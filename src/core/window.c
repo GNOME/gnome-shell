@@ -155,7 +155,8 @@ enum {
   PROP_DEMANDS_ATTENTION,
   PROP_URGENT,
   PROP_MUTTER_HINTS,
-  PROP_APPEARS_FOCUSED
+  PROP_APPEARS_FOCUSED,
+  PROP_WM_CLASS
 };
 
 enum
@@ -246,6 +247,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_APPEARS_FOCUSED:
       g_value_set_boolean (value, meta_window_appears_focused (win));
+      break;
+    case PROP_WM_CLASS:
+      g_value_set_string (value, win->res_class);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -381,6 +385,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                                          "Whether the window is drawn as being focused",
                                                          FALSE,
                                                          G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_WM_CLASS,
+                                   g_param_spec_string ("wm-class",
+                                                        "WM_CLASS",
+                                                        "Contents of the WM_CLASS property of this window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
 
   window_signals[WORKSPACE_CHANGED] =
     g_signal_new ("workspace-changed",

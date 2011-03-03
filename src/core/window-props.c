@@ -845,6 +845,8 @@ reload_wm_class (MetaWindow    *window,
 
       if (value->v.class_hint.res_class)
         window->res_class = g_strdup (value->v.class_hint.res_class);
+
+      g_object_notify (G_OBJECT (window), "wm-class");
     }
 
   meta_verbose ("Window %s class: '%s' name: '%s'\n",
