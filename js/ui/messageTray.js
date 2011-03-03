@@ -421,6 +421,7 @@ Notification.prototype = {
                     !this._actionArea.contains(event.get_source()))
                     this._onClicked();
             }));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._buttonFocusManager = St.FocusManager.get_for_stage(global.stage);
 
@@ -763,6 +764,8 @@ Notification.prototype = {
     },
 
     collapseCompleted: function() {
+        if (this._destroyed)
+            return;
         this.expanded = false;
         // Make sure we don't line wrap the title, and ellipsize it instead.
         this._titleLabel.clutter_text.line_wrap = false;
@@ -794,13 +797,18 @@ Notification.prototype = {
             this.destroy();
     },
 
-    destroy: function(reason) {
+    _onDestroy: function() {
         if (this._destroyed)
             return;
         this._destroyed = true;
-        if (!reason)
-            reason = NotificationDestroyedReason.DISMISSED;
-        this.emit('destroy', reason);
+        if (!this._destroyedReason)
+            this._destroyedReason = NotificationDestroyedReason.DISMISSED;
+        this.emit('destroy', this._destroyedReason);
+    },
+
+    destroy: function(reason) {
+        this._destroyedReason = reason;
+        this.actor.destroy();
     }
 };
 Signals.addSignalMethods(Notification.prototype);
@@ -1135,10 +1143,7 @@ MessageTray.prototype = {
                 this._onSummaryItemClicked(summaryItem);
             }));
 
-        source.connect('destroy', Lang.bind(this,
-            function () {
-                this.removeSource(source);
-            }));
+        source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
 
         // We need to display the newly-added summary item, but if the
         // caller is about to post a notification, we want to show that
@@ -1147,20 +1152,12 @@ MessageTray.prototype = {
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() { this._updateState(); return false; }));
     },
 
-    removeSource: function(source) {
+    _onSourceDestroy: function(source) {
         let index = this._getIndexOfSummaryItemForSource(source);
         if (index == -1)
             return;
 
-        // remove all notifications with this source from the queue
-        let newNotificationQueue = [];
-        for (let i = 0; i < this._notificationQueue.length; i++) {
-            if (this._notificationQueue[i].source != source)
-                newNotificationQueue.push(this._notificationQueue[i]);
-        }
-        this._notificationQueue = newNotificationQueue;
-
-        this._summary.remove_actor(this._summaryItems[index].actor);
+        this._summaryItems[index].actor.destroy();
 
         let newSummaryItemsIndex = this._newSummaryItems.indexOf(this._summaryItems[index]);
         if (newSummaryItemsIndex != -1)
@@ -1202,9 +1199,16 @@ MessageTray.prototype = {
 
         if (needUpdate);
             this._updateState();
+
+        // remove all notifications with this source from the queue
+        let newNotificationQueue = [];
+        for (let i = this._notificationQueue.length - 1; i >= 0; i--) {
+            if (this._notificationQueue[i].source == source)
+                this._notificationQueue[i].destroy();
+        }
     },
 
-    removeNotification: function(notification) {
+    _onNotificationDestroy: function(notification) {
         if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
             this._updateNotificationTimeout(0);
             this._notificationRemoved = true;
@@ -1213,6 +1217,7 @@ MessageTray.prototype = {
         }
 
         let index = this._notificationQueue.indexOf(notification);
+        notification.destroy();
         if (index != -1)
             this._notificationQueue.splice(index, 1);
     },
@@ -1248,7 +1253,7 @@ MessageTray.prototype = {
             this._updateShowingNotification();
         } else if (this._notificationQueue.indexOf(notification) < 0) {
             notification.connect('destroy',
-                                 Lang.bind(this, this.removeNotification));
+                                 Lang.bind(this, this._onNotificationDestroy));
             this._notificationQueue.push(notification);
             this._notificationQueue.sort(function(notification1, notification2) {
                 return (notification2.urgency - notification1.urgency);
