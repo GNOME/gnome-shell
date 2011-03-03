@@ -541,7 +541,7 @@ const WindowPositionFlags = {
 };
 
 /**
- * @metaWorkspace: a #Meta.Workspace
+ * @metaWorkspace: a #Meta.Workspace, or null
  */
 function Workspace(metaWorkspace, monitorIndex) {
     this._init(metaWorkspace, monitorIndex);
@@ -587,10 +587,12 @@ Workspace.prototype = {
         }
 
         // Track window changes
-        this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                          Lang.bind(this, this._windowAdded));
-        this._windowRemovedId = this.metaWorkspace.connect('window-removed',
-                                                            Lang.bind(this, this._windowRemoved));
+        if (this.metaWorkspace) {
+            this._windowAddedId = this.metaWorkspace.connect('window-added',
+                                                             Lang.bind(this, this._windowAdded));
+            this._windowRemovedId = this.metaWorkspace.connect('window-removed',
+                                                               Lang.bind(this, this._windowRemoved));
+        }
         this._windowEnteredMonitorId = global.screen.connect('window-entered-monitor',
                                                            Lang.bind(this, this._windowEnteredMonitor));
         this._windowLeftMonitorId = global.screen.connect('window-left-monitor',
@@ -902,7 +904,7 @@ Workspace.prototype = {
         clones = this._orderWindowsByMotionAndStartup(clones, slots);
 
         let currentWorkspace = global.screen.get_active_workspace();
-        let isOnCurrentWorkspace = this.metaWorkspace == currentWorkspace;
+        let isOnCurrentWorkspace = this.metaWorkspace == null || this.metaWorkspace == currentWorkspace;
 
         for (let i = 0; i < clones.length; i++) {
             let slot = slots[i];
@@ -1005,7 +1007,8 @@ Workspace.prototype = {
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let overlay = this._windowOverlays[i];
-            this._showWindowOverlay(clone, overlay, this.metaWorkspace == currentWorkspace);
+            this._showWindowOverlay(clone, overlay,
+                                    this.metaWorkspace == null || this.metaWorkspace == currentWorkspace);
         }
     },
 
@@ -1202,7 +1205,7 @@ Workspace.prototype = {
         this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
                                                                            this._doneLeavingOverview));
 
-        if (this.metaWorkspace != currentWorkspace)
+        if (this.metaWorkspace != null && this.metaWorkspace != currentWorkspace)
             return;
 
         // Position and scale the windows.
@@ -1246,8 +1249,10 @@ Workspace.prototype = {
         }
         Tweener.removeTweens(actor);
 
-        this.metaWorkspace.disconnect(this._windowAddedId);
-        this.metaWorkspace.disconnect(this._windowRemovedId);
+        if (this.metaWorkspace) {
+            this.metaWorkspace.disconnect(this._windowAddedId);
+            this.metaWorkspace.disconnect(this._windowRemovedId);
+        }
         global.screen.disconnect(this._windowEnteredMonitorId);
         global.screen.disconnect(this._windowLeftMonitorId);
 
@@ -1270,7 +1275,7 @@ Workspace.prototype = {
 
     // Tests if @win belongs to this workspaces and monitor
     _isMyWindow : function (win) {
-        return Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index()) &&
+        return (this.metaWorkspace == null || Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index())) &&
             (!win.get_meta_window() || win.get_meta_window().get_monitor() == this.monitorIndex);
     },
 
@@ -1359,8 +1364,10 @@ Workspace.prototype = {
     },
 
     _onCloneSelected : function (clone, time) {
-        Main.activateWindow(clone.metaWindow, time,
-                            this.metaWorkspace.index());
+        let wsIndex = undefined;
+        if (this.metaWorkspace)
+            wsIndex = this.metaWorkspace.index();
+        Main.activateWindow(clone.metaWindow, time, wsIndex);
     },
 
     // Draggable target interface
@@ -1388,7 +1395,15 @@ Workspace.prototype = {
             };
 
             let metaWindow = win.get_meta_window();
-            metaWindow.change_workspace_by_index(this.metaWorkspace.index(),
+
+            // We need to move the window before changing the workspace, because
+            // the move itself could cause a workspace change if the window enters
+            // the primary monitor
+            if (metaWindow.get_monitor() != this.monitorIndex)
+                metaWindow.move_frame(true, this._x, this._y);
+
+            let index = this.metaWorkspace ? this.metaWorkspace.index() : global.screen.get_active_workspace_index();
+            metaWindow.change_workspace_by_index(index,
                                                  false, // don't create workspace
                                                  time);
             return true;
