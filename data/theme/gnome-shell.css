@@ -195,21 +195,19 @@ StTooltip StLabel {
     font-weight: bold;
 }
 
-#panelLeft {
+#panelLeft:ltr {
     padding-right: 4px;
 }
 
 #panelLeft:rtl {
-    padding-right: 0px;
     padding-left: 4px;
 }
 
-#panelRight {
+#panelRight:ltr {
     padding-left: 4px;
 }
 
 #panelRight:rtl {
-    padding-left: 0px;
     padding-right: 4px;
 }
 
@@ -297,6 +295,11 @@ StTooltip StLabel {
     padding-left: 14px;
 }
 
+#legacyTray:rtl {
+    padding-left: 0px;
+    padding-right: 14px;
+}
+
 #legacyTray:compact {
     spacing: 8px;
 }
@@ -358,6 +361,10 @@ StTooltip StLabel {
     width: 24px;
     -st-background-image-shadow: -2px 2px 6px rgba(0,0,0,0.5);
     -shell-close-overlap: 16px;
+}
+
+.window-close:rtl {
+    -st-background-image-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 /* Dash */
@@ -473,8 +480,13 @@ StTooltip StLabel {
 }
 
 #searchResultsContent {
-    padding: 0 20px 0 0;
+    padding-right: 20px;
     spacing: 36px;
+}
+
+#searchResultsContent:rtl {
+    padding-right: 0px;
+    padding-left: 20px;
 }
 
 .search-statustext,
@@ -541,6 +553,11 @@ StTooltip StLabel {
     spacing: 20px;
 }
 
+.all-app:rtl {
+    padding-right: 16px;
+    padding-left: 25px;
+}
+
 .app-filter {
     font-size: 14px;
     font-weight: bold;
@@ -551,8 +568,13 @@ StTooltip StLabel {
 
 .app-filter:selected {
     color: #ffffff;
-    background-image: url("filter-selected.svg");
+    background-image: url("filter-selected-ltr.svg");
     background-position: 190px 10px;
+}
+
+.app-filter:selected:rtl {
+    background-image: url("filter-selected-rtl.svg");
+    background-position: 10px 10px;
 }
 
 .dash-item-container > .app-well-app {
@@ -765,6 +787,11 @@ StTooltip StLabel {
     background-image: url("calendar-arrow-left.svg");
     border-radius: 4px;
 }
+
+.calendar-change-month-back:rtl {
+    background-image: url("calendar-arrow-right.svg");
+}
+
 .calendar-change-month-back:hover {
     background-color: #999999;
 }
@@ -778,6 +805,11 @@ StTooltip StLabel {
     background-image: url("calendar-arrow-right.svg");
     border-radius: 4px;
 }
+
+.calendar-change-month-forward:rtl {
+    background-image: url("calendar-arrow-left.svg");
+}
+
 .calendar-change-month-forward:hover {
     background-color: #999999;
 }
@@ -872,16 +904,29 @@ StTooltip StLabel {
     padding-left: 0.3em;
 }
 
+.events-day-header:rtl {
+    padding-left: 0em;
+    padding-right: 0.3em;
+}
+
 .events-day-dayname {
     font-size: 12px;
     color: rgba(153, 153, 153, 1.0);
     text-align: left;
 }
 
+.events-day-dayname:rtl {
+    text-align: right;
+}
+
 .events-day-time {
     font-size: 12px;
     color: #fff;
     text-align: right;
+}
+
+.events-day-time:rtl {
+    text-align: left;
 }
 
 .events-day-task {
@@ -896,6 +941,11 @@ StTooltip StLabel {
 .events-time-box {
     width: 70px;
     padding-right: 8px;
+}
+
+.events-time-box:rtl {
+    padding-right: 0px;
+    padding-left: 8px;
 }
 
 .events-event-box {
@@ -951,8 +1001,12 @@ StTooltip StLabel {
     height: 1em;
 }
 
-#notification-scrollview > StScrollBar {
+#notification-scrollview:ltr > StScrollBar {
     padding-left: 6px;
+}
+
+#notification-scrollview:rtl > StScrollBar {
+    padding-right: 6px;
 }
 
 #notification-body {
@@ -1014,6 +1068,11 @@ StTooltip StLabel {
     border-radius: 4px;
 }
 
+.chat-received:rtl {
+    padding-left: 0px;
+    padding-right: 4px;
+}
+
 .chat-sent {
     background-gradient-direction: horizontal;
     background-gradient-start: rgba(255, 255, 255, 0);
@@ -1023,11 +1082,21 @@ StTooltip StLabel {
     border-radius: 4px;
 }
 
+.chat-sent:rtl {
+    padding-left: 0px;
+    padding-right: 4px;
+}
+
 .chat-meta-message {
     padding-left: 4px;
     border-radius: 4px;
     font-size: 14px;
     color: #bbbbbb;
+}
+
+.chat-meta-message:rtl {
+    padding-left: 0px;
+    padding-right: 4px;
 }
 
 #notification StEntry {
@@ -1066,19 +1135,37 @@ StTooltip StLabel {
     height: 36px;
 }
 
-.summary-source-button {
+#summary-mode:rtl {
+    padding: 2px 4px 0px 0px;
+}
+
+.summary-source-button:ltr {
     padding-left: 4px;
     padding-right: 16px;
 }
 
-.summary-source-button:last-child {
+.summary-source-button:rtl {
+    padding-right: 4px;
+    padding-left: 16px;
+}
+
+.summary-source-button:last-child:ltr {
     padding-right: 12px;
+}
+
+.summary-source-button:last-child:rtl {
+    padding-left: 12px;
 }
 
 .source-title {
     font-size: 12px;
     font-weight: bold;
     padding-left: 4px;
+}
+
+.source-title:rtl {
+    padding-left: 0px;
+    padding-right: 4px;
 }
 
 /* App Switcher */
@@ -1302,12 +1389,22 @@ StTooltip StLabel {
     padding-bottom: 30px;
 }
 
+.end-session-dialog-subject:rtl {
+    padding-left: 0px;
+    padding-right: 17px;
+}
+
 .end-session-dialog-description {
     font-size: 10pt;
     color: white;
     padding-left: 17px;
     padding-right: 40px;
     width: 16em;
+}
+
+.end-session-dialog-description:rtl {
+    padding-right: 17px;
+    padding-left: 40px;
 }
 
 .end-session-dialog-logout-icon {
@@ -1331,12 +1428,25 @@ StTooltip StLabel {
     padding-right: 32px;
 }
 
-.end-session-dialog-app-list-item {
+.end-session-dialog-app-list:rtl {
+    padding-right: 17px;
+    padding-left: 32px;
+}
+
+.end-session-dialog-app-list-item:ltr {
     padding-right: 1em;
 }
 
-.end-session-dialog-app-list-item-icon {
+.end-session-dialog-app-list-item:rtl {
+    padding-left: 1em;
+}
+
+.end-session-dialog-app-list-item-icon:ltr {
     padding-right: 17px;
+}
+
+.end-session-dialog-app-list-item-icon:rtl {
+    padding-left: 17px;
 }
 
 .end-session-dialog-app-list-item-name {
@@ -1379,8 +1489,17 @@ StTooltip StLabel {
     spacing: 10px;
 }
 
-.polkit-dialog-password-label {
+.polkit-dialog-user-layout:rtl {
+    padding-left: 0px;
+    padding-right: 10px;
+}
+
+.polkit-dialog-password-label:ltr {
     padding-right: 0.5em;
+}
+
+.polkit-dialog-password-label:rtl {
+    padding-left: 0.5em;
 }
 
 .polkit-dialog-password-entry {
