@@ -413,16 +413,14 @@ Notification.prototype = {
                 this.destroy();
             }));
 
-        this.actor = new St.Table({ name: 'notification',
-                                    reactive: true });
-        this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
-        this.actor.connect('button-release-event', Lang.bind(this,
-            function (actor, event) {
-                if (!this._actionArea ||
-                    !this._actionArea.contains(event.get_source()))
-                    this._onClicked();
-            }));
+        this.actor = new St.Button();
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
+        this._table = new St.Table({ name: 'notification',
+                                     reactive: true });
+        this._table.connect('style-changed', Lang.bind(this, this._styleChanged));
+        this.actor.set_child(this._table);
 
         this._buttonFocusManager = St.FocusManager.get_for_stage(global.stage);
 
@@ -435,10 +433,10 @@ Notification.prototype = {
         this._bannerBox.connect('get-preferred-width', Lang.bind(this, this._bannerBoxGetPreferredWidth));
         this._bannerBox.connect('get-preferred-height', Lang.bind(this, this._bannerBoxGetPreferredHeight));
         this._bannerBox.connect('allocate', Lang.bind(this, this._bannerBoxAllocate));
-        this.actor.add(this._bannerBox, { row: 0,
-                                          col: 1,
-                                          y_expand: false,
-                                          y_fill: false });
+        this._table.add(this._bannerBox, { row: 0,
+                                           col: 1,
+                                           y_expand: false,
+                                           y_fill: false });
 
         this._titleLabel = new St.Label();
         this._bannerBox.add_actor(this._titleLabel);
@@ -484,15 +482,15 @@ Notification.prototype = {
             this._buttonBox = null;
         }
         if (!this._scrollArea && !this._actionArea)
-            this.actor.remove_style_class_name('multi-line-notification');
+            this._table.remove_style_class_name('multi-line-notification');
 
         this._icon = params.icon || this.source.createNotificationIcon();
-        this.actor.add(this._icon, { row: 0,
-                                     col: 0,
-                                     x_expand: false,
-                                     y_expand: false,
-                                     y_fill: false,
-                                     y_align: St.Align.START });
+        this._table.add(this._icon, { row: 0,
+                                      col: 0,
+                                      x_expand: false,
+                                      y_expand: false,
+                                      y_fill: false,
+                                      y_align: St.Align.START });
 
         title = title ? _fixMarkup(title.replace(/\n/g, ' '), params.titleMarkup) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
@@ -519,12 +517,12 @@ Notification.prototype = {
     },
 
     _createScrollArea: function() {
-        this.actor.add_style_class_name('multi-line-notification');
+        this._table.add_style_class_name('multi-line-notification');
         this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
                                                vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER,
                                                vfade: true });
-        this.actor.add(this._scrollArea, { row: 1, col: 1 });
+        this._table.add(this._scrollArea, { row: 1, col: 1 });
         this._contentArea = new St.BoxLayout({ name: 'notification-body',
                                                vertical: true });
         this._scrollArea.add_actor(this._contentArea);
@@ -603,8 +601,8 @@ Notification.prototype = {
         props.row = 2;
         props.col = 1;
 
-        this.actor.add_style_class_name('multi-line-notification');
-        this.actor.add(this._actionArea, props);
+        this._table.add_style_class_name('multi-line-notification');
+        this._table.add(this._actionArea, props);
         this._updated();
     },
 
@@ -665,7 +663,7 @@ Notification.prototype = {
     },
 
     _styleChanged: function() {
-        this._spacing = this.actor.get_theme_node().get_length('spacing-columns');
+        this._spacing = this._table.get_theme_node().get_length('spacing-columns');
     },
 
     _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {
@@ -710,7 +708,7 @@ Notification.prototype = {
             // Make _bannerLabel visible if the entire notification
             // fits on one line, or if the notification is currently
             // unexpanded and only showing one line anyway.
-            if (!this.expanded || (bannerFits && this.actor.row_count == 1))
+            if (!this.expanded || (bannerFits && this._table.row_count == 1))
                 this._bannerLabel.opacity = 255;
         }
 
@@ -722,7 +720,7 @@ Notification.prototype = {
                                         function() {
                                             this._addBannerBody();
                                             if (!this._titleFitsInBannerMode)
-                                                this.actor.add_style_class_name('multi-line-notification');
+                                                this._table.add_style_class_name('multi-line-notification');
                                             this._updated();
                                             return false;
                                         }));
@@ -743,7 +741,7 @@ Notification.prototype = {
             this._titleLabel.clutter_text.line_wrap = true;
             this._titleLabel.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
             this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        } else if (this.actor.row_count > 1 && this._bannerLabel.opacity != 0) {
+        } else if (this._table.row_count > 1 && this._bannerLabel.opacity != 0) {
             // We always hide the banner if the notification has additional content.
             //
             // We don't need to wrap the banner that doesn't fit the way we wrap the
