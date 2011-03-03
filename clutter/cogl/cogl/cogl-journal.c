@@ -1699,7 +1699,7 @@ try_checking_point_hits_entry_after_clipping (CoglJournalEntry *entry,
       software_clip_entry (entry, vertices, &clip_bounds);
       entry_to_screen_polygon (entry, vertices, poly);
 
-      *hit = _cogl_util_point_in_poly (x, y, poly, sizeof (float) * 4, 4);
+      *hit = _cogl_util_point_in_screen_poly (x, y, poly, sizeof (float) * 4, 4);
       return TRUE;
     }
 
@@ -1753,7 +1753,7 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
 
       entry_to_screen_polygon (entry, vertices, poly);
 
-      if (!_cogl_util_point_in_poly (x, y, poly, sizeof (float) * 4, 4))
+      if (!_cogl_util_point_in_screen_poly (x, y, poly, sizeof (float) * 4, 4))
         continue;
 
       /* FIXME: the journal should have a back pointer to the

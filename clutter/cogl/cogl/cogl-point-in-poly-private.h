@@ -28,11 +28,11 @@
 G_BEGIN_DECLS
 
 int
-_cogl_util_point_in_poly (float point_x,
-                          float point_y,
-                          void *vertices,
-                          size_t stride,
-                          int n_vertices);
+_cogl_util_point_in_screen_poly (float point_x,
+                                 float point_y,
+                                 void *vertices,
+                                 size_t stride,
+                                 int n_vertices);
 
 G_END_DECLS
 
