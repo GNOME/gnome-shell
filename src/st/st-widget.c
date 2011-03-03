@@ -554,6 +554,7 @@ st_widget_get_theme_node (StWidget *widget)
       StThemeNode *parent_node = NULL;
       ClutterStage *stage = NULL;
       ClutterActor *parent;
+      char *pseudo_class, *direction_pseudo_class;
 
       parent = clutter_actor_get_parent (CLUTTER_ACTOR (widget));
       while (parent != NULL)
@@ -575,13 +576,31 @@ st_widget_get_theme_node (StWidget *widget)
       if (parent_node == NULL)
         parent_node = get_root_theme_node (CLUTTER_STAGE (stage));
 
+      /* Always append a "magic" pseudo class indicating the text
+       * direction, to allow to adapt the CSS when necessary without
+       * requiring separate style sheets.
+       */
+      if (st_widget_get_direction (widget) == ST_TEXT_DIRECTION_RTL)
+        direction_pseudo_class = "rtl";
+      else
+        direction_pseudo_class = "ltr";
+
+      if (priv->pseudo_class)
+        pseudo_class = g_strconcat(priv->pseudo_class, " ",
+                                   direction_pseudo_class, NULL);
+      else
+        pseudo_class = direction_pseudo_class;
+
       priv->theme_node = st_theme_node_new (st_theme_context_get_for_stage (stage),
                                             parent_node, priv->theme,
                                             G_OBJECT_TYPE (widget),
                                             clutter_actor_get_name (CLUTTER_ACTOR (widget)),
                                             priv->style_class,
-                                            priv->pseudo_class,
+                                            pseudo_class,
                                             priv->inline_style);
+
+      if (pseudo_class != direction_pseudo_class)
+        g_free (pseudo_class);
     }
 
   return priv->theme_node;
@@ -1438,8 +1457,15 @@ st_widget_get_direction (StWidget *self)
 void
 st_widget_set_direction (StWidget *self, StTextDirection dir)
 {
+  StTextDirection old_direction;
+
   g_return_if_fail (ST_IS_WIDGET (self));
+
+  old_direction = st_widget_get_direction (self);
   self->priv->direction = dir;
+
+  if (old_direction != st_widget_get_direction (self))
+    st_widget_style_changed (self);
 }
 
 /**
