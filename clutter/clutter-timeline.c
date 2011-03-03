@@ -332,9 +332,9 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
   object_class->finalize     = clutter_timeline_finalize;
   object_class->set_property = clutter_timeline_set_property;
   object_class->get_property = clutter_timeline_get_property;
-  _clutter_object_class_install_properties (object_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (object_class,
+                                     PROP_LAST,
+                                     obj_props);
 
   /**
    * ClutterTimeline::new-frame:
@@ -691,7 +691,7 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
           else
             priv->direction = CLUTTER_TIMELINE_FORWARD;
 
-          _clutter_notify_by_pspec (G_OBJECT (timeline),
+          g_object_notify_by_pspec (G_OBJECT (timeline),
                                     obj_props[PROP_DIRECTION]);
         }
 
@@ -851,7 +851,7 @@ clutter_timeline_set_loop (ClutterTimeline *timeline,
     {
       timeline->priv->loop = loop;
 
-      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_LOOP]);
+      g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_LOOP]);
     }
 }
 
@@ -1077,7 +1077,7 @@ clutter_timeline_set_delay (ClutterTimeline *timeline,
   if (priv->delay != msecs)
     {
       priv->delay = msecs;
-      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DELAY]);
+      g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DELAY]);
     }
 }
 
@@ -1129,7 +1129,7 @@ clutter_timeline_set_duration (ClutterTimeline *timeline,
     {
       priv->duration = msecs;
 
-      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DURATION]);
+      g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DURATION]);
     }
 }
 
@@ -1202,7 +1202,7 @@ clutter_timeline_set_direction (ClutterTimeline          *timeline,
       if (priv->elapsed_time == 0)
         priv->elapsed_time = priv->duration;
 
-      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DIRECTION]);
+      g_object_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_DIRECTION]);
     }
 }
 
@@ -1605,7 +1605,7 @@ clutter_timeline_set_auto_reverse (ClutterTimeline *timeline,
     {
       priv->auto_reverse = reverse;
 
-      _clutter_notify_by_pspec (G_OBJECT (timeline),
+      g_object_notify_by_pspec (G_OBJECT (timeline),
                                 obj_props[PROP_AUTO_REVERSE]);
     }
 }

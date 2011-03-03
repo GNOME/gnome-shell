@@ -46,12 +46,6 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterMainContext      ClutterMainContext;
 
-#define _clutter_notify_by_pspec(obj, pspec) \
-  g_object_notify_by_pspec ((obj), (pspec))
-
-#define _clutter_object_class_install_properties(oclass, n_pspecs, pspecs) \
-  g_object_class_install_properties ((oclass), (n_pspecs), (pspecs))
-
 #define CLUTTER_REGISTER_VALUE_TRANSFORM_TO(TYPE_TO,func)             { \
   g_value_register_transform_func (g_define_type_id, TYPE_TO, func);    \
 }

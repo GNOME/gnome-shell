@@ -329,9 +329,9 @@ clutter_clone_class_init (ClutterCloneClass *klass)
                          G_PARAM_CONSTRUCT |
                          CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void
@@ -402,7 +402,7 @@ clutter_clone_set_source_internal (ClutterClone *clone,
 			G_CALLBACK (clone_source_queue_relayout_cb), clone);
     }
 
-  _clutter_notify_by_pspec (G_OBJECT (clone), obj_props[PROP_SOURCE]);
+  g_object_notify_by_pspec (G_OBJECT (clone), obj_props[PROP_SOURCE]);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
 }

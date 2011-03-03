@@ -488,7 +488,7 @@ clutter_behaviour_rotate_set_axis (ClutterBehaviourRotate *rotate,
     {
       priv->axis = axis;
 
-      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_AXIS]);
+      g_object_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_AXIS]);
     }
 }
 
@@ -534,7 +534,7 @@ clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
     {
       priv->direction = direction;
 
-      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_DIRECTION]);
+      g_object_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_DIRECTION]);
     }
 }
 
@@ -594,14 +594,14 @@ clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
     {
       priv->angle_start = clamp_angle (angle_start);
 
-      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_ANGLE_START]);
+      g_object_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_ANGLE_START]);
     }
 
   if (priv->angle_end != angle_end)
     {
       priv->angle_end = clamp_angle (angle_end);
 
-      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_ANGLE_END]);
+      g_object_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_ANGLE_END]);
     }
 
   g_object_thaw_notify (G_OBJECT (rotate));
@@ -636,19 +636,19 @@ clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
   if (priv->center_x != x)
     {
       priv->center_x = x;
-      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_X]);
+      g_object_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_X]);
     }
 
   if (priv->center_y != y)
     {
       priv->center_y = y;
-      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_Y]);
+      g_object_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_Y]);
     }
 
   if (priv->center_z != z)
     {
       priv->center_z = z;
-      _clutter_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_Z]);
+      g_object_notify_by_pspec (G_OBJECT (rotate), obj_props[PROP_CENTER_Z]);
     }
 
   g_object_thaw_notify (G_OBJECT (rotate));

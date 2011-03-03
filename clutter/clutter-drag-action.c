@@ -557,9 +557,9 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
   gobject_class->set_property = clutter_drag_action_set_property;
   gobject_class->get_property = clutter_drag_action_get_property;
   gobject_class->dispose = clutter_drag_action_dispose;
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            drag_props);
+  g_object_class_install_properties  (gobject_class,
+                                      PROP_LAST,
+                                      drag_props);
 
   /**
    * ClutterDragAction::drag-begin:
@@ -714,14 +714,14 @@ clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
     {
       priv->x_drag_threshold = x_threshold;
 
-      _clutter_notify_by_pspec (self, drag_props[PROP_X_DRAG_THRESHOLD]);
+      g_object_notify_by_pspec (self, drag_props[PROP_X_DRAG_THRESHOLD]);
     }
 
   if (priv->y_drag_threshold != y_threshold)
     {
       priv->y_drag_threshold = y_threshold;
 
-      _clutter_notify_by_pspec (self, drag_props[PROP_Y_DRAG_THRESHOLD]);
+      g_object_notify_by_pspec (self, drag_props[PROP_Y_DRAG_THRESHOLD]);
     }
 
   g_object_thaw_notify (self);
@@ -778,7 +778,7 @@ clutter_drag_action_set_drag_handle (ClutterDragAction *action,
 
   priv->drag_handle = handle;
 
-  _clutter_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_HANDLE]);
+  g_object_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_HANDLE]);
 }
 
 /**
@@ -826,7 +826,7 @@ clutter_drag_action_set_drag_axis (ClutterDragAction *action,
 
   priv->drag_axis = axis;
 
-  _clutter_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_AXIS]);
+  g_object_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_AXIS]);
 }
 
 /**

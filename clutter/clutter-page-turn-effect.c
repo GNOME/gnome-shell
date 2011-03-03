@@ -321,7 +321,7 @@ clutter_page_turn_effect_set_period (ClutterPageTurnEffect *effect,
 
   clutter_deform_effect_invalidate (CLUTTER_DEFORM_EFFECT (effect));
 
-  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_PERIOD]);
+  g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_PERIOD]);
 }
 
 /**
@@ -362,7 +362,7 @@ clutter_page_turn_effect_set_angle (ClutterPageTurnEffect *effect,
 
   clutter_deform_effect_invalidate (CLUTTER_DEFORM_EFFECT (effect));
 
-  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_ANGLE]);
+  g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_ANGLE]);
 }
 
 /**
@@ -402,7 +402,7 @@ clutter_page_turn_effect_set_radius (ClutterPageTurnEffect *effect,
 
   clutter_deform_effect_invalidate (CLUTTER_DEFORM_EFFECT (effect));
 
-  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_RADIUS]);
+  g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_RADIUS]);
 }
 
 /**

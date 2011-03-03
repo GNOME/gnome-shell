@@ -311,9 +311,9 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
   gobject_class->set_property = clutter_desaturate_effect_set_property;
   gobject_class->get_property = clutter_desaturate_effect_get_property;
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void
@@ -367,7 +367,7 @@ clutter_desaturate_effect_set_factor (ClutterDesaturateEffect *effect,
       if (effect->actor != NULL)
         clutter_actor_queue_redraw (effect->actor);
 
-      _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_FACTOR]);
+      g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_FACTOR]);
     }
 }
 

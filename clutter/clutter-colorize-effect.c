@@ -309,9 +309,9 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
                               &default_tint,
                               CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void
@@ -359,7 +359,7 @@ clutter_colorize_effect_set_tint (ClutterColorizeEffect *effect,
   if (effect->actor != NULL)
     clutter_actor_queue_redraw (effect->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_TINT]);
+  g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_TINT]);
 }
 
 /**

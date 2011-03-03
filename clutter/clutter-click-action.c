@@ -111,7 +111,7 @@ click_action_set_pressed (ClutterClickAction *action,
     return;
 
   priv->is_pressed = is_pressed;
-  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_PRESSED]);
+  g_object_notify_by_pspec (G_OBJECT (action), obj_props[PROP_PRESSED]);
 }
 
 static gboolean
@@ -318,9 +318,9 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
                           FALSE,
                           CLUTTER_PARAM_READABLE);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 
   /**
    * ClutterClickAction::clicked:

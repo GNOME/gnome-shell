@@ -464,7 +464,7 @@ clutter_snap_constraint_set_source (ClutterSnapConstraint *constraint,
         clutter_actor_queue_relayout (constraint->actor);
     }
 
-  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_SOURCE]);
+  g_object_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_SOURCE]);
 }
 
 /**
@@ -513,7 +513,7 @@ clutter_snap_constraint_set_edges (ClutterSnapConstraint *constraint,
   if (constraint->from_edge != from_edge)
     {
       constraint->from_edge = from_edge;
-      _clutter_notify_by_pspec (G_OBJECT (constraint),
+      g_object_notify_by_pspec (G_OBJECT (constraint),
                                 obj_props[PROP_FROM_EDGE]);
       from_changed = TRUE;
     }
@@ -521,7 +521,7 @@ clutter_snap_constraint_set_edges (ClutterSnapConstraint *constraint,
   if (constraint->to_edge != to_edge)
     {
       constraint->to_edge = to_edge;
-      _clutter_notify_by_pspec (G_OBJECT (constraint),
+      g_object_notify_by_pspec (G_OBJECT (constraint),
                                 obj_props[PROP_TO_EDGE]);
       to_changed = TRUE;
     }
@@ -582,7 +582,7 @@ clutter_snap_constraint_set_offset (ClutterSnapConstraint *constraint,
   if (constraint->actor != NULL)
     clutter_actor_queue_relayout (constraint->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_OFFSET]);
+  g_object_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_OFFSET]);
 }
 
 /**

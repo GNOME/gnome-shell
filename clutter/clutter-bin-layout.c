@@ -178,7 +178,7 @@ set_layer_x_align (ClutterBinLayer     *self,
   manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), layer_props[PROP_LAYER_X_ALIGN]);
+  g_object_notify_by_pspec (G_OBJECT (self), layer_props[PROP_LAYER_X_ALIGN]);
 }
 
 static void
@@ -197,7 +197,7 @@ set_layer_y_align (ClutterBinLayer     *self,
   manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), layer_props[PROP_LAYER_Y_ALIGN]);
+  g_object_notify_by_pspec (G_OBJECT (self), layer_props[PROP_LAYER_Y_ALIGN]);
 }
 
 static void
@@ -274,9 +274,9 @@ clutter_bin_layer_class_init (ClutterBinLayerClass *klass)
                        CLUTTER_BIN_ALIGNMENT_CENTER,
                        CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAYER_LAST,
-                                            layer_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAYER_LAST,
+                                     layer_props);
 }
 
 static void
@@ -305,7 +305,7 @@ set_x_align (ClutterBinLayout    *self,
       manager = CLUTTER_LAYOUT_MANAGER (self);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), bin_props[PROP_X_ALIGN]);
+      g_object_notify_by_pspec (G_OBJECT (self), bin_props[PROP_X_ALIGN]);
     }
 }
 
@@ -324,7 +324,7 @@ set_y_align (ClutterBinLayout    *self,
       manager = CLUTTER_LAYOUT_MANAGER (self);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), bin_props[PROP_Y_ALIGN]);
+      g_object_notify_by_pspec (G_OBJECT (self), bin_props[PROP_Y_ALIGN]);
     }
 }
 
@@ -603,9 +603,9 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
 
   gobject_class->set_property = clutter_bin_layout_set_property;
   gobject_class->get_property = clutter_bin_layout_get_property;
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            bin_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     bin_props);
 
   layout_class->get_preferred_width =
     clutter_bin_layout_get_preferred_width;

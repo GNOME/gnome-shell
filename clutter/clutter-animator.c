@@ -1804,9 +1804,9 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
                          CLUTTER_TYPE_TIMELINE,
                          CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void

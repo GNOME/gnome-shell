@@ -420,9 +420,9 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
 
   gobject_class->set_property = clutter_shader_effect_set_property;
   gobject_class->finalize = clutter_shader_effect_finalize;
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 
   meta_class->set_actor = clutter_shader_effect_set_actor;
 

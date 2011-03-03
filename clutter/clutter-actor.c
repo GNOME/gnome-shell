@@ -1035,7 +1035,7 @@ clutter_actor_real_map (ClutterActor *self)
   /* notify on parent mapped before potentially mapping
    * children, so apps see a top-down notification.
    */
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
 
   for (c = self->priv->children; c; c = c->next)
     {
@@ -1101,7 +1101,7 @@ clutter_actor_real_unmap (ClutterActor *self)
   /* notify on parent mapped after potentially unmapping
    * children, so apps see a bottom-up notification.
    */
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
 
   /* relinquish keyboard focus if we were unmapped while owning it */
   if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
@@ -1195,7 +1195,7 @@ set_show_on_set_parent (ClutterActor *self,
   if (priv->parent_actor == NULL)
     {
       priv->show_on_set_parent = set_show;
-      _clutter_notify_by_pspec (G_OBJECT (self),
+      g_object_notify_by_pspec (G_OBJECT (self),
                                 obj_props[PROP_SHOW_ON_SET_PARENT]);
     }
 }
@@ -1241,7 +1241,7 @@ clutter_actor_show (ClutterActor *self)
   set_show_on_set_parent (self, TRUE);
 
   g_signal_emit (self, actor_signals[SHOW], 0);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
   if (priv->parent_actor)
     clutter_actor_queue_redraw (priv->parent_actor);
@@ -1334,7 +1334,7 @@ clutter_actor_hide (ClutterActor *self)
   set_show_on_set_parent (self, FALSE);
 
   g_signal_emit (self, actor_signals[HIDE], 0);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
   if (priv->parent_actor)
     clutter_actor_queue_redraw (priv->parent_actor);
@@ -1425,7 +1425,7 @@ clutter_actor_realize (ClutterActor *self)
   CLUTTER_NOTE (ACTOR, "Realizing actor '%s'", _clutter_actor_get_debug_name (self));
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
 
   g_signal_emit (self, actor_signals[REALIZE], 0);
 
@@ -1519,7 +1519,7 @@ unrealize_actor_after_children_cb (ClutterActor *self,
    * child actors are unrealized, to maintain invariants.
    */
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
   return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
 }
 
@@ -1738,15 +1738,15 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
    */
   if (priv->needs_allocation)
     {
-      _clutter_notify_by_pspec (obj, obj_props[PROP_X]);
-      _clutter_notify_by_pspec (obj, obj_props[PROP_Y]);
-      _clutter_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
-      _clutter_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_X]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_Y]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
   else if (priv->needs_width_request || priv->needs_height_request)
     {
-      _clutter_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
-      _clutter_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
+      g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
   else
     {
@@ -1759,16 +1759,16 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
       heightu = priv->allocation.y2 - priv->allocation.y1;
 
       if (xu != old->x1)
-        _clutter_notify_by_pspec (obj, obj_props[PROP_X]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_X]);
 
       if (yu != old->y1)
-        _clutter_notify_by_pspec (obj, obj_props[PROP_Y]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_Y]);
 
       if (widthu != (old->x2 - old->x1))
-        _clutter_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_WIDTH]);
 
       if (heightu != (old->y2 - old->y1))
-        _clutter_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
 
   g_object_thaw_notify (obj);
@@ -1804,7 +1804,7 @@ clutter_actor_real_allocate (ClutterActor           *self,
       CLUTTER_NOTE (LAYOUT, "Allocation for '%s' changed",
                     _clutter_actor_get_debug_name (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ALLOCATION]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ALLOCATION]);
 
       /* we also emit the ::allocation-changed signal for people
        * that wish to track the allocation flags
@@ -2742,17 +2742,17 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
     {
     case CLUTTER_X_AXIS:
       priv->rxang = angle;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_X]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_X]);
       break;
 
     case CLUTTER_Y_AXIS:
       priv->ryang = angle;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Y]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Y]);
       break;
 
     case CLUTTER_Z_AXIS:
       priv->rzang = angle;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Z]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_ANGLE_Z]);
       break;
     }
 
@@ -5911,7 +5911,7 @@ clutter_actor_set_fixed_position_set (ClutterActor *self,
     return;
 
   self->priv->position_set = is_set != FALSE;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIXED_POSITION_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIXED_POSITION_SET]);
 
   clutter_actor_queue_relayout (self);
 }
@@ -5973,7 +5973,7 @@ clutter_actor_set_min_width (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_min_width = min_width;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH]);
   clutter_actor_set_min_width_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -6008,7 +6008,7 @@ clutter_actor_set_min_height (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_min_height = min_height;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT]);
   clutter_actor_set_min_height_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -6043,7 +6043,7 @@ clutter_actor_set_natural_width (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_natural_width = natural_width;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH]);
   clutter_actor_set_natural_width_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -6078,7 +6078,7 @@ clutter_actor_set_natural_height (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->request_natural_height = natural_height;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT]);
   clutter_actor_set_natural_height_set (self, TRUE);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
@@ -6101,7 +6101,7 @@ clutter_actor_set_min_width_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->min_width_set = use_min_width != FALSE;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_WIDTH_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -6121,7 +6121,7 @@ clutter_actor_set_min_height_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->min_height_set = use_min_height != FALSE;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MIN_HEIGHT_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -6141,7 +6141,7 @@ clutter_actor_set_natural_width_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->natural_width_set = use_natural_width != FALSE;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_WIDTH_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -6161,7 +6161,7 @@ clutter_actor_set_natural_height_set (ClutterActor *self,
   clutter_actor_store_old_geometry (self, &old);
 
   priv->natural_height_set = use_natural_height != FALSE;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NATURAL_HEIGHT_SET]);
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -6199,7 +6199,7 @@ clutter_actor_set_request_mode (ClutterActor       *self,
   priv->needs_width_request = TRUE;
   priv->needs_height_request = TRUE;
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REQUEST_MODE]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REQUEST_MODE]);
 
   clutter_actor_queue_relayout (self);
 }
@@ -6843,10 +6843,10 @@ clutter_actor_set_scale (ClutterActor *self,
   g_object_freeze_notify (G_OBJECT (self));
 
   priv->scale_x = scale_x;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_X]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_X]);
 
   priv->scale_y = scale_y;
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_Y]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_Y]);
 
   clutter_actor_queue_redraw (self);
 
@@ -6885,10 +6885,10 @@ clutter_actor_set_scale_full (ClutterActor *self,
   clutter_actor_set_scale (self, scale_x, scale_y);
 
   if (priv->scale_center.is_fractional)
-    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
 
   clutter_anchor_coord_set_units (&priv->scale_center, center_x, center_y, 0);
 
@@ -6931,9 +6931,9 @@ clutter_actor_set_scale_with_gravity (ClutterActor   *self,
 
       clutter_actor_set_scale (self, scale_x, scale_y);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_Y]);
 
       clutter_anchor_coord_set_gravity (&priv->scale_center, gravity);
 
@@ -7039,7 +7039,7 @@ clutter_actor_set_opacity (ClutterActor *self,
 
       clutter_actor_queue_redraw (self);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_OPACITY]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_OPACITY]);
     }
 }
 
@@ -7145,7 +7145,7 @@ clutter_actor_set_name (ClutterActor *self,
   g_free (self->priv->name);
   self->priv->name = g_strdup (name);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NAME]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NAME]);
 }
 
 /**
@@ -7224,7 +7224,7 @@ clutter_actor_set_depth (ClutterActor *self,
 
       clutter_actor_queue_redraw (self);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DEPTH]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DEPTH]);
     }
 }
 
@@ -7290,19 +7290,19 @@ clutter_actor_set_rotation (ClutterActor      *self,
     {
     case CLUTTER_X_AXIS:
       clutter_anchor_coord_set_units (&priv->rx_center, x, y, z);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_X]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_X]);
       break;
 
     case CLUTTER_Y_AXIS:
       clutter_anchor_coord_set_units (&priv->ry_center, x, y, z);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Y]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Y]);
       break;
 
     case CLUTTER_Z_AXIS:
       if (priv->rz_center.is_fractional)
-        _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
+        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
       clutter_anchor_coord_set_units (&priv->rz_center, x, y, z);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
       break;
     }
 
@@ -7343,8 +7343,8 @@ clutter_actor_set_z_rotation_from_gravity (ClutterActor   *self,
       clutter_actor_set_rotation_internal (self, CLUTTER_Z_AXIS, angle);
 
       clutter_anchor_coord_set_gravity (&priv->rz_center, gravity);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z_GRAVITY]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
 
       g_object_thaw_notify (G_OBJECT (self));
     }
@@ -7466,8 +7466,8 @@ clutter_actor_set_clip (ClutterActor *self,
 
   clutter_actor_queue_redraw (self);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP]);
 }
 
 /**
@@ -7488,7 +7488,7 @@ clutter_actor_remove_clip (ClutterActor *self)
 
   clutter_actor_queue_redraw (self);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_CLIP]);
 }
 
 /**
@@ -8116,7 +8116,7 @@ clutter_actor_set_reactive (ClutterActor *actor,
   else
     CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
 
-  _clutter_notify_by_pspec (G_OBJECT (actor), obj_props[PROP_REACTIVE]);
+  g_object_notify_by_pspec (G_OBJECT (actor), obj_props[PROP_REACTIVE]);
 }
 
 /**
@@ -8198,17 +8198,17 @@ clutter_actor_set_anchor_point (ClutterActor *self,
                                   NULL);
 
   if (priv->anchor.is_fractional)
-    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
 
   if (old_anchor_x != anchor_x)
     {
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
       changed = TRUE;
     }
 
   if (old_anchor_y != anchor_y)
     {
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
       changed = TRUE;
     }
 
@@ -8360,9 +8360,9 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
     {
       clutter_anchor_coord_set_gravity (&self->priv->anchor, gravity);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
     }
 }
 
@@ -10458,16 +10458,16 @@ clutter_actor_set_flags (ClutterActor      *self,
   visible_set  = ((self->flags & CLUTTER_ACTOR_VISIBLE)  != 0);
 
   if (reactive_set != was_reactive_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_REACTIVE]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_REACTIVE]);
 
   if (realized_set != was_realized_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_REALIZED]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_REALIZED]);
 
   if (mapped_set != was_mapped_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_MAPPED]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_MAPPED]);
 
   if (visible_set != was_visible_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_VISIBLE]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_VISIBLE]);
 
   g_object_thaw_notify (obj);
   g_object_unref (obj);
@@ -10518,16 +10518,16 @@ clutter_actor_unset_flags (ClutterActor      *self,
   visible_set  = ((self->flags & CLUTTER_ACTOR_VISIBLE)  != 0);
 
   if (reactive_set != was_reactive_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_REACTIVE]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_REACTIVE]);
 
   if (realized_set != was_realized_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_REALIZED]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_REALIZED]);
 
   if (mapped_set != was_mapped_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_MAPPED]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_MAPPED]);
 
   if (visible_set != was_visible_set)
-    _clutter_notify_by_pspec (obj, obj_props[PROP_VISIBLE]);
+    g_object_notify_by_pspec (obj, obj_props[PROP_VISIBLE]);
 
   g_object_thaw_notify (obj);
 }
@@ -10633,7 +10633,7 @@ clutter_actor_set_text_direction (ClutterActor         *self,
        * the text direction; see clutter_text_direction_changed_cb()
        * inside clutter-text.c
        */
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT_DIRECTION]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT_DIRECTION]);
 
       /* if this is a container we need to recurse */
       if (CLUTTER_IS_CONTAINER (self))
@@ -10659,7 +10659,7 @@ _clutter_actor_set_has_pointer (ClutterActor *self,
     {
       priv->has_pointer = has_pointer;
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_POINTER]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_HAS_POINTER]);
     }
 }
 
@@ -10884,7 +10884,7 @@ clutter_actor_add_action (ClutterActor  *self,
 
   _clutter_meta_group_add_meta (priv->actions, CLUTTER_ACTOR_META (action));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
 }
 
 /**
@@ -10945,7 +10945,7 @@ clutter_actor_remove_action (ClutterActor  *self,
 
   _clutter_meta_group_remove_meta (priv->actions, CLUTTER_ACTOR_META (action));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
 }
 
 /**
@@ -10979,7 +10979,7 @@ clutter_actor_remove_action_by_name (ClutterActor *self,
 
   _clutter_meta_group_remove_meta (priv->actions, meta);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIONS]);
 }
 
 /**
@@ -11091,7 +11091,7 @@ clutter_actor_add_constraint (ClutterActor      *self,
                                 CLUTTER_ACTOR_META (constraint));
   clutter_actor_queue_relayout (self);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
 }
 
 /**
@@ -11154,7 +11154,7 @@ clutter_actor_remove_constraint (ClutterActor      *self,
                                    CLUTTER_ACTOR_META (constraint));
   clutter_actor_queue_relayout (self);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
 }
 
 /**
@@ -11292,7 +11292,7 @@ clutter_actor_set_clip_to_allocation (ClutterActor *self,
 
       clutter_actor_queue_redraw (self);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP_TO_ALLOCATION]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CLIP_TO_ALLOCATION]);
     }
 }
 
@@ -11348,7 +11348,7 @@ clutter_actor_add_effect (ClutterActor  *self,
 
   clutter_actor_queue_redraw (self);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EFFECT]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EFFECT]);
 }
 
 /**
@@ -11411,7 +11411,7 @@ clutter_actor_remove_effect (ClutterActor  *self,
 
   clutter_actor_queue_redraw (self);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EFFECT]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EFFECT]);
 }
 
 /**

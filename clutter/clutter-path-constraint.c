@@ -232,9 +232,9 @@ clutter_path_constraint_class_init (ClutterPathConstraintClass *klass)
   gobject_class->set_property = clutter_path_constraint_set_property;
   gobject_class->get_property = clutter_path_constraint_get_property;
   gobject_class->dispose = clutter_path_constraint_dispose;
-  _clutter_object_class_install_properties (gobject_class,
-                                            LAST_PROPERTY,
-                                            path_properties);
+  g_object_class_install_properties (gobject_class,
+                                     LAST_PROPERTY,
+                                     path_properties);
 
   meta_class->set_actor = clutter_path_constraint_set_actor;
 
@@ -328,7 +328,7 @@ clutter_path_constraint_set_path (ClutterPathConstraint *constraint,
   if (constraint->actor != NULL)
     clutter_actor_queue_relayout (constraint->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (constraint), path_properties[PROP_PATH]);
+  g_object_notify_by_pspec (G_OBJECT (constraint), path_properties[PROP_PATH]);
 }
 
 /**
@@ -374,7 +374,7 @@ clutter_path_constraint_set_offset (ClutterPathConstraint *constraint,
   if (constraint->actor != NULL)
     clutter_actor_queue_relayout (constraint->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (constraint), path_properties[PROP_OFFSET]);
+  g_object_notify_by_pspec (G_OBJECT (constraint), path_properties[PROP_OFFSET]);
 }
 
 /**

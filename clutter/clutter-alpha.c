@@ -156,7 +156,7 @@ timeline_new_frame_cb (ClutterTimeline *timeline,
 
   /* Update alpha value and notify */
   priv->alpha = clutter_alpha_get_alpha (alpha);
-  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_ALPHA]);
+  g_object_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_ALPHA]);
 }
 
 static void 
@@ -379,9 +379,9 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
                               CLUTTER_CUSTOM_MODE,
                               G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (object_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (object_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void
@@ -495,7 +495,7 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
   clutter_alpha_set_closure_internal (alpha, closure);
 
   priv->mode = CLUTTER_CUSTOM_MODE;
-  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
+  g_object_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
 }
 
 /**
@@ -531,7 +531,7 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
   clutter_alpha_set_closure_internal (alpha, closure);
 
   priv->mode = CLUTTER_CUSTOM_MODE;
-  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
+  g_object_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
 }
 
 /**
@@ -576,7 +576,7 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
                         alpha);
     }
 
-  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_TIMELINE]);
+  g_object_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_TIMELINE]);
 }
 
 /**
@@ -1298,7 +1298,7 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
   else
     g_assert_not_reached ();
 
-  _clutter_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
+  g_object_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
 }
 
 static gulong

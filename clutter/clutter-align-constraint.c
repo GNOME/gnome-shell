@@ -379,7 +379,7 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
         clutter_actor_queue_relayout (align->actor);
     }
 
-  _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_SOURCE]);
+  g_object_notify_by_pspec (G_OBJECT (align), obj_props[PROP_SOURCE]);
 }
 
 /**
@@ -424,7 +424,7 @@ clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
   if (align->actor != NULL)
     clutter_actor_queue_relayout (align->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_ALIGN_AXIS]);
+  g_object_notify_by_pspec (G_OBJECT (align), obj_props[PROP_ALIGN_AXIS]);
 }
 
 /**
@@ -476,7 +476,7 @@ clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
   if (align->actor != NULL)
     clutter_actor_queue_relayout (align->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_FACTOR]);
+  g_object_notify_by_pspec (G_OBJECT (align), obj_props[PROP_FACTOR]);
 }
 
 /**

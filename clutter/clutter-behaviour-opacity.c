@@ -274,14 +274,14 @@ clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
     {
       priv->opacity_start = opacity_start;
 
-      _clutter_notify_by_pspec (G_OBJECT (behaviour), obj_props[PROP_OPACITY_START]);
+      g_object_notify_by_pspec (G_OBJECT (behaviour), obj_props[PROP_OPACITY_START]);
     }
 
   if (priv->opacity_end != opacity_end)
     {
       priv->opacity_end = opacity_end;
 
-      _clutter_notify_by_pspec (G_OBJECT (behaviour), obj_props[PROP_OPACITY_END]);
+      g_object_notify_by_pspec (G_OBJECT (behaviour), obj_props[PROP_OPACITY_END]);
     }
 
   g_object_thaw_notify (G_OBJECT (behaviour));

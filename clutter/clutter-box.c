@@ -409,7 +409,7 @@ set_layout_manager (ClutterBox           *self,
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAYOUT_MANAGER]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAYOUT_MANAGER]);
 }
 
 static void
@@ -983,8 +983,8 @@ clutter_box_set_color (ClutterBox         *box,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
 
-  _clutter_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR_SET]);
-  _clutter_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR]);
+  g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR_SET]);
+  g_object_notify_by_pspec (G_OBJECT (box), obj_props[PROP_COLOR]);
 }
 
 /**

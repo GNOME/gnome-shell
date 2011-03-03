@@ -431,9 +431,9 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                        0,
                        CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 
   /**
    * ClutterCairoTexture::create-surface:
@@ -767,13 +767,13 @@ clutter_cairo_texture_set_surface_size (ClutterCairoTexture *self,
   if (priv->width != width)
     {
       priv->width = width;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_WIDTH]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_WIDTH]);
     }
 
   if (priv->height != height)
     {
       priv->height = height;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_HEIGHT]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_HEIGHT]);
     }
 
   clutter_cairo_texture_surface_resize_internal (self);

@@ -135,9 +135,9 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 
   gobject_class->set_property = clutter_device_manager_set_property;
   gobject_class->get_property = clutter_device_manager_get_property;
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 
   /**
    * ClutterDeviceManager::device-added:

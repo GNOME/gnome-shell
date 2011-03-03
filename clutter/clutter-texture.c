@@ -1507,7 +1507,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   /* If resized actor may need resizing but paint() will do this */
   clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
-  _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_COGL_TEXTURE]);
+  g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_COGL_TEXTURE]);
 }
 
 static gboolean
@@ -2056,7 +2056,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
 
-  _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_FILENAME]);
+  g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_FILENAME]);
 
   return TRUE;
 }
@@ -2104,7 +2104,7 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_FILTER_QUALITY]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_FILTER_QUALITY]);
     }
 }
 
@@ -2715,7 +2715,7 @@ clutter_texture_set_sync_size (ClutterTexture *texture,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
 
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_SYNC_SIZE]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_SYNC_SIZE]);
     }
 }
 
@@ -2767,7 +2767,7 @@ clutter_texture_set_repeat (ClutterTexture *texture,
     {
       priv->repeat_x = repeat_x;
 
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_REPEAT_X]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_REPEAT_X]);
 
       changed = TRUE;
     }
@@ -2776,7 +2776,7 @@ clutter_texture_set_repeat (ClutterTexture *texture,
     {
       priv->repeat_y = repeat_y;
 
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_REPEAT_Y]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_REPEAT_Y]);
 
       changed = TRUE;
     }
@@ -2870,7 +2870,7 @@ clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
 
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_KEEP_ASPECT_RATIO]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_KEEP_ASPECT_RATIO]);
     }
 }
 
@@ -2925,8 +2925,8 @@ clutter_texture_set_load_async (ClutterTexture *texture,
 
       priv->load_async_set = load_async;
 
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_ASYNC]);
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_DATA_ASYNC]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_ASYNC]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_DATA_ASYNC]);
     }
 }
 
@@ -2983,8 +2983,8 @@ clutter_texture_set_load_data_async (ClutterTexture *texture,
 
       priv->load_async_set = load_async;
 
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_ASYNC]);
-      _clutter_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_DATA_ASYNC]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_ASYNC]);
+      g_object_notify_by_pspec (G_OBJECT (texture), obj_props[PROP_LOAD_DATA_ASYNC]);
     }
 }
 

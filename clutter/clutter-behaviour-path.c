@@ -447,7 +447,7 @@ clutter_behaviour_path_set_path (ClutterBehaviourPath *pathb,
 
   priv->path = path;
 
-  _clutter_notify_by_pspec (G_OBJECT (pathb), obj_props[PROP_PATH]);
+  g_object_notify_by_pspec (G_OBJECT (pathb), obj_props[PROP_PATH]);
 }
 
 /**

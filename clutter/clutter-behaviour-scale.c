@@ -366,25 +366,25 @@ clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
   if (priv->x_scale_start != x_scale_start)
     {
       priv->x_scale_start = x_scale_start;
-      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_X_SCALE_START]);
+      g_object_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_X_SCALE_START]);
     }
 
   if (priv->y_scale_start != y_scale_start)
     {
       priv->y_scale_start = y_scale_start;
-      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_Y_SCALE_START]);
+      g_object_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_Y_SCALE_START]);
     }
 
   if (priv->x_scale_end != x_scale_end)
     {
       priv->x_scale_end = x_scale_end;
-      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_X_SCALE_END]);
+      g_object_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_X_SCALE_END]);
     }
 
   if (priv->y_scale_end != y_scale_end)
     {
       priv->y_scale_end = y_scale_end;
-      _clutter_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_Y_SCALE_END]);
+      g_object_notify_by_pspec (G_OBJECT (scale), obj_props[PROP_Y_SCALE_END]);
     }
 
   g_object_thaw_notify (G_OBJECT (scale));

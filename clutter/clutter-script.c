@@ -409,9 +409,9 @@ clutter_script_class_init (ClutterScriptClass *klass)
   gobject_class->get_property = clutter_script_get_property;
   gobject_class->finalize = clutter_script_finalize;
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void

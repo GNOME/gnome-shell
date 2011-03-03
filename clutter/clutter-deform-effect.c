@@ -566,9 +566,9 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
   gobject_class->finalize = clutter_deform_effect_finalize;
   gobject_class->set_property = clutter_deform_effect_set_property;
   gobject_class->get_property = clutter_deform_effect_get_property;
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 
   meta_class->set_actor = clutter_deform_effect_set_actor;
 
@@ -673,7 +673,7 @@ clutter_deform_effect_set_n_tiles (ClutterDeformEffect *effect,
     {
       priv->x_tiles = x_tiles;
 
-      _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_X_TILES]);
+      g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_X_TILES]);
 
       tiles_changed = TRUE;
     }
@@ -682,7 +682,7 @@ clutter_deform_effect_set_n_tiles (ClutterDeformEffect *effect,
     {
       priv->y_tiles = y_tiles;
 
-      _clutter_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_Y_TILES]);
+      g_object_notify_by_pspec (G_OBJECT (effect), obj_props[PROP_Y_TILES]);
 
       tiles_changed = TRUE;
     }

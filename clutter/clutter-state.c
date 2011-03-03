@@ -524,7 +524,7 @@ clutter_state_change (ClutterState *state,
   priv->source_state_name = priv->target_state_name;
   priv->target_state_name = target_state_name;
 
-  _clutter_notify_by_pspec (G_OBJECT (state), obj_props[PROP_STATE]);
+  g_object_notify_by_pspec (G_OBJECT (state), obj_props[PROP_STATE]);
 
   duration = clutter_state_get_duration (state,
                                          priv->source_state_name,

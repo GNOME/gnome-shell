@@ -224,9 +224,9 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
   gobject_class->finalize = clutter_actor_meta_finalize;
   gobject_class->set_property = clutter_actor_meta_set_property;
   gobject_class->get_property = clutter_actor_meta_get_property;
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 void
@@ -262,7 +262,7 @@ clutter_actor_meta_set_name (ClutterActorMeta *meta,
   g_free (meta->priv->name);
   meta->priv->name = g_strdup (name);
 
-  _clutter_notify_by_pspec (G_OBJECT (meta), obj_props[PROP_NAME]);
+  g_object_notify_by_pspec (G_OBJECT (meta), obj_props[PROP_NAME]);
 }
 
 /**
@@ -308,7 +308,7 @@ clutter_actor_meta_set_enabled (ClutterActorMeta *meta,
 
   meta->priv->is_enabled = is_enabled;
 
-  _clutter_notify_by_pspec (G_OBJECT (meta), obj_props[PROP_ENABLED]);
+  g_object_notify_by_pspec (G_OBJECT (meta), obj_props[PROP_ENABLED]);
 }
 
 /**

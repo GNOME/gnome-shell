@@ -145,9 +145,9 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
                          G_PARAM_CONSTRUCT_ONLY |
                          CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void

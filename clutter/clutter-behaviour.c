@@ -300,9 +300,9 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
                          CLUTTER_TYPE_ALPHA,
                          CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (object_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (object_class,
+                                     PROP_LAST,
+                                     obj_props);
 
   klass->alpha_notify = clutter_behaviour_alpha_notify_unimplemented;
 
@@ -636,7 +636,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
                     priv->alpha, priv->notify_id);
     }
 
-  _clutter_notify_by_pspec (G_OBJECT (behave), obj_props[PROP_ALPHA]);
+  g_object_notify_by_pspec (G_OBJECT (behave), obj_props[PROP_ALPHA]);
 }
 
 /**

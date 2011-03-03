@@ -999,9 +999,9 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
   gobject_class->finalize = clutter_flow_layout_finalize;
   gobject_class->set_property = clutter_flow_layout_set_property;
   gobject_class->get_property = clutter_flow_layout_get_property;
-  _clutter_object_class_install_properties (gobject_class,
-                                            N_PROPERTIES,
-                                            flow_properties);
+  g_object_class_install_properties (gobject_class,
+                                     N_PROPERTIES,
+                                     flow_properties);
 }
 
 static void
@@ -1087,7 +1087,7 @@ clutter_flow_layout_set_orientation (ClutterFlowLayout      *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (layout),
+      g_object_notify_by_pspec (G_OBJECT (layout),
                                 flow_properties[PROP_ORIENTATION]);
     }
 }
@@ -1140,7 +1140,7 @@ clutter_flow_layout_set_homogeneous (ClutterFlowLayout *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (layout),
+      g_object_notify_by_pspec (G_OBJECT (layout),
                                 flow_properties[PROP_HOMOGENEOUS]);
     }
 }
@@ -1191,7 +1191,7 @@ clutter_flow_layout_set_column_spacing (ClutterFlowLayout *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (layout),
+      g_object_notify_by_pspec (G_OBJECT (layout),
                                 flow_properties[PROP_COLUMN_SPACING]);
     }
 }
@@ -1243,7 +1243,7 @@ clutter_flow_layout_set_row_spacing (ClutterFlowLayout *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (layout),
+      g_object_notify_by_pspec (G_OBJECT (layout),
                                 flow_properties[PROP_ROW_SPACING]);
     }
 }
@@ -1313,11 +1313,11 @@ clutter_flow_layout_set_column_width (ClutterFlowLayout *layout,
     }
 
   if (notify_min)
-    _clutter_notify_by_pspec (G_OBJECT (layout),
+    g_object_notify_by_pspec (G_OBJECT (layout),
                               flow_properties[PROP_MIN_COLUMN_WIDTH]);
 
   if (notify_max)
-    _clutter_notify_by_pspec (G_OBJECT (layout),
+    g_object_notify_by_pspec (G_OBJECT (layout),
                               flow_properties[PROP_MAX_COLUMN_WIDTH]);
 
   g_object_thaw_notify (G_OBJECT (layout));
@@ -1393,11 +1393,11 @@ clutter_flow_layout_set_row_height (ClutterFlowLayout *layout,
     }
 
   if (notify_min)
-    _clutter_notify_by_pspec (G_OBJECT (layout),
+    g_object_notify_by_pspec (G_OBJECT (layout),
                               flow_properties[PROP_MIN_ROW_HEGHT]);
 
   if (notify_max)
-    _clutter_notify_by_pspec (G_OBJECT (layout),
+    g_object_notify_by_pspec (G_OBJECT (layout),
                               flow_properties[PROP_MAX_ROW_HEIGHT]);
 
   g_object_thaw_notify (G_OBJECT (layout));

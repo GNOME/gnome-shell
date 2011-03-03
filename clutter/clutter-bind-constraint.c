@@ -348,9 +348,9 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
                         0.0f,
                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void
@@ -436,7 +436,7 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
         clutter_actor_queue_relayout (constraint->actor);
     }
 
-  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_SOURCE]);
+  g_object_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_SOURCE]);
 }
 
 /**
@@ -480,7 +480,7 @@ clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
   if (constraint->actor != NULL)
     clutter_actor_queue_relayout (constraint->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_COORDINATE]);
+  g_object_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_COORDINATE]);
 }
 
 /**
@@ -525,7 +525,7 @@ clutter_bind_constraint_set_offset (ClutterBindConstraint *constraint,
   if (constraint->actor != NULL)
     clutter_actor_queue_relayout (constraint->actor);
 
-  _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_OFFSET]);
+  g_object_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_OFFSET]);
 }
 
 /**

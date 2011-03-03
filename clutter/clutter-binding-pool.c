@@ -322,9 +322,9 @@ clutter_binding_pool_class_init (ClutterBindingPoolClass *klass)
                          CLUTTER_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT_ONLY);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     obj_props);
 }
 
 static void

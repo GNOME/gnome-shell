@@ -270,7 +270,7 @@ clutter_text_clear_selection (ClutterText *self)
   if (priv->selection_bound != priv->position)
     {
       priv->selection_bound = priv->position;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
     }
 }
@@ -490,7 +490,7 @@ clutter_text_set_font_description_internal (ClutterText          *self,
   if (priv->text && priv->text[0] != '\0')
     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_DESCRIPTION]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_DESCRIPTION]);
 }
 
 static void
@@ -948,10 +948,10 @@ clutter_text_delete_selection (ClutterText *self)
 
   /* Not required to be guarded by g_object_freeze/thaw_notify */
   if (priv->position != old_position)
-    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_POSITION]);
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_POSITION]);
 
   if (priv->selection_bound != old_selection)
-    _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
+    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
 
   return TRUE;
 }
@@ -1022,7 +1022,7 @@ clutter_text_set_text_internal (ClutterText *self,
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
   g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -3328,7 +3328,7 @@ clutter_text_set_editable (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EDITABLE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_EDITABLE]);
     }
 }
 
@@ -3378,7 +3378,7 @@ clutter_text_set_selectable (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTABLE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTABLE]);
     }
 }
 
@@ -3432,7 +3432,7 @@ clutter_text_set_activatable (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIVATABLE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIVATABLE]);
     }
 }
 
@@ -3523,7 +3523,7 @@ clutter_text_set_cursor_visible (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_VISIBLE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_VISIBLE]);
     }
 }
 
@@ -3577,8 +3577,8 @@ clutter_text_set_cursor_color (ClutterText        *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR]);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_COLOR_SET]);
 }
 
 /**
@@ -3719,7 +3719,7 @@ clutter_text_set_selection_bound (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_BOUND]);
     }
 }
 
@@ -3775,8 +3775,8 @@ clutter_text_set_selection_color (ClutterText        *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR]);
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR_SET]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SELECTION_COLOR_SET]);
 }
 
 /**
@@ -3934,7 +3934,7 @@ clutter_text_set_font_name (ClutterText *self,
   clutter_text_set_font_description_internal (self, desc);
   priv->is_default_font = is_default_font;
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_NAME]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_NAME]);
 
 out:
   if (is_default_font)
@@ -3996,7 +3996,7 @@ clutter_text_set_use_markup_internal (ClutterText *self,
           priv->markup_attrs = NULL;
         }
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_USE_MARKUP]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_USE_MARKUP]);
     }
 }
 
@@ -4120,7 +4120,7 @@ clutter_text_set_color (ClutterText        *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_COLOR]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_COLOR]);
 }
 
 /**
@@ -4177,7 +4177,7 @@ clutter_text_set_ellipsize (ClutterText        *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ELLIPSIZE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ELLIPSIZE]);
     }
 }
 
@@ -4247,7 +4247,7 @@ clutter_text_set_line_wrap (ClutterText *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_WRAP]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_WRAP]);
     }
 }
 
@@ -4280,7 +4280,7 @@ clutter_text_set_line_wrap_mode (ClutterText   *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_WRAP_MODE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_WRAP_MODE]);
     }
 }
 
@@ -4345,7 +4345,7 @@ clutter_text_set_attributes (ClutterText   *self,
 
   clutter_text_dirty_cache (self);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ATTRIBUTES]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ATTRIBUTES]);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
@@ -4402,7 +4402,7 @@ clutter_text_set_line_alignment (ClutterText    *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_ALIGNMENT]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_ALIGNMENT]);
     }
 }
 
@@ -4515,7 +4515,7 @@ clutter_text_set_justify (ClutterText *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_JUSTIFY]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_JUSTIFY]);
     }
 }
 
@@ -4594,7 +4594,7 @@ clutter_text_set_cursor_position (ClutterText *self,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_POSITION]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_POSITION]);
 }
 
 /**
@@ -4628,7 +4628,7 @@ clutter_text_set_cursor_size (ClutterText *self,
 
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_SIZE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_SIZE]);
     }
 }
 
@@ -4680,7 +4680,7 @@ clutter_text_set_password_char (ClutterText *self,
       clutter_text_dirty_cache (self);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_PASSWORD_CHAR]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_PASSWORD_CHAR]);
     }
 }
 
@@ -4738,7 +4738,7 @@ clutter_text_set_max_length (ClutterText *self,
       clutter_text_set_text (self, new);
       g_free (new);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAX_LENGTH]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAX_LENGTH]);
     }
 }
 
@@ -4963,7 +4963,7 @@ clutter_text_delete_chars (ClutterText *self,
 
   g_string_free (new, TRUE);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
 }
 
 /**
@@ -5050,13 +5050,13 @@ clutter_text_set_single_line_mode (ClutterText *self,
         {
           priv->activatable = TRUE;
 
-          _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIVATABLE]);
+          g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ACTIVATABLE]);
         }
 
       clutter_text_dirty_cache (self);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SINGLE_LINE_MODE]);
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SINGLE_LINE_MODE]);
 
       g_object_thaw_notify (G_OBJECT (self));
     }
