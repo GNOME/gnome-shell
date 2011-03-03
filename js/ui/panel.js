@@ -25,6 +25,8 @@ const PANEL_HEIGHT = 26;
 
 const PANEL_ICON_SIZE = 24;
 
+const STARTUP_ANIMATION_TIME = 0.2;
+
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
@@ -1046,7 +1048,7 @@ Panel.prototype = {
         this.actor.y = oldY - this.actor.height;
         Tweener.addTween(this.actor,
                          { y: oldY,
-                           time: 0.2,
+                           time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
     },
