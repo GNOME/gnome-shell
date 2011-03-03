@@ -25,16 +25,12 @@ const KEY_MOUSE_KEYS_ENABLED  = 'mousekeys-enable';
 
 const APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 
-const XSETTINGS_SCHEMA = 'org.gnome.settings-daemon.plugins.xsettings';
-const KEY_DPI = 'dpi';
-
 const DPI_LOW_REASONABLE_VALUE  = 50;
 const DPI_HIGH_REASONABLE_VALUE = 500;
 
 const DPI_FACTOR_LARGE   = 1.25;
 const DPI_FACTOR_LARGER  = 1.5;
 const DPI_FACTOR_LARGEST = 2.0;
-const DPI_DEFAULT        = 96;
 
 const KEY_META_DIR       = '/apps/metacity/general';
 const KEY_VISUAL_BELL = KEY_META_DIR + '/visual_bell';
@@ -42,24 +38,9 @@ const KEY_VISUAL_BELL = KEY_META_DIR + '/visual_bell';
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const KEY_GTK_THEME      = 'gtk-theme';
 const KEY_ICON_THEME     = 'icon-theme';
+const KEY_TEXT_SCALING_FACTOR = 'text-scaling-factor';
 
 const HIGH_CONTRAST_THEME = 'HighContrast';
-
-function getDPIFromX() {
-    let screen = global.get_gdk_screen();
-    if (screen) {
-        let width_dpi = (screen.get_width() / (screen.get_width_mm() / 25.4));
-        let height_dpi = (screen.get_height() / (screen.get_height_mm() / 25.4));
-        if (width_dpi < DPI_LOW_REASONABLE_VALUE
-            || width_dpi > DPI_HIGH_REASONABLE_VALUE
-            || height_dpi < DPI_LOW_REASONABLE_VALUE
-            || height_dpi > DPI_HIGH_REASONABLE_VALUE)
-            return DPI_DEFAULT;
-        else
-            return (width_dpi + height_dpi) / 2;
-    }
-    return DPI_DEFAULT;
-}
 
 function ATIndicator() {
     this._init.apply(this, arguments);
@@ -194,30 +175,23 @@ ATIndicator.prototype = {
     },
 
     _buildFontItem: function() {
-        let settings = new Gio.Settings({ schema: XSETTINGS_SCHEMA });
+        let settings = new Gio.Settings({ schema: DESKTOP_INTERFACE_SCHEMA });
 
-        // we assume this never changes (which is not true if resolution
-        // is changed, but we would need XRandR events for that)
-        let x_value = getDPIFromX();
-        let user_value;
-        function on_get() {
-            user_value = settings.get_double(KEY_DPI);
-            return (user_value - (DPI_FACTOR_LARGE * x_value) > -1);
-        }
-        let initial_setting = on_get();
-        let default_value = (initial_setting || user_value == 0) ? x_value : user_value;
+        let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
+        let initial_setting = (factor > 1.0);
         let widget = this._buildItemExtended(_("Large Text"),
             initial_setting,
-            settings.is_writable(KEY_DPI),
+            settings.is_writable(KEY_TEXT_SCALING_FACTOR),
             function (enabled) {
                 if (enabled)
-                    settings.set_double(KEY_DPI, DPI_FACTOR_LARGE * default_value);
+                    settings.set_double(KEY_TEXT_SCALING_FACTOR,
+                                        DPI_FACTOR_LARGE);
                 else
-                    settings.set_double(KEY_DPI, default_value);
+                    settings.reset(KEY_TEXT_SCALING_FACTOR);
             });
-        settings.connect('changed::' + KEY_DPI, function() {
-            let active = on_get();
-            default_value = (active || user_value == 0) ? x_value : user_value;
+        settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, function() {
+            let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
+            let active = (factor > 1.0);
             widget.setToggleState(active);
         });
         return widget;
