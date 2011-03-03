@@ -238,6 +238,7 @@ create_entry (const ClutterColor *color,
 {
   ClutterActor *retval = clutter_text_new_full (NULL, text, color);
   ClutterColor selection = { 0, };
+  ClutterColor selected_text = { 0x00, 0x00, 0xff, 0xff };
 
   clutter_actor_set_reactive (retval, TRUE);
 
@@ -250,6 +251,7 @@ create_entry (const ClutterColor *color,
   clutter_text_set_password_char (CLUTTER_TEXT (retval), password_char);
   clutter_text_set_cursor_color (CLUTTER_TEXT (retval), &selection);
   clutter_text_set_max_length (CLUTTER_TEXT (retval), max_length);
+  clutter_text_set_selected_text_color (CLUTTER_TEXT (retval), &selected_text);
 
   g_signal_connect (retval, "activate",
                     G_CALLBACK (on_entry_activate),

@@ -19,6 +19,7 @@ test_text_main (gint    argc,
   ClutterColor  text_color       = { 0x33, 0xff, 0x33, 0xff };
   ClutterColor  cursor_color     = { 0xff, 0x33, 0x33, 0xff };
   ClutterColor  background_color = { 0x00, 0x00, 0x00, 0xff };
+  ClutterColor  selected_text_color = { 0x00, 0x00, 0xff, 0xff };
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
@@ -39,6 +40,7 @@ test_text_main (gint    argc,
   clutter_text_set_editable (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_selectable (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_cursor_color (CLUTTER_TEXT (text), &cursor_color);
+  clutter_text_set_selected_text_color (CLUTTER_TEXT (text), &selected_text_color);
 
   if (argv[1])
     {
