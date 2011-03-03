@@ -1165,7 +1165,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
 
   g_return_if_fail (n_attributes > 0);
 
-  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
 
   i = 0;
   for (l = buffer->submitted_vbos; l; l = l->next)
@@ -1195,9 +1195,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
         }
     }
 
-  attributes[i] = NULL;
-
-  cogl_primitive_set_attributes (buffer->primitive, attributes);
+  cogl_primitive_set_attributes (buffer->primitive, attributes, i);
 }
 
 static void

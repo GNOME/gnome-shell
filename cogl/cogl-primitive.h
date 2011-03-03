@@ -231,11 +231,11 @@ cogl_primitive_new (CoglVerticesMode mode,
                     int n_vertices,
                     ...);
 
-/* XXX: how about just: cogl_primitive_new_with_attributes () ? */
 CoglPrimitive *
-cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
-                                          int n_vertices,
-                                          CoglAttribute **attributes);
+cogl_primitive_new_with_attributes (CoglVerticesMode mode,
+                                    int n_vertices,
+                                    CoglAttribute **attributes,
+                                    int n_attributes);
 
 /**
  * cogl_primitive_new_p2:
@@ -634,7 +634,8 @@ cogl_primitive_set_mode (CoglPrimitive *primitive,
  */
 void
 cogl_primitive_set_attributes (CoglPrimitive *primitive,
-                               CoglAttribute **attributes);
+                               CoglAttribute **attributes,
+                               int n_attributes);
 
 
 void

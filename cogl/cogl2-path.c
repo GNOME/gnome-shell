@@ -238,10 +238,10 @@ _cogl_path_stroke_nodes (CoglPath *path)
     {
       node = &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
-      cogl_draw_attributes (COGL_VERTICES_MODE_LINE_STRIP,
-                                   0, node->path_size,
-                                   data->stroke_attributes[path_num],
-                                   NULL);
+      cogl_vdraw_attributes (COGL_VERTICES_MODE_LINE_STRIP,
+                             0, node->path_size,
+                             data->stroke_attributes[path_num],
+                             NULL);
 
       path_num++;
     }
@@ -343,15 +343,15 @@ _cogl_path_fill_nodes (CoglPath *path)
 
   _cogl_path_build_fill_attribute_buffer (path);
 
-  _cogl_draw_indexed_attributes_array
-                                 (COGL_VERTICES_MODE_TRIANGLES,
-                                  0, /* first_vertex */
-                                  path->data->fill_vbo_n_indices,
-                                  path->data->fill_vbo_indices,
-                                  path->data->fill_attributes,
-                                  COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                                  COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                                  COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+  _cogl_draw_indexed_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                 0, /* first_vertex */
+                                 path->data->fill_vbo_n_indices,
+                                 path->data->fill_vbo_indices,
+                                 path->data->fill_attributes,
+                                 COGL_PATH_N_ATTRIBUTES,
+                                 COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                 COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                 COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
 }
 
 void
@@ -1500,8 +1500,6 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
                         G_STRUCT_OFFSET (CoglPathTesselatorVertex, s),
                         2, /* n_components */
                         COGL_ATTRIBUTE_TYPE_FLOAT);
-  /* NULL terminator */
-  data->fill_attributes[2] = NULL;
 
   data->fill_vbo_indices = cogl_indices_new (tess.indices_type,
                                              tess.indices->data,

@@ -934,7 +934,7 @@ _cogl_rectangle_immediate (float x_1,
       x_2, y_2
     };
   CoglAttributeBuffer *attribute_buffer;
-  CoglAttribute *attributes[2];
+  CoglAttribute *attributes[1];
 
   attribute_buffer = cogl_attribute_buffer_new (sizeof (vertices), vertices);
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -943,15 +943,15 @@ _cogl_rectangle_immediate (float x_1,
                                       0, /* offset */
                                       2, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_FLOAT);
-  attributes[1] = NULL;
 
-  _cogl_draw_attributes_array (COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                               0, /* first_index */
-                               4, /* n_vertices */
-                               attributes,
-                               COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                               COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                               COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+  _cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_STRIP,
+                         0, /* first_index */
+                         4, /* n_vertices */
+                         attributes,
+                         1,
+                         COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                         COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                         COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
 
 
   cogl_object_unref (attributes[0]);
@@ -1067,8 +1067,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   n_layers = cogl_pipeline_get_n_layers (pipeline);
 
   n_attributes = 1 + n_layers + (use_color ? 1 : 0);
-  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
-  attributes[n_attributes] = NULL;
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
 
   /* Our data is arranged like:
    * [X, Y, Z, TX0, TY0, TX1, TY1..., R, G, B, A,...] */
@@ -1167,9 +1166,10 @@ cogl_polygon (const CoglTextureVertex *vertices,
 
   cogl_push_source (pipeline);
 
-  cogl_draw_attributes_array (COGL_VERTICES_MODE_TRIANGLE_FAN,
-                              0, n_vertices,
-                              attributes);
+  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_FAN,
+                        0, n_vertices,
+                        attributes,
+                        n_attributes);
 
   cogl_pop_source ();
 

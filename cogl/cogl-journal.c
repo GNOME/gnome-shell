@@ -296,28 +296,31 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 #ifdef HAVE_COGL_GL
 
   /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
-  _cogl_draw_attributes_array (GL_QUADS,
-                               state->current_vertex, batch_len * 4,
-                               attributes,
-                               draw_flags);
+  _cogl_draw_attributes (GL_QUADS,
+                         state->current_vertex, batch_len * 4,
+                         attributes,
+                         state->attributes->len,
+                         draw_flags);
 
 #else /* HAVE_COGL_GL */
   if (batch_len > 1)
     {
-      _cogl_draw_indexed_attributes_array (COGL_VERTICES_MODE_TRIANGLES,
-                                           state->current_vertex * 6 / 4,
-                                           batch_len * 6,
-                                           state->indices,
-                                           attributes,
-                                           draw_flags);
+      _cogl_draw_indexed_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                     state->current_vertex * 6 / 4,
+                                     batch_len * 6,
+                                     state->indices,
+                                     attributes,
+                                     state->attributes->len,
+                                     draw_flags);
 
     }
   else
     {
-      _cogl_draw_attributes_array (COGL_VERTICES_MODE_TRIANGLE_FAN,
-                                   state->current_vertex, 4,
-                                   attributes,
-                                   draw_flags);
+      _cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_FAN,
+                             state->current_vertex, 4,
+                             attributes,
+                             state->attributes->len,
+                             draw_flags);
     }
 #endif
 
@@ -332,7 +335,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       static CoglPipeline *outline = NULL;
       guint8 color_intensity;
       int i;
-      CoglAttribute *loop_attributes[2];
+      CoglAttribute *loop_attributes[1];
 
       _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
@@ -358,12 +361,12 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       cogl_set_source (outline);
 
       loop_attributes[0] = attributes[0]; /* we just want the position */
-      loop_attributes[1] = NULL;
       for (i = 0; i < batch_len; i++)
-        _cogl_draw_attributes_array (COGL_VERTICES_MODE_LINE_LOOP,
-                                     4 * i + state->current_vertex, 4,
-                                     loop_attributes,
-                                     draw_flags);
+        _cogl_draw_attributes (COGL_VERTICES_MODE_LINE_LOOP,
+                               4 * i + state->current_vertex, 4,
+                               loop_attributes,
+                               1,
+                               draw_flags);
 
       /* Go to the next color */
       do

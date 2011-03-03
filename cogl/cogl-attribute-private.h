@@ -82,19 +82,21 @@ void
 _cogl_attribute_immutable_unref (CoglAttribute *attribute);
 
 void
-_cogl_draw_attributes_array (CoglVerticesMode mode,
-                             int first_vertex,
-                             int n_vertices,
-                             CoglAttribute **attributes,
-                             CoglDrawFlags flags);
+_cogl_draw_attributes (CoglVerticesMode mode,
+                       int first_vertex,
+                       int n_vertices,
+                       CoglAttribute **attributes,
+                       int n_attributes,
+                       CoglDrawFlags flags);
 
 void
-_cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
-                                     int first_vertex,
-                                     int n_vertices,
-                                     CoglIndices *indices,
-                                     CoglAttribute **attributes,
-                                     CoglDrawFlags flags);
+_cogl_draw_indexed_attributes (CoglVerticesMode mode,
+                               int first_vertex,
+                               int n_vertices,
+                               CoglIndices *indices,
+                               CoglAttribute **attributes,
+                               int n_attributes,
+                               CoglDrawFlags flags);
 
 void
 _cogl_attribute_disable_cached_arrays (void);

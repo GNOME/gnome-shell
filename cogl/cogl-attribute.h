@@ -152,30 +152,32 @@ gboolean
 cogl_is_attribute (void *object);
 
 void
+cogl_vdraw_attributes (CoglVerticesMode mode,
+                       int first_vertex,
+                       int n_vertices,
+                       ...) G_GNUC_NULL_TERMINATED;
+
+void
 cogl_draw_attributes (CoglVerticesMode mode,
                       int first_vertex,
                       int n_vertices,
-                      ...) G_GNUC_NULL_TERMINATED;
+                      CoglAttribute **attributes,
+                      int n_attributes);
 
 void
-cogl_draw_attributes_array (CoglVerticesMode mode,
-                            int first_vertex,
-                            int n_vertices,
-                            CoglAttribute **attributes);
+cogl_vdraw_indexed_attributes (CoglVerticesMode mode,
+                               int first_vertex,
+                               int n_vertices,
+                               CoglIndices *indices,
+                               ...) G_GNUC_NULL_TERMINATED;
 
 void
 cogl_draw_indexed_attributes (CoglVerticesMode mode,
                               int first_vertex,
                               int n_vertices,
                               CoglIndices *indices,
-                              ...) G_GNUC_NULL_TERMINATED;
-
-void
-cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
-                                    int first_vertex,
-                                    int n_vertices,
-                                    CoglIndices *indices,
-                                    CoglAttribute **attributes);
+                              CoglAttribute **attributes,
+                              int n_attributes);
 
 G_END_DECLS
 
