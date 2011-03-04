@@ -222,7 +222,7 @@ WindowClone.prototype = {
         let [width, height] = this.actor.get_transformed_size();
 
         this.actor.x = _clamp(this.actor.x, 0, global.screen_width  - width);
-        this.actor.y = _clamp(this.actor.y, Panel.PANEL_HEIGHT, global.screen_height - height);
+        this.actor.y = _clamp(this.actor.y, Main.panel.actor.height, global.screen_height - height);
     },
 
     _zoomStart : function () {

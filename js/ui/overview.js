@@ -439,7 +439,7 @@ Overview.prototype = {
         let primary = global.get_primary_monitor();
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
-        let contentY = Panel.PANEL_HEIGHT;
+        let contentY = Main.panel.actor.height;
         let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
 
         this._group.set_position(primary.x, primary.y);

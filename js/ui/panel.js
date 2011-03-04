@@ -22,8 +22,6 @@ const DateMenu = imports.ui.dateMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const PANEL_HEIGHT = 26;
-
 const PANEL_ICON_SIZE = 24;
 
 const STARTUP_ANIMATION_TIME = 0.2;
@@ -1044,7 +1042,7 @@ Panel.prototype = {
         let primary = global.get_primary_monitor();
 
         this.actor.set_position(primary.x, primary.y);
-        this.actor.set_size(primary.width, PANEL_HEIGHT);
+        this.actor.set_size(primary.width, -1);
 
         this._leftCorner.relayout();
         this._rightCorner.relayout();
