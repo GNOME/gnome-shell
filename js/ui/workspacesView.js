@@ -385,6 +385,7 @@ WorkspacesView.prototype = {
             return;
 
         this._inDrag = true;
+        this._firstDragMotion = true;
 
         this._dragMonitor = {
             dragMotion: Lang.bind(this, this._onDragMotion)
@@ -395,6 +396,14 @@ WorkspacesView.prototype = {
     _onDragMotion: function(dragEvent) {
         if (Main.overview.animationInProgress)
              return DND.DragMotionResult.CONTINUE;
+
+        if (this._firstDragMotion) {
+            this._firstDragMotion = false;
+            for (let i = 0; i < this._workspaces.length; i++)
+                this._workspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
+            for (let i = 0; i < this._extraWorkspaces.length; i++)
+                this._extraWorkspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
+        }
 
         let primary = global.get_primary_monitor();
 
@@ -409,7 +418,6 @@ WorkspacesView.prototype = {
         let switchTop = (dragEvent.y <= topEdge && topWorkspace);
         if (switchTop && this._dragOverLastY != topEdge) {
             topWorkspace.metaWorkspace.activate(global.get_current_time());
-            topWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
             this._dragOverLastY = topEdge;
 
             return DND.DragMotionResult.CONTINUE;
@@ -418,7 +426,6 @@ WorkspacesView.prototype = {
         let switchBottom = (dragEvent.y >= bottomEdge && bottomWorkspace);
         if (switchBottom && this._dragOverLastY != bottomEdge) {
             bottomWorkspace.metaWorkspace.activate(global.get_current_time());
-            bottomWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
             this._dragOverLastY = bottomEdge;
 
             return DND.DragMotionResult.CONTINUE;
@@ -453,7 +460,6 @@ WorkspacesView.prototype = {
                 this._timeoutId = Mainloop.timeout_add_seconds(1,
                     Lang.bind(this, function() {
                        hoverWorkspace.metaWorkspace.activate(global.get_current_time());
-                       hoverWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
                        return false;
                     }));
         } else {
@@ -476,6 +482,8 @@ WorkspacesView.prototype = {
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(null);
+        for (let i = 0; i < this._extraWorkspaces.length; i++)
+            this._extraWorkspaces[i].setReservedSlot(null);
     },
 
     _swipeScrollBegin: function() {
