@@ -23,21 +23,6 @@
     </schema>
 
     <schema>
-      <key>/schemas/apps/mutter/general/clutter_plugins</key>
-      <applyto>/apps/mutter/general/clutter_plugins</applyto>
-      <owner>mutter</owner>
-      <type>list</type>
-      <list_type>string</list_type>
-      <default>[default]</default>
-      <locale name="C">
-        <short>Clutter Plugins</short>
-        <long>
-          Plugins to load for the Clutter-based compositing manager.
-        </long>
-      </locale>
-    </schema>
-
-    <schema>
       <key>/schemas/apps/mutter/general/attach_modal_dialogs</key>
       <applyto>/apps/mutter/general/attach_modal_dialogs</applyto>
       <owner>mutter</owner>

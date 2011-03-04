@@ -550,18 +550,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   info->plugin_mgr =
     meta_plugin_manager_get (screen);
-
-  if (info->plugin_mgr != meta_plugin_manager_get_default ())
-    {
-      /* The default plugin manager has been initialized during
-       * global preferences load.
-       */
-      if (!meta_plugin_manager_load (info->plugin_mgr))
-        g_critical ("failed to load plugins");
-    }
-
-  if (!meta_plugin_manager_initialize (info->plugin_mgr))
-    g_critical ("failed to initialize plugins");
+  meta_plugin_manager_initialize (info->plugin_mgr);
 
   /*
    * Delay the creation of the overlay window as long as we can, to avoid

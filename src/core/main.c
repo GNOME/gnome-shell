@@ -481,6 +481,7 @@ main (int argc, char **argv)
   guint i;
   GIOChannel *channel;
   GOptionContext *ctx;
+  MetaPluginManager *mgr;
 
   if (!g_thread_supported ())
     g_thread_init (NULL);
@@ -536,11 +537,17 @@ main (int argc, char **argv)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
+#ifdef HAVE_INTROSPECTION
+  g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
+#endif
+
   /* Parse command line arguments.*/
   ctx = meta_parse_options (&argc, &argv, &meta_args);
 
   if (meta_args.print_version)
     version ();
+
+  mgr = meta_plugin_manager_get_default ();
 
   /* This must come before the introspect below, so we load all the plugins
    * in order to get their get_type functions.
@@ -549,38 +556,20 @@ main (int argc, char **argv)
     {
       char **plugins = g_strsplit (meta_args.mutter_plugins, ",", -1);
       char **plugin;
-      GSList *plugins_list = NULL;
 
       for (plugin = plugins; *plugin; plugin++)
         {
           g_strstrip (*plugin);
-          plugins_list = g_slist_prepend (plugins_list, *plugin);
+          meta_plugin_manager_load (mgr, *plugin);
         }
-
-      plugins_list = g_slist_reverse (plugins_list);
-      meta_prefs_override_clutter_plugins (plugins_list);
-
-      g_slist_free(plugins_list);
       g_strfreev (plugins);
     }
 
 #ifdef HAVE_INTROSPECTION
-  g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
   if (meta_args.introspect)
     {
       GError *error = NULL;
-      if (meta_args.mutter_plugins)
-        {
-          /* We need to load all plugins so that we can call their
-           * get_type functions.  We do not call
-           * mutter_plugin_manager_initialize because almost nothing else
-           * is initialized at this point, and we don't plan to run any real
-           * plugin code.
-           */
-          MetaPluginManager *mgr = meta_plugin_manager_get_default ();
-          if (!meta_plugin_manager_load (mgr))
-            g_critical ("failed to load plugins");
-        }
+
       if (!g_irepository_dump (meta_args.introspect, &error))
         {
           g_printerr ("failed to dump: %s\n", error->message);
@@ -589,17 +578,6 @@ main (int argc, char **argv)
       return 0;
     }
 #endif
-
-  /* Early initialization for plugins comes before almost anything
-     else here */
-  {
-    MetaPluginManager *mgr = meta_plugin_manager_get_default ();
-
-    if (!meta_plugin_manager_load (mgr))
-      g_error ("failed to load plugins");
-
-    meta_plugin_manager_initialize_early (mgr);
-  }
 
   meta_set_syncing (meta_args.sync || (g_getenv ("MUTTER_SYNC") != NULL));
 

@@ -35,10 +35,7 @@
 
 #include <clutter/x11/clutter-x11.h>
 
-/*
- * There is only one instace of each module per the process.
- */
-static GHashTable *plugin_modules = NULL;
+static GSList *plugin_types;
 
 /*
  * We have one "default plugin manager" that acts for the first screen,
@@ -46,312 +43,67 @@ static GHashTable *plugin_modules = NULL;
  * plugin managers for each screen. (This is ugly. Probably we should
  * have one plugin manager and only make the plugins per-screen.)
  */
-
 static MetaPluginManager *default_plugin_manager;
-
-static gboolean meta_plugin_manager_reload (MetaPluginManager *plugin_mgr);
 
 struct MetaPluginManager
 {
   MetaScreen   *screen;
 
-  gboolean plugin_load_attempted;
-
-  GList /* MetaPlugin */       *plugins;  /* TODO -- maybe use hash table */
-  GList                        *unload;  /* Plugins that are disabled and pending unload */
-
-  guint         idle_unload_id;
+  GList /* MetaPlugin */ *plugins;  /* TODO -- maybe use hash table */
 };
 
 /*
- * Checks that the plugin is compatible with the WM and sets up the plugin
- * struct.
+ * Loads the given plugin.
  */
-static MetaPlugin *
-meta_plugin_load (MetaPluginManager *mgr,
-                  MetaModule        *module,
-                  const gchar       *params)
-{
-  MetaPlugin *plugin = NULL;
-  GType         plugin_type = meta_module_get_plugin_type (module);
-
-  if (!plugin_type)
-    {
-      g_warning ("Plugin type not registered !!!");
-      return NULL;
-    }
-
-  plugin = g_object_new (plugin_type,
-                         "params", params,
-                         NULL);
-
-  return plugin;
-}
-
-/*
- * Attempst to unload a plugin; returns FALSE if plugin cannot be unloaded at
- * present (e.g., and effect is in progress) and should be scheduled for
- * removal later.
- */
-static gboolean
-meta_plugin_unload (MetaPlugin *plugin)
-{
-  if (meta_plugin_running (plugin))
-    {
-      g_object_set (plugin, "disabled", TRUE, NULL);
-      return FALSE;
-    }
-
-  g_object_unref (plugin);
-
-  return TRUE;
-}
-
-/*
- * Iddle callback to remove plugins that could not be removed directly and are
- * pending for removal.
- */
-static gboolean
-meta_plugin_manager_idle_unload (MetaPluginManager *plugin_mgr)
-{
-  GList *l = plugin_mgr->unload;
-  gboolean dont_remove = TRUE;
-
-  while (l)
-    {
-      MetaPlugin *plugin = l->data;
-
-      if (meta_plugin_unload (plugin))
-        {
-          /* Remove from list */
-          GList *p = l->prev;
-          GList *n = l->next;
-
-          if (!p)
-            plugin_mgr->unload = n;
-          else
-            p->next = n;
-
-          if (n)
-            n->prev = p;
-
-          g_list_free_1 (l);
-
-          l = n;
-        }
-      else
-        l = l->next;
-    }
-
-  if (!plugin_mgr->unload)
-    {
-      /* If no more unloads are pending, remove the handler as well */
-      dont_remove = FALSE;
-      plugin_mgr->idle_unload_id = 0;
-    }
-
-  return dont_remove;
-}
-
-/*
- * Unloads all plugins
- */
-static void
-meta_plugin_manager_unload (MetaPluginManager *plugin_mgr)
-{
-  GList *plugins = plugin_mgr->plugins;
-
-  while (plugins)
-    {
-      MetaPlugin *plugin = plugins->data;
-
-      /* If the plugin could not be removed, move it to the unload list */
-      if (!meta_plugin_unload (plugin))
-        {
-          plugin_mgr->unload = g_list_prepend (plugin_mgr->unload, plugin);
-
-          if (!plugin_mgr->idle_unload_id)
-            {
-              plugin_mgr->idle_unload_id = g_idle_add ((GSourceFunc)
-                            meta_plugin_manager_idle_unload,
-                            plugin_mgr);
-            }
-        }
-
-      plugins = plugins->next;
-    }
-
-  g_list_free (plugin_mgr->plugins);
-  plugin_mgr->plugins = NULL;
-
-  plugin_mgr->plugin_load_attempted = FALSE;
-}
-
-static void
-prefs_changed_callback (MetaPreference pref,
-                        void          *data)
-{
-  MetaPluginManager *plugin_mgr = data;
-
-  if (pref == META_PREF_CLUTTER_PLUGINS)
-    {
-      meta_plugin_manager_reload (plugin_mgr);
-    }
-}
-
-static MetaModule *
-meta_plugin_manager_get_module (const gchar *path)
-{
-  MetaModule *module = g_hash_table_lookup (plugin_modules, path);
-
-  if (!module &&
-      (module = g_object_new (META_TYPE_MODULE, "path", path, NULL)))
-    {
-      g_hash_table_insert (plugin_modules, g_strdup (path), module);
-    }
-
-  return module;
-}
-
-/*
- * Loads all plugins listed in gconf registry.
- */
-gboolean
-meta_plugin_manager_load (MetaPluginManager *plugin_mgr)
+void
+meta_plugin_manager_load (MetaPluginManager *plugin_mgr,
+                          const gchar       *plugin_name)
 {
   const gchar *dpath = MUTTER_PLUGIN_DIR "/";
-  GSList      *plugins, *fallback = NULL;
+  gchar       *path;
+  MetaModule  *module;
+  GType        plugin_type;
+  MetaPlugin  *plugin;
 
-  if (plugin_mgr->plugin_load_attempted)
-    return TRUE;
-  plugin_mgr->plugin_load_attempted = TRUE;
+  if (g_path_is_absolute (plugin_name))
+    path = g_strdup (plugin_name);
+  else
+    path = g_strconcat (dpath, plugin_name, ".so", NULL);
 
-  plugins = meta_prefs_get_clutter_plugins ();
-
-  if (!plugins)
+  module = g_object_new (META_TYPE_MODULE, "path", path, NULL);
+  if (!module || !g_type_module_use (G_TYPE_MODULE (module)))
     {
-      /*
-       * If no plugins are specified, try to load the default plugin.
+      /* This is fatal under the assumption that a monitoring
+       * process like gnome-session will take over and handle
+       * our untimely exit.
        */
-      fallback = g_slist_append (fallback, "default");
-      plugins = fallback;
+      g_printerr ("Unable to load plugin module [%s]: %s",
+                  path, g_module_error());
+      exit (1);
     }
 
-  while (plugins)
-    {
-      gchar   *plugin_string;
-      gchar   *params;
+  plugin_type = meta_module_get_plugin_type (module);
+  plugin_types = g_slist_prepend (plugin_types, GSIZE_TO_POINTER (plugin_type));
 
-      plugin_string = g_strdup (plugins->data);
+  plugin = g_object_new (plugin_type, NULL);
+  plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, plugin);
 
-      if (plugin_string)
-        {
-          MetaModule *module;
-          gchar        *path;
-
-          params = strchr (plugin_string, ':');
-
-          if (params)
-            {
-              *params = 0;
-              ++params;
-            }
-
-          if (g_path_is_absolute (plugin_string))
-            path = g_strdup (plugin_string);
-          else
-            path = g_strconcat (dpath, plugin_string, ".so", NULL);
-
-          module = meta_plugin_manager_get_module (path);
-
-          if (module)
-            {
-              gboolean      use_succeeded;
-
-              /*
-               * This dlopens the module and registers the plugin type with the
-               * GType system, if the module is not already loaded.  When we
-               * create a plugin, the type system also calls g_type_module_use()
-               * to guarantee the module will not be unloaded during the plugin
-               * life time. Consequently we can unuse() the module again.
-               */
-              use_succeeded = g_type_module_use (G_TYPE_MODULE (module));
-
-              if (use_succeeded)
-                {
-                  MetaPlugin *plugin = meta_plugin_load (plugin_mgr, module, params);
-
-                  if (plugin)
-                    plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, plugin);
-                  else
-                    g_warning ("Plugin load for [%s] failed", path);
-
-                  g_type_module_unuse (G_TYPE_MODULE (module));
-                }
-            }
-          else
-            {
-              /* This is fatal under the assumption that a monitoring
-               * process like gnome-session will take over and handle
-               * our untimely exit.
-               */
-              g_printerr ("Unable to load plugin module [%s]: %s",
-                          path, g_module_error());
-              exit (1);
-            }
-
-          g_free (path);
-          g_free (plugin_string);
-        }
-
-      plugins = plugins->next;
-    }
-
-
-  if (fallback)
-    g_slist_free (fallback);
-
-  if (plugin_mgr->plugins != NULL)
-    {
-      meta_prefs_add_listener (prefs_changed_callback, plugin_mgr);
-      return TRUE;
-    }
-
-  return FALSE;
+  g_type_module_unuse (G_TYPE_MODULE (module));
+  g_free (path);
 }
 
-/**
- * meta_plugin_manager_initialize_early:
- * @plugin_mgr: a #MetaPluginManager
- *
- * This function invokes any plugin handling code that needs to be run
- * effectively immediately after we know which plugins are going to be
- * used.  This means before the process has an X connection, or
- * talks to the session manager, for example.
- *
- * An example intended use is claiming DBus names.
- */
-gboolean
-meta_plugin_manager_initialize_early (MetaPluginManager *plugin_mgr)
-{
-  GList *iter;
-
-  for (iter = plugin_mgr->plugins; iter; iter = iter->next)
-    {
-      MetaPlugin *plugin = (MetaPlugin*) iter->data;
-      MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
-
-      if (klass->early_initialize)
-        klass->early_initialize (plugin);
-    }
-
-  return TRUE;
-}
-
-gboolean
+void
 meta_plugin_manager_initialize (MetaPluginManager *plugin_mgr)
 {
   GList *iter;
+
+  if (!plugin_mgr->plugins)
+    {
+      /*
+       * If no plugins are specified, load the default plugin.
+       */
+      meta_plugin_manager_load (plugin_mgr, "default");
+    }
 
   for (iter = plugin_mgr->plugins; iter; iter = iter->next)
     {
@@ -365,26 +117,6 @@ meta_plugin_manager_initialize (MetaPluginManager *plugin_mgr)
       if (klass->start)
         klass->start (plugin);
     }
-
-  return TRUE;
-}
-
-/*
- * Reloads all plugins
- */
-static gboolean
-meta_plugin_manager_reload (MetaPluginManager *plugin_mgr)
-{
-  /* TODO -- brute force; should we build a list of plugins to load and list of
-   * plugins to unload? We are probably not going to have large numbers of
-   * plugins loaded at the same time, so it might not be worth it.
-   */
-
-  /* Prevent stale grabs on unloaded plugins */
-  meta_check_end_modal (plugin_mgr->screen);
-
-  meta_plugin_manager_unload (plugin_mgr);
-  return meta_plugin_manager_load (plugin_mgr);
 }
 
 static MetaPluginManager *
@@ -392,15 +124,8 @@ meta_plugin_manager_new (MetaScreen *screen)
 {
   MetaPluginManager *plugin_mgr;
 
-  if (!plugin_modules)
-    {
-      plugin_modules = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
-                                              NULL);
-    }
-
   plugin_mgr = g_new0 (MetaPluginManager, 1);
-
-  plugin_mgr->screen        = screen;
+  plugin_mgr->screen = screen;
 
   if (screen)
     g_object_set_data (G_OBJECT (screen), "meta-plugin-manager", plugin_mgr);
@@ -441,7 +166,20 @@ meta_plugin_manager_get (MetaScreen *screen)
     }
   else
     {
-      return meta_plugin_manager_new (screen);
+      GSList *iter;
+      GType plugin_type;
+      MetaPlugin *plugin;
+
+      plugin_mgr = meta_plugin_manager_new (screen);
+
+      for (iter = plugin_types; iter; iter = iter->next)
+        {
+          plugin_type = (GType)GPOINTER_TO_SIZE (iter->data);
+          plugin = g_object_new (plugin_type, "screen", screen,  NULL);
+          plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, plugin);
+        }
+
+      return plugin_mgr;
     }
 }
 

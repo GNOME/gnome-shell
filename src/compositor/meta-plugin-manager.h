@@ -46,12 +46,13 @@
  */
 typedef struct MetaPluginManager MetaPluginManager;
 
-MetaPluginManager * meta_plugin_manager_get (MetaScreen *screen);
+MetaPluginManager * meta_plugin_manager_get         (MetaScreen *screen);
 MetaPluginManager * meta_plugin_manager_get_default (void);
 
-gboolean meta_plugin_manager_load         (MetaPluginManager *mgr);
-gboolean meta_plugin_manager_initialize_early (MetaPluginManager *plugin_mgr);
-gboolean meta_plugin_manager_initialize   (MetaPluginManager *plugin_mgr);
+void     meta_plugin_manager_load         (MetaPluginManager *mgr,
+                                           const gchar       *plugin_name);
+void     meta_plugin_manager_initialize   (MetaPluginManager *mgr);
+
 gboolean meta_plugin_manager_event_simple (MetaPluginManager *mgr,
                                            MetaWindowActor   *actor,
                                            unsigned long      event);

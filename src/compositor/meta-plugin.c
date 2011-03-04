@@ -43,7 +43,6 @@ enum
 {
   PROP_0,
   PROP_SCREEN,
-  PROP_PARAMS,
   PROP_FEATURES,
   PROP_DISABLED,
   PROP_DEBUG_MODE,
@@ -52,7 +51,6 @@ enum
 struct _MetaPluginPrivate
 {
   MetaScreen   *screen;
-  gchar        *params;
   gulong        features;
 
   gint          running;
@@ -70,95 +68,38 @@ meta_plugin_dispose (GObject *object)
 static void
 meta_plugin_finalize (GObject *object)
 {
-  MetaPluginPrivate *priv = META_PLUGIN (object)->priv;
-
-  g_free (priv->params);
-  priv->params = NULL;
-
   G_OBJECT_CLASS (meta_plugin_parent_class)->finalize (object);
 }
 
 static void
-meta_plugin_parse_params (MetaPlugin *plugin)
+meta_plugin_set_features (MetaPlugin *plugin)
 {
-  char                  *p;
-  gulong                features = 0;
   MetaPluginPrivate  *priv     = plugin->priv;
   MetaPluginClass    *klass    = META_PLUGIN_GET_CLASS (plugin);
 
-/*
- * Feature flags: identify events that the plugin can handle; a plugin can
- * handle one or more events.
- */
+  priv->features = 0;
+
+  /*
+   * Feature flags: identify events that the plugin can handle; a plugin can
+   * handle one or more events.
+   */
   if (klass->minimize)
-    features |= META_PLUGIN_MINIMIZE;
+    priv->features |= META_PLUGIN_MINIMIZE;
 
   if (klass->maximize)
-    features |= META_PLUGIN_MAXIMIZE;
+    priv->features |= META_PLUGIN_MAXIMIZE;
 
   if (klass->unmaximize)
-    features |= META_PLUGIN_UNMAXIMIZE;
+    priv->features |= META_PLUGIN_UNMAXIMIZE;
 
   if (klass->map)
-    features |= META_PLUGIN_MAP;
+    priv->features |= META_PLUGIN_MAP;
 
   if (klass->destroy)
-    features |= META_PLUGIN_DESTROY;
+    priv->features |= META_PLUGIN_DESTROY;
 
   if (klass->switch_workspace)
-    features |= META_PLUGIN_SWITCH_WORKSPACE;
-
-  if (priv->params)
-    {
-      gboolean debug = FALSE;
-
-      if ((p = strstr (priv->params, "disable:")))
-        {
-          gchar *d = g_strdup (p+8);
-
-          p = strchr (d, ';');
-
-          if (p)
-            *p = 0;
-
-          if (strstr (d, "minimize"))
-            features &= ~ META_PLUGIN_MINIMIZE;
-
-          if (strstr (d, "maximize"))
-            features &= ~ META_PLUGIN_MAXIMIZE;
-
-          if (strstr (d, "unmaximize"))
-            features &= ~ META_PLUGIN_UNMAXIMIZE;
-
-          if (strstr (d, "map"))
-            features &= ~ META_PLUGIN_MAP;
-
-          if (strstr (d, "destroy"))
-            features &= ~ META_PLUGIN_DESTROY;
-
-          if (strstr (d, "switch-workspace"))
-            features &= ~META_PLUGIN_SWITCH_WORKSPACE;
-
-          g_free (d);
-        }
-
-      if (strstr (priv->params, "debug"))
-        debug = TRUE;
-
-      if (debug != priv->debug)
-        {
-          priv->debug = debug;
-
-          g_object_notify (G_OBJECT (plugin), "debug-mode");
-        }
-    }
-
-  if (features != priv->features)
-    {
-      priv->features = features;
-
-      g_object_notify (G_OBJECT (plugin), "features");
-    }
+    priv->features |= META_PLUGIN_SWITCH_WORKSPACE;
 }
 
 static void
@@ -173,10 +114,6 @@ meta_plugin_set_property (GObject      *object,
     {
     case PROP_SCREEN:
       priv->screen = g_value_get_object (value);
-      break;
-    case PROP_PARAMS:
-      priv->params = g_value_dup_string (value);
-      meta_plugin_parse_params (META_PLUGIN (object));
       break;
     case PROP_DISABLED:
       priv->disabled = g_value_get_boolean (value);
@@ -202,9 +139,6 @@ meta_plugin_get_property (GObject    *object,
     {
     case PROP_SCREEN:
       g_value_set_object (value, priv->screen);
-      break;
-    case PROP_PARAMS:
-      g_value_set_string (value, priv->params);
       break;
     case PROP_DISABLED:
       g_value_set_boolean (value, priv->disabled);
@@ -241,15 +175,6 @@ meta_plugin_class_init (MetaPluginClass *klass)
                                                         G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
-				   PROP_PARAMS,
-				   g_param_spec_string ("params",
-							"Parameters",
-							"Plugin Parameters",
-							NULL,
-							G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (gobject_class,
 				   PROP_FEATURES,
 				   g_param_spec_ulong ("features",
                                                        "Features",
@@ -282,6 +207,8 @@ meta_plugin_init (MetaPlugin *self)
   MetaPluginPrivate *priv;
 
   self->priv = priv = META_PLUGIN_GET_PRIVATE (self);
+
+  meta_plugin_set_features (self);
 }
 
 gulong
