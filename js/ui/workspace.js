@@ -419,8 +419,13 @@ WindowOverlay.prototype = {
         let button = this.closeButton;
         let title = this.title;
 
-        let buttonX = cloneX + cloneWidth - button._overlap;
-        let buttonY = cloneY - button.height + button._overlap;
+        let buttonX;
+        let buttonY = cloneY - (button.height - button._overlap);
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            buttonX = cloneX - (button.width - button._overlap);
+        else
+            buttonX = cloneX + (cloneWidth - button._overlap);
+
         button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
         if (!title.fullWidth)
