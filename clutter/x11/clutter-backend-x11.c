@@ -349,12 +349,13 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
    * Only open connection if not already set by prior call to
    * clutter_x11_set_display()
    */
-  if (!backend_x11->xdpy)
+  if (backend_x11->xdpy == NULL)
     {
-      if (clutter_display_name)
+      if (clutter_display_name != NULL &&
+          *clutter_display_name != '\0')
 	{
-	  CLUTTER_NOTE (BACKEND, "XOpenDisplay on '%s'",
-			clutter_display_name);
+	  CLUTTER_NOTE (BACKEND, "XOpenDisplay on '%s'", clutter_display_name);
+
 	  backend_x11->xdpy = XOpenDisplay (clutter_display_name);
           if (backend_x11->xdpy == NULL)
             {
@@ -367,16 +368,17 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
 	}
       else
 	{
-	  g_set_error (error, CLUTTER_INIT_ERROR,
-		       CLUTTER_INIT_ERROR_BACKEND,
-		       "Unable to open display. You have to set the DISPLAY "
-		       "environment variable, or use the --display command "
-		       "line argument");
+	  g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                               CLUTTER_INIT_ERROR_BACKEND,
+                               "Unable to open display. You have to set the "
+                               "DISPLAY environment variable, or use the "
+                               "--display command line argument");
 	  return FALSE;
 	}
     }
 
-  if (backend_x11->xdpy)
+  g_assert (backend_x11->xdpy != NULL);
+
     {
       ClutterSettings *settings;
       Atom atoms[N_ATOM_NAMES];
