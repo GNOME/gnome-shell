@@ -480,7 +480,9 @@ _Draggable.prototype = {
             let [parentX, parentY] = this._dragOrigParent.get_transformed_position();
             let [parentWidth, parentHeight] = this._dragOrigParent.get_size();
             let [parentScaledWidth, parentScaledHeight] = this._dragOrigParent.get_transformed_size();
-            let parentScale = parentScaledWidth / parentWidth;
+            let parentScale = 1.0;
+            if (parentWidth != 0)
+                parentScale = parentScaledWidth / parentWidth;
 
             x = parentX + parentScale * this._dragOrigX;
             y = parentY + parentScale * this._dragOrigY;
