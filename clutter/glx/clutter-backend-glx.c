@@ -100,9 +100,9 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
                           &backend_glx->error_base,
                           &backend_glx->event_base))
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "XServer appears to lack required GLX support");
+      g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                           CLUTTER_INIT_ERROR_BACKEND,
+                           "XServer appears to lack the required GLX support");
 
       return FALSE;
     }
@@ -110,12 +110,16 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   /* XXX: Technically we should require >= GLX 1.3 support but for a long
    * time Mesa has exported a hybrid GLX, exporting extensions specified
    * to require GLX 1.3, but still reporting 1.2 via glXQueryVersion. */
+  glx_major = 1;
+  glx_minor = 2;
   if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor) ||
       !(glx_major == 1 && glx_minor >= 2))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
-                   "XServer appears to lack required GLX 1.2 support");
+                   "XServer appears to lack the required GLX "
+                   "1.2 support (%d.%d reported)",
+                   glx_major, glx_minor);
       return FALSE;
     }
 
@@ -570,9 +574,9 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
 
   if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to find suitable fbconfig for the GLX context");
+      g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                           CLUTTER_INIT_ERROR_BACKEND,
+                           "Unable to find suitable fbconfig for the GLX context");
       return FALSE;
     }
 
@@ -585,9 +589,9 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
                                                  True);
   if (backend_glx->gl_context == NULL)
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to create suitable GL context");
+      g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                           CLUTTER_INIT_ERROR_BACKEND,
+                           "Unable to create suitable GL context");
       return FALSE;
     }
 
@@ -612,9 +616,9 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
   xvisinfo = glXGetVisualFromFBConfig (xdisplay, config);
   if (xvisinfo == NULL)
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to retrieve the X11 visual");
+      g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                           CLUTTER_INIT_ERROR_BACKEND,
+                           "Unable to retrieve the X11 visual");
       return FALSE;
     }
 
@@ -665,9 +669,9 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
 
   if (clutter_x11_untrap_x_errors ())
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to select the newly created GLX context");
+      g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                           CLUTTER_INIT_ERROR_BACKEND,
+                           "Unable to select the newly created GLX context");
       return FALSE;
     }
 
