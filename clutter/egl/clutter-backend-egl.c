@@ -49,7 +49,7 @@
 #include "clutter-main.h"
 #include "clutter-stage-private.h"
 /* FIXME: We should have CLUTTER_ define for this... */
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 #include "clutter-cex100.h"
 #endif
 
@@ -58,7 +58,7 @@ static ClutterBackendEGL *backend_singleton = NULL;
 static gchar *clutter_vblank = NULL;
 
 /* FIXME: We should have CLUTTER_ define for this... */
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
 static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
 #endif
@@ -312,7 +312,7 @@ clutter_backend_egl_create_context (ClutterBackend  *backend,
                                  clutter_x11_get_use_argb_visual ());
 #endif
 
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   cogl_swap_chain_set_length (swap_chain, gdl_n_buffers);
 #endif
 
@@ -331,8 +331,8 @@ clutter_backend_egl_create_context (ClutterBackend  *backend,
   backend->cogl_display = cogl_display_new (backend->cogl_renderer,
                                             onscreen_template);
 
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
-  cogl_display_cex100_set_gdl_plane (backend->cogl_display, gdl_plane);
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  cogl_gdl_display_set_plane (backend->cogl_display, gdl_plane);
 #endif
 
   cogl_object_unref (backend->cogl_renderer);
@@ -503,7 +503,7 @@ clutter_egl_get_egl_display (void)
 }
 
 /* FIXME we should have a CLUTTER_ define for this */
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 void
 clutter_cex100_set_plane (gdl_plane_id_t plane)
 {

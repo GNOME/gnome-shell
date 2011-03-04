@@ -338,7 +338,7 @@ if SUPPORT_EGL_PLATFORM_POWERVR_NULL
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c
 endif
-if SUPPORT_EGL_PLATFORM_POWERVR_GDL
+if SUPPORT_EGL_PLATFORM_GDL
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c
 endif

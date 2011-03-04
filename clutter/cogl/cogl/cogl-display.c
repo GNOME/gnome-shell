@@ -121,3 +121,15 @@ cogl_display_setup (CoglDisplay *display,
 
   return TRUE;
 }
+
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+void
+cogl_gdl_display_set_plane (CoglDisplay *display,
+                            struct gdl_plane *plane)
+{
+  g_return_if_fail (display->setup == FALSE);
+
+  display->gdl_plane = plane;
+}
+#endif
+

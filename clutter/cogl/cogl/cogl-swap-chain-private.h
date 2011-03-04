@@ -32,6 +32,7 @@ struct _CoglSwapChain
 
   gboolean has_alpha;
 
+  int length;
 };
 
 #endif /* __COGL_SWAP_CHAIN_PRIVATE_H */

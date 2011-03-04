@@ -81,6 +81,10 @@ typedef struct _CoglRendererEGL
   EGLint egl_version_major;
   EGLint egl_version_minor;
 
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  gboolean gdl_initialized;
+#endif
+
   /* Function pointers for GLX specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
 
@@ -105,7 +109,8 @@ typedef struct _CoglDisplayEGL
   EGLContext egl_context;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   EGLSurface dummy_surface;
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
+#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
   EGLSurface egl_surface;
   int egl_surface_width;
   int egl_surface_height;
@@ -242,6 +247,11 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
   CoglRendererEGL *egl_renderer = renderer->winsys;
 
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  if (egl_renderer->gdl_initialized)
+    gdl_close ();
+#endif
+
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   _cogl_renderer_xlib_disconnect (renderer);
 #endif
@@ -260,6 +270,10 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   CoglRendererXlib *xlib_renderer;
 #endif
   EGLBoolean status;
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  gdl_ret_t rc = GDL_SUCCESS;
+  gdl_display_info_t gdl_display_info;
+#endif
 
   renderer->winsys = g_slice_new0 (CoglRendererEGL);
 
@@ -282,6 +296,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   status = eglInitialize (egl_renderer->edpy,
 			  &egl_renderer->egl_version_major,
 			  &egl_renderer->egl_version_minor);
+#endif
 
   if (status != EGL_TRUE)
     {
@@ -290,6 +305,32 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                    "Failed to initialize EGL");
       goto error;
     }
+
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  /* Check we can talk to the GDL library */
+
+  rc = gdl_init (NULL);
+  if (rc != GDL_SUCCESS)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "GDL initialize failed. %s",
+                   gdl_get_error_string (rc));
+      goto error;
+    }
+
+  rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &gdl_display_info);
+  if (rc != GDL_SUCCESS)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "GDL failed to get display information: %s",
+                   gdl_get_error_string (rc));
+      gdl_close ();
+      goto error;
+    }
+
+  gdl_close ();
 #endif
 
   return TRUE;
@@ -427,6 +468,12 @@ try_create_context (CoglDisplay *display,
 
     EGL_DEPTH_SIZE,      1,
 
+    /* XXX: Why does the GDL platform choose these by default? */
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+    EGL_BIND_TO_TEXTURE_RGBA, EGL_TRUE,
+    EGL_BIND_TO_TEXTURE_RGB, EGL_TRUE,
+#endif
+
     EGL_BUFFER_SIZE,     EGL_DONT_CARE,
 
 #if defined (HAVE_COGL_GL)
@@ -528,6 +575,8 @@ try_create_context (CoglDisplay *display,
 
   if (egl_display->dummy_surface == EGL_NO_SURFACE)
     {
+      /* FIXME: we shouldn't be calling g_set_error here we should
+       * just set error_message same goes for below. */
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to create an EGL surface");
@@ -688,6 +737,81 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   display->winsys = NULL;
 }
 
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+static gboolean
+gdl_plane_init (CoglDisplay *display, GError **error)
+{
+  gboolean ret = TRUE;
+  gdl_color_space_t colorSpace = GDL_COLOR_SPACE_RGB;
+  gdl_rectangle_t dstRect;
+  gdl_display_info_t display_info;
+  gdl_ret_t rc = GDL_SUCCESS;
+
+  if (!display->gdl_plane)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "No GDL plane specified with "
+                   "cogl_gdl_display_set_plane");
+      return FALSE;
+    }
+
+  rc = gdl_init (NULL);
+  if (rc != GDL_SUCCESS)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "GDL initialize failed. %s", gdl_get_error_string (rc));
+      return FALSE;
+    }
+
+  rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &display_info);
+  if (rc != GDL_SUCCESS)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "GDL failed to get display infomation: %s",
+                   gdl_get_error_string (rc));
+      gdl_close ();
+      return FALSE;
+    }
+
+  dstRect.origin.x = 0;
+  dstRect.origin.y = 0;
+  dstRect.width = display_info.tvmode.width;
+  dstRect.height = display_info.tvmode.height;
+
+  /* Configure the plane attribute. */
+  rc = gdl_plane_reset (plane);
+  if (rc == GDL_SUCCESS)
+    rc = gdl_plane_config_begin (plane);
+
+  if (rc == GDL_SUCCESS)
+    rc = gdl_plane_set_attr (GDL_PLANE_SRC_COLOR_SPACE, &colorSpace);
+
+  if (rc == GDL_SUCCESS)
+    rc = gdl_plane_set_attr (GDL_PLANE_PIXEL_FORMAT, &pixfmt);
+
+  if (rc == GDL_SUCCESS)
+    rc = gdl_plane_set_attr (GDL_PLANE_DST_RECT, &dstRect);
+
+  if (rc == GDL_SUCCESS)
+    rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES,
+                             display->swap_chain->length);
+
+  if (rc == GDL_SUCCESS)
+    rc = gdl_plane_config_end (GDL_FALSE);
+  else
+    gdl_plane_config_end (GDL_TRUE);
+
+  if (rc != GDL_SUCCESS)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "GDL configuration failed: %s.", gdl_get_error_string (rc));
+      ret = FALSE;
+    }
+
+  gdl_close ();
+}
+#endif
+
 static gboolean
 _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
@@ -698,6 +822,11 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 
   egl_display = g_slice_new0 (CoglDisplayEGL);
   display->winsys = egl_display;
+
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  if (!gdl_plane_init (display, error))
+    goto error;
+#endif
 
   if (!create_context (display, error))
     goto error;
