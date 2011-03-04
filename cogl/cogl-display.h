@@ -36,6 +36,10 @@
 
 G_BEGIN_DECLS
 
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+#include <@CLUTTER_CEX100_LIBGDL_PREFIX@libgdl.h>
+#endif
+
 /**
  * SECTION:cogl-display
  * @short_description: Represents a display pipeline
@@ -81,6 +85,14 @@ cogl_display_new (CoglRenderer *renderer,
 gboolean
 cogl_display_setup (CoglDisplay *display,
                     GError **error);
+
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+#define cogl_gdl_display_set_plane \
+  cogl_gdl_display_set_plane_EXP
+void
+cogl_gdl_display_set_plane (CoglDisplay *display,
+                            struct gdl_plane *plane);
+#endif
 
 G_END_DECLS
 

@@ -26,6 +26,7 @@
 #define __COGL_DISPLAY_PRIVATE_H
 
 #include "cogl-object-private.h"
+#include "cogl-display.h"
 #include "cogl-renderer.h"
 #include "cogl-onscreen-template.h"
 
@@ -36,6 +37,10 @@ struct _CoglDisplay
   gboolean setup;
   CoglRenderer *renderer;
   CoglOnscreenTemplate *onscreen_template;
+
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  struct gdl_plane *gdl_plane;
+#endif
 
   void *winsys;
 };

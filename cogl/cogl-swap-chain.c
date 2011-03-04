@@ -54,6 +54,8 @@ cogl_swap_chain_new (void)
 {
   CoglSwapChain *swap_chain = g_slice_new0 (CoglSwapChain);
 
+  swap_chain->length = -1; /* no preference */
+
   return _cogl_swap_chain_object_new (swap_chain);
 }
 
@@ -64,3 +66,9 @@ cogl_swap_chain_set_has_alpha (CoglSwapChain *swap_chain,
   swap_chain->has_alpha = has_alpha;
 }
 
+void
+cogl_swap_chain_set_length (CoglSwapChain *swap_chain,
+                            int length)
+{
+  swap_chain->length = length;
+}
