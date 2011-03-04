@@ -1772,11 +1772,13 @@ clutter_get_option_group (void)
  * Returns a #GOptionGroup for the command line arguments recognized
  * by Clutter. You should add this group to your #GOptionContext with
  * g_option_context_add_group(), if you are using g_option_context_parse()
- * to parse your commandline arguments. Unlike clutter_get_option_group(),
- * calling g_option_context_parse() with the #GOptionGroup returned by this
- * function requires a subsequent explicit call to clutter_init(); use this
- * function when needing to set foreign display connection with
- * clutter_x11_set_display(), or with <function>gtk_clutter_init()</function>.
+ * to parse your commandline arguments.
+ *
+ * Unlike clutter_get_option_group(), calling g_option_context_parse() with
+ * the #GOptionGroup returned by this function requires a subsequent explicit
+ * call to clutter_init(); use this function when needing to set foreign
+ * display connection with clutter_x11_set_display(), or with
+ * <function>gtk_clutter_init()</function>.
  *
  * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
@@ -1903,16 +1905,17 @@ clutter_init_with_args (int            *argc,
 }
 
 static gboolean
-clutter_parse_args (int    *argc,
-                    char ***argv)
+clutter_parse_args (int      *argc,
+                    char   ***argv,
+                    GError  **error)
 {
   GOptionContext *option_context;
-  GOptionGroup   *clutter_group, *cogl_group;
+  GOptionGroup *clutter_group, *cogl_group;
 #ifdef CLUTTER_ENABLE_PROFILE
-  GOptionGroup   *uprof_group;
+  GOptionGroup *uprof_group;
 #endif
-  GError         *error = NULL;
-  gboolean        ret = TRUE;
+  GError *internal_error = NULL;
+  gboolean ret = TRUE;
 
   if (clutter_is_initialized)
     return TRUE;
@@ -1922,7 +1925,6 @@ clutter_parse_args (int    *argc,
   g_option_context_set_help_enabled (option_context, FALSE);
 
   /* Initiate any command line options from the backend */
-
   clutter_group = clutter_get_option_group ();
   g_option_context_set_main_group (option_context, clutter_group);
 
@@ -1934,14 +1936,9 @@ clutter_parse_args (int    *argc,
   g_option_context_add_group (option_context, uprof_group);
 #endif
 
-  if (!g_option_context_parse (option_context, argc, argv, &error))
+  if (!g_option_context_parse (option_context, argc, argv, &internal_error))
     {
-      if (error)
-	{
-	  g_warning ("%s", error->message);
-	  g_error_free (error);
-	}
-
+      g_propagate_error (error, internal_error);
       ret = FALSE;
     }
 
@@ -1956,12 +1953,20 @@ clutter_parse_args (int    *argc,
  * @argv: (array length=argc) (inout) (allow-none): A pointer to an array
  *   of arguments.
  *
- * It will initialise everything needed to operate with Clutter and
- * parses some standard command line options. @argc and @argv are
- * adjusted accordingly so your own code will never see those standard
- * arguments.
+ * Initialises everything needed to operate with Clutter and parses some
+ * standard command line options; @argc and @argv are adjusted accordingly
+ * so your own code will never see those standard arguments.
  *
- * Return value: 1 on success, < 0 on failure.
+ * It is safe to call this function multiple times.
+ *
+ * <note>This function will not abort in case of errors during
+ * initialization; clutter_init() will print out the error message on
+ * stderr, and will return an error code. It is up to the application
+ * code to handle this case. If you need to display the error message
+ * yourself, you can use clutter_init_with_args(), which takes a #GError
+ * pointer.</note>
+ *
+ * Return value: a #ClutterInitError value
  */
 ClutterInitError
 clutter_init (int    *argc,
@@ -1969,6 +1974,7 @@ clutter_init (int    *argc,
 {
   ClutterMainContext *ctx;
   GError *error = NULL;
+  ClutterInitError res;
 
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
@@ -1987,16 +1993,27 @@ clutter_init (int    *argc,
       /* parse_args will trigger backend creation and things like
        * DISPLAY connection etc.
        */
-      if (clutter_parse_args (argc, argv) == FALSE)
+      if (!clutter_parse_args (argc, argv, &error))
 	{
-	  CLUTTER_NOTE (MISC, "failed to parse arguments.");
-	  return CLUTTER_INIT_ERROR_INTERNAL;
-	}
+          g_critical ("Unable to initialize Clutter: %s", error->message);
+          g_error_free (error);
 
-      return CLUTTER_INIT_SUCCESS;
+          res = CLUTTER_INIT_ERROR_INTERNAL;
+	}
+      else
+        res = CLUTTER_INIT_SUCCESS;
     }
   else
-    return clutter_init_real (&error);
+    {
+      res = clutter_init_real (&error);
+      if (error != NULL)
+        {
+          g_critical ("Unable to initialize Clutter: %s", error->message);
+          g_error_free (error);
+        }
+    }
+
+  return res;
 }
 
 gboolean
