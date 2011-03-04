@@ -33,8 +33,38 @@ const MAX_RESULTS = 100;
 
 const ResultType = {
     // http://zeitgeist-project.com/docs/0.6/datamodel.html#resulttype
-    // We currently only use MOST_POPULAR_SUBJECTS
-    MOST_POPULAR_SUBJECTS: 4,
+    // It's unfortunate to have to define these by hand; maybe if D-Bus had a way to introspect enums...
+    MOST_RECENT_EVENTS                   : 0,
+    LEAST_RECENT_EVENTS                  : 1,
+    MOST_RECENT_SUBJECTS                 : 2,
+    LEAST_RECENT_SUBJECTS                : 3,
+    MOST_POPULAR_SUBJECTS                : 4,
+    LEAST_POPULAR_SUBJECTS               : 5,
+    MOST_POPULAR_ACTOR                   : 6,
+    LEAST_POPULAR_ACTOR                  : 7,
+    MOST_RECENT_ACTOR                    : 8,
+    LEAST_RECENT_ACTOR                   : 9,
+    MOST_RECENT_ORIGIN                   : 10,
+    LEAST_RECENT_ORIGIN                  : 11,
+    MOST_POPULAR_ORIGIN                  : 12,
+    LEAST_POPULAR_ORIGIN                 : 13,
+    OLDEST_ACTOR                         : 14,
+    MOST_RECENT_SUBJECT_INTERPRETATION   : 15,
+    LEAST_RECENT_SUBJECT_INTERPRETATION  : 16,
+    MOST_POPULAR_SUBJECT_INTERPRETATION  : 17,
+    LEAST_POPULAR_SUBJECT_INTERPRETATION : 18,
+    MOST_RECENT_MIME_TYPE                : 19,
+    LEAST_RECENT_MIME_TYPE               : 20,
+    MOST_POPULAR_MIME_TYPE               : 21,
+    LEAST_POPULAR_MIME_TYPE              : 22
+};
+
+const StorageState = {
+    // http://zeitgeist-project.com/docs/0.6/datamodel.html#storagestate
+    // As with ResultType, it would be nice if we could introspect enums through D-Bus
+    NOT_AVAILABLE : 0,
+    AVAILABLE     : 1,
+    ANY           : 2
 };
 
 /* Zeitgeist Subjects (files, people, etc.) */
