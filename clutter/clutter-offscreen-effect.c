@@ -211,13 +211,18 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
    * we need to redirect its rendering offscreen and its position will
    * be used to setup an offset viewport */
   if (clutter_actor_get_paint_box (priv->actor, &box))
-    clutter_actor_box_get_size (&box, &fbo_width, &fbo_height);
+    {
+      clutter_actor_box_get_size (&box, &fbo_width, &fbo_height);
+      clutter_actor_box_get_origin (&box, &priv->x_offset, &priv->y_offset);
+    }
   else
     {
       /* If we can't get a valid paint box then we fallback to
        * creating a full stage size fbo. */
       ClutterActor *stage = _clutter_actor_get_stage_internal (priv->actor);
       clutter_actor_get_size (stage, &fbo_width, &fbo_height);
+      priv->x_offset = 0.0f;
+      priv->y_offset = 0.0f;
     }
 
   /* First assert that the framebuffer is the right size... */
@@ -236,7 +241,6 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
    * but offset it so that the actor of interest lands on our
    * framebuffer. */
   clutter_actor_get_size (priv->stage, &width, &height);
-  clutter_actor_box_get_origin (&box, &priv->x_offset, &priv->y_offset);
 
   /* Expand the viewport if the actor is partially off-stage,
    * otherwise the actor will end up clipped to the stage viewport
