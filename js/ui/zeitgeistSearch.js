@@ -84,7 +84,10 @@ ZeitgeistAsyncSearchProvider.prototype = {
     getResultMeta: function(resultId) {
         return { 'id': ZeitgeistSubjectCache[resultId].uri,
                  'name': ZeitgeistSubjectCache[resultId].name,
-                 'icon': ZeitgeistSubjectCache[resultId].createIcon(48) };
+                 'createIcon': function (size) {
+                                   return ZeitgeistSubjectCache[resultId].createIcon(size);
+                               },
+               };
     },
 
     activateResult: function(resultId) {

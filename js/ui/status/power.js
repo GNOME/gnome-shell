@@ -72,7 +72,7 @@ Indicator.prototype = {
         this._hasPrimary = false;
         this._primaryDeviceId = null;
 
-        this._batteryItem = new PopupMenu.PopupMenuItem('');
+        this._batteryItem = new PopupMenu.PopupMenuItem('', { reactive: false });
         this._primaryPercentage = new St.Label();
         this._batteryItem.addActor(this._primaryPercentage, { align: St.Align.END });
         this.menu.addMenuItem(this._batteryItem);
@@ -136,17 +136,6 @@ Indicator.prototype = {
             }
 
             this._primaryDeviceId = device_id;
-            if (this._primaryDeviceId) {
-                this._batteryItem.actor.reactive = true;
-                this._batteryItem.actor.can_focus = true;
-                this._batteryItem.connect('activate', function(item) {
-                    Util.spawn(['gnome-power-statistics', '--device', device_id]);
-                });
-            } else {
-                // virtual device
-                this._batteryItem.actor.reactive = false;
-                this._batteryItem.actor.can_focus = false;
-            }
         }));
     },
 
@@ -168,9 +157,6 @@ Indicator.prototype = {
                     continue;
 
                 let item = new DeviceItem (devices[i]);
-                item.connect('activate', function() {
-                    Util.spawn(['gnome-power-statistics', '--device', device_id]);
-                });
                 this._deviceItems.push(item);
                 this.menu.addMenuItem(item, this._otherDevicePosition + position);
                 position++;
@@ -216,7 +202,7 @@ DeviceItem.prototype = {
     __proto__: PopupMenu.PopupBaseMenuItem.prototype,
 
     _init: function(device) {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call(this);
+        PopupMenu.PopupBaseMenuItem.prototype._init.call(this, { reactive: false });
 
         let [device_id, device_type, icon, percentage, state, time] = device;
 

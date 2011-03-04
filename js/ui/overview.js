@@ -659,20 +659,20 @@ Overview.prototype = {
 
         if (this._shown) {
             if (!this._modal) {
-                if (Main.pushModal(this.dash.actor))
+                if (Main.pushModal(this._group))
                     this._modal = true;
                 else
                     this.hide();
             }
         } else if (this._shownTemporarily) {
             if (this._modal) {
-                Main.popModal(this.dash.actor);
+                Main.popModal(this._group);
                 this._modal = false;
             }
             global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
         } else {
             if (this._modal) {
-                Main.popModal(this.dash.actor);
+                Main.popModal(this._group);
                 this._modal = false;
             }
             else if (global.stage_input_mode == Shell.StageInputMode.FULLSCREEN)

@@ -52,8 +52,7 @@ BaseIcon.prototype = {
             this.createIcon = params.createIcon;
         this._setSizeManually = params.setSizeManually;
 
-        this.icon = this.createIcon(this.iconSize);
-        this._iconBin.set_child(this.icon);
+        this.icon = null;
     },
 
     _allocate: function(actor, box, flags) {
@@ -116,14 +115,15 @@ BaseIcon.prototype = {
         if (!this._setSizeManually)
             throw new Error('setSizeManually has to be set to use setIconsize');
 
-        this._setIconSize(size);
-    },
-
-    _setIconSize: function(size) {
         if (size == this.iconSize)
             return;
 
-        this.icon.destroy();
+        this._createIconTexture(size);
+    },
+
+    _createIconTexture: function(size) {
+        if (this.icon)
+            this.icon.destroy();
         this.iconSize = size;
         this.icon = this.createIcon(this.iconSize);
 
@@ -139,12 +139,15 @@ BaseIcon.prototype = {
         let node = this.actor.get_theme_node();
         this._spacing = node.get_length('spacing');
 
-        if (this._setSizeManually)
-            return;
+        let size;
+        if (this._setSizeManually) {
+            size = this.iconSize;
+        } else {
+            let [found, len] = node.lookup_length('icon-size', false);
+            size = found ? len : ICON_SIZE;
+        }
 
-        let len = node.get_length('icon-size');
-        if (len > 0)
-            this._setIconSize(len);
+        this._createIconTexture(size);
     }
 };
 

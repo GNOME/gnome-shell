@@ -25,6 +25,8 @@ const PANEL_HEIGHT = 26;
 
 const PANEL_ICON_SIZE = 24;
 
+const STARTUP_ANIMATION_TIME = 0.2;
+
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
@@ -1042,10 +1044,25 @@ Panel.prototype = {
     },
 
     startupAnimation: function() {
-        this.actor.y = -this.actor.height;
+        let oldY = this.actor.y;
+        this.actor.y = oldY - this.actor.height;
         Tweener.addTween(this.actor,
-                         { y: 0,
-                           time: 0.2,
+                         { y: oldY,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+
+        let oldCornerY = this._leftCorner.actor.y;
+        this._leftCorner.actor.y = oldCornerY - this.actor.height;
+        this._rightCorner.actor.y = oldCornerY - this.actor.height;
+        Tweener.addTween(this._leftCorner.actor,
+                         { y: oldCornerY,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+        Tweener.addTween(this._rightCorner.actor,
+                         { y: oldCornerY,
+                           time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
     },

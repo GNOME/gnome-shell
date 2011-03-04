@@ -13,7 +13,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Search = imports.ui.search;
 
-const MAX_SEARCH_RESULTS_ROWS = 2;
+const MAX_SEARCH_RESULTS_ROWS = 1;
 
 
 function SearchResult(provider, metaInfo, terms) {
@@ -36,9 +36,7 @@ SearchResult.prototype = {
                                    reactive: true,
                                    track_hover: true });
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
-                                             { createIcon: Lang.bind(this, function(size) {
-                                                 return this.metaInfo['icon'];
-                                             })});
+                                             { createIcon: this.metaInfo['createIcon'] });
             content.set_child(icon.actor);
         }
         this._content = content;
@@ -244,18 +242,9 @@ SearchResults.prototype = {
     createProviderMeta: function(provider) {
         let providerBox = new St.BoxLayout({ style_class: 'search-section',
                                              vertical: true });
-        let titleButton = new St.Button({ style_class: 'search-section-header',
-                                          reactive: true,
-                                          x_fill: true,
-                                          y_fill: true });
-        titleButton.connect('clicked', Lang.bind(this, function () { this._onHeaderClicked(provider); }));
-        providerBox.add(titleButton);
-        let titleBox = new St.BoxLayout();
-        titleButton.set_child(titleBox);
-        let title = new St.Label({ text: provider.title });
-        let count = new St.Label();
-        titleBox.add(title, { expand: true });
-        titleBox.add(count);
+        let title = new St.Label({ style_class: 'search-section-header',
+                                   text: provider.title });
+        providerBox.add(title);
 
         let resultDisplayBin = new St.Bin({ style_class: 'search-section-results',
                                             x_fill: true,
@@ -268,8 +257,7 @@ SearchResults.prototype = {
         resultDisplayBin.set_child(resultDisplay.actor);
 
         this._providerMeta.push({ actor: providerBox,
-                                  resultDisplay: resultDisplay,
-                                  count: count });
+                                  resultDisplay: resultDisplay });
         this._content.add(providerBox);
     },
 
@@ -326,17 +314,12 @@ SearchResults.prototype = {
             let meta = this._metaForProvider(provider);
             meta.actor.show();
             meta.resultDisplay.renderResults(providerResults, terms);
-            meta.count.set_text('' + providerResults.length);
         }
 
         if (this._selectedOpenSearchButton == -1)
             this.selectDown(false);
 
         return true;
-    },
-
-    _onHeaderClicked: function(provider) {
-        provider.expandSearch(this._searchSystem.getTerms());
     },
 
     _modifyActorSelection: function(resultDisplay, up) {
