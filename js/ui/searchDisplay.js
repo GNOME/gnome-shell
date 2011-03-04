@@ -190,9 +190,11 @@ SearchResults.prototype = {
         this._selectedProvider = -1;
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
-        for (let i = 0; i < this._providers.length; i++)
+        this._providerMetaResults = {};
+        for (let i = 0; i < this._providers.length; i++) {
             this.createProviderMeta(this._providers[i]);
-
+            this._providerMetaResults[this.providers[i].title] = [];
+        }
         this._searchProvidersBox = new St.BoxLayout({ style_class: 'search-providers-box' });
         this.actor.add(this._searchProvidersBox);
 
@@ -270,6 +272,12 @@ SearchResults.prototype = {
             meta.actor.hide();
         }
     },
+    
+    _clearDisplayForProvider: function(index) {
+        let meta = this._providerMeta[index];
+        meta.resultDisplay.clear();
+        meta.actor.hide();
+    },
 
     reset: function() {
         this._searchSystem.reset();
@@ -294,7 +302,6 @@ SearchResults.prototype = {
     },
 
     _updateResults: function(searchSystem, results) {
-        this._clearDisplay();
         if (results.length == 0) {
             this._statusText.set_text(_("No matching results."));
             this._statusText.show();
@@ -310,10 +317,16 @@ SearchResults.prototype = {
         for (let i = 0; i < results.length; i++) {
             let [provider, providerResults] = results[i];
             if (providerResults.length == 0)
-                  continue;
-            let meta = this._metaForProvider(provider);
-            meta.actor.show();
-            meta.resultDisplay.renderResults(providerResults, terms);
+                this._clearDisplayForProvider(i)
+            else {
+                if (this._providerMetaResults[provider.title] != providerResults) {
+                    this._providerMetaResults[provider.title] = providerResults;
+                    this._clearDisplayForProvider(i);
+                    let meta = this._metaForProvider(provider);
+                    meta.actor.show();
+                    meta.resultDisplay.renderResults(providerResults, terms);
+                }
+            }
         }
 
         if (this._selectedOpenSearchButton == -1)
