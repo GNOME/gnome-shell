@@ -1704,7 +1704,7 @@ post_parse_hook (GOptionContext  *context,
    * which in turn calls the backend post parse hooks.
    */
   if (!clutter_context->defer_display_setup)
-    return clutter_init_real (error);
+    return clutter_init_real (error) == CLUTTER_INIT_SUCCESS;
 
   return TRUE;
 }
