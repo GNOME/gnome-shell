@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&component=general\n"
 "POT-Creation-Date: 2011-02-21 01:21+0000\n"
-"PO-Revision-Date: 2011-03-04 17:30+0530\n"
+"PO-Revision-Date: 2011-03-04 17:37+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -939,7 +939,7 @@ msgstr[1] ""
 
 #: ../src/gvc/gvc-mixer-control.c:1402
 msgid "System Sounds"
-msgstr ""
+msgstr "ವ್ಯವಸ್ಥೆಯ ಧ್ವನಿಗಳು"
 
 #: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
@@ -949,33 +949,33 @@ msgstr ""
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d ನಿಮಿಷದ ಹಿಂದೆ"
+msgstr[1] "%d ನಿಮಿಷಗಳ ಹಿಂದೆ"
 
 #: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d ಗಂಟೆಯ ಹಿಂದೆ"
+msgstr[1] "%d ಗಂಟೆಗಳ ಹಿಂದೆ"
 
 #: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d ದಿನದ ಹಿಂದೆ"
+msgstr[1] "%d ದಿನಗಳ ಹಿಂದೆ"
 
 #: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d ವಾರದ ಹಿಂದೆ"
+msgstr[1] "%d ವಾರಗಳ ಹಿಂದೆ"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
-msgstr ""
+msgstr "ನೆಲೆ ಕಡತಕೋಶ"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
