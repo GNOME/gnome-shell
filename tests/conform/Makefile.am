@@ -69,6 +69,7 @@ units_sources += \
         test-clutter-text.c             \
 	test-clutter-texture.c		\
 	test-group.c			\
+	test-offscreen-redirect.c	\
 	test-path.c 			\
 	test-paint-opacity.c 		\
 	test-pick.c 			\
