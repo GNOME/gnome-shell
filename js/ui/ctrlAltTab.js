@@ -91,12 +91,12 @@ function CtrlAltTabPopup() {
 
 CtrlAltTabPopup.prototype = {
     _init : function() {
-        let primary = global.get_primary_monitor();
-        this.actor = new St.BoxLayout({ name: 'ctrlAltTabPopup',
-                                        reactive: true,
-                                        x: primary.x + primary.width / 2,
-                                        y: primary.y + primary.height / 2,
-                                        anchor_gravity: Clutter.Gravity.CENTER });
+        this.actor = new Shell.GenericContainer({ name: 'ctrlAltTabPopup',
+                                                  reactive: true });
+
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -104,6 +104,37 @@ CtrlAltTabPopup.prototype = {
         this._selection = 0;
 
         Main.uiGroup.add_actor(this.actor);
+    },
+
+    _getPreferredWidth: function (actor, forHeight, alloc) {
+        let primary = global.get_primary_monitor();
+
+        alloc.min_size = primary.width;
+        alloc.natural_size = primary.width;
+    },
+
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        let primary = global.get_primary_monitor();
+
+        alloc.min_size = primary.height;
+        alloc.natural_size = primary.height;
+    },
+
+    _allocate: function (actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        let primary = global.get_primary_monitor();
+
+        let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
+        let vPadding = this.actor.get_theme_node().get_vertical_padding();
+        let hPadding = this.actor.get_theme_node().get_horizontal_padding();
+
+        let [childMinHeight, childNaturalHeight] = this._switcher.actor.get_preferred_height(primary.width - hPadding);
+        let [childMinWidth, childNaturalWidth] = this._switcher.actor.get_preferred_width(childNaturalHeight);
+        childBox.x1 = Math.max(primary.x + leftPadding, primary.x + Math.floor((primary.width - childNaturalWidth) / 2));
+        childBox.x2 = Math.min(primary.width - hPadding, childBox.x1 + childNaturalWidth);
+        childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
+        childBox.y2 = childBox.y1 + childNaturalHeight;
+        this._switcher.actor.allocate(childBox, flags);
     },
 
     show : function(items, startBackwards) {
