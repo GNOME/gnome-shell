@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2011-03-05 08:37+0000\n"
-"PO-Revision-Date: 2011-03-05 15:33+0700\n"
+"PO-Revision-Date: 2011-03-05 15:41+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -59,10 +59,9 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Hộp thoại lịch sử lệnh (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#, fuzzy
 #| msgid "History for command (Alt-F2) dialog"
 msgid "History for the looking glass dialog"
-msgstr "Hộp thoại lịch sử lệnh (Alt-F2)"
+msgstr "Lịch sử hộp thoại looking glass"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
@@ -151,7 +150,7 @@ msgid ""
 "used ones (e.g. in launchers). While this data will be kept private, you may "
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
-msgstr ""
+msgstr "GNOME Shell bình thường sẽ theo dõi các ứng dụng tích cực để thể hiện phù hợp (ví dụ, bộ phóng). Mặc dù thông tin này là riêng tư, bạn vẫn có thể tắt vì lý do cá nhân. Chú ý là làm vậy sẽ không xoá bỏ những dữ liệu đã có."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
@@ -195,7 +194,7 @@ msgstr "ỨNG DỤNG"
 
 #: ../js/ui/appDisplay.js:311
 msgid "SETTINGS"
-msgstr ""
+msgstr "THIẾT LẬP"
 
 #: ../js/ui/appDisplay.js:565
 msgid "New Window"
@@ -596,13 +595,12 @@ msgstr "Không tìm thấy."
 
 #: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
 msgid "Power Off..."
-msgstr ""
+msgstr "Tắt máy..."
 
 #: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
-#, fuzzy
 #| msgid "Suspend..."
 msgid "Suspend"
-msgstr "Ngưng..."
+msgstr "Ngưng"
 
 #: ../js/ui/statusMenu.js:125
 msgid "Available"
@@ -791,7 +789,7 @@ msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:73
 msgid "Show Keyboard Layout..."
-msgstr ""
+msgstr "Hiện bố trí bàn phím..."
 
 #: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
@@ -805,7 +803,7 @@ msgstr "Thiết lập năng lượng"
 #. to estimate battery life
 #: ../js/ui/status/power.js:110
 msgid "Estimating..."
-msgstr ""
+msgstr "Ước lượng..."
 
 #: ../js/ui/status/power.js:117
 #, c-format
@@ -925,7 +923,7 @@ msgstr "Đã gửi %X lúc %A"
 #. characters.
 #: ../js/ui/viewSelector.js:103
 msgid "Type to search..."
-msgstr ""
+msgstr "Nhập để tìm..."
 
 #: ../js/ui/windowAttentionHandler.js:42
 #, c-format
@@ -987,7 +985,7 @@ msgstr[0] "%d tuần trước"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Hộp thoại xác thực bị người dùng bỏ qua"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
