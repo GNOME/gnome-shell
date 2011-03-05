@@ -63,7 +63,6 @@ meta_plugin_manager_load (MetaPluginManager *plugin_mgr,
   gchar       *path;
   MetaModule  *module;
   GType        plugin_type;
-  MetaPlugin  *plugin;
 
   if (g_path_is_absolute (plugin_name))
     path = g_strdup (plugin_name);
@@ -83,13 +82,25 @@ meta_plugin_manager_load (MetaPluginManager *plugin_mgr,
     }
 
   plugin_type = meta_module_get_plugin_type (module);
+  meta_plugin_manager_register (plugin_mgr, plugin_type);
+
+  g_type_module_unuse (G_TYPE_MODULE (module));
+  g_free (path);
+}
+
+/*
+ * Registers the given plugin type
+ */
+void
+meta_plugin_manager_register (MetaPluginManager *plugin_mgr,
+                              GType              plugin_type)
+{
+  MetaPlugin  *plugin;
+
   plugin_types = g_slist_prepend (plugin_types, GSIZE_TO_POINTER (plugin_type));
 
   plugin = g_object_new (plugin_type, NULL);
   plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, plugin);
-
-  g_type_module_unuse (G_TYPE_MODULE (module));
-  g_free (path);
 }
 
 void

@@ -26,6 +26,10 @@
 
 #include <glib.h>
 
+GOptionContext *meta_get_option_context (void);
+void            meta_init               (void);
+int             meta_run                (void);
+
 typedef enum
 {
   META_EXIT_SUCCESS,

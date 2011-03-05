@@ -51,6 +51,8 @@ MetaPluginManager * meta_plugin_manager_get_default (void);
 
 void     meta_plugin_manager_load         (MetaPluginManager *mgr,
                                            const gchar       *plugin_name);
+void     meta_plugin_manager_register     (MetaPluginManager *mgr,
+                                           GType              plugin_type);
 void     meta_plugin_manager_initialize   (MetaPluginManager *mgr);
 
 gboolean meta_plugin_manager_event_simple (MetaPluginManager *mgr,

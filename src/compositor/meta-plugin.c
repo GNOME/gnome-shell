@@ -22,6 +22,7 @@
  */
 
 #include "meta-plugin.h"
+#include "meta-plugin-manager.h"
 #include "screen.h"
 #include "display.h"
 
@@ -60,18 +61,6 @@ struct _MetaPluginPrivate
 };
 
 static void
-meta_plugin_dispose (GObject *object)
-{
-  G_OBJECT_CLASS (meta_plugin_parent_class)->dispose (object);
-}
-
-static void
-meta_plugin_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (meta_plugin_parent_class)->finalize (object);
-}
-
-static void
 meta_plugin_set_features (MetaPlugin *plugin)
 {
   MetaPluginPrivate  *priv     = plugin->priv;
@@ -100,6 +89,27 @@ meta_plugin_set_features (MetaPlugin *plugin)
 
   if (klass->switch_workspace)
     priv->features |= META_PLUGIN_SWITCH_WORKSPACE;
+}
+
+static void
+meta_plugin_constructed (GObject *object)
+{
+  meta_plugin_set_features (META_PLUGIN (object));
+
+  if (G_OBJECT_CLASS (meta_plugin_parent_class)->constructed)
+      G_OBJECT_CLASS (meta_plugin_parent_class)->constructed (object);
+}
+
+static void
+meta_plugin_dispose (GObject *object)
+{
+  G_OBJECT_CLASS (meta_plugin_parent_class)->dispose (object);
+}
+
+static void
+meta_plugin_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (meta_plugin_parent_class)->finalize (object);
 }
 
 static void
@@ -161,6 +171,7 @@ meta_plugin_class_init (MetaPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->constructed     = meta_plugin_constructed;
   gobject_class->finalize        = meta_plugin_finalize;
   gobject_class->dispose         = meta_plugin_dispose;
   gobject_class->set_property    = meta_plugin_set_property;
@@ -207,8 +218,6 @@ meta_plugin_init (MetaPlugin *self)
   MetaPluginPrivate *priv;
 
   self->priv = priv = META_PLUGIN_GET_PRIVATE (self);
-
-  meta_plugin_set_features (self);
 }
 
 gulong
@@ -540,3 +549,18 @@ meta_plugin_get_screen (MetaPlugin *plugin)
   return priv->screen;
 }
 
+/**
+ * meta_plugin_type_register:
+ * @plugin_type: a #MetaPlugin type
+ *
+ * Register @plugin_type as a compositor plugin type to be used.
+ * You must call this before calling meta_init().
+ */
+void
+meta_plugin_type_register (GType plugin_type)
+{
+  MetaPluginManager *plugin_manager;
+
+  plugin_manager = meta_plugin_manager_get_default ();
+  meta_plugin_manager_register (plugin_manager, plugin_type);
+}

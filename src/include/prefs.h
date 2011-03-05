@@ -138,7 +138,6 @@ void     meta_prefs_set_live_hidden_windows (gboolean whether);
 
 gboolean meta_prefs_get_no_tab_popup (void);
 void     meta_prefs_set_no_tab_popup (gboolean whether);
-void     meta_prefs_override_no_tab_popup (gboolean whether);
 
 /* XXX FIXME This should be x-macroed, but isn't yet because it would be
  * difficult (or perhaps impossible) to add the suffixes using the current

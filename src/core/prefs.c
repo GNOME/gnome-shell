@@ -3020,12 +3020,6 @@ meta_prefs_set_no_tab_popup (gboolean whether)
 #endif
 }
 
-void
-meta_prefs_override_no_tab_popup (gboolean whether)
-{
-  no_tab_popup = whether;
-}
-
 #ifndef HAVE_GCONF
 static void
 init_button_layout(void)

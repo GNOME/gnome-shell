@@ -7,6 +7,7 @@ src/core/display.c
 src/core/errors.c
 src/core/keybindings.c
 src/core/main.c
+src/core/mutter.c
 src/core/prefs.c
 src/core/screen.c
 src/core/session.c

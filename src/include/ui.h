@@ -41,7 +41,7 @@ typedef enum
   META_UI_DIRECTION_RTL
 } MetaUIDirection;
 
-void meta_ui_init (int *argc, char ***argv);
+void meta_ui_init (void);
 
 Display* meta_ui_get_display (void);
 

@@ -221,6 +221,9 @@ struct _MetaPluginVersion
   }                                                                     \
 
 void
+meta_plugin_type_register (GType plugin_type);
+
+void
 meta_plugin_switch_workspace_completed (MetaPlugin *plugin);
 
 void

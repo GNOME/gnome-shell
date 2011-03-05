@@ -58,7 +58,7 @@ struct _MetaUI
 };
 
 void
-meta_ui_init (int *argc, char ***argv)
+meta_ui_init (void)
 {
   /* As of 2.91.7, Gdk uses XI2 by default, which conflicts with the
    * direct X calls we use - in particular, events caused by calls to
@@ -70,7 +70,7 @@ meta_ui_init (int *argc, char ***argv)
   gdk_disable_multidevice ();
 #endif
 
-  if (!gtk_init_check (argc, argv))
+  if (!gtk_init_check (NULL, NULL))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
 
   meta_stock_icons_init ();

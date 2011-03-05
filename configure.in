@@ -511,6 +511,7 @@ doc/man/Makefile
 src/Makefile
 src/wm-tester/Makefile
 src/libmutter-private.pc
+src/libmutter-wm.pc
 src/mutter-plugins.pc
 src/tools/Makefile
 src/compositor/plugins/Makefile
