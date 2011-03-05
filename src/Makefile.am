@@ -196,9 +196,11 @@ mutter_theme_viewer_SOURCES=  \
 
 bin_PROGRAMS=mutter mutter-theme-viewer
 
+if HAVE_INTROSPECTION
+include $(INTROSPECTION_MAKEFILE)
+
 api_version = $(MUTTER_MAJOR_VERSION).$(MUTTER_MINOR_VERSION)
 
-if WITH_INTROSPECTION
 # These files are in package-private directories, even though they may be used
 # by plugins.  If you're writing a plugin, use g-ir-compiler --add-include-path
 # and g-ir-compiler --includedir.
@@ -208,33 +210,19 @@ gir_DATA = Meta-$(api_version).gir
 typelibdir = $(pkglibdir)
 typelib_DATA = Meta-$(api_version).typelib
 
-# We need to strip out the attribute that would point back to libmutter-introspect
-# so that libgirepository looks for symbols in the executable instead
-Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mutter_SOURCES) Makefile
-	$(AM_V_GEN) pwd=`pwd` ;				\
-        cd $(srcdir) &&					\
-	$(G_IR_SCANNER)					\
-		--namespace=Meta			\
-		--nsversion=$(api_version)		\
-		--warn-all				\
-		--warn-error				\
-		--include=GObject-2.0			\
-		--include=Gdk-3.0			\
-		--include=Gtk-3.0			\
-		--include=Clutter-1.0			\
-		--pkg=clutter-1.0			\
-		--pkg=gtk+-3.0				\
-		--include=xlib-2.0			\
-		--include=xfixes-4.0			\
-		--program=$$pwd/mutter			\
-		mutter-enum-types.h			\
-		$(filter %.c,$(mutter_SOURCES))		\
-		$(libmutterinclude_base_headers)	\
-		$(INCLUDES)				\
-		-o $$pwd/$@
+INTROSPECTION_GIRS = Meta-$(api_version).gir
 
-Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
-	$(AM_V_GEN) LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
+Meta-$(api_version).gir: mutter
+@META_GIR@_INCLUDES = GObject-2.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0
+@META_GIR@_PACKAGES = clutter-1.0 gtk+-3.0
+@META_GIR@_CFLAGS = $(INCLUDES)
+@META_GIR@_PROGRAM = $(builddir)/mutter
+@META_GIR@_FILES =				\
+	mutter-enum-types.h			\
+	$(libmutterinclude_base_headers)	\
+	$(filter %.c,$(mutter_SOURCES))
+@META_GIR@_SCANNERFLAGS = --warn-all --warn-error
+
 endif
 
 EFENCE=
