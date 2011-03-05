@@ -16,9 +16,9 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n-lib.h>
 #include <girepository.h>
-#include <main.h>
-#include <meta-plugin.h>
-#include <prefs.h>
+#include <meta/main.h>
+#include <meta/meta-plugin.h>
+#include <meta/prefs.h>
 
 #include "shell-a11y.h"
 #include "shell-global.h"

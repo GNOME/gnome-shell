@@ -2,12 +2,11 @@
 #ifndef __SHELL_GLOBAL_H__
 #define __SHELL_GLOBAL_H__
 
-#include "meta-plugin.h"
 #include <clutter/clutter.h>
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
-
+#include <meta/meta-plugin.h>
 #include <telepathy-glib/telepathy-glib.h>
 
 G_BEGIN_DECLS

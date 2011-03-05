@@ -2,38 +2,39 @@
 
 #include "config.h"
 
-#include "shell-global-private.h"
-#include "shell-enum-types.h"
-#include "shell-perf-log.h"
-#include "shell-window-tracker.h"
-#include "shell-marshal.h"
-#include "shell-wm.h"
-#include "st.h"
-
-#include "display.h"
-#include "util.h"
-#include <clutter/glx/clutter-glx.h>
-#include <clutter/x11/clutter-x11.h>
-#include <gdk/gdkx.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <dbus/dbus-glib.h>
-#include <gio/gio.h>
-#include <math.h>
-#include <X11/extensions/Xfixes.h>
-#include <gjs/gjs-module.h>
-#include <canberra.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
+
+#include <X11/extensions/Xfixes.h>
+#include <canberra.h>
+#include <clutter/glx/clutter-glx.h>
+#include <clutter/x11/clutter-x11.h>
+#include <dbus/dbus-glib.h>
+#include <gdk/gdkx.h>
+#include <gio/gio.h>
+#include <gjs/gjs-module.h>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
+#include <meta/display.h>
+#include <meta/util.h>
+
+#include "shell-enum-types.h"
+#include "shell-global-private.h"
 #include "shell-jsapi-compat-private.h"
+#include "shell-marshal.h"
+#include "shell-perf-log.h"
+#include "shell-window-tracker.h"
+#include "shell-wm.h"
+#include "st.h"
 
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
 

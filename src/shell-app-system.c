@@ -10,11 +10,11 @@
 #include <gtk/gtk.h>
 #include <clutter/clutter.h>
 #include <glib/gi18n.h>
+#include <meta/display.h>
 
 #include "shell-app-private.h"
 #include "shell-window-tracker-private.h"
 #include "shell-global.h"
-#include "display.h"
 #include "st.h"
 
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE

@@ -3,7 +3,7 @@
 #define __SHELL_WM_H__
 
 #include <glib-object.h>
-#include <meta-plugin.h>
+#include <meta/meta-plugin.h>
 
 G_BEGIN_DECLS
 

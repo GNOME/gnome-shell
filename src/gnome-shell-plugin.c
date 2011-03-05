@@ -25,18 +25,16 @@
 
 #include "config.h"
 
-#include <meta-plugin.h>
-
-#include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
-#include <gjs/gjs.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <GL/glx.h>
 #include <GL/glxext.h>
-
-#include "display.h"
+#include <gjs/gjs.h>
+#include <meta/display.h>
+#include <meta/meta-plugin.h>
 
 #include "shell-global-private.h"
 #include "shell-perf-log.h"

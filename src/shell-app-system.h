@@ -4,9 +4,9 @@
 
 #include <gio/gio.h>
 #include <clutter/clutter.h>
+#include <meta/window.h>
 
 #include "shell-app.h"
-#include "window.h"
 
 #define SHELL_TYPE_APP_SYSTEM                 (shell_app_system_get_type ())
 #define SHELL_APP_SYSTEM(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_APP_SYSTEM, ShellAppSystem))

@@ -4,11 +4,9 @@
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#include <gtk/gtk.h>
-
-#include <display.h>
-
 #include <girepository.h>
+#include <gtk/gtk.h>
+#include <meta/display.h>
 
 #include "shell-tray-manager.h"
 #include "na-tray-manager.h"
