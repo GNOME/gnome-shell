@@ -522,8 +522,9 @@ msgstr "PLACES & DEVICES"
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:33
+#, fuzzy
 msgid "toggle-switch-us"
-msgstr "முறைமை-மாற்றி-யூஎஸ்"
+msgstr "toggle-switch-us"
 
 #: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
@@ -718,39 +719,3 @@ msgstr "தேடு"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "Overview workspace view mode"
-#~ msgstr "பணி இட மேல்பார்வை காட்சிப் பாங்கு."
-
-#~ msgid ""
-#~ "The selected workspace view mode in the overview. Supported values are "
-#~ "\"single\" and \"grid\"."
-#~ msgstr ""
-#~ "மேல்பார்வையில் தேர்ந்தெடுத்த பணீட காட்சி பாங்கு. ஆதரவுள்ள மதிப்புகள் 'ஒன்று' மற்றும் "
-#~ "'வலை'"
-
-#~ msgid "Drag here to add favorites"
-#~ msgstr "விருப்பங்களுக்கு சேர்க்க இங்கு இழுத்துவிடு"
-
-#~ msgid "Find"
-#~ msgstr "தேடு"
-
-#~ msgid "Searching..."
-#~ msgstr "தேடுகிறது..."
-
-#~ msgid "No matching results."
-#~ msgstr "பொருத்தமான விடைகள் இல்லை"
-
-#~ msgid "ON"
-#~ msgstr "இயக்கத்தில்"
-
-#~ msgid "OFF"
-#~ msgstr "செயல் நீக்கு"
-
-#~ msgid "Invisible"
-#~ msgstr "பார்க்கமுடியாதது"
-
-#~ msgid "Account Information..."
-#~ msgstr "கணக்கு தகவல்..."
-
-#~ msgid "System Preferences..."
-#~ msgstr "கணினி முன்னுரிமைகள்..."
