@@ -1157,7 +1157,7 @@ MessageTray.prototype = {
         if (index == -1)
             return;
 
-        this._summaryItems[index].actor.destroy();
+        let summaryItemToRemove = this._summaryItems[index];
 
         let newSummaryItemsIndex = this._newSummaryItems.indexOf(this._summaryItems[index]);
         if (newSummaryItemsIndex != -1)
@@ -1167,6 +1167,9 @@ MessageTray.prototype = {
 
         if (source.isChat)
             this._chatSummaryItemsCount--;
+
+        if (this._expandedSummaryItem == summaryItemToRemove)
+            this._expandedSummaryItem = null;
 
         if (this._longestSummaryItem.source == source) {
             let newTitleWidth = 0;
@@ -1192,10 +1195,12 @@ MessageTray.prototype = {
             this._notificationRemoved = true;
             needUpdate = true;
         }
-        if (this._clickedSummaryItem && this._clickedSummaryItem.source == source) {
+        if (this._clickedSummaryItem == summaryItemToRemove) {
             this._unsetClickedSummaryItem();
             needUpdate = true;
         }
+
+        summaryItemToRemove.actor.destroy();
 
         if (needUpdate);
             this._updateState();
