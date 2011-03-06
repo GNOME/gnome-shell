@@ -23,10 +23,10 @@
 
 #include <stdlib.h>
 
-#include "main.h"
-#include "util.h"
+#include <meta/main.h>
+#include <meta/util.h>
 #ifdef HAVE_INTROSPECTION
-#include "compositor/meta-plugin-manager.h"
+#include "meta-plugin-manager.h"
 #endif
 
 #include <glib.h>

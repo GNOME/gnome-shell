@@ -34,11 +34,11 @@
 #include <glib.h>
 #include <X11/Xlib.h>
 #include "eventqueue.h"
-#include "common.h"
-#include "boxes.h"
-#include "display.h"
+#include <meta/common.h>
+#include <meta/boxes.h>
+#include <meta/display.h>
 #include "keybindings-private.h"
-#include "prefs.h"
+#include <meta/prefs.h>
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -99,7 +99,7 @@ struct _MetaDisplay
    * class is constructed.
    */
 #define item(x)  Atom atom_##x;
-#include "atomnames.h"
+#include <meta/atomnames.h>
 #undef item
 
   /* This is the actual window from focus events,

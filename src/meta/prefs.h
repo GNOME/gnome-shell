@@ -26,7 +26,7 @@
 #define META_PREFS_H
 
 /* This header is a "common" one between the UI and core side */
-#include "common.h"
+#include <meta/common.h>
 #include <pango/pango-font.h>
 
 typedef enum

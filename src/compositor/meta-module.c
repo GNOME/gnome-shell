@@ -21,7 +21,7 @@
  * 02111-1307, USA.
  */
 
-#include "meta-plugin.h"
+#include <meta/meta-plugin.h>
 #include "meta-module.h"
 
 #include <gmodule.h>

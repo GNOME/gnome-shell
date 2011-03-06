@@ -24,9 +24,10 @@
  */
 
 #include <config.h>
-#include "prefs.h"
+#include <meta/prefs.h>
 #include "ui.h"
-#include "util.h"
+#include <meta/util.h>
+#include "meta-plugin-manager.h"
 #ifdef HAVE_GCONF
 #include <gconf/gconf-client.h>
 #endif

@@ -27,7 +27,7 @@
  */
 
 #include "boxes-private.h"
-#include "util.h"
+#include <meta/util.h>
 #include <X11/Xutil.h>  /* Just for the definition of the various gravities */
 
 /* It would make sense to use GSlice here, but until we clean up the

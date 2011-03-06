@@ -24,9 +24,9 @@
 #ifndef META_PLUGIN_H_
 #define META_PLUGIN_H_
 
-#include "types.h"
-#include "compositor.h"
-#include "compositor-mutter.h"
+#include <meta/types.h>
+#include <meta/compositor.h>
+#include <meta/compositor-mutter.h>
 
 #include <clutter/clutter.h>
 #include <X11/extensions/Xfixes.h>

@@ -29,7 +29,7 @@
 #ifndef META_KEYBINDINGS_PRIVATE_H
 #define META_KEYBINDINGS_PRIVATE_H
 
-#include "keybindings.h"
+#include <meta/keybindings.h>
 
 void     meta_display_init_keys             (MetaDisplay *display);
 void     meta_display_shutdown_keys         (MetaDisplay *display);

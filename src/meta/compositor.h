@@ -25,10 +25,10 @@
 #include <glib.h>
 #include <X11/Xlib.h>
 
-#include "types.h"
-#include "boxes.h"
-#include "window.h"
-#include "workspace.h"
+#include <meta/types.h>
+#include <meta/boxes.h>
+#include <meta/window.h>
+#include <meta/workspace.h>
 
 /**
  * MetaCompEffect:

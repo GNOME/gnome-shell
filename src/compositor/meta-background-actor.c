@@ -32,7 +32,7 @@
 
 #include "cogl-utils.h"
 #include "compositor-private.h"
-#include "errors.h"
+#include <meta/errors.h>
 #include "meta-background-actor.h"
 
 struct _MetaBackgroundActorClass

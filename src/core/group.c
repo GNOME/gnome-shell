@@ -23,11 +23,11 @@
  */
 
 #include <config.h>
-#include "util.h"
+#include <meta/util.h>
 #include "group-private.h"
 #include "group-props.h"
 #include "window-private.h"
-#include "window.h"
+#include <meta/window.h>
 
 static MetaGroup*
 meta_group_new (MetaDisplay *display,

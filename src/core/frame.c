@@ -24,9 +24,9 @@
  */
 
 #include <config.h>
-#include "frame-private.h"
+#include "frame.h"
 #include "bell.h"
-#include "errors.h"
+#include <meta/errors.h>
 #include "keybindings-private.h"
 
 #include <X11/extensions/Xrender.h>

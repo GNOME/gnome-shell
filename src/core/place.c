@@ -28,8 +28,8 @@
 
 #include "boxes-private.h"
 #include "place.h"
-#include "workspace.h"
-#include "prefs.h"
+#include <meta/workspace.h>
+#include <meta/prefs.h>
 #include <gdk/gdk.h>
 #include <math.h>
 #include <stdlib.h>

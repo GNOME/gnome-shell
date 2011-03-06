@@ -4,19 +4,19 @@
 
 #include <clutter/x11/clutter-x11.h>
 
-#include "screen.h"
-#include "errors.h"
-#include "window.h"
+#include <meta/screen.h>
+#include <meta/errors.h>
+#include <meta/window.h>
 #include "compositor-private.h"
-#include "compositor-mutter.h"
+#include <meta/compositor-mutter.h>
 #include "xprops.h"
-#include "prefs.h"
-#include "meta-shadow-factory.h"
+#include <meta/prefs.h>
+#include <meta/meta-shadow-factory.h>
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
 #include "meta-background-actor.h"
-#include "../core/window-private.h" /* to check window->hidden */
-#include "../core/display-private.h" /* for meta_display_lookup_x_window() */
+#include "window-private.h" /* to check window->hidden */
+#include "display-private.h" /* for meta_display_lookup_x_window() */
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 

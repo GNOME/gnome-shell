@@ -24,7 +24,7 @@
 #include <config.h>
 #include "iconcache.h"
 #include "ui.h"
-#include "errors.h"
+#include <meta/errors.h>
 
 #include <X11/Xatom.h>
 

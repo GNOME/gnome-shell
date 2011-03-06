@@ -35,10 +35,10 @@
 #define META_WINDOW_PRIVATE_H
 
 #include <config.h>
-#include "compositor.h"
-#include "window.h"
+#include <meta/compositor.h>
+#include <meta/window.h>
 #include "screen-private.h"
-#include "util.h"
+#include <meta/util.h>
 #include "stack.h"
 #include "iconcache.h"
 #include <X11/Xutil.h>

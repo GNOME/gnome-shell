@@ -25,8 +25,8 @@
 #include <glib-object.h>
 #include <X11/Xlib.h>
 
-#include "boxes.h"
-#include "types.h"
+#include <meta/boxes.h>
+#include <meta/types.h>
 
 typedef enum
 {

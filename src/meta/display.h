@@ -25,9 +25,9 @@
 #include <glib-object.h>
 #include <X11/Xlib.h>
 
-#include "types.h"
-#include "prefs.h"
-#include "common.h"
+#include <meta/types.h>
+#include <meta/prefs.h>
+#include <meta/common.h>
 
 typedef enum
 {

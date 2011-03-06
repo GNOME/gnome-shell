@@ -21,8 +21,8 @@
  * 02111-1307, USA.
  */
 
-#include "meta-plugin.h"
-#include "window.h"
+#include <meta/meta-plugin.h>
+#include <meta/window.h>
 
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)

@@ -25,7 +25,7 @@
 #define META_PLACE_H
 
 #include "window-private.h"
-#include "frame-private.h"
+#include "frame.h"
 
 void meta_window_place (MetaWindow *window,
                         MetaFrameGeometry *fgeom,

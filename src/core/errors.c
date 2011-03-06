@@ -23,7 +23,7 @@
  */
 
 #include <config.h>
-#include "errors.h"
+#include <meta/errors.h>
 #include "display-private.h"
 #include <errno.h>
 #include <stdlib.h>

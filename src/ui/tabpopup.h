@@ -26,8 +26,8 @@
 #define META_TABPOPUP_H
 
 /* Don't include gtk.h or gdk.h here */
-#include "common.h"
-#include "boxes.h"
+#include <meta/common.h>
+#include <meta/boxes.h>
 #include <X11/Xlib.h>
 #include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>

@@ -24,7 +24,7 @@
 #ifndef META_GROUP_PROPS_H
 #define META_GROUP_PROPS_H
 
-#include "group.h"
+#include <meta/group.h>
 #include "window-private.h"
 
 void meta_group_reload_property         (MetaGroup   *group,

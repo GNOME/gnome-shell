@@ -25,14 +25,14 @@
 
 #include <config.h>
 #include <math.h>
-#include "boxes.h"
+#include <meta/boxes.h>
 #include "frames.h"
-#include "util.h"
+#include <meta/util.h>
 #include "core.h"
 #include "menu.h"
 #include "fixedtip.h"
-#include "theme.h"
-#include "prefs.h"
+#include <meta/theme.h>
+#include <meta/prefs.h>
 #include "ui.h"
 
 #include <cairo-xlib.h>

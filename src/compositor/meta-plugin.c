@@ -21,10 +21,10 @@
  * 02111-1307, USA.
  */
 
-#include "meta-plugin.h"
+#include <meta/meta-plugin.h>
 #include "meta-plugin-manager.h"
-#include "screen.h"
-#include "display.h"
+#include <meta/screen.h>
+#include <meta/display.h>
 
 #include <string.h>
 #include <X11/Xlib.h>

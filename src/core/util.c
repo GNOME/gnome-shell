@@ -26,9 +26,9 @@
 #define _POSIX_C_SOURCE 200112L /* for fdopen() */
 
 #include <config.h>
-#include "common.h"
-#include "util.h"
-#include "main.h"
+#include <meta/common.h>
+#include <meta/util.h>
+#include <meta/main.h>
 
 #include <clutter/clutter.h> /* For clutter_threads_add_repaint_func() */
 

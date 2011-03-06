@@ -25,13 +25,13 @@
 
 #include <config.h>
 
-#include "util.h"
+#include <meta/util.h>
 #include "core.h"
 #include "tabpopup.h"
 /* FIXME these two includes are 100% broken ...
  */
-#include "../core/workspace-private.h"
-#include "../core/frame-private.h"
+#include "workspace-private.h"
+#include "frame.h"
 #include "draw-workspace.h"
 #include <gtk/gtk.h>
 #include <math.h>

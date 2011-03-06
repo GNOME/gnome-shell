@@ -28,7 +28,7 @@
 #include <cairo.h>
 #include <clutter/clutter.h>
 #include "meta-window-shape.h"
-#include "meta-shadow-factory.h"
+#include <meta/meta-shadow-factory.h>
 
 /**
  * MetaShadow:

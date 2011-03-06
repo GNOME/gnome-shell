@@ -36,7 +36,7 @@
 #include <X11/XKBlib.h>
 #endif
 #include "display-private.h"
-#include "frame-private.h"
+#include "frame.h"
 
 #ifdef HAVE_XKB
 /**

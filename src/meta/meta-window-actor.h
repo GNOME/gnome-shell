@@ -28,7 +28,7 @@
 #include <clutter/clutter.h>
 #include <X11/Xlib.h>
 
-#include "compositor.h"
+#include <meta/compositor.h>
 
 /*
  * MetaWindowActor object (ClutterGroup sub-class)

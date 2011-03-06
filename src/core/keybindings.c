@@ -29,13 +29,13 @@
 #include <config.h>
 #include "keybindings-private.h"
 #include "workspace-private.h"
-#include "errors.h"
+#include <meta/errors.h>
 #include "edge-resistance.h"
 #include "ui.h"
-#include "frame-private.h"
+#include "frame.h"
 #include "place.h"
-#include "prefs.h"
-#include "util.h"
+#include <meta/prefs.h>
+#include <meta/util.h>
 
 #include <X11/keysym.h>
 #include <string.h>

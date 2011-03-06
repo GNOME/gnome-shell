@@ -25,7 +25,7 @@
 
 #include <clutter/clutter.h>
 
-#include "screen.h"
+#include <meta/screen.h>
 
 /**
  * MetaBackgroundActor:

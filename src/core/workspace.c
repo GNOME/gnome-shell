@@ -25,13 +25,13 @@
 
 #include <config.h>
 #include "screen-private.h"
-#include "workspace.h"
+#include <meta/workspace.h>
 #include "workspace-private.h"
 #include "boxes-private.h"
-#include "errors.h"
-#include "prefs.h"
+#include <meta/errors.h>
+#include <meta/prefs.h>
 
-#include "compositor.h"
+#include <meta/compositor.h>
 
 #include <X11/Xatom.h>
 #include <string.h>

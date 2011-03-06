@@ -28,7 +28,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include "common.h"
+#include <meta/common.h>
 
 gboolean meta_is_verbose  (void);
 void     meta_set_verbose (gboolean setting);

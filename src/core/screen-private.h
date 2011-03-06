@@ -34,7 +34,7 @@
 #define META_SCREEN_PRIVATE_H
 
 #include "display-private.h"
-#include "screen.h"
+#include <meta/screen.h>
 #include <X11/Xutil.h>
 #include "stack-tracker.h"
 #include "ui.h"

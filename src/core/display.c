@@ -34,21 +34,21 @@
 
 #include <config.h>
 #include "display-private.h"
-#include "util.h"
-#include "main.h"
+#include <meta/util.h>
+#include <meta/main.h>
 #include "screen-private.h"
 #include "window-private.h"
 #include "window-props.h"
 #include "group-props.h"
-#include "frame-private.h"
-#include "errors.h"
+#include "frame.h"
+#include <meta/errors.h>
 #include "keybindings-private.h"
-#include "prefs.h"
+#include <meta/prefs.h>
 #include "resizepopup.h"
 #include "xprops.h"
 #include "workspace-private.h"
 #include "bell.h"
-#include "compositor.h"
+#include <meta/compositor.h>
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
 #ifdef HAVE_SOLARIS_XINERAMA
@@ -417,7 +417,7 @@ meta_display_open (void)
   /* A list of all atom names, so that we can intern them in one go. */
   char *atom_names[] = {
 #define item(x) #x,
-#include "atomnames.h"
+#include <meta/atomnames.h>
 #undef item
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
@@ -490,7 +490,7 @@ meta_display_open (void)
   {
     int i = 0;    
 #define item(x) the_display->atom_##x = atoms[i++];
-#include "atomnames.h"
+#include <meta/atomnames.h>
 #undef item
   }
 

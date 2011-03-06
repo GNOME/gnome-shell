@@ -26,7 +26,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
-#include "common.h"
+#include <meta/common.h>
 #include "theme-private.h"
 
 typedef enum

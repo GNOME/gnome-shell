@@ -6,7 +6,7 @@
 #include <config.h>
 
 #include <X11/extensions/Xdamage.h>
-#include "compositor-mutter.h"
+#include <meta/compositor-mutter.h>
 
 MetaWindowActor *meta_window_actor_new (MetaWindow *window);
 

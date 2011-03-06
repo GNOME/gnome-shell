@@ -28,16 +28,16 @@
 
 #include <config.h>
 #include "screen-private.h"
-#include "util.h"
-#include "errors.h"
+#include <meta/util.h>
+#include <meta/errors.h>
 #include "window-private.h"
-#include "frame-private.h"
-#include "prefs.h"
+#include "frame.h"
+#include <meta/prefs.h>
 #include "workspace-private.h"
 #include "keybindings-private.h"
 #include "stack.h"
 #include "xprops.h"
-#include "compositor.h"
+#include <meta/compositor.h>
 #include "mutter-marshal.h"
 #include "mutter-enum-types.h"
 
@@ -277,7 +277,7 @@ set_supported_hint (MetaScreen *screen)
   Atom atoms[] = {
 #define EWMH_ATOMS_ONLY
 #define item(x)  screen->display->atom_##x,
-#include "atomnames.h"
+#include <meta/atomnames.h>
 #undef item
 #undef EWMH_ATOMS_ONLY
   };

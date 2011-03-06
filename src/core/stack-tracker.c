@@ -23,12 +23,12 @@
 
 #include <string.h>
 
-#include "frame-private.h"
+#include "frame.h"
 #include "screen-private.h"
 #include "stack-tracker.h"
-#include "util.h"
+#include <meta/util.h>
 
-#include "compositor.h"
+#include <meta/compositor.h>
 
 /* The complexity here comes from resolving two competing factors:
  *

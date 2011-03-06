@@ -5,8 +5,8 @@
 
 #include <X11/extensions/Xfixes.h>
 
-#include "compositor.h"
-#include "display.h"
+#include <meta/compositor.h>
+#include <meta/display.h>
 #include "meta-plugin-manager.h"
 #include <clutter/clutter.h>
 

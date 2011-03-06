@@ -13,10 +13,10 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdk.h> /* for gdk_rectangle_union() */
 
-#include "display.h"
-#include "errors.h"
+#include <meta/display.h>
+#include <meta/errors.h>
 #include "frame.h"
-#include "window.h"
+#include <meta/window.h>
 #include "xprops.h"
 
 #include "compositor-private.h"

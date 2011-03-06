@@ -23,7 +23,7 @@
 
 #include <config.h>
 #include "theme-private.h"
-#include "util.h"
+#include <meta/util.h>
 #include <string.h>
 #include <stdlib.h>
 

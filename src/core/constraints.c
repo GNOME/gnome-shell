@@ -28,7 +28,7 @@
 #include "constraints.h"
 #include "workspace-private.h"
 #include "place.h"
-#include "prefs.h"
+#include <meta/prefs.h>
 
 #include <stdlib.h>
 #include <math.h>

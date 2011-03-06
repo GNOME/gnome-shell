@@ -23,7 +23,8 @@
 
 #include <config.h>
 
-#include "theme-private.h"
+#include <meta/common.h>
+#include <meta/theme.h>
 #include <gtk/gtk.h>
 
 #ifndef META_PREVIEW_WIDGET_H

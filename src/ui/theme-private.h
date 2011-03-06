@@ -24,10 +24,10 @@
 #ifndef META_THEME_PRIVATE_H
 #define META_THEME_PRIVATE_H
 
-#include "boxes.h"
-#include "gradient.h"
-#include "theme.h"
-#include "common.h"
+#include <meta/boxes.h>
+#include <meta/gradient.h>
+#include <meta/theme.h>
+#include <meta/common.h>
 #include <gtk/gtk.h>
 
 /**

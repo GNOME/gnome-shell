@@ -45,14 +45,14 @@
 #define _SVID_SOURCE /* for putenv() and some signal-related functions */
 
 #include <config.h>
-#include "main.h"
-#include "util.h"
+#include <meta/main.h>
+#include <meta/util.h>
 #include "display-private.h"
-#include "errors.h"
+#include <meta/errors.h>
 #include "ui.h"
 #include "session.h"
-#include "prefs.h"
-#include "compositor.h"
+#include <meta/prefs.h>
+#include <meta/compositor.h>
 
 #include <glib-object.h>
 #include <gdk/gdkx.h>

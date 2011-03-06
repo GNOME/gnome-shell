@@ -29,11 +29,11 @@
 #include <config.h>
 #include "stack.h"
 #include "window-private.h"
-#include "errors.h"
-#include "frame-private.h"
-#include "group.h"
-#include "prefs.h"
-#include "workspace.h"
+#include <meta/errors.h>
+#include "frame.h"
+#include <meta/group.h>
+#include <meta/prefs.h>
+#include <meta/workspace.h>
 
 #include <X11/Xatom.h>
 

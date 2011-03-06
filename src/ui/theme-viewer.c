@@ -22,9 +22,10 @@
  */
 
 #include <config.h>
-#include "util.h"
-#include "theme.h"
-#include "preview-widget.h"
+#include <meta/util.h>
+#include <meta/theme.h>
+#include "theme-private.h"
+#include <meta/preview-widget.h>
 #include <gtk/gtk.h>
 #include <time.h>
 #include <stdlib.h>

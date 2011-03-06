@@ -69,10 +69,10 @@ meta_window_release_saved_state (const MetaWindowSessionInfo *info)
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "main.h"
-#include "util.h"
+#include <meta/main.h>
+#include <meta/util.h>
 #include "display-private.h"
-#include "workspace.h"
+#include <meta/workspace.h>
 
 static void ice_io_error_handler (IceConn connection);
 

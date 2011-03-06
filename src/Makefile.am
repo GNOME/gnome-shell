@@ -7,7 +7,9 @@ SUBDIRS=wm-tester tools compositor/plugins
 
 INCLUDES=								\
 	$(MUTTER_CFLAGS)						\
-	-I$(srcdir)/include						\
+	-I$(srcdir)							\
+	-I$(srcdir)/core						\
+	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
 	-DMUTTER_LIBEXECDIR=\"$(libexecdir)\"				\
 	-DHOST_ALIAS=\"@HOST_ALIAS@\"					\
@@ -37,7 +39,7 @@ libmutter_wm_la_SOURCES =			\
 	core/bell.h				\
 	core/boxes.c				\
 	core/boxes-private.h			\
-	include/boxes.h				\
+	meta/boxes.h				\
 	compositor/cogl-utils.c			\
 	compositor/cogl-utils.h			\
 	compositor/compositor.c			\
@@ -63,11 +65,11 @@ libmutter_wm_la_SOURCES =			\
 	compositor/meta-window-shape.h		\
 	compositor/region-utils.c		\
 	compositor/region-utils.h		\
-	include/compositor.h			\
-	include/meta-plugin.h			\
-	include/meta-shadow-factory.h		\
-	include/meta-window-actor.h		\
-	include/compositor-mutter.h 		\
+	meta/compositor.h			\
+	meta/meta-plugin.h			\
+	meta/meta-shadow-factory.h		\
+	meta/meta-window-actor.h		\
+	meta/compositor-mutter.h 		\
 	core/above-tab-keycode.c		\
 	core/constraints.c			\
 	core/constraints.h			\
@@ -75,25 +77,24 @@ libmutter_wm_la_SOURCES =			\
 	core/delete.c				\
 	core/display.c				\
 	core/display-private.h			\
-	include/display.h			\
+	meta/display.h				\
 	ui/draw-workspace.c			\
 	ui/draw-workspace.h			\
 	core/edge-resistance.c			\
 	core/edge-resistance.h			\
 	core/errors.c				\
-	include/errors.h			\
+	meta/errors.h				\
 	core/eventqueue.c			\
 	core/eventqueue.h			\
 	core/frame.c				\
-	core/frame-private.h			\
-	include/frame.h				\
+	core/frame.h				\
 	ui/gradient.c				\
-	ui/gradient.h				\
+	meta/gradient.h				\
 	core/group-private.h			\
 	core/group-props.c			\
 	core/group-props.h			\
 	core/group.c				\
-	include/group.h				\
+	meta/group.h				\
 	core/iconcache.c			\
 	core/iconcache.h			\
 	core/keybindings.c			\
@@ -103,11 +104,11 @@ libmutter_wm_la_SOURCES =			\
 	core/place.c				\
 	core/place.h				\
 	core/prefs.c				\
-	include/prefs.h				\
+	meta/prefs.h				\
 	core/screen.c				\
 	core/screen-private.h			\
-	include/screen.h			\
-	include/types.h                         \
+	meta/screen.h				\
+	meta/types.h				\
 	core/session.c				\
 	core/session.h				\
 	core/stack.c				\
@@ -115,19 +116,19 @@ libmutter_wm_la_SOURCES =			\
 	core/stack-tracker.c			\
 	core/stack-tracker.h			\
 	core/util.c				\
-	include/util.h				\
+	meta/util.h				\
 	core/window-props.c			\
 	core/window-props.h			\
 	core/window.c				\
 	core/window-private.h			\
-	include/window.h			\
+	meta/window.h				\
 	core/workspace.c			\
 	core/workspace-private.h		\
 	core/xprops.c				\
-	include/xprops.h			\
-	include/common.h			\
-	include/core.h				\
-	include/ui.h				\
+	core/xprops.h				\
+	meta/common.h				\
+	core/core.h				\
+	ui/ui.h					\
 	inlinepixbufs.h				\
 	ui/fixedtip.c				\
 	ui/fixedtip.h				\
@@ -138,17 +139,17 @@ libmutter_wm_la_SOURCES =			\
 	ui/metaaccellabel.c			\
 	ui/metaaccellabel.h			\
 	ui/resizepopup.c			\
-	include/resizepopup.h			\
+	ui/resizepopup.h			\
 	ui/tabpopup.c				\
-	include/tabpopup.h				\
+	ui/tabpopup.h				\
 	ui/tile-preview.c			\
-	include/tile-preview.h			\
+	ui/tile-preview.h			\
 	ui/theme-parser.c			\
 	ui/theme.c				\
-	ui/theme.h				\
+	meta/theme.h				\
 	ui/theme-private.h			\
 	ui/ui.c					\
-	include/all-keybindings.h               \
+	core/all-keybindings.h			\
 	$(mutter_built_sources)
 
 libmutter_wm_la_LDFLAGS = -no-undefined
@@ -159,17 +160,17 @@ libmutter_wm_la_LIBADD  = $(MUTTER_LIBS)
 libmutter_private_la_CFLAGS =
 libmutter_private_la_SOURCES=			\
 	core/boxes.c				\
-	include/boxes.h				\
+	meta/boxes.h				\
 	ui/gradient.c				\
-	ui/gradient.h				\
+	meta/gradient.h				\
 	core/util.c				\
-	include/util.h				\
-	include/common.h			\
+	meta/util.h				\
+	meta/common.h				\
 	ui/preview-widget.c			\
-	ui/preview-widget.h			\
+	meta/preview-widget.h			\
 	ui/theme-parser.c			\
 	ui/theme.c				\
-	ui/theme.h
+	meta/theme.h
 
 libmutter_private_la_LDFLAGS = -no-undefined
 libmutter_private_la_LIBADD  = $(MUTTER_LIBS)
@@ -177,35 +178,35 @@ libmutter_private_la_LIBADD  = $(MUTTER_LIBS)
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
 libmutterinclude_base_headers =		\
-	include/boxes.h				\
-	ui/gradient.h				\
-	include/main.h				\
-	include/util.h				\
-	include/common.h			\
-	ui/theme.h				\
-	include/prefs.h				\
-	include/window.h			\
-	include/workspace.h			\
-	include/compositor.h			\
-	include/compositor-mutter.h		\
-	include/types.h				\
-	include/errors.h			\
-	include/screen.h			\
-	include/display.h			\
-	include/group.h				\
-	include/keybindings.h			\
-	include/meta-plugin.h			\
-	include/meta-shadow-factory.h		\
-	include/meta-window-actor.h
+	meta/boxes.h				\
+	meta/common.h				\
+	meta/compositor-mutter.h		\
+	meta/compositor.h			\
+	meta/display.h				\
+	meta/errors.h				\
+	meta/gradient.h				\
+	meta/group.h				\
+	meta/keybindings.h			\
+	meta/main.h				\
+	meta/meta-plugin.h			\
+	meta/meta-shadow-factory.h		\
+	meta/meta-window-actor.h		\
+	meta/prefs.h				\
+	meta/screen.h				\
+	meta/theme.h				\
+	meta/types.h				\
+	meta/util.h				\
+	meta/window.h				\
+	meta/workspace.h
 
 # Excluded from scanning for introspection but installed
 # preview-widget.h: only part of libmutter-private
 # atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
-	ui/preview-widget.h			\
-	include/atomnames.h
+	meta/preview-widget.h			\
+	meta/atomnames.h
 
-libmutterincludedir = $(includedir)/mutter/mutter-private
+libmutterincludedir = $(includedir)/mutter/meta
 
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\

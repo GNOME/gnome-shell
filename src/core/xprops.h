@@ -26,7 +26,7 @@
 
 #include <config.h>
 
-#include "display.h"
+#include <meta/display.h>
 #include <X11/Xutil.h>
 
 #ifdef HAVE_XSYNC

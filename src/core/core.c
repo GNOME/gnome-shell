@@ -25,10 +25,10 @@
 
 #include <config.h>
 #include "core.h"
-#include "frame-private.h"
+#include "frame.h"
 #include "workspace-private.h"
-#include "prefs.h"
-#include "errors.h"
+#include <meta/prefs.h>
+#include <meta/errors.h>
 
 /* Looks up the MetaWindow representing the frame of the given X window.
  * Used as a helper function by a bunch of the functions below.
