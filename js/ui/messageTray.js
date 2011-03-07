@@ -1339,6 +1339,8 @@ MessageTray.prototype = {
     },
 
     set _expandedSummaryItemTitleWidth(expansion) {
+        expansion = Math.round(expansion);
+
         // Expand the expanding item to its new width
         if (this._expandedSummaryItem)
             this._expandedSummaryItem.setTitleWidth(expansion);
@@ -1369,11 +1371,32 @@ MessageTray.prototype = {
             if (this._summaryItems[i] == this._expandedSummaryItem)
                 continue;
 
-            let width = this._summaryItems[i].getTitleWidth();
-            this._summaryItems[i].setTitleWidth(width * shrinkage);
+            let oldWidth = this._summaryItems[i].getTitleWidth();
+            let newWidth = Math.floor(oldWidth * shrinkage);
+            excess -= newWidth;
+            this._summaryItems[i].setTitleWidth(newWidth);
         }
-        if (this._expandedSummaryItem)
-            this._imaginarySummaryItemTitleWidth *= shrinkage;
+        if (this._expandedSummaryItem) {
+            let oldWidth = this._imaginarySummaryItemTitleWidth;
+            let newWidth = Math.floor(oldWidth * shrinkage);
+            excess -= newWidth;
+            this._imaginarySummaryItemTitleWidth = newWidth;
+        }
+
+        // If the tray as a whole is fully-expanded, make sure the
+        // left edge doesn't wobble during animation due to rounding.
+        if (this._imaginarySummaryItemTitleWidth == 0 && excess != 0) {
+            for (let i = 0; i < this._summaryItems.length; i++) {
+                if (this._summaryItems[i] == this._expandedSummaryItem)
+                    continue;
+
+                let oldWidth = this._summaryItems[i].getTitleWidth();
+                if (oldWidth != 0) {
+                    this._summaryItems[i].setTitleWidth (oldWidth + excess);
+                    break;
+                }
+            }
+        }
     },
 
     _expandSummaryItemCompleted: function() {
