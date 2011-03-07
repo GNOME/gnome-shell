@@ -89,12 +89,6 @@ static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
  */
 static GMainLoop *meta_main_loop = NULL;
 
-/**
- * If set, Mutter will spawn an identical copy of itself immediately
- * before quitting.
- */
-static gboolean meta_restart_after_quit = FALSE;
-
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
@@ -697,36 +691,15 @@ main (int argc, char **argv)
 
   meta_finalize ();
 
-  if (meta_restart_after_quit)
-    {
-      GError *err;
-
-      err = NULL;
-      if (!g_spawn_async (NULL,
-                          argv,
-                          NULL,
-                          G_SPAWN_SEARCH_PATH,
-                          NULL,
-                          NULL,
-                          NULL,
-                          &err))
-        {
-          meta_fatal (_("Failed to restart: %s\n"),
-                      err->message);
-          g_error_free (err); /* not reached anyhow */
-          meta_exit_code = META_EXIT_ERROR;
-        }
-    }
-  
   return meta_exit_code;
 }
 
 /**
- * Stops Mutter. This tells the event loop to stop processing; it is rather
- * dangerous to use this rather than meta_restart() because this will leave
- * the user with no window manager. We generally do this only if, for example,
- * the session manager asks us to; we assume the session manager knows what
- * it's talking about.
+ * Stops Mutter. This tells the event loop to stop processing; it is
+ * rather dangerous to use this because this will leave the user with
+ * no window manager. We generally do this only if, for example, the
+ * session manager asks us to; we assume the session manager knows
+ * what it's talking about.
  *
  * \param code The success or failure code to return to the calling process.
  */
@@ -737,19 +710,6 @@ meta_quit (MetaExitCode code)
 
   if (g_main_loop_is_running (meta_main_loop))
     g_main_loop_quit (meta_main_loop);
-}
-
-/**
- * Restarts Mutter. In practice, this tells the event loop to stop
- * processing, having first set the meta_restart_after_quit flag which
- * tells Mutter to spawn an identical copy of itself before quitting.
- * This happens on receipt of a _MUTTER_RESTART_MESSAGE client event.
- */
-void
-meta_restart (void)
-{
-  meta_restart_after_quit = TRUE;
-  meta_quit (META_EXIT_SUCCESS);
 }
 
 /**

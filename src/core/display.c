@@ -2525,12 +2525,6 @@ event_callback (XEvent   *event,
                     }
                 }
               else if (event->xclient.message_type ==
-                       display->atom__MUTTER_RESTART_MESSAGE)
-                {
-                  meta_verbose ("Received restart request\n");
-                  meta_restart ();
-                }
-              else if (event->xclient.message_type ==
                        display->atom__MUTTER_RELOAD_THEME_MESSAGE)
                 {
                   meta_verbose ("Received reload theme request\n");

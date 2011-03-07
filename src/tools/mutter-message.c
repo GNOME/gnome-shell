@@ -32,34 +32,6 @@
 static Display *display;
 
 static void
-send_restart (void)
-{
-  XEvent xev;
-
-  xev.xclient.type = ClientMessage;
-  xev.xclient.serial = 0;
-  xev.xclient.send_event = True;
-  xev.xclient.display = display;
-  xev.xclient.window = gdk_x11_get_default_root_xwindow ();
-  xev.xclient.message_type = XInternAtom (display,
-                                          "_MUTTER_RESTART_MESSAGE",
-                                          False);
-  xev.xclient.format = 32;
-  xev.xclient.data.l[0] = 0;
-  xev.xclient.data.l[1] = 0;
-  xev.xclient.data.l[2] = 0;
-
-  XSendEvent (display,
-              gdk_x11_get_default_root_xwindow (),
-              False,
-	      SubstructureRedirectMask | SubstructureNotifyMask,
-	      &xev);
-
-  XFlush (display);
-  XSync (display, False);
-}
-
-static void
 send_reload_theme (void)
 {
   XEvent xev;
@@ -149,7 +121,7 @@ static void
 usage (void)
 {
   g_printerr (_("Usage: %s\n"),
-              "mutter-message (restart|reload-theme|enable-keybindings|disable-keybindings|toggle-verbose)");
+              "mutter-message (reload-theme|enable-keybindings|disable-keybindings|toggle-verbose)");
   exit (1);
 }
 
@@ -165,9 +137,7 @@ main (int argc, char **argv)
 
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
-  if (strcmp (argv[1], "restart") == 0)
-    send_restart ();
-  else if (strcmp (argv[1], "reload-theme") == 0)
+  if (strcmp (argv[1], "reload-theme") == 0)
     send_reload_theme ();
   else if (strcmp (argv[1], "enable-keybindings") == 0)
     send_set_keybindings (TRUE);
