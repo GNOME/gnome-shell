@@ -565,6 +565,10 @@ StTooltip StLabel {
     width: 200px;
 }
 
+.app-filter:hover {
+    color: #eee;
+}
+
 .app-filter:selected {
     color: #ffffff;
     background-image: url("filter-selected-ltr.svg");
