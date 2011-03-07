@@ -2694,10 +2694,11 @@ clutter_actor_paint (ClutterActor *self)
        */
       if (!in_clone_paint ())
         {
-          if (G_LIKELY (!(clutter_paint_debug_flags &
-                          CLUTTER_DEBUG_DISABLE_CULLING) &&
-                        !(clutter_paint_debug_flags &
-                          CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+          if (G_LIKELY ((clutter_paint_debug_flags &
+                         (CLUTTER_DEBUG_DISABLE_CULLING |
+                          CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)) !=
+                        (CLUTTER_DEBUG_DISABLE_CULLING |
+                         CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
             _clutter_actor_update_last_paint_volume (self);
 
           if (cull_actor (self))
