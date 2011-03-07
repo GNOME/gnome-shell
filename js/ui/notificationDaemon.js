@@ -435,6 +435,7 @@ Source.prototype = {
         MessageTray.Source.prototype._init.call(this, title);
 
         this._pid = pid;
+        this._appStateChangedId = 0;
         this._setApp();
         if (this.app)
             this.title = this.app.get_name();
@@ -459,6 +460,10 @@ Source.prototype = {
         if (!this.app)
             return;
 
+        // We only update the app if this.app is null, so we can't disconnect the old this._appStateChangedId
+        // even if it were non-zero for some reason.
+        this._appStateChangedId = this.app.connect('notify::state', Lang.bind(this,  this._appStateChanged));
+
         // Only override the icon if we were previously using
         // notification-based icons (ie, not a trayicon) or if it was unset before
         if (!this._isTrayIcon) {
@@ -482,6 +487,16 @@ Source.prototype = {
             this.destroy();
     },
 
+    _appStateChanged: function() {
+        // Destroy notification sources when their apps exit.
+        // The app exiting would normally result in a tray icon being removed,
+        // so it should be ok to destroy the source associated with a tray icon
+        // here too, however we just let that happen through the code path
+        // associated with the tray icon being removed.
+        if (!this._isTrayIcon && this.app.get_state() == Shell.AppState.STOPPED)
+            this.destroy();
+    },
+
     openApp: function() {
         if (this.app == null)
             return;
@@ -491,5 +506,13 @@ Source.prototype = {
             let mostRecentWindow = windows[0];
             Main.activateWindow(mostRecentWindow);
         }
+    },
+
+    destroy: function() {
+        if (this.app && this._appStateChangedId) {
+            this.app.disconnect(this._appStateChangedId);
+            this._appStateChangedId = 0;
+        }
+        MessageTray.Source.prototype.destroy.call(this);
     }
 };
