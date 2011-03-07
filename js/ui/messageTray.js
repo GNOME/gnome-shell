@@ -1574,8 +1574,8 @@ MessageTray.prototype = {
 
         // Summary notification
         let haveClickedSummaryItem = this._clickedSummaryItem != null;
-        let summaryNotificationIsMainNotification = (haveClickedSummaryItem &&
-                                                     this._clickedSummaryItem.source.notification == this._notification);
+        let summarySourceIsMainNotificationSource = (haveClickedSummaryItem && this._notification &&
+                                                     this._clickedSummaryItem.source == this._notification.source);
         let canShowSummaryBoxPointer = this._summaryState == State.SHOWN;
         let wrongSummaryNotification = (this._clickedSummaryItemMouseButton == 1 &&
                                         this._summaryNotification != this._clickedSummaryItem.source.notification);
@@ -1585,7 +1585,7 @@ MessageTray.prototype = {
                                       (wrongSummaryNotification || wrongSummaryRightClickMenu));
 
         if (this._summaryBoxPointerState == State.HIDDEN) {
-            if (haveClickedSummaryItem && !summaryNotificationIsMainNotification && canShowSummaryBoxPointer)
+            if (haveClickedSummaryItem && !summarySourceIsMainNotificationSource && canShowSummaryBoxPointer)
                 this._showSummaryBoxPointer();
         } else if (this._summaryBoxPointerState == State.SHOWN) {
             if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer)
