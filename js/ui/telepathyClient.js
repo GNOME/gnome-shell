@@ -7,6 +7,7 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -22,6 +23,9 @@ const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
 
+// See Source._displayPendingMessages
+const SCROLLBACK_HISTORY_LINES = 10;
+
 const NotificationDirection = {
     SENT: 'chat-sent',
     RECEIVED: 'chat-received'
@@ -35,6 +39,31 @@ let contactFeatures = [Tp.ContactFeature.ALIAS,
 // interface. Specifically, the shell is a Telepathy 'Observer', which
 // lets us see messages even if they belong to another app (eg,
 // Empathy).
+
+function makeMessageFromTpMessage(tpMessage, direction) {
+    let [text, flags] = tpMessage.to_text();
+    return {
+        messageType: tpMessage.get_message_type(),
+        text: text,
+        sender: tpMessage.sender.alias,
+        timestamp: tpMessage.get_received_timestamp(),
+        direction: direction
+    };
+}
+
+
+function makeMessageFromTplEvent(event) {
+    let sent = event.get_sender().get_entity_type() == Tpl.EntityType.SELF;
+    let direction = sent ? NotificationDirection.SENT : NotificationDirection.RECEIVED;
+
+    return {
+        messageType: event.get_message_type(),
+        text: event.get_message(),
+        sender: event.get_sender().get_alias(),
+        timestamp: event.get_timestamp(),
+        direction: direction
+    };
+}
 
 function Client() {
     this._init();
@@ -160,7 +189,7 @@ Source.prototype = {
         Main.messageTray.add(this);
         this.pushNotification(this._notification);
 
-        this._displayPendingMessages();
+        this._getLogMessages();
     },
 
     _updateAlias: function() {
@@ -203,13 +232,50 @@ Source.prototype = {
         req.ensure_channel_async('', null, null);
     },
 
-    _displayPendingMessages: function() {
-        let msgs = this._channel.get_pending_messages();
+    _getLogMessages: function() {
+        let logManager = Tpl.LogManager.dup_singleton();
+        let entity = Tpl.Entity.new_from_tp_contact(this._contact, Tpl.EntityType.CONTACT);
+        Shell.get_contact_events(logManager,
+                                 this._account, entity,
+                                 SCROLLBACK_HISTORY_LINES,
+                                 Lang.bind(this, this._displayPendingMessages));
+    },
 
-        for (let i = 0; i < msgs.length; i++) {
-            let msg = msgs[i];
-            this._messageReceived(this._channel, msg);
+    _displayPendingMessages: function(logManager, result) {
+        let [success, events] = logManager.get_filtered_events_finish(result);
+
+        let logMessages = events.map(makeMessageFromTplEvent);
+        for (let i = 0; i < logMessages.length; i++) {
+            this._notification.appendMessage(logMessages[i], true);
         }
+
+        let pendingMessages = this._channel.get_pending_messages();
+        let hasPendingMessage = false;
+        for (let i = 0; i < pendingMessages.length; i++) {
+            let message = makeMessageFromTpMessage(pendingMessages[i], NotificationDirection.RECEIVED);
+
+            // Skip any pending messages that are in the logs.
+            let inLog = false;
+            for (let j = 0; j < logMessages.length; j++) {
+                let logMessage = logMessages[j];
+                if (logMessage.timestamp == message.timestamp && logMessage.text == message.body) {
+                    inLog = true;
+                }
+            }
+
+            if (inLog)
+                continue;
+
+            this._notification.appendMessage(message, true);
+            hasPendingMessage = true;
+        }
+
+        // Only show the timestamp if we have at least one message.
+        if (hasPendingMessage || logMessages.length > 0)
+            this._notification.appendTimestamp();
+
+        if (hasPendingMessage)
+            this.notify();
     },
 
     _channelClosed: function() {
@@ -225,14 +291,16 @@ Source.prototype = {
     },
 
     _messageReceived: function(channel, message) {
-        this._notification.appendMessage(message, NotificationDirection.RECEIVED);
+        message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
+        this._notification.appendMessage(message);
         this.notify();
     },
 
     // This is called for both messages we send from
     // our client and other clients as well.
     _messageSent: function(channel, message, flags, token) {
-        this._notification.appendMessage(message, NotificationDirection.SENT);
+        message = makeMessageFromTpMessage(message, NotificationDirection.SENT);
+        this._notification.appendMessage(message);
     },
 
     notify: function() {
@@ -320,25 +388,34 @@ Notification.prototype = {
         this._timestampTimeoutId = 0;
     },
 
-    appendMessage: function(message, direction) {
-        let type = message.get_message_type();
-        let [text, flags] = message.to_text();
-        let timestamp = message.get_received_timestamp();
+    /**
+     * appendMessage:
+     * @message: An object with the properties:
+     *   text: the body of the message,
+     *   messageType: a #Tp.ChannelTextMessageType,
+     *   sender: the name of the sender,
+     *   timestamp: the time the message was sent
+     *   direction: a #NotificationDirection
+     * 
+     * @noTimestamp: Whether to add a timestamp. If %true, no timestamp
+     *   will be added, regardless of the difference since the
+     *   last timestamp
+     */
+    appendMessage: function(message, noTimestamp) {
+        let messageBody = GLib.markup_escape_text(message.text, -1);
+        let styles = [message.direction];
 
-        let messageBody = GLib.markup_escape_text(text, -1);
-        let styles = [direction];
-
-        if (type == Tp.ChannelTextMessageType.ACTION) {
-            let senderAlias = GLib.markup_escape_text(message.sender.alias, -1);
+        if (message.messageType == Tp.ChannelTextMessageType.ACTION) {
+            let senderAlias = GLib.markup_escape_text(message.sender, -1);
             messageBody = '<i>%s</i> %s'.format(senderAlias, messageBody);
             styles.push('chat-action');
         }
 
         this.update(this.source.title, messageBody, { customContent: true, bannerMarkup: true });
-        this._append(messageBody, styles, timestamp);
+        this._append(messageBody, styles, message.timestamp, noTimestamp);
     },
 
-    _append: function(text, styles, timestamp) {
+    _append: function(text, styles, timestamp, noTimestamp) {
         let currentTime = (Date.now() / 1000);
         if (!timestamp)
             timestamp = currentTime;
@@ -356,14 +433,16 @@ Notification.prototype = {
 
         this._history.unshift({ actor: body, time: timestamp, realMessage: true });
 
-        if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME)
-            this._appendTimestamp();
-        else
-            // Schedule a new timestamp in SCROLLBACK_IMMEDIATE_TIME
-            // from the timestamp of the message.
-            this._timestampTimeoutId = Mainloop.timeout_add_seconds(
-                SCROLLBACK_IMMEDIATE_TIME - (currentTime - timestamp),
-                Lang.bind(this, this._appendTimestamp));
+        if (!noTimestamp) {
+            if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME)
+                this.appendTimestamp();
+            else
+                // Schedule a new timestamp in SCROLLBACK_IMMEDIATE_TIME
+                // from the timestamp of the message.
+                this._timestampTimeoutId = Mainloop.timeout_add_seconds(
+                    SCROLLBACK_IMMEDIATE_TIME - (currentTime - timestamp),
+                    Lang.bind(this, this.appendTimestamp));
+        }
 
         if (this._history.length > 1) {
             // Keep the scrollback from growing too long. If the most
@@ -384,7 +463,7 @@ Notification.prototype = {
         }
     },
 
-    _appendTimestamp: function() {
+    appendTimestamp: function() {
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
