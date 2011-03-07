@@ -1391,6 +1391,36 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
  * icon you are loading, use %ST_ICON_FULLCOLOR.
  */
 
+/* generates names like g_themed_icon_new_with_default_fallbacks(),
+ * but *only* symbolic names
+ */
+static char **
+symbolic_names_for_icon (const char *name)
+{
+  char **parts, **names;
+  int i;
+
+  parts = g_strsplit (name, "-", -1);
+  names = g_new (char *, g_strv_length (parts) + 1);
+  for (i = 0; parts[i]; i++)
+    {
+      if (i == 0)
+        {
+          names[i] = g_strdup_printf ("%s-symbolic", parts[i]);
+        }
+      else
+        {
+          names[i] = g_strdup_printf ("%.*s-%s-symbolic",
+                                      (int) (strlen (names[i - 1]) - strlen ("-symbolic")),
+                                      names[i - 1], parts[i]);
+        }
+    }
+  names[i] = NULL;
+
+  g_strfreev (parts);
+  return names;
+}
+
 /**
  * st_texture_cache_load_icon_name:
  * @cache: The texture cache instance
@@ -1414,7 +1444,7 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
 {
   ClutterActor *texture;
   GIcon *themed;
-  char *symbolic;
+  char **names;
 
   g_return_val_if_fail (!(icon_type == ST_ICON_SYMBOLIC && theme_node == NULL), NULL);
 
@@ -1429,9 +1459,9 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
       return CLUTTER_ACTOR (texture);
       break;
     case ST_ICON_SYMBOLIC:
-      symbolic = g_strconcat (name, "-symbolic", NULL);
-      themed = g_themed_icon_new_with_default_fallbacks ((const gchar*)symbolic);
-      g_free (symbolic);
+      names = symbolic_names_for_icon (name);
+      themed = g_themed_icon_new_from_names (names, -1);
+      g_strfreev (names);
       texture = load_gicon_with_colors (cache, themed, size,
                                         st_theme_node_get_icon_colors (theme_node));
       g_object_unref (themed);
