@@ -106,10 +106,10 @@
   "attribute vec3 cogl_normal_in;\n"
 
 #define _COGL_FRAGMENT_SHADER_BOILERPLATE \
-  _COGL_COMMON_SHADER_BOILERPLATE \
   "#if __VERSION__ == 100\n" \
   "precision highp float;\n" \
   "#endif\n" \
+  _COGL_COMMON_SHADER_BOILERPLATE \
   "\n" \
   "varying vec4 _cogl_color;\n" \
   "\n" \
