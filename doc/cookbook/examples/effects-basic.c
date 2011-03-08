@@ -2,14 +2,15 @@
 #include <clutter/clutter.h>
 
 #include "cb-border-effect.h"
+#include "cb-background-effect.h"
 
 static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };
 static ClutterColor red_color = { 0xff, 0x00, 0x00, 0xff };
 
 static gboolean
-add_highlight (ClutterActor *actor,
-               ClutterEvent *event,
-               gpointer      user_data)
+toggle_highlight (ClutterActor *actor,
+                  ClutterEvent *event,
+                  gpointer      user_data)
 {
   ClutterActorMeta *meta = CLUTTER_ACTOR_META (user_data);
 
@@ -30,7 +31,9 @@ main (int   argc,
   ClutterActor *box;
   ClutterLayoutManager *layout_manager;
   ClutterActor *texture;
-  ClutterEffect *effect;
+  ClutterEffect *background_effect;
+  ClutterEffect *border_effect;
+  ClutterConstraint *width_constraint;
   gchar *filename;
   guint i;
   GError *error = NULL;
@@ -57,7 +60,10 @@ main (int   argc,
                                        10);
 
   box = clutter_box_new (layout_manager);
-  clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_WIDTH, 0.0));
+  width_constraint = clutter_bind_constraint_new (stage,
+                                                  CLUTTER_BIND_WIDTH,
+                                                  0.0);
+  clutter_actor_add_constraint (box, width_constraint);
 
   /* loop through the files specified on the command line, adding
    * each one into the box
@@ -80,18 +86,25 @@ main (int   argc,
                    filename,
                    error->message);
 
-      /* create a 5 pixel red border effect */
-      effect = cb_border_effect_new (5.0, &red_color);
+      /* create a grey background effect */
+      background_effect = cb_background_effect_new ();
 
-      /* add the effect to the actor, but disabled */
-      clutter_actor_add_effect (texture, effect);
-      clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (effect), FALSE);
+      /* apply the effect to the actor */
+      clutter_actor_add_effect (texture, background_effect);
+
+      /* create a 5 pixel red border effect */
+      border_effect = cb_border_effect_new (5.0, &red_color);
+
+      /* apply the effect to the actor, but disabled */
+      clutter_actor_add_effect (texture, border_effect);
+      clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (border_effect),
+                                      FALSE);
 
       /* on mouse click, toggle the "enabled" property of the border effect */
       g_signal_connect (texture,
                         "button-press-event",
-                        G_CALLBACK (add_highlight),
-                        effect);
+                        G_CALLBACK (toggle_highlight),
+                        border_effect);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (box), texture);
     }
