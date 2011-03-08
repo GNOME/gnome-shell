@@ -152,6 +152,10 @@ gboolean              st_widget_navigate_focus            (StWidget        *widg
                                                            GtkDirectionType direction,
                                                            gboolean         wrap_around);
 
+ClutterActor *        st_widget_get_label_actor           (StWidget        *widget);
+void                  st_widget_set_label_actor           (StWidget        *widget,
+                                                           ClutterActor    *label);
+
 /* Only to be used by sub-classes of StWidget */
 void                  st_widget_style_changed             (StWidget        *widget);
 StThemeNode *         st_widget_get_theme_node            (StWidget        *widget);

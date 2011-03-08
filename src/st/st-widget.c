@@ -75,6 +75,8 @@ struct _StWidgetPrivate
   StTextDirection   direction;
 
   AtkObject *accessible;
+
+  ClutterActor *label_actor;
 };
 
 /**
@@ -101,7 +103,8 @@ enum
   PROP_TOOLTIP_TEXT,
   PROP_TRACK_HOVER,
   PROP_HOVER,
-  PROP_CAN_FOCUS
+  PROP_CAN_FOCUS,
+  PROP_LABEL_ACTOR
 };
 
 enum
@@ -186,6 +189,10 @@ st_widget_set_property (GObject      *gobject,
       st_widget_set_can_focus (actor, g_value_get_boolean (value));
       break;
 
+    case PROP_LABEL_ACTOR:
+      st_widget_set_label_actor (actor, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -241,6 +248,10 @@ st_widget_get_property (GObject    *gobject,
 
     case PROP_CAN_FOCUS:
       g_value_set_boolean (value, priv->can_focus);
+      break;
+
+    case PROP_LABEL_ACTOR:
+      g_value_set_object (value, priv->label_actor);
       break;
 
     default:
@@ -299,6 +310,12 @@ st_widget_dispose (GObject *gobject)
    */
   if (priv->accessible)
     priv->accessible = NULL;
+
+  if (priv->label_actor)
+    {
+      g_object_unref (priv->label_actor);
+      priv->label_actor = NULL;
+    }
 
   G_OBJECT_CLASS (st_widget_parent_class)->dispose (gobject);
 }
@@ -952,6 +969,19 @@ st_widget_class_init (StWidgetClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_CAN_FOCUS,
                                    pspec);
+
+  /**
+   * ClutterActor:label-actor:
+   *
+   * An actor that labels this widget.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_LABEL_ACTOR,
+                                   g_param_spec_object ("label-actor",
+                                                        "Label",
+                                                        "Label that identifies this widget",
+                                                        CLUTTER_TYPE_ACTOR,
+                                                        ST_PARAM_READWRITE));
 
   /**
    * StWidget::style-changed:
@@ -2123,6 +2153,53 @@ gfloat
 st_get_slow_down_factor ()
 {
   return st_slow_down_factor;
+}
+
+
+/**
+ * st_widget_get_label_actor:
+ * @widget: a #StWidget
+ *
+ * Gets the label that identifies @widget if it is defined
+ *
+ * Return value: (transfer none): the label that identifies the widget
+ */
+ClutterActor *
+st_widget_get_label_actor (StWidget *widget)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (widget), NULL);
+
+  return widget->priv->label_actor;
+}
+
+/**
+ * st_widget_set_label_actor:
+ * @widget: a #StWidget
+ * @label: a #ClutterActor
+ *
+ * Sets @label as the #ClutterActor that identifies (labels)
+ * @widget. @label can be %NULL to indicate that @widget is not
+ * labelled any more
+ */
+
+void
+st_widget_set_label_actor (StWidget     *widget,
+                           ClutterActor *label)
+{
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  if (widget->priv->label_actor != label)
+    {
+      if (widget->priv->label_actor)
+        g_object_unref (widget->priv->label_actor);
+
+      if (label != NULL)
+        widget->priv->label_actor = g_object_ref (label);
+      else
+        widget->priv->label_actor = NULL;
+
+      g_object_notify (G_OBJECT (widget), "label-actor");
+    }
 }
 
 /******************************************************************************/
