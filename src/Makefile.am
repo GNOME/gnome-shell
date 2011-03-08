@@ -140,7 +140,8 @@ libgnome_shell_la_gir_sources = \
 gnome_shell_real_SOURCES =		\
 	main.c
 gnome_shell_real_CPPFLAGS = $(gnome_shell_cflags)
-gnome_shell_real_LDADD = -lgnome-shell
+gnome_shell_real_LDADD = libgnome-shell.la
+gnome_shell_real_DEPENDENCIES = libgnome-shell.la
 
 ########################################
 
