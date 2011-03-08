@@ -498,6 +498,7 @@ _Draggable.prototype = {
     },
 
     _cancelDrag: function(eventTime) {
+        this.emit('drag-cancelled', eventTime);
         this._dragInProgress = false;
         let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
 

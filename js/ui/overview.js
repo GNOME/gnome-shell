@@ -481,6 +481,10 @@ Overview.prototype = {
         this.emit('window-drag-begin');
     },
 
+    cancelledWindowDrag: function(source) {
+        this.emit('window-drag-cancelled');
+    },
+
     endWindowDrag: function(source) {
         this.emit('window-drag-end');
     },
