@@ -38,6 +38,10 @@ function run() {
                               Scripting.scriptEvent('overviewShowDone');
                           });
 
+    Scripting.destroyTestWindows();
+    Scripting.createTestWindow(640, 480, false, false);
+    Scripting.waitTestWindows();
+
     yield Scripting.sleep(1000);
     yield Scripting.waitLeisure();
     for (let i = 0; i < 2; i++) {

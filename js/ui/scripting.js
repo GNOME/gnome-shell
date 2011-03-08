@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const DBus = imports.dbus;
 const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 
@@ -62,6 +63,104 @@ function waitLeisure() {
                              if (cb)
                                  cb();
                           });
+
+    return function(callback) {
+        cb = callback;
+    };
+}
+
+const PerfHelperIface = {
+    name: 'org.gnome.Shell.PerfHelper',
+    methods: [{ name: 'CreateWindow', inSignature: 'iibb', outSignature: '' },
+              { name: 'WaitWindows', inSignature: '', outSignature: '' },
+              { name: 'DestroyWindows', inSignature: '', outSignature: ''}]
+};
+
+const PerfHelper = function () {
+    this._init();
+};
+
+PerfHelper.prototype = {
+     _init: function() {
+         DBus.session.proxifyObject(this, 'org.gnome.Shell.PerfHelper', '/org/gnome/Shell/PerfHelper');
+     }
+};
+
+DBus.proxifyPrototype(PerfHelper.prototype, PerfHelperIface);
+
+let _perfHelper = null;
+function _getPerfHelper() {
+    if (_perfHelper == null)
+        _perfHelper = new PerfHelper();
+
+    return _perfHelper;
+}
+
+/**
+ * createTestWindow:
+ * @width: width of window, in pixels
+ * @height: height of window, in pixels
+ * @alpha: whether the window should be alpha transparent
+ * @maximized: whethe the window should be created maximized
+ *
+ * Creates a window using gnome-shell-perf-helper for testing purposes.
+ * While this function can be used with yield in an automation
+ * script to pause until the D-Bus call to the helper process returns,
+ * because of the normal X asynchronous mapping process, to actually wait
+ * until the window has been mapped and exposed, use waitTestWindows().
+ */
+function createTestWindow(width, height, alpha, maximized) {
+    let cb;
+    let perfHelper = _getPerfHelper();
+
+    perfHelper.CreateWindowRemote(width, height, alpha, maximized,
+                                  function(result, excp) {
+                                      if (cb)
+                                          cb();
+                                  });
+
+    return function(callback) {
+        cb = callback;
+    };
+}
+
+/**
+ * waitTestWindows:
+ *
+ * Used within an automation script to pause until all windows previously
+ * created with createTestWindow have been mapped and exposed.
+ */
+function waitTestWindows() {
+    let cb;
+    let perfHelper = _getPerfHelper();
+
+    perfHelper.WaitWindowsRemote(function(result, excp) {
+                                     if (cb)
+                                         cb();
+                                 });
+
+    return function(callback) {
+        cb = callback;
+    };
+}
+
+/**
+ * destroyTestWindows:
+ *
+ * Destroys all windows previously created with createTestWindow().
+ * While this function can be used with yield in an automation
+ * script to pause until the D-Bus call to the helper process returns,
+ * this doesn't guarantee that Mutter has actually finished the destroy
+ * process because of normal X asynchronicity.
+ */
+function destroyTestWindows() {
+    let cb;
+    let perfHelper = _getPerfHelper();
+
+    perfHelper.DestroyWindowsRemote(function(result, excp) {
+                                        if (cb)
+                                            cb();
+                                    });
 
     return function(callback) {
         cb = callback;

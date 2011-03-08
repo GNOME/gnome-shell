@@ -169,6 +169,29 @@ def start_dconf_await_service():
 
     wait_for_dbus_name (DCONF_NAME)
 
+PERF_HELPER_NAME = "org.gnome.Shell.PerfHelper"
+PERF_HELPER_IFACE = "org.gnome.Shell.PerfHelper"
+PERF_HELPER_PATH = "/org/gnome/Shell/PerfHelper"
+
+def start_perf_helper():
+    get_bus_iface() # connect to NameOwnerChanged signal
+
+    self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    running_from_source_tree = os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in'))
+
+    if running_from_source_tree:
+        perf_helper_path = os.path.join(self_dir, "gnome-shell-perf-helper")
+    else:
+        perf_helper_path = "@libexecdir@/gnome-shell-perf-helper"
+
+    subprocess.Popen([perf_helper_path])
+    wait_for_dbus_name (PERF_HELPER_NAME)
+
+def stop_perf_helper():
+    bus = get_bus()
+    proxy = bus.get_object(PERF_HELPER_NAME, PERF_HELPER_PATH)
+    proxy.Exit(dbus_interface=PERF_HELPER_IFACE)
+
 def start_shell(perf_output=None):
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
@@ -212,6 +235,7 @@ def start_shell(perf_output=None):
 
     if options.perf is not None:
         env['SHELL_PERF_MODULE'] = options.perf
+        env['MUTTER_WM_CLASS_FILTER'] = 'Gnome-shell-perf-helper'
 
     if perf_output is not None:
         env['SHELL_PERF_OUTPUT'] = perf_output
@@ -389,6 +413,8 @@ def run_performance_test():
     logs = []
     metric_summaries = {}
 
+    start_perf_helper()
+
     for i in xrange(0, iters):
         # We create an empty temporary file that the shell will overwrite
         # with the contents.
@@ -399,17 +425,24 @@ def run_performance_test():
         normal_exit = False
         try:
             normal_exit = run_shell(perf_output=output_file)
+        except:
+            stop_perf_helper()
+            raise
         finally:
             if not normal_exit:
                 os.remove(output_file)
 
         if not normal_exit:
+            stop_perf_helper()
             return False
 
         try:
             f = open(output_file)
             output = json.load(f)
             f.close()
+        except:
+            stop_perf_helper()
+            raise
         finally:
             os.remove(output_file)
 
@@ -435,6 +468,8 @@ def run_performance_test():
             summary['values'].append(metric['value'])
 
         logs.append(output['log'])
+
+    stop_perf_helper()
 
     if options.perf_output or options.perf_upload:
         # Write a complete report, formatted as JSON. The Javascript/C code that
