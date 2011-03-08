@@ -123,11 +123,11 @@ WindowManager.prototype = {
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._undimParentWindow(this._dimmedWindows[i], true);
+                this._undimWindow(this._dimmedWindows[i], true);
         }));
         Main.overview.connect('hiding', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._dimParentWindow(this._dimmedWindows[i], true);
+                this._dimWindow(this._dimmedWindows[i], true);
         }));
     },
 
@@ -234,41 +234,39 @@ WindowManager.prototype = {
     _unmaximizeWindowDone : function(shellwm, actor) {
     },
 
-    _parentHasOtherAttachedDialog: function(parent, self) {
+    _hasAttachedDialogs: function(window, ignoreWindow) {
         var count = 0;
-        parent.foreach_transient(function(win) {
-            if (win.get_window_type() == Meta.WindowType.MODAL_DIALOG && win != self)
+        window.foreach_transient(function(win) {
+            if (win != ignoreWindow && win.get_window_type() == Meta.WindowType.MODAL_DIALOG)
                 count++;
             return false;
         });
         return count != 0;
     },
 
-    _markParentWindowAsDimmable: function(actor, animate) {
-        if (Meta.prefs_get_attach_modal_dialogs()) {
-            this._dimmedWindows.push(actor);
-            if (this._shouldAnimate())
-                this._dimParentWindow(actor, animate);
+    _checkDimming: function(window, ignoreWindow) {
+        let shouldDim = Meta.prefs_get_attach_modal_dialogs() && this._hasAttachedDialogs(window, ignoreWindow);
+
+        if (shouldDim && !window._dimmed) {
+            window._dimmed = true;
+            this._dimmedWindows.push(window);
+            if (!Main.overview.visible)
+                this._dimWindow(window, true);
+        } else if (!shouldDim && window._dimmed) {
+            window._dimmed = false;
+            this._dimmedWindows = this._dimmedWindows.filter(function(win) {
+                                                                 return win != window;
+                                                             });
+            if (!Main.overview.visible)
+                this._undimWindow(window, true);
         }
     },
 
-    _unmarkParentWindowAsDimmable: function(actor, animate) {
-        if (!Main.overview.visible)
-            this._undimParentWindow(actor, true);
-        this._dimmedWindows = this._dimmedWindows.filter(function(win) {
-            return win != actor;
-        });
-    },
-
-    _dimParentWindow: function(actor, animate) {
-        let meta = actor.get_meta_window();
-        let parent = meta.get_transient_for();
-        if (!parent)
+    _dimWindow: function(window, animate) {
+        let actor = window.get_compositor_private();
+        if (!actor)
             return;
-        let parentActor = parent.get_compositor_private();
-        if (!parentActor || this._parentHasOtherAttachedDialog(parent, meta))
-            return;
-        let texture = parentActor.get_texture();
+        let texture = actor.get_texture();
         if (animate)
             Tweener.addTween(getWindowDimmer(texture),
                              { dimFraction: 1.0,
@@ -279,15 +277,11 @@ WindowManager.prototype = {
             getWindowDimmer(texture).dimFraction = 1.0;
     },
 
-    _undimParentWindow: function(actor, animate) {
-        let meta = actor.get_meta_window();
-        let parent = meta.get_transient_for();
-        if (!parent)
+    _undimWindow: function(window, animate) {
+        let actor = window.get_compositor_private();
+        if (!actor)
             return;
-        let parentActor = parent.get_compositor_private();
-        if (!parentActor || this._parentHasOtherAttachedDialog(parent, meta))
-            return;
-        let texture = parentActor.get_texture();
+        let texture = actor.get_texture();
         if (animate)
             Tweener.addTween(getWindowDimmer(texture),
                              { dimFraction: 0.0,
@@ -304,17 +298,19 @@ WindowManager.prototype = {
             let type = actor.meta_window.get_window_type();
             if (type == actor._windowType)
                 return;
-            if (type == Meta.WindowType.MODAL_DIALOG)
-                this._markParentWindowAsDimmable(actor, true);
-            else if (actor._windowType == Meta.WindowType.MODAL_DIALOG)
-                this._unmarkParentWindowAsDimmable(actor, true);
+            if (type == Meta.WindowType.MODAL_DIALOG ||
+                actor._windowType == Meta.WindowType.MODAL_DIALOG) {
+                let parent = actor.get_meta_window().get_transient_for();
+                if (parent)
+                    this._checkDimming(parent);
+            }
 
             actor._windowType = type;
         }));
         if (actor.meta_window.get_window_type() == Meta.WindowType.MODAL_DIALOG
             && Meta.prefs_get_attach_modal_dialogs()
             && actor.get_meta_window().get_transient_for()) {
-            this._markParentWindowAsDimmable(actor, true);
+            this._checkDimming(actor.get_meta_window().get_transient_for());
             if (this._shouldAnimate()) {
                 actor.set_scale(1.0, 0.0);
                 actor.show();
@@ -374,14 +370,20 @@ WindowManager.prototype = {
     },
 
     _destroyWindow : function(shellwm, actor) {
-        let parent = actor.meta_window.get_transient_for();
+        let window = actor.meta_window;
+        let parent = window.get_transient_for();
         if (actor._notifyWindowTypeSignalId) {
-            actor.meta_window.disconnect(actor._notifyWindowTypeSignalId);
+            window.disconnect(actor._notifyWindowTypeSignalId);
             actor._notifyWindowTypeSignalId = 0;
         }
-        while (actor.meta_window.get_window_type() == Meta.WindowType.MODAL_DIALOG
+        if (window._dimmed) {
+            this._dimmedWindows = this._dimmedWindows.filter(function(win) {
+                                                                 return win != window;
+                                                             });
+        }
+        while (window.get_window_type() == Meta.WindowType.MODAL_DIALOG
                && parent) {
-            this._unmarkParentWindowAsDimmable(actor, true);
+            this._checkDimming(parent, window);
             if (!Meta.prefs_get_attach_modal_dialogs()
                 || !this._shouldAnimate())
                 break;
