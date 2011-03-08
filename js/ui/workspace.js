@@ -289,6 +289,8 @@ WindowClone.prototype = {
     },
 
     _onDragBegin : function (draggable, time) {
+        [this.dragOrigX, this.dragOrigY] = this.actor.get_position();
+        this.dragOrigScale = this.actor.scale_x;
         this.inDrag = true;
         this.emit('drag-begin');
     },
@@ -695,10 +697,20 @@ Workspace.prototype = {
         let xDelta, yDelta, distanceSquared;
         let actorWidth, actorHeight;
 
-        actorWidth = actor.width * actor.scale_x;
-        actorHeight = actor.height * actor.scale_y;
-        xDelta = actor.x + actorWidth / 2.0 - xCenter * this._width - this._x;
-        yDelta = actor.y + actorHeight / 2.0 - yCenter * this._height - this._y;
+        let x = actor.x;
+        let y = actor.y;
+        let scale = actor.scale_x;
+
+        if (actor._delegate.inDrag) {
+            x = actor._delegate.dragOrigX;
+            y = actor._delegate.dragOrigY;
+            scale = actor._delegate.dragOrigScale;
+        }
+
+        actorWidth = actor.width * scale;
+        actorHeight = actor.height * scale;
+        xDelta = x + actorWidth / 2.0 - xCenter * this._width - this._x;
+        yDelta = y + actorHeight / 2.0 - yCenter * this._height - this._y;
         distanceSquared = xDelta * xDelta + yDelta * yDelta;
 
         return distanceSquared;
