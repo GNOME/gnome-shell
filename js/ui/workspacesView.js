@@ -562,6 +562,7 @@ WorkspacesDisplay.prototype = {
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.set_clip_to_allocation(true);
 
         let controls = new St.Bin({ style_class: 'workspace-controls',
                                     request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT,
