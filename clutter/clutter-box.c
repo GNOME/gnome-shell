@@ -302,9 +302,40 @@ static gboolean
 clutter_box_real_get_paint_volume (ClutterActor       *actor,
                                    ClutterPaintVolume *volume)
 {
-  return _clutter_actor_set_default_paint_volume (actor,
-                                                  CLUTTER_TYPE_BOX,
-                                                  volume);
+  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+  gboolean retval = FALSE;
+  GList *l;
+
+  /* if we have a background color, and an allocation, then we need to
+   * set it as the base of our paint volume
+   */
+  if (priv->color_set)
+    retval = clutter_paint_volume_set_from_allocation (volume, actor);
+
+  /* bail out early if we don't have any child */
+  if (priv->children == NULL)
+    return retval;
+  else
+    retval = TRUE;
+
+  /* otherwise, union the paint volumes of our children, in case
+   * any one of them decides to paint outside the parent's allocation
+   */
+  for (l = priv->children; l != NULL; l = l->next)
+    {
+      ClutterActor *child = l->data;
+      const ClutterPaintVolume *child_volume;
+
+      /* This gets the paint volume of the child transformed into the
+       * group's coordinate space... */
+      child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
+      if (!child_volume)
+        return FALSE;
+
+      clutter_paint_volume_union (volume, child_volume);
+    }
+
+  return retval;
 }
 
 static void
