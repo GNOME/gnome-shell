@@ -4,99 +4,377 @@
 # Softcatala <info@softcatala.org>, 2002.
 # Jesús Moreno <jmmolas@wanadoo.es>, 2002.
 # Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006, 2007, 2008.
-# David Planella <david.planella@gmail.com>, 2008, 2009.
+# David Planella <david.planella@gmail.com>, 2008, 2009, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-23 15:37+0100\n"
-"PO-Revision-Date: 2009-02-22 15:30+0100\n"
+"POT-Creation-Date: 2011-03-08 20:41+0100\n"
+"PO-Revision-Date: 2011-03-08 20:41+0100\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "Escriptori"
+#: ../src/core/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Canvia a l'espai de treball 1"
 
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "Gestor de finestres"
+#: ../src/core/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Canvia a l'espai de treball 2"
 
-#: ../src/core/core.c:206
+#: ../src/core/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Canvia a l'espai de treball 3"
+
+#: ../src/core/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Canvia a l'espai de treball 4"
+
+#: ../src/core/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Canvia a l'espai de treball 5"
+
+#: ../src/core/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Canvia a l'espai de treball 6"
+
+#: ../src/core/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Canvia a l'espai de treball 7"
+
+#: ../src/core/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Canvia a l'espai de treball 8"
+
+#: ../src/core/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Canvia a l'espai de treball 9"
+
+#: ../src/core/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Canvia a l'espai de treball 10"
+
+#: ../src/core/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Canvia a l'espai de treball 11"
+
+#: ../src/core/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Canvia a l'espai de treball 12"
+
+#: ../src/core/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Canvia a l'espai de treball de l'esquerra de l'actual"
+
+#: ../src/core/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Canvia a l'espai de treball a la dreta de l'actual"
+
+#: ../src/core/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Canvia a l'espai de treball damunt de l'actual"
+
+#: ../src/core/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Canvia a l'espai de treball a sota de l'actual"
+
+#: ../src/core/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Mou-te entre finestres d'una aplicació amb un diàleg emergent"
+
+#: ../src/core/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr ""
+"Mou-te cap enrere entre finestres d'una aplicació amb un diàleg emergent"
+
+#: ../src/core/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Mou-te entre finestres amb un diàleg emergent"
+
+#: ../src/core/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr "Mou-te cap enrere entre finestres amb un diàleg emergent"
+
+#: ../src/core/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Mou-te entre quadres i l'escriptori amb un diàleg emergent"
+
+#: ../src/core/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr "Mou-te cap enrere entre quadres i l'escriptori amb un diàleg emergent"
+
+#: ../src/core/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Mou-te entre les finestres d'una aplicació immediatament"
+
+#: ../src/core/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Mou-te cap enrere entre les finestres d'una aplicació immediatament"
+
+#: ../src/core/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Mou-te entre finestres immediatament"
+
+#: ../src/core/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Mou-te cap enrere entre finestres immediatament"
+
+#: ../src/core/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Mou entre quadres i l'escriptori immediatament"
+
+#: ../src/core/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Mou cap enrere entre quadres i l'escriptori immediatament"
+
+#: ../src/core/all-keybindings.h:203
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Oculta totes les finestres normals i dóna el focus a l'escriptori"
+
+#: ../src/core/all-keybindings.h:206
+msgid "Show the panel's main menu"
+msgstr "Mostra el menú principal del quadre"
+
+#: ../src/core/all-keybindings.h:209
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Mostra el diàleg d'execució d'aplicacions del quadre"
+
+#: ../src/core/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Inicia o atura l'enregistrament de la sessió"
+
+#: ../src/core/all-keybindings.h:252
+msgid "Take a screenshot"
+msgstr "Fes una captura de pantalla"
+
+#: ../src/core/all-keybindings.h:254
+msgid "Take a screenshot of a window"
+msgstr "Fes una captura de pantalla d'una finestra"
+
+#: ../src/core/all-keybindings.h:256
+msgid "Run a terminal"
+msgstr "Executa un terminal"
+
+#: ../src/core/all-keybindings.h:271
+msgid "Activate the window menu"
+msgstr "Activa el menú de finestra"
+
+#: ../src/core/all-keybindings.h:274
+msgid "Toggle fullscreen mode"
+msgstr "Si s'utilitza el mode a pantalla completa"
+
+#: ../src/core/all-keybindings.h:276
+msgid "Toggle maximization state"
+msgstr "Canvia l'estat de maximització"
+
+#: ../src/core/all-keybindings.h:278
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr ""
+"Commuta la funció que fa que una finestra sempre serà visible per sobre de "
+"les altres"
+
+#: ../src/core/all-keybindings.h:280
+msgid "Maximize window"
+msgstr "Maximitza la finestra"
+
+#: ../src/core/all-keybindings.h:282
+msgid "Restore window"
+msgstr "Restaura la finestra"
+
+#: ../src/core/all-keybindings.h:284
+msgid "Toggle shaded state"
+msgstr "Canvia l'estat d'ombrejat"
+
+#: ../src/core/all-keybindings.h:286
+msgid "Minimize window"
+msgstr "Minimitza la finestra"
+
+#: ../src/core/all-keybindings.h:288
+msgid "Close window"
+msgstr "Tanca la finestra"
+
+#: ../src/core/all-keybindings.h:290
+msgid "Move window"
+msgstr "Mou la finestra"
+
+#: ../src/core/all-keybindings.h:292
+msgid "Resize window"
+msgstr "Redimensiona la finestra"
+
+#: ../src/core/all-keybindings.h:295
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr ""
+"Commuta la funció que fa que la finestra estigui en tots els espais de "
+"treball o només en un"
+
+#: ../src/core/all-keybindings.h:299
+msgid "Move window to workspace 1"
+msgstr "Mou la finestra a l'espai de treball 1"
+
+#: ../src/core/all-keybindings.h:302
+msgid "Move window to workspace 2"
+msgstr "Mou la finestra a l'espai de treball 2"
+
+#: ../src/core/all-keybindings.h:305
+msgid "Move window to workspace 3"
+msgstr "Mou la finestra a l'espai de treball 3"
+
+#: ../src/core/all-keybindings.h:308
+msgid "Move window to workspace 4"
+msgstr "Mou la finestra a l'espai de treball 4"
+
+#: ../src/core/all-keybindings.h:311
+msgid "Move window to workspace 5"
+msgstr "Mou la finestra a l'espai de treball 5"
+
+#: ../src/core/all-keybindings.h:314
+msgid "Move window to workspace 6"
+msgstr "Mou la finestra a l'espai de treball 6"
+
+#: ../src/core/all-keybindings.h:317
+msgid "Move window to workspace 7"
+msgstr "Mou la finestra a l'espai de treball 7"
+
+#: ../src/core/all-keybindings.h:320
+msgid "Move window to workspace 8"
+msgstr "Mou la finestra a l'espai de treball 8"
+
+#: ../src/core/all-keybindings.h:323
+msgid "Move window to workspace 9"
+msgstr "Mou la finestra a l'espai de treball 9"
+
+#: ../src/core/all-keybindings.h:326
+msgid "Move window to workspace 10"
+msgstr "Mou la finestra a l'espai de treball 10"
+
+#: ../src/core/all-keybindings.h:329
+msgid "Move window to workspace 11"
+msgstr "Mou la finestra a l'espai de treball 11"
+
+#: ../src/core/all-keybindings.h:332
+msgid "Move window to workspace 12"
+msgstr "Mou la finestra a l'espai de treball 12"
+
+#: ../src/core/all-keybindings.h:344
+msgid "Move window one workspace to the left"
+msgstr "Mou la finestra un espai de treball a l'esquerra"
+
+#: ../src/core/all-keybindings.h:347
+msgid "Move window one workspace to the right"
+msgstr "Mou la finestra un espai de treball a la dreta"
+
+#: ../src/core/all-keybindings.h:350
+msgid "Move window one workspace up"
+msgstr "Mou la finestra un espai de treball amunt"
+
+#: ../src/core/all-keybindings.h:353
+msgid "Move window one workspace down"
+msgstr "Mou la finestra un espai de treball avall"
+
+#: ../src/core/all-keybindings.h:356
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "Alça una finestra coberta per una altra, o sinó la baixa"
+
+#: ../src/core/all-keybindings.h:358
+msgid "Raise window above other windows"
+msgstr "Alça una finestra per damunt de les altres"
+
+#: ../src/core/all-keybindings.h:360
+msgid "Lower window below other windows"
+msgstr "Baixa la finestra sota les altres"
+
+#: ../src/core/all-keybindings.h:364
+msgid "Maximize window vertically"
+msgstr "Maximitza la finestra verticalment"
+
+#: ../src/core/all-keybindings.h:368
+msgid "Maximize window horizontally"
+msgstr "Maximitza la finestra horitzontalment"
+
+#: ../src/core/all-keybindings.h:372
+msgid "Move window to north-west (top left) corner"
+msgstr "Mou la finestra a la cantonada nord-oest (part superior esquerra)"
+
+#: ../src/core/all-keybindings.h:375
+msgid "Move window to north-east (top right) corner"
+msgstr "Mou la finestra a la cantonada nord-est (part superior dreta)"
+
+#: ../src/core/all-keybindings.h:378
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Mou la finestra a la cantonada sud-oest (part inferior esquerra)"
+
+#: ../src/core/all-keybindings.h:381
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Mou la finestra a la cantonada sud-est (part inferior dreta)"
+
+#: ../src/core/all-keybindings.h:385
+msgid "Move window to north (top) side of screen"
+msgstr "Mou la finestra a la part nord (superior) de la pantalla"
+
+#: ../src/core/all-keybindings.h:388
+msgid "Move window to south (bottom) side of screen"
+msgstr "Mou la finestra a la part del sud (inferior) de la pantalla"
+
+#: ../src/core/all-keybindings.h:391
+msgid "Move window to east (right) side of screen"
+msgstr "Mou la finestra a la part est (dreta) de la pantalla"
+
+#: ../src/core/all-keybindings.h:394
+msgid "Move window to west (left) side of screen"
+msgstr "Mou la finestra a la part oest (esquerra) de la pantalla"
+
+#: ../src/core/all-keybindings.h:397
+msgid "Move window to center of screen"
+msgstr "Mou la finestra al centre de la pantalla"
+
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Esdeveniment de campana"
+
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Es desconeix la informació demanada sobre la finestra: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
+#. Translators: %s is a window title
+#: ../src/core/delete.c:94
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "No s'ha pogut analitzar «%s» com a enter"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> no està responent."
 
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "No s'entenen els caràcters finals «%s» de la cadena «%s»"
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "No s'ha pogut analitzar el missatge «%s» des del procés de diàleg\n"
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr ""
-"S'ha produït un error en llegir del procés de la pantalla de diàleg: %s\n"
-
-#: ../src/core/delete.c:336
-#, c-format
+#: ../src/core/delete.c:99
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
 msgstr ""
-"S'ha produït un error en executar el diàleg metacity per preguntar quant a "
-"la \n"
-"finalització d'una aplicació: %s\n"
+"Podeu esperar un moment perquè continuï o podeu forçar-ne la sortida "
+"completa."
 
-#: ../src/core/delete.c:445
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "S'ha produït un error en obtenir el nom de l'ordinador central: %s\n"
+#: ../src/core/delete.c:108
+msgid "_Wait"
+msgstr "_Espera"
 
-#: ../src/core/display.c:256
+#: ../src/core/delete.c:108
+msgid "_Force Quit"
+msgstr "_Força'n la sortida"
+
+#: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Manca l'extensió %s necessària per a la composició"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:431
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
 "S'ha produït un error en obrir la pantalla del sistema de finestres X «%s»\n"
 
-#: ../src/core/errors.c:272
-#, c-format
-msgid ""
-"Lost connection to the display '%s';\n"
-"most likely the X server was shut down or you killed/destroyed\n"
-"the window manager.\n"
-msgstr ""
-"S'ha perdut la connexió amb la pantalla «%s»;\n"
-"és molt probable que el servidor X s'hagi aturat o que hagueu finalitzat/\n"
-"destruït el gestor de finestres.\n"
-
-#: ../src/core/errors.c:279
-#, c-format
-msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "S'ha produït un error fatal d'E/S %d (%s) a la pantalla «%s».\n"
-
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:759
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,7 +386,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2468
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -119,74 +397,46 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2558
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap ordre %d.\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3570
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "No s'ha definit cap ordre de terminal.\n"
 
-#: ../src/core/main.c:116
-#, c-format
-msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-msgstr ""
-"metacity %s\n"
-"Copyright © 2001-2008 Havoc Pennington, Red Hat, Inc., i d'altres\n"
-"Això és programari lliure; vegeu els fitxers de codi font per a conèixer-ne\n"
-"les condicions de còpia.\n"
-"No hi ha CAP garantia; ni tan sols la garantia implícita de COMERCIABILITAT\n"
-"o ADEQUACIÓ A PER UN PROPÒSIT PARTICULAR.\n"
-
-#: ../src/core/main.c:253
+#: ../src/core/main.c:206
 msgid "Disable connection to session manager"
 msgstr "Inhabilita la connexió al gestor de sessions"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "Reemplaça el gestor de finestres en execució per el Metacity"
+#: ../src/core/main.c:212
+msgid "Replace the running window manager"
+msgstr "Reemplaça el gestor de finestres en execució"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:218
 msgid "Specify session management ID"
 msgstr "Especifica l'ID de gestió de sessió"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:223
 msgid "X Display to use"
 msgstr "Visualització X per a usar"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:229
 msgid "Initialize session from savefile"
 msgstr "Inicialitza la sessió des del fitxer desat"
 
-#: ../src/core/main.c:282
-msgid "Print version"
-msgstr "Escriu versió"
-
-#: ../src/core/main.c:288
+#: ../src/core/main.c:235
 msgid "Make X calls synchronous"
 msgstr "Fes que les crides a l'X siguin síncrones"
 
-#: ../src/core/main.c:294
-msgid "Turn compositing on"
-msgstr "Habilita la composició"
-
-#: ../src/core/main.c:300
-msgid "Turn compositing off"
-msgstr "Inhabilita la composició"
-
-#: ../src/core/main.c:478
+#: ../src/core/main.c:508
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "No s'ha pogut analitzar el directori de temes: %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:524
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -194,10 +444,29 @@ msgstr ""
 "No s'ha trobat cap tema. Assegureu-vos que %s existeix i conté els temes "
 "habituals.\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/mutter.c:42
 #, c-format
-msgid "Failed to restart: %s\n"
-msgstr "No s'ha pogut reiniciar: %s\n"
+msgid ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"Mutter %s\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., i d'altres\n"
+"Això és programari lliure; vegeu els fitxers de codi font per a conèixer-ne\n"
+"les condicions de còpia.\n"
+"No hi ha CAP garantia; ni tan sols la garantia implícita de COMERCIABILITAT\n"
+"o ADEQUACIÓ A PER UN PROPÒSIT PARTICULAR.\n"
+
+#: ../src/core/mutter.c:56
+msgid "Print version"
+msgstr "Escriu versió"
+
+#: ../src/core/mutter.c:62
+msgid "Comma-separated list of compositor plugins"
+msgstr "Llista separada per comes de connectors de composició"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -210,25 +479,37 @@ msgstr "No s'ha pogut reiniciar: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "La clau GConf «%s» està establerta a un valor no vàlid\n"
+msgstr "La clau «%s» del GConf està establerta a un valor no vàlid\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
-"%d, emmagatzemat a la clau GConf %s, està fora de l'interval de %d a %d\n"
+"%d, emmagatzemat a la clau %s del GConf, està fora de l'interval de %d a %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
+#: ../src/core/prefs.c:856 ../src/core/prefs.c:1317 ../src/core/prefs.c:1333
+#: ../src/core/prefs.c:1350 ../src/core/prefs.c:1366
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "La clau «%s» del Gconf està establerta a un tipus no vàlid\n"
+msgstr "La clau «%s» del GConf està establerta a un tipus no vàlid\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1196
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr ""
+"La clau %s del GConf ja s'està utilitzant i no es pot fer servir per "
+"sobreescriure %s\n"
+
+#: ../src/core/prefs.c:1255
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "No es pot sobreescriure la clau del GConf; no s'ha trobat %s\n"
+
+#: ../src/core/prefs.c:1440
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -236,14 +517,14 @@ msgstr ""
 "Les solucions temporals per a aplicacions amb errors estan inhabilitades. "
 "Pot ser que certes aplicacions no funcionin correctament.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1517
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
-"No s'ha pogut analitzar la descripció de tipus de lletra «%s» de la clau "
-"GConf %s\n"
+"No s'ha pogut analitzar la descripció de tipus de lletra «%s» de la clau %s "
+"del GConf\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -252,18 +533,18 @@ msgstr ""
 "«%s», trobat a la base de dades de la configuració, no és un valor vàlid per "
 "al modificador del botó del ratolí\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:2006
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "S'ha produït un error en establir el nombre d'espais de treball a %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:2190 ../src/core/prefs.c:2692
 #, c-format
 msgid "Workspace %d"
 msgstr "Espai de treball %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2222 ../src/core/prefs.c:2400
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -272,24 +553,33 @@ msgstr ""
 "«%s» trobat a la base de dades de la configuració no és un valor vàlid per a "
 "la vinculació de tecla «%s»\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2773
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
-"S'ha produït un error en establir el nom de l'espai de treball %d a «%s»: %s\n"
+"S'ha produït un error en establir el nom de l'espai de treball %d a «%s»: "
+"%s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2987
 #, c-format
-msgid "Error setting compositor status: %s\n"
+msgid "Error setting live hidden windows status status: %s\n"
 msgstr ""
-"S'ha produït un error en establir l'estat del gestor de composició: %s\n"
+"S'ha produït un error en establir l'estat de les finestres ocultes en viu: "
+"%s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:3015
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr ""
+"S'ha produït un error en establir l'estat de les pestanyes sense finestra "
+"emergent: %s\n"
+
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La pantalla %d en la visualització '%s' no és vàlida\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:593
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -298,7 +588,7 @@ msgstr ""
 "La pantalla %d en la visualització «%s» ja té un gestor de finestres; proveu "
 "l'opció --replace per a reemplaçar el gestor de finestres actual.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:620
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -306,165 +596,117 @@ msgstr ""
 "No s'ha pogut adquirir la selecció del gestor de finestres en la pantalla %d "
 "visualització «%s»\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La pantalla %d en la visualització «%s» ja té un gestor de finestres\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:860
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No s'ha pogut alliberar la pantalla %d en la visualització «%s»\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"El format és «<Control>a» o «<Shift><Alt>F1».\n"
-"\n"
-"L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-"abreviacions com «<Ctl>» i «<Ctrl>». Si establiu l'opció a la cadena especial "
-"«disabled» (inhabilitat), no hi haurà cap vinculació per a aquesta acció."
-
-#: ../src/core/schema-bindings.c:177
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"El format és «<Control>a» o «<Shift><Alt>F1».\n"
-"\n"
-"L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-"abreviacions com «<Ctl>» i «<Ctrl>». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció.\n"
-"\n"
-"Aquesta vinculació es pot invertir en prémer la tecla «Shift»; de manera que "
-"no es podrà utilitzar la tecla «Shift»."
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:863 ../src/core/session.c:870
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "No s'ha pogut crear el directori «%s»: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:880
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "No s'ha pogut obrir el fitxer de sessió «%s» per a l'escriptura: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1021
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "S'ha produït un error en escriure el fitxer de sessió «%s»: %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1026
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "S'ha produït un error en tancar el fitxer de sessió «%s»: %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "No s'ha pogut llegir el fitxer de sessió «%s» desat: %s\n"
-
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1156
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "No s'ha pogut analitzar el fitxer de sessió desat: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1205
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
+msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr ""
-"S'ha vist l'atribut <metacity_session> però encara hi ha l'identificador de "
+"S'ha vist l'atribut <mutter_session> però encara hi ha l'identificador de "
 "sessió"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1218 ../src/core/session.c:1293
+#: ../src/core/session.c:1325 ../src/core/session.c:1397
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Atribut %s desconegut a l'element <%s>"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1235
 #, c-format
 msgid "nested <window> tag"
 msgstr "etiqueta <window> imbricada"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1477
 #, c-format
 msgid "Unknown element %s"
 msgstr "Element %s desconegut"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1829
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"S'ha produït un error en executar el metacity-dialog per a avisar sobre "
-"aplicacions que no suporten la gestió de sessions: %s\n"
+"Aquestes finestres no implementen «desa la configuració actual» i s'hauran "
+"de reiniciar manualment la pròxima vegada que entreu."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "No s'ha pogut obrir el registre de depuració: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:121
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "No s'ha pogut executar fdopen() sobre el fitxer de registre %s: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "S'ha obert el fitxer de registre %s\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity es va compilar sense suport per al mode detallat\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter es va compilar sense compatibilitat per al mode detallat\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:286
 msgid "Window manager: "
 msgstr "Gestor de finestres: "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:434
 msgid "Bug in window manager: "
 msgstr "Error en el gestor de finestres: "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:467
 msgid "Window manager warning: "
 msgstr "Avís del gestor de finestres: "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:495
 msgid "Window manager error: "
 msgstr "Error del gestor de finestres: "
 
 #. Translators: This is the title used on dialog boxes
-#. eof all-keybindings.h
-#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:6492
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -480,27 +722,27 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:7155
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "La finestra %s estableix un consell MWM que indica que no és "
 "redimensionable, però estableix una mida mínima %d x %d i una mida màxima %d "
 "x %d; açò no té massa sentit.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "L'aplicació ha definit un _NET_WM_PID %lu fals\n"
 
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (a %s)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1478
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -523,969 +765,211 @@ msgstr ""
 "La finestra té el títol=«%s» classe=«%s» nom=«%s»\n"
 "\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "La propietat %s en la finestra 0x%lx contenia un UTF-8 invàlid\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"La propietat %s en la finestra 0x%lx contenia UTF-8 invàlid per a l'element %"
-"d en la lista\n"
+"La propietat %s en la finestra 0x%lx contenia caràcters UTF-8 no vàlids per "
+"a l'element %d en la llista\n"
 
-#: ../src/include/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "Canvia a l'espai de treball 1"
+#: ../src/mutter.schemas.in.h:1
+msgid "Attach modal dialogs"
+msgstr "Adjunta els diàlegs modals"
 
-#: ../src/include/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "Canvia a l'espai de treball 2"
-
-#: ../src/include/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "Canvia a l'espai de treball 3"
-
-#: ../src/include/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "Canvia a l'espai de treball 4"
-
-#: ../src/include/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "Canvia a l'espai de treball 5"
-
-#: ../src/include/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "Canvia a l'espai de treball 6"
-
-#: ../src/include/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "Canvia a l'espai de treball 7"
-
-#: ../src/include/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "Canvia a l'espai de treball 8"
-
-#: ../src/include/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "Canvia a l'espai de treball 9"
-
-#: ../src/include/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "Canvia a l'espai de treball 10"
-
-#: ../src/include/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "Canvia a l'espai de treball 11"
-
-#: ../src/include/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "Canvia a l'espai de treball 12"
-
-#: ../src/include/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "Canvia a l'espai de treball de l'esquerra de l'actual"
-
-#: ../src/include/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "Canvia a l'espai de treball a la dreta de l'actual"
-
-#: ../src/include/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "Canvia a l'espai de treball damunt de l'actual"
-
-#: ../src/include/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "Canvia a l'espai de treball a sota de l'actual"
-
-#: ../src/include/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "Mou-te entre finestres d'una aplicació amb un diàleg emergent"
-
-#: ../src/include/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr ""
-"Mou-te cap enrere entre finestres d'una aplicació amb un diàleg emergent"
-
-#: ../src/include/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "Mou-te entre finestres amb un diàleg emergent"
-
-#: ../src/include/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "Mou-te cap enrere entre finestres amb un diàleg emergent"
-
-#: ../src/include/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "Mou-te entre quadres i l'escriptori amb un diàleg emergent"
-
-#: ../src/include/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "Mou-te cap enrere entre quadres i l'escriptori amb un diàleg emergent"
-
-#: ../src/include/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "Mou-te entre les finestres d'una aplicació immediatament"
-
-#: ../src/include/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "Mou-te cap enrere entre les finestres d'una aplicació immediatament"
-
-#: ../src/include/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "Mou-te entre finestres immediatament"
-
-#: ../src/include/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "Mou-te cap enrere entre finestres immediatament"
-
-#: ../src/include/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "Mou entre quadres i l'escriptori immediatament"
-
-#: ../src/include/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Mou cap enrere entre quadres i l'escriptori immediatament"
-
-#: ../src/include/all-keybindings.h:191
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Oculta totes les finestres normals i dóna el focus a l'escriptori"
-
-#: ../src/include/all-keybindings.h:194
-msgid "Show the panel's main menu"
-msgstr "Mostra el menú principal del quadre"
-
-#: ../src/include/all-keybindings.h:197
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Mostra el diàleg d'execució d'aplicacions del quadre"
-
-#: ../src/include/all-keybindings.h:238
-msgid "Take a screenshot"
-msgstr "Fes una captura de pantalla"
-
-#: ../src/include/all-keybindings.h:240
-msgid "Take a screenshot of a window"
-msgstr "Fes una captura de pantalla d'una finestra"
-
-#: ../src/include/all-keybindings.h:242
-msgid "Run a terminal"
-msgstr "Executa un terminal"
-
-#: ../src/include/all-keybindings.h:257
-msgid "Activate the window menu"
-msgstr "Activa el menú de finestra"
-
-#: ../src/include/all-keybindings.h:260
-msgid "Toggle fullscreen mode"
-msgstr "Si s'utilitza el mode a pantalla completa"
-
-#: ../src/include/all-keybindings.h:262
-msgid "Toggle maximization state"
-msgstr "Canvia l'estat de maximització"
-
-#: ../src/include/all-keybindings.h:264
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr ""
-"Commuta la funció que fa que una finestra sempre serà visible per sobre de "
-"les altres"
-
-#: ../src/include/all-keybindings.h:266
-msgid "Maximize window"
-msgstr "Maximitza la finestra"
-
-#: ../src/include/all-keybindings.h:268
-msgid "Restore window"
-msgstr "Restaura la finestra"
-
-#: ../src/include/all-keybindings.h:270
-msgid "Toggle shaded state"
-msgstr "Canvia l'estat d'ombrejat"
-
-#: ../src/include/all-keybindings.h:272
-msgid "Minimize window"
-msgstr "Minimitza la finestra"
-
-#: ../src/include/all-keybindings.h:274
-msgid "Close window"
-msgstr "Tanca la finestra"
-
-#: ../src/include/all-keybindings.h:276
-msgid "Move window"
-msgstr "Mou la finestra"
-
-#: ../src/include/all-keybindings.h:278
-msgid "Resize window"
-msgstr "Redimensiona la finestra"
-
-#: ../src/include/all-keybindings.h:281
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr ""
-"Commuta la funció que fa que la finestra estigui en tots els espais de "
-"treball o només en un"
-
-#: ../src/include/all-keybindings.h:285
-msgid "Move window to workspace 1"
-msgstr "Mou la finestra a l'espai de treball 1"
-
-#: ../src/include/all-keybindings.h:288
-msgid "Move window to workspace 2"
-msgstr "Mou la finestra a l'espai de treball 2"
-
-#: ../src/include/all-keybindings.h:291
-msgid "Move window to workspace 3"
-msgstr "Mou la finestra a l'espai de treball 3"
-
-#: ../src/include/all-keybindings.h:294
-msgid "Move window to workspace 4"
-msgstr "Mou la finestra a l'espai de treball 4"
-
-#: ../src/include/all-keybindings.h:297
-msgid "Move window to workspace 5"
-msgstr "Mou la finestra a l'espai de treball 5"
-
-#: ../src/include/all-keybindings.h:300
-msgid "Move window to workspace 6"
-msgstr "Mou la finestra a l'espai de treball 6"
-
-#: ../src/include/all-keybindings.h:303
-msgid "Move window to workspace 7"
-msgstr "Mou la finestra a l'espai de treball 7"
-
-#: ../src/include/all-keybindings.h:306
-msgid "Move window to workspace 8"
-msgstr "Mou la finestra a l'espai de treball 8"
-
-#: ../src/include/all-keybindings.h:309
-msgid "Move window to workspace 9"
-msgstr "Mou la finestra a l'espai de treball 9"
-
-#: ../src/include/all-keybindings.h:312
-msgid "Move window to workspace 10"
-msgstr "Mou la finestra a l'espai de treball 10"
-
-#: ../src/include/all-keybindings.h:315
-msgid "Move window to workspace 11"
-msgstr "Mou la finestra a l'espai de treball 11"
-
-#: ../src/include/all-keybindings.h:318
-msgid "Move window to workspace 12"
-msgstr "Mou la finestra a l'espai de treball 12"
-
-#: ../src/include/all-keybindings.h:330
-msgid "Move window one workspace to the left"
-msgstr "Mou la finestra un espai de treball a l'esquerra"
-
-#: ../src/include/all-keybindings.h:333
-msgid "Move window one workspace to the right"
-msgstr "Mou la finestra un espai de treball a la dreta"
-
-#: ../src/include/all-keybindings.h:336
-msgid "Move window one workspace up"
-msgstr "Mou la finestra un espai de treball amunt"
-
-#: ../src/include/all-keybindings.h:339
-msgid "Move window one workspace down"
-msgstr "Mou la finestra un espai de treball avall"
-
-#: ../src/include/all-keybindings.h:342
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Alça una finestra coberta per una altra, o sinó la baixa"
-
-#: ../src/include/all-keybindings.h:344
-msgid "Raise window above other windows"
-msgstr "Alça una finestra per damunt de les altres"
-
-#: ../src/include/all-keybindings.h:346
-msgid "Lower window below other windows"
-msgstr "Baixa la finestra sota les altres"
-
-#: ../src/include/all-keybindings.h:350
-msgid "Maximize window vertically"
-msgstr "Maximitza la finestra verticalment"
-
-#: ../src/include/all-keybindings.h:354
-msgid "Maximize window horizontally"
-msgstr "Maximitza la finestra horitzontalment"
-
-#: ../src/include/all-keybindings.h:358
-msgid "Move window to north-west (top left) corner"
-msgstr "Mou la finestra a la cantonada nord-oest (part superior esquerra)"
-
-#: ../src/include/all-keybindings.h:361
-msgid "Move window to north-east (top right) corner"
-msgstr "Mou la finestra a la cantonada nord-est (part superior dreta)"
-
-#: ../src/include/all-keybindings.h:364
-msgid "Move window to south-west (bottom left) corner"
-msgstr "Mou la finestra a la cantonada sud-oest (part inferior esquerra)"
-
-#: ../src/include/all-keybindings.h:367
-msgid "Move window to south-east (bottom right) corner"
-msgstr "Mou la finestra a la cantonada sud-est (part inferior dreta)"
-
-#: ../src/include/all-keybindings.h:371
-msgid "Move window to north (top) side of screen"
-msgstr "Mou la finestra a la part nord (superior) de la pantalla"
-
-#: ../src/include/all-keybindings.h:374
-msgid "Move window to south (bottom) side of screen"
-msgstr "Mou la finestra a la part del sud (inferior) de la pantalla"
-
-#: ../src/include/all-keybindings.h:377
-msgid "Move window to east (right) side of screen"
-msgstr "Mou la finestra a la part est (dreta) de la pantalla"
-
-#: ../src/include/all-keybindings.h:380
-msgid "Move window to west (left) side of screen"
-msgstr "Mou la finestra a la part oest (esquerra) de la pantalla"
-
-#: ../src/include/all-keybindings.h:383
-msgid "Move window to center of screen"
-msgstr "Mou la finestra al centre de la pantalla"
-
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
-"(No implementat) La navegació funciona en termes d'aplicacions, no finestres"
-
-#: ../src/metacity.schemas.in.in.h:2
+#: ../src/mutter.schemas.in.h:2
 msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
 msgstr ""
-"Una cadena de descripció de tipus de lletra per a les barres de títol de les "
-"finestres. La mida de la descripció només s'utilitzarà si l'opció "
-"titlebar_font_size està establerta a 0. A més a més, aquesta opció està "
-"inhabilitada si titlebar_uses_desktop_font està establert és cert."
+"Determina si les finestres ocultes (és a dir, les finestres minimitzades i "
+"les finestres en altres espais de treball) s'han de mantenir en viu."
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Acció en fer doble clic en la barra de títol"
+#: ../src/mutter.schemas.in.h:3
+msgid "Live Hidden Windows"
+msgstr "Finestres ocultes en viu"
 
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "Acció en fer clic amb el botó del mig en la barra de títol"
-
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "Acció en fer clic amb el botó secundari en la barra de títol"
-
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Emplaçament dels botons en la barra de títol"
-
-#: ../src/metacity.schemas.in.in.h:7
-msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
+#: ../src/mutter.schemas.in.h:4
+msgid "Modifier to use for extended window management operations"
 msgstr ""
-"La disposició dels botons a la barra del títol. El valor ha de ser una "
-"cadena, com ara «menu:minimize,maximize,spacer,close»; els dos punts separen "
-"la cantonada esquerra de la finestra de la dreta, i els noms dels botons se "
-"separen amb comes. No es permeten botons duplicats. Els botons desconeguts "
-"es descartaran sense cap notificació, de manera que es puguin afegir botons "
-"en futures versions del Metacity sense trencar les versions antigues. Es pot "
-"afegir una etiqueta especial d'espaiament («spacer») per a insertar una "
-"determinada quantitat d'espai entre dos botons adjacents."
-
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "Alça automàticament la finestra amb el focus"
-
-#: ../src/metacity.schemas.in.in.h:9
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
-msgstr ""
-"Si es fa clic en una finestra mentre es manté aquesta tecla modificadora "
-"premuda, es mourà la finestra (botó esquerre), redimensionarà la finestra "
-"(botó central) o mostrarà el menú de la finestra (botó dret). Les operacions "
-"de la dreta i de l'esquerra es poden intercanviar amb la clau "
-"«mouse_button_resize». El modificador s'expressa com a «&lt;Alt;&gt;» o com a "
-"«&lt;Super&gt;», per exemple."
-
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "Ordres a executar en resposta a vinculacions de tecles"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "Gestor de composició"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "Controla de quina manera les finestres noves reben el focus"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "Tema actual"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "Retard en mil·lisegons per a l'opció d'alçat automàtic"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "Determina si el Metacity és un gestor de composició."
-
-#: ../src/metacity.schemas.in.in.h:16
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-"Determina si les aplicacions o el sistema poden generar «sons» audibles; es "
-"pot utilitzar en conjunció amb «visual bell» per a permetre «sons» silenciosos."
-
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Inhabilita funcionalitats que són requerides per aplicacions velles o amb "
-"errors"
-
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "Habilita la campana visual"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-"Si és cert, i el mode del focus és «sloppy» o «mouse», aleshores la finestra "
-"amb el focus s'alçarà automàticament després d'un retard, que s'especifica a "
-"la clau auto_raise_delay. Això no està relacionat en l'acció de fer clic a "
-"una finestra per a alçar-la, ni tampoc en entrar en una finestra en "
-"arrossegar i deixar anar."
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-"Si és veritat, ignora l'opció titlebar_font i utilitza el tipus de lletra de "
-"les aplicacions estàndard per als títols de les finestres."
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-"Sí és cert, el metacity donarà a l'usuari menys informació utilitzant marcs "
-"amb fils, evitant les animacions o altres mitjans. Això implica una reducció "
-"significativa en usabilitat per a molts usuaris, però pot permetre a algunes "
-"aplicacions velles i servidors de terminal. No obstant, la funcionalitat "
-"dels marcs amb fils es desactiva quan l'accessibilitat està habilitada."
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"Si és cert, el Metacity treballarà en termes d'aplicacions, en comptes de "
-"finestres. El concepte és una mica abstracte, però en general, una "
-"configuració basada en aplicacions és més semblant als Mac i menys com el "
-"Windows. Quan teniu el focus en una finestra en el mode basat en "
-"aplicacions, totes les finestres en l'aplicació s'alçaran. A més a més, en "
-"el mode basat en aplicacions, els clics de focus no es passen a les "
-"finestres d'altres aplicacions. Tanmateix, el mode basat en aplicacions "
-"encara no està massa implementat."
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr "Si és vertader, sacrifica usabilitat per a usar menys recursos"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "Modificador a usar per a les accions modificades de clic en finestra"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "Nom de l'espai de treball"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "Número d'espais de treball"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"El nombre d'espais de treball. Ha de ser més gran que zero, i té un màxim "
-"fixe per a prevenir la destrucció accidental del vostre escriptori si "
-"demaneu massa espais de treball."
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "Executa una ordre definida"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"Establiu-lo a «true» (cert) per a canviar la mida amb el botó secundari i "
-"mostrar un menú amb el botó central mentre es premi la tecla especificada al "
-"paràmetre «mouse_button_modifier». Establiu-lo a «false» (fals) perquè "
-"funcioni a l'inversa."
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"Si establiu aquesta opció a «false» (fals) es pot produir un comportament "
-"incorrecte, de manera que s'aconsella als usuaris que no canviïn el seu "
-"valor predeterminat: «true» (cert). Moltes accions (p.ex. fer clic a l'àrea "
-"del client, moure o canviar la mida de la finestra) normalment alcen la "
-"finestra com a efecte secundari. Si establiu aquesta opció a fals -cosa molt "
-"poc recomanable- se separarà l'alçament de la finestra d'altres accions de "
-"l'usuari i s'ignoraran les sol·licituds d'alçament que generin les "
-"aplicacions. Vegeu l'informe d'error http://bugzilla.gnome.org/show_bug.cgi?"
-"id=445447#c6. Fins i tot quan aquesta opció sigui falsa, encara es poden "
-"alçar les finestres amb alt-clic-esquerra en qualsevol lloc de la finestra, "
-"amb un clic a les decoracions de la finestra, o amb un missatge especial "
-"dels paginadors, com ara sol·licituds d'activació des de les miniaplicacions "
-"de la llista de finestres. Aquesta opció està inhabilitada en el mode "
-"d'alçar les finestres amb clic. Fixeu-vos que les diverses maneres d'alçar "
-"les finestres quan «raise_on_click» és fals no inclouen les peticions "
-"programades de les aplicacions per a alçar finestres; aquestes peticions "
-"s'ignoraran sigui quin sigui el motiu. Si desenvolupeu aplicacions i un "
-"usuari es queixa que l'aplicació no funciona quan aquest paràmetre està "
-"inhabilitat, digueu-li que es culpa _seva_ per haver trencat el gestor de "
-"finestres, i que ha de tornar a canviar aquesta opció a «true» o conviure amb "
-"l'error."
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"Algunes aplicacions no fan cas de les especificacions que poden fer que el "
-"gestor de finestri no respongui correctament. Aquesta opció fa que el "
-"Metaciti es posi en un mode rogorosament correcte, que proporciona una "
-"interfície d'usuari més consistent, sempre que no s'hagin d'executar "
-"aplicacions que no actuin correctament."
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "La campana del sistema és audible"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"Li diu al Metacity com implementar la indicació visual de que s'ha tocat la "
-"campana del sistema, o l'indicador de campana d'un altra aplicació. "
-"Actualment, hi ha dos valors vàlids, «fullscreen», que fa un flaix blanc i "
-"negre en tota la pantalla, i «frame_flash», que causa que la barra del títol "
-"de l'aplicació que ha enviat el senyal de campana faci un flaix. Si no se "
-"sap quina aplicació ha enviat el senyal de campana, com sol pasar per als "
-"«sons del sistema» per defecte, la barra del títol de la finestra que tingui "
-"el focus en aquell moment rep un flaix."
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"Les claus /apps/metacity/global_keybindings/run_command_N estableixen "
-"vinculacions de tecles que corresponen a aquestes ordres. Si es prem la "
-"vinculació per a run_command_N, s'executarà command_N."
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"La clau /apps/metacity/global_keybindings/run_command_screenshot estableix "
-"una vinculació de tecles que fa que s'invoqui l'ordre especificada en "
-"aquesta configuració."
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"La clau /apps/metacity/global_keybindings/run_command_window_screenshot "
-"estableix una vinculació de tecles que fa que s'invoqui l'ordre especificada "
-"en aquesta configuració."
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"La vinculació de tecles que executa l'ordre amb la numeració corresponent a /"
-"apps/metacity/keybinding_commands. El format és semblant a «&lt;Control&gt;a» "
-"o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
-"minúscules i majúscules, i també abreviacions com ara «&lt;Ctl&gt;» o «&lt;"
-"Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "El nom d'un espai de treball."
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "L'ordre de captura de pantalla"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr ""
-"El tema determina l'aspecte dels contorns de les finestres, la barra del "
-"títol, etc..."
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"El retard de temps abans d'alçar una finestra si auto_raise és establer a "
-"«true». El retard es dóna en mil·lèssimes de segon."
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"El mode de focus de la finestra indica com s'activen les finestres. Té tres "
-"valors possibles; «click» vol dir que cal fer clic a les finestres per a "
-"donar-los el focus, «sloppy» vol dir que les finestres reben el focus quan el "
-"punter hi entra a dins, i «mouse» vol dir que les finestres s'enfoquen quan "
-"el punter hi entra a dins, i es desenfoquen quan el punter abandona la "
-"finestra."
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "L'ordre de captura de finestra"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Aquesta opció determina l'efecte de l'acció de doble clic a la barra de "
-"títol. Els valors permesos són «toggle_shade» (commuta l'estat de persiana), "
-"que commutarà l'estat d'ombrejat de la finestra, «toggle_maximize» (commuta "
-"la maximització), que en commutarà l'estat de maximització, "
-"«toggle_maximize_horizontally» (commuta la maximització horitzontal) i "
-"«toggle_maximize_vertically» (commuta la maximització vertical), que només "
-"commutaran l'estat de maximització en la direcció indicada, "
-"«minimize» (minimitza), que minimitzarà la finestra, «shade» (persiana), que "
-"enrotllarà la finestra cap amunt, «menu», que mostrarà el menú de la "
-"finestra, «lower» (abaixa), que situarà la finestra darrere de totes les "
-"altres, i «none» (res), que no farà res."
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Aquesta opció determina l'efecte de l'acció de fer clic amb el botó del mig "
-"a la barra de títol. Els valors permesos són «toggle_shade» (commuta l'estat "
-"de persiana), que commutarà l'estat d'ombrejat de la finestra, "
-"«toggle_maximize» (commuta la maximització), que en commutarà l'estat de "
-"maximització, «toggle_maximize_horizontally» (commuta la maximització "
-"horitzontal) i «toggle_maximize_vertically» (commuta la maximització "
-"vertical), que només commutaran l'estat de maximització en la direcció "
-"indicada, «minimize» (minimitza), que minimitzarà la finestra, "
-"«shade» (persiana), que enrotllarà la finestra cap amunt, «menu», que mostrarà "
-"el menú de la finestra, «lower» (abaixa), que situarà la finestra darrere de "
-"totes les altres, i «none» (res), que no farà res."
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Aquesta opció determina l'efecte de l'acció de fer clic amb el botó "
-"secundari a la barra de títol. Els valors permesos són "
-"«toggle_shade» (commuta l'estat de persiana), que commutarà l'estat "
-"d'ombrejat de la finestra, «toggle_maximize» (commuta la maximització), que "
-"en commutarà l'estat de maximització, «toggle_maximize_horizontally» (commuta "
-"la maximització horitzontal) i «toggle_maximize_vertically» (commuta la "
-"maximització vertical), que només commutaran l'estat de maximització en la "
-"direcció indicada, «minimize» (minimitza), que minimitzarà la finestra, "
-"«shade» (persiana), que enrotllarà la finestra cap amunt, «menu», que mostrarà "
-"el menú de la finestra, «lower» (abaixa), que situarà la finestra darrere de "
-"totes les altres, i «none» (res), que no farà res."
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"Aquesta opció proporciona control adicional sobre com les finestres noves "
-"obtenen el focus. Té dos valors possibles: «smart», que aplica el focus "
-"normal d'usuari, i «strict», que fa que no es doni el focus a les finestres "
-"que s'iniciïn des d'un terminal."
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"Activa una indicació visual quan una aplicació o el sistema envia un senyal "
-"de «campana» o «sons»; és útil per als durs d'orella i per a l'ús en ambients "
-"amb soroll."
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr ""
-"Utilitza el tipus de lletra estàndard del sistema en els títols de les "
+"Modificador que s'utilitzarà per les operacions ampliades de gestió de "
 "finestres"
 
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "Tipus de «sons» visual"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
+#: ../src/mutter.schemas.in.h:5
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
-"Si l'alçat hauria de ser un efecte secundari d'altres interaccions de "
-"l'usuari"
+"Aquesta tecla iniciarà l'«overlay» (superposador), el qual és una combinació "
+"de visualització de finestres i sistema de llançament d'aplicacions. El "
+"valor predeterminat és la «tecla Windows» en maquinari basat en ordinadors "
+"PC. El valor d'aquesta vinculació s'espera que sigui el predeterminat o text "
+"en blanc."
 
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "Si es canviarà la mida amb el botó secundari"
+#: ../src/mutter.schemas.in.h:6
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"Quan sigui «true» (cert), en lloc de tenir barres de títol independents, els "
+"diàlegs modals apareixeran adjuntats a la barra de títol de la finestra mare "
+"i es mouran juntament amb aquesta."
 
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "Mode de focus de les finestres"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "Tipus de lletra del títol de les finestres"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Forma d'ús: %s\n"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1099
 msgid "Close Window"
 msgstr "Tanca la finestra"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1102
 msgid "Window Menu"
 msgstr "Menú de la finestra"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1105
 msgid "Minimize Window"
 msgstr "Minimitza la finestra"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1108
 msgid "Maximize Window"
 msgstr "Maximitza la finestra"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1111
 msgid "Restore Window"
 msgstr "Restaura la finestra"
 
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1114
 msgid "Roll Up Window"
 msgstr "Enrotlla la finestra"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1117
 msgid "Unroll Window"
 msgstr "Desenrotlla la finestra"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1120
 msgid "Keep Window On Top"
-msgstr "Matín la finestra per damunt"
+msgstr "Mantén la finestra per damunt"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1123
 msgid "Remove Window From Top"
 msgstr "Treu la finestra de damunt"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1126
 msgid "Always On Visible Workspace"
 msgstr "Sempre a l'espai de treball visible"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1129
 msgid "Put Window On Only One Workspace"
 msgstr "Posa la finestra només a un espai de treball"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:70
+#: ../src/ui/menu.c:69
 msgid "Mi_nimize"
 msgstr "Mi_nimitza"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:72
+#: ../src/ui/menu.c:71
 msgid "Ma_ximize"
 msgstr "Ma_ximitza"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:74
+#: ../src/ui/menu.c:73
 msgid "Unma_ximize"
 msgstr "Desma_ximitza"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:76
+#: ../src/ui/menu.c:75
 msgid "Roll _Up"
 msgstr "_Enrotlla"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:78
+#: ../src/ui/menu.c:77
 msgid "_Unroll"
 msgstr "Desenro_tlla"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:80
+#: ../src/ui/menu.c:79
 msgid "_Move"
 msgstr "_Mou"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82
+#: ../src/ui/menu.c:81
 msgid "_Resize"
 msgstr "_Redimensiona"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:84
+#: ../src/ui/menu.c:83
 msgid "Move Titlebar On_screen"
 msgstr "Mou la _barra de títol en pantalla"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
 msgid "Always on _Top"
 msgstr "Sempre per _damunt"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:91
+#: ../src/ui/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "Sempre a l'espai de treball _visible"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:93
+#: ../src/ui/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "Només en _aquest espai de treball"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:95
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "Mou a l'espai de treball de l'es_querra"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:97
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "Mou a l'espai de treball de la _dreta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:99
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "Mou a l'espai de treball de _sobre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:101
+#: ../src/ui/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "Mou a l'espai de treball de s_ota"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:105
+#: ../src/ui/menu.c:104
 msgid "_Close"
 msgstr "_Tanca"
 
-#: ../src/ui/menu.c:203
+#: ../src/ui/menu.c:204
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Espai de treball %d%n"
 
-#: ../src/ui/menu.c:213
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Espai de treball 1_0"
 
-#: ../src/ui/menu.c:215
+#: ../src/ui/menu.c:216
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Espai de treball %s%d"
 
-#: ../src/ui/menu.c:395
+#: ../src/ui/menu.c:397
 msgid "Move to Another _Workspace"
 msgstr "Mou a un altre es_pai de treball"
 
@@ -1494,7 +978,7 @@ msgstr "Mou a un altre es_pai de treball"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:104
+#: ../src/ui/metaaccellabel.c:77
 msgid "Shift"
 msgstr "Maj"
 
@@ -1503,7 +987,7 @@ msgstr "Maj"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:110
+#: ../src/ui/metaaccellabel.c:83
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1512,7 +996,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:116
+#: ../src/ui/metaaccellabel.c:89
 msgid "Alt"
 msgstr "Alt"
 
@@ -1521,7 +1005,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:122
+#: ../src/ui/metaaccellabel.c:95
 msgid "Meta"
 msgstr "Meta"
 
@@ -1530,7 +1014,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:128
+#: ../src/ui/metaaccellabel.c:101
 msgid "Super"
 msgstr "Super"
 
@@ -1539,7 +1023,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:134
+#: ../src/ui/metaaccellabel.c:107
 msgid "Hyper"
 msgstr "Hiper"
 
@@ -1548,7 +1032,7 @@ msgstr "Hiper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:140
+#: ../src/ui/metaaccellabel.c:113
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1557,7 +1041,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:146
+#: ../src/ui/metaaccellabel.c:119
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1566,7 +1050,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:152
+#: ../src/ui/metaaccellabel.c:125
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1575,55 +1059,9 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:158
+#: ../src/ui/metaaccellabel.c:131
 msgid "Mod5"
 msgstr "Mod5"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "«%s» no està responent."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Podeu esperar un poc per a que continue o forçar la sortida completa de "
-"l'aplicació."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Espera"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Força'n la sortida"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Títol"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Classe"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Aquestes finestres no suporten «desa la configuració actual» i s'hauran de "
-"reiniciar manualment la pròxima vegada que entreu."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"S'ha produït un error en executar «%s»:\n"
-"%s."
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
@@ -1633,48 +1071,49 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:254
+#: ../src/ui/theme.c:255
 msgid "top"
 msgstr "superior"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:257
 msgid "bottom"
 msgstr "inferior"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:259
 msgid "left"
 msgstr "esquerra"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:261
 msgid "right"
 msgstr "dreta"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:288
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "la geometria del marc no especifica la dimensió «%s»"
 
-#: ../src/ui/theme.c:306
+#: ../src/ui/theme.c:307
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "la geometria del marc no especifica la dimensió «%s» per al contorn «%s»"
+msgstr ""
+"la geometria del marc no especifica la dimensió «%s» per al contorn «%s»"
 
-#: ../src/ui/theme.c:343
+#: ../src/ui/theme.c:344
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "El ràtio d'aspecte dels botons %g no és raonable"
 
-#: ../src/ui/theme.c:355
+#: ../src/ui/theme.c:356
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "La geometria del marc no especifica la mida dels botons"
 
-#: ../src/ui/theme.c:1020
+#: ../src/ui/theme.c:1064
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Els degradats han de tenir almenys dos colors"
 
-#: ../src/ui/theme.c:1146
+#: ../src/ui/theme.c:1202
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1683,7 +1122,7 @@ msgstr ""
 "L'especificació de color GTK ha de tenir l'estat entre claudàtors, p.e. gtk:"
 "fg[NORMAL] on NORMAL és l'estat; no s'ha pogut analitzar \"%s\""
 
-#: ../src/ui/theme.c:1160
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1693,17 +1132,17 @@ msgstr ""
 "de l'estat, p.e. gtk:fg[NORMAL] on NORMAL és l'estat; no s'ha pogut "
 "analitzar «%s»"
 
-#: ../src/ui/theme.c:1171
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "No s'entén l'estat «%s» en l'especificació del color"
 
-#: ../src/ui/theme.c:1184
+#: ../src/ui/theme.c:1240
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "No s'entén l'element de color «%s» en l'especificació del color"
 
-#: ../src/ui/theme.c:1214
+#: ../src/ui/theme.c:1270
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1712,44 +1151,44 @@ msgstr ""
 "El format de barreja és «blend/bg_color/fg_color/alpha», «%s» no s'ajusta al "
 "format"
 
-#: ../src/ui/theme.c:1225
+#: ../src/ui/theme.c:1281
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "No s'ha pogut analitzar el valor d'opacitat «%s» en el color barrejat"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1291
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "El valor alfa «%s» en el color barrejat no està entre 0,0 i 1,0"
 
-#: ../src/ui/theme.c:1282
+#: ../src/ui/theme.c:1338
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "El format d'ombrejat és «shade/base_color/factor», «%s» no s'ajusta al format"
 
-#: ../src/ui/theme.c:1293
+#: ../src/ui/theme.c:1349
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "No s'ha pogut analitzar el factor d'ombrejat «%s» en el color ombrejat"
 
-#: ../src/ui/theme.c:1303
+#: ../src/ui/theme.c:1359
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "El factor d'ombrejat «%s» en el color ombrejat és negatiu"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1388
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "No s'ha pogut analitzar el color «%s»"
 
-#: ../src/ui/theme.c:1582
+#: ../src/ui/theme.c:1646
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "L'expressió coordinada conté el caràcter '%s', el qual no és permès"
 
-#: ../src/ui/theme.c:1609
+#: ../src/ui/theme.c:1673
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1758,12 +1197,12 @@ msgstr ""
 "L'expressió coordinada conté el número '%s' de punt flotant el qual no es "
 "pot analitzar"
 
-#: ../src/ui/theme.c:1623
+#: ../src/ui/theme.c:1687
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "L'expressió coordinada conté l'enter '%s' el qual no es pot analitzar"
 
-#: ../src/ui/theme.c:1745
+#: ../src/ui/theme.c:1809
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1772,17 +1211,17 @@ msgstr ""
 "L'expressió coordinada conté un operador desconegut a l'inici d'aquest text: "
 "«%s»"
 
-#: ../src/ui/theme.c:1802
+#: ../src/ui/theme.c:1866
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "L'expressió coordinada estava buida o no s'ha entès"
 
-#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "L'expressió coordinada dóna una divisió per zero"
 
-#: ../src/ui/theme.c:1965
+#: ../src/ui/theme.c:2029
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -1790,66 +1229,66 @@ msgstr ""
 "L'expressió coordinada intenta utilitzar l'operador de mode en un número de "
 "punt flotant"
 
-#: ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2085
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "L'expressió coordinada té un operador «%s» on hi hauria d'anar un operand"
 
-#: ../src/ui/theme.c:2030
+#: ../src/ui/theme.c:2094
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "L'expressió coordinada té un operand on hi hauria d'anar un operador"
 
-#: ../src/ui/theme.c:2038
+#: ../src/ui/theme.c:2102
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "L'expressió coordinada ha finalitzat amb un operador en lloc d'un operand"
 
-#: ../src/ui/theme.c:2048
+#: ../src/ui/theme.c:2112
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"L'expressió coordinada té un operador «%c» seguit de l'operador «%c» sense cap "
-"operand enmig"
+"L'expressió coordinada té un operador «%c» seguit de l'operador «%c» sense "
+"cap operand enmig"
 
-#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "L'expressió coordinada té una variable o constant desconeguda «%s»"
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2362
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 "L'analitzador d'expressions de coordinades ha desbordat la seva memòria "
 "intermèdia."
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2391
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "L'expressió coordinada té un parèntesi de tancament i cap d'obertura"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2455
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "L'expressió coordinada té un parèntesi d'obertura i cap de tancament"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2466
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "L'expressió coordinada no sembla tenir cap operador o operand"
 
-#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "El tema conté una expressió que ha provocat un error: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4410
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1858,7 +1297,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"qualsevol\"/> s'ha "
 "d'especificar per a aquest estil de marc"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1866,18 +1305,18 @@ msgstr ""
 "No s'ha trobat <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style="
 "\"qualsevol\"/>"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:5013
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "No s'ha pogut carregar el tema \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
+#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No s'ha definit <%s> per al tema «%s»"
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:5185
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1886,15 +1325,15 @@ msgstr ""
 "No s'ha definit cap estil de marc per al tipus de finestra \"%s\" en el tema "
 "\"%s\", afegiu un element <window type=\"%s\" style_set=\"qualsevol\"/>"
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"Les constants de la definició d'usuari han de començar per una majúscula; «%"
-"s» no ho és"
+"Les constants de la definició d'usuari han de començar per una majúscula; "
+"«%s» no ho és"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La constant «%s» ja s'ha definit"
@@ -1902,120 +1341,130 @@ msgstr "La constant «%s» ja s'ha definit"
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "No hi ha cap atribut «%s» a l'element <%s>"
 
-#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Línia %d caràcter %d: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "S'ha repetit l'atribut «%s» dues vegades en el mateix element <%s>"
 
-#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "L'atribut «%s» no és vàlid per a l'element <%s> en aquest context"
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:594
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "No s'ha pogut analitzar «%s» com a enter"
+
+#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "No s'entenen els caràcters finals «%s» de la cadena «%s»"
+
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "L'enter %ld ha de ser positiu"
 
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "L'enter %ld és massa gran, el màxim actual és %d"
 
-#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "No s'ha pogut analitzar «%s» com a un número de coma flotant"
 
-#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Els valors boleans han de ser «true» (cert) o «false» (fals), no «%s»"
+msgstr "Els valors booleans han de ser «true» (cert) o «false» (fals), no «%s»"
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "L'angle ha d'estar entre 0.0 i 360.0, era %g\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
-"L'opacitat ha d'estar entre 0.0 (invisible) i 1.0 (totalment opac), era a %"
-"g\n"
+"L'opacitat ha d'estar entre 0.0 (invisible) i 1.0 (totalment opac), era a "
+"%g\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Escala de títol no vàlida «%s» (ha de ser una d'aquestes: xx-small,x-small,"
-"small,medium,large,x-large,xx-large)\n"
+"Escala de títol no vàlida «%s» (ha de ser una d'aquestes: xx-small, x-small, "
+"small, medium, large, x-large o xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
+#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> amb nom «%s» s'ha utilitzat dues vegades"
 
-#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
+#: ../src/ui/theme-parser.c:1231
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "el pare de <%s>, «%s», no s'ha definit"
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1141
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "la geometria de <%s>, «%s», no s'ha definit"
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1154
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
 "<%s> ha d'especificar bé una geometria o un pare que tingui una geometria"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "El valor alfa requereix que també s'especifiqui un fons de pantalla"
 
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Tipus desconegut «%s» en l'element <%s>"
 
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1275
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "style_set «%s» desconegut en l'element <%s>"
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "El tipus de finestra «%s» ja té assignat un joc d'estil"
 
-#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
+#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
+#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3034
+#: ../src/ui/theme-parser.c:3273 ../src/ui/theme-parser.c:3311
+#: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "No es permet l'element <%s> sota <%s>"
 
-#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
+#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
+#: ../src/ui/theme-parser.c:1486
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
@@ -2023,124 +1472,124 @@ msgstr ""
 "No es pot especificar «button_width»/«button_height» i l'«aspect_ratio» a la "
 "vegada per als botons"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1450
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "La distància «%s» és desconeguda"
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1495
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "El ratio d'aspecte «%s» és desconeguda"
+msgstr "La relació d'aspecte «%s» és desconeguda"
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "El contorn «%s» és desconegut"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1868
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "No hi ha cap atribut de «start_angle» o «from» en l'element <%s>"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "No hi ha cap atribut de «extent_angle» o «to» en l'element <%s>"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2115
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "No s'entén el valor «%s» per al tipus de degradat"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "No s'entén el tipus de farciment «%s» per a l'element <%s>"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
+#: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "No s'entén l'estat «%s» per a l'element <%s>"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "No s'entén l'ombra «%s» per a l'element <%s>"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "No s'entén la fletxa «%s» per a l'element <%s>"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "No s'ha definit cap <draw_ops> amb el nom «%s»"
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "La inclusió de draw_ops «%s» aquí crearà una referència circular"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Posició «%s» desconeguda per a la peça del marc"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2925
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "L'estil del marc ja té una peça a posició %s"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "No s'ha definit cap <draw_ops> amb el nom «%s»"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2972
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Funció «%s» desconeguda per al botó"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr ""
 "La funció de botó «%s» no existeix en aquesta versió (%d, es necessita %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2994
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Estat «%s» desconegut per al botó"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:3002
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "L'estil del marc ja té un botó per a l'estat %s de la funció %s"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:3073
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "«%s» no és un valor vàlid per a l'atribut del focus"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:3082
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "«%s» no és un valor vàlid per a l'atribut de l'estat"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:3092
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "No s'ha definit un estil amb el nom «%s»"
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "«%s» no és un valor vàlid per a l'atribut de redimensiona"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -2149,7 +1598,7 @@ msgstr ""
 "No hauria de tenir l'atribut «resize» en l'element <%s> per als estats "
 "maximitzat/ombrejat"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3161
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
@@ -2157,17 +1606,19 @@ msgstr ""
 "No hauria de tenir l'atribut «resize» en l'element <%s> per als estats "
 "maximitzats"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "L'estil ja s'ha especificat per a l'estat %s redimensiona %s focus %s"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
+#: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
+#: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "L'estil ja s'ha especificat per a l'estat %s focus %s"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3294
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2176,7 +1627,7 @@ msgstr ""
 "especificat un atribut draw_ops i també un element <draw_ops>, o ha "
 "especificat ambdós elements) "
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3332
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2185,7 +1636,7 @@ msgstr ""
 "especificat un atribut draw_ops i també un element <draw_ops>, o ha "
 "especificat ambdós elements)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3370
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -2194,235 +1645,237 @@ msgstr ""
 "especificat un atribut draw_ops i també un element <draw_ops>, o ha "
 "especificat ambdós elements)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3434
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr "Especificació de versió errònia («%s»)"
+
+#: ../src/ui/theme-parser.c:3507
+msgid ""
+"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+"theme-2.xml"
+msgstr ""
+"L'atribut «version» no es pot utilitzat als fitxers metacity-theme-1.xml o "
+"metacity-theme-2.xml"
+
+#: ../src/ui/theme-parser.c:3530
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr ""
+"El tema requereix la versió %s, però la darrera versió compatible del tema "
+"és la %d.%d"
+
+#: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "L'element més extern en el tema ha de ser <metacity_theme>, no <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3582
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "L'element <%s> no és permès dins d'un element name/author/date/description"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3587
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "L'element <%s> no és permès dins d'un element <constant>"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3599
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "L'element <%s> no és permès dins d'un element distance/border/aspect_ratio"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "L'element <%s> no és permès dins d'un element d'operació igual"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "L'element <%s> no és permès dins d'un element <%s>"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
 msgstr "No s'ha proveït cap draw_ops per a la peça del marc"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3914
 msgid "No draw_ops provided for button"
 msgstr "No s'ha proveït cap draw_ops per al botó"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3968
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "No es permet cap text dins de l'element <%s>"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "S'ha especificat <name> dues vegades per a aquest tema"
+#: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
+#: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
+#: ../src/ui/theme-parser.c:4074
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "S'ha especificat <%s> dues vegades per a aquest tema"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "S'ha especificat <author> dues vegades per a aquest tema"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "S'ha especificat <copyright> dues vegades per a aquest tema"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "S'ha especificat <date> dues vegades per a aquest tema"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "S'ha especificat <description> dues vegades per a aquest tema"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4348
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "No s'ha trobat un fitxer vàlid per al tema %s\n"
 
-#: ../src/ui/theme-parser.c:4083
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "El fitxer de tema %s no conté un element arrel <metacity_theme>"
+#: ../src/ui/theme-viewer.c:99
+msgid "_Windows"
+msgstr "_Finestres"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/_Finestres"
+#: ../src/ui/theme-viewer.c:100
+msgid "_Dialog"
+msgstr "_Diàleg"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/Finestres/separador"
+#: ../src/ui/theme-viewer.c:101
+msgid "_Modal dialog"
+msgstr "Diàleg _modal"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/Finestres/_Diàleg"
+#: ../src/ui/theme-viewer.c:102
+msgid "_Utility"
+msgstr "_Eina"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/Finestres/Diàleg _modal"
+#: ../src/ui/theme-viewer.c:103
+msgid "_Splashscreen"
+msgstr "_Pantalla flaix"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/Finestres/_Utilitat"
+#: ../src/ui/theme-viewer.c:104
+msgid "_Top dock"
+msgstr "Acoblador _superior"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/Finestres/_Pantalla flaix"
+#: ../src/ui/theme-viewer.c:105
+msgid "_Bottom dock"
+msgstr "Acoblador _inferior"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/Finestres/Anclatge _superior"
+#: ../src/ui/theme-viewer.c:106
+msgid "_Left dock"
+msgstr "Acoblador es_querre"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/Finestres/Anclatge _inferior"
+#: ../src/ui/theme-viewer.c:107
+msgid "_Right dock"
+msgstr "Acoblador d_ret"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/Finestres/Anclatge es_querre"
+#: ../src/ui/theme-viewer.c:108
+msgid "_All docks"
+msgstr "_Tots els acobladors"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/Finestres/Anclatge d_ret"
+#: ../src/ui/theme-viewer.c:109
+msgid "Des_ktop"
+msgstr "Escr_iptori"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/Finestres/_Tots els anclatges"
-
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/Finestres/_Escriptori"
-
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Obre una altra d'aquestes finestres"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Aquest és un botó de prova amb una icona «obre»"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Aquest és un botó de prova amb una icona de «surt»"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Aquest és un exemple de missatge en un diàleg d'exemple"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Element fals de menú %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Finestra amb només contorn"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Barra"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Finestra d'aplicació normal"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "Caixa de diàleg"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "Caixa de diàleg modal"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Paleta d'utilitat"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Menú arrossegable"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Contorn"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:413
+msgid "Attached Modal Dialog"
+msgstr "Diàleg modal adjuntat"
+
+#: ../src/ui/theme-viewer.c:744
 #, c-format
 msgid "Button layout test %d"
 msgstr "Prova de disposició de botons %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:773
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g mil·lisegons per a dibuixar un marc de finestra"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Forma d'ús: metacity-theme-viewer [NOMDELTEMA]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:825
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "S'ha produït un error en carregar el tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:831
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "S'ha carregat el tema «%s» en %g segons\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:875
 msgid "Normal Title Font"
 msgstr "Tipus de lletra per a títol normal"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:881
 msgid "Small Title Font"
 msgstr "Tipus de lletra per a títol petit"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:887
 msgid "Large Title Font"
 msgstr "Tipus de lletra per a títol gran"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:892
 msgid "Button Layouts"
 msgstr "Disposicions de botons"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:897
 msgid "Benchmark"
 msgstr "Test de referència"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "El títol de la finestra va aquí"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1055
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2433,44 +1886,647 @@ msgstr ""
 "%g segons de rellotge inclosos els recursos del servidor d'X (%g "
 "mil·lisegons per marc)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1274
 msgid "position expression test returned TRUE but set error"
 msgstr "La prova d'expressió de posició ha tornat TRUE però ha establert error"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1276
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "La prova d'expressió de posició ha tornat FALSE però no ha establert error"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1280
 msgid "Error was expected but none given"
 msgstr "S'esperava un error però no s'ha donat cap"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1282
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "S'esperava l'error %d però s'ha donat %d"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1288
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "No s'esperava cap error però s'ha tornat un: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1292
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "El valor x ha sigut %d, i s'esperava %d"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1295
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "El valor y ha sigut %d, i s'esperava %d"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1360
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expressions de coordenades analitzades en %g segons (%g segons de mitja)\n"
+
+#~ msgid ""
+#~ "Don't make fullscreen windows that are maximized and have no decorations"
+#~ msgstr ""
+#~ "No creïs finestres a pantalla completa que estiguin maximitzades i no "
+#~ "tinguin decoracions"
+
+#~ msgid "Whether window popup/frame should be shown when cycling windows."
+#~ msgstr ""
+#~ "Si s'hauria de mostrar una finestra emergent o el seu marc en canviar en "
+#~ "cicle entre finestres"
+
+#~ msgid "Internal argument for GObject introspection"
+#~ msgstr "Argument intern per a la introspecció basada en el GObject"
+
+#~ msgid "Failed to restart: %s\n"
+#~ msgstr "No s'ha pogut reiniciar: %s\n"
+
+#~ msgid "Error setting clutter plugin list: %s\n"
+#~ msgstr ""
+#~ "S'ha produït un error en establir la llista de connectors del Clutter: "
+#~ "%s\n"
+
+#~ msgid "Clutter Plugins"
+#~ msgstr "Connectors del Clutter"
+
+#~ msgid "Plugins to load for the Clutter-based compositing manager."
+#~ msgstr ""
+#~ "Connectors que s'han de carregar per al gestor de composició basat en el "
+#~ "Clutter."
+
+#~ msgid "Window Management"
+#~ msgstr "Gestor de finestres"
+
+#~ msgid "Failed to parse message \"%s\" from dialog process\n"
+#~ msgstr "No s'ha pogut analitzar el missatge «%s» des del procés de diàleg\n"
+
+#~ msgid "Error reading from dialog display process: %s\n"
+#~ msgstr ""
+#~ "S'ha produït un error en llegir del procés de la pantalla de diàleg: %s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
+#~ msgstr ""
+#~ "S'ha produït un error en executar el diàleg metacity per preguntar quant "
+#~ "a la \n"
+#~ "finalització d'una aplicació: %s\n"
+
+#~ msgid "Failed to get hostname: %s\n"
+#~ msgstr ""
+#~ "S'ha produït un error en obtenir el nom de l'ordinador central: %s\n"
+
+#~ msgid ""
+#~ "Lost connection to the display '%s';\n"
+#~ "most likely the X server was shut down or you killed/destroyed\n"
+#~ "the window manager.\n"
+#~ msgstr ""
+#~ "S'ha perdut la connexió amb la pantalla «%s»;\n"
+#~ "és molt probable que el servidor X s'hagi aturat o que hagueu "
+#~ "finalitzat/\n"
+#~ "destruït el gestor de finestres.\n"
+
+#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
+#~ msgstr "S'ha produït un error fatal d'E/S %d (%s) a la pantalla «%s».\n"
+
+#~ msgid "Turn compositing on"
+#~ msgstr "Habilita la composició"
+
+#~ msgid "Turn compositing off"
+#~ msgstr "Inhabilita la composició"
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "El format és «<Control>a» o «<Shift><Alt>F1».\n"
+#~ "\n"
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «<Ctl>» i «<Ctrl>». Si establiu l'opció a la cadena "
+#~ "especial «disabled» (inhabilitat), no hi haurà cap vinculació per a "
+#~ "aquesta acció."
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action.\n"
+#~ "\n"
+#~ "This keybinding may be reversed by holding down the \"shift\" key; "
+#~ "therefore, \"shift\" cannot be one of the keys it uses."
+#~ msgstr ""
+#~ "El format és «<Control>a» o «<Shift><Alt>F1».\n"
+#~ "\n"
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «<Ctl>» i «<Ctrl>». Si establiu l'opció a la cadena "
+#~ "especial «disabled», no hi haurà cap vinculació per a aquesta acció.\n"
+#~ "\n"
+#~ "Aquesta vinculació es pot invertir en prémer la tecla «Shift»; de manera "
+#~ "que no es podrà utilitzar la tecla «Shift»."
+
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "No s'ha pogut llegir el fitxer de sessió «%s» desat: %s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to warn about apps that don't support "
+#~ "session management: %s\n"
+#~ msgstr ""
+#~ "S'ha produït un error en executar el metacity-dialog per a avisar sobre "
+#~ "aplicacions que no suporten la gestió de sessions: %s\n"
+
+#~ msgid "Metacity"
+#~ msgstr "Metacity"
+
+#~ msgid ""
+#~ "(Not implemented) Navigation works in terms of applications not windows"
+#~ msgstr ""
+#~ "(No implementat) La navegació funciona en termes d'aplicacions, no "
+#~ "finestres"
+
+#~ msgid ""
+#~ "A font description string describing a font for window titlebars. The "
+#~ "size from the description will only be used if the titlebar_font_size "
+#~ "option is set to 0. Also, this option is disabled if the "
+#~ "titlebar_uses_desktop_font option is set to true."
+#~ msgstr ""
+#~ "Una cadena de descripció de tipus de lletra per a les barres de títol de "
+#~ "les finestres. La mida de la descripció només s'utilitzarà si l'opció "
+#~ "titlebar_font_size està establerta a 0. A més a més, aquesta opció està "
+#~ "inhabilitada si titlebar_uses_desktop_font està establert és cert."
+
+#~ msgid "Action on title bar double-click"
+#~ msgstr "Acció en fer doble clic en la barra de títol"
+
+#~ msgid "Action on title bar middle-click"
+#~ msgstr "Acció en fer clic amb el botó del mig en la barra de títol"
+
+#~ msgid "Action on title bar right-click"
+#~ msgstr "Acció en fer clic amb el botó secundari en la barra de títol"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "Emplaçament dels botons en la barra de títol"
+
+#~ msgid ""
+#~ "Arrangement of buttons on the titlebar. The value should be a string, "
+#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
+#~ "left corner of the window from the right corner, and the button names are "
+#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
+#~ "are silently ignored so that buttons can be added in future metacity "
+#~ "versions without breaking older versions. A special spacer tag can be "
+#~ "used to insert some space between two adjacent buttons."
+#~ msgstr ""
+#~ "La disposició dels botons a la barra del títol. El valor ha de ser una "
+#~ "cadena, com ara «menu:minimize,maximize,spacer,close»; els dos punts "
+#~ "separen la cantonada esquerra de la finestra de la dreta, i els noms dels "
+#~ "botons se separen amb comes. No es permeten botons duplicats. Els botons "
+#~ "desconeguts es descartaran sense cap notificació, de manera que es puguin "
+#~ "afegir botons en futures versions del Metacity sense trencar les versions "
+#~ "antigues. Es pot afegir una etiqueta especial d'espaiament («spacer») per "
+#~ "a insertar una determinada quantitat d'espai entre dos botons adjacents."
+
+#~ msgid "Automatically raises the focused window"
+#~ msgstr "Alça automàticament la finestra amb el focus"
+
+#~ msgid ""
+#~ "Clicking a window while holding down this modifier key will move the "
+#~ "window (left click), resize the window (middle click), or show the window "
+#~ "menu (right click). The left and right operations may be swapped using "
+#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
+#~ "or \"&lt;Super&gt;\" for example."
+#~ msgstr ""
+#~ "Si es fa clic en una finestra mentre es manté aquesta tecla modificadora "
+#~ "premuda, es mourà la finestra (botó esquerre), redimensionarà la finestra "
+#~ "(botó central) o mostrarà el menú de la finestra (botó dret). Les "
+#~ "operacions de la dreta i de l'esquerra es poden intercanviar amb la clau "
+#~ "«mouse_button_resize». El modificador s'expressa com a «&lt;Alt;&gt;» o "
+#~ "com a «&lt;Super&gt;», per exemple."
+
+#~ msgid "Commands to run in response to keybindings"
+#~ msgstr "Ordres a executar en resposta a vinculacions de tecles"
+
+#~ msgid "Compositing Manager"
+#~ msgstr "Gestor de composició"
+
+#~ msgid "Control how new windows get focus"
+#~ msgstr "Controla de quina manera les finestres noves reben el focus"
+
+#~ msgid "Current theme"
+#~ msgstr "Tema actual"
+
+#~ msgid "Delay in milliseconds for the auto raise option"
+#~ msgstr "Retard en mil·lisegons per a l'opció d'alçat automàtic"
+
+#~ msgid "Determines whether Metacity is a compositing manager."
+#~ msgstr "Determina si el Metacity és un gestor de composició."
+
+#~ msgid ""
+#~ "Determines whether applications or the system can generate audible "
+#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
+#~ "'beeps'."
+#~ msgstr ""
+#~ "Determina si les aplicacions o el sistema poden generar «sons» audibles; "
+#~ "es pot utilitzar en conjunció amb «visual bell» per a permetre «sons» "
+#~ "silenciosos."
+
+#~ msgid "Disable misfeatures that are required by old or broken applications"
+#~ msgstr ""
+#~ "Inhabilita funcionalitats que són requerides per aplicacions velles o amb "
+#~ "errors"
+
+#~ msgid "Enable Visual Bell"
+#~ msgstr "Habilita la campana visual"
+
+#~ msgid ""
+#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#~ "the focused window will be automatically raised after a delay specified "
+#~ "by the auto_raise_delay key. This is not related to clicking on a window "
+#~ "to raise it, nor to entering a window during drag-and-drop."
+#~ msgstr ""
+#~ "Si és cert, i el mode del focus és «sloppy» o «mouse», aleshores la "
+#~ "finestra amb el focus s'alçarà automàticament després d'un retard, que "
+#~ "s'especifica a la clau auto_raise_delay. Això no està relacionat en "
+#~ "l'acció de fer clic a una finestra per a alçar-la, ni tampoc en entrar en "
+#~ "una finestra en arrossegar i deixar anar."
+
+#~ msgid ""
+#~ "If true, ignore the titlebar_font option, and use the standard "
+#~ "application font for window titles."
+#~ msgstr ""
+#~ "Si és veritat, ignora l'opció titlebar_font i utilitza el tipus de lletra "
+#~ "de les aplicacions estàndard per als títols de les finestres."
+
+#~ msgid ""
+#~ "If true, metacity will give the user less feedback by using wireframes, "
+#~ "avoiding animations, or other means. This is a significant reduction in "
+#~ "usability for many users, but may allow legacy applications to continue "
+#~ "working, and may also be a useful tradeoff for terminal servers. However, "
+#~ "the wireframe feature is disabled when accessibility is on."
+#~ msgstr ""
+#~ "Sí és cert, el metacity donarà a l'usuari menys informació utilitzant "
+#~ "marcs amb fils, evitant les animacions o altres mitjans. Això implica una "
+#~ "reducció significativa en usabilitat per a molts usuaris, però pot "
+#~ "permetre a algunes aplicacions velles i servidors de terminal. No "
+#~ "obstant, la funcionalitat dels marcs amb fils es desactiva quan "
+#~ "l'accessibilitat està habilitada."
+
+#~ msgid ""
+#~ "If true, then Metacity works in terms of applications rather than "
+#~ "windows. The concept is a bit abstract, but in general an application-"
+#~ "based setup is more like the Mac and less like Windows. When you focus a "
+#~ "window in application-based mode, all the windows in the application will "
+#~ "be raised. Also, in application-based mode, focus clicks are not passed "
+#~ "through to windows in other applications. Application-based mode is, "
+#~ "however, largely unimplemented at the moment."
+#~ msgstr ""
+#~ "Si és cert, el Metacity treballarà en termes d'aplicacions, en comptes de "
+#~ "finestres. El concepte és una mica abstracte, però en general, una "
+#~ "configuració basada en aplicacions és més semblant als Mac i menys com el "
+#~ "Windows. Quan teniu el focus en una finestra en el mode basat en "
+#~ "aplicacions, totes les finestres en l'aplicació s'alçaran. A més a més, "
+#~ "en el mode basat en aplicacions, els clics de focus no es passen a les "
+#~ "finestres d'altres aplicacions. Tanmateix, el mode basat en aplicacions "
+#~ "encara no està massa implementat."
+
+#~ msgid "If true, trade off usability for less resource usage"
+#~ msgstr "Si és vertader, sacrifica usabilitat per a usar menys recursos"
+
+#~ msgid "Name of workspace"
+#~ msgstr "Nom de l'espai de treball"
+
+#~ msgid "Number of workspaces"
+#~ msgstr "Número d'espais de treball"
+
+#~ msgid ""
+#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
+#~ "prevent making the desktop unusable by accidentally asking for too many "
+#~ "workspaces."
+#~ msgstr ""
+#~ "El nombre d'espais de treball. Ha de ser més gran que zero, i té un màxim "
+#~ "fixe per a prevenir la destrucció accidental del vostre escriptori si "
+#~ "demaneu massa espais de treball."
+
+#~ msgid "Run a defined command"
+#~ msgstr "Executa una ordre definida"
+
+#~ msgid ""
+#~ "Set this to true to resize with the right button and show a menu with the "
+#~ "middle button while holding down the key given in \"mouse_button_modifier"
+#~ "\"; set it to false to make it work the opposite way around."
+#~ msgstr ""
+#~ "Establiu-lo a «true» (cert) per a canviar la mida amb el botó secundari i "
+#~ "mostrar un menú amb el botó central mentre es premi la tecla especificada "
+#~ "al paràmetre «mouse_button_modifier». Establiu-lo a «false» (fals) perquè "
+#~ "funcioni a l'inversa."
+
+#~ msgid ""
+#~ "Setting this option to false can lead to buggy behavior, so users are "
+#~ "strongly discouraged from changing it from the default of true. Many "
+#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
+#~ "normally raise the window as a side-effect. Setting this option to false, "
+#~ "which is strongly discouraged, will decouple raising from other user "
+#~ "actions, and ignore raise requests generated by applications. See http://"
+#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
+#~ "false, windows can still be raised by an alt-left-click anywhere on the "
+#~ "window, a normal click on the window decorations, or by special messages "
+#~ "from pagers, such as activation requests from tasklist applets. This "
+#~ "option is currently disabled in click-to-focus mode. Note that the list "
+#~ "of ways to raise windows when raise_on_click is false does not include "
+#~ "programmatic requests from applications to raise windows; such requests "
+#~ "will be ignored regardless of the reason for the request. If you are an "
+#~ "application developer and have a user complaining that your application "
+#~ "does not work with this setting disabled, tell them it is _their_ fault "
+#~ "for breaking their window manager and that they need to change this "
+#~ "option back to true or live with the \"bug\" they requested."
+#~ msgstr ""
+#~ "Si establiu aquesta opció a «false» (fals) es pot produir un comportament "
+#~ "incorrecte, de manera que s'aconsella als usuaris que no canviïn el seu "
+#~ "valor predeterminat: «true» (cert). Moltes accions (p.ex. fer clic a "
+#~ "l'àrea del client, moure o canviar la mida de la finestra) normalment "
+#~ "alcen la finestra com a efecte secundari. Si establiu aquesta opció a "
+#~ "fals -cosa molt poc recomanable- se separarà l'alçament de la finestra "
+#~ "d'altres accions de l'usuari i s'ignoraran les sol·licituds d'alçament "
+#~ "que generin les aplicacions. Vegeu l'informe d'error http://bugzilla."
+#~ "gnome.org/show_bug.cgi?id=445447#c6. Fins i tot quan aquesta opció sigui "
+#~ "falsa, encara es poden alçar les finestres amb alt-clic-esquerra en "
+#~ "qualsevol lloc de la finestra, amb un clic a les decoracions de la "
+#~ "finestra, o amb un missatge especial dels paginadors, com ara "
+#~ "sol·licituds d'activació des de les miniaplicacions de la llista de "
+#~ "finestres. Aquesta opció està inhabilitada en el mode d'alçar les "
+#~ "finestres amb clic. Fixeu-vos que les diverses maneres d'alçar les "
+#~ "finestres quan «raise_on_click» és fals no inclouen les peticions "
+#~ "programades de les aplicacions per a alçar finestres; aquestes peticions "
+#~ "s'ignoraran sigui quin sigui el motiu. Si desenvolupeu aplicacions i un "
+#~ "usuari es queixa que l'aplicació no funciona quan aquest paràmetre està "
+#~ "inhabilitat, digueu-li que es culpa _seva_ per haver trencat el gestor de "
+#~ "finestres, i que ha de tornar a canviar aquesta opció a «true» o conviure "
+#~ "amb l'error."
+
+#~ msgid ""
+#~ "Some applications disregard specifications in ways that result in window "
+#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
+#~ "mode, which gives a more consistent user interface, provided one does not "
+#~ "need to run any misbehaving applications."
+#~ msgstr ""
+#~ "Algunes aplicacions no fan cas de les especificacions que poden fer que "
+#~ "el gestor de finestri no respongui correctament. Aquesta opció fa que el "
+#~ "Metaciti es posi en un mode rogorosament correcte, que proporciona una "
+#~ "interfície d'usuari més consistent, sempre que no s'hagin d'executar "
+#~ "aplicacions que no actuin correctament."
+
+#~ msgid "System Bell is Audible"
+#~ msgstr "La campana del sistema és audible"
+
+#~ msgid ""
+#~ "Tells Metacity how to implement the visual indication that the system "
+#~ "bell or another application 'bell' indicator has been rung. Currently "
+#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
+#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
+#~ "application which sent the bell signal to flash. If the application which "
+#~ "sent the bell is unknown (as is usually the case for the default \"system "
+#~ "beep\"), the currently focused window's titlebar is flashed."
+#~ msgstr ""
+#~ "Li diu al Metacity com implementar la indicació visual de que s'ha tocat "
+#~ "la campana del sistema, o l'indicador de campana d'un altra aplicació. "
+#~ "Actualment, hi ha dos valors vàlids, «fullscreen», que fa un flaix blanc "
+#~ "i negre en tota la pantalla, i «frame_flash», que causa que la barra del "
+#~ "títol de l'aplicació que ha enviat el senyal de campana faci un flaix. Si "
+#~ "no se sap quina aplicació ha enviat el senyal de campana, com sol pasar "
+#~ "per als «sons del sistema» per defecte, la barra del títol de la finestra "
+#~ "que tingui el focus en aquell moment rep un flaix."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
+#~ "keybindings that correspond to these commands. Pressing the keybinding "
+#~ "for run_command_N will execute command_N."
+#~ msgstr ""
+#~ "Les claus /apps/metacity/global_keybindings/run_command_N estableixen "
+#~ "vinculacions de tecles que corresponen a aquestes ordres. Si es prem la "
+#~ "vinculació per a run_command_N, s'executarà command_N."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
+#~ "a keybinding which causes the command specified by this setting to be "
+#~ "invoked."
+#~ msgstr ""
+#~ "La clau /apps/metacity/global_keybindings/run_command_screenshot "
+#~ "estableix una vinculació de tecles que fa que s'invoqui l'ordre "
+#~ "especificada en aquesta configuració."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+#~ "defines a keybinding which causes the command specified by this setting "
+#~ "to be invoked."
+#~ msgstr ""
+#~ "La clau /apps/metacity/global_keybindings/run_command_window_screenshot "
+#~ "estableix una vinculació de tecles que fa que s'invoqui l'ordre "
+#~ "especificada en aquesta configuració."
+
+#~ msgid ""
+#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
+#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+#~ "\"disabled\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "La vinculació de tecles que executa l'ordre amb la numeració corresponent "
+#~ "a /apps/metacity/keybinding_commands. El format és semblant a «&lt;"
+#~ "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
+#~ "flexible i permet minúscules i majúscules, i també abreviacions com ara "
+#~ "«&lt;Ctl&gt;» o «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
+#~ "«disabled», no hi haurà cap vinculació per a aquesta acció."
+
+#~ msgid "The name of a workspace."
+#~ msgstr "El nom d'un espai de treball."
+
+#~ msgid "The screenshot command"
+#~ msgstr "L'ordre de captura de pantalla"
+
+#~ msgid ""
+#~ "The theme determines the appearance of window borders, titlebar, and so "
+#~ "forth."
+#~ msgstr ""
+#~ "El tema determina l'aspecte dels contorns de les finestres, la barra del "
+#~ "títol, etc..."
+
+#~ msgid ""
+#~ "The time delay before raising a window if auto_raise is set to true. The "
+#~ "delay is given in thousandths of a second."
+#~ msgstr ""
+#~ "El retard de temps abans d'alçar una finestra si auto_raise és establer a "
+#~ "«true». El retard es dóna en mil·lèssimes de segon."
+
+#~ msgid ""
+#~ "The window focus mode indicates how windows are activated. It has three "
+#~ "possible values; \"click\" means windows must be clicked in order to "
+#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
+#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
+#~ "the window and unfocused when the mouse leaves the window."
+#~ msgstr ""
+#~ "El mode de focus de la finestra indica com s'activen les finestres. Té "
+#~ "tres valors possibles; «click» vol dir que cal fer clic a les finestres "
+#~ "per a donar-los el focus, «sloppy» vol dir que les finestres reben el "
+#~ "focus quan el punter hi entra a dins, i «mouse» vol dir que les finestres "
+#~ "s'enfoquen quan el punter hi entra a dins, i es desenfoquen quan el "
+#~ "punter abandona la finestra."
+
+#~ msgid "The window screenshot command"
+#~ msgstr "L'ordre de captura de finestra"
+
+#~ msgid ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Aquesta opció determina l'efecte de l'acció de doble clic a la barra de "
+#~ "títol. Els valors permesos són «toggle_shade» (commuta l'estat de "
+#~ "persiana), que commutarà l'estat d'ombrejat de la finestra, "
+#~ "«toggle_maximize» (commuta la maximització), que en commutarà l'estat de "
+#~ "maximització, «toggle_maximize_horizontally» (commuta la maximització "
+#~ "horitzontal) i «toggle_maximize_vertically» (commuta la maximització "
+#~ "vertical), que només commutaran l'estat de maximització en la direcció "
+#~ "indicada, «minimize» (minimitza), que minimitzarà la finestra, "
+#~ "«shade» (persiana), que enrotllarà la finestra cap amunt, «menu», que "
+#~ "mostrarà el menú de la finestra, «lower» (abaixa), que situarà la "
+#~ "finestra darrere de totes les altres, i «none» (res), que no farà res."
+
+#~ msgid ""
+#~ "This option determines the effects of middle-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Aquesta opció determina l'efecte de l'acció de fer clic amb el botó del "
+#~ "mig a la barra de títol. Els valors permesos són «toggle_shade» (commuta "
+#~ "l'estat de persiana), que commutarà l'estat d'ombrejat de la finestra, "
+#~ "«toggle_maximize» (commuta la maximització), que en commutarà l'estat de "
+#~ "maximització, «toggle_maximize_horizontally» (commuta la maximització "
+#~ "horitzontal) i «toggle_maximize_vertically» (commuta la maximització "
+#~ "vertical), que només commutaran l'estat de maximització en la direcció "
+#~ "indicada, «minimize» (minimitza), que minimitzarà la finestra, "
+#~ "«shade» (persiana), que enrotllarà la finestra cap amunt, «menu», que "
+#~ "mostrarà el menú de la finestra, «lower» (abaixa), que situarà la "
+#~ "finestra darrere de totes les altres, i «none» (res), que no farà res."
+
+#~ msgid ""
+#~ "This option determines the effects of right-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Aquesta opció determina l'efecte de l'acció de fer clic amb el botó "
+#~ "secundari a la barra de títol. Els valors permesos són "
+#~ "«toggle_shade» (commuta l'estat de persiana), que commutarà l'estat "
+#~ "d'ombrejat de la finestra, «toggle_maximize» (commuta la maximització), "
+#~ "que en commutarà l'estat de maximització, "
+#~ "«toggle_maximize_horizontally» (commuta la maximització horitzontal) i "
+#~ "«toggle_maximize_vertically» (commuta la maximització vertical), que "
+#~ "només commutaran l'estat de maximització en la direcció indicada, "
+#~ "«minimize» (minimitza), que minimitzarà la finestra, «shade» (persiana), "
+#~ "que enrotllarà la finestra cap amunt, «menu», que mostrarà el menú de la "
+#~ "finestra, «lower» (abaixa), que situarà la finestra darrere de totes les "
+#~ "altres, i «none» (res), que no farà res."
+
+#~ msgid ""
+#~ "This option provides additional control over how newly created windows "
+#~ "get focus. It has two possible values; \"smart\" applies the user's "
+#~ "normal focus mode, and \"strict\" results in windows started from a "
+#~ "terminal not being given focus."
+#~ msgstr ""
+#~ "Aquesta opció proporciona control adicional sobre com les finestres noves "
+#~ "obtenen el focus. Té dos valors possibles: «smart», que aplica el focus "
+#~ "normal d'usuari, i «strict», que fa que no es doni el focus a les "
+#~ "finestres que s'iniciïn des d'un terminal."
+
+#~ msgid ""
+#~ "Turns on a visual indication when an application or the system issues a "
+#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+#~ "environments."
+#~ msgstr ""
+#~ "Activa una indicació visual quan una aplicació o el sistema envia un "
+#~ "senyal de «campana» o «sons»; és útil per als durs d'orella i per a l'ús "
+#~ "en ambients amb soroll."
+
+#~ msgid "Use standard system font in window titles"
+#~ msgstr ""
+#~ "Utilitza el tipus de lletra estàndard del sistema en els títols de les "
+#~ "finestres"
+
+#~ msgid "Visual Bell Type"
+#~ msgstr "Tipus de «sons» visual"
+
+#~ msgid "Whether raising should be a side-effect of other user interactions"
+#~ msgstr ""
+#~ "Si l'alçat hauria de ser un efecte secundari d'altres interaccions de "
+#~ "l'usuari"
+
+#~ msgid "Whether to resize with the right button"
+#~ msgstr "Si es canviarà la mida amb el botó secundari"
+
+#~ msgid "Window focus mode"
+#~ msgstr "Mode de focus de les finestres"
+
+#~ msgid "Window title font"
+#~ msgstr "Tipus de lletra del títol de les finestres"
+
+#~ msgid "Title"
+#~ msgstr "Títol"
+
+#~ msgid "Class"
+#~ msgstr "Classe"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "S'ha produït un error en executar «%s»:\n"
+#~ "%s."
+
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "S'ha especificat <author> dues vegades per a aquest tema"
+
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr "S'ha especificat <copyright> dues vegades per a aquest tema"
+
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "S'ha especificat <date> dues vegades per a aquest tema"
+
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr "S'ha especificat <description> dues vegades per a aquest tema"
+
+#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
+#~ msgstr "El fitxer de tema %s no conté un element arrel <metacity_theme>"
+
+#~ msgid "/Windows/tearoff"
+#~ msgstr "/Finestres/separador"
+
+#~ msgid "/Windows/_Dialog"
+#~ msgstr "/Finestres/_Diàleg"
+
+#~ msgid "/Windows/_Modal dialog"
+#~ msgstr "/Finestres/Diàleg _modal"
+
+#~ msgid "/Windows/Des_ktop"
+#~ msgstr "/Finestres/_Escriptori"
 
 #~ msgid ""
 #~ "Error launching metacity-dialog to print an error about a command: %s\n"
@@ -2598,11 +2654,11 @@ msgstr ""
 #~ "will be no keybinding for this action."
 #~ msgstr ""
 #~ "La vinculació de tecles que canvia a l'espai de treball a sobre de "
-#~ "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
-#~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
-#~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
-#~ "vinculació per a aquesta acció."
+#~ "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
+#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
+#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+#~ "haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding that switches to the workspace below the current "
@@ -2613,11 +2669,11 @@ msgstr ""
 #~ "will be no keybinding for this action."
 #~ msgstr ""
 #~ "La vinculació de tecles que canvia a l'espai de treball sota l'espai de "
-#~ "treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
-#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció "
-#~ "a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
-#~ "acció."
+#~ "treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
+#~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
+#~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
+#~ "vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding that switches to the workspace on the left of the current "
@@ -2628,11 +2684,11 @@ msgstr ""
 #~ "will be no keybinding for this action."
 #~ msgstr ""
 #~ "La vinculació de tecles que canvia a l'espai de treball a l'esquerra de "
-#~ "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
-#~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
-#~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
-#~ "vinculació per a aquesta acció."
+#~ "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
+#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
+#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+#~ "haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding that switches to the workspace on the right of the current "
@@ -2643,11 +2699,11 @@ msgstr ""
 #~ "will be no keybinding for this action."
 #~ msgstr ""
 #~ "La vinculació de tecles que canvia a l'espai de treball a la dreta de "
-#~ "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
-#~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
-#~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
-#~ "vinculació per a aquesta acció."
+#~ "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
+#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
+#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+#~ "haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
@@ -2884,11 +2940,11 @@ msgstr ""
 #~ "then there will be no keybinding for this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a amagar totes les finestres normals i "
-#~ "establir el focus al fons de l'escriptori. El format és «&lt;Control&gt;a» "
-#~ "o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
-#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
-#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-#~ "haurà cap vinculació per a aquesta acció."
+#~ "establir el focus al fons de l'escriptori. El format és «&lt;Control&gt;"
+#~ "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i "
+#~ "permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+#~ "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no "
+#~ "hi haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to maximize a window. The format looks like \"&lt;"
@@ -2899,10 +2955,11 @@ msgstr ""
 #~ "action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a maximitzar una finestra. El format és "
-#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-#~ "és prou flexible i permet minúscules i majúscules, i també abreviacions "
-#~ "com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena "
-#~ "especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding used to minimize a window. The format looks like \"&lt;"
@@ -2930,7 +2987,8 @@ msgstr ""
 #~ "avall. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 #~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 #~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace to the left. The "
@@ -2941,8 +2999,8 @@ msgstr ""
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra un espai de treball a "
-#~ "l'esquerra. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
+#~ "l'esquerra. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
 #~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 #~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
 #~ "vinculació per a aquesta acció."
@@ -2986,10 +3044,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 1. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 10. The format looks "
@@ -3000,10 +3059,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 10. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 11. The format looks "
@@ -3014,10 +3074,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 11. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 12. The format looks "
@@ -3028,10 +3089,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 12. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 2. The format looks "
@@ -3042,10 +3104,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 2. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 3. The format looks "
@@ -3056,10 +3119,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 3. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 4. The format looks "
@@ -3070,10 +3134,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 4. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 5. The format looks "
@@ -3084,10 +3149,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 5. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 6. The format looks "
@@ -3098,10 +3164,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 6. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 7. The format looks "
@@ -3112,10 +3179,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 7. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 8. The format looks "
@@ -3126,10 +3194,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 8. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 9. The format looks "
@@ -3140,10 +3209,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a moure una finestra a l'espai de treball 9. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between panels and the "
@@ -3170,10 +3240,11 @@ msgstr ""
 #~ msgstr ""
 #~ "La vinculació de tecles que mou el focus cap enrere entre els quadres i "
 #~ "l'escriptori, sense utilitzar una finestra emergent. El format és "
-#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-#~ "és prou flexible i permet minúscules i majúscules, i també abreviacions "
-#~ "com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena "
-#~ "especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows of an "
@@ -3188,11 +3259,11 @@ msgstr ""
 #~ "La vinculació de tecles que mou el focus cap enrere entre finestres d'una "
 #~ "aplicació, sense utilitzar una finestra emergent. Mantenint premuda la "
 #~ "techa de «majúscules» juntament amb aquesta convinació de tecles, fa que "
-#~ "es vagi enrere. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1». L'analitzador és força flexible i permet minúscules i "
-#~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
-#~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
-#~ "vinculació per a aquesta acció."
+#~ "es vagi enrere. El format és semblant a «&lt;Control&gt;a» o «&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1». L'analitzador és força flexible i permet "
+#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
+#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+#~ "haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows of an "
@@ -3210,8 +3281,8 @@ msgstr ""
 #~ "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 #~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 #~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled» (inhabilitat), no hi haurà cap vinculació per a "
-#~ "aquesta acció."
+#~ "cadena especial «disabled» (inhabilitat), no hi haurà cap vinculació per "
+#~ "a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows without a "
@@ -3240,10 +3311,10 @@ msgstr ""
 #~ msgstr ""
 #~ "La vinculació de tecles que mou el focus cap enrere entre finestres, "
 #~ "utilitzant una finestra emergent. El format és semblant a «&lt;Control&gt;"
-#~ "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
-#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
-#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-#~ "haurà cap vinculació per a aquesta acció."
+#~ "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i "
+#~ "permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+#~ "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no "
+#~ "hi haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to move focus between panels and the desktop, using a "
@@ -3270,10 +3341,11 @@ msgstr ""
 #~ msgstr ""
 #~ "La vinculació de tecles que mou el focus entre els quadres i "
 #~ "l'escriptori, sense utilitzar una finestra emergent. El format és "
-#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-#~ "és prou flexible i permet minúscules i majúscules, i també abreviacions "
-#~ "com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena "
-#~ "especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application "
@@ -3288,10 +3360,11 @@ msgstr ""
 #~ "La vinculació de tecles que mou el focus entre finestres d'una aplicació, "
 #~ "sense utilitzar una finestra emergent. Prement la tecla de majúscules "
 #~ "aquesta vinculació fa que la direcció sigui cap enrere. El format és "
-#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-#~ "és prou flexible i permet minúscules i majúscules, i també abreviacions "
-#~ "com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena "
-#~ "especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application, "
@@ -3357,8 +3430,8 @@ msgstr ""
 #~ msgstr ""
 #~ "La vinculació de tecles per a seleccionar si una finestra està sempre per "
 #~ "damunt. Una finestra que estiga sempre per damunt serà visible per damunt "
-#~ "de les altres finestres que s'interseccionen. El format és semblant a «&lt;"
-#~ "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
+#~ "de les altres finestres que s'interseccionen. El format és semblant a "
+#~ "«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
 #~ "flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
 #~ "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 #~ "«disabled», no hi haurà cap vinculació per a aquesta acció."
@@ -3390,7 +3463,8 @@ msgstr ""
 #~ "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 #~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 #~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding used to toggle shaded/unshaded state. The format looks "
@@ -3403,9 +3477,9 @@ msgstr ""
 #~ "La vinculació de tecles per a canviar entre l'estat ombrejat i "
 #~ "desombrejat. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 #~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
-#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció "
-#~ "a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
-#~ "acció."
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "The keybinding used to toggle whether the window is on all workspaces or "
@@ -3431,10 +3505,11 @@ msgstr ""
 #~ "action."
 #~ msgstr ""
 #~ "La vinculació de tecles per a desmaximitzar una finestra. El format és "
-#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-#~ "és prou flexible i permet minúscules i majúscules, i també abreviacions "
-#~ "com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena "
-#~ "especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding which display's the panel's \"Run Application\" dialog "
@@ -3475,10 +3550,11 @@ msgstr ""
 #~ msgstr ""
 #~ "La vinculació de tecles que invoca la utilitat de captures de pantalla "
 #~ "del quadre per a prendre una captura d'una finestra. El format és "
-#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-#~ "és prou flexible i permet minúscules i majúscules, i també abreviacions "
-#~ "com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena "
-#~ "especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "The keybinding which invokes the panel's screenshot utility. The format "
@@ -3489,8 +3565,8 @@ msgstr ""
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "La vinculació de tecles que invoca la utilitat de captures de pantalla "
-#~ "del quadre. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
+#~ "del quadre. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
 #~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 #~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
 #~ "vinculació per a aquesta acció."
@@ -3507,7 +3583,8 @@ msgstr ""
 #~ "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 #~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 #~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "This keybinding changes whether a window is above or below other windows. "
@@ -3522,11 +3599,11 @@ msgstr ""
 #~ "Aquesta vinculació de tecles canvia si una finestra és per damunt o per "
 #~ "sota d'altres finestres. Si la finestra està coberta per una altra "
 #~ "finestra, s'alça la finestra per damunt de les altres, quedant totalment "
-#~ "visible, i posa a sota les altres. El format és semblant a «&lt;Control&gt;"
-#~ "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
-#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
-#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-#~ "haurà cap vinculació per a aquesta acció."
+#~ "visible, i posa a sota les altres. El format és semblant a «&lt;"
+#~ "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
+#~ "flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
+#~ "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
+#~ "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "This keybinding lowers a window below other windows. The format looks "
@@ -3540,7 +3617,8 @@ msgstr ""
 #~ "és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 #~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 #~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+#~ "acció."
 
 #~ msgid ""
 #~ "This keybinding moves a window against the north (top) side of the "
@@ -3575,18 +3653,18 @@ msgstr ""
 
 #~ msgid ""
 #~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
+#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
+#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+#~ "set the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "Aquesta vinculació de tecles mou una finestra cap a la part est (dreta) "
-#~ "de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
-#~ "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
-#~ "establiu l'opció a la cadena especial «disabled», no hi haurà cap "
-#~ "vinculació per a aquesta acció."
+#~ "de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
+#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
+#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+#~ "haurà cap vinculació per a aquesta acció."
 
 #~ msgid ""
 #~ "This keybinding moves a window into the north-east (top right) corner of "
@@ -3665,10 +3743,10 @@ msgstr ""
 
 #~ msgid ""
 #~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
+#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
+#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+#~ "set the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "Aquesta vinculació de tecles mou una finestra cap a la part l'oest "
@@ -3687,10 +3765,11 @@ msgstr ""
 #~ "this action."
 #~ msgstr ""
 #~ "Aquesta vinculació de tecles eleva la finestra per damunt de les altres. "
-#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
-#~ "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
-#~ "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-#~ "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+#~ "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+#~ "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu "
+#~ "l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a "
+#~ "aquesta acció."
 
 #~ msgid ""
 #~ "This keybinding resizes a window to fill available horizontal space. The "
@@ -3717,10 +3796,10 @@ msgstr ""
 #~ msgstr ""
 #~ "Aquesta vinculació de tecles redimensiona una finestra per a que plene "
 #~ "tot l'espai vertical disponible. El format és semblant a «&lt;Control&gt;"
-#~ "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
-#~ "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
-#~ "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-#~ "haurà cap vinculació per a aquesta acció."
+#~ "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i "
+#~ "permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+#~ "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no "
+#~ "hi haurà cap vinculació per a aquesta acció."
 
 #~ msgid "Unmaximize Window"
 #~ msgstr "Desmaximitza la finestra"
