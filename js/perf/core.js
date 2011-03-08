@@ -21,6 +21,24 @@ let METRICS = {
     overviewFpsSubsequent:
     { description: "Frames rate when going to the overview, second time",
       units: "frames / s" },
+    overviewFps5Windows:
+    { description: "Frames rate when going to the overview, 5 windows open",
+      units: "frames / s" },
+    overviewFps10Windows:
+    { description: "Frames rate when going to the overview, 10 windows open",
+      units: "frames / s" },
+    overviewFps5Maximized:
+    { description: "Frames rate when going to the overview, 5 maximized windows open",
+      units: "frames / s" },
+    overviewFps10Maximized:
+    { description: "Frames rate when going to the overview, 10 maximized windows open",
+      units: "frames / s" },
+    overviewFps5Alpha:
+    { description: "Frames rate when going to the overview, 5 alpha-transparent windows open",
+      units: "frames / s" },
+    overviewFps10Alpha:
+    { description: "Frames rate when going to the overview, 10 alpha-transparent windows open",
+      units: "frames / s" },
     usedAfterOverview:
     { description: "Malloc'ed bytes after the overview is shown once",
       units: "B" },
@@ -28,6 +46,16 @@ let METRICS = {
     { description: "Additional malloc'ed bytes the second time the overview is shown",
       units: "B" }
 };
+
+let WINDOW_CONFIGS = [
+    { width: 640, height: 480, alpha: false, maximized: false, count: 1,  metric: 'overviewFpsSubsequent' },
+    { width: 640, height: 480, alpha: false, maximized: false, count: 5,  metric: 'overviewFps5Windows'  },
+    { width: 640, height: 480, alpha: false, maximized: false, count: 10, metric: 'overviewFps10Windows'  },
+    { width: 640, height: 480, alpha: false, maximized: true,  count: 5,  metric: 'overviewFps5Maximized' },
+    { width: 640, height: 480, alpha: false, maximized: true,  count: 10, metric: 'overviewFps10Maximized' },
+    { width: 640, height: 480, alpha: true,  maximized: false, count: 5,  metric: 'overviewFps5Alpha' },
+    { width: 640, height: 480, alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha' }
+];
 
 function run() {
     Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
@@ -38,13 +66,24 @@ function run() {
                               Scripting.scriptEvent('overviewShowDone');
                           });
 
-    Scripting.destroyTestWindows();
-    Scripting.createTestWindow(640, 480, false, false);
-    Scripting.waitTestWindows();
-
     yield Scripting.sleep(1000);
-    yield Scripting.waitLeisure();
-    for (let i = 0; i < 2; i++) {
+
+    for (let i = 0; i < 2 * WINDOW_CONFIGS.length; i++) {
+        // We go to the overview twice for each configuration; the first time
+        // to calculate the mipmaps for the windows, the second time to get
+        // a clean set of numbers.
+        if ((i % 2) == 0) {
+            let config = WINDOW_CONFIGS[i / 2];
+            yield Scripting.destroyTestWindows();
+
+            for (let k = 0; k < config.count; k++)
+                yield Scripting.createTestWindow(config.width, config.height, config.alpha, config.maximized);
+
+            yield Scripting.waitTestWindows();
+            yield Scripting.sleep(1000);
+            yield Scripting.waitLeisure();
+        }
+
         Scripting.scriptEvent('overviewShowStart');
         Main.overview.show();
 
@@ -117,9 +156,15 @@ function _frameDone(time) {
         if (overviewShowCount == 1) {
             METRICS.overviewLatencyFirst.value = overviewLatency;
             METRICS.overviewFpsFirst.value = fps;
-        } else {
+        } else if (overviewShowCount == 2) {
             METRICS.overviewLatencySubsequent.value = overviewLatency;
-            METRICS.overviewFpsSubsequent.value = fps;
+        }
+
+        // Other than overviewFpsFirst, we collect FPS metrics the second
+        // we show each window configuration. overviewShowCount is 1,2,3...
+        if (overviewShowCount % 2 == 0) {
+            let config = WINDOW_CONFIGS[(overviewShowCount / 2) - 1];
+            METRICS[config.metric].value = fps;
         }
     }
 }
