@@ -572,7 +572,7 @@ clutter_win32_handle_event (const MSG *msg)
             clutter_event_set_device (event, core_pointer);
 
             /* we entered the stage */
-            _clutter_stage_add_device (stage, event->crossing.device);
+            _clutter_stage_add_device (stage, core_pointer);
 
             take_and_queue_event (crossing);
 
