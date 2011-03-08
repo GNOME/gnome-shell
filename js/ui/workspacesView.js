@@ -553,6 +553,7 @@ WorkspacesDisplay.prototype = {
         this.workspacesView = null;
 
         this._inDrag = false;
+        this._cancelledDrag = false;
         this._zoomOut = false;
         this._zoomFraction = 0;
 
@@ -562,6 +563,7 @@ WorkspacesDisplay.prototype = {
         this._itemDragBeginId = 0;
         this._itemDragEndId = 0;
         this._windowDragBeginId = 0;
+        this._windowDragCancelledId = 0;
         this._windowDragEndId = 0;
     },
 
@@ -597,6 +599,9 @@ WorkspacesDisplay.prototype = {
         if (this._windowDragBeginId == 0)
             this._windowDragBeginId = Main.overview.connect('window-drag-begin',
                                                             Lang.bind(this, this._dragBegin));
+        if (this._windowDragCancelledId == 0)
+            this._windowDragCancelledId = Main.overview.connect('window-drag-cancelled',
+                                                            Lang.bind(this, this._dragCancelled));
         if (this._windowDragEndId == 0)
             this._windowDragEndId = Main.overview.connect('window-drag-end',
                                                           Lang.bind(this, this._dragEnd));
@@ -630,6 +635,10 @@ WorkspacesDisplay.prototype = {
         if (this._windowDragBeginId > 0) {
             Main.overview.disconnect(this._windowDragBeginId);
             this._windowDragBeginId = 0;
+        }
+        if (this._windowDragCancelledId > 0) {
+            Main.overview.disconnect(this._windowDragCancelledId);
+            this._windowDragCancelledId = 0;
         }
         if (this._windowDragEndId > 0) {
             Main.overview.disconnect(this._windowDragEndId);
@@ -782,7 +791,7 @@ WorkspacesDisplay.prototype = {
         if (Main.overview.animationInProgress)
             return;
 
-        let shouldZoom = this._controls.hover || this._inDrag;
+        let shouldZoom = this._controls.hover || (this._inDrag && !this._cancelledDrag);
         if (shouldZoom != this._zoomOut) {
             this._zoomOut = shouldZoom;
             this._updateWorkspacesGeometry();
@@ -805,6 +814,12 @@ WorkspacesDisplay.prototype = {
 
     _dragBegin: function() {
         this._inDrag = true;
+        this._cancelledDrag = false;
+        this._updateZoom();
+    },
+
+    _dragCancelled: function() {
+        this._cancelledDrag = true;
         this._updateZoom();
     },
 
