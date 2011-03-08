@@ -42,10 +42,10 @@ BaseIcon.prototype = {
         box.add_actor(this._iconBin);
 
         if (params.showLabel) {
-            this._name = new St.Label({ text: label });
-            box.add_actor(this._name);
+            this.label = new St.Label({ text: label });
+            box.add_actor(this.label);
         } else {
-            this._name = null;
+            this.label = null;
         }
 
         if (params.createIcon)
@@ -67,8 +67,8 @@ BaseIcon.prototype = {
 
         let childBox = new Clutter.ActorBox();
 
-        if (this._name) {
-            let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(-1);
+        if (this.label) {
+            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(-1);
             preferredHeight += this._spacing + labelNatHeight;
 
             let labelHeight = availHeight >= preferredHeight ? labelNatHeight
@@ -79,7 +79,7 @@ BaseIcon.prototype = {
             childBox.x2 = availWidth;
             childBox.y1 = iconSize + this._spacing;
             childBox.y2 = childBox.y1 + labelHeight;
-            this._name.allocate(childBox, flags);
+            this.label.allocate(childBox, flags);
         }
 
         childBox.x1 = Math.floor((availWidth - iconNatWidth) / 2);
@@ -98,8 +98,8 @@ BaseIcon.prototype = {
         alloc.min_size = iconMinHeight;
         alloc.natural_size = iconNatHeight;
 
-        if (this._name) {
-            let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(forWidth);
+        if (this.label) {
+            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(forWidth);
             alloc.min_size += this._spacing + labelMinHeight;
             alloc.natural_size += this._spacing + labelNatHeight;
         }

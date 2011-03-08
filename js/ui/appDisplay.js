@@ -434,6 +434,8 @@ AppWellIcon.prototype = {
         this.icon = new AppIcon(app, iconParams);
         this.actor.set_child(this.icon.actor);
 
+        this.actor.label_actor = this.icon.label;
+
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));

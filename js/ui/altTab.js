@@ -587,7 +587,7 @@ SwitcherList.prototype = {
         this._rightArrow.opacity = this._rightGradient.opacity;
     },
 
-    addItem : function(item) {
+    addItem : function(item, label) {
         let bbox = new St.Button({ style_class: 'item-box',
                                    reactive: true });
 
@@ -597,6 +597,8 @@ SwitcherList.prototype = {
         let n = this._items.length;
         bbox.connect('clicked', Lang.bind(this, function() { this._onItemClicked(n); }));
         bbox.connect('enter-event', Lang.bind(this, function() { this._onItemEnter(n); }));
+
+        bbox.label_actor = label;
 
         this._items.push(bbox);
     },
@@ -983,7 +985,7 @@ AppSwitcher.prototype = {
 
     _addIcon : function(appIcon) {
         this.icons.push(appIcon);
-        this.addItem(appIcon.actor);
+        this.addItem(appIcon.actor, appIcon.label);
 
         let n = this._arrows.length;
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
@@ -1053,9 +1055,12 @@ ThumbnailList.prototype = {
                 this._labels.push(bin);
                 bin.add_actor(name);
                 box.add_actor(bin);
+
+                this.addItem(box, name);
+            } else {
+                this.addItem(box, null);
             }
 
-            this.addItem(box);
         }
     },
 

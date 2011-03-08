@@ -39,6 +39,7 @@ SearchResult.prototype = {
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                              { createIcon: this.metaInfo['createIcon'] });
             content.set_child(icon.actor);
+            this.actor.label_actor = icon.label;
         }
         this._content = content;
         this.actor.set_child(content);
@@ -259,6 +260,7 @@ SearchResults.prototype = {
         let title = new St.Label({ text: provider.name,
                                    style_class: 'dash-search-button-label' });
 
+        button.label_actor = title;
         bin.set_child(title);
         button.set_child(bin);
         provider.actor = button;

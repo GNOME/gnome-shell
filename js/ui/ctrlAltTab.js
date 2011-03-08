@@ -323,6 +323,6 @@ CtrlAltTabSwitcher.prototype = {
         let text = new St.Label({ text: item.name });
         box.add(text, { x_fill: false });
 
-        this.addItem(box);
+        this.addItem(box, text);
     }
 };
