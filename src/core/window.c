@@ -64,6 +64,9 @@ static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
 static void     invalidate_work_areas     (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
+static void     set_wm_state_on_xwindow   (MetaDisplay    *display,
+                                           Window          xwindow,
+                                           int             state);
 static void     set_wm_state              (MetaWindow     *window,
                                            int             state);
 static void     set_net_wm_state          (MetaWindow     *window);
@@ -517,6 +520,90 @@ meta_window_new (MetaDisplay *display,
   return window;
 }
 
+/* The MUTTER_WM_CLASS_FILTER environment variable is designed for
+ * performance and regression testing environments where we want to do
+ * tests with only a limited set of windows and ignore all other windows
+ *
+ * When it is set to a comma separated list of WM_CLASS class names, all
+ * windows not matching the list will be ignored.
+ *
+ * Returns TRUE if window has been filtered out and should be ignored.
+ */
+static gboolean
+maybe_filter_window (MetaDisplay       *display,
+                     Window             xwindow,
+                     gboolean           must_be_viewable,
+                     XWindowAttributes *attrs)
+{
+  static char **filter_wm_classes = NULL;
+  static gboolean initialized = FALSE;
+  XClassHint class_hint;
+  gboolean filtered;
+  Status success;
+  int i;
+
+  if (!initialized)
+    {
+      const char *filter_string = g_getenv ("MUTTER_WM_CLASS_FILTER");
+      if (filter_string)
+        filter_wm_classes = g_strsplit (filter_string, ",", -1);
+      initialized = TRUE;
+    }
+
+  if (!filter_wm_classes || !filter_wm_classes[0])
+    return FALSE;
+
+  filtered = TRUE;
+
+  meta_error_trap_push (display);
+  success = XGetClassHint (display->xdisplay, xwindow, &class_hint);
+
+  if (success)
+    {
+      for (i = 0; filter_wm_classes[i]; i++)
+        {
+          if (strcmp (class_hint.res_class, filter_wm_classes[i]) == 0)
+            {
+              filtered = FALSE;
+              break;
+            }
+        }
+
+      XFree (class_hint.res_name);
+      XFree (class_hint.res_class);
+    }
+
+  if (filtered)
+    {
+      /* We want to try and get the window managed by the next WM that come along,
+       * so we need to make sure that windows that are requested to be mapped while
+       * Mutter is running (!must_be_viewable), or windows already viewable at startup
+       * get a non-withdrawn WM_STATE property. Previously unmapped windows are left
+       * with whatever WM_STATE property they had.
+       */
+      if (!must_be_viewable || attrs->map_state == IsViewable)
+        {
+          gulong old_state;
+
+          if (!meta_prop_get_cardinal_with_atom_type (display, xwindow,
+                                                      display->atom_WM_STATE,
+                                                      display->atom_WM_STATE,
+                                                      &old_state))
+            old_state = WithdrawnState;
+
+          if (old_state == WithdrawnState)
+            set_wm_state_on_xwindow (display, xwindow, NormalState);
+        }
+
+      /* Make sure filtered windows are hidden from view */
+      XUnmapWindow (display->xdisplay, xwindow);
+    }
+
+  meta_error_trap_pop (display);
+
+  return filtered;
+}
+
 MetaWindow*
 meta_window_new_with_attrs (MetaDisplay       *display,
                             Window             xwindow,
@@ -578,6 +665,12 @@ meta_window_new_with_attrs (MetaDisplay       *display,
     meta_verbose ("Not managing our own windows\n");
     return NULL;
   }
+
+  if (maybe_filter_window (display, xwindow, must_be_viewable, attrs))
+    {
+      meta_verbose ("Not managing filtered window\n");
+      return NULL;
+    }
 
   /* Grab server */
   meta_display_grab (display);
@@ -1632,13 +1725,11 @@ meta_window_update_on_all_workspaces (MetaWindow *window)
 }
 
 static void
-set_wm_state (MetaWindow *window,
-              int         state)
+set_wm_state_on_xwindow (MetaDisplay *display,
+                         Window       xwindow,
+                         int          state)
 {
   unsigned long data[2];
-
-  meta_verbose ("Setting wm state %s on %s\n",
-                wm_state_to_string (state), window->desc);
 
   /* Mutter doesn't use icon windows, so data[1] should be None
    * according to the ICCCM 2.0 Section 4.1.3.1.
@@ -1646,12 +1737,22 @@ set_wm_state (MetaWindow *window,
   data[0] = state;
   data[1] = None;
 
-  meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom_WM_STATE,
-                   window->display->atom_WM_STATE,
+  meta_error_trap_push (display);
+  XChangeProperty (display->xdisplay, xwindow,
+                   display->atom_WM_STATE,
+                   display->atom_WM_STATE,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (display);
+}
+
+static void
+set_wm_state (MetaWindow *window,
+              int         state)
+{
+  meta_verbose ("Setting wm state %s on %s\n",
+                wm_state_to_string (state), window->desc);
+
+  set_wm_state_on_xwindow (window->display, window->xwindow, state);
 }
 
 static void
