@@ -16,8 +16,8 @@
   <repository type="cvs" name="libxklavier.freedesktop.org"
       cvsroot=":pserver:anoncvs@anoncvs.freedesktop.org:/cvs/xklavier"
       password=""/>
-  <repository type="git" name="git.collabora.co.uk"
-      href="git://git.collabora.co.uk/git/"/>
+  <repository type="git" name="git.freedesktop.org"
+      href="git://anongit.freedesktop.org"/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -251,7 +251,7 @@
   </autotools>
 
   <autotools id="telepathy-glib" autogenargs="--disable-Werror" >
-    <branch repo="git.collabora.co.uk" module="telepathy-glib" />
+    <branch repo="git.freedesktop.org" module="telepathy/telepathy-glib" />
     <dependencies>
       <dep package="gobject-introspection"/>
     </dependencies>
