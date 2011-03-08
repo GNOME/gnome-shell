@@ -218,7 +218,7 @@ mutter_theme_viewer_SOURCES=  \
 bin_PROGRAMS=mutter mutter-theme-viewer
 
 mutter_SOURCES = core/mutter.c
-mutter_LDADD = libmutter-wm.la
+mutter_LDADD = $(MUTTER_LIBS) libmutter-wm.la
 
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
@@ -257,9 +257,9 @@ testasyncgetprop_SOURCES = core/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD = libmutter-wm.la
-testgradient_LDADD = libmutter-wm.la
-testasyncgetprop_LDADD = libmutter-wm.la
+testboxes_LDADD = $(MUTTER_LIBS) libmutter-wm.la
+testgradient_LDADD = $(MUTTER_LIBS) libmutter-wm.la
+testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter-wm.la
 
 @INTLTOOL_DESKTOP_RULE@
 
