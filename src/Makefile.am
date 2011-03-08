@@ -262,6 +262,7 @@ Shell_0_1_gir_FILES = $(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources))
 Shell_0_1_gir_SCANNERFLAGS = --include-uninstalled=$(builddir)/St-1.0.gir \
 	--add-include-path=$(MUTTER_GIR_DIR)
 INTROSPECTION_GIRS += Shell-0.1.gir
+CLEANFILES += Shell-0.1.gir
 
 St-1.0.gir: libst-1.0.la
 St_1_0_gir_INCLUDES = Clutter-1.0 Gtk-3.0
@@ -270,6 +271,7 @@ St_1_0_gir_LIBS = libst-1.0.la
 St_1_0_gir_FILES = $(filter-out %-private.h $(st_non_gir_sources), $(addprefix $(srcdir)/,$(st_source_h))) \
 	$(addprefix $(srcdir)/,$(st_source_c))
 INTROSPECTION_GIRS += St-1.0.gir
+CLEANFILES += St-1.0.gir
 
 Gdm-1.0.gir: libgdmuser-1.0.la
 Gdm_1_0_gir_INCLUDES = GObject-2.0 GdkPixbuf-2.0
@@ -278,3 +280,4 @@ Gdm_1_0_gir_LIBS = libgdmuser-1.0.la
 Gdm_1_0_gir_FILES = $(filter-out %-private.h, $(addprefix $(srcdir)/,$(gdmuser_source_h))) \
 	$(addprefix $(srcdir)/,$(gdmuser_source_c))
 INTROSPECTION_GIRS += Gdm-1.0.gir
+CLEANFILES += Gdm-1.0.gir

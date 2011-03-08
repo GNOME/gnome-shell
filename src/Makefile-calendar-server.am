@@ -7,6 +7,7 @@ $(service_DATA): $(service_in_files) Makefile
 	$(AM_V_GEN)									\
 		[ -d $(@D) ] || $(mkdir_p) $(@D) ;					\
 		sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
+CLEANFILES += $(service_DATA)
 
 libexec_PROGRAMS += gnome-shell-calendar-server
 
