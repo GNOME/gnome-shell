@@ -246,8 +246,8 @@ function _collect(scriptModule, outputFile) {
         Shell.write_string_to_stream(out, '"events":\n');
         Shell.PerfLog.get_default().dump_events(out);
 
-        let monitors = global.get_monitors()
-        let primary = global.get_primary_monitor()
+        let monitors = global.get_monitors();
+        let primary = global.get_primary_monitor();
         Shell.write_string_to_stream(out, ',\n"monitors":\n[');
         for (let i = 0; i < monitors.length; i++) {
             let monitor = monitors[i];
@@ -266,7 +266,21 @@ function _collect(scriptModule, outputFile) {
         Shell.write_string_to_stream(out, ',\n"metrics":\n[ ');
         let first = true;
         for (let name in scriptModule.METRICS) {
-            let metric = scriptModule.METRICS[name]; 
+            let metric = scriptModule.METRICS[name];
+            // Extra checks here because JSON.stringify generates
+            // invalid JSON for undefined values
+            if (metric.description == null) {
+                log("Error: No description found for metric " + name);
+                continue;
+            }
+            if (metric.units == null) {
+                log("Error: No units found for metric " + name);
+                continue;
+            }
+            if (metric.value == null) {
+                log("Error: No value found for metric " + name);
+                continue;
+            }
 
             if (!first)
                 Shell.write_string_to_stream(out, ',\n  ');
