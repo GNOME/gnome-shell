@@ -885,8 +885,11 @@ clutter_event_get_device (const ClutterEvent *event)
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
+      break;
+
     case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
+      device = event->crossing.device;
       break;
 
     case CLUTTER_BUTTON_PRESS:
