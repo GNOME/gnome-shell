@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-06 13:39+0100\n"
-"PO-Revision-Date: 2011-03-06 13:40+0100\n"
+"POT-Creation-Date: 2011-03-08 15:24+0100\n"
+"PO-Revision-Date: 2011-03-08 15:29+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -167,27 +167,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:195
+#: ../js/ui/appDisplay.js:226
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:285
+#: ../js/ui/appDisplay.js:324
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:311
+#: ../js/ui/appDisplay.js:350
 msgid "SETTINGS"
 msgstr "INNSTILLINGER"
 
-#: ../js/ui/appDisplay.js:565
+#: ../js/ui/appDisplay.js:612
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:615
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:569
+#: ../js/ui/appDisplay.js:616
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -347,7 +347,7 @@ msgstr "Denne uken"
 msgid "Next week"
 msgstr "Neste uke"
 
-#: ../js/ui/dash.js:174
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
 msgid "Remove"
 msgstr "Fjern"
 
@@ -355,54 +355,54 @@ msgstr "Fjern"
 msgid "Date and Time Settings"
 msgstr "Innstillinger for dato og klokkeslett"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "Åpne kalender"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:176
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:180
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:207
+#: ../js/ui/dateMenu.js:209
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B, %Y"
 
@@ -512,7 +512,11 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1907
+#: ../js/ui/messageTray.js:926
+msgid "Open"
+msgstr "Åpne"
+
+#: ../js/ui/messageTray.js:1963
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -528,17 +532,27 @@ msgstr "Vinduer"
 msgid "Applications"
 msgstr "Programmer"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:202
+msgid "Dash"
+msgstr "Favoritter"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:531
+#: ../js/ui/panel.js:532
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:892
+#: ../js/ui/panel.js:893
 msgid "Activities"
 msgstr "Aktiviteter"
+
+#: ../js/ui/panel.js:994
+msgid "Panel"
+msgstr "Panel"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -562,7 +576,7 @@ msgstr "STEDER & ENHETER"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:612
+#: ../js/ui/popupMenu.js:618
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -909,9 +923,13 @@ msgstr "Sendt %X på %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:103
+#: ../js/ui/viewSelector.js:117
 msgid "Type to search..."
 msgstr "Skriv for å søke …"
+
+#: ../js/ui/viewSelector.js:137 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Søk"
 
 #: ../js/ui/windowAttentionHandler.js:42
 #, c-format
@@ -945,32 +963,36 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/shell-global.c:1298
+#: ../src/main.c:395
+msgid "Print version"
+msgstr "Skriv ut versjon"
+
+#: ../src/shell-global.c:1308
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:1302
+#: ../src/shell-global.c:1312
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:1307
+#: ../src/shell-global.c:1317
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1322
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1327
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -990,10 +1012,6 @@ msgstr "Hjemmemappe"
 #: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Filsystem"
-
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "Søk"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
