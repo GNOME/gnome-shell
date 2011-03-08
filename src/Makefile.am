@@ -225,9 +225,9 @@ stamp-shell-enum-types.h: $(srcdir)/shell-enum-types.h.in $(shell_public_headers
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $< \
-	  $(shell_public_headers_h) ) > $@.tmp && \
-	(cmp -s $@.tmp shell-enum-types.h || mv $@.tmp shell-enum-types.h) && \
-	rm -f $@.tmp && \
+	  $(shell_public_headers_h) ) > $(@F).tmp && \
+	(cmp -s $(@F).tmp shell-enum-types.h || mv $(@F).tmp shell-enum-types.h) && \
+	rm -f $(@F).tmp && \
 	echo timestamp > $(@F)
 EXTRA_DIST += shell-enum-types.h.in
 CLEANFILES += stamp-shell-enum-types.h
@@ -236,9 +236,9 @@ shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $< \
-	  $(shell_public_headers_h) ) > $@.tmp && \
-	mv $@.tmp $@ && \
-	rm -f $@.tmp
+	  $(shell_public_headers_h) ) > $(@F).tmp && \
+	mv $(@F).tmp $(@F) && \
+	rm -f $(@F).tmp
 EXTRA_DIST += shell-enum-types.c.in
 
 libgnome_shell_la_LDFLAGS = -avoid-version
