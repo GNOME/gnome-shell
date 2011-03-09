@@ -44,7 +44,13 @@ let METRICS = {
       units: "B" },
     leakedAfterOverview:
     { description: "Additional malloc'ed bytes the second time the overview is shown",
-      units: "B" }
+      units: "B" },
+    applicationsShowTimeFirst:
+    { description: "Time to switch to applications view, first time",
+      units: "us" },
+    applicationsShowTimeSubsequent:
+    { description: "Time to switch to applications view, second time",
+      units: "us"}
 };
 
 let WINDOW_CONFIGS = [
@@ -61,6 +67,8 @@ function run() {
     Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
     Scripting.defineScriptEvent("overviewShowDone", "Overview finished showing");
     Scripting.defineScriptEvent("afterShowHide", "After a show/hide cycle for the overview");
+    Scripting.defineScriptEvent("applicationsShowStart", "Starting to switch to applications view");
+    Scripting.defineScriptEvent("applicationsShowDone", "Done switching to applications view");
 
     Main.overview.connect('shown', function() {
                               Scripting.scriptEvent('overviewShowDone');
@@ -96,6 +104,21 @@ function run() {
         Scripting.collectStatistics();
         Scripting.scriptEvent('afterShowHide');
     }
+
+    yield Scripting.destroyTestWindows();
+    yield Scripting.sleep(1000);
+
+    Main.overview.show();
+    yield Scripting.waitLeisure();
+
+    for (let i = 0; i < 2; i++) {
+        Scripting.scriptEvent('applicationsShowStart');
+        Main.overview.viewSelector.switchTab('applications');
+        yield Scripting.waitLeisure();
+        Scripting.scriptEvent('applicationsShowDone');
+        Main.overview.viewSelector.switchTab('windows');
+        yield Scripting.waitLeisure();
+    }
 }
 
 let showingOverview = false;
@@ -107,6 +130,8 @@ let mallocUsedSize = 0;
 let overviewShowCount = 0;
 let firstOverviewUsedSize;
 let haveSwapComplete = false;
+let applicationsShowStart;
+let applicationsShowCount = 0;
 
 function script_overviewShowStart(time) {
     showingOverview = true;
@@ -120,6 +145,18 @@ function script_overviewShowDone(time) {
     // need to wait for one more frame to paint before we count
     // ourselves as done.
     finishedShowingOverview = true;
+}
+
+function script_applicationsShowStart(time) {
+    applicationsShowStart = time;
+}
+
+function script_applicationsShowDone(time) {
+    applicationsShowCount++;
+    if (applicationsShowCount == 1)
+        METRICS.applicationsShowTimeFirst.value = time - applicationsShowStart;
+    else
+        METRICS.applicationsShowTimeSubsequent.value = time - applicationsShowStart;
 }
 
 function script_afterShowHide(time) {
