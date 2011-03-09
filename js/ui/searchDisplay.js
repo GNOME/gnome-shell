@@ -49,6 +49,10 @@ SearchResult.prototype = {
                           Lang.bind(this, function() {
                               Main.overview.beginItemDrag(this);
                           }));
+        draggable.connect('drag-cancelled',
+                          Lang.bind(this, function() {
+                              Main.overview.cancelledItemDrag(this);
+                          }));
         draggable.connect('drag-end',
                           Lang.bind(this, function() {
                               Main.overview.endItemDrag(this);

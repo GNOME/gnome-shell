@@ -474,6 +474,10 @@ Overview.prototype = {
         this.emit('item-drag-begin');
     },
 
+    cancelledItemDrag: function(source) {
+        this.emit('item-drag-cancelled');
+    },
+
     endItemDrag: function(source) {
         this.emit('item-drag-end');
     },

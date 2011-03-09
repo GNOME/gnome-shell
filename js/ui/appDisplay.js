@@ -412,6 +412,10 @@ AppWellIcon.prototype = {
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             }));
+        this._draggable.connect('drag-cancelled', Lang.bind(this,
+            function () {
+                Main.overview.cancelledItemDrag(this);
+            }));
         this._draggable.connect('drag-end', Lang.bind(this,
             function () {
                Main.overview.endItemDrag(this);
