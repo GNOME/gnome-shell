@@ -221,8 +221,15 @@ WindowClone.prototype = {
 
         let [width, height] = this.actor.get_transformed_size();
 
-        this.actor.x = _clamp(this.actor.x, 0, global.screen_width  - width);
-        this.actor.y = _clamp(this.actor.y, Main.panel.actor.height, global.screen_height - height);
+        let monitorIndex = this.metaWindow.get_monitor();
+        let availArea = global.get_monitors()[monitorIndex];
+        if (monitorIndex == global.get_primary_monitor_index()) {
+            availArea.y += Main.panel.actor.height;
+            availArea.height -= Main.panel.actor.height;
+        }
+
+        this.actor.x = _clamp(this.actor.x, availArea.x, availArea.x + availArea.width - width);
+        this.actor.y = _clamp(this.actor.y, availArea.y, availArea.y + availArea.height - height);
     },
 
     _zoomStart : function () {
