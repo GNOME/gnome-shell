@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&component=general\n"
 "POT-Creation-Date: 2011-02-21 01:21+0000\n"
-"PO-Revision-Date: 2011-03-04 17:37+0530\n"
+"PO-Revision-Date: 2011-03-09 09:36+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -112,6 +112,7 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
+"ಈ ಐಡೆಂಟಿಫಯರುಗಳಿಗೆ ಅನುಗುಣವಾದ ಅನ್ವಯಗಳನ್ನು ಮೆಚ್ಚಿನವುಗಳ ಜಾಗದಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
@@ -119,12 +120,17 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
+"ರೆಕಾರ್ಡು ಮಾಡಲಾದ ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟುಗಳಿಗಾಗಿನ ಕಡತದ ಹೆಸರು ಪ್ರಸಕ್ತ ದಿನಾಂಕದ "
+"ಆಧರಿತವಾದ ಒಂದು ವಿಶೇಷವಾದ ಕಡತದ ಹೆಸರಾಗಿರುತ್ತದೆ, ಹಾಗು ಈ ವಿಸ್ತರಣೆಯನ್ನು ಬಳಸುತ್ತದೆ. "
+"ಬೇರೊಂದು ಕಂಟೈನರ್ ಶೈಲಿಗೆ ರೆಕಾರ್ಡ್ ಮಾಡುವಾಗ ಇದನ್ನು ಬದಲಾಯಿಸಬೇಕಾಗುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
+"ಪ್ರತಿ ಸೆಕೆಂಡಿನ ಫ್ರೇಮ್‌ಗಳಲ್ಲಿನ GNOME ಶೆಲ್‌ನ ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟ್‍ ರೆಕಾರ್ಡರಿನಿಂದ "
+"ರೆಕಾರ್ಡು ಮಾಡಲಾದ ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟಿನ ಫ್ರೇಮ್‌ದರ. "
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -658,7 +664,7 @@ msgstr "ಜಾಗತಿಕ ನಿಲುಕಣೆ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
-msgstr ""
+msgstr "ಅತಿ ಹೆಚ್ಚು ವೈದೃಶ್ಯ"
 
 #: ../js/ui/status/accessibility.js:206
 msgid "Large Text"
@@ -767,7 +773,7 @@ msgstr "ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ"
 #: ../js/ui/status/bluetooth.js:445
 #, c-format
 msgid "Pairing request for %s"
-msgstr ""
+msgstr "%s ಗಾಗಿ ಪೇರಿಂಗ್ ಮನವಿ"
 
 #: ../js/ui/status/bluetooth.js:453
 msgid "Please enter the PIN mentioned on the device."
@@ -912,7 +918,7 @@ msgstr "ಹುಡುಕಲು ನಮೂದಿಸು..."
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
-msgstr ""
+msgstr "ಆರಂಭಗೊಳಿಸುವುದನ್ನು %s ಪೂರ್ಣಗೊಳಿಸಿದ್ದಾರೆ"
 
 #: ../js/ui/windowAttentionHandler.js:45
 #, c-format
@@ -925,8 +931,8 @@ msgstr "'%s' ಸಿದ್ಧಗೊಂಡಿದೆ"
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u ಔಟ್‌ಪುಟ್"
+msgstr[1] "%u ಔಟ್‌ಪುಟ್‌ಗಳು"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -934,8 +940,8 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u ಇನ್‌ಪುಟ್"
+msgstr[1] "%u ಇನ್‌ಪುಟ್‌ಗಳು"
 
 #: ../src/gvc/gvc-mixer-control.c:1402
 msgid "System Sounds"
@@ -943,7 +949,7 @@ msgstr "ವ್ಯವಸ್ಥೆಯ ಧ್ವನಿಗಳು"
 
 #: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
-msgstr ""
+msgstr "ಒಂದು ನಿಮಿಷಕ್ಕೂ ಹಿಂದೆ"
 
 #: ../src/shell-global.c:1367
 #, c-format
