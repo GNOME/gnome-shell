@@ -597,6 +597,7 @@ WorkspacesDisplay.prototype = {
         this._switchWorkspaceNotifyId = 0;
 
         this._itemDragBeginId = 0;
+        this._itemDragCancelledId = 0;
         this._itemDragEndId = 0;
         this._windowDragBeginId = 0;
         this._windowDragCancelledId = 0;
@@ -629,6 +630,9 @@ WorkspacesDisplay.prototype = {
         if (this._itemDragBeginId == 0)
             this._itemDragBeginId = Main.overview.connect('item-drag-begin',
                                                           Lang.bind(this, this._dragBegin));
+        if (this._itemDragCancelledId == 0)
+            this._itemDragCancelledId = Main.overview.connect('item-drag-cancelled',
+                                                              Lang.bind(this, this._dragCancelled));
         if (this._itemDragEndId == 0)
             this._itemDragEndId = Main.overview.connect('item-drag-end',
                                                         Lang.bind(this, this._dragEnd));
@@ -664,7 +668,11 @@ WorkspacesDisplay.prototype = {
             Main.overview.disconnect(this._itemDragBeginId);
             this._itemDragBeginId = 0;
         }
-        if (this._itemEndBeginId > 0) {
+        if (this._itemDragCancelledId > 0) {
+            Main.overview.disconnect(this._itemDragCancelledId);
+            this._itemDragCancelledId = 0;
+        }
+        if (this._itemDragEndId > 0) {
             Main.overview.disconnect(this._itemDragEndId);
             this._itemDragEndId = 0;
         }
