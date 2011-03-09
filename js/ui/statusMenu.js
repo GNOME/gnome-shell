@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Gdm = imports.gi.Gdm;
+const DBus = imports.dbus;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
@@ -15,6 +16,16 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
+
+const BUS_NAME = 'org.gnome.ScreenSaver';
+const OBJECT_PATH = '/org/gnome/ScreenSaver';
+
+const ScreenSaverInterface = {
+    name: BUS_NAME,
+    methods: [ { name: 'Lock', inSignature: '' } ]
+};
+
+let ScreenSaverProxy = DBus.makeProxyClass(ScreenSaverInterface);
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -43,7 +54,7 @@ StatusMenuButton.prototype = {
         this._account_mgr = Tp.AccountManager.dup()
 
         this._upClient = new UPowerGlib.Client();
-
+        this._screenSaverProxy = new ScreenSaverProxy(DBus.session, BUS_NAME, OBJECT_PATH);
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
@@ -188,7 +199,7 @@ StatusMenuButton.prototype = {
 
     _onLockScreenActivate: function() {
         Main.overview.hide();
-        Util.spawn(['gnome-screensaver-command', '--lock']);
+        this._screenSaverProxy.LockRemote();
     },
 
     _onLoginScreenActivate: function() {
