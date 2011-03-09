@@ -571,11 +571,6 @@ Notification.prototype = {
     //
     // Scrolls the content area (if scrollable) to the indicated edge
     scrollTo: function(side) {
-        // Hack to force a relayout, since the caller probably
-        // just added or removed something to scrollArea, and
-        // the adjustment needs to reflect that.
-        global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, 0, 0);
-
         let adjustment = this._scrollArea.vscroll.adjustment;
         if (side == St.Side.TOP)
             adjustment.value = adjustment.lower;
