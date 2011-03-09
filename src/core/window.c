@@ -3213,6 +3213,17 @@ meta_window_is_fullscreen (MetaWindow *window)
   return window->fullscreen;
 }
 
+/**
+ * meta_window_is_on_primary_monitor:
+ *
+ * Return value: %TRUE if the window is on the primary monitor
+ */
+gboolean
+meta_window_is_on_primary_monitor (MetaWindow *window)
+{
+  return window->monitor->number == window->screen->primary_monitor_index;
+}
+
 void
 meta_window_tile (MetaWindow *window)
 {
