@@ -283,20 +283,37 @@ Dash.prototype = {
                               Lang.bind(this, this._onDragBegin));
         Main.overview.connect('item-drag-end',
                               Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('item-drag-cancelled',
+                              Lang.bind(this, this._onDragCancelled));
         Main.overview.connect('window-drag-begin',
                               Lang.bind(this, this._onDragBegin));
+        Main.overview.connect('window-drag-cancelled',
+                              Lang.bind(this, this._onDragCancelled));
         Main.overview.connect('window-drag-end',
                               Lang.bind(this, this._onDragEnd));
     },
 
     _onDragBegin: function() {
+        this._dragCancelled = false;
         this._dragMonitor = {
             dragMotion: Lang.bind(this, this._onDragMotion)
         };
         DND.addDragMonitor(this._dragMonitor);
     },
 
+    _onDragCancelled: function() {
+        this._dragCancelled = true;
+        this._endDrag();
+    },
+
     _onDragEnd: function() {
+        if (this._dragCancelled)
+            return;
+
+        this._endDrag();
+    },
+
+    _endDrag: function() {
         this._clearDragPlaceholder();
         if (this._favRemoveTarget) {
             this._favRemoveTarget.actor.hide();
