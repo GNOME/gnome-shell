@@ -7666,33 +7666,40 @@ meta_window_show_menu (MetaWindow *window,
       window->type != META_WINDOW_DESKTOP)
     ops |= META_MENU_OP_RECOVER;
 
-  n_workspaces = meta_screen_get_n_workspaces (window->screen);
-
-  if (n_workspaces > 1)
-    ops |= META_MENU_OP_WORKSPACES;
-
-  meta_screen_calc_workspace_layout (window->screen,
-                                     n_workspaces,
-                                     meta_workspace_index ( window->screen->active_workspace),
-                                     &layout);
-
-  if (!window->on_all_workspaces)
+  if (!meta_prefs_get_workspaces_only_on_primary () ||
+      meta_window_is_on_primary_monitor (window))
     {
-      ltr = meta_ui_get_direction() == META_UI_DIRECTION_LTR;
+      n_workspaces = meta_screen_get_n_workspaces (window->screen);
 
-      if (layout.current_col > 0)
-        ops |= ltr ? META_MENU_OP_MOVE_LEFT : META_MENU_OP_MOVE_RIGHT;
-      if ((layout.current_col < layout.cols - 1) &&
-          (layout.current_row * layout.cols + (layout.current_col + 1) < n_workspaces))
-        ops |= ltr ? META_MENU_OP_MOVE_RIGHT : META_MENU_OP_MOVE_LEFT;
-      if (layout.current_row > 0)
-        ops |= META_MENU_OP_MOVE_UP;
-      if ((layout.current_row < layout.rows - 1) &&
-          ((layout.current_row + 1) * layout.cols + layout.current_col < n_workspaces))
-        ops |= META_MENU_OP_MOVE_DOWN;
+      if (n_workspaces > 1)
+        ops |= META_MENU_OP_WORKSPACES;
+
+      meta_screen_calc_workspace_layout (window->screen,
+                                         n_workspaces,
+                                         meta_workspace_index ( window->screen->active_workspace),
+                                         &layout);
+
+      if (!window->on_all_workspaces)
+        {
+          ltr = meta_ui_get_direction() == META_UI_DIRECTION_LTR;
+
+          if (layout.current_col > 0)
+            ops |= ltr ? META_MENU_OP_MOVE_LEFT : META_MENU_OP_MOVE_RIGHT;
+          if ((layout.current_col < layout.cols - 1) &&
+              (layout.current_row * layout.cols + (layout.current_col + 1) < n_workspaces))
+            ops |= ltr ? META_MENU_OP_MOVE_RIGHT : META_MENU_OP_MOVE_LEFT;
+          if (layout.current_row > 0)
+            ops |= META_MENU_OP_MOVE_UP;
+          if ((layout.current_row < layout.rows - 1) &&
+              ((layout.current_row + 1) * layout.cols + layout.current_col < n_workspaces))
+            ops |= META_MENU_OP_MOVE_DOWN;
+        }
+
+      meta_screen_free_workspace_layout (&layout);
+
+      ops |= META_MENU_OP_UNSTICK;
+      ops |= META_MENU_OP_STICK;
     }
-
-  meta_screen_free_workspace_layout (&layout);
 
   if (META_WINDOW_MAXIMIZED (window))
     ops |= META_MENU_OP_UNMAXIMIZE;
@@ -7705,9 +7712,6 @@ meta_window_show_menu (MetaWindow *window,
   else
     ops |= META_MENU_OP_SHADE;
 #endif
-
-  ops |= META_MENU_OP_UNSTICK;
-  ops |= META_MENU_OP_STICK;
 
   if (window->wm_state_above)
     ops |= META_MENU_OP_UNABOVE;
