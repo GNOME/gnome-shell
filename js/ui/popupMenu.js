@@ -54,8 +54,10 @@ PopupBaseMenuItem.prototype = {
         }
         if (params.reactive && params.hover)
             this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
-        if (params.reactive)
+        if (params.reactive) {
             this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+            this.actor.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+        }
     },
 
     _onStyleChanged: function (actor) {
@@ -79,6 +81,10 @@ PopupBaseMenuItem.prototype = {
 
     _onKeyFocusIn: function (actor) {
         this.setActive(true);
+    },
+
+    _onKeyFocusOut: function (actor) {
+        this.setActive(false);
     },
 
     _onHoverChanged: function (actor) {
@@ -684,28 +690,6 @@ PopupImageMenuItem.prototype = {
     }
 };
 
-function mod(a, b) {
-    return (a + b) % b;
-}
-
-function findNextInCycle(items, current, direction) {
-    let cur;
-
-    if (items.length == 0)
-        return current;
-    else if (items.length == 1)
-        return items[0];
-
-    if (current)
-        cur = items.indexOf(current);
-    else if (direction == 1)
-        cur = items.length - 1;
-    else
-        cur = 0;
-
-    return items[mod(cur + direction, items.length)];
-}
-
 function PopupMenuBase() {
     throw new TypeError('Trying to instantiate abstract class PopupMenuBase');
 }
@@ -861,17 +845,6 @@ PopupMenuBase.prototype = {
         }
     },
 
-    activateFirst: function() {
-        let children = this.box.get_children();
-        for (let i = 0; i < children.length; i++) {
-            let actor = children[i];
-            if (actor._delegate && actor._delegate instanceof PopupBaseMenuItem && actor.visible && actor.reactive) {
-                actor._delegate.setActive(true);
-                break;
-            }
-        }
-    },
-
     toggle: function() {
         if (this.isOpen)
             this.close(true);
@@ -909,6 +882,8 @@ PopupMenu.prototype = {
         this.actor = this._boxPointer.actor;
         this.actor._delegate = this;
         this.actor.style_class = 'popup-menu-boxpointer';
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
+
         this._boxWrapper = new Shell.GenericContainer();
         this._boxWrapper.connect('get-preferred-width', Lang.bind(this, this._boxGetPreferredWidth));
         this._boxWrapper.connect('get-preferred-height', Lang.bind(this, this._boxGetPreferredHeight));
@@ -935,6 +910,15 @@ PopupMenu.prototype = {
 
     _boxAllocate: function (actor, box, flags) {
         this.box.allocate(box, flags);
+    },
+
+    _onKeyPressEvent: function(actor, event) {
+        if (event.get_key_symbol() == Clutter.Escape) {
+            this.close(true);
+            return true;
+        }
+
+        return false;
     },
 
     setArrowOrigin: function(origin) {
@@ -1127,11 +1111,17 @@ PopupSubMenuMenuItem.prototype = {
     },
 
     _onKeyPressEvent: function(actor, event) {
-        if (event.get_key_symbol() == Clutter.KEY_Right) {
+        let symbol = event.get_key_symbol();
+
+        if (symbol == Clutter.KEY_Right) {
             this.menu.open(true);
-            this.menu.activateFirst();
+            this.menu.actor.navigate_focus(null, Gtk.DirectionType.DOWN, false);
+            return true;
+        } else if (symbol == Clutter.KEY_Left && this.menu.isOpen) {
+            this.menu.close();
             return true;
         }
+
         return PopupBaseMenuItem.prototype._onKeyPressEvent.call(this, actor, event);
     },
 
@@ -1158,12 +1148,13 @@ PopupMenuManager.prototype = {
         this.grabbed = false;
 
         this._eventCaptureId = 0;
-        this._keyPressEventId = 0;
         this._enterEventId = 0;
         this._leaveEventId = 0;
+        this._keyFocusNotifyId = 0;
         this._activeMenu = null;
         this._menus = [];
         this._preGrabInputMode = null;
+        this._grabbedFromKeynav = false;
     },
 
     addMenu: function(menu, position) {
@@ -1172,15 +1163,13 @@ PopupMenuManager.prototype = {
             openStateChangeId: menu.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState)),
             destroyId:         menu.connect('destroy', Lang.bind(this, this._onMenuDestroy)),
             enterId:           0,
-            focusInId:         0,
-            focusOutId:        0
+            focusInId:         0
         };
 
         let source = menu.sourceActor;
         if (source) {
             menudata.enterId = source.connect('enter-event', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
             menudata.focusInId = source.connect('key-focus-in', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
-            menudata.focusOutId = source.connect('key-focus-out', Lang.bind(this, function() { this._onKeyFocusOut(menu); }));
         }
 
         if (position == undefined)
@@ -1205,8 +1194,6 @@ PopupMenuManager.prototype = {
             menu.sourceActor.disconnect(menudata.enterId);
         if (menudata.focusInId)
             menu.sourceActor.disconnect(menudata.focusInId);
-        if (menudata.focusOutId)
-            menu.sourceActor.disconnect(menudata.focusOutId);
 
         this._menus.splice(position, 1);
     },
@@ -1215,10 +1202,10 @@ PopupMenuManager.prototype = {
         Main.pushModal(this._owner.actor);
 
         this._eventCaptureId = global.stage.connect('captured-event', Lang.bind(this, this._onEventCapture));
-        this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         // captured-event doesn't see enter/leave events
         this._enterEventId = global.stage.connect('enter-event', Lang.bind(this, this._onEventCapture));
         this._leaveEventId = global.stage.connect('leave-event', Lang.bind(this, this._onEventCapture));
+        this._keyFocusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
 
         this.grabbed = true;
     },
@@ -1226,49 +1213,47 @@ PopupMenuManager.prototype = {
     _ungrab: function() {
         global.stage.disconnect(this._eventCaptureId);
         this._eventCaptureId = 0;
-        global.stage.disconnect(this._keyPressEventId);
-        this._keyPressEventId = 0;
         global.stage.disconnect(this._enterEventId);
         this._enterEventId = 0;
         global.stage.disconnect(this._leaveEventId);
         this._leaveEventId = 0;
+        global.stage.disconnect(this._keyFocusNotifyId);
+        this._keyFocusNotifyId = 0;
 
         this.grabbed = false;
         Main.popModal(this._owner.actor);
     },
 
     _onMenuOpenState: function(menu, open) {
+        if (open)
+            this._activeMenu = menu;
+
+        // Check what the focus was before calling pushModal/popModal
+        let focus = global.stage.key_focus;
+        let hadFocus = focus && this._activeMenuContains(focus);
+
         if (open) {
             if (!this.grabbed) {
                 this._preGrabInputMode = global.stage_input_mode;
+                this._grabbedFromKeynav = hadFocus;
                 this._grab();
             }
-            this._activeMenu = menu;
 
-            // if the focus is not already associated with the menu,
-            // then focus the menu
-            let focus = global.stage.key_focus;
-            if (!this._activeMenuContains(focus))
-                menu.sourceActor.grab_key_focus();
+            if (hadFocus)
+                focus.grab_key_focus();
+            else
+                menu.actor.grab_key_focus();
         } else if (menu == this._activeMenu) {
-            let focus = global.stage.key_focus;
-            let fromActive = focus && this._activeMenuContains(focus);
-
             if (this.grabbed)
                 this._ungrab();
             this._activeMenu = null;
 
-            // If keynav was in effect before we grabbed, then we need
-            // to properly re-establish it after we ungrab. (popModal
-            // will have unset the focus.) If some part of the menu
-            // was focused at the time of the ungrab then focus its
-            // sourceActor. Otherwise just reset the focus to where it
-            // was right before the ungrab.
-            if (this._preGrabInputMode == Shell.StageInputMode.FOCUSED) {
-                global.stage_input_mode = Shell.StageInputMode.FOCUSED;
-                if (fromActive)
+            if (this._grabbedFromKeynav) {
+                if (this._preGrabInputMode == Shell.StageInputMode.FOCUSED)
+                    global.stage_input_mode = Shell.StageInputMode.FOCUSED;
+                if (hadFocus && menu.sourceActor)
                     menu.sourceActor.grab_key_focus();
-                else
+                else if (focus)
                     focus.grab_key_focus();
             }
         }
@@ -1296,29 +1281,20 @@ PopupMenuManager.prototype = {
         return false;
     },
 
-    _onKeyFocusOut: function(menu) {
-        if (!this.grabbed || menu != this._activeMenu)
+    _onKeyFocusChanged: function() {
+        if (!this.grabbed || !this._activeMenu)
             return;
 
-        // We want to close the menu if the focus has moved somewhere
-        // other than inside the menu or to another menu's sourceActor.
-        // Unfortunately, when key-focus-out is emitted,
-        // stage.key_focus will be null. So we have to wait until
-        // after it emits the key-focus-in as well.
-        let id = global.stage.connect('notify::key-focus', Lang.bind(this,
-            function () {
-                global.stage.disconnect(id);
+        let focus = global.stage.key_focus;
+        if (focus) {
+            if (this._activeMenuContains(focus))
+                return;
+            if (focus._delegate && focus._delegate.menu &&
+                this._findMenu(focus._delegate.menu) != -1)
+                return;
+        }
 
-                if (menu != this._activeMenu)
-                    return;
-
-                let focus = global.stage.key_focus;
-                if (!focus || this._activeMenuContains(focus))
-                    return;
-                if (focus._delegate && this._findMenu(focus._delegate.menu) != -1)
-                    return;
-                menu.close(true);
-            }));
+        this._closeMenu();
     },
 
     _onMenuDestroy: function(menu) {
@@ -1354,18 +1330,6 @@ PopupMenuManager.prototype = {
         return -1;
     },
 
-    _nextMenu: function(pos, direction) {
-        for (let i = 1; i < this._menus.length; i++) {
-            let candidate = mod(pos + i * direction, this._menus.length);
-            let menu = this._menus[candidate].menu;
-            if (!menu.sourceActor || menu.sourceActor.visible)
-                return menu;
-        }
-        // no menu is found? this should not happen
-        // anyway stay on current menu
-        return this._menus[pos];
-    },
-
     _onEventCapture: function(actor, event) {
         if (!this.grabbed)
             return false;
@@ -1383,8 +1347,7 @@ PopupMenuManager.prototype = {
                 this._closeMenu();
                 return true;
             }
-        } else if ((eventType == Clutter.EventType.BUTTON_PRESS && !activeMenuContains)
-                   || (eventType == Clutter.EventType.KEY_PRESS && event.get_key_symbol() == Clutter.Escape)) {
+        } else if (eventType == Clutter.EventType.BUTTON_PRESS && !activeMenuContains) {
             this._closeMenu();
             return true;
         } else if (activeMenuContains || this._eventIsOnAnyMenuSource(event)) {
@@ -1392,27 +1355,6 @@ PopupMenuManager.prototype = {
         }
 
         return true;
-    },
-
-    _onKeyPressEvent: function(actor, event) {
-        if (!this.grabbed || !this._activeMenu)
-            return false;
-        if (!this._eventIsOnActiveMenu(event))
-            return false;
-
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.Left || symbol == Clutter.Right) {
-            let direction = symbol == Clutter.Right ? 1 : -1;
-            let pos = this._findMenu(this._activeMenu);
-            let next = this._nextMenu(pos, direction);
-            if (next != this._activeMenu) {
-                this._changeMenu(next);
-                next.activateFirst();
-            }
-            return true;
-        }
-
-        return false;
     },
 
     _closeMenu: function() {

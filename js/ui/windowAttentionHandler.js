@@ -15,12 +15,11 @@ function WindowAttentionHandler() {
 WindowAttentionHandler.prototype = {
     _init : function() {
         this._startupIds = {};
-        this._sources = {};
+        this._tracker = Shell.WindowTracker.get_default();
+        this._tracker.connect('startup-sequence-changed', Lang.bind(this, this._onStartupSequenceChanged));
 
         let display = global.screen.get_display();
         display.connect('window-demands-attention', Lang.bind(this, this._onWindowDemandsAttention));
-        let tracker = Shell.WindowTracker.get_default();
-        tracker.connect('startup-sequence-changed', Lang.bind(this, this._onStartupSequenceChanged));
     },
 
     _onStartupSequenceChanged : function(tracker) {
@@ -57,28 +56,16 @@ WindowAttentionHandler.prototype = {
         if (!window || window.has_focus() || window.is_skip_taskbar())
             return;
 
-        let tracker = Shell.WindowTracker.get_default();
-        let app = tracker.get_window_app(window);
-        let appId = app.get_id();
-
-        let source = this._sources[appId];
-        if (source == null) {
-            source = new Source(app, window);
-            this._sources[appId] = source;
-            Main.messageTray.add(source);
-            source.connect('destroy', Lang.bind(this, function() { delete this._sources[appId]; }));
-        }
+        let app = this._tracker.get_window_app(window);
+        let source = new Source(app, window);
+        Main.messageTray.add(source);
 
         let notification = new MessageTray.Notification(source, this._getTitle(app, window), this._getBanner(app, window));
         source.notify(notification);
 
-        window.connect('notify::title', Lang.bind(this, function(win) {
-                                                            notification.update(this._getTitle(app, win), this._getBanner(app, win));
-                                                        }));
-        window.connect('notify::demands-attention', Lang.bind(this, function() { source.destroy(); }));
-        window.connect('focus', Lang.bind(this, function() { source.destroy(); }));
-        window.connect('unmanaged', Lang.bind(this, function() { source.destroy(); }));
-
+        source.signalIDs.push(window.connect('notify::title', Lang.bind(this, function(win) {
+                                    notification.update(this._getTitle(app, win), this._getBanner(app, win));
+                              })));
     }
 };
 
@@ -94,13 +81,27 @@ Source.prototype = {
         this._window = window;
         this._app = app;
         this._setSummaryIcon(this.createNotificationIcon());
+
+        this.signalIDs = [];
+        this.signalIDs.push(this._window.connect('notify::demands-attention', Lang.bind(this, function() { this.destroy(); })));
+        this.signalIDs.push(this._window.connect('focus', Lang.bind(this, function() { this.destroy(); })));
+        this.signalIDs.push(this._window.connect('unmanaged', Lang.bind(this, function() { this.destroy(); })));
+
+        this.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    _onDestroy : function() {
+        for(let i = 0; i < this.signalIDs.length; i++) {
+           this._window.disconnect(this.signalIDs[i]);
+        }
+        this.signalIDs = [];
     },
 
     createNotificationIcon : function() {
         return this._app.create_icon_texture(this.ICON_SIZE);
     },
 
-    _notificationClicked : function(notification) {
+    open : function(notification) {
         Main.activateWindow(this._window);
         this.destroy();
     }

@@ -12,15 +12,14 @@
 #include <glib.h>
 #include <gio/gio.h>
 #include <dbus/dbus-glib.h>
+#include <meta/display.h>
+#include <meta/group.h>
+#include <meta/window.h>
 
 #include "shell-app-usage.h"
 #include "shell-window-tracker.h"
 #include "shell-global.h"
 #include "shell-marshal.h"
-
-#include "display.h"
-#include "window.h"
-#include "group.h"
 
 /* This file includes modified code from
  * desktop-data-engine/engine-dbus/hippo-application-monitor.c

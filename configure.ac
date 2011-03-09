@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([gnome-shell],[2.91.90],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AC_INIT([gnome-shell],[2.91.91],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/shell-global.c])
@@ -63,7 +63,7 @@ AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 CLUTTER_MIN_VERSION=1.5.15
 GOBJECT_INTROSPECTION_MIN_VERSION=0.10.1
 GJS_MIN_VERSION=0.7.11
-MUTTER_MIN_VERSION=2.91.90
+MUTTER_MIN_VERSION=2.91.91
 GTK_MIN_VERSION=3.0.0
 GIO_MIN_VERSION=2.25.9
 LIBECAL_MIN_VERSION=2.32.0
@@ -74,20 +74,20 @@ TELEPATHY_GLIB_MIN_VERSION=0.13.12
 POLKIT_MIN_VERSION=0.100
 
 # Collect more than 20 libraries for a prize!
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
-                                 gio-unix-2.0 dbus-glib-1 libxml-2.0
-                                 gtk+-3.0 >= $GTK_MIN_VERSION
-                                 mutter-plugins >= $MUTTER_MIN_VERSION
-                                 gjs-internals-1.0 >= $GJS_MIN_VERSION
-				 libgnome-menu $recorder_modules gconf-2.0
-                                 gdk-x11-3.0
-				 clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
-				 clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
-                                 libstartup-notification-1.0
-                                 gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
-				 libcanberra
-                                 telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
-                                 polkit-agent-1 >= $POLKIT_MIN_VERSION)
+PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
+                               gio-unix-2.0 dbus-glib-1 libxml-2.0
+                               gtk+-3.0 >= $GTK_MIN_VERSION
+                               libmutter-wm >= $MUTTER_MIN_VERSION
+                               gjs-internals-1.0 >= $GJS_MIN_VERSION
+			       libgnome-menu $recorder_modules gconf-2.0
+                               gdk-x11-3.0
+			       clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
+			       clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
+                               libstartup-notification-1.0
+                               gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
+			       libcanberra
+                               telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
+                               polkit-agent-1 >= $POLKIT_MIN_VERSION)
 
 GJS_VERSION=`$PKG_CONFIG --modversion gjs-internals-1.0`
 AC_DEFINE_UNQUOTED([GJS_VERSION], ["$GJS_VERSION"], [The version of GJS we're linking to])
@@ -97,8 +97,8 @@ GOBJECT_INTROSPECTION_CHECK([$GOBJECT_INTROSPECTION_MIN_VERSION])
 
 saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS
-CFLAGS=$MUTTER_PLUGIN_CFLAGS
-LIBS=$MUTTER_PLUGIN_LIBS
+CFLAGS=$GNOME_SHELL_CFLAGS
+LIBS=$GNOME_SHELL_LIBS
 # sn_startup_sequence_get_application_id, we can replace with a version check later
 AC_CHECK_FUNCS(JS_NewGlobalObject sn_startup_sequence_get_application_id)
 CFLAGS=$saved_CFLAGS
@@ -134,13 +134,10 @@ PKG_CHECK_MODULES(CALENDAR_SERVER, libecal-1.2 >= $LIBECAL_MIN_VERSION libedatas
 AC_SUBST(CALENDAR_SERVER_CFLAGS)
 AC_SUBST(CALENDAR_SERVER_LIBS)
 
-MUTTER_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix mutter-plugins`/bin
-# FIXME: metacity-plugins.pc should point directly to its .gir file
-MUTTER_LIB_DIR=`$PKG_CONFIG --variable=libdir mutter-plugins`
-MUTTER_PLUGIN_DIR=`$PKG_CONFIG --variable=plugindir mutter-plugins`
-AC_SUBST(MUTTER_BIN_DIR)
-AC_SUBST(MUTTER_LIB_DIR)
-AC_SUBST(MUTTER_PLUGIN_DIR)
+MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter-wm`
+MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wm`
+AC_SUBST(MUTTER_GIR_DIR)
+AC_SUBST(MUTTER_TYPELIB_DIR)
 
 GJS_CONSOLE=`$PKG_CONFIG --variable=gjs_console gjs-1.0`
 AC_SUBST(GJS_CONSOLE)
@@ -206,9 +203,6 @@ AC_ARG_ENABLE(dynamic-mozjs-hack,
   AS_HELP_STRING([--dynamic-mozjs-hack=no],[Look for libmozjs.so using pkg-config]),,enable_dynamic_mozjs_hack=$enable_dynamic_mozjs_hack_default)
 ENABLE_DYNAMIC_MOZJS_HACK=$enable_dynamic_mozjs_hack
 AC_SUBST(ENABLE_DYNAMIC_MOZJS_HACK)
-
-AC_PATH_PROG(mutter, [mutter])
-AC_SUBST(mutter)
 
 AC_CONFIG_FILES([
   Makefile

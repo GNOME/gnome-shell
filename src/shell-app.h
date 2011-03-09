@@ -4,8 +4,7 @@
 
 #include <clutter/clutter.h>
 #include <gio/gio.h>
-
-#include "window.h"
+#include <meta/window.h>
 
 G_BEGIN_DECLS
 

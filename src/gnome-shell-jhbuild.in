@@ -143,17 +143,15 @@ def start_dconf_await_service():
     loop.run()
 
 def start_shell(perf_output=None):
-    bin_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-    if os.path.exists(os.path.join(bin_dir, 'gnome-shell-jhbuild.in')):
+    self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
         running_from_source_tree = True
-        top_dir = os.path.dirname(bin_dir)
-        plugin = os.path.join(top_dir, 'src', 'libgnome-shell.la')
+        top_dir = os.path.dirname(self_dir)
         typelib_dir = os.path.join(top_dir, "src")
         js_dir = os.path.join(top_dir, "js")
         data_dir = os.path.join(top_dir, "data")
     else:
         running_from_source_tree = False
-        plugin = 'libgnome-shell'
         js_dir = os.path.join('@pkgdatadir@', 'js')
 
     # Set up environment
@@ -166,13 +164,13 @@ def start_shell(perf_output=None):
     # below. Otherwise it's just a bad reimplementation of "jhbuild
     # run".  See bug #642084
     env.update({'GNOME_SHELL_JS'      : js_dir,
-                'PATH'                : '@MUTTER_BIN_DIR@:' + os.environ.get('PATH', ''),
+                'PATH'                : '@bindir@:' + os.environ.get('PATH', ''),
                 'XDG_CONFIG_DIRS'     : '@sysconfdir@/xdg:' + (os.environ.get('XDG_CONFIG_DIRS') or '/etc/xdg'),
                 'XDG_DATA_DIRS'       : '@datadir@:' + (os.environ.get('XDG_DATA_DIRS') or '/usr/local/share:/usr/share')})
     if running_from_source_tree:
         if os.environ.has_key('GI_TYPELIB_PATH'):
             typelib_dir = typelib_dir + ":" + os.environ.get('GI_TYPELIB_PATH')
-        env.update({'GNOME_SHELL_BINDIR' : bin_dir,
+        env.update({'GNOME_SHELL_BINDIR'   : self_dir,
                     'GNOME_SHELL_DATADIR'  : data_dir,
                     'GI_TYPELIB_PATH'      : typelib_dir,
                     'GSETTINGS_SCHEMA_DIR' : data_dir })
@@ -191,15 +189,14 @@ def start_shell(perf_output=None):
     if perf_output is not None:
         env['SHELL_PERF_OUTPUT'] = perf_output
 
+    args = []
     if options.debug:
         debug_command = options.debug_command.split()
-        args = list(debug_command)
-    else:
-        args = []
+        if running_from_source_tree:
+            args += [os.path.join(top_dir, 'libtool'), '--mode=execute']
+        args += debug_command
 
-    if running_from_source_tree:
-        env['MUTTER_PLUGINS'] = plugin
-    args.append(os.path.join(bin_dir, 'gnome-shell-installed'))
+    args.append(os.path.join(self_dir, 'gnome-shell-real'))
     if options.replace:
         args.append('--replace')
     if options.sync:
@@ -427,9 +424,9 @@ def run_performance_test():
         }
 
         # Add the Git revision if available
-        bin_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
-            top_dir = os.path.dirname(bin_dir)
+        self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
+            top_dir = os.path.dirname(self_dir)
             git_dir = os.path.join(top_dir, '.git')
             if os.path.exists(git_dir):
                 env = dict(os.environ)

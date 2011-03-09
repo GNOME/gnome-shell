@@ -125,6 +125,7 @@ WindowClone.prototype = {
                                               dragActorMaxSize: WINDOW_DND_SIZE,
                                               dragActorOpacity: DRAGGING_WINDOW_OPACITY });
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+        this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
 
@@ -288,8 +289,14 @@ WindowClone.prototype = {
     },
 
     _onDragBegin : function (draggable, time) {
+        [this.dragOrigX, this.dragOrigY] = this.actor.get_position();
+        this.dragOrigScale = this.actor.scale_x;
         this.inDrag = true;
         this.emit('drag-begin');
+    },
+
+    _onDragCancelled : function (draggable, time) {
+        this.emit('drag-cancelled');
     },
 
     _onDragEnd : function (draggable, time, snapback) {
@@ -327,6 +334,7 @@ WindowOverlay.prototype = {
 
         this._windowClone = windowClone;
         this._parentActor = parentActor;
+        this._hidden = false;
 
         let title = new St.Label({ style_class: 'window-caption',
                                    text: metaWindow.title });
@@ -372,11 +380,13 @@ WindowOverlay.prototype = {
     },
 
     hide: function() {
+        this._hidden = true;
         this.closeButton.hide();
         this.title.hide();
     },
 
     show: function() {
+        this._hidden = false;
         let [x, y, mask] = global.get_pointer();
         let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
                                                   x, y);
@@ -387,8 +397,8 @@ WindowOverlay.prototype = {
     },
 
     fadeIn: function() {
+        this.show();
         this.title.opacity = 0;
-        this.title.show();
         this._parentActor.raise_top();
         Tweener.addTween(this.title,
                         { opacity: 255,
@@ -419,8 +429,13 @@ WindowOverlay.prototype = {
         let button = this.closeButton;
         let title = this.title;
 
-        let buttonX = cloneX + cloneWidth - button._overlap;
-        let buttonY = cloneY - button.height + button._overlap;
+        let buttonX;
+        let buttonY = cloneY - (button.height - button._overlap);
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            buttonX = cloneX - (button.width - button._overlap);
+        else
+            buttonX = cloneX + (cloneWidth - button._overlap);
+
         button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
         if (!title.fullWidth)
@@ -475,6 +490,12 @@ WindowOverlay.prototype = {
     },
 
     _onEnter: function() {
+        // We might get enter events on the clone while the overlay is
+        // hidden, e.g. during animations, we ignore these events,
+        // as the close button will be shown as needed when the overlays
+        // are shown again
+        if (this._hidden)
+            return;
         this._parentActor.raise_top();
         this.closeButton.show();
         this.emit('show-close-button');
@@ -515,7 +536,7 @@ WindowOverlay.prototype = {
 Signals.addSignalMethods(WindowOverlay.prototype);
 
 const WindowPositionFlags = {
-    ZOOM: 1 << 0,
+    INITIAL: 1 << 0,
     ANIMATE: 1 << 1
 };
 
@@ -531,26 +552,25 @@ Workspace.prototype = {
         // When dragging a window, we use this slot for reserve space.
         this._reservedSlot = null;
         this.metaWorkspace = metaWorkspace;
+        this._x = 0;
+        this._y = 0;
+        this._width = 0;
+        this._height = 0;
+
         this._windowOverlaysGroup = new Clutter.Group();
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);
 
         this.actor = new Clutter.Group();
-        this.actor._delegate = this;
+        this.actor.set_size(0, 0);
+
+        this._dropRect = new Clutter.Rectangle({ opacity: 0 });
+        this._dropRect._delegate = this;
+
+        this.actor.add_actor(this._dropRect);
+        this.actor.add_actor(this._windowOverlaysGroup);
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-
-        // Items in _windowOverlaysGroup should not be scaled, so we don't
-        // add them to this.actor, but to its parent whenever it changes
-        this.actor.connect('parent-set', Lang.bind(this, this._onParentSet));
-
-        // Auto-sizing is unreliable in the presence of ClutterClone, so rather than
-        // implicitly counting on the workspace actor to be sized to the size of the
-        // included desktop actor clone, set the size explicitly to the screen size.
-        // See http://bugzilla.openedhand.com/show_bug.cgi?id=1755
-        this.actor.width = global.screen_width;
-        this.actor.height = global.screen_height;
-        this.scale = 1.0;
 
         let windows = Main.getWindowActorsForWorkspace(this.metaWorkspace.index());
 
@@ -574,6 +594,22 @@ Workspace.prototype = {
         this.leavingOverview = false;
     },
 
+    setGeometry: function(x, y, width, height) {
+        this._x = x;
+        this._y = y;
+        this._width = width;
+        this._height = height;
+
+        // This is sometimes called during allocation, so we do this later
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
+            function () {
+                this._dropRect.set_position(x, y);
+                this._dropRect.set_size(width, height);
+                return false;
+            }));
+
+    },
+
     _lookupIndex: function (metaWindow) {
         for (let i = 0; i < this._windows.length; i++) {
             if (this._windows[i].metaWindow == metaWindow) {
@@ -581,17 +617,6 @@ Workspace.prototype = {
             }
         }
         return -1;
-    },
-
-    _onParentSet: function(actor, old_parent) {
-        let new_parent = this.actor.get_parent();
-        if (new_parent == null)
-            return;
-
-        if (old_parent)
-            this._windowOverlaysGroup.reparent(new_parent);
-        else
-            new_parent.add_actor(this._windowOverlaysGroup);
     },
 
     containsMetaWindow: function (metaWindow) {
@@ -672,10 +697,20 @@ Workspace.prototype = {
         let xDelta, yDelta, distanceSquared;
         let actorWidth, actorHeight;
 
-        actorWidth = actor.width * actor.scale_x;
-        actorHeight = actor.height * actor.scale_y;
-        xDelta = actor.x + actorWidth / 2.0 - xCenter * global.screen_width;
-        yDelta = actor.y + actorHeight / 2.0 - yCenter * global.screen_height;
+        let x = actor.x;
+        let y = actor.y;
+        let scale = actor.scale_x;
+
+        if (actor._delegate.inDrag) {
+            x = actor._delegate.dragOrigX;
+            y = actor._delegate.dragOrigY;
+            scale = actor._delegate.dragOrigScale;
+        }
+
+        actorWidth = actor.width * scale;
+        actorHeight = actor.height * scale;
+        xDelta = x + actorWidth / 2.0 - xCenter * this._width - this._x;
+        yDelta = y + actorHeight / 2.0 - yCenter * this._height - this._y;
         distanceSquared = xDelta * xDelta + yDelta * yDelta;
 
         return distanceSquared;
@@ -700,6 +735,12 @@ Workspace.prototype = {
                 let delta = this._computeWindowMotion(cloneActor, slot);
 
                 motion += delta;
+
+                // Bail out early if we're already larger than the
+                // previous best
+                if (minimumMotionPermutation != null &&
+                    motion > minimumMotion)
+                    continue;
             }
 
             if (minimumMotionPermutation == null || motion < minimumMotion) {
@@ -760,38 +801,35 @@ Workspace.prototype = {
     },
 
     /**
-     * _getSlotRelativeGeometry:
+     * _getSlotGeometry:
      * @slot: A layout slot
      *
-     * Returns: the workspace-relative [x, y, width, height]
+     * Returns: the screen-relative [x, y, width, height]
      * of a given window layout slot.
      */
-    _getSlotRelativeGeometry: function(slot) {
+    _getSlotGeometry: function(slot) {
         let [xCenter, yCenter, fraction] = slot;
 
-        let width = global.screen_width * fraction;
-        let height = global.screen_height * fraction;
+        let width = this._width * fraction;
+        let height = this._height * fraction;
 
-        let x = xCenter * global.screen_width - width / 2;
-        let y = yCenter * global.screen_height - height / 2;
+        let x = this._x + xCenter * this._width - width / 2 ;
+        let y = this._y + yCenter * this._height - height / 2;
 
         return [x, y, width, height];
     },
 
     /**
-     * _computeWindowRelativeLayout:
+     * _computeWindowLayout:
      * @metaWindow: A #MetaWindow
      * @slot: A layout slot
      *
      * Given a window and slot to fit it in, compute its
-     * workspace-relative [x, y, scale] where scale applies
+     * screen-relative [x, y, scale] where scale applies
      * to both X and Y directions.
      */
-    _computeWindowRelativeLayout: function(metaWindow, slot) {
-        let [xCenter, yCenter, fraction] = slot;
-        let [x, y, width, height] = this._getSlotRelativeGeometry(slot);
-
-        xCenter = xCenter * global.screen_width;
+    _computeWindowLayout: function(metaWindow, slot) {
+        let [x, y, width, height] = this._getSlotGeometry(slot);
 
         let rect = metaWindow.get_outer_rect();
         let buttonOuterHeight, captionHeight;
@@ -799,23 +837,19 @@ Workspace.prototype = {
 
         if (this._windowOverlays[0]) {
             [buttonOuterHeight, captionHeight] = this._windowOverlays[0].chromeHeights();
-            buttonOuterWidth = this._windowOverlays[0].chromeWidth() / this.scale;
+            buttonOuterWidth = this._windowOverlays[0].chromeWidth();
         } else
             [buttonOuterHeight, captionHeight] = [0, 0];
-        buttonOuterHeight /= this.scale;
-        captionHeight /= this.scale;
 
-        let desiredWidth = global.screen_width * fraction;
-        let desiredHeight = global.screen_height * fraction;
-        let scale = Math.min((desiredWidth - buttonOuterWidth) / rect.width,
-                             (desiredHeight - buttonOuterHeight - captionHeight) / rect.height,
-                             1.0 / this.scale);
+        let scale = Math.min((width - buttonOuterWidth) / rect.width,
+                             (height - buttonOuterHeight - captionHeight) / rect.height,
+                             1.0);
 
-        x = Math.floor(xCenter - 0.5 * scale * rect.width);
+        x = Math.floor(x + (width - scale * rect.width) / 2);
 
         // We want to center the window in case we have just one
         if (metaWindow.get_workspace().n_windows == 1)
-            y = Math.floor(yCenter * global.screen_height - 0.5 * scale * rect.height);
+            y = Math.floor(y + (height - scale * rect.height) / 2);
         else
             y = Math.floor(y + height - rect.height * scale - captionHeight);
 
@@ -841,7 +875,7 @@ Workspace.prototype = {
     /**
      * positionWindows:
      * @flags:
-     *  ZOOM - workspace is moving at the same time and we need to take that into account.
+     *  INITIAL - this is the initial positioning of the windows.
      *  ANIMATE - Indicates that we need animate changing position.
      */
     positionWindows : function(flags) {
@@ -854,7 +888,7 @@ Workspace.prototype = {
         if (this._reservedSlot)
             clones.push(this._reservedSlot);
 
-        let workspaceZooming = flags & WindowPositionFlags.ZOOM;
+        let initialPositioning = flags & WindowPositionFlags.INITIAL;
         let animate = flags & WindowPositionFlags.ANIMATE;
 
         // Start the animations
@@ -876,7 +910,7 @@ Workspace.prototype = {
             if (clone.inDrag)
                 continue;
 
-            let [x, y, scale] = this._computeWindowRelativeLayout(metaWindow, slot);
+            let [x, y, scale] = this._computeWindowLayout(metaWindow, slot);
 
             if (overlay)
                 overlay.hide();
@@ -885,7 +919,7 @@ Workspace.prototype = {
                     /* Hidden windows should fade in and grow
                      * therefore we need to resize them now so they
                      * can be scaled up later */
-                     if (workspaceZooming) {
+                     if (initialPositioning) {
                          clone.actor.opacity = 0;
                          clone.actor.scale_x = 0;
                          clone.actor.scale_y = 0;
@@ -906,7 +940,6 @@ Workspace.prototype = {
                                    y: y,
                                    scale_x: scale,
                                    scale_y: scale,
-                                   workspace_relative: workspaceZooming ? this : null,
                                    time: Overview.ANIMATION_TIME,
                                    transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this, function() {
@@ -929,7 +962,7 @@ Workspace.prototype = {
             let clone = clones[i];
             let metaWindow = clone.metaWindow;
             if (i == 0) {
-                clone.setStackAbove(null);
+                clone.setStackAbove(this._dropRect);
             } else {
                 let previousClone = clones[i - 1];
                 clone.setStackAbove(previousClone.actor);
@@ -949,10 +982,8 @@ Workspace.prototype = {
         // be after the workspace animation finishes.
         let [cloneX, cloneY] = clone.actor.get_position();
         let [cloneWidth, cloneHeight] = clone.actor.get_size();
-        cloneX = this.x + this.scale * cloneX;
-        cloneY = this.y + this.scale * cloneY;
-        cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
-        cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
+        cloneWidth = clone.actor.scale_x * cloneWidth;
+        cloneHeight = clone.actor.scale_y * cloneHeight;
 
         if (overlay) {
             overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
@@ -977,12 +1008,10 @@ Workspace.prototype = {
             return true;
 
         let [x, y, mask] = global.get_pointer();
-        let wsWidth = this.actor.width * this.scale;
-        let wsHeight = this.actor.height * this.scale;
 
         let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
-        let inWorkspace = (this.x < x && x < this.x + wsWidth &&
-                           this.y < y && y < this.y + wsHeight);
+        let inWorkspace = (this._x < x && x < this._x + this._width &&
+                           this._y < y && y < this._y + this._height);
 
         if (pointerHasMoved && inWorkspace) {
             // store current cursor position
@@ -1083,13 +1112,20 @@ Workspace.prototype = {
         let clone = this._addWindowClone(win);
 
         if (win._overviewHint) {
-            let x = (win._overviewHint.x - this.actor.x) / this.scale;
-            let y = (win._overviewHint.y - this.actor.y) / this.scale;
-            let scale = win._overviewHint.scale / this.scale;
+            let x = win._overviewHint.x - this.actor.x;
+            let y = win._overviewHint.y - this.actor.y;
+            let scale = win._overviewHint.scale;
             delete win._overviewHint;
 
             clone.actor.set_position (x, y);
             clone.actor.set_scale (scale, scale);
+        } else {
+            // Position new windows at the top corner of the workspace rather
+            // than where they were placed for real to avoid the window
+            // being clipped to the workspaceView. Its not really more
+            // natural for the window to suddenly appear in the overview
+            // on some seemingly random location anyway.
+            clone.actor.set_position (this._x, this._y);
         }
 
         this.positionWindows(WindowPositionFlags.ANIMATE);
@@ -1109,14 +1145,11 @@ Workspace.prototype = {
 
     // Animate the full-screen to Overview transition.
     zoomToOverview : function() {
-        this.actor.set_position(this.x, this.y);
-        this.actor.set_scale(this.scale, this.scale);
-
         // Position and scale the windows.
         if (Main.overview.animationInProgress)
-            this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.ZOOM);
+            this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
         else
-            this.positionWindows(WindowPositionFlags.ZOOM);
+            this.positionWindows(WindowPositionFlags.INITIAL);
     },
 
     // Animates the return from Overview mode
@@ -1134,7 +1167,7 @@ Workspace.prototype = {
         this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
                                                                            this._doneLeavingOverview));
 
-        if (this._metaWorkspace == currentWorkspace)
+        if (this.metaWorkspace != currentWorkspace)
             return;
 
         // Position and scale the windows.
@@ -1149,7 +1182,6 @@ Workspace.prototype = {
                                    y: clone.origY,
                                    scale_x: 1.0,
                                    scale_y: 1.0,
-                                   workspace_relative: this,
                                    time: Overview.ANIMATION_TIME,
                                    opacity: 255,
                                    transition: 'easeOutQuad'
@@ -1160,7 +1192,6 @@ Workspace.prototype = {
                                  { scale_x: 0,
                                    scale_y: 0,
                                    opacity: 0,
-                                   workspace_relative: this,
                                    time: Overview.ANIMATION_TIME,
                                    transition: 'easeOutQuad'
                                  });
@@ -1222,6 +1253,10 @@ Workspace.prototype = {
                       Lang.bind(this, function(clone) {
                           Main.overview.beginWindowDrag();
                           overlay.hide();
+                      }));
+        clone.connect('drag-cancelled',
+                      Lang.bind(this, function(clone) {
+                          Main.overview.cancelledWindowDrag();
                       }));
         clone.connect('drag-end',
                       Lang.bind(this, function(clone) {
@@ -1330,56 +1365,3 @@ Workspace.prototype = {
 };
 
 Signals.addSignalMethods(Workspace.prototype);
-
-// Create a SpecialPropertyModifier to let us move windows in a
-// straight line on the screen even though their containing workspace
-// is also moving.
-Tweener.registerSpecialPropertyModifier('workspace_relative', _workspaceRelativeModifier, _workspaceRelativeGet);
-
-function _workspaceRelativeModifier(workspace) {
-    let [startX, startY] = Main.overview.getPosition();
-    let overviewPosX, overviewPosY, overviewScale;
-
-    if (!workspace)
-        return [];
-
-    if (workspace.leavingOverview) {
-        let [zoomedInX, zoomedInY] = Main.overview.getZoomedInPosition();
-        overviewPosX = { begin: startX, end: zoomedInX };
-        overviewPosY = { begin: startY, end: zoomedInY };
-        overviewScale = { begin: Main.overview.getScale(),
-                          end: Main.overview.getZoomedInScale() };
-    } else {
-        overviewPosX = { begin: startX, end: 0 };
-        overviewPosY = { begin: startY, end: 0 };
-        overviewScale = { begin: Main.overview.getScale(), end: 1 };
-    }
-
-    return [ { name: 'x',
-               parameters: { workspacePos: workspace.x,
-                             overviewPos: overviewPosX,
-                             overviewScale: overviewScale } },
-             { name: 'y',
-               parameters: { workspacePos: workspace.y,
-                             overviewPos: overviewPosY,
-                             overviewScale: overviewScale } }
-           ];
-}
-
-function _workspaceRelativeGet(begin, end, time, params) {
-    let curOverviewPos = (1 - time) * params.overviewPos.begin +
-                         time * params.overviewPos.end;
-    let curOverviewScale = (1 - time) * params.overviewScale.begin +
-                           time * params.overviewScale.end;
-
-    // Calculate the screen position of the window.
-    let screen = (1 - time) *
-                 ((begin + params.workspacePos) * params.overviewScale.begin +
-                  params.overviewPos.begin) +
-                 time *
-                 ((end + params.workspacePos) * params.overviewScale.end +
-                 params.overviewPos.end);
-
-    // Return the workspace coordinates.
-    return (screen - curOverviewPos) / curOverviewScale - params.workspacePos;
-}

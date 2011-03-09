@@ -10,17 +10,31 @@ noinst_PROGRAMS =
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir)
-INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(MUTTER_LIB_DIR)/mutter/
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(MUTTER_TYPELIB_DIR)
 
 typelibdir = $(pkglibdir)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
-generated_bin_scripts = gnome-shell-installed gnome-shell-jhbuild gnome-shell-extension-tool
-bin_SCRIPTS += gnome-shell $(generated_bin_scripts)
+bin_SCRIPTS += gnome-shell-extension-tool
+bin_PROGRAMS = gnome-shell-real
 
-generated_script_substitutions = -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
+if USE_JHBUILD_WRAPPER_SCRIPT
+gnome_shell = gnome-shell-jhbuild
+bin_SCRIPTS += gnome-shell-jhbuild
+else
+gnome_shell = gnome-shell-real
+endif
+
+noinst_DATA = gnome-shell
+gnome-shell: $(gnome_shell) Makefile
+	cp $< $@.tmp && mv $@.tmp $@
+install-exec-hook:
+	mv $(DESTDIR)$(bindir)/$(gnome_shell) $(DESTDIR)$(bindir)/gnome-shell
+
+generated_script_substitutions = \
+	    -e "s|@bindir[@]|$(bindir)|" \
 	    -e "s|@datadir[@]|$(datadir)|" \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
@@ -33,22 +47,11 @@ generated_script_substitutions = -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
 gnome-shell-jhbuild: gnome-shell-jhbuild.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
 
-gnome-shell-installed: gnome-shell-installed.in Makefile
-	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
-
 gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
 
-if USE_JHBUILD_WRAPPER_SCRIPT
-gnome-shell: gnome-shell-jhbuild Makefile
-	cp $< $@.tmp && mv $@.tmp $@
-else
-gnome-shell: gnome-shell-installed Makefile
-	cp $< $@.tmp && mv $@.tmp $@
-endif
-
-CLEANFILES += gnome-shell $(generated_bin_scripts)
-EXTRA_DIST += $(generated_bin_scripts:=.in)
+CLEANFILES += gnome-shell $(bin_SCRIPTS)
+EXTRA_DIST += $(bin_SCRIPTS:=.in)
 
 include Makefile-gdmuser.am
 include Makefile-st.am
@@ -57,17 +60,17 @@ include Makefile-gvc.am
 include Makefile-calendar-server.am
 
 gnome_shell_cflags =				\
-	$(MUTTER_PLUGIN_CFLAGS)			\
-	$(LIBGNOMEUI_CFLAGS)                    \
+	$(GNOME_SHELL_CFLAGS)			\
 	-I$(srcdir)/tray			\
+	-DVERSION=\"$(VERSION)\"		\
 	-DLOCALEDIR=\"$(datadir)/locale\" \
 	-DGNOME_SHELL_LIBEXECDIR=\"$(libexecdir)\"	\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
 	-DJSDIR=\"$(pkgdatadir)/js\"
 
-plugindir = $(MUTTER_PLUGIN_DIR)
-plugin_LTLIBRARIES = libgnome-shell.la
+privlibdir = $(pkglibdir)
+privlib_LTLIBRARIES = libgnome-shell.la
 
 shell_built_sources = \
 	shell-marshal.h \
@@ -133,6 +136,12 @@ libgnome_shell_la_SOURCES =		\
 
 libgnome_shell_la_gir_sources = \
 	$(filter-out %-private.h $(shell_recorder_non_gir_sources), $(shell_public_headers_h) $(libgnome_shell_la_SOURCES))
+
+gnome_shell_real_SOURCES =		\
+	main.c
+gnome_shell_real_CPPFLAGS = $(gnome_shell_cflags)
+gnome_shell_real_LDADD = libgnome-shell.la $(libgnome_shell_la_LIBADD)
+gnome_shell_real_DEPENDENCIES = libgnome-shell.la
 
 ########################################
 
@@ -216,9 +225,9 @@ stamp-shell-enum-types.h: $(srcdir)/shell-enum-types.h.in $(shell_public_headers
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $< \
-	  $(shell_public_headers_h) ) > $@.tmp && \
-	(cmp -s $@.tmp shell-enum-types.h || mv $@.tmp shell-enum-types.h) && \
-	rm -f $@.tmp && \
+	  $(shell_public_headers_h) ) > $(@F).tmp && \
+	(cmp -s $(@F).tmp shell-enum-types.h || mv $(@F).tmp shell-enum-types.h) && \
+	rm -f $(@F).tmp && \
 	echo timestamp > $(@F)
 EXTRA_DIST += shell-enum-types.h.in
 CLEANFILES += stamp-shell-enum-types.h
@@ -227,16 +236,15 @@ shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $< \
-	  $(shell_public_headers_h) ) > $@.tmp && \
-	mv $@.tmp $@ && \
-	rm -f $@.tmp
+	  $(shell_public_headers_h) ) > $(@F).tmp && \
+	mv $(@F).tmp $(@F) && \
+	rm -f $(@F).tmp
 EXTRA_DIST += shell-enum-types.c.in
 
-libgnome_shell_la_LDFLAGS = -avoid-version -module
-libgnome_shell_la_LIBADD =	\
+libgnome_shell_la_LDFLAGS = -avoid-version
+libgnome_shell_la_LIBADD =		\
 	-lm			\
-	$(MUTTER_PLUGIN_LIBS)	\
-	$(LIBGNOMEUI_LIBS)      \
+	$(GNOME_SHELL_LIBS)	\
 	$(BLUETOOTH_LIBS)	\
 	libst-1.0.la       	\
 	libgdmuser-1.0.la	\
@@ -244,7 +252,7 @@ libgnome_shell_la_LIBADD =	\
 	libgvc.la		\
 	$(NULL)
 
-libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags) $(LIBECAL_CFLAGS)
+libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 Shell-0.1.gir: libgnome-shell.la St-1.0.gir
 Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-2.91 TelepathyGLib-0.12
@@ -252,10 +260,9 @@ Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 Shell_0_1_gir_LIBS = libgnome-shell.la
 Shell_0_1_gir_FILES = $(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources))
 Shell_0_1_gir_SCANNERFLAGS = --include-uninstalled=$(builddir)/St-1.0.gir \
-	--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
-	--program=mutter \
-	--program-arg=--mutter-plugins=`pwd`/libgnome-shell.la
+	--add-include-path=$(MUTTER_GIR_DIR)
 INTROSPECTION_GIRS += Shell-0.1.gir
+CLEANFILES += Shell-0.1.gir
 
 St-1.0.gir: libst-1.0.la
 St_1_0_gir_INCLUDES = Clutter-1.0 Gtk-3.0
@@ -264,6 +271,7 @@ St_1_0_gir_LIBS = libst-1.0.la
 St_1_0_gir_FILES = $(filter-out %-private.h $(st_non_gir_sources), $(addprefix $(srcdir)/,$(st_source_h))) \
 	$(addprefix $(srcdir)/,$(st_source_c))
 INTROSPECTION_GIRS += St-1.0.gir
+CLEANFILES += St-1.0.gir
 
 Gdm-1.0.gir: libgdmuser-1.0.la
 Gdm_1_0_gir_INCLUDES = GObject-2.0 GdkPixbuf-2.0
@@ -272,3 +280,4 @@ Gdm_1_0_gir_LIBS = libgdmuser-1.0.la
 Gdm_1_0_gir_FILES = $(filter-out %-private.h, $(addprefix $(srcdir)/,$(gdmuser_source_h))) \
 	$(addprefix $(srcdir)/,$(gdmuser_source_c))
 INTROSPECTION_GIRS += Gdm-1.0.gir
+CLEANFILES += Gdm-1.0.gir

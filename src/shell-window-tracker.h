@@ -4,8 +4,8 @@
 
 #include <glib-object.h>
 #include <glib.h>
+#include <meta/window.h>
 
-#include "window.h"
 #include "shell-app.h"
 #include "shell-app-system.h"
 

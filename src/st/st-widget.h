@@ -77,13 +77,15 @@ struct _StWidgetClass
   /*< private >*/
   ClutterActorClass parent_class;
 
-  /* vfuncs */
-  void     (* style_changed)   (StWidget         *self);
-  gboolean (* navigate_focus)  (StWidget         *self,
-                                ClutterActor     *from,
-                                GtkDirectionType  direction);
+  /* signals */
+  void     (* style_changed)       (StWidget         *self);
+  void     (* popup_menu)          (StWidget         *self);
 
-  GType    (*get_accessible_type)   (void);
+  /* vfuncs */
+  gboolean (* navigate_focus)      (StWidget         *self,
+                                    ClutterActor     *from,
+                                    GtkDirectionType  direction);
+  GType    (* get_accessible_type) (void);
 };
 
 GType st_widget_get_type (void) G_GNUC_CONST;

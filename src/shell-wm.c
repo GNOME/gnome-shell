@@ -4,11 +4,11 @@
 
 #include <string.h>
 
+#include <meta/keybindings.h>
+
 #include "shell-wm-private.h"
 #include "shell-global.h"
 #include "shell-marshal.h"
-
-#include <keybindings.h>
 
 struct _ShellWM {
   GObject parent;

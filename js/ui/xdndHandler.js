@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const Mainloop = imports.mainloop;
 const DND = imports.ui.dnd;
 
 function XdndHandler() {
@@ -41,9 +40,14 @@ XdndHandler.prototype = {
     // Called when the user cancels the drag (i.e release the button)
     _onLeave: function() {
         if (this._windowGroupVisibilityHandlerId != 0) {
-            Mainloop.source_remove(this._windowGroupVisibilityHandlerId);
+            global.window_group.disconnect(this._windowGroupVisibilityHandlerId);
             this._windowGroupVisibilityHandlerId = 0;
         }
+        if (this._cursorWindowClone) {
+            this._cursorWindowClone.destroy();
+            this._cursorWindowClone = null;
+        }
+
         this.emit('drag-end');
     },
 
@@ -77,8 +81,7 @@ XdndHandler.prototype = {
             // Make sure that the clone has the same position as the source
             this._cursorWindowClone.add_constraint(constraint_position);
         } else {
-            if (this._cursorWindowClone)
-            {
+            if (this._cursorWindowClone) {
                 this._cursorWindowClone.destroy();
                 this._cursorWindowClone = null;
             }

@@ -586,7 +586,7 @@ st_entry_key_press_event (ClutterActor    *actor,
       return TRUE;
     }
 
-  return FALSE;
+  return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->key_press_event (actor, event);
 }
 
 static void

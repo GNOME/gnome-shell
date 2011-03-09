@@ -10,10 +10,17 @@ const St = imports.gi.St;
 
 const AltTab = imports.ui.altTab;
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 const POPUP_APPICON_SIZE = 96;
 const POPUP_FADE_TIME = 0.1; // seconds
+
+const SortGroup = {
+    TOP:    0,
+    MIDDLE: 1,
+    BOTTOM: 2
+};
 
 function CtrlAltTabManager() {
     this._init();
@@ -23,14 +30,18 @@ CtrlAltTabManager.prototype = {
     _init: function() {
         this._items = [];
         this._focusManager = St.FocusManager.get_for_stage(global.stage);
-        Main.wm.setKeybindingHandler('switch_panels', Lang.bind(this,
-            function (shellwm, binding, window, backwards) {
-                this.popup(backwards);
-            }));
     },
 
-    addGroup: function(root, name, icon) {
-        this._items.push({ root: root, name: name, iconName: icon });
+    addGroup: function(root, name, icon, params) {
+        let item = Params.parse(params, { sortGroup: SortGroup.MIDDLE,
+                                          proxy: root,
+                                          focusCallback: null });
+
+        item.root = root;
+        item.name = name;
+        item.iconName = icon;
+
+        this._items.push(item);
         root.connect('destroy', Lang.bind(this, function() { this.removeGroup(root); }));
         this._focusManager.add_group(root);
     },
@@ -45,38 +56,73 @@ CtrlAltTabManager.prototype = {
         }
     },
 
-    focusGroup: function(root) {
+    focusGroup: function(item) {
         if (global.stage_input_mode == Shell.StageInputMode.NONREACTIVE ||
             global.stage_input_mode == Shell.StageInputMode.NORMAL)
             global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
-        root.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+
+        if (item.window)
+            Main.activateWindow(item.window);
+        else if (item.focusCallback)
+            item.focusCallback();
+        else
+            item.root.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+    },
+
+    // Sort the items into a consistent order; panel first, tray last,
+    // and everything else in between, sorted by X coordinate, so that
+    // they will have the same left-to-right ordering in the
+    // Ctrl-Alt-Tab dialog as they do onscreen.
+    _sortItems: function(a, b) {
+        if (a.sortGroup != b.sortGroup)
+            return a.sortGroup - b.sortGroup;
+
+        let y;
+        if (a.x == undefined) {
+            if (a.window)
+                a.x = a.window.get_compositor_private().x;
+            else
+                [a.x, y] = a.proxy.get_transformed_position();
+        }
+        if (b.x == undefined) {
+            if (b.window)
+                b.x = b.window.get_compositor_private().x;
+            else
+                [b.x, y] = b.proxy.get_transformed_position();
+        }
+
+        return a.x - b.x;
     },
 
     popup: function(backwards) {
         // Start with the set of focus groups that are currently mapped
-        let items = this._items.filter(function (item) { return item.root.mapped; });
+        let items = this._items.filter(function (item) { return item.proxy.mapped; });
 
         // And add the windows metacity would show in its Ctrl-Alt-Tab list
-        let screen = global.screen;
-        let display = screen.get_display();
-        let windows = display.get_tab_list(Meta.TabList.DOCKS, screen, screen.get_active_workspace ());
-        let windowTracker = Shell.WindowTracker.get_default();
-        let textureCache = St.TextureCache.get_default();
-        for (let i = 0; i < windows.length; i++) {
-            let icon;
-            let app = windowTracker.get_window_app(windows[i]);
-            if (app)
-                icon = app.create_icon_texture(POPUP_APPICON_SIZE);
-            else
-                icon = textureCache.bind_pixbuf_property(windows[i], 'icon');
-            items.push({ window: windows[i],
-                         name: windows[i].title,
-                         iconActor: icon });
+        if (!Main.overview.visible) {
+            let screen = global.screen;
+            let display = screen.get_display();
+            let windows = display.get_tab_list(Meta.TabList.DOCKS, screen, screen.get_active_workspace ());
+            let windowTracker = Shell.WindowTracker.get_default();
+            let textureCache = St.TextureCache.get_default();
+            for (let i = 0; i < windows.length; i++) {
+                let icon;
+                let app = windowTracker.get_window_app(windows[i]);
+                if (app)
+                    icon = app.create_icon_texture(POPUP_APPICON_SIZE);
+                else
+                    icon = textureCache.bind_pixbuf_property(windows[i], 'icon');
+                items.push({ window: windows[i],
+                             name: windows[i].title,
+                             iconActor: icon,
+                             sortGroup: SortGroup.MIDDLE });
+            }
         }
 
         if (!items.length)
             return;
 
+        items.sort(Lang.bind(this, this._sortItems));
         new CtrlAltTabPopup().show(items, backwards);
     }
 };
@@ -91,12 +137,12 @@ function CtrlAltTabPopup() {
 
 CtrlAltTabPopup.prototype = {
     _init : function() {
-        let primary = global.get_primary_monitor();
-        this.actor = new St.BoxLayout({ name: 'ctrlAltTabPopup',
-                                        reactive: true,
-                                        x: primary.x + primary.width / 2,
-                                        y: primary.y + primary.height / 2,
-                                        anchor_gravity: Clutter.Gravity.CENTER });
+        this.actor = new Shell.GenericContainer({ name: 'ctrlAltTabPopup',
+                                                  reactive: true });
+
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -104,6 +150,37 @@ CtrlAltTabPopup.prototype = {
         this._selection = 0;
 
         Main.uiGroup.add_actor(this.actor);
+    },
+
+    _getPreferredWidth: function (actor, forHeight, alloc) {
+        let primary = global.get_primary_monitor();
+
+        alloc.min_size = primary.width;
+        alloc.natural_size = primary.width;
+    },
+
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        let primary = global.get_primary_monitor();
+
+        alloc.min_size = primary.height;
+        alloc.natural_size = primary.height;
+    },
+
+    _allocate: function (actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        let primary = global.get_primary_monitor();
+
+        let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
+        let vPadding = this.actor.get_theme_node().get_vertical_padding();
+        let hPadding = this.actor.get_theme_node().get_horizontal_padding();
+
+        let [childMinHeight, childNaturalHeight] = this._switcher.actor.get_preferred_height(primary.width - hPadding);
+        let [childMinWidth, childNaturalWidth] = this._switcher.actor.get_preferred_width(childNaturalHeight);
+        childBox.x1 = Math.max(primary.x + leftPadding, primary.x + Math.floor((primary.width - childNaturalWidth) / 2));
+        childBox.x2 = Math.min(primary.width - hPadding, childBox.x1 + childNaturalWidth);
+        childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
+        childBox.y2 = childBox.y1 + childNaturalHeight;
+        this._switcher.actor.allocate(childBox, flags);
     },
 
     show : function(items, startBackwards) {
@@ -180,11 +257,7 @@ CtrlAltTabPopup.prototype = {
     _finish : function() {
         this.destroy();
 
-        let item = this._items[this._selection];
-        if (item.root)
-            Main.ctrlAltTabManager.focusGroup(item.root);
-        else
-            Main.activateWindow(item.window);
+        Main.ctrlAltTabManager.focusGroup(this._items[this._selection]);
     },
 
     _popModal: function() {

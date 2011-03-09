@@ -9,6 +9,10 @@
 #include <X11/Xatom.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
+#include <meta/display.h>
+#include <meta/group.h>
+#include <meta/util.h>
+#include <meta/window.h>
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
@@ -19,11 +23,6 @@
 #include "shell-global.h"
 #include "shell-marshal.h"
 #include "st.h"
-
-#include "display.h"
-#include "window.h"
-#include "group.h"
-#include "util.h"
 
 /* This file includes modified code from
  * desktop-data-engine/engine-dbus/hippo-application-monitor.c

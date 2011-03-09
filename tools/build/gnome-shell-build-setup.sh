@@ -53,13 +53,13 @@ fi
 # binutils, curl, gcc, make, git
 #
 # General build stuff:
-# automake, bison, flex, gettext, gnome-common, gtk-doc, intltool,
+# automake, bison, flex, gettext, gnome-common, gperf, gtk-doc, intltool,
 # libtool, pkgconfig, cvs
 #
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, expat, GL, gnome-menus, gstreamer, libffi,
 # libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
-# iso-codes, libxml2, ORBit2, pam, python, readline,
+# iso-codes, libical, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
 # libgcrypt, libtasn1, libgnome-keyring, libgtop, cups,
@@ -73,10 +73,10 @@ fi
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
   reqd="
     build-essential curl
-    automake bison flex gettext git-core cvs gnome-common gtk-doc-tools
+    automake bison flex gettext git-core gperf cvs gnome-common gtk-doc-tools
     gvfs gvfs-backends icon-naming-utils
     libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev libgtop2-dev
-    libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
+    libical-dev libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
     libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
     xulrunner-dev libcroco3-dev
@@ -111,9 +111,9 @@ fi
 if test "x$system" = xFedora ; then
   reqd="
     binutils curl gcc gcc-c++ make cvs
-    automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
+    automake bison flex gettext git gnome-common gnome-doc-utils gperf gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
-    gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel libpng-devel
+    gnome-python2-gconf jasper-devel libffi-devel libical-devel libjpeg-devel libpng-devel
     libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel pam-devel
     pulseaudio-libs-devel python-devel pygobject2 readline-devel xulrunner-devel
     libXdamage-devel libcroco-devel libxml2-devel gstreamer-devel

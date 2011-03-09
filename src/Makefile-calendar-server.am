@@ -4,7 +4,10 @@ service_in_files = calendar-server/org.gnome.Shell.CalendarServer.service.in
 service_DATA     = $(service_in_files:.service.in=.service)
 
 $(service_DATA): $(service_in_files) Makefile
-	@sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN)									\
+		[ -d $(@D) ] || $(mkdir_p) $(@D) ;					\
+		sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
+CLEANFILES += $(service_DATA)
 
 libexec_PROGRAMS += gnome-shell-calendar-server
 

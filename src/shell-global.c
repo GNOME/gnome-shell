@@ -2,38 +2,39 @@
 
 #include "config.h"
 
-#include "shell-global-private.h"
-#include "shell-enum-types.h"
-#include "shell-perf-log.h"
-#include "shell-window-tracker.h"
-#include "shell-marshal.h"
-#include "shell-wm.h"
-#include "st.h"
-
-#include "display.h"
-#include "util.h"
-#include <clutter/glx/clutter-glx.h>
-#include <clutter/x11/clutter-x11.h>
-#include <gdk/gdkx.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <dbus/dbus-glib.h>
-#include <gio/gio.h>
-#include <math.h>
-#include <X11/extensions/Xfixes.h>
-#include <gjs/gjs-module.h>
-#include <canberra.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
+
+#include <X11/extensions/Xfixes.h>
+#include <canberra.h>
+#include <clutter/glx/clutter-glx.h>
+#include <clutter/x11/clutter-x11.h>
+#include <dbus/dbus-glib.h>
+#include <gdk/gdkx.h>
+#include <gio/gio.h>
+#include <gjs/gjs-module.h>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
+#include <meta/display.h>
+#include <meta/util.h>
+
+#include "shell-enum-types.h"
+#include "shell-global-private.h"
 #include "shell-jsapi-compat-private.h"
+#include "shell-marshal.h"
+#include "shell-perf-log.h"
+#include "shell-window-tracker.h"
+#include "shell-wm.h"
+#include "st.h"
 
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
 
@@ -203,7 +204,8 @@ static void
 shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
-  char *imagedir;
+  const char *shell_js = g_getenv("GNOME_SHELL_JS");
+  char *imagedir, **search_path;
 
   if (!datadir)
     datadir = GNOME_SHELL_DATADIR;
@@ -242,6 +244,15 @@ shell_global_init (ShellGlobal *global)
   ca_context_create (&global->sound_context);
   ca_context_change_props (global->sound_context, CA_PROP_APPLICATION_NAME, PACKAGE_NAME, CA_PROP_APPLICATION_ID, "org.gnome.Shell", NULL);
   ca_context_open (global->sound_context);
+
+  if (!shell_js)
+    shell_js = JSDIR;
+  search_path = g_strsplit (shell_js, ":", -1);
+  global->js_context = g_object_new (GJS_TYPE_CONTEXT,
+                                     "search-path", search_path,
+                                     "js-version", "1.8",
+                                     NULL);
+  g_strfreev (search_path);
 }
 
 static void
@@ -791,11 +802,10 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->focus_manager = st_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
 }
 
-void
-_shell_global_set_gjs_context (ShellGlobal *global,
-                               GjsContext  *context)
+GjsContext *
+_shell_global_get_gjs_context (ShellGlobal *global)
 {
-  global->js_context = context;
+  return global->js_context;
 }
 
 /**

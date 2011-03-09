@@ -3,7 +3,7 @@
 # This is a simple script that we use to check for files in git
 # and not in the distribution. It was previously written in shell
 # and inlined in the Makefile.am, but 'git ls-files --exclude=<pattern>'
-# was changed to no longer due anything useful, which made that
+# was changed to no longer do anything useful, which made that
 # too challenging to be worthwhile.
 
 import fnmatch, os, subprocess, sys

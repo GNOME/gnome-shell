@@ -23,6 +23,7 @@ const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
 
 const MENU_POPUP_TIMEOUT = 600;
+const SCROLL_TIME = 0.1;
 
 function AlphabeticalView() {
     this._init();
@@ -67,12 +68,35 @@ AlphabeticalView.prototype = {
         let appIcon = new AppWellIcon(this._appSystem.get_app(appInfo.get_id()));
 
         this._grid.addItem(appIcon.actor);
+        appIcon.actor.connect('key-focus-in', Lang.bind(this, this._ensureIconVisible));
 
         appIcon._appInfo = appInfo;
         if (this._filterApp && !this._filterApp(appInfo))
             appIcon.actor.hide();
 
         this._apps.push(appIcon);
+    },
+
+    _ensureIconVisible: function(icon) {
+        let adjustment = this.actor.vscroll.adjustment;
+        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+
+        let offset = 0;
+        let vfade = this.actor.get_effect("vfade");
+        if (vfade)
+            offset = vfade.fade_offset;
+
+        if (icon.y < value + offset)
+            value = Math.max(0, icon.y - offset);
+        else if (icon.y + icon.height > value + pageSize - offset)
+            value = Math.min(upper, icon.y + icon.height + offset - pageSize);
+        else
+            return;
+
+        Tweener.addTween(adjustment,
+                         { value: value,
+                           time: SCROLL_TIME,
+                           transition: 'easeOutQuad' });
     },
 
     setFilter: function(filter) {
@@ -128,6 +152,12 @@ ViewByCategories.prototype = {
             }));
 
         this._sections = [];
+
+        // We need a dummy actor to catch the keyboard focus if the
+        // user Ctrl-Alt-Tabs here before the deferred work creates
+        // our real contents
+        this._focusDummy = new St.Bin({ can_focus: true });
+        this.actor.add(this._focusDummy);
     },
 
     _scrollFilter: function(actor, event) {
@@ -166,7 +196,8 @@ ViewByCategories.prototype = {
     _addFilter: function(name, num) {
         let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
                                      style_class: 'app-filter',
-                                     x_align: St.Align.START });
+                                     x_align: St.Align.START,
+                                     can_focus: true });
         this._filters.add(button, { expand: true, x_fill: true, y_fill: false });
         button.connect('clicked', Lang.bind(this, function() {
             this._selectCategory(num);
@@ -201,6 +232,14 @@ ViewByCategories.prototype = {
             this._addFilter(sections[i], i);
 
         this._selectCategory(-1);
+
+        if (this._focusDummy) {
+            let focused = this._focusDummy.has_key_focus();
+            this._focusDummy.destroy();
+            this._focusDummy = null;
+            if (focused)
+                this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        }
     }
 };
 
@@ -352,6 +391,7 @@ AppWellIcon.prototype = {
         this.actor = new St.Button({ style_class: 'app-well-app',
                                      reactive: true,
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+                                     can_focus: true,
                                      x_fill: true,
                                      y_fill: true });
         this.actor._delegate = this;
@@ -361,6 +401,7 @@ AppWellIcon.prototype = {
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
 
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
@@ -437,6 +478,11 @@ AppWellIcon.prototype = {
         return false;
     },
 
+    _onKeyboardPopupMenu: function() {
+        this.popupMenu();
+        this._menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+    },
+
     getId: function() {
         return this.app.get_id();
     },
@@ -454,6 +500,7 @@ AppWellIcon.prototype = {
                 if (!isPoppedUp)
                     this._onMenuPoppedDown();
             }));
+            Main.overview.connect('hiding', Lang.bind(this, function () { this._menu.close(); }));
 
             this._menuManager.addMenu(this._menu);
         }

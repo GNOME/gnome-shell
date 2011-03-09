@@ -2,15 +2,15 @@
 
 #include "config.h"
 
-#include "st.h"
-#include "shell-app-private.h"
-#include "shell-global.h"
-#include "shell-enum-types.h"
-#include "display.h"
-#include "st.h"
-#include "shell-window-tracker-private.h"
-
 #include <string.h>
+
+#include <meta/display.h>
+
+#include "shell-app-private.h"
+#include "shell-enum-types.h"
+#include "shell-global.h"
+#include "shell-window-tracker-private.h"
+#include "st.h"
 
 /* This is mainly a memory usage optimization - the user is going to
  * be running far fewer of the applications at one time than they have

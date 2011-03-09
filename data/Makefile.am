@@ -26,7 +26,8 @@ dist_theme_DATA =				\
 	theme/close.svg				\
 	theme/corner-ripple.png			\
 	theme/dash-placeholder.svg		\
-	theme/filter-selected.svg		\
+	theme/filter-selected-ltr.svg		\
+	theme/filter-selected-rtl.svg		\
 	theme/gnome-shell.css			\
 	theme/mosaic-view-active.svg		\
 	theme/mosaic-view.svg			\
@@ -35,7 +36,7 @@ dist_theme_DATA =				\
 	theme/panel-button-border.svg		\
 	theme/panel-button-highlight-narrow.svg	\
 	theme/panel-button-highlight-wide.svg	\
-	theme/process-working.png		\
+	theme/process-working.svg		\
 	theme/running-indicator.svg		\
 	theme/scroll-button-down-hover.png	\
 	theme/scroll-button-down.png		\

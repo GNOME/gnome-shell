@@ -13,6 +13,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
+const CtrlAltTab = imports.ui.ctrlAltTab;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -243,6 +244,10 @@ AppMenuButton.prototype = {
 
         let bin = new St.Bin({ name: 'appMenu' });
         this.actor.set_child(bin);
+
+        this.actor.reactive = false;
+        this._targetIsCurrent = false;
+
         this._container = new Shell.GenericContainer();
         bin.set_child(this._container);
         this._container.connect('get-preferred-width', Lang.bind(this, this._getContentPreferredWidth));
@@ -275,7 +280,7 @@ AppMenuButton.prototype = {
         this._clipWidth = PANEL_ICON_SIZE;
         this._direction = SPINNER_SPEED;
 
-        this._spinner = new AnimatedIcon('process-working.png',
+        this._spinner = new AnimatedIcon('process-working.svg',
                                          PANEL_ICON_SIZE);
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.lower_bottom();
@@ -500,13 +505,6 @@ AppMenuButton.prototype = {
                 lastStartedApp = this._startingApps[i];
 
         let focusedApp = tracker.focus_app;
-        let targetApp = focusedApp != null ? focusedApp : lastStartedApp;
-        if (targetApp == this._targetApp) {
-            if (targetApp && targetApp.get_state() != Shell.AppState.STARTING)
-                this.stopAnimation();
-            return;
-        }
-        this._stopAnimation();
 
         if (!focusedApp) {
             // If the app has just lost focus to the panel, pretend
@@ -516,27 +514,56 @@ AppMenuButton.prototype = {
                 return;
         }
 
+        let targetApp = focusedApp != null ? focusedApp : lastStartedApp;
+
+        if (targetApp == null) {
+            if (!this._targetIsCurrent)
+                return;
+
+            this.actor.reactive = false;
+            this._targetIsCurrent = false;
+
+            Tweener.removeTweens(this.actor);
+            Tweener.addTween(this.actor, { opacity: 0,
+                                           time: Overview.ANIMATION_TIME,
+                                           transition: 'easeOutQuad' });
+            return;
+        }
+
+        if (!this._targetIsCurrent) {
+            this.actor.reactive = true;
+            this._targetIsCurrent = true;
+
+            Tweener.removeTweens(this.actor);
+            Tweener.addTween(this.actor, { opacity: 255,
+                                           time: Overview.ANIMATION_TIME,
+                                           transition: 'easeOutQuad' });
+        }
+
+        if (targetApp == this._targetApp) {
+            if (targetApp && targetApp.get_state() != Shell.AppState.STARTING)
+                this.stopAnimation();
+            return;
+        }
+        this._stopAnimation();
+
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
         this._label.setText('');
-        this.actor.reactive = false;
 
         this._targetApp = targetApp;
-        if (targetApp != null) {
-            let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
+        let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
 
-            this._label.setText(targetApp.get_name());
-            // TODO - _quit() doesn't really work on apps in state STARTING yet
-            this._quitMenu.label.set_text(_("Quit %s").format(targetApp.get_name()));
+        this._label.setText(targetApp.get_name());
+        // TODO - _quit() doesn't really work on apps in state STARTING yet
+        this._quitMenu.label.set_text(_("Quit %s").format(targetApp.get_name()));
 
-            this.actor.reactive = true;
-            this._iconBox.set_child(icon);
-            this._iconBox.show();
+        this._iconBox.set_child(icon);
+        this._iconBox.show();
 
-            if (targetApp.get_state() == Shell.AppState.STARTING)
-                this.startAnimation();
-        }
+        if (targetApp.get_state() == Shell.AppState.STARTING)
+            this.startAnimation();
 
         this.emit('changed');
     }
@@ -813,13 +840,6 @@ Panel.prototype = {
         this._centerBox = new St.BoxLayout({ name: 'panelCenter' });
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
 
-        // This will eventually be automatic, see
-        // https://bugzilla.gnome.org/show_bug.cgi?id=584662
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
-            this._leftBox.add_style_pseudo_class('rtl');
-            this._rightBox.add_style_pseudo_class('rtl');
-        }
-
         this._leftCorner = new PanelCorner(St.Side.LEFT);
         this._rightCorner = new PanelCorner(St.Side.RIGHT);
 
@@ -996,6 +1016,9 @@ Panel.prototype = {
         Main.chrome.addActor(this._rightCorner.actor, { visibleInOverview: true,
                                                   affectsStruts: false,
                                                   affectsInputRegion: false });
+
+        Main.ctrlAltTabManager.addGroup(this.actor, _("Panel"), 'start-here',
+                                        { sortGroup: CtrlAltTab.SortGroup.TOP });
     },
 
     _xdndShowOverview: function (actor) {

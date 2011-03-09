@@ -646,23 +646,9 @@ st_container_navigate_focus (StWidget         *widget,
        * any child is inconsistently scaled, then the focus chain will
        * probably be unpredictable.
        */
-      if (from)
+      if (focus_child)
         {
-          if (from == focus_child)
-            clutter_actor_get_allocation_box (focus_child, &sort_data.box);
-          else
-            {
-              float cx, cy, fx, fy, fw, fh;
-
-              clutter_actor_get_transformed_position (CLUTTER_ACTOR (container), &cx, &cy);
-              clutter_actor_get_transformed_position (from, &fx, &fy);
-              clutter_actor_get_transformed_size (from, &fw, &fh);
-
-              sort_data.box.x1 = fx - cx;
-              sort_data.box.x2 = fx - cx + fw;
-              sort_data.box.y1 = fy - cy;
-              sort_data.box.y2 = fy - cy + fh;
-            }
+          clutter_actor_get_allocation_box (focus_child, &sort_data.box);
         }
       else
         {

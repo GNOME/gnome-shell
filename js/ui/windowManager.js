@@ -93,6 +93,8 @@ WindowManager.prototype = {
 
         this._dimmedWindows = [];
 
+        this._animationBlockCount = 0;
+
         this._switchData = null;
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
         this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
@@ -117,6 +119,7 @@ WindowManager.prototype = {
         this.setKeybindingHandler('switch_to_workspace_down', Lang.bind(this, this._showWorkspaceSwitcher));
         this.setKeybindingHandler('switch_windows', Lang.bind(this, this._startAppSwitcher));
         this.setKeybindingHandler('switch_group', Lang.bind(this, this._startAppSwitcher));
+        this.setKeybindingHandler('switch_panels', Lang.bind(this, this._startA11ySwitcher));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -138,8 +141,16 @@ WindowManager.prototype = {
             this._shellwm.connect('keybinding::' + keybinding, handler);
     },
 
+    blockAnimations: function() {
+        this._animationBlockCount++;
+    },
+
+    unblockAnimations: function() {
+        this._animationBlockCount = Math.max(0, this._animationBlockCount - 1);
+    },
+
     _shouldAnimate : function(actor) {
-        if (Main.overview.visible)
+        if (Main.overview.visible || this._animationsBlocked > 0)
             return false;
         if (actor && (actor.meta_window.get_window_type() != Meta.WindowType.NORMAL))
             return false;
@@ -523,6 +534,10 @@ WindowManager.prototype = {
 
         if (!tabPopup.show(backwards, binding == 'switch_group'))
             tabPopup.destroy();
+    },
+
+    _startA11ySwitcher : function(shellwm, binding, window, backwards) {
+        Main.ctrlAltTabManager.popup(backwards);
     },
 
     _showWorkspaceSwitcher : function(shellwm, binding, window, backwards) {
