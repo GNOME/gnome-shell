@@ -518,25 +518,28 @@ Notification.prototype = {
         this._updated();
     },
 
+    _createScrollArea: function() {
+        this.actor.add_style_class_name('multi-line-notification');
+        this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
+                                               vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
+                                               hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                               vfade: true });
+        this.actor.add(this._scrollArea, { row: 1, col: 1 });
+        this._contentArea = new St.BoxLayout({ name: 'notification-body',
+                                               vertical: true });
+        this._scrollArea.add_actor(this._contentArea);
+        // If we know the notification will be expandable, we need to add
+        // the banner text to the body as the first element.
+        this._addBannerBody();
+    },
+
     // addActor:
     // @actor: actor to add to the body of the notification
     //
     // Appends @actor to the notification's body
     addActor: function(actor, style) {
         if (!this._scrollArea) {
-            this.actor.add_style_class_name('multi-line-notification');
-            this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
-                                                   vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
-                                                   hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                                   vfade: true });
-            this.actor.add(this._scrollArea, { row: 1,
-                                               col: 1 });
-            this._contentArea = new St.BoxLayout({ name: 'notification-body',
-                                                   vertical: true });
-            this._scrollArea.add_actor(this._contentArea);
-            // If we know the notification will be expandable, we need to add
-            // the banner text to the body as the first element.
-            this._addBannerBody();
+            this._createScrollArea();
         }
 
         this._contentArea.add(actor, style ? style : {});

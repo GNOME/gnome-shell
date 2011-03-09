@@ -279,6 +279,16 @@ Notification.prototype = {
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
         this.setActionArea(this._responseEntry);
 
+        this._oldMaxScrollAdjustment = 0;
+        this._createScrollArea();
+
+        this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
+            let currentValue = adjustment.value + adjustment.page_size;
+            if (currentValue == this._oldMaxScrollAdjustment)
+                this.scrollTo(St.Side.BOTTOM);
+            this._oldMaxScrollAdjustment = adjustment.upper;
+        }));
+
         this._history = [];
         this._timestampTimeoutId = 0;
     },
@@ -305,7 +315,6 @@ Notification.prototype = {
 
         let body = this.addBody(text);
         body.add_style_class_name(style);
-        this.scrollTo(St.Side.BOTTOM);
 
         this._history.unshift({ actor: body, time: timestamp, realMessage: true });
 
