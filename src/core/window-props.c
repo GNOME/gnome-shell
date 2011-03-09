@@ -693,6 +693,7 @@ reload_net_wm_state (MetaWindow    *window,
                 window->desc);
 
   meta_window_recalc_window_type (window);
+  meta_window_recalc_features (window);
 }
 
 static void
