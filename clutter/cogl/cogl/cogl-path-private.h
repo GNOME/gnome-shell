@@ -87,6 +87,14 @@ struct _CoglPathData
   CoglVertexArray     *stroke_vbo;
   CoglAttribute      **stroke_vbo_attributes;
   unsigned int         stroke_vbo_n_attributes;
+
+  /* This is used as an optimisation for when the path contains a
+     single contour specified using cogl2_path_rectangle. Cogl is more
+     optimised to handle rectangles than paths so we can detect this
+     case and divert to the journal or a rectangle clip. If it is TRUE
+     then the entire path can be described by calling
+     _cogl_path_get_bounds */
+  gboolean             is_rectangle;
 };
 
 void
@@ -100,5 +108,8 @@ _cogl_path_get_bounds (CoglPath *path,
                        float *min_y,
                        float *max_x,
                        float *max_y);
+
+gboolean
+_cogl_path_is_rectangle (CoglPath *path);
 
 #endif /* __COGL_PATH_PRIVATE_H */

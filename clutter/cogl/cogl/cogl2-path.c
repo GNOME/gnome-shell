@@ -190,6 +190,11 @@ _cogl_path_add_node (CoglPath *path,
       if (y > data->path_nodes_max.y)
         data->path_nodes_max.y = y;
     }
+
+  /* Once the path nodes have been modified then we'll assume it's no
+     longer a rectangle. cogl2_path_rectangle will set this back to
+     TRUE if this has been called from there */
+  data->is_rectangle = FALSE;
 }
 
 static void
@@ -466,18 +471,32 @@ cogl2_path_fill (CoglPath *path)
   if (path->data->path_nodes->len == 0)
     return;
 
-  framebuffer = _cogl_get_draw_buffer ();
+  /* If the path is a simple rectangle then we can divert to using
+     cogl_rectangle which should be faster because it can go through
+     the journal instead of uploading the geometry just for two
+     triangles */
+  if (path->data->is_rectangle)
+    {
+      float x_1, y_1, x_2, y_2;
 
-  _cogl_framebuffer_flush_journal (framebuffer);
+      _cogl_path_get_bounds (path, &x_1, &y_1, &x_2, &y_2);
+      cogl_rectangle (x_1, y_1, x_2, y_2);
+    }
+  else
+    {
+      framebuffer = _cogl_get_draw_buffer ();
 
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the pipeline state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (framebuffer,
-                                 _cogl_get_read_buffer (),
-                                 0);
+      _cogl_framebuffer_flush_journal (framebuffer);
 
-  _cogl_path_fill_nodes (path);
+      /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
+       * as the pipeline state) when flushing the clip stack, so should
+       * always be done first when preparing to draw. */
+      _cogl_framebuffer_flush_state (framebuffer,
+                                     _cogl_get_read_buffer (),
+                                     0);
+
+      _cogl_path_fill_nodes (path);
+    }
 }
 
 void
@@ -612,11 +631,28 @@ cogl2_path_rectangle (CoglPath *path,
                       float x_2,
                       float y_2)
 {
+  gboolean is_rectangle;
+
+  /* If the path was previously empty and the rectangle isn't mirrored
+     then we'll record that this is a simple rectangle path so that we
+     can optimise it */
+  is_rectangle = (path->data->path_nodes->len == 0 &&
+                  x_2 >= x_1 &&
+                  y_2 >= y_1);
+
   cogl2_path_move_to (path, x_1, y_1);
   cogl2_path_line_to (path, x_2, y_1);
   cogl2_path_line_to (path, x_2, y_2);
   cogl2_path_line_to (path, x_1, y_2);
   cogl2_path_close (path);
+
+  path->data->is_rectangle = is_rectangle;
+}
+
+gboolean
+_cogl_path_is_rectangle (CoglPath *path)
+{
+  return path->data->is_rectangle;
 }
 
 static void
@@ -975,6 +1011,7 @@ cogl2_path_new (void)
   data->last_path = 0;
   data->fill_vbo = COGL_INVALID_HANDLE;
   data->stroke_vbo = NULL;
+  data->is_rectangle = FALSE;
 
   return _cogl_path_object_new (path);
 }
