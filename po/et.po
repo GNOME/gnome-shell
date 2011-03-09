@@ -14,383 +14,15 @@ msgstr ""
 "Project-Id-Version: mutter MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
-"POT-Creation-Date: 2011-02-01 17:26+0000\n"
-"PO-Revision-Date: 2011-02-03 00:52+0300\n"
-"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"POT-Creation-Date: 2011-03-07 23:35+0000\n"
+"PO-Revision-Date: 2011-03-09 06:41+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid "Bell event"
-msgstr "Helina sündmus"
-
-#, c-format
-msgid "Unknown window information request: %d"
-msgstr "Tundmatu aknateabe päring: %d"
-
-#. Translators: %s is a window title
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> ei vasta."
-
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "Sa võid natukene selle järel oodata või sundida rakenduse lõpetama."
-
-msgid "_Wait"
-msgstr "_Oota"
-
-msgid "_Force Quit"
-msgstr "_Sulge jõuga"
-
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr "Puuduv laiendus %s on vajalik komposiitmontaaži jaoks"
-
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "Tõrge X Window System'i kuva '%s' avamisel\n"
-
-#, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
-"Mõni teine programm juba kasutab klahvi %s koos muuteklahvidega %x "
-"kiirklahvina\n"
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#, c-format
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
-msgstr ""
-"<tt>%s</tt> käivitamisel esines viga:\n"
-"\n"
-"%s"
-
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "Käsku %d pole defineeritud.\n"
-
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "Terminalikäsku pole defineeritud.\n"
-
-#, c-format
-msgid ""
-"mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-msgstr ""
-"mutter %s\n"
-"Autoriõigused (C) 2001-%d Havoc Pennington, Red Hat, Inc., ja teised\n"
-"See programm on vaba tarkvara; kopeerimistingimuste kohta vaata\n"
-"programmi lähteteksti. Sellel programmil pole MINGISUGUST GARANTIID;\n"
-"isegi MITTE KOMMERTSGARANTIID EGA GARANTIID SOBIVUSELE\n"
-"TEATUD KINDLAKS EESMÄRGIKS.\n"
-
-msgid "Disable connection to session manager"
-msgstr "Seansihalduriga ühendumise keelamine"
-
-msgid "Replace the running window manager with Mutter"
-msgstr "Käivitatud aknahalduri asendamine Mutteriga"
-
-msgid "Specify session management ID"
-msgstr "Seansihalduse ID kirjeldamine"
-
-msgid "X Display to use"
-msgstr "X-kuva, mida kasutada"
-
-msgid "Initialize session from savefile"
-msgstr "Seansi lähtestamine salvestatud failist"
-
-msgid "Print version"
-msgstr "Versiooni printimine"
-
-msgid "Make X calls synchronous"
-msgstr "Tee X-väljakutsed sünkroonseks"
-
-msgid ""
-"Don't make fullscreen windows that are maximized and have no decorations"
-msgstr "Ei tehta maksimeeritud ilma raamita täisekraanaknaid."
-
-msgid "Comma-separated list of compositor plugins"
-msgstr "Komaga eraldatud nimekiri komposiitmontaaži pluginatest"
-
-msgid "Whether window popup/frame should be shown when cycling windows."
-msgstr "Kas hüpikakent/raami näidatakse akende vahetamisel."
-
-msgid "Internal argument for GObject introspection"
-msgstr "GObject enesevaatluse siseargument"
-
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr "Tõrge teemadekataloogi skannimisel: %s\n"
-
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"Teemat ei leitud! Veendu, et %s on olemas ja sisaldab harilikke teemasid.\n"
-
-#, c-format
-msgid "Failed to restart: %s\n"
-msgstr "Tõrge taaskäivitamisel: %s\n"
-
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf võtme '%s' väärtus on vigane\n"
-
-#, c-format
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr ""
-"%d, mis on salvestatud GConf võtmes %s, on väljaspool piirkonda %d - %d\n"
-
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf-i võti \"%s\" on määratud vigase tüübiga\n"
-
-#, c-format
-msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr ""
-"GConfi võti %s on juba kasutusel ja sellega ei saa tühistada võtit %s\n"
-
-#, c-format
-msgid "Can't override GConf key, %s not found\n"
-msgstr "GConfi võtit pole võimalik tühistada, võtit %s ei leitud\n"
-
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Ümbernurga parandused vigastele rakendustele on keelatud. Mõned rakendused "
-"ei pruugi õigesti käituda.\n"
-
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Fondi kirjeldust \"%s\" GConf võtmest %s ei saa töödelda\n"
-
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"Seadistuste andmebaasist leitud \"%s\" ei ole sobiv väärtus hiireklahvi "
-"modifikaatoriks\n"
-
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Viga tööalade arvuks %d määramisel: %s\n"
-
-#, c-format
-msgid "Workspace %d"
-msgstr "Tööala %d"
-
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"Seadistuste andmebaasist leitud \"%s\" ei ole sobiv väärtus kiirklahvile \"%s"
-"\"\n"
-
-#, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Viga tööalale %d nime \"%s\" määramisel: %s\n"
-
-#, c-format
-msgid "Error setting clutter plugin list: %s\n"
-msgstr "Viga clutteri pluginate nimekirja määramisel: %s\n"
-
-#, c-format
-msgid "Error setting live hidden windows status status: %s\n"
-msgstr "Viga varjus elushoitavate akende oleku määramisel: %s\n"
-
-#, c-format
-msgid "Error setting no tab popup status: %s\n"
-msgstr ""
-
-#, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Ekraan %d kuval '%s' on vigane\n"
-
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"Ekraan %d kuval '%s' on juba aknahalduri poolt hallatav. Olemasoleva "
-"aknahalduri asendamiseks proovi --replace võtit \n"
-
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Aknahalduri valikut ei saa hankida ekraani %d kuval \"%s\"\n"
-
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Ekraan %d kuval '%s' on juba aknahalduri poolt hallatav\n"
-
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Ekraani %d kuval \"%s\" ei saa vabastada\n"
-
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "Kataloogi '%s' pole võimalik luua: %s\n"
-
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Seansifaili '%s' pole võimalik kirjutamiseks avada: %s\n"
-
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Viga seansifaili '%s' kirjutamisel: %s\n"
-
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "Viga seansifaili '%s' sulgemisel: %s\n"
-
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "Viga salvestatud seansifaili analüüsimisel: %s\n"
-
-#, c-format
-msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "Nähti <mutter_session> atribuuti, aga sessiooni ID on juba määratud"
-
-#, c-format
-msgid "Unknown attribute %s on <%s> element"
-msgstr "Tundmatu atribuut %s <%s> elemendil"
-
-#, c-format
-msgid "nested <window> tag"
-msgstr "pesastatud <window>"
-
-#, c-format
-msgid "Unknown element %s"
-msgstr "Tundmatu element %s"
-
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Need aknad ei toeta &quot;praeguse paigutuse salvestamist&quot; ja tuleb "
-"järgmisel sisselogimisel käsitsi taaskäivitada."
-
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Tõrge silumislogi avamisel: %s\n"
-
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Tõrge logifaili %s avamisel funktsiooniga fdopen(): %s\n"
-
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "Avati logifail %s\n"
-
-#, c-format
-msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Mutter kompileeriti ilma jutuka režiimi toeta\n"
-
-msgid "Window manager: "
-msgstr "Aknahaldur: "
-
-msgid "Bug in window manager: "
-msgstr "Viga aknahalduris: "
-
-msgid "Window manager warning: "
-msgstr "Aknahalduri hoiatus: "
-
-msgid "Window manager error: "
-msgstr "Aknahalduri viga: "
-
-#. Translators: This is the title used on dialog boxes
-#. eof all-keybindings.h
-msgid "Mutter"
-msgstr "Mutter"
-
-#. first time through
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"Aken %s määrab SM_CLIENT_ID endale, selle asemel et  määrata see "
-"WM_CLIENT_LEADER aknale, nagu seda kirjeldab ICCCM.\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"Aken %s määrab MWM vihje, näidates, et see pole muudetava suurusega, aga "
-"määrab vähimaks suuruseks %d x %d ja suurimaks suuruseks %d x %d; sel pole "
-"tähendust.\n"
-
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Rakendus määras võltsitud _NET_WM_PID %lu\n"
-
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (masinas %s)"
-
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "Vigane WM_TRANSIENT_FOR aknale 0x%lx määratud %s jaoks.\n"
-
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-"Aknal 0x%lx on omadus %s,\n"
-"mis oleks pidanud olema %s tüüpi %d vormingus,\n"
-"aga tegelikult oli %s tüüpi %d vormingus n_items %d.\n"
-"See on kõige tõenäolisemalt rakenduse, mitte aknahalduri viga.\n"
-"Aknal on title=\"%s\" class=\"%s\" name=\"%s\"\n"
-
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Omadus %s aknal 0x%lx sisaldab vigast UTF-8\n"
-
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Omadus %s aknal 0x%lx sisaldab vigast UTF-8 %d kirjele nimekirjas\n"
 
 msgid "Switch to workspace 1"
 msgstr "Lülitumine 1. tööalale"
@@ -623,11 +255,357 @@ msgstr "Akna tõstmine ekraani läänepoolsesse (vasakusse) serva"
 msgid "Move window to center of screen"
 msgstr "Akna tõstmine ekraani keskele"
 
+msgid "Bell event"
+msgstr "Helina sündmus"
+
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr "Tundmatu aknateabe päring: %d"
+
+#. Translators: %s is a window title
+#, c-format
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> ei vasta."
+
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Sa võid natukene selle järel oodata või sundida rakenduse lõpetama."
+
+msgid "_Wait"
+msgstr "_Oota"
+
+msgid "_Force Quit"
+msgstr "_Sulge jõuga"
+
+#, c-format
+msgid "Missing %s extension required for compositing"
+msgstr "Puuduv laiendus %s on vajalik komposiitmontaaži jaoks"
+
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Tõrge X Window System'i kuva '%s' avamisel\n"
+
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+"Mõni teine programm juba kasutab klahvi %s koos muuteklahvidega %x "
+"kiirklahvina\n"
+
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#, c-format
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
+msgstr ""
+"<tt>%s</tt> käivitamisel esines viga:\n"
+"\n"
+"%s"
+
+#, c-format
+msgid "No command %d has been defined.\n"
+msgstr "Käsku %d pole defineeritud.\n"
+
+#, c-format
+msgid "No terminal command has been defined.\n"
+msgstr "Terminalikäsku pole defineeritud.\n"
+
+msgid "Disable connection to session manager"
+msgstr "Seansihalduriga ühendumise keelamine"
+
+msgid "Replace the running window manager"
+msgstr "Töötava aknahalduri asendamine"
+
+msgid "Specify session management ID"
+msgstr "Seansihalduse ID kirjeldamine"
+
+msgid "X Display to use"
+msgstr "X-kuva, mida kasutada"
+
+msgid "Initialize session from savefile"
+msgstr "Seansi lähtestamine salvestatud failist"
+
+msgid "Make X calls synchronous"
+msgstr "Tee X-väljakutsed sünkroonseks"
+
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Tõrge teemadekataloogi skannimisel: %s\n"
+
+#, c-format
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr ""
+"Teemat ei leitud! Veendu, et %s on olemas ja sisaldab harilikke teemasid.\n"
+
+#, c-format
+msgid ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"mutter %s\n"
+"Autoriõigused (C) 2001-%d Havoc Pennington, Red Hat, Inc., ja teised\n"
+"See programm on vaba tarkvara; kopeerimistingimuste kohta vaata\n"
+"programmi lähteteksti. Sellel programmil pole MINGISUGUST GARANTIID;\n"
+"isegi MITTE KOMMERTSGARANTIID EGA GARANTIID SOBIVUSELE\n"
+"TEATUD KINDLAKS EESMÄRGIKS.\n"
+
+msgid "Print version"
+msgstr "Versiooni printimine"
+
+msgid "Comma-separated list of compositor plugins"
+msgstr "Komaga eraldatud nimekiri komposiitmontaaži pluginatest"
+
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
+#.
+#.
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "GConf võtme '%s' väärtus on vigane\n"
+
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr ""
+"%d, mis on salvestatud GConf võtmes %s, on väljaspool piirkonda %d - %d\n"
+
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf-i võti \"%s\" on määratud vigase tüübiga\n"
+
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr ""
+"GConfi võti %s on juba kasutusel ja sellega ei saa tühistada võtit %s\n"
+
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "GConfi võtit pole võimalik tühistada, võtit %s ei leitud\n"
+
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"Ümbernurga parandused vigastele rakendustele on keelatud. Mõned rakendused "
+"ei pruugi õigesti käituda.\n"
+
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Fondi kirjeldust \"%s\" GConf võtmest %s ei saa töödelda\n"
+
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"Seadistuste andmebaasist leitud \"%s\" ei ole sobiv väärtus hiireklahvi "
+"modifikaatoriks\n"
+
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "Viga tööalade arvuks %d määramisel: %s\n"
+
+#, c-format
+msgid "Workspace %d"
+msgstr "Tööala %d"
+
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"Seadistuste andmebaasist leitud \"%s\" ei ole sobiv väärtus kiirklahvile \"%s"
+"\"\n"
+
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Viga tööalale %d nime \"%s\" määramisel: %s\n"
+
+#, c-format
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr "Viga varjus elushoitavate akende oleku määramisel: %s\n"
+
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr ""
+
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "Ekraan %d kuval '%s' on vigane\n"
+
+#, c-format
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+"Ekraan %d kuval '%s' on juba aknahalduri poolt hallatav. Olemasoleva "
+"aknahalduri asendamiseks proovi --replace võtit \n"
+
+#, c-format
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "Aknahalduri valikut ei saa hankida ekraani %d kuval \"%s\"\n"
+
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "Ekraan %d kuval '%s' on juba aknahalduri poolt hallatav\n"
+
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "Ekraani %d kuval \"%s\" ei saa vabastada\n"
+
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Kataloogi '%s' pole võimalik luua: %s\n"
+
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "Seansifaili '%s' pole võimalik kirjutamiseks avada: %s\n"
+
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Viga seansifaili '%s' kirjutamisel: %s\n"
+
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "Viga seansifaili '%s' sulgemisel: %s\n"
+
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "Viga salvestatud seansifaili analüüsimisel: %s\n"
+
+#, c-format
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr "Nähti <mutter_session> atribuuti, aga sessiooni ID on juba määratud"
+
+#, c-format
+msgid "Unknown attribute %s on <%s> element"
+msgstr "Tundmatu atribuut %s <%s> elemendil"
+
+#, c-format
+msgid "nested <window> tag"
+msgstr "pesastatud <window>"
+
+#, c-format
+msgid "Unknown element %s"
+msgstr "Tundmatu element %s"
+
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"Need aknad ei toeta &quot;praeguse paigutuse salvestamist&quot; ja tuleb "
+"järgmisel sisselogimisel käsitsi taaskäivitada."
+
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "Tõrge silumislogi avamisel: %s\n"
+
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "Tõrge logifaili %s avamisel funktsiooniga fdopen(): %s\n"
+
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "Avati logifail %s\n"
+
+#, c-format
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter kompileeriti ilma jutuka režiimi toeta\n"
+
+msgid "Window manager: "
+msgstr "Aknahaldur: "
+
+msgid "Bug in window manager: "
+msgstr "Viga aknahalduris: "
+
+msgid "Window manager warning: "
+msgstr "Aknahalduri hoiatus: "
+
+msgid "Window manager error: "
+msgstr "Aknahalduri viga: "
+
+#. Translators: This is the title used on dialog boxes
+msgid "Mutter"
+msgstr "Mutter"
+
+#. first time through
+#, c-format
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"Aken %s määrab SM_CLIENT_ID endale, selle asemel et  määrata see "
+"WM_CLIENT_LEADER aknale, nagu seda kirjeldab ICCCM.\n"
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#, c-format
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"Aken %s määrab MWM vihje, näidates, et see pole muudetava suurusega, aga "
+"määrab vähimaks suuruseks %d x %d ja suurimaks suuruseks %d x %d; sel pole "
+"tähendust.\n"
+
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Rakendus määras võltsitud _NET_WM_PID %lu\n"
+
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (masinas %s)"
+
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "Vigane WM_TRANSIENT_FOR aknale 0x%lx määratud %s jaoks.\n"
+
+#, c-format
+msgid ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+msgstr ""
+"Aknal 0x%lx on omadus %s,\n"
+"mis oleks pidanud olema %s tüüpi %d vormingus,\n"
+"aga tegelikult oli %s tüüpi %d vormingus n_items %d.\n"
+"See on kõige tõenäolisemalt rakenduse, mitte aknahalduri viga.\n"
+"Aknal on title=\"%s\" class=\"%s\" name=\"%s\"\n"
+
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "Omadus %s aknal 0x%lx sisaldab vigast UTF-8\n"
+
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "Omadus %s aknal 0x%lx sisaldab vigast UTF-8 %d kirjele nimekirjas\n"
+
 msgid "Attach modal dialogs"
 msgstr "Modaaldialoogide kinnistamine"
-
-msgid "Clutter Plugins"
-msgstr "Clutteri pluginad"
 
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
@@ -641,9 +619,6 @@ msgstr "Varjatud akende aktiivsus"
 
 msgid "Modifier to use for extended window management operations"
 msgstr "Laiendatud aknaoperatsioonide korral kasutatav muuteklahv"
-
-msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr "Clutteril põhineva komposiitmontaažihalduri laadimise pluginad."
 
 # millalgi võiks selle kohta vearaporti kirjutada
 msgid ""
@@ -1536,3 +1511,25 @@ msgstr "y väärtus oli %d, oodati väärtust %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinaatide avaldis töödeldi %g sekundiga (keskmine %g sekundit)\n"
+
+#~ msgid ""
+#~ "Don't make fullscreen windows that are maximized and have no decorations"
+#~ msgstr "Ei tehta maksimeeritud ilma raamita täisekraanaknaid."
+
+#~ msgid "Whether window popup/frame should be shown when cycling windows."
+#~ msgstr "Kas hüpikakent/raami näidatakse akende vahetamisel."
+
+#~ msgid "Internal argument for GObject introspection"
+#~ msgstr "GObject enesevaatluse siseargument"
+
+#~ msgid "Failed to restart: %s\n"
+#~ msgstr "Tõrge taaskäivitamisel: %s\n"
+
+#~ msgid "Error setting clutter plugin list: %s\n"
+#~ msgstr "Viga clutteri pluginate nimekirja määramisel: %s\n"
+
+#~ msgid "Clutter Plugins"
+#~ msgstr "Clutteri pluginad"
+
+#~ msgid "Plugins to load for the Clutter-based compositing manager."
+#~ msgstr "Clutteril põhineva komposiitmontaažihalduri laadimise pluginad."
