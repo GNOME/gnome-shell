@@ -95,6 +95,7 @@ source_h =					\
 	$(srcdir)/clutter-fixed-layout.h	\
 	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-frame-source.h        \
+	$(srcdir)/clutter-gesture-action.h 		\
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
@@ -118,6 +119,7 @@ source_h =					\
 	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-shader-effect.h	\
 	$(srcdir)/clutter-shader-types.h	\
+	$(srcdir)/clutter-swipe-action.h	\
 	$(srcdir)/clutter-snap-constraint.h	\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
@@ -178,6 +180,7 @@ source_c = \
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-frame-source.c	\
+	$(srcdir)/clutter-gesture-action.c 		\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
@@ -202,6 +205,7 @@ source_c = \
 	$(srcdir)/clutter-shader.c		\
 	$(srcdir)/clutter-shader-effect.c	\
 	$(srcdir)/clutter-shader-types.c	\
+	$(srcdir)/clutter-swipe-action.c	\
 	$(srcdir)/clutter-snap-constraint.c	\
 	$(srcdir)/clutter-stage.c		\
 	$(srcdir)/clutter-stage-manager.c	\
