@@ -218,7 +218,9 @@ StatusMenuButton.prototype = {
 
         if (this._haveSuspend &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
-            this._upClient.suspend_sync(null);
+            this._screenSaverProxy.LockRemote(Lang.bind(this, function() {
+                this._upClient.suspend_sync(null);
+            }));
         } else {
             Util.spawn(['gnome-session-quit', '--power-off']);
         }
