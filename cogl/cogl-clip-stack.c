@@ -445,23 +445,35 @@ _cogl_clip_stack_push_from_path (CoglClipStack *stack,
                                  CoglPath *path,
                                  const CoglMatrix *modelview_matrix)
 {
-  CoglClipStackPath *entry;
   float x_1, y_1, x_2, y_2;
-
-  entry = _cogl_clip_stack_push_entry (stack,
-                                       sizeof (CoglClipStackPath),
-                                       COGL_CLIP_STACK_PATH);
-
-  entry->path = cogl_path_copy (path);
-
-  entry->matrix = *modelview_matrix;
 
   _cogl_path_get_bounds (path, &x_1, &y_1, &x_2, &y_2);
 
-  _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
-                                     x_1, y_1, x_2, y_2, modelview_matrix);
+  /* If the path is a simple rectangle then we can divert to pushing a
+     rectangle clip instead which usually won't involve the stencil
+     buffer */
+  if (_cogl_path_is_rectangle (path))
+    return _cogl_clip_stack_push_rectangle (stack,
+                                            x_1, y_1,
+                                            x_2, y_2,
+                                            modelview_matrix);
+  else
+    {
+      CoglClipStackPath *entry;
 
-  return (CoglClipStack *) entry;
+      entry = _cogl_clip_stack_push_entry (stack,
+                                           sizeof (CoglClipStackPath),
+                                           COGL_CLIP_STACK_PATH);
+
+      entry->path = cogl_path_copy (path);
+
+      entry->matrix = *modelview_matrix;
+
+      _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
+                                         x_1, y_1, x_2, y_2, modelview_matrix);
+
+      return (CoglClipStack *) entry;
+    }
 }
 
 CoglClipStack *
