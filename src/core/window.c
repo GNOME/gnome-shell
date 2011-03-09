@@ -1711,6 +1711,12 @@ ancestor_is_minimized (MetaWindow *window)
   return is_minimized;
 }
 
+/**
+ * meta_window_showing_on_its_workspace:
+ * @window: A #MetaWindow
+ *
+ * Returns: %TRUE if window would be visible, if its workspace was current
+ */
 gboolean
 meta_window_showing_on_its_workspace (MetaWindow *window)
 {
@@ -4448,6 +4454,15 @@ meta_window_move_resize_internal (MetaWindow          *window,
     meta_window_foreach_transient (window, move_attached_dialog, NULL);
 }
 
+/**
+ * meta_window_resize:
+ * @window: a #MetaWindow
+ * @user_op: bool to indicate whether or not this is a user operation
+ * @w: desired width
+ * @h: desired height
+ *
+ * Resize the window to the desired size.
+ */
 void
 meta_window_resize (MetaWindow  *window,
                     gboolean     user_op,
@@ -4468,6 +4483,18 @@ meta_window_resize (MetaWindow  *window,
                                     x, y, w, h);
 }
 
+/**
+ * meta_window_move:
+ * @window: a #MetaWindow
+ * @user_op: bool to indicate whether or not this is a user operation
+ * @root_x_nw: desired x pos
+ * @root_y_nw: desired y pos
+ *
+ * Moves the window to the desired location on window's assigned workspace.
+ * NOTE: does NOT place according to the origin of the enclosing
+ * frame/window-decoration, but according to the origin of the window,
+ * itself.
+ */
 void
 meta_window_move (MetaWindow  *window,
                   gboolean     user_op,
@@ -4486,6 +4513,37 @@ meta_window_move (MetaWindow  *window,
                                     root_x_nw, root_y_nw,
                                     window->rect.width,
                                     window->rect.height);
+}
+/**
+ * meta_window_move_frame:
+ * @window: a #MetaWindow
+ * @user_op: bool to indicate whether or not this is a user operation
+ * @root_x_nw: desired x pos
+ * @root_y_nw: desired y pos
+ *
+ * Moves the window to the desired location on window's assigned
+ * workspace, using the northwest edge of the frame as the reference,
+ * instead of the actual window's origin, but only if a frame is present.
+ * Otherwise, acts identically to meta_window_move().
+ */
+void
+meta_window_move_frame (MetaWindow  *window,
+                  gboolean     user_op,
+                  int          root_x_nw,
+                  int          root_y_nw)
+{
+  int x = root_x_nw;
+  int y = root_y_nw;
+
+  if (window->frame)
+    {
+      /* offset by the distance between the origin of the window
+       * and the origin of the enclosing window decorations
+       */
+      x += window->frame->child_x;
+      y += window->frame->child_y;
+    }
+  meta_window_move (window, user_op, x, y);
 }
 
 void
