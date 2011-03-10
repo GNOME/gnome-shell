@@ -923,13 +923,13 @@ _clutter_paint_volume_cull (ClutterPaintVolume *pv,
   int i;
   int j;
 
+  if (pv->is_empty)
+    return CLUTTER_CULL_RESULT_OUT;
+
   /* We expect the volume to already be transformed into eye coordinates
    */
   g_return_val_if_fail (pv->is_complete == TRUE, CLUTTER_CULL_RESULT_IN);
   g_return_val_if_fail (pv->actor == NULL, CLUTTER_CULL_RESULT_IN);
-
-  if (pv->is_empty)
-    return CLUTTER_CULL_RESULT_OUT;
 
   /* Most actors are 2D so we only have to transform the front 4
    * vertices of the paint volume... */
