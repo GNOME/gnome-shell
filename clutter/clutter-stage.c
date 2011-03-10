@@ -525,6 +525,12 @@ _clutter_stage_do_paint (ClutterStage *stage, const ClutterGeometry *clip)
       clip_poly[7] = geom.height;
     }
 
+  CLUTTER_NOTE (CLIPPING, "Setting stage clip too: "
+                "x=%f, y=%f, width=%f, height=%f",
+                clip_poly[0], clip_poly[1],
+                clip_poly[2] - clip_poly[0],
+                clip_poly[5] - clip_poly[1]);
+
   _cogl_util_get_eye_planes_for_screen_poly (clip_poly,
                                              4,
                                              priv->viewport,

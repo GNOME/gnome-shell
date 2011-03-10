@@ -2525,7 +2525,12 @@ cull_actor (ClutterActor *self)
   ClutterCullResult result;
 
   if (!priv->last_paint_volume_valid)
-    return FALSE;
+    {
+      CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
+                    "->last_paint_volume_valid == FALSE",
+                    G_OBJECT_TYPE_NAME (self));
+      return FALSE;
+    }
 
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CULLING))
     return FALSE;
@@ -2533,7 +2538,12 @@ cull_actor (ClutterActor *self)
   stage = _clutter_actor_get_stage_internal (self);
   stage_clip = _clutter_stage_get_clip (CLUTTER_STAGE (stage));
   if (G_UNLIKELY (!stage_clip))
-    return FALSE;
+    {
+      CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
+                    "No stage clip set",
+                    G_OBJECT_TYPE_NAME (self));
+      return FALSE;
+    }
 
   result = _clutter_paint_volume_cull (&priv->last_paint_volume, stage_clip);
   if (result == CLUTTER_CULL_RESULT_IN ||
@@ -2557,7 +2567,12 @@ _clutter_actor_update_last_paint_volume (ClutterActor *self)
 
   pv = clutter_actor_get_paint_volume (self);
   if (!pv)
-    return;
+    {
+      CLUTTER_NOTE (CLIPPING, "Bail from update_last_paint_volume (%s): "
+                    "Actor failed to report a paint volume",
+                    G_OBJECT_TYPE_NAME (self));
+      return;
+    }
 
   _clutter_paint_volume_copy_static (pv, &priv->last_paint_volume);
 
