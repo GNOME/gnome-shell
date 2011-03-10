@@ -91,7 +91,8 @@ ATIndicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Universal Access Settings"), function() {
-            Util.spawnDesktop('gnome-universal-access-panel');
+            let app = Shell.AppSystem.get_default().get_app('gnome-universal-access-panel.desktop');
+            app.activate(-1);
         });
     },
 

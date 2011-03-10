@@ -159,20 +159,6 @@ shell_app_info_new_from_window (MetaWindow *window)
   return info;
 }
 
-static ShellAppInfo *
-shell_app_info_new_from_keyfile_take_ownership (GKeyFile   *keyfile,
-                                                const char *path)
-{
-  ShellAppInfo *info;
-
-  info = g_slice_alloc0 (sizeof (ShellAppInfo));
-  info->type = SHELL_APP_INFO_TYPE_DESKTOP_FILE;
-  info->refcount = 1;
-  info->keyfile = keyfile;
-  info->keyfile_path = g_strdup (path);
-  return info;
-}
-
 static void shell_app_system_class_init(ShellAppSystemClass *klass)
 {
   GObjectClass *gobject_class = (GObjectClass *)klass;
@@ -574,44 +560,6 @@ _shell_app_system_register_app (ShellAppSystem   *self,
   ref->info = shell_app_info_ref (_shell_app_get_info (app));
   g_hash_table_insert (self->priv->app_id_to_app, (char*)shell_app_info_get_id (ref->info), app);
   g_object_weak_ref (G_OBJECT (app), shell_app_system_on_app_weakref, ref);
-}
-
-ShellAppInfo *
-shell_app_system_load_from_desktop_file (ShellAppSystem   *system,
-                                         const char       *filename,
-                                         GError          **error)
-{
-  ShellAppInfo *appinfo;
-  GKeyFile *keyfile;
-  char *full_path = NULL;
-  gboolean success;
-
-  keyfile = g_key_file_new ();
-
-  if (strchr (filename, '/') != NULL)
-    {
-      success = g_key_file_load_from_file (keyfile, filename, G_KEY_FILE_NONE, error);
-      full_path = g_strdup (filename);
-    }
-  else
-    {
-      char *app_path = g_build_filename ("applications", filename, NULL);
-      success = g_key_file_load_from_data_dirs (keyfile, app_path, &full_path,
-                                                G_KEY_FILE_NONE, error);
-      g_free (app_path);
-    }
-
-  if (!success)
-    {
-      g_key_file_free (keyfile);
-      g_free (full_path);
-      return NULL;
-    }
-
-  appinfo = shell_app_info_new_from_keyfile_take_ownership (keyfile, full_path);
-  g_free (full_path);
-
-  return appinfo;
 }
 
 /**
@@ -1386,12 +1334,23 @@ shell_app_info_launch_full (ShellAppInfo *info,
   shell_app = shell_app_system_get_app (shell_app_system_get_default (),
                                         shell_app_info_get_id (info));
 
-  ret = g_desktop_app_info_launch_uris_as_manager (gapp, uris,
-                                                   G_APP_LAUNCH_CONTEXT (context),
-                                                   G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-                                                   NULL, NULL,
-                                                   _gather_pid_callback, shell_app,
-                                                   error);
+  /* In the case where we know an app, we handle reaping the child internally,
+   * in the window tracker.
+   */
+  if (shell_app != NULL)
+    ret = g_desktop_app_info_launch_uris_as_manager (gapp, uris,
+                                                     G_APP_LAUNCH_CONTEXT (context),
+                                                     G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+                                                     NULL, NULL,
+                                                     _gather_pid_callback, shell_app,
+                                                     error);
+  else
+    ret = g_desktop_app_info_launch_uris_as_manager (gapp, uris,
+                                                     G_APP_LAUNCH_CONTEXT (context),
+                                                     G_SPAWN_SEARCH_PATH,
+                                                     NULL, NULL,
+                                                     NULL, NULL,
+                                                     error);
 
   g_object_unref (G_OBJECT (gapp));
 

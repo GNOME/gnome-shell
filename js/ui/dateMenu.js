@@ -200,7 +200,8 @@ DateMenuButton.prototype = {
 
     _onPreferencesActivate: function() {
         this.menu.close();
-        Util.spawnDesktop('gnome-datetime-panel');
+        let app = Shell.AppSystem.get_default().get_app('gnome-datetime-panel.desktop');
+        app.activate(-1);
     },
 
     _onOpenCalendarActivate: function() {

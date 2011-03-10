@@ -81,9 +81,6 @@ ShellApp       *shell_app_system_get_app_for_window        (ShellAppSystem  *sel
 ShellApp       *shell_app_system_lookup_heuristic_basename (ShellAppSystem  *system,
                                                             const char      *id);
 
-ShellAppInfo   *shell_app_system_load_from_desktop_file    (ShellAppSystem  *system,
-                                                            const char      *filename,
-                                                            GError         **error);
 ShellAppInfo   *shell_app_system_create_from_window        (ShellAppSystem  *system,
                                                             MetaWindow      *window);
 

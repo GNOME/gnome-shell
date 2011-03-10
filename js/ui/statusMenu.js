@@ -190,12 +190,14 @@ StatusMenuButton.prototype = {
 
     _onMyAccountActivate: function() {
         Main.overview.hide();
-        Util.spawnDesktop('gnome-user-accounts-panel');
+        let app = Shell.AppSystem.get_default().get_app('gnome-user-accounts-panel.desktop');
+        app.activate(-1);
     },
 
     _onPreferencesActivate: function() {
         Main.overview.hide();
-        Util.spawnDesktop('gnome-control-center');
+        let app = Shell.AppSystem.get_default().get_app('gnome-control-center.desktop');
+        app.activate(-1);
     },
 
     _onLockScreenActivate: function() {

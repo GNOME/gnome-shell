@@ -55,20 +55,6 @@ function spawnCommandLine(command_line) {
     }
 }
 
-// spawnDesktop:
-// @id: a desktop file ID
-//
-// Spawns the desktop file identified by @id using startup notification,
-// etc, handling any errors that occur when trying to find or start
-// the program.
-function spawnDesktop(id) {
-    try {
-        trySpawnDesktop(id);
-    } catch (err) {
-        _handleSpawnError(id, err);
-    }
-}
-
 // trySpawn:
 // @argv: an argv array
 //
@@ -114,33 +100,6 @@ function trySpawnCommandLine(command_line) {
     }
 
     trySpawn(argv);
-}
-
-// trySpawnDesktop:
-// @id: a desktop file ID
-//
-// Spawns the desktop file identified by @id using startup notification.
-// On error, throws an exception.
-function trySpawnDesktop(id) {
-    let app;
-
-    // shell_app_system_load_from_desktop_file() will end up returning
-    // a stupid error message if the desktop file doesn't exist, but
-    // that's the only case it returns an error for, so we just
-    // substitute our own error in instead
-    try {
-        app = Shell.AppSystem.get_default().load_from_desktop_file(id + '.desktop');
-    } catch (err) {
-        throw new Error(_("No such application"));
-    }
-
-    try {
-        app.launch();
-    } catch(err) {
-        // see trySpawn
-        err.message = err.message.replace(/.*\((.+)\)/, '$1');
-        throw err;
-    }
 }
 
 function _handleSpawnError(command, err) {
