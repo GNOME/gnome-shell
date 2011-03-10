@@ -2,6 +2,7 @@
 #define __CLUTTER_STAGE_WINDOW_H__
 
 #include <clutter/clutter-actor.h>
+#include <cogl/cogl.h>
 
 G_BEGIN_DECLS
 
@@ -33,79 +34,83 @@ struct _ClutterStageWindowIface
   /*< private >*/
   GTypeInterface parent_iface;
 
-  ClutterActor *(* get_wrapper)           (ClutterStageWindow *stage_window);
+  ClutterActor     *(* get_wrapper)             (ClutterStageWindow *stage_window);
 
-  void          (* set_title)             (ClutterStageWindow *stage_window,
-                                           const gchar        *title);
-  void          (* set_fullscreen)        (ClutterStageWindow *stage_window,
-                                           gboolean            is_fullscreen);
-  void          (* set_cursor_visible)    (ClutterStageWindow *stage_window,
-                                           gboolean            cursor_visible);
-  void          (* set_user_resizable)    (ClutterStageWindow *stage_window,
-                                           gboolean            is_resizable);
+  void              (* set_title)               (ClutterStageWindow *stage_window,
+                                                 const gchar        *title);
+  void              (* set_fullscreen)          (ClutterStageWindow *stage_window,
+                                                 gboolean            is_fullscreen);
+  void              (* set_cursor_visible)      (ClutterStageWindow *stage_window,
+                                                 gboolean            cursor_visible);
+  void              (* set_user_resizable)      (ClutterStageWindow *stage_window,
+                                                 gboolean            is_resizable);
 
-  gboolean      (* realize)               (ClutterStageWindow *stage_window);
-  void          (* unrealize)             (ClutterStageWindow *stage_window);
+  gboolean          (* realize)                 (ClutterStageWindow *stage_window);
+  void              (* unrealize)               (ClutterStageWindow *stage_window);
 
-  void          (* show)                  (ClutterStageWindow *stage_window,
-                                           gboolean            do_raise);
-  void          (* hide)                  (ClutterStageWindow *stage_window);
+  void              (* show)                    (ClutterStageWindow *stage_window,
+                                                 gboolean            do_raise);
+  void              (* hide)                    (ClutterStageWindow *stage_window);
 
-  void          (* resize)                (ClutterStageWindow *stage_window,
-                                           gint                width,
-                                           gint                height);
-  void          (* get_geometry)          (ClutterStageWindow *stage_window,
-                                           ClutterGeometry    *geometry);
+  void              (* resize)                  (ClutterStageWindow *stage_window,
+                                                 gint                width,
+                                                 gint                height);
+  void              (* get_geometry)            (ClutterStageWindow *stage_window,
+                                                 ClutterGeometry    *geometry);
 
-  int           (* get_pending_swaps)     (ClutterStageWindow *stage_window);
+  int               (* get_pending_swaps)       (ClutterStageWindow *stage_window);
 
-  void          (* add_redraw_clip)       (ClutterStageWindow *stage_window,
-                                           ClutterGeometry    *stage_rectangle);
-  gboolean      (* has_redraw_clips)      (ClutterStageWindow *stage_window);
-  gboolean      (* ignoring_redraw_clips) (ClutterStageWindow *stage_window);
+  void              (* add_redraw_clip)         (ClutterStageWindow *stage_window,
+                                                 ClutterGeometry    *stage_rectangle);
+  gboolean          (* has_redraw_clips)        (ClutterStageWindow *stage_window);
+  gboolean          (* ignoring_redraw_clips)   (ClutterStageWindow *stage_window);
 
-  void          (* set_accept_focus)      (ClutterStageWindow *stage_window,
-                                           gboolean            accept_focus);
+  void              (* set_accept_focus)        (ClutterStageWindow *stage_window,
+                                                 gboolean            accept_focus);
 
-  void          (* redraw)                (ClutterStageWindow *stage_window);
+  void              (* redraw)                  (ClutterStageWindow *stage_window);
+
+  CoglFramebuffer  *(* get_active_framebuffer)  (ClutterStageWindow *stage_window);
 };
 
 GType clutter_stage_window_get_type (void) G_GNUC_CONST;
 
-ClutterActor *_clutter_stage_window_get_wrapper        (ClutterStageWindow *window);
+ClutterActor *    _clutter_stage_window_get_wrapper        (ClutterStageWindow *window);
 
-void          _clutter_stage_window_set_title          (ClutterStageWindow *window,
-                                                        const gchar        *title);
-void          _clutter_stage_window_set_fullscreen     (ClutterStageWindow *window,
-                                                        gboolean            is_fullscreen);
-void          _clutter_stage_window_set_cursor_visible (ClutterStageWindow *window,
-                                                        gboolean            is_visible);
-void          _clutter_stage_window_set_user_resizable (ClutterStageWindow *window,
-                                                        gboolean            is_resizable);
+void              _clutter_stage_window_set_title          (ClutterStageWindow *window,
+                                                            const gchar        *title);
+void              _clutter_stage_window_set_fullscreen     (ClutterStageWindow *window,
+                                                            gboolean            is_fullscreen);
+void              _clutter_stage_window_set_cursor_visible (ClutterStageWindow *window,
+                                                            gboolean            is_visible);
+void              _clutter_stage_window_set_user_resizable (ClutterStageWindow *window,
+                                                            gboolean            is_resizable);
 
-gboolean      _clutter_stage_window_realize               (ClutterStageWindow *window);
-void          _clutter_stage_window_unrealize             (ClutterStageWindow *window);
+gboolean          _clutter_stage_window_realize                 (ClutterStageWindow *window);
+void              _clutter_stage_window_unrealize               (ClutterStageWindow *window);
 
-void          _clutter_stage_window_show                  (ClutterStageWindow *window,
-                                                           gboolean            do_raise);
-void          _clutter_stage_window_hide                  (ClutterStageWindow *window);
+void              _clutter_stage_window_show                    (ClutterStageWindow *window,
+                                                                 gboolean            do_raise);
+void              _clutter_stage_window_hide                    (ClutterStageWindow *window);
 
-void          _clutter_stage_window_resize                (ClutterStageWindow *window,
-                                                           gint                width,
-                                                           gint                height);
-void          _clutter_stage_window_get_geometry          (ClutterStageWindow *window,
-                                                           ClutterGeometry    *geometry);
-int           _clutter_stage_window_get_pending_swaps     (ClutterStageWindow *window);
+void              _clutter_stage_window_resize                  (ClutterStageWindow *window,
+                                                                 gint                width,
+                                                                 gint                height);
+void              _clutter_stage_window_get_geometry            (ClutterStageWindow *window,
+                                                                 ClutterGeometry    *geometry);
+int               _clutter_stage_window_get_pending_swaps       (ClutterStageWindow *window);
 
-void          _clutter_stage_window_add_redraw_clip       (ClutterStageWindow *window,
-                                                           ClutterGeometry    *stage_clip);
-gboolean      _clutter_stage_window_has_redraw_clips      (ClutterStageWindow *window);
-gboolean      _clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *window);
+void              _clutter_stage_window_add_redraw_clip         (ClutterStageWindow *window,
+                                                                 ClutterGeometry    *stage_clip);
+gboolean          _clutter_stage_window_has_redraw_clips        (ClutterStageWindow *window);
+gboolean          _clutter_stage_window_ignoring_redraw_clips   (ClutterStageWindow *window);
 
-void          _clutter_stage_window_set_accept_focus      (ClutterStageWindow *window,
+void              _clutter_stage_window_set_accept_focus        (ClutterStageWindow *window,
                                                            gboolean            accept_focus);
 
-void          _clutter_stage_window_redraw                (ClutterStageWindow *window);
+void              _clutter_stage_window_redraw                  (ClutterStageWindow *window);
+
+CoglFramebuffer  *_clutter_stage_window_get_active_framebuffer  (ClutterStageWindow *window);
 
 G_END_DECLS
 

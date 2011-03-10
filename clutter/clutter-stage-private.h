@@ -27,6 +27,8 @@
 #include <clutter/clutter-input-device.h>
 #include <clutter/clutter-private.h>
 
+#include <cogl/cogl.h>
+
 G_BEGIN_DECLS
 
 typedef struct _ClutterStageQueueRedrawEntry ClutterStageQueueRedrawEntry;
@@ -91,6 +93,8 @@ gboolean        _clutter_stage_has_device       (ClutterStage       *stage,
 void     _clutter_stage_set_motion_events_enabled (ClutterStage *stage,
                                                    gboolean      enabled);
 gboolean _clutter_stage_get_motion_events_enabled (ClutterStage *stage);
+
+CoglFramebuffer *_clutter_stage_get_active_framebuffer (ClutterStage *stage);
 
 G_END_DECLS
 

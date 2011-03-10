@@ -2524,14 +2524,6 @@ cull_actor (ClutterActor *self)
   const ClutterPlane *stage_clip;
   ClutterCullResult result;
 
-  if (cogl_get_draw_framebuffer () != NULL)
-    {
-      CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
-                    "Current framebuffer doesn't correspond to stage",
-                    G_OBJECT_TYPE_NAME (self));
-      return FALSE;
-    }
-
   if (!priv->last_paint_volume_valid)
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
@@ -2549,6 +2541,15 @@ cull_actor (ClutterActor *self)
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
                     "No stage clip set",
+                    G_OBJECT_TYPE_NAME (self));
+      return FALSE;
+    }
+
+  if (cogl_get_draw_framebuffer () !=
+      _clutter_stage_get_active_framebuffer (CLUTTER_STAGE (stage)))
+    {
+      CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
+                    "Current framebuffer doesn't correspond to stage",
                     G_OBJECT_TYPE_NAME (self));
       return FALSE;
     }

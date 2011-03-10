@@ -192,3 +192,23 @@ _clutter_stage_window_redraw (ClutterStageWindow *window)
   if (iface->redraw)
     iface->redraw (window);
 }
+
+/* NB: The presumption shouldn't be that a stage can't be comprised of
+ * multiple internal framebuffers, so instead of simply naming this
+ * function _clutter_stage_window_get_framebuffer(), the "active"
+ * infix is intended to clarify that it gets the framebuffer that is
+ * currently in use/being painted.
+ */
+CoglFramebuffer *
+_clutter_stage_window_get_active_framebuffer (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), NULL);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->get_active_framebuffer)
+    return iface->get_active_framebuffer (window);
+  else
+    return NULL;
+}

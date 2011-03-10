@@ -145,6 +145,8 @@ struct _ClutterStagePrivate
 
   ClutterPickMode     pick_buffer_mode;
 
+  CoglFramebuffer    *active_framebuffer;
+
   GHashTable *devices;
 
   GTimer *fps_timer;
@@ -490,6 +492,23 @@ _cogl_util_get_eye_planes_for_screen_poly (float *polygon,
   cogl_vector3_normalize (&plane->n);
 }
 
+static void
+_clutter_stage_update_active_framebuffer (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  /* We track the CoglFramebuffer that corresponds to the stage itself
+   * so, for example, we can disable culling when rendering to an
+   * offscreen framebuffer.
+   */
+
+  priv->active_framebuffer =
+    _clutter_stage_window_get_active_framebuffer (priv->impl);
+
+  if (!priv->active_framebuffer)
+    priv->active_framebuffer = cogl_get_draw_framebuffer ();
+}
+
 /* This provides a common point of entry for painting the scenegraph
  * for picking or painting...
  *
@@ -545,6 +564,7 @@ _clutter_stage_do_paint (ClutterStage *stage, const ClutterGeometry *clip)
                                              priv->current_clip_planes);
 
   _clutter_stage_paint_volume_stack_free_all (stage);
+  _clutter_stage_update_active_framebuffer (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 }
 
@@ -3837,4 +3857,16 @@ gboolean
 _clutter_stage_get_motion_events_enabled (ClutterStage *stage)
 {
   return stage->priv->motion_events_enabled;
+}
+
+/* NB: The presumption shouldn't be that a stage can't be comprised
+ * of multiple internal framebuffers, so instead of simply naming
+ * this function _clutter_stage_get_framebuffer(), the "active"
+ * infix is intended to clarify that it gets the framebuffer that
+ * is currently in use/being painted.
+ */
+CoglFramebuffer *
+_clutter_stage_get_active_framebuffer (ClutterStage *stage)
+{
+  return stage->priv->active_framebuffer;
 }
