@@ -1048,7 +1048,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
 
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
 
-  framebuffer = _cogl_get_draw_buffer ();
+  framebuffer = cogl_get_draw_framebuffer ();
   /* Viewport needs to have some size and be inside the window for this */
   _cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
   if (viewport[0] <  0 || viewport[1] <  0 ||

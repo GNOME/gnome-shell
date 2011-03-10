@@ -2524,7 +2524,7 @@ cull_actor (ClutterActor *self)
   const ClutterPlane *stage_clip;
   ClutterCullResult result;
 
-  if (_cogl_get_draw_buffer () != NULL)
+  if (cogl_get_draw_framebuffer () != NULL)
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
                     "Current framebuffer doesn't correspond to stage",

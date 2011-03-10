@@ -434,7 +434,7 @@ _cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
    * always render upside down to offscreen buffers.
    */
   if (mode == COGL_MATRIX_PROJECTION &&
-      cogl_is_offscreen (_cogl_get_draw_buffer ()))
+      cogl_is_offscreen (cogl_get_draw_framebuffer ()))
     {
       CoglMatrix flipped_projection;
       CoglMatrix *projection =
