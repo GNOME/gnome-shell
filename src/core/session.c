@@ -39,12 +39,6 @@ meta_session_init (const char *client_id,
   meta_topic (META_DEBUG_SM, "Compiled without session management support\n");
 }
 
-void
-meta_session_shutdown (void)
-{
-  /* nothing */
-}
-
 const MetaWindowSessionInfo*
 meta_window_lookup_saved_state (MetaWindow *window)
 {
@@ -307,7 +301,12 @@ meta_session_init (const char *previous_client_id,
     SmProp prop1, prop2, prop3, prop4, prop5, prop6, *props[6];
     SmPropValue prop1val, prop2val, prop3val, prop4val, prop5val, prop6val;
     char pid[32];
-    char hint = SmRestartImmediately;
+    /* Historically, this was SmRestartImmediately, which made sense
+     * for a stateless window manager, but we don't really control
+     * what embedders do, and it's all around better if gnome-session
+     * handles this.
+     */
+    char hint = SmRestartIfRunning;
     char priority = 20; /* low to run before other apps */
     
     prop1.name = SmProgram;
@@ -369,31 +368,6 @@ meta_session_init (const char *previous_client_id,
 
  out:
   g_free (saved_client_id);
-}
-
-void
-meta_session_shutdown (void)
-{
-  /* Change our restart mode to IfRunning */
-  
-  SmProp prop1;
-  SmPropValue prop1val;
-  SmProp *props[1];
-  char hint = SmRestartIfRunning;
-
-  if (session_connection == NULL)
-    return;
-  
-  prop1.name = SmRestartStyleHint;
-  prop1.type = SmCARD8;
-  prop1.num_vals = 1;
-  prop1.vals = &prop1val;
-  prop1val.value = &hint;
-  prop1val.length = 1;
-    
-  props[0] = &prop1;
-  
-  SmcSetProperties (session_connection, 1, props);
 }
 
 static void
