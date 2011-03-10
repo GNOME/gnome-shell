@@ -77,7 +77,7 @@ set_clip_plane (GLint plane_num,
   GLdouble plane[4];
 #endif
   GLfloat angle;
-  CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
+  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
@@ -131,7 +131,7 @@ set_clip_planes (float x_1,
 		 float x_2,
 		 float y_2)
 {
-  CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
+  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrix modelview_matrix;
@@ -192,7 +192,7 @@ add_stencil_clip_rectangle (float x_1,
                             float y_2,
                             gboolean first)
 {
-  CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
+  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
@@ -598,7 +598,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
   ctx->current_clip_stack = _cogl_clip_stack_ref (stack);
 
   modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
 
   has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
 
@@ -629,7 +629,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
     scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = scissor_y_start = 0;
   else
     {
-      CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
+      CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
 
       /* We store the entry coordinates in Cogl coordinate space
        * but OpenGL requires the window origin to be the bottom

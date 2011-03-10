@@ -459,8 +459,8 @@ _cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
 
   /* Make sure the current framebuffers are bound. We explicitly avoid
      flushing the clip state so we can bind our own empty state */
-  _cogl_framebuffer_flush_state (_cogl_get_draw_buffer (),
-                                 _cogl_get_read_buffer (),
+  _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
+                                 _cogl_get_read_framebuffer (),
                                  0);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,

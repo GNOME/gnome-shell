@@ -241,10 +241,7 @@ CoglHandle
 _cogl_onscreen_new (void);
 
 CoglFramebuffer *
-_cogl_get_draw_buffer (void);
-
-CoglFramebuffer *
-_cogl_get_read_buffer (void);
+_cogl_get_read_framebuffer (void);
 
 GSList *
 _cogl_create_framebuffer_stack (void);

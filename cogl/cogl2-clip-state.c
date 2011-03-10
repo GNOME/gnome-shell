@@ -37,7 +37,7 @@ cogl2_clip_push_from_path (CoglPath *path)
   CoglClipState *clip_state;
   CoglMatrix modelview_matrix;
 
-  framebuffer = _cogl_get_draw_buffer ();
+  framebuffer = cogl_get_draw_framebuffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   cogl_get_modelview_matrix (&modelview_matrix);

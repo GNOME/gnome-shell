@@ -1519,7 +1519,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   entry->pipeline = _cogl_pipeline_journal_ref (source);
 
-  clip_stack = _cogl_framebuffer_get_clip_stack (_cogl_get_draw_buffer ());
+  clip_stack = _cogl_framebuffer_get_clip_stack (cogl_get_draw_framebuffer ());
   entry->clip_stack = _cogl_clip_stack_ref (clip_stack);
 
   if (G_UNLIKELY (source != pipeline))
@@ -1529,7 +1529,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          add_framebuffer_deps_cb,
-                                         _cogl_get_draw_buffer ());
+                                         cogl_get_draw_framebuffer ());
 
   /* XXX: It doesn't feel very nice that in this case we just assume
    * that the journal is associated with the current framebuffer. I
@@ -1537,7 +1537,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
    * the reason we don't have that currently is that it would
    * introduce a circular reference. */
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BATCHING)))
-    _cogl_framebuffer_flush_journal (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_flush_journal (cogl_get_draw_framebuffer ());
 
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);
 }
@@ -1588,7 +1588,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
                                 4 /* n_points */);
 
   projection_stack =
-    _cogl_framebuffer_get_projection_stack (_cogl_get_draw_buffer ());
+    _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
   _cogl_matrix_stack_get (projection_stack, &projection);
 
   cogl_matrix_project_points (&projection,
@@ -1600,7 +1600,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
                               poly, /* points_out */
                               4 /* n_points */);
 
-  _cogl_framebuffer_get_viewport4fv (_cogl_get_draw_buffer (),
+  _cogl_framebuffer_get_viewport4fv (cogl_get_draw_framebuffer (),
                                      viewport);
 
 /* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)

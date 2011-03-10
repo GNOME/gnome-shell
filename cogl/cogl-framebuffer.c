@@ -513,7 +513,7 @@ _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
   framebuffer->viewport_width = width;
   framebuffer->viewport_height = height;
 
-  if (framebuffer->context && _cogl_get_draw_buffer () == framebuffer)
+  if (framebuffer->context && cogl_get_draw_framebuffer () == framebuffer)
     framebuffer->context->dirty_gl_viewport = TRUE;
 }
 
@@ -1105,8 +1105,8 @@ _cogl_set_framebuffers (CoglFramebuffer *draw_buffer,
   g_return_if_fail (_cogl_is_framebuffer (draw_buffer));
   g_return_if_fail (_cogl_is_framebuffer (read_buffer));
 
-  current_draw_buffer = _cogl_get_draw_buffer ();
-  current_read_buffer = _cogl_get_read_buffer ();
+  current_draw_buffer = cogl_get_draw_framebuffer ();
+  current_read_buffer = _cogl_get_read_framebuffer ();
 
   if (current_draw_buffer != draw_buffer ||
       current_read_buffer != read_buffer)
@@ -1147,7 +1147,7 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle handle)
 }
 
 CoglFramebuffer *
-_cogl_get_draw_buffer (void)
+cogl_get_draw_framebuffer (void)
 {
   CoglFramebufferStackEntry *entry;
 
@@ -1161,7 +1161,7 @@ _cogl_get_draw_buffer (void)
 }
 
 CoglFramebuffer *
-_cogl_get_read_buffer (void)
+_cogl_get_read_framebuffer (void)
 {
   CoglFramebufferStackEntry *entry;
 
@@ -1192,8 +1192,8 @@ _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
 
   /* Copy the top of the stack so that when we call cogl_set_framebuffer
      it will still know what the old framebuffer was */
-  old_draw_buffer = cogl_object_ref (_cogl_get_draw_buffer ());
-  old_read_buffer = cogl_object_ref (_cogl_get_read_buffer ());
+  old_draw_buffer = cogl_object_ref (cogl_get_draw_framebuffer ());
+  old_read_buffer = cogl_object_ref (_cogl_get_read_framebuffer ());
   ctx->framebuffer_stack =
     g_slist_prepend (ctx->framebuffer_stack,
                      create_stack_entry (old_draw_buffer,
@@ -1212,7 +1212,7 @@ cogl_push_framebuffer (CoglFramebuffer *buffer)
 void
 cogl_push_draw_buffer (void)
 {
-  cogl_push_framebuffer (_cogl_get_draw_buffer ());
+  cogl_push_framebuffer (cogl_get_draw_framebuffer ());
 }
 
 void
@@ -1455,8 +1455,8 @@ _cogl_blit_framebuffer (unsigned int src_x,
   CoglFramebuffer *read_buffer;
   CoglContext *ctx;
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  read_buffer = _cogl_get_read_buffer ();
+  draw_buffer = cogl_get_draw_framebuffer ();
+  read_buffer = _cogl_get_read_framebuffer ();
   ctx = draw_buffer->context;
 
   g_return_if_fail (cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT));
@@ -1470,8 +1470,8 @@ _cogl_blit_framebuffer (unsigned int src_x,
 
   /* Make sure the current framebuffers are bound. We explicitly avoid
      flushing the clip state so we can bind our own empty state */
-  _cogl_framebuffer_flush_state (_cogl_get_draw_buffer (),
-                                 _cogl_get_read_buffer (),
+  _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
+                                 _cogl_get_read_framebuffer (),
                                  COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
 
   /* Flush any empty clip stack because glBlitFramebuffer is affected

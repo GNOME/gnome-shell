@@ -360,7 +360,7 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
                                   gboolean need_clear)
 {
   CoglPathData *data = path->data;
-  CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
+  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
@@ -484,7 +484,7 @@ cogl2_path_fill (CoglPath *path)
     }
   else
     {
-      framebuffer = _cogl_get_draw_buffer ();
+      framebuffer = cogl_get_draw_framebuffer ();
 
       _cogl_framebuffer_flush_journal (framebuffer);
 
@@ -492,7 +492,7 @@ cogl2_path_fill (CoglPath *path)
        * as the pipeline state) when flushing the clip stack, so should
        * always be done first when preparing to draw. */
       _cogl_framebuffer_flush_state (framebuffer,
-                                     _cogl_get_read_buffer (),
+                                     _cogl_get_read_framebuffer (),
                                      0);
 
       _cogl_path_fill_nodes (path);
