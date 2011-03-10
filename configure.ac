@@ -1241,6 +1241,7 @@ AC_CONFIG_FILES([
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
 
 	clutter/cogl/Makefile
+	clutter/cogl/po/Makefile.in
 	clutter/cogl/cogl/Makefile
 	clutter/cogl/cogl/cogl-defines.h
 	clutter/cogl/cogl/cogl-1.0.pc:clutter/cogl/cogl/cogl-1.0-clutter.pc.in

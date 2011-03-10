@@ -4,10 +4,10 @@ libdir=@libdir@
 includedir=@includedir@
 apiversion=1.0
 requires=@COGL_PKG_REQUIRES@
-backend=@COGL_WINSYS@ #only kept for backward compatability
-winsys=@COGL_WINSYS@
-cogl=@COGL_DRIVER@ #only kept for backward compatability
-driver=@COGL_DRIVER@
+backend=none #only kept for backward compatability
+winsys=none
+cogl=none #only kept for backward compatability
+driver=none
 
 Name: Cogl
 Description: An object oriented GL/GLES Abstraction/Utility Layer
