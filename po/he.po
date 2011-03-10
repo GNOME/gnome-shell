@@ -8,14 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-02 19:57+0200\n"
-"PO-Revision-Date: 2011-03-02 19:58+0200\n"
+"POT-Creation-Date: 2011-03-10 18:43+0200\n"
+"PO-Revision-Date: 2011-03-10 18:45+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
-"Language-Team: Hebrew <he@li.org>\n"
+"Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n>2||n==0) ? 1 :2;\n"
+"X-Poedit-Language: Hebrew\n"
+"X-Poedit-Country: ISRAEL\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -188,27 +191,27 @@ msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:195
+#: ../js/ui/appDisplay.js:226
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:282
+#: ../js/ui/appDisplay.js:324
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:312
+#: ../js/ui/appDisplay.js:350
 msgid "SETTINGS"
 msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:572
+#: ../js/ui/appDisplay.js:612
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:575
+#: ../js/ui/appDisplay.js:615
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:576
+#: ../js/ui/appDisplay.js:616
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -368,7 +371,7 @@ msgstr "השבוע"
 msgid "Next week"
 msgstr "בשבוע הבא"
 
-#: ../js/ui/dash.js:174
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:931
 msgid "Remove"
 msgstr "הסרה"
 
@@ -376,54 +379,54 @@ msgstr "הסרה"
 msgid "Date and Time Settings"
 msgstr "הגדרות תאריך ושעה"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "פתיחת היומן"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:176
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:180
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:207
+#: ../js/ui/dateMenu.js:209
 msgid "%A %B %e, %Y"
 msgstr "%A ה־%e ב%B, %Y"
 
@@ -500,37 +503,41 @@ msgstr "אישור"
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ../js/ui/lookingGlass.js:587
+#: ../js/ui/lookingGlass.js:588
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:625
 msgid "Enabled"
 msgstr "פעיל"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/lookingGlass.js:628
+#: ../js/ui/lookingGlass.js:629
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:631
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: ../js/ui/lookingGlass.js:655
+#: ../js/ui/lookingGlass.js:656
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: ../js/ui/lookingGlass.js:661
+#: ../js/ui/lookingGlass.js:662
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:1902
+#: ../js/ui/messageTray.js:924
+msgid "Open"
+msgstr "פתיחה"
+
+#: ../js/ui/messageTray.js:1961
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -546,17 +553,27 @@ msgstr "חלונות"
 msgid "Applications"
 msgstr "יישומים"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:202
+msgid "Dash"
+msgstr "חלונית"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:529
+#: ../js/ui/panel.js:560
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:897
+#: ../js/ui/panel.js:919
 msgid "Activities"
 msgstr "פעילויות"
+
+#: ../js/ui/panel.js:1020
+msgid "Panel"
+msgstr "לוח"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -580,7 +597,7 @@ msgstr "מקומות והתקנים"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:612
+#: ../js/ui/popupMenu.js:618
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -588,91 +605,91 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
-#: ../js/ui/searchDisplay.js:295
+#: ../js/ui/searchDisplay.js:283
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/searchDisplay.js:309
+#: ../js/ui/searchDisplay.js:297
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
-#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
+#: ../js/ui/statusMenu.js:113 ../js/ui/statusMenu.js:177
 msgid "Power Off..."
 msgstr "כיבוי..."
 
-#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:115 ../js/ui/statusMenu.js:176
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:136
 msgid "Available"
 msgstr "זמין"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:141
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:149
 msgid "My Account"
 msgstr "החשבון שלי"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:153
 msgid "System Settings"
 msgstr "הגדרות המערכת"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:160
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:153
+#: ../js/ui/statusMenu.js:164
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/statusMenu.js:158
+#: ../js/ui/statusMenu.js:169
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/status/accessibility.js:81
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "תקריב"
 
-#: ../js/ui/status/accessibility.js:88
+#: ../js/ui/status/accessibility.js:69
 msgid "Screen Reader"
 msgstr "מקריא מסך"
 
-#: ../js/ui/status/accessibility.js:92
+#: ../js/ui/status/accessibility.js:73
 msgid "Screen Keyboard"
 msgstr "מקלדת מסך"
 
-#: ../js/ui/status/accessibility.js:96
+#: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "התראות חזותיות"
 
-#: ../js/ui/status/accessibility.js:99
+#: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
 msgstr "מקשים דביקים"
 
-#: ../js/ui/status/accessibility.js:102
+#: ../js/ui/status/accessibility.js:83
 msgid "Slow Keys"
 msgstr "מקשים אטיים"
 
-#: ../js/ui/status/accessibility.js:105
+#: ../js/ui/status/accessibility.js:86
 msgid "Bounce Keys"
 msgstr "מקשים קופצים"
 
-#: ../js/ui/status/accessibility.js:108
+#: ../js/ui/status/accessibility.js:89
 msgid "Mouse Keys"
 msgstr "מקשי עכבר"
 
-#: ../js/ui/status/accessibility.js:112
+#: ../js/ui/status/accessibility.js:93
 msgid "Universal Access Settings"
 msgstr "הגדרות גישה אוניברסלית"
 
-#: ../js/ui/status/accessibility.js:164
+#: ../js/ui/status/accessibility.js:145
 msgid "High Contrast"
 msgstr "ניגודיות גבוהה"
 
-#: ../js/ui/status/accessibility.js:209
+#: ../js/ui/status/accessibility.js:182
 msgid "Large Text"
 msgstr "טקסט גדול"
 
@@ -843,51 +860,51 @@ msgstr[0] "דקה אחת נותרה"
 msgstr[1] "%d דקות נותרו"
 msgstr[2] "שתי דקות נותרו"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:227
 msgid "AC adapter"
 msgstr "מתאם חשמל"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:229
 msgid "Laptop battery"
 msgstr "סוללת נייד"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:231
 msgid "UPS"
 msgstr "אל־פסק"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:233
 msgid "Monitor"
 msgstr "צג"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:235
 msgid "Mouse"
 msgstr "עכבר"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:237
 msgid "Keyboard"
 msgstr "מקלדת"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:239
 msgid "PDA"
 msgstr "מחשב כף יד"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:241
 msgid "Cell phone"
 msgstr "טלפון סלולרי"
 
-#: ../js/ui/status/power.js:257
+#: ../js/ui/status/power.js:243
 msgid "Media player"
 msgstr "נגן מדיה"
 
-#: ../js/ui/status/power.js:259
+#: ../js/ui/status/power.js:245
 msgid "Tablet"
 msgstr "טבלת שליטה"
 
-#: ../js/ui/status/power.js:261
+#: ../js/ui/status/power.js:247
 msgid "Computer"
 msgstr "מחשב"
 
-#: ../js/ui/status/power.js:263 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "לא ידוע"
 
@@ -922,7 +939,7 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:348
+#: ../js/ui/telepathyClient.js:357
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "נשלח ב־%X בשעה %A"
@@ -931,16 +948,20 @@ msgstr "נשלח ב־%X בשעה %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:103
+#: ../js/ui/viewSelector.js:117
 msgid "Type to search..."
 msgstr "יש להקליד כדי לחפש..."
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/viewSelector.js:137 ../src/shell-util.c:250
+msgid "Search"
+msgstr "חיפוש"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s סיים את תהליך ההתחלה"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' מוכן"
@@ -969,11 +990,15 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/shell-global.c:1298
+#: ../src/main.c:395
+msgid "Print version"
+msgstr "Print version"
+
+#: ../src/shell-global.c:1308
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1302
+#: ../src/shell-global.c:1312
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -981,7 +1006,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1307
+#: ../src/shell-global.c:1317
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -989,7 +1014,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1322
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -997,7 +1022,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1327
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1018,10 +1043,6 @@ msgstr "תיקיית הבית"
 #: ../src/shell-util.c:104
 msgid "File System"
 msgstr "מערכת הקבצים"
-
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "חיפוש"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
