@@ -253,32 +253,295 @@ AS_IF(
 )
 
 
+
 dnl     ============================================================
-dnl     Determine which window systems and drivers we can support
+dnl     Determine which drivers and window systems we can support
 dnl     ============================================================
+
+dnl         ========================================================
+dnl         Drivers first...
+dnl         ========================================================
+DRIVER_COUNT=0
+EGL_CHECKED=no
+
+AC_ARG_ENABLE(
+  [gles1],
+  [AC_HELP_STRING([--enable-gles1=@<:@no/yes@:>@], [Enable support for OpenGL-ES 1.1 @<:@default=no@:>@])],
+  [],
+  enable_gles1=no
+)
+AS_IF([test "x$enable_gles1" = "xyes"],
+      [
+        DRIVER_COUNT=$((DRIVER_COUNT + 1))
+        COGL_DRIVER=gles
+        glesversion=1.1
+
+        cogl_gl_headers="GLES/gl.h GLES/glext.h"
+
+        AC_DEFINE([HAVE_COGL_GLES], 1, [Have GLES 1.1 for rendering])
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES CLUTTER_COGL_HAS_GLES"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES1"
+
+        PKG_CHECK_EXISTS([glesv1_cm],
+          [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glesv1_cm"
+           NEED_EGL=yes
+          ],
+          [
+            AC_CHECK_HEADERS([$cogl_gl_headers],
+                             [],
+                             [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+            # Check for a GLES 1.x Common Profile library with/without EGL.
+            #
+            # Note: historically GLES 1 libraries shipped with the
+            # EGL and GLES symbols all bundled in one library. Now
+            # the Khronos Implementers Guide defines two naming
+            # schemes: -lGLES_CM should be used for a library that
+            # bundles the GLES and EGL API together and -lGLESv1_CM
+            # would be used for a standalone GLES API.
+            AC_CHECK_LIB(GLES_CM, [eglInitialize],
+              [COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGLES_CM"],
+              [
+                AC_CHECK_LIB(GLESv1_CM, [glFlush],
+                  [COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGLESv1_CM"
+                   NEED_SEPARATE_EGL=yes
+                  ],
+                  [AC_MSG_ERROR([Unable to locate required GLES 1.x Common Profile library])])
+              ])
+
+            EGL_CHECKED=yes
+          ])
+      ])
+
+AC_ARG_ENABLE(
+  [gles2],
+  [AC_HELP_STRING([--enable-gles2=@<:@no/yes@:>@], [Enable support for OpenGL-ES 2.0 @<:@default=no@:>@])],
+  [],
+  enable_gles2=no
+)
+AS_IF([test "x$enable_gles2" = "xyes"],
+      [
+        DRIVER_COUNT=$((DRIVER_COUNT + 1))
+        COGL_DRIVER=gles
+        glesversion=2.0
+
+        cogl_gl_headers="GLES2/gl2.h GLES2/gl2ext.h"
+        AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GLES 2.0 for rendering])
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES CLUTTER_COGL_HAS_GLES"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES2"
+
+        PKG_CHECK_EXISTS([glesv2],
+          [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glesv2"],
+          [
+            AC_CHECK_HEADERS([$cogl_gl_headers],
+                             [],
+                             [AC_MSG_ERROR([Unable to locate required GLES headers])],
+                             [[#include <GLES2/gl2.h>
+                             ]])
+
+            COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGLESv2"
+          ])
+
+        NEED_EGL=yes
+      ])
+
+AC_ARG_ENABLE(
+  [gl],
+  [AC_HELP_STRING([--enable-gl=@<:@no/yes@:>@], [Enable support for OpenGL @<:@default=yes@:>@])],
+  [],
+  [AS_IF([test $DRIVER_COUNT -gt 0], [enable_gl=no], [enable_gl=yes])]
+)
+AS_IF([test "x$enable_gl" = "xyes"],
+      [
+        DRIVER_COUNT=$((DRIVER_COUNT + 1))
+        COGL_DRIVER=gl
+        ALLOW_GLX=yes
+
+        cogl_gl_headers="GL/gl.h"
+
+        PKG_CHECK_EXISTS(
+          [gl], [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gl"],
+          [AC_CHECK_LIB(GL, [glGetString],
+                        [COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGL"],
+                        [AC_MSG_ERROR([Unable to locate required GL library])])
+          ])
+
+        AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GL"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GL"
+      ])
+
+AS_IF([test $DRIVER_COUNT -gt 1],
+      [AC_MSG_ERROR(['The --enable-gl{es1,es2} options are currently mutually exclusive'])])
+
+AC_SUBST([COGL_DRIVER])
+
+AM_CONDITIONAL([COGL_DRIVER_GL], [test "x$COGL_DRIVER" = "xgl"])
+AM_CONDITIONAL([COGL_DRIVER_GLES], [test "x$COGL_DRIVER" = "xgles"])
+
+dnl         ========================================================
+dnl         Check window system integration libraries...
+dnl         ========================================================
+
+AC_ARG_ENABLE(
+  [glx],
+  [AC_HELP_STRING([--enable-glx=@<:@no/yes@:>@], [Enable support GLX @<:@default=auto@:>@])],
+  [],
+  [AS_IF([test "x$ALLOW_GLX" = "xyes"], [enable_glx=yes], [enable_glx=no])]
+)
+AS_IF([test "x$enable_glx" = "xyes"],
+      [
+        AS_IF([test "x$ALLOW_GLX" != "xyes"],
+              [AC_MSG_ERROR([GLX not supported with $COGL_DRIVER driver])])
+
+        NEED_XLIB=yes
+        SUPPORT_GLX=yes
+        GL_WINSYS_APIS="$GL_WINSYS_APIS glx"
+
+        AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
+
+        # We might fall back to DRM for sync-to-vblank on GLX
+        PKG_CHECK_EXISTS([libdrm],
+                         [
+                           AC_DEFINE([HAVE_DRM], [1], [Have libdrm support])
+                           COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES libdrm"
+                         ],
+                         [])
+      ])
+AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "xyes"])
+
+
+EGL_PLATFORM_COUNT=0
+
+AC_ARG_ENABLE(
+  [null-egl-platform],
+  [AC_HELP_STRING([--enable-null-egl-platform=@<:@no/yes@:>@], [Enable support for the NULL egl platform @<:@default=no@:>@])],
+  [],
+  enable_null_egl_platform=no
+)
+AS_IF([test "x$enable_null_egl_platform" = "xyes"],
+      [
+        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
+        NEED_EGL=yes
+        EGL_PLATFORMS="$EGL_PLATFORMS null"
+
+        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
+                  [Cogl supports NULL EGL platform typedefs])
+      ])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL,
+               [test "x$enable_null_egl_platform" = "xyes"])
+
+AC_ARG_ENABLE(
+  [gdl-egl-platform],
+  [AC_HELP_STRING([--enable-gdl-egl-platform=@<:@no/yes@:>@], [Enable support for the GDL egl platform @<:@default=no@:>@])],
+  [],
+  enable_gdl_egl_platform=no
+)
+AS_IF([test "x$enable_gdl_egl_platform" == "xyes"],
+      [
+        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
+        NEED_EGL=yes
+        EGL_PLATFORMS="$EGL_PLATFORMS gdl"
+
+        AC_CHECK_HEADERS(
+          [libgdl.h],
+          [],
+          [
+            AC_CHECK_HEADERS(
+              [CE4100/libgdl.h],
+              [COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I/usr/include/CE4100"],
+              [AC_MSG_ERROR([libgdl.h not found])])
+          ])
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_GDL_SUPPORT"
+      ])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_GDL,
+               [test "x$enable_gdl_egl_platform" = "xyes"])
+
+dnl This should go last, since it's the default fallback and we need
+dnl to check the value of $EGL_PLATFORM_COUNT here.
+AC_ARG_ENABLE(
+  [xlib-egl-platform],
+  [AC_HELP_STRING([--enable-xlib-egl-platform=@<:@no/yes@:>@], [Enable support for the Xlib egl platform @<:@default=auto@:>@])],
+  [],
+  AS_IF([test "x$COGL_DRIVER" = "xgles" && test $EGL_PLATFORM_COUNT -eq 0],
+        [enable_xlib_egl_platform=yes], [enable_xlib_egl_platform=no])
+)
+AS_IF([test "x$enable_xlib_egl_platform" = "xyes"],
+      [
+        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
+        NEED_EGL=yes
+        NEED_XLIB=yes
+        EGL_PLATFORMS="$EGL_PLATFORMS xlib"
+
+        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
+                  [Cogl supports Xlib based EGL platform typedefs])
+      ])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11,
+               [test "x$enable_xlib_egl_platform" = "xyes"])
+
+
+
+AS_IF([test $EGL_PLATFORM_COUNT -gt 1],
+      [AC_MSG_ERROR(['The --enable-*-egl-platform options are currently mutually exclusive'])])
+
+AS_IF([test "x$NEED_EGL" = "xyes" && test "x$EGL_CHECKED" != "xyes"],
+      [
+        PKG_CHECK_EXISTS([egl],
+          [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES egl"],
+          [
+            AC_CHECK_HEADERS(
+              [EGL/egl.h],
+              [],
+              [AC_MSG_ERROR([Unable to locate required EGL headers])])
+
+            AC_CHECK_LIB(EGL, [eglInitialize],
+              [COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lEGL"],
+              [AC_MSG_ERROR([Unable to locate required EGL library])])
+
+            COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lEGL"
+          ]
+          )
+        SUPPORT_EGL=yes
+        GL_WINSYS_APIS="$GL_WINSYS_APIS egl"
+      ])
+AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "xyes"])
+
+
+dnl         ========================================================
+dnl         Check X11 dependencies if required
+dnl         ========================================================
+AS_IF([test "x$NEED_XLIB" = "xyes"],
+      [
+        X11_MODULES="x11 xext xfixes >= xfixes_req_version xdamage xcomposite >= xcomposite_req_version"
+        PKG_CHECK_MODULES(DUMMY, [$X11_MODULES],
+                          [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES $X11_MODULES"])
+        SUPPORT_X11=yes
+        SUPPORT_XLIB=yes
+
+        AC_DEFINE([COGL_HAS_X11_SUPPORT], [1],
+                  [Cogl supports the X11 window system])
+        AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1],
+                  [Cogl supports X11 using the Xlib API])
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11_SUPPORT"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_XLIB"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_XLIB_SUPPORT"
+      ])
+
+AM_CONDITIONAL(X11_TESTS, [test "x$SUPPORT_X11" = "xyes"])
+AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "xyes"])
+AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "xyes"])
+
 
 AM_CONDITIONAL(COGL_STANDALONE_BUILD, [true])
 AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
 
-AC_DEFINE([COGL_HAS_X11_SUPPORT], [1], [Cogl supports the X11 window system])
-AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1], [Cogl supports X11 using the Xlib API])
-AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
-AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
-
-AM_CONDITIONAL(SUPPORT_GLX, [true])
-AM_CONDITIONAL(SUPPORT_X11, [true])
-AM_CONDITIONAL(SUPPORT_XLIB, [true])
-AM_CONDITIONAL(SUPPORT_EGL, [false])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [false])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [false])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_GDL, [false])
 AM_CONDITIONAL(SUPPORT_OSX, [false])
 AM_CONDITIONAL(SUPPORT_WIN32, [false])
-AM_CONDITIONAL(SUPPORT_CEX100, [false])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [false])
-
-AM_CONDITIONAL([COGL_DRIVER_GLES], [false])
-AM_CONDITIONAL([COGL_DRIVER_GL],   [true])
 
 
 dnl ================================================================
@@ -335,16 +598,6 @@ COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glib-2.0 pangocairo >= pangocairo_req_vers
 AC_SUBST(COGL_PKG_REQUIRES)
 PKG_CHECK_MODULES(COGL_DEP, [$COGL_PKG_REQUIRES])
 
-dnl     ============================================================
-dnl     Check X11 dependencies (if supporting any X11 based winsys)
-dnl     ============================================================
-AS_IF(
-  [test "x$SUPPORT_XLIB" = "x1"],
-  [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES x11 xext xfixes >= xfixes_req_version xdamage xcomposite >= xcomposite_req_version"]
-)
-
-AM_CONDITIONAL(X11_TESTS, [test "x$SUPPORT_XLIB" = "x1"])
-
 
 dnl ================================================================
 dnl Misc program dependencies.
@@ -361,49 +614,40 @@ dnl Checks for header files.
 dnl ================================================================
 AC_PATH_X
 AC_HEADER_STDC
-AC_CHECK_HEADERS(fcntl.h limits.h unistd.h signal.h)
+AC_CHECK_HEADERS(fcntl.h limits.h unistd.h)
 
 
 dnl ================================================================
 dnl Checks for library functions.
 dnl ================================================================
-AC_TYPE_SIGNAL
-AC_CHECK_FUNCS(putenv strdup)
 
 
-COGL_DEFINES_SYMBOLS="COGL_HAS_X11 COGL_HAS_X11_SUPPORT COGL_HAS_XLIB COGL_HAS_XLIB_SUPPORT COGL_HAS_GL CLUTTER_COGL_HAS_GL"
-
+dnl ================================================================
+dnl What needs to be substituted in other files
+dnl ================================================================
 COGL_DEFINES=""
 for x in $COGL_DEFINES_SYMBOLS; do
   COGL_DEFINES="$COGL_DEFINES
 #define $x 1"
 done;
-
 AC_SUBST(COGL_DEFINES)
 
-COGL_GL_HEADER_INCLUDES="#include <GL/gl.h>"
+
+AS_IF([test "x$cogl_gl_headers" = "x"],
+      [AC_MSG_ERROR([Internal error: no GL header set])])
+dnl cogl_gl_headers is a space separate list of headers to
+dnl include. We'll now convert them to a single variable with a
+dnl #include line for each header
+COGL_GL_HEADER_INCLUDES=""
+for x in $cogl_gl_headers; do
+  COGL_GL_HEADER_INCLUDES="$COGL_GL_HEADER_INCLUDES
+#include <$x>"
+done;
 AC_SUBST(COGL_GL_HEADER_INCLUDES)
 
-AM_CONDITIONAL([COGL_DRIVER_GL],   [true])
 AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
           [Can use Cogl 2.0 API internally])
 
-PKG_CHECK_EXISTS([gl],
-		 [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"],
-		 # if a pkg-config file isn't found just add -lGL
-		 # and hope for the best.
-		 [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGL"])
-
-COGL_WINSYS=glx
-AC_SUBST([COGL_WINSYS])
-COGL_DRIVER=gl
-AC_SUBST([COGL_DRIVER])
-
-COGL_DEBUG_CFLAGS="-DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"
-
-dnl ================================================================
-dnl What needs to be substituted in other files
-dnl ================================================================
 AC_SUBST(COGL_DEP_CFLAGS)
 AC_SUBST(COGL_DEP_LIBS)
 AC_SUBST(COGL_EXTRA_CFLAGS)
@@ -430,17 +674,27 @@ echo ""
 echo " • Global:"
 echo "        Prefix: ${prefix}"
 
+echo ""
+# Features
+echo " • Features:"
+echo "        Driver: ${COGL_DRIVER} ${glesversion}"
+echo "        GL Window System APIs:${GL_WINSYS_APIS}"
+if test "x$SUPPORT_EGL" = "xyes"; then
+echo "        EGL Platforms:${EGL_PLATFORMS}"
+fi
+echo "        Image backend: ${COGL_IMAGE_BACKEND}"
+
 # Compiler/Debug related flags
 echo ""
 echo " • Compiler options:"
 echo "        Cogl debug: ${enable_debug}"
 echo "        Compiler flags: ${CFLAGS} ${COGL_EXTRA_CFLAGS}"
+echo "        Linker flags: ${LDFLAGS} ${COGL_EXTRA_LDFLAGS}"
 
 # Miscellaneous
 echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
-echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 
 echo ""
 
