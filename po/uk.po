@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-06 16:25+0200\n"
-"PO-Revision-Date: 2011-03-11 19:26+0300\n"
+"POT-Creation-Date: 2011-03-11 19:35+0200\n"
+"PO-Revision-Date: 2011-03-11 19:37+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -17,6 +17,316 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Virtaal 0.6.1\n"
+
+#: ../src/core/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Перейти на робочий простір 1"
+
+#: ../src/core/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Перейти на робочий простір 2"
+
+#: ../src/core/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Перейти на робочий простір 3"
+
+#: ../src/core/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Перейти на робочий простір 4"
+
+#: ../src/core/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Перейти на робочий простір 5"
+
+#: ../src/core/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Перейти на робочий простір 6"
+
+#: ../src/core/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Перейти на робочий простір 7"
+
+#: ../src/core/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Перейти на робочий простір 8"
+
+#: ../src/core/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Перейти на робочий простір 9"
+
+#: ../src/core/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Перейти на робочий простір 10"
+
+#: ../src/core/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Перейти на робочий простір 11"
+
+#: ../src/core/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Перейти на робочий простір 12"
+
+#: ../src/core/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Перейти на робочий простір, що зліва від поточного"
+
+#: ../src/core/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Перейти на робочий простір, що справа від поточного"
+
+#: ../src/core/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Перейти на робочий простір, що зверху від поточного"
+
+#: ../src/core/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Перейти на робочий простір, що знизу від поточного"
+
+#: ../src/core/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Перейти між вікнами програми, використовуючи контекстне вікно"
+
+#: ../src/core/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr ""
+"Повернутись назад між вікнами програми, використовуючи контекстне вікно"
+
+#: ../src/core/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Перейти між вікнами, використовуючи контекстне вікно"
+
+#: ../src/core/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr "Повернутись назад між вікнами, використовуючи контекстне вікно"
+
+#: ../src/core/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Перейти між панелями та стільницею, використовуючи контекстне вікно"
+
+#: ../src/core/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr ""
+"Повернутись назад між панелями і стільницею, використовуючи контекстне вікно"
+
+#: ../src/core/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Негайно перейти між вікнами програми"
+
+#: ../src/core/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Негайно повернутись назад між вікнами програми"
+
+#: ../src/core/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Негайно перейти між вікнами"
+
+#: ../src/core/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Негайно повернутись назад між вікнами"
+
+#: ../src/core/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Негайний перейти між панелями та стільницею"
+
+#: ../src/core/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Негайно перейти між панелями та стільницею"
+
+#: ../src/core/all-keybindings.h:203
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Сховати всі звичайні вікна та перейти до стільниці"
+
+#: ../src/core/all-keybindings.h:206
+msgid "Show the panel's main menu"
+msgstr "Показати головне меню панелі"
+
+#: ../src/core/all-keybindings.h:209
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Показати вікно панелі запуску програм"
+
+#: ../src/core/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Почати або зупинити запис сеансу"
+
+#: ../src/core/all-keybindings.h:252
+msgid "Take a screenshot"
+msgstr "Зробити знімок екрана"
+
+#: ../src/core/all-keybindings.h:254
+msgid "Take a screenshot of a window"
+msgstr "Зробити знімок вікна"
+
+#: ../src/core/all-keybindings.h:256
+msgid "Run a terminal"
+msgstr "Запустити термінал"
+
+#: ../src/core/all-keybindings.h:271
+msgid "Activate the window menu"
+msgstr "Активувати меню вікна"
+
+#: ../src/core/all-keybindings.h:274
+msgid "Toggle fullscreen mode"
+msgstr "Перемикання повноекранного режиму"
+
+#: ../src/core/all-keybindings.h:276
+msgid "Toggle maximization state"
+msgstr "Перемикання стану розгортання"
+
+#: ../src/core/all-keybindings.h:278
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "Перемикання видимості вікна над усіма іншими вікнами назавжди"
+
+#: ../src/core/all-keybindings.h:280
+msgid "Maximize window"
+msgstr "Розгорнути вікно"
+
+#: ../src/core/all-keybindings.h:282
+msgid "Restore window"
+msgstr "Відновити вікно"
+
+#: ../src/core/all-keybindings.h:284
+msgid "Toggle shaded state"
+msgstr "Перемикання стану згорнутості"
+
+#: ../src/core/all-keybindings.h:286
+msgid "Minimize window"
+msgstr "Згорнути вікно"
+
+#: ../src/core/all-keybindings.h:288
+msgid "Close window"
+msgstr "Закрити вікно"
+
+#: ../src/core/all-keybindings.h:290
+msgid "Move window"
+msgstr "Перемістити вікно"
+
+#: ../src/core/all-keybindings.h:292
+msgid "Resize window"
+msgstr "Змінити розмір вікна"
+
+#: ../src/core/all-keybindings.h:295
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "Перемикання розміщення вікна всіх робочих просторах або одному "
+
+#: ../src/core/all-keybindings.h:299
+msgid "Move window to workspace 1"
+msgstr "Перемістити вікно на робочий простір 1"
+
+#: ../src/core/all-keybindings.h:302
+msgid "Move window to workspace 2"
+msgstr "Перемістити вікно на робочий простір 2"
+
+#: ../src/core/all-keybindings.h:305
+msgid "Move window to workspace 3"
+msgstr "Перемістити вікно на робочий простір 3"
+
+#: ../src/core/all-keybindings.h:308
+msgid "Move window to workspace 4"
+msgstr "Перемістити вікно на робочий простір 4"
+
+#: ../src/core/all-keybindings.h:311
+msgid "Move window to workspace 5"
+msgstr "Перемістити вікно на робочий простір 5"
+
+#: ../src/core/all-keybindings.h:314
+msgid "Move window to workspace 6"
+msgstr "Перемістити вікно на робочий простір 6"
+
+#: ../src/core/all-keybindings.h:317
+msgid "Move window to workspace 7"
+msgstr "Перемістити вікно на робочий простір 7"
+
+#: ../src/core/all-keybindings.h:320
+msgid "Move window to workspace 8"
+msgstr "Перемістити вікно на робочий простір 8"
+
+#: ../src/core/all-keybindings.h:323
+msgid "Move window to workspace 9"
+msgstr "Перемістити вікно на робочий простір 9"
+
+#: ../src/core/all-keybindings.h:326
+msgid "Move window to workspace 10"
+msgstr "Перемістити вікно на робочий простір 10"
+
+#: ../src/core/all-keybindings.h:329
+msgid "Move window to workspace 11"
+msgstr "Перемістити вікно на робочий простір 11"
+
+#: ../src/core/all-keybindings.h:332
+msgid "Move window to workspace 12"
+msgstr "Перемістити вікно на робочий простір 12"
+
+#: ../src/core/all-keybindings.h:344
+msgid "Move window one workspace to the left"
+msgstr "Перемістити вікно у робочий простір ліворуч"
+
+#: ../src/core/all-keybindings.h:347
+msgid "Move window one workspace to the right"
+msgstr "Перемістити вікно у робочий простір праворуч"
+
+#: ../src/core/all-keybindings.h:350
+msgid "Move window one workspace up"
+msgstr "Перемістити вікно на робочий простір вище"
+
+#: ../src/core/all-keybindings.h:353
+msgid "Move window one workspace down"
+msgstr "Перемістити вікно на робочий простір нижче"
+
+#: ../src/core/all-keybindings.h:356
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "Підняти вікно, якщо його покрито іншим, інакше опустити його"
+
+#: ../src/core/all-keybindings.h:358
+msgid "Raise window above other windows"
+msgstr "Підняти вікно над іншими"
+
+#: ../src/core/all-keybindings.h:360
+msgid "Lower window below other windows"
+msgstr "Перемістити вікна нижче усіх вікон"
+
+#: ../src/core/all-keybindings.h:364
+msgid "Maximize window vertically"
+msgstr "Розгорнути вікно на весь екран вертикально"
+
+#: ../src/core/all-keybindings.h:368
+msgid "Maximize window horizontally"
+msgstr "Розгорнути вікно на весь екран горизонтально"
+
+#: ../src/core/all-keybindings.h:372
+msgid "Move window to north-west (top left) corner"
+msgstr "Перемістити вікно у верхній лівий край"
+
+#: ../src/core/all-keybindings.h:375
+msgid "Move window to north-east (top right) corner"
+msgstr "Перемістити вікно у верхній правий край"
+
+#: ../src/core/all-keybindings.h:378
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Перемістити вікно у нижній лівий край"
+
+#: ../src/core/all-keybindings.h:381
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Перемістити вікно у нижній правий край"
+
+#: ../src/core/all-keybindings.h:385
+msgid "Move window to north (top) side of screen"
+msgstr "Перемістити вікно у верхній бік екрана"
+
+#: ../src/core/all-keybindings.h:388
+msgid "Move window to south (bottom) side of screen"
+msgstr "Перемістити вікно у нижній бік екрана"
+
+#: ../src/core/all-keybindings.h:391
+msgid "Move window to east (right) side of screen"
+msgstr "Перемістити вікно у правий бік екрана"
+
+#: ../src/core/all-keybindings.h:394
+msgid "Move window to west (left) side of screen"
+msgstr "Перемістити вікно у лівий бік екрана"
+
+#: ../src/core/all-keybindings.h:397
+msgid "Move window to center of screen"
+msgstr "Перемістити вікно у центр екрана"
 
 #: ../src/core/bell.c:302
 msgid "Bell event"
@@ -89,7 +399,44 @@ msgstr "Команду %d не визначено.\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Команду термінала не визначено.\n"
 
-#: ../src/core/main.c:130
+#: ../src/core/main.c:206
+msgid "Disable connection to session manager"
+msgstr "Вимкнути з'єднання з менеджером сеансу"
+
+#: ../src/core/main.c:212
+msgid "Replace the running window manager"
+msgstr "Замінити запущений віконний менеджер"
+
+#: ../src/core/main.c:218
+msgid "Specify session management ID"
+msgstr "Вказати ідентифікатор сеансу"
+
+#: ../src/core/main.c:223
+msgid "X Display to use"
+msgstr "Дисплей X"
+
+#: ../src/core/main.c:229
+msgid "Initialize session from savefile"
+msgstr "Розпочати сеанс зі збереженого файла"
+
+#: ../src/core/main.c:235
+msgid "Make X calls synchronous"
+msgstr "Зробити виклики X синхронними"
+
+#: ../src/core/main.c:508
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Помилка зчитування каталогу тем: %s\n"
+
+#: ../src/core/main.c:524
+#, c-format
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr ""
+"Не вдалось знайти тему! Перевірте, чи існує %s та чи містить він звичайну "
+"тему.\n"
+
+#: ../src/core/mutter.c:42
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -104,68 +451,13 @@ msgstr ""
 "Не надається НІЯКИХ гарантій; навіть ПРИДАТНОСТІ ДЛЯ ПРОДАЖУ чи "
 "ВІДПОВІДНОСТІ ПЕВНІЙ МЕТІ.\n"
 
-#: ../src/core/main.c:261
-msgid "Disable connection to session manager"
-msgstr "Вимкнути з'єднання з менеджером сеансу"
-
-#: ../src/core/main.c:267
-msgid "Replace the running window manager with Mutter"
-msgstr "Замінити запущеного менеджера вікон на Mutter"
-
-#: ../src/core/main.c:273
-msgid "Specify session management ID"
-msgstr "Вказати ідентифікатор сеансу"
-
-#: ../src/core/main.c:278
-msgid "X Display to use"
-msgstr "Дисплей X"
-
-#: ../src/core/main.c:284
-msgid "Initialize session from savefile"
-msgstr "Розпочати сеанс зі збереженого файла"
-
-#: ../src/core/main.c:290
+#: ../src/core/mutter.c:56
 msgid "Print version"
 msgstr "Показати версію"
 
-#: ../src/core/main.c:296
-msgid "Make X calls synchronous"
-msgstr "Зробити виклики X синхронними"
-
-#: ../src/core/main.c:302
-msgid ""
-"Don't make fullscreen windows that are maximized and have no decorations"
-msgstr "Не робити повноекранні вікна, які розгорнуто і не мають рамки"
-
-#: ../src/core/main.c:308
+#: ../src/core/mutter.c:62
 msgid "Comma-separated list of compositor plugins"
 msgstr "Список композитних додатків розділених комою"
-
-#: ../src/core/main.c:314
-msgid "Whether window popup/frame should be shown when cycling windows."
-msgstr "Чи показувати циклічні вікна."
-
-#: ../src/core/main.c:321
-msgid "Internal argument for GObject introspection"
-msgstr "Внутрішній аргумент для самоаналізу GObject"
-
-#: ../src/core/main.c:659
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr "Помилка зчитування каталогу тем: %s\n"
-
-#: ../src/core/main.c:675
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"Не вдалось знайти тему! Перевірте, чи існує %s та чи містить він звичайну "
-"тему.\n"
-
-#: ../src/core/main.c:736
-#, c-format
-msgid "Failed to restart: %s\n"
-msgstr "Збій перезапуску: %s\n"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -178,34 +470,34 @@ msgstr "Збій перезапуску: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:541 ../src/core/prefs.c:702
+#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ключ GConf «%s» встановлено у неправильний тип\n"
 
-#: ../src/core/prefs.c:628 ../src/core/prefs.c:871
+#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "Значення %d збережене в ключі GConf %s виходить за межі %d ― %d\n"
 
-#: ../src/core/prefs.c:672 ../src/core/prefs.c:749 ../src/core/prefs.c:797
-#: ../src/core/prefs.c:861 ../src/core/prefs.c:1336 ../src/core/prefs.c:1352
-#: ../src/core/prefs.c:1369 ../src/core/prefs.c:1385
+#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
+#: ../src/core/prefs.c:856 ../src/core/prefs.c:1317 ../src/core/prefs.c:1333
+#: ../src/core/prefs.c:1350 ../src/core/prefs.c:1366
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ключу GConf «%s» вказано неправильний тип\n"
 
-#: ../src/core/prefs.c:1215
+#: ../src/core/prefs.c:1196
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr "Ключ GConf %s вже використовується і неможливо перевизначити %s\n"
 
-#: ../src/core/prefs.c:1274
+#: ../src/core/prefs.c:1255
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Неможливо перевизначити ключ GConf, %s не знайдено\n"
 
-#: ../src/core/prefs.c:1476
+#: ../src/core/prefs.c:1440
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -213,12 +505,12 @@ msgstr ""
 "Обхід для роботи із зіпсованими програмами вимкнено. Деякі додатки можуть "
 "працювати некоректно.\n"
 
-#: ../src/core/prefs.c:1553
+#: ../src/core/prefs.c:1517
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Неможливо проаналізувати опис шрифту «%s» у ключі GConf %s\n"
 
-#: ../src/core/prefs.c:1615
+#: ../src/core/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -227,17 +519,17 @@ msgstr ""
 "У базі даних налаштування знайдено «%s» — що не є правильним значенням "
 "модифікатора клавіші миші.\n"
 
-#: ../src/core/prefs.c:2045
+#: ../src/core/prefs.c:2006
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Помилка налаштування кількості робочих просторів у %d: %s\n"
 
-#: ../src/core/prefs.c:2229 ../src/core/prefs.c:2731
+#: ../src/core/prefs.c:2190 ../src/core/prefs.c:2692
 #, c-format
 msgid "Workspace %d"
 msgstr "Робочий простір %d"
 
-#: ../src/core/prefs.c:2261 ../src/core/prefs.c:2439
+#: ../src/core/prefs.c:2222 ../src/core/prefs.c:2400
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -246,22 +538,17 @@ msgstr ""
 "Знайдене у базі даних налаштування значення «%s» не є правильним записом "
 "прив'язки клавіш «%s»\n"
 
-#: ../src/core/prefs.c:2812
+#: ../src/core/prefs.c:2773
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Помилка налаштуванні назви робочих просторів %d у «%s»: %s\n"
 
-#: ../src/core/prefs.c:3028
-#, c-format
-msgid "Error setting clutter plugin list: %s\n"
-msgstr "Помилка налаштування списку додатків Clutter: %s\n"
-
-#: ../src/core/prefs.c:3072
+#: ../src/core/prefs.c:2987
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Помилка налаштування стану схованих вікон: %s\n"
 
-#: ../src/core/prefs.c:3100
+#: ../src/core/prefs.c:3015
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Помилка налаштування стану контекстних вкладок: %s\n"
@@ -368,7 +655,7 @@ msgstr "Збій виконання fdopen() для журналу %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Відкрито журнал %s\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:179
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter зібрано без підтримки докладного режиму\n"
@@ -390,19 +677,19 @@ msgid "Window manager error: "
 msgstr "Помилка віконного менеджера:"
 
 #. Translators: This is the title used on dialog boxes
-#. eof all-keybindings.h
 #: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6492
+#: ../src/core/window.c:6550
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
-msgstr "Вікно %s встановило значення SM_CLIENT_ID на себе, замість вікна зі "
+msgstr ""
+"Вікно %s встановило значення SM_CLIENT_ID на себе, замість вікна зі "
 "значенням WM_CLIENT_LEADER, як це вказано в ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
@@ -412,12 +699,13 @@ msgstr "Вікно %s встановило значення SM_CLIENT_ID на с
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7155
+#: ../src/core/window.c:7213
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr "Вікно %s встановило підказку MWM, яка вказує, що його розмір не може "
+msgstr ""
+"Вікно %s встановило підказку MWM, яка вказує, що його розмір не може "
 "змінюватись, але встановило мінімальний розмір %d x %d та максимальний %d x "
 "%d;, в чому не має сенсу.\n"
 
@@ -431,7 +719,7 @@ msgstr "Програма встановила неправильне значе�
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1478
+#: ../src/core/window-props.c:1479
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Неправильний параметр WM_TRANSIENT_FOR вікна 0x%lx вказано для %s.\n"
@@ -460,326 +748,14 @@ msgstr "Властивість %s вікна 0x%lx містить неправи
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Властивість %s вікна 0x%lx містить неправильний UTF-8 у пункті %d списку\n"
-
-#: ../src/include/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "Перейти на робочий простір 1"
-
-#: ../src/include/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "Перейти на робочий простір 2"
-
-#: ../src/include/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "Перейти на робочий простір 3"
-
-#: ../src/include/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "Перейти на робочий простір 4"
-
-#: ../src/include/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "Перейти на робочий простір 5"
-
-#: ../src/include/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "Перейти на робочий простір 6"
-
-#: ../src/include/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "Перейти на робочий простір 7"
-
-#: ../src/include/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "Перейти на робочий простір 8"
-
-#: ../src/include/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "Перейти на робочий простір 9"
-
-#: ../src/include/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "Перейти на робочий простір 10"
-
-#: ../src/include/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "Перейти на робочий простір 11"
-
-#: ../src/include/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "Перейти на робочий простір 12"
-
-#: ../src/include/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "Перейти на робочий простір, що зліва від поточного"
-
-#: ../src/include/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "Перейти на робочий простір, що справа від поточного"
-
-#: ../src/include/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "Перейти на робочий простір, що зверху від поточного"
-
-#: ../src/include/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "Перейти на робочий простір, що знизу від поточного"
-
-#: ../src/include/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "Перейти між вікнами програми, використовуючи контекстне вікно"
-
-#: ../src/include/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "Повернутись назад між вікнами програми, використовуючи контекстне вікно"
-
-#: ../src/include/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "Перейти між вікнами, використовуючи контекстне вікно"
-
-#: ../src/include/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "Повернутись назад між вікнами, використовуючи контекстне вікно"
-
-#: ../src/include/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "Перейти між панелями та стільницею, використовуючи контекстне вікно"
-
-#: ../src/include/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
 msgstr ""
-"Повернутись назад між панелями і стільницею, використовуючи контекстне вікно"
-
-#: ../src/include/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "Негайно перейти між вікнами програми"
-
-#: ../src/include/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "Негайно повернутись назад між вікнами програми"
-
-#: ../src/include/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "Негайно перейти між вікнами"
-
-#: ../src/include/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "Негайно повернутись назад між вікнами"
-
-#: ../src/include/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "Негайний перейти між панелями та стільницею"
-
-#: ../src/include/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Негайно перейти між панелями та стільницею"
-
-#: ../src/include/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Сховати всі звичайні вікна та перейти до стільниці"
-
-#: ../src/include/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "Показати головне меню панелі"
-
-#: ../src/include/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Показати вікно панелі запуску програм"
-
-#: ../src/include/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "Почати або зупинити запис сеансу"
-
-#: ../src/include/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "Зробити знімок екрана"
-
-#: ../src/include/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "Зробити знімок вікна"
-
-#: ../src/include/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "Запустити термінал"
-
-#: ../src/include/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "Активувати меню вікна"
-
-#: ../src/include/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "Перемикання повноекранного режиму"
-
-#: ../src/include/all-keybindings.h:276
-msgid "Toggle maximization state"
-msgstr "Перемикання стану розгортання"
-
-#: ../src/include/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Перемикання видимості вікна над усіма іншими вікнами назавжди"
-
-#: ../src/include/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "Розгорнути вікно"
-
-#: ../src/include/all-keybindings.h:282
-msgid "Restore window"
-msgstr "Відновити вікно"
-
-#: ../src/include/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr "Перемикання стану згорнутості"
-
-#: ../src/include/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "Згорнути вікно"
-
-#: ../src/include/all-keybindings.h:288
-msgid "Close window"
-msgstr "Закрити вікно"
-
-#: ../src/include/all-keybindings.h:290
-msgid "Move window"
-msgstr "Перемістити вікно"
-
-#: ../src/include/all-keybindings.h:292
-msgid "Resize window"
-msgstr "Змінити розмір вікна"
-
-#: ../src/include/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Перемикання розміщення вікна всіх робочих просторах або одному "
-
-#: ../src/include/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "Перемістити вікно на робочий простір 1"
-
-#: ../src/include/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "Перемістити вікно на робочий простір 2"
-
-#: ../src/include/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "Перемістити вікно на робочий простір 3"
-
-#: ../src/include/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "Перемістити вікно на робочий простір 4"
-
-#: ../src/include/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "Перемістити вікно на робочий простір 5"
-
-#: ../src/include/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "Перемістити вікно на робочий простір 6"
-
-#: ../src/include/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "Перемістити вікно на робочий простір 7"
-
-#: ../src/include/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "Перемістити вікно на робочий простір 8"
-
-#: ../src/include/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "Перемістити вікно на робочий простір 9"
-
-#: ../src/include/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "Перемістити вікно на робочий простір 10"
-
-#: ../src/include/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "Перемістити вікно на робочий простір 11"
-
-#: ../src/include/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "Перемістити вікно на робочий простір 12"
-
-#: ../src/include/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "Перемістити вікно у робочий простір ліворуч"
-
-#: ../src/include/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "Перемістити вікно у робочий простір праворуч"
-
-#: ../src/include/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "Перемістити вікно на робочий простір вище"
-
-#: ../src/include/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "Перемістити вікно на робочий простір нижче"
-
-#: ../src/include/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Підняти вікно, якщо його покрито іншим, інакше опустити його"
-
-#: ../src/include/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "Підняти вікно над іншими"
-
-#: ../src/include/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "Перемістити вікна нижче усіх вікон"
-
-#: ../src/include/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "Розгорнути вікно на весь екран вертикально"
-
-#: ../src/include/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "Розгорнути вікно на весь екран горизонтально"
-
-#: ../src/include/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr "Перемістити вікно у верхній лівий край"
-
-#: ../src/include/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr "Перемістити вікно у верхній правий край"
-
-#: ../src/include/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr "Перемістити вікно у нижній лівий край"
-
-#: ../src/include/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr "Перемістити вікно у нижній правий край"
-
-#: ../src/include/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr "Перемістити вікно у верхній бік екрана"
-
-#: ../src/include/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr "Перемістити вікно у нижній бік екрана"
-
-#: ../src/include/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr "Перемістити вікно у правий бік екрана"
-
-#: ../src/include/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr "Перемістити вікно у лівий бік екрана"
-
-#: ../src/include/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr "Перемістити вікно у центр екрана"
+"Властивість %s вікна 0x%lx містить неправильний UTF-8 у пункті %d списку\n"
 
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
 msgstr "Долучити модальні вікна"
 
 #: ../src/mutter.schemas.in.h:2
-msgid "Clutter Plugins"
-msgstr "Додатки Clutter"
-
-#: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
@@ -787,19 +763,16 @@ msgstr ""
 "Визначає, чи сховані вікна (наприклад, згорнуті вікна та вікна на інших "
 "робочих просторах) слід утримувати активними."
 
-#: ../src/mutter.schemas.in.h:4
+#: ../src/mutter.schemas.in.h:3
 msgid "Live Hidden Windows"
 msgstr "Активувати сховані вікна"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:4
 msgid "Modifier to use for extended window management operations"
-msgstr "Модифікатор, що використовується для розширених дій віконного менеджера"
+msgstr ""
+"Модифікатор, що використовується для розширених дій віконного менеджера"
 
-#: ../src/mutter.schemas.in.h:6
-msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr "Додатки для завантаження композитного менеджера основаного на Clutter."
-
-#: ../src/mutter.schemas.in.h:7
+#: ../src/mutter.schemas.in.h:5
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -810,7 +783,7 @@ msgstr ""
 "запуску програм. Типово на це призначено клавішу «Win» в обладнанні. "
 "Очікується, що це буде прив'язка або типова, або порожній рядок."
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/mutter.schemas.in.h:6
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -820,7 +793,7 @@ msgstr ""
 "долучено до батьківського вікна заголовка і пересунуто разом з батьківських "
 "вікном."
 
-#: ../src/tools/mutter-message.c:151
+#: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Використання: %s\n"
@@ -1190,8 +1163,7 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"Вираз координати містить число з рухомою комою «%s», яке не вдалось "
-"розібрати"
+"Вираз координати містить число з рухомою комою «%s», яке не вдалось розібрати"
 
 #: ../src/ui/theme.c:1687
 #, c-format
@@ -1291,7 +1263,8 @@ msgstr ""
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Нема <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"будь-що\"/>"
+msgstr ""
+"Нема <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"будь-що\"/>"
 
 #: ../src/ui/theme.c:5013
 #, c-format
@@ -1387,7 +1360,8 @@ msgstr "Кут повинен бути між 0.0 та 360.0, вказано %g\
 #: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Альфа повинен бути у межах 0.0 (невидимість) та 1.0 (повна непрозорість), "
+msgstr ""
+"Альфа повинен бути у межах 0.0 (невидимість) та 1.0 (повна непрозорість), "
 "було %g\n"
 
 #: ../src/ui/theme-parser.c:863
@@ -1395,8 +1369,9 @@ msgstr "Альфа повинен бути у межах 0.0 (невидиміс
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
-msgstr "Неприпустимий масштаб заголовка «%s» (можливі значення: xx-"
-"small,x-small,small,medium,large,x-large,xx-large)\n"
+msgstr ""
+"Неприпустимий масштаб заголовка «%s» (можливі значення: xx-small,x-small,"
+"small,medium,large,x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
@@ -1673,8 +1648,7 @@ msgstr "Елемент <%s> не дозволяється у елементі <c
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
-"Елемент <%s> не дозволяється у елементах <distance>, <border>, "
-"<aspect_ratio>"
+"Елемент <%s> не дозволяється у елементах <distance>, <border>, <aspect_ratio>"
 
 #: ../src/ui/theme-parser.c:3621
 #, c-format
@@ -1712,206 +1686,231 @@ msgstr "<%s> в цій темі вказано двічі"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Не вдалось знайти коректний файл для теми %s\n"
 
-#: ../src/ui/theme-viewer.c:98
+#: ../src/ui/theme-viewer.c:99
 msgid "_Windows"
 msgstr "_Вікна"
 
-#: ../src/ui/theme-viewer.c:99
+#: ../src/ui/theme-viewer.c:100
 msgid "_Dialog"
 msgstr "_Діалог"
 
-#: ../src/ui/theme-viewer.c:100
+#: ../src/ui/theme-viewer.c:101
 msgid "_Modal dialog"
 msgstr "_Модальне вікно"
 
-#: ../src/ui/theme-viewer.c:101
+#: ../src/ui/theme-viewer.c:102
 msgid "_Utility"
 msgstr "_Засіб"
 
-#: ../src/ui/theme-viewer.c:102
+#: ../src/ui/theme-viewer.c:103
 msgid "_Splashscreen"
 msgstr "За_ставка"
 
-#: ../src/ui/theme-viewer.c:103
+#: ../src/ui/theme-viewer.c:104
 msgid "_Top dock"
 msgstr "В_ерхня панель"
 
-#: ../src/ui/theme-viewer.c:104
+#: ../src/ui/theme-viewer.c:105
 msgid "_Bottom dock"
 msgstr "Н_ижня панель"
 
-#: ../src/ui/theme-viewer.c:105
+#: ../src/ui/theme-viewer.c:106
 msgid "_Left dock"
 msgstr "_Ліва панель"
 
-#: ../src/ui/theme-viewer.c:106
+#: ../src/ui/theme-viewer.c:107
 msgid "_Right dock"
 msgstr "_Права панель"
 
-#: ../src/ui/theme-viewer.c:107
+#: ../src/ui/theme-viewer.c:108
 msgid "_All docks"
 msgstr "_Усі панелі"
 
-#: ../src/ui/theme-viewer.c:108
+#: ../src/ui/theme-viewer.c:109
 msgid "Des_ktop"
 msgstr "С_тільниця"
 
-#: ../src/ui/theme-viewer.c:114
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Відкрити інше вікно"
 
-#: ../src/ui/theme-viewer.c:116
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Це демонстраційна кнопка з піктограмою відкривання"
 
-#: ../src/ui/theme-viewer.c:118
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Це демонстраційна кнопка з піктограмою виходу"
 
-#: ../src/ui/theme-viewer.c:252
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Це зразок повідомлення у зразковому діалозі"
 
-#: ../src/ui/theme-viewer.c:335
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Фальшивий елемент меню %d\n"
 
-#: ../src/ui/theme-viewer.c:369
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Вікно лише з рамкою"
 
-#: ../src/ui/theme-viewer.c:371
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Прямокутник"
 
-#: ../src/ui/theme-viewer.c:388
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Звичайне вікно програми"
 
-#: ../src/ui/theme-viewer.c:392
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "Діалог"
 
-#: ../src/ui/theme-viewer.c:396
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "Модальне вікно"
 
-#: ../src/ui/theme-viewer.c:400
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Допоміжна палітра"
 
-#: ../src/ui/theme-viewer.c:404
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Відірване меню"
 
-#: ../src/ui/theme-viewer.c:408
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Рамка"
 
-#: ../src/ui/theme-viewer.c:412
+#: ../src/ui/theme-viewer.c:413
 msgid "Attached Modal Dialog"
 msgstr "Долучене модальне вікно"
 
-#: ../src/ui/theme-viewer.c:743
+#: ../src/ui/theme-viewer.c:744
 #, c-format
 msgid "Button layout test %d"
 msgstr "Випробування компонування кнопок %d"
 
-#: ../src/ui/theme-viewer.c:772
+#: ../src/ui/theme-viewer.c:773
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g мілісекунд для малювання однієї рамки вікна"
 
-#: ../src/ui/theme-viewer.c:817
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Використання: metacity-theme-viewer [НАЗВА_ТЕМИ]\n"
 
-#: ../src/ui/theme-viewer.c:824
+#: ../src/ui/theme-viewer.c:825
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Помилка завантаження теми: %s\n"
 
-#: ../src/ui/theme-viewer.c:830
+#: ../src/ui/theme-viewer.c:831
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Завантажено тему «%s» за %g секунд\n"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:875
 msgid "Normal Title Font"
 msgstr "Звичайний шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:880
+#: ../src/ui/theme-viewer.c:881
 msgid "Small Title Font"
 msgstr "Малий шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:886
+#: ../src/ui/theme-viewer.c:887
 msgid "Large Title Font"
 msgstr "Великий шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:891
+#: ../src/ui/theme-viewer.c:892
 msgid "Button Layouts"
 msgstr "Компонування кнопок"
 
-#: ../src/ui/theme-viewer.c:896
+#: ../src/ui/theme-viewer.c:897
 msgid "Benchmark"
 msgstr "Продуктивність"
 
-#: ../src/ui/theme-viewer.c:948
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "Тут буде заголовок вікна"
 
-#: ../src/ui/theme-viewer.c:1054
+#: ../src/ui/theme-viewer.c:1055
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
-msgstr "Намальовано %d рамок за %g секунд клієнтського часу (%g мс на рамку) і %g "
+msgstr ""
+"Намальовано %d рамок за %g секунд клієнтського часу (%g мс на рамку) і %g "
 "секунд календарного часу, враховуючи ресурси сервера X Window (%g мілісекунд "
 "на кадр)\n"
 
-#: ../src/ui/theme-viewer.c:1273
+#: ../src/ui/theme-viewer.c:1274
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "випробування виразу позиції повернула значення TRUE, але встановило помилку"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1276
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "випробування виразу позиції повернула значення FALSE, але не встановило "
 "помилку"
 
-#: ../src/ui/theme-viewer.c:1279
+#: ../src/ui/theme-viewer.c:1280
 msgid "Error was expected but none given"
 msgstr "Очікувалась помилка, але її не трапилось"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1282
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Очікувалась помилка %d, але трапилась помилка %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1288
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Помилка не очікувалась, але її повернуто: %s"
 
-#: ../src/ui/theme-viewer.c:1291
+#: ../src/ui/theme-viewer.c:1292
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "Значення X було %d, а очікувалось ― %d"
 
-#: ../src/ui/theme-viewer.c:1294
+#: ../src/ui/theme-viewer.c:1295
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "Значення Y було %d, а очікувалось ― %d"
 
-#: ../src/ui/theme-viewer.c:1359
+#: ../src/ui/theme-viewer.c:1360
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d координатних виразів проаналізовано за %g секунд (середнє значення: %g "
+msgstr ""
+"%d координатних виразів проаналізовано за %g секунд (середнє значення: %g "
 "секунд)\n"
+
+#~ msgid ""
+#~ "Don't make fullscreen windows that are maximized and have no decorations"
+#~ msgstr "Не робити повноекранні вікна, які розгорнуто і не мають рамки"
+
+#~ msgid "Whether window popup/frame should be shown when cycling windows."
+#~ msgstr "Чи показувати циклічні вікна."
+
+#~ msgid "Internal argument for GObject introspection"
+#~ msgstr "Внутрішній аргумент для самоаналізу GObject"
+
+#~ msgid "Failed to restart: %s\n"
+#~ msgstr "Збій перезапуску: %s\n"
+
+#~ msgid "Error setting clutter plugin list: %s\n"
+#~ msgstr "Помилка налаштування списку додатків Clutter: %s\n"
+
+#~ msgid "Clutter Plugins"
+#~ msgstr "Додатки Clutter"
+
+#~ msgid "Plugins to load for the Clutter-based compositing manager."
+#~ msgstr ""
+#~ "Додатки для завантаження композитного менеджера основаного на Clutter."
 
 #~ msgid "Window Management"
 #~ msgstr "Керування вікнами"
