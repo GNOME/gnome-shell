@@ -24,6 +24,7 @@
 #include <glib-object.h>
 #include "gvc-pulseaudio-fake.h"
 #include "gvc-channel-map.h"
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -84,6 +85,7 @@ gboolean            gvc_mixer_stream_change_is_muted (GvcMixerStream *stream,
 gboolean            gvc_mixer_stream_is_running      (GvcMixerStream *stream);
 const char *        gvc_mixer_stream_get_name        (GvcMixerStream *stream);
 const char *        gvc_mixer_stream_get_icon_name   (GvcMixerStream *stream);
+GIcon *             gvc_mixer_stream_get_gicon       (GvcMixerStream *stream);
 const char *        gvc_mixer_stream_get_description (GvcMixerStream *stream);
 const char *        gvc_mixer_stream_get_application_id (GvcMixerStream *stream);
 gboolean            gvc_mixer_stream_is_event_stream (GvcMixerStream *stream);

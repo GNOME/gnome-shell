@@ -390,6 +390,15 @@ gvc_mixer_stream_get_icon_name (GvcMixerStream *stream)
         return stream->priv->icon_name;
 }
 
+GIcon *
+gvc_mixer_stream_get_gicon (GvcMixerStream *stream)
+{
+        g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), NULL);
+        if (stream->priv->icon_name == NULL)
+                return NULL;
+        return g_themed_icon_new_with_default_fallbacks (stream->priv->icon_name);
+}
+
 gboolean
 gvc_mixer_stream_set_icon_name (GvcMixerStream *stream,
                                 const char     *icon_name)
@@ -496,7 +505,7 @@ gvc_mixer_stream_change_port (GvcMixerStream *stream,
 const GList *
 gvc_mixer_stream_get_ports (GvcMixerStream *stream)
 {
-        g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), FALSE);
+        g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), NULL);
         return stream->priv->ports;
 }
 
