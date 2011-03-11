@@ -251,6 +251,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
                     if (!this.pushModal())
                         this.close();
                 }
+                return true;
             }
             if (symbol == Clutter.Escape) {
                 this.close();
