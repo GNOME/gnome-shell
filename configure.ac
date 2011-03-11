@@ -190,20 +190,6 @@ AC_ARG_ENABLE(jhbuild-wrapper-script,
   AS_HELP_STRING([--jhbuild-wrapper-script=yes],[Make "gnome-shell" script work for jhbuild]),,enable_jhbuild_wrapper_script=no)
 AM_CONDITIONAL(USE_JHBUILD_WRAPPER_SCRIPT, test "x$enable_jhbuild_wrapper_script" = xyes)
 
-AC_MSG_CHECKING([for Ubuntu])
-if test -f /etc/ubuntu_version; then
-  enable_dynamic_mozjs_hack_default=yes
-  AC_MSG_RESULT([yes])
-else
-  enable_dynamic_mozjs_hack_default=no
-  AC_MSG_RESULT([no])
-fi
-
-AC_ARG_ENABLE(dynamic-mozjs-hack,
-  AS_HELP_STRING([--dynamic-mozjs-hack=no],[Look for libmozjs.so using pkg-config]),,enable_dynamic_mozjs_hack=$enable_dynamic_mozjs_hack_default)
-ENABLE_DYNAMIC_MOZJS_HACK=$enable_dynamic_mozjs_hack
-AC_SUBST(ENABLE_DYNAMIC_MOZJS_HACK)
-
 AC_CONFIG_FILES([
   Makefile
   data/Makefile

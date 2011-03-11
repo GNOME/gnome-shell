@@ -39,7 +39,6 @@ generated_script_substitutions = \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
-	    -e "s|@ENABLE_DYNAMIC_MOZJS_HACK[@]|$(ENABLE_DYNAMIC_MOZJS_HACK)|" \
 	    -e "s|@PYTHON[@]|$(PYTHON)|" \
 	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    -e "s|@sysconfdir[@]|$(sysconfdir)|"
