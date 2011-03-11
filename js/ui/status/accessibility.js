@@ -66,13 +66,13 @@ ATIndicator.prototype = {
         let textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
-        let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
-                                                               'screen-reader-enabled');
-        this.menu.addMenuItem(screenReader);
+//        let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+//                                                               'screen-reader-enabled');
+//        this.menu.addMenuItem(screenReader);
 
-        let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-                                                                   'screen-keyboard-enabled');
-        this.menu.addMenuItem(screenKeyboard);
+//        let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+//                                                                   'screen-keyboard-enabled');
+//        this.menu.addMenuItem(screenKeyboard);
 
         let visualBell = this._buildItemGConf(_("Visual Alerts"), client, KEY_VISUAL_BELL);
         this.menu.addMenuItem(visualBell);
