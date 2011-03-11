@@ -34,13 +34,6 @@ stage {
     color: rgba(0,0,0,0.5);
 }
 
-.label-real-shadow {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(0, 0, 0, 0);
-    background-gradient-end: rgba(0, 0, 0, 255);
-    width: 10px;
-}
-
 StScrollBar
 {
   padding: 0px;
