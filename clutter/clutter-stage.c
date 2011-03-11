@@ -1212,6 +1212,10 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_no_clear_hint (stage, g_value_get_boolean (value));
       break;
 
+    case PROP_ACCEPT_FOCUS:
+      clutter_stage_set_accept_focus (stage, g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1279,6 +1283,10 @@ clutter_stage_get_property (GObject    *gobject,
 
         g_value_set_boolean (value, hint);
       }
+      break;
+
+    case PROP_ACCEPT_FOCUS:
+      g_value_set_boolean (value, priv->accept_focus);
       break;
 
     default:
