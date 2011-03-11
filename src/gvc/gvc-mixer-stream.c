@@ -390,6 +390,12 @@ gvc_mixer_stream_get_icon_name (GvcMixerStream *stream)
         return stream->priv->icon_name;
 }
 
+/**
+ * gvc_mixer_stream_get_gicon:
+ * @stream: a #GvcMixerStream
+ *
+ * Returns: (transfer full): a new #GIcon
+ */
 GIcon *
 gvc_mixer_stream_get_gicon (GvcMixerStream *stream)
 {
