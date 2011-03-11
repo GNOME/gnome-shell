@@ -16,7 +16,6 @@ const Util = imports.misc.util;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const VOLUME_MAX = 65536.0; /* PA_VOLUME_NORM */
 const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
 
 const VOLUME_NOTIFY_ID = 1;
@@ -37,6 +36,8 @@ Indicator.prototype = {
         this._control.connect('default-source-changed', Lang.bind(this, this._readInput));
         this._control.connect('stream-added', Lang.bind(this, this._maybeShowInput));
         this._control.connect('stream-removed', Lang.bind(this, this._maybeShowInput));
+        this._volumeMax = this._control.get_vol_max_norm();
+        this._volumeMaxAmplified = this._control.get_vol_max_amplified();
 
         this._output = null;
         this._outputVolumeId = 0;
@@ -72,9 +73,9 @@ Indicator.prototype = {
 
     _getMaxVolume: function(property) {
         if (this[property].get_can_decibel())
-            return (VOLUME_MAX * 1.5);
+            return this._volumeMaxAmplified;
         else
-            return VOLUME_MAX;
+            return this._volumeMax;
     },
 
     _onScrollEvent: function(actor, event) {
