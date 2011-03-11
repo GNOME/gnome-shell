@@ -243,10 +243,11 @@ st_label_paint (ClutterActor *actor)
           priv->text_shadow_material = material;
         }
 
-      _st_paint_shadow_with_opacity (shadow_spec,
-                                     priv->text_shadow_material,
-                                     &allocation,
-                                     clutter_actor_get_paint_opacity (priv->label));
+      if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+        _st_paint_shadow_with_opacity (shadow_spec,
+                                       priv->text_shadow_material,
+                                       &allocation,
+                                       clutter_actor_get_paint_opacity (priv->label));
     }
 
   clutter_actor_paint (priv->label);
