@@ -548,3 +548,8 @@ try:
 finally:
     if options.replace and (options.perf or not normal_exit):
         restore_gnome()
+
+if normal_exit:
+    sys.exit(0)
+else:
+    sys.exit(1)
