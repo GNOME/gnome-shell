@@ -1,7 +1,7 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
-lib_LTLIBRARIES = libmutter-private.la libmutter-wm.la
+lib_LTLIBRARIES = libmutter.la
 
 SUBDIRS=wm-tester tools compositor/plugins
 
@@ -32,7 +32,7 @@ mutter_built_sources = \
 	mutter-enum-types.h \
 	mutter-enum-types.c
 
-libmutter_wm_la_SOURCES =			\
+libmutter_la_SOURCES =				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
 	core/bell.c				\
@@ -150,30 +150,12 @@ libmutter_wm_la_SOURCES =			\
 	ui/theme-private.h			\
 	ui/ui.c					\
 	core/all-keybindings.h			\
+	meta/preview-widget.h			\
+	ui/preview-widget.c			\
 	$(mutter_built_sources)
 
-libmutter_wm_la_LDFLAGS = -no-undefined
-libmutter_wm_la_LIBADD  = $(MUTTER_LIBS)
-
-# by setting libmutter_private_la_CFLAGS, the files shared with
-# mutter proper will be compiled with different names.
-libmutter_private_la_CFLAGS =
-libmutter_private_la_SOURCES=			\
-	core/boxes.c				\
-	meta/boxes.h				\
-	ui/gradient.c				\
-	meta/gradient.h				\
-	core/util.c				\
-	meta/util.h				\
-	meta/common.h				\
-	ui/preview-widget.c			\
-	meta/preview-widget.h			\
-	ui/theme-parser.c			\
-	ui/theme.c				\
-	meta/theme.h
-
-libmutter_private_la_LDFLAGS = -no-undefined
-libmutter_private_la_LIBADD  = $(MUTTER_LIBS)
+libmutter_la_LDFLAGS = -no-undefined
+libmutter_la_LIBADD  = $(MUTTER_LIBS)
 
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
@@ -200,7 +182,6 @@ libmutterinclude_base_headers =		\
 	meta/workspace.h
 
 # Excluded from scanning for introspection but installed
-# preview-widget.h: only part of libmutter-private
 # atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
 	meta/preview-widget.h			\
@@ -218,7 +199,7 @@ mutter_theme_viewer_SOURCES=  \
 bin_PROGRAMS=mutter mutter-theme-viewer
 
 mutter_SOURCES = core/mutter.c
-mutter_LDADD = $(MUTTER_LIBS) libmutter-wm.la
+mutter_LDADD = $(MUTTER_LIBS) libmutter.la
 
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
@@ -236,20 +217,20 @@ typelib_DATA = Meta-$(api_version).typelib
 
 INTROSPECTION_GIRS = Meta-$(api_version).gir
 
-Meta-$(api_version).gir: libmutter-wm.la
+Meta-$(api_version).gir: libmutter.la
 @META_GIR@_INCLUDES = GObject-2.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0
 @META_GIR@_PACKAGES = clutter-1.0 gtk+-3.0
 @META_GIR@_CFLAGS = $(INCLUDES)
-@META_GIR@_LIBS = libmutter-wm.la
+@META_GIR@_LIBS = libmutter.la
 @META_GIR@_FILES =				\
 	mutter-enum-types.h			\
 	$(libmutterinclude_base_headers)	\
-	$(filter %.c,$(libmutter_wm_la_SOURCES))
+	$(filter %.c,$(libmutter_la_SOURCES))
 @META_GIR@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
 
-mutter_theme_viewer_LDADD= $(MUTTER_LIBS) libmutter-private.la
+mutter_theme_viewer_LDADD= $(MUTTER_LIBS) libmutter.la
 
 testboxes_SOURCES = core/testboxes.c
 testgradient_SOURCES = ui/testgradient.c
@@ -257,9 +238,9 @@ testasyncgetprop_SOURCES = core/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD = $(MUTTER_LIBS) libmutter-wm.la
-testgradient_LDADD = $(MUTTER_LIBS) libmutter-wm.la
-testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter-wm.la
+testboxes_LDADD = $(MUTTER_LIBS) libmutter.la
+testgradient_LDADD = $(MUTTER_LIBS) libmutter.la
+testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter.la
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -308,7 +289,7 @@ inlinepixbufs.h: $(IMAGES)
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libmutter-private.pc libmutter-wm.pc mutter-plugins.pc
+pkgconfig_DATA = libmutter.pc mutter-plugins.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\
@@ -316,8 +297,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	$(schema_in_files)		\
-	libmutter-private.pc.in	\
-	libmutter-wm.pc.in \
+	libmutter.pc.in \
 	mutter-plugins.pc.in  \
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in \
