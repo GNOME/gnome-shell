@@ -485,12 +485,30 @@ PopupSliderMenuItem.prototype = {
         let sliderBorderColor = themeNode.get_color('-slider-border-color');
         let sliderColor = themeNode.get_color('-slider-background-color');
 
+        let sliderActiveBorderColor = themeNode.get_color('-slider-active-border-color');
+        let sliderActiveColor = themeNode.get_color('-slider-active-background-color');
+
+        cr.setSourceRGBA (
+            sliderActiveColor.red / 255,
+            sliderActiveColor.green / 255,
+            sliderActiveColor.blue / 255,
+            sliderActiveColor.alpha / 255);
+        cr.rectangle(handleRadius, (height - sliderHeight) / 2, sliderWidth * this._value, sliderHeight);
+        cr.fillPreserve();
+        cr.setSourceRGBA (
+            sliderActiveBorderColor.red / 255,
+            sliderActiveBorderColor.green / 255,
+            sliderActiveBorderColor.blue / 255,
+            sliderActiveBorderColor.alpha / 255);
+        cr.setLineWidth(sliderBorderWidth);
+        cr.stroke();
+
         cr.setSourceRGBA (
             sliderColor.red / 255,
             sliderColor.green / 255,
             sliderColor.blue / 255,
             sliderColor.alpha / 255);
-        cr.rectangle(handleRadius, (height - sliderHeight) / 2, sliderWidth, sliderHeight);
+        cr.rectangle(handleRadius + sliderWidth * this._value, (height - sliderHeight) / 2, sliderWidth * (1 - this._value), sliderHeight);
         cr.fillPreserve();
         cr.setSourceRGBA (
             sliderBorderColor.red / 255,
