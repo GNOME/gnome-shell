@@ -708,8 +708,11 @@ WorkspacesDisplay.prototype = {
         if (!this.workspacesView)
             return;
 
-        let width = this.actor.allocation.x2 - this.actor.allocation.x1;
-        let height = this.actor.allocation.y2 - this.actor.allocation.y1;
+        let fullWidth = this.actor.allocation.x2 - this.actor.allocation.x1;
+        let fullHeight = this.actor.allocation.y2 - this.actor.allocation.y1;
+
+        let width = fullWidth;
+        let height = fullHeight;
 
         let [controlsMin, controlsNatural] = this._controls.get_preferred_width(height);
         let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
@@ -727,6 +730,9 @@ WorkspacesDisplay.prototype = {
             if (rtl)
                 x += controlsVisible;
         }
+
+        height = (fullHeight / fullWidth) * width;
+        y += (fullHeight - height) / 2;
 
         this.workspacesView.setGeometry(x, y, width, height);
     },
