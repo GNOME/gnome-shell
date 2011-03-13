@@ -439,3 +439,42 @@ shell_util_set_hidden_from_pick (ClutterActor *actor,
       g_object_set_data (G_OBJECT (actor), "shell-stop-pick", NULL);
     }
 }
+
+/**
+ * shell_util_format_date:
+ * @format: a strftime-style string format, as parsed by
+ *   g_date_time_format()
+ * @time_ms: milliseconds since 1970-01-01 00:00:00 UTC; the
+ *   value returned by Date.getTime()
+ *
+ * Formats a date for the current locale. This should be
+ * used instead of the Spidermonkey Date.toLocaleFormat()
+ * extension because Date.toLocaleFormat() is buggy for
+ * Unicode format strings:
+ * https://bugzilla.mozilla.org/show_bug.cgi?id=508783
+ *
+ * Return value: the formatted date. If the date is
+ *  outside of the range of a GDateTime (which contains
+ *  any plausible dates we actually care about), will
+ *  return an empty string.
+ */
+char *
+shell_util_format_date (const char *format,
+                        gint64      time_ms)
+{
+  GDateTime *datetime;
+  GTimeVal tv;
+  char *result;
+
+  tv.tv_sec = time_ms / 1000;
+  tv.tv_usec = (time_ms % 1000) * 1000;
+
+  datetime = g_date_time_new_from_timeval_local (&tv);
+  if (!datetime) /* time_ms is out of range of GDateTime */
+    return g_strdup ("");
+
+  result = g_date_time_format (datetime, format);
+
+  g_date_time_unref (datetime);
+  return result;
+}
