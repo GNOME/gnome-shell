@@ -31,7 +31,8 @@ int main (int argc, char **argv)
 
   g_thread_init (NULL);
   gst_init (&argc, &argv);
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    g_error ("failed to initialize Clutter");
 
   clutter_color_from_string (&red, "red");
   clutter_color_from_string (&green, "green");
