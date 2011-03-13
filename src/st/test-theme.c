@@ -426,7 +426,8 @@ main (int argc, char **argv)
   StTheme *theme;
   StThemeContext *context;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    g_error ("failed to initialize clutter");
 
   theme = st_theme_new ("st/test-theme.css",
                         NULL, NULL);
