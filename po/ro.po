@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-12 22:48+0000\n"
+"POT-Creation-Date: 2011-03-13 00:31+0000\n"
 "PO-Revision-Date: 2011-03-13 01:25+0200\n"
 "Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
 "Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
-"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);;\n"
 "X-Generator: Virtaal 0.6.1\n"
@@ -33,8 +33,8 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Permite accesul la uneltele interne de depanare și monitorizare folosind dialogul "
-"Alt-F2."
+"Permite accesul la uneltele interne de depanare și monitorizare folosind "
+"dialogul Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -62,7 +62,6 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Istoricul dialogului de comenzi (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#| msgid "History for command (Alt-F2) dialog"
 msgid "History for the looking glass dialog"
 msgstr "Istoricul dialogului „looking glass”"
 
@@ -477,7 +476,8 @@ msgstr "Oprește"
 
 #: ../js/ui/endSessionDialog.js:75
 msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Apăsați „Oprește” pentru a închide aceste aplicații și a opri sistemul."
+msgstr ""
+"Apăsați „Oprește” pentru a închide aceste aplicații și a opri sistemul."
 
 #: ../js/ui/endSessionDialog.js:76
 #, c-format
@@ -583,7 +583,6 @@ msgid "Activities"
 msgstr "Activități"
 
 #: ../js/ui/panel.js:1020
-#| msgid "Cancel"
 msgid "Panel"
 msgstr "Panou"
 
