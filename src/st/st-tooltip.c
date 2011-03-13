@@ -377,7 +377,7 @@ st_tooltip_update_position (StTooltip *tooltip)
  *
  * Returns: the text for the tooltip. This must not be freed by the application
  */
-G_CONST_RETURN gchar *
+const gchar *
 st_tooltip_get_label (StTooltip *tooltip)
 {
   g_return_val_if_fail (ST_IS_TOOLTIP (tooltip), NULL);
@@ -489,7 +489,7 @@ st_tooltip_set_tip_area (StTooltip             *tooltip,
  * Returns: the #ClutterGeometry, owned by the tooltip which must not be freed
  * by the application.
  */
-G_CONST_RETURN ClutterGeometry*
+const ClutterGeometry*
 st_tooltip_get_tip_area (StTooltip *tooltip)
 {
   g_return_val_if_fail (ST_IS_TOOLTIP (tooltip), NULL);

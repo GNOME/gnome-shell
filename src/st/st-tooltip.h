@@ -60,13 +60,13 @@ struct _StTooltipClass
 
 GType st_tooltip_get_type (void) G_GNUC_CONST;
 
-G_CONST_RETURN gchar *st_tooltip_get_label (StTooltip   *tooltip);
-void                  st_tooltip_set_label (StTooltip   *tooltip,
-                                            const gchar *text);
+const gchar * st_tooltip_get_label (StTooltip   *tooltip);
+void          st_tooltip_set_label (StTooltip   *tooltip,
+                                    const gchar *text);
 
-void                            st_tooltip_set_tip_area (StTooltip             *tooltip,
-                                                         const ClutterGeometry *area);
-G_CONST_RETURN ClutterGeometry* st_tooltip_get_tip_area (StTooltip             *tooltip);
+void                   st_tooltip_set_tip_area (StTooltip             *tooltip,
+                                                const ClutterGeometry *area);
+const ClutterGeometry* st_tooltip_get_tip_area (StTooltip             *tooltip);
 
 G_END_DECLS
 
