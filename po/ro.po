@@ -627,10 +627,9 @@ msgstr "Niciun rezultat care să se potrivească."
 
 #: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
 msgid "Power Off..."
-msgstr ""
+msgstr "Oprește..."
 
 #: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
-#| msgid "Suspend..."
 msgid "Suspend"
 msgstr "Suspendă"
 
@@ -1069,9 +1068,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "PREFERENCES"
 #~ msgstr "PREFERINȚE"
-
-#~ msgid "Shut Down..."
-#~ msgstr "Oprește..."
 
 #~ msgid "Search your computer"
 #~ msgstr "Căutați în calculator"
