@@ -78,7 +78,7 @@ main(int argc, char **argv)
   clutter_x11_disable_event_retrieval ();
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
-    g_error ("failed to initialize Clutter");
+    return 1;
 
   gdk_window_add_filter (NULL, event_filter, NULL);
 
