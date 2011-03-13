@@ -220,6 +220,7 @@ Overview.prototype = {
         this._resetWindowSwitchTimeout();
         this._lastHoveredWindow = null;
         DND.removeMonitor(this._dragMonitor);
+        this.endItemDrag();
     },
 
     _resetWindowSwitchTimeout: function() {

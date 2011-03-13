@@ -320,6 +320,9 @@ WorkspacesView.prototype = {
         Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
 
+        if (this._inDrag)
+            this._dragEnd();
+
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
