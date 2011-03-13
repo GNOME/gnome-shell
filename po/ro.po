@@ -1,5 +1,5 @@
 # This file is distributed under the same license as the gnome-shell package.
-# Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2009, 2010.
+# Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2009, 2010, 2011.
 # Daniel Șerbănescu <cyber19rider@gmail.com>, 2010, 2011.
 # laurion <me_lawr@yahoo.com>, 2010.
 # Ion Laurențiu Cristian <me_lawr@yahoo.com>, 2010.
@@ -9,13 +9,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-12 22:48+0000\n"
-"PO-Revision-Date: 2011-02-13 00:04+0200\n"
-"Last-Translator: Daniel Șerbănescu <cyber19rider@gmail.com>\n"
+"PO-Revision-Date: 2011-03-13 01:25+0200\n"
+"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
 "Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);;\n"
 "X-Generator: Virtaal 0.6.1\n"
@@ -62,10 +62,9 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Istoricul dialogului de comenzi (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#, fuzzy
 #| msgid "History for command (Alt-F2) dialog"
 msgid "History for the looking glass dialog"
-msgstr "Istoricul dialogului de comenzi (Alt-F2)"
+msgstr "Istoricul dialogului „looking glass”"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
@@ -84,7 +83,7 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "Listă de identificatori de fișiere desktop pentru aplicațiile favorite"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-#, fuzzy, no-c-format
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -435,7 +434,6 @@ msgstr "%a %l:%M %p"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
 #: ../js/ui/dateMenu.js:209
-#, fuzzy
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B, %Y"
 
@@ -548,7 +546,7 @@ msgstr "Pagină web"
 
 #: ../js/ui/messageTray.js:924
 msgid "Open"
-msgstr ""
+msgstr "Deschide"
 
 #: ../js/ui/messageTray.js:1961
 msgid "System Information"
@@ -585,10 +583,9 @@ msgid "Activities"
 msgstr "Activități"
 
 #: ../js/ui/panel.js:1020
-#, fuzzy
 #| msgid "Cancel"
 msgid "Panel"
-msgstr "Anulează"
+msgstr "Panou"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -633,10 +630,9 @@ msgid "Power Off..."
 msgstr ""
 
 #: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
-#, fuzzy
 #| msgid "Suspend..."
 msgid "Suspend"
-msgstr "Suspendă..."
+msgstr "Suspendă"
 
 #: ../js/ui/statusMenu.js:137
 msgid "Available"
@@ -825,7 +821,7 @@ msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:73
 msgid "Show Keyboard Layout..."
-msgstr ""
+msgstr "Arată aranjamentu tastaturii..."
 
 #: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
@@ -839,7 +835,7 @@ msgstr "Configurări de alimentare"
 #. to estimate battery life
 #: ../js/ui/status/power.js:110
 msgid "Estimating..."
-msgstr ""
+msgstr "Se estimează..."
 
 #: ../js/ui/status/power.js:117
 #, c-format
@@ -967,7 +963,7 @@ msgstr "Trimis la %X pe data de %A"
 #. characters.
 #: ../js/ui/viewSelector.js:119
 msgid "Type to search..."
-msgstr ""
+msgstr "Tastați pentru a căuta ..."
 
 #: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
 msgid "Search"
@@ -1009,7 +1005,7 @@ msgstr "Sunetele sistemului"
 
 #: ../src/main.c:395
 msgid "Print version"
-msgstr ""
+msgstr "Tipărește versiunea"
 
 #: ../src/shell-global.c:1308
 msgid "Less than a minute ago"
@@ -1049,7 +1045,7 @@ msgstr[2] "Acum %d de săptămâni"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Dialogul de autentificare a fost respins de utilizator"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
