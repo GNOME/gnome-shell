@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-08 14:59+0200\n"
+"POT-Creation-Date: 2011-03-13 19:13+0200\n"
 "PO-Revision-Date: 2011-01-23 00:04+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
@@ -622,7 +622,7 @@ msgstr "ΤΟΠΟΘΕΣΙΕΣ $ ΣΥΣΚΕΥΕΣ"
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:618
 msgid "toggle-switch-us"
-msgstr "toggle-switch-us"
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
