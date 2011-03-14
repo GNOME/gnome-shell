@@ -205,8 +205,7 @@ DateMenuButton.prototype = {
 
     _onOpenCalendarActivate: function() {
         this.menu.close();
-        // TODO: pass '-c calendar' (to force the calendar at startup)
         // TODO: pass the selected day
-        Util.spawnDesktop('evolution');
-    },
+        Util.spawn(['evolution', '-c', 'calendar']);
+    }
 };
