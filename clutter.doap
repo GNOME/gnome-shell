@@ -30,6 +30,7 @@
     <foaf:Person>
       <foaf:name>Emmanuele Bassi</foaf:name>
       <foaf:mbox rdf:resource="mailto:ebassi@linux.intel.com"/>
+      <gnome:userid>ebassi</gnome:userid>
     </foaf:Person>
   </maintainer>
 
