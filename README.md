@@ -1,7 +1,7 @@
 Clutter
 =======
 
-What it Clutter?
+What is Clutter?
 ----------------
 
 Clutter is an open source software library for creating fast, compelling,
