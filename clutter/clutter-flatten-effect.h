@@ -62,8 +62,6 @@ struct _ClutterFlattenEffectClass
 struct _ClutterFlattenEffect
 {
   ClutterOffscreenEffect parent;
-
-  ClutterFlattenEffectPrivate *priv;
 };
 
 GType _clutter_flatten_effect_get_type (void) G_GNUC_CONST;

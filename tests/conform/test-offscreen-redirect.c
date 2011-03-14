@@ -33,7 +33,7 @@ GType foo_actor_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (FooActor, foo_actor, CLUTTER_TYPE_ACTOR);
 
 static void
-foo_actor_class_paint (ClutterActor *actor)
+foo_actor_paint (ClutterActor *actor)
 {
   FooActor *foo_actor = (FooActor *) actor;
   ClutterActorBox allocation;
@@ -55,10 +55,16 @@ foo_actor_class_paint (ClutterActor *actor)
 }
 
 static gboolean
-foo_actor_class_get_paint_volume (ClutterActor *actor,
-                                  ClutterPaintVolume *volume)
+foo_actor_get_paint_volume (ClutterActor *actor,
+                            ClutterPaintVolume *volume)
 {
   return clutter_paint_volume_set_from_allocation (volume, actor);
+}
+
+static gboolean
+foo_actor_has_overlaps (ClutterActor *actor)
+{
+  return FALSE;
 }
 
 static void
@@ -66,12 +72,47 @@ foo_actor_class_init (FooActorClass *klass)
 {
   ClutterActorClass *actor_class = (ClutterActorClass *) klass;
 
-  actor_class->paint = foo_actor_class_paint;
-  actor_class->get_paint_volume = foo_actor_class_get_paint_volume;
+  actor_class->paint = foo_actor_paint;
+  actor_class->get_paint_volume = foo_actor_get_paint_volume;
+  actor_class->has_overlaps = foo_actor_has_overlaps;
 }
 
 static void
 foo_actor_init (FooActor *self)
+{
+}
+
+typedef struct _FooGroup      FooGroup;
+typedef struct _FooGroupClass FooGroupClass;
+
+struct _FooGroupClass
+{
+  ClutterGroupClass parent_class;
+};
+
+struct _FooGroup
+{
+  ClutterGroup parent;
+};
+
+G_DEFINE_TYPE (FooGroup, foo_group, CLUTTER_TYPE_GROUP);
+
+static gboolean
+foo_group_has_overlaps (ClutterActor *actor)
+{
+  return FALSE;
+}
+
+static void
+foo_group_class_init (FooGroupClass *klass)
+{
+  ClutterActorClass *actor_class = (ClutterActorClass *) klass;
+
+  actor_class->has_overlaps = foo_group_has_overlaps;
+}
+
+static void
+foo_group_init (FooGroup *self)
 {
 }
 
@@ -155,7 +196,7 @@ timeout_cb (gpointer user_data)
      it needs to fill the cache first. It should be painted with full
      opacity */
   clutter_actor_set_offscreen_redirect
-    (data->container, CLUTTER_OFFSCREEN_REDIRECT_OPACITY_ONLY);
+    (data->container, CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY);
   verify_results (data,
                   255, 127, 127,
                   1,
@@ -242,7 +283,7 @@ test_offscreen_redirect (TestConformSimpleFixture *fixture,
 
       data.parent_container = clutter_group_new ();
 
-      data.container = clutter_group_new ();
+      data.container = g_object_new (foo_group_get_type (), NULL);
 
       data.foo_actor = g_object_new (foo_actor_get_type (), NULL);
       clutter_actor_set_size (CLUTTER_ACTOR (data.foo_actor), 100, 100);

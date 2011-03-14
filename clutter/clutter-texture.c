@@ -409,6 +409,14 @@ clutter_texture_allocate (ClutterActor           *self,
     clutter_actor_allocate_preferred_size (priv->fbo_source, flags);
 }
 
+static gboolean
+clutter_texture_has_overlaps (ClutterActor *self)
+{
+  /* Textures never need an offscreen redirect because there are never
+     any overlapping primitives */
+  return FALSE;
+}
+
 static void
 set_viewport_with_buffer_under_fbo_source (ClutterActor *fbo_source,
                                            int viewport_width,
@@ -980,6 +988,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   actor_class->get_paint_volume = clutter_texture_get_paint_volume;
   actor_class->realize          = clutter_texture_realize;
   actor_class->unrealize        = clutter_texture_unrealize;
+  actor_class->has_overlaps     = clutter_texture_has_overlaps;
 
   actor_class->get_preferred_width  = clutter_texture_get_preferred_width;
   actor_class->get_preferred_height = clutter_texture_get_preferred_height;

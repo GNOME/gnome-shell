@@ -162,6 +162,14 @@ clutter_rectangle_get_paint_volume (ClutterActor       *self,
                                                   volume);
 }
 
+static gboolean
+clutter_rectangle_has_overlaps (ClutterActor *self)
+{
+  /* Rectangles never need an offscreen redirect because there are
+     never any overlapping primitives */
+  return FALSE;
+}
+
 static void
 clutter_rectangle_set_property (GObject      *object,
 				guint         prop_id,
@@ -243,6 +251,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
 
   actor_class->paint            = clutter_rectangle_paint;
   actor_class->get_paint_volume = clutter_rectangle_get_paint_volume;
+  actor_class->has_overlaps     = clutter_rectangle_has_overlaps;
 
   gobject_class->finalize     = clutter_rectangle_finalize;
   gobject_class->dispose      = clutter_rectangle_dispose;

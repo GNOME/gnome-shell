@@ -221,6 +221,19 @@ clutter_clone_get_paint_volume (ClutterActor *self,
   return TRUE;
 }
 
+static gboolean
+clutter_clone_has_overlaps (ClutterActor *self)
+{
+  ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
+
+  /* The clone has overlaps iff the source has overlaps */
+
+  if (priv->clone_source == NULL)
+    return FALSE;
+
+  return clutter_actor_has_overlaps (priv->clone_source);
+}
+
 static void
 clutter_clone_allocate (ClutterActor           *self,
                         const ClutterActorBox  *box,
@@ -309,6 +322,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
   actor_class->get_preferred_width  = clutter_clone_get_preferred_width;
   actor_class->get_preferred_height = clutter_clone_get_preferred_height;
   actor_class->allocate             = clutter_clone_allocate;
+  actor_class->has_overlaps         = clutter_clone_has_overlaps;
 
   gobject_class->dispose      = clutter_clone_dispose;
   gobject_class->set_property = clutter_clone_set_property;
