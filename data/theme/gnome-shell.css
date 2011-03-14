@@ -257,6 +257,11 @@ StTooltip StLabel {
     transition-duration: 100;
 }
 
+.panel-button:hover {
+    color: white;
+    text-shadow: black 0px 2px 2px;
+}
+
 .panel-button:active,
 .panel-button:checked,
 .panel-button:focus {
