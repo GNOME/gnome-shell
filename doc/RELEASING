@@ -21,7 +21,7 @@ When making a new release;
 
  - Run:
 
-     $ ./autogen.sh --enable-gtk-doc
+     $ ./autogen.sh --enable-gtk-doc --enable-docs
      $ make all
      $ make check
 
@@ -33,7 +33,7 @@ When making a new release;
      - README: dependencies, any behavioural changes relevant to
        developers;
 
-   The commit the changes.
+   then commit the changes.
 
  - Bump clutter_micro_version to the next even number; if this is a stable
    release, bump up clutter_interface_version by one as well. Then commit
@@ -59,4 +59,5 @@ When making a new release;
      $ git push origin master
      $ git push origin 1.2.4
 
- - Announce release to the waiting world on the blog and mailing lists
+ - Announce release to the waiting world on the blog and mailing lists. Use
+   the template printed by `make release-publish`.
