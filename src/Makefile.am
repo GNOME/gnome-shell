@@ -100,6 +100,7 @@ shell_public_headers_h =		\
 	shell-perf-log.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
+	shell-tp-client.h			\
 	shell-tray-icon.h		\
 	shell-tray-manager.h		\
 	shell-util.h			\
@@ -134,6 +135,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-polkit-authentication-agent.c	\
 	shell-slicer.c			\
 	shell-stack.c			\
+	shell-tp-client.c			\
 	shell-tray-icon.c		\
 	shell-tray-manager.c		\
 	shell-util.c			\
