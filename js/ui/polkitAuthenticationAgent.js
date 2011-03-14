@@ -49,6 +49,8 @@ AuthenticationDialog.prototype = {
         this.actionId = actionId;
         this.message = message;
         this.userNames = userNames;
+        this._wasDismissed = false;
+        this._completed = false;
 
         let mainContentBox = new St.BoxLayout({ style_class: 'polkit-dialog-main-layout',
                                                 vertical: false });
@@ -100,32 +102,39 @@ AuthenticationDialog.prototype = {
                                                  Lang.bind(this, this._onUserChanged));
 
         // Special case 'root'
-        if (userName == 'root')
+        let userIsRoot = false;
+        if (userName == 'root') {
+            userIsRoot = true;
             userRealName = _('Administrator');
+        }
 
         // Work around Gdm.UserManager returning an empty string for the real name
         if (userRealName.length == 0)
             userRealName = userName;
 
-        let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
-                                         vertical: false });
-        messageBox.add(userBox);
-
-        this._userIcon = new St.Icon();
-        this._userIcon.hide();
-        userBox.add(this._userIcon,
-                    { x_fill:  true,
-                      y_fill:  false,
-                      x_align: St.Align.END,
-                      y_align: St.Align.START });
-
-        let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-label',
-                                        text: userRealName }));
-        userBox.add(userLabel,
-                    { x_fill:  true,
-                      y_fill:  false,
-                      x_align: St.Align.END,
-                      y_align: St.Align.MIDDLE });
+        if (userIsRoot) {
+            let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
+                                            text: userRealName }));
+            messageBox.add(userLabel);
+        } else {
+            let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
+                                             vertical: false });
+            messageBox.add(userBox);
+            this._userIcon = new St.Icon();
+            this._userIcon.hide();
+            userBox.add(this._userIcon,
+                        { x_fill:  true,
+                          y_fill:  false,
+                          x_align: St.Align.END,
+                          y_align: St.Align.START });
+            let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-label',
+                                            text: userRealName }));
+            userBox.add(userLabel,
+                        { x_fill:  true,
+                          y_fill:  false,
+                          x_align: St.Align.END,
+                          y_align: St.Align.MIDDLE });
+        }
 
         this._onUserChanged();
 
@@ -141,32 +150,28 @@ AuthenticationDialog.prototype = {
                               {expand: true });
         this._passwordBox.hide();
 
-        this._errorBox = new St.BoxLayout({ style_class: 'polkit-dialog-error-box' });
-        messageBox.add(this._errorBox);
-        let errorIcon = new St.Icon({ icon_name: 'dialog-error',
-                                      icon_size: 24,
-                                      style_class: 'polkit-dialog-error-icon' });
-        this._errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
-        this._errorMessage = new St.Label({ style_class: 'polkit-dialog-error-label' });
-        this._errorMessage.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this._errorMessage.clutter_text.line_wrap = true;
-        this._errorBox.add(this._errorMessage, { expand: true,
-                                                 y_align: St.Align.MIDDLE,
-                                                 y_fill: true });
-        this._errorBox.hide();
+        this._errorMessageLabel = new St.Label({ style_class: 'polkit-dialog-error-label' });
+        this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._errorMessageLabel.clutter_text.line_wrap = true;
+        messageBox.add(this._errorMessageLabel);
+        this._errorMessageLabel.hide();
 
-        this._infoBox = new St.BoxLayout({ style_class: 'polkit-dialog-info-box' });
-        messageBox.add(this._infoBox);
-        let infoIcon = new St.Icon({ icon_name: 'dialog-information',
-                                     icon_size: 24,
-                                     style_class: 'polkit-dialog-info-icon' });
-        this._infoBox.add(infoIcon, { y_align: St.Align.MIDDLE });
-        this._infoMessage = new St.Label({ style_class: 'polkit-dialog-info-label'});
-        this._infoMessage.clutter_text.line_wrap = true;
-        this._infoBox.add(this._infoMessage, { expand: true,
-                                               y_align: St.Align.MIDDLE,
-                                               y_fill: true });
-        this._infoBox.hide();
+        this._infoMessageLabel = new St.Label({ style_class: 'polkit-dialog-info-label' });
+        this._infoMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._infoMessageLabel.clutter_text.line_wrap = true;
+        messageBox.add(this._infoMessageLabel);
+        this._infoMessageLabel.hide();
+
+        /* text is intentionally non-blank otherwise the height is not the same as for
+         * infoMessage and errorMessageLabel - but it is still invisible because
+         * gnome-shell.css sets the color to be transparent
+         */
+        this._nullMessageLabel = new St.Label({ style_class: 'polkit-dialog-null-label',
+                                                text: 'abc'});
+        this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._nullMessageLabel.clutter_text.line_wrap = true;
+        messageBox.add(this._nullMessageLabel);
+        this._nullMessageLabel.show();
 
         this.setButtons([{ label: _('Cancel'),
                            action: Lang.bind(this, this.cancel),
@@ -234,8 +239,9 @@ AuthenticationDialog.prototype = {
         this._session.response(response);
         // When the user responds, dismiss already shown info and
         // error texts (if any)
-        this._errorBox.hide();
-        this._infoBox.hide();
+        this._errorMessageLabel.hide();
+        this._infoMessageLabel.hide();
+        this._nullMessageLabel.show();
     },
 
     _onAuthenticateButtonPressed: function() {
@@ -243,7 +249,24 @@ AuthenticationDialog.prototype = {
     },
 
     _onSessionCompleted: function(session, gainedAuthorization) {
-        this._passwordBox.hide();
+        if (this._completed)
+            return;
+
+        this._completed = true;
+
+        if (!gainedAuthorization) {
+            /* Unless we are showing an existing error message from the PAM
+             * module (the PAM module could be reporting the authentication
+             * error providing authentication-method specific information),
+             * show "Sorry, that didn't work. Please try again."
+             */
+            if (!this._errorMessageLabel.visible && !this._wasDismissed) {
+                this._errorMessageLabel.set_text(_('Sorry, that didn\'t work. Please try again.'));
+                this._errorMessageLabel.show();
+                this._infoMessageLabel.hide();
+                this._nullMessageLabel.hide();
+            }
+        }
         this._emitDone(!gainedAuthorization, false);
     },
 
@@ -267,41 +290,49 @@ AuthenticationDialog.prototype = {
 
     _onSessionShowError: function(session, text) {
         this._passwordEntry.set_text('');
-        this._errorMessage.set_text(text);
-        this._errorBox.show();
+        this._errorMessageLabel.set_text(text);
+        this._errorMessageLabel.show();
+        this._infoMessageLabel.hide();
+        this._nullMessageLabel.hide();
         this._ensureOpen();
     },
 
     _onSessionShowInfo: function(session, text) {
         this._passwordEntry.set_text('');
-        this._infoMessage.set_text(text);
-        this._infoBox.show();
+        this._infoMessageLabel.set_text(text);
+        this._infoMessageLabel.show();
+        this._errorMessageLabel.hide();
+        this._nullMessageLabel.hide();
         this._ensureOpen();
     },
 
     destroySession: function() {
         if (this._session) {
-            this._session.cancel();
+            if (!this._completed)
+                this._session.cancel();
             this._session = null;
         }
     },
 
     _onUserChanged: function() {
         if (this._user.is_loaded) {
-            let iconFileName = this._user.get_icon_file();
-            let iconFile = Gio.file_new_for_path(iconFileName);
-            let icon;
-            if (iconFile.query_exists(null)) {
-                icon = new Gio.FileIcon({file: iconFile});
-            } else {
-                icon = new Gio.ThemedIcon({name: 'avatar-default'});
+            if (this._userIcon) {
+                let iconFileName = this._user.get_icon_file();
+                let iconFile = Gio.file_new_for_path(iconFileName);
+                let icon;
+                if (iconFile.query_exists(null)) {
+                    icon = new Gio.FileIcon({file: iconFile});
+                } else {
+                    icon = new Gio.ThemedIcon({name: 'avatar-default'});
+                }
+                this._userIcon.set_gicon (icon);
+                this._userIcon.show();
             }
-            this._userIcon.set_gicon (icon);
-            this._userIcon.show();
         }
     },
 
     cancel: function() {
+        this._wasDismissed = true;
         this.close(global.get_current_time());
         this._emitDone(false, true);
     },

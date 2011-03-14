@@ -1477,12 +1477,12 @@ StTooltip StLabel {
 }
 
 .polkit-dialog-main-layout {
-    spacing: 10px;
+    spacing: 24px;
     padding: 10px;
 }
 
 .polkit-dialog-message-layout {
-    spacing: 10px;
+    spacing: 16px;
 }
 
 .polkit-dialog-headline {
@@ -1506,6 +1506,10 @@ StTooltip StLabel {
     padding-right: 10px;
 }
 
+.polkit-dialog-user-root-label {
+    color: #ff0000;
+}
+
 .polkit-dialog-password-label:ltr {
     padding-right: 0.5em;
 }
@@ -1521,33 +1525,21 @@ StTooltip StLabel {
 }
 
 .polkit-dialog-error-label {
-    font-size: 12px;
-    color: white;
-}
-
-.polkit-dialog-error-box {
-    padding-top: 15px;
-    spacing: 5px;
-}
-
-.polkit-dialog-checking-label {
-    font-size: 12px;
-    color: white;
-}
-
-.polkit-dialog-checking-box {
-    padding-top: 15px;
-    spacing: 5px;
+    font-size: 10pt;
+    color: #ffff00;
+    padding-bottom: 8px;
 }
 
 .polkit-dialog-info-label {
-    font-size: 12px;
-    color: white;
+    font-size: 10pt;
+    padding-bottom: 8px;
 }
 
-.polkit-dialog-info-box {
-    padding-top: 15px;
-    spacing: 5px;
+/* intentionally left transparent to avoid dialog changing size */
+.polkit-dialog-null-label {
+    font-size: 10pt;
+    color: rgba(0,0,0,0);
+    padding-bottom: 8px;
 }
 
 
