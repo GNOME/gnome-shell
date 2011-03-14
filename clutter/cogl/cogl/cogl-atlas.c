@@ -58,8 +58,8 @@ _cogl_atlas_new (CoglPixelFormat texture_format,
   atlas->texture = NULL;
   atlas->flags = flags;
   atlas->texture_format = texture_format;
-  _cogl_callback_list_init (&atlas->pre_reorganize_callbacks);
-  _cogl_callback_list_init (&atlas->post_reorganize_callbacks);
+  g_hook_list_init (&atlas->pre_reorganize_callbacks, sizeof (GHook));
+  g_hook_list_init (&atlas->post_reorganize_callbacks, sizeof (GHook));
 
   return _cogl_atlas_object_new (atlas);
 }
@@ -74,8 +74,8 @@ _cogl_atlas_free (CoglAtlas *atlas)
   if (atlas->map)
     _cogl_rectangle_map_free (atlas->map);
 
-  _cogl_callback_list_destroy (&atlas->pre_reorganize_callbacks);
-  _cogl_callback_list_destroy (&atlas->post_reorganize_callbacks);
+  g_hook_list_clear (&atlas->pre_reorganize_callbacks);
+  g_hook_list_clear (&atlas->post_reorganize_callbacks);
 
   g_free (atlas);
 }
@@ -312,13 +312,13 @@ _cogl_atlas_compare_size_cb (const void *a,
 static void
 _cogl_atlas_notify_pre_reorganize (CoglAtlas *atlas)
 {
-  _cogl_callback_list_invoke (&atlas->pre_reorganize_callbacks);
+  g_hook_list_invoke (&atlas->pre_reorganize_callbacks, FALSE);
 }
 
 static void
 _cogl_atlas_notify_post_reorganize (CoglAtlas *atlas)
 {
-  _cogl_callback_list_invoke (&atlas->post_reorganize_callbacks);
+  g_hook_list_invoke (&atlas->post_reorganize_callbacks, FALSE);
 }
 
 gboolean
@@ -542,30 +542,48 @@ _cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
 
 void
 _cogl_atlas_add_reorganize_callback (CoglAtlas            *atlas,
-                                     CoglCallbackListFunc  pre_callback,
-                                     CoglCallbackListFunc  post_callback,
+                                     GHookFunc             pre_callback,
+                                     GHookFunc             post_callback,
                                      void                 *user_data)
 {
   if (pre_callback)
-    _cogl_callback_list_add (&atlas->pre_reorganize_callbacks,
-                             pre_callback,
-                             user_data);
+    {
+      GHook *hook = g_hook_alloc (&atlas->post_reorganize_callbacks);
+      hook->func = pre_callback;
+      hook->data = user_data;
+      g_hook_prepend (&atlas->pre_reorganize_callbacks, hook);
+    }
   if (post_callback)
-    _cogl_callback_list_add (&atlas->post_reorganize_callbacks,
-                             post_callback,
-                             user_data);
+    {
+      GHook *hook = g_hook_alloc (&atlas->pre_reorganize_callbacks);
+      hook->func = post_callback;
+      hook->data = user_data;
+      g_hook_prepend (&atlas->post_reorganize_callbacks, hook);
+    }
 }
 
 void
 _cogl_atlas_remove_reorganize_callback (CoglAtlas            *atlas,
-                                        CoglCallbackListFunc  pre_callback,
-                                        CoglCallbackListFunc  post_callback,
+                                        GHookFunc             pre_callback,
+                                        GHookFunc             post_callback,
                                         void                 *user_data)
 {
   if (pre_callback)
-    _cogl_callback_list_remove (&atlas->pre_reorganize_callbacks,
-                                pre_callback, user_data);
+    {
+      GHook *hook = g_hook_find_func_data (&atlas->pre_reorganize_callbacks,
+                                           FALSE,
+                                           pre_callback,
+                                           user_data);
+      if (hook)
+        g_hook_destroy_link (&atlas->pre_reorganize_callbacks, hook);
+    }
   if (post_callback)
-    _cogl_callback_list_remove (&atlas->post_reorganize_callbacks,
-                                post_callback, user_data);
+    {
+      GHook *hook = g_hook_find_func_data (&atlas->post_reorganize_callbacks,
+                                           FALSE,
+                                           post_callback,
+                                           user_data);
+      if (hook)
+        g_hook_destroy_link (&atlas->post_reorganize_callbacks, hook);
+    }
 }

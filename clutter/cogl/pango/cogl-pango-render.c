@@ -212,7 +212,7 @@ cogl_pango_render_qdata_forget_display_list (CoglPangoRendererQdata *qdata)
     {
       _cogl_pango_glyph_cache_remove_reorganize_callback
         (qdata->renderer->glyph_cache,
-         (CoglCallbackListFunc) cogl_pango_render_qdata_forget_display_list,
+         (GHookFunc) cogl_pango_render_qdata_forget_display_list,
          qdata);
 
       _cogl_pango_display_list_free (qdata->display_list);
@@ -289,7 +289,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
          we can rebuild the display list */
       _cogl_pango_glyph_cache_add_reorganize_callback
         (priv->glyph_cache,
-         (CoglCallbackListFunc) cogl_pango_render_qdata_forget_display_list,
+         (GHookFunc) cogl_pango_render_qdata_forget_display_list,
          qdata);
 
       priv->display_list = qdata->display_list;
