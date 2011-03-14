@@ -1,3 +1,7 @@
+# Do not modify this list; this file is maintained for historical
+# reasons. The list of authors can be extracted from the Git commit
+# log. See the clutter.doap file for the updated maintainers list.
+
 Matthew Allum <mallum@o-hand.com> - Primary cat hurding authour.
 Emmanuele Bassi <ebassi@o-hand.com> - python bindings, gobject/glib mastery.
 Iain Holmes <iain@o-hand.com> - Original GTK Clutter widget.
