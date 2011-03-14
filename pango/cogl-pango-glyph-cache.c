@@ -30,7 +30,6 @@
 #include "cogl-pango-glyph-cache.h"
 #include "cogl-pango-private.h"
 #include "cogl/cogl-atlas.h"
-#include "cogl/cogl-callback-list.h"
 
 typedef struct _CoglPangoGlyphCacheKey     CoglPangoGlyphCacheKey;
 
@@ -44,7 +43,7 @@ struct _CoglPangoGlyphCache
   GSList           *atlases;
 
   /* List of callbacks to invoke when an atlas is reorganized */
-  CoglCallbackList  reorganize_callbacks;
+  GHookList         reorganize_callbacks;
 
   /* True if some of the glyphs are dirty. This is used as an
      optimization in _cogl_pango_glyph_cache_set_dirty_glyphs to avoid
@@ -115,7 +114,7 @@ cogl_pango_glyph_cache_new (void)
      (GDestroyNotify) cogl_pango_glyph_cache_value_free);
 
   cache->atlases = NULL;
-  _cogl_callback_list_init (&cache->reorganize_callbacks);
+  g_hook_list_init (&cache->reorganize_callbacks, sizeof (GHook));
 
   cache->has_dirty_glyphs = FALSE;
 
@@ -140,7 +139,7 @@ cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache)
 
   g_hash_table_unref (cache->hash_table);
 
-  _cogl_callback_list_destroy (&cache->reorganize_callbacks);
+  g_hook_list_clear (&cache->reorganize_callbacks);
 
   g_free (cache);
 }
@@ -177,7 +176,7 @@ cogl_pango_glyph_cache_reorganize_cb (void *user_data)
 {
   CoglPangoGlyphCache *cache = user_data;
 
-  _cogl_callback_list_invoke (&cache->reorganize_callbacks);
+  g_hook_list_invoke (&cache->reorganize_callbacks, FALSE);
 }
 
 CoglPangoGlyphCacheValue *
@@ -293,16 +292,25 @@ _cogl_pango_glyph_cache_set_dirty_glyphs (CoglPangoGlyphCache *cache,
 
 void
 _cogl_pango_glyph_cache_add_reorganize_callback (CoglPangoGlyphCache *cache,
-                                                 CoglCallbackListFunc func,
+                                                 GHookFunc func,
                                                  void *user_data)
 {
-  _cogl_callback_list_add (&cache->reorganize_callbacks, func, user_data);
+  GHook *hook = g_hook_alloc (&cache->reorganize_callbacks);
+  hook->func = func;
+  hook->data = user_data;
+  g_hook_prepend (&cache->reorganize_callbacks, hook);
 }
 
 void
 _cogl_pango_glyph_cache_remove_reorganize_callback (CoglPangoGlyphCache *cache,
-                                                    CoglCallbackListFunc func,
+                                                    GHookFunc func,
                                                     void *user_data)
 {
-  _cogl_callback_list_remove (&cache->reorganize_callbacks, func, user_data);
+  GHook *hook = g_hook_find_func_data (&cache->reorganize_callbacks,
+                                       FALSE,
+                                       func,
+                                       user_data);
+
+  if (hook)
+    g_hook_destroy_link (&cache->reorganize_callbacks, hook);
 }

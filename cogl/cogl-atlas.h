@@ -25,7 +25,6 @@
 #define __COGL_ATLAS_H
 
 #include "cogl-rectangle-map.h"
-#include "cogl-callback-list.h"
 #include "cogl-object-private.h"
 
 typedef void
@@ -55,8 +54,8 @@ struct _CoglAtlas
 
   CoglAtlasUpdatePositionCallback update_position_cb;
 
-  CoglCallbackList pre_reorganize_callbacks;
-  CoglCallbackList post_reorganize_callbacks;
+  GHookList pre_reorganize_callbacks;
+  GHookList post_reorganize_callbacks;
 };
 
 CoglAtlas *
@@ -85,14 +84,14 @@ _cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
 
 void
 _cogl_atlas_add_reorganize_callback (CoglAtlas            *atlas,
-                                     CoglCallbackListFunc  pre_callback,
-                                     CoglCallbackListFunc  post_callback,
+                                     GHookFunc             pre_callback,
+                                     GHookFunc             post_callback,
                                      void                 *user_data);
 
 void
 _cogl_atlas_remove_reorganize_callback (CoglAtlas            *atlas,
-                                        CoglCallbackListFunc  pre_callback,
-                                        CoglCallbackListFunc  post_callback,
+                                        GHookFunc             pre_callback,
+                                        GHookFunc             post_callback,
                                         void                 *user_data);
 
 #endif /* __COGL_ATLAS_H */

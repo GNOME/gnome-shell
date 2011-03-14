@@ -26,7 +26,6 @@
 
 #include <glib.h>
 #include <cogl/cogl.h>
-#include <cogl/cogl-callback-list.h>
 #include <pango/pango-font.h>
 
 G_BEGIN_DECLS
@@ -77,12 +76,12 @@ cogl_pango_glyph_cache_clear (CoglPangoGlyphCache *cache);
 
 void
 _cogl_pango_glyph_cache_add_reorganize_callback (CoglPangoGlyphCache *cache,
-                                                 CoglCallbackListFunc func,
+                                                 GHookFunc func,
                                                  void *user_data);
 
 void
 _cogl_pango_glyph_cache_remove_reorganize_callback (CoglPangoGlyphCache *cache,
-                                                    CoglCallbackListFunc func,
+                                                    GHookFunc func,
                                                     void *user_data);
 
 void

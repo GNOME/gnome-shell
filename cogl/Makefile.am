@@ -273,8 +273,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-shader-boilerplate.h		\
 	$(srcdir)/cogl-shader-private.h			\
 	$(srcdir)/cogl-shader.c                        	\
-	$(srcdir)/cogl-callback-list.h                  \
-	$(srcdir)/cogl-callback-list.c                  \
 	$(srcdir)/cogl-gtype-private.h                  \
 	$(srcdir)/cogl-point-in-poly-private.h       \
 	$(srcdir)/cogl-point-in-poly.c       	\
