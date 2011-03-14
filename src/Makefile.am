@@ -39,7 +39,6 @@ generated_script_substitutions = \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
-	    -e "s|@ENABLE_DYNAMIC_MOZJS_HACK[@]|$(ENABLE_DYNAMIC_MOZJS_HACK)|" \
 	    -e "s|@PYTHON[@]|$(PYTHON)|" \
 	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    -e "s|@sysconfdir[@]|$(sysconfdir)|"
@@ -166,6 +165,14 @@ test_recorder_SOURCES =     \
 	$(shell_recorder_sources) $(shell_recorder_non_gir_sources) \
 	test-recorder.c
 endif BUILD_RECORDER
+
+########################################
+
+libexec_PROGRAMS += gnome-shell-perf-helper
+
+gnome_shell_perf_helper_SOURCES = shell-perf-helper.c
+gnome_shell_perf_helper_CPPFLAGS = $(SHELL_PERF_HELPER_CFLAGS)
+gnome_shell_perf_helper_LDADD = $(SHELL_PERF_HELPER_LIBS)
 
 ########################################
 

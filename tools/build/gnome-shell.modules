@@ -184,7 +184,9 @@
   <autotools id="libcanberra" autogen-sh="configure">
     <branch repo="0pointer.de" module="libcanberra/libcanberra-0.26.tar.gz" version="0.26"
             hash="sha256:4b5d8d2c2835133620adbc53745dd107b6e58b9a2963059e8f457143fee00982"
-            md5sum="ee2c66ada7c851a4e7b6eb1682285a24" size="463209" />
+            md5sum="ee2c66ada7c851a4e7b6eb1682285a24" size="463209">
+      <patch file="libcanberra-quit-add.patch" strip="1"/>
+    </branch>
     <dependencies>
       <dep package="gtk3"/>
     </dependencies>

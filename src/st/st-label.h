@@ -60,11 +60,11 @@ struct _StLabelClass
 
 GType st_label_get_type (void) G_GNUC_CONST;
 
-StWidget *            st_label_new              (const gchar *text);
-G_CONST_RETURN gchar *st_label_get_text         (StLabel     *label);
-void                  st_label_set_text         (StLabel     *label,
-                                                 const gchar *text);
-ClutterActor *        st_label_get_clutter_text (StLabel     *label);
+StWidget *     st_label_new              (const gchar *text);
+const gchar *  st_label_get_text         (StLabel     *label);
+void           st_label_set_text         (StLabel     *label,
+                                          const gchar *text);
+ClutterActor * st_label_get_clutter_text (StLabel     *label);
 
 G_END_DECLS
 

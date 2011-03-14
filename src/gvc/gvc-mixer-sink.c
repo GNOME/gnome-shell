@@ -43,7 +43,6 @@ struct GvcMixerSinkPrivate
 static void     gvc_mixer_sink_class_init (GvcMixerSinkClass *klass);
 static void     gvc_mixer_sink_init       (GvcMixerSink      *mixer_sink);
 static void     gvc_mixer_sink_finalize   (GObject           *object);
-static void     gvc_mixer_sink_dispose    (GObject           *object);
 
 G_DEFINE_TYPE (GvcMixerSink, gvc_mixer_sink, GVC_TYPE_MIXER_STREAM)
 
@@ -139,26 +138,12 @@ gvc_mixer_sink_change_port (GvcMixerStream *stream,
 #endif /* PA_MICRO > 15 */
 }
 
-static GObject *
-gvc_mixer_sink_constructor (GType                  type,
-                            guint                  n_construct_properties,
-                            GObjectConstructParam *construct_params)
-{
-        GObject      *object;
-
-        object = G_OBJECT_CLASS (gvc_mixer_sink_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        return object;
-}
-
 static void
 gvc_mixer_sink_class_init (GvcMixerSinkClass *klass)
 {
         GObjectClass        *object_class = G_OBJECT_CLASS (klass);
         GvcMixerStreamClass *stream_class = GVC_MIXER_STREAM_CLASS (klass);
 
-        object_class->constructor = gvc_mixer_sink_constructor;
-        object_class->dispose = gvc_mixer_sink_dispose;
         object_class->finalize = gvc_mixer_sink_finalize;
 
         stream_class->push_volume = gvc_mixer_sink_push_volume;
@@ -172,15 +157,6 @@ static void
 gvc_mixer_sink_init (GvcMixerSink *sink)
 {
         sink->priv = GVC_MIXER_SINK_GET_PRIVATE (sink);
-}
-
-static void
-gvc_mixer_sink_dispose (GObject *object)
-{
-        g_return_if_fail (object != NULL);
-        g_return_if_fail (GVC_IS_MIXER_SINK (object));
-
-        G_OBJECT_CLASS (gvc_mixer_sink_parent_class)->dispose (object);
 }
 
 static void

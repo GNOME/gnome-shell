@@ -355,7 +355,7 @@ st_label_new (const gchar *text)
  *
  * Returns: the text for the label. This must not be freed by the application
  */
-G_CONST_RETURN gchar *
+const gchar *
 st_label_get_text (StLabel *label)
 {
   g_return_val_if_fail (ST_IS_LABEL (label), NULL);

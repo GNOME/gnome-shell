@@ -471,9 +471,15 @@ PinNotification.prototype = {
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             if (action == 'ok') {
-                if (this._numeric)
-                    this._applet.agent_reply_passkey(this._devicePath, parseInt(this._entry.text));
-                else
+                if (this._numeric) {
+                    let num = parseInt(this._entry.text);
+                    if (isNaN(num)) {
+                        // user reply was empty, or was invalid
+                        // cancel the operation
+                        num = -1;
+                    }
+                    this._applet.agent_reply_passkey(this._devicePath, num);
+                } else
                     this._applet.agent_reply_pincode(this._devicePath, this._entry.text);
             } else {
                 if (this._numeric)

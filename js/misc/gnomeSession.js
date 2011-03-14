@@ -102,3 +102,24 @@ Inhibitor.prototype = {
 };
 DBus.proxifyPrototype(Inhibitor.prototype, InhibitorIface);
 Signals.addSignalMethods(Inhibitor.prototype);
+
+
+// Not the full interface, only the methods we use
+const SessionManagerIface = {
+    name: 'org.gnome.SessionManager',
+    methods: [
+        { name: 'Logout', inSignature: 'u', outSignature: '' },
+        { name: 'Shutdown', inSignature: '', outSignature: '' }
+    ]
+};
+
+function SessionManager() {
+    this._init();
+}
+
+SessionManager.prototype = {
+    _init: function() {
+        DBus.session.proxifyObject(this, 'org.gnome.SessionManager', '/org/gnome/SessionManager');
+    }
+};
+DBus.proxifyPrototype(SessionManager.prototype, SessionManagerIface);

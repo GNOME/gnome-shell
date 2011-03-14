@@ -64,6 +64,11 @@ function init() {
     Tweener.init();
     String.prototype.format = Format.format;
 
+    // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
+    Date.prototype.toLocaleFormat = function(format) {
+        return Shell.util_format_date(format, this.getTime());
+    };
+
     // Set the default direction for St widgets (this needs to be done before any use of St)
     if (Gettext_gtk30.gettext('default:LTR') == 'default:RTL') {
         St.Widget.set_default_direction(St.TextDirection.RTL);

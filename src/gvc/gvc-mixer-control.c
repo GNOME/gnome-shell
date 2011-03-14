@@ -615,13 +615,13 @@ static void
 update_default_source_from_name (GvcMixerControl *control,
                                  const char      *name)
 {
-        gboolean changed;
+        gboolean changed = FALSE;
 
         if ((control->priv->default_source_name == NULL
              && name != NULL)
             || (control->priv->default_source_name != NULL
                 && name == NULL)
-            || strcmp (control->priv->default_source_name, name) != 0) {
+            || (name != NULL && strcmp (control->priv->default_source_name, name) != 0)) {
                 changed = TRUE;
         }
 
@@ -640,13 +640,13 @@ static void
 update_default_sink_from_name (GvcMixerControl *control,
                                const char      *name)
 {
-        gboolean changed;
+        gboolean changed = FALSE;
 
         if ((control->priv->default_sink_name == NULL
              && name != NULL)
             || (control->priv->default_sink_name != NULL
                 && name == NULL)
-            || strcmp (control->priv->default_sink_name, name) != 0) {
+            || (name != NULL && strcmp (control->priv->default_sink_name, name) != 0)) {
                 changed = TRUE;
         }
 
@@ -711,6 +711,58 @@ add_stream (GvcMixerControl *control,
 }
 
 static void
+set_icon_name_from_proplist (GvcMixerStream *stream,
+                             pa_proplist    *l,
+                             const char     *default_icon_name)
+{
+        const char *t;
+
+        if ((t = pa_proplist_gets (l, PA_PROP_DEVICE_ICON_NAME))) {
+                goto finish;
+        }
+
+        if ((t = pa_proplist_gets (l, PA_PROP_MEDIA_ICON_NAME))) {
+                goto finish;
+        }
+
+        if ((t = pa_proplist_gets (l, PA_PROP_WINDOW_ICON_NAME))) {
+                goto finish;
+        }
+
+        if ((t = pa_proplist_gets (l, PA_PROP_APPLICATION_ICON_NAME))) {
+                goto finish;
+        }
+
+        if ((t = pa_proplist_gets (l, PA_PROP_MEDIA_ROLE))) {
+
+                if (strcmp (t, "video") == 0 ||
+                    strcmp (t, "phone") == 0) {
+                        goto finish;
+                }
+
+                if (strcmp (t, "music") == 0) {
+                        t = "audio";
+                        goto finish;
+                }
+
+                if (strcmp (t, "game") == 0) {
+                        t = "applications-games";
+                        goto finish;
+                }
+
+                if (strcmp (t, "event") == 0) {
+                        t = "dialog-information";
+                        goto finish;
+                }
+        }
+
+        t = default_icon_name;
+
+ finish:
+        gvc_mixer_stream_set_icon_name (stream, t);
+}
+
+static void
 update_sink (GvcMixerControl    *control,
              const pa_sink_info *info)
 {
@@ -767,7 +819,7 @@ update_sink (GvcMixerControl    *control,
         gvc_mixer_stream_set_name (stream, info->name);
         gvc_mixer_stream_set_card_index (stream, info->card);
         gvc_mixer_stream_set_description (stream, info->description);
-        gvc_mixer_stream_set_icon_name (stream, "audio-card");
+        set_icon_name_from_proplist (stream, info->proplist, "audio-card");
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
         gvc_mixer_stream_set_is_muted (stream, info->mute);
         gvc_mixer_stream_set_can_decibel (stream, !!(info->flags & PA_SINK_DECIBEL_VOLUME));
@@ -856,7 +908,7 @@ update_source (GvcMixerControl      *control,
         gvc_mixer_stream_set_name (stream, info->name);
         gvc_mixer_stream_set_card_index (stream, info->card);
         gvc_mixer_stream_set_description (stream, info->description);
-        gvc_mixer_stream_set_icon_name (stream, "audio-input-microphone");
+        set_icon_name_from_proplist (stream, info->proplist, "audio-input-microphone");
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
         gvc_mixer_stream_set_is_muted (stream, info->mute);
         gvc_mixer_stream_set_can_decibel (stream, !!(info->flags & PA_SOURCE_DECIBEL_VOLUME));
@@ -878,54 +930,6 @@ update_source (GvcMixerControl      *control,
             && strcmp (control->priv->default_source_name, info->name) == 0) {
                 _set_default_source (control, stream);
         }
-}
-
-static void
-set_icon_name_from_proplist (GvcMixerStream *stream,
-                             pa_proplist    *l,
-                             const char     *default_icon_name)
-{
-        const char *t;
-
-        if ((t = pa_proplist_gets (l, PA_PROP_MEDIA_ICON_NAME))) {
-                goto finish;
-        }
-
-        if ((t = pa_proplist_gets (l, PA_PROP_WINDOW_ICON_NAME))) {
-                goto finish;
-        }
-
-        if ((t = pa_proplist_gets (l, PA_PROP_APPLICATION_ICON_NAME))) {
-                goto finish;
-        }
-
-        if ((t = pa_proplist_gets (l, PA_PROP_MEDIA_ROLE))) {
-
-                if (strcmp (t, "video") == 0 ||
-                    strcmp (t, "phone") == 0) {
-                        goto finish;
-                }
-
-                if (strcmp (t, "music") == 0) {
-                        t = "audio";
-                        goto finish;
-                }
-
-                if (strcmp (t, "game") == 0) {
-                        t = "applications-games";
-                        goto finish;
-                }
-
-                if (strcmp (t, "event") == 0) {
-                        t = "dialog-information";
-                        goto finish;
-                }
-        }
-
-        t = default_icon_name;
-
- finish:
-        gvc_mixer_stream_set_icon_name (stream, t);
 }
 
 static void
@@ -1121,7 +1125,7 @@ update_card (GvcMixerControl      *control,
              const pa_card_info   *info)
 {
         GvcMixerCard *card;
-        gboolean      is_new;
+        gboolean      is_new = FALSE;
 #if 1
         guint i;
         const char *key;
@@ -1989,6 +1993,11 @@ gvc_mixer_control_dispose (GObject *object)
 {
         GvcMixerControl *control = GVC_MIXER_CONTROL (object);
 
+        if (control->priv->reconnect_id != 0) {
+                g_source_remove (control->priv->reconnect_id);
+                control->priv->reconnect_id = 0;
+        }
+
         if (control->priv->pa_context != NULL) {
                 pa_context_unref (control->priv->pa_context);
                 control->priv->pa_context = NULL;
@@ -2229,4 +2238,21 @@ gvc_mixer_control_new (const char *name)
                                 "name", name,
                                 NULL);
         return GVC_MIXER_CONTROL (control);
+}
+
+/* FIXME: Remove when PA 0.9.23 is used */
+#ifndef PA_VOLUME_UI_MAX
+#define PA_VOLUME_UI_MAX pa_sw_volume_from_dB(+11.0)
+#endif
+
+gdouble
+gvc_mixer_control_get_vol_max_norm (GvcMixerControl *control)
+{
+	return (gdouble) PA_VOLUME_NORM;
+}
+
+gdouble
+gvc_mixer_control_get_vol_max_amplified (GvcMixerControl *control)
+{
+	return (gdouble) PA_VOLUME_UI_MAX;
 }

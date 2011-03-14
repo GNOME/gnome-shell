@@ -176,37 +176,8 @@ PlacesManager.prototype = {
                 Util.spawn(['nautilus-connect-server']);
             });
 
-        let networkApp = null;
-        try {
-            networkApp = Shell.AppSystem.get_default().load_from_desktop_file('gnome-network-scheme.desktop');
-        } catch(e) {
-            try {
-                networkApp = Shell.AppSystem.get_default().load_from_desktop_file('network-scheme.desktop');
-            } catch(e) {
-                log('Cannot create "Network" item, .desktop file not found or corrupt.');
-            }
-        }
-
-        if (networkApp != null) {
-            this._network = new PlaceInfo('special:network', networkApp.get_name(),
-                function(size) {
-                    return networkApp.create_icon_texture(size);
-                },
-                function (params) {
-                    params = Params.parse(params, { workspace: null,
-                                                    timestamp: 0 });
-
-                    networkApp.launch_full(params.timestamp, [],
-                                           params.workspace ? params.workspace.index() : -1);
-                });
-        }
-
         this._defaultPlaces.push(this._home);
         this._defaultPlaces.push(this._desktopMenu);
-
-        if (this._network)
-            this._defaultPlaces.push(this._network);
-
         this._defaultPlaces.push(this._connect);
 
         /*

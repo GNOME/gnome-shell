@@ -180,10 +180,10 @@ Overview.prototype = {
         this._group.add_actor(this.viewSelector.actor);
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this.viewSelector.addViewTab(_("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
+        this.viewSelector.addViewTab('windows', _("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
 
         let appView = new AppDisplay.AllAppDisplay();
-        this.viewSelector.addViewTab(_("Applications"), appView.actor, 'system-run');
+        this.viewSelector.addViewTab('applications', _("Applications"), appView.actor, 'system-run');
 
         // Default search providers
         this.viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());
@@ -224,6 +224,7 @@ Overview.prototype = {
         this._resetWindowSwitchTimeout();
         this._lastHoveredWindow = null;
         DND.removeMonitor(this._dragMonitor);
+        this.endItemDrag();
     },
 
     _resetWindowSwitchTimeout: function() {

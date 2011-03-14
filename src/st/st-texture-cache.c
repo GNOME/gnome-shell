@@ -1398,10 +1398,11 @@ static char **
 symbolic_names_for_icon (const char *name)
 {
   char **parts, **names;
-  int i;
+  int i, numnames;
 
   parts = g_strsplit (name, "-", -1);
-  names = g_new (char *, g_strv_length (parts) + 1);
+  numnames = g_strv_length (parts);
+  names = g_new (char *, numnames + 1);
   for (i = 0; parts[i]; i++)
     {
       if (i == 0)
@@ -1418,6 +1419,15 @@ symbolic_names_for_icon (const char *name)
   names[i] = NULL;
 
   g_strfreev (parts);
+
+  /* need to reverse here, because longest (most specific)
+     name has to come first */
+  for (i = 0; i < (numnames / 2); i++) {
+    char *tmp = names[i];
+    names[i] = names[numnames - i - 1];
+    names[numnames - i - 1] = tmp;
+  }
+
   return names;
 }
 

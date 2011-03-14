@@ -735,7 +735,7 @@ st_entry_new (const gchar *text)
  *
  * Returns: the text for the entry. This must not be freed by the application
  */
-G_CONST_RETURN gchar *
+const gchar *
 st_entry_get_text (StEntry *entry)
 {
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
@@ -843,8 +843,7 @@ st_entry_set_hint_text (StEntry     *entry,
  * Returns: the current value of the hint property. This string is owned by the
  * #StEntry and should not be freed or modified.
  */
-G_CONST_RETURN
-gchar *
+const gchar *
 st_entry_get_hint_text (StEntry *entry)
 {
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);

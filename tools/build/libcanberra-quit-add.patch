@@ -1,0 +1,24 @@
+diff -up libcanberra-0.26/src/canberra-gtk-module.c.quit-add libcanberra-0.26/src/canberra-gtk-module.c
+--- libcanberra-0.26/src/canberra-gtk-module.c.quit-add	2011-01-07 22:48:49.388992626 -0500
++++ libcanberra-0.26/src/canberra-gtk-module.c	2011-01-07 22:49:02.339995153 -0500
+@@ -932,11 +932,6 @@ static void connect_settings(void) {
+         connected = TRUE;
+ }
+ 
+-static gboolean quit_handler(gpointer data) {
+-        dispatch_queue();
+-        return FALSE;
+-}
+-
+ G_MODULE_EXPORT void gtk_module_init(gint *argc, gchar ***argv[]) {
+ 
+         /* This is the same quark libgnomeui uses! */
+@@ -963,8 +958,6 @@ G_MODULE_EXPORT void gtk_module_init(gin
+         install_hook(GTK_TYPE_WIDGET, "drag-drop", &signal_id_widget_drag_drop);
+         install_hook(GTK_TYPE_WIDGET, "drag-failed", &signal_id_widget_drag_failed);
+         install_hook(GTK_TYPE_EXPANDER, "activate", &signal_id_expander_activate);
+-
+-        gtk_quit_add(1, quit_handler, NULL);
+ }
+ 
+ G_MODULE_EXPORT gchar* g_module_check_init(GModule *module);

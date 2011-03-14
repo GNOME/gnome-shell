@@ -44,7 +44,7 @@ libgvc_la_SOURCES =			\
 	$(libgvc_la_private_sources)
 
 Gvc-1.0.gir: libgvc.la
-Gvc_1_0_gir_INCLUDES = GObject-2.0
+Gvc_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
 Gvc_1_0_gir_CFLAGS = $(INCLUDES) -I$(srcdir)/gvc -DWITH_INTROSPECTION
 Gvc_1_0_gir_LIBS = libgvc.la
 Gvc_1_0_gir_FILES = $(addprefix $(srcdir)/,$(libgvc_la_gir_sources))

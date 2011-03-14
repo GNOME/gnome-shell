@@ -77,14 +77,16 @@ BaseTab.prototype = {
 Signals.addSignalMethods(BaseTab.prototype);
 
 
-function ViewTab(label, pageActor, a11yIcon) {
-    this._init(label, pageActor, a11yIcon);
+function ViewTab(id, label, pageActor, a11yIcon) {
+    this._init(id, label, pageActor, a11yIcon);
 }
 
 ViewTab.prototype = {
     __proto__: BaseTab.prototype,
 
-    _init: function(label, pageActor, a11yIcon) {
+    _init: function(id, label, pageActor, a11yIcon) {
+        this.id = id;
+
         let titleActor = new St.Button({ label: label,
                                          style_class: 'view-tab-title' });
         titleActor.connect('clicked', Lang.bind(this, this._activate));
@@ -383,8 +385,8 @@ ViewSelector.prototype = {
         }));
     },
 
-    addViewTab: function(title, pageActor, a11yIcon) {
-        let viewTab = new ViewTab(title, pageActor, a11yIcon);
+    addViewTab: function(id, title, pageActor, a11yIcon) {
+        let viewTab = new ViewTab(id, title, pageActor, a11yIcon);
         this._tabs.push(viewTab);
         this._tabBox.add(viewTab.title);
         this._addTab(viewTab);
@@ -431,6 +433,14 @@ ViewSelector.prototype = {
                                    transition: 'easeOutQuad' });
             }
         }
+    },
+
+    switchTab: function(id) {
+        for (let i = 0; i < this._tabs.length; i++)
+            if (this._tabs[i].id == id) {
+                this._switchTab(this._tabs[i]);
+                break;
+            }
     },
 
     _switchDefaultTab: function() {

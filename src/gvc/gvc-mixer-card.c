@@ -157,7 +157,7 @@ gvc_mixer_card_get_profile (GvcMixerCard *card)
         GList *l;
 
         g_return_val_if_fail (GVC_IS_MIXER_CARD (card), NULL);
-        g_return_val_if_fail (card->priv->profiles != NULL, FALSE);
+        g_return_val_if_fail (card->priv->profiles != NULL, NULL);
 
         for (l = card->priv->profiles; l != NULL; l = l->next) {
                 GvcMixerCardProfile *p = l->data;
@@ -266,7 +266,7 @@ gvc_mixer_card_change_profile (GvcMixerCard *card,
 const GList *
 gvc_mixer_card_get_profiles (GvcMixerCard *card)
 {
-        g_return_val_if_fail (GVC_IS_MIXER_CARD (card), FALSE);
+        g_return_val_if_fail (GVC_IS_MIXER_CARD (card), NULL);
         return card->priv->profiles;
 }
 

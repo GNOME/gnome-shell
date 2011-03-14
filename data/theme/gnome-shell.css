@@ -150,6 +150,8 @@ StTooltip StLabel {
     -slider-height: 0.3em;
     -slider-background-color: #333333;
     -slider-border-color: #5f5f5f;
+    -slider-active-background-color: #76b0ec;
+    -slider-active-border-color: #1f6dbc;
     -slider-border-width: 1px;
     -slider-handle-radius: 0.5em;
 }
@@ -462,15 +464,6 @@ StTooltip StLabel {
     background-color: #c2c7cd;
     border-radius: 4px;
     height: 24px;
-}
-
-.view-tab-boxpointer {
-    -arrow-border-radius: 9px;
-    -arrow-background-color: rgba(0,0,0,0.5);
-    -arrow-border-width: 2px;
-    -arrow-border-color: rgba(255,255,255,0.5);
-    -arrow-base: 30px;
-    -arrow-rise: 15px;
 }
 
 #searchResults {
@@ -1484,12 +1477,12 @@ StTooltip StLabel {
 }
 
 .polkit-dialog-main-layout {
-    spacing: 10px;
+    spacing: 24px;
     padding: 10px;
 }
 
 .polkit-dialog-message-layout {
-    spacing: 10px;
+    spacing: 16px;
 }
 
 .polkit-dialog-headline {
@@ -1513,6 +1506,10 @@ StTooltip StLabel {
     padding-right: 10px;
 }
 
+.polkit-dialog-user-root-label {
+    color: #ff0000;
+}
+
 .polkit-dialog-password-label:ltr {
     padding-right: 0.5em;
 }
@@ -1528,33 +1525,21 @@ StTooltip StLabel {
 }
 
 .polkit-dialog-error-label {
-    font-size: 12px;
-    color: white;
-}
-
-.polkit-dialog-error-box {
-    padding-top: 15px;
-    spacing: 5px;
-}
-
-.polkit-dialog-checking-label {
-    font-size: 12px;
-    color: white;
-}
-
-.polkit-dialog-checking-box {
-    padding-top: 15px;
-    spacing: 5px;
+    font-size: 10pt;
+    color: #ffff00;
+    padding-bottom: 8px;
 }
 
 .polkit-dialog-info-label {
-    font-size: 12px;
-    color: white;
+    font-size: 10pt;
+    padding-bottom: 8px;
 }
 
-.polkit-dialog-info-box {
-    padding-top: 15px;
-    spacing: 5px;
+/* intentionally left transparent to avoid dialog changing size */
+.polkit-dialog-null-label {
+    font-size: 10pt;
+    color: rgba(0,0,0,0);
+    padding-bottom: 8px;
 }
 
 

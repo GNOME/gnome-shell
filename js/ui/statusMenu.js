@@ -50,6 +50,7 @@ StatusMenuButton.prototype = {
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
         this._presenceItems = {};
+        this._session = new GnomeSession.SessionManager();
 
         this._account_mgr = Tp.AccountManager.dup()
 
@@ -210,7 +211,7 @@ StatusMenuButton.prototype = {
 
     _onQuitSessionActivate: function() {
         Main.overview.hide();
-        Util.spawn(['gnome-session-quit', '--logout']);
+        this._session.LogoutRemote(0);
     },
 
     _onSuspendOrPowerOffActivate: function() {
@@ -222,7 +223,7 @@ StatusMenuButton.prototype = {
                 this._upClient.suspend_sync(null);
             }));
         } else {
-            Util.spawn(['gnome-session-quit', '--power-off']);
+            this._session.ShutdownRemote();
         }
     },
 

@@ -91,6 +91,9 @@ gboolean            gvc_mixer_control_set_default_sink     (GvcMixerControl *con
 gboolean            gvc_mixer_control_set_default_source   (GvcMixerControl *control,
                                                             GvcMixerStream  *stream);
 
+gdouble             gvc_mixer_control_get_vol_max_norm      (GvcMixerControl *control);
+gdouble             gvc_mixer_control_get_vol_max_amplified (GvcMixerControl *control);
+
 G_END_DECLS
 
 #endif /* __GVC_MIXER_CONTROL_H */
