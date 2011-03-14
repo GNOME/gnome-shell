@@ -185,21 +185,6 @@ DateMenuButton.prototype = {
         }
 
         let displayDate = new Date();
-        let msecRemaining;
-        if (showSeconds) {
-            msecRemaining = 1000 - displayDate.getMilliseconds();
-            if (msecRemaining < 50) {
-                displayDate.setSeconds(displayDate.getSeconds() + 1);
-                msecRemaining += 1000;
-            }
-        } else {
-            msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
-                                     displayDate.getMilliseconds());
-            if (msecRemaining < 500) {
-                displayDate.setMinutes(displayDate.getMinutes() + 1);
-                msecRemaining += 60000;
-            }
-        }
 
         this._clock.set_text(displayDate.toLocaleFormat(clockFormat));
 
@@ -209,7 +194,7 @@ DateMenuButton.prototype = {
         dateFormat = _("%A %B %e, %Y");
         this._date.set_text(displayDate.toLocaleFormat(dateFormat));
 
-        Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClockAndDate));
+        Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateClockAndDate));
         return false;
     },
 
