@@ -4,6 +4,8 @@
 
 #include <string.h>
 
+#include <glib/gi18n-lib.h>
+
 #include <meta/display.h>
 
 #include "shell-app-private.h"
@@ -427,13 +429,24 @@ shell_app_activate (ShellApp      *app,
   switch (app->state)
     {
       case SHELL_APP_STATE_STOPPED:
-        /* TODO sensibly handle this error */
-        shell_app_info_launch_full (app->info,
-                                    0,
-                                    NULL,
-                                    workspace,
-                                    NULL,
-                                    NULL);
+        {
+          GError *error = NULL;
+          if (!shell_app_info_launch_full (app->info,
+                                           0,
+                                           NULL,
+                                           workspace,
+                                           NULL,
+                                           &error))
+            {
+              char *msg;
+              msg = g_strdup_printf (_("Failed to launch '%s'"), shell_app_get_name (app));
+              shell_global_notify_error (shell_global_get (),
+                                         msg,
+                                         error->message);
+              g_free (msg);
+              g_clear_error (&error);
+            }
+        }
         break;
       case SHELL_APP_STATE_STARTING:
         break;
