@@ -259,7 +259,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="telepathy-logger" autogenargs="--enable-introspection">
+  <autotools id="telepathy-logger" autogenargs="--enable-introspection --disable-Werror">
     <branch repo="git.freedesktop.org" module="telepathy/telepathy-logger" />
     <dependencies>
       <dep package="telepathy-glib"/>
