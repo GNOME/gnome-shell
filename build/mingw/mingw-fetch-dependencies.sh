@@ -24,6 +24,10 @@ TOR_DEPS=( \
     libpng{-dev,}_1.4.0-1_win32.zip \
     zlib{-dev,}_1.2.4-2_win32.zip );
 
+GNOME_SOURCES_URL="http://ftp.gnome.org/pub/GNOME/sources/"
+SOURCES_DEPS=(\
+    json-glib/0.12/json-glib-0.12.2.tar.gz );
+
 GL_HEADER_URLS=( \
     http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/gl.h \
     http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/mesa_wgl.h \
@@ -111,6 +115,24 @@ function do_unzip_d ()
     fi;
 }
 
+function do_untar_source ()
+{
+    do_untar_source_d "$BUILD_DIR" "$@";
+}
+
+function do_untar_source_d ()
+{
+    local exdir="$1"; shift;
+    local tarfile="$1"; shift;
+
+    tar -C "$exdir" -zxvf "$tarfile" "$@";
+
+    if [ "$?" -ne 0 ]; then
+	echo "Failed to extract $tarfile";
+	exit 1;
+    fi;
+}
+
 function add_env ()
 {
     echo "export $1=\"$2\"" >> $env_file;
@@ -156,6 +178,28 @@ function find_compiler ()
     echo "Using compiler ${MINGW_TOOL_PREFIX}gcc and target $TARGET";
 }
 
+function do_cross_compile ()
+{
+    local dep="$1"; shift;
+    local builddir="$BUILD_DIR/$dep";
+
+    cd "$builddir"
+    . $ROOT_DIR/share/env.sh
+    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`"
+
+    if [ "$?" -ne 0 ]; then
+	echo "Failed to configure $dep";
+	exit 1;
+    fi;
+
+    make all install
+
+    if [ "$?" -ne 0 ]; then
+	echo "Failed to build $dep";
+	exit 1;
+    fi;
+}
+
 # If a download directory hasn't been specified then try to guess one
 # but ask for confirmation first
 guess_dir DOWNLOAD_DIR "downloads" \
@@ -187,6 +231,11 @@ guess_dir ROOT_DIR "clutter-cross" \
 SLASH_SCRIPT='s/\//\\\//g';
 quoted_root_dir=`echo "$ROOT_DIR" | sed "$SLASH_SCRIPT" `;
 
+# If a build directory hasn't been specified then try to guess one
+# but ask for confirmation first
+guess_dir BUILD_DIR "build" \
+    "the directory to build source dependencies in" "Build directory";
+
 ##
 # Download files
 ##
@@ -210,6 +259,11 @@ for dep in "${GL_HEADER_URLS[@]}"; do
     download_file "$dep" "$bn";
 done;
 
+for dep in "${SOURCES_DEPS[@]}"; do
+    src="${dep##*/}";
+    download_file "$GNOME_SOURCES_URL/$dep" "$src";
+done;
+
 ##
 # Extract files
 ##
@@ -223,6 +277,12 @@ done;
 for dep in "${TOR_DEPS[@]}"; do
     echo "Extracting $dep...";
     do_unzip "$DOWNLOAD_DIR/$dep";
+done;
+
+for src in "${SOURCES_DEPS[@]}"; do
+    echo "Extracting $src...";
+    src="${src##*/}";
+    do_untar_source "$DOWNLOAD_DIR/$src";
 done;
 
 echo "Fixing pkgconfig files...";
@@ -254,7 +314,7 @@ for header in "${GL_HEADERS[@]}"; do
 done;
 
 ##
-# Build
+# Build environment
 ##
 
 env_file="$ROOT_DIR/share/env.sh";
@@ -290,3 +350,14 @@ fi;
 EOF
 
 chmod a+x "$env_file";
+
+##
+# Build source dependencies
+##
+
+for dep in "${SOURCES_DEPS[@]}"; do
+    echo "Building $dep...";
+    src="${dep##*/}";
+    src="${src%%.tar.gz}";
+    do_cross_compile "$src"
+done;
