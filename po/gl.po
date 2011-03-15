@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-15 01:31+0100\n"
-"PO-Revision-Date: 2011-03-15 01:32+0100\n"
+"POT-Creation-Date: 2011-03-15 15:19+0100\n"
+"PO-Revision-Date: 2011-03-15 15:25+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -375,7 +375,7 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "A vindeira semana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:935
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -430,7 +430,7 @@ msgstr "%a %l:%M %p"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:209
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%a, %e de %B, %Y"
 
@@ -521,7 +521,7 @@ msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Desactivado"
 
@@ -541,11 +541,11 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:928
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1963
+#: ../js/ui/messageTray.js:1965
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -565,21 +565,21 @@ msgstr "Aplicativos"
 #. the left of the overview
 #: ../js/ui/overview.js:202
 msgid "Dash"
-msgstr ""
+msgstr "Panel"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:532
+#: ../js/ui/panel.js:510
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:893
+#: ../js/ui/panel.js:869
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:994
+#: ../js/ui/panel.js:970
 msgid "Panel"
 msgstr "Panel"
 
@@ -596,7 +596,7 @@ msgstr "Reintentar"
 msgid "Connect to..."
 msgstr "Conectar con…"
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "LUGARES E DISPOSITIVOS"
 
@@ -605,7 +605,7 @@ msgstr "LUGARES E DISPOSITIVOS"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:618
+#: ../js/ui/popupMenu.js:636
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -621,39 +621,39 @@ msgstr "Buscando..."
 msgid "No matching results."
 msgstr "Non hai resultados que coincidan."
 
-#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
+#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:137
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:142
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:150
 msgid "My Account"
 msgstr "A miña conta"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:154
 msgid "System Settings"
 msgstr "Configuracións do sistema"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:161
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/statusMenu.js:153
+#: ../js/ui/statusMenu.js:165
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:158
+#: ../js/ui/statusMenu.js:170
 msgid "Log Out..."
 msgstr "Saír da sesión…"
 
@@ -752,7 +752,7 @@ msgstr "Configuracións do teclado"
 msgid "Mouse Settings"
 msgstr "Configuracións do rato"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Configuracións do son"
 
@@ -912,30 +912,30 @@ msgstr "Computador"
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: ../js/ui/status/volume.js:44
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:57
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Micrófono"
 
-#: ../js/ui/telepathyClient.js:239
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "%s está conectado/a."
 
-#: ../js/ui/telepathyClient.js:244
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "%s está desconectado/a."
 
-#: ../js/ui/telepathyClient.js:247
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "%s está ausente."
 
-#: ../js/ui/telepathyClient.js:250
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "%s está ocupado/a."
@@ -943,20 +943,27 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:348
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviado ás %X o %A"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/telepathyClient.js:498
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s é coñecido agora como %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:117
+#: ../js/ui/viewSelector.js:119
 msgid "Type to search..."
 msgstr "Teclear para buscar…"
 
-#: ../js/ui/viewSelector.js:137 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Buscar"
 
@@ -972,7 +979,7 @@ msgstr "«%s» está preparado"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -981,43 +988,47 @@ msgstr[1] "%u saídas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/shell-global.c:1298
+#: ../src/main.c:395
+msgid "Print version"
+msgstr "Imprimir versión"
+
+#: ../src/shell-global.c:1308
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1302
+#: ../src/shell-global.c:1312
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1307
+#: ../src/shell-global.c:1317
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1322
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1327
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
