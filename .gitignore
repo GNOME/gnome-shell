@@ -44,8 +44,9 @@ src/calendar-server/org.gnome.Shell.CalendarServer.service
 src/gnome-shell
 src/gnome-shell-calendar-server
 src/gnome-shell-extension-tool
-src/gnome-shell-real
 src/gnome-shell-jhbuild
+src/gnome-shell-perf-helper
+src/gnome-shell-real
 src/run-js-test
 src/test-recorder
 src/test-recorder.ogg
