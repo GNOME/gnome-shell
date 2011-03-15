@@ -408,7 +408,7 @@ msgstr "%s bo samodejno odjavljen čez %d sekund."
 #: ../js/ui/endSessionDialog.js:67
 #, c-format
 msgid "You will be logged out automatically in %d seconds."
-msgstr "Samodejno boste odjavljeni čez %f sekund."
+msgstr "Samodejno boste odjavljeni čez %d sekund."
 
 #: ../js/ui/endSessionDialog.js:68
 msgid "Logging out of the system."
