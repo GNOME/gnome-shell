@@ -2402,41 +2402,18 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
 }
 
 static void
-_clutter_actor_draw_paint_volume (ClutterActor *self)
+_clutter_actor_draw_paint_volume_full (ClutterActor *self,
+                                       ClutterPaintVolume *pv,
+                                       const char *label,
+                                       const CoglColor *color)
 {
   static CoglMaterial *outline = NULL;
   CoglHandle vbo;
-  ClutterPaintVolume *pv;
-  gboolean free_fake_pv;
-  ClutterPaintVolume fake_pv;
   ClutterVertex line_ends[12 * 2];
   int n_vertices;
-  PangoLayout *layout;
-  CoglColor color;
 
   if (outline == NULL)
     outline = cogl_material_new ();
-
-  pv = _clutter_actor_get_paint_volume_mutable (self);
-  if (!pv)
-    {
-      gfloat width, height;
-      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-      _clutter_paint_volume_init_static (&fake_pv, stage);
-      free_fake_pv = TRUE;
-
-      clutter_actor_get_size (self, &width, &height);
-      clutter_paint_volume_set_width (&fake_pv, width);
-      clutter_paint_volume_set_height (&fake_pv, height);
-
-      pv = &fake_pv;
-      cogl_color_init_from_4f (&color, 0, 0, 1, 1);
-    }
-  else
-    {
-      cogl_color_init_from_4f (&color, 0, 1, 0, 1);
-      free_fake_pv = FALSE;
-    }
 
   _clutter_paint_volume_complete (pv);
 
@@ -2472,23 +2449,103 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
                           0, /* stride */
                           line_ends);
 
-  cogl_material_set_color (outline, &color);
+  cogl_material_set_color (outline, color);
   cogl_set_source (outline);
   cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINES,
                            0 , n_vertices);
   cogl_object_unref (vbo);
 
-  layout = pango_layout_new (clutter_actor_get_pango_context (self));
-  pango_layout_set_text (layout, G_OBJECT_TYPE_NAME (self), -1);
-  cogl_pango_render_layout (layout,
-                            pv->vertices[0].x,
-                            pv->vertices[0].y,
-                            &color,
-                            0);
-  g_object_unref (layout);
+  if (label)
+    {
+      PangoLayout *layout;
+      layout = pango_layout_new (clutter_actor_get_pango_context (self));
+      pango_layout_set_text (layout, label, -1);
+      cogl_pango_render_layout (layout,
+                                pv->vertices[0].x,
+                                pv->vertices[0].y,
+                                color,
+                                0);
+      g_object_unref (layout);
+    }
+}
 
-  if (free_fake_pv)
-    clutter_paint_volume_free (&fake_pv);
+static void
+_clutter_actor_draw_paint_volume (ClutterActor *self)
+{
+  ClutterPaintVolume *pv;
+  CoglColor color;
+
+  pv = _clutter_actor_get_paint_volume_mutable (self);
+  if (!pv)
+    {
+      gfloat width, height;
+      ClutterPaintVolume fake_pv;
+
+      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
+      _clutter_paint_volume_init_static (&fake_pv, stage);
+
+      clutter_actor_get_size (self, &width, &height);
+      clutter_paint_volume_set_width (&fake_pv, width);
+      clutter_paint_volume_set_height (&fake_pv, height);
+
+      cogl_color_init_from_4f (&color, 0, 0, 1, 1);
+      _clutter_actor_draw_paint_volume_full (self, &fake_pv,
+                                             G_OBJECT_TYPE_NAME (self),
+                                             &color);
+
+      clutter_paint_volume_free (&fake_pv);
+    }
+  else
+    {
+      cogl_color_init_from_4f (&color, 0, 1, 0, 1);
+      _clutter_actor_draw_paint_volume_full (self, pv,
+                                             G_OBJECT_TYPE_NAME (self),
+                                             &color);
+    }
+}
+
+static void
+_clutter_actor_paint_cull_result (ClutterActor *self,
+                                  gboolean success,
+                                  ClutterCullResult result)
+{
+  ClutterPaintVolume *pv;
+  CoglColor color;
+
+  if (success)
+    {
+      if (result == CLUTTER_CULL_RESULT_IN)
+        cogl_color_init_from_4f (&color, 0, 1, 0, 1);
+      else if (result == CLUTTER_CULL_RESULT_OUT)
+        cogl_color_init_from_4f (&color, 0, 0, 1, 1);
+      else
+        cogl_color_init_from_4f (&color, 0, 1, 1, 1);
+    }
+  else
+    cogl_color_init_from_4f (&color, 1, 1, 1, 1);
+
+  if (success && (pv = _clutter_actor_get_paint_volume_mutable (self)))
+    _clutter_actor_draw_paint_volume_full (self, pv,
+                                           G_OBJECT_TYPE_NAME (self),
+                                           &color);
+  else
+    {
+      PangoLayout *layout;
+      char *label =
+        g_strdup_printf ("CULL FAILURE: %s", G_OBJECT_TYPE_NAME (self));
+      cogl_color_init_from_4f (&color, 1, 1, 1, 1);
+      cogl_set_source_color (&color);
+
+      layout = pango_layout_new (clutter_actor_get_pango_context (self));
+      pango_layout_set_text (layout, label, -1);
+      cogl_pango_render_layout (layout,
+                                0,
+                                0,
+                                &color,
+                                0);
+      g_free (label);
+      g_object_unref (layout);
+    }
 }
 
 static int clone_paint_level = 0;
@@ -2517,12 +2574,11 @@ in_clone_paint (void)
  * means there's no point in trying to cull descendants of the current
  * node. */
 static gboolean
-cull_actor (ClutterActor *self)
+cull_actor (ClutterActor *self, ClutterCullResult *result_out)
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActor *stage;
   const ClutterPlane *stage_clip;
-  ClutterCullResult result;
 
   if (!priv->last_paint_volume_valid)
     {
@@ -2554,12 +2610,9 @@ cull_actor (ClutterActor *self)
       return FALSE;
     }
 
-  result = _clutter_paint_volume_cull (&priv->last_paint_volume, stage_clip);
-  if (result == CLUTTER_CULL_RESULT_IN ||
-      result == CLUTTER_CULL_RESULT_PARTIAL)
-    return FALSE;
-  else
-    return TRUE;
+  *result_out =
+    _clutter_paint_volume_cull (&priv->last_paint_volume, stage_clip);
+  return TRUE;
 }
 
 static void
@@ -2718,6 +2771,11 @@ clutter_actor_paint (ClutterActor *self)
        */
       if (!in_clone_paint ())
         {
+          gboolean success;
+          /* annoyingly gcc warns if uninitialized even though
+           * the initialization is redundant :-( */
+          ClutterCullResult result = CLUTTER_CULL_RESULT_IN;
+
           if (G_LIKELY ((clutter_paint_debug_flags &
                          (CLUTTER_DEBUG_DISABLE_CULLING |
                           CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)) !=
@@ -2725,7 +2783,11 @@ clutter_actor_paint (ClutterActor *self)
                          CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
             _clutter_actor_update_last_paint_volume (self);
 
-          if (cull_actor (self))
+          success = cull_actor (self, &result);
+
+          if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
+            _clutter_actor_paint_cull_result (self, success, result);
+          else if (result == CLUTTER_CULL_RESULT_OUT && success)
             goto done;
         }
 

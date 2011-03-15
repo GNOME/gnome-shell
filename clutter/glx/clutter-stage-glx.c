@@ -442,7 +442,18 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
   else
     {
       CLUTTER_NOTE (CLIPPING, "Unclipped stage paint\n");
-      _clutter_stage_do_paint (stage_x11->wrapper, NULL);
+
+      /* If we are trying to debug redraw issues then we want to pass
+       * the bounding_redraw_clip so it can be visualized */
+      if (G_UNLIKELY (clutter_paint_debug_flags &
+                      CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS) &&
+          may_use_clipped_redraw)
+        {
+          _clutter_stage_do_paint (stage_x11->wrapper,
+                                   &stage_glx->bounding_redraw_clip);
+        }
+      else
+        _clutter_stage_do_paint (stage_x11->wrapper, NULL);
     }
 
   if (may_use_clipped_redraw &&
