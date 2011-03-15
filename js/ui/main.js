@@ -86,6 +86,9 @@ function start() {
     global.logError = _logError;
     global.log = _logDebug;
 
+    // Chain up async errors reported from C
+    global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
+
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     shellDBusService = new ShellDBus.GnomeShell();
@@ -393,6 +396,27 @@ function loadTheme() {
 
     let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
     themeContext.set_theme (theme);
+}
+
+/**
+ * notifyError:
+ * @msg: An error message
+ * @details: Additional information
+ *
+ * See shell_global_notify_problem().
+ */
+function notifyError(msg, details) {
+    // Also print to stderr so it's logged somewhere
+    if (details)
+        log("error: " + msg + ": " + details);
+    else
+        log("error: " + msg)
+
+    let source = new MessageTray.SystemNotificationSource();
+    messageTray.add(source);
+    let notification = new MessageTray.Notification(source, msg, details);
+    notification.setTransient(true);
+    source.notify(notification);
 }
 
 /**

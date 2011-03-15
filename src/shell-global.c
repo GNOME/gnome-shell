@@ -21,6 +21,7 @@
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <gjs/gjs-module.h>
+#include <girepository.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -102,6 +103,7 @@ enum
  XDND_POSITION_CHANGED,
  XDND_LEAVE,
  XDND_ENTER,
+ NOTIFY_ERROR,
  LAST_SIGNAL
 };
 
@@ -292,6 +294,17 @@ shell_global_class_init (ShellGlobalClass *klass)
                     NULL, NULL,
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
+
+  shell_global_signals[NOTIFY_ERROR] =
+      g_signal_new ("notify-error",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL,
+                    gi_cclosure_marshal_generic,
+                    G_TYPE_NONE, 2,
+                    G_TYPE_STRING,
+                    G_TYPE_STRING);
 
   g_object_class_install_property (gobject_class,
                                    PROP_OVERLAY_GROUP,
@@ -1236,6 +1249,25 @@ void
 shell_global_maybe_gc (ShellGlobal *global)
 {
   gjs_context_maybe_gc (global->js_context);
+}
+
+/**
+ * shell_global_notify_error:
+ * @global: a #ShellGlobal
+ * @msg: Error message
+ * @details: Error details
+ *
+ * Show a system error notification.  Use this function
+ * when a user-initiated action results in a non-fatal problem
+ * from causes that may not be under system control.  For
+ * example, an application crash.
+ */
+void
+shell_global_notify_error (ShellGlobal  *global,
+                           const char   *msg,
+                           const char   *details)
+{
+  g_signal_emit_by_name (global, "notify-error", msg, details);
 }
 
 static void

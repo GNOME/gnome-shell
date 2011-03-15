@@ -6,7 +6,6 @@ const GLib = imports.gi.GLib;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -146,12 +145,7 @@ function trySpawnDesktop(id) {
 
 function _handleSpawnError(command, err) {
     let title = _("Execution of '%s' failed:").format(command);
-
-    let source = new MessageTray.SystemNotificationSource();
-    Main.messageTray.add(source);
-    let notification = new MessageTray.Notification(source, title, err.message);
-    notification.setTransient(true);
-    source.notify(notification);
+    Main.notifyProblem(title, err.message);
 }
 
 // killall:

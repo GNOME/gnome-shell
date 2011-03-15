@@ -143,6 +143,11 @@ void shell_global_play_theme_sound (ShellGlobal       *global,
 void shell_global_cancel_theme_sound (ShellGlobal     *global,
                                       guint            id);
 
+
+void shell_global_notify_error (ShellGlobal  *global,
+                                const char   *msg,
+                                const char   *details);
+
 void shell_global_init_xdnd (ShellGlobal *global);
 
 typedef void (*ShellGetTpContactCb) (TpConnection *connection,
