@@ -108,10 +108,6 @@ AuthenticationDialog.prototype = {
             userRealName = _('Administrator');
         }
 
-        // Work around Gdm.UserManager returning an empty string for the real name
-        if (userRealName.length == 0)
-            userRealName = userName;
-
         if (userIsRoot) {
             let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
                                             text: userRealName }));
