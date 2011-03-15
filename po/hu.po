@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-24 16:09+0100\n"
-"PO-Revision-Date: 2011-02-24 16:10+0100\n"
+"POT-Creation-Date: 2011-03-15 14:43+0100\n"
+"PO-Revision-Date: 2011-03-15 14:42+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "Language: \n"
@@ -193,27 +193,27 @@ msgid "Execution of '%s' failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:174
+#: ../js/ui/appDisplay.js:226
 msgid "All"
 msgstr "Összes"
 
-#: ../js/ui/appDisplay.js:261
+#: ../js/ui/appDisplay.js:324
 msgid "APPLICATIONS"
 msgstr "ALKALMAZÁSOK"
 
-#: ../js/ui/appDisplay.js:291
-msgid "PREFERENCES"
+#: ../js/ui/appDisplay.js:350
+msgid "SETTINGS"
 msgstr "BEÁLLÍTÁSOK"
 
-#: ../js/ui/appDisplay.js:551
+#: ../js/ui/appDisplay.js:612
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../js/ui/appDisplay.js:555
+#: ../js/ui/appDisplay.js:615
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: ../js/ui/appDisplay.js:556
+#: ../js/ui/appDisplay.js:616
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
@@ -230,19 +230,19 @@ msgstr "%s eltávolítva a Kedvencek közül"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Egész nap"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%k.%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%p %l.%M"
@@ -252,43 +252,43 @@ msgstr "%p %l.%M"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "H"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Sz"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Cs"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Sz"
@@ -299,136 +299,136 @@ msgstr "Sz"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "V"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "H"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Sze"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Cs"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "Szo"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "Semmi sincs ütemezve"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y %B %d"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "Ma"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
 msgstr "Holnap"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "Ezen a héten"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
 msgstr "Jövő héten"
 
-#: ../js/ui/dash.js:174
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:935
 msgid "Remove"
 msgstr "Eltávolítás"
 
-#: ../js/ui/dateMenu.js:93
+#: ../js/ui/dateMenu.js:91
 msgid "Date and Time Settings"
 msgstr "Dátum- és időbeállítások"
 
-#: ../js/ui/dateMenu.js:112
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "Naptár megnyitása"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:151
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %k.%M.%S"
 
-#: ../js/ui/dateMenu.js:152
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %k.%M"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:156
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %k.%M.%S"
 
-#: ../js/ui/dateMenu.js:157
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %k.%M"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:164
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %p %l.%M.%S"
 
-#: ../js/ui/dateMenu.js:165
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %p %l.%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:169
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %p %l.%M.%S"
 
-#: ../js/ui/dateMenu.js:170
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a, %p %l.%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:196
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%Y. %b %e %A"
 
@@ -511,37 +511,41 @@ msgstr "Megerősítés"
 msgid "Cancel"
 msgstr "Mégse"
 
-#: ../js/ui/lookingGlass.js:587
+#: ../js/ui/lookingGlass.js:588
 msgid "No extensions installed"
 msgstr "Nincsenek kiterjesztések telepítve"
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:625
 msgid "Enabled"
 msgstr "Engedélyezve"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Tiltva"
 
-#: ../js/ui/lookingGlass.js:628
+#: ../js/ui/lookingGlass.js:629
 msgid "Error"
 msgstr "Hiba"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:631
 msgid "Out of date"
 msgstr "Elavult"
 
-#: ../js/ui/lookingGlass.js:655
+#: ../js/ui/lookingGlass.js:656
 msgid "View Source"
 msgstr "Forrás megtekintése"
 
-#: ../js/ui/lookingGlass.js:661
+#: ../js/ui/lookingGlass.js:662
 msgid "Web Page"
 msgstr "Weblap"
 
-#: ../js/ui/messageTray.js:1902
+#: ../js/ui/messageTray.js:928
+msgid "Open"
+msgstr "Megnyitás"
+
+#: ../js/ui/messageTray.js:1965
 msgid "System Information"
 msgstr "Rendszerinformációk"
 
@@ -557,17 +561,28 @@ msgstr "Ablakok"
 msgid "Applications"
 msgstr "Alkalmazások"
 
+# FIXME - valami jobbat
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:202
+msgid "Dash"
+msgstr "Dash"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:510
 #, c-format
 msgid "Quit %s"
 msgstr "%s bezárása"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:905
+#: ../js/ui/panel.js:869
 msgid "Activities"
 msgstr "Tevékenységek"
+
+#: ../js/ui/panel.js:970
+msgid "Panel"
+msgstr "Panel"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -582,7 +597,7 @@ msgstr "Újra"
 msgid "Connect to..."
 msgstr "Kapcsolódás…"
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "HELYEK ÉS ESZKÖZÖK"
 
@@ -591,7 +606,7 @@ msgstr "HELYEK ÉS ESZKÖZÖK"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:612
+#: ../js/ui/popupMenu.js:636
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -599,91 +614,91 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Adjon meg egy parancsot:"
 
-#: ../js/ui/searchDisplay.js:295
+#: ../js/ui/searchDisplay.js:283
 msgid "Searching..."
 msgstr "Keresés…"
 
-#: ../js/ui/searchDisplay.js:309
+#: ../js/ui/searchDisplay.js:297
 msgid "No matching results."
 msgstr "Nincs találat."
 
-#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
 msgid "Power Off..."
 msgstr "Kikapcsolás…"
 
-#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#: ../js/ui/statusMenu.js:122
+#: ../js/ui/statusMenu.js:137
 msgid "Available"
 msgstr "Elérhető"
 
-#: ../js/ui/statusMenu.js:127
+#: ../js/ui/statusMenu.js:142
 msgid "Busy"
 msgstr "Elfoglalt"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:150
 msgid "My Account"
 msgstr "Saját fiók"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:154
 msgid "System Settings"
 msgstr "Rendszerbeállítások"
 
-#: ../js/ui/statusMenu.js:146
+#: ../js/ui/statusMenu.js:161
 msgid "Lock Screen"
 msgstr "Képernyő zárolása"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:165
 msgid "Switch User"
 msgstr "Felhasználóváltás"
 
-#: ../js/ui/statusMenu.js:155
+#: ../js/ui/statusMenu.js:170
 msgid "Log Out..."
 msgstr "Kijelentkezés…"
 
-#: ../js/ui/status/accessibility.js:81
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "Nagyítás"
 
-#: ../js/ui/status/accessibility.js:88
+#: ../js/ui/status/accessibility.js:69
 msgid "Screen Reader"
 msgstr "Képernyőolvasó"
 
-#: ../js/ui/status/accessibility.js:92
+#: ../js/ui/status/accessibility.js:73
 msgid "Screen Keyboard"
 msgstr "Képernyő-billentyűzet"
 
-#: ../js/ui/status/accessibility.js:96
+#: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Vizuális figyelmeztetések"
 
-#: ../js/ui/status/accessibility.js:99
+#: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
 msgstr "Ragadós billentyűk"
 
-#: ../js/ui/status/accessibility.js:102
+#: ../js/ui/status/accessibility.js:83
 msgid "Slow Keys"
 msgstr "Lassú billentyűk"
 
-#: ../js/ui/status/accessibility.js:105
+#: ../js/ui/status/accessibility.js:86
 msgid "Bounce Keys"
 msgstr "Billentyűszűrés"
 
-#: ../js/ui/status/accessibility.js:108
+#: ../js/ui/status/accessibility.js:89
 msgid "Mouse Keys"
 msgstr "Egérbillentyűk"
 
-#: ../js/ui/status/accessibility.js:112
+#: ../js/ui/status/accessibility.js:93
 msgid "Universal Access Settings"
 msgstr "Akadálymentesítési beállítások"
 
-#: ../js/ui/status/accessibility.js:164
+#: ../js/ui/status/accessibility.js:145
 msgid "High Contrast"
 msgstr "Nagy kontraszt"
 
-#: ../js/ui/status/accessibility.js:209
+#: ../js/ui/status/accessibility.js:182
 msgid "Large Text"
 msgstr "Nagy szöveg"
 
@@ -738,7 +753,7 @@ msgstr "Billentyűzetbeállítások"
 msgid "Mouse Settings"
 msgstr "Egérbeállítások"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Hangbeállítások"
 
@@ -812,7 +827,13 @@ msgstr "Lokalizációs beállítások"
 msgid "Power Settings"
 msgstr "Energiabeállítások"
 
-#: ../js/ui/status/power.js:112
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:110
+msgid "Estimating..."
+msgstr "Becslés…"
+
+#: ../js/ui/status/power.js:117
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -820,102 +841,102 @@ msgstr[0] "%d óra van hátra"
 msgstr[1] "%d óra van hátra"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s van hátra"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:122
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "óra"
 msgstr[1] "óra"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:122
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "perc"
 msgstr[1] "perc"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:125
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d perc van hátra"
 msgstr[1] "%d perc van hátra"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:227
 msgid "AC adapter"
 msgstr "Hálózati csatlakozó"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:229
 msgid "Laptop battery"
 msgstr "Noteszgép-akkumulátor"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:231
 msgid "UPS"
 msgstr "Szünetmentes táp"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:233
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:235
 msgid "Mouse"
 msgstr "Egér"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:237
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:239
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:241
 msgid "Cell phone"
 msgstr "Mobiltelefon"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:243
 msgid "Media player"
 msgstr "Médialejátszó"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:245
 msgid "Tablet"
 msgstr "Táblagép"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:247
 msgid "Computer"
 msgstr "Számítógép"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: ../js/ui/status/volume.js:44
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "Hangerő"
 
-#: ../js/ui/status/volume.js:57
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:239
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "%s elérhető."
 
-#: ../js/ui/telepathyClient.js:244
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "%s kilépett."
 
-#: ../js/ui/telepathyClient.js:247
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "%s távol van."
 
-#: ../js/ui/telepathyClient.js:250
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "%s elfoglalt."
@@ -923,32 +944,43 @@ msgstr "%s elfoglalt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:348
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Elküldve: %A, %X"
 
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/telepathyClient.js:498
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s mostantól %s néven ismert"
+
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters
-#: ../js/ui/viewSelector.js:30
+#. characters.
+#: ../js/ui/viewSelector.js:119
 msgid "Type to search..."
 msgstr "Gépeljen a kereséshez…"
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Oldalsáv"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s indítása befejeződött"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "„%s” kész"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -957,43 +989,47 @@ msgstr[1] "%u kimenet"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u bemenet"
 msgstr[1] "%u bemenet"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
-#: ../src/shell-global.c:1363
+#: ../src/main.c:395
+msgid "Print version"
+msgstr "Verzió kiírása"
+
+#: ../src/shell-global.c:1308
 msgid "Less than a minute ago"
 msgstr "Kevesebb, mint egy perce"
 
-#: ../src/shell-global.c:1367
+#: ../src/shell-global.c:1312
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d perce"
 msgstr[1] "%d perce"
 
-#: ../src/shell-global.c:1372
+#: ../src/shell-global.c:1317
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d órája"
 msgstr[1] "%d órája"
 
-#: ../src/shell-global.c:1377
+#: ../src/shell-global.c:1322
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d napja"
 msgstr[1] "%d napja"
 
-#: ../src/shell-global.c:1382
+#: ../src/shell-global.c:1327
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1001,7 +1037,7 @@ msgstr[0] "%d hete"
 msgstr[1] "%d hete"
 
 #: ../src/shell-polkit-authentication-agent.c:334
-msgid "Authentation dialog was dismissed by the user"
+msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
 #: ../src/shell-util.c:89
@@ -1014,10 +1050,6 @@ msgstr "Saját mappa"
 msgid "File System"
 msgstr "Fájlrendszer"
 
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "Oldalsáv"
-
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
@@ -1027,4 +1059,3 @@ msgstr "Oldalsáv"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
