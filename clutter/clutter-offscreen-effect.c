@@ -150,7 +150,17 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
     return TRUE;
 
   if (priv->target == COGL_INVALID_HANDLE)
-    priv->target = cogl_material_new ();
+    {
+      priv->target = cogl_material_new ();
+
+      /* We're always going to render the texture at a 1:1 texel:pixel
+         ratio so we can use 'nearest' filtering to decrease the
+         effects of rounding errors in the geometry calculation */
+      cogl_material_set_layer_filters (priv->target,
+                                       0, /* layer_index */
+                                       COGL_MATERIAL_FILTER_NEAREST,
+                                       COGL_MATERIAL_FILTER_NEAREST);
+    }
 
   texture =
     clutter_offscreen_effect_create_texture (self, fbo_width, fbo_height);
