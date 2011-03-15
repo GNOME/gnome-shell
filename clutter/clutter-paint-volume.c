@@ -922,8 +922,7 @@ _clutter_paint_volume_cull (ClutterPaintVolume *pv,
 {
   int vertex_count;
   ClutterVertex *vertices = pv->vertices;
-  gboolean in = TRUE;
-  gboolean out = TRUE;
+  gboolean partial = FALSE;
   int i;
   int j;
 
@@ -942,10 +941,10 @@ _clutter_paint_volume_cull (ClutterPaintVolume *pv,
   else
     vertex_count = 8;
 
-  for (i = 0; i < vertex_count; i++)
+  for (i = 0; i < 4; i++)
     {
-      gboolean point_in = TRUE;
-      for (j = 0; j < 4; j++)
+      int out = 0;
+      for (j = 0; j < vertex_count; j++)
         {
           ClutterVertex p;
           float distance;
@@ -953,32 +952,27 @@ _clutter_paint_volume_cull (ClutterPaintVolume *pv,
           /* XXX: for perspective projections this can be optimized
            * out because all the planes should pass through the origin
            * so (0,0,0) is a valid v0. */
-          p.x = vertices[i].x - planes[j].v0.x;
-          p.y = vertices[i].y - planes[j].v0.y;
-          p.z = vertices[i].z - planes[j].v0.z;
+          p.x = vertices[j].x - planes[i].v0.x;
+          p.y = vertices[j].y - planes[i].v0.y;
+          p.z = vertices[j].z - planes[i].v0.z;
 
           distance =
-            planes[j].n.x * p.x + planes[j].n.y * p.y + planes[j].n.z * p.z;
+            planes[i].n.x * p.x + planes[i].n.y * p.y + planes[i].n.z * p.z;
 
           if (distance < 0)
-            {
-              point_in = FALSE;
-              break;
-            }
+            out++;
         }
 
-      if (!point_in)
-        in = FALSE;
-      else
-        out = FALSE;
+      if (out == 4)
+        return CLUTTER_CULL_RESULT_OUT;
+      else if (out != 0)
+        partial = TRUE;
     }
 
-  if (in)
-    return CLUTTER_CULL_RESULT_IN;
-  else if (out)
-    return CLUTTER_CULL_RESULT_OUT;
-  else
+  if (partial)
     return CLUTTER_CULL_RESULT_PARTIAL;
+  else
+    return CLUTTER_CULL_RESULT_IN;
 }
 
 void
