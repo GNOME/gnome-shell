@@ -376,7 +376,15 @@ AltTabPopup.prototype = {
         this.destroy();
     },
 
+    _popModal: function() {
+        if (this._haveModal) {
+            Main.popModal(this.actor);
+            this._haveModal = false;
+        }
+    },
+
     destroy : function() {
+        this._popModal();
         if (this.actor.visible) {
             Tweener.addTween(this.actor,
                              { opacity: 0,
@@ -392,8 +400,7 @@ AltTabPopup.prototype = {
     },
 
     _onDestroy : function() {
-        if (this._haveModal)
-            Main.popModal(this.actor);
+        this._popModal();
 
         if (this._thumbnails)
             this._destroyThumbnails();

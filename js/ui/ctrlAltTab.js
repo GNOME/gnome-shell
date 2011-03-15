@@ -281,6 +281,7 @@ CtrlAltTabPopup.prototype = {
     },
 
     _onDestroy : function() {
+        this._popModal();
         if (this._keyPressEventId)
             this.actor.disconnect(this._keyPressEventId);
         if (this._keyReleaseEventId)
