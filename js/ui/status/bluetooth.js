@@ -136,6 +136,7 @@ Indicator.prototype = {
     _updateDevices: function() {
         let devices = this._applet.get_devices();
 
+        let newlist = [ ];
         for (let i = 0; i < this._deviceItems.length; i++) {
             let item = this._deviceItems[i];
             let destroy = true;
@@ -143,26 +144,20 @@ Indicator.prototype = {
                 // we need to deep compare because BluetoothSimpleDevice is a boxed type
                 // (but we take advantage of that, because _skip will disappear the next
                 // time get_devices() is called)
-                if (this._deviceCompare(item._device, devices[i])) {
-                    item.label.text = devices[i].alias;
-                    devices[i]._skip = true;
+                if (this._deviceCompare(item._device, devices[j])) {
+                    item.label.text = devices[j].alias;
+                    devices[j]._skip = true;
                     destroy = false;
+                    break;
                 }
             }
-            if (destroy) {
+            if (destroy)
                 item.destroy();
-                item._destroyed = true;
-            }
-        }
-
-        let newlist = [ ];
-        for (let i = 0; i < this._deviceItems.length; i++) {
-            let item = this._deviceItems[i];
-            if (!item._destroyed)
+            else
                 newlist.push(item);
         }
-        this._deviceItems = newlist;
 
+        this._deviceItems = newlist;
         this._hasDevices = newlist.length > 0;
         for (let i = 0; i < devices.length; i++) {
             let d = devices[i];
