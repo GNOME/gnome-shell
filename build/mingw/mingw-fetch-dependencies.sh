@@ -325,8 +325,7 @@ find_compiler;
 
 add_env PKG_CONFIG_PATH "$ROOT_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH";
 
-add_env LDFLAGS "-mno-cygwin \$LDFLAGS"
-add_env CFLAGS "-mno-cygwin -mms-bitfields \$CFLAGS"
+add_env CFLAGS "-mms-bitfields \$CFLAGS"
 
 cat >> "$env_file" <<EOF
 export ROOT_DIR="$ROOT_DIR";
