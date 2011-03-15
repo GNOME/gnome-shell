@@ -7,22 +7,337 @@
 # Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2007, 2008.
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 # Fran Dieguez <fran.dieguez@glug.es>, 2009.
-# Fran Diéguez <frandieguez@ubuntu.com>, 2010, 2011.
+# Fran Diéguez <frandieguez@gnome.org>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-27 03:17+0100\n"
-"PO-Revision-Date: 2011-01-26 15:31+0100\n"
-"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
-"Language-Team: Galician <gnome-gl-list@gnome.org>\n"
+"POT-Creation-Date: 2011-03-15 16:01+0100\n"
+"PO-Revision-Date: 2011-03-15 16:01+0100\n"
+"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
+"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 0.3\n"
+
+#: ../src/core/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Cambiar ao espazo de traballo 1"
+
+#: ../src/core/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Cambiar ao espazo de traballo 2"
+
+#: ../src/core/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Cambiar ao espazo de traballo 3"
+
+#: ../src/core/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Cambiar ao espazo de traballo 4"
+
+#: ../src/core/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Cambiar ao espazo de traballo 5"
+
+#: ../src/core/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Cambiar ao espazo de traballo 6"
+
+#: ../src/core/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Cambiar ao espazo de traballo 7"
+
+#: ../src/core/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Cambiar ao espazo de traballo 8"
+
+#: ../src/core/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Cambiar ao espazo de traballo 9"
+
+#: ../src/core/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Cambiar ao espazo de traballo 10"
+
+#: ../src/core/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Cambiar ao espazo de traballo 11"
+
+#: ../src/core/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Cambiar ao espazo de traballo 12"
+
+#: ../src/core/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Cambiar ao espazo de traballo á esquerda do espazo actual"
+
+#: ../src/core/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Cambiar ao espazo de traballo á dereita do espazo actual"
+
+#: ../src/core/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Cambiar ao espazo de traballo sobre o espazo actual"
+
+#: ../src/core/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Cambiar ao espazo de traballo baixo o espazo actual"
+
+#: ../src/core/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Moverse entre xanelas dun aplicativo usando unha xanela emerxente"
+
+#: ../src/core/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr ""
+"Moverse cara a atrás entre xanelas dun aplicativo usando unha xanela "
+"emerxente"
+
+#: ../src/core/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Moverse entre xanelas usando unha xanela emerxente"
+
+#: ../src/core/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr "Moverse cara a atrás entre xanelas usando unha xanela emerxente"
+
+#: ../src/core/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Moverse entre os paneis e o escritorio usando unha xanela emerxente"
+
+#: ../src/core/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr ""
+"Moverse cara a atrás entre os paneis e o escritorio usando unha xanela "
+"emerxente"
+
+#: ../src/core/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Moverse inmediatamente entre xanelas dun aplicativo"
+
+#: ../src/core/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Moverse cara a atrás entre xanelas dun aplicativo inmediatamente"
+
+#: ../src/core/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Moverse inmediatamente entre xanelas"
+
+#: ../src/core/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Moverse cara a atrás entre xanelas inmediatamente"
+
+#: ../src/core/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Moverse inmediatamente entre os paneis e o escritorio"
+
+#: ../src/core/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Moverse inmediatamente cara a atrás entre os paneis e o escritorio"
+
+#: ../src/core/all-keybindings.h:203
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Agochar todas as xanelas normais e cambiar o foco ao escritorio"
+
+#: ../src/core/all-keybindings.h:206
+msgid "Show the panel's main menu"
+msgstr "Mostrar o menú principal do panel"
+
+#: ../src/core/all-keybindings.h:209
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Mostrar a caixa de diálogo \"Executar un aplicativo\" do panel"
+
+#: ../src/core/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Iniciar ou deter a grabación da sesión"
+
+#: ../src/core/all-keybindings.h:252
+msgid "Take a screenshot"
+msgstr "Coller unha captura de pantalla"
+
+#: ../src/core/all-keybindings.h:254
+msgid "Take a screenshot of a window"
+msgstr "Coller unha captura de pantalla dunha xanela"
+
+#: ../src/core/all-keybindings.h:256
+msgid "Run a terminal"
+msgstr "Executar nun terminal"
+
+#: ../src/core/all-keybindings.h:271
+msgid "Activate the window menu"
+msgstr "Activar o menú da xanela"
+
+#: ../src/core/all-keybindings.h:274
+msgid "Toggle fullscreen mode"
+msgstr "Alternar o modo de pantalla completa"
+
+#: ../src/core/all-keybindings.h:276
+msgid "Toggle maximization state"
+msgstr "Alternar o estado maximizado"
+
+#: ../src/core/all-keybindings.h:278
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr ""
+"Alternar entre se unha xanela será visíbel sempre sobre outras xanelas ou non"
+
+#: ../src/core/all-keybindings.h:280
+msgid "Maximize window"
+msgstr "Maximizar a xanela"
+
+#: ../src/core/all-keybindings.h:282
+msgid "Restore window"
+msgstr "Restaurar a xanela"
+
+#: ../src/core/all-keybindings.h:284
+msgid "Toggle shaded state"
+msgstr "Alternar o estado ensombrecido"
+
+#: ../src/core/all-keybindings.h:286
+msgid "Minimize window"
+msgstr "Minimizar a xanela"
+
+#: ../src/core/all-keybindings.h:288
+msgid "Close window"
+msgstr "Pechar a xanela"
+
+#: ../src/core/all-keybindings.h:290
+msgid "Move window"
+msgstr "Mover a xanela"
+
+#: ../src/core/all-keybindings.h:292
+msgid "Resize window"
+msgstr "Redimensionar a xanela"
+
+#: ../src/core/all-keybindings.h:295
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr ""
+"Alternar entre se unha xanela está en todos os espazos de traballo ou só nun"
+
+#: ../src/core/all-keybindings.h:299
+msgid "Move window to workspace 1"
+msgstr "Mover a xanela ao espazo de traballo 1"
+
+#: ../src/core/all-keybindings.h:302
+msgid "Move window to workspace 2"
+msgstr "Mover a xanela ao espazo de traballo 2"
+
+#: ../src/core/all-keybindings.h:305
+msgid "Move window to workspace 3"
+msgstr "Mover a xanela ao espazo de traballo 3"
+
+#: ../src/core/all-keybindings.h:308
+msgid "Move window to workspace 4"
+msgstr "Mover a xanela ao espazo de traballo 4"
+
+#: ../src/core/all-keybindings.h:311
+msgid "Move window to workspace 5"
+msgstr "Mover a xanela ao espazo de traballo 5"
+
+#: ../src/core/all-keybindings.h:314
+msgid "Move window to workspace 6"
+msgstr "Mover a xanela ao espazo de traballo 6"
+
+#: ../src/core/all-keybindings.h:317
+msgid "Move window to workspace 7"
+msgstr "Mover a xanela ao espazo de traballo 7"
+
+#: ../src/core/all-keybindings.h:320
+msgid "Move window to workspace 8"
+msgstr "Mover a xanela ao espazo de traballo 8"
+
+#: ../src/core/all-keybindings.h:323
+msgid "Move window to workspace 9"
+msgstr "Mover a xanela ao espazo de traballo 9"
+
+#: ../src/core/all-keybindings.h:326
+msgid "Move window to workspace 10"
+msgstr "Mover a xanela ao espazo de traballo 10"
+
+#: ../src/core/all-keybindings.h:329
+msgid "Move window to workspace 11"
+msgstr "Mover a xanela ao espazo de traballo 11"
+
+#: ../src/core/all-keybindings.h:332
+msgid "Move window to workspace 12"
+msgstr "Mover a xanela ao espazo de traballo 12"
+
+#: ../src/core/all-keybindings.h:344
+msgid "Move window one workspace to the left"
+msgstr "Mover a xanela un espazo de traballo cara á esquerda"
+
+#: ../src/core/all-keybindings.h:347
+msgid "Move window one workspace to the right"
+msgstr "Mover a xanela un espazo de traballo cara á dereita"
+
+#: ../src/core/all-keybindings.h:350
+msgid "Move window one workspace up"
+msgstr "Mover a xanela un espazo de traballo cara a arriba"
+
+#: ../src/core/all-keybindings.h:353
+msgid "Move window one workspace down"
+msgstr "Mover a xanela un espazo de traballo cara a abaixo"
+
+#: ../src/core/all-keybindings.h:356
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr ""
+"Elevar unha xanela se está cuberta por outra, en caso contrario baixala"
+
+#: ../src/core/all-keybindings.h:358
+msgid "Raise window above other windows"
+msgstr "Subir a xanela por enriba doutras xanelas"
+
+#: ../src/core/all-keybindings.h:360
+msgid "Lower window below other windows"
+msgstr "Baixar unha xanela debaixo doutras xanelas"
+
+#: ../src/core/all-keybindings.h:364
+msgid "Maximize window vertically"
+msgstr "Maximizar a xanela verticalmente"
+
+#: ../src/core/all-keybindings.h:368
+msgid "Maximize window horizontally"
+msgstr "Maximizar a xanela horizontalmente"
+
+#: ../src/core/all-keybindings.h:372
+msgid "Move window to north-west (top left) corner"
+msgstr "Mover a xanela á esquina noroeste (arriba á esquerda)"
+
+#: ../src/core/all-keybindings.h:375
+msgid "Move window to north-east (top right) corner"
+msgstr "Mover a xanela á esquina nordeste (arriba á dereita)"
+
+#: ../src/core/all-keybindings.h:378
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Mover a xanela á esquina sudoeste (abaixo á esquerda)"
+
+#: ../src/core/all-keybindings.h:381
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Mover a xanela á esquina sueste (abaixo á dereita)"
+
+#: ../src/core/all-keybindings.h:385
+msgid "Move window to north (top) side of screen"
+msgstr "Mover a xanela ao lado norte (arriba) da pantalla"
+
+#: ../src/core/all-keybindings.h:388
+msgid "Move window to south (bottom) side of screen"
+msgstr "Mover a xanela ao lado sur (abaixo) da pantalla"
+
+#: ../src/core/all-keybindings.h:391
+msgid "Move window to east (right) side of screen"
+msgstr "Mover a xanela ao lado leste (dereita) da pantalla"
+
+#: ../src/core/all-keybindings.h:394
+msgid "Move window to west (left) side of screen"
+msgstr "Mover a xanela ao lado oeste (esquerda) da pantalla"
+
+#: ../src/core/all-keybindings.h:397
+msgid "Move window to center of screen"
+msgstr "Mover a xanela ao centro da pantalla"
 
 #: ../src/core/bell.c:302
 msgid "Bell event"
@@ -77,7 +392,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2459
+#: ../src/core/keybindings.c:2468
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -88,84 +403,46 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2549
+#: ../src/core/keybindings.c:2558
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Non se definiu ningunha orde %d.\n"
 
-#: ../src/core/keybindings.c:3561
+#: ../src/core/keybindings.c:3570
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Non se definiu ningunha orde de terminal.\n"
 
-#: ../src/core/main.c:130
-#, c-format
-msgid ""
-"mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-msgstr ""
-"mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-
-#: ../src/core/main.c:261
+#: ../src/core/main.c:206
 msgid "Disable connection to session manager"
 msgstr "Desactivar a conexión ao xestor de sesión"
 
-#: ../src/core/main.c:267
-msgid "Replace the running window manager with Mutter"
-msgstr "Substituír o xestor de xanelas en execución co Mutter"
+#: ../src/core/main.c:212
+msgid "Replace the running window manager"
+msgstr "Substituír o xestor de xanelas en execución"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:218
 msgid "Specify session management ID"
 msgstr "Especificar o ID de xestión de sesión"
 
-#: ../src/core/main.c:278
+#: ../src/core/main.c:223
 msgid "X Display to use"
 msgstr "Pantalla X que se vai usar"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:229
 msgid "Initialize session from savefile"
 msgstr "Iniciar sesión desde o ficheiro de salvagarda"
 
-#: ../src/core/main.c:290
-msgid "Print version"
-msgstr "Imprimir versión"
-
-#: ../src/core/main.c:296
+#: ../src/core/main.c:235
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: ../src/core/main.c:302
-msgid ""
-"Don't make fullscreen windows that are maximized and have no decorations"
-msgstr ""
-"Non poñer a pantalla completa as xanelas maximizadas e que non teñen "
-"decoración"
-
-#: ../src/core/main.c:308
-msgid "Comma-separated list of compositor plugins"
-msgstr "Lista de separadas por comas dos complementos do compositor"
-
-#: ../src/core/main.c:314
-msgid "Whether window popup/frame should be shown when cycling windows."
-msgstr "Se se debe mostrar a xanela emerxente/marco ao rotar nas xanelas."
-
-#: ../src/core/main.c:321
-msgid "Internal argument for GObject introspection"
-msgstr "Argumento interno para a introspección de GObject"
-
-#: ../src/core/main.c:648
+#: ../src/core/main.c:508
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Fallou ao dixitalizar o directorio de temas: %s\n"
 
-#: ../src/core/main.c:664
+#: ../src/core/main.c:524
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -173,10 +450,28 @@ msgstr ""
 "Non foi posíbel atopar ningún tema! Asegúrese de que %s existe e de que "
 "contén os temas habituais.\n"
 
-#: ../src/core/main.c:725
+#: ../src/core/mutter.c:42
 #, c-format
-msgid "Failed to restart: %s\n"
-msgstr "Produciuse un fallo ao reiniciar: %s\n"
+msgid ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+
+#: ../src/core/mutter.c:56
+msgid "Print version"
+msgstr "Imprimir versión"
+
+#: ../src/core/mutter.c:62
+msgid "Comma-separated list of compositor plugins"
+msgstr "Lista de separadas por comas dos complementos do compositor"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -189,36 +484,36 @@ msgstr "Produciuse un fallo ao reiniciar: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:541 ../src/core/prefs.c:702
+#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "A chave GConf «%s» está configurada cun valor non válido\n"
 
-#: ../src/core/prefs.c:628 ../src/core/prefs.c:871
+#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d almacenado na chave GConf %s está fóra do intervalo %d a %d\n"
 
-#: ../src/core/prefs.c:672 ../src/core/prefs.c:749 ../src/core/prefs.c:797
-#: ../src/core/prefs.c:861 ../src/core/prefs.c:1336 ../src/core/prefs.c:1352
-#: ../src/core/prefs.c:1369 ../src/core/prefs.c:1385
+#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
+#: ../src/core/prefs.c:856 ../src/core/prefs.c:1317 ../src/core/prefs.c:1333
+#: ../src/core/prefs.c:1350 ../src/core/prefs.c:1366
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "A chave GConf «%s» está configurada cun tipo non válido\n"
 
-#: ../src/core/prefs.c:1215
+#: ../src/core/prefs.c:1196
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr ""
 "A chave de GConf %s xa está en uso e non é posíbel usala para sobrescribir "
 "%s\n"
 
-#: ../src/core/prefs.c:1274
+#: ../src/core/prefs.c:1255
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Non é posíbel sobrescribir a chave de GConf, non se atopou %s\n"
 
-#: ../src/core/prefs.c:1476
+#: ../src/core/prefs.c:1440
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -226,14 +521,14 @@ msgstr ""
 "Desactiváronse os arranxos para aplicativos danados. Pode que algúns "
 "aplicativos non se comporten correctamente.\n"
 
-#: ../src/core/prefs.c:1553
+#: ../src/core/prefs.c:1517
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Non foi posíbel analizar a descrición do tipo de letra «%s» da chave GConf "
 "%s\n"
 
-#: ../src/core/prefs.c:1615
+#: ../src/core/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -242,17 +537,17 @@ msgstr ""
 "«%s» atopados na base de datos de configuración non é un valor válido para o "
 "modificador do botón do rato\n"
 
-#: ../src/core/prefs.c:2045
+#: ../src/core/prefs.c:2006
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro ao definir o número de espazos de traballo en %d: %s\n"
 
-#: ../src/core/prefs.c:2229 ../src/core/prefs.c:2731
+#: ../src/core/prefs.c:2190 ../src/core/prefs.c:2692
 #, c-format
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/prefs.c:2261 ../src/core/prefs.c:2439
+#: ../src/core/prefs.c:2222 ../src/core/prefs.c:2400
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -261,23 +556,18 @@ msgstr ""
 "«%s» atopados na base de datos de configuración non é un valor válido para a "
 "combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:2812
+#: ../src/core/prefs.c:2773
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Erro ao definir o nome do espazo de traballo %d como «%s»: %s\n"
 
-#: ../src/core/prefs.c:3028
-#, c-format
-msgid "Error setting clutter plugin list: %s\n"
-msgstr "Erro ao definir a lista de complementos de clutter: %s\n"
-
-#: ../src/core/prefs.c:3072
+#: ../src/core/prefs.c:2987
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr ""
 "Produciuse un erro ao estabelecer o estado da vida das xanelas ocultas %s\n"
 
-#: ../src/core/prefs.c:3100
+#: ../src/core/prefs.c:3015
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr ""
@@ -316,54 +606,54 @@ msgstr "A visualización %d na pantalla «%s» ten xa un xestor de xanelas\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Non foi posíbel liberar a visualización %d na pantalla «%s»\n"
 
-#: ../src/core/session.c:856 ../src/core/session.c:863
+#: ../src/core/session.c:863 ../src/core/session.c:870
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Non foi posíbel crear o directorio «%s»: %s\n"
 
-#: ../src/core/session.c:873
+#: ../src/core/session.c:880
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Non foi posíbel abrir o ficheiro de sesión «%s» para escritura: %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:1021
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erro ao escribir o ficheiro de sesión «%s»: %s\n"
 
-#: ../src/core/session.c:1019
+#: ../src/core/session.c:1026
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erro ao pechar o ficheiro de sesión «%s»: %s\n"
 
-#: ../src/core/session.c:1149
+#: ../src/core/session.c:1156
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Produciuse un fallo ao analizar o ficheiro de sesión gardado: %s\n"
 
-#: ../src/core/session.c:1198
+#: ../src/core/session.c:1205
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "O atributo <mutter_session> foi visto pero xa temos o ID de sesión"
 
-#: ../src/core/session.c:1211 ../src/core/session.c:1286
-#: ../src/core/session.c:1318 ../src/core/session.c:1390
-#: ../src/core/session.c:1450
+#: ../src/core/session.c:1218 ../src/core/session.c:1293
+#: ../src/core/session.c:1325 ../src/core/session.c:1397
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Atributo descoñecido %s no elemento <%s>"
 
-#: ../src/core/session.c:1228
+#: ../src/core/session.c:1235
 #, c-format
 msgid "nested <window> tag"
 msgstr "etiqueta <window> aniñada"
 
-#: ../src/core/session.c:1470
+#: ../src/core/session.c:1477
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento descoñecido %s"
 
-#: ../src/core/session.c:1822
+#: ../src/core/session.c:1829
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -386,7 +676,7 @@ msgstr "Produciuse un fallo ao facer fdopen() no ficheiro de rexistro %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Ficheiro de rexistro %s aberto\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:179
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter foi compilado sen compatibilidade para o modo detallado\n"
@@ -408,14 +698,13 @@ msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. Translators: This is the title used on dialog boxes
-#. eof all-keybindings.h
 #: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6472
+#: ../src/core/window.c:6550
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -431,7 +720,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7135
+#: ../src/core/window.c:7213
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -451,7 +740,7 @@ msgstr "O aplicativo configurou un _NET_WM_PID %lu falso\n"
 msgid "%s (on %s)"
 msgstr "%s (en %s)"
 
-#: ../src/core/window-props.c:1478
+#: ../src/core/window-props.c:1479
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -485,330 +774,11 @@ msgstr ""
 "A propiedade %s na xanela 0x%lx contén UTF-8 non válido para o elemento da "
 "lista %d\n"
 
-#: ../src/include/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "Cambiar ao espazo de traballo 1"
-
-#: ../src/include/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "Cambiar ao espazo de traballo 2"
-
-#: ../src/include/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "Cambiar ao espazo de traballo 3"
-
-#: ../src/include/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "Cambiar ao espazo de traballo 4"
-
-#: ../src/include/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "Cambiar ao espazo de traballo 5"
-
-#: ../src/include/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "Cambiar ao espazo de traballo 6"
-
-#: ../src/include/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "Cambiar ao espazo de traballo 7"
-
-#: ../src/include/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "Cambiar ao espazo de traballo 8"
-
-#: ../src/include/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "Cambiar ao espazo de traballo 9"
-
-#: ../src/include/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "Cambiar ao espazo de traballo 10"
-
-#: ../src/include/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "Cambiar ao espazo de traballo 11"
-
-#: ../src/include/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "Cambiar ao espazo de traballo 12"
-
-#: ../src/include/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "Cambiar ao espazo de traballo á esquerda do espazo actual"
-
-#: ../src/include/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "Cambiar ao espazo de traballo á dereita do espazo actual"
-
-#: ../src/include/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "Cambiar ao espazo de traballo sobre o espazo actual"
-
-#: ../src/include/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "Cambiar ao espazo de traballo baixo o espazo actual"
-
-#: ../src/include/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "Moverse entre xanelas dun aplicativo usando unha xanela emerxente"
-
-#: ../src/include/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr ""
-"Moverse cara a atrás entre xanelas dun aplicativo usando unha xanela "
-"emerxente"
-
-#: ../src/include/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "Moverse entre xanelas usando unha xanela emerxente"
-
-#: ../src/include/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "Moverse cara a atrás entre xanelas usando unha xanela emerxente"
-
-#: ../src/include/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "Moverse entre os paneis e o escritorio usando unha xanela emerxente"
-
-#: ../src/include/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr ""
-"Moverse cara a atrás entre os paneis e o escritorio usando unha xanela "
-"emerxente"
-
-#: ../src/include/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "Moverse inmediatamente entre xanelas dun aplicativo"
-
-#: ../src/include/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "Moverse cara a atrás entre xanelas dun aplicativo inmediatamente"
-
-#: ../src/include/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "Moverse inmediatamente entre xanelas"
-
-#: ../src/include/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "Moverse cara a atrás entre xanelas inmediatamente"
-
-#: ../src/include/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "Moverse inmediatamente entre os paneis e o escritorio"
-
-#: ../src/include/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Moverse inmediatamente cara a atrás entre os paneis e o escritorio"
-
-#: ../src/include/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Agochar todas as xanelas normais e cambiar o foco ao escritorio"
-
-#: ../src/include/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "Mostrar o menú principal do panel"
-
-#: ../src/include/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Mostrar a caixa de diálogo \"Executar un aplicativo\" do panel"
-
-#: ../src/include/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "Iniciar ou deter a grabación da sesión"
-
-#: ../src/include/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "Coller unha captura de pantalla"
-
-#: ../src/include/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "Coller unha captura de pantalla dunha xanela"
-
-#: ../src/include/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "Executar nun terminal"
-
-#: ../src/include/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "Activar o menú da xanela"
-
-#: ../src/include/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "Alternar o modo de pantalla completa"
-
-#: ../src/include/all-keybindings.h:276
-msgid "Toggle maximization state"
-msgstr "Alternar o estado maximizado"
-
-#: ../src/include/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr ""
-"Alternar entre se unha xanela será visíbel sempre sobre outras xanelas ou non"
-
-#: ../src/include/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "Maximizar a xanela"
-
-#: ../src/include/all-keybindings.h:282
-msgid "Restore window"
-msgstr "Restaurar a xanela"
-
-#: ../src/include/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr "Alternar o estado ensombrecido"
-
-#: ../src/include/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "Minimizar a xanela"
-
-#: ../src/include/all-keybindings.h:288
-msgid "Close window"
-msgstr "Pechar a xanela"
-
-#: ../src/include/all-keybindings.h:290
-msgid "Move window"
-msgstr "Mover a xanela"
-
-#: ../src/include/all-keybindings.h:292
-msgid "Resize window"
-msgstr "Redimensionar a xanela"
-
-#: ../src/include/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr ""
-"Alternar entre se unha xanela está en todos os espazos de traballo ou só nun"
-
-#: ../src/include/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "Mover a xanela ao espazo de traballo 1"
-
-#: ../src/include/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "Mover a xanela ao espazo de traballo 2"
-
-#: ../src/include/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "Mover a xanela ao espazo de traballo 3"
-
-#: ../src/include/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "Mover a xanela ao espazo de traballo 4"
-
-#: ../src/include/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "Mover a xanela ao espazo de traballo 5"
-
-#: ../src/include/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "Mover a xanela ao espazo de traballo 6"
-
-#: ../src/include/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "Mover a xanela ao espazo de traballo 7"
-
-#: ../src/include/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "Mover a xanela ao espazo de traballo 8"
-
-#: ../src/include/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "Mover a xanela ao espazo de traballo 9"
-
-#: ../src/include/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "Mover a xanela ao espazo de traballo 10"
-
-#: ../src/include/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "Mover a xanela ao espazo de traballo 11"
-
-#: ../src/include/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "Mover a xanela ao espazo de traballo 12"
-
-#: ../src/include/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "Mover a xanela un espazo de traballo cara á esquerda"
-
-#: ../src/include/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "Mover a xanela un espazo de traballo cara á dereita"
-
-#: ../src/include/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "Mover a xanela un espazo de traballo cara a arriba"
-
-#: ../src/include/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "Mover a xanela un espazo de traballo cara a abaixo"
-
-#: ../src/include/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr ""
-"Elevar unha xanela se está cuberta por outra, en caso contrario baixala"
-
-#: ../src/include/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "Subir a xanela por enriba doutras xanelas"
-
-#: ../src/include/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "Baixar unha xanela debaixo doutras xanelas"
-
-#: ../src/include/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "Maximizar a xanela verticalmente"
-
-#: ../src/include/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "Maximizar a xanela horizontalmente"
-
-#: ../src/include/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr "Mover a xanela á esquina noroeste (arriba á esquerda)"
-
-#: ../src/include/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr "Mover a xanela á esquina nordeste (arriba á dereita)"
-
-#: ../src/include/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr "Mover a xanela á esquina sudoeste (abaixo á esquerda)"
-
-#: ../src/include/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr "Mover a xanela á esquina sueste (abaixo á dereita)"
-
-#: ../src/include/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr "Mover a xanela ao lado norte (arriba) da pantalla"
-
-#: ../src/include/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr "Mover a xanela ao lado sur (abaixo) da pantalla"
-
-#: ../src/include/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr "Mover a xanela ao lado leste (dereita) da pantalla"
-
-#: ../src/include/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr "Mover a xanela ao lado oeste (esquerda) da pantalla"
-
-#: ../src/include/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr "Mover a xanela ao centro da pantalla"
-
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
 msgstr "Anexar os diálogos modais"
 
 #: ../src/mutter.schemas.in.h:2
-msgid "Clutter Plugins"
-msgstr "Complementos de Clutter"
-
-#: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
@@ -816,20 +786,16 @@ msgstr ""
 "Determina se as xanelas agochadas (p.ex., xanelas minimizadas ou xanelas "
 "noutros espazos de traballo) deben manterse activas."
 
-#: ../src/mutter.schemas.in.h:4
+#: ../src/mutter.schemas.in.h:3
 msgid "Live Hidden Windows"
 msgstr "Xanelas agochadas en vivo"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:4
 msgid "Modifier to use for extended window management operations"
 msgstr ""
 "Modificador que se vai usar para as accións modificadas de xestión de xanela"
 
-#: ../src/mutter.schemas.in.h:6
-msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr "Complementos a cargar polo xestor de composición baseado en Clutter."
-
-#: ../src/mutter.schemas.in.h:7
+#: ../src/mutter.schemas.in.h:5
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -841,7 +807,7 @@ msgstr ""
 "nun PC é a «Tecla Windows». Espérase que este enlace sexa configurado ao "
 "valor predeterminado ou á cadena baleira."
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/mutter.schemas.in.h:6
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -851,7 +817,7 @@ msgstr ""
 "diálogos modais aparecerán anexados á barra de título da xanela pai e "
 "moveranse de forma conxunta á xanela pai."
 
-#: ../src/tools/mutter-message.c:151
+#: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Uso: %s\n"
@@ -1757,157 +1723,157 @@ msgstr "<%s> especificada dúas veces para este tema"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Non se atopou ningún ficheiro válido para o tema %s\n"
 
-#: ../src/ui/theme-viewer.c:98
+#: ../src/ui/theme-viewer.c:99
 msgid "_Windows"
 msgstr "_Xanelas"
 
-#: ../src/ui/theme-viewer.c:99
+#: ../src/ui/theme-viewer.c:100
 msgid "_Dialog"
 msgstr "_Diálogo"
 
-#: ../src/ui/theme-viewer.c:100
+#: ../src/ui/theme-viewer.c:101
 msgid "_Modal dialog"
 msgstr "_Diálogo modal"
 
-#: ../src/ui/theme-viewer.c:101
+#: ../src/ui/theme-viewer.c:102
 msgid "_Utility"
 msgstr "_Utilidade"
 
-#: ../src/ui/theme-viewer.c:102
+#: ../src/ui/theme-viewer.c:103
 msgid "_Splashscreen"
 msgstr "_Pantalla de inicio"
 
-#: ../src/ui/theme-viewer.c:103
+#: ../src/ui/theme-viewer.c:104
 msgid "_Top dock"
 msgstr "Doca _superior"
 
-#: ../src/ui/theme-viewer.c:104
+#: ../src/ui/theme-viewer.c:105
 msgid "_Bottom dock"
 msgstr "Doca _inferior"
 
-#: ../src/ui/theme-viewer.c:105
+#: ../src/ui/theme-viewer.c:106
 msgid "_Left dock"
 msgstr "Doca _esquerda"
 
-#: ../src/ui/theme-viewer.c:106
+#: ../src/ui/theme-viewer.c:107
 msgid "_Right dock"
 msgstr "Doca _dereita"
 
-#: ../src/ui/theme-viewer.c:107
+#: ../src/ui/theme-viewer.c:108
 msgid "_All docks"
 msgstr "_Todas as docas"
 
-#: ../src/ui/theme-viewer.c:108
+#: ../src/ui/theme-viewer.c:109
 msgid "Des_ktop"
 msgstr "Es_critorio"
 
-#: ../src/ui/theme-viewer.c:114
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Abrir outra destas xanelas"
 
-#: ../src/ui/theme-viewer.c:116
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Este é un botón de demostración cunha icona 'abrir'"
 
-#: ../src/ui/theme-viewer.c:118
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Este é un botón de demostración cunha icona 'saír'"
 
-#: ../src/ui/theme-viewer.c:252
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Esta é unha mensaxe de mostra no diálogo de mostra"
 
-#: ../src/ui/theme-viewer.c:335
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Elemento de menú falso %d\n"
 
-#: ../src/ui/theme-viewer.c:369
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Xanela só con bordo"
 
-#: ../src/ui/theme-viewer.c:371
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Barra"
 
-#: ../src/ui/theme-viewer.c:388
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Xanela de aplicativo normal"
 
-#: ../src/ui/theme-viewer.c:392
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "Caixa de diálogo"
 
-#: ../src/ui/theme-viewer.c:396
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "Caixa de diálogo modal"
 
-#: ../src/ui/theme-viewer.c:400
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Paleta de utilidades"
 
-#: ../src/ui/theme-viewer.c:404
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Menú desprazado"
 
-#: ../src/ui/theme-viewer.c:408
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Bordo"
 
-#: ../src/ui/theme-viewer.c:412
+#: ../src/ui/theme-viewer.c:413
 msgid "Attached Modal Dialog"
 msgstr "Diálogo modal adxunto"
 
-#: ../src/ui/theme-viewer.c:743
+#: ../src/ui/theme-viewer.c:744
 #, c-format
 msgid "Button layout test %d"
 msgstr "Proba de disposición de botóns %d"
 
-#: ../src/ui/theme-viewer.c:772
+#: ../src/ui/theme-viewer.c:773
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisegundos para debuxar un marco de xanela"
 
-#: ../src/ui/theme-viewer.c:817
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Uso: metacity-theme-viewer [NOMETEMA]\n"
 
-#: ../src/ui/theme-viewer.c:824
+#: ../src/ui/theme-viewer.c:825
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Erro ao cargar o tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:830
+#: ../src/ui/theme-viewer.c:831
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Cargouse o tema «%s» en %g segundos\n"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:875
 msgid "Normal Title Font"
 msgstr "Tipo de letra de título normal"
 
-#: ../src/ui/theme-viewer.c:880
+#: ../src/ui/theme-viewer.c:881
 msgid "Small Title Font"
 msgstr "Tipo de letra de título pequena"
 
-#: ../src/ui/theme-viewer.c:886
+#: ../src/ui/theme-viewer.c:887
 msgid "Large Title Font"
 msgstr "Tipo de letra de título grande"
 
-#: ../src/ui/theme-viewer.c:891
+#: ../src/ui/theme-viewer.c:892
 msgid "Button Layouts"
 msgstr "Disposición dos botóns"
 
-#: ../src/ui/theme-viewer.c:896
+#: ../src/ui/theme-viewer.c:897
 msgid "Benchmark"
 msgstr "Banco de probas"
 
-#: ../src/ui/theme-viewer.c:948
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "O título da xanela vai aquí"
 
-#: ../src/ui/theme-viewer.c:1054
+#: ../src/ui/theme-viewer.c:1055
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1918,46 +1884,71 @@ msgstr ""
 "marco) e %g segundos de tempo estándar incluíndo recursos do servidor X (%g "
 "milisegundos por marco)\n"
 
-#: ../src/ui/theme-viewer.c:1273
+#: ../src/ui/theme-viewer.c:1274
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "a proba de expresión da posición devolveu TRUE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1276
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "a proba de expresión da posición devolveu FALSE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1279
+#: ../src/ui/theme-viewer.c:1280
 msgid "Error was expected but none given"
 msgstr "Esperábase un erro, mais non se deu ningún"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1282
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Esperábase un erro %d mais deuse %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1288
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Non se esperaba ningún erro mais devolveuse un: %s"
 
-#: ../src/ui/theme-viewer.c:1291
+#: ../src/ui/theme-viewer.c:1292
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "o valor x era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1294
+#: ../src/ui/theme-viewer.c:1295
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "o valor y era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1359
+#: ../src/ui/theme-viewer.c:1360
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expresións de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
+
+#~ msgid ""
+#~ "Don't make fullscreen windows that are maximized and have no decorations"
+#~ msgstr ""
+#~ "Non poñer a pantalla completa as xanelas maximizadas e que non teñen "
+#~ "decoración"
+
+#~ msgid "Whether window popup/frame should be shown when cycling windows."
+#~ msgstr "Se se debe mostrar a xanela emerxente/marco ao rotar nas xanelas."
+
+#~ msgid "Internal argument for GObject introspection"
+#~ msgstr "Argumento interno para a introspección de GObject"
+
+#~ msgid "Failed to restart: %s\n"
+#~ msgstr "Produciuse un fallo ao reiniciar: %s\n"
+
+#~ msgid "Error setting clutter plugin list: %s\n"
+#~ msgstr "Erro ao definir a lista de complementos de clutter: %s\n"
+
+#~ msgid "Clutter Plugins"
+#~ msgstr "Complementos de Clutter"
+
+#~ msgid "Plugins to load for the Clutter-based compositing manager."
+#~ msgstr ""
+#~ "Complementos a cargar polo xestor de composición baseado en Clutter."
 
 #~ msgid "Turn compositing on"
 #~ msgstr "Activar a composición"
