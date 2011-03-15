@@ -412,6 +412,7 @@ if SUPPORT_WIN32
 # won't let you link against the .o directly because it wants you to
 # link against libtool objects for dynamic libraries.
 .rc.o :
+	mkdir -p win32
 	$(WINDRES) -I$(srcdir)/win32 $< $@
 
 win32/resources.o : $(srcdir)/win32/invisible-cursor.cur
