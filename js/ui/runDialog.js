@@ -210,10 +210,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
 
         this._entryText = entry.clutter_text;
         this.contentLayout.add(entry, { y_align: St.Align.START });
-        this.connect('opened',
-                     Lang.bind(this, function() {
-                         this._entryText.grab_key_focus();
-                     }));
+        this.setInitialKeyFocus(this._entryText);
 
         this._errorBox = new St.BoxLayout({ style_class: 'run-dialog-error-box' });
 

@@ -148,17 +148,21 @@ ModalDialog.prototype = {
         this._lightbox.show();
         this._group.opacity = 0;
         this._group.show();
+        this._initialKeyFocus.grab_key_focus();
         Tweener.addTween(this._group,
                          { opacity: 255,
                            time: OPEN_AND_CLOSE_TIME,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this,
                                function() {
-                                   this._initialKeyFocus.grab_key_focus();
                                    this.state = State.OPENED;
                                    this.emit('opened');
-                               }),
+                               })
                          });
+    },
+
+    setInitialKeyFocus: function(actor) {
+        this._initialKeyFocus = actor;
     },
 
     open: function(timestamp) {
@@ -167,8 +171,6 @@ ModalDialog.prototype = {
 
         if (!Main.pushModal(this._group, timestamp))
             return false;
-
-        global.stage.set_key_focus(this._group);
 
         this._fadeOpen();
         return true;
