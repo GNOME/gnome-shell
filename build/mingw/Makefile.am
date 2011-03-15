@@ -1,1 +1,1 @@
-EXTRA_DIST = README mingw-cross-compile.sh
+EXTRA_DIST = README mingw-fetch-dependencies.sh

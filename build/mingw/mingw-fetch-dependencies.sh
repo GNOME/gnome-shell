@@ -31,8 +31,6 @@ GL_HEADER_URLS=( \
 
 GL_HEADERS=( gl.h mesa_wgl.h glext.h );
 
-CLUTTER_GIT="git://git.clutter-project.org"
-
 function download_file ()
 {
     local url="$1"; shift;
@@ -314,25 +312,3 @@ fi;
 EOF
 
 chmod a+x "$env_file";
-
-if y_or_n "Do you want to checkout and build Clutter?"; then
-    source "$env_file";
-
-    guess_dir CLUTTER_BUILD_DIR "clutter" \
-	"the build directory for clutter" "Build dir";
-    git clone "$CLUTTER_GIT/clutter" $CLUTTER_BUILD_DIR;
-    if [ "$?" -ne 0 ]; then
-	echo "git failed";
-	exit 1;
-    fi;
-    ( cd "$CLUTTER_BUILD_DIR" && do_autogen );
-    if [ "$?" -ne 0 ]; then
-	echo "autogen failed";
-	exit 1;
-    fi;
-    ( cd "$CLUTTER_BUILD_DIR" && make all install );
-    if [ "$?" -ne 0 ]; then
-	echo "make failed";
-	exit 1;
-    fi;
-fi;
