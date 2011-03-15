@@ -521,18 +521,16 @@ Notification.prototype = {
     },
 
     appendAliasChange: function(oldAlias, newAlias) {
-        // FIXME: uncomment this after 3.0 string freeze ends
+        oldAlias = GLib.markup_escape_text(oldAlias, -1);
+        newAlias = GLib.markup_escape_text(newAlias, -1);
 
-        // oldAlias = GLib.markup_escape_text(oldAlias, -1);
-        // newAlias = GLib.markup_escape_text(newAlias, -1);
-
-        // /* Translators: this is the other person changing their old IM name to their new
-        //    IM name. */
-        // let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
-        // let label = this.addBody(message, true);
-        // label.add_style_class_name('chat-meta-message');
-        // this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false });
-        // this.update(newAlias, null, { customContent: true });
+        /* Translators: this is the other person changing their old IM name to their new
+           IM name. */
+        let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
+        let label = this.addBody(message, true);
+        label.add_style_class_name('chat-meta-message');
+        this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false });
+        this.update(newAlias, null, { customContent: true });
     },
 
     _onEntryActivated: function() {
