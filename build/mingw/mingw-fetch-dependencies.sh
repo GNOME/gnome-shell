@@ -184,8 +184,7 @@ function do_cross_compile ()
     local builddir="$BUILD_DIR/$dep";
 
     cd "$builddir"
-    . $ROOT_DIR/share/env.sh
-    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`"
+    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`" CFLAGS="-mms-bitfields" PKG_CONFIG_PATH="$ROOT_DIR/lib/pkgconfig"
 
     if [ "$?" -ne 0 ]; then
 	echo "Failed to configure $dep";
@@ -317,36 +316,7 @@ done;
 # Build environment
 ##
 
-env_file="$ROOT_DIR/share/env.sh";
-echo "Writing build environment script to $env_file";
-echo "#!/bin/bash" > "$env_file";
-
 find_compiler;
-
-add_env PKG_CONFIG_PATH "$ROOT_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH";
-
-add_env CFLAGS "-mms-bitfields \$CFLAGS"
-
-cat >> "$env_file" <<EOF
-export ROOT_DIR="$ROOT_DIR";
-export TARGET="$TARGET";
-
-function do_autogen()
-{
-  ./autogen.sh --prefix="\$ROOT_DIR" --host="\$TARGET" --target="\$TARGET" \\
-    --with-flavour=win32;
-}
-
-# If any arguments are given then execute it as a program with the
-# environment we set up
-
-if test "\$#" -ge 1; then
-    exec "\$@";
-fi;
-
-EOF
-
-chmod a+x "$env_file";
 
 ##
 # Build source dependencies
