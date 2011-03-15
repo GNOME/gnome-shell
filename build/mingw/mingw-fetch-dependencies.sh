@@ -150,32 +150,10 @@ function find_compiler ()
 	fi;
     fi;
 
-    CC="${MINGW_TOOL_PREFIX}gcc";
-    add_env ADDR2LINE "${MINGW_TOOL_PREFIX}addr2line"
-    add_env AS "${MINGW_TOOL_PREFIX}as"
-    add_env CC "${CC}"
-    add_env CPP "${MINGW_TOOL_PREFIX}cpp"
-    add_env CPPFILT "${MINGW_TOOL_PREFIX}c++filt"
-    add_env CXX "${MINGW_TOOL_PREFIX}g++"
-    add_env DLLTOOL "${MINGW_TOOL_PREFIX}dlltool"
-    add_env DLLWRAP "${MINGW_TOOL_PREFIX}dllwrap"
-    add_env GCOV "${MINGW_TOOL_PREFIX}gcov"
-    add_env LD "${MINGW_TOOL_PREFIX}ld"
-    add_env NM "${MINGW_TOOL_PREFIX}nm"
-    add_env OBJCOPY "${MINGW_TOOL_PREFIX}objcopy"
-    add_env OBJDUMP "${MINGW_TOOL_PREFIX}objdump"
-    add_env READELF "${MINGW_TOOL_PREFIX}readelf"
-    add_env SIZE "${MINGW_TOOL_PREFIX}size"
-    add_env STRINGS "${MINGW_TOOL_PREFIX}strings"
-    add_env WINDRES "${MINGW_TOOL_PREFIX}windres"
-    add_env AR "${MINGW_TOOL_PREFIX}ar"
-    add_env RANLIB "${MINGW_TOOL_PREFIX}ranlib"
-    add_env STRIP "${MINGW_TOOL_PREFIX}strip"
-
     TARGET="${MINGW_TOOL_PREFIX##*/}";
     TARGET="${TARGET%%-}";
 
-    echo "Using compiler $CC and target $TARGET";
+    echo "Using compiler ${MINGW_TOOL_PREFIX}gcc and target $TARGET";
 }
 
 # If a download directory hasn't been specified then try to guess one
