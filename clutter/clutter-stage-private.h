@@ -64,14 +64,11 @@ void     _clutter_stage_process_queued_events             (ClutterStage *stage);
 void     _clutter_stage_update_input_devices              (ClutterStage *stage);
 int      _clutter_stage_get_pending_swaps                 (ClutterStage *stage);
 gboolean _clutter_stage_has_full_redraw_queued            (ClutterStage *stage);
-void     _clutter_stage_set_pick_buffer_valid             (ClutterStage   *stage,
-                                                           gboolean        valid,
-                                                           ClutterPickMode mode);
-gboolean _clutter_stage_get_pick_buffer_valid             (ClutterStage *stage,
-                                                           ClutterPickMode mode);
-void     _clutter_stage_increment_picks_per_frame_counter (ClutterStage *stage);
-void     _clutter_stage_reset_picks_per_frame_counter     (ClutterStage *stage);
-guint    _clutter_stage_get_picks_per_frame_counter       (ClutterStage *stage);
+
+ClutterActor *_clutter_stage_do_pick (ClutterStage    *stage,
+                                      gint             x,
+                                      gint             y,
+                                      ClutterPickMode  mode);
 
 ClutterPaintVolume *_clutter_stage_paint_volume_stack_allocate (ClutterStage *stage);
 void                _clutter_stage_paint_volume_stack_free_all (ClutterStage *stage);

@@ -73,10 +73,16 @@
 #include "clutter-stage-private.h"
 #include "clutter-util.h"
 #include "clutter-version.h" 	/* For flavour */
+#include "clutter-private.h"
 
 #include "cogl/cogl.h"
 
 #include <math.h>
+
+#ifdef USE_GDKPIXBUF
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#endif
+
 
 G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
@@ -954,6 +960,28 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
     }
 }
 
+static gboolean
+_clutter_stage_get_pick_buffer_valid (ClutterStage *stage, ClutterPickMode mode)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  if (stage->priv->pick_buffer_mode != mode)
+    return FALSE;
+
+  return stage->priv->have_valid_pick_buffer;
+}
+
+static void
+_clutter_stage_set_pick_buffer_valid (ClutterStage   *stage,
+                                      gboolean        valid,
+                                      ClutterPickMode mode)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  stage->priv->have_valid_pick_buffer = !!valid;
+  stage->priv->pick_buffer_mode = mode;
+}
+
 static void
 clutter_stage_do_redraw (ClutterStage *stage)
 {
@@ -966,7 +994,7 @@ clutter_stage_do_redraw (ClutterStage *stage)
                      stage);
 
   _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-  _clutter_stage_reset_picks_per_frame_counter (stage);
+  priv->picks_per_frame = 0;
 
   _clutter_backend_ensure_context (backend, stage);
 
@@ -1129,6 +1157,263 @@ _clutter_stage_has_full_redraw_queued (ClutterStage *stage)
   else
     return FALSE;
 }
+
+#ifdef USE_GDKPIXBUF
+static void
+pixbuf_free (guchar   *pixels,
+             gpointer  data)
+{
+  g_free (pixels);
+}
+#endif
+
+static void
+read_pixels_to_file (char *filename_stem,
+                     int   x,
+                     int   y,
+                     int   width,
+                     int   height)
+{
+#ifdef USE_GDKPIXBUF
+  GLubyte *data;
+  GdkPixbuf *pixbuf;
+  static int read_count = 0;
+
+  data = g_malloc (4 * width * height);
+  cogl_read_pixels (x, y, width, height,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGB_888,
+                    data);
+  pixbuf = gdk_pixbuf_new_from_data (data,
+                                     GDK_COLORSPACE_RGB,
+                                     FALSE, /* has alpha */
+                                     8, /* bits per sample */
+                                     width, /* width */
+                                     height, /* height */
+                                     width * 3, /* rowstride */
+                                     pixbuf_free, /* callback to free data */
+                                     NULL); /* callback data */
+  if (pixbuf)
+    {
+      char *filename = g_strdup_printf ("%s-%05d.png",
+                                        filename_stem,
+                                        read_count);
+      GError *error = NULL;
+
+      if (!gdk_pixbuf_save (pixbuf, filename, "png", &error, NULL))
+        {
+          g_warning ("Failed to save pick buffer to file %s: %s",
+                     filename, error->message);
+          g_error_free (error);
+        }
+
+      g_free (filename);
+      g_object_unref (pixbuf);
+      read_count++;
+    }
+#else /* !USE_GDKPIXBUF */
+  {
+    static gboolean seen = FALSE;
+
+    if (!seen)
+      {
+        g_warning ("dumping buffers to an image isn't supported on platforms "
+                   "without gdk pixbuf support\n");
+        seen = TRUE;
+      }
+  }
+#endif /* USE_GDKPIXBUF */
+}
+
+ClutterActor *
+_clutter_stage_do_pick (ClutterStage   *stage,
+                        gint            x,
+                        gint            y,
+                        ClutterPickMode mode)
+{
+  ClutterStagePrivate *priv;
+  ClutterMainContext *context;
+  guchar pixel[4] = { 0xff, 0xff, 0xff, 0xff };
+  CoglColor stage_pick_id;
+  guint32 id_;
+  GLboolean dither_was_on;
+  ClutterActor *actor;
+  gboolean is_clipped;
+  CLUTTER_STATIC_COUNTER (do_pick_counter,
+                          "_clutter_stage_do_pick counter",
+                          "Increments for each full pick run",
+                          0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_timer,
+                        "Mainloop", /* parent */
+                        "Picking",
+                        "The time spent picking",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_clear,
+                        "Picking", /* parent */
+                        "Stage clear (pick)",
+                        "The time spent clearing stage for picking",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_paint,
+                        "Picking", /* parent */
+                        "Painting actors (pick mode)",
+                        "The time spent painting actors in pick mode",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_read,
+                        "Picking", /* parent */
+                        "Read Pixels",
+                        "The time spent issuing a read pixels",
+                        0 /* no application private data */);
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  priv = stage->priv;
+
+  if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_NOP_PICKING))
+    return CLUTTER_ACTOR (stage);
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_resume ();
+#endif /* CLUTTER_ENABLE_PROFILE */
+
+  CLUTTER_COUNTER_INC (_clutter_uprof_context, do_pick_counter);
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_timer);
+
+  context = _clutter_context_get_default ();
+
+  /* It's possible that we currently have a static scene and have renderered a
+   * full, unclipped pick buffer. If so we can simply continue to read from
+   * this cached buffer until the scene next changes. */
+  if (_clutter_stage_get_pick_buffer_valid (stage, mode))
+    {
+      CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
+      cogl_read_pixels (x, y, 1, 1,
+                        COGL_READ_PIXELS_COLOR_BUFFER,
+                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                        pixel);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
+
+      CLUTTER_NOTE (PICK, "Reusing pick buffer from previous render to fetch "
+                    "actor at %i,%i", x, y);
+
+      /* FIXME: This is a lazy copy and paste of the logic at the end of this
+       * function used when we actually do a pick render. It should be
+       * consolidated somehow.
+       */
+      if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
+        {
+          actor = CLUTTER_ACTOR (stage);
+          goto result;
+        }
+
+      id_ = _clutter_pixel_to_id (pixel);
+      actor = _clutter_get_actor_by_id (id_);
+      goto result;
+    }
+
+  priv->picks_per_frame++;
+
+  _clutter_backend_ensure_context (context->backend, stage);
+
+  /* needed for when a context switch happens */
+  _clutter_stage_maybe_setup_viewport (stage);
+
+  /* If we are seeing multiple picks per frame that means the scene is static
+   * so we promote to doing a non-scissored pick render so that all subsequent
+   * picks for the same static scene won't require additional renders */
+  if (priv->picks_per_frame < 2)
+    {
+      if (G_LIKELY (!(clutter_pick_debug_flags &
+                      CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+        cogl_clip_push_window_rectangle (x, y, 1, 1);
+      is_clipped = TRUE;
+    }
+  else
+    is_clipped = FALSE;
+
+  CLUTTER_NOTE (PICK, "Performing %s pick at %i,%i",
+                is_clipped ? "clippped" : "full", x, y);
+
+  cogl_disable_fog ();
+  cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
+  cogl_clear (&stage_pick_id,
+	      COGL_BUFFER_BIT_COLOR |
+	      COGL_BUFFER_BIT_DEPTH);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
+
+  /* Disable dithering (if any) when doing the painting in pick mode */
+  dither_was_on = glIsEnabled (GL_DITHER);
+  if (dither_was_on)
+    glDisable (GL_DITHER);
+
+  /* Render the entire scence in pick mode - just single colored silhouette's
+   * are drawn offscreen (as we never swap buffers)
+  */
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_paint);
+  context->pick_mode = mode;
+  _clutter_stage_do_paint (stage, NULL);
+  context->pick_mode = CLUTTER_PICK_NONE;
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
+
+  if (is_clipped)
+    {
+      if (G_LIKELY (!(clutter_pick_debug_flags &
+                      CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+        cogl_clip_pop ();
+
+      _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
+    }
+  else
+    _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
+
+  /* Read the color of the screen co-ords pixel. RGBA_8888_PRE is used
+     even though we don't care about the alpha component because under
+     GLES this is the only format that is guaranteed to work so Cogl
+     will end up having to do a conversion if any other format is
+     used. The format is requested as pre-multiplied because Cogl
+     assumes that all pixels in the framebuffer are premultiplied so
+     it avoids a conversion. */
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
+  cogl_read_pixels (x, y, 1, 1,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                    pixel);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
+
+  if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
+    {
+      read_pixels_to_file ("pick-buffer", 0, 0,
+                           clutter_actor_get_width (CLUTTER_ACTOR (stage)),
+                           clutter_actor_get_height (CLUTTER_ACTOR (stage)));
+    }
+
+  /* Restore whether GL_DITHER was enabled */
+  if (dither_was_on)
+    glEnable (GL_DITHER);
+
+  if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
+    {
+      actor = CLUTTER_ACTOR (stage);
+      goto result;
+    }
+
+  id_ = _clutter_pixel_to_id (pixel);
+  actor = _clutter_get_actor_by_id (id_);
+
+result:
+
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_suspend ();
+#endif
+
+  return actor;
+}
+
+
 
 static gboolean
 clutter_stage_real_delete_event (ClutterStage *stage,
@@ -1766,7 +2051,7 @@ clutter_stage_init (ClutterStage *self)
   _clutter_stage_set_viewport (self, 0, 0, geom.width, geom.height);
 
   _clutter_stage_set_pick_buffer_valid (self, FALSE, CLUTTER_PICK_ALL);
-  _clutter_stage_reset_picks_per_frame_counter (self);
+  priv->picks_per_frame = 0;
 
   priv->paint_volume_stack =
     g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
@@ -2331,7 +2616,7 @@ clutter_stage_get_actor_at_pos (ClutterStage    *stage,
                                 gint             x,
                                 gint             y)
 {
-  return _clutter_do_pick (stage, x, y, pick_mode);
+  return _clutter_stage_do_pick (stage, x, y, pick_mode);
 }
 
 /**
@@ -3250,52 +3535,6 @@ clutter_stage_get_no_clear_hint (ClutterStage *stage)
   return (stage->priv->stage_hints & CLUTTER_STAGE_NO_CLEAR_ON_PAINT) != 0;
 }
 
-gboolean
-_clutter_stage_get_pick_buffer_valid (ClutterStage *stage, ClutterPickMode mode)
-{
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
-
-  if (stage->priv->pick_buffer_mode != mode)
-    return FALSE;
-
-  return stage->priv->have_valid_pick_buffer;
-}
-
-void
-_clutter_stage_set_pick_buffer_valid (ClutterStage   *stage,
-                                      gboolean        valid,
-                                      ClutterPickMode mode)
-{
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  stage->priv->have_valid_pick_buffer = !!valid;
-  stage->priv->pick_buffer_mode = mode;
-}
-
-void
-_clutter_stage_increment_picks_per_frame_counter (ClutterStage *stage)
-{
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  stage->priv->picks_per_frame++;
-}
-
-void
-_clutter_stage_reset_picks_per_frame_counter (ClutterStage *stage)
-{
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  stage->priv->picks_per_frame = 0;
-}
-
-guint
-_clutter_stage_get_picks_per_frame_counter (ClutterStage *stage)
-{
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), 0);
-
-  return stage->priv->picks_per_frame;
-}
-
 ClutterPaintVolume *
 _clutter_stage_paint_volume_stack_allocate (ClutterStage *stage)
 {
@@ -3376,9 +3615,9 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
-  /* We have an optimization in _clutter_do_pick to detect when the
-   * scene is static so we can cache a full, un-clipped pick buffer to
-   * avoid continuous pick renders.
+  /* We have an optimization in _clutter_stage_do_pick to detect when
+   * the scene is static so we can cache a full, un-clipped pick
+   * buffer to avoid continuous pick renders.
    *
    * Currently the assumption is that actors queue a redraw when some
    * state changes that affects painting *or* picking so we can use

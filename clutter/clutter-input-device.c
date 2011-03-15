@@ -708,7 +708,8 @@ _clutter_input_device_update (ClutterInputDevice *device,
   clutter_input_device_get_device_coords (device, &x, &y);
 
   old_cursor_actor = device->cursor_actor;
-  new_cursor_actor = _clutter_do_pick (stage, x, y, CLUTTER_PICK_REACTIVE);
+  new_cursor_actor =
+    _clutter_stage_do_pick (stage, x, y, CLUTTER_PICK_REACTIVE);
 
   /* if the pick could not find an actor then we do not update the
    * input device, to avoid ghost enter/leave events; the pick should

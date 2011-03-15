@@ -194,13 +194,10 @@ G_CONST_RETURN gchar *_clutter_gettext (const gchar *str);
 gboolean      _clutter_feature_init (GError **error);
 
 /* Picking code */
-ClutterActor *_clutter_do_pick (ClutterStage    *stage,
-				gint             x,
-				gint             y,
-				ClutterPickMode  mode);
-
+guint         _clutter_pixel_to_id (guchar pixel[4]);
 void          _clutter_id_to_color (guint id,
                                     ClutterColor *col);
+ClutterActor *_clutter_get_actor_by_id (guint32 actor_id);
 
 /* use this function as the accumulator if you have a signal with
  * a G_TYPE_BOOLEAN return value; this will stop the emission as
