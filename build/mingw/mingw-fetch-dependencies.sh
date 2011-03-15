@@ -361,3 +361,17 @@ for dep in "${SOURCES_DEPS[@]}"; do
     src="${src%%.tar.gz}";
     do_cross_compile "$src"
 done;
+
+echo
+echo "Done!"
+echo
+echo "You should now have everything you need to cross compile Clutter"
+echo
+echo "To get started, you should be able to configure and build from"
+echo "the top of your clutter source directory as follows:"
+echo
+echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"`./config.guess`\" --with-flavour=win32 CFLAGS=\"-mms-bitfields\" PKG_CONFIG_PATH=\"$ROOT_DIR/lib/pkgconfig\""
+echo "make"
+echo
+echo "Note: the explicit --build option is often necessary to ensure autoconf"
+echo "realizes you are cross-compiling."
