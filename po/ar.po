@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-16 14:53+0200\n"
-"PO-Revision-Date: 2011-03-09 01:12+0300\n"
+"POT-Creation-Date: 2011-03-16 17:45+0200\n"
+"PO-Revision-Date: 2011-03-16 17:41+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -472,7 +472,7 @@ msgstr "يُعيد تشغيل النظام."
 msgid "Confirm"
 msgstr "أكّد"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:465
 msgid "Cancel"
 msgstr "ألغِ"
 
@@ -510,7 +510,7 @@ msgstr "صفحة الوب"
 msgid "Open"
 msgstr "افتح"
 
-#: ../js/ui/messageTray.js:1965
+#: ../js/ui/messageTray.js:1988
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -533,18 +533,18 @@ msgid "Dash"
 msgstr "الشريط"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:508
+#: ../js/ui/panel.js:514
 #, c-format
 msgid "Quit %s"
 msgstr "أغلق %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:867
+#: ../js/ui/panel.js:873
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: ../js/ui/panel.js:968
+#: ../js/ui/panel.js:974
 msgid "Panel"
 msgstr "اللوحة"
 
@@ -664,9 +664,9 @@ msgstr "تباين عال"
 msgid "Large Text"
 msgstr "نص كبير"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:236
+#: ../js/ui/status/bluetooth.js:332 ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:406 ../js/ui/status/bluetooth.js:439
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
@@ -686,94 +686,94 @@ msgstr "اضبط جهازا جديدا..."
 msgid "Bluetooth Settings"
 msgstr "إعدادات بلوتوث"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:187
 msgid "Connection"
 msgstr "الاتصال"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:223
 msgid "Send Files..."
 msgstr "أرسل ملفات..."
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:228
 msgid "Browse Files..."
 msgstr "تصفح الملفات..."
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:237
 msgid "Error browsing device"
 msgstr "عطل أثناء تصفّح الجهاز"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:238
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "تعذّر تصفح الجهاز، رسالة العطل '%s'"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:246
 msgid "Keyboard Settings"
 msgstr "إعدادات لوحة المفاتيح"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:251
 msgid "Mouse Settings"
 msgstr "إعدادات الفأرة"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "إعدادات الصوت"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:367
 #, c-format
 msgid "Authorization request from %s"
 msgstr "طلب تخويل من %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:373
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "يريد الجهاز %s صلاحية الوصول للخدمة '%s'"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:375
 msgid "Always grant access"
 msgstr "امنح الصلاحية دائما"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:376
 msgid "Grant this time only"
 msgstr "امنح هذه المرة فقط"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:377
 msgid "Reject"
 msgstr "أخرج"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:407
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "تأكيد مزاوجة %s"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:413 ../js/ui/status/bluetooth.js:447
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "يريد الجهاز %s المزاوجة مع هذا الحاسوب"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:414
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "من فضلك أكد تطابق الرقم '%s' مع الموجود على الجهاز."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:416
 msgid "Matches"
 msgstr "مطابقات"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:417
 msgid "Does not match"
 msgstr "لا تتطابق"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:440
 #, c-format
 msgid "Pairing request for %s"
 msgstr "طلب مزاوجة من %s"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:448
 msgid "Please enter the PIN mentioned on the device."
 msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:464
 msgid "OK"
 msgstr "حسنا"
 
@@ -784,6 +784,136 @@ msgstr "أظهر تخطيط لوحة المفاتيح..."
 #: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "إعدادات اللغة"
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<غير معروفة>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "مُعَطَّلة"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "يتّصل..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "الاستيثاق مطلوب"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "الكبل مفصول"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "غير متاح"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "فشل الاتصال"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "متّصل (شخصي)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "إيثرنت تلقائي"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "نطاق عريض تلقائي"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "اتصال هاتفي تلقائي"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "‏%s تلقائي"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "بلوتوث تلقائي"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "لاسلكي تلقائي"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "المزيد..."
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "فعّل الشبكات"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "سلكي"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "لاسلكي"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "شبكة هاتف محمول"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "اتصال ش‌خ‌ف"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "إعدادات الشّبكة"
+
+#: ../js/ui/status/network.js:1782
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "صرت الآن متّصلا بشبكة الهاتف المحمول '%s'"
+
+#: ../js/ui/status/network.js:1786
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "صرت الآن متّصلا بالشبكة اللاسلكية '%s'"
+
+#: ../js/ui/status/network.js:1790
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "صرت الآن متّصلا بالشبكة السلكية '%s'"
+
+#: ../js/ui/status/network.js:1794
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "صرت الآن متّصلا بشبكة ش‌خ‌ف '%s'"
+
+#: ../js/ui/status/network.js:1799
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "صرت الآن متّصلا بشبكة '%s'"
+
+#: ../js/ui/status/network.js:1807
+msgid "Connection estabilished"
+msgstr "تم الاتصال"
+
+#: ../js/ui/status/network.js:1929
+msgid "Networking is disabled"
+msgstr "عُطّلت الشبكات"
+
+#: ../js/ui/status/network.js:2054
+msgid "Network Manager"
+msgstr "مدير الشبكة"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -1031,6 +1161,14 @@ msgstr[3] "منذ %d أسابيع"
 msgstr[4] "منذ %d أسبوعا"
 msgstr[5] "منذ %d أسبوع"
 
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "المملكة المتحدة"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "المبدئي"
+
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
 msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
@@ -1128,9 +1266,6 @@ msgstr "‏%1$s:‏ %2$s"
 
 #~ msgid "Frequent"
 #~ msgstr "متكرر"
-
-#~ msgid "More"
-#~ msgstr "المزيد"
 
 #~ msgid "(see all)"
 #~ msgstr "(انظر الكل)"
