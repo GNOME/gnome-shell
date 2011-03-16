@@ -501,6 +501,7 @@ AppMenuButton.prototype = {
             return;
         }
 
+        this._spinner.actor.hide();
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
