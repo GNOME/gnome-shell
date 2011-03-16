@@ -38,6 +38,7 @@ generated_script_substitutions = \
 	    -e "s|@datadir[@]|$(datadir)|" \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
+	    -e "s|@JHBUILD_TYPELIBDIR[@]|$(JHBUILD_TYPELIBDIR)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
 	    -e "s|@PYTHON[@]|$(PYTHON)|" \
 	    -e "s|@VERSION[@]|$(VERSION)|" \

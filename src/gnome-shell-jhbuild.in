@@ -197,12 +197,16 @@ def start_shell(perf_output=None):
     if os.path.exists(os.path.join(self_dir, 'gnome-shell-jhbuild.in')):
         running_from_source_tree = True
         top_dir = os.path.dirname(self_dir)
-        typelib_dir = os.path.join(top_dir, "src")
+        typelib_dir = '@JHBUILD_TYPELIBDIR@:' + os.path.join(top_dir, "src")
         js_dir = os.path.join(top_dir, "js")
         data_dir = os.path.join(top_dir, "data")
     else:
         running_from_source_tree = False
         js_dir = os.path.join('@pkgdatadir@', 'js')
+        typelib_dir = '@JHBUILD_TYPELIBDIR@'
+
+    if os.environ.has_key('GI_TYPELIB_PATH'):
+        typelib_dir = typelib_dir + ":" + os.environ.get('GI_TYPELIB_PATH')
 
     # Set up environment
     env = dict(os.environ)
@@ -215,14 +219,12 @@ def start_shell(perf_output=None):
     # run".  See bug #642084
     env.update({'GNOME_SHELL_JS'      : js_dir,
                 'PATH'                : '@bindir@:' + os.environ.get('PATH', ''),
+                'GI_TYPELIB_PATH'     : typelib_dir,
                 'XDG_CONFIG_DIRS'     : '@sysconfdir@/xdg:' + (os.environ.get('XDG_CONFIG_DIRS') or '/etc/xdg'),
                 'XDG_DATA_DIRS'       : '@datadir@:' + (os.environ.get('XDG_DATA_DIRS') or '/usr/local/share:/usr/share')})
     if running_from_source_tree:
-        if os.environ.has_key('GI_TYPELIB_PATH'):
-            typelib_dir = typelib_dir + ":" + os.environ.get('GI_TYPELIB_PATH')
         env.update({'GNOME_SHELL_BINDIR'   : self_dir,
                     'GNOME_SHELL_DATADIR'  : data_dir,
-                    'GI_TYPELIB_PATH'      : typelib_dir,
                     'GSETTINGS_SCHEMA_DIR' : data_dir })
     else:
         # This is just broken to set in the installed case; see bug #642084
