@@ -461,7 +461,18 @@ Source.prototype = {
         if (event.type() != Clutter.EventType.BUTTON_RELEASE)
             return false;
 
-        this._trayIcon.click(event);
+        if (Main.overview.visible) {
+            // We can't just connect to Main.overview's 'hidden' signal,
+            // because it's emitted *before* it calls popModal()...
+            let id = global.connect('notify::stage-input-mode', Lang.bind(this,
+                function () {
+                    global.disconnect(id);
+                    this._trayIcon.click(event);
+                }));
+            Main.overview.hide();
+        } else {
+            this._trayIcon.click(event);
+        }
         return true;
     },
 
