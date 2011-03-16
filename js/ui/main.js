@@ -219,6 +219,10 @@ function start() {
     }
 
     global.screen.connect('notify::n-workspaces', _nWorkspacesChanged);
+
+    global.screen.connect('window-entered-monitor', _windowEnteredMonitor);
+    global.screen.connect('window-left-monitor', _windowLeftMonitor);
+
     Mainloop.idle_add(_nWorkspacesChanged);
 }
 
@@ -304,6 +308,20 @@ function _windowRemoved(workspace, window) {
             _queueCheckWorkspaces();
         }
     });
+}
+
+function _windowLeftMonitor(metaScreen, monitorIndex, metaWin) {
+    // If the window left the primary monitor, that
+    // might make that workspace empty
+    if (monitorIndex == global.get_primary_monitor_index())
+        _queueCheckWorkspaces();
+}
+
+function _windowEnteredMonitor(metaScreen, monitorIndex, metaWin) {
+    // If the window entered the primary monitor, that
+    // might make that workspace non-empty
+    if (monitorIndex == global.get_primary_monitor_index())
+        _queueCheckWorkspaces();
 }
 
 function _queueCheckWorkspaces() {
