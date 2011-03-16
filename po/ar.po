@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-09 01:12+0200\n"
+"POT-Creation-Date: 2011-03-16 14:53+0200\n"
 "PO-Revision-Date: 2011-03-09 01:12+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -344,7 +344,7 @@ msgstr "هذا الأسبوع"
 msgid "Next week"
 msgstr "الأسبوع القادم"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:935
 msgid "Remove"
 msgstr "أزِل"
 
@@ -399,7 +399,7 @@ msgstr "%A %Ol:%OM %p"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:209
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B، %Y"
 
@@ -486,7 +486,7 @@ msgstr "مفعّل"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "معطّل"
 
@@ -506,11 +506,11 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:928
 msgid "Open"
 msgstr "افتح"
 
-#: ../js/ui/messageTray.js:1963
+#: ../js/ui/messageTray.js:1965
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -533,18 +533,18 @@ msgid "Dash"
 msgstr "الشريط"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:560
+#: ../js/ui/panel.js:508
 #, c-format
 msgid "Quit %s"
 msgstr "أغلق %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:919
+#: ../js/ui/panel.js:867
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: ../js/ui/panel.js:1020
+#: ../js/ui/panel.js:968
 msgid "Panel"
 msgstr "اللوحة"
 
@@ -561,7 +561,7 @@ msgstr "أعد المحاولة"
 msgid "Connect to..."
 msgstr "اتّصل ب‍..."
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "الأماكن والأجهزة"
 
@@ -570,7 +570,7 @@ msgstr "الأماكن والأجهزة"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:618
+#: ../js/ui/popupMenu.js:636
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -586,39 +586,39 @@ msgstr "يبحث..."
 msgid "No matching results."
 msgstr "لا نتائج مطابقة."
 
-#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
+#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
 msgid "Power Off..."
 msgstr "أطفئ..."
 
-#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
 msgid "Suspend"
 msgstr "علّق"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:137
 msgid "Available"
 msgstr "متاح"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:142
 msgid "Busy"
 msgstr "مشغول"
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:150
 msgid "My Account"
 msgstr "حسابي"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:154
 msgid "System Settings"
 msgstr "إعدادات النظام"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:161
 msgid "Lock Screen"
 msgstr "أوصد الشاشة"
 
-#: ../js/ui/statusMenu.js:153
+#: ../js/ui/statusMenu.js:165
 msgid "Switch User"
 msgstr "بدّل المستخدم"
 
-#: ../js/ui/statusMenu.js:158
+#: ../js/ui/statusMenu.js:170
 msgid "Log Out..."
 msgstr "اخرج..."
 
@@ -626,14 +626,12 @@ msgstr "اخرج..."
 msgid "Zoom"
 msgstr "تقريب"
 
-#: ../js/ui/status/accessibility.js:69
-msgid "Screen Reader"
-msgstr "قارئ الشاشة"
-
-#: ../js/ui/status/accessibility.js:73
-msgid "Screen Keyboard"
-msgstr "لوحة مفاتيح على الشاشة"
-
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "تنبيهات بصرية"
@@ -717,7 +715,7 @@ msgstr "إعدادات لوحة المفاتيح"
 msgid "Mouse Settings"
 msgstr "إعدادات الفأرة"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "إعدادات الصوت"
 
@@ -893,30 +891,30 @@ msgstr "حاسوب"
 msgid "Unknown"
 msgstr "مجهول"
 
-#: ../js/ui/status/volume.js:44
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "جزء"
 
-#: ../js/ui/status/volume.js:57
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "ميكروفون"
 
-#: ../js/ui/telepathyClient.js:239
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "‏%s متّصل."
 
-#: ../js/ui/telepathyClient.js:244
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "‏%s غير متّصل."
 
-#: ../js/ui/telepathyClient.js:247
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "‏%s غائب."
 
-#: ../js/ui/telepathyClient.js:250
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "‏%s مشغول."
@@ -924,7 +922,7 @@ msgstr "‏%s مشغول."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:348
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "أُرسلت الساعة %l:%M:%S في %A"
@@ -933,11 +931,11 @@ msgstr "أُرسلت الساعة %l:%M:%S في %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:117
+#: ../js/ui/viewSelector.js:119
 msgid "Type to search..."
 msgstr "اكتب نصا للبحث عنه..."
 
-#: ../js/ui/viewSelector.js:137 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
 msgid "Search"
 msgstr "ابحث"
 
@@ -953,7 +951,7 @@ msgstr "‏'%s' جاهز"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -966,7 +964,7 @@ msgstr[5] "%u مخرج"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -977,7 +975,7 @@ msgstr[3] "%u مداخل"
 msgstr[4] "%u مدخلا"
 msgstr[5] "%u مدخل"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "أصوات النظام"
 
@@ -1056,6 +1054,12 @@ msgstr "نظام الملفات"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
+
+#~ msgid "Screen Reader"
+#~ msgstr "قارئ الشاشة"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "لوحة مفاتيح على الشاشة"
 
 #~ msgid "PREFERENCES"
 #~ msgstr "التفضيلات"
