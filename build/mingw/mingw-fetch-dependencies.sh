@@ -184,7 +184,7 @@ function do_cross_compile ()
     local builddir="$BUILD_DIR/$dep";
 
     cd "$builddir"
-    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`" CFLAGS="-mms-bitfields" PKG_CONFIG_PATH="$ROOT_DIR/lib/pkgconfig"
+    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`" CFLAGS="-mms-bitfields" PKG_CONFIG="$RUN_PKG_CONFIG";
 
     if [ "$?" -ne 0 ]; then
 	echo "Failed to configure $dep";
@@ -312,6 +312,26 @@ for header in "${GL_HEADERS[@]}"; do
     fi;
 done;
 
+RUN_PKG_CONFIG="$BUILD_DIR/run-pkg-config.sh";
+
+echo "Generating $BUILD_DIR/run-pkg-config.sh";
+
+cat > "$RUN_PKG_CONFIG" <<EOF
+# This is a wrapper script for pkg-config that overrides the
+# PKG_CONFIG_LIBDIR variable so that it won't pick up the local system
+# .pc files.
+
+# The MinGW compiler on Fedora tries to do a similar thing except that
+# it also unsets PKG_CONFIG_PATH. This breaks any attempts to add a
+# local search path so we need to avoid using that script.
+
+export PKG_CONFIG_LIBDIR="$ROOT_DIR/lib/pkgconfig"
+
+exec pkg-config "\$@"
+EOF
+
+chmod a+x "$RUN_PKG_CONFIG";
+
 ##
 # Build environment
 ##
@@ -337,7 +357,7 @@ echo
 echo "To get started, you should be able to configure and build from"
 echo "the top of your clutter source directory as follows:"
 echo
-echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"`./config.guess`\" --with-flavour=win32 CFLAGS=\"-mms-bitfields\" PKG_CONFIG_PATH=\"$ROOT_DIR/lib/pkgconfig\""
+echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"`./config.guess`\" --with-flavour=win32 CFLAGS=\"-mms-bitfields\" PKG_CONFIG=\"$RUN_PKG_CONFIG\""
 echo "make"
 echo
 echo "Note: the explicit --build option is often necessary to ensure autoconf"
