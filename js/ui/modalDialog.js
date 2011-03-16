@@ -45,6 +45,11 @@ ModalDialog.prototype = {
                                      x: 0,
                                      y: 0 });
         Main.uiGroup.add_actor(this._group);
+
+        let constraint = new Clutter.BindConstraint({ source: global.stage,
+                                                      coordinate: Clutter.BindCoordinate.POSITION | Clutter.BindCoordinate.SIZE });
+        this._group.add_constraint(constraint);
+
         global.focus_manager.add_group(this._group);
         this._initialKeyFocus = this._group;
         this._savedKeyFocus = null;
