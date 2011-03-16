@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-15 15:19+0100\n"
-"PO-Revision-Date: 2011-03-15 15:25+0100\n"
+"POT-Creation-Date: 2011-03-16 19:45+0100\n"
+"PO-Revision-Date: 2011-03-16 19:54+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -507,7 +507,7 @@ msgstr "Reiniciando o computador."
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:465
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -545,7 +545,7 @@ msgstr "Páxina web"
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1965
+#: ../js/ui/messageTray.js:1988
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -568,18 +568,18 @@ msgid "Dash"
 msgstr "Panel"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:510
+#: ../js/ui/panel.js:514
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:869
+#: ../js/ui/panel.js:873
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:970
+#: ../js/ui/panel.js:974
 msgid "Panel"
 msgstr "Panel"
 
@@ -661,14 +661,12 @@ msgstr "Saír da sesión…"
 msgid "Zoom"
 msgstr "Ampliación"
 
-#: ../js/ui/status/accessibility.js:69
-msgid "Screen Reader"
-msgstr "Lector de pantalla"
-
-#: ../js/ui/status/accessibility.js:73
-msgid "Screen Keyboard"
-msgstr "Teclado en pantalla"
-
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Alertas visuais"
@@ -701,9 +699,9 @@ msgstr "Alto contraste"
 msgid "Large Text"
 msgstr "Texto máis grande"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:236
+#: ../js/ui/status/bluetooth.js:332 ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:406 ../js/ui/status/bluetooth.js:439
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -723,94 +721,94 @@ msgstr "Configurar un novo dispositivo…"
 msgid "Bluetooth Settings"
 msgstr "Configuracións de Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:187
 msgid "Connection"
 msgstr "Conexión"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:223
 msgid "Send Files..."
 msgstr "Enviar ficheiros…"
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:228
 msgid "Browse Files..."
 msgstr "Explorar ficheiros…"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:237
 msgid "Error browsing device"
 msgstr "Produciuse un erro ao explorar o dispositivo"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:238
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "O dispositivo solicitado non pode explorarse, o erro foi «%s»"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:246
 msgid "Keyboard Settings"
 msgstr "Configuracións do teclado"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:251
 msgid "Mouse Settings"
 msgstr "Configuracións do rato"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Configuracións do son"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:367
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Solicitude de autorización de %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:373
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "O dispositivo %s quere acceder ao servizo «%s»"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:375
 msgid "Always grant access"
 msgstr "Conceder acceso sempre"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:376
 msgid "Grant this time only"
 msgstr "Conceder só esta vez"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:377
 msgid "Reject"
 msgstr "Rexeitar"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:407
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Confirmación de emparellado para «%s»"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:413 ../js/ui/status/bluetooth.js:447
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "O dispositivo «%s» quere emparellarse con este equipo"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:414
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confirme que o PIN mostrado en «%s» coincide co do dispositivo."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:416
 msgid "Matches"
 msgstr "Coincide"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:417
 msgid "Does not match"
 msgstr "Non coincide"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:440
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Solicitude de emparellamento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:448
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Introduza o PIN mencionado no dispositivo."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:464
 msgid "OK"
 msgstr "Aceptar"
 
@@ -821,6 +819,136 @@ msgstr "Mostrar a distribución do teclado…"
 #: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "Configuracións do son"
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<descoñecida>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "desactivada"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "conectando..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "autenticación requirida"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "cable desconectado"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "non dispoñíbel"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "conexión fallida"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "Conectado (privado)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "Ethernet automática"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "Banda larga automática"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "Por liña conmutada automática"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "%s automática"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "Bluetooth automática"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "Sen fíos automática"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "Máis..."
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "Activar rede"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "Con fíos"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "Sen fíos"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "Banda larga móbil"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "Conexións VPN"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "Configuracións da rede"
+
+#: ../js/ui/status/network.js:1782
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Vostede está conectado agora á conexión de banda larga móbil «%s»"
+
+#: ../js/ui/status/network.js:1786
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Vostede está conectado agora á conexión sen fíos «%s»"
+
+#: ../js/ui/status/network.js:1790
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Vostede está conectado agora á conexión con fíos «%s»"
+
+#: ../js/ui/status/network.js:1794
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Vostede está conectado agora á conexión VPN «%s»"
+
+#: ../js/ui/status/network.js:1799
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Vostede está conectado agora a «%s»"
+
+#: ../js/ui/status/network.js:1807
+msgid "Connection estabilished"
+msgstr "Conexión estabelecida"
+
+#: ../js/ui/status/network.js:1929
+msgid "Networking is disabled"
+msgstr "A rede está desactivada"
+
+#: ../js/ui/status/network.js:2054
+msgid "Network Manager"
+msgstr "Xestor de rede"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -948,13 +1076,6 @@ msgstr "%s está ocupado/a."
 msgid "Sent at %X on %A"
 msgstr "Enviado ás %X o %A"
 
-#. Translators: this is the other person changing their old IM name to their new
-#. IM name.
-#: ../js/ui/telepathyClient.js:498
-#, c-format
-msgid "%s is now known as %s"
-msgstr "%s é coñecido agora como %s"
-
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
@@ -1035,6 +1156,14 @@ msgid_plural "%d weeks ago"
 msgstr[0] "hai %d semana"
 msgstr[1] "hai %d semanas"
 
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Reino Unido"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Predeterminado"
+
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O usuario rexeitou o diálogo de autenticación"
@@ -1058,6 +1187,15 @@ msgstr "Sistema de ficheiros"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Screen Reader"
+#~ msgstr "Lector de pantalla"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Teclado en pantalla"
+
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s é coñecido agora como %s"
 
 #~ msgid "Clip the crosshairs at the center"
 #~ msgstr "Poñer o punto de mira no centro"
