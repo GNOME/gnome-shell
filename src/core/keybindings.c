@@ -2444,7 +2444,7 @@ static void
 error_on_command (int         command_index,
                   const char *command,
                   const char *message,
-                  int         screen_number,
+                  MetaScreen *screen,
                   guint32     timestamp)
 {
   if (command_index < 0)
@@ -2473,7 +2473,7 @@ error_on_command (int         command_index,
       meta_show_dialog ("--error",
                         text,
                         NULL,
-                        screen_number,
+                        screen->screen_name,
                         NULL, NULL, 0,
                         NULL, NULL);
 
@@ -2485,7 +2485,7 @@ error_on_command (int         command_index,
       meta_show_dialog ("--error",
                         message,
                         NULL,
-                        screen_number,
+                        screen->screen_name,
                         NULL, NULL, 0,
                         NULL, NULL);
     }
@@ -2557,7 +2557,7 @@ handle_run_command (MetaDisplay    *display,
       
       s = g_strdup_printf (_("No command %d has been defined.\n"),
                            which + 1);
-      error_on_command (which, NULL, s, screen->number, event->xkey.time);
+      error_on_command (which, NULL, s, screen, event->xkey.time);
       g_free (s);
       
       return;
@@ -2566,7 +2566,7 @@ handle_run_command (MetaDisplay    *display,
   err = NULL;
   if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
     {
-      error_on_command (which, command, err->message, screen->number, event->xkey.time);
+      error_on_command (which, command, err->message, screen, event->xkey.time);
       
       g_error_free (err);
     }
@@ -3568,7 +3568,7 @@ handle_run_terminal (MetaDisplay    *display,
 		  "keybinding press\n");
       
       s = g_strdup_printf (_("No terminal command has been defined.\n"));
-      error_on_command (-1, NULL, s, screen->number, event->xkey.time);
+      error_on_command (-1, NULL, s, screen, event->xkey.time);
       g_free (s);
       
       return;
@@ -3577,7 +3577,7 @@ handle_run_terminal (MetaDisplay    *display,
   err = NULL;
   if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
     {
-      error_on_command (-1, command, err->message, screen->number,
+      error_on_command (-1, command, err->message, screen,
                         event->xkey.time);
       
       g_error_free (err);

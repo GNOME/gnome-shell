@@ -1804,7 +1804,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
                            "and will have to be restarted manually next time "
                            "you log in."),
                          "240",
-                         meta_screen_get_screen_number (meta_get_display()->active_screen),
+                         meta_get_display()->active_screen->screen_name,
                          NULL, NULL,
                          None,
                          columns,

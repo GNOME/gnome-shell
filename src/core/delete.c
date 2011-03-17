@@ -103,8 +103,8 @@ delete_ping_timeout_func (MetaDisplay *display,
 
   dialog_pid =
     meta_show_dialog ("--question",
-                      window_content, 0,
-                      window->screen->number,
+                      window_content, NULL,
+                      window->screen->screen_name,
                       _("_Wait"), _("_Force Quit"), window->xwindow,
                       NULL, NULL);
 
