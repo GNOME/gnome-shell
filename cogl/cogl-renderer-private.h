@@ -31,6 +31,10 @@
 #include <X11/Xlib.h>
 #endif
 
+#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#include <wayland-client.h>
+#endif
+
 struct _CoglRenderer
 {
   CoglObject _parent;
@@ -38,6 +42,10 @@ struct _CoglRenderer
   const CoglWinsysVtable *winsys_vtable;
 #ifdef COGL_HAS_XLIB_SUPPORT
   Display *foreign_xdpy;
+#endif
+#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  struct wl_display *foreign_wayland_display;
+  struct wl_compositor *foreign_wayland_compositor;
 #endif
   /* List of callback functions that will be given every native event */
   GSList *event_filters;

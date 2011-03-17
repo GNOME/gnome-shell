@@ -331,6 +331,10 @@ if SUPPORT_EGL_PLATFORM_GDL
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c
 endif
+if SUPPORT_EGL_PLATFORM_WAYLAND
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-winsys-egl.c
+endif
 if SUPPORT_STUB
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-stub.c

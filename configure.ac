@@ -534,6 +534,31 @@ AS_IF([test "x$enable_gdl_egl_platform" == "xyes"],
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_GDL,
                [test "x$enable_gdl_egl_platform" = "xyes"])
 
+AC_ARG_ENABLE(
+  [wayland-egl-platform],
+  [AC_HELP_STRING([--enable-wayland-egl-platform=@<:@no/yes@:>@], [Enable support for the Wayland egl platform @<:@default=no@:>@])],
+  [],
+  enable_wayland_egl_platform=no
+)
+AS_IF([test "x$enable_wayland_egl_platform" == "xyes"],
+      [
+        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
+        NEED_EGL=yes
+        EGL_PLATFORMS="$EGL_PLATFORMS wayland"
+
+        PKG_CHECK_EXISTS([wayland-egl],
+                         [
+                           COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-egl"
+                           COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-client"
+                         ],
+                         [AC_MSG_ERROR([Unable to locate required wayland libraries])])
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT"
+      ])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_WAYLAND,
+               [test "x$enable_wayland_egl_platform" = "xyes"])
+
+
 dnl This should go last, since it's the default fallback and we need
 dnl to check the value of $EGL_PLATFORM_COUNT here.
 AC_ARG_ENABLE(
