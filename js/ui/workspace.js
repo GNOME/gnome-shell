@@ -1401,7 +1401,7 @@ Workspace.prototype = {
             // the move itself could cause a workspace change if the window enters
             // the primary monitor
             if (metaWindow.get_monitor() != this.monitorIndex)
-                metaWindow.move_frame(true, this._x, this._y);
+                metaWindow.move_to_monitor(this.monitorIndex);
 
             let index = this.metaWorkspace ? this.metaWorkspace.index() : global.screen.get_active_workspace_index();
             metaWindow.change_workspace_by_index(index,

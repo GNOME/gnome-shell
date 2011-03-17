@@ -410,7 +410,7 @@ WorkspaceThumbnail.prototype = {
             // the move itself could cause a workspace change if the window enters
             // the primary monitor
             if (metaWindow.get_monitor() != this.monitorIndex)
-                metaWindow.move_frame(true, this._portholeX, this._portholeY);
+                metaWindow.move_to_monitor(this.monitorIndex);
 
             metaWindow.change_workspace_by_index(this.metaWorkspace.index(),
                                                  false, // don't create workspace
