@@ -25,12 +25,6 @@ cb_background_effect_pre_paint (ClutterEffect *self)
   gfloat height;
   CbBackgroundEffectPrivate *priv;
 
-  ClutterActorMeta *meta = CLUTTER_ACTOR_META (self);
-
-  /* check that the effect is enabled before applying it */
-  if (!clutter_actor_meta_get_enabled (meta))
-    return TRUE;
-
   priv = CB_BACKGROUND_EFFECT (self)->priv;
 
   /* get the associated actor's dimensions */

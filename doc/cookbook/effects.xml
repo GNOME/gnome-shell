@@ -385,8 +385,7 @@ cb_background_effect_dispose (GObject *gobject)
 
       <para>Now, the important part: implement <function>pre_paint()</function>
       and/or <function>post_paint()</function>, using Cogl to draw on the
-      material(s) set up for the effect. In these functions, you should also
-      check whether the effect is enabled before drawing.</para>
+      material(s) set up for the effect.</para>
 
       <para>For the background effect, we implement <function>pre_paint()</function>,
       to draw a gray rectangle under the actor:</para>
@@ -404,12 +403,6 @@ cb_background_effect_pre_paint (ClutterEffect *self)
   gfloat width;
   gfloat height;
   CbBackgroundEffectPrivate *priv;
-
-  ClutterActorMeta *meta = CLUTTER_ACTOR_META (self);
-
-  /* check that the effect is enabled before applying it */
-  if (!clutter_actor_meta_get_enabled (meta))
-    return TRUE;
 
   priv = CB_BACKGROUND_EFFECT (self)->priv;
 

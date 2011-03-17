@@ -35,12 +35,6 @@ cb_border_effect_post_paint (ClutterEffect *self)
   gfloat height;
   CbBorderEffectPrivate *priv;
 
-  ClutterActorMeta *meta = CLUTTER_ACTOR_META (self);
-
-  /* check that the effect is enabled before applying it */
-  if (!clutter_actor_meta_get_enabled (meta))
-    return;
-
   priv = CB_BORDER_EFFECT (self)->priv;
 
   /* get the associated actor's dimensions */
