@@ -78,7 +78,7 @@ POLKIT_MIN_VERSION=0.100
 PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
                                gio-unix-2.0 dbus-glib-1 libxml-2.0
                                gtk+-3.0 >= $GTK_MIN_VERSION
-                               libmutter-wm >= $MUTTER_MIN_VERSION
+                               libmutter >= $MUTTER_MIN_VERSION
                                gjs-internals-1.0 >= $GJS_MIN_VERSION
 			       libgnome-menu $recorder_modules gconf-2.0
                                gdk-x11-3.0
@@ -146,8 +146,8 @@ PKG_CHECK_MODULES(CALENDAR_SERVER, libecal-1.2 >= $LIBECAL_MIN_VERSION libedatas
 AC_SUBST(CALENDAR_SERVER_CFLAGS)
 AC_SUBST(CALENDAR_SERVER_LIBS)
 
-MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter-wm`
-MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wm`
+MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
+MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
 AC_SUBST(MUTTER_GIR_DIR)
 AC_SUBST(MUTTER_TYPELIB_DIR)
 
