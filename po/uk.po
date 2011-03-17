@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-11 19:35+0200\n"
-"PO-Revision-Date: 2011-03-11 19:37+0300\n"
+"POT-Creation-Date: 2011-03-17 18:21+0200\n"
+"PO-Revision-Date: 2011-03-17 18:24+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -470,34 +470,34 @@ msgstr "Список композитних додатків розділени�
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
+#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ключ GConf «%s» встановлено у неправильний тип\n"
 
-#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "Значення %d збережене в ключі GConf %s виходить за межі %d ― %d\n"
 
-#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
-#: ../src/core/prefs.c:856 ../src/core/prefs.c:1317 ../src/core/prefs.c:1333
-#: ../src/core/prefs.c:1350 ../src/core/prefs.c:1366
+#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
+#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
+#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ключу GConf «%s» вказано неправильний тип\n"
 
-#: ../src/core/prefs.c:1196
+#: ../src/core/prefs.c:1203
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr "Ключ GConf %s вже використовується і неможливо перевизначити %s\n"
 
-#: ../src/core/prefs.c:1255
+#: ../src/core/prefs.c:1262
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Неможливо перевизначити ключ GConf, %s не знайдено\n"
 
-#: ../src/core/prefs.c:1440
+#: ../src/core/prefs.c:1447
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -505,12 +505,12 @@ msgstr ""
 "Обхід для роботи із зіпсованими програмами вимкнено. Деякі додатки можуть "
 "працювати некоректно.\n"
 
-#: ../src/core/prefs.c:1517
+#: ../src/core/prefs.c:1524
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Неможливо проаналізувати опис шрифту «%s» у ключі GConf %s\n"
 
-#: ../src/core/prefs.c:1579
+#: ../src/core/prefs.c:1586
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -519,17 +519,17 @@ msgstr ""
 "У базі даних налаштування знайдено «%s» — що не є правильним значенням "
 "модифікатора клавіші миші.\n"
 
-#: ../src/core/prefs.c:2006
+#: ../src/core/prefs.c:2016
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Помилка налаштування кількості робочих просторів у %d: %s\n"
 
-#: ../src/core/prefs.c:2190 ../src/core/prefs.c:2692
+#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
 #, c-format
 msgid "Workspace %d"
 msgstr "Робочий простір %d"
 
-#: ../src/core/prefs.c:2222 ../src/core/prefs.c:2400
+#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -538,27 +538,27 @@ msgstr ""
 "Знайдене у базі даних налаштування значення «%s» не є правильним записом "
 "прив'язки клавіш «%s»\n"
 
-#: ../src/core/prefs.c:2773
+#: ../src/core/prefs.c:2783
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Помилка налаштуванні назви робочих просторів %d у «%s»: %s\n"
 
-#: ../src/core/prefs.c:2987
+#: ../src/core/prefs.c:2997
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Помилка налаштування стану схованих вікон: %s\n"
 
-#: ../src/core/prefs.c:3015
+#: ../src/core/prefs.c:3032
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Помилка налаштування стану контекстних вкладок: %s\n"
 
-#: ../src/core/screen.c:577
+#: ../src/core/screen.c:623
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї «%s» не правильний\n"
 
-#: ../src/core/screen.c:593
+#: ../src/core/screen.c:639
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -567,7 +567,7 @@ msgstr ""
 "Екран %d на дисплеї «%s» вже має менеджера вікон; спробуйте вказати параметр "
 "--replace, щоб замінити поточний менеджер вікон.\n"
 
-#: ../src/core/screen.c:620
+#: ../src/core/screen.c:666
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -575,12 +575,12 @@ msgstr ""
 "Не вдалось одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "«%s»\n"
 
-#: ../src/core/screen.c:675
+#: ../src/core/screen.c:721
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплеї «%s» вже має менеджера вікон\n"
 
-#: ../src/core/screen.c:860
+#: ../src/core/screen.c:906
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не вдалось відпустити екран %d на дисплеї «%s»\n"
@@ -683,7 +683,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6550
+#: ../src/core/window.c:6651
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -699,7 +699,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7213
+#: ../src/core/window.c:7314
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -764,15 +764,23 @@ msgstr ""
 "робочих просторах) слід утримувати активними."
 
 #: ../src/mutter.schemas.in.h:3
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only the primary window."
+msgstr ""
+"Визначає, чи перемикання робочого простору повинно здійснюватись для вікон "
+"на всіх моніторах, чи лише для первинного вікна."
+
+#: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
 msgstr "Активувати сховані вікна"
 
-#: ../src/mutter.schemas.in.h:4
+#: ../src/mutter.schemas.in.h:5
 msgid "Modifier to use for extended window management operations"
 msgstr ""
 "Модифікатор, що використовується для розширених дій віконного менеджера"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:6
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -783,7 +791,7 @@ msgstr ""
 "запуску програм. Типово на це призначено клавішу «Win» в обладнанні. "
 "Очікується, що це буде прив'язка або типова, або порожній рядок."
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/mutter.schemas.in.h:7
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -792,6 +800,10 @@ msgstr ""
 "Якщо це позначено, замість незалежних заголовків, модальні вікна буде "
 "долучено до батьківського вікна заголовка і пересунуто разом з батьківських "
 "вікном."
+
+#: ../src/mutter.schemas.in.h:8
+msgid "Workspaces only on primary"
+msgstr "Робочий простір лише на первинному"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
