@@ -23,10 +23,10 @@
 /* Vendor prefixes are something that can be preprended to a .desktop
  * file name.  Undo this.
  */
-static const char*const known_vendor_prefixes[] = { "gnome",
-                                                    "fedora",
-                                                    "mozilla",
-                                                    NULL };
+static const char*const vendor_prefixes[] = { "gnome-",
+                                              "fedora-",
+                                              "mozilla-",
+                                              NULL };
 
 enum {
    PROP_0,
@@ -49,12 +49,14 @@ struct _ShellAppSystemPrivate {
 
   GSList *cached_flattened_apps; /* ShellAppInfo */
   GSList *cached_settings; /* ShellAppInfo */
+  GSList *known_vendor_prefixes;
 
   gint app_monitor_id;
 
   guint app_change_timeout_id;
 };
 
+static char *shell_app_info_get_prefix (ShellAppInfo *info);
 static void shell_app_system_finalize (GObject *object);
 static gboolean on_tree_changed (gpointer user_data);
 static void on_tree_changed_cb (GMenuTree *tree, gpointer user_data);
@@ -226,6 +228,11 @@ shell_app_system_finalize (GObject *object)
   g_slist_foreach (priv->cached_flattened_apps, (GFunc)shell_app_info_unref, NULL);
   g_slist_free (priv->cached_flattened_apps);
   priv->cached_flattened_apps = NULL;
+
+  g_slist_foreach (priv->known_vendor_prefixes, (GFunc)g_free, NULL);
+  g_slist_free (priv->known_vendor_prefixes);
+  priv->known_vendor_prefixes = NULL;
+
   g_slist_foreach (priv->cached_settings, (GFunc)shell_app_info_unref, NULL);
   g_slist_free (priv->cached_settings);
   priv->cached_settings = NULL;
@@ -309,10 +316,20 @@ cache_by_id (ShellAppSystem *self, GSList *apps)
   for (iter = apps; iter; iter = iter->next)
     {
       ShellAppInfo *info = iter->data;
+      const char *id = shell_app_info_get_id (info);
+      char *prefix = shell_app_info_get_prefix (info);
+
       shell_app_info_ref (info);
       /* the name is owned by the info itself */
-      g_hash_table_replace (self->priv->app_id_to_info, (char*)shell_app_info_get_id (info),
-                            info);
+
+      if (prefix
+          && !g_slist_find_custom (self->priv->known_vendor_prefixes, prefix,
+                                   (GCompareFunc)g_strcmp0))
+        self->priv->known_vendor_prefixes = g_slist_append (self->priv->known_vendor_prefixes,
+                                                            prefix);
+      else
+        g_free (prefix);
+      g_hash_table_replace (self->priv->app_id_to_info, (char*)id, info);
     }
 }
 
@@ -320,6 +337,10 @@ static void
 reread_menus (ShellAppSystem *self)
 {
   GHashTable *unique = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_slist_foreach (self->priv->known_vendor_prefixes, (GFunc)g_free, NULL);
+  g_slist_free (self->priv->known_vendor_prefixes);
+  self->priv->known_vendor_prefixes = NULL;
 
   reread_entries (self, &(self->priv->cached_flattened_apps), unique, self->priv->apps_tree);
   g_hash_table_remove_all (unique);
@@ -593,16 +614,13 @@ shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
                                             const char *name)
 {
   ShellApp *result;
-  char **vendor_prefixes;
-
+  GSList *prefix;
   result = shell_app_system_get_app (system, name);
   if (result != NULL)
     return result;
-
-  for (vendor_prefixes = (char**)known_vendor_prefixes;
-       *vendor_prefixes; vendor_prefixes++)
+  for (prefix = system->priv->known_vendor_prefixes; prefix; prefix = g_slist_next (prefix))
     {
-      char *tmpid = g_strjoin (NULL, *vendor_prefixes, "-", name, NULL);
+      char *tmpid = g_strconcat ((char*)prefix->data, name, NULL);
       result = shell_app_system_get_app (system, tmpid);
       g_free (tmpid);
       if (result != NULL)
@@ -939,6 +957,115 @@ shell_app_info_get_id (ShellAppInfo *info)
   }
   g_assert_not_reached ();
   return NULL;
+}
+
+static char *
+shell_app_info_get_prefix (ShellAppInfo *info)
+{
+  char *prefix = NULL, *file_prefix = NULL;
+  const char *id;
+  GFile *file;
+  char *name;
+  int i = 0;
+
+  if (info->type != SHELL_APP_INFO_TYPE_ENTRY)
+    return NULL;
+
+  id = gmenu_tree_entry_get_desktop_file_id ((GMenuTreeEntry*)info->entry);
+  file = g_file_new_for_path (gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry*)info->entry));
+  name = g_file_get_basename (file);
+
+  if (!name)
+    {
+      g_object_unref (file);
+      return NULL;
+    }
+  for (i = 0; vendor_prefixes[i]; i++)
+    {
+      if (g_str_has_prefix (name, vendor_prefixes[i]))
+        {
+          file_prefix = g_strdup (vendor_prefixes[i]);
+          break;
+        }
+    }
+
+  while (strcmp (name, id) != 0)
+    {
+      char *t;
+      char *pname;
+      GFile *parent = g_file_get_parent (file);
+
+      if (!parent)
+        {
+          g_warn_if_reached ();
+          break;
+        }
+
+      pname = g_file_get_basename (parent);
+      if (!pname)
+        {
+          g_object_unref (parent);
+          break;
+        }
+      if (!g_strstr_len (id, -1, pname))
+        {
+          /* handle <LegacyDir prefix="..."> */
+          char *t;
+          size_t name_len = strlen (name);
+          size_t id_len = strlen (id);
+          char *t_id = g_strdup (id);
+
+          t_id[id_len - name_len] = '\0';
+          t = g_strdup(t_id);
+          g_free (prefix);
+          g_free (t_id);
+          g_free (name);
+          name = g_strdup (id);
+          prefix = t;
+
+          g_object_unref (file);
+          file = parent;
+          g_free (pname);
+          g_free (file_prefix);
+          file_prefix = NULL;
+          break;
+        }
+
+      t = g_strconcat (pname, "-", name, NULL);
+      g_free (name);
+      name = t;
+
+      t = g_strconcat (pname, "-", prefix, NULL);
+      g_free (prefix);
+      prefix = t;
+
+      g_object_unref (file);
+      file = parent;
+      g_free (pname);
+    }
+
+  if (file)
+    g_object_unref (file);
+
+  if (strcmp (name, id) == 0)
+    {
+      g_free (name);
+      if (file_prefix && !prefix)
+        return file_prefix;
+      if (file_prefix)
+        {
+          char *t = g_strconcat (prefix, "-", file_prefix, NULL);
+          g_free (prefix);
+          g_free (file_prefix);
+          prefix = t;
+        }
+      return prefix;
+    }
+
+  g_free (name);
+  g_free (prefix);
+  g_free (file_prefix);
+  g_return_val_if_reached (NULL);
 }
 
 #define DESKTOP_ENTRY_GROUP "Desktop Entry"
