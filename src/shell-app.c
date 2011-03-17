@@ -141,14 +141,26 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   app = data->app;
   size = data->size;
 
-  icon = shell_app_info_get_icon (app->info);
-  if (icon == NULL)
-    return COGL_INVALID_HANDLE;
+  info = NULL;
 
-  info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                         icon, (int) (size + 0.5),
-                                         GTK_ICON_LOOKUP_FORCE_SIZE);
-  g_object_unref (icon);
+  icon = shell_app_info_get_icon (app->info);
+  if (icon != NULL)
+    {
+      info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                             icon, (int) (size + 0.5),
+                                             GTK_ICON_LOOKUP_FORCE_SIZE);
+      g_object_unref (icon);
+    }
+
+  if (info == NULL)
+    {
+      icon = g_themed_icon_new ("application-x-executable");
+      info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                             icon, (int) (size + 0.5),
+                                             GTK_ICON_LOOKUP_FORCE_SIZE);
+      g_object_unref (icon);
+    }
+
   if (info == NULL)
     return COGL_INVALID_HANDLE;
 

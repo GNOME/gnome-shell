@@ -1208,21 +1208,27 @@ shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
   GIcon *icon;
   ClutterActor *ret;
 
+  ret = NULL;
+
   if (info->type == SHELL_APP_INFO_TYPE_WINDOW)
     {
-      return st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
-                                                    G_OBJECT (info->window),
-                                                    "icon");
-    }
-
-  icon = shell_app_info_get_icon (info);
-  if (icon == NULL)
-    {
-      ret = clutter_texture_new ();
-      g_object_set (ret, "opacity", 0, "width", size, "height", size, NULL);
+      ret = st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
+                                                   G_OBJECT (info->window),
+                                                   "icon");
     }
   else
     {
+      icon = shell_app_info_get_icon (info);
+      if (icon != NULL)
+        {
+          ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, (int)size);
+          g_object_unref (icon);
+        }
+    }
+
+  if (ret == NULL)
+    {
+      icon = g_themed_icon_new ("application-x-executable");
       ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, (int)size);
       g_object_unref (icon);
     }

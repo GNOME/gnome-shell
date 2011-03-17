@@ -1195,6 +1195,8 @@ load_gicon_with_colors (StTextureCache    *cache,
        g_slist_free (request->textures);
        g_free (request);
        g_hash_table_remove (cache->priv->outstanding_requests, key);
+       g_object_unref (texture);
+       texture = NULL;
     }
 
   g_free (key);
@@ -1216,7 +1218,7 @@ load_gicon_with_colors (StTextureCache    *cache,
  * This will load @icon as a full-color icon; if you want a symbolic
  * icon, you must use st_texture_cache_load_icon_name().
  *
- * Return Value: (transfer none): A new #ClutterActor for the icon
+ * Return Value: (transfer none): A new #ClutterActor for the icon, or %NULL if not found
  */
 ClutterActor *
 st_texture_cache_load_gicon (StTextureCache    *cache,
@@ -1461,10 +1463,27 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
   switch (icon_type)
     {
     case ST_ICON_APPLICATION:
+      themed = g_themed_icon_new (name);
+      texture = load_gicon_with_colors (cache, themed, size, NULL);
+      g_object_unref (themed);
+      if (texture == NULL)
+        {
+          themed = g_themed_icon_new ("application-x-executable");
+          texture = load_gicon_with_colors (cache, themed, size, NULL);
+          g_object_unref (themed);
+        }
+      return CLUTTER_ACTOR (texture);
+      break;
     case ST_ICON_DOCUMENT:
       themed = g_themed_icon_new (name);
       texture = load_gicon_with_colors (cache, themed, size, NULL);
       g_object_unref (themed);
+      if (texture == NULL)
+        {
+          themed = g_themed_icon_new ("x-office-document");
+          texture = load_gicon_with_colors (cache, themed, size, NULL);
+          g_object_unref (themed);
+        }
 
       return CLUTTER_ACTOR (texture);
       break;
@@ -1482,6 +1501,12 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
       themed = g_themed_icon_new_with_default_fallbacks (name);
       texture = load_gicon_with_colors (cache, themed, size, NULL);
       g_object_unref (themed);
+      if (texture == NULL)
+        {
+          themed = g_themed_icon_new ("image-missing");
+          texture = load_gicon_with_colors (cache, themed, size, NULL);
+          g_object_unref (themed);
+        }
 
       return CLUTTER_ACTOR (texture);
       break;
