@@ -660,6 +660,7 @@ cogl/cogl-1.0.pc
 cogl/cogl-$COGL_MAJOR_VERSION.0.pc:cogl/cogl.pc.in
 cogl/cogl-defines.h
 pango/Makefile
+examples/Makefile
 po/Makefile.in
 )
 
