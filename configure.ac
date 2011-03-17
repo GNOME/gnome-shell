@@ -1242,6 +1242,7 @@ AC_CONFIG_FILES([
 
 	clutter/cogl/Makefile
 	clutter/cogl/po/Makefile.in
+	clutter/cogl/examples/Makefile
 	clutter/cogl/cogl/Makefile
 	clutter/cogl/cogl/cogl-defines.h
 	clutter/cogl/cogl/cogl-1.0.pc:clutter/cogl/cogl/cogl-1.0-clutter.pc.in
