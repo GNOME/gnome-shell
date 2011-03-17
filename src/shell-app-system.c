@@ -200,7 +200,7 @@ shell_app_system_init (ShellAppSystem *self)
    * case by case.
    */
   priv->apps_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
-  priv->settings_tree = gmenu_tree_lookup ("settings.menu", GMENU_TREE_FLAGS_NONE);
+  priv->settings_tree = gmenu_tree_lookup ("gnomecc.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
 
   priv->app_change_timeout_id = 0;
 
