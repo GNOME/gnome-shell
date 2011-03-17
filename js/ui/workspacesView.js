@@ -51,6 +51,7 @@ WorkspacesView.prototype = {
         this._height = 0;
         this._x = 0;
         this._y = 0;
+        this._workspaceRatioSpacing = 0;
         this._spacing = 0;
         this._lostWorkspaces = [];
         this._animating = false; // tweening
@@ -124,7 +125,7 @@ WorkspacesView.prototype = {
         this._swipeScrollEndId = 0;
     },
 
-    setGeometry: function(x, y, width, height) {
+    setGeometry: function(x, y, width, height, spacing) {
       if (this._x == x && this._y == y &&
           this._width == width && this._height == height)
           return;
@@ -132,6 +133,7 @@ WorkspacesView.prototype = {
         this._height = height;
         this._x = x;
         this._y = y;
+        this._workspaceRatioSpacing = spacing;
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setGeometry(x, y, width, height);
@@ -200,7 +202,7 @@ WorkspacesView.prototype = {
             Tweener.removeTweens(workspace.actor);
 
             let opacity = (this._inDrag && w != active) ? 200 : 255;
-            let y = (w - active) * (this._height + this._spacing);
+            let y = (w - active) * (this._height + this._spacing + this._workspaceRatioSpacing);
 
             if (showAnimation) {
                 let params = { y: y,
@@ -763,9 +765,10 @@ WorkspacesDisplay.prototype = {
         }
 
         height = (fullHeight / fullWidth) * width;
-        y += (fullHeight - height) / 2;
+        let difference = fullHeight - height;
+        y += difference / 2;
 
-        this.workspacesView.setGeometry(x, y, width, height);
+        this.workspacesView.setGeometry(x, y, width, height, difference);
     },
 
     _onRestacked: function() {
