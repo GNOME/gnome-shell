@@ -25,6 +25,7 @@
 
 #include <config.h>
 #include <math.h>
+#include <string.h>
 #include <meta/boxes.h>
 #include "frames.h"
 #include <meta/util.h>
@@ -187,6 +188,74 @@ prefs_changed_callback (MetaPreference pref,
     }
 }
 
+static GtkStyleContext *
+create_style_context (MetaFrames  *frames,
+                      const gchar *variant)
+{
+  GtkStyleContext *style;
+  GdkScreen *screen;
+  char *theme_name;
+
+  screen = gtk_widget_get_screen (GTK_WIDGET (frames));
+  g_object_get (gtk_settings_get_for_screen (screen),
+                "gtk-theme-name", &theme_name,
+                NULL);
+
+  style = gtk_style_context_new ();
+  gtk_style_context_set_path (style,
+                              gtk_widget_get_path (GTK_WIDGET (frames)));
+
+  if (theme_name && *theme_name)
+    {
+      GtkCssProvider *provider;
+
+      provider = gtk_css_provider_get_named (theme_name, variant);
+      gtk_style_context_add_provider (style,
+                                      GTK_STYLE_PROVIDER (provider),
+                                      GTK_STYLE_PROVIDER_PRIORITY_THEME);
+    }
+
+  g_free (theme_name);
+
+  return style;
+}
+
+static GtkStyleContext *
+meta_frames_get_theme_variant (MetaFrames  *frames,
+                               const gchar *variant)
+{
+  GtkStyleContext *style;
+
+  style = g_hash_table_lookup (frames->style_variants, variant);
+  if (style == NULL)
+    {
+      style = create_style_context (frames, variant);
+      g_hash_table_insert (frames->style_variants, g_strdup (variant), style);
+    }
+
+  return style;
+}
+
+static void
+update_style_contexts (MetaFrames *frames)
+{
+  GtkStyleContext *style;
+  GList *variants, *variant;
+
+  if (frames->normal_style)
+    g_object_unref (frames->normal_style);
+  frames->normal_style = create_style_context (frames, NULL);
+
+  variants = g_hash_table_get_keys (frames->style_variants);
+  for (variant = variants; variant; variant = variants->next)
+    {
+      style = create_style_context (frames, (char *)variant->data);
+      g_hash_table_insert (frames->style_variants,
+                           g_strdup (variant->data), style);
+    }
+  g_list_free (variants);
+}
+
 static void
 meta_frames_init (MetaFrames *frames)
 {
@@ -201,6 +270,9 @@ meta_frames_init (MetaFrames *frames)
   frames->invalidate_cache_timeout_id = 0;
   frames->invalidate_frames = NULL;
   frames->cache = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+  frames->style_variants = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                  g_free, g_object_unref);
 
   gtk_widget_set_double_buffered (GTK_WIDGET (frames), FALSE);
 
@@ -240,6 +312,9 @@ meta_frames_destroy (GtkWidget *object)
       meta_frames_unmanage_window (frames, frame->xwindow);
     }
   g_slist_free (winlist);
+
+  g_object_unref (frames->normal_style);
+  g_hash_table_destroy (frames->style_variants);
 
   GTK_WIDGET_CLASS (meta_frames_parent_class)->destroy (object);
 }
@@ -429,6 +504,8 @@ meta_frames_style_updated  (GtkWidget *widget)
 
   meta_frames_font_changed (frames);
 
+  update_style_contexts (frames);
+
   g_hash_table_foreach (frames->frames,
                         reattach_style_func, frames);
 
@@ -574,10 +651,23 @@ static void
 meta_frames_attach_style (MetaFrames  *frames,
                           MetaUIFrame *frame)
 {
+  gboolean has_frame;
+  char *variant = NULL;
+
   if (frame->style != NULL)
     g_object_unref (frame->style);
 
-  frame->style = g_object_ref (gtk_widget_get_style_context (GTK_WIDGET (frames)));
+  meta_core_get (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
+                 frame->xwindow,
+                 META_CORE_WINDOW_HAS_FRAME, &has_frame,
+                 META_CORE_GET_THEME_VARIANT, &variant,
+                 META_CORE_GET_END);
+
+  if (variant == NULL || strcmp(variant, "normal") == 0)
+    frame->style = g_object_ref (frames->normal_style);
+  else
+    frame->style = g_object_ref (meta_frames_get_theme_variant (frames,
+                                                                variant));
 }
 
 void
