@@ -130,8 +130,6 @@ libmutter_la_SOURCES =				\
 	core/core.h				\
 	ui/ui.h					\
 	inlinepixbufs.h				\
-	ui/fixedtip.c				\
-	ui/fixedtip.h				\
 	ui/frames.c				\
 	ui/frames.h				\
 	ui/menu.c				\
