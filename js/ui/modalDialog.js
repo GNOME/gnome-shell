@@ -39,6 +39,7 @@ ModalDialog.prototype = {
         params = Params.parse(params, { styleClass: null });
 
         this.state = State.CLOSED;
+        this._hasModal = false;
 
         this._group = new St.Group({ visible: false,
                                      x: 0,
@@ -46,6 +47,7 @@ ModalDialog.prototype = {
         Main.uiGroup.add_actor(this._group);
         global.focus_manager.add_group(this._group);
         this._initialKeyFocus = this._group;
+        this._savedKeyFocus = null;
 
         this._group.connect('destroy', Lang.bind(this, this._onGroupDestroy));
 
@@ -60,12 +62,18 @@ ModalDialog.prototype = {
         this._group.add_actor(this._backgroundBin);
         this._lightbox.highlight(this._backgroundBin);
 
+        this._backgroundStack = new Shell.Stack();
+        this._backgroundBin.child = this._backgroundStack;
+
+        this._eventBlocker = new Clutter.Group({ reactive: true });
+        this._backgroundStack.add_actor(this._eventBlocker);
+
         this._dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
                                                 vertical:    true });
         if (params.styleClass != null) {
             this._dialogLayout.add_style_class_name(params.styleClass);
         }
-        this._backgroundBin.child = this._dialogLayout;
+        this._backgroundStack.add_actor(this._dialogLayout);
 
         this.contentLayout = new St.BoxLayout({ vertical: true });
         this._dialogLayout.add(this.contentLayout,
@@ -148,7 +156,6 @@ ModalDialog.prototype = {
         this._lightbox.show();
         this._group.opacity = 0;
         this._group.show();
-        this._initialKeyFocus.grab_key_focus();
         Tweener.addTween(this._group,
                          { opacity: 255,
                            time: OPEN_AND_CLOSE_TIME,
@@ -169,7 +176,7 @@ ModalDialog.prototype = {
         if (this.state == State.OPENED || this.state == State.OPENING)
             return true;
 
-        if (!Main.pushModal(this._group, timestamp))
+        if (!this.pushModal(timestamp))
             return false;
 
         this._fadeOpen();
@@ -180,14 +187,8 @@ ModalDialog.prototype = {
         if (this.state == State.CLOSED || this.state == State.CLOSING)
             return;
 
-        let needsPopModal;
-
-        if (this.state == State.OPENED || this.state == State.OPENING)
-            needsPopModal = true;
-        else
-            needsPopModal = false;
-
         this.state = State.CLOSING;
+        this.popModal(timestamp);
 
         Tweener.addTween(this._group,
                          { opacity: 0,
@@ -197,11 +198,44 @@ ModalDialog.prototype = {
                                function() {
                                    this.state = State.CLOSED;
                                    this._group.hide();
-
-                                   if (needsPopModal)
-                                       Main.popModal(this._group, timestamp);
                                })
                          });
+    },
+
+    // Drop modal status without closing the dialog; this makes the
+    // dialog insensitive as well, so it needs to be followed shortly
+    // by either a close() or a pushModal()
+    popModal: function(timestamp) {
+        if (!this._hasModal)
+            return;
+
+        let focus = global.stage.key_focus;
+        if (focus && this._group.contains(focus))
+            this._savedKeyFocus = focus;
+        else
+            this._savedKeyFocus = null;
+        Main.popModal(this._group, timestamp);
+        global.gdk_screen.get_display().sync();
+        this._hasModal = false;
+
+        this._eventBlocker.raise_top();
+    },
+
+    pushModal: function (timestamp) {
+        if (this._hasModal)
+            return true;
+        if (!Main.pushModal(this._group, timestamp))
+            return false;
+
+        this._hasModal = true;
+        if (this._savedKeyFocus) {
+            this._savedKeyFocus.grab_key_focus();
+            this._savedKeyFocus = null;
+        } else
+            this._initialKeyFocus.grab_key_focus();
+
+        this._eventBlocker.lower_bottom();
+        return true;
     },
 
     // This method is like close, but fades the dialog out much slower,
@@ -222,6 +256,7 @@ ModalDialog.prototype = {
         if (this.state == State.FADED_OUT)
             return;
 
+        this.popModal(timestamp);
         Tweener.addTween(this._dialogLayout,
                          { opacity: 0,
                            time:    FADE_OUT_DIALOG_TIME,
@@ -229,7 +264,6 @@ ModalDialog.prototype = {
                            onComplete: Lang.bind(this,
                                function() {
                                    this.state = State.FADED_OUT;
-                                   Main.popModal(this._group, timestamp);
                                })
                          });
     }

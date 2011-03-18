@@ -240,15 +240,20 @@ __proto__: ModalDialog.ModalDialog.prototype,
         this._entryText.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
+                this.popModal();
                 if (Shell.get_event_state(e) & Clutter.ModifierType.CONTROL_MASK)
                     this._run(o.get_text(), true);
                 else
                     this._run(o.get_text(), false);
                 if (!this._commandError)
-                    this.close(global.get_current_time());
+                    this.close();
+                else {
+                    if (!this.pushModal())
+                        this.close();
+                }
             }
             if (symbol == Clutter.Escape) {
-                this.close(global.get_current_time());
+                this.close();
                 return true;
             }
             if (symbol == Clutter.slash) {
