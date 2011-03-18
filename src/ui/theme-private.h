@@ -961,7 +961,7 @@ MetaColorSpec* meta_color_spec_new_gtk         (MetaGtkColorComponent component,
                                                 GtkStateType          state);
 void           meta_color_spec_free            (MetaColorSpec     *spec);
 void           meta_color_spec_render          (MetaColorSpec     *spec,
-                                                GtkWidget         *widget,
+                                                GtkStyleContext   *style_gtk,
                                                 GdkColor          *color);
 
 
@@ -1006,7 +1006,7 @@ gboolean       meta_draw_op_list_contains (MetaDrawOpList    *op_list,
 MetaGradientSpec* meta_gradient_spec_new    (MetaGradientType        type);
 void              meta_gradient_spec_free   (MetaGradientSpec       *desc);
 GdkPixbuf*        meta_gradient_spec_render (const MetaGradientSpec *desc,
-                                             GtkWidget              *widget,
+                                             GtkStyleContext        *gtk_style,
                                              int                     width,
                                              int                     height);
 gboolean          meta_gradient_spec_validate (MetaGradientSpec     *spec,

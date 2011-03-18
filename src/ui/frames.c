@@ -2526,7 +2526,7 @@ meta_frames_set_window_background (MetaFrames   *frames,
       GdkVisual *visual;
 
       meta_color_spec_render (style->window_background_color,
-                              GTK_WIDGET (frames),
+                              frame->style,
                               &color);
 
       /* Set A in ARGB to window_background_alpha, if we have ARGB */

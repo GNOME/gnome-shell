@@ -1015,7 +1015,7 @@ meta_gradient_spec_free (MetaGradientSpec *spec)
 
 GdkPixbuf*
 meta_gradient_spec_render (const MetaGradientSpec *spec,
-                           GtkWidget              *widget,
+                           GtkStyleContext        *style,
                            int                     width,
                            int                     height)
 {
@@ -1036,7 +1036,7 @@ meta_gradient_spec_render (const MetaGradientSpec *spec,
   tmp = spec->color_specs;
   while (tmp != NULL)
     {
-      meta_color_spec_render (tmp->data, widget, &colors[i]);
+      meta_color_spec_render (tmp->data, style, &colors[i]);
 
       tmp = tmp->next;
       ++i;
@@ -1416,17 +1416,18 @@ meta_color_spec_new_gtk (MetaGtkColorComponent component,
 }
 
 void
-meta_color_spec_render (MetaColorSpec *spec,
-                        GtkWidget     *widget,
-                        GdkColor      *color)
+meta_color_spec_render (MetaColorSpec   *spec,
+                        GtkStyleContext *context,
+                        GdkColor        *color)
 {
   GtkStyle *style;
 
-  style = gtk_widget_get_style (widget);
-
   g_return_if_fail (spec != NULL);
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (style != NULL);
+  g_return_if_fail (GTK_IS_STYLE_CONTEXT (context));
+
+  style = g_object_new (GTK_TYPE_STYLE,
+                        "context", context,
+                        NULL);
 
   switch (spec->type)
     {
@@ -1471,8 +1472,8 @@ meta_color_spec_render (MetaColorSpec *spec,
       {
         GdkColor bg, fg;
 
-        meta_color_spec_render (spec->data.blend.background, widget, &bg);
-        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
+        meta_color_spec_render (spec->data.blend.background, context, &bg);
+        meta_color_spec_render (spec->data.blend.foreground, context, &fg);
 
         color_composite (&bg, &fg, spec->data.blend.alpha, 
                          &spec->data.blend.color);
@@ -1483,7 +1484,7 @@ meta_color_spec_render (MetaColorSpec *spec,
 
     case META_COLOR_SPEC_SHADE:
       {
-        meta_color_spec_render (spec->data.shade.base, widget, 
+        meta_color_spec_render (spec->data.shade.base, context,
                                 &spec->data.shade.color);
             
         gtk_style_shade (&spec->data.shade.color, 
@@ -1493,6 +1494,8 @@ meta_color_spec_render (MetaColorSpec *spec,
       }
       break;
     }
+
+  g_object_unref (style);
 }
 
 /**
@@ -3255,7 +3258,7 @@ scale_and_alpha_pixbuf (GdkPixbuf             *src,
 
 static GdkPixbuf*
 draw_op_as_pixbuf (const MetaDrawOp    *op,
-                   GtkWidget           *widget,
+                   GtkStyleContext     *context,
                    const MetaDrawInfo  *info,
                    int                  width,
                    int                  height)
@@ -3279,7 +3282,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
           GdkColor color;
 
           meta_color_spec_render (op->data.rectangle.color_spec,
-                                  widget,
+                                  context,
                                   &color);
 
           pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
@@ -3303,7 +3306,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
         gboolean has_alpha;
 
         meta_color_spec_render (op->data.rectangle.color_spec,
-                                widget,
+                                context,
                                 &color);
 
         has_alpha =
@@ -3346,7 +3349,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
     case META_DRAW_GRADIENT:
       {
         pixbuf = meta_gradient_spec_render (op->data.gradient.gradient_spec,
-                                            widget, width, height);
+                                            context, width, height);
 
         pixbuf = apply_alpha (pixbuf,
                               op->data.gradient.alpha_spec,
@@ -3362,7 +3365,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
 	    GdkColor color;
 
             meta_color_spec_render (op->data.image.colorize_spec,
-                                    widget, &color);
+                                    context, &color);
             
             if (op->data.image.colorize_cache_pixbuf == NULL ||
                 op->data.image.colorize_cache_pixel != GDK_COLOR_RGB (color))
@@ -3531,7 +3534,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
       {
         int x1, x2, y1, y2;
 
-        meta_color_spec_render (op->data.line.color_spec, widget, &color);
+        meta_color_spec_render (op->data.line.color_spec, style_gtk, &color);
         gdk_cairo_set_source_color (cr, &color);
 
         if (op->data.line.width > 0)
@@ -3606,7 +3609,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
       {
         int rx, ry, rwidth, rheight;
 
-        meta_color_spec_render (op->data.rectangle.color_spec, widget, &color);
+        meta_color_spec_render (op->data.rectangle.color_spec,
+                                style_gtk, &color);
         gdk_cairo_set_source_color (cr, &color);
 
         rx = parse_x_position_unchecked (op->data.rectangle.x, env);
@@ -3636,7 +3640,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         double start_angle, end_angle;
         double center_x, center_y;
 
-        meta_color_spec_render (op->data.arc.color_spec, widget, &color);
+        meta_color_spec_render (op->data.arc.color_spec, style_gtk, &color);
         gdk_cairo_set_source_color (cr, &color);
 
         rx = parse_x_position_unchecked (op->data.arc.x, env);
@@ -3691,7 +3695,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
         if (!needs_alpha)
           {
-            meta_color_spec_render (op->data.tint.color_spec, widget, &color);
+            meta_color_spec_render (op->data.tint.color_spec,
+                                    style_gtk, &color);
             gdk_cairo_set_source_color (cr, &color);
 
             cairo_rectangle (cr, rx, ry, rwidth, rheight);
@@ -3701,7 +3706,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
           {
             GdkPixbuf *pixbuf;
 
-            pixbuf = draw_op_as_pixbuf (op, widget, info,
+            pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
                                         rwidth, rheight);
 
             if (pixbuf)
@@ -3725,7 +3730,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gradient.width, env);
         rheight = parse_size_unchecked (op->data.gradient.height, env);
 
-        pixbuf = draw_op_as_pixbuf (op, widget, info,
+        pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
                                     rwidth, rheight);
 
         if (pixbuf)
@@ -3752,7 +3757,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.image.width, env);
         rheight = parse_size_unchecked (op->data.image.height, env);
         
-        pixbuf = draw_op_as_pixbuf (op, widget, info,
+        pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
                                     rwidth, rheight);
 
         if (pixbuf)
@@ -3842,7 +3847,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.icon.width, env);
         rheight = parse_size_unchecked (op->data.icon.height, env);
         
-        pixbuf = draw_op_as_pixbuf (op, widget, info,
+        pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
                                     rwidth, rheight);
 
         if (pixbuf)
@@ -3864,7 +3869,8 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
           int rx, ry;
           PangoRectangle ink_rect, logical_rect;
 
-          meta_color_spec_render (op->data.title.color_spec, widget, &color);
+          meta_color_spec_render (op->data.title.color_spec,
+                                  style_gtk, &color);
           gdk_cairo_set_source_color (cr, &color);
 
           rx = parse_x_position_unchecked (op->data.title.x, env);
