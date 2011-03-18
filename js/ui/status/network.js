@@ -1486,7 +1486,8 @@ NMApplet.prototype = {
         this.menu.addMenuItem(this._devices.vpn.section);
 
         this.menu.addAction(_("Network Settings"), function() {
-            Util.spawnDesktop('gnome-network-panel');
+            let app = Shell.AppSystem.get_default().get_app('gnome-network-panel.desktop');
+            app.activate(-1);
         });
 
         this._activeConnections = [ ];

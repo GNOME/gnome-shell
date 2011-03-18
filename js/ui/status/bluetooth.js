@@ -93,7 +93,8 @@ Indicator.prototype = {
         this._updateFullMenu();
 
         this.menu.addAction(_("Bluetooth Settings"), function() {
-            GLib.spawn_command_line_async('gnome-control-center bluetooth');
+            let app = Shell.AppSystem.get_default().get_app('bluetooth-properties.desktop');
+            app.activate(-1);
         });
 
         this._applet.connect('pincode-request', Lang.bind(this, this._pinRequest));
