@@ -199,7 +199,7 @@ clutter_clone_paint (ClutterActor *self)
   _clutter_actor_set_in_clone_paint (priv->clone_source, FALSE);
 }
 
-gboolean
+static gboolean
 clutter_clone_get_paint_volume (ClutterActor *self,
                                 ClutterPaintVolume *volume)
 {
