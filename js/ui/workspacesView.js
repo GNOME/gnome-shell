@@ -590,8 +590,14 @@ WorkspacesDisplay.prototype = {
 
         this._inDrag = false;
         this._cancelledDrag = false;
+
+        this._alwaysZoomOut = false;
         this._zoomOut = false;
         this._zoomFraction = 0;
+
+        this._updateAlwaysZoom();
+
+        global.screen.connect('monitors-changed', Lang.bind(this, this._updateAlwaysZoom));
 
         this._nWorkspacesNotifyId = 0;
         this._switchWorkspaceNotifyId = 0;
@@ -647,8 +653,8 @@ WorkspacesDisplay.prototype = {
                                                           Lang.bind(this, this._dragEnd));
 
         this._onRestacked();
-        this._zoomOut = false;
-        this._zoomFraction = 0;
+        this._zoomOut = this._alwaysZoomOut;
+        this._zoomFraction = this._alwaysZoomOut ? 1 : 0;
         this._updateZoom();
     },
 
@@ -705,6 +711,23 @@ WorkspacesDisplay.prototype = {
 
     get zoomFraction() {
         return this._zoomFraction;
+    },
+
+    _updateAlwaysZoom: function()  {
+        this._alwaysZoomOut = false;
+
+        let monitors = global.get_monitors();
+        let primary = global.get_primary_monitor();
+
+        /* Look for any monitor to the right of the primary, if there is
+         * one, we always keep zoom out, otherwise its hard to reach
+         * the thumbnail area without passing into the next monitor. */
+        for (let i = 0; i < monitors.length; i++) {
+            if (monitors[i].x >= primary.x + primary.width) {
+                this._alwaysZoomOut = true;
+                break;
+            }
+        }
     },
 
     _getPreferredWidth: function (actor, forHeight, alloc) {
@@ -842,7 +865,7 @@ WorkspacesDisplay.prototype = {
         if (Main.overview.animationInProgress)
             return;
 
-        let shouldZoom = this._controls.hover || (this._inDrag && !this._cancelledDrag);
+        let shouldZoom = this._alwaysZoomOut || this._controls.hover || (this._inDrag && !this._cancelledDrag);
         if (shouldZoom != this._zoomOut) {
             this._zoomOut = shouldZoom;
             this._updateWorkspacesGeometry();
