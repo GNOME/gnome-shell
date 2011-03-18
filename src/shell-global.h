@@ -103,6 +103,12 @@ MetaRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
 int            shell_global_get_primary_monitor_index (ShellGlobal  *global);
 MetaRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
+guint32 shell_global_create_pointer_barrier (ShellGlobal *global,
+                                             int x1, int y1, int x2, int y2,
+                                             int directions);
+void    shell_global_destroy_pointer_barrier (ShellGlobal *global,
+                                              guint32 barrier);
+
 void shell_global_get_pointer  (ShellGlobal         *global,
                                 int                 *x,
                                 int                 *y,

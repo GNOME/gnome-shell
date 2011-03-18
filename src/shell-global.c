@@ -885,6 +885,61 @@ shell_global_display_is_grabbed (ShellGlobal *global)
 }
 
 /**
+ * shell_global_create_pointer_barrier
+ * @global: a #ShellGlobal
+ * @x1: left X coordinate
+ * @y1: top Y coordinate
+ * @x2: right X coordinate
+ * @y2: bottom Y coordinate
+ * @directions: The directions we're allowed to pass through
+ *
+ * If supported by X creates a pointer barrier.
+ *
+ * Return value: value you can pass to shell_global_destroy_pointer_barrier()
+ */
+guint32
+shell_global_create_pointer_barrier (ShellGlobal *global,
+                                     int x1, int y1, int x2, int y2,
+                                     int directions)
+{
+#if XFIXES_MAJOR >= 5
+  Display *xdpy;
+
+  xdpy = meta_plugin_get_xdisplay (global->plugin);
+
+  return (guint32)
+    XFixesCreatePointerBarrier (xdpy, DefaultRootWindow(xdpy),
+                                x1, y1,
+                                x2, y2,
+                                directions,
+                                0, NULL);
+#else
+  return 0;
+#endif
+}
+
+/**
+ * shell_global_destroy_pointer_barrier
+ * @global: a #ShellGlobal
+ * @barrier: a pointer barrier
+ *
+ * Destroys the @barrier created by shell_global_create_pointer_barrier().
+ */
+void
+shell_global_destroy_pointer_barrier (ShellGlobal *global, guint32 barrier)
+{
+#if XFIXES_MAJOR >= 5
+  Display *xdpy;
+
+  g_return_if_fail (barrier > 0);
+
+  xdpy = meta_plugin_get_xdisplay (global->plugin);
+  XFixesDestroyPointerBarrier (xdpy, (PointerBarrier)barrier);
+#endif
+}
+
+
+/**
  * shell_global_add_extension_importer:
  * @target_object_script: JavaScript code evaluating to a target object
  * @target_property: Name of property to use for importer

@@ -789,6 +789,8 @@ Panel.prototype = {
             this.actor.remove_style_class_name('in-overview');
         }));
 
+        this._leftPointerBarrier = 0;
+        this._rightPointerBarrier = 0;
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -1050,6 +1052,20 @@ Panel.prototype = {
 
         this.actor.set_position(primary.x, primary.y);
         this.actor.set_size(primary.width, -1);
+
+        if (this._leftPointerBarrier)
+            global.destroy_pointer_barrier(this._leftPointerBarrier);
+        if (this._rightPointerBarrier)
+            global.destroy_pointer_barrier(this._rightPointerBarrier);
+
+        this._leftPointerBarrier =
+            global.create_pointer_barrier(primary.x, primary.y,
+                                          primary.x, primary.y + this.actor.height,
+                                          1 /* BarrierPositiveX */);
+        this._rightPointerBarrier =
+            global.create_pointer_barrier(primary.x + primary.width, primary.y,
+                                          primary.x + primary.width, primary.y + this.actor.height,
+                                          4 /* BarrierNegativeX */);
 
         this._leftCorner.relayout();
         this._rightCorner.relayout();

@@ -1030,6 +1030,7 @@ MessageTray.prototype = {
         this._clickedSummaryItemAllocationChangedId = 0;
         this._expandedSummaryItem = null;
         this._summaryItemTitleWidth = 0;
+        this._pointerBarrier = 0;
 
         // To simplify the summary item animation code, we pretend
         // that there's an invisible SummaryItem to the left of the
@@ -1119,6 +1120,15 @@ MessageTray.prototype = {
         this._notificationBin.width = primary.width;
         this._summaryBin.x = 0;
         this._summaryBin.width = primary.width;
+
+        if (this._pointerBarrier)
+            global.destroy_pointer_barrier(this._pointerBarrier);
+        this._pointerBarrier =
+            global.create_pointer_barrier(primary.x + primary.width, primary.y + primary.height - this.actor.height,
+                                          primary.x + primary.width, primary.y + primary.height,
+                                          4 /* BarrierNegativeX */);
+
+
     },
 
     contains: function(source) {
