@@ -1187,3 +1187,47 @@ meta_get_overlay_window (MetaScreen *screen)
 
   return info->output;
 }
+
+#define FLASH_TIME_MS 50
+
+static void
+flash_out_completed (ClutterAnimation *animation,
+                     ClutterActor     *flash)
+{
+  clutter_actor_destroy (flash);
+}
+
+static void
+flash_in_completed (ClutterAnimation *animation,
+                    ClutterActor     *flash)
+{
+  clutter_actor_animate (flash, CLUTTER_EASE_IN_QUAD,
+                         FLASH_TIME_MS,
+                         "opacity", 0,
+                         "signal-after::completed", flash_out_completed, flash,
+                         NULL);
+}
+
+void
+meta_compositor_flash_screen (MetaCompositor *compositor,
+                              MetaScreen     *screen)
+{
+  ClutterActor *stage;
+  ClutterActor *flash;
+  ClutterColor black = { 0, 0, 0, 255 };
+  gfloat width, height;
+
+  stage = meta_get_stage_for_screen (screen);
+  clutter_actor_get_size (stage, &width, &height);
+
+  flash = clutter_rectangle_new_with_color (&black);
+  clutter_actor_set_size (flash, width, height);
+  clutter_actor_set_opacity (flash, 0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), flash);
+
+  clutter_actor_animate (flash, CLUTTER_EASE_OUT_QUAD,
+                         FLASH_TIME_MS,
+                         "opacity", 192,
+                         "signal-after::completed", flash_in_completed, flash,
+                         NULL);
+}
