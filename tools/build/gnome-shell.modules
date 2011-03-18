@@ -4,7 +4,7 @@
 <!-- vim:set ts=2 expandtab: -->
 <moduleset>
   <repository type="git" name="git.clutter-project.org"
-      href="git://git.clutter-project.org/"/>
+      href="http://git.clutter-project.org/"/>
   <repository type="git" name="git.gnome.org"
       href="git://git.gnome.org/"/>
   <repository type="git" name="git.moblin.org"
