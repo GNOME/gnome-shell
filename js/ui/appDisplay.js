@@ -86,10 +86,14 @@ AlphabeticalView.prototype = {
         if (vfade)
             offset = vfade.fade_offset;
 
-        if (icon.y < value + offset)
-            value = Math.max(0, icon.y - offset);
-        else if (icon.y + icon.height > value + pageSize - offset)
-            value = Math.min(upper, icon.y + icon.height + offset - pageSize);
+        // If this gets called as part of a right-click, the actor
+        // will be needs_allocation, and so "icon.y" would return 0
+        let box = icon.get_allocation_box();
+
+        if (box.y1 < value + offset)
+            value = Math.max(0, box.y1 - offset);
+        else if (box.y2 > value + pageSize - offset)
+            value = Math.min(upper, box.y2 + offset - pageSize);
         else
             return;
 
