@@ -43,8 +43,7 @@ POTFILES
 50-metacity-desktop-key.xml
 50-metacity-key.xml
 inlinepixbufs.h
-libmutter-private.pc
-libmutter-wm.pc
+libmutter.pc
 mutter
 mutter-theme-viewer
 mutter.desktop
