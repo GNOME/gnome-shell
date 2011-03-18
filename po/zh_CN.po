@@ -7,19 +7,19 @@
 # zhang ping <zhangping159@gmail.com>, 2010.
 # 指冷玉笙寒 (dhyang) <dhyang555@gmail.com>, 2010
 # Ray Wang <raywang@gnome.org>, 2009, 2011.
-# Aron Xu <aronxu@gnome.org>, 2010, 2011.
 # YunQiang Su <wzssyqa@gmail.com>, 2010, 2011.
 # 李炜 <lw124124@gmail.com>, 2011.
 # chiachen <luojiazhen@gmail.com>, 2011.
+# Aron Xu <aronxu@gnome.org>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-15 19:36+0000\n"
-"PO-Revision-Date: 2011-03-16 23:27+0800\n"
-"Last-Translator: chiachen <luojiazhen@gmail.com>\n"
+"POT-Creation-Date: 2011-03-18 04:26+0000\n"
+"PO-Revision-Date: 2011-03-18 18:34+0800\n"
+"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,7 +66,7 @@ msgstr "命令对话框(Alt-F2)的历史记录"
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 #, fuzzy
 msgid "History for the looking glass dialog"
-msgstr "查看仪表历史记录"
+msgstr "镜子对话框历史"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
@@ -167,21 +167,17 @@ msgstr "是否收集应用程序的使用情况"
 msgid "disabled OpenSearch providers"
 msgstr "已禁用的 OpenSearch 提供商"
 
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "命令未找到"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "不能解析命令："
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "没有此应用程序"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
@@ -367,7 +363,7 @@ msgstr "本周"
 msgid "Next week"
 msgstr "下周"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:935
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
 msgid "Remove"
 msgstr "移除"
 
@@ -495,7 +491,7 @@ msgstr "重启计算机。"
 msgid "Confirm"
 msgstr "确定"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "取消"
 
@@ -529,11 +525,11 @@ msgstr "查看源"
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:928
+#: ../js/ui/messageTray.js:926
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:1965
+#: ../js/ui/messageTray.js:1986
 msgid "System Information"
 msgstr "系统信息"
 
@@ -556,18 +552,18 @@ msgid "Dash"
 msgstr "虚线"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:508
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "退出 %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:867
+#: ../js/ui/panel.js:874
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/panel.js:968
+#: ../js/ui/panel.js:975
 msgid "Panel"
 msgstr "面板"
 
@@ -679,17 +675,17 @@ msgstr "鼠标按键"
 msgid "Universal Access Settings"
 msgstr "通用访问设置"
 
-#: ../js/ui/status/accessibility.js:145
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "高对比度"
 
-#: ../js/ui/status/accessibility.js:182
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "大号文本"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "蓝牙"
 
@@ -709,94 +705,94 @@ msgstr "安装新设备..."
 msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "连接"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "发送文件..."
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "浏览文件..."
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "浏览设备出错"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "无法浏览请求的设备，错误为 %s"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "键盘设置"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "鼠标设置"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "声音设置"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "来自 %s 的认证请求"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "设备 %s 希望访问 %s 服务"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "始终允许"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "允许一次"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "拒绝"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s 的配对确认"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "设备 %s 希望与此电脑配对"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "请确认 PIN 码 %s 和要配对的设备是否相同。"
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "相同"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "不同"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s 的配对请求"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "请输入设备上的 PIN 码。"
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "确定"
 
@@ -808,89 +804,219 @@ msgstr "显示键盘布局..."
 msgid "Localization Settings"
 msgstr "本地化设置"
 
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<未知>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "已禁用"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "连接中..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "需要认证"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "线缆被拔出"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "不可用"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "连接失败"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "已连接(私有网络)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "自动以太网"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "自动移动宽带"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "自动拨号"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "自动 %s"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "自动蓝牙"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "自动无线"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "更多..."
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "启用联网"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "有线"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "无线"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "移动宽带"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "VPN 连接"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "网络设置"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "您已连接至移动宽带连接 %s"
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "您已连接至无线网络 %s"
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "您已连接至有线网络 %s"
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "您已连接至 VPN 网络 %s"
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "您已连接至 %s"
+
+#: ../js/ui/status/network.js:1808
+msgid "Connection estabilished"
+msgstr "连接已建立"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr "联网已禁用"
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "网络管理器"
+
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "电源设置"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:111
 msgid "Estimating..."
-msgstr "正在评估..."
+msgstr "估计中..."
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "剩余 %d 小时"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "剩余 %d %s %d %s"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "小时"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "分钟"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "剩余 %d 分钟"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "AC 适配器"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "笔记本电池"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "显示器"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "鼠标"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "键盘"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "手机"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "媒体播放器"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "触摸板"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "计算机"
 
-#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
 msgid "Unknown"
 msgstr "未知"
 
@@ -972,37 +1098,50 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/main.c:395
+#: ../src/main.c:397
 msgid "Print version"
 msgstr "打印版本"
 
-#: ../src/shell-global.c:1308
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "启动 %s 失败"
+
+#: ../src/shell-global.c:1340
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1344
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1349
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:1322
+#: ../src/shell-global.c:1354
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1327
+#: ../src/shell-global.c:1359
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d 周前"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "英国"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "默认"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
@@ -1027,6 +1166,9 @@ msgstr "文件系统"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "No such application"
+#~ msgstr "没有此应用程序"
 
 #~ msgid "Screen Reader"
 #~ msgstr "屏幕阅读器"
