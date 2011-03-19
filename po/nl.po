@@ -6,12 +6,15 @@
 # Reinout van Schouwen <reinouts@gnome.org>, 2010
 # Wouter Bolsterlee <wbolster@gnome.org>, 2011
 #
+# Aangezien dit een erg zichtbare module is graag eerst contact opnemen met
+# Wouter Bolsterlee alvorens zaken te wijzigen!
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-12 23:52+0100\n"
-"PO-Revision-Date: 2011-03-12 23:52+0100\n"
+"POT-Creation-Date: 2011-03-19 01:14+0100\n"
+"PO-Revision-Date: 2011-03-19 01:14+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -44,11 +47,11 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
-msgstr "Bestandsextensie voor het opslaan van de screencast"
+msgstr "Bestandsextensie voor het opslaan van de schermopname"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
-msgstr "Framerate voor het opnemen van de screencasts."
+msgstr "Framerate voor het opnemen van de schermopnamen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
@@ -149,7 +152,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "De gstreamer-pijplijn voor het coderen van de screencast"
+msgstr "De gstreamer-pijplijn voor het coderen van de schermopname"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
@@ -175,21 +178,17 @@ msgstr "Of statistieken worden bijgehouden over gebruik van toepassingen"
 msgid "disabled OpenSearch providers"
 msgstr "uitgeschakelde OpenSearch-providers"
 
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "Opdracht niet gevonden"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "Kon opdracht niet parsen:"
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "Toepassing niet gevonden"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Uitvoeren van ‘%s’ mislukt:"
@@ -375,13 +374,13 @@ msgstr "Deze week"
 msgid "Next week"
 msgstr "Volgende week"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:931
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
 msgid "Remove"
 msgstr "Verwijderen"
 
 #: ../js/ui/dateMenu.js:91
 msgid "Date and Time Settings"
-msgstr "Datum- en tijdinstellingen"
+msgstr "Instellingen voor datum en tijd"
 
 #: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
@@ -427,13 +426,12 @@ msgstr "%a %l:%M:%S %p"
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
-# Dagnaam bewust afgekort (Wouter Bolsterlee)
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:209
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
-msgstr "%a %e %B %Y"
+msgstr "%A %e %B %Y"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
@@ -509,7 +507,7 @@ msgstr "Computer opnieuw opstarten"
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -543,11 +541,11 @@ msgstr "Broncode weergeven"
 msgid "Web Page"
 msgstr "Webpagina"
 
-#: ../js/ui/messageTray.js:924
+#: ../js/ui/messageTray.js:926
 msgid "Open"
 msgstr "Openen"
 
-#: ../js/ui/messageTray.js:1961
+#: ../js/ui/messageTray.js:1986
 msgid "System Information"
 msgstr "Systeeminformatie"
 
@@ -571,18 +569,18 @@ msgid "Dash"
 msgstr "Zijbalk"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:560
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "%s afsluiten"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:919
+#: ../js/ui/panel.js:874
 msgid "Activities"
 msgstr "Activiteiten"
 
-#: ../js/ui/panel.js:1020
+#: ../js/ui/panel.js:975
 msgid "Panel"
 msgstr "Paneel"
 
@@ -599,7 +597,7 @@ msgstr "Opnieuw"
 msgid "Connect to..."
 msgstr "Verbinding maken met…"
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "LOCATIES & APPARATEN"
 
@@ -608,7 +606,7 @@ msgstr "LOCATIES & APPARATEN"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:618
+#: ../js/ui/popupMenu.js:636
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -624,39 +622,39 @@ msgstr "Zoeken…"
 msgid "No matching results."
 msgstr "Geen overeenkomende resultaten."
 
-#: ../js/ui/statusMenu.js:113 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
 msgid "Power Off..."
 msgstr "Uitschakelen…"
 
-#: ../js/ui/statusMenu.js:115 ../js/ui/statusMenu.js:176
+#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
 msgid "Suspend"
 msgstr "Slaapstand"
 
-#: ../js/ui/statusMenu.js:136
+#: ../js/ui/statusMenu.js:137
 msgid "Available"
 msgstr "Beschikbaar"
 
-#: ../js/ui/statusMenu.js:141
+#: ../js/ui/statusMenu.js:142
 msgid "Busy"
 msgstr "Bezig"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:150
 msgid "My Account"
 msgstr "Mijn account"
 
-#: ../js/ui/statusMenu.js:153
+#: ../js/ui/statusMenu.js:154
 msgid "System Settings"
 msgstr "Systeeminstellingen"
 
-#: ../js/ui/statusMenu.js:160
+#: ../js/ui/statusMenu.js:161
 msgid "Lock Screen"
 msgstr "Scherm vergrendelen"
 
-#: ../js/ui/statusMenu.js:164
+#: ../js/ui/statusMenu.js:165
 msgid "Switch User"
 msgstr "Gebruiker wisselen"
 
-#: ../js/ui/statusMenu.js:169
+#: ../js/ui/statusMenu.js:170
 msgid "Log Out..."
 msgstr "Afmelden…"
 
@@ -664,14 +662,12 @@ msgstr "Afmelden…"
 msgid "Zoom"
 msgstr "Zoomen"
 
-#: ../js/ui/status/accessibility.js:69
-msgid "Screen Reader"
-msgstr "Schermlezer"
-
-#: ../js/ui/status/accessibility.js:73
-msgid "Screen Keyboard"
-msgstr "Schermtoetsenbord"
-
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Visuele alerteringen"
@@ -696,17 +692,17 @@ msgstr "Muistoetsen"
 msgid "Universal Access Settings"
 msgstr "Instellingen voor toegankelijkheid"
 
-#: ../js/ui/status/accessibility.js:145
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "Hoog contrast"
 
-#: ../js/ui/status/accessibility.js:182
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "Grote tekst"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -726,94 +722,94 @@ msgstr "Nieuw apparaat instellen…"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-instellingen"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "Verbinding"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Bestanden sturen…"
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Bestanden doorbladeren…"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "Fout bij doorbladeren van apparaat"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Het gekozen apparaat kon niet doorgebladerd worden. De fout is ‘%s’"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "Toetsenbordvoorkeuren"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "Muisvoorkeuren"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Geluidsvoorkeuren"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Autorisatie-aanvraag van %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Het apparaat ‘%s’ wil toegang tot de dienst ‘%s’"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "Altijd toestaan"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "Eenmalig toestaan"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Afwijzen"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Koppelbevestiging voor %s"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Het apparaat ‘%s’ wil aankoppelen met deze computer"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Bevestig dat de PIN-code ‘%s’ hetzelfde is als die van het apparaat."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Komt overeen"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Komt niet overeen"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Verzoek tot koppelen met %s"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Geef de op het apparaat aangegeven PIN-code."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "OK"
 
@@ -825,17 +821,149 @@ msgstr "Toetsenbordindeling tonen…"
 msgid "Localization Settings"
 msgstr "Regionale instellingen"
 
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<onbekend>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "uitgeschakeld"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "verbinden…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "authenticatie nodig"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "kabel niet verbonden"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "niet beschikbaar"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "verbinding mislukt"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "Verbonden (persoonlijke verbinding)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "Automatisch ethernetverbinding"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "Automatische breedbandverbinding"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "Automatisch inbellen"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "%s (automatisch)"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "Automatische Bluetooth"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "Automatisch draadloos netwerk"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "Meer…"
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "Netwerk inschakelen"
+
+# Expliciet "netwerk" toegevoegd (Wouter Bolsterlee)
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "Bekabeld netwerk"
+
+# Expliciet "netwerk" toegevoegd (Wouter Bolsterlee)
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "Draadloos netwerk"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "Mobiel breedband"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "VPN-verbindingen"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "Netwerkinstellingen"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "U bent nu verbonden met de mobiele breedbandverbinding ‘%s’"
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "U bent nu verbonden met het draadloze netwerk ‘%s’"
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "U bent nu verbonden met het bekabelde netwerk ‘%s’"
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "U bent nu verbonden met het VPN-netwerk ‘%s’"
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "U bent nu verbonden met ‘%s’"
+
+#: ../js/ui/status/network.js:1808
+msgid "Connection estabilished"
+msgstr "Verbinding gemaakt"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr "Netwerk is uitgeschakeld"
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "Netwerk-manager"
+
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Energievoorkeuren"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:111
 msgid "Estimating..."
 msgstr "Schatten…"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -843,75 +971,75 @@ msgstr[0] "%d uur resterend"
 msgstr[1] "%d uur resterend"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s resterend"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "uur"
 msgstr[1] "uur"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuut"
 msgstr[1] "minuten"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minuut resterend"
 msgstr[1] "%d minuten resterend"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "Netstroom"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "Laptop-accu"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "Muis"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "Toetsenbord"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "Mobiele telefoon"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "Mediaspeler"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "Computer"
 
-#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -923,22 +1051,22 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Microfoon"
 
-#: ../js/ui/telepathyClient.js:239
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "%s is online."
 
-#: ../js/ui/telepathyClient.js:244
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "%s is offline."
 
-#: ../js/ui/telepathyClient.js:247
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "%s is afwezig."
 
-#: ../js/ui/telepathyClient.js:250
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "%s is bezig."
@@ -946,7 +1074,7 @@ msgstr "%s is bezig."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:357
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Verzonden om %H:%M op %A %e %B %Y"
@@ -995,41 +1123,54 @@ msgstr[1] "%u invoerkanalen"
 msgid "System Sounds"
 msgstr "Systeemgeluiden"
 
-#: ../src/main.c:395
+#: ../src/main.c:397
 msgid "Print version"
 msgstr "Versie weergeven"
 
-#: ../src/shell-global.c:1308
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Kon ‘%s’ niet starten"
+
+#: ../src/shell-global.c:1340
 msgid "Less than a minute ago"
 msgstr "Minder dan een minuut geleden"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1344
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuut geleden"
 msgstr[1] "%d minuten geleden"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1349
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d uur geleden"
 msgstr[1] "%d uur geleden"
 
-#: ../src/shell-global.c:1322
+#: ../src/shell-global.c:1354
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag geleden"
 msgstr[1] "%d dagen geleden"
 
-#: ../src/shell-global.c:1327
+#: ../src/shell-global.c:1359
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d week geleden"
 msgstr[1] "%d weken geleden"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Verenigd Koninkrijk"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Standaard"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
@@ -1054,6 +1195,15 @@ msgstr "Bestandssysteem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "No such application"
+#~ msgstr "Toepassing niet gevonden"
+
+#~ msgid "Screen Reader"
+#~ msgstr "Schermlezer"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Schermtoetsenbord"
 
 #~ msgid "PREFERENCES"
 #~ msgstr "VOORKEUREN"
