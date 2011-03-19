@@ -99,6 +99,7 @@ struct _MetaWindow
   char *wm_client_machine;
   char *startup_id;
   char *mutter_hints;
+  char *gtk_theme_variant;
 
   int net_wm_pid;
   

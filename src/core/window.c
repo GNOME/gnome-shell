@@ -195,6 +195,7 @@ meta_window_finalize (GObject *object)
   g_free (window->title);
   g_free (window->icon_name);
   g_free (window->desc);
+  g_free (window->gtk_theme_variant);
 }
 
 static void
