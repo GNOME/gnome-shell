@@ -820,7 +820,9 @@ Source.prototype = {
     _init: function(title) {
         this.title = title;
         this._iconBin = new St.Bin({ width: this.ICON_SIZE,
-                                     height: this.ICON_SIZE });
+                                     height: this.ICON_SIZE,
+                                     x_fill: true,
+                                     y_fill: true });
         this.isTransient = false;
         this.isChat = false;
     },
