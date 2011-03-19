@@ -894,7 +894,7 @@ msgid "You're now connected to '%s'"
 msgstr "Vzpostavljena je povezava z '%s'."
 
 #: ../js/ui/status/network.js:1808
-msgid "Connection estabilished"
+msgid "Connection established"
 msgstr "Povezava je vzpostavljena"
 
 #: ../js/ui/status/network.js:1930

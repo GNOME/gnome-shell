@@ -900,7 +900,7 @@ msgid "You're now connected to '%s'"
 msgstr "صرت الآن متّصلا بشبكة '%s'"
 
 #: ../js/ui/status/network.js:1807
-msgid "Connection estabilished"
+msgid "Connection established"
 msgstr "تم الاتصال"
 
 #: ../js/ui/status/network.js:1929

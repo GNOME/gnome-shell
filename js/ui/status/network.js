@@ -1805,7 +1805,7 @@ NMApplet.prototype = {
                                               icon_size: this._source.ICON_SIZE
                                             });
                 let notification = new MessageTray.Notification(this._source,
-                                                                _("Connection estabilished"),
+                                                                _("Connection established"),
                                                                 banner,
                                                                 { icon: iconActor });
                 this._source.notify(notification);

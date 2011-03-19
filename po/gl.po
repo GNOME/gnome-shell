@@ -939,7 +939,7 @@ msgid "You're now connected to '%s'"
 msgstr "Vostede está conectado agora a «%s»"
 
 #: ../js/ui/status/network.js:1807
-msgid "Connection estabilished"
+msgid "Connection established"
 msgstr "Conexión estabelecida"
 
 #: ../js/ui/status/network.js:1929

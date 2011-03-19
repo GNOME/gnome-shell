@@ -927,7 +927,7 @@ msgid "You're now connected to '%s'"
 msgstr "כעת ישנו חיבור בינך ובין '%s'"
 
 #: ../js/ui/status/network.js:1807
-msgid "Connection estabilished"
+msgid "Connection established"
 msgstr "ההתחברות הצליחה"
 
 #: ../js/ui/status/network.js:1929

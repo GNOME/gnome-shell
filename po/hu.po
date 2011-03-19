@@ -940,7 +940,7 @@ msgid "You're now connected to '%s'"
 msgstr "Csatlakozott ehhez: „%s”"
 
 #: ../js/ui/status/network.js:1807
-msgid "Connection estabilished"
+msgid "Connection established"
 msgstr "Kapcsolat létrejött"
 
 #: ../js/ui/status/network.js:1929

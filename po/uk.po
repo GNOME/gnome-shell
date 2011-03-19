@@ -930,7 +930,7 @@ msgid "You're now connected to '%s'"
 msgstr "Зараз ви з'єднані через «%s»"
 
 #: ../js/ui/status/network.js:1807
-msgid "Connection estabilished"
+msgid "Connection established"
 msgstr "З'єднання встановлено"
 
 #: ../js/ui/status/network.js:1929
