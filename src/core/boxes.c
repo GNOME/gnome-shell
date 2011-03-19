@@ -183,7 +183,7 @@ meta_rectangle_area (const MetaRectangle *rect)
  * meta_rectangle_intersect:
  * @src1: a #MetaRectangle
  * @src2: another #MetaRectangle
- * @dest: (out callee-allocates): an empty #MetaRectangle, to be filled
+ * @dest: (out caller-allocates): an empty #MetaRectangle, to be filled
  *   with the coordinates of the intersection.
  *
  * Returns: TRUE is some intersection exists and is not degenerate, FALSE
@@ -240,7 +240,7 @@ meta_rectangle_equal (const MetaRectangle *src1,
  * meta_rectangle_union:
  * @rect1: a #MetaRectangle
  * @rect2: another #MetaRectangle
- * @dest: (out callee-allocates): an empty #MetaRectangle, to be filled
+ * @dest: (out caller-allocates): an empty #MetaRectangle, to be filled
  *   with the coordinates of the bounding box.
  */
 void
