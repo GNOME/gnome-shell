@@ -104,7 +104,7 @@ function trySpawnCommandLine(command_line) {
 
 function _handleSpawnError(command, err) {
     let title = _("Execution of '%s' failed:").format(command);
-    Main.notifyProblem(title, err.message);
+    Main.notifyError(title, err.message);
 }
 
 // killall:
