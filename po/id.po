@@ -1,333 +1,1191 @@
 # Indonesian translation of gnome-shell
 # Copyright (C) 2010 THE gnome-shell'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Andika Triwidada <andika@gmail.com>, 2010.
 #
+# Andika Triwidada <andika@gmail.com>, 2010.
+# Dirgita <dirgitadevina@yahoo.co.id>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2010-05-30 20:55+0000\n"
-"PO-Revision-Date: 2010-05-31 19:43+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-19 10:16+0000\n"
+"PO-Revision-Date: 2011-03-05 22:23+0700\n"
+"Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Language: Indonesian\n"
 "X-Poedit-Country: Indonesia\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr "Shell GNOME"
+msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Manajemen jendela dan peluncuran aplikasi"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "Jam"
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "Gubah panel jam"
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Mengaktifkan perkakas internal yang berguna bagi pengembang dan penguji "
+"dengan Alt-F2"
 
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "Format Jam"
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "File extension used for storing the screencast"
+msgstr "Ekstensi berkas untuk menyimpan tangkapan layar"
 
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "Preferensi Jam"
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "Framerate used for recording screencasts."
+msgstr "Laju gambar untuk menyimpan tangkapan layar."
 
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "Tampilan Panel"
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
 
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "Tampilka_n detik"
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid "History for command (Alt-F2) dialog"
+msgstr "Riwayat dialog perintah (Alt-F2)"
 
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "Tampilkan tan_ggal"
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#, fuzzy
+msgid "History for the looking glass dialog"
+msgstr "Riwayat dialog perintah (Alt-F2)"
 
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "Format _12 jam"
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Jika bernilai benar (true), tanggal akan ditampilkan."
 
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "Format _24 jam"
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "If true, display seconds in time."
+msgstr "Jika bernilai benar (true), detik akan ditampilkan."
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:306 ../js/ui/dash.js:858
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Daftar ID berkas desktop untuk aplikasi favorit"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show date in clock"
+msgstr "Menampilkan tanggal pada jam"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show the week date in the calendar"
+msgstr "Menampilkan tanggal pada kalender"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr "Menampilkan detik"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Uuids of extensions to disable"
+msgstr "Ekstensi Uuid yang hendak dinonaktifkan"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "Whether to collect stats about applications usage"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr ""
+
+#: ../js/misc/util.js:71
+msgid "Command not found"
+msgstr "Perintah tidak ditemukan"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:98
+msgid "Could not parse command:"
+msgstr "Tidak dapat mengurai perintah:"
+
+#: ../js/misc/util.js:106
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Eksekusi '%s' gagal:"
+
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:226
+msgid "All"
+msgstr "Semua"
+
+#: ../js/ui/appDisplay.js:324
 msgid "APPLICATIONS"
 msgstr "APLIKASI"
 
-#: ../js/ui/appDisplay.js:338
-msgid "PREFERENCES"
-msgstr "PREFERENSI"
+#: ../js/ui/appDisplay.js:350
+msgid "SETTINGS"
+msgstr "PENGATURAN"
 
-#: ../js/ui/appDisplay.js:710
+#: ../js/ui/appDisplay.js:616
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: ../js/ui/appDisplay.js:714
+#: ../js/ui/appDisplay.js:619
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: ../js/ui/appDisplay.js:715
+#: ../js/ui/appDisplay.js:620
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: ../js/ui/appDisplay.js:1042
-msgid "Drag here to add favorites"
-msgstr "Seret ke sini untuk menambah favorit"
-
-#: ../js/ui/appFavorites.js:89
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s telah ditambahkan ke favorit Anda."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
 
-#: ../js/ui/dash.js:189
-msgid "Find"
-msgstr "Temukan"
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:66
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Sepanjang Hari"
 
-#: ../js/ui/dash.js:513
-msgid "Searching..."
-msgstr "Mencari..."
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:71
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
 
-#: ../js/ui/dash.js:527
-msgid "No matching results."
-msgstr "Tak ada yang cocok."
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:78
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M"
 
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:877 ../js/ui/placeDisplay.js:551
-msgid "PLACES & DEVICES"
-msgstr "LOKASI & PERANGKAT"
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:118
+msgctxt "grid sunday"
+msgid "S"
+msgstr "M"
 
-#. **** Documents ****
-#: ../js/ui/dash.js:884 ../js/ui/docDisplay.js:497
-msgid "RECENT ITEMS"
-msgstr "DOKUMEN TERKINI"
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:120
+msgctxt "grid monday"
+msgid "M"
+msgstr "S"
 
-#: ../js/ui/lookingGlass.js:470
-msgid "No extensions installed"
-msgstr "Tak ada ekstensi terpasang"
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:122
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "S"
 
-#: ../js/ui/lookingGlass.js:507
-msgid "Enabled"
-msgstr "Diaktifkan"
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:124
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "R"
 
-#: ../js/ui/lookingGlass.js:509
-msgid "Disabled"
-msgstr "Dinonaktifkan"
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:126
+msgctxt "grid thursday"
+msgid "T"
+msgstr "K"
 
-#: ../js/ui/lookingGlass.js:511
-msgid "Error"
-msgstr "Galat"
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:128
+msgctxt "grid friday"
+msgid "F"
+msgstr "J"
 
-#: ../js/ui/lookingGlass.js:513
-msgid "Out of date"
-msgstr "Kadaluarsa"
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:130
+msgctxt "grid saturday"
+msgid "S"
+msgstr "S"
 
-#: ../js/ui/lookingGlass.js:538
-msgid "View Source"
-msgstr "Tilik Sumber"
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:143
+msgctxt "list sunday"
+msgid "Su"
+msgstr "Min"
 
-#: ../js/ui/lookingGlass.js:544
-msgid "Web Page"
-msgstr "Halaman Web"
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:145
+msgctxt "list monday"
+msgid "M"
+msgstr "Sen"
 
-#: ../js/ui/overview.js:161
-msgid "Undo"
-msgstr "Batal"
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:147
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Sel"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:903
-msgid "Activities"
-msgstr "Aktivitas"
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:149
+msgctxt "list wednesday"
+msgid "W"
+msgstr "Rab"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:151
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Kam"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:153
+msgctxt "list friday"
+msgid "F"
+msgstr "Jum"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:155
+msgctxt "list saturday"
+msgid "S"
+msgstr "Sab"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:704
+msgid "Nothing Scheduled"
+msgstr "Tidak Ada Jadwal"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %d %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:723
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %d %B %Y"
+
+#: ../js/ui/calendar.js:733
+msgid "Today"
+msgstr "Hari ini"
+
+#: ../js/ui/calendar.js:737
+msgid "Tomorrow"
+msgstr "Besok"
+
+#: ../js/ui/calendar.js:746
+msgid "This week"
+msgstr "Minggu ini"
+
+#: ../js/ui/calendar.js:754
+msgid "Next week"
+msgstr "Minggu depan"
+
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+msgid "Remove"
+msgstr "Hapus"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "Pengaturan Waktu dan Tanggal"
+
+#: ../js/ui/dateMenu.js:111
+msgid "Open Calendar"
+msgstr "Buka Kalender"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:1118
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R:%S"
 
-#: ../js/ui/panel.js:1119
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:1123
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:1124
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:1131
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %k:%M:%S"
 
-#: ../js/ui/panel.js:1132
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %k:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:1136
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %k:%M:%S"
 
-#: ../js/ui/panel.js:1137
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %k:%M"
 
-#: ../js/ui/placeDisplay.js:108
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+#, fuzzy
+msgid "%A %B %e, %Y"
+msgstr "%a %e %b, %R"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "DOKUMEN TERKINI"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Keluar %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr "Keluar"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "Klik Keluar untuk menutup aplikasi ini serta keluar dari sistem."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "%s akan keluar otomatis dalam %d detik."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "Anda akan keluar otomatis dalam %d detik."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Keluar dari sistem."
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr "Matikan"
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr "Klik Matikan untuk menutup aplikasi ini serta mematikan sistem."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "Sistem akan mati otomatis dalam %d detik."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "Mematikan sistem."
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "Nyalakan Ulang"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Klik Nyalakan Ulang untuk menutup aplikasi ini serta menyalakan kembali "
+"sistem."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "Sistem akan dinyalakan ulang setelah %d detik."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "Menyalan ulang sistem."
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "Konfirmasi"
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
+msgid "Cancel"
+msgstr "Batal"
+
+#: ../js/ui/lookingGlass.js:588
+msgid "No extensions installed"
+msgstr "Tak ada ekstensi terpasang"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Enabled"
+msgstr "Diaktifkan"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
+msgid "Disabled"
+msgstr "Dinonaktifkan"
+
+#: ../js/ui/lookingGlass.js:629
+msgid "Error"
+msgstr "Galat"
+
+#: ../js/ui/lookingGlass.js:631
+msgid "Out of date"
+msgstr "Kadaluarsa"
+
+#: ../js/ui/lookingGlass.js:656
+msgid "View Source"
+msgstr "Tilik Sumber"
+
+#: ../js/ui/lookingGlass.js:662
+msgid "Web Page"
+msgstr "Halaman Web"
+
+#: ../js/ui/messageTray.js:926
+msgid "Open"
+msgstr ""
+
+#: ../js/ui/messageTray.js:1986
+msgid "System Information"
+msgstr "Informasi Sistem"
+
+#: ../js/ui/overview.js:88
+msgid "Undo"
+msgstr "Batal"
+
+#: ../js/ui/overview.js:183
+msgid "Windows"
+msgstr "Jendela"
+
+#: ../js/ui/overview.js:186
+msgid "Applications"
+msgstr "Aplikasi"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:202
+msgid "Dash"
+msgstr ""
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:515
+#, c-format
+msgid "Quit %s"
+msgstr "Keluar %s"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:874
+msgid "Activities"
+msgstr "Aktivitas"
+
+#: ../js/ui/panel.js:975
+#, fuzzy
+#| msgid "Cancel"
+msgid "Panel"
+msgstr "Batal"
+
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Gagal melepas kait '%s'"
 
-#: ../js/ui/placeDisplay.js:111
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "Coba lagi"
 
-#: ../js/ui/placeDisplay.js:156
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "Sambung ke..."
 
-#: ../js/ui/runDialog.js:231
+#: ../js/ui/placeDisplay.js:380
+msgid "PLACES & DEVICES"
+msgstr "LOKASI & PERANGKAT"
+
+# Dirgita: Hayo, enaknya pake I/O atau ON/OFF?^^
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:636
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
-msgstr "Silakan masukkan suatu perintah:"
+msgstr "Ketikkan perintah:"
 
-#: ../js/ui/runDialog.js:375
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "Eksekusi '%s' gagal:"
+#: ../js/ui/searchDisplay.js:287
+msgid "Searching..."
+msgstr "Mencari..."
 
-#: ../js/ui/statusMenu.js:90
+#: ../js/ui/searchDisplay.js:301
+msgid "No matching results."
+msgstr "Tak ada yang cocok."
+
+#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+msgid "Power Off..."
+msgstr "Matikan..."
+
+#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+msgid "Suspend"
+msgstr "Suspensi"
+
+#: ../js/ui/statusMenu.js:137
 msgid "Available"
 msgstr "Ada"
 
-#: ../js/ui/statusMenu.js:94
+#: ../js/ui/statusMenu.js:142
 msgid "Busy"
 msgstr "Sibuk"
 
-#: ../js/ui/statusMenu.js:98
-msgid "Invisible"
-msgstr "Tak nampak"
+#: ../js/ui/statusMenu.js:150
+msgid "My Account"
+msgstr "Akun Saya"
 
-#: ../js/ui/statusMenu.js:105
-msgid "Account Information..."
-msgstr "Informasi Akun..."
+#: ../js/ui/statusMenu.js:154
+msgid "System Settings"
+msgstr "Pengaturan Sistem"
 
-#: ../js/ui/statusMenu.js:109
-msgid "System Preferences..."
-msgstr "Preferensi Sistem..."
-
-#: ../js/ui/statusMenu.js:116
+#: ../js/ui/statusMenu.js:161
 msgid "Lock Screen"
 msgstr "Kunci Layar"
 
-#: ../js/ui/statusMenu.js:120
+#: ../js/ui/statusMenu.js:165
 msgid "Switch User"
 msgstr "Ganti Pengguna"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:170
 msgid "Log Out..."
 msgstr "Keluar..."
 
-#: ../js/ui/statusMenu.js:129
-msgid "Shut Down..."
-msgstr "Matikan..."
+#: ../js/ui/status/accessibility.js:62
+msgid "Zoom"
+msgstr "Zum"
 
-#: ../js/ui/windowAttentionHandler.js:47
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
+msgid "Visual Alerts"
+msgstr "Peringatan Visual"
+
+#: ../js/ui/status/accessibility.js:80
+msgid "Sticky Keys"
+msgstr "Tombol Lengket"
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Slow Keys"
+msgstr "Tombol Lambat"
+
+#: ../js/ui/status/accessibility.js:86
+msgid "Bounce Keys"
+msgstr "Tombol Pantul"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Mouse Keys"
+msgstr "Tombol Tetikus"
+
+#: ../js/ui/status/accessibility.js:93
+msgid "Universal Access Settings"
+msgstr "Pengaturan Akses Universal"
+
+#: ../js/ui/status/accessibility.js:146
+msgid "High Contrast"
+msgstr "Kontras Tinggi"
+
+#: ../js/ui/status/accessibility.js:183
+msgid "Large Text"
+msgstr "Teks Besar"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Visibilitas"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Kirim Berkas pada Perangkat..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Setel Perangkat Baru..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Pengaturan Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:188
+msgid "Connection"
+msgstr "Koneksi"
+
+#: ../js/ui/status/bluetooth.js:224
+msgid "Send Files..."
+msgstr "Kirim Berkas..."
+
+#: ../js/ui/status/bluetooth.js:229
+msgid "Browse Files..."
+msgstr "Telusur Berkas..."
+
+#: ../js/ui/status/bluetooth.js:238
+msgid "Error browsing device"
+msgstr "Galat ketika menelusuri perangkat"
+
+#: ../js/ui/status/bluetooth.js:239
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "Perangkat yang dipinta tidak dapat ditelusuri, dengan galat '%s'"
+
+#: ../js/ui/status/bluetooth.js:247
+msgid "Keyboard Settings"
+msgstr "Pengaturan Papan Ketik"
+
+#: ../js/ui/status/bluetooth.js:252
+msgid "Mouse Settings"
+msgstr "Pengaturan Tetikus"
+
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+msgid "Sound Settings"
+msgstr "Pengaturan Suara"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Permintaan otorisasi dari %s"
+
+#: ../js/ui/status/bluetooth.js:374
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Perangkat %s ingin mengakses layanan '%s'"
+
+#: ../js/ui/status/bluetooth.js:376
+msgid "Always grant access"
+msgstr "Selalu berikan akses"
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Grant this time only"
+msgstr "Hanya untuk saat ini"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Reject"
+msgstr "Tolak"
+
+#: ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Konfirmasi berpasangan untuk %s"
+
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Perangkat %s ingin berpasangan dengan komputer ini"
+
+#: ../js/ui/status/bluetooth.js:415
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:417
+msgid "Matches"
+msgstr "Cocok"
+
+#: ../js/ui/status/bluetooth.js:418
+msgid "Does not match"
+msgstr "Tidak cocok"
+
+#: ../js/ui/status/bluetooth.js:441
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Permintaan berpasangan untuk %s"
+
+#: ../js/ui/status/bluetooth.js:449
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Ketikkan PIN yang disebutkan oleh perangkat."
+
+#: ../js/ui/status/bluetooth.js:465
+msgid "OK"
+msgstr "Oke"
+
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Tampilkan Tata Letak Papan Ketik..."
+
+#: ../js/ui/status/keyboard.js:76
+msgid "Localization Settings"
+msgstr "Pengaturan Pelokalan"
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+#, fuzzy
+#| msgid "Unknown"
+msgid "<unknown>"
+msgstr "Tak dikenal"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+#, fuzzy
+#| msgid "Disabled"
+msgid "disabled"
+msgstr "Dinonaktifkan"
+
+#: ../js/ui/status/network.js:476
+#, fuzzy
+#| msgid "Connection"
+msgid "connecting..."
+msgstr "Koneksi"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr ""
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr ""
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+#, fuzzy
+#| msgid "Available"
+msgid "unavailable"
+msgstr "Ada"
+
+#: ../js/ui/status/network.js:491
+#, fuzzy
+#| msgid "Connection"
+msgid "connection failed"
+msgstr "Koneksi"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr ""
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr ""
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr ""
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr ""
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, fuzzy, c-format
+#| msgid "Quit %s"
+msgid "Auto %s"
+msgstr "Keluar %s"
+
+#: ../js/ui/status/network.js:845
+#, fuzzy
+#| msgid "Bluetooth"
+msgid "Auto bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr ""
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr ""
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr ""
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr ""
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr ""
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr ""
+
+#: ../js/ui/status/network.js:1479
+#, fuzzy
+#| msgid "Connection"
+msgid "VPN Connections"
+msgstr "Koneksi"
+
+#: ../js/ui/status/network.js:1488
+#, fuzzy
+#| msgid "Power Settings"
+msgid "Network Settings"
+msgstr "Pengaturan Daya"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1808
+#, fuzzy
+#| msgid "Connection"
+msgid "Connection established"
+msgstr "Koneksi"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr ""
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr ""
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Pengaturan Daya"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "Memperkirakan..."
+
+#: ../js/ui/status/power.js:118
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d jam lagi"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:121
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s %d %s lagi"
+
+#: ../js/ui/status/power.js:123
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "jam"
+
+#: ../js/ui/status/power.js:123
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "menit"
+
+#: ../js/ui/status/power.js:126
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d menit lagi"
+
+#: ../js/ui/status/power.js:228
+msgid "AC adapter"
+msgstr "Adaptor AC"
+
+#: ../js/ui/status/power.js:230
+msgid "Laptop battery"
+msgstr "Baterai laptop"
+
+#: ../js/ui/status/power.js:232
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:234
+msgid "Monitor"
+msgstr "Monitor"
+
+#: ../js/ui/status/power.js:236
+msgid "Mouse"
+msgstr "Tetikus"
+
+#: ../js/ui/status/power.js:238
+msgid "Keyboard"
+msgstr "Papan Ketik"
+
+#: ../js/ui/status/power.js:240
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:242
+msgid "Cell phone"
+msgstr "Ponsel"
+
+#: ../js/ui/status/power.js:244
+msgid "Media player"
+msgstr "Pemutar media"
+
+#: ../js/ui/status/power.js:246
+msgid "Tablet"
+msgstr "Tablet"
+
+#: ../js/ui/status/power.js:248
+msgid "Computer"
+msgstr "Komputer"
+
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+msgid "Unknown"
+msgstr "Tak dikenal"
+
+#: ../js/ui/status/volume.js:45
+msgid "Volume"
+msgstr "Volume"
+
+#: ../js/ui/status/volume.js:58
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: ../js/ui/telepathyClient.js:332
+#, c-format
+msgid "%s is online."
+msgstr "%s tersedia."
+
+#: ../js/ui/telepathyClient.js:337
+#, c-format
+msgid "%s is offline."
+msgstr "%s tidak tersedia."
+
+#: ../js/ui/telepathyClient.js:340
+#, c-format
+msgid "%s is away."
+msgstr "%s sedang pergi."
+
+#: ../js/ui/telepathyClient.js:343
+#, c-format
+msgid "%s is busy."
+msgstr "%s sibuk."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:474
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Dikirim pada %X dari %A"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "Ketik yang ingin dicari..."
+
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Cari"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s telah selesai diawali"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' telah siap"
 
-#: ../js/ui/workspacesView.js:237
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1098
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Keluaran"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1108
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Masukan"
+
+#: ../src/gvc/gvc-mixer-control.c:1406
+msgid "System Sounds"
+msgstr "Suara Sistem"
+
+#: ../src/main.c:397
+msgid "Print version"
 msgstr ""
-"Tak bisa menambah ruang kerja baru karena batas ruang kerja maksimum telah "
-"tercapai."
 
-#: ../js/ui/workspacesView.js:254
-msgid "Can't remove the first workspace."
-msgstr "Tak bisa menghapus ruang kerja pertama."
+#: ../src/shell-app.c:454
+#, fuzzy, c-format
+#| msgid "Failed to unmount '%s'"
+msgid "Failed to launch '%s'"
+msgstr "Gagal melepas kait '%s'"
 
-#: ../src/shell-global.c:1027
+#: ../src/shell-global.c:1340
 msgid "Less than a minute ago"
 msgstr "Kurang dari semenit yang lalu"
 
-#: ../src/shell-global.c:1031
+#: ../src/shell-global.c:1344
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d menit yang lalu"
 
-#: ../src/shell-global.c:1036
+#: ../src/shell-global.c:1349
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d jam yang lalu "
 
-#: ../src/shell-global.c:1041
+#: ../src/shell-global.c:1354
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d hari yang lalu"
 
-#: ../src/shell-global.c:1046
+#: ../src/shell-global.c:1359
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d minggu yang lalu"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr ""
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr ""
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr ""
+
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Folder Rumah"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Sistem Berkas"
-
-#: ../src/shell-uri-util.c:250
-msgid "Search"
-msgstr "Cari"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "No such application"
+#~ msgstr "Tidak ada aplikasi"
+
+#~ msgid "Screen Reader"
+#~ msgstr "Pembaca Layar"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Papan Tik Layar"
+
+#~ msgid "PREFERENCES"
+#~ msgstr "PREFERENSI"
