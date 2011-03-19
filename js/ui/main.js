@@ -223,7 +223,7 @@ function start() {
     global.screen.connect('window-entered-monitor', _windowEnteredMonitor);
     global.screen.connect('window-left-monitor', _windowLeftMonitor);
 
-    Mainloop.idle_add(_nWorkspacesChanged);
+    _nWorkspacesChanged();
 }
 
 let _workspaces = [];
