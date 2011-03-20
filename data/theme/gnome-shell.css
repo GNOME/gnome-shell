@@ -154,7 +154,7 @@ StTooltip StLabel {
 }
 
 .popup-inactive-menu-item {
-    font-style: italic;
+    color: #999;
 }
 
 .popup-subtitle-menu-item {
