@@ -764,6 +764,39 @@ meta_frames_unflicker_bg (MetaFrames *frames,
   set_background_none (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), frame->xwindow);
 }
 
+#ifdef HAVE_SHAPE
+static void
+apply_cairo_region_to_window (Display        *display,
+                              Window          xwindow,
+                              cairo_region_t *region,
+                              int             op)
+{
+  int n_rects, i;
+  XRectangle *rects;
+
+  n_rects = cairo_region_num_rectangles (region);
+  rects = g_new (XRectangle, n_rects);
+
+  for (i = 0; i < n_rects; i++)
+    {
+      cairo_rectangle_int_t rect;
+
+      cairo_region_get_rectangle (region, i, &rect);
+
+      rects[i].x = rect.x;
+      rects[i].y = rect.y;
+      rects[i].width = rect.width;
+      rects[i].height = rect.height;
+    }
+
+  XShapeCombineRectangles (display, xwindow,
+                           ShapeBounding, 0, 0, rects, n_rects,
+                           ShapeSet, YXBanded);
+
+  g_free (rects);
+}
+#endif
+
 void
 meta_frames_apply_shapes (MetaFrames *frames,
                           Window      xwindow,
@@ -775,9 +808,9 @@ meta_frames_apply_shapes (MetaFrames *frames,
   /* Apply shapes as if window had new_window_width, new_window_height */
   MetaUIFrame *frame;
   MetaFrameGeometry fgeom;
-  XRectangle xrect;
-  Region corners_xregion;
-  Region window_xregion;
+  cairo_rectangle_int_t rect;
+  cairo_region_t *corners_region;
+  cairo_region_t *window_region;
   Display *display;
   
   frame = meta_frames_lookup_window (frames, xwindow);
@@ -813,7 +846,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
       return; /* nothing to do */
     }
   
-  corners_xregion = XCreateRegion ();
+  corners_region = cairo_region_create ();
   
   if (fgeom.top_left_corner_rounded_radius != 0)
     {
@@ -824,12 +857,12 @@ meta_frames_apply_shapes (MetaFrames *frames,
       for (i=0; i<corner; i++)
         {
           const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
-          xrect.x = 0;
-          xrect.y = i;
-          xrect.width = width;
-          xrect.height = 1;
+          rect.x = 0;
+          rect.y = i;
+          rect.width = width;
+          rect.height = 1;
           
-          XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+          cairo_region_union_rectangle (corners_region, &rect);
         }
     }
 
@@ -842,12 +875,12 @@ meta_frames_apply_shapes (MetaFrames *frames,
       for (i=0; i<corner; i++)
         {
           const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
-          xrect.x = new_window_width - width;
-          xrect.y = i;
-          xrect.width = width;
-          xrect.height = 1;
+          rect.x = new_window_width - width;
+          rect.y = i;
+          rect.width = width;
+          rect.height = 1;
           
-          XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+          cairo_region_union_rectangle (corners_region, &rect);
         }
     }
 
@@ -860,12 +893,12 @@ meta_frames_apply_shapes (MetaFrames *frames,
       for (i=0; i<corner; i++)
         {
           const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
-          xrect.x = 0;
-          xrect.y = new_window_height - i - 1;
-          xrect.width = width;
-          xrect.height = 1;
+          rect.x = 0;
+          rect.y = new_window_height - i - 1;
+          rect.width = width;
+          rect.height = 1;
           
-          XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+          cairo_region_union_rectangle (corners_region, &rect);
         }
     }
 
@@ -878,27 +911,27 @@ meta_frames_apply_shapes (MetaFrames *frames,
       for (i=0; i<corner; i++)
         {
           const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
-          xrect.x = new_window_width - width;
-          xrect.y = new_window_height - i - 1;
-          xrect.width = width;
-          xrect.height = 1;
+          rect.x = new_window_width - width;
+          rect.y = new_window_height - i - 1;
+          rect.width = width;
+          rect.height = 1;
           
-          XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+          cairo_region_union_rectangle (corners_region, &rect);
         }
     }
   
-  window_xregion = XCreateRegion ();
+  window_region = cairo_region_create ();
   
-  xrect.x = 0;
-  xrect.y = 0;
-  xrect.width = new_window_width;
-  xrect.height = new_window_height;
+  rect.x = 0;
+  rect.y = 0;
+  rect.width = new_window_width;
+  rect.height = new_window_height;
 
-  XUnionRectWithRegion (&xrect, window_xregion, window_xregion);
+  cairo_region_union_rectangle (window_region, &rect);
 
-  XSubtractRegion (window_xregion, corners_xregion, window_xregion);
+  cairo_region_subtract (window_region, corners_region);
 
-  XDestroyRegion (corners_xregion);
+  cairo_region_destroy (corners_region);
   
   if (window_has_shape)
     {
@@ -911,7 +944,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
       XSetWindowAttributes attrs;      
       Window shape_window;
       Window client_window;
-      Region client_xregion;
+      cairo_region_t *client_region;
       GdkScreen *screen;
       int screen_number;
       
@@ -951,21 +984,21 @@ meta_frames_apply_shapes (MetaFrames *frames,
       /* Punch the client area out of the normal frame shape,
        * then union it with the shape_window's existing shape
        */
-      client_xregion = XCreateRegion ();
+      client_region = cairo_region_create ();
   
-      xrect.x = fgeom.left_width;
-      xrect.y = fgeom.top_height;
-      xrect.width = new_window_width - fgeom.right_width - xrect.x;
-      xrect.height = new_window_height - fgeom.bottom_height - xrect.y;
+      rect.x = fgeom.left_width;
+      rect.y = fgeom.top_height;
+      rect.width = new_window_width - fgeom.right_width - rect.x;
+      rect.height = new_window_height - fgeom.bottom_height - rect.y;
 
-      XUnionRectWithRegion (&xrect, client_xregion, client_xregion);
+      cairo_region_union_rectangle (client_region, &rect);
       
-      XSubtractRegion (window_xregion, client_xregion, window_xregion);
+      cairo_region_subtract (window_region, client_region);
 
-      XDestroyRegion (client_xregion);
-      
-      XShapeCombineRegion (display, shape_window,
-                           ShapeBounding, 0, 0, window_xregion, ShapeUnion);
+      cairo_region_destroy (client_region);
+
+      apply_cairo_region_to_window (display, shape_window,
+                                    window_region, ShapeUnion);
       
       /* Now copy shape_window shape to the real frame */
       XShapeCombineShape (display, frame->xwindow, ShapeBounding,
@@ -984,13 +1017,13 @@ meta_frames_apply_shapes (MetaFrames *frames,
                   "Frame 0x%lx has shaped corners\n",
                   frame->xwindow);
       
-      XShapeCombineRegion (display, frame->xwindow,
-                           ShapeBounding, 0, 0, window_xregion, ShapeSet);
+      apply_cairo_region_to_window (display, frame->xwindow,
+                                    window_region, ShapeSet);
     }
   
   frame->shape_applied = TRUE;
   
-  XDestroyRegion (window_xregion);
+  cairo_region_destroy (window_region);
 #endif /* HAVE_SHAPE */
 }
 
