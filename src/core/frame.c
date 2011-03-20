@@ -154,8 +154,9 @@ meta_window_ensure_frame (MetaWindow *window)
   window->frame = frame;
 
   /* Now that frame->xwindow is registered with window, we can set its
-   * background.
+   * style and background.
    */
+  meta_ui_update_frame_style (window->screen->ui, frame->xwindow);
   meta_ui_reset_frame_bg (window->screen->ui, frame->xwindow);
   
   if (window->title)

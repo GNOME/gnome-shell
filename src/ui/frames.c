@@ -686,7 +686,6 @@ meta_frames_manage_window (MetaFrames *frames,
   gdk_window_set_user_data (frame->window, frames);
 
   frame->style = NULL;
-  meta_frames_attach_style (frames, frame);
 
   /* Don't set event mask here, it's in frame.c */
   
