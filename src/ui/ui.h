@@ -117,6 +117,9 @@ void meta_ui_set_frame_title (MetaUI *ui,
                               Window xwindow,
                               const char *title);
 
+void meta_ui_update_frame_style (MetaUI  *ui,
+                                 Window   window);
+
 void meta_ui_repaint_frame (MetaUI *ui,
                             Window xwindow);
 

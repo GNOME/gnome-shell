@@ -124,6 +124,9 @@ void meta_frames_set_title (MetaFrames *frames,
                             Window      xwindow,
                             const char *title);
 
+void meta_frames_update_frame_style (MetaFrames *frames,
+                                     Window      xwindow);
+
 void meta_frames_repaint_frame (MetaFrames *frames,
                                 Window      xwindow);
 
