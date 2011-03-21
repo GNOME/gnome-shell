@@ -2,6 +2,7 @@
 
 const Gdm = imports.gi.Gdm;
 const DBus = imports.dbus;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
@@ -19,6 +20,11 @@ const Util = imports.misc.util;
 
 const BUS_NAME = 'org.gnome.ScreenSaver';
 const OBJECT_PATH = '/org/gnome/ScreenSaver';
+
+const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
+const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
+const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
+const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 
 const ScreenSaverInterface = {
     name: BUS_NAME,
@@ -43,6 +49,8 @@ StatusMenuButton.prototype = {
         PanelMenu.Button.prototype._init.call(this, 0.0);
         let box = new St.BoxLayout({ name: 'panelStatusMenu' });
         this.actor.set_child(box);
+
+        this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
 
         this._gdm = Gdm.UserManager.ref_default();
         this._gdm.queue_load();
@@ -79,6 +87,15 @@ StatusMenuButton.prototype = {
         this._gdm.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUser));
         this._gdm.connect('user-added', Lang.bind(this, this._updateSwitchUser));
         this._gdm.connect('user-removed', Lang.bind(this, this._updateSwitchUser));
+        this._lockdownSettings.connect('changed::' + DISABLE_USER_SWITCH_KEY,
+                                       Lang.bind(this, this._updateSwitchUser));
+        this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
+                                       Lang.bind(this, this._updateLogout));
+        this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
+                                       Lang.bind(this, this._updateLockScreen));
+        this._updateSwitchUser();
+        this._updateLogout();
+        this._updateLockScreen();
 
         this._upClient.connect('notify::can-suspend', Lang.bind(this, this._updateSuspendOrPowerOff));
     },
@@ -95,11 +112,41 @@ StatusMenuButton.prototype = {
           this._name.set_text("");
     },
 
+    _updateSessionSeparator: function() {
+        let showSeparator = this._loginScreenItem.actor.visible ||
+                            this._logoutItem.actor.visible ||
+                            this._lockScreenItem.actor.visible;
+        if (showSeparator)
+            this._sessionSeparator.actor.show();
+        else
+            this._sessionSeparator.actor.hide();
+    },
+
     _updateSwitchUser: function() {
-        if (this._gdm.can_switch ())
+        let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
+        if (allowSwitch && this._gdm.can_switch ())
             this._loginScreenItem.actor.show();
         else
             this._loginScreenItem.actor.hide();
+        this._updateSessionSeparator();
+    },
+
+    _updateLogout: function() {
+        let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
+        if (allowLogout)
+            this._logoutItem.actor.show();
+        else
+            this._logoutItem.actor.hide();
+        this._updateSessionSeparator();
+    },
+
+    _updateLockScreen: function() {
+        let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
+        if (allowLockScreen)
+            this._lockScreenItem.actor.show();
+        else
+            this._lockScreenItem.actor.hide();
+        this._updateSessionSeparator();
     },
 
     _updateSuspendOrPowerOff: function() {
@@ -161,6 +208,7 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupMenuItem(_("Lock Screen"));
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this.menu.addMenuItem(item);
+        this._lockScreenItem = item;
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
@@ -170,9 +218,11 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupMenuItem(_("Log Out..."));
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this.menu.addMenuItem(item);
+        this._logoutItem = item;
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
+        this._sessionSeparator = item;
 
         item = new PopupMenu.PopupAlternatingMenuItem(_("Suspend"),
                                                       _("Power Off..."));
