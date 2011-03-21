@@ -434,10 +434,11 @@ try_pixmap_and_mask (MetaDisplay *display,
 
   if (unscaled && src_mask != None)
     {
-      get_pixmap_geometry (display, src_mask, &w, &h, NULL);
-      mask = meta_gdk_pixbuf_get_from_pixmap (src_mask,
-                                              0, 0,
-                                              w, h);
+      get_pixmap_geometry (display, src_mask, &w, &h, &d);
+      if (d == 1)
+        mask = meta_gdk_pixbuf_get_from_pixmap (src_mask,
+                                                0, 0,
+                                                w, h);
     }
 
   meta_error_trap_pop (display);
