@@ -346,7 +346,7 @@ NotificationDaemon.prototype = {
         notification.setTransient(hints['transient'] == true);
 
         let sourceIconActor = source.useNotificationIcon ? this._iconForNotificationData(icon, hints, source.ICON_SIZE) : null;
-        source.notify(notification, sourceIconActor);
+        source.processNotification(notification, sourceIconActor);
     },
 
     CloseNotification: function(id) {
@@ -445,12 +445,17 @@ Source.prototype = {
         this._trayIcon = null;
     },
 
-    notify: function(notification, icon) {
+    processNotification: function(notification, icon) {
         if (!this.app)
             this._setApp();
         if (!this.app && icon)
             this._setSummaryIcon(icon);
-        MessageTray.Source.prototype.notify.call(this, notification);
+
+        let tracker = Shell.WindowTracker.get_default();
+        if (notification.resident && this.app && tracker.focus_app == this.app)
+            this.pushNotification(notification);
+        else
+            this.notify(notification);
     },
 
     handleSummaryClick: function() {
