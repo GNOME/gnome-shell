@@ -8133,8 +8133,6 @@ update_move (MetaWindow  *window,
           else
             window->tile_mode = META_TILE_NONE;
         }
-      else
-        window->tile_mode = META_TILE_NONE;
 
       /* For maximized tiling we are interested in the outside top edge
        * of the work area of the monitor where the pointer is located.
@@ -8142,6 +8140,11 @@ update_move (MetaWindow  *window,
        * We use the outside edge instead of the inside edge, because we
        * don't want to force users to maximize windows they are placing
        * near the top of their screens.
+       *
+       * If window->tile_mode is not NONE, that means that either we are
+       * on an edge and set it above, or we are currently tiled (in
+       * which case meta_window_can_tile_side_by_side() and
+       * meta_window_can_tile_maximized() return FALSE).
        */
       if (window->tile_mode == META_TILE_NONE && meta_window_can_tile_maximized (window))
         {
