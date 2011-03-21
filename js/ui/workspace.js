@@ -394,12 +394,6 @@ WindowOverlay.prototype = {
 
     show: function() {
         this._hidden = false;
-        let [x, y, mask] = global.get_pointer();
-        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
-                                                  x, y);
-        if (actor == this._windowClone.actor) {
-            this.closeButton.show();
-        }
         this.title.show();
     },
 

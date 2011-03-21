@@ -690,6 +690,7 @@ Overview.prototype = {
             this._animateNotVisible();
 
         this._syncInputMode();
+        global.sync_pointer();
     },
 
     _hideDone: function() {
