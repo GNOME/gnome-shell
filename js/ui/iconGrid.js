@@ -282,7 +282,6 @@ IconGrid.prototype = {
     },
 
     _computeLayout: function (forWidth) {
-        let children = this._grid.get_children();
         let nColumns = 0;
         let usedWidth = 0;
         while ((this._colLimit == null || nColumns < this._colLimit) &&
