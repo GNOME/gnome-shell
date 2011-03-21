@@ -974,7 +974,7 @@ Panel.prototype = {
                                                   affectsStruts: false,
                                                   affectsInputRegion: false });
 
-        Main.ctrlAltTabManager.addGroup(this.actor, _("Panel"), 'start-here',
+        Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
     },
 
