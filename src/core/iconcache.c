@@ -323,6 +323,40 @@ get_pixmap_geometry (MetaDisplay *display,
     *d = depth;
 }
 
+static void
+apply_foreground_background (GdkPixbuf *pixbuf)
+{
+  int w, h;
+  int i, j;
+  guchar *pixels;
+  int stride;
+
+  w = gdk_pixbuf_get_width (pixbuf);
+  h = gdk_pixbuf_get_height (pixbuf);
+  pixels = gdk_pixbuf_get_pixels (pixbuf);
+  stride = gdk_pixbuf_get_rowstride (pixbuf);
+
+  i = 0;
+  while (i < h)
+    {
+      j = 0;
+      while (j < w)
+        {
+          guchar *p = pixels + i * stride + j * 4;
+          if (p[3] == 0)
+            p[0] = p[1] = p[2] =  0xff; /* white background */
+          else
+            p[0] = p[1] = p[2] = 0x00; /* black foreground */
+
+          p[3] = 0xff;
+
+          ++j;
+        }
+
+      ++i;
+    }
+}
+
 static GdkPixbuf*
 apply_mask (GdkPixbuf *pixbuf,
             GdkPixbuf *mask)
@@ -379,18 +413,24 @@ try_pixmap_and_mask (MetaDisplay *display,
 {
   GdkPixbuf *unscaled = NULL;
   GdkPixbuf *mask = NULL;
-  int w, h;
+  int w, h, d;
 
   if (src_pixmap == None)
     return FALSE;
 
   meta_error_trap_push (display);
 
-  get_pixmap_geometry (display, src_pixmap, &w, &h, NULL);
+  get_pixmap_geometry (display, src_pixmap, &w, &h, &d);
 
   unscaled = meta_gdk_pixbuf_get_from_pixmap (src_pixmap,
                                               0, 0,
                                               w, h);
+
+  /* A depth 1 pixmap has 0 background, and 1 foreground, but
+   * cairo and meta_gdk_pixbuf_get_from_pixmap consider it
+   * to be 0 transparent, 1 opaque */
+  if (d == 1)
+    apply_foreground_background (unscaled);
 
   if (unscaled && src_mask != None)
     {
