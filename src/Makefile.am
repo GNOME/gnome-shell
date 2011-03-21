@@ -44,8 +44,10 @@ generated_script_substitutions = \
 	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    -e "s|@sysconfdir[@]|$(sysconfdir)|"
 
-gnome-shell-jhbuild: gnome-shell-jhbuild.in Makefile
+gnome-shell-jhbuild: gnome-shell-jhbuild.in gnome-shell-real Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
+	@# Regenerate libtool wrapper so Alt+F2 restart will work
+	@$(LIBTOOL) --mode=execute test -f gnome-shell-real
 
 gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
