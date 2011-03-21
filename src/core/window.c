@@ -4776,6 +4776,49 @@ meta_window_move_frame (MetaWindow  *window,
   meta_window_move (window, user_op, x, y);
 }
 
+/**
+ * meta_window_move_to_monitor:
+ * @window: a #MetaWindow
+ * @monitor: desired monitor index
+ *
+ * Moves the window to the monitor with index @monitor, keeping
+ * the relative position of the window's top left corner.
+ */
+void
+meta_window_move_to_monitor (MetaWindow  *window,
+                             int          monitor)
+{
+  MetaRectangle old_area, new_area;
+  int rel_x, rel_y;
+  double scale_x, scale_y;
+
+  if (monitor == window->monitor->number)
+    return;
+
+  meta_window_get_work_area_for_monitor (window,
+                                         window->monitor->number,
+                                         &old_area);
+  meta_window_get_work_area_for_monitor (window,
+                                         monitor,
+                                         &new_area);
+
+  rel_x = window->user_rect.x - old_area.x;
+  rel_y = window->user_rect.y - old_area.y;
+  scale_x = (double)new_area.width / old_area.width;
+  scale_y = (double)new_area.height / old_area.height;
+
+  window->user_rect.x = new_area.x + rel_x * scale_x;
+  window->user_rect.y = new_area.y + rel_y * scale_y;
+  window->saved_rect.x = window->user_rect.x;
+  window->saved_rect.y = window->user_rect.y;
+
+  meta_window_move_resize (window, FALSE,
+                           window->user_rect.x,
+                           window->user_rect.y,
+                           window->user_rect.width,
+                           window->user_rect.height);
+}
+
 void
 meta_window_move_resize (MetaWindow  *window,
                          gboolean     user_op,
