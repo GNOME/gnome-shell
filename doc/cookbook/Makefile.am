@@ -37,6 +37,8 @@ HTML_FILES = $(top_builddir)/doc/cookbook/html/*.html
 CSS_FILES = $(top_builddir)/doc/cookbook/html/*.css
 IMAGE_FILES = \
 	$(srcdir)/images/clutter-logo.png \
+	$(srcdir)/images/effects-basic.png \
+	$(srcdir)/images/effects-basic-background.png \
 	$(srcdir)/images/effects-built-in.png \
 	$(srcdir)/images/effects-custom-deform.png \
 	$(srcdir)/images/effects-custom-deform-back-material.png \
