@@ -7433,10 +7433,7 @@ recalc_window_features (MetaWindow *window)
     {
       MetaWindow *parent = meta_window_get_transient_for (window);
       if (parent)
-        {
-          window->has_resize_func = FALSE;
-          window->border_only = TRUE;
-        }
+        window->border_only = TRUE;
     }
 
   if (window->type == META_WINDOW_DESKTOP ||
@@ -8422,6 +8419,15 @@ update_resize (MetaWindow *window,
 
   dx = x - window->display->grab_anchor_root_x;
   dy = y - window->display->grab_anchor_root_y;
+
+  /* Attached modal dialogs are special in that horizontal
+   * size changes apply to both sides, so that the dialog
+   * remains centered to the parent.
+   */
+  if (window->type == META_WINDOW_MODAL_DIALOG &&
+      meta_prefs_get_attach_modal_dialogs () &&
+      meta_window_get_transient_for (window) != NULL)
+    dx *= 2;
 
   new_w = window->display->grab_anchor_window_pos.width;
   new_h = window->display->grab_anchor_window_pos.height;
