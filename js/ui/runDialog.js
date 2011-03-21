@@ -22,6 +22,9 @@ const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
 const HISTORY_KEY = 'command-history';
 
+const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
+const DISABLE_COMMAND_LINE_KEY = 'disable-command-line';
+
 const DIALOG_GROW_TIME = 0.1;
 
 function CommandCompleter() {
@@ -167,6 +170,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
     _init : function() {
         ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'run-dialog' });
 
+        this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
         global.settings.connect('changed::development-tools', Lang.bind(this, function () {
             this._enableInternalCommands = global.settings.get_boolean('development-tools');
         }));
@@ -352,6 +356,9 @@ __proto__: ModalDialog.ModalDialog.prototype,
         this._errorBox.hide();
         this._entryText.set_text('');
         this._commandError = false;
+
+        if (this._lockdownSettings.get_boolean(DISABLE_COMMAND_LINE_KEY))
+            return;
 
         ModalDialog.ModalDialog.prototype.open.call(this);
     },
