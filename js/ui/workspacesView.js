@@ -598,6 +598,14 @@ WorkspacesDisplay.prototype = {
         this._updateAlwaysZoom();
 
         global.screen.connect('monitors-changed', Lang.bind(this, this._updateAlwaysZoom));
+        Main.xdndHandler.connect('drag-begin', Lang.bind(this, function(){
+            this._alwaysZoomOut = true;
+        }));
+
+        Main.xdndHandler.connect('drag-end', Lang.bind(this, function(){
+            this._alwaysZoomOut = false;
+            this._updateAlwaysZoom();
+        }));
 
         this._nWorkspacesNotifyId = 0;
         this._switchWorkspaceNotifyId = 0;

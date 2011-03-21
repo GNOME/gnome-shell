@@ -24,6 +24,7 @@ const PlaceDisplay = imports.ui.placeDisplay;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 const WorkspacesView = imports.ui.workspacesView;
+const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
@@ -243,7 +244,8 @@ Overview.prototype = {
     _onDragMotion: function(dragEvent) {
         let targetIsWindow = dragEvent.targetActor &&
                              dragEvent.targetActor._delegate &&
-                             dragEvent.targetActor._delegate.metaWindow;
+                             dragEvent.targetActor._delegate.metaWindow &&
+                             !(dragEvent.targetActor._delegate instanceof WorkspaceThumbnail.WindowClone);
 
         this._windowSwitchTimestamp = global.get_current_time();
 

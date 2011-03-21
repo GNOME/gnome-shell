@@ -379,6 +379,11 @@ WorkspaceThumbnail.prototype = {
 
     // Draggable target interface
     handleDragOver : function(source, actor, x, y, time) {
+        if (source == Main.xdndHandler) {
+            this.metaWorkspace.activate(time);
+            return DND.DragMotionResult.CONTINUE;
+        }
+
         if (this.state > ThumbnailState.NORMAL)
             return DND.DragMotionResult.CONTINUE;
 
