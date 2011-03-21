@@ -8124,18 +8124,14 @@ update_move (MetaWindow  *window,
 
       if (meta_window_can_tile_side_by_side (window))
         {
-          if (y >= monitor->rect.y &&
-              y < (monitor->rect.y + monitor->rect.height))
-            {
-              /* check if cursor is near an edge of the work area */
-              if (x >= monitor->rect.x && x < (work_area.x + shake_threshold))
-                window->tile_mode = META_TILE_LEFT;
-              else if (x >= work_area.x + work_area.width - shake_threshold &&
-                       x < (monitor->rect.x + monitor->rect.width))
-                window->tile_mode = META_TILE_RIGHT;
-              else
-                window->tile_mode = META_TILE_NONE;
-            }
+          /* check if cursor is near an edge of the work area */
+          if (x >= monitor->rect.x && x < (work_area.x + shake_threshold))
+            window->tile_mode = META_TILE_LEFT;
+          else if (x >= work_area.x + work_area.width - shake_threshold &&
+                   x < (monitor->rect.x + monitor->rect.width))
+            window->tile_mode = META_TILE_RIGHT;
+          else
+            window->tile_mode = META_TILE_NONE;
         }
       else
         window->tile_mode = META_TILE_NONE;
@@ -8149,13 +8145,9 @@ update_move (MetaWindow  *window,
        */
       if (window->tile_mode == META_TILE_NONE && meta_window_can_tile_maximized (window))
         {
-          if (x >= monitor->rect.x &&
-              x < (monitor->rect.x + monitor->rect.width))
-            {
-              /* check if cursor is on the top edge of the monitor*/
-              if (y >= monitor->rect.y && y <= work_area.y)
-                  window->tile_mode = META_TILE_MAXIMIZED;
-            }
+          /* check if cursor is on the top edge of the monitor*/
+          if (y >= monitor->rect.y && y <= work_area.y)
+              window->tile_mode = META_TILE_MAXIMIZED;
         }
     }
 
