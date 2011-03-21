@@ -233,7 +233,7 @@ EndSessionDialog.prototype = {
     __proto__: ModalDialog.ModalDialog.prototype,
 
     _init: function() {
-        ModalDialog.ModalDialog.prototype._init.call(this);
+        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'end-session-dialog' });
 
         this._user = Gdm.UserManager.ref_default().get_user(GLib.get_user_name());
 

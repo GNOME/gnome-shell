@@ -1350,6 +1350,10 @@ StTooltip StLabel {
     padding-top: 30px;
 }
 
+.modal-dialog-button-box {
+    spacing: 21px;
+}
+
 .modal-dialog-button {
     border: 1px solid #8b8b8b;
     border-radius: 18px;
@@ -1421,6 +1425,10 @@ StTooltip StLabel {
 }
 
 /* End Session Dialog */
+.end-session-dialog {
+    spacing: 42px;
+}
+
 .end-session-dialog-subject {
     font-size: 12pt;
     font-weight: bold;
@@ -1439,13 +1447,11 @@ StTooltip StLabel {
     font-size: 10pt;
     color: white;
     padding-left: 17px;
-    padding-right: 40px;
-    width: 16em;
+    width: 28em;
 }
 
 .end-session-dialog-description:rtl {
     padding-right: 17px;
-    padding-left: 40px;
 }
 
 .end-session-dialog-logout-icon {
@@ -1464,13 +1470,12 @@ StTooltip StLabel {
     font-size: 10pt;
     max-height: 200px;
     padding-top: 42px;
-    padding-bottom: 42px;
-    padding-left: 17px;
+    padding-left: 49px;
     padding-right: 32px;
 }
 
 .end-session-dialog-app-list:rtl {
-    padding-right: 17px;
+    padding-right: 49px;
     padding-left: 32px;
 }
 

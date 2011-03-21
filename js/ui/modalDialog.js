@@ -87,8 +87,9 @@ ModalDialog.prototype = {
                                  x_align: St.Align.MIDDLE,
                                  y_align: St.Align.START });
 
-        this._buttonLayout = new St.BoxLayout({ opacity:  220,
-                                                vertical: false });
+        this._buttonLayout = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
+                                                opacity:     220,
+                                                vertical:    false });
         this._dialogLayout.add(this._buttonLayout,
                                { expand:  true,
                                  x_align: St.Align.MIDDLE,
