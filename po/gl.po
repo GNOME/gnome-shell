@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-20 18:54+0100\n"
-"PO-Revision-Date: 2011-03-20 18:54+0100\n"
+"POT-Creation-Date: 2011-03-22 00:52+0100\n"
+"PO-Revision-Date: 2011-03-22 00:52+0100\n"
 "Last-Translator: \n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -191,27 +191,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:620
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:619
+#: ../js/ui/appDisplay.js:623
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:620
+#: ../js/ui/appDisplay.js:624
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
@@ -371,7 +371,7 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "A vindeira semana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:944
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -537,29 +537,29 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:937
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2008
 msgid "System Information"
 msgstr "Información do sistema"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:89
 msgid "Undo"
 msgstr "Desfacer"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:184
 msgid "Windows"
 msgstr "Xanelas"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:187
 msgid "Applications"
 msgstr "Aplicativos"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:203
 msgid "Dash"
 msgstr "Panel"
 
@@ -571,13 +571,13 @@ msgstr "Saír de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:874
+#: ../js/ui/panel.js:876
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:975
-msgid "Panel"
-msgstr "Panel"
+#: ../js/ui/panel.js:977
+msgid "Top Bar"
+msgstr "Barra superior"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -605,51 +605,51 @@ msgstr "LUGARES E DISPOSITIVOS"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
-#: ../js/ui/searchDisplay.js:287
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Buscando..."
 
-#: ../js/ui/searchDisplay.js:301
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Non hai resultados que coincidan."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "A miña conta"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Configuracións do sistema"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Saír da sesión…"
 
@@ -1032,7 +1032,7 @@ msgstr "Tablet"
 msgid "Computer"
 msgstr "Computador"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Descoñecido"
 
@@ -1125,32 +1125,32 @@ msgstr "Imprimir versión"
 msgid "Failed to launch '%s'"
 msgstr "Produciuse un fallo ao iniciar «%s»"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1188,6 +1188,9 @@ msgstr "Sistema de ficheiros"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Panel"
+#~ msgstr "Panel"
 
 #~ msgid "No such application"
 #~ msgstr "Non existe o aplicativo"
