@@ -64,7 +64,7 @@
         <short>Workspaces only on primary</short>
         <long>
           Determines whether workspace switching should happen for windows
-	  on all monitors or only the primary window.
+	  on all monitors or only for windows on the primary monitor.
         </long>
       </locale>
     </schema>
