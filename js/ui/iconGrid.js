@@ -281,6 +281,10 @@ IconGrid.prototype = {
         }
     },
 
+    childrenInRow: function(rowWidth) {
+        return this._computeLayout(rowWidth)[0];
+    },
+
     _computeLayout: function (forWidth) {
         let nColumns = 0;
         let usedWidth = 0;
