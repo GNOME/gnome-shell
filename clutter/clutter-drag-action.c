@@ -815,9 +815,17 @@ clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
                                         guint             *x_threshold,
                                         guint             *y_threshold)
 {
+  gint x_res, y_res;
+
   g_return_if_fail (CLUTTER_IS_DRAG_ACTION (action));
 
-  get_drag_threshold (action, x_threshold, y_threshold);
+  get_drag_threshold (action, &x_res, &y_res);
+
+  if (x_threshold != NULL)
+    *x_threshold = x_res;
+
+  if (y_threshold != NULL)
+    *y_threshold = y_res;
 }
 
 /**
