@@ -232,7 +232,10 @@ st_button_key_release (ClutterActor    *actor,
       if (event->keyval == CLUTTER_KEY_space ||
           event->keyval == CLUTTER_KEY_Return)
         {
-          st_button_release (button, ST_BUTTON_ONE, 1);
+          gboolean is_click;
+
+          is_click = (button->priv->pressed & ST_BUTTON_ONE);
+          st_button_release (button, ST_BUTTON_ONE, is_click ? 1 : 0);
           return TRUE;
         }
     }
