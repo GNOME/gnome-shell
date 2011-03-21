@@ -75,11 +75,13 @@ ShellInfo.prototype = {
             Main.messageTray.add(this._source);
         }
 
-        let notification = this._source.notification;
-        if (notification == null)
+        let notification = null;
+        if (this._source.notifications.length == 0) {
             notification = new MessageTray.Notification(this._source, text, null);
-        else
+        } else {
+            notification = this._source.notifications[0];
             notification.update(text, null, { clear: true });
+        }
 
         notification.setTransient(true);
 

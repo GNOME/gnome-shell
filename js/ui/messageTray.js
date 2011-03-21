@@ -408,12 +408,12 @@ Notification.prototype = {
         this._spacing = 0;
 
         source.connect('destroy', Lang.bind(this,
-            // Avoid passing 'source' as an argument to this.destroy()
-            function () {
-                this.destroy();
+            function (source, reason) {
+                this.destroy(reason);
             }));
 
         this.actor = new St.Button();
+        this.actor._delegate = this;
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -514,6 +514,10 @@ Notification.prototype = {
         if (params.body)
             this.addBody(params.body, params.bodyMarkup);
         this._updated();
+    },
+
+    setIconVisible: function(visible) {
+        this._icon.visible = visible;
     },
 
     _createScrollArea: function() {
@@ -806,6 +810,7 @@ Notification.prototype = {
     destroy: function(reason) {
         this._destroyedReason = reason;
         this.actor.destroy();
+        this.actor._delegate = null;
     }
 };
 Signals.addSignalMethods(Notification.prototype);
@@ -825,6 +830,8 @@ Source.prototype = {
                                      y_fill: true });
         this.isTransient = false;
         this.isChat = false;
+
+        this.notifications = [];
     },
 
     setTransient: function(isTransient) {
@@ -845,23 +852,21 @@ Source.prototype = {
     },
 
     pushNotification: function(notification) {
-        if (this.notification) {
-            this.notification.disconnect(this._notificationClickedId);
-            this.notification.disconnect(this._notificationDestroyedId);
+        if (this.notifications.indexOf(notification) < 0) {
+            this.notifications.push(notification);
+            this.emit('notification-added', notification);
         }
 
-        // FIXME: Right now, we don't save multiple notifications.
-        this.notification = notification;
-
-        this._notificationClickedId = notification.connect('clicked', Lang.bind(this, this.open));
-        this._notificationDestroyedId = notification.connect('destroy', Lang.bind(this,
+        notification.connect('clicked', Lang.bind(this, this.open));
+        notification.connect('destroy', Lang.bind(this,
             function () {
-                if (this.notification == notification) {
-                    this.notification = null;
-                    this._notificationDestroyedId = 0;
-                    this._notificationClickedId = 0;
-                    this._notificationRemoved();
-                }
+                let index = this.notifications.indexOf(notification);
+                if (index < 0)
+                    return;
+
+                this.notifications.splice(index, 1);
+                if (this.notifications.length == 0)
+                    this._lastNotificationRemoved();
             }));
     },
 
@@ -870,8 +875,8 @@ Source.prototype = {
         this.emit('notify', notification);
     },
 
-    destroy: function() {
-        this.emit('destroy');
+    destroy: function(reason) {
+        this.emit('destroy', reason);
     },
 
     // A subclass can redefine this to "steal" clicks from the
@@ -895,8 +900,14 @@ Source.prototype = {
     open: function(notification) {
     },
 
+    destroyNonResidentNotifications: function() {
+        for (let i = this.notifications.length - 1; i >= 0; i--)
+            if (!this.notifications[i].resident)
+                this.notifications[i].destroy();
+    },
+
     // Default implementation is to destroy this source, but subclasses can override
-    _notificationRemoved: function() {
+    _lastNotificationRemoved: function() {
         this.destroy();
     }
 };
@@ -909,6 +920,8 @@ function SummaryItem(source) {
 SummaryItem.prototype = {
     _init: function(source) {
         this.source = source;
+        this.source.connect('notification-added', Lang.bind(this, this._notificationAddedToSource));
+
         this.actor = new St.Button({ style_class: 'summary-source-button',
                                      y_fill: true,
                                      reactive: true,
@@ -930,6 +943,13 @@ SummaryItem.prototype = {
         this._sourceBox.add(this._sourceIcon, { y_fill: false });
         this._sourceBox.add(this._sourceTitleBin, { expand: true, y_fill: false });
         this.actor.child = this._sourceBox;
+
+        this.notificationStack = new St.BoxLayout({ name: 'summary-notification-stack',
+                                                     vertical: true });
+        this._notificationExpandedIds = [];
+        this._notificationDoneDisplayingIds = [];
+        this._notificationDestroyedIds = [];
+
         this.rightClickMenu = new St.BoxLayout({ name: 'summary-right-click-menu',
                                                  vertical: true });
 
@@ -938,14 +958,14 @@ SummaryItem.prototype = {
         item = new PopupMenu.PopupMenuItem(_("Open"));
         item.connect('activate', Lang.bind(this, function() {
             source.open();
-            this.emit('right-click-menu-done-displaying');
+            this.emit('done-displaying-content');
         }));
         this.rightClickMenu.add(item.actor);
 
         item = new PopupMenu.PopupMenuItem(_("Remove"));
         item.connect('activate', Lang.bind(this, function() {
             source.destroy();
-            this.emit('right-click-menu-done-displaying');
+            this.emit('done-displaying-content');
         }));
         this.rightClickMenu.add(item.actor);
 
@@ -975,6 +995,72 @@ SummaryItem.prototype = {
 
     setEllipsization: function(mode) {
         this._sourceTitle.clutter_text.ellipsize = mode;
+    },
+
+    prepareNotificationStackForShowing: function() {
+        if (this.notificationStack.get_children().length > 0)
+            return;
+
+        for (let i = 0; i < this.source.notifications.length; i++) {
+            this._appendNotificationToStack(this.source.notifications[i]);
+        }
+    },
+
+    doneShowingNotificationStack: function() {
+        let notificationActors = this.notificationStack.get_children();
+        for (let i = 0; i < notificationActors.length; i++) {
+            notificationActors[i]._delegate.collapseCompleted();
+            notificationActors[i]._delegate.disconnect(this._notificationExpandedIds[i]);
+            notificationActors[i]._delegate.disconnect(this._notificationDoneDisplayingIds[i]);
+            notificationActors[i]._delegate.disconnect(this._notificationDestroyedIds[i]);
+            this.notificationStack.remove_actor(notificationActors[i]);
+            notificationActors[i]._delegate.setIconVisible(true);
+        }
+        this._notificationExpandedIds = [];
+        this._notificationDoneDisplayingIds = [];
+        this._notificationDestroyedIds = [];
+    },
+
+    _notificationAddedToSource: function(source, notification) {
+        if (this.notificationStack.mapped)
+            this._appendNotificationToStack(notification);
+    },
+
+    _appendNotificationToStack: function(notification) {
+        let notificationExpandedId = notification.connect('expanded', Lang.bind(this, this._contentUpdated));
+        this._notificationExpandedIds.push(notificationExpandedId);
+        let notificationDoneDisplayingId = notification.connect('done-displaying', Lang.bind(this, this._notificationDoneDisplaying));
+        this._notificationDoneDisplayingIds.push(notificationDoneDisplayingId);
+        let notificationDestroyedId = notification.connect('destroy', Lang.bind(this, this._notificationDestroyed));
+        this._notificationDestroyedIds.push(notificationDestroyedId);
+        if (this.notificationStack.get_children().length > 0)
+            notification.setIconVisible(false);
+        this.notificationStack.add(notification.actor);
+        notification.expand(false);
+    },
+
+    _contentUpdated: function() {
+        this.emit('content-updated');
+    },
+
+    _notificationDoneDisplaying: function() {
+        this.emit('done-displaying-content');
+    },
+
+    _notificationDestroyed: function(notification) {
+        let index = this.notificationStack.get_children().indexOf(notification.actor);
+        if (index >= 0) {
+            notification.disconnect(this._notificationExpandedIds[index]);
+            this._notificationExpandedIds.splice(index, 1);
+            notification.disconnect(this._notificationDoneDisplayingIds[index]);
+            this._notificationDoneDisplayingIds.splice(index, 1);
+            notification.disconnect(this._notificationDestroyedIds[index]);
+            this._notificationDestroyedIds.splice(index, 1);
+            this.notificationStack.remove_actor(notification.actor);
+            this._contentUpdated();
+        }
+        if (this.notificationStack.get_children().length > 0)
+            this.notificationStack.get_children()[0]._delegate.setIconVisible(true);
     }
 };
 Signals.addSignalMethods(SummaryItem.prototype);
@@ -1023,9 +1109,9 @@ MessageTray.prototype = {
         this._summaryBoxPointer.actor.lower_bottom();
         this._summaryBoxPointer.actor.hide();
 
-        this._summaryNotification = null;
-        this._summaryNotificationClickedId = 0;
-        this._summaryRightClickMenuClickedId = 0;
+        this._summaryBoxPointerItem = null;
+        this._summaryBoxPointerContentUpdatedId = 0;
+        this._summaryBoxPointerDoneDisplayingId = 0;
         this._clickedSummaryItem = null;
         this._clickedSummaryItemMouseButton = -1;
         this._clickedSummaryItemAllocationChangedId = 0;
@@ -1066,11 +1152,10 @@ MessageTray.prototype = {
         this._notificationTimeoutId = 0;
         this._notificationExpandedId = 0;
         this._summaryBoxPointerState = State.HIDDEN;
-        this._summaryNotificationTimeoutId = 0;
-        this._summaryNotificationExpandedId = 0;
+        this._summaryBoxPointerTimeoutId = 0;
         this._overviewVisible = Main.overview.visible;
         this._notificationRemoved = false;
-        this._reNotifyWithSummaryNotificationAfterHide = false;
+        this._reNotifyAfterHideNotification = null;
 
         Main.chrome.addActor(this.actor, { affectsStruts: false,
                                            visibleInOverview: true });
@@ -1251,13 +1336,6 @@ MessageTray.prototype = {
 
         if (needUpdate);
             this._updateState();
-
-        // remove all notifications with this source from the queue
-        let newNotificationQueue = [];
-        for (let i = this._notificationQueue.length - 1; i >= 0; i--) {
-            if (this._notificationQueue[i].source == source)
-                this._notificationQueue[i].destroy();
-        }
     },
 
     _onNotificationDestroy: function(notification) {
@@ -1286,14 +1364,18 @@ MessageTray.prototype = {
     },
 
     _onNotify: function(source, notification) {
-        if (notification == this._summaryNotification) {
-            if (!this._summaryNotificationExpandedId)
-                // We must be in the process of hiding the summary notification.
-                // If the summary notification is updated while it is being
-                // hidden, we show the update as a new notification. However,
-                // we must first wait till the hide is complete and the
-                // notification actor is not part of the stage.
-                this._reNotifyWithSummaryNotificationAfterHide = true;
+        if (this._summaryBoxPointerItem && this._summaryBoxPointerItem.source == source) {
+            if (this._summaryBoxPointerState == State.HIDING)
+                // We are in the process of hiding the summary box pointer.
+                // If there is an update for one of the notifications or
+                // a new notification to be added to the notification stack
+                // while it is in the process of being hidden, we show it as
+                // a new notification. However, we first wait till the hide
+                // is complete. This is especially important if one of the
+                // notifications in the stack was updated because we will
+                // need to be able to re-parent its actor to a different
+                // part of the stage.
+                this._reNotifyAfterHideNotification = notification;
             return;
         }
 
@@ -1629,15 +1711,18 @@ MessageTray.prototype = {
         let summarySourceIsMainNotificationSource = (haveClickedSummaryItem && this._notification &&
                                                      this._clickedSummaryItem.source == this._notification.source);
         let canShowSummaryBoxPointer = this._summaryState == State.SHOWN;
-        let wrongSummaryNotification = (this._clickedSummaryItemMouseButton == 1 &&
-                                        this._summaryNotification != this._clickedSummaryItem.source.notification);
+        // We only have sources with empty notification stacks for legacy tray icons. Currently, we never attempt
+        // to show notifications for legacy tray icons, but this would be necessary if we did.
+        let requestedNotificationStackIsEmpty = (this._clickedSummaryItemMouseButton == 1 && this._clickedSummaryItem.source.notifications.length == 0);
+        let wrongSummaryNotificationStack = (this._clickedSummaryItemMouseButton == 1 &&
+                                             this._summaryBoxPointer.bin.child != this._clickedSummaryItem.notificationStack);
         let wrongSummaryRightClickMenu = (this._clickedSummaryItemMouseButton == 3 &&
                                           this._summaryBoxPointer.bin.child != this._clickedSummaryItem.rightClickMenu);
         let wrongSummaryBoxPointer = (haveClickedSummaryItem &&
-                                      (wrongSummaryNotification || wrongSummaryRightClickMenu));
+                                      (wrongSummaryNotificationStack || wrongSummaryRightClickMenu));
 
         if (this._summaryBoxPointerState == State.HIDDEN) {
-            if (haveClickedSummaryItem && !summarySourceIsMainNotificationSource && canShowSummaryBoxPointer)
+            if (haveClickedSummaryItem && !summarySourceIsMainNotificationSource && canShowSummaryBoxPointer && !requestedNotificationStackIsEmpty)
                 this._showSummaryBoxPointer();
         } else if (this._summaryBoxPointerState == State.SHOWN) {
             if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer)
@@ -1900,33 +1985,28 @@ MessageTray.prototype = {
     },
 
     _showSummaryBoxPointer: function() {
+        this._summaryBoxPointerItem = this._clickedSummaryItem;
+        this._summaryBoxPointerContentUpdatedId = this._summaryBoxPointerItem.connect('content-updated',
+                                                                                      Lang.bind(this, this._adjustSummaryBoxPointerPosition));
+        this._summaryBoxPointerDoneDisplayingId = this._summaryBoxPointerItem.connect('done-displaying-content',
+                                                                                      Lang.bind(this, this._escapeTray));
         if (this._clickedSummaryItemMouseButton == 1) {
-            let clickedSummaryItemNotification = this._clickedSummaryItem.source.notification;
-            let index = this._notificationQueue.indexOf(clickedSummaryItemNotification);
-            if (index != -1)
-                this._notificationQueue.splice(index, 1);
-
-            this._summaryNotification = clickedSummaryItemNotification;
-            this._summaryNotificationClickedId = this._summaryNotification.connect('done-displaying',
-                                                                                   Lang.bind(this, this._escapeTray));
-            this._summaryBoxPointer.bin.child = this._summaryNotification.actor;
-            if (!this._summaryNotificationExpandedId)
-                this._summaryNotificationExpandedId = this._summaryNotification.connect('expanded',
-                                                                                        Lang.bind(this, this._onSummaryBoxPointerExpanded));
-            this._summaryNotification.expand(false);
+            this._notificationQueue = this._notificationQueue.filter( Lang.bind(this,
+                function(notification) {
+                    return this._summaryBoxPointerItem.source != notification.source;
+                }));
+            this._summaryBoxPointerItem.prepareNotificationStackForShowing();
+            this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStack;
         } else if (this._clickedSummaryItemMouseButton == 3) {
-            this._summaryRightClickMenuClickedId = this._clickedSummaryItem.connect('right-click-menu-done-displaying',
-                                                                                    Lang.bind(this, this._escapeTray));
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
         }
 
         this._focusGrabber.grabFocus(this._summaryBoxPointer.bin.child);
 
-
         this._clickedSummaryItemAllocationChangedId =
             this._clickedSummaryItem.actor.connect('allocation-changed',
                                                    Lang.bind(this, this._adjustSummaryBoxPointerPosition));
-        // _clickedSummaryItem.actor can change absolute postiion without changing allocation
+        // _clickedSummaryItem.actor can change absolute position without changing allocation
         this._summaryMotionId = this._summary.connect('allocation-changed',
                                                       Lang.bind(this, this._adjustSummaryBoxPointerPosition));
 
@@ -1957,26 +2037,13 @@ MessageTray.prototype = {
             this._summaryMotionId = 0;
         }
 
-        if (this._summaryRightClickMenuClickedId) {
-            this._clickedSummaryItem.disconnect(this._summaryRightClickMenuClickedId);
-            this._summaryRightClickMenuClickedId = 0;
-        }
-
         if (this._clickedSummaryItem)
             this._clickedSummaryItem.actor.remove_style_pseudo_class('selected');
         this._clickedSummaryItem = null;
         this._clickedSummaryItemMouseButton = -1;
     },
 
-    _onSummaryBoxPointerExpanded: function() {
-        this._adjustSummaryBoxPointerPosition();
-    },
-
     _hideSummaryBoxPointer: function() {
-        if (this._summaryNotificationExpandedId) {
-            this._summaryNotification.disconnect(this._summaryNotificationExpandedId);
-            this._summaryNotificationExpandedId = 0;
-        }
         // Unset this._clickedSummaryItem if we are no longer showing the summary
         if (this._summaryState != State.SHOWN)
             this._unsetClickedSummaryItem();
@@ -1987,21 +2054,32 @@ MessageTray.prototype = {
     },
 
     _hideSummaryBoxPointerCompleted: function() {
+        let doneShowingNotificationStack = (this._summaryBoxPointer.bin.child == this._summaryBoxPointerItem.notificationStack);
+
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointer.bin.child = null;
-        if (this._summaryNotification != null) {
-            this._summaryNotification.collapseCompleted();
-            this._summaryNotification.disconnect(this._summaryNotificationClickedId);
-            this._summaryNotificationClickedId = 0;
-            let summaryNotification = this._summaryNotification;
-            this._summaryNotification = null;
-            if (summaryNotification.isTransient && !this._reNotifyWithSummaryNotificationAfterHide)
-                summaryNotification.destroy(NotificationDestroyedReason.EXPIRED);
-            if (this._reNotifyWithSummaryNotificationAfterHide) {
-                this._onNotify(summaryNotification.source, summaryNotification);
-                this._reNotifyWithSummaryNotificationAfterHide = false;
+        this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
+        this._summaryBoxPointerContentUpdatedId = 0;
+        this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerDoneDisplayingId);
+        this._summaryBoxPointerDoneDisplayingId = 0;
+
+        let sourceNotificationStackDoneShowing = null;
+        if (doneShowingNotificationStack) {
+            this._summaryBoxPointerItem.doneShowingNotificationStack();
+            sourceNotificationStackDoneShowing = this._summaryBoxPointerItem.source;
+        }
+
+        this._summaryBoxPointerItem = null;
+
+        if (sourceNotificationStackDoneShowing) {
+            if (sourceNotificationStackDoneShowing.isTransient && !this._reNotifyAfterHideNotification)
+                sourceNotificationStackDoneShowing.destroy(NotificationDestroyedReason.EXPIRED);
+            if (this._reNotifyAfterHideNotification) {
+                this._onNotify(this._reNotifyAfterHideNotification.source, this._reNotifyAfterHideNotification);
+                this._reNotifyAfterHideNotification = null;
             }
         }
+
         if (this._clickedSummaryItem)
             this._updateState();
     }

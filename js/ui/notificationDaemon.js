@@ -390,8 +390,7 @@ NotificationDaemon.prototype = {
         for (let id in this._sources) {
             let source = this._sources[id];
             if (source.app == tracker.focus_app) {
-                if (source.notification && !source.notification.resident)
-                    source.notification.destroy();
+                source.destroyNonResidentNotifications();
                 return;
             }
         }
@@ -508,10 +507,11 @@ Source.prototype = {
     },
 
     open: function(notification) {
+        this.destroyNonResidentNotifications();
         this.openApp();
     },
 
-    _notificationRemoved: function() {
+    _lastNotificationRemoved: function() {
         if (!this._trayIcon)
             this.destroy();
     },
