@@ -5,18 +5,20 @@
 # Pier Luigi Fiorini <plfiorini@libero.it>, 2002.
 # Lapo Calamandrei <lapo.calamandrei@virgilio.it>, 2003.
 # Luca Ferretti <lferrett@gnome.org>, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter 2.9x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-11 02:09+0100\n"
-"PO-Revision-Date: 2011-03-11 02:10+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-21 19:31+0000\n"
+"PO-Revision-Date: 2011-03-22 22:52+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 # questo e i successivi presi dallo stesso
@@ -342,7 +344,7 @@ msgstr "Muovi la finestra sul lato ovest (sinistra) dello schermo"
 msgid "Move window to center of screen"
 msgstr "Muovi la finestra al centro dello schermo"
 
-#: ../src/core/bell.c:302
+#: ../src/core/bell.c:310
 msgid "Bell event"
 msgstr "Evento campanella"
 
@@ -443,12 +445,12 @@ msgstr "Inizializza la sessione da file salvato"
 msgid "Make X calls synchronous"
 msgstr "Rende le chiamate X sincrone"
 
-#: ../src/core/main.c:508
+#: ../src/core/main.c:506
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Scansione della directory dei temi non riuscita: %s\n"
 
-#: ../src/core/main.c:524
+#: ../src/core/main.c:522
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -490,38 +492,38 @@ msgstr "Elenco separato da virgole dei plugin del compositor"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
+#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La chiave GConf «%s» è impostata ad un valore non valido\n"
 
 # lasciato "Il valore" iniziale che c'era in precendeza
-#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "Il valore %d memorizzato nella chiave GConf %s è fuori dall'intervallo da %d "
 "a %d\n"
 
-#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
-#: ../src/core/prefs.c:856 ../src/core/prefs.c:1317 ../src/core/prefs.c:1333
-#: ../src/core/prefs.c:1350 ../src/core/prefs.c:1366
+#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
+#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
+#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La chiave GConf «%s» è impostata ad un tipo non valido\n"
 
-#: ../src/core/prefs.c:1196
+#: ../src/core/prefs.c:1203
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr ""
 "La chiave GConf %s è già in uso e non può essere usata per scavalcare %s\n"
 
-#: ../src/core/prefs.c:1255
+#: ../src/core/prefs.c:1262
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Impossibile scavalcare la chiave GConf, %s non trovato\n"
 
-#: ../src/core/prefs.c:1440
+#: ../src/core/prefs.c:1447
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -529,14 +531,14 @@ msgstr ""
 "Disabilitate le funzionalità palliative per la applicazioni difettose. "
 "Alcune applicazioni potrebbero avere comportamenti errati.\n"
 
-#: ../src/core/prefs.c:1517
+#: ../src/core/prefs.c:1524
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Impossibile analizzare la descrizione del tipo di carattere «%s» dalla "
 "chiave GConf %s\n"
 
-#: ../src/core/prefs.c:1579
+#: ../src/core/prefs.c:1586
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -545,17 +547,17 @@ msgstr ""
 "Il valore «%s» trovato nel database di configurazione non è valido per il "
 "modificatore del tasto del mouse\n"
 
-#: ../src/core/prefs.c:2006
+#: ../src/core/prefs.c:2016
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Errore nell'impostare il numero di spazi di lavoro a %d: %s\n"
 
-#: ../src/core/prefs.c:2190 ../src/core/prefs.c:2692
+#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
 #, c-format
 msgid "Workspace %d"
 msgstr "Spazio di lavoro %d"
 
-#: ../src/core/prefs.c:2222 ../src/core/prefs.c:2400
+#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -564,29 +566,29 @@ msgstr ""
 "Il valore «%s» nel database di configurazione non è valido per "
 "l'associazione di tasti «%s»\n"
 
-#: ../src/core/prefs.c:2773
+#: ../src/core/prefs.c:2783
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Errore nell'impostare il nome dello spazio di lavoro %d a «%s»: %s\n"
 
 # eeeehhh????
-#: ../src/core/prefs.c:2987
+#: ../src/core/prefs.c:2997
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Errore nell'impostare lo stato \"stato finestre live nascoste\": %s\n"
 
 # eeeehhh????
-#: ../src/core/prefs.c:3015
+#: ../src/core/prefs.c:3032
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Errore nell'impostare lo stato \"niente tab popup\": %s\n"
 
-#: ../src/core/screen.c:577
+#: ../src/core/screen.c:623
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Lo schermo %d nel display «%s» non è valido\n"
 
-#: ../src/core/screen.c:593
+#: ../src/core/screen.c:639
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -595,7 +597,7 @@ msgstr ""
 "Lo schermo %d sul display «%s» ha già un window manager; provare a "
 "utilizzare l'opzione --replace per sostituirlo.\n"
 
-#: ../src/core/screen.c:620
+#: ../src/core/screen.c:666
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -603,66 +605,66 @@ msgstr ""
 "Impossibile acquisire la selezione del window manager per lo schermo %d nel "
 "display «%s»\n"
 
-#: ../src/core/screen.c:675
+#: ../src/core/screen.c:721
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Lo schermo %d sul display «%s» ha già un window manager\n"
 
-#: ../src/core/screen.c:860
+#: ../src/core/screen.c:906
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossibile rilasciare lo schermo %d sul display «%s»\n"
 
-#: ../src/core/session.c:863 ../src/core/session.c:870
+#: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Impossibile creare la directory «%s»: %s\n"
 
-#: ../src/core/session.c:880
+#: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Impossibile aprire il file di sessione «%s» in scrittura: %s\n"
 
-#: ../src/core/session.c:1021
+#: ../src/core/session.c:995
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Errore nello scrivere il file di sessione «%s»: %s\n"
 
-#: ../src/core/session.c:1026
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Errore nel chiudere il file di sessione «%s»: %s\n"
 
-#: ../src/core/session.c:1156
+#: ../src/core/session.c:1130
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Analisi del file della sessione salvato non riuscita: %s\n"
 
-#: ../src/core/session.c:1205
+#: ../src/core/session.c:1179
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr ""
 "Attributo <mutter_session> individuato, ma è già presente un ID della "
 "sessione"
 
-#: ../src/core/session.c:1218 ../src/core/session.c:1293
-#: ../src/core/session.c:1325 ../src/core/session.c:1397
-#: ../src/core/session.c:1457
+#: ../src/core/session.c:1192 ../src/core/session.c:1267
+#: ../src/core/session.c:1299 ../src/core/session.c:1371
+#: ../src/core/session.c:1431
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Attributo %s sconosciuto per l'elemento <%s>"
 
-#: ../src/core/session.c:1235
+#: ../src/core/session.c:1209
 #, c-format
 msgid "nested <window> tag"
 msgstr "tag <window> annidato"
 
-#: ../src/core/session.c:1477
+#: ../src/core/session.c:1451
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento %s sconosciuto"
 
-#: ../src/core/session.c:1829
+#: ../src/core/session.c:1803
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -708,13 +710,13 @@ msgid "Window manager error: "
 msgstr "Errore del window manager: "
 
 #. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6550
+#: ../src/core/window.c:6752
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -730,7 +732,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7213
+#: ../src/core/window.c:7415
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -799,15 +801,24 @@ msgstr ""
 "sugli spazi di lavoro diversi da quello corrente) debbano essere tenute "
 "alive."
 
+# mica ho capito cosa fa...
 #: ../src/mutter.schemas.in.h:3
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Determina se il cambio di spazio di lavoro debba avvenire per le finestre su "
+"tutti i monitor oppure solo per le finestre sul monitor primario."
+
+#: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
 msgstr "Finestre nascoste live"
 
-#: ../src/mutter.schemas.in.h:4
+#: ../src/mutter.schemas.in.h:5
 msgid "Modifier to use for extended window management operations"
 msgstr "Modificatore da utilizzare per le azioni di gestione finestre estese"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:6
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -820,7 +831,7 @@ msgstr ""
 "questa scorciatoia sia o il valore predefinito, oppure che sia impostata "
 "alla stringa vuota."
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/mutter.schemas.in.h:7
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -829,6 +840,10 @@ msgstr ""
 "Se impostata a VERO, invece di avere barre di titolo indipendenti, i "
 "dialoghi modali appaiono attaccati alla barra del titolo della finestra "
 "genitore, muovendosi assieme ad essa."
+
+#: ../src/mutter.schemas.in.h:8
+msgid "Workspaces only on primary"
+msgstr "Spazi di lavoro solo sul primario"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
