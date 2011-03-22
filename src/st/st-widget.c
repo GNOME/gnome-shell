@@ -44,6 +44,8 @@
 
 #include "st-widget-accessible.h"
 
+#include <gtk/gtk.h>
+
 /*
  * Forward declaration for sake of StWidgetChild
  */
@@ -56,6 +58,7 @@ struct _StWidgetPrivate
   gchar        *inline_style;
 
   StThemeNodeTransition *transition_animation;
+  guint tooltip_timeout_id;
 
   gboolean      is_stylable : 1;
   gboolean      has_tooltip : 1;
@@ -125,6 +128,7 @@ static gboolean st_widget_real_navigate_focus (StWidget         *widget,
 
 static AtkObject * st_widget_get_accessible (ClutterActor *actor);
 
+static void st_widget_start_tooltip_timeout (StWidget *widget);
 static void st_widget_do_show_tooltip (StWidget *widget);
 static void st_widget_do_hide_tooltip (StWidget *widget);
 
@@ -276,6 +280,12 @@ st_widget_dispose (GObject *gobject)
     }
 
   st_widget_remove_transition (actor);
+
+  if (priv->tooltip_timeout_id)
+    {
+      g_source_remove (priv->tooltip_timeout_id);
+      priv->tooltip_timeout_id = 0;
+    }
 
   if (priv->tooltip)
     {
@@ -670,6 +680,19 @@ st_widget_leave (ClutterActor         *actor,
     return FALSE;
 }
 
+static gboolean
+st_widget_motion (ClutterActor       *actor,
+                  ClutterMotionEvent *motion)
+{
+  StWidget *widget = ST_WIDGET (actor);
+  StWidgetPrivate *priv = widget->priv;
+
+  if (priv->has_tooltip)
+    st_widget_start_tooltip_timeout (widget);
+
+  return FALSE;
+}
+
 static void
 st_widget_key_focus_in (ClutterActor *actor)
 {
@@ -773,6 +796,7 @@ st_widget_class_init (StWidgetClass *klass)
 
   actor_class->enter_event = st_widget_enter;
   actor_class->leave_event = st_widget_leave;
+  actor_class->motion_event = st_widget_motion;
   actor_class->key_focus_in = st_widget_key_focus_in;
   actor_class->key_focus_out = st_widget_key_focus_out;
   actor_class->key_press_event = st_widget_key_press_event;
@@ -1561,11 +1585,20 @@ st_widget_set_has_tooltip (StWidget *widget,
             st_widget_ensure_tooltip_parented (widget, CLUTTER_STAGE (stage));
         }
     }
-  else if (priv->tooltip)
+  else
     {
-      clutter_actor_destroy (CLUTTER_ACTOR (priv->tooltip));
-      g_object_unref (priv->tooltip);
-      priv->tooltip = NULL;
+      if (priv->tooltip_timeout_id)
+        {
+          g_source_remove (priv->tooltip_timeout_id);
+          priv->tooltip_timeout_id = 0;
+        }
+
+      if (priv->tooltip)
+        {
+          clutter_actor_destroy (CLUTTER_ACTOR (priv->tooltip));
+          g_object_unref (priv->tooltip);
+          priv->tooltip = NULL;
+        }
     }
 }
 
@@ -1749,6 +1782,28 @@ st_widget_get_track_hover (StWidget *widget)
   return widget->priv->track_hover;
 }
 
+static gboolean
+tooltip_timeout (gpointer data)
+{
+  st_widget_show_tooltip (data);
+
+  return FALSE;
+}
+
+static void
+st_widget_start_tooltip_timeout (StWidget *widget)
+{
+  StWidgetPrivate *priv = widget->priv;
+  GtkSettings *settings = gtk_settings_get_default ();
+  guint timeout;
+
+  if (priv->tooltip_timeout_id)
+    g_source_remove (priv->tooltip_timeout_id);
+
+  g_object_get (settings, "gtk-tooltip-timeout", &timeout, NULL);
+  priv->tooltip_timeout_id = g_timeout_add (timeout, tooltip_timeout, widget);
+}
+
 /**
  * st_widget_set_hover:
  * @widget: A #StWidget
@@ -1779,13 +1834,21 @@ st_widget_set_hover (StWidget *widget,
         {
           st_widget_add_style_pseudo_class (widget, "hover");
           if (priv->has_tooltip)
-            st_widget_show_tooltip (widget);
+            st_widget_start_tooltip_timeout (widget);
         }
       else
         {
           st_widget_remove_style_pseudo_class (widget, "hover");
           if (priv->has_tooltip)
-            st_widget_hide_tooltip (widget);
+            {
+              if (priv->tooltip_timeout_id)
+                {
+                  g_source_remove (priv->tooltip_timeout_id);
+                  priv->tooltip_timeout_id = 0;
+                }
+
+              st_widget_hide_tooltip (widget);
+            }
         }
       g_object_notify (G_OBJECT (widget), "hover");
     }
