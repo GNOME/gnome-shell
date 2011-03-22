@@ -406,6 +406,13 @@ EndSessionDialog.prototype = {
                          }]);
     },
 
+    close: function() {
+        ModalDialog.ModalDialog.prototype.close.call(this);
+        DBus.session.emit_signal('/org/gnome/SessionManager/EndSessionDialog',
+                                 'org.gnome.SessionManager.EndSessionDialog',
+                                 'Closed', '', []);
+    },
+
     cancel: function() {
         this._stopTimer();
         DBus.session.emit_signal('/org/gnome/SessionManager/EndSessionDialog',
