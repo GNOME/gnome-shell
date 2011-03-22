@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-17 17:49+0000\n"
-"PO-Revision-Date: 2011-03-17 19:54+0100\n"
+"POT-Creation-Date: 2011-03-22 10:13+0000\n"
+"PO-Revision-Date: 2011-03-22 21:47+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -336,7 +336,7 @@ msgstr "Premakni okno na levi del zaslona"
 msgid "Move window to center of screen"
 msgstr "Premakni okno na sredino zaslona"
 
-#: ../src/core/bell.c:302
+#: ../src/core/bell.c:310
 msgid "Bell event"
 msgstr "Dogodek zvonjenja"
 
@@ -671,14 +671,14 @@ msgid "Window manager error: "
 msgstr "Napaka upravljalnika oken: "
 
 #. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:616
+#: ../src/core/util.c:615
 #: ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6651
+#: ../src/core/window.c:6795
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
@@ -690,7 +690,7 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7314
+#: ../src/core/window.c:7458
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
@@ -744,8 +744,8 @@ msgid "Determines whether hidden windows (i.e., minimized windows and windows on
 msgstr "Določa ali naj se skrita okna (skrčena okna in okna na drugih delovnih površinah) ohranjajo odprta."
 
 #: ../src/mutter.schemas.in.h:3
-msgid "Determines whether workspace switching should happen for windows on all monitors or only the primary window."
-msgstr "Določa sli naj se delovne površine preklapljajo na vseh zaslonih ali le na prvem, glavnem zaslonu."
+msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
+msgstr "Določa ali naj se delovne površine preklapljajo na vseh zaslonih ali le na prvem, glavnem zaslonu."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
