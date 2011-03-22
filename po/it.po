@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-17 16:01+0100\n"
-"PO-Revision-Date: 2011-03-17 16:03+0100\n"
+"POT-Creation-Date: 2011-03-22 01:35+0100\n"
+"PO-Revision-Date: 2011-03-22 01:36+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -190,27 +190,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Tutte"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "APPLICAZIONI"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "IMPOSTAZIONI"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:620
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:623
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:624
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -372,7 +372,7 @@ msgstr "Questa settimana"
 msgid "Next week"
 msgstr "Prossima settimana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:944
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -508,7 +508,7 @@ msgstr "Riavvio del sistema."
 msgid "Confirm"
 msgstr "Conferma"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:465
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -544,11 +544,11 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:937
 msgid "Open"
 msgstr "Apri"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2008
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -572,20 +572,20 @@ msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:514
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "Chiudi %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:873
+#: ../js/ui/panel.js:876
 msgid "Activities"
 msgstr "Attività"
 
-#: ../js/ui/panel.js:974
-msgid "Panel"
-msgstr "Pannello"
+#: ../js/ui/panel.js:977
+msgid "Top Bar"
+msgstr "Barra superiore"
 
 # (ndt) libera, ma unmount non si può proprio vedere...
 #: ../js/ui/placeDisplay.js:122
@@ -614,51 +614,51 @@ msgstr "RISORSE E DISPOSITIVI"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:287
 msgid "Searching..."
 msgstr "Ricerca..."
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:301
 msgid "No matching results."
 msgstr "Nessun risultato corrispondente."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Spegni..."
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Sospendi"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Account personale"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Impostazioni di sistema"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Blocca schermo"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Termina sessione..."
 
@@ -704,9 +704,9 @@ msgstr "Contrasto elevato"
 msgid "Large Text"
 msgstr "Caratteri grandi"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:236
-#: ../js/ui/status/bluetooth.js:332 ../js/ui/status/bluetooth.js:366
-#: ../js/ui/status/bluetooth.js:406 ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -729,94 +729,94 @@ msgstr "Impostazioni Bluetooth"
 
 # indica lo stato del device BT, per esempio gli auricolari
 # credo sia meglio l'aggettivo che il sostantivo
-#: ../js/ui/status/bluetooth.js:187
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "Collegato"
 
-#: ../js/ui/status/bluetooth.js:223
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Invia file..."
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Esplora file..."
 
-#: ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "Errore nell'esplorare il dispositivo"
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Non è possibile esplorare il dispositivo richiesto, l'errore è «%s»"
 
-#: ../js/ui/status/bluetooth.js:246
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "Impostazioni tastiera"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "Impostazioni mouse"
 
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Impostazioni audio"
 
-#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Richesta autorizzazione da %s"
 
-#: ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Il dispositivo %s vuole accedere al servizio «%s»"
 
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "Consenti sempre accesso"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "Consenti solo stavolta"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Rifiuta"
 
-#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Conferma associazione per %s"
 
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/status/bluetooth.js:447
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Il dispositivo %s vuole associarsi con questo computer"
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confermare la corrispondenza del PIN «%s» con quello sul dispositivo."
 
-#: ../js/ui/status/bluetooth.js:416
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Corrisponde"
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Non corrisponde"
 
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Richiesta associazione per %s"
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Inserire il PIN indicato sul dispositivo."
 
-#: ../js/ui/status/bluetooth.js:464
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "OK"
 
@@ -921,40 +921,40 @@ msgstr "Connessioni VPN"
 msgid "Network Settings"
 msgstr "Impostazioni rete"
 
-#: ../js/ui/status/network.js:1782
+#: ../js/ui/status/network.js:1783
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Connessi alla rete mobile «%s»"
 
-#: ../js/ui/status/network.js:1786
+#: ../js/ui/status/network.js:1787
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Connessi alla rete wireless «%s»"
 
-#: ../js/ui/status/network.js:1790
+#: ../js/ui/status/network.js:1791
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Connessi alla rete via cavo «%s»"
 
-#: ../js/ui/status/network.js:1794
+#: ../js/ui/status/network.js:1795
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Connessi alla rete VPN «%s»"
 
-#: ../js/ui/status/network.js:1799
+#: ../js/ui/status/network.js:1800
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Connessi a «%s»"
 
-#: ../js/ui/status/network.js:1807
+#: ../js/ui/status/network.js:1808
 msgid "Connection established"
 msgstr "Connessione stabilita"
 
-#: ../js/ui/status/network.js:1929
+#: ../js/ui/status/network.js:1930
 msgid "Networking is disabled"
 msgstr "Rete disabilitata"
 
-#: ../js/ui/status/network.js:2054
+#: ../js/ui/status/network.js:2055
 msgid "Network Manager"
 msgstr "Gestore reti"
 
@@ -1045,7 +1045,7 @@ msgstr "Tablet"
 msgid "Computer"
 msgstr "Computer"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Sconosciuto"
 
@@ -1089,11 +1089,11 @@ msgstr "Inviato alle %-H.%M di %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:119
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "Digitare per cercare..."
 
-#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Cerca"
 
@@ -1134,37 +1134,37 @@ msgstr "Audio di sistema"
 msgid "Print version"
 msgstr "Stampa la versione"
 
-#: ../src/shell-app.c:442
+#: ../src/shell-app.c:454
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Avvio di «%s» non riuscito"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1205,6 +1205,9 @@ msgstr "File system"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Panel"
+#~ msgstr "Pannello"
 
 #~ msgid "No such application"
 #~ msgstr "Applicazione inesistente"
