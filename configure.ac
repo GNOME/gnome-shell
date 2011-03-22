@@ -1125,12 +1125,12 @@ AS_CASE([$enable_maintainer_flags],
 )
 
 # strip leading spaces
-MAINTAINER_CFLAGS=${MAINTAINER_CFLAGS/#  }
+MAINTAINER_CFLAGS=${MAINTAINER_CFLAGS#*  }
 AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl === Dependencies, compiler flags and linker libraries =====================
 # strip leading space
-BACKEND_PC_FILES=${BACKEND_PC_FILES/# }
+BACKEND_PC_FILES=${BACKEND_PC_FILES/#* }
 
 CLUTTER_REQUIRES="$CLUTTER_BASE_PC_FILES $IMAGE_PC_FILES $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
