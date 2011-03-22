@@ -4,21 +4,20 @@
 #
 # Andrey Korzinev <fellrond@gmail.com>, 2009.
 # Sergey V. Kovylov <serejka@gmail.com>, 2009.
-# Marina Zhurakhinskaya <marinaz@redhat.com>, 2009.
-#
+# Marina Zhurakhinskaya <marinaz@redhat.com>, 2009, 2010.
+# Sergey Davidoff <shnatsel@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2009-10-09 00:27-0400\n"
-"PO-Revision-Date: 2009-10-09 00:27-0400\n"
-"Last-Translator: Marina Zhurakhinskaya <marinaz@redhat.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-22 01:51+0000\n"
+"PO-Revision-Date: 2011-03-22 21:17+0400\n"
+"Last-Translator: Yuri Myaseodov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -28,105 +27,1100 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Управление окнами и запуск приложений"
 
-#: ../js/ui/appDisplay.js:335
-msgid "Frequent"
-msgstr "Часто используемые"
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
+msgstr "Разрешает доступ ко внутренней отладке и инструментам наблюдения, используя диалог Alt-F2."
 
-#: ../js/ui/appIcon.js:462
-msgid "New Window"
-msgstr "Новое окно"
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr "Включить внутренние инструменты из Alt-F2 для разработчиков и тестеров"
 
-#: ../js/ui/appIcon.js:475
-msgid "Remove from Favorites"
-msgstr "Удалить из избранного"
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "File extension used for storing the screencast"
+msgstr "Расширение файла, использующееся для хранения скринкастов"
 
-#: ../js/ui/appIcon.js:476
-msgid "Add to Favorites"
-msgstr "Добавить в избранное"
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "Framerate used for recording screencasts."
+msgstr "Частота смены кадров для записи скринкастов."
 
-#: ../js/ui/dash.js:283
-msgid "Find..."
-msgstr "Найти…"
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded."
+msgstr "У расширений GNOME Shell есть свойство uuid; этот ключ перечисляет раширения, которые не должны загружаться."
 
-#: ../js/ui/dash.js:400
-msgid "More"
-msgstr "Ещё"
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid "History for command (Alt-F2) dialog"
+msgstr "История команд диалога (Alt-F2)"
 
-#: ../js/ui/dash.js:543
-#: "(увидеть все)" does not fit when it is next to "НЕДАВНИЕ ДОКУМЕНТЫ", so I'm just using "(все)"
-msgid "(see all)"
-msgstr "(все)"
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "История просмотра прозрачного диалога"
 
-#. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
-msgid "APPLICATIONS"
-msgstr "ПРИЛОЖЕНИЯ"
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Если установлено, то в часах будет показана дата."
 
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:783
-msgid "PLACES"
-msgstr "ПАПКИ И РЕСУРСЫ"
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "If true, display seconds in time."
+msgstr "Если установлено, то время будет указано с секундами."
 
-#. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
-msgid "RECENT DOCUMENTS"
-msgstr "НЕДАВНИЕ ДОКУМЕНТЫ"
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Если установлено, календарь будет показывать неделю в формате ISO."
 
-#. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
-msgid "SEARCH RESULTS"
-msgstr "РЕЗУЛЬТАТЫ ПОИСКА"
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Список идентификаторов desktop-файлов для избранных приложений"
 
-#: ../js/ui/dash.js:830
-msgid "PREFERENCES"
-msgstr "НАСТРОЙКИ"
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
+msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
+msgstr "Устанавливает конвейер GStreamer для кодирования записей. Соответствует синтаксису, используемому для gst-launch. Конвейер должен иметь неподключенный входной коннектор, где происходит запись видео. Выход коннектора обычно отключён, выход с этого коннектора записывается в файл вывода. Однако конвейер также может позаботиться о своём выводе, что можно использовать для отправки вывода на сервер icecast через shout2send или нечто подобное. При сбросе или установке пустого значения будет использоваться конвейер по умолчанию. В данный момент это «videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux»; запись выполняется в WEBM с помощью кодека VP8. %T используется как заполнитель для определения оптимального количества потоков в системе."
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:272
-#. Another word that was considered was "Обзор", but it was decided that it doesn't give a full sense of the actions
-#. possible when in the overview mode.
-msgid "Activities"
-msgstr "Действия"
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show date in clock"
+msgstr "Показывать в часах дату"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:464
-msgid "%a %l:%M %p"
-msgstr "%a, %H:%M"
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show the week date in the calendar"
+msgstr "Показывать в часах дату недели"
 
-#: ../js/ui/places.js:178
-msgid "Connect to..."
-msgstr "Соединиться с…"
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr "Показывать секунды"
 
-#: ../js/ui/runDialog.js:96
-msgid "Please enter a command:"
-msgstr "Введите команду:"
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
+msgstr "Приложения, соответствующие этих идентификаторам, будут показаны в области изобранных приложений."
 
-#: ../js/ui/runDialog.js:173
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
+msgstr "Имя файла записанного скринкаста будет уникальным именем, основанным на текущей дате, и использует это расширение. Оно должно быть изменено, если запись выполняется в другой контейнерный формат."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
+msgstr "Частота смены кадров в скринкасте, записанном с помощью GNOME Shell (кадров/сек)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Конвейер gstreamer, используемый для кодирования скринкастов"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
+msgstr "Обычно, оболочка отслеживает активные приложения, чтобы определить наиболее используемые приложения. Хотя эти данные хранятся как личные, возможно вы захотите отключить эту возможность из соображений безопасности. Это не приведёт к удалению уже сохранённых данных."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Uuids of extensions to disable"
+msgstr "Выключить расширения с uuid"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "Whether to collect stats about applications usage"
+msgstr "Собирать ли статистику об использовании приложений"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr "отключённые провайдеры OpenSearch"
+
+#: ../js/misc/util.js:71
+msgid "Command not found"
+msgstr "Команда не найдена"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:98
+#| msgid "Please enter a command:"
+msgid "Could not parse command:"
+msgstr "Не удалось разобрать команду:"
+
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Не удалось выполнить «%s»:"
 
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:162
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:230
+msgid "All"
+msgstr "Все"
+
+#: ../js/ui/appDisplay.js:328
+msgid "APPLICATIONS"
+msgstr "ПРИЛОЖЕНИЯ"
+
+#: ../js/ui/appDisplay.js:354
+msgid "SETTINGS"
+msgstr "ПАРАМЕТРЫ"
+
+#: ../js/ui/appDisplay.js:620
+msgid "New Window"
+msgstr "Новое окно"
+
+#: ../js/ui/appDisplay.js:623
+msgid "Remove from Favorites"
+msgstr "Удалить из избранного"
+
+#: ../js/ui/appDisplay.js:624
+msgid "Add to Favorites"
+msgstr "Добавить в избранное"
+
+#: ../js/ui/appFavorites.js:91
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s добавлен в избранное."
+
+#: ../js/ui/appFavorites.js:122
+#, c-format
+#| msgid "Remove from Favorites"
+msgid "%s has been removed from your favorites."
+msgstr "%s удалён из избранных."
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:66
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Весь день"
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:71
+#| msgid "%H:%M"
+msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../js/ui/widget.js:316
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:78
+#| msgid "%a %l:%M %p"
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:118
+msgctxt "grid sunday"
+msgid "S"
+msgstr "Вс"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:120
+msgctxt "grid monday"
+msgid "M"
+msgstr "Пн"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:122
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "Вт"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:124
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "Ср"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:126
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Чт"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:128
+msgctxt "grid friday"
+msgid "F"
+msgstr "Пт"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:130
+msgctxt "grid saturday"
+msgid "S"
+msgstr "Сб"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:143
+msgctxt "list sunday"
+msgid "Su"
+msgstr "Вс"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:145
+msgctxt "list monday"
+msgid "M"
+msgstr "Пн"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:147
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Вт"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:149
+msgctxt "list wednesday"
+msgid "W"
+msgstr "Ср"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:151
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Чт"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:153
+msgctxt "list friday"
+msgid "F"
+msgstr "Пт"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:155
+msgctxt "list saturday"
+msgid "S"
+msgstr "Сб"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:704
+msgid "Nothing Scheduled"
+msgstr "Нет событий"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:723
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %B %d, %Y"
+
+#: ../js/ui/calendar.js:733
+msgid "Today"
+msgstr "Сегодня"
+
+#: ../js/ui/calendar.js:737
+msgid "Tomorrow"
+msgstr "Завтра"
+
+#: ../js/ui/calendar.js:746
+msgid "This week"
+msgstr "Эта неделя"
+
+#: ../js/ui/calendar.js:754
+msgid "Next week"
+msgstr "Следующая неделя"
+
+#: ../js/ui/dash.js:174
+#: ../js/ui/messageTray.js:945
+msgid "Remove"
+msgstr "Удалить"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "Параметры даты и времени"
+
+#: ../js/ui/dateMenu.js:111
+msgid "Open Calendar"
+msgstr "Открыть календарь"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:164
+msgid "%a %b %e, %R:%S"
+msgstr "%a %b %e, %R:%S"
+
+#: ../js/ui/dateMenu.js:165
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %R"
+msgstr "%a %b %e, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:169
+#| msgid "%a %l:%M %p"
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/dateMenu.js:170
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:177
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %b %e, %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:178
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %b %e, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:182
+#| msgid "%a %l:%M %p"
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:183
+msgid "%a %l:%M %p"
+msgstr "%a, %H:%M"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A %B %e, %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "НЕДАВНИЕ ДОКУМЕНТЫ"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+#| msgid "Log Out..."
+msgid "Log Out %s"
+msgstr "Вывести из системы пользователя %s"
+
+#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:69
+#| msgid "Log Out..."
+msgid "Log Out"
+msgstr "Выйти из системы"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "Нажмите «Выйти из системы», чтобы закрыть эти приложения и выйти из системы."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "Пользователь %s будет автоматически выведен из системы через %d сек."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "Вы автоматически выйдете систему через %d сек."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Выход из системы."
+
+#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:78
+#| msgid "Shut Down..."
+msgid "Shut Down"
+msgstr "Выключить"
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr "Нажмите «Выключить», чтобы закрыть эти приложения и выключить систему."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "Система будет автоматически выключена через %d сек."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "Выключение системы."
+
+#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "Перезапустить"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "Нажмите «Перезапустить», чтобы закрыть эти приложения и перезапустить систему."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "Система будет автоматически перезапущена через %d сек."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "Перезапуск системы."
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "Подтвердить"
+
+#: ../js/ui/endSessionDialog.js:400
+#: ../js/ui/status/bluetooth.js:466
+msgid "Cancel"
+msgstr "Отмена"
+
+#: ../js/ui/lookingGlass.js:588
+msgid "No extensions installed"
+msgstr "Расширения не установлены"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Enabled"
+msgstr "Включено"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:627
+#: ../src/gvc/gvc-mixer-control.c:1091
+msgid "Disabled"
+msgstr "Выключено"
+
+#: ../js/ui/lookingGlass.js:629
+msgid "Error"
+msgstr "Ошибка"
+
+#: ../js/ui/lookingGlass.js:631
+msgid "Out of date"
+msgstr "Устарело"
+
+#: ../js/ui/lookingGlass.js:656
+msgid "View Source"
+msgstr "Показать код"
+
+#: ../js/ui/lookingGlass.js:662
+msgid "Web Page"
+msgstr "Веб-страница"
+
+#: ../js/ui/messageTray.js:938
+msgid "Open"
+msgstr "Открыть"
+
+#: ../js/ui/messageTray.js:2018
+#| msgid "Account Information..."
+msgid "System Information"
+msgstr "Системная информация"
+
+#: ../js/ui/overview.js:89
+msgid "Undo"
+msgstr "Отменить"
+
+#: ../js/ui/overview.js:184
+#| msgid "New Window"
+msgid "Windows"
+msgstr "Окна"
+
+#: ../js/ui/overview.js:187
 msgid "Applications"
 msgstr "Приложения"
 
-#: ../js/ui/widget.js:341
-msgid "Recent Documents"
-msgstr "Недавние документы"
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:203
+msgid "Dash"
+msgstr "Приборная панель"
 
-#: ../src/shell-global.c:812
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:515
+#, c-format
+msgid "Quit %s"
+msgstr "Закрыть %s"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:876
+msgid "Activities"
+msgstr "Обзор"
+
+#: ../js/ui/panel.js:977
+msgid "Top Bar"
+msgstr "Верхняя панель"
+
+#: ../js/ui/placeDisplay.js:122
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Не удалось отмонтировать «%s»"
+
+#: ../js/ui/placeDisplay.js:125
+msgid "Retry"
+msgstr "Повторить"
+
+#: ../js/ui/placeDisplay.js:165
+msgid "Connect to..."
+msgstr "Соединиться с…"
+
+#: ../js/ui/placeDisplay.js:380
+msgid "PLACES & DEVICES"
+msgstr "МЕСТА И УСТРОЙСТВА"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:636
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:205
+msgid "Please enter a command:"
+msgstr "Введите команду:"
+
+#: ../js/ui/searchDisplay.js:310
+msgid "Searching..."
+msgstr "Поиск…"
+
+#: ../js/ui/searchDisplay.js:324
+msgid "No matching results."
+msgstr "Нет совпадений."
+
+#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "Выключить питание…"
+
+#: ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "Ждущий режим"
+
+#: ../js/ui/statusMenu.js:184
+msgid "Available"
+msgstr "Доступен"
+
+#: ../js/ui/statusMenu.js:189
+msgid "Busy"
+msgstr "Занят"
+
+#: ../js/ui/statusMenu.js:197
+msgid "My Account"
+msgstr "Моя учётная запись"
+
+#: ../js/ui/statusMenu.js:201
+msgid "System Settings"
+msgstr "Системные параметры"
+
+#: ../js/ui/statusMenu.js:208
+msgid "Lock Screen"
+msgstr "Заблокировать экран"
+
+#: ../js/ui/statusMenu.js:213
+msgid "Switch User"
+msgstr "Сменить пользователя"
+
+#: ../js/ui/statusMenu.js:218
+msgid "Log Out..."
+msgstr "Завершить сеанс…"
+
+#: ../js/ui/status/accessibility.js:62
+msgid "Zoom"
+msgstr "Масштабирование"
+
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
+msgid "Visual Alerts"
+msgstr "Визуальные предупреждения"
+
+#: ../js/ui/status/accessibility.js:80
+msgid "Sticky Keys"
+msgstr "Залипающие клавиши"
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Slow Keys"
+msgstr "Медленные клавиши"
+
+#: ../js/ui/status/accessibility.js:86
+msgid "Bounce Keys"
+msgstr "Отскакивающие клавиши"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Mouse Keys"
+msgstr "Клавиши мыши"
+
+#: ../js/ui/status/accessibility.js:93
+msgid "Universal Access Settings"
+msgstr "Параметры универсального доступа"
+
+#: ../js/ui/status/accessibility.js:146
+msgid "High Contrast"
+msgstr "Высокая контрастность"
+
+#: ../js/ui/status/accessibility.js:183
+msgid "Large Text"
+msgstr "Крупный текст"
+
+#: ../js/ui/status/bluetooth.js:42
+#: ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333
+#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:440
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Доступность"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Отправить файлы на устройство…"
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Настроить новое устройство…"
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Параметры Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:188
+#| msgid "Connect to..."
+msgid "Connection"
+msgstr "Соединение"
+
+#: ../js/ui/status/bluetooth.js:224
+msgid "Send Files..."
+msgstr "Отправить файлы…"
+
+#: ../js/ui/status/bluetooth.js:229
+msgid "Browse Files..."
+msgstr "Обзор файлов…"
+
+#: ../js/ui/status/bluetooth.js:238
+msgid "Error browsing device"
+msgstr "Ошибка обзора устройства"
+
+#: ../js/ui/status/bluetooth.js:239
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "Не удалось выполнить обзор запрошенного устройства: %s"
+
+#: ../js/ui/status/bluetooth.js:247
+msgid "Keyboard Settings"
+msgstr "Параметры клавиатуры"
+
+#: ../js/ui/status/bluetooth.js:252
+msgid "Mouse Settings"
+msgstr "Параметры мыши"
+
+#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/volume.js:66
+msgid "Sound Settings"
+msgstr "Параметры звука"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Запрос авторизации от %s"
+
+#: ../js/ui/status/bluetooth.js:374
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Устройство %s пытается получить доступ к службе «%s»"
+
+#: ../js/ui/status/bluetooth.js:376
+msgid "Always grant access"
+msgstr "Всегда предоставлять доступ"
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Grant this time only"
+msgstr "Предоставить единовременно"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Reject"
+msgstr "Извлечь"
+
+#: ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Подтверждение на сопряжение с %s"
+
+#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:448
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Устройство %s пытается выполнить сопряжение с этим компьютером"
+
+#: ../js/ui/status/bluetooth.js:415
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Подтвердите, совпадает ли PIN-код «%s» с кодом устройства."
+
+#: ../js/ui/status/bluetooth.js:417
+msgid "Matches"
+msgstr "Совпадает"
+
+#: ../js/ui/status/bluetooth.js:418
+msgid "Does not match"
+msgstr "Не совпадает"
+
+#: ../js/ui/status/bluetooth.js:441
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Запрос на сопряжение для %s"
+
+#: ../js/ui/status/bluetooth.js:449
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Введите PIN-код устройства."
+
+#: ../js/ui/status/bluetooth.js:465
+msgid "OK"
+msgstr "OK"
+
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Показать раскладку клавиатуры…"
+
+#: ../js/ui/status/keyboard.js:76
+msgid "Localization Settings"
+msgstr "Параметры локализации"
+
+#: ../js/ui/status/network.js:102
+#: ../js/ui/status/network.js:1393
+#| msgid "Unknown"
+msgid "<unknown>"
+msgstr "<неизвестно>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "выключено"
+
+#: ../js/ui/status/network.js:476
+#| msgid "Connect to..."
+msgid "connecting..."
+msgstr "соединение…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "требуется авторизация"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "кабель не подключен"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "недоступное"
+
+#: ../js/ui/status/network.js:491
+#| msgid "Execution of '%s' failed:"
+msgid "connection failed"
+msgstr "сбой подключения"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571
+#: ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "Подключено (частное)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "Автоматическое Ethernet"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "Автоматическое широкополосное"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "Автоматическое коммутируемое"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843
+#: ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "Автоматическое %s"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "Автоматическое bluetooth"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "Автоматическое беспроводное"
+
+#: ../js/ui/status/network.js:1413
+#| msgid "More"
+msgid "More..."
+msgstr "Ещё…"
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "Включить сеть"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "Проводное"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "Беспроводное"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "Мобильное широкополосное"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "Соединения VPN"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "Сетевые параметры"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Вы подключены по мобильному широкополосному соединению «%s»"
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Вы подключены к беспроводной сети «%s»"
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Вы подключены к проводной сети «%s»"
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Вы подключены к сети VPN «%s»"
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Вы подключены к «%s»"
+
+#: ../js/ui/status/network.js:1808
+msgid "Connection established"
+msgstr "Соединение установлено"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr "Сеть отключена"
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "Диспетчер сети"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Параметры питания"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "Выполняется подсчёт…"
+
+#: ../js/ui/status/power.js:118
+#, c-format
+#| msgid "%d hour ago"
+#| msgid_plural "%d hours ago"
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "Остался %d час"
+msgstr[1] "Осталось %d часа"
+msgstr[2] "Осталось %d часов"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:121
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "Осталось %d %s %d %s"
+
+#: ../js/ui/status/power.js:123
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "час"
+msgstr[1] "часа"
+msgstr[2] "часов"
+
+#: ../js/ui/status/power.js:123
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "минута"
+msgstr[1] "минуты"
+msgstr[2] "минут"
+
+#: ../js/ui/status/power.js:126
+#, c-format
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "Осталась %d минута"
+msgstr[1] "Осталось %d минуты"
+msgstr[2] "Осталось %d минут"
+
+#: ../js/ui/status/power.js:228
+msgid "AC adapter"
+msgstr "Адаптер переменного тока"
+
+#: ../js/ui/status/power.js:230
+msgid "Laptop battery"
+msgstr "Батарея ноутбука"
+
+#: ../js/ui/status/power.js:232
+msgid "UPS"
+msgstr "ИБП"
+
+#: ../js/ui/status/power.js:234
+msgid "Monitor"
+msgstr "Монитор"
+
+#: ../js/ui/status/power.js:236
+#| msgid "More"
+msgid "Mouse"
+msgstr "Мышь"
+
+#: ../js/ui/status/power.js:238
+msgid "Keyboard"
+msgstr "Клавиатура"
+
+#: ../js/ui/status/power.js:240
+msgid "PDA"
+msgstr "КПК"
+
+#: ../js/ui/status/power.js:242
+msgid "Cell phone"
+msgstr "Мобильный телефон"
+
+#: ../js/ui/status/power.js:244
+msgid "Media player"
+msgstr "Медиаплеер"
+
+#: ../js/ui/status/power.js:246
+msgid "Tablet"
+msgstr "Планшет"
+
+#: ../js/ui/status/power.js:248
+msgid "Computer"
+msgstr "Компьютер"
+
+#: ../js/ui/status/power.js:250
+#: ../src/shell-app-system.c:1088
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: ../js/ui/status/volume.js:45
+msgid "Volume"
+msgstr "Громкость"
+
+#: ../js/ui/status/volume.js:58
+msgid "Microphone"
+msgstr "Микрофон"
+
+#: ../js/ui/telepathyClient.js:332
+#, c-format
+msgid "%s is online."
+msgstr "%s в сети."
+
+#: ../js/ui/telepathyClient.js:337
+#, c-format
+msgid "%s is offline."
+msgstr "%s не в сети."
+
+#: ../js/ui/telepathyClient.js:340
+#, c-format
+msgid "%s is away."
+msgstr "%s ушёл."
+
+#: ../js/ui/telepathyClient.js:343
+#, c-format
+msgid "%s is busy."
+msgstr "%s занят."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:474
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Отправлено %X %A"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "Введите для поиска…"
+
+#: ../js/ui/viewSelector.js:142
+#: ../src/shell-util.c:250
+msgid "Search"
+msgstr "Поиск"
+
+#: ../js/ui/windowAttentionHandler.js:42
+#, c-format
+msgid "%s has finished starting"
+msgstr "Приложение %s завершило запуск"
+
+#: ../js/ui/windowAttentionHandler.js:44
+#, c-format
+msgid "'%s' is ready"
+msgstr "Приложение «%s» готово"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1098
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u вывод"
+msgstr[1] "%u вывода"
+msgstr[2] "%u выводов"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1108
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u вход"
+msgstr[1] "%u входа"
+msgstr[2] "%u входов"
+
+#: ../src/gvc/gvc-mixer-control.c:1406
+msgid "System Sounds"
+msgstr "Системные звуки"
+
+#: ../src/main.c:397
+msgid "Print version"
+msgstr "Показать номер версии"
+
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Не удалось запустить «%s»"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
-msgstr "Менее минуты назад"
+msgstr "Меньше минуты назад"
 
-#: ../src/shell-global.c:815
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -134,7 +1128,7 @@ msgstr[0] "%d минуту назад"
 msgstr[1] "%d минуты назад"
 msgstr[2] "%d минут назад"
 
-#: ../src/shell-global.c:818
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -142,7 +1136,7 @@ msgstr[0] "%d час назад"
 msgstr[1] "%d часа назад"
 msgstr[2] "%d часов назад"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -150,7 +1144,7 @@ msgstr[0] "%d день назад"
 msgstr[1] "%d дня назад"
 msgstr[2] "%d дней назад"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -158,76 +1152,35 @@ msgstr[0] "%d неделю назад"
 msgstr[1] "%d недели назад"
 msgstr[2] "%d недель назад"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "Неизвестно"
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Великобритания"
 
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "Не удалось заблокировать экран: %s"
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "По умолчанию"
 
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "Не удалось временно установить пустую экранную заставку: %s"
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Пользователь отклонил диалог аутентификации"
 
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "Не удалось завершить сеанс пользователя: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "Информация о пользователе…"
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "Боковая панель"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "Системные настройки…"
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "Заблокировать экран"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "Сменить пользователя"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "Завершить сеанс…"
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "Выключить…"
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Домашняя папка"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Файловая система"
-
-#: ../src/shell-uri-util.c:248
-msgid "Search"
-msgstr "Поиск"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
