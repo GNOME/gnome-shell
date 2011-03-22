@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-18 10:35+0000\n"
-"PO-Revision-Date: 2011-03-18 14:38+0100\n"
+"POT-Creation-Date: 2011-03-22 20:39+0000\n"
+"PO-Revision-Date: 2011-03-22 21:52+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Language: Slovenian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: Slovenian\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -138,27 +138,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -319,7 +319,7 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/dash.js:174
-#: ../js/ui/messageTray.js:933
+#: ../js/ui/messageTray.js:945
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -388,7 +388,7 @@ msgid "Log Out %s"
 msgstr "Odjava %s"
 
 #: ../js/ui/endSessionDialog.js:64
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Odjava"
 
@@ -410,47 +410,44 @@ msgstr "Samodejno boste odjavljeni čez %d sekund."
 msgid "Logging out of the system."
 msgstr "Odjavljanje iz sistema."
 
-#: ../js/ui/endSessionDialog.js:74
-#: ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Izklopi"
-
 #: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Kliknite Izklop za končanje teh programov in izklop sistema."
+#: ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Izklop"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Sistem se bo samodejno izklopil čez %d sekund."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Kliknite na gumb za izklop za končanje teh programov in izklop iz sistema."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "Izklapljanje sistema."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "Sistem se bo samodejno izklopil čez %d sekund."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "Izklapljanje sistema"
+
+#: ../js/ui/endSessionDialog.js:80
 #: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Zaženi znova"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Kliknite Zaženi znova za končanje teh programov in ponoven zagon sistema. "
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Sistem se bo samodejno ponovno zagnal čez %d sekund."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Ponoven zagon sistema."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Potrdi"
-
-#: ../js/ui/endSessionDialog.js:400
+#: ../js/ui/endSessionDialog.js:415
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Prekliči"
@@ -486,29 +483,29 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:938
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2018
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:89
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:184
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:187
 msgid "Applications"
 msgstr "Programi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:203
 msgid "Dash"
 msgstr "Armaturna plošča"
 
@@ -520,13 +517,13 @@ msgstr "Končaj %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:874
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:975
-msgid "Panel"
-msgstr "Pult"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Vrhnja vrstica"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -550,57 +547,57 @@ msgstr "Mesta in naprave"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
-#: ../js/ui/statusMenu.js:114
-#: ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Izklop ..."
 
-#: ../js/ui/statusMenu.js:116
-#: ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Zaustavi"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Zaposleno"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Račun"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Odjava ..."
 
@@ -1000,7 +997,7 @@ msgid "Computer"
 msgstr "Računalnik"
 
 #: ../js/ui/status/power.js:250
-#: ../src/shell-app-system.c:961
+#: ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Neznano"
 
@@ -1044,11 +1041,11 @@ msgstr "Poslano na %X ob %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:119
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "Vtipkajte za iskanje ..."
 
-#: ../js/ui/viewSelector.js:139
+#: ../js/ui/viewSelector.js:142
 #: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Poišči"
@@ -1089,7 +1086,7 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:397
+#: ../src/main.c:438
 msgid "Print version"
 msgstr "Izpiši različico"
 
@@ -1098,11 +1095,11 @@ msgstr "Izpiši različico"
 msgid "Failed to launch '%s'"
 msgstr "Zaganjanje '%s' je spodletelo"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -1111,7 +1108,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -1120,7 +1117,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -1129,7 +1126,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1170,46 +1167,46 @@ msgstr "Datotečni sistem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Shut Down"
+#~ msgstr "Izklopi"
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Kliknite Izklop za končanje teh programov in izklop sistema."
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Sistem se bo samodejno izklopil čez %d sekund."
+#~ msgid "Shutting down the system."
+#~ msgstr "Izklapljanje sistema."
+#~ msgid "Confirm"
+#~ msgstr "Potrdi"
+#~ msgid "Panel"
+#~ msgstr "Pult"
 #~ msgid "No such application"
 #~ msgstr "Ni takšnega programa"
-
 #~ msgid "Screen Reader"
 #~ msgstr "Zaslonski bralnik"
-
 #~ msgid "Screen Keyboard"
 #~ msgstr "Zaslonska tipkovnica"
-
 #~ msgid "%s is now known as %s"
 #~ msgstr "%s je sedaj znan kot v %s"
-
 #~ msgid "PREFERENCES"
 #~ msgstr "Možnosti"
-
 #~ msgid "Shut Down..."
 #~ msgstr "Izklopi ..."
-
 #~ msgid "Search your computer"
 #~ msgstr "Iskanje po računalniku"
-
 #~ msgid "Clip the crosshairs at the center"
 #~ msgstr "Ali merek prekriva kazalko miške v središču"
-
 #~ msgid "Color of the crosshairs"
 #~ msgstr "Barva merka"
-
 #~ msgid ""
 #~ "Determines the length of the vertical and horizontal lines that make up "
 #~ "the crosshairs."
 #~ msgstr "Določi dolžino navpične in vodoravne črte, ki določata merek."
-
 #~ msgid ""
 #~ "Determines the transparency of the crosshairs, from fully opaque to fully "
 #~ "transparent."
 #~ msgstr "Določi prosojnost merka, od prekrivne to prozorne."
-
 #~ msgid "Enable lens mode"
 #~ msgstr "Omogočeni način leče"
-
 #~ msgid ""
 #~ "For centered mouse tracking, when the system pointer is at or near the "
 #~ "edge of the screen, the magnified contents continue to scroll such that "
@@ -1218,63 +1215,48 @@ msgstr "%1$s: %2$s"
 #~ "Pri usredinjenem sledenju miški, ko je sistemski kazalnik ob robu "
 #~ "zaslona, približanje vsebine drsi naprej tako, da je rob zaslona v "
 #~ "približanem pogledu."
-
 #~ msgid "Length of the crosshairs"
 #~ msgstr "Dolžina merka"
-
 #~ msgid "Magnification factor"
 #~ msgstr "Faktor približanja"
-
 #~ msgid "Mouse Tracking Mode"
 #~ msgstr "Način sledenja miške"
-
 #~ msgid "Opacity of the crosshairs"
 #~ msgstr "Prosojnost merka"
-
 #~ msgid "Screen position"
 #~ msgstr "Položaj zaslona"
-
 #~ msgid "Scroll magnified contents beyond the edges of the desktop"
 #~ msgstr "Zdrsni približano vsebino preko robov namizja"
-
 #~ msgid "Show or hide crosshairs"
 #~ msgstr "Pokaži ali skrij merek"
-
 #~ msgid "Show or hide the magnifier"
 #~ msgstr "Pokaži ali skrij približevalnik"
-
 #~ msgid "Show or hide the magnifier and all of its zoom regions."
 #~ msgstr "Pokaže ali skrije povečevalo in vsa njegova območja približevanja."
-
 #~ msgid ""
 #~ "The color of the the vertical and horizontal lines that make up the "
 #~ "crosshairs."
 #~ msgstr "Barva navpične in vodoravne črte, ki določata merek."
-
 #~ msgid ""
 #~ "The magnified view either fills the entire screen, or occupies the top-"
 #~ "half, bottom-half, left-half, or right-half of the screen."
 #~ msgstr ""
 #~ "Približan pogled lahko zapolni celoten zaslon, lahko pa zasede zgornjo, "
 #~ "spodnjo, levo ali pa desno polovico zaslona."
-
 #~ msgid ""
 #~ "The power of the magnification. A value of 1.0 means no magnification. A "
 #~ "value of 2.0 doubles the size."
 #~ msgstr ""
 #~ "Vrednost približanja. Vrednost 1.0 pomeni brez približanja, vrednost 2.0 "
 #~ "pa podvoji učinek približanja."
-
 #~ msgid "Thickness of the crosshairs"
 #~ msgstr "Debelina merka"
-
 #~ msgid ""
 #~ "Whether the magnified view should be centered over the location of the "
 #~ "system mouse and move with it."
 #~ msgstr ""
 #~ "Ali naj bo približan pogled usredinjen na mesto sistemske miške in se z "
 #~ "njo premika."
-
 #~ msgid ""
 #~ "Width of the vertical and horizontal lines that make up the crosshairs."
 #~ msgstr "Širina navpične in vodoravne čete, ki določata merek."
@@ -1282,36 +1264,28 @@ msgstr "%1$s: %2$s"
 #, fuzzy
 #~ msgid "Bluetooth Agent"
 #~ msgstr "Agent KAOS"
-
 #~ msgid ""
 #~ "Can't add a new workspace because maximum workspaces limit has been "
 #~ "reached."
 #~ msgstr ""
 #~ "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo največje "
 #~ "dovoljeno število."
-
 #~ msgid "Can't remove the first workspace."
 #~ msgstr "Ni mogoče odstraniti prve delovne površine."
-
 #~ msgid "Clock"
 #~ msgstr "Ura"
-
 #~ msgid "Customize the panel clock"
 #~ msgstr "Prilagodi uro pladnja"
-
 #~ msgid "Custom format of the clock"
 #~ msgstr "Zapis ure po meri"
-
 #~ msgid "Hour format"
 #~ msgstr "Urni zapis"
-
 #~ msgid ""
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
 #~ "Izbrana možnost določa ali \"12-urni\" ali pa \"24-urni\" zapis časa s "
 #~ "prikazanimi sekundami."
-
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
 #~ "is set to \"custom\". You can use conversion specifiers understood by "
@@ -1322,103 +1296,77 @@ msgstr "%1$s: %2$s"
 #~ "zapisa nastavljen kot \"prikrojen\". Za določitev zapisa lahko uporabite "
 #~ "tudi oznake funkcije strftime(), ki so podrobneje zapisane v priročniku "
 #~ "funkcije."
-
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Ključ določa zapis ure. Mogoče vrednosti so \"12-urni\", \"24-urni\", "
 #~ "\"unix\" in \"po meri\". Možnost \"unix\" prikazuje čas v sekundah od "
 #~ "začetka ere, torej od 01.01.1970, možnost \"po meri\" pa omogoča "
 #~ "prikrojen zapis. Pri izbiri zapisa \"unix\" ali \"po meri\" sta izbiri "
 #~ "pokaži datum in pokaži sekunde, prezrti."
-
 #~ msgid "Clock Format"
 #~ msgstr "Zapis ure"
-
 #~ msgid "Clock Preferences"
 #~ msgstr "Možnosti ure"
-
 #~ msgid "Panel Display"
 #~ msgstr "Prikazovanje pladnja"
-
 #~ msgid "Show seco_nds"
 #~ msgstr "Pokaži _sekunde"
-
 #~ msgid "Show the _date"
 #~ msgstr "Pokaži _datum"
-
 #~ msgid "_12 hour format"
 #~ msgstr "_12-urni zapis časa"
-
 #~ msgid "_24 hour format"
 #~ msgstr "_24-urni zapis časa"
-
 #~ msgid "Preferences"
 #~ msgstr "Možnosti"
-
 #~ msgid "What's using power..."
 #~ msgstr "Kaj porablja napetost ..."
-
 #~ msgid "Overview workspace view mode"
 #~ msgstr "Način pregleda predogleda delovnih površin"
-
 #~ msgid ""
 #~ "The selected workspace view mode in the overview. Supported values are "
 #~ "\"single\" and \"grid\"."
 #~ msgstr ""
 #~ "Izbrani pogled delovnih površin v predogledu. Podprte vrednosti sta "
 #~ "\"enojno\" in \"mrežno\"."
-
 #~ msgid "Drag here to add favorites"
 #~ msgstr "S potegom na to mesto se izbor doda med priljubljene"
-
 #~ msgid "Find"
 #~ msgstr "Najdi"
-
 #~ msgid "Invisible"
 #~ msgstr "Nevidno"
-
 #~ msgid "System Preferences..."
 #~ msgstr "Sistemske možnosti ..."
-
 #~ msgid "ON"
 #~ msgstr "⚪"
-
 #~ msgid "OFF"
 #~ msgstr "⚫"
-
 #~ msgid "Sidebar"
 #~ msgstr "Stranska vrstica"
-
 #~ msgid "Recent Documents"
 #~ msgstr "Nedavni dokumenti"
-
 #~ msgid "PLACES"
 #~ msgstr "Mesta"
-
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "Rezultati iskanja"
-
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Ni mogoče zakleniti zaslona: %s"
-
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
 #~ msgstr ""
 #~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
-
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
-
 #~ msgid "Frequent"
 #~ msgstr "Pogosto"
-
 #~ msgid "(see all)"
 #~ msgstr "(poglej vse)"
-
 #~ msgid "Browse"
 #~ msgstr "Prebrskaj"
+
