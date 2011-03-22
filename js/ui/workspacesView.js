@@ -619,6 +619,10 @@ WorkspacesDisplay.prototype = {
     },
 
    show: function() {
+        this._zoomOut = this._alwaysZoomOut;
+        this._zoomFraction = this._alwaysZoomOut ? 1 : 0;
+        this._updateZoom();
+
         this._controls.show();
         this._thumbnailsBox.show();
 
@@ -661,9 +665,6 @@ WorkspacesDisplay.prototype = {
                                                           Lang.bind(this, this._dragEnd));
 
         this._onRestacked();
-        this._zoomOut = this._alwaysZoomOut;
-        this._zoomFraction = this._alwaysZoomOut ? 1 : 0;
-        this._updateZoom();
     },
 
     hide: function() {
