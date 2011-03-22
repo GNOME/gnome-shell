@@ -173,6 +173,8 @@ PopupBaseMenuItem.prototype = {
         cr.fill();
     },
 
+    // This returns column widths in logical order (i.e. from the dot
+    // to the image), not in visual order (left to right)
     getColumnWidths: function() {
         let widths = [];
         for (let i = 0, col = 0; i < this._children.length; i++) {
@@ -224,19 +226,36 @@ PopupBaseMenuItem.prototype = {
 
     _allocate: function(actor, box, flags) {
         let height = box.y2 - box.y1;
+        let direction = this.actor.get_direction();
 
         if (this._dot) {
+            // The dot is placed outside box
+            // one quarter of padding from the border of the container
+            // (so 3/4 from the inner border)
+            // (padding is box.x1)
             let dotBox = new Clutter.ActorBox();
             let dotWidth = Math.round(box.x1 / 2);
 
-            dotBox.x1 = Math.round(box.x1 / 4);
-            dotBox.x2 = dotBox.x1 + dotWidth;
+            if (direction == St.TextDirection.LTR) {
+                dotBox.x1 = Math.round(box.x1 / 4);
+                dotBox.x2 = dotBox.x1 + dotWidth;
+            } else {
+                dotBox.x2 = box.x2 + 3 * Math.round(box.x1 / 4);
+                dotBox.x1 = dotBox.x2 - dotWidth;
+            }
             dotBox.y1 = Math.round(box.y1 + (height - dotWidth) / 2);
             dotBox.y2 = dotBox.y1 + dotWidth;
             this._dot.allocate(dotBox, flags);
         }
 
-        let x = box.x1;
+        let x;
+        if (direction == St.TextDirection.LTR)
+            x = box.x1;
+        else
+            x = box.x2;
+        // if direction is ltr, x is the right edge of the last added
+        // actor, and it's constantly increasing, whereas if rtl, x is
+        // the left edge and it decreases
         for (let i = 0, col = 0; i < this._children.length; i++) {
             let child = this._children[i];
             let childBox = new Clutter.ActorBox();
@@ -244,9 +263,12 @@ PopupBaseMenuItem.prototype = {
             let [minWidth, naturalWidth] = child.actor.get_preferred_width(-1);
             let availWidth, extraWidth;
             if (this._columnWidths) {
-                if (child.span == -1)
-                    availWidth = box.x2 - x;
-                else {
+                if (child.span == -1) {
+                    if (direction == St.TextDirection.LTR)
+                        availWidth = box.x2 - x;
+                    else
+                        availWidth = x - box.x1;
+                } else {
                     availWidth = 0;
                     for (let j = 0; j < child.span; j++)
                         availWidth += this._columnWidths[col++];
@@ -257,18 +279,36 @@ PopupBaseMenuItem.prototype = {
                 extraWidth = 0;
             }
 
-            if (child.expand) {
-                childBox.x1 = x;
-                childBox.x2 = x + availWidth;
-            } else if (child.align === St.Align.CENTER) {
-                childBox.x1 = x + Math.round(extraWidth / 2);
-                childBox.x2 = childBox.x1 + naturalWidth;
-            } else if (child.align === St.Align.END) {
-                childBox.x2 = x + availWidth;
-                childBox.x1 = childBox.x2 - naturalWidth;
+            if (direction == St.TextDirection.LTR) {
+                if (child.expand) {
+                    childBox.x1 = x;
+                    childBox.x2 = x + availWidth;
+                } else if (child.align === St.Align.CENTER) {
+                    childBox.x1 = x + Math.round(extraWidth / 2);
+                    childBox.x2 = childBox.x1 + naturalWidth;
+                } else if (child.align === St.Align.END) {
+                    childBox.x2 = x + availWidth;
+                    childBox.x1 = childBox.x2 - naturalWidth;
+                } else {
+                    childBox.x1 = x;
+                    childBox.x2 = x + naturalWidth;
+                }
             } else {
-                childBox.x1 = x;
-                childBox.x2 = x + naturalWidth;
+                if (child.expand) {
+                    childBox.x1 = x - availWidth;
+                    childBox.x2 = x;
+                } else if (child.align === St.Align.CENTER) {
+                    childBox.x1 = x - Math.round(extraWidth / 2);
+                    childBox.x2 = childBox.x1 + naturalWidth;
+                } else if (child.align === St.Align.END) {
+                    // align to the left
+                    childBox.x1 = x - availWidth;
+                    childBox.x2 = childBox.x1 + naturalWidth;
+                } else {
+                    // align to the right
+                    childBox.x2 = x;
+                    childBox.x1 = x - naturalWidth;
+                }
             }
 
             let [minHeight, naturalHeight] = child.actor.get_preferred_height(-1);
@@ -277,7 +317,10 @@ PopupBaseMenuItem.prototype = {
 
             child.actor.allocate(childBox, flags);
 
-            x += availWidth + this._spacing;
+            if (direction == St.TextDirection.LTR)
+                x += availWidth + this._spacing;
+            else
+                x -= availWidth + this._spacing;
         }
     }
 };
