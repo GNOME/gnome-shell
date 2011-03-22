@@ -971,7 +971,7 @@ StTooltip StLabel {
 #message-tray {
     background-gradient-direction: vertical;
     background-gradient-start: rgba(0,0,0,0.01);
-    background-gradient-end: rgba(0,0,0,0.95);
+    background-gradient-end: rgba(0,0,0,0.82);
     height: 36px;
     color: white;
 }
@@ -1157,14 +1157,32 @@ StTooltip StLabel {
     padding: 2px 4px 0px 0px;
 }
 
+.summary-source-button {
+    color: #fff;
+    text-shadow: black 0px 2px 2px;
+}
+
 .summary-source-button:ltr {
-    padding-left: 4px;
-    padding-right: 16px;
+    padding-right: 12px;
+}
+
+.summary-source-button:selected .summary-source {
+    background-image: url("panel-button-highlight-narrow.svg");
+    border-image: url("source-button-border.svg") 10 10 0 1;
+}
+
+.summary-source-button:expanded:selected .summary-source {
+    background-image: none;
+    border-image: none;
+}
+
+.summary-source-button:expanded:selected {
+    background-image: url("panel-button-highlight-wide.svg");
+    border-image: url("source-button-border.svg") 10 10 0 1;
 }
 
 .summary-source-button:rtl {
-    padding-right: 4px;
-    padding-left: 16px;
+    padding-left: 12px;
 }
 
 .summary-source-button:last-child:ltr {
@@ -1173,6 +1191,11 @@ StTooltip StLabel {
 
 .summary-source-button:last-child:rtl {
     padding-left: 12px;
+}
+
+.summary-source {
+    padding-right: 4px;
+    padding-left: 4px;
 }
 
 .source-title {

@@ -910,6 +910,7 @@ SummaryItem.prototype = {
     _init: function(source) {
         this.source = source;
         this.actor = new St.Button({ style_class: 'summary-source-button',
+                                     y_fill: true,
                                      reactive: true,
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE,
                                      track_hover: true });
@@ -926,8 +927,8 @@ SummaryItem.prototype = {
         this._sourceTitleBin.child = this._sourceTitle;
         this._sourceTitleBin.width = 0;
 
-        this._sourceBox.add_actor(this._sourceIcon);
-        this._sourceBox.add_actor(this._sourceTitleBin, { expand: true });
+        this._sourceBox.add(this._sourceIcon, { y_fill: false });
+        this._sourceBox.add(this._sourceTitleBin, { expand: true, y_fill: false });
         this.actor.child = this._sourceBox;
         this.rightClickMenu = new St.BoxLayout({ name: 'summary-right-click-menu',
                                                  vertical: true });
@@ -1331,12 +1332,18 @@ MessageTray.prototype = {
         // Turn off ellipsization for the previously expanded item that is
         // collapsing and for the item that is expanding because it looks
         // better that way.
-        if (this._expandedSummaryItem)
+        if (this._expandedSummaryItem) {
+            // Ideally, we would remove 'expanded' pseudo class when the item
+            // is done collapsing, but we don't track when that happens.
+            this._expandedSummaryItem.actor.remove_style_pseudo_class('expanded');
             this._expandedSummaryItem.setEllipsization(Pango.EllipsizeMode.NONE);
+        }
 
         this._expandedSummaryItem = summaryItem;
-        if (this._expandedSummaryItem)
+        if (this._expandedSummaryItem) {
+            this._expandedSummaryItem.actor.add_style_pseudo_class('expanded');
             this._expandedSummaryItem.setEllipsization(Pango.EllipsizeMode.NONE);
+        }
 
         // We tween on a "_expandedSummaryItemTitleWidth" pseudo-property
         // that represents the current title width of the
@@ -1928,6 +1935,7 @@ MessageTray.prototype = {
         this._adjustSummaryBoxPointerPosition();
 
         this._summaryBoxPointerState = State.SHOWING;
+        this._clickedSummaryItem.actor.add_style_pseudo_class('selected');
         this._summaryBoxPointer.show(true, Lang.bind(this, function() {
             this._summaryBoxPointerState = State.SHOWN;
         }));
@@ -1954,6 +1962,8 @@ MessageTray.prototype = {
             this._summaryRightClickMenuClickedId = 0;
         }
 
+        if (this._clickedSummaryItem)
+            this._clickedSummaryItem.actor.remove_style_pseudo_class('selected');
         this._clickedSummaryItem = null;
         this._clickedSummaryItemMouseButton = -1;
     },
