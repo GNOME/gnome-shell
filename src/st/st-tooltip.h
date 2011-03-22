@@ -68,6 +68,24 @@ void                   st_tooltip_set_tip_area (StTooltip             *tooltip,
                                                 const ClutterGeometry *area);
 const ClutterGeometry* st_tooltip_get_tip_area (StTooltip             *tooltip);
 
+/**
+ * StTooltipConstrainFunc:
+ * @tooltip: the #StTooltip that is being positioned
+ * @geometry: size and position of the tooltip without any constraints
+ * @adjusted_geometry: (out): new position of the tooltip.
+ *   The width and height fields will be ignored.
+ * @data: (closure): user data passed to st_tooltip_set_constrain_func()
+ */
+typedef void (*StTooltipConstrainFunc) (StTooltip             *tooltip,
+                                        const ClutterGeometry *geometry,
+                                        ClutterGeometry       *adjusted_geometry,
+                                        gpointer               data);
+
+void st_tooltip_set_constrain_func (ClutterStage           *stage,
+                                    StTooltipConstrainFunc  func,
+                                    gpointer                data,
+                                    GDestroyNotify          notify);
+
 G_END_DECLS
 
 #endif /* __ST_TOOLTIP_H__ */

@@ -31,6 +31,7 @@
 #include "config.h"
 #endif
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -59,9 +60,6 @@ struct _StTooltipPrivate
 {
   StLabel         *label;
 
-  gfloat           arrow_offset;
-  gboolean         actor_below;
-
   ClutterGeometry *tip_area;
 };
 
@@ -72,6 +70,10 @@ G_DEFINE_TYPE (StTooltip, st_tooltip, ST_TYPE_WIDGET);
 static void st_tooltip_show (ClutterActor *self);
 static void st_tooltip_show_all (ClutterActor *self);
 static void st_tooltip_hide_all (ClutterActor *self);
+
+static void st_tooltip_constrain (StTooltip             *tooltip,
+                                  const ClutterGeometry *geometry,
+                                  ClutterGeometry       *adjusted_geometry);
 
 static void
 st_tooltip_set_property (GObject      *gobject,
@@ -279,9 +281,9 @@ st_tooltip_update_position (StTooltip *tooltip)
 {
   StTooltipPrivate *priv = tooltip->priv;
   ClutterGeometry *tip_area = tooltip->priv->tip_area;
+  ClutterGeometry geometry;
+  ClutterGeometry adjusted_geometry;
   gfloat tooltip_w, tooltip_h, tooltip_x, tooltip_y;
-  gfloat parent_w, parent_h;
-  ClutterActor *parent;
 
   /* if no area set, just position ourselves top left */
   if (!priv->tip_area)
@@ -301,37 +303,15 @@ st_tooltip_update_position (StTooltip *tooltip)
   tooltip_x = (int)(tip_area->x + (tip_area->width / 2) - (tooltip_w / 2));
   tooltip_y = (int)(tip_area->y + tip_area->height);
 
-  parent = clutter_actor_get_parent ((ClutterActor *) tooltip);
-  if (!parent)
-    {
-      g_critical ("StTooltip is not parented");
-      return;
-    }
-  clutter_actor_get_size (parent, &parent_w, &parent_h);
+  geometry.x = tooltip_x;
+  geometry.y = tooltip_y;
+  geometry.width = ceil (tooltip_w);
+  geometry.height = ceil (tooltip_h);
 
-  /* make sure the tooltip is not off screen vertically */
-  if (tooltip_x < 0)
-    {
-      tooltip_x = 0;
-    }
-  else if (tooltip_x + tooltip_w > parent_w)
-    {
-      tooltip_x = (int)(parent_w) - tooltip_w;
-    }
+  st_tooltip_constrain (tooltip, &geometry, &adjusted_geometry);
 
-  /* make sure the tooltip is not off screen horizontally */
-  if (tooltip_y + tooltip_h > parent_h)
-    {
-      priv->actor_below = TRUE;
-      tooltip_y = tip_area->y - tooltip_h;
-    }
-  else
-    {
-      priv->actor_below = FALSE;
-    }
-
-  /* calculate the arrow offset */
-  priv->arrow_offset = tip_area->x + tip_area->width / 2 - tooltip_x;
+  tooltip_x = adjusted_geometry.x;
+  tooltip_y = adjusted_geometry.y;
 
   /* Since we are updating the position out of st_widget_allocate(), we can't
    * call clutter_actor_set_position(), since that would trigger another
@@ -442,4 +422,103 @@ st_tooltip_get_tip_area (StTooltip *tooltip)
   g_return_val_if_fail (ST_IS_TOOLTIP (tooltip), NULL);
 
   return tooltip->priv->tip_area;
+}
+
+typedef struct {
+  StTooltipConstrainFunc func;
+  gpointer data;
+  GDestroyNotify notify;
+} ConstrainFuncClosure;
+
+static void
+constrain_func_closure_free (gpointer data)
+{
+  ConstrainFuncClosure *closure = data;
+  if (closure->notify)
+    closure->notify (closure->data);
+  g_slice_free (ConstrainFuncClosure, data);
+}
+
+static GQuark
+st_tooltip_constrain_func_quark (void)
+{
+  static GQuark value = 0;
+  if (G_UNLIKELY (value == 0))
+    value = g_quark_from_static_string ("st-tooltip-constrain-func");
+  return value;
+}
+
+/**
+ * st_tooltip_set_constrain_func:
+ * @stage: a #ClutterStage
+ * @func: (allow-none): function to be called to constrain tooltip position
+ * @data: (allow-none): user data to pass to @func
+ * @notify: (allow-none): function to be called when @data is no longer needed
+ *
+ * Sets a callback function that will be used to constrain the position
+ * of tooltips within @stage. This can be used, for example, if the stage
+ * spans multiple monitors and tooltips should be positioned not to cross
+ * monitors.
+ */
+void
+st_tooltip_set_constrain_func (ClutterStage           *stage,
+                               StTooltipConstrainFunc  func,
+                               gpointer                data,
+                               GDestroyNotify          notify)
+{
+  ConstrainFuncClosure *closure;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  if (func)
+    {
+      closure = g_slice_new (ConstrainFuncClosure);
+      closure->func = func;
+      closure->data = data;
+      closure->notify = notify;
+    }
+  else
+    closure = NULL;
+
+  g_object_set_qdata_full (G_OBJECT (stage), st_tooltip_constrain_func_quark (),
+                           closure, constrain_func_closure_free);
+}
+
+static void
+st_tooltip_constrain (StTooltip             *tooltip,
+                      const ClutterGeometry *geometry,
+                      ClutterGeometry       *adjusted_geometry)
+{
+  ConstrainFuncClosure *closure;
+
+  ClutterActor *stage = clutter_actor_get_stage (CLUTTER_ACTOR (tooltip));
+
+  *adjusted_geometry = *geometry;
+
+  if (stage == NULL)
+    return;
+
+  closure = g_object_get_qdata (G_OBJECT (stage), st_tooltip_constrain_func_quark ());
+  if (closure)
+    {
+      closure->func (tooltip, geometry, adjusted_geometry, closure->data);
+    }
+  else
+    {
+      ClutterActor *parent;
+      gfloat parent_w, parent_h;
+
+      parent = clutter_actor_get_parent ((ClutterActor *) tooltip);
+      clutter_actor_get_size (parent, &parent_w, &parent_h);
+
+      /* make sure the tooltip is not off parent horizontally */
+      if (adjusted_geometry->x < 0)
+        adjusted_geometry->x = 0;
+      else if (adjusted_geometry->x + adjusted_geometry->width > parent_w)
+        adjusted_geometry->x = (int)(parent_w) - adjusted_geometry->width;
+
+      /* make sure the tooltip is not off parent vertically */
+      if (adjusted_geometry->y + adjusted_geometry->height > parent_h)
+        adjusted_geometry->y = parent_h - adjusted_geometry->height;
+    }
 }
