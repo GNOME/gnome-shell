@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-17 22:54+0200\n"
-"PO-Revision-Date: 2011-03-17 22:54+0300\n"
+"POT-Creation-Date: 2011-03-22 15:03+0200\n"
+"PO-Revision-Date: 2011-03-22 15:03+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -160,27 +160,27 @@ msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "الكل"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "التطبيقات"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "الإعدادات"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:620
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:623
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:624
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -340,7 +340,7 @@ msgstr "هذا الأسبوع"
 msgid "Next week"
 msgstr "الأسبوع القادم"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:945
 msgid "Remove"
 msgstr "أزِل"
 
@@ -468,7 +468,7 @@ msgstr "يُعيد تشغيل النظام."
 msgid "Confirm"
 msgstr "أكّد"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:465
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "ألغِ"
 
@@ -502,47 +502,47 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:938
 msgid "Open"
 msgstr "افتح"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2018
 msgid "System Information"
 msgstr "معلومات النظام"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:89
 msgid "Undo"
 msgstr "تراجع"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:184
 msgid "Windows"
 msgstr "النوافذ"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:187
 msgid "Applications"
 msgstr "التطبيقات"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:203
 msgid "Dash"
 msgstr "الشريط"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:514
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "أغلق %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:873
+#: ../js/ui/panel.js:876
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: ../js/ui/panel.js:974
-msgid "Panel"
-msgstr "اللوحة"
+#: ../js/ui/panel.js:977
+msgid "Top Bar"
+msgstr "الشريط العلوي"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -570,51 +570,51 @@ msgstr "الأماكن والأجهزة"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "من فضلك اكتب أمرا:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "يبحث..."
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "لا نتائج مطابقة."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "أطفئ..."
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "علّق"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "متاح"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "مشغول"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "حسابي"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "إعدادات النظام"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "أوصد الشاشة"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "بدّل المستخدم"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "اخرج..."
 
@@ -660,9 +660,9 @@ msgstr "تباين عال"
 msgid "Large Text"
 msgstr "نص كبير"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:236
-#: ../js/ui/status/bluetooth.js:332 ../js/ui/status/bluetooth.js:366
-#: ../js/ui/status/bluetooth.js:406 ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
@@ -682,94 +682,94 @@ msgstr "اضبط جهازا جديدا..."
 msgid "Bluetooth Settings"
 msgstr "إعدادات بلوتوث"
 
-#: ../js/ui/status/bluetooth.js:187
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "الاتصال"
 
-#: ../js/ui/status/bluetooth.js:223
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "أرسل ملفات..."
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "تصفح الملفات..."
 
-#: ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "عطل أثناء تصفّح الجهاز"
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "تعذّر تصفح الجهاز، رسالة العطل '%s'"
 
-#: ../js/ui/status/bluetooth.js:246
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "إعدادات لوحة المفاتيح"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "إعدادات الفأرة"
 
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "إعدادات الصوت"
 
-#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "طلب تخويل من %s"
 
-#: ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "يريد الجهاز %s صلاحية الوصول للخدمة '%s'"
 
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "امنح الصلاحية دائما"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "امنح هذه المرة فقط"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "أخرج"
 
-#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "تأكيد مزاوجة %s"
 
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/status/bluetooth.js:447
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "يريد الجهاز %s المزاوجة مع هذا الحاسوب"
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "من فضلك أكد تطابق الرقم '%s' مع الموجود على الجهاز."
 
-#: ../js/ui/status/bluetooth.js:416
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "مطابقات"
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "لا تتطابق"
 
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "طلب مزاوجة من %s"
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
 
-#: ../js/ui/status/bluetooth.js:464
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "حسنا"
 
@@ -874,40 +874,40 @@ msgstr "اتصال ش‌خ‌ف"
 msgid "Network Settings"
 msgstr "إعدادات الشّبكة"
 
-#: ../js/ui/status/network.js:1782
+#: ../js/ui/status/network.js:1783
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "صرت الآن متّصلا بشبكة الهاتف المحمول '%s'"
 
-#: ../js/ui/status/network.js:1786
+#: ../js/ui/status/network.js:1787
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "صرت الآن متّصلا بالشبكة اللاسلكية '%s'"
 
-#: ../js/ui/status/network.js:1790
+#: ../js/ui/status/network.js:1791
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "صرت الآن متّصلا بالشبكة السلكية '%s'"
 
-#: ../js/ui/status/network.js:1794
+#: ../js/ui/status/network.js:1795
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "صرت الآن متّصلا بشبكة ش‌خ‌ف '%s'"
 
-#: ../js/ui/status/network.js:1799
+#: ../js/ui/status/network.js:1800
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "صرت الآن متّصلا بشبكة '%s'"
 
-#: ../js/ui/status/network.js:1807
+#: ../js/ui/status/network.js:1808
 msgid "Connection established"
 msgstr "تم الاتصال"
 
-#: ../js/ui/status/network.js:1929
+#: ../js/ui/status/network.js:1930
 msgid "Networking is disabled"
 msgstr "عُطّلت الشبكات"
 
-#: ../js/ui/status/network.js:2054
+#: ../js/ui/status/network.js:2055
 msgid "Network Manager"
 msgstr "مدير الشبكة"
 
@@ -1013,7 +1013,7 @@ msgstr "لوحة"
 msgid "Computer"
 msgstr "حاسوب"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "مجهول"
 
@@ -1057,11 +1057,11 @@ msgstr "أُرسلت الساعة %l:%M:%S في %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:119
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "اكتب نصا للبحث عنه..."
 
-#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
 msgstr "ابحث"
 
@@ -1114,11 +1114,11 @@ msgstr "اطبع الإصدارة"
 msgid "Failed to launch '%s'"
 msgstr "فشل تشغيل '%s'"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "منذ أقل من دقيقة"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -1129,7 +1129,7 @@ msgstr[3] "منذ %d دقائق"
 msgstr[4] "منذ %d دقيقة"
 msgstr[5] "منذ %d دقيقة"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -1140,7 +1140,7 @@ msgstr[3] "منذ %d ساعات"
 msgstr[4] "منذ %d ساعة"
 msgstr[5] "منذ %d ساعة"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -1151,7 +1151,7 @@ msgstr[3] "منذ %d أيام"
 msgstr[4] "منذ %d يوما"
 msgstr[5] "منذ %d يوم"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1193,6 +1193,9 @@ msgstr "نظام الملفات"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
+
+#~ msgid "Panel"
+#~ msgstr "اللوحة"
 
 #~ msgid "No such application"
 #~ msgstr "لا تطبيق بهذا الاسم"
