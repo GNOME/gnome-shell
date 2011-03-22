@@ -406,6 +406,7 @@ Notification.prototype = {
         this._bannerBodyMarkup = false;
         this._titleFitsInBannerMode = true;
         this._spacing = 0;
+        this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
 
         source.connect('destroy', Lang.bind(this,
             function (source, reason) {
@@ -520,10 +521,16 @@ Notification.prototype = {
         this._icon.visible = visible;
     },
 
+    enableScrolling: function(enableScrolling) {
+        this._scrollPolicy = enableScrolling ? Gtk.PolicyType.AUTOMATIC : Gtk.PolicyType.NEVER;
+        if (this._scrollArea)
+            this._scrollArea.vscrollbar_policy = this._scrollPolicy;
+    },
+
     _createScrollArea: function() {
         this._table.add_style_class_name('multi-line-notification');
         this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
-                                               vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
+                                               vscrollbar_policy: this._scrollPolicy,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER,
                                                vfade: true });
         this._table.add(this._scrollArea, { row: 1, col: 1 });
@@ -944,11 +951,25 @@ SummaryItem.prototype = {
         this._sourceBox.add(this._sourceTitleBin, { expand: true, y_fill: false });
         this.actor.child = this._sourceBox;
 
+        this.notificationStackView = new St.ScrollView({ name: source.isChat ? '' : 'summary-notification-stack-scrollview',
+                                                         vscrollbar_policy: source.isChat ? Gtk.PolicyType.NEVER : Gtk.PolicyType.AUTOMATIC,
+                                                         hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                                         vfade: true });
         this.notificationStack = new St.BoxLayout({ name: 'summary-notification-stack',
                                                      vertical: true });
+        this.notificationStackView.add_actor(this.notificationStack);
         this._notificationExpandedIds = [];
         this._notificationDoneDisplayingIds = [];
         this._notificationDestroyedIds = [];
+
+        this._oldMaxScrollAdjustment = 0;
+
+        this.notificationStackView.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
+            let currentValue = adjustment.value + adjustment.page_size;
+            if (currentValue == this._oldMaxScrollAdjustment)
+                this.scrollTo(St.Side.BOTTOM);
+            this._oldMaxScrollAdjustment = adjustment.upper;
+        }));
 
         this.rightClickMenu = new St.BoxLayout({ name: 'summary-right-click-menu',
                                                  vertical: true });
@@ -1015,6 +1036,7 @@ SummaryItem.prototype = {
             notificationActors[i]._delegate.disconnect(this._notificationDestroyedIds[i]);
             this.notificationStack.remove_actor(notificationActors[i]);
             notificationActors[i]._delegate.setIconVisible(true);
+            notificationActors[i]._delegate.enableScrolling(true);
         }
         this._notificationExpandedIds = [];
         this._notificationDoneDisplayingIds = [];
@@ -1033,10 +1055,24 @@ SummaryItem.prototype = {
         this._notificationDoneDisplayingIds.push(notificationDoneDisplayingId);
         let notificationDestroyedId = notification.connect('destroy', Lang.bind(this, this._notificationDestroyed));
         this._notificationDestroyedIds.push(notificationDestroyedId);
+        if (!this.source.isChat)
+            notification.enableScrolling(false);
         if (this.notificationStack.get_children().length > 0)
             notification.setIconVisible(false);
         this.notificationStack.add(notification.actor);
         notification.expand(false);
+    },
+
+    // scrollTo:
+    // @side: St.Side.TOP or St.Side.BOTTOM
+    //
+    // Scrolls the notifiction stack to the indicated edge
+    scrollTo: function(side) {
+        let adjustment = this.notificationStackView.vscroll.adjustment;
+        if (side == St.Side.TOP)
+            adjustment.value = adjustment.lower;
+        else if (side == St.Side.BOTTOM)
+            adjustment.value = adjustment.upper;
     },
 
     _contentUpdated: function() {
@@ -1715,7 +1751,7 @@ MessageTray.prototype = {
         // to show notifications for legacy tray icons, but this would be necessary if we did.
         let requestedNotificationStackIsEmpty = (this._clickedSummaryItemMouseButton == 1 && this._clickedSummaryItem.source.notifications.length == 0);
         let wrongSummaryNotificationStack = (this._clickedSummaryItemMouseButton == 1 &&
-                                             this._summaryBoxPointer.bin.child != this._clickedSummaryItem.notificationStack);
+                                             this._summaryBoxPointer.bin.child != this._clickedSummaryItem.notificationStackView);
         let wrongSummaryRightClickMenu = (this._clickedSummaryItemMouseButton == 3 &&
                                           this._summaryBoxPointer.bin.child != this._clickedSummaryItem.rightClickMenu);
         let wrongSummaryBoxPointer = (haveClickedSummaryItem &&
@@ -1996,7 +2032,8 @@ MessageTray.prototype = {
                     return this._summaryBoxPointerItem.source != notification.source;
                 }));
             this._summaryBoxPointerItem.prepareNotificationStackForShowing();
-            this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStack;
+            this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackView;
+            this._summaryBoxPointerItem.scrollTo(St.Side.BOTTOM);
         } else if (this._clickedSummaryItemMouseButton == 3) {
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
         }
@@ -2054,7 +2091,7 @@ MessageTray.prototype = {
     },
 
     _hideSummaryBoxPointerCompleted: function() {
-        let doneShowingNotificationStack = (this._summaryBoxPointer.bin.child == this._summaryBoxPointerItem.notificationStack);
+        let doneShowingNotificationStack = (this._summaryBoxPointer.bin.child == this._summaryBoxPointerItem.notificationStackView);
 
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointer.bin.child = null;

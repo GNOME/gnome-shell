@@ -1012,6 +1012,24 @@ StTooltip StLabel {
     padding-bottom: 12px;
 }
 
+#summary-notification-stack-scrollview {
+    max-height: 18em;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#summary-notification-stack-scrollview > .top-shadow, #summary-notification-stack-scrollview > .bottom-shadow {
+    height: 1em;
+}
+
+#summary-notification-stack-scrollview:ltr {
+    padding-right: 8px;
+}
+
+#summary-notification-stack-scrollview:rtl {
+    padding-left: 8px;
+}
+
 #notification-scrollview {
     max-height: 10em;
 }
