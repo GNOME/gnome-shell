@@ -724,6 +724,11 @@ PopupMenuBase.prototype = {
         }
 
         this.isOpen = false;
+
+        // If set, we don't send events (including crossing events) to the source actor
+        // for the menu which causes its prelight state to freeze
+        this.blockSourceEvents = false;
+
         this._activeMenuItem = null;
     },
 
@@ -1331,14 +1336,20 @@ PopupMenuManager.prototype = {
         return this._activeMenuContains(event.get_source());
     },
 
-    _eventIsOnAnyMenuSource: function(event) {
+    _shouldBlockEvent: function(event) {
         let src = event.get_source();
+
+        if (this._activeMenu != null && this._activeMenu.actor.contains(src))
+            return false;
+
         for (let i = 0; i < this._menus.length; i++) {
             let menu = this._menus[i].menu;
-            if (menu.sourceActor && menu.sourceActor.contains(src))
-                return true;
+            if (menu.sourceActor && !menu.blockSourceEvents && menu.sourceActor.contains(src)) {
+                return false;
+            }
         }
-        return false;
+
+        return true;
     },
 
     _findMenu: function(item) {
@@ -1370,7 +1381,7 @@ PopupMenuManager.prototype = {
         } else if (eventType == Clutter.EventType.BUTTON_PRESS && !activeMenuContains) {
             this._closeMenu();
             return true;
-        } else if (activeMenuContains || this._eventIsOnAnyMenuSource(event)) {
+        } else if (!this._shouldBlockEvent(event)) {
             return false;
         }
 
