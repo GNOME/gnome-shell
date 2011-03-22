@@ -79,16 +79,17 @@ CLUTTER_LT_AGE=lt_age
 CLUTTER_LT_VERSION="$CLUTTER_LT_CURRENT:$CLUTTER_LT_REV:$CLUTTER_LT_AGE"
 CLUTTER_LT_LDFLAGS="-version-info $CLUTTER_LT_VERSION"
 
+AC_CANONICAL_HOST
 AC_MSG_CHECKING([if building for some Win32 platform])
-case "$host" in
-  *-*-mingw*|*-*-cygwin*)
-    CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
-    platform_win32=yes
-    ;;
-  *)
-    platform_win32=no
-    ;;
-esac
+AS_CASE([$host],
+        [*-*-mingw*|*-*-cygwin*],
+        [
+          CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
+          platform_win32=yes
+        ],
+
+        [platform_win32=no]
+)
 AC_MSG_RESULT([$platform_win32])
 
 AC_SUBST(CLUTTER_LT_VERSION)
