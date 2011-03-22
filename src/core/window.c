@@ -4223,9 +4223,13 @@ meta_window_update_monitor (MetaWindow *window)
        * workspace is when dropping the window on some other workspace thumbnail directly.
        * That should be handled by explicitly moving the window before changing the
        * workspace
+       * Don't do this if old == NULL, because thats what happens when we're updating
+       * the monitors due to a monitors change event, and we don't want to move
+       * everything to the currently active workspace.
        */
       if (meta_prefs_get_workspaces_only_on_primary () &&
           meta_window_is_on_primary_monitor (window)  &&
+          old != NULL &&
           window->screen->active_workspace != window->workspace)
         meta_window_change_workspace (window, window->screen->active_workspace);
 
