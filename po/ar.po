@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-22 15:03+0200\n"
-"PO-Revision-Date: 2011-03-22 15:03+0300\n"
+"POT-Creation-Date: 2011-03-22 20:58+0200\n"
+"PO-Revision-Date: 2011-03-22 20:58+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -172,15 +172,15 @@ msgstr "التطبيقات"
 msgid "SETTINGS"
 msgstr "الإعدادات"
 
-#: ../js/ui/appDisplay.js:620
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:623
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:624
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -408,7 +408,7 @@ msgstr "العناصر الحديثة"
 msgid "Log Out %s"
 msgstr "اخرج%.0s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "اخرج"
 
@@ -430,45 +430,42 @@ msgstr "ستُخرج تلقائيا بعد %d ثوان."
 msgid "Logging out of the system."
 msgstr "يخرج من النظام."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "أطفئ"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "انقر على \"أطفئ\" لغلق هذه التطبيقات وإطفاء النظام."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "أطفئ الحاسوب"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "سيُطفأ النظام تلقائيا خلال %d ثوان."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "انقر على \"أطفئ الحاسوب\" لغلق هذه التطبيقات وإطفاء النظام."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "يُغلق النظام."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "سيُطفأ النظام تلقائيا خلال %d ثوان."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "يُطفأ النظام."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "أعِد التشغيل"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "انقر على \"أعِد التشغيل\" لغلق هذه التطبيقات إعادة تشغيل النظام."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "سيُعاد تشغيل النظام تلقائيا خلال %d ثوان."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "يُعيد تشغيل النظام."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "أكّد"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "ألغِ"
 
@@ -536,11 +533,11 @@ msgstr "أغلق %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:876
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: ../js/ui/panel.js:977
+#: ../js/ui/panel.js:979
 msgid "Top Bar"
 msgstr "الشريط العلوي"
 
@@ -566,7 +563,7 @@ msgstr "الأماكن والأجهزة"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1105,7 +1102,7 @@ msgstr[5] "%u مدخل"
 msgid "System Sounds"
 msgstr "أصوات النظام"
 
-#: ../src/main.c:397
+#: ../src/main.c:438
 msgid "Print version"
 msgstr "اطبع الإصدارة"
 
@@ -1193,6 +1190,21 @@ msgstr "نظام الملفات"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "أطفئ"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "انقر على \"أطفئ\" لغلق هذه التطبيقات وإطفاء النظام."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "سيُطفأ النظام تلقائيا خلال %d ثوان."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "يُغلق النظام."
+
+#~ msgid "Confirm"
+#~ msgstr "أكّد"
 
 #~ msgid "Panel"
 #~ msgstr "اللوحة"
