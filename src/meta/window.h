@@ -23,6 +23,7 @@
 #define META_WINDOW_H
 
 #include <glib-object.h>
+#include <cairo.h>
 #include <X11/Xlib.h>
 
 #include <meta/boxes.h>
@@ -155,5 +156,7 @@ gboolean    meta_window_is_modal (MetaWindow *window);
 const char *meta_window_get_mutter_hints (MetaWindow *window);
 
 MetaFrameType meta_window_get_frame_type (MetaWindow *window);
+
+cairo_region_t *meta_window_get_frame_bounds (MetaWindow *window);
 
 #endif

@@ -702,6 +702,26 @@ meta_window_actor_get_shadow_bounds (MetaWindowActor       *self,
 }
 #endif
 
+/* If we have an ARGB32 window that we decorate with a frame, it's
+ * probably something like a translucent terminal - something where
+ * the alpha channel represents transparency rather than a shape.  We
+ * don't want to show the shadow through the translucent areas since
+ * the shadow is wrong for translucent windows (it should be
+ * translucent itself and colored), and not only that, will /look/
+ * horribly wrong - a misplaced big black blob. As a hack, what we
+ * want to do is just draw the shadow as normal outside the frame, and
+ * inside the frame draw no shadow.  This is also not even close to
+ * the right result, but looks OK. We also apply this approach to
+ * windows set to be partially translucent with _NET_WM_WINDOW_OPACITY.
+ */
+static gboolean
+clip_shadow_under_window (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  return (priv->argb32 || priv->opacity != 0xff) && priv->window->frame;
+}
+
 static void
 meta_window_actor_paint (ClutterActor *actor)
 {
@@ -714,9 +734,24 @@ meta_window_actor_paint (ClutterActor *actor)
     {
       MetaShadowParams params;
       cairo_rectangle_int_t shape_bounds;
+      cairo_region_t *clip = priv->shadow_clip;
 
       meta_window_actor_get_shape_bounds (self, &shape_bounds);
       meta_window_actor_get_shadow_params (self, appears_focused, &params);
+
+      /* The frame bounds are already subtracted from priv->shadow_clip
+       * if that exists.
+       */
+      if (!clip && clip_shadow_under_window (self))
+        {
+          cairo_region_t *frame_bounds = meta_window_get_frame_bounds (priv->window);
+          cairo_rectangle_int_t bounds;
+
+          meta_window_actor_get_shadow_bounds (self, appears_focused, &bounds);
+          clip = cairo_region_create_rectangle (&bounds);
+
+          cairo_region_subtract (clip, frame_bounds);
+        }
 
       meta_shadow_paint (shadow,
                          params.x_offset + shape_bounds.x,
@@ -724,7 +759,11 @@ meta_window_actor_paint (ClutterActor *actor)
                          shape_bounds.width,
                          shape_bounds.height,
                          (clutter_actor_get_paint_opacity (actor) * params.opacity * priv->opacity) / (255 * 255),
-                         priv->shadow_clip);
+                         clip,
+                         clip_shadow_under_window (self)); /* clip_strictly - not just as an optimization */
+
+      if (clip && clip != priv->shadow_clip)
+        cairo_region_destroy (clip);
     }
 
   CLUTTER_ACTOR_CLASS (meta_window_actor_parent_class)->paint (actor);
@@ -1787,6 +1826,12 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
     {
       meta_window_actor_clear_shadow_clip (self);
       priv->shadow_clip = cairo_region_copy (beneath_region);
+
+      if (clip_shadow_under_window (self))
+        {
+          cairo_region_t *frame_bounds = meta_window_get_frame_bounds (priv->window);
+          cairo_region_subtract (priv->shadow_clip, frame_bounds);
+        }
     }
 }
 

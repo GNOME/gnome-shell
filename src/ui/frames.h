@@ -144,6 +144,10 @@ void meta_frames_apply_shapes (MetaFrames *frames,
                                int         new_window_width,
                                int         new_window_height,
                                gboolean    window_has_shape);
+cairo_region_t *meta_frames_get_frame_bounds (MetaFrames *frames,
+                                              Window      xwindow,
+                                              int         window_width,
+                                              int         window_height);
 void meta_frames_move_resize_frame (MetaFrames *frames,
 				    Window      xwindow,
 				    int         x,

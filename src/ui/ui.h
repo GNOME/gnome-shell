@@ -28,6 +28,7 @@
 #include <meta/common.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <cairo.h>
 #include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -103,6 +104,11 @@ void meta_ui_apply_frame_shape  (MetaUI  *ui,
                                  int      new_window_width,
                                  int      new_window_height,
                                  gboolean window_has_shape);
+
+cairo_region_t *meta_ui_get_frame_bounds (MetaUI  *ui,
+                                          Window   xwindow,
+                                          int      window_width,
+                                          int      window_height);
 
 void meta_ui_queue_frame_draw (MetaUI *ui,
                                Window xwindow);
