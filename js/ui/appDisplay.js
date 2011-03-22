@@ -513,6 +513,8 @@ AppWellIcon.prototype = {
             this._menuManager.addMenu(this._menu);
         }
 
+        this.actor.set_hover(true);
+        this.actor.show_tooltip();
         this._menu.popup();
 
         return false;
@@ -575,6 +577,9 @@ AppIconMenu.prototype = {
             side = St.Side.RIGHT;
 
         PopupMenu.PopupMenu.prototype._init.call(this, source.actor, 0.5, side, 0);
+
+        // We want to keep the item hovered while the menu is up
+        this.blockSourceEvents = true;
 
         this._source = source;
 
