@@ -21,11 +21,6 @@
 
   <programming-language>C</programming-language>
 
-  <category rdf:resource="http://labs.o-hand.com/doap/category/library"/>
-  <category rdf:resource="http://labs.o-hand.com/doap/category/graphics"/>
-  <category rdf:resource="http://labs.o-hand.com/doap/category/embedded"/>
-  <category rdf:resource="http://labs.o-hand.com/doap/category/clutter"/>
-
   <maintainer>
     <foaf:Person>
       <foaf:name>Emmanuele Bassi</foaf:name>
