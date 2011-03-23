@@ -519,10 +519,13 @@ Source.prototype = {
     _appStateChanged: function() {
         // Destroy notification sources when their apps exit.
         // The app exiting would normally result in a tray icon being removed,
-        // so it should be ok to destroy the source associated with a tray icon
-        // here too, however we just let that happen through the code path
-        // associated with the tray icon being removed.
-        if (!this._isTrayIcon && this.app.get_state() == Shell.AppState.STOPPED)
+        // so the associated source would be destroyed through the code path
+        // that handles the tray icon being removed. We should not destroy
+        // the source associated with a tray icon when the application state
+        // is Shell.AppState.STOPPED because running applications that have
+        // no open windows would also have that state. This is often the case
+        // for applications that use tray icons.
+        if (!this._trayIcon && this.app.get_state() == Shell.AppState.STOPPED)
             this.destroy();
     },
 
