@@ -36,7 +36,6 @@ gboolean meta_is_debugging (void);
 void     meta_set_debugging (gboolean setting);
 gboolean meta_is_syncing (void);
 void     meta_set_syncing (gboolean setting);
-gboolean meta_get_replace_current_wm (void);
 void     meta_set_replace_current_wm (gboolean setting);
 
 void meta_debug_spew_real (const char *format,
