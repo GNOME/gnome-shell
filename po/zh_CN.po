@@ -15,16 +15,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-18 04:26+0000\n"
-"PO-Revision-Date: 2011-03-18 18:34+0800\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-23 21:37+0800\n"
+"PO-Revision-Date: 2011-03-23 21:39+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -183,27 +182,27 @@ msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "应用程序"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "设置"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
@@ -363,7 +362,7 @@ msgstr "本周"
 msgid "Next week"
 msgstr "下周"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "移除"
 
@@ -431,7 +430,7 @@ msgstr "最近项目"
 msgid "Log Out %s"
 msgstr "注销 %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "注销"
 
@@ -453,45 +452,42 @@ msgstr "您将在 %d 秒后自动注销。"
 msgid "Logging out of the system."
 msgstr "从系统注销"
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
 msgstr "关机"
 
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "点“关机“来退出这些应用程序并关闭系统。"
-
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "系统将在 %d 秒后自动关机。"
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "点击关机以退出应用程序并关闭系统。"
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "关闭计算机。"
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "系统将在 %d 秒后自动关机。"
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "关闭系统。"
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "重启"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "点“重启“来退出这些应用程序并重启系统"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "系统将在 %d 秒后自动重启。"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "重启计算机。"
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "确定"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "取消"
 
@@ -525,29 +521,29 @@ msgstr "查看源"
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "系统信息"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "撤销"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "窗口"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "应用程序"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "虚线"
 
@@ -559,13 +555,13 @@ msgstr "退出 %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:874
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/panel.js:975
-msgid "Panel"
-msgstr "面板"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "顶栏"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -589,55 +585,55 @@ msgstr "位置和设备"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "请输入一个命令："
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "正在搜索..."
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "无匹配结果。"
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "关机..."
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "休眠"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "可用"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "我的帐户"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "系统设置"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "锁住屏幕"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "切换用户"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "退出..."
 
@@ -1016,7 +1012,7 @@ msgstr "触摸板"
 msgid "Computer"
 msgstr "计算机"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "未知"
 
@@ -1060,11 +1056,11 @@ msgstr "发送于 %X，在 %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:119
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "搜索..."
 
-#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
 msgstr "搜索"
 
@@ -1098,7 +1094,7 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/main.c:397
+#: ../src/main.c:438
 msgid "Print version"
 msgstr "打印版本"
 
@@ -1107,29 +1103,29 @@ msgstr "打印版本"
 msgid "Failed to launch '%s'"
 msgstr "启动 %s 失败"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1166,6 +1162,24 @@ msgstr "文件系统"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "关机"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "点“关机“来退出这些应用程序并关闭系统。"
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "系统将在 %d 秒后自动关机。"
+
+#~ msgid "Shutting down the system."
+#~ msgstr "关闭计算机。"
+
+#~ msgid "Confirm"
+#~ msgstr "确定"
+
+#~ msgid "Panel"
+#~ msgstr "面板"
 
 #~ msgid "No such application"
 #~ msgstr "没有此应用程序"
@@ -1215,16 +1229,17 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
-#~ "此键指定面板时钟使用的时间格式。可能的值为 \"12-hour\"、\"24-hour\"、"
-#~ "\"unix\" 和 \"custom\"。如果设为 unix，时钟将显示从 Epoch(也就是 1970-1-1 "
-#~ "UTC)开始的秒数。如果设为 \"custom\"，时钟将根据在 custom_format 键中设定的"
-#~ "格式规则显示时间。注意，如果设置为 \"unix\" 或 \"custom\"，show_date 和 "
-#~ "show_seconds 键将被忽略。"
+#~ "此键指定面板时钟使用的时间格式。可能的值为 \"12-hour\"、\"24-hour"
+#~ "\"、\"unix\" 和 \"custom\"。如果设为 unix，时钟将显示从 Epoch(也就是 "
+#~ "1970-1-1 UTC)开始的秒数。如果设为 \"custom\"，时钟将根据在 custom_format "
+#~ "键中设定的格式规则显示时间。注意，如果设置为 \"unix\" 或 \"custom\"，"
+#~ "show_date 和 show_seconds 键将被忽略。"
 
 #~ msgid "Clip the crosshairs at the center"
 #~ msgstr "将十字夹在中间"
