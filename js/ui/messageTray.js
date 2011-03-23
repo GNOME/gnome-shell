@@ -108,6 +108,12 @@ URLHighlighter.prototype = {
         }
 
         this.setMarkup(text, allowMarkup);
+        this.actor.connect('button-press-event', function() {
+            // Keep Notification.actor from seeing this and taking
+            // a pointer grab, which would block our button-release-event
+            // handler
+            return true;
+        });
         this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1) {
