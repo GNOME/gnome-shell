@@ -245,36 +245,35 @@ Source.prototype = {
         let [success, events] = logManager.get_filtered_events_finish(result);
 
         let logMessages = events.map(makeMessageFromTplEvent);
+
+        let pendingTpMessages = this._channel.get_pending_messages();
+        let pendingMessages = pendingTpMessages.map(function (tpMessage) { return makeMessageFromTpMessage(tpMessage, NotificationDirection.RECEIVED); });
+
         for (let i = 0; i < logMessages.length; i++) {
-            this._notification.appendMessage(logMessages[i], true);
-        }
+            let logMessage = logMessages[i];
+            let isPending = false;
 
-        let pendingMessages = this._channel.get_pending_messages();
-        let hasPendingMessage = false;
-        for (let i = 0; i < pendingMessages.length; i++) {
-            let message = makeMessageFromTpMessage(pendingMessages[i], NotificationDirection.RECEIVED);
-
-            // Skip any pending messages that are in the logs.
-            let inLog = false;
-            for (let j = 0; j < logMessages.length; j++) {
-                let logMessage = logMessages[j];
-                if (logMessage.timestamp == message.timestamp && logMessage.text == message.body) {
-                    inLog = true;
+            // Skip any log messages that are also in pendingMessages
+            for (let j = 0; j < pendingMessages.length; j++) {
+                let pending = pendingMessages[j];
+                if (logMessage.timestamp == pending.timestamp && logMessage.text == pending.text) {
+                    isPending = true;
+                    break;
                 }
             }
 
-            if (inLog)
-                continue;
-
-            this._notification.appendMessage(message, true);
-            hasPendingMessage = true;
+            if (!isPending)
+                this._notification.appendMessage(logMessage, true);
         }
 
+        for (let i = 0; i < pendingMessages.length; i++)
+            this._notification.appendMessage(pendingMessages[i], true);
+
         // Only show the timestamp if we have at least one message.
-        if (hasPendingMessage || logMessages.length > 0)
+        if (pendingMessages.length > 0 || logMessages.length > 0)
             this._notification.appendTimestamp();
 
-        if (hasPendingMessage)
+        if (pendingMessages.length > 0)
             this.notify();
     },
 
