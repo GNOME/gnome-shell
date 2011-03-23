@@ -80,14 +80,9 @@ Client.prototype = {
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
         let dbus = Tp.DBusDaemon.dup();
-        this._observer = Tp.SimpleObserver.new(dbus, true, 'GnomeShell', true,
-                                              Lang.bind(this, this._observeChannels));
-
-        // We only care about single-user text-based chats
-        let props = {};
-        props[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
-        props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.HandleType.CONTACT;
-        this._observer.add_observer_filter(props);
+        this._observer = Shell.TpClient.new(dbus);
+        this._observer.set_observe_channels_func(
+            Lang.bind(this, this._observeChannels));
 
         try {
             this._observer.register();
