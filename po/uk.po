@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-17 18:44+0200\n"
-"PO-Revision-Date: 2011-03-17 18:58+0300\n"
+"POT-Creation-Date: 2011-03-23 16:06+0200\n"
+"PO-Revision-Date: 2011-03-23 16:10+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -189,27 +189,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Не вдалось виконати «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Всі"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "ПАРАМЕТРИ"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
@@ -369,7 +369,7 @@ msgstr "Цей тиждень"
 msgid "Next week"
 msgstr "Наступний тиждень"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Вилучити"
 
@@ -437,7 +437,7 @@ msgstr "ОСТАННІ ПУНКТИ"
 msgid "Log Out %s"
 msgstr "Завершити сеанс %s…"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Завершити сеанс"
 
@@ -459,46 +459,43 @@ msgstr "Буде завершено сеанс автоматично через
 msgid "Logging out of the system."
 msgstr "Вихід із системи."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
 msgstr "Вимкнути"
 
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Натисніть «Вимкнути», щоб вийти з усіх програм і вимкнути систему."
-
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Систему буде вимкнено автоматично через %d секунд."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Натисніть «Вимкнути», щоб вийти з усіх програм і системи."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "Система автоматично вимкнеться через %d секунд."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
 msgstr "Вимкнення системи."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Перезапустити"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Натисніть «Перезапустити», щоб вийти з усіх програм і перезапустити систему."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Система автоматично перезапуститься через %d секунд."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Перезапуск системи."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Підтвердити"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:465
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -532,47 +529,47 @@ msgstr "Переглянути джерело"
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "Відкрити"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Інформація про систему"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Повернути"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Вікна"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Програми"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Риска"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:514
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "Вийти з %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:873
+#: ../js/ui/panel.js:878
 msgid "Activities"
-msgstr "Дії"
+msgstr "Діяльність"
 
-#: ../js/ui/panel.js:974
-msgid "Panel"
-msgstr "Панель"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Верхня панель"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -596,55 +593,55 @@ msgstr "МІСЦЯ ТА ПРИСТРОЇ"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Будь ласка, введіть команду:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Пошук…"
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Нема збігів."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Вимкнення живлення…"
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Призупинити"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Доступний"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Зайнятий"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Мій обліковий запис"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Системні параметри"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Заблокувати екран"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Змінити користувача"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Завершити сеанс…"
 
@@ -690,9 +687,9 @@ msgstr "Висока контрастність"
 msgid "Large Text"
 msgstr "Більший текст"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:236
-#: ../js/ui/status/bluetooth.js:332 ../js/ui/status/bluetooth.js:366
-#: ../js/ui/status/bluetooth.js:406 ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -712,94 +709,94 @@ msgstr "Встановити новий пристрій…"
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:187
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "З'єднання"
 
-#: ../js/ui/status/bluetooth.js:223
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Відправити файли…"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Огляд файлів…"
 
-#: ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "Помилка перегляду пристрою…"
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Потрібний пристрій неможливо переглянути, помилка — «%s»"
 
-#: ../js/ui/status/bluetooth.js:246
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "Параметри клавіатури"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "Параметри миші"
 
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Параметри звуку"
 
-#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Запит про авторизацію від %s"
 
-#: ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Пристрій %s потребує доступ до служби «%s»"
 
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "Завжди надавати доступ"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "Надати лише цього разу"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Відмовити"
 
-#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Сполучення підтвердження для %s"
 
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/status/bluetooth.js:447
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Пристрій %s потребує прив'язання до цього комп'ютера"
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Будь ласка, підвердьте, чи «%s» збігається з PIN на пристрої."
 
-#: ../js/ui/status/bluetooth.js:416
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Збігається"
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Не збігається"
 
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Запит на сполучення для %s"
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Будь ласка, введіть PIN, згаданий на пристрої."
 
-#: ../js/ui/status/bluetooth.js:464
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "Гаразд"
 
@@ -904,40 +901,40 @@ msgstr "З'єднання VPN"
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
-#: ../js/ui/status/network.js:1782
+#: ../js/ui/status/network.js:1783
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Зараз ви з'єднані через мобільну радіомережу «%s»"
 
-#: ../js/ui/status/network.js:1786
+#: ../js/ui/status/network.js:1787
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Зараз ви з'єднані через бездротову мережу «%s»"
 
-#: ../js/ui/status/network.js:1790
+#: ../js/ui/status/network.js:1791
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Зараз ви з'єднані через дротову мережу «%s»"
 
-#: ../js/ui/status/network.js:1794
+#: ../js/ui/status/network.js:1795
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Зараз ви з'єднані через мережу VPN «%s»"
 
-#: ../js/ui/status/network.js:1799
+#: ../js/ui/status/network.js:1800
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Зараз ви з'єднані через «%s»"
 
-#: ../js/ui/status/network.js:1807
+#: ../js/ui/status/network.js:1808
 msgid "Connection established"
 msgstr "З'єднання встановлено"
 
-#: ../js/ui/status/network.js:1929
+#: ../js/ui/status/network.js:1930
 msgid "Networking is disabled"
 msgstr "Мережу вимкнено"
 
-#: ../js/ui/status/network.js:2054
+#: ../js/ui/status/network.js:2055
 msgid "Network Manager"
 msgstr "Керування мережею"
 
@@ -1031,7 +1028,7 @@ msgstr "Планшет"
 msgid "Computer"
 msgstr "Комп'ютер"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Невідомо"
 
@@ -1075,11 +1072,11 @@ msgstr "Відправити на %X в %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:119
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "Введіть для пошуку…"
 
-#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Пошук"
 
@@ -1117,20 +1114,20 @@ msgstr[2] "%u входів"
 msgid "System Sounds"
 msgstr "Системні звуки"
 
-#: ../src/main.c:397
+#: ../src/main.c:438
 msgid "Print version"
 msgstr "Показати версію"
 
-#: ../src/shell-app.c:442
+#: ../src/shell-app.c:454
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Не вдалось запустити «%s»"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Менше хвилини тому"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -1138,7 +1135,7 @@ msgstr[0] "%d хвилина тому"
 msgstr[1] "%d хвилини тому"
 msgstr[2] "%d хвилин тому"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -1146,7 +1143,7 @@ msgstr[0] "%d година тому"
 msgstr[1] "%d години тому"
 msgstr[2] "%d годин тому"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -1154,7 +1151,7 @@ msgstr[0] "%d день тому"
 msgstr[1] "%d дні тому"
 msgstr[2] "%d днів тому"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1193,6 +1190,24 @@ msgstr "Файлова система"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Вимкнути"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Натисніть «Вимкнути», щоб вийти з усіх програм і вимкнути систему."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Систему буде вимкнено автоматично через %d секунд."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Вимкнення системи."
+
+#~ msgid "Confirm"
+#~ msgstr "Підтвердити"
+
+#~ msgid "Panel"
+#~ msgstr "Панель"
 
 #~ msgid "No such application"
 #~ msgstr "Нема такої програми"
