@@ -73,15 +73,6 @@ void     shell_global_end_modal   (ShellGlobal *global,
 
 void shell_global_reexec_self (ShellGlobal *global);
 
-void shell_breakpoint (void);
-
-gboolean shell_parse_search_provider (const char    *data,
-                                      char         **name,
-                                      char         **url,
-                                      GList        **langs,
-                                      char         **icon_data_uri,
-                                      GError       **error);
-
 void shell_global_gc (ShellGlobal *global);
 
 void shell_global_maybe_gc (ShellGlobal *global);
@@ -104,12 +95,6 @@ void shell_global_get_pointer  (ShellGlobal         *global,
 void shell_global_sync_pointer (ShellGlobal         *global);
 
 GSettings *shell_global_get_settings (ShellGlobal *global);
-
-ClutterModifierType shell_get_event_state (ClutterEvent *event);
-
-gboolean shell_write_string_to_stream (GOutputStream *stream,
-                                       const char    *str,
-                                       GError       **error);
 
 guint32 shell_global_get_current_time (ShellGlobal *global);
 
@@ -144,9 +129,6 @@ void shell_global_notify_error (ShellGlobal  *global,
 void shell_global_init_xdnd (ShellGlobal *global);
 
 void shell_global_launch_calendar_server (ShellGlobal *global);
-
-char *shell_get_file_contents_utf8_sync (const char *path,
-                                         GError    **error);
 
 G_END_DECLS
 

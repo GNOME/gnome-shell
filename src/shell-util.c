@@ -7,7 +7,11 @@
 #include <gconf/gconf-client.h>
 #include <gtk/gtk.h>
 
-/* The code in this file adapted under the GPLv2+ from:
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
+
+/* Some code in this file adapted under the GPLv2+ from:
  *
  * GNOME panel utils: gnome-panel/gnome-panel/panel-util.c
  * (C) 1997, 1998, 1999, 2000 The Free Software Foundation
@@ -532,4 +536,215 @@ shell_util_format_date (const char *format,
 
   g_date_time_unref (datetime);
   return result;
+}
+
+/**
+ * shell_get_event_state:
+ * @event: a #ClutterEvent
+ *
+ * Gets the current state of the event (the set of modifier keys that
+ * are pressed down). Thhis is a wrapper around
+ * clutter_event_get_state() that strips out any un-declared modifier
+ * flags, to make gjs happy; see
+ * https://bugzilla.gnome.org/show_bug.cgi?id=597292.
+ *
+ * Return value: the state from the event
+ */
+ClutterModifierType
+shell_get_event_state (ClutterEvent *event)
+{
+  ClutterModifierType state = clutter_event_get_state (event);
+  return state & CLUTTER_MODIFIER_MASK;
+}
+
+/**
+ * shell_write_string_to_stream:
+ * @stream: a #GOutputStream
+ * @str: a UTF-8 string to write to @stream
+ * @error: location to store GError
+ *
+ * Write a string to a GOutputStream as UTF-8. This is a workaround
+ * for not having binary buffers in GJS.
+ *
+ * Return value: %TRUE if write succeeded
+ */
+gboolean
+shell_write_string_to_stream (GOutputStream *stream,
+                              const char    *str,
+                              GError       **error)
+{
+  return g_output_stream_write_all (stream, str, strlen (str),
+                                    NULL, NULL, error);
+}
+
+/**
+ * shell_get_file_contents_utf8_sync:
+ * @path: UTF-8 encoded filename path
+ * @error: a #GError
+ *
+ * Synchronously load the contents of a file as a NUL terminated
+ * string, validating it as UTF-8.  Embedded NUL characters count as
+ * invalid content.
+ *
+ * Returns: (transfer full): File contents
+ */
+char *
+shell_get_file_contents_utf8_sync (const char *path,
+                                   GError    **error)
+{
+  char *contents;
+  gsize len;
+  if (!g_file_get_contents (path, &contents, &len, error))
+    return NULL;
+  if (!g_utf8_validate (contents, len, NULL))
+    {
+      g_free (contents);
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "File %s contains invalid UTF-8",
+                   path);
+      return NULL;
+    }
+  return contents;
+}
+
+/**
+ * shell_breakpoint:
+ *
+ * Using G_BREAKPOINT(), interrupt the current process.  This is useful
+ * in conjunction with a debugger such as gdb.
+ */
+void
+shell_breakpoint (void)
+{
+  G_BREAKPOINT ();
+}
+
+/**
+ * shell_parse_search_provider:
+ * @data: description of provider
+ * @name: (out): location to store a display name
+ * @url: (out): location to store template of url
+ * @langs: (out) (transfer full) (element-type utf8): list of supported languages
+ * @icon_data_uri: (out): location to store uri
+ * @error: location to store GError
+ *
+ * Returns: %TRUE on success
+ */
+gboolean
+shell_parse_search_provider (const char    *data,
+                             char         **name,
+                             char         **url,
+                             GList        **langs,
+                             char         **icon_data_uri,
+                             GError       **error)
+{
+  xmlDocPtr doc = xmlParseMemory (data, strlen (data));
+  xmlNode *root;
+
+  *name = NULL;
+  *url = NULL;
+  *icon_data_uri = NULL;
+  *langs = NULL;
+
+  if (!doc)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Malformed xml");
+      return FALSE;
+    }
+
+  root = xmlDocGetRootElement (doc);
+  if (root && root->name && xmlStrcmp (root->name, (const xmlChar *)"OpenSearchDescription") == 0)
+    {
+      xmlNode *child;
+      for (child = root->children; child; child = child->next)
+        {
+            if (!child->name)
+              continue;
+            if (xmlStrcmp (child->name, (const xmlChar *)"Language") == 0)
+              {
+                xmlChar *val = xmlNodeListGetString(doc, child->xmlChildrenNode, 1);
+                if (!val)
+                  continue;
+                *langs = g_list_append (*langs, g_strdup ((char *)val));
+                xmlFree (val);
+              }
+            if (!*name && xmlStrcmp (child->name, (const xmlChar *)"ShortName") == 0)
+              {
+                xmlChar *val = xmlNodeListGetString(doc, child->xmlChildrenNode, 1);
+                *name = g_strdup ((char *)val);
+                xmlFree (val);
+              }
+            if (!*icon_data_uri && xmlStrcmp (child->name, (const xmlChar *)"Image") == 0)
+              {
+                xmlChar *val = xmlNodeListGetString(doc, child->xmlChildrenNode, 1);
+                if (val)
+                  *icon_data_uri = g_strdup ((char *)val);
+                xmlFree (val);
+              }
+            if (!*url && xmlStrcmp (child->name, (const xmlChar *)"Url") == 0)
+              {
+                xmlChar *template;
+                xmlChar *type;
+
+                type = xmlGetProp(child, (const xmlChar *)"type");
+                if (!type)
+                  continue;
+
+                if (xmlStrcmp (type, (const xmlChar *)"text/html") != 0)
+                  {
+                    xmlFree (type);
+                    continue;
+                  }
+                xmlFree (type);
+
+                template = xmlGetProp(child, (const xmlChar *)"template");
+                if (!template)
+                  continue;
+                *url = g_strdup ((char *)template);
+                xmlFree (template);
+              }
+        }
+    }
+  else
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Invalid OpenSearch document");
+      xmlFreeDoc (doc);
+      return FALSE;
+    }
+  xmlFreeDoc (doc);
+  if (*icon_data_uri && *name && *url)
+    return TRUE;
+
+  if (*icon_data_uri)
+    g_free (*icon_data_uri);
+  else
+    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                 "search provider doesn't have icon");
+
+  if (*name)
+    g_free (*name);
+  else if (error && !*error)
+    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                 "search provider doesn't have ShortName");
+
+  if (*url)
+    g_free (*url);
+  else if (error && !*error)
+    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                 "search provider doesn't have template for url");
+
+  if (*langs)
+    {
+      g_list_foreach (*langs, (GFunc)g_free, NULL);
+      g_list_free (*langs);
+    }
+
+  *url = NULL;
+  *name = NULL;
+  *icon_data_uri = NULL;
+  *langs = NULL;
+
+  return FALSE;
 }

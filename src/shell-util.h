@@ -19,6 +19,24 @@ void shell_util_get_transformed_allocation (ClutterActor    *actor,
 char *shell_util_format_date (const char *format,
                               gint64      time_ms);
 
+ClutterModifierType shell_get_event_state (ClutterEvent *event);
+
+gboolean shell_write_string_to_stream (GOutputStream *stream,
+                                       const char    *str,
+                                       GError       **error);
+
+char *shell_get_file_contents_utf8_sync (const char *path,
+                                         GError    **error);
+
+void shell_breakpoint (void);
+
+gboolean shell_parse_search_provider (const char    *data,
+                                      char         **name,
+                                      char         **url,
+                                      GList        **langs,
+                                      char         **icon_data_uri,
+                                      GError       **error);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
