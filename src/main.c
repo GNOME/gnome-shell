@@ -31,11 +31,12 @@ extern GType gnome_shell_plugin_get_type (void);
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
 static void
-shell_dbus_init (void)
+shell_dbus_init (gboolean replace)
 {
   GError *error = NULL;
   DBusGConnection *session;
   DBusGProxy *bus;
+  guint32 request_name_flags;
   guint32 request_name_result;
 
   /** TODO:
@@ -51,18 +52,25 @@ shell_dbus_init (void)
                                    DBUS_PATH_DBUS,
                                    DBUS_INTERFACE_DBUS);
 
+  request_name_flags = DBUS_NAME_FLAG_DO_NOT_QUEUE;
+  if (replace)
+    request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
   if (!dbus_g_proxy_call (bus, "RequestName", &error,
                           G_TYPE_STRING, SHELL_DBUS_SERVICE,
-                          G_TYPE_UINT, 0,
+                          G_TYPE_UINT, request_name_flags,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
     {
-      g_print ("failed to acquire org.gnome.Shell: %s\n", error->message);
-      /* If we somehow got started again, it's not an error to be running
-       * already.  So just exit 0.
-       */
-      exit (0);
+      g_printerr ("failed to acquire org.gnome.Shell: %s\n", error->message);
+      exit (1);
+    }
+  if (!(request_name_result == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER
+        || request_name_result == DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER))
+    {
+      g_printerr ("%s already exists on bus and --replace not specified\n",
+                  SHELL_DBUS_SERVICE);
+      exit (1);
     }
 
   /* Also grab org.gnome.Panel to replace any existing panel process,
@@ -475,7 +483,7 @@ main (int argc, char **argv)
   g_setenv ("GJS_DEBUG_OUTPUT", "stderr", TRUE);
   g_setenv ("GJS_DEBUG_TOPICS", "JS ERROR;JS LOG", TRUE);
 
-  shell_dbus_init ();
+  shell_dbus_init (meta_get_replace_current_wm ());
   shell_a11y_init ();
   shell_fonts_init ();
   shell_perf_log_init ();
