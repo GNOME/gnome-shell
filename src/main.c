@@ -52,7 +52,7 @@ shell_dbus_init (gboolean replace)
                                    DBUS_PATH_DBUS,
                                    DBUS_INTERFACE_DBUS);
 
-  request_name_flags = DBUS_NAME_FLAG_DO_NOT_QUEUE;
+  request_name_flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
   if (replace)
     request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
   if (!dbus_g_proxy_call (bus, "RequestName", &error,
