@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-23 21:37+0800\n"
-"PO-Revision-Date: 2011-03-23 21:39+0800\n"
+"PO-Revision-Date: 2011-03-23 23:57+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -62,10 +62,10 @@ msgstr "GNOME Shell 扩展有一个 uuid 属性，此键列出了不应该加载
 msgid "History for command (Alt-F2) dialog"
 msgstr "命令对话框(Alt-F2)的历史记录"
 
+# http://live.gnome.org/GnomeShell/LookingGlass
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#, fuzzy
 msgid "History for the looking glass dialog"
-msgstr "镜子对话框历史"
+msgstr "Looking Glass 控制台历史"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
