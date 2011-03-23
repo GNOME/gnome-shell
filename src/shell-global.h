@@ -20,17 +20,12 @@ typedef struct _ShellGlobalClass ShellGlobalClass;
 #define SHELL_IS_GLOBAL_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_GLOBAL))
 #define SHELL_GLOBAL_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_GLOBAL, ShellGlobalClass))
 
-#define SHELL_GCONF_DIR "/desktop/gnome/shell"
-
 struct _ShellGlobalClass
 {
   GObjectClass parent_class;
 };
 
 GType            shell_global_get_type            (void) G_GNUC_CONST;
-
-gboolean shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
-                                                GdkPixbuf      *pixbuf);
 
 ShellGlobal *shell_global_get (void);
 
@@ -76,8 +71,6 @@ gboolean shell_global_begin_modal (ShellGlobal *global,
 void     shell_global_end_modal   (ShellGlobal *global,
 				   guint32      timestamp);
 
-gboolean shell_global_display_is_grabbed (ShellGlobal *global);
-
 void shell_global_reexec_self (ShellGlobal *global);
 
 void shell_global_breakpoint (ShellGlobal *global);
@@ -93,8 +86,6 @@ gboolean shell_global_parse_search_provider (ShellGlobal   *global,
 void shell_global_gc (ShellGlobal *global);
 
 void shell_global_maybe_gc (ShellGlobal *global);
-
-void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta, char **text, guint *next_update);
 
 GSList       *shell_global_get_monitors        (ShellGlobal  *global);
 MetaRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
@@ -116,9 +107,6 @@ void shell_global_sync_pointer (ShellGlobal         *global);
 GSettings *shell_global_get_settings (ShellGlobal *global);
 
 ClutterModifierType shell_get_event_state (ClutterEvent *event);
-
-void shell_popup_menu (GtkMenu *menu, int button, guint32 time,
-                       int menu_x, int menu_y);
 
 gboolean shell_write_string_to_stream (GOutputStream *stream,
                                        const char    *str,

@@ -418,31 +418,6 @@ shell_global_class_init (ShellGlobalClass *klass)
 }
 
 /**
- * shell_clutter_texture_set_from_pixbuf: 
- * texture: #ClutterTexture to be modified
- * pixbuf: #GdkPixbuf to set as an image for #ClutterTexture
- *
- * Convenience function for setting an image for #ClutterTexture based on #GdkPixbuf.
- * Copied from an example posted by hp in this thread http://mail.gnome.org/archives/gtk-devel-list/2008-September/msg00218.html
- *
- * Return value: %TRUE on success, %FALSE on failure
- */
-gboolean
-shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
-                                       GdkPixbuf      *pixbuf)
-{
-    return clutter_texture_set_from_rgb_data (texture,
-                                              gdk_pixbuf_get_pixels (pixbuf),
-                                              gdk_pixbuf_get_has_alpha (pixbuf),
-                                              gdk_pixbuf_get_width (pixbuf),
-                                              gdk_pixbuf_get_height (pixbuf),
-                                              gdk_pixbuf_get_rowstride (pixbuf),
-                                              gdk_pixbuf_get_has_alpha (pixbuf)
-                                              ? 4 : 3,
-                                              0, NULL);
-}
-
-/**
  * shell_global_get:
  *
  * Gets the singleton global object that represents the desktop.
@@ -858,30 +833,6 @@ shell_global_end_modal (ShellGlobal *global,
                         guint32      timestamp)
 {
   meta_plugin_end_modal (global->plugin, timestamp);
-}
-
-/**
- * shell_global_display_is_grabbed
- * @global: a #ShellGlobal
- *
- * Determines whether Mutter currently has a grab (keyboard or mouse or
- * both) on the display. This could be the result of a current window
- * management operation like a window move, or could be from
- * shell_global_begin_modal().
- *
- * This function is useful to for ad-hoc checks to avoid over-grabbing
- * the Mutter grab a grab from GTK+. Longer-term we might instead want a
- * mechanism to make Mutter use GDK grabs instead of raw XGrabPointer().
- *
- * Return value: %TRUE if Mutter has a grab on the display
- */
-gboolean
-shell_global_display_is_grabbed (ShellGlobal *global)
-{
-  MetaScreen *screen = meta_plugin_get_screen (global->plugin);
-  MetaDisplay *display = meta_screen_get_display (screen);
-
-  return meta_display_get_grab_op (display) != META_GRAB_OP_NONE;
 }
 
 /**
@@ -1370,54 +1321,6 @@ void shell_global_init_xdnd (ShellGlobal *global)
 }
 
 /**
- * shell_global_format_time_relative_pretty:
- * @global:
- * @delta: Time in seconds since the current time
- * @text: (out): Relative human-consumption-only time string
- * @next_update: (out): Time in seconds until we should redisplay the time
- *
- * Format a time value for human consumption only.  The passed time
- * value is a delta in terms of seconds from the current time.
- * This function needs to be in C because of its use of ngettext() which
- * is not accessible from JavaScript.
- */
-void
-shell_global_format_time_relative_pretty (ShellGlobal *global,
-                                          guint        delta,
-                                          char       **text,
-                                          guint       *next_update)
-{
-#define MINUTE (60)
-#define HOUR (MINUTE*60)
-#define DAY (HOUR*24)
-#define WEEK (DAY*7)
-  if (delta < MINUTE) {
-    *text = g_strdup (_("Less than a minute ago"));
-    *next_update = MINUTE - delta;
-   } else if (delta < HOUR) {
-     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
-                                         "%d minute ago", "%d minutes ago",
-                                         delta / MINUTE), delta / MINUTE);
-     *next_update = MINUTE - (delta % MINUTE);
-   } else if (delta < DAY) {
-     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
-                                         "%d hour ago", "%d hours ago",
-                                         delta / HOUR), delta / HOUR);
-     *next_update = HOUR - (delta % HOUR);
-   } else if (delta < WEEK) {
-     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
-                                         "%d day ago", "%d days ago",
-                                         delta / DAY), delta / DAY);
-     *next_update = DAY - (delta % DAY);
-   } else {
-     *text = g_strdup_printf (dngettext (GETTEXT_PACKAGE,
-                                         "%d week ago", "%d weeks ago",
-                                         delta / WEEK), delta / WEEK);
-     *next_update = WEEK - (delta % WEEK);
-   }
-}
-
-/**
  * shell_global_get_monitors:
  * @global: the #ShellGlobal
  *
@@ -1617,39 +1520,6 @@ GSettings *
 shell_global_get_settings (ShellGlobal *global)
 {
   return global->settings;
-}
-
-static void
-shell_popup_menu_position_func (GtkMenu   *menu,
-                                int       *x,
-                                int       *y,
-                                gboolean  *push_in,
-                                gpointer   user_data)
-{
-  *x = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menu), "shell-menu-x"));
-  *y = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menu), "shell-menu-y"));
-}
-
-/**
- * shell_popup_menu:
- * @menu: a #GtkMenu
- * @button: mouse button that triggered the menu
- * @time: timestamp of event that triggered the menu
- * @menu_x: x coordinate to display the menu at
- * @menu_y: y coordinate to display the menu at
- *
- * Wraps gtk_menu_popup(), but using @menu_x, @menu_y for the location
- * rather than needing a callback.
- **/
-void
-shell_popup_menu (GtkMenu *menu, int button, guint32 time,
-                  int menu_x, int menu_y)
-{
-  g_object_set_data (G_OBJECT (menu), "shell-menu-x", GINT_TO_POINTER (menu_x));
-  g_object_set_data (G_OBJECT (menu), "shell-menu-y", GINT_TO_POINTER (menu_y));
-
-  gtk_menu_popup (menu, NULL, NULL, shell_popup_menu_position_func, NULL,
-                  button, time);
 }
 
 /**
