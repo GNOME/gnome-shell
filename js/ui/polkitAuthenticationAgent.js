@@ -71,7 +71,7 @@ AuthenticationDialog.prototype = {
                            { y_align: St.Align.START });
 
         this._subjectLabel = new St.Label({ style_class: 'polkit-dialog-headline',
-                                            text: _('Authentication Required') });
+                                            text: _("Authentication Required") });
 
         messageBox.add(this._subjectLabel,
                        { y_fill:  false,
@@ -105,7 +105,7 @@ AuthenticationDialog.prototype = {
         let userIsRoot = false;
         if (userName == 'root') {
             userIsRoot = true;
-            userRealName = _('Administrator');
+            userRealName = _("Administrator");
         }
 
         if (userIsRoot) {
@@ -139,7 +139,7 @@ AuthenticationDialog.prototype = {
         this._passwordLabel = new St.Label(({ style_class: 'polkit-dialog-password-label' }));
         this._passwordBox.add(this._passwordLabel);
         this._passwordEntry = new St.Entry({ style_class: 'polkit-dialog-password-entry',
-                                             text: _(''),
+                                             text: _(""),
                                              can_focus: true});
         this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
         this._passwordBox.add(this._passwordEntry,
@@ -169,11 +169,11 @@ AuthenticationDialog.prototype = {
         messageBox.add(this._nullMessageLabel);
         this._nullMessageLabel.show();
 
-        this.setButtons([{ label: _('Cancel'),
+        this.setButtons([{ label: _("Cancel"),
                            action: Lang.bind(this, this.cancel),
                            key:    Clutter.Escape
                          },
-                         { label:  _('Authenticate'),
+                         { label:  _("Authenticate"),
                            action: Lang.bind(this, this._onAuthenticateButtonPressed)
                          }]);
 
@@ -257,7 +257,7 @@ AuthenticationDialog.prototype = {
              * show "Sorry, that didn't work. Please try again."
              */
             if (!this._errorMessageLabel.visible && !this._wasDismissed) {
-                this._errorMessageLabel.set_text(_('Sorry, that didn\'t work. Please try again.'));
+                this._errorMessageLabel.set_text(_("Sorry, that didn\'t work. Please try again."));
                 this._errorMessageLabel.show();
                 this._infoMessageLabel.hide();
                 this._nullMessageLabel.hide();
@@ -269,7 +269,7 @@ AuthenticationDialog.prototype = {
     _onSessionRequest: function(session, request, echo_on) {
         // Cheap localization trick
         if (request == 'Password:')
-            this._passwordLabel.set_text(_('Password:'));
+            this._passwordLabel.set_text(_("Password:"));
         else
             this._passwordLabel.set_text(request);
 
