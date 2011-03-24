@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-22 01:35+0100\n"
-"PO-Revision-Date: 2011-03-22 01:36+0100\n"
+"PO-Revision-Date: 2011-03-24 01:13+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -710,10 +710,10 @@ msgstr "Caratteri grandi"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-# as on Android :P
+# su Android è Rilevabile :P
 #: ../js/ui/status/bluetooth.js:55
 msgid "Visibility"
-msgstr "Rilevabile"
+msgstr "Visibile"
 
 #: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
@@ -774,11 +774,11 @@ msgstr "Il dispositivo %s vuole accedere al servizio «%s»"
 
 #: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
-msgstr "Consenti sempre accesso"
+msgstr "Accorda sempre l'accesso"
 
 #: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
-msgstr "Consenti solo stavolta"
+msgstr "Accorda solo stavolta"
 
 #: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
@@ -810,7 +810,7 @@ msgstr "Non corrisponde"
 #: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
-msgstr "Richiesta associazione per %s"
+msgstr "Richiesta di associazione per %s"
 
 #: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
@@ -1180,10 +1180,8 @@ msgid "Default"
 msgstr "Predefinito"
 
 #: ../src/shell-polkit-authentication-agent.c:334
-#, fuzzy
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
-"Il dialogo di autenticazione è stato scartato|respinto|rimosso dall'utente"
+msgstr "Il dialogo di autenticazione è stato annullato dall'utente"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
