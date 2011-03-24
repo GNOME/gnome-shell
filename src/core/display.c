@@ -3528,7 +3528,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
    * grab the parent instead for moving.
    */
   if (meta_prefs_get_attach_modal_dialogs () &&
-      window->type == META_WINDOW_MODAL_DIALOG &&
+      window && window->type == META_WINDOW_MODAL_DIALOG &&
       meta_grab_op_is_moving (op))
     grab_window = meta_window_get_transient_for (window);
 
