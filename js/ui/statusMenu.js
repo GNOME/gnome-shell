@@ -160,7 +160,7 @@ StatusMenuButton.prototype = {
         if (!this._haveSuspend) {
             this._suspendOrPowerOffItem.updateText(_("Power Off..."), null);
         } else {
-            this._suspendOrPowerOffItem.updateText(_("Suspend"), ("Power Off..."));
+            this._suspendOrPowerOffItem.updateText(_("Suspend"), _("Power Off..."));
         }
     },
 
