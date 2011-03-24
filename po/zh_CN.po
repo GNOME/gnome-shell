@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-23 21:37+0800\n"
-"PO-Revision-Date: 2011-03-23 23:57+0800\n"
+"POT-Creation-Date: 2011-03-24 16:07+0800\n"
+"PO-Revision-Date: 2011-03-24 16:09+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -487,7 +487,8 @@ msgstr "系统将在 %d 秒后自动重启。"
 msgid "Restarting the system."
 msgstr "重启计算机。"
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "取消"
 
@@ -579,6 +580,26 @@ msgstr "连接到..."
 #: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "位置和设备"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "需要认证"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "管理员"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "认证"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "抱歉，您的输入有误。请重试。"
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "口令："
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1094,7 +1115,7 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/main.c:438
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "打印版本"
 
