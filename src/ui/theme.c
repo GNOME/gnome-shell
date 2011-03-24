@@ -1415,19 +1415,111 @@ meta_color_spec_new_gtk (MetaGtkColorComponent component,
   return spec;
 }
 
+/* Based on set_color() in gtkstyle.c */
+#define LIGHTNESS_MULT 1.3
+#define DARKNESS_MULT  0.7
+static void
+meta_set_color_from_style (GdkColor              *color,
+                           GtkStyleContext       *context,
+                           GtkStateType           state,
+                           MetaGtkColorComponent  component)
+{
+  GdkRGBA *rgba_color = NULL;
+  GtkStateFlags flags;
+
+  switch (state)
+    {
+    case GTK_STATE_ACTIVE:
+      flags = GTK_STATE_FLAG_ACTIVE;
+      break;
+    case GTK_STATE_PRELIGHT:
+      flags = GTK_STATE_FLAG_PRELIGHT;
+      break;
+    case GTK_STATE_SELECTED:
+      flags = GTK_STATE_FLAG_SELECTED;
+      break;
+    case GTK_STATE_INSENSITIVE:
+      flags = GTK_STATE_FLAG_INSENSITIVE;
+      break;
+    default:
+      flags = 0;
+    }
+
+  switch (component)
+    {
+    case META_GTK_COLOR_BG:
+    case META_GTK_COLOR_BASE:
+    case META_GTK_COLOR_MID:
+    case META_GTK_COLOR_LIGHT:
+    case META_GTK_COLOR_DARK:
+      gtk_style_context_get (context, flags,
+                             "background-color", &rgba_color,
+                             NULL);
+      break;
+    case META_GTK_COLOR_FG:
+    case META_GTK_COLOR_TEXT:
+    case META_GTK_COLOR_TEXT_AA:
+      gtk_style_context_get (context, flags,
+                             "color", &rgba_color,
+                             NULL);
+      break;
+    case META_GTK_COLOR_LAST:
+      g_assert_not_reached ();
+      break;
+    }
+
+  if (rgba_color)
+    {
+      color->pixel = 0;
+      color->red = CLAMP ((guint) (rgba_color->red * 65535), 0, 65535);
+      color->green = CLAMP ((guint) (rgba_color->green * 65535), 0, 65535);
+      color->blue = CLAMP ((guint) (rgba_color->blue * 65535), 0, 65535);
+      gdk_rgba_free (rgba_color);
+    }
+  else
+    {
+      meta_warning (_("Failed to retrieve color %s[%s] from GTK+ theme.\n"),
+                    meta_color_component_to_string (component),
+                    meta_gtk_state_to_string (state));
+      color->pixel = 0;
+      color->red = component == META_GTK_COLOR_TEXT ? 0 : 65535;
+      color->green = 0;
+      color->blue = component == META_GTK_COLOR_TEXT ? 0 : 65535;
+    }
+
+  if (component == META_GTK_COLOR_LIGHT)
+    gtk_style_shade (color, color, LIGHTNESS_MULT);
+  else if (component == META_GTK_COLOR_DARK)
+    gtk_style_shade (color, color, DARKNESS_MULT);
+  else if (component == META_GTK_COLOR_MID)
+    {
+      GdkColor light, dark;
+
+      gtk_style_shade (color, &light, LIGHTNESS_MULT);
+      gtk_style_shade (color, &dark, DARKNESS_MULT);
+
+      color->red = (light.red + dark.red) / 2;
+      color->green = (light.green + dark.green) / 2;
+      color->blue = (light.blue + dark.blue) / 2;
+    }
+  else if (component == META_GTK_COLOR_TEXT_AA)
+    {
+      GdkColor base;
+
+      meta_set_color_from_style (&base, context, state, META_GTK_COLOR_BASE);
+      color->red = (color->red + base.red) / 2;
+      color->green = (color->green + base.green) / 2;
+      color->blue = (color->blue + base.blue) / 2;
+    }
+}
+
 void
 meta_color_spec_render (MetaColorSpec   *spec,
                         GtkStyleContext *context,
                         GdkColor        *color)
 {
-  GtkStyle *style;
-
   g_return_if_fail (spec != NULL);
   g_return_if_fail (GTK_IS_STYLE_CONTEXT (context));
-
-  style = g_object_new (GTK_TYPE_STYLE,
-                        "context", context,
-                        NULL);
 
   switch (spec->type)
     {
@@ -1436,36 +1528,10 @@ meta_color_spec_render (MetaColorSpec   *spec,
       break;
 
     case META_COLOR_SPEC_GTK:
-      switch (spec->data.gtk.component)
-        {
-        case META_GTK_COLOR_BG:
-          *color = style->bg[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_FG:
-          *color = style->fg[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_BASE:
-          *color = style->base[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_TEXT:
-          *color = style->text[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_LIGHT:
-          *color = style->light[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_DARK:
-          *color = style->dark[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_MID:
-          *color = style->mid[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_TEXT_AA:
-          *color = style->text_aa[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_LAST:
-          g_assert_not_reached ();
-          break;
-        }
+      meta_set_color_from_style (color,
+                                 context,
+                                 spec->data.gtk.state,
+                                 spec->data.gtk.component);
       break;
 
     case META_COLOR_SPEC_BLEND:
@@ -1494,8 +1560,6 @@ meta_color_spec_render (MetaColorSpec   *spec,
       }
       break;
     }
-
-  g_object_unref (style);
 }
 
 /**
