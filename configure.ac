@@ -52,8 +52,8 @@ AC_MSG_CHECKING([for GStreamer (needed for recording functionality)])
 if $PKG_CONFIG --exists gstreamer-0.10 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
-   recorder_modules="gstreamer-0.10 gstreamer-base-0.10 xfixes x11"
-   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0)
+   recorder_modules="gstreamer-0.10 gstreamer-base-0.10 x11"
+   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0 xfixes)
 else
    AC_MSG_RESULT(no)
 fi
@@ -89,7 +89,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
 			       libcanberra
                                telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
                                telepathy-logger-0.2 >= $TELEPATHY_LOGGER_MIN_VERSION
-                               polkit-agent-1 >= $POLKIT_MIN_VERSION)
+                               polkit-agent-1 >= $POLKIT_MIN_VERSION xfixes)
 
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
 
@@ -112,7 +112,7 @@ saved_LIBS=$LIBS
 CFLAGS=$GNOME_SHELL_CFLAGS
 LIBS=$GNOME_SHELL_LIBS
 # sn_startup_sequence_get_application_id, we can replace with a version check later
-AC_CHECK_FUNCS(JS_NewGlobalObject sn_startup_sequence_get_application_id)
+AC_CHECK_FUNCS(JS_NewGlobalObject sn_startup_sequence_get_application_id XFixesCreatePointerBarrier)
 CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 
