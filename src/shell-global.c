@@ -153,7 +153,7 @@ shell_global_get_property(GObject         *object,
   switch (prop_id)
     {
     case PROP_OVERLAY_GROUP:
-      g_value_set_object (value, meta_plugin_get_overlay_group (global->plugin));
+      g_value_set_object (value, meta_get_overlay_group_for_screen (global->meta_screen));
       break;
     case PROP_SCREEN:
       g_value_set_object (value, global->meta_screen);
@@ -168,7 +168,7 @@ shell_global_get_property(GObject         *object,
       {
         int width, height;
 
-        meta_plugin_query_screen_size (global->plugin, &width, &height);
+        meta_screen_get_size (global->meta_screen, &width, &height);
         g_value_set_int (value, width);
       }
       break;
@@ -176,7 +176,7 @@ shell_global_get_property(GObject         *object,
       {
         int width, height;
 
-        meta_plugin_query_screen_size (global->plugin, &width, &height);
+        meta_screen_get_size (global->meta_screen, &width, &height);
         g_value_set_int (value, height);
       }
       break;
@@ -187,10 +187,10 @@ shell_global_get_property(GObject         *object,
       g_value_set_enum (value, global->input_mode);
       break;
     case PROP_WINDOW_GROUP:
-      g_value_set_object (value, meta_plugin_get_window_group (global->plugin));
+      g_value_set_object (value, meta_get_window_group_for_screen (global->meta_screen));
       break;
     case PROP_BACKGROUND_ACTOR:
-      g_value_set_object (value, meta_plugin_get_background_actor (global->plugin));
+      g_value_set_object (value, meta_get_background_actor_for_screen (global->meta_screen));
       break;
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
@@ -702,7 +702,7 @@ shell_global_get_window_actors (ShellGlobal *global)
 {
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
 
-  return meta_plugin_get_window_actors (global->plugin);
+  return meta_get_window_actors (global->meta_screen);
 }
 
 static void
