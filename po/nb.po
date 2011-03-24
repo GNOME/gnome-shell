@@ -4,12 +4,13 @@
 #
 # Kjartan Maraas <kmaraas@gnome.org>, 2009-2011.
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
+#: ../js/ui/polkitAuthenticationAgent.js:142
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-17 09:36+0100\n"
-"PO-Revision-Date: 2011-03-17 09:44+0100\n"
+"POT-Creation-Date: 2011-03-23 21:46+0100\n"
+"PO-Revision-Date: 2011-03-23 21:47+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -163,27 +164,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "INNSTILLINGER"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -343,7 +344,7 @@ msgstr "Denne uken"
 msgid "Next week"
 msgstr "Neste uke"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Fjern"
 
@@ -411,7 +412,7 @@ msgstr "SISTE OPPFØRINGER"
 msgid "Log Out %s"
 msgstr "Logg ut %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Logg ut"
 
@@ -434,47 +435,46 @@ msgstr "Du vil bli logget ut automatisk om %d sekunder."
 msgid "Logging out of the system."
 msgstr "Logger ut av systemet"
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Avslutt"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Klikk Avslutt for å avslutte disse programmene og stenge ned systemet."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Slå av"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Systemet vil slås av automatisk om %d sekunder."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Klikk «Slå av» for å avslutte disse programmene og logge ut av systemet."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "Systemet vil slås av automatisk om %d sekunder."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
 msgstr "Slår av systemet."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Start på nytt"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Klikk Start på nytt for å avslutte disse programmene og starte systemet på "
 "nytt."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Systemet vil starte på nytt automatisk om %d sekunder."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Starter systemet på nytt."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Bekreft"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:465
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -508,47 +508,47 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Systeminformasjon"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Vinduer"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Programmer"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Favoritter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:514
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:873
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:974
-msgid "Panel"
-msgstr "Panel"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Topp-panel"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -567,60 +567,80 @@ msgstr "Koble til …"
 msgid "PLACES & DEVICES"
 msgstr "STEDER & ENHETER"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Autentisering kreves"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrator"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autentiser"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Beklager, det virket ikke. Vennligst prøv igjen."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Passord:"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Oppgi en kommando:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Søker …"
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Ingen treff."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Slå av …"
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Tilgjengelig"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Min konto"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Systeminnstillinger"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Logg ut …"
 
@@ -666,9 +686,9 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:236
-#: ../js/ui/status/bluetooth.js:332 ../js/ui/status/bluetooth.js:366
-#: ../js/ui/status/bluetooth.js:406 ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -688,94 +708,94 @@ msgstr "Sett opp en ny enhet …"
 msgid "Bluetooth Settings"
 msgstr "Innstillinger for Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:187
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "Tilkobling"
 
-#: ../js/ui/status/bluetooth.js:223
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Send filer …"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Bla gjennom filer …"
 
-#: ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "Feil under lesing av enhet"
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Kan ikke bla gjennom forespurt enhet. Feilen er «%s»"
 
-#: ../js/ui/status/bluetooth.js:246
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "Innstillinger for tastatur"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "Innstillinger for mus"
 
-#: ../js/ui/status/bluetooth.js:258 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Innstillinger for lyd"
 
-#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Forespørsel om autorisering fra %s"
 
-#: ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Enhet %s vil ha tilgang til tjenesten «%s»"
 
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "Alltid gi tilgang"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "Gi tilgang kun denne ene gangen"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Avvis"
 
-#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Bekreftelse for tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/status/bluetooth.js:447
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Enhet %s vil koble seg sammen med denne datamaskinen"
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Vennligst bekreft om PIN «%s» er lik den som brukes på enheten."
 
-#: ../js/ui/status/bluetooth.js:416
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Stemmer overens"
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Stemmer ikke overens"
 
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Forespørsel om tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 
-#: ../js/ui/status/bluetooth.js:464
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "OK"
 
@@ -880,40 +900,40 @@ msgstr "VPN-tilkoblinger"
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1782
+#: ../js/ui/status/network.js:1783
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du er nå koblet til mobil bredbåndstilkobling «%s»"
 
-#: ../js/ui/status/network.js:1786
+#: ../js/ui/status/network.js:1787
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du er nå koblet til trådløst nettverk «%s»"
 
-#: ../js/ui/status/network.js:1790
+#: ../js/ui/status/network.js:1791
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du er nå koblet til kablet nettverk «%s»"
 
-#: ../js/ui/status/network.js:1794
+#: ../js/ui/status/network.js:1795
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du er nå koblet til virtuelt privat nettverk «%s»"
 
-#: ../js/ui/status/network.js:1799
+#: ../js/ui/status/network.js:1800
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du er nå koblet til «%s»"
 
-#: ../js/ui/status/network.js:1807
+#: ../js/ui/status/network.js:1808
 msgid "Connection established"
 msgstr "Tilkobling etablert"
 
-#: ../js/ui/status/network.js:1929
+#: ../js/ui/status/network.js:1930
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
-#: ../js/ui/status/network.js:2054
+#: ../js/ui/status/network.js:2055
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
@@ -1003,7 +1023,7 @@ msgstr "Nettbrett"
 msgid "Computer"
 msgstr "Datamaskin"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -1047,11 +1067,11 @@ msgstr "Sendt %X på %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:119
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "Skriv for å søke …"
 
-#: ../js/ui/viewSelector.js:139 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Søk"
 
@@ -1087,41 +1107,41 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/main.c:395
+#: ../src/main.c:438
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
-#: ../src/shell-app.c:442
+#: ../src/shell-app.c:454
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Klarte ikke å starte «%s»"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
