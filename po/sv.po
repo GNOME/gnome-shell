@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 22:53+0100\n"
+"POT-Creation-Date: 2011-03-24 23:04+0100\n"
 "PO-Revision-Date: 2011-03-24 23:04+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -26,12 +26,17 @@ msgid "Window management and application launching"
 msgstr "Fönsterhantering och programstarter"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
-msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "Tillåter åtkomst till interna verktyg för felsökning och övervakning med dialogen Alt-F2."
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Tillåter åtkomst till interna verktyg för felsökning och övervakning med "
+"dialogen Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr "Aktivera interna verktyg användbara för utvecklare och testare från Alt-F2"
+msgstr ""
+"Aktivera interna verktyg användbara för utvecklare och testare från Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
@@ -42,8 +47,12 @@ msgid "Framerate used for recording screencasts."
 msgstr "Bildfrekvens för inspelade skärminspelningar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded."
-msgstr "GNOME Shell-tillägg har en uuid-egenskap; denna nyckel listar tillägg som inte ska läsas in."
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"GNOME Shell-tillägg har en uuid-egenskap; denna nyckel listar tillägg som "
+"inte ska läsas in."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
@@ -71,8 +80,30 @@ msgstr "Lista över skrivbordsfil-id för favoritprogram"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
-msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-msgstr "Ställer in GStreamer-rörledningen som används för att koda inspelningar. Den följer det syntax som används för gst-launch. Rörledningen bör ha en oansluten sink pad där den inspelade videon spelas in. Den kommer vanligtvis har en oansluten source pad; utmatning från denna pad kommer att skrivas till utmatningsfilen. Dock kan rörledningen också ta hand om sin egna utmatning - detta kan användas för att skicka utmatningen till en icecast-server via shout2send eller liknande. När den inte är inställd eller inställd till ett tomt värde så kommer standardrörledningen att användas. Detta är för närvarande \"videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux\" och inspelningar till WEBM använder kodeken VP8. %T används som en platshållare för en gissning av det optimala trådantalet på systemet."
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+"Ställer in GStreamer-rörledningen som används för att koda inspelningar. Den "
+"följer det syntax som används för gst-launch. Rörledningen bör ha en "
+"oansluten sink pad där den inspelade videon spelas in. Den kommer vanligtvis "
+"har en oansluten source pad; utmatning från denna pad kommer att skrivas "
+"till utmatningsfilen. Dock kan rörledningen också ta hand om sin egna "
+"utmatning - detta kan användas för att skicka utmatningen till en icecast-"
+"server via shout2send eller liknande. När den inte är inställd eller "
+"inställd till ett tomt värde så kommer standardrörledningen att användas. "
+"Detta är för närvarande \"videorate ! vp8enc quality=10 speed=2 threads=%T ! "
+"queue ! webmmux\" och inspelningar till WEBM använder kodeken VP8. %T "
+"används som en platshållare för en gissning av det optimala trådantalet på "
+"systemet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -87,24 +118,46 @@ msgid "Show time with seconds"
 msgstr "Visa tid med sekunder"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
-msgstr "Programmen som motsvarar dessa identifierare kommer att visas i favoritområdet."
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programmen som motsvarar dessa identifierare kommer att visas i "
+"favoritområdet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
-msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
-msgstr "Filnamnet för skärminspelningar kommer att vara ett unikt filnamn baserat på aktuellt datum och använder denna filändelse. Den bör ändras när inspelningar sker i andra containerformat."
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Filnamnet för skärminspelningar kommer att vara ett unikt filnamn baserat på "
+"aktuellt datum och använder denna filändelse. Den bör ändras när "
+"inspelningar sker i andra containerformat."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
-msgstr "Bildfrekvensen för skärminspelningen som spelats in av GNOME Shells skärminspelare i bilder per sekund."
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Bildfrekvensen för skärminspelningen som spelats in av GNOME Shells "
+"skärminspelare i bilder per sekund."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Den gstreamer-rörledning som användes för att koda skärminspelningen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
-msgstr "Skalet övervakar normalt sett aktiva program för att kunna visa de mest använda (t.ex. i programstartare). Då denna data kommer att hållas privat så kan du inaktivera detta av integritetsskäl. Observera att göra det kommer inte ta bort redan sparat data."
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Skalet övervakar normalt sett aktiva program för att kunna visa de mest "
+"använda (t.ex. i programstartare). Då denna data kommer att hållas privat så "
+"kan du inaktivera detta av integritetsskäl. Observera att göra det kommer "
+"inte ta bort redan sparat data."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
@@ -314,8 +367,7 @@ msgstr "Denna vecka"
 msgid "Next week"
 msgstr "Nästa vecka"
 
-#: ../js/ui/dash.js:174
-#: ../js/ui/messageTray.js:994
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -383,14 +435,14 @@ msgstr "TIDIGARE OBJEKT"
 msgid "Log Out %s"
 msgstr "Logga ut %s"
 
-#: ../js/ui/endSessionDialog.js:64
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Logga ut"
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Klicka på Logga ut för att avsluta dessa program och logga ut från systemet."
+msgstr ""
+"Klicka på Logga ut för att avsluta dessa program och logga ut från systemet."
 
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
@@ -406,14 +458,14 @@ msgstr "Du kommer att loggas ut automatiskt om %d sekunder."
 msgid "Logging out of the system."
 msgstr "Loggar ut från systemet."
 
-#: ../js/ui/endSessionDialog.js:75
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
 msgid "Power Off"
 msgstr "Stäng av"
 
 #: ../js/ui/endSessionDialog.js:76
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Klicka på Stäng av för att avsluta dessa program och stänga av systemet."
+msgstr ""
+"Klicka på Stäng av för att avsluta dessa program och stänga av systemet."
 
 #: ../js/ui/endSessionDialog.js:77
 #, c-format
@@ -424,15 +476,15 @@ msgstr "Systemet kommer att stängas av automatiskt om %d sekunder."
 msgid "Powering off the system."
 msgstr "Stänger av systemet."
 
-#: ../js/ui/endSessionDialog.js:80
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
 #: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Starta om"
 
 #: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "Klicka på Starta om för att avsluta dessa program och starta om systemet."
+msgstr ""
+"Klicka på Starta om för att avsluta dessa program och starta om systemet."
 
 #: ../js/ui/endSessionDialog.js:90
 #, c-format
@@ -443,8 +495,7 @@ msgstr "Systemet kommer att startas om automatiskt om %d sekunder."
 msgid "Restarting the system."
 msgstr "Starta om systemet."
 
-#: ../js/ui/endSessionDialog.js:415
-#: ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Avbryt"
@@ -459,8 +510,7 @@ msgstr "Aktiverad"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:627
-#: ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Inaktiverad"
 
@@ -580,14 +630,12 @@ msgstr "Söker..."
 msgid "No matching results."
 msgstr "Inga sökträffar."
 
-#: ../js/ui/statusMenu.js:161
-#: ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
 #: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Stäng av..."
 
-#: ../js/ui/statusMenu.js:163
-#: ../js/ui/statusMenu.js:227
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Vänteläge"
 
@@ -661,12 +709,9 @@ msgstr "Hög kontrast"
 msgid "Large Text"
 msgstr "Stor text"
 
-#: ../js/ui/status/bluetooth.js:42
-#: ../js/ui/status/bluetooth.js:237
-#: ../js/ui/status/bluetooth.js:333
-#: ../js/ui/status/bluetooth.js:367
-#: ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -715,8 +760,7 @@ msgstr "Tangentbordsinställningar"
 msgid "Mouse Settings"
 msgstr "Musinställningar"
 
-#: ../js/ui/status/bluetooth.js:259
-#: ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Ljudinställningar"
 
@@ -747,8 +791,7 @@ msgstr "Neka"
 msgid "Pairing confirmation for %s"
 msgstr "Bekräftelse av ihopparning för %s"
 
-#: ../js/ui/status/bluetooth.js:414
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Enheten %s vill paras ihop med denna dator"
@@ -787,8 +830,7 @@ msgstr "Visa tangentbordslayout..."
 msgid "Localization Settings"
 msgstr "Språkinställningar"
 
-#: ../js/ui/status/network.js:102
-#: ../js/ui/status/network.js:1393
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
 msgid "<unknown>"
 msgstr "<okänd>"
 
@@ -823,8 +865,7 @@ msgstr "anslutningen misslyckades"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571
-#: ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
 msgid "Connected (private)"
 msgstr "Ansluten (privat)"
 
@@ -841,8 +882,7 @@ msgid "Auto dial-up"
 msgstr "Automatiskt uppringt nätverk"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
 #, c-format
 msgid "Auto %s"
 msgstr "Automatiskt %s"
@@ -1006,8 +1046,7 @@ msgstr "Pekdator"
 msgid "Computer"
 msgstr "Dator"
 
-#: ../js/ui/status/power.js:250
-#: ../src/shell-app-system.c:1088
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Okänt"
 
@@ -1055,8 +1094,7 @@ msgstr "Skickades klockan %X på %A"
 msgid "Type to search..."
 msgstr "Skriv för att söka..."
 
-#: ../js/ui/viewSelector.js:142
-#: ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Sök"
 
@@ -1172,90 +1210,128 @@ msgstr "%1$s: %2$s"
 #, fuzzy
 #~ msgid "Shut Down"
 #~ msgstr "Stäng av..."
+
 #~ msgid "Screen Reader"
 #~ msgstr "Skärmläsare"
+
 #~ msgid "Screen Keyboard"
 #~ msgstr "Skärmtangentbord"
+
 #~ msgid "Clock"
 #~ msgstr "Klocka"
+
 #~ msgid "Customize the panel clock"
 #~ msgstr "Anpassa panelklockan"
+
 #~ msgid "Custom format of the clock"
 #~ msgstr "Anpassat format för klockan"
+
 #~ msgid "Hour format"
 #~ msgstr "Timmesformat"
+
 #~ msgid ""
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
 #~ "Om true och formatet antingen är \"12-hour\" eller \"24-hour\", visa "
 #~ "sekunder i tiden."
+
 #~ msgid "Enable lens mode"
 #~ msgstr "Aktivera linsläge"
+
 #~ msgid "Magnification factor"
 #~ msgstr "Förstoringsfaktor"
+
 #~ msgid "Screen position"
 #~ msgstr "Skärmposition"
+
 #~ msgid "Clock Format"
 #~ msgstr "Klockformat"
+
 #~ msgid "Clock Preferences"
 #~ msgstr "Klockinställningar"
+
 #~ msgid "Panel Display"
 #~ msgstr "Panelvisning"
+
 #~ msgid "Show seco_nds"
 #~ msgstr "Visa seku_nder"
+
 #~ msgid "Show the _date"
 #~ msgstr "Visa _datum"
+
 #~ msgid "_12 hour format"
 #~ msgstr "_12-timmarsformat"
+
 #~ msgid "_24 hour format"
 #~ msgstr "_24-timmarsformat"
+
 #~ msgid "PREFERENCES"
 #~ msgstr "INSTÄLLNINGAR"
+
 #~ msgid "Preferences"
 #~ msgstr "Inställningar"
+
 #~ msgid "Search your computer"
 #~ msgstr "Sök i din dator"
+
 #~ msgid ""
 #~ "Can't add a new workspace because maximum workspaces limit has been "
 #~ "reached."
 #~ msgstr ""
 #~ "Kan inte lägga till en ny arbetsyta eftersom maximalt antal arbetsytor "
 #~ "har uppnåtts."
+
 #~ msgid "Can't remove the first workspace."
 #~ msgstr "Kan inte ta bort första arbetsytan."
+
 #~ msgid "Drag here to add favorites"
 #~ msgstr "Dra hit för att lägga till favorit"
+
 #~ msgid "Find"
 #~ msgstr "Sök"
+
 #~ msgid "ON"
 #~ msgstr "PÅ"
+
 #~ msgid "OFF"
 #~ msgstr "AV"
+
 #~ msgid "Invisible"
 #~ msgstr "Osynlig"
+
 #~ msgid "PLACES"
 #~ msgstr "PLATSER"
+
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "SÖKRESULTAT"
+
 #~ msgid "Recent Documents"
 #~ msgstr "Senaste dokument"
+
 #~ msgid "(see all)"
 #~ msgstr "(se alla)"
+
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Kan inte låsa skärmen: %s"
+
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
 #~ msgstr "Kan inte temporärt ställa in skärmsläckaren till blank skärm: %s"
+
 #~ msgid "Can't logout: %s"
 #~ msgstr "Kan inte logga ut: %s"
+
 #~ msgid "Sidebar"
 #~ msgstr "Sidopanel"
+
 #~ msgid "Browse"
 #~ msgstr "Bläddra"
+
 #~ msgid "Find apps or documents"
 #~ msgstr "Hitta program eller dokument"
+
 #~ msgid "DOCUMENTS"
 #~ msgstr "DOKUMENT"
+
 #~ msgid "The user manager object this user is controlled by."
 #~ msgstr "Användarhanteringsobjektet som denna användare styrs av."
-
