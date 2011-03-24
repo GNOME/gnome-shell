@@ -249,6 +249,8 @@ Source.prototype = {
         let pendingTpMessages = this._channel.get_pending_messages();
         let pendingMessages = pendingTpMessages.map(function (tpMessage) { return makeMessageFromTpMessage(tpMessage, NotificationDirection.RECEIVED); });
 
+        let showTimestamp = false;
+
         for (let i = 0; i < logMessages.length; i++) {
             let logMessage = logMessages[i];
             let isPending = false;
@@ -262,16 +264,17 @@ Source.prototype = {
                 }
             }
 
-            if (!isPending)
+            if (!isPending) {
+                showTimestamp = true;
                 this._notification.appendMessage(logMessage, true);
+            }
         }
+
+        if (showTimestamp)
+            this._notification.appendTimestamp();
 
         for (let i = 0; i < pendingMessages.length; i++)
             this._notification.appendMessage(pendingMessages[i], true);
-
-        // Only show the timestamp if we have at least one message.
-        if (pendingMessages.length > 0 || logMessages.length > 0)
-            this._notification.appendTimestamp();
 
         if (pendingMessages.length > 0)
             this.notify();
