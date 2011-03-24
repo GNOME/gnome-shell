@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-23 16:06+0200\n"
-"PO-Revision-Date: 2011-03-23 16:10+0300\n"
+"POT-Creation-Date: 2011-03-24 23:56+0200\n"
+"PO-Revision-Date: 2011-03-24 23:59+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -495,7 +495,8 @@ msgstr "Система автоматично перезапуститься ч�
 msgid "Restarting the system."
 msgstr "Перезапуск системи."
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -588,6 +589,26 @@ msgstr "З'єднатися з…"
 msgid "PLACES & DEVICES"
 msgstr "МІСЦЯ ТА ПРИСТРОЇ"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Потрібна автентифікація"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Адміністратор"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Аутентифікація"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Вибачте, це не працює. Спробуйте ще."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Пароль:"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -609,7 +630,8 @@ msgstr "Пошук…"
 msgid "No matching results."
 msgstr "Нема збігів."
 
-#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Вимкнення живлення…"
 
@@ -1114,7 +1136,7 @@ msgstr[2] "%u входів"
 msgid "System Sounds"
 msgstr "Системні звуки"
 
-#: ../src/main.c:438
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Показати версію"
 
