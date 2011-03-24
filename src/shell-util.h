@@ -8,34 +8,38 @@
 
 G_BEGIN_DECLS
 
-char *shell_util_get_label_for_uri (const char *text_uri);
-GIcon *shell_util_get_icon_for_uri (const char *text_uri);
-GIcon *shell_util_icon_from_string (const char *string, GError **error);
-void   shell_util_set_hidden_from_pick (ClutterActor *actor, gboolean hidden);
+char    *shell_util_get_label_for_uri          (const char       *text_uri);
+GIcon   *shell_util_get_icon_for_uri           (const char       *text_uri);
+GIcon   *shell_util_icon_from_string           (const char       *string,
+                                                GError          **error);
 
-void shell_util_get_transformed_allocation (ClutterActor    *actor,
-                                            ClutterActorBox *box);
+void     shell_util_set_hidden_from_pick       (ClutterActor     *actor,
+                                                gboolean          hidden);
 
-char *shell_util_format_date (const char *format,
-                              gint64      time_ms);
+void     shell_util_get_transformed_allocation (ClutterActor     *actor,
+                                                ClutterActorBox  *box);
 
-ClutterModifierType shell_get_event_state (ClutterEvent *event);
+char    *shell_util_format_date                (const char       *format,
+                                                gint64            time_ms);
 
-gboolean shell_write_string_to_stream (GOutputStream *stream,
-                                       const char    *str,
-                                       GError       **error);
+ClutterModifierType
+         shell_get_event_state                 (ClutterEvent     *event);
 
-char *shell_get_file_contents_utf8_sync (const char *path,
-                                         GError    **error);
+gboolean shell_write_string_to_stream          (GOutputStream    *stream,
+                                                const char       *str,
+                                                GError          **error);
 
-void shell_breakpoint (void);
+char    *shell_get_file_contents_utf8_sync     (const char       *path,
+                                                GError          **error);
 
-gboolean shell_parse_search_provider (const char    *data,
-                                      char         **name,
-                                      char         **url,
-                                      GList        **langs,
-                                      char         **icon_data_uri,
-                                      GError       **error);
+void     shell_breakpoint                      (void);
+
+gboolean shell_parse_search_provider           (const char       *data,
+                                                char            **name,
+                                                char            **url,
+                                                GList           **langs,
+                                                char            **icon_data_uri,
+                                                GError          **error);
 
 G_END_DECLS
 

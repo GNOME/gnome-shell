@@ -25,32 +25,26 @@ struct _ShellGlobalClass
   GObjectClass parent_class;
 };
 
-GType            shell_global_get_type            (void) G_GNUC_CONST;
+GType shell_global_get_type (void) G_GNUC_CONST;
 
-ShellGlobal *shell_global_get (void);
+ShellGlobal   *shell_global_get                       (void);
 
-typedef enum {
-  SHELL_CURSOR_DND_IN_DRAG,
-  SHELL_CURSOR_DND_UNSUPPORTED_TARGET,
-  SHELL_CURSOR_DND_MOVE,
-  SHELL_CURSOR_DND_COPY,
-  SHELL_CURSOR_POINTING_HAND
-} ShellCursor;
+MetaScreen    *shell_global_get_screen                (ShellGlobal *global);
+GdkScreen     *shell_global_get_gdk_screen            (ShellGlobal *global);
+GList         *shell_global_get_window_actors         (ShellGlobal *global);
+GSList        *shell_global_get_monitors              (ShellGlobal *global);
+MetaRectangle *shell_global_get_primary_monitor       (ShellGlobal *global);
+int            shell_global_get_primary_monitor_index (ShellGlobal *global);
+MetaRectangle *shell_global_get_focus_monitor         (ShellGlobal *global);
+GSettings     *shell_global_get_settings              (ShellGlobal *global);
+guint32        shell_global_get_current_time          (ShellGlobal *global);
 
-void shell_global_set_cursor (ShellGlobal *global,
-                              ShellCursor type);
 
-void shell_global_unset_cursor (ShellGlobal  *global);
-
-MetaScreen *shell_global_get_screen (ShellGlobal  *global);
-
-GdkScreen *shell_global_get_gdk_screen (ShellGlobal  *global);
-
-gboolean shell_global_add_extension_importer (ShellGlobal *global,
-                                              const char  *target_object_script,
-                                              const char  *target_property,
-                                              const char  *directory,
-                                              GError     **error);
+/* Input/event handling */
+gboolean shell_global_begin_modal            (ShellGlobal         *global,
+                                              guint32              timestamp);
+void     shell_global_end_modal              (ShellGlobal         *global,
+                                              guint32              timestamp);
 
 typedef enum {
   SHELL_STAGE_INPUT_MODE_NONREACTIVE,
@@ -59,76 +53,88 @@ typedef enum {
   SHELL_STAGE_INPUT_MODE_FULLSCREEN
 } ShellStageInputMode;
 
-void shell_global_set_stage_input_mode   (ShellGlobal         *global,
-					  ShellStageInputMode  mode);
-void shell_global_set_stage_input_region (ShellGlobal         *global,
-					  GSList              *rectangles);
+void     shell_global_set_stage_input_mode   (ShellGlobal         *global,
+                                              ShellStageInputMode  mode);
+void     shell_global_set_stage_input_region (ShellGlobal         *global,
+                                              GSList              *rectangles);
 
-GList *shell_global_get_window_actors (ShellGlobal *global);
+/* X utilities */
+typedef enum {
+  SHELL_CURSOR_DND_IN_DRAG,
+  SHELL_CURSOR_DND_UNSUPPORTED_TARGET,
+  SHELL_CURSOR_DND_MOVE,
+  SHELL_CURSOR_DND_COPY,
+  SHELL_CURSOR_POINTING_HAND
+} ShellCursor;
 
-gboolean shell_global_begin_modal (ShellGlobal *global,
-				   guint32      timestamp);
-void     shell_global_end_modal   (ShellGlobal *global,
-				   guint32      timestamp);
+void    shell_global_set_cursor              (ShellGlobal         *global,
+                                              ShellCursor          type);
+void    shell_global_unset_cursor            (ShellGlobal         *global);
 
-void shell_global_reexec_self (ShellGlobal *global);
+guint32 shell_global_create_pointer_barrier  (ShellGlobal         *global,
+                                              int                  x1,
+                                              int                  y1,
+                                              int                  x2,
+                                              int                  y2,
+                                              int                  directions);
+void    shell_global_destroy_pointer_barrier (ShellGlobal         *global,
+                                              guint32              barrier);
 
-void shell_global_gc (ShellGlobal *global);
+void    shell_global_get_pointer             (ShellGlobal         *global,
+                                              int                 *x,
+                                              int                 *y,
+                                              ClutterModifierType *mods);
 
-void shell_global_maybe_gc (ShellGlobal *global);
 
-GSList       *shell_global_get_monitors        (ShellGlobal  *global);
-MetaRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
-int            shell_global_get_primary_monitor_index (ShellGlobal  *global);
-MetaRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
-
-guint32 shell_global_create_pointer_barrier (ShellGlobal *global,
-                                             int x1, int y1, int x2, int y2,
-                                             int directions);
-void    shell_global_destroy_pointer_barrier (ShellGlobal *global,
-                                              guint32 barrier);
-
-void shell_global_get_pointer  (ShellGlobal         *global,
-                                int                 *x,
-                                int                 *y,
-                                ClutterModifierType *mods);
-void shell_global_sync_pointer (ShellGlobal         *global);
-
-GSettings *shell_global_get_settings (ShellGlobal *global);
-
-guint32 shell_global_get_current_time (ShellGlobal *global);
-
-GAppLaunchContext *shell_global_create_app_launch_context (ShellGlobal *global);
+/* JavaScript utilities */
+void     shell_global_gc                   (ShellGlobal *global);
+void     shell_global_maybe_gc             (ShellGlobal *global);
 
 gboolean shell_global_set_property_mutable (ShellGlobal *global,
                                             const char  *object,
                                             const char  *property,
                                             gboolean     mutable);
 
-void shell_global_begin_work     (ShellGlobal         *global);
-void shell_global_end_work       (ShellGlobal         *global);
+
+/* Run-at-leisure API */
+void shell_global_begin_work     (ShellGlobal          *global);
+void shell_global_end_work       (ShellGlobal          *global);
 
 typedef void (*ShellLeisureFunction) (gpointer data);
 
-void shell_global_run_at_leisure (ShellGlobal         *global,
-                                  ShellLeisureFunction func,
-                                  gpointer             user_data,
-                                  GDestroyNotify       notify);
-
-void shell_global_play_theme_sound (ShellGlobal       *global,
-                                    guint              id,
-                                    const char        *name);
-void shell_global_cancel_theme_sound (ShellGlobal     *global,
-                                      guint            id);
+void shell_global_run_at_leisure (ShellGlobal          *global,
+                                  ShellLeisureFunction  func,
+                                  gpointer              user_data,
+                                  GDestroyNotify        notify);
 
 
-void shell_global_notify_error (ShellGlobal  *global,
-                                const char   *msg,
-                                const char   *details);
+/* Misc utilities / Shell API */
+gboolean shell_global_add_extension_importer    (ShellGlobal  *global,
+                                                 const char   *target_object_script,
+                                                 const char   *target_property,
+                                                 const char   *directory,
+                                                 GError      **error);
 
-void shell_global_init_xdnd (ShellGlobal *global);
+void     shell_global_sync_pointer              (ShellGlobal  *global);
 
-void shell_global_launch_calendar_server (ShellGlobal *global);
+GAppLaunchContext *
+         shell_global_create_app_launch_context (ShellGlobal  *global);
+
+void     shell_global_play_theme_sound          (ShellGlobal  *global,
+                                                 guint         id,
+                                                 const char   *name);
+void     shell_global_cancel_theme_sound        (ShellGlobal  *global,
+                                                 guint         id);
+
+void     shell_global_notify_error              (ShellGlobal  *global,
+                                                 const char   *msg,
+                                                 const char   *details);
+
+void     shell_global_init_xdnd                 (ShellGlobal  *global);
+
+void     shell_global_reexec_self               (ShellGlobal  *global);
+
+void     shell_global_launch_calendar_server    (ShellGlobal  *global);
 
 G_END_DECLS
 
