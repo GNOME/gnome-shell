@@ -139,7 +139,7 @@ AuthenticationDialog.prototype = {
         this._passwordLabel = new St.Label(({ style_class: 'polkit-dialog-password-label' }));
         this._passwordBox.add(this._passwordLabel);
         this._passwordEntry = new St.Entry({ style_class: 'polkit-dialog-password-entry',
-                                             text: _(""),
+                                             text: "",
                                              can_focus: true});
         this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
         this._passwordBox.add(this._passwordEntry,
