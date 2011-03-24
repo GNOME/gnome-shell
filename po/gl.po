@@ -6,13 +6,14 @@
 # Anton Meixome <certima@certima.net>, 2009.
 # Antón Méixome <meixome@certima.net>, 2009.
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011.
+# Fran Dieguez <frandieguez@gnome.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-22 21:17+0100\n"
-"PO-Revision-Date: 2011-03-22 21:18+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2011-03-24 09:50+0100\n"
+"PO-Revision-Date: 2011-03-24 09:51+0100\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
@@ -371,7 +372,7 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "A vindeira semana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:945
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -500,7 +501,8 @@ msgstr "O seu computador reiniciarase automaticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -534,29 +536,29 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:938
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2018
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Información do sistema"
 
-#: ../js/ui/overview.js:89
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Desfacer"
 
-#: ../js/ui/overview.js:184
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Xanelas"
 
-#: ../js/ui/overview.js:187
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Aplicativos"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:203
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Panel"
 
@@ -592,6 +594,26 @@ msgstr "Conectar con…"
 #: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "LUGARES E DISPOSITIVOS"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Autenticación requirida"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrador"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autenticar"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Desculpe, iso non funcionou. Ténteo de novo."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Contrasinal:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1113,7 +1135,7 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/main.c:438
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Imprimir versión"
 
