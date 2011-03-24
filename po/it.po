@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-22 01:35+0100\n"
-"PO-Revision-Date: 2011-03-24 01:13+0100\n"
+"POT-Creation-Date: 2011-03-24 22:46+0100\n"
+"PO-Revision-Date: 2011-03-24 22:58+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -202,15 +202,15 @@ msgstr "APPLICAZIONI"
 msgid "SETTINGS"
 msgstr "IMPOSTAZIONI"
 
-#: ../js/ui/appDisplay.js:620
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:623
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:624
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -372,7 +372,7 @@ msgstr "Questa settimana"
 msgid "Next week"
 msgstr "Prossima settimana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:944
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -440,7 +440,7 @@ msgstr "ELEMENTI RECENTI"
 msgid "Log Out %s"
 msgstr "Termina sessione di %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Termina sessione"
 
@@ -465,50 +465,45 @@ msgstr "La sessione verrà terminata automaticamente tra %d secondi."
 msgid "Logging out of the system."
 msgstr "Chiusura della sessione."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Arresta"
-
-# usato un termine diverso, magari si capisce meglio (LF)
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr ""
-"Fare clic su «Arresta» per chiudere queste applicazioni e spegnere il "
-"sistema."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Spegni"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Il sistema verrà arrestato automaticamente tra %d secondi."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Fare clic su «Spegni» per chiudere queste applicazioni e spegnere il sistema."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "Arresto del sistema."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "Il sistema verrà spento automaticamente tra %d secondi."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "pegnimento del sistema."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Riavvia"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Fare clic su «Riavvia» per chiudere queste applicazioni e riavviare il "
 "sistema."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Il sistema verrà riavviato automaticamente tra %d secondi."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Riavvio del sistema."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Conferma"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -544,30 +539,30 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:937
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "Apri"
 
-#: ../js/ui/messageTray.js:2008
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Informazione di sistema"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Annulla"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Finestre"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Applicazioni"
 
 # cruscotto?!?!?!?!?!?!?
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Dash"
 
@@ -579,11 +574,11 @@ msgstr "Chiudi %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:876
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Attività"
 
-#: ../js/ui/panel.js:977
+#: ../js/ui/panel.js:979
 msgid "Top Bar"
 msgstr "Barra superiore"
 
@@ -605,12 +600,32 @@ msgstr "Connetti a..."
 msgid "PLACES & DEVICES"
 msgstr "RISORSE E DISPOSITIVI"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Richiesta autenticazione"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Amministratore"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autentica"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr ""
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Password:"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -618,15 +633,16 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
-#: ../js/ui/searchDisplay.js:287
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Ricerca..."
 
-#: ../js/ui/searchDisplay.js:301
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Nessun risultato corrispondente."
 
-#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Spegni..."
 
@@ -1130,7 +1146,7 @@ msgstr[1] "%u ingressi"
 msgid "System Sounds"
 msgstr "Audio di sistema"
 
-#: ../src/main.c:397
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Stampa la versione"
 
@@ -1203,6 +1219,24 @@ msgstr "File system"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Arresta"
+
+# usato un termine diverso, magari si capisce meglio (LF)
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr ""
+#~ "Fare clic su «Arresta» per chiudere queste applicazioni e spegnere il "
+#~ "sistema."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Il sistema verrà arrestato automaticamente tra %d secondi."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Arresto del sistema."
+
+#~ msgid "Confirm"
+#~ msgstr "Conferma"
 
 #~ msgid "Panel"
 #~ msgstr "Pannello"
