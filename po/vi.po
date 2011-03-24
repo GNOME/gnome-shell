@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-24 08:03+0000\n"
-"PO-Revision-Date: 2011-03-05 15:41+0700\n"
+"PO-Revision-Date: 2011-03-25 00:31+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -222,7 +222,7 @@ msgstr "Đã bỏ đánh dấu ưa thích cho %s"
 #: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
-msgstr "Nguyên ngày"
+msgstr "Cả ngày"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:71
@@ -378,31 +378,31 @@ msgstr "Mở lịch"
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
-msgstr "%R:%S, %a %b %e"
+msgstr "%a %R:%S, %e %b"
 
 #: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
-msgstr "%R, %a %b %e"
+msgstr "%a %R, %e %b"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
-msgstr "%R:%S %a"
+msgstr "%a %R:%S"
 
 #: ../js/ui/dateMenu.js:170
 msgid "%a %R"
-msgstr "%R %a"
+msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %b %e, %l:%M:%S %p"
+msgstr "%a %e %b, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %b %e, %l:%M %p"
+msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
@@ -453,28 +453,25 @@ msgid "Logging out of the system."
 msgstr "Đang xuất khỏi hệ thống."
 
 #: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
-#, fuzzy
 #| msgid "Power Off..."
 msgid "Power Off"
-msgstr "Tắt máy..."
+msgstr "Tắt máy"
 
 #: ../js/ui/endSessionDialog.js:76
-#, fuzzy
 #| msgid "Click Log Out to quit these applications and log out of the system."
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Nhấn Đăng xuất để thoát những ứng dụng này và đăng xuất khỏi hệ thống."
+msgstr "Nhấn Tắt máy để thoát những ứng dụng này và tắt máy."
 
 #: ../js/ui/endSessionDialog.js:77
-#, fuzzy, c-format
+#, c-format
 #| msgid "The system will restart automatically in %d seconds."
 msgid "The system will power off automatically in %d seconds."
-msgstr "Hệ thống sẽ tự động khởi động lại sau %d giây."
+msgstr "Hệ thống sẽ tự động tắt sau %d giây."
 
 #: ../js/ui/endSessionDialog.js:78
-#, fuzzy
 #| msgid "Logging out of the system."
 msgid "Powering off the system."
-msgstr "Đang xuất khỏi hệ thống."
+msgstr "Tắt máy."
 
 #: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
 #: ../js/ui/endSessionDialog.js:93
@@ -532,7 +529,7 @@ msgstr "Trang Web"
 
 #: ../js/ui/messageTray.js:987
 msgid "Open"
-msgstr ""
+msgstr "Mở"
 
 #: ../js/ui/messageTray.js:2145
 msgid "System Information"
@@ -554,7 +551,7 @@ msgstr "Ứng dụng"
 #. the left of the overview
 #: ../js/ui/overview.js:205
 msgid "Dash"
-msgstr ""
+msgstr "Khung ứng dụng"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
 #: ../js/ui/panel.js:515
@@ -570,7 +567,7 @@ msgstr "Hoạt động"
 
 #: ../js/ui/panel.js:979
 msgid "Top Bar"
-msgstr ""
+msgstr "Thanh đỉnh"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -591,23 +588,23 @@ msgstr "ĐỊA ĐIỂM & THIẾT BỊ"
 
 #: ../js/ui/polkitAuthenticationAgent.js:74
 msgid "Authentication Required"
-msgstr ""
+msgstr "Cần xác thực"
 
 #: ../js/ui/polkitAuthenticationAgent.js:108
 msgid "Administrator"
-msgstr ""
+msgstr "Quản trị"
 
 #: ../js/ui/polkitAuthenticationAgent.js:176
 msgid "Authenticate"
-msgstr ""
+msgstr "Xác thực"
 
 #: ../js/ui/polkitAuthenticationAgent.js:260
 msgid "Sorry, that didn't work. Please try again."
-msgstr ""
+msgstr "Rất tiếc, không được. Vui lòng thử lại."
 
 #: ../js/ui/polkitAuthenticationAgent.js:272
 msgid "Password:"
-msgstr ""
+msgstr "Mật khẩu:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -830,153 +827,144 @@ msgid "Localization Settings"
 msgstr "Thiết lập bản địa hoá"
 
 #: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
-#, fuzzy
 #| msgid "Unknown"
 msgid "<unknown>"
-msgstr "Không biết"
+msgstr "<không rõ>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:295
-#, fuzzy
 #| msgid "Disabled"
 msgid "disabled"
-msgstr "Tắt"
+msgstr "tắt"
 
 #: ../js/ui/status/network.js:476
-#, fuzzy
 #| msgid "Connection"
 msgid "connecting..."
-msgstr "Kết nối"
+msgstr "đang kết nối..."
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:479
 msgid "authentication required"
-msgstr ""
+msgstr "cần xác thực"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:485
 msgid "cable unplugged"
-msgstr ""
+msgstr "cáp bị tháo"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
 #: ../js/ui/status/network.js:489
-#, fuzzy
 #| msgid "Available"
 msgid "unavailable"
-msgstr "Có mặt"
+msgstr "không có mặt"
 
 #: ../js/ui/status/network.js:491
-#, fuzzy
 #| msgid "Connection"
 msgid "connection failed"
-msgstr "Kết nối"
+msgstr "lỗi kết nối"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
 #: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
 msgid "Connected (private)"
-msgstr ""
+msgstr "Đã kết nối (riêng)"
 
 #: ../js/ui/status/network.js:636
 msgid "Auto Ethernet"
-msgstr ""
+msgstr "Ethernet tự động"
 
 #: ../js/ui/status/network.js:697
 msgid "Auto broadband"
-msgstr ""
+msgstr "Băng thông rộng tự động"
 
 #: ../js/ui/status/network.js:700
 msgid "Auto dial-up"
-msgstr ""
+msgstr "Quay số tự động"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
 #: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
-#, fuzzy, c-format
+#, c-format
 #| msgid "Quit %s"
 msgid "Auto %s"
-msgstr "Thoát %s"
+msgstr "%s tự động"
 
 #: ../js/ui/status/network.js:845
-#, fuzzy
 #| msgid "Bluetooth"
 msgid "Auto bluetooth"
-msgstr "Bluetooth"
+msgstr "Bluetooth tự động"
 
 #: ../js/ui/status/network.js:1355
 msgid "Auto wireless"
-msgstr ""
+msgstr "Mạng không dây tự động"
 
 #: ../js/ui/status/network.js:1413
 msgid "More..."
-msgstr ""
+msgstr "Nữa..."
 
 #: ../js/ui/status/network.js:1436
 msgid "Enable networking"
-msgstr ""
+msgstr "Bật nối mạng"
 
 #: ../js/ui/status/network.js:1448
 msgid "Wired"
-msgstr ""
+msgstr "Mạng dây"
 
 #: ../js/ui/status/network.js:1459
 msgid "Wireless"
-msgstr ""
+msgstr "Mạng không dây"
 
 #: ../js/ui/status/network.js:1469
 msgid "Mobile broadband"
-msgstr ""
+msgstr "Mạng băng thông rộng"
 
 #: ../js/ui/status/network.js:1479
-#, fuzzy
 #| msgid "Connection"
 msgid "VPN Connections"
-msgstr "Kết nối"
+msgstr "Kết nối VPN"
 
 #: ../js/ui/status/network.js:1488
-#, fuzzy
 #| msgid "Power Settings"
 msgid "Network Settings"
-msgstr "Thiết lập năng lượng"
+msgstr "Thiết lập mạng"
 
 #: ../js/ui/status/network.js:1783
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
-msgstr ""
+msgstr "Bạn đã kết nối vào mạng băng thông rộng '%s'"
 
 #: ../js/ui/status/network.js:1787
 #, c-format
 msgid "You're now connected to wireless network '%s'"
-msgstr ""
+msgstr "Bạn đã kết nối vào mạng không dây '%s'"
 
 #: ../js/ui/status/network.js:1791
 #, c-format
 msgid "You're now connected to wired network '%s'"
-msgstr ""
+msgstr "Bạn đã kết nối vào mạng (dây) '%s'"
 
 #: ../js/ui/status/network.js:1795
 #, c-format
 msgid "You're now connected to VPN network '%s'"
-msgstr ""
+msgstr "Bạn đã kết nối vào mạng VPN '%s'"
 
 #: ../js/ui/status/network.js:1800
 #, c-format
 msgid "You're now connected to '%s'"
-msgstr ""
+msgstr "Bạn đã kết nối vào '%s'"
 
 #: ../js/ui/status/network.js:1808
-#, fuzzy
 #| msgid "Connection"
 msgid "Connection established"
-msgstr "Kết nối"
+msgstr "Đã tạo kết nối"
 
 #: ../js/ui/status/network.js:1930
 msgid "Networking is disabled"
-msgstr ""
+msgstr "Mạng bị tắt"
 
 #: ../js/ui/status/network.js:2055
 msgid "Network Manager"
-msgstr ""
+msgstr "Trình quản lý mạng"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -1144,13 +1132,13 @@ msgstr "Âm thanh hệ thống"
 
 #: ../src/main.c:446
 msgid "Print version"
-msgstr ""
+msgstr "In phiên bản"
 
 #: ../src/shell-app.c:454
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to unmount '%s'"
 msgid "Failed to launch '%s'"
-msgstr "Lỗi bỏ gắn '%s'"
+msgstr "Lỗi chạy '%s'"
 
 #: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
@@ -1182,11 +1170,11 @@ msgstr[0] "%d tuần trước"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr ""
+msgstr "Vương quốc Anh"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
-msgstr ""
+msgstr "Mặc định"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
