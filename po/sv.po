@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 07:30+0100\n"
-"PO-Revision-Date: 2011-03-24 08:03+0100\n"
+"POT-Creation-Date: 2011-03-24 22:53+0100\n"
+"PO-Revision-Date: 2011-03-24 23:04+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -72,7 +72,7 @@ msgstr "Lista över skrivbordsfil-id för favoritprogram"
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-msgstr ""
+msgstr "Ställer in GStreamer-rörledningen som används för att koda inspelningar. Den följer det syntax som används för gst-launch. Rörledningen bör ha en oansluten sink pad där den inspelade videon spelas in. Den kommer vanligtvis har en oansluten source pad; utmatning från denna pad kommer att skrivas till utmatningsfilen. Dock kan rörledningen också ta hand om sin egna utmatning - detta kan användas för att skicka utmatningen till en icecast-server via shout2send eller liknande. När den inte är inställd eller inställd till ett tomt värde så kommer standardrörledningen att användas. Detta är för närvarande \"videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux\" och inspelningar till WEBM använder kodeken VP8. %T används som en platshållare för en gissning av det optimala trådantalet på systemet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -104,7 +104,7 @@ msgstr "Den gstreamer-rörledning som användes för att koda skärminspelningen
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
-msgstr ""
+msgstr "Skalet övervakar normalt sett aktiva program för att kunna visa de mest använda (t.ex. i programstartare). Då denna data kommer att hållas privat så kan du inaktivera detta av integritetsskäl. Observera att göra det kommer inte ta bort redan sparat data."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
@@ -116,7 +116,7 @@ msgstr "Huruvida statistik ska samlas in för programanvändning"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
-msgstr ""
+msgstr "inaktiverade OpenSearch-leverantörer"
 
 #: ../js/misc/util.js:71
 msgid "Command not found"
@@ -444,6 +444,7 @@ msgid "Restarting the system."
 msgstr "Starta om systemet."
 
 #: ../js/ui/endSessionDialog.js:415
+#: ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Avbryt"
@@ -503,7 +504,7 @@ msgstr "Program"
 #. the left of the overview
 #: ../js/ui/overview.js:205
 msgid "Dash"
-msgstr ""
+msgstr "Favoriter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
 #: ../js/ui/panel.js:515
@@ -519,7 +520,7 @@ msgstr "Aktiviteter"
 
 #: ../js/ui/panel.js:979
 msgid "Top Bar"
-msgstr ""
+msgstr "Övre rad"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -537,6 +538,26 @@ msgstr "Anslut till..."
 #: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "PLATSER OCH ENHETER"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Autentisering krävs"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administratör"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autentisera"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Tyvärr, det fungerade inte. Försök igen."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Lösenord:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -560,6 +581,7 @@ msgid "No matching results."
 msgstr "Inga sökträffar."
 
 #: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:163
 #: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Stäng av..."
@@ -1113,7 +1135,7 @@ msgstr[1] "%d veckor sedan"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr ""
+msgstr "Storbritannien"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
