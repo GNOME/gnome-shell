@@ -1100,6 +1100,10 @@ StTooltip StLabel {
     icon-size: 36px;
 }
 
+.chat-log-message {
+    color: #888888;
+}
+
 .chat-received {
     background-gradient-direction: horizontal;
     background-gradient-start: rgba(255, 255, 255, 0.2);

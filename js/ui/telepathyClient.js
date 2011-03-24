@@ -267,7 +267,7 @@ Source.prototype = {
 
             if (!isPending) {
                 showTimestamp = true;
-                this._notification.appendMessage(logMessage, true);
+                this._notification.appendMessage(logMessage, true, ['chat-log-message']);
             }
         }
 
@@ -403,10 +403,12 @@ Notification.prototype = {
      * @noTimestamp: Whether to add a timestamp. If %true, no timestamp
      *   will be added, regardless of the difference since the
      *   last timestamp
+     * @styles: A list of CSS class names.
      */
-    appendMessage: function(message, noTimestamp) {
+    appendMessage: function(message, noTimestamp, styles) {
         let messageBody = GLib.markup_escape_text(message.text, -1);
-        let styles = [message.direction];
+        styles = styles || [];
+        styles.push(message.direction);
 
         if (message.messageType == Tp.ChannelTextMessageType.ACTION) {
             let senderAlias = GLib.markup_escape_text(message.sender, -1);
