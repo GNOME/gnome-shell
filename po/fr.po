@@ -1106,7 +1106,7 @@ msgstr "Envoyé à %X à %H:%M"
 #. characters.
 #: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
-msgstr "Texte à rechercher..."
+msgstr "Rechercher..."
 
 #: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
