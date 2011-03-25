@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
@@ -176,6 +177,18 @@ BoxPointer.prototype = {
                 break;
         }
         this.bin.allocate(childBox, flags);
+
+        if (this._sourceActor) {
+            Meta.later_add (Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
+                function () {
+                    // This won't cause a loop if _allocate() was
+                    // called as a result of repositioning, because in
+                    // that case _reposition() will set the same
+                    // coordinates again, which Clutter will just
+                    // ignore.
+                    this._reposition(this._sourceActor, this._gap, this._alignment);
+                }));
+        }
     },
 
     _drawBorder: function(area) {
@@ -306,6 +319,14 @@ BoxPointer.prototype = {
         // so that we can query the correct size.
         this.actor.show();
 
+        this._sourceActor = sourceActor;
+        this._gap = gap;
+        this._alignment = alignment;
+
+        this._reposition(sourceActor, gap, alignment);
+    },
+
+    _reposition: function(sourceActor, gap, alignment) {
         // Position correctly relative to the sourceActor
         let sourceNode = sourceActor.get_theme_node();
         let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
