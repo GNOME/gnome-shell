@@ -449,8 +449,10 @@ NMDevice.prototype = {
             obj.item.destroy();
         this._connections.splice(pos, 1);
 
-        if (this._connections.length == 0) {
+        if (this._connections.length <= 1) {
             // We need to show the automatic connection again
+            // (or in the case of NMDeviceWired, we want to hide
+            // the only explicit connection)
             this._clearSection();
             this._createSection();
         }
@@ -676,6 +678,20 @@ NMDeviceWired.prototype = {
         if (fixedMac)
             return macCompare(fixedMac, macToArray(this.device.perm_hw_address));
         return true;
+    },
+
+    _createSection: function() {
+        NMDevice.prototype._createSection.call(this);
+
+        // if we have only one connection (normal or automatic)
+        // we hide the connection list, and use the switch to control
+        // the device
+        // we can do it here because addConnection and removeConnection
+        // both call _createSection at some point
+        if (this._connections.length <= 1)
+            this.section.actor.hide();
+        else
+            this.section.actor.show();
     },
 
     _createAutomaticConnection: function() {
