@@ -61,7 +61,7 @@ PopupBaseMenuItem.prototype = {
     },
 
     _onStyleChanged: function (actor) {
-        this._spacing = actor.get_theme_node().get_length('spacing');
+        this._spacing = Math.round(actor.get_theme_node().get_length('spacing'));
     },
 
     _onButtonReleaseEvent: function (actor, event) {
