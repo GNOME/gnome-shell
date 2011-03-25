@@ -1813,7 +1813,7 @@ NMApplet.prototype = {
                         }
                     }
                 } else
-                    a._primaryDevice = this._vpnDevice;
+                    a._primaryDevice = this._devices.vpn.device
 
                 if (a._primaryDevice)
                     a._primaryDevice.setActiveConnection(a);
