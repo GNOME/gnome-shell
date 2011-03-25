@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -345,7 +346,7 @@ NotificationDaemon.prototype = {
         notification.setTransient(hints['transient'] == true);
 
         let sourceIconActor = source.useNotificationIcon ? this._iconForNotificationData(icon, hints, source.ICON_SIZE) : null;
-        source.notify(notification, sourceIconActor);
+        source.processNotification(notification, sourceIconActor);
     },
 
     CloseNotification: function(id) {
@@ -389,8 +390,7 @@ NotificationDaemon.prototype = {
         for (let id in this._sources) {
             let source = this._sources[id];
             if (source.app == tracker.focus_app) {
-                if (source.notification && !source.notification.resident)
-                    source.notification.destroy();
+                source.destroyNonResidentNotifications();
                 return;
             }
         }
@@ -441,15 +441,43 @@ Source.prototype = {
             this.title = this.app.get_name();
         else
             this.useNotificationIcon = true;
-        this._isTrayIcon = false;
+        this._trayIcon = null;
     },
 
-    notify: function(notification, icon) {
+    processNotification: function(notification, icon) {
         if (!this.app)
             this._setApp();
         if (!this.app && icon)
             this._setSummaryIcon(icon);
-        MessageTray.Source.prototype.notify.call(this, notification);
+
+        let tracker = Shell.WindowTracker.get_default();
+        if (notification.resident && this.app && tracker.focus_app == this.app)
+            this.pushNotification(notification);
+        else
+            this.notify(notification);
+    },
+
+    handleSummaryClick: function() {
+        if (!this._trayIcon)
+            return false;
+
+        let event = Clutter.get_current_event();
+        if (event.type() != Clutter.EventType.BUTTON_RELEASE)
+            return false;
+
+        if (Main.overview.visible) {
+            // We can't just connect to Main.overview's 'hidden' signal,
+            // because it's emitted *before* it calls popModal()...
+            let id = global.connect('notify::stage-input-mode', Lang.bind(this,
+                function () {
+                    global.disconnect(id);
+                    this._trayIcon.click(event);
+                }));
+            Main.overview.hide();
+        } else {
+            this._trayIcon.click(event);
+        }
+        return true;
     },
 
     _setApp: function() {
@@ -466,7 +494,7 @@ Source.prototype = {
 
         // Only override the icon if we were previously using
         // notification-based icons (ie, not a trayicon) or if it was unset before
-        if (!this._isTrayIcon) {
+        if (!this._trayIcon) {
             this.useNotificationIcon = false;
             this._setSummaryIcon(this.app.create_icon_texture (this.ICON_SIZE));
         }
@@ -475,25 +503,29 @@ Source.prototype = {
     setTrayIcon: function(icon) {
         this._setSummaryIcon(icon);
         this.useNotificationIcon = false;
-        this._isTrayIcon = true;
+        this._trayIcon = icon;
     },
 
     open: function(notification) {
+        this.destroyNonResidentNotifications();
         this.openApp();
     },
 
-    _notificationRemoved: function() {
-        if (!this._isTrayIcon)
+    _lastNotificationRemoved: function() {
+        if (!this._trayIcon)
             this.destroy();
     },
 
     _appStateChanged: function() {
         // Destroy notification sources when their apps exit.
         // The app exiting would normally result in a tray icon being removed,
-        // so it should be ok to destroy the source associated with a tray icon
-        // here too, however we just let that happen through the code path
-        // associated with the tray icon being removed.
-        if (!this._isTrayIcon && this.app.get_state() == Shell.AppState.STOPPED)
+        // so the associated source would be destroyed through the code path
+        // that handles the tray icon being removed. We should not destroy
+        // the source associated with a tray icon when the application state
+        // is Shell.AppState.STOPPED because running applications that have
+        // no open windows would also have that state. This is often the case
+        // for applications that use tray icons.
+        if (!this._trayIcon && this.app.get_state() == Shell.AppState.STOPPED)
             this.destroy();
     },
 

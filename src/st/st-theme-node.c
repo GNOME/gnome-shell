@@ -2518,6 +2518,15 @@ st_theme_node_get_border_image (StThemeNode *node)
 
           char *filename;
 
+          /* Support border-image: none; to suppress a previously specified border image */
+          if (term_is_none (term))
+            {
+              if (term->next == NULL)
+                return NULL;
+              else
+                goto next_property;
+            }
+
           /* First term must be the URL to the image */
           if (term->type != TERM_URI)
             goto next_property;

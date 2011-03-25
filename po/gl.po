@@ -2,24 +2,25 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
+#
 # Anton Meixome <certima@certima.net>, 2009.
 # Antón Méixome <meixome@certima.net>, 2009.
-# Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010, 2011.
-#
+# Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011.
+# Fran Dieguez <frandieguez@gnome.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-06 00:11+0100\n"
-"PO-Revision-Date: 2011-02-06 00:14+0100\n"
-"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
-"Language-Team: Galician <gnome-gl-list@gnome.org>\n"
+"POT-Creation-Date: 2011-03-24 09:50+0100\n"
+"PO-Revision-Date: 2011-03-24 09:51+0100\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Virtaal 0.4.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -64,22 +65,26 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Historial do diálogo de orde (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "Historial do diálogo de «looking glass»"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Se é verdadeiro, móstrase a data no reloxo, ademais da hora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "Se é verdadeiro, móstranse os segundos na hora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Se é verdadeiro, móstrase a data da semana ISO no calendario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Mostra os ID de ficheiros desktop para os aplicativos preferidos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -105,19 +110,19 @@ msgstr ""
 "códec VP8. Úsase %T como suposición para o número de fillos óptimos no "
 "sistema."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Mostrar a data no reloxo"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Mostrar a data da semana no calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Mostrar a hora con segundos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -125,7 +130,7 @@ msgstr ""
 "Os aplicativos que corresponden a estes identificadores mostraranse na área "
 "de preferidos."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -135,7 +140,7 @@ msgstr ""
 "baseado na data actual e usa esta extensión. Debería cambiar ao grabar nun "
 "formato de contedor diferente."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -143,11 +148,11 @@ msgstr ""
 "A taxa de marcos do screencast resultante grabado polo grabador de "
 "screencasts de GNOME Shell en marcos-por-segundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "A tubería de gstreamer usada para codificar o screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -159,213 +164,55 @@ msgstr ""
 "privados, vostede pode desactivar isto por motivos de privacidade. Teña en "
 "conta que facendo isto non eliminará os datos gardados."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "Os Uuid das extensións a desactivar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "Indica se recoller estatísticas sobre o uso dos aplicativos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "fornecedores de OpenSearch desactivados"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr "Poñer o punto de mira no centro"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr "Cor do punto de mira"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-"Determina a lonxitude das liñas verticais e horizontais que contén o punto "
-"de mira."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
-"Determina a posición da imaxe magnificada do rato dentro da vista "
-"magnificada e como reacciona ao movemento do rato do sistema. Os valores son "
-"«none» (ningún): sen seguimento do rato; «centered» (centrado): a imaxe do "
-"rato móstrase no centro da rexión ampliada (que tamén representa o punto "
-"baixo o rato do sistema) e o contido magnificado deslízase segundo se move o "
-"rato do sistema; «proporcional»: a posición do rato magnificado na rexión de "
-"ampliación é proporcionalmente a mesma que a posición do rato do sistema na "
-"pantalla; «push» (empurrar): cando o rato magnificado cruza un límite da "
-"rexión de ampliación, o contido deslízase na vista."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr ""
-"Determina a transparencia do punto de mira, desde a opacidade total á "
-"transparencia total."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-"Determina se as cruces cruzan o «sprite» magnificado do rato ou fíxanse de "
-"tal forma que os finais das liñas horizontais e verticais rodean a imaxe do "
-"rato."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-msgid "Enable lens mode"
-msgstr "Activar o modo lente"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr ""
-"Activa/desactiva a visualización do punto de mira centrada no mapa de bits "
-"de magnificación do rato."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-"Para o seguimento do centro do rato, cando o punteiro do sistema está preto "
-"do bordo da pantalla, o contido magnificado continúa desprazándose de tal "
-"forma que o bordo da pantalla móvese dentro da vista magnificada."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr "Lonxitude do punto de mira"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr "Factor de magnificación"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr "Modo de seguimento do rato"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr "Opacidade do punto de mira"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr "Posición de pantalla"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr "Mostrar os contidos magnificados máis aló dos bordos do escritorio"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr "Mostrar ou agochar o punto de mira"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr "Mostrar ou agochar o magnificador"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr ""
-"Mostrar ou agochar o magnificador e todas as súas rexións de magnificación."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "A cor das liñas verticais e horizontais que contén o punto de mira."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-"A vista magnificada tanto se enche a pantalla completa, ou ocupa a metade "
-"superior, metade inferior, metade da esquerda ou metade da dereita da "
-"pantalla."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr ""
-"O poder da magnificación. Un valor de 1.0 desactiva a magnificación. Un "
-"valor de 2.0 duplica o tamaño."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr "Grosor do punto de mira"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr ""
-"Indica se a visualización do punto de mira debería centrarse sobre a "
-"localización do rato do sistema ou moverse con el."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr "Anchura das liñas verticais e horizontais que contén o punto de mira."
-
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "Orde non atopada"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "Non foi posíbel analizar a orde:"
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "Non existe o aplicativo"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:164
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:275
-msgid "PREFERENCES"
-msgstr "PREFERENCIAS"
+#: ../js/ui/appDisplay.js:354
+msgid "SETTINGS"
+msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:572
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:576
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:577
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
@@ -382,19 +229,19 @@ msgstr "%s foi eliminado dos seus favoritos."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo o día"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -404,43 +251,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "W"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
 msgstr "X"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -451,81 +298,81 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Do"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "W"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "X"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "Hoxe"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
 msgstr "Mañá"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "Esta semana"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
 msgstr "A vindeira semana"
 
-#: ../js/ui/dash.js:27
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -533,47 +380,47 @@ msgstr "Eliminar"
 msgid "Date and Time Settings"
 msgstr "Configuracións do data e hora"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "Abrir o calendario"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
@@ -584,7 +431,7 @@ msgstr "%a %l:%M %p"
 msgid "%A %B %e, %Y"
 msgstr "%a, %e de %B, %Y"
 
-#: ../js/ui/docDisplay.js:18
+#: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECENTES"
 
@@ -593,7 +440,7 @@ msgstr "ELEMENTOS RECENTES"
 msgid "Log Out %s"
 msgstr "Saír da sesión de %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Saír da sesión"
 
@@ -616,230 +463,260 @@ msgstr "A súa sesión pecharase automaticamente en %d segundos."
 msgid "Logging out of the system."
 msgstr "Saíndo da sesión."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
+#: ../js/ui/endSessionDialog.js:76
+msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Prema sobre Apagar para saír de estes aplicativos e apagar o computador."
 
-#: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "O computador apagarase automaticamente en %d segundos."
-
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "Apagando o computador."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "O seu computador apagarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "Apagando o sistema."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Prema sobre Reiniciar para saír de estes aplicativos e reiniciar o seu "
 "computador."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "O seu computador reiniciarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Confirmar"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/ui/lookingGlass.js:556
+#: ../js/ui/lookingGlass.js:588
 msgid "No extensions installed"
 msgstr "Non hai ningunha extensión instalada"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:625
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:597
+#: ../js/ui/lookingGlass.js:629
 msgid "Error"
 msgstr "Erro"
 
-#: ../js/ui/lookingGlass.js:599
+#: ../js/ui/lookingGlass.js:631
 msgid "Out of date"
 msgstr "Desactualizado"
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:656
 msgid "View Source"
 msgstr "Ver fonte"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:662
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:1809
+#: ../js/ui/messageTray.js:987
+msgid "Open"
+msgstr "Abrir"
+
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Información do sistema"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Desfacer"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Xanelas"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Aplicativos"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr "Panel"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Barra superior"
+
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Produciuse un fallo ao desmontar «%s»"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "Reintentar"
 
-#: ../js/ui/placeDisplay.js:150
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "Conectar con…"
 
-#: ../js/ui/placeDisplay.js:386
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "LUGARES E DISPOSITIVOS"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Autenticación requirida"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrador"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autenticar"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Desculpe, iso non funcionou. Ténteo de novo."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Contrasinal:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
-#: ../js/ui/searchDisplay.js:295
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Buscando..."
 
-#: ../js/ui/searchDisplay.js:309
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Non hai resultados que coincidan."
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "Apagar…"
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "A miña conta"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Configuracións do sistema"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Saír da sesión…"
 
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "Apagar…"
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "Ampliación"
 
-#: ../js/ui/status/accessibility.js:89
-msgid "Screen Reader"
-msgstr "Lector de pantalla"
-
-#: ../js/ui/status/accessibility.js:92
-msgid "Screen Keyboard"
-msgstr "Teclado en pantalla"
-
-#: ../js/ui/status/accessibility.js:95
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Alertas visuais"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
 msgstr "Teclas persistentes"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:83
 msgid "Slow Keys"
 msgstr "Teclas lentas"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:86
 msgid "Bounce Keys"
 msgstr "Rebote das teclas"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:89
 msgid "Mouse Keys"
 msgstr "Teclas do Rato"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:93
 msgid "Universal Access Settings"
 msgstr "Configuracións de acceso universal"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "Alto contraste"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "Texto máis grande"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -859,111 +736,246 @@ msgstr "Configurar un novo dispositivo…"
 msgid "Bluetooth Settings"
 msgstr "Configuracións de Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "Conexión"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Enviar ficheiros…"
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Explorar ficheiros…"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "Produciuse un erro ao explorar o dispositivo"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "O dispositivo solicitado non pode explorarse, o erro foi «%s»"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "Configuracións do teclado"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "Configuracións do rato"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Configuracións do son"
 
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
-msgid "Bluetooth Agent"
-msgstr "Axente Bluetooth"
-
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Solicitude de autorización de %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "O dispositivo %s quere acceder ao servizo «%s»"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "Conceder acceso sempre"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "Conceder só esta vez"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Rexeitar"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Confirmación de emparellado para «%s»"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "O dispositivo «%s» quere emparellarse con este equipo"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confirme que o PIN mostrado en «%s» coincide co do dispositivo."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Coincide"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Non coincide"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Solicitude de emparellamento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Introduza o PIN mencionado no dispositivo."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "Aceptar"
 
-#: ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Mostrar a distribución do teclado…"
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "Configuracións do son"
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<descoñecida>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "desactivada"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "conectando..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "autenticación requirida"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "cable desconectado"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "non dispoñíbel"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "conexión fallida"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "Conectado (privado)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "Ethernet automática"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "Banda larga automática"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "Por liña conmutada automática"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "%s automática"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "Bluetooth automática"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "Sen fíos automática"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "Máis..."
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "Activar rede"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "Con fíos"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "Sen fíos"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "Banda larga móbil"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "Conexións VPN"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "Configuracións da rede"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Vostede está conectado agora á conexión de banda larga móbil «%s»"
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Vostede está conectado agora á conexión sen fíos «%s»"
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Vostede está conectado agora á conexión con fíos «%s»"
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Vostede está conectado agora á conexión VPN «%s»"
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Vostede está conectado agora a «%s»"
+
+#: ../js/ui/status/network.js:1808
+msgid "Connection established"
+msgstr "Conexión estabelecida"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr "A rede está desactivada"
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "Xestor de rede"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Configuracións de enerxía"
 
-#: ../js/ui/status/power.js:112
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "Estimando…"
+
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -971,102 +983,102 @@ msgstr[0] "%d hora restante"
 msgstr[1] "%d horas restante"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s retante"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "hora"
 msgstr[1] "horas"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuto"
 msgstr[1] "minutos"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minuto restante"
 msgstr[1] "%d minutos restantes"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "Adaptador de corrente"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "Batería do portátil"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "Rato"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "Teléfono móbil"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "Reprodutor multimedia"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "Computador"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Micrófono"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "%s está conectado/a."
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "%s está desconectado/a."
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "%s está ausente."
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "%s está ocupado/a."
@@ -1074,39 +1086,36 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:668
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviado ás %X o %A"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "Buscar no seu computador"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "Teclear para buscar…"
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Buscar"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s rematou de iniarse"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
-#: ../js/ui/workspacesView.js:243
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr ""
-"Non é posíbel engadir unha área de traballo nova porque chegouse ao límite "
-"de áreas de traballo."
-
-#: ../js/ui/workspacesView.js:259
-msgid "Can't remove the first workspace."
-msgstr "Non é posíbel quitar a primeira área de traballo."
-
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1115,48 +1124,69 @@ msgstr[1] "%u saídas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/shell-global.c:1365
+#: ../src/main.c:446
+msgid "Print version"
+msgstr "Imprimir versión"
+
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Produciuse un fallo ao iniciar «%s»"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1369
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1374
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1379
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1384
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "hai %d semana"
 msgstr[1] "hai %d semanas"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Reino Unido"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Predeterminado"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "O usuario rexeitou o diálogo de autenticación"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -1168,10 +1198,6 @@ msgstr "Cartafol persoal"
 msgid "File System"
 msgstr "Sistema de ficheiros"
 
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "Buscar"
-
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
@@ -1182,8 +1208,192 @@ msgstr "Buscar"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "Suspend..."
-#~ msgstr "Suspender…"
+#~ msgid "Shut Down"
+#~ msgstr "Apagar"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr ""
+#~ "Prema sobre Apagar para saír de estes aplicativos e apagar o computador."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "O computador apagarase automaticamente en %d segundos."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Apagando o computador."
+
+#~ msgid "Confirm"
+#~ msgstr "Confirmar"
+
+#~ msgid "Panel"
+#~ msgstr "Panel"
+
+#~ msgid "No such application"
+#~ msgstr "Non existe o aplicativo"
+
+#~ msgid "Screen Reader"
+#~ msgstr "Lector de pantalla"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Teclado en pantalla"
+
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s é coñecido agora como %s"
+
+#~ msgid "Clip the crosshairs at the center"
+#~ msgstr "Poñer o punto de mira no centro"
+
+#~ msgid "Color of the crosshairs"
+#~ msgstr "Cor do punto de mira"
+
+#~ msgid ""
+#~ "Determines the length of the vertical and horizontal lines that make up "
+#~ "the crosshairs."
+#~ msgstr ""
+#~ "Determina a lonxitude das liñas verticais e horizontais que contén o "
+#~ "punto de mira."
+
+#~ msgid ""
+#~ "Determines the position of the magnified mouse image within the magnified "
+#~ "view and how it reacts to system mouse movement. The values are - none: "
+#~ "no mouse tracking; - centered: the mouse image is displayed at the center "
+#~ "of the zoom region (which also represents the point under the system "
+#~ "mouse) and the magnified contents are scrolled as the system mouse moves; "
+#~ "- proportional: the position of the magnified mouse in the zoom region is "
+#~ "proportionally the same as the position of the system mouse on screen; - "
+#~ "push: when the magnified mouse intersects a boundary of the zoom region, "
+#~ "the contents are scrolled into view."
+#~ msgstr ""
+#~ "Determina a posición da imaxe magnificada do rato dentro da vista "
+#~ "magnificada e como reacciona ao movemento do rato do sistema. Os valores "
+#~ "son «none» (ningún): sen seguimento do rato; «centered» (centrado): a "
+#~ "imaxe do rato móstrase no centro da rexión ampliada (que tamén representa "
+#~ "o punto baixo o rato do sistema) e o contido magnificado deslízase "
+#~ "segundo se move o rato do sistema; «proporcional»: a posición do rato "
+#~ "magnificado na rexión de ampliación é proporcionalmente a mesma que a "
+#~ "posición do rato do sistema na pantalla; «push» (empurrar): cando o rato "
+#~ "magnificado cruza un límite da rexión de ampliación, o contido deslízase "
+#~ "na vista."
+
+#~ msgid ""
+#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
+#~ "transparent."
+#~ msgstr ""
+#~ "Determina a transparencia do punto de mira, desde a opacidade total á "
+#~ "transparencia total."
+
+#~ msgid ""
+#~ "Determines whether the crosshairs intersect the magnified mouse sprite, "
+#~ "or are clipped such that the ends of the horizontal and vertical lines "
+#~ "surround the mouse image."
+#~ msgstr ""
+#~ "Determina se as cruces cruzan o «sprite» magnificado do rato ou fíxanse "
+#~ "de tal forma que os finais das liñas horizontais e verticais rodean a "
+#~ "imaxe do rato."
+
+#~ msgid "Enable lens mode"
+#~ msgstr "Activar o modo lente"
+
+#~ msgid ""
+#~ "Enables/disables display of crosshairs centered on the magnified mouse "
+#~ "sprite."
+#~ msgstr ""
+#~ "Activa/desactiva a visualización do punto de mira centrada no mapa de "
+#~ "bits de magnificación do rato."
+
+#~ msgid ""
+#~ "For centered mouse tracking, when the system pointer is at or near the "
+#~ "edge of the screen, the magnified contents continue to scroll such that "
+#~ "the screen edge moves into the magnified view."
+#~ msgstr ""
+#~ "Para o seguimento do centro do rato, cando o punteiro do sistema está "
+#~ "preto do bordo da pantalla, o contido magnificado continúa desprazándose "
+#~ "de tal forma que o bordo da pantalla móvese dentro da vista magnificada."
+
+#~ msgid "Length of the crosshairs"
+#~ msgstr "Lonxitude do punto de mira"
+
+#~ msgid "Magnification factor"
+#~ msgstr "Factor de magnificación"
+
+#~ msgid "Mouse Tracking Mode"
+#~ msgstr "Modo de seguimento do rato"
+
+#~ msgid "Opacity of the crosshairs"
+#~ msgstr "Opacidade do punto de mira"
+
+#~ msgid "Screen position"
+#~ msgstr "Posición de pantalla"
+
+#~ msgid "Scroll magnified contents beyond the edges of the desktop"
+#~ msgstr "Mostrar os contidos magnificados máis aló dos bordos do escritorio"
+
+#~ msgid "Show or hide crosshairs"
+#~ msgstr "Mostrar ou agochar o punto de mira"
+
+#~ msgid "Show or hide the magnifier"
+#~ msgstr "Mostrar ou agochar o magnificador"
+
+#~ msgid "Show or hide the magnifier and all of its zoom regions."
+#~ msgstr ""
+#~ "Mostrar ou agochar o magnificador e todas as súas rexións de "
+#~ "magnificación."
+
+#~ msgid ""
+#~ "The color of the the vertical and horizontal lines that make up the "
+#~ "crosshairs."
+#~ msgstr "A cor das liñas verticais e horizontais que contén o punto de mira."
+
+#~ msgid ""
+#~ "The magnified view either fills the entire screen, or occupies the top-"
+#~ "half, bottom-half, left-half, or right-half of the screen."
+#~ msgstr ""
+#~ "A vista magnificada tanto se enche a pantalla completa, ou ocupa a metade "
+#~ "superior, metade inferior, metade da esquerda ou metade da dereita da "
+#~ "pantalla."
+
+#~ msgid ""
+#~ "The power of the magnification. A value of 1.0 means no magnification. A "
+#~ "value of 2.0 doubles the size."
+#~ msgstr ""
+#~ "O poder da magnificación. Un valor de 1.0 desactiva a magnificación. Un "
+#~ "valor de 2.0 duplica o tamaño."
+
+#~ msgid "Thickness of the crosshairs"
+#~ msgstr "Grosor do punto de mira"
+
+#~ msgid ""
+#~ "Whether the magnified view should be centered over the location of the "
+#~ "system mouse and move with it."
+#~ msgstr ""
+#~ "Indica se a visualización do punto de mira debería centrarse sobre a "
+#~ "localización do rato do sistema ou moverse con el."
+
+#~ msgid ""
+#~ "Width of the vertical and horizontal lines that make up the crosshairs."
+#~ msgstr ""
+#~ "Anchura das liñas verticais e horizontais que contén o punto de mira."
+
+#~ msgid "PREFERENCES"
+#~ msgstr "PREFERENCIAS"
+
+#~ msgid "Shut Down..."
+#~ msgstr "Apagar…"
+
+#~ msgid "Bluetooth Agent"
+#~ msgstr "Axente Bluetooth"
+
+#~ msgid "Search your computer"
+#~ msgstr "Buscar no seu computador"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "Non é posíbel engadir unha área de traballo nova porque chegouse ao "
+#~ "límite de áreas de traballo."
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "Non é posíbel quitar a primeira área de traballo."
 
 #~ msgid "Clock"
 #~ msgstr "Reloxo"

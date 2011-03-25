@@ -86,6 +86,9 @@ function start() {
     global.logError = _logError;
     global.log = _logDebug;
 
+    // Chain up async errors reported from C
+    global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
+
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     shellDBusService = new ShellDBus.GnomeShell();
@@ -133,6 +136,7 @@ function start() {
 
     // Set up stage hierarchy to group all UI actors under one container.
     uiGroup = new Clutter.Group();
+    St.set_ui_root(global.stage, uiGroup);
     global.window_group.reparent(uiGroup);
     global.overlay_group.reparent(uiGroup);
     global.stage.add_actor(uiGroup);
@@ -189,7 +193,7 @@ function start() {
     // Attempt to become a PolicyKit authentication agent
     PolkitAuthenticationAgent.init()
 
-    global.gdk_screen.connect('monitors-changed', _relayout);
+    global.screen.connect('monitors-changed', _relayout);
 
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
@@ -216,7 +220,11 @@ function start() {
     }
 
     global.screen.connect('notify::n-workspaces', _nWorkspacesChanged);
-    Mainloop.idle_add(_nWorkspacesChanged);
+
+    global.screen.connect('window-entered-monitor', _windowEnteredMonitor);
+    global.screen.connect('window-left-monitor', _windowLeftMonitor);
+
+    _nWorkspacesChanged();
 }
 
 let _workspaces = [];
@@ -301,6 +309,20 @@ function _windowRemoved(workspace, window) {
             _queueCheckWorkspaces();
         }
     });
+}
+
+function _windowLeftMonitor(metaScreen, monitorIndex, metaWin) {
+    // If the window left the primary monitor, that
+    // might make that workspace empty
+    if (monitorIndex == global.get_primary_monitor_index())
+        _queueCheckWorkspaces();
+}
+
+function _windowEnteredMonitor(metaScreen, monitorIndex, metaWin) {
+    // If the window entered the primary monitor, that
+    // might make that workspace non-empty
+    if (monitorIndex == global.get_primary_monitor_index())
+        _queueCheckWorkspaces();
 }
 
 function _queueCheckWorkspaces() {
@@ -396,6 +418,27 @@ function loadTheme() {
 }
 
 /**
+ * notifyError:
+ * @msg: An error message
+ * @details: Additional information
+ *
+ * See shell_global_notify_problem().
+ */
+function notifyError(msg, details) {
+    // Also print to stderr so it's logged somewhere
+    if (details)
+        log("error: " + msg + ": " + details);
+    else
+        log("error: " + msg)
+
+    let source = new MessageTray.SystemNotificationSource();
+    messageTray.add(source);
+    let notification = new MessageTray.Notification(source, msg, details);
+    notification.setTransient(true);
+    source.notify(notification);
+}
+
+/**
  * _log:
  * @category: string message type ('info', 'error')
  * @msg: A message string
@@ -438,28 +481,67 @@ function _getAndClearErrorStack() {
 
 function _relayout() {
     let monitors = global.get_monitors();
-    if (monitors.length != hotCorners.length) {
-        // destroy old corners
-        for (let i = 0; i < hotCorners.length; i++)
-            hotCorners[i].destroy();
-        hotCorners = [];
-        for (let i = 0; i < monitors.length; i++)
-            hotCorners[i] = new Panel.HotCorner();
-    }
+    // destroy old corners
+    for (let i = 0; i < hotCorners.length; i++)
+        hotCorners[i].destroy();
+    hotCorners = [];
 
 
     let primary = global.get_primary_monitor();
     for (let i = 0; i < monitors.length; i++) {
         let monitor = monitors[i];
-        let corner = hotCorners[i];
         let isPrimary = (monitor.x == primary.x &&
                          monitor.y == primary.y &&
                          monitor.width == primary.width &&
                          monitor.height == primary.height);
+
+        let cornerX = monitor.x;
+        let cornerY = monitor.y;
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
-            corner.actor.set_position(monitor.x + monitor.width, monitor.y);
+            cornerX += monitor.width;
+
+
+        let haveTopLeftCorner = true;
+
+        /* Check if we have a top left (right for RTL) corner.
+         * I.e. if there is no monitor directly above or to the left(right) */
+        let besideX;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            besideX = monitor.x + 1;
         else
-            corner.actor.set_position(monitor.x, monitor.y);
+            besideX = cornerX - 1;
+        let besideY = cornerY;
+        let aboveX = cornerX;
+        let aboveY = cornerY - 1;
+
+        for (let j = 0; j < monitors.length; j++) {
+            if (i == j)
+                continue;
+            let otherMonitor = monitors[j];
+            if (besideX >= otherMonitor.x &&
+                besideX < otherMonitor.x + otherMonitor.width &&
+                besideY >= otherMonitor.y &&
+                besideY < otherMonitor.y + otherMonitor.height) {
+                haveTopLeftCorner = false;
+                break;
+            }
+            if (aboveX >= otherMonitor.x &&
+                aboveX < otherMonitor.x + otherMonitor.width &&
+                aboveY >= otherMonitor.y &&
+                aboveY < otherMonitor.y + otherMonitor.height) {
+                haveTopLeftCorner = false;
+                break;
+            }
+        }
+
+        /* We only want hot corners where there is a natural top-left
+         * corner, and on the primary monitor */
+        if (!isPrimary && !haveTopLeftCorner)
+            continue;
+
+        let corner = new Panel.HotCorner();
+        hotCorners.push(corner);
+        corner.actor.set_position(cornerX, cornerY);
         if (isPrimary)
             panel.setHotCorner(corner);
     }

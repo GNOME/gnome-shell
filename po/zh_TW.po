@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 2.91.6\n"
+"Project-Id-Version: gnome-shell 2.91.91\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-04 13:12+0800\n"
-"PO-Revision-Date: 2011-02-04 12:41+0800\n"
+"POT-Creation-Date: 2011-03-22 19:42+0800\n"
+"PO-Revision-Date: 2011-03-22 12:30+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: \n"
@@ -55,22 +55,27 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "指令 (Alt-F2) 對話盒歷史紀錄"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+#, fuzzy
+msgid "History for the looking glass dialog"
+msgstr "指令 (Alt-F2) 對話盒歷史紀錄"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "如設定為「true」，除了在時鐘內顯示日期外還顯示時刻。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "如設定為「true」，在時刻中顯示秒數。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "如果設為 true，在日曆中顯示 ISO 週數。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "喜好的應用程式桌面檔案 ID 清單"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -92,25 +97,25 @@ msgstr ""
 "%T ! queue ! webmmux' 即使用 VP8 codec 錄製 WEBM。%T 是在系統的最佳化執行緒計"
 "數猜測時使用的佔位符。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "在時鐘內顯示日期"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "在日曆中顯示週數"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "在時刻中顯示秒數"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "對應這些辨別碼的應用程式會顯示在喜好區域。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -119,7 +124,7 @@ msgstr ""
 "錄製好的畫面廣播檔案名稱會以目前的時刻作為獨特的檔名，並使用這個延伸檔名。當"
 "錄製為不同的容器格式時應該做適當變更。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -127,11 +132,11 @@ msgstr ""
 "由 GNOME Shell 的畫面廣播錄製程式所錄製成果的框架率，以 frames-per-second "
 "計。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "用來編碼畫面廣播的 gstreamer 管線"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -142,191 +147,55 @@ msgstr ""
 "器中）。雖然這個資料會保持隱密，但是您可能會基於隱私的理由想要停用這個功能。"
 "請注意這麼做並不會移除已儲存的資料。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "要停用的延伸檔名 Uuid"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "是否收集關於應用程式使用率的狀態"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "已停用 OpenSearch 提供者"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr "點選中央的十字準星"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr "十字準星的顏色"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "決定組成十字準星的垂直和水平線條的長度。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
-"決定放大的滑鼠圖片在放大鏡檢 視中的位置以及它如何反應系統滑鼠的移動。數值有 "
-"- none: 不追蹤滑鼠；- centered: 滑鼠圖片顯示於放大區域的中央（也代表系統滑鼠"
-"下方的點）而放大的內容也會隨系統滑鼠移動而捲動；- proportional: 放大的滑鼠在"
-"縮放區域中的位置和系統滑鼠在螢幕中的位置是成比例的；- push: 當放大的滑鼠與縮"
-"放區域邊界交錯時，內容會捲動到檢視中。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr "決定十字準星的透明度，從完全不透明到完全透明。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-msgid "Enable lens mode"
-msgstr "啟用鏡頭模式"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-"對於置中式的滑鼠追蹤，當系統指標位於或接近螢幕的邊緣時，放大的內容也會持續捲"
-"動，讓螢幕的邊緣移進放大的檢視範圍。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr "十字準星長度"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr "放大率"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr "滑鼠追蹤模式"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr "十字準星透明度"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr "螢幕位置"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr "在桌面邊緣時捲動放大的內容"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr "顯示或隱藏十字準星"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr "顯示或隱藏放大鏡"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr "顯示或隱藏放大鏡和所有被它放大的區域。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "組成十字準星的垂直和水平線條的顏色。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr "放大的檢視要佔據整個螢幕，或是只佔螢幕的上半、下半、左半或右半邊。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr "放大的倍數。數值 1.0 表示不放大。數值 2.0 為放大兩倍。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr "十字準星厚度"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr "放大的檢視是否應以系統滑鼠的位置為中心點並隨滑鼠移動。"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr "組成十字準星的垂直和水平線條的寬度。"
-
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "找不到指令"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "無法分析指令："
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "沒有這個應用程式"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "執行「%s」失敗："
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:164
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "程式集"
 
-#: ../js/ui/appDisplay.js:275
-msgid "PREFERENCES"
-msgstr "偏好設定"
+#: ../js/ui/appDisplay.js:354
+msgid "SETTINGS"
+msgstr "設定值"
 
-#: ../js/ui/appDisplay.js:572
+#: ../js/ui/appDisplay.js:620
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:576
+#: ../js/ui/appDisplay.js:623
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:577
+#: ../js/ui/appDisplay.js:624
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
@@ -343,86 +212,68 @@ msgstr "%s 已經從您的喜好中移除。"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
-#, fuzzy
-#| msgid "All Day"
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "整天"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
-#, fuzzy
-#| msgid "%a %l:%M %p"
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
-msgstr "%a %p %l:%M"
+msgstr "%p %l:%M"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
-#, fuzzy
-#| msgid "S"
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "日"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
-#, fuzzy
-#| msgid "M"
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "一"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
-#, fuzzy
-#| msgid "T"
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "二"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
-#, fuzzy
-#| msgid "W"
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "三"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
-#, fuzzy
-#| msgid "T"
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
-msgstr "二"
+msgstr "四"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
-#, fuzzy
-#| msgid "F"
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "五"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
-#, fuzzy
-#| msgid "S"
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
-msgstr "日"
+msgstr "六"
 
 #. Translators: Event list abbreviation for Sunday.
 #. *
@@ -430,99 +281,81 @@ msgstr "日"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
-#, fuzzy
-#| msgid "Su"
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "日"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
-#, fuzzy
-#| msgid "M"
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "一"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
-#, fuzzy
-#| msgid "T"
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "二"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
-#, fuzzy
-#| msgid "W"
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "三"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
-#, fuzzy
-#| msgid "Th"
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "四"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
-#, fuzzy
-#| msgid "F"
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "五"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
-#, fuzzy
-#| msgid "S"
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
-msgstr "日"
+msgstr "六"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "沒有預訂行程"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
-#, fuzzy
-#| msgid "%A %B %e, %Y"
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%Y %B %e %A"
+msgstr "%B%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
-#, fuzzy
-#| msgid "%A %B %e, %Y"
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%Y %B %e %A"
+msgstr "%Y年%B%d日%A"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "今天"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
 msgstr "明天"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "本週"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
 msgstr "下週"
 
-#: ../js/ui/dash.js:27
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:945
 msgid "Remove"
 msgstr "移除"
 
@@ -530,47 +363,47 @@ msgstr "移除"
 msgid "Date and Time Settings"
 msgstr "日期與時刻設定值"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "開啟行事曆"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%b %e %a, %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%b %e %a, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%b %e %a, %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%b %e %a, %p %l:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %p %l:%M"
 
@@ -581,7 +414,7 @@ msgstr "%a %p %l:%M"
 msgid "%A %B %e, %Y"
 msgstr "%Y %B %e %A"
 
-#: ../js/ui/docDisplay.js:18
+#: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
 msgstr "最近使用項目"
 
@@ -650,82 +483,98 @@ msgstr "重新啟動系統。"
 msgid "Confirm"
 msgstr "確認"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/ui/lookingGlass.js:556
+#: ../js/ui/lookingGlass.js:588
 msgid "No extensions installed"
 msgstr "沒有安裝擴充功能"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:625
 msgid "Enabled"
 msgstr "已啟用"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "已停用"
 
-#: ../js/ui/lookingGlass.js:597
+#: ../js/ui/lookingGlass.js:629
 msgid "Error"
 msgstr "錯誤"
 
-#: ../js/ui/lookingGlass.js:599
+#: ../js/ui/lookingGlass.js:631
 msgid "Out of date"
 msgstr "過期"
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:656
 msgid "View Source"
 msgstr "檢示來源"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:662
 msgid "Web Page"
 msgstr "網頁"
 
-#: ../js/ui/messageTray.js:1809
+#: ../js/ui/messageTray.js:938
+#, fuzzy
+msgid "Open"
+msgstr "開啟"
+
+#: ../js/ui/messageTray.js:2018
 msgid "System Information"
 msgstr "系統資訊"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:89
 msgid "Undo"
 msgstr "復原"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:184
 msgid "Windows"
 msgstr "視窗"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:187
 msgid "Applications"
 msgstr "應用程式"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:203
+#, fuzzy
+msgid "Dash"
+msgstr "破折號"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "結束 %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:876
 msgid "Activities"
 msgstr "概覽 "
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/panel.js:977
+msgid "Top Bar"
+msgstr "頂端列"
+
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "無法卸載「%s」"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "重試"
 
-#: ../js/ui/placeDisplay.js:150
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "連接到…"
 
-#: ../js/ui/placeDisplay.js:386
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "位置 & 裝置"
 
@@ -734,95 +583,103 @@ msgstr "位置 & 裝置"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:636
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "請輸入指令："
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/searchDisplay.js:310
+msgid "Searching..."
+msgstr "搜尋中…"
+
+#: ../js/ui/searchDisplay.js:324
+msgid "No matching results."
+msgstr "沒有相符的結果。"
+
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "關閉電源…"
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "暫停"
+
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "可用"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "我的帳號"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "系統設定值"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "鎖定畫面"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "切換使用者"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "登出…"
 
-#: ../js/ui/statusMenu.js:142
-msgid "Suspend..."
-msgstr "暫停…"
-
-#: ../js/ui/statusMenu.js:146
-msgid "Shut Down..."
-msgstr "關機…"
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "縮放"
 
-#: ../js/ui/status/accessibility.js:89
-msgid "Screen Reader"
-msgstr "螢幕閱讀器"
-
-#: ../js/ui/status/accessibility.js:92
-msgid "Screen Keyboard"
-msgstr "螢幕鍵盤"
-
-#: ../js/ui/status/accessibility.js:95
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "視覺警示"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
 msgstr "黏性特殊鍵"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:83
 msgid "Slow Keys"
 msgstr "遲緩按鍵"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:86
 msgid "Bounce Keys"
 msgstr "回鍵"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:89
 msgid "Mouse Keys"
 msgstr "滑鼠按鍵"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:93
 msgid "Universal Access Settings"
 msgstr "無障礙功能設定值"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "高反差"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "大型文字"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "藍牙"
 
@@ -842,210 +699,345 @@ msgstr "設定新的裝置…"
 msgid "Bluetooth Settings"
 msgstr "藍牙設定值"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "連線"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "傳送檔案…"
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "瀏覽檔案…"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "瀏覽裝置時發生錯誤"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "要求的裝置是不能瀏覽的，錯誤為「%s」"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "鍵盤設定值"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "滑鼠設定值"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "音效設定值"
 
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
-msgid "Bluetooth Agent"
-msgstr "藍牙代理程式"
-
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "來自「%s」的驗證要求"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "裝置 %s 想要存取服務「%s」"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "永遠准許存取"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "只有這次准許"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "拒絕"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s 的配對確認"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "裝置 %s 想要和這個電腦配對"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "請確認 PIN「%s」是否和裝置上的相符。"
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "相符"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "不相符"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s 的配對請求"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "請輸入裝置所提及的 PIN。"
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "確定"
 
-#: ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "顯示鍵盤配置…"
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "本地化設定值"
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<不明>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "已停用"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "連線中…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "要求驗證"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "纜線已拔除"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "無法使用"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "連線失敗"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "已連線 (私人)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "自動使用乙太網路"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "自動使用行動寬頻"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "自動使用撥接"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "自動使用 %s"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "自動使用藍牙"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "自動使用無線網路"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "更多…"
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "啟用網路"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "有線"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "無線"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "行動寬頻"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "VPN 連線"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "網路設定值"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "您現在已連線至行動寬頻網路連線「%s」"
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "您現在已連線到無線網路「%s」"
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "您現在已連線至有線網路「%s」"
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "您現在已連線至 VPN 網路「%s」"
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "您現在已連線至「%s」"
+
+#: ../js/ui/status/network.js:1808
+msgid "Connection established"
+msgstr "連線已建立"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr "網路已停用"
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "網路管理員"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "電源定值"
 
-#: ../js/ui/status/power.js:112
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "評估中…"
+
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "可使用 %d 小時"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "剩下 %d %s %d %s"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "小時"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "分鐘"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "剩下 %d 分鐘"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "AC 電源"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "筆記型電腦電池"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "不斷電系統"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "監視器"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "滑鼠"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "鍵盤"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "行動電話"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "媒體播放器"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "手寫板"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "電腦"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "不明"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "音量"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "麥克風"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "%s 現在上線。"
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "%s 現在離線。"
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "%s 已離開。"
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "%s 正忙碌。"
@@ -1053,37 +1045,36 @@ msgstr "%s 正忙碌。"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:668
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "傳送於 %X %A"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "搜尋您的電腦"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "輸入以搜尋…"
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "搜尋"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s 已完成啟動"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "「%s」已就緒"
 
-#: ../js/ui/workspacesView.js:243
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr "不能加入新的工作區，因為已達到最大工作區上限。"
-
-#: ../js/ui/workspacesView.js:259
-msgid "Can't remove the first workspace."
-msgstr "不能移除第一個工作區。"
-
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1091,43 +1082,64 @@ msgstr[0] "%u 輸出"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u 輸入"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "系統音效"
 
-#: ../src/shell-global.c:1365
+#: ../src/main.c:397
+msgid "Print version"
+msgstr "顯示版本"
+
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "無法啟動「%s」"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "少於一分鐘之前"
 
-#: ../src/shell-global.c:1369
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分鐘前"
 
-#: ../src/shell-global.c:1374
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小時前"
 
-#: ../src/shell-global.c:1379
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1384
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d 週前"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "英國"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "預設值"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "驗證對話盒被使用者取消了"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -1139,10 +1151,6 @@ msgstr "家目錄"
 msgid "File System"
 msgstr "檔案系統"
 
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "搜尋"
-
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
@@ -1153,99 +1161,5 @@ msgstr "搜尋"
 msgid "%1$s: %2$s"
 msgstr "%1$s：%2$s"
 
-#~ msgid "Clock"
-#~ msgstr "時鐘"
-
-#~ msgid "Customize the panel clock"
-#~ msgstr "自訂面板時鐘"
-
-#~ msgid "Custom format of the clock"
-#~ msgstr "自訂時鐘的格式"
-
-#~ msgid "Hour format"
-#~ msgstr "小時格式"
-
-#~ msgid ""
-#~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
-#~ "in time."
-#~ msgstr "如果設為 true 且格式為「12-小時」或「24-小時」，在時刻裡顯示秒鐘。"
-
-#~ msgid ""
-#~ "This key specifies the format used by the panel clock when the format key "
-#~ "is set to \"custom\". You can use conversion specifiers understood by "
-#~ "strftime() to obtain a specific format. See the strftime() manual for "
-#~ "more information."
-#~ msgstr ""
-#~ "這個設定鍵是在面板時鐘的「format」設定鍵被設為「custom」時使用的自訂格式。"
-#~ "您可以用可被 strftime() 理解的轉換規範來取得所指定的格式。請查閱 strftime"
-#~ "() 手冊以獲取更多資訊。"
-
-#~ msgid ""
-#~ "This key specifies the hour format used by the panel clock. Possible "
-#~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
-#~ msgstr ""
-#~ "這個設定值指定了面板時鐘使用的小時格式。可用的數值有「12-hour」、「24-"
-#~ "hour」、「unix」和「custom」。如果設定為「unix」，時鐘會顯示自 Epoch，即 "
-#~ "1970-01-01 以來的秒數。如果設定為「custom」，時鐘會根據 custom_format 設定"
-#~ "鍵顯示時刻。注意不管設為「unix」或「custom」，show_date 和 show_seconds 設"
-#~ "定鍵都會被忽略。"
-
-#~ msgid "Clock Format"
-#~ msgstr "時鐘格式"
-
-#~ msgid "Clock Preferences"
-#~ msgstr "時鐘偏好設定"
-
-#~ msgid "Panel Display"
-#~ msgstr "面板顯示"
-
-#~ msgid "Show seco_nds"
-#~ msgstr "顯示秒數(_N)"
-
-#~ msgid "Show the _date"
-#~ msgstr "顯示日期(_D)"
-
-#~ msgid "_12 hour format"
-#~ msgstr "_12 小時制"
-
-#~ msgid "_24 hour format"
-#~ msgstr "_24 小時制"
-
-#~ msgid "Preferences"
-#~ msgstr "偏好設定"
-
-#~ msgid "Overview workspace view mode"
-#~ msgstr "概覽工作區檢視模式"
-
-#~ msgid ""
-#~ "The selected workspace view mode in the overview. Supported values are "
-#~ "\"single\" and \"grid\"."
-#~ msgstr ""
-#~ "在概覽中選取的工作區檢視模式。支援的數值有「single」(單一)和「grid」(格"
-#~ "線)。"
-
-#~ msgid "Drag here to add favorites"
-#~ msgstr "拖放到這裡加入喜好"
-
-#~ msgid "Find"
-#~ msgstr "尋找"
-
-#~ msgid "Searching..."
-#~ msgstr "搜尋中…"
-
-#~ msgid "No matching results."
-#~ msgstr "沒有相符的結果。"
-
-#~ msgid "Invisible"
-#~ msgstr "隱形"
-
-#~ msgid "ON"
-#~ msgstr "開"
-
-#~ msgid "OFF"
-#~ msgstr "關"
+#~ msgid "No such application"
+#~ msgstr "沒有這個應用程式"

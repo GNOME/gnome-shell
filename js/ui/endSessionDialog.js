@@ -66,16 +66,20 @@ const logoutDialogContent = {
     uninhibitedDescriptionWithUser: _("%s will be logged out automatically in %d seconds."),
     uninhibitedDescription: _("You will be logged out automatically in %d seconds."),
     endDescription: _("Logging out of the system."),
-    confirmButtonText: _("Log Out"),
+    confirmButtons: [{ signal: 'ConfirmedLogout',
+                       label:  _("Log Out") }],
     iconStyleClass: 'end-session-dialog-logout-icon'
 };
 
 const shutdownDialogContent = {
-    subject: _("Shut Down"),
-    inhibitedDescription: _("Click Shut Down to quit these applications and shut down the system."),
-    uninhibitedDescription: _("The system will shut down automatically in %d seconds."),
-    endDescription: _("Shutting down the system."),
-    confirmButtonText: _("Shut Down"),
+    subject: _("Power Off"),
+    inhibitedDescription: _("Click Power Off to quit these applications and power off the system."),
+    uninhibitedDescription: _("The system will power off automatically in %d seconds."),
+    endDescription: _("Powering off the system."),
+    confirmButtons: [{ signal: 'ConfirmedReboot',
+                       label:  _("Restart") },
+                     { signal: 'ConfirmedShutdown',
+                       label:  _("Power Off") }],
     iconName: 'system-shutdown',
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
@@ -85,7 +89,8 @@ const restartDialogContent = {
     inhibitedDescription: _("Click Restart to quit these applications and restart the system."),
     uninhibitedDescription: _("The system will restart automatically in %d seconds."),
     endDescription: _("Restarting the system."),
-    confirmButtonText: _("Restart"),
+    confirmButtons: [{ signal: 'ConfirmedReboot',
+                       label:  _("Restart") }],
     iconName: 'system-shutdown',
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
@@ -233,7 +238,7 @@ EndSessionDialog.prototype = {
     __proto__: ModalDialog.ModalDialog.prototype,
 
     _init: function() {
-        ModalDialog.ModalDialog.prototype._init.call(this);
+        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'end-session-dialog' });
 
         this._user = Gdm.UserManager.ref_default().get_user(GLib.get_user_name());
 
@@ -288,12 +293,26 @@ EndSessionDialog.prototype = {
         this.contentLayout.add(scrollView,
                                { x_fill: true,
                                  y_fill: true });
+        scrollView.hide();
+
         this._applicationList = new St.BoxLayout({ vertical: true });
         scrollView.add_actor(this._applicationList,
                              { x_fill:  true,
                                y_fill:  true,
                                x_align: St.Align.START,
                                y_align: St.Align.MIDDLE });
+
+        this._applicationList.connect('actor-added',
+                                      Lang.bind(this, function() {
+                                          if (this._applicationList.get_children().length == 1)
+                                              scrollView.show();
+                                      }));
+
+        this._applicationList.connect('actor-removed',
+                                      Lang.bind(this, function() {
+                                          if (this._applicationList.get_children().length == 0)
+                                              scrollView.hide();
+                                      }));
     },
 
     _onDestroy: function() {
@@ -392,18 +411,27 @@ EndSessionDialog.prototype = {
             return;
 
         let dialogContent = DialogContent[this._type];
-        let confirmButtonText = _("Confirm");
+        let buttons = [{ action: Lang.bind(this, this.cancel),
+                         label:  _("Cancel"),
+                         key:    Clutter.Escape }];
 
-        if (dialogContent.confirmButtonText)
-            confirmButtonText = dialogContent.confirmButtonText;
+        for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
+            let signal = dialogContent.confirmButtons[i].signal;
+            let label = dialogContent.confirmButtons[i].label;
+            buttons.push({ action: Lang.bind(this, function() {
+                                       this._confirm(signal);
+                                   }),
+                           label: label });
+        }
 
-        this.setButtons([{ label: _("Cancel"),
-                           action: Lang.bind(this, this.cancel),
-                           key:    Clutter.Escape
-                         },
-                         { label:  confirmButtonText,
-                           action: Lang.bind(this, this._confirm)
-                         }]);
+        this.setButtons(buttons);
+    },
+
+    close: function() {
+        ModalDialog.ModalDialog.prototype.close.call(this);
+        DBus.session.emit_signal('/org/gnome/SessionManager/EndSessionDialog',
+                                 'org.gnome.SessionManager.EndSessionDialog',
+                                 'Closed', '', []);
     },
 
     cancel: function() {
@@ -414,12 +442,12 @@ EndSessionDialog.prototype = {
         this.close(global.get_current_time());
     },
 
-    _confirm: function() {
+    _confirm: function(signal) {
         this._fadeOutDialog();
         this._stopTimer();
         DBus.session.emit_signal('/org/gnome/SessionManager/EndSessionDialog',
                                  'org.gnome.SessionManager.EndSessionDialog',
-                                 'Confirmed', '', []);
+                                 signal, '', []);
     },
 
     _onOpened: function() {
@@ -434,7 +462,11 @@ EndSessionDialog.prototype = {
                            time: this._secondsLeft,
                            transition: 'linear',
                            onUpdate: Lang.bind(this, this._updateContent),
-                           onComplete: Lang.bind(this, this._confirm),
+                           onComplete: Lang.bind(this, function() {
+                                           let dialogContent = DialogContent[this._type];
+                                           let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
+                                           this._confirm(button.signal);
+                                       }),
                          });
     },
 

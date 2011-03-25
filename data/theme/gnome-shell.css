@@ -34,13 +34,6 @@ stage {
     color: rgba(0,0,0,0.5);
 }
 
-.label-real-shadow {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(0, 0, 0, 0);
-    background-gradient-end: rgba(0, 0, 0, 255);
-    width: 10px;
-}
-
 StScrollBar
 {
   padding: 0px;
@@ -82,10 +75,10 @@ StScrollBar StButton#vhandle:hover
 }
 
 StTooltip StLabel {
-    border: 1px solid rgba(79,111,173,1);
+    border: 1px solid rgba(255,255,255,0.6);
     border-radius: 5px;
-    padding: 4px;
-    background-color: rgba(79,111,173,0.9);
+    padding: 2px 12px;
+    background-color: rgba(0,0,0,0.9);
     color: #ffffff;
     font-size: 0.8em;
     font-weight: normal;
@@ -105,7 +98,7 @@ StTooltip StLabel {
 
 .popup-menu {
     color: #ffffff;
-    font-size: 14px;
+    font-size: 10.5pt;
     min-width: 200px;
 }
 
@@ -160,6 +153,14 @@ StTooltip StLabel {
     spacing: .5em;
 }
 
+.popup-inactive-menu-item {
+    color: #999;
+}
+
+.popup-subtitle-menu-item {
+    font-weight: bold;
+}
+
 .popup-menu-icon {
     icon-size: 1.14em;
 }
@@ -190,6 +191,8 @@ StTooltip StLabel {
     color: #ffffff;
     background-color: black;
     border-image: url("panel-border.svg") 1;
+    font-size: 10.5pt;
+    height: 1.86em;
 }
 
 #panelLeft, #panelCenter, #panelRight {
@@ -249,10 +252,14 @@ StTooltip StLabel {
 
 .panel-button {
     padding: 0px 12px;
-    font-size: 14px;
     font-weight: bold;
     color: #ccc;
     transition-duration: 100;
+}
+
+.panel-button:hover {
+    color: white;
+    text-shadow: black 0px 2px 2px;
 }
 
 .panel-button:active,
@@ -317,7 +324,7 @@ StTooltip StLabel {
     background-color: rgba(0,0,0,0.6);
 }
 
-.workspaces-view {
+.window-caption {
     color: white;
     spacing: 25px;
 }
@@ -346,13 +353,14 @@ StTooltip StLabel {
 
 .workspace-thumbnail-indicator {
     outline: 2px solid white;
+    border: 1px solid #888;
 }
 
 .window-caption {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(128,128,128,0.40);
     border-radius: 10px;
-    font-size: 12px;
+    font-size: 9pt;
     padding: 2px 8px;
     -shell-caption-spacing: 4px;
 }
@@ -372,7 +380,7 @@ StTooltip StLabel {
 
 #dash {
     color: #5f5f5f;
-    font-size: 12px;
+    font-size: 9pt;
     padding: 4px 0px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(128, 128, 128, 0.4);
@@ -398,12 +406,12 @@ StTooltip StLabel {
 }
 
 #viewSelector {
-    spacing: 16px;
-    font-size: 16px;
+    spacing: 1em;
+    font-size: 12pt;
 }
 
 #viewSelectorTabBar {
-    padding: 16px;
+    padding: 1em;
 }
 
 #searchArea {
@@ -451,8 +459,8 @@ StTooltip StLabel {
 .view-tab-title {
     color: #888a85;
     font-weight: bold;
-    padding: 0px 12px;
-    height: 24px;
+    padding: 0px 0.75em;
+    height: 1.5em;
 }
 
 .view-tab-title:hover {
@@ -462,8 +470,7 @@ StTooltip StLabel {
 .view-tab-title:selected {
     color: #000000;
     background-color: #c2c7cd;
-    border-radius: 4px;
-    height: 24px;
+    border-radius: 0.25em;
 }
 
 #searchResults {
@@ -526,7 +533,7 @@ StTooltip StLabel {
 
 .dash-search-button-label {
     color: #cccccc;
-    font-size: 16px;
+    font-size: 12pt;
 }
 
 /* Apps */
@@ -551,9 +558,9 @@ StTooltip StLabel {
 }
 
 .app-filter {
-    font-size: 14px;
+    font-size: 10.5pt;
     font-weight: bold;
-    height: 40px;
+    height: 2.85em;
     color: #aaa;
     width: 200px;
 }
@@ -596,7 +603,7 @@ StTooltip StLabel {
     border-radius: 4px;
     padding: 3px;
     border: 1px rgba(0,0,0,0);
-    font-size: 10px;
+    font-size: 7.5pt;
     color: white;
     transition-duration: 100;
     text-align: center;
@@ -626,7 +633,7 @@ StTooltip StLabel {
 }
 
 .app-well-menu {
-    font-size: 12px
+    font-size: 9pt;
 }
 
 /* LookingGlass */
@@ -782,7 +789,7 @@ StTooltip StLabel {
 
 .calendar-month-label {
     color: #666666;
-    font-size: 10px;
+    font-size: 7.5pt;
     padding: 2px;
     font-weight: bold;
 }
@@ -825,16 +832,16 @@ StTooltip StLabel {
 
 .datemenu-date-label {
     padding: .4em 1.75em;
-    font-size: 14px;
+    font-size: 10.5pt;
     color: #cccccc;
     font-weight: bold;
 }
 
 .calendar-day-base {
-    font-size: 10px;
+    font-size: 7.5pt;
     text-align: center;
-    width: 24px;
-    height: 24px;
+    width: 2.4em;
+    height: 2.4em;
 }
 
 .calendar-day-base:hover {
@@ -904,7 +911,7 @@ StTooltip StLabel {
 }
 
 .events-day-header {
-    font-size: 12px;
+    font-size: 9pt;
     font-weight: bold;
     color: rgba(153, 153, 153, 1.0);
     padding-left: 0.3em;
@@ -916,7 +923,7 @@ StTooltip StLabel {
 }
 
 .events-day-dayname {
-    font-size: 12px;
+    font-size: 9pt;
     color: rgba(153, 153, 153, 1.0);
     text-align: left;
 }
@@ -926,7 +933,7 @@ StTooltip StLabel {
 }
 
 .events-day-time {
-    font-size: 12px;
+    font-size: 9pt;
     color: #fff;
     text-align: right;
 }
@@ -936,7 +943,7 @@ StTooltip StLabel {
 }
 
 .events-day-task {
-    font-size: 12px;
+    font-size: 9pt;
     color: rgba(153, 153, 153, 1.0);
 }
 
@@ -965,13 +972,13 @@ StTooltip StLabel {
 #message-tray {
     background-gradient-direction: vertical;
     background-gradient-start: rgba(0,0,0,0.01);
-    background-gradient-end: rgba(0,0,0,0.95);
+    background-gradient-end: rgba(0,0,0,0.82);
     height: 36px;
     color: white;
 }
 
 #notification {
-    font-size: 16px;
+    font-size: 12pt;
     border-radius: 5px 5px 0px 0px;
     background: rgba(0,0,0,0.9);
     padding: 8px 8px 4px 8px;
@@ -1000,9 +1007,27 @@ StTooltip StLabel {
 }
 
 .summary-boxpointer #summary-right-click-menu {
-    font-size: 14px;
+    font-size: 10.5pt;
     padding-top: 12px;
     padding-bottom: 12px;
+}
+
+#summary-notification-stack-scrollview {
+    max-height: 18em;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#summary-notification-stack-scrollview > .top-shadow, #summary-notification-stack-scrollview > .bottom-shadow {
+    height: 1em;
+}
+
+#summary-notification-stack-scrollview:ltr {
+    padding-right: 8px;
+}
+
+#summary-notification-stack-scrollview:rtl {
+    padding-left: 8px;
 }
 
 #notification-scrollview {
@@ -1102,7 +1127,7 @@ StTooltip StLabel {
 .chat-meta-message {
     padding-left: 4px;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 10.5pt;
     color: #bbbbbb;
 }
 
@@ -1151,14 +1176,32 @@ StTooltip StLabel {
     padding: 2px 4px 0px 0px;
 }
 
+.summary-source-button {
+    color: #fff;
+    text-shadow: black 0px 2px 2px;
+}
+
 .summary-source-button:ltr {
-    padding-left: 4px;
-    padding-right: 16px;
+    padding-right: 12px;
+}
+
+.summary-source-button:selected .summary-source {
+    background-image: url("panel-button-highlight-narrow.svg");
+    border-image: url("source-button-border.svg") 10 10 0 1;
+}
+
+.summary-source-button:expanded:selected .summary-source {
+    background-image: none;
+    border-image: none;
+}
+
+.summary-source-button:expanded:selected {
+    background-image: url("panel-button-highlight-wide.svg");
+    border-image: url("source-button-border.svg") 10 10 0 1;
 }
 
 .summary-source-button:rtl {
-    padding-right: 4px;
-    padding-left: 16px;
+    padding-left: 12px;
 }
 
 .summary-source-button:last-child:ltr {
@@ -1169,8 +1212,13 @@ StTooltip StLabel {
     padding-left: 12px;
 }
 
+.summary-source {
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
 .source-title {
-    font-size: 12px;
+    font-size: 9pt;
     font-weight: bold;
     padding-left: 4px;
 }
@@ -1192,7 +1240,7 @@ StTooltip StLabel {
     border-radius: 24px;
     padding: 20px;
 
-    font-size: 12px;
+    font-size: 9pt;
     color: white;
 }
 
@@ -1251,7 +1299,11 @@ StTooltip StLabel {
 .ripple-box {
     width: 52px;
     height: 52px;
-    background-image: url("corner-ripple.png");
+    background-image: url("corner-ripple-ltr.png");
+}
+
+.ripple-box:rtl {
+    background-image: url("corner-ripple-rtl.png");
 }
 
 .switcher-arrow {
@@ -1321,10 +1373,14 @@ StTooltip StLabel {
     padding-top: 30px;
 }
 
+.modal-dialog-button-box {
+    spacing: 21px;
+}
+
 .modal-dialog-button {
     border: 1px solid #8b8b8b;
     border-radius: 18px;
-    font-size: 14px;
+    font-size: 10.5pt;
 
     margin-left: 10px;
     margin-right: 10px;
@@ -1357,12 +1413,12 @@ StTooltip StLabel {
 
 /* Run Dialog */
 .run-dialog-label {
-    font-size: 12px;
+    font-size: 9pt;
     color: white;
 }
 
 .run-dialog-error-label {
-    font-size: 12px;
+    font-size: 9pt;
     color: white;
 }
 
@@ -1372,9 +1428,9 @@ StTooltip StLabel {
 }
 
 .run-dialog-entry {
-    font-size: 14px;
+    font-size: 10.5pt;
     font-weight: bold;
-    width: 320px;
+    width: 23em;
     color: white;
 }
 
@@ -1392,6 +1448,10 @@ StTooltip StLabel {
 }
 
 /* End Session Dialog */
+.end-session-dialog {
+    spacing: 42px;
+}
+
 .end-session-dialog-subject {
     font-size: 12pt;
     font-weight: bold;
@@ -1410,13 +1470,11 @@ StTooltip StLabel {
     font-size: 10pt;
     color: white;
     padding-left: 17px;
-    padding-right: 40px;
-    width: 16em;
+    width: 28em;
 }
 
 .end-session-dialog-description:rtl {
     padding-right: 17px;
-    padding-left: 40px;
 }
 
 .end-session-dialog-logout-icon {
@@ -1435,14 +1493,21 @@ StTooltip StLabel {
     font-size: 10pt;
     max-height: 200px;
     padding-top: 42px;
-    padding-bottom: 42px;
-    padding-left: 17px;
+    padding-left: 49px;
     padding-right: 32px;
 }
 
 .end-session-dialog-app-list:rtl {
-    padding-right: 17px;
+    padding-right: 49px;
     padding-left: 32px;
+}
+
+.end-session-dialog-app-list-item {
+    color: #ccc;
+}
+
+.end-session-dialog-app-list-item:hover {
+    color: white;
 }
 
 .end-session-dialog-app-list-item:ltr {

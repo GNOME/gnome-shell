@@ -41,11 +41,14 @@ BaseTab.prototype = {
         this.visible = false;
     },
 
-    show: function() {
+    show: function(animate) {
         this.visible = true;
-        this.page.opacity = 0;
         this.page.show();
 
+        if (!animate)
+            return;
+
+        this.page.opacity = 0;
         Tweener.addTween(this.page,
                          { opacity: 255,
                            time: 0.1,
@@ -393,6 +396,8 @@ ViewSelector.prototype = {
     },
 
     _switchTab: function(tab) {
+        let firstSwitch = this._activeTab == null;
+
         if (this._activeTab && this._activeTab.visible) {
             if (this._activeTab == tab)
                 return;
@@ -408,11 +413,13 @@ ViewSelector.prototype = {
             }
         }
 
+        // Only fade when switching between tabs,
+        // not when setting the initially selected one.
         if (!tab.visible)
-            tab.show();
+            tab.show(!firstSwitch);
 
         // Pull a Meg Ryan:
-        if (Main.overview && Main.overview.workspaces) {
+        if (!firstSwitch && Main.overview.workspaces) {
             if (tab != this._tabs[0]) {
                 Tweener.addTween(Main.overview.workspaces.actor,
                                  { opacity: 0,

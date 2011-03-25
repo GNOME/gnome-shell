@@ -1,5 +1,5 @@
 <schemalist>
-  <schema id="org.gnome.shell" path="/apps/gnome-shell/"
+  <schema id="org.gnome.shell" path="/org/gnome/shell/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="development-tools" type="b">
       <default>true</default>
@@ -54,7 +54,7 @@
     <child name="recorder" schema="org.gnome.shell.recorder"/>
   </schema>
 
-  <schema id="org.gnome.shell.calendar" path="/apps/gnome-shell/calendar/"
+  <schema id="org.gnome.shell.calendar" path="/org/gnome/shell/calendar/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="show-weekdate" type="b">
       <default>false</default>
@@ -65,7 +65,7 @@
       </key>
   </schema>
 
-  <schema id="org.gnome.shell.clock" path="/apps/gnome-shell/clock/"
+  <schema id="org.gnome.shell.clock" path="/org/gnome/shell/clock/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="show-seconds" type="b">
       <default>false</default>
@@ -83,7 +83,7 @@
     </key>
   </schema>
 
-  <schema id="org.gnome.shell.recorder" path="/apps/gnome-shell/recorder/"
+  <schema id="org.gnome.shell.recorder" path="/org/gnome/shell/recorder/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="framerate" type="i">
       <default>15</default>

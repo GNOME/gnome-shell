@@ -321,20 +321,28 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
     }
 #endif
 
-  /* When the pointer leaves the stage to enter a child of the stage
-   * (like a notification icon), we don't want to produce Clutter leave
-   * events. But Clutter treats all leave events identically, so we
-   * need hide the detail = NotifyInferior events from it.
-   *
-   * Since Clutter doesn't see any event at all, this does mean that
-   * it won't produce an enter event on a Clutter actor that surrounds
-   * the child (unless it gets a MotionNotify before the Enter event).
-   * Other weirdness is likely also possible.
-   */
   if ((xev->xany.type == EnterNotify || xev->xany.type == LeaveNotify)
-      && xev->xcrossing.detail == NotifyInferior
       && xev->xcrossing.window == clutter_x11_get_stage_window (CLUTTER_STAGE (clutter_stage_get_default ())))
-    return TRUE;
+    {
+      /* If the pointer enters a child of the stage window (eg, a
+       * trayicon), we want to consider it to still be in the stage,
+       * so don't let Clutter see the event.
+       */
+      if (xev->xcrossing.detail == NotifyInferior)
+        return TRUE;
+
+      /* If the pointer is grabbed by a window it is not currently in,
+       * filter that out as well. In particular, if a trayicon grabs
+       * the pointer after a click on its label, we don't want to hide
+       * the message tray. Filtering out this event will leave Clutter
+       * out of sync, but that happens fairly often with grabs, and we
+       * can work around it. (Eg, shell_global_sync_pointer().)
+       */
+      if (xev->xcrossing.mode == NotifyGrab &&
+          (xev->xcrossing.detail == NotifyNonlinear ||
+           xev->xcrossing.detail == NotifyNonlinearVirtual))
+        return TRUE;
+    }
 
   /*
    * Pass the event to shell-global

@@ -4,7 +4,7 @@
 <!-- vim:set ts=2 expandtab: -->
 <moduleset>
   <repository type="git" name="git.clutter-project.org"
-      href="git://git.clutter-project.org/"/>
+      href="http://git.clutter-project.org/"/>
   <repository type="git" name="git.gnome.org"
       href="git://git.gnome.org/"/>
   <repository type="git" name="git.moblin.org"
@@ -30,10 +30,10 @@
     <branch repo="git.gnome.org" module="glib"/>
   </autotools>
 
-  <tarball id="vala" version="0.11.4" autogenargs="--enable-vapigen">
-    <source href="http://ftp.gnome.org/pub/GNOME/sources/vala/0.11/vala-0.11.4.tar.bz2"
-            hash="sha256:98b3e9e94b5462e88b1ad46d018d830d0316e26c61e36bf778500b414342239d"
-            md5sum="5d8c374b29c18bff14df7f5a7d64fda9" size="2852854"/>
+  <tarball id="vala" version="0.11.7" autogenargs="--enable-vapigen">
+    <source href="http://ftp.gnome.org/pub/GNOME/sources/vala/0.11/vala-0.11.7.tar.bz2"
+            hash="sha256:d82a17003cb999b3411615631ca82849900986177a8bc6bec2333a5101b226f6"
+            md5sum="5515f32552ee45ed5c7541c119009caa" size="2845070"/>
     <dependencies>
       <dep package="glib"/>
     </dependencies>
@@ -227,6 +227,7 @@
     <branch repo="git.gnome.org" module="libgweather"/>
     <dependencies>
      <dep package="libsoup"/>
+     <dep package="gtk3"/>
     </dependencies>
   </autotools>
 
@@ -259,6 +260,13 @@
     </dependencies>
   </autotools>
 
+  <autotools id="telepathy-logger" autogenargs="--enable-introspection --disable-Werror">
+    <branch repo="git.freedesktop.org" module="telepathy/telepathy-logger" />
+    <dependencies>
+      <dep package="telepathy-glib"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-shell" autogenargs="--enable-jhbuild-wrapper-script">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
@@ -274,9 +282,10 @@
         <dep package="gnome-icon-theme"/>
         <dep package="gnome-icon-theme-symbolic"/>
         <dep package="libcanberra"/>
-	<dep package="gnome-settings-daemon"/>
-	<dep package="gnome-bluetooth"/>
+        <dep package="gnome-settings-daemon"/>
+        <dep package="gnome-bluetooth"/>
         <dep package="telepathy-glib"/>
+        <dep package="telepathy-logger"/>
         <dep package="upower"/>
     </dependencies>
   </autotools>

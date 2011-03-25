@@ -6,19 +6,21 @@
 # Felipe Borges <felipe10borges@gmail.com>, 2010.
 # Henrique P. Machado <hpmachado@gnome.org>, 2010.
 # Jonh Wendell <wendell@bani.com.br>, 2010.
+# Rodrigo Padula <contato@rodrigopadula.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-07 08:59-0200\n"
-"PO-Revision-Date: 2010-12-06 16:03+0100\n"
-"Last-Translator: Jonh Wendell <wendell@bani.com.br>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-24 18:16+0000\n"
+"PO-Revision-Date: 2011-03-24 14:11-0300\n"
+"Last-Translator: Rodrigo Padula de Oliveira <contato@rodrigopadula.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR>\n"
-"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -29,14 +31,6 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gerenciamento de janelas e lançador de aplicativos"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "Relógio"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "Personalizar o relógio do painel"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -46,24 +40,20 @@ msgstr ""
 "diálogo Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr "Padrão personalizado do relógio"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "Habilitar ferramentas internas úteis para desenvolvedores e testadores a "
 "partir do Alt-F2"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr "Extensão de arquivo usada para armazenagem do screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr "Taxa de quadros usada para gravar screencasts."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
@@ -71,40 +61,33 @@ msgstr ""
 "As extensões do GNOME Shell tem uma propriedade uuid; esta chave lista as "
 "extensões que não devem ser carregadas."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr "Histórico do diálogo comandos (Alt-F2)"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "Histórico do diálogo comandos"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
-msgstr "Formato de horas"
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Se verdadeiro, exibe data no relógio, em adição à hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-"Se verdadeiro e o formato é \"12-horas\" ou \"24-horas\", mostra a data no "
-"relógio, junto com o horário."
+msgid "If true, display seconds in time."
+msgstr "Se verdadeiro, exibe segundos na hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-"Se verdadeiro e o formato é \"12-horas\" ou \"24-horas\", mostra os segundos "
-"junto com o horário."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Se verdadeiro, exibe o número da semana no calendário."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 "Lista dos IDs de arquivo de área de trabalho para os aplicativos favoritos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -113,17 +96,21 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
-"Configura a fila de processamento usada para codificar gravações. Ela segue "
-"a a sintaxe usada para gst-launch. A fila de processamento deve ter um sink "
-"pad onde o vídeo gravado é retido. Ele normalmente terá um source pad "
-"desconectado; saídas deste pad serão gravadas no arquivo de saída. Porém, a "
-"fila de processamento pode também tomar conta de sua própria saída - isto "
-"poderia ser usado para enviar a saída para um servidor icecast via "
-"shout2send oiu similar. Quando não definido ou definido para um valor vazio, "
-"o fluxo de processamento padrão será usado. Atualmente é 'videorate ! "
-"theoraenc ! oggmux' e gravação no formato Ogg Theora."
+"Configura a fila de processamento GStreamer usada para codificar gravações. "
+"Ela segue a sintaxe usada para gst-launch. A fila de processamento deve "
+"ter um sink pad onde o vídeo gravado é escrito. Ele normalmente terá um "
+"source pad desconectado; saídas deste pad serão gravadas no arquivo de "
+"saída. Porém, a fila de processamento pode também tomar conta de sua própria "
+"saída - isto poderia ser usado para enviar a saída para um servidor icecast "
+"via shout2send oiu similar. Quando não definido ou definido para um valor "
+"vazio, o fluxo de processamento padrão será usado. Atualmente é \"videorate ! "
+"vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux\" e grave para WEBM "
+"usando o codec VP8. %T é usado como espaço reservado para um convidado na "
+"lista para uma ótima contagem de threads no sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -161,7 +148,7 @@ msgid ""
 "screencast recorder in frames-per-second."
 msgstr ""
 "A taxa de quadros do screencast resultante gravado pelo gravador de "
-"screencastsdo GNOME Shell em quadros por segundo."
+"screencasts do GNOME Shell em quadros por segundo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -180,213 +167,54 @@ msgstr ""
 "favor, note que que ao fazer isso não removerá os dado já salvos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-"Esta chave especifica o formato usado pelo relógio do painel quando a chave "
-"de formato é atribuída como \"personalizado\". Você pode usar "
-"especificadores de conversão entendidos pela função strftime() para obter um "
-"formato específico. Veja o manual da strftime() para maiores informações."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-"Esta chave especifica o formato de horas utilizado pelo relógio do painel. "
-"Valores possíveis são \"12-hour\", \"24-hour\", \"unix\" e \"custom\". Se "
-"definida como \"unix\", o relógio irá exibir as horas em segundos desde seu "
-"lançamento, por exemplo 01/01/1970. Se definida como \"custom\", o relógio "
-"irá exibir as horas de acordo com o formato especificado na chave "
-"custom_format. Note que se definida tanto como \"unix\" ou \"custom\", as "
-"chaves show_date e show_seconds serão igoradas."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "Uuids das extensões a desabilitar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "Quando coletar dados sobre uso de aplicativos"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr ""
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr "desabilitar provedores OpenSearch"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr ""
+#: ../js/misc/util.js:71
+msgid "Command not found"
+msgstr "Comando não encontrado"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:98
+msgid "Could not parse command:"
+msgstr "Não foi possível analisar comando:"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
+#: ../js/misc/util.js:106
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "A execução de \"%s\" falhou:"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr ""
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:230
+msgid "All"
+msgstr "Todos"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-#, fuzzy
-msgid "Enable lens mode"
-msgstr "Habilitado"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr ""
-
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "Formato do relógio"
-
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "Preferências do Relógio"
-
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "Mostrador do painel"
-
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "Mostrar segundos"
-
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "Mostrar a _data"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "Formato de _12 horas"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "Formato de _24 horas"
-
-#: ../js/ui/appDisplay.js:215
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:245
-msgid "PREFERENCES"
-msgstr "PREFERÊNCIAS"
+#: ../js/ui/appDisplay.js:354
+msgid "SETTINGS"
+msgstr "CONFIGURAÇÕES"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Nova janela"
 
-#: ../js/ui/appDisplay.js:546
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: ../js/ui/appDisplay.js:547
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
@@ -400,228 +228,757 @@ msgstr "%s foi adicionado aos seus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removido dos seus favoritos."
 
-#: ../js/ui/dash.js:27
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:66
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Dia todo"
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:71
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:78
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:118
+msgctxt "grid sunday"
+msgid "S"
+msgstr "D"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:120
+msgctxt "grid monday"
+msgid "M"
+msgstr "S"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:122
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:124
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "Q"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:126
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Q"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:128
+msgctxt "grid friday"
+msgid "F"
+msgstr "S"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:130
+msgctxt "grid saturday"
+msgid "S"
+msgstr "S"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:143
+msgctxt "list sunday"
+msgid "Su"
+msgstr "Dom"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:145
+msgctxt "list monday"
+msgid "M"
+msgstr "Seg"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:147
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Ter"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:149
+msgctxt "list wednesday"
+msgid "W"
+msgstr "Qua"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:151
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Qui"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:153
+msgctxt "list friday"
+msgid "F"
+msgstr "Sex"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:155
+msgctxt "list saturday"
+msgid "S"
+msgstr "Sab"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:704
+msgid "Nothing Scheduled"
+msgstr "Nada agendado"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:723
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %B %d, %Y"
+
+#: ../js/ui/calendar.js:733
+msgid "Today"
+msgstr "Hoje"
+
+#: ../js/ui/calendar.js:737
+msgid "Tomorrow"
+msgstr "Amanhã"
+
+#: ../js/ui/calendar.js:746
+msgid "This week"
+msgstr "Esta semana"
+
+#: ../js/ui/calendar.js:754
+msgid "Next week"
+msgstr "Próxima semana"
+
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Remover"
 
-#: ../js/ui/docDisplay.js:494
-msgid "RECENT ITEMS"
-msgstr "DOCUMENTOS RECENTES"
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "Configurações de data e hora"
 
-#: ../js/ui/lookingGlass.js:552
-msgid "No extensions installed"
-msgstr "Nenhuma extensão instalada"
-
-#: ../js/ui/lookingGlass.js:589
-msgid "Enabled"
-msgstr "Habilitado"
-
-#. translators:
-#. * The device has been disabled
-#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
-msgid "Disabled"
-msgstr "Desabilitado"
-
-#: ../js/ui/lookingGlass.js:593
-msgid "Error"
-msgstr "Erro"
-
-#: ../js/ui/lookingGlass.js:595
-msgid "Out of date"
-msgstr "Expirado"
-
-#: ../js/ui/lookingGlass.js:620
-msgid "View Source"
-msgstr "Ver fonte"
-
-#: ../js/ui/lookingGlass.js:626
-msgid "Web Page"
-msgstr "Página Web"
-
-#: ../js/ui/overview.js:112
-msgid "Undo"
-msgstr "Desfazer"
-
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
-#, c-format
-msgid "Quit %s"
-msgstr "Sair de %s"
-
-#: ../js/ui/panel.js:495
-msgid "Preferences"
-msgstr "Preferências"
+#: ../js/ui/dateMenu.js:111
+msgid "Open Calendar"
+msgstr "Abrir calendário"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A %B %e, %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "DOCUMENTOS RECENTES"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Encerrar sessão %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
+msgid "Log Out"
+msgstr "Encerrar sessão"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Clique em Encerrar sessão para finalizar estes aplicativos e sair "
+"do sistema."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "%s encerrará a sessão automaticamente em %d segundos."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "Sua sessão será encerrada automaticamente em %d segundos."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Encerrando sessão do sistema."
+
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Desligar"
+
+#: ../js/ui/endSessionDialog.js:76
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Clique em Desligar para fechar os aplicativos e desligar o sistema."
+
+#: ../js/ui/endSessionDialog.js:77
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "O sistema será desligado automaticamente em %d segundos."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "Desligando o sistema."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../js/ui/endSessionDialog.js:89
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "Clique em Reiniciar para fechar os aplicativos e reiniciar o sistema."
+
+#: ../js/ui/endSessionDialog.js:90
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "O sistema será reiniciado automaticamente em %d segundos."
+
+#: ../js/ui/endSessionDialog.js:91
+msgid "Restarting the system."
+msgstr "Reiniciando o sistema."
+
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../js/ui/lookingGlass.js:588
+msgid "No extensions installed"
+msgstr "Nenhuma extensão instalada"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Enabled"
+msgstr "Habilitado"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
+msgid "Disabled"
+msgstr "Desabilitado"
+
+#: ../js/ui/lookingGlass.js:629
+msgid "Error"
+msgstr "Erro"
+
+#: ../js/ui/lookingGlass.js:631
+msgid "Out of date"
+msgstr "Expirado"
+
+#: ../js/ui/lookingGlass.js:656
+msgid "View Source"
+msgstr "Ver fonte"
+
+#: ../js/ui/lookingGlass.js:662
+msgid "Web Page"
+msgstr "Página Web"
+
+#: ../js/ui/messageTray.js:987
+msgid "Open"
+msgstr "Abrir"
+
+#: ../js/ui/messageTray.js:2145
+msgid "System Information"
+msgstr "Informação do sistema"
+
+#: ../js/ui/overview.js:91
+msgid "Undo"
+msgstr "Desfazer"
+
+#: ../js/ui/overview.js:186
+msgid "Windows"
+msgstr "Janelas"
+
+#: ../js/ui/overview.js:189
+msgid "Applications"
+msgstr "Aplicativos"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr "Dash"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:515
+#, c-format
+msgid "Quit %s"
+msgstr "Sair de %s"
+
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Atividades"
 
-#: ../js/ui/placeDisplay.js:111
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Barra superior"
+
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Erro ao desmontar \"%s\""
 
-#: ../js/ui/placeDisplay.js:114
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "Tentar novamente"
 
-#: ../js/ui/placeDisplay.js:159
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "Conectar ao..."
 
-#: ../js/ui/placeDisplay.js:558
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "LOCAIS & DISPOSITIVOS"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+#| msgid "authentication required"
+msgid "Authentication Required"
+msgstr "Autenticação necessária"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrador"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+#| msgid "authentication required"
+msgid "Authenticate"
+msgstr "Autenticação"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Senha:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:233
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Por favor digite um comando:"
 
-#: ../js/ui/runDialog.js:378
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "A execução de \"%s\" falhou:"
+#: ../js/ui/searchDisplay.js:310
+msgid "Searching..."
+msgstr "Pesquisando..."
 
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/searchDisplay.js:324
+msgid "No matching results."
+msgstr "Nenhum resultado encontrado."
+
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "Desligar..."
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Disponível"
 
-#: ../js/ui/statusMenu.js:106
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:114
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Minha conta"
 
-#: ../js/ui/statusMenu.js:118
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Configurações do sistema"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Bloquear a tela"
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Alternar usuário"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Encerrar sessão..."
 
-#: ../js/ui/statusMenu.js:141
-msgid "Suspend..."
-msgstr "Suspender..."
-
-#: ../js/ui/statusMenu.js:145
-msgid "Shut Down..."
-msgstr "Desligar..."
-
-#: ../js/ui/status/accessibility.js:82
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "Ampliador"
 
-#: ../js/ui/status/accessibility.js:88
-msgid "Screen Reader"
-msgstr "Leitor de tela"
-
-#: ../js/ui/status/accessibility.js:91
-msgid "Screen Keyboard"
-msgstr "Teclado na tela"
-
-#: ../js/ui/status/accessibility.js:94
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Alertas visuais"
 
-#: ../js/ui/status/accessibility.js:97
+#: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
 msgstr "Teclas de aderência"
 
-#: ../js/ui/status/accessibility.js:100
+#: ../js/ui/status/accessibility.js:83
 msgid "Slow Keys"
 msgstr "Teclas lentas"
 
-#: ../js/ui/status/accessibility.js:103
+#: ../js/ui/status/accessibility.js:86
 msgid "Bounce Keys"
 msgstr "Teclas de repercussão"
 
-#: ../js/ui/status/accessibility.js:106
+#: ../js/ui/status/accessibility.js:89
 msgid "Mouse Keys"
 msgstr "Teclas do mouse"
 
-#: ../js/ui/status/accessibility.js:110
+#: ../js/ui/status/accessibility.js:93
 msgid "Universal Access Settings"
 msgstr "Configurações de acesso universal"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "Alto contraste"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "Texto grande"
 
-#: ../js/ui/status/power.js:87
-msgid "What's using power..."
-msgstr "Onde a energia está sendo gasta..."
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+msgid "Bluetooth"
+msgstr "Bluetooth"
 
-#: ../js/ui/status/power.js:90
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Visibilidade"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Enviar arquivos para o dispositivo..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Configurar um novo dispositivo..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Configurações de Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:188
+msgid "Connection"
+msgstr "Conexão"
+
+#: ../js/ui/status/bluetooth.js:224
+msgid "Send Files..."
+msgstr "Enviar arquivos..."
+
+#: ../js/ui/status/bluetooth.js:229
+msgid "Browse Files..."
+msgstr "Explorar arquivos..."
+
+#: ../js/ui/status/bluetooth.js:238
+msgid "Error browsing device"
+msgstr "Erro ao navegar no dispositivo"
+
+#: ../js/ui/status/bluetooth.js:239
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "O dispositivo requerido não pode ser explorado, o erro é \"%s\""
+
+#: ../js/ui/status/bluetooth.js:247
+msgid "Keyboard Settings"
+msgstr "Configurações de teclado"
+
+#: ../js/ui/status/bluetooth.js:252
+msgid "Mouse Settings"
+msgstr "Configurações do mouse"
+
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+msgid "Sound Settings"
+msgstr "Configurações de som"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Autorização requerida de %s"
+
+#: ../js/ui/status/bluetooth.js:374
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "O dispositivo %s deseja acessar o serviço \"%s\""
+
+#: ../js/ui/status/bluetooth.js:376
+msgid "Always grant access"
+msgstr "Sempre permitir acesso"
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Grant this time only"
+msgstr "Permitir apenas desta vez"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Reject"
+msgstr "Rejeitar"
+
+#: ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Confirmação de emparelhamento para %s"
+
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "O dispositivo %s deseja parear com este computador"
+
+#: ../js/ui/status/bluetooth.js:415
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Por favor confirme se o PIN \"%s\"' é o mesmo do dispositivo."
+
+#: ../js/ui/status/bluetooth.js:417
+msgid "Matches"
+msgstr "Corresponde"
+
+#: ../js/ui/status/bluetooth.js:418
+msgid "Does not match"
+msgstr "Não corresponde"
+
+#: ../js/ui/status/bluetooth.js:441
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Requisição de pareamento para %s"
+
+#: ../js/ui/status/bluetooth.js:449
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Por favor, informe o PIN mencionado no dispositivo."
+
+#: ../js/ui/status/bluetooth.js:465
+msgid "OK"
+msgstr "OK"
+
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Exibir Layout de teclado..."
+
+#: ../js/ui/status/keyboard.js:76
+msgid "Localization Settings"
+msgstr "Configurações de localização"
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<desconhecido>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "desabilitado"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "conectando..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "autenticação necessária"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "cabo desconectado"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "indisponível"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "conexão falhou"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "Conectado (privado)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "Rede cabeada - automática"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "Banda larga - automática"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "Conexão discada - automática"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "%s - automática"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "Bluetooth automático"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "Rede sem fio automática"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "Mais..."
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "Habilitar rede"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "Cabeada"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "Sem fio"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "Banda larga móvel"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "Conexões VPN"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "Configurações de rede"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Você está agora conectado à rede banda larga móvel \"%s\""
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Você está agora conectado à rede sem fios \"%s\""
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Você está agora conectado à rede cabeada \"%s\""
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Você está agora conectado à rede VPN \"%s\""
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Você está agora conectado à \"%s\""
+
+#: ../js/ui/status/network.js:1808
+msgid "Connection established"
+msgstr "Conexão estabelecida"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr "Rede está desabilitada"
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "Gerenciador de rede"
+
+#: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Gerenciamento de energia..."
 
-#: ../js/ui/status/power.js:117
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "Estimando..."
+
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -629,118 +986,139 @@ msgstr[0] "%d hora restante"
 msgstr[1] "%d horas restantes"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s e %d %s restantes"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "hora"
 msgstr[1] "horas"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuto"
 msgstr[1] "minutos"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minuto restante"
 msgstr[1] "%d minutos restantes"
 
-#: ../js/ui/status/power.js:244
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "Tomada"
 
-#: ../js/ui/status/power.js:246
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "Bateria do laptop"
 
-#: ../js/ui/status/power.js:248
+#: ../js/ui/status/power.js:232
 msgid "UPS"
-msgstr "UPS"
+msgstr "No-break"
 
-#: ../js/ui/status/power.js:250
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:252
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "Mouse"
 
-#: ../js/ui/status/power.js:254
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/status/power.js:256
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:258
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "Telefone celular"
 
-#: ../js/ui/status/power.js:260
+#: ../js/ui/status/power.js:244
 msgid "Media player"
-msgstr "Reprodutor de música"
+msgstr "Reprodutor de mídia"
 
-#: ../js/ui/status/power.js:262
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:264
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "Computador"
 
-#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: ../js/ui/status/volume.js:41
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:54
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Microfone"
 
-#: ../js/ui/status/volume.js:62
-msgid "Sound Settings"
-msgstr "Configurações de som"
+#: ../js/ui/telepathyClient.js:332
+#, c-format
+msgid "%s is online."
+msgstr "%s está conectado."
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "Pesquise no seu computador"
+#: ../js/ui/telepathyClient.js:337
+#, c-format
+msgid "%s is offline."
+msgstr "%s está desconectado."
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/telepathyClient.js:340
+#, c-format
+msgid "%s is away."
+msgstr "%s está ausente."
+
+#: ../js/ui/telepathyClient.js:343
+#, c-format
+msgid "%s is busy."
+msgstr "%s está ocupado."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:474
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Enviado para %X em %A"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "Digite para buscar..."
+
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Pesquisar"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s terminou sua inicialização"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "\"%s\" está pronto"
 
-#: ../js/ui/workspacesView.js:244
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr ""
-"Não é possível adicionar um novo espaço de trabalho porque foi atingido o "
-"limite."
-
-#: ../js/ui/workspacesView.js:260
-msgid "Can't remove the first workspace."
-msgstr "Não é possível remover o primeiro espaço de trabalho."
-
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -749,48 +1127,69 @@ msgstr[1] "%u saídas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/shell-global.c:1163
+#: ../src/main.c:446
+msgid "Print version"
+msgstr "Versão de impressão"
+
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Erro ao lançar \"%s\""
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Há menos de um minuto"
 
-#: ../src/shell-global.c:1167
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Há %d minuto"
 msgstr[1] "Há %d minutos"
 
-#: ../src/shell-global.c:1172
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Há %d hora"
 msgstr[1] "Há %d horas"
 
-#: ../src/shell-global.c:1177
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Há %d dia"
 msgstr[1] "Há %d dias"
 
-#: ../src/shell-global.c:1182
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "Há %d semana"
 msgstr[1] "Há %d semanas"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Reino unido"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Padrão"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "O diálogo de autenticação foi descartado pelo usuário"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -802,10 +1201,6 @@ msgstr "Pasta pessoal"
 msgid "File System"
 msgstr "Sistema de arquivos"
 
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "Pesquisar"
-
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
@@ -816,78 +1211,3 @@ msgstr "Pesquisar"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "Overview workspace view mode"
-#~ msgstr "Resumo do modo de visão de áreas de trabalho"
-
-#~ msgid ""
-#~ "The selected workspace view mode in the overview. Supported values are "
-#~ "\"single\" and \"grid\"."
-#~ msgstr ""
-#~ "O o modo de visão do espaço de trabalho na visão geral. Valores aceitos "
-#~ "são: \"single\" e \"grid\"."
-
-#~ msgid "Drag here to add favorites"
-#~ msgstr "Arraste até aqui para adicionar aos favoritos"
-
-#~ msgid "Find"
-#~ msgstr "Localizar"
-
-#~ msgid "Searching..."
-#~ msgstr "Pesquisando..."
-
-#~ msgid "No matching results."
-#~ msgstr "Nenhum resultado encontrado."
-
-#~ msgid "Invisible"
-#~ msgstr "Invisível"
-
-#~ msgid "ON"
-#~ msgstr "⚪"
-
-#~ msgid "OFF"
-#~ msgstr "⚫"
-
-#~ msgid "Account Information..."
-#~ msgstr "Informação da conta..."
-
-#~ msgid "Sidebar"
-#~ msgstr "Barra lateral"
-
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgid "Applications"
-#~ msgstr "Aplicativos"
-
-#~ msgid "Recent Documents"
-#~ msgstr "Documentos recentes"
-
-#~ msgid "PLACES"
-#~ msgstr "LOCAIS"
-
-#~ msgid "SEARCH RESULTS"
-#~ msgstr "RESULTADOS DA BUSCA"
-
-#~ msgid "Can't lock screen: %s"
-#~ msgstr "Não foi possível travar a tela: %s"
-
-#~ msgid "Can't temporarily set screensaver to blank screen: %s"
-#~ msgstr "Não foi possível definir a proteção de tela para uma tela vazia: %s"
-
-#~ msgid "Can't logout: %s"
-#~ msgstr "Não foi possível encerrar a sessão: %s"
-
-#~ msgid "Browse"
-#~ msgstr "Navegar"
-
-#~ msgid "(see all)"
-#~ msgstr "(veja todos)"
-
-#~ msgid "Find apps or documents"
-#~ msgstr "Localizar aplicativos ou documentos"
-
-#~ msgid "Manager"
-#~ msgstr "Gerenciador"
-
-#~ msgid "The user manager object this user is controlled by."
-#~ msgstr "O objeto gerenciador de usuários que controla este usuário."

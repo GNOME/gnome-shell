@@ -445,33 +445,35 @@ filter_by_position (GList            *children,
       clutter_actor_get_allocation_box (child, &cbox);
 
       /* Filter out children if they are in the wrong direction from
-       * @rbox, or if they don't overlap it.
+       * @rbox, or if they don't overlap it. To account for floating-
+       * point imprecision, an actor is "down" (etc.) from an another
+       * actor even if it overlaps it by up to 0.1 pixels.
        */
       switch (direction)
         {
         case GTK_DIR_UP:
-          if (cbox.y2 > rbox->y1)
+          if (cbox.y2 > rbox->y1 + 0.1)
             continue;
           if (cbox.x1 >= rbox->x2 || cbox.x2 <= rbox->x1)
             continue;
           break;
 
         case GTK_DIR_DOWN:
-          if (cbox.y1 < rbox->y2)
+          if (cbox.y1 < rbox->y2 - 0.1)
             continue;
           if (cbox.x1 >= rbox->x2 || cbox.x2 <= rbox->x1)
             continue;
           break;
 
         case GTK_DIR_LEFT:
-          if (cbox.x2 > rbox->x1)
+          if (cbox.x2 > rbox->x1 + 0.1)
             continue;
           if (cbox.y1 >= rbox->y2 || cbox.y2 <= rbox->y1)
             continue;
           break;
 
         case GTK_DIR_RIGHT:
-          if (cbox.x1 < rbox->x2)
+          if (cbox.x1 < rbox->x2 - 0.1)
             continue;
           if (cbox.y1 >= rbox->y2 || cbox.y2 <= rbox->y1)
             continue;

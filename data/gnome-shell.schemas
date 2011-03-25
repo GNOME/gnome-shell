@@ -81,5 +81,20 @@
         </locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/windows/workspaces_only_on_primary</key>
+        <applyto>/desktop/gnome/shell/windows/workspaces_only_on_primary</applyto>
+        <owner>gnome-shell</owner>
+        <type>bool</type>
+        <default>true</default>
+        <locale name="C">
+          <short>Workspaces only on primary monitor</short>
+          <long>
+             This key overrides /apps/mutter/general/workspaces_only_on_primary when
+             running GNOME Shell.
+          </long>
+        </locale>
+      </schema>
+
   </schemalist>
 </gconfschemafile>

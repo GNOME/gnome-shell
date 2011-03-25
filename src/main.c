@@ -31,11 +31,12 @@ extern GType gnome_shell_plugin_get_type (void);
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
 static void
-shell_dbus_init (void)
+shell_dbus_init (gboolean replace)
 {
   GError *error = NULL;
   DBusGConnection *session;
   DBusGProxy *bus;
+  guint32 request_name_flags;
   guint32 request_name_result;
 
   /** TODO:
@@ -51,18 +52,25 @@ shell_dbus_init (void)
                                    DBUS_PATH_DBUS,
                                    DBUS_INTERFACE_DBUS);
 
+  request_name_flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
+  if (replace)
+    request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
   if (!dbus_g_proxy_call (bus, "RequestName", &error,
                           G_TYPE_STRING, SHELL_DBUS_SERVICE,
-                          G_TYPE_UINT, 0,
+                          G_TYPE_UINT, request_name_flags,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
     {
-      g_print ("failed to acquire org.gnome.Shell: %s\n", error->message);
-      /* If we somehow got started again, it's not an error to be running
-       * already.  So just exit 0.
-       */
-      exit (0);
+      g_printerr ("failed to acquire org.gnome.Shell: %s\n", error->message);
+      exit (1);
+    }
+  if (!(request_name_result == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER
+        || request_name_result == DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER))
+    {
+      g_printerr ("%s already exists on bus and --replace not specified\n",
+                  SHELL_DBUS_SERVICE);
+      exit (1);
     }
 
   /* Also grab org.gnome.Panel to replace any existing panel process,
@@ -108,6 +116,45 @@ shell_dbus_init (void)
   g_object_unref (bus);
 }
 
+static void
+constrain_tooltip (StTooltip             *tooltip,
+                   const ClutterGeometry *geometry,
+                   ClutterGeometry       *adjusted_geometry,
+                   gpointer               data)
+{
+  const ClutterGeometry *tip_area = st_tooltip_get_tip_area (tooltip);
+  ShellGlobal *global = shell_global_get ();
+  MetaScreen *screen = shell_global_get_screen (global);
+  int n_monitors = meta_screen_get_n_monitors (screen);
+  int i;
+
+  *adjusted_geometry = *geometry;
+
+  /* A point that determines what screen we'll constrain to */
+  int x = tip_area->x + tip_area->width / 2;
+  int y = tip_area->y + tip_area->height / 2;
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      MetaRectangle rect;
+      meta_screen_get_monitor_geometry (screen, i, &rect);
+      if (x >= rect.x && x < rect.x + rect.width &&
+          y >= rect.y && y < rect.y + rect.height)
+        {
+          if (adjusted_geometry->x + adjusted_geometry->width > rect.x + rect.width)
+            adjusted_geometry->x = rect.x + rect.width - adjusted_geometry->width;
+          if (adjusted_geometry->x < rect.x)
+            adjusted_geometry->x = rect.x;
+
+          if (adjusted_geometry->y + adjusted_geometry->height > rect.y + rect.height)
+            adjusted_geometry->y = rect.y + rect.height - adjusted_geometry->height;
+          if (adjusted_geometry->y < rect.y)
+            adjusted_geometry->y = rect.y;
+
+          return;
+        }
+    }
+}
 
 static void
 update_font_options (GtkSettings *settings)
@@ -138,6 +185,8 @@ update_font_options (GtkSettings *settings)
     st_theme_context_set_resolution (context, dpi / 1024);
   else
     st_theme_context_set_default_resolution (context);
+
+  st_tooltip_set_constrain_func (stage, constrain_tooltip, NULL, NULL);
 
   /* Clutter (as of 0.9) passes comprehensively wrong font options
    * override whatever set_font_flags() did above.
@@ -221,6 +270,8 @@ shell_prefs_init (void)
 {
   meta_prefs_override_preference_location ("/apps/mutter/general/attach_modal_dialogs",
                                            "/desktop/gnome/shell/windows/attach_modal_dialogs");
+  meta_prefs_override_preference_location ("/apps/mutter/general/workspaces_only_on_primary",
+                                           "/desktop/gnome/shell/windows/workspaces_only_on_primary");
   meta_prefs_override_preference_location ("/apps/metacity/general/button_layout",
                                            "/desktop/gnome/shell/windows/button_layout");
   meta_prefs_override_preference_location ("/apps/metacity/general/edge_tiling",
@@ -432,7 +483,7 @@ main (int argc, char **argv)
   g_setenv ("GJS_DEBUG_OUTPUT", "stderr", TRUE);
   g_setenv ("GJS_DEBUG_TOPICS", "JS ERROR;JS LOG", TRUE);
 
-  shell_dbus_init ();
+  shell_dbus_init (meta_get_replace_current_wm ());
   shell_a11y_init ();
   shell_fonts_init ();
   shell_perf_log_init ();

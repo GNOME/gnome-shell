@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([gnome-shell],[2.91.91],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AC_INIT([gnome-shell],[2.91.92],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/shell-global.c])
@@ -71,13 +71,14 @@ LIBEDATASERVER_MIN_VERSION=1.2.0
 LIBEDATASERVERUI2_MIN_VERSION=1.2.0
 LIBEDATASERVERUI3_MIN_VERSION=2.91.6
 TELEPATHY_GLIB_MIN_VERSION=0.13.12
+TELEPATHY_LOGGER_MIN_VERSION=0.2.4
 POLKIT_MIN_VERSION=0.100
 
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
                                gio-unix-2.0 dbus-glib-1 libxml-2.0
                                gtk+-3.0 >= $GTK_MIN_VERSION
-                               libmutter-wm >= $MUTTER_MIN_VERSION
+                               libmutter >= $MUTTER_MIN_VERSION
                                gjs-internals-1.0 >= $GJS_MIN_VERSION
 			       libgnome-menu $recorder_modules gconf-2.0
                                gdk-x11-3.0
@@ -87,6 +88,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
                                gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
 			       libcanberra
                                telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
+                               telepathy-logger-0.2 >= $TELEPATHY_LOGGER_MIN_VERSION
                                polkit-agent-1 >= $POLKIT_MIN_VERSION)
 
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
@@ -96,6 +98,14 @@ AC_DEFINE_UNQUOTED([GJS_VERSION], ["$GJS_VERSION"], [The version of GJS we're li
 AC_SUBST([GJS_VERSION], ["$GJS_VERSION"])
 
 GOBJECT_INTROSPECTION_CHECK([$GOBJECT_INTROSPECTION_MIN_VERSION])
+JHBUILD_TYPELIBDIR="$INTROSPECTION_TYPELIBDIR"
+# NM is the only typelib we use that we don't jhbuild
+PKG_CHECK_EXISTS([libnm-glib >= 0.8.995],
+        [NM_TYPELIBDIR=`$PKG_CONFIG --variable=libdir libnm-glib`/girepository-1.0
+	 if test "$INTROSPECTION_TYPELIBDIR" != "$NM_TYPELIBDIR"; then
+	     JHBUILD_TYPELIBDIR="$JHBUILD_TYPELIBDIR:$NM_TYPELIBDIR"
+	 fi])
+AC_SUBST(JHBUILD_TYPELIBDIR)
 
 saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS
@@ -136,8 +146,8 @@ PKG_CHECK_MODULES(CALENDAR_SERVER, libecal-1.2 >= $LIBECAL_MIN_VERSION libedatas
 AC_SUBST(CALENDAR_SERVER_CFLAGS)
 AC_SUBST(CALENDAR_SERVER_LIBS)
 
-MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter-wm`
-MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wm`
+MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
+MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
 AC_SUBST(MUTTER_GIR_DIR)
 AC_SUBST(MUTTER_TYPELIB_DIR)
 

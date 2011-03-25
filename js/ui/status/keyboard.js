@@ -74,7 +74,8 @@ XKBIndicator.prototype = {
             Util.spawn(['gkbd-keyboard-display', '-g', String(this._config.get_current_group() + 1)]);
         }));
         this.menu.addAction(_("Localization Settings"), function() {
-            Util.spawn(['gnome-control-center', 'region']);
+            let app = Shell.AppSystem.get_default().get_app('gnome-region-panel.desktop');
+            app.activate(-1);
         });
     },
 

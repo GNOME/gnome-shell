@@ -23,6 +23,7 @@ const PlaceDisplay = imports.ui.placeDisplay;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 const WorkspacesView = imports.ui.workspacesView;
+const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 const ZeitgeistSearch = imports.ui.zeitgeistSearch;
 
 // Time for initial animation going into Overview mode
@@ -74,11 +75,13 @@ ShellInfo.prototype = {
             Main.messageTray.add(this._source);
         }
 
-        let notification = this._source.notification;
-        if (notification == null)
+        let notification = null;
+        if (this._source.notifications.length == 0) {
             notification = new MessageTray.Notification(this._source, text, null);
-        else
+        } else {
+            notification = this._source.notifications[0];
             notification.update(text, null, { clear: true });
+        }
 
         notification.setTransient(true);
 
@@ -247,7 +250,8 @@ Overview.prototype = {
     _onDragMotion: function(dragEvent) {
         let targetIsWindow = dragEvent.targetActor &&
                              dragEvent.targetActor._delegate &&
-                             dragEvent.targetActor._delegate.metaWindow;
+                             dragEvent.targetActor._delegate.metaWindow &&
+                             !(dragEvent.targetActor._delegate instanceof WorkspaceThumbnail.WindowClone);
 
         this._windowSwitchTimestamp = global.get_current_time();
 
@@ -443,7 +447,7 @@ Overview.prototype = {
         let primary = global.get_primary_monitor();
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
-        let contentY = Panel.PANEL_HEIGHT;
+        let contentY = Main.panel.actor.height;
         let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
 
         this._group.set_position(primary.x, primary.y);
@@ -476,6 +480,10 @@ Overview.prototype = {
 
     beginItemDrag: function(source) {
         this.emit('item-drag-begin');
+    },
+
+    cancelledItemDrag: function(source) {
+        this.emit('item-drag-cancelled');
     },
 
     endItemDrag: function(source) {
@@ -690,6 +698,7 @@ Overview.prototype = {
             this._animateNotVisible();
 
         this._syncInputMode();
+        global.sync_pointer();
     },
 
     _hideDone: function() {

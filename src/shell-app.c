@@ -4,6 +4,8 @@
 
 #include <string.h>
 
+#include <glib/gi18n-lib.h>
+
 #include <meta/display.h>
 
 #include "shell-app-private.h"
@@ -139,14 +141,26 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   app = data->app;
   size = data->size;
 
-  icon = shell_app_info_get_icon (app->info);
-  if (icon == NULL)
-    return COGL_INVALID_HANDLE;
+  info = NULL;
 
-  info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                         icon, (int) (size + 0.5),
-                                         GTK_ICON_LOOKUP_FORCE_SIZE);
-  g_object_unref (icon);
+  icon = shell_app_info_get_icon (app->info);
+  if (icon != NULL)
+    {
+      info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                             icon, (int) (size + 0.5),
+                                             GTK_ICON_LOOKUP_FORCE_SIZE);
+      g_object_unref (icon);
+    }
+
+  if (info == NULL)
+    {
+      icon = g_themed_icon_new ("application-x-executable");
+      info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                             icon, (int) (size + 0.5),
+                                             GTK_ICON_LOOKUP_FORCE_SIZE);
+      g_object_unref (icon);
+    }
+
   if (info == NULL)
     return COGL_INVALID_HANDLE;
 
@@ -427,13 +441,24 @@ shell_app_activate (ShellApp      *app,
   switch (app->state)
     {
       case SHELL_APP_STATE_STOPPED:
-        /* TODO sensibly handle this error */
-        shell_app_info_launch_full (app->info,
-                                    0,
-                                    NULL,
-                                    workspace,
-                                    NULL,
-                                    NULL);
+        {
+          GError *error = NULL;
+          if (!shell_app_info_launch_full (app->info,
+                                           0,
+                                           NULL,
+                                           workspace,
+                                           NULL,
+                                           &error))
+            {
+              char *msg;
+              msg = g_strdup_printf (_("Failed to launch '%s'"), shell_app_get_name (app));
+              shell_global_notify_error (shell_global_get (),
+                                         msg,
+                                         error->message);
+              g_free (msg);
+              g_clear_error (&error);
+            }
+        }
         break;
       case SHELL_APP_STATE_STARTING:
         break;
@@ -755,9 +780,6 @@ _shell_app_add_window (ShellApp        *app,
 
   g_object_freeze_notify (G_OBJECT (app));
 
-  if (app->state != SHELL_APP_STATE_STARTING)
-    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
-
   if (!app->running_state)
       create_running_state (app);
 
@@ -769,6 +791,9 @@ _shell_app_add_window (ShellApp        *app,
   user_time = meta_window_get_user_time (window);
   if (user_time > app->running_state->last_user_time)
     app->running_state->last_user_time = user_time;
+
+  if (app->state != SHELL_APP_STATE_STARTING)
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
 
   g_object_thaw_notify (G_OBJECT (app));
 

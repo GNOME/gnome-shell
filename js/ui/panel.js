@@ -22,8 +22,6 @@ const DateMenu = imports.ui.dateMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const PANEL_HEIGHT = 26;
-
 const PANEL_ICON_SIZE = 24;
 
 const STARTUP_ANIMATION_TIME = 0.2;
@@ -33,8 +31,7 @@ const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
 const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
-const SPINNER_UPDATE_TIMEOUT = 130;
-const SPINNER_SPEED = 0.02;
+const SPINNER_ANIMATION_TIME = 0.2;
 
 const STANDARD_TRAY_ICON_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'bluetooth', 'network', 'battery'];
 const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
@@ -46,6 +43,12 @@ const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
 
 if (Config.HAVE_BLUETOOTH)
     STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
+
+try {
+    STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['network'] = imports.ui.status.network.NMApplet;
+} catch(e) {
+    log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
+}
 
 // To make sure the panel corners blend nicely with the panel,
 // we draw background and borders the same way, e.g. drawing
@@ -275,19 +278,12 @@ AppMenuButton.prototype = {
             this.hide();
         }));
 
-        this._updateId = 0;
-        this._animationStep = 0;
-        this._clipWidth = PANEL_ICON_SIZE;
-        this._direction = SPINNER_SPEED;
+        this._stop = true;
 
         this._spinner = new AnimatedIcon('process-working.svg',
                                          PANEL_ICON_SIZE);
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.lower_bottom();
-
-        this._shadow = new St.Bin({ style_class: 'label-real-shadow' });
-        this._shadow.hide();
-        this._container.add_actor(this._shadow);
 
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('notify::focus-app', Lang.bind(this, this._sync));
@@ -338,62 +334,26 @@ AppMenuButton.prototype = {
             this._iconBox.remove_clip();
     },
 
-    _stopAnimation: function(animate) {
-        this._label.actor.remove_clip();
-        if (this._updateId) {
-            this._shadow.hide();
-            if (animate) {
-                Tweener.addTween(this._spinner.actor,
-                                 { opacity: 0,
-                                   time: 0.2,
-                                   transition: "easeOutQuad",
-                                   onCompleteScope: this,
-                                   onComplete: function() {
-                                       this._spinner.actor.opacity = 255;
-                                       this._spinner.actor.hide();
-                                   }
-                                 });
-            }
-            Mainloop.source_remove(this._updateId);
-            this._updateId = 0;
-        }
-        if (!animate)
-            this._spinner.actor.hide();
-    },
-
     stopAnimation: function() {
-        this._direction = SPINNER_SPEED * 3;
-        this._stop = true;
-    },
+        if (this._stop)
+            return;
 
-    _update: function() {
-        this._animationStep += this._direction;
-        if (this._animationStep > 1 && this._stop) {
-            this._animationStep = 1;
-            this._stopAnimation(true);
-            return false;
-        }
-        if (this._animationStep > 1)
-            this._animationStep = 1;
-        this._clipWidth = this._label.actor.width - (this._label.actor.width - PANEL_ICON_SIZE) * (1 - this._animationStep);
-        if (this.actor.get_direction() == St.TextDirection.LTR) {
-            this._label.actor.set_clip(0, 0, this._clipWidth + this._shadow.width, this.actor.height);
-        } else {
-            this._label.actor.set_clip(this._label.actor.width - this._clipWidth, 0, this._clipWidth, this.actor.height);
-        }
-        this._container.queue_relayout();
-        return true;
+        this._stop = true;
+        Tweener.addTween(this._spinner.actor,
+                         { opacity: 0,
+                           time: SPINNER_ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onCompleteScope: this,
+                           onComplete: function() {
+                               this._spinner.actor.opacity = 255;
+                               this._spinner.actor.hide();
+                           }
+                         });
     },
 
     startAnimation: function() {
-        this._direction = SPINNER_SPEED;
-        this._stopAnimation(false);
-        this._animationStep = 0;
-        this._update();
         this._stop = false;
-        this._updateId = Mainloop.timeout_add(SPINNER_UPDATE_TIMEOUT, Lang.bind(this, this._update));
         this._spinner.actor.show();
-        this._shadow.show();
     },
 
     _getContentPreferredWidth: function(actor, forHeight, alloc) {
@@ -455,18 +415,13 @@ AppMenuButton.prototype = {
         this._label.actor.allocate(childBox, flags);
 
         if (direction == St.TextDirection.LTR) {
-            childBox.x1 = Math.floor(iconWidth / 2) + this._clipWidth + this._shadow.width;
+            childBox.x1 = Math.floor(iconWidth / 2) + this._label.actor.width;
             childBox.x2 = childBox.x1 + this._spinner.actor.width;
             childBox.y1 = box.y1;
             childBox.y2 = box.y2 - 1;
             this._spinner.actor.allocate(childBox, flags);
-            childBox.x1 = Math.floor(iconWidth / 2) + this._clipWidth + 2;
-            childBox.x2 = childBox.x1 + this._shadow.width;
-            childBox.y1 = box.y1;
-            childBox.y2 = box.y2 - 1;
-            this._shadow.allocate(childBox, flags);
         } else {
-            childBox.x1 = this._label.actor.width - this._clipWidth - this._spinner.actor.width;
+            childBox.x1 = -this._spinner.actor.width;
             childBox.x2 = childBox.x1 + this._spinner.actor.width;
             childBox.y1 = box.y1;
             childBox.y2 = box.y2 - 1;
@@ -545,8 +500,8 @@ AppMenuButton.prototype = {
                 this.stopAnimation();
             return;
         }
-        this._stopAnimation();
 
+        this._spinner.actor.hide();
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
@@ -751,6 +706,8 @@ HotCorner.prototype = {
                                         x: x,
                                         y: y });
         ripple._opacity =  startOpacity;
+        if (ripple.get_direction() == St.TextDirection.RTL)
+            ripple.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
         Tweener.addTween(ripple, { _opacity: finalOpacity,
                                    scale_x: finalScale,
                                    scale_y: finalScale,
@@ -834,6 +791,8 @@ Panel.prototype = {
             this.actor.remove_style_class_name('in-overview');
         }));
 
+        this._leftPointerBarrier = 0;
+        this._rightPointerBarrier = 0;
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -1017,7 +976,7 @@ Panel.prototype = {
                                                   affectsStruts: false,
                                                   affectsInputRegion: false });
 
-        Main.ctrlAltTabManager.addGroup(this.actor, _("Panel"), 'start-here',
+        Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
     },
 
@@ -1094,7 +1053,21 @@ Panel.prototype = {
         let primary = global.get_primary_monitor();
 
         this.actor.set_position(primary.x, primary.y);
-        this.actor.set_size(primary.width, PANEL_HEIGHT);
+        this.actor.set_size(primary.width, -1);
+
+        if (this._leftPointerBarrier)
+            global.destroy_pointer_barrier(this._leftPointerBarrier);
+        if (this._rightPointerBarrier)
+            global.destroy_pointer_barrier(this._rightPointerBarrier);
+
+        this._leftPointerBarrier =
+            global.create_pointer_barrier(primary.x, primary.y,
+                                          primary.x, primary.y + this.actor.height,
+                                          1 /* BarrierPositiveX */);
+        this._rightPointerBarrier =
+            global.create_pointer_barrier(primary.x + primary.width, primary.y,
+                                          primary.x + primary.width, primary.y + this.actor.height,
+                                          4 /* BarrierNegativeX */);
 
         this._leftCorner.relayout();
         this._rightCorner.relayout();

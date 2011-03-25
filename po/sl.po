@@ -2,20 +2,20 @@
 # Copyright (C) 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2010.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2011-03-09 04:06+0000\n"
-"PO-Revision-Date: 2011-03-09 13:14+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-22 20:39+0000\n"
+"PO-Revision-Date: 2011-03-22 21:52+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Language: Slovenian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: Slovenian\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -54,19 +54,16 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Zgodovina pogovornega okna ukazov (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#, fuzzy
 msgid "History for the looking glass dialog"
-msgstr "Zgodovina pogovornega okna ukazov (Alt-F2)"
+msgstr "Zgodovina za pogovorno okno povečevalnega stekla"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-#, fuzzy
 msgid "If true, display date in the clock, in addition to time."
-msgstr "Izbrana možnost omogoča ob času tudi prikaz datuma."
+msgstr "Izbrana možnost določi, da je ob času prikazan tudi datum."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-#, fuzzy
 msgid "If true, display seconds in time."
-msgstr "Izbrana možnost omogoča prikaz sekund."
+msgstr "Izbrana možnost določi prikaz sekund v času."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
@@ -77,9 +74,9 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "Seznam določil ID namiznih datotek priljubljenih programov"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-msgstr "Določa cevovod programa GStreamer, ki se uporablja za kodiranje posnetkov. Ta sledi skladnji, ki je uporabljena za gst-launch. Cevovod mora imeti nepovezano korito, kamor se posnetek snema. Običajno je za to namenjen nepovezan izvorni pomnilnik, katerega odvod se zapiše v odvodno datoteko. Vendar pa lahko cevovod ta korak naredi v lastni odvod - možnost se lahko uporabi pri pošiljanju odvoda na strežnik icecast preko shout2send ali podobno. Nedoločena ali prazna možnost se odrazi kot privzeti cevovod. Trenutno je to 'videorate ! theoraenc ! oggmux' in omogoča snemanje v zapis Ogg Theora."
+msgstr "Določa cevovod programa GStreamer, ki se uporablja za kodiranje posnetkov. Ta sledi skladnji, ki se uporablja za gst-launch. Cevovod mora imeti nepovezano korito, kamor se posnetek snema. Običajno je za to namenjen nepovezan izvorni pomnilnik, katerega odvod se zapiše v odvodno datoteko. Vendar pa lahko cevovod ta korak naredi v lastni odvod - možnost se lahko uporabi pri pošiljanju odvoda na strežnik icecast preko shout2send ali podobno. Nedoločena ali prazna možnost se odrazi kot privzeti cevovod. Trenutno je to 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' in omogoča snemanje v zapis WEBM z uporabo kodeka VP8. %T se uporablja kot ročnik za ugibanje optimalnega števila niti na sistemu."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -122,53 +119,46 @@ msgid "Whether to collect stats about applications usage"
 msgstr "Ali naj se beleži statistika uporabe programov"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
-#, fuzzy
 msgid "disabled OpenSearch providers"
-msgstr "Seznam nameščenih ponudnikov"
+msgstr "ponudniki OpenSearch so bili onemogočeni"
 
-#: ../js/misc/util.js:86
-#, fuzzy
+#: ../js/misc/util.js:71
 msgid "Command not found"
-msgstr "Ukaz ni najden."
+msgstr "Ukaz ni mogoče najti"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
-#, fuzzy
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
-msgstr "Ni mogoče razčleniti ukazne vrstice '%s': %s"
+msgstr "Ukaza ni mogoče razčleniti:"
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "Ni takšnega programa"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -198,10 +188,9 @@ msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:78
-#, fuzzy
 msgctxt "event list time"
 msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgstr "%H.%M"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -245,7 +234,6 @@ msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:130
-#, fuzzy
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -257,21 +245,18 @@ msgstr "S"
 #. * both be 'T').
 #.
 #: ../js/ui/calendar.js:143
-#, fuzzy
 msgctxt "list sunday"
 msgid "Su"
-msgstr "ne"
+msgstr "Ne"
 
 #. Translators: Event list abbreviation for Monday
 #: ../js/ui/calendar.js:145
-#, fuzzy
 msgctxt "list monday"
 msgid "M"
-msgstr "M"
+msgstr "P"
 
 #. Translators: Event list abbreviation for Tuesday
 #: ../js/ui/calendar.js:147
-#, fuzzy
 msgctxt "list tuesday"
 msgid "T"
 msgstr "T"
@@ -284,40 +269,35 @@ msgstr "S"
 
 #. Translators: Event list abbreviation for Thursday
 #: ../js/ui/calendar.js:151
-#, fuzzy
 msgctxt "list thursday"
 msgid "Th"
-msgstr "če"
+msgstr "Če"
 
 #. Translators: Event list abbreviation for Friday
 #: ../js/ui/calendar.js:153
-#, fuzzy
 msgctxt "list friday"
 msgid "F"
-msgstr "F"
+msgstr "Pe"
 
 #. Translators: Event list abbreviation for Saturday
 #: ../js/ui/calendar.js:155
-#, fuzzy
 msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:704
-#, fuzzy
 msgid "Nothing Scheduled"
-msgstr "Načrtovane naloge"
+msgstr "Nič ni razporejeno"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %d. %m."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:723
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
@@ -339,7 +319,7 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/dash.js:174
-#: ../js/ui/messageTray.js:933
+#: ../js/ui/messageTray.js:945
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -394,8 +374,7 @@ msgstr "%a, %H:%M"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:209
-#, fuzzy
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%a, %e. %b., %R"
 
@@ -409,74 +388,67 @@ msgid "Log Out %s"
 msgstr "Odjava %s"
 
 #: ../js/ui/endSessionDialog.js:64
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Odjava"
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
+msgstr "Kliknite Odjava za končanje teh programov in odjavo iz sistema."
 
 #: ../js/ui/endSessionDialog.js:66
-#, fuzzy, c-format
+#, c-format
 msgid "%s will be logged out automatically in %d seconds."
-msgstr "Samodejno boste odjavljeni čez %s sekund."
+msgstr "%s bo samodejno odjavljen čez %d sekund."
 
 #: ../js/ui/endSessionDialog.js:67
-#, fuzzy, c-format
+#, c-format
 msgid "You will be logged out automatically in %d seconds."
-msgstr "Samodejno boste odjavljeni čez %s sekund."
+msgstr "Samodejno boste odjavljeni čez %d sekund."
 
 #: ../js/ui/endSessionDialog.js:68
-#, fuzzy
 msgid "Logging out of the system."
-msgstr "Onemogoči odjavo"
-
-#: ../js/ui/endSessionDialog.js:74
-#: ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Izklopi"
+msgstr "Odjavljanje iz sistema."
 
 #: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr ""
+#: ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Izklop"
 
 #: ../js/ui/endSessionDialog.js:76
-#, fuzzy, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Sistem se bo samodejno izklopil čez %s sekund."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Kliknite na gumb za izklop za končanje teh programov in izklop iz sistema."
 
 #: ../js/ui/endSessionDialog.js:77
-#, fuzzy
-msgid "Shutting down the system."
-msgstr "Izklapljanje programa Evolution"
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "Sistem se bo samodejno izklopil čez %d sekund."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "Izklapljanje sistema"
+
+#: ../js/ui/endSessionDialog.js:80
 #: ../js/ui/endSessionDialog.js:88
-#, fuzzy
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
-msgstr "Ponoven zagon"
+msgstr "Zaženi znova"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
+msgstr "Kliknite Zaženi znova za končanje teh programov in ponoven zagon sistema. "
 
-#: ../js/ui/endSessionDialog.js:86
-#, fuzzy, c-format
+#: ../js/ui/endSessionDialog.js:90
+#, c-format
 msgid "The system will restart automatically in %d seconds."
-msgstr "Sistem se bo samodejno ponovno zagnal čez %s sekund."
+msgstr "Sistem se bo samodejno ponovno zagnal čez %d sekund."
 
-#: ../js/ui/endSessionDialog.js:87
-#, fuzzy
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
-msgstr "Sistemski klic:"
+msgstr "Ponoven zagon sistema."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Potrdi"
-
-#: ../js/ui/endSessionDialog.js:400
-#: ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:415
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -491,7 +463,7 @@ msgstr "Omogočeno"
 #. translators:
 #. * The device has been disabled
 #: ../js/ui/lookingGlass.js:627
-#: ../src/gvc/gvc-mixer-control.c:1087
+#: ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Onemogočeno"
 
@@ -511,48 +483,47 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:938
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1963
+#: ../js/ui/messageTray.js:2018
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:89
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:184
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:187
 msgid "Applications"
 msgstr "Programi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:203
 msgid "Dash"
-msgstr ""
+msgstr "Armaturna plošča"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:560
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "Končaj %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:919
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:1020
-#, fuzzy
-msgid "Panel"
-msgstr "Prekliči"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Vrhnja vrstica"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -567,7 +538,7 @@ msgstr "Poskusi znova"
 msgid "Connect to..."
 msgstr "Povezava z ..."
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
@@ -576,58 +547,57 @@ msgstr "Mesta in naprave"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:618
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
-#: ../js/ui/statusMenu.js:102
-#: ../js/ui/statusMenu.js:166
+#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
-msgstr ""
+msgstr "Izklop ..."
 
-#: ../js/ui/statusMenu.js:104
-#: ../js/ui/statusMenu.js:165
-#, fuzzy
+#: ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:227
 msgid "Suspend"
-msgstr "V pripravljenost"
+msgstr "Zaustavi"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Zaposleno"
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Račun"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/statusMenu.js:153
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/statusMenu.js:158
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Odjava ..."
 
@@ -635,14 +605,12 @@ msgstr "Odjava ..."
 msgid "Zoom"
 msgstr "Približanje"
 
-#: ../js/ui/status/accessibility.js:69
-msgid "Screen Reader"
-msgstr "Zaslonski bralnik"
-
-#: ../js/ui/status/accessibility.js:73
-msgid "Screen Keyboard"
-msgstr "Zaslonska tipkovnica"
-
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Vidna opozorila"
@@ -667,20 +635,20 @@ msgstr "Miškine tipke"
 msgid "Universal Access Settings"
 msgstr "Splošne nastavitve dostopa"
 
-#: ../js/ui/status/accessibility.js:145
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "Visok kontrast"
 
-#: ../js/ui/status/accessibility.js:182
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
 #: ../js/ui/status/bluetooth.js:42
-#: ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337
-#: ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411
-#: ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333
+#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -693,113 +661,103 @@ msgid "Send Files to Device..."
 msgstr "Pošilji datoteke na napravo ..."
 
 #: ../js/ui/status/bluetooth.js:70
-#, fuzzy
 msgid "Setup a New Device..."
-msgstr "Namestitev nove naprave Bluetooth"
+msgstr "Namestitev nove naprave ..."
 
 #: ../js/ui/status/bluetooth.js:95
-#, fuzzy
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "Povezava"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Pošlji datoteke ..."
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Brskanje datotek ..."
 
-#: ../js/ui/status/bluetooth.js:242
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
-msgstr "Napaka med priklapljanjem naprave"
+msgstr "Napaka med brskanjem po napravi"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
-msgstr ""
+msgstr "Po zahtevani naprave ni mogoče brskati, napaka je '%s'"
 
-#: ../js/ui/status/bluetooth.js:251
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
-msgstr "Nastavitve računa"
+msgstr "Nastavitve tipkovnice"
 
-#: ../js/ui/status/bluetooth.js:256
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
-msgstr "Nastavitve računa"
+msgstr "Nastavitve miške"
 
-#: ../js/ui/status/bluetooth.js:263
-#: ../js/ui/status/volume.js:65
+#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Nastavitve zvoka"
 
-#: ../js/ui/status/bluetooth.js:372
-#, fuzzy, c-format
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
 msgid "Authorization request from %s"
 msgstr "Zahteva za pooblastitev od %s"
 
-#: ../js/ui/status/bluetooth.js:378
-#, fuzzy, c-format
+#: ../js/ui/status/bluetooth.js:374
+#, c-format
 msgid "Device %s wants access to the service '%s'"
-msgstr "Naprava %s čaka na dostop do storitve '%s'."
+msgstr "Naprava %s želi dostop do storitve '%s'."
 
-#: ../js/ui/status/bluetooth.js:380
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
-msgstr "_Vedno odobri dostop"
+msgstr "Vedno odobri dostop"
 
-#: ../js/ui/status/bluetooth.js:381
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
-msgstr "Pokaži le _ta okvir"
+msgstr "Odobri le tokrat"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Zavrni"
 
-#: ../js/ui/status/bluetooth.js:412
-#, fuzzy, c-format
+#: ../js/ui/status/bluetooth.js:408
+#, c-format
 msgid "Pairing confirmation for %s"
-msgstr "Potrditev združevanja z napravo '%s'"
+msgstr "Potrditev razčlenjevanja za %s"
+
+#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:448
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Naprava %s se skuša povezati s tem računalnikom"
+
+#: ../js/ui/status/bluetooth.js:415
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Potrdite, ali se PIN '%s' ujema s tistim na napravi."
+
+#: ../js/ui/status/bluetooth.js:417
+msgid "Matches"
+msgstr "Ujemanja"
 
 #: ../js/ui/status/bluetooth.js:418
-#: ../js/ui/status/bluetooth.js:452
-#, fuzzy, c-format
-msgid "Device %s wants to pair with this computer"
-msgstr "Naprava '%s' se skuša povezati z računalnikom"
-
-#: ../js/ui/status/bluetooth.js:419
-#, fuzzy, c-format
-msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr "Potrdite, ali se prehodno geslo '%s' sklada z geslom naprave %s."
-
-#: ../js/ui/status/bluetooth.js:421
-#, fuzzy
-msgid "Matches"
-msgstr "Zadetki"
-
-#: ../js/ui/status/bluetooth.js:422
-#, fuzzy
 msgid "Does not match"
-msgstr "Se ne sklada"
+msgstr "Se ne ujema"
 
-#: ../js/ui/status/bluetooth.js:445
-#, fuzzy, c-format
+#: ../js/ui/status/bluetooth.js:441
+#, c-format
 msgid "Pairing request for %s"
-msgstr "Zahteva za združevanje z napravo '%s'"
+msgstr "Zahteva razčlenjevanja za %s"
 
-#: ../js/ui/status/bluetooth.js:453
-#, fuzzy
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
-msgstr "Vnesite prehodno geslo naprave %s."
+msgstr "Vnesite PIN, ki je naveden na napravi."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "V redu"
 
@@ -808,9 +766,141 @@ msgid "Show Keyboard Layout..."
 msgstr "Pokaži razporeditev tipkovnice ..."
 
 #: ../js/ui/status/keyboard.js:76
-#, fuzzy
 msgid "Localization Settings"
-msgstr "Nastavitve računa"
+msgstr "Krajevne nastavitve"
+
+#: ../js/ui/status/network.js:102
+#: ../js/ui/status/network.js:1393
+msgid "<unknown>"
+msgstr "<neznano>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+msgid "disabled"
+msgstr "onemogočeno"
+
+#: ../js/ui/status/network.js:476
+msgid "connecting..."
+msgstr "povezovanje ..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr "zahtevana je overitev"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr "kabel ni priklopljen"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+msgid "unavailable"
+msgstr "ni na voljo"
+
+#: ../js/ui/status/network.js:491
+msgid "connection failed"
+msgstr "povezovanje je spodletelo"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571
+#: ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr "Povezano (zasebna povezava)"
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "Samodejni eternet"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr "Samodejni širokopasovni dostop"
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr "Samodejni klicni dostop"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843
+#: ../js/ui/status/network.js:1353
+#, c-format
+msgid "Auto %s"
+msgstr "Samodejna povezava z %s"
+
+#: ../js/ui/status/network.js:845
+msgid "Auto bluetooth"
+msgstr "Samodejna povezava z Bluetooth"
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr "Samodejni brezžični dostop"
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "Več ..."
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr "Omogoči omrežje"
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "Žično"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "Brezžično"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "Mobilni širokopasovni dostop"
+
+#: ../js/ui/status/network.js:1479
+msgid "VPN Connections"
+msgstr "Povezave VPN"
+
+#: ../js/ui/status/network.js:1488
+msgid "Network Settings"
+msgstr "Omrežne nastavitve"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Vzpostavljena je povezava z mobilnim širokopasovnim omrežjem '%s'."
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Vzpostavljena je povezava z brezžičnim omrežjem '%s'."
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Vzpostavljena je povezava z žičnim omrežjem '%s'."
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Vzpostavljena je povezava z omrežjem VPN '%s'"
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Vzpostavljena je povezava z '%s'."
+
+#: ../js/ui/status/network.js:1808
+msgid "Connection established"
+msgstr "Povezava je vzpostavljena"
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr "Omrežje je onemogočeno"
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "Upravljalnik omrežij"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -818,11 +908,11 @@ msgstr "Upravljanje napajanja"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:111
 msgid "Estimating..."
-msgstr ""
+msgstr "Ocenjevanje ...."
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -832,12 +922,12 @@ msgstr[2] "preostajata še %d uri"
 msgstr[3] "preostajajo še %d ure"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "Preostaja še %d %s %d %s"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ur"
@@ -845,7 +935,7 @@ msgstr[1] "ura"
 msgstr[2] "uri"
 msgstr[3] "ure"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minut"
@@ -853,7 +943,7 @@ msgstr[1] "minuta"
 msgstr[2] "minuti"
 msgstr[3] "minute"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -862,100 +952,100 @@ msgstr[1] "preostaja še %d minuta"
 msgstr[2] "preostajata še %d minuti"
 msgstr[3] "preostajajo še %d minute"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "Električni prilagodilnik"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "Baterija prenosnika"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "Zaslon"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "Miška"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "Dlančnik"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "Mobilni telefon"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "Predstavni predvajalnik"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "Tablični računalnik"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "Računalnik"
 
-#: ../js/ui/status/power.js:249
-#: ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:250
+#: ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../js/ui/status/volume.js:44
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "Glasnost"
 
-#: ../js/ui/status/volume.js:57
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:239
-#, fuzzy, c-format
+#: ../js/ui/telepathyClient.js:332
+#, c-format
 msgid "%s is online."
-msgstr "%s je povezan"
+msgstr "%s je povezan."
 
-#: ../js/ui/telepathyClient.js:244
-#, fuzzy, c-format
+#: ../js/ui/telepathyClient.js:337
+#, c-format
 msgid "%s is offline."
 msgstr "%s ni povezan."
 
-#: ../js/ui/telepathyClient.js:247
-#, fuzzy, c-format
+#: ../js/ui/telepathyClient.js:340
+#, c-format
 msgid "%s is away."
-msgstr "Uporabnik %s je odsoten:"
+msgstr "%s je odsoten."
 
-#: ../js/ui/telepathyClient.js:250
-#, fuzzy, c-format
+#: ../js/ui/telepathyClient.js:343
+#, c-format
 msgid "%s is busy."
-msgstr "\"%s\" je zaposlen:"
+msgstr "%s je zaposlen."
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:348
-#, fuzzy, no-c-format
+#: ../js/ui/telepathyClient.js:474
+#, no-c-format
 msgid "Sent at %X on %A"
-msgstr "Sporočilo poslano ob odsotnosti "
+msgstr "Poslano na %X ob %A"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:117
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
-msgstr ""
+msgstr "Vtipkajte za iskanje ..."
 
-#: ../js/ui/viewSelector.js:137
+#: ../js/ui/viewSelector.js:142
 #: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Poišči"
@@ -972,7 +1062,7 @@ msgstr "'%s' storitev je pripravljena"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -983,7 +1073,7 @@ msgstr[3] "%u odvodi naprave"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -992,19 +1082,24 @@ msgstr[1] "%u dovod naprave"
 msgstr[2] "%u dovoda naprave"
 msgstr[3] "%u dovodi naprave"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:395
+#: ../src/main.c:438
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/shell-global.c:1308
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Zaganjanje '%s' je spodletelo"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -1013,7 +1108,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -1022,7 +1117,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:1322
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -1031,7 +1126,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:1327
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1040,9 +1135,17 @@ msgstr[1] "Pred %d tednom"
 msgstr[2] "Pred %d tednoma"
 msgstr[3] "Pred %d tedni"
 
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Velika Britanija"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Privzeto"
+
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -1064,34 +1167,46 @@ msgstr "Datotečni sistem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Shut Down"
+#~ msgstr "Izklopi"
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Kliknite Izklop za končanje teh programov in izklop sistema."
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Sistem se bo samodejno izklopil čez %d sekund."
+#~ msgid "Shutting down the system."
+#~ msgstr "Izklapljanje sistema."
+#~ msgid "Confirm"
+#~ msgstr "Potrdi"
+#~ msgid "Panel"
+#~ msgstr "Pult"
+#~ msgid "No such application"
+#~ msgstr "Ni takšnega programa"
+#~ msgid "Screen Reader"
+#~ msgstr "Zaslonski bralnik"
+#~ msgid "Screen Keyboard"
+#~ msgstr "Zaslonska tipkovnica"
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s je sedaj znan kot v %s"
 #~ msgid "PREFERENCES"
 #~ msgstr "Možnosti"
-
 #~ msgid "Shut Down..."
 #~ msgstr "Izklopi ..."
-
 #~ msgid "Search your computer"
 #~ msgstr "Iskanje po računalniku"
-
 #~ msgid "Clip the crosshairs at the center"
 #~ msgstr "Ali merek prekriva kazalko miške v središču"
-
 #~ msgid "Color of the crosshairs"
 #~ msgstr "Barva merka"
-
 #~ msgid ""
 #~ "Determines the length of the vertical and horizontal lines that make up "
 #~ "the crosshairs."
 #~ msgstr "Določi dolžino navpične in vodoravne črte, ki določata merek."
-
 #~ msgid ""
 #~ "Determines the transparency of the crosshairs, from fully opaque to fully "
 #~ "transparent."
 #~ msgstr "Določi prosojnost merka, od prekrivne to prozorne."
-
 #~ msgid "Enable lens mode"
 #~ msgstr "Omogočeni način leče"
-
 #~ msgid ""
 #~ "For centered mouse tracking, when the system pointer is at or near the "
 #~ "edge of the screen, the magnified contents continue to scroll such that "
@@ -1100,63 +1215,48 @@ msgstr "%1$s: %2$s"
 #~ "Pri usredinjenem sledenju miški, ko je sistemski kazalnik ob robu "
 #~ "zaslona, približanje vsebine drsi naprej tako, da je rob zaslona v "
 #~ "približanem pogledu."
-
 #~ msgid "Length of the crosshairs"
 #~ msgstr "Dolžina merka"
-
 #~ msgid "Magnification factor"
 #~ msgstr "Faktor približanja"
-
 #~ msgid "Mouse Tracking Mode"
 #~ msgstr "Način sledenja miške"
-
 #~ msgid "Opacity of the crosshairs"
 #~ msgstr "Prosojnost merka"
-
 #~ msgid "Screen position"
 #~ msgstr "Položaj zaslona"
-
 #~ msgid "Scroll magnified contents beyond the edges of the desktop"
 #~ msgstr "Zdrsni približano vsebino preko robov namizja"
-
 #~ msgid "Show or hide crosshairs"
 #~ msgstr "Pokaži ali skrij merek"
-
 #~ msgid "Show or hide the magnifier"
 #~ msgstr "Pokaži ali skrij približevalnik"
-
 #~ msgid "Show or hide the magnifier and all of its zoom regions."
 #~ msgstr "Pokaže ali skrije povečevalo in vsa njegova območja približevanja."
-
 #~ msgid ""
 #~ "The color of the the vertical and horizontal lines that make up the "
 #~ "crosshairs."
 #~ msgstr "Barva navpične in vodoravne črte, ki določata merek."
-
 #~ msgid ""
 #~ "The magnified view either fills the entire screen, or occupies the top-"
 #~ "half, bottom-half, left-half, or right-half of the screen."
 #~ msgstr ""
 #~ "Približan pogled lahko zapolni celoten zaslon, lahko pa zasede zgornjo, "
 #~ "spodnjo, levo ali pa desno polovico zaslona."
-
 #~ msgid ""
 #~ "The power of the magnification. A value of 1.0 means no magnification. A "
 #~ "value of 2.0 doubles the size."
 #~ msgstr ""
 #~ "Vrednost približanja. Vrednost 1.0 pomeni brez približanja, vrednost 2.0 "
 #~ "pa podvoji učinek približanja."
-
 #~ msgid "Thickness of the crosshairs"
 #~ msgstr "Debelina merka"
-
 #~ msgid ""
 #~ "Whether the magnified view should be centered over the location of the "
 #~ "system mouse and move with it."
 #~ msgstr ""
 #~ "Ali naj bo približan pogled usredinjen na mesto sistemske miške in se z "
 #~ "njo premika."
-
 #~ msgid ""
 #~ "Width of the vertical and horizontal lines that make up the crosshairs."
 #~ msgstr "Širina navpične in vodoravne čete, ki določata merek."
@@ -1164,36 +1264,28 @@ msgstr "%1$s: %2$s"
 #, fuzzy
 #~ msgid "Bluetooth Agent"
 #~ msgstr "Agent KAOS"
-
 #~ msgid ""
 #~ "Can't add a new workspace because maximum workspaces limit has been "
 #~ "reached."
 #~ msgstr ""
 #~ "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo največje "
 #~ "dovoljeno število."
-
 #~ msgid "Can't remove the first workspace."
 #~ msgstr "Ni mogoče odstraniti prve delovne površine."
-
 #~ msgid "Clock"
 #~ msgstr "Ura"
-
 #~ msgid "Customize the panel clock"
 #~ msgstr "Prilagodi uro pladnja"
-
 #~ msgid "Custom format of the clock"
 #~ msgstr "Zapis ure po meri"
-
 #~ msgid "Hour format"
 #~ msgstr "Urni zapis"
-
 #~ msgid ""
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
 #~ "Izbrana možnost določa ali \"12-urni\" ali pa \"24-urni\" zapis časa s "
 #~ "prikazanimi sekundami."
-
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
 #~ "is set to \"custom\". You can use conversion specifiers understood by "
@@ -1204,106 +1296,77 @@ msgstr "%1$s: %2$s"
 #~ "zapisa nastavljen kot \"prikrojen\". Za določitev zapisa lahko uporabite "
 #~ "tudi oznake funkcije strftime(), ki so podrobneje zapisane v priročniku "
 #~ "funkcije."
-
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Ključ določa zapis ure. Mogoče vrednosti so \"12-urni\", \"24-urni\", "
 #~ "\"unix\" in \"po meri\". Možnost \"unix\" prikazuje čas v sekundah od "
 #~ "začetka ere, torej od 01.01.1970, možnost \"po meri\" pa omogoča "
 #~ "prikrojen zapis. Pri izbiri zapisa \"unix\" ali \"po meri\" sta izbiri "
 #~ "pokaži datum in pokaži sekunde, prezrti."
-
 #~ msgid "Clock Format"
 #~ msgstr "Zapis ure"
-
 #~ msgid "Clock Preferences"
 #~ msgstr "Možnosti ure"
-
 #~ msgid "Panel Display"
 #~ msgstr "Prikazovanje pladnja"
-
 #~ msgid "Show seco_nds"
 #~ msgstr "Pokaži _sekunde"
-
 #~ msgid "Show the _date"
 #~ msgstr "Pokaži _datum"
-
 #~ msgid "_12 hour format"
 #~ msgstr "_12-urni zapis časa"
-
 #~ msgid "_24 hour format"
 #~ msgstr "_24-urni zapis časa"
-
 #~ msgid "Preferences"
 #~ msgstr "Možnosti"
-
 #~ msgid "What's using power..."
 #~ msgstr "Kaj porablja napetost ..."
-
 #~ msgid "Overview workspace view mode"
 #~ msgstr "Način pregleda predogleda delovnih površin"
-
 #~ msgid ""
 #~ "The selected workspace view mode in the overview. Supported values are "
 #~ "\"single\" and \"grid\"."
 #~ msgstr ""
 #~ "Izbrani pogled delovnih površin v predogledu. Podprte vrednosti sta "
 #~ "\"enojno\" in \"mrežno\"."
-
 #~ msgid "Drag here to add favorites"
 #~ msgstr "S potegom na to mesto se izbor doda med priljubljene"
-
 #~ msgid "Find"
 #~ msgstr "Najdi"
-
 #~ msgid "Invisible"
 #~ msgstr "Nevidno"
-
 #~ msgid "System Preferences..."
 #~ msgstr "Sistemske možnosti ..."
-
 #~ msgid "ON"
 #~ msgstr "⚪"
-
 #~ msgid "OFF"
 #~ msgstr "⚫"
-
 #~ msgid "Sidebar"
 #~ msgstr "Stranska vrstica"
-
 #~ msgid "Recent Documents"
 #~ msgstr "Nedavni dokumenti"
-
 #~ msgid "PLACES"
 #~ msgstr "Mesta"
-
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "Rezultati iskanja"
-
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Ni mogoče zakleniti zaslona: %s"
-
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
 #~ msgstr ""
 #~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
-
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
-
 #~ msgid "Frequent"
 #~ msgstr "Pogosto"
-
-#~ msgid "More"
-#~ msgstr "Več"
-
 #~ msgid "(see all)"
 #~ msgstr "(poglej vse)"
-
 #~ msgid "Browse"
 #~ msgstr "Prebrskaj"
+

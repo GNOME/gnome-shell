@@ -8,6 +8,7 @@
 #include <gtk/gtk.h>
 #include <meta/meta-plugin.h>
 #include <telepathy-glib/telepathy-glib.h>
+#include <telepathy-logger/telepathy-logger.h>
 
 G_BEGIN_DECLS
 
@@ -99,12 +100,20 @@ void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta,
 
 GSList       *shell_global_get_monitors        (ShellGlobal  *global);
 MetaRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
+int            shell_global_get_primary_monitor_index (ShellGlobal  *global);
 MetaRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
-void shell_global_get_pointer (ShellGlobal         *global,
-                               int                 *x,
-                               int                 *y,
-                               ClutterModifierType *mods);
+guint32 shell_global_create_pointer_barrier (ShellGlobal *global,
+                                             int x1, int y1, int x2, int y2,
+                                             int directions);
+void    shell_global_destroy_pointer_barrier (ShellGlobal *global,
+                                              guint32 barrier);
+
+void shell_global_get_pointer  (ShellGlobal         *global,
+                                int                 *x,
+                                int                 *y,
+                                ClutterModifierType *mods);
+void shell_global_sync_pointer (ShellGlobal         *global);
 
 GSettings *shell_global_get_settings (ShellGlobal *global);
 
@@ -142,6 +151,11 @@ void shell_global_play_theme_sound (ShellGlobal       *global,
 void shell_global_cancel_theme_sound (ShellGlobal     *global,
                                       guint            id);
 
+
+void shell_global_notify_error (ShellGlobal  *global,
+                                const char   *msg,
+                                const char   *details);
+
 void shell_global_init_xdnd (ShellGlobal *global);
 
 typedef void (*ShellGetTpContactCb) (TpConnection *connection,
@@ -156,6 +170,20 @@ void shell_get_tp_contacts (TpConnection *self,
                             ShellGetTpContactCb callback);
 
 void shell_global_launch_calendar_server (ShellGlobal *global);
+
+typedef void (*ShellGetSelfContactFeaturesCb) (TpConnection *connection,
+                                               TpContact *contact);
+
+void shell_get_self_contact_features (TpConnection *self,
+                                      guint n_features,
+                                      const TpContactFeature *features,
+                                      ShellGetSelfContactFeaturesCb callback);
+
+void shell_get_contact_events (TplLogManager *log_manager,
+                               TpAccount *account,
+                               TplEntity *entity,
+                               guint num_events,
+                               GAsyncReadyCallback callback);
 
 G_END_DECLS
 

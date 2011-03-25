@@ -226,23 +226,6 @@ get_appid_from_window (MetaWindow  *window)
 }
 
 /**
- * window_is_tracked:
- *
- * We don't attempt to associate override-redirect windows with applications
- * at all, since there's no reason to do so yet.
- *
- * Returns: %TRUE iff we want to scan this window for application association
- */
-static gboolean
-window_is_tracked (MetaWindow *window)
-{
-  if (meta_window_is_override_redirect (window))
-    return FALSE;
-
-  return TRUE;
-}
-
-/**
  * shell_window_tracker_is_window_interesting:
  *
  * The ShellWindowTracker associates certain kinds of windows with
@@ -529,7 +512,7 @@ track_window (ShellWindowTracker *self,
 {
   ShellApp *app;
 
-  if (!window_is_tracked (window))
+  if (!shell_window_tracker_is_window_interesting (window))
     return;
 
   app = get_app_for_window (self, window);
@@ -538,10 +521,6 @@ track_window (ShellWindowTracker *self,
 
   /* At this point we've stored the association from window -> application */
   g_hash_table_insert (self->window_to_app, window, app);
-
-  /* However, only put interesting windows in the window list for an app. */
-  if (!shell_window_tracker_is_window_interesting (window))
-    return;
 
   if (shell_app_is_transient (app))
     {

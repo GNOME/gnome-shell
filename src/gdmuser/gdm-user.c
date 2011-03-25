@@ -407,7 +407,9 @@ gdm_user_get_uid (GdmUser *user)
  * gdm_user_get_real_name:
  * @user: the user object to examine.
  *
- * Retrieves the display name of @user.
+ * Retrieves a displayable name for @user. By default this is the real name
+ * of the user, but will fall back to the user name if there is no real name
+ * defined.
  *
  * Returns: (transfer none): a pointer to an array of characters which must not be modified or
  *  freed, or %NULL.
@@ -417,7 +419,12 @@ gdm_user_get_real_name (GdmUser *user)
 {
         g_return_val_if_fail (GDM_IS_USER (user), NULL);
 
-        return (user->real_name ? user->real_name : user->user_name);
+        if (user->real_name == NULL ||
+            user->real_name[0] == '\0') {
+                return user->user_name;
+        }
+
+        return user->real_name;
 }
 
 /**

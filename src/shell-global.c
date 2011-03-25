@@ -21,6 +21,7 @@
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <gjs/gjs-module.h>
+#include <girepository.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -102,6 +103,7 @@ enum
  XDND_POSITION_CHANGED,
  XDND_LEAVE,
  XDND_ENTER,
+ NOTIFY_ERROR,
  LAST_SIGNAL
 };
 
@@ -292,6 +294,17 @@ shell_global_class_init (ShellGlobalClass *klass)
                     NULL, NULL,
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
+
+  shell_global_signals[NOTIFY_ERROR] =
+      g_signal_new ("notify-error",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL,
+                    gi_cclosure_marshal_generic,
+                    G_TYPE_NONE, 2,
+                    G_TYPE_STRING,
+                    G_TYPE_STRING);
 
   g_object_class_install_property (gobject_class,
                                    PROP_OVERLAY_GROUP,
@@ -872,6 +885,61 @@ shell_global_display_is_grabbed (ShellGlobal *global)
 }
 
 /**
+ * shell_global_create_pointer_barrier
+ * @global: a #ShellGlobal
+ * @x1: left X coordinate
+ * @y1: top Y coordinate
+ * @x2: right X coordinate
+ * @y2: bottom Y coordinate
+ * @directions: The directions we're allowed to pass through
+ *
+ * If supported by X creates a pointer barrier.
+ *
+ * Return value: value you can pass to shell_global_destroy_pointer_barrier()
+ */
+guint32
+shell_global_create_pointer_barrier (ShellGlobal *global,
+                                     int x1, int y1, int x2, int y2,
+                                     int directions)
+{
+#if XFIXES_MAJOR >= 5
+  Display *xdpy;
+
+  xdpy = meta_plugin_get_xdisplay (global->plugin);
+
+  return (guint32)
+    XFixesCreatePointerBarrier (xdpy, DefaultRootWindow(xdpy),
+                                x1, y1,
+                                x2, y2,
+                                directions,
+                                0, NULL);
+#else
+  return 0;
+#endif
+}
+
+/**
+ * shell_global_destroy_pointer_barrier
+ * @global: a #ShellGlobal
+ * @barrier: a pointer barrier
+ *
+ * Destroys the @barrier created by shell_global_create_pointer_barrier().
+ */
+void
+shell_global_destroy_pointer_barrier (ShellGlobal *global, guint32 barrier)
+{
+#if XFIXES_MAJOR >= 5
+  Display *xdpy;
+
+  g_return_if_fail (barrier > 0);
+
+  xdpy = meta_plugin_get_xdisplay (global->plugin);
+  XFixesDestroyPointerBarrier (xdpy, (PointerBarrier)barrier);
+#endif
+}
+
+
+/**
  * shell_global_add_extension_importer:
  * @target_object_script: JavaScript code evaluating to a target object
  * @target_property: Name of property to use for importer
@@ -1238,6 +1306,25 @@ shell_global_maybe_gc (ShellGlobal *global)
   gjs_context_maybe_gc (global->js_context);
 }
 
+/**
+ * shell_global_notify_error:
+ * @global: a #ShellGlobal
+ * @msg: Error message
+ * @details: Error details
+ *
+ * Show a system error notification.  Use this function
+ * when a user-initiated action results in a non-fatal problem
+ * from causes that may not be under system control.  For
+ * example, an application crash.
+ */
+void
+shell_global_notify_error (ShellGlobal  *global,
+                           const char   *msg,
+                           const char   *details)
+{
+  g_signal_emit_by_name (global, "notify-error", msg, details);
+}
+
 static void
 grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
 {
@@ -1368,46 +1455,31 @@ shell_global_get_monitors (ShellGlobal *global)
 MetaRectangle *
 shell_global_get_primary_monitor (ShellGlobal  *global)
 {
-  GdkScreen *screen = shell_global_get_gdk_screen (global);
-  GdkRectangle gdk_rect;
+  MetaScreen *screen = shell_global_get_screen (global);
   MetaRectangle rect;
   gint primary = 0;
 
-  /* gdk_screen_get_primary_monitor is only present in gtk-2.20+
-   * and is in a useable state (supports heuristics and fallback modes)
-   * starting with 2.20.1
-   */
-#if !GTK_CHECK_VERSION (2, 20, 1)
-  gint i;
-  gchar *output_name = NULL;
-  gint num_monitors = gdk_screen_get_n_monitors (screen);
-
-  for (i = 0; i < num_monitors; i++)
-    {
-      /* Prefer the laptop's internal screen if present */
-      output_name = gdk_screen_get_monitor_plug_name (screen, i);
-      if (output_name)
-        {
-          gboolean is_lvds = g_ascii_strncasecmp (output_name, "LVDS", 4) == 0;
-          g_free (output_name);
-          if (is_lvds)
-            {
-              primary = i;
-              break;
-            }
-        }
-    }
-#else
-  primary = gdk_screen_get_primary_monitor (screen);
-#endif
-
-  gdk_screen_get_monitor_geometry (screen, primary, &gdk_rect);
-  rect.x = gdk_rect.x;
-  rect.y = gdk_rect.y;
-  rect.width = gdk_rect.width;
-  rect.height = gdk_rect.height;
+  primary = meta_screen_get_primary_monitor (screen);
+  meta_screen_get_monitor_geometry (screen, primary, &rect);
 
   return meta_rectangle_copy (&rect);
+}
+
+/**
+ * shell_global_get_primary_monitor_index:
+ * @global: the #ShellGlobal
+ *
+ * Gets the index of the primary monitor (the one that the
+ * panel is on).
+ *
+ * Return value: the index of the primary monitor
+ */
+int
+shell_global_get_primary_monitor_index (ShellGlobal  *global)
+{
+  MetaScreen *screen = shell_global_get_screen (global);
+
+  return meta_screen_get_primary_monitor (screen);
 }
 
 /**
@@ -1471,6 +1543,48 @@ shell_global_get_pointer (ShellGlobal         *global,
 
   gdk_display_get_pointer (gdk_display_get_default (), NULL, x, y, &raw_mods);
   *mods = raw_mods & GDK_MODIFIER_MASK;
+}
+
+/**
+ * shell_global_sync_pointer:
+ * @global: the #ShellGlobal
+ *
+ * Ensures that clutter is aware of the current pointer position,
+ * causing enter and leave events to be emitted if the pointer moved
+ * behind our back (ie, during a pointer grab).
+ */
+void
+shell_global_sync_pointer (ShellGlobal *global)
+{
+  int x, y;
+  GdkModifierType mods;
+  ClutterMotionEvent event;
+
+  gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, &mods);
+
+  event.type = CLUTTER_MOTION;
+  event.time = shell_global_get_current_time (global);
+  event.flags = 0;
+  /* This is wrong: we should be setting event.stage to NULL if the
+   * pointer is not inside the bounds of the stage given the current
+   * stage_input_mode. For our current purposes however, this works.
+   */
+  event.stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
+  event.x = x;
+  event.y = y;
+  event.modifier_state = mods;
+  event.axes = NULL;
+  event.device = clutter_device_manager_get_core_device (clutter_device_manager_get_default (),
+                                                         CLUTTER_POINTER_DEVICE);
+
+  /* Leaving event.source NULL will force clutter to look it up, which
+   * will generate enter/leave events as a side effect, if they are
+   * needed. We need a better way to do this though... see
+   * http://bugzilla.clutter-project.org/show_bug.cgi?id=2615.
+   */
+  event.source = NULL;
+
+  clutter_event_put ((ClutterEvent *)&event);
 }
 
 /**
@@ -2047,4 +2161,71 @@ shell_global_launch_calendar_server (ShellGlobal *global)
    */
 
   g_free (calendar_server_exe);
+}
+
+static void
+shell_global_get_self_contact_features_cb (TpConnection *connection,
+                                           guint n_contacts,
+                                           TpContact * const *contacts,
+                                           const GError *error,
+                                           gpointer user_data,
+                                           GObject *weak_object)
+{
+  if (error != NULL) {
+    g_print ("Failed to upgrade self contact: %s", error->message);
+    return;
+  }
+  ((ShellGetSelfContactFeaturesCb)user_data)(connection, *contacts);
+}
+
+/**
+ * shell_get_self_contact_features:
+ * @self: A connection, which must be ready
+ * @n_features: Number of features in features
+ * @features: (array length=n_features) (allow-none) (element-type uint):
+ *  Array of features
+ * @callback: (scope async): User callback to run when the contact is ready
+ * 
+ * Wrap tp_connection_upgrade_contacts due to the lack of support for
+ * proper arrays arguments in GJS.
+ */
+void
+shell_get_self_contact_features (TpConnection *self,
+                                 guint n_features,
+                                 const TpContactFeature *features,
+                                 ShellGetSelfContactFeaturesCb callback)
+{
+  TpContact *self_contact = tp_connection_get_self_contact (self);
+
+  tp_connection_upgrade_contacts (self, 1, &self_contact,
+                                  n_features, features,
+                                  shell_global_get_self_contact_features_cb,
+                                  callback, NULL, NULL);
+}
+
+/**
+ * shell_get_contact_events:
+ * @log_manager: A #TplLogManager
+ * @account: A #TpAccount
+ * @entity: A #TplEntity
+ * @num_events: The number of events to retrieve
+ * @callback: (scope async): User callback to run when the contact is ready
+ * 
+ * Wrap tpl_log_manager_get_filtered_events_async because gjs cannot support
+ * multiple callbacks in the same function call.
+ */
+void
+shell_get_contact_events (TplLogManager *log_manager,
+                          TpAccount *account,
+                          TplEntity *entity,
+                          guint num_events,
+                          GAsyncReadyCallback callback)
+{
+  tpl_log_manager_get_filtered_events_async (log_manager,
+                                             account,
+                                             entity,
+                                             TPL_EVENT_MASK_TEXT,
+                                             num_events,
+                                             NULL, NULL,
+                                             callback, NULL);
 }

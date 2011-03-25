@@ -36,8 +36,8 @@ Chrome.prototype = {
 
         this._trackedActors = [];
 
-        global.gdk_screen.connect('monitors-changed',
-                                  Lang.bind(this, this._monitorsChanged));
+        global.screen.connect('monitors-changed',
+                              Lang.bind(this, this._monitorsChanged));
         global.screen.connect('restacked',
                               Lang.bind(this, this._windowsRestacked));
 
@@ -335,6 +335,11 @@ Chrome.prototype = {
             this._updateVisibility();
             this._queueUpdateRegions();
         }
+
+        // Figure out where the pointer is in case we lost track of
+        // it during a grab. (In particular, if a trayicon popup menu
+        // is dismissed, see if we need to close the message tray.)
+        global.sync_pointer();
     },
 
     _updateRegions: function() {

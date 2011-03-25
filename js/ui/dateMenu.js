@@ -200,13 +200,13 @@ DateMenuButton.prototype = {
 
     _onPreferencesActivate: function() {
         this.menu.close();
-        Util.spawnDesktop('gnome-datetime-panel');
+        let app = Shell.AppSystem.get_default().get_app('gnome-datetime-panel.desktop');
+        app.activate(-1);
     },
 
     _onOpenCalendarActivate: function() {
         this.menu.close();
-        // TODO: pass '-c calendar' (to force the calendar at startup)
         // TODO: pass the selected day
-        Util.spawnDesktop('evolution');
-    },
+        Util.spawn(['evolution', '-c', 'calendar']);
+    }
 };

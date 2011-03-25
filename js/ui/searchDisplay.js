@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 const Gtk = imports.gi.Gtk;
+const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 
 const DND = imports.ui.dnd;
@@ -48,6 +49,10 @@ SearchResult.prototype = {
         draggable.connect('drag-begin',
                           Lang.bind(this, function() {
                               Main.overview.beginItemDrag(this);
+                          }));
+        draggable.connect('drag-cancelled',
+                          Lang.bind(this, function() {
+                              Main.overview.cancelledItemDrag(this);
                           }));
         draggable.connect('drag-end',
                           Lang.bind(this, function() {
@@ -100,8 +105,30 @@ GridSearchResults.prototype = {
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
         this.actor = new St.Bin({ x_align: St.Align.START });
+
         this.actor.set_child(this._grid.actor);
         this.selectionIndex = -1;
+        this._width = 0;
+        this.actor.connect('notify::width', Lang.bind(this, function() {
+            this._width = this.actor.width;
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+                this._tryAddResults();
+            }));
+        }));
+        this._notDisplayedResult = [];
+        this._terms = [];
+    },
+
+    _tryAddResults: function() {
+        let canDisplay = this._grid.childrenInRow(this._width) * MAX_SEARCH_RESULTS_ROWS
+                         - this._grid.visibleItemsCount();
+
+        for (let i = Math.min(this._notDisplayedResult.length, canDisplay); i > 0; i--) {
+            let result = this._notDisplayedResult.shift();
+            let meta = this.provider.getResultMeta(result);
+            let display = new SearchResult(this.provider, meta, this._terms);
+            this._grid.addItem(display.actor);
+        }
     },
 
     getVisibleResultCount: function() {
@@ -109,15 +136,15 @@ GridSearchResults.prototype = {
     },
 
     renderResults: function(results, terms) {
-        for (let i = 0; i < results.length; i++) {
-            let result = results[i];
-            let meta = this.provider.getResultMeta(result);
-            let display = new SearchResult(this.provider, meta, terms);
-            this._grid.addItem(display.actor);
-        }
+        // copy the lists
+        this._notDisplayedResult = results.slice(0);
+        this._terms = terms.slice(0);
+        this._tryAddResults();
     },
 
     clear: function () {
+        this._terms = [];
+        this._notDisplayedResult = [];
         this._grid.removeAll();
         this.selectionIndex = -1;
     },

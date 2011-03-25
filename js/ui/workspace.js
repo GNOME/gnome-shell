@@ -221,8 +221,15 @@ WindowClone.prototype = {
 
         let [width, height] = this.actor.get_transformed_size();
 
-        this.actor.x = _clamp(this.actor.x, 0, global.screen_width  - width);
-        this.actor.y = _clamp(this.actor.y, Panel.PANEL_HEIGHT, global.screen_height - height);
+        let monitorIndex = this.metaWindow.get_monitor();
+        let availArea = global.get_monitors()[monitorIndex];
+        if (monitorIndex == global.get_primary_monitor_index()) {
+            availArea.y += Main.panel.actor.height;
+            availArea.height -= Main.panel.actor.height;
+        }
+
+        this.actor.x = _clamp(this.actor.x, availArea.x, availArea.x + availArea.width - width);
+        this.actor.y = _clamp(this.actor.y, availArea.y, availArea.y + availArea.height - height);
     },
 
     _zoomStart : function () {
@@ -387,12 +394,6 @@ WindowOverlay.prototype = {
 
     show: function() {
         this._hidden = false;
-        let [x, y, mask] = global.get_pointer();
-        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
-                                                  x, y);
-        if (actor == this._windowClone.actor) {
-            this.closeButton.show();
-        }
         this.title.show();
     },
 
@@ -541,14 +542,14 @@ const WindowPositionFlags = {
 };
 
 /**
- * @metaWorkspace: a #Meta.Workspace
+ * @metaWorkspace: a #Meta.Workspace, or null
  */
-function Workspace(metaWorkspace) {
-    this._init(metaWorkspace);
+function Workspace(metaWorkspace, monitorIndex) {
+    this._init(metaWorkspace, monitorIndex);
 }
 
 Workspace.prototype = {
-    _init : function(metaWorkspace) {
+    _init : function(metaWorkspace, monitorIndex) {
         // When dragging a window, we use this slot for reserve space.
         this._reservedSlot = null;
         this.metaWorkspace = metaWorkspace;
@@ -557,6 +558,8 @@ Workspace.prototype = {
         this._width = 0;
         this._height = 0;
 
+        this.monitorIndex = monitorIndex;
+        this._monitor = global.get_monitors()[this.monitorIndex];
         this._windowOverlaysGroup = new Clutter.Group();
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);
@@ -572,7 +575,7 @@ Workspace.prototype = {
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        let windows = Main.getWindowActorsForWorkspace(this.metaWorkspace.index());
+        let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
         // Create clones for windows that should be
         // visible in the Overview
@@ -585,10 +588,16 @@ Workspace.prototype = {
         }
 
         // Track window changes
-        this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                          Lang.bind(this, this._windowAdded));
-        this._windowRemovedId = this.metaWorkspace.connect('window-removed',
-                                                            Lang.bind(this, this._windowRemoved));
+        if (this.metaWorkspace) {
+            this._windowAddedId = this.metaWorkspace.connect('window-added',
+                                                             Lang.bind(this, this._windowAdded));
+            this._windowRemovedId = this.metaWorkspace.connect('window-removed',
+                                                               Lang.bind(this, this._windowRemoved));
+        }
+        this._windowEnteredMonitorId = global.screen.connect('window-entered-monitor',
+                                                           Lang.bind(this, this._windowEnteredMonitor));
+        this._windowLeftMonitorId = global.screen.connect('window-left-monitor',
+                                                           Lang.bind(this, this._windowLeftMonitor));
         this._repositionWindowsId = 0;
 
         this.leavingOverview = false;
@@ -896,7 +905,7 @@ Workspace.prototype = {
         clones = this._orderWindowsByMotionAndStartup(clones, slots);
 
         let currentWorkspace = global.screen.get_active_workspace();
-        let isOnCurrentWorkspace = this.metaWorkspace == currentWorkspace;
+        let isOnCurrentWorkspace = this.metaWorkspace == null || this.metaWorkspace == currentWorkspace;
 
         for (let i = 0; i < clones.length; i++) {
             let slot = slots[i];
@@ -999,7 +1008,8 @@ Workspace.prototype = {
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let overlay = this._windowOverlays[i];
-            this._showWindowOverlay(clone, overlay, this.metaWorkspace == currentWorkspace);
+            this._showWindowOverlay(clone, overlay,
+                                    this.metaWorkspace == null || this.metaWorkspace == currentWorkspace);
         }
     },
 
@@ -1036,13 +1046,17 @@ Workspace.prototype = {
         this._windowOverlaysGroup.hide();
     },
 
-    _windowRemoved : function(metaWorkspace, metaWin) {
+    _doRemoveWindow : function(metaWin) {
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
         let index = this._lookupIndex (metaWin);
 
         if (index == -1)
+            return;
+
+        // Check if window still should be here
+        if (win && this._isMyWindow(win))
             return;
 
         let clone = this._windows[index];
@@ -1088,7 +1102,7 @@ Workspace.prototype = {
             Lang.bind(this, this._delayedWindowRepositioning));
     },
 
-    _windowAdded : function(metaWorkspace, metaWin) {
+    _doAddWindow : function(metaWin) {
         if (this.leavingOverview)
             return;
 
@@ -1100,13 +1114,18 @@ Workspace.prototype = {
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
                                             if (this.actor && metaWin.get_compositor_private())
-                                                this._windowAdded(metaWorkspace, metaWin);
+                                                this._doAddWindow(metaWin);
                                             return false;
                                         }));
             return;
         }
 
-        if (!this._isOverviewWindow(win))
+        // We might have the window in our list already if it was on all workspaces and
+        // now was moved to this workspace
+        if (this._lookupIndex (metaWin) != -1)
+            return;
+
+        if (!this._isMyWindow(win) || !this._isOverviewWindow(win))
             return;
 
         let clone = this._addWindowClone(win);
@@ -1129,6 +1148,26 @@ Workspace.prototype = {
         }
 
         this.positionWindows(WindowPositionFlags.ANIMATE);
+    },
+
+    _windowAdded : function(metaWorkspace, metaWin) {
+        this._doAddWindow(metaWin);
+    },
+
+    _windowRemoved : function(metaWorkspace, metaWin) {
+        this._doRemoveWindow(metaWin);
+    },
+
+    _windowEnteredMonitor : function(metaScreen, monitorIndex, metaWin) {
+        if (monitorIndex == this.monitorIndex) {
+            this._doAddWindow(metaWin);
+        }
+    },
+
+    _windowLeftMonitor : function(metaScreen, monitorIndex, metaWin) {
+        if (monitorIndex == this.monitorIndex) {
+            this._doRemoveWindow(metaWin);
+        }
     },
 
     // check for maximized windows on the workspace
@@ -1167,7 +1206,7 @@ Workspace.prototype = {
         this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
                                                                            this._doneLeavingOverview));
 
-        if (this.metaWorkspace != currentWorkspace)
+        if (this.metaWorkspace != null && this.metaWorkspace != currentWorkspace)
             return;
 
         // Position and scale the windows.
@@ -1211,8 +1250,12 @@ Workspace.prototype = {
         }
         Tweener.removeTweens(actor);
 
-        this.metaWorkspace.disconnect(this._windowAddedId);
-        this.metaWorkspace.disconnect(this._windowRemovedId);
+        if (this.metaWorkspace) {
+            this.metaWorkspace.disconnect(this._windowAddedId);
+            this.metaWorkspace.disconnect(this._windowRemovedId);
+        }
+        global.screen.disconnect(this._windowEnteredMonitorId);
+        global.screen.disconnect(this._windowLeftMonitorId);
 
         if (this._repositionWindowsId > 0)
             Mainloop.source_remove(this._repositionWindowsId);
@@ -1231,9 +1274,10 @@ Workspace.prototype = {
         this.leavingOverview = false;
     },
 
-    // Tests if @win belongs to this workspaces
+    // Tests if @win belongs to this workspaces and monitor
     _isMyWindow : function (win) {
-        return Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index());
+        return (this.metaWorkspace == null || Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index())) &&
+            (!win.get_meta_window() || win.get_meta_window().get_monitor() == this.monitorIndex);
     },
 
     // Tests if @win should be shown in the Overview
@@ -1321,8 +1365,10 @@ Workspace.prototype = {
     },
 
     _onCloneSelected : function (clone, time) {
-        Main.activateWindow(clone.metaWindow, time,
-                            this.metaWorkspace.index());
+        let wsIndex = undefined;
+        if (this.metaWorkspace)
+            wsIndex = this.metaWorkspace.index();
+        Main.activateWindow(clone.metaWindow, time, wsIndex);
     },
 
     // Draggable target interface
@@ -1350,7 +1396,15 @@ Workspace.prototype = {
             };
 
             let metaWindow = win.get_meta_window();
-            metaWindow.change_workspace_by_index(this.metaWorkspace.index(),
+
+            // We need to move the window before changing the workspace, because
+            // the move itself could cause a workspace change if the window enters
+            // the primary monitor
+            if (metaWindow.get_monitor() != this.monitorIndex)
+                metaWindow.move_to_monitor(this.monitorIndex);
+
+            let index = this.metaWorkspace ? this.metaWorkspace.index() : global.screen.get_active_workspace_index();
+            metaWindow.change_workspace_by_index(index,
                                                  false, // don't create workspace
                                                  time);
             return true;

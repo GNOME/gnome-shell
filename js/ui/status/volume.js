@@ -64,7 +64,8 @@ Indicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Sound Settings"), function() {
-            Util.spawnDesktop('gnome-sound-panel');
+            let app = Shell.AppSystem.get_default().get_app('gnome-sound-panel.desktop');
+            app.activate(-1);
         });
 
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));

@@ -38,13 +38,16 @@ generated_script_substitutions = \
 	    -e "s|@datadir[@]|$(datadir)|" \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
+	    -e "s|@JHBUILD_TYPELIBDIR[@]|$(JHBUILD_TYPELIBDIR)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
 	    -e "s|@PYTHON[@]|$(PYTHON)|" \
 	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    -e "s|@sysconfdir[@]|$(sysconfdir)|"
 
-gnome-shell-jhbuild: gnome-shell-jhbuild.in Makefile
+gnome-shell-jhbuild: gnome-shell-jhbuild.in gnome-shell-real Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
+	@# Regenerate libtool wrapper so Alt+F2 restart will work
+	@$(LIBTOOL) --mode=execute test -f gnome-shell-real
 
 gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
@@ -62,7 +65,8 @@ gnome_shell_cflags =				\
 	$(GNOME_SHELL_CFLAGS)			\
 	-I$(srcdir)/tray			\
 	-DVERSION=\"$(VERSION)\"		\
-	-DLOCALEDIR=\"$(datadir)/locale\" \
+	-DLOCALEDIR=\"$(datadir)/locale\" 	\
+	-DDATADIR=\"$(datadir)\"		\
 	-DGNOME_SHELL_LIBEXECDIR=\"$(libexecdir)\"	\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
@@ -90,6 +94,7 @@ shell_public_headers_h =		\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
 	shell-global.h			\
+	shell-mobile-providers.h	\
 	shell-perf-log.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
@@ -121,6 +126,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-global.c			\
+	shell-mobile-providers.c	\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\
@@ -262,7 +268,7 @@ libgnome_shell_la_LIBADD =		\
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 Shell-0.1.gir: libgnome-shell.la St-1.0.gir
-Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-2.91 TelepathyGLib-0.12
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-2.91 TelepathyGLib-0.12 TelepathyLogger-0.2
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 Shell_0_1_gir_LIBS = libgnome-shell.la
 Shell_0_1_gir_FILES = $(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources))

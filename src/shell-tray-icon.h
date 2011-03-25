@@ -31,4 +31,7 @@ struct _ShellTrayIconClass
 GType         shell_tray_icon_get_type (void) G_GNUC_CONST;
 ClutterActor *shell_tray_icon_new      (ShellEmbeddedWindow *window);
 
+void          shell_tray_icon_click    (ShellTrayIcon       *icon,
+                                        ClutterEvent        *event);
+
 #endif /* __SHELL_TRAY_ICON_H__ */

@@ -6,7 +6,6 @@ const GLib = imports.gi.GLib;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -53,20 +52,6 @@ function spawnCommandLine(command_line) {
         trySpawn(argv);
     } catch (err) {
         _handleSpawnError(command_line, err);
-    }
-}
-
-// spawnDesktop:
-// @id: a desktop file ID
-//
-// Spawns the desktop file identified by @id using startup notification,
-// etc, handling any errors that occur when trying to find or start
-// the program.
-function spawnDesktop(id) {
-    try {
-        trySpawnDesktop(id);
-    } catch (err) {
-        _handleSpawnError(id, err);
     }
 }
 
@@ -117,41 +102,9 @@ function trySpawnCommandLine(command_line) {
     trySpawn(argv);
 }
 
-// trySpawnDesktop:
-// @id: a desktop file ID
-//
-// Spawns the desktop file identified by @id using startup notification.
-// On error, throws an exception.
-function trySpawnDesktop(id) {
-    let app;
-
-    // shell_app_system_load_from_desktop_file() will end up returning
-    // a stupid error message if the desktop file doesn't exist, but
-    // that's the only case it returns an error for, so we just
-    // substitute our own error in instead
-    try {
-        app = Shell.AppSystem.get_default().load_from_desktop_file(id + '.desktop');
-    } catch (err) {
-        throw new Error(_("No such application"));
-    }
-
-    try {
-        app.launch();
-    } catch(err) {
-        // see trySpawn
-        err.message = err.message.replace(/.*\((.+)\)/, '$1');
-        throw err;
-    }
-}
-
 function _handleSpawnError(command, err) {
     let title = _("Execution of '%s' failed:").format(command);
-
-    let source = new MessageTray.SystemNotificationSource();
-    Main.messageTray.add(source);
-    let notification = new MessageTray.Notification(source, title, err.message);
-    notification.setTransient(true);
-    source.notify(notification);
+    Main.notifyError(title, err.message);
 }
 
 // killall:
@@ -177,4 +130,84 @@ function killall(processName) {
     } catch (e) {
         logError(e, 'Failed to kill ' + processName);
     }
+}
+
+// This was ported from network-manager-applet
+// Copyright 2007 - 2011 Red Hat, Inc.
+// Author: Dan Williams <dcbw@redhat.com>
+
+const _IGNORED_WORDS = [
+        'Semiconductor',
+        'Components',
+        'Corporation',
+        'Communications',
+        'Company',
+        'Corp.',
+        'Corp',
+        'Co.',
+        'Inc.',
+        'Inc',
+        'Incorporated',
+        'Ltd.',
+        'Limited.',
+        'Intel?',
+        'chipset',
+        'adapter',
+        '[hex]',
+        'NDIS',
+        'Module'
+];
+
+const _IGNORED_PHRASES = [
+        'Multiprotocol MAC/baseband processor',
+        'Wireless LAN Controller',
+        'Wireless LAN Adapter',
+        'Wireless Adapter',
+        'Network Connection',
+        'Wireless Cardbus Adapter',
+        'Wireless CardBus Adapter',
+        '54 Mbps Wireless PC Card',
+        'Wireless PC Card',
+        'Wireless PC',
+        'PC Card with XJACK(r) Antenna',
+        'Wireless cardbus',
+        'Wireless LAN PC Card',
+        'Technology Group Ltd.',
+        'Communication S.p.A.',
+        'Business Mobile Networks BV',
+        'Mobile Broadband Minicard Composite Device',
+        'Mobile Communications AB',
+        '(PC-Suite Mode)'
+];
+
+function fixupPCIDescription(desc) {
+    desc.replace(/[_,]/, ' ');
+
+    /* Attempt to shorten ID by ignoring certain phrases */
+    for (let i = 0; i < _IGNORED_PHRASES.length; i++) {
+        let item = _IGNORED_PHRASES[i];
+        let pos = desc.indexOf(item);
+        if (pos != -1) {
+            let before = desc.substring(0, pos);
+            let after = desc.substring(pos + item.length, desc.length);
+            desc = before + after;
+        }
+    }
+
+    /* Attmept to shorten ID by ignoring certain individual words */
+    let words = desc.split(' ');
+    let out = [ ];
+    for (let i = 0; i < words; i++) {
+        let item = words[i];
+
+        // skip empty items (that come out from consecutive spaces)
+        if (item.length == 0)
+            continue;
+
+        if (_IGNORED_WORDS.indexOf(item) == -1) {
+            out.push(item);
+        }
+    }
+
+    return out.join(' ');
 }

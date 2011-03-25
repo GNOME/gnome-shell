@@ -435,11 +435,12 @@ blur_pixels (guchar  *pixels_in,
   guchar *pixels_out;
   float   sigma;
 
-  /* we use an approximation of the sigma - blur radius relationship used
-     in Firefox for doing SVG blurs; see
-     http://mxr.mozilla.org/mozilla-central/source/gfx/thebes/src/gfxBlur.cpp#280
-  */
-  sigma = blur / 1.9;
+  /* The CSS specification defines (or will define) the blur radius as twice
+   * the Gaussian standard deviation. See:
+   *
+   * http://lists.w3.org/Archives/Public/www-style/2010Sep/0002.html
+   */
+  sigma = blur / 2.;
 
   if ((guint) blur == 0)
     {
@@ -604,31 +605,40 @@ _st_create_shadow_material_from_actor (StShadow     *shadow_spec,
     {
       CoglHandle buffer, offscreen;
       ClutterActorBox box;
+      CoglColor clear_color;
       float width, height;
 
       clutter_actor_get_allocation_box (actor, &box);
       clutter_actor_box_get_size (&box, &width, &height);
 
+      if (width == 0 || height == 0)
+        return COGL_INVALID_HANDLE;
+
       buffer = cogl_texture_new_with_size (width,
                                            height,
                                            COGL_TEXTURE_NO_SLICING,
                                            COGL_PIXEL_FORMAT_ANY);
+
+      if (buffer == COGL_INVALID_HANDLE)
+        return COGL_INVALID_HANDLE;
+
       offscreen = cogl_offscreen_new_to_texture (buffer);
 
-      if (offscreen != COGL_INVALID_HANDLE)
+      if (offscreen == COGL_INVALID_HANDLE)
         {
-          CoglColor clear_color;
-
-          cogl_color_set_from_4ub (&clear_color, 0, 0, 0, 0);
-          cogl_push_framebuffer (offscreen);
-          cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
-          cogl_ortho (0, width, height, 0, 0, 1.0);
-          clutter_actor_paint (actor);
-          cogl_pop_framebuffer ();
-          cogl_handle_unref (offscreen);
-
-          shadow_material = _st_create_shadow_material (shadow_spec, buffer);
+          cogl_handle_unref (buffer);
+          return COGL_INVALID_HANDLE;
         }
+
+      cogl_color_set_from_4ub (&clear_color, 0, 0, 0, 0);
+      cogl_push_framebuffer (offscreen);
+      cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
+      cogl_ortho (0, width, height, 0, 0, 1.0);
+      clutter_actor_paint (actor);
+      cogl_pop_framebuffer ();
+      cogl_handle_unref (offscreen);
+
+      shadow_material = _st_create_shadow_material (shadow_spec, buffer);
 
       cogl_handle_unref (buffer);
     }

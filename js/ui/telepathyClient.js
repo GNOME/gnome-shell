@@ -7,10 +7,12 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const History = imports.misc.history;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
@@ -20,6 +22,9 @@ const SCROLLBACK_IMMEDIATE_TIME = 60; // 1 minute
 const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
+
+// See Source._displayPendingMessages
+const SCROLLBACK_HISTORY_LINES = 10;
 
 const NotificationDirection = {
     SENT: 'chat-sent',
@@ -34,6 +39,31 @@ let contactFeatures = [Tp.ContactFeature.ALIAS,
 // interface. Specifically, the shell is a Telepathy 'Observer', which
 // lets us see messages even if they belong to another app (eg,
 // Empathy).
+
+function makeMessageFromTpMessage(tpMessage, direction) {
+    let [text, flags] = tpMessage.to_text();
+    return {
+        messageType: tpMessage.get_message_type(),
+        text: text,
+        sender: tpMessage.sender.alias,
+        timestamp: tpMessage.get_received_timestamp(),
+        direction: direction
+    };
+}
+
+
+function makeMessageFromTplEvent(event) {
+    let sent = event.get_sender().get_entity_type() == Tpl.EntityType.SELF;
+    let direction = sent ? NotificationDirection.SENT : NotificationDirection.RECEIVED;
+
+    return {
+        messageType: event.get_message_type(),
+        text: event.get_message(),
+        sender: event.get_sender().get_alias(),
+        timestamp: event.get_timestamp(),
+        direction: direction
+    };
+}
 
 function Client() {
     this._init();
@@ -67,7 +97,22 @@ Client.prototype = {
 
     _observeChannels: function(observer, account, conn, channels,
                                dispatchOp, requests, context) {
-        let connPath = conn.get_object_path();
+        // If the self_contact doesn't have the ALIAS, make sure
+        // to fetch it before trying to grab the channels.
+        let self_contact = conn.get_self_contact();
+        if (self_contact.has_feature(Tp.ContactFeature.ALIAS)) {
+            this._finishObserveChannels(account, conn, channels, context);
+        } else {
+            Shell.get_self_contact_features(conn,
+                                            contactFeatures.length, contactFeatures,
+                                            Lang.bind(this, function() {
+                                                this._finishObserveChannels(account, conn, channels, context);
+                                            }));
+            context.delay();
+        }
+    },
+
+    _finishObserveChannels: function(account, conn, channels, context) {
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
@@ -90,7 +135,6 @@ Client.prototype = {
                     }), null);
         }
 
-        // Allow dbus method to return
         context.accept();
     },
 
@@ -116,7 +160,7 @@ Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
     _init: function(account, conn, channel, contact) {
-        MessageTray.Source.prototype._init.call(this, channel.get_identifier());
+        MessageTray.Source.prototype._init.call(this, contact.get_alias());
 
         this.isChat = true;
 
@@ -126,8 +170,6 @@ Source.prototype = {
         this._conn = conn;
         this._channel = channel;
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
-
-        this._updateAlias();
 
         this._notification = new Notification(this);
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
@@ -143,11 +185,18 @@ Source.prototype = {
         this._notifyAvatarId = this._contact.connect('notify::avatar-file', Lang.bind(this, this._updateAvatarIcon));
         this._presenceChangedId = this._contact.connect('presence-changed', Lang.bind(this, this._presenceChanged));
 
-        this._displayPendingMessages();
+        // Add ourselves as a source.
+        Main.messageTray.add(this);
+        this.pushNotification(this._notification);
+
+        this._getLogMessages();
     },
 
     _updateAlias: function() {
+        let oldAlias = this.title;
         this.title = this._contact.get_alias();
+        this._notification.appendAliasChange(oldAlias, this.title);
+        this.pushNotification(this._notification);
     },
 
     createNotificationIcon: function() {
@@ -183,13 +232,50 @@ Source.prototype = {
         req.ensure_channel_async('', null, null);
     },
 
-    _displayPendingMessages: function() {
-        let msgs = this._channel.get_pending_messages();
+    _getLogMessages: function() {
+        let logManager = Tpl.LogManager.dup_singleton();
+        let entity = Tpl.Entity.new_from_tp_contact(this._contact, Tpl.EntityType.CONTACT);
+        Shell.get_contact_events(logManager,
+                                 this._account, entity,
+                                 SCROLLBACK_HISTORY_LINES,
+                                 Lang.bind(this, this._displayPendingMessages));
+    },
 
-        for (let i = 0; i < msgs.length; i++) {
-            let msg = msgs[i];
-            this._messageReceived(this._channel, msg);
+    _displayPendingMessages: function(logManager, result) {
+        let [success, events] = logManager.get_filtered_events_finish(result);
+
+        let logMessages = events.map(makeMessageFromTplEvent);
+        for (let i = 0; i < logMessages.length; i++) {
+            this._notification.appendMessage(logMessages[i], true);
         }
+
+        let pendingMessages = this._channel.get_pending_messages();
+        let hasPendingMessage = false;
+        for (let i = 0; i < pendingMessages.length; i++) {
+            let message = makeMessageFromTpMessage(pendingMessages[i], NotificationDirection.RECEIVED);
+
+            // Skip any pending messages that are in the logs.
+            let inLog = false;
+            for (let j = 0; j < logMessages.length; j++) {
+                let logMessage = logMessages[j];
+                if (logMessage.timestamp == message.timestamp && logMessage.text == message.body) {
+                    inLog = true;
+                }
+            }
+
+            if (inLog)
+                continue;
+
+            this._notification.appendMessage(message, true);
+            hasPendingMessage = true;
+        }
+
+        // Only show the timestamp if we have at least one message.
+        if (hasPendingMessage || logMessages.length > 0)
+            this._notification.appendTimestamp();
+
+        if (hasPendingMessage)
+            this.notify();
     },
 
     _channelClosed: function() {
@@ -205,25 +291,32 @@ Source.prototype = {
     },
 
     _messageReceived: function(channel, message) {
-        this._notification.appendMessage(message, NotificationDirection.RECEIVED);
+        message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
+        this._notification.appendMessage(message);
         this.notify();
     },
 
     // This is called for both messages we send from
     // our client and other clients as well.
     _messageSent: function(channel, message, flags, token) {
-        this._notification.appendMessage(message, NotificationDirection.SENT);
+        message = makeMessageFromTpMessage(message, NotificationDirection.SENT);
+        this._notification.appendMessage(message);
     },
 
     notify: function() {
-        if (!Main.messageTray.contains(this))
-            Main.messageTray.add(this);
-
         MessageTray.Source.prototype.notify.call(this, this._notification);
     },
 
     respond: function(text) {
-        let msg = Tp.ClientMessage.new_text(Tp.ChannelTextMessageType.NORMAL, text);
+        let type;
+        if (text.slice(0, 4) == '/me ') {
+            type = Tp.ChannelTextMessageType.ACTION;
+            text = text.slice(4);
+        } else {
+            type = Tp.ChannelTextMessageType.NORMAL;
+        }
+
+        let msg = Tp.ClientMessage.new_text(type, text);
         this._channel.send_message_async(msg, 0, null);
     },
 
@@ -289,19 +382,40 @@ Notification.prototype = {
             this._oldMaxScrollAdjustment = adjustment.upper;
         }));
 
+        this._inputHistory = new History.HistoryManager({ entry: this._responseEntry.clutter_text });
+
         this._history = [];
         this._timestampTimeoutId = 0;
     },
 
-    appendMessage: function(message, direction) {
-        let [text, flags] = message.to_text();
-        let timestamp = message.get_received_timestamp();
+    /**
+     * appendMessage:
+     * @message: An object with the properties:
+     *   text: the body of the message,
+     *   messageType: a #Tp.ChannelTextMessageType,
+     *   sender: the name of the sender,
+     *   timestamp: the time the message was sent
+     *   direction: a #NotificationDirection
+     * 
+     * @noTimestamp: Whether to add a timestamp. If %true, no timestamp
+     *   will be added, regardless of the difference since the
+     *   last timestamp
+     */
+    appendMessage: function(message, noTimestamp) {
+        let messageBody = GLib.markup_escape_text(message.text, -1);
+        let styles = [message.direction];
 
-        this.update(this.source.title, text, { customContent: true });
-        this._append(text, direction, timestamp);
+        if (message.messageType == Tp.ChannelTextMessageType.ACTION) {
+            let senderAlias = GLib.markup_escape_text(message.sender, -1);
+            messageBody = '<i>%s</i> %s'.format(senderAlias, messageBody);
+            styles.push('chat-action');
+        }
+
+        this.update(this.source.title, messageBody, { customContent: true, bannerMarkup: true });
+        this._append(messageBody, styles, message.timestamp, noTimestamp);
     },
 
-    _append: function(text, style, timestamp) {
+    _append: function(text, styles, timestamp, noTimestamp) {
         let currentTime = (Date.now() / 1000);
         if (!timestamp)
             timestamp = currentTime;
@@ -313,19 +427,22 @@ Notification.prototype = {
         if (this._timestampTimeoutId)
             Mainloop.source_remove(this._timestampTimeoutId);
 
-        let body = this.addBody(text);
-        body.add_style_class_name(style);
+        let body = this.addBody(text, true);
+        for (let i = 0; i < styles.length; i ++)
+            body.add_style_class_name(styles[i]);
 
         this._history.unshift({ actor: body, time: timestamp, realMessage: true });
 
-        if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME)
-            this._appendTimestamp();
-        else
-            // Schedule a new timestamp in SCROLLBACK_IMMEDIATE_TIME
-            // from the timestamp of the message.
-            this._timestampTimeoutId = Mainloop.timeout_add_seconds(
-                SCROLLBACK_IMMEDIATE_TIME - (currentTime - timestamp),
-                Lang.bind(this, this._appendTimestamp));
+        if (!noTimestamp) {
+            if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME)
+                this.appendTimestamp();
+            else
+                // Schedule a new timestamp in SCROLLBACK_IMMEDIATE_TIME
+                // from the timestamp of the message.
+                this._timestampTimeoutId = Mainloop.timeout_add_seconds(
+                    SCROLLBACK_IMMEDIATE_TIME - (currentTime - timestamp),
+                    Lang.bind(this, this.appendTimestamp));
+        }
 
         if (this._history.length > 1) {
             // Keep the scrollback from growing too long. If the most
@@ -346,7 +463,7 @@ Notification.prototype = {
         }
     },
 
-    _appendTimestamp: function() {
+    appendTimestamp: function() {
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
@@ -372,10 +489,27 @@ Notification.prototype = {
         this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false});
     },
 
+    appendAliasChange: function(oldAlias, newAlias) {
+        // FIXME: uncomment this after 3.0 string freeze ends
+
+        // oldAlias = GLib.markup_escape_text(oldAlias, -1);
+        // newAlias = GLib.markup_escape_text(newAlias, -1);
+
+        // /* Translators: this is the other person changing their old IM name to their new
+        //    IM name. */
+        // let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
+        // let label = this.addBody(message, true);
+        // label.add_style_class_name('chat-meta-message');
+        // this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false });
+        // this.update(newAlias, null, { customContent: true });
+    },
+
     _onEntryActivated: function() {
         let text = this._responseEntry.get_text();
         if (text == '')
             return;
+
+        this._inputHistory.addItem(text);
 
         // Telepathy sends out the Sent signal for us.
         // see Source._messageSent

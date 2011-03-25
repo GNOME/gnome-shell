@@ -24,7 +24,8 @@ dist_theme_DATA =				\
 	theme/calendar-today.svg		\
 	theme/close-window.svg			\
 	theme/close.svg				\
-	theme/corner-ripple.png			\
+	theme/corner-ripple-ltr.png		\
+	theme/corner-ripple-rtl.png		\
 	theme/dash-placeholder.svg		\
 	theme/filter-selected-ltr.svg		\
 	theme/filter-selected-rtl.svg		\
@@ -49,6 +50,7 @@ dist_theme_DATA =				\
 	theme/separator-white.png		\
 	theme/single-view-active.svg		\
 	theme/single-view.svg			\
+	theme/source-button-border.svg		\
 	theme/toggle-off-us.svg			\
 	theme/toggle-off-intl.svg		\
 	theme/toggle-on-us.svg			\

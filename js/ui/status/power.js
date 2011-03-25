@@ -83,7 +83,8 @@ Indicator.prototype = {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this.menu.addAction(_("Power Settings"),function() {
-            Util.spawnDesktop('gnome-power-panel');
+            let app = Shell.AppSystem.get_default().get_app('gnome-power-panel.desktop');
+            app.activate(-1);
         });
 
         this._proxy.connect('Changed', Lang.bind(this, this._devicesChanged));

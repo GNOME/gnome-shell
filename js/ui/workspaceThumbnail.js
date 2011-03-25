@@ -146,6 +146,7 @@ function WorkspaceThumbnail(metaWorkspace) {
 WorkspaceThumbnail.prototype = {
     _init : function(metaWorkspace) {
         this.metaWorkspace = metaWorkspace;
+        this.monitorIndex = global.get_primary_monitor_index();
 
         this.actor = new St.Group({ reactive: true,
                                     clip_to_allocation: true,
@@ -169,7 +170,8 @@ WorkspaceThumbnail.prototype = {
         this._background = new Clutter.Clone({ source: global.background_actor });
         this._contents.add_actor(this._background);
 
-        this.setPorthole(0, 0, global.screen_width, global.screen_height);
+        let monitor = global.get_primary_monitor();
+        this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
 
         let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
@@ -186,6 +188,10 @@ WorkspaceThumbnail.prototype = {
                                                           Lang.bind(this, this._windowAdded));
         this._windowRemovedId = this.metaWorkspace.connect('window-removed',
                                                            Lang.bind(this, this._windowRemoved));
+        this._windowEnteredMonitorId = global.screen.connect('window-entered-monitor',
+                                                           Lang.bind(this, this._windowEnteredMonitor));
+        this._windowLeftMonitorId = global.screen.connect('window-left-monitor',
+                                                           Lang.bind(this, this._windowLeftMonitor));
 
         this.state = ThumbnailState.NORMAL;
         this._slidePosition = 0; // Fully slid in
@@ -193,6 +199,8 @@ WorkspaceThumbnail.prototype = {
     },
 
     setPorthole: function(x, y, width, height) {
+        this._portholeX = x;
+        this._portholeY = y;
         this.actor.set_size(width, height);
         this._contents.set_position(-x, -y);
     },
@@ -239,7 +247,7 @@ WorkspaceThumbnail.prototype = {
         return this._collapseFraction;
     },
 
-    _windowRemoved : function(metaWorkspace, metaWin) {
+    _doRemoveWindow : function(metaWin) {
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
@@ -248,12 +256,16 @@ WorkspaceThumbnail.prototype = {
         if (index == -1)
             return;
 
+        // Check if window still should be here
+        if (win && this._isMyWindow(win))
+            return;
+
         let clone = this._windows[index];
         this._windows.splice(index, 1);
         clone.destroy();
     },
 
-    _windowAdded : function(metaWorkspace, metaWin) {
+    _doAddWindow : function(metaWin) {
         if (this.leavingOverview)
             return;
 
@@ -265,16 +277,41 @@ WorkspaceThumbnail.prototype = {
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
                                             if (this.actor && metaWin.get_compositor_private())
-                                                this._windowAdded(metaWorkspace, metaWin);
+                                                this._doAddWindow(metaWin);
                                             return false;
                                         }));
             return;
         }
 
-        if (!this._isOverviewWindow(win))
+        // We might have the window in our list already if it was on all workspaces and
+        // now was moved to this workspace
+        if (this._lookupIndex (metaWin) != -1)
+            return;
+
+        if (!this._isMyWindow(win) || !this._isOverviewWindow(win))
             return;
 
         let clone = this._addWindowClone(win);
+    },
+
+    _windowAdded : function(metaWorkspace, metaWin) {
+        this._doAddWindow(metaWin);
+    },
+
+    _windowRemoved : function(metaWorkspace, metaWin) {
+        this._doRemoveWindow(metaWin);
+    },
+
+    _windowEnteredMonitor : function(metaScreen, monitorIndex, metaWin) {
+        if (monitorIndex == this.monitorIndex) {
+            this._doAddWindow(metaWin);
+        }
+    },
+
+    _windowLeftMonitor : function(metaScreen, monitorIndex, metaWin) {
+        if (monitorIndex == this.monitorIndex) {
+            this._doRemoveWindow(metaWin);
+        }
     },
 
     destroy : function() {
@@ -284,15 +321,17 @@ WorkspaceThumbnail.prototype = {
     _onDestroy: function(actor) {
         this.metaWorkspace.disconnect(this._windowAddedId);
         this.metaWorkspace.disconnect(this._windowRemovedId);
+        global.screen.disconnect(this._windowEnteredMonitorId);
+        global.screen.disconnect(this._windowLeftMonitorId);
 
         this._windows = [];
         this.actor = null;
     },
 
-    // Tests if @win belongs to this workspaces
+    // Tests if @win belongs to this workspace and monitor
     _isMyWindow : function (win) {
-        return win.get_workspace() == this.metaWorkspace.index() ||
-            (win.get_meta_window() && win.get_meta_window().is_on_all_workspaces());
+        return Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index()) &&
+            (!win.get_meta_window() || win.get_meta_window().get_monitor() == this.monitorIndex);
     },
 
     // Tests if @win should be shown in the Overview
@@ -340,6 +379,11 @@ WorkspaceThumbnail.prototype = {
 
     // Draggable target interface
     handleDragOver : function(source, actor, x, y, time) {
+        if (source == Main.xdndHandler) {
+            this.metaWorkspace.activate(time);
+            return DND.DragMotionResult.CONTINUE;
+        }
+
         if (this.state > ThumbnailState.NORMAL)
             return DND.DragMotionResult.CONTINUE;
 
@@ -361,6 +405,13 @@ WorkspaceThumbnail.prototype = {
                 return false;
 
             let metaWindow = win.get_meta_window();
+
+            // We need to move the window before changing the workspace, because
+            // the move itself could cause a workspace change if the window enters
+            // the primary monitor
+            if (metaWindow.get_monitor() != this.monitorIndex)
+                metaWindow.move_to_monitor(this.monitorIndex);
+
             metaWindow.change_workspace_by_index(this.metaWorkspace.index(),
                                                  false, // don't create workspace
                                                  time);
@@ -442,11 +493,12 @@ ThumbnailsBox.prototype = {
 
         // The "porthole" is the portion of the screen that we show in the workspaces
         let panelHeight = Main.panel.actor.height;
+        let monitor = global.get_primary_monitor();
         this._porthole = {
-            x: 0,
-            y: panelHeight,
-            width: global.screen_width,
-            height: global.screen_height - panelHeight
+            x: monitor.x,
+            y: monitor.y + panelHeight,
+            width: monitor.width,
+            height: monitor.height - panelHeight
         };
 
         this.addThumbnails(0, global.screen.n_workspaces);
