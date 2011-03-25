@@ -374,6 +374,14 @@ window_decorated_notify (MetaWindow *mw,
 }
 
 static void
+window_appears_focused_notify (MetaWindow *mw,
+                               GParamSpec *arg1,
+                               gpointer    data)
+{
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (data));
+}
+
+static void
 meta_window_actor_constructed (GObject *object)
 {
   MetaWindowActor        *self     = META_WINDOW_ACTOR (object);
@@ -422,6 +430,8 @@ meta_window_actor_constructed (GObject *object)
 
       g_signal_connect (priv->window, "notify::decorated",
                         G_CALLBACK (window_decorated_notify), self);
+      g_signal_connect (priv->window, "notify::appears-focused",
+                        G_CALLBACK (window_appears_focused_notify), self);
     }
   else
     {

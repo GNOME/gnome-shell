@@ -154,7 +154,8 @@ enum {
   PROP_USER_TIME,
   PROP_DEMANDS_ATTENTION,
   PROP_URGENT,
-  PROP_MUTTER_HINTS
+  PROP_MUTTER_HINTS,
+  PROP_APPEARS_FOCUSED
 };
 
 enum
@@ -238,6 +239,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_MUTTER_HINTS:
       g_value_set_string (value, win->mutter_hints);
+      break;
+    case PROP_APPEARS_FOCUSED:
+      g_value_set_boolean (value, meta_window_appears_focused (win));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -366,6 +370,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                                         "Contents of the _MUTTER_HINTS property of this window",
                                                         NULL,
                                                         G_PARAM_READABLE));
+  g_object_class_install_property (object_class,
+                                   PROP_APPEARS_FOCUSED,
+                                   g_param_spec_boolean ("appears-focused",
+                                                         "Appears focused",
+                                                         "Whether the window is drawn as being focused",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
   window_signals[WORKSPACE_CHANGED] =
     g_signal_new ("workspace-changed",
                   G_TYPE_FROM_CLASS (object_class),
@@ -856,6 +868,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->frame = NULL;
   window->has_focus = FALSE;
+  window->attached_focus_window = NULL;
 
   window->maximized_horizontally = FALSE;
   window->maximized_vertically = FALSE;
@@ -1488,6 +1501,7 @@ meta_window_unmanage (MetaWindow  *window,
       meta_workspace_focus_default_window (window->screen->active_workspace,
                                            window,
                                            timestamp);
+      meta_window_propagate_focus_appearance (window, FALSE);
     }
   else if (window->display->expected_focus_window == window)
     {
@@ -6359,20 +6373,46 @@ meta_window_client_message (MetaWindow *window,
   return FALSE;
 }
 
-static void
-check_ancestor_focus_appearance (MetaWindow *window)
+void
+meta_window_propagate_focus_appearance (MetaWindow *window,
+                                        gboolean    focused)
 {
-  MetaWindow *parent = meta_window_get_transient_for (window);
+  MetaWindow *child, *parent;
 
   if (!meta_prefs_get_attach_modal_dialogs ())
     return;
 
-  if (window->type != META_WINDOW_MODAL_DIALOG || !parent || parent == window)
-    return;
-  if (parent->frame)
-    meta_frame_queue_draw (parent->frame);
+  child = window;
+  parent = meta_window_get_transient_for (child);
+  while (child->type == META_WINDOW_MODAL_DIALOG && parent)
+    {
+      gboolean child_focus_state_changed;
 
-  check_ancestor_focus_appearance (parent);
+      if (focused)
+        {
+          if (parent->attached_focus_window == window)
+            break;
+          child_focus_state_changed = (parent->attached_focus_window == NULL);
+          parent->attached_focus_window = window;
+        }
+      else
+        {
+          if (parent->attached_focus_window != window)
+            break;
+          child_focus_state_changed = (parent->attached_focus_window != NULL);
+          parent->attached_focus_window = NULL;
+        }
+
+      if (child_focus_state_changed && !parent->has_focus)
+        {
+          g_object_notify (G_OBJECT (parent), "appears-focused");
+          if (parent->frame)
+            meta_frame_queue_draw (parent->frame);
+        }
+
+      child = parent;
+      parent = meta_window_get_transient_for (child);
+    }
 }
 
 gboolean
@@ -6517,11 +6557,16 @@ meta_window_notify_focus (MetaWindow *window,
               !meta_prefs_get_raise_on_click())
             meta_display_ungrab_focus_window_button (window->display, window);
 
-          /* parent window become active. */
-          check_ancestor_focus_appearance (window);
-
           g_signal_emit (window, window_signals[FOCUS], 0);
           g_object_notify (G_OBJECT (window->display), "focus-window");
+
+          if (!window->attached_focus_window)
+            {
+              g_object_notify (G_OBJECT (window), "appears-focused");
+              if (window->frame)
+                meta_frame_queue_draw (window->frame);
+            }
+          meta_window_propagate_focus_appearance (window, TRUE);
         }
     }
   else if (event->type == FocusOut ||
@@ -6549,11 +6594,14 @@ meta_window_notify_focus (MetaWindow *window,
           window->display->focus_window = NULL;
           g_object_notify (G_OBJECT (window->display), "focus-window");
           window->has_focus = FALSE;
-          /* parent window become inactive. */
-          check_ancestor_focus_appearance (window);
 
-          if (window->frame)
-            meta_frame_queue_draw (window->frame);
+          if (!window->attached_focus_window)
+            {
+              g_object_notify (G_OBJECT (window), "appears-focused");
+              if (window->frame)
+                meta_frame_queue_draw (window->frame);
+            }
+          meta_window_propagate_focus_appearance (window, FALSE);
 
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,
@@ -9692,16 +9740,6 @@ meta_window_get_frame (MetaWindow *window)
   return window->frame;
 }
 
-static gboolean
-transient_has_focus (MetaWindow *window,
-                     void       *data)
-{
-  if (window->type == META_WINDOW_MODAL_DIALOG && meta_window_appears_focused (window))
-    *((gboolean *)data) = TRUE;
-
-  return FALSE;
-}
-
 /**
  * meta_window_appears_focused:
  * @window: a #MetaWindow
@@ -9715,16 +9753,7 @@ transient_has_focus (MetaWindow *window,
 gboolean
 meta_window_appears_focused (MetaWindow *window)
 {
-  /* FIXME: meta_window_foreach_transient() iterates over all windows; we
-   *  should eat the complexity to cache a bit for this.
-   */
-  if (!window->has_focus && meta_prefs_get_attach_modal_dialogs ())
-    {
-      gboolean focus = FALSE;
-      meta_window_foreach_transient (window, transient_has_focus, &focus);
-      return focus;
-    }
-  return window->has_focus;
+  return window->has_focus || (window->attached_focus_window != NULL);
 }
 
 gboolean
