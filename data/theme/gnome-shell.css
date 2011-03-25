@@ -167,8 +167,8 @@ StTooltip StLabel {
 
 /* Switches (to be used in menus) */
 .toggle-switch {
-    width: 4.5em;
-    height: 1.5em;
+    width: 65px;
+    height: 22px;
 }
 
 .toggle-switch-us {
