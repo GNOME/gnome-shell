@@ -185,6 +185,10 @@ StTooltip StLabel {
     background-image: url("toggle-on-intl.svg");
 }
 
+.nm-menu-item-icons {
+    spacing: .5em;
+}
+
 /* Panel */
 
 #panel {

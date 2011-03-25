@@ -92,16 +92,32 @@ function NMNetworkMenuItem() {
 }
 
 NMNetworkMenuItem.prototype = {
-    __proto__: PopupMenu.PopupImageMenuItem.prototype,
+    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
 
     _init: function(accessPoints, title, params) {
+        PopupMenu.PopupBaseMenuItem.prototype._init.call(this, params);
+
         accessPoints = sortAccessPoints(accessPoints);
         this.bestAP = accessPoints[0];
 
         let ssid = this.bestAP.get_ssid();
         title = title || NetworkManager.utils_ssid_to_utf8(ssid) || _("<unknown>");
 
-        PopupMenu.PopupImageMenuItem.prototype._init.call(this, title, this._getIcon(), params);
+        this._label = new St.Label({ text: title });
+        this.addActor(this._label);
+        this._icons = new St.BoxLayout({ style_class: 'nm-menu-item-icons' });
+        this.addActor(this._icons, { align: St.Align.END });
+
+        this._signalIcon = new St.Icon({ icon_name: this._getIcon(),
+                                         style_class: 'popup-menu-icon' });
+        this._icons.add_actor(this._signalIcon);
+
+        if (this.bestAP._secType != NMAccessPointSecurity.UNKNOWN &&
+            this.bestAP._secType != NMAccessPointSecurity.NONE) {
+            this._secureIcon = new St.Icon({ icon_name: 'network-wireless-encrypted',
+                                             style_class: 'popup-menu-icon' });
+            this._icons.add_actor(this._secureIcon);
+        }
 
         this._accessPoints = [ ];
         for (let i = 0; i < accessPoints.length; i++) {
@@ -120,7 +136,7 @@ NMNetworkMenuItem.prototype = {
         if (strength > this.bestAP.strength)
             this.bestAP = ap;
 
-        this.setIcon(this._getIcon());
+        this._signalIcon.icon_name = this._getIcon();
     },
 
     _getIcon: function() {
