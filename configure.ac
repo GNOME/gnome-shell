@@ -91,6 +91,7 @@ AS_CASE([$host],
         [platform_win32=no]
 )
 AC_MSG_RESULT([$platform_win32])
+AM_CONDITIONAL(OS_WIN32, [test "$platform_win32" = "yes"])
 
 AC_SUBST(CLUTTER_LT_VERSION)
 AC_SUBST(CLUTTER_LT_LDFLAGS)

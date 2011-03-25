@@ -61,6 +61,12 @@ if X11_TESTS
 UNIT_TESTS += test-pixmap.c test-devices.c
 endif
 
+if OS_WIN32
+SHEXT =
+else
+SHEXT = $(EXEEXT)
+endif
+
 # For convenience, this provides a way to easily run individual unit tests:
 wrappers: stamp-test-interactive
 	@true
@@ -77,9 +83,9 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 		echo "  GEN    $$test_bin" ; \
 		( echo "#!/bin/sh" ; \
 		  echo "$$wrapper $$test_bin \$$@" \
-		) > $$test_bin$(EXEEXT) ; \
-		chmod +x $$test_bin$(EXEEXT) ; \
-		echo "/$$test_bin$(EXEEXT)" >> .gitignore ; \
+		) > $$test_bin$(SHEXT) ; \
+		chmod +x $$test_bin$(SHEXT) ; \
+		echo "/$$test_bin$(SHEXT)" >> .gitignore ; \
 	done \
 	&& echo timestamp > $(@F)
 
@@ -88,7 +94,7 @@ clean-wrappers:
 	do \
 		test_bin=$${i%*.c} ; \
 		echo "  RM    $$test_bin"; \
-		rm -f $$test_bin$(EXEEXT); \
+		rm -f $$test_bin$(SHEXT); \
 	done \
 	&& rm -f stamp-test-interactive
 

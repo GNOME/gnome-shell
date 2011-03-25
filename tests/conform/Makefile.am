@@ -86,6 +86,12 @@ units_sources += \
 
 test_conformance_SOURCES = $(common_sources) $(units_sources)
 
+if OS_WIN32
+SHEXT =
+else
+SHEXT = $(EXEEXT)
+endif
+
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers clean-wrappers
 
@@ -113,11 +119,11 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  GEN    $$unit"; \
-		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(EXEEXT) ; \
-		( echo "#!/bin/sh" ; echo "exec $(abs_builddir)/test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(EXEEXT) ; \
-		chmod +x $$unit$(EXEEXT); \
-		chmod +x wrappers/$$unit$(EXEEXT); \
-		echo "/$$unit$(EXEEXT)" >> .gitignore; \
+		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(SHEXT) ; \
+		( echo "#!/bin/sh" ; echo "exec $(abs_builddir)/test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(SHEXT) ; \
+		chmod +x $$unit$(SHEXT); \
+		chmod +x wrappers/$$unit$(SHEXT); \
+		echo "/$$unit$(SHEXT)" >> .gitignore; \
 	done \
 	&& echo timestamp > $(@F)
 
@@ -126,8 +132,8 @@ clean-wrappers:
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  RM     $$unit"; \
-		rm -f $$unit$(EXEEXT) ; \
-		rm -f wrappers/$$unit$(EXEEXT) ; \
+		rm -f $$unit$(SHEXT) ; \
+		rm -f wrappers/$$unit$(SHEXT) ; \
 	done \
 	&& rm -f unit-tests \
 	&& rm -f stamp-test-conformance
