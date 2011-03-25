@@ -478,15 +478,27 @@ NMDevice.prototype = {
             /* Translators: this is for network connections that require some kind of key or password */
             return _("authentication required");
         case NetworkManager.DeviceState.UNAVAILABLE:
-            // we don't check if the carrier property is actually false, as that causes race
-            // conditions if state is changed before the new carrier value is picked by libnm-glib
-            if (this.device.capabilities & NetworkManager.DeviceCapabilities.CARRIER_DETECT)
-                /* Translators: this is for wired network devices that are physically disconnected */
-                return _("cable unplugged");
-            else
-                /* Translators: this is for a network device that cannot be activated (for example it
-                   is disabled by rfkill, or it has no coverage */
-                return _("unavailable");
+            // This state is actually a compound of various states (generically unavailable,
+            // firmware missing, carrier not available), that are exposed by different properties
+            // (whose state may or may not updated when we receive state-changed).
+            if (!this._firmwareMissingId)
+                this._firmwareMissingId = this.device.connect('notify::firmware-missing', Lang.bind(this, this._substateChanged));
+            if (this.device.firmware_missing) {
+                /* Translators: this is for devices that require some kind of firmware or kernel
+                   module, which is missing */
+                return _("firmware missing");
+            }
+            if (this.device.capabilities & NetworkManager.DeviceCapabilities.CARRIER_DETECT) {
+                if (!this._carrierChangedId)
+                    this._carrierChangedId = this.device.connect('notify::carrier', Lang.bind(this, this._substateChanged));
+                if (!this.carrier) {
+                    /* Translators: this is for wired network devices that are physically disconnected */
+                    return _("cable unplugged");
+                }
+            }
+            /* Translators: this is for a network device that cannot be activated (for example it
+               is disabled by rfkill, or it has no coverage */
+            return _("unavailable");
         case NetworkManager.DeviceState.FAILED:
             return _("connection failed");
         default:
@@ -595,11 +607,27 @@ NMDevice.prototype = {
             break;
         }
 
+        if (this._carrierChangedId) {
+            // see above for why this is needed
+            GObject.Object.prototype.disconnect.call(this.device, this._carrierChangedId);
+            this._carrierChangedId = 0;
+        }
+        if (this._firmwareChangedId) {
+            GObject.Object.prototype.disconnect.call(this.device, this._firmwareChangedId);
+            this._firmwareChangedId = 0;
+        }
+
         this.statusItem.setStatus(this.getStatusLabel());
         this.statusItem.setToggleState(this.connected);
 
         this._clearSection();
         this._createSection();
+        this.emit('state-changed');
+    },
+
+    _substateChanged: function() {
+        this.statusItem.setStatus(this.getStatusLabel());
+
         this.emit('state-changed');
     },
 
