@@ -395,7 +395,7 @@ NMDevice.prototype = {
         // pick the most recently used connection and connect to that
         // or if no connections ever set, create an automatic one
         if (this._connections.length > 0) {
-            this._client.activate_connection(this._connections[0].connection.path, this.device, null, null);
+            this._client.activate_connection(this._connections[0].connection, this.device, null, null);
         } else if (this._autoConnectionName) {
             let connection = this._createAutomaticConnection();
             this._client.add_and_activate_connection(connection, this.device, null, null);
@@ -582,10 +582,11 @@ NMDevice.prototype = {
     },
 
     _createConnectionItem: function(obj) {
-        let path = obj.connection.path;
+        let connection = obj.connection;
         let item = new PopupMenu.PopupMenuItem(obj.name);
+
         item.connect('activate', Lang.bind(this, function() {
-            this._client.activate_connection(path, this.device, null, null);
+            this._client.activate_connection(connection, this.device, null, null);
         }));
         return item;
     },
@@ -1061,7 +1062,7 @@ NMDeviceWireless.prototype = {
             for (let i = 0; i < bestApObj.accessPoints.length; i++) {
                 let ap = bestApObj.accessPoints[i];
                 if (this._connectionValidForAP(best, ap)) {
-                    this._client.activate_connection(best.path, this.device, ap.dbus_path, null);
+                    this._client.activate_connection(best, this.device, ap.dbus_path, null);
                     break;
                 }
             }
@@ -1196,7 +1197,7 @@ NMDeviceWireless.prototype = {
             let accessPoints = sortAccessPoints(accessPointObj.accessPoints);
             for (let i = 0; i < accessPoints.length; i++) {
                 if (this._connectionValidForAP(connection, accessPoints[i])) {
-                    this._client.activate_connection(connection.path, this.device, accessPoints[i].dbus_path, null);
+                    this._client.activate_connection(connection, this.device, accessPoints[i].dbus_path, null);
                     break;
                 }
             }
