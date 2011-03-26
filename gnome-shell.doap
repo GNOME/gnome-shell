@@ -6,6 +6,16 @@
 
   <name xml:lang="en">GNOME Shell</name>
   <shortdesc xml:lang="en">Next generation GNOME desktop shell</shortdesc>
+  <description>Mutter is a window and compositing manager that displays and manages
+your desktop via OpenGL. Mutter combines a sophisticated display engine
+using the Clutter toolkit with solid window-management logic inherited
+from the Metacity window manager.
+
+While Mutter can be used stand-alone, it is primarily intended to be
+used as the display core of a larger system such as GNOME Shell.
+For this reason, Mutter is very extensible via plugins, which
+are used both to add fancy visual effects and to rework the window
+management behaviors to meet the needs of the environment.</description>
   <!--
   <homepage rdf:resource="http://live.gnome.org/GnomeShell" />
   -->
