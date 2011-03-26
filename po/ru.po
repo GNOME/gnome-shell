@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-17 13:27+0000\n"
-"PO-Revision-Date: 2011-03-21 21:49+0400\n"
+"POT-Creation-Date: 2011-03-21 19:31+0000\n"
+"PO-Revision-Date: 2011-03-26 22:12+0400\n"
 "Last-Translator: Yuri Myaseodov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -327,7 +327,7 @@ msgstr "Переместить окно к восточной (левой) ст�
 msgid "Move window to center of screen"
 msgstr "Переместить окно в центр экрана"
 
-#: ../src/core/bell.c:302
+#: ../src/core/bell.c:310
 msgid "Bell event"
 msgstr "Событие звонка"
 
@@ -339,7 +339,6 @@ msgstr "Неизвестный запрос сведений об окне: %d"
 #. Translators: %s is a window title
 #: ../src/core/delete.c:94
 #, c-format
-#| msgid "\"%s\" is not responding."
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> не отвечает."
 
@@ -399,7 +398,6 @@ msgid "Disable connection to session manager"
 msgstr "Запретить подключение к менеджеру сеансов"
 
 #: ../src/core/main.c:212
-#| msgid "Replace the running window manager with Metacity"
 msgid "Replace the running window manager"
 msgstr "Заменить запущенный оконный менеджер"
 
@@ -419,24 +417,18 @@ msgstr "Инициализировать сеанс из сохранённог�
 msgid "Make X calls synchronous"
 msgstr "Сделать X-вызовы синхронными"
 
-#: ../src/core/main.c:508
+#: ../src/core/main.c:506
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Не удалось прочитать каталог тем: %s\n"
 
-#: ../src/core/main.c:524
+#: ../src/core/main.c:522
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Не удалось найти тему! Убедитесь, что «%s» существует и содержит обычные темы.\n"
 
 #: ../src/core/mutter.c:42
 #, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
 "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -539,13 +531,11 @@ msgstr "Произошла ошибка при установке имени р�
 
 #: ../src/core/prefs.c:2997
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Ошибка установки состояния существования скрытых окон: %s\n"
 
 #: ../src/core/prefs.c:3032
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Ошибка установки состояния всплывающего окна вкладки: %s\n"
 
@@ -574,61 +564,57 @@ msgstr "У экрана %d дисплея «%s» уже есть менедже�
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не удалось освободить экран %d дисплея «%s»\n"
 
-#: ../src/core/session.c:863
-#: ../src/core/session.c:870
+#: ../src/core/session.c:837
+#: ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не удалось создать каталог «%s»: %s\n"
 
-#: ../src/core/session.c:880
+#: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не удалось открыть для записи файл сеанса «%s»: %s\n"
 
-#: ../src/core/session.c:1021
+#: ../src/core/session.c:995
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Произошла ошибка при записи файла сеанса «%s»: %s\n"
 
-#: ../src/core/session.c:1026
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Произошла ошибка при закрытии файла сеанса «%s»: %s\n"
 
-#: ../src/core/session.c:1156
+#: ../src/core/session.c:1130
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Не удалось разобрать сохранённый файл сеанса: %s\n"
 
-#: ../src/core/session.c:1205
+#: ../src/core/session.c:1179
 #, c-format
-#| msgid "<metacity_session> attribute seen but we already have the session ID"
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "Атрибут <mutter_session> обнаружен, но у нас уже есть ID сеанса"
 
-#: ../src/core/session.c:1218
-#: ../src/core/session.c:1293
-#: ../src/core/session.c:1325
-#: ../src/core/session.c:1397
-#: ../src/core/session.c:1457
+#: ../src/core/session.c:1192
+#: ../src/core/session.c:1267
+#: ../src/core/session.c:1299
+#: ../src/core/session.c:1371
+#: ../src/core/session.c:1431
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Атрибут %s элемента <%s> неизвестен"
 
-#: ../src/core/session.c:1235
+#: ../src/core/session.c:1209
 #, c-format
 msgid "nested <window> tag"
 msgstr "вложенный тег <window>"
 
-#: ../src/core/session.c:1477
+#: ../src/core/session.c:1451
 #, c-format
 msgid "Unknown element %s"
 msgstr "Элемент %s неизвестен"
 
-#: ../src/core/session.c:1829
-#| msgid ""
-#| "These windows do not support \"save current setup\" and will have to be "
-#| "restarted manually next time you log in."
+#: ../src/core/session.c:1803
 msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
 msgstr "Эти окна не поддерживают команду «Сохранить текущие настройки». При следующем входе в систему их придётся перезапустить вручную."
 
@@ -650,7 +636,6 @@ msgstr "Открыт журнал отладочной информации %s\n
 #: ../src/core/util.c:146
 #: ../src/tools/mutter-message.c:149
 #, c-format
-#| msgid "Metacity was compiled without support for verbose mode\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Metacity собран без поддержки режима подробных сообщений\n"
 
@@ -671,14 +656,14 @@ msgid "Window manager error: "
 msgstr "Ошибка менеджера окон: "
 
 #. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:616
+#: ../src/core/util.c:615
 #: ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6651
+#: ../src/core/window.c:6752
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Окно %s установило на себя значение SM_CLIENT_ID вместо окна с значением WM_CLIENT_LEADER, как это определено в ICCCM.\n"
@@ -690,7 +675,7 @@ msgstr "Окно %s установило на себя значение SM_CLIEN
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7314
+#: ../src/core/window.c:7415
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Окно %s установило подсказку MWM, определяющую, что его размер не меняется, но установило минимальный размер %d × %d и максимальный размер %d × %d, что не имеет смысла.\n"
@@ -744,15 +729,17 @@ msgid "Determines whether hidden windows (i.e., minimized windows and windows on
 msgstr "Определяет, должны ли существовать скрытые окна (например, минимизированные окна и окна, находящиеся на другом рабочем месте)."
 
 #: ../src/mutter.schemas.in.h:3
-msgid "Determines whether workspace switching should happen for windows on all monitors or only the primary window."
-msgstr "Определяет, должно ли переключение рабочего места происходить для окон на всех мониторах или только главного окна."
+#| msgid ""
+#| "Determines whether workspace switching should happen for windows on all "
+#| "monitors or only the primary window."
+msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
+msgstr "Определяет, должно ли переключение рабочего места происходить для окон на всех мониторах или только для окон на главном мониторе."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
 msgstr "Существование скрытых окон"
 
 #: ../src/mutter.schemas.in.h:5
-#| msgid "Modifier to use for modified window click actions"
 msgid "Modifier to use for extended window management operations"
 msgstr "Модификатор для использования дополнительных действий управления окнами"
 
@@ -1611,7 +1598,6 @@ msgstr "Использование текста внутри элемента <%
 #: ../src/ui/theme-parser.c:4062
 #: ../src/ui/theme-parser.c:4074
 #, c-format
-#| msgid "<name> specified twice for this theme"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> указан для этой темы дважды"
 
@@ -1621,57 +1607,46 @@ msgid "Failed to find a valid file for theme %s\n"
 msgstr "Не удалось найти допустимый файл для темы %s\n"
 
 #: ../src/ui/theme-viewer.c:99
-#| msgid "/_Windows"
 msgid "_Windows"
 msgstr "_Окна"
 
 #: ../src/ui/theme-viewer.c:100
-#| msgid "Dialog Box"
 msgid "_Dialog"
 msgstr "_Диалоговое окно"
 
 #: ../src/ui/theme-viewer.c:101
-#| msgid "Modal Dialog Box"
 msgid "_Modal dialog"
 msgstr "_Модальное диалоговое окно"
 
 #: ../src/ui/theme-viewer.c:102
-#| msgid "/Windows/_Utility"
 msgid "_Utility"
 msgstr "_Утилита"
 
 #: ../src/ui/theme-viewer.c:103
-#| msgid "/Windows/_Splashscreen"
 msgid "_Splashscreen"
 msgstr "_Экран-заставка"
 
 #: ../src/ui/theme-viewer.c:104
-#| msgid "/Windows/_Top dock"
 msgid "_Top dock"
 msgstr "_Верхний док"
 
 #: ../src/ui/theme-viewer.c:105
-#| msgid "/Windows/_Bottom dock"
 msgid "_Bottom dock"
 msgstr "_Нижний док"
 
 #: ../src/ui/theme-viewer.c:106
-#| msgid "/Windows/_Left dock"
 msgid "_Left dock"
 msgstr "_Левый док"
 
 #: ../src/ui/theme-viewer.c:107
-#| msgid "/Windows/_Right dock"
 msgid "_Right dock"
 msgstr "_Правый док"
 
 #: ../src/ui/theme-viewer.c:108
-#| msgid "/Windows/_All docks"
 msgid "_All docks"
 msgstr "В_се доки"
 
 #: ../src/ui/theme-viewer.c:109
-#| msgid "Desktop"
 msgid "Des_ktop"
 msgstr "_Рабочий стол"
 
@@ -1729,7 +1704,6 @@ msgid "Border"
 msgstr "Рамка"
 
 #: ../src/ui/theme-viewer.c:413
-#| msgid "Modal Dialog Box"
 msgid "Attached Modal Dialog"
 msgstr "Прикреплённый модальный диалог"
 
