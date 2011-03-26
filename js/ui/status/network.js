@@ -22,6 +22,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const NMConnectionCategory = {
+    INVALID: 'invalid',
     WIRED: 'wired',
     WIRELESS: 'wireless',
     WWAN: 'wwan',
@@ -1928,11 +1929,12 @@ NMApplet.prototype = {
             this._connections.splice(connection);
 
         let section = connection._section;
+
         if (section == NMConnectionCategory.VPN) {
             this._devices.vpn.device.removeConnection(connection);
             if (this._devices.vpn.device.empty)
                 this._devices.vpn.section.actor.hide();
-        } else {
+        } else if (section != NMConnectionCategory.INVALID) {
             let devices = this._devices[section].devices;
             for (let i = 0; i < devices.length; i++)
                 devices[i].removeConnection(connection);
@@ -1946,16 +1948,19 @@ NMApplet.prototype = {
     _updateConnection: function(connection) {
         let connectionSettings = connection.get_setting_by_name(NetworkManager.SETTING_CONNECTION_SETTING_NAME);
         connection._type = connectionSettings.type;
-        connection._section = this._ctypes[connection._type];
+
+        connection._section = this._ctypes[connection._type] || NMConnectionCategory.INVALID;
         connection._name = connectionSettings.id;
         connection._uuid = connectionSettings.uuid;
         connection._timestamp = connectionSettings.timestamp;
 
         let section = connection._section;
+
+        if (connection._section == NMConnectionCategory.INVALID)
+            return;
         if (section == NMConnectionCategory.VPN) {
             this._devices.vpn.device.checkConnection(connection);
             this._devices.vpn.section.actor.show();
-            connection._everAdded = true;
         } else {
             let devices = this._devices[section].devices;
             for (let i = 0; i < devices.length; i++) {
