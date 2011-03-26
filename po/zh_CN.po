@@ -2,7 +2,6 @@
 # Copyright (C) 2010, 2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 # jiero <lililjlj@gmail.com>, 2010.
-# Aron Xu <aronxu@gnome.org>, 2010.
 # Jessica Ban <bancage@gmail.com>, 2010.
 # zhang ping <zhangping159@gmail.com>, 2010.
 # 指冷玉笙寒 (dhyang) <dhyang555@gmail.com>, 2010
@@ -18,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-26 07:02+0000\n"
-"PO-Revision-Date: 2011-03-26 19:07+0800\n"
+"PO-Revision-Date: 2011-03-27 03:38+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -630,7 +629,7 @@ msgstr "关机..."
 
 #: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
-msgstr "休眠"
+msgstr "待机"
 
 #: ../js/ui/statusMenu.js:184
 msgid "Available"
