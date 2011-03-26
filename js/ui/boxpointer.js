@@ -330,10 +330,9 @@ BoxPointer.prototype = {
         // Position correctly relative to the sourceActor
         let sourceNode = sourceActor.get_theme_node();
         let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
-        let [sourceX, sourceY] = sourceActor.get_transformed_position();
-        let [sourceWidth, sourceHeight] = sourceActor.get_transformed_size();
-        let sourceCenterX = sourceX + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) / 2;
-        let sourceCenterY = sourceY + sourceContentBox.y1 + (sourceContentBox.y2 - sourceContentBox.y1) / 2;
+        let sourceAllocation = Shell.util_get_transformed_allocation(sourceActor);
+        let sourceCenterX = sourceAllocation.x1 + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) / 2;
+        let sourceCenterY = sourceAllocation.y1 + sourceContentBox.y1 + (sourceContentBox.y2 - sourceContentBox.y1) / 2;
         let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
 
         // We also want to keep it onscreen, and separated from the
@@ -351,16 +350,16 @@ BoxPointer.prototype = {
 
         switch (this._arrowSide) {
         case St.Side.TOP:
-            resY = sourceY + sourceHeight + gap;
+            resY = sourceAllocation.y2 + gap;
             break;
         case St.Side.BOTTOM:
-            resY = sourceY - natHeight - gap;
+            resY = sourceAllocation.y1 - natHeight - gap;
             break;
         case St.Side.LEFT:
-            resX = sourceX + sourceWidth + gap;
+            resX = sourceAllocation.x2 + gap;
             break;
         case St.Side.RIGHT:
-            resX = sourceX - natWidth - gap;
+            resX = sourceAllocation.x1 - natWidth - gap;
             break;
         }
 
