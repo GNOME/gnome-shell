@@ -81,11 +81,12 @@ struct GvcMixerControlPrivate
         GHashTable       *cards;
 
         GvcMixerStream   *new_default_stream; /* new default stream, used in gvc_mixer_control_set_default_sink () */
+
+        GvcMixerControlState state;
 };
 
 enum {
-        CONNECTING,
-        READY,
+        STATE_CHANGED,
         STREAM_ADDED,
         STREAM_REMOVED,
         CARD_ADDED,
@@ -508,16 +509,17 @@ dec_outstanding (GvcMixerControl *control)
         }
 
         if (--control->priv->n_outstanding <= 0) {
-                g_signal_emit (G_OBJECT (control), signals[READY], 0);
+                control->priv->state = GVC_STATE_READY;
+                g_signal_emit (G_OBJECT (control), signals[STATE_CHANGED], 0, GVC_STATE_READY);
         }
 }
 
-gboolean
-gvc_mixer_control_is_ready (GvcMixerControl *control)
+GvcMixerControlState
+gvc_mixer_control_get_state (GvcMixerControl *control)
 {
         g_return_val_if_fail (GVC_IS_MIXER_CONTROL (control), FALSE);
 
-        return (control->priv->n_outstanding == 0);
+        return control->priv->state;
 }
 
 
@@ -1943,7 +1945,8 @@ _pa_context_state_cb (pa_context *context,
                 break;
 
         case PA_CONTEXT_FAILED:
-                g_warning ("Connection failed, reconnecting...");
+                control->priv->state = GVC_STATE_FAILED;
+                g_signal_emit (control, signals[STATE_CHANGED], 0, GVC_STATE_FAILED);
                 if (control->priv->reconnect_id == 0)
                         control->priv->reconnect_id = g_timeout_add_seconds (RECONNECT_DELAY, idle_reconnect, control);
                 break;
@@ -1968,7 +1971,8 @@ gvc_mixer_control_open (GvcMixerControl *control)
                                        _pa_context_state_cb,
                                        control);
 
-        g_signal_emit (G_OBJECT (control), signals[CONNECTING], 0);
+        control->priv->state = GVC_STATE_CONNECTING;
+        g_signal_emit (G_OBJECT (control), signals[STATE_CHANGED], 0, GVC_STATE_CONNECTING);
         res = pa_context_connect (control->priv->pa_context, NULL, (pa_context_flags_t) PA_CONTEXT_NOFAIL, NULL);
         if (res < 0) {
                 g_warning ("Failed to connect context: %s",
@@ -1985,6 +1989,9 @@ gvc_mixer_control_close (GvcMixerControl *control)
         g_return_val_if_fail (control->priv->pa_context != NULL, FALSE);
 
         pa_context_disconnect (control->priv->pa_context);
+
+        control->priv->state = GVC_STATE_CLOSED;
+        g_signal_emit (G_OBJECT (control), signals[STATE_CHANGED], 0, GVC_STATE_CLOSED);
         return TRUE;
 }
 
@@ -2125,22 +2132,14 @@ gvc_mixer_control_class_init (GvcMixerControlClass *klass)
                                                               NULL,
                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
 
-        signals [CONNECTING] =
-                g_signal_new ("connecting",
+        signals [STATE_CHANGED] =
+                g_signal_new ("state-changed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
-                              G_STRUCT_OFFSET (GvcMixerControlClass, connecting),
+                              G_STRUCT_OFFSET (GvcMixerControlClass, state_changed),
                               NULL, NULL,
-                              g_cclosure_marshal_VOID__VOID,
-                              G_TYPE_NONE, 0);
-        signals [READY] =
-                g_signal_new ("ready",
-                              G_TYPE_FROM_CLASS (klass),
-                              G_SIGNAL_RUN_LAST,
-                              G_STRUCT_OFFSET (GvcMixerControlClass, ready),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__VOID,
-                              G_TYPE_NONE, 0);
+                              g_cclosure_marshal_VOID__UINT,
+                              G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [STREAM_ADDED] =
                 g_signal_new ("stream-added",
                               G_TYPE_FROM_CLASS (klass),
@@ -2212,6 +2211,8 @@ gvc_mixer_control_init (GvcMixerControl *control)
         control->priv->cards = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_object_unref);
 
         control->priv->clients = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_free);
+
+        control->priv->state = GVC_STATE_CLOSED;
 }
 
 static void

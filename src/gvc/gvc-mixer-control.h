@@ -27,6 +27,14 @@
 
 G_BEGIN_DECLS
 
+typedef enum
+{
+        GVC_STATE_CLOSED,
+        GVC_STATE_READY,
+        GVC_STATE_CONNECTING,
+        GVC_STATE_FAILED
+} GvcMixerControlState;
+
 #define GVC_TYPE_MIXER_CONTROL         (gvc_mixer_control_get_type ())
 #define GVC_MIXER_CONTROL(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GVC_TYPE_MIXER_CONTROL, GvcMixerControl))
 #define GVC_MIXER_CONTROL_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), GVC_TYPE_MIXER_CONTROL, GvcMixerControlClass))
@@ -46,8 +54,8 @@ typedef struct
 {
         GObjectClass            parent_class;
 
-        void (*connecting)             (GvcMixerControl *control);
-        void (*ready)                  (GvcMixerControl *control);
+        void (*state_changed)          (GvcMixerControl      *control,
+                                        GvcMixerControlState  new_state);
         void (*stream_added)           (GvcMixerControl *control,
                                         guint            id);
         void (*stream_removed)         (GvcMixerControl *control,
@@ -68,7 +76,6 @@ GvcMixerControl *   gvc_mixer_control_new                 (const char *name);
 
 gboolean            gvc_mixer_control_open                (GvcMixerControl *control);
 gboolean            gvc_mixer_control_close               (GvcMixerControl *control);
-gboolean            gvc_mixer_control_is_ready            (GvcMixerControl *control);
 
 GSList *            gvc_mixer_control_get_cards           (GvcMixerControl *control);
 GSList *            gvc_mixer_control_get_streams         (GvcMixerControl *control);
@@ -93,6 +100,8 @@ gboolean            gvc_mixer_control_set_default_source   (GvcMixerControl *con
 
 gdouble             gvc_mixer_control_get_vol_max_norm      (GvcMixerControl *control);
 gdouble             gvc_mixer_control_get_vol_max_amplified (GvcMixerControl *control);
+
+GvcMixerControlState gvc_mixer_control_get_state            (GvcMixerControl *control);
 
 G_END_DECLS
 
