@@ -1417,6 +1417,7 @@ MessageTray.prototype = {
         if (!this._locked)
             return;
         this._locked = false;
+        this._pointerInTray = this.actor.hover && !this._summaryBoxPointer.bin.hover;
         this._updateState();
     },
 
@@ -2106,13 +2107,18 @@ MessageTray.prototype = {
     },
 
     _hideSummaryBoxPointer: function() {
+        this._summaryBoxPointerState = State.HIDING;
         // Unset this._clickedSummaryItem if we are no longer showing the summary
         if (this._summaryState != State.SHOWN)
             this._unsetClickedSummaryItem();
 
         this._focusGrabber.ungrabFocus();
-        this._summaryBoxPointerState = State.HIDING;
-        this._summaryBoxPointer.hide(true, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
+        if (this._summaryBoxPointerItem.source.notifications.length == 0) {
+            this._summaryBoxPointer.actor.hide();
+            this._hideSummaryBoxPointerCompleted();
+        } else {
+            this._summaryBoxPointer.hide(true, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
+        }
     },
 
     _hideSummaryBoxPointerCompleted: function() {
