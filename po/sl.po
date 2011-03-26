@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-22 20:39+0000\n"
-"PO-Revision-Date: 2011-03-22 21:52+0100\n"
+"POT-Creation-Date: 2011-03-26 15:31+0000\n"
+"PO-Revision-Date: 2011-03-26 20:24+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -319,7 +319,7 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/dash.js:174
-#: ../js/ui/messageTray.js:945
+#: ../js/ui/messageTray.js:1000
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -448,6 +448,7 @@ msgid "Restarting the system."
 msgstr "Ponoven zagon sistema."
 
 #: ../js/ui/endSessionDialog.js:415
+#: ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Prekliči"
@@ -483,29 +484,29 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:938
+#: ../js/ui/messageTray.js:993
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:2018
+#: ../js/ui/messageTray.js:2151
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
-#: ../js/ui/overview.js:89
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/overview.js:184
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/overview.js:187
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Programi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:203
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Armaturna plošča"
 
@@ -542,6 +543,26 @@ msgstr "Povezava z ..."
 msgid "PLACES & DEVICES"
 msgstr "Mesta in naprave"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Zahtevana je overitev"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Skrbnik"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Overi"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Dejanje je spodletelo. Poskusite znova."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Geslo:"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -564,6 +585,7 @@ msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
 #: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:163
 #: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Izklop ..."
@@ -769,136 +791,142 @@ msgstr "Pokaži razporeditev tipkovnice ..."
 msgid "Localization Settings"
 msgstr "Krajevne nastavitve"
 
-#: ../js/ui/status/network.js:102
-#: ../js/ui/status/network.js:1393
+#: ../js/ui/status/network.js:104
+#: ../js/ui/status/network.js:1454
 msgid "<unknown>"
 msgstr "<neznano>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
+#: ../js/ui/status/network.js:311
 msgid "disabled"
 msgstr "onemogočeno"
 
-#: ../js/ui/status/network.js:476
+#: ../js/ui/status/network.js:494
 msgid "connecting..."
 msgstr "povezovanje ..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:497
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
+msgstr "manjka strojna programska oprema"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:514
 msgid "cable unplugged"
 msgstr "kabel ni priklopljen"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:519
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:521
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571
-#: ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:602
+#: ../js/ui/status/network.js:1402
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
 msgstr "Samodejni eternet"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:758
 msgid "Auto broadband"
 msgstr "Samodejni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:761
 msgid "Auto dial-up"
 msgstr "Samodejni klicni dostop"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:904
+#: ../js/ui/status/network.js:1414
 #, c-format
 msgid "Auto %s"
 msgstr "Samodejna povezava z %s"
 
-#: ../js/ui/status/network.js:845
+#: ../js/ui/status/network.js:906
 msgid "Auto bluetooth"
 msgstr "Samodejna povezava z Bluetooth"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1416
 msgid "Auto wireless"
 msgstr "Samodejni brezžični dostop"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1474
 msgid "More..."
 msgstr "Več ..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1497
 msgid "Enable networking"
 msgstr "Omogoči omrežje"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1509
 msgid "Wired"
 msgstr "Žično"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1520
 msgid "Wireless"
 msgstr "Brezžično"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
 msgstr "Mobilni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:1479
+#: ../js/ui/status/network.js:1540
 msgid "VPN Connections"
 msgstr "Povezave VPN"
 
-#: ../js/ui/status/network.js:1488
+#: ../js/ui/status/network.js:1549
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Vzpostavljena je povezava z mobilnim širokopasovnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1848
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Vzpostavljena je povezava z brezžičnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1852
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Vzpostavljena je povezava z žičnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1856
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Vzpostavljena je povezava z omrežjem VPN '%s'"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1861
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Vzpostavljena je povezava z '%s'."
 
-#: ../js/ui/status/network.js:1808
+#: ../js/ui/status/network.js:1869
 msgid "Connection established"
 msgstr "Povezava je vzpostavljena"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1991
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2116
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -1009,22 +1037,22 @@ msgstr "Glasnost"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:331
 #, c-format
 msgid "%s is online."
 msgstr "%s je povezan."
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:336
 #, c-format
 msgid "%s is offline."
 msgstr "%s ni povezan."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is away."
 msgstr "%s je odsoten."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:342
 #, c-format
 msgid "%s is busy."
 msgstr "%s je zaposlen."
@@ -1032,7 +1060,7 @@ msgstr "%s je zaposlen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:473
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Poslano na %X ob %A"
@@ -1086,7 +1114,7 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:438
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Izpiši različico"
 
