@@ -15,9 +15,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 16:07+0800\n"
-"PO-Revision-Date: 2011-03-24 16:09+0800\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-26 07:02+0000\n"
+"PO-Revision-Date: 2011-03-26 19:07+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -362,7 +363,7 @@ msgstr "本周"
 msgid "Next week"
 msgstr "下周"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
 msgid "Remove"
 msgstr "移除"
 
@@ -522,11 +523,11 @@ msgstr "查看源"
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:987
+#: ../js/ui/messageTray.js:993
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:2145
+#: ../js/ui/messageTray.js:2151
 msgid "System Information"
 msgstr "系统信息"
 
@@ -622,7 +623,8 @@ msgstr "正在搜索..."
 msgid "No matching results."
 msgstr "无匹配结果。"
 
-#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "关机..."
 
@@ -821,133 +823,139 @@ msgstr "显示键盘布局..."
 msgid "Localization Settings"
 msgstr "本地化设置"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
 msgid "<unknown>"
 msgstr "<未知>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
+#: ../js/ui/status/network.js:311
 msgid "disabled"
 msgstr "已禁用"
 
-#: ../js/ui/status/network.js:476
+#: ../js/ui/status/network.js:494
 msgid "connecting..."
 msgstr "连接中..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:497
 msgid "authentication required"
 msgstr "需要认证"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
+msgstr "固件缺失"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:514
 msgid "cable unplugged"
 msgstr "线缆被拔出"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:519
 msgid "unavailable"
 msgstr "不可用"
 
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:521
 msgid "connection failed"
 msgstr "连接失败"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
 msgid "Connected (private)"
 msgstr "已连接(私有网络)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
 msgstr "自动以太网"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:758
 msgid "Auto broadband"
 msgstr "自动移动宽带"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:761
 msgid "Auto dial-up"
 msgstr "自动拨号"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
 #, c-format
 msgid "Auto %s"
 msgstr "自动 %s"
 
-#: ../js/ui/status/network.js:845
+#: ../js/ui/status/network.js:906
 msgid "Auto bluetooth"
 msgstr "自动蓝牙"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1416
 msgid "Auto wireless"
 msgstr "自动无线"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1474
 msgid "More..."
 msgstr "更多..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1497
 msgid "Enable networking"
 msgstr "启用联网"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1509
 msgid "Wired"
 msgstr "有线"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1520
 msgid "Wireless"
 msgstr "无线"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
 msgstr "移动宽带"
 
-#: ../js/ui/status/network.js:1479
+#: ../js/ui/status/network.js:1540
 msgid "VPN Connections"
 msgstr "VPN 连接"
 
-#: ../js/ui/status/network.js:1488
+#: ../js/ui/status/network.js:1549
 msgid "Network Settings"
 msgstr "网络设置"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "您已连接至移动宽带连接 %s"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1848
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "您已连接至无线网络 %s"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1852
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "您已连接至有线网络 %s"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1856
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "您已连接至 VPN 网络 %s"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1861
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "您已连接至 %s"
 
-#: ../js/ui/status/network.js:1808
+#: ../js/ui/status/network.js:1869
 msgid "Connection established"
 msgstr "连接已建立"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1991
 msgid "Networking is disabled"
 msgstr "联网已禁用"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2116
 msgid "Network Manager"
 msgstr "网络管理器"
 
@@ -1045,22 +1053,22 @@ msgstr "音量"
 msgid "Microphone"
 msgstr "麦克风"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:331
 #, c-format
 msgid "%s is online."
 msgstr "%s 在线。"
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:336
 #, c-format
 msgid "%s is offline."
 msgstr "%s 离线。"
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is away."
 msgstr "%s 离开。"
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:342
 #, c-format
 msgid "%s is busy."
 msgstr "%s 忙碌。"
@@ -1068,7 +1076,7 @@ msgstr "%s 忙碌。"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:473
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "发送于 %X，在 %A"
