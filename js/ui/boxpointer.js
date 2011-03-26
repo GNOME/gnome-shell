@@ -41,80 +41,80 @@ BoxPointer.prototype = {
         this._border.connect('repaint', Lang.bind(this, this._drawBorder));
         this._container.add_actor(this._border);
         this.bin.raise(this._border);
+        this._xOffset = 0;
+        this._yOffset = 0;
+        this._xPosition = 0;
+        this._yPosition = 0;
     },
 
     show: function(animate, onComplete) {
-        let x = this.actor.x;
-        let y = this.actor.y;
         let themeNode = this.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
 
-        this.actor.opacity = 0;
+        this.opacity = 0;
         this.actor.show();
 
         if (animate) {
             switch (this._arrowSide) {
                 case St.Side.TOP:
-                    this.actor.y -= rise;
+                    this.yOffset = -rise;
                     break;
                 case St.Side.BOTTOM:
-                    this.actor.y += rise;
+                    this.yOffset = rise;
                     break;
                 case St.Side.LEFT:
-                    this.actor.x -= rise;
+                    this.xOffset = -rise;
                     break;
                 case St.Side.RIGHT:
-                    this.actor.x += rise;
+                    this.xOffset = rise;
                     break;
             }
         }
 
-        Tweener.addTween(this.actor, { opacity: 255,
-                                       x: x,
-                                       y: y,
-                                       transition: "linear",
-                                       onComplete: onComplete,
-                                       time: POPUP_ANIMATION_TIME });
+        Tweener.addTween(this, { opacity: 255,
+                                 xOffset: 0,
+                                 yOffset: 0,
+                                 transition: "linear",
+                                 onComplete: onComplete,
+                                 time: POPUP_ANIMATION_TIME });
     },
 
     hide: function(animate, onComplete) {
-        let x = this.actor.x;
-        let y = this.actor.y;
-        let originalX = this.actor.x;
-        let originalY = this.actor.y;
+        let xOffset = 0;
+        let yOffset = 0;
         let themeNode = this.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
 
         if (animate) {
             switch (this._arrowSide) {
                 case St.Side.TOP:
-                    y += rise;
+                    yOffset = rise;
                     break;
                 case St.Side.BOTTOM:
-                    y -= rise;
+                    yOffset = -rise;
                     break;
                 case St.Side.LEFT:
-                    x += rise;
+                    xOffset = rise;
                     break;
                 case St.Side.RIGHT:
-                    x -= rise;
+                    xOffset = -rise;
                     break;
             }
         }
 
-        Tweener.addTween(this.actor, { opacity: 0,
-                                       x: x,
-                                       y: y,
-                                       transition: "linear",
-                                       time: POPUP_ANIMATION_TIME,
-                                       onComplete: Lang.bind(this, function () {
-                                           this.actor.hide();
-                                           this.actor.x = originalX;
-                                           this.actor.y = originalY;
-                                           if (onComplete)
-                                               onComplete();
-                                       })
-                                     });
+        Tweener.addTween(this, { opacity: 0,
+                                 xOffset: xOffset,
+                                 yOffset: yOffset,
+                                 transition: "linear",
+                                 time: POPUP_ANIMATION_TIME,
+                                 onComplete: Lang.bind(this, function () {
+                                     this.actor.hide();
+                                     this.xOffset = 0;
+                                     this.yOffset = 0;
+                                     if (onComplete)
+                                         onComplete();
+                                 })
+                               });
     },
 
     _adjustAllocationForArrow: function(isWidth, alloc) {
@@ -178,17 +178,8 @@ BoxPointer.prototype = {
         }
         this.bin.allocate(childBox, flags);
 
-        if (this._sourceActor) {
-            Meta.later_add (Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
-                function () {
-                    // This won't cause a loop if _allocate() was
-                    // called as a result of repositioning, because in
-                    // that case _reposition() will set the same
-                    // coordinates again, which Clutter will just
-                    // ignore.
-                    this._reposition(this._sourceActor, this._gap, this._alignment);
-                }));
-        }
+        if (this._sourceActor && this._sourceActor.mapped)
+            this._reposition(this._sourceActor, this._gap, this._alignment);
     },
 
     _drawBorder: function(area) {
@@ -393,9 +384,9 @@ BoxPointer.prototype = {
             parent = parent.get_parent();
         }
 
-        // Actually set the position
-        this.actor.x = Math.floor(x);
-        this.actor.y = Math.floor(y);
+        this._xPosition = Math.floor(x);
+        this._yPosition = Math.floor(y);
+        this._shiftActor();
     },
 
     // @origin: Coordinate specifying middle of the arrow, along
@@ -406,5 +397,42 @@ BoxPointer.prototype = {
             this._arrowOrigin = origin;
             this._border.queue_repaint();
         }
+    },
+
+    _shiftActor : function() {
+        // Since the position of the BoxPointer depends on the allocated size
+        // of the BoxPointer and the position of the source actor, trying
+        // to position the BoxPoiner via the x/y properties will result in
+        // allocation loops and warnings. Instead we do the positioning via
+        // the anchor point, which is independent of allocation, and leave
+        // x == y == 0.
+        this.actor.set_anchor_point(-(this._xPosition + this._xOffset),
+                                    -(this._yPosition + this._yOffset));
+    },
+
+    set xOffset(offset) {
+        this._xOffset = offset;
+        this._shiftActor();
+    },
+
+    get xOffset() {
+        return this._xOffset;
+    },
+
+    set yOffset(offset) {
+        this._yOffset = offset;
+        this._shiftActor();
+    },
+
+    get yOffset() {
+        return this._yOffset;
+    },
+
+    set opacity(opacity) {
+        this.actor.opacity = opacity;
+    },
+
+    get opacity() {
+        return this.actor.opacity;
     }
 };
