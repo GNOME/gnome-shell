@@ -34,6 +34,7 @@ AlphabeticalView.prototype = {
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
         this._appSystem = Shell.AppSystem.get_default();
 
+        this._apps = [];
         this._filterApp = null;
 
         let box = new St.BoxLayout({ vertical: true });
@@ -224,7 +225,6 @@ ViewByCategories.prototype = {
 
         let sections = this._appSystem.get_sections();
         this._apps = apps;
-        this._view.refresh(apps);
 
         /* Translators: Filter to display all applications */
         this._addFilter(_("All"), -1);
@@ -236,6 +236,7 @@ ViewByCategories.prototype = {
             this._addFilter(sections[i], i);
 
         this._selectCategory(-1);
+        this._view.refresh(apps);
 
         if (this._focusDummy) {
             let focused = this._focusDummy.has_key_focus();
