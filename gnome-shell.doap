@@ -6,16 +6,22 @@
 
   <name xml:lang="en">GNOME Shell</name>
   <shortdesc xml:lang="en">Next generation GNOME desktop shell</shortdesc>
-  <description>Mutter is a window and compositing manager that displays and manages
-your desktop via OpenGL. Mutter combines a sophisticated display engine
-using the Clutter toolkit with solid window-management logic inherited
-from the Metacity window manager.
+  <description>GNOME Shell provides core user interface functions for the GNOME 3
+desktop, like switching to windows and launching applications.
+GNOME Shell takes advantage of the capabilities of modern graphics
+hardware and introduces innovative user interface concepts to
+provide a visually attractive and easy to use experience.
 
-While Mutter can be used stand-alone, it is primarily intended to be
-used as the display core of a larger system such as GNOME Shell.
-For this reason, Mutter is very extensible via plugins, which
-are used both to add fancy visual effects and to rework the window
-management behaviors to meet the needs of the environment.</description>
+Tarball releases are provided largely for distributions to build
+packages. If you are interested in building GNOME Shell from source,
+we would recommend building from version control using the build
+script described at:
+
+ http://live.gnome.org/GnomeShell
+
+Not only will that give you the very latest version of this rapidly
+changing project, it will be much easier than get GNOME Shell and
+its dependencies to build from tarballs.</description>
   <!--
   <homepage rdf:resource="http://live.gnome.org/GnomeShell" />
   -->
