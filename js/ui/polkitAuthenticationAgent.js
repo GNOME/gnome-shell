@@ -257,6 +257,10 @@ AuthenticationDialog.prototype = {
              * show "Sorry, that didn't work. Please try again."
              */
             if (!this._errorMessageLabel.visible && !this._wasDismissed) {
+                /* Translators: "that didn't work" refers to the fact that the
+                 * requested authentication was not gained; this can happen
+                 * because of an authentication error (like invalid password),
+                 * for instance. */
                 this._errorMessageLabel.set_text(_("Sorry, that didn\'t work. Please try again."));
                 this._errorMessageLabel.show();
                 this._infoMessageLabel.hide();
