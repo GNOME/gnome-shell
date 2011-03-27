@@ -740,15 +740,22 @@ Notification.prototype = {
         // If the banner doesn't fully fit in the banner box, we possibly need to add the
         // banner to the body. We can't do that from here though since that will force a
         // relayout, so we add it to the main loop.
-        if (!bannerFits)
-            Mainloop.idle_add(Lang.bind(this,
-                                        function() {
+        if (!bannerFits && this._canExpandContent())
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                           Lang.bind(this,
+                                     function() {
+                                        if (this._canExpandContent()) {
                                             this._addBannerBody();
-                                            if (!this._titleFitsInBannerMode)
-                                                this._table.add_style_class_name('multi-line-notification');
+                                            this._table.add_style_class_name('multi-line-notification');
                                             this._updated();
-                                            return false;
-                                        }));
+                                        }
+                                        return false;
+                                     }));
+    },
+
+    _canExpandContent: function() {
+        return this._bannerBodyText ||
+               (!this._titleFitsInBannerMode && !this._table.has_style_class_name('multi-line-notification'));
     },
 
     _updated: function() {
