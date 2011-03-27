@@ -394,6 +394,8 @@ WindowOverlay.prototype = {
 
     show: function() {
         this._hidden = false;
+        if (this._windowClone.actor.has_pointer)
+            this.closeButton.show();
         this.title.show();
     },
 
