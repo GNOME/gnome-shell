@@ -8239,15 +8239,6 @@ clutter_actor_unparent (ClutterActor *self)
   if (priv->parent_actor == NULL)
     return;
 
-   /* We take this opportunity to invalidate any queue redraw entry
-    * associated with the actor and descendants since we won't be able to
-    * determine the appropriate stage after this. */
-  _clutter_actor_traverse (self,
-                           0,
-                           invalidate_queue_redraw_entry,
-                           NULL,
-                           NULL);
-
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
 
   /* we need to unrealize *before* we set parent_actor to NULL,
@@ -8257,6 +8248,15 @@ clutter_actor_unparent (ClutterActor *self)
    * unless we're reparenting.
    */
   clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
+
+   /* We take this opportunity to invalidate any queue redraw entry
+    * associated with the actor and descendants since we won't be able to
+    * determine the appropriate stage after this. */
+  _clutter_actor_traverse (self,
+                           0,
+                           invalidate_queue_redraw_entry,
+                           NULL,
+                           NULL);
 
   old_parent = priv->parent_actor;
   priv->parent_actor = NULL;
