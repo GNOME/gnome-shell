@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-20 23:53+0000\n"
-"PO-Revision-Date: 2011-03-20 23:55+0000\n"
+"POT-Creation-Date: 2011-03-29 00:25+0100\n"
+"PO-Revision-Date: 2011-03-29 00:25+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -562,12 +562,12 @@ msgstr "Erro ao definir o estado das janelas escondidas activas: %s\n"
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Erro ao definir o estado de popup ao ciclar: %s\n"
 
-#: ../src/core/screen.c:623
+#: ../src/core/screen.c:624
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ecrã %d no monitor '%s' é inválido\n"
 
-#: ../src/core/screen.c:639
+#: ../src/core/screen.c:640
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -576,19 +576,19 @@ msgstr ""
 "Ecrã %d no monitor \"%s\" já tem um gestor de janelas; tente utilizar a "
 "opção --replace para substituir o gestor de janelas actual.\n"
 
-#: ../src/core/screen.c:666
+#: ../src/core/screen.c:667
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Incapaz de obter selecção do gestor de janelas no ecrã %d monitor \"%s\"\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:722
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ecrã %d no monitor \"%s\" já tem um gestor de janelas\n"
 
-#: ../src/core/screen.c:906
+#: ../src/core/screen.c:907
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Incapaz libertar ecrã %d no monitor \"%s\"\n"
@@ -692,7 +692,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6752
+#: ../src/core/window.c:6847
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -708,7 +708,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7415
+#: ../src/core/window.c:7510
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -728,7 +728,7 @@ msgstr "Aplicação definiu um _NET_WM_PID %lu fictício\n"
 msgid "%s (on %s)"
 msgstr "%s (em %s)"
 
-#: ../src/core/window-props.c:1479
+#: ../src/core/window-props.c:1482
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Janela 0x%lx de WM_TRANSIENT_FOR inválido especificada para %s.\n"
@@ -777,10 +777,10 @@ msgstr ""
 #: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
-"monitors or only the primary window."
+"monitors or only for windows on the primary monitor."
 msgstr ""
 "Determina se a troca de área de trabalho deverá ocorrer para janelas em "
-"todos os monitores ou apenas a janela principal."
+"todos os monitores ou apenas para janelas no monitor principal."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
