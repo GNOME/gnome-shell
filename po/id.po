@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-19 10:16+0000\n"
-"PO-Revision-Date: 2011-03-05 22:23+0700\n"
+"POT-Creation-Date: 2011-03-27 05:13+0000\n"
+"PO-Revision-Date: 2011-03-27 11:12+0700\n"
 "Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
-"Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
+"Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -62,9 +62,8 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Riwayat dialog perintah (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#, fuzzy
 msgid "History for the looking glass dialog"
-msgstr "Riwayat dialog perintah (Alt-F2)"
+msgstr "Riwayat untuk dialog yang berpenampilan gelas kaca"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
@@ -77,6 +76,7 @@ msgstr "Jika bernilai benar (true), detik akan ditampilkan."
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
+"Jika bernilai \"true\", menampilkan tanggal berformat ISO pada kalender."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
@@ -168,27 +168,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Eksekusi '%s' gagal:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Semua"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "APLIKASI"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "PENGATURAN"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: ../js/ui/appDisplay.js:619
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: ../js/ui/appDisplay.js:620
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
@@ -348,7 +348,7 @@ msgstr "Minggu ini"
 msgid "Next week"
 msgstr "Minggu depan"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
 msgid "Remove"
 msgstr "Hapus"
 
@@ -404,9 +404,8 @@ msgstr "%a %k:%M"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
 #: ../js/ui/dateMenu.js:194
-#, fuzzy
 msgid "%A %B %e, %Y"
-msgstr "%a %e %b, %R"
+msgstr ""
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
@@ -417,7 +416,7 @@ msgstr "DOKUMEN TERKINI"
 msgid "Log Out %s"
 msgstr "Keluar %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Keluar"
 
@@ -439,47 +438,45 @@ msgstr "Anda akan keluar otomatis dalam %d detik."
 msgid "Logging out of the system."
 msgstr "Keluar dari sistem."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
 msgstr "Matikan"
 
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Klik Matikan untuk menutup aplikasi ini serta mematikan sistem."
-
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Sistem akan mati otomatis dalam %d detik."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Klik Matikan untuk keluar dari aplikasi dan mematikan sistem."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "Sistem akan dimatikan otomatis dalam %d detik."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
 msgstr "Mematikan sistem."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Nyalakan Ulang"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Klik Nyalakan Ulang untuk menutup aplikasi ini serta menyalakan kembali "
 "sistem."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Sistem akan dinyalakan ulang setelah %d detik."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Menyalan ulang sistem."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Konfirmasi"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Batal"
 
@@ -513,29 +510,29 @@ msgstr "Tilik Sumber"
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:993
 msgid "Open"
-msgstr ""
+msgstr "Buka"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2151
 msgid "System Information"
 msgstr "Informasi Sistem"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Batal"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Jendela"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Aplikasi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr ""
 
@@ -547,15 +544,13 @@ msgstr "Keluar %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:874
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: ../js/ui/panel.js:975
-#, fuzzy
-#| msgid "Cancel"
-msgid "Panel"
-msgstr "Batal"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr ""
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -574,61 +569,86 @@ msgstr "Sambung ke..."
 msgid "PLACES & DEVICES"
 msgstr "LOKASI & PERANGKAT"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Diperlukan Otentikasi"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrator"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Otentikasi"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Maaf, tidak berhasil. Silakan coba lagi."
+
+#: ../js/ui/polkitAuthenticationAgent.js:276
+msgid "Password:"
+msgstr "Sandi:"
+
 # Dirgita: Hayo, enaknya pake I/O atau ON/OFF?^^
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Ketikkan perintah:"
 
-#: ../js/ui/searchDisplay.js:287
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Mencari..."
 
-#: ../js/ui/searchDisplay.js:301
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Tak ada yang cocok."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Matikan..."
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Ada"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Sibuk"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Akun Saya"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Pengaturan Sistem"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Kunci Layar"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Ganti Pengguna"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Keluar..."
 
@@ -795,154 +815,141 @@ msgstr "Tampilkan Tata Letak Papan Ketik..."
 msgid "Localization Settings"
 msgstr "Pengaturan Pelokalan"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
-#, fuzzy
-#| msgid "Unknown"
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
 msgid "<unknown>"
-msgstr "Tak dikenal"
+msgstr "<tak dikenal>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
-#, fuzzy
-#| msgid "Disabled"
+#: ../js/ui/status/network.js:311
 msgid "disabled"
-msgstr "Dinonaktifkan"
+msgstr "dinonaktifkan"
 
-#: ../js/ui/status/network.js:476
-#, fuzzy
-#| msgid "Connection"
+#: ../js/ui/status/network.js:494
 msgid "connecting..."
-msgstr "Koneksi"
+msgstr "menghubungi..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:497
 msgid "authentication required"
+msgstr "diperlukan otentikasi"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
 msgstr ""
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:514
 msgid "cable unplugged"
-msgstr ""
+msgstr "kabel tidak tersambung"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
-#, fuzzy
-#| msgid "Available"
+#: ../js/ui/status/network.js:519
 msgid "unavailable"
-msgstr "Ada"
+msgstr "tidak tersedia"
 
-#: ../js/ui/status/network.js:491
-#, fuzzy
-#| msgid "Connection"
+#: ../js/ui/status/network.js:521
 msgid "connection failed"
-msgstr "Koneksi"
+msgstr "koneksi gagal"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
 msgid "Connected (private)"
-msgstr ""
+msgstr "Termsabung (pribadi)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
-msgstr ""
+msgstr "Ethernet otomatis"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:758
 msgid "Auto broadband"
-msgstr ""
+msgstr "Seluler otomatis"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:761
 msgid "Auto dial-up"
-msgstr ""
+msgstr "Dial-up otomatis"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
-#, fuzzy, c-format
-#| msgid "Quit %s"
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
+#, c-format
 msgid "Auto %s"
-msgstr "Keluar %s"
+msgstr "%s otomatis"
 
-#: ../js/ui/status/network.js:845
-#, fuzzy
-#| msgid "Bluetooth"
+#: ../js/ui/status/network.js:906
 msgid "Auto bluetooth"
-msgstr "Bluetooth"
+msgstr "Bluetooth otomatis"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1416
 msgid "Auto wireless"
-msgstr ""
+msgstr "Nirkabel otomatis"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1474
 msgid "More..."
-msgstr ""
+msgstr "Lainnya..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1497
 msgid "Enable networking"
-msgstr ""
+msgstr "Aktifkan jaringan"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1509
 msgid "Wired"
-msgstr ""
+msgstr "Berkabel"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1520
 msgid "Wireless"
-msgstr ""
+msgstr "Nirkabel"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
-msgstr ""
+msgstr "Data seluler"
 
-#: ../js/ui/status/network.js:1479
-#, fuzzy
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1540
 msgid "VPN Connections"
-msgstr "Koneksi"
+msgstr "Koneksi VPN"
 
-#: ../js/ui/status/network.js:1488
-#, fuzzy
-#| msgid "Power Settings"
+#: ../js/ui/status/network.js:1549
 msgid "Network Settings"
-msgstr "Pengaturan Daya"
+msgstr "Pengaturan Jaringan"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
-msgstr ""
+msgstr "Anda kini terhubung pada jaringan seluler '%s'"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1848
 #, c-format
 msgid "You're now connected to wireless network '%s'"
-msgstr ""
+msgstr "Anda kini terhubung pada jaringan nirkabel '%s'"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1852
 #, c-format
 msgid "You're now connected to wired network '%s'"
-msgstr ""
+msgstr "Anda kini terhubung pada jaringan berkabel '%s'"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1856
 #, c-format
 msgid "You're now connected to VPN network '%s'"
-msgstr ""
+msgstr "Anda kini terhubung pada jaringan VPN '%s'"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1861
 #, c-format
 msgid "You're now connected to '%s'"
-msgstr ""
+msgstr "Anda kini terhubung pada '%s'"
 
-#: ../js/ui/status/network.js:1808
-#, fuzzy
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1869
 msgid "Connection established"
-msgstr "Koneksi"
+msgstr "Koneksi tersambung"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1991
 msgid "Networking is disabled"
-msgstr ""
+msgstr "Jaringan tidak diaktifkan"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2116
 msgid "Network Manager"
-msgstr ""
+msgstr "Manajer Jaringan"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -1026,7 +1033,7 @@ msgstr "Tablet"
 msgid "Computer"
 msgstr "Komputer"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Tak dikenal"
 
@@ -1038,22 +1045,22 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:331
 #, c-format
 msgid "%s is online."
 msgstr "%s tersedia."
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:336
 #, c-format
 msgid "%s is offline."
 msgstr "%s tidak tersedia."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is away."
 msgstr "%s sedang pergi."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:342
 #, c-format
 msgid "%s is busy."
 msgstr "%s sibuk."
@@ -1061,7 +1068,7 @@ msgstr "%s sibuk."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:473
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Dikirim pada %X dari %A"
@@ -1108,39 +1115,38 @@ msgstr[0] "%u Masukan"
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
-#: ../src/main.c:397
+#: ../src/main.c:446
 msgid "Print version"
 msgstr ""
 
 #: ../src/shell-app.c:454
-#, fuzzy, c-format
-#| msgid "Failed to unmount '%s'"
+#, c-format
 msgid "Failed to launch '%s'"
-msgstr "Gagal melepas kait '%s'"
+msgstr "Gagal meluncurkan '%s'"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Kurang dari semenit yang lalu"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d menit yang lalu"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d jam yang lalu "
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d hari yang lalu"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1148,15 +1154,15 @@ msgstr[0] "%d minggu yang lalu"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr ""
+msgstr "Inggris Raya"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
-msgstr ""
+msgstr "Baku"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Dialog otentikasi ditolak oleh pengguna"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -1177,6 +1183,26 @@ msgstr "Sistem Berkas"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Matikan"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Klik Matikan untuk menutup aplikasi ini serta mematikan sistem."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Sistem akan mati otomatis dalam %d detik."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Mematikan sistem."
+
+#~ msgid "Confirm"
+#~ msgstr "Konfirmasi"
+
+#, fuzzy
+#~| msgid "Cancel"
+#~ msgid "Panel"
+#~ msgstr "Batal"
 
 #~ msgid "No such application"
 #~ msgstr "Tidak ada aplikasi"
