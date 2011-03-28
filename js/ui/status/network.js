@@ -1198,6 +1198,11 @@ NMDeviceWireless.prototype = {
             if (apObj.item)
                 apObj.item.destroy();
             this._networks.splice(pos, 1);
+            if (this._overflowItem &&
+                this._overflowItem.menu.length == 0) {
+                this._overflowItem.destroy();
+                this._overflowItem = null;
+            }
         } else if (apObj.item)
             apObj.item.updateAccessPoints(apObj.accessPoints);
     },

@@ -766,6 +766,7 @@ PopupMenuBase.prototype = {
             this.box = new St.BoxLayout({ vertical: true });
         }
         this.box.connect_after('queue-relayout', Lang.bind(this, this._menuQueueRelayout));
+        this.length = 0;
 
         this.isOpen = false;
 
@@ -855,6 +856,8 @@ PopupMenuBase.prototype = {
             menuItem.connect('destroy', Lang.bind(this, function() {
                 menuItem.disconnect(menuItem._subMenuActivateId);
                 menuItem.disconnect(menuItem._subMenuActiveChangeId);
+
+                this.length--;
             }));
         } else if (menuItem instanceof PopupSubMenuMenuItem) {
             if (before_item == null)
@@ -871,6 +874,8 @@ PopupMenuBase.prototype = {
             this._connectItemSignals(menuItem);
         else
             throw TypeError("Invalid argument to PopupMenuBase.addMenuItem()");
+
+        this.length++;
     },
 
     getColumnWidths: function() {
