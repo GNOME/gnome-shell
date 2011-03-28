@@ -29,7 +29,7 @@ Indicator.prototype = {
         PanelMenu.SystemStatusButton.prototype._init.call(this, 'audio-volume-muted', null);
 
         this._control = new Gvc.MixerControl({ name: 'GNOME Shell Volume Control' });
-        this._control.connect('ready', Lang.bind(this, this._onControlReady));
+        this._control.connect('state-changed', Lang.bind(this, this._onControlStateChanged));
         this._control.connect('default-sink-changed', Lang.bind(this, this._readOutput));
         this._control.connect('default-source-changed', Lang.bind(this, this._readInput));
         this._control.connect('stream-added', Lang.bind(this, this._maybeShowInput));
@@ -102,9 +102,14 @@ Indicator.prototype = {
         this._notifyVolumeChange();
     },
 
-    _onControlReady: function() {
-        this._readOutput();
-        this._readInput();
+    _onControlStateChanged: function() {
+        if (this._control.get_state() == Gvc.MixerControlState.READY) {
+            this._readOutput();
+            this._readInput();
+            this.actor.show();
+        } else {
+            this.actor.hide();
+        }
     },
 
     _readOutput: function() {
