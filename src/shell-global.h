@@ -7,8 +7,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
 #include <meta/meta-plugin.h>
-#include <telepathy-glib/telepathy-glib.h>
-#include <telepathy-logger/telepathy-logger.h>
 
 G_BEGIN_DECLS
 
@@ -158,32 +156,7 @@ void shell_global_notify_error (ShellGlobal  *global,
 
 void shell_global_init_xdnd (ShellGlobal *global);
 
-typedef void (*ShellGetTpContactCb) (TpConnection *connection,
-                                     GList *contacts,
-                                     TpHandle *failed);
-
-void shell_get_tp_contacts (TpConnection *self,
-                            guint n_handles,
-                            const TpHandle *handles,
-                            guint n_features,
-                            const TpContactFeature *features,
-                            ShellGetTpContactCb callback);
-
 void shell_global_launch_calendar_server (ShellGlobal *global);
-
-typedef void (*ShellGetSelfContactFeaturesCb) (TpConnection *connection,
-                                               TpContact *contact);
-
-void shell_get_self_contact_features (TpConnection *self,
-                                      guint n_features,
-                                      const TpContactFeature *features,
-                                      ShellGetSelfContactFeaturesCb callback);
-
-void shell_get_contact_events (TplLogManager *log_manager,
-                               TpAccount *account,
-                               TplEntity *entity,
-                               guint num_events,
-                               GAsyncReadyCallback callback);
 
 char *shell_get_file_contents_utf8_sync (const char *path,
                                          GError    **error);

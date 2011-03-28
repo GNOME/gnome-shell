@@ -1,5 +1,7 @@
 #include "shell-tp-client.h"
 
+#include <string.h>
+
 #include <telepathy-glib/telepathy-glib.h>
 
 G_DEFINE_TYPE(ShellTpClient, shell_tp_client, TP_TYPE_BASE_CLIENT)
@@ -122,4 +124,132 @@ shell_tp_client_set_observe_channels_func (ShellTpClient *self,
   self->priv->observe_impl = observe_impl;
   self->priv->user_data_obs = user_data;
   self->priv->destroy_obs = destroy;
+}
+
+/* Telepathy utility functions */
+
+/**
+ * ShellGetTpContactCb:
+ * @connection: The connection
+ * @contacts: (element-type TelepathyGLib.Contact): List of contacts
+ * @failed: Array of failed contacts
+ */
+
+static void
+shell_global_get_tp_contacts_cb (TpConnection *self,
+                                 guint n_contacts,
+                                 TpContact * const *contacts,
+                                 guint n_failed,
+                                 const TpHandle *failed,
+                                 const GError *error,
+                                 gpointer user_data,
+                                 GObject *weak_object)
+{
+  int i;
+  GList *contact_list = NULL;
+  for (i = 0; i < n_contacts; i++) {
+      contact_list = g_list_append(contact_list, contacts[i]);
+  }
+
+  TpHandle *failed_list = g_new0 (TpHandle, n_failed + 1);
+  memcpy(failed_list, failed, n_failed);
+
+  ((ShellGetTpContactCb)user_data)(self, contact_list, failed_list);
+}
+
+/**
+ * shell_get_tp_contacts:
+ * @self: A connection, which must be ready
+ * @n_handles: Number of handles in handles
+ * @handles: (array length=n_handles) (element-type uint): Array of handles
+ * @n_features: Number of features in features
+ * @features: (array length=n_features) (allow-none) (element-type uint):
+ *  Array of features
+ * @callback: (scope async): User callback to run when the contacts are ready
+ *
+ * Wrap tp_connection_get_contacts_by_handle so we can transform the array
+ * into a null-terminated one, which gjs can handle.
+ * We send the original callback to tp_connection_get_contacts_by_handle as
+ * user_data, and we have our own function as callback, which does the
+ * transforming.
+ */
+void
+shell_get_tp_contacts (TpConnection *self,
+                       guint n_handles,
+                       const TpHandle *handles,
+                       guint n_features,
+                       const TpContactFeature *features,
+                       ShellGetTpContactCb callback)
+{
+  tp_connection_get_contacts_by_handle(self, n_handles, handles,
+                                       n_features, features,
+                                       shell_global_get_tp_contacts_cb,
+                                       callback, NULL, NULL);
+}
+
+static void
+shell_global_get_self_contact_features_cb (TpConnection *connection,
+                                           guint n_contacts,
+                                           TpContact * const *contacts,
+                                           const GError *error,
+                                           gpointer user_data,
+                                           GObject *weak_object)
+{
+  if (error != NULL) {
+    g_print ("Failed to upgrade self contact: %s", error->message);
+    return;
+  }
+  ((ShellGetSelfContactFeaturesCb)user_data)(connection, *contacts);
+}
+
+/**
+ * shell_get_self_contact_features:
+ * @self: A connection, which must be ready
+ * @n_features: Number of features in features
+ * @features: (array length=n_features) (allow-none) (element-type uint):
+ *  Array of features
+ * @callback: (scope async): User callback to run when the contact is ready
+ *
+ * Wrap tp_connection_upgrade_contacts due to the lack of support for
+ * proper arrays arguments in GJS.
+ */
+void
+shell_get_self_contact_features (TpConnection *self,
+                                 guint n_features,
+                                 const TpContactFeature *features,
+                                 ShellGetSelfContactFeaturesCb callback)
+{
+  TpContact *self_contact = tp_connection_get_self_contact (self);
+
+  tp_connection_upgrade_contacts (self, 1, &self_contact,
+                                  n_features, features,
+                                  shell_global_get_self_contact_features_cb,
+                                  callback, NULL, NULL);
+}
+
+/**
+ * shell_get_contact_events:
+ * @log_manager: A #TplLogManager
+ * @account: A #TpAccount
+ * @entity: A #TplEntity
+ * @num_events: The number of events to retrieve
+ * @callback: (scope async): User callback to run when the contact is ready
+ *
+ * Wrap tpl_log_manager_get_filtered_events_async because gjs cannot support
+ * multiple callbacks in the same function call.
+ */
+void
+shell_get_contact_events (TplLogManager *log_manager,
+                          TpAccount *account,
+                          TplEntity *entity,
+                          guint num_events,
+                          GAsyncReadyCallback callback)
+{
+  tpl_log_manager_get_filtered_events_async (log_manager,
+                                             account,
+                                             entity,
+                                             TPL_EVENT_MASK_TEXT,
+                                             num_events,
+                                             NULL, NULL,
+                                             callback, NULL);
 }
