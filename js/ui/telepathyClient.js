@@ -11,6 +11,7 @@ const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
+const C_ = Gettext.pgettext;
 
 const History = imports.misc.history;
 const Main = imports.ui.main;
@@ -465,15 +466,39 @@ Notification.prototype = {
         }
     },
 
+    _formatTimestamp: function(date) {
+        let now = new Date();
+
+        var daysAgo = (now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
+
+        // Show a week day and time if date is in the last week
+        if (daysAgo < 1 || (daysAgo < 7 && now.getDay() != date.getDay())) {
+            /* Translators: this is a time format string followed by a date.
+             If applicable, replace %X with a strftime format valid for your
+             locale, without seconds. */
+            // xgettext:no-c-format
+            format = _("Sent at %X on %A");
+
+        // FIXME: The next two are stolen from calendar.js with the comment to avoid
+        // a string-freeze break. They should be replaced with better strings
+        // with 'Sent at', appropriate context and appropriate translator comment.
+
+        } else if (date.getYear() == now.getYear()) {
+            /* Translators: Shown on calendar heading when selected day occurs on current year */
+            format = C_("calendar heading", "%A, %B %d");
+        } else {
+            /* Translators: Shown on calendar heading when selected day occurs on different year */
+            format = C_("calendar heading", "%A, %B %d, %Y");
+        }
+
+        return date.toLocaleFormat(format);
+    },
+
     appendTimestamp: function() {
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
-        /* Translators: this is a time format string followed by a date.
-           If applicable, replace %X with a strftime format valid for your
-           locale, without seconds. */
-        // xgettext:no-c-format
-        let timeLabel = this.addBody(lastMessageDate.toLocaleFormat(_("Sent at %X on %A")), false, { expand: true, x_fill: false, x_align: St.Align.END });
+        let timeLabel = this.addBody(this._formatTimestamp(lastMessageDate), false, { expand: true, x_fill: false, x_align: St.Align.END });
         timeLabel.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: timeLabel, time: lastMessageTime, realMessage: false });
 
