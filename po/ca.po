@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-06 18:36+0100\n"
-"PO-Revision-Date: 2011-03-06 18:36+0100\n"
+"POT-Creation-Date: 2011-03-29 00:29+0200\n"
+"PO-Revision-Date: 2011-03-27 13:05+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -161,7 +161,7 @@ msgstr ""
 "El GNOME Shell normalment fa un seguiment de les aplicacions actives per tal "
 "de mostrar les més utilitzades (per exemple en els llançadors). Tot i que "
 "les dades es mantindran en privat, podeu inhabilitar-ho per motius de "
-"privacitat. Tingueu en compte que si ho inhabiliteu no es suprimiran les "
+"privadesa. Tingueu en compte que si ho inhabiliteu no es suprimiran les "
 "dades ja recollides."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
@@ -176,47 +176,43 @@ msgstr "Si s'han de recollir estadístiques d'ús de les aplicacions"
 msgid "disabled OpenSearch providers"
 msgstr "inhabilita els proveïdors d'OpenSearch"
 
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "No s'ha trobat l'ordre"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "No s'ha pogut analitzar l'ordre:"
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "No hi ha cap aplicació"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "No s'ha pogut executar «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:195
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Totes"
 
-#: ../js/ui/appDisplay.js:285
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "APLICACIONS"
 
-#: ../js/ui/appDisplay.js:311
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "CONFIGURACIÓ"
 
-#: ../js/ui/appDisplay.js:565
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Finestra nova"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Suprimeix dels preferits"
 
-#: ../js/ui/appDisplay.js:569
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Afegeix als preferits"
 
@@ -376,7 +372,7 @@ msgstr "Aquesta setmana"
 msgid "Next week"
 msgstr "La setmana que ve"
 
-#: ../js/ui/dash.js:174
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
 msgid "Remove"
 msgstr "Suprimeix"
 
@@ -384,54 +380,54 @@ msgstr "Suprimeix"
 msgid "Date and Time Settings"
 msgstr "Configuració de la data i l'hora"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "Obre el calendari"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %d de %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %d de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %d de %b, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:176
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %d de %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:180
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:207
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%A %d de %B, %Y"
 
@@ -444,7 +440,7 @@ msgstr "DOCUMENTS RECENTS"
 msgid "Log Out %s"
 msgstr "Surt %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Surt"
 
@@ -466,46 +462,44 @@ msgstr "Sortireu automàticament d'aquí %d segons."
 msgid "Logging out of the system."
 msgstr "S'està sortint de la sessió."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Atura"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Feu clic a «Atura» per tancar les aplicacions i apagar l'ordinador."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Apaga"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "S'apagarà l'ordinador automàticament d'aquí %d segons."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Feu clic a «Apaga» per tancar les aplicacions i apagar l'ordinador."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "S'apagarà l'ordinador automàticament d'aquí %d segons."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
 msgstr "S'està apagant l'ordinador."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Reinicia"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Feu clic a «Reinicia» per tancar les aplicacions i reiniciar l'ordinador."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Es reiniciarà l'ordinador automàticament d'aquí %d segons."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "S'està reiniciant l'ordinador."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "D'acord"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -519,7 +513,7 @@ msgstr "Habilitat"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Inhabilitat"
 
@@ -539,33 +533,47 @@ msgstr "Visualitza el font"
 msgid "Web Page"
 msgstr "Pàgina web"
 
-#: ../js/ui/messageTray.js:1907
+#: ../js/ui/messageTray.js:993
+msgid "Open"
+msgstr "Obre"
+
+#: ../js/ui/messageTray.js:2151
 msgid "System Information"
 msgstr "Informació de l'ordinador"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Desfés"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Finestres"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Aplicacions"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr "Quadre d'aplicacions"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:531
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "Tanca %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:892
+#: ../js/ui/panel.js:893
 msgid "Activities"
 msgstr "Activitats"
+
+#: ../js/ui/panel.js:994
+msgid "Top Bar"
+msgstr "Barra superior"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -580,64 +588,89 @@ msgstr "Torna-ho a intentar"
 msgid "Connect to..."
 msgstr "Connecta a..."
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "LLOCS I DISPOSITIUS"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Cal autenticació"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrador"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autentica"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
+msgid "Sorry, that didn't work. Please try again."
+msgstr "No ha funcionat. Torneu-ho a provar."
+
+#: ../js/ui/polkitAuthenticationAgent.js:276
+msgid "Password:"
+msgstr "Contrasenya:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:612
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Introduïu una ordre:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "S'està cercant..."
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "No s'ha trobat cap coincidència."
 
-#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Apaga..."
 
-#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Atura temporalment"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Disponible"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Ocupat"
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "El meu compte"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Paràmetres de l'ordinador"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Bloca la pantalla"
 
-#: ../js/ui/statusMenu.js:153
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Canvia d'usuari"
 
-#: ../js/ui/statusMenu.js:158
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Surt..."
 
@@ -645,14 +678,12 @@ msgstr "Surt..."
 msgid "Zoom"
 msgstr "Amplia"
 
-#: ../js/ui/status/accessibility.js:69
-msgid "Screen Reader"
-msgstr "Lector de pantalla"
-
-#: ../js/ui/status/accessibility.js:73
-msgid "Screen Keyboard"
-msgstr "Teclat en pantalla"
-
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Avisos visuals"
@@ -677,17 +708,17 @@ msgstr "Tecles del ratolí"
 msgid "Universal Access Settings"
 msgstr "Paràmetres d'accés universal"
 
-#: ../js/ui/status/accessibility.js:145
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "Alt contrast"
 
-#: ../js/ui/status/accessibility.js:182
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "Text gran"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -707,94 +738,94 @@ msgstr "Establiu un dispositiu nou..."
 msgid "Bluetooth Settings"
 msgstr "Paràmetres del Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "Connexió"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Envia fitxers..."
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Navega pels fitxers..."
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "S'ha produït un error en navegar pel dispositiu"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "No es pot navegar pel dispositiu degut a l'error «%s»"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "Paràmetres del teclat"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "Paràmetres del ratolí"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Paràmetres de so"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Hi ha una petició d'autorització des de %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "El dispositiu %s vol accedir al servei «%s»"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "Permet l'accés sempre"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "Permete-ho només ara"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Rebutja"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Confirmació d'aparellament per %s"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "El dispositiu %s vol aparellar-se amb aquest ordinador"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confirmeu que el PIN «%s» coincideix amb el que hi ha al dispositiu."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Coincideix"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "No coincideix"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Teniu una sol·licitud d'aparellament amb %s"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Introduïu el PIN que es mostra al dispositiu."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "D'acord"
 
@@ -806,17 +837,153 @@ msgstr "Mostra la disposició del teclat..."
 msgid "Localization Settings"
 msgstr "Paràmetres de localització"
 
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
+msgid "<unknown>"
+msgstr "<desconegut>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:311
+msgid "disabled"
+msgstr "inhabilitada"
+
+#: ../js/ui/status/network.js:494
+msgid "connecting..."
+msgstr "s'està connectant..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:497
+msgid "authentication required"
+msgstr "cal autenticació"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
+msgstr "manca el microprogramari"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:514
+msgid "cable unplugged"
+msgstr "s'ha desconnectat el cable"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:519
+msgid "unavailable"
+msgstr "no disponible"
+
+#: ../js/ui/status/network.js:521
+msgid "connection failed"
+msgstr "ha fallat la connexió"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
+msgid "Connected (private)"
+msgstr "Connectat (privat)"
+
+#: ../js/ui/status/network.js:683
+msgid "Auto Ethernet"
+msgstr "Ethernet automàtic"
+
+#: ../js/ui/status/network.js:758
+msgid "Auto broadband"
+msgstr "Banda ampla automàtica"
+
+#: ../js/ui/status/network.js:761
+msgid "Auto dial-up"
+msgstr "Marcatge directe automàtic"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
+#, c-format
+msgid "Auto %s"
+msgstr "%s automàtic"
+
+#: ../js/ui/status/network.js:906
+msgid "Auto bluetooth"
+msgstr "Bluetooth automàtic"
+
+#: ../js/ui/status/network.js:1416
+msgid "Auto wireless"
+msgstr "Sense fil automàtic"
+
+#: ../js/ui/status/network.js:1474
+msgid "More..."
+msgstr "Més..."
+
+#: ../js/ui/status/network.js:1497
+msgid "Enable networking"
+msgstr "Habilita la xarxa"
+
+#: ../js/ui/status/network.js:1509
+msgid "Wired"
+msgstr "Amb fil"
+
+#: ../js/ui/status/network.js:1520
+msgid "Wireless"
+msgstr "Sense fil"
+
+#: ../js/ui/status/network.js:1530
+msgid "Mobile broadband"
+msgstr "Ampla de banda mòbil"
+
+#: ../js/ui/status/network.js:1540
+msgid "VPN Connections"
+msgstr "Connexions VPN"
+
+#: ../js/ui/status/network.js:1549
+msgid "Network Settings"
+msgstr "Paràmetres de xarxa"
+
+#: ../js/ui/status/network.js:1844
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Us acabeu de connectar amb la connexió de banda ampla mòbil «%s»"
+
+#: ../js/ui/status/network.js:1848
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Us acabeu de connectar a la xarxa sense fil «%s»"
+
+#: ../js/ui/status/network.js:1852
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Us acabeu de connectar a la xarxa amb fil «%s»"
+
+#: ../js/ui/status/network.js:1856
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Us acabeu de connectar a la xarxa VPN «%s»"
+
+#: ../js/ui/status/network.js:1861
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Us acabeu de connectar a «%s»"
+
+#: ../js/ui/status/network.js:1869
+msgid "Connection established"
+msgstr "S'ha establert la connexió"
+
+#: ../js/ui/status/network.js:1991
+msgid "Networking is disabled"
+msgstr "S'ha inhabilitat la xarxa"
+
+#: ../js/ui/status/network.js:2116
+msgid "Network Manager"
+msgstr "Gestor de connexions de xarxa"
+
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Paràmetres d'energia"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:111
 msgid "Estimating..."
 msgstr "S'està estimant la durada..."
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -824,102 +991,102 @@ msgstr[0] "Queda %d hora"
 msgstr[1] "Queden %d hores"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "Queden %d %s %d %s"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "hora"
 msgstr[1] "hores"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minut"
 msgstr[1] "minuts"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "Queda %d minut"
 msgstr[1] "Queden %d minuts"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "Adaptador de corrent"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "Bateria del portàtil"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "SAI"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "Pantalla"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "Ratolí"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "Teclat"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "Telèfon mòbil"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "Reproductor multimèdia"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "Tauleta"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "Ordinador"
 
-#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: ../js/ui/status/volume.js:44
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "Volum"
 
-#: ../js/ui/status/volume.js:57
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Micròfon"
 
-#: ../js/ui/telepathyClient.js:239
+#: ../js/ui/telepathyClient.js:331
 #, c-format
 msgid "%s is online."
 msgstr "%s és en línia."
 
-#: ../js/ui/telepathyClient.js:244
+#: ../js/ui/telepathyClient.js:336
 #, c-format
 msgid "%s is offline."
 msgstr "%s no hi és."
 
-#: ../js/ui/telepathyClient.js:247
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is away."
 msgstr "%s és lluny."
 
-#: ../js/ui/telepathyClient.js:250
+#: ../js/ui/telepathyClient.js:342
 #, c-format
 msgid "%s is busy."
 msgstr "%s està ocupat."
@@ -927,7 +1094,7 @@ msgstr "%s està ocupat."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:348
+#: ../js/ui/telepathyClient.js:473
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviat a les %X del %A"
@@ -936,9 +1103,13 @@ msgstr "Enviat a les %X del %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:103
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "Teclegeu per cercar..."
+
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Cerca"
 
 #: ../js/ui/windowAttentionHandler.js:42
 #, c-format
@@ -952,7 +1123,7 @@ msgstr "«%s» ja està apunt"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -961,48 +1132,65 @@ msgstr[1] "%u sortides"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entrades"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "Sons del sistema"
 
-#: ../src/shell-global.c:1298
+#: ../src/main.c:446
+msgid "Print version"
+msgstr "Mostra la versió"
+
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "No s'ha pogut iniciar «%s»"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Fa menys d'un minut"
 
-#: ../src/shell-global.c:1302
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Fa %d minut"
 msgstr[1] "Fa %d minuts"
 
-#: ../src/shell-global.c:1307
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Fa %d hora"
 msgstr[1] "Fa %d hores"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Fa %d dia"
 msgstr[1] "Fa %d dies"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "Fa %d setmana"
 msgstr[1] "Fa %d setmanes"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Regne Unit"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Predeterminat"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
@@ -1018,10 +1206,6 @@ msgstr "Carpeta d'inici"
 msgid "File System"
 msgstr "Sistema de fitxers"
 
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "Cerca"
-
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
@@ -1031,6 +1215,33 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Atura"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Feu clic a «Atura» per tancar les aplicacions i apagar l'ordinador."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "S'apagarà l'ordinador automàticament d'aquí %d segons."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "S'està apagant l'ordinador."
+
+#~ msgid "Confirm"
+#~ msgstr "D'acord"
+
+#~ msgid "Panel"
+#~ msgstr "Quadre"
+
+#~ msgid "No such application"
+#~ msgstr "No hi ha cap aplicació"
+
+#~ msgid "Screen Reader"
+#~ msgstr "Lector de pantalla"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Teclat en pantalla"
 
 #~ msgid "PREFERENCES"
 #~ msgstr "PREFERÈNCIES"
