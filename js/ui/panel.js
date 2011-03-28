@@ -300,6 +300,10 @@ AppMenuButton.prototype = {
 
         this._visible = true;
         this.actor.show();
+
+        if (!this._targetIsCurrent)
+            return;
+
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 255,
@@ -312,6 +316,11 @@ AppMenuButton.prototype = {
             return;
 
         this._visible = false;
+        if (!this._targetIsCurrent) {
+            this.actor.hide();
+            return;
+        }
+
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 0,
