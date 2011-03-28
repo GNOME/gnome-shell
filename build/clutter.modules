@@ -13,6 +13,8 @@
       href="git://git.moblin.org/"/>
   <repository type="git" name="github.com/rib"
       href="git://github.com/rib/"/>
+  <repository type="git" name="github.com/clutter-project"
+      href="git://github.com/clutter-project/"/>
   <repository type="git" name="gstreamer.freedesktop.org"
       href="git://anongit.freedesktop.org/gstreamer/"/>
 
@@ -222,7 +224,7 @@
   </autotools>
 
   <autotools id="clutter">
-    <branch repo="git.clutter-project.org"
+    <branch repo="git.gnome.org"
             module="clutter"
             revision="master"/>
     <dependencies>
@@ -253,7 +255,7 @@
   </autotools>
 
   <autotools id="clutter-gst">
-    <branch repo="git.clutter-project.org"
+    <branch repo="git.gnome.org"
             module="clutter-gst"
             revision="master"/>
     <dependencies>
@@ -264,7 +266,7 @@
   </autotools>
 
   <autotools id="clutter-gtk">
-    <branch repo="git.clutter-project.org"
+    <branch repo="git.gnome.org"
             module="clutter-gtk"
             revision="master"/>
     <dependencies>
@@ -274,8 +276,17 @@
   </autotools>
 
   <autotools id="clutter-box2d">
-    <branch repo="git.clutter-project.org"
+    <branch repo="github.com/clutter-project"
             module="clutter-box2d"
+            revision="master"/>
+    <dependencies>
+      <dep package="clutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="clutter-bullet">
+    <branch repo="github.com/clutter-project"
+            module="clutter-bullet"
             revision="master"/>
     <dependencies>
       <dep package="clutter"/>
