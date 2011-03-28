@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
@@ -13,6 +14,7 @@ const _ = Gettext.gettext;
 
 const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
+const DocInfo = imports.misc.docInfo;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
@@ -21,6 +23,7 @@ const Search = imports.ui.search;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
+const Zeitgeist = imports.misc.zeitgeist;
 
 const MENU_POPUP_TIMEOUT = 600;
 const SCROLL_TIME = 0.1;
@@ -582,6 +585,7 @@ AppIconMenu.prototype = {
         this.blockSourceEvents = true;
 
         this._source = source;
+        this._eventTemplate = new Zeitgeist.Event('', '', "application://" + this._source.app.get_id(), [], []);
 
         this.connect('activate', Lang.bind(this, this._onActivate));
         this.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
@@ -628,6 +632,63 @@ AppIconMenu.prototype = {
         this._toggleFavoriteMenuItem = this._appendMenuItem(isFavorite ? _("Remove from Favorites")
                                                                     : _("Add to Favorites"));
 
+        Zeitgeist.findEvents([new Date().getTime() - 86400000*90, Zeitgeist.MAX_TIMESTAMP],
+                             [this._eventTemplate],
+                             Zeitgeist.StorageState.ANY,
+                             100,
+                             Zeitgeist.ResultType.MOST_RECENT_SUBJECTS,
+                             Lang.bind(this, this._appendJumplist));
+    },
+
+    _appendJumplist: function (events) {
+        let fetchedUris = [];
+        let hasJumplist = false;
+
+        function appendEvents(events2, count, type) {
+            if (count == null) {
+                count = 3;
+            }
+            if (type == null) {
+                type = "emblem-favorite";
+            }
+            let j = 0;
+            if (events.length > 0) {
+                for (let i in events) {
+                    let uri = events[i].subjects[0].uri.replace('file://', '');
+                    uri = uri.replace(/\%20/g, ' '); // FIXME: properly unescape, or get the display name otherwise
+                    if (fetchedUris.indexOf(uri) == -1 &&
+                        (GLib.file_test(uri, GLib.FileTest.EXISTS) || this._source.app.get_id() == "tomboy.desktop")) {
+                        if (!hasJumplist) {
+                            this._appendSeparator();
+                            hasJumplist = true;
+                        }
+                        this._appendJumplistItem(events[i], type);
+                        fetchedUris.push(uri);
+                        j++;
+                        if (j >= count)
+                            break;
+                    }
+                }
+            }
+        }
+
+        appendEvents.call(this, events, 4, "document-open-recent");
+        Zeitgeist.findEvents([new Date().getTime() - 86400000*90, Zeitgeist.MAX_TIMESTAMP],
+                             [this._eventTemplate],
+                             Zeitgeist.StorageState.ANY,
+                             100,
+                             Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS,
+                             Lang.bind(this, appendEvents));
+    },
+
+    _appendJumplistItem: function (event, type) {
+        let info = new DocInfo.ZeitgeistItemInfo(event);
+        let item = new PopupMenu.PopupImageMenuItem(info.name, type);
+        this.addMenuItem(item);
+        item.connect('activate', Lang.bind(this, function () {
+            let app = new Gio.DesktopAppInfo.new_from_filename();
+            app.launch_uris([info.uri], null);
+        }));
     },
 
     _appendSeparator: function () {
