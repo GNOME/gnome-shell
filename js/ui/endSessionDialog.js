@@ -366,8 +366,10 @@ EndSessionDialog.prototype = {
 
         if (this._user.is_loaded && !dialogContent.iconName) {
             let iconFile = this._user.get_icon_file();
-
-            this._setIconFromFile(iconFile, dialogContent.iconStyleClass);
+            if (GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+                this._setIconFromFile(iconFile, dialogContent.iconStyleClass);
+            else
+                this._setIconFromName('avatar-default', dialogContent.iconStyleClass);
         } else if (dialogContent.iconName) {
             this._setIconFromName(dialogContent.iconName,
                                   dialogContent.iconStyleClass);
