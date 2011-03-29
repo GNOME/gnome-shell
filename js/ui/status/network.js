@@ -113,12 +113,11 @@ NMNetworkMenuItem.prototype = {
                                          style_class: 'popup-menu-icon' });
         this._icons.add_actor(this._signalIcon);
 
+        this._secureIcon = new St.Icon({ style_class: 'popup-menu-icon' });
         if (this.bestAP._secType != NMAccessPointSecurity.UNKNOWN &&
-            this.bestAP._secType != NMAccessPointSecurity.NONE) {
-            this._secureIcon = new St.Icon({ icon_name: 'network-wireless-encrypted',
-                                             style_class: 'popup-menu-icon' });
-            this._icons.add_actor(this._secureIcon);
-        }
+            this.bestAP._secType != NMAccessPointSecurity.NONE)
+            this._secureIcon.icon_name = 'network-wireless-encrypted';
+        this._icons.add_actor(this._secureIcon);
 
         this._accessPoints = [ ];
         for (let i = 0; i < accessPoints.length; i++) {
