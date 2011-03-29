@@ -8203,50 +8203,42 @@ update_move (MetaWindow  *window,
   shake_threshold = meta_ui_get_drag_threshold (window->screen->ui) *
     DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
 
-  if (meta_prefs_get_edge_tiling ())
+  if (meta_prefs_get_edge_tiling () &&
+      !META_WINDOW_MAXIMIZED (window) &&
+      !META_WINDOW_TILED_SIDE_BY_SIDE (window))
     {
       const MetaMonitorInfo *monitor;
       MetaRectangle work_area;
 
       /* For side-by-side tiling we are interested in the inside vertical
-       * edges of the work area of the monitor where the pointer is located.
-       * Also see comment in meta_window_get_current_tile_area()
+       * edges of the work area of the monitor where the pointer is located,
+       * and in the outside top edge for maximized tiling.
+       * Also see comment in meta_window_get_current_tile_area().
+       *
+       * For maximized tiling we use the outside edge instead of the
+       * inside edge, because we don't want to force users to maximize
+       * windows they are placing near the top of their screens.
        */
       monitor = meta_screen_get_current_monitor (window->screen);
       meta_window_get_work_area_for_monitor (window,
                                              monitor->number,
                                              &work_area);
 
-      if (meta_window_can_tile_side_by_side (window))
-        {
-          /* check if cursor is near an edge of the work area */
-          if (x >= monitor->rect.x && x < (work_area.x + shake_threshold))
-            window->tile_mode = META_TILE_LEFT;
-          else if (x >= work_area.x + work_area.width - shake_threshold &&
-                   x < (monitor->rect.x + monitor->rect.width))
-            window->tile_mode = META_TILE_RIGHT;
-          else
-            window->tile_mode = META_TILE_NONE;
-        }
-
-      /* For maximized tiling we are interested in the outside top edge
-       * of the work area of the monitor where the pointer is located.
-       *
-       * We use the outside edge instead of the inside edge, because we
-       * don't want to force users to maximize windows they are placing
-       * near the top of their screens.
-       *
-       * If window->tile_mode is not NONE, that means that either we are
-       * on an edge and set it above, or we are currently tiled (in
-       * which case meta_window_can_tile_side_by_side() and
-       * meta_window_can_tile_maximized() return FALSE).
+      /* Check if the cursor is in a position which triggers tiling
+       * and set tile_mode accordingly.
        */
-      if (window->tile_mode == META_TILE_NONE && meta_window_can_tile_maximized (window))
-        {
-          /* check if cursor is on the top edge of the monitor*/
-          if (y >= monitor->rect.y && y <= work_area.y)
-              window->tile_mode = META_TILE_MAXIMIZED;
-        }
+      if (meta_window_can_tile_side_by_side (window) &&
+          x >= monitor->rect.x && x < (work_area.x + shake_threshold))
+        window->tile_mode = META_TILE_LEFT;
+      else if (meta_window_can_tile_side_by_side (window) &&
+               x >= work_area.x + work_area.width - shake_threshold &&
+               x < (monitor->rect.x + monitor->rect.width))
+        window->tile_mode = META_TILE_RIGHT;
+      else if (meta_window_can_tile_maximized (window) &&
+               y >= monitor->rect.y && y <= work_area.y)
+        window->tile_mode = META_TILE_MAXIMIZED;
+      else
+        window->tile_mode = META_TILE_NONE;
     }
 
   /* shake loose (unmaximize) maximized or tiled window if dragged beyond
