@@ -708,6 +708,7 @@ static guint last_later_id = 0;
 typedef struct
 {
   guint id;
+  guint ref_count;
   MetaLaterType when;
   GSourceFunc func;
   gpointer data;
@@ -724,13 +725,29 @@ static guint later_repaint_func = 0;
 static void ensure_later_repaint_func (void);
 
 static void
+unref_later (MetaLater *later)
+{
+  if (--later->ref_count == 0)
+    {
+      if (later->notify)
+        {
+          later->notify (later->data);
+          later->notify = NULL;
+        }
+      g_slice_free (MetaLater, later);
+    }
+}
+
+static void
 destroy_later (MetaLater *later)
 {
   if (later->source)
-    g_source_remove (later->source);
-  if (later->notify)
-    later->notify (later->data);
-  g_slice_free (MetaLater, later);
+    {
+      g_source_remove (later->source);
+      later->source = 0;
+    }
+  later->func = NULL;
+  unref_later (later);
 }
 
 /* Used to sort the list of laters with the highest priority
@@ -746,34 +763,41 @@ compare_laters (gconstpointer a,
 static gboolean
 run_repaint_laters (gpointer data)
 {
-  GSList *old_laters = laters;
+  GSList *laters_copy;
   GSList *l;
   gboolean keep_timeline_running = FALSE;
-  laters = NULL;
 
-  for (l = old_laters; l; l = l->next)
+  laters_copy = NULL;
+  for (l = laters; l; l = l->next)
     {
       MetaLater *later = l->data;
       if (later->source == 0 ||
           (later->when <= META_LATER_BEFORE_REDRAW && !later->run_once))
         {
-          if (later->func (later->data))
-            {
-              if (later->source == 0)
-                keep_timeline_running = TRUE;
-              laters = g_slist_insert_sorted (laters, later, compare_laters);
-            }
-          else
-            destroy_later (later);
+          later->ref_count++;
+          laters_copy = g_slist_prepend (laters_copy, later);
+        }
+    }
+  laters_copy = g_slist_reverse (laters_copy);
+
+  for (l = laters_copy; l; l = l->next)
+    {
+      MetaLater *later = l->data;
+
+      if (later->func && later->func (later->data))
+        {
+          if (later->source == 0)
+            keep_timeline_running = TRUE;
         }
       else
-        laters = g_slist_insert_sorted (laters, later, compare_laters);
+        meta_later_remove (later->id);
+      unref_later (later);
     }
 
   if (!keep_timeline_running)
     clutter_timeline_stop (later_timeline);
 
-  g_slist_free (old_laters);
+  g_slist_free (laters_copy);
 
   /* Just keep the repaint func around - it's cheap if the list is empty */
   return TRUE;
@@ -800,9 +824,7 @@ call_idle_later (gpointer data)
 
   if (!later->func (later->data))
     {
-      laters = g_slist_remove (laters, later);
-      later->source = 0;
-      destroy_later (later);
+      meta_later_remove (later->id);
       return FALSE;
     }
   else
@@ -838,6 +860,7 @@ meta_later_add (MetaLaterType  when,
   MetaLater *later = g_slice_new0 (MetaLater);
 
   later->id = ++last_later_id;
+  later->ref_count = 1;
   later->when = when;
   later->func = func;
   later->data = data;
