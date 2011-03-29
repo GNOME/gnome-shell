@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-22 01:51+0000\n"
-"PO-Revision-Date: 2011-03-22 21:17+0400\n"
+"POT-Creation-Date: 2011-03-25 20:20+0000\n"
+"PO-Revision-Date: 2011-03-26 23:41+0400\n"
 "Last-Translator: Yuri Myaseodov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,6 @@ msgstr "Команда не найдена"
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
 #: ../js/misc/util.js:98
-#| msgid "Please enter a command:"
 msgid "Could not parse command:"
 msgstr "Не удалось разобрать команду:"
 
@@ -149,15 +148,15 @@ msgstr "ПРИЛОЖЕНИЯ"
 msgid "SETTINGS"
 msgstr "ПАРАМЕТРЫ"
 
-#: ../js/ui/appDisplay.js:620
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Новое окно"
 
-#: ../js/ui/appDisplay.js:623
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Удалить из избранного"
 
-#: ../js/ui/appDisplay.js:624
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
@@ -168,7 +167,6 @@ msgstr "%s добавлен в избранное."
 
 #: ../js/ui/appFavorites.js:122
 #, c-format
-#| msgid "Remove from Favorites"
 msgid "%s has been removed from your favorites."
 msgstr "%s удалён из избранных."
 
@@ -182,14 +180,12 @@ msgstr "Весь день"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:71
-#| msgid "%H:%M"
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:78
-#| msgid "%a %l:%M %p"
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -321,7 +317,7 @@ msgid "Next week"
 msgstr "Следующая неделя"
 
 #: ../js/ui/dash.js:174
-#: ../js/ui/messageTray.js:945
+#: ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Удалить"
 
@@ -340,14 +336,12 @@ msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
 #: ../js/ui/dateMenu.js:165
-#| msgid "%a %l:%M %p"
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:169
-#| msgid "%a %l:%M %p"
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
@@ -358,19 +352,16 @@ msgstr "%a %R"
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:177
-#| msgid "%a %l:%M %p"
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:178
-#| msgid "%a %l:%M %p"
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:182
-#| msgid "%a %l:%M %p"
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
@@ -391,13 +382,11 @@ msgstr "НЕДАВНИЕ ДОКУМЕНТЫ"
 
 #: ../js/ui/endSessionDialog.js:63
 #, c-format
-#| msgid "Log Out..."
 msgid "Log Out %s"
 msgstr "Вывести из системы пользователя %s"
 
 #: ../js/ui/endSessionDialog.js:64
-#: ../js/ui/endSessionDialog.js:69
-#| msgid "Log Out..."
+#: ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Выйти из системы"
 
@@ -419,48 +408,49 @@ msgstr "Вы автоматически выйдете систему через
 msgid "Logging out of the system."
 msgstr "Выход из системы."
 
-#: ../js/ui/endSessionDialog.js:74
-#: ../js/ui/endSessionDialog.js:78
-#| msgid "Shut Down..."
-msgid "Shut Down"
+#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:82
+#| msgid "Power Off..."
+msgid "Power Off"
 msgstr "Выключить"
 
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
+#: ../js/ui/endSessionDialog.js:76
+#| msgid "Click Log Out to quit these applications and log out of the system."
+msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Нажмите «Выключить», чтобы закрыть эти приложения и выключить систему."
 
-#: ../js/ui/endSessionDialog.js:76
+#: ../js/ui/endSessionDialog.js:77
 #, c-format
-msgid "The system will shut down automatically in %d seconds."
+#| msgid "The system will restart automatically in %d seconds."
+msgid "The system will power off automatically in %d seconds."
 msgstr "Система будет автоматически выключена через %d сек."
 
-#: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
+#: ../js/ui/endSessionDialog.js:78
+#| msgid "Logging out of the system."
+msgid "Powering off the system."
 msgstr "Выключение системы."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:80
 #: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Перезапустить"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Нажмите «Перезапустить», чтобы закрыть эти приложения и перезапустить систему."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Система будет автоматически перезапущена через %d сек."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Перезапуск системы."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Подтвердить"
-
-#: ../js/ui/endSessionDialog.js:400
+#: ../js/ui/endSessionDialog.js:415
+#: ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Отмена"
@@ -496,31 +486,29 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: ../js/ui/messageTray.js:938
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "Открыть"
 
-#: ../js/ui/messageTray.js:2018
-#| msgid "Account Information..."
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Системная информация"
 
-#: ../js/ui/overview.js:89
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Отменить"
 
-#: ../js/ui/overview.js:184
-#| msgid "New Window"
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Окна"
 
-#: ../js/ui/overview.js:187
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Приложения"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:203
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Приборная панель"
 
@@ -532,11 +520,11 @@ msgstr "Закрыть %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:876
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Обзор"
 
-#: ../js/ui/panel.js:977
+#: ../js/ui/panel.js:979
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -557,12 +545,34 @@ msgstr "Соединиться с…"
 msgid "PLACES & DEVICES"
 msgstr "МЕСТА И УСТРОЙСТВА"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+#| msgid "authentication required"
+msgid "Authentication Required"
+msgstr "Требуется аутентификация"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Администратор"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+#| msgid "authentication required"
+msgid "Authenticate"
+msgstr "Аутентифицировать"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Извините, это не сработало. Попробуйте ещё раз."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Пароль:"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -579,9 +589,10 @@ msgid "No matching results."
 msgstr "Нет совпадений."
 
 #: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:163
 #: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
-msgstr "Выключить питание…"
+msgstr "Выключить…"
 
 #: ../js/ui/statusMenu.js:163
 #: ../js/ui/statusMenu.js:227
@@ -684,7 +695,6 @@ msgid "Bluetooth Settings"
 msgstr "Параметры Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:188
-#| msgid "Connect to..."
 msgid "Connection"
 msgstr "Соединение"
 
@@ -786,8 +796,7 @@ msgid "Localization Settings"
 msgstr "Параметры локализации"
 
 #: ../js/ui/status/network.js:102
-#: ../js/ui/status/network.js:1393
-#| msgid "Unknown"
+#: ../js/ui/status/network.js:1437
 msgid "<unknown>"
 msgstr "<неизвестно>"
 
@@ -796,129 +805,132 @@ msgstr "<неизвестно>"
 msgid "disabled"
 msgstr "выключено"
 
-#: ../js/ui/status/network.js:476
-#| msgid "Connect to..."
+#: ../js/ui/status/network.js:478
 msgid "connecting..."
 msgstr "соединение…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:481
 msgid "authentication required"
 msgstr "требуется авторизация"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:491
+msgid "firmware missing"
+msgstr "отсутствует прошивка"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:498
 msgid "cable unplugged"
 msgstr "кабель не подключен"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:503
 msgid "unavailable"
 msgstr "недоступное"
 
-#: ../js/ui/status/network.js:491
-#| msgid "Execution of '%s' failed:"
+#: ../js/ui/status/network.js:505
 msgid "connection failed"
 msgstr "сбой подключения"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571
-#: ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:585
+#: ../js/ui/status/network.js:1385
 msgid "Connected (private)"
 msgstr "Подключено (частное)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:666
 msgid "Auto Ethernet"
 msgstr "Автоматическое Ethernet"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:741
 msgid "Auto broadband"
 msgstr "Автоматическое широкополосное"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:744
 msgid "Auto dial-up"
 msgstr "Автоматическое коммутируемое"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:887
+#: ../js/ui/status/network.js:1397
 #, c-format
 msgid "Auto %s"
 msgstr "Автоматическое %s"
 
-#: ../js/ui/status/network.js:845
+#: ../js/ui/status/network.js:889
 msgid "Auto bluetooth"
 msgstr "Автоматическое bluetooth"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1399
 msgid "Auto wireless"
 msgstr "Автоматическое беспроводное"
 
-#: ../js/ui/status/network.js:1413
-#| msgid "More"
+#: ../js/ui/status/network.js:1457
 msgid "More..."
 msgstr "Ещё…"
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1480
 msgid "Enable networking"
 msgstr "Включить сеть"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1492
 msgid "Wired"
 msgstr "Проводное"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1503
 msgid "Wireless"
 msgstr "Беспроводное"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1513
 msgid "Mobile broadband"
 msgstr "Мобильное широкополосное"
 
-#: ../js/ui/status/network.js:1479
+#: ../js/ui/status/network.js:1523
 msgid "VPN Connections"
 msgstr "Соединения VPN"
 
-#: ../js/ui/status/network.js:1488
+#: ../js/ui/status/network.js:1532
 msgid "Network Settings"
 msgstr "Сетевые параметры"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1827
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Вы подключены по мобильному широкополосному соединению «%s»"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1831
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Вы подключены к беспроводной сети «%s»"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1835
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Вы подключены к проводной сети «%s»"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1839
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Вы подключены к сети VPN «%s»"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Вы подключены к «%s»"
 
-#: ../js/ui/status/network.js:1808
+#: ../js/ui/status/network.js:1852
 msgid "Connection established"
 msgstr "Соединение установлено"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1974
 msgid "Networking is disabled"
 msgstr "Сеть отключена"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2099
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
@@ -934,8 +946,6 @@ msgstr "Выполняется подсчёт…"
 
 #: ../js/ui/status/power.js:118
 #, c-format
-#| msgid "%d hour ago"
-#| msgid_plural "%d hours ago"
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "Остался %d час"
@@ -956,8 +966,6 @@ msgstr[1] "часа"
 msgstr[2] "часов"
 
 #: ../js/ui/status/power.js:123
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "минута"
@@ -966,8 +974,6 @@ msgstr[2] "минут"
 
 #: ../js/ui/status/power.js:126
 #, c-format
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "Осталась %d минута"
@@ -991,7 +997,6 @@ msgid "Monitor"
 msgstr "Монитор"
 
 #: ../js/ui/status/power.js:236
-#| msgid "More"
 msgid "Mouse"
 msgstr "Мышь"
 
@@ -1107,7 +1112,7 @@ msgstr[2] "%u входов"
 msgid "System Sounds"
 msgstr "Системные звуки"
 
-#: ../src/main.c:397
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Показать номер версии"
 

@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-24 08:03+0000\n"
-"PO-Revision-Date: 2011-03-25 08:16+0530\n"
+"POT-Creation-Date: 2011-03-25 20:20+0000\n"
+"PO-Revision-Date: 2011-03-27 10:02+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -92,6 +92,20 @@ msgid ""
 "records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
 "at the optimal thread count on the system."
 msgstr ""
+"ਰਿਕਾਰਡਿੰਗ ਇੰਕੋਡ ਕਰਨ ਲਈ ਜੀਸਟੀਮਰ ਪਾਇਪਲਾਈਨ ਸੈੱਟ ਕਰੋ। ਇਹ gst-launch ਲਈ ਵਰਤਿਆ "
+"ਜਾਂਦਾ ਸੰਟੈਕਸ ਵਰਤਦਾ ਹੈ। ਪਾਇਪਲਾਈਨ ਲਈ ਸਿੰਕ ਪੈਡ ਲਈ ਕੁਨੈਕਟ ਨਹੀਂ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ, "
+"ਜਿੱਥੇ "
+"ਰਿਕਾਰਡ ਹੋਣ ਵਾਲੀ ਵਿਡੀਓ ਰਿਕਾਰਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ। ਇਹ ਆਮ ਤੌਰ ਉੱਤੇ ਨਾ-ਕੁਨੈਕਟ ਕੀਤਾ "
+"ਸਰੋਤ ਪੈਡ ਹੋਵੇਗਾ, ਉਸ ਪੈਡ ਤੋਂ ਆਉਟਪੁੱਟ ਨੂੰ ਆਉਟਪੁੱਟ ਫਾਇਲ ਵਿੱਚ ਲਿਖਿਆ ਜਾਵੇਗਾ। ਪਰ "
+"ਪਾਈਪਲਾਈਨ ਖੁਦ ਦੀ ਆਉਟਪੁੱਟ ਦਾ ਧਿਆਨ ਵੀ ਰੱਖ ਸਕਦੀ ਹੈ - ਇਸ ਨਾਲ ਆਉਟਪੁੱਟ ਨੂੰ "
+"icecast ਸਰਵਰ ਉੱਤੇ shout2send ਜਾਂ ਕਿਸੇ ਹੋਰ ਰਾਹੀਂ ਵੀ ਭੇਜਿਆ ਜਾ ਸਕਦਾ ਹੈ। ਜਦੋਂ "
+"ਅਣ-ਸੈੱਟ "
+"ਕੀਤਾ ਜਾਂ ਖਾਲੀ ਮੁੱਲ ਨਾਲ ਸੈੱਟ ਕੀਤਾ ਤਾਂ, ਡਿਫਾਲਟ ਪਾਈਪਲਾਈਨ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। ਇਸ ਇਸ "
+"ਵੇਲੇ "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux'  ਹੈ ਅਤੇ "
+"VP8 codec ਦੀ ਵਰਤੋਂ ਕਰਕੇ WEBM ਨਾਲ ਰਿਕਾਰਡ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। %T ਸਿਸਟਮ ਉੱਤੇ ਢੁੱਕਵੀ "
+"ਥਰਿੱਡ "
+"ਗਿਣਤੀ ਦਾ ਅੰਦਾਜ਼ਾ ਲਗਾਉਣ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -452,23 +466,19 @@ msgid "Logging out of the system."
 msgstr "ਸਿਸਟਮ ਲਾਗ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
 
 #: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
-#| msgid "Power Off..."
 msgid "Power Off"
 msgstr "ਬੰਦ ਕਰੋ"
 
 #: ../js/ui/endSessionDialog.js:76
-#| msgid "Click Log Out to quit these applications and log out of the system."
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨਾਂ ਬੰਦ ਕਰਨ ਅਤੇ ਸਿਸਟਮ ਨੂੰ ਬੰਦ ਕਰਨ ਲਈ ਬੰਦ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
 
 #: ../js/ui/endSessionDialog.js:77
 #, c-format
-#| msgid "The system will restart automatically in %d seconds."
 msgid "The system will power off automatically in %d seconds."
 msgstr "ਸਿਸਟਮ ਨੂੰ ਆਟੋਮੈਟਿਕ ਹੀ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵੇਗਾ।"
 
 #: ../js/ui/endSessionDialog.js:78
-#| msgid "Logging out of the system."
 msgid "Powering off the system."
 msgstr "ਸਿਸਟਮ ਬੰਦ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
 
@@ -626,7 +636,8 @@ msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
 msgid "No matching results."
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
 
-#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "...ਬੰਦ ਕਰੋ"
 
@@ -825,144 +836,139 @@ msgstr "...ਕੀਬੋਰਡ ਲੇਆਉਟ ਵੇਖੋ"
 msgid "Localization Settings"
 msgstr "ਲੋਕਲਾਈਜ਼ੇਸ਼ਨ ਸੈਟਿੰਗ"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
-#| msgid "Unknown"
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1437
 msgid "<unknown>"
 msgstr "<ਅਣਜਾਣ>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:295
-#| msgid "Disabled"
 msgid "disabled"
 msgstr "ਬੰਦ ਹੈ"
 
-#: ../js/ui/status/network.js:476
-#| msgid "Connection"
+#: ../js/ui/status/network.js:478
 msgid "connecting..."
 msgstr "ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:481
 msgid "authentication required"
 msgstr "ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:491
+msgid "firmware missing"
+msgstr "ਫਿਰਮਵੇਅਰ ਮੌਜੂਦ ਨਹੀਂ ਹੈ"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:498
 msgid "cable unplugged"
 msgstr "ਕੇਬਲ ਕੱਢੀ ਹੋਈ ਹੈ"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
-#| msgid "Available"
+#: ../js/ui/status/network.js:503
 msgid "unavailable"
 msgstr "ਨਾ-ਉਪਲੱਬਧ"
 
-#: ../js/ui/status/network.js:491
-#| msgid "Connection"
+#: ../js/ui/status/network.js:505
 msgid "connection failed"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1385
 msgid "Connected (private)"
 msgstr "ਕੁਨੈਕਟ ਹੈ (ਪ੍ਰਾਈਵੇਟ)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:666
 msgid "Auto Ethernet"
 msgstr "ਆਟੋ ਈਥਰਨੈੱਟ"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:741
 msgid "Auto broadband"
 msgstr "ਆਟੋ ਬਰਾਡਬੈਂਡ"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:744
 msgid "Auto dial-up"
 msgstr "ਆਟੋ ਡਾਇਲ-ਅੱਪ"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:887 ../js/ui/status/network.js:1397
 #, c-format
-#| msgid "Quit %s"
 msgid "Auto %s"
 msgstr "ਆਟੋ %s"
 
-#: ../js/ui/status/network.js:845
-#| msgid "Bluetooth"
+#: ../js/ui/status/network.js:889
 msgid "Auto bluetooth"
 msgstr "ਆਟੋ ਬਲਿਊਟੁੱਥ"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1399
 msgid "Auto wireless"
 msgstr "ਆਟੋ ਬੇਤਾਰ"
 
-#: ../js/ui/status/network.js:1413
-#| msgid "More"
+#: ../js/ui/status/network.js:1457
 msgid "More..."
 msgstr "ਹੋਰ..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1480
 msgid "Enable networking"
 msgstr "ਨੈੱਟਵਰਕਿੰਗ ਚਾਲੂ ਹੈ"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1492
 msgid "Wired"
 msgstr "ਤਾਰ"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1503
 msgid "Wireless"
 msgstr "ਬੇਤਾਰ"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1513
 msgid "Mobile broadband"
 msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ"
 
-#: ../js/ui/status/network.js:1479
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1523
 msgid "VPN Connections"
 msgstr "VPN ਕੁਨੈਕਸ਼ਨ"
 
-#: ../js/ui/status/network.js:1488
-#| msgid "Power Settings"
+#: ../js/ui/status/network.js:1532
 msgid "Network Settings"
 msgstr "ਨੈੱਟਵਰਕ ਸੈਟਿੰਗ"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1827
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "ਹੁਣ ਤੁਸੀਂ ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਨੈੱਟਵਰਕ '%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1831
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "ਹੁਣ ਤੁਸੀਂ ਬੇਤਾਰ ਨੈੱਟਵਰਕ '%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1835
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "ਹੁਣ ਤੁਸੀਂ ਤਾਰ ਵਾਲੇ ਨੈੱਟਵਰਕ '%s'  ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1839
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "ਤੁਸੀਂ ਹੁਣ VPN ਨੈੱਟਵਰਕ '%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਚੁੱਕੇ ਹੋ"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "ਤੁਸੀਂ ਹੁਣ '%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋ"
 
-#: ../js/ui/status/network.js:1808
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1852
 msgid "Connection established"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ ਗਿਆ"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1974
 msgid "Networking is disabled"
 msgstr "ਨੈੱਟਵਰਕਿੰਗ ਬੰਦ ਹੈ"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2099
 msgid "Network Manager"
 msgstr "ਨੈੱਟਵਰਕ ਮੈਨੇਜਰ"
 
@@ -1142,7 +1148,6 @@ msgstr "ਵਰਜਨ ਛਾਪੋ"
 
 #: ../src/shell-app.c:454
 #, c-format
-#| msgid "Failed to unmount '%s'"
 msgid "Failed to launch '%s'"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ"
 

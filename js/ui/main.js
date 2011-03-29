@@ -539,7 +539,7 @@ function _relayout() {
         if (!isPrimary && !haveTopLeftCorner)
             continue;
 
-        let corner = new Panel.HotCorner();
+        let corner = new Panel.HotCorner(isPrimary ? panel.button : null);
         hotCorners.push(corner);
         corner.actor.set_position(cornerX, cornerY);
         if (isPrimary)

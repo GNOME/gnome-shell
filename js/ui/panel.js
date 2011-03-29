@@ -300,6 +300,10 @@ AppMenuButton.prototype = {
 
         this._visible = true;
         this.actor.show();
+
+        if (!this._targetIsCurrent)
+            return;
+
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 255,
@@ -312,6 +316,11 @@ AppMenuButton.prototype = {
             return;
 
         this._visible = false;
+        if (!this._targetIsCurrent) {
+            this.actor.hide();
+            return;
+        }
+
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 0,
@@ -622,12 +631,17 @@ PanelCorner.prototype = {
  * This class manages the "hot corner" that can toggle switching to
  * overview.
  */
-function HotCorner() {
-    this._init();
+function HotCorner(button) {
+    this._init(button);
 }
 
 HotCorner.prototype = {
-    _init : function() {
+    _init : function(button) {
+        // This is the activities button associated with this hot corner,
+        // if this is on the primary monitor (or null with the corner is
+        // on a different monitor)
+        this._button = button;
+
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
@@ -654,6 +668,8 @@ HotCorner.prototype = {
 
         this._activationTime = 0;
 
+        this.actor.connect('enter-event',
+                           Lang.bind(this, this._onEnvironsEntered));
         this.actor.connect('leave-event',
                            Lang.bind(this, this._onEnvironsLeft));
         // Clicking on the hot corner environs should result in the same bahavior
@@ -730,6 +746,11 @@ HotCorner.prototype = {
         this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
     },
 
+    _onEnvironsEntered : function() {
+        if (this._button)
+            this._button.hover = true;
+    },
+
     _onCornerEntered : function() {
         if (!this._entered) {
             this._entered = true;
@@ -757,6 +778,9 @@ HotCorner.prototype = {
     },
 
     _onEnvironsLeft : function(actor, event) {
+        if (this._button)
+            this._button.hover = false;
+
         if (event.get_related() != this._corner)
             this._entered = false;
         return false;

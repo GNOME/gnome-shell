@@ -11,11 +11,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-24 18:16+0000\n"
-"PO-Revision-Date: 2011-03-24 14:11-0300\n"
-"Last-Translator: Rodrigo Padula de Oliveira <contato@rodrigopadula.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-27 17:44-0400\n"
+"PO-Revision-Date: 2011-03-26 12:05-0300\n"
+"Last-Translator: Gabriel F. Vilar <cogumm@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,13 +100,13 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 "Configura a fila de processamento GStreamer usada para codificar gravações. "
-"Ela segue a sintaxe usada para gst-launch. A fila de processamento deve "
-"ter um sink pad onde o vídeo gravado é escrito. Ele normalmente terá um "
-"source pad desconectado; saídas deste pad serão gravadas no arquivo de "
-"saída. Porém, a fila de processamento pode também tomar conta de sua própria "
-"saída - isto poderia ser usado para enviar a saída para um servidor icecast "
-"via shout2send oiu similar. Quando não definido ou definido para um valor "
-"vazio, o fluxo de processamento padrão será usado. Atualmente é \"videorate ! "
+"Ela segue a sintaxe usada para gst-launch. A fila de processamento deve ter "
+"um sink pad onde o vídeo gravado é escrito. Ele normalmente terá um source "
+"pad desconectado; saídas deste pad serão gravadas no arquivo de saída. "
+"Porém, a fila de processamento pode também tomar conta de sua própria saída "
+"- isto poderia ser usado para enviar a saída para um servidor icecast via "
+"shout2send oiu similar. Quando não definido ou definido para um valor vazio, "
+"o fluxo de processamento padrão será usado. Atualmente é \"videorate ! "
 "vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux\" e grave para WEBM "
 "usando o codec VP8. %T é usado como espaço reservado para um convidado na "
 "lista para uma ótima contagem de threads no sistema."
@@ -374,7 +373,7 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "Próxima semana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
 msgid "Remove"
 msgstr "Remover"
 
@@ -449,8 +448,7 @@ msgstr "Encerrar sessão"
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
-"Clique em Encerrar sessão para finalizar estes aplicativos e sair "
-"do sistema."
+"Clique em Encerrar sessão para finalizar estes aplicativos e sair do sistema."
 
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
@@ -536,11 +534,11 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página Web"
 
-#: ../js/ui/messageTray.js:987
+#: ../js/ui/messageTray.js:993
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2145
+#: ../js/ui/messageTray.js:2151
 msgid "System Information"
 msgstr "Informação do sistema"
 
@@ -596,7 +594,6 @@ msgid "PLACES & DEVICES"
 msgstr "LOCAIS & DISPOSITIVOS"
 
 #: ../js/ui/polkitAuthenticationAgent.js:74
-#| msgid "authentication required"
 msgid "Authentication Required"
 msgstr "Autenticação necessária"
 
@@ -605,15 +602,18 @@ msgid "Administrator"
 msgstr "Administrador"
 
 #: ../js/ui/polkitAuthenticationAgent.js:176
-#| msgid "authentication required"
 msgid "Authenticate"
 msgstr "Autenticação"
 
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
 msgstr "Senha:"
 
@@ -838,133 +838,139 @@ msgstr "Exibir Layout de teclado..."
 msgid "Localization Settings"
 msgstr "Configurações de localização"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
 msgid "<unknown>"
 msgstr "<desconhecido>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
+#: ../js/ui/status/network.js:311
 msgid "disabled"
 msgstr "desabilitado"
 
-#: ../js/ui/status/network.js:476
+#: ../js/ui/status/network.js:494
 msgid "connecting..."
 msgstr "conectando..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:497
 msgid "authentication required"
 msgstr "autenticação necessária"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
+msgstr "firmware faltando"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:514
 msgid "cable unplugged"
 msgstr "cabo desconectado"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:519
 msgid "unavailable"
 msgstr "indisponível"
 
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:521
 msgid "connection failed"
 msgstr "conexão falhou"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
 msgid "Connected (private)"
 msgstr "Conectado (privado)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
 msgstr "Rede cabeada - automática"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:758
 msgid "Auto broadband"
 msgstr "Banda larga - automática"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:761
 msgid "Auto dial-up"
 msgstr "Conexão discada - automática"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
 #, c-format
 msgid "Auto %s"
 msgstr "%s - automática"
 
-#: ../js/ui/status/network.js:845
+#: ../js/ui/status/network.js:906
 msgid "Auto bluetooth"
 msgstr "Bluetooth automático"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1416
 msgid "Auto wireless"
 msgstr "Rede sem fio automática"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1474
 msgid "More..."
 msgstr "Mais..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1497
 msgid "Enable networking"
 msgstr "Habilitar rede"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1509
 msgid "Wired"
 msgstr "Cabeada"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1520
 msgid "Wireless"
 msgstr "Sem fio"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
 msgstr "Banda larga móvel"
 
-#: ../js/ui/status/network.js:1479
+#: ../js/ui/status/network.js:1540
 msgid "VPN Connections"
 msgstr "Conexões VPN"
 
-#: ../js/ui/status/network.js:1488
+#: ../js/ui/status/network.js:1549
 msgid "Network Settings"
 msgstr "Configurações de rede"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Você está agora conectado à rede banda larga móvel \"%s\""
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1848
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Você está agora conectado à rede sem fios \"%s\""
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1852
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Você está agora conectado à rede cabeada \"%s\""
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1856
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Você está agora conectado à rede VPN \"%s\""
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1861
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Você está agora conectado à \"%s\""
 
-#: ../js/ui/status/network.js:1808
+#: ../js/ui/status/network.js:1869
 msgid "Connection established"
 msgstr "Conexão estabelecida"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1991
 msgid "Networking is disabled"
 msgstr "Rede está desabilitada"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2116
 msgid "Network Manager"
 msgstr "Gerenciador de rede"
 
@@ -1066,22 +1072,22 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Microfone"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:331
 #, c-format
 msgid "%s is online."
 msgstr "%s está conectado."
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:336
 #, c-format
 msgid "%s is offline."
 msgstr "%s está desconectado."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is away."
 msgstr "%s está ausente."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:342
 #, c-format
 msgid "%s is busy."
 msgstr "%s está ocupado."
@@ -1089,7 +1095,7 @@ msgstr "%s está ocupado."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:473
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviado para %X em %A"
@@ -1210,4 +1216,3 @@ msgstr "Sistema de arquivos"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-

@@ -11,6 +11,7 @@ const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
+const C_ = Gettext.pgettext;
 
 const History = imports.misc.history;
 const Main = imports.ui.main;
@@ -245,36 +246,38 @@ Source.prototype = {
         let [success, events] = logManager.get_filtered_events_finish(result);
 
         let logMessages = events.map(makeMessageFromTplEvent);
+
+        let pendingTpMessages = this._channel.get_pending_messages();
+        let pendingMessages = pendingTpMessages.map(function (tpMessage) { return makeMessageFromTpMessage(tpMessage, NotificationDirection.RECEIVED); });
+
+        let showTimestamp = false;
+
         for (let i = 0; i < logMessages.length; i++) {
-            this._notification.appendMessage(logMessages[i], true);
-        }
+            let logMessage = logMessages[i];
+            let isPending = false;
 
-        let pendingMessages = this._channel.get_pending_messages();
-        let hasPendingMessage = false;
-        for (let i = 0; i < pendingMessages.length; i++) {
-            let message = makeMessageFromTpMessage(pendingMessages[i], NotificationDirection.RECEIVED);
-
-            // Skip any pending messages that are in the logs.
-            let inLog = false;
-            for (let j = 0; j < logMessages.length; j++) {
-                let logMessage = logMessages[j];
-                if (logMessage.timestamp == message.timestamp && logMessage.text == message.body) {
-                    inLog = true;
+            // Skip any log messages that are also in pendingMessages
+            for (let j = 0; j < pendingMessages.length; j++) {
+                let pending = pendingMessages[j];
+                if (logMessage.timestamp == pending.timestamp && logMessage.text == pending.text) {
+                    isPending = true;
+                    break;
                 }
             }
 
-            if (inLog)
-                continue;
-
-            this._notification.appendMessage(message, true);
-            hasPendingMessage = true;
+            if (!isPending) {
+                showTimestamp = true;
+                this._notification.appendMessage(logMessage, true, ['chat-log-message']);
+            }
         }
 
-        // Only show the timestamp if we have at least one message.
-        if (hasPendingMessage || logMessages.length > 0)
+        if (showTimestamp)
             this._notification.appendTimestamp();
 
-        if (hasPendingMessage)
+        for (let i = 0; i < pendingMessages.length; i++)
+            this._notification.appendMessage(pendingMessages[i], true);
+
+        if (pendingMessages.length > 0)
             this.notify();
     },
 
@@ -400,10 +403,12 @@ Notification.prototype = {
      * @noTimestamp: Whether to add a timestamp. If %true, no timestamp
      *   will be added, regardless of the difference since the
      *   last timestamp
+     * @styles: A list of CSS class names.
      */
-    appendMessage: function(message, noTimestamp) {
+    appendMessage: function(message, noTimestamp, styles) {
         let messageBody = GLib.markup_escape_text(message.text, -1);
-        let styles = [message.direction];
+        styles = styles || [];
+        styles.push(message.direction);
 
         if (message.messageType == Tp.ChannelTextMessageType.ACTION) {
             let senderAlias = GLib.markup_escape_text(message.sender, -1);
@@ -463,15 +468,39 @@ Notification.prototype = {
         }
     },
 
+    _formatTimestamp: function(date) {
+        let now = new Date();
+
+        var daysAgo = (now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
+
+        // Show a week day and time if date is in the last week
+        if (daysAgo < 1 || (daysAgo < 7 && now.getDay() != date.getDay())) {
+            /* Translators: this is a time format string followed by a date.
+             If applicable, replace %X with a strftime format valid for your
+             locale, without seconds. */
+            // xgettext:no-c-format
+            format = _("Sent at %X on %A");
+
+        // FIXME: The next two are stolen from calendar.js with the comment to avoid
+        // a string-freeze break. They should be replaced with better strings
+        // with 'Sent at', appropriate context and appropriate translator comment.
+
+        } else if (date.getYear() == now.getYear()) {
+            /* Translators: Shown on calendar heading when selected day occurs on current year */
+            format = C_("calendar heading", "%A, %B %d");
+        } else {
+            /* Translators: Shown on calendar heading when selected day occurs on different year */
+            format = C_("calendar heading", "%A, %B %d, %Y");
+        }
+
+        return date.toLocaleFormat(format);
+    },
+
     appendTimestamp: function() {
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
-        /* Translators: this is a time format string followed by a date.
-           If applicable, replace %X with a strftime format valid for your
-           locale, without seconds. */
-        // xgettext:no-c-format
-        let timeLabel = this.addBody(lastMessageDate.toLocaleFormat(_("Sent at %X on %A")), false, { expand: true, x_fill: false, x_align: St.Align.END });
+        let timeLabel = this.addBody(this._formatTimestamp(lastMessageDate), false, { expand: true, x_fill: false, x_align: St.Align.END });
         timeLabel.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: timeLabel, time: lastMessageTime, realMessage: false });
 

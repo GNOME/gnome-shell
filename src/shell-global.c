@@ -902,7 +902,7 @@ shell_global_create_pointer_barrier (ShellGlobal *global,
                                      int x1, int y1, int x2, int y2,
                                      int directions)
 {
-#if XFIXES_MAJOR >= 5
+#if HAVE_XFIXESCREATEPOINTERBARRIER
   Display *xdpy;
 
   xdpy = meta_plugin_get_xdisplay (global->plugin);
@@ -928,7 +928,7 @@ shell_global_create_pointer_barrier (ShellGlobal *global,
 void
 shell_global_destroy_pointer_barrier (ShellGlobal *global, guint32 barrier)
 {
-#if XFIXES_MAJOR >= 5
+#if HAVE_XFIXESCREATEPOINTERBARRIER
   Display *xdpy;
 
   g_return_if_fail (barrier > 0);

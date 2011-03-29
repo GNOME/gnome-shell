@@ -13,6 +13,9 @@ GIcon *shell_util_get_icon_for_uri (const char *text_uri);
 GIcon *shell_util_icon_from_string (const char *string, GError **error);
 void   shell_util_set_hidden_from_pick (ClutterActor *actor, gboolean hidden);
 
+void shell_util_get_transformed_allocation (ClutterActor    *actor,
+                                            ClutterActorBox *box);
+
 char *shell_util_format_date (const char *format,
                               gint64      time_ms);
 

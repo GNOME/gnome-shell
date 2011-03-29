@@ -6,12 +6,12 @@
 # Zeper <zeper@msn.com>, 2010.
 # Bakhtiyar<bakhtiyar108@gmail.com>, 2011
 # Oghlan Temkin <temkin119@gmail.com>,2011
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2011-02-15 23:39+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-24 08:03+0000\n"
 "PO-Revision-Date: 2010-11-25 14:28+0600\n"
 "Last-Translator: Oghlan Temkin <temkin119@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -57,22 +57,27 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "بۇيرۇق (Alt-F2) سۆزلەشكۈنىڭ تارىخى"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+#| msgid "History for command (Alt-F2) dialog"
+msgid "History for the looking glass dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "true بولسا سائەتتە ۋاقىت كۆرسەتكەندىن تاشقىرى چېسلا كۆرسىتىدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "true بولسا ۋاقىتتا سېكۇنتمۇ كۆرۈنىدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "ئەگەر راست(true) بولسا يىلنامىدىكى ISO ھەپتە چېسلانى كۆرسىتىدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "ئامراق پروگراممىلارنىڭ ئۈستەلئۈستى ھۆججەت ID تىزىملىكى"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -87,42 +92,42 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr "ئۈن ئېلىشنى كودلاشتا ئىشلىتىلىدىغان GStreamer ئاقما لىنىيىنى تەڭشەيدۇ. ‫ئۇ gst-launch گرامماتىكىسىغا بوي سۇنىدۇ. ‫بۇ ئاقما لىنىيىدە ئۇلانمىغان sink pad بولۇشى لازىم، خاتىرىلىنىدىغان سىن مۇشۇ جايدا خاتىرىلىنىدۇ. ‫بۇ لىنىيىدە ئادەتتە يەنە بىر ئۇلانمىغان مەنبە pad بولىدۇ؛ بۇ pad چىقارغان ئۇچۇرلار ھۆججەتكە يېزىلىدۇ. ‫ئەمما ئاقما لىنىيە ئۆزىنىڭ چىقىرىشىنى بىر تەرەپ قىلالايدۇ، بۇنداق بولغاندا shout2send ئارقىلىق ياكى شۇنىڭغا ئوخشاش ئۇسۇلدا چىقىرىشنى icecast مۇلازىمېتىرىغا يوللايدۇ. ‫ئاقما لىنىيە تەڭشەلمىگەن ياكى بوش قىممەتكە تەڭشەلگەندە كۆڭۈلدىكى ئاقما لىنىيە قوزغىتىلىدۇ. ‫ئۇنىڭ نۆۋەتتىكى قىممىتى 'videorate ! vp8enc سۈپەت=10 سۈرەت=2 سىزىقلار=%T ! قاتار! webmmux' ۋە WEBM گە خاتىرىلەنگەنلەر VP8 كودىنى ئىشلىتىدۇ. T% بولسا سىستېمىنىڭ ئەڭ ياخشى سىزىق ئېلىپبەسىنى ھېسابلايدىغان ئورۇن بەلگىسى"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "سائەت ئىچىدە چېسلا كۆرسەت"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "يىلنامىدە ھەپتىنى كۆرسىتىدۇ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "ۋاقىت ئىچىدە سېكۇنتنى بىللە كۆرسەت"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "مۇناسىپ پروگرامما بەلگىسى يىغقۇچ رايونىدا كۆرسىتىلىدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr "خاتىرىلەنگەن ئېكراننىڭ ھۆججەت ئاتى نۆۋەتتىكى چېسلا ئاساسىدا بىردىنبىر بولۇپ بۇ كېڭەيتىلگەن ئاتىنى ئىشلىتىدۇ. ئۇ ئۆزگەرسە ئوخشاش بولمىغان قاچا فورماتىدا خاتىرىلەيدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr "GNOME Shell ئېكران خاتىرىلىگۈچ ھەر سېكۇنتتا خاتىرىلەيدىغان ئېكران كەسمىسى كاندۇك سۈرىتى(ھەر سېكۇنتتىكى كاندۇك سانى)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "ئېكران كەسمىسىنى كودلاشتا ئىشلىتىلىدىغان gstreamer ئاقما لىنىيىسى"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -130,59 +135,55 @@ msgid ""
 "remove already saved data."
 msgstr "چاپان (shell) ئادەتتىكى ئەھۋالدا كۆپ ئىشلىتىلىدىغان ئاكتىپ پروگراممىلار(مەسىلەن، ئىجرا قىلىنىۋاتقان)نى كۆزىتىدۇ. گەرچە بۇ سانلىق مەلۇماتلار مەخپىي ساقلانسىمۇ، شەخسىي سىر سەۋەبىدىن بۇنى چەكلىشىڭىز مۇمكىن. دىققەت بۇنداق قىلغاندا ئاللىبۇرۇن ساقلانغان سانلىق مەلۇماتلار چىقىرىۋېتىلمەيدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "چەكلىنىدىغان كېڭەيتىلمىنىڭ Uuid سى"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "پروگراممىنىڭ ئىشلىتىلىشى ھەققىدىكى ستاتىستىكىنى توپلامدۇ يوق"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "OpenSearch نىڭ تەمىنلىگۈچىلىرى چەكلەنگەن"
 
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "بۇيرۇق تېپىلمىدى"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "بۇيرۇقنى تەھلىل قىلالمىدى:"
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "بۇنداق پروگرامما يوق"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "«%s» ئىجرا قىلىش مەغلۇپ بولدى:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:174
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "ھەممىسى"
 
-#: ../js/ui/appDisplay.js:261
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "پروگراممىلار"
 
-#: ../js/ui/appDisplay.js:291
-msgid "PREFERENCES"
-msgstr "مايىللىق"
+#: ../js/ui/appDisplay.js:354
+msgid "SETTINGS"
+msgstr ""
 
-#: ../js/ui/appDisplay.js:551
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "يېڭى كۆزنەك"
 
-#: ../js/ui/appDisplay.js:555
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "يىغقۇچتىن چىقىرىۋەت"
 
-#: ../js/ui/appDisplay.js:556
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "يىغقۇچقا قوش"
 
@@ -199,19 +200,19 @@ msgstr "%s يىغقۇچىڭىزدىن چىقىرىۋېتىلىدۇ."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "كۈن بويى"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -221,43 +222,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
-msgstr "ي"
+msgstr "ش"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "د"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "س"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "چ"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
-msgstr "پ"
+msgstr "س"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "ج"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ش"
@@ -268,136 +269,136 @@ msgstr "ش"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "ي"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "د"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "س"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "چ"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "پ"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "ج"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "ش"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "ھېچنېمە پىلانلانمىدى"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A، %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A، %B %d، %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "بۈگۈن"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
 msgstr "ئەتە"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "بۇ ھەپتە"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
 msgstr "كېيىنكى ھەپتە"
 
-#: ../js/ui/dash.js:174
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "چىقىرىۋەت"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:91
 msgid "Date and Time Settings"
 msgstr "چېسلا ۋە ۋاقىت تەڭشىكى"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "ئوچۇق يىلنامە"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:148
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e، %R:%S"
 
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %b %e، %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:153
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:161
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e، %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e، %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:166
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%p%l:%M (%a)"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:193
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e، %Y"
 
@@ -410,7 +411,7 @@ msgstr "يېقىنقى تۈرلەر"
 msgid "Log Out %s"
 msgstr "%s تىزىمدىن چىقىش"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "تىزىمدىن چىق"
 
@@ -432,105 +433,120 @@ msgstr "%d سېكۇنتتىن كېيىن ئۆزلۈكىدىن تىزىمدىن �
 msgid "Logging out of the system."
 msgstr "سىستېما تىزىمدىن چىقىۋاتىدۇ"
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "تاقا"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "تاقاش (Shut Down) نى بېسىپ پروگراممىدىن چېكىنىش ۋە سىستېمىنى تاقاش."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr ""
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "بۇ سىستېما %d سېكۇنتتىن كېيىن ئۆزلۈكىدىن تاقىلىدۇ."
+#| msgid "Click Log Out to quit these applications and log out of the system."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "سىستېما  تاقىلىۋاتىدۇ."
+#, c-format
+#| msgid "The system will restart automatically in %d seconds."
+msgid "The system will power off automatically in %d seconds."
+msgstr ""
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+#| msgid "Logging out of the system."
+msgid "Powering off the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "قايتا قوزغات"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "قايتا قوزغىتىش (restart) نى بېسىپ پروگراممىدىن چېكىنىش ۋە سىستېمىنى قايتا قوزغىتىش."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "بۇ سىستېما %d سېكۇنتتىن كېيىن ئۆزلۈكىدىن قايتا قوزغىلىدۇ."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "سىستېما قايتا قوزغىلىۋاتىدۇ."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "جەزملە"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "ۋاز كەچ"
 
-#: ../js/ui/lookingGlass.js:584
+#: ../js/ui/lookingGlass.js:588
 msgid "No extensions installed"
 msgstr "ھېچقانداق كېڭەيتىلمە ئورنىتىلمىغان"
 
-#: ../js/ui/lookingGlass.js:621
+#: ../js/ui/lookingGlass.js:625
 msgid "Enabled"
 msgstr "قوزغىتىلغان"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:623 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "چەكلەنگەن"
 
-#: ../js/ui/lookingGlass.js:625
+#: ../js/ui/lookingGlass.js:629
 msgid "Error"
 msgstr "خاتالىق"
 
-#: ../js/ui/lookingGlass.js:627
+#: ../js/ui/lookingGlass.js:631
 msgid "Out of date"
 msgstr "ۋاقتى ئۆتۈپ كەتكەن"
 
-#: ../js/ui/lookingGlass.js:652
+#: ../js/ui/lookingGlass.js:656
 msgid "View Source"
-msgstr "مەنبەنى كۆرۈش"
+msgstr "مەنبەنى كۆرسەت"
 
-#: ../js/ui/lookingGlass.js:658
+#: ../js/ui/lookingGlass.js:662
 msgid "Web Page"
 msgstr "توربەت"
 
-#: ../js/ui/messageTray.js:1864
+#: ../js/ui/messageTray.js:987
+msgid "Open"
+msgstr "ئاچ"
+
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "سىستېما ئۇچۇرى"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "يېنىۋال"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "كۆزنەكلەر"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "پروگراممىلار"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr ""
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:479
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "%s چېكىن"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "پائالىيەتلەر"
+
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr ""
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -545,116 +561,132 @@ msgstr "قايتا سىنا"
 msgid "Connect to..."
 msgstr "باغلىنىش…"
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "ئورۇن ۋە ئۈسكۈنىلەر"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "سالاھىيەت دەلىللەش"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "باشقۇرغۇچى"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr ""
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr ""
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "ئىم:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:506
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "بۇيرۇق كىرگۈزۈڭ:"
 
-#: ../js/ui/searchDisplay.js:295
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "ئىزدەۋاتىدۇ..."
 
-#: ../js/ui/searchDisplay.js:309
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "ماس كېلىدىغان نەتىجە يوق."
 
-#: ../js/ui/statusMenu.js:102
-msgid "Available"
-msgstr "بار"
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr ""
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "توڭلات"
+
+#: ../js/ui/statusMenu.js:184
+msgid "Available"
+msgstr "ئىشلىتىلىشچان"
+
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "ئالدىراش"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "ھېساباتىم"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "سىستېما تەڭشىكى"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "ئېكراننى قۇلۇپلاش"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "ئىشلەتكۈچى ئالماشتۇرۇش"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "تىزىمدىن چىقىش…"
 
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "تاقا…"
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "كېڭەيت تارايت"
 
-#: ../js/ui/status/accessibility.js:89
-msgid "Screen Reader"
-msgstr "ئېكران ئوقۇغۇچ"
-
-#: ../js/ui/status/accessibility.js:92
-msgid "Screen Keyboard"
-msgstr "ئېكران ھەرپتاختىسى"
-
-#: ../js/ui/status/accessibility.js:95
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "كۆرۈنمە ئاگاھلاندۇرۇش"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
 msgstr "Sticky Keys"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:83
 msgid "Slow Keys"
 msgstr "Slow Keys"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:86
 msgid "Bounce Keys"
 msgstr "Bounce Keys"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:89
 msgid "Mouse Keys"
 msgstr "Mouse Keys"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:93
 msgid "Universal Access Settings"
 msgstr "ئۇنىۋېرسال زىيارەت تەڭشىكى"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "يۇقىرى ئاق-قارىلىقى"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "چوڭ تېكىست"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "كۆكچىش"
 
@@ -674,205 +706,355 @@ msgstr "يېڭى ئۈسكىنىنى تەڭشەيدۇ..."
 msgid "Bluetooth Settings"
 msgstr "كۆكچىش تەڭشىكى"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "باغلىنىش"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "ھۆججەت يوللاۋاتىدۇ..."
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "ھۆججەتكە كۆز يۈگۈرت..."
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "ئۈسكىنىگە كۆز يۈگۈرتكەندە خاتالىق كۆرۈلدى"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "ئىلتىماس قىلغان ئۈسكىنىگە كۆز يۈگۈرتەلمىدى، خاتالىق '%s'"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "ھەرپتاختا تەڭشىكى"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "چاشقىنەك تەڭشىكى"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "ئاۋاز تەڭشىكى"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "'%s' تىن كەلگەن دەلىللەش ئىلتىماسى"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "ئۈسكۈنە %s مۇلازىمەت %s نى زىيارەت قىلماقچى"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "ھەمىشە زىيارەتكە رۇخسەت"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "بۇ قېتىمغىلا رۇخسەت"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "رەت قىل"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s نىڭ جەزملىشىنى جۈپلەشتۈرۈۋاتىدۇ"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ئۈسكۈنە'%s' كومپيۇتېر بىلەن جۈپلەنمەكچى"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "سىز كىرگۈزگەن PIN '%s'  نومۇرى ئۈسكىنىدىكىگە ئوخشايدىغانلىقىنى جەزملەڭ."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
-msgstr "ماسلاشمىلار"
+msgstr "تېپىلغانلىرى"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "ماسلاشمىدى"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s دىن كەلگەن جۈپلەش ئىلتىماسى"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "ئۈسكۈنىسىدە يوللىغان PIN نومۇرىنى كىرگۈزۈڭ."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
-msgstr "تامام"
+msgstr "جەزملە"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr ""
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "يەرلىكلەشتۈرۈش تەڭشىكى"
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+#| msgid "Unknown"
+msgid "<unknown>"
+msgstr ""
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+#| msgid "Disabled"
+msgid "disabled"
+msgstr ""
+
+#: ../js/ui/status/network.js:476
+#| msgid "Connection"
+msgid "connecting..."
+msgstr ""
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:479
+msgid "authentication required"
+msgstr ""
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:485
+msgid "cable unplugged"
+msgstr ""
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:489
+#| msgid "Available"
+msgid "unavailable"
+msgstr ""
+
+#: ../js/ui/status/network.js:491
+#| msgid "Connection"
+msgid "connection failed"
+msgstr ""
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+msgid "Connected (private)"
+msgstr ""
+
+#: ../js/ui/status/network.js:636
+msgid "Auto Ethernet"
+msgstr "ئاپتوماتىك Ethernet"
+
+#: ../js/ui/status/network.js:697
+msgid "Auto broadband"
+msgstr ""
+
+#: ../js/ui/status/network.js:700
+msgid "Auto dial-up"
+msgstr ""
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#, c-format
+#| msgid "Quit %s"
+msgid "Auto %s"
+msgstr ""
+
+#: ../js/ui/status/network.js:845
+#| msgid "Bluetooth"
+msgid "Auto bluetooth"
+msgstr ""
+
+#: ../js/ui/status/network.js:1355
+msgid "Auto wireless"
+msgstr ""
+
+#: ../js/ui/status/network.js:1413
+msgid "More..."
+msgstr "تېخىمۇ كۆپ..."
+
+#: ../js/ui/status/network.js:1436
+msgid "Enable networking"
+msgstr ""
+
+#: ../js/ui/status/network.js:1448
+msgid "Wired"
+msgstr "سىملىق"
+
+#: ../js/ui/status/network.js:1459
+msgid "Wireless"
+msgstr "سىمسىز"
+
+#: ../js/ui/status/network.js:1469
+msgid "Mobile broadband"
+msgstr "كۆچمە كەڭ بەلۋاغ"
+
+#: ../js/ui/status/network.js:1479
+#| msgid "Connection"
+msgid "VPN Connections"
+msgstr ""
+
+#: ../js/ui/status/network.js:1488
+#| msgid "Power Settings"
+msgid "Network Settings"
+msgstr "تور تەڭشەكلىرى"
+
+#: ../js/ui/status/network.js:1783
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1787
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1791
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1795
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1800
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr ""
+
+#: ../js/ui/status/network.js:1808
+#| msgid "Connection"
+msgid "Connection established"
+msgstr ""
+
+#: ../js/ui/status/network.js:1930
+msgid "Networking is disabled"
+msgstr ""
+
+#: ../js/ui/status/network.js:2055
+msgid "Network Manager"
+msgstr "تور باشقۇرغۇچ"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "توك مەنبە تەڭشىكى"
 
-#: ../js/ui/status/power.js:112
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr ""
+
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "%d سائەت قالدى"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s  قالدى"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "سائەت"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "مىنۇت"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d مىنۇت قالدى"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "ئۆزگىرىشچان توك ماسلاشتۇرغۇچ"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "يان كومپيۇتېر توكدانى"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "ئېكران"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "چاشقىنەك"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "ھەرپتاختا"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "يانفون"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "ۋاسىتە چالغۇ"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "سەزگۈر تاختا"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "كومپيۇتېر"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "نامەلۇم"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "دىسكا"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "مىكروفون"
 
-#: ../js/ui/telepathyClient.js:565
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "%s توردا."
 
-#: ../js/ui/telepathyClient.js:570
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "%s توردا يوق."
 
-#: ../js/ui/telepathyClient.js:573
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "%s يوق."
 
-#: ../js/ui/telepathyClient.js:576
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "%s ئالدىراش."
@@ -880,28 +1062,36 @@ msgstr "%s ئالدىراش."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:671
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "سائەت %X %A غا ئەۋەتتى"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "كومپيۇتېر ئىزدەش"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr ""
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "ئىزدە"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s باشلاشنى تاماملىدى"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» تەييار"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -909,43 +1099,65 @@ msgstr[0] "%u چىقىرىلما"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u كىرگۈزۈلمە"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "سىستېما ئاۋازى"
 
-#: ../src/shell-global.c:1363
+#: ../src/main.c:446
+msgid "Print version"
+msgstr "نەشرىنى باس"
+
+#: ../src/shell-app.c:454
+#, c-format
+#| msgid "Failed to unmount '%s'"
+msgid "Failed to launch '%s'"
+msgstr ""
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "بىر مىنۇتتىنمۇ ئىلگىرى"
 
-#: ../src/shell-global.c:1367
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d مىنۇت ئىلگىرى"
 
-#: ../src/shell-global.c:1372
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d سائەت ئىلگىرى"
 
-#: ../src/shell-global.c:1377
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d كۈن ئىلگىرى"
 
-#: ../src/shell-global.c:1382
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d ھەپتە ئىلگىرى"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "ئەنگلىيە پادىشاھلىقى"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "كۆڭۈلدىكى"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr ""
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -957,10 +1169,6 @@ msgstr "ماكان مۇندەرىجە"
 msgid "File System"
 msgstr "ھۆججەت سىستېمىسى"
 
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "ئىزدە"
-
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
@@ -970,6 +1178,39 @@ msgstr "ئىزدە"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "No such application"
+#~ msgstr "بۇنداق پروگرامما يوق"
+
+#~ msgid "PREFERENCES"
+#~ msgstr "مايىللىق"
+
+#~ msgid "Shut Down"
+#~ msgstr "تاقا"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "تاقاش (Shut Down) نى بېسىپ پروگراممىدىن چېكىنىش ۋە سىستېمىنى تاقاش."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "بۇ سىستېما %d سېكۇنتتىن كېيىن ئۆزلۈكىدىن تاقىلىدۇ."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "سىستېما  تاقىلىۋاتىدۇ."
+
+#~ msgid "Confirm"
+#~ msgstr "جەزملە"
+
+#~ msgid "Shut Down..."
+#~ msgstr "تاقا…"
+
+#~ msgid "Screen Reader"
+#~ msgstr "ئېكران ئوقۇغۇچ"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "ئېكران ھەرپتاختىسى"
+
+#~ msgid "Search your computer"
+#~ msgstr "كومپيۇتېر ئىزدەش"
 
 #~ msgid "Clock"
 #~ msgstr "سائەت"

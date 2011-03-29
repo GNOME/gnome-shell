@@ -92,16 +92,32 @@ function NMNetworkMenuItem() {
 }
 
 NMNetworkMenuItem.prototype = {
-    __proto__: PopupMenu.PopupImageMenuItem.prototype,
+    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
 
     _init: function(accessPoints, title, params) {
+        PopupMenu.PopupBaseMenuItem.prototype._init.call(this, params);
+
         accessPoints = sortAccessPoints(accessPoints);
         this.bestAP = accessPoints[0];
 
         let ssid = this.bestAP.get_ssid();
         title = title || NetworkManager.utils_ssid_to_utf8(ssid) || _("<unknown>");
 
-        PopupMenu.PopupImageMenuItem.prototype._init.call(this, title, this._getIcon(), params);
+        this._label = new St.Label({ text: title });
+        this.addActor(this._label);
+        this._icons = new St.BoxLayout({ style_class: 'nm-menu-item-icons' });
+        this.addActor(this._icons, { align: St.Align.END });
+
+        this._signalIcon = new St.Icon({ icon_name: this._getIcon(),
+                                         style_class: 'popup-menu-icon' });
+        this._icons.add_actor(this._signalIcon);
+
+        if (this.bestAP._secType != NMAccessPointSecurity.UNKNOWN &&
+            this.bestAP._secType != NMAccessPointSecurity.NONE) {
+            this._secureIcon = new St.Icon({ icon_name: 'network-wireless-encrypted',
+                                             style_class: 'popup-menu-icon' });
+            this._icons.add_actor(this._secureIcon);
+        }
 
         this._accessPoints = [ ];
         for (let i = 0; i < accessPoints.length; i++) {
@@ -120,7 +136,7 @@ NMNetworkMenuItem.prototype = {
         if (strength > this.bestAP.strength)
             this.bestAP = ap;
 
-        this.setIcon(this._getIcon());
+        this._signalIcon.icon_name = this._getIcon();
     },
 
     _getIcon: function() {
@@ -379,7 +395,7 @@ NMDevice.prototype = {
         // pick the most recently used connection and connect to that
         // or if no connections ever set, create an automatic one
         if (this._connections.length > 0) {
-            this._client.activate_connection(this._connections[0].connection.path, this.device, null, null);
+            this._client.activate_connection(this._connections[0].connection, this.device, null, null);
         } else if (this._autoConnectionName) {
             let connection = this._createAutomaticConnection();
             this._client.add_and_activate_connection(connection, this.device, null, null);
@@ -566,10 +582,11 @@ NMDevice.prototype = {
     },
 
     _createConnectionItem: function(obj) {
-        let path = obj.connection.path;
+        let connection = obj.connection;
         let item = new PopupMenu.PopupMenuItem(obj.name);
+
         item.connect('activate', Lang.bind(this, function() {
-            this._client.activate_connection(path, this.device, null, null);
+            this._client.activate_connection(connection, this.device, null, null);
         }));
         return item;
     },
@@ -1045,7 +1062,7 @@ NMDeviceWireless.prototype = {
             for (let i = 0; i < bestApObj.accessPoints.length; i++) {
                 let ap = bestApObj.accessPoints[i];
                 if (this._connectionValidForAP(best, ap)) {
-                    this._client.activate_connection(best.path, this.device, ap.dbus_path, null);
+                    this._client.activate_connection(best, this.device, ap.dbus_path, null);
                     break;
                 }
             }
@@ -1180,7 +1197,7 @@ NMDeviceWireless.prototype = {
             let accessPoints = sortAccessPoints(accessPointObj.accessPoints);
             for (let i = 0; i < accessPoints.length; i++) {
                 if (this._connectionValidForAP(connection, accessPoints[i])) {
-                    this._client.activate_connection(connection.path, this.device, accessPoints[i].dbus_path, null);
+                    this._client.activate_connection(connection, this.device, accessPoints[i].dbus_path, null);
                     break;
                 }
             }
@@ -1797,7 +1814,7 @@ NMApplet.prototype = {
                         }
                     }
                 } else
-                    a._primaryDevice = this._vpnDevice;
+                    a._primaryDevice = this._devices.vpn.device
 
                 if (a._primaryDevice)
                     a._primaryDevice.setActiveConnection(a);

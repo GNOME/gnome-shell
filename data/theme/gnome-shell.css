@@ -167,8 +167,8 @@ StTooltip StLabel {
 
 /* Switches (to be used in menus) */
 .toggle-switch {
-    width: 4.5em;
-    height: 1.5em;
+    width: 65px;
+    height: 22px;
 }
 
 .toggle-switch-us {
@@ -183,6 +183,10 @@ StTooltip StLabel {
 }
 .toggle-switch-intl:checked {
     background-image: url("toggle-on-intl.svg");
+}
+
+.nm-menu-item-icons {
+    spacing: .5em;
 }
 
 /* Panel */
@@ -1094,6 +1098,10 @@ StTooltip StLabel {
 
 .notification-icon-button > StIcon {
     icon-size: 36px;
+}
+
+.chat-log-message {
+    color: #888888;
 }
 
 .chat-received {

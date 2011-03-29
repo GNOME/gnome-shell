@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-24 08:03+0000\n"
-"PO-Revision-Date: 2011-03-25 00:31+0700\n"
+"POT-Creation-Date: 2011-03-25 20:20+0000\n"
+"PO-Revision-Date: 2011-03-26 13:58+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -846,6 +846,12 @@ msgstr "đang kết nối..."
 #: ../js/ui/status/network.js:479
 msgid "authentication required"
 msgstr "cần xác thực"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:491
+msgid "firmware missing"
+msgstr "thiếu firmware"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:485

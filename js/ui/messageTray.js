@@ -108,6 +108,12 @@ URLHighlighter.prototype = {
         }
 
         this.setMarkup(text, allowMarkup);
+        this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+            // Keep Notification.actor from seeing this and taking
+            // a pointer grab, which would block our button-release-event
+            // handler, if an URL is clicked
+            return this._findUrlAtPos(event) != -1;
+        }));
         this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1) {
@@ -734,15 +740,22 @@ Notification.prototype = {
         // If the banner doesn't fully fit in the banner box, we possibly need to add the
         // banner to the body. We can't do that from here though since that will force a
         // relayout, so we add it to the main loop.
-        if (!bannerFits)
-            Mainloop.idle_add(Lang.bind(this,
-                                        function() {
+        if (!bannerFits && this._canExpandContent())
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                           Lang.bind(this,
+                                     function() {
+                                        if (this._canExpandContent()) {
                                             this._addBannerBody();
-                                            if (!this._titleFitsInBannerMode)
-                                                this._table.add_style_class_name('multi-line-notification');
+                                            this._table.add_style_class_name('multi-line-notification');
                                             this._updated();
-                                            return false;
-                                        }));
+                                        }
+                                        return false;
+                                     }));
+    },
+
+    _canExpandContent: function() {
+        return this._bannerBodyText ||
+               (!this._titleFitsInBannerMode && !this._table.has_style_class_name('multi-line-notification'));
     },
 
     _updated: function() {
@@ -1404,6 +1417,7 @@ MessageTray.prototype = {
         if (!this._locked)
             return;
         this._locked = false;
+        this._pointerInTray = this.actor.hover && !this._summaryBoxPointer.bin.hover;
         this._updateState();
     },
 
@@ -2093,13 +2107,18 @@ MessageTray.prototype = {
     },
 
     _hideSummaryBoxPointer: function() {
+        this._summaryBoxPointerState = State.HIDING;
         // Unset this._clickedSummaryItem if we are no longer showing the summary
         if (this._summaryState != State.SHOWN)
             this._unsetClickedSummaryItem();
 
         this._focusGrabber.ungrabFocus();
-        this._summaryBoxPointerState = State.HIDING;
-        this._summaryBoxPointer.hide(true, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
+        if (this._summaryBoxPointerItem.source.notifications.length == 0) {
+            this._summaryBoxPointer.actor.hide();
+            this._hideSummaryBoxPointerCompleted();
+        } else {
+            this._summaryBoxPointer.hide(true, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
+        }
     },
 
     _hideSummaryBoxPointerCompleted: function() {
