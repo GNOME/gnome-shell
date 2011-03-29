@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-26 07:02+0000\n"
-"PO-Revision-Date: 2011-03-28 12:52+0800\n"
+"PO-Revision-Date: 2011-03-30 00:38+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -629,7 +629,7 @@ msgstr "关机..."
 
 #: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
-msgstr "待机"
+msgstr "挂起"
 
 #: ../js/ui/statusMenu.js:184
 msgid "Available"
