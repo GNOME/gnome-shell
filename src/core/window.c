@@ -2041,6 +2041,8 @@ idle_calc_showing (gpointer data)
   MetaWindow *first_window;
   guint queue_index = GPOINTER_TO_INT (data);
 
+  g_return_val_if_fail (queue_pending[queue_index] != NULL, FALSE);
+
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Clearing the calc_showing queue\n");
 
