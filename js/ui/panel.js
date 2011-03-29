@@ -260,9 +260,13 @@ AppMenuButton.prototype = {
         this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
         this._iconBox.connect('style-changed',
                               Lang.bind(this, this._onIconBoxStyleChanged));
+        this._iconBox.connect('notify::allocation',
+                              Lang.bind(this, this._updateIconBoxClip));
         this._container.add_actor(this._iconBox);
         this._label = new TextShadower();
         this._container.add_actor(this._label.actor);
+
+        this._iconBottomClip = 0;
 
         this._quitMenu = new PopupMenu.PopupMenuItem('');
         this.menu.addMenuItem(this._quitMenu);
@@ -334,11 +338,16 @@ AppMenuButton.prototype = {
 
     _onIconBoxStyleChanged: function() {
         let node = this._iconBox.get_theme_node();
-        let bottomClip = node.get_length('app-icon-bottom-clip');
-        if (bottomClip > 0)
+        this._iconBottomClip = node.get_length('app-icon-bottom-clip');
+        this._updateIconBoxClip();
+    },
+
+    _updateIconBoxClip: function() {
+        let allocation = this._iconBox.allocation;
+        if (this._iconBottomClip > 0)
             this._iconBox.set_clip(0, 0,
-                                   this._iconBox.width,
-                                   this._iconBox.height - bottomClip);
+                                   allocation.x2 - allocation.x1,
+                                   allocation.y2 - allocation.y1 - this._iconBottomClip);
         else
             this._iconBox.remove_clip();
     },
