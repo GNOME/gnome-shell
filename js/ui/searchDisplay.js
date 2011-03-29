@@ -77,11 +77,12 @@ SearchResult.prototype = {
     },
 
     getDragActorSource: function() {
-        return this.metaInfo['icon'];
+        // not exactly right, but alignment problems are hard to notice
+        return this._content;
     },
 
     getDragActor: function(stageX, stageY) {
-        return new Clutter.Clone({ source: this.metaInfo['icon'] });
+        return this.metaInfo['createIcon'](Main.overview.dash.iconSize);
     },
 
     shellWorkspaceLaunch: function(params) {
