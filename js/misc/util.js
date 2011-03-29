@@ -150,7 +150,7 @@ const _IGNORED_WORDS = [
         'Incorporated',
         'Ltd.',
         'Limited.',
-        'Intel?',
+        'Intel',
         'chipset',
         'adapter',
         '[hex]',
@@ -181,7 +181,7 @@ const _IGNORED_PHRASES = [
 ];
 
 function fixupPCIDescription(desc) {
-    desc.replace(/[_,]/, ' ');
+    desc = desc.replace(/[_,]/, ' ');
 
     /* Attempt to shorten ID by ignoring certain phrases */
     for (let i = 0; i < _IGNORED_PHRASES.length; i++) {
@@ -197,7 +197,7 @@ function fixupPCIDescription(desc) {
     /* Attmept to shorten ID by ignoring certain individual words */
     let words = desc.split(' ');
     let out = [ ];
-    for (let i = 0; i < words; i++) {
+    for (let i = 0; i < words.length; i++) {
         let item = words[i];
 
         // skip empty items (that come out from consecutive spaces)
