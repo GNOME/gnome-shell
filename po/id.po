@@ -10,10 +10,10 @@ msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-18 18:57+0000\n"
-"PO-Revision-Date: 2011-03-05 22:05+0700\n"
+"POT-Creation-Date: 2011-03-28 22:21+0000\n"
+"PO-Revision-Date: 2011-03-27 13:15+0700\n"
 "Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
-"Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
+"Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -179,9 +179,8 @@ msgid "Toggle maximization state"
 msgstr "Ubah kondisi maksimal"
 
 #: ../src/core/all-keybindings.h:278
-#, fuzzy
 msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Turunkan jendela di bawah jendela lain"
+msgstr "Membuat apakah jendela selalu terlihat di antara jendela yang lain"
 
 #: ../src/core/all-keybindings.h:280
 msgid "Maximize window"
@@ -212,9 +211,8 @@ msgid "Resize window"
 msgstr "Rubah ukuran jendela"
 
 #: ../src/core/all-keybindings.h:295
-#, fuzzy
 msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Togel jendela pada semua workspace"
+msgstr "Membuat apakah jendela hanya ada di satu atau semua area kerja"
 
 #: ../src/core/all-keybindings.h:299
 msgid "Move window to workspace 1"
@@ -338,7 +336,7 @@ msgstr "Pindahkan jendela ke tengah layar"
 
 #: ../src/core/bell.c:310
 msgid "Bell event"
-msgstr ""
+msgstr "Bel peristiwa"
 
 #: ../src/core/core.c:157
 #, c-format
@@ -412,10 +410,8 @@ msgid "Disable connection to session manager"
 msgstr "Menonaktifkan koneksi ke manajer sesi"
 
 #: ../src/core/main.c:212
-#, fuzzy
-#| msgid "Replace the running window manager with Mutter"
 msgid "Replace the running window manager"
-msgstr "Mengganti manajer program yang berjalan dengan Mutter"
+msgstr "Mengganti manajer jendela yang tengah berjalan"
 
 #: ../src/core/main.c:218
 msgid "Specify session management ID"
@@ -431,7 +427,7 @@ msgstr "Aktifkan sesi dari berkas simpanan"
 
 #: ../src/core/main.c:235
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Buat panggilan X selaras"
 
 #: ../src/core/main.c:506
 #, c-format
@@ -466,7 +462,7 @@ msgstr "Cetak versi"
 
 #: ../src/core/mutter.c:62
 msgid "Comma-separated list of compositor plugins"
-msgstr ""
+msgstr "Daftar kompositor pengaya yang dipisahkan koma"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -557,19 +553,19 @@ msgstr "Ada error saat melakukan seting nama workspace %d ke \"%s\": %s\n"
 #: ../src/core/prefs.c:2997
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
-msgstr ""
+msgstr "Galat ketika menyetel status jendela tersembunyi: %s\n"
 
 #: ../src/core/prefs.c:3032
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting no tab popup status: %s\n"
-msgstr "Ada error saat melakukan seting nama workspace %d ke \"%s\": %s\n"
+msgstr "Galat ketika menyetel status popup tanpa tab: %s\n"
 
-#: ../src/core/screen.c:623
+#: ../src/core/screen.c:624
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Layar %d pada tampilan '%s' tidak benar\n"
 
-#: ../src/core/screen.c:639
+#: ../src/core/screen.c:640
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -578,7 +574,7 @@ msgstr ""
 "Layar %d pada tampilan \"%s\" sudah memiliki pengatur jendela. Cobalah "
 "gunakan pilihan --replace untuk mengganti pengatur jendela yang aktif.\n"
 
-#: ../src/core/screen.c:666
+#: ../src/core/screen.c:667
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -586,12 +582,12 @@ msgstr ""
 "Tidak dapat mendapatkan pilihan pengatur jendela pada layar %d tampilan \"%s"
 "\"\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:722
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Layar %d pada tampilan \"%s\" sudah ada pengatur jendelanya\n"
 
-#: ../src/core/screen.c:906
+#: ../src/core/screen.c:907
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Layar %d pada tampilan \"%s\" tidak dapat dilepas\n"
@@ -624,7 +620,7 @@ msgstr "Gagal membaca berkas sesi simpanan: %s\n"
 #: ../src/core/session.c:1179
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "Atribut <mutter_session> terlihat tapi kode sesi sudah ada sebelumnya"
 
 #: ../src/core/session.c:1192 ../src/core/session.c:1267
 #: ../src/core/session.c:1299 ../src/core/session.c:1371
@@ -694,7 +690,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6752
+#: ../src/core/window.c:6847
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -710,7 +706,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7415
+#: ../src/core/window.c:7510
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -730,7 +726,7 @@ msgstr "Aplikasi telah membuat _NET_WM_PID %lu bohongan\n"
 msgid "%s (on %s)"
 msgstr "%s (pada %s)"
 
-#: ../src/core/window-props.c:1479
+#: ../src/core/window-props.c:1482
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "WM_TRANSIENT_FOR salah jendela 0x%lx ditentukan untuk %s.\n"
@@ -764,29 +760,31 @@ msgstr ""
 
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
-msgstr ""
+msgstr "Lampirkan dialog modal"
 
 #: ../src/mutter.schemas.in.h:2
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
+"Menentukan apakah jendela yang tersembunyi (cth. jendela yang dikecilkan dan "
+"jendela pada area kerja lain) tetap hidup/dipertahankan."
 
 #: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
-"monitors or only the primary window."
+"monitors or only for windows on the primary monitor."
 msgstr ""
+"Menentukan apakah perpindahan area kerja hanya terjadi pada jendela aplikasi "
+"di semua monitor atau hanya untuk jendela pada monitor utama."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
-msgstr ""
+msgstr "Kelangsungan Jendela Tersembunyi"
 
 #: ../src/mutter.schemas.in.h:5
-#, fuzzy
 msgid "Modifier to use for extended window management operations"
-msgstr ""
-"Tombol yang digunakan untuk menjalankan suatu perintah apabila jendela diklik"
+msgstr "Tombol yang digunakan untuk memperluas operasi manajemen jendela"
 
 #: ../src/mutter.schemas.in.h:6
 msgid ""
@@ -802,6 +800,8 @@ msgid ""
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
+"Jika bernilai \"true\", maka dialog modal akan muncul menempel pada baris "
+"judul jendela utama dan bergerak seiring perpindahan jendela utama tersebut."
 
 #: ../src/mutter.schemas.in.h:8
 msgid "Workspaces only on primary"
@@ -833,22 +833,20 @@ msgid "Restore Window"
 msgstr "Kembalikan Ukuran jendela"
 
 #: ../src/ui/frames.c:1114
-#, fuzzy
 msgid "Roll Up Window"
-msgstr "G_ulung"
+msgstr "Menggulung Jendela"
 
 #: ../src/ui/frames.c:1117
-#, fuzzy
 msgid "Unroll Window"
-msgstr "Tutup Jendela"
+msgstr "Tidak Menggulung Jendela"
 
 #: ../src/ui/frames.c:1120
 msgid "Keep Window On Top"
-msgstr ""
+msgstr "Jaga Jendela Di Atas"
 
 #: ../src/ui/frames.c:1123
 msgid "Remove Window From Top"
-msgstr ""
+msgstr "Hapus Jendela Dari Atas"
 
 #: ../src/ui/frames.c:1126
 msgid "Always On Visible Workspace"
@@ -1266,9 +1264,9 @@ msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Ekspresi koordinat sepertinya tidak memiliki operator atau operan"
 
 #: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
-#, fuzzy, c-format
+#, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "Tema berisi ekspresi \"%s\" yang menghasilkan error: %s\n"
+msgstr "Tema mengandung ekspresi yang menghasilkan galat: %s\n"
 
 #: ../src/ui/theme.c:4410
 #, c-format
@@ -1417,6 +1415,7 @@ msgstr "<%s> harus menentukan geometri atau induk yang ada geometrinya"
 #: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr ""
+"Anda mesti menyatakan suatu latar belakang bagi nilai alfa agar berarti"
 
 #: ../src/ui/theme-parser.c:1264
 #, c-format
@@ -1626,7 +1625,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3434
 #, c-format
 msgid "Bad version specification '%s'"
-msgstr ""
+msgstr "Spesifikasi versi '%s' jelek"
 
 #: ../src/ui/theme-parser.c:3507
 msgid ""
@@ -1639,7 +1638,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3530
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr ""
+msgstr "Tema memerlukan versi %s tetapi versi yang didukung adalah %d.%d"
 
 #: ../src/ui/theme-parser.c:3562
 #, c-format
@@ -1799,9 +1798,8 @@ msgid "Border"
 msgstr "Batas"
 
 #: ../src/ui/theme-viewer.c:413
-#, fuzzy
 msgid "Attached Modal Dialog"
-msgstr "Kotak Dialog Modal"
+msgstr "Dialog Modal yang Dilampirkan"
 
 #: ../src/ui/theme-viewer.c:744
 #, c-format
