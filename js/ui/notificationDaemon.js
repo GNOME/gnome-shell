@@ -189,9 +189,11 @@ NotificationDaemon.prototype = {
                      actions, hints, timeout) {
         let id;
 
-        // Filter out notifications from Empathy, since we
+        // Filter out chat and presence notifications from Empathy, since we
         // handle that information from telepathyClient.js
-        if (appName == 'Empathy') {
+        if (appName == 'Empathy' && (hints['category'] == 'im.received' ||
+              hints['category'] == 'presence.online' ||
+              hints['category'] == 'presence.offline')) {
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
             id = nextNotificationId++;
