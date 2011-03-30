@@ -68,6 +68,7 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM },
   { "dump-atlas-image", COGL_DEBUG_DUMP_ATLAS_IMAGE },
   { "disable-atlas", COGL_DEBUG_DISABLE_ATLAS },
+  { "disable-shared-atlas", COGL_DEBUG_DISABLE_SHARED_ATLAS },
   { "disable-texturing", COGL_DEBUG_DISABLE_TEXTURING},
   { "disable-arbfp", COGL_DEBUG_DISABLE_ARBFP},
   { "disable-fixed", COGL_DEBUG_DISABLE_FIXED},
