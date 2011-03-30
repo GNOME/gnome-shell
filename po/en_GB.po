@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-08 19:51+0000\n"
-"PO-Revision-Date: 2011-03-08 19:50+0100\n"
+"POT-Creation-Date: 2011-03-30 14:52+0100\n"
+"PO-Revision-Date: 2011-03-30 14:55+0100\n"
 "Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
 "Language-Team: British English <en@li.org>\n"
 "Language: en_GB\n"
@@ -169,47 +169,43 @@ msgstr "Whether to collect statistics about application usage"
 msgid "disabled OpenSearch providers"
 msgstr "disabled OpenSearch providers"
 
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "Command not found"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "Could not parse command:"
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "No such application"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Execution of '%s' failed:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "All"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "APPLICATIONS"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "SETTINGS"
 
-#: ../js/ui/appDisplay.js:612
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "New Window"
 
-#: ../js/ui/appDisplay.js:615
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Remove from Favourites"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Add to Favourites"
 
@@ -342,13 +338,13 @@ msgid "Nothing Scheduled"
 msgstr "Nothing Scheduled"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
@@ -369,7 +365,7 @@ msgstr "This week"
 msgid "Next week"
 msgstr "Next week"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
 msgid "Remove"
 msgstr "Remove"
 
@@ -424,7 +420,7 @@ msgstr "%a %l:%M %p"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:209
+#: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B, %Y"
 
@@ -437,7 +433,7 @@ msgstr "RECENT ITEMS"
 msgid "Log Out %s"
 msgstr "Log Out %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Log Out"
 
@@ -459,45 +455,43 @@ msgstr "You will be logged out automatically in %d seconds."
 msgid "Logging out of the system."
 msgstr "Logging out of the system."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Shut Down"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Click Shut Down to quit these applications and shut down the system."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Power Off"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "The system will shut down automatically in %d seconds."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Click Power Off to quit these applications and power off the system."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "Shutting down the system."
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "The system will power off automatically in %d seconds."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "Powering off the system."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Restart"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Click Restart to quit these applications and restart the system."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "The system will restart automatically in %d seconds."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Restarting the system."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Confirm"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -511,7 +505,7 @@ msgstr "Enabled"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -531,47 +525,47 @@ msgstr "View Source"
 msgid "Web Page"
 msgstr "Web Page"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:1000
 msgid "Open"
 msgstr "Open"
 
-#: ../js/ui/messageTray.js:1963
+#: ../js/ui/messageTray.js:2164
 msgid "System Information"
 msgstr "System Information"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Undo"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Windows"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Applications"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:532
+#: ../js/ui/panel.js:524
 #, c-format
 msgid "Quit %s"
 msgstr "Quit %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:893
+#: ../js/ui/panel.js:902
 msgid "Activities"
 msgstr "Activities"
 
-#: ../js/ui/panel.js:994
-msgid "Panel"
-msgstr "Panel"
+#: ../js/ui/panel.js:1003
+msgid "Top Bar"
+msgstr "Top Bar"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -586,64 +580,89 @@ msgstr "Retry"
 msgid "Connect to..."
 msgstr "Connect to…"
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "PLACES & DEVICES"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Authentication Required"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrator"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Authenticate"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Sorry, that didn't work. Please try again."
+
+#: ../js/ui/polkitAuthenticationAgent.js:276
+msgid "Password:"
+msgstr "Password:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:618
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Please enter a command:"
 
-#: ../js/ui/searchDisplay.js:283
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Searching…"
 
-#: ../js/ui/searchDisplay.js:297
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "No matching results."
 
-#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Power Off…"
 
-#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Suspend"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Available"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Busy"
 
-#: ../js/ui/statusMenu.js:138
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "My Account"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "System Settings"
 
-#: ../js/ui/statusMenu.js:149
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Lock Screen"
 
-#: ../js/ui/statusMenu.js:153
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Switch User"
 
-#: ../js/ui/statusMenu.js:158
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Log Out…"
 
@@ -651,14 +670,12 @@ msgstr "Log Out…"
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../js/ui/status/accessibility.js:69
-msgid "Screen Reader"
-msgstr "Screen Reader"
-
-#: ../js/ui/status/accessibility.js:73
-msgid "Screen Keyboard"
-msgstr "Screen Keyboard"
-
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Visual Alerts"
@@ -683,17 +700,17 @@ msgstr "Mouse Keys"
 msgid "Universal Access Settings"
 msgstr "Universal Access Settings"
 
-#: ../js/ui/status/accessibility.js:145
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr "High Contrast"
 
-#: ../js/ui/status/accessibility.js:182
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr "Large Text"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -713,94 +730,94 @@ msgstr "Setup a New Device…"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Settings"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "Connection"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "Send Files…"
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "Browse Files…"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "Error browsing device"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "The requested device cannot be browsed, error is '%s'"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "Keyboard Settings"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "Mouse Settings"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Sound Settings"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Authorisation request from %s"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Device %s wants access to the service '%s'"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr "Always grant access"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr "Grant this time only"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
 msgstr "Reject"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Pairing confirmation for %s"
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Device %s wants to pair with this computer"
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Please confirm whether the PIN '%s' matches the one on the device."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "Matches"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "Does not match"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Pairing request for %s"
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Please enter the PIN mentioned on the device."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "OK"
 
@@ -812,17 +829,153 @@ msgstr "Show Keyboard Layout…"
 msgid "Localization Settings"
 msgstr "Localisation Settings"
 
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
+msgid "<unknown>"
+msgstr "<unknown>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:311
+msgid "disabled"
+msgstr "disabled"
+
+#: ../js/ui/status/network.js:494
+msgid "connecting..."
+msgstr "connecting…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:497
+msgid "authentication required"
+msgstr "authentication required"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
+msgstr "firmware missing"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:514
+msgid "cable unplugged"
+msgstr "cable unplugged"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:519
+msgid "unavailable"
+msgstr "unavailable"
+
+#: ../js/ui/status/network.js:521
+msgid "connection failed"
+msgstr "connection failed"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
+msgid "Connected (private)"
+msgstr "Connected (private)"
+
+#: ../js/ui/status/network.js:683
+msgid "Auto Ethernet"
+msgstr "Auto Ethernet"
+
+#: ../js/ui/status/network.js:758
+msgid "Auto broadband"
+msgstr "Auto broadband"
+
+#: ../js/ui/status/network.js:761
+msgid "Auto dial-up"
+msgstr "Auto dial-up"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
+#, c-format
+msgid "Auto %s"
+msgstr "Auto %s"
+
+#: ../js/ui/status/network.js:906
+msgid "Auto bluetooth"
+msgstr "Auto bluetooth"
+
+#: ../js/ui/status/network.js:1416
+msgid "Auto wireless"
+msgstr "Auto wireless"
+
+#: ../js/ui/status/network.js:1474
+msgid "More..."
+msgstr "More…"
+
+#: ../js/ui/status/network.js:1497
+msgid "Enable networking"
+msgstr "Enable networking"
+
+#: ../js/ui/status/network.js:1509
+msgid "Wired"
+msgstr "Wired"
+
+#: ../js/ui/status/network.js:1520
+msgid "Wireless"
+msgstr "Wireless"
+
+#: ../js/ui/status/network.js:1530
+msgid "Mobile broadband"
+msgstr "Mobile broadband"
+
+#: ../js/ui/status/network.js:1540
+msgid "VPN Connections"
+msgstr "VPN Connections"
+
+#: ../js/ui/status/network.js:1549
+msgid "Network Settings"
+msgstr "Network Settings"
+
+#: ../js/ui/status/network.js:1844
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "You're now connected to mobile broadband connection '%s'"
+
+#: ../js/ui/status/network.js:1848
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "You're now connected to wireless network '%s'"
+
+#: ../js/ui/status/network.js:1852
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "You're now connected to wired network '%s'"
+
+#: ../js/ui/status/network.js:1856
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "You're now connected to VPN network '%s'"
+
+#: ../js/ui/status/network.js:1861
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "You're now connected to '%s'"
+
+#: ../js/ui/status/network.js:1869
+msgid "Connection established"
+msgstr "Connection established"
+
+#: ../js/ui/status/network.js:1991
+msgid "Networking is disabled"
+msgstr "Networking is disabled"
+
+#: ../js/ui/status/network.js:2116
+msgid "Network Manager"
+msgstr "Network Manager"
+
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Power Settings"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:111
 msgid "Estimating..."
 msgstr "Estimating…"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -830,102 +983,102 @@ msgstr[0] "%d hour remaining"
 msgstr[1] "%d hours remaining"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s remaining"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "hour"
 msgstr[1] "hours"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minute"
 msgstr[1] "minutes"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minute remaining"
 msgstr[1] "%d minutes remaining"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "AC adapter"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "Laptop battery"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "Mouse"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "Keyboard"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "Mobile phone"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "Media player"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "Computer"
 
-#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Unknown"
 
-#: ../js/ui/status/volume.js:44
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:57
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Microphone"
 
-#: ../js/ui/telepathyClient.js:239
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is online."
 msgstr "%s is online."
 
-#: ../js/ui/telepathyClient.js:244
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is offline."
 msgstr "%s is offline."
 
-#: ../js/ui/telepathyClient.js:247
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is away."
 msgstr "%s is away."
 
-#: ../js/ui/telepathyClient.js:250
+#: ../js/ui/telepathyClient.js:346
 #, c-format
 msgid "%s is busy."
 msgstr "%s is busy."
@@ -933,7 +1086,7 @@ msgstr "%s is busy."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:348
+#: ../js/ui/telepathyClient.js:482
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Sent at %X on %A"
@@ -942,11 +1095,11 @@ msgstr "Sent at %X on %A"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/viewSelector.js:117
+#: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "Type to search…"
 
-#: ../js/ui/viewSelector.js:137 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Search"
 
@@ -962,7 +1115,7 @@ msgstr "'%s' is ready"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -971,52 +1124,65 @@ msgstr[1] "%u Outputs"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Input"
 msgstr[1] "%u Inputs"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "System Sounds"
 
-#: ../src/main.c:395
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Print version"
 
-#: ../src/shell-global.c:1308
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Failed to launch '%s'"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Less than a minute ago"
 
-#: ../src/shell-global.c:1312
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minute ago"
 msgstr[1] "%d minutes ago"
 
-#: ../src/shell-global.c:1317
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d hour ago"
 msgstr[1] "%d hours ago"
 
-#: ../src/shell-global.c:1322
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d day ago"
 msgstr[1] "%d days ago"
 
-#: ../src/shell-global.c:1327
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d week ago"
 msgstr[1] "%d weeks ago"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "United Kingdom"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Default"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
@@ -1041,6 +1207,34 @@ msgstr "File System"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "No such application"
+#~ msgstr "No such application"
+
+#~ msgid "Shut Down"
+#~ msgstr "Shut Down"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr ""
+#~ "Click Shut Down to quit these applications and shut down the system."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "The system will shut down automatically in %d seconds."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Shutting down the system."
+
+#~ msgid "Confirm"
+#~ msgstr "Confirm"
+
+#~ msgid "Panel"
+#~ msgstr "Panel"
+
+#~ msgid "Screen Reader"
+#~ msgstr "Screen Reader"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Screen Keyboard"
 
 #~ msgid "Clock"
 #~ msgstr "Clock"
