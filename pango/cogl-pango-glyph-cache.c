@@ -46,6 +46,11 @@ struct _CoglPangoGlyphCache
   /* List of callbacks to invoke when an atlas is reorganized */
   GHookList         reorganize_callbacks;
 
+  /* TRUE if we've ever stored a texture in the global atlas. This is
+     used to make sure we only register one callback to listen for
+     global atlas reorganizations */
+  gboolean          using_global_atlas;
+
   /* True if some of the glyphs are dirty. This is used as an
      optimization in _cogl_pango_glyph_cache_set_dirty_glyphs to avoid
      iterating the hash table if we know none of them are dirty */
@@ -128,6 +133,14 @@ cogl_pango_glyph_cache_new (gboolean use_mipmapping)
   return cache;
 }
 
+static void
+cogl_pango_glyph_cache_reorganize_cb (void *user_data)
+{
+  CoglPangoGlyphCache *cache = user_data;
+
+  g_hook_list_invoke (&cache->reorganize_callbacks, FALSE);
+}
+
 void
 cogl_pango_glyph_cache_clear (CoglPangoGlyphCache *cache)
 {
@@ -142,6 +155,10 @@ cogl_pango_glyph_cache_clear (CoglPangoGlyphCache *cache)
 void
 cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache)
 {
+  if (cache->using_global_atlas)
+    _cogl_atlas_texture_remove_reorganize_callback
+      (cogl_pango_glyph_cache_reorganize_cb, cache);
+
   cogl_pango_glyph_cache_clear (cache);
 
   g_hash_table_unref (cache->hash_table);
@@ -178,14 +195,6 @@ cogl_pango_glyph_cache_update_position_cb (void *user_data,
   value->dirty = TRUE;
 }
 
-static void
-cogl_pango_glyph_cache_reorganize_cb (void *user_data)
-{
-  CoglPangoGlyphCache *cache = user_data;
-
-  g_hook_list_invoke (&cache->reorganize_callbacks, FALSE);
-}
-
 static gboolean
 cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
                                             PangoFont *font,
@@ -214,6 +223,17 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
   value->ty2 = 1;
   value->tx_pixel = 0;
   value->ty_pixel = 0;
+
+  /* The first time we store a texture in the global atlas we'll
+     register for notifications when the global atlas is reorganized
+     so we can forward the notification on as a glyph
+     reorganization */
+  if (!cache->using_global_atlas)
+    {
+      _cogl_atlas_texture_add_reorganize_callback
+        (cogl_pango_glyph_cache_reorganize_cb, cache);
+      cache->using_global_atlas = TRUE;
+    }
 
   return TRUE;
 }
