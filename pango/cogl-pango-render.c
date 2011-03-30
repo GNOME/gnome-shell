@@ -35,6 +35,7 @@
 #include <cairo.h>
 
 #include "cogl/cogl-debug.h"
+#include "cogl/cogl-texture-private.h"
 #include "cogl-pango-private.h"
 #include "cogl-pango-glyph-cache.h"
 #include "cogl-pango-display-list.h"
@@ -85,26 +86,65 @@ struct _CoglPangoRendererQdata
 static void
 _cogl_pango_ensure_glyph_cache_for_layout_line (PangoLayoutLine *line);
 
+typedef struct
+{
+  CoglPangoDisplayList *display_list;
+  float x1, y1, x2, y2;
+} CoglPangoRendererSliceCbData;
+
+void
+cogl_pango_renderer_slice_cb (CoglHandle handle,
+                              const float *slice_coords,
+                              const float *virtual_coords,
+                              void *user_data)
+{
+  CoglPangoRendererSliceCbData *data = user_data;
+
+  /* Note: this assumes that there is only one slice containing the
+     whole texture and it doesn't attempt to split up the vertex
+     coordinates based on the virtual_coords */
+
+  _cogl_pango_display_list_add_texture (data->display_list,
+                                        handle,
+                                        data->x1,
+                                        data->y1,
+                                        data->x2,
+                                        data->y2,
+                                        slice_coords[0],
+                                        slice_coords[1],
+                                        slice_coords[2],
+                                        slice_coords[3]);
+}
+
 static void
 cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
                                 CoglPangoGlyphCacheValue *cache_value,
                                 float                     x1,
                                 float                     y1)
 {
-  float x2, y2;
+  CoglPangoRendererSliceCbData data;
 
   g_return_if_fail (priv->display_list != NULL);
 
-  x2 = x1 + (float) cache_value->draw_width;
-  y2 = y1 + (float) cache_value->draw_height;
+  data.display_list = priv->display_list;
+  data.x1 = x1;
+  data.y1 = y1;
+  data.x2 = x1 + (float) cache_value->draw_width;
+  data.y2 = y1 + (float) cache_value->draw_height;
 
-  _cogl_pango_display_list_add_texture (priv->display_list,
-                                        cache_value->texture,
-                                        x1, y1, x2, y2,
-                                        cache_value->tx1,
-                                        cache_value->ty1,
-                                        cache_value->tx2,
-                                        cache_value->ty2);
+  /* We iterate the internal sub textures of the texture so that we
+     can get a pointer to the base texture even if the texture is in
+     the global atlas. That way the display list can recognise that
+     the neighbouring glyphs are coming from the same atlas and bundle
+     them together into a single VBO */
+
+  _cogl_texture_foreach_sub_texture_in_region (cache_value->texture,
+                                               cache_value->tx1,
+                                               cache_value->ty1,
+                                               cache_value->tx2,
+                                               cache_value->ty2,
+                                               cogl_pango_renderer_slice_cb,
+                                               &data);
 }
 
 static void cogl_pango_renderer_finalize (GObject *object);
