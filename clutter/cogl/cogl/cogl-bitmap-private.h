@@ -30,6 +30,7 @@
 
 #include "cogl-handle.h"
 #include "cogl-buffer.h"
+#include "cogl-bitmap.h"
 
 /*
  * CoglBitmapDestroyNotify:
