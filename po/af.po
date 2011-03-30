@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-25 20:20+0000\n"
-"PO-Revision-Date: 2011-03-29 23:38+0200\n"
+"PO-Revision-Date: 2011-03-30 19:04+0200\n"
 "Last-Translator: F Wolff <friedel@translate.org.za>\n"
 "Language-Team: translate-discuss-af@lists.sourceforge.net\n"
 "Language: af\n"
@@ -92,7 +92,7 @@ msgstr "%s uit die gunstelinge verwyder."
 #: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
-msgstr "Voldag"
+msgstr "Heel dag"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:71
@@ -208,13 +208,13 @@ msgstr "Niks geskeduleer nie"
 #: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A %d %B"
+msgstr "%A %e %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A %d %B %Y"
+msgstr "%A %e %B %Y"
 
 #: ../js/ui/calendar.js:733
 msgid "Today"
@@ -481,7 +481,7 @@ msgstr "Wagwoord:"
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
-msgstr "oggle-switch-intl"
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
