@@ -142,6 +142,8 @@ _cogl_atlas_texture_post_reorganize_cb (void *user_data)
 {
   CoglAtlas *atlas = user_data;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (atlas->map)
     {
       CoglAtlasTextureGetRectanglesData data;
@@ -171,6 +173,9 @@ _cogl_atlas_texture_post_reorganize_cb (void *user_data)
 
       g_free (data.textures);
     }
+
+  /* Notify any listeners that an atlas has changed */
+  g_hook_list_invoke (&ctx->atlas_reorganize_callbacks, FALSE);
 }
 
 static void
@@ -744,6 +749,37 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
   cogl_object_unref (override_bmp);
 
   return atlas_tex_handle;
+}
+
+void
+_cogl_atlas_texture_add_reorganize_callback (GHookFunc callback,
+                                             void *user_data)
+{
+  GHook *hook;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  hook = g_hook_alloc (&ctx->atlas_reorganize_callbacks);
+  hook->func = callback;
+  hook->data = user_data;
+  g_hook_prepend (&ctx->atlas_reorganize_callbacks, hook);
+}
+
+void
+_cogl_atlas_texture_remove_reorganize_callback (GHookFunc callback,
+                                                void *user_data)
+{
+  GHook *hook;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  hook = g_hook_find_func_data (&ctx->atlas_reorganize_callbacks,
+                                FALSE,
+                                callback,
+                                user_data);
+
+  if (hook)
+    g_hook_destroy_link (&ctx->atlas_reorganize_callbacks, hook);
 }
 
 static const CoglTextureVtable

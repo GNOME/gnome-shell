@@ -186,6 +186,7 @@ struct _CoglContext
   CoglPipeline     *blit_texture_pipeline;
 
   GSList           *atlases;
+  GHookList         atlas_reorganize_callbacks;
 
   /* This debugging variable is used to pick a colour for visually
      displaying the quad batches. It needs to be global so that it can

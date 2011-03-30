@@ -69,4 +69,12 @@ _cogl_atlas_texture_new_with_size (unsigned int     width,
                                    CoglTextureFlags flags,
                                    CoglPixelFormat  internal_format);
 
+void
+_cogl_atlas_texture_add_reorganize_callback (GHookFunc callback,
+                                             void *user_data);
+
+void
+_cogl_atlas_texture_remove_reorganize_callback (GHookFunc callback,
+                                                void *user_data);
+
 #endif /* __COGL_ATLAS_TEXTURE_H */
