@@ -1,0 +1,2555 @@
+# Copyright (C) 2011 clutter's COPYRIGHT HOLDER
+# This file is distributed under the same license as the clutter package.
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: clutter master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-29 15:41+0000\n"
+"PO-Revision-Date: 2011-03-30 18:34+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\\n\n"
+"X-Poedit-Language: Slovenian\n"
+"X-Poedit-Country: SLOVENIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../clutter/clutter-actor.c:3523
+#, fuzzy
+msgid "X coordinate"
+msgstr "X točka osi"
+
+#: ../clutter/clutter-actor.c:3524
+#, fuzzy
+msgid "X coordinate of the actor"
+msgstr "i* - nedoločen igralec"
+
+#: ../clutter/clutter-actor.c:3539
+#, fuzzy
+msgid "Y coordinate"
+msgstr "Y točka osi"
+
+#: ../clutter/clutter-actor.c:3540
+#, fuzzy
+msgid "Y coordinate of the actor"
+msgstr "i* - nedoločen igralec"
+
+#: ../clutter/clutter-actor.c:3555
+#: ../clutter/clutter-behaviour-ellipse.c:474
+#, fuzzy
+msgid "Width"
+msgstr "Širina"
+
+#: ../clutter/clutter-actor.c:3556
+#, fuzzy
+msgid "Width of the actor"
+msgstr "i* - nedoločen igralec"
+
+#: ../clutter/clutter-actor.c:3570
+#: ../clutter/clutter-behaviour-ellipse.c:490
+#, fuzzy
+msgid "Height"
+msgstr "Višina"
+
+#: ../clutter/clutter-actor.c:3571
+#, fuzzy
+msgid "Height of the actor"
+msgstr "i* - nedoločen igralec"
+
+#: ../clutter/clutter-actor.c:3589
+#, fuzzy
+msgid "Fixed X"
+msgstr "Določeno"
+
+#: ../clutter/clutter-actor.c:3590
+#, fuzzy
+msgid "Forced X position of the actor"
+msgstr "Položaj X glavnega okna"
+
+#: ../clutter/clutter-actor.c:3608
+#, fuzzy
+msgid "Fixed Y"
+msgstr "Določeno"
+
+#: ../clutter/clutter-actor.c:3609
+#, fuzzy
+msgid "Forced Y position of the actor"
+msgstr "Položaj X glavnega okna"
+
+#: ../clutter/clutter-actor.c:3625
+#, fuzzy
+msgid "Fixed position set"
+msgstr "| @name mosaic-position {0=auto,1=fixed} . . . .lega"
+
+#: ../clutter/clutter-actor.c:3626
+msgid "Whether to use fixed positioning for the actor"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3648
+#, fuzzy
+msgid "Min Width"
+msgstr "Najmanjša vodoravna širina vrstice"
+
+#: ../clutter/clutter-actor.c:3649
+msgid "Forced minimum width request for the actor"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3668
+#, fuzzy
+msgid "Min Height"
+msgstr "Najmanjša vodoravna višina vrstice"
+
+#: ../clutter/clutter-actor.c:3669
+msgid "Forced minimum height request for the actor"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3688
+#, fuzzy
+msgid "Natural Width"
+msgstr "širina zajemanja"
+
+#: ../clutter/clutter-actor.c:3689
+msgid "Forced natural width request for the actor"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3708
+#, fuzzy
+msgid "Natural Height"
+msgstr "višina zajemanja"
+
+#: ../clutter/clutter-actor.c:3709
+msgid "Forced natural height request for the actor"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3725
+#, fuzzy
+msgid "Minimum width set"
+msgstr "Širina pojavnega okna"
+
+#: ../clutter/clutter-actor.c:3726
+msgid "Whether to use the min-width property"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3741
+#, fuzzy
+msgid "Minimum height set"
+msgstr "Nastavi najmanjšo vrednost"
+
+#: ../clutter/clutter-actor.c:3742
+msgid "Whether to use the min-height property"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3757
+#, fuzzy
+msgid "Natural width set"
+msgstr "Širina pojavnega okna"
+
+#: ../clutter/clutter-actor.c:3758
+msgid "Whether to use the natural-width property"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3775
+#, fuzzy
+msgid "Natural height set"
+msgstr "Nastavi polno višino ozadja"
+
+#: ../clutter/clutter-actor.c:3776
+msgid "Whether to use the natural-height property"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3795
+#, fuzzy
+msgid "Allocation"
+msgstr "Bajti / Dodelitve: "
+
+#: ../clutter/clutter-actor.c:3796
+#, fuzzy
+msgid "The actor's allocation"
+msgstr "Bajti / Dodelitve: "
+
+#: ../clutter/clutter-actor.c:3852
+#, fuzzy
+msgid "Request Mode"
+msgstr "Način uvoza: "
+
+#: ../clutter/clutter-actor.c:3853
+#, fuzzy
+msgid "The actor's request mode"
+msgstr "Omogoči razhroščevalni način"
+
+#: ../clutter/clutter-actor.c:3868
+#, fuzzy
+msgid "Depth"
+msgstr "Globina:"
+
+#: ../clutter/clutter-actor.c:3869
+#, fuzzy
+msgid "Position on the Z axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:3883
+#, fuzzy
+msgid "Opacity"
+msgstr "Motnost"
+
+#: ../clutter/clutter-actor.c:3884
+#, fuzzy
+msgid "Opacity of an actor"
+msgstr "i* - nedoločen igralec"
+
+#: ../clutter/clutter-actor.c:3899
+#, fuzzy
+msgid "Visible"
+msgstr "Vidno"
+
+#: ../clutter/clutter-actor.c:3900
+#, fuzzy
+msgid "Whether the actor is visible or not"
+msgstr "Ali naj bo ikona stanja vidna"
+
+#: ../clutter/clutter-actor.c:3915
+#, fuzzy
+msgid "Mapped"
+msgstr "Postavi v žarišče med preslikavanjem"
+
+#: ../clutter/clutter-actor.c:3916
+#, fuzzy
+msgid "Whether the actor will be painted"
+msgstr "Ali naj bo stranski pult viden."
+
+#: ../clutter/clutter-actor.c:3930
+msgid "Realized"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3931
+#, fuzzy
+msgid "Whether the actor has been realized"
+msgstr "Ali je bil določen neviden znak"
+
+#: ../clutter/clutter-actor.c:3947
+#, fuzzy
+msgid "Reactive"
+msgstr "Repetitivno-eksplozivni"
+
+#: ../clutter/clutter-actor.c:3948
+msgid "Whether the actor is reactive to events"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:3960
+#, fuzzy
+msgid "Has Clip"
+msgstr "Širina izrezka"
+
+#: ../clutter/clutter-actor.c:3961
+#, fuzzy
+msgid "Whether the actor has a clip set"
+msgstr "Ali je bil določen neviden znak"
+
+#: ../clutter/clutter-actor.c:3976
+#, fuzzy
+msgid "Clip"
+msgstr "Izrezek"
+
+#: ../clutter/clutter-actor.c:3977
+#, fuzzy
+msgid "The clip region for the actor"
+msgstr "Pisava za naslove posnetkov"
+
+#: ../clutter/clutter-actor.c:3991
+#: ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-binding-pool.c:319
+#: ../clutter/clutter-input-device.c:236
+#, fuzzy
+msgid "Name"
+msgstr "Ime"
+
+#: ../clutter/clutter-actor.c:3992
+#, fuzzy
+msgid "Name of the actor"
+msgstr "i* - nedoločen igralec"
+
+#: ../clutter/clutter-actor.c:4006
+#, fuzzy
+msgid "Scale X"
+msgstr "_Merilo:"
+
+#: ../clutter/clutter-actor.c:4007
+#, fuzzy
+msgid "Scale factor on the X axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4022
+#, fuzzy
+msgid "Scale Y"
+msgstr "_Merilo:"
+
+#: ../clutter/clutter-actor.c:4023
+#, fuzzy
+msgid "Scale factor on the Y axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4038
+#, fuzzy
+msgid "Scale Center X"
+msgstr "Osrednje vozlišče"
+
+#: ../clutter/clutter-actor.c:4039
+#, fuzzy
+msgid "Horizontal scale center"
+msgstr "Poravnava vodoravne sredine"
+
+#: ../clutter/clutter-actor.c:4054
+#, fuzzy
+msgid "Scale Center Y"
+msgstr "Osrednje vozlišče"
+
+#: ../clutter/clutter-actor.c:4055
+#, fuzzy
+msgid "Vertical scale center"
+msgstr "Poravnava navpične sredine"
+
+#: ../clutter/clutter-actor.c:4070
+#, fuzzy
+msgid "Scale Gravity"
+msgstr "Teorija težnosti"
+
+#: ../clutter/clutter-actor.c:4071
+#, fuzzy
+msgid "The center of scaling"
+msgstr "Prilagajanje velikosti strani:"
+
+#: ../clutter/clutter-actor.c:4088
+#, fuzzy
+msgid "Rotation Angle X"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-actor.c:4089
+#, fuzzy
+msgid "The rotation angle on the X axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4104
+#, fuzzy
+msgid "Rotation Angle Y"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-actor.c:4105
+#, fuzzy
+msgid "The rotation angle on the Y axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4120
+#, fuzzy
+msgid "Rotation Angle Z"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-actor.c:4121
+#, fuzzy
+msgid "The rotation angle on the Z axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4136
+#, fuzzy
+msgid "Rotation Center X"
+msgstr "Osrednje vozlišče"
+
+#: ../clutter/clutter-actor.c:4137
+#, fuzzy
+msgid "The rotation center on the X axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4153
+#, fuzzy
+msgid "Rotation Center Y"
+msgstr "Osrednje vozlišče"
+
+#: ../clutter/clutter-actor.c:4154
+#, fuzzy
+msgid "The rotation center on the Y axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4170
+#, fuzzy
+msgid "Rotation Center Z"
+msgstr "Osrednje vozlišče"
+
+#: ../clutter/clutter-actor.c:4171
+#, fuzzy
+msgid "The rotation center on the Z axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-actor.c:4187
+#, fuzzy
+msgid "Rotation Center Z Gravity"
+msgstr "Preklopnik podatkovnega središča"
+
+#: ../clutter/clutter-actor.c:4188
+msgid "Center point for rotation around the Z axis"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:4206
+#, fuzzy
+msgid "Anchor X"
+msgstr "Sidro"
+
+#: ../clutter/clutter-actor.c:4207
+#, fuzzy
+msgid "X coordinate of the anchor point"
+msgstr "Sidrna točka v besedilu"
+
+#: ../clutter/clutter-actor.c:4223
+#, fuzzy
+msgid "Anchor Y"
+msgstr "Sidro"
+
+#: ../clutter/clutter-actor.c:4224
+#, fuzzy
+msgid "Y coordinate of the anchor point"
+msgstr "Sidrna točka v besedilu"
+
+#: ../clutter/clutter-actor.c:4239
+#, fuzzy
+msgid "Anchor Gravity"
+msgstr "Teorija težnosti"
+
+#: ../clutter/clutter-actor.c:4240
+#, fuzzy
+msgid "The anchor point as a ClutterGravity"
+msgstr "Sidrna točka v besedilu"
+
+#: ../clutter/clutter-actor.c:4259
+#, fuzzy
+msgid "Show on set parent"
+msgstr "Določitev oznake razdelka na %1"
+
+#: ../clutter/clutter-actor.c:4260
+msgid "Whether the actor is shown when parented"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:4280
+#, fuzzy
+msgid "Clip to Allocation"
+msgstr "Napaka dodelljevanja pomnilnika"
+
+#: ../clutter/clutter-actor.c:4281
+msgid "Sets the clip region to track the actor's allocation"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:4291
+#, fuzzy
+msgid "Text Direction"
+msgstr "Smer besedila"
+
+#: ../clutter/clutter-actor.c:4292
+#, fuzzy
+msgid "Direction of the text"
+msgstr "Smer besedila"
+
+#: ../clutter/clutter-actor.c:4310
+#, fuzzy
+msgid "Has Pointer"
+msgstr "Način kazalnika"
+
+#: ../clutter/clutter-actor.c:4311
+msgid "Whether the actor contains the pointer of an input device"
+msgstr ""
+
+#: ../clutter/clutter-actor.c:4328
+#, fuzzy
+msgid "Actions"
+msgstr "Dejanja"
+
+#: ../clutter/clutter-actor.c:4329
+#, fuzzy
+msgid "Adds an action to the actor"
+msgstr "Dejanje, povezano s korakom"
+
+#: ../clutter/clutter-actor.c:4343
+#, fuzzy
+msgid "Constraints"
+msgstr "Omejitve"
+
+#: ../clutter/clutter-actor.c:4344
+#, fuzzy
+msgid "Adds a constraint to the actor"
+msgstr "Določi omejitve naloge"
+
+#: ../clutter/clutter-actor-meta.c:191
+#: ../clutter/clutter-child-meta.c:142
+#, fuzzy
+msgid "Actor"
+msgstr "Igralec/vršilec"
+
+#: ../clutter/clutter-actor-meta.c:192
+#, fuzzy
+msgid "The actor attached to the meta"
+msgstr "Pripeta shema `%s' h ključu  `%s'\n"
+
+#: ../clutter/clutter-actor-meta.c:206
+#, fuzzy
+msgid "The name of the meta"
+msgstr "Meta spremenilnik"
+
+#: ../clutter/clutter-actor-meta.c:219
+#: ../clutter/clutter-input-device.c:315
+#: ../clutter/clutter-shader.c:295
+#, fuzzy
+msgid "Enabled"
+msgstr "Omogočeno"
+
+#: ../clutter/clutter-actor-meta.c:220
+#, fuzzy
+msgid "Whether the meta is enabled"
+msgstr "Ali je vstavek omogočen"
+
+#: ../clutter/clutter-align-constraint.c:252
+#: ../clutter/clutter-bind-constraint.c:316
+#: ../clutter/clutter-clone.c:326
+#: ../clutter/clutter-snap-constraint.c:321
+#, fuzzy
+msgid "Source"
+msgstr "Vir"
+
+#: ../clutter/clutter-align-constraint.c:253
+#, fuzzy
+msgid "The source of the alignment"
+msgstr "Poravnava besedila"
+
+#: ../clutter/clutter-align-constraint.c:266
+#, fuzzy
+msgid "Align Axis"
+msgstr "_Ena os:"
+
+#: ../clutter/clutter-align-constraint.c:267
+#, fuzzy
+msgid "The axis to align the position to"
+msgstr "Skoči na določeno mesto"
+
+#: ../clutter/clutter-align-constraint.c:286
+#: ../clutter/clutter-desaturate-effect.c:304
+#, fuzzy
+msgid "Factor"
+msgstr "Faktor"
+
+#: ../clutter/clutter-align-constraint.c:287
+#, fuzzy
+msgid "The alignment factor, between 0.0 and 1.0"
+msgstr "Konstantni faktor med 0 in -1"
+
+#: ../clutter/clutter-alpha.c:339
+#: ../clutter/clutter-animation.c:523
+#: ../clutter/clutter-animator.c:1802
+#, fuzzy
+msgid "Timeline"
+msgstr "_Časovnica"
+
+#: ../clutter/clutter-alpha.c:340
+#, fuzzy
+msgid "Timeline used by the alpha"
+msgstr "Privzeto uporabljeni GtkPageSetup"
+
+#: ../clutter/clutter-alpha.c:355
+#, fuzzy
+msgid "Alpha value"
+msgstr "Stopenjska alfa vrednost [nedoločeno,1,2,4]"
+
+#: ../clutter/clutter-alpha.c:356
+msgid "Alpha value as computed by the alpha"
+msgstr ""
+
+#: ../clutter/clutter-alpha.c:376
+#: ../clutter/clutter-animation.c:479
+#, fuzzy
+msgid "Mode"
+msgstr "Način"
+
+#: ../clutter/clutter-alpha.c:377
+#, fuzzy
+msgid "Progress mode"
+msgstr "Način uvoza: "
+
+#: ../clutter/clutter-animation.c:463
+#, fuzzy
+msgid "Object"
+msgstr "Predmet"
+
+#: ../clutter/clutter-animation.c:464
+#, fuzzy
+msgid "Object to which the animation applies"
+msgstr "Predmet dopolnjevanja, ki mu pripada vsebina"
+
+#: ../clutter/clutter-animation.c:480
+#, fuzzy
+msgid "The mode of the animation"
+msgstr "Način animacije slik"
+
+#: ../clutter/clutter-animation.c:494
+#: ../clutter/clutter-animator.c:1786
+#: ../clutter/clutter-media.c:194
+#: ../clutter/clutter-state.c:1422
+#: ../clutter/clutter-timeline.c:294
+#, fuzzy
+msgid "Duration"
+msgstr "Trajanje"
+
+#: ../clutter/clutter-animation.c:495
+#, fuzzy
+msgid "Duration of the animation, in milliseconds"
+msgstr "Dolžina skladbe v milisekundah."
+
+#: ../clutter/clutter-animation.c:509
+#: ../clutter/clutter-timeline.c:263
+#, fuzzy
+msgid "Loop"
+msgstr "Ponavljanje"
+
+#: ../clutter/clutter-animation.c:510
+#, fuzzy
+msgid "Whether the animation should loop"
+msgstr "Ali naj kazalec utripa"
+
+#: ../clutter/clutter-animation.c:524
+#, fuzzy
+msgid "The timeline used by the animation"
+msgstr "Privzeto uporabljeni GtkPageSetup"
+
+#: ../clutter/clutter-animation.c:537
+#: ../clutter/clutter-behaviour.c:298
+#, fuzzy
+msgid "Alpha"
+msgstr "Alfa"
+
+#: ../clutter/clutter-animation.c:538
+#, fuzzy
+msgid "The alpha used by the animation"
+msgstr "Privzeto uporabljeni GtkPageSetup"
+
+#: ../clutter/clutter-animator.c:1787
+#, fuzzy
+msgid "The duration of the animation"
+msgstr "Animacija in risanke"
+
+#: ../clutter/clutter-animator.c:1803
+#, fuzzy
+msgid "The timeline of the animation"
+msgstr "Animacija in risanke"
+
+#: ../clutter/clutter-behaviour.c:299
+msgid "Alpha Object to drive the behaviour"
+msgstr ""
+
+#: ../clutter/clutter-behaviour-depth.c:174
+#, fuzzy
+msgid "Start Depth"
+msgstr "_Neomejena globina"
+
+#: ../clutter/clutter-behaviour-depth.c:175
+#, fuzzy
+msgid "Initial depth to apply"
+msgstr "Uveljavi za vse _primere"
+
+#: ../clutter/clutter-behaviour-depth.c:190
+#, fuzzy
+msgid "End Depth"
+msgstr "_Neomejena globina"
+
+#: ../clutter/clutter-behaviour-depth.c:191
+#, fuzzy
+msgid "Final depth to apply"
+msgstr "Uveljavi za vse _primere"
+
+#: ../clutter/clutter-behaviour-ellipse.c:394
+#, fuzzy
+msgid "Start Angle"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-behaviour-ellipse.c:395
+#: ../clutter/clutter-behaviour-rotate.c:276
+#, fuzzy
+msgid "Initial angle"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-behaviour-ellipse.c:410
+#, fuzzy
+msgid "End Angle"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-behaviour-ellipse.c:411
+#: ../clutter/clutter-behaviour-rotate.c:294
+#, fuzzy
+msgid "Final angle"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-behaviour-ellipse.c:426
+#, fuzzy
+msgid "Angle x tilt"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-behaviour-ellipse.c:427
+#, fuzzy
+msgid "Tilt of the ellipse around x axis"
+msgstr "Vrtenje v R^3 okoli izhodišča in osi x"
+
+#: ../clutter/clutter-behaviour-ellipse.c:442
+#, fuzzy
+msgid "Angle y tilt"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-behaviour-ellipse.c:443
+#, fuzzy
+msgid "Tilt of the ellipse around y axis"
+msgstr "Vrtenje v R^3 okoli izhodišča in osi x"
+
+#: ../clutter/clutter-behaviour-ellipse.c:458
+#, fuzzy
+msgid "Angle z tilt"
+msgstr "Kot rezanja"
+
+#: ../clutter/clutter-behaviour-ellipse.c:459
+#, fuzzy
+msgid "Tilt of the ellipse around z axis"
+msgstr "Vrtenje v R^3 okoli izhodišča in osi x"
+
+#: ../clutter/clutter-behaviour-ellipse.c:475
+#, fuzzy
+msgid "Width of the ellipse"
+msgstr "zapolnjena elipsa"
+
+#: ../clutter/clutter-behaviour-ellipse.c:491
+#, fuzzy
+msgid "Height of ellipse"
+msgstr "zapolnjena elipsa"
+
+#: ../clutter/clutter-behaviour-ellipse.c:506
+#, fuzzy
+msgid "Center"
+msgstr "Sredinsko"
+
+#: ../clutter/clutter-behaviour-ellipse.c:507
+#, fuzzy
+msgid "Center of ellipse"
+msgstr "zapolnjena elipsa"
+
+#: ../clutter/clutter-behaviour-ellipse.c:521
+#: ../clutter/clutter-behaviour-rotate.c:329
+#: ../clutter/clutter-timeline.c:310
+#, fuzzy
+msgid "Direction"
+msgstr "Smer"
+
+#: ../clutter/clutter-behaviour-ellipse.c:522
+#: ../clutter/clutter-behaviour-rotate.c:330
+#, fuzzy
+msgid "Direction of rotation"
+msgstr "Vrtilna hitrost:"
+
+#: ../clutter/clutter-behaviour-opacity.c:177
+#, fuzzy
+msgid "Opacity Start"
+msgstr "Začetni datum:"
+
+#: ../clutter/clutter-behaviour-opacity.c:178
+#, fuzzy
+msgid "Initial opacity level"
+msgstr "Gradnik vrhnje ravni"
+
+#: ../clutter/clutter-behaviour-opacity.c:195
+#, fuzzy
+msgid "Opacity End"
+msgstr "Končni datum:"
+
+#: ../clutter/clutter-behaviour-opacity.c:196
+#, fuzzy
+msgid "Final opacity level"
+msgstr "Gradnik vrhnje ravni"
+
+#: ../clutter/clutter-behaviour-path.c:219
+#: ../clutter/clutter-path-constraint.c:212
+#, fuzzy
+msgid "Path"
+msgstr "Pot"
+
+#: ../clutter/clutter-behaviour-path.c:220
+msgid "The ClutterPath object representing the path to animate along"
+msgstr ""
+
+#: ../clutter/clutter-behaviour-rotate.c:275
+#, fuzzy
+msgid "Angle Begin"
+msgstr "Po začetku"
+
+#: ../clutter/clutter-behaviour-rotate.c:293
+#, fuzzy
+msgid "Angle End"
+msgstr "Končni datum:"
+
+#: ../clutter/clutter-behaviour-rotate.c:311
+#, fuzzy
+msgid "Axis"
+msgstr "_Ena os:"
+
+#: ../clutter/clutter-behaviour-rotate.c:312
+#, fuzzy
+msgid "Axis of rotation"
+msgstr "Vrtilna hitrost:"
+
+#: ../clutter/clutter-behaviour-rotate.c:347
+#, fuzzy
+msgid "Center X"
+msgstr "Sredinsko"
+
+#: ../clutter/clutter-behaviour-rotate.c:348
+#, fuzzy
+msgid "X coordinate of the center of rotation"
+msgstr "<i>Vrtenje ni podprto</i>"
+
+#: ../clutter/clutter-behaviour-rotate.c:365
+#, fuzzy
+msgid "Center Y"
+msgstr "Sredinsko"
+
+#: ../clutter/clutter-behaviour-rotate.c:366
+#, fuzzy
+msgid "Y coordinate of the center of rotation"
+msgstr "<i>Vrtenje ni podprto</i>"
+
+#: ../clutter/clutter-behaviour-rotate.c:383
+#, fuzzy
+msgid "Center Z"
+msgstr "Sredinsko"
+
+#: ../clutter/clutter-behaviour-rotate.c:384
+#, fuzzy
+msgid "Z coordinate of the center of rotation"
+msgstr "<i>Vrtenje ni podprto</i>"
+
+#: ../clutter/clutter-behaviour-scale.c:218
+#, fuzzy
+msgid "X Start Scale"
+msgstr "Časovno merilo"
+
+#: ../clutter/clutter-behaviour-scale.c:219
+#, fuzzy
+msgid "Initial scale on the X axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-behaviour-scale.c:237
+#, fuzzy
+msgid "X End Scale"
+msgstr "Časovno merilo"
+
+#: ../clutter/clutter-behaviour-scale.c:238
+#, fuzzy
+msgid "Final scale on the X axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-behaviour-scale.c:256
+#, fuzzy
+msgid "Y Start Scale"
+msgstr "Časovno merilo"
+
+#: ../clutter/clutter-behaviour-scale.c:257
+#, fuzzy
+msgid "Initial scale on the Y axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-behaviour-scale.c:275
+#, fuzzy
+msgid "Y End Scale"
+msgstr "Časovno merilo"
+
+#: ../clutter/clutter-behaviour-scale.c:276
+#, fuzzy
+msgid "Final scale on the Y axis"
+msgstr "Pult leži na sredini osi X"
+
+#: ../clutter/clutter-bind-constraint.c:317
+#, fuzzy
+msgid "The source of the binding"
+msgstr "Odkrij povezave"
+
+#: ../clutter/clutter-bind-constraint.c:330
+#, fuzzy
+msgid "Coordinate"
+msgstr "X koordinata"
+
+#: ../clutter/clutter-bind-constraint.c:331
+#, fuzzy
+msgid "The coordinate to bind"
+msgstr "Dlančnika ni mogoče vezati"
+
+#: ../clutter/clutter-bind-constraint.c:345
+#: ../clutter/clutter-path-constraint.c:226
+#: ../clutter/clutter-snap-constraint.c:366
+#, fuzzy
+msgid "Offset"
+msgstr "Odmik"
+
+#: ../clutter/clutter-bind-constraint.c:346
+msgid "The offset in pixels to apply to the binding"
+msgstr ""
+
+#: ../clutter/clutter-binding-pool.c:320
+#, fuzzy
+msgid "The unique name of the binding pool"
+msgstr "Enkratno ime za dejanje."
+
+#: ../clutter/clutter-bin-layout.c:261
+#: ../clutter/clutter-bin-layout.c:580
+#: ../clutter/clutter-box-layout.c:395
+#: ../clutter/clutter-table-layout.c:652
+#, fuzzy
+msgid "Horizontal Alignment"
+msgstr "Vodoravna poravnava"
+
+#: ../clutter/clutter-bin-layout.c:262
+msgid "Horizontal alignment for the actor inside the layout manager"
+msgstr ""
+
+#: ../clutter/clutter-bin-layout.c:270
+#: ../clutter/clutter-bin-layout.c:597
+#: ../clutter/clutter-box-layout.c:404
+#: ../clutter/clutter-table-layout.c:667
+#, fuzzy
+msgid "Vertical Alignment"
+msgstr "Navpična poravnava"
+
+#: ../clutter/clutter-bin-layout.c:271
+msgid "Vertical alignment for the actor inside the layout manager"
+msgstr ""
+
+#: ../clutter/clutter-bin-layout.c:581
+msgid "Default horizontal alignment for the actors inside the layout manager"
+msgstr ""
+
+#: ../clutter/clutter-bin-layout.c:598
+msgid "Default vertical alignment for the actors inside the layout manager"
+msgstr ""
+
+#: ../clutter/clutter-box.c:537
+#, fuzzy
+msgid "Layout Manager"
+msgstr "Upravljalnik povezav"
+
+#: ../clutter/clutter-box.c:538
+#, fuzzy
+msgid "The layout manager used by the box"
+msgstr "Razred programa kot ga uporablja upravljalnik oken"
+
+#: ../clutter/clutter-box.c:557
+#: ../clutter/clutter-rectangle.c:258
+#: ../clutter/clutter-stage.c:1443
+#, fuzzy
+msgid "Color"
+msgstr "Barva"
+
+#: ../clutter/clutter-box.c:558
+#, fuzzy
+msgid "The background color of the box"
+msgstr "Barva izbirnega polja"
+
+#: ../clutter/clutter-box.c:572
+#, fuzzy
+msgid "Color Set"
+msgstr "Nastavi barvo ozadja"
+
+#: ../clutter/clutter-box.c:573
+#, fuzzy
+msgid "Whether the background color is set"
+msgstr "Določa ali je določena barva ozadja"
+
+#: ../clutter/clutter-box-layout.c:370
+#, fuzzy
+msgid "Expand"
+msgstr "Razširi"
+
+#: ../clutter/clutter-box-layout.c:371
+msgid "Allocate extra space for the child"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:377
+#: ../clutter/clutter-table-layout.c:631
+#, fuzzy
+msgid "Horizontal Fill"
+msgstr "Barva polnila:"
+
+#: ../clutter/clutter-box-layout.c:378
+#: ../clutter/clutter-table-layout.c:632
+msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:386
+#: ../clutter/clutter-table-layout.c:638
+#, fuzzy
+msgid "Vertical Fill"
+msgstr "Barva polnila:"
+
+#: ../clutter/clutter-box-layout.c:387
+#: ../clutter/clutter-table-layout.c:639
+msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:396
+#: ../clutter/clutter-table-layout.c:653
+msgid "Horizontal alignment of the actor within the cell"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:405
+#: ../clutter/clutter-table-layout.c:668
+msgid "Vertical alignment of the actor within the cell"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:1077
+#, fuzzy
+msgid "Vertical"
+msgstr "Navpično"
+
+#: ../clutter/clutter-box-layout.c:1078
+msgid "Whether the layout should be vertical, rather than horizontal"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:1093
+#: ../clutter/clutter-flow-layout.c:898
+#, fuzzy
+msgid "Homogeneous"
+msgstr "Homogenost"
+
+#: ../clutter/clutter-box-layout.c:1094
+msgid "Whether the layout should be homogeneous, i.e. all childs get the same size"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:1109
+#, fuzzy
+msgid "Pack Start"
+msgstr "Začetni datum:"
+
+#: ../clutter/clutter-box-layout.c:1110
+msgid "Whether to pack items at the start of the box"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:1123
+#, fuzzy
+msgid "Spacing"
+msgstr "Razmik"
+
+#: ../clutter/clutter-box-layout.c:1124
+#, fuzzy
+msgid "Spacing between children"
+msgstr "Prostor med celicami"
+
+#: ../clutter/clutter-box-layout.c:1138
+#: ../clutter/clutter-table-layout.c:1740
+#, fuzzy
+msgid "Use Animations"
+msgstr "Pokaži animacije"
+
+#: ../clutter/clutter-box-layout.c:1139
+#: ../clutter/clutter-table-layout.c:1741
+msgid "Whether layout changes should be animated"
+msgstr ""
+
+#: ../clutter/clutter-box-layout.c:1160
+#: ../clutter/clutter-table-layout.c:1762
+#, fuzzy
+msgid "Easing Mode"
+msgstr "Način uvoza: "
+
+#: ../clutter/clutter-box-layout.c:1161
+#: ../clutter/clutter-table-layout.c:1763
+#, fuzzy
+msgid "The easing mode of the animations"
+msgstr "Pokaži animacije slik"
+
+#: ../clutter/clutter-box-layout.c:1178
+#: ../clutter/clutter-table-layout.c:1780
+#, fuzzy
+msgid "Easing Duration"
+msgstr "Trajanje poudarjanja"
+
+#: ../clutter/clutter-box-layout.c:1179
+#: ../clutter/clutter-table-layout.c:1781
+#, fuzzy
+msgid "The duration of the animations"
+msgstr "Pokaži animacije"
+
+#: ../clutter/clutter-cairo-texture.c:413
+#, fuzzy
+msgid "Surface Width"
+msgstr "širina zajemanja"
+
+#: ../clutter/clutter-cairo-texture.c:414
+#, fuzzy
+msgid "The width of the Cairo surface"
+msgstr "Cairo WMF (stari)"
+
+#: ../clutter/clutter-cairo-texture.c:428
+#, fuzzy
+msgid "Surface Height"
+msgstr "višina zajemanja"
+
+#: ../clutter/clutter-cairo-texture.c:429
+#, fuzzy
+msgid "The height of the Cairo surface"
+msgstr "Oddaljenost glave nad površino diska"
+
+#: ../clutter/clutter-child-meta.c:127
+#, fuzzy
+msgid "Container"
+msgstr "Vsebovalnik"
+
+#: ../clutter/clutter-child-meta.c:128
+msgid "The container that created this data"
+msgstr ""
+
+#: ../clutter/clutter-child-meta.c:143
+#, fuzzy
+msgid "The actor wrapped by this data"
+msgstr "Zapis datoteke in podatki opisani v metapodatkih."
+
+#: ../clutter/clutter-click-action.c:302
+#, fuzzy
+msgid "Pressed"
+msgstr "pritisnjeno"
+
+#: ../clutter/clutter-click-action.c:303
+msgid "Whether the clickable should be in pressed state"
+msgstr ""
+
+#: ../clutter/clutter-click-action.c:316
+#, fuzzy
+msgid "Held"
+msgstr "Zadrži"
+
+#: ../clutter/clutter-click-action.c:317
+#, fuzzy
+msgid "Whether the clickable has a grab"
+msgstr "Ali so v projektu izbori"
+
+#: ../clutter/clutter-clone.c:327
+#, fuzzy
+msgid "Specifies the actor to be cloned"
+msgstr "Določa kaj uporabnik lahko izbere"
+
+#: ../clutter/clutter-colorize-effect.c:307
+#, fuzzy
+msgid "Tint"
+msgstr "_Črnilo"
+
+#: ../clutter/clutter-colorize-effect.c:308
+#, fuzzy
+msgid "The tint to apply"
+msgstr "Uporaba zaloge"
+
+#: ../clutter/clutter-deform-effect.c:527
+#, fuzzy
+msgid "Horizontal Tiles"
+msgstr "Preostalih ploščic:"
+
+#: ../clutter/clutter-deform-effect.c:528
+#, fuzzy
+msgid "The number of horizontal tiles"
+msgstr "velikost igralnih ploščic"
+
+#: ../clutter/clutter-deform-effect.c:543
+#, fuzzy
+msgid "Vertical Tiles"
+msgstr "Preostalih ploščic:"
+
+#: ../clutter/clutter-deform-effect.c:544
+#, fuzzy
+msgid "The number of vertical tiles"
+msgstr "velikost igralnih ploščic"
+
+#: ../clutter/clutter-deform-effect.c:561
+#, fuzzy
+msgid "Back Material"
+msgstr "Nazaj - istovetnost"
+
+#: ../clutter/clutter-deform-effect.c:562
+msgid "The material to be used when painting the back of the actor"
+msgstr ""
+
+#: ../clutter/clutter-desaturate-effect.c:305
+#, fuzzy
+msgid "The desaturation factor"
+msgstr "Korekcijski faktor"
+
+#: ../clutter/clutter-device-manager.c:131
+#: ../clutter/clutter-input-device.c:344
+#: ../clutter/x11/clutter-keymap-x11.c:316
+#, fuzzy
+msgid "Backend"
+msgstr "Hrbtenica"
+
+#: ../clutter/clutter-device-manager.c:132
+#, fuzzy
+msgid "The ClutterBackend of the device manager"
+msgstr "Pogled upravljalnika nalog"
+
+#: ../clutter/clutter-drag-action.c:547
+#, fuzzy
+msgid "Horizontal Drag Threshold"
+msgstr "Prag (na kanal)"
+
+#: ../clutter/clutter-drag-action.c:548
+msgid "The horizontal amount of pixels required to start dragging"
+msgstr ""
+
+#: ../clutter/clutter-drag-action.c:575
+#, fuzzy
+msgid "Vertical Drag Threshold"
+msgstr "Prag (na kanal)"
+
+#: ../clutter/clutter-drag-action.c:576
+msgid "The vertical amount of pixels required to start dragging"
+msgstr ""
+
+#: ../clutter/clutter-drag-action.c:597
+#, fuzzy
+msgid "Drag Handle"
+msgstr "Dodaj ročico"
+
+#: ../clutter/clutter-drag-action.c:598
+#, fuzzy
+msgid "The actor that is being dragged"
+msgstr "Naslov URI trenutno preučene strani"
+
+#: ../clutter/clutter-drag-action.c:611
+#, fuzzy
+msgid "Drag Axis"
+msgstr "_Ena os:"
+
+#: ../clutter/clutter-drag-action.c:612
+#, fuzzy
+msgid "Constraints the dragging to an axis"
+msgstr "S klikom lahko premaknete \"%s\""
+
+#: ../clutter/clutter-flow-layout.c:882
+#, fuzzy
+msgid "Orientation"
+msgstr "Usmerjenost"
+
+#: ../clutter/clutter-flow-layout.c:883
+#, fuzzy
+msgid "The orientation of the layout"
+msgstr "_Vodoravni razpored"
+
+#: ../clutter/clutter-flow-layout.c:899
+msgid "Whether each item should receive the same allocation"
+msgstr ""
+
+#: ../clutter/clutter-flow-layout.c:914
+#: ../clutter/clutter-table-layout.c:1711
+#, fuzzy
+msgid "Column Spacing"
+msgstr "Prostor med stolpci"
+
+#: ../clutter/clutter-flow-layout.c:915
+#, fuzzy
+msgid "The spacing between columns"
+msgstr "Prostor med celicami"
+
+#: ../clutter/clutter-flow-layout.c:931
+#: ../clutter/clutter-table-layout.c:1725
+#, fuzzy
+msgid "Row Spacing"
+msgstr "Prostor med vrsticami"
+
+#: ../clutter/clutter-flow-layout.c:932
+#, fuzzy
+msgid "The spacing between rows"
+msgstr "Prostor med celicami"
+
+#: ../clutter/clutter-flow-layout.c:946
+#, fuzzy
+msgid "Minimum Column Width"
+msgstr "Najmanjša dovoljena širina stolpca"
+
+#: ../clutter/clutter-flow-layout.c:947
+#, fuzzy
+msgid "Minimum width for each column"
+msgstr "Širina, uporabljena za vsak element"
+
+#: ../clutter/clutter-flow-layout.c:962
+#, fuzzy
+msgid "Maximum Column Width"
+msgstr "Največja dovoljena širina stolpca"
+
+#: ../clutter/clutter-flow-layout.c:963
+#, fuzzy
+msgid "Maximum width for each column"
+msgstr "Širina, uporabljena za vsak element"
+
+#: ../clutter/clutter-flow-layout.c:977
+#, fuzzy
+msgid "Minimum Row Height"
+msgstr "Enotna višina vrstic"
+
+#: ../clutter/clutter-flow-layout.c:978
+msgid "Minimum height for each row"
+msgstr ""
+
+#: ../clutter/clutter-flow-layout.c:993
+#, fuzzy
+msgid "Maximum Row Height"
+msgstr "Enotna višina vrstic"
+
+#: ../clutter/clutter-flow-layout.c:994
+msgid "Maximum height for each row"
+msgstr ""
+
+#: ../clutter/clutter-input-device.c:220
+#, fuzzy
+msgid "Id"
+msgstr "ID"
+
+#: ../clutter/clutter-input-device.c:221
+#, fuzzy
+msgid "Unique identifier of the device"
+msgstr "Edinstveno določilo datoteke."
+
+#: ../clutter/clutter-input-device.c:237
+#, fuzzy
+msgid "The name of the device"
+msgstr "Ime naprave"
+
+#: ../clutter/clutter-input-device.c:251
+#, fuzzy
+msgid "Device Type"
+msgstr "_Vrsta naprave:"
+
+#: ../clutter/clutter-input-device.c:252
+#, fuzzy
+msgid "The type of the device"
+msgstr "_Vrsta naprave:"
+
+#: ../clutter/clutter-input-device.c:267
+#, fuzzy
+msgid "Device Manager"
+msgstr "Upravljalnik povezav"
+
+#: ../clutter/clutter-input-device.c:268
+#, fuzzy
+msgid "The device manager instance"
+msgstr "Opravilo z več pojavitvami"
+
+#: ../clutter/clutter-input-device.c:281
+#, fuzzy
+msgid "Device Mode"
+msgstr "Način uvoza: "
+
+#: ../clutter/clutter-input-device.c:282
+#, fuzzy
+msgid "The mode of the device"
+msgstr "Podpora naprav"
+
+#: ../clutter/clutter-input-device.c:296
+#, fuzzy
+msgid "Has Cursor"
+msgstr "Ima kazalec"
+
+#: ../clutter/clutter-input-device.c:297
+#, fuzzy
+msgid "Whether the device has a cursor"
+msgstr "Ali naj kazalec utripa"
+
+#: ../clutter/clutter-input-device.c:316
+#, fuzzy
+msgid "Whether the device is enabled"
+msgstr "Ali je vstavek omogočen"
+
+#: ../clutter/clutter-input-device.c:329
+#, fuzzy
+msgid "Number of Axes"
+msgstr "XLST - Osi"
+
+#: ../clutter/clutter-input-device.c:330
+#, fuzzy
+msgid "The number of axes on the device"
+msgstr "Številka naprave za uporabo na vmesniku."
+
+#: ../clutter/clutter-input-device.c:345
+#, fuzzy
+msgid "The backend instance"
+msgstr "Večkratna pojavitev"
+
+#: ../clutter/clutter-interval.c:397
+#, fuzzy
+msgid "Value Type"
+msgstr "vrednost `%s' bi morala biti vrste %s"
+
+#: ../clutter/clutter-interval.c:398
+#, fuzzy
+msgid "The type of the values in the interval"
+msgstr "Interval zajemanja (v minutah):"
+
+#: ../clutter/clutter-layout-meta.c:117
+#, fuzzy
+msgid "Manager"
+msgstr "Upravljalnik"
+
+#: ../clutter/clutter-layout-meta.c:118
+msgid "The manager that created this data"
+msgstr ""
+
+#. Translate to default:RTL if you want your widgets
+#. * to be RTL, otherwise translate to default:LTR.
+#. *
+#. * Do *not* translate it to "predefinito:LTR": if it
+#. * it isn't default:LTR or default:RTL it will not work
+#.
+#: ../clutter/clutter-main.c:738
+#, fuzzy
+msgid "default:LTR"
+msgstr "privzeto:LTR"
+
+#: ../clutter/clutter-main.c:1541
+#, fuzzy
+msgid "Show frames per second"
+msgstr "Prebujanja procesorja na sekundo:"
+
+#: ../clutter/clutter-main.c:1543
+#, fuzzy
+msgid "Default frame rate"
+msgstr "_Hitrost sličic vhoda"
+
+#: ../clutter/clutter-main.c:1545
+#, fuzzy
+msgid "Make all warnings fatal"
+msgstr "Izpiši vsa opozorila kot usodna"
+
+#: ../clutter/clutter-main.c:1548
+#, fuzzy
+msgid "Direction for the text"
+msgstr "Pisava za besedilo"
+
+#: ../clutter/clutter-main.c:1551
+#, fuzzy
+msgid "Disable mipmapping on text"
+msgstr "Besedilo, ki bo prikazano v prikazovalniku napredka"
+
+#: ../clutter/clutter-main.c:1554
+#, fuzzy
+msgid "Use 'fuzzy' picking"
+msgstr "Vključi ohlapne nize"
+
+#: ../clutter/clutter-main.c:1557
+#, fuzzy
+msgid "Clutter debugging flags to set"
+msgstr "GDict zastavice razhroščevanja, ki naj bodo nastavljene"
+
+#: ../clutter/clutter-main.c:1559
+#, fuzzy
+msgid "Clutter debugging flags to unset"
+msgstr "GDict zastavice razhroščevanja, ki naj ne bodo nastavljene"
+
+#: ../clutter/clutter-main.c:1563
+#, fuzzy
+msgid "Clutter profiling flags to set"
+msgstr "GDict zastavice razhroščevanja, ki naj bodo nastavljene"
+
+#: ../clutter/clutter-main.c:1565
+#, fuzzy
+msgid "Clutter profiling flags to unset"
+msgstr "GDict zastavice razhroščevanja, ki naj ne bodo nastavljene"
+
+#: ../clutter/clutter-main.c:1568
+#, fuzzy
+msgid "Enable accessibility"
+msgstr "Omogoči dostopnost"
+
+#: ../clutter/clutter-main.c:1755
+#, fuzzy
+msgid "Clutter Options"
+msgstr "Nastavitve prejemanja"
+
+#: ../clutter/clutter-main.c:1756
+#, fuzzy
+msgid "Show Clutter Options"
+msgstr "Pokaži možnosti strežnika."
+
+#: ../clutter/clutter-media.c:77
+#, fuzzy
+msgid "URI"
+msgstr "URI"
+
+#: ../clutter/clutter-media.c:78
+#, fuzzy
+msgid "URI of a media file"
+msgstr "Ogg medijska datoteka (*.ogg)"
+
+#: ../clutter/clutter-media.c:91
+#, fuzzy
+msgid "Playing"
+msgstr "Predvajanje"
+
+#: ../clutter/clutter-media.c:92
+#, fuzzy
+msgid "Wheter the actor is playing"
+msgstr "Pove katera skladba se trenutno predvaja"
+
+#: ../clutter/clutter-media.c:106
+#, fuzzy
+msgid "Progress"
+msgstr "Napredek"
+
+#: ../clutter/clutter-media.c:107
+#, fuzzy
+msgid "Current progress of the playback"
+msgstr "Natisni trenutno glasnost predvajanja"
+
+#: ../clutter/clutter-media.c:120
+#, fuzzy
+msgid "Subtitle URI"
+msgstr "Osnovni URI"
+
+#: ../clutter/clutter-media.c:121
+#, fuzzy
+msgid "URI of a subtitle file"
+msgstr "Uporabi datoteko s podnapisi"
+
+#: ../clutter/clutter-media.c:136
+#, fuzzy
+msgid "Subtitle Font Name"
+msgstr "Ime izbrane pisave"
+
+#: ../clutter/clutter-media.c:137
+#, fuzzy
+msgid "The font used to display subtitles"
+msgstr "Velikost pisave uporabljene za prikaz dnevnika"
+
+#: ../clutter/clutter-media.c:151
+#, fuzzy
+msgid "Audio Volume"
+msgstr "Zvočna glasnost"
+
+#: ../clutter/clutter-media.c:152
+#, fuzzy
+msgid "The volume of the audio"
+msgstr "Zvočna glasnost"
+
+#: ../clutter/clutter-media.c:165
+#, fuzzy
+msgid "Can Seek"
+msgstr "Išči _do ..."
+
+#: ../clutter/clutter-media.c:166
+#, fuzzy
+msgid "Whether the current stream is seekable"
+msgstr "Po trenutni skladbi ni mogoče iskati"
+
+#: ../clutter/clutter-media.c:180
+#, fuzzy
+msgid "Buffer Fill"
+msgstr "Barva polnila:"
+
+#: ../clutter/clutter-media.c:181
+#, fuzzy
+msgid "The fill level of the buffer"
+msgstr "Pokaži raven polnjenja"
+
+#: ../clutter/clutter-media.c:195
+#, fuzzy
+msgid "The duration of the stream, in seconds"
+msgstr "Trajanje trenutnega pretoka v sekundah"
+
+#: ../clutter/clutter-path-constraint.c:213
+#, fuzzy
+msgid "The path used to constrain an actor"
+msgstr "Pot do uporabljene binarne datoteke GDB"
+
+#: ../clutter/clutter-path-constraint.c:227
+msgid "The offset along the path, between -1.0 and 2.0"
+msgstr ""
+
+#: ../clutter/clutter-rectangle.c:259
+#, fuzzy
+msgid "The color of the rectangle"
+msgstr "Pravokotnik izbire"
+
+#: ../clutter/clutter-rectangle.c:272
+#, fuzzy
+msgid "Border Color"
+msgstr "Barva okvirja:"
+
+#: ../clutter/clutter-rectangle.c:273
+#, fuzzy
+msgid "The color of the border of the rectangle"
+msgstr "Barva okvira poudarjanja"
+
+#: ../clutter/clutter-rectangle.c:288
+#, fuzzy
+msgid "Border Width"
+msgstr "Širina robu:"
+
+#: ../clutter/clutter-rectangle.c:289
+#, fuzzy
+msgid "The width of the border of the rectangle"
+msgstr "Širina pravokotnika snemanja"
+
+#: ../clutter/clutter-rectangle.c:303
+#, fuzzy
+msgid "Has Border"
+msgstr "Barva okvirja:"
+
+#: ../clutter/clutter-rectangle.c:304
+#, fuzzy
+msgid "Whether the rectangle should have a border"
+msgstr "Ali naj kazalec utripa"
+
+#: ../clutter/clutter-script.c:389
+#, fuzzy
+msgid "Filename Set"
+msgstr "Določi ime datoteke:"
+
+#: ../clutter/clutter-script.c:390
+#, fuzzy
+msgid "Whether the :filename property is set"
+msgstr "Določa ali je določena barva pisave"
+
+#: ../clutter/clutter-script.c:404
+#: ../clutter/clutter-texture.c:1070
+#, fuzzy
+msgid "Filename"
+msgstr "Ime datoteke"
+
+#: ../clutter/clutter-script.c:405
+#, fuzzy
+msgid "The path of the currently parsed file"
+msgstr "Ime trenutno urejane datoteka"
+
+#: ../clutter/clutter-settings.c:350
+#, fuzzy
+msgid "Double Click Time"
+msgstr "Čas dvojnega klika"
+
+#: ../clutter/clutter-settings.c:351
+msgid "The time between clicks necessary to detect a multiple click"
+msgstr ""
+
+#: ../clutter/clutter-settings.c:366
+#, fuzzy
+msgid "Double Click Distance"
+msgstr "Razdalja dvojnega klika"
+
+#: ../clutter/clutter-settings.c:367
+msgid "The distance between clicks necessary to detect a multiple click"
+msgstr ""
+
+#: ../clutter/clutter-settings.c:382
+#, fuzzy
+msgid "Drag Threshold"
+msgstr "Prag vlečenja"
+
+#: ../clutter/clutter-settings.c:383
+msgid "The distance the cursor should travel before starting to drag"
+msgstr ""
+
+#: ../clutter/clutter-settings.c:398
+#: ../clutter/clutter-text.c:2554
+#, fuzzy
+msgid "Font Name"
+msgstr "Ime pisave"
+
+#: ../clutter/clutter-settings.c:399
+msgid "The description of the default font, as one that could be parsed by Pango"
+msgstr ""
+
+#: ../clutter/clutter-settings.c:414
+#, fuzzy
+msgid "Font Antialias"
+msgstr "Glajenje robov Xft"
+
+#: ../clutter/clutter-settings.c:415
+msgid "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the default)"
+msgstr ""
+
+#: ../clutter/clutter-settings.c:431
+#, fuzzy
+msgid "Font DPI"
+msgstr "DPI Xft"
+
+#: ../clutter/clutter-settings.c:432
+#, fuzzy
+msgid "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
+msgstr "Ločljivost Xft pisave, v 1024 * točk/palec. -1 za uporabo privzete vrednosti."
+
+#: ../clutter/clutter-settings.c:448
+#, fuzzy
+msgid "Font Hinting"
+msgstr "Xft prilagoditev"
+
+#: ../clutter/clutter-settings.c:449
+msgid "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
+msgstr ""
+
+#: ../clutter/clutter-settings.c:470
+#, fuzzy
+msgid "Font Hint Style"
+msgstr "Slog prilagajanja Xft"
+
+#: ../clutter/clutter-settings.c:471
+msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
+msgstr ""
+
+#: ../clutter/clutter-settings.c:492
+#, fuzzy
+msgid "Font Subpixel Order"
+msgstr "Obrni vrstni red seznama"
+
+#: ../clutter/clutter-settings.c:493
+#, fuzzy
+msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
+msgstr "Vrsta podtočkovnega glajenja robov; brez, rgb, bgr, vrgb, vbgr"
+
+#: ../clutter/clutter-shader.c:249
+#, fuzzy
+msgid "Vertex Source"
+msgstr "Izvorna datoteka:"
+
+#: ../clutter/clutter-shader.c:250
+#, fuzzy
+msgid "Source of vertex shader"
+msgstr "Nepravilna zapolnjenost vrha\n"
+
+#: ../clutter/clutter-shader.c:264
+#, fuzzy
+msgid "Fragment Source"
+msgstr "Izvorna datoteka:"
+
+#: ../clutter/clutter-shader.c:265
+#, fuzzy
+msgid "Source of fragment shader"
+msgstr "Odsek programske izvorne kode"
+
+#: ../clutter/clutter-shader.c:280
+#, fuzzy
+msgid "Compiled"
+msgstr "Kodno prevedel %s@%s.%s\n"
+
+#: ../clutter/clutter-shader.c:281
+msgid "Whether the shader is compiled and linked"
+msgstr ""
+
+#: ../clutter/clutter-shader.c:296
+#, fuzzy
+msgid "Whether the shader is enabled"
+msgstr "Ali je vstavek omogočen"
+
+#: ../clutter/clutter-shader.c:501
+#, fuzzy, c-format
+msgid "%s compilation failed: %s"
+msgstr "Prevajanje logičnega izraza ni uspelo: %s: %s"
+
+#: ../clutter/clutter-shader.c:502
+#, fuzzy
+msgid "Vertex shader"
+msgstr "Nepravilna zapolnjenost vrha\n"
+
+#: ../clutter/clutter-shader.c:503
+#, fuzzy
+msgid "Fragment shader"
+msgstr "Odsek programske izvorne kode"
+
+#: ../clutter/clutter-shader-effect.c:415
+#, fuzzy
+msgid "Shader Type"
+msgstr "Vrsta skripta"
+
+#: ../clutter/clutter-shader-effect.c:416
+#, fuzzy
+msgid "The type of shader used"
+msgstr "Zadnja uporabljena vrsta arhiva"
+
+#: ../clutter/clutter-snap-constraint.c:322
+#, fuzzy
+msgid "The source of the constraint"
+msgstr "Brez omejitev"
+
+#: ../clutter/clutter-snap-constraint.c:335
+#, fuzzy
+msgid "From Edge"
+msgstr "_Robno drsenje"
+
+#: ../clutter/clutter-snap-constraint.c:336
+msgid "The edge of the actor that should be snapped"
+msgstr ""
+
+#: ../clutter/clutter-snap-constraint.c:350
+#, fuzzy
+msgid "To Edge"
+msgstr "_Robno drsenje"
+
+#: ../clutter/clutter-snap-constraint.c:351
+msgid "The edge of the source that should be snapped"
+msgstr ""
+
+#: ../clutter/clutter-snap-constraint.c:367
+msgid "The offset in pixels to apply to the constraint"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1385
+#, fuzzy
+msgid "Fullscreen Set"
+msgstr "Določi možnosti"
+
+#: ../clutter/clutter-stage.c:1386
+#, fuzzy
+msgid "Whether the main stage is fullscreen"
+msgstr "Ali naj bo vrstica stanja prikazana v glavnem oknu"
+
+#: ../clutter/clutter-stage.c:1402
+msgid "Offscreen"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1403
+msgid "Whether the main stage should be rendered offscreen"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1415
+#: ../clutter/clutter-text.c:2667
+#, fuzzy
+msgid "Cursor Visible"
+msgstr "Viden kazalec"
+
+#: ../clutter/clutter-stage.c:1416
+msgid "Whether the mouse pointer is visible on the main stage"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1430
+#, fuzzy
+msgid "User Resizable"
+msgstr "Stolpec je spremenljive velikosti"
+
+#: ../clutter/clutter-stage.c:1431
+msgid "Whether the stage is able to be resized via user interaction"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1444
+#, fuzzy
+msgid "The color of the stage"
+msgstr "Barva okvirja:"
+
+#: ../clutter/clutter-stage.c:1458
+#, fuzzy
+msgid "Perspective"
+msgstr "Prostorski vidik"
+
+#: ../clutter/clutter-stage.c:1459
+#, fuzzy
+msgid "Perspective projection parameters"
+msgstr "Parametri ukazne vrstice"
+
+#: ../clutter/clutter-stage.c:1474
+#, fuzzy
+msgid "Title"
+msgstr "Naslov"
+
+#: ../clutter/clutter-stage.c:1475
+#, fuzzy
+msgid "Stage Title"
+msgstr "Naslov apleta:"
+
+#: ../clutter/clutter-stage.c:1490
+#, fuzzy
+msgid "Use Fog"
+msgstr "Vreme: megleno"
+
+#: ../clutter/clutter-stage.c:1491
+#, fuzzy
+msgid "Whether to enable depth cueing"
+msgstr "Ali naj bo omogočen neposreden izbris datotek"
+
+#: ../clutter/clutter-stage.c:1505
+#, fuzzy
+msgid "Fog"
+msgstr "Megla"
+
+#: ../clutter/clutter-stage.c:1506
+#, fuzzy
+msgid "Settings for the depth cueing"
+msgstr "Nastavitve izbrane naprave:"
+
+#: ../clutter/clutter-stage.c:1522
+#, fuzzy
+msgid "Use Alpha"
+msgstr "Uporabi alfa barve"
+
+#: ../clutter/clutter-stage.c:1523
+msgid "Whether to honour the alpha component of the stage color"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1539
+#, fuzzy
+msgid "Key Focus"
+msgstr "Je v žarišču"
+
+#: ../clutter/clutter-stage.c:1540
+msgid "The currently key focused actor"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1556
+#, fuzzy
+msgid "No Clear Hint"
+msgstr "Na voljo ni nobenega namiga."
+
+#: ../clutter/clutter-stage.c:1557
+msgid "Whether the stage should clear its contents"
+msgstr ""
+
+#: ../clutter/clutter-stage.c:1570
+#, fuzzy
+msgid "Accept Focus"
+msgstr "Sprejmi dejavnost"
+
+#: ../clutter/clutter-stage.c:1571
+msgid "Whether the stage should accept focus on show"
+msgstr ""
+
+#: ../clutter/clutter-state.c:1408
+#, fuzzy
+msgid "State"
+msgstr "Stanje"
+
+#: ../clutter/clutter-state.c:1409
+msgid "Currently set state, (transition to this state might not be complete)"
+msgstr ""
+
+#: ../clutter/clutter-state.c:1423
+#, fuzzy
+msgid "Default transition duration"
+msgstr "Trajanje animacije (privzeto: 10 sekund)"
+
+#: ../clutter/clutter-table-layout.c:585
+#, fuzzy
+msgid "Column Number"
+msgstr "Neznana številka stolpca %d"
+
+#: ../clutter/clutter-table-layout.c:586
+#, fuzzy
+msgid "The column the widget resides in"
+msgstr "Stolpec širine v znakih"
+
+#: ../clutter/clutter-table-layout.c:593
+#, fuzzy
+msgid "Row Number"
+msgstr "Število sider"
+
+#: ../clutter/clutter-table-layout.c:594
+#, fuzzy
+msgid "The row the widget resides in"
+msgstr "Priročnik Štiri-v-vrsto"
+
+#: ../clutter/clutter-table-layout.c:601
+#, fuzzy
+msgid "Column Span"
+msgstr "Dolžina stolpca"
+
+#: ../clutter/clutter-table-layout.c:602
+#, fuzzy
+msgid "The number of columns the widget should span"
+msgstr "Podatkovni modeli morajo imeti enako število stolpcev"
+
+#: ../clutter/clutter-table-layout.c:609
+#, fuzzy
+msgid "Row Span"
+msgstr "Seganje vrstice:"
+
+#: ../clutter/clutter-table-layout.c:610
+msgid "The number of rows the widget should span"
+msgstr ""
+
+#: ../clutter/clutter-table-layout.c:617
+#, fuzzy
+msgid "Horizontal Expand"
+msgstr "Razširi vse"
+
+#: ../clutter/clutter-table-layout.c:618
+msgid "Allocate extra space for the child in horizontal axis"
+msgstr ""
+
+#: ../clutter/clutter-table-layout.c:624
+#, fuzzy
+msgid "Vertical Expand"
+msgstr "Razširi vse"
+
+#: ../clutter/clutter-table-layout.c:625
+msgid "Allocate extra space for the child in vertical axis"
+msgstr ""
+
+#: ../clutter/clutter-table-layout.c:1712
+#, fuzzy
+msgid "Spacing between columns"
+msgstr "Prostor med celicami"
+
+#: ../clutter/clutter-table-layout.c:1726
+#, fuzzy
+msgid "Spacing between rows"
+msgstr "Prostor med celicami"
+
+#: ../clutter/clutter-text.c:2555
+#, fuzzy
+msgid "The font to be used by the text"
+msgstr "Pisava uporabljena za tiskanje"
+
+#: ../clutter/clutter-text.c:2572
+#, fuzzy
+msgid "Font Description"
+msgstr "Opis pisave"
+
+#: ../clutter/clutter-text.c:2573
+#, fuzzy
+msgid "The font description to be used"
+msgstr "Pisava uporabljena za tiskanje"
+
+#: ../clutter/clutter-text.c:2589
+#, fuzzy
+msgid "Text"
+msgstr "Besedilo"
+
+#: ../clutter/clutter-text.c:2590
+#, fuzzy
+msgid "The text to render"
+msgstr "Besedilo za izris"
+
+#: ../clutter/clutter-text.c:2604
+#, fuzzy
+msgid "Font Color"
+msgstr "Barva pisave"
+
+#: ../clutter/clutter-text.c:2605
+#, fuzzy
+msgid "Color of the font used by the text"
+msgstr "Besedilo predogleda pisave"
+
+#: ../clutter/clutter-text.c:2619
+#, fuzzy
+msgid "Editable"
+msgstr "Uredljivo"
+
+#: ../clutter/clutter-text.c:2620
+#, fuzzy
+msgid "Whether the text is editable"
+msgstr "Ali je vnos mogoče spreminjati"
+
+#: ../clutter/clutter-text.c:2635
+#, fuzzy
+msgid "Selectable"
+msgstr "Izberljiva"
+
+#: ../clutter/clutter-text.c:2636
+#, fuzzy
+msgid "Whether the text is selectable"
+msgstr "Ali naj bo to besedilo skrito."
+
+#: ../clutter/clutter-text.c:2650
+#, fuzzy
+msgid "Activatable"
+msgstr "Aktivacija omogočena"
+
+#: ../clutter/clutter-text.c:2651
+msgid "Whether pressing return causes the activate signal to be emitted"
+msgstr ""
+
+#: ../clutter/clutter-text.c:2668
+#, fuzzy
+msgid "Whether the input cursor is visible"
+msgstr "Ali je predogled prikazan"
+
+#: ../clutter/clutter-text.c:2682
+#: ../clutter/clutter-text.c:2683
+#, fuzzy
+msgid "Cursor Color"
+msgstr "Barva kazalca"
+
+#: ../clutter/clutter-text.c:2697
+#, fuzzy
+msgid "Cursor Color Set"
+msgstr "Nastavi barvo ozadja"
+
+#: ../clutter/clutter-text.c:2698
+#, fuzzy
+msgid "Whether the cursor color has been set"
+msgstr "Ali je bil določen neviden znak"
+
+#: ../clutter/clutter-text.c:2713
+#, fuzzy
+msgid "Cursor Size"
+msgstr "Velikost kazalca"
+
+#: ../clutter/clutter-text.c:2714
+#, fuzzy
+msgid "The width of the cursor, in pixels"
+msgstr "Privzeta širina zajete slike (v točkah):"
+
+#: ../clutter/clutter-text.c:2728
+#, fuzzy
+msgid "Cursor Position"
+msgstr "Položaj kazalca"
+
+#: ../clutter/clutter-text.c:2729
+#, fuzzy
+msgid "The cursor position"
+msgstr "Položaj kazalca"
+
+#: ../clutter/clutter-text.c:2744
+#, fuzzy
+msgid "Selection-bound"
+msgstr "Drugi konec izbire"
+
+#: ../clutter/clutter-text.c:2745
+#, fuzzy
+msgid "The cursor position of the other end of the selection"
+msgstr "Ni mogoče premakniti kazalnika za konec datoteke!"
+
+#: ../clutter/clutter-text.c:2760
+#: ../clutter/clutter-text.c:2761
+#, fuzzy
+msgid "Selection Color"
+msgstr "Barva izbora"
+
+#: ../clutter/clutter-text.c:2775
+#, fuzzy
+msgid "Selection Color Set"
+msgstr "Nastavi barvo ozadja"
+
+#: ../clutter/clutter-text.c:2776
+#, fuzzy
+msgid "Whether the selection color has been set"
+msgstr "Ali je bil določen neviden znak"
+
+#: ../clutter/clutter-text.c:2791
+#, fuzzy
+msgid "Attributes"
+msgstr "Atributi"
+
+#: ../clutter/clutter-text.c:2792
+#, fuzzy
+msgid "A list of style attributes to apply to the contents of the actor"
+msgstr "Seznam atributov sloga, ki naj se uveljavijo na besedilu izrisovalca"
+
+#: ../clutter/clutter-text.c:2814
+#, fuzzy
+msgid "Use markup"
+msgstr "Uporabi označevanje"
+
+#: ../clutter/clutter-text.c:2815
+msgid "Whether or not the text includes Pango markup"
+msgstr ""
+
+#: ../clutter/clutter-text.c:2831
+#, fuzzy
+msgid "Line wrap"
+msgstr "Prelom vrstic"
+
+#: ../clutter/clutter-text.c:2832
+#, fuzzy
+msgid "If set, wrap the lines if the text becomes too wide"
+msgstr "Izbrana možnost določa prelom vrstic, kadar je besedilo širše od zaslona."
+
+#: ../clutter/clutter-text.c:2847
+#, fuzzy
+msgid "Line wrap mode"
+msgstr "Način preloma vrstic"
+
+#: ../clutter/clutter-text.c:2848
+msgid "Control how line-wrapping is done"
+msgstr ""
+
+#: ../clutter/clutter-text.c:2863
+#, fuzzy
+msgid "Ellipsize"
+msgstr "Okrajšanje"
+
+#: ../clutter/clutter-text.c:2864
+msgid "The preferred place to ellipsize the string"
+msgstr ""
+
+#: ../clutter/clutter-text.c:2880
+#, fuzzy
+msgid "Line Alignment"
+msgstr "Poravnava besedila"
+
+#: ../clutter/clutter-text.c:2881
+msgid "The preferred alignment for the string, for multi-line text"
+msgstr ""
+
+#: ../clutter/clutter-text.c:2897
+#, fuzzy
+msgid "Justify"
+msgstr "poravnaj na sredini"
+
+#: ../clutter/clutter-text.c:2898
+#, fuzzy
+msgid "Whether the text should be justified"
+msgstr "Ali naj bo stranski pult viden."
+
+#: ../clutter/clutter-text.c:2913
+#, fuzzy
+msgid "Password Character"
+msgstr "_Nabor znakov:"
+
+#: ../clutter/clutter-text.c:2914
+msgid "If non-zero, use this character to display the actor's contents"
+msgstr ""
+
+#: ../clutter/clutter-text.c:2928
+#, fuzzy
+msgid "Max Length"
+msgstr "Največja dolžina"
+
+#: ../clutter/clutter-text.c:2929
+msgid "Maximum length of the text inside the actor"
+msgstr ""
+
+#: ../clutter/clutter-text.c:2952
+#, fuzzy
+msgid "Single Line Mode"
+msgstr "Enovrstični način"
+
+#: ../clutter/clutter-text.c:2953
+msgid "Whether the text should be a single line"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:984
+#, fuzzy
+msgid "Sync size of actor"
+msgstr "Pokaži _osnovno velikost"
+
+#: ../clutter/clutter-texture.c:985
+msgid "Auto sync size of actor to underlying pixbuf dimensions"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:992
+#, fuzzy
+msgid "Disable Slicing"
+msgstr "Način razdeljevanja"
+
+#: ../clutter/clutter-texture.c:993
+msgid "Forces the underlying texture to be singular and not made of smaller space saving individual textures"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1002
+#, fuzzy
+msgid "Tile Waste"
+msgstr "Barve ploščic"
+
+#: ../clutter/clutter-texture.c:1003
+msgid "Maximum waste area of a sliced texture"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1011
+#, fuzzy
+msgid "Horizontal repeat"
+msgstr "_Brez ponavljanja"
+
+#: ../clutter/clutter-texture.c:1012
+msgid "Repeat the contents rather than scaling them horizontally"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1019
+#, fuzzy
+msgid "Vertical repeat"
+msgstr "_Brez ponavljanja"
+
+#: ../clutter/clutter-texture.c:1020
+msgid "Repeat the contents rather than scaling them vertically"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1027
+#, fuzzy
+msgid "Filter Quality"
+msgstr "Kakovost VBR"
+
+#: ../clutter/clutter-texture.c:1028
+msgid "Rendering quality used when drawing the texture"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1036
+#, fuzzy
+msgid "Pixel Format"
+msgstr "Izbor vrste zapisa:"
+
+#: ../clutter/clutter-texture.c:1037
+#, fuzzy
+msgid "The Cogl pixel format to use"
+msgstr "Uporaba diskovnega pripomočka za formatiranje nosilca"
+
+#: ../clutter/clutter-texture.c:1045
+#, fuzzy
+msgid "Cogl Texture"
+msgstr "Slika tlakovanja ozadja"
+
+#: ../clutter/clutter-texture.c:1046
+msgid "The underlying Cogl texture handle used to draw this actor"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1053
+#, fuzzy
+msgid "Cogl Material"
+msgstr "Uporablja materiale iz"
+
+#: ../clutter/clutter-texture.c:1054
+msgid "The underlying Cogl material handle used to draw this actor"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1071
+#, fuzzy
+msgid "The path of the file containing the image data"
+msgstr "Slikovna datoteka '%s' ne vsebuje podatkov"
+
+#: ../clutter/clutter-texture.c:1078
+#, fuzzy
+msgid "Keep Aspect Ratio"
+msgstr "Ohrani razmerje velikosti"
+
+#: ../clutter/clutter-texture.c:1079
+msgid "Keep the aspect ratio of the texture when requesting the preferred width or height"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1105
+#, fuzzy
+msgid "Load asynchronously"
+msgstr "_Naloži beležnico"
+
+#: ../clutter/clutter-texture.c:1106
+msgid "Load files inside a thread to avoid blocking when loading images from disk"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1122
+#, fuzzy
+msgid "Load data asynchronously"
+msgstr "Pripni prenesene podatke"
+
+#: ../clutter/clutter-texture.c:1123
+msgid "Decode image data files inside a thread to reduce blocking when loading images from disk"
+msgstr ""
+
+#: ../clutter/clutter-texture.c:1147
+#, fuzzy
+msgid "Pick With Alpha"
+msgstr "Cairo PNG (s kanalom alfa)"
+
+#: ../clutter/clutter-texture.c:1148
+msgid "Shape actor with alpha channel when picking"
+msgstr ""
+
+#: ../clutter/clutter-timeline.c:264
+#, fuzzy
+msgid "Should the timeline automatically restart"
+msgstr "Sistem se bo samodejno ponovno zagnal čez %d sekund."
+
+#: ../clutter/clutter-timeline.c:278
+#, fuzzy
+msgid "Delay"
+msgstr "Zakasnitev"
+
+#: ../clutter/clutter-timeline.c:279
+#, fuzzy
+msgid "Delay before start"
+msgstr "Zamik pred začetkom (privzeto: 1 sekunda)"
+
+#: ../clutter/clutter-timeline.c:295
+#, fuzzy
+msgid "Duration of the timeline in milliseconds"
+msgstr "Dolžina skladbe v milisekundah."
+
+#: ../clutter/clutter-timeline.c:311
+#, fuzzy
+msgid "Direction of the timeline"
+msgstr "Pokaži časovni potek"
+
+#: ../clutter/clutter-timeline.c:326
+#, fuzzy
+msgid "Auto Reverse"
+msgstr "_Obrnjen vrstni red"
+
+#: ../clutter/clutter-timeline.c:327
+msgid "Whether the direction should be reversed when reaching the end"
+msgstr ""
+
+#: ../clutter/cogl/cogl/cogl-debug.c:203
+#, fuzzy
+msgid "Cogl debugging flags to set"
+msgstr "GDict zastavice razhroščevanja, ki naj bodo nastavljene"
+
+#: ../clutter/cogl/cogl/cogl-debug.c:205
+#, fuzzy
+msgid "Cogl debugging flags to unset"
+msgstr "GDict zastavice razhroščevanja, ki naj ne bodo nastavljene"
+
+#: ../clutter/cogl/cogl/cogl-debug.c:238
+#, fuzzy
+msgid "Cogl Options"
+msgstr "Nastavitve prejemanja"
+
+#: ../clutter/cogl/cogl/cogl-debug.c:239
+#, fuzzy
+msgid "Show Cogl options"
+msgstr "Pokaži možnosti strežnika."
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:147
+#, fuzzy
+msgid "sysfs Path"
+msgstr "Prva pot:"
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:148
+#, fuzzy
+msgid "Path of the device in sysfs"
+msgstr "Nepopolna pot v ukazni lupini"
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:163
+#, fuzzy
+msgid "Device Path"
+msgstr "POT DO NAPRAVE"
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:164
+#, fuzzy
+msgid "Path of the device node"
+msgstr "POT DO NAPRAVE"
+
+#: ../clutter/glx/clutter-backend-glx.c:134
+msgid "VBlank method to be used (none, dri or glx)"
+msgstr ""
+
+#: ../clutter/x11/clutter-backend-x11.c:484
+#, fuzzy
+msgid "X display to use"
+msgstr "Zaslon X, ki naj se uporabi"
+
+#: ../clutter/x11/clutter-backend-x11.c:490
+#, fuzzy
+msgid "X screen to use"
+msgstr "Zaslon X, ki naj se uporabi"
+
+#: ../clutter/x11/clutter-backend-x11.c:495
+#, fuzzy
+msgid "Make X calls synchronous"
+msgstr "Naredi klice X usklajene"
+
+#: ../clutter/x11/clutter-backend-x11.c:502
+#, fuzzy
+msgid "Enable XInput support"
+msgstr "Omogoči IPv6 podporo"
+
+#: ../clutter/x11/clutter-keymap-x11.c:317
+#, fuzzy
+msgid "The Clutter backend"
+msgstr "Hrbtni del Makefile"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:544
+#, fuzzy
+msgid "Pixmap"
+msgstr "Rastrska slika"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:545
+msgid "The X11 Pixmap to be bound"
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:553
+#, fuzzy
+msgid "Pixmap width"
+msgstr "Širina za prilagoditev velikosti sličice"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:554
+msgid "The width of the pixmap bound to this texture"
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:562
+#, fuzzy
+msgid "Pixmap height"
+msgstr "Višina za prilagoditev velikosti sličice"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:563
+msgid "The height of the pixmap bound to this texture"
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:571
+#, fuzzy
+msgid "Pixmap Depth"
+msgstr "_Neomejena globina"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:572
+msgid "The depth (in number of bits) of the pixmap bound to this texture"
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:580
+#, fuzzy
+msgid "Automatic Updates"
+msgstr "_Posodobitve GnomeICU ..."
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:581
+msgid "If the texture should be kept in sync with any pixmap changes."
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:589
+msgid "Window"
+msgstr "Okno"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:590
+#, fuzzy
+msgid "The X11 Window to be bound"
+msgstr "Višina okna za prikaz"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:598
+#, fuzzy
+msgid "Window Redirect Automatic"
+msgstr "Pokaži okno samodejnih &komentarjev"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:599
+msgid "If composite window redirects are set to Automatic (or Manual if false)"
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:609
+#, fuzzy
+msgid "Window Mapped"
+msgstr "Skrij okno"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:610
+#, fuzzy
+msgid "If window is mapped"
+msgstr "Udejanjeno okno gradnika"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:619
+#, fuzzy
+msgid "Destroyed"
+msgstr "Uspešno uničen predmet '%s'"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:620
+#, fuzzy
+msgid "If window has been destroyed"
+msgstr "Preverite, če je Banshee pooblaščen"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:628
+#, fuzzy
+msgid "Window X"
+msgstr "okno"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:629
+msgid "X position of window on screen according to X11"
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:637
+#, fuzzy
+msgid "Window Y"
+msgstr "okno"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:638
+msgid "Y position of window on screen according to X11"
+msgstr ""
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:645
+#, fuzzy
+msgid "Window Override Redirect"
+msgstr "Neveljaven preusmeritveni URI: %s"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:646
+msgid "If this is an override-redirect window"
+msgstr ""
+
