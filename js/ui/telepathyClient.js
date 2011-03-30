@@ -473,6 +473,8 @@ Notification.prototype = {
 
         var daysAgo = (now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
 
+        let format;
+
         // Show a week day and time if date is in the last week
         if (daysAgo < 1 || (daysAgo < 7 && now.getDay() != date.getDay())) {
             /* Translators: this is a time format string followed by a date.
