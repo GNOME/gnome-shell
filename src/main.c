@@ -73,13 +73,10 @@ shell_dbus_init (gboolean replace)
       exit (1);
     }
 
-  /* Also grab org.gnome.Panel to replace any existing panel process,
-   * unless a special environment variable is passed.  The environment
-   * variable is used by the gnome-shell (no --replace) launcher in
-   * Xephyr */
+  /* Also grab org.gnome.Panel to replace any existing panel process */
   if (!dbus_g_proxy_call (bus, "RequestName", &error, G_TYPE_STRING,
                           "org.gnome.Panel", G_TYPE_UINT,
-                          DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                          DBUS_NAME_FLAG_REPLACE_EXISTING | request_name_flags,
                           G_TYPE_INVALID, G_TYPE_UINT,
                           &request_name_result, G_TYPE_INVALID))
     {
@@ -91,7 +88,7 @@ shell_dbus_init (gboolean replace)
    */
   if (!dbus_g_proxy_call (bus, "RequestName", &error,
                           G_TYPE_STRING, MAGNIFIER_DBUS_SERVICE,
-                          G_TYPE_UINT, 0,
+                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | request_name_flags,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
@@ -101,11 +98,13 @@ shell_dbus_init (gboolean replace)
        * but keep going. */
     }
 
-  /* ...and the org.freedesktop.Notifications service.
+  /* ...and the org.freedesktop.Notifications service; we always
+   * specify REPLACE_EXISTING to ensure we kill off
+   * notification-daemon if it was running.
    */
   if (!dbus_g_proxy_call (bus, "RequestName", &error,
                           G_TYPE_STRING, "org.freedesktop.Notifications",
-                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | request_name_flags,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
