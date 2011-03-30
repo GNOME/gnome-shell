@@ -353,6 +353,7 @@ cogl_context_new (CoglDisplay *display,
   _cogl_flush_face_winding ();
 
   context->atlases = NULL;
+  g_hook_list_init (&context->atlas_reorganize_callbacks, sizeof (GHook));
 
   _context->buffer_map_fallback_array = g_byte_array_new ();
   _context->buffer_map_fallback_in_use = FALSE;
@@ -433,6 +434,7 @@ _cogl_context_free (CoglContext *context)
     _cogl_clip_stack_unref (context->current_clip_stack);
 
   g_slist_free (context->atlases);
+  g_hook_list_clear (&context->atlas_reorganize_callbacks);
 
   _cogl_bitmask_destroy (&context->arrays_enabled);
   _cogl_bitmask_destroy (&context->temp_bitmask);
