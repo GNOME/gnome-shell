@@ -204,6 +204,9 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
 {
   CoglHandle texture;
 
+  if (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SHARED_ATLAS))
+    return FALSE;
+
   /* If the cache is using mipmapping then we can't use the global
      atlas because it would just get migrated back out */
   if (cache->use_mipmapping)

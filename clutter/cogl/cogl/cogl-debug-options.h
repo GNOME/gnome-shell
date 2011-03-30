@@ -112,6 +112,12 @@ OPT (DISABLE_ATLAS,
      "disable-atlas",
      "Disable texture atlasing",
      "Disable use of texture atlasing")
+OPT (DISABLE_SHARED_ATLAS,
+     "Root Cause",
+     "disable-shared-atlas",
+     "Disable sharing the texture atlas between text and images",
+     "When this is set the glyph cache will always use a separate texture "
+     "for its atlas. Otherwise it will try to share the atlas with images.")
 OPT (DISABLE_TEXTURING,
      "Root Cause",
      "disable-texturing",
