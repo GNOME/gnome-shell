@@ -2210,6 +2210,7 @@ st_widget_set_label_actor (StWidget     *widget,
 
 static void st_widget_accessible_class_init (StWidgetAccessibleClass *klass);
 static void st_widget_accessible_init       (StWidgetAccessible *widget);
+static void st_widget_accessible_dispose    (GObject *gobject);
 
 /* AtkObject */
 static AtkStateSet *st_widget_accessible_ref_state_set (AtkObject *obj);
@@ -2223,7 +2224,12 @@ static void on_pseudo_class_notify (GObject    *gobject,
 static void on_can_focus_notify    (GObject    *gobject,
                                     GParamSpec *pspec,
                                     gpointer    data);
+static void on_label_notify        (GObject    *gobject,
+                                    GParamSpec *pspec,
+                                    gpointer    data);
 static void check_selected         (StWidgetAccessible *self,
+                                    StWidget *widget);
+static void check_labels           (StWidgetAccessible *self,
                                     StWidget *widget);
 
 G_DEFINE_TYPE (StWidgetAccessible, st_widget_accessible, CALLY_TYPE_ACTOR)
@@ -2236,6 +2242,11 @@ struct _StWidgetAccessiblePrivate
 {
   /* Cached values (used to avoid extra notifications) */
   gboolean selected;
+
+  /* The current_label. Right now there are the proper atk
+   * relationships between this object and the label
+   */
+  AtkObject *current_label;
 };
 
 
@@ -2267,6 +2278,8 @@ st_widget_accessible_class_init (StWidgetAccessibleClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   AtkObjectClass *atk_class = ATK_OBJECT_CLASS (klass);
 
+  gobject_class->dispose = st_widget_accessible_dispose;
+
   atk_class->ref_state_set = st_widget_accessible_ref_state_set;
   atk_class->initialize = st_widget_accessible_initialize;
 
@@ -2282,6 +2295,19 @@ st_widget_accessible_init (StWidgetAccessible *self)
 }
 
 static void
+st_widget_accessible_dispose (GObject *gobject)
+{
+  StWidgetAccessible *self = ST_WIDGET_ACCESSIBLE (gobject);
+
+  if (self->priv->current_label)
+    {
+      g_object_unref (self->priv->current_label);
+      self->priv->current_label = NULL;
+    }
+}
+
+
+static void
 st_widget_accessible_initialize (AtkObject *obj,
                                  gpointer   data)
 {
@@ -2295,11 +2321,16 @@ st_widget_accessible_initialize (AtkObject *obj,
                     G_CALLBACK (on_can_focus_notify),
                     obj);
 
+  g_signal_connect (data, "notify::label-actor",
+                    G_CALLBACK (on_label_notify),
+                    obj);
+
   /* Check the cached selected state and notify the first selection.
    * Ie: it is required to ensure a first notification when Alt+Tab
    * popup appears
    */
   check_selected (ST_WIDGET_ACCESSIBLE (obj), ST_WIDGET (data));
+  check_labels (ST_WIDGET_ACCESSIBLE (obj), ST_WIDGET (data));
 }
 
 static AtkStateSet *
@@ -2458,4 +2489,58 @@ st_get_ui_root (ClutterStage *stage)
     return root;
   else
     return CLUTTER_CONTAINER (stage);
+}
+
+static void
+on_label_notify (GObject    *gobject,
+                 GParamSpec *pspec,
+                 gpointer    data)
+{
+  check_labels (ST_WIDGET_ACCESSIBLE (data), ST_WIDGET (gobject));
+}
+
+static void
+check_labels (StWidgetAccessible *widget_accessible,
+              StWidget           *widget)
+{
+  ClutterActor *label = NULL;
+  AtkObject *label_accessible = NULL;
+
+  /* We only call this method at startup, and when the label changes,
+   * so it is fine to remove the previous relationships if we have the
+   * current_label by default
+   */
+  if (widget_accessible->priv->current_label != NULL)
+    {
+      AtkObject *previous_label = widget_accessible->priv->current_label;
+
+      atk_object_remove_relationship (ATK_OBJECT (widget_accessible),
+                                      ATK_RELATION_LABELLED_BY,
+                                      previous_label);
+
+      atk_object_remove_relationship (previous_label,
+                                      ATK_RELATION_LABEL_FOR,
+                                      ATK_OBJECT (widget_accessible));
+
+      g_object_unref (previous_label);
+    }
+
+  label = st_widget_get_label_actor (widget);
+  if (label == NULL)
+    {
+      widget_accessible->priv->current_label = NULL;
+    }
+  else
+    {
+      label_accessible = clutter_actor_get_accessible (label);
+      widget_accessible->priv->current_label = g_object_ref (label_accessible);
+
+      atk_object_add_relationship (ATK_OBJECT (widget_accessible),
+                                   ATK_RELATION_LABELLED_BY,
+                                   label_accessible);
+
+      atk_object_add_relationship (label_accessible,
+                                   ATK_RELATION_LABEL_FOR,
+                                   ATK_OBJECT (widget_accessible));
+    }
 }
