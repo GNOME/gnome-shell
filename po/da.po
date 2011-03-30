@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-28 23:40+0200\n"
-"PO-Revision-Date: 2011-03-28 20:00+0000\n"
+"POT-Creation-Date: 2011-03-30 22:40+0200\n"
+"PO-Revision-Date: 2011-03-30 19:55+0000\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -345,13 +345,13 @@ msgid "Nothing Scheduled"
 msgstr "Intet planlagt"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y"
@@ -372,7 +372,7 @@ msgstr "Denne uge"
 msgid "Next week"
 msgstr "Næste uge"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
 msgid "Remove"
 msgstr "Fjern"
 
@@ -463,24 +463,21 @@ msgid "Logging out of the system."
 msgstr "Logger ud af systemet."
 
 #: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
-#, fuzzy
 msgid "Power Off"
-msgstr "Sluk..."
+msgstr "Sluk"
 
 #: ../js/ui/endSessionDialog.js:76
-#, fuzzy
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Tryk Log ud for at afslutte disse programmer og logge ud af systemet."
+msgstr "Tryk Sluk for at afslutte disse programmer og lukke systemet ned."
 
 #: ../js/ui/endSessionDialog.js:77
-#, fuzzy, c-format
+#, c-format
 msgid "The system will power off automatically in %d seconds."
-msgstr "Systemet vil genstarte automatisk om %d sekunder."
+msgstr "Systemet vil lukke ned automatisk om %d sekunder."
 
 #: ../js/ui/endSessionDialog.js:78
-#, fuzzy
 msgid "Powering off the system."
-msgstr "Logger ud af systemet."
+msgstr "Lukker systemet ned."
 
 #: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
 #: ../js/ui/endSessionDialog.js:93
@@ -535,11 +532,11 @@ msgstr "Vis kilde"
 msgid "Web Page"
 msgstr "Webside"
 
-#: ../js/ui/messageTray.js:993
+#: ../js/ui/messageTray.js:1000
 msgid "Open"
 msgstr "Åbn"
 
-#: ../js/ui/messageTray.js:2151
+#: ../js/ui/messageTray.js:2164
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -562,20 +559,20 @@ msgid "Dash"
 msgstr "Favoritområde"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:524
 #, c-format
 msgid "Quit %s"
 msgstr "Afslut %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:893
+#: ../js/ui/panel.js:902
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:994
+#: ../js/ui/panel.js:1003
 msgid "Top Bar"
-msgstr ""
+msgstr "Toppanel"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -596,15 +593,15 @@ msgstr "STEDER & ENHEDER"
 
 #: ../js/ui/polkitAuthenticationAgent.js:74
 msgid "Authentication Required"
-msgstr ""
+msgstr "Godkendelse er påkrævet"
 
 #: ../js/ui/polkitAuthenticationAgent.js:108
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #: ../js/ui/polkitAuthenticationAgent.js:176
 msgid "Authenticate"
-msgstr ""
+msgstr "Godkend"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -612,11 +609,11 @@ msgstr ""
 #. * for instance.
 #: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
-msgstr ""
+msgstr "Beklager, godkendelse mislykkedes. Prøv igen."
 
 #: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
-msgstr ""
+msgstr "Adgangskode:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -840,150 +837,140 @@ msgid "Localization Settings"
 msgstr "Indstillinger for sprog"
 
 #: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
-#, fuzzy
 msgid "<unknown>"
-msgstr "Ukendt"
+msgstr "<ukendt>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:311
-#, fuzzy
 msgid "disabled"
-msgstr "Deaktiveret"
+msgstr "deaktiveret"
 
 #: ../js/ui/status/network.js:494
-#, fuzzy
 msgid "connecting..."
-msgstr "Forbindelse"
+msgstr "forbinder..."
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:497
 msgid "authentication required"
-msgstr ""
+msgstr "godkendelse påkrævet"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
 #: ../js/ui/status/network.js:507
 msgid "firmware missing"
-msgstr ""
+msgstr "firmware mangler"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:514
 msgid "cable unplugged"
-msgstr ""
+msgstr "kabel er ikke sat i"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
 #: ../js/ui/status/network.js:519
-#, fuzzy
 msgid "unavailable"
-msgstr "Tilgængelig"
+msgstr "utilgængelig"
 
 #: ../js/ui/status/network.js:521
-#, fuzzy
 msgid "connection failed"
-msgstr "Forbindelse"
+msgstr "forbindelse mislykkedes"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
 #: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
 msgid "Connected (private)"
-msgstr ""
+msgstr "Forbundet (privat)"
 
 #: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
-msgstr ""
+msgstr "Auto ethernet"
 
 #: ../js/ui/status/network.js:758
 msgid "Auto broadband"
-msgstr ""
+msgstr "Auto bredbånd"
 
 #: ../js/ui/status/network.js:761
 msgid "Auto dial-up"
-msgstr ""
+msgstr "Auto opringning"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
 #: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
 #, c-format
 msgid "Auto %s"
-msgstr ""
+msgstr "Auto %s"
 
 #: ../js/ui/status/network.js:906
-#, fuzzy
 msgid "Auto bluetooth"
-msgstr "Bluetooth"
+msgstr "Auto bluetooth"
 
 #: ../js/ui/status/network.js:1416
 msgid "Auto wireless"
-msgstr ""
+msgstr "Auto trådløs"
 
 #: ../js/ui/status/network.js:1474
 msgid "More..."
-msgstr ""
+msgstr "Mere..."
 
 #: ../js/ui/status/network.js:1497
 msgid "Enable networking"
-msgstr ""
+msgstr "Aktivér netværk"
 
 #: ../js/ui/status/network.js:1509
 msgid "Wired"
-msgstr ""
+msgstr "Trådet"
 
 #: ../js/ui/status/network.js:1520
 msgid "Wireless"
-msgstr ""
+msgstr "Trådløs"
 
 #: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
-msgstr ""
+msgstr "Mobilt bredbånd"
 
 #: ../js/ui/status/network.js:1540
-#, fuzzy
 msgid "VPN Connections"
-msgstr "Forbindelse"
+msgstr "VPN-forbindelser"
 
 #: ../js/ui/status/network.js:1549
-#, fuzzy
 msgid "Network Settings"
-msgstr "Indstillinger for strømstyring"
+msgstr "Indstillinger for netværk"
 
 #: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
-msgstr ""
+msgstr "Du er nu forbundet til den mobile bredbåndsforbindelse \"%s\""
 
 #: ../js/ui/status/network.js:1848
 #, c-format
 msgid "You're now connected to wireless network '%s'"
-msgstr ""
+msgstr "Du er nu forbundet til det trådløse netværk \"%s\""
 
 #: ../js/ui/status/network.js:1852
 #, c-format
 msgid "You're now connected to wired network '%s'"
-msgstr ""
+msgstr "Du er nu forbundet til det trådede netværk \"%s\""
 
 #: ../js/ui/status/network.js:1856
 #, c-format
 msgid "You're now connected to VPN network '%s'"
-msgstr ""
+msgstr "Du er nu forbundet til VPN-netværket \"%s\""
 
 #: ../js/ui/status/network.js:1861
 #, c-format
 msgid "You're now connected to '%s'"
-msgstr ""
+msgstr "Du er nu forbundet til \"%s\""
 
 #: ../js/ui/status/network.js:1869
-#, fuzzy
 msgid "Connection established"
-msgstr "Forbindelse"
+msgstr "Forbindelse oprettet"
 
 #: ../js/ui/status/network.js:1991
 msgid "Networking is disabled"
-msgstr ""
+msgstr "Netværk er deaktiveret"
 
 #: ../js/ui/status/network.js:2116
-#, fuzzy
 msgid "Network Manager"
-msgstr "Håndtering"
+msgstr "Netværkshåndtering"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -1083,22 +1070,22 @@ msgstr "Lydstyrke"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:331
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is online."
 msgstr "%s er online."
 
-#: ../js/ui/telepathyClient.js:336
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is offline."
 msgstr "%s er offline."
 
-#: ../js/ui/telepathyClient.js:339
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is away."
 msgstr "%s er ikke til stede."
 
-#: ../js/ui/telepathyClient.js:342
+#: ../js/ui/telepathyClient.js:346
 #, c-format
 msgid "%s is busy."
 msgstr "%s er optaget."
@@ -1106,7 +1093,7 @@ msgstr "%s er optaget."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:473
+#: ../js/ui/telepathyClient.js:482
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Sendt kl. %X i %As"
@@ -1160,9 +1147,9 @@ msgid "Print version"
 msgstr "Udskriv version"
 
 #: ../src/shell-app.c:454
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to launch '%s'"
-msgstr "Kunne ikke afmontere \"%s\""
+msgstr "Kunne ikke køre \"%s\""
 
 #: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
@@ -1198,11 +1185,11 @@ msgstr[1] "%d uger siden"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr ""
+msgstr "Storbritannien"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
