@@ -3196,12 +3196,30 @@ _cogl_pipeline_layer_filters_equal (CoglPipelineLayer *authority0,
 }
 
 static gboolean
+compare_wrap_mode_equal (CoglPipelineWrapMode wrap_mode0,
+                         CoglPipelineWrapMode wrap_mode1)
+{
+  /* We consider AUTOMATIC to be equivalent to CLAMP_TO_EDGE because
+     the primitives code is expected to override this to something
+     else if it wants it to be behave any other way */
+  if (wrap_mode0 == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+    wrap_mode0 = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+  if (wrap_mode1 == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+    wrap_mode1 = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+
+  return wrap_mode0 == wrap_mode1;
+}
+
+static gboolean
 _cogl_pipeline_layer_wrap_modes_equal (CoglPipelineLayer *authority0,
                                        CoglPipelineLayer *authority1)
 {
-  if (authority0->wrap_mode_s != authority1->wrap_mode_s ||
-      authority0->wrap_mode_t != authority1->wrap_mode_t ||
-      authority0->wrap_mode_p != authority1->wrap_mode_p)
+  if (!compare_wrap_mode_equal (authority0->wrap_mode_s,
+                                authority1->wrap_mode_s) ||
+      !compare_wrap_mode_equal (authority0->wrap_mode_t,
+                                authority1->wrap_mode_t) ||
+      !compare_wrap_mode_equal (authority0->wrap_mode_p,
+                                authority1->wrap_mode_p))
     return FALSE;
 
   return TRUE;
@@ -3684,6 +3702,11 @@ _cogl_pipeline_resolve_authorities (CoglPipeline *pipeline,
  * it means that _cogl_pipeline_equal doesn't strictly compare whether the
  * pipelines are the same. If we needed those semantics we could perhaps add
  * another function or some flags to control the behaviour.
+ *
+ * XXX: Similarly when comparing the wrap modes,
+ * COGL_PIPELINE_WRAP_MODE_AUTOMATIC is considered to be the same as
+ * COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE because once they get to the
+ * journal stage they act exactly the same.
  */
 gboolean
 _cogl_pipeline_equal (CoglPipeline *pipeline0,
