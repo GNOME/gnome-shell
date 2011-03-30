@@ -765,7 +765,7 @@ StTooltip StLabel {
 
 #calendarArea {
     /* this is the width of the entire popup */
-    width: 600px;
+    min-width: 600px;
 }
 
 .calendar-vertical-separator {
@@ -903,11 +903,13 @@ StTooltip StLabel {
 }
 
 .events-header-vbox {
-    spacing: 8px;
+    spacing: 6pt;
+    padding-right: 1.75em;
 }
 
-.events-header {
-    height: 40px;
+.events-header-vbox:rtl {
+    padding-right: 0em;
+    padding-left: 1.75em;
 }
 
 .events-header-hbox {
@@ -952,17 +954,17 @@ StTooltip StLabel {
 }
 
 .events-day-name-box {
-    width: 20px;
+    min-width: 15pt;
 }
 
 .events-time-box {
-    width: 70px;
-    padding-right: 8px;
+    min-width: 53pt;
+    padding-right: 6pt;
 }
 
 .events-time-box:rtl {
     padding-right: 0px;
-    padding-left: 8px;
+    padding-left: 6pt;
 }
 
 .events-event-box {
