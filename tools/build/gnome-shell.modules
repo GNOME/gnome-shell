@@ -227,6 +227,7 @@
     <branch repo="git.gnome.org" module="libgweather"/>
     <dependencies>
      <dep package="libsoup"/>
+     <dep package="gconf"/>
      <dep package="gtk3"/>
     </dependencies>
   </autotools>
