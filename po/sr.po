@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-19 10:16+0000\n"
-"PO-Revision-Date: 2011-03-19 12:37+0100\n"
+"POT-Creation-Date: 2011-03-25 20:20+0000\n"
+"PO-Revision-Date: 2011-03-31 11:06+0200\n"
 "Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -188,27 +188,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Није успело покретање „%s“:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Све"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "ПОДЕШАВАЊА"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Нови прозор"
 
-#: ../js/ui/appDisplay.js:619
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Уклони из омиљених"
 
-#: ../js/ui/appDisplay.js:620
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Додај у омиљене"
 
@@ -368,7 +368,7 @@ msgstr "Ове недеље"
 msgid "Next week"
 msgstr "Следеће недеље"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Уклони"
 
@@ -436,7 +436,7 @@ msgstr "СКОРАШЊЕ СТАВКЕ"
 msgid "Log Out %s"
 msgstr "Одјави „%s“"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Одјави"
 
@@ -459,47 +459,50 @@ msgstr "Бићете аутоматски одјављени за %d сек."
 msgid "Logging out of the system."
 msgstr "Одјављујем се са система."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Угаси"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Кликните на „Угаси“ да напустите ове програме и да угасите систем."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+#| msgid "Power Off..."
+msgid "Power Off"
+msgstr "Искључи"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Систем ће се аутоматски искључити за %d сек."
+#| msgid "Click Log Out to quit these applications and log out of the system."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Кликните на „Искључи“ да напустите ове програме и да искључите рачунар."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "Искључујем систем."
+#, c-format
+#| msgid "The system will restart automatically in %d seconds."
+msgid "The system will power off automatically in %d seconds."
+msgstr "Рачунар ће се аутоматски искључити за %d сек."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+#| msgid "Logging out of the system."
+msgid "Powering off the system."
+msgstr "Искључујем рачунар."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Кликните на „Поново покрени“ да напустите ове програме и да поново покренете "
 "систем."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Систем ће се аутоматски поново покренути за %d сек."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Поновно покрећем систем."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Потврди"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -533,29 +536,29 @@ msgstr "Погледај извор"
 msgid "Web Page"
 msgstr "Интернет страница"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "Отвори"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Информације о систему"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Опозови"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Прозори"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Програми"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Дашер"
 
@@ -567,13 +570,13 @@ msgstr "Напусти „%s“"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:874
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Активности"
 
-#: ../js/ui/panel.js:975
-msgid "Panel"
-msgstr "Панел"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Горња трака"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -592,60 +595,83 @@ msgstr "Повежи се на..."
 msgid "PLACES & DEVICES"
 msgstr "МЕСТА И УРЕЂАЈИ"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+#| msgid "authentication required"
+msgid "Authentication Required"
+msgstr "Потребна је пријава"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Администратор"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+#| msgid "authentication required"
+msgid "Authenticate"
+msgstr "Потврда идентитета"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Погрешно! Покушајте поново."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Лозинка:"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Унесите наредбу:"
 
-#: ../js/ui/searchDisplay.js:287
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Тражим..."
 
-#: ../js/ui/searchDisplay.js:301
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Нема одговарајућих резултата."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Искључи..."
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Обустави"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Доступан"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Заузет"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Мој налог"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Подешавања система"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Закључај екран"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Промени корисника"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Одјави ме..."
 
@@ -812,143 +838,139 @@ msgstr "Прикажи распоред тастатуре..."
 msgid "Localization Settings"
 msgstr "Подешавања локализације"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
-#| msgid "Unknown"
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1437
 msgid "<unknown>"
 msgstr "<непознато>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:295
-#| msgid "Disabled"
 msgid "disabled"
 msgstr "онемогућено"
 
-#: ../js/ui/status/network.js:476
-#| msgid "Connection"
+#: ../js/ui/status/network.js:478
 msgid "connecting..."
 msgstr "повезујем се..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:481
 msgid "authentication required"
 msgstr "потребна је пријава"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:491
+msgid "firmware missing"
+msgstr "недостаје фирмвер"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:498
 msgid "cable unplugged"
 msgstr "кабли је искључен"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
-#| msgid "Available"
+#: ../js/ui/status/network.js:503
 msgid "unavailable"
 msgstr "недоступно"
 
-#: ../js/ui/status/network.js:491
-#| msgid "Connection"
+#: ../js/ui/status/network.js:505
 msgid "connection failed"
 msgstr "повезивање није успело"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1385
 msgid "Connected (private)"
 msgstr "Повезан (приватно)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:666
 msgid "Auto Ethernet"
 msgstr "Аутоматска жичана веза"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:741
 msgid "Auto broadband"
 msgstr "Аутоматска широкопојасна веза"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:744
 msgid "Auto dial-up"
 msgstr "Аутоматска дајал-ап веза"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:887 ../js/ui/status/network.js:1397
 #, c-format
-#| msgid "Quit %s"
 msgid "Auto %s"
 msgstr "Аутоматска %s веза"
 
-#: ../js/ui/status/network.js:845
-#| msgid "Bluetooth"
+#: ../js/ui/status/network.js:889
 msgid "Auto bluetooth"
 msgstr "Аутоматска блутут веза"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1399
 msgid "Auto wireless"
 msgstr "Аутоматска бежична веза"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1457
 msgid "More..."
 msgstr "Више..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1480
 msgid "Enable networking"
 msgstr "Омогући мрежне услуге"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1492
 msgid "Wired"
 msgstr "Жичана"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1503
 msgid "Wireless"
 msgstr "Бежична"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1513
 msgid "Mobile broadband"
 msgstr "Мобилна широкопојасна"
 
-#: ../js/ui/status/network.js:1479
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1523
 msgid "VPN Connections"
 msgstr "ВПН веза"
 
-#: ../js/ui/status/network.js:1488
-#| msgid "Power Settings"
+#: ../js/ui/status/network.js:1532
 msgid "Network Settings"
 msgstr "Подешавања мрежа"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1827
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Повезани сте на мобилну широкопојасну мрежу „%s“"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1831
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Повезани сте на мобилну бежичну мрежу „%s“"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1835
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Повезани сте на мобилну жичану мрежу „%s“"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1839
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Повезани сте на мобилну ВПН мрежу „%s“"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Повезани сте на „%s“"
 
-#: ../js/ui/status/network.js:1808
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1852
 msgid "Connection established"
 msgstr "Веза је успостављена"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1974
 msgid "Networking is disabled"
 msgstr "Умрежавање је онемогућено"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2099
 msgid "Network Manager"
 msgstr "Управник мреже"
 
@@ -1046,7 +1068,7 @@ msgstr "Таблет"
 msgid "Computer"
 msgstr "Рачунар"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Непознато"
 
@@ -1134,21 +1156,20 @@ msgstr[3] "%u улаз"
 msgid "System Sounds"
 msgstr "Системски звуци"
 
-#: ../src/main.c:397
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Испиши вррзију"
 
 #: ../src/shell-app.c:454
 #, c-format
-#| msgid "Failed to unmount '%s'"
 msgid "Failed to launch '%s'"
 msgstr "Не могу да покренем „%s“"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Пре мање од једног минута"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -1157,7 +1178,7 @@ msgstr[1] "Пре %d минута"
 msgstr[2] "Пре %d минута"
 msgstr[3] "Пре један минут"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -1166,7 +1187,7 @@ msgstr[1] "Пре %d сата"
 msgstr[2] "Пре %d сати"
 msgstr[3] "Пре једног сата"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -1175,7 +1196,7 @@ msgstr[1] "Пре %d дана"
 msgstr[2] "Пре %d дана"
 msgstr[3] "Пре један дан"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1215,6 +1236,24 @@ msgstr "Систем датотека"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Угаси"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Кликните на „Угаси“ да напустите ове програме и да угасите систем."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Систем ће се аутоматски искључити за %d сек."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Искључујем систем."
+
+#~ msgid "Confirm"
+#~ msgstr "Потврди"
+
+#~ msgid "Panel"
+#~ msgstr "Панел"
 
 #~| msgid "Applications"
 #~ msgid "No such application"

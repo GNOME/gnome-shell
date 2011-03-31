@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-19 10:16+0000\n"
-"PO-Revision-Date: 2011-03-19 12:37+0100\n"
+"POT-Creation-Date: 2011-03-25 20:20+0000\n"
+"PO-Revision-Date: 2011-03-31 11:06+0200\n"
 "Last-Translator: Miloš Popović <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -188,27 +188,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Nije uspelo pokretanje „%s“:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:226
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "Sve"
 
-#: ../js/ui/appDisplay.js:324
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "PROGRAMI"
 
-#: ../js/ui/appDisplay.js:350
+#: ../js/ui/appDisplay.js:354
 msgid "SETTINGS"
 msgstr "PODEŠAVANJA"
 
-#: ../js/ui/appDisplay.js:616
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "Novi prozor"
 
-#: ../js/ui/appDisplay.js:619
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "Ukloni iz omiljenih"
 
-#: ../js/ui/appDisplay.js:620
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "Dodaj u omiljene"
 
@@ -368,7 +368,7 @@ msgstr "Ove nedelje"
 msgid "Next week"
 msgstr "Sledeće nedelje"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:933
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "Ukloni"
 
@@ -436,7 +436,7 @@ msgstr "SKORAŠNJE STAVKE"
 msgid "Log Out %s"
 msgstr "Odjavi „%s“"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "Odjavi"
 
@@ -459,47 +459,50 @@ msgstr "Bićete automatski odjavljeni za %d sek."
 msgid "Logging out of the system."
 msgstr "Odjavljujem se sa sistema."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "Ugasi"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Kliknite na „Ugasi“ da napustite ove programe i da ugasite sistem."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+#| msgid "Power Off..."
+msgid "Power Off"
+msgstr "Isključi"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "Sistem će se automatski isključiti za %d sek."
+#| msgid "Click Log Out to quit these applications and log out of the system."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Kliknite na „Isključi“ da napustite ove programe i da isključite računar."
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "Isključujem sistem."
+#, c-format
+#| msgid "The system will restart automatically in %d seconds."
+msgid "The system will power off automatically in %d seconds."
+msgstr "Računar će se automatski isključiti za %d sek."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+#| msgid "Logging out of the system."
+msgid "Powering off the system."
+msgstr "Isključujem računar."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "Ponovo pokreni"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Kliknite na „Ponovo pokreni“ da napustite ove programe i da ponovo pokrenete "
 "sistem."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "Sistem će se automatski ponovo pokrenuti za %d sek."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "Ponovno pokrećem sistem."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "Potvrdi"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Otkaži"
 
@@ -533,29 +536,29 @@ msgstr "Pogledaj izvor"
 msgid "Web Page"
 msgstr "Internet stranica"
 
-#: ../js/ui/messageTray.js:926
+#: ../js/ui/messageTray.js:987
 msgid "Open"
 msgstr "Otvori"
 
-#: ../js/ui/messageTray.js:1986
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "Informacije o sistemu"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Opozovi"
 
-#: ../js/ui/overview.js:183
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "Prozori"
 
-#: ../js/ui/overview.js:186
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "Programi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Dašer"
 
@@ -567,13 +570,13 @@ msgstr "Napusti „%s“"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:874
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "Aktivnosti"
 
-#: ../js/ui/panel.js:975
-msgid "Panel"
-msgstr "Panel"
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr "Gornja traka"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -592,60 +595,83 @@ msgstr "Poveži se na..."
 msgid "PLACES & DEVICES"
 msgstr "MESTA I UREĐAJI"
 
+#: ../js/ui/polkitAuthenticationAgent.js:74
+#| msgid "authentication required"
+msgid "Authentication Required"
+msgstr "Potrebna je prijava"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrator"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+#| msgid "authentication required"
+msgid "Authenticate"
+msgstr "Potvrda identiteta"
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Pogrešno! Pokušajte ponovo."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "Lozinka:"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:636
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:201
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "Unesite naredbu:"
 
-#: ../js/ui/searchDisplay.js:287
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "Tražim..."
 
-#: ../js/ui/searchDisplay.js:301
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
 msgstr "Nema odgovarajućih rezultata."
 
-#: ../js/ui/statusMenu.js:114 ../js/ui/statusMenu.js:178
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Isključi..."
 
-#: ../js/ui/statusMenu.js:116 ../js/ui/statusMenu.js:177
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "Obustavi"
 
-#: ../js/ui/statusMenu.js:137
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "Dostupan"
 
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "Zauzet"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "Moj nalog"
 
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "Podešavanja sistema"
 
-#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "Zaključaj ekran"
 
-#: ../js/ui/statusMenu.js:165
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "Promeni korisnika"
 
-#: ../js/ui/statusMenu.js:170
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "Odjavi me..."
 
@@ -812,143 +838,139 @@ msgstr "Prikaži raspored tastature..."
 msgid "Localization Settings"
 msgstr "Podešavanja lokalizacije"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
-#| msgid "Unknown"
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1437
 msgid "<unknown>"
 msgstr "<nepoznato>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:295
-#| msgid "Disabled"
 msgid "disabled"
 msgstr "onemogućeno"
 
-#: ../js/ui/status/network.js:476
-#| msgid "Connection"
+#: ../js/ui/status/network.js:478
 msgid "connecting..."
 msgstr "povezujem se..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:481
 msgid "authentication required"
 msgstr "potrebna je prijava"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:491
+msgid "firmware missing"
+msgstr "nedostaje firmver"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:498
 msgid "cable unplugged"
 msgstr "kabli je isključen"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
-#| msgid "Available"
+#: ../js/ui/status/network.js:503
 msgid "unavailable"
 msgstr "nedostupno"
 
-#: ../js/ui/status/network.js:491
-#| msgid "Connection"
+#: ../js/ui/status/network.js:505
 msgid "connection failed"
 msgstr "povezivanje nije uspelo"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1385
 msgid "Connected (private)"
 msgstr "Povezan (privatno)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:666
 msgid "Auto Ethernet"
 msgstr "Automatska žičana veza"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:741
 msgid "Auto broadband"
 msgstr "Automatska širokopojasna veza"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:744
 msgid "Auto dial-up"
 msgstr "Automatska dajal-ap veza"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:887 ../js/ui/status/network.js:1397
 #, c-format
-#| msgid "Quit %s"
 msgid "Auto %s"
 msgstr "Automatska %s veza"
 
-#: ../js/ui/status/network.js:845
-#| msgid "Bluetooth"
+#: ../js/ui/status/network.js:889
 msgid "Auto bluetooth"
 msgstr "Automatska blutut veza"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1399
 msgid "Auto wireless"
 msgstr "Automatska bežična veza"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1457
 msgid "More..."
 msgstr "Više..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1480
 msgid "Enable networking"
 msgstr "Omogući mrežne usluge"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1492
 msgid "Wired"
 msgstr "Žičana"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1503
 msgid "Wireless"
 msgstr "Bežična"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1513
 msgid "Mobile broadband"
 msgstr "Mobilna širokopojasna"
 
-#: ../js/ui/status/network.js:1479
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1523
 msgid "VPN Connections"
 msgstr "VPN veza"
 
-#: ../js/ui/status/network.js:1488
-#| msgid "Power Settings"
+#: ../js/ui/status/network.js:1532
 msgid "Network Settings"
 msgstr "Podešavanja mreža"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1827
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Povezani ste na mobilnu širokopojasnu mrežu „%s“"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1831
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Povezani ste na mobilnu bežičnu mrežu „%s“"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1835
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Povezani ste na mobilnu žičanu mrežu „%s“"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1839
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Povezani ste na mobilnu VPN mrežu „%s“"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Povezani ste na „%s“"
 
-#: ../js/ui/status/network.js:1808
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1852
 msgid "Connection established"
 msgstr "Veza je uspostavljena"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1974
 msgid "Networking is disabled"
 msgstr "Umrežavanje je onemogućeno"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2099
 msgid "Network Manager"
 msgstr "Upravnik mreže"
 
@@ -1046,7 +1068,7 @@ msgstr "Tablet"
 msgid "Computer"
 msgstr "Računar"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:961
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Nepoznato"
 
@@ -1134,21 +1156,20 @@ msgstr[3] "%u ulaz"
 msgid "System Sounds"
 msgstr "Sistemski zvuci"
 
-#: ../src/main.c:397
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Ispiši vrrziju"
 
 #: ../src/shell-app.c:454
 #, c-format
-#| msgid "Failed to unmount '%s'"
 msgid "Failed to launch '%s'"
 msgstr "Ne mogu da pokrenem „%s“"
 
-#: ../src/shell-global.c:1340
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "Pre manje od jednog minuta"
 
-#: ../src/shell-global.c:1344
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -1157,7 +1178,7 @@ msgstr[1] "Pre %d minuta"
 msgstr[2] "Pre %d minuta"
 msgstr[3] "Pre jedan minut"
 
-#: ../src/shell-global.c:1349
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -1166,7 +1187,7 @@ msgstr[1] "Pre %d sata"
 msgstr[2] "Pre %d sati"
 msgstr[3] "Pre jednog sata"
 
-#: ../src/shell-global.c:1354
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -1175,7 +1196,7 @@ msgstr[1] "Pre %d dana"
 msgstr[2] "Pre %d dana"
 msgstr[3] "Pre jedan dan"
 
-#: ../src/shell-global.c:1359
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1215,6 +1236,24 @@ msgstr "Sistem datoteka"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Ugasi"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Kliknite na „Ugasi“ da napustite ove programe i da ugasite sistem."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Sistem će se automatski isključiti za %d sek."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Isključujem sistem."
+
+#~ msgid "Confirm"
+#~ msgstr "Potvrdi"
+
+#~ msgid "Panel"
+#~ msgstr "Panel"
 
 #~| msgid "Applications"
 #~ msgid "No such application"
