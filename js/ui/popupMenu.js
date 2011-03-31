@@ -1059,9 +1059,9 @@ PopupSubMenu.prototype = {
         // we don't implement the !animate case because that doesn't
         // currently get used...
 
+        this.actor.show();
         let [naturalHeight, minHeight] = this.actor.get_preferred_height(-1);
         this.actor.height = 0;
-        this.actor.show();
         this.actor._arrow_rotation = this._arrow.rotation_angle_z;
         Tweener.addTween(this.actor,
                          { _arrow_rotation: 90,
