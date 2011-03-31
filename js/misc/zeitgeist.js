@@ -134,7 +134,7 @@ Event.fromPlain = function(rawEvent) {
                           subjects, // subjects
                           rawEvent[2]);// payload
     event.id = rawEvent[0][0]; // id
-    event.timestamp = rawEvent[0][1]; // timestamp
+    event.timestamp = parseInt(rawEvent[0][1], 10); // timestamp - it comes as a string over d-bus (yuck)
     return event;
 };
 
