@@ -274,24 +274,18 @@ OpenSearchSystem.prototype = {
     },
 
     _addProvider: function(fileName) {
-        let file = Gio.file_new_for_path(global.datadir + '/search_providers/' + fileName);
-        let source = '';
-
-        file.load_contents_async(null, Lang.bind(this, function (obj, res) {
-            let [success, source] = file.load_contents_finish(res);
-            if (source) {
-                let [success, name, url, langs, icon_uri] = global.parse_search_provider(source);
-                let provider ={ name: name,
-                                url: url,
-                                id: this._providers.length,
-                                icon_uri: icon_uri,
-                                langs: langs };
-                if (this._checkSupportedProviderLanguage(provider)) {
-                    this._providers.push(provider);
-                    this.emit('changed');
-                }
-            }
-        }));
+        let path = global.datadir + '/search_providers/' + fileName;
+        let source = Shell.get_file_contents_utf8_sync(path);
+        let [success, name, url, langs, icon_uri] = global.parse_search_provider(source);
+        let provider ={ name: name,
+                        url: url,
+                        id: this._providers.length,
+                        icon_uri: icon_uri,
+                        langs: langs };
+        if (this._checkSupportedProviderLanguage(provider)) {
+            this._providers.push(provider);
+            this.emit('changed');
+        }
     },
 
     _refresh: function() {

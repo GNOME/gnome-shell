@@ -2229,3 +2229,36 @@ shell_get_contact_events (TplLogManager *log_manager,
                                              NULL, NULL,
                                              callback, NULL);
 }
+
+
+/**
+ * shell_get_file_contents_utf8_sync:
+ * @path: UTF-8 encoded filename path
+ * @error: a #GError
+ *
+ * Synchronously load the contents of a file as a NUL terminated
+ * string, validating it as UTF-8.  Embedded NUL characters count as
+ * invalid content.
+ *
+ * Returns: (transfer full): File contents
+ */
+char *
+shell_get_file_contents_utf8_sync (const char *path,
+                                   GError    **error)
+{
+  char *contents;
+  gsize len;
+  if (!g_file_get_contents (path, &contents, &len, error))
+    return NULL;
+  if (!g_utf8_validate (contents, len, NULL))
+    {
+      g_free (contents);
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "File %s contains invalid UTF-8",
+                   path);
+      return NULL;
+    }
+  return contents;
+}

@@ -185,6 +185,9 @@ void shell_get_contact_events (TplLogManager *log_manager,
                                guint num_events,
                                GAsyncReadyCallback callback);
 
+char *shell_get_file_contents_utf8_sync (const char *path,
+                                         GError    **error);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

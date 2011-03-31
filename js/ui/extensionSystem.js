@@ -67,7 +67,13 @@ function loadExtension(dir, enabled, type) {
         return;
     }
 
-    let [success, metadataContents, len, etag] = metadataFile.load_contents(null);
+    let metadataContents;
+    try {
+        metadataContents = Shell.get_file_contents_utf8_sync(metadataFile.get_path());
+    } catch (e) {
+        global.logError(baseErrorString + 'Failed to load metadata.json: ' + e);
+        return;
+    }
     let meta;
     try {
         meta = JSON.parse(metadataContents);
