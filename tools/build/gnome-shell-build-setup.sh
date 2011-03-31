@@ -54,7 +54,7 @@ fi
 #
 # General build stuff:
 # automake, bison, flex, gettext, gnome-common, gperf, gtk-doc, intltool,
-# libtool, pkgconfig, cvs
+# libtool, pkgconfig
 #
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, expat, GL, gnome-menus, gstreamer, libffi,
@@ -73,7 +73,7 @@ fi
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
   reqd="
     build-essential curl
-    automake bison flex gettext git-core gperf cvs gnome-common gtk-doc-tools
+    automake bison flex gettext git-core gperf gnome-common gtk-doc-tools
     gvfs gvfs-backends icon-naming-utils
     libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev libgtop2-dev
     libical-dev libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
@@ -110,7 +110,7 @@ fi
 
 if test "x$system" = xFedora ; then
   reqd="
-    binutils curl gcc gcc-c++ make cvs
+    binutils curl gcc gcc-c++ make
     automake bison flex gettext git gnome-common gnome-doc-utils gperf gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
     gnome-python2-gconf jasper-devel libffi-devel libical-devel libjpeg-devel libpng-devel
@@ -149,7 +149,7 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
     orbit2-devel libwnck-devel xorg-x11-proto-devel readline-devel \
     mozilla-xulrunner191-devel libcroco-devel \
     xorg-x11-devel xorg-x11 xorg-x11-server-extra evolution-data-server-devel \
-    cvs iso-codes-devel \
+    iso-codes-devel \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
@@ -171,7 +171,7 @@ if test "x$system" = xMandrivaLinux ; then
     readline-devel libxulrunner-devel \
     libxdamage-devel mesa-demos zenity \
     libcroco0.6-devel libevolution-data-server3-devel \
-    cvs iso-codes-devel \
+    iso-codes-devel \
     ; do
       if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
