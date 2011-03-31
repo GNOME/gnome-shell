@@ -200,7 +200,7 @@ NMDeviceTitleMenuItem.prototype = {
     },
 
     setStatus: function(text) {
-        if (text) {
+        if (text != null) {
             this._statusLabel.text = text;
             this._statusBin.child = this._statusLabel;
             this.actor.reactive = false;
@@ -367,6 +367,8 @@ NMDevice.prototype = {
                     this.deactivate();
                 this.emit('enabled-changed');
             }));
+
+            this._updateStatusItem();
         }
         this.section = new PopupMenu.PopupMenuSection();
 
@@ -383,10 +385,19 @@ NMDevice.prototype = {
             GObject.Object.prototype.disconnect.call(this.device, this._stateChangedId);
             this._stateChangedId = 0;
         }
+        if (this._carrierChangedId) {
+            // see above for why this is needed
+            GObject.Object.prototype.disconnect.call(this.device, this._carrierChangedId);
+            this._carrierChangedId = 0;
+        }
+        if (this._firmwareChangedId) {
+            GObject.Object.prototype.disconnect.call(this.device, this._firmwareChangedId);
+            this._firmwareChangedId = 0;
+        }
 
         this._clearSection();
-        if (this.titleItem)
-            this.titleItem.destroy();
+        if (this.statusItem)
+            this.statusItem.destroy();
         this.section.destroy();
     },
 
@@ -633,6 +644,14 @@ NMDevice.prototype = {
             break;
         }
 
+        this._updateStatusItem();
+
+        this._clearSection();
+        this._createSection();
+        this.emit('state-changed');
+    },
+
+    _updateStatusItem: function() {
         if (this._carrierChangedId) {
             // see above for why this is needed
             GObject.Object.prototype.disconnect.call(this.device, this._carrierChangedId);
@@ -645,10 +664,6 @@ NMDevice.prototype = {
 
         this.statusItem.setStatus(this.getStatusLabel());
         this.statusItem.setToggleState(this.connected);
-
-        this._clearSection();
-        this._createSection();
-        this.emit('state-changed');
     },
 
     _substateChanged: function() {
@@ -1666,6 +1681,8 @@ NMApplet.prototype = {
                 managedDevices.forEach(function(dev) {
                     dev.statusItem.actor.show();
                 });
+                // remove status text from the section title item
+                item.updateForDevice(null);
             }
         }
     },
