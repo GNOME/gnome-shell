@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-18 10:35+0000\n"
-"PO-Revision-Date: 2011-03-18 21:33+0300\n"
+"POT-Creation-Date: 2011-03-30 17:13+0000\n"
+"PO-Revision-Date: 2011-03-30 23:56+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "Language: et\n"
@@ -385,19 +385,19 @@ msgstr "Sind logitakse %d sekundi pärast automaatselt välja."
 msgid "Logging out of the system."
 msgstr "Süsteemist väljalogimine"
 
-msgid "Shut Down"
+msgid "Power Off"
 msgstr "Lülita välja"
 
-msgid "Click Shut Down to quit these applications and shut down the system."
+msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Nende rakenduste sulgemiseks ja süsteemi väljalülitamiseks klõpsa nupule "
-"Logi välja."
+"Lülita välja."
 
 #, c-format
-msgid "The system will shut down automatically in %d seconds."
+msgid "The system will power off automatically in %d seconds."
 msgstr "%d sekundi pärast lülitub süsteem automaatselt välja."
 
-msgid "Shutting down the system."
+msgid "Powering off the system."
 msgstr "Süsteemi väljalülitamine."
 
 msgid "Restart"
@@ -414,9 +414,6 @@ msgstr "Süsteem taaskäivitatakse automaatselt %d sekundi pärast."
 
 msgid "Restarting the system."
 msgstr "Süsteemi taaskäivitamine."
-
-msgid "Confirm"
-msgstr "Kinnita"
 
 msgid "Cancel"
 msgstr "Katkesta"
@@ -474,8 +471,8 @@ msgstr "Lõpeta %s"
 msgid "Activities"
 msgstr "Tegevused"
 
-msgid "Panel"
-msgstr "Paneel"
+msgid "Top Bar"
+msgstr "Ülemine riba"
 
 #, c-format
 msgid "Failed to unmount '%s'"
@@ -489,6 +486,25 @@ msgstr "Ühendumine..."
 
 msgid "PLACES & DEVICES"
 msgstr "Asukohad ja seadmed"
+
+msgid "Authentication Required"
+msgstr "Vajalik on autentimine"
+
+msgid "Administrator"
+msgstr "Administraator"
+
+msgid "Authenticate"
+msgstr "Autendi"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Kahjuks see ei sobinud. Palun proovi uuesti."
+
+msgid "Password:"
+msgstr "Parool:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -672,6 +688,11 @@ msgstr "ühendumine..."
 msgid "authentication required"
 msgstr "vajalik on autentimine"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+msgid "firmware missing"
+msgstr "püsivara puudub"
+
 #. Translators: this is for wired network devices that are physically disconnected
 msgid "cable unplugged"
 msgstr "juhe eemaldatud"
@@ -750,7 +771,7 @@ msgstr "Loodi ühendus VPN-võrguga '%s'"
 msgid "You're now connected to '%s'"
 msgstr "Loodi võrguühendus '%s' kaudu"
 
-msgid "Connection estabilished"
+msgid "Connection established"
 msgstr "Ühendus loodud"
 
 msgid "Networking is disabled"
@@ -955,6 +976,26 @@ msgstr "Failisüsteem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Lülita välja"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr ""
+#~ "Nende rakenduste sulgemiseks ja süsteemi väljalülitamiseks klõpsa nupule "
+#~ "Logi välja."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "%d sekundi pärast lülitub süsteem automaatselt välja."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Süsteemi väljalülitamine."
+
+#~ msgid "Confirm"
+#~ msgstr "Kinnita"
+
+#~ msgid "Panel"
+#~ msgstr "Paneel"
 
 #~ msgid "No such application"
 #~ msgstr "Sellist rakendust ei ole"
