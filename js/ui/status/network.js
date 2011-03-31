@@ -424,7 +424,7 @@ NMDevice.prototype = {
     },
 
     checkConnection: function(connection) {
-        let exists = this._findConnection(connection) != -1;
+        let exists = this._findConnection(connection._uuid) != -1;
         let valid = this.connectionValid(connection);
         if (exists && !valid)
             this.removeConnection(connection);
