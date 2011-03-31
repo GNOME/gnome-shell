@@ -254,6 +254,11 @@ NMWiredSectionTitleMenuItem.prototype = {
             return;
         }
 
+        // Immediately reset the switch to false, it will be updated appropriately
+        // by state-changed signals in devices (but fixes the VPN not being in sync
+        // if the ActiveConnection object is never seen by libnm-glib)
+        this._switch.setToggleState(false);
+
         if (this._switch.state)
             this._device.activate();
         else
@@ -940,7 +945,13 @@ NMDeviceVPN.prototype = {
     },
 
     get connected() {
-        return true;
+        return !!this._activeConnection;
+    },
+
+    setActiveConnection: function(activeConnection) {
+        NMDevice.prototype.setActiveConnection.call(this, activeConnection);
+
+        this.emit('active-connection-changed');
     },
 
     _shouldShowConnectionList: function() {
@@ -1539,6 +1550,9 @@ NMApplet.prototype = {
             device: new NMDeviceVPN(this._client),
             item: new NMWiredSectionTitleMenuItem(_("VPN Connections"))
         };
+        this._devices.vpn.device.connect('active-connection-changed', Lang.bind(this, function() {
+            this._devices.vpn.item.updateForDevice(this._devices.vpn.device);
+        }));
         this._devices.vpn.item.updateForDevice(this._devices.vpn.device);
         this._devices.vpn.section.addMenuItem(this._devices.vpn.item);
         this._devices.vpn.section.addMenuItem(this._devices.vpn.device.section);
