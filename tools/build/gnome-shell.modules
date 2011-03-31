@@ -206,6 +206,7 @@
     <branch repo="git.gnome.org" module="glib-networking"/>
     <dependencies>
      <dep package="glib"/>
+     <dep package="gsettings-desktop-schemas"/>
     </dependencies>
   </autotools>
 
