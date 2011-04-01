@@ -4,13 +4,12 @@
 #
 # Kjartan Maraas <kmaraas@gnome.org>, 2009-2011.
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
-#: ../js/ui/polkitAuthenticationAgent.js:142
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-23 21:46+0100\n"
-"PO-Revision-Date: 2011-03-23 21:47+0100\n"
+"POT-Creation-Date: 2011-04-01 09:43+0200\n"
+"PO-Revision-Date: 2011-04-01 09:45+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -56,7 +55,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "Historikk for kommandodialog (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for the looking glass dialog"
@@ -68,7 +67,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
-msgstr ""
+msgstr "Viser sekunder i klokken hvis «true»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
@@ -317,13 +316,13 @@ msgid "Nothing Scheduled"
 msgstr "Ingenting planlagt"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
@@ -344,7 +343,7 @@ msgstr "Denne uken"
 msgid "Next week"
 msgstr "Neste uke"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
 msgid "Remove"
 msgstr "Fjern"
 
@@ -508,11 +507,11 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:987
+#: ../js/ui/messageTray.js:1000
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:2145
+#: ../js/ui/messageTray.js:2164
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -535,18 +534,18 @@ msgid "Dash"
 msgstr "Favoritter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:524
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:878
+#: ../js/ui/panel.js:902
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:1003
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -579,11 +578,15 @@ msgstr "Administrator"
 msgid "Authenticate"
 msgstr "Autentiser"
 
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Beklager, det virket ikke. Vennligst prøv igjen."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
 msgstr "Passord:"
 
@@ -608,7 +611,8 @@ msgstr "Søker …"
 msgid "No matching results."
 msgstr "Ingen treff."
 
-#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:228
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "Slå av …"
 
@@ -807,133 +811,139 @@ msgstr "Vis tastaturutforming …"
 msgid "Localization Settings"
 msgstr "Innstillinger for lokalisering"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
 msgid "<unknown>"
 msgstr "<ukjent>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
+#: ../js/ui/status/network.js:311
 msgid "disabled"
 msgstr "slått av"
 
-#: ../js/ui/status/network.js:476
+#: ../js/ui/status/network.js:494
 msgid "connecting..."
 msgstr "kobler til …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:497
 msgid "authentication required"
 msgstr "autentisering kreves"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
+msgstr "fastvare mangler"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:514
 msgid "cable unplugged"
 msgstr "kabel koblet fra"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:519
 msgid "unavailable"
 msgstr "ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:521
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
 msgstr "Automatisk Ethernet"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:758
 msgid "Auto broadband"
 msgstr "Automatisk bredbånd"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:761
 msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
 
-#: ../js/ui/status/network.js:845
+#: ../js/ui/status/network.js:906
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1416
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1474
 msgid "More..."
 msgstr "Mer …"
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1497
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1509
 msgid "Wired"
 msgstr "Kablet"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1520
 msgid "Wireless"
 msgstr "Trådløst"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:1479
+#: ../js/ui/status/network.js:1540
 msgid "VPN Connections"
 msgstr "VPN-tilkoblinger"
 
-#: ../js/ui/status/network.js:1488
+#: ../js/ui/status/network.js:1549
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du er nå koblet til mobil bredbåndstilkobling «%s»"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1848
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du er nå koblet til trådløst nettverk «%s»"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1852
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du er nå koblet til kablet nettverk «%s»"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1856
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du er nå koblet til virtuelt privat nettverk «%s»"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1861
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du er nå koblet til «%s»"
 
-#: ../js/ui/status/network.js:1808
+#: ../js/ui/status/network.js:1869
 msgid "Connection established"
 msgstr "Tilkobling etablert"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1991
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2116
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
@@ -1035,22 +1045,22 @@ msgstr "Volum"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is online."
 msgstr "%s er tilkoblet."
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is offline."
 msgstr "%s er frakoblet."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is away."
 msgstr "«%s» er borte."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:346
 #, c-format
 msgid "%s is busy."
 msgstr "%s er opptatt."
@@ -1058,7 +1068,7 @@ msgstr "%s er opptatt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:482
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Sendt %X på %A"
@@ -1107,7 +1117,7 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/main.c:438
+#: ../src/main.c:446
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
@@ -1150,7 +1160,7 @@ msgstr[1] "%d uker siden"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr ""
+msgstr "England"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
