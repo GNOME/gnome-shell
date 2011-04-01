@@ -2,21 +2,21 @@
 # Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Dr.T.Vasudevan <agnihot3@gmail.com>, 2010.
+# Dr.T.Vasudevan <agnihot3@gmail.com>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-30 14:13+0530\n"
-"PO-Revision-Date: 2010-12-01 12:57+0530\n"
-"Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
-"Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
-"Language: ta\n"
+"POT-Creation-Date: 2011-04-01 12:15+0530\n"
+"PO-Revision-Date: 2011-04-01 12:16+0530\n"
+"Last-Translator: \n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ta\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -25,14 +25,6 @@ msgstr "க்னோம் ஷெல்"
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "சாளர மேலாண்மை மற்றும் பயன்பாடு துவக்கம்"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "கடிகாரம்"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "பலக கடிகாரத்தை தனிப்பயனாக்கும்"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
@@ -43,24 +35,20 @@ msgstr ""
 "உதவும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr "கடிகாரத்தின் தனிப்பயன் வடிவமைப்பு"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "உருவாக்குவோர் மற்றூம் சோதிப்போருக்கு பயன்படுமாறு Alt-F2 வழியாக உள்ளமை கருவிகளை "
 "செயலாக்கு"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr "திரைவெட்டை சேமிக்க கோப்பு பின்னொட்டு."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr "திரைநிகழ்வை பதிவு செய்ய சட்டவிகிதம் ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
@@ -68,39 +56,32 @@ msgstr ""
 "க்னோம் ஷெல் நீட்சிகளுக்கு ஒரு யூயூஐடி பண்பு உண்டு. இந்த விசை எந்த நீட்சிகள் ஏற்றப்பட வேண்டும் "
 "என பட்டியலிடுகிறது."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr "(Alt-F2) கட்டளை உரையாடல் க்கு வரலாறு"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "லுக்கிங் க்ளாஸ் உரையாடலுக்கு வரலாறு"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
-msgstr "மணி வடிவமைப்பு"
+msgid "If true, display date in the clock, in addition to time."
+msgstr "உண்மையெனில், கடிகாரத்தில் மணியுடன் நாளை காட்டு."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-"உண்மையெனில், அமைப்பு \"12 மணி\" அல்லது \"24 மணி\" என இருப்பின் நேரத்துடன் நாளையும் "
-"காட்டு"
+msgid "If true, display seconds in time."
+msgstr "உண்மையானால் நேரத்தில் வினாடிகளை காட்டவும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-"உண்மையெனில், அமைப்பு \"12 மணி\" அல்லது \"24 மணி\" என இருப்பின் நேரத்தில் "
-"வினாடிகளையும் காட்டு"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
 msgstr "உண்மையானால் நாட்காட்டியில் ஐஎஸ்ஓ வார எண்களை காட்டவும்."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "விருப்ப பயன்பாடுகளுக்கு மேல்மேசை கோப்பு அடையாளங்கள்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -109,15 +90,19 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 "பதிவுகளை குறியாக்க ஜிஸ்ட்ரீமர் குழாயை அமைக்கிறது. ஜிஎஸ்டி லான்ஸ் க்கு பயன்படும் அதே "
 "இலக்கணத்தை பின் பற்றும். குழாய்க்கு இணைப்பில்லா பதிவுக்குழி இருத்தல் வேண்டும். இதில் விடியோ "
-"பதிவாகும். சாதாரணமாக இதில் ஒரு மூல பதிவேடு இருக்கும்; இதன் வெளியீடு வெளியீட்டு "
+"பதிவாகும். சாதாரணமாக இதில் இணைக்காத ஒரு மூல பதிவேடு இருக்கும்; இதன் வெளியீடு வெளியீட்டு "
 "கோப்பாக பதிவாகும். எனினும் குழாய் தன் வெளியீட்டை தானே கவனித்துக்கொள்ள இயலும். இது "
 "வெளியீட்டை ஐஸ்காஸ்ட் அல்லது ஷௌட்2சென்ட் போன்றவற்றுக்கு நேரடியாக அனுப்ப இயலும். அமைப்பை "
 "அன்செட் செய்தாலல்லது காலி மதிப்புக்கு அமைத்தாலும் முன்னிருப்பு குழாய் பயன்படுத்தப்படும். "
-"நடப்பில் இது 'விடியோரேட்!தியோரேங்க்!ஆக்மக்ஸ்' ஆகும்; இது ஆக் தியோராவுக்கு பதிவுசெய்யும்."
+"நடப்பில் இது ''videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux'  ஆகும்; இது"
+"VP8 கோடக் ஐ பயன்படுத்தி WEBM க்கு பதிவுசெய்யும். கணினியில் பொருத்தமான இழை கணக்குக்கு ஊகம் "
+"செய்வதற்கு %T இடப்பிடிப்பானாக வேலை செய்யும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -170,224 +155,54 @@ msgstr ""
 "இதை நீக்க விரும்பலாம். அப்படிச் செய்வது முன்னே சேகரித்த தரவை நீக்காஅது என் அறியவும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-"வடிவமைப்பு விசை \"தனிப்பயன்\" என்று அமைக்கப்படும் போது பலக கடிகாரம் இந்த விசையை "
-"பயன்படுத்தும். குறிப்பிட்ட அமைப்பை பெற்றுக்கொள்ள strftime() ஆல் புரிந்துகொள்ளக்கூடிய "
-"மாற்று குறிப்புகளை தரவும். மேலும் அதிக விவரங்களுக்கு strftime() கையேட்டை பார்க்கவும்."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-"இந்த விசை பலக கடிகாரம் பயன்படுத்த வேண்டிய மணி ஒழுங்கை குறிக்கிறது. தரக்கூடிய "
-"மதிப்புகள் \"12-மணி\", \"24-மணி\", \"யூனிக்ஸ்\" மற்றும் \"தனிப்பயன்\". \"யூனிக்ஸ்\" "
-"எனில் அது எபோக் அதாவது 1970-01-01 முதல் நடந்த காலத்தை வினாடிகளில் காட்டும். \"தனிப்பயன்"
-"\" எனில் தனிப்பயன்_ஒழுங்கு இல் காட்டப்பட்ட ஒழுங்கில் நேரத்தைக் காட்டும். \"யூனிக்ஸ்\" அல்லது "
-"\"தனிப்பயன்\" என மைக்கும்போது தேதி_காட்டு, வினாடிகளை_காட்டு விசைகள் "
-"உதாசீனப்படுத்தப்படும் என அறிக."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "செயல்நீக்க வேண்டிய நீட்சிகளின் யூயூஐடிக்கள்."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "நிரல்களின் பயன்பாடு குறித்த புள்ளிவிவரம் சேகரிக்க வேண்டுமா"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr "குறுக்கு இழைகளை மையத்தில் வெட்டிவிடுக"
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr "ஓபன்செர்ச் வழங்குவோர் செயல்நீக்கம் செய்யபட்டனர்."
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr "குறுக்கு இழைகளின் நிறம்"
+#: ../js/misc/util.js:71
+msgid "Command not found"
+msgstr "கட்டளை காணப்படவில்லை"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "குறுக்கு இழைகளை சொடுக்கியின் அடையாளத்தில் மையப்படுத்தி காட்டுகிறது/ மறைக்கிறது"
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:98
+msgid "Could not parse command:"
+msgstr "கட்டளையை அலகிட முடியவில்லை"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
-"பெரிதாக்கப்பட்ட காட்சியில் பெரிதாக்கப்பட்ட சொடுக்கியின் பிம்பம் எங்கு இருக்க வேண்டும், அது "
-"கணினி சொடுக்கி நகர்தலுடன் எப்படி நகர வேண்டும் என நிர்ணயிக்கிறது. மதிப்புகள் - ஏதுமில்லை: "
-"சொடுக்கி தடம் தொடரப்பட மாட்டாது; -மையம்: சொடுக்கி பிம்பம் பெரிதாக்கப்பட்ட இடத்தின் மையத்தில் "
-"காட்டப்படும் (இது சொடுக்கியின் கீழ் காணப்படும் இடம்தான்) பெரிதாக்கப்பட்ட பிம்பம் சொடுக்கி "
-"நகரும் திசையின் தானும் நகரும்; - விகிதாசாரம்:  அணுகல் பரப்பில் உள்ள பெரிதாக்கபட்ட சொடுக்கியின் "
-"இடம் திரையில் விகிதாசாரப்படி கணினி சொடுக்கி இருக்கும் அதே இடம்தான்; - தள்ளு: பெரிதாக்கப்பட்ட "
-"சொடுக்கி அணுகல் பரப்பின் விளிம்புக்கு வருமானால் அடக்கங்கள் உருண்டு பார்வைக்கு வரும்."
+#: ../js/misc/util.js:106
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "'%s' ஐ நிறைவேற்றுதல் தோல்வி அடைந்தது:"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr "குறுக்கு இழைகளின் ஊடுருவும் தனமியை முழு மறைப்பிலிருந்து முழு ஊடுருவல் வரை நிர்ணயிக்கிறது"
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:230
+msgid "All"
+msgstr "எல்லா"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-"குறுக்கு இழைகளை சொடுக்கியின் அடையாளத்தில் மையப்படுத்தி காட்டுவதா அல்லது செங்குத்து கிடை மட்ட "
-"கோடுகளின் முனைகள் சொடுக்கி அடையாளத்தை சூழ்ந்து இருப்பதாக வெட்டுவதா என நிர்ணயிக்கிறது."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-msgid "Enable lens mode"
-msgstr "பூத கண்ணாடி முறைமையை செயல்படுத்து"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr "குறுக்கு இழைகளை சொடுக்கியின் அடையாளத்தில் மையப்படுத்தி காட்டுகிறது/ மறைக்கிறது"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-"மையப்படுத்திய சொடுக்கி தடம் தொடர்வதில், கணினியின் சுட்டி திரையின் விளிம்பில் அல்லது அதன் "
-"அருகில் இர்ந்தால், பெரிதாக்கப்பட்ட உள்ளடக்கங்கள் உருண்டு திரையின் விளிம்பு பெரிதாக்கப்பட்ட "
-"பார்வைக்கு வரும்."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr "குறுக்கு இழைகளின் நீளம்"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr "உருபெருக்க விகிதம்"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr "சொடுக்கி தொடர்வு பாங்கு"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr "குறுக்கிழைகள் இன் ஒளிபுகாதன்மை"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr "திரை நிலை"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr "மேல்மேசையின் விளிம்புகளுக்கு வெளீயே இருக்கும் அடக்கத்தை உருளை மூலம் காட்டு"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr "குறுக்கிழைகள் காட்டு அல்லது மறை"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr "உருப்பெருக்கியை காட்டு அல்லது மறை"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr "உருப்பெருக்கி மற்றும் அதன் அணுகல் வட்டாரங்களை காட்டு அல்லது மறை"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "குறுக்கு இழைகளின் செங்குத்து , கிடைமட்ட கோடுகளின் நிறம்"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-"பெரிதாக்கப்பட்ட காட்சி முழுத்திரையயும் ஆக்ரமிக்கலாம் அல்லது மேல் பாதி, கீழ் பாதி, வலது பாதி, "
-"இடது பாதி என இருக்கலாம்."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr "பெரிதாக்கும் அளவு. 1.0 எனில் பெரிதாக்கம் இல்லை. மதிப்பு 2.0 எனில் இரண்டு மடங்கு."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr "குறுக்கிழைகளின் தடிமன்"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr "பெரிதாக்கிய காட்சியின் மையம் சொடுக்கியின் இடத்தில் இருந்து கொண்டு அதனுடன் நகர வேண்டுமா/"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr "குறுக்கு இழைகளின் செங்குத்து , கிடைமட்ட கோடுகளின் அகலம்"
-
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "கடிகார வடிவம்"
-
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "கடிகாரம் விருப்பங்கள்"
-
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "பலக காட்சி"
-
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "(_n) நொடிகளை காட்டுக"
-
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "(_d)  தேதியை காட்டுக"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "_12 மணி வடிவமைப்பு"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "_24 மணி வடிவமைப்பு"
-
-#: ../js/ui/appDisplay.js:215
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
 msgstr "பயன்பாடுகள்"
 
-#: ../js/ui/appDisplay.js:245
-msgid "PREFERENCES"
-msgstr "விருப்பங்கள்"
+#: ../js/ui/appDisplay.js:354
+msgid "SETTINGS"
+msgstr "SETTINGS"
 
-#: ../js/ui/appDisplay.js:538
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "புதிய சாளரம்"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "விருப்பத்தில் இருந்து நீக்கு"
 
-#: ../js/ui/appDisplay.js:543
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
 msgstr "விருப்பங்களுக்கு சேர்"
 
@@ -401,245 +216,903 @@ msgstr "%s உங்கள் விருப்பங்களில் சே�
 msgid "%s has been removed from your favorites."
 msgstr "%s உங்கள் விருப்பங்களில் இருந்து நீக்கப்பட்டது"
 
-#: ../js/ui/dash.js:27
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:66
+msgctxt "event list time"
+msgid "All Day"
+msgstr "முழு நாள்"
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:71
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:78
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:118
+msgctxt "grid sunday"
+msgid "S"
+msgstr "ஞா"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:120
+msgctxt "grid monday"
+msgid "M"
+msgstr "தி"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:122
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "செ"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:124
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "பு"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:126
+msgctxt "grid thursday"
+msgid "T"
+msgstr "வி"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:128
+msgctxt "grid friday"
+msgid "F"
+msgstr "வெ"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:130
+msgctxt "grid saturday"
+msgid "S"
+msgstr "ச"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:143
+msgctxt "list sunday"
+msgid "Su"
+msgstr "ஞா"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:145
+msgctxt "list monday"
+msgid "M"
+msgstr "தி"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:147
+msgctxt "list tuesday"
+msgid "T"
+msgstr "செ"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:149
+msgctxt "list wednesday"
+msgid "W"
+msgstr "பு"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:151
+msgctxt "list thursday"
+msgid "Th"
+msgstr "வியா"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:153
+msgctxt "list friday"
+msgid "F"
+msgstr "வெ"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:155
+msgctxt "list saturday"
+msgid "S"
+msgstr "ச"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:704
+msgid "Nothing Scheduled"
+msgstr "திட்டம் எதுவுமில்லை"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %B %d, %Y"
+
+#: ../js/ui/calendar.js:733
+msgid "Today"
+msgstr "இன்று"
+
+#: ../js/ui/calendar.js:737
+msgid "Tomorrow"
+msgstr "நாளை"
+
+#: ../js/ui/calendar.js:746
+msgid "This week"
+msgstr "இந்த வாரம்"
+
+#: ../js/ui/calendar.js:754
+msgid "Next week"
+msgstr "அடுத்த வாரம்"
+
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
 msgid "Remove"
 msgstr "நீக்கு"
 
-#: ../js/ui/docDisplay.js:494
-msgid "RECENT ITEMS"
-msgstr "RECENT ITEMS"
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "தேதி நேரம் அமைப்புகள்"
 
-#: ../js/ui/lookingGlass.js:552
-msgid "No extensions installed"
-msgstr "நீட்சிகள் ஏதும் நிறுவப்படவில்லை"
-
-#: ../js/ui/lookingGlass.js:589
-msgid "Enabled"
-msgstr "செயலாக்கப்பட்டது"
-
-#. translators:
-#. * The device has been disabled
-#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
-msgid "Disabled"
-msgstr "செயல்நீக்கப்பட்டது"
-
-#: ../js/ui/lookingGlass.js:593
-msgid "Error"
-msgstr "பிழை"
-
-#: ../js/ui/lookingGlass.js:595
-msgid "Out of date"
-msgstr "காலாவதியானது"
-
-#: ../js/ui/lookingGlass.js:620
-msgid "View Source"
-msgstr "மூலத்தை பார்க்க"
-
-#: ../js/ui/lookingGlass.js:626
-msgid "Web Page"
-msgstr "இணைய பக்கம்"
-
-#: ../js/ui/overview.js:112
-msgid "Undo"
-msgstr "மறை"
-
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
-#, c-format
-msgid "Quit %s"
-msgstr "%s லிருந்து வெளியேறு"
-
-#: ../js/ui/panel.js:495
-msgid "Preferences"
-msgstr "விருப்பங்கள்"
+#: ../js/ui/dateMenu.js:111
+msgid "Open Calendar"
+msgstr "நாள்காட்டியை திற"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A %B %e, %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "RECENT ITEMS"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "%s யிலிருந்து வெளியேறு"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
+msgid "Log Out"
+msgstr "வெளியேறு"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "இந்த பயன்பாடுகளை மூடி கணினியில் இருந்து வெளியேற வெளியேறு ஐ சொடுக்கவும்"
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "%s தானியங்கியாக %d வினாடிகளில் வெளியேறும்"
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "நீங்கள்  தானியங்கியாக %d வினாடிகளில் வெளியேற்றப்படுவீர்கள் "
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "கணினியில் இருந்து வெளியேறுகிறது"
+
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "மின்சக்தி நிறுத்தம்"
+
+#: ../js/ui/endSessionDialog.js:76
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "இந்த பயன்பாடுகளை மூடி கணினி மின் நிறுத்தம் செய்ய மின் நிறுத்தம் ஐ சொடுக்கவும்"
+
+#: ../js/ui/endSessionDialog.js:77
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "கணினி தானியங்கியாக %d வினாடிகளில் மின் நிறுத்தப்படும்"
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "கணினி மின் நிறுத்தப்படுகிறது"
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
+msgid "Restart"
+msgstr "மறு துவக்கம்"
+
+#: ../js/ui/endSessionDialog.js:89
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "இந்த பயன்பாடுகளை மூடி கணினி மீள் துவக்கம் செய்ய செய்ய மீள் துவக்கம் ஐ சொடுக்கவும்"
+
+#: ../js/ui/endSessionDialog.js:90
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "கணினி தானியங்கியாக %d வினாடிகளில் மீள் துவக்கம்  செய்யப்படும்."
+
+#: ../js/ui/endSessionDialog.js:91
+msgid "Restarting the system."
+msgstr "கணினி மறு துவக்கம் செய்யப்படுகிறது"
+
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
+msgid "Cancel"
+msgstr "ரத்துசெய்க"
+
+#: ../js/ui/lookingGlass.js:588
+msgid "No extensions installed"
+msgstr "நீட்சிகள் ஏதும் நிறுவப்படவில்லை"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Enabled"
+msgstr "செயலாக்கப்பட்டது"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
+msgid "Disabled"
+msgstr "செயல்நீக்கப்பட்டது"
+
+#: ../js/ui/lookingGlass.js:629
+msgid "Error"
+msgstr "பிழை"
+
+#: ../js/ui/lookingGlass.js:631
+msgid "Out of date"
+msgstr "காலாவதியானது"
+
+#: ../js/ui/lookingGlass.js:656
+msgid "View Source"
+msgstr "மூலத்தை பார்க்க"
+
+#: ../js/ui/lookingGlass.js:662
+msgid "Web Page"
+msgstr "இணைய பக்கம்"
+
+#: ../js/ui/messageTray.js:1000
+msgid "Open"
+msgstr "திற"
+
+#: ../js/ui/messageTray.js:2164
+msgid "System Information"
+msgstr "கணினி தகவல்கள்"
+
+#: ../js/ui/overview.js:91
+msgid "Undo"
+msgstr "மறை"
+
+#: ../js/ui/overview.js:186
+msgid "Windows"
+msgstr "சாளரங்கள்"
+
+#: ../js/ui/overview.js:189
+msgid "Applications"
+msgstr "பயன்பாடுகள்"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr "டேஷ்போர்ட்"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:524
+#, c-format
+msgid "Quit %s"
+msgstr "%s லிருந்து வெளியேறு"
+
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:902
 msgid "Activities"
 msgstr "செயல்பாடுகள்"
 
-#: ../js/ui/placeDisplay.js:111
+#: ../js/ui/panel.js:1003
+msgid "Top Bar"
+msgstr "மேல் பட்டை"
+
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "'%s' ஐ இறக்க முடியவில்லை"
 
-#: ../js/ui/placeDisplay.js:114
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "மறு முயற்சி"
 
-#: ../js/ui/placeDisplay.js:159
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "இணைக்கவும்..."
 
-#: ../js/ui/placeDisplay.js:558
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr "PLACES & DEVICES"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "உறுதிப்படுத்தல் தேவை"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "நிர்வாகி"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "உறுதிப்படுத்து"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
+msgid "Sorry, that didn't work. Please try again."
+msgstr "மன்னிக்க, அது வேலை செய்யவில்லை. மீண்டு முயற்சி செய்க."
+
+#: ../js/ui/polkitAuthenticationAgent.js:276
+msgid "Password:"
+msgstr "கடவுச்சொல்:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
-#, fuzzy
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
-msgstr "toggle-switch-us"
+msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:233
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "தயை செய்து ஒரு கட்டளையை உள்ளிடுக:"
 
-#: ../js/ui/runDialog.js:378
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "'%s' ஐ நிறைவேற்றுதல் தோல்வி அடைந்தது:"
+#: ../js/ui/searchDisplay.js:310
+msgid "Searching..."
+msgstr "தேடுகிறது..."
 
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/searchDisplay.js:324
+msgid "No matching results."
+msgstr "பொருத்தமான விடைகள் இல்லை."
+
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "மின்சக்தி நிறுத்து..."
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "இடைநிறுத்தம்."
+
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "இருப்பவை"
 
-#: ../js/ui/statusMenu.js:106
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "வேலையில்"
 
-#: ../js/ui/statusMenu.js:114
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "என் கணக்கு"
 
-#: ../js/ui/statusMenu.js:118
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "கணினி அமைப்புகள்"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "திரையைப் பூட்டுக."
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "பயனர் மாற்று"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "வெளியேறு..."
 
-#: ../js/ui/statusMenu.js:141
-msgid "Suspend..."
-msgstr "இடைநிறுத்தம்..."
-
-#: ../js/ui/statusMenu.js:145
-msgid "Shut Down..."
-msgstr "நிறுத்தவும்... "
-
-#: ../js/ui/status/accessibility.js:88
-msgid "Screen Reader"
-msgstr "திரைபடிப்பான்"
-
-#: ../js/ui/status/accessibility.js:91
-msgid "Screen Keyboard"
-msgstr "திரை விசைப்பலகை"
-
-#: ../js/ui/status/accessibility.js:94
-msgid "Visual Alerts"
-msgstr "காட்சி எச்சரிக்கைகள்"
-
-#: ../js/ui/status/accessibility.js:97
-msgid "Sticky Keys"
-msgstr "ஒட்டு விசைகள்"
-
-#: ../js/ui/status/accessibility.js:100
-msgid "Slow Keys"
-msgstr "மெது விசைகள்"
-
-#: ../js/ui/status/accessibility.js:103
-msgid "Bounce Keys"
-msgstr "எதிரொலிப்பு விசைகள்"
-
-#: ../js/ui/status/accessibility.js:106
-msgid "Mouse Keys"
-msgstr "சொடுக்கி விசைகள்"
-
-#: ../js/ui/status/accessibility.js:110
-msgid "Universal Access Settings"
-msgstr "உலகளாவிய அணுகல் அமைப்பு"
-
-#: ../js/ui/status/accessibility.js:163
-msgid "High Contrast"
-msgstr "அதிக முறண்"
-
-#: ../js/ui/status/accessibility.js:205
-msgid "Large Text"
-msgstr "பெரிய உரை"
-
-#: ../js/ui/status/accessibility.js:224
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "பெரிதாக்கு"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "உங்கள் கணினியில் தேடுக"
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
+msgid "Visual Alerts"
+msgstr "காட்சி எச்சரிக்கைகள்"
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/status/accessibility.js:80
+msgid "Sticky Keys"
+msgstr "ஒட்டு விசைகள்"
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Slow Keys"
+msgstr "மெது விசைகள்"
+
+#: ../js/ui/status/accessibility.js:86
+msgid "Bounce Keys"
+msgstr "எதிரொலிப்பு விசைகள்"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Mouse Keys"
+msgstr "சொடுக்கி விசைகள்"
+
+#: ../js/ui/status/accessibility.js:93
+msgid "Universal Access Settings"
+msgstr "உலகளாவிய அணுகல் அமைப்பு"
+
+#: ../js/ui/status/accessibility.js:146
+msgid "High Contrast"
+msgstr "அதிக முறண்"
+
+#: ../js/ui/status/accessibility.js:183
+msgid "Large Text"
+msgstr "பெரிய உரை"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+msgid "Bluetooth"
+msgstr "ப்ளூடூத்"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "காணல்"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "சாதனத்துக்கு கோப்புகளை அனுப்பு..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "புதிய சாதனம் அமை..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "ப்ளூடூத் அமைப்புகள்"
+
+#: ../js/ui/status/bluetooth.js:188
+msgid "Connection"
+msgstr "இணைப்பு"
+
+#: ../js/ui/status/bluetooth.js:224
+msgid "Send Files..."
+msgstr "கோப்புகளை அனுப்பவும்..."
+
+#: ../js/ui/status/bluetooth.js:229
+msgid "Browse Files..."
+msgstr "கோப்புகளை உலாவு..."
+
+#: ../js/ui/status/bluetooth.js:238
+msgid "Error browsing device"
+msgstr "சாதனத்தில் உலாவுகையில் பிழை"
+
+#: ../js/ui/status/bluetooth.js:239
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "வேண்டிய சாதனத்தில் உலாவ இயலாது, பிழை  '%s'"
+
+#: ../js/ui/status/bluetooth.js:247
+msgid "Keyboard Settings"
+msgstr "விசைப்பலகை அமைப்புகள்"
+
+#: ../js/ui/status/bluetooth.js:252
+msgid "Mouse Settings"
+msgstr "சொடுக்கி அமைப்புகள்"
+
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+msgid "Sound Settings"
+msgstr "ஒலி அமைப்புகள்"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Authorization request from %s"
+msgstr "%s இடமிருந்து உறுதிப்படுத்தல் வேண்டுதல்"
+
+#: ../js/ui/status/bluetooth.js:374
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "சாதனம் %s  ' சேவை %s' க்கு அணுகல் வேண்டுகிறது"
+
+#: ../js/ui/status/bluetooth.js:376
+msgid "Always grant access"
+msgstr "எப்போதும் அணுகலை அளி"
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Grant this time only"
+msgstr "இம்முறை மட்டும் அணுகலை அளி"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Reject"
+msgstr "மறு"
+
+#: ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "%s க்கு இணை சேர்த்த உறுதிப்படுத்தல்"
+
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "சாதனம்  %s இந்த கணினியுடன் இணைக்க விரும்புகிறது"
+
+#: ../js/ui/status/bluetooth.js:415
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "தயை செய்து பின்  '%s' சாதனத்தில் உள்ள ஒன்றுடன் பொருந்துகிறதா என உறுதி செய்யவும்."
+
+#: ../js/ui/status/bluetooth.js:417
+msgid "Matches"
+msgstr "பொருந்துகிறது"
+
+#: ../js/ui/status/bluetooth.js:418
+msgid "Does not match"
+msgstr "பொருந்தவில்லை"
+
+#: ../js/ui/status/bluetooth.js:441
+#, c-format
+msgid "Pairing request for %s"
+msgstr "%s க்கு இணைக்க வேண்டுதல்"
+
+#: ../js/ui/status/bluetooth.js:449
+msgid "Please enter the PIN mentioned on the device."
+msgstr "சாதனத்தின் சொல்லும் பின் ஐ உள்ளீடு செய்க"
+
+#: ../js/ui/status/bluetooth.js:465
+msgid "OK"
+msgstr "சரி"
+
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "விசைப்பலகை இடவமைவை காட்டுக..."
+
+#: ../js/ui/status/keyboard.js:76
+msgid "Localization Settings"
+msgstr "உள்ளார்மை அமைப்புகள்"
+
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
+msgid "<unknown>"
+msgstr "<தெரியாத>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:311
+msgid "disabled"
+msgstr "செயல்நீக்கப்பட்டது"
+
+#: ../js/ui/status/network.js:494
+msgid "connecting..."
+msgstr "இணைக்கிறது..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:497
+msgid "authentication required"
+msgstr "உறுதிப்படுத்துதல் தேவை"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:507
+msgid "firmware missing"
+msgstr "தள நிரல் காணவில்லை"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:514
+msgid "cable unplugged"
+msgstr "கம்பி இணைப்பு நீக்கப்பட்டது"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:519
+msgid "unavailable"
+msgstr "செயலாக்க முடியாதவை"
+
+#: ../js/ui/status/network.js:521
+msgid "connection failed"
+msgstr "இணைப்பு தோல்வி அடைந்தது"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
+msgid "Connected (private)"
+msgstr "இணைக்கப்பட்டது (தனியார்)"
+
+#: ../js/ui/status/network.js:683
+msgid "Auto Ethernet"
+msgstr "தானியங்கி ஈதர்நெட்"
+
+#: ../js/ui/status/network.js:758
+msgid "Auto broadband"
+msgstr "தானியங்கி அகலப்பட்டை"
+
+#: ../js/ui/status/network.js:761
+msgid "Auto dial-up"
+msgstr "தானியங்கி டயல் அப்"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
+#, c-format
+msgid "Auto %s"
+msgstr "தானியங்கி %s "
+
+#: ../js/ui/status/network.js:906
+msgid "Auto bluetooth"
+msgstr "தானியங்கி ப்ளூடூத்"
+
+#: ../js/ui/status/network.js:1416
+msgid "Auto wireless"
+msgstr "தானியங்கி கம்பியில்லாத"
+
+#: ../js/ui/status/network.js:1474
+msgid "More..."
+msgstr "மேலும்..."
+
+#: ../js/ui/status/network.js:1497
+msgid "Enable networking"
+msgstr "வலைபின்னலை செயலாக்கு"
+
+#: ../js/ui/status/network.js:1509
+msgid "Wired"
+msgstr "கம்பியுள்ள"
+
+#: ../js/ui/status/network.js:1520
+msgid "Wireless"
+msgstr "கம்பியில்லாத"
+
+#: ../js/ui/status/network.js:1530
+msgid "Mobile broadband"
+msgstr "லை அகலப்பட்டை"
+
+#: ../js/ui/status/network.js:1540
+msgid "VPN Connections"
+msgstr "விபிஎன் இணைப்புகள்"
+
+#: ../js/ui/status/network.js:1549
+msgid "Network Settings"
+msgstr "வலைப்பின்னல் அமைப்புகள்"
+
+#: ../js/ui/status/network.js:1844
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "நீங்கள் இப்போது அலை அகலப்பட்டை இணைப்பு  '%s' க்கு இணைக்கப்பட்டுள்ளீர்கள்"
+
+#: ../js/ui/status/network.js:1848
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "நீங்கள் இப்போது கம்பியில்லா இணைப்பு  '%s' க்கு இணைக்கப்பட்டுள்ளீர்கள்"
+
+#: ../js/ui/status/network.js:1852
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "நீங்கள் இப்போது கம்பி இணைப்பு  '%s' க்கு இணைக்கப்பட்டுள்ளீர்கள்"
+
+#: ../js/ui/status/network.js:1856
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "நீங்கள் இப்போது விபிஎன் இணைப்பு  '%s' க்கு இணைக்கப்பட்டுள்ளீர்கள்"
+
+#: ../js/ui/status/network.js:1861
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "நீங்கள் இப்போது  '%s' க்கு இணைக்கப்பட்டுள்ளீர்கள்"
+
+#: ../js/ui/status/network.js:1869
+msgid "Connection established"
+msgstr "இணைப்பு  செயலாயிற்று"
+
+#: ../js/ui/status/network.js:1991
+msgid "Networking is disabled"
+msgstr "வலைப்பின்னல் செயல் நீக்கப்பட்டது"
+
+#: ../js/ui/status/network.js:2116
+msgid "Network Manager"
+msgstr "வ்லைப்பின்னல் மேலாளர்"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "மின்சக்தி அமைப்புகள்"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "கணிக்கிறது..."
+
+#: ../js/ui/status/power.js:118
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d மணிநேரம் மீதி "
+msgstr[1] "%d மணிகள் மீதி "
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:121
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s %d %s மீதமுள்ளது"
+
+#: ../js/ui/status/power.js:123
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "மணி"
+msgstr[1] "மணிகள்"
+
+#: ../js/ui/status/power.js:123
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "நிமிடம்"
+msgstr[1] "நிமிடங்கள்"
+
+#: ../js/ui/status/power.js:126
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d நிமிடம் மீதி"
+msgstr[1] "%d நிமிடங்கள் மீதி"
+
+#: ../js/ui/status/power.js:228
+msgid "AC adapter"
+msgstr "ஏசி தகைவி"
+
+#: ../js/ui/status/power.js:230
+msgid "Laptop battery"
+msgstr "மடிக்கணினி மின்கலம்"
+
+#: ../js/ui/status/power.js:232
+msgid "UPS"
+msgstr "யூபிஎஸ்"
+
+#: ../js/ui/status/power.js:234
+msgid "Monitor"
+msgstr "திரை"
+
+#: ../js/ui/status/power.js:236
+msgid "Mouse"
+msgstr "சொடுக்கி"
+
+#: ../js/ui/status/power.js:238
+msgid "Keyboard"
+msgstr "விசைப்பலகை"
+
+#: ../js/ui/status/power.js:240
+msgid "PDA"
+msgstr "பிடிஏ"
+
+#: ../js/ui/status/power.js:242
+msgid "Cell phone"
+msgstr "அலைபேசி"
+
+#: ../js/ui/status/power.js:244
+msgid "Media player"
+msgstr "ஊடக இயக்கி"
+
+#: ../js/ui/status/power.js:246
+msgid "Tablet"
+msgstr "திட்டு"
+
+#: ../js/ui/status/power.js:248
+msgid "Computer"
+msgstr "கணினி"
+
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
+msgid "Unknown"
+msgstr "தெரியாத"
+
+#: ../js/ui/status/volume.js:45
+msgid "Volume"
+msgstr "ஒலிஅளவு"
+
+#: ../js/ui/status/volume.js:58
+msgid "Microphone"
+msgstr "ஒலிவாங்கி"
+
+#: ../js/ui/telepathyClient.js:335
+#, c-format
+msgid "%s is online."
+msgstr "%s இணைப்பில்"
+
+#: ../js/ui/telepathyClient.js:340
+#, c-format
+msgid "%s is offline."
+msgstr "%s இணைப்பு விலகி"
+
+#: ../js/ui/telepathyClient.js:343
+#, c-format
+msgid "%s is away."
+msgstr "%s  வெளியே "
+
+#: ../js/ui/telepathyClient.js:346
+#, c-format
+msgid "%s is busy."
+msgstr "%s வேலையில்"
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:482
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr " %X இல் %A மீது அனுப்பு"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "தேட உள்ளிடு..."
+
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "தேடு"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s இன் துவக்கம் முடிந்துவிட்டது"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' தயாராக உள்ளது"
 
-#: ../js/ui/workspacesView.js:244
-msgid "Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr "பணிக்களத்தை சேர்க்க முடியாது; ஏனெனில் பணிக்களங்களின் உச்ச வரம்பு எட்டப்பட்டுவிட்டது."
-
-#: ../js/ui/workspacesView.js:260
-msgid "Can't remove the first workspace."
-msgstr "முதல் பணிக்களத்தை நீக்க முடியாது"
-
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -648,52 +1121,69 @@ msgstr[1] "%u வெளிப்பாடுகள்"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u உள்ளீடு"
 msgstr[1] "%u உள்ளீடுகள்"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "கணினி ஒலிகள்"
 
-#: ../src/shell-app-system.c:1012
-msgid "Unknown"
-msgstr "தெரியாத"
+#: ../src/main.c:446
+msgid "Print version"
+msgstr "அச்சுப் பதிப்பு"
 
-#: ../src/shell-global.c:1163
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "'%s' ஐ துவக்க முடியவில்லை"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr "ஒரு நிமிடத்திற்கும் குறைவாக"
 
-#: ../src/shell-global.c:1167
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutes ago"
 msgstr[1] "%d நிமிடங்களுக்கு முன்"
 
-#: ../src/shell-global.c:1172
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d மணிநேரத்துக்கு முன்"
 msgstr[1] "%d மணிகள் முன்"
 
-#: ../src/shell-global.c:1177
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d நாளைக்கு முன்"
 msgstr[1] "%d நாட்களுக்கு முன்"
 
-#: ../src/shell-global.c:1182
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d வாரம் முன்"
 msgstr[1] "%d வாரங்கள் முன்"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "ஐக்கிய முடியரசுகள்"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "முன்னிருப்பு"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "பயனர் உறுதிப்படுத்தல் உரையாடலை வெளியனுப்பினார்."
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -705,10 +1195,6 @@ msgstr "இல்ல அடைவு"
 msgid "File System"
 msgstr "கோப்பு அமைப்பு"
 
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "தேடு"
-
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
@@ -719,3 +1205,217 @@ msgstr "தேடு"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Clock"
+#~ msgstr "கடிகாரம்"
+
+#~ msgid "Customize the panel clock"
+#~ msgstr "பலக கடிகாரத்தை தனிப்பயனாக்கும்"
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "கடிகாரத்தின் தனிப்பயன் வடிவமைப்பு"
+
+#~ msgid "Hour format"
+#~ msgstr "மணி வடிவமைப்பு"
+
+#~ msgid ""
+#~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
+#~ "in time."
+#~ msgstr ""
+#~ "உண்மையெனில், அமைப்பு \"12 மணி\" அல்லது \"24 மணி\" என இருப்பின் நேரத்தில் "
+#~ "வினாடிகளையும் காட்டு"
+
+#~ msgid ""
+#~ "This key specifies the format used by the panel clock when the format key "
+#~ "is set to \"custom\". You can use conversion specifiers understood by "
+#~ "strftime() to obtain a specific format. See the strftime() manual for "
+#~ "more information."
+#~ msgstr ""
+#~ "வடிவமைப்பு விசை \"தனிப்பயன்\" என்று அமைக்கப்படும் போது பலக கடிகாரம் இந்த விசையை "
+#~ "பயன்படுத்தும். குறிப்பிட்ட அமைப்பை பெற்றுக்கொள்ள strftime() ஆல் புரிந்துகொள்ளக்கூடிய "
+#~ "மாற்று குறிப்புகளை தரவும். மேலும் அதிக விவரங்களுக்கு strftime() கையேட்டை "
+#~ "பார்க்கவும்."
+
+#~ msgid ""
+#~ "This key specifies the hour format used by the panel clock. Possible "
+#~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ msgstr ""
+#~ "இந்த விசை பலக கடிகாரம் பயன்படுத்த வேண்டிய மணி ஒழுங்கை குறிக்கிறது. தரக்கூடிய "
+#~ "மதிப்புகள் \"12-மணி\", \"24-மணி\", \"யூனிக்ஸ்\" மற்றும் \"தனிப்பயன்\". \"யூனிக்ஸ்\" "
+#~ "எனில் அது எபோக் அதாவது 1970-01-01 முதல் நடந்த காலத்தை வினாடிகளில் காட்டும். "
+#~ "\"தனிப்பயன்\" எனில் தனிப்பயன்_ஒழுங்கு இல் காட்டப்பட்ட ஒழுங்கில் நேரத்தைக் காட்டும். "
+#~ "\"யூனிக்ஸ்\" அல்லது \"தனிப்பயன்\" என மைக்கும்போது தேதி_காட்டு, வினாடிகளை_காட்டு "
+#~ "விசைகள் உதாசீனப்படுத்தப்படும் என அறிக."
+
+#~ msgid "Clip the crosshairs at the center"
+#~ msgstr "குறுக்கு இழைகளை மையத்தில் வெட்டிவிடுக"
+
+#~ msgid "Color of the crosshairs"
+#~ msgstr "குறுக்கு இழைகளின் நிறம்"
+
+#~ msgid ""
+#~ "Determines the length of the vertical and horizontal lines that make up "
+#~ "the crosshairs."
+#~ msgstr ""
+#~ "குறுக்கு இழைகளை சொடுக்கியின் அடையாளத்தில் மையப்படுத்தி காட்டுகிறது/ மறைக்கிறது"
+
+#~ msgid ""
+#~ "Determines the position of the magnified mouse image within the magnified "
+#~ "view and how it reacts to system mouse movement. The values are - none: "
+#~ "no mouse tracking; - centered: the mouse image is displayed at the center "
+#~ "of the zoom region (which also represents the point under the system "
+#~ "mouse) and the magnified contents are scrolled as the system mouse moves; "
+#~ "- proportional: the position of the magnified mouse in the zoom region is "
+#~ "proportionally the same as the position of the system mouse on screen; - "
+#~ "push: when the magnified mouse intersects a boundary of the zoom region, "
+#~ "the contents are scrolled into view."
+#~ msgstr ""
+#~ "பெரிதாக்கப்பட்ட காட்சியில் பெரிதாக்கப்பட்ட சொடுக்கியின் பிம்பம் எங்கு இருக்க வேண்டும், "
+#~ "அது கணினி சொடுக்கி நகர்தலுடன் எப்படி நகர வேண்டும் என நிர்ணயிக்கிறது. மதிப்புகள் - "
+#~ "ஏதுமில்லை: சொடுக்கி தடம் தொடரப்பட மாட்டாது; -மையம்: சொடுக்கி பிம்பம் பெரிதாக்கப்பட்ட "
+#~ "இடத்தின் மையத்தில் காட்டப்படும் (இது சொடுக்கியின் கீழ் காணப்படும் இடம்தான்) பெரிதாக்கப்பட்ட "
+#~ "பிம்பம் சொடுக்கி நகரும் திசையின் தானும் நகரும்; - விகிதாசாரம்:  அணுகல் பரப்பில் உள்ள "
+#~ "பெரிதாக்கபட்ட சொடுக்கியின் இடம் திரையில் விகிதாசாரப்படி கணினி சொடுக்கி இருக்கும் "
+#~ "அதே இடம்தான்; - தள்ளு: பெரிதாக்கப்பட்ட சொடுக்கி அணுகல் பரப்பின் விளிம்புக்கு வருமானால் "
+#~ "அடக்கங்கள் உருண்டு பார்வைக்கு வரும்."
+
+#~ msgid ""
+#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
+#~ "transparent."
+#~ msgstr ""
+#~ "குறுக்கு இழைகளின் ஊடுருவும் தனமியை முழு மறைப்பிலிருந்து முழு ஊடுருவல் வரை "
+#~ "நிர்ணயிக்கிறது"
+
+#~ msgid ""
+#~ "Determines whether the crosshairs intersect the magnified mouse sprite, "
+#~ "or are clipped such that the ends of the horizontal and vertical lines "
+#~ "surround the mouse image."
+#~ msgstr ""
+#~ "குறுக்கு இழைகளை சொடுக்கியின் அடையாளத்தில் மையப்படுத்தி காட்டுவதா அல்லது செங்குத்து "
+#~ "கிடை மட்ட கோடுகளின் முனைகள் சொடுக்கி அடையாளத்தை சூழ்ந்து இருப்பதாக வெட்டுவதா என "
+#~ "நிர்ணயிக்கிறது."
+
+#~ msgid "Enable lens mode"
+#~ msgstr "பூத கண்ணாடி முறைமையை செயல்படுத்து"
+
+#~ msgid ""
+#~ "Enables/disables display of crosshairs centered on the magnified mouse "
+#~ "sprite."
+#~ msgstr ""
+#~ "குறுக்கு இழைகளை சொடுக்கியின் அடையாளத்தில் மையப்படுத்தி காட்டுகிறது/ மறைக்கிறது"
+
+#~ msgid ""
+#~ "For centered mouse tracking, when the system pointer is at or near the "
+#~ "edge of the screen, the magnified contents continue to scroll such that "
+#~ "the screen edge moves into the magnified view."
+#~ msgstr ""
+#~ "மையப்படுத்திய சொடுக்கி தடம் தொடர்வதில், கணினியின் சுட்டி திரையின் விளிம்பில் அல்லது "
+#~ "அதன் அருகில் இர்ந்தால், பெரிதாக்கப்பட்ட உள்ளடக்கங்கள் உருண்டு திரையின் விளிம்பு "
+#~ "பெரிதாக்கப்பட்ட பார்வைக்கு வரும்."
+
+#~ msgid "Length of the crosshairs"
+#~ msgstr "குறுக்கு இழைகளின் நீளம்"
+
+#~ msgid "Magnification factor"
+#~ msgstr "உருபெருக்க விகிதம்"
+
+#~ msgid "Mouse Tracking Mode"
+#~ msgstr "சொடுக்கி தொடர்வு பாங்கு"
+
+#~ msgid "Opacity of the crosshairs"
+#~ msgstr "குறுக்கிழைகள் இன் ஒளிபுகாதன்மை"
+
+#~ msgid "Screen position"
+#~ msgstr "திரை நிலை"
+
+#~ msgid "Scroll magnified contents beyond the edges of the desktop"
+#~ msgstr "மேல்மேசையின் விளிம்புகளுக்கு வெளீயே இருக்கும் அடக்கத்தை உருளை மூலம் காட்டு"
+
+#~ msgid "Show or hide crosshairs"
+#~ msgstr "குறுக்கிழைகள் காட்டு அல்லது மறை"
+
+#~ msgid "Show or hide the magnifier"
+#~ msgstr "உருப்பெருக்கியை காட்டு அல்லது மறை"
+
+#~ msgid "Show or hide the magnifier and all of its zoom regions."
+#~ msgstr "உருப்பெருக்கி மற்றும் அதன் அணுகல் வட்டாரங்களை காட்டு அல்லது மறை"
+
+#~ msgid ""
+#~ "The color of the the vertical and horizontal lines that make up the "
+#~ "crosshairs."
+#~ msgstr "குறுக்கு இழைகளின் செங்குத்து , கிடைமட்ட கோடுகளின் நிறம்"
+
+#~ msgid ""
+#~ "The magnified view either fills the entire screen, or occupies the top-"
+#~ "half, bottom-half, left-half, or right-half of the screen."
+#~ msgstr ""
+#~ "பெரிதாக்கப்பட்ட காட்சி முழுத்திரையயும் ஆக்ரமிக்கலாம் அல்லது மேல் பாதி, கீழ் பாதி, வலது "
+#~ "பாதி, இடது பாதி என இருக்கலாம்."
+
+#~ msgid ""
+#~ "The power of the magnification. A value of 1.0 means no magnification. A "
+#~ "value of 2.0 doubles the size."
+#~ msgstr ""
+#~ "பெரிதாக்கும் அளவு. 1.0 எனில் பெரிதாக்கம் இல்லை. மதிப்பு 2.0 எனில் இரண்டு மடங்கு."
+
+#~ msgid "Thickness of the crosshairs"
+#~ msgstr "குறுக்கிழைகளின் தடிமன்"
+
+#~ msgid ""
+#~ "Whether the magnified view should be centered over the location of the "
+#~ "system mouse and move with it."
+#~ msgstr ""
+#~ "பெரிதாக்கிய காட்சியின் மையம் சொடுக்கியின் இடத்தில் இருந்து கொண்டு அதனுடன் நகர "
+#~ "வேண்டுமா/"
+
+#~ msgid ""
+#~ "Width of the vertical and horizontal lines that make up the crosshairs."
+#~ msgstr "குறுக்கு இழைகளின் செங்குத்து , கிடைமட்ட கோடுகளின் அகலம்"
+
+#~ msgid "Clock Format"
+#~ msgstr "கடிகார வடிவம்"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "கடிகாரம் விருப்பங்கள்"
+
+#~ msgid "Panel Display"
+#~ msgstr "பலக காட்சி"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "(_n) நொடிகளை காட்டுக"
+
+#~ msgid "Show the _date"
+#~ msgstr "(_d)  தேதியை காட்டுக"
+
+#~ msgid "_12 hour format"
+#~ msgstr "_12 மணி வடிவமைப்பு"
+
+#~ msgid "_24 hour format"
+#~ msgstr "_24 மணி வடிவமைப்பு"
+
+#~ msgid "PREFERENCES"
+#~ msgstr "விருப்பங்கள்"
+
+#~ msgid "Preferences"
+#~ msgstr "விருப்பங்கள்"
+
+#~ msgid "Shut Down..."
+#~ msgstr "நிறுத்தவும்... "
+
+#~ msgid "Screen Reader"
+#~ msgstr "திரைபடிப்பான்"
+
+#~ msgid "Search your computer"
+#~ msgstr "உங்கள் கணினியில் தேடுக"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "பணிக்களத்தை சேர்க்க முடியாது; ஏனெனில் பணிக்களங்களின் உச்ச வரம்பு எட்டப்பட்டுவிட்டது."
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "முதல் பணிக்களத்தை நீக்க முடியாது"
