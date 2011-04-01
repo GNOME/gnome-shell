@@ -132,8 +132,8 @@ NMNetworkMenuItem.prototype = {
         }
     },
 
-    _updated: function(ap, strength) {
-        if (strength > this.bestAP.strength)
+    _updated: function(ap) {
+        if (ap.strength > this.bestAP.strength)
             this.bestAP = ap;
 
         this._signalIcon.icon_name = this._getIcon();
