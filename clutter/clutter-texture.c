@@ -689,6 +689,16 @@ static gboolean
 clutter_texture_get_paint_volume (ClutterActor       *self,
                                   ClutterPaintVolume *volume)
 {
+  ClutterTexturePrivate *priv;
+
+  priv = CLUTTER_TEXTURE (self)->priv;
+
+  if (priv->material == NULL)
+    return FALSE;
+
+  if (priv->image_width == 0 || priv->image_height == 0)
+    return FALSE;
+
   return _clutter_actor_set_default_paint_volume (self,
                                                   CLUTTER_TYPE_TEXTURE,
                                                   volume);
