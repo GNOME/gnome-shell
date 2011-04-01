@@ -11,9 +11,10 @@ RELEASE_UPLOAD_DIR  = $(RELEASE_UPLOAD_USER)@$(RELEASE_UPLOAD_HOST):~$(RELEASE_U
 RELEASE_URL_BASE = http://source.clutter-project.org/sources/clutter
 RELEASE_URL      = $(RELEASE_URL_BASE)/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)
 
-RELEASE_ANNOUNCE_LIST = clutter-announce@clutter-project.org (Cc: gnome-announce-list@gnome.org)
+RELEASE_ANNOUNCE_LIST = clutter-announce@clutter-project.org
+RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org
 
-tar_file = $(distdir).tar.bz2
+tar_file    = $(distdir).tar.bz2
 sha256_file = $(distdir).sha256sum
 
 $(sha256_file): $(tar_file)
@@ -56,11 +57,11 @@ release-verify-sane-changelogs: changelogs
 
 release-verify-even-micro:
 	@echo -n "Checking that $(VERSION) has an even micro component..."
-	@test "$(CLUTTER_MICRO_VERSION)" = "`echo $(CLUTTER_MICRO_VERSION)/2*2 | bc`" \
-	  || (echo "Ouch." && \
-	      echo "The version micro component '$(CLUTTER_MICRO_VERSION)' is not an even number." && \
-	      echo "The version in configure.ac must be incremented before a new release." && \
-	      false)
+	@test "$(CLUTTER_MICRO_VERSION)" = "`echo $(CLUTTER_MICRO_VERSION)/2*2 | bc`" || \
+	  (echo "Ouch." && \
+	   echo "The version micro component '$(CLUTTER_MICRO_VERSION)' is not an even number." && \
+	   echo "The version in configure.ac must be incremented before a new release." && \
+	   false)
 	@echo "Good."
 
 release-upload: $(sha256_file)
@@ -68,12 +69,15 @@ release-upload: $(sha256_file)
 	@mv -f $(sha256_file) $(top_builddir)/build/$(sha256_file)
 
 release-message:
-	@echo "Release URL: $(RELEASE_URL)/$(tar_file)"
+	@echo "     Release URL: $(RELEASE_URL)/$(tar_file)"
 	@echo "Release checksum: $(RELEASE_URL)/$(sha256_file)"
 	@echo "Send an email to: $(RELEASE_ANNOUNCE_LIST)"
-	@echo "  Subject: Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))"
-	@echo "Contents:"
+	@echo "              Cc: $(RELEASE_ANNOUNCE_CC)"
+	@echo "         Subject: Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))"
+	@echo "        Contents:"
 	@echo "--- CUT HERE ---"
+	@echo "Good news, everyone!"
+	@echl ""
 	@echo "A new Clutter $(CLUTTER_RELEASE_STATUS) is now available at:"
 	@echo ""
 	@echo "  $(RELEASE_URL)/$(tar_file)"
@@ -83,8 +87,7 @@ release-message:
 	@cat $(top_builddir)/build/$(sha256_file)
 	@echo ""
 	@echo "Additionally, a git clone of the source tree:"
-	@echo ""
-	@echo "  git clone git://git.clutter-project.org/clutter"
+	@echo "  git clone git://git.gnome.org/clutter"
 	@echo ""
 	@echo "will include a signed $(CLUTTER_VERSION) tag which points to a commit named:"
 	@echo "  `git cat-file tag $(CLUTTER_VERSION) | grep ^object | sed -e 's,object ,,'`"
