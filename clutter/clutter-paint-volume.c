@@ -855,6 +855,10 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
 
   clutter_actor_get_allocation_geometry (self, &geometry);
 
+  /* a zero-sized actor has no paint volume */
+  if (geometry.width == 0 || geometry.height == 0)
+    return FALSE;
+
   clutter_paint_volume_set_width (volume, geometry.width);
   clutter_paint_volume_set_height (volume, geometry.height);
 
