@@ -1,4 +1,4 @@
-# translation of gnome-shell.po.master.hi.po to Hindi
+# translation of gnome-shell.master.hi.po to Hindi
 # Hindi translation for gnome-shell.
 # Copyright (C) 2011 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell.po.master.hi\n"
+"Project-Id-Version: gnome-shell.master.hi\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-28 05:30+0000\n"
-"PO-Revision-Date: 2011-03-28 13:39+0530\n"
+"POT-Creation-Date: 2011-03-28 08:48+0000\n"
+"PO-Revision-Date: 2011-04-01 13:59+0530\n"
 "Last-Translator: Rajesh Ranjan\n"
 "Language-Team: Hindi <Indlinux>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr ""
+msgstr "GNOME शेल"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
@@ -316,7 +316,7 @@ msgstr ""
 #: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:723
@@ -334,11 +334,11 @@ msgstr "कल"
 
 #: ../js/ui/calendar.js:746
 msgid "This week"
-msgstr ""
+msgstr "इस सप्ताह"
 
 #: ../js/ui/calendar.js:754
 msgid "Next week"
-msgstr ""
+msgstr "अगला सप्ताह"
 
 #: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
 msgid "Remove"
@@ -346,47 +346,47 @@ msgstr "हटाएँ"
 
 #: ../js/ui/dateMenu.js:91
 msgid "Date and Time Settings"
-msgstr ""
+msgstr "तिथि व समय सेटिंग्स"
 
 #: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
-msgstr ""
+msgstr "पंचांग खोलें"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
-msgstr ""
+msgstr "%a %b %e, %R:%S"
 
 #: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
-msgstr ""
+msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
-msgstr ""
+msgstr "%a %R:%S"
 
 #: ../js/ui/dateMenu.js:170
 msgid "%a %R"
-msgstr ""
+msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr ""
+msgstr "%a %b %e, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
-msgstr ""
+msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
-msgstr ""
+msgstr "%a %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
@@ -397,16 +397,16 @@ msgstr "%a %l:%M %p"
 #.
 #: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
-msgstr ""
+msgstr "%A %B %e, %Y"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
-msgstr ""
+msgstr "हालिया मद"
 
 #: ../js/ui/endSessionDialog.js:63
 #, c-format
 msgid "Log Out %s"
-msgstr ""
+msgstr "लॉगआउट %s"
 
 #: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
@@ -432,7 +432,7 @@ msgstr ""
 
 #: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
 msgid "Power Off"
-msgstr ""
+msgstr "बिजली बंद"
 
 #: ../js/ui/endSessionDialog.js:76
 msgid "Click Power Off to quit these applications and power off the system."
@@ -490,7 +490,7 @@ msgstr "त्रुटि"
 
 #: ../js/ui/lookingGlass.js:631
 msgid "Out of date"
-msgstr ""
+msgstr "समयातीत"
 
 #: ../js/ui/lookingGlass.js:656
 msgid "View Source"
@@ -530,7 +530,7 @@ msgstr "डैश"
 #: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
-msgstr ""
+msgstr "छोड़ें %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
@@ -540,7 +540,7 @@ msgstr "क्रियाएँ"
 
 #: ../js/ui/panel.js:979
 msgid "Top Bar"
-msgstr ""
+msgstr "शीर्ष पट्टी"
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -623,7 +623,7 @@ msgstr "व्यस्त"
 
 #: ../js/ui/statusMenu.js:197
 msgid "My Account"
-msgstr ""
+msgstr "मेरा खाता"
 
 #: ../js/ui/statusMenu.js:201
 msgid "System Settings"
@@ -653,7 +653,7 @@ msgstr "ज़ूम"
 #. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
-msgstr ""
+msgstr "दृष्टि चेतावनी"
 
 #: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
@@ -732,7 +732,7 @@ msgstr "कुंजीपट विन्यास"
 
 #: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
-msgstr ""
+msgstr "माउस सेटिंग"
 
 #: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
@@ -851,7 +851,7 @@ msgstr ""
 
 #: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
-msgstr ""
+msgstr "स्वतः इथरनेट"
 
 #: ../js/ui/status/network.js:758
 msgid "Auto broadband"
@@ -893,7 +893,7 @@ msgstr "बेतार"
 
 #: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
-msgstr ""
+msgstr "मोबाइल ब्रॉडबैंड"
 
 #: ../js/ui/status/network.js:1540
 msgid "VPN Connections"
@@ -938,11 +938,11 @@ msgstr ""
 
 #: ../js/ui/status/network.js:2116
 msgid "Network Manager"
-msgstr ""
+msgstr "संजाल प्रबंधक"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
-msgstr ""
+msgstr "बिजली सेटिंग्स"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
@@ -1141,8 +1141,8 @@ msgstr[1] "%d घंटा पहले"
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d दिन पहले"
+msgstr[1] "%d दिन पहले"
 
 #: ../src/shell-global.c:1414
 #, c-format
