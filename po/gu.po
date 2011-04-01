@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gu\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2011-02-09 01:41+0000\n"
-"PO-Revision-Date: 2011-02-09 12:51+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-25 20:20+0000\n"
+"PO-Revision-Date: 2011-04-01 17:23+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -55,22 +55,28 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "આદેશ (Alt-F2) સંવાદ માટે ઇતિહાસ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+#, fuzzy
+#| msgid "History for command (Alt-F2) dialog"
+msgid "History for the looking glass dialog"
+msgstr "આદેશ (Alt-F2) સંવાદ માટે ઇતિહાસ"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "પસંદીદા કાર્યક્રમો માટે ડેસ્કટોપ ફાઇલ IDs ની યાદી કરો"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -85,42 +91,42 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "ઘડિયાળમાં તારીખને બતાવો"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "કૅલેન્ડરમાં અઠવાડિયા તારીખને બતાવો"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "સેકંડોમાં સમયને બતાવો"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -128,186 +134,57 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr ""
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-msgid "Enable lens mode"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr "સ્ક્રીન સ્થાન"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr ""
-
-#: ../js/misc/util.js:86
+#: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "આદેશ મળ્યો નથી"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:113
+#: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "આદેશનું પદચ્છેદન કરી શક્યા નથી:"
 
-#: ../js/misc/util.js:135
-msgid "No such application"
-msgstr "આવુ કાર્યક્રમ નથી"
-
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:106
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr ""
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:164
+#: ../js/ui/appDisplay.js:230
 msgid "All"
 msgstr "બધા"
 
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
-msgstr ""
+msgstr "APPLICATIONS"
 
-#: ../js/ui/appDisplay.js:281
-msgid "PREFERENCES"
-msgstr ""
+#: ../js/ui/appDisplay.js:354
+msgid "SETTINGS"
+msgstr "SETTINGS"
 
-#: ../js/ui/appDisplay.js:582
+#: ../js/ui/appDisplay.js:625
 msgid "New Window"
 msgstr "નવી વિન્ડો"
 
-#: ../js/ui/appDisplay.js:586
+#: ../js/ui/appDisplay.js:628
 msgid "Remove from Favorites"
 msgstr "પસંદીદાઓ માંથી દૂર કરો"
 
-#: ../js/ui/appDisplay.js:587
+#: ../js/ui/appDisplay.js:629
 msgid "Add to Favorites"
-msgstr ""
+msgstr "પસંદીદાને ઉમેરો"
 
 #: ../js/ui/appFavorites.js:91
 #, c-format
@@ -322,19 +199,19 @@ msgstr "%s ને તમારી પસંદીદામાંથી દૂર
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "બધા દિવસ"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -344,43 +221,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "W"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -391,81 +268,81 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Su"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "W"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Th"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr ""
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "આજે"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
-msgstr ""
+msgstr "આવતી કાલે"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "આ અઠવાડિયે"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
-msgstr ""
+msgstr "આગળનું અઠવાડિયું"
 
-#: ../js/ui/dash.js:27
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
 msgid "Remove"
 msgstr "દૂર કરો"
 
@@ -473,47 +350,47 @@ msgstr "દૂર કરો"
 msgid "Date and Time Settings"
 msgstr "તારીખ અને સમય સુયોજનો"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "કૅલેન્ડરને ખોલો"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:170
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
@@ -533,7 +410,7 @@ msgstr ""
 msgid "Log Out %s"
 msgstr "%s માંથી બહાર નીકળો"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "બહાર નીકળો"
 
@@ -555,105 +432,120 @@ msgstr ""
 msgid "Logging out of the system."
 msgstr "સિસ્ટમની બહાર નીકળી રહ્યા છે."
 
-#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-msgid "Shut Down"
-msgstr "બંધ કરો"
-
-#: ../js/ui/endSessionDialog.js:75
-msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "આ કાર્યક્રમોમાંથી બહાર નીકળવા માટે બંધ કરો પર ક્લિક કરો અને સિસ્ટમને બંધ કરો."
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "પાવર બંધ"
 
 #: ../js/ui/endSessionDialog.js:76
-#, c-format
-msgid "The system will shut down automatically in %d seconds."
-msgstr "સિસ્ટમ %d સેકંડોમાં આપમેળે બંધ થઇ જશે."
+#| msgid "Click Log Out to quit these applications and log out of the system."
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "આ કાર્યક્રમોને બહાર નીકાળવા માટે પાવર બંધ કરો પર ક્લિક કરો અને સિસ્ટમનો પાવર બંધ કરો"
 
 #: ../js/ui/endSessionDialog.js:77
-msgid "Shutting down the system."
-msgstr "સિસ્ટમને બંધ કરી રહ્યા છે."
+#, c-format
+#| msgid "The system will restart automatically in %d seconds."
+msgid "The system will power off automatically in %d seconds."
+msgstr "સિસ્ટમ %d સેકંડોમાં આપમેળે પાવર બંધ થઇ જશે."
 
-#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:78
+#| msgid "Logging out of the system."
+msgid "Powering off the system."
+msgstr "સિસ્ટમનો પાવર બંધ કરી રહ્યા છે."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "પુન:શરૂ કરો"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "આ કાર્યક્રમોમાંથી બહાર નીકળવા માટે પુન:શરૂ કરો પર ક્લિક કરો અને સિસ્ટમને પુન:શરૂ કરો."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:90
 #, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "સિસ્ટમ %d સેકંડોમાં આપમેળે પુન:શરૂ થઇ જશે."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:91
 msgid "Restarting the system."
 msgstr "સિસ્ટમને પુન:શરૂ કરી રહ્યા છે."
 
-#: ../js/ui/endSessionDialog.js:395
-msgid "Confirm"
-msgstr "ખાતરી કરો"
-
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "રદ કરો"
 
-#: ../js/ui/lookingGlass.js:556
+#: ../js/ui/lookingGlass.js:588
 msgid "No extensions installed"
 msgstr "એક્સટેન્શનો સ્થાપિત થયેલ નથી"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:625
 msgid "Enabled"
 msgstr "સક્રિય"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "નિષ્ક્રિય"
 
-#: ../js/ui/lookingGlass.js:597
+#: ../js/ui/lookingGlass.js:629
 msgid "Error"
 msgstr "ભૂલ"
 
-#: ../js/ui/lookingGlass.js:599
+#: ../js/ui/lookingGlass.js:631
 msgid "Out of date"
 msgstr ""
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:656
 msgid "View Source"
 msgstr "સ્ત્રોત દર્શાવો"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:662
 msgid "Web Page"
 msgstr "વેબ પાનું"
 
-#: ../js/ui/messageTray.js:1835
+#: ../js/ui/messageTray.js:987
+msgid "Open"
+msgstr "ખોલો"
+
+#: ../js/ui/messageTray.js:2145
 msgid "System Information"
 msgstr "સિસ્ટમ જાણકારી"
 
-#: ../js/ui/overview.js:88
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr ""
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:186
 msgid "Windows"
 msgstr "વિન્ડો"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:189
 msgid "Applications"
 msgstr "કાર્યક્રમો"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr ""
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:515
 #, c-format
 msgid "Quit %s"
 msgstr "%s માંથી બહાર નીકળો"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:878
 msgid "Activities"
 msgstr "પ્રવૃત્તિઓ"
+
+#: ../js/ui/panel.js:979
+msgid "Top Bar"
+msgstr ""
 
 #: ../js/ui/placeDisplay.js:122
 #, c-format
@@ -666,116 +558,135 @@ msgstr "પુન:પ્રયત્ન કરો"
 
 #: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
-msgstr ""
+msgstr "ની સાથે જોડાવો..."
 
-#: ../js/ui/placeDisplay.js:409
+#: ../js/ui/placeDisplay.js:380
 msgid "PLACES & DEVICES"
 msgstr ""
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "સત્તાધિકરણ જરૂરી"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "વહીવટકર્તા"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr ""
+
+#: ../js/ui/polkitAuthenticationAgent.js:260
+msgid "Sorry, that didn't work. Please try again."
+msgstr "દિલગીર છું, કામ કરતુ નથી. મહેરબાની કરીને ફરીથી પ્રયત્ન કરો."
+
+#: ../js/ui/polkitAuthenticationAgent.js:272
+msgid "Password:"
+msgstr "પાસવર્ડ:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:512
+#: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
-msgstr ""
+msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:205
 msgid "Please enter a command:"
 msgstr "મહેરબાની કરીને આદેશને દાખલ કરો:"
 
-#: ../js/ui/searchDisplay.js:295
+#: ../js/ui/searchDisplay.js:310
 msgid "Searching..."
 msgstr "શોધી રહ્યા છે..."
 
-#: ../js/ui/searchDisplay.js:309
+#: ../js/ui/searchDisplay.js:324
 msgid "No matching results."
-msgstr ""
+msgstr "પરિણામો બંધબેસતાનથી."
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "પાવર બંધ..."
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "અટકાવો"
+
+#: ../js/ui/statusMenu.js:184
 msgid "Available"
 msgstr "ઉપલબ્ધ"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:189
 msgid "Busy"
 msgstr "વ્યસ્ત"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:197
 msgid "My Account"
 msgstr "મારુ ખાતુ"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:201
 msgid "System Settings"
 msgstr "સિસ્ટમ સુયોજનો"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:208
 msgid "Lock Screen"
 msgstr "સ્ક્રીનને તાળુ મારો"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:213
 msgid "Switch User"
 msgstr "વપરાશકર્તાને બદલો"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:218
 msgid "Log Out..."
 msgstr "બહાર નીકળો..."
 
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "બંધ કરો..."
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:62
 msgid "Zoom"
 msgstr "નાનુ મોટુ કરો"
 
-#: ../js/ui/status/accessibility.js:89
-msgid "Screen Reader"
-msgstr "સ્ક્રીન રીડર"
-
-#: ../js/ui/status/accessibility.js:92
-msgid "Screen Keyboard"
-msgstr "સ્ક્રીન કિબોર્ડ"
-
-#: ../js/ui/status/accessibility.js:95
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr ""
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:80
 msgid "Sticky Keys"
-msgstr ""
+msgstr "સ્ટીકી કી"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:83
 msgid "Slow Keys"
-msgstr ""
+msgstr "ધીમી કી"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:86
 msgid "Bounce Keys"
-msgstr ""
+msgstr "બાઉન્સ કી"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:89
 msgid "Mouse Keys"
 msgstr "માઉસ કીઓ"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:93
 msgid "Universal Access Settings"
 msgstr ""
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:146
 msgid "High Contrast"
 msgstr ""
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:183
 msgid "Large Text"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "બ્લુટુથ"
 
@@ -795,214 +706,366 @@ msgstr "નવા ઉપકરણને સુયોજિત કરો..."
 msgid "Bluetooth Settings"
 msgstr "બ્લુટુથ સુયોજનો"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:188
 msgid "Connection"
 msgstr "જોડાણ"
 
-#: ../js/ui/status/bluetooth.js:228
+#: ../js/ui/status/bluetooth.js:224
 msgid "Send Files..."
 msgstr "ફાઇલોને મોકલો..."
 
-#: ../js/ui/status/bluetooth.js:233
+#: ../js/ui/status/bluetooth.js:229
 msgid "Browse Files..."
 msgstr "ફાઇલોને બ્રાઉઝ કરો..."
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:238
 msgid "Error browsing device"
 msgstr "ઉપકરણને બ્રાઉઝ કરતી વખતે ભૂલ"
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:239
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
-msgstr ""
+msgstr "સુચિત ઉપકરણને બ્રાઉઝ કરી શકાતુ નથી, ભૂલ '%s' છે"
 
-#: ../js/ui/status/bluetooth.js:251
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
-msgstr "કિબોર્ડ સુયોજનો"
+msgstr "કીબોર્ડ સુયોજનો"
 
-#: ../js/ui/status/bluetooth.js:256
+#: ../js/ui/status/bluetooth.js:252
 msgid "Mouse Settings"
 msgstr "માઉસ સુયોજનો"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "સાઇન્ડ સુયોજનો"
 
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
-msgid "Bluetooth Agent"
-msgstr "બ્લુટુથ ઍજન્ટ"
-
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Authorization request from %s"
-msgstr ""
+msgstr "%s માંથી સત્તાધિકરણ માંગણી"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
-msgstr ""
+msgstr "રદ કરો"
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:419
+#: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr ""
+msgstr "મહેરબાની કરીને ખાતરી કરો કે શું PIN '%s' એ ઉપકરણ પર એક સાથે બંધબેસે છે."
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
 msgstr "બંધબેસે છે"
 
-#: ../js/ui/status/bluetooth.js:422
+#: ../js/ui/status/bluetooth.js:418
 msgid "Does not match"
 msgstr "બંધબેસતુ નથી"
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:453
+#: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
-msgstr ""
+msgstr "મહેરબાની કરીને ઉપકરણ પર દર્શાવેલ PIN દાખલ કરો."
 
-#: ../js/ui/status/bluetooth.js:469
+#: ../js/ui/status/bluetooth.js:465
 msgid "OK"
 msgstr "બરાબર"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "કીબોર્ડ લેઆઉટને બતાવો..."
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr ""
+
+#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1437
+#| msgid "Unknown"
+msgid "<unknown>"
+msgstr "<અજ્ઞાત>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:295
+#| msgid "Disabled"
+msgid "disabled"
+msgstr "નિષ્ક્રિય"
+
+#: ../js/ui/status/network.js:478
+#| msgid "Connection"
+msgid "connecting..."
+msgstr "જોડાઇ રહ્યા છે..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:481
+msgid "authentication required"
+msgstr "સત્તાધિકરણ જરૂરી"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:491
+msgid "firmware missing"
+msgstr ""
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:498
+msgid "cable unplugged"
+msgstr ""
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:503
+#| msgid "Available"
+msgid "unavailable"
+msgstr "બિનઉપલબ્ધ"
+
+#: ../js/ui/status/network.js:505
+#| msgid "Connection"
+msgid "connection failed"
+msgstr "જોડાણ નિષ્ફળ"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1385
+msgid "Connected (private)"
+msgstr ""
+
+#: ../js/ui/status/network.js:666
+msgid "Auto Ethernet"
+msgstr ""
+
+#: ../js/ui/status/network.js:741
+msgid "Auto broadband"
+msgstr ""
+
+#: ../js/ui/status/network.js:744
+msgid "Auto dial-up"
+msgstr ""
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:887 ../js/ui/status/network.js:1397
+#, fuzzy, c-format
+#| msgid "Quit %s"
+msgid "Auto %s"
+msgstr "%s માંથી બહાર નીકળો"
+
+#: ../js/ui/status/network.js:889
+#, fuzzy
+#| msgid "Bluetooth"
+msgid "Auto bluetooth"
+msgstr "બ્લુટુથ"
+
+#: ../js/ui/status/network.js:1399
+msgid "Auto wireless"
+msgstr ""
+
+#: ../js/ui/status/network.js:1457
+msgid "More..."
+msgstr "વધારે..."
+
+#: ../js/ui/status/network.js:1480
+msgid "Enable networking"
+msgstr "નેટવર્કીંગ સક્રિય કરો"
+
+#: ../js/ui/status/network.js:1492
+msgid "Wired"
+msgstr "વાયરવાળું"
+
+#: ../js/ui/status/network.js:1503
+msgid "Wireless"
+msgstr "વાયરલેસ"
+
+#: ../js/ui/status/network.js:1513
+msgid "Mobile broadband"
+msgstr "મોબાઇલ બ્રોડબેન્ડ"
+
+#: ../js/ui/status/network.js:1523
+#| msgid "Connection"
+msgid "VPN Connections"
+msgstr "VPN જોડાણો"
+
+#: ../js/ui/status/network.js:1532
+#| msgid "Power Settings"
+msgid "Network Settings"
+msgstr "નેટવર્ક સુયોજનો"
+
+#: ../js/ui/status/network.js:1827
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "તમે હવે મોબાઇલ બ્રોડબેન્ડ જોડાણ '%s' સાથે જોડાયેલ છો"
+
+#: ../js/ui/status/network.js:1831
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "તમે હવે વાયરલેસ નેટવર્ક '%s' સાથે જોડાયેલ છો"
+
+#: ../js/ui/status/network.js:1835
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "તમે હવે વાયરવાળું નેટવર્ક '%s' સાથે જોડાયેલ છો"
+
+#: ../js/ui/status/network.js:1839
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "તમે હવે VPN નેટવર્ક '%s' સાથે જોડાયેલ છો"
+
+#: ../js/ui/status/network.js:1844
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "તમે હવે '%s' સાથે જોડાયેલ છો"
+
+#: ../js/ui/status/network.js:1852
+#| msgid "Connection"
+msgid "Connection established"
+msgstr "જોડાણ સ્થાપિત થયેલ છે"
+
+#: ../js/ui/status/network.js:1974
+msgid "Networking is disabled"
+msgstr "નેટવર્કીંગ નિષ્ક્રિય થયેલ છે"
+
+#: ../js/ui/status/network.js:2099
+msgid "Network Manager"
+msgstr "નેટવર્ક સંચાલક"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "પાવર સુયોજનો"
 
-#: ../js/ui/status/power.js:112
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr ""
+
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d કલાક બાકી રહેલ છે"
+msgstr[1] "%d કલાક બાકી રહેલ છે"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:121
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s બાકી રહેલ છે"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "કલાક"
 msgstr[1] "કલાકો"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "મિનિટ"
 msgstr[1] "મિનિટો"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:126
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d મિનિટ બાકી રહી છે"
+msgstr[1] "%d મિનિટ બાકી રહી છે"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:228
 msgid "AC adapter"
 msgstr "AC ઍડપ્ટર"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:230
 msgid "Laptop battery"
 msgstr "લેપટોપ બેટરી"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:232
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:234
 msgid "Monitor"
 msgstr "મોનિટર"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:236
 msgid "Mouse"
 msgstr "માઉસ"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:238
 msgid "Keyboard"
 msgstr "કિબોર્ડ"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:240
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:242
 msgid "Cell phone"
 msgstr "સેલ ફોન"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:244
 msgid "Media player"
 msgstr "મીડિયા પ્લેયર"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:246
 msgid "Tablet"
-msgstr ""
+msgstr "ટૅબલેટ"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:248
 msgid "Computer"
 msgstr "કમ્પ્યૂટર"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "અજ્ઞાત"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:45
 msgid "Volume"
 msgstr "વોલ્યુમ"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "માઇક્રોફોન"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:332
 #, c-format
 msgid "%s is online."
 msgstr "%s ઓનલાઇન છે."
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:337
 #, c-format
 msgid "%s is offline."
 msgstr "%s ઓફલાઇન છે."
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is away."
 msgstr "%s એ દૂર છે."
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is busy."
 msgstr "%s વ્યસ્ત છે."
@@ -1010,28 +1073,36 @@ msgstr "%s વ્યસ્ત છે."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:668
+#: ../js/ui/telepathyClient.js:474
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr ""
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "તમારા કમ્પ્યૂટરને શોધો"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "શોધવા માટે ટાઇપ કરો..."
 
-#: ../js/ui/windowAttentionHandler.js:43
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "શોધો"
+
+#: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
 msgstr ""
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' તૈયાર છે"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1094
+#: ../src/gvc/gvc-mixer-control.c:1098
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1040,48 +1111,70 @@ msgstr[1] "%u આઉટપુટો"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1104
+#: ../src/gvc/gvc-mixer-control.c:1108
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ઇનપુટ"
 msgstr[1] "%u ઇનપુટો"
 
-#: ../src/gvc/gvc-mixer-control.c:1402
+#: ../src/gvc/gvc-mixer-control.c:1406
 msgid "System Sounds"
 msgstr "સિસ્ટમ અવાજો"
 
-#: ../src/shell-global.c:1363
+#: ../src/main.c:446
+msgid "Print version"
+msgstr "ા"
+
+#: ../src/shell-app.c:454
+#, fuzzy, c-format
+#| msgid "Failed to unmount '%s'"
+msgid "Failed to launch '%s'"
+msgstr "'%s' ને અનમાઉન્ટ કરવામાં નિષ્ફળતા"
+
+#: ../src/shell-global.c:1395
 msgid "Less than a minute ago"
 msgstr ""
 
-#: ../src/shell-global.c:1367
+#: ../src/shell-global.c:1399
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d મિનિટ પહેલાં"
 msgstr[1] "%d મિનિટો પહેલાં"
 
-#: ../src/shell-global.c:1372
+#: ../src/shell-global.c:1404
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d કલાક પહેલાં"
 msgstr[1] "%d કલાકો પહેલાં"
 
-#: ../src/shell-global.c:1377
+#: ../src/shell-global.c:1409
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d દિવસ પહેલાં"
 msgstr[1] "%d દિવસો પહેલાં"
 
-#: ../src/shell-global.c:1382
+#: ../src/shell-global.c:1414
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d અઠવાડિયુ પહેલાં"
 msgstr[1] "%d અઠવાડિયાઓ પહેલાં"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "United Kingdom"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "મૂળભૂત"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr ""
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -1092,10 +1185,6 @@ msgstr "ઘર ફોલ્ડર"
 #: ../src/shell-util.c:104
 msgid "File System"
 msgstr "ફાઇલ સિસ્ટમ"
-
-#: ../src/shell-util.c:250
-msgid "Search"
-msgstr "શોધો"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
