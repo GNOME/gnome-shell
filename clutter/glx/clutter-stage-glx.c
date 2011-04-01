@@ -541,6 +541,29 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
       copy_area.width = clip->width;
       copy_area.height = clip->height;
 
+      /* We need to ensure that all the rendering is done, otherwise
+       * redraw operations that are slower than the framerate can
+       * queue up in the pipeline during a heavy animation, causing a
+       * larger and larger backlog of rendering visible as lag to the
+       * user.
+       *
+       * Note: since calling glFinish() and sycnrhonizing the CPU with
+       * the GPU is far from ideal, we hope that this is only a short
+       * term solution.
+       * - One idea is to using sync objects to track render
+       *   completion so we can throttle the backlog (ideally with an
+       *   additional extension that lets us get notifications in our
+       *   mainloop instead of having to busy wait for the
+       *   completion.)
+       * - Another option is to support clipped redraws by reusing the
+       *   contents of old back buffers such that we can flip instead
+       *   of using a blit and then we can use GLX_INTEL_swap_events
+       *   to throttle. For this though we would still probably want an
+       *   additional extension so we can report the limited region of
+       *   the window damage to X/compositors.
+       */
+      glFinish ();
+
       /* glXCopySubBufferMESA and glBlitFramebuffer are not integrated
        * with the glXSwapIntervalSGI mechanism which we usually use to
        * throttle the Clutter framerate to the vertical refresh and so
@@ -563,7 +586,6 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
            *
            * See where we call glXSwapBuffers for more details.
            */
-          glFinish ();
           wait_for_vblank (backend_glx);
         }
       else if (backend_glx->get_video_sync)
