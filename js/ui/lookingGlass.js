@@ -707,6 +707,7 @@ LookingGlass.prototype = {
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
         this.actor.add_actor(toolbar);
         let inspectIcon = new St.Icon({ icon_name: 'gtk-color-picker',
+                                        icon_type: St.IconType.FULLCOLOR,
                                         icon_size: 24 });
         toolbar.add_actor(inspectIcon);
         inspectIcon.reactive = true;
