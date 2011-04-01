@@ -144,7 +144,7 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
       actor_height = clutter_actor_box_get_height (allocation);
       allocation->y1 = ((source_height - actor_height) * align->factor)
                      + source_y;
-      allocation->x1 = floorf (allocation->x1 + 0.5);
+      allocation->y1 = floorf (allocation->y1 + 0.5);
       allocation->y2 = allocation->y1 + actor_height;
       break;
 
