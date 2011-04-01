@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-21 19:31+0000\n"
-"PO-Revision-Date: 2011-04-01 13:11+0200\n"
+"PO-Revision-Date: 2011-04-01 13:25+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
+"\n"
 "\n"
 
 #: ../src/core/all-keybindings.h:88
@@ -755,7 +756,7 @@ msgstr ""
 
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
-msgstr ""
+msgstr "Erantsi elkarrizketa-koadro modala"
 
 #: ../src/mutter.schemas.in.h:2
 msgid ""
@@ -770,6 +771,8 @@ msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
+"Laneko areaz aldatzean pantaila guztietako leihoei eragingo dien "
+"edo pantaila nagusiko leihoei soilik zehazten du."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
@@ -797,10 +800,13 @@ msgid ""
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
+"True (egia) bada, titulu-barra independenteak eduki ordez, elkarrizketa-koadro modalak "
+"agertuko dira leiho gurasoko titulu-barrari erantsita eta leiho gurasoarekin "
+"batera mugituko dira."
 
 #: ../src/mutter.schemas.in.h:8
 msgid "Workspaces only on primary"
-msgstr ""
+msgstr "Laneko areak soilik nagusian"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
@@ -1610,18 +1616,20 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3434
 #, c-format
 msgid "Bad version specification '%s'"
-msgstr ""
+msgstr "'%s' bertsioaren okerreko zehaztapena"
 
 #: ../src/ui/theme-parser.c:3507
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
+"\"version\" atributua ezin da erabili metacity-theme-1.xml edo "
+"metacity-theme-2.xml fitxategietan"
 
 #: ../src/ui/theme-parser.c:3530
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr ""
+msgstr "Gaiak %s bertsioa behar du, baina onartutako gaiaren azken bertsioa %d.%d da."
 
 #: ../src/ui/theme-parser.c:3562
 #, c-format
@@ -1680,70 +1688,59 @@ msgid "Failed to find a valid file for theme %s\n"
 msgstr "Huts egin du %s gaiaren fitxategi egokia bilatzean\n"
 
 #: ../src/ui/theme-viewer.c:99
-#, fuzzy
 #| msgid "/_Windows"
 msgid "_Windows"
-msgstr "/_Leihoak"
+msgstr "_Leihoak"
 
 #: ../src/ui/theme-viewer.c:100
-#, fuzzy
 #| msgid "Dialog Box"
 msgid "_Dialog"
-msgstr "Elkarrizketa-koadroko kutxa"
+msgstr "_Elkarrizketa-koadroa"
 
 #: ../src/ui/theme-viewer.c:101
-#, fuzzy
 #| msgid "Modal Dialog Box"
 msgid "_Modal dialog"
-msgstr "Elkarrizketa-koadroko kutxa modala"
+msgstr "Elkarrizketa-koadro _modala"
 
 #: ../src/ui/theme-viewer.c:102
-#, fuzzy
 #| msgid "/Windows/_Utility"
 msgid "_Utility"
-msgstr "/Leihoak/_Utilitatea"
+msgstr "_Utilitatea"
 
 #: ../src/ui/theme-viewer.c:103
-#, fuzzy
 #| msgid "/Windows/_Splashscreen"
 msgid "_Splashscreen"
-msgstr "/Leihoak/_Harrerako pantaila"
+msgstr "_Harrerako pantaila"
 
 #: ../src/ui/theme-viewer.c:104
-#, fuzzy
 #| msgid "/Windows/_Top dock"
 msgid "_Top dock"
-msgstr "/Leihoak/_Goiko atrakea"
+msgstr "_Goiko atrakea"
 
 #: ../src/ui/theme-viewer.c:105
-#, fuzzy
 #| msgid "/Windows/_Bottom dock"
 msgid "_Bottom dock"
-msgstr "/Leihoak/_Azpiko atrakea"
+msgstr "_Azpiko atrakea"
 
 #: ../src/ui/theme-viewer.c:106
-#, fuzzy
 #| msgid "/Windows/_Left dock"
 msgid "_Left dock"
-msgstr "/Leihoak/E_zkerreko atrakea"
+msgstr "E_zkerreko atrakea"
 
 #: ../src/ui/theme-viewer.c:107
-#, fuzzy
 #| msgid "/Windows/_Right dock"
 msgid "_Right dock"
-msgstr "/Leihoak/E_skuineko atrakea"
+msgstr "E_skuineko atrakea"
 
 #: ../src/ui/theme-viewer.c:108
-#, fuzzy
 #| msgid "/Windows/_All docks"
 msgid "_All docks"
-msgstr "/Leihoak/Atrake _denak"
+msgstr "Atrake _guztiak"
 
 #: ../src/ui/theme-viewer.c:109
-#, fuzzy
 #| msgid "/Windows/Des_ktop"
 msgid "Des_ktop"
-msgstr "/Leihoak/_Mahaigaina"
+msgstr "_Mahaigaina"
 
 #: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
@@ -1799,10 +1796,9 @@ msgid "Border"
 msgstr "Ertza"
 
 #: ../src/ui/theme-viewer.c:413
-#, fuzzy
 #| msgid "Modal Dialog Box"
 msgid "Attached Modal Dialog"
-msgstr "Elkarrizketa-koadroko kutxa modala"
+msgstr "Erantsitako elkarrizketa-koadro modala"
 
 #: ../src/ui/theme-viewer.c:744
 #, c-format
