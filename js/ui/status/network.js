@@ -557,8 +557,7 @@ NMDevice.prototype = {
     },
 
     _shouldShowConnectionList: function() {
-        return (this.device.state == NetworkManager.DeviceState.DISCONNECTED ||
-                this.device.state == NetworkManager.DeviceState.ACTIVATED);
+        return (this.device.state >= NetworkManager.DeviceState.DISCONNECTED);
     },
 
     _createSection: function() {
@@ -1809,13 +1808,8 @@ NMApplet.prototype = {
             if (a.default6)
                 default_ip6 = a;
 
-            if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING) {
+            if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
                 activating = a;
-
-                // don't set activating connections to devices, NMDevice:state-changed
-                // should take care of rebuilding the menu
-                continue;
-            }
 
             if (!a._primaryDevice) {
                 if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME) {
