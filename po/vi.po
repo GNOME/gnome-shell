@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-21 19:31+0000\n"
-"PO-Revision-Date: 2011-02-12 00:31+0700\n"
+"PO-Revision-Date: 2011-04-02 12:49+0700\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -406,10 +406,9 @@ msgid "Disable connection to session manager"
 msgstr "Vô hiệu hóa kết nối với bộ quản lý phiên làm việc"
 
 #: ../src/core/main.c:212
-#, fuzzy
 #| msgid "Replace the running window manager with Mutter"
 msgid "Replace the running window manager"
-msgstr "Thay thế bộ quản lý cửa sổ đang chạy bằng Mutter"
+msgstr "Thay thế bộ quản lý cửa sổ đang chạy"
 
 #: ../src/core/main.c:218
 msgid "Specify session management ID"
@@ -773,7 +772,7 @@ msgstr ""
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
-msgstr ""
+msgstr "Xác định chuyển vùng làm việc cho cửa sổ trên mọi màn hình hay chỉ trên màn hình chính."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
@@ -806,7 +805,7 @@ msgstr ""
 
 #: ../src/mutter.schemas.in.h:8
 msgid "Workspaces only on primary"
-msgstr ""
+msgstr "Vùng làm việc chỉ trên màn hình chính"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
