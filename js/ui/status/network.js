@@ -1758,8 +1758,10 @@ NMApplet.prototype = {
 
         for (let i = 0; i < closedConnections.length; i++) {
             let active = closedConnections[i];
-            if (active._primaryDevice)
+            if (active._primaryDevice) {
                 active._primaryDevice.setActiveConnection(null);
+                active._primaryDevice = null;
+            }
             if (active._notifyStateId) {
                 active.disconnect(active._notifyStateId);
                 active._notifyStateId = 0;
