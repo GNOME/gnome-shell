@@ -391,7 +391,6 @@ clutter_stage_osx_hide (ClutterStageWindow *stage_window)
 
   [self->window orderOut: nil];
 
-  clutter_stage_osx_unrealize (stage_window);
   clutter_actor_unmap (CLUTTER_ACTOR (self->wrapper));
 
   CLUTTER_OSX_POOL_RELEASE();
