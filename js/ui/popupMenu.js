@@ -773,6 +773,10 @@ PopupMenuBase.prototype = {
         // for the menu which causes its prelight state to freeze
         this.blockSourceEvents = false;
 
+        // Can be set while a menu is up to let all events through without special
+        // menu handling useful for scrollbars in menus, and probably not otherwise.
+        this.passEvents = false;
+
         this._activeMenuItem = null;
     },
 
@@ -1043,11 +1047,56 @@ PopupSubMenu.prototype = {
         this._arrow = sourceArrow;
         this._arrow.rotation_center_z_gravity = Clutter.Gravity.CENTER;
 
-        this.actor = this.box;
+        // Since a function of a submenu might be to provide a "More.." expander
+        // with long content, we make it scrollable - the scrollbar will only take
+        // effect if a CSS max-height is set on the top menu.
+        this.actor = new St.ScrollView({ hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                         vscrollbar_policy: Gtk.PolicyType.NEVER });
+
+        // StScrollbar plays dirty tricks with events, calling
+        // clutter_set_motion_events_enabled (FALSE) during the scroll; this
+        // confuses our event tracking, so we just turn it off during the
+        // scroll.
+        let vscroll = this.actor.get_vscroll_bar();
+        vscroll.connect('scroll-start',
+                        Lang.bind(this, function() {
+                                      let topMenu = this._getTopMenu();
+                                      if (topMenu)
+                                          topMenu.passEvents = true;
+                                  }));
+        vscroll.connect('scroll-stop',
+                        Lang.bind(this, function() {
+                                      let topMenu = this._getTopMenu();
+                                      if (topMenu)
+                                          topMenu.passEvents = false;
+                                  }));
+
+        this.actor.add_actor(this.box);
         this.actor._delegate = this;
         this.actor.clip_to_allocation = true;
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         this.actor.hide();
+    },
+
+    _getTopMenu: function() {
+        let actor = this.actor.get_parent();
+        while (actor) {
+            if (actor._delegate && actor._delegate instanceof PopupMenu)
+                return actor._delegate;
+
+            actor = actor.get_parent();
+        }
+
+        return null;
+    },
+
+    _needsScrollbar: function() {
+        let topMenu = this._getTopMenu();
+        let [topMinHeight, topNaturalHeight] = topMenu.actor.get_preferred_height(-1);
+        let topThemeNode = topMenu.actor.get_theme_node();
+
+        let topMaxHeight = topThemeNode.get_max_height();
+        return topMaxHeight >= 0 && topNaturalHeight >= topMaxHeight;
     },
 
     open: function(animate) {
@@ -1056,27 +1105,45 @@ PopupSubMenu.prototype = {
 
         this.isOpen = true;
 
-        // we don't implement the !animate case because that doesn't
-        // currently get used...
-
         this.actor.show();
-        let [naturalHeight, minHeight] = this.actor.get_preferred_height(-1);
-        this.actor.height = 0;
-        this.actor._arrow_rotation = this._arrow.rotation_angle_z;
-        Tweener.addTween(this.actor,
-                         { _arrow_rotation: 90,
-                           height: naturalHeight,
-                           time: 0.25,
-                           onUpdateScope: this,
-                           onUpdate: function() {
-                               this._arrow.rotation_angle_z = this.actor._arrow_rotation;
-                           },
-                           onCompleteScope: this,
-                           onComplete: function() {
-                               this.actor.set_height(-1);
-                               this.emit('open-state-changed', true);
-                           }
-                         });
+
+        let needsScrollbar = this._needsScrollbar();
+
+        // St.ScrollView always requests space horizontally for a possible vertical
+        // scrollbar if in AUTOMATIC mode. Doing better would require implementation
+        // of width-for-height in St.BoxLayout and St.ScrollView. This looks bad
+        // when we *don't* need it, so turn off the scrollbar when that's true.
+        // Dynamic changes in whether we need it aren't handled properly.
+        this.actor.vscrollbar_policy =
+            needsScrollbar ? Gtk.PolicyType.AUTOMATIC : Gtk.PolicyType.NEVER;
+
+        // It looks funny if we animate with a scrollbar (at what point is
+        // the scrollbar added?) so just skip that case
+        if (animate && needsScrollbar)
+            animate = false;
+
+        if (animate) {
+            let [minHeight, naturalHeight] = this.actor.get_preferred_height(-1);
+            this.actor.height = 0;
+            this.actor._arrow_rotation = this._arrow.rotation_angle_z;
+            Tweener.addTween(this.actor,
+                             { _arrow_rotation: 90,
+                               height: naturalHeight,
+                               time: 0.25,
+                               onUpdateScope: this,
+                               onUpdate: function() {
+                                   this._arrow.rotation_angle_z = this.actor._arrow_rotation;
+                               },
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   this.actor.set_height(-1);
+                                   this.emit('open-state-changed', true);
+                               }
+                             });
+        } else {
+            this._arrow.rotation_angle_z = 90;
+            this.emit('open-state-changed', true);
+        }
     },
 
     close: function(animate) {
@@ -1087,6 +1154,9 @@ PopupSubMenu.prototype = {
 
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
+
+        if (animate && this._needsScrollbar())
+            animate = false;
 
         if (animate) {
             this.actor._arrow_rotation = this._arrow.rotation_angle_z;
@@ -1423,8 +1493,12 @@ PopupMenuManager.prototype = {
             this._owner.menuEventFilter(event))
             return true;
 
+        if (this._activeMenu != null && this._activeMenu.passEvents)
+            return false;
+
         let activeMenuContains = this._eventIsOnActiveMenu(event);
         let eventType = event.type();
+
         if (eventType == Clutter.EventType.BUTTON_RELEASE) {
             if (activeMenuContains) {
                 return false;
