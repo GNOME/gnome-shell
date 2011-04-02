@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-17 13:27+0000\n"
-"PO-Revision-Date: 2011-03-19 23:39+0900\n"
+"POT-Creation-Date: 2011-03-21 19:31+0000\n"
+"PO-Revision-Date: 2011-04-02 20:10+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -336,7 +336,7 @@ msgstr "창을 화면 왼쪽 가장자리로 옮기기"
 msgid "Move window to center of screen"
 msgstr "창을 화면 가운데로 옮기기"
 
-#: ../src/core/bell.c:302
+#: ../src/core/bell.c:310
 msgid "Bell event"
 msgstr "삑소리 이벤트"
 
@@ -431,12 +431,12 @@ msgstr "저장 파일에서 세션을 초기화 합니다"
 msgid "Make X calls synchronous"
 msgstr "동기 X 호출을 합니다"
 
-#: ../src/core/main.c:508
+#: ../src/core/main.c:506
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "테마 디렉터리를 읽는 데 실패했습니다: %s\n"
 
-#: ../src/core/main.c:524
+#: ../src/core/main.c:522
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -594,54 +594,54 @@ msgstr ""
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d을(를) 떼어 놓을수 없습니다\n"
 
-#: ../src/core/session.c:863 ../src/core/session.c:870
+#: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "디렉터리 '%s'을(를) 만들 수 없습니다: %s\n"
 
-#: ../src/core/session.c:880
+#: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "세션 파일 '%s'을(를) 쓰기위해 열 수 없습니다: %s\n"
 
-#: ../src/core/session.c:1021
+#: ../src/core/session.c:995
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "세션 파일 '%s'을(를) 쓰는 중 오류: %s\n"
 
-#: ../src/core/session.c:1026
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "세션 파일 '%s'을(를) 닫는 중 오류: %s\n"
 
-#: ../src/core/session.c:1156
+#: ../src/core/session.c:1130
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "저장된 세션파일을 분석하기 실패: %s\n"
 
-#: ../src/core/session.c:1205
+#: ../src/core/session.c:1179
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "이미 세션 ID를 가지고 있는데 <mutter_session> 속성이 나왔습니다."
 
-#: ../src/core/session.c:1218 ../src/core/session.c:1293
-#: ../src/core/session.c:1325 ../src/core/session.c:1397
-#: ../src/core/session.c:1457
+#: ../src/core/session.c:1192 ../src/core/session.c:1267
+#: ../src/core/session.c:1299 ../src/core/session.c:1371
+#: ../src/core/session.c:1431
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "<%2$s> 엘리먼트에 알 수 없는 속성 %1$s"
 
-#: ../src/core/session.c:1235
+#: ../src/core/session.c:1209
 #, c-format
 msgid "nested <window> tag"
 msgstr "포함된 <window> 태그"
 
-#: ../src/core/session.c:1477
+#: ../src/core/session.c:1451
 #, c-format
 msgid "Unknown element %s"
 msgstr "알 수 없는 속성 %s"
 
-#: ../src/core/session.c:1829
+#: ../src/core/session.c:1803
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -686,13 +686,13 @@ msgid "Window manager error: "
 msgstr "장 관리자 오류: "
 
 #. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "머터"
 
 #. first time through
-#: ../src/core/window.c:6651
+#: ../src/core/window.c:6752
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -708,7 +708,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7314
+#: ../src/core/window.c:7415
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -776,8 +776,10 @@ msgstr ""
 #: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
-"monitors or only the primary window."
-msgstr "작업 공간을 전환할 때 모든 모니터의 창에 대해 할지 주 모니터의 창에서만 할지 결정합니다."
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"작업 공간을 전환할 때 모든 모니터의 창에 대해 할지 주 모니터의 창에서만 할지 "
+"결정합니다."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
