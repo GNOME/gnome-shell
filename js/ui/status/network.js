@@ -254,12 +254,14 @@ NMWiredSectionTitleMenuItem.prototype = {
             return;
         }
 
+        let newState = this._switch.state;
+
         // Immediately reset the switch to false, it will be updated appropriately
         // by state-changed signals in devices (but fixes the VPN not being in sync
         // if the ActiveConnection object is never seen by libnm-glib)
         this._switch.setToggleState(false);
 
-        if (this._switch.state)
+        if (newState)
             this._device.activate();
         else
             this._device.deactivate();
