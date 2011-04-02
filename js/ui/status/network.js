@@ -824,12 +824,15 @@ NMDeviceModem.prototype = {
     },
 
     _createSection: function() {
+        if (!this._shouldShowConnectionList())
+            return;
+
         if (this.mobileDevice) {
             // If operator_name is null, just pass the empty string, as the item is hidden anyway
             this._operatorItem = new PopupMenu.PopupImageMenuItem(this.mobileDevice.operator_name || '',
                                                                   this._getSignalIcon(),
                                                                   { reactive: false });
-            if (this.mobileDevice.operator_name)
+            if (!this.mobileDevice.operator_name)
                 this._operatorItem.actor.hide();
             this.section.addMenuItem(this._operatorItem);
         }
@@ -837,7 +840,7 @@ NMDeviceModem.prototype = {
         NMDevice.prototype._createSection.call(this);
     },
 
-    clearSection: function() {
+    _clearSection: function() {
         this._operatorItem = null;
 
         NMDevice.prototype._clearSection.call(this);
