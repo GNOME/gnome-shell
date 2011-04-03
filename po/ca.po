@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-29 00:29+0200\n"
-"PO-Revision-Date: 2011-03-27 13:05+0100\n"
+"PO-Revision-Date: 2011-04-03 23:19+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -62,7 +62,7 @@ msgstr "Historial de les ordres utilitzades en el diàleg de l'Alt+F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for the looking glass dialog"
-msgstr "Historial del diàleg de l'Alt+F2"
+msgstr "Historial del depurador del GNOME Shell"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
@@ -71,7 +71,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
-msgstr "Si és «true» (cert) es mostren el segons."
+msgstr "Si és «true» (cert) es mostren els segons."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
@@ -106,7 +106,7 @@ msgstr ""
 "s'estableix a un valor nul, s'utilitzarà el conducte predeterminat que ara "
 "mateix és «videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! "
 "webmmux» que enregistra amb el format WEBM amb el còdec VP8. El %T és una "
-"variable per a estimar el nombre de fils d'execució paral·lels òptims del "
+"variable per estimar el nombre de fils d'execució paral·lels òptims del "
 "sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
@@ -787,7 +787,7 @@ msgstr "Permet l'accés sempre"
 
 #: ../js/ui/status/bluetooth.js:377
 msgid "Grant this time only"
-msgstr "Permete-ho només ara"
+msgstr "Permet-ho només ara"
 
 #: ../js/ui/status/bluetooth.js:378
 msgid "Reject"
