@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-30 21:19+0200\n"
-"PO-Revision-Date: 2011-03-29 22:50+0100\n"
+"PO-Revision-Date: 2011-04-03 23:45+0200\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "Language: \n"
@@ -421,7 +421,7 @@ msgstr "Especifica l'ID de gestió de sessió"
 
 #: ../src/core/main.c:223
 msgid "X Display to use"
-msgstr "Visualització X per a usar"
+msgstr "Visualització X per usar"
 
 #: ../src/core/main.c:229
 msgid "Initialize session from savefile"
@@ -455,7 +455,7 @@ msgid ""
 msgstr ""
 "Mutter %s\n"
 "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., i d'altres\n"
-"Això és programari lliure; vegeu els fitxers de codi font per a conèixer-ne\n"
+"Això és programari lliure; vegeu els fitxers de codi font per conèixer-ne\n"
 "les condicions de còpia.\n"
 "No hi ha CAP garantia; ni tan sols la garantia implícita de COMERCIABILITAT\n"
 "o ADEQUACIÓ A PER UN PROPÒSIT PARTICULAR.\n"
@@ -586,7 +586,7 @@ msgid ""
 "replace option to replace the current window manager.\n"
 msgstr ""
 "La pantalla %d en la visualització «%s» ja té un gestor de finestres; proveu "
-"l'opció --replace per a reemplaçar el gestor de finestres actual.\n"
+"l'opció --replace per reemplaçar el gestor de finestres actual.\n"
 
 #: ../src/core/screen.c:667
 #, c-format
@@ -713,7 +713,7 @@ msgid ""
 "window as specified in the ICCCM.\n"
 msgstr ""
 "La finestra %s estableix SM_CLIENT_ID en ella mateixa, en comptes del "
-"WM_CLIENT_LEADER, tal i com s'especifica a ICCCM.\n"
+"WM_CLIENT_LEADER, tal com s'especifica a ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -768,7 +768,7 @@ msgstr ""
 #: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "La propietat %s en la finestra 0x%lx contenia un UTF-8 invàlid\n"
+msgstr "La propietat %s en la finestra 0x%lx contenia un UTF-8 no vàlid\n"
 
 #: ../src/core/xprops.c:494
 #, c-format
@@ -1635,7 +1635,7 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"No es pot tenir dos draw_ops per a un element <piece> (el tema ha "
+"No es poden tenir dos draw_ops per a un element <piece> (el tema ha "
 "especificat un atribut draw_ops i també un element <draw_ops>, o ha "
 "especificat ambdós elements) "
 
@@ -1644,7 +1644,7 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"No es pot tenir dos draw_ops per a un element <button> (el tema ha "
+"No es poden tenir dos draw_ops per a un element <button> (el tema ha "
 "especificat un atribut draw_ops i també un element <draw_ops>, o ha "
 "especificat ambdós elements)"
 
@@ -1653,7 +1653,7 @@ msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"No es pot tenir dos draw_ops per a un element <menu_icon> (el tema ha "
+"No es poden tenir dos draw_ops per a un element <menu_icon> (el tema ha "
 "especificat un atribut draw_ops i també un element <draw_ops>, o ha "
 "especificat ambdós elements)"
 
@@ -1846,7 +1846,7 @@ msgstr "Prova de disposició de botons %d"
 #: ../src/ui/theme-viewer.c:773
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr "%g mil·lisegons per a dibuixar un marc de finestra"
+msgstr "%g mil·lisegons per dibuixar un marc de finestra"
 
 #: ../src/ui/theme-viewer.c:818
 #, c-format
@@ -2206,7 +2206,7 @@ msgstr ""
 #~ "encara no està massa implementat."
 
 #~ msgid "If true, trade off usability for less resource usage"
-#~ msgstr "Si és vertader, sacrifica usabilitat per a usar menys recursos"
+#~ msgstr "Si és vertader, sacrifica usabilitat per usar menys recursos"
 
 #~ msgid "Name of workspace"
 #~ msgstr "Nom de l'espai de treball"
