@@ -1125,7 +1125,7 @@ msgstr "%s is opgestart"
 #: ../js/ui/windowAttentionHandler.js:44
 #, c-format
 msgid "'%s' is ready"
-msgstr "‘%s’ is klaar"
+msgstr "‘%s’ is gereed"
 
 #. translators:
 #. * The number of sound outputs on a particular device
