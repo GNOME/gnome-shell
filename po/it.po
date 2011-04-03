@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 22:46+0100\n"
-"PO-Revision-Date: 2011-03-24 22:58+0100\n"
+"POT-Creation-Date: 2011-04-03 10:34+0200\n"
+"PO-Revision-Date: 2011-04-03 10:35+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -345,13 +345,13 @@ msgid "Nothing Scheduled"
 msgstr "Nessun evento"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e %B %Y"
@@ -372,7 +372,7 @@ msgstr "Questa settimana"
 msgid "Next week"
 msgstr "Prossima settimana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -471,7 +471,8 @@ msgstr "Spegni"
 
 #: ../js/ui/endSessionDialog.js:76
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Fare clic su «Spegni» per chiudere queste applicazioni e spegnere il sistema."
+msgstr ""
+"Fare clic su «Spegni» per chiudere queste applicazioni e spegnere il sistema."
 
 #: ../js/ui/endSessionDialog.js:77
 #, c-format
@@ -539,11 +540,11 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:987
+#: ../js/ui/messageTray.js:1000
 msgid "Open"
 msgstr "Apri"
 
-#: ../js/ui/messageTray.js:2145
+#: ../js/ui/messageTray.js:2164
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -567,18 +568,18 @@ msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:524
 #, c-format
 msgid "Quit %s"
 msgstr "Chiudi %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:878
+#: ../js/ui/panel.js:902
 msgid "Activities"
 msgstr "Attività"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:1003
 msgid "Top Bar"
 msgstr "Barra superiore"
 
@@ -612,11 +613,15 @@ msgstr "Amministratore"
 msgid "Authenticate"
 msgstr "Autentica"
 
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
-msgstr ""
+msgstr "Errore nell'autenticazione. Provare di nuovo."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
 msgstr "Password:"
 
@@ -633,11 +638,11 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:311
 msgid "Searching..."
 msgstr "Ricerca..."
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:325
 msgid "No matching results."
 msgstr "Nessun risultato corrispondente."
 
@@ -844,133 +849,139 @@ msgstr "Mostra disposizione tastiera..."
 msgid "Localization Settings"
 msgstr "Impostazioni localizzazione"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1393
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1467
 msgid "<unknown>"
 msgstr "<sconosciuto>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
+#: ../js/ui/status/network.js:318
 msgid "disabled"
 msgstr "disabilitata"
 
-#: ../js/ui/status/network.js:476
+#: ../js/ui/status/network.js:501
 msgid "connecting..."
 msgstr "connessione..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:504
 msgid "authentication required"
 msgstr "richiesta autenticazione"
 
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:514
+msgid "firmware missing"
+msgstr "firmware mancante"
+
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:521
 msgid "cable unplugged"
 msgstr "cavo scollegato"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:526
 msgid "unavailable"
 msgstr "non disponibile"
 
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:528
 msgid "connection failed"
 msgstr "connessione non riuscita"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:571 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:609 ../js/ui/status/network.js:1415
 msgid "Connected (private)"
 msgstr "Connessa (privata)"
 
-#: ../js/ui/status/network.js:636
+#: ../js/ui/status/network.js:690
 msgid "Auto Ethernet"
 msgstr "Ethernet automatica"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:765
 msgid "Auto broadband"
 msgstr "Banda larga automatica"
 
-#: ../js/ui/status/network.js:700
+#: ../js/ui/status/network.js:768
 msgid "Auto dial-up"
 msgstr "Dial-up automatica"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:843 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:911 ../js/ui/status/network.js:1427
 #, c-format
 msgid "Auto %s"
 msgstr "%s automatica"
 
-#: ../js/ui/status/network.js:845
+#: ../js/ui/status/network.js:913
 msgid "Auto bluetooth"
 msgstr "Bluetooth automatica"
 
-#: ../js/ui/status/network.js:1355
+#: ../js/ui/status/network.js:1429
 msgid "Auto wireless"
 msgstr "Wireless automatica"
 
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1487
 msgid "More..."
 msgstr "Altro..."
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1510
 msgid "Enable networking"
 msgstr "Abilita rete"
 
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:1522
 msgid "Wired"
 msgstr "Via cavo"
 
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:1533
 msgid "Wireless"
 msgstr "Wireless"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1543
 msgid "Mobile broadband"
 msgstr "Banda larga mobile"
 
-#: ../js/ui/status/network.js:1479
+#: ../js/ui/status/network.js:1553
 msgid "VPN Connections"
 msgstr "Connessioni VPN"
 
-#: ../js/ui/status/network.js:1488
+#: ../js/ui/status/network.js:1565
 msgid "Network Settings"
 msgstr "Impostazioni rete"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1860
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Connessi alla rete mobile «%s»"
 
-#: ../js/ui/status/network.js:1787
+#: ../js/ui/status/network.js:1864
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Connessi alla rete wireless «%s»"
 
-#: ../js/ui/status/network.js:1791
+#: ../js/ui/status/network.js:1868
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Connessi alla rete via cavo «%s»"
 
-#: ../js/ui/status/network.js:1795
+#: ../js/ui/status/network.js:1872
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Connessi alla rete VPN «%s»"
 
-#: ../js/ui/status/network.js:1800
+#: ../js/ui/status/network.js:1877
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Connessi a «%s»"
 
-#: ../js/ui/status/network.js:1808
+#: ../js/ui/status/network.js:1885
 msgid "Connection established"
 msgstr "Connessione stabilita"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:2007
 msgid "Networking is disabled"
 msgstr "Rete disabilitata"
 
-#: ../js/ui/status/network.js:2055
+#: ../js/ui/status/network.js:2132
 msgid "Network Manager"
 msgstr "Gestore reti"
 
@@ -1073,22 +1084,22 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Microfono"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is online."
 msgstr "%s è disponibile."
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is offline."
 msgstr "%s è fuori rete."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is away."
 msgstr "%s è assente."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:346
 #, c-format
 msgid "%s is busy."
 msgstr "%s non è disponibile."
@@ -1096,7 +1107,7 @@ msgstr "%s non è disponibile."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:482
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Inviato alle %-H.%M di %A"
