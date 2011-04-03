@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-27 05:13+0000\n"
+"POT-Creation-Date: 2011-03-27 14:43+0000\n"
 "PO-Revision-Date: 2011-03-27 15:45+0200\n"
 "Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
@@ -241,7 +241,7 @@ msgstr "%s wurde aus Ihren Favoriten entfernt"
 #: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
-msgstr "Ganztägig"
+msgstr "Ganztägig"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:71
@@ -379,7 +379,7 @@ msgstr "Diese Woche"
 
 #: ../js/ui/calendar.js:754
 msgid "Next week"
-msgstr "Nächste Woche"
+msgstr "Nächste Woche"
 
 #: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
 msgid "Remove"
@@ -391,7 +391,7 @@ msgstr "Einstellungen für Datum und Uhrzeit"
 
 #: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
-msgstr "Kalender öffnen"
+msgstr "Kalender öffnen"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
@@ -795,7 +795,7 @@ msgstr "Legitimierungsanfrage von %s"
 #: ../js/ui/status/bluetooth.js:374
 #, c-format
 msgid "Device %s wants access to the service '%s'"
-msgstr "Gerät »%s« bittet um Zugriff auf den Dienst »%s«"
+msgstr "Gerät »%s« bittet um Zugriff auf den Dienst »%s«"
 
 #: ../js/ui/status/bluetooth.js:376
 msgid "Always grant access"
@@ -817,7 +817,7 @@ msgstr "Koppelungsbestätigung für %s"
 #: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
-msgstr "Gerät »%s« möchte mit diesem Rechner gekoppelt werden"
+msgstr "Gerät »%s« möchte mit diesem Rechner gekoppelt werden"
 
 #: ../js/ui/status/bluetooth.js:415
 #, c-format
@@ -836,11 +836,11 @@ msgstr "Stimmt nicht überein"
 #: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
-msgstr "Koppelungsanfrage für %s"
+msgstr "Koppelungsanfrage für %s"
 
 #: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
-msgstr "Bitte geben Sie die auf dem Gerät angezeigte PIN ein."
+msgstr "Bitte geben Sie die auf dem Gerät angezeigte PIN ein."
 
 #: ../js/ui/status/bluetooth.js:465
 msgid "OK"
@@ -1066,7 +1066,7 @@ msgstr "Mobiltelefon"
 
 #: ../js/ui/status/power.js:244
 msgid "Media player"
-msgstr "Medienwiedergabegerät"
+msgstr "Medienwiedergabegerät"
 
 #: ../js/ui/status/power.js:246
 msgid "Tablet"
@@ -1082,7 +1082,7 @@ msgstr "Unbekannt"
 
 #: ../js/ui/status/volume.js:45
 msgid "Volume"
-msgstr "Lautstärke"
+msgstr "Lautstärke"
 
 #: ../js/ui/status/volume.js:58
 msgid "Microphone"
@@ -1248,7 +1248,7 @@ msgstr "%1$s: %2$s"
 #~ msgstr "Ausschalten des Systems."
 
 #~ msgid "Confirm"
-#~ msgstr "Bestätigen"
+#~ msgstr "Bestätigen"
 
 #~| msgid "Cancel"
 #~ msgid "Panel"
