@@ -1,5 +1,5 @@
 # Czech translation of mutter.
-# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 the author(s) of mutter.
+# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 the author(s) of mutter.
 # Copyright (C) 2003, 2004, 2005, 2006 Miloslav Trmac <mitr@volny.cz>.
 # This file is distributed under the same license as the mutter package.
 # Miloslav Trmac <mitr@volny.cz>, 2002, 2003, 2004, 2005, 2006.
@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-28 20:35+0100\n"
-"PO-Revision-Date: 2011-01-28 20:35+0100\n"
+"POT-Creation-Date: 2011-04-03 17:11+0200\n"
+"PO-Revision-Date: 2011-04-03 17:09+0200\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -21,7 +21,318 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 1.1\n"
 
-#: ../src/core/bell.c:302
+#: ../src/core/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Přepnout na plochu 1"
+
+#: ../src/core/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Přepnout na plochu 2"
+
+#: ../src/core/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Přepnout na plochu 3"
+
+#: ../src/core/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Přepnout na plochu 4"
+
+#: ../src/core/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Přepnout na plochu 5"
+
+#: ../src/core/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Přepnout na plochu 6"
+
+#: ../src/core/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Přepnout na plochu 7"
+
+#: ../src/core/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Přepnout na plochu 8"
+
+#: ../src/core/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Přepnout na plochu 9"
+
+#: ../src/core/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Přepnout na plochu 10"
+
+#: ../src/core/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Přepnout na plochu 11"
+
+#: ../src/core/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Přepnout na plochu 12"
+
+#: ../src/core/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Přepnout na plochu nalevo od aktuální plochy"
+
+#: ../src/core/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Přepnout na plochu napravo od aktuální plochy"
+
+#: ../src/core/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Přepnout na plochu nad aktuální plochou"
+
+#: ../src/core/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Přepnout na plochu pod aktuální plochou"
+
+#: ../src/core/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Přepínat mezi okny aplikace pomocí automaticky otevíraného okna"
+
+#: ../src/core/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "Přepínat zpět mezi okny aplikace pomocí automaticky otevíraného okna"
+
+#: ../src/core/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Přepínat mezi okny pomocí automaticky otevíraného okna"
+
+#: ../src/core/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr "Přepínat zpět mezi okny pomocí automaticky otevíraného okna"
+
+#: ../src/core/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr ""
+"Přepínat mezi panely a pracovní plochou pomocí automaticky otevíraného okna"
+
+#: ../src/core/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr ""
+"Přepínat zpět mezi panely a pracovní plochou pomocí automaticky otevíraného "
+"okna"
+
+#: ../src/core/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Přepínat mezi okny aplikace okamžitě"
+
+#: ../src/core/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Okamžitě přepínat zpět mezi okny aplikace"
+
+#: ../src/core/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Přepínat mezi okny okamžitě"
+
+#: ../src/core/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Okamžitě přepínat zpět mezi okny"
+
+#: ../src/core/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Přepínat mezi panely a pracovní plochou okamžitě"
+
+#: ../src/core/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Okamžitě přepínat zpět mezi panely a pracovní plochou"
+
+#: ../src/core/all-keybindings.h:203
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Skrýt všechna okna a aktivovat pracovní plochu"
+
+#: ../src/core/all-keybindings.h:206
+msgid "Show the panel's main menu"
+msgstr "Zobrazit hlavní nabídku panelu"
+
+#: ../src/core/all-keybindings.h:209
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Zobrazit dialog spuštění aplikace umístěný na panelu"
+
+#: ../src/core/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Spustit nebo ukončit záznam sezení"
+
+#: ../src/core/all-keybindings.h:252
+msgid "Take a screenshot"
+msgstr "Zachytit obrazovku"
+
+#: ../src/core/all-keybindings.h:254
+msgid "Take a screenshot of a window"
+msgstr "Zachytit obrázek okna"
+
+#: ../src/core/all-keybindings.h:256
+msgid "Run a terminal"
+msgstr "Spustit terminál"
+
+#: ../src/core/all-keybindings.h:271
+msgid "Activate the window menu"
+msgstr "Aktivovat nabídku okna"
+
+#: ../src/core/all-keybindings.h:274
+msgid "Toggle fullscreen mode"
+msgstr "Přepnout režim na celou obrazovku"
+
+#: ../src/core/all-keybindings.h:276
+msgid "Toggle maximization state"
+msgstr "Přepnout stav maximalizace"
+
+#: ../src/core/all-keybindings.h:278
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "Přepnout vždy platnou viditelnost okna nad jinými okny"
+
+#: ../src/core/all-keybindings.h:280
+msgid "Maximize window"
+msgstr "Maximalizovat okno"
+
+#: ../src/core/all-keybindings.h:282
+msgid "Restore window"
+msgstr "Obnovit okno"
+
+#: ../src/core/all-keybindings.h:284
+msgid "Toggle shaded state"
+msgstr "Přepnout stav svinutí"
+
+#: ../src/core/all-keybindings.h:286
+msgid "Minimize window"
+msgstr "Minimalizovat okno"
+
+#: ../src/core/all-keybindings.h:288
+msgid "Close window"
+msgstr "Zavřít okno"
+
+#: ../src/core/all-keybindings.h:290
+msgid "Move window"
+msgstr "Přesunout okno"
+
+#: ../src/core/all-keybindings.h:292
+msgid "Resize window"
+msgstr "Změnit velikost okna"
+
+#: ../src/core/all-keybindings.h:295
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "Přepnout výskyt okna na všech plochách nebo jen na jedné"
+
+#: ../src/core/all-keybindings.h:299
+msgid "Move window to workspace 1"
+msgstr "Přesunout okno na plochu 1"
+
+#: ../src/core/all-keybindings.h:302
+msgid "Move window to workspace 2"
+msgstr "Přesunout okno na plochu 2"
+
+#: ../src/core/all-keybindings.h:305
+msgid "Move window to workspace 3"
+msgstr "Přesunout okno na plochu 3"
+
+#: ../src/core/all-keybindings.h:308
+msgid "Move window to workspace 4"
+msgstr "Přesunout okno na plochu 4"
+
+#: ../src/core/all-keybindings.h:311
+msgid "Move window to workspace 5"
+msgstr "Přesunout okno na plochu 5"
+
+#: ../src/core/all-keybindings.h:314
+msgid "Move window to workspace 6"
+msgstr "Přesunout okno na plochu 6"
+
+#: ../src/core/all-keybindings.h:317
+msgid "Move window to workspace 7"
+msgstr "Přesunout okno na plochu 7"
+
+#: ../src/core/all-keybindings.h:320
+msgid "Move window to workspace 8"
+msgstr "Přesunout okno na plochu 8"
+
+#: ../src/core/all-keybindings.h:323
+msgid "Move window to workspace 9"
+msgstr "Přesunout okno na plochu 9"
+
+#: ../src/core/all-keybindings.h:326
+msgid "Move window to workspace 10"
+msgstr "Přesunout okno na plochu 10"
+
+#: ../src/core/all-keybindings.h:329
+msgid "Move window to workspace 11"
+msgstr "Přesunout okno na plochu 11"
+
+#: ../src/core/all-keybindings.h:332
+msgid "Move window to workspace 12"
+msgstr "Přesunout okno na plochu 12"
+
+#: ../src/core/all-keybindings.h:344
+msgid "Move window one workspace to the left"
+msgstr "Posunout okno o plochu doleva"
+
+#: ../src/core/all-keybindings.h:347
+msgid "Move window one workspace to the right"
+msgstr "Posunout okno o plochu doprava"
+
+#: ../src/core/all-keybindings.h:350
+msgid "Move window one workspace up"
+msgstr "Posunout okno o plochu nahoru"
+
+#: ../src/core/all-keybindings.h:353
+msgid "Move window one workspace down"
+msgstr "Posunout okno o plochu dolů"
+
+#: ../src/core/all-keybindings.h:356
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "Zvýšit okno, pokud je zakryté jiným oknem, jinak je snížit"
+
+#: ../src/core/all-keybindings.h:358
+msgid "Raise window above other windows"
+msgstr "Zvýšit okno nad jiná okna"
+
+#: ../src/core/all-keybindings.h:360
+msgid "Lower window below other windows"
+msgstr "Snížit okno pod jiná okna"
+
+#: ../src/core/all-keybindings.h:364
+msgid "Maximize window vertically"
+msgstr "Maximalizovat okno svisle"
+
+#: ../src/core/all-keybindings.h:368
+msgid "Maximize window horizontally"
+msgstr "Maximalizovat okno vodorovně"
+
+#: ../src/core/all-keybindings.h:372
+msgid "Move window to north-west (top left) corner"
+msgstr "Přesunout okno do severozápadního (levého horního) rohu"
+
+#: ../src/core/all-keybindings.h:375
+msgid "Move window to north-east (top right) corner"
+msgstr "Přesunout okno do severovýchodního (pravého horního) rohu"
+
+#: ../src/core/all-keybindings.h:378
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Přesunout okno do jihozápadního (levého dolního) rohu"
+
+#: ../src/core/all-keybindings.h:381
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Přesunout okno do jihovýchodního (pravého dolního) rohu"
+
+#: ../src/core/all-keybindings.h:385
+msgid "Move window to north (top) side of screen"
+msgstr "Přesunout okno na severní (horní) stranu obrazovky"
+
+#: ../src/core/all-keybindings.h:388
+msgid "Move window to south (bottom) side of screen"
+msgstr "Přesunout okno na jižní (dolní) stranu obrazovky"
+
+#: ../src/core/all-keybindings.h:391
+msgid "Move window to east (right) side of screen"
+msgstr "Přesunout okno na východní (pravou) stranu obrazovky"
+
+#: ../src/core/all-keybindings.h:394
+msgid "Move window to west (left) side of screen"
+msgstr "Přesunout okno na západní (levou) stranu obrazovky"
+
+#: ../src/core/all-keybindings.h:397
+msgid "Move window to center of screen"
+msgstr "Přesunout okno na střed obrazovky"
+
+#: ../src/core/bell.c:310
 msgid "Bell event"
 msgstr "Událost zvonku"
 
@@ -94,7 +405,44 @@ msgstr "Nebyl definován příkaz %d.\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Nebyl definován příkaz terminálu.\n"
 
-#: ../src/core/main.c:130
+#: ../src/core/main.c:206
+msgid "Disable connection to session manager"
+msgstr "Zakáže připojení ke správci sezení"
+
+#: ../src/core/main.c:212
+msgid "Replace the running window manager"
+msgstr "Nahradí běžícího správce oken"
+
+#: ../src/core/main.c:218
+msgid "Specify session management ID"
+msgstr "Určení ID správy sezení"
+
+#: ../src/core/main.c:223
+msgid "X Display to use"
+msgstr "Displej X, který použije"
+
+#: ../src/core/main.c:229
+msgid "Initialize session from savefile"
+msgstr "Spustí sezení z uloženého souboru"
+
+#: ../src/core/main.c:235
+msgid "Make X calls synchronous"
+msgstr "Provede volání X synchronně"
+
+#: ../src/core/main.c:506
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Nelze prohledat adresář motivů: %s\n"
+
+#: ../src/core/main.c:522
+#, c-format
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr ""
+"Nelze najít motiv! Ujistěte se prosím, že existuje %s a obsahuje obvyklé "
+"motivy.\n"
+
+#: ../src/core/mutter.c:42
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -110,72 +458,13 @@ msgstr ""
 "Tento software je BEZ JAKÉKOLIV ZÁRUKY; neposkytují se ani záruky "
 "PRODEJNOSTI anebo VHODNOSTI PRO URČITÝ ÚČEL.\n"
 
-#: ../src/core/main.c:261
-msgid "Disable connection to session manager"
-msgstr "Zakáže připojení ke správci sezení"
-
-#: ../src/core/main.c:267
-msgid "Replace the running window manager with Mutter"
-msgstr "Nahradí běžícího správce oken správcem Mutter"
-
-#: ../src/core/main.c:273
-msgid "Specify session management ID"
-msgstr "Určení ID správy sezení"
-
-#: ../src/core/main.c:278
-msgid "X Display to use"
-msgstr "Displej X, který použije"
-
-#: ../src/core/main.c:284
-msgid "Initialize session from savefile"
-msgstr "Spustí sezení z uloženého souboru"
-
-#: ../src/core/main.c:290
+#: ../src/core/mutter.c:56
 msgid "Print version"
 msgstr "Vypíše verzi"
 
-#: ../src/core/main.c:296
-msgid "Make X calls synchronous"
-msgstr "Provede volání X synchronně"
-
-#: ../src/core/main.c:302
-msgid ""
-"Don't make fullscreen windows that are maximized and have no decorations"
-msgstr ""
-"Nevytvářet okna přes celou obrazovku, která jsou maximalizovaná a nemají "
-"dekorace"
-
-#: ../src/core/main.c:308
+#: ../src/core/mutter.c:62
 msgid "Comma-separated list of compositor plugins"
 msgstr "Čárkou oddělený seznam zásuvných modulů kompozitoru"
-
-#: ../src/core/main.c:314
-msgid "Whether window popup/frame should be shown when cycling windows."
-msgstr ""
-"Zda se má při procházení okny zobrazovat automaticky otevírané okno či "
-"rámeček okna."
-
-#: ../src/core/main.c:321
-msgid "Internal argument for GObject introspection"
-msgstr "Vnitřní argument GObject introspection"
-
-#: ../src/core/main.c:648
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr "Nelze prohledat adresář motivů: %s\n"
-
-#: ../src/core/main.c:664
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"Nelze najít motiv! Ujistěte se prosím, že existuje %s a obsahuje obvyklé "
-"motivy.\n"
-
-#: ../src/core/main.c:725
-#, c-format
-msgid "Failed to restart: %s\n"
-msgstr "Nezdařil se restart: %s\n"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -188,34 +477,34 @@ msgstr "Nezdařil se restart: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:541 ../src/core/prefs.c:702
+#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Klíč GConf \"%s\" je nastaven na neplatnou hodnotu\n"
 
-#: ../src/core/prefs.c:628 ../src/core/prefs.c:871
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d uloženo v klíči GConf %s je mimo rozsah %d až %d\n"
 
-#: ../src/core/prefs.c:672 ../src/core/prefs.c:749 ../src/core/prefs.c:797
-#: ../src/core/prefs.c:861 ../src/core/prefs.c:1336 ../src/core/prefs.c:1352
-#: ../src/core/prefs.c:1369 ../src/core/prefs.c:1385
+#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
+#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
+#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Klíč GConf \"%s\" je nastaven na neplatný typ\n"
 
-#: ../src/core/prefs.c:1215
+#: ../src/core/prefs.c:1203
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr "Klíč GConf %s se již používá a nemůže být použit k přepsání %s\n"
 
-#: ../src/core/prefs.c:1274
+#: ../src/core/prefs.c:1262
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Nelze přepsat klíč GConf, %s nenalezeno\n"
 
-#: ../src/core/prefs.c:1476
+#: ../src/core/prefs.c:1447
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -223,12 +512,12 @@ msgstr ""
 "Bylo zakázáno obcházení chyb aplikací. Některé aplikace se možná nebudou "
 "chovat správně.\n"
 
-#: ../src/core/prefs.c:1553
+#: ../src/core/prefs.c:1524
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nelze analyzovat popis písma \"%s\" v klíči GConf %s\n"
 
-#: ../src/core/prefs.c:1615
+#: ../src/core/prefs.c:1586
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -237,17 +526,17 @@ msgstr ""
 "\"%s\" nalezené v databázi nastavení není platnou hodnotou modifikátoru "
 "tlačítka myši\n"
 
-#: ../src/core/prefs.c:2045
+#: ../src/core/prefs.c:2016
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Chyba při nastavování počtu ploch na %d: %s\n"
 
-#: ../src/core/prefs.c:2229 ../src/core/prefs.c:2731
+#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
 #, c-format
 msgid "Workspace %d"
 msgstr "Plocha %d"
 
-#: ../src/core/prefs.c:2261 ../src/core/prefs.c:2439
+#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -256,34 +545,29 @@ msgstr ""
 "\"%s\" nalezené v databázi nastavení není platnou hodnotou klávesové zkratky "
 "\"%s\"\n"
 
-#: ../src/core/prefs.c:2812
+#: ../src/core/prefs.c:2783
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Chyba při nastavování názvu plochy %d na \"%s\": %s\n"
 
-#: ../src/core/prefs.c:3028
-#, c-format
-msgid "Error setting clutter plugin list: %s\n"
-msgstr "Chyba při nastavování seznamu zásuvných modulů clutter: %s\n"
-
-#: ../src/core/prefs.c:3072
+#: ../src/core/prefs.c:2997
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Chyba při nastavování stavu aktivních oken, která jsou skrytá: %s\n"
 
-#: ../src/core/prefs.c:3100
+#: ../src/core/prefs.c:3032
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr ""
 "Chyba při nastavování stavu bez automaticky otevíraného okna tabulátorem: "
 "%s\n"
 
-#: ../src/core/screen.c:577
+#: ../src/core/screen.c:624
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji \"%s\" je neplatná\n"
 
-#: ../src/core/screen.c:593
+#: ../src/core/screen.c:640
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -292,70 +576,70 @@ msgstr ""
 "Obrazovka %d na displeji \"%s\" již správce oken má; zkuste prosím nahradit "
 "aktuálního správce oken pomocí přepínače --replace.\n"
 
-#: ../src/core/screen.c:620
+#: ../src/core/screen.c:667
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nelze získat výběr správce oken na obrazovce %d displeje \"%s\"\n"
 
-#: ../src/core/screen.c:675
+#: ../src/core/screen.c:722
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" již má správce oken\n"
 
-#: ../src/core/screen.c:860
+#: ../src/core/screen.c:907
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nelze uvolnit obrazovku %d na displeji \"%s\"\n"
 
-#: ../src/core/session.c:856 ../src/core/session.c:863
+#: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nelze vytvořit adresář \"%s\": %s\n"
 
-#: ../src/core/session.c:873
+#: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nelze otevřít soubor sezení \"%s\" k zápisu: %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:995
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Chyba při zápisu souboru sezení \"%s\": %s\n"
 
-#: ../src/core/session.c:1019
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Chyba při zavírání souboru sezení \"%s\": %s\n"
 
-#: ../src/core/session.c:1149
+#: ../src/core/session.c:1130
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Chyba při analyzování uloženého souboru sezení: %s\n"
 
-#: ../src/core/session.c:1198
+#: ../src/core/session.c:1179
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "nalezen atribut <mutter_session>, ale ID sezení už k dispozici je"
 
-#: ../src/core/session.c:1211 ../src/core/session.c:1286
-#: ../src/core/session.c:1318 ../src/core/session.c:1390
-#: ../src/core/session.c:1450
+#: ../src/core/session.c:1192 ../src/core/session.c:1267
+#: ../src/core/session.c:1299 ../src/core/session.c:1371
+#: ../src/core/session.c:1431
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Neznámý atribut %s prvku <%s>"
 
-#: ../src/core/session.c:1228
+#: ../src/core/session.c:1209
 #, c-format
 msgid "nested <window> tag"
 msgstr "vnořená značka <window>"
 
-#: ../src/core/session.c:1470
+#: ../src/core/session.c:1451
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznámý prvek %s"
 
-#: ../src/core/session.c:1822
+#: ../src/core/session.c:1803
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -378,7 +662,7 @@ msgstr "Nelze provést fdopen() soubor záznamu %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Otevřen soubor záznamu %s\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:179
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter bylo přeloženo bez podpory podrobného režimu\n"
@@ -400,14 +684,13 @@ msgid "Window manager error: "
 msgstr "Chyba správce oken: "
 
 #. Translators: This is the title used on dialog boxes
-#. eof all-keybindings.h
-#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6471
+#: ../src/core/window.c:6849
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -423,7 +706,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7134
+#: ../src/core/window.c:7512
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -443,7 +726,7 @@ msgstr "Aplikace nastavila neplatný _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1478
+#: ../src/core/window-props.c:1482
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neplatné okno WM_TRANSIENT_FOR 0x%lx specifikováno pro %s.\n"
@@ -475,332 +758,25 @@ msgid ""
 msgstr ""
 "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8 u položky %d seznamu\n"
 
-#: ../src/include/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "Přepnout na plochu 1"
-
-#: ../src/include/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "Přepnout na plochu 2"
-
-#: ../src/include/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "Přepnout na plochu 3"
-
-#: ../src/include/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "Přepnout na plochu 4"
-
-#: ../src/include/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "Přepnout na plochu 5"
-
-#: ../src/include/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "Přepnout na plochu 6"
-
-#: ../src/include/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "Přepnout na plochu 7"
-
-#: ../src/include/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "Přepnout na plochu 8"
-
-#: ../src/include/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "Přepnout na plochu 9"
-
-#: ../src/include/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "Přepnout na plochu 10"
-
-#: ../src/include/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "Přepnout na plochu 11"
-
-#: ../src/include/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "Přepnout na plochu 12"
-
-#: ../src/include/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "Přepnout na plochu nalevo od aktuální plochy"
-
-#: ../src/include/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "Přepnout na plochu napravo od aktuální plochy"
-
-#: ../src/include/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "Přepnout na plochu nad aktuální plochou"
-
-#: ../src/include/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "Přepnout na plochu pod aktuální plochou"
-
-#: ../src/include/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "Přepínat mezi okny aplikace pomocí automaticky otevíraného okna"
-
-#: ../src/include/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "Přepínat zpět mezi okny aplikace pomocí automaticky otevíraného okna"
-
-#: ../src/include/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "Přepínat mezi okny pomocí automaticky otevíraného okna"
-
-#: ../src/include/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr "Přepínat zpět mezi okny pomocí automaticky otevíraného okna"
-
-#: ../src/include/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr ""
-"Přepínat mezi panely a pracovní plochou pomocí automaticky otevíraného okna"
-
-#: ../src/include/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr ""
-"Přepínat zpět mezi panely a pracovní plochou pomocí automaticky otevíraného "
-"okna"
-
-#: ../src/include/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "Přepínat mezi okny aplikace okamžitě"
-
-#: ../src/include/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "Okamžitě přepínat zpět mezi okny aplikace"
-
-#: ../src/include/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "Přepínat mezi okny okamžitě"
-
-#: ../src/include/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "Okamžitě přepínat zpět mezi okny"
-
-#: ../src/include/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "Přepínat mezi panely a pracovní plochou okamžitě"
-
-#: ../src/include/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Okamžitě přepínat zpět mezi panely a pracovní plochou"
-
-#: ../src/include/all-keybindings.h:203
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Skrýt všechna okna a aktivovat pracovní plochu"
-
-#: ../src/include/all-keybindings.h:206
-msgid "Show the panel's main menu"
-msgstr "Zobrazit hlavní nabídku panelu"
-
-#: ../src/include/all-keybindings.h:209
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Zobrazit dialog spuštění aplikace umístěný na panelu"
-
-#: ../src/include/all-keybindings.h:211
-msgid "Start or stop recording the session"
-msgstr "Spustit nebo ukončit záznam sezení"
-
-#: ../src/include/all-keybindings.h:252
-msgid "Take a screenshot"
-msgstr "Zachytit obrazovku"
-
-#: ../src/include/all-keybindings.h:254
-msgid "Take a screenshot of a window"
-msgstr "Zachytit obrázek okna"
-
-#: ../src/include/all-keybindings.h:256
-msgid "Run a terminal"
-msgstr "Spustit terminál"
-
-#: ../src/include/all-keybindings.h:271
-msgid "Activate the window menu"
-msgstr "Aktivovat nabídku okna"
-
-#: ../src/include/all-keybindings.h:274
-msgid "Toggle fullscreen mode"
-msgstr "Přepnout režim na celou obrazovku"
-
-#: ../src/include/all-keybindings.h:276
-msgid "Toggle maximization state"
-msgstr "Přepnout stav maximalizace"
-
-#: ../src/include/all-keybindings.h:278
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Přepnout vždy platnou viditelnost okna nad jinými okny"
-
-#: ../src/include/all-keybindings.h:280
-msgid "Maximize window"
-msgstr "Maximalizovat okno"
-
-#: ../src/include/all-keybindings.h:282
-msgid "Restore window"
-msgstr "Obnovit okno"
-
-#: ../src/include/all-keybindings.h:284
-msgid "Toggle shaded state"
-msgstr "Přepnout stav svinutí"
-
-#: ../src/include/all-keybindings.h:286
-msgid "Minimize window"
-msgstr "Minimalizovat okno"
-
-#: ../src/include/all-keybindings.h:288
-msgid "Close window"
-msgstr "Zavřít okno"
-
-#: ../src/include/all-keybindings.h:290
-msgid "Move window"
-msgstr "Přesunout okno"
-
-#: ../src/include/all-keybindings.h:292
-msgid "Resize window"
-msgstr "Změnit velikost okna"
-
-#: ../src/include/all-keybindings.h:295
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Přepnout výskyt okna na všech plochách nebo jen na jedné"
-
-#: ../src/include/all-keybindings.h:299
-msgid "Move window to workspace 1"
-msgstr "Přesunout okno na plochu 1"
-
-#: ../src/include/all-keybindings.h:302
-msgid "Move window to workspace 2"
-msgstr "Přesunout okno na plochu 2"
-
-#: ../src/include/all-keybindings.h:305
-msgid "Move window to workspace 3"
-msgstr "Přesunout okno na plochu 3"
-
-#: ../src/include/all-keybindings.h:308
-msgid "Move window to workspace 4"
-msgstr "Přesunout okno na plochu 4"
-
-#: ../src/include/all-keybindings.h:311
-msgid "Move window to workspace 5"
-msgstr "Přesunout okno na plochu 5"
-
-#: ../src/include/all-keybindings.h:314
-msgid "Move window to workspace 6"
-msgstr "Přesunout okno na plochu 6"
-
-#: ../src/include/all-keybindings.h:317
-msgid "Move window to workspace 7"
-msgstr "Přesunout okno na plochu 7"
-
-#: ../src/include/all-keybindings.h:320
-msgid "Move window to workspace 8"
-msgstr "Přesunout okno na plochu 8"
-
-#: ../src/include/all-keybindings.h:323
-msgid "Move window to workspace 9"
-msgstr "Přesunout okno na plochu 9"
-
-#: ../src/include/all-keybindings.h:326
-msgid "Move window to workspace 10"
-msgstr "Přesunout okno na plochu 10"
-
-#: ../src/include/all-keybindings.h:329
-msgid "Move window to workspace 11"
-msgstr "Přesunout okno na plochu 11"
-
-#: ../src/include/all-keybindings.h:332
-msgid "Move window to workspace 12"
-msgstr "Přesunout okno na plochu 12"
-
-#: ../src/include/all-keybindings.h:344
-msgid "Move window one workspace to the left"
-msgstr "Posunout okno o plochu doleva"
-
-#: ../src/include/all-keybindings.h:347
-msgid "Move window one workspace to the right"
-msgstr "Posunout okno o plochu doprava"
-
-#: ../src/include/all-keybindings.h:350
-msgid "Move window one workspace up"
-msgstr "Posunout okno o plochu nahoru"
-
-#: ../src/include/all-keybindings.h:353
-msgid "Move window one workspace down"
-msgstr "Posunout okno o plochu dolů"
-
-#: ../src/include/all-keybindings.h:356
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Zvýšit okno, pokud je zakryté jiným oknem, jinak je snížit"
-
-#: ../src/include/all-keybindings.h:358
-msgid "Raise window above other windows"
-msgstr "Zvýšit okno nad jiná okna"
-
-#: ../src/include/all-keybindings.h:360
-msgid "Lower window below other windows"
-msgstr "Snížit okno pod jiná okna"
-
-#: ../src/include/all-keybindings.h:364
-msgid "Maximize window vertically"
-msgstr "Maximalizovat okno svisle"
-
-#: ../src/include/all-keybindings.h:368
-msgid "Maximize window horizontally"
-msgstr "Maximalizovat okno vodorovně"
-
-#: ../src/include/all-keybindings.h:372
-msgid "Move window to north-west (top left) corner"
-msgstr "Přesunout okno do severozápadního (levého horního) rohu"
-
-#: ../src/include/all-keybindings.h:375
-msgid "Move window to north-east (top right) corner"
-msgstr "Přesunout okno do severovýchodního (pravého horního) rohu"
-
-#: ../src/include/all-keybindings.h:378
-msgid "Move window to south-west (bottom left) corner"
-msgstr "Přesunout okno do jihozápadního (levého dolního) rohu"
-
-#: ../src/include/all-keybindings.h:381
-msgid "Move window to south-east (bottom right) corner"
-msgstr "Přesunout okno do jihovýchodního (pravého dolního) rohu"
-
-#: ../src/include/all-keybindings.h:385
-msgid "Move window to north (top) side of screen"
-msgstr "Přesunout okno na severní (horní) stranu obrazovky"
-
-#: ../src/include/all-keybindings.h:388
-msgid "Move window to south (bottom) side of screen"
-msgstr "Přesunout okno na jižní (dolní) stranu obrazovky"
-
-#: ../src/include/all-keybindings.h:391
-msgid "Move window to east (right) side of screen"
-msgstr "Přesunout okno na východní (pravou) stranu obrazovky"
-
-#: ../src/include/all-keybindings.h:394
-msgid "Move window to west (left) side of screen"
-msgstr "Přesunout okno na západní (levou) stranu obrazovky"
-
-#: ../src/include/all-keybindings.h:397
-msgid "Move window to center of screen"
-msgstr "Přesunout okno na střed obrazovky"
-
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
 msgstr "Připojit modální dialogová okna"
 
 #: ../src/mutter.schemas.in.h:2
-msgid "Clutter Plugins"
-msgstr "Zásuvné moduly Clutter"
-
-#: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
 "Určuje, zda by měla skrytá okna (tj. minimalizovaná okna a okna na jiných "
 "pracovních plochách než na aktuální) zůstat aktivní."
+
+#: ../src/mutter.schemas.in.h:3
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Určuje, zda by se měly pracovní plochy přepínat u všech oken na všech "
+"monitorech, nebo pouze u oken na primárním monitoru."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
@@ -811,12 +787,6 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Modifikátor, který se má použít u operací rozšířené správy oken"
 
 #: ../src/mutter.schemas.in.h:6
-msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr ""
-"Zásuvné moduly, které se mají nahrát v souvislosti s kompozitním správcem "
-"založeným na Clutter."
-
-#: ../src/mutter.schemas.in.h:7
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -828,7 +798,7 @@ msgstr ""
 "Windows\". Předpokládá se, že tato zkratka bude výchozí, nebo nastavena na "
 "prázdný řetězec."
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/mutter.schemas.in.h:7
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -838,7 +808,11 @@ msgstr ""
 "zobrazují jako připojené k záhlaví okna rodiče a jsou přesunovány společně s "
 "oknem rodiče."
 
-#: ../src/tools/mutter-message.c:151
+#: ../src/mutter.schemas.in.h:8
+msgid "Workspaces only on primary"
+msgstr "Pracovní plochy pouze na primárním"
+
+#: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Použití: %s\n"
@@ -1723,157 +1697,157 @@ msgstr "<%s> u tohoto motivu definováno dvakrát"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nelze nalézt platný soubor motivu %s\n"
 
-#: ../src/ui/theme-viewer.c:98
+#: ../src/ui/theme-viewer.c:99
 msgid "_Windows"
 msgstr "_Okna"
 
-#: ../src/ui/theme-viewer.c:99
+#: ../src/ui/theme-viewer.c:100
 msgid "_Dialog"
 msgstr "_Dialogové okno"
 
-#: ../src/ui/theme-viewer.c:100
+#: ../src/ui/theme-viewer.c:101
 msgid "_Modal dialog"
 msgstr "_Modální dialogové okno"
 
-#: ../src/ui/theme-viewer.c:101
+#: ../src/ui/theme-viewer.c:102
 msgid "_Utility"
 msgstr "_Nástroje"
 
-#: ../src/ui/theme-viewer.c:102
+#: ../src/ui/theme-viewer.c:103
 msgid "_Splashscreen"
 msgstr "_Spouštěcí obrazovka"
 
-#: ../src/ui/theme-viewer.c:103
+#: ../src/ui/theme-viewer.c:104
 msgid "_Top dock"
 msgstr "_Horní dok"
 
-#: ../src/ui/theme-viewer.c:104
+#: ../src/ui/theme-viewer.c:105
 msgid "_Bottom dock"
 msgstr "Dolní do_k"
 
-#: ../src/ui/theme-viewer.c:105
+#: ../src/ui/theme-viewer.c:106
 msgid "_Left dock"
 msgstr "_Levý dok"
 
-#: ../src/ui/theme-viewer.c:106
+#: ../src/ui/theme-viewer.c:107
 msgid "_Right dock"
 msgstr "P_ravý dok"
 
-#: ../src/ui/theme-viewer.c:107
+#: ../src/ui/theme-viewer.c:108
 msgid "_All docks"
 msgstr "_Všechny doky"
 
-#: ../src/ui/theme-viewer.c:108
+#: ../src/ui/theme-viewer.c:109
 msgid "Des_ktop"
 msgstr "Pra_covní prostředí"
 
-#: ../src/ui/theme-viewer.c:114
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Otevřít další takové okno"
 
-#: ../src/ui/theme-viewer.c:116
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Toto je demonstrační tlačítko s ikonou \"otevřít\""
 
-#: ../src/ui/theme-viewer.c:118
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Toto je demonstrační tlačítko s ikonou \"ukončit\""
 
-#: ../src/ui/theme-viewer.c:252
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Toto je ukázková zpráva v ukázkovém dialogu"
 
-#: ../src/ui/theme-viewer.c:335
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falešná položka nabídky %d\n"
 
-#: ../src/ui/theme-viewer.c:369
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Okno jen s okrajem"
 
-#: ../src/ui/theme-viewer.c:371
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Lišta"
 
-#: ../src/ui/theme-viewer.c:388
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Normální okno aplikace"
 
-#: ../src/ui/theme-viewer.c:392
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "Dialogové okno"
 
-#: ../src/ui/theme-viewer.c:396
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "Modální dialogové okno"
 
-#: ../src/ui/theme-viewer.c:400
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Paleta nástrojů"
 
-#: ../src/ui/theme-viewer.c:404
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Odtržení nabídky"
 
-#: ../src/ui/theme-viewer.c:408
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Okraj"
 
-#: ../src/ui/theme-viewer.c:412
+#: ../src/ui/theme-viewer.c:413
 msgid "Attached Modal Dialog"
 msgstr "Připojené modální dialogové okno"
 
-#: ../src/ui/theme-viewer.c:743
+#: ../src/ui/theme-viewer.c:744
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test rozložení tlačítek %d"
 
-#: ../src/ui/theme-viewer.c:772
+#: ../src/ui/theme-viewer.c:773
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekund na nakreslení jednoho rámu okna"
 
-#: ../src/ui/theme-viewer.c:817
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Použití: metacity-theme-viewer [NÁZEVMOTIVU]\n"
 
-#: ../src/ui/theme-viewer.c:824
+#: ../src/ui/theme-viewer.c:825
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Chyba při načítání motivu: %s\n"
 
-#: ../src/ui/theme-viewer.c:830
+#: ../src/ui/theme-viewer.c:831
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Načten motiv \"%s\" za %g sekund\n"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:875
 msgid "Normal Title Font"
 msgstr "Normální písmo nadpisu"
 
-#: ../src/ui/theme-viewer.c:880
+#: ../src/ui/theme-viewer.c:881
 msgid "Small Title Font"
 msgstr "Malé písmo nadpisu"
 
-#: ../src/ui/theme-viewer.c:886
+#: ../src/ui/theme-viewer.c:887
 msgid "Large Title Font"
 msgstr "Velké písmo nadpisu"
 
-#: ../src/ui/theme-viewer.c:891
+#: ../src/ui/theme-viewer.c:892
 msgid "Button Layouts"
 msgstr "Rozložení tlačítek"
 
-#: ../src/ui/theme-viewer.c:896
+#: ../src/ui/theme-viewer.c:897
 msgid "Benchmark"
 msgstr "Test výkonnosti"
 
-#: ../src/ui/theme-viewer.c:948
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "Sem patří nadpis okna"
 
-#: ../src/ui/theme-viewer.c:1054
+#: ../src/ui/theme-viewer.c:1055
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1883,60 +1857,39 @@ msgstr ""
 "Nakresleno %d rámů za %g sekund na straně klienta (%g milisekund na rám) a "
 "%g sekund reálného času včetně zdrojů serveru X (%g milisekund na rám)\n"
 
-#: ../src/ui/theme-viewer.c:1273
+#: ../src/ui/theme-viewer.c:1274
 msgid "position expression test returned TRUE but set error"
 msgstr "test výrazu umístění vrátil TRUE, ale nastavil chybu"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1276
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test výrazu umístění vrátil FALSE, ale nenastavil chybu"
 
-#: ../src/ui/theme-viewer.c:1279
+#: ../src/ui/theme-viewer.c:1280
 msgid "Error was expected but none given"
 msgstr "Byla očekávána chyba, ale nebyla přijata"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1282
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Byla očekávána chyba %d, ale bylo přijato %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1288
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Chyba nebyla očekávána, ale byla vrácena: %s"
 
-#: ../src/ui/theme-viewer.c:1291
+#: ../src/ui/theme-viewer.c:1292
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "Hodnota x byla %d, bylo očekáváno %d"
 
-#: ../src/ui/theme-viewer.c:1294
+#: ../src/ui/theme-viewer.c:1295
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "Hodnota y byla %d, bylo očekáváno %d"
 
-#: ../src/ui/theme-viewer.c:1359
+#: ../src/ui/theme-viewer.c:1360
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "Zpracováno %d výrazů souřadnic za %g sekund (průměr %g sekund)\n"
-
-#~ msgid "Turn compositing on"
-#~ msgstr "Zapnout funkci kompozitoru"
-
-#~ msgid "Turn compositing off"
-#~ msgstr "Vypnout funkci kompozitoru"
-
-#~ msgid "Error setting compositor status: %s\n"
-#~ msgstr "Chyba při nastavování stavu kompozitoru: %s\n"
-
-#~ msgid ""
-#~ "Lost connection to the display '%s';\n"
-#~ "most likely the X server was shut down or you killed/destroyed\n"
-#~ "the window manager.\n"
-#~ msgstr ""
-#~ "Ztraceno spojení s displejem \"%s\";\n"
-#~ "pravděpodobně byl ukončen server X nebo jste zabili/zrušili\n"
-#~ "správce oken.\n"
-
-#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
-#~ msgstr "Kritická chyba V/V %d (%s) na displeji \"%s\".\n"
