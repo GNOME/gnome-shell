@@ -862,7 +862,7 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
   _cogl_texture_set_filters (texhandle, GL_NEAREST, GL_NEAREST);
 
   offscreen = g_new0 (CoglOffscreen, 1);
-  offscreen->texture = cogl_handle_ref (texhandle);
+  offscreen->texture = texhandle;
 
   if ((create_flags & COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL))
     fbo_created = try_creating_fbo (offscreen, 0, &data);
@@ -898,8 +898,12 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
                               data.level_width,
                               data.level_height);
 
+      /* take a reference on the texture */
+      cogl_handle_ref (offscreen->texture);
+
       ret = _cogl_offscreen_object_new (offscreen);
       _cogl_texture_associate_framebuffer (texhandle, COGL_FRAMEBUFFER (ret));
+
       return ret;
     }
   else
@@ -907,6 +911,7 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
       g_free (offscreen);
       /* XXX: This API should probably have been defined to take a GError */
       g_warning ("%s: Failed to create an OpenGL framebuffer", G_STRLOC);
+
       return COGL_INVALID_HANDLE;
     }
 }
