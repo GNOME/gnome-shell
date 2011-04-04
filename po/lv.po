@@ -2,14 +2,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Rudolfs <rudolfs.mazurs@gmail.com>, 2011.
+# Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-25 20:20+0000\n"
-"PO-Revision-Date: 2011-03-26 14:14+0200\n"
-"Last-Translator: Rudolfs <rudolfs.mazurs@gmail.com>\n"
+"POT-Creation-Date: 2011-03-27 22:10+0000\n"
+"PO-Revision-Date: 2011-04-04 02:11+0300\n"
+"Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -189,7 +190,7 @@ msgstr "'%s' izpilde neizdevās:"
 #. Translators: Filter to display all applications
 #: ../js/ui/appDisplay.js:230
 msgid "All"
-msgstr "Visi"
+msgstr "Visas"
 
 #: ../js/ui/appDisplay.js:328
 msgid "APPLICATIONS"
@@ -367,7 +368,7 @@ msgstr "Šonedēļ"
 msgid "Next week"
 msgstr "Nākamnedēļ"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:994
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
 msgid "Remove"
 msgstr "Izņemt"
 
@@ -460,23 +461,19 @@ msgid "Logging out of the system."
 msgstr "Izrakstās no sistēmas."
 
 #: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
-#| msgid "Power Off..."
 msgid "Power Off"
 msgstr "Izslēgt"
 
 #: ../js/ui/endSessionDialog.js:76
-#| msgid "Click Log Out to quit these applications and log out of the system."
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Spiediet 'Izslēgt', lai izietu no šīm lietotnēm un izslēgtu sistēmas."
 
 #: ../js/ui/endSessionDialog.js:77
 #, c-format
-#| msgid "The system will restart automatically in %d seconds."
 msgid "The system will power off automatically in %d seconds."
 msgstr "Sistēma tiks izslēgta automātiski pēc %d sekundēm."
 
 #: ../js/ui/endSessionDialog.js:78
-#| msgid "Logging out of the system."
 msgid "Powering off the system."
 msgstr "Izslēdz sistēmu."
 
@@ -510,13 +507,13 @@ msgstr "Nav instalētu paplašinājumu"
 
 #: ../js/ui/lookingGlass.js:625
 msgid "Enabled"
-msgstr "Aktivēts"
+msgstr "Aktivēta"
 
 #. translators:
 #. * The device has been disabled
 #: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
-msgstr "Deaktivēts"
+msgstr "Deaktivēta"
 
 #: ../js/ui/lookingGlass.js:629
 msgid "Error"
@@ -534,11 +531,11 @@ msgstr "Skatīt avotu"
 msgid "Web Page"
 msgstr "Tīmekļa lapa"
 
-#: ../js/ui/messageTray.js:987
+#: ../js/ui/messageTray.js:993
 msgid "Open"
 msgstr "Atvērt"
 
-#: ../js/ui/messageTray.js:2145
+#: ../js/ui/messageTray.js:2151
 msgid "System Information"
 msgstr "Sistēmas informācija"
 
@@ -548,7 +545,7 @@ msgstr "Atsaukt"
 
 #: ../js/ui/overview.js:186
 msgid "Windows"
-msgstr "Logs"
+msgstr "Logi"
 
 #: ../js/ui/overview.js:189
 msgid "Applications"
@@ -570,7 +567,7 @@ msgstr "Iziet no %s"
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
 #: ../js/ui/panel.js:878
 msgid "Activities"
-msgstr "Darbības"
+msgstr "Aktivitātes"
 
 #: ../js/ui/panel.js:979
 msgid "Top Bar"
@@ -594,7 +591,6 @@ msgid "PLACES & DEVICES"
 msgstr "VIETAS un IERĪCES"
 
 #: ../js/ui/polkitAuthenticationAgent.js:74
-#| msgid "authentication required"
 msgid "Authentication Required"
 msgstr "Nepieciešama autentifikācija"
 
@@ -603,15 +599,18 @@ msgid "Administrator"
 msgstr "Administrators"
 
 #: ../js/ui/polkitAuthenticationAgent.js:176
-#| msgid "authentication required"
 msgid "Authenticate"
 msgstr "Autentificēt"
 
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Diemžēl tas nenostrādāja. Lūdzu, mēģiniet vēlreiz."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
 msgstr "Parole:"
 
@@ -836,140 +835,139 @@ msgstr "Rādīt tastatūras izkārtojumu..."
 msgid "Localization Settings"
 msgstr "Lokalizācijas iestatījumi"
 
-#: ../js/ui/status/network.js:102 ../js/ui/status/network.js:1437
+#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
 msgid "<unknown>"
 msgstr "<nezināms>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
+#: ../js/ui/status/network.js:311
 msgid "disabled"
-msgstr "deaktivēts"
+msgstr "izslēgts"
 
-#: ../js/ui/status/network.js:478
+#: ../js/ui/status/network.js:494
 msgid "connecting..."
 msgstr "savienojas..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:481
+#: ../js/ui/status/network.js:497
 msgid "authentication required"
 msgstr "nepieciešama autentifikācija"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:507
 msgid "firmware missing"
 msgstr "trūkst aparātprogrammatūras"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:498
+#: ../js/ui/status/network.js:514
 msgid "cable unplugged"
 msgstr "vads atvienots"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:503
+#: ../js/ui/status/network.js:519
 msgid "unavailable"
 msgstr "nav pieejams"
 
-#: ../js/ui/status/network.js:505
+#: ../js/ui/status/network.js:521
 msgid "connection failed"
 msgstr "savienojums neizdevās"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:585 ../js/ui/status/network.js:1385
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
 msgid "Connected (private)"
 msgstr "Savienots (privāts)"
 
-#: ../js/ui/status/network.js:666
+#: ../js/ui/status/network.js:683
 msgid "Auto Ethernet"
 msgstr "Auto Ethernet"
 
-#: ../js/ui/status/network.js:741
+#: ../js/ui/status/network.js:758
 msgid "Auto broadband"
 msgstr "Auto platjosla"
 
-#: ../js/ui/status/network.js:744
+#: ../js/ui/status/network.js:761
 msgid "Auto dial-up"
 msgstr "Auto iezvanlīnija"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:887 ../js/ui/status/network.js:1397
+#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
 #, c-format
 msgid "Auto %s"
-msgstr "Auto %s"
+msgstr "Automātisks %s"
 
-#: ../js/ui/status/network.js:889
+#: ../js/ui/status/network.js:906
 msgid "Auto bluetooth"
-msgstr "Auto bluetooth"
+msgstr "Automātisks bluetooth"
 
-#: ../js/ui/status/network.js:1399
+#: ../js/ui/status/network.js:1416
 msgid "Auto wireless"
-msgstr "Auto bezvadu"
+msgstr "Automātisks bezvadu"
 
-#: ../js/ui/status/network.js:1457
+#: ../js/ui/status/network.js:1474
 msgid "More..."
 msgstr "Vairāk..."
 
-#: ../js/ui/status/network.js:1480
+#: ../js/ui/status/network.js:1497
 msgid "Enable networking"
 msgstr "Aktivē tīklošanu"
 
-#: ../js/ui/status/network.js:1492
+#: ../js/ui/status/network.js:1509
 msgid "Wired"
 msgstr "Vadu"
 
-#: ../js/ui/status/network.js:1503
+#: ../js/ui/status/network.js:1520
 msgid "Wireless"
 msgstr "Bezvadu"
 
-#: ../js/ui/status/network.js:1513
+#: ../js/ui/status/network.js:1530
 msgid "Mobile broadband"
 msgstr "Mobilā platjosla"
 
-#: ../js/ui/status/network.js:1523
+#: ../js/ui/status/network.js:1540
 msgid "VPN Connections"
 msgstr "VPN savienojumi"
 
-#: ../js/ui/status/network.js:1532
+#: ../js/ui/status/network.js:1549
 msgid "Network Settings"
 msgstr "Tīkla iestatījumi"
 
-#: ../js/ui/status/network.js:1827
+#: ../js/ui/status/network.js:1844
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Jūs esat savienojies ar mobilo platjoslas savienojumu '%s'"
 
-#: ../js/ui/status/network.js:1831
+#: ../js/ui/status/network.js:1848
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Jūs esat savienojies ar bezvadu tīklu '%s'"
 
-#: ../js/ui/status/network.js:1835
+#: ../js/ui/status/network.js:1852
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Jūs esat savienojies ar vadu tīklu '%s'"
 
-#: ../js/ui/status/network.js:1839
+#: ../js/ui/status/network.js:1856
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Jūs esat savienojies ar VPN tīklu '%s'"
 
-#: ../js/ui/status/network.js:1844
+#: ../js/ui/status/network.js:1861
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Jūs esat savienojies ar '%s'"
 
-#: ../js/ui/status/network.js:1852
-#| msgid "Connection estabilished"
+#: ../js/ui/status/network.js:1869
 msgid "Connection established"
 msgstr "Savienojums izveidots"
 
-#: ../js/ui/status/network.js:1974
+#: ../js/ui/status/network.js:1991
 msgid "Networking is disabled"
 msgstr "Tīklošana ir deaktivēta"
 
-#: ../js/ui/status/network.js:2099
+#: ../js/ui/status/network.js:2116
 msgid "Network Manager"
 msgstr "Tīkla pārvaldnieks"
 
@@ -1069,28 +1067,28 @@ msgstr "Nezināms"
 
 #: ../js/ui/status/volume.js:45
 msgid "Volume"
-msgstr "Sējums"
+msgstr "Skaļums"
 
 #: ../js/ui/status/volume.js:58
 msgid "Microphone"
 msgstr "Mikrofons"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:331
 #, c-format
 msgid "%s is online."
 msgstr "%s ir tiešsaistē."
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:336
 #, c-format
 msgid "%s is offline."
 msgstr "%s ir nesaistē."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is away."
 msgstr "%s\" ir prom."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:342
 #, c-format
 msgid "%s is busy."
 msgstr "%s\" ir aizņemts."
@@ -1098,7 +1096,7 @@ msgstr "%s\" ir aizņemts."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:473
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Sūtīts %X %A"
