@@ -1,0 +1,63 @@
+Contributors to GNOME Shell 3.0
+===============================
+
+Code:
+
+ Josh Adams, Kiyoshi Aman, Nuno Araujo, Emmanuele Bassi, Dirk-Jan C. Binnema,
+ Wouter Bolsterlee, Raphael Bosshard, Milan Bouchet-Valat, Christina Boumpouka,
+ Mathieu Bridon, Alban Browaeys, Phil Bull, Micro Cai, Giovanni Campagna,
+ Cosimo Cecchi, Tor-björn Claesson, Matthias Clasen, Jason D. Clinton,
+ Frederic Crozat, Guillaume Desmottes, Sander Dijkhuis, Neha Doijode,
+ Maxim Ermilov, Diego Escalante Urrelo, Luca Ferretti, Steve Frécinaux,
+ Takao Fujiwara, Adel Gadllah, Vadim Girlin, Nick Glynn, Guido Günther,
+ Leon Handreke, Lex Hider, Richard Hughes, Javier Jardón, Abderrahim Kitouni,
+ Andre Klapper, Alexander Larsson, Nickolas Lloyd, Ryan Lortie, Kjartan Maraas,
+ Koop Mast, Rui Matos, Jonathan Matthew, William Jon McCann, Morten Mjelva,
+ Federico Mena Quintero, Florian Müllner, Jon Nettleton, Hellyna Ng,
+ Discardi Nicola, Carlos Martín Nieto, Bastien Nocera, Bill Nottingham,
+ Matt Novenstern, Marc-Antoine Perennou, Neil Perry, Frédéric Péters,
+ Alejandro Piñeiro, Siegfried-Angel Gevatter Pujals, "res", Neil Roberts,
+ "Sardem FF7", Florian Scandella, Joseph Scheuhammer, Christian Schramm,
+ Gustavo Noronha Silva, Jasper St. Pierre, Eric Springer, Jakub Steiner,
+ Jonathan Strander, Ray Strode, Owen Taylor, Rico Tzschichholz,
+ Sergey V. Udaltsov, Daiki Ueno, Vincent Untz, Marcelo Jorge Vieira,
+ Mads Villadsen, Colin Walters, Dan Winship, William Wolf, Thomas Wood,
+ Pierre Yager, David Zeuthen, Marina Zhurakhinskaya
+
+Design:
+
+ Allan Day, William Jon McCann, Jeremy Perry, Jakub Steiner
+ 2008 Boston GNOME design hackfest participants (especially Neil J. Patel
+ for turning the resulting sketches into our first mockups.)
+ Everybody on irc.gnome.org:#gnome-design
+
+Translations:
+
+ Friedel Wolff (af), Khaled Hosny (ar), Ivaylo Valkov (bg), Jamil Ahmed (bn)
+ Runa Bhattacharjee (bn_IN), Gil Forcada, Siegfried-Angel Gevatter Pujals,
+ Jordi Serratosa (ca), Andre Klapper, Petr Kovar (cs), Kenneth Nielsen,
+ Kris Thomsen (da), Mario Blättermann, Hendrik Brandt, Christian Kirbach,
+ Hendrik Richter, Wolfgang Stöggl (de), Michael Kotsarinis, Kostas Papadimas,
+ Jennie Petoumenou, Sterios Prosiniklis, Fotis Tsamis, Simos Xenitellis (el),
+ Bruce Cowan, Philip Withnall (en_GB), Jorge Gonzalez, Daniel Mustieles (es),
+ Mattias Põldaru, Ivar Smolin (et), Inaki Larranaga Murgoitio (eu),
+ Mahyar Moghimi (fa), Timo Jyrinki (fi), Cyril Arnaud, Bruno Brouard,
+ Pablo Martin-Gomez, Claude Paroz, Frédéric Peters (fr), Seán de Búrca (ga)
+ Francisco Diéguez, Antón Méixome (gl), Sweta Kothari (gu), Liel Fridman,
+ Yaron Shahrabani (he), Rajesh Ranjan (hi), Gabor Kelemen (hu), Milo Casagrande,
+ Luca Ferretti (it), Dirgita, Andika Triwidada (id), Takayuki KUSANO,
+ Takayoshi OKANO, Kiyotaka NISHIBORI, Futoshi NISHIO (ja), Shankar Prasad (kn),
+ Young-Ho Cha, Changwoo Ryu (ko), Žygimantas Beručka, Gintautas Miliauskas (lt),
+ Rudolfs Mazurs (lv), Sandeep Shedmake (mr), Kjartan Maraas (nb),
+ Wouter Bolsterlee, Sander Dijkhuis, Reinout van Schouwen (nl),
+ Torstein Winterseth (nn), A S Alam (pa), Tomasz Dominikowski, Piotr Drąg (pl),
+ Duarte Loreto (pt), Felipe Borges, Rodrigo Padula de Oliveira,
+ Rodrigo L. M. Flores, Amanda Magalhães, Og B. Maciel, Gabriel F. Vilar,
+ Jonh Wendell (pt_BR), Lucian Adrian Grijincu, Daniel Șerbănescu (ro),
+ Sergey V. Kovylov, Andrey Korzinev, Yuri Myasoedov, Marina Zhurakhinskaya (ru),
+ Daniel Nylander (se), Matej Urbančič, Andrej Žnidaršič (sl),
+ Miloš Popović (sr, sr@latin), Miroslav Nikolić (sr), Tirumurti Vasudevan (ta),
+ Sira Nokyoongtong (th), Baris Cicek (tr), Abduxukur Abdurixit,
+ Gheyret T. Kenji (ug), Maxim V. Dziumanenko, Daniel Korostil (uk),
+ Nguyễn Thái Ngọc Duy (vi), Jessica Ban, 'jiero', Wei Li, YunQiang Su, Ray Wang,
+ Aron Xu (zh_CN), Chao-Hsiung Liao (zh_HK, zh_TW)
