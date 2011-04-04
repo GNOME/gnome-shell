@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-29 03:39+0000\n"
-"PO-Revision-Date: 2011-03-30 00:26+0900\n"
+"PO-Revision-Date: 2011-04-04 21:30+0900\n"
 "Last-Translator: Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -851,7 +851,7 @@ msgstr "認証が要求されました"
 #. module, which is missing
 #: ../js/ui/status/network.js:507
 msgid "firmware missing"
-msgstr "ファームウェアが見つかりません"
+msgstr "ファームウェア無し"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:514
