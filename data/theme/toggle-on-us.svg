@@ -13,8 +13,8 @@
    height="22"
    id="svg2857"
    version="1.1"
-   inkscape:version="0.47 r22583"
-   sodipodi:docname="New document 2">
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="toggle-on-us.svg">
   <defs
      id="defs2859">
     <inkscape:perspective
@@ -40,16 +40,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="-69.642856"
-     inkscape:cy="42.428569"
+     inkscape:cx="19.689855"
+     inkscape:cy="2.0517979"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="609"
-     inkscape:window-height="501"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="941"
+     inkscape:window-height="751"
+     inkscape:window-x="2577"
+     inkscape:window-y="206"
+     inkscape:window-maximized="0"
+     borderlayer="true"
+     inkscape:showpageshadow="false" />
   <metadata
      id="metadata2862">
     <rdf:RDF>
@@ -58,7 +60,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -72,7 +74,7 @@
        transform="translate(-351.35714,708.36218)"
        id="g16453">
       <rect
-         style="color:#000000;fill:#204a87;fill-opacity:1;fill-rule:nonzero;stroke:#3465a4;stroke-width:0.99999994;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:#4a90d9;fill-opacity:1;fill-rule:nonzero;stroke:#3465a4;stroke-width:0.99999994000000003;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          id="rect16256-9-4"
          width="63.000004"
          height="19"
