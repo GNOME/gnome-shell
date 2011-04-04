@@ -14,6 +14,8 @@ RELEASE_URL      = $(RELEASE_URL_BASE)/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_
 RELEASE_ANNOUNCE_LIST = clutter-announce@clutter-project.org
 RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org
 
+RELEASE_DOC_URLS = http://docs.clutter-project.org/docs/
+
 tar_file    = $(distdir).tar.bz2
 sha256_file = $(distdir).sha256sum
 
@@ -122,10 +124,10 @@ release-message:
 	@echo "  http://git.gnome.org/browse/clutter/tree/README.in"
 	@echo ""
 	@echo "Documentation:"
-	@echo "   Clutter: $(CLUTTER_DOCS_URL)/clutter/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
-	@echo "      Cogl: $(CLUTTER_DOCS_URL)/cogl/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
-	@echo "     Cally: $(CLUTTER_DOCS_URL)/cally/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
-	@echo "  Cookbook: $(CLUTTER_DOCS_URL)/clutter-cookbook/$(CLUTTER_API_VERSION)/"
+	@echo "   Clutter: $(RELEASE_DOCS_URL)/clutter/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
+	@echo "      Cogl: $(RELEASE_DOCS_URL)/cogl/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
+	@echo "     Cally: $(RELEASE_DOCS_URL)/cally/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
+	@echo "  Cookbook: $(RELEASE_DOCS_URL)/clutter-cookbook/$(CLUTTER_API_VERSION)/"
 	@echo ""
 	@echo "Release Notes:"
 	@echo "  - This version is API and ABI compatible with the current stable"
