@@ -7,15 +7,14 @@
 
   <name>Clutter</name>
   <shortname>clutter</shortname>
-  <created>2006-11-18</created>
 
-  <shortdesc xml:lang="en">Clutter is an OpenGL based interface library</shortdesc>
+  <shortdesc xml:lang="en">A toolkit for creating fast, portable, compelling dynamic UIs</shortdesc>
 
   <description xml:lang="en">Clutter is an open source software library for creating fast, portable, compelling and dynamic graphical user interfaces. Clutter uses OpenGL (and optionally OpenGL|ES for use on Mobile and embedded platforms) for rendering, but with an API which hides the underlying GL complexity from the developer. The Clutter API is intended to be easy to use, efficient and flexible.</description>
 
   <homepage rdf:resource="http://www.clutter-project.org" />
   <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
-  <bug-database rdf:resource="http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter"/>
+  <bug-database rdf:resource="http://bugzilla.gnome.org/enter_bug.cgi?product=clutter"/>
   <download-page rdf:resource="http://source.clutter-project.org/sources/clutter" />
   <mailing-list rdf:resource="mailto:clutter-devel-list@clutter-project.org" />
 
@@ -26,6 +25,22 @@
       <foaf:name>Emmanuele Bassi</foaf:name>
       <foaf:mbox rdf:resource="mailto:ebassi@linux.intel.com"/>
       <gnome:userid>ebassi</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Neil Roberts</foaf:name>
+      <foaf:mbox rdf:resource="mailto:neil@linux.intel.com"/>
+      <gnome:userid>nroberts</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Robert Bragg</foaf:name>
+      <foaf:mbox rdf:resource="mailto:rob@linux.intel.com"/>
+      <gnome:userid>rbragg</gnome:userid>
     </foaf:Person>
   </maintainer>
 
@@ -40,6 +55,7 @@
     <foaf:Person>
       <foaf:name>Emmanuele Bassi</foaf:name>
       <foaf:mbox rdf:resource="mailto:ebassi@linux.intel.com"/>
+      <gnome:userid>ebassi</gnome:userid>
     </foaf:Person>
   </author>
 
@@ -47,6 +63,7 @@
     <foaf:Person>
       <foaf:name>Neil Roberts</foaf:name>
       <foaf:mbox rdf:resource="mailto:neil@linux.intel.com"/>
+      <gnome:userid>nroberts</gnome:userid>
     </foaf:Person>
   </author>
 
@@ -54,6 +71,7 @@
     <foaf:Person>
       <foaf:name>Robert Bragg</foaf:name>
       <foaf:mbox rdf:resource="mailto:robert@linux.intel.com"/>
+      <gnome:userid>rbragg</gnome:userid>
     </foaf:Person>
   </author>
 
@@ -66,8 +84,8 @@
 
   <repository>
     <GitRepository>
-      <browse rdf:resource="http://git.clutter-project.org/clutter/"/>
-      <location rdf:resource="git://git.clutter-project.org/clutter"/>
+      <browse rdf:resource="http://git.gnom.org/browse/clutter/"/>
+      <location rdf:resource="git://git.gnome.org/clutter"/>
     </GitRepository>
   </repository>
 
