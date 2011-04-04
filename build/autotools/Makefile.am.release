@@ -65,8 +65,14 @@ release-verify-even-micro:
 	@echo "Good."
 
 release-upload: $(sha256_file)
+	@echo "Uploading to $(RELEASE_UPLOAD_HOST)..."
 	@scp $(tar_file) $(RELEASE_UPLOAD_DIR)
+	@echo "Uploading to master.gnome.org..."
+	@scp $(tar_file) master.gnome.org:
+	@echo "Running ftpadmin install..."
+	@ssh master.gnome.org ftpadmin install $(tar_file)
 	@mv -f $(sha256_file) $(top_builddir)/build/$(sha256_file)
+	@echo "Done."
 
 release-message:
 	@echo "     Release URL: $(RELEASE_URL)/$(tar_file)"
@@ -98,6 +104,40 @@ release-message:
 	@echo "and can be checked out with a command such as:"
 	@echo "  git checkout -b build $(CLUTTER_VERSION)"
 	@echo ""
+	@echo "Clutter is a library for creating compelling, dynamic and portable graphical"
+	@echo "user interfaces. Clutter is released under the terms of the GNU Lesser"
+	@echo "General Public License, version 2.1 or (at your option) later."
+	@echo ""
+	@echo "Clutter depends on:"
+	@echo "  GLib ≥ @GLIB_REQ_VERSION@"
+	@echo "  JSON-GLib ≥ @JSON_GLIB_REQ_VERSION@"
+	@echo "  Cairo ≥ @CAIRO_REQ_VERSION@"
+	@echo "  Pango ≥ @PANGO_REQ_VERSION@"
+	@echo "  Atk ≥ @ATK_REQ_VERSION@"
+	@echo "  OpenGL ≥ 1.3 (or 1.2 + multi-texturing), OpenGL|ES 1.1 or 2.0"
+	@echo "  GLX, WGL, Quartz, or an EGL implementation"
+	@echo ""
+	@echo "Clutter also has platform-specific dependencies; for more information, see"
+	@echo "the README file at:"
+	@echo "  http://git.gnome.org/browse/clutter/tree/README.in"
+	@echo ""
+	@echo "Documentation:"
+	@echo "   Clutter: $(CLUTTER_DOCS_URL)/clutter/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
+	@echo "      Cogl: $(CLUTTER_DOCS_URL)/cogl/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
+	@echo "     Cally: $(CLUTTER_DOCS_URL)/cally/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
+	@echo "  Cookbook: $(CLUTTER_DOCS_URL)/clutter-cookbook/$(CLUTTER_API_VERSION)/"
+	@echo ""
+	@echo "Release Notes:"
+	@echo "  - This version is API and ABI compatible with the current stable"
+	@echo "    release of Clutter."
+	@echo "  - Installing the contents of this release will overwrite the files"
+	@echo "    from the installation of the current release of Clutter."
+	@echo "  - Bugs should be reported on the Clutter Bugzilla product, at:"
+	@echo "    http://bugzilla.gnome.org/enter_bug.cgi?product=clutter"
+	@echo ""
+	@$(SED) -n '1bend;/^Clutter /q;:end;2,$$p' $(top_srcdir)/NEWS
+	@echo ""
+	@echo "Have fun with Clutter!"
 	@echo "--- CUT HERE ---"
 
 release-publish: release-check
