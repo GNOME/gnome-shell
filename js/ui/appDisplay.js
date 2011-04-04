@@ -686,7 +686,7 @@ AppIconMenu.prototype = {
         let item = new PopupMenu.PopupImageMenuItem(info.name, type);
         this.addMenuItem(item);
         item.connect('activate', Lang.bind(this, function () {
-            let app = new Gio.DesktopAppInfo.new_from_filename();
+            let app = new Gio.DesktopAppInfo.new(this._source.app.get_id());
             app.launch_uris([info.uri], null);
         }));
     },
