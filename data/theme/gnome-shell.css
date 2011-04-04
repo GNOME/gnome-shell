@@ -102,8 +102,15 @@ StTooltip StLabel {
     min-width: 200px;
 }
 
+.popup-submenu-menu-item:open {
+    background-color: #4c4c4c;
+}
+
 .popup-sub-menu {
-    background-color: #606060;
+    background-gradient-start: rgba(80,80,80,0.3);
+    background-gradient-end: rgba(80,80,80,0.7);
+    background-gradient-direction: vertical;
+    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.9);
 }
 
 /* The remaining popup-menu sizing is all done in ems, so that if you
