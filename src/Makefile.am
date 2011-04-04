@@ -29,9 +29,11 @@ endif
 
 noinst_DATA = gnome-shell
 gnome-shell: $(gnome_shell) Makefile
-	cp $< $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN) cp $< $@.tmp && mv $@.tmp $@
 install-exec-hook:
 	mv $(DESTDIR)$(bindir)/$(gnome_shell) $(DESTDIR)$(bindir)/gnome-shell
+uninstall-hook:
+	rm -f $(DESTDIR)$(bindir)/gnome-shell
 
 generated_script_substitutions = \
 	    -e "s|@bindir[@]|$(bindir)|" \
