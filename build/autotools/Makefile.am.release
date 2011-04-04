@@ -77,7 +77,7 @@ release-message:
 	@echo "        Contents:"
 	@echo "--- CUT HERE ---"
 	@echo "Good news, everyone!"
-	@echl ""
+	@echo ""
 	@echo "A new Clutter $(CLUTTER_RELEASE_STATUS) is now available at:"
 	@echo ""
 	@echo "  $(RELEASE_URL)/$(tar_file)"
