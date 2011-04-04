@@ -1042,7 +1042,7 @@ PopupSubMenu.prototype = {
     __proto__: PopupMenuBase.prototype,
 
     _init: function(sourceActor, sourceArrow) {
-        PopupMenuBase.prototype._init.call(this, sourceActor, 'popup-sub-menu');
+        PopupMenuBase.prototype._init.call(this, sourceActor);
 
         this._arrow = sourceArrow;
         this._arrow.rotation_center_z_gravity = Clutter.Gravity.CENTER;
@@ -1050,7 +1050,8 @@ PopupSubMenu.prototype = {
         // Since a function of a submenu might be to provide a "More.." expander
         // with long content, we make it scrollable - the scrollbar will only take
         // effect if a CSS max-height is set on the top menu.
-        this.actor = new St.ScrollView({ hscrollbar_policy: Gtk.PolicyType.NEVER,
+        this.actor = new St.ScrollView({ style_class: 'popup-sub-menu',
+                                         hscrollbar_policy: Gtk.PolicyType.NEVER,
                                          vscrollbar_policy: Gtk.PolicyType.NEVER });
 
         // StScrollbar plays dirty tricks with events, calling
