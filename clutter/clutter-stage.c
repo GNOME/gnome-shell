@@ -176,6 +176,7 @@ struct _ClutterStagePrivate
   guint have_valid_pick_buffer : 1;
   guint accept_focus           : 1;
   guint motion_events_enabled  : 1;
+  guint has_custom_perspective : 1;
 };
 
 enum
@@ -2136,24 +2137,11 @@ clutter_stage_get_color (ClutterStage *stage,
   *color = priv->color;
 }
 
-/**
- * clutter_stage_set_perspective:
- * @stage: A #ClutterStage
- * @perspective: A #ClutterPerspective
- *
- * Sets the stage perspective.
- */
-void
-clutter_stage_set_perspective (ClutterStage       *stage,
-                               ClutterPerspective *perspective)
+static void
+clutter_stage_set_perspective_internal (ClutterStage       *stage,
+                                        ClutterPerspective *perspective)
 {
-  ClutterStagePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-  g_return_if_fail (perspective != NULL);
-  g_return_if_fail (perspective->z_far - perspective->z_near != 0);
-
-  priv = stage->priv;
+  ClutterStagePrivate *priv = stage->priv;
 
   if (priv->perspective.fovy == perspective->fovy &&
       priv->perspective.aspect == perspective->aspect &&
@@ -2174,6 +2162,35 @@ clutter_stage_set_perspective (ClutterStage       *stage,
 
   priv->dirty_projection = TRUE;
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+/**
+ * clutter_stage_set_perspective:
+ * @stage: A #ClutterStage
+ * @perspective: A #ClutterPerspective
+ *
+ * Sets the stage perspective. Using this function is not recommended
+ * because it will disable Clutter's attempts to generate an
+ * appropriate perspective based on the size of the stage.
+ */
+void
+clutter_stage_set_perspective (ClutterStage       *stage,
+                               ClutterPerspective *perspective)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (perspective != NULL);
+  g_return_if_fail (perspective->z_far - perspective->z_near != 0);
+
+  priv = stage->priv;
+
+  /* If the application ever calls this function then we'll stop
+     automatically updating the perspective when the stage changes
+     size */
+  priv->has_custom_perspective = TRUE;
+
+  clutter_stage_set_perspective_internal (stage, perspective);
 }
 
 /**
@@ -3134,8 +3151,15 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
                          priv->viewport[3]);
 
       perspective = priv->perspective;
-      perspective.aspect = priv->viewport[2] / priv->viewport[3];
-      clutter_stage_set_perspective (stage, &perspective);
+
+      /* Ideally we want to regenerate the perspective matrix whenever
+         the size changes but if the user has provided a custom matrix
+         then we don't want to override it */
+      if (!priv->has_custom_perspective)
+        {
+          perspective.aspect = priv->viewport[2] / priv->viewport[3];
+          clutter_stage_set_perspective_internal (stage, &perspective);
+        }
 
       cogl_matrix_init_identity (&priv->view);
       cogl_matrix_view_2d_in_perspective (&priv->view,
