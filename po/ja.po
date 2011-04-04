@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-29 03:39+0000\n"
-"PO-Revision-Date: 2011-04-04 21:30+0900\n"
+"POT-Creation-Date: 2011-04-04 12:31+0000\n"
+"PO-Revision-Date: 2011-03-30 00:26+0900\n"
 "Last-Translator: Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -490,7 +490,7 @@ msgstr "%d 秒後にシステムを再起動します。"
 msgid "Restarting the system."
 msgstr "システムを再起動します。"
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/endSessionDialog.js:417 ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "キャンセル"
@@ -621,11 +621,11 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "コマンド:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:311
 msgid "Searching..."
 msgstr "検索しています..."
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:325
 msgid "No matching results."
 msgstr "一致するものがありません。"
 
@@ -829,139 +829,139 @@ msgstr "キーボードレイアウトの表示..."
 msgid "Localization Settings"
 msgstr "ローカライズ設定"
 
-#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:105 ../js/ui/status/network.js:1467
 msgid "<unknown>"
 msgstr "< 不明 >"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:311
+#: ../js/ui/status/network.js:319
 msgid "disabled"
 msgstr "利用不可"
 
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:502
 msgid "connecting..."
-msgstr "接続しています..."
+msgstr "接続中..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/network.js:505
 msgid "authentication required"
-msgstr "認証が要求されました"
+msgstr "認証要求"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:507
+#: ../js/ui/status/network.js:515
 msgid "firmware missing"
 msgstr "ファームウェア無し"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:514
+#: ../js/ui/status/network.js:522
 msgid "cable unplugged"
-msgstr "ケーブルが接続されていません"
+msgstr "ケーブル抜け"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:519
+#: ../js/ui/status/network.js:527
 msgid "unavailable"
-msgstr "利用できません"
+msgstr "利用不可"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:529
 msgid "connection failed"
-msgstr "接続に失敗しました"
+msgstr "接続失敗"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
+#: ../js/ui/status/network.js:609 ../js/ui/status/network.js:1415
 msgid "Connected (private)"
-msgstr "接続済み (制限付)"
+msgstr "接続 (制限付)"
 
-#: ../js/ui/status/network.js:683
+#: ../js/ui/status/network.js:690
 msgid "Auto Ethernet"
 msgstr "自動イーサネット接続"
 
-#: ../js/ui/status/network.js:758
+#: ../js/ui/status/network.js:765
 msgid "Auto broadband"
 msgstr "自動ブロードバンド接続"
 
-#: ../js/ui/status/network.js:761
+#: ../js/ui/status/network.js:768
 msgid "Auto dial-up"
 msgstr "自動ダイヤルアップ"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:911 ../js/ui/status/network.js:1427
 #, c-format
 msgid "Auto %s"
 msgstr "自動 %s"
 
-#: ../js/ui/status/network.js:906
+#: ../js/ui/status/network.js:913
 msgid "Auto bluetooth"
 msgstr "自動 Bluetooth 接続"
 
-#: ../js/ui/status/network.js:1416
+#: ../js/ui/status/network.js:1429
 msgid "Auto wireless"
 msgstr "自動無線接続"
 
-#: ../js/ui/status/network.js:1474
+#: ../js/ui/status/network.js:1487
 msgid "More..."
 msgstr "その他..."
 
-#: ../js/ui/status/network.js:1497
+#: ../js/ui/status/network.js:1510
 msgid "Enable networking"
 msgstr "ネットワークを利用可能にする"
 
-#: ../js/ui/status/network.js:1509
+#: ../js/ui/status/network.js:1522
 msgid "Wired"
 msgstr "有線接続"
 
-#: ../js/ui/status/network.js:1520
+#: ../js/ui/status/network.js:1533
 msgid "Wireless"
 msgstr "無線接続"
 
-#: ../js/ui/status/network.js:1530
+#: ../js/ui/status/network.js:1543
 msgid "Mobile broadband"
 msgstr "モバイルブロードバンド"
 
-#: ../js/ui/status/network.js:1540
+#: ../js/ui/status/network.js:1553
 msgid "VPN Connections"
 msgstr "VPN 接続"
 
-#: ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:1565
 msgid "Network Settings"
 msgstr "ネットワーク設定"
 
-#: ../js/ui/status/network.js:1844
+#: ../js/ui/status/network.js:1855
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "モバイルブロードバンド '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1848
+#: ../js/ui/status/network.js:1859
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "無線ネットワーク '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1852
+#: ../js/ui/status/network.js:1863
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "有線ネットワーク '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1856
+#: ../js/ui/status/network.js:1867
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "VPN ネットワーク '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1861
+#: ../js/ui/status/network.js:1872
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "'%s' に接続しました"
 
-#: ../js/ui/status/network.js:1869
+#: ../js/ui/status/network.js:1880
 msgid "Connection established"
 msgstr "接続を確立しました"
 
-#: ../js/ui/status/network.js:1991
+#: ../js/ui/status/network.js:2006
 msgid "Networking is disabled"
 msgstr "ネットワークを利用できません"
 
-#: ../js/ui/status/network.js:2116
+#: ../js/ui/status/network.js:2131
 msgid "Network Manager"
 msgstr "ネットワークマネージャ"
 
