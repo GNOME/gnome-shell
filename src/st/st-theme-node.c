@@ -483,21 +483,12 @@ get_color_from_term (StThemeNode  *node,
   /* rgba () colors - a CSS3 addition, are not supported by libcroco,
    * but they are parsed as a "function", so we can emulate the
    * functionality.
-   *
-   * libcroco < 0.6.2 has a bug where functions starting with 'r' are
-   * misparsed. We workaround this by pre-converting 'rgba' to 'RGBA'
-   * before parsing the stylesheet. Since libcroco isn't
-   * case-insensitive (a bug), it's fine with functions starting with
-   * 'R'. (In theory, we should be doing a case-insensitive compare
-   * everywhere, not just here, but that doesn't make much sense when
-   * the built-in parsing of libcroco is case-sensitive and things
-   * like 10PX don't work.)
    */
   else if (term->type == TERM_FUNCTION &&
            term->content.str &&
            term->content.str->stryng &&
            term->content.str->stryng->str &&
-           g_ascii_strcasecmp (term->content.str->stryng->str, "rgba") == 0)
+           strcmp (term->content.str->stryng->str, "rgba") == 0)
     {
       return get_color_from_rgba_term (term, color);
     }
