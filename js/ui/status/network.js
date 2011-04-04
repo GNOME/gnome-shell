@@ -492,6 +492,7 @@ NMDevice.prototype = {
 
     getStatusLabel: function() {
         switch(this.device.state) {
+        case NetworkManager.DeviceState.UNMANAGED:
         case NetworkManager.DeviceState.DISCONNECTED:
         case NetworkManager.DeviceState.ACTIVATED:
             return null;
@@ -1711,13 +1712,13 @@ NMApplet.prototype = {
                                                                 { icon: icon });
                 this._source.notify(notification);
             })); */
-            wrapper._stateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
+            wrapper._deviceStateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
                 this._syncSectionTitle(dev.category);
             }));
             wrapper._destroyId = wrapper.connect('destroy', function(wrapper) {
                 //wrapper.disconnect(wrapper._networkLostId);
                 //wrapper.disconnect(wrapper._activationFailedId);
-                wrapper.disconnect(wrapper._stateChangedId);
+                wrapper.disconnect(wrapper._deviceStateChangedId);
             });
             let section = this._devices[wrapper.category].section;
             let devices = this._devices[wrapper.category].devices;
