@@ -1,3 +1,730 @@
+3.0.0
+=====
+
+* Avoid crashing when you have a single window and try to move it between
+  workspaces. [Dan]
+  https://bugzilla.gnome.org/show_bug.cgi?id=642957
+
+Contributors:
+ Dan Winship
+
+Translations:
+ Jordi Serratosa [ca], Petr Kovar [cz], Ask H. Larsen [da], Bruce Cowan [en_GB],
+ Inaki Larranaga Murgoitio [eu], Gabor Kelemen [hu], Dirgita [id], Shankar Prasad [kn],
+ Changwoo Ryu [ko], Wouter Bolsterlee [nl], Duarte Loreto [pt],
+ Antonio Fernandes C. Neto, Rodrigo Padula de Oliveira [pt_BR], T. Vasudevan [ta],
+ Nguyễn Thái Ngọc Duy [vi], Chao-Hsiung Liao [zh_HK, zh_TW]
+
+2.91.93
+=======
+
+* Fix bug where, when a monitor was hot-plugged, all workspaces
+  would collapse to a single workspace. (There are still issues
+  when a secondary monitor is hot-plugged to the left of the
+  primary monitor.) [Alex]
+  https://bugzilla.gnome.org/show_bug.cgi?id=645408)
+
+* Fix a crash for the cycle_group action [Jasper]
+  https://bugzilla.gnome.org/show_bug.cgi?id=645843
+
+* Fix misdrawing of window shadows on some focus changes [Dan]
+  https://bugzilla.gnome.org/show_bug.cgi?id=636904
+
+* Export meta_get_replace_current_wm() to allow fixing a
+  GNOME Shell bug with --replace [Colin]
+  https://bugzilla.gnome.org/show_bug.cgi?id=645590
+
+Contributors:
+ Alexander Larsson, Jasper St. Pierre, Colin Walters, Dan Winship
+
+Translations:
+ Alexander Shopov [bg], Christian Kirbach [de], Yaron Shahrabani [he],
+ Rudolfs Mazurs [lv], A S Alam [pa], Yuri Myasoedov [ru], Daniel Nylander [se],
+ Abduxukur Abdurixit [ug], Daniel Korostil [uj], Aron Xu [zh_CN]
+
+2.91.92
+=======
+
+ * Add a workspaces_only_on_primary preferences. When set, this makes
+   workspaces switching only apply to windows on the primary monitor,
+   while windows on other monitors are unaffected.
+ * Export API for monitor handling [Alex]
+    MetaScreen::monitors-changed signal
+    meta_screen_get_primary_monitor()
+    meta_window_is_on_primary_monitor()
+    meta_window_get_monitor()
+    MetaWindow::window-entered-monitor, <etaWindow::window-left-monitor
+    meta_window_move_to_monitor() [Florian]
+ * Behavior improvemnts for attached modal dialogs:
+   - Allow dragging dragging on the titlebar to move the  parent ["Ron"]
+   - Allow resizing [Florian]
+   - Constrain to be on the current monitor [Florian]
+ * Don't turn on XSMP autorestart [Colin]
+ * Combine libmutter-wm and libmutter-private into a single libmutter
+   [Frédéric]
+ * Export methods to move and resize windows [Jeffery]
+   meta_window_move(), meta_window_resize(), meta_window_move_frame()
+ * Add a MUTTER_WM_CLASS_FILTER environment variable to allow existing
+   windows to be ignored when performance testing. [Owen]
+ * Add a new compositor-based flash for visual bell [Dan]
+ * Fix bug where application specified values for properties like
+   "skip taskbar" were sometimes ignored [Dan]
+ * Bug fixes [Dan, Florian, Giovanni, Jasper, Owen]
+ * Build fixes [Rico]
+
+Contributors:
+ Giovanni Campagna, Florian Müllner, Alexander Larsson, Jeffery Olson,
+ Frédéric Péters, Owen Taylor, Jasper St. Pierre, Rico Tzschichholz,
+ "Ron", Colin Walters, Dan Winship
+
+Translations:
+ Khaled Hosny [ar], David Planella [ca], Mario Blättermann [de],
+ Bruce Cowan [en_GB], Jorge González, Daniel Mustieles [es], Ivar Smolin [et],
+ Bruno Brouard [fr], Fran Diéguez [gl], Yaron Shahrabani [he],
+ Gabor Kelemen [hu], Luca Ferretti [it], Kjartan Maraas [nb], Piotr Drąg [pl],
+ Duarte Loreto [pt], Lucian Adrian Grijincu, Adi Roiban [ro],
+ Yuri Myasoedov [ru], Matej Urbančič [sl], Daniel Korostil [uk]
+
+Bugs fixed:
+ 624360 window shows up in when pressing alt+tab, but skip_taskbar_hint is set to True
+ 631308 Dialogs attached to parent sometimes extend out of the screen
+ 638674 [PATCH] Allow moving attached dialogs
+ 639765 a11y: visual alert only works per-window, not screen
+ 641975 Pre-_NET_WM_ICONs look corrupted
+ 642355 patch to expose MetaWindow.move(), .resize() and add/expose .move_frame() to javascript
+ 642787 MetaWindowActor has a dangling reference to its MetaWindow
+ 643597 Attached dialogs not resizable, even by app request
+ 644188 Broken build of 2.91.91
+ 644252 Add MUTTER_WM_CLASS_FILTER environment variable
+ 644529 session: Change XSMP restart style to Never
+ 644565 Kill libmutter-private ?
+ 644961 auto-tiling makes moving already-tiled windows hard
+ 645224 Translation message doesn't make much sense
+ 645247 Methods of Meta.Rectangle are missing annotations.
+ 645455 tiling: Fix dragging windows free from edge-tiling
+
+2.91.91
+=======
+
+ * Build a libmutter-wm that contains all of the logic and that
+   can be linked to to create custom executables. The mutter executable
+   becomes a small stub linked to this library [Dan]
+ * Move installed headers files into a meta/ subdirectory instead
+   of polluting the toplevel namespace [Dan]
+ * Remove various unused complications: [Dan]
+   - Ability to set the set of plugins via GConf
+   - Plugin 'params'
+   - meta_restart() and "mutter-message restart"
+ * Don't exit when we are requested to exit via XSMP, assume we'll be
+   killed along with the X server; this avoids visual artifacts from
+   unmanaging windows when logging out [Colin]
+ * Build fixes [Dan, Jani, Jeff]
+
+Contributors:
+ Jani Monoses, Jeff Olson, Colin Walters, Dan Winship
+
+Translations:
+ Bruno Brouard [fr], Kjartan Maraas [nb], Daniel Korostil [uk]
+
+Bugs fixed:
+ 643194 patch: expose new meta_window_get_window_rect
+ 643437 Don't exit on XSMP request
+ 643959 Make mutter into a library
+
+2.91.90
+=======
+
+ * Change <Alt>Above_Tab from being a cycle_group binding to
+   a switch_group binding [Rui]
+ * Make plugin-loading failure fatal [Colin]
+ * Add 'position-changed' signal to MetaWindowActor [Owen]
+ * When 'live_hidden_previews' is enabled, position hidden windows
+   to allow the creation of workspace previews [Owen]
+ * Fix bug with opacity of MetaBackgroundActor
+
+Contributors:
+  Rui Matos, Owen Taylor, Colin Walters
+
+Translations:
+  Jorge González [es],  Mattias Põldaru [et], Sweta Kothari [gu], Luca Ferretti [it],
+  Changwoo Ryu [ko], Nguyễn Thái Ngọc Duy [vi]
+
+Bugs fixed:
+  641309 When live_hidden_previews is set, force placement for hidden windows
+  641310 MetaWindowActor: Add a 'positioned-changed' signal
+  641979 Visual glitch on workspace selector closing overview mode
+  641384 Make plugin loading failure fatal
+  642426 Don't pass handled key events to GTK+
+
+2.91.6
+======
+
+ * Add meta_screen_override_window_layout() to let a plugin set the workspace
+   layout [Owen]
+ * Add a 'size-changed' signal to MetaWindowActor [Florian]
+ * Add meta_window_actor_is_destroyed() [Adel]
+ * Fix problems with window tile previews when cancelling a move [Florian]
+ * Port theme elements that use GTK+ drawing to use GtkStyleContext instead
+   of the deprecated GtkStyle. [Florian]
+ * Fix compiler warnings that were causing compilation failures [Jasper, Owen]
+ * Misc bug fixes [Gabor, Jasper, Owen, Rui]
+
+Contributors:
+ Adel Gadllah, Gabor Kelemen, Rui Matos, Florian Müllner, Jasper St. Pierre,
+ Owen Taylor
+
+Translations:
+ Khaled Hosny [ar], Alexander Shopov [bg], Petr Kovar [cz], Fran Diéguez [gl],
+ Marios Zindilis [gr], Gabor Kelemen [hu], Kjartan Maraas [nb], A S Alam [pa],
+ Daniel Nylander [se], Chao-Hsiung Liao [zh_HK, zh_TW]
+
+2.91.5
+======
+
+* Add a Above_Tab key symbol that can be used in key bindings to mean
+  the key above the Tab key. This is now the default binding for
+  cycle_group in both Mutter and Metacity. [Owen]
+* Add new frame states for tiled-on-the-left and tiled-on-the-right [Florian]
+* Add new background drawing functions that can be defined in a theme
+  for single buttons. [Florian]
+* Draw the right button backgrounds for all custom button layouts [Florian]
+* Remove vestigal --composite/--no-composite command line options [Nickolas]
+* Fix building on GLES [Andreas]
+* Code cleanups [Adel, Owen]
+
+Contributors:
+ Adel Gadllah, Nickolas Lloyd, Andreas Mueller, Florian Müllner, Owen Taylor
+
+Translations:
+ Mattias Põldaru, Ivar Smolin [et], Gheyret T. Kenji [ug]
+
+Bugs fixed:
+ 613124 Invalid visibility-related asserts in MutterWindow
+ 626875 Fix handling of --composite and --no-composite command line options
+ 629282 [PATCH] Fix errors building for gles-systems (clutter-eglx)
+ 635569 Add an "Above_Tab" pseudo-keysym
+ 635683 add specific button background for single button (per side) case
+ 635686 button backgrounds broken with rtl locales
+ 637330 [PATCH] theme: Add tiled_left/tiled_right frame states
+
+2.91.4
+======
+
+* Update for GTK+ 3 changes [Benjamin, Colin, Emmanuele, Florian]
+* Support maximizing a window by dragging to the top of the screen
+  in the same way you can tile by dragging to the edge of the screen.
+  [Ray, Florian]
+* Misc bug fixes [Milan, Owen]
+
+Contributors:
+ Emmanuele Bassi, Milan Bouchet-Valat, Florian Müllner, Benjamin Otte,
+ Ray Strode, Owen Taylor, Colin Walters
+
+Translations:
+ Matej Urbančič [sl], Nguyễn Thái Ngọc Duy [vi]
+
+Bugs fixed:
+ 630548 gnome-shell could auto-maximize windows when dragged to top edge of screen
+ 636083 workspace: Consider text direction when switching
+ 636301 Port testgradient example to GTK3
+ 636302 Replace some GDK X11 calls with future-proof ones
+ 636491 valgrind: meta_window_shape_new (meta-window-shape.c:79)
+ 637802 ui: Adapt to GDK API changes
+
+2.91.3
+======
+
+* Better shadows: [Owen]
+   - Shadows can be different for different window types and focus states
+   - Shadows are larger by default, especially for the currently active
+     window
+   - Shadows for attached modal dialogs and menus are drawn not to
+     overlap the attachment point.
+   - Shadows follow the shape of shaped windows
+ * Optimization: [Owen]
+   - Avoid repainting in situations when windows are potentially restacked
+     but aren't actually restacked.
+   - Pay attention to partial stage repaints in obscured window calculations
+   - Better optimization of painting obscured shadows; turn off shadows
+     for maximized windows.
+   - Move background repainting into Mutter; doing it here rather than
+     in plugins allows not painting obscured parts of the background.
+ * A new frame type 'attached' is added for attached modal dialogs
+   and can be referenced in theme files with a theme version of 3.2.
+ * Fix updating key bindings when the keyboard layout changes
+   [Derek, Owen, Thomas]
+ * Bug fixes [Adel, Florian]
+ * Build fixes [Dan Williams, Diego, Javier, Owen]
+
+Contributors:
+ Adel Gadllah, Javier Jardón, Florian Müllner, Derek Poon, Owen Taylor,
+ Thomas Thurman, Diego Escalante Urrelo, Dan Williams
+
+Translations:
+ Khaled Hosny [ar], Jorge González [es], Fran Diéguez [gl],
+ Yaron Shahrabani [he], Kjartan Maraas [nb], Gheyret T. Kenji [ug]
+
+Bugs fixed:
+ 634779 MetaWindowGroup: further optimize paints by using current scissor
+ 634833 Draw the root window background
+ 592382 improve shadow effect
+ 628199 Add antialising to arc and line drawing operations
+ 633002 meta-actor-window: Use G_UNLIKELY for TFP check
+ 634771 MetaStackTracker: Avoid queueing resync for obvious no-ops
+ 635421 Fix crash in check_needs_shadow
+ 635493 configure.in: it's git, not Subversion
+ 635528 configure.ac: move call to AM_GNU_GLIB_GETTEXT above cflags modification
+ 635575 meta-window-actor: remove unused meta_window_actor_get_shadow_bounds
+ 636083 workspace: Consider text direction when switching
+
+2.91.2
+======
+
+* Remove support for GTK+ 2 [Florian]
+* Adapt to deprecation of size_request deprecation in GTK+ [Matthias]
+* Include change from Metacity to fix confusion of mouse
+  tracking when double-clicking on title bar [Owen]
+* Fix bug with the the window menu getting stuck when you alt-Tab [Owen]
+
+Contributors:
+ Matthias Clasen, Florian Müllner, Owen Taylor
+
+Translations:
+ Petr Kovar [cz]
+
+Bugs fixed:
+ 633133 Remove compatibility for GTK+-2.0
+ 633352 prepare for the demise of size_request
+ 633398 Fix check for events on UI widgets
+ 633401 Fix warning from synthesized events with GdkDevice
+
+2.91.1
+======
+
+* Default build is now GTK+ 3 build
+* Mutter namespace prefix is removed, in favor of consistent
+  meta_ namespace prefixing [Owen]. Naming changes:
+    MutterWindow              => MetaWindowActor
+    mutter_get_windows        => meta_get_window_actors
+    mutter_plugin_get_windows => meta_plugin_get_window_actors
+* Add missing values in MetaKeyBindingAction - this fixes a problem where
+  key binding lookup wasn't working properly for some key bindings. [Dan]
+* Remove keysym parameter to meta_display_get_keybinding_action() - the
+  function expected the default keysym for the keycode to always be passed [Dan]
+* Clean up installed header files - in particular, theme-parser.h is merged
+  into a new public-only theme.h and private internals are moved to
+  theme-private.h.
+* Fix problems with antialiased rendering of themes [Brandon, Owen, Nickolas]
+* Fix problem with parsing color constants in themes [Jon, Owen]
+* Build fixes [Colin]
+* Miscellaneous bug fixes [Giovanni, Rico]
+
+Contributors:
+  Giovanni Campagna, Nickolas Lloyd, William Jon McCann, Owen Taylor,
+  Rico Tzschichholz, Colin Walters, Dan Winship, Brandon Wright
+
+Translations:
+  Fran Diéguez [gl], Yinghua Wang [zh_CN]
+
+Fixed bugs:
+ 628401 tint and line draw ops rendering issues
+ 628520 unfortunate namespacing
+ 631487 Fix drawing of <arc> theme elements
+ 632116 don't clobber gerrors
+ 632149 Fill in missing MetaKeyBindingAction values
+ 632155 meta_display_get_keybinding_action: remove keysym parameter
+ 632474 Remove MetaRegion
+ 632494 introspection: remove --allow-unprefixed
+
+2.91.0
+======
+
+ * Enable side-by-side tiling via a gesture of dragging to the left or right
+   edge of the screen. (enabled with an off-by-default GConf key) [Florian]
+ * Allow breaking out of maximization/tiling using a alt-middle-button window
+   resize [Owen, Florian]
+ * Add the ability to have modal dialogs attached to their parent window
+   (enabled with an off-by-default GConf key) [Maxim]
+ * Draw with Cairo rather than GDK [Florian, Benjamin]
+ * Add compatibility for changes in GTK+ 3
+   [Benjamin, Alban, Florian, Jasper, Matthias, Owen, Thierry]
+   - libmutter-private is now only installed for GTK+ 3 builds
+   - Theme parts of libmutter-private API are changed to take cairo_t
+     rather than GdkDrawable
+ * Update introspection build and annotations for new behavior of
+   g-ir-scanner [Colin]
+ * Fix bug that caused window menu options not to work [Owen]
+ * Fix misbehavior of Wine windows [Owen, Alban]
+ * Fix crashes from missing error traps [Adel]
+ * Build fixes [Colin, Florian, Owen, Rob, Tomas]
+ * Misc bug fixes [Adel, Jon, Owen, Nickolas, Tomas]
+ * Cleanups [Adel, Benjamin, Florian]
+
+Contributors:
+ Alban Browaeys, Matthias Clasen, Maxim Ermilov, Tomas Frydrych, Adel Gadllah,
+ Nickolas Lloyd, William Jon McCann, Florian Muellner, Benjamin Otte,
+ Thierry Reding, Rob Staudinger, Jasper St. Pierre, Owen Taylor, Colin Walters
+
+Translations:
+ Alexander Shopov [bg], Mario Blättermann [de], Ask H. Larsen [dk],
+ Michael Kotsarinis [el], Philip Withnall [en_UK], Jorge González [es],
+ Fran Diéguez [gl], Bruno Brouard, Claude Paroz [fr], Yaron Shahrabani [he],
+ Gabor Kelemen [hu], Luca Ferretti [it], Nils-Christoph Fiedler [nds],
+ Kjartan Maraas [nb], A S Alam [pa], Piotr Drąg [pl], Duarte Loreto [pt],
+ Antonio Fernandes C. Neto [pt_BR], Matej Urbančič [sl],
+ Miloš Popović [sr, sr@latin], Tirumurti Vasudevan [ta], Aron Xu [zh_CN],
+ Chao-Hsiung Liao [zh_HK, zh_TW]
+
+Fixed Bugs:
+ 597763 With >2 workspaces, Window menu "Move to Another Workspace" menu doesn't work
+ 598603 displays window size when moving terminal window
+ 606158 "Always on top" triggers Window manager warning:
+        Log level 8: meta_window_set_user_time: assertion `!window->override_redirect' failed
+ 610575 make meta_screen_set_cursor public
+ 613126 Do not cancel Alt+Tab grab due to Shift key events
+ 623235 BadDamage error from XSubtractDamage
+ 624757 Check for TFP usage after actually setting the pixmap
+ 625712 [mutter-shaped-texture] Remove material_workaround
+ 626583 Replace Gdk drawing API with cairo
+ 627087 Mipmap emulation not working
+ 627210 Crash with X error
+ 628544 introspection: Build with --warn-fatal, drop fix-meta-rectangle.py hack
+ 629127 build problem with recent gtk3
+ 629232 Multiple syntax errors in file mutter-message.c when building Mutter for
+        GNOME Shell dependencies
+ 629350 [mutter-shaped-texture] Use a base material for all instances
+ 629931 Allow breaking out from maximization/tiling during a mouse resize
+ 630195 Use GDK error trapping straight-up
+ 630203 Prepare mutter code for GTK3 rendering-cleanup
+ 630671 prepare mutter for the demise of GtkObject
+ 630843 gtk_window_set_visual was replaced by gtk_widget_set_visua
+ 631147 Adapt to GTK API changes
+ 631175 Mutter error compiling Gnome Shell
+
+2.31.5
+======
+
+* Support building with GTK+ 3.0 [Florian]
+* Remove deprecated usages for compatibility with GTK+ 3.0
+  [Claudio, Florian, Nickolas]
+* Export a boxed type for MetaRectangle [Owen]
+* Allow disabling -Werror with --enable-compile-warnings=yes [Nickolas]
+* Build fixes [Andreas, Florian, Owen]
+
+Contributors:
+ Nickolas Lloyd, Andreas Mueller, Florian Müllner, Claudio Saavedra,
+ Owen Taylor
+
+Translations:
+ Petr Kovar [cz], Jorge González [es], Fran Diéguez [gl],
+ Yaron Shahrabani [he], Matej Urbančič [sl]
+
+Fixed Bugs:
+ 587991 - Remove deprecated GTK+ symbols
+ 616275 - -Werror should not be enabled by default (or should be possible to disable)
+ 622303 - Allow building with Gtk+-3.0
+ 622800 - Make mutter more gtk+ 3.0 friendly
+ 623335 - Make MetaRectangle a boxed type
+ 623639 - Work around g-ir-scanner problem with Gdk.Rectangle
+ 624166 - src/core/util.c: Fix warning in case WITH_VERBOSE_MODE is not set
+
+2.31.4
+======
+
+* Clean up MutterPlugin effect interface [Maxim]
+* Track damage as the bounding box, a significant optimizations
+  for rapidly drawing clients [Robert]
+* Add meta_window_is_remote() [Colin]
+* Add meta_add_debug_topic() for turning on logging of
+  specific topics [Colin]
+* Fix bug with window unmaximization [Owen]
+
+Contributors:
+ Robert Bragg, Maxim Ermilov, Owen Taylor, Colin Walters
+
+Translations:
+ Yaron Shahrabani (he), Fran Diéguez (gl), Kjartan Maraas (nb), A S Alam (pa)
+
+Fixed Bugs:
+ 611838 - expose sub-stage redraws by streaming raw updates to ClutterX11TexturePixmap
+ 620585 - Add meta_window_is_remote
+ 620860 - function ‘meta_display_open’
+ 621082 - MutterPluginManager should call plugin->switch_workspace,
+          when screen doesn't have any window. Or function should be renamed.
+ 621413 - Maximize/Unmaximize not behaving properly for some non-gnome based programs
+
+2.31.2
+======
+
+* Theme enhancements [Owen]
+  - Add a flexible version mechanism for themes -
+    metacity-theme-3.xml is now supported, and can include
+    version="> 3.2" type attributes on the root element or
+    any subelement.
+  - Add frame_x_center/frame_y_center variables
+  - Allow a theme to turn on title ellipsization
+* Performance enhancements:
+  - Stream raw damage updates to ClutterX11TexturePixmap
+    to enable partial stage updates when windos change [Robert]
+  - Don't trap XErrors in meta_compositor_process_event [Adel]
+* Add meta_prefs_override_preference_location(); this allows
+  a plugin like GNOME Shell to redirect preferences to a
+  plugin-specific location. [Owen]
+* Support a _MUTTER_HINTS window property; this is a string
+  property holding key-value pairs with plugin-specific
+  interpretation [Tomas]
+* Build with GSEAL_ENABLE [Florian, Javier]
+* Add meta_display_get_leader_window() [Tomas]
+* Add meta_display_sort_windows_by_stacking [Colin]
+* Export
+   meta_display_get_last_user_time()
+   meta_display_xserver_time_is_before()
+   meta_window_foreach_ancestor(),
+   meta_window_foreach_transient()
+   meta_window_lower()
+   meta_window_raise()
+   meta_window_set_demands_attention()
+   meta_window_unset_demands_attention() [Colin]
+* Bug fixes [Dan, Edward, Owen, Tomas]
+* Build fixes [Owen, Dominique, Vincent]
+
+Contributors:
+ Robert Bragg, Adel Gadllah, Tomas Frydrych, Javier Jardón,
+ Dominique Leuenberger, Florian Müllner, Edward Sheldrake,
+ Owen Taylor, Vincent Untz, Colin Walters, Dan Winship
+
+Translations:
+ Xandru Armesto Fernandez (ast), Khaled Hosny (ar), Petr Kovar (cz),
+ Mario Blättermann, (de), Jorge González (es),
+ Inaki Larranaga Murgoitio [eu), Claude Paroz (fr), Luca Ferretti (it),
+ Gintautas Miliauskas (lt), Pavol Šimo (sk), Matej Urbančič (sl)
+
+Fixed Bugs:
+ 591842 - ellipsize titles when oversize
+ 592503 - Add a flexible version mechanism
+ 595496 - Use accessor functions instead direct access (use GSEAL GnomeGoal)
+ 596659 - Fix handling of grabbed key events
+ 613123 - Framework for plugin-specific per-window hint
+ 613125 - Add meta_display_get_leader_window()
+ 613127 - Keep num_workspaces key in sync with the actual workspace number
+ 613136 - remove over-restrictive assert from meta_prefs_get_workspace_name()
+ 613398 - Don't trap XErrors in meta_compositor_process_event
+ 615586 - Allow redirecting preferences to a different GConf key
+ 615672 - cant' compile mutter error: dereferencing pointer ‘p’ does break
+          strict-aliasing rules
+ 616050 - alt-tab infrastructure patches
+ 616274 - mutter from git fails with gcc 4.5 (on new warning)
+ 616546 - On dual screen maximized windows dragged to the second screen no
+          longer update their contents
+ 618138 - Work around COGL bug causing flash for new windows
+ 618613 - Fix crash with --sync option
+
+2.29.1
+======
+
+* Support and require Clutter 1.2 (Owen)
+* Add meta_display_get_keybinding_action() (Colin, Dan)
+* Add meta_window_get_wm_class_instance() (Tomas)
+* Remove workaround for bug fixed in intel driver Q2/2009 release (Robert)
+* Build fixes (Owen, Brian, Nguyễn Thái Ngọc Duy)
+
+Contributors:
+ Robert Bragg, Brian Cameron, Tomas Frydrych, Nguyễn Thái Ngọc Duy,
+ Owen Taylor, Colin Walters, Dan Winship
+
+Translations:
+ Alexander Shopov (bg), Mario Blättermann (de), Bruno Brouard (fr),
+ Nils-Christoph Fiedler (nds), Piotr Drąg (pl), Aron Xu (zh_CN)
+
+Fixed Bugs:
+
+ 610862 Support and require Clutter 1.1
+ 612506 mutter 2.29.0 fails to compile on Solaris
+ 613100 [MetaDisplay] Expose meta_display_get_keybinding_action
+ 613121 Remove workaround for multitexturing with old intel drivers
+ 613128 [MetaWindow] Accessor for the instance part of WM_CLASS property
+ 613278 meta_display_get_keybinding_action: strip out uninteresting modifiers
+
+2.29.0
+======
+
+* Improve appearance of scaled down windows using mipmap emulation (Owen)
+* Added signals: MetaDisplay::window-created, MetaDisplay::window-marked-urgent,
+  MetaDisplay::window-demands-attention, MetaWindow::unmanaged (Colin, Tomas)
+* Added properties: MetaWindow:demands-attention, MetaWindow:urgent,
+  MetaWindow:maximized-horizontally, MetaWindow:maximized-vertically (Florian, Tomas)
+* Fix nasty crash when workspace "struts" changed during a window move (Jon, Owen)
+* Bug fixes (Dan, Maxim, Neil, Owen, Tomas)
+* Build fixes (Colin, Emmanuele, Nickolas, Owen, Richard)
+* Merge Metacity changes since 2.26. Includes themable sound support
+  via libcanberra (Owen)
+
+Contributors
+ Emmanuele Bassi, Maxim Ermilov, Tomas Frydrych, Richard Hughes, Nickolas Lloyd,
+ Florian Müllner, Jon Nettleton, Neil Roberts, Owen Taylor, Colin Walters,
+ Dan Winship
+
+Additional Metacity contributors:
+ Thomas Hindoe Paaboel Andersen, Peter Bloomfield, Matthias Clasen,
+ Matt Kraai, Claude Paroz, Lennart Poettering, Ray Strode, Thomas Thurman,
+ Vincent Untz, Tomislav Vujec, Tomeu Vizoso, Travis Watkins, 'alexisdm59'
+
+Translations:
+ Khaled Hosny (ar), Petr Kovar (cz), Kjartan Maraas (nb), Djavan Fagundes (pt_BR),
+ Nils-Christoph Fiedler (nds), Matej Urbančič (sl), Vincent Untz
+
+Fixed Bugs:
+
+ 588065 Adds demands-attention signal to the window class
+ 591913 Fails to skip current window on alt+tab when another window is asking for attention
+ 592567 Dereferencing NULL in mutter_window_get_workspace()
+ 597052 Add signal to MetaDisplay so we know when a window has demanded-attention
+ 598289 Add "window-created" signal to MetaDisplay, "unmanaged" signal for MetaWindow
+ 598473 "XXX specified twice for this theme" messages not in sync with metacity.
+ 598600 "Visual Bell" option in Metacity causes Mutter to crash
+ 600068 notifications for window urgency hint
+ 601228 rdesktop does not get keypress signals
+ 602349 [PATCH] trivial - fix compilation warning in mutter
+ 602740 Remove XOR gc only used in removed reduced-resources mode
+ 602870 Fix compilation with older libGL
+ 604200 Compile issue: Use of deprecated clutter functions
+ 606388 mutter fails to build when using ld with --no-add-needed
+ 607125 Fails to build with latest introspection data
+ 607398 Do not use CGL_* symbols
+ 607746 reduce gconf roundtrips at startup
+ 608800 alt-dragging gimp windows crashes gnome-shell
+ 609350 Mutter does not support the COGL_DEBUG environment variable
+ 609546 meta_workspace_set_builtin_struts(): optimize out non-changes
+ 609585 Merge libcanberra usage from Metacity
+ 609657 Use cogl multitexture API when drawing MutterShapedTexture
+ 609665 Bug fixes from Fedora RPM
+ 609710 screencast recording broke
+ 610391 Fix crash on startup with list bindings
+
+2.28.0
+======
+
+* New exported API:
+    meta_window_get_stable_sequence() [Colin]
+    meta_window_get_transient_for_as_xid() [Tomas]
+    MutterScreen::workareas-changed signal [Tomas]
+* Fix a problem where changes processed from a Clutter event
+  callback wouldn't get handled before the screen was next
+  repainted, causing flashing [Owen]
+* Remove MetaAltTabHandler as no longer needed [Dan]
+* Bug fixes [Colin, Owen]
+
+Contributors:
+  Tomas Frydrych, Owen Taylor, Colin Walters, Dan Winship
+
+Translations:
+  Christian Kirbach (de), Claude Paroz (fr)
+
+2.27.5
+======
+
+ * Fix bug in GConf schemas where the overview activation key was specified as
+   '<Super_L>' not 'Super_L'.
+
+Contributors:
+
+ Colin Walters
+
+Translation:
+
+ Denis Arnaud (br)
+
+2.27.4
+======
+
+* Big code cleanup: when talking about multiple monitors, call them
+  "monitors", not "xineramas". [Dan]
+
+* Accessors added or made public:
+
+  meta_screen_get_n_monitors(), meta_screen_get_monitor_geometry()
+  meta_window_get_user_time() and MetaWindow:user-time property.
+
+  [Colin, Dan]
+
+* Set _GNOME_WM_KEYBINDINGS=Metacity,Mutter on the _NET_SUPPORTING_WM_CHECK
+  window so that gnome-keybinding-properties can figure out to show the
+  Metacity keybindings when Mutter is running. [Owen]
+
+* Bug and build fixes [Colin, Owen]
+
+Contributors:
+
+  Owen Taylor, Colin Walters, Dan Winship
+
+Translation:
+
+  Jorge González (es), Inaki Larranaga Murgoitio (eu), Gabor Kelemen (hu)
+
+Bugs fixed:
+
+  592393 - Clicking on a minimized window in the overview doesn't focus the window
+  593399 - Add meta_display_get_grab_op()
+  593404 - Make MUTTER_DEBUG_XINERAMA override active Xinerama
+  593407 - Add 'skip-taskbar' accessor to MetaWindow.
+  593686 - Add meta_screen_get_monitors()
+  594067 - Export a _GNOME_WM_KEYBINDINGS property
+
+2.27.3
+======
+
+* Key handling improvements:
+
+  - enforce that every key is handled no more than once.
+  - mutter_plugin_begin_modal() and mutter_plugin_begin_modal() allow
+    putting a plugin into a "modal" state where it has exclusive access
+    to key and pointer events.
+  - Add "tab_popup_select", "tab_pop_cancel" pseudo-keypress-handlers
+    that plugins can use to get notification when Alt-Tab ends
+
+  [Owen]
+
+* Accessors added or made public:
+
+   meta_window_is_override_redirect(), meta_window_is_mapped(),
+   meta_display_xwindow_is_a_no_focus_window(),
+   meta_display_get_grab_op(), meta_window_is_skip_taskbar(),
+   meta_window_is_modal(), all of errors.h
+
+ [Colin, Owen, Michael, Steve, Tomas]
+
+* Fix for various GTK+ deprecations [Javier]
+* Bug fixes [Colin, Frédéric, Owen, Thomas, Tomas, Volker]
+
+Contributors:
+
+  Javier Jardón, Steve Frécinaux, Tomas Frydrych, Michael Meeks,
+  Frédéric Péters, Volker Sobek, Owen Taylor, Thomas Thurman,
+  Colin Walters
+
+Translation:
+
+  Fran Dieguez (gl), Gabor Kelemen (hu), Daniel Nylander (se)
+
+Bugs fixed:
+
+  589457 - Fix up window property notification for "title"
+  590911 - Do not run plugin effects on WM startup
+  590978 - API to query whether window is in modal state
+  591367 - Be silent by default
+  591566 - install errors.h header ...
+  591788 - Add meta_window_is_override_redirect
+  591836 - mutter mishandles opacity
+  591913 - Fails to skip current window on alt+tab when another window is asking for attention
+  592393 - Clicking on a minimized window in the overview doesn't focus the window
+  592699 - Remove deprecated Encoding key from desktop files
+  592742 - Avoid accessing freed memory when being replaced
+  593399 - Add meta_display_get_grab_op()
+  593404 - Make MUTTER_DEBUG_XINERAMA override active Xinerama
+  593407 - Add 'skip-taskbar' accessor to MetaWindow.
+
+----------------------------- Older Metacity News -----------------------------
+
 2.26.0
 ======
 
