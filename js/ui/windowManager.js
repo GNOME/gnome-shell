@@ -239,7 +239,7 @@ WindowManager.prototype = {
     _hasAttachedDialogs: function(window, ignoreWindow) {
         var count = 0;
         window.foreach_transient(function(win) {
-            if (win != ignoreWindow && win.get_window_type() == Meta.WindowType.MODAL_DIALOG)
+            if (win != ignoreWindow && win.is_attached_dialog())
                 count++;
             return false;
         });
@@ -247,7 +247,7 @@ WindowManager.prototype = {
     },
 
     _checkDimming: function(window, ignoreWindow) {
-        let shouldDim = Meta.prefs_get_attach_modal_dialogs() && this._hasAttachedDialogs(window, ignoreWindow);
+        let shouldDim = this._hasAttachedDialogs(window, ignoreWindow);
 
         if (shouldDim && !window._dimmed) {
             window._dimmed = true;
@@ -309,9 +309,7 @@ WindowManager.prototype = {
 
             actor._windowType = type;
         }));
-        if (actor.meta_window.get_window_type() == Meta.WindowType.MODAL_DIALOG
-            && Meta.prefs_get_attach_modal_dialogs()
-            && actor.get_meta_window().get_transient_for()) {
+        if (actor.meta_window.is_attached_dialog()) {
             this._checkDimming(actor.get_meta_window().get_transient_for());
             if (this._shouldAnimate()) {
                 actor.set_scale(1.0, 0.0);
@@ -373,7 +371,6 @@ WindowManager.prototype = {
 
     _destroyWindow : function(shellwm, actor) {
         let window = actor.meta_window;
-        let parent = window.get_transient_for();
         if (actor._notifyWindowTypeSignalId) {
             window.disconnect(actor._notifyWindowTypeSignalId);
             actor._notifyWindowTypeSignalId = 0;
@@ -383,12 +380,14 @@ WindowManager.prototype = {
                                                                  return win != window;
                                                              });
         }
-        while (window.get_window_type() == Meta.WindowType.MODAL_DIALOG
-               && parent) {
+        if (window.is_attached_dialog()) {
+            let parent = window.get_transient_for();
             this._checkDimming(parent, window);
-            if (!Meta.prefs_get_attach_modal_dialogs()
-                || !this._shouldAnimate())
-                break;
+            if (!this._shouldAnimate()) {
+                shellwm.completed_destroy(actor);
+                return;
+            }
+
             actor.set_scale(1.0, 1.0);
             actor.show();
             this._destroying.push(actor);
