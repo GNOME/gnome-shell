@@ -2194,7 +2194,8 @@ _cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
   if (layer_parent->index == layer->index && layer_parent->owner == NULL)
     {
       cogl_object_ref (layer_parent);
-      link->data = _cogl_pipeline_layer_get_parent (layer);
+      layer_parent->owner = layers_authority;
+      link->data = layer_parent;
       cogl_object_unref (layer);
       recursively_free_layer_caches (layers_authority);
       return;
