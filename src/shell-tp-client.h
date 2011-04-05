@@ -51,12 +51,39 @@ typedef void (*ShellTpClientObserveChannelsImpl) (ShellTpClient *client,
                                                   TpObserveChannelsContext *context,
                                                   gpointer user_data);
 
-ShellTpClient * shell_tp_client_new (TpDBusDaemon *dbus);
-
 void shell_tp_client_set_observe_channels_func (ShellTpClient *self,
                                                 ShellTpClientObserveChannelsImpl observe_impl,
                                                 gpointer user_data,
                                                 GDestroyNotify destroy);
+
+typedef void (*ShellTpClientApproveChannelsImpl) (
+    ShellTpClient *client,
+    TpAccount *account,
+    TpConnection *connection,
+    GList *channels,
+    TpChannelDispatchOperation *dispatch_operation,
+    TpAddDispatchOperationContext *context,
+    gpointer user_data);
+
+void shell_tp_client_set_approve_channels_func (ShellTpClient *self,
+    ShellTpClientApproveChannelsImpl approve_impl,
+    gpointer user_data,
+    GDestroyNotify destroy);
+
+typedef void (*ShellTpClientHandleChannelsImpl) (
+    ShellTpClient *client,
+    TpAccount *account,
+    TpConnection *connection,
+    GList *channels,
+    GList *requests_satisfied,
+    gint64 user_action_time,
+    TpHandleChannelsContext *context,
+    gpointer user_data);
+
+void shell_tp_client_set_handle_channels_func (ShellTpClient *self,
+    ShellTpClientHandleChannelsImpl handle_channels_impl,
+    gpointer user_data,
+    GDestroyNotify destroy);
 
 /* Telepathy utility functions */
 typedef void (*ShellGetTpContactCb) (TpConnection *connection,

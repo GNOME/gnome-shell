@@ -77,14 +77,20 @@ Client.prototype = {
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
         let dbus = Tp.DBusDaemon.dup();
-        this._observer = Shell.TpClient.new(dbus);
-        this._observer.set_observe_channels_func(
+        this._tp_client = new Shell.TpClient({ 'dbus_daemon': dbus,
+                                               'name': 'GnomeShell',
+                                               'uniquify-name': true })
+        this._tp_client.set_observe_channels_func(
             Lang.bind(this, this._observeChannels));
+        this._tp_client.set_approve_channels_func(
+            Lang.bind(this, this._approveChannels));
+        this._tp_client.set_handle_channels_func(
+            Lang.bind(this, this._handleChannels));
 
         try {
-            this._observer.register();
+            this._tp_client.register();
         } catch (e) {
-            throw new Error('Couldn\'t register SimpleObserver. Error: \n' + e);
+            throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
         }
     },
 
@@ -135,30 +141,78 @@ Client.prototype = {
         if (this._sources[channel.get_object_path()])
             return;
 
-        let source = new Source(account, conn, channel, contact);
+        let source = new Source(account, conn, channel, contact, this._tp_client);
 
         this._sources[channel.get_object_path()] = source;
         source.connect('destroy', Lang.bind(this,
                        function() {
+                           if (this._tp_client.is_handling_channel(channel)) {
+                               // The chat box has been destroyed so it can't
+                               // handle the channel any more.
+                               channel.close_async(null);
+                           }
+
                            delete this._sources[channel.get_object_path()];
                        }));
+    },
+
+    _handlingChannels: function(account, conn, channels) {
+        let len = channels.length;
+        for (let i = 0; i < len; i++) {
+            let channel = channels[i];
+
+            // We can only handle text channel, so close any other channel
+            if (!(channel instanceof Tp.TextChannel)) {
+                channel.close_async(null);
+                continue;
+            }
+
+            if (this._tp_client.is_handling_channel(channel)) {
+                // We are already handling the channel, display the source
+                let source = this._sources[channel.get_object_path()];
+                if (source)
+                    source.notify();
+            }
+        }
+    },
+
+    _approveChannels: function(approver, account, conn, channels,
+                               dispatchOp, context) {
+        // Approve the channels right away as we are going to handle it
+        dispatchOp.claim_with_async(this._tp_client,
+                                    Lang.bind (this, function(dispatchOp, result) {
+            try {
+                dispatchOp.claim_with_finish(result);
+                this._handlingChannels(account, conn, channels);
+            } catch (err) {
+                global.logError('Failed to Claim channel: ' + err);
+            }}));
+
+        context.accept();
+    },
+
+    _handleChannels: function(handler, account, conn, channels,
+                              requests, user_action_time, context) {
+        this._handlingChannels(account, conn, channels);
+        context.accept();
     }
 };
 
-function Source(account, conn, channel, contact) {
-    this._init(account, conn, channel, contact);
+function Source(account, conn, channel, contact, client) {
+    this._init(account, conn, channel, contact, client);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(account, conn, channel, contact) {
+    _init: function(account, conn, channel, contact, client) {
         MessageTray.Source.prototype._init.call(this, contact.get_alias());
 
         this.isChat = true;
 
         this._account = account;
         this._contact = contact;
+        this._client = client;
 
         this._conn = conn;
         this._channel = channel;
@@ -216,13 +270,17 @@ Source.prototype = {
     },
 
     open: function(notification) {
-        let props = {};
-        props[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
-        [props[Tp.PROP_CHANNEL_TARGET_HANDLE], props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE]] = this._channel.get_handle();
+          if (this._client.is_handling_channel(this._channel)) {
+              // We are handling the channel, try to pass it to Empathy
+              this._client.delegate_channels_async([this._channel], global.get_current_time(), "", null);
+          }
+          else {
+              // We are not the handler, just ask to present the channel
+              let dbus = Tp.DBusDaemon.dup();
+              let cd = Tp.ChannelDispatcher.new(dbus);
 
-        let req = Tp.AccountChannelRequest.new(this._account, props, global.get_current_time());
-
-        req.ensure_channel_async('', null, null);
+              cd.present_channel_async(this._channel, global.get_current_time(), null);
+          }
     },
 
     _getLogMessages: function() {
