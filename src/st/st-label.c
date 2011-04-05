@@ -376,21 +376,27 @@ st_label_set_text (StLabel     *label,
                    const gchar *text)
 {
   StLabelPrivate *priv;
+  ClutterText *ctext;
 
   g_return_if_fail (ST_IS_LABEL (label));
   g_return_if_fail (text != NULL);
 
   priv = label->priv;
+  ctext = CLUTTER_TEXT (priv->label);
 
-  if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+  if (clutter_text_get_editable (ctext) ||
+      g_strcmp0 (clutter_text_get_text (ctext), text) != 0)
     {
-      cogl_handle_unref (priv->text_shadow_material);
-      priv->text_shadow_material = COGL_INVALID_HANDLE;
+      if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+        {
+          cogl_handle_unref (priv->text_shadow_material);
+          priv->text_shadow_material = COGL_INVALID_HANDLE;
+        }
+
+      clutter_text_set_text (ctext, text);
+
+      g_object_notify (G_OBJECT (label), "text");
     }
-
-  clutter_text_set_text (CLUTTER_TEXT (priv->label), text);
-
-  g_object_notify (G_OBJECT (label), "text");
 }
 
 /**
