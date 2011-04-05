@@ -2189,9 +2189,11 @@ _cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
 
   /* If the layer's parent doesn't have an owner then we can simply
    * take ownership ourselves and drop our reference on the empty
-   * layer.
+   * layer. We don't want to take ownership of the root node layer so
+   * we also need to verify that the parent has a parent
    */
-  if (layer_parent->index == layer->index && layer_parent->owner == NULL)
+  if (layer_parent->index == layer->index && layer_parent->owner == NULL &&
+      _cogl_pipeline_layer_get_parent (layer_parent) != NULL)
     {
       cogl_object_ref (layer_parent);
       layer_parent->owner = layers_authority;
