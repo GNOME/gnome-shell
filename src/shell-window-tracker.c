@@ -429,12 +429,14 @@ get_app_for_window (ShellWindowTracker    *monitor,
         }
     }
 
-  result = get_app_from_window_pid (monitor, window);
+  /* Check if the app's WM_CLASS specifies an app; this is
+   * canonical if it does.
+   */
+  result = get_app_from_window_wmclass (window);
   if (result != NULL)
     return result;
 
-  /* Check if the app's WM_CLASS specifies an app */
-  result = get_app_from_window_wmclass (window);
+  result = get_app_from_window_pid (monitor, window);
   if (result != NULL)
     return result;
 
