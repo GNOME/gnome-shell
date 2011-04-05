@@ -1,3 +1,10 @@
+3.0.0.1
+=======
+
+* Fix problem with stuck event handling if network menu pops down while
+  user is using the scrollbar. [Owen Taylor]
+  https://bugzilla.gnome.org/show_bug.cgi?id=646825
+
 Contributors to GNOME Shell 3.0
 ===============================
 
