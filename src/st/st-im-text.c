@@ -103,7 +103,6 @@ update_im_cursor_location (StIMText *self)
 {
   StIMTextPrivate *priv = self->priv;
   ClutterText *clutter_text = CLUTTER_TEXT (self);
-  ClutterActor *parent;
   gint position;
   gfloat cursor_x, cursor_y, cursor_height;
   gfloat actor_x, actor_y;
@@ -113,25 +112,7 @@ update_im_cursor_location (StIMText *self)
   clutter_text_position_to_coords (clutter_text, position,
                                    &cursor_x, &cursor_y, &cursor_height);
 
-  /* This is a workaround for a bug in Clutter where
-   * clutter_actor_get_transformed_position doesn't work during
-   * clutter_actor_paint() because the actor has already set up
-   * a model-view matrix.
-   *
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=1115
-   */
-  actor_x = actor_y = 0.;
-  parent = CLUTTER_ACTOR (self);
-  while (parent)
-    {
-      gfloat x, y;
-
-      clutter_actor_get_position (parent, &x, &y);
-      actor_x += x;
-      actor_y += y;
-
-      parent = clutter_actor_get_parent (parent);
-    }
+  clutter_actor_get_transformed_position (CLUTTER_ACTOR (self), &actor_x, &actor_y);
 
   area.x = (int)(0.5 + cursor_x + actor_x);
   area.y = (int)(0.5 + cursor_y + actor_y);
@@ -355,14 +336,6 @@ st_im_text_key_press_event (ClutterActor    *actor,
       gdk_event_free ((GdkEvent *)event_gdk);
     }
 
-  /* ClutterText:position isn't properly notified, so we have to
-   * check before/after to catch a keypress (like an arrow key)
-   * moving the cursor position, which should reset the IM context.
-   * (Resetting on notify::position would require a sentinel when
-   * committing text)
-   *
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=1830
-   */
   old_position = clutter_text_get_cursor_position (clutter_text);
 
   if (!result &&
