@@ -1469,44 +1469,48 @@ reload_transient_for (MetaWindow    *window,
                       gboolean       initial)
 {
   MetaWindow *parent = NULL;
+  Window transient_for, old_transient_for;
 
-  if (meta_window_appears_focused (window) && window->xtransient_for != None)
-    meta_window_propagate_focus_appearance (window, FALSE);
-
-  window->xtransient_for = None;
-  
   if (value->type != META_PROP_VALUE_INVALID)
-    window->xtransient_for = value->v.xwindow;
-
-  /* Make sure transient_for is valid */
-  if (window->xtransient_for != None)
     {
-      parent = meta_display_lookup_x_window (window->display,
-                                             window->xtransient_for);
+      transient_for = value->v.xwindow;
+
+      parent = meta_display_lookup_x_window (window->display, transient_for);
       if (!parent)
         {
           meta_warning (_("Invalid WM_TRANSIENT_FOR window 0x%lx specified "
                           "for %s.\n"),
-                        window->xtransient_for, window->desc);
-          window->xtransient_for = None;
+                        transient_for, window->desc);
+          transient_for = None;
         }
-    }
 
-  /* Make sure there is not a loop */
-  while (parent)
-    {
-      if (parent == window)
+      /* Make sure there is not a loop */
+      while (parent)
         {
-          meta_warning (_("WM_TRANSIENT_FOR window 0x%lx for %s "
-                          "would create loop.\n"),
-                        window->xtransient_for, window->desc);
-          window->xtransient_for = None;
-          break;
-        }
+          if (parent == window)
+            {
+              meta_warning (_("WM_TRANSIENT_FOR window 0x%lx for %s "
+                              "would create loop.\n"),
+                            transient_for, window->desc);
+              transient_for = None;
+              break;
+            }
 
-      parent = meta_display_lookup_x_window (parent->display,
-                                             parent->xtransient_for);
+          parent = meta_display_lookup_x_window (parent->display,
+                                                 parent->xtransient_for);
+        }
     }
+  else
+    transient_for = None;
+
+  if (transient_for == window->xtransient_for)
+    return;
+
+  if (meta_window_appears_focused (window) && window->xtransient_for != None)
+    meta_window_propagate_focus_appearance (window, FALSE);
+
+  old_transient_for = window->xtransient_for;
+  window->xtransient_for = transient_for;
 
   window->transient_parent_is_root_window =
     window->xtransient_for == window->screen->xroot;
@@ -1519,6 +1523,25 @@ reload_transient_for (MetaWindow    *window,
 
   /* may now be a dialog */
   meta_window_recalc_window_type (window);
+
+  if (!window->constructing)
+    {
+      /* If the window attaches, detaches, or changes attached
+       * parents, we need to destroy the MetaWindow and let a new one
+       * be created (which happens as a side effect of
+       * meta_window_unmanage()). The condition below is correct
+       * because we know window->xtransient_for has changed.
+       */
+      if (window->attached || meta_window_should_attach_to_parent (window))
+        {
+          guint32 timestamp;
+
+          window->xtransient_for = old_transient_for;
+          timestamp = meta_display_get_current_time_roundtrip (window->display);
+          meta_window_unmanage (window, timestamp);
+          return;
+        }
+    }
 
   /* update stacking constraints */
   if (!window->override_redirect)

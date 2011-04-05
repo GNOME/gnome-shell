@@ -749,9 +749,7 @@ constrain_modal_dialog (MetaWindow         *window,
   MetaWindow *parent = meta_window_get_transient_for (window);
   gboolean constraint_already_satisfied;
 
-  if (!meta_prefs_get_attach_modal_dialogs ())
-    return TRUE;
-  if (window->type != META_WINDOW_MODAL_DIALOG || !parent)
+  if (!meta_window_is_attached_dialog (window))
     return TRUE;
 
   x = parent->rect.x + (parent->rect.width / 2  - info->current.width / 2);
