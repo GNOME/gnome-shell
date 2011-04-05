@@ -110,6 +110,8 @@ handle_button_press_event_cb (ClutterActor       *actor,
                               ClutterButtonEvent *event,
                               StScrollBar        *bar);
 
+static void stop_scrolling (StScrollBar *bar);
+
 static void
 st_scroll_bar_get_property (GObject    *gobject,
                             guint       prop_id,
@@ -270,6 +272,8 @@ st_scroll_bar_unmap (ClutterActor *actor)
   StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->unmap (actor);
+
+  stop_scrolling (ST_SCROLL_BAR (actor));
 
   clutter_actor_unmap (priv->bw_stepper);
   clutter_actor_unmap (priv->fw_stepper);
@@ -806,6 +810,22 @@ move_slider (StScrollBar *bar,
   st_adjustment_set_value (priv->adjustment, position);
 }
 
+static void
+stop_scrolling (StScrollBar *bar)
+{
+  ClutterActor *stage;
+
+  if (!bar->priv->capture_handler)
+    return;
+
+  stage = clutter_actor_get_stage (bar->priv->trough);
+  g_signal_handler_disconnect (stage, bar->priv->capture_handler);
+  bar->priv->capture_handler = 0;
+
+  clutter_set_motion_events_enabled (TRUE);
+  g_signal_emit (bar, signals[SCROLL_STOP], 0);
+}
+
 static gboolean
 handle_capture_event_cb (ClutterActor *trough,
                          ClutterEvent *event,
@@ -822,19 +842,11 @@ handle_capture_event_cb (ClutterActor *trough,
     {
       ClutterActor *stage, *target;
 
-      stage = clutter_actor_get_stage(bar->priv->trough);
-
-      if (bar->priv->capture_handler)
-        {
-          g_signal_handler_disconnect (stage, bar->priv->capture_handler);
-          bar->priv->capture_handler = 0;
-        }
-
-      clutter_set_motion_events_enabled (TRUE);
-      g_signal_emit (bar, signals[SCROLL_STOP], 0);
+      stop_scrolling (bar);
 
       /* check if the mouse pointer has left the handle during the drag and
        * remove the hover state if it has */
+      stage = clutter_actor_get_stage (bar->priv->trough);
       target = clutter_stage_get_actor_at_pos ((ClutterStage*) stage,
                                                CLUTTER_PICK_REACTIVE,
                                                ((ClutterButtonEvent*) event)->x,
@@ -843,8 +855,6 @@ handle_capture_event_cb (ClutterActor *trough,
         {
           st_widget_remove_style_pseudo_class ((StWidget*) bar->priv->handle, "hover");
         }
-
-
     }
 
   return TRUE;
