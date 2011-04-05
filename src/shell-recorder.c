@@ -62,8 +62,6 @@ struct _ShellRecorder {
 
   gboolean only_paint; /* Used to temporarily suppress recording */
 
-  gboolean have_pack_invert; /* True when GL_MESA_pack_invert is available */
-
   int framerate;
   char *pipeline_description;
   char *filename;
@@ -450,15 +448,7 @@ recorder_draw_cursor (ShellRecorder *recorder,
                                                  recorder->stage_height,
                                                  recorder->stage_width * 4);
 
-  /* When not using GL_MESA_pack_invert the data we get from glReadPixels is "upside down",
-   * so transform our cairo drawing to match */
   cr = cairo_create (surface);
-  if (!recorder->have_pack_invert)
-    {
-      cairo_translate(cr, 0, recorder->stage_height);
-      cairo_scale(cr, 1, -1);
-    }
-
   cairo_set_source_surface (cr,
                             recorder->cursor_image,
                             recorder->pointer_x - recorder->cursor_hot_x,
@@ -534,36 +524,11 @@ recorder_record_frame (ShellRecorder *recorder)
 
   GST_BUFFER_TIMESTAMP(buffer) = get_wall_time() - recorder->start_time;
 
-  /* We could use cogl_read_pixels, but it only currently supports
-   * COGL_PIXEL_FORMAT_RGBA_8888, while we prefer the native framebuffer
-   * format. (COGL_PIXEL_FORMAT_ARGB_8888_PRE,
-   * COGL_PIXEL_FORMAT_BGRA_PRE, depending on endianess)
-   *
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=1959
-   */
-
-  /* Flush any primitives that Cogl has batched up */
-  cogl_flush ();
-
-  /* Set the parameters for how data is stored; these are the initial
-   * values but Cogl will have modified them for its own purposes */
-  glPixelStorei (GL_PACK_ALIGNMENT, 4);
-  glPixelStorei (GL_PACK_ROW_LENGTH, 0);
-  glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
-  glPixelStorei (GL_PACK_SKIP_ROWS, 0);
-
-  if (recorder->have_pack_invert)
-    glPixelStorei (GL_PACK_INVERT_MESA, TRUE);
-
-  glReadBuffer (GL_BACK_LEFT);
-  glReadPixels (0, 0,
-                recorder->stage_width, recorder->stage_height,
-                GL_BGRA,
-                GL_UNSIGNED_INT_8_8_8_8_REV,
-                data);
-
-  if (recorder->have_pack_invert)
-    glPixelStorei (GL_PACK_INVERT_MESA, FALSE);
+  cogl_read_pixels (0, 0,
+                    recorder->stage_width, recorder->stage_height,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_BGRA_8888_PRE,
+                    data);
 
   recorder_draw_cursor (recorder, buffer);
 
@@ -866,7 +831,6 @@ recorder_set_stage (ShellRecorder *recorder,
   if (recorder->stage)
     {
       int error_base;
-      const char *gl_extensions;
 
       recorder->stage = stage;
       g_signal_connect (recorder->stage, "destroy",
@@ -891,8 +855,6 @@ recorder_set_stage (ShellRecorder *recorder,
                                  XFixesDisplayCursorNotifyMask);
 
       clutter_stage_ensure_current (stage);
-      gl_extensions = (const char *)glGetString (GL_EXTENSIONS);
-      recorder->have_pack_invert = strstr (gl_extensions, "GL_MESA_pack_invert") != NULL;
 
       recorder_get_initial_cursor_position (recorder);
     }
@@ -1093,8 +1055,6 @@ recorder_pipeline_add_source (RecorderPipeline *pipeline)
   GstPad *sink_pad = NULL, *src_pad = NULL;
   gboolean result = FALSE;
   GstElement *ffmpegcolorspace;
-  GstElement *videoflip;
-  GError *error = NULL;
 
   sink_pad = gst_bin_find_unlinked_pad (GST_BIN (pipeline->pipeline), GST_PAD_SINK);
   if (sink_pad == NULL)
@@ -1124,38 +1084,8 @@ recorder_pipeline_add_source (RecorderPipeline *pipeline)
     }
   gst_bin_add (GST_BIN (pipeline->pipeline), ffmpegcolorspace);
 
-  /* glReadPixels gives us an upside-down buffer, so we have to flip it back
-   * right-side up.
-   *
-   * When available MESA_pack_invert extension is used to avoid the
-   * flip entirely, since the data is actually stored in the frame buffer
-   * in the order that we expect.
-   *
-   * We use gst_parse_launch to avoid having to know the enum value for flip-vertical
-   */
-
-  if (!pipeline->recorder->have_pack_invert)
-    {
-      videoflip = gst_parse_launch_full ("videoflip method=vertical-flip", NULL,
-                                         GST_PARSE_FLAG_FATAL_ERRORS,
-                                         &error);
-      if (videoflip == NULL)
-        {
-          g_warning("Can't create videoflip element: %s", error->message);
-          g_error_free (error);
-          goto out;
-        }
-
-      gst_bin_add (GST_BIN (pipeline->pipeline), videoflip);
-      gst_element_link_many (pipeline->src, ffmpegcolorspace, videoflip, NULL);
-
-      src_pad = gst_element_get_static_pad (videoflip, "src");
-    }
-  else
-    {
-      gst_element_link_many (pipeline->src, ffmpegcolorspace, NULL);
-      src_pad = gst_element_get_static_pad (ffmpegcolorspace, "src");
-    }
+  gst_element_link_many (pipeline->src, ffmpegcolorspace, NULL);
+  src_pad = gst_element_get_static_pad (ffmpegcolorspace, "src");
 
   if (!src_pad)
     {
