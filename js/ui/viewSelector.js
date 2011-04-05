@@ -152,10 +152,6 @@ SearchTab.prototype = {
             return true;
         }));
 
-        this._entry.connect('secondary-icon-clicked', Lang.bind(this,
-            function() {
-                this._reset();
-            }));
         this._entry.connect('notify::mapped', Lang.bind(this, this._onMapped));
 
         global.stage.connect('notify::key-focus', Lang.bind(this, this._updateCursorVisibility));
