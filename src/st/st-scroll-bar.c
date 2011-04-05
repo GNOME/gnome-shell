@@ -75,14 +75,6 @@ struct _StScrollBarPrivate
   ClutterAnimation *paging_animation;
 
   guint             vertical : 1;
-
-  /* We want to keep track of whether we have a currently valid
-   * allocation or not. This isn't exported from ClutterActor
-   * so we need to shadow the computations and track it ourselves.
-   *
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=2024
-   */
-  guint             needs_allocation : 1;
 };
 
 enum
@@ -281,28 +273,6 @@ st_scroll_bar_unmap (ClutterActor *actor)
 
   if (priv->handle)
     clutter_actor_unmap (priv->handle);
-}
-
-static void
-st_scroll_bar_parent_set (ClutterActor  *actor,
-                          ClutterActor   *old_parent)
-{
-  StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
-
-  priv->needs_allocation = TRUE;
-
-  if (CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->parent_set)
-    CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->parent_set (actor, old_parent);
-}
-
-static void
-st_scroll_bar_queue_relayout (ClutterActor *actor)
-{
-  StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
-
-  priv->needs_allocation = TRUE;
-
-  CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->queue_relayout (actor);
 }
 
 static void
@@ -581,9 +551,6 @@ st_scroll_bar_allocate (ClutterActor          *actor,
                         ClutterAllocationFlags flags)
 {
   StScrollBar *bar = ST_SCROLL_BAR (actor);
-  StScrollBarPrivate *priv = bar->priv;
-
-  priv->needs_allocation = FALSE;
 
   /* Chain up */
   CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->allocate (actor, box, flags);
@@ -594,7 +561,6 @@ st_scroll_bar_allocate (ClutterActor          *actor,
 static void
 scroll_bar_update_positions (StScrollBar *bar)
 {
-  StScrollBarPrivate *priv = bar->priv;
   ClutterActorBox box;
 
   /* Due to a change in the adjustments, we need to reposition our
@@ -608,7 +574,7 @@ scroll_bar_update_positions (StScrollBar *bar)
    * allocate our children if we already have a valid allocation, and
    * otherwise just wait for the queued relayout.
    */
-  if (priv->needs_allocation)
+  if (!clutter_actor_has_allocation (CLUTTER_ACTOR (bar)))
     return;
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (bar), &box);
@@ -718,8 +684,6 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
 
   actor_class->get_preferred_width  = st_scroll_bar_get_preferred_width;
   actor_class->get_preferred_height = st_scroll_bar_get_preferred_height;
-  actor_class->parent_set     = st_scroll_bar_parent_set;
-  actor_class->queue_relayout = st_scroll_bar_queue_relayout;
   actor_class->allocate       = st_scroll_bar_allocate;
   actor_class->paint          = st_scroll_bar_paint;
   actor_class->pick           = st_scroll_bar_pick;
@@ -1235,8 +1199,6 @@ st_scroll_bar_init (StScrollBar *self)
 
   g_signal_connect (self, "notify::reactive",
                     G_CALLBACK (st_scroll_bar_notify_reactive), NULL);
-
-  self->priv->needs_allocation = TRUE;
 }
 
 StWidget *
