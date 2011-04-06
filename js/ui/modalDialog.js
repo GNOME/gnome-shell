@@ -50,10 +50,6 @@ ModalDialog.prototype = {
                                                       coordinate: Clutter.BindCoordinate.POSITION | Clutter.BindCoordinate.SIZE });
         this._group.add_constraint(constraint);
 
-        global.focus_manager.add_group(this._group);
-        this._initialKeyFocus = this._group;
-        this._savedKeyFocus = null;
-
         this._group.connect('destroy', Lang.bind(this, this._onGroupDestroy));
 
         this._actionKeys = {};
@@ -94,6 +90,10 @@ ModalDialog.prototype = {
                                { expand:  true,
                                  x_align: St.Align.MIDDLE,
                                  y_align: St.Align.END });
+
+        global.focus_manager.add_group(this._dialogLayout);
+        this._initialKeyFocus = this._dialogLayout;
+        this._savedKeyFocus = null;
     },
 
     setButtons: function(buttons) {
@@ -195,6 +195,7 @@ ModalDialog.prototype = {
 
         this.state = State.CLOSING;
         this.popModal(timestamp);
+        this._savedKeyFocus = null;
 
         Tweener.addTween(this._group,
                          { opacity: 0,

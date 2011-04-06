@@ -408,10 +408,6 @@ EndSessionDialog.prototype = {
     },
 
     _updateButtons: function() {
-        if (this.state != ModalDialog.State.OPENING &&
-            this.state != ModalDialog.State.OPENED)
-            return;
-
         let dialogContent = DialogContent[this._type];
         let buttons = [{ action: Lang.bind(this, this.cancel),
                          label:  _("Cancel"),
@@ -521,11 +517,12 @@ EndSessionDialog.prototype = {
             this._inhibitors.push(inhibitor);
         }
 
+        this._updateButtons();
+
         if (!this.open(timestamp))
             throw new DBus.DBusError('org.gnome.Shell.ModalDialog.GrabError',
                                      "Cannot grab pointer and keyboard");
 
-        this._updateButtons();
         this._updateContent();
 
         let signalId = this.connect('opened',
