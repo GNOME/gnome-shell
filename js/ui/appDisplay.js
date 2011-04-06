@@ -313,7 +313,7 @@ BaseAppSearchProvider.prototype = {
                                         timestamp: null });
 
         let app = this._appSys.get_app(id);
-        app.open_new_window(params.workspace ? params.workspace.get_index() : -1);
+        app.open_new_window(params.workspace ? params.workspace.index() : -1);
     }
 };
 
