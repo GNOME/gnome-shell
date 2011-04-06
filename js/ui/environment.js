@@ -88,6 +88,15 @@ function init() {
         return St.describe_actor(this);
     };
 
+    let origToString = Object.prototype.toString;
+    Object.prototype.toString = function() {
+        let base = origToString.call(this);
+        if ('actor' in this && this.actor instanceof Clutter.Actor)
+            return base.replace(/\]$/, ' delegate for ' + this.actor.toString().substring(1));
+        else
+            return base;
+    };
+
     if (window.global === undefined) // test environment
         return;
 
