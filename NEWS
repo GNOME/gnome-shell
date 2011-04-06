@@ -1,3 +1,13 @@
+3.0.0.2
+=======
+
+* Fix missing import that was preventing extensions from loading.
+  [Maxim Ermilov]
+  https://bugzilla.gnome.org/show_bug.cgi?id=646333
+
+Translations:
+ Timo Jyrinki [fi]
+
 3.0.0.1
 =======
 
