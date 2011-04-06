@@ -2,7 +2,7 @@
 #ifndef __SHELL_STACK_H__
 #define __SHELL_STACK_H__
 
-#include <clutter/clutter.h>
+#include "st.h"
 #include <gtk/gtk.h>
 
 #define SHELL_TYPE_STACK                 (shell_stack_get_type ())
@@ -19,14 +19,14 @@ typedef struct _ShellStackPrivate ShellStackPrivate;
 
 struct _ShellStack
 {
-    ClutterGroup parent;
+    StContainer parent;
 
     ShellStackPrivate *priv;
 };
 
 struct _ShellStackClass
 {
-    ClutterGroupClass parent_class;
+    StContainerClass parent_class;
 };
 
 GType shell_stack_get_type (void) G_GNUC_CONST;
