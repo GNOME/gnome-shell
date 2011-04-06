@@ -411,6 +411,7 @@ Notification.prototype = {
         this._bannerBodyText = null;
         this._bannerBodyMarkup = false;
         this._titleFitsInBannerMode = true;
+        this._titleDirection = St.TextDirection.NONE;
         this._spacing = 0;
         this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
 
@@ -509,6 +510,19 @@ Notification.prototype = {
 
         title = title ? _fixMarkup(title.replace(/\n/g, ' '), params.titleMarkup) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
+
+        if (Pango.find_base_dir(title, -1) == Pango.Direction.RTL)
+            this._titleDirection = St.TextDirection.RTL;
+        else
+            this._titleDirection = St.TextDirection.LTR;
+
+        // Let the title's text direction control the overall direction
+        // of the notification - in case where different scripts are used
+        // in the notification, this is the right thing for the icon, and
+        // arguably for action buttons as well. Labels other than the title
+        // will be allocated at the available width, so that their alignment
+        // is done correctly automatically.
+        this._table.set_direction(this._titleDirection);
 
         // Unless the notification has custom content, we save this._bannerBodyText
         // to add it to the content of the notification if the notification is
@@ -711,23 +725,39 @@ Notification.prototype = {
         let availWidth = box.x2 - box.x1;
 
         let titleBox = new Clutter.ActorBox();
-        titleBox.x1 = titleBox.y1 = 0;
-        titleBox.x2 = Math.min(titleNatW, availWidth);
+        let titleBoxW = Math.min(titleNatW, availWidth);
+        if (this._titleDirection == St.TextDirection.RTL) {
+            titleBox.x1 = availWidth - titleBoxW;
+            titleBox.x2 = availWidth;
+        } else {
+            titleBox.x1 = 0;
+            titleBox.x2 = titleBoxW;
+        }
+        titleBox.y1 = 0;
         titleBox.y2 = titleNatH;
         this._titleLabel.allocate(titleBox, flags);
         this._titleFitsInBannerMode = (titleNatW <= availWidth);
 
         let bannerFits = true;
-        if (titleBox.x2 + this._spacing > availWidth) {
+        if (titleBoxW + this._spacing > availWidth) {
             this._bannerLabel.opacity = 0;
             bannerFits = false;
         } else {
             let bannerBox = new Clutter.ActorBox();
-            bannerBox.x1 = titleBox.x2 + this._spacing;
+
+            if (this._titleDirection == St.TextDirection.RTL) {
+                bannerBox.x1 = 0;
+                bannerBox.x2 = titleBox.x1 - this._spacing;
+
+                bannerFits = (bannerBox.x2 - bannerNatW >= 0);
+            } else {
+                bannerBox.x1 = titleBox.x2 + this._spacing;
+                bannerBox.x2 = availWidth;
+
+                bannerFits = (bannerBox.x1 + bannerNatW <= availWidth);
+            }
             bannerBox.y1 = 0;
-            bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
             bannerBox.y2 = titleNatH;
-            bannerFits = (bannerBox.x1 + bannerNatW <= availWidth);
             this._bannerLabel.allocate(bannerBox, flags);
 
             // Make _bannerLabel visible if the entire notification
