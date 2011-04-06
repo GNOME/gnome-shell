@@ -42,6 +42,10 @@ const NM80211Mode = NetworkManager['80211Mode'];
 const NM80211ApFlags = NetworkManager['80211ApFlags'];
 const NM80211ApSecurityFlags = NetworkManager['80211ApSecurityFlags'];
 
+// number of wireless networks that should be visible
+// (the remaining are placed into More...)
+const NUM_VISIBLE_NETWORKS = 5;
+
 function macToArray(string) {
     return string.split(':').map(function(el) {
         return parseInt(el, 16);
@@ -1036,6 +1040,7 @@ NMDeviceWireless.prototype = {
                         item: null,
                         accessPoints: [ ap ]
                       };
+                obj.ssidText = NetworkManager.utils_ssid_to_utf8(obj.ssid);
                 this._networks.push(obj);
             }
 
@@ -1048,6 +1053,14 @@ NMDeviceWireless.prototype = {
                 }
             }
         }
+        if (this.device.active_access_point) {
+            this._activeNetwork = this._networks[this._findNetwork(this.device.active_access_point)];
+        } else {
+            this._activeNetwork = null;
+        }
+        this._networks.sort(this._networkSortFunction);
+
+        this._apChangedId = device.connect('notify::active-access-point', Lang.bind(this, this._activeApChanged));
         this._apAddedId = device.connect('access-point-added', Lang.bind(this, this._accessPointAdded));
         this._apRemovedId = device.connect('access-point-removed', Lang.bind(this, this._accessPointRemoved));
 
@@ -1055,8 +1068,13 @@ NMDeviceWireless.prototype = {
     },
 
     destroy: function() {
-        if (this._apAddedId) {
+        if (this._apChangedId) {
             // see above for this HACK
+            GObject.Object.prototype.disconnect.call(this.device, this._apChangedId);
+            this._apChangedId = 0;
+        }
+
+        if (this._apAddedId) {
             GObject.Object.prototype.disconnect.call(this.device, this._apAddedId);
             this._apAddedId = 0;
         }
@@ -1122,6 +1140,19 @@ NMDeviceWireless.prototype = {
         }
     },
 
+    _activeApChanged: function() {
+        this._activeNetwork = null;
+
+        let activeAp = this.device.active_access_point;
+
+        if (activeAp) {
+            let pos = this._findNetwork(activeAp);
+            this._activeNetwork = this._networks[pos];
+        }
+
+        // we don't refresh the view here, setActiveConnection will
+    },
+
     _getApSecurityType: function(accessPoint) {
         if (accessPoint._secType)
             return accessPoint._secType;
@@ -1151,6 +1182,32 @@ NMDeviceWireless.prototype = {
         return type;
     },
 
+    _networkSortFunction: function(one, two) {
+        let oneHasConnection = one.connections.length != 0;
+        let twoHasConnection = two.connections.length != 0;
+
+        // place known connections first
+        // (-1 = good order, 1 = wrong order)
+        if (oneHasConnection && !twoHasConnection)
+            return -1;
+        else if (!oneHasConnection && twoHasConnection)
+            return 1;
+
+        let oneHasSecurity = one.security != NMAccessPointSecurity.NONE;
+        let twoHasSecurity = two.security != NMAccessPointSecurity.NONE;
+
+        // place secure connections first
+        // (we treat WEP/WPA/WPA2 the same as there is no way to
+        // take them apart from the UI)
+        if (oneHasSecurity && !twoHasSecurity)
+            return -1;
+        else if (!oneHasSecurity && twoHasSecurity)
+            return 1;
+
+        // sort alphabetically
+        return GLib.utf8_collate(one.ssidText, two.ssidText);
+    },
+
     _networkCompare: function(network, accessPoint) {
         if (!ssidCompare(network.ssid, accessPoint.get_ssid()))
             return false;
@@ -1173,6 +1230,8 @@ NMDeviceWireless.prototype = {
     _accessPointAdded: function(device, accessPoint) {
         let pos = this._findNetwork(accessPoint);
         let apObj;
+        let needsupdate = false;
+
         if (pos != -1) {
             apObj = this._networks[pos];
             if (apObj.accessPoints.indexOf(accessPoint) != -1) {
@@ -1181,6 +1240,8 @@ NMDeviceWireless.prototype = {
             }
 
             apObj.accessPoints.push(accessPoint);
+            if (apObj.item)
+                apObj.item.updateAccessPoints(apObj.accessPoints);
         } else {
             apObj = { ssid: accessPoint.get_ssid(),
                       mode: accessPoint.mode,
@@ -1189,7 +1250,8 @@ NMDeviceWireless.prototype = {
                       item: null,
                       accessPoints: [ accessPoint ]
                     };
-            this._networks.push(apObj);
+            apObj.ssidText = NetworkManager.utils_ssid_to_utf8(apObj.ssid);
+            needsupdate = true;
         }
 
         // check if this enables new connections for this group
@@ -1198,12 +1260,44 @@ NMDeviceWireless.prototype = {
             if (this._connectionValidForAP(connection, accessPoint) &&
                 apObj.connections.indexOf(connection) == -1) {
                 apObj.connections.push(connection);
+
+                // this potentially changes the order
+                needsupdate = true;
             }
         }
 
-        // update everything
-        this._clearSection();
-        this._createSection();
+        if (needsupdate) {
+            if (apObj.item)
+                apObj.item.destroy();
+
+            if (pos != -1)
+                this._networks.splice(pos, 1);
+
+            if (this._networks.length == 0) {
+                // only network in the list
+                this._networks.push(apObj);
+                this._clearSection();
+                this._createSection();
+                return;
+            }
+
+            // skip networks that should appear earlier
+            let menuPos = 0;
+            for (pos = 0;
+                 pos < this._networks.length &&
+                 this._networkSortFunction(this._networks[i], apObj) < 0; ++pos) {
+                if (this._networks[pos] != this._activeNetwork)
+                    menuPos++;
+            }
+
+            // (re-)add the network
+            this._networks.splice(pos, 0, apObj);
+
+            if (this._shouldShowConnectionList()) {
+                menuPos += (this._activeConnectionItem ? 1 : 0);
+                this._createNetworkItem(apObj, menuPos);
+            }
+        }
     },
 
     _accessPointRemoved: function(device, accessPoint) {
@@ -1315,6 +1409,12 @@ NMDeviceWireless.prototype = {
                     // remove the connection from the access point group
                     connections.splice(k);
                     anyauto = connections.length == 0;
+
+                    if (anyauto) {
+                        // this potentially changes the sorting order
+                        forceupdate = true;
+                        break;
+                    }
                     if (apObj.item) {
                         if (apObj.item instanceof PopupMenu.PopupSubMenuMenuItem) {
                             let items = apObj.item.menu.getMenuItems();
@@ -1340,6 +1440,7 @@ NMDeviceWireless.prototype = {
         }
 
         if (forceupdate || anyauto) {
+            this._networks.sort(this._networkSortFunction);
             this._clearSection();
             this._createSection();
         }
@@ -1355,42 +1456,24 @@ NMDeviceWireless.prototype = {
         this._connections.push(obj);
 
         // find an appropriate access point
-        let any = false, forceupdate = false;
+        let forceupdate = false;
         for (let i = 0; i < this._networks.length; i++) {
             let apObj = this._networks[i];
 
             // Check if connection is valid for any of these access points
-            let any = false;
             for (let k = 0; k < apObj.accessPoints.length; k++) {
                 let ap = apObj.accessPoints[k];
                 if (this._connectionValidForAP(connection, ap)) {
                     apObj.connections.push(connection);
-                    any = true;
+                    // this potentially changes the sorting order
+                    forceupdate = true;
                     break;
-                }
-            }
-
-            if (any && this._shouldShowConnectionList()) {
-                // we need to show this connection
-                if (apObj.item && apObj.item.menu) {
-                    // We're already showing the submenu for this access point
-                    apObj.item.menu.addMenuItem(this._createAPItem(connection, apObj, true));
-                } else {
-                    if (apObj.item)
-                        apObj.item.destroy();
-                    if (apObj.connections.length == 1) {
-                        apObj.item = this._createAPItem(connection, apObj, false);
-                        this.section.addMenuItem(apObj.item);
-                    } else {
-                        apObj.item = null;
-                        // we need to force an update to create the submenu
-                        forceupdate = true;
-                    }
                 }
             }
         }
 
         if (forceupdate) {
+            this._networks.sort(this._networkSortFunction);
             this._clearSection();
             this._createSection();
         }
@@ -1473,6 +1556,37 @@ NMDeviceWireless.prototype = {
         return connection;
     },
 
+    _createNetworkItem: function(apObj, position) {
+        if(apObj.connections.length > 0) {
+            if (apObj.connections.length == 1)
+                apObj.item = this._createAPItem(apObj.connections[0], apObj, false);
+            else {
+                let title = apObj.ssidText;
+                apObj.item = new PopupMenu.PopupSubMenuMenuItem(title);
+                apObj.item._apObj = apObj;
+                for (let i = 0; i < apObj.connections.length; i++)
+                    apObj.item.menu.addMenuItem(this._createAPItem(apObj.connections[i], apObj, true));
+            }
+        } else {
+            apObj.item = new NMNetworkMenuItem(apObj.accessPoints);
+            apObj.item._apObj = apObj;
+            apObj.item.connect('activate', Lang.bind(this, function() {
+                let connection = this._createAutomaticConnection(apObj);
+                let accessPoints = sortAccessPoints(apObj.accessPoints);
+                this._client.add_and_activate_connection(connection, this.device, accessPoints[0].dbus_path, null)
+            }));
+        }
+        if (position < NUM_VISIBLE_NETWORKS)
+            this.section.addMenuItem(apObj.item);
+        else {
+            if (!this._overflowItem) {
+                this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
+                this.section.addMenuItem(this._overflowItem);
+            }
+            this._overflowItem.menu.addMenuItem(apObj.item, position - NUM_VISIBLE_NETWORKS);
+        }
+    },
+
     _createSection: function() {
         if (!this._shouldShowConnectionList())
             return;
@@ -1482,47 +1596,14 @@ NMDeviceWireless.prototype = {
             this.section.addMenuItem(this._activeConnectionItem);
         }
 
-        let activeAp = this.device.active_access_point;
-        let activeApSsid = activeAp ? activeAp.get_ssid() : null;
-
-        // we want five access points in the menu, including the active one
-        let numItems = this._activeConnection ? 4 : 5;
+        let activeOffset = this._activeConnectionItem ? 1 : 0;
 
         for(let j = 0; j < this._networks.length; j++) {
             let apObj = this._networks[j];
-            if(activeAp && ssidCompare(apObj.ssid, activeApSsid))
+            if (apObj == this._activeNetwork)
                 continue;
 
-            let menuItem;
-            if(apObj.connections.length > 0) {
-                if (apObj.connections.length == 1)
-                    apObj.item = this._createAPItem(apObj.connections[0], apObj, false);
-                else {
-                    let title = NetworkManager.utils_ssid_to_utf8(apObj.ssid) || _("<unknown>");
-                    apObj.item = new PopupMenu.PopupSubMenuMenuItem(title);
-                    apObj.item._apObj = apObj;
-                    for (let i = 0; i < apObj.connections.length; i++)
-                        apObj.item.menu.addMenuItem(this._createAPItem(apObj.connections[i], apObj, true));
-                }
-            } else {
-                apObj.item = new NMNetworkMenuItem(apObj.accessPoints);
-                apObj.item._apObj = apObj;
-                apObj.item.connect('activate', Lang.bind(this, function() {
-                    let connection = this._createAutomaticConnection(apObj);
-                    let accessPoints = sortAccessPoints(apObj.accessPoints);
-                    this._client.add_and_activate_connection(connection, this.device, accessPoints[0].dbus_path, null)
-                }));
-            }
-
-            if (j < numItems)
-                this.section.addMenuItem(apObj.item);
-            else {
-                if (!this._overflowItem) {
-                    this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
-                    this.section.addMenuItem(this._overflowItem);
-                }
-                this._overflowItem.menu.addMenuItem(apObj.item);
-            }
+            this._createNetworkItem(apObj, j + activeOffset);
         }
     },
 };
