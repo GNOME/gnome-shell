@@ -817,6 +817,8 @@ Panel.prototype = {
                                         reactive: true });
         this.actor._delegate = this;
 
+        this._statusArea = {};
+
         Main.overview.connect('shown', Lang.bind(this, function () {
             this.actor.add_style_class_name('in-overview');
         }));
@@ -913,6 +915,7 @@ Panel.prototype = {
                                       style_class: 'panel-button',
                                       reactive: true,
                                       can_focus: true });
+        this._activities = this.button;
         this.button.set_child(label);
         this.button._delegate = this.button;
         this.button._xdndTimeOut = 0;
@@ -941,10 +944,10 @@ Panel.prototype = {
 
         this._hotCorner = null;
 
-        let appMenuButton = new AppMenuButton();
-        this._leftBox.add(appMenuButton.actor);
+        this._appMenu = new AppMenuButton();
+        this._leftBox.add(this._appMenu.actor);
 
-        this._menus.addMenu(appMenuButton.menu);
+        this._menus.addMenu(this._appMenu.menu);
 
         /* center */
         this._dateMenu = new DateMenu.DateMenuButton();
@@ -963,12 +966,12 @@ Panel.prototype = {
         this._rightBox.add(this._trayBox);
         this._rightBox.add(this._statusBox);
 
-        this._statusmenu = new StatusMenu.StatusMenuButton();
-        this._statusmenu.actor.name = 'panelStatus';
-        this._rightBox.add(this._statusmenu.actor);
+        this._userMenu = new StatusMenu.StatusMenuButton();
+        this._userMenu.actor.name = 'panelStatus';
+        this._rightBox.add(this._userMenu.actor);
 
         // Synchronize the buttons pseudo classes with its corner
-        this._statusmenu.actor.connect('style-changed', Lang.bind(this,
+        this._userMenu.actor.connect('style-changed', Lang.bind(this,
             function(actor) {
                 let rtl = actor.get_direction() == St.TextDirection.RTL;
                 let corner = rtl ? this._leftCorner : this._rightCorner;
@@ -1051,11 +1054,13 @@ Panel.prototype = {
             let indicator = new constructor();
             this._statusBox.add(indicator.actor);
             this._menus.addMenu(indicator.menu);
+
+            this._statusArea[role] = indicator;
         }
 
         // PopupMenuManager depends on menus being added in order for
         // keyboard navigation
-        this._menus.addMenu(this._statusmenu.menu);
+        this._menus.addMenu(this._userMenu.menu);
     },
 
     startupAnimation: function() {
