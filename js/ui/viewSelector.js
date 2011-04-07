@@ -226,7 +226,7 @@ SearchTab.prototype = {
             if (this._iconClickedId == 0) {
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
                     Lang.bind(this, function() {
-                        this.reset();
+                        this._reset();
                     }));
             }
             this._activate();
