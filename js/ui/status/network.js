@@ -917,7 +917,7 @@ NMDeviceBluetooth.prototype = {
     },
 
     _updateAutoConnectionName: function() {
-        this._autoConnectionName = this._makeConnectioName(this.device);
+        this._autoConnectionName = this._makeConnectionName(this.device);
 
         this._clearSection();
         this._createSection();
