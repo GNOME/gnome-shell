@@ -140,7 +140,10 @@ NMNetworkMenuItem.prototype = {
     },
 
     _getIcon: function() {
-        return 'network-wireless-signal-' + signalToIcon(this.bestAP.strength);
+        if (this.bestAP.mode == NM80211Mode.ADHOC)
+            return 'network-workgroup';
+        else
+            return 'network-wireless-signal-' + signalToIcon(this.bestAP.strength);
     },
 
     updateAccessPoints: function(accessPoints) {
@@ -2075,7 +2078,7 @@ NMApplet.prototype = {
                     let ap = dev.device.active_access_point;
                     let mode = dev.device.mode;
                     if (!ap) {
-                        if (mode != NetworkManager['80211Mode'].ADHOC) {
+                        if (mode != NM80211Mode.ADHOC) {
                             log('An active wireless connection, in infrastructure mode, involves no access point?');
                             break;
                         }
