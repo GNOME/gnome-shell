@@ -162,7 +162,14 @@ SearchTab.prototype = {
     hide: function() {
         BaseTab.prototype.hide.call(this);
 
-        this._reset();
+        // Leave the entry focused when it doesn't have any text;
+        // when replacing a selected search term, Clutter emits
+        // two 'text-changed' signals, one for deleting the previous
+        // text and one for the new one - the second one is handled
+        // incorrectly when we remove focus
+        // (https://bugzilla.gnome.org/show_bug.cgi?id=636341) */
+        if (this._text.text != '')
+            this._reset();
     },
 
     _reset: function () {
