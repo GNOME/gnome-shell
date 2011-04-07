@@ -101,8 +101,13 @@ NMNetworkMenuItem.prototype = {
         accessPoints = sortAccessPoints(accessPoints);
         this.bestAP = accessPoints[0];
 
-        let ssid = this.bestAP.get_ssid();
-        title = title || NetworkManager.utils_ssid_to_utf8(ssid) || _("<unknown>");
+        if (!title) {
+            let ssid = this.bestAP.get_ssid();
+            if (ssid)
+                title = NetworkManager.utils_ssid_to_utf8(ssid);
+            if (!title)
+                title = _("<unknown>");
+        }
 
         this._label = new St.Label({ text: title });
         this.addActor(this._label);
