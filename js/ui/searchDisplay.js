@@ -333,6 +333,13 @@ SearchResults.prototype = {
         let terms = this._searchSystem.getTerms();
         this._openSearchSystem.setSearchTerms(terms);
 
+        // To avoid CSS transitions causing flickering
+        // of the selection when the first search result
+        // stays the same, we hide the content while
+        // filling in the results and setting the initial
+        // selection.
+        this._content.hide();
+
         for (let i = 0; i < results.length; i++) {
             let [provider, providerResults] = results[i];
             let meta = this._metaForProvider(provider);
@@ -342,6 +349,8 @@ SearchResults.prototype = {
 
         if (this._selectedOpenSearchButton == -1)
             this.selectDown(false);
+
+        this._content.show();
 
         return true;
     },
