@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-05 19:17+0000\n"
-"PO-Revision-Date: 2011-04-06 12:22+0200\n"
+"POT-Creation-Date: 2011-04-06 17:50+0000\n"
+"PO-Revision-Date: 2011-04-11 10:22+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -195,7 +195,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:3947
 msgid "Reactive"
-msgstr ""
+msgstr "Reactivo"
 
 #: ../clutter/clutter-actor.c:3948
 msgid "Whether the actor is reactive to events"
@@ -268,7 +268,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4088
 msgid "Rotation Angle X"
-msgstr ""
+msgstr "Ángulo de rotación X"
 
 #: ../clutter/clutter-actor.c:4089
 msgid "The rotation angle on the X axis"
@@ -276,7 +276,7 @@ msgstr "El ángulo de rotación en el eje X"
 
 #: ../clutter/clutter-actor.c:4104
 msgid "Rotation Angle Y"
-msgstr ""
+msgstr "Ángulo de rotación Y"
 
 #: ../clutter/clutter-actor.c:4105
 msgid "The rotation angle on the Y axis"
@@ -284,7 +284,7 @@ msgstr "El ángulo de rotación en el eje Y"
 
 #: ../clutter/clutter-actor.c:4120
 msgid "Rotation Angle Z"
-msgstr ""
+msgstr "Ángulo de rotación Z"
 
 #: ../clutter/clutter-actor.c:4121
 msgid "The rotation angle on the Z axis"
@@ -296,7 +296,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4137
 msgid "The rotation center on the X axis"
-msgstr ""
+msgstr "El ángulo de rotación en el eje Y"
 
 #: ../clutter/clutter-actor.c:4153
 msgid "Rotation Center Y"
@@ -304,7 +304,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4154
 msgid "The rotation center on the Y axis"
-msgstr ""
+msgstr "En centro de la rotación en el eje Y"
 
 #: ../clutter/clutter-actor.c:4170
 msgid "Rotation Center Z"
@@ -312,7 +312,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4171
 msgid "The rotation center on the Z axis"
-msgstr ""
+msgstr "El ángulo de rotación en el eje Z"
 
 #: ../clutter/clutter-actor.c:4187
 msgid "Rotation Center Z Gravity"
@@ -324,7 +324,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4206
 msgid "Anchor X"
-msgstr ""
+msgstr "Ancla X"
 
 #: ../clutter/clutter-actor.c:4207
 msgid "X coordinate of the anchor point"
@@ -332,7 +332,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4223
 msgid "Anchor Y"
-msgstr ""
+msgstr "Ancla Y"
 
 #: ../clutter/clutter-actor.c:4224
 msgid "Y coordinate of the anchor point"
@@ -340,7 +340,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4239
 msgid "Anchor Gravity"
-msgstr ""
+msgstr "Gravedad del ancla"
 
 #: ../clutter/clutter-actor.c:4240
 msgid "The anchor point as a ClutterGravity"
@@ -364,7 +364,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4291
 msgid "Text Direction"
-msgstr ""
+msgstr "Dirección del texto"
 
 #: ../clutter/clutter-actor.c:4292
 msgid "Direction of the text"
@@ -477,7 +477,7 @@ msgstr ""
 
 #: ../clutter/clutter-animation.c:480
 msgid "The mode of the animation"
-msgstr ""
+msgstr "El modo de la animación"
 
 #: ../clutter/clutter-animation.c:494 ../clutter/clutter-animator.c:1786
 #: ../clutter/clutter-media.c:194 ../clutter/clutter-state.c:1422
@@ -527,7 +527,7 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-depth.c:175
 msgid "Initial depth to apply"
-msgstr ""
+msgstr "Profundidad inicial que aplicar"
 
 #: ../clutter/clutter-behaviour-depth.c:190
 msgid "End Depth"
@@ -535,7 +535,7 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-depth.c:191
 msgid "Final depth to apply"
-msgstr ""
+msgstr "Profundidad final que aplicar"
 
 #: ../clutter/clutter-behaviour-ellipse.c:394
 msgid "Start Angle"
@@ -611,7 +611,7 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-opacity.c:178
 msgid "Initial opacity level"
-msgstr ""
+msgstr "Nivel inicial de opacidad"
 
 #: ../clutter/clutter-behaviour-opacity.c:195
 msgid "Opacity End"
@@ -648,7 +648,7 @@ msgstr "Eje de rotación"
 
 #: ../clutter/clutter-behaviour-rotate.c:347
 msgid "Center X"
-msgstr ""
+msgstr "Centro X"
 
 #: ../clutter/clutter-behaviour-rotate.c:348
 msgid "X coordinate of the center of rotation"
@@ -656,7 +656,7 @@ msgstr "Coordenada X del centro de rotación"
 
 #: ../clutter/clutter-behaviour-rotate.c:365
 msgid "Center Y"
-msgstr ""
+msgstr "Centro Y"
 
 #: ../clutter/clutter-behaviour-rotate.c:366
 msgid "Y coordinate of the center of rotation"
@@ -664,7 +664,7 @@ msgstr "Coordenada Y del centro de rotación"
 
 #: ../clutter/clutter-behaviour-rotate.c:383
 msgid "Center Z"
-msgstr ""
+msgstr "Centro Z"
 
 #: ../clutter/clutter-behaviour-rotate.c:384
 msgid "Z coordinate of the center of rotation"
@@ -676,7 +676,7 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-scale.c:219
 msgid "Initial scale on the X axis"
-msgstr ""
+msgstr "Escala inicial en el eje X"
 
 #: ../clutter/clutter-behaviour-scale.c:237
 msgid "X End Scale"
@@ -684,7 +684,7 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-scale.c:238
 msgid "Final scale on the X axis"
-msgstr ""
+msgstr "Escala final en el eje X"
 
 #: ../clutter/clutter-behaviour-scale.c:256
 msgid "Y Start Scale"
@@ -692,7 +692,7 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-scale.c:257
 msgid "Initial scale on the Y axis"
-msgstr ""
+msgstr "Escala inicial en el eje Y"
 
 #: ../clutter/clutter-behaviour-scale.c:275
 msgid "Y End Scale"
@@ -700,7 +700,7 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-scale.c:276
 msgid "Final scale on the Y axis"
-msgstr ""
+msgstr "Escala final en el eje Y"
 
 #: ../clutter/clutter-bind-constraint.c:317
 msgid "The source of the binding"
@@ -992,7 +992,7 @@ msgstr ""
 
 #: ../clutter/clutter-drag-action.c:611
 msgid "Drag Axis"
-msgstr ""
+msgstr "Arrastrar ejes"
 
 #: ../clutter/clutter-drag-action.c:612
 msgid "Constraints the dragging to an axis"
@@ -1032,7 +1032,7 @@ msgstr "Anchura mínima de la columna"
 
 #: ../clutter/clutter-flow-layout.c:947
 msgid "Minimum width for each column"
-msgstr ""
+msgstr "Anchura mínima de cada columna"
 
 #: ../clutter/clutter-flow-layout.c:962
 msgid "Maximum Column Width"
@@ -1040,23 +1040,23 @@ msgstr "Anchura máxima de la columna"
 
 #: ../clutter/clutter-flow-layout.c:963
 msgid "Maximum width for each column"
-msgstr ""
+msgstr "Anchura máxima de cada columna"
 
 #: ../clutter/clutter-flow-layout.c:977
 msgid "Minimum Row Height"
-msgstr ""
+msgstr "Altura mínima de la fila"
 
 #: ../clutter/clutter-flow-layout.c:978
 msgid "Minimum height for each row"
-msgstr ""
+msgstr "Altura mínima de cada fila"
 
 #: ../clutter/clutter-flow-layout.c:993
 msgid "Maximum Row Height"
-msgstr ""
+msgstr "Altura máxima de la fila"
 
 #: ../clutter/clutter-flow-layout.c:994
 msgid "Maximum height for each row"
-msgstr ""
+msgstr "Altura máxima de cada fila"
 
 #: ../clutter/clutter-input-device.c:220
 msgid "Id"
@@ -1952,9 +1952,8 @@ msgid "Delay before start"
 msgstr ""
 
 #: ../clutter/clutter-timeline.c:295
-#, fuzzy
 msgid "Duration of the timeline in milliseconds"
-msgstr "La duración del flujo, en segundos"
+msgstr "Duración de la línea de tiempo, en milisegundos"
 
 #: ../clutter/clutter-timeline.c:311
 #, fuzzy
@@ -1979,14 +1978,12 @@ msgid "Cogl debugging flags to unset"
 msgstr ""
 
 #: ../clutter/cogl/cogl/cogl-debug.c:238
-#, fuzzy
 msgid "Cogl Options"
-msgstr "Opciones de Clutter"
+msgstr "Opciones de Cogl"
 
 #: ../clutter/cogl/cogl/cogl-debug.c:239
-#, fuzzy
 msgid "Show Cogl options"
-msgstr "Mostrar las opciones de Clutter"
+msgstr "Mostrar las opciones de Cogl"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:147
 msgid "sysfs Path"
@@ -2003,9 +2000,8 @@ msgid "Device Path"
 msgstr "Administrador de dispositivos"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:164
-#, fuzzy
 msgid "Path of the device node"
-msgstr "El nombre del dispositivo"
+msgstr "Ruta al nodo del dispositivo"
 
 #: ../clutter/glx/clutter-backend-glx.c:134
 msgid "VBlank method to be used (none, dri or glx)"
