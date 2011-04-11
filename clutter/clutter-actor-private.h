@@ -162,6 +162,8 @@ G_CONST_RETURN gchar *_clutter_actor_get_debug_name (ClutterActor *self);
 void _clutter_actor_push_clone_paint (void);
 void _clutter_actor_pop_clone_paint  (void);
 
+guint32 _clutter_actor_get_pick_id (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */

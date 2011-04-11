@@ -2650,6 +2650,12 @@ actor_has_shader_data (ClutterActor *self)
   return g_object_get_qdata (G_OBJECT (self), quark_shader_data) != NULL;
 }
 
+guint32
+_clutter_actor_get_pick_id (ClutterActor *self)
+{
+  return self->priv->id;
+}
+
 /**
  * clutter_actor_paint:
  * @self: A #ClutterActor
@@ -2813,7 +2819,7 @@ clutter_actor_paint (ClutterActor *self)
 
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_pick_counter);
 
-      _clutter_id_to_color (clutter_actor_get_gid (self), &col);
+      _clutter_id_to_color (_clutter_actor_get_pick_id (self), &col);
 
       /* Actor will then paint silhouette of itself in supplied
        * color.  See clutter_stage_get_actor_at_pos() for where
@@ -7278,6 +7284,8 @@ clutter_actor_get_name (ClutterActor *self)
  * Return value: Globally unique value for this object instance.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: The id is not used any longer.
  */
 guint32
 clutter_actor_get_gid (ClutterActor *self)

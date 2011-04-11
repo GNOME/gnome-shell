@@ -2296,6 +2296,8 @@ _clutter_process_event (ClutterEvent *event)
  *   The returned actor does not have its reference count increased.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: The id is not used any longer.
  */
 ClutterActor *
 clutter_get_actor_by_gid (guint32 id_)
