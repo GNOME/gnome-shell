@@ -1,7 +1,6 @@
 # Czech translation for clutter.
 # Copyright (C) 2011 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
-#
 # Marek Černocký <marek@manet.cz>, 2011.
 #
 msgid ""
@@ -9,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-29 13:11+0000\n"
-"PO-Revision-Date: 2011-04-07 18:07+0200\n"
+"POT-Creation-Date: 2011-04-11 17:44+0000\n"
+"PO-Revision-Date: 2011-04-11 23:37+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,380 +18,380 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../clutter/clutter-actor.c:3523
+#: ../clutter/clutter-actor.c:3586
 msgid "X coordinate"
 msgstr "Souřadnice X"
 
-#: ../clutter/clutter-actor.c:3524
+#: ../clutter/clutter-actor.c:3587
 msgid "X coordinate of the actor"
 msgstr "Souřadnice X účastníka"
 
-#: ../clutter/clutter-actor.c:3539
+#: ../clutter/clutter-actor.c:3602
 msgid "Y coordinate"
 msgstr "Souřadnice Y"
 
-#: ../clutter/clutter-actor.c:3540
+#: ../clutter/clutter-actor.c:3603
 msgid "Y coordinate of the actor"
 msgstr "Souřadnice Y účastníka"
 
-#: ../clutter/clutter-actor.c:3555 ../clutter/clutter-behaviour-ellipse.c:474
+#: ../clutter/clutter-actor.c:3618 ../clutter/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Šířka"
 
-#: ../clutter/clutter-actor.c:3556
+#: ../clutter/clutter-actor.c:3619
 msgid "Width of the actor"
 msgstr "Šířka účastníka"
 
-#: ../clutter/clutter-actor.c:3570 ../clutter/clutter-behaviour-ellipse.c:490
+#: ../clutter/clutter-actor.c:3633 ../clutter/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Výška"
 
-#: ../clutter/clutter-actor.c:3571
+#: ../clutter/clutter-actor.c:3634
 msgid "Height of the actor"
 msgstr "Výška účastníka"
 
-#: ../clutter/clutter-actor.c:3589
+#: ../clutter/clutter-actor.c:3652
 msgid "Fixed X"
 msgstr "Pevná X"
 
-#: ../clutter/clutter-actor.c:3590
+#: ../clutter/clutter-actor.c:3653
 msgid "Forced X position of the actor"
 msgstr "Přikázaná poloha X účastníka"
 
-#: ../clutter/clutter-actor.c:3608
+#: ../clutter/clutter-actor.c:3671
 msgid "Fixed Y"
 msgstr "Pevná Y"
 
-#: ../clutter/clutter-actor.c:3609
+#: ../clutter/clutter-actor.c:3672
 msgid "Forced Y position of the actor"
 msgstr "Přikázaná poloha Y účastníka"
 
-#: ../clutter/clutter-actor.c:3625
+#: ../clutter/clutter-actor.c:3688
 msgid "Fixed position set"
 msgstr "Nastavena pevná poloha"
 
-#: ../clutter/clutter-actor.c:3626
+#: ../clutter/clutter-actor.c:3689
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Zda je použita pevná poloha pro účastníka"
 
-#: ../clutter/clutter-actor.c:3648
+#: ../clutter/clutter-actor.c:3711
 msgid "Min Width"
 msgstr "Min. šířka"
 
-#: ../clutter/clutter-actor.c:3649
+#: ../clutter/clutter-actor.c:3712
 msgid "Forced minimum width request for the actor"
 msgstr "Požadavek na nutnou minimální šířku účastníka"
 
-#: ../clutter/clutter-actor.c:3668
+#: ../clutter/clutter-actor.c:3731
 msgid "Min Height"
 msgstr "Min. výška"
 
-#: ../clutter/clutter-actor.c:3669
+#: ../clutter/clutter-actor.c:3732
 msgid "Forced minimum height request for the actor"
 msgstr "Požadavek na nutnou minimální výšku účastníka"
 
-#: ../clutter/clutter-actor.c:3688
+#: ../clutter/clutter-actor.c:3751
 msgid "Natural Width"
 msgstr "Přirozená šířka"
 
-#: ../clutter/clutter-actor.c:3689
+#: ../clutter/clutter-actor.c:3752
 msgid "Forced natural width request for the actor"
 msgstr "Požadavek na nutnou přirozenou šířku účastníka"
 
-#: ../clutter/clutter-actor.c:3708
+#: ../clutter/clutter-actor.c:3771
 msgid "Natural Height"
 msgstr "Přirozená výška"
 
-#: ../clutter/clutter-actor.c:3709
+#: ../clutter/clutter-actor.c:3772
 msgid "Forced natural height request for the actor"
 msgstr "Požadavek na nutnou přirozenou výšku účastníka"
 
-#: ../clutter/clutter-actor.c:3725
+#: ../clutter/clutter-actor.c:3788
 msgid "Minimum width set"
 msgstr "Nastavena min. šířka"
 
-#: ../clutter/clutter-actor.c:3726
+#: ../clutter/clutter-actor.c:3789
 msgid "Whether to use the min-width property"
 msgstr "Zda se má použit vlastnost min-width"
 
-#: ../clutter/clutter-actor.c:3741
+#: ../clutter/clutter-actor.c:3804
 msgid "Minimum height set"
 msgstr "Nastavena min. výška"
 
-#: ../clutter/clutter-actor.c:3742
+#: ../clutter/clutter-actor.c:3805
 msgid "Whether to use the min-height property"
 msgstr "Zda se má použit vlastnost min-height"
 
-#: ../clutter/clutter-actor.c:3757
+#: ../clutter/clutter-actor.c:3820
 msgid "Natural width set"
 msgstr "Nastavena přirozená šířka"
 
-#: ../clutter/clutter-actor.c:3758
+#: ../clutter/clutter-actor.c:3821
 msgid "Whether to use the natural-width property"
 msgstr "Zda se má použit vlastnost natural-width"
 
-#: ../clutter/clutter-actor.c:3775
+#: ../clutter/clutter-actor.c:3838
 msgid "Natural height set"
 msgstr "Nastavena přirozená výška"
 
-#: ../clutter/clutter-actor.c:3776
+#: ../clutter/clutter-actor.c:3839
 msgid "Whether to use the natural-height property"
 msgstr "Zda se má použit vlastnost natural-height"
 
-#: ../clutter/clutter-actor.c:3795
+#: ../clutter/clutter-actor.c:3858
 msgid "Allocation"
 msgstr "Místo"
 
-#: ../clutter/clutter-actor.c:3796
+#: ../clutter/clutter-actor.c:3859
 msgid "The actor's allocation"
 msgstr "Místo zabrané účastníkem"
 
-#: ../clutter/clutter-actor.c:3852
+#: ../clutter/clutter-actor.c:3915
 msgid "Request Mode"
 msgstr "Režim požadavku"
 
-#: ../clutter/clutter-actor.c:3853
+#: ../clutter/clutter-actor.c:3916
 msgid "The actor's request mode"
 msgstr "Režim požadavku účastníka"
 
-#: ../clutter/clutter-actor.c:3868
+#: ../clutter/clutter-actor.c:3931
 msgid "Depth"
 msgstr "Hloubka"
 
-#: ../clutter/clutter-actor.c:3869
+#: ../clutter/clutter-actor.c:3932
 msgid "Position on the Z axis"
 msgstr "Poloha na ose X"
 
-#: ../clutter/clutter-actor.c:3883
+#: ../clutter/clutter-actor.c:3946
 msgid "Opacity"
 msgstr "Krytí"
 
-#: ../clutter/clutter-actor.c:3884
+#: ../clutter/clutter-actor.c:3947
 msgid "Opacity of an actor"
 msgstr "Úroveň krytí barev účastníka"
 
-#: ../clutter/clutter-actor.c:3899
+#: ../clutter/clutter-actor.c:3962
 msgid "Visible"
 msgstr "Viditelnost"
 
-#: ../clutter/clutter-actor.c:3900
+#: ../clutter/clutter-actor.c:3963
 msgid "Whether the actor is visible or not"
 msgstr "Zda je účastník viditelný či ne"
 
-#: ../clutter/clutter-actor.c:3915
+#: ../clutter/clutter-actor.c:3978
 msgid "Mapped"
 msgstr "Namapován"
 
-#: ../clutter/clutter-actor.c:3916
+#: ../clutter/clutter-actor.c:3979
 msgid "Whether the actor will be painted"
 msgstr "Zda bude účastník kreslen"
 
-#: ../clutter/clutter-actor.c:3930
+#: ../clutter/clutter-actor.c:3993
 msgid "Realized"
 msgstr "Realizován"
 
-#: ../clutter/clutter-actor.c:3931
+#: ../clutter/clutter-actor.c:3994
 msgid "Whether the actor has been realized"
 msgstr "Zda byl účastník realizován"
 
-#: ../clutter/clutter-actor.c:3947
+#: ../clutter/clutter-actor.c:4010
 msgid "Reactive"
 msgstr "Reagující"
 
-#: ../clutter/clutter-actor.c:3948
+#: ../clutter/clutter-actor.c:4011
 msgid "Whether the actor is reactive to events"
 msgstr "Zda účastník reaguje na události"
 
-#: ../clutter/clutter-actor.c:3960
+#: ../clutter/clutter-actor.c:4023
 msgid "Has Clip"
 msgstr "Má ořez"
 
-#: ../clutter/clutter-actor.c:3961
+#: ../clutter/clutter-actor.c:4024
 msgid "Whether the actor has a clip set"
 msgstr "Zda má účastník nastavené ořezání"
 
-#: ../clutter/clutter-actor.c:3976
+#: ../clutter/clutter-actor.c:4039
 msgid "Clip"
 msgstr "Ořez"
 
-#: ../clutter/clutter-actor.c:3977
+#: ../clutter/clutter-actor.c:4040
 msgid "The clip region for the actor"
 msgstr "Oblast ořezání účastníka"
 
-#: ../clutter/clutter-actor.c:3991 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-actor.c:4054 ../clutter/clutter-actor-meta.c:205
 #: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:236
 msgid "Name"
 msgstr "Název"
 
-#: ../clutter/clutter-actor.c:3992
+#: ../clutter/clutter-actor.c:4055
 msgid "Name of the actor"
 msgstr "Název účastníka"
 
-#: ../clutter/clutter-actor.c:4006
+#: ../clutter/clutter-actor.c:4069
 msgid "Scale X"
 msgstr "Měřítko X"
 
-#: ../clutter/clutter-actor.c:4007
+#: ../clutter/clutter-actor.c:4070
 msgid "Scale factor on the X axis"
 msgstr "Škálovací měřítko v ose X"
 
-#: ../clutter/clutter-actor.c:4022
+#: ../clutter/clutter-actor.c:4085
 msgid "Scale Y"
 msgstr "Měřítko Y"
 
-#: ../clutter/clutter-actor.c:4023
+#: ../clutter/clutter-actor.c:4086
 msgid "Scale factor on the Y axis"
 msgstr "Škálovací měřítko v ose Y"
 
-#: ../clutter/clutter-actor.c:4038
+#: ../clutter/clutter-actor.c:4101
 msgid "Scale Center X"
 msgstr "Střed škálování X"
 
-#: ../clutter/clutter-actor.c:4039
+#: ../clutter/clutter-actor.c:4102
 msgid "Horizontal scale center"
 msgstr "Střed škálování ve vodorovném směru"
 
-#: ../clutter/clutter-actor.c:4054
+#: ../clutter/clutter-actor.c:4117
 msgid "Scale Center Y"
 msgstr "Střed škálování Y"
 
-#: ../clutter/clutter-actor.c:4055
+#: ../clutter/clutter-actor.c:4118
 msgid "Vertical scale center"
 msgstr "Střed škálování ve svislém směru"
 
-#: ../clutter/clutter-actor.c:4070
+#: ../clutter/clutter-actor.c:4133
 msgid "Scale Gravity"
 msgstr "Středobod škálování"
 
-#: ../clutter/clutter-actor.c:4071
+#: ../clutter/clutter-actor.c:4134
 msgid "The center of scaling"
 msgstr "Střed škálování"
 
-#: ../clutter/clutter-actor.c:4088
+#: ../clutter/clutter-actor.c:4151
 msgid "Rotation Angle X"
 msgstr "Úhel natočení v X"
 
-#: ../clutter/clutter-actor.c:4089
+#: ../clutter/clutter-actor.c:4152
 msgid "The rotation angle on the X axis"
 msgstr "Úhel natočení v ose X"
 
-#: ../clutter/clutter-actor.c:4104
+#: ../clutter/clutter-actor.c:4167
 msgid "Rotation Angle Y"
 msgstr "Úhel natočení v Y"
 
-#: ../clutter/clutter-actor.c:4105
+#: ../clutter/clutter-actor.c:4168
 msgid "The rotation angle on the Y axis"
 msgstr "Úhel natočení v ose Y"
 
-#: ../clutter/clutter-actor.c:4120
+#: ../clutter/clutter-actor.c:4183
 msgid "Rotation Angle Z"
 msgstr "Úhel natočení v Z"
 
-#: ../clutter/clutter-actor.c:4121
+#: ../clutter/clutter-actor.c:4184
 msgid "The rotation angle on the Z axis"
 msgstr "Úhel natočení v ose Z"
 
-#: ../clutter/clutter-actor.c:4136
+#: ../clutter/clutter-actor.c:4199
 msgid "Rotation Center X"
 msgstr "Střed natočení X"
 
-#: ../clutter/clutter-actor.c:4137
+#: ../clutter/clutter-actor.c:4200
 msgid "The rotation center on the X axis"
 msgstr "Souřadnice na ose X středu natočení"
 
-#: ../clutter/clutter-actor.c:4153
+#: ../clutter/clutter-actor.c:4216
 msgid "Rotation Center Y"
 msgstr "Střed natočení Y"
 
-#: ../clutter/clutter-actor.c:4154
+#: ../clutter/clutter-actor.c:4217
 msgid "The rotation center on the Y axis"
 msgstr "Souřadnice na ose Y středu natočení"
 
-#: ../clutter/clutter-actor.c:4170
+#: ../clutter/clutter-actor.c:4233
 msgid "Rotation Center Z"
 msgstr "Střed natočení Z"
 
-#: ../clutter/clutter-actor.c:4171
+#: ../clutter/clutter-actor.c:4234
 msgid "The rotation center on the Z axis"
 msgstr "Souřadnice na ose Z středu natočení"
 
-#: ../clutter/clutter-actor.c:4187
+#: ../clutter/clutter-actor.c:4250
 msgid "Rotation Center Z Gravity"
 msgstr "Středobod natočení v ose Z"
 
-#: ../clutter/clutter-actor.c:4188
+#: ../clutter/clutter-actor.c:4251
 msgid "Center point for rotation around the Z axis"
 msgstr "Středový bod pro natočení okolo osy Z"
 
-#: ../clutter/clutter-actor.c:4206
+#: ../clutter/clutter-actor.c:4269
 msgid "Anchor X"
 msgstr "Kotva X"
 
-#: ../clutter/clutter-actor.c:4207
+#: ../clutter/clutter-actor.c:4270
 msgid "X coordinate of the anchor point"
 msgstr "Souřadnice X kotevního bodu"
 
-#: ../clutter/clutter-actor.c:4223
+#: ../clutter/clutter-actor.c:4286
 msgid "Anchor Y"
 msgstr "Kotva Y"
 
-#: ../clutter/clutter-actor.c:4224
+#: ../clutter/clutter-actor.c:4287
 msgid "Y coordinate of the anchor point"
 msgstr "Souřadnice Y kotevního bodu"
 
-#: ../clutter/clutter-actor.c:4239
+#: ../clutter/clutter-actor.c:4302
 msgid "Anchor Gravity"
 msgstr "Středobod kotvy"
 
-#: ../clutter/clutter-actor.c:4240
+#: ../clutter/clutter-actor.c:4303
 msgid "The anchor point as a ClutterGravity"
 msgstr "Kotevní bod ve formě ClutterGravity"
 
-#: ../clutter/clutter-actor.c:4259
+#: ../clutter/clutter-actor.c:4322
 msgid "Show on set parent"
 msgstr "Zobrazit podle nastavení rodiče"
 
-#: ../clutter/clutter-actor.c:4260
+#: ../clutter/clutter-actor.c:4323
 msgid "Whether the actor is shown when parented"
 msgstr "Zda je účastník zobrazen, když je zobrazen rodič"
 
-#: ../clutter/clutter-actor.c:4280
+#: ../clutter/clutter-actor.c:4343
 msgid "Clip to Allocation"
 msgstr "Ořez podle místa"
 
-#: ../clutter/clutter-actor.c:4281
+#: ../clutter/clutter-actor.c:4344
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Mění oblast ořezu průběžně podle místa, na kterém je účastník"
 
-#: ../clutter/clutter-actor.c:4291
+#: ../clutter/clutter-actor.c:4354
 msgid "Text Direction"
 msgstr "Směr textu"
 
-#: ../clutter/clutter-actor.c:4292
+#: ../clutter/clutter-actor.c:4355
 msgid "Direction of the text"
 msgstr "Směr textu"
 
-#: ../clutter/clutter-actor.c:4310
+#: ../clutter/clutter-actor.c:4373
 msgid "Has Pointer"
 msgstr "Má ukazatel"
 
-#: ../clutter/clutter-actor.c:4311
+#: ../clutter/clutter-actor.c:4374
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Zda účastník obsahuje ukazatel některého ze vstupních zařízení"
 
-#: ../clutter/clutter-actor.c:4328
+#: ../clutter/clutter-actor.c:4391
 msgid "Actions"
 msgstr "Akce"
 
-#: ../clutter/clutter-actor.c:4329
+#: ../clutter/clutter-actor.c:4392
 msgid "Adds an action to the actor"
 msgstr "Přidává do účastníka akci"
 
-#: ../clutter/clutter-actor.c:4343
+#: ../clutter/clutter-actor.c:4406
 msgid "Constraints"
 msgstr "Omezení"
 
-#: ../clutter/clutter-actor.c:4344
+#: ../clutter/clutter-actor.c:4407
 msgid "Adds a constraint to the actor"
 msgstr "Přidává do účastníka omezení"
 
@@ -765,7 +764,7 @@ msgid "The layout manager used by the box"
 msgstr "Správce rozvržení použitý boxem"
 
 #: ../clutter/clutter-box.c:557 ../clutter/clutter-rectangle.c:258
-#: ../clutter/clutter-stage.c:1443
+#: ../clutter/clutter-stage.c:1736
 msgid "Color"
 msgstr "Barva"
 
@@ -1150,59 +1149,59 @@ msgstr "Správce, který vytvořil tato data"
 #. * Do *not* translate it to "predefinito:LTR": if it
 #. * it isn't default:LTR or default:RTL it will not work
 #.
-#: ../clutter/clutter-main.c:738
+#: ../clutter/clutter-main.c:487
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1541
+#: ../clutter/clutter-main.c:1283
 msgid "Show frames per second"
 msgstr "Zobrazit počet snímků za sekundu"
 
-#: ../clutter/clutter-main.c:1543
+#: ../clutter/clutter-main.c:1285
 msgid "Default frame rate"
 msgstr "Výchozí snímková rychlost"
 
-#: ../clutter/clutter-main.c:1545
+#: ../clutter/clutter-main.c:1287
 msgid "Make all warnings fatal"
 msgstr "Učinit všechna varování jako kritická"
 
-#: ../clutter/clutter-main.c:1548
+#: ../clutter/clutter-main.c:1290
 msgid "Direction for the text"
 msgstr "Směr textu"
 
-#: ../clutter/clutter-main.c:1551
+#: ../clutter/clutter-main.c:1293
 msgid "Disable mipmapping on text"
 msgstr "Vypnout mipmapping u textů"
 
-#: ../clutter/clutter-main.c:1554
+#: ../clutter/clutter-main.c:1296
 msgid "Use 'fuzzy' picking"
 msgstr "Použít přibližné („fuzzy“) vybírání"
 
-#: ../clutter/clutter-main.c:1557
+#: ../clutter/clutter-main.c:1299
 msgid "Clutter debugging flags to set"
 msgstr "Příznaky ladění pro Clutter, které se mají zapnout"
 
-#: ../clutter/clutter-main.c:1559
+#: ../clutter/clutter-main.c:1301
 msgid "Clutter debugging flags to unset"
 msgstr "Příznaky ladění pro Clutter, které se mají vypnout"
 
-#: ../clutter/clutter-main.c:1563
+#: ../clutter/clutter-main.c:1305
 msgid "Clutter profiling flags to set"
 msgstr "Příznaky profilování pro Clutter, které se mají zapnout"
 
-#: ../clutter/clutter-main.c:1565
+#: ../clutter/clutter-main.c:1307
 msgid "Clutter profiling flags to unset"
 msgstr "Příznaky profilování pro Clutter, které se mají vypnout"
 
-#: ../clutter/clutter-main.c:1568
+#: ../clutter/clutter-main.c:1310
 msgid "Enable accessibility"
 msgstr "Zapnout zpřístupnění"
 
-#: ../clutter/clutter-main.c:1755
+#: ../clutter/clutter-main.c:1492
 msgid "Clutter Options"
 msgstr "Volby Clutter"
 
-#: ../clutter/clutter-main.c:1756
+#: ../clutter/clutter-main.c:1493
 msgid "Show Clutter Options"
 msgstr "Zobrazit volby Clutter"
 
@@ -1318,7 +1317,7 @@ msgstr "Název souboru nastaven"
 msgid "Whether the :filename property is set"
 msgstr "Zda je nastavena vlastnost :filename"
 
-#: ../clutter/clutter-script.c:404 ../clutter/clutter-texture.c:1070
+#: ../clutter/clutter-script.c:404 ../clutter/clutter-texture.c:1080
 msgid "Filename"
 msgstr "Název souboru"
 
@@ -1487,103 +1486,103 @@ msgstr "Hrana účastníka, která by se měla přichytávat"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Posun v pixelech, při kterém se má použít omezení"
 
-#: ../clutter/clutter-stage.c:1385
+#: ../clutter/clutter-stage.c:1678
 msgid "Fullscreen Set"
 msgstr "Nastavena celá obrazovka"
 
-#: ../clutter/clutter-stage.c:1386
+#: ../clutter/clutter-stage.c:1679
 msgid "Whether the main stage is fullscreen"
 msgstr "Zda je hlavní scéna v režimu celé obrazovky"
 
-#: ../clutter/clutter-stage.c:1402
+#: ../clutter/clutter-stage.c:1695
 msgid "Offscreen"
 msgstr "V paměti"
 
-#: ../clutter/clutter-stage.c:1403
+#: ../clutter/clutter-stage.c:1696
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Zda by měla být hlavní scéna vykreslována v paměti bez zobrazení"
 
-#: ../clutter/clutter-stage.c:1415 ../clutter/clutter-text.c:2667
+#: ../clutter/clutter-stage.c:1708 ../clutter/clutter-text.c:2667
 msgid "Cursor Visible"
 msgstr "Kurzor viditelný"
 
-#: ../clutter/clutter-stage.c:1416
+#: ../clutter/clutter-stage.c:1709
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Zda je ukazatel myši viditelný na hlavní scéně"
 
-#: ../clutter/clutter-stage.c:1430
+#: ../clutter/clutter-stage.c:1723
 msgid "User Resizable"
 msgstr "Uživatelsky měnitelná velikost"
 
-#: ../clutter/clutter-stage.c:1431
+#: ../clutter/clutter-stage.c:1724
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Zda uživatel může interaktivně měnit velikost scény"
 
-#: ../clutter/clutter-stage.c:1444
+#: ../clutter/clutter-stage.c:1737
 msgid "The color of the stage"
 msgstr "Barva scény"
 
-#: ../clutter/clutter-stage.c:1458
+#: ../clutter/clutter-stage.c:1751
 msgid "Perspective"
 msgstr "Perspektiva"
 
-#: ../clutter/clutter-stage.c:1459
+#: ../clutter/clutter-stage.c:1752
 msgid "Perspective projection parameters"
 msgstr "Parametry perspektivní projekce"
 
-#: ../clutter/clutter-stage.c:1474
+#: ../clutter/clutter-stage.c:1767
 msgid "Title"
 msgstr "Název"
 
-#: ../clutter/clutter-stage.c:1475
+#: ../clutter/clutter-stage.c:1768
 msgid "Stage Title"
 msgstr "Název scény"
 
-#: ../clutter/clutter-stage.c:1490
+#: ../clutter/clutter-stage.c:1783
 msgid "Use Fog"
 msgstr "Použít zamlžení"
 
-#: ../clutter/clutter-stage.c:1491
+#: ../clutter/clutter-stage.c:1784
 msgid "Whether to enable depth cueing"
 msgstr "Zda zapnout zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:1505
+#: ../clutter/clutter-stage.c:1798
 msgid "Fog"
 msgstr "Zamlžení"
 
-#: ../clutter/clutter-stage.c:1506
+#: ../clutter/clutter-stage.c:1799
 msgid "Settings for the depth cueing"
 msgstr "Nastavení pro zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:1522
+#: ../clutter/clutter-stage.c:1815
 msgid "Use Alpha"
 msgstr "Použít alfu"
 
-#: ../clutter/clutter-stage.c:1523
+#: ../clutter/clutter-stage.c:1816
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Zda se řídit komponentou alfa z barvy scény"
 
-#: ../clutter/clutter-stage.c:1539
+#: ../clutter/clutter-stage.c:1832
 msgid "Key Focus"
 msgstr "Hlavní zaměření"
 
-#: ../clutter/clutter-stage.c:1540
+#: ../clutter/clutter-stage.c:1833
 msgid "The currently key focused actor"
 msgstr "Aktuálně hlavní zaměřený účastník"
 
-#: ../clutter/clutter-stage.c:1556
+#: ../clutter/clutter-stage.c:1849
 msgid "No Clear Hint"
 msgstr "Nemazat bez pokynu"
 
-#: ../clutter/clutter-stage.c:1557
+#: ../clutter/clutter-stage.c:1850
 msgid "Whether the stage should clear its contents"
 msgstr "Zda by scéna měla vymazat svůj obsah"
 
-#: ../clutter/clutter-stage.c:1570
+#: ../clutter/clutter-stage.c:1863
 msgid "Accept Focus"
 msgstr "Přijímat zaměření"
 
-#: ../clutter/clutter-stage.c:1571
+#: ../clutter/clutter-stage.c:1864
 msgid "Whether the stage should accept focus on show"
 msgstr "Zda by měla scéna při zobrazení přijímat zaměření"
 
@@ -1839,21 +1838,21 @@ msgstr "Jednořádkový režim"
 msgid "Whether the text should be a single line"
 msgstr "Zda by měl být text jednořádkový"
 
-#: ../clutter/clutter-texture.c:984
+#: ../clutter/clutter-texture.c:994
 msgid "Sync size of actor"
 msgstr "Synchronizovat velikost účastníka"
 
-#: ../clutter/clutter-texture.c:985
+#: ../clutter/clutter-texture.c:995
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
 "Automaticky synchronizovat velikost účastníka k rozměrům podkladové pixelové "
 "paměti"
 
-#: ../clutter/clutter-texture.c:992
+#: ../clutter/clutter-texture.c:1002
 msgid "Disable Slicing"
 msgstr "Zakázat dělení"
 
-#: ../clutter/clutter-texture.c:993
+#: ../clutter/clutter-texture.c:1003
 msgid ""
 "Forces the underlying texture to be singular and not made of smaller space "
 "saving individual textures"
@@ -1861,71 +1860,71 @@ msgstr ""
 "Způsobuje, že podkladová textura je v jediném celku a není tvořena z malých "
 "částí s jednotlivými texturami"
 
-#: ../clutter/clutter-texture.c:1002
+#: ../clutter/clutter-texture.c:1012
 msgid "Tile Waste"
 msgstr "Nevyužitá část dlaždice"
 
-#: ../clutter/clutter-texture.c:1003
+#: ../clutter/clutter-texture.c:1013
 msgid "Maximum waste area of a sliced texture"
 msgstr "Maximální nevyužitá oblast rozdělené textury"
 
-#: ../clutter/clutter-texture.c:1011
+#: ../clutter/clutter-texture.c:1021
 msgid "Horizontal repeat"
 msgstr "Opakování vodorovně"
 
-#: ../clutter/clutter-texture.c:1012
+#: ../clutter/clutter-texture.c:1022
 msgid "Repeat the contents rather than scaling them horizontally"
 msgstr "Obsah vodorovně raději opakovat než roztáhnout"
 
-#: ../clutter/clutter-texture.c:1019
+#: ../clutter/clutter-texture.c:1029
 msgid "Vertical repeat"
 msgstr "Opakování svisle"
 
-#: ../clutter/clutter-texture.c:1020
+#: ../clutter/clutter-texture.c:1030
 msgid "Repeat the contents rather than scaling them vertically"
 msgstr "Obsah svisle raději opakovat než roztáhnout"
 
-#: ../clutter/clutter-texture.c:1027
+#: ../clutter/clutter-texture.c:1037
 msgid "Filter Quality"
 msgstr "Kvalita filtru"
 
-#: ../clutter/clutter-texture.c:1028
+#: ../clutter/clutter-texture.c:1038
 msgid "Rendering quality used when drawing the texture"
 msgstr "Kvalita vykreslování použitá při kreslení textury"
 
-#: ../clutter/clutter-texture.c:1036
+#: ../clutter/clutter-texture.c:1046
 msgid "Pixel Format"
 msgstr "Formát obrázku"
 
-#: ../clutter/clutter-texture.c:1037
+#: ../clutter/clutter-texture.c:1047
 msgid "The Cogl pixel format to use"
 msgstr "Formát obrázku Cogl, který se má použít"
 
-#: ../clutter/clutter-texture.c:1045
+#: ../clutter/clutter-texture.c:1055
 msgid "Cogl Texture"
 msgstr "Textura Cogl"
 
-#: ../clutter/clutter-texture.c:1046
+#: ../clutter/clutter-texture.c:1056
 msgid "The underlying Cogl texture handle used to draw this actor"
 msgstr "Podkladová textura Cogl použitá k vykreslení účastníka"
 
-#: ../clutter/clutter-texture.c:1053
+#: ../clutter/clutter-texture.c:1063
 msgid "Cogl Material"
 msgstr "Materiál Cogl"
 
-#: ../clutter/clutter-texture.c:1054
+#: ../clutter/clutter-texture.c:1064
 msgid "The underlying Cogl material handle used to draw this actor"
 msgstr "Podkladový materiál Cogl použitý k vykreslení účastníka"
 
-#: ../clutter/clutter-texture.c:1071
+#: ../clutter/clutter-texture.c:1081
 msgid "The path of the file containing the image data"
 msgstr "Cesta k souboru obsahujícímu data obrázku"
 
-#: ../clutter/clutter-texture.c:1078
+#: ../clutter/clutter-texture.c:1088
 msgid "Keep Aspect Ratio"
 msgstr "Zachovat poměr stran"
 
-#: ../clutter/clutter-texture.c:1079
+#: ../clutter/clutter-texture.c:1089
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
@@ -1933,22 +1932,22 @@ msgstr ""
 "Zachovat poměr stran textury, když je požadována přednastavená šířka nebo "
 "výška"
 
-#: ../clutter/clutter-texture.c:1105
+#: ../clutter/clutter-texture.c:1115
 msgid "Load asynchronously"
 msgstr "Načítat asynchronně"
 
-#: ../clutter/clutter-texture.c:1106
+#: ../clutter/clutter-texture.c:1116
 msgid ""
 "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 "Načítat soubory ve zvláštním vlákně, aby se předešlo blokování při načítání "
 "obrázků z disku"
 
-#: ../clutter/clutter-texture.c:1122
+#: ../clutter/clutter-texture.c:1132
 msgid "Load data asynchronously"
 msgstr "Načítat data asynchronně"
 
-#: ../clutter/clutter-texture.c:1123
+#: ../clutter/clutter-texture.c:1133
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
@@ -1956,11 +1955,11 @@ msgstr ""
 "Dekódovat soubory s daty obrázků ve zvláštním vlákně, aby se omezilo "
 "blokování při načítání obrázků z disku"
 
-#: ../clutter/clutter-texture.c:1147
+#: ../clutter/clutter-texture.c:1157
 msgid "Pick With Alpha"
 msgstr "Výběr s alfou"
 
-#: ../clutter/clutter-texture.c:1148
+#: ../clutter/clutter-texture.c:1158
 msgid "Shape actor with alpha channel when picking"
 msgstr "Tvar účastníka s alfakanálem při výběru"
 
@@ -2024,23 +2023,25 @@ msgstr "Cesta zařízení"
 msgid "Path of the device node"
 msgstr "Cesta uzlu zařízení"
 
-#: ../clutter/glx/clutter-backend-glx.c:134
-msgid "VBlank method to be used (none, dri or glx)"
-msgstr "Metoda VBlank, která se má použít (none, dri nebo glx)"
+#: ../clutter/glx/clutter-backend-glx.c:107
+msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
+msgstr ""
+"Nastavte na „none“ nebo „0“, když chcete zakázat omezení snímkové rychlost "
+"na synchronizační řádky (vblank)."
 
-#: ../clutter/x11/clutter-backend-x11.c:484
+#: ../clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
 msgstr "Displej X, který se má použít"
 
-#: ../clutter/x11/clutter-backend-x11.c:490
+#: ../clutter/x11/clutter-backend-x11.c:489
 msgid "X screen to use"
 msgstr "Obrazovka X, která se má použít"
 
-#: ../clutter/x11/clutter-backend-x11.c:495
+#: ../clutter/x11/clutter-backend-x11.c:494
 msgid "Make X calls synchronous"
 msgstr "Nastavit volání X jako synchronní"
 
-#: ../clutter/x11/clutter-backend-x11.c:502
+#: ../clutter/x11/clutter-backend-x11.c:501
 msgid "Enable XInput support"
 msgstr "Zapnout podporu XInput"
 
@@ -2048,101 +2049,104 @@ msgstr "Zapnout podporu XInput"
 msgid "The Clutter backend"
 msgstr "Výkonné jádro knihovny Clutter"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:544
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:549
 msgid "Pixmap"
 msgstr "Pixelová mapa"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:545
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:550
 msgid "The X11 Pixmap to be bound"
 msgstr "Pixelová mapa X11, která se má navázat"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:553
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:558
 msgid "Pixmap width"
 msgstr "Šířka pixelové mapy"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:554
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:559
 msgid "The width of the pixmap bound to this texture"
 msgstr "Šířka pixelové mapy svázané s touto texturou"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:562
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:567
 msgid "Pixmap height"
 msgstr "Výška pixelové mapy"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:563
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:568
 msgid "The height of the pixmap bound to this texture"
 msgstr "Výška pixelové mapy svázané s touto texturou"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:571
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:576
 msgid "Pixmap Depth"
 msgstr "Barevná hloubka pixelové mapy"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:572
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:577
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr "Barevná hloubka (v počtu bitů) pixelové mapy svázané s touto texturou"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:580
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:585
 msgid "Automatic Updates"
 msgstr "Automaticky aktualizovat"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:581
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:586
 msgid "If the texture should be kept in sync with any pixmap changes."
 msgstr ""
 "Jestli by měla být textura udržována ve shodě se změnami v pixelové mapě"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:589
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:594
 msgid "Window"
 msgstr "Okno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:590
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:595
 msgid "The X11 Window to be bound"
 msgstr "Okno X11, které má být navázáno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:598
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:603
 msgid "Window Redirect Automatic"
 msgstr "Automatické přesměrování okna"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:599
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:604
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr ""
 "Zda jsou přesměrování kompozitního okna nastavena na Automaticky (nebo na "
 "Ručně při nezapnutí)"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:609
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:614
 msgid "Window Mapped"
 msgstr "Okno mapováno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:610
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:615
 msgid "If window is mapped"
 msgstr "Zda je okno mapováno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:619
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:624
 msgid "Destroyed"
 msgstr "Zlikvidováno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:620
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:625
 msgid "If window has been destroyed"
 msgstr "Zda bylo okno zlikvidováno"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:628
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:633
 msgid "Window X"
 msgstr "Okno X"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:629
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:634
 msgid "X position of window on screen according to X11"
 msgstr "Poloha okna v ose X na obrazovce podle X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:637
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:642
 msgid "Window Y"
 msgstr "Okno Y"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:638
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:643
 msgid "Y position of window on screen according to X11"
 msgstr "Poloha okna v ose Y na obrazovce podle X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:645
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:650
 msgid "Window Override Redirect"
 msgstr "Potlačit přesměrování u okna"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:646
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:651
 msgid "If this is an override-redirect window"
 msgstr "Zda má okno nastaven příznak override-redirect"
+
+#~ msgid "VBlank method to be used (none, dri or glx)"
+#~ msgstr "Metoda VBlank, která se má použít (none, dri nebo glx)"
