@@ -96,6 +96,13 @@ gboolean _clutter_stage_get_motion_events_enabled (ClutterStage *stage);
 
 CoglFramebuffer *_clutter_stage_get_active_framebuffer (ClutterStage *stage);
 
+gint32          _clutter_stage_acquire_pick_id          (ClutterStage *stage,
+                                                         ClutterActor *actor);
+void            _clutter_stage_release_pick_id          (ClutterStage *stage,
+                                                         gint32        pick_id);
+ClutterActor *  _clutter_stage_get_actor_by_pick_id     (ClutterStage *stage,
+                                                         gint32        pick_id);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_PRIVATE_H__ */

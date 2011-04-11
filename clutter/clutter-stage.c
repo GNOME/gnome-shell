@@ -66,6 +66,7 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-event-private.h"
+#include "clutter-id-pool.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-master-clock.h"
@@ -154,6 +155,8 @@ struct _ClutterStagePrivate
 
   GTimer *fps_timer;
   gint32 timer_n_frames;
+
+  ClutterIDPool *pick_id_pool;
 
 #ifdef CLUTTER_ENABLE_DEBUG
   gulong redraw_count;
@@ -1284,7 +1287,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
         }
 
       id_ = _clutter_pixel_to_id (pixel);
-      actor = _clutter_get_actor_by_id (id_);
+      actor = _clutter_get_actor_by_id (stage, id_);
       goto result;
     }
 
@@ -1376,7 +1379,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     }
 
   id_ = _clutter_pixel_to_id (pixel);
-  actor = _clutter_get_actor_by_id (id_);
+  actor = _clutter_get_actor_by_id (stage, id_);
 
 result:
 
@@ -1597,6 +1600,8 @@ clutter_stage_finalize (GObject *object)
   g_array_free (priv->paint_volume_stack, TRUE);
 
   g_hash_table_destroy (priv->devices);
+
+  _clutter_id_pool_free (priv->pick_id_pool);
 
   if (priv->fps_timer != NULL)
     g_timer_destroy (priv->fps_timer);
@@ -2034,6 +2039,8 @@ clutter_stage_init (ClutterStage *self)
     g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
 
   priv->devices = g_hash_table_new (NULL, NULL);
+
+  priv->pick_id_pool = _clutter_id_pool_new (256);
 }
 
 /**
@@ -3826,4 +3833,37 @@ CoglFramebuffer *
 _clutter_stage_get_active_framebuffer (ClutterStage *stage)
 {
   return stage->priv->active_framebuffer;
+}
+
+gint32
+_clutter_stage_acquire_pick_id (ClutterStage *stage,
+                                ClutterActor *actor)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_assert (priv->pick_id_pool != NULL);
+
+  return _clutter_id_pool_add (priv->pick_id_pool, actor);
+}
+
+void
+_clutter_stage_release_pick_id (ClutterStage *stage,
+                                gint32        pick_id)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_assert (priv->pick_id_pool != NULL);
+
+  _clutter_id_pool_remove (priv->pick_id_pool, pick_id);
+}
+
+ClutterActor *
+_clutter_stage_get_actor_by_pick_id (ClutterStage *stage,
+                                     gint32        pick_id)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_assert (priv->pick_id_pool != NULL);
+
+  return _clutter_id_pool_lookup (priv->pick_id_pool, pick_id);
 }

@@ -13,7 +13,7 @@ struct _State
 {
   ClutterActor *stage;
   int y, x;
-  guint32 gids[ACTORS_X * ACTORS_Y];
+  ClutterActor *actors[ACTORS_X * ACTORS_Y];
   guint actor_width, actor_height;
   gboolean pass;
 };
@@ -74,7 +74,6 @@ on_timeout (State *state)
         for (x = 0; x < ACTORS_X; x++)
           {
             gboolean pass = FALSE;
-            guint32 gid;
             ClutterActor *actor
               = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (state->stage),
                                                 CLUTTER_PICK_ALL,
@@ -84,8 +83,8 @@ on_timeout (State *state)
                                                 + state->actor_height / 2);
 
             if (g_test_verbose ())
-              g_print ("% 3i,% 3i / % 4i -> ",
-                       x, y, (int) state->gids[y * ACTORS_X + x]);
+              g_print ("% 3i,% 3i / %p -> ",
+                       x, y, state->actors[y * ACTORS_X + x]);
 
             if (actor == NULL)
               {
@@ -104,15 +103,14 @@ on_timeout (State *state)
               }
             else
               {
-                gid = clutter_actor_get_gid (actor);
-                if (gid == state->gids[y * ACTORS_X + x]
+                if (actor == state->actors[y * ACTORS_X + x]
                     && (test_num != 2
                         || x < 2 || x >= ACTORS_X - 2
                         || y < 2 || y >= ACTORS_Y - 2))
                   pass = TRUE;
 
                 if (g_test_verbose ())
-                  g_print ("% 10i: %s\n", gid, pass ? "pass" : "FAIL");
+                  g_print ("%p: %s\n", actor, pass ? "pass" : "FAIL");
               }
 
             if (!pass)
@@ -152,7 +150,7 @@ actor_picking (void)
 
 	clutter_container_add (CLUTTER_CONTAINER (state.stage), rect, NULL);
 
-	state.gids[y * ACTORS_X + x] = clutter_actor_get_gid (rect);
+	state.actors[y * ACTORS_X + x] = rect;
       }
 
   clutter_actor_show (state.stage);

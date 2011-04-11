@@ -449,6 +449,8 @@ struct _ClutterActorPrivate
   gchar          *name;
   guint32         id; /* Unique ID */
 
+  gint32 pick_id;
+
   gdouble         scale_x;
   gdouble         scale_y;
   AnchorCoord     scale_center;
@@ -1032,11 +1034,22 @@ clutter_actor_update_map_state (ClutterActor  *self,
 static void
 clutter_actor_real_map (ClutterActor *self)
 {
+  ClutterActorPrivate *priv = self->priv;
+  ClutterActor *stage;
   GList *c;
 
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
+  CLUTTER_NOTE (ACTOR, "Mapping actor '%s'",
+                _clutter_actor_get_debug_name (self));
+
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+
+  stage = _clutter_actor_get_stage_internal (self);
+  priv->pick_id = _clutter_stage_acquire_pick_id (CLUTTER_STAGE (stage), self);
+  CLUTTER_NOTE (ACTOR, "Pick id '%d' for actor '%s'",
+                priv->pick_id,
+                _clutter_actor_get_debug_name (self));
 
   /* notify on parent mapped before potentially mapping
    * children, so apps see a top-down notification.
@@ -1086,11 +1099,15 @@ clutter_actor_map (ClutterActor *self)
 static void
 clutter_actor_real_unmap (ClutterActor *self)
 {
+  ClutterActorPrivate *priv = self->priv;
   GList *c;
 
   g_assert (CLUTTER_ACTOR_IS_MAPPED (self));
 
-  for (c = self->priv->children; c; c = c->next)
+  CLUTTER_NOTE (ACTOR, "Unmapping actor '%s'",
+                _clutter_actor_get_debug_name (self));
+
+  for (c = priv->children; c; c = c->next)
     {
       ClutterActor *child = c->data;
       clutter_actor_unmap (child);
@@ -1101,8 +1118,8 @@ clutter_actor_real_unmap (ClutterActor *self)
   /* clear the contents of the last paint volume, so that hiding + moving +
    * showing will not result in the wrong area being repainted
    */
-  _clutter_paint_volume_init_static (&self->priv->last_paint_volume, NULL);
-  self->priv->last_paint_volume_valid = TRUE;
+  _clutter_paint_volume_init_static (&priv->last_paint_volume, NULL);
+  priv->last_paint_volume_valid = TRUE;
 
   /* notify on parent mapped after potentially unmapping
    * children, so apps see a bottom-up notification.
@@ -1112,14 +1129,19 @@ clutter_actor_real_unmap (ClutterActor *self)
   /* relinquish keyboard focus if we were unmapped while owning it */
   if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
     {
-      ClutterActor *stage;
+      ClutterStage *stage;
 
-      stage = _clutter_actor_get_stage_internal (self);
+      stage = CLUTTER_STAGE (_clutter_actor_get_stage_internal (self));
+
+      if (stage != NULL)
+        _clutter_stage_release_pick_id (stage, priv->pick_id);
+
+      priv->pick_id = -1;
 
       if (stage != NULL &&
-          clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self)
+          clutter_stage_get_key_focus (stage) == self)
         {
-          clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
+          clutter_stage_set_key_focus (stage, NULL);
         }
     }
 }
@@ -2653,7 +2675,10 @@ actor_has_shader_data (ClutterActor *self)
 guint32
 _clutter_actor_get_pick_id (ClutterActor *self)
 {
-  return self->priv->id;
+  if (self->priv->pick_id < 0)
+    return 0;
+
+  return self->priv->pick_id;
 }
 
 /**
@@ -5003,6 +5028,7 @@ clutter_actor_init (ClutterActor *self)
   priv->has_clip = FALSE;
   priv->opacity = 0xff;
   priv->id = _clutter_context_acquire_id (self);
+  priv->pick_id = -1;
   priv->scale_x = 1.0;
   priv->scale_y = 1.0;
   priv->show_on_set_parent = TRUE;
