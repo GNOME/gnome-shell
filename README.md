@@ -82,8 +82,7 @@ Mailman web interface available at:
 
 New bug page on Bugzilla:
 
-        http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter
-        http://bugzilla.clutter-project.org/enter_bug.cgi?product=cogl
+        http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
 Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later: see the `COPYING` file
@@ -148,8 +147,7 @@ Bugs
 
 Bugs should be reported to the Clutter Bugzilla at:
 
-        http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter
-        http://bugzilla.clutter-project.org/enter_bug.cgi?product=cogl
+        http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
 You will need a Bugzilla account.
 
