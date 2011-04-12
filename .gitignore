@@ -30,6 +30,7 @@ stamp-marshal
 /clutter/cogl/cogl/cogl-fixed-fragment-shader.[ch]
 /clutter/egl/clutter-cex100.h
 /build/autotools/*.m4
+/clutter/cogl/build/autotools/*.m4
 !/build/autotools/introspection.m4
 !/build/autotools/as-linguas.m4
 !/build/autotools/as-compiler-flag.m4
@@ -123,6 +124,19 @@ TAGS
 /po/remove-potcdate.sin
 /po/remove-potcdate.sed
 /po/stamp-po
+/clutter/cogl/po/POTFILES
+/clutter/cogl/po/*.gmo
+/clutter/cogl/po/Makefile.in.in
+/clutter/cogl/po/Makevars.template
+/clutter/cogl/po/Rules-quot
+/clutter/cogl/po/boldquot.sed
+/clutter/cogl/po/en@boldquot.header
+/clutter/cogl/po/en@quot.header
+/clutter/cogl/po/insert-header.sin
+/clutter/cogl/po/quot.sed
+/clutter/cogl/po/remove-potcdate.sin
+/clutter/cogl/po/remove-potcdate.sed
+/clutter/cogl/po/stamp-po
 *.swn
 *.swo
 *.swp
