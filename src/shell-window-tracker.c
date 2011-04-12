@@ -886,7 +886,7 @@ on_focus_window_changed (MetaDisplay        *display,
   ShellApp *new_focus_app;
 
   new_focus_win = meta_display_get_focus_window (display);
-  new_focus_app = new_focus_win ? g_hash_table_lookup (tracker->window_to_app, new_focus_win) : NULL;
+  new_focus_app = new_focus_win ? shell_window_tracker_get_window_app (tracker, new_focus_win) : NULL;
 
   set_focus_app (tracker, new_focus_app);
 }
