@@ -238,14 +238,22 @@ glx_event_filter_cb (XEvent *xevent, void *data)
                                                 xevent->xconfigure.width,
                                                 xevent->xconfigure.height);
         }
+
+      /* we let ConfigureNotify pass through */
+      return COGL_XLIB_FILTER_CONTINUE;
     }
-  else if (xevent->type ==
-           (glx_renderer->glx_event_base + GLX_BufferSwapComplete))
+
+#ifdef GLX_INTEL_swap_event
+  if (xevent->type == (glx_renderer->glx_event_base + GLX_BufferSwapComplete))
     {
-      GLXBufferSwapComplete *swap_event = (GLXBufferSwapComplete *)xevent;
+      GLXBufferSwapComplete *swap_event = (GLXBufferSwapComplete *) xevent;
+
       notify_swap_buffers (context, swap_event->drawable);
+
+      /* remove SwapComplete events from the queue */
       return COGL_XLIB_FILTER_REMOVE;
     }
+#endif /* GLX_INTEL_swap_event */
 
   return COGL_XLIB_FILTER_CONTINUE;
 }
