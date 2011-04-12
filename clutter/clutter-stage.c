@@ -53,10 +53,13 @@
 #include "config.h"
 #endif
 
+#include <cairo/cairo.h>
+
 #include "clutter-stage.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
+#include "clutter-cairo-texture.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
@@ -1166,15 +1169,6 @@ _clutter_stage_has_full_redraw_queued (ClutterStage *stage)
     return FALSE;
 }
 
-#ifdef USE_GDKPIXBUF
-static void
-pixbuf_free (guchar   *pixels,
-             gpointer  data)
-{
-  g_free (pixels);
-}
-#endif
-
 static void
 read_pixels_to_file (char *filename_stem,
                      int   x,
@@ -1182,55 +1176,30 @@ read_pixels_to_file (char *filename_stem,
                      int   width,
                      int   height)
 {
-#ifdef USE_GDKPIXBUF
   GLubyte *data;
-  GdkPixbuf *pixbuf;
+  cairo_surface_t *surface;
   static int read_count = 0;
+  char *filename = g_strdup_printf ("%s-%05d.png",
+                                    filename_stem,
+                                    read_count);
 
   data = g_malloc (4 * width * height);
   cogl_read_pixels (x, y, width, height,
                     COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGB_888,
+                    CLUTTER_CAIRO_FORMAT_ARGB32,
                     data);
-  pixbuf = gdk_pixbuf_new_from_data (data,
-                                     GDK_COLORSPACE_RGB,
-                                     FALSE, /* has alpha */
-                                     8, /* bits per sample */
-                                     width, /* width */
-                                     height, /* height */
-                                     width * 3, /* rowstride */
-                                     pixbuf_free, /* callback to free data */
-                                     NULL); /* callback data */
-  if (pixbuf)
-    {
-      char *filename = g_strdup_printf ("%s-%05d.png",
-                                        filename_stem,
-                                        read_count);
-      GError *error = NULL;
 
-      if (!gdk_pixbuf_save (pixbuf, filename, "png", &error, NULL))
-        {
-          g_warning ("Failed to save pick buffer to file %s: %s",
-                     filename, error->message);
-          g_error_free (error);
-        }
+  surface = cairo_image_surface_create_for_data (data, CAIRO_FORMAT_RGB24,
+                                                 width, height,
+                                                 width * 4);
 
-      g_free (filename);
-      g_object_unref (pixbuf);
-      read_count++;
-    }
-#else /* !USE_GDKPIXBUF */
-  {
-    static gboolean seen = FALSE;
+  cairo_surface_write_to_png (surface, filename);
+  cairo_surface_destroy (surface);
 
-    if (!seen)
-      {
-        g_warning ("dumping buffers to an image isn't supported on platforms "
-                   "without gdk pixbuf support\n");
-        seen = TRUE;
-      }
-  }
-#endif /* USE_GDKPIXBUF */
+  g_free (data);
+  g_free (filename);
+
+  read_count++;
 }
 
 ClutterActor *
