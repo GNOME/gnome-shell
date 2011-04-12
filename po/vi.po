@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-25 20:20+0000\n"
-"PO-Revision-Date: 2011-03-26 13:58+0700\n"
+"PO-Revision-Date: 2011-04-12 18:34+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -937,27 +937,27 @@ msgstr "Thiết lập mạng"
 #: ../js/ui/status/network.js:1783
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
-msgstr "Bạn đã kết nối vào mạng băng thông rộng '%s'"
+msgstr "Đã nối mạng '%s' (băng thông rộng)"
 
 #: ../js/ui/status/network.js:1787
 #, c-format
 msgid "You're now connected to wireless network '%s'"
-msgstr "Bạn đã kết nối vào mạng không dây '%s'"
+msgstr "Đã nối mạng '%s' (không dây)"
 
 #: ../js/ui/status/network.js:1791
 #, c-format
 msgid "You're now connected to wired network '%s'"
-msgstr "Bạn đã kết nối vào mạng (dây) '%s'"
+msgstr "Đã nối mạng '%s' (dây)"
 
 #: ../js/ui/status/network.js:1795
 #, c-format
 msgid "You're now connected to VPN network '%s'"
-msgstr "Bạn đã kết nối vào mạng VPN '%s'"
+msgstr "Đã nối mạng VPN '%s'"
 
 #: ../js/ui/status/network.js:1800
 #, c-format
 msgid "You're now connected to '%s'"
-msgstr "Bạn đã kết nối vào '%s'"
+msgstr "Đã kết nối '%s'"
 
 #: ../js/ui/status/network.js:1808
 #| msgid "Connection"
