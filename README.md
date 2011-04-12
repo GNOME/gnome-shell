@@ -140,7 +140,7 @@ The usual workflow for contributions should be:
 2. Create a branch (`git checkout -b my_work`)
 3. Commit your changes (`git commit -am "Added my awesome feature"`)
 4. Push to the branch (`git push origin my_work`)
-5. Create an [Issue][1] with a link to your branch
+5. Create an [Bug][1] with a link to your branch
 6. Sit back, relax and wait for feedback and eventual merge
 
 Bugs
@@ -172,4 +172,4 @@ obtained using gdb are greatly appreciated.
 
 
 [building-clutter]: http://wiki.clutter-project.org/wiki/BuildingClutter
-[1]: http://github.com/clutter-project/clutter/issues
+[1]: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
