@@ -531,12 +531,13 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   ClutterInputDeviceType type = CLUTTER_EXTENSION_DEVICE;
   ClutterInputDevice *device;
   ClutterActor *stage;
-  const gchar *device_file, *sysfs_path;
+  const gchar *device_file, *sysfs_path, *device_name;
   const gchar * const *keys;
   guint i;
 
   device_file = g_udev_device_get_device_file (udev_device);
   sysfs_path = g_udev_device_get_sysfs_path (udev_device);
+  device_name = g_udev_device_get_name (udev_device);
 
   if (device_file == NULL || sysfs_path == NULL)
     return;
@@ -571,10 +572,11 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
 
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
                          "id", 0,
-                         "name", "Evdev device", /* FIXME */
+                         "name", device_name,
                          "device-type", type,
                          "sysfs-path", sysfs_path,
                          "device-path", device_file,
+                         "enabled", TRUE,
                          NULL);
 
   /* Always associate the device to the default stage */
