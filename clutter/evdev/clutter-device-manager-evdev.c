@@ -532,7 +532,6 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   ClutterInputDevice *device;
   ClutterActor *stage;
   const gchar *device_file, *sysfs_path, *device_name;
-  const gchar * const *keys;
   guint i;
 
   device_file = g_udev_device_get_device_file (udev_device);
@@ -551,24 +550,20 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   if (!is_evdev (sysfs_path))
     return;
 
-  keys = g_udev_device_get_property_keys (udev_device);
-  for (i = 0; keys[i]; i++)
-    {
-      /* Clutter assumes that device types are exclusive in the
-       * ClutterInputDevice API */
-      if (strcmp (keys[i], "ID_INPUT_KEY") == 0)
-        type = CLUTTER_KEYBOARD_DEVICE;
-      else if (strcmp (keys[i], "ID_INPUT_MOUSE") == 0)
-        type = CLUTTER_POINTER_DEVICE;
-      else if (strcmp (keys[i], "ID_INPUT_JOYSTICK") == 0)
-        type = CLUTTER_JOYSTICK_DEVICE;
-      else if (strcmp (keys[i], "ID_INPUT_TABLET") == 0)
-        type = CLUTTER_TABLET_DEVICE;
-      else if (strcmp (keys[i], "ID_INPUT_TOUCHPAD") == 0)
-        type = CLUTTER_TOUCHPAD_DEVICE;
-      else if (strcmp (keys[i], "ID_INPUT_TOUCHSCREEN") == 0)
-        type = CLUTTER_TOUCHSCREEN_DEVICE;
-    }
+  /* Clutter assumes that device types are exclusive in the
+   * ClutterInputDevice API */
+  if (g_udev_device_has_property (udev_device, "ID_INPUT_KEYBOARD"))
+    type = CLUTTER_KEYBOARD_DEVICE;
+  else if (g_udev_device_has_property (udev_device, "ID_INPUT_MOUSE"))
+    type = CLUTTER_POINTER_DEVICE;
+  else if (g_udev_device_has_property (udev_device, "ID_INPUT_JOYSTICK"))
+    type = CLUTTER_JOYSTICK_DEVICE;
+  else if (g_udev_device_has_property (udev_device, "ID_INPUT_TABLET"))
+    type = CLUTTER_TABLET_DEVICE;
+  else if (g_udev_device_has_property (udev_device, "ID_INPUT_TOUCHPAD"))
+    type = CLUTTER_TOUCHPAD_DEVICE;
+  else if (g_udev_device_has_property (udev_device, "ID_INPUT_TOUCHSCREEN"))
+    type = CLUTTER_TOUCHSCREEN_DEVICE;
 
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
                          "id", 0,
