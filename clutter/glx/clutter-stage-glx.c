@@ -101,7 +101,6 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
   ClutterBackend *backend;
-  ClutterBackendGLX *backend_glx;
   CoglFramebuffer *framebuffer;
   GError *error = NULL;
   gfloat width;
@@ -113,7 +112,6 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                 stage_window);
 
   backend = CLUTTER_BACKEND (stage_x11->backend);
-  backend_glx = CLUTTER_BACKEND_GLX (stage_x11->backend);
 
   clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
 
