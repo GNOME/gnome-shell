@@ -611,15 +611,12 @@ _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
   CoglDisplayGLX *glx_display;
-  CoglDisplayXlib *xlib_display;
   int i;
 
   g_return_val_if_fail (display->winsys == NULL, FALSE);
 
   glx_display = g_slice_new0 (CoglDisplayGLX);
   display->winsys = glx_display;
-
-  xlib_display = display->winsys;
 
   if (!create_context (display, error))
     goto error;
@@ -989,12 +986,10 @@ drm_wait_vblank (int fd, drm_wait_vblank_t *vbl)
 void
 _cogl_winsys_wait_for_vblank (void)
 {
-  CoglDisplayGLX *glx_display;
   CoglRendererGLX *glx_renderer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  glx_display = ctx->display->winsys;
   glx_renderer = ctx->display->renderer->winsys;
 
   if (glx_renderer->pf_glXGetVideoSync)
@@ -1033,7 +1028,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
   GLXDrawable drawable =
     glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
-  guint32 end_frame_vsync_counter;
+  guint32 end_frame_vsync_counter = 0;
   gboolean have_counter;
   gboolean can_wait;
 
@@ -1321,7 +1316,6 @@ _cogl_winsys_has_feature (CoglWinsysFeature feature)
 XVisualInfo *
 _cogl_winsys_xlib_get_visual_info (void)
 {
-  CoglDisplayXlib *xlib_display;
   CoglDisplayGLX *glx_display;
   CoglRendererXlib *xlib_renderer;
 
@@ -1329,7 +1323,6 @@ _cogl_winsys_xlib_get_visual_info (void)
 
   g_return_val_if_fail (ctx->display->winsys, FALSE);
 
-  xlib_display = ctx->display->winsys;
   glx_display = ctx->display->winsys;
   xlib_renderer = ctx->display->renderer->winsys;
 
