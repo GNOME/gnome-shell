@@ -223,7 +223,9 @@ static CoglXlibFilterReturn
 glx_event_filter_cb (XEvent *xevent, void *data)
 {
   CoglContext *context = data;
-  CoglRendererGLX *glx_renderer = context->display->renderer->winsys;
+#ifdef GLX_INTEL_swap_event
+  CoglRendererGLX *glx_renderer;
+#endif
 
   if (xevent->type == ConfigureNotify)
     {
@@ -244,6 +246,8 @@ glx_event_filter_cb (XEvent *xevent, void *data)
     }
 
 #ifdef GLX_INTEL_swap_event
+  glx_renderer = context->display->renderer->winsys;
+
   if (xevent->type == (glx_renderer->glx_event_base + GLX_BufferSwapComplete))
     {
       GLXBufferSwapComplete *swap_event = (GLXBufferSwapComplete *) xevent;
