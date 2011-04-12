@@ -44,6 +44,26 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_CAIRO_TEXTURE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_CAIRO_TEXTURE))
 #define CLUTTER_CAIRO_TEXTURE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_CAIRO_TEXTURE, ClutterCairoTextureClass))
 
+/**
+ * CLUTTER_CAIRO_FORMAT_ARGB32:
+ *
+ * The #CoglPixelFormat to be used when uploading image data from
+ * and to a Cairo image surface using %CAIRO_FORMAT_ARGB32 and
+ * %CAIRO_FORMAT_RGB24 as #cairo_format_t.
+ *
+ * Since: 1.8
+ */
+
+/* Cairo stores the data in native byte order as ARGB but Cogl's pixel
+ * formats specify the actual byte order. Therefore we need to use a
+ * different format depending on the architecture
+ */
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define CLUTTER_CAIRO_FORMAT_ARGB32     (COGL_PIXEL_FORMAT_BGRA_8888_PRE)
+#else
+#define CLUTTER_CAIRO_FORMAT_ARGB32     (COGL_PIXEL_FORMAT_ARGB_8888_PRE)
+#endif
+
 typedef struct _ClutterCairoTexture             ClutterCairoTexture;
 typedef struct _ClutterCairoTextureClass        ClutterCairoTextureClass;
 typedef struct _ClutterCairoTexturePrivate      ClutterCairoTexturePrivate;

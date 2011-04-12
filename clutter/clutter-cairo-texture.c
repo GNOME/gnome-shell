@@ -125,15 +125,6 @@ static guint cairo_signals[LAST_SIGNAL] = { 0, };
 
 #define CLUTTER_CAIRO_TEXTURE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CAIRO_TEXTURE, ClutterCairoTexturePrivate))
 
-/* Cairo stores the data in native byte order as ARGB but Cogl's pixel
-   formats specify the actual byte order. Therefore we need to use a
-   different format depending on the architecture */
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-#define CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT COGL_PIXEL_FORMAT_BGRA_8888_PRE
-#else
-#define CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT COGL_PIXEL_FORMAT_ARGB_8888_PRE
-#endif
-
 struct _ClutterCairoTexturePrivate
 {
   cairo_surface_t *cr_surface;
@@ -356,7 +347,7 @@ clutter_cairo_texture_create_surface (ClutterCairoTexture *self,
   /* create a backing Cogl texture */
   cogl_texture = cogl_texture_new_from_data (width, height,
                                              COGL_TEXTURE_NONE,
-                                             CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
+                                             CLUTTER_CAIRO_FORMAT_ARGB32,
                                              COGL_PIXEL_FORMAT_ANY,
                                              cairo_stride,
                                              cairo_data);
@@ -560,7 +551,7 @@ clutter_cairo_texture_context_destroy (void *data)
                            ctxt->rect.x, ctxt->rect.y,
                            cairo_width, cairo_height,
                            cairo_width, cairo_height,
-                           CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
+                           CLUTTER_CAIRO_FORMAT_ARGB32,
                            cairo_stride,
                            cairo_data);
 
