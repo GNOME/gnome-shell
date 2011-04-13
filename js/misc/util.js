@@ -14,7 +14,7 @@ const _notTrailingJunk = '[^\\s`!()\\[\\]{};:\'\\".,<>?\u00AB\u00BB\u201C\u201D\
 const _urlRegexp = new RegExp(
     '\\b(' +
         '(?:' +
-            '[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])' + // scheme:data
+            '[a-z][\\w-]+://' +                   // scheme://
             '|' +
             'www\\d{0,3}[.]' +                    // www.
             '|' +
