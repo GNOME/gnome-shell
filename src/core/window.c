@@ -10094,7 +10094,9 @@ meta_window_is_remote (MetaWindow *window)
 {
   g_return_val_if_fail (META_IS_WINDOW (window), FALSE);
 
-  return g_strcmp0 (window->wm_client_machine, window->display->hostname) != 0;
+  if (window->wm_client_machine != NULL)
+    return g_strcmp0 (window->wm_client_machine, window->display->hostname) != 0;
+  return FALSE;
 }
 
 /**
