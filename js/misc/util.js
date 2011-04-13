@@ -7,8 +7,30 @@ const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
 
-/* http://daringfireball.net/2010/07/improved_regex_for_matching_urls */
-const _urlRegexp = new RegExp('\\b(([a-z][\\w-]+:(/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)([^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\\".,<>?«»“”‘’]))', 'gi');
+// http://daringfireball.net/2010/07/improved_regex_for_matching_urls
+const _balancedParens = '\\((?:[^\\s()<>]+|(?:\\(?:[^\\s()<>]+\\)))*\\)';
+const _notTrailingJunk = '[^\\s`!()\\[\\]{};:\'\\".,<>?\u00AB\u00BB\u201C\u201D\u2018\u2019]';
+
+const _urlRegexp = new RegExp(
+    '\\b(' +
+        '(?:' +
+            '[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])' + // scheme:data
+            '|' +
+            'www\\d{0,3}[.]' +                    // www.
+            '|' +
+            '[a-z0-9.\\-]+[.][a-z]{2,4}/' +       // foo.xx/
+        ')' +
+        '(?:' +                                   // one or more:
+            '[^\\s()<>]+' +                       // run of non-space non-()
+            '|' +                                 // or
+            _balancedParens +                     // balanced parens
+        ')+' +
+        '(?:' +                                   // end with:
+            _balancedParens +                     // balanced parens
+            '|' +                                 // or
+            _notTrailingJunk +                    // last non-junk char
+        ')' +
+    ')', 'gi');
 
 // findUrls:
 // @str: string to find URLs in
