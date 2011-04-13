@@ -127,13 +127,6 @@ Indicator.prototype = {
         }
     },
 
-    _deviceCompare: function(d1, d2) {
-        return d1.device_path == d2.device_path &&
-            d1.bdaddr == d2.bdaddr &&
-            d1.can_connect == d2.can_connect &&
-            d1.capabilities == d2.capabilities;
-    },
-
     _updateDevices: function() {
         let devices = this._applet.get_devices();
 
@@ -142,12 +135,8 @@ Indicator.prototype = {
             let item = this._deviceItems[i];
             let destroy = true;
             for (let j = 0; j < devices.length; j++) {
-                // we need to deep compare because BluetoothSimpleDevice is a boxed type
-                // (but we take advantage of that, because _skip will disappear the next
-                // time get_devices() is called)
-                if (this._deviceCompare(item._device, devices[j])) {
-                    item.label.text = devices[j].alias;
-                    devices[j]._skip = true;
+                if (item._device.device_path == devices[j].device_path) {
+                    this._updateDeviceItem(item, devices[j]);
                     destroy = false;
                     break;
                 }
@@ -162,7 +151,7 @@ Indicator.prototype = {
         this._hasDevices = newlist.length > 0;
         for (let i = 0; i < devices.length; i++) {
             let d = devices[i];
-            if (d._skip)
+            if (d._item)
                 continue;
             let item = this._createDeviceItem(d);
             if (item) {
@@ -177,17 +166,55 @@ Indicator.prototype = {
             this._deviceSep.actor.hide();
     },
 
+    _updateDeviceItem: function(item, device) {
+        if (!device.can_connect && device.capabilities == GnomeBluetoothApplet.Capabilities.NONE) {
+            item.destroy();
+            return;
+        }
+
+        let prevDevice = item._device;
+        let prevCapabilities = prevDevice.capabilities;
+        let prevCanConnect = prevDevice.can_connect;
+
+        // adopt the new device object
+        item._device = device;
+        device._item = item;
+
+        // update properties
+        item.label.text = device.alias;
+
+        if (prevCapabilities != device.capabilities ||
+            prevCanConnect != device.can_connect) {
+            // need to rebuild the submenu
+            item.menu.removeAll();
+            this._buildDeviceSubMenu(item, device);
+        }
+
+        // update connected property
+        if (device.can_connect)
+            item._connectedMenuitem.setToggleState(device.connected);
+    },
+
     _createDeviceItem: function(device) {
         if (!device.can_connect && device.capabilities == GnomeBluetoothApplet.Capabilities.NONE)
             return null;
         let item = new PopupMenu.PopupSubMenuMenuItem(device.alias);
-        item._device = device;
 
+        // adopt the device object, and add a back link
+        item._device = device;
+        device._item = item;
+
+        this._buildDeviceSubMenu(item, device);
+
+        return item;
+    },
+
+    _buildDeviceSubMenu: function(item, device) {
         if (device.can_connect) {
             item._connected = device.connected;
-            let menuitem = new PopupMenu.PopupSwitchMenuItem(_("Connection"), device.connected);
+            item._connectedMenuitem = new PopupMenu.PopupSwitchMenuItem(_("Connection"), device.connected);
 
-            menuitem.connect('toggled', Lang.bind(this, function() {
+            item._connectedMenuitem.connect('toggled', Lang.bind(this, function() {
                 if (item._connected > ConnectionState.CONNECTED) {
                     // operation already in progress, revert
                     menuitem.setToggleState(menuitem.state);
@@ -217,7 +244,7 @@ Indicator.prototype = {
                 }
             }));
 
-            item.menu.addMenuItem(menuitem);
+            item.menu.addMenuItem(item._connectedMenuitem);
         }
 
         if (device.capabilities & GnomeBluetoothApplet.Capabilities.OBEX_PUSH) {
@@ -263,8 +290,6 @@ Indicator.prototype = {
         default:
             break;
         }
-
-        return item;
     },
 
     _updateFullMenu: function() {
