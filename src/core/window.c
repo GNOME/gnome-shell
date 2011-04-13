@@ -1520,6 +1520,8 @@ meta_window_unmanage (MetaWindow  *window,
    * on what gets focused, maintaining sloppy focus
    * invariants.
    */
+  if (meta_window_appears_focused (window))
+    meta_window_propagate_focus_appearance (window, FALSE);
   if (window->has_focus)
     {
       meta_topic (META_DEBUG_FOCUS,
@@ -1528,7 +1530,6 @@ meta_window_unmanage (MetaWindow  *window,
       meta_workspace_focus_default_window (window->screen->active_workspace,
                                            window,
                                            timestamp);
-      meta_window_propagate_focus_appearance (window, FALSE);
     }
   else if (window->display->expected_focus_window == window)
     {
@@ -6415,14 +6416,29 @@ meta_window_client_message (MetaWindow *window,
   return FALSE;
 }
 
+/**
+ * meta_window_propagate_focus_appearance:
+ * @window: the window to start propagating from
+ * @focused: %TRUE if @window's ancestors should appear focused,
+ *   %FALSE if they should not.
+ *
+ * Adjusts the value of #MetaWindow:appears-focused on @window's
+ * ancestors (but not @window itself). If @focused is %TRUE, each of
+ * @window's ancestors will have its %attached_focus_window field set
+ * to the current %focus_window. If @focused if %FALSE, each of
+ * @window's ancestors will have its %attached_focus_window field
+ * cleared if it is currently %focus_window.
+ */
 void
 meta_window_propagate_focus_appearance (MetaWindow *window,
                                         gboolean    focused)
 {
-  MetaWindow *child, *parent;
+  MetaWindow *child, *parent, *focus_window;
 
   if (!meta_prefs_get_attach_modal_dialogs ())
     return;
+
+  focus_window = window->display->focus_window;
 
   child = window;
   parent = meta_window_get_transient_for (child);
@@ -6432,14 +6448,14 @@ meta_window_propagate_focus_appearance (MetaWindow *window,
 
       if (focused)
         {
-          if (parent->attached_focus_window == window)
+          if (parent->attached_focus_window == focus_window)
             break;
           child_focus_state_changed = (parent->attached_focus_window == NULL);
-          parent->attached_focus_window = window;
+          parent->attached_focus_window = focus_window;
         }
       else
         {
-          if (parent->attached_focus_window != window)
+          if (parent->attached_focus_window != focus_window)
             break;
           child_focus_state_changed = (parent->attached_focus_window != NULL);
           parent->attached_focus_window = NULL;
@@ -6634,6 +6650,8 @@ meta_window_notify_focus (MetaWindow *window,
           meta_topic (META_DEBUG_FOCUS,
                       "* Focus --> NULL (was %s)\n", window->desc);
 
+          meta_window_propagate_focus_appearance (window, FALSE);
+
           window->display->focus_window = NULL;
           g_object_notify (G_OBJECT (window->display), "focus-window");
           window->has_focus = FALSE;
@@ -6644,7 +6662,6 @@ meta_window_notify_focus (MetaWindow *window,
               if (window->frame)
                 meta_frame_queue_draw (window->frame);
             }
-          meta_window_propagate_focus_appearance (window, FALSE);
 
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,
