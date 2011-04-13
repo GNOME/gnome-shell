@@ -131,16 +131,16 @@ cogl_xlib_filter (XEvent       *xevent,
                   gpointer      data)
 {
   ClutterX11FilterReturn retval;
-  CoglXlibFilterReturn ret;
+  CoglFilterReturn ret;
 
   ret = cogl_xlib_handle_event (xevent);
   switch (ret)
     {
-    case COGL_XLIB_FILTER_REMOVE:
+    case COGL_FILTER_REMOVE:
       retval = CLUTTER_X11_FILTER_REMOVE;
       break;
 
-    case COGL_XLIB_FILTER_CONTINUE:
+    case COGL_FILTER_CONTINUE:
     default:
       retval = CLUTTER_X11_FILTER_CONTINUE;
       break;

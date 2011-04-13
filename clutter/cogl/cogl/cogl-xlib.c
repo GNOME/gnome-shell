@@ -52,35 +52,6 @@
    context is created */
 static Display *_cogl_xlib_display = NULL;
 
-CoglXlibFilterReturn
-cogl_xlib_handle_event (XEvent *xevent)
-{
-  GSList *l;
-
-  _COGL_GET_CONTEXT (ctx, COGL_XLIB_FILTER_CONTINUE);
-
-  if (!ctx->stub_winsys)
-    return cogl_renderer_xlib_handle_event (ctx->display->renderer, xevent);
-
-  /* Pass the event on to all of the registered filters in turn */
-  for (l = ctx->event_filters; l; l = l->next)
-    {
-      CoglXlibFilterClosure *closure = l->data;
-
-      if (closure->func (xevent, closure->data) == COGL_XLIB_FILTER_REMOVE)
-        return COGL_XLIB_FILTER_REMOVE;
-    }
-
-  switch (xevent->type)
-    {
-      /* TODO... */
-    default:
-      break;
-    }
-
-  return COGL_XLIB_FILTER_CONTINUE;
-}
-
 Display *
 cogl_xlib_get_display (void)
 {
@@ -104,59 +75,34 @@ cogl_xlib_set_display (Display *display)
   _cogl_xlib_display = display;
 }
 
-void
-_cogl_xlib_add_filter (CoglXlibFilterFunc func,
-                       void *data)
+/* These three functions are wrappers around the equivalent renderer
+   functions. They can be removed once all xlib-based backends in
+   Clutter know about the renderer */
+CoglFilterReturn
+cogl_xlib_handle_event (XEvent *xevent)
 {
-  CoglXlibFilterClosure *closure;
+  _COGL_GET_CONTEXT (ctx, COGL_FILTER_CONTINUE);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (!ctx->stub_winsys)
-    {
-      cogl_renderer_xlib_add_filter (ctx->display->renderer,
-                                     func, data);
-      return;
-    }
-
-  closure = g_slice_new (CoglXlibFilterClosure);
-  closure->func = func;
-  closure->data = data;
-
-  ctx->event_filters =
-    g_slist_prepend (ctx->event_filters, closure);
+  /* Pass the event on to the renderer */
+  return cogl_renderer_handle_native_event (ctx->display->renderer, xevent);
 }
 
 void
-_cogl_xlib_remove_filter (CoglXlibFilterFunc func,
-                          void *data)
+_cogl_xlib_add_filter (CoglNativeFilterFunc func,
+                       void *data)
 {
-  GSList *l, *prev = NULL;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!ctx->stub_winsys)
-    {
-      cogl_renderer_xlib_remove_filter (ctx->display->renderer,
-                                        func, data);
-      return;
-    }
+  cogl_renderer_add_native_filter (ctx->display->renderer, func, data);
+}
 
-  for (l = ctx->event_filters; l; prev = l, l = l->next)
-    {
-      CoglXlibFilterClosure *closure = l->data;
+void
+_cogl_xlib_remove_filter (CoglNativeFilterFunc func,
+                          void *data)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-      if (closure->func == func && closure->data == data)
-        {
-          g_slice_free (CoglXlibFilterClosure, closure);
-          if (prev)
-            prev->next = g_slist_delete_link (prev->next, l);
-          else
-            ctx->event_filters =
-              g_slist_delete_link (ctx->event_filters, l);
-          break;
-        }
-    }
+  cogl_renderer_remove_native_filter (ctx->display->renderer, func, data);
 }
 
 static int

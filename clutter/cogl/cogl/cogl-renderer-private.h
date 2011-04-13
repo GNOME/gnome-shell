@@ -37,6 +37,8 @@ struct _CoglRenderer
 #ifdef COGL_HAS_XLIB_SUPPORT
   Display *foreign_xdpy;
 #endif
+  /* List of callback functions that will be given every native event */
+  GSList *event_filters;
   void *winsys;
 };
 

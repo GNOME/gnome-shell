@@ -43,82 +43,6 @@
 static char *_cogl_x11_display_name = NULL;
 static GList *_cogl_xlib_renderers = NULL;
 
-CoglXlibFilterReturn
-cogl_renderer_xlib_handle_event (CoglRenderer *renderer,
-                                 XEvent *xevent)
-{
-  CoglRendererXlib *xlib_renderer = renderer->winsys;
-  GSList *l;
-
-  g_return_val_if_fail (xlib_renderer->xdpy != NULL, COGL_XLIB_FILTER_CONTINUE);
-
-  /* XXX: should this be a more graceful check? */
-  g_return_val_if_fail (xlib_renderer != NULL, COGL_XLIB_FILTER_CONTINUE);
-
-  /* Pass the event on to all of the registered filters in turn */
-  for (l = xlib_renderer->event_filters; l; l = l->next)
-    {
-      CoglXlibFilterClosure *closure = l->data;
-
-      if (closure->func (xevent, closure->data) == COGL_XLIB_FILTER_REMOVE)
-        return COGL_XLIB_FILTER_REMOVE;
-    }
-
-  switch (xevent->type)
-    {
-      /* TODO... */
-    default:
-      break;
-    }
-
-  return COGL_XLIB_FILTER_CONTINUE;
-}
-
-void
-cogl_renderer_xlib_add_filter (CoglRenderer *renderer,
-                               CoglXlibFilterFunc func,
-                               void *data)
-{
-  CoglRendererXlib *xlib_renderer;
-  CoglXlibFilterClosure *closure;
-
-  xlib_renderer = renderer->winsys;
-
-  closure = g_slice_new (CoglXlibFilterClosure);
-  closure->func = func;
-  closure->data = data;
-
-  xlib_renderer->event_filters =
-    g_slist_prepend (xlib_renderer->event_filters, closure);
-}
-
-void
-cogl_renderer_xlib_remove_filter (CoglRenderer *renderer,
-                                  CoglXlibFilterFunc func,
-                                  void *data)
-{
-  CoglRendererXlib *xlib_renderer;
-  GSList *l, *prev = NULL;
-
-  xlib_renderer = renderer->winsys;
-
-  for (l = xlib_renderer->event_filters; l; prev = l, l = l->next)
-    {
-      CoglXlibFilterClosure *closure = l->data;
-
-      if (closure->func == func && closure->data == data)
-        {
-          g_slice_free (CoglXlibFilterClosure, closure);
-          if (prev)
-            prev->next = g_slist_delete_link (prev->next, l);
-          else
-            xlib_renderer->event_filters =
-              g_slist_delete_link (xlib_renderer->event_filters, l);
-          break;
-        }
-    }
-}
-
 static void
 register_xlib_renderer (CoglRenderer *renderer)
 {
@@ -245,8 +169,6 @@ _cogl_renderer_xlib_connect (CoglRenderer *renderer, GError **error)
                               &damage_error))
     x11_renderer->damage_base = -1;
 
-  xlib_renderer->event_filters = NULL;
-
   xlib_renderer->trap_state = NULL;
 
   register_xlib_renderer (renderer);
@@ -254,20 +176,10 @@ _cogl_renderer_xlib_connect (CoglRenderer *renderer, GError **error)
   return TRUE;
 }
 
-static void
-free_xlib_filter_closure (void *data, void *user_data)
-{
-  g_slice_free (CoglXlibFilterClosure, data);
-}
-
 void
 _cogl_renderer_xlib_disconnect (CoglRenderer *renderer)
 {
   CoglRendererXlib *xlib_renderer = renderer->winsys;
-
-  g_slist_foreach (xlib_renderer->event_filters,
-                   free_xlib_filter_closure, NULL);
-  g_slist_free (xlib_renderer->event_filters);
 
   if (!renderer->foreign_xdpy)
     XCloseDisplay (xlib_renderer->xdpy);

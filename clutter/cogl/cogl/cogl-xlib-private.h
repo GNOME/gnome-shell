@@ -40,12 +40,6 @@ struct _CoglXlibTrapState
   CoglXlibTrapState *old_state;
 };
 
-typedef struct _CoglXlibFilterClosure
-{
-  CoglXlibFilterFunc func;
-  void *data;
-} CoglXlibFilterClosure;
-
 void
 _cogl_xlib_query_damage_extension (void);
 
@@ -66,7 +60,7 @@ _cogl_xlib_untrap_errors (CoglXlibTrapState *state);
  * %COGL_XLIB_FILTER_REMOVE.
  */
 void
-_cogl_xlib_add_filter (CoglXlibFilterFunc func,
+_cogl_xlib_add_filter (CoglNativeFilterFunc func,
                        void *data);
 
 /*
@@ -76,7 +70,7 @@ _cogl_xlib_add_filter (CoglXlibFilterFunc func,
  * _cogl_xlib_add_filter().
  */
 void
-_cogl_xlib_remove_filter (CoglXlibFilterFunc func,
+_cogl_xlib_remove_filter (CoglNativeFilterFunc func,
                           void *data);
 
 #endif /* __COGL_XLIB_PRIVATE_H */
