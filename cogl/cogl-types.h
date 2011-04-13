@@ -596,19 +596,19 @@ typedef enum { /*< prefix=COGL_RENDERER_ERROR >*/
 } CoglRendererError;
 
 /*
- * CoglXlibFilterReturn:
- * @COGL_XLIB_FILTER_CONTINUE: The event was not handled, continues the
- *                            processing
- * @COGL_XLIB_FILTER_REMOVE: Remove the event, stops the processing
+ * CoglFilterReturn:
+ * @COGL_FILTER_CONTINUE: The event was not handled, continues the
+ *                        processing
+ * @COGL_FILTER_REMOVE: Remove the event, stops the processing
  *
- * Return values for the #CoglXlibFilterFunc function.
+ * Return values for the #CoglFilterFunc function.
  *
  * Stability: Unstable
  */
-typedef enum _CoglXlibFilterReturn { /*< prefix=COGL_XLIB_FILTER >*/
-  COGL_XLIB_FILTER_CONTINUE,
-  COGL_XLIB_FILTER_REMOVE
-} CoglXlibFilterReturn;
+typedef enum _CoglFilterReturn { /*< prefix=COGL_FILTER >*/
+  COGL_FILTER_CONTINUE,
+  COGL_FILTER_REMOVE
+} CoglFilterReturn;
 
 typedef enum _CoglWinsysFeature
 {
@@ -651,20 +651,23 @@ typedef enum _CoglWinsysFeature
  * so although they aren't explicitly guarded they are implicitly
  * experimental too. */
 
-#ifdef COGL_HAS_XLIB
-
 /*
- * CoglXlibFilterFunc:
+ * CoglNativeFilterFunc:
+ * @native_event: A pointer to the native system event
+ * @data: The data that was given when the filter was added
  *
  * A callback function that can be registered with
- * _cogl_xlib_add_filter. The function should return
- * %COGL_XLIB_FILTER_REMOVE if it wants to prevent further processing
- * or %COGL_XLIB_FILTER_CONTINUE otherwise.
+ * cogl_renderer_add_native_filter(). The function should return
+ * %COGL_FILTER_REMOVE if it wants to prevent further processing or
+ * %COGL_FILTER_CONTINUE otherwise.
+ *
+ * The type that @native_event points to depends on the type of the
+ * underlying renderer. On xlib based renderers this would point to an
+ * XEvent struct and on Windows it would point to a MSG struct.
  */
-typedef CoglXlibFilterReturn (* CoglXlibFilterFunc) (XEvent *xevent,
-                                                     void *data);
+typedef CoglFilterReturn (* CoglNativeFilterFunc) (void *native_event,
+                                                   void *data);
 
-#endif /* COGL_HAS_XLIB */
 
 G_END_DECLS
 

@@ -34,8 +34,6 @@ typedef struct _CoglRendererXlib
 
   Display *xdpy;
 
-  /* List of callback functions that will be given every Xlib event */
-  GSList *event_filters;
   /* Current top of the XError trap state stack. The actual memory for
      these is expected to be allocated on the stack by the caller */
   CoglXlibTrapState *trap_state;

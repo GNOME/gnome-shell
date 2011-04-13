@@ -78,7 +78,7 @@ cogl_xlib_set_display (Display *display);
  * Stability: Unstable
  */
 #define cogl_xlib_handle_event cogl_xlib_handle_event_EXP
-CoglXlibFilterReturn
+CoglFilterReturn
 cogl_xlib_handle_event (XEvent *xevent);
 
 #endif /* __COGL_XLIB_H__ */

@@ -219,9 +219,10 @@ notify_swap_buffers (CoglContext *context, GLXDrawable drawable)
     }
 }
 
-static CoglXlibFilterReturn
-glx_event_filter_cb (XEvent *xevent, void *data)
+static CoglFilterReturn
+glx_event_filter_cb (void *native_event, void *data)
 {
+  XEvent *xevent = native_event;
   CoglContext *context = data;
 #ifdef GLX_INTEL_swap_event
   CoglRendererGLX *glx_renderer;
@@ -242,7 +243,7 @@ glx_event_filter_cb (XEvent *xevent, void *data)
         }
 
       /* we let ConfigureNotify pass through */
-      return COGL_XLIB_FILTER_CONTINUE;
+      return COGL_FILTER_CONTINUE;
     }
 
 #ifdef GLX_INTEL_swap_event
@@ -255,11 +256,11 @@ glx_event_filter_cb (XEvent *xevent, void *data)
       notify_swap_buffers (context, swap_event->drawable);
 
       /* remove SwapComplete events from the queue */
-      return COGL_XLIB_FILTER_REMOVE;
+      return COGL_FILTER_REMOVE;
     }
 #endif /* GLX_INTEL_swap_event */
 
-  return COGL_XLIB_FILTER_CONTINUE;
+  return COGL_FILTER_CONTINUE;
 }
 
 gboolean
@@ -672,9 +673,9 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   context->winsys = g_new0 (CoglContextGLX, 1);
 
-  cogl_renderer_xlib_add_filter (context->display->renderer,
-                                 glx_event_filter_cb,
-                                 context);
+  cogl_renderer_add_native_filter (context->display->renderer,
+                                   glx_event_filter_cb,
+                                   context);
   update_winsys_features (context);
 
   return TRUE;
@@ -683,9 +684,9 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
 void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
-  cogl_renderer_xlib_remove_filter (context->display->renderer,
-                                    glx_event_filter_cb,
-                                    context);
+  cogl_renderer_remove_native_filter (context->display->renderer,
+                                      glx_event_filter_cb,
+                                      context);
   g_free (context->winsys);
 }
 

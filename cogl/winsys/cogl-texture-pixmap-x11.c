@@ -203,13 +203,14 @@ process_damage_event (CoglTexturePixmapX11 *tex_pixmap,
 #endif
 }
 
-static CoglXlibFilterReturn
-_cogl_texture_pixmap_x11_filter (XEvent *event, gpointer data)
+static CoglFilterReturn
+_cogl_texture_pixmap_x11_filter (void *native_event, void *data)
 {
+  XEvent *event = native_event;
   CoglTexturePixmapX11 *tex_pixmap = data;
   int damage_base;
 
-  _COGL_GET_CONTEXT (ctxt, COGL_XLIB_FILTER_CONTINUE);
+  _COGL_GET_CONTEXT (ctxt, COGL_FILTER_CONTINUE);
 
   damage_base = _cogl_xlib_get_damage_base ();
   if (event->type == damage_base + XDamageNotify)
@@ -220,7 +221,7 @@ _cogl_texture_pixmap_x11_filter (XEvent *event, gpointer data)
         process_damage_event (tex_pixmap, damage_event);
     }
 
-  return COGL_XLIB_FILTER_CONTINUE;
+  return COGL_FILTER_CONTINUE;
 }
 
 #ifdef COGL_HAS_GLX_SUPPORT

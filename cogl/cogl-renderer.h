@@ -63,27 +63,57 @@ cogl_renderer_new (void);
 
 /* optional configuration APIs */
 
-#ifdef COGL_HAS_XLIB
-
-#define cogl_renderer_xlib_handle_event cogl_renderer_xlib_handle_event_EXP
+#define cogl_renderer_handle_native_event cogl_renderer_handle_native_event_EXP
 /*
- * cogl_renderer_xlib_handle_event:
- * @xevent: pointer to XEvent structure
+ * cogl_renderer_handle_native_event:
+ * @event: pointer to native event structure
  *
- * This function processes a single X event; it can be used to hook
- * into external X event retrieval (for example that done by Clutter
- * or GDK).
+ * This function processes a single event; it can be used to hook into
+ * external event retrieval (for example that done by Clutter or
+ * GDK). The type of the structure that event points to depends on the
+ * window system used for the renderer. On an xlib renderer it would
+ * be a pointer to an XEvent or an a Windows renderer it would be a
+ * pointer to a MSG struct.
  *
- * Return value: #CoglXlibFilterReturn. %COGL_XLIB_FILTER_REMOVE
- * indicates that Cogl has internally handled the event and the
- * caller should do no further processing. %COGL_XLIB_FILTER_CONTINUE
- * indicates that Cogl is either not interested in the event,
- * or has used the event to update internal state without taking
- * any exclusive action.
+ * Return value: #CoglFilterReturn. %COGL_FILTER_REMOVE indicates that
+ * Cogl has internally handled the event and the caller should do no
+ * further processing. %COGL_FILTER_CONTINUE indicates that Cogl is
+ * either not interested in the event, or has used the event to update
+ * internal state without taking any exclusive action.
  */
-CoglXlibFilterReturn
-cogl_renderer_xlib_handle_event (CoglRenderer *renderer,
-                                 XEvent *xevent);
+CoglFilterReturn
+cogl_renderer_handle_native_event (CoglRenderer *renderer,
+                                   void *event);
+
+#define cogl_renderer_add_native_filter cogl_renderer_add_native_filter_EXP
+/*
+ * _cogl_renderer_add_native_filter:
+ *
+ * Adds a callback function that will receive all native events. The
+ * function can stop further processing of the event by return
+ * %COGL_FILTER_REMOVE. What is considered a native event depends on
+ * the type of renderer used. An xlib based renderer would pass all
+ * XEvents whereas a Windows based renderer would pass MSGs.
+ */
+void
+cogl_renderer_add_native_filter (CoglRenderer *renderer,
+                                 CoglNativeFilterFunc func,
+                                 void *data);
+
+#define cogl_renderer_remove_native_filter \
+  cogl_renderer_remove_native_filter_EXP
+/*
+ * _cogl_renderer_remove_native_filter:
+ *
+ * Removes a callback that was previously added with
+ * _cogl_renderer_add_native_filter().
+ */
+void
+cogl_renderer_remove_native_filter (CoglRenderer *renderer,
+                                    CoglNativeFilterFunc func,
+                                    void *data);
+
+#ifdef COGL_HAS_XLIB
 
 #define cogl_renderer_xlib_get_foreign_display \
   cogl_renderer_xlib_get_foreign_display_EXP
@@ -113,30 +143,6 @@ cogl_renderer_xlib_set_foreign_display (CoglRenderer *renderer,
 Display *
 cogl_renderer_xlib_get_display (CoglRenderer *renderer);
 
-#define cogl_renderer_xlib_add_filter cogl_renderer_xlib_add_filter_EXP
-/*
- * _cogl_xlib_add_filter:
- *
- * Adds a callback function that will receive all X11 events. The
- * function can stop further processing of the event by return
- * %COGL_XLIB_FILTER_REMOVE.
- */
-void
-cogl_renderer_xlib_add_filter (CoglRenderer *renderer,
-                               CoglXlibFilterFunc func,
-                               void *data);
-
-#define cogl_renderer_xlib_remove_filter cogl_renderer_xlib_remove_filter_EXP
-/*
- * _cogl_xlib_remove_filter:
- *
- * Removes a callback that was previously added with
- * _cogl_xlib_add_filter().
- */
-void
-cogl_renderer_xlib_remove_filter (CoglRenderer *renderer,
-                                  CoglXlibFilterFunc func,
-                                  void *data);
 #endif /* COGL_HAS_XLIB */
 
 #define cogl_renderer_check_onscreen_template \
