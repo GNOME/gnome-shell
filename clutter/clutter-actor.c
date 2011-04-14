@@ -884,7 +884,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
         {
           g_warning ("Clutter toplevel of type '%s' is not visible, but "
                      "it is somehow still mapped",
-                     G_OBJECT_TYPE_NAME (self));
+                     _clutter_actor_get_debug_name (self));
         }
     }
   else
@@ -2490,7 +2490,7 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
 
       cogl_color_init_from_4f (&color, 0, 0, 1, 1);
       _clutter_actor_draw_paint_volume_full (self, &fake_pv,
-                                             G_OBJECT_TYPE_NAME (self),
+                                             _clutter_actor_get_debug_name (self),
                                              &color);
 
       clutter_paint_volume_free (&fake_pv);
@@ -2499,7 +2499,7 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
     {
       cogl_color_init_from_4f (&color, 0, 1, 0, 1);
       _clutter_actor_draw_paint_volume_full (self, pv,
-                                             G_OBJECT_TYPE_NAME (self),
+                                             _clutter_actor_get_debug_name (self),
                                              &color);
     }
 }
@@ -2526,13 +2526,13 @@ _clutter_actor_paint_cull_result (ClutterActor *self,
 
   if (success && (pv = _clutter_actor_get_paint_volume_mutable (self)))
     _clutter_actor_draw_paint_volume_full (self, pv,
-                                           G_OBJECT_TYPE_NAME (self),
+                                           _clutter_actor_get_debug_name (self),
                                            &color);
   else
     {
       PangoLayout *layout;
       char *label =
-        g_strdup_printf ("CULL FAILURE: %s", G_OBJECT_TYPE_NAME (self));
+        g_strdup_printf ("CULL FAILURE: %s", _clutter_actor_get_debug_name (self));
       cogl_color_init_from_4f (&color, 1, 1, 1, 1);
       cogl_set_source_color (&color);
 
@@ -2584,7 +2584,7 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
                     "->last_paint_volume_valid == FALSE",
-                    G_OBJECT_TYPE_NAME (self));
+                    _clutter_actor_get_debug_name (self));
       return FALSE;
     }
 
@@ -2597,7 +2597,7 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
                     "No stage clip set",
-                    G_OBJECT_TYPE_NAME (self));
+                    _clutter_actor_get_debug_name (self));
       return FALSE;
     }
 
@@ -2606,7 +2606,7 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
                     "Current framebuffer doesn't correspond to stage",
-                    G_OBJECT_TYPE_NAME (self));
+                    _clutter_actor_get_debug_name (self));
       return FALSE;
     }
 
@@ -2632,7 +2632,7 @@ _clutter_actor_update_last_paint_volume (ClutterActor *self)
     {
       CLUTTER_NOTE (CLIPPING, "Bail from update_last_paint_volume (%s): "
                     "Actor failed to report a paint volume",
-                    G_OBJECT_TYPE_NAME (self));
+                    _clutter_actor_get_debug_name (self));
       return;
     }
 
@@ -5820,7 +5820,7 @@ clutter_actor_allocate (ClutterActor           *self,
     {
       g_warning ("Spurious clutter_actor_allocate called for actor %p/%s "
                  "which isn't a descendent of the stage!\n",
-                 self, G_OBJECT_TYPE_NAME (self));
+                 self, _clutter_actor_get_debug_name (self));
       return;
     }
 
@@ -11680,7 +11680,7 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
     {
       CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                     "Actor needs allocation",
-                    G_OBJECT_TYPE_NAME (self));
+                    _clutter_actor_get_debug_name (self));
       return FALSE;
     }
 
@@ -11718,7 +11718,7 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
     {
       CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                     "Actor has \"paint\" signal handlers",
-                    G_OBJECT_TYPE_NAME (self));
+                    _clutter_actor_get_debug_name (self));
       return FALSE;
     }
 
@@ -11729,7 +11729,7 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
       clutter_paint_volume_free (pv);
       CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                     "Actor failed to report a volume",
-                    G_OBJECT_TYPE_NAME (self));
+                    _clutter_actor_get_debug_name (self));
       return FALSE;
     }
 
@@ -11755,7 +11755,7 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
                   clutter_paint_volume_free (pv);
                   CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                                 "Effect (%s) failed to report a volume",
-                                G_OBJECT_TYPE_NAME (self),
+                                _clutter_actor_get_debug_name (self),
                                 G_OBJECT_TYPE_NAME (l->data));
                   return FALSE;
                 }
@@ -11773,7 +11773,7 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
                 clutter_paint_volume_free (pv);
                 CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                               "Effect (%s) failed to report a volume",
-                              G_OBJECT_TYPE_NAME (self),
+                              _clutter_actor_get_debug_name (self),
                               G_OBJECT_TYPE_NAME (l->data));
                 return FALSE;
               }
@@ -11992,7 +11992,11 @@ _clutter_debug_print_actor_cb (ClutterActor *actor,
                                int depth,
                                void *user_data)
 {
-  g_print ("%*s%s:%p\n", depth * 2, "", G_OBJECT_TYPE_NAME (actor), actor);
+  g_print ("%*s%s:%p\n",
+           depth * 2, "",
+           _clutter_actor_get_debug_name (actor),
+           actor);
+
   return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
 }
 

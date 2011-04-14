@@ -3600,7 +3600,7 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
   ClutterStagePrivate *priv = stage->priv;
 
   CLUTTER_NOTE (CLIPPING, "stage_queue_actor_redraw (actor=%s, clip=%p): ",
-                G_OBJECT_TYPE_NAME (actor), clip);
+                _clutter_actor_get_debug_name (actor), clip);
 
   if (!priv->redraw_pending)
     {
@@ -3641,7 +3641,7 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
         {
           CLUTTER_NOTE (CLIPPING, "Bail from stage_queue_actor_redraw (%s): "
                         "Unclipped redraw of actor already queued",
-                        G_OBJECT_CLASS_NAME (actor));
+                        _clutter_actor_get_debug_name (actor));
           return entry;
         }
 
