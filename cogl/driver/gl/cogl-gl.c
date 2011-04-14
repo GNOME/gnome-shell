@@ -190,7 +190,8 @@ _cogl_gl_update_features (CoglContext *context)
   _cogl_get_gl_version (&gl_major, &gl_minor);
 
   flags = (COGL_FEATURE_TEXTURE_READ_PIXELS
-           | COGL_FEATURE_UNSIGNED_INT_INDICES);
+           | COGL_FEATURE_UNSIGNED_INT_INDICES
+           | COGL_FEATURE_DEPTH_RANGE);
 
   gl_extensions = (const char *)glGetString (GL_EXTENSIONS);
 

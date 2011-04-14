@@ -85,6 +85,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-indices.h>
 #include <cogl/cogl-attribute.h>
 #include <cogl/cogl-primitive.h>
+#include <cogl/cogl-depth-state.h>
 #include <cogl/cogl-pipeline.h>
 #include <cogl/cogl-framebuffer.h>
 #ifdef COGL_HAS_XLIB

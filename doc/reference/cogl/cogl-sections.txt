@@ -519,19 +519,25 @@ cogl_material_get_layer_wrap_mode_p
 cogl_material_wrap_mode_get_type
 cogl_material_set_user_program
 cogl_material_get_user_program
-cogl_material_set_depth_range
-cogl_material_get_depth_range
-cogl_material_set_depth_test_enabled
-cogl_material_get_depth_test_enabled
-cogl_material_set_depth_test_function
-cogl_material_get_depth_test_function
-cogl_material_set_depth_writing_enabled
-cogl_material_get_depth_writing_enabled
 cogl_material_foreach_layer
 
 <SUBSECTION Private>
 cogl_blend_string_error_get_type
 cogl_blend_string_error_quark
+</SECTION>
+
+<SECTION>
+<FILE>cogl-depth-state</FILE>
+CoglDepthState
+cogl_depth_state_init
+cogl_depth_state_set_test_enabled
+cogl_depth_state_get_test_enabled
+cogl_depth_state_set_test_function
+cogl_depth_state_get_test_function
+cogl_depth_state_set_writing_enabled
+cogl_depth_state_get_writing_enabled
+cogl_depth_state_set_range
+cogl_depth_state_get_range
 </SECTION>
 
 <SECTION>

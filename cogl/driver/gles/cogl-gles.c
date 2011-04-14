@@ -129,6 +129,7 @@ _cogl_gl_update_features (CoglContext *context)
   /* Note GLES 2 core doesn't support mipmaps for npot textures or
    * repeat modes other than CLAMP_TO_EDGE. */
   flags |= COGL_FEATURE_TEXTURE_NPOT_BASIC;
+  flags |= COGL_FEATURE_DEPTH_RANGE;
 #endif
 
   flags |= COGL_FEATURE_VBOS;

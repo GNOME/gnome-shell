@@ -68,6 +68,7 @@ IGNORE_HFILES=\
 	cogl-object-private.h			\
 	cogl-path.h				\
 	cogl-path-private.h			\
+	cogl-depth-state-private.h		\
 	cogl-pipeline-fragend-arbfp-private.h	\
 	cogl-pipeline-fragend-fixed-private.h	\
 	cogl-pipeline-fragend-glsl-private.h	\

@@ -61,6 +61,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-color.h 			\
 	$(srcdir)/cogl-fixed.h 			\
+	$(srcdir)/cogl-depth-state.h 		\
 	$(srcdir)/cogl-material-compat.h 	\
 	$(srcdir)/cogl-pipeline.h 		\
 	$(srcdir)/cogl-vector.h 		\
@@ -236,6 +237,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix-private.h			\
 	$(srcdir)/cogl-matrix-stack.c			\
 	$(srcdir)/cogl-matrix-stack.h			\
+	$(srcdir)/cogl-depth-state.c			\
+	$(srcdir)/cogl-depth-state-private.h		\
 	$(srcdir)/cogl-pipeline.c			\
 	$(srcdir)/cogl-pipeline-private.h		\
 	$(srcdir)/cogl-pipeline-opengl.c		\

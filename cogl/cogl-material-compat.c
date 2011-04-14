@@ -428,68 +428,27 @@ cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
 }
 
 void
-cogl_material_set_depth_test_enabled (CoglMaterial *material,
-                                      gboolean enable)
-{
-  cogl_pipeline_set_depth_test_enabled (COGL_PIPELINE (material), enable);
-}
-
-gboolean
-cogl_material_get_depth_test_enabled (CoglMaterial *material)
-{
-  return cogl_pipeline_get_depth_test_enabled (COGL_PIPELINE (material));
-}
-
-void
-cogl_material_set_depth_writing_enabled (CoglMaterial *material,
-                                         gboolean enable)
-{
-  cogl_pipeline_set_depth_writing_enabled (COGL_PIPELINE (material), enable);
-}
-
-gboolean
-cogl_material_get_depth_writing_enabled (CoglMaterial *material)
-{
-  return cogl_pipeline_get_depth_writing_enabled (COGL_PIPELINE (material));
-}
-
-void
-cogl_material_set_depth_test_function (CoglMaterial *material,
-                                       CoglDepthTestFunction function)
-{
-  cogl_pipeline_set_depth_test_function (COGL_PIPELINE (material), function);
-}
-
-CoglDepthTestFunction
-cogl_material_get_depth_test_function (CoglMaterial *material)
-{
-  return cogl_pipeline_get_depth_test_function (COGL_PIPELINE (material));
-}
-
-gboolean
-cogl_material_set_depth_range (CoglMaterial *material,
-                               float near_val,
-                               float far_val,
-                               GError **error)
-{
-  return cogl_pipeline_set_depth_range (COGL_PIPELINE (material),
-                                        near_val, far_val, error);
-}
-
-void
-cogl_material_get_depth_range (CoglMaterial *material,
-                               float *near_val,
-                               float *far_val)
-{
-  cogl_pipeline_get_depth_range (COGL_PIPELINE (material), near_val, far_val);
-}
-
-void
 cogl_material_foreach_layer (CoglMaterial *material,
                              CoglMaterialLayerCallback callback,
                              void *user_data)
 {
   cogl_pipeline_foreach_layer (COGL_PIPELINE (material),
                                (CoglPipelineLayerCallback)callback, user_data);
+}
+
+gboolean
+cogl_material_set_depth_state (CoglMaterial *material,
+                               const CoglDepthState *state,
+                               GError **error)
+{
+  return cogl_pipeline_set_depth_state (COGL_PIPELINE (material),
+                                        state, error);
+}
+
+void
+cogl_material_get_depth_state (CoglMaterial *material,
+                               CoglDepthState *state_out)
+{
+  cogl_pipeline_get_depth_state (COGL_PIPELINE (material), state_out);
 }
 

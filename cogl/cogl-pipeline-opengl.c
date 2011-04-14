@@ -445,36 +445,36 @@ blend_factor_uses_constant (GLenum blend_factor)
 #endif
 
 static void
-flush_depth_state (CoglPipelineDepthState *depth_state)
+flush_depth_state (CoglDepthState *depth_state)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->depth_test_function_cache != depth_state->depth_test_function)
+  if (ctx->depth_test_function_cache != depth_state->test_function)
     {
-      GE (glDepthFunc (depth_state->depth_test_function));
-      ctx->depth_test_function_cache = depth_state->depth_test_function;
+      GE (glDepthFunc (depth_state->test_function));
+      ctx->depth_test_function_cache = depth_state->test_function;
     }
 
-  if (ctx->depth_writing_enabled_cache != depth_state->depth_writing_enabled)
+  if (ctx->depth_writing_enabled_cache != depth_state->write_enabled)
     {
-      GE (glDepthMask (depth_state->depth_writing_enabled ?
+      GE (glDepthMask (depth_state->write_enabled ?
                        GL_TRUE : GL_FALSE));
-      ctx->depth_writing_enabled_cache = depth_state->depth_writing_enabled;
+      ctx->depth_writing_enabled_cache = depth_state->write_enabled;
     }
 
 #ifndef COGL_HAS_GLES
-  if (ctx->depth_range_near_cache != depth_state->depth_range_near ||
-      ctx->depth_range_far_cache != depth_state->depth_range_far)
+  if (ctx->depth_range_near_cache != depth_state->range_near ||
+      ctx->depth_range_far_cache != depth_state->range_far)
     {
 #ifdef COGL_HAS_GLES2
-      GE (glDepthRangef (depth_state->depth_range_near,
-                         depth_state->depth_range_far));
+      GE (glDepthRangef (depth_state->range_near,
+                         depth_state->range_far));
 #else
-      GE (glDepthRange (depth_state->depth_range_near,
-                        depth_state->depth_range_far));
+      GE (glDepthRange (depth_state->range_near,
+                        depth_state->range_far));
 #endif
-      ctx->depth_range_near_cache = depth_state->depth_range_near;
-      ctx->depth_range_far_cache = depth_state->depth_range_far;
+      ctx->depth_range_near_cache = depth_state->range_near;
+      ctx->depth_range_far_cache = depth_state->range_far;
     }
 #endif /* COGL_HAS_GLES */
 }
@@ -609,21 +609,21 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
     {
       CoglPipeline *authority =
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
-      CoglPipelineDepthState *depth_state = &authority->big_state->depth_state;
+      CoglDepthState *depth_state = &authority->big_state->depth_state;
 
-      if (depth_state->depth_test_enabled)
+      if (depth_state->test_enabled)
         {
           if (ctx->depth_test_enabled_cache != TRUE)
             {
               GE (glEnable (GL_DEPTH_TEST));
-              ctx->depth_test_enabled_cache = depth_state->depth_test_enabled;
+              ctx->depth_test_enabled_cache = depth_state->test_enabled;
             }
           flush_depth_state (depth_state);
         }
       else if (ctx->depth_test_enabled_cache != FALSE)
         {
           GE (glDisable (GL_DEPTH_TEST));
-          ctx->depth_test_enabled_cache = depth_state->depth_test_enabled;
+          ctx->depth_test_enabled_cache = depth_state->test_enabled;
         }
     }
 

@@ -456,6 +456,20 @@ cogl_blend_string_error_quark
 </SECTION>
 
 <SECTION>
+<FILE>cogl-depth-state</FILE>
+CoglDepthState
+cogl_depth_state_init
+cogl_depth_state_set_test_enabled
+cogl_depth_state_get_test_enabled
+cogl_depth_state_set_test_function
+cogl_depth_state_get_test_function
+cogl_depth_state_set_writing_enabled
+cogl_depth_state_get_writing_enabled
+cogl_depth_state_set_range
+cogl_depth_state_get_range
+</SECTION>
+
+<SECTION>
 <FILE>cogl-buffer</FILE>
 <TITLE>CoglBuffer: The Base Buffer Type</TITLE>
 cogl_is_buffer

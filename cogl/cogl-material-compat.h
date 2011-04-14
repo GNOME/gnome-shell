@@ -32,6 +32,7 @@ G_BEGIN_DECLS
 
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-matrix.h>
+#include <cogl/cogl-depth-state.h>
 
 /**
  * SECTION:cogl-material
@@ -1195,167 +1196,44 @@ cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
 /**
- * cogl_material_set_depth_test_enabled:
+ * cogl_material_set_depth_state:
  * @material: A #CoglMaterial object
- * @enable: The enable state you want
+ * @state: A #CoglDepthState struct
+ * @error: A #GError to report failures to setup the given @state.
  *
- * Enables or disables depth testing according to the value of
- * @enable.
+ * This commits all the depth state configured in @state struct to the
+ * given @material. The configuration values are copied into the
+ * material so there is no requirement to keep the #CoglDepthState
+ * struct around if you don't need it any more.
  *
- * If depth testing is enable then the #CoglDepthTestFunction set
- * using cogl_material_set_depth_test_function() us used to evaluate
- * the depth value of incoming fragments against the corresponding
- * value stored in the current depth buffer, and if the test passes
- * then the fragments depth value is used to update the depth buffer.
- * (unless you have disabled depth writing via
- * cogl_material_set_depth_writing_enabled ())
+ * Note: Since some platforms do not support the depth range feature
+ * it is possible for this function to fail and report an @error.
  *
- * By default depth testing is disabled.
+ * Returns: TRUE if the GPU supports all the given @state else %FALSE
+ *          and returns an @error.
  *
- * Since: 1.4
- * Stability: Unstable
- */
-void
-cogl_material_set_depth_test_enabled (CoglMaterial *material,
-                                      gboolean enable);
-
-/**
- * cogl_material_get_depth_test_enabled:
- * @material: A #CoglMaterial object
- *
- * Gets the current depth test enabled state as previously set by
- * cogl_material_set_depth_test_enabled().
- *
- * Returns: The material's current depth test enabled state.
- * Since: 1.4
+ * Since: 1.8
  * Stability: Unstable
  */
 gboolean
-cogl_material_get_depth_test_enabled (CoglMaterial *material);
-
-/**
- * cogl_material_set_depth_writing_enabled:
- * @material: A #CoglMaterial object
- * @enable: The enable state you want
- *
- * Enables or disables depth buffer writing according to the value of
- * @enable. Normally when depth testing is enabled and the comparison
- * between a fragment's depth value and the corresponding depth buffer
- * value passes then the fragment's depth is written to the depth
- * buffer unless writing is disabled here.
- *
- * By default depth writing is enabled
- *
- * Since: 1.4
- * Stability: Unstable
- */
-void
-cogl_material_set_depth_writing_enabled (CoglMaterial *material,
-                                         gboolean enable);
-
-/**
- * cogl_material_get_depth_writing_enabled:
- * @material: A #CoglMaterial object
- *
- * Gets the depth writing enable state as set by the corresponding
- * cogl_material_set_depth_writing_enabled.
- *
- * Returns: The current depth writing enable state
- * Since: 1.4
- * Stability: Unstable
- */
-gboolean
-cogl_material_get_depth_writing_enabled (CoglMaterial *material);
-
-/**
- * cogl_material_set_depth_test_function:
- * @material: A #CoglMaterial object
- * @function: The #CoglDepthTestFunction to set
- *
- * Sets the #CoglDepthTestFunction used to compare the depth value of
- * an incoming fragment against the corresponding value in the current
- * depth buffer.
- *
- * Since: 1.4
- * Stability: Unstable
- */
-void
-cogl_material_set_depth_test_function (CoglMaterial *material,
-                                       CoglDepthTestFunction function);
-
-/**
- * cogl_material_get_depth_test_function:
- * @material: A #CoglMaterial object
- *
- * Gets the current depth test enable state as previously set via
- * cogl_material_set_depth_test_enabled().
- *
- * Returns: The current depth test enable state.
- * Since: 1.4
- * Stability: Unstable
- */
-CoglDepthTestFunction
-cogl_material_get_depth_test_function (CoglMaterial *material);
-
-/**
- * cogl_material_set_depth_range:
- * @material: A #CoglMaterial object
- * @near_val: The near component of the desired depth range which will be
- * clamped to the range [0, 1]
- * @far_val: The far component of the desired depth range which will be
- * clamped to the range [0, 1]
- * @error: location to store an error of type #CoglError
- *
- * Sets the range to map depth values in normalized device coordinates
- * to before writing out to a depth buffer.
- *
- * After your geometry has be transformed, clipped and had perspective
- * division applied placing it in normalized device
- * coordinates all depth values between the near and far z clipping
- * planes are in the range -1 to 1. Before writing any depth value to
- * the depth buffer though the value is mapped into the range [0, 1].
- *
- * With this function you can change the range which depth values are
- * mapped too although the range must still lye within the range [0,
- * 1].
- *
- * If your driver does not support this feature (for example you are
- * using GLES 1 drivers) then this will return %FALSE and set an error
- * if @error isn't NULL. You can check ahead of time for the
- * %COGL_FEATURE_DEPTH_RANGE feature with cogl_features_available() to
- * know if this function will succeed.
- *
- * By default normalized device coordinate depth values are mapped to
- * the full range of depth buffer values, [0, 1].
- *
- * Returns: %TRUE if driver support is available else %FALSE.
- *
- * Since: 1.4
- * Stability: Unstable
- */
-gboolean
-cogl_material_set_depth_range (CoglMaterial *material,
-                               float near_val,
-                               float far_val,
+cogl_material_set_depth_state (CoglMaterial *material,
+                               const CoglDepthState *state,
                                GError **error);
 
 /**
- * cogl_material_get_depth_range_mapping:
+ * cogl_material_get_depth_state
  * @material: A #CoglMaterial object
- * @near_val: A pointer to store the near component of the depth range
- * @far_val: A pointer to store the far component of the depth range
+ * @state: A destination #CoglDepthState struct
  *
- * Gets the current range to which normalized depth values are mapped
- * before writing to the depth buffer. This corresponds to the range
- * set with cogl_material_set_depth_range().
+ * Retrieves the current depth state configuration for the given
+ * @pipeline as previously set using cogl_pipeline_set_depth_state().
  *
- * Since: 1.4
+ * Since: 2.0
  * Stability: Unstable
  */
 void
-cogl_material_get_depth_range (CoglMaterial *material,
-                               float *near_val,
-                               float *far_val);
+cogl_material_get_depth_state (CoglMaterial *material,
+                               CoglDepthState *state_out);
 
 /**
  * CoglMaterialLayerCallback:

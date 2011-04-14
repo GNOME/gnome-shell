@@ -43,6 +43,7 @@
 #include "cogl-color-private.h"
 #include "cogl-util.h"
 #include "cogl-profile.h"
+#include "cogl-depth-state-private.h"
 
 #include <glib.h>
 #include <glib/gprintf.h>
@@ -210,7 +211,7 @@ _cogl_pipeline_init_default_pipeline (void)
   CoglPipelineLightingState *lighting_state = &big_state->lighting_state;
   CoglPipelineAlphaFuncState *alpha_state = &big_state->alpha_state;
   CoglPipelineBlendState *blend_state = &big_state->blend_state;
-  CoglPipelineDepthState *depth_state = &big_state->depth_state;
+  CoglDepthState *depth_state = &big_state->depth_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -308,11 +309,11 @@ _cogl_pipeline_init_default_pipeline (void)
   big_state->user_program = COGL_INVALID_HANDLE;
 
   /* The same as the GL defaults */
-  depth_state->depth_test_enabled = FALSE;
-  depth_state->depth_test_function = COGL_DEPTH_TEST_FUNCTION_LESS;
-  depth_state->depth_writing_enabled = TRUE;
-  depth_state->depth_range_near = 0;
-  depth_state->depth_range_far = 1;
+  depth_state->test_enabled = FALSE;
+  depth_state->test_function = COGL_DEPTH_TEST_FUNCTION_LESS;
+  depth_state->write_enabled = TRUE;
+  depth_state->range_near = 0;
+  depth_state->range_far = 1;
 
   big_state->point_size = 1.0f;
 
@@ -1074,7 +1075,7 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
     {
       memcpy (&big_state->depth_state,
               &src->big_state->depth_state,
-              sizeof (CoglPipelineDepthState));
+              sizeof (CoglDepthState));
     }
 
   if (differences & COGL_PIPELINE_STATE_FOG)
@@ -1147,7 +1148,7 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
       {
         memcpy (&pipeline->big_state->depth_state,
                 &authority->big_state->depth_state,
-                sizeof (CoglPipelineDepthState));
+                sizeof (CoglDepthState));
         break;
       }
     case COGL_PIPELINE_STATE_FOG:
@@ -3479,13 +3480,19 @@ static gboolean
 _cogl_pipeline_depth_state_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1)
 {
-  if (authority0->big_state->depth_state.depth_test_enabled == FALSE &&
-      authority1->big_state->depth_state.depth_test_enabled == FALSE)
+  if (authority0->big_state->depth_state.test_enabled == FALSE &&
+      authority1->big_state->depth_state.test_enabled == FALSE)
     return TRUE;
   else
-    return memcmp (&authority0->big_state->depth_state,
-                   &authority1->big_state->depth_state,
-                   sizeof (CoglPipelineDepthState)) == 0;
+    {
+      CoglDepthState *s0 = &authority0->big_state->depth_state;
+      CoglDepthState *s1 = &authority1->big_state->depth_state;
+      return s0->test_enabled == s1->test_enabled &&
+             s0->test_function == s1->test_function &&
+             s0->write_enabled == s1->write_enabled &&
+             s0->range_near == s1->range_near &&
+             s0->range_far == s1->range_far;
+    }
 }
 
 static gboolean
@@ -4703,153 +4710,39 @@ cogl_pipeline_set_user_program (CoglPipeline *pipeline,
   handle_automatic_blend_enable (pipeline, state);
 }
 
-void
-cogl_pipeline_set_depth_test_enabled (CoglPipeline *pipeline,
-                                      gboolean enable)
-{
-  CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
-  CoglPipeline *authority;
-  CoglPipelineDepthState *depth_state;
-
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-
-  authority = _cogl_pipeline_get_authority (pipeline, state);
-
-  depth_state = &authority->big_state->depth_state;
-  if (depth_state->depth_test_enabled == enable)
-    return;
-
-  /* - Flush journal primitives referencing the current state.
-   * - Make sure the pipeline has no dependants so it may be modified.
-   * - If the pipeline isn't currently an authority for the state being
-   *   changed, then initialize that state from the current authority.
-   */
-  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
-
-  pipeline->big_state->depth_state.depth_test_enabled = enable;
-
-  _cogl_pipeline_update_authority (pipeline, authority, state,
-                                   _cogl_pipeline_depth_state_equal);
-}
-
 gboolean
-cogl_pipeline_get_depth_test_enabled (CoglPipeline *pipeline)
-{
-  CoglPipeline *authority;
-
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
-
-  authority =
-    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
-
-  return authority->big_state->depth_state.depth_test_enabled;
-}
-
-void
-cogl_pipeline_set_depth_writing_enabled (CoglPipeline *pipeline,
-                                         gboolean enable)
-{
-  CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
-  CoglPipeline *authority;
-  CoglPipelineDepthState *depth_state;
-
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-
-  authority = _cogl_pipeline_get_authority (pipeline, state);
-
-  depth_state = &authority->big_state->depth_state;
-  if (depth_state->depth_writing_enabled == enable)
-    return;
-
-  /* - Flush journal primitives referencing the current state.
-   * - Make sure the pipeline has no dependants so it may be modified.
-   * - If the pipeline isn't currently an authority for the state being
-   *   changed, then initialize that state from the current authority.
-   */
-  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
-
-  pipeline->big_state->depth_state.depth_writing_enabled = enable;
-
-  _cogl_pipeline_update_authority (pipeline, authority, state,
-                                   _cogl_pipeline_depth_state_equal);
-}
-
-gboolean
-cogl_pipeline_get_depth_writing_enabled (CoglPipeline *pipeline)
-{
-  CoglPipeline *authority;
-
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), TRUE);
-
-  authority =
-    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
-
-  return authority->big_state->depth_state.depth_writing_enabled;
-}
-
-void
-cogl_pipeline_set_depth_test_function (CoglPipeline *pipeline,
-                                       CoglDepthTestFunction function)
-{
-  CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
-  CoglPipeline *authority;
-  CoglPipelineDepthState *depth_state;
-
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-
-  authority = _cogl_pipeline_get_authority (pipeline, state);
-
-  depth_state = &authority->big_state->depth_state;
-  if (depth_state->depth_test_function == function)
-    return;
-
-  /* - Flush journal primitives referencing the current state.
-   * - Make sure the pipeline has no dependants so it may be modified.
-   * - If the pipeline isn't currently an authority for the state being
-   *   changed, then initialize that state from the current authority.
-   */
-  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
-
-  pipeline->big_state->depth_state.depth_test_function = function;
-
-  _cogl_pipeline_update_authority (pipeline, authority, state,
-                                   _cogl_pipeline_depth_state_equal);
-}
-
-CoglDepthTestFunction
-cogl_pipeline_get_depth_test_function (CoglPipeline *pipeline)
-{
-  CoglPipeline *authority;
-
-  g_return_val_if_fail (cogl_is_pipeline (pipeline),
-                        COGL_DEPTH_TEST_FUNCTION_LESS);
-
-  authority =
-    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
-
-  return authority->big_state->depth_state.depth_test_function;
-}
-
-
-gboolean
-cogl_pipeline_set_depth_range (CoglPipeline *pipeline,
-                               float near_val,
-                               float far_val,
+cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
+                               const CoglDepthState *depth_state,
                                GError **error)
 {
-#ifndef COGL_HAS_GLES
   CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
   CoglPipeline *authority;
-  CoglPipelineDepthState *depth_state;
+  CoglDepthState *orig_state;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), TRUE);
+  g_return_if_fail (depth_state->magic == COGL_DEPTH_STATE_MAGIC);
 
   authority = _cogl_pipeline_get_authority (pipeline, state);
 
-  depth_state = &authority->big_state->depth_state;
-  if (depth_state->depth_range_near == near_val &&
-      depth_state->depth_range_far == far_val)
+  orig_state = &authority->big_state->depth_state;
+  if (orig_state->test_enabled == depth_state->test_enabled &&
+      orig_state->write_enabled == depth_state->write_enabled &&
+      orig_state->test_function == depth_state->test_function &&
+      orig_state->range_near == depth_state->range_near &&
+      orig_state->range_far == depth_state->range_far)
     return TRUE;
+
+#ifdef COGL_HAS_GLES
+  if (depth_state->range_near != 0 ||
+      depth_state->range_far != 1)
+    {
+      g_set_error (error,
+                   COGL_ERROR,
+                   COGL_ERROR_UNSUPPORTED,
+                   "glDepthRange not available on GLES 1");
+      return FALSE;
+    }
+#endif
 
   /* - Flush journal primitives referencing the current state.
    * - Make sure the pipeline has no dependants so it may be modified.
@@ -4858,25 +4751,17 @@ cogl_pipeline_set_depth_range (CoglPipeline *pipeline,
    */
   _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  pipeline->big_state->depth_state.depth_range_near = near_val;
-  pipeline->big_state->depth_state.depth_range_far = far_val;
+  pipeline->big_state->depth_state = *depth_state;
 
   _cogl_pipeline_update_authority (pipeline, authority, state,
                                    _cogl_pipeline_depth_state_equal);
+
   return TRUE;
-#else
-  g_set_error (error,
-               COGL_ERROR,
-               COGL_ERROR_UNSUPPORTED,
-               "glDepthRange not available on GLES 1");
-  return FALSE;
-#endif
 }
 
 void
-cogl_pipeline_get_depth_range (CoglPipeline *pipeline,
-                               float *near_val,
-                               float *far_val)
+cogl_pipeline_get_depth_state (CoglPipeline *pipeline,
+                               CoglDepthState *state)
 {
   CoglPipeline *authority;
 
@@ -4884,9 +4769,7 @@ cogl_pipeline_get_depth_range (CoglPipeline *pipeline,
 
   authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
-
-  *near_val = authority->big_state->depth_state.depth_range_near;
-  *far_val = authority->big_state->depth_state.depth_range_far;
+  *state = authority->big_state->depth_state;
 }
 
 static void
@@ -5880,7 +5763,12 @@ _cogl_pipeline_apply_legacy_state (CoglPipeline *pipeline)
     cogl_pipeline_set_user_program (pipeline, ctx->current_program);
 
   if (ctx->legacy_depth_test_enabled)
-    cogl_pipeline_set_depth_test_enabled (pipeline, TRUE);
+    {
+      CoglDepthState depth_state;
+      cogl_depth_state_init (&depth_state);
+      cogl_depth_state_set_test_enabled (&depth_state, TRUE);
+      cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL);
+    }
 
   if (ctx->legacy_fog_state.enabled)
     _cogl_pipeline_set_fog_state (pipeline, &ctx->legacy_fog_state);
@@ -6277,22 +6165,22 @@ static void
 _cogl_pipeline_hash_depth_state (CoglPipeline *authority,
                                  HashState *state)
 {
-  CoglPipelineDepthState *depth_state = &authority->big_state->depth_state;
+  CoglDepthState *depth_state = &authority->big_state->depth_state;
   unsigned int hash = state->hash;
 
-  if (depth_state->depth_test_enabled)
+  if (depth_state->test_enabled)
     {
-      guint8 enabled = depth_state->depth_test_enabled;
-      CoglDepthTestFunction function = depth_state->depth_test_function;
+      guint8 enabled = depth_state->test_enabled;
+      CoglDepthTestFunction function = depth_state->test_function;
       hash = _cogl_util_one_at_a_time_hash (hash, &enabled, sizeof (enabled));
       hash = _cogl_util_one_at_a_time_hash (hash, &function, sizeof (function));
     }
 
-  if (depth_state->depth_writing_enabled)
+  if (depth_state->write_enabled)
     {
-      guint8 enabled = depth_state->depth_writing_enabled;
-      float near_val = depth_state->depth_range_near;
-      float far_val = depth_state->depth_range_far;
+      guint8 enabled = depth_state->write_enabled;
+      float near_val = depth_state->range_near;
+      float far_val = depth_state->range_far;
       hash = _cogl_util_one_at_a_time_hash (hash, &enabled, sizeof (enabled));
       hash = _cogl_util_one_at_a_time_hash (hash, &near_val, sizeof (near_val));
       hash = _cogl_util_one_at_a_time_hash (hash, &far_val, sizeof (far_val));

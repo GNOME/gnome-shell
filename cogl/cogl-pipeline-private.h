@@ -564,15 +564,6 @@ typedef struct
 
 typedef struct
 {
-  gboolean              depth_test_enabled;
-  CoglDepthTestFunction depth_test_function;
-  gboolean              depth_writing_enabled;
-  float                 depth_range_near;
-  float                 depth_range_far;
-} CoglPipelineDepthState;
-
-typedef struct
-{
   gboolean        enabled;
   CoglColor       color;
   CoglFogMode     mode;
@@ -587,7 +578,7 @@ typedef struct
   CoglPipelineAlphaFuncState alpha_state;
   CoglPipelineBlendState blend_state;
   CoglHandle user_program;
-  CoglPipelineDepthState depth_state;
+  CoglDepthState depth_state;
   CoglPipelineFogState fog_state;
   float point_size;
 } CoglPipelineBigState;

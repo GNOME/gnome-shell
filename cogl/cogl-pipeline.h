@@ -1054,167 +1054,44 @@ cogl_pipeline_set_layer_wrap_mode (CoglPipeline        *pipeline,
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
 /**
- * cogl_pipeline_set_depth_test_enabled:
+ * cogl_pipeline_set_depth_state:
  * @pipeline: A #CoglPipeline object
- * @enable: The enable state you want
+ * @state: A #CoglDepthState struct
+ * @error: A #GError to report failures to setup the given @state.
  *
- * Enables or disables depth testing according to the value of
- * @enable.
+ * This commits all the depth state configured in @state struct to the
+ * given @pipeline. The configuration values are copied into the
+ * pipeline so there is no requirement to keep the #CoglDepthState
+ * struct around if you don't need it any more.
  *
- * If depth testing is enable then the #CoglDepthTestFunction set
- * using cogl_pipeline_set_depth_test_function() us used to evaluate
- * the depth value of incoming fragments against the corresponding
- * value stored in the current depth buffer, and if the test passes
- * then the fragments depth value is used to update the depth buffer.
- * (unless you have disabled depth writing via
- * cogl_pipeline_set_depth_writing_enabled ())
+ * Note: Since some platforms do not support the depth range feature
+ * it is possible for this function to fail and report an @error.
  *
- * By default depth testing is disabled.
- *
- * Since: 2.0
- * Stability: Unstable
- */
-void
-cogl_pipeline_set_depth_test_enabled (CoglPipeline *pipeline,
-                                      gboolean enable);
-
-/**
- * cogl_pipeline_get_depth_test_enabled:
- * @pipeline: A #CoglPipeline object
- *
- * Gets the current depth test enabled state as previously set by
- * cogl_pipeline_set_depth_test_enabled().
- *
- * Returns: The pipeline's current depth test enabled state.
- * Since: 2.0
- * Stability: Unstable
- */
-gboolean
-cogl_pipeline_get_depth_test_enabled (CoglPipeline *pipeline);
-
-/**
- * cogl_pipeline_set_depth_writing_enabled:
- * @pipeline: A #CoglPipeline object
- * @enable: The enable state you want
- *
- * Enables or disables depth buffer writing according to the value of
- * @enable. Normally when depth testing is enabled and the comparison
- * between a fragment's depth value and the corresponding depth buffer
- * value passes then the fragment's depth is written to the depth
- * buffer unless writing is disabled here.
- *
- * By default depth writing is enabled
- *
- * Since: 2.0
- * Stability: Unstable
- */
-void
-cogl_pipeline_set_depth_writing_enabled (CoglPipeline *pipeline,
-                                         gboolean enable);
-
-/**
- * cogl_pipeline_get_depth_writing_enabled:
- * @pipeline: A #CoglPipeline object
- *
- * Gets the depth writing enable state as set by the corresponding
- * cogl_pipeline_set_depth_writing_enabled.
- *
- * Returns: The current depth writing enable state
- * Since: 2.0
- * Stability: Unstable
- */
-gboolean
-cogl_pipeline_get_depth_writing_enabled (CoglPipeline *pipeline);
-
-/**
- * cogl_pipeline_set_depth_test_function:
- * @pipeline: A #CoglPipeline object
- * @function: The #CoglDepthTestFunction to set
- *
- * Sets the #CoglDepthTestFunction used to compare the depth value of
- * an incoming fragment against the corresponding value in the current
- * depth buffer.
- *
- * Since: 2.0
- * Stability: Unstable
- */
-void
-cogl_pipeline_set_depth_test_function (CoglPipeline *pipeline,
-                                       CoglDepthTestFunction function);
-
-/**
- * cogl_pipeline_get_depth_test_function:
- * @pipeline: A #CoglPipeline object
- *
- * Gets the current depth test enable state as previously set via
- * cogl_pipeline_set_depth_test_enabled().
- *
- * Returns: The current depth test enable state.
- * Since: 2.0
- * Stability: Unstable
- */
-CoglDepthTestFunction
-cogl_pipeline_get_depth_test_function (CoglPipeline *pipeline);
-
-/**
- * cogl_pipeline_set_depth_range:
- * @pipeline: A #CoglPipeline object
- * @near_val: The near component of the desired depth range which will be
- * clamped to the range [0, 1]
- * @far_val: The far component of the desired depth range which will be
- * clamped to the range [0, 1]
- * @error: location to store an error of type #CoglError
- *
- * Sets the range to map depth values in normalized device coordinates
- * to before writing out to a depth buffer.
- *
- * After your geometry has be transformed, clipped and had perspective
- * division applied placing it in normalized device
- * coordinates all depth values between the near and far z clipping
- * planes are in the range -1 to 1. Before writing any depth value to
- * the depth buffer though the value is mapped into the range [0, 1].
- *
- * With this function you can change the range which depth values are
- * mapped too although the range must still lye within the range [0,
- * 1].
- *
- * If your driver does not support this feature (for example you are
- * using GLES 1 drivers) then this will return %FALSE and set an error
- * if @error isn't NULL. You can check ahead of time for the
- * %COGL_FEATURE_DEPTH_RANGE feature with cogl_features_available() to
- * know if this function will succeed.
- *
- * By default normalized device coordinate depth values are mapped to
- * the full range of depth buffer values, [0, 1].
- *
- * Returns: %TRUE if driver support is available else %FALSE.
+ * Returns: TRUE if the GPU supports all the given @state else %FALSE
+ *          and returns an @error.
  *
  * Since: 2.0
  * Stability: Unstable
  */
 gboolean
-cogl_pipeline_set_depth_range (CoglPipeline *pipeline,
-                               float near_val,
-                               float far_val,
+cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
+                               const CoglDepthState *state,
                                GError **error);
 
 /**
- * cogl_pipeline_get_depth_range_mapping:
+ * cogl_pipeline_get_depth_state
  * @pipeline: A #CoglPipeline object
- * @near_val: A pointer to store the near component of the depth range
- * @far_val: A pointer to store the far component of the depth range
+ * @state: A destination #CoglDepthState struct
  *
- * Gets the current range to which normalized depth values are mapped
- * before writing to the depth buffer. This corresponds to the range
- * set with cogl_pipeline_set_depth_range().
+ * Retrieves the current depth state configuration for the given
+ * @pipeline as previously set using cogl_pipeline_set_depth_state().
  *
  * Since: 2.0
  * Stability: Unstable
  */
 void
-cogl_pipeline_get_depth_range (CoglPipeline *pipeline,
-                               float *near_val,
-                               float *far_val);
+cogl_pipeline_get_depth_state (CoglPipeline *pipeline,
+                               CoglDepthState *state_out);
 
 /**
  * CoglPipelineLayerCallback:
