@@ -371,6 +371,22 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
     }
 }
 
+static void
+clutter_stage_x11_unrealize (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  if (clutter_stages_by_xid != NULL)
+    {
+      CLUTTER_NOTE (BACKEND, "Removing X11 stage 0x%x [%p]",
+                    (unsigned int) stage_x11->xwin,
+                    stage_x11);
+
+      g_hash_table_remove (clutter_stages_by_xid,
+                           GINT_TO_POINTER (stage_x11->xwin));
+    }
+}
+
 static gboolean
 clutter_stage_x11_realize (ClutterStageWindow *stage_window)
 {
@@ -763,6 +779,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->resize = clutter_stage_x11_resize;
   iface->get_geometry = clutter_stage_x11_get_geometry;
   iface->realize = clutter_stage_x11_realize;
+  iface->unrealize = clutter_stage_x11_unrealize;
 }
 
 static inline void
