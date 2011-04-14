@@ -76,6 +76,8 @@ compute_above_tab_keycode (Display *xdisplay)
   keyboard = XkbGetKeyboard (xdisplay,
                              XkbGBN_ClientSymbolsMask | XkbGBN_KeyNamesMask | XkbGBN_GeometryMask,
                              XkbUseCoreKbd);
+  if (!keyboard)
+    return best_keycode;
 
   geometry = keyboard->geom;
 
