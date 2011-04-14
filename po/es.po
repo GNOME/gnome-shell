@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-11 18:59+0000\n"
-"PO-Revision-Date: 2011-04-12 16:57+0200\n"
+"POT-Creation-Date: 2011-04-12 19:05+0000\n"
+"PO-Revision-Date: 2011-04-13 16:14+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1443,22 +1443,20 @@ msgid "The type of shader used"
 msgstr ""
 
 #: ../clutter/clutter-snap-constraint.c:322
-#, fuzzy
 msgid "The source of the constraint"
-msgstr "La fuente de la alineación"
+msgstr "La fuente de la restricción"
 
 #: ../clutter/clutter-snap-constraint.c:335
 msgid "From Edge"
-msgstr ""
+msgstr "Desde el borde"
 
 #: ../clutter/clutter-snap-constraint.c:336
-#, fuzzy
 msgid "The edge of the actor that should be snapped"
-msgstr "Indica si el texto se debe justificar"
+msgstr "El borde del actor que debería romperse"
 
 #: ../clutter/clutter-snap-constraint.c:350
 msgid "To Edge"
-msgstr ""
+msgstr "Al borde"
 
 #: ../clutter/clutter-snap-constraint.c:351
 msgid "The edge of the source that should be snapped"
@@ -1582,7 +1580,7 @@ msgstr "Duración de la transición predeterminada"
 
 #: ../clutter/clutter-table-layout.c:585
 msgid "Column Number"
-msgstr ""
+msgstr "Número de columna"
 
 #: ../clutter/clutter-table-layout.c:586
 msgid "The column the widget resides in"
@@ -1590,14 +1588,13 @@ msgstr ""
 
 #: ../clutter/clutter-table-layout.c:593
 msgid "Row Number"
-msgstr ""
+msgstr "Número de fila"
 
 #: ../clutter/clutter-table-layout.c:594
 msgid "The row the widget resides in"
 msgstr ""
 
 #: ../clutter/clutter-table-layout.c:601
-#, fuzzy
 msgid "Column Span"
 msgstr "Espaciado entre columnas"
 
@@ -1606,7 +1603,6 @@ msgid "The number of columns the widget should span"
 msgstr ""
 
 #: ../clutter/clutter-table-layout.c:609
-#, fuzzy
 msgid "Row Span"
 msgstr "Espaciado entre filas"
 
@@ -1615,18 +1611,16 @@ msgid "The number of rows the widget should span"
 msgstr ""
 
 #: ../clutter/clutter-table-layout.c:617
-#, fuzzy
 msgid "Horizontal Expand"
-msgstr "Repetición horizontal"
+msgstr "Expansión horizontal"
 
 #: ../clutter/clutter-table-layout.c:618
 msgid "Allocate extra space for the child in horizontal axis"
 msgstr ""
 
 #: ../clutter/clutter-table-layout.c:624
-#, fuzzy
 msgid "Vertical Expand"
-msgstr "Repetición vertical"
+msgstr "Expansión vertical"
 
 #: ../clutter/clutter-table-layout.c:625
 msgid "Allocate extra space for the child in vertical axis"
@@ -1678,7 +1672,7 @@ msgstr "Indica si el texto es editable"
 
 #: ../clutter/clutter-text.c:2635
 msgid "Selectable"
-msgstr ""
+msgstr "Seleccionable"
 
 #: ../clutter/clutter-text.c:2636
 msgid "Whether the text is selectable"
@@ -1686,7 +1680,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2650
 msgid "Activatable"
-msgstr ""
+msgstr "Activable"
 
 #: ../clutter/clutter-text.c:2651
 msgid "Whether pressing return causes the activate signal to be emitted"
@@ -1945,7 +1939,7 @@ msgstr ""
 
 #: ../clutter/clutter-timeline.c:278
 msgid "Delay"
-msgstr ""
+msgstr "Retardo"
 
 #: ../clutter/clutter-timeline.c:279
 msgid "Delay before start"
@@ -1956,18 +1950,16 @@ msgid "Duration of the timeline in milliseconds"
 msgstr "Duración de la línea de tiempo, en milisegundos"
 
 #: ../clutter/clutter-timeline.c:311
-#, fuzzy
 msgid "Direction of the timeline"
-msgstr "Dirección del texto"
+msgstr "Dirección de la línea de tiempo"
 
 #: ../clutter/clutter-timeline.c:326
 msgid "Auto Reverse"
 msgstr ""
 
 #: ../clutter/clutter-timeline.c:327
-#, fuzzy
 msgid "Whether the direction should be reversed when reaching the end"
-msgstr "Indica si el texto debe estar en una única línea"
+msgstr "Indica si se debe invertir la dirección al llegar al final"
 
 #: ../clutter/cogl/cogl/cogl-debug.c:203
 msgid "Cogl debugging flags to set"
@@ -1990,14 +1982,12 @@ msgid "sysfs Path"
 msgstr ""
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:148
-#, fuzzy
 msgid "Path of the device in sysfs"
-msgstr "El nombre del dispositivo"
+msgstr "Ruta del dispositivo en sysfs"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:163
-#, fuzzy
 msgid "Device Path"
-msgstr "Administrador de dispositivos"
+msgstr "Ruta del dispositivo"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:164
 msgid "Path of the device node"
@@ -2009,11 +1999,11 @@ msgstr ""
 
 #: ../clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
-msgstr ""
+msgstr "Pantalla X que usar"
 
 #: ../clutter/x11/clutter-backend-x11.c:489
 msgid "X screen to use"
-msgstr ""
+msgstr "Pantalla (screen) X que usar"
 
 #: ../clutter/x11/clutter-backend-x11.c:494
 msgid "Make X calls synchronous"
@@ -2085,23 +2075,23 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:614
 msgid "Window Mapped"
-msgstr ""
+msgstr "Ventana mapeada"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:615
 msgid "If window is mapped"
-msgstr ""
+msgstr "Indica si la ventana está mapeada"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:624
 msgid "Destroyed"
-msgstr ""
+msgstr "Destruida"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:625
 msgid "If window has been destroyed"
-msgstr ""
+msgstr "Indica si se ha destruido la ventana"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:633
 msgid "Window X"
-msgstr ""
+msgstr "Ventana X"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:634
 msgid "X position of window on screen according to X11"
@@ -2109,7 +2099,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:642
 msgid "Window Y"
-msgstr ""
+msgstr "Ventana Y"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:643
 msgid "Y position of window on screen according to X11"
