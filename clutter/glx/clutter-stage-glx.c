@@ -72,6 +72,9 @@ clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
   /* Note unrealize should free up any backend stage related resources */
   CLUTTER_NOTE (BACKEND, "Unrealizing GLX stage [%p]", stage_glx);
 
+  /* chain up to the StageX11 implementation */
+  clutter_stage_window_parent_iface->unrealize (stage_window);
+
   cogl_object_unref (stage_glx->onscreen);
   stage_glx->onscreen = NULL;
 }
