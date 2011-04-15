@@ -27,6 +27,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-context-private.h"
 
 GQuark
 _cogl_winsys_error_quark (void)
@@ -34,3 +35,11 @@ _cogl_winsys_error_quark (void)
   return g_quark_from_static_string ("cogl-winsys-error-quark");
 }
 
+/* FIXME: we should distinguish renderer and context features */
+gboolean
+_cogl_winsys_has_feature (CoglWinsysFeature feature)
+{
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  return COGL_FLAGS_GET (ctx->winsys_features, feature);
+}
