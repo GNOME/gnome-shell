@@ -25,6 +25,7 @@
 #define __COGL_DEBUG_H__
 
 #include "cogl-profile.h"
+#include "cogl-flags.h"
 
 #include <glib.h>
 
@@ -70,32 +71,18 @@ typedef enum {
 
 #ifdef COGL_ENABLE_DEBUG
 
-#define COGL_DEBUG_N_INTS ((COGL_DEBUG_N_FLAGS + \
-                            (sizeof (unsigned int) * 8 - 1)) \
-                           / (sizeof (unsigned int) * 8))
+#define COGL_DEBUG_N_INTS COGL_FLAGS_N_INTS_FOR_SIZE (COGL_DEBUG_N_FLAGS)
 
-/* It would probably make sense to use unsigned long here instead
-   because then on 64-bit systems where it can handle 64-bits just as
-   easily and it can test more bits. However GDebugKey uses a guint
-   for the mask and we need to fit the masks into this */
 extern unsigned int _cogl_debug_flags[COGL_DEBUG_N_INTS];
 
-#define COGL_DEBUG_GET_FLAG_INDEX(flag) \
-  ((flag) / (sizeof (unsigned int) * 8))
-#define COGL_DEBUG_GET_FLAG_MASK(flag) \
-  (1U << ((unsigned int) (flag) & (sizeof (unsigned int) * 8 - 1)))
-
 #define COGL_DEBUG_ENABLED(flag) \
-  (!!(_cogl_debug_flags[COGL_DEBUG_GET_FLAG_INDEX (flag)] & \
-      COGL_DEBUG_GET_FLAG_MASK (flag)))
+  COGL_FLAGS_GET (_cogl_debug_flags, flag)
 
 #define COGL_DEBUG_SET_FLAG(flag) \
-  (_cogl_debug_flags[COGL_DEBUG_GET_FLAG_INDEX (flag)] |= \
-   COGL_DEBUG_GET_FLAG_MASK (flag))
+  COGL_FLAGS_SET (_cogl_debug_flags, flag, TRUE)
 
 #define COGL_DEBUG_CLEAR_FLAG(flag) \
-  (_cogl_debug_flags[COGL_DEBUG_GET_FLAG_INDEX (flag)] &= \
-   ~COGL_DEBUG_GET_FLAG_MASK (flag))
+  COGL_FLAGS_SET (_cogl_debug_flags, flag, FALSE)
 
 #ifdef __GNUC__
 #define COGL_NOTE(type,x,a...)                      G_STMT_START {            \

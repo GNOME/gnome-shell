@@ -332,7 +332,7 @@ update_winsys_features (CoglContext *context)
 
   _cogl_gl_update_features (context);
 
-  _cogl_bitmask_init (&context->winsys_features);
+  memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
   glx_extensions =
     glXQueryExtensionsString (xlib_renderer->xdpy,
@@ -341,9 +341,9 @@ update_winsys_features (CoglContext *context)
   COGL_NOTE (WINSYS, "  GLX Extensions: %s", glx_extensions);
 
   context->feature_flags |= COGL_FEATURE_ONSCREEN_MULTIPLE;
-  _cogl_bitmask_set (&context->winsys_features,
-                     COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
-                     TRUE);
+  COGL_FLAGS_SET (context->winsys_features,
+                  COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
+                  TRUE);
 
   initialize_function_table (context->display->renderer);
 
@@ -354,9 +354,9 @@ update_winsys_features (CoglContext *context)
       {
         context->feature_flags |= winsys_feature_data[i].feature_flags;
         if (winsys_feature_data[i].winsys_feature)
-          _cogl_bitmask_set (&context->winsys_features,
-                             winsys_feature_data[i].winsys_feature,
-                             TRUE);
+          COGL_FLAGS_SET (context->winsys_features,
+                          winsys_feature_data[i].winsys_feature,
+                          TRUE);
       }
 
   /* Note: the GLX_SGI_video_sync spec explicitly states this extension
@@ -368,9 +368,9 @@ update_winsys_features (CoglContext *context)
     }
 
   if (glx_renderer->pf_glXWaitVideoSync)
-    _cogl_bitmask_set (&context->winsys_features,
-                       COGL_WINSYS_FEATURE_VBLANK_WAIT,
-                       TRUE);
+    COGL_FLAGS_SET (context->winsys_features,
+                    COGL_WINSYS_FEATURE_VBLANK_WAIT,
+                    TRUE);
 
 #ifdef HAVE_DRM
   /* drm is really an extreme fallback -rumoured to work with Via
@@ -380,23 +380,23 @@ update_winsys_features (CoglContext *context)
       if (glx_renderer->dri_fd < 0)
         glx_renderer->dri_fd = open("/dev/dri/card0", O_RDWR);
       if (glx_renderer->dri_fd >= 0)
-        _cogl_bitmask_set (&context->winsys_features,
-                           COGL_WINSYS_FEATURE_VBLANK_WAIT,
-                           TRUE);
+        COGL_FLAGS_SET (context->winsys_features,
+                        COGL_WINSYS_FEATURE_VBLANK_WAIT,
+                        TRUE);
     }
 #endif
 
   if (glx_renderer->pf_glXCopySubBuffer || context->drv.pf_glBlitFramebuffer)
-    _cogl_bitmask_set (&context->winsys_features,
-                       COGL_WINSYS_FEATURE_SWAP_REGION, TRUE);
+    COGL_FLAGS_SET (context->winsys_features,
+                    COGL_WINSYS_FEATURE_SWAP_REGION, TRUE);
 
   /* Note: glXCopySubBuffer and glBlitFramebuffer won't be throttled
    * by the SwapInterval so we have to throttle swap_region requests
    * manually... */
   if (_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION) &&
       _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_WAIT))
-    _cogl_bitmask_set (&context->winsys_features,
-                       COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE, TRUE);
+    COGL_FLAGS_SET (context->winsys_features,
+                    COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE, TRUE);
 }
 
 /* It seems the GLX spec never defined an invalid GLXFBConfig that
@@ -1314,7 +1314,7 @@ _cogl_winsys_has_feature (CoglWinsysFeature feature)
 {
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  return _cogl_bitmask_get (&ctx->winsys_features, feature);
+  return COGL_FLAGS_GET (ctx->winsys_features, feature);
 }
 
 /* XXX: This is a particularly hacky _cogl_winsys interface... */

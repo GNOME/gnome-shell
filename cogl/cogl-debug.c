@@ -103,11 +103,11 @@ _cogl_parse_debug_string_for_keys (const char *value,
       int nkeys_for_int = 0;
 
       for (key_num = 0; key_num < nkeys; key_num++)
-        if (COGL_DEBUG_GET_FLAG_INDEX (keys[key_num].value) == int_num)
+        if (COGL_FLAGS_GET_INDEX (keys[key_num].value) == int_num)
           {
             keys_for_int[nkeys_for_int] = keys[key_num];
             keys_for_int[nkeys_for_int].value =
-              COGL_DEBUG_GET_FLAG_MASK (keys[key_num].value);
+              COGL_FLAGS_GET_MASK (keys[key_num].value);
             nkeys_for_int++;
           }
 
