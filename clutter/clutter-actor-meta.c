@@ -515,3 +515,20 @@ _clutter_meta_group_get_meta (ClutterMetaGroup *group,
 
   return NULL;
 }
+
+/*< private >
+ * clutter_actor_meta_get_debug_name:
+ * @meta: a #ClutterActorMeta
+ *
+ * Retrieves the name of the @meta for debugging purposes.
+ *
+ * Return value: (transfer none): the name of the @meta. The returned
+ *   string is owned by the @meta instance and it should not be
+ *   modified or freed
+ */
+const gchar *
+_clutter_actor_meta_get_debug_name (ClutterActorMeta *meta)
+{
+  return meta->priv->name != NULL ? meta->priv->name
+                                  : G_OBJECT_TYPE_NAME (meta);
+}

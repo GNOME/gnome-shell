@@ -65,6 +65,8 @@ ClutterActorMeta *    _clutter_meta_group_get_meta    (ClutterMetaGroup *group,
 void                  _clutter_actor_meta_set_actor   (ClutterActorMeta *meta,
                                                        ClutterActor     *actor);
 
+const gchar *           _clutter_actor_meta_get_debug_name        (ClutterActorMeta *meta);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_META_PRIVATE_H__ */
