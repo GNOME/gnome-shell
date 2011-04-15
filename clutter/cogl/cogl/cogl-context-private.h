@@ -27,6 +27,7 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-winsys-private.h"
+#include "cogl-flags.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-xlib-private.h"
@@ -258,7 +259,8 @@ struct _CoglContext
 
   CoglContextDriver drv;
 
-  CoglBitmask winsys_features;
+  unsigned int winsys_features
+    [COGL_FLAGS_N_INTS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
   void *winsys;
   gboolean stub_winsys;
 };

@@ -44,6 +44,10 @@ G_BEGIN_DECLS
  * unsigned ints. This relies on the fact the g_malloc will return a
  * pointer aligned to at least two bytes (so that the least
  * significant bit of the address is always 0)
+ *
+ * If the maximum possible bit number in the set is known at compile
+ * time, it may make more sense to use the macros in cogl-flags.h
+ * instead of this type.
  */
 
 typedef struct _CoglBitmaskImaginaryType *CoglBitmask;

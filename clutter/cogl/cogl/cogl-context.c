@@ -137,7 +137,7 @@ cogl_context_new (CoglDisplay *display,
 
   context->rectangle_state = COGL_WINSYS_RECTANGLE_STATE_UNKNOWN;
 
-  _cogl_bitmask_init (&context->winsys_features);
+  memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
   if (!display)
     display = cogl_display_new (NULL, NULL);
@@ -440,8 +440,6 @@ _cogl_context_free (CoglContext *context)
 #endif
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
-
-  _cogl_bitmask_destroy (&context->winsys_features);
 
   cogl_object_unref (context->display);
 

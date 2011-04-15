@@ -612,8 +612,6 @@ typedef enum _CoglFilterReturn { /*< prefix=COGL_FILTER >*/
 
 typedef enum _CoglWinsysFeature
 {
-  COGL_WINSYS_FEATURE_NONE,
-
   /* Available if the window system can support multiple onscreen
    * framebuffers at the same time. */
   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
@@ -644,7 +642,9 @@ typedef enum _CoglWinsysFeature
 
   /* Available if swap_region requests can be automatically throttled
    * to the vblank frequency. */
-  COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE
+  COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE,
+
+  COGL_WINSYS_FEATURE_N_FEATURES
 } CoglWinsysFeature;
 
 /* XXX: Note these enum types are only referenced by experimental API

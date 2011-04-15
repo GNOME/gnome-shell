@@ -297,6 +297,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix-mesa.c 			\
 	$(srcdir)/cogl-profile.h 			\
 	$(srcdir)/cogl-profile.c 			\
+	$(srcdir)/cogl-flags.h				\
 	$(srcdir)/cogl-bitmask.h                        \
 	$(srcdir)/cogl-bitmask.c                        \
 	$(srcdir)/cogl-shader-boilerplate.h		\
