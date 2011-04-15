@@ -11756,7 +11756,7 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
                   CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                                 "Effect (%s) failed to report a volume",
                                 _clutter_actor_get_debug_name (self),
-                                G_OBJECT_TYPE_NAME (l->data));
+                                _clutter_actor_meta_get_debug_name (l->data));
                   return FALSE;
                 }
             }
@@ -11774,7 +11774,7 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
                 CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                               "Effect (%s) failed to report a volume",
                               _clutter_actor_get_debug_name (self),
-                              G_OBJECT_TYPE_NAME (l->data));
+                              _clutter_actor_meta_get_debug_name (l->data));
                 return FALSE;
               }
         }
