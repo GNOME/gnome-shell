@@ -200,18 +200,21 @@ G_DEFINE_TYPE_WITH_CODE (ClutterAnimation, clutter_animation, G_TYPE_OBJECT,
                                                 clutter_scriptable_init));
 
 static void
-on_actor_dispose (gpointer  user_data,
-                  GObject  *actor_pointer)
+on_actor_destroy (ClutterActor     *actor,
+                  ClutterAnimation *animation)
 {
-  ClutterAnimation *self = user_data;
+  ClutterAnimationPrivate *priv = animation->priv;
+  GObject *obj = G_OBJECT (actor);
 
-  if (self->priv->object == actor_pointer)
+  if (obj == priv->object)
     {
-      CLUTTER_NOTE (ANIMATION, "Object [%p] was unref'd", actor_pointer);
-      g_object_unref (self);
+      g_object_set_qdata (priv->object, quark_object_animation, NULL);
+      g_signal_handlers_disconnect_by_func (priv->object,
+                                            G_CALLBACK (on_actor_destroy),
+                                            animation);
+      g_object_unref (animation);
     }
 }
-
 
 static void
 clutter_animation_real_completed (ClutterAnimation *self)
@@ -265,7 +268,9 @@ clutter_animation_real_completed (ClutterAnimation *self)
                     priv->object);
 
       g_object_set_qdata (priv->object, quark_object_animation, NULL);
-      g_object_weak_unref (priv->object, on_actor_dispose, self);
+      g_signal_handlers_disconnect_by_func (priv->object,
+                                            G_CALLBACK (on_actor_destroy),
+                                            animation);
 
       CLUTTER_NOTE (ANIMATION, "Releasing the reference Animation [%p]",
                     animation);
@@ -1973,7 +1978,13 @@ animation_create_for_actor (ClutterActor *actor)
       animation = clutter_animation_new ();
       clutter_animation_set_object (animation, object);
       g_object_set_qdata (object, quark_object_animation, animation);
-      g_object_weak_ref (object, on_actor_dispose, animation);
+
+      /* use the ::destroy signal to get a notification
+       * that the actor went away mid-animation
+       */
+      g_signal_connect (object, "destroy",
+                        G_CALLBACK (on_actor_destroy),
+                        animation);
 
       CLUTTER_NOTE (ANIMATION,
                     "Created new Animation [%p] for actor [%p]",
@@ -2514,10 +2525,10 @@ clutter_actor_detach_animation (ClutterActor *actor)
         clutter_timeline_stop (timeline);
     }
 
-  /* set_object(NULL) does no call weak_unref() because the weak reference
-   * is added by animation_create_for_actor()
-   */
-  g_object_weak_unref (priv->object, on_actor_dispose, animation);
+  /* disconnect the ::destroy handler added by animation_create_for_actor() */
+  g_signal_handlers_disconnect_by_func (actor,
+                                        G_CALLBACK (on_actor_destroy),
+                                        animation);
 
   clutter_animation_set_object (animation, NULL);
 
