@@ -87,7 +87,7 @@ AltTabPopup.prototype = {
         let [childMinHeight, childNaturalHeight] = this._appSwitcher.actor.get_preferred_height(primary.width - hPadding);
         let [childMinWidth, childNaturalWidth] = this._appSwitcher.actor.get_preferred_width(childNaturalHeight);
         childBox.x1 = Math.max(primary.x + leftPadding, primary.x + Math.floor((primary.width - childNaturalWidth) / 2));
-        childBox.x2 = Math.min(primary.x + primary.width - hPadding, childBox.x1 + childNaturalWidth);
+        childBox.x2 = Math.min(primary.x + primary.width - rightPadding, childBox.x1 + childNaturalWidth);
         childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
         childBox.y2 = childBox.y1 + childNaturalHeight;
         this._appSwitcher.actor.allocate(childBox, flags);
