@@ -145,6 +145,12 @@ AltTabPopup.prototype = {
 
         this._appIcons = this._appSwitcher.icons;
 
+        // Need to force an allocation so we can figure out whether we
+        // need to scroll when selecting
+        this.actor.opacity = 0;
+        this.actor.show();
+        this.actor.get_allocation_box();
+
         // Make the initial selection
         if (switch_group) {
             if (backward) {
@@ -174,8 +180,6 @@ AltTabPopup.prototype = {
             return false;
         }
 
-        this.actor.opacity = 0;
-        this.actor.show();
         Tweener.addTween(this.actor,
                          { opacity: 255,
                            time: POPUP_FADE_TIME,
