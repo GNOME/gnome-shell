@@ -471,7 +471,9 @@ evdev_h_priv = \
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
 	$(NULL)
 
-egl_cex_h = $(srcdir)/egl/clutter-cex100.h
+egl_cex_h = egl/clutter-cex100.h
+BUILT_SOURCES += egl/clutter-cex100.h
+EXTRA_DIST += $(srcdir)/egl/clutter-cex100.h.in
 
 if SUPPORT_EGL
 
