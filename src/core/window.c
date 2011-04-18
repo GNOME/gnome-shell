@@ -3454,12 +3454,24 @@ meta_window_tile (MetaWindow *window)
 }
 
 static gboolean
+meta_window_can_tile_maximized (MetaWindow *window)
+{
+  if (!META_WINDOW_ALLOWS_RESIZE (window))
+    return FALSE;
+
+  if (!window->has_maximize_func)
+    return FALSE;
+
+  return TRUE;
+}
+
+static gboolean
 meta_window_can_tile_side_by_side (MetaWindow *window)
 {
   const MetaMonitorInfo *monitor;
   MetaRectangle tile_area;
 
-  if (!META_WINDOW_ALLOWS_RESIZE (window))
+  if (!meta_window_can_tile_maximized (window))
     return FALSE;
 
   monitor = meta_screen_get_current_monitor (window->screen);
@@ -3483,18 +3495,6 @@ meta_window_can_tile_side_by_side (MetaWindow *window)
 
   return tile_area.width >= window->size_hints.min_width &&
          tile_area.height >= window->size_hints.min_height;
-}
-
-static gboolean
-meta_window_can_tile_maximized (MetaWindow *window)
-{
-  if (!META_WINDOW_ALLOWS_RESIZE (window))
-    return FALSE;
-
-  if (!window->has_maximize_func)
-    return FALSE;
-
-  return TRUE;
 }
 
 static void
