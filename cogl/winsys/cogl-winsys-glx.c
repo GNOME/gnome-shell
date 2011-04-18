@@ -1880,6 +1880,7 @@ _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
 
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
+    .name = "GLX",
     .get_proc_address = _cogl_winsys_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,

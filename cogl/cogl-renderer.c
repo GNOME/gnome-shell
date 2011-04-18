@@ -28,6 +28,9 @@
 #include "config.h"
 #endif
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-object.h"
@@ -168,6 +171,7 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 {
 #ifdef COGL_HAS_FULL_WINSYS
   int i;
+  char *renderer_name = getenv ("COGL_RENDERER");
 #endif
   GString *error_message;
 
@@ -180,6 +184,10 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
     {
       const CoglWinsysVtable *winsys = _cogl_winsys_vtable_getters[i]();
       GError *tmp_error = NULL;
+
+      if (renderer_name && strcmp (winsys->name, renderer_name) != 0)
+        continue;
+
       if (!winsys->renderer_connect (renderer, &tmp_error))
         {
           g_string_append_c (error_message, '\n');
