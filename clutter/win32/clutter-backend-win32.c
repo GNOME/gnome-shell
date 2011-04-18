@@ -229,7 +229,7 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
     CLUTTER_NOTE (BACKEND, "vblank sync: left at default at user request");
   else if (cogl_clutter_check_extension ("WGL_EXT_swap_control", extensions)
 	   && (swap_interval = (SwapIntervalProc)
-	       cogl_get_proc_address ("wglSwapIntervalEXT")))
+	       wglGetProcAddress ((LPCSTR) "wglSwapIntervalEXT")))
     {
       /* According to the specification for the WGL_EXT_swap_control
 	 extension the default swap interval is 1 anyway, so if no
