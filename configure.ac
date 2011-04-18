@@ -69,7 +69,7 @@ GOBJECT_INTROSPECTION_MIN_VERSION=0.10.1
 GJS_MIN_VERSION=1.29.15
 MUTTER_MIN_VERSION=3.0.0
 GTK_MIN_VERSION=3.0.0
-GIO_MIN_VERSION=2.25.9
+GIO_MIN_VERSION=2.29.10
 LIBECAL_MIN_VERSION=2.32.0
 LIBEDATASERVER_MIN_VERSION=1.2.0
 LIBEDATASERVERUI_MIN_VERSION=2.91.6
@@ -84,7 +84,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
                                gtk+-3.0 >= $GTK_MIN_VERSION
                                libmutter >= $MUTTER_MIN_VERSION
                                gjs-internals-1.0 >= $GJS_MIN_VERSION
-			       libgnome-menu $recorder_modules gconf-2.0
+			       libgnome-menu-3.0 $recorder_modules gconf-2.0
                                gdk-x11-3.0 libsoup-2.4
 			       clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
 			       clutter-glx-1.0 >= $CLUTTER_MIN_VERSION

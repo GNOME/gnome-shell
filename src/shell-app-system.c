@@ -51,6 +51,7 @@ struct _ShellAppSystemPrivate {
   GSList *cached_settings; /* ShellAppInfo */
   GSList *known_vendor_prefixes;
 
+  gboolean loaded;
   gint app_monitor_id;
 
   guint app_change_timeout_id;
@@ -86,7 +87,7 @@ struct _ShellAppInfo {
   char *casefolded_description;
   char *casefolded_exec;
 
-  GMenuTreeItem *entry;
+  GMenuTreeEntry *entry;
 
   GKeyFile *keyfile;
   char *keyfile_path;
@@ -130,17 +131,17 @@ shell_app_info_unref (ShellAppInfo *info)
 }
 
 static ShellAppInfo *
-shell_app_info_new_from_tree_item (GMenuTreeItem *item)
+shell_app_info_new_from_tree_item (GMenuTreeEntry *entry)
 {
   ShellAppInfo *info;
 
-  if (!item)
+  if (!entry)
     return NULL;
 
   info = g_slice_alloc0 (sizeof (ShellAppInfo));
   info->type = SHELL_APP_INFO_TYPE_ENTRY;
   info->refcount = 1;
-  info->entry = gmenu_tree_item_ref (item);
+  info->entry = (GMenuTreeEntry*)gmenu_tree_item_ref (entry);
   return info;
 }
 
@@ -199,13 +200,13 @@ shell_app_system_init (ShellAppSystem *self)
    * handle NODISPLAY semantics at a higher level or investigate them
    * case by case.
    */
-  priv->apps_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
-  priv->settings_tree = gmenu_tree_lookup ("gnomecc.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
+  priv->apps_tree = gmenu_tree_new ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
+  priv->settings_tree = gmenu_tree_new ("gnomecc.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
 
   priv->app_change_timeout_id = 0;
 
-  gmenu_tree_add_monitor (priv->apps_tree, on_tree_changed_cb, self);
-  gmenu_tree_add_monitor (priv->settings_tree, on_tree_changed_cb, self);
+  g_signal_connect (priv->apps_tree, "changed", G_CALLBACK (on_tree_changed_cb), self);
+  g_signal_connect (priv->settings_tree, "changed", G_CALLBACK (on_tree_changed_cb), self);
 
   reread_menus (self);
 }
@@ -216,11 +217,8 @@ shell_app_system_finalize (GObject *object)
   ShellAppSystem *self = SHELL_APP_SYSTEM (object);
   ShellAppSystemPrivate *priv = self->priv;
 
-  gmenu_tree_remove_monitor (priv->apps_tree, on_tree_changed_cb, self);
-  gmenu_tree_remove_monitor (priv->settings_tree, on_tree_changed_cb, self);
-
-  gmenu_tree_unref (priv->apps_tree);
-  gmenu_tree_unref (priv->settings_tree);
+  g_object_unref (priv->apps_tree);
+  g_object_unref (priv->settings_tree);
 
   g_hash_table_destroy (priv->app_id_to_info);
   g_hash_table_destroy (priv->app_id_to_app);
@@ -246,39 +244,42 @@ gather_entries_recurse (ShellAppSystem     *monitor,
                         GHashTable         *unique,
                         GMenuTreeDirectory *root)
 {
-  GSList *contents;
-  GSList *iter;
+  GMenuTreeIter *iter = gmenu_tree_directory_iter (root);
+  GMenuTreeItemType next_type;
 
-  contents = gmenu_tree_directory_get_contents (root);
-
-  for (iter = contents; iter; iter = iter->next)
+  while ((next_type = gmenu_tree_iter_next (iter)) != GMENU_TREE_ITEM_INVALID)
     {
-      GMenuTreeItem *item = iter->data;
-      switch (gmenu_tree_item_get_type (item))
+      gpointer item = NULL;
+
+      switch (next_type)
         {
-          case GMENU_TREE_ITEM_ENTRY:
-            {
-              ShellAppInfo *app = shell_app_info_new_from_tree_item (item);
-              if (!g_hash_table_lookup (unique, shell_app_info_get_id (app)))
-                {
-                  apps = g_slist_prepend (apps, app);
-                  g_hash_table_insert (unique, (char*)shell_app_info_get_id (app), app);
-                }
-            }
-            break;
-          case GMENU_TREE_ITEM_DIRECTORY:
-            {
-              GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
-              apps = gather_entries_recurse (monitor, apps, unique, dir);
-            }
-            break;
-          default:
-            break;
+        case GMENU_TREE_ITEM_INVALID:
+          break;
+        case GMENU_TREE_ITEM_ENTRY:
+          {
+            ShellAppInfo *app;
+            item = gmenu_tree_iter_get_entry (iter);
+            app = shell_app_info_new_from_tree_item (item);
+            if (!g_hash_table_lookup (unique, shell_app_info_get_id (app)))
+              {
+                apps = g_slist_prepend (apps, app);
+                g_hash_table_insert (unique, (char*)shell_app_info_get_id (app), app);
+              }
+          }
+          break;
+        case GMENU_TREE_ITEM_DIRECTORY:
+          {
+            item = gmenu_tree_iter_get_directory (iter);
+            apps = gather_entries_recurse (monitor, apps, unique, (GMenuTreeDirectory*)item);
+          }
+          break;
+        default:
+          break;
         }
       gmenu_tree_item_unref (item);
     }
 
-  g_slist_free (contents);
+  gmenu_tree_iter_unref (iter);
 
   return apps;
 }
@@ -336,7 +337,20 @@ cache_by_id (ShellAppSystem *self, GSList *apps)
 static void
 reread_menus (ShellAppSystem *self)
 {
-  GHashTable *unique = g_hash_table_new (g_str_hash, g_str_equal);
+  GHashTable *unique;
+  GError *error = NULL;
+
+  if (!self->priv->loaded)
+    {
+      if (!gmenu_tree_load_sync (self->priv->apps_tree, &error))
+        {
+          g_warning ("Failed to load apps: %s", error->message);
+          return;
+        }
+      self->priv->loaded = TRUE;
+    }
+
+  unique = g_hash_table_new (g_str_hash, g_str_equal);
 
   g_slist_foreach (self->priv->known_vendor_prefixes, (GFunc)g_free, NULL);
   g_slist_free (self->priv->known_vendor_prefixes);
@@ -358,6 +372,7 @@ on_tree_changed (gpointer user_data)
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
 
+  self->priv->loaded = FALSE;
   reread_menus (self);
 
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
@@ -526,7 +541,7 @@ shell_app_system_get_app_for_path (ShellAppSystem   *system,
 
   if (info->type == SHELL_APP_INFO_TYPE_ENTRY)
     {
-      const char *full_path = gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry*) info->entry);
+      const char *full_path = gmenu_tree_entry_get_desktop_file_path (info->entry);
       if (strcmp (desktop_path, full_path) != 0)
         return NULL;
     }
@@ -675,16 +690,18 @@ shell_app_info_init_search_data (ShellAppInfo *info)
   const char *exec;
   const char *comment;
   char *normalized_exec;
+  GDesktopAppInfo *appinfo;
 
   g_assert (info->type == SHELL_APP_INFO_TYPE_ENTRY);
 
-  name = gmenu_tree_entry_get_name ((GMenuTreeEntry*)info->entry);
+  appinfo = gmenu_tree_entry_get_app_info (info->entry);
+  name = g_app_info_get_name (G_APP_INFO (appinfo));
   info->casefolded_name = normalize_and_casefold (name);
 
-  comment = gmenu_tree_entry_get_comment ((GMenuTreeEntry*)info->entry);
+  comment = g_app_info_get_description (G_APP_INFO (appinfo));
   info->casefolded_description = normalize_and_casefold (comment);
 
-  exec = gmenu_tree_entry_get_exec ((GMenuTreeEntry*)info->entry);
+  exec = g_app_info_get_executable (G_APP_INFO (appinfo));
   normalized_exec = normalize_and_casefold (exec);
   info->casefolded_exec = trim_exec_line (normalized_exec);
   g_free (normalized_exec);
@@ -756,11 +773,13 @@ shell_app_info_compare (gconstpointer a,
   const char *id_b = b;
   ShellAppInfo *info_a = g_hash_table_lookup (system->priv->app_id_to_info, id_a);
   ShellAppInfo *info_b = g_hash_table_lookup (system->priv->app_id_to_info, id_b);
+  GDesktopAppInfo *app_info_a = gmenu_tree_entry_get_app_info (info_a->entry);
+  GDesktopAppInfo *app_info_b = gmenu_tree_entry_get_app_info (info_b->entry);
 
   if (!info_a->name_collation_key)
-    info_a->name_collation_key = g_utf8_collate_key (gmenu_tree_entry_get_name ((GMenuTreeEntry*)info_a->entry), -1);
+    info_a->name_collation_key = g_utf8_collate_key (g_app_info_get_name ((GAppInfo*)app_info_a), -1);
   if (!info_b->name_collation_key)
-    info_b->name_collation_key = g_utf8_collate_key (gmenu_tree_entry_get_name ((GMenuTreeEntry*)info_b->entry), -1);
+    info_b->name_collation_key = g_utf8_collate_key (g_app_info_get_name ((GAppInfo*)app_info_b), -1);
 
   return strcmp (info_a->name_collation_key, info_b->name_collation_key);
 }
@@ -949,7 +968,7 @@ shell_app_info_get_id (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return gmenu_tree_entry_get_desktop_file_id ((GMenuTreeEntry*)info->entry);
+      return gmenu_tree_entry_get_desktop_file_id (info->entry);
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
       return info->keyfile_path;
     case SHELL_APP_INFO_TYPE_WINDOW:
@@ -971,8 +990,8 @@ shell_app_info_get_prefix (ShellAppInfo *info)
   if (info->type != SHELL_APP_INFO_TYPE_ENTRY)
     return NULL;
 
-  id = gmenu_tree_entry_get_desktop_file_id ((GMenuTreeEntry*)info->entry);
-  file = g_file_new_for_path (gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry*)info->entry));
+  id = gmenu_tree_entry_get_desktop_file_id (info->entry);
+  file = g_file_new_for_path (gmenu_tree_entry_get_desktop_file_path (info->entry));
   name = g_file_get_basename (file);
 
   if (!name)
@@ -1076,7 +1095,10 @@ shell_app_info_get_name (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return g_strdup (gmenu_tree_entry_get_name ((GMenuTreeEntry*)info->entry));
+      {
+        const char *name = g_app_info_get_name (G_APP_INFO (gmenu_tree_entry_get_app_info (info->entry)));
+        return g_strdup (name);
+      }
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
       return g_key_file_get_locale_string (info->keyfile, DESKTOP_ENTRY_GROUP, "Name", NULL, NULL);
     case SHELL_APP_INFO_TYPE_WINDOW:
@@ -1099,7 +1121,10 @@ shell_app_info_get_description (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return g_strdup (gmenu_tree_entry_get_comment ((GMenuTreeEntry*)info->entry));
+      {
+        const char *description = g_app_info_get_description (G_APP_INFO (gmenu_tree_entry_get_app_info (info->entry)));
+        return g_strdup (description);
+      }
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
       return g_key_file_get_locale_string (info->keyfile, DESKTOP_ENTRY_GROUP, "Comment", NULL, NULL);
     case SHELL_APP_INFO_TYPE_WINDOW:
@@ -1115,7 +1140,10 @@ shell_app_info_get_executable (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return g_strdup (gmenu_tree_entry_get_exec ((GMenuTreeEntry*)info->entry));
+      {
+        const char *exec = g_app_info_get_executable (G_APP_INFO (gmenu_tree_entry_get_app_info (info->entry)));
+        return g_strdup (exec);
+      }
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
       return g_key_file_get_string (info->keyfile, DESKTOP_ENTRY_GROUP, "Exec", NULL);
     case SHELL_APP_INFO_TYPE_WINDOW:
@@ -1131,7 +1159,7 @@ shell_app_info_get_desktop_file_path (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return g_strdup (gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry*)info->entry));
+      return g_strdup (gmenu_tree_entry_get_desktop_file_path (info->entry));
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
       return g_strdup (info->keyfile_path);
     case SHELL_APP_INFO_TYPE_WINDOW:
@@ -1199,7 +1227,7 @@ shell_app_info_get_icon (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return themed_icon_from_name (gmenu_tree_entry_get_icon ((GMenuTreeEntry*)info->entry));
+      return g_object_ref (g_app_info_get_icon (G_APP_INFO (gmenu_tree_entry_get_app_info (info->entry))));
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
       iconname = g_key_file_get_locale_string (info->keyfile, DESKTOP_ENTRY_GROUP, "Icon", NULL, NULL);
       icon = themed_icon_from_name (iconname);
@@ -1224,31 +1252,32 @@ GList *
 shell_app_system_get_sections (ShellAppSystem *system)
 {
   GList *res = NULL;
-  GSList *i, *contents;
   GMenuTreeDirectory *root;
+  GMenuTreeIter *iter;
+  GMenuTreeItemType next_type;
 
   root = gmenu_tree_get_root_directory (system->priv->apps_tree);
 
   if (G_UNLIKELY (!root))
     g_error ("applications.menu not found.");
 
-  contents = gmenu_tree_directory_get_contents (root);
+  iter = gmenu_tree_directory_iter (root);
 
-  for (i = contents; i; i = i->next)
+  while ((next_type = gmenu_tree_iter_next (iter)) != GMENU_TREE_ITEM_INVALID)
     {
-      GMenuTreeItem *item = i->data;
-      if (gmenu_tree_item_get_type (item) == GMENU_TREE_ITEM_DIRECTORY)
+      if (next_type == GMENU_TREE_ITEM_DIRECTORY)
         {
-          char *name = g_strdup (gmenu_tree_directory_get_name ((GMenuTreeDirectory*)item));
+          GMenuTreeDirectory *dir = gmenu_tree_iter_get_directory (iter);
+          char *name = g_strdup (gmenu_tree_directory_get_name (dir));
 
           g_assert (name);
 
           res = g_list_append (res, name);
+          gmenu_tree_item_unref (dir);
         }
-      gmenu_tree_item_unref (item);
     }
 
-  g_slist_free (contents);
+  gmenu_tree_iter_unref (iter);
 
   return res;
 }
@@ -1268,28 +1297,28 @@ shell_app_info_get_section (ShellAppInfo *info)
   if (info->type != SHELL_APP_INFO_TYPE_ENTRY)
     return NULL;
 
-  dir = gmenu_tree_item_get_parent ((GMenuTreeItem*)info->entry);
+  dir = gmenu_tree_entry_get_parent (info->entry);
   if (!dir)
     return NULL;
 
-  parent = gmenu_tree_item_get_parent ((GMenuTreeItem*)dir);
+  parent = gmenu_tree_directory_get_parent (dir);
   if (!parent)
     return NULL;
 
   while (TRUE)
     {
-      GMenuTreeDirectory *pparent = gmenu_tree_item_get_parent ((GMenuTreeItem*)parent);
+      GMenuTreeDirectory *pparent = gmenu_tree_directory_get_parent (parent);
       if (!pparent)
         break;
-      gmenu_tree_item_unref ((GMenuTreeItem*)dir);
+      gmenu_tree_item_unref (dir);
       dir = parent;
       parent = pparent;
     }
 
   name = g_strdup (gmenu_tree_directory_get_name (dir));
 
-  gmenu_tree_item_unref ((GMenuTreeItem*)dir);
-  gmenu_tree_item_unref ((GMenuTreeItem*)parent);
+  gmenu_tree_item_unref (dir);
+  gmenu_tree_item_unref (parent);
   return name;
 }
 
@@ -1299,7 +1328,7 @@ shell_app_info_get_is_nodisplay (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return gmenu_tree_entry_get_is_nodisplay ((GMenuTreeEntry*)info->entry);
+      return g_desktop_app_info_get_nodisplay (gmenu_tree_entry_get_app_info (info->entry));
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
     case SHELL_APP_INFO_TYPE_WINDOW:
       return FALSE;
@@ -1435,7 +1464,7 @@ shell_app_info_launch_full (ShellAppInfo *info,
   else if (info->type == SHELL_APP_INFO_TYPE_ENTRY)
     {
       /* Can't use g_desktop_app_info_new, see bug 614879 */
-      const char *filename = gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry *)info->entry);
+      const char *filename = gmenu_tree_entry_get_desktop_file_path (info->entry);
       gapp = g_desktop_app_info_new_from_filename (filename);
     }
   else
