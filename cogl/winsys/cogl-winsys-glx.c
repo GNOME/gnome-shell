@@ -1191,7 +1191,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 
   if (onscreen->swap_throttled)
     {
-      guint32 end_frame_vsync_counter;
+      guint32 end_frame_vsync_counter = 0;
 
       have_counter =
         _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_COUNTER);
