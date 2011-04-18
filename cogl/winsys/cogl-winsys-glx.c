@@ -806,6 +806,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
       XFree (xvisinfo);
 
+      XMapWindow (xlib_renderer->xdpy, xwin);
+
       XSync (xlib_renderer->xdpy, False);
       xerror = _cogl_renderer_xlib_untrap_errors (display->renderer, &state);
       if (xerror)
