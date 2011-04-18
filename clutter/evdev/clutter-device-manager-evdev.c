@@ -532,7 +532,6 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   ClutterInputDevice *device;
   ClutterActor *stage;
   const gchar *device_file, *sysfs_path, *device_name;
-  guint i;
 
   device_file = g_udev_device_get_device_file (udev_device);
   sysfs_path = g_udev_device_get_sysfs_path (udev_device);
