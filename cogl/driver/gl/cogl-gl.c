@@ -34,32 +34,6 @@
 #include "cogl-context-private.h"
 #include "cogl-feature-private.h"
 
-#ifdef HAVE_CLUTTER_OSX
-static gboolean
-really_enable_npot (void)
-{
-  /* OSX backend + ATI Radeon X1600 + NPOT texture + GL_REPEAT seems to crash
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=929
-   *
-   * Temporary workaround until post 0.8 we rejig the features set up a
-   * little to allow the backend to overide.
-   */
-  const char *gl_renderer;
-  const char *env_string;
-
-  /* Regardless of hardware, allow user to decide. */
-  env_string = g_getenv ("COGL_ENABLE_NPOT");
-  if (env_string != NULL)
-    return env_string[0] == '1';
-
-  gl_renderer = (char*)glGetString (GL_RENDERER);
-  if (strstr (gl_renderer, "ATI Radeon X1600") != NULL)
-    return FALSE;
-
-  return TRUE;
-}
-#endif
-
 static gboolean
 _cogl_get_gl_version (int *major_out, int *minor_out)
 {
@@ -223,13 +197,10 @@ _cogl_gl_update_features (CoglContext *context)
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
       _cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
     {
-#ifdef HAVE_CLUTTER_OSX
-      if (really_enable_npot ())
-#endif
-        flags |= COGL_FEATURE_TEXTURE_NPOT
-          | COGL_FEATURE_TEXTURE_NPOT_BASIC
-          | COGL_FEATURE_TEXTURE_NPOT_MIPMAP
-          | COGL_FEATURE_TEXTURE_NPOT_REPEAT;
+      flags |= COGL_FEATURE_TEXTURE_NPOT
+        | COGL_FEATURE_TEXTURE_NPOT_BASIC
+        | COGL_FEATURE_TEXTURE_NPOT_MIPMAP
+        | COGL_FEATURE_TEXTURE_NPOT_REPEAT;
     }
 
 #ifdef GL_YCBCR_MESA
