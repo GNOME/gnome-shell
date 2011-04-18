@@ -1082,6 +1082,7 @@ _cogl_winsys_context_egl_get_egl_display (CoglContext *context)
 
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
+    .name = "EGL",
     .get_proc_address = _cogl_winsys_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,

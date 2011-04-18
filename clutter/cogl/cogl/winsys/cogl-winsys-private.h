@@ -54,6 +54,8 @@ typedef enum
 
 typedef struct _CoglWinsysVtable
 {
+  const char *name;
+
   CoglFuncPtr
   (*get_proc_address) (const char *name);
 
