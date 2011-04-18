@@ -513,6 +513,9 @@ AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$CLUTTER_WINSYS" = "xwayland"])
+AM_CONDITIONAL(SUPPORT_STUB, [test "x$CLUTTER_WINSYS" = "xwin32" -o \
+			      "x$CLUTTER_WINSYS" = "xosx" -o \
+			      "x$CLUTTER_WINSYS" = "xwayland"])
 
 dnl === COGL driver backend =====================================================
 
