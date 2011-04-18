@@ -426,8 +426,7 @@ AS_IF([test "x$enable_null_egl_platform" = "xyes"],
         NEED_EGL=yes
         EGL_PLATFORMS="$EGL_PLATFORMS null"
 
-        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
-                  [Cogl supports NULL EGL platform typedefs])
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT"
       ])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL,
                [test "x$enable_null_egl_platform" = "xyes"])
@@ -475,8 +474,7 @@ AS_IF([test "x$enable_xlib_egl_platform" = "xyes"],
         NEED_XLIB=yes
         EGL_PLATFORMS="$EGL_PLATFORMS xlib"
 
-        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
-                  [Cogl supports Xlib based EGL platform typedefs])
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT"
       ])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11,
                [test "x$enable_xlib_egl_platform" = "xyes"])
@@ -505,6 +503,7 @@ AS_IF([test "x$NEED_EGL" = "xyes" && test "x$EGL_CHECKED" != "xyes"],
           )
         SUPPORT_EGL=yes
         GL_WINSYS_APIS="$GL_WINSYS_APIS egl"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_SUPPORT"
       ])
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "xyes"])
 
@@ -519,11 +518,6 @@ AS_IF([test "x$NEED_XLIB" = "xyes"],
                           [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES $X11_MODULES"])
         SUPPORT_X11=yes
         SUPPORT_XLIB=yes
-
-        AC_DEFINE([COGL_HAS_X11_SUPPORT], [1],
-                  [Cogl supports the X11 window system])
-        AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1],
-                  [Cogl supports X11 using the Xlib API])
 
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11"
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11_SUPPORT"
