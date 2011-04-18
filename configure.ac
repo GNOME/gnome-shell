@@ -399,6 +399,7 @@ AS_IF([test "x$enable_stub_winsys" = "xyes"],
         GL_WINSYS_APIS="$GL_WINSYS_APIS stub"
         ALLOW_GLX=no
       ])
+AM_CONDITIONAL(SUPPORT_STUB, [test "x$enable_stub_winsys" = "xyes"])
 
 AC_ARG_ENABLE(
   [glx],
@@ -563,11 +564,6 @@ AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "xyes"])
 
 
 AM_CONDITIONAL(COGL_STANDALONE_BUILD, [true])
-
-AM_CONDITIONAL(SUPPORT_OSX, [false])
-AM_CONDITIONAL(SUPPORT_WIN32, [false])
-AM_CONDITIONAL(SUPPORT_WAYLAND, [false])
-
 
 dnl ================================================================
 dnl Compiler stuff.

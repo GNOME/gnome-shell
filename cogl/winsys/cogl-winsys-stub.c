@@ -32,6 +32,11 @@
  * calls into the winsys layer with #ifdef COGL_HAS_FULL_WINSYS
  */
 
+CoglFuncPtr
+_cogl_winsys_get_proc_address (const char *name)
+{
+  return NULL;
+}
 
 void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)

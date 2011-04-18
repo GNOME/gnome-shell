@@ -342,14 +342,8 @@ if SUPPORT_EGL_PLATFORM_GDL
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c
 endif
-if SUPPORT_WIN32
+if SUPPORT_STUB
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-win32.c \
-       $(srcdir)/winsys/cogl-winsys-stub.c
-endif
-if SUPPORT_OSX
-cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-osx.c \
        $(srcdir)/winsys/cogl-winsys-stub.c
 endif
 
