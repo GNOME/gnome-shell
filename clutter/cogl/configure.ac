@@ -132,6 +132,24 @@ AC_SUBST([COGL_RELEASE_STATUS], [cogl_release_status])
 
 
 dnl ================================================================
+dnl See what platform we are building for
+dnl ================================================================
+AC_CANONICAL_HOST
+AC_MSG_CHECKING([if building for some Win32 platform])
+AS_CASE([$host],
+        [*-*-mingw*|*-*-cygwin*],
+        [
+          COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -no-undefined"
+          platform_win32=yes
+        ],
+
+        [platform_win32=no]
+)
+AC_MSG_RESULT([$platform_win32])
+AM_CONDITIONAL(OS_WIN32, [test "$platform_win32" = "yes"])
+
+
+dnl ================================================================
 dnl Handle extra configure options
 dnl ================================================================
 
@@ -151,11 +169,11 @@ AS_CASE(
   [yes],
   [
     test "$cflags_set" = set || CFLAGS="$CFLAGS -g -O0"
-    COGL_EXTRA_CFLAGS="-DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"
+    COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"
   ],
   [no],
   [
-    COGL_EXTRA_CFLAGS="-DCOGL_ENABLE_DEBUG -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
+    COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -DCOGL_ENABLE_DEBUG -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
   ],
   [AC_MSG_ERROR([Unknown argument for --enable-debug])]
 )
@@ -271,6 +289,9 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_gles1" = "xyes"],
       [
+        AS_IF([test "x$platform_win32" != "xyes"],
+	      [AC_MSG_ERROR([GLES 1 not available for win32])])
+
         DRIVER_COUNT=$((DRIVER_COUNT + 1))
         COGL_DRIVER=gles
         glesversion=1.1
@@ -320,6 +341,9 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_gles2" = "xyes"],
       [
+        AS_IF([test "x$platform_win32" != "xyes"],
+	      [AC_MSG_ERROR([GLES 1 not available for win32])])
+
         DRIVER_COUNT=$((DRIVER_COUNT + 1))
         COGL_DRIVER=gles
         glesversion=2.0
@@ -358,12 +382,19 @@ AS_IF([test "x$enable_gl" = "xyes"],
 
         cogl_gl_headers="GL/gl.h"
 
-        PKG_CHECK_EXISTS(
-          [gl], [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gl"],
-          [AC_CHECK_LIB(GL, [glGetString],
-                        [COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGL"],
-                        [AC_MSG_ERROR([Unable to locate required GL library])])
-          ])
+        AS_IF([test "x$platform_win32" = "xyes"],
+	      [
+		COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lopengl32 -lgdi32 -lwinmm"
+		COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -D_WIN32_WINNT=0x0500"
+	      ],
+	      [
+		PKG_CHECK_EXISTS(
+		  [gl], [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gl"],
+		  [AC_CHECK_LIB(GL, [glGetString],
+				[COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGL"],
+				[AC_MSG_ERROR([Unable to locate required GL library])])
+		  ])
+	      ])
 
         AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
