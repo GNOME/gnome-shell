@@ -214,9 +214,8 @@ AC_ARG_ENABLE(
   [],
   enable_gdk_pixbuf=yes
 )
-
 if test "x$enable_gdk_pixbuf" = "xyes"; then
-  PKG_CHECK_EXISTS([xi], [have_gdk_pixbuf=yes], [have_gdk_pixbuf=no])
+  PKG_CHECK_EXISTS([gdk-pixbuf-2.0], [have_gdk_pixbuf=yes], [have_gdk_pixbuf=no])
 else
   have_gdk_pixbuf=no
 fi
@@ -615,7 +614,7 @@ AM_PATH_GLIB_2_0([glib_req_version],
                  [gobject gthread gmodule-no-export])
 AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 
-COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glib-2.0 pangocairo >= pangocairo_req_version gl"
+COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glib-2.0 pangocairo >= pangocairo_req_version"
 AC_SUBST(COGL_PKG_REQUIRES)
 PKG_CHECK_MODULES(COGL_DEP, [$COGL_PKG_REQUIRES])
 
