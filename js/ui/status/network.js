@@ -513,11 +513,14 @@ NMDevice.prototype = {
         switch(this.device.state) {
         case NetworkManager.DeviceState.UNMANAGED:
         case NetworkManager.DeviceState.DISCONNECTED:
+        case NetworkManager.DeviceState.DEACTIVATING:
         case NetworkManager.DeviceState.ACTIVATED:
             return null;
         case NetworkManager.DeviceState.PREPARE:
         case NetworkManager.DeviceState.CONFIG:
         case NetworkManager.DeviceState.IP_CONFIG:
+        case NetworkManager.DeviceState.IP_CHECK:
+        case NetworkManager.DeviceState.SECONDARIES:
             return _("connecting...");
         case NetworkManager.DeviceState.NEED_AUTH:
             /* Translators: this is for network connections that require some kind of key or password */
