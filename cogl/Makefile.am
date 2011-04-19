@@ -361,7 +361,7 @@ else
 noinst_LTLIBRARIES += libcogl.la
 endif
 
-libcogl_la_LIBADD = -lm $(COGL_DEP_LIBS)
+libcogl_la_LIBADD = -lm $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 if SUPPORT_GLX
 libcogl_la_LIBADD += -ldl
 endif
