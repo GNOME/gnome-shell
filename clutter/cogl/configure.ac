@@ -704,6 +704,10 @@ AC_SUBST(COGL_DEP_LIBS)
 AC_SUBST(COGL_EXTRA_CFLAGS)
 AC_SUBST(COGL_EXTRA_LDFLAGS)
 
+# just for compatability with the clutter build...
+MAINTAINER_CFLAGS=
+AC_SUBST(MAINTAINER_CFLAGS)
+
 AC_OUTPUT(
 Makefile
 cogl/Makefile
