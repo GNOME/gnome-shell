@@ -21,7 +21,7 @@ endif
 
 libcoglpango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
 libcoglpango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
-libcoglpango_la_LIBADD = $(COGL_DEP_LIBS)
+libcoglpango_la_LIBADD = $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 if COGL_STANDALONE_BUILD
 libcoglpango_la_LIBADD += $(top_builddir)/cogl/libcogl.la
 libcoglpango_la_LDFLAGS = \
