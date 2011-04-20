@@ -147,7 +147,11 @@ clutter_backend_glx_dispose (GObject *gobject)
    * make Cogl calls during destruction which would cause a crash */
   G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
 
-  cogl_object_unref (backend->cogl_context);
+  if (backend->cogl_context)
+    {
+      cogl_object_unref (backend->cogl_context);
+      backend->cogl_context = NULL;
+    }
 }
 
 static GObject *
