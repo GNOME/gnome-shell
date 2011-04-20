@@ -276,7 +276,9 @@ WorkspaceThumbnail.prototype = {
             // the compositor finds out about them...
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
-                                            if (this.actor && metaWin.get_compositor_private())
+                                            if (this.actor &&
+                                                metaWin.get_compositor_private() &&
+                                                metaWin.get_workspace() == this.metaWorkspace)
                                                 this._doAddWindow(metaWin);
                                             return false;
                                         }));
