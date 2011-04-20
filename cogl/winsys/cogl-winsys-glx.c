@@ -188,7 +188,7 @@ find_onscreen_for_xid (CoglContext *context, guint32 xid)
       CoglFramebuffer *framebuffer = l->data;
       CoglOnscreenXlib *xlib_onscreen;
 
-      if (!framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+      if (framebuffer->type != COGL_FRAMEBUFFER_TYPE_ONSCREEN)
         continue;
 
       /* Does the GLXEvent have the GLXDrawable or the X Window? */
