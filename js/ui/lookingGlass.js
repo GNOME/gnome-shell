@@ -5,6 +5,7 @@ const Cogl = imports.gi.Cogl;
 const GConf = imports.gi.GConf;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
@@ -100,12 +101,19 @@ Notebook.prototype = {
     selectIndex: function(index) {
         if (index == this._selectedIndex)
             return;
-        this._unselect();
         if (index < 0) {
+            this._unselect();
             this.emit('selection', null);
             return;
         }
+
+        // Focus the new tab before unmapping the old one
         let tabData = this._tabs[index];
+        if (!tabData.scrollView.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
+            this.actor.grab_key_focus();
+
+        this._unselect();
+
         tabData.labelBox.add_style_pseudo_class('selected');
         tabData.scrollView.show();
         this._selectedIndex = index;
@@ -745,12 +753,7 @@ LookingGlass.prototype = {
         let label = new St.Label({ text: 'js>>> ' });
         entryArea.add(label);
 
-        this._entry = new St.Entry();
-        /* unmapping the edit box will un-focus it, undo that */
-        notebook.connect('selection', Lang.bind(this, function (nb, child) {
-            if (child == this._evalBox)
-                global.stage.set_key_focus(this._entry);
-        }));
+        this._entry = new St.Entry({ can_focus: true });
         entryArea.add(this._entry, { expand: true });
 
         this._windowList = new WindowList();
@@ -909,6 +912,7 @@ LookingGlass.prototype = {
         if (!Main.pushModal(this._entry))
             return;
 
+        this._notebook.selectIndex(0);
         this.actor.show();
         this.actor.lower(Main.chrome.actor);
         this._open = true;
