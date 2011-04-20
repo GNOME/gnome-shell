@@ -78,13 +78,6 @@ _cogl_winsys_xlib_get_visual_info (void)
 }
 #endif
 
-gboolean
-_cogl_winsys_has_feature (CoglWinsysFeature feature)
-{
-  g_assert (0);
-  return FALSE;
-}
-
 #ifdef COGL_HAS_X11_SUPPORT
 guint32
 _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
