@@ -196,68 +196,18 @@ NMNetworkMenuItem.prototype = {
     }
 };
 
-function NMDeviceTitleMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-NMDeviceTitleMenuItem.prototype = {
-    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
-
-    _init: function(description, params) {
-        PopupMenu.PopupBaseMenuItem.prototype._init.call(this, params);
-
-        this._descriptionLabel = new St.Label({ text: description,
-                                                style_class: 'popup-subtitle-menu-item'
-                                              });
-        this.addActor(this._descriptionLabel);
-
-        this._statusBin = new St.Bin({ x_align: St.Align.END });
-        this.addActor(this._statusBin, { align: St.Align.END });
-
-        this._statusLabel = new St.Label({ text: '',
-                                           style_class: 'popup-inactive-menu-item'
-                                         });
-        this._switch = new PopupMenu.Switch(false);
-        this._statusBin.child = this._switch.actor;
-    },
-
-    setStatus: function(text) {
-        if (text != null) {
-            this._statusLabel.text = text;
-            this._statusBin.child = this._statusLabel;
-            this.actor.reactive = false;
-            this.actor.can_focus = false;
-        } else {
-            this._statusBin.child = this._switch.actor;
-            this.actor.reactive = true;
-            this.actor.can_focus = true;
-        }
-    },
-
-    activate: function(event) {
-        if (this._switch.actor.mapped) {
-            this._switch.toggle();
-            this.emit('toggled', this._switch.state);
-        }
-
-        PopupMenu.PopupBaseMenuItem.prototype.activate.call(this, event);
-    },
-
-    get state() {
-        return this._switch.state;
-    },
-
-    setToggleState: function(newval) {
-        this._switch.setToggleState(newval);
-    }
-};
-
 function NMWiredSectionTitleMenuItem() {
     this._init.apply(this, arguments);
 }
 
 NMWiredSectionTitleMenuItem.prototype = {
-    __proto__: NMDeviceTitleMenuItem.prototype,
+    __proto__: PopupMenu.PopupSwitchMenuItem.prototype,
+
+    _init: function(label, params) {
+        params = params || { };
+        params.style_class = 'popup-subtitle-menu-item';
+        PopupMenu.PopupSwitchMenuItem.prototype._init.call(this, label, false, params);
+    },
 
     updateForDevice: function(device) {
         if (device) {
@@ -269,7 +219,7 @@ NMWiredSectionTitleMenuItem.prototype = {
     },
 
     activate: function(event) {
-        NMDeviceTitleMenuItem.prototype.activate.call(this, event);
+        PopupMenu.PopupSwitchMenuItem.prototype.activate.call(this, event);
 
         if (!this._device) {
             log('Section title activated when there is more than one device, should be non reactive');
@@ -295,10 +245,12 @@ function NMWirelessSectionTitleMenuItem() {
 }
 
 NMWirelessSectionTitleMenuItem.prototype = {
-    __proto__: NMDeviceTitleMenuItem.prototype,
+    __proto__: PopupMenu.PopupSwitchMenuItem.prototype,
 
     _init: function(client, property, title, params) {
-        NMDeviceTitleMenuItem.prototype._init.call(this, title, params);
+        params = params || { };
+        params.style_class = 'popup-subtitle-menu-item';
+        PopupMenu.PopupSwitchMenuItem.prototype._init.call(this, title, false, params);
 
         this._client = client;
         this._property = property + '_enabled';
@@ -324,7 +276,7 @@ NMWirelessSectionTitleMenuItem.prototype = {
     },
 
     activate: function(event) {
-        NMDeviceTitleMenuItem.prototype.activate.call(this, event);
+        PopupMenu.PopupSwitchMenuItem.prototype.activate.call(this, event);
 
         this._client[this._setEnabledFunc](this._switch.state);
     },
@@ -380,7 +332,7 @@ NMDevice.prototype = {
         this._overflowItem = null;
 
         if (this.device) {
-            this.statusItem = new NMDeviceTitleMenuItem(this._getDescription());
+            this.statusItem = new PopupMenu.PopupSwitchMenuItem(this._getDescription(), this.connected, { style_class: 'popup-subtitle-menu-item' });
             this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
                 if (state)
                     this.activate();

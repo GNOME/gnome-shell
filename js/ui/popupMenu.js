@@ -704,11 +704,36 @@ PopupSwitchMenuItem.prototype = {
         this._switch = new Switch(active);
 
         this.addActor(this.label);
-        this.addActor(this._switch.actor, { align: St.Align.END });
 
-        this.connect('activate', Lang.bind(this,function(from) {
+        this._statusBin = new St.Bin({ x_align: St.Align.END });
+        this.addActor(this._statusBin, { align: St.Align.END });
+
+        this._statusLabel = new St.Label({ text: '',
+                                           style_class: 'popup-inactive-menu-item'
+                                         });
+        this._switch = new Switch(false);
+        this._statusBin.child = this._switch.actor;
+    },
+
+    setStatus: function(text) {
+        if (text != null) {
+            this._statusLabel.text = text;
+            this._statusBin.child = this._statusLabel;
+            this.actor.reactive = false;
+            this.actor.can_focus = false;
+        } else {
+            this._statusBin.child = this._switch.actor;
+            this.actor.reactive = true;
+            this.actor.can_focus = true;
+        }
+    },
+
+    activate: function(event) {
+        if (this._switch.actor.mapped) {
             this.toggle();
-        }));
+        }
+
+        PopupBaseMenuItem.prototype.activate.call(this, event);
     },
 
     toggle: function() {

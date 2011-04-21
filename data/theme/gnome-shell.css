@@ -187,6 +187,7 @@ StTooltip StLabel {
 }
 
 .popup-inactive-menu-item {
+    font-weight: normal;
     color: #999;
 }
 
