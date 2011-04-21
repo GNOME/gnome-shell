@@ -154,6 +154,7 @@ cogl_context_new (CoglDisplay *display,
   context->display = display;
 
 #ifdef COGL_HAS_FULL_WINSYS
+  context->stub_winsys = FALSE;
   if (!_cogl_winsys_context_init (context, error))
     {
       cogl_object_unref (display);
