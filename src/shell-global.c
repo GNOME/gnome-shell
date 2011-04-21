@@ -1517,8 +1517,7 @@ shell_global_get_focus_monitor (ShellGlobal  *global)
         }
     }
 
-  meta_screen_get_monitor_geometry (screen, 0, &rect);
-  return meta_rectangle_copy (&rect);
+  return shell_global_get_primary_monitor (global);
 }
 
 /**
