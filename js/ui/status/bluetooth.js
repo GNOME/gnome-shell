@@ -67,7 +67,7 @@ Indicator.prototype = {
 
         this._fullMenuItems = [new PopupMenu.PopupSeparatorMenuItem(),
                                new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
-                               new PopupMenu.PopupMenuItem(_("Setup a New Device...")),
+                               new PopupMenu.PopupMenuItem(_("Set up a New Device...")),
                                new PopupMenu.PopupSeparatorMenuItem()];
         this._hasDevices = false;
         this._deviceSep = this._fullMenuItems[0]; // hidden if no device exists
