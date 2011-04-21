@@ -498,7 +498,7 @@ PopupSliderMenuItem.prototype = {
         this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
         this.addActor(this._slider, { span: -1, expand: true });
         this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
-        this._slider.connect('button-press-event', Lang.bind(this, this._startDragging));
+        this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._releaseId = this._motionId = 0;
