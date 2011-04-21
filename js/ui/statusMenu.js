@@ -274,13 +274,13 @@ StatusMenuButton.prototype = {
 
     _onMyAccountActivate: function() {
         Main.overview.hide();
-        let app = Shell.AppSystem.get_default().get_app('gnome-user-accounts-panel.desktop');
+        let app = Shell.AppSystem.get_default().lookup_setting('gnome-user-accounts-panel.desktop');
         app.activate(-1);
     },
 
     _onPreferencesActivate: function() {
         Main.overview.hide();
-        let app = Shell.AppSystem.get_default().get_app('gnome-control-center.desktop');
+        let app = Shell.AppSystem.get_default().lookup_app('gnome-control-center.desktop');
         app.activate(-1);
     },
 

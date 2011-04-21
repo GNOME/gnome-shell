@@ -199,7 +199,7 @@ DateMenuButton.prototype = {
     _onPreferencesActivate: function() {
         this.menu.close();
         Main.overview.hide();
-        let app = Shell.AppSystem.get_default().get_app('gnome-datetime-panel.desktop');
+        let app = Shell.AppSystem.get_default().lookup_setting('gnome-datetime-panel.desktop');
         app.activate(-1);
     },
 

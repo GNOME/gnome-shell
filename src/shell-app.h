@@ -5,6 +5,8 @@
 #include <clutter/clutter.h>
 #include <gio/gio.h>
 #include <meta/window.h>
+#define GMENU_I_KNOW_THIS_IS_UNSTABLE
+#include <gmenu-tree.h>
 
 G_BEGIN_DECLS
 
@@ -34,12 +36,14 @@ typedef enum {
 GType shell_app_get_type (void) G_GNUC_CONST;
 
 const char *shell_app_get_id (ShellApp *app);
+GMenuTreeEntry *shell_app_get_tree_entry (ShellApp *app);
+GDesktopAppInfo *shell_app_get_app_info (ShellApp *app);
 
 ClutterActor *shell_app_create_icon_texture (ShellApp *app, float size);
 ClutterActor *shell_app_get_faded_icon (ShellApp *app, float size);
-char *shell_app_get_name (ShellApp *app);
-char *shell_app_get_description (ShellApp *app);
-gboolean shell_app_is_transient (ShellApp *app);
+const char *shell_app_get_name (ShellApp *app);
+const char *shell_app_get_description (ShellApp *app);
+gboolean shell_app_is_window_backed (ShellApp *app);
 
 void shell_app_activate_window (ShellApp *app, MetaWindow *window, guint32 timestamp);
 
@@ -60,6 +64,15 @@ GSList *shell_app_get_windows (ShellApp *app);
 GSList *shell_app_get_pids (ShellApp *app);
 
 gboolean shell_app_is_on_workspace (ShellApp *app, MetaWorkspace *workspace);
+
+gboolean shell_app_launch (ShellApp     *app,
+                           guint         timestamp,
+                           GList        *uris,
+                           int           workspace,
+                           char        **startup_id,
+                           GError      **error);
+
+int shell_app_compare_by_name (ShellApp *app, ShellApp *other);
 
 int shell_app_compare (ShellApp *app, ShellApp *other);
 

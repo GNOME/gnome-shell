@@ -113,7 +113,7 @@ function findAppFromInhibitor(inhibitor) {
     let app = null;
     for (let i = 0; i < candidateDesktopFiles.length; i++) {
         try {
-            app = appSystem.get_app(candidateDesktopFiles[i]);
+            app = appSystem.lookup_app(candidateDesktopFiles[i]);
 
             if (app)
                 break;

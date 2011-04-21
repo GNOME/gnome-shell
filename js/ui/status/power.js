@@ -82,7 +82,7 @@ Indicator.prototype = {
 
         this.menu.addAction(_("Power Settings"),function() {
             Main.overview.hide();
-            let app = Shell.AppSystem.get_default().get_app('gnome-power-panel.desktop');
+            let app = Shell.AppSystem.get_default().lookup_setting('gnome-power-panel.desktop');
             app.activate(-1);
         });
 

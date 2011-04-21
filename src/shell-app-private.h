@@ -10,17 +10,22 @@
 
 G_BEGIN_DECLS
 
-ShellAppInfo *_shell_app_get_info (ShellApp *app);
-
 ShellApp* _shell_app_new_for_window (MetaWindow *window);
 
-ShellApp* _shell_app_new (ShellAppInfo *appinfo);
+ShellApp* _shell_app_new (GMenuTreeEntry *entry);
 
 void _shell_app_handle_startup_sequence (ShellApp *app, SnStartupSequence *sequence);
 
 void _shell_app_add_window (ShellApp *app, MetaWindow *window);
 
 void _shell_app_remove_window (ShellApp *app, MetaWindow *window);
+
+void _shell_app_do_match (ShellApp         *app,
+                          GSList           *terms,
+                          GSList          **multiple_prefix_results,
+                          GSList          **prefix_results,
+                          GSList          **multiple_substring_results,
+                          GSList          **substring_results);
 
 G_END_DECLS
 

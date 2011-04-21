@@ -90,7 +90,7 @@ ATIndicator.prototype = {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Universal Access Settings"), function() {
             Main.overview.hide();
-            let app = Shell.AppSystem.get_default().get_app('gnome-universal-access-panel.desktop');
+            let app = Shell.AppSystem.get_default().lookup_setting('gnome-universal-access-panel.desktop');
             app.activate(-1);
         });
     },

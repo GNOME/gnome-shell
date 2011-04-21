@@ -18,7 +18,6 @@
 #include <libsn/sn.h>
 
 #include "shell-window-tracker-private.h"
-#include "shell-app-system.h"
 #include "shell-app-private.h"
 #include "shell-global.h"
 #include "shell-marshal.h"
@@ -244,6 +243,8 @@ get_app_from_window_wmclass (MetaWindow  *window)
   g_free (wmclass);
 
   app = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
+  if (app != NULL)
+    g_object_ref (app);
   g_free (with_desktop);
 
   return app;
@@ -340,19 +341,16 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
  */
 static ShellApp *
 get_app_for_window (ShellWindowTracker    *monitor,
-                    MetaWindow         *window)
+                    MetaWindow            *window)
 {
-  ShellApp *result;
+  ShellApp *result = NULL;
   const char *startup_id;
 
-  if (meta_window_is_remote (window))
-    return shell_app_system_get_app_for_window (shell_app_system_get_default (), window);
-
-  result = NULL;
   /* First, we check whether we already know about this window,
    * if so, just return that.
    */
-  if (meta_window_get_window_type (window) == META_WINDOW_NORMAL)
+  if (meta_window_get_window_type (window) == META_WINDOW_NORMAL
+      || meta_window_is_remote (window))
     {
       result = g_hash_table_lookup (monitor->window_to_app, window);
       if (result != NULL)
@@ -361,6 +359,9 @@ get_app_for_window (ShellWindowTracker    *monitor,
           return result;
         }
     }
+
+  if (meta_window_is_remote (window))
+    return _shell_app_new_for_window (window);
 
   /* Check if the app's WM_CLASS specifies an app; this is
    * canonical if it does.
@@ -389,7 +390,10 @@ get_app_for_window (ShellWindowTracker    *monitor,
 
           result = shell_startup_sequence_get_app (sequence);
           if (result)
-            break;
+            {
+              result = g_object_ref (result);
+              break;
+            }
         }
     }
 
@@ -401,7 +405,7 @@ get_app_for_window (ShellWindowTracker    *monitor,
 
   /* Our last resort - we create a fake app from the window */
   if (result == NULL)
-    result = shell_app_system_get_app_for_window (shell_app_system_get_default (), window);
+    result = _shell_app_new_for_window (window);
 
   return result;
 }
@@ -855,7 +859,7 @@ shell_startup_sequence_get_id (ShellStartupSequence *sequence)
  * shell_startup_sequence_get_app:
  * @sequence: A #ShellStartupSequence
  *
- * Returns: (transfer full): The application being launched, or %NULL if unknown.
+ * Returns: (transfer none): The application being launched, or %NULL if unknown.
  */
 ShellApp *
 shell_startup_sequence_get_app (ShellStartupSequence *sequence)
@@ -869,7 +873,7 @@ shell_startup_sequence_get_app (ShellStartupSequence *sequence)
     return NULL;
 
   appsys = shell_app_system_get_default ();
-  app = shell_app_system_get_app_for_path (appsys, appid);
+  app = shell_app_system_lookup_app_for_path (appsys, appid);
   return app;
 }
 

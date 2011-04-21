@@ -188,7 +188,7 @@ Overview.prototype = {
 
         // Default search providers
         this.viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());
-        this.viewSelector.addSearchProvider(new AppDisplay.PrefsSearchProvider());
+        this.viewSelector.addSearchProvider(new AppDisplay.SettingsSearchProvider());
         this.viewSelector.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
         this.viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
 

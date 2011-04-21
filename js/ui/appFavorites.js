@@ -28,7 +28,7 @@ AppFavorites.prototype = {
         let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
         let appSys = Shell.AppSystem.get_default();
         let apps = ids.map(function (id) {
-                return appSys.get_app(id);
+                return appSys.lookup_app(id);
             }).filter(function (app) {
                 return app != null;
             });
@@ -65,7 +65,7 @@ AppFavorites.prototype = {
         if (appId in this._favorites)
             return false;
 
-        let app = Shell.AppSystem.get_default().get_app(appId);
+        let app = Shell.AppSystem.get_default().lookup_app(appId);
 
         if (!app)
             return false;
@@ -84,7 +84,7 @@ AppFavorites.prototype = {
         if (!this._addFavorite(appId, pos))
             return;
 
-        let app = Shell.AppSystem.get_default().get_app(appId);
+        let app = Shell.AppSystem.get_default().lookup_app(appId);
 
         Main.overview.shellInfo.setMessage(_("%s has been added to your favorites.").format(app.get_name()), Lang.bind(this, function () {
             this._removeFavorite(appId);

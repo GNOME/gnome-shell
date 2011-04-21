@@ -247,7 +247,7 @@ WindowList.prototype = {
             box.add(propsBox);
             propsBox.add(new St.Label({ text: 'wmclass: ' + metaWindow.get_wm_class() }));
             let app = tracker.get_window_app(metaWindow);
-            if (app != null && !app.is_transient()) {
+            if (app != null && !app.is_window_backed()) {
                 let icon = app.create_icon_texture(22);
                 let propBox = new St.BoxLayout({ style: 'spacing: 6px; ' });
                 propsBox.add(propBox);

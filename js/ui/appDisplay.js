@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
+const GMenu = imports.gi.GMenu;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
@@ -35,8 +36,7 @@ AlphabeticalView.prototype = {
         this._appSystem = Shell.AppSystem.get_default();
 
         this._pendingAppLaterId = 0;
-        this._apps = [];
-        this._filterApp = null;
+        this._appIcons = {}; // desktop file id
 
         let box = new St.BoxLayout({ vertical: true });
         box.add(this._grid.actor, { y_align: St.Align.START, expand: true });
@@ -63,20 +63,17 @@ AlphabeticalView.prototype = {
 
     _removeAll: function() {
         this._grid.removeAll();
-        this._apps = [];
+        this._appIcons = {};
     },
 
-    _addApp: function(appInfo) {
-        let appIcon = new AppWellIcon(this._appSystem.get_app(appInfo.get_id()));
+    _addApp: function(app) {
+        var id = app.get_id();
+        let appIcon = new AppWellIcon(app);
 
         this._grid.addItem(appIcon.actor);
         appIcon.actor.connect('key-focus-in', Lang.bind(this, this._ensureIconVisible));
 
-        appIcon._appInfo = appInfo;
-        if (this._filterApp && !this._filterApp(appInfo))
-            appIcon.actor.hide();
-
-        this._apps.push(appIcon);
+        this._appIcons[id] = appIcon;
     },
 
     _ensureIconVisible: function(icon) {
@@ -105,52 +102,33 @@ AlphabeticalView.prototype = {
                            transition: 'easeOutQuad' });
     },
 
-    setFilter: function(filter) {
-        this._filterApp = filter;
-        for (let i = 0; i < this._apps.length; i++)
-            this._apps[i].actor.visible = filter(this._apps[i]._appInfo);
-    },
-
-    // Create actors for the applications in an idle to avoid blocking
-    // for too long; see bug 647778
-    _addPendingApps: function() {
-        let i;
-        let startTimeMillis = new Date().getTime();
-        for (i = 0; i < this._pendingAppIds.length; i++) {
-            let id = this._pendingAppIds[i];
-            this._addApp(this._pendingApps[id]);
-
-            let currentTimeMillis = new Date().getTime();
-            if (currentTimeMillis - startTimeMillis > MAX_APPLICATION_WORK_MILLIS)
-                break;
-        }
-        this._pendingAppIds.splice(0, i + 1);
-        if (this._pendingAppIds.length > 0) {
-            return true;
+    setVisibleApps: function(apps) {
+        if (apps == null) { // null implies "all"
+            for (var id in this._appIcons) {
+                var icon = this._appIcons[id];
+                icon.actor.visible = true;
+            }
         } else {
-            this._pendingAppLaterId = 0;
-            this._pendingAppIds = null;
-            this._pendingApps = null;
-            return false;
+            // Set everything to not-visible, then set to visible what we should see
+            for (var id in this._appIcons) {
+                var icon = this._appIcons[id];
+                icon.actor.visible = false;
+            }
+            for (var i = 0; i < apps.length; i++) {
+                var app = apps[i];
+                var id = app.get_id();
+                var icon = this._appIcons[id];
+                icon.actor.visible = true;
+            }
         }
     },
 
-    refresh: function(apps) {
-        let ids = [];
-        for (let i in apps)
-            ids.push(i);
-        ids.sort(function(a, b) {
-            return apps[a].get_name().localeCompare(apps[b].get_name());
-        });
-
+    setAppList: function(apps) {
         this._removeAll();
-
-        this._pendingAppIds = ids;
-        this._pendingApps = apps;
-        if (this._pendingAppLaterId)
-            Meta.later_remove(this._pendingAppLaterId);
-        this._pendingAppLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                                                 Lang.bind(this, this._addPendingApps));
+        for (var i = 0; i < apps.length; i++) {
+            var app = apps[i];
+            this._addApp(app);
+         }
     }
 };
 
@@ -171,22 +149,23 @@ ViewByCategories.prototype = {
         // -2 is a flag to indicate that nothing is selected
         // (used only before the actor is mapped the first time)
         this._currentCategory = -2;
-        this._filters = new St.BoxLayout({ vertical: true, reactive: true });
-        this._filtersBox = new St.ScrollView({ x_fill: false,
-                                               y_fill: false,
-                                               style_class: 'vfade' });
-        this._filtersBox.add_actor(this._filters);
+        this._categories = [];
+        this._apps = null;
+
+        this._categoryBox = new St.BoxLayout({ vertical: true, reactive: true });
+        this._categoryScroll = new St.ScrollView({ x_fill: false,
+                                                   y_fill: false,
+                                                   style_class: 'vfade' });
+        this._categoryScroll.add_actor(this._categoryBox);
         this.actor.add(this._view.actor, { expand: true, x_fill: true, y_fill: true });
-        this.actor.add(this._filtersBox, { expand: false, y_fill: false, y_align: St.Align.START });
+        this.actor.add(this._categoryScroll, { expand: false, y_fill: false, y_align: St.Align.START });
 
         // Always select the "All" filter when switching to the app view
         this.actor.connect('notify::mapped', Lang.bind(this,
             function() {
-                if (this.actor.mapped && this._allFilter)
+                if (this.actor.mapped && this._allCategoryButton)
                     this._selectCategory(-1);
             }));
-
-        this._sections = [];
 
         // We need a dummy actor to catch the keyboard focus if the
         // user Ctrl-Alt-Tabs here before the deferred work creates
@@ -201,64 +180,94 @@ ViewByCategories.prototype = {
 
         this._currentCategory = num;
 
-        if (num != -1)
-            this._allFilter.remove_style_pseudo_class('selected');
-        else
-            this._allFilter.add_style_pseudo_class('selected');
+        if (num != -1) {
+            var category = this._categories[num];
+            this._allCategoryButton.remove_style_pseudo_class('selected');
+            this._view.setVisibleApps(category.apps);
+        } else {
+            this._allCategoryButton.add_style_pseudo_class('selected');
+            this._view.setVisibleApps(null);
+        }
 
-        this._view.setFilter(Lang.bind(this, function(app) {
-            if (num == -1)
-                return true;
-            return this._sections[num].name == app.get_section();
-        }));
-
-        for (let i = 0; i < this._sections.length; i++) {
+        for (var i = 0; i < this._categories.length; i++) {
             if (i == num)
-                this._sections[i].filterActor.add_style_pseudo_class('selected');
+                this._categories[i].button.add_style_pseudo_class('selected');
             else
-                this._sections[i].filterActor.remove_style_pseudo_class('selected');
+                this._categories[i].button.remove_style_pseudo_class('selected');
         }
     },
 
-    _addFilter: function(name, num) {
+    // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
+    _loadCategory: function(dir, appList) {
+        var iter = dir.iter();
+        var nextType;
+        while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
+            if (nextType == GMenu.TreeItemType.ENTRY) {
+                var entry = iter.get_entry();
+                var app = this._appSystem.lookup_app_by_tree_entry(entry);
+                appList.push(app);
+            } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
+                _loadCategory(iter.get_directory(), appList);
+            }
+        }
+    },
+
+    _addCategory: function(name, index, dir, allApps) {
         let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
                                      style_class: 'app-filter',
                                      x_align: St.Align.START,
                                      can_focus: true });
-        this._filters.add(button, { expand: true, x_fill: true, y_fill: false });
         button.connect('clicked', Lang.bind(this, function() {
-            this._selectCategory(num);
+            this._selectCategory(index);
         }));
 
-        if (num != -1)
-            this._sections[num] = { filterActor: button,
-                                    name: name };
-        else
-            this._allFilter = button;
+        var apps;
+        if (dir == null) {
+            apps = allApps;
+            this._allCategoryButton = button;
+        } else {
+            apps = [];
+            this._loadCategory(dir, apps);
+            this._categories.push({ apps: apps,
+                                    name: name,
+                                    button: button });
+        }
+
+        this._categoryBox.add(button, { expand: true, x_fill: true, y_fill: false });
     },
 
     _removeAll: function() {
-        this._sections = [];
-        this._filters.destroy_children();
+        this._categories = [];
+        this._categoryBox.destroy_children();
     },
 
-    refresh: function(apps) {
+    refresh: function() {
         this._removeAll();
 
-        let sections = this._appSystem.get_sections();
-        this._apps = apps;
+        var allApps = Shell.AppSystem.get_default().get_all();
+        allApps.sort(function(a, b) {
+            return a.compare_by_name(b);
+        });
 
         /* Translators: Filter to display all applications */
-        this._addFilter(_("All"), -1);
+        this._addCategory(_("All"), -1, null, allApps);
 
-        if (!sections)
-            return;
+        var tree = this._appSystem.get_tree();
+        var root = tree.get_root_directory();
 
-        for (let i = 0; i < sections.length; i++)
-            this._addFilter(sections[i], i);
+        var iter = root.iter();
+        var nextType;
+        var i = 0;
+        while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
+            if (nextType == GMenu.TreeItemType.DIRECTORY) {
+                var dir = iter.get_directory();
+                this._addCategory(dir.get_name(), i, dir);
+                i++;
+            }
+        }
 
+        this._view.setAppList(allApps);
         this._selectCategory(-1);
-        this._view.refresh(apps);
 
         if (this._focusDummy) {
             let focused = this._focusDummy.has_key_focus();
@@ -291,36 +300,37 @@ AllAppDisplay.prototype = {
     },
 
     _redisplay: function() {
-        let apps = this._appSystem.get_flattened_apps().filter(function(app) {
-            return !app.get_is_nodisplay();
-        });
-
-        this._appView.refresh(apps);
+        this._appView.refresh();
     }
 };
 
-function BaseAppSearchProvider() {
+function AppSearchProvider() {
     this._init();
 }
 
-BaseAppSearchProvider.prototype = {
+AppSearchProvider.prototype = {
     __proto__: Search.SearchProvider.prototype,
 
-    _init: function(name) {
-        Search.SearchProvider.prototype._init.call(this, name);
+    _init: function() {
+        Search.SearchProvider.prototype._init.call(this, _("APPLICATIONS"));
         this._appSys = Shell.AppSystem.get_default();
     },
 
-    getResultMeta: function(resultId) {
-        let app = this._appSys.get_app(resultId);
-        if (!app)
-            return null;
-        return { 'id': resultId,
+    getResultMeta: function(app) {
+        return { 'id': app,
                  'name': app.get_name(),
                  'createIcon': function(size) {
                                    return app.create_icon_texture(size);
                                }
                };
+    },
+
+    getInitialResultSet: function(terms) {
+        return this._appSys.initial_search(terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        return this._appSys.subsearch(previousResults, terms);
     },
 
     activateResult: function(id, params) {
@@ -332,7 +342,7 @@ BaseAppSearchProvider.prototype = {
         let modifiers = event ? Shell.get_event_state(event) : 0;
         let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
 
-        let app = this._appSys.get_app(id);
+        let app = this._appSys.lookup_app(id);
         if (openNewWindow)
             app.open_new_window(workspace);
         else
@@ -343,54 +353,62 @@ BaseAppSearchProvider.prototype = {
         params = Params.parse(params, { workspace: null,
                                         timestamp: null });
 
-        let app = this._appSys.get_app(id);
+        let app = this._appSys.lookup_app(id);
         app.open_new_window(params.workspace ? params.workspace.index() : -1);
-    }
-};
-
-function AppSearchProvider() {
-    this._init();
-}
-
-AppSearchProvider.prototype = {
-    __proto__: BaseAppSearchProvider.prototype,
-
-    _init: function() {
-         BaseAppSearchProvider.prototype._init.call(this, _("APPLICATIONS"));
-    },
-
-    getInitialResultSet: function(terms) {
-        return this._appSys.initial_search(false, terms);
-    },
-
-    getSubsearchResultSet: function(previousResults, terms) {
-        return this._appSys.subsearch(false, previousResults, terms);
     },
 
     createResultActor: function (resultMeta, terms) {
-        let app = this._appSys.get_app(resultMeta['id']);
+        let app = resultMeta['id'];
         let icon = new AppWellIcon(app);
         return icon.actor;
     }
 };
 
-function PrefsSearchProvider() {
+function SettingsSearchProvider() {
     this._init();
 }
 
-PrefsSearchProvider.prototype = {
-    __proto__: BaseAppSearchProvider.prototype,
+SettingsSearchProvider.prototype = {
+    __proto__: Search.SearchProvider.prototype,
 
     _init: function() {
-        BaseAppSearchProvider.prototype._init.call(this, _("SETTINGS"));
+        Search.SearchProvider.prototype._init.call(this, _("SETTINGS"));
+        this._appSys = Shell.AppSystem.get_default();
+        this._gnomecc = this._appSys.lookup_app('gnome-control-center.desktop');
+    },
+
+    getResultMeta: function(pref) {
+        return { 'id': pref,
+                 'name': pref.get_name(),
+                 'createIcon': function(size) {
+                                   return pref.create_icon_texture(size);
+                               }
+               };
     },
 
     getInitialResultSet: function(terms) {
-        return this._appSys.initial_search(true, terms);
+        return this._appSys.search_settings(terms);
     },
 
     getSubsearchResultSet: function(previousResults, terms) {
-        return this._appSys.subsearch(true, previousResults, terms);
+        return this._appSys.search_settings(terms);
+    },
+
+    activateResult: function(pref, params) {
+        params = Params.parse(params, { workspace: null,
+                                        timestamp: null });
+
+        pref.activate(params.workspace);
+    },
+
+    dragActivateResult: function(pref, params) {
+        this.activateResult(pref, params);
+    },
+
+    createResultActor: function (resultMeta, terms) {
+        let app = resultMeta['id'];
+        let icon = new AppWellIcon(app);
+        return icon.actor;
     }
 };
 
@@ -416,12 +434,12 @@ AppIcon.prototype = {
     }
 };
 
-function AppWellIcon(app, iconParams) {
-    this._init(app, iconParams);
+function AppWellIcon(app, iconParams, onActivateOverride) {
+    this._init(app, iconParams, onActivateOverride);
 }
 
 AppWellIcon.prototype = {
-    _init : function(app, iconParams) {
+    _init : function(app, iconParams, onActivateOverride) {
         this.app = app;
         this.actor = new St.Button({ style_class: 'app-well-app',
                                      reactive: true,
@@ -436,6 +454,8 @@ AppWellIcon.prototype = {
 
         this.actor.label_actor = this.icon.label;
 
+        // A function callback to override the default "app.activate()"; used by preferences
+        this._onActivateOverride = onActivateOverride;
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
@@ -569,11 +589,15 @@ AppWellIcon.prototype = {
         this.emit('launching');
         let modifiers = Shell.get_event_state(event);
 
-        if (modifiers & Clutter.ModifierType.CONTROL_MASK
-            && this.app.state == Shell.AppState.RUNNING) {
-            this.app.open_new_window(-1);
+        if (this._onActivateOverride) {
+            this._onActivateOverride(event);
         } else {
-            this.app.activate(-1);
+            if (modifiers & Clutter.ModifierType.CONTROL_MASK
+                && this.app.state == Shell.AppState.RUNNING) {
+                this.app.open_new_window(-1);
+            } else {
+                this.app.activate(-1);
+            }
         }
         Main.overview.hide();
     },

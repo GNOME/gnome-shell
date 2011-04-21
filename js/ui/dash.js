@@ -207,7 +207,7 @@ RemoveFavoriteIcon.prototype = {
         let app = null;
         if (source instanceof AppDisplay.AppWellIcon) {
             let appSystem = Shell.AppSystem.get_default();
-            app = appSystem.get_app(source.getId());
+            app = appSystem.lookup_app(source.getId());
         } else if (source.metaWindow) {
             let tracker = Shell.WindowTracker.get_default();
             app = tracker.get_window_app(source.metaWindow);
@@ -330,7 +330,7 @@ Dash.prototype = {
     _onDragMotion: function(dragEvent) {
         let app = null;
         if (dragEvent.source instanceof AppDisplay.AppWellIcon)
-            app = this._appSystem.get_app(dragEvent.source.getId());
+            app = this._appSystem.lookup_app(dragEvent.source.getId());
         else if (dragEvent.source.metaWindow)
             app = this._tracker.get_window_app(dragEvent.source.metaWindow);
         else
@@ -619,12 +619,12 @@ Dash.prototype = {
     handleDragOver : function(source, actor, x, y, time) {
         let app = null;
         if (source instanceof AppDisplay.AppWellIcon)
-            app = this._appSystem.get_app(source.getId());
+            app = this._appSystem.lookup_app(source.getId());
         else if (source.metaWindow)
             app = this._tracker.get_window_app(source.metaWindow);
 
         // Don't allow favoriting of transient apps
-        if (app == null || app.is_transient())
+        if (app == null || app.is_window_backed())
             return DND.DragMotionResult.NO_DROP;
 
         let favorites = AppFavorites.getAppFavorites().getFavorites();
@@ -704,13 +704,13 @@ Dash.prototype = {
     acceptDrop : function(source, actor, x, y, time) {
         let app = null;
         if (source instanceof AppDisplay.AppWellIcon) {
-            app = this._appSystem.get_app(source.getId());
+            app = this._appSystem.lookup_app(source.getId());
         } else if (source.metaWindow) {
             app = this._tracker.get_window_app(source.metaWindow);
         }
 
         // Don't allow favoriting of transient apps
-        if (app == null || app.is_transient()) {
+        if (app == null || app.is_window_backed()) {
             return false;
         }
 

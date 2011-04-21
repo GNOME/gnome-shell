@@ -105,7 +105,7 @@ G_DEFINE_TYPE (ShellAppUsage, shell_app_usage, G_TYPE_OBJECT);
 struct UsageData
 {
   /* Whether the application we're tracking is "transient", see
-   * shell_app_info_is_transient.
+   * shell_app_is_window_backed.
    */
   gboolean transient;
 
@@ -315,7 +315,7 @@ on_app_state_changed (ShellWindowTracker *tracker,
   UsageData *usage;
   gboolean running;
 
-  if (shell_app_is_transient (app))
+  if (shell_app_is_window_backed (app))
     return;
 
   usage = get_usage_for_app (self, app);
@@ -509,7 +509,7 @@ shell_app_usage_get_most_used (ShellAppUsage   *self,
       const char *appid = iter->data;
       ShellApp *app;
 
-      app = shell_app_system_get_app (appsys, appid);
+      app = shell_app_system_lookup_app (appsys, appid);
       if (!app)
         continue;
 
@@ -670,7 +670,7 @@ idle_save_application_usage (gpointer data)
     {
       ShellApp *app;
 
-      app = shell_app_system_get_app (shell_app_system_get_default(), id);
+      app = shell_app_system_lookup_app (shell_app_system_get_default(), id);
 
       if (!app)
         continue;
