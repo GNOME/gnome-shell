@@ -46,10 +46,6 @@ struct _ClutterBackendWin32
 {
   ClutterBackend parent_instance;
 
-  HGLRC          gl_context;
-  HWND           dummy_hwnd;
-  HDC            dummy_dc;
-
   HCURSOR        invisible_cursor;
 
   GSource       *event_source;
@@ -75,6 +71,8 @@ ClutterFeatureFlags
 clutter_backend_win32_get_features (ClutterBackend *backend);
 
 HCURSOR _clutter_backend_win32_get_invisible_cursor (ClutterBackend *backend);
+
+G_CONST_RETURN gchar *_clutter_backend_win32_get_vblank (void);
 
 G_END_DECLS
 

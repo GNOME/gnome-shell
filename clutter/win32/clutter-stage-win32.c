@@ -392,14 +392,24 @@ static gboolean
 clutter_stage_win32_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
+  ClutterBackend *backend;
   ClutterBackendWin32 *backend_win32;
-  PIXELFORMATDESCRIPTOR pfd;
-  int pf;
+  CoglFramebuffer *framebuffer;
+  gfloat width;
+  gfloat height;
   GError *error = NULL;
+  const char *clutter_vblank;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
-  backend_win32 = CLUTTER_BACKEND_WIN32 (clutter_get_default_backend ());
+  backend = CLUTTER_BACKEND (stage_win32->backend);
+  backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+
+  clutter_actor_get_size (CLUTTER_ACTOR (stage_win32->wrapper),
+                          &width, &height);
+
+  stage_win32->onscreen = cogl_onscreen_new (backend->cogl_context,
+                                             width, height);
 
   if (stage_win32->hwnd == NULL)
     {
@@ -457,10 +467,22 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
       SetWindowLongPtrW (stage_win32->hwnd, 0, (LONG_PTR) stage_win32);
     }
 
-  if (stage_win32->client_dc)
-    ReleaseDC (stage_win32->hwnd, stage_win32->client_dc);
+  cogl_onscreen_win32_set_foreign_window (stage_win32->onscreen,
+                                          stage_win32->hwnd);
 
-  stage_win32->client_dc = GetDC (stage_win32->hwnd);
+  clutter_vblank = _clutter_backend_win32_get_vblank ();
+  if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
+    cogl_onscreen_set_swap_throttled (stage_win32->onscreen, FALSE);
+
+  framebuffer = COGL_FRAMEBUFFER (stage_win32->onscreen);
+  if (!cogl_framebuffer_allocate (framebuffer, &error))
+    {
+      g_warning ("Failed to allocate stage: %s", error->message);
+      g_error_free (error);
+      cogl_object_unref (stage_win32->onscreen);
+      stage_win32->onscreen = NULL;
+      goto fail;
+    }
 
   /* Create a context. This will be a no-op if we already have one */
   if (!_clutter_backend_create_context (CLUTTER_BACKEND (backend_win32),
@@ -468,15 +490,6 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
     {
       g_critical ("Unable to realize stage: %s", error->message);
       g_error_free (error);
-      goto fail;
-    }
-
-  /* Use the same pixel format as the dummy DC */
-  pf = GetPixelFormat (backend_win32->dummy_dc);
-  DescribePixelFormat (backend_win32->dummy_dc, pf, sizeof (pfd), &pfd);
-  if (!SetPixelFormat (stage_win32->client_dc, pf, &pfd))
-    {
-      g_critical ("Unable to find suitable GL pixel format");
       goto fail;
     }
 
@@ -491,12 +504,6 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
 static void
 clutter_stage_win32_unprepare_window (ClutterStageWin32 *stage_win32)
 {
-  if (stage_win32->client_dc)
-    {
-      ReleaseDC (stage_win32->hwnd, stage_win32->client_dc);
-      stage_win32->client_dc = NULL;
-    }
-
   if (!stage_win32->is_foreign_win && stage_win32->hwnd)
     {
       /* Drop the pointer to this stage in the window so that any
@@ -527,8 +534,8 @@ clutter_stage_win32_redraw (ClutterStageWindow *stage_window)
   _clutter_stage_do_paint (stage_win32->wrapper, NULL);
   cogl_flush ();
 
-  if (stage_win32->client_dc)
-    SwapBuffers (stage_win32->client_dc);
+  if (stage_win32->onscreen)
+    cogl_framebuffer_swap_buffers (COGL_FRAMEBUFFER (stage_win32->onscreen));
 }
 
 static void
@@ -543,7 +550,10 @@ clutter_stage_win32_dispose (GObject *gobject)
     clutter_stage_win32_unprepare_window (stage_win32);
 
   if (stage_win32->wtitle)
-    g_free (stage_win32->wtitle);
+    {
+      g_free (stage_win32->wtitle);
+      stage_win32->wtitle = NULL;
+    }
 
   G_OBJECT_CLASS (clutter_stage_win32_parent_class)->dispose (gobject);
 }
@@ -560,7 +570,6 @@ static void
 clutter_stage_win32_init (ClutterStageWin32 *stage)
 {
   stage->hwnd = NULL;
-  stage->client_dc = NULL;
   stage->win_width = 640;
   stage->win_height = 480;
   stage->backend = NULL;

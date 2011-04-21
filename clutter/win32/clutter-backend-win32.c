@@ -54,6 +54,15 @@ static HINSTANCE clutter_hinst = NULL;
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_event_retrieval = FALSE;
 
+G_CONST_RETURN gchar *
+_clutter_backend_win32_get_vblank (void)
+{
+  if (clutter_vblank_name && strcmp (clutter_vblank_name, "0") == 0)
+    return "none";
+  else
+    return clutter_vblank_name;
+}
+
 gboolean
 clutter_backend_win32_pre_parse (ClutterBackend  *backend,
 				 GError         **error)
@@ -125,6 +134,7 @@ clutter_backend_win32_finalize (GObject *gobject)
 static void
 clutter_backend_win32_dispose (GObject *gobject)
 {
+  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (gobject);
   ClutterStageManager *stage_manager;
 
@@ -139,26 +149,13 @@ clutter_backend_win32_dispose (GObject *gobject)
   /* Unrealize all shaders, since the GL context is going away */
   _clutter_shader_release_all ();
 
-  if (backend_win32->gl_context)
-    {
-      wglMakeCurrent (NULL, NULL);
-      wglDeleteContext (backend_win32->gl_context);
-      backend_win32->gl_context = NULL;
-    }
-
-  if (backend_win32->dummy_dc)
-    {
-      ReleaseDC (backend_win32->dummy_hwnd, backend_win32->dummy_dc);
-      backend_win32->dummy_dc = NULL;
-    }
-
-  if (backend_win32->dummy_hwnd)
-    {
-      DestroyWindow (backend_win32->dummy_hwnd);
-      backend_win32->dummy_hwnd = NULL;
-    }
-
   G_OBJECT_CLASS (clutter_backend_win32_parent_class)->dispose (gobject);
+
+  if (backend->cogl_context)
+    {
+      cogl_object_unref (backend->cogl_context);
+      backend->cogl_context = NULL;
+    }
 }
 
 static GObject *
@@ -185,296 +182,110 @@ clutter_backend_win32_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
-static gboolean
-check_vblank_env (const char *name)
-{
-  return clutter_vblank_name && !g_ascii_strcasecmp (clutter_vblank_name, name);
-}
-
 ClutterFeatureFlags
 clutter_backend_win32_get_features (ClutterBackend *backend)
 {
-  ClutterFeatureFlags  flags;
-  const gchar         *extensions;
-  SwapIntervalProc     swap_interval;
-  ClutterBackendWin32 *backend_win32;
+  ClutterBackendClass *parent_class;
+  ClutterFeatureFlags flags;
 
-  /* this will make sure that the GL context exists and is bound to a
-     drawable */
-  backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-  g_return_val_if_fail (backend_win32->gl_context != NULL, 0);
-  g_return_val_if_fail (wglGetCurrentDC () != NULL, 0);
+  parent_class = CLUTTER_BACKEND_CLASS (clutter_backend_win32_parent_class);
 
-  extensions = (const gchar *) glGetString (GL_EXTENSIONS);
+  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
 
-  CLUTTER_NOTE (BACKEND,
-                "Checking features\n"
-                "  GL_VENDOR: %s\n"
-                "  GL_RENDERER: %s\n"
-                "  GL_VERSION: %s\n"
-                "  GL_EXTENSIONS: %s\n",
-                glGetString (GL_VENDOR),
-                glGetString (GL_RENDERER),
-                glGetString (GL_VERSION),
-                extensions);
-
-  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE
-    | CLUTTER_FEATURE_STAGE_CURSOR
-    | CLUTTER_FEATURE_STAGE_MULTIPLE;
-
-  /* If the VBlank should be left at the default or it has been
-     disabled elsewhere (eg NVIDIA) then don't bother trying to check
-     for the swap control extension */
-  if (getenv ("__GL_SYNC_TO_VBLANK") || check_vblank_env ("default"))
-    CLUTTER_NOTE (BACKEND, "vblank sync: left at default at user request");
-  else if (cogl_clutter_check_extension ("WGL_EXT_swap_control", extensions)
-	   && (swap_interval = (SwapIntervalProc)
-	       wglGetProcAddress ((LPCSTR) "wglSwapIntervalEXT")))
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
     {
-      /* According to the specification for the WGL_EXT_swap_control
-	 extension the default swap interval is 1 anyway, so if no
-	 vblank is requested then we should explicitly set it to
-	 zero */
-      if (check_vblank_env ("none"))
-	{
-	  if (swap_interval (0))
-	    CLUTTER_NOTE (BACKEND, "vblank sync: successfully disabled");
-	  else
-	    CLUTTER_NOTE (BACKEND, "vblank sync: disabling failed");
-	}
-      else
-	{
-	  if (swap_interval (1))
-	    {
-	      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-	      CLUTTER_NOTE (BACKEND, "vblank sync: wglSwapIntervalEXT "
-			    "vblank setup success");
-	    }
-	  else
-	    CLUTTER_NOTE (BACKEND, "vblank sync: wglSwapIntervalEXT "
-			  "vblank setup failed");
-	}
+      CLUTTER_NOTE (BACKEND, "Cogl supports multiple onscreen framebuffers");
+      flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
     }
   else
-    CLUTTER_NOTE (BACKEND, "no use-able vblank mechanism found");
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl only supports one onscreen framebuffer");
+      flags |= CLUTTER_FEATURE_STAGE_STATIC;
+    }
+
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_THROTTLE))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers throttling");
+      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+    }
+  else
+    CLUTTER_NOTE (BACKEND, "Cogl doesn't support swap buffers throttling");
 
   CLUTTER_NOTE (BACKEND, "backend features checked");
 
   return flags;
 }
 
-static ATOM
-clutter_backend_win32_get_dummy_window_class ()
-{
-  static ATOM klass = 0;
-
-  if (klass == 0)
-    {
-      WNDCLASSW wndclass;
-      memset (&wndclass, 0, sizeof (wndclass));
-      wndclass.lpfnWndProc = DefWindowProc;
-      wndclass.hInstance = GetModuleHandleW (NULL);
-      wndclass.lpszClassName = L"ClutterBackendWin32DummyWindow";
-      klass = RegisterClassW (&wndclass);
-    }
-
-  return klass;
-}
-
-static gboolean
-clutter_backend_win32_pixel_format_is_better (const PIXELFORMATDESCRIPTOR *pfa,
-                                              const PIXELFORMATDESCRIPTOR *pfb)
-{
-  /* Always prefer a format with a stencil buffer */
-  if (pfa->cStencilBits == 0)
-    {
-      if (pfb->cStencilBits > 0)
-        return TRUE;
-    }
-  else if (pfb->cStencilBits == 0)
-    return FALSE;
-
-  /* Prefer a bigger color buffer */
-  if (pfb->cColorBits > pfa->cColorBits)
-    return TRUE;
-  else if (pfb->cColorBits < pfa->cColorBits)
-    return FALSE;
-
-  /* Prefer a bigger depth buffer */
-  return pfb->cDepthBits > pfa->cDepthBits;
-}
-
-static int
-clutter_backend_win32_choose_pixel_format (HDC dc, PIXELFORMATDESCRIPTOR *pfd)
-{
-  int i, num_formats, best_pf = 0;
-  PIXELFORMATDESCRIPTOR best_pfd;
-
-  num_formats = DescribePixelFormat (dc, 0, sizeof (best_pfd), NULL);
-
-  for (i = 1; i <= num_formats; i++)
-    {
-      memset (pfd, 0, sizeof (*pfd));
-
-      if (DescribePixelFormat (dc, i, sizeof (best_pfd), pfd)
-          /* Check whether this format is useable by Clutter */
-          && ((pfd->dwFlags & (PFD_SUPPORT_OPENGL
-                               | PFD_DRAW_TO_WINDOW
-                               | PFD_DOUBLEBUFFER
-                               | PFD_GENERIC_FORMAT))
-              == (PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER | PFD_DRAW_TO_WINDOW))
-          && pfd->iPixelType == PFD_TYPE_RGBA
-          && pfd->cColorBits >= 16 && pfd->cColorBits <= 32
-          && pfd->cDepthBits >= 16 && pfd->cDepthBits <= 32
-          /* Check whether this is a better format than one we've
-             already found */
-          && (best_pf == 0
-              || clutter_backend_win32_pixel_format_is_better (&best_pfd, pfd)))
-        {
-          best_pf = i;
-          best_pfd = *pfd;
-        }
-    }
-
-  *pfd = best_pfd;
-
-  return best_pf;
-}
-
 static gboolean
 clutter_backend_win32_create_context (ClutterBackend  *backend,
                                       GError         **error)
 {
-  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+  CoglSwapChain *swap_chain;
+  CoglOnscreenTemplate *onscreen_template;
 
-  /* COGL assumes that there is always a GL context selected; in order
-   * to make sure that a WGL context exists and is made current, we
-   * use a small dummy window that never gets shown to which we can
-   * always fall back if no stage is available
-   */
-  if (backend_win32->dummy_hwnd == NULL)
-    {
-      ATOM window_class = clutter_backend_win32_get_dummy_window_class ();
+  if (backend->cogl_context)
+    return TRUE;
 
-      if (window_class == 0)
-        {
-          g_critical ("Unable to register window class");
-          return FALSE;
-        }
+  backend->cogl_renderer = cogl_renderer_new ();
+  if (!cogl_renderer_connect (backend->cogl_renderer, error))
+    goto error;
 
-      backend_win32->dummy_hwnd =
-        CreateWindowW ((LPWSTR) MAKEINTATOM (window_class),
-                       L".",
-                       WS_OVERLAPPEDWINDOW,
-                       CW_USEDEFAULT,
-                       CW_USEDEFAULT,
-                       1, 1,
-                       NULL, NULL,
-                       GetModuleHandle (NULL),
-                       NULL);
+  swap_chain = cogl_swap_chain_new ();
 
-      if (backend_win32->dummy_hwnd == NULL)
-        {
-          g_critical ("Unable to create dummy window");
-          return FALSE;
-        }
-    }
+  onscreen_template = cogl_onscreen_template_new (swap_chain);
+  cogl_object_unref (swap_chain);
 
-  if (backend_win32->dummy_dc == NULL)
-    {
-      PIXELFORMATDESCRIPTOR pfd;
-      int pf;
+  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                              onscreen_template,
+                                              error))
+    goto error;
 
-      backend_win32->dummy_dc = GetDC (backend_win32->dummy_hwnd);
+  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
+                                            onscreen_template);
+  cogl_object_unref (backend->cogl_renderer);
+  cogl_object_unref (onscreen_template);
 
-      pf = clutter_backend_win32_choose_pixel_format (backend_win32->dummy_dc,
-                                                      &pfd);
+  if (!cogl_display_setup (backend->cogl_display, error))
+    goto error;
 
-      if (pf == 0 || !SetPixelFormat (backend_win32->dummy_dc, pf, &pfd))
-        {
-          g_critical ("Unable to find suitable GL pixel format");
-          ReleaseDC (backend_win32->dummy_hwnd, backend_win32->dummy_dc);
-          backend_win32->dummy_dc = NULL;
-          return FALSE;
-        }
-    }
+  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
+  if (!backend->cogl_context)
+    goto error;
 
-  if (backend_win32->gl_context == NULL)
-    {
-      backend_win32->gl_context = wglCreateContext (backend_win32->dummy_dc);
-
-      if (backend_win32->gl_context == NULL)
-        {
-          g_critical ("Unable to create suitable GL context");
-          return FALSE;
-        }
-    }
-
-  CLUTTER_NOTE (BACKEND, "Selecting dummy 0x%x for the WGL context",
-                (unsigned int) backend_win32->dummy_hwnd);
-
-  wglMakeCurrent (backend_win32->dummy_dc, backend_win32->gl_context);
+  /* XXX: eventually this should go away but a lot of Cogl code still
+   * depends on a global default context. */
+  cogl_set_default_context (backend->cogl_context);
 
   return TRUE;
+
+error:
+  if (backend->cogl_display)
+    {
+      cogl_object_unref (backend->cogl_display);
+      backend->cogl_display = NULL;
+    }
+
+  if (onscreen_template)
+    cogl_object_unref (onscreen_template);
+  if (swap_chain)
+    cogl_object_unref (swap_chain);
+
+  if (backend->cogl_renderer)
+    {
+      cogl_object_unref (backend->cogl_renderer);
+      backend->cogl_renderer = NULL;
+    }
+  return FALSE;
 }
 
 static void
 clutter_backend_win32_ensure_context (ClutterBackend *backend, 
 				      ClutterStage   *stage)
 {
-  ClutterStageWindow  *impl;
+  ClutterStageWin32 *stage_win32 =
+    CLUTTER_STAGE_WIN32 (_clutter_stage_get_window (stage));
 
-  if (stage == NULL ||
-      CLUTTER_ACTOR_IN_DESTRUCTION (stage) ||
-      ((impl = _clutter_stage_get_window (stage)) == NULL))
-    {
-      CLUTTER_NOTE (MULTISTAGE, "Clearing all context");
-
-      wglMakeCurrent (NULL, NULL);
-    }
-  else
-    {
-      ClutterBackendWin32 *backend_win32;
-      ClutterStageWin32   *stage_win32;
-
-      g_return_if_fail (impl != NULL);
-      
-      CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
-		    g_type_name (G_OBJECT_TYPE (impl)),
-		    impl);
-
-      backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-      stage_win32 = CLUTTER_STAGE_WIN32 (impl);
-      
-      /* no GL context to set */
-      if (backend_win32->gl_context == NULL)
-        return;
-
-      /* we might get here inside the final dispose cycle, so we
-       * need to handle this gracefully
-       */
-      if (stage_win32->client_dc == NULL)
-        {
-          CLUTTER_NOTE (MULTISTAGE,
-                        "Received a stale stage, clearing all context");
-
-          if (backend_win32->dummy_dc != NULL)
-            wglMakeCurrent (backend_win32->dummy_dc,
-                            backend_win32->gl_context);
-          else
-            wglMakeCurrent (NULL, NULL);
-        }
-      else
-        {
-          CLUTTER_NOTE (BACKEND,
-			"MakeCurrent window %p (%s), context %p",
-			stage_win32->hwnd,
-			stage_win32->is_foreign_win ? "foreign" : "native",
-			backend_win32->gl_context);
-          wglMakeCurrent (stage_win32->client_dc,
-			  backend_win32->gl_context);
-        }
-    }
+  cogl_set_framebuffer (COGL_FRAMEBUFFER (stage_win32->onscreen));
 }
 
 static ClutterStageWindow *
@@ -558,7 +369,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
 static void
 clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
 {
-  backend_win32->gl_context         = NULL;
   backend_win32->invisible_cursor   = NULL;
 
   /* FIXME: get from GetSystemMetric?

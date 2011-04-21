@@ -44,8 +44,9 @@ struct _ClutterStageWin32
 {
   ClutterGroup parent_instance;
 
+  CoglOnscreen *onscreen;
+
   HWND         hwnd;
-  HDC          client_dc;
   gint         win_width;
   gint         win_height;
   gint         scroll_pos;

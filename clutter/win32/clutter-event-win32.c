@@ -348,6 +348,7 @@ get_key_modifier_state (const BYTE *key_states)
 gboolean
 clutter_win32_handle_event (const MSG *msg)
 {
+  ClutterBackend       *backend;
   ClutterBackendWin32  *backend_win32;
   ClutterStageWin32    *stage_win32;
   ClutterDeviceManager *manager;
@@ -365,6 +366,13 @@ clutter_win32_handle_event (const MSG *msg)
   impl = _clutter_stage_get_window (stage);
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
   backend_win32 = stage_win32->backend;
+  backend = CLUTTER_BACKEND (backend_win32);
+
+  /* Give Cogl a chance to handle the message first */
+  if (backend->cogl_renderer != NULL &&
+      cogl_renderer_handle_native_event (backend->cogl_renderer,
+                                         (void *) msg) == COGL_FILTER_REMOVE)
+    return TRUE;
 
   manager = clutter_device_manager_get_default ();
   core_pointer =
