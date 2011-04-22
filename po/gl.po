@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-27 20:33+0200\n"
-"PO-Revision-Date: 2011-03-27 20:33+0200\n"
+"POT-Creation-Date: 2011-04-22 17:56+0200\n"
+"PO-Revision-Date: 2011-04-22 17:57+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -197,23 +197,23 @@ msgstr "Produciuse un fallo na execución de «%s»:"
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:328
+#: ../js/ui/appDisplay.js:329
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:354
+#: ../js/ui/appDisplay.js:355
 msgid "SETTINGS"
 msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:625
+#: ../js/ui/appDisplay.js:626
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:628
+#: ../js/ui/appDisplay.js:629
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:630
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
@@ -346,13 +346,13 @@ msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:492
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:495
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
@@ -373,7 +373,7 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "A vindeira semana"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -409,17 +409,17 @@ msgstr "%a %R"
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %e de %b, %H:%M:%S"
+msgstr "%a %e de %b, %l:%M:%S"
 
 #: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %e de %b, %H:%M"
+msgstr "%a %e de %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
-msgstr "%a %H:%M:%S"
+msgstr "%a %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
@@ -502,7 +502,7 @@ msgstr "O seu computador reiniciarase automaticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Cancelar"
@@ -537,11 +537,11 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:993
+#: ../js/ui/messageTray.js:1030
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2151
+#: ../js/ui/messageTray.js:2194
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -564,18 +564,18 @@ msgid "Dash"
 msgstr "Panel"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:524
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:878
+#: ../js/ui/panel.js:902
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:1003
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -633,11 +633,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:311
 msgid "Searching..."
 msgstr "Buscando..."
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:325
 msgid "No matching results."
 msgstr "Non hai resultados que coincidan."
 
@@ -841,139 +841,139 @@ msgstr "Mostrar a distribución do teclado…"
 msgid "Localization Settings"
 msgstr "Configuracións do son"
 
-#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:109 ../js/ui/status/network.js:1498
 msgid "<unknown>"
 msgstr "<descoñecida>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:311
+#: ../js/ui/status/network.js:326
 msgid "disabled"
 msgstr "desactivada"
 
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:521
 msgid "connecting..."
 msgstr "conectando..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/network.js:524
 msgid "authentication required"
 msgstr "autenticación requirida"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:507
+#: ../js/ui/status/network.js:534
 msgid "firmware missing"
 msgstr "falta o «firmware»"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:514
+#: ../js/ui/status/network.js:541
 msgid "cable unplugged"
 msgstr "cable desconectado"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:519
+#: ../js/ui/status/network.js:546
 msgid "unavailable"
 msgstr "non dispoñíbel"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:548
 msgid "connection failed"
 msgstr "conexión fallida"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
+#: ../js/ui/status/network.js:628 ../js/ui/status/network.js:1446
 msgid "Connected (private)"
 msgstr "Conectado (privado)"
 
-#: ../js/ui/status/network.js:683
+#: ../js/ui/status/network.js:713
 msgid "Auto Ethernet"
 msgstr "Ethernet automática"
 
-#: ../js/ui/status/network.js:758
+#: ../js/ui/status/network.js:788
 msgid "Auto broadband"
 msgstr "Banda larga automática"
 
-#: ../js/ui/status/network.js:761
+#: ../js/ui/status/network.js:791
 msgid "Auto dial-up"
 msgstr "Por liña conmutada automática"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:937 ../js/ui/status/network.js:1458
 #, c-format
 msgid "Auto %s"
 msgstr "%s automática"
 
-#: ../js/ui/status/network.js:906
+#: ../js/ui/status/network.js:939
 msgid "Auto bluetooth"
 msgstr "Bluetooth automática"
 
-#: ../js/ui/status/network.js:1416
+#: ../js/ui/status/network.js:1460
 msgid "Auto wireless"
 msgstr "Sen fíos automática"
 
-#: ../js/ui/status/network.js:1474
+#: ../js/ui/status/network.js:1518
 msgid "More..."
 msgstr "Máis..."
 
-#: ../js/ui/status/network.js:1497
+#: ../js/ui/status/network.js:1541
 msgid "Enable networking"
 msgstr "Activar rede"
 
-#: ../js/ui/status/network.js:1509
+#: ../js/ui/status/network.js:1553
 msgid "Wired"
 msgstr "Con fíos"
 
-#: ../js/ui/status/network.js:1520
+#: ../js/ui/status/network.js:1564
 msgid "Wireless"
 msgstr "Sen fíos"
 
-#: ../js/ui/status/network.js:1530
+#: ../js/ui/status/network.js:1574
 msgid "Mobile broadband"
 msgstr "Banda larga móbil"
 
-#: ../js/ui/status/network.js:1540
+#: ../js/ui/status/network.js:1584
 msgid "VPN Connections"
 msgstr "Conexións VPN"
 
-#: ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:1596
 msgid "Network Settings"
 msgstr "Configuracións da rede"
 
-#: ../js/ui/status/network.js:1844
+#: ../js/ui/status/network.js:1890
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Vostede está conectado agora á conexión de banda larga móbil «%s»"
 
-#: ../js/ui/status/network.js:1848
+#: ../js/ui/status/network.js:1894
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Vostede está conectado agora á conexión sen fíos «%s»"
 
-#: ../js/ui/status/network.js:1852
+#: ../js/ui/status/network.js:1898
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Vostede está conectado agora á conexión con fíos «%s»"
 
-#: ../js/ui/status/network.js:1856
+#: ../js/ui/status/network.js:1902
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Vostede está conectado agora á conexión VPN «%s»"
 
-#: ../js/ui/status/network.js:1861
+#: ../js/ui/status/network.js:1907
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Vostede está conectado agora a «%s»"
 
-#: ../js/ui/status/network.js:1869
+#: ../js/ui/status/network.js:1915
 msgid "Connection established"
 msgstr "Conexión estabelecida"
 
-#: ../js/ui/status/network.js:1991
+#: ../js/ui/status/network.js:2041
 msgid "Networking is disabled"
 msgstr "A rede está desactivada"
 
-#: ../js/ui/status/network.js:2116
+#: ../js/ui/status/network.js:2166
 msgid "Network Manager"
 msgstr "Xestor de rede"
 
@@ -1075,22 +1075,22 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Micrófono"
 
-#: ../js/ui/telepathyClient.js:331
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is online."
 msgstr "%s está conectado/a."
 
-#: ../js/ui/telepathyClient.js:336
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is offline."
 msgstr "%s está desconectado/a."
 
-#: ../js/ui/telepathyClient.js:339
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is away."
 msgstr "%s está ausente."
 
-#: ../js/ui/telepathyClient.js:342
+#: ../js/ui/telepathyClient.js:346
 #, c-format
 msgid "%s is busy."
 msgstr "%s está ocupado/a."
@@ -1098,7 +1098,7 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:473
+#: ../js/ui/telepathyClient.js:484
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviado ás %X o %A"
@@ -1147,7 +1147,7 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/main.c:446
+#: ../src/main.c:445
 msgid "Print version"
 msgstr "Imprimir versión"
 
