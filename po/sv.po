@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-25 22:15+0100\n"
-"PO-Revision-Date: 2011-03-25 22:15+0100\n"
+"POT-Creation-Date: 2011-04-22 08:46+0200\n"
+"PO-Revision-Date: 2011-04-22 08:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -138,23 +138,23 @@ msgstr "Körning av \"%s\" misslyckades:"
 msgid "All"
 msgstr "Alla"
 
-#: ../js/ui/appDisplay.js:328
+#: ../js/ui/appDisplay.js:329
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
 
-#: ../js/ui/appDisplay.js:354
+#: ../js/ui/appDisplay.js:355
 msgid "SETTINGS"
 msgstr "INSTÄLLNINGAR"
 
-#: ../js/ui/appDisplay.js:625
+#: ../js/ui/appDisplay.js:626
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: ../js/ui/appDisplay.js:628
+#: ../js/ui/appDisplay.js:629
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:630
 msgid "Add to Favorites"
 msgstr "Lägg till som favorit"
 
@@ -288,12 +288,14 @@ msgstr "Ingenting i schemat"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:720
+#: ../js/ui/telepathyClient.js:492
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:723
+#: ../js/ui/telepathyClient.js:495
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
@@ -315,7 +317,7 @@ msgid "Next week"
 msgstr "Nästa vecka"
 
 #: ../js/ui/dash.js:174
-#: ../js/ui/messageTray.js:994
+#: ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -351,21 +353,21 @@ msgstr "%a %R"
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %e %b, %H.%M.%S"
+msgstr "%a %e %b, %l.%M.%S %p"
 
 #: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %e %b, %H.%M"
+msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
-msgstr "%a %H.%M.%S"
+msgstr "%a %l.%M.%S %p"
 
 #: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
-msgstr "%a %H.%M"
+msgstr "%a %l.%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
@@ -443,7 +445,7 @@ msgstr "Systemet kommer att startas om automatiskt om %d sekunder."
 msgid "Restarting the system."
 msgstr "Starta om systemet."
 
-#: ../js/ui/endSessionDialog.js:415
+#: ../js/ui/endSessionDialog.js:413
 #: ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
@@ -480,11 +482,11 @@ msgstr "Visa källa"
 msgid "Web Page"
 msgstr "Webbsida"
 
-#: ../js/ui/messageTray.js:987
+#: ../js/ui/messageTray.js:1030
 msgid "Open"
 msgstr "Öppna"
 
-#: ../js/ui/messageTray.js:2145
+#: ../js/ui/messageTray.js:2194
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -507,18 +509,18 @@ msgid "Dash"
 msgstr "Favoriter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:524
 #, c-format
 msgid "Quit %s"
 msgstr "Avsluta %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:878
+#: ../js/ui/panel.js:902
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:1003
 msgid "Top Bar"
 msgstr "Övre rad"
 
@@ -551,11 +553,15 @@ msgstr "Administratör"
 msgid "Authenticate"
 msgstr "Autentisera"
 
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Tyvärr, det fungerade inte. Försök igen."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
 msgstr "Lösenord:"
 
@@ -572,11 +578,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Ange ett kommando:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:311
 msgid "Searching..."
 msgstr "Söker..."
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:325
 msgid "No matching results."
 msgstr "Inga sökträffar."
 
@@ -787,142 +793,142 @@ msgstr "Visa tangentbordslayout..."
 msgid "Localization Settings"
 msgstr "Språkinställningar"
 
-#: ../js/ui/status/network.js:102
-#: ../js/ui/status/network.js:1437
+#: ../js/ui/status/network.js:109
+#: ../js/ui/status/network.js:1498
 msgid "<unknown>"
 msgstr "<okänd>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:295
+#: ../js/ui/status/network.js:326
 msgid "disabled"
 msgstr "inaktiverad"
 
-#: ../js/ui/status/network.js:478
+#: ../js/ui/status/network.js:521
 msgid "connecting..."
 msgstr "ansluter..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:481
+#: ../js/ui/status/network.js:524
 msgid "authentication required"
 msgstr "autentisering krävs"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:534
 msgid "firmware missing"
 msgstr "fast programvara saknas"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:498
+#: ../js/ui/status/network.js:541
 msgid "cable unplugged"
 msgstr "kabeln är inte ansluten"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:503
+#: ../js/ui/status/network.js:546
 msgid "unavailable"
 msgstr "inte tillgänglig"
 
-#: ../js/ui/status/network.js:505
+#: ../js/ui/status/network.js:548
 msgid "connection failed"
 msgstr "anslutningen misslyckades"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:585
-#: ../js/ui/status/network.js:1385
+#: ../js/ui/status/network.js:628
+#: ../js/ui/status/network.js:1446
 msgid "Connected (private)"
 msgstr "Ansluten (privat)"
 
-#: ../js/ui/status/network.js:666
+#: ../js/ui/status/network.js:713
 msgid "Auto Ethernet"
 msgstr "Automatiskt ethernet"
 
-#: ../js/ui/status/network.js:741
+#: ../js/ui/status/network.js:788
 msgid "Auto broadband"
 msgstr "Automatiskt bredband"
 
-#: ../js/ui/status/network.js:744
+#: ../js/ui/status/network.js:791
 msgid "Auto dial-up"
 msgstr "Automatiskt uppringt nätverk"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:887
-#: ../js/ui/status/network.js:1397
+#: ../js/ui/status/network.js:937
+#: ../js/ui/status/network.js:1458
 #, c-format
 msgid "Auto %s"
 msgstr "Automatiskt %s"
 
-#: ../js/ui/status/network.js:889
+#: ../js/ui/status/network.js:939
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1399
+#: ../js/ui/status/network.js:1460
 msgid "Auto wireless"
 msgstr "Automatiskt trådlöst nätverk"
 
-#: ../js/ui/status/network.js:1457
+#: ../js/ui/status/network.js:1518
 msgid "More..."
 msgstr "Mer..."
 
-#: ../js/ui/status/network.js:1480
+#: ../js/ui/status/network.js:1541
 msgid "Enable networking"
 msgstr "Aktivera nätverk"
 
-#: ../js/ui/status/network.js:1492
+#: ../js/ui/status/network.js:1553
 msgid "Wired"
 msgstr "Trådbundet"
 
-#: ../js/ui/status/network.js:1503
+#: ../js/ui/status/network.js:1564
 msgid "Wireless"
 msgstr "Trådlöst"
 
-#: ../js/ui/status/network.js:1513
+#: ../js/ui/status/network.js:1574
 msgid "Mobile broadband"
 msgstr "Mobilt bredband"
 
-#: ../js/ui/status/network.js:1523
+#: ../js/ui/status/network.js:1584
 msgid "VPN Connections"
 msgstr "VPN-anslutningar"
 
-#: ../js/ui/status/network.js:1532
+#: ../js/ui/status/network.js:1596
 msgid "Network Settings"
 msgstr "Nätverksinställningar"
 
-#: ../js/ui/status/network.js:1827
+#: ../js/ui/status/network.js:1890
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du är nu ansluten till mobila bredbandsanslutningen \"%s\""
 
-#: ../js/ui/status/network.js:1831
+#: ../js/ui/status/network.js:1894
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du är nu ansluten till trådlösa nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1835
+#: ../js/ui/status/network.js:1898
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du är nu ansluten till trådbundna nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1839
+#: ../js/ui/status/network.js:1902
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du är nu ansluten till VPN-nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1844
+#: ../js/ui/status/network.js:1907
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du är nu ansluten till \"%s\""
 
-#: ../js/ui/status/network.js:1852
+#: ../js/ui/status/network.js:1915
 msgid "Connection established"
 msgstr "Anslutningen etablerad"
 
-#: ../js/ui/status/network.js:1974
+#: ../js/ui/status/network.js:2041
 msgid "Networking is disabled"
 msgstr "Nätverk är inaktiverat"
 
-#: ../js/ui/status/network.js:2099
+#: ../js/ui/status/network.js:2166
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
@@ -1025,22 +1031,22 @@ msgstr "Volym"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:332
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is online."
 msgstr "%s är ansluten."
 
-#: ../js/ui/telepathyClient.js:337
+#: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is offline."
 msgstr "%s är frånkopplad."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is away."
 msgstr "%s är frånvarande."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:346
 #, c-format
 msgid "%s is busy."
 msgstr "%s är upptagen."
@@ -1048,7 +1054,7 @@ msgstr "%s är upptagen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:474
+#: ../js/ui/telepathyClient.js:484
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Skickades klockan %X på %A"
@@ -1098,7 +1104,7 @@ msgstr[1] "%u ingångar"
 msgid "System Sounds"
 msgstr "Systemljud"
 
-#: ../src/main.c:446
+#: ../src/main.c:445
 msgid "Print version"
 msgstr "Skriv ut version"
 
