@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-04 14:08+0000\n"
-"PO-Revision-Date: 2011-03-30 00:26+0900\n"
-"Last-Translator: Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>\n"
+"POT-Creation-Date: 2011-04-22 21:34+0000\n"
+"PO-Revision-Date: 2011-04-19 23:13+0900\n"
+"Last-Translator: Jiro Matsuzawa <matsuzawa.jr@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -187,23 +187,23 @@ msgstr "'%s'の実行に失敗しました:"
 msgid "All"
 msgstr "すべて"
 
-#: ../js/ui/appDisplay.js:328
+#: ../js/ui/appDisplay.js:329
 msgid "APPLICATIONS"
 msgstr "アプリケーション"
 
-#: ../js/ui/appDisplay.js:354
+#: ../js/ui/appDisplay.js:355
 msgid "SETTINGS"
 msgstr "設定"
 
-#: ../js/ui/appDisplay.js:625
+#: ../js/ui/appDisplay.js:626
 msgid "New Window"
 msgstr "新しいウィンドウで開く"
 
-#: ../js/ui/appDisplay.js:628
+#: ../js/ui/appDisplay.js:629
 msgid "Remove from Favorites"
 msgstr "お気に入りから削除"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:630
 msgid "Add to Favorites"
 msgstr "お気に入りに追加"
 
@@ -336,13 +336,13 @@ msgid "Nothing Scheduled"
 msgstr "予定がありません"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:492
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%B%e日 (%a)"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:495
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%B%e日 (%a)"
@@ -363,7 +363,7 @@ msgstr "今週"
 msgid "Next week"
 msgstr "来週"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "削除"
 
@@ -490,7 +490,7 @@ msgstr "%d 秒後にシステムを再起動します。"
 msgid "Restarting the system."
 msgstr "システムを再起動します。"
 
-#: ../js/ui/endSessionDialog.js:417 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "キャンセル"
@@ -525,11 +525,11 @@ msgstr "ソースの表示"
 msgid "Web Page"
 msgstr "ウェブページ"
 
-#: ../js/ui/messageTray.js:1000
+#: ../js/ui/messageTray.js:1030
 msgid "Open"
 msgstr "開く"
 
-#: ../js/ui/messageTray.js:2164
+#: ../js/ui/messageTray.js:2194
 msgid "System Information"
 msgstr "システム情報"
 
@@ -829,139 +829,139 @@ msgstr "キーボードレイアウトの表示..."
 msgid "Localization Settings"
 msgstr "ローカライズ設定"
 
-#: ../js/ui/status/network.js:105 ../js/ui/status/network.js:1466
+#: ../js/ui/status/network.js:109 ../js/ui/status/network.js:1498
 msgid "<unknown>"
 msgstr "< 不明 >"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:318
+#: ../js/ui/status/network.js:326
 msgid "disabled"
 msgstr "利用不可"
 
-#: ../js/ui/status/network.js:501
+#: ../js/ui/status/network.js:521
 msgid "connecting..."
 msgstr "接続中..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:504
+#: ../js/ui/status/network.js:524
 msgid "authentication required"
 msgstr "認証要求"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:514
+#: ../js/ui/status/network.js:534
 msgid "firmware missing"
 msgstr "ファームウェア無し"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:541
 msgid "cable unplugged"
 msgstr "ケーブル抜け"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:526
+#: ../js/ui/status/network.js:546
 msgid "unavailable"
 msgstr "利用不可"
 
-#: ../js/ui/status/network.js:528
+#: ../js/ui/status/network.js:548
 msgid "connection failed"
 msgstr "接続失敗"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:608 ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:628 ../js/ui/status/network.js:1446
 msgid "Connected (private)"
 msgstr "接続 (制限付)"
 
-#: ../js/ui/status/network.js:689
+#: ../js/ui/status/network.js:713
 msgid "Auto Ethernet"
 msgstr "自動イーサネット接続"
 
-#: ../js/ui/status/network.js:764
+#: ../js/ui/status/network.js:788
 msgid "Auto broadband"
 msgstr "自動ブロードバンド接続"
 
-#: ../js/ui/status/network.js:767
+#: ../js/ui/status/network.js:791
 msgid "Auto dial-up"
 msgstr "自動ダイヤルアップ"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:910 ../js/ui/status/network.js:1426
+#: ../js/ui/status/network.js:937 ../js/ui/status/network.js:1458
 #, c-format
 msgid "Auto %s"
 msgstr "自動 %s"
 
-#: ../js/ui/status/network.js:912
+#: ../js/ui/status/network.js:939
 msgid "Auto bluetooth"
 msgstr "自動 Bluetooth 接続"
 
-#: ../js/ui/status/network.js:1428
+#: ../js/ui/status/network.js:1460
 msgid "Auto wireless"
 msgstr "自動無線接続"
 
-#: ../js/ui/status/network.js:1486
+#: ../js/ui/status/network.js:1518
 msgid "More..."
 msgstr "その他..."
 
-#: ../js/ui/status/network.js:1509
+#: ../js/ui/status/network.js:1541
 msgid "Enable networking"
 msgstr "ネットワークを利用可能にする"
 
-#: ../js/ui/status/network.js:1521
+#: ../js/ui/status/network.js:1553
 msgid "Wired"
 msgstr "有線接続"
 
-#: ../js/ui/status/network.js:1532
+#: ../js/ui/status/network.js:1564
 msgid "Wireless"
 msgstr "無線接続"
 
-#: ../js/ui/status/network.js:1542
+#: ../js/ui/status/network.js:1574
 msgid "Mobile broadband"
 msgstr "モバイルブロードバンド"
 
-#: ../js/ui/status/network.js:1552
+#: ../js/ui/status/network.js:1584
 msgid "VPN Connections"
 msgstr "VPN 接続"
 
-#: ../js/ui/status/network.js:1564
+#: ../js/ui/status/network.js:1596
 msgid "Network Settings"
-msgstr "ネットワーク設定"
+msgstr "ネットワークの設定"
 
-#: ../js/ui/status/network.js:1854
+#: ../js/ui/status/network.js:1890
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "モバイルブロードバンド '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1858
+#: ../js/ui/status/network.js:1894
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "無線ネットワーク '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1862
+#: ../js/ui/status/network.js:1898
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "有線ネットワーク '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1866
+#: ../js/ui/status/network.js:1902
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "VPN ネットワーク '%s' に接続しました"
 
-#: ../js/ui/status/network.js:1871
+#: ../js/ui/status/network.js:1907
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "'%s' に接続しました"
 
-#: ../js/ui/status/network.js:1879
+#: ../js/ui/status/network.js:1915
 msgid "Connection established"
 msgstr "接続を確立しました"
 
-#: ../js/ui/status/network.js:2005
+#: ../js/ui/status/network.js:2041
 msgid "Networking is disabled"
 msgstr "ネットワークを利用できません"
 
-#: ../js/ui/status/network.js:2130
+#: ../js/ui/status/network.js:2166
 msgid "Network Manager"
 msgstr "ネットワークマネージャ"
 
@@ -1082,7 +1082,7 @@ msgstr "%s は離席中です。"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:482
+#: ../js/ui/telepathyClient.js:484
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "%Aの%Xに送信"
@@ -1129,7 +1129,7 @@ msgstr[0] "入力数: %u"
 msgid "System Sounds"
 msgstr "システムのサウンド"
 
-#: ../src/main.c:446
+#: ../src/main.c:445
 msgid "Print version"
 msgstr "バージョンを表示"
 
