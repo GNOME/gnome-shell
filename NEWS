@@ -1,3 +1,22 @@
+3.0.1
+=====
+
+* If WM_CLIENT_MACHINE isn't set, don't assume a window is remote;
+  fixes behavior of Fox toolkit applications under GNOME Shell.
+  https://bugzilla.gnome.org/show_bug.cgi?id=647662 [Colin]
+* Fix cases where windows could get stuck drawing as focused after
+  an attached modal dialog was closed. [Dan]
+  https://bugzilla.gnome.org/show_bug.cgi?id=647613
+* Fix a bug where a window that is too big to be tiled side-by-side
+  would behave strangely when using the gesture of dragging to
+  the top to maximize. [Florian]
+
+Contributors:
+ Florian Müllner, Colin Walters, Dan Winship
+
+Translations:
+ Amitakhya Phukan [as], Kristjan Schmidt [eo], Muhammet Kara [tr]
+
 3.0.0
 =====
 
