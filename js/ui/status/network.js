@@ -505,7 +505,7 @@ NMDevice.prototype = {
     },
 
     connectionValid: function(connection) {
-        throw new TypeError('Invoking pure virtual function NMDevice.connectionValid');
+        return this.device.connection_valid(connection);
     },
 
     setEnabled: function(enabled) {
@@ -723,17 +723,6 @@ NMDeviceWired.prototype = {
         NMDevice.prototype._init.call(this, client, device, connections);
     },
 
-    connectionValid: function(connection) {
-        if (connection._type != NetworkManager.SETTING_WIRED_SETTING_NAME)
-            return false;
-
-        let ethernetSettings = connection.get_setting_by_name(NetworkManager.SETTING_WIRED_SETTING_NAME);
-        let fixedMac = ethernetSettings.get_mac_address();
-        if (fixedMac)
-            return macCompare(fixedMac, macToArray(this.device.perm_hw_address));
-        return true;
-    },
-
     _createSection: function() {
         NMDevice.prototype._createSection.call(this);
 
@@ -876,10 +865,6 @@ NMDeviceModem.prototype = {
         NMDevice.prototype._clearSection.call(this);
     },
 
-    connectionValid: function(connection) {
-        return connection._type == this._connectionType;
-    },
-
     _createAutomaticConnection: function() {
         // FIXME: we need to summon the mobile wizard here
         // or NM will not have the necessary parameters to complete the connection
@@ -911,18 +896,6 @@ NMDeviceBluetooth.prototype = {
         this.category = NMConnectionCategory.WWAN;
 
         NMDevice.prototype._init.call(this, client, device, connections);
-    },
-
-    connectionValid: function(connection) {
-        if (connection._type != NetworkManager.SETTING_BLUETOOTH_SETTING_NAME)
-            return false;
-
-        let bluetoothSettings = connection.get_setting_by_name(NetworkManager.SETTING_BLUETOOTH_SETTING_NAME);
-        let fixedBdaddr = bluetoothSettings.get_bdaddr();
-        if (fixedBdaddr)
-            return macCompare(fixedBdaddr, macToArray(this.device.hw_address));
-
-        return true;
     },
 
     _createAutomaticConnection: function() {
@@ -1047,7 +1020,7 @@ NMDeviceWireless.prototype = {
             // Check if some connection is valid for this AP
             for (let j = 0; j < validConnections.length; j++) {
                 let connection = validConnections[j];
-                if (this._connectionValidForAP(connection, ap) &&
+                if (ap.connection_valid(connection) &&
                     obj.connections.indexOf(connection) == -1) {
                     obj.connections.push(connection);
                 }
@@ -1121,7 +1094,7 @@ NMDeviceWireless.prototype = {
         if (best) {
             for (let i = 0; i < bestApObj.accessPoints.length; i++) {
                 let ap = bestApObj.accessPoints[i];
-                if (this._connectionValidForAP(best, ap)) {
+                if (ap.connection_valid(best)) {
                     this._client.activate_connection(best, this.device, ap.dbus_path, null);
                     break;
                 }
@@ -1257,7 +1230,7 @@ NMDeviceWireless.prototype = {
         // check if this enables new connections for this group
         for (let i = 0; i < this._connections.length; i++) {
             let connection = this._connections[i].connection;
-            if (this._connectionValidForAP(connection, accessPoint) &&
+            if (accessPoint.connection_valid(connection) &&
                 apObj.connections.indexOf(connection) == -1) {
                 apObj.connections.push(connection);
 
@@ -1337,47 +1310,13 @@ NMDeviceWireless.prototype = {
         item.connect('activate', Lang.bind(this, function() {
             let accessPoints = sortAccessPoints(accessPointObj.accessPoints);
             for (let i = 0; i < accessPoints.length; i++) {
-                if (this._connectionValidForAP(connection, accessPoints[i])) {
+                if (accessPoints[i].connection_valid(connection)) {
                     this._client.activate_connection(connection, this.device, accessPoints[i].dbus_path, null);
                     break;
                 }
             }
         }));
         return item;
-    },
-
-    connectionValid: function(connection) {
-        if (connection._type != NetworkManager.SETTING_WIRELESS_SETTING_NAME)
-            return false;
-
-        let wirelessSettings = connection.get_setting_by_name(NetworkManager.SETTING_WIRELESS_SETTING_NAME);
-        let wirelessSecuritySettings = connection.get_setting_by_name(NetworkManager.SETTING_WIRELESS_SECURITY_SETTING_NAME);
-
-        let fixedMac = wirelessSettings.get_mac_address();
-        if (fixedMac && !macCompare(fixedMac, macToArray(this.device.perm_hw_address)))
-            return false;
-
-        if (wirelessSecuritySettings &&
-            wirelessSecuritySettings.key_mgmt != 'none' &&
-            wirelessSecuritySettings.key_mgmt != 'ieee8021x') {
-            let capabilities = this.device.wireless_capabilities;
-            if (!(capabilities & NetworkManager.DeviceWifiCapabilities.WPA) ||
-                !(capabilities & NetworkManager.DeviceWifiCapabilities.CIPHER_TKIP))
-                return false;
-            if (wirelessSecuritySettings.get_num_protos() == 1 &&
-                wirelessSecuritySettings.get_proto(0) == 'rsn' &&
-                !(capabilities & NetworkManager.DeviceWifiCapabilities.RSN))
-                return false;
-            if (wirelessSecuritySettings.get_num_pairwise() == 1 &&
-                wirelessSecuritySettings.get_pairwise(0) == 'ccmp' &&
-                !(capabilities & NetworkManager.DeviceWifiCapabilities.CIPHER_CCMP))
-                return false;
-            if (wirelessSecuritySettings.get_num_groups() == 1 &&
-                wirelessSecuritySettings.get_group(0) == 'ccmp' &&
-                !(capabilities & NetworkManager.DeviceWifiCapabilities.CIPHER_CCMP))
-                return false;
-        }
-        return true;
     },
 
     _clearSection: function() {
@@ -1463,7 +1402,7 @@ NMDeviceWireless.prototype = {
             // Check if connection is valid for any of these access points
             for (let k = 0; k < apObj.accessPoints.length; k++) {
                 let ap = apObj.accessPoints[k];
-                if (this._connectionValidForAP(connection, ap)) {
+                if (ap.connection_valid(connection)) {
                     apObj.connections.push(connection);
                     // this potentially changes the sorting order
                     forceupdate = true;
@@ -1477,37 +1416,6 @@ NMDeviceWireless.prototype = {
             this._clearSection();
             this._createSection();
         }
-    },
-
-    _connectionValidForAP: function(connection, ap) {
-        // copied and adapted from nm-applet
-        let wirelessSettings = connection.get_setting_by_name(NetworkManager.SETTING_WIRELESS_SETTING_NAME);
-        if (!ssidCompare(wirelessSettings.get_ssid(), ap.get_ssid()))
-            return false;
-
-        let wirelessSecuritySettings = connection.get_setting_by_name(NetworkManager.SETTING_WIRELESS_SECURITY_SETTING_NAME);
-
-        let fixedBssid = wirelessSettings.get_bssid();
-        if (fixedBssid && !macCompare(fixedBssid, macToArray(ap.hw_address)))
-            return false;
-
-        let fixedBand = wirelessSettings.band;
-        if (fixedBand) {
-            let freq = ap.frequency;
-            if (fixedBand == 'a' && (freq < 4915 || freq > 5825))
-                return false;
-            if (fixedBand == 'bg' && (freq < 2412 || freq > 2484))
-                return false;
-        }
-
-        let fixedChannel = wirelessSettings.channel;
-        if (fixedChannel && fixedChannel != NetworkManager.utils_wifi_freq_to_channel(ap.frequency))
-            return false;
-
-        if (!wirelessSecuritySettings)
-            return true;
-
-        return wirelessSettings.ap_security_compatible(wirelessSecuritySettings, ap.flags, ap.wpa_flags, ap.rsn_flags, ap.mode);
     },
 
     _createActiveConnectionItem: function() {
