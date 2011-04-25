@@ -1,5 +1,5 @@
 # Thai translation for gnome-shell.
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright (C) 2010-2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 # Sira Nokyoongtong <gumaraa@gmail.com>, 2010.
 #
@@ -9,8 +9,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2010-11-20 13:40+0000\n"
-"PO-Revision-Date: 2010-11-23 10:04+0700\n"
-"Last-Translator: Sira Nokyoongtong <gumaraa@gmail.com>\n"
+"PO-Revision-Date: 2011-04-25 08:46+0700\n"
+"Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -595,7 +595,7 @@ msgstr "บังคับเมาส์ด้วยแป้น"
 
 #: ../js/ui/status/accessibility.js:110
 msgid "Universal Access Settings"
-msgstr "ตั้งค่าสิ่งอำนวยความสะดวก"
+msgstr "ตั้งค่าการเข้าถึงหลากหลาย"
 
 #: ../js/ui/status/accessibility.js:163
 msgid "High Contrast"
