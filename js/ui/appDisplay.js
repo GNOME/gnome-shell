@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
+const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Mainloop = imports.mainloop;
 const Gettext = imports.gettext.domain('gnome-shell');
@@ -22,6 +23,7 @@ const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
 
+const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
 const SCROLL_TIME = 0.1;
 
@@ -34,6 +36,7 @@ AlphabeticalView.prototype = {
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
         this._appSystem = Shell.AppSystem.get_default();
 
+        this._pendingAppLaterId = 0;
         this._apps = [];
         this._filterApp = null;
 
@@ -110,6 +113,30 @@ AlphabeticalView.prototype = {
             this._apps[i].actor.visible = filter(this._apps[i]._appInfo);
     },
 
+    // Create actors for the applications in an idle to avoid blocking
+    // for too long; see bug 647778
+    _addPendingApps: function() {
+        let i;
+        let startTimeMillis = new Date().getTime();
+        for (i = 0; i < this._pendingAppIds.length; i++) {
+            let id = this._pendingAppIds[i];
+            this._addApp(this._pendingApps[id]);
+
+            let currentTimeMillis = new Date().getTime();
+            if (currentTimeMillis - startTimeMillis > MAX_APPLICATION_WORK_MILLIS)
+                break;
+        }
+        this._pendingAppIds.splice(0, i);
+        if (this._pendingAppIds.length > 0) {
+            return true;
+        } else {
+            this._pendingAppLaterId = 0;
+            this._pendingAppIds = null;
+            this._pendingApps = null;
+            return false;
+        }
+    },
+
     refresh: function(apps) {
         let ids = [];
         for (let i in apps)
@@ -120,9 +147,12 @@ AlphabeticalView.prototype = {
 
         this._removeAll();
 
-        for (let i = 0; i < ids.length; i++) {
-            this._addApp(apps[ids[i]]);
-        }
+        this._pendingAppIds = ids;
+        this._pendingApps = apps;
+        if (this._pendingAppLaterId)
+            Meta.later_remove(this._pendingAppLaterId);
+        this._pendingAppLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                                                 Lang.bind(this, this._addPendingApps));
     }
 };
 
