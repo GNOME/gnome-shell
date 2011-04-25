@@ -1,3 +1,69 @@
+3.0.1
+=====
+
+* Network menu
+  - Fix problems updating the menu for mobile broadband devices [Giovanni]
+    https://bugzilla.gnome.org/show_bug.cgi?id=646395
+  - Fix missing device descriptions with multiple devices of the
+    same type [Giovanni]
+    https://bugzilla.gnome.org/show_bug.cgi?id=646074
+  - Label ad-hoc neworks with an appropriate icon [Dan]
+    https://bugzilla.gnome.org/show_bug.cgi?id=646141
+  - Fix displaying some devices states as "invalid" [Dan]
+    https://bugzilla.gnome.org/show_bug.cgi?id=646946
+  - Fix problems with access points that don't report a SSID [Giovanni]
+    https://bugzilla.gnome.org/show_bug.cgi?id=647040
+  - Miscellaneous minor bug fixes [Dan, Giovanni, Owen]
+    645981, 646558, 646443, 646708, 646968
+* Application menu and icon
+  - Fix bug where application menu icon was missing at GNOME Shell
+    startup. [Florian]
+    https://bugzilla.gnome.org/show_bug.cgi?id=644122
+  - Fix missing application menu for dialog windows [Colin]
+    https://bugzilla.gnome.org/show_bug.cgi?id=647082
+ -  When launching an application through an alternate launcher
+    (like for a System Settings pane), association the windows with
+    the application, not the launcher. [Colin]
+    https://bugzilla.gnome.org/show_bug.cgi?id=646689
+* Activities overview
+  - Load the applications view incrementally to avoid potentially freezing
+    for multiple seconds [Colin]
+    https://bugzilla.gnome.org/show_bug.cgi?id=647778
+  - Fix bug where package installation while the overview
+    was up could result in a corrupted application display. [Giovanni]
+    https://bugzilla.gnome.org/show_bug.cgi?id=645801
+  - Fix dragging from the search results to launch apps and docs [Florian]
+    https://bugzilla.gnome.org/show_bug.cgi?id=645990
+  - Fix flickering of selection when searching in the overview [Florian]
+    https://bugzilla.gnome.org/show_bug.cgi?id=646019
+  - Fix bug when typing into the search box when text was already
+    selected [Nohemi]
+    https://bugzilla.gnome.org/show_bug.cgi?id=636341
+* Fix layout of notifications for right-to-left languages [Florian]
+  https://bugzilla.gnome.org/show_bug.cgi?id=646921
+* Remove a confusing special case where Alt-Tab sometimes switched
+  to a different window of the same application rather than to
+  a different application. [Rui]
+  https://bugzilla.gnome.org/show_bug.cgi?id=648132
+* Fix a crash that could happen when a window was opened on a
+  workspace that was immediately removed [Dan]
+  https://bugzilla.gnome.org/show_bug.cgi?id=648132
+* Fix keyboard navigation in logout/reboot dialogs [Dan]
+  https://bugzilla.gnome.org/show_bug.cgi?id=646740
+* Fix missing inspector icon in Looking Glass console [Dan]
+* Miscellaneous minor bug fixes [Adel, Colin, Dan, Florian, Nohemi]
+  645648, 646205, 646257, 646855, 647098, 646730
+
+Contributors:
+ Giovanni Campagna, Nohemi Fernandez, Adel Gadllah, Rui Matos, Florian Müllner,
+ Owen Taylor, Colin Walters, Dan Winship
+
+Translations:
+ Hendrik Richter [de], Jorge González [es], Arash Mousavi [fa],
+ Fran Diéguez [gl], Jiro Matsuzawa [ja], Piotr Drąg [pl], Daniel Nylander [sv],
+ Sira Nokyoongtong [th], Muhammet Kara [tr], Nguyễn Thái Ngọc Duy [vi],
+ Aron Xu [zh_CN], Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.0.0.2
 =======
 
