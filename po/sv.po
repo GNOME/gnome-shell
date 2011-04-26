@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-22 08:46+0200\n"
-"PO-Revision-Date: 2011-04-22 08:50+0100\n"
+"POT-Creation-Date: 2011-04-26 23:10+0200\n"
+"PO-Revision-Date: 2011-04-26 23:10+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -134,27 +134,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Körning av \"%s\" misslyckades:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:230
+#: ../js/ui/appDisplay.js:260
 msgid "All"
 msgstr "Alla"
 
-#: ../js/ui/appDisplay.js:329
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
 
-#: ../js/ui/appDisplay.js:355
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "INSTÄLLNINGAR"
 
-#: ../js/ui/appDisplay.js:626
+#: ../js/ui/appDisplay.js:656
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:659
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: ../js/ui/appDisplay.js:630
+#: ../js/ui/appDisplay.js:660
 msgid "Add to Favorites"
 msgstr "Lägg till som favorit"
 
@@ -306,7 +306,7 @@ msgstr "Idag"
 
 #: ../js/ui/calendar.js:737
 msgid "Tomorrow"
-msgstr "Igår"
+msgstr "Imorgon"
 
 #: ../js/ui/calendar.js:746
 msgid "This week"
@@ -509,18 +509,18 @@ msgid "Dash"
 msgstr "Favoriter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:524
+#: ../js/ui/panel.js:533
 #, c-format
 msgid "Quit %s"
 msgstr "Avsluta %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:902
+#: ../js/ui/panel.js:911
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:1003
+#: ../js/ui/panel.js:1012
 msgid "Top Bar"
 msgstr "Övre rad"
 
@@ -794,7 +794,7 @@ msgid "Localization Settings"
 msgstr "Språkinställningar"
 
 #: ../js/ui/status/network.js:109
-#: ../js/ui/status/network.js:1498
+#: ../js/ui/status/network.js:1501
 msgid "<unknown>"
 msgstr "<okänd>"
 
@@ -803,132 +803,132 @@ msgstr "<okänd>"
 msgid "disabled"
 msgstr "inaktiverad"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:524
 msgid "connecting..."
 msgstr "ansluter..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:524
+#: ../js/ui/status/network.js:527
 msgid "authentication required"
 msgstr "autentisering krävs"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:534
+#: ../js/ui/status/network.js:537
 msgid "firmware missing"
 msgstr "fast programvara saknas"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:541
+#: ../js/ui/status/network.js:544
 msgid "cable unplugged"
 msgstr "kabeln är inte ansluten"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:546
+#: ../js/ui/status/network.js:549
 msgid "unavailable"
 msgstr "inte tillgänglig"
 
-#: ../js/ui/status/network.js:548
+#: ../js/ui/status/network.js:551
 msgid "connection failed"
 msgstr "anslutningen misslyckades"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:628
-#: ../js/ui/status/network.js:1446
+#: ../js/ui/status/network.js:631
+#: ../js/ui/status/network.js:1449
 msgid "Connected (private)"
 msgstr "Ansluten (privat)"
 
-#: ../js/ui/status/network.js:713
+#: ../js/ui/status/network.js:716
 msgid "Auto Ethernet"
 msgstr "Automatiskt ethernet"
 
-#: ../js/ui/status/network.js:788
+#: ../js/ui/status/network.js:791
 msgid "Auto broadband"
 msgstr "Automatiskt bredband"
 
-#: ../js/ui/status/network.js:791
+#: ../js/ui/status/network.js:794
 msgid "Auto dial-up"
 msgstr "Automatiskt uppringt nätverk"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:937
-#: ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:940
+#: ../js/ui/status/network.js:1461
 #, c-format
 msgid "Auto %s"
 msgstr "Automatiskt %s"
 
-#: ../js/ui/status/network.js:939
+#: ../js/ui/status/network.js:942
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1460
+#: ../js/ui/status/network.js:1463
 msgid "Auto wireless"
 msgstr "Automatiskt trådlöst nätverk"
 
-#: ../js/ui/status/network.js:1518
+#: ../js/ui/status/network.js:1521
 msgid "More..."
 msgstr "Mer..."
 
-#: ../js/ui/status/network.js:1541
+#: ../js/ui/status/network.js:1544
 msgid "Enable networking"
 msgstr "Aktivera nätverk"
 
-#: ../js/ui/status/network.js:1553
+#: ../js/ui/status/network.js:1556
 msgid "Wired"
 msgstr "Trådbundet"
 
-#: ../js/ui/status/network.js:1564
+#: ../js/ui/status/network.js:1567
 msgid "Wireless"
 msgstr "Trådlöst"
 
-#: ../js/ui/status/network.js:1574
+#: ../js/ui/status/network.js:1577
 msgid "Mobile broadband"
 msgstr "Mobilt bredband"
 
-#: ../js/ui/status/network.js:1584
+#: ../js/ui/status/network.js:1587
 msgid "VPN Connections"
 msgstr "VPN-anslutningar"
 
-#: ../js/ui/status/network.js:1596
+#: ../js/ui/status/network.js:1599
 msgid "Network Settings"
 msgstr "Nätverksinställningar"
 
-#: ../js/ui/status/network.js:1890
+#: ../js/ui/status/network.js:1893
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du är nu ansluten till mobila bredbandsanslutningen \"%s\""
 
-#: ../js/ui/status/network.js:1894
+#: ../js/ui/status/network.js:1897
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du är nu ansluten till trådlösa nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1898
+#: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du är nu ansluten till trådbundna nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1902
+#: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du är nu ansluten till VPN-nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1907
+#: ../js/ui/status/network.js:1910
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du är nu ansluten till \"%s\""
 
-#: ../js/ui/status/network.js:1915
+#: ../js/ui/status/network.js:1918
 msgid "Connection established"
 msgstr "Anslutningen etablerad"
 
-#: ../js/ui/status/network.js:2041
+#: ../js/ui/status/network.js:2044
 msgid "Networking is disabled"
 msgstr "Nätverk är inaktiverat"
 
-#: ../js/ui/status/network.js:2166
+#: ../js/ui/status/network.js:2169
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
