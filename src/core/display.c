@@ -519,7 +519,9 @@ meta_display_open (void)
   the_display->autoraise_timeout_id = 0;
   the_display->autoraise_window = NULL;
   the_display->focus_window = NULL;
-  the_display->expected_focus_window = NULL;
+  the_display->focus_serial = 0;
+  the_display->server_focus_window = None;
+  the_display->server_focus_serial = 0;
   the_display->grab_old_window_stacking = NULL;
 
   the_display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
@@ -1632,12 +1634,12 @@ meta_display_mouse_mode_focus (MetaDisplay *display,
        * alternative mechanism works great.
        */
       if (meta_prefs_get_focus_mode() == G_DESKTOP_FOCUS_MODE_MOUSE &&
-          display->expected_focus_window != NULL)
+          display->focus_window != NULL)
         {
           meta_topic (META_DEBUG_FOCUS,
                       "Unsetting focus from %s due to mouse entering "
                       "the DESKTOP window\n",
-                      display->expected_focus_window->desc);
+                      display->focus_window->desc);
           meta_display_focus_the_no_focus_window (display,
                                                   window->screen,
                                                   timestamp);
@@ -1851,6 +1853,163 @@ get_input_event (MetaDisplay *display,
   return NULL;
 }
 
+static void
+set_focus_window (MetaDisplay *display,
+                  MetaWindow  *window,
+                  gulong       serial)
+{
+  display->focus_serial = serial;
+
+  if (window == display->focus_window)
+    return;
+
+  if (display->focus_window)
+    {
+      MetaWindow *previous;
+
+      meta_topic (META_DEBUG_FOCUS,
+                  "%s is now the previous focus window due to being focused out or unmapped\n",
+                  display->focus_window->desc);
+
+      /* Make sure that signals handlers invoked by
+       * meta_window_set_focused_internal() don't see
+       * display->focus_window->has_focus == FALSE
+       */
+      previous = display->focus_window;
+      display->focus_window = NULL;
+
+      meta_window_set_focused_internal (previous, FALSE);
+    }
+
+  display->focus_window = window;
+
+  if (display->focus_window)
+    {
+      meta_topic (META_DEBUG_FOCUS, "* Focus --> %s with serial %lu\n",
+                  display->focus_window->desc, serial);
+      meta_window_set_focused_internal (display->focus_window, TRUE);
+    }
+  else
+    meta_topic (META_DEBUG_FOCUS, "* Focus --> NULL with serial %lu\n", serial);
+
+  g_object_notify (G_OBJECT (display), "focus-window");
+  meta_display_update_active_window_hint (display);
+}
+
+static void
+handle_window_focus_event (MetaDisplay  *display,
+                           MetaWindow   *window,
+                           XIEnterEvent *event,
+                           unsigned long serial)
+{
+  MetaWindow *focus_window;
+#ifdef WITH_VERBOSE_MODE
+  const char *window_type;
+
+  /* Note the event can be on either the window or the frame,
+   * we focus the frame for shaded windows
+   */
+  if (window)
+    {
+      if (event->event == window->xwindow)
+        window_type = "client window";
+      else if (window->frame && event->event == window->frame->xwindow)
+        window_type = "frame window";
+      else
+        window_type = "unknown client window";
+    }
+  else if (meta_display_xwindow_is_a_no_focus_window (display, event->event))
+    window_type = "no_focus_window";
+  else if (meta_display_screen_for_root (display, event->event))
+    window_type = "root window";
+  else
+    window_type = "unknown window";
+
+  meta_topic (META_DEBUG_FOCUS,
+              "Focus %s event received on %s 0x%lx (%s) "
+              "mode %s detail %s serial %lu\n",
+              event->evtype == XI_FocusIn ? "in" :
+              event->evtype == XI_FocusOut ? "out" :
+              "???",
+              window ? window->desc : "",
+              event->event, window_type,
+              meta_event_mode_to_string (event->mode),
+              meta_event_detail_to_string (event->mode),
+              event->serial);
+#endif
+
+  /* FIXME our pointer tracking is broken; see how
+   * gtk+/gdk/x11/gdkevents-x11.c or XFree86/xc/programs/xterm/misc.c
+   * for how to handle it the correct way.  In brief you need to track
+   * pointer focus and regular focus, and handle EnterNotify in
+   * PointerRoot mode with no window manager.  However as noted above,
+   * accurate focus tracking will break things because we want to keep
+   * windows "focused" when using keybindings on them, and also we
+   * sometimes "focus" a window by focusing its frame or
+   * no_focus_window; so this all needs rethinking massively.
+   *
+   * My suggestion is to change it so that we clearly separate
+   * actual keyboard focus tracking using the xterm algorithm,
+   * and mutter's "pretend" focus window, and go through all
+   * the code and decide which one should be used in each place;
+   * a hard bit is deciding on a policy for that.
+   *
+   * http://bugzilla.gnome.org/show_bug.cgi?id=90382
+   */
+
+  /* We ignore grabs, though this is questionable. It may be better to
+   * increase the intelligence of the focus window tracking.
+   *
+   * The problem is that keybindings for windows are done with
+   * XGrabKey, which means focus_window disappears and the front of
+   * the MRU list gets confused from what the user expects once a
+   * keybinding is used.
+   */
+
+  if (event->mode == NotifyGrab ||
+      event->mode == NotifyUngrab ||
+      /* From WindowMaker, ignore all funky pointer root events */
+      event->detail > NotifyNonlinearVirtual)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Ignoring focus event generated by a grab or other weirdness\n");
+      return;
+    }
+
+  if (event->evtype == XI_FocusIn)
+    {
+      display->server_focus_window = event->event;
+      display->server_focus_serial = serial;
+
+      if (window && window->override_redirect)
+        focus_window = NULL;
+      else
+        focus_window = window;
+    }
+  else if (event->evtype == XI_FocusOut)
+    {
+      if (event->detail == NotifyInferior)
+        {
+          /* This event means the client moved focus to a subwindow */
+          meta_topic (META_DEBUG_FOCUS,
+                      "Ignoring focus out with NotifyInferior\n");
+          return;
+        }
+
+      display->server_focus_window = None;
+      display->server_focus_serial = serial;
+      focus_window = NULL;
+    }
+  else
+    g_return_if_reached ();
+
+  if (display->server_focus_serial >= display->focus_serial)
+    {
+      set_focus_window (display, focus_window,
+                        display->server_focus_serial);
+    }
+}
+
 /**
  * event_callback:
  * @event: The event that just happened
@@ -1893,7 +2052,18 @@ event_callback (XEvent   *event,
   filter_out_event = FALSE;
   display->current_time = event_get_time (display, event);
   display->monitor_cache_invalidated = TRUE;
-  
+
+  if (event->xany.serial > display->focus_serial &&
+      display->focus_window &&
+      display->focus_window->xwindow != display->server_focus_window)
+    {
+      meta_topic (META_DEBUG_FOCUS, "Earlier attempt to focus %s failed\n",
+                  display->focus_window->desc);
+      set_focus_window (display,
+                        meta_display_lookup_x_window (display, display->server_focus_window),
+                        display->server_focus_serial);
+    }
+
   modified = event_get_modified_window (display, event);
 
   input_event = get_input_event (display, event);
@@ -2350,40 +2520,19 @@ event_callback (XEvent   *event,
           break;
         case XI_FocusIn:
         case XI_FocusOut:
-          if (window)
+          /* libXi does not properly copy the serial to the XIEnterEvent, so pull it
+           * from the parent XAnyEvent.
+           * See: https://bugs.freedesktop.org/show_bug.cgi?id=64687
+           */
+          handle_window_focus_event (display, window, enter_event, event->xany.serial);
+          if (!window)
             {
-              meta_window_notify_focus (window, enter_event);
-            }
-          else if (meta_display_xwindow_is_a_no_focus_window (display,
-                                                              enter_event->event))
-            {
-              meta_topic (META_DEBUG_FOCUS,
-                          "Focus %s event received on no_focus_window 0x%lx "
-                          "mode %s detail %s\n",
-                          enter_event->evtype == XI_FocusIn ? "in" :
-                          enter_event->evtype == XI_FocusOut ? "out" :
-                          "???",
-                          enter_event->event,
-                          meta_event_mode_to_string (enter_event->mode),
-                          meta_event_detail_to_string (enter_event->detail));
-            }
-          else
-            {
+              /* Check if the window is a root window. */
               MetaScreen *screen =
                 meta_display_screen_for_root(display,
                                              enter_event->event);
               if (screen == NULL)
                 break;
-
-              meta_topic (META_DEBUG_FOCUS,
-                          "Focus %s event received on root window 0x%lx "
-                          "mode %s detail %s\n",
-                          enter_event->evtype == XI_FocusIn ? "in" :
-                          enter_event->evtype == XI_FocusOut ? "out" :
-                          "???",
-                          enter_event->event,
-                          meta_event_mode_to_string (enter_event->mode),
-                          meta_event_detail_to_string (enter_event->detail));
           
               if (enter_event->evtype == XI_FocusIn &&
                   enter_event->mode == XINotifyDetailNone)
@@ -2521,13 +2670,6 @@ event_callback (XEvent   *event,
                                   window->unmaps_pending);
                     }
                 }
-
-              /* Unfocus on UnmapNotify, do this after the possible
-               * window_free above so that window_free can see if window->has_focus
-               * and move focus to another window
-               */
-              if (window)
-                meta_window_lost_focus (window);
             }
           break;
         case MapNotify:
@@ -5622,18 +5764,57 @@ meta_display_set_input_focus_window (MetaDisplay *display,
     return;
 
   meta_error_trap_push (display);
+  display->focus_serial = XNextRequest (display->xdisplay);
+  meta_topic (META_DEBUG_FOCUS, "XSetInputFocus(%s, %u) with serial %lu\n",
+              window->desc, timestamp, display->focus_serial);
   XSetInputFocus (display->xdisplay,
                   focus_frame ? window->frame->xwindow : window->xwindow,
                   RevertToPointerRoot,
                   timestamp);
   meta_error_trap_pop (display);
 
-  display->expected_focus_window = window;
   display->last_focus_time = timestamp;
   display->active_screen = window->screen;
 
   if (window != display->autoraise_window)
     meta_display_remove_autoraise_callback (window->display);
+
+  set_focus_window (display, window, display->focus_serial);
+}
+
+void
+meta_display_request_take_focus (MetaDisplay *display,
+                                 MetaWindow  *window,
+                                 guint32      timestamp)
+{
+  if (timestamp_too_old (display, window, &timestamp))
+    return;
+
+  meta_topic (META_DEBUG_FOCUS, "WM_TAKE_FOCUS(%s, %u)\n",
+              window->desc, timestamp);
+
+  if (window != display->focus_window)
+    {
+      /* The "Globally Active Input" window case, where the window
+       * doesn't want us to call XSetInputFocus on it, but does
+       * want us to send a WM_TAKE_FOCUS.
+       *
+       * We can't just set display->focus_window to @window, since we
+       * we don't know when (or even if) the window will actually take
+       * focus, so we could end up being wrong for arbitrarily long.
+       * But we also can't leave it set to the current window, or else
+       * bug #597352 would come back. So we focus the no_focus_window
+       * now (and set display->focus_window to that), send the
+       * WM_TAKE_FOCUS, and then just forget about @window
+       * until/unless we get a FocusIn.
+       */
+      meta_display_focus_the_no_focus_window (display,
+                                              window->screen,
+                                              timestamp);
+    }
+  meta_window_send_icccm_message (window,
+                                  display->atom_WM_TAKE_FOCUS,
+                                  timestamp);
 }
 
 void
@@ -5644,15 +5825,19 @@ meta_display_focus_the_no_focus_window (MetaDisplay *display,
   if (timestamp_too_old (display, NULL, &timestamp))
     return;
 
+  display->focus_serial = XNextRequest (display->xdisplay);
+  meta_topic (META_DEBUG_FOCUS, "Focusing no_focus_window at %u with serial %lu\n",
+              timestamp, display->focus_serial);
   XSetInputFocus (display->xdisplay,
                   screen->no_focus_window,
                   RevertToPointerRoot,
                   timestamp);
-  display->expected_focus_window = NULL;
   display->last_focus_time = timestamp;
   display->active_screen = screen;
 
   meta_display_remove_autoraise_callback (display);
+
+  set_focus_window (display, NULL, display->focus_serial);
 }
 
 void
@@ -5762,11 +5947,9 @@ meta_display_has_shape (MetaDisplay *display)
  * meta_display_get_focus_window:
  * @display: a #MetaDisplay
  *
- * Get the window that, according to events received from X server,
- * currently has the input focus. We may have already sent a request
- * to the X server to move the focus window elsewhere. (The
- * expected_focus_window records where we've last set the input
- * focus.)
+ * Get our best guess as to the "currently" focused window (that is,
+ * the window that we expect will be focused at the point when the X
+ * server processes our next request).
  *
  * Return Value: (transfer none): The current focus window
  */

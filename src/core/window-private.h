@@ -277,7 +277,7 @@ struct _MetaWindow
   /* EWHH demands attention flag */
   guint wm_state_demands_attention : 1;
   
-  /* this flag tracks receipt of focus_in focus_out */
+  /* TRUE iff window == window->display->focus_window */
   guint has_focus : 1;
 
   /* Have we placed this window? */
@@ -590,9 +590,8 @@ gboolean meta_window_property_notify   (MetaWindow *window,
                                         XEvent     *event);
 gboolean meta_window_client_message    (MetaWindow *window,
                                         XEvent     *event);
-gboolean meta_window_notify_focus      (MetaWindow *window,
-                                        XIEnterEvent *event);
-void     meta_window_lost_focus        (MetaWindow *window);
+void     meta_window_set_focused_internal (MetaWindow *window,
+                                           gboolean    focused);
 
 void     meta_window_set_current_workspace_hint (MetaWindow *window);
 

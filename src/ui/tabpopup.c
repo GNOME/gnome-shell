@@ -857,10 +857,7 @@ meta_convert_meta_to_wnck (MetaWindow *window, MetaScreen *screen)
   WnckWindowDisplayInfo wnck_window;
   wnck_window.icon = window->icon;
   wnck_window.mini_icon = window->mini_icon;
-  
-  wnck_window.is_active = FALSE;
-  if (window == window->display->expected_focus_window)
-    wnck_window.is_active = TRUE;
+  wnck_window.is_active = window->has_focus;
 
   if (window->frame)
     {
