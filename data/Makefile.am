@@ -30,26 +30,14 @@ dist_theme_DATA =				\
 	theme/filter-selected-ltr.svg		\
 	theme/filter-selected-rtl.svg		\
 	theme/gnome-shell.css			\
-	theme/mosaic-view-active.svg		\
-	theme/mosaic-view.svg			\
-	theme/move-window-on-new.svg		\
 	theme/panel-border.svg			\
 	theme/panel-button-border.svg		\
 	theme/panel-button-highlight-narrow.svg	\
 	theme/panel-button-highlight-wide.svg	\
 	theme/process-working.svg		\
 	theme/running-indicator.svg		\
-	theme/scroll-button-down-hover.png	\
-	theme/scroll-button-down.png		\
-	theme/scroll-button-up-hover.png	\
-	theme/scroll-button-up.png		\
 	theme/scroll-hhandle.svg		\
 	theme/scroll-vhandle.svg		\
-	theme/section-more.svg			\
-	theme/section-more-open.svg		\
-	theme/separator-white.png		\
-	theme/single-view-active.svg		\
-	theme/single-view.svg			\
 	theme/source-button-border.svg		\
 	theme/toggle-off-us.svg			\
 	theme/toggle-off-intl.svg		\
