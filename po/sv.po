@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-22 08:46+0200\n"
-"PO-Revision-Date: 2011-04-22 08:50+0100\n"
+"POT-Creation-Date: 2011-04-26 23:09+0200\n"
+"PO-Revision-Date: 2011-04-26 23:09+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -134,27 +134,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Körning av \"%s\" misslyckades:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:230
+#: ../js/ui/appDisplay.js:260
 msgid "All"
 msgstr "Alla"
 
-#: ../js/ui/appDisplay.js:329
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
 
-#: ../js/ui/appDisplay.js:355
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "INSTÄLLNINGAR"
 
-#: ../js/ui/appDisplay.js:626
+#: ../js/ui/appDisplay.js:656
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:659
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: ../js/ui/appDisplay.js:630
+#: ../js/ui/appDisplay.js:660
 msgid "Add to Favorites"
 msgstr "Lägg till som favorit"
 
@@ -306,7 +306,7 @@ msgstr "Idag"
 
 #: ../js/ui/calendar.js:737
 msgid "Tomorrow"
-msgstr "Igår"
+msgstr "Imorgon"
 
 #: ../js/ui/calendar.js:746
 msgid "This week"
@@ -447,7 +447,7 @@ msgstr "Starta om systemet."
 
 #: ../js/ui/endSessionDialog.js:413
 #: ../js/ui/polkitAuthenticationAgent.js:172
-#: ../js/ui/status/bluetooth.js:466
+#: ../js/ui/status/bluetooth.js:491
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -509,18 +509,18 @@ msgid "Dash"
 msgstr "Favoriter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:524
+#: ../js/ui/panel.js:533
 #, c-format
 msgid "Quit %s"
 msgstr "Avsluta %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:902
+#: ../js/ui/panel.js:913
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:1003
+#: ../js/ui/panel.js:1015
 msgid "Top Bar"
 msgstr "Övre rad"
 
@@ -668,11 +668,11 @@ msgid "Large Text"
 msgstr "Stor text"
 
 #: ../js/ui/status/bluetooth.js:42
-#: ../js/ui/status/bluetooth.js:237
-#: ../js/ui/status/bluetooth.js:333
-#: ../js/ui/status/bluetooth.js:367
-#: ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:358
+#: ../js/ui/status/bluetooth.js:392
+#: ../js/ui/status/bluetooth.js:432
+#: ../js/ui/status/bluetooth.js:465
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -692,96 +692,96 @@ msgstr "Konfigurera en ny enhet..."
 msgid "Bluetooth Settings"
 msgstr "Inställningar för Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:188
+#: ../js/ui/status/bluetooth.js:215
 msgid "Connection"
 msgstr "Anslutning"
 
-#: ../js/ui/status/bluetooth.js:224
+#: ../js/ui/status/bluetooth.js:251
 msgid "Send Files..."
 msgstr "Skicka filer..."
 
-#: ../js/ui/status/bluetooth.js:229
+#: ../js/ui/status/bluetooth.js:256
 msgid "Browse Files..."
 msgstr "Bläddra efter filer..."
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:265
 msgid "Error browsing device"
 msgstr "Fel vid bläddring i enheten"
 
-#: ../js/ui/status/bluetooth.js:239
+#: ../js/ui/status/bluetooth.js:266
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Den begärda enheten kan inte bläddras. Felet är \"%s\""
 
-#: ../js/ui/status/bluetooth.js:247
+#: ../js/ui/status/bluetooth.js:274
 msgid "Keyboard Settings"
 msgstr "Tangentbordsinställningar"
 
-#: ../js/ui/status/bluetooth.js:252
+#: ../js/ui/status/bluetooth.js:279
 msgid "Mouse Settings"
 msgstr "Musinställningar"
 
-#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/bluetooth.js:286
 #: ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Ljudinställningar"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:393
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Auktoriseringsbegäran från %s"
 
-#: ../js/ui/status/bluetooth.js:374
+#: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Enheten %s vill ha åtkomst till tjänsten \"%s\""
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:401
 msgid "Always grant access"
 msgstr "Tillåt alltid åtkomst"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:402
 msgid "Grant this time only"
 msgstr "Tillåt för denna gång"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:403
 msgid "Reject"
 msgstr "Neka"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:433
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Bekräftelse av ihopparning för %s"
 
-#: ../js/ui/status/bluetooth.js:414
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:473
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Enheten %s vill paras ihop med denna dator"
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:440
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Bekräfta huruvida PIN-koden \"%s\" stämmer med den på enheten."
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:442
 msgid "Matches"
 msgstr "Stämmer"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:443
 msgid "Does not match"
 msgstr "Stämmer inte"
 
-#: ../js/ui/status/bluetooth.js:441
+#: ../js/ui/status/bluetooth.js:466
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Ihopparningsbegäran för %s"
 
-#: ../js/ui/status/bluetooth.js:449
+#: ../js/ui/status/bluetooth.js:474
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Ange PIN-koden som anges på enheten."
 
-#: ../js/ui/status/bluetooth.js:465
+#: ../js/ui/status/bluetooth.js:490
 msgid "OK"
 msgstr "OK"
 
@@ -793,142 +793,141 @@ msgstr "Visa tangentbordslayout..."
 msgid "Localization Settings"
 msgstr "Språkinställningar"
 
-#: ../js/ui/status/network.js:109
-#: ../js/ui/status/network.js:1498
+#: ../js/ui/status/network.js:113
 msgid "<unknown>"
 msgstr "<okänd>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:326
+#: ../js/ui/status/network.js:330
 msgid "disabled"
 msgstr "inaktiverad"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:528
 msgid "connecting..."
 msgstr "ansluter..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:524
+#: ../js/ui/status/network.js:531
 msgid "authentication required"
 msgstr "autentisering krävs"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:534
+#: ../js/ui/status/network.js:541
 msgid "firmware missing"
 msgstr "fast programvara saknas"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:541
+#: ../js/ui/status/network.js:548
 msgid "cable unplugged"
 msgstr "kabeln är inte ansluten"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:546
+#: ../js/ui/status/network.js:553
 msgid "unavailable"
 msgstr "inte tillgänglig"
 
-#: ../js/ui/status/network.js:548
+#: ../js/ui/status/network.js:555
 msgid "connection failed"
 msgstr "anslutningen misslyckades"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:628
-#: ../js/ui/status/network.js:1446
+#: ../js/ui/status/network.js:635
+#: ../js/ui/status/network.js:1532
 msgid "Connected (private)"
 msgstr "Ansluten (privat)"
 
-#: ../js/ui/status/network.js:713
+#: ../js/ui/status/network.js:720
 msgid "Auto Ethernet"
 msgstr "Automatiskt ethernet"
 
-#: ../js/ui/status/network.js:788
+#: ../js/ui/status/network.js:795
 msgid "Auto broadband"
 msgstr "Automatiskt bredband"
 
-#: ../js/ui/status/network.js:791
+#: ../js/ui/status/network.js:798
 msgid "Auto dial-up"
 msgstr "Automatiskt uppringt nätverk"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:937
-#: ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:944
+#: ../js/ui/status/network.js:1544
 #, c-format
 msgid "Auto %s"
 msgstr "Automatiskt %s"
 
-#: ../js/ui/status/network.js:939
+#: ../js/ui/status/network.js:946
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1460
+#: ../js/ui/status/network.js:1546
 msgid "Auto wireless"
 msgstr "Automatiskt trådlöst nätverk"
 
-#: ../js/ui/status/network.js:1518
+#: ../js/ui/status/network.js:1583
 msgid "More..."
 msgstr "Mer..."
 
-#: ../js/ui/status/network.js:1541
+#: ../js/ui/status/network.js:1625
 msgid "Enable networking"
 msgstr "Aktivera nätverk"
 
-#: ../js/ui/status/network.js:1553
+#: ../js/ui/status/network.js:1637
 msgid "Wired"
 msgstr "Trådbundet"
 
-#: ../js/ui/status/network.js:1564
+#: ../js/ui/status/network.js:1648
 msgid "Wireless"
 msgstr "Trådlöst"
 
-#: ../js/ui/status/network.js:1574
+#: ../js/ui/status/network.js:1658
 msgid "Mobile broadband"
 msgstr "Mobilt bredband"
 
-#: ../js/ui/status/network.js:1584
+#: ../js/ui/status/network.js:1668
 msgid "VPN Connections"
 msgstr "VPN-anslutningar"
 
-#: ../js/ui/status/network.js:1596
+#: ../js/ui/status/network.js:1680
 msgid "Network Settings"
 msgstr "Nätverksinställningar"
 
-#: ../js/ui/status/network.js:1890
+#: ../js/ui/status/network.js:1974
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du är nu ansluten till mobila bredbandsanslutningen \"%s\""
 
-#: ../js/ui/status/network.js:1894
+#: ../js/ui/status/network.js:1978
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du är nu ansluten till trådlösa nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1898
+#: ../js/ui/status/network.js:1982
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du är nu ansluten till trådbundna nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1902
+#: ../js/ui/status/network.js:1986
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du är nu ansluten till VPN-nätverket \"%s\""
 
-#: ../js/ui/status/network.js:1907
+#: ../js/ui/status/network.js:1991
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du är nu ansluten till \"%s\""
 
-#: ../js/ui/status/network.js:1915
+#: ../js/ui/status/network.js:1999
 msgid "Connection established"
 msgstr "Anslutningen etablerad"
 
-#: ../js/ui/status/network.js:2041
+#: ../js/ui/status/network.js:2125
 msgid "Networking is disabled"
 msgstr "Nätverk är inaktiverat"
 
-#: ../js/ui/status/network.js:2166
+#: ../js/ui/status/network.js:2250
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
@@ -1058,6 +1057,13 @@ msgstr "%s är upptagen."
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Skickades klockan %X på %A"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/telepathyClient.js:529
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s är nu känd som %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
