@@ -411,8 +411,6 @@ meta_window_actor_constructed (GObject *object)
   if (format && format->type == PictTypeDirect && format->direct.alphaMask)
     priv->argb32 = TRUE;
 
-  meta_window_actor_update_opacity (self);
-
   if (!priv->actor)
     {
       priv->actor = meta_shaped_texture_new ();
@@ -442,7 +440,7 @@ meta_window_actor_constructed (GObject *object)
       clutter_actor_raise_top (priv->actor);
     }
 
-
+  meta_window_actor_update_opacity (self);
   meta_window_actor_update_shape (self, priv->shaped);
 }
 
@@ -725,7 +723,7 @@ meta_window_actor_paint (ClutterActor *actor)
                          params.y_offset + shape_bounds.y,
                          shape_bounds.width,
                          shape_bounds.height,
-                         (clutter_actor_get_paint_opacity (actor) * params.opacity) / 255,
+                         (clutter_actor_get_paint_opacity (actor) * params.opacity * priv->opacity) / (255 * 255),
                          priv->shadow_clip);
     }
 
@@ -1690,7 +1688,7 @@ meta_window_actor_get_obscured_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  if (!priv->argb32 && priv->back_pixmap)
+  if (!priv->argb32 && priv->opacity == 0xff && priv->back_pixmap)
     {
       if (priv->shaped)
         return priv->shape_region;
@@ -2147,5 +2145,5 @@ meta_window_actor_update_opacity (MetaWindowActor *self)
     opacity = 255;
 
   self->priv->opacity = opacity;
-  clutter_actor_set_opacity (CLUTTER_ACTOR (self), opacity);
+  clutter_actor_set_opacity (self->priv->actor, opacity);
 }
