@@ -77,9 +77,9 @@ HistoryManager.prototype = {
             this._history[this._history.length - 1] != input) {
 
             this._history.push(input);
-            this._historyIndex = this._history.length;
             this._save();
-        }   
+        }
+        this._historyIndex = this._history.length;
     },
 
     _onEntryKeyPress: function(entry, event) {
