@@ -1086,21 +1086,19 @@ shell_global_reexec_self (ShellGlobal *global)
 }
 
 /**
- * shell_global_breakpoint:
- * @global: A #ShellGlobal
+ * shell_breakpoint:
  *
  * Using G_BREAKPOINT(), interrupt the current process.  This is useful
  * in conjunction with a debugger such as gdb.
  */
 void
-shell_global_breakpoint (ShellGlobal *global)
+shell_breakpoint (void)
 {
   G_BREAKPOINT ();
 }
 
 /**
- * shell_global_parse_search_provider:
- * @global: A #ShellGlobal
+ * shell_parse_search_provider:
  * @data: description of provider
  * @name: (out): location to store a display name
  * @url: (out): location to store template of url
@@ -1111,13 +1109,12 @@ shell_global_breakpoint (ShellGlobal *global)
  * Returns: %TRUE on success
  */
 gboolean
-shell_global_parse_search_provider (ShellGlobal   *global,
-                                    const char    *data,
-                                    char         **name,
-                                    char         **url,
-                                    GList        **langs,
-                                    char         **icon_data_uri,
-                                    GError       **error)
+shell_parse_search_provider (const char    *data,
+                             char         **name,
+                             char         **url,
+                             GList        **langs,
+                             char         **icon_data_uri,
+                             GError       **error)
 {
   xmlDocPtr doc = xmlParseMemory (data, strlen(data));
   xmlNode *root;

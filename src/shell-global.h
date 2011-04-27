@@ -73,15 +73,14 @@ void     shell_global_end_modal   (ShellGlobal *global,
 
 void shell_global_reexec_self (ShellGlobal *global);
 
-void shell_global_breakpoint (ShellGlobal *global);
+void shell_breakpoint (void);
 
-gboolean shell_global_parse_search_provider (ShellGlobal   *global,
-                                             const char    *data,
-                                             char         **name,
-                                             char         **url,
-                                             GList        **langs,
-                                             char         **icon_data_uri,
-                                             GError       **error);
+gboolean shell_parse_search_provider (const char    *data,
+                                      char         **name,
+                                      char         **url,
+                                      GList        **langs,
+                                      char         **icon_data_uri,
+                                      GError       **error);
 
 void shell_global_gc (ShellGlobal *global);
 

@@ -276,7 +276,7 @@ OpenSearchSystem.prototype = {
     _addProvider: function(fileName) {
         let path = global.datadir + '/search_providers/' + fileName;
         let source = Shell.get_file_contents_utf8_sync(path);
-        let [success, name, url, langs, icon_uri] = global.parse_search_provider(source);
+        let [success, name, url, langs, icon_uri] = Shell.parse_search_provider(source);
         let provider ={ name: name,
                         url: url,
                         id: this._providers.length,
