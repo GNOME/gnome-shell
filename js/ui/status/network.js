@@ -1285,7 +1285,7 @@ NMDeviceWireless.prototype = {
             let menuPos = 0;
             for (pos = 0;
                  pos < this._networks.length &&
-                 this._networkSortFunction(this._networks[i], apObj) < 0; ++pos) {
+                 this._networkSortFunction(this._networks[pos], apObj) < 0; ++pos) {
                 if (this._networks[pos] != this._activeNetwork)
                     menuPos++;
             }
