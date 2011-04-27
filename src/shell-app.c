@@ -415,16 +415,6 @@ shell_app_activate_window (ShellApp     *app,
                                                   meta_window_get_user_time (most_recent_transient)))
         window = most_recent_transient;
 
-
-      if (!shell_window_tracker_is_window_interesting (window))
-        {
-          /* We won't get notify::user-time signals for uninteresting windows,
-           * which means that an app's last_user_time won't get updated.
-           * Update it here instead.
-           */
-          app->running_state->last_user_time = timestamp;
-        }
-
       if (active != workspace)
         meta_workspace_activate_with_focus (workspace, window, timestamp);
       else
