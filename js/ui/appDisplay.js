@@ -126,7 +126,7 @@ AlphabeticalView.prototype = {
             if (currentTimeMillis - startTimeMillis > MAX_APPLICATION_WORK_MILLIS)
                 break;
         }
-        this._pendingAppIds.splice(0, i);
+        this._pendingAppIds.splice(0, i + 1);
         if (this._pendingAppIds.length > 0) {
             return true;
         } else {
