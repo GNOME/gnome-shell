@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-14 17:19+0000\n"
-"PO-Revision-Date: 2011-04-25 22:43+0200\n"
+"POT-Creation-Date: 2011-04-25 20:50+0000\n"
+"PO-Revision-Date: 2011-04-28 10:51+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -244,19 +244,19 @@ msgstr "Factor de escala en el eje Y"
 
 #: ../clutter/clutter-actor.c:4101
 msgid "Scale Center X"
-msgstr ""
+msgstr "Centro X del escalado"
 
 #: ../clutter/clutter-actor.c:4102
 msgid "Horizontal scale center"
-msgstr ""
+msgstr "Centro de la escala horizontal"
 
 #: ../clutter/clutter-actor.c:4117
 msgid "Scale Center Y"
-msgstr ""
+msgstr "Centro Y del escalado"
 
 #: ../clutter/clutter-actor.c:4118
 msgid "Vertical scale center"
-msgstr ""
+msgstr "Centro de la escala vertical"
 
 #: ../clutter/clutter-actor.c:4133
 msgid "Scale Gravity"
@@ -264,7 +264,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4134
 msgid "The center of scaling"
-msgstr ""
+msgstr "El centro del escalado"
 
 #: ../clutter/clutter-actor.c:4151
 msgid "Rotation Angle X"
@@ -320,7 +320,7 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4251
 msgid "Center point for rotation around the Z axis"
-msgstr ""
+msgstr "Punto central de la rotación alrededor del eje Z"
 
 #: ../clutter/clutter-actor.c:4269
 msgid "Anchor X"
@@ -372,11 +372,11 @@ msgstr "Dirección del texto"
 
 #: ../clutter/clutter-actor.c:4373
 msgid "Has Pointer"
-msgstr ""
+msgstr "Tiene puntero"
 
 #: ../clutter/clutter-actor.c:4374
 msgid "Whether the actor contains the pointer of an input device"
-msgstr ""
+msgstr "Indica si el actor contiene un puntero a un dispositivo de entrada"
 
 #: ../clutter/clutter-actor.c:4391
 msgid "Actions"
@@ -431,7 +431,7 @@ msgstr "Alinear ejes"
 
 #: ../clutter/clutter-align-constraint.c:267
 msgid "The axis to align the position to"
-msgstr ""
+msgstr "El eje al que alinear la posición"
 
 #: ../clutter/clutter-align-constraint.c:286
 #: ../clutter/clutter-desaturate-effect.c:304
@@ -442,7 +442,7 @@ msgstr "Factor"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "El factor de alineación, entre 0.0 y 1.0"
 
-#: ../clutter/clutter-alpha.c:339 ../clutter/clutter-animation.c:523
+#: ../clutter/clutter-alpha.c:339 ../clutter/clutter-animation.c:528
 #: ../clutter/clutter-animator.c:1802
 msgid "Timeline"
 msgstr "Línea de tiempo"
@@ -459,7 +459,7 @@ msgstr "Valor alfa"
 msgid "Alpha value as computed by the alpha"
 msgstr ""
 
-#: ../clutter/clutter-alpha.c:376 ../clutter/clutter-animation.c:479
+#: ../clutter/clutter-alpha.c:376 ../clutter/clutter-animation.c:484
 msgid "Mode"
 msgstr "Modo"
 
@@ -467,47 +467,47 @@ msgstr "Modo"
 msgid "Progress mode"
 msgstr "Modo de progreso"
 
-#: ../clutter/clutter-animation.c:463
+#: ../clutter/clutter-animation.c:468
 msgid "Object"
 msgstr "Objeto"
 
-#: ../clutter/clutter-animation.c:464
+#: ../clutter/clutter-animation.c:469
 msgid "Object to which the animation applies"
-msgstr ""
+msgstr "Objeto al que se aplica la animación"
 
-#: ../clutter/clutter-animation.c:480
+#: ../clutter/clutter-animation.c:485
 msgid "The mode of the animation"
 msgstr "El modo de la animación"
 
-#: ../clutter/clutter-animation.c:494 ../clutter/clutter-animator.c:1786
+#: ../clutter/clutter-animation.c:499 ../clutter/clutter-animator.c:1786
 #: ../clutter/clutter-media.c:194 ../clutter/clutter-state.c:1422
 #: ../clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "Duración"
 
-#: ../clutter/clutter-animation.c:495
+#: ../clutter/clutter-animation.c:500
 msgid "Duration of the animation, in milliseconds"
-msgstr ""
+msgstr "Duración de la animación, en milisegundos"
 
-#: ../clutter/clutter-animation.c:509 ../clutter/clutter-timeline.c:263
+#: ../clutter/clutter-animation.c:514 ../clutter/clutter-timeline.c:263
 msgid "Loop"
 msgstr "Bucle"
 
-#: ../clutter/clutter-animation.c:510
+#: ../clutter/clutter-animation.c:515
 msgid "Whether the animation should loop"
 msgstr ""
 
-#: ../clutter/clutter-animation.c:524
+#: ../clutter/clutter-animation.c:529
 msgid "The timeline used by the animation"
 msgstr "La línea de tiempo usada por la animación"
 
-#: ../clutter/clutter-animation.c:537 ../clutter/clutter-behaviour.c:298
+#: ../clutter/clutter-animation.c:542 ../clutter/clutter-behaviour.c:298
 msgid "Alpha"
 msgstr "Alfa"
 
-#: ../clutter/clutter-animation.c:538
+#: ../clutter/clutter-animation.c:543
 msgid "The alpha used by the animation"
-msgstr ""
+msgstr "El alfa usado por la animación"
 
 #: ../clutter/clutter-animator.c:1787
 msgid "The duration of the animation"
@@ -539,7 +539,7 @@ msgstr "Profundidad final que aplicar"
 
 #: ../clutter/clutter-behaviour-ellipse.c:394
 msgid "Start Angle"
-msgstr ""
+msgstr "Ángulo inicial"
 
 #: ../clutter/clutter-behaviour-ellipse.c:395
 #: ../clutter/clutter-behaviour-rotate.c:276
@@ -548,7 +548,7 @@ msgstr "Ángulo inicial"
 
 #: ../clutter/clutter-behaviour-ellipse.c:410
 msgid "End Angle"
-msgstr ""
+msgstr "Ángulo final"
 
 #: ../clutter/clutter-behaviour-ellipse.c:411
 #: ../clutter/clutter-behaviour-rotate.c:294
@@ -704,7 +704,7 @@ msgstr "Escala final en el eje Y"
 
 #: ../clutter/clutter-bind-constraint.c:317
 msgid "The source of the binding"
-msgstr ""
+msgstr "El origen de la asociación"
 
 #: ../clutter/clutter-bind-constraint.c:330
 msgid "Coordinate"
@@ -712,7 +712,7 @@ msgstr "Coordenada"
 
 #: ../clutter/clutter-bind-constraint.c:331
 msgid "The coordinate to bind"
-msgstr ""
+msgstr "La coordenada que asociar"
 
 #: ../clutter/clutter-bind-constraint.c:345
 #: ../clutter/clutter-path-constraint.c:226
@@ -722,7 +722,7 @@ msgstr "Desplazamiento"
 
 #: ../clutter/clutter-bind-constraint.c:346
 msgid "The offset in pixels to apply to the binding"
-msgstr ""
+msgstr "El desplazamiento en píxeles que aplicar a la asociación"
 
 #: ../clutter/clutter-binding-pool.c:320
 msgid "The unique name of the binding pool"
@@ -1096,7 +1096,7 @@ msgstr "El modo del dispositivo"
 
 #: ../clutter/clutter-input-device.c:296
 msgid "Has Cursor"
-msgstr ""
+msgstr "Tiene cursor"
 
 #: ../clutter/clutter-input-device.c:297
 msgid "Whether the device has a cursor"
@@ -1424,7 +1424,7 @@ msgstr ""
 #: ../clutter/clutter-shader.c:501
 #, c-format
 msgid "%s compilation failed: %s"
-msgstr ""
+msgstr "falló la compilación de %s: %s"
 
 #: ../clutter/clutter-shader.c:502
 msgid "Vertex shader"
@@ -1688,7 +1688,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2668
 msgid "Whether the input cursor is visible"
-msgstr ""
+msgstr "Indica si el cursor de entrada es visible"
 
 #: ../clutter/clutter-text.c:2682 ../clutter/clutter-text.c:2683
 msgid "Cursor Color"
