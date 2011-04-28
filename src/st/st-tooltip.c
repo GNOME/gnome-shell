@@ -91,6 +91,7 @@ st_tooltip_set_property (GObject      *gobject,
 
     case PROP_TIP_AREA:
       st_tooltip_set_tip_area (tooltip, g_value_get_boxed (value));
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
