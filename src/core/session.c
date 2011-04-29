@@ -308,13 +308,16 @@ meta_session_init (const char *previous_client_id,
      */
     char hint = SmRestartIfRunning;
     char priority = 20; /* low to run before other apps */
-    
+    const char *prgname;
+
+    prgname = g_get_prgname ();
+
     prop1.name = SmProgram;
     prop1.type = SmARRAY8;
     prop1.num_vals = 1;
     prop1.vals = &prop1val;
-    prop1val.value = "mutter";
-    prop1val.length = strlen ("mutter");
+    prop1val.value = (char *)prgname;
+    prop1val.length = strlen (prgname);
 
     /* twm sets getuid() for this, but the SM spec plainly
      * says pw_name, twm is on crack
@@ -573,6 +576,9 @@ set_clone_restart_commands (void)
   char *discardv[10];
   int i;
   SmProp prop1, prop2, prop3, *props[3];
+  const char *prgname;
+
+  prgname = g_get_prgname ();
   
   /* Restart (use same client ID) */
   
@@ -582,7 +588,7 @@ set_clone_restart_commands (void)
   g_return_if_fail (client_id);
   
   i = 0;
-  restartv[i] = "mutter";
+  restartv[i] = (char *)prgname;
   ++i;
   restartv[i] = "--sm-client-id";
   ++i;
@@ -603,7 +609,7 @@ set_clone_restart_commands (void)
   /* Clone (no client ID) */
   
   i = 0;
-  clonev[i] = "mutter";
+  clonev[i] = (char *)prgname;
   ++i;
   clonev[i] = NULL;
 
