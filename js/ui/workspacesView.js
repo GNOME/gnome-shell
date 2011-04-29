@@ -201,12 +201,10 @@ WorkspacesView.prototype = {
 
             Tweener.removeTweens(workspace.actor);
 
-            let opacity = (this._inDrag && w != active) ? 200 : 255;
             let y = (w - active) * (this._height + this._spacing + this._workspaceRatioSpacing);
 
             if (showAnimation) {
                 let params = { y: y,
-                               opacity: opacity,
                                time: WORKSPACE_SWITCH_TIME,
                                transition: 'easeOutQuad'
                              };
@@ -224,7 +222,6 @@ WorkspacesView.prototype = {
                 Tweener.addTween(workspace.actor, params);
             } else {
                 workspace.actor.set_position(0, y);
-                workspace.actor.opacity = opacity;
                 if (w == 0)
                     this._updateVisibility();
             }
@@ -439,20 +436,14 @@ WorkspacesView.prototype = {
         if (topWorkspace) {
             if (topWorkspace.actor.contains(dragEvent.targetActor)) {
                 hoverWorkspace = topWorkspace;
-                topWorkspace.opacity = topWorkspace.actor.opacity = 255;
                 result = topWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
-            } else {
-                topWorkspace.opacity = topWorkspace.actor.opacity = 200;
             }
         }
 
         if (bottomWorkspace) {
             if (bottomWorkspace.actor.contains(dragEvent.targetActor)) {
                 hoverWorkspace = bottomWorkspace;
-                bottomWorkspace.opacity = bottomWorkspace.actor.opacity = 255;
                 result = bottomWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
-            } else {
-                bottomWorkspace.opacity = bottomWorkspace.actor.opacity = 200;
             }
         }
 
