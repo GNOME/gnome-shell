@@ -7,7 +7,7 @@ imports.gi.versions.GdkPixbuf = '2.0';
 imports.gi.versions.Gtk = '3.0';
 
 const Clutter = imports.gi.Clutter;;
-const Gettext = imports.gettext.domain('gnome-shell');
+const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
