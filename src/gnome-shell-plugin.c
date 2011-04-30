@@ -178,7 +178,8 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
   gjs_context = _shell_global_get_gjs_context (shell_plugin->global);
 
   if (!gjs_context_eval (gjs_context,
-                         "const Main = imports.ui.main; Main.start();",
+                         "imports.ui.environment.init();"
+                         "imports.ui.main.start();",
                          -1,
                          "<main>",
                          &status,

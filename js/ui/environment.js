@@ -1,14 +1,21 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+imports.gi.versions.Clutter = '1.0';
+imports.gi.versions.Gio = '2.0';
+imports.gi.versions.Gdk = '3.0';
+imports.gi.versions.GdkPixbuf = '2.0';
+imports.gi.versions.Gtk = '3.0';
+
 const Clutter = imports.gi.Clutter;;
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Gettext_gtk30 = imports.gettext.domain('gtk30');
 
-const Tweener = imports.ui.tweener;
+// We can't import shell JS modules yet, because they may have
+// variable initializations, etc, that depend on init() already having
+// been run.
 
-const Format = imports.misc.format;
 
 // "monkey patch" in some varargs ClutterContainer methods; we need
 // to do this per-container class since there is no representation
@@ -61,26 +68,16 @@ function _blockMethod(method, replacement, reason) {
 }
 
 function init() {
-    Tweener.init();
-    String.prototype.format = Format.format;
-
-    // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
-    Date.prototype.toLocaleFormat = function(format) {
-        return Shell.util_format_date(format, this.getTime());
-    };
+    // Add some bindings to the global JS namespace; (gjs keeps the web
+    // browser convention of having that namespace be called 'window'.)
+    window.global = Shell.Global.get();
 
     // Set the default direction for St widgets (this needs to be done before any use of St)
-    if (Gettext_gtk30.gettext('default:LTR') == 'default:RTL') {
+    if (Gtk.Widget.get_default_direction() == Gtk.TextDirection.RTL) {
         St.Widget.set_default_direction(St.TextDirection.RTL);
     }
 
-    let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
-    if (slowdownEnv) {
-        let factor = parseFloat(slowdownEnv);
-        if (!isNaN(factor) && factor > 0.0)
-            St.set_slow_down_factor(factor);
-    }
-
+    // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);
     _patchContainerClass(St.Table);
 
@@ -97,9 +94,6 @@ function init() {
             return base;
     };
 
-    if (window.global === undefined) // test environment
-        return;
-
     _blockMethod('Clutter.Event.get_state', 'Shell.get_event_state',
                  'gjs\'s handling of Clutter.ModifierType is broken. See bug 597292.');
     _blockMethod('Gdk.Window.get_device_position', 'global.get_pointer',
@@ -110,4 +104,23 @@ function init() {
     // Shell.Global.prototype itself is read-only.
     global.set_property_mutable('imports.gi.Shell.Global.prototype', 'set_property_mutable', true);
     Shell.Global.prototype.set_property_mutable = undefined;
+
+    // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
+    Date.prototype.toLocaleFormat = function(format) {
+        return Shell.util_format_date(format, this.getTime());
+    };
+
+    let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
+    if (slowdownEnv) {
+        let factor = parseFloat(slowdownEnv);
+        if (!isNaN(factor) && factor > 0.0)
+            St.set_slow_down_factor(factor);
+    }
+
+    // OK, now things are initialized enough that we can import shell JS
+    const Format = imports.misc.format;
+    const Tweener = imports.ui.tweener;
+
+    Tweener.init();
+    String.prototype.format = Format.format;
 }

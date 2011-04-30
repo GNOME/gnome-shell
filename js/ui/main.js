@@ -1,11 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-imports.gi.versions.Clutter = '1.0';
-imports.gi.versions.Gio = '2.0';
-imports.gi.versions.Gdk = '3.0';
-imports.gi.versions.GdkPixbuf = '2.0';
-imports.gi.versions.Gtk = '3.0';
-
 const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const Gdk = imports.gi.Gdk;
@@ -75,12 +69,7 @@ let _cssStylesheet = null;
 let background = null;
 
 function start() {
-    // Add a binding for 'global' in the global JS namespace; (gjs
-    // keeps the web browser convention of having that namespace be
-    // called 'window'.)
-    window.global = Shell.Global.get();
-
-    // Now monkey patch utility functions into the global proxy;
+    // Monkey patch utility functions into the global proxy;
     // This is easier and faster than indirecting down into global
     // if we want to call back up into JS.
     global.logError = _logError;
@@ -101,8 +90,6 @@ function start() {
     // Load the calendar server. Note that we are careful about
     // not loading any events until the user presses the clock
     global.launch_calendar_server();
-
-    Environment.init();
 
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
     // also initialize ShellAppSystem first.  ShellAppSystem

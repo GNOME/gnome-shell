@@ -24,15 +24,19 @@
  * IN THE SOFTWARE.
  */
 
-#include <config.h>
-#include <gtk/gtk.h>
-#include <gdk/gdkx.h>
-#include <clutter/x11/clutter-x11.h>
-#include <string.h>
-#include <stdlib.h>
-#include <locale.h>
+#include "config.h"
 
+#include <locale.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <clutter/x11/clutter-x11.h>
+#include <gdk/gdkx.h>
 #include <gjs/gjs.h>
+#include <gtk/gtk.h>
+
+#include "shell-global.h"
+#include "shell-global-private.h"
 
 static char **include_path = NULL;
 static char *command = NULL;
@@ -59,10 +63,10 @@ event_filter (GdkXEvent *xevent,
 int
 main(int argc, char **argv)
 {
-  char *command_line;
   GOptionContext *context;
   ClutterActor *stage;
   GError *error = NULL;
+  ShellGlobal *global;
   GjsContext *js_context;
   char *script;
   const char *filename;
@@ -94,12 +98,8 @@ main(int argc, char **argv)
   setlocale (LC_ALL, "");
   g_type_init ();
 
-  command_line = g_strjoinv (" ", argv);
-  g_debug ("Command line: %s", command_line);
-  g_free (command_line);
-
-  g_debug ("Creating new context to eval console script");
-  js_context = gjs_context_new_with_search_path (include_path);
+  global = shell_global_get ();
+  js_context = _shell_global_get_gjs_context (global);
 
   /* prepare command line arguments */
   if (!gjs_context_define_string_array (js_context, "ARGV",
