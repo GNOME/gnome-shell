@@ -9,9 +9,6 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-const C_ = Gettext.pgettext;
 
 const History = imports.misc.history;
 const Main = imports.ui.main;

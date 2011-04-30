@@ -8,8 +8,6 @@ const Signals = imports.signals;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Main = imports.ui.main;
 const Search = imports.ui.search;

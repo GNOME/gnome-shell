@@ -1,8 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const DocInfo = imports.misc.docInfo;
 const Params = imports.misc.params;
 const Search = imports.ui.search;

@@ -2,8 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;

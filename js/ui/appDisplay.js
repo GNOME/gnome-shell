@@ -9,8 +9,6 @@ const Signals = imports.signals;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Mainloop = imports.mainloop;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;

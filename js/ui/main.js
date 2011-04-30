@@ -11,8 +11,6 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Chrome = imports.ui.chrome;
 const CtrlAltTab = imports.ui.ctrlAltTab;

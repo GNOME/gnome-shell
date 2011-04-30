@@ -10,8 +10,6 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Params = imports.misc.params;
 

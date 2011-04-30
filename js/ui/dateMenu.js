@@ -8,8 +8,6 @@ const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Util = imports.misc.util;
 const Main = imports.ui.main;

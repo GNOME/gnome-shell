@@ -13,9 +13,6 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
 
 const VOLUME_NOTIFY_ID = 1;

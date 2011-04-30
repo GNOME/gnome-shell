@@ -11,9 +11,6 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const BUS_NAME = 'org.gnome.PowerManager';
 const OBJECT_PATH = '/org/gnome/PowerManager';
 
@@ -115,15 +112,15 @@ Indicator.prototype = {
                     let timestring;
                     if (time > 60) {
                         if (minutes == 0) {
-                            timestring = Gettext.ngettext("%d hour remaining", "%d hours remaining", hours).format(hours);
+                            timestring = ngettext("%d hour remaining", "%d hours remaining", hours).format(hours);
                         } else {
                             /* TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
                             let template = _("%d %s %d %s remaining");
 
-                            timestring = template.format (hours, Gettext.ngettext("hour", "hours", hours), minutes, Gettext.ngettext("minute", "minutes", minutes));
+                            timestring = template.format (hours, ngettext("hour", "hours", hours), minutes, ngettext("minute", "minutes", minutes));
                         }
                     } else
-                        timestring = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
+                        timestring = ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
                     this._batteryItem.label.text = timestring;
                 }
                 this._primaryPercentage.text = Math.round(percentage) + '%';

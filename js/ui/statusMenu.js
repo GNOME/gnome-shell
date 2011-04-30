@@ -9,8 +9,6 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Tp = imports.gi.TelepathyGLib;
 const UPowerGlib = imports.gi.UPowerGlib;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;

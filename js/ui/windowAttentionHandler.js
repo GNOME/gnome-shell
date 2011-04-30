@@ -2,8 +2,6 @@
 
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;

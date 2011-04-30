@@ -22,8 +22,6 @@
 
 const Lang = imports.lang;
 const Signals = imports.signals;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;

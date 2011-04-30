@@ -13,9 +13,6 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 function LayoutMenuItem() {
     this._init.apply(this, arguments);
 }

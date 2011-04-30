@@ -8,9 +8,6 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 const Pango = imports.gi.Pango;
 const Gettext_gtk30 = imports.gettext.domain('gtk30');
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-const C_ = Gettext.pgettext;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 

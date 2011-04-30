@@ -12,8 +12,6 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const History = imports.misc.history;
 const ExtensionSystem = imports.ui.extensionSystem;

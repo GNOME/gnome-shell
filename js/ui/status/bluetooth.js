@@ -16,9 +16,6 @@ const MessageTray = imports.ui.messageTray;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const ConnectionState = {
     DISCONNECTED: 0,
     CONNECTED: 1,

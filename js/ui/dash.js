@@ -6,8 +6,6 @@ const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
 const AppFavorites = imports.ui.appFavorites;

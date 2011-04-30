@@ -7,9 +7,6 @@ const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const Util = imports.misc.util;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 

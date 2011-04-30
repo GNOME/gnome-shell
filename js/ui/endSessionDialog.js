@@ -22,9 +22,6 @@ const DBus = imports.dbus;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const Clutter = imports.gi.Clutter;
 const Gdm = imports.gi.Gdm;
 const GLib = imports.gi.GLib;

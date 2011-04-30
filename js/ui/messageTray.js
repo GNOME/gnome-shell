@@ -20,9 +20,6 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
 const SUMMARY_TIMEOUT = 1;

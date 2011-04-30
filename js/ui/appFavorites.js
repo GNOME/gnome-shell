@@ -3,8 +3,6 @@
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Main = imports.ui.main;
 

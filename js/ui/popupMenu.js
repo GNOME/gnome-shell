@@ -13,9 +13,6 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
 
 function PopupBaseMenuItem(params) {

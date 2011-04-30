@@ -18,9 +18,6 @@ const MessageTray = imports.ui.messageTray;
 const ModemManager = imports.misc.modemManager;
 const Util = imports.misc.util;
 
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
-
 const NMConnectionCategory = {
     INVALID: 'invalid',
     WIRED: 'wired',

@@ -9,8 +9,6 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;

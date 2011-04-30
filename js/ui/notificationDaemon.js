@@ -7,8 +7,6 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
-const Gettext = imports.gettext.domain('gnome-shell');
-const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
 const Main = imports.ui.main;

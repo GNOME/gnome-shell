@@ -7,6 +7,7 @@ imports.gi.versions.GdkPixbuf = '2.0';
 imports.gi.versions.Gtk = '3.0';
 
 const Clutter = imports.gi.Clutter;;
+const Gettext = imports.gettext.domain('gnome-shell');
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
@@ -71,6 +72,10 @@ function init() {
     // Add some bindings to the global JS namespace; (gjs keeps the web
     // browser convention of having that namespace be called 'window'.)
     window.global = Shell.Global.get();
+
+    window._ = Gettext.gettext;
+    window.C_ = Gettext.pgettext;
+    window.ngettext = Gettext.ngettext;
 
     // Set the default direction for St widgets (this needs to be done before any use of St)
     if (Gtk.Widget.get_default_direction() == Gtk.TextDirection.RTL) {
