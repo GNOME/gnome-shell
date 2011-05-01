@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-26 23:09+0200\n"
-"PO-Revision-Date: 2011-04-26 23:09+0100\n"
+"POT-Creation-Date: 2011-05-01 09:53+0200\n"
+"PO-Revision-Date: 2011-05-01 09:53+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -146,15 +146,15 @@ msgstr "PROGRAM"
 msgid "SETTINGS"
 msgstr "INSTÄLLNINGAR"
 
-#: ../js/ui/appDisplay.js:656
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: ../js/ui/appDisplay.js:659
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "Lägg till som favorit"
 
@@ -288,14 +288,14 @@ msgstr "Ingenting i schemat"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:720
-#: ../js/ui/telepathyClient.js:492
+#: ../js/ui/telepathyClient.js:487
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:723
-#: ../js/ui/telepathyClient.js:495
+#: ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
@@ -578,11 +578,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Ange ett kommando:"
 
-#: ../js/ui/searchDisplay.js:311
+#: ../js/ui/searchDisplay.js:313
 msgid "Searching..."
 msgstr "Söker..."
 
-#: ../js/ui/searchDisplay.js:325
+#: ../js/ui/searchDisplay.js:327
 msgid "No matching results."
 msgstr "Inga sökträffar."
 
@@ -685,7 +685,7 @@ msgid "Send Files to Device..."
 msgstr "Skicka filer till enhet..."
 
 #: ../js/ui/status/bluetooth.js:70
-msgid "Setup a New Device..."
+msgid "Set up a New Device..."
 msgstr "Konfigurera en ny enhet..."
 
 #: ../js/ui/status/bluetooth.js:95
@@ -1030,22 +1030,22 @@ msgstr "Volym"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:335
+#: ../js/ui/telepathyClient.js:330
 #, c-format
 msgid "%s is online."
 msgstr "%s är ansluten."
 
-#: ../js/ui/telepathyClient.js:340
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is offline."
 msgstr "%s är frånkopplad."
 
-#: ../js/ui/telepathyClient.js:343
+#: ../js/ui/telepathyClient.js:338
 #, c-format
 msgid "%s is away."
 msgstr "%s är frånvarande."
 
-#: ../js/ui/telepathyClient.js:346
+#: ../js/ui/telepathyClient.js:341
 #, c-format
 msgid "%s is busy."
 msgstr "%s är upptagen."
@@ -1053,14 +1053,14 @@ msgstr "%s är upptagen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:484
+#: ../js/ui/telepathyClient.js:479
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Skickades klockan %X på %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:529
+#: ../js/ui/telepathyClient.js:524
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s är nu känd som %s"
@@ -1119,38 +1119,6 @@ msgstr "Skriv ut version"
 msgid "Failed to launch '%s'"
 msgstr "Misslyckades med att starta \"%s\""
 
-#: ../src/shell-global.c:1395
-msgid "Less than a minute ago"
-msgstr "Mindre än en minut sedan"
-
-#: ../src/shell-global.c:1399
-#, c-format
-msgid "%d minute ago"
-msgid_plural "%d minutes ago"
-msgstr[0] "%d minut sedan"
-msgstr[1] "%d minuter sedan"
-
-#: ../src/shell-global.c:1404
-#, c-format
-msgid "%d hour ago"
-msgid_plural "%d hours ago"
-msgstr[0] "%d timme sedan"
-msgstr[1] "%d timmar sedan"
-
-#: ../src/shell-global.c:1409
-#, c-format
-msgid "%d day ago"
-msgid_plural "%d days ago"
-msgstr[0] "%d dag sedan"
-msgstr[1] "%d dagar sedan"
-
-#: ../src/shell-global.c:1414
-#, c-format
-msgid "%d week ago"
-msgid_plural "%d weeks ago"
-msgstr[0] "%d vecka sedan"
-msgstr[1] "%d veckor sedan"
-
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
 msgstr "Storbritannien"
@@ -1183,6 +1151,33 @@ msgstr "Filsystem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Less than a minute ago"
+#~ msgstr "Mindre än en minut sedan"
+
+#~ msgid "%d minute ago"
+
+#~ msgid_plural "%d minutes ago"
+#~ msgstr[0] "%d minut sedan"
+#~ msgstr[1] "%d minuter sedan"
+
+#~ msgid "%d hour ago"
+
+#~ msgid_plural "%d hours ago"
+#~ msgstr[0] "%d timme sedan"
+#~ msgstr[1] "%d timmar sedan"
+
+#~ msgid "%d day ago"
+
+#~ msgid_plural "%d days ago"
+#~ msgstr[0] "%d dag sedan"
+#~ msgstr[1] "%d dagar sedan"
+
+#~ msgid "%d week ago"
+
+#~ msgid_plural "%d weeks ago"
+#~ msgstr[0] "%d vecka sedan"
+#~ msgstr[1] "%d veckor sedan"
+
 #, fuzzy
 #~ msgid "No such application"
 #~ msgstr "Program"
@@ -1190,90 +1185,128 @@ msgstr "%1$s: %2$s"
 #, fuzzy
 #~ msgid "Shut Down"
 #~ msgstr "Stäng av..."
+
 #~ msgid "Screen Reader"
 #~ msgstr "Skärmläsare"
+
 #~ msgid "Screen Keyboard"
 #~ msgstr "Skärmtangentbord"
+
 #~ msgid "Clock"
 #~ msgstr "Klocka"
+
 #~ msgid "Customize the panel clock"
 #~ msgstr "Anpassa panelklockan"
+
 #~ msgid "Custom format of the clock"
 #~ msgstr "Anpassat format för klockan"
+
 #~ msgid "Hour format"
 #~ msgstr "Timmesformat"
+
 #~ msgid ""
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
 #~ "Om true och formatet antingen är \"12-hour\" eller \"24-hour\", visa "
 #~ "sekunder i tiden."
+
 #~ msgid "Enable lens mode"
 #~ msgstr "Aktivera linsläge"
+
 #~ msgid "Magnification factor"
 #~ msgstr "Förstoringsfaktor"
+
 #~ msgid "Screen position"
 #~ msgstr "Skärmposition"
+
 #~ msgid "Clock Format"
 #~ msgstr "Klockformat"
+
 #~ msgid "Clock Preferences"
 #~ msgstr "Klockinställningar"
+
 #~ msgid "Panel Display"
 #~ msgstr "Panelvisning"
+
 #~ msgid "Show seco_nds"
 #~ msgstr "Visa seku_nder"
+
 #~ msgid "Show the _date"
 #~ msgstr "Visa _datum"
+
 #~ msgid "_12 hour format"
 #~ msgstr "_12-timmarsformat"
+
 #~ msgid "_24 hour format"
 #~ msgstr "_24-timmarsformat"
+
 #~ msgid "PREFERENCES"
 #~ msgstr "INSTÄLLNINGAR"
+
 #~ msgid "Preferences"
 #~ msgstr "Inställningar"
+
 #~ msgid "Search your computer"
 #~ msgstr "Sök i din dator"
+
 #~ msgid ""
 #~ "Can't add a new workspace because maximum workspaces limit has been "
 #~ "reached."
 #~ msgstr ""
 #~ "Kan inte lägga till en ny arbetsyta eftersom maximalt antal arbetsytor "
 #~ "har uppnåtts."
+
 #~ msgid "Can't remove the first workspace."
 #~ msgstr "Kan inte ta bort första arbetsytan."
+
 #~ msgid "Drag here to add favorites"
 #~ msgstr "Dra hit för att lägga till favorit"
+
 #~ msgid "Find"
 #~ msgstr "Sök"
+
 #~ msgid "ON"
 #~ msgstr "PÅ"
+
 #~ msgid "OFF"
 #~ msgstr "AV"
+
 #~ msgid "Invisible"
 #~ msgstr "Osynlig"
+
 #~ msgid "PLACES"
 #~ msgstr "PLATSER"
+
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "SÖKRESULTAT"
+
 #~ msgid "Recent Documents"
 #~ msgstr "Senaste dokument"
+
 #~ msgid "(see all)"
 #~ msgstr "(se alla)"
+
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Kan inte låsa skärmen: %s"
+
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
 #~ msgstr "Kan inte temporärt ställa in skärmsläckaren till blank skärm: %s"
+
 #~ msgid "Can't logout: %s"
 #~ msgstr "Kan inte logga ut: %s"
+
 #~ msgid "Sidebar"
 #~ msgstr "Sidopanel"
+
 #~ msgid "Browse"
 #~ msgstr "Bläddra"
+
 #~ msgid "Find apps or documents"
 #~ msgstr "Hitta program eller dokument"
+
 #~ msgid "DOCUMENTS"
 #~ msgstr "DOKUMENT"
+
 #~ msgid "The user manager object this user is controlled by."
 #~ msgstr "Användarhanteringsobjektet som denna användare styrs av."
-
