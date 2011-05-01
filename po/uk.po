@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-27 18:25+0300\n"
-"PO-Revision-Date: 2011-03-27 18:27+0300\n"
+"POT-Creation-Date: 2011-05-02 02:44+0300\n"
+"PO-Revision-Date: 2011-05-02 02:46+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -98,7 +98,7 @@ msgstr ""
 "Вказує канал даних GStreamer для кодування запису. Звідси відповідний "
 "синтаксис для gst-launch. Канал даних повинен мати нез'єднаний приймальний "
 "буфер, де відео записано. Зазвичай воно має нез'єднане джерело буфера; вивід "
-"з цього буфера  буде записано в вихідний файл. Однак канал даних також "
+"з цього буфера буде записано в вихідний файл. Однак канал даних також "
 "відповідати за власний вивід — це може бути використано для відправлення "
 "виводу до сервера через протокол shout2send чи будь-який інший. Коли не "
 "вказано або вказано порожнє значення, буде використано типовий канал даних. "
@@ -189,27 +189,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Не вдалось виконати «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:230
+#: ../js/ui/appDisplay.js:260
 msgid "All"
 msgstr "Всі"
 
-#: ../js/ui/appDisplay.js:328
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:354
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "ПАРАМЕТРИ"
 
-#: ../js/ui/appDisplay.js:625
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: ../js/ui/appDisplay.js:628
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
@@ -342,13 +342,13 @@ msgid "Nothing Scheduled"
 msgstr "Нічого не заплановано"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:487
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
@@ -369,7 +369,7 @@ msgstr "Цей тиждень"
 msgid "Next week"
 msgstr "Наступний тиждень"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "Вилучити"
 
@@ -495,8 +495,8 @@ msgstr "Система автоматично перезапуститься ч�
 msgid "Restarting the system."
 msgstr "Перезапуск системи."
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
-#: ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:491
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -530,11 +530,11 @@ msgstr "Переглянути джерело"
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: ../js/ui/messageTray.js:993
+#: ../js/ui/messageTray.js:1030
 msgid "Open"
 msgstr "Відкрити"
 
-#: ../js/ui/messageTray.js:2151
+#: ../js/ui/messageTray.js:2194
 msgid "System Information"
 msgstr "Інформація про систему"
 
@@ -557,18 +557,18 @@ msgid "Dash"
 msgstr "Риска"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:533
 #, c-format
 msgid "Quit %s"
 msgstr "Вийти з %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:878
+#: ../js/ui/panel.js:913
 msgid "Activities"
 msgstr "Діяльність"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:1015
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -626,11 +626,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Будь ласка, введіть команду:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:313
 msgid "Searching..."
 msgstr "Пошук…"
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:327
 msgid "No matching results."
 msgstr "Нема збігів."
 
@@ -713,9 +713,9 @@ msgstr "Висока контрастність"
 msgid "Large Text"
 msgstr "Більший текст"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
-#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
-#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:358 ../js/ui/status/bluetooth.js:392
+#: ../js/ui/status/bluetooth.js:432 ../js/ui/status/bluetooth.js:465
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -728,101 +728,101 @@ msgid "Send Files to Device..."
 msgstr "Відправити файли до пристрою…"
 
 #: ../js/ui/status/bluetooth.js:70
-msgid "Setup a New Device..."
+msgid "Set up a New Device..."
 msgstr "Встановити новий пристрій…"
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:188
+#: ../js/ui/status/bluetooth.js:215
 msgid "Connection"
 msgstr "З'єднання"
 
-#: ../js/ui/status/bluetooth.js:224
+#: ../js/ui/status/bluetooth.js:251
 msgid "Send Files..."
 msgstr "Відправити файли…"
 
-#: ../js/ui/status/bluetooth.js:229
+#: ../js/ui/status/bluetooth.js:256
 msgid "Browse Files..."
 msgstr "Огляд файлів…"
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:265
 msgid "Error browsing device"
 msgstr "Помилка перегляду пристрою…"
 
-#: ../js/ui/status/bluetooth.js:239
+#: ../js/ui/status/bluetooth.js:266
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Потрібний пристрій неможливо переглянути, помилка — «%s»"
 
-#: ../js/ui/status/bluetooth.js:247
+#: ../js/ui/status/bluetooth.js:274
 msgid "Keyboard Settings"
 msgstr "Параметри клавіатури"
 
-#: ../js/ui/status/bluetooth.js:252
+#: ../js/ui/status/bluetooth.js:279
 msgid "Mouse Settings"
 msgstr "Параметри миші"
 
-#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:286 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Параметри звуку"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:393
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Запит про авторизацію від %s"
 
-#: ../js/ui/status/bluetooth.js:374
+#: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Пристрій %s потребує доступ до служби «%s»"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:401
 msgid "Always grant access"
 msgstr "Завжди надавати доступ"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:402
 msgid "Grant this time only"
 msgstr "Надати лише цього разу"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:403
 msgid "Reject"
 msgstr "Відмовити"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:433
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Сполучення підтвердження для %s"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:439 ../js/ui/status/bluetooth.js:473
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Пристрій %s потребує прив'язання до цього комп'ютера"
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:440
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Будь ласка, підвердьте, чи «%s» збігається з PIN на пристрої."
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:442
 msgid "Matches"
 msgstr "Збігається"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:443
 msgid "Does not match"
 msgstr "Не збігається"
 
-#: ../js/ui/status/bluetooth.js:441
+#: ../js/ui/status/bluetooth.js:466
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Запит на сполучення для %s"
 
-#: ../js/ui/status/bluetooth.js:449
+#: ../js/ui/status/bluetooth.js:474
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Будь ласка, введіть PIN, згаданий на пристрої."
 
-#: ../js/ui/status/bluetooth.js:465
+#: ../js/ui/status/bluetooth.js:490
 msgid "OK"
 msgstr "Гаразд"
 
@@ -834,139 +834,139 @@ msgstr "Показувати розкладку клавіатури…"
 msgid "Localization Settings"
 msgstr "Параметри локалізації"
 
-#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:113
 msgid "<unknown>"
 msgstr "<невідомо>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:311
+#: ../js/ui/status/network.js:330
 msgid "disabled"
 msgstr "вимкнено"
 
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:528
 msgid "connecting..."
 msgstr "з'єднання…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/network.js:531
 msgid "authentication required"
 msgstr "Потрібна аутентифікація"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:507
+#: ../js/ui/status/network.js:541
 msgid "firmware missing"
 msgstr "Бракує мікропрограми"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:514
+#: ../js/ui/status/network.js:548
 msgid "cable unplugged"
 msgstr "кабель від'єднано"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:519
+#: ../js/ui/status/network.js:553
 msgid "unavailable"
 msgstr "недоступний"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:555
 msgid "connection failed"
 msgstr "не вдалось з'єднатись"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
+#: ../js/ui/status/network.js:635 ../js/ui/status/network.js:1532
 msgid "Connected (private)"
 msgstr "З'єднано (приватно)"
 
-#: ../js/ui/status/network.js:683
+#: ../js/ui/status/network.js:720
 msgid "Auto Ethernet"
 msgstr "Автоматично Ethernet"
 
-#: ../js/ui/status/network.js:758
+#: ../js/ui/status/network.js:795
 msgid "Auto broadband"
 msgstr "Автоматично радіомережа"
 
-#: ../js/ui/status/network.js:761
+#: ../js/ui/status/network.js:798
 msgid "Auto dial-up"
 msgstr "Автоматично додзвін"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:944 ../js/ui/status/network.js:1544
 #, c-format
 msgid "Auto %s"
 msgstr "Автоматично %s"
 
-#: ../js/ui/status/network.js:906
+#: ../js/ui/status/network.js:946
 msgid "Auto bluetooth"
 msgstr "Автоматично Bluetooth"
 
-#: ../js/ui/status/network.js:1416
+#: ../js/ui/status/network.js:1546
 msgid "Auto wireless"
 msgstr "Автоматично бездротова мережа"
 
-#: ../js/ui/status/network.js:1474
+#: ../js/ui/status/network.js:1583
 msgid "More..."
 msgstr "Більше…"
 
-#: ../js/ui/status/network.js:1497
+#: ../js/ui/status/network.js:1625
 msgid "Enable networking"
 msgstr "Увімкнути мережу"
 
-#: ../js/ui/status/network.js:1509
+#: ../js/ui/status/network.js:1637
 msgid "Wired"
 msgstr "Дротова"
 
-#: ../js/ui/status/network.js:1520
+#: ../js/ui/status/network.js:1648
 msgid "Wireless"
 msgstr "Бездротова"
 
-#: ../js/ui/status/network.js:1530
+#: ../js/ui/status/network.js:1658
 msgid "Mobile broadband"
 msgstr "Мобільна радіомережа"
 
-#: ../js/ui/status/network.js:1540
+#: ../js/ui/status/network.js:1668
 msgid "VPN Connections"
 msgstr "З'єднання VPN"
 
-#: ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:1680
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
-#: ../js/ui/status/network.js:1844
+#: ../js/ui/status/network.js:1974
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Зараз ви з'єднані через мобільну радіомережу «%s»"
 
-#: ../js/ui/status/network.js:1848
+#: ../js/ui/status/network.js:1978
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Зараз ви з'єднані через бездротову мережу «%s»"
 
-#: ../js/ui/status/network.js:1852
+#: ../js/ui/status/network.js:1982
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Зараз ви з'єднані через дротову мережу «%s»"
 
-#: ../js/ui/status/network.js:1856
+#: ../js/ui/status/network.js:1986
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Зараз ви з'єднані через мережу VPN «%s»"
 
-#: ../js/ui/status/network.js:1861
+#: ../js/ui/status/network.js:1991
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Зараз ви з'єднані через «%s»"
 
-#: ../js/ui/status/network.js:1869
+#: ../js/ui/status/network.js:1999
 msgid "Connection established"
 msgstr "З'єднання встановлено"
 
-#: ../js/ui/status/network.js:1991
+#: ../js/ui/status/network.js:2125
 msgid "Networking is disabled"
 msgstr "Мережу вимкнено"
 
-#: ../js/ui/status/network.js:2116
+#: ../js/ui/status/network.js:2250
 msgid "Network Manager"
 msgstr "Керування мережею"
 
@@ -1072,22 +1072,22 @@ msgstr "Гучність"
 msgid "Microphone"
 msgstr "Мікрофон"
 
-#: ../js/ui/telepathyClient.js:331
+#: ../js/ui/telepathyClient.js:330
 #, c-format
 msgid "%s is online."
 msgstr "%s в мережі."
 
-#: ../js/ui/telepathyClient.js:336
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is offline."
 msgstr "%s поза мережею."
 
-#: ../js/ui/telepathyClient.js:339
+#: ../js/ui/telepathyClient.js:338
 #, c-format
 msgid "%s is away."
 msgstr "%s відійшов."
 
-#: ../js/ui/telepathyClient.js:342
+#: ../js/ui/telepathyClient.js:341
 #, c-format
 msgid "%s is busy."
 msgstr "%s зайнятий."
@@ -1095,10 +1095,17 @@ msgstr "%s зайнятий."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:473
+#: ../js/ui/telepathyClient.js:479
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Відправити на %X в %A"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/telepathyClient.js:524
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s тепер відомий як %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1146,7 +1153,7 @@ msgstr[2] "%u входів"
 msgid "System Sounds"
 msgstr "Системні звуки"
 
-#: ../src/main.c:446
+#: ../src/main.c:445
 msgid "Print version"
 msgstr "Показати версію"
 
@@ -1154,42 +1161,6 @@ msgstr "Показати версію"
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Не вдалось запустити «%s»"
-
-#: ../src/shell-global.c:1395
-msgid "Less than a minute ago"
-msgstr "Менше хвилини тому"
-
-#: ../src/shell-global.c:1399
-#, c-format
-msgid "%d minute ago"
-msgid_plural "%d minutes ago"
-msgstr[0] "%d хвилина тому"
-msgstr[1] "%d хвилини тому"
-msgstr[2] "%d хвилин тому"
-
-#: ../src/shell-global.c:1404
-#, c-format
-msgid "%d hour ago"
-msgid_plural "%d hours ago"
-msgstr[0] "%d година тому"
-msgstr[1] "%d години тому"
-msgstr[2] "%d годин тому"
-
-#: ../src/shell-global.c:1409
-#, c-format
-msgid "%d day ago"
-msgid_plural "%d days ago"
-msgstr[0] "%d день тому"
-msgstr[1] "%d дні тому"
-msgstr[2] "%d днів тому"
-
-#: ../src/shell-global.c:1414
-#, c-format
-msgid "%d week ago"
-msgid_plural "%d weeks ago"
-msgstr[0] "%d тиждень тому"
-msgstr[1] "%d тижні тому"
-msgstr[2] "%d тижнів тому"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1222,6 +1193,33 @@ msgstr "Файлова система"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Менше хвилини тому"
+
+#~ msgid "%d minute ago"
+#~ msgid_plural "%d minutes ago"
+#~ msgstr[0] "%d хвилина тому"
+#~ msgstr[1] "%d хвилини тому"
+#~ msgstr[2] "%d хвилин тому"
+
+#~ msgid "%d hour ago"
+#~ msgid_plural "%d hours ago"
+#~ msgstr[0] "%d година тому"
+#~ msgstr[1] "%d години тому"
+#~ msgstr[2] "%d годин тому"
+
+#~ msgid "%d day ago"
+#~ msgid_plural "%d days ago"
+#~ msgstr[0] "%d день тому"
+#~ msgstr[1] "%d дні тому"
+#~ msgstr[2] "%d днів тому"
+
+#~ msgid "%d week ago"
+#~ msgid_plural "%d weeks ago"
+#~ msgstr[0] "%d тиждень тому"
+#~ msgstr[1] "%d тижні тому"
+#~ msgstr[2] "%d тижнів тому"
 
 #~ msgid "Shut Down"
 #~ msgstr "Вимкнути"
