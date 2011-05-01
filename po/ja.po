@@ -1,99 +1,380 @@
-# metacity ja.po.
-# Copyright (C) 2002-2009 Free Software Foundation, Inc.
+# mutter ja.po.
+# Copyright (C) 2002-2011 Free Software Foundation, Inc.
 # Akira TAGOH <tagoh@gnome.gr.jp>, 2002.
 # KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
-# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2009.
+# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2011.
 # Yukihiro Nakai <nakai@gnome.gr.jp>, 2003.
 # Satoru SATOH <ss@gnome.gr.jp>, 2006.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity gnome-2-26\n"
+"Project-Id-Version: mutter gnome-3-0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-11 12:29+0900\n"
-"PO-Revision-Date: 2009-02-11 11:02+0900\n"
+"POT-Creation-Date: 2011-05-01 13:02+0900\n"
+"PO-Revision-Date: 2011-04-30 17:41+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "デスクトップ"
+# ｢キーボード・ショートカット｣のアプレット (gnome-control-center) で表示するメッセージ
+#: ../src/core/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "ワークスペース 1 へ切り替える"
 
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "ウィンドウの管理"
+#: ../src/core/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "ワークスペース 2 へ切り替える"
 
-#: ../src/core/core.c:206
+#: ../src/core/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "ワークスペース 3 へ切り替える"
+
+#: ../src/core/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "ワークスペース 4 へ切り替える"
+
+#: ../src/core/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "ワークスペース 5 へ切り替える"
+
+#: ../src/core/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "ワークスペース 6 へ切り替える"
+
+#: ../src/core/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "ワークスペース 7 へ切り替える"
+
+#: ../src/core/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "ワークスペース 8 へ切り替える"
+
+#: ../src/core/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "ワークスペース 9 へ切り替える"
+
+#: ../src/core/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "ワークスペース 10 へ切り替える"
+
+#: ../src/core/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "ワークスペース 11 へ切り替える"
+
+#: ../src/core/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "ワークスペース 12 へ切り替える"
+
+#: ../src/core/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "左側のワークスペースへ切り替える"
+
+#: ../src/core/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "右側のワークスペースへ切り替える"
+
+#: ../src/core/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "上側のワークスペースへ切り替える"
+
+#: ../src/core/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "下側のワークスペースへ切り替える"
+
+#: ../src/core/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を移動する"
+
+#: ../src/core/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を降順で移動する"
+
+#: ../src/core/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを切り替える"
+
+#: ../src/core/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr ""
+"ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを降順で切り替える"
+
+#: ../src/core/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr ""
+"ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを切り替"
+"える"
+
+#: ../src/core/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr ""
+"ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを降順で"
+"切り替える"
+
+#: ../src/core/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "アプリケーションが持つ複数のウィンドウの間を移動する"
+
+#: ../src/core/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "アプリケーションが持つ複数のウィンドウを降順で移動する"
+
+#: ../src/core/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "ウィンドウ間のフォーカスを切り替える"
+
+#: ../src/core/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "ウィンドウ間のフォーカスを降順で切り替える"
+
+#: ../src/core/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "パネルとデスクトップとのフォーカスを切り替える"
+
+#: ../src/core/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "後方のパネルとデスクトップとの間を切り替える"
+
+#: ../src/core/all-keybindings.h:203
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "全てのウィンドウを隠してデスクトップにフォーカスを移す"
+
+#: ../src/core/all-keybindings.h:206
+msgid "Show the panel's main menu"
+msgstr "パネルにあるメイン・メニューを開く"
+
+#: ../src/core/all-keybindings.h:209
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "アプリケーションの実行ダイアログを開く"
+
+#: ../src/core/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "セッションの録画を開始/停止する"
+
+#: ../src/core/all-keybindings.h:252
+msgid "Take a screenshot"
+msgstr "スクリーンショットを撮る"
+
+#: ../src/core/all-keybindings.h:254
+msgid "Take a screenshot of a window"
+msgstr "ウィンドウのスクリーンショットを撮る"
+
+#: ../src/core/all-keybindings.h:256
+msgid "Run a terminal"
+msgstr "端末を起動する"
+
+#: ../src/core/all-keybindings.h:271
+msgid "Activate the window menu"
+msgstr "ウィンドウ・メニューを開く"
+
+#: ../src/core/all-keybindings.h:274
+msgid "Toggle fullscreen mode"
+msgstr "フル・スクリーン表示を切り替える"
+
+#: ../src/core/all-keybindings.h:276
+msgid "Toggle maximization state"
+msgstr "最大化/最小化の状態を切り替える"
+
+#: ../src/core/all-keybindings.h:278
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "ウィンドウを常に前面に表示するかどうかの設定を切り替える"
+
+#: ../src/core/all-keybindings.h:280
+msgid "Maximize window"
+msgstr "ウィンドウを最大化する"
+
+#: ../src/core/all-keybindings.h:282
+msgid "Restore window"
+msgstr "ウィンドウの状態を元に戻す"
+
+#: ../src/core/all-keybindings.h:284
+msgid "Toggle shaded state"
+msgstr "シェードの状態を切り替える"
+
+#: ../src/core/all-keybindings.h:286
+msgid "Minimize window"
+msgstr "ウィンドウを最小化する"
+
+#: ../src/core/all-keybindings.h:288
+msgid "Close window"
+msgstr "ウィンドウを閉じる"
+
+#: ../src/core/all-keybindings.h:290
+msgid "Move window"
+msgstr "ウィンドウを移動する"
+
+#: ../src/core/all-keybindings.h:292
+msgid "Resize window"
+msgstr "ウィンドウ・サイズを変更する"
+
+#: ../src/core/all-keybindings.h:295
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "ウィンドウを全てのワークスペースに配置するか切り替える"
+
+#: ../src/core/all-keybindings.h:299
+msgid "Move window to workspace 1"
+msgstr "ウィンドウをワークスペース 1 へ移動する"
+
+#: ../src/core/all-keybindings.h:302
+msgid "Move window to workspace 2"
+msgstr "ウィンドウをワークスペース 2 へ移動する"
+
+#: ../src/core/all-keybindings.h:305
+msgid "Move window to workspace 3"
+msgstr "ウィンドウをワークスペース 3 へ移動する"
+
+#: ../src/core/all-keybindings.h:308
+msgid "Move window to workspace 4"
+msgstr "ウィンドウをワークスペース 4 へ移動する"
+
+#: ../src/core/all-keybindings.h:311
+msgid "Move window to workspace 5"
+msgstr "ウィンドウをワークスペース 5 へ移動する"
+
+#: ../src/core/all-keybindings.h:314
+msgid "Move window to workspace 6"
+msgstr "ウィンドウをワークスペース 6 へ移動する"
+
+#: ../src/core/all-keybindings.h:317
+msgid "Move window to workspace 7"
+msgstr "ウィンドウをワークスペース 7 へ移動する"
+
+#: ../src/core/all-keybindings.h:320
+msgid "Move window to workspace 8"
+msgstr "ウィンドウをワークスペース 8 へ移動する"
+
+#: ../src/core/all-keybindings.h:323
+msgid "Move window to workspace 9"
+msgstr "ウィンドウをワークスペース 9 へ移動する"
+
+#: ../src/core/all-keybindings.h:326
+msgid "Move window to workspace 10"
+msgstr "ウィンドウをワークスペース 10 へ移動する"
+
+#: ../src/core/all-keybindings.h:329
+msgid "Move window to workspace 11"
+msgstr "ウィンドウをワークスペース 11 へ移動する"
+
+#: ../src/core/all-keybindings.h:332
+msgid "Move window to workspace 12"
+msgstr "ウィンドウをワークスペース 12 へ移動する"
+
+#: ../src/core/all-keybindings.h:344
+msgid "Move window one workspace to the left"
+msgstr "ウィンドウを左側のワークスペースへ移動する"
+
+#: ../src/core/all-keybindings.h:347
+msgid "Move window one workspace to the right"
+msgstr "ウィンドウを右側のワークスペースへ移動する"
+
+#: ../src/core/all-keybindings.h:350
+msgid "Move window one workspace up"
+msgstr "ウィンドウを上側のワークスペースへ移動する"
+
+#: ../src/core/all-keybindings.h:353
+msgid "Move window one workspace down"
+msgstr "ウィンドウを下側のワークスペースへ移動する"
+
+#: ../src/core/all-keybindings.h:356
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "隠れているウィンドウを前面に表示する"
+
+#: ../src/core/all-keybindings.h:358
+msgid "Raise window above other windows"
+msgstr "ウィンドウを前面に表示する"
+
+#: ../src/core/all-keybindings.h:360
+msgid "Lower window below other windows"
+msgstr "ウィンドウを一番奥に移動する"
+
+#: ../src/core/all-keybindings.h:364
+msgid "Maximize window vertically"
+msgstr "ウィンドウを垂直方向に最大化する"
+
+#: ../src/core/all-keybindings.h:368
+msgid "Maximize window horizontally"
+msgstr "ウィンドウを水平方向に最大化する"
+
+#: ../src/core/all-keybindings.h:372
+msgid "Move window to north-west (top left) corner"
+msgstr "ウィンドウを画面の左上隅へ移動する"
+
+#: ../src/core/all-keybindings.h:375
+msgid "Move window to north-east (top right) corner"
+msgstr "ウィンドウを画面の右上隅へ移動する"
+
+#: ../src/core/all-keybindings.h:378
+msgid "Move window to south-west (bottom left) corner"
+msgstr "ウィンドウを画面の左下隅へ移動する"
+
+#: ../src/core/all-keybindings.h:381
+msgid "Move window to south-east (bottom right) corner"
+msgstr "ウィンドウを画面の右下隅へ移動する"
+
+#: ../src/core/all-keybindings.h:385
+msgid "Move window to north (top) side of screen"
+msgstr "ウィンドウを画面の上側へ移動する"
+
+#: ../src/core/all-keybindings.h:388
+msgid "Move window to south (bottom) side of screen"
+msgstr "ウィンドウを画面の下側へ移動する"
+
+#: ../src/core/all-keybindings.h:391
+msgid "Move window to east (right) side of screen"
+msgstr "ウィンドウを画面の右側へ移動する"
+
+#: ../src/core/all-keybindings.h:394
+msgid "Move window to west (left) side of screen"
+msgstr "ウィンドウを画面の左側へ移動する"
+
+#: ../src/core/all-keybindings.h:397
+msgid "Move window to center of screen"
+msgstr "ウィンドウを画面の中央へ移動する"
+
+#: ../src/core/bell.c:310
+msgid "Bell event"
+msgstr "ベルのイベント"
+
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "ウィンドウ情報の要求が不明です: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
+#. Translators: %s is a window title
+#: ../src/core/delete.c:94
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "\"%s\"を整数として構文解釈できませんでした"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> から応答がありません"
 
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "末尾の文字列 \"%s\" (文字列 \"%s\") を理解できませんでした"
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "ダイアログのプロセスからメッセージ \"%s\" の構文解釈に失敗しました\n"
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "ダイアログ表示プロセスから読み込み際にエラーが発生しました: %s\n"
-
-#: ../src/core/delete.c:336
-#, c-format
+#: ../src/core/delete.c:99
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
 msgstr ""
-"アプリケーションの強制終了を尋ねる metacity-dialog を起動する際にエラーが発生"
-"しました: %s\n"
+"応答があるまでしばらく待機するか、今すぐにアプリケーションを強制終了するかを"
+"選択して下さい。"
 
-#: ../src/core/delete.c:445
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "ホスト名の取得に失敗しました: %s\n"
+#: ../src/core/delete.c:108
+msgid "_Wait"
+msgstr "待機する(_W)"
 
-#: ../src/core/display.c:256
+#: ../src/core/delete.c:108
+msgid "_Force Quit"
+msgstr "強制終了する(_F)"
+
+#: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ウィンドウの合成に必要な %s という拡張モジュールが存在しません"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:431
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ｘウィンドウ・システムのディスプレイ '%s' のオープンに失敗しました\n"
 
-#: ../src/core/errors.c:272
-#, c-format
-msgid ""
-"Lost connection to the display '%s';\n"
-"most likely the X server was shut down or you killed/destroyed\n"
-"the window manager.\n"
-msgstr ""
-"ディスプレイ '%s' への接続が切れました。\n"
-"おそらくＸサーバがシャットダウンしたか、\n"
-"ウィンドウ・マネージャが強制終了/破棄されたようです。\n"
-
-#: ../src/core/errors.c:279
-#, c-format
-msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "致命的なIOエラー %d (%s) - ディスプレイ '%s' が発生しました。\n"
-
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:759
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -105,7 +386,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2468
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -116,75 +397,47 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2558
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "コマンド %d は定義されていません。\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3570
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "端末を起動するコマンドが定義されていません。\n"
 
-#: ../src/core/main.c:116
-#, c-format
-msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-msgstr ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., とその他の貢献者\n"
-"これはフリーソフトウェアです; 複製する際の条件はソース・ファイルを参照して下"
-"さい。\n"
-"このソフトウェアは無保証です; 商用や特定目的への適用についても保証しませ"
-"ん。\n"
-
-#: ../src/core/main.c:253
+#: ../src/core/main.c:206
 msgid "Disable connection to session manager"
 msgstr "セッション・マネージャに接続しない"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "実行中のウィンドウ・マネージャを Metacity で置き換える"
+#: ../src/core/main.c:212
+msgid "Replace the running window manager"
+msgstr "実行中のウィンドウ・マネージャを置き換える"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:218
 msgid "Specify session management ID"
-msgstr "セッション管理 ID を指定する"
+msgstr "セッション管理の ID を指定する"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:223
 msgid "X Display to use"
 msgstr "使用するＸディスプレイを指定する"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:229
 msgid "Initialize session from savefile"
 msgstr "保存ファイルからセッションを初期化する"
 
-#: ../src/core/main.c:282
-msgid "Print version"
-msgstr "バージョンを表示する"
-
 # 'X' という１文字は固有名詞のため大文字にする
-#: ../src/core/main.c:288
+#: ../src/core/main.c:235
 msgid "Make X calls synchronous"
 msgstr "Ｘの呼び出しを同期させる"
 
-#: ../src/core/main.c:294
-msgid "Turn compositing on"
-msgstr "ウィンドウの合成を有効にする"
-
-#: ../src/core/main.c:300
-msgid "Turn compositing off"
-msgstr "ウィンドウの合成を無効にする"
-
-#: ../src/core/main.c:478
+#: ../src/core/main.c:506
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "テーマ・フォルダのスキャンに失敗しました: %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:522
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -192,10 +445,29 @@ msgstr ""
 "テーマが見つかりませんでした！ %s の存在と通常のテーマが含まれていることを確"
 "認して下さい。\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/mutter.c:42
 #, c-format
-msgid "Failed to restart: %s\n"
-msgstr "再起動に失敗しました: %s\n"
+msgid ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., とその他の貢献者\n"
+"これはフリーソフトウェアです; 複製する際の条件はソース・ファイルを参照して下"
+"さい。\n"
+"このソフトウェアは無保証です; 商用での利用や特定の目的に対する利用についても"
+"保証しません。\n"
+
+#: ../src/core/mutter.c:56
+msgid "Print version"
+msgstr "バージョンを表示する"
+
+#: ../src/core/mutter.c:62
+msgid "Comma-separated list of compositor plugins"
+msgstr "画像の合成プラグインを指定する (複数ある時はカンマ ',' で区切る)"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -208,24 +480,34 @@ msgstr "再起動に失敗しました: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf の '%s' キーには無効な値が格納されています\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "GConf の %2$s キーの値 %1$d は %3$d〜%4$d の範囲内にありません\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
+#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
+#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf の \"%s\" キーには無効な型が格納されています\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1203
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr "GConf キーの %s は既に使用中なので %s をオーバーライドできません\n"
+
+#: ../src/core/prefs.c:1262
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "GConf キーをオーバーライドできません (%s が見つかりませんでした)\n"
+
+#: ../src/core/prefs.c:1447
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -233,12 +515,12 @@ msgstr ""
 "仕様に準拠していないアプリケーションに対する次善策は無効になっています．一部"
 "のアプリケーションは正常に動作しない可能性があります\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1524
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf の %2$s キーからフォント名 \"%1$s\" を解析できませんでした\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1586
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -246,17 +528,17 @@ msgid ""
 msgstr ""
 "GConf の \"%s\" はマウス・ボタンの修飾キーとして妥当な値ではありません\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:2016
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ワークスペース数を %d に設定中にエラーが発生しました: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
 #, c-format
 msgid "Workspace %d"
 msgstr "ワークスペース %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -265,33 +547,39 @@ msgstr ""
 "設定データベースで発見した \"%s\" はキーバインド \"%s\" に有効な値ではありま"
 "せん\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2783
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "ワークスペース %d の名前を \"%s\" に設定するときにエラーが発生しました: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2997
 #, c-format
-msgid "Error setting compositor status: %s\n"
-msgstr "合成の状態を指定する際にエラーが発生しました: %s\n"
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr ""
+"表示されていないが動作中のウィンドウに対するステータスの設定エラー: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:3032
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr "タブなしのポップアップ・ステータスの設定エラー: %s\n"
+
+#: ../src/core/screen.c:624
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ディスプレイ '%2$s' 上のスクリーン %1$d は無効です\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:640
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャを持っ"
-"ています; 現在のウィンドウマネージャを上書きするために--replace オプションの"
-"使用を試してください。\n"
+"ています; 現在のウィンドウマネージャを上書きするために --replace というオプ"
+"ションの使用を試してみて下さい。\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:667
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -299,170 +587,118 @@ msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d でウィンドウマネージャの選択を取得"
 "できませんでした\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:722
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャを持っ"
 "ています\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:907
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d を解放できませんでした\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"この操作に対するキーバインドを \"<Control>a\" や \"<Shift><Alt>F1\" といった"
-"書式で指定して下さい。\n"
-"\n"
-"この書式を解釈するパーサはかなり自由度が高いため、大文字でも小文字でも解釈で"
-"きますし、<Ctl> や <Ctrl> といった略語にも対応しています。ここで \"disabled"
-"\" という特別なキーワードを指定すると、この操作に割り当てられたキーバインドが"
-"無効になります。"
-
-#: ../src/core/schema-bindings.c:177
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"ウィンドウを閉じる際に使うキーバインドを \"<Control>a\" や \"<Shift><Alt>F1"
-"\" といった書式で指定して下さい。\n"
-"\n"
-"この書式を解釈するパーサはかなり自由度が高いため、大文字でも小文字でも解釈で"
-"きますし、<Ctl> や <Ctrl> といった略語にも対応しています。ここで \"disabled"
-"\" という特別なキーワードを指定すると、この操作に割り当てられたキーバインドが"
-"無効になります。<\n"
-"\n"
-"このキーバインドは \"shift\" キーを押下したままにすることで保留になる場合があ"
-"ります。そのため、\"shift\" は指定できないので注意して下さい。"
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ディレクトリを作成できませんでした: '%s': %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr ""
 "セッション・ファイルを書き込みモードでオープンできませんでした: '%s': %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1001
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "セッション・ファイルに書き込む際にエラーが発生しました: '%s': %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "セッションファイルをクローズする際にエラーが発生しました: '%s': %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "保存したセッション・ファイルの読み込みに失敗しました: '%s': %s\n"
-
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1136
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "保存したセッション・ファイルの解析に失敗しました: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1185
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session> 属性はありますが、既にセッション ID があります"
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr "<mutter_session> 属性はありますが、既にセッション ID を所有しています"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1198 ../src/core/session.c:1273
+#: ../src/core/session.c:1305 ../src/core/session.c:1377
+#: ../src/core/session.c:1437
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "<%2$s> の要素にある %1$s は不明な属性です"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1215
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> タグがネストされています"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown element %s"
 msgstr "不明なエレメント %s があります"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1809
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"セッション管理をサポートしないアプリケーションについて警告するために "
-"metacity-dialog の起動中にエラーが発生しました: %s\n"
+"これらのウィンドウは &quot;現在の設定を保存する&quot; という機能をサポートし"
+"ていません。必要であれば、次回ログインする際に手動で起動して下さい。"
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "デバッグ・ログのオープンに失敗しました: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:121
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "ログ・ファイル %s の fdopen() に失敗しました: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "ログ・ファイル %s をオープンしました\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "この metacity は詳細ログ・モードをサポートしていません\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "この mutter は詳細ログ・モードをサポートしていません\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:286
 msgid "Window manager: "
 msgstr "ウィンドウ・マネージャ: "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:434
 msgid "Bug in window manager: "
 msgstr "ウィンドウ・マネージャのバグ: "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:467
 msgid "Window manager warning: "
 msgstr "ウィンドウ・マネージャの警告: "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:495
 msgid "Window manager error: "
 msgstr "ウィンドウ・マネージャのエラー: "
 
 #. Translators: This is the title used on dialog boxes
-#. eof all-keybindings.h
-#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:6860
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -478,27 +714,27 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:7523
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "ウィンドウ %s はリサイズ可能ではない MWM ヒント指示を設定していますが，最小サ"
 "イズ %d x %d と最大サイズ %d x %dも設定しています．これはあまり意味がありませ"
 "ん\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "アプリケーションが間違った _NET_WM_PID %lu を設定しました\n"
 
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1482
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -519,12 +755,12 @@ msgstr ""
 "ウィンドウマネージャのバグではありません．\n"
 "ウィンドウの属性は title=\"%8$s\" class=\"%9$s\" name=\"%10$s\"です．\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "ウィンドウ 0x%2$lx 上のプロパティ %1$s は無効なUTF-8を含んでいました\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
@@ -532,929 +768,209 @@ msgstr ""
 "ウィンドウ 0x%2$lx 上のプロパティ %1$s はリスト内のアイテム %3$d で無効な "
 "UTF-8を含んでいました\n"
 
-# ｢キーボード・ショートカット｣のアプレット (gnome-control-center) で表示するメッセージ
-#: ../src/include/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "ワークスペース 1 へ切り替える"
-
-#: ../src/include/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "ワークスペース 2 へ切り替える"
-
-#: ../src/include/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "ワークスペース 3 へ切り替える"
-
-#: ../src/include/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "ワークスペース 4 へ切り替える"
-
-#: ../src/include/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "ワークスペース 5 へ切り替える"
-
-#: ../src/include/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "ワークスペース 6 へ切り替える"
-
-#: ../src/include/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "ワークスペース 7 へ切り替える"
-
-#: ../src/include/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "ワークスペース 8 へ切り替える"
-
-#: ../src/include/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "ワークスペース 9 へ切り替える"
-
-#: ../src/include/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "ワークスペース 10 へ切り替える"
-
-#: ../src/include/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "ワークスペース 11 へ切り替える"
-
-#: ../src/include/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "ワークスペース 12 へ切り替える"
-
-#: ../src/include/all-keybindings.h:122
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "左側のワークスペースへ切り替える"
-
-#: ../src/include/all-keybindings.h:126
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "右側のワークスペースへ切り替える"
-
-#: ../src/include/all-keybindings.h:130
-msgid "Switch to workspace above the current workspace"
-msgstr "上側のワークスペースへ切り替える"
-
-#: ../src/include/all-keybindings.h:134
-msgid "Switch to workspace below the current workspace"
-msgstr "下側のワークスペースへ切り替える"
-
-#: ../src/include/all-keybindings.h:150
-msgid "Move between windows of an application, using a popup window"
-msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を移動する"
-
-#: ../src/include/all-keybindings.h:153
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を降順で移動する"
-
-#: ../src/include/all-keybindings.h:157
-msgid "Move between windows, using a popup window"
-msgstr "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを切り替える"
-
-#: ../src/include/all-keybindings.h:160
-msgid "Move backward between windows, using a popup window"
-msgstr ""
-"ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを降順で切り替える"
-
-#: ../src/include/all-keybindings.h:163
-msgid "Move between panels and the desktop, using a popup window"
-msgstr ""
-"ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを切り替"
-"える"
-
-#: ../src/include/all-keybindings.h:166
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr ""
-"ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを降順で"
-"切り替える"
-
-#: ../src/include/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "アプリケーションが持つ複数のウィンドウの間を移動する"
-
-#: ../src/include/all-keybindings.h:174
-msgid "Move backward between windows of an application immediately"
-msgstr "アプリケーションが持つ複数のウィンドウを降順で移動する"
-
-#: ../src/include/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "ウィンドウ間のフォーカスを切り替える"
-
-#: ../src/include/all-keybindings.h:180
-msgid "Move backward between windows immediately"
-msgstr "ウィンドウ間のフォーカスを降順で切り替える"
-
-#: ../src/include/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "パネルとデスクトップとのフォーカスを切り替える"
-
-#: ../src/include/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "後方のパネルとデスクトップとの間を切り替える"
-
-#: ../src/include/all-keybindings.h:191
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "全てのウィンドウを隠してデスクトップにフォーカスを移す"
-
-#: ../src/include/all-keybindings.h:194
-msgid "Show the panel's main menu"
-msgstr "パネルにあるメイン・メニューを開く"
-
-#: ../src/include/all-keybindings.h:197
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "アプリケーションの実行ダイアログを開く"
-
-#: ../src/include/all-keybindings.h:238
-msgid "Take a screenshot"
-msgstr "スクリーンショットを撮る"
-
-#: ../src/include/all-keybindings.h:240
-msgid "Take a screenshot of a window"
-msgstr "ウィンドウのスクリーンショットを撮る"
-
-#: ../src/include/all-keybindings.h:242
-msgid "Run a terminal"
-msgstr "端末の起動"
-
-#: ../src/include/all-keybindings.h:257
-msgid "Activate the window menu"
-msgstr "ウィンドウ・メニューを開く"
-
-#: ../src/include/all-keybindings.h:260
-msgid "Toggle fullscreen mode"
-msgstr "フル・スクリーン表示を切り替える"
-
-#: ../src/include/all-keybindings.h:262
-msgid "Toggle maximization state"
-msgstr "最大化/最小化の状態を切り替える"
-
-#: ../src/include/all-keybindings.h:264
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "ウィンドウを常に前面に表示するかどうかの設定を切り替える"
-
-#: ../src/include/all-keybindings.h:266
-msgid "Maximize window"
-msgstr "ウィンドウを最大化する"
-
-#: ../src/include/all-keybindings.h:268
-msgid "Restore window"
-msgstr "ウィンドウの状態を元に戻す"
-
-#: ../src/include/all-keybindings.h:270
-msgid "Toggle shaded state"
-msgstr "シェードの状態を切り替える"
-
-#: ../src/include/all-keybindings.h:272
-msgid "Minimize window"
-msgstr "ウィンドウを最小化する"
-
-#: ../src/include/all-keybindings.h:274
-msgid "Close window"
-msgstr "ウィンドウを閉じる"
-
-#: ../src/include/all-keybindings.h:276
-msgid "Move window"
-msgstr "ウィンドウを移動する"
-
-#: ../src/include/all-keybindings.h:278
-msgid "Resize window"
-msgstr "ウィンドウ・サイズを変更する"
-
-#: ../src/include/all-keybindings.h:281
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "ウィンドウを全てのワークスペースに配置するか切り替える"
-
-#: ../src/include/all-keybindings.h:285
-msgid "Move window to workspace 1"
-msgstr "ウィンドウをワークスペース 1 へ移動する"
-
-#: ../src/include/all-keybindings.h:288
-msgid "Move window to workspace 2"
-msgstr "ウィンドウをワークスペース 2 へ移動する"
-
-#: ../src/include/all-keybindings.h:291
-msgid "Move window to workspace 3"
-msgstr "ウィンドウをワークスペース 3 へ移動する"
-
-#: ../src/include/all-keybindings.h:294
-msgid "Move window to workspace 4"
-msgstr "ウィンドウをワークスペース 4 へ移動する"
-
-#: ../src/include/all-keybindings.h:297
-msgid "Move window to workspace 5"
-msgstr "ウィンドウをワークスペース 5 へ移動する"
-
-#: ../src/include/all-keybindings.h:300
-msgid "Move window to workspace 6"
-msgstr "ウィンドウをワークスペース 6 へ移動する"
-
-#: ../src/include/all-keybindings.h:303
-msgid "Move window to workspace 7"
-msgstr "ウィンドウをワークスペース 7 へ移動する"
-
-#: ../src/include/all-keybindings.h:306
-msgid "Move window to workspace 8"
-msgstr "ウィンドウをワークスペース 8 へ移動する"
-
-#: ../src/include/all-keybindings.h:309
-msgid "Move window to workspace 9"
-msgstr "ウィンドウをワークスペース 9 へ移動する"
-
-#: ../src/include/all-keybindings.h:312
-msgid "Move window to workspace 10"
-msgstr "ウィンドウをワークスペース 10 へ移動する"
-
-#: ../src/include/all-keybindings.h:315
-msgid "Move window to workspace 11"
-msgstr "ウィンドウをワークスペース 11 へ移動する"
-
-#: ../src/include/all-keybindings.h:318
-msgid "Move window to workspace 12"
-msgstr "ウィンドウをワークスペース 12 へ移動する"
-
-#: ../src/include/all-keybindings.h:330
-msgid "Move window one workspace to the left"
-msgstr "ウィンドウを左側のワークスペースへ移動する"
-
-#: ../src/include/all-keybindings.h:333
-msgid "Move window one workspace to the right"
-msgstr "ウィンドウを右側のワークスペースへ移動する"
-
-#: ../src/include/all-keybindings.h:336
-msgid "Move window one workspace up"
-msgstr "ウィンドウを上側のワークスペースへ移動する"
-
-#: ../src/include/all-keybindings.h:339
-msgid "Move window one workspace down"
-msgstr "ウィンドウを下側のワークスペースへ移動する"
-
-#: ../src/include/all-keybindings.h:342
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "隠れているウィンドウを前面に表示する"
-
-#: ../src/include/all-keybindings.h:344
-msgid "Raise window above other windows"
-msgstr "ウィンドウを前面に表示する"
-
-#: ../src/include/all-keybindings.h:346
-msgid "Lower window below other windows"
-msgstr "ウィンドウを一番奥に移動する"
-
-#: ../src/include/all-keybindings.h:350
-msgid "Maximize window vertically"
-msgstr "ウィンドウを垂直方向に最大化する"
-
-#: ../src/include/all-keybindings.h:354
-msgid "Maximize window horizontally"
-msgstr "ウィンドウを水平方向に最大化する"
-
-#: ../src/include/all-keybindings.h:358
-msgid "Move window to north-west (top left) corner"
-msgstr "ウィンドウを画面の左上隅へ移動する"
-
-#: ../src/include/all-keybindings.h:361
-msgid "Move window to north-east (top right) corner"
-msgstr "ウィンドウを画面の右上隅へ移動する"
-
-#: ../src/include/all-keybindings.h:364
-msgid "Move window to south-west (bottom left) corner"
-msgstr "ウィンドウを画面の左下隅へ移動する"
-
-#: ../src/include/all-keybindings.h:367
-msgid "Move window to south-east (bottom right) corner"
-msgstr "ウィンドウを画面の右下隅へ移動する"
-
-#: ../src/include/all-keybindings.h:371
-msgid "Move window to north (top) side of screen"
-msgstr "ウィンドウを画面の上側へ移動する"
-
-#: ../src/include/all-keybindings.h:374
-msgid "Move window to south (bottom) side of screen"
-msgstr "ウィンドウを画面の下側へ移動する"
-
-#: ../src/include/all-keybindings.h:377
-msgid "Move window to east (right) side of screen"
-msgstr "ウィンドウを画面の右側へ移動する"
-
-#: ../src/include/all-keybindings.h:380
-msgid "Move window to west (left) side of screen"
-msgstr "ウィンドウを画面の左側へ移動する"
-
-#: ../src/include/all-keybindings.h:383
-msgid "Move window to center of screen"
-msgstr "ウィンドウを画面の中央へ移動する"
-
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "ウィンドウを利用しないアプリの動作をナビゲートする条件 (未実装) "
-
-#: ../src/metacity.schemas.in.in.h:2
+#: ../src/mutter.schemas.in.h:1
+msgid "Attach modal dialogs"
+msgstr "モーダルなダイアログを統合するかどうか"
+
+#: ../src/mutter.schemas.in.h:2
 msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
 msgstr ""
-"ウィンドウのタイトルバーに表示するフォント (論理フォント名) です。ただし、こ"
-"こで指定したフォント・サイズが使用されるのは、titlebar_font_size オプション"
-"が 0 の場合だけです。また titlebar_uses_desktop_font オプションが TRUE の場合"
-"は、この設定は無効になります。"
+"現在表示されていないウィンドウ (すなわち、最小化したウィンドウや現在のワーク"
+"スペースにはないウィンドウなど) を (表示させずに) そのままの状態にしておくか"
+"どうかです。"
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "タイトル・バーをダブル・クリックした時の効果"
-
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "タイトル・バーを中クリックした時の効果"
-
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "タイトル・バーを右クリックした時の効果"
-
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "タイトル・バーのボタンの配置"
-
-#: ../src/metacity.schemas.in.in.h:7
+#: ../src/mutter.schemas.in.h:3
 msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
 msgstr ""
-"タイトル・バーのボタンの位置を指定します。ここで指定する値は \"menu:minimize,"
-"maximize,spacer,close\" のような文字列にして下さい; コロンでウィンドウの右上"
-"隅と左上隅を分割し、ボタン名はコンマで区切ります。ボタンを重複させることはで"
-"きません。不明なボタン名は単に無視されるだけなので、metacity の将来のバージョ"
-"ンでも利用できます。spacer というタグはボタンとボタンの間に挿入する空白を意味"
-"します。"
+"全てのモニタにあるウィンドウに対してワークスペースの切り替えを可能にするか、"
+"またはプライマリ・モニタにあるウィンドウに対してのみワークスペースの切り替え"
+"を提供するかどうかです。"
 
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "フォーカスされたウィンドウを自動的に前面に表示するかどうか"
+#: ../src/mutter.schemas.in.h:4
+msgid "Live Hidden Windows"
+msgstr "表示されていないウィンドウをそのままにしておくかどうか"
 
-#: ../src/metacity.schemas.in.in.h:9
+#: ../src/mutter.schemas.in.h:5
+msgid "Modifier to use for extended window management operations"
+msgstr "ウィンドウの拡張管理の操作で使用する修飾キー"
+
+#: ../src/mutter.schemas.in.h:6
 msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
-"ここで指定した修飾キーを押したままウィンドウをクリックすると、ウィンドウを移"
-"動させたり (左クリック)、ウィンドウのサイズを変更したり (中クリック)、ウィン"
-"ドウのメニューを表示させたり (右クリック) することができます。ここで指定する"
-"修飾キーは、例えば \"&lt;Alt&gt;\" や \"&lt;Super&gt;\" のような書式にして下"
-"さい。"
+"ここに指定したキーで「オーバーレイの機能」を起動します。この機能は GNOME "
+"Shell などが提供するウィンドウの全体表示やアプリの起動システムと連携します。"
+"デフォルトのキーは PC のキーボードにある [Windows キー] です。指定可能な値: "
+"デフォルトのキー、または空の文字列"
 
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "キーバインドの応答で走らせるコマンド"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "合成マネージャかどうか"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "新しいウィンドウに対するフォーカスの当て方"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "現在使用しているテーマ"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "自動的に前面に表示するオプションの遅延時間 (ミリ秒)"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "Metacity が合成マネージャになれるかどうかです。"
-
-#: ../src/metacity.schemas.in.in.h:16
+#: ../src/mutter.schemas.in.h:7
 msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
 msgstr ""
-"アプリケーションまたはシステムが｢ベル｣や｢ビープ音｣を生成できるかどうかです。"
-"これは音の無いビープ音を有効にする｢視覚的なベル｣と一緒に用いられます。"
+"TRUE にすると、タイトルバーを持つ通常のモーダルなダイアログを表示する代わり"
+"に、親ウィンドウのタイトルバーに統合したダイアログを表示します (親ウィンドウ"
+"を移動すると一緒にモーダルなダイアログも移動します)。"
 
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"旧式または仕様に準拠していないアプリケーションが要求する不要な機能を無効にす"
-"るかどうか"
+#: ../src/mutter.schemas.in.h:8
+msgid "Workspaces only on primary"
+msgstr "プライマリ・モニタのみワークスペースを切り替えるかどうか"
 
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "視覚的なベルを有効にするかどうか"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-"この値が TRUE でかつフォーカス・モードが \"sloppy\" または \"mouse\" の場合、"
-"フォーカスを取得したウィンドウは auto_raise_delay キーに指定した時間が経過し"
-"た後に自動的に前面に表示されます。これはウィンドウをクリックして前面に表示す"
-"る場合とは関係はなく、ドラッグ＆ドロップ中にポインタがウィンドウ内に入った場"
-"合とも関係はありません。"
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-"TRUE にすると、titlebar_font に指定したフォントを無視してウィンドウ・タイトル"
-"に標準のフォントを使用します。"
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-"この値を TRUE にすると、Metacity はワイヤフレームを使ったり、アニメーションを"
-"行わなくなるなど、ユーザへのフィードバックが減少し｢直感的な操作｣という点でも"
-"操作性が落ちます。これは多くのユーザにとってユーザビリティの重大な低下につな"
-"がりますが、そうしないと操作に困るような旧式のアプリケーションやターミナル・"
-"サーバが動作するようになります。但し、アクセシビリティの機能が有効な場合はワ"
-"イヤフレームの機能は無効になります。"
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"TRUE にすると、Metacity の動作はウィンドウではなくアプリケーションに依存しま"
-"す。この概念はやや抽象的ですが、この設定は一般的に Apple の MacOS に似ていま"
-"すが、Microsoft Windows にはあまり似ていません。この設定が TRUE の場合にウィ"
-"ンドウがフォーカスされると、アプリケーションの全てのウィンドウが手前に表示さ"
-"れます。また、この設定が TRUE の場合、フォーカス・クリックが他のアプリケー"
-"ションのウィンドウに渡されることはありません。しかしながら、アプリケーション"
-"固定モードは現在のところ大部分が未実装です。"
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr "ユーザビリティとリソースの省力化をトレードオフするかどうか"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "ウィンドウをクリックした時の効果を変更する修飾キー"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "ワークスペースの名前"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "ワークスペースの数"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"ワークスペースの数です。ワークスペースの数を 0 にしないで下さい。さらに、非常"
-"に多くのワークスペースを指定して、誤ってデスクトップを壊してしまわないように"
-"最大値が決まっています。"
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "実行するコマンド"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"これを TRUE にすると、mouse_button_modifier に指定した修飾キーを押している間"
-"はマウスの右ボタンでサイズを変更し、中ボタンでメニューを表示するようになりま"
-"す。FALSE にすると、それとは逆の操作になります。"
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"これを FALSE にすると動作が不安定になる場合があるので、デフォルトの TRUE から"
-"変更しないようにして下さい。例えばウィンドウの内部をクリックするとか、ウィン"
-"ドウを移動したりサイズを変更するような操作では、たいていの場合｢その副作用とし"
-"て｣ウィンドウを前面に表示します。この設定を FALSE にすると (これはかなりお勧"
-"めできないのですが)、ウィンドウを前面に表示する処理とユーザの操作を分離し、ア"
-"プリケーションから出された要求 (ウィンドウを前面に表示させる要求) を無視する"
-"ようになります。これに関しては http://bugzilla.gnome.org/show_bug.cgi?"
-"id=445447#c6 にあるバグ報告も参照してみて下さい。さらに、たとえこの設定を "
-"FALSE にしても、ウインドウのどこかで Alt+左クリックしたり、普通にウィンドウの"
-"タイトルバーをクリックしたり、あるいはページャから特別なメッセージ (ウィンド"
-"ウ一覧のアプレットからウィンドウにフォーカスを与える要求) を受け取ったりする"
-"とウィンドウが前面に表示されてしまいます。但し、現在のバージョンで、この設定"
-"はクリックしてフォーカスを与えるモードでは利用できないようになっています。こ"
-"の設定が FALSE の時に複数のウィンドウを前面に表示する手段には、アプリケーショ"
-"ンのプログラムから出される要求は含まれていないので注意して下さい。このような"
-"要求はその理由如何に関わらず無視されます。そのため、もしあなたがアプリケー"
-"ションの開発者で、この設定を FALSE にしてもそのアプリケーションが正しく動作し"
-"ないといったクレームを受け取っている場合、それはアプリケーションの問題ではな"
-"く、この設定を FALSE にしているユーザに責任があり、この設定をデフォルトの "
-"TRUE に戻す必要がある旨を伝えるか、バグをそのままにしておくかして下さい。"
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"いくつかのアプリケーションではウィンドウ・マネージャの間違った動きや機能の結"
-"果、仕様を無視します。このオプションは Metacity を厳格に正しいモードにし、さ"
-"らに一貫したユーザ・インタフェースを提供することで、何かおかしな動きをするア"
-"プリケーションを実行することがないようにします。"
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "システム・ベル"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"システムベルや他のアプリケーション｢ベル｣が鳴らされたことを視覚的に通知する方"
-"法を Metacity に指示します。現在のところ２つの方法を指定できます。fullscree "
-"は全画面を白黒で点滅させます。frame_flas はベルのシグナルを通知したアプリケー"
-"ションのタイトルバーを点滅させます。どのアプリケーションがベルのシグナルを鳴"
-"らしたのか分からない時 (デフォルトの \"システムビープ\" ではよくあるケースで"
-"す) は、その時点でフォーカスされているウィンドウのタイトルバーを点滅させま"
-"す。"
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"/apps/metacity/global_keybindings/runs_command_N キーは、これらのコマンドに対"
-"応するキーバインドを定義します。run_command_N のキーバインドを押すとcommand_N"
-"が実行されます。"
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"/apps/metacity/global_keybindings/runs_command_screenshot キーは。この設定で"
-"実行するよう指定されたコマンドに対応するキーバインドを定義します。"
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"/apps/metacity/global_keybindings/runs_command_window_screenshot キーは、この"
-"設定で実行するよう指定されたコマンドに対応するキーバインドを定義します。"
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"/apps/metacity/keybinding_commands に対応する数字のコマンドを実行するキーバイ"
-"ンドを指定します。フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\" のようにします。パーサは完全に自由で大文字や小文字を許可します。"
-"そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;\" のような省略もできます。もし特別な"
-"文字 \"disabled\" をオプションに設定した場合は、この動作のキーバインドはなく"
-"なります。"
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "ワークスペースの名前"
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "スクリーンショットを撮影するコマンド"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr "テーマはウィンドウの境界やタイトルバーなどの外観を決定します。"
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"auto_raiseがtrueに設定されている場合に，ウィンドウを手前に表示するまでの遅延"
-"時間を指定します．この遅延は1000分の1秒単位で指定します"
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"ウィンドウフォーカスモードはウィンドウがどのようにアクティブにされるかを示し"
-"ます．設定可能な値は3つあり，\"click\"はフォーカスするためにクリックする必要"
-"があることを意味します．\"sloppy\"はマウスがウィンドウ内に入る時ウィンドウが"
-"フォーカスされることを意味し，\"mouse\"はマウスがウィンドウ内に入る時にウィン"
-"ドウがフォーカスされ，マウスがウィンドウから出る時にフォーカスが解除されるこ"
-"とを意味します"
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "ウィンドウのスクリーンショットを撮影するコマンド"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"タイトル・バーをダブル・クリックした時の効果を指定します。指定可能なオプショ"
-"ン: toggle_shade (ウィンドウの巻き上げを ON/OFF する)、toggle_maximize (ウィ"
-"ンドウの最大化/最小化)、toggle_maximize_horizontally (水平方向にだけウィンド"
-"ウの最大化/最小化)、toggle_maximize_vertically (垂直方向にだけウィンドウの最"
-"大化/最小化)、minimize (ウィンドウの最小化)、shade (ウィンドウを巻き上げる)、"
-"menu (ウィンドウのメニューを表示する)、lower (ウィンドウを一番後ろに回す)、"
-"none (何もしない)"
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"タイトル・バーを中クリックした時の効果を指定します。指定可能なオプション: "
-"toggle_shade (ウィンドウの巻き上げを ON/OFF する)、toggle_maximize (ウィンド"
-"ウの最大化/最小化)、toggle_maximize_horizontally (水平方向にだけウィンドウの"
-"最大化/最小化)、toggle_maximize_vertically (垂直方向にだけウィンドウの最大化/"
-"最小化)、minimize (ウィンドウの最小化)、shade (ウィンドウを巻き上げる)、menu "
-"(ウィンドウのメニューを表示する)、lower (ウィンドウを一番後ろに回す)、none "
-"(何もしない)"
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"タイトル・バーを右クリックした時の効果を指定します。指定可能なオプション: "
-"toggle_shade (ウィンドウの巻き上げを ON/OFF する)、toggle_maximize (ウィンド"
-"ウの最大化/最小化)、toggle_maximize_horizontally (水平方向にだけウィンドウの"
-"最大化/最小化)、toggle_maximize_vertically (垂直方向にだけウィンドウの最大化/"
-"最小化)、minimize (ウィンドウの最小化)、shade (ウィンドウを巻き上げる)、menu "
-"(ウィンドウのメニューを表示する)、lower (ウィンドウを一番後ろに回す)、none "
-"(何もしない)"
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"このオプションを使い、新しく生成したウィンドウに対して、どのようにフォーカス"
-"を与えるかを制御します。設定可能なオプション: \"smart\" (ユーザが定義した"
-"フォーカス・モードを適用します)、\"strict\" (端末から起動したアプリのウィンド"
-"ウにはフォーカスを与えないようにします)"
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"アプリケーションまたはシステムが｢ベル｣や｢ビープ音｣を鳴らしたら、視覚的にも"
-"鳴ったのが分かるような通知を行います。難聴のユーザや騒々しい環境で作業する"
-"ユーザには便利です。"
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr "ウィンドウのタイトルに標準のシステム・フォントを使うかどうか"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "視覚的なベルの種類"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "ウィンドウ操作の副作用としてウィンドウを前面に出すかどうか"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "右ボタンで大きさを変更するかどうか"
-
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "ウィンドウ・フォーカスのモード"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "ウィンドウ・タイトルのフォント"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "用法: %s\n"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1177
 msgid "Close Window"
 msgstr "ウィンドウを閉じます"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1180
 msgid "Window Menu"
 msgstr "ウィンドウ・メニューを表示します"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1183
 msgid "Minimize Window"
 msgstr "ウィンドウを最小化します"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1186
 msgid "Maximize Window"
 msgstr "ウィンドウを最大化します"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1189
 msgid "Restore Window"
 msgstr "ウィンドウの状態を元に戻します"
 
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1192
 msgid "Roll Up Window"
 msgstr "ウィンドウを巻き上げます"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1195
 msgid "Unroll Window"
 msgstr "ウィンドウの巻き上げを解除します"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1198
 msgid "Keep Window On Top"
 msgstr "ウィンドウを最前面に維持します"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1201
 msgid "Remove Window From Top"
 msgstr "ウィンドウを最前面の維持から解除します"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1204
 msgid "Always On Visible Workspace"
 msgstr "全てのワークスペースに配置します"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1207
 msgid "Put Window On Only One Workspace"
 msgstr "現在のワークスペースにのみ配置します"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:70
+#: ../src/ui/menu.c:69
 msgid "Mi_nimize"
 msgstr "最小化(_N)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:72
+#: ../src/ui/menu.c:71
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:74
+#: ../src/ui/menu.c:73
 msgid "Unma_ximize"
 msgstr "元のサイズに戻す(_X)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:76
+#: ../src/ui/menu.c:75
 msgid "Roll _Up"
 msgstr "巻き上げる(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:78
+#: ../src/ui/menu.c:77
 msgid "_Unroll"
 msgstr "展開する(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:80
+#: ../src/ui/menu.c:79
 msgid "_Move"
 msgstr "移動(_M)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82
+#: ../src/ui/menu.c:81
 msgid "_Resize"
 msgstr "サイズの変更(_R)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:84
+#: ../src/ui/menu.c:83
 msgid "Move Titlebar On_screen"
 msgstr "画面上でタイトルバーを移動する(_S)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
 msgid "Always on _Top"
 msgstr "最前面へ(_T)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:91
+#: ../src/ui/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "全てのワークスペースに配置する(_A)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:93
+#: ../src/ui/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "現在のワークスペースのみ(_O)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:95
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "左側のワークスペースへ移動する(_L)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:97
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "右側のワークスペースへ移動する(_I)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:99
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "上側のワークスペースへ移動する(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:101
+#: ../src/ui/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "下側のワークスペースへ移動する(_D)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:105
+#: ../src/ui/menu.c:104
 msgid "_Close"
 msgstr "閉じる(_C)"
 
-#: ../src/ui/menu.c:203
+#: ../src/ui/menu.c:204
 #, c-format
 msgid "Workspace %d%n"
 msgstr "ワークスペース %d%n"
 
-#: ../src/ui/menu.c:213
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace 1_0"
 msgstr "ワークスペース 1_0"
 
-#: ../src/ui/menu.c:215
+#: ../src/ui/menu.c:216
 #, c-format
 msgid "Workspace %s%d"
 msgstr "ワークスペース %s%d"
 
-#: ../src/ui/menu.c:395
+#: ../src/ui/menu.c:397
 msgid "Move to Another _Workspace"
 msgstr "別のワークスペースへ移動する(_W)"
 
@@ -1463,7 +979,7 @@ msgstr "別のワークスペースへ移動する(_W)"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:104
+#: ../src/ui/metaaccellabel.c:77
 msgid "Shift"
 msgstr "Shift"
 
@@ -1472,7 +988,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:110
+#: ../src/ui/metaaccellabel.c:83
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1481,7 +997,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:116
+#: ../src/ui/metaaccellabel.c:89
 msgid "Alt"
 msgstr "Alt"
 
@@ -1490,7 +1006,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:122
+#: ../src/ui/metaaccellabel.c:95
 msgid "Meta"
 msgstr "Meta"
 
@@ -1499,7 +1015,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:128
+#: ../src/ui/metaaccellabel.c:101
 msgid "Super"
 msgstr "Super"
 
@@ -1508,7 +1024,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:134
+#: ../src/ui/metaaccellabel.c:107
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -1517,7 +1033,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:140
+#: ../src/ui/metaaccellabel.c:113
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1526,7 +1042,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:146
+#: ../src/ui/metaaccellabel.c:119
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1535,7 +1051,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:152
+#: ../src/ui/metaaccellabel.c:125
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1544,55 +1060,9 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:158
+#: ../src/ui/metaaccellabel.c:131
 msgid "Mod5"
 msgstr "Mod5"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" から応答がありません。"
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"応答があるまで待機するか、または強制的にアプリケーションを終了するか選択して"
-"下さい。"
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "待機する(_W)"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "強制終了する(_F)"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "タイトル"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "クラス"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"これらのウィンドウは \"現在の設定を保存する\" 機能をサポートしません。次回ロ"
-"グインする時に手動で再起動して下さい。"
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"\"%s\"が動作中にエラーがありました:\n"
-"%s"
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
@@ -1602,48 +1072,48 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:254
+#: ../src/ui/theme.c:255
 msgid "top"
 msgstr "上"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:257
 msgid "bottom"
 msgstr "下"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:259
 msgid "left"
 msgstr "左"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:261
 msgid "right"
 msgstr "右"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:288
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "フレームジオメトリは \"%s\" のサイズを指定しません"
 
-#: ../src/ui/theme.c:306
+#: ../src/ui/theme.c:307
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "境界 \"%2$s\" 用のフレームジオメトリは大きさ \"%1$s\" を指定しません"
 
-#: ../src/ui/theme.c:343
+#: ../src/ui/theme.c:344
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "ボタンのアスペクト比 %g は妥当ではありません"
 
-#: ../src/ui/theme.c:355
+#: ../src/ui/theme.c:356
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "フレームジオメトリはボタンのサイズを指定しません"
 
-#: ../src/ui/theme.c:1020
+#: ../src/ui/theme.c:1064
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "階調度は少なくとも2つの色をもつべきです"
 
-#: ../src/ui/theme.c:1146
+#: ../src/ui/theme.c:1202
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1652,7 +1122,7 @@ msgstr ""
 "\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態を"
 "大括弧で囲み指定する必要があります (NORMAL は状態を示す)"
 
-#: ../src/ui/theme.c:1160
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1661,17 +1131,17 @@ msgstr ""
 "\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態の"
 "後に右大括弧をつける必要があります (NORMAL は状態を示す)"
 
-#: ../src/ui/theme.c:1171
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "色指定で状態 \"%s\" は理解しませんでした"
 
-#: ../src/ui/theme.c:1184
+#: ../src/ui/theme.c:1240
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "色指定でカラーコンポーネント \"%s\" は理解しませんでした"
 
-#: ../src/ui/theme.c:1214
+#: ../src/ui/theme.c:1270
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1680,17 +1150,17 @@ msgstr ""
 "混合色のフォーマットは \"blend/bg_color/fg_color/alpha\" で，\"%s\" はこの"
 "フォーマットに適合していません"
 
-#: ../src/ui/theme.c:1225
+#: ../src/ui/theme.c:1281
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "混合色のアルファ値 \"%s\" を解析できませんでした"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1291
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色のアルファ値 \"%s\" は 0.0 から 1.0 の間ではありません"
 
-#: ../src/ui/theme.c:1282
+#: ../src/ui/theme.c:1338
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -1698,78 +1168,78 @@ msgstr ""
 "シェードのフォーマットは \"shade/base_color/factor\" で，\"%s\" はこのフォー"
 "マットに適合していません"
 
-#: ../src/ui/theme.c:1293
+#: ../src/ui/theme.c:1349
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "シェードカラーのシェード係数 \"%s\" をパスできませんでした"
 
-#: ../src/ui/theme.c:1303
+#: ../src/ui/theme.c:1359
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "シェードカラーのシェード係数 \"%s\" が負の値です"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1388
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "色 \"%s\" を解析できませんでした"
 
-#: ../src/ui/theme.c:1582
+#: ../src/ui/theme.c:1646
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "許可されていない文字 '%s' が座標式に含まれています"
 
-#: ../src/ui/theme.c:1609
+#: ../src/ui/theme.c:1673
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "解析できない浮動小数点数 '%s' が座標式に含まれています"
 
-#: ../src/ui/theme.c:1623
+#: ../src/ui/theme.c:1687
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "解析できない整数 '%s' が座標式に含まれています"
 
-#: ../src/ui/theme.c:1745
+#: ../src/ui/theme.c:1809
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "座標式は次のテキストの先頭に無効な演算子を含んでいました: \"%s\""
 
-#: ../src/ui/theme.c:1802
+#: ../src/ui/theme.c:1866
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "座標式が空か解析不能です"
 
-#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "座標式はゼロで除算しました"
 
-#: ../src/ui/theme.c:1965
+#: ../src/ui/theme.c:2029
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "座標式は浮動小数点で mod 演算子を使用しようとしています"
 
-#: ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2085
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "座標式はオペランドが必要な場所に演算子 \"%s\" を使用しています"
 
-#: ../src/ui/theme.c:2030
+#: ../src/ui/theme.c:2094
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "座標式は演算子が必要な場所でオペランドを使用しています"
 
-#: ../src/ui/theme.c:2038
+#: ../src/ui/theme.c:2102
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "座標式はオペランドの代わりに演算子で終わっています"
 
-#: ../src/ui/theme.c:2048
+#: ../src/ui/theme.c:2112
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1778,37 +1248,37 @@ msgstr ""
 "座標式は演算子 \"%2$c\" の後に演算子 \"%1$c\" が続いており，これらの間にオペ"
 "ランドがありません"
 
-#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "座標式は無効な値または定数 \"%s\" が使用されていました"
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2362
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "座標式を解析する際にオーバーフローが発生しました"
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2391
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "座標式は左括弧がなしに右括弧が指定されています"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2455
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "座標式は左括弧が指定されていますが，右括弧がありません"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2466
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "座標式は演算子もオペランドも使用していないようです"
 
-#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "テーマにエラーを引き起こす式が含まれていました: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4410
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1817,7 +1287,7 @@ msgstr ""
 "このフレームスタイルは <button function=\"%s\" state=\"%s\" draw_ops="
 "\"whatever\"/> を指定する必要があります"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1825,18 +1295,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>がありませ"
 "ん"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:5013
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "テーマ \"%s\" の読み込みに失敗しました: %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
+#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "テーマ \"%1$s\" の <%2$s> が設定されていません"
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:5185
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1846,13 +1316,13 @@ msgstr ""
 "ません．<window type=\"%3$s\" style_set=\"whatever\"/> エレメントを追加してく"
 "ださい"
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ユーザ定義の定数は大文字で始まらなければなりません; \"%s\" は違います"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" は既に定義されています"
@@ -1860,60 +1330,70 @@ msgstr "定数 \"%s\" は既に定義されています"
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "<%2$s> の要素には \"%1$s\" という属性はありません"
 
-#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "%d 行目 %d 文字目: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "同じ <%2$s> エレメント上で属性 \"%1$s\" が 2 度繰り返されました"
 
-#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "このコンテキスト内では <%2$s> エレメント上の属性 \"%1$s\" は無効です"
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:594
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "\"%s\"を整数として構文解釈できませんでした"
+
+#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "末尾の文字列 \"%s\" (文字列 \"%s\") を理解できませんでした"
+
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "整数 %ld は正数でなければなりません"
 
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "整数 %ld は大きすぎます，現在の最大は %d です"
 
-#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "浮動小数点として \"%s\" を解析できませんでした"
 
-#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr ""
 "ブール値は \"true\" か \"false\" でなければならず \"%s\" ではありません"
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "角度は 0.0 から 360.0 の間でなければなりませんが，%g でした\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
-"アルファ値は 0.0 (不可視)と 1.0 (完全に不透明) の間でなければなりませんが，%"
-"g でした\n"
+"アルファ値は 0.0 (不可視)と 1.0 (完全に不透明) の間でなければなりません"
+"が，%g でした\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -1922,60 +1402,60 @@ msgstr ""
 "無効なタイトルスケール \"%s\" です (xx-small,x-small,small,medium,large,x-"
 "large,xx-large のひとつでなければなりません)\n"
 
-#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
+#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> の名前 \"%s\"が2回使われています"
 
-#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
+#: ../src/ui/theme-parser.c:1231
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s> の親 \"%s\" は定義されていません"
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1141
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s> のジオメトリ \"%s\" は定義されていません"
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1154
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
 "<%s> はジオメトリ，またはジオメトリを持つ親のどちらかを指定しなければなりませ"
 "ん"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "背景色の妥当なアルファ値を指定して下さい"
 
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "<%2$s> エレメント上に不明なタイプ \"%1$s\" があります"
 
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1275
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "<%2$s> エレメント上に不明な style_set \"%1$s\" があります"
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "ウィンドウタイプ \"%s\" はすでにスタイル設定に割り当てられています"
 
-#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
+#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
+#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3034
+#: ../src/ui/theme-parser.c:3273 ../src/ui/theme-parser.c:3311
+#: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "エレメント <%s> は <%s> の下では許可されていません"
 
-#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
+#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
+#: ../src/ui/theme-parser.c:1486
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
@@ -1983,126 +1463,126 @@ msgstr ""
 "複数のボタンに \"button_width\"/\"button_height\" と \"aspect_ratio\" の両方"
 "の属性を指定できません"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1450
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "間隔 \"%s\" は不明です"
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1495
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "アスペクト比 \"%s\"は不明です"
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "境界 \"%s\" は不明です"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1868
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "エレメント <%s> に \"start_angle\" または \"from\" 属性はありません"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr ""
 "エレメント <%s> に \"extent_angle\" または \"to\" 属性はありません\n"
 "               "
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2115
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "階調度のタイプの値 \"%s\" は解釈されませんでした"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "<%2$s>エレメント用のフィルタイプ \"%1$s\"は解釈されませんでした"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
+#: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "<%2$s> エレメント用の状態 \"%1$s\" は解釈されませんでした"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "<%2$s> エレメント用の影 \"%1$s\" は解釈されませんでした"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "<%2$s> エレメント用の矢印 \"%1$s\" は解釈されませんでした"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "\"%s\"を呼ぶ <draw_ops> は定義されていません"
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "ここに draw_ops \"%s\" を含めると循環参照が生成されます"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "フレーム要素の場所 \"%s\" は不明です"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2925
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "フレームスタイルはすでに場所 %s に要素を持っています"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "名前 \"%s\" で <draw_ops>が定義されていません"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2972
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "ボタンのための機能 \"%s\" は不明です"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr ""
 "このバージョンでは \"%s\" というボタンの機能は提供していません (現 %d, 要 %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2994
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "ボタンのための状態 \"%s\" は不明です"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:3002
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "フレームスタイルはすでに機能 %s 状態 %s のボタンを持っています"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:3073
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" はフォーカス属性のためには有効な値ではありません"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:3082
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" は状態の属性のためには有効な値ではありません"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:3092
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "\"%s\" に呼ばれるスタイルは定義されていません"
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" はリサイズ属性のためには有効な値ではありません"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -2110,24 +1590,26 @@ msgid ""
 msgstr ""
 "最大化/シェード化のための <%s> エレメントには \"resize\" 属性を指定できません"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3161
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "最大化のための <%s> エレメントには \"resize\" 属性を指定できません"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
 "状態 %s リサイズ %s フォーカス %s のためのスタイルはすでに指定されています"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
+#: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
+#: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "状態 %s フォーカス %s のためのスタイルはすでに指定されています"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3294
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2136,7 +1618,7 @@ msgstr ""
 "属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメントが指定さ"
 "れました)"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3332
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2145,7 +1627,7 @@ msgstr ""
 "draw_ops 属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメン"
 "トが指定されました)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3370
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -2154,14 +1636,34 @@ msgstr ""
 "draw_ops 属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメン"
 "トが指定されました)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3434
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr "バージョン '%s' の仕様はサポートしていません"
+
+#: ../src/ui/theme-parser.c:3507
+msgid ""
+"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+"theme-2.xml"
+msgstr ""
+"\"version\" 属性は metacity-theme-1.xml や metacity-theme-2.xml では指定でき"
+"ません"
+
+#: ../src/ui/theme-parser.c:3530
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr ""
+"バージョン %s のテーマが必要ですが、サポートしている最新のバージョンは %d.%d "
+"です"
+
+#: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr ""
 "テーマの最も外側のエレメントは <metacity_theme> でなければならず，<%s>ではあ"
 "りません"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3582
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
@@ -2169,12 +1671,12 @@ msgstr ""
 "エレメント <%s> は name/author/date/description エレメントの内側に許可されて"
 "いません"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3587
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "エレメント <%s> は <constant> エレメントの内側に許可されていません"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3599
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
@@ -2182,255 +1684,235 @@ msgstr ""
 "エレメント <%s> はdistance/border/aspect_ratioエレメントの内側に許可されてい"
 "ません"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "エレメント <%s> は描画処理エレメントの内側に許可されていません"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "エレメント <%s> は <%s> エレメントの内側に許可されていません"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
 msgstr "フレームのための draw_ops は提供されていません"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3914
 msgid "No draw_ops provided for button"
 msgstr "ボタンのための draw_ops は提供されていません"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3968
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "エレメント <%s> の内側にテキストは許可されません"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "このテーマで <name> は二回指定しました"
+#: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
+#: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
+#: ../src/ui/theme-parser.c:4074
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "このテーマでは <%s> という要素を２回指定しています"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "このテーマで <author> は二回指定しました"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "このテーマで <copyright> は二回指定しました"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "このテーマで <date> は二回指定しました"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "このテーマで<description>は二回指定しました"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4348
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "%s というテーマの妥当なファイルが見つかりませんでした\n"
 
-#: ../src/ui/theme-parser.c:4083
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
-"テーマファイル %s はルートに <metacity_theme> エレメントを含んでいませんでし"
-"た"
+#: ../src/ui/theme-viewer.c:99
+msgid "_Windows"
+msgstr "ウィンドウ(_W)"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/ウィンドウ(_W)"
+#: ../src/ui/theme-viewer.c:100
+msgid "_Dialog"
+msgstr "ダイアログ(_D)"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/ウィンドウ(_W)/ティアオフ"
+#: ../src/ui/theme-viewer.c:101
+msgid "_Modal dialog"
+msgstr "モーダルなダイアログ(_M)"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/ウィンドウ(_W)/ダイアログ(_D)"
+#: ../src/ui/theme-viewer.c:102
+msgid "_Utility"
+msgstr "ユーティリティ(_U)"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/ウィンドウ(_W)/モーダルダイアログ(_M)"
+#: ../src/ui/theme-viewer.c:103
+msgid "_Splashscreen"
+msgstr "スプラッシュスクリーン(_S)"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/ウィンドウ(_W)/ユーティリティ(_U)"
+#: ../src/ui/theme-viewer.c:104
+msgid "_Top dock"
+msgstr "上側のドック(_T)"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/ウィンドウ(_W)/スプラッシュスクリーン(_S)"
+#: ../src/ui/theme-viewer.c:105
+msgid "_Bottom dock"
+msgstr "下側のドック(_B)"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/ウィンドウ(_W)/上ドック(_T)"
+#: ../src/ui/theme-viewer.c:106
+msgid "_Left dock"
+msgstr "左側のドック(_L)"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/ウィンドウ(_W)/下ドック(_B)"
+#: ../src/ui/theme-viewer.c:107
+msgid "_Right dock"
+msgstr "右側のドック(_R)"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/ウィンドウ(_W)/左ドック(_L)"
+#: ../src/ui/theme-viewer.c:108
+msgid "_All docks"
+msgstr "全てのドック(_A)"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/ウィンドウ(_W)/右ドック(_R)"
+#: ../src/ui/theme-viewer.c:109
+msgid "Des_ktop"
+msgstr "デスクトップ(_K)"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/ウィンドウ(_W)/すべてのドック(_A)"
-
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/ウィンドウ(_W)/デスクトップ(_K)"
-
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
-msgstr "これらのウィンドウをもう一つ別に表示"
+msgstr "複数あるウィンドウの別のウィンドウを開きます"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
-msgstr "これは'開く'アイコンが付いたデモボタンです"
+msgstr "これは '開く' のアイコンを持つボタンの例です"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
-msgstr "これは'終了'アイコンが付いたデモボタンです"
+msgstr "これは '終了' のアイコンを持つボタンの例です"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
-msgstr "これはサンプルダイアログの中のサンプルメッセージです"
+msgstr "これはサンプル・ダイアログの中に表示したサンプル・メッセージです"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr "見せかけのメニュー・アイテム %d\n"
+msgstr "メニュー・アイテムの例%d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
-msgstr "ボーダーのみのウィンドウ"
+msgstr "境界線だけのウィンドウ"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "バー"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
-msgstr "通常のアプリケーションウィンドウ"
+msgstr "通常のアプリケーション・ウィンドウ"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
-msgstr "ダイアログボックス"
+msgstr "ダイアログ・ボックス"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
-msgstr "モーダルダイアログボックス"
+msgstr "モーダルなダイアログ・ボックス"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
-msgstr "ユーティリティパレット"
+msgstr "ユーティリティ・パレット"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
-msgstr "トーンオフ メニュー"
+msgstr "取り外したメニュー"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
-msgstr "ボーダー"
+msgstr "境界線"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:413
+msgid "Attached Modal Dialog"
+msgstr "埋め込んだモーダルなダイアログ"
+
+#: ../src/ui/theme-viewer.c:744
 #, c-format
 msgid "Button layout test %d"
-msgstr "ボタン・レイアウトのテスト %d"
+msgstr "ボタンの配置テスト %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:773
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr "一つのウィンドウ・フレームの描画時間: %g ミリ秒"
+msgstr "１個のウィンドウ・フレームの描画時間: %gミリ秒"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "用法: metacity-theme-viewer [テーマ名]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:825
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "テーマのロードでエラーが発生しました: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:831
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "\"%s\" というテーマを %g秒で読み込みました\n"
+msgstr "\"%s\" というテーマを%g秒で読み込みました\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:875
 msgid "Normal Title Font"
-msgstr "通常のタイトルフォント"
+msgstr "標準的なフォントのタイトル"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:881
 msgid "Small Title Font"
-msgstr "小さいタイトルフォント"
+msgstr "小さなフォントのタイトル"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:887
 msgid "Large Title Font"
-msgstr "大きいタイトルフォント"
+msgstr "大きなフォントのタイトル"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:892
 msgid "Button Layouts"
-msgstr "ボタンレイアウト"
+msgstr "ボタンの配置"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:897
 msgid "Benchmark"
 msgstr "ベンチマーク"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "ここにウィンドウのタイトルが表示されます"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1055
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"%d フレームをクライアント側で %g秒 (1フレームにつき %gミリ秒)、実時間ではＸ"
-"サーバのリソースを含めて %g秒 (1フレームにつき %gミリ秒)で描画しました\n"
+"%d 個のフレームをクライアント側で%g秒 (1フレームにつき%gミリ秒)、実時間ではＸ"
+"サーバのリソースを含めて%g秒 (1フレームにつき %gミリ秒)で描画しました\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1274
 msgid "position expression test returned TRUE but set error"
 msgstr "位置式テストはTRUEを返しましたがエラーがセットされています"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1276
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "位置式テストはFALSEを返しましたがエラーをセットしていません"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1280
 msgid "Error was expected but none given"
 msgstr "エラーが起きるはずですが何も起こりませんでした"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1282
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "エラー %d が起きるはずですが %d が起こりました"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1288
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "エラーは起きないはずですが一つ発生しました: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1292
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "xの値が %d でした (期待値: %d)"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1295
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "yの値は %d でした (期待値: %d)"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1360
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
