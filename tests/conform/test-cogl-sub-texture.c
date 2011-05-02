@@ -2,6 +2,7 @@
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "test-conform-common.h"
 
@@ -226,8 +227,8 @@ validate_result (TestState *state)
   for (y = 0; y < 10; y++)
     for (x = 0; x < 10; x++)
       {
-        g_assert (*(p++) == x + 40);
-        g_assert (*(p++) == y + 20);
+        g_assert_cmpint (abs(*(p++) - (x + 40)), <=, 1);
+        g_assert_cmpint (abs(*(p++) - (y + 20)), <=, 1);
         p += 2;
       }
   g_free (texture_data);
