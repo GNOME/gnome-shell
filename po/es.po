@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-28 18:41+0000\n"
-"PO-Revision-Date: 2011-04-29 12:05+0200\n"
+"POT-Creation-Date: 2011-04-29 17:48+0000\n"
+"PO-Revision-Date: 2011-05-02 10:07+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -111,7 +111,7 @@ msgstr "Anchura mínima establecida"
 
 #: ../clutter/clutter-actor.c:3789
 msgid "Whether to use the min-width property"
-msgstr "Indica si se usar la propiedad «anchura mínima»"
+msgstr "Indica si se usa la propiedad «anchura mínima»"
 
 #: ../clutter/clutter-actor.c:3804
 msgid "Minimum height set"
@@ -119,7 +119,7 @@ msgstr "Altura mínima establecida"
 
 #: ../clutter/clutter-actor.c:3805
 msgid "Whether to use the min-height property"
-msgstr "Indica si se usar la propiedad «altura mínima»"
+msgstr "Indica si se usa la propiedad «altura mínima»"
 
 #: ../clutter/clutter-actor.c:3820
 msgid "Natural width set"
@@ -127,7 +127,7 @@ msgstr "Anchura natural establecida"
 
 #: ../clutter/clutter-actor.c:3821
 msgid "Whether to use the natural-width property"
-msgstr "Indica si se usar la propiedad «anchura natural»"
+msgstr "Indica si se usa la propiedad «anchura natural»"
 
 #: ../clutter/clutter-actor.c:3838
 msgid "Natural height set"
@@ -135,7 +135,7 @@ msgstr "Altura natural establecida"
 
 #: ../clutter/clutter-actor.c:3839
 msgid "Whether to use the natural-height property"
-msgstr "Indica si se usar la propiedad «altura natural»"
+msgstr "Indica si se usa la propiedad «altura natural»"
 
 #: ../clutter/clutter-actor.c:3858
 msgid "Allocation"
@@ -344,15 +344,15 @@ msgstr "Gravedad del ancla"
 
 #: ../clutter/clutter-actor.c:4303
 msgid "The anchor point as a ClutterGravity"
-msgstr "El punto de anclado como un ClutterGravity"
+msgstr "El punto de anclado como un «ClutterGravity»"
 
 #: ../clutter/clutter-actor.c:4322
 msgid "Show on set parent"
-msgstr ""
+msgstr "Mostrar en el conjunto padre"
 
 #: ../clutter/clutter-actor.c:4323
 msgid "Whether the actor is shown when parented"
-msgstr ""
+msgstr "Indica si el actor se muestra cuando tiene padre"
 
 #: ../clutter/clutter-actor.c:4343
 msgid "Clip to Allocation"
@@ -519,7 +519,7 @@ msgstr "La línea de tiempo de la animación"
 
 #: ../clutter/clutter-behaviour.c:299
 msgid "Alpha Object to drive the behaviour"
-msgstr ""
+msgstr "Objeto alfa para dirigir el comportamiento"
 
 #: ../clutter/clutter-behaviour-depth.c:174
 msgid "Start Depth"
@@ -628,7 +628,7 @@ msgstr "Ruta"
 
 #: ../clutter/clutter-behaviour-path.c:220
 msgid "The ClutterPath object representing the path to animate along"
-msgstr "El objeto ClutterPath que representa la ruta sobre la que animar"
+msgstr "El objeto «ClutterPath» que representa la ruta sobre la que animar"
 
 #: ../clutter/clutter-behaviour-rotate.c:275
 msgid "Angle Begin"
@@ -688,7 +688,7 @@ msgstr "Escala final en el eje X"
 
 #: ../clutter/clutter-behaviour-scale.c:256
 msgid "Y Start Scale"
-msgstr ""
+msgstr "Escala Y inicial"
 
 #: ../clutter/clutter-behaviour-scale.c:257
 msgid "Initial scale on the Y axis"
@@ -696,7 +696,7 @@ msgstr "Escala inicial en el eje Y"
 
 #: ../clutter/clutter-behaviour-scale.c:275
 msgid "Y End Scale"
-msgstr ""
+msgstr "Escala Y final"
 
 #: ../clutter/clutter-behaviour-scale.c:276
 msgid "Final scale on the Y axis"
@@ -735,7 +735,7 @@ msgstr "Alineación horizontal"
 
 #: ../clutter/clutter-bin-layout.c:262
 msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Alineación horizontal del actor dentro del gestor de distribución"
 
 #: ../clutter/clutter-bin-layout.c:270 ../clutter/clutter-bin-layout.c:597
 #: ../clutter/clutter-box-layout.c:404 ../clutter/clutter-table-layout.c:667
@@ -744,15 +744,19 @@ msgstr "Alineación vertical"
 
 #: ../clutter/clutter-bin-layout.c:271
 msgid "Vertical alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Alineación vertical del actor dentro del gestor de distribución"
 
 #: ../clutter/clutter-bin-layout.c:581
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr ""
+"Alineación horizontal predeterminada de los actores dentro del gestor de "
+"distribución"
 
 #: ../clutter/clutter-bin-layout.c:598
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr ""
+"Alineación vertical predeterminada de los actores dentro del gestor de "
+"distribución"
 
 #: ../clutter/clutter-box.c:537
 msgid "Layout Manager"
@@ -760,7 +764,7 @@ msgstr "Gestor de distribución"
 
 #: ../clutter/clutter-box.c:538
 msgid "The layout manager used by the box"
-msgstr ""
+msgstr "El gestor de distribución usado por la caja"
 
 #: ../clutter/clutter-box.c:557 ../clutter/clutter-rectangle.c:258
 #: ../clutter/clutter-stage.c:1736
@@ -796,6 +800,8 @@ msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
 msgstr ""
+"Indica si el hijo debe tener prioridad cuando el contenedor reserve espacio "
+"libre en el eje horizontal"
 
 #: ../clutter/clutter-box-layout.c:386 ../clutter/clutter-table-layout.c:638
 msgid "Vertical Fill"
@@ -806,14 +812,16 @@ msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
 msgstr ""
+"Indica si el hijo debe tener prioridad cuando el contenedor reserve espacio "
+"libre en el eje vertical"
 
 #: ../clutter/clutter-box-layout.c:396 ../clutter/clutter-table-layout.c:653
 msgid "Horizontal alignment of the actor within the cell"
-msgstr ""
+msgstr "Alineación horizontal del actor en la celda"
 
 #: ../clutter/clutter-box-layout.c:405 ../clutter/clutter-table-layout.c:668
 msgid "Vertical alignment of the actor within the cell"
-msgstr ""
+msgstr "Alineación vertical del actor en la celda"
 
 #: ../clutter/clutter-box-layout.c:1077
 msgid "Vertical"
@@ -821,16 +829,18 @@ msgstr "Vertical"
 
 #: ../clutter/clutter-box-layout.c:1078
 msgid "Whether the layout should be vertical, rather than horizontal"
-msgstr ""
+msgstr "Indica si la distribución debe ser vertical, en lugar de horizontal"
 
 #: ../clutter/clutter-box-layout.c:1093 ../clutter/clutter-flow-layout.c:898
 msgid "Homogeneous"
-msgstr ""
+msgstr "Homogénea"
 
 #: ../clutter/clutter-box-layout.c:1094
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
+"Indica si la distribución debe ser homogénea, ej. todos los hijos tienen el "
+"mismo tamaño"
 
 #: ../clutter/clutter-box-layout.c:1109
 msgid "Pack Start"
@@ -854,7 +864,7 @@ msgstr "Usar animaciones"
 
 #: ../clutter/clutter-box-layout.c:1139 ../clutter/clutter-table-layout.c:1741
 msgid "Whether layout changes should be animated"
-msgstr ""
+msgstr "Indica si se deben animar lo cambios en la distribución"
 
 #: ../clutter/clutter-box-layout.c:1160 ../clutter/clutter-table-layout.c:1762
 msgid "Easing Mode"
@@ -894,11 +904,11 @@ msgstr "Contenedor"
 
 #: ../clutter/clutter-child-meta.c:128
 msgid "The container that created this data"
-msgstr ""
+msgstr "El contenedor que creó estos datos"
 
 #: ../clutter/clutter-child-meta.c:143
 msgid "The actor wrapped by this data"
-msgstr ""
+msgstr "El actor envuelto por estos datos"
 
 #: ../clutter/clutter-click-action.c:302
 msgid "Pressed"
@@ -918,7 +928,7 @@ msgstr ""
 
 #: ../clutter/clutter-clone.c:327
 msgid "Specifies the actor to be cloned"
-msgstr ""
+msgstr "Especifica qué actor clonar"
 
 #: ../clutter/clutter-colorize-effect.c:307
 msgid "Tint"
@@ -934,7 +944,7 @@ msgstr "Cuadros horizontales"
 
 #: ../clutter/clutter-deform-effect.c:528
 msgid "The number of horizontal tiles"
-msgstr ""
+msgstr "El número de cuadros horizontales"
 
 #: ../clutter/clutter-deform-effect.c:543
 msgid "Vertical Tiles"
@@ -942,15 +952,15 @@ msgstr "Cuadros verticales"
 
 #: ../clutter/clutter-deform-effect.c:544
 msgid "The number of vertical tiles"
-msgstr ""
+msgstr "El número de cuadros verticales"
 
 #: ../clutter/clutter-deform-effect.c:561
 msgid "Back Material"
-msgstr ""
+msgstr "Material trasero"
 
 #: ../clutter/clutter-deform-effect.c:562
 msgid "The material to be used when painting the back of the actor"
-msgstr ""
+msgstr "El material que usar para pintar la parte trasera del actor"
 
 #: ../clutter/clutter-desaturate-effect.c:305
 msgid "The desaturation factor"
