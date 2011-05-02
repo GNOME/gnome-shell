@@ -99,8 +99,8 @@ delete_ping_timeout_func (MetaDisplay *display,
   g_free (tmp);
 
   /* Translators: %s is a window title */
-  tmp = g_strdup_printf (_("<tt>%s</tt> is not responding."),
-                         window_title);
+  tmp = g_markup_printf_escaped (_("<tt>%s</tt> is not responding."),
+                                 window_title);
   window_content = g_strdup_printf (
       "<big><b>%s</b></big>\n\n<i>%s</i>",
       tmp,
