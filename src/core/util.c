@@ -584,6 +584,25 @@ meta_gravity_to_string (int gravity)
     }
 }
 
+/* Command line arguments are passed in the locale encoding; in almost
+ * all cases, we'd hope that is UTF-8 and no conversion is necessary.
+ * If it's not UTF-8, then it's possible that the message isn't
+ * representable in the locale encoding.
+ */
+static void
+append_argument (GPtrArray  *args,
+                 const char *arg)
+{
+  char *locale_arg = g_locale_from_utf8 (arg, -1, NULL, NULL, NULL);
+
+  /* This is cheesy, but it's better to have a few ???'s in the dialog
+   * for an unresponsive application than no dialog at all appear */
+  if (!locale_arg)
+    locale_arg = g_strdup ("???");
+
+  g_ptr_array_add (args, locale_arg);
+}
+
 GPid
 meta_show_dialog (const char *type,
                   const char *message,
@@ -597,59 +616,57 @@ meta_show_dialog (const char *type,
 {
   GError *error = NULL;
   GSList *tmp;
-  int i=0;
   GPid child_pid;
-  const char **argvl = g_malloc(sizeof (char*) *
-                                (17 +
-                                 g_slist_length (columns)*2 +
-                                 g_slist_length (entries)));
+  GPtrArray *args;
 
-  argvl[i++] = "zenity";
-  argvl[i++] = type;
-  argvl[i++] = "--display";
-  argvl[i++] = display;
-  argvl[i++] = "--class";
-  argvl[i++] = "mutter-dialog";
-  argvl[i++] = "--title";
+  args = g_ptr_array_new ();
+
+  append_argument (args, "zenity");
+  append_argument (args, type);
+  append_argument (args, "--display");
+  append_argument (args, display);
+  append_argument (args, "--class");
+  append_argument (args, "mutter-dialog");
+  append_argument (args, "--title");
   /* Translators: This is the title used on dialog boxes */
-  argvl[i++] = _("Mutter");
-  argvl[i++] = "--text";
-  argvl[i++] = message;
-  
+  append_argument (args, _("Mutter"));
+  append_argument (args, "--text");
+  append_argument (args, message);
+
   if (timeout)
     {
-      argvl[i++] = "--timeout";
-      argvl[i++] = timeout;
+      append_argument (args, "--timeout");
+      append_argument (args, timeout);
     }
 
   if (ok_text)
     {
-      argvl[i++] = "--ok-label";
-      argvl[i++] = ok_text;
+      append_argument (args, "--ok-label");
+      append_argument (args, ok_text);
      }
 
   if (cancel_text)
     {
-      argvl[i++] = "--cancel-label";
-      argvl[i++] = cancel_text;
+      append_argument (args, "--cancel-label");
+      append_argument (args, cancel_text);
     }
-  
+
   tmp = columns;
   while (tmp)
     {
-      argvl[i++] = "--column";
-      argvl[i++] = tmp->data;
+      append_argument (args, "--column");
+      append_argument (args, tmp->data);
       tmp = tmp->next;
     }
 
   tmp = entries;
   while (tmp)
     {
-      argvl[i++] = tmp->data;
+      append_argument (args, tmp->data);
       tmp = tmp->next;
     }
-    
-  argvl[i] = NULL;
+
+  g_ptr_array_add (args, NULL); /* NULL-terminate */
 
   if (transient_for)
     {
@@ -660,7 +677,7 @@ meta_show_dialog (const char *type,
 
   g_spawn_async (
                  "/",
-                 (gchar**) argvl, /* ugh */
+                 (gchar**) args->pdata,
                  NULL,
                  G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
                  NULL, NULL,
@@ -671,7 +688,7 @@ meta_show_dialog (const char *type,
   if (transient_for)
     unsetenv ("WINDOWID");
 
-  g_free (argvl);
+  g_ptr_array_free (args, TRUE);
 
   if (error)
     {

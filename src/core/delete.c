@@ -88,7 +88,15 @@ delete_ping_timeout_func (MetaDisplay *display,
       return;
     }
 
-  window_title = g_locale_from_utf8 (window->title, -1, NULL, NULL, NULL);
+  /* This is to get a bit better string if the title isn't representable
+   * in the locale encoding; actual conversion to UTF-8 is done inside
+   * meta_show_dialog */
+  tmp = g_locale_from_utf8 (window->title, -1, NULL, NULL, NULL);
+  if (tmp == NULL)
+    window_title = "???";
+  else
+    window_title = window->title;
+  g_free (tmp);
 
   /* Translators: %s is a window title */
   tmp = g_strdup_printf (_("<tt>%s</tt> is not responding."),
@@ -98,8 +106,6 @@ delete_ping_timeout_func (MetaDisplay *display,
       tmp,
       _("You may choose to wait a short while for it to "
         "continue or force the application to quit entirely."));
-
-  g_free (window_title);
 
   dialog_pid =
     meta_show_dialog ("--question",
