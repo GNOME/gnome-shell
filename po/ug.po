@@ -59,7 +59,7 @@ msgid ""
 "should not be loaded."
 msgstr ""
 "GNOME Shell كېڭەيتىلمىسىنىڭ uuid خاسلىقى بار؛ بۇ كۇنۇپكا يۈكلەنمەيدىغان "
-"كېڭەيتىلمىلەر تىزىمىنى كۆرسىتىدۇ."
+"كېڭەيتىلمىلەر تىزىملىكىنى كۆرسىتىدۇ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
@@ -83,7 +83,7 @@ msgstr "ئەگەر راست(true) بولسا يىلنامىدىكى ISO ھەپت
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
-msgstr "ئامراق پروگراممىلارنىڭ ئۈستەلئۈستى ھۆججەت ID تىزىمى"
+msgstr "ئامراق پروگراممىلارنىڭ ئۈستەلئۈستى ھۆججەت ID تىزىملىكى"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
@@ -470,7 +470,7 @@ msgstr "توكنى ئۈز"
 #: ../js/ui/endSessionDialog.js:76
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
-"تۈكنى ئۈز چېكىلسە قوللىنىشچان پروگراممىلاردىن چېكىنىپ سىستېمىنى تاقايدۇ."
+"تۈكنى ئۈز چېكىلسە قوللىنىشچان پىروگراممىلاردىن چېكىنىپ سىستېمىنى تاقايدۇ."
 
 #: ../js/ui/endSessionDialog.js:77
 #, c-format
@@ -868,7 +868,7 @@ msgstr "مۇقىم دېتال كەم"
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:544
 msgid "cable unplugged"
-msgstr "كابېل چېتىلمىدى"
+msgstr "كابىل چېتىلمىدى"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
@@ -878,7 +878,7 @@ msgstr "ئىشلەتكىلى بولمايدۇ"
 
 #: ../js/ui/status/network.js:551
 msgid "connection failed"
-msgstr "باغلىنىش مەغلۇپ بولدى"
+msgstr "باغلىنالمىدى"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
@@ -892,7 +892,7 @@ msgstr "ئاپتوماتىك Ethernet"
 
 #: ../js/ui/status/network.js:791
 msgid "Auto broadband"
-msgstr "ئاپتوماتىك كۆچمە كەڭ بەلۋاغ"
+msgstr "ئاپتوماتىك كۆچمە كەڭ بەلباغ"
 
 #: ../js/ui/status/network.js:794
 msgid "Auto dial-up"
@@ -930,7 +930,7 @@ msgstr "سىمسىز"
 
 #: ../js/ui/status/network.js:1577
 msgid "Mobile broadband"
-msgstr "كۆچمە كەڭ بەلۋاغ"
+msgstr "كۆچمە كەڭ بەلباغ"
 
 #: ../js/ui/status/network.js:1587
 msgid "VPN Connections"
@@ -943,7 +943,7 @@ msgstr "تور تەڭشەكلىرى"
 #: ../js/ui/status/network.js:1893
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
-msgstr "ھازىر كۆچمە كەڭ بەلۋاغ '%s' غا باغلاندىڭىز"
+msgstr "ھازىر كۆچمە كەڭ بەلباغ '%s' غا باغلاندىڭىز"
 
 #: ../js/ui/status/network.js:1897
 #, c-format
@@ -1188,7 +1188,7 @@ msgstr "كۆڭۈلدىكى"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr "سالاھىيەت دەلىللەش سۆزلەشكۈنى ئىشلەتكۈچى رەت قىلدى"
+msgstr "دەلىللەش سۆزلەشكۈنى ئىشلەتكۈچى رەت قىلدى"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
