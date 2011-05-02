@@ -251,6 +251,11 @@ meta_get_option_context (void)
 {
   GOptionContext *ctx;
 
+  if (setlocale (LC_ALL, "") == NULL)
+    meta_warning ("Locale not understood by C library, internationalization will not work\n");
+  bindtextdomain (GETTEXT_PACKAGE, MUTTER_LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
   ctx = g_option_context_new (NULL);
   g_option_context_add_main_entries (ctx, meta_options, GETTEXT_PACKAGE);
   g_option_context_add_group (ctx, clutter_get_option_group_without_init ());
@@ -385,9 +390,6 @@ meta_init (void)
   sigset_t empty_mask;
   GIOChannel *channel;
 
-  if (setlocale (LC_ALL, "") == NULL)
-    meta_warning ("Locale not understood by C library, internationalization will not work\n");
-
   g_type_init ();
   
   sigemptyset (&empty_mask);
@@ -430,10 +432,6 @@ meta_init (void)
 
   meta_print_self_identity ();
   
-  bindtextdomain (GETTEXT_PACKAGE, MUTTER_LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-
 #ifdef HAVE_INTROSPECTION
   g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
 #endif
