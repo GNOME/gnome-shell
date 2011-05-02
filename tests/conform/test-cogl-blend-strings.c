@@ -2,6 +2,7 @@
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "test-conform-common.h"
 
@@ -39,10 +40,9 @@ check_pixel (GLubyte *pixel, guint32 color)
   if (g_test_verbose ())
     g_print ("  expected = %x, %x, %x, %x\n",
              r, g, b, a);
-  /* FIXME - allow for hardware in-precision */
-  g_assert_cmpint (pixel[RED], ==, r);
-  g_assert_cmpint (pixel[GREEN], ==, g);
-  g_assert_cmpint (pixel[BLUE], ==, b);
+  g_assert_cmpint (abs(pixel[RED] - r), <=, 1);
+  g_assert_cmpint (abs(pixel[GREEN] - g), <=, 1);
+  g_assert_cmpint (abs(pixel[BLUE] - b), <=, 1);
 
   /* FIXME
    * We ignore the alpha, since we don't know if our render target is
