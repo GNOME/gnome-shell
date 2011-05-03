@@ -48,6 +48,16 @@ const NM80211ApSecurityFlags = NetworkManager['80211ApSecurityFlags'];
 // (the remaining are placed into More...)
 const NUM_VISIBLE_NETWORKS = 5;
 
+const NMAppletHelperInterface = {
+    name: 'org.gnome.network_manager_applet',
+    methods: [
+        { name: 'ConnectToHiddenNetwork', inSignature: '', outSignature: '' },
+        { name: 'CreateWifiNetwork', inSignature: '', outSignature: '' },
+        { name: 'ConnectTo8021xNetwork', inSignature: 'oo', outSignature: '' }
+    ],
+};
+const NMAppletProxy = DBus.makeProxyClass(NMAppletHelperInterface);
+
 function macToArray(string) {
     return string.split(':').map(function(el) {
         return parseInt(el, 16);
@@ -991,6 +1001,10 @@ NMDeviceWireless.prototype = {
         this._overflowItem = null;
         this._networks = [ ];
 
+        this._applet_proxy = new NMAppletProxy(DBus.session,
+                                               'org.gnome.network_manager_applet',
+                                               '/org/gnome/network_manager_applet');
+
         // breaking the layers with this, but cannot call
         // this.connectionValid until I have a device
         this.device = device;
@@ -1483,9 +1497,20 @@ NMDeviceWireless.prototype = {
             apObj.item = new NMNetworkMenuItem(apObj.accessPoints);
             apObj.item._apObj = apObj;
             apObj.item.connect('activate', Lang.bind(this, function() {
-                let connection = this._createAutomaticConnection(apObj);
                 let accessPoints = sortAccessPoints(apObj.accessPoints);
-                this._client.add_and_activate_connection(connection, this.device, accessPoints[0].dbus_path, null)
+                if (   (accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
+                    || (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
+                    // 802.1x-enabled APs get handled by nm-applet for now...
+                    this._applet_proxy.ConnectTo8021xNetworkRemote(this.device.get_path(),
+                                                                   accessPoints[0].dbus_path,
+                                                                   Lang.bind(this, function(results, err) {
+                                                                       if (err)
+                                                                           log(err);
+                                                                   }));
+                } else {
+                    let connection = this._createAutomaticConnection(apObj);
+                    this._client.add_and_activate_connection(connection, this.device, accessPoints[0].dbus_path, null)
+                }
             }));
         }
         if (position < NUM_VISIBLE_NETWORKS)
