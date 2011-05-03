@@ -101,6 +101,7 @@ guint32
 cogl_onscreen_x11_get_visual_xid (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_X11 */
 
+#define cogl_onscreen_set_swap_throttled cogl_onscreen_set_swap_throttled_EXP
 void
 cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
                                   gboolean throttled);
