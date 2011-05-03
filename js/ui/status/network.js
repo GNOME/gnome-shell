@@ -33,8 +33,10 @@ const NMAccessPointSecurity = {
     UNKNOWN: 0,
     NONE: 1,
     WEP: 2,
-    WPA: 3,
-    WPA2: 4
+    WPA_PSK: 3,
+    WPA2_PSK: 4,
+    WPA_ENT: 5,
+    WPA2_ENT: 6
 };
 
 // small optimization, to avoid using [] all the time
@@ -1098,26 +1100,28 @@ NMDeviceWireless.prototype = {
     _getApSecurityType: function(accessPoint) {
         if (accessPoint._secType)
             return accessPoint._secType;
-        // XXX: have this checked by someone familiar with IEEE 802.1x
 
         let flags = accessPoint.flags;
         let wpa_flags = accessPoint.wpa_flags;
         let rsn_flags = accessPoint.rsn_flags;
         let type;
-        if (  !(flags & NM80211ApFlags.PRIVACY)
-	      && (wpa_flags == NM80211ApSecurityFlags.NONE)
-	      && (rsn_flags == NM80211ApSecurityFlags.NONE))
-	    type = NMAccessPointSecurity.NONE;
-        else if (   (flags & NM80211ApFlags.PRIVACY)
-	            && (wpa_flags == NM80211ApSecurityFlags.NONE)
-	            && (rsn_flags == NM80211ApSecurityFlags.NONE))
-	    type = NMAccessPointSecurity.WEP;
-        else if (   !(flags & NM80211ApFlags.PRIVACY)
-	        &&  (wpa_flags != NM80211ApSecurity.NONE)
-	        &&  (rsn_flags != NM80211ApSecurity.NONE))
-	    type = NMAccessPointSecurity.WPA;
-        else
-            type = NMAccessPointSecurity.WPA2;
+        if (rsn_flags != NM80211ApSecurityFlags.NONE) {
+            /* RSN check first so that WPA+WPA2 APs are treated as RSN/WPA2 */
+            if (rsn_flags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
+	        type = NMAccessPointSecurity.WPA2_ENT;
+	    else if (rsn_flags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
+	        type = NMAccessPointSecurity.WPA2_PSK;
+        } else if (wpa_flags != NM80211ApSecurityFlags.NONE) {
+            if (wpa_flags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
+                type = NMAccessPointSecurity.WPA_ENT;
+            else if (wpa_flags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
+	        type = NMAccessPointSecurity.WPA_PSK;
+        } else {
+            if (flags & NM80211ApFlags.PRIVACY)
+                type = NMAccessPointSecurity.WEP;
+            else
+                type = NMAccessPointSecurity.NONE;
+        }
 
         // cache the found value to avoid checking flags all the time
         accessPoint._secType = type;
