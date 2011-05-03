@@ -349,6 +349,43 @@ set_wm_icon_size_hint (MetaScreen *screen)
 #undef N_VALS
 }
 
+/* The list of monitors reported by the windowing system might include
+ * mirrored monitors with identical bounds. Since mirrored monitors
+ * shouldn't be treated as separate monitors for most purposes, we
+ * filter them out here. (We ignore the possibility of partially
+ * overlapping monitors because they are rare and it's hard to come
+ * up with any sensible interpretation.)
+ */
+static void
+filter_mirrored_monitors (MetaScreen *screen)
+{
+  int i, j;
+
+  /* Currently always true and simplifies things */
+  g_assert (screen->primary_monitor_index == 0);
+
+  for (i = 1; i < screen->n_monitor_infos; i++)
+    {
+      /* In case we've filtered previous monitors */
+      screen->monitor_infos[i].number = i;
+
+      for (j = 0; j < i; j++)
+        {
+          if (meta_rectangle_equal (&screen->monitor_infos[i].rect,
+                                    &screen->monitor_infos[j].rect))
+            {
+              memmove (&screen->monitor_infos[i],
+                       &screen->monitor_infos[i + 1],
+                       (screen->n_monitor_infos - i - 1) * sizeof (MetaMonitorInfo));
+              screen->n_monitor_infos--;
+              i--;
+
+              continue;
+            }
+        }
+    }
+}
+
 static void
 reload_monitor_infos (MetaScreen *screen)
 {
@@ -537,6 +574,8 @@ reload_monitor_infos (MetaScreen *screen)
       screen->monitor_infos[0].number = 0;
       screen->monitor_infos[0].rect = screen->rect;
     }
+
+  filter_mirrored_monitors (screen);
 
   g_assert (screen->n_monitor_infos > 0);
   g_assert (screen->monitor_infos != NULL);
