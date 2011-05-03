@@ -342,7 +342,10 @@ Dash.prototype = {
 
         let srcIsFavorite = (id in favorites);
 
-        if (srcIsFavorite && this._favRemoveTarget == null) {
+        if (srcIsFavorite &&
+            dragEvent.source.actor &&
+            this.actor.contains (dragEvent.source.actor) &&
+            this._favRemoveTarget == null) {
                 this._favRemoveTarget = new RemoveFavoriteIcon();
                 this._favRemoveTarget.icon.setIconSize(this.iconSize);
                 this._box.add(this._favRemoveTarget.actor);
