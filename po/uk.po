@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-23 15:51+0200\n"
-"PO-Revision-Date: 2011-03-23 15:52+0300\n"
+"POT-Creation-Date: 2011-05-03 22:43+0300\n"
+"PO-Revision-Date: 2011-05-03 22:46+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -337,24 +337,27 @@ msgstr "Подія гудка"
 msgid "Unknown window information request: %d"
 msgstr "Запит інформації невідомого вікна: %d"
 
-#. Translators: %s is a window title
-#: ../src/core/delete.c:94
+#: ../src/core/delete.c:111
 #, c-format
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> не відповідає."
 
-#: ../src/core/delete.c:99
+#: ../src/core/delete.c:114
+msgid "Application is not responding."
+msgstr "Програма не відповідає."
+
+#: ../src/core/delete.c:119
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
 "Можете трошки зачекати відновлення активності або примусово закрити програму."
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Wait"
 msgstr "_Зачекати"
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Force Quit"
 msgstr "_Завершити примусово"
 
@@ -423,12 +426,12 @@ msgstr "Розпочати сеанс зі збереженого файла"
 msgid "Make X calls synchronous"
 msgstr "Зробити виклики X синхронними"
 
-#: ../src/core/main.c:506
+#: ../src/core/main.c:504
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Помилка зчитування каталогу тем: %s\n"
 
-#: ../src/core/main.c:522
+#: ../src/core/main.c:520
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -553,12 +556,12 @@ msgstr "Помилка налаштування стану схованих ві
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Помилка налаштування стану контекстних вкладок: %s\n"
 
-#: ../src/core/screen.c:623
+#: ../src/core/screen.c:624
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї «%s» не правильний\n"
 
-#: ../src/core/screen.c:639
+#: ../src/core/screen.c:640
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -567,7 +570,7 @@ msgstr ""
 "Екран %d на дисплеї «%s» вже має менеджера вікон; спробуйте вказати параметр "
 "--replace, щоб замінити поточний менеджер вікон.\n"
 
-#: ../src/core/screen.c:666
+#: ../src/core/screen.c:667
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -575,64 +578,64 @@ msgstr ""
 "Не вдалось одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "«%s»\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:722
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплеї «%s» вже має менеджера вікон\n"
 
-#: ../src/core/screen.c:906
+#: ../src/core/screen.c:907
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не вдалось відпустити екран %d на дисплеї «%s»\n"
 
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не вдалось створити каталог «%s»: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не вдалось відкрити для запису файл сеансу «%s»: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1001
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Помилка запису файла сеансу \"%s\": %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Помилка закриття файла сеансу «%s»: %s\n"
 
-#: ../src/core/session.c:1130
+#: ../src/core/session.c:1136
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Збій аналізування збереженого файла сеансу: %s\n"
 
-#: ../src/core/session.c:1179
+#: ../src/core/session.c:1185
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "Прочитано атрибут <mutter_session>, але вже є ідентифікатор сеансу"
 
-#: ../src/core/session.c:1192 ../src/core/session.c:1267
-#: ../src/core/session.c:1299 ../src/core/session.c:1371
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1198 ../src/core/session.c:1273
+#: ../src/core/session.c:1305 ../src/core/session.c:1377
+#: ../src/core/session.c:1437
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Невідомий атрибут %s у елементі <%s>"
 
-#: ../src/core/session.c:1209
+#: ../src/core/session.c:1215
 #, c-format
 msgid "nested <window> tag"
 msgstr "вкладена мітка <window>"
 
-#: ../src/core/session.c:1451
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown element %s"
 msgstr "Невідомий елемент %s"
 
-#: ../src/core/session.c:1803
+#: ../src/core/session.c:1809
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -677,13 +680,13 @@ msgid "Window manager error: "
 msgstr "Помилка віконного менеджера:"
 
 #. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:632 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6795
+#: ../src/core/window.c:6860
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -699,7 +702,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7458
+#: ../src/core/window.c:7523
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -719,7 +722,7 @@ msgstr "Програма встановила неправильне значе�
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1479
+#: ../src/core/window-props.c:1482
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Неправильний параметр WM_TRANSIENT_FOR вікна 0x%lx вказано для %s.\n"
@@ -810,47 +813,47 @@ msgstr "Робочий простір лише на первинному"
 msgid "Usage: %s\n"
 msgstr "Використання: %s\n"
 
-#: ../src/ui/frames.c:1099
+#: ../src/ui/frames.c:1177
 msgid "Close Window"
 msgstr "Закрити вікно"
 
-#: ../src/ui/frames.c:1102
+#: ../src/ui/frames.c:1180
 msgid "Window Menu"
 msgstr "Меню вікна"
 
-#: ../src/ui/frames.c:1105
+#: ../src/ui/frames.c:1183
 msgid "Minimize Window"
 msgstr "Згорнути вікно"
 
-#: ../src/ui/frames.c:1108
+#: ../src/ui/frames.c:1186
 msgid "Maximize Window"
 msgstr "Розгорнути вікно"
 
-#: ../src/ui/frames.c:1111
+#: ../src/ui/frames.c:1189
 msgid "Restore Window"
 msgstr "Відновити вікно"
 
-#: ../src/ui/frames.c:1114
+#: ../src/ui/frames.c:1192
 msgid "Roll Up Window"
 msgstr "Скотити вікно"
 
-#: ../src/ui/frames.c:1117
+#: ../src/ui/frames.c:1195
 msgid "Unroll Window"
 msgstr "Розкотити вікно"
 
-#: ../src/ui/frames.c:1120
+#: ../src/ui/frames.c:1198
 msgid "Keep Window On Top"
 msgstr "Тримати вікно нагорі"
 
-#: ../src/ui/frames.c:1123
+#: ../src/ui/frames.c:1201
 msgid "Remove Window From Top"
 msgstr "Прибрати вікно з гори"
 
-#: ../src/ui/frames.c:1126
+#: ../src/ui/frames.c:1204
 msgid "Always On Visible Workspace"
 msgstr "Завжди на видимому робочому просторі"
 
-#: ../src/ui/frames.c:1129
+#: ../src/ui/frames.c:1207
 msgid "Put Window On Only One Workspace"
 msgstr "Розміщувати вікно лише на одному робочому просторі"
 
