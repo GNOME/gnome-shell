@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-29 17:48+0000\n"
-"PO-Revision-Date: 2011-05-02 10:07+0200\n"
+"POT-Creation-Date: 2011-05-02 10:11+0000\n"
+"PO-Revision-Date: 2011-05-03 18:12+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -983,6 +983,7 @@ msgstr "Umbral de arrastre horizontal"
 #: ../clutter/clutter-drag-action.c:548
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr ""
+"La cantidad de píxeles horizontales requeridos para empezar a arrastrar"
 
 #: ../clutter/clutter-drag-action.c:575
 msgid "Vertical Drag Threshold"
@@ -990,7 +991,7 @@ msgstr "Umbral de arrastre vertical"
 
 #: ../clutter/clutter-drag-action.c:576
 msgid "The vertical amount of pixels required to start dragging"
-msgstr ""
+msgstr "La cantidad de píxeles verticales requeridos para empezar a arrastrar"
 
 #: ../clutter/clutter-drag-action.c:597
 msgid "Drag Handle"
@@ -1018,7 +1019,7 @@ msgstr "La orientación de la disposición"
 
 #: ../clutter/clutter-flow-layout.c:899
 msgid "Whether each item should receive the same allocation"
-msgstr ""
+msgstr "Indica si cada elemento debe recibir la misma asignación"
 
 #: ../clutter/clutter-flow-layout.c:914 ../clutter/clutter-table-layout.c:1711
 msgid "Column Spacing"
@@ -1094,7 +1095,7 @@ msgstr "Administrador de dispositivos"
 
 #: ../clutter/clutter-input-device.c:268
 msgid "The device manager instance"
-msgstr ""
+msgstr "La instancia del gestor de dispositivos"
 
 #: ../clutter/clutter-input-device.c:281
 msgid "Device Mode"
@@ -1138,7 +1139,7 @@ msgstr "El tipo de valores en el intervalo"
 
 #: ../clutter/clutter-layout-meta.c:117
 msgid "Manager"
-msgstr ""
+msgstr "Gestor"
 
 #: ../clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
@@ -1324,7 +1325,7 @@ msgstr "Nombre de archivo"
 
 #: ../clutter/clutter-script.c:405
 msgid "The path of the currently parsed file"
-msgstr ""
+msgstr "La ruta del archivo analizado actualmente"
 
 #: ../clutter/clutter-settings.c:350
 msgid "Double Click Time"
@@ -1474,7 +1475,7 @@ msgstr ""
 
 #: ../clutter/clutter-snap-constraint.c:367
 msgid "The offset in pixels to apply to the constraint"
-msgstr ""
+msgstr "El desplazamiento en píxeles que aplicar a la restricción"
 
 #: ../clutter/clutter-stage.c:1678
 msgid "Fullscreen Set"
@@ -1738,11 +1739,11 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2760 ../clutter/clutter-text.c:2761
 msgid "Selection Color"
-msgstr ""
+msgstr "Selección de color"
 
 #: ../clutter/clutter-text.c:2775
 msgid "Selection Color Set"
-msgstr ""
+msgstr "Conjunto de selección de colores"
 
 #: ../clutter/clutter-text.c:2776
 msgid "Whether the selection color has been set"
@@ -1766,19 +1767,20 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2831
 msgid "Line wrap"
-msgstr ""
+msgstr "Ajuste de línea"
 
 #: ../clutter/clutter-text.c:2832
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
+"Si está definido, ajustar las líneas si el texto se vuelve demasiado ancho"
 
 #: ../clutter/clutter-text.c:2847
 msgid "Line wrap mode"
-msgstr ""
+msgstr "Modo de ajuste de línea"
 
 #: ../clutter/clutter-text.c:2848
 msgid "Control how line-wrapping is done"
-msgstr ""
+msgstr "Controlar cómo se hace el ajuste de línea"
 
 #: ../clutter/clutter-text.c:2863
 msgid "Ellipsize"
@@ -1790,7 +1792,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2880
 msgid "Line Alignment"
-msgstr ""
+msgstr "Alineación de línea"
 
 #: ../clutter/clutter-text.c:2881
 msgid "The preferred alignment for the string, for multi-line text"
@@ -1830,7 +1832,7 @@ msgstr "Indica si el texto debe estar en una única línea"
 
 #: ../clutter/clutter-texture.c:994
 msgid "Sync size of actor"
-msgstr ""
+msgstr "Sincronizar tamaño del actor"
 
 #: ../clutter/clutter-texture.c:995
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
@@ -1872,7 +1874,7 @@ msgstr "Repite el contenido en vez de escalarlo verticalmente"
 
 #: ../clutter/clutter-texture.c:1037
 msgid "Filter Quality"
-msgstr ""
+msgstr "Calidad del filtro"
 
 #: ../clutter/clutter-texture.c:1038
 msgid "Rendering quality used when drawing the texture"
@@ -1880,7 +1882,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1046
 msgid "Pixel Format"
-msgstr ""
+msgstr "Formato del píxel"
 
 #: ../clutter/clutter-texture.c:1047
 msgid "The Cogl pixel format to use"
@@ -1888,7 +1890,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1055
 msgid "Cogl Texture"
-msgstr ""
+msgstr "Textura de Cogl"
 
 #: ../clutter/clutter-texture.c:1056
 msgid "The underlying Cogl texture handle used to draw this actor"
@@ -1896,7 +1898,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1063
 msgid "Cogl Material"
-msgstr ""
+msgstr "Material de Cogl"
 
 #: ../clutter/clutter-texture.c:1064
 msgid "The underlying Cogl material handle used to draw this actor"
@@ -1918,7 +1920,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1115
 msgid "Load asynchronously"
-msgstr ""
+msgstr "Cargar de forma asíncrona"
 
 #: ../clutter/clutter-texture.c:1116
 msgid ""
@@ -1927,7 +1929,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1132
 msgid "Load data asynchronously"
-msgstr ""
+msgstr "Cargar datos de forma asíncrona"
 
 #: ../clutter/clutter-texture.c:1133
 msgid ""
@@ -1973,11 +1975,11 @@ msgstr "Indica si se debe invertir la dirección al llegar al final"
 
 #: ../clutter/cogl/cogl/cogl-debug.c:203
 msgid "Cogl debugging flags to set"
-msgstr ""
+msgstr "Opciones de depuración de Cogl que establecer"
 
 #: ../clutter/cogl/cogl/cogl-debug.c:205
 msgid "Cogl debugging flags to unset"
-msgstr ""
+msgstr "Opciones de depuración de Cogl que quitar"
 
 #: ../clutter/cogl/cogl/cogl-debug.c:238
 msgid "Cogl Options"
@@ -2025,7 +2027,7 @@ msgstr "Activar soporte XInput"
 
 #: ../clutter/x11/clutter-keymap-x11.c:317
 msgid "The Clutter backend"
-msgstr ""
+msgstr "El backend de Clutter"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:549
 msgid "Pixmap"
@@ -2073,7 +2075,7 @@ msgstr "Ventana"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:595
 msgid "The X11 Window to be bound"
-msgstr ""
+msgstr "La ventana X11 que asociar"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:603
 msgid "Window Redirect Automatic"
