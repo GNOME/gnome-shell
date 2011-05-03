@@ -53,7 +53,8 @@ const NMAppletHelperInterface = {
     methods: [
         { name: 'ConnectToHiddenNetwork', inSignature: '', outSignature: '' },
         { name: 'CreateWifiNetwork', inSignature: '', outSignature: '' },
-        { name: 'ConnectTo8021xNetwork', inSignature: 'oo', outSignature: '' }
+        { name: 'ConnectTo8021xNetwork', inSignature: 'oo', outSignature: '' },
+        { name: 'ConnectTo3gNetwork', inSignature: 'o', outSignature: '' }
     ],
 };
 const NMAppletProxy = DBus.makeProxyClass(NMAppletHelperInterface);
@@ -440,7 +441,8 @@ NMDevice.prototype = {
             this._client.activate_connection(this._connections[0].connection, this.device, null, null);
         } else if (this._autoConnectionName) {
             let connection = this._createAutomaticConnection();
-            this._client.add_and_activate_connection(connection, this.device, null, null);
+            if (connection)
+                this._client.add_and_activate_connection(connection, this.device, null, null);
         }
     },
 
@@ -620,7 +622,8 @@ NMDevice.prototype = {
             this._autoConnectionItem = new PopupMenu.PopupMenuItem(this._autoConnectionName);
             this._autoConnectionItem.connect('activate', Lang.bind(this, function() {
                 let connection = this._createAutomaticConnection();
-                this._client.add_and_activate_connection(connection, this.device, null, null);
+                if (connection)
+                    this._client.add_and_activate_connection(connection, this.device, null, null);
             }));
             this.section.addMenuItem(this._autoConnectionItem);
         }
@@ -777,6 +780,10 @@ NMDeviceModem.prototype = {
         this.mobileDevice = null;
         this._connectionType = 'ppp';
 
+        this._applet_proxy = new NMAppletProxy(DBus.session,
+                                               'org.gnome.network_manager_applet',
+                                               '/org/gnome/network_manager_applet');
+
         this._capabilities = device.current_capabilities;
         if (this._capabilities & NetworkManager.DeviceModemCapabilities.GSM_UMTS) {
             is_wwan = true;
@@ -878,19 +885,13 @@ NMDeviceModem.prototype = {
     },
 
     _createAutomaticConnection: function() {
-        // FIXME: we need to summon the mobile wizard here
-        // or NM will not have the necessary parameters to complete the connection
-        // pending a DBus method on nm-applet
-
-        let connection = new NetworkManager.Connection;
-        connection._uuid = NetworkManager.utils_uuid_generate();
-        connection.add_setting(new NetworkManager.SettingConnection({
-            uuid: connection._uuid,
-            id: this._autoConnectionName,
-            type: this._connectionType,
-            autoconnect: false
-        }));
-        return connection;
+        // Mobile wizard is handled by nm-applet for now...
+        this._applet_proxy.ConnectTo3gNetworkRemote(this.device.get_path(),
+                                                    Lang.bind(this, function(results, err) {
+                                                        if (err)
+                                                            log(err);
+                                                    }));
+        return null;
     }
 };
 
