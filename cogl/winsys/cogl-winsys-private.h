@@ -144,4 +144,7 @@ typedef struct _CoglWinsysVtable
 
 } CoglWinsysVtable;
 
+gboolean
+_cogl_winsys_has_feature (CoglWinsysFeature feature);
+
 #endif /* __COGL_WINSYS_PRIVATE_H */
