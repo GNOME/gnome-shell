@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-05-03 21:00+0000\n"
-"PO-Revision-Date: 2011-05-04 10:07+0200\n"
+"PO-Revision-Date: 2011-05-04 22:41+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1316,7 +1316,6 @@ msgid "Filename Set"
 msgstr ""
 
 #: ../clutter/clutter-script.c:390
-#, fuzzy
 msgid "Whether the :filename property is set"
 msgstr "Indica si la propiedad «:filename» está establecida"
 
