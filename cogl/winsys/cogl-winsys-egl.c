@@ -971,8 +971,6 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
       XFree (xvisinfo);
 
-      XMapWindow (xlib_renderer->xdpy, xwin);
-
       XSync (xlib_renderer->xdpy, False);
       xerror = _cogl_renderer_xlib_untrap_errors (display->renderer, &state);
       if (xerror)
@@ -1127,6 +1125,22 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
     g_warning ("Error reported by eglSwapBuffersRegion");
 }
 
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+static void
+_cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
+                                      gboolean visibility)
+{
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRendererXlib *xlib_renderer = context->display->renderer->winsys;
+  CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+
+  if (visibility)
+    XMapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
+  else
+    XUnmapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
+}
+#endif
+
 static guint32
 _cogl_winsys_get_vsync_counter (void)
 {
@@ -1229,6 +1243,9 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_bind = _cogl_winsys_onscreen_bind,
     .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
     .onscreen_swap_region = _cogl_winsys_onscreen_swap_region,
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+    .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
+#endif
     .onscreen_update_swap_throttled =
       _cogl_winsys_onscreen_update_swap_throttled,
     .onscreen_x11_get_window_xid =

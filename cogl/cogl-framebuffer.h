@@ -106,6 +106,58 @@ void
 cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
                                   gboolean throttled);
 
+/**
+ * cogl_onscreen_show:
+ * @onscreen: The onscreen framebuffer to make visible
+ *
+ * This requests to make @onscreen visible to the user.
+ *
+ * Actually the precise semantics of this function depend on the
+ * window system currently in use, and if you don't have a
+ * multi-windowining system this function may in-fact do nothing.
+ *
+ * This function will implicitly allocate the given @onscreen
+ * framebuffer before showing it if it hasn't already been allocated.
+ *
+ * <note>Since Cogl doesn't explicitly track the visibility status of
+ * onscreen framebuffers it wont try to avoid redundant window system
+ * requests e.g. to show an already visible window. This also means
+ * that it's acceptable to alternatively use native APIs to show and
+ * hide windows without confusing Cogl.</note>
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+#define cogl_onscreen_show cogl_onscreen_show_EXP
+void
+cogl_onscreen_show (CoglOnscreen *onscreen);
+
+/**
+ * cogl_onscreen_hide:
+ * @onscreen: The onscreen framebuffer to make invisible
+ *
+ * This requests to make @onscreen invisible to the user.
+ *
+ * Actually the precise semantics of this function depend on the
+ * window system currently in use, and if you don't have a
+ * multi-windowining system this function may in-fact do nothing.
+ *
+ * This function does not implicitly allocate the given @onscreen
+ * framebuffer before hiding it.
+ *
+ * <note>Since Cogl doesn't explicitly track the visibility status of
+ * onscreen framebuffers it wont try to avoid redundant window system
+ * requests e.g. to show an already visible window. This also means
+ * that it's acceptable to alternatively use native APIs to show and
+ * hide windows without confusing Cogl.</note>
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+#define cogl_onscreen_hide cogl_onscreen_hide_EXP
+void
+cogl_onscreen_hide (CoglOnscreen *onscreen);
+
 #define cogl_get_draw_framebuffer cogl_get_draw_framebuffer_EXP
 CoglFramebuffer *
 cogl_get_draw_framebuffer (void);

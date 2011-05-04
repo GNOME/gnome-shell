@@ -122,6 +122,10 @@ typedef struct _CoglWinsysVtable
   (*onscreen_remove_swap_buffers_callback) (CoglOnscreen *onscreen,
                                             unsigned int id);
 
+  void
+  (*onscreen_set_visibility) (CoglOnscreen *onscreen,
+                              gboolean visibility);
+
   guint32
   (*get_vsync_counter) (void);
 
