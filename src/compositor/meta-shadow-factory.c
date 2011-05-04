@@ -120,17 +120,17 @@ static guint signals[LAST_SIGNAL] = { 0 };
 /* The first element in this array also defines the default parameters
  * for newly created classes */
 MetaShadowClassInfo default_shadow_classes[] = {
-  { "normal",       { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
-  { "dialog",       { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
-  { "modal_dialog", { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
-  { "utility",      { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
-  { "border",       { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
-  { "menu",         { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
+  { "normal",       { 6, -1, 0, 3, 255 }, { 3, -1, 0, 3, 128 } },
+  { "dialog",       { 6, -1, 0, 3, 255 }, { 3, -1, 0, 3, 128 } },
+  { "modal_dialog", { 6, -1, 0, 1, 255 }, { 3, -1, 0, 3, 128 } },
+  { "utility",      { 3, -1, 0, 1, 255 }, { 3, -1, 0, 1, 128 } },
+  { "border",       { 6, -1, 0, 3, 255 }, { 3, -1, 0, 3, 128 } },
+  { "menu",         { 6, -1, 0, 3, 255 }, { 3, -1, 0, 0, 128 } },
 
-  { "popup-menu",    { 6, -1, 0, 4, 255 }, { 6, -1, 0, 4, 255 } },
+  { "popup-menu",    { 1, -1, 0, 1, 128 }, { 1, -1, 0, 1, 128 } },
 
-  { "dropdown-menu", { 6, 25, 0, 4, 255 }, { 6, 100, 0, 4, 255 } },
-  { "attached",      { 6, 25, 0, 4, 255 }, { 6, 100, 0, 4, 255 } }
+  { "dropdown-menu", { 1, 10, 0, 1, 128 }, { 1, 10, 0, 1, 128 } },
+  { "attached",      { 2, 50, 0, 1, 255 }, { 1, 50, 0, 1, 128 } }
 };
 
 G_DEFINE_TYPE (MetaShadowFactory, meta_shadow_factory, G_TYPE_OBJECT);
