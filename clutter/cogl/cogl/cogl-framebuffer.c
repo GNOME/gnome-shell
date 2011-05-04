@@ -1690,3 +1690,34 @@ cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
       winsys->onscreen_update_swap_throttled (onscreen);
     }
 }
+
+void
+cogl_onscreen_show (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  const CoglWinsysVtable *winsys;
+
+  if (!framebuffer->allocated)
+    {
+      if (!cogl_framebuffer_allocate (framebuffer, NULL))
+        return;
+    }
+
+  winsys = _cogl_framebuffer_get_winsys (framebuffer);
+  if (winsys->onscreen_set_visibility)
+    winsys->onscreen_set_visibility (onscreen, TRUE);
+}
+
+void
+cogl_onscreen_hide (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+
+  if (framebuffer->allocated)
+    {
+      const CoglWinsysVtable *winsys =
+        _cogl_framebuffer_get_winsys (framebuffer);
+      if (winsys->onscreen_set_visibility)
+        winsys->onscreen_set_visibility (onscreen, FALSE);
+    }
+}

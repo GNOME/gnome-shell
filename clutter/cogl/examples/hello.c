@@ -34,6 +34,8 @@ main (int argc, char **argv)
         return 1;
     }
 
+    cogl_onscreen_show (onscreen);
+
     cogl_push_framebuffer (fb);
 
     triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,

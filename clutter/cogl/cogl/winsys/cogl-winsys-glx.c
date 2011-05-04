@@ -806,8 +806,6 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
       XFree (xvisinfo);
 
-      XMapWindow (xlib_renderer->xdpy, xwin);
-
       XSync (xlib_renderer->xdpy, False);
       xerror = _cogl_renderer_xlib_untrap_errors (display->renderer, &state);
       if (xerror)
@@ -1322,6 +1320,20 @@ _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 
   glx_context->current_drawable = 0;
   _cogl_winsys_onscreen_bind (onscreen);
+}
+
+static void
+_cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
+                                      gboolean visibility)
+{
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRendererXlib *xlib_renderer = context->display->renderer->winsys;
+  CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+
+  if (visibility)
+    XMapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
+  else
+    XUnmapWindow (xlib_renderer->xdpy, xlib_onscreen->xwin);
 }
 
 /* XXX: This is a particularly hacky _cogl_winsys interface... */
@@ -1904,6 +1916,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
       _cogl_winsys_onscreen_add_swap_buffers_callback,
     .onscreen_remove_swap_buffers_callback =
       _cogl_winsys_onscreen_remove_swap_buffers_callback,
+    .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
     .get_vsync_counter = _cogl_winsys_get_vsync_counter,
 
     /* X11 tfp support... */
