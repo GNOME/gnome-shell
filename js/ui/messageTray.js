@@ -68,14 +68,19 @@ function _fixMarkup(text, allowMarkup) {
         // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
         // occurrences of '&'.
         let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, '&amp;');
+
         // Support <b>, <i>, and <u>, escape anything else
         // so it displays as raw markup.
-        return _text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, '&lt;$1');
-    } else {
-        // Escape everything
-        let _text = text.replace(/&/g, '&amp;');
-        return _text.replace(/</g, '&lt;');
+        _text = _text.replace(/<(?!\/?[biu]>)/g, '&lt;');
+
+        try {
+            Pango.parse_markup(_text, -1, '');
+            return _text;
+        } catch (e) {}
     }
+
+    // !allowMarkup, or invalid markup
+    return GLib.markup_escape_text(text, -1);
 }
 
 function URLHighlighter(text, lineWrap, allowMarkup) {
