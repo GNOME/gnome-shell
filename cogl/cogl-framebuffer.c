@@ -1624,9 +1624,17 @@ cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
 #ifdef COGL_HAS_X11_SUPPORT
 void
 cogl_onscreen_x11_set_foreign_window_xid (CoglOnscreen *onscreen,
-                                          guint32 xid)
+                                          guint32 xid,
+                                          CoglOnscreenX11MaskCallback update,
+                                          void *user_data)
 {
+  /* We don't wan't applications to get away with being lazy here and not
+   * passing an update callback... */
+  g_return_if_fail (update);
+
   onscreen->foreign_xid = xid;
+  onscreen->foreign_update_mask_callback = update;
+  onscreen->foreign_update_mask_data = user_data;
 }
 
 guint32

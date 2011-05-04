@@ -118,6 +118,8 @@ struct _CoglOnscreen
 
 #ifdef COGL_HAS_X11_SUPPORT
   guint32 foreign_xid;
+  CoglOnscreenX11MaskCallback foreign_update_mask_callback;
+  void *foreign_update_mask_data;
 #endif
 
   gboolean swap_throttled;
