@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-02 10:11+0000\n"
-"PO-Revision-Date: 2011-05-03 18:12+0200\n"
+"POT-Creation-Date: 2011-05-03 21:00+0000\n"
+"PO-Revision-Date: 2011-05-04 10:07+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -67,11 +67,11 @@ msgstr "Posición Y forzada del actor"
 
 #: ../clutter/clutter-actor.c:3688
 msgid "Fixed position set"
-msgstr ""
+msgstr "Posición fija establecida"
 
 #: ../clutter/clutter-actor.c:3689
 msgid "Whether to use fixed positioning for the actor"
-msgstr ""
+msgstr "Indica si se usa una posición fija para el actor"
 
 #: ../clutter/clutter-actor.c:3711
 msgid "Min Width"
@@ -79,7 +79,7 @@ msgstr "Anchura mínima"
 
 #: ../clutter/clutter-actor.c:3712
 msgid "Forced minimum width request for the actor"
-msgstr ""
+msgstr "Solicitud de anchura mínima forzada para el actor"
 
 #: ../clutter/clutter-actor.c:3731
 msgid "Min Height"
@@ -87,7 +87,7 @@ msgstr "Altura mínima"
 
 #: ../clutter/clutter-actor.c:3732
 msgid "Forced minimum height request for the actor"
-msgstr ""
+msgstr "Solicitud de altura mínima forzada para el actor"
 
 #: ../clutter/clutter-actor.c:3751
 msgid "Natural Width"
@@ -95,7 +95,7 @@ msgstr "Anchura natural"
 
 #: ../clutter/clutter-actor.c:3752
 msgid "Forced natural width request for the actor"
-msgstr ""
+msgstr "Solicitud de anchura natural forzada para el actor"
 
 #: ../clutter/clutter-actor.c:3771
 msgid "Natural Height"
@@ -103,7 +103,7 @@ msgstr "Altura natural"
 
 #: ../clutter/clutter-actor.c:3772
 msgid "Forced natural height request for the actor"
-msgstr ""
+msgstr "Solicitud de altura natural forzada para el actor"
 
 #: ../clutter/clutter-actor.c:3788
 msgid "Minimum width set"
@@ -557,27 +557,27 @@ msgstr "Ángulo final"
 
 #: ../clutter/clutter-behaviour-ellipse.c:426
 msgid "Angle x tilt"
-msgstr ""
+msgstr "Inclinación X del ángulo"
 
 #: ../clutter/clutter-behaviour-ellipse.c:427
 msgid "Tilt of the ellipse around x axis"
-msgstr ""
+msgstr "Inclinación de la elipse sobre el eje X"
 
 #: ../clutter/clutter-behaviour-ellipse.c:442
 msgid "Angle y tilt"
-msgstr ""
+msgstr "Inclinación Y del ángulo"
 
 #: ../clutter/clutter-behaviour-ellipse.c:443
 msgid "Tilt of the ellipse around y axis"
-msgstr ""
+msgstr "Inclinación de la elipse sobre el eje Y"
 
 #: ../clutter/clutter-behaviour-ellipse.c:458
 msgid "Angle z tilt"
-msgstr ""
+msgstr "Inclinación Z del ángulo"
 
 #: ../clutter/clutter-behaviour-ellipse.c:459
 msgid "Tilt of the ellipse around z axis"
-msgstr ""
+msgstr "Inclinación de la elipse sobre el eje Z"
 
 #: ../clutter/clutter-behaviour-ellipse.c:475
 msgid "Width of the ellipse"
@@ -726,7 +726,7 @@ msgstr "El desplazamiento en píxeles que aplicar a la asociación"
 
 #: ../clutter/clutter-binding-pool.c:320
 msgid "The unique name of the binding pool"
-msgstr ""
+msgstr "El nombre único de la asociación de la agrupación"
 
 #: ../clutter/clutter-bin-layout.c:261 ../clutter/clutter-bin-layout.c:580
 #: ../clutter/clutter-box-layout.c:395 ../clutter/clutter-table-layout.c:652
@@ -868,15 +868,15 @@ msgstr "Indica si se deben animar lo cambios en la distribución"
 
 #: ../clutter/clutter-box-layout.c:1160 ../clutter/clutter-table-layout.c:1762
 msgid "Easing Mode"
-msgstr ""
+msgstr "Modo de desaceleración"
 
 #: ../clutter/clutter-box-layout.c:1161 ../clutter/clutter-table-layout.c:1763
 msgid "The easing mode of the animations"
-msgstr ""
+msgstr "El modo de desaceleración de las animaciones"
 
 #: ../clutter/clutter-box-layout.c:1178 ../clutter/clutter-table-layout.c:1780
 msgid "Easing Duration"
-msgstr ""
+msgstr "Duración de la desaceleración"
 
 #: ../clutter/clutter-box-layout.c:1179 ../clutter/clutter-table-layout.c:1781
 msgid "The duration of the animations"
@@ -1099,7 +1099,7 @@ msgstr "La instancia del gestor de dispositivos"
 
 #: ../clutter/clutter-input-device.c:281
 msgid "Device Mode"
-msgstr ""
+msgstr "Modo del dispositivo"
 
 #: ../clutter/clutter-input-device.c:282
 msgid "The mode of the device"
@@ -1127,7 +1127,7 @@ msgstr "El número de ejes en el dispositivo"
 
 #: ../clutter/clutter-input-device.c:345
 msgid "The backend instance"
-msgstr ""
+msgstr "La instancia del backend"
 
 #: ../clutter/clutter-interval.c:397
 msgid "Value Type"
@@ -1143,7 +1143,7 @@ msgstr "Gestor"
 
 #: ../clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr ""
+msgstr "El gestor que ha creado este dato"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -1197,7 +1197,7 @@ msgstr ""
 
 #: ../clutter/clutter-main.c:1310
 msgid "Enable accessibility"
-msgstr ""
+msgstr "Activar accesibilidad"
 
 #: ../clutter/clutter-main.c:1492
 msgid "Clutter Options"
@@ -1221,7 +1221,7 @@ msgstr "Reproduciendo"
 
 #: ../clutter/clutter-media.c:92
 msgid "Wheter the actor is playing"
-msgstr ""
+msgstr "Indica si el actor se está reproduciendo"
 
 #: ../clutter/clutter-media.c:106
 msgid "Progress"
@@ -1277,7 +1277,7 @@ msgstr "La duración del flujo, en segundos"
 
 #: ../clutter/clutter-path-constraint.c:213
 msgid "The path used to constrain an actor"
-msgstr ""
+msgstr "La ruta usada para restringir a un actor"
 
 #: ../clutter/clutter-path-constraint.c:227
 msgid "The offset along the path, between -1.0 and 2.0"
@@ -1293,7 +1293,7 @@ msgstr "Color del borde"
 
 #: ../clutter/clutter-rectangle.c:273
 msgid "The color of the border of the rectangle"
-msgstr ""
+msgstr "El color del borde del rectángulo"
 
 #: ../clutter/clutter-rectangle.c:288
 msgid "Border Width"
@@ -1301,7 +1301,7 @@ msgstr "Anchura del borde"
 
 #: ../clutter/clutter-rectangle.c:289
 msgid "The width of the border of the rectangle"
-msgstr ""
+msgstr "La anchura del borde del rectángulo"
 
 #: ../clutter/clutter-rectangle.c:303
 msgid "Has Border"
@@ -1316,8 +1316,9 @@ msgid "Filename Set"
 msgstr ""
 
 #: ../clutter/clutter-script.c:390
+#, fuzzy
 msgid "Whether the :filename property is set"
-msgstr ""
+msgstr "Indica si la propiedad «:filename» está establecida"
 
 #: ../clutter/clutter-script.c:404 ../clutter/clutter-texture.c:1080
 msgid "Filename"
