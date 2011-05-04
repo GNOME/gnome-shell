@@ -64,6 +64,8 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const GLubyte *procName);
 #include <errno.h>
 #endif
 
+#define COGL_ONSCREEN_X11_EVENT_MASK StructureNotifyMask
+
 typedef struct _CoglContextGLX
 {
   GLXDrawable current_drawable;
@@ -756,6 +758,11 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
       _cogl_framebuffer_winsys_update_size (framebuffer,
                                             attr.width, attr.height);
+
+      /* Make sure the app selects for the events we require... */
+      onscreen->foreign_update_mask_callback (onscreen,
+                                              COGL_ONSCREEN_X11_EVENT_MASK,
+                                              onscreen->foreign_update_mask_data);
     }
   else
     {
@@ -792,7 +799,9 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                                         DefaultRootWindow (xlib_renderer->xdpy),
                                         xvisinfo->visual,
                                         AllocNone);
-      mask = CWBorderPixel | CWColormap;
+      xattr.event_mask = COGL_ONSCREEN_X11_EVENT_MASK;
+
+      mask = CWBorderPixel | CWColormap | CWEventMask;
 
       xwin = XCreateWindow (xlib_renderer->xdpy,
                             DefaultRootWindow (xlib_renderer->xdpy),

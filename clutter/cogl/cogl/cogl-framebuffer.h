@@ -86,11 +86,67 @@ CoglOnscreen *
 cogl_onscreen_new (CoglContext *context, int width, int height);
 
 #ifdef COGL_HAS_X11
+typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
+                                             guint32 event_mask,
+                                             void *user_data);
+
+/**
+ * cogl_onscreen_x11_set_foreign_window_xid:
+ * @onscreen: The unallocated framebuffer to associated with an X
+ *            window.
+ * @xid: The XID of an existing X window
+ * @update: A callback that notifies of updates to what Cogl requires
+ *          to be in the core X protocol event mask.
+ *
+ * Ideally we would recommend that you let Cogl be responsible for
+ * creating any X window required to back an onscreen framebuffer but
+ * if you really need to target a window created manually this
+ * function can be called before @onscreen has been allocated to set a
+ * foreign XID for your existing X window.
+ *
+ * Since Cogl needs, for example, to track changes to the size of an X
+ * window it requires that certain events be selected for via the core
+ * X protocol. This requirement may also be changed asynchronously so
+ * you must pass in an @update callback to inform you of Cogl's
+ * required event mask.
+ *
+ * For example if you are using Xlib you could use this API roughly
+ * as follows:
+ * [{
+ * static void
+ * my_update_cogl_x11_event_mask (CoglOnscreen *onscreen,
+ *                                guint32 event_mask,
+ *                                void *user_data)
+ * {
+ *   XSetWindowAttributes attrs;
+ *   MyData *data = user_data;
+ *   attrs.event_mask = event_mask | data->my_event_mask;
+ *   XChangeWindowAttributes (data->xdpy,
+ *                            data->xwin,
+ *                            CWEventMask,
+ *                            &attrs);
+ * }
+ *
+ * {
+ *   *snip*
+ *   cogl_onscreen_x11_set_foreign_window_xid (onscreen,
+ *                                             data->xwin,
+ *                                             my_update_cogl_x11_event_mask,
+ *                                             data);
+ *   *snip*
+ * }
+ * }]
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
 #define cogl_onscreen_x11_set_foreign_window_xid \
   cogl_onscreen_x11_set_foreign_window_xid_EXP
 void
 cogl_onscreen_x11_set_foreign_window_xid (CoglOnscreen *onscreen,
-                                          guint32 xid);
+                                          guint32 xid,
+                                          CoglOnscreenX11MaskCallback update,
+                                          void *user_data);
 
 #define cogl_onscreen_x11_get_window_xid cogl_onscreen_x11_get_window_xid_EXP
 guint32

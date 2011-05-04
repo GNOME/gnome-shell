@@ -121,8 +121,13 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
   stage_glx->onscreen = cogl_onscreen_new (backend->cogl_context,
                                            width, height);
   if (stage_x11->xwin != None)
-    cogl_onscreen_x11_set_foreign_window_xid (stage_glx->onscreen,
-                                              stage_x11->xwin);
+    {
+      cogl_onscreen_x11_set_foreign_window_xid (
+                                  stage_glx->onscreen,
+                                  stage_x11->xwin,
+                                  _clutter_stage_x11_update_foreign_event_mask,
+                                  stage_x11);
+    }
 
   clutter_vblank = _clutter_backend_glx_get_vblank ();
   if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)

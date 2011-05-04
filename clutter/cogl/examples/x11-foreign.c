@@ -5,6 +5,24 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
+static void
+update_cogl_x11_event_mask (CoglOnscreen *onscreen,
+                            guint32 event_mask,
+                            void *user_data)
+{
+  XDisplay *xdpy = user_data;
+  XSetWindowAttributes attrs;
+  guint32 xwin;
+
+  attrs.event_mask = event_mask;
+  xwin = cogl_onscreen_x11_get_window_xid (onscreen);
+
+  XChangeWindowAttributes (xdpy,
+                           (Window)xwin,
+                           CWEventMask,
+                           &attrs);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -110,7 +128,9 @@ main (int argc, char **argv)
 
   XFree (xvisinfo);
 
-  cogl_onscreen_x11_set_foreign_window_xid (onscreen, xwin);
+  cogl_onscreen_x11_set_foreign_window_xid (onscreen, xwin,
+                                            update_cogl_x11_event_mask,
+                                            xdpy);
 
   fb = COGL_FRAMEBUFFER (onscreen);
   /* Eventually there will be an implicit allocate on first use so this

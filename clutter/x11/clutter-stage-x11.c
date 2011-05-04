@@ -387,6 +387,23 @@ clutter_stage_x11_unrealize (ClutterStageWindow *stage_window)
     }
 }
 
+void
+_clutter_stage_x11_update_foreign_event_mask (CoglOnscreen *onscreen,
+                                              guint32 event_mask,
+                                              void *user_data)
+{
+  ClutterStageX11 *stage_x11 = user_data;
+  ClutterBackendX11 *backend_x11 = stage_x11->backend;
+  XSetWindowAttributes attrs;
+
+  attrs.event_mask = event_mask | CLUTTER_STAGE_X11_EVENT_MASK;
+
+  XChangeWindowAttributes (backend_x11->xdpy,
+                           stage_x11->xwin,
+                           CWEventMask,
+                           &attrs);
+}
+
 static gboolean
 clutter_stage_x11_realize (ClutterStageWindow *stage_window)
 {
@@ -412,17 +429,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
    * because key events are broken with that extension, and will
    * be fixed by XI2
    */
-  event_flags = StructureNotifyMask
-              | FocusChangeMask
-              | ExposureMask
-              | PropertyChangeMask
-              | EnterWindowMask
-              | LeaveWindowMask
-              | KeyPressMask
-              | KeyReleaseMask
-              | ButtonPressMask
-              | ButtonReleaseMask
-              | PointerMotionMask;
+  event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
 
   /* we unconditionally select input events even with event retrieval
    * disabled because we need to guarantee that the Clutter internal
