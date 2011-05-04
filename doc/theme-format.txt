@@ -22,6 +22,18 @@ This document has separate sections for each format version. You may
 want to read the document in reverse order, since the base features
 are discussed under version 1.
 
+New Features in Theme Format Version 3.4
+========================================
+
+An additional color type is added to pick up custom colors defined
+in the GTK+ theme's CSS:
+
+  gtk:custom(name,fallback)
+
+where <name> refers to a custom color defined with @define-color in
+the GTK+ theme, and <fallback> provides an alternative color definition
+in case the color referenced by <name> is not found.
+
 New Features in Theme Format Version 3.3
 ========================================
 

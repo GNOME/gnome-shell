@@ -1118,6 +1118,10 @@ meta_color_spec_new (MetaColorSpecType type)
       size += sizeof (dummy.data.gtk);
       break;
 
+    case META_COLOR_SPEC_GTK_CUSTOM:
+      size += sizeof (dummy.data.gtkcustom);
+      break;
+
     case META_COLOR_SPEC_BLEND:
       size += sizeof (dummy.data.blend);
       break;
@@ -1147,6 +1151,14 @@ meta_color_spec_free (MetaColorSpec *spec)
 
     case META_COLOR_SPEC_GTK:
       DEBUG_FILL_STRUCT (&spec->data.gtk);
+      break;
+
+    case META_COLOR_SPEC_GTK_CUSTOM:
+      if (spec->data.gtkcustom.color_name)
+        g_free (spec->data.gtkcustom.color_name);
+      if (spec->data.gtkcustom.fallback)
+        meta_color_spec_free (spec->data.gtkcustom.fallback);
+      DEBUG_FILL_STRUCT (&spec->data.gtkcustom);
       break;
 
     case META_COLOR_SPEC_BLEND:
@@ -1179,7 +1191,68 @@ meta_color_spec_new_from_string (const char *str,
 
   spec = NULL;
   
-  if (str[0] == 'g' && str[1] == 't' && str[2] == 'k' && str[3] == ':')
+  if (str[0] == 'g' && str[1] == 't' && str[2] == 'k' && str[3] == ':' &&
+      str[4] == 'c' && str[5] == 'u' && str[6] == 's' && str[7] == 't' &&
+      str[8] == 'o' && str[9] == 'm')
+    {
+      const char *color_name_start, *fallback_str_start, *end;
+      char *color_name, *fallback_str;
+      MetaColorSpec *fallback = NULL;
+
+      if (str[10] != '(')
+        {
+          g_set_error (err, META_THEME_ERROR,
+                       META_THEME_ERROR_FAILED,
+                       _("GTK custom color specification must have color name and fallback in parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""),
+                       str);
+          return NULL;
+        }
+
+      color_name_start = str + 11;
+
+      fallback_str_start = color_name_start;
+      while (*fallback_str_start && *fallback_str_start != ',')
+        {
+          if (!(g_ascii_isalnum (*fallback_str_start)
+                || *fallback_str_start == '-'
+                || *fallback_str_start == '_'))
+            {
+              g_set_error (err, META_THEME_ERROR,
+                           META_THEME_ERROR_FAILED,
+                           _("Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-_ are valid"),
+                           *fallback_str_start);
+              return NULL;
+            }
+          fallback_str_start++;
+        }
+      fallback_str_start++;
+
+      end = strrchr (str, ')');
+
+      if (color_name_start == NULL || fallback_str_start == NULL || end == NULL)
+        {
+          g_set_error (err, META_THEME_ERROR,
+                       META_THEME_ERROR_FAILED,
+                       _("Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not fit the format"),
+                       str);
+          return NULL;
+        }
+
+      fallback_str = g_strndup (fallback_str_start, end - fallback_str_start);
+      fallback = meta_color_spec_new_from_string (fallback_str, err);
+      g_free (fallback_str);
+
+      if (fallback == NULL)
+        return NULL;
+
+      color_name = g_strndup (color_name_start,
+                              fallback_str_start - color_name_start - 1);
+
+      spec = meta_color_spec_new (META_COLOR_SPEC_GTK_CUSTOM);
+      spec->data.gtkcustom.color_name = color_name;
+      spec->data.gtkcustom.fallback = fallback;
+    }
+  else if (str[0] == 'g' && str[1] == 't' && str[2] == 'k' && str[3] == ':')
     {
       /* GTK color */
       const char *bracket;
@@ -1479,6 +1552,16 @@ meta_set_color_from_style (GdkRGBA               *color,
     }
 }
 
+static void
+meta_set_custom_color_from_style (GdkRGBA         *color,
+                                  GtkStyleContext *context,
+                                  char            *color_name,
+                                  MetaColorSpec   *fallback)
+{
+  if (!gtk_style_context_lookup_color (context, color_name, color))
+    meta_color_spec_render (fallback, context, color);
+}
+
 void
 meta_color_spec_render (MetaColorSpec   *spec,
                         GtkStyleContext *context,
@@ -1498,6 +1581,13 @@ meta_color_spec_render (MetaColorSpec   *spec,
                                  context,
                                  spec->data.gtk.state,
                                  spec->data.gtk.component);
+      break;
+
+    case META_COLOR_SPEC_GTK_CUSTOM:
+      meta_set_custom_color_from_style (color,
+                                        context,
+                                        spec->data.gtkcustom.color_name,
+                                        spec->data.gtkcustom.fallback);
       break;
 
     case META_COLOR_SPEC_BLEND:
