@@ -231,7 +231,7 @@ DragPlaceholderItem.prototype = {
 
     _init: function() {
         DashItemContainer.prototype._init.call(this);
-        this.setChild(new St.Bin({ style_class: 'dash-placeholder' }));
+        this.setChild(new St.Bin({ style_class: 'placeholder' }));
     }
 };
 

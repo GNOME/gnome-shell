@@ -20,6 +20,11 @@ let MAX_THUMBNAIL_SCALE = 1/8.;
 const RESCALE_ANIMATION_TIME = 0.2;
 const SLIDE_ANIMATION_TIME = 0.2;
 
+// When we create workspaces by dragging, we add a "cut" into the top and
+// bottom of each workspace so that the user doesn't have to hit the
+// placeholder exactly.
+const WORKSPACE_CUT_SIZE = 10;
+
 function WindowClone(realWindow) {
     this._init(realWindow);
 }
@@ -422,6 +427,11 @@ WorkspaceThumbnail.prototype = {
         if (this.state > ThumbnailState.NORMAL)
             return DND.DragMotionResult.CONTINUE;
 
+        let [w, h] = this.actor.get_transformed_size();
+        // Bubble up if we're in the "workspace cut".
+        if (y < WORKSPACE_CUT_SIZE || y > h - WORKSPACE_CUT_SIZE)
+            return DND.DragMotionResult.CONTINUE;
+
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
         if (source.shellWorkspaceLaunch)
@@ -475,6 +485,7 @@ ThumbnailsBox.prototype = {
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor._delegate = this;
 
         // When we animate the scale, we don't animate the requested size of the thumbnails, rather
         // we ask for our final size and then animate within that size. This slightly simplifies the
@@ -498,6 +509,10 @@ ThumbnailsBox.prototype = {
         this._indicator = indicator;
         this.actor.add_actor(indicator);
 
+        this._dropPlaceholderPos = -1;
+        this._dropPlaceholder = new St.Bin({ style_class: 'placeholder' });
+        this.actor.add_actor(this._dropPlaceholder);
+
         this._targetScale = 0;
         this._scale = 0;
         this._pendingScaleUpdate = false;
@@ -510,6 +525,83 @@ ThumbnailsBox.prototype = {
             this._stateCounts[ThumbnailState[key]] = 0;
 
         this._thumbnails = [];
+    },
+
+    // Draggable target interface
+    handleDragOver : function(source, actor, x, y, time) {
+        if (!source.realWindow && !source.shellWorkspaceLaunch)
+            return DND.DragMotionResult.CONTINUE;
+
+        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let thumbHeight = this._porthole.height * this._scale;
+
+        let workspace = -1;
+        let firstThumbY = this._thumbnails[0].actor.y;
+        for (let i = 0; i < this._thumbnails.length; i ++) {
+            let targetBase = firstThumbY + (thumbHeight + spacing) * i;
+
+            // Allow the reorder target to have a 10px "cut" into
+            // each side of the thumbnail, to make dragging onto the
+            // placeholder easier
+            let targetTop = targetBase - spacing - WORKSPACE_CUT_SIZE;
+            let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
+
+            // Expand the target to include the placeholder, if it exists.
+            if (i == this._dropPlaceholderPos)
+                targetBottom += this._dropPlaceholder.get_height();
+
+            if (y > targetTop && y <= targetBottom) {
+                workspace = i;
+                break;
+            }
+        }
+
+        this._dropPlaceholderPos = workspace;
+        this.actor.queue_relayout();
+
+        if (workspace == -1)
+            return DND.DragMotionResult.CONTINUE;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    },
+
+    acceptDrop: function(source, actor, x, y, time) {
+        if (this._dropPlaceholderPos == -1)
+            return false;
+
+        if (!source.realWindow && !source.shellWorkspaceLaunch)
+            return false;
+
+        let isWindow = !!source.realWindow;
+
+        // To create a new workspace, we first slide all the windows on workspaces
+        // below us to the next workspace, leaving a blank workspace for us to recycle.
+        let newWorkspaceIndex;
+        [newWorkspaceIndex, this._dropPlaceholderPos] = [this._dropPlaceholderPos, -1];
+
+        // Nab all the windows below us.
+        let windows = global.get_window_actors().filter(function(win) {
+            if (isWindow)
+                return win.get_workspace() >= newWorkspaceIndex && win != source;
+            else
+                return win.get_workspace() >= newWorkspaceIndex;
+        });
+
+        // ... move them down one.
+        windows.forEach(function(win) {
+            win.meta_window.change_workspace_by_index(win.get_workspace() + 1,
+                                                      true, time);
+        });
+
+        if (isWindow)
+            // ... and bam, a workspace, good as new.
+            source.metaWindow.change_workspace_by_index(newWorkspaceIndex,
+                                                        true, time);
+        else (source.shellWorkspaceLaunch)
+            source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
+                                          timestamp: time });
+
+        return true;
     },
 
     show: function() {
@@ -840,19 +932,17 @@ ThumbnailsBox.prototype = {
 
         let y = contentBox.y1;
 
+        if (this._dropPlaceholderPos == -1) {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+                this._dropPlaceholder.hide();
+            }));
+        }
+
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];
 
             if (i > 0)
                 y += spacing - Math.round(thumbnail.collapseFraction * spacing);
-
-            // We might end up with thumbnailHeight being something like 99.33
-            // pixels. To make this work and not end up with a gap at the bottom,
-            // we need some thumbnails to be 99 pixels and some 100 pixels height;
-            // we compute an actual scale separately for each thumbnail.
-            let y1 = Math.round(y);
-            let y2 = Math.round(y + thumbnailHeight);
-            let roundedVScale = (y2 - y1) / portholeHeight;
 
             let x1, x2;
             if (rtl) {
@@ -862,6 +952,27 @@ ThumbnailsBox.prototype = {
                 x1 = contentBox.x2 - thumbnailWidth + slideOffset * thumbnail.slidePosition;
                 x2 = x1 + thumbnailWidth;
             }
+
+            if (i == this._dropPlaceholderPos) {
+                let [minHeight, placeholderHeight] = this._dropPlaceholder.get_preferred_height(-1);
+                childBox.x1 = x1;
+                childBox.x2 = x1 + thumbnailWidth;
+                childBox.y1 = Math.round(y);
+                childBox.y2 = Math.round(y + placeholderHeight);
+                this._dropPlaceholder.allocate(childBox, flags);
+                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+                    this._dropPlaceholder.show();
+                }));
+                y += placeholderHeight + spacing;
+            }
+
+            // We might end up with thumbnailHeight being something like 99.33
+            // pixels. To make this work and not end up with a gap at the bottom,
+            // we need some thumbnails to be 99 pixels and some 100 pixels height;
+            // we compute an actual scale separately for each thumbnail.
+            let y1 = Math.round(y);
+            let y2 = Math.round(y + thumbnailHeight);
+            let roundedVScale = (y2 - y1) / portholeHeight;
 
             if (thumbnail.metaWorkspace == indicatorWorkspace)
                 indicatorY = y1;
