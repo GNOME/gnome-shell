@@ -3,15 +3,11 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 apiversion=1.0
-requires=@COGL_PKG_REQUIRES@
-backend=none #only kept for backward compatability
-winsys=none
-cogl=none #only kept for backward compatability
-driver=none
+requires=@COGL_PKG_REQUIRES@ cogl-2.0
 
 Name: Cogl
 Description: An object oriented GL/GLES Abstraction/Utility Layer
 Version: @COGL_1_VERSION@
-Libs: -L${libdir} -lcogl
-Cflags: -I${includedir}/clutter-${apiversion}
+Libs: -L${libdir} -lcoglpango
+Cflags: -I${includedir}/cogl
 Requires: ${requires}

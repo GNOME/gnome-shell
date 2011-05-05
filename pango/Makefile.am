@@ -54,3 +54,11 @@ coglpangoheadersdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 coglpangoheaders_HEADERS = $(source_h)
 endif
 
+pc_files = cogl-pango-1.0.pc \
+	   cogl-pango-$(COGL_API_VERSION).pc
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = $(pc_files)
+
+EXTRA_DIST = cogl-pango.pc.in
+DISTCLEANFILES = $(pc_files)
