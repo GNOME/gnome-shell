@@ -97,8 +97,6 @@ AltTabPopup.prototype = {
         // those calculations
         if (this._thumbnails) {
             let icon = this._appIcons[this._currentApp].actor;
-            // Force a stage relayout to make sure we get the correct position
-            global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, 0, 0);
             let [posX, posY] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
             let [childMinWidth, childNaturalWidth] = this._thumbnails.actor.get_preferred_width(-1);
