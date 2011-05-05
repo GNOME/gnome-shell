@@ -2,13 +2,26 @@
 # Copyright (C) 2009-2011 Timo Jyrinki
 # This file is distributed under the same license as the gnome-shell package.
 # Timo Jyrinki <timo.jyrinki@iki.fi>, 2009-2011.
+# Marko Myllynen <myllynen@redhat.com>, 2011.
+#
+# IMPORTANT NOTICE!
+#
+# Some date / time strings are currently non-optimal. The optimal CLDR 
+# compliant versions are included as comments in the respective strings.
+#
+# CLDR: http://kotoistus.fi/suositukset/vahv_kalenterit_cldr1_4.htm
+# 
+# They should be taken into use as soon as the related bugs are fixed:
+# 
+# https://bugzilla.gnome.org/show_bug.cgi?id=647320
+# https://bugzilla.gnome.org/show_bug.cgi?id=648678
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-06 12:55+0300\n"
-"PO-Revision-Date: 2011-04-06 12:55+0300\n"
+"PO-Revision-Date: 2011-05-05 18:01+0300\n"
 "Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -199,7 +212,7 @@ msgstr "%s on poistettu suosikeista."
 #: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
-msgstr ""
+msgstr "Koko päivä"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:71
@@ -309,19 +322,21 @@ msgstr "la"
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
-msgstr ""
+msgstr "Ei merkintöjä"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
+#msgstr "%A, %-d. %Bta"
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %d. %Bta"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
+#msgstr "%A, %-d. %Bta %Y"
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr ""
+msgstr "%A, %d. %Bta %Y"
 
 #: ../js/ui/calendar.js:733
 msgid "Today"
@@ -329,15 +344,15 @@ msgstr "Tänään"
 
 #: ../js/ui/calendar.js:737
 msgid "Tomorrow"
-msgstr ""
+msgstr "Huomenna"
 
 #: ../js/ui/calendar.js:746
 msgid "This week"
-msgstr ""
+msgstr "Tällä viikolla"
 
 #: ../js/ui/calendar.js:754
 msgid "Next week"
-msgstr ""
+msgstr "Ensi viikolla"
 
 #: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
 msgid "Remove"
@@ -354,49 +369,58 @@ msgstr "Avaa kalenteri"
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:164
+#msgstr "%a %-d.%-m., %-H.%M.%S"
 msgid "%a %b %e, %R:%S"
-msgstr "%a %b %e., %h.%M.%S"
+msgstr "%a %d.%m., %H.%M.%S"
 
 #: ../js/ui/dateMenu.js:165
+#msgstr "%a %-d.%-m., %-H.%M"
 msgid "%a %b %e, %R"
-msgstr "%a %b %e., %H.%M"
+msgstr "%a %d.%m., %H.%M"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:169
+#msgstr "%a %-H.%M.%S"
 msgid "%a %R:%S"
-msgstr "%a %H.%M"
+msgstr "%a %H.%M.%S"
 
 #: ../js/ui/dateMenu.js:170
+#msgstr "%a %-H.%M"
 msgid "%a %R"
 msgstr "%a %H.%M"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:177
+#msgstr "%a %-d.%-m., %-I.%M.%S %p"
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %b %e., %l.%M.%S %p"
+msgstr "%a %d.%m., %I.%M.%S %p"
 
 #: ../js/ui/dateMenu.js:178
+#msgstr "%a %-d.%-m., %-I.%M %p"
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %b %e.,.%l:%M %p"
+msgstr "%a %d.%m., %I.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:182
+#msgstr "%a %-I.%M.%S %p"
 msgid "%a %l:%M:%S %p"
-msgstr "%a %l.%M.%S %p"
+msgstr "%a %I.%M.%S %p"
 
 #: ../js/ui/dateMenu.js:183
+#msgstr "%a %-I.%M %p"
 msgid "%a %l:%M %p"
-msgstr "%a %l.%M %p"
+msgstr "%a %I.%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
 #: ../js/ui/dateMenu.js:194
+#msgstr "%A, %-d. %Bta %Y"
 msgid "%A %B %e, %Y"
-msgstr "+%Ana %d. %Bta, %Y"
+msgstr "%A, %d. %Bta %Y"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
