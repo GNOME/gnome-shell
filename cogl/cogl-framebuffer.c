@@ -1641,9 +1641,14 @@ guint32
 cogl_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
 
-  return winsys->onscreen_x11_get_window_xid (onscreen);
+  if (onscreen->foreign_xid)
+    return onscreen->foreign_xid;
+  else
+    {
+      const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+      return winsys->onscreen_x11_get_window_xid (onscreen);
+    }
 }
 
 guint32
