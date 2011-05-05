@@ -1223,10 +1223,11 @@ load_gicon_with_colors (StTextureCache    *cache,
   else
     {
       /* Blah; we failed to find the icon, but we've added our texture to the outstanding
-       * requests.  In that case, just undo what create_texture_lookup_status did.
+       * requests.  In that case, just undo what create_texture_and_ensure_request() did.
        */
        g_slist_foreach (request->textures, (GFunc) g_object_unref, NULL);
        g_slist_free (request->textures);
+       g_free (request->key);
        g_free (request);
        g_hash_table_remove (cache->priv->outstanding_requests, key);
        g_object_unref (texture);
