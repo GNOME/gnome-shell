@@ -1,0 +1,5 @@
+The mingw-fetch-dependencies.sh script in this directory automates
+fetching of the depndencies required to cross compile Clutter using
+the MinGW compiler. For a description of how to use it, see:
+
+ http://wiki.clutter-project.org/wiki/BuildingClutterOnWindows
