@@ -254,6 +254,7 @@ xfixes_cursor_reset_image (ShellXFixesCursor *xfixes_cursor)
       xfixes_cursor->cursor_hot_y = cursor_image->yhot;
       g_signal_emit (xfixes_cursor, signals[CURSOR_CHANGED], 0);
     }
+  XFree (cursor_image);
 }
 
 static void
