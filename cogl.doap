@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name>Cogl</name>
+  <shortname>cogl</shortname>
+
+  <shortdesc xml:lang="en">A hardware accelerated 3D graphics API</shortdesc>
+
+  <description xml:lang="en">Cogl is a small open source software library for using 3D graphics hardware to draw pretty pictures. The API departs from the flat state machine style of OpenGL and is designed to make it easy to write orthogonal components that can render without stepping on each others toes. Cogl currently supports OpenGL ES 1.1/2.0 and OpenGL > 1.3 (or 1.2 if you have the GL_ARB_multitexture extension), and having Gallium or D3D backends are options for the future.</description>
+
+  <homepage rdf:resource="http://www.clutter-project.org" />
+  <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
+  <bug-database rdf:resource="http://bugzilla.gnome.org/enter_bug.cgi?product=cogl"/>
+  <download-page rdf:resource="http://source.clutter-project.org/sources/cogl" />
+  <mailing-list rdf:resource="mailto:clutter-devel-list@clutter-project.org" />
+
+  <programming-language>C</programming-language>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Robert Bragg</foaf:name>
+      <foaf:mbox rdf:resource="mailto:robert@linux.intel.com"/>
+      <gnome:userid>rbragg</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Neil Roberts</foaf:name>
+      <foaf:mbox rdf:resource="mailto:neil@linux.intel.com"/>
+      <gnome:userid>nroberts</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <repository>
+    <GitRepository>
+      <browse rdf:resource="http://git.gnome.org/browse/cogl/"/>
+      <location rdf:resource="git://git.gnome.org/cogl"/>
+    </GitRepository>
+  </repository>
+
+</Project>
