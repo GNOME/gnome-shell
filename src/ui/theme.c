@@ -2639,11 +2639,13 @@ meta_theme_replace_constants (MetaTheme   *theme,
         {
           if (meta_theme_lookup_int_constant (theme, t->d.v.name, &ival))
             {
+              g_free (t->d.v.name);
               t->type = POS_TOKEN_INT;
               t->d.i.val = ival;
             }
           else if (meta_theme_lookup_float_constant (theme, t->d.v.name, &dval))
             {
+              g_free (t->d.v.name);
               t->type = POS_TOKEN_DOUBLE;
               t->d.d.val = dval;
             }
