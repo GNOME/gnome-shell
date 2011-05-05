@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-03 21:00+0000\n"
-"PO-Revision-Date: 2011-05-04 22:41+0200\n"
+"POT-Creation-Date: 2011-05-04 20:42+0000\n"
+"PO-Revision-Date: 2011-05-05 15:46+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -844,11 +844,11 @@ msgstr ""
 
 #: ../clutter/clutter-box-layout.c:1109
 msgid "Pack Start"
-msgstr ""
+msgstr "Empaquetar al principio"
 
 #: ../clutter/clutter-box-layout.c:1110
 msgid "Whether to pack items at the start of the box"
-msgstr ""
+msgstr "Indica si se empaquetan los elementos al principio de la caja"
 
 #: ../clutter/clutter-box-layout.c:1123
 msgid "Spacing"
@@ -916,15 +916,15 @@ msgstr "Pulsado"
 
 #: ../clutter/clutter-click-action.c:303
 msgid "Whether the clickable should be in pressed state"
-msgstr ""
+msgstr "Indica si el pulsable debe estar en estado «pulsado»"
 
 #: ../clutter/clutter-click-action.c:316
 msgid "Held"
-msgstr ""
+msgstr "Retenido"
 
 #: ../clutter/clutter-click-action.c:317
 msgid "Whether the clickable has a grab"
-msgstr ""
+msgstr "Indica si el dispositivo tiene un tirador"
 
 #: ../clutter/clutter-clone.c:327
 msgid "Specifies the actor to be cloned"
@@ -1153,7 +1153,7 @@ msgstr "El gestor que ha creado este dato"
 #.
 #: ../clutter/clutter-main.c:487
 msgid "default:LTR"
-msgstr ""
+msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1283
 msgid "Show frames per second"
@@ -1161,7 +1161,7 @@ msgstr "Mostrar fotogramas por segundo"
 
 #: ../clutter/clutter-main.c:1285
 msgid "Default frame rate"
-msgstr ""
+msgstr "Velocidad de fotogramas predeterminada"
 
 #: ../clutter/clutter-main.c:1287
 msgid "Make all warnings fatal"
@@ -1173,11 +1173,11 @@ msgstr "Dirección del texto"
 
 #: ../clutter/clutter-main.c:1293
 msgid "Disable mipmapping on text"
-msgstr ""
+msgstr "Desactivar «mipmapping» en el texto"
 
 #: ../clutter/clutter-main.c:1296
 msgid "Use 'fuzzy' picking"
-msgstr ""
+msgstr "Usar selección «difusa»"
 
 #: ../clutter/clutter-main.c:1299
 msgid "Clutter debugging flags to set"
@@ -1189,11 +1189,11 @@ msgstr "Opciones de depuración de Clutter que no establecer"
 
 #: ../clutter/clutter-main.c:1305
 msgid "Clutter profiling flags to set"
-msgstr ""
+msgstr "Opciones de perfil de Clutter que establecer"
 
 #: ../clutter/clutter-main.c:1307
 msgid "Clutter profiling flags to unset"
-msgstr ""
+msgstr "Opciones de perfil de Clutter que no establecer"
 
 #: ../clutter/clutter-main.c:1310
 msgid "Enable accessibility"
@@ -1257,15 +1257,15 @@ msgstr "El volumen del sonido"
 
 #: ../clutter/clutter-media.c:165
 msgid "Can Seek"
-msgstr ""
+msgstr "Puede buscar"
 
 #: ../clutter/clutter-media.c:166
 msgid "Whether the current stream is seekable"
-msgstr ""
+msgstr "Indica si flujo actual se puede buscar"
 
 #: ../clutter/clutter-media.c:180
 msgid "Buffer Fill"
-msgstr ""
+msgstr "Llenado del búfer"
 
 #: ../clutter/clutter-media.c:181
 msgid "The fill level of the buffer"
@@ -1281,7 +1281,7 @@ msgstr "La ruta usada para restringir a un actor"
 
 #: ../clutter/clutter-path-constraint.c:227
 msgid "The offset along the path, between -1.0 and 2.0"
-msgstr ""
+msgstr "El desplazamiento sobre la ruta, entre -1.0 y 2.0"
 
 #: ../clutter/clutter-rectangle.c:259
 msgid "The color of the rectangle"
@@ -1313,7 +1313,7 @@ msgstr "Indica si el rectángulo debe tener borde"
 
 #: ../clutter/clutter-script.c:389
 msgid "Filename Set"
-msgstr ""
+msgstr "Conjunto de nombres de archivo"
 
 #: ../clutter/clutter-script.c:390
 msgid "Whether the :filename property is set"
@@ -1329,19 +1329,21 @@ msgstr "La ruta del archivo analizado actualmente"
 
 #: ../clutter/clutter-settings.c:350
 msgid "Double Click Time"
-msgstr ""
+msgstr "Tiempo de la doble pulsación"
 
 #: ../clutter/clutter-settings.c:351
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr ""
+"El tiempo necesario entre pulsaciones para detectar una pulsación múltiple"
 
 #: ../clutter/clutter-settings.c:366
 msgid "Double Click Distance"
-msgstr ""
+msgstr "Distancia de la doble pulsación"
 
 #: ../clutter/clutter-settings.c:367
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr ""
+"La distancia necesaria entre pulsaciones para detectar una pulsación múltiple"
 
 #: ../clutter/clutter-settings.c:382
 msgid "Drag Threshold"
@@ -1349,7 +1351,7 @@ msgstr "Umbral de arrastre"
 
 #: ../clutter/clutter-settings.c:383
 msgid "The distance the cursor should travel before starting to drag"
-msgstr ""
+msgstr "La distancia que el cursor debe recorrer antes de empezar a arrastrar"
 
 #: ../clutter/clutter-settings.c:398 ../clutter/clutter-text.c:2554
 msgid "Font Name"
@@ -1359,16 +1361,20 @@ msgstr "Nombre de la tipografía"
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
+"La descripción de la tipografía predeterminada, como una que Pango pueda "
+"analizar"
 
 #: ../clutter/clutter-settings.c:414
 msgid "Font Antialias"
-msgstr "Alisado de tipografía"
+msgstr "Alisado de la tipografía"
 
 #: ../clutter/clutter-settings.c:415
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
 msgstr ""
+"Indica si se debe usar alisado (1 para activar, 0 para desactivar y -1 para "
+"usar la opción predeterminada)"
 
 #: ../clutter/clutter-settings.c:431
 msgid "Font DPI"
@@ -1387,10 +1393,12 @@ msgstr "Contorno de la tipografía"
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
+"Indica si se debe usar contorno (1 para activar, 0 para desactivar y -1 para "
+"usar la opción predeterminada)"
 
 #: ../clutter/clutter-settings.c:470
 msgid "Font Hint Style"
-msgstr ""
+msgstr "Estilo de contorno de la tipografía"
 
 #: ../clutter/clutter-settings.c:471
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
