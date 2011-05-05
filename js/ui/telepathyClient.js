@@ -289,6 +289,9 @@ Source.prototype = {
     },
 
     _messageReceived: function(channel, message) {
+        if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
+            return;
+
         message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
         this._notification.appendMessage(message);
         this.notify();
