@@ -776,7 +776,7 @@ HotCorner.prototype = {
     _onCornerClicked : function() {
          if (!Main.overview.animationInProgress)
              this.maybeToggleOverviewOnClick();
-         return false;
+         return true;
     },
 
     _onCornerLeft : function(actor, event) {
