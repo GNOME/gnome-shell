@@ -257,6 +257,57 @@ over (const ClutterColor *source,
   unpremultiply (result);
 }
 
+/*
+ * st_theme_node_reduce_border_radius:
+ * @node: a #StThemeNode
+ * @corners: (array length=4) (out): reduced corners
+ *
+ * Implements the corner overlap algorithm mentioned at
+ * http://www.w3.org/TR/css3-background/#corner-overlap
+ */
+static void
+st_theme_node_reduce_border_radius (StThemeNode  *node,
+                                    guint        *corners)
+{
+  gfloat scale;
+  guint sum;
+
+  scale = 1.0;
+
+  /* top */
+  sum = node->border_radius[ST_CORNER_TOPLEFT]
+    + node->border_radius[ST_CORNER_TOPRIGHT];
+
+  if (sum > 0)
+    scale = MIN (node->alloc_width / sum, scale);
+
+  /* right */
+  sum = node->border_radius[ST_CORNER_TOPRIGHT]
+    + node->border_radius[ST_CORNER_BOTTOMRIGHT];
+
+  if (sum > 0)
+    scale = MIN (node->alloc_height / sum, scale);
+
+  /* bottom */
+  sum = node->border_radius[ST_CORNER_BOTTOMLEFT]
+    + node->border_radius[ST_CORNER_BOTTOMRIGHT];
+
+  if (sum > 0)
+    scale = MIN (node->alloc_width / sum, scale);
+
+  /* left */
+  sum = node->border_radius[ST_CORNER_BOTTOMLEFT]
+    + node->border_radius[ST_CORNER_TOPLEFT];
+
+  if (sum > 0)
+    scale = MIN (node->alloc_height / sum, scale);
+
+  corners[ST_CORNER_TOPLEFT]     = node->border_radius[ST_CORNER_TOPLEFT]     * scale;
+  corners[ST_CORNER_TOPRIGHT]    = node->border_radius[ST_CORNER_TOPRIGHT]    * scale;
+  corners[ST_CORNER_BOTTOMLEFT]  = node->border_radius[ST_CORNER_BOTTOMLEFT]  * scale;
+  corners[ST_CORNER_BOTTOMRIGHT] = node->border_radius[ST_CORNER_BOTTOMRIGHT] * scale;
+}
+
 static void
 st_theme_node_get_corner_border_widths (StThemeNode *node,
                                         StCorner     corner_id,
@@ -301,13 +352,15 @@ st_theme_node_lookup_corner (StThemeNode    *node,
   StTextureCache *cache;
   StCornerSpec corner;
   LoadCornerData data;
+  guint radius[4];
 
   if (node->border_radius[corner_id] == 0)
     return COGL_INVALID_HANDLE;
 
   cache = st_texture_cache_get_default ();
 
-  corner.radius = node->border_radius[corner_id];
+  st_theme_node_reduce_border_radius (node, radius);
+  corner.radius = radius[corner_id];
   corner.color = node->background_color;
   st_theme_node_get_corner_border_widths (node, corner_id,
                                           &corner.border_width_1,
@@ -877,7 +930,8 @@ st_theme_node_prerender_background (StThemeNode *node)
 {
   StBorderImage *border_image;
   CoglHandle texture;
-  int radius[4], i;
+  guint radius[4];
+  int i;
   cairo_t *cr;
   cairo_surface_t *surface;
   StShadow *shadow_spec;
@@ -944,12 +998,10 @@ st_theme_node_prerender_background (StThemeNode *node)
   /* TODO - support non-uniform border colors */
   get_arbitrary_border_color (node, &border_color);
 
-  for (i = 0; i < 4; i++)
-    {
-      border_width[i] = st_theme_node_get_border_width (node, i);
+  st_theme_node_reduce_border_radius (node, radius);
 
-      radius[i] = st_theme_node_get_border_radius (node, i);
-    }
+  for (i = 0; i < 4; i++)
+    border_width[i] = st_theme_node_get_border_width (node, i);
 
   /* Note we don't support translucent background images on top
    * of gradients. It's strictly either/or.
@@ -1457,6 +1509,7 @@ st_theme_node_paint_borders (StThemeNode           *node,
 {
   float width, height;
   int border_width[4];
+  guint border_radius[4];
   int max_border_radius = 0;
   int max_width_radius[4];
   int corner_id, side_id;
@@ -1472,6 +1525,8 @@ st_theme_node_paint_borders (StThemeNode           *node,
   for (side_id = 0; side_id < 4; side_id++)
     border_width[side_id] = st_theme_node_get_border_width(node, side_id);
 
+  st_theme_node_reduce_border_radius (node, border_radius);
+
   for (corner_id = 0; corner_id < 4; corner_id++)
     {
       guint border_width_1, border_width_2;
@@ -1479,10 +1534,10 @@ st_theme_node_paint_borders (StThemeNode           *node,
       st_theme_node_get_corner_border_widths (node, corner_id,
                                               &border_width_1, &border_width_2);
 
-      if (node->border_radius[corner_id] > max_border_radius)
-        max_border_radius = node->border_radius[corner_id];
+      if (border_radius[corner_id] > max_border_radius)
+        max_border_radius = border_radius[corner_id];
       max_width_radius[corner_id] = MAX(MAX(border_width_1, border_width_2),
-                                        node->border_radius[corner_id]);
+                                        border_radius[corner_id]);
     }
 
   /* borders */
@@ -1506,8 +1561,8 @@ st_theme_node_paint_borders (StThemeNode           *node,
                                     alpha);
 
           /* NORTH */
-          skip_corner_1 = node->border_radius[ST_CORNER_TOPLEFT] > 0;
-          skip_corner_2 = node->border_radius[ST_CORNER_TOPRIGHT] > 0;
+          skip_corner_1 = border_radius[ST_CORNER_TOPLEFT] > 0;
+          skip_corner_2 = border_radius[ST_CORNER_TOPRIGHT] > 0;
 
           x1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPLEFT] : 0;
           y1 = 0;
@@ -1516,8 +1571,8 @@ st_theme_node_paint_borders (StThemeNode           *node,
           cogl_rectangle (x1, y1, x2, y2);
 
           /* EAST */
-          skip_corner_1 = node->border_radius[ST_CORNER_TOPRIGHT] > 0;
-          skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
+          skip_corner_1 = border_radius[ST_CORNER_TOPRIGHT] > 0;
+          skip_corner_2 = border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
 
           x1 = width - border_width[ST_SIDE_RIGHT];
           y1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPRIGHT]
@@ -1528,8 +1583,8 @@ st_theme_node_paint_borders (StThemeNode           *node,
           cogl_rectangle (x1, y1, x2, y2);
 
           /* SOUTH */
-          skip_corner_1 = node->border_radius[ST_CORNER_BOTTOMLEFT] > 0;
-          skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
+          skip_corner_1 = border_radius[ST_CORNER_BOTTOMLEFT] > 0;
+          skip_corner_2 = border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
 
           x1 = skip_corner_1 ? max_width_radius[ST_CORNER_BOTTOMLEFT] : 0;
           y1 = height - border_width[ST_SIDE_BOTTOM];
@@ -1539,8 +1594,8 @@ st_theme_node_paint_borders (StThemeNode           *node,
           cogl_rectangle (x1, y1, x2, y2);
 
           /* WEST */
-          skip_corner_1 = node->border_radius[ST_CORNER_TOPLEFT] > 0;
-          skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMLEFT] > 0;
+          skip_corner_1 = border_radius[ST_CORNER_TOPLEFT] > 0;
+          skip_corner_2 = border_radius[ST_CORNER_BOTTOMLEFT] > 0;
 
           x1 = 0;
           y1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPLEFT]
@@ -1610,32 +1665,32 @@ st_theme_node_paint_borders (StThemeNode           *node,
           int n_rects;
 
           /* corner texture does not need padding */
-          if (max_border_radius == node->border_radius[corner_id])
+          if (max_border_radius == border_radius[corner_id])
             continue;
 
-          n_rects = node->border_radius[corner_id] == 0 ? 1 : 2;
+          n_rects = border_radius[corner_id] == 0 ? 1 : 2;
 
           switch (corner_id)
             {
               case ST_CORNER_TOPLEFT:
                 verts[0] = border_width[ST_SIDE_LEFT];
-                verts[1] = MAX(node->border_radius[corner_id],
+                verts[1] = MAX(border_radius[corner_id],
                                border_width[ST_SIDE_TOP]);
                 verts[2] = max_border_radius;
                 verts[3] = max_border_radius;
                 if (n_rects == 2)
                   {
-                    verts[4] = MAX(node->border_radius[corner_id],
+                    verts[4] = MAX(border_radius[corner_id],
                                    border_width[ST_SIDE_LEFT]);
                     verts[5] = border_width[ST_SIDE_TOP];
                     verts[6] = max_border_radius;
-                    verts[7] = MAX(node->border_radius[corner_id],
+                    verts[7] = MAX(border_radius[corner_id],
                                    border_width[ST_SIDE_TOP]);
                   }
                 break;
               case ST_CORNER_TOPRIGHT:
                 verts[0] = width - max_border_radius;
-                verts[1] = MAX(node->border_radius[corner_id],
+                verts[1] = MAX(border_radius[corner_id],
                                border_width[ST_SIDE_TOP]);
                 verts[2] = width - border_width[ST_SIDE_RIGHT];
                 verts[3] = max_border_radius;
@@ -1643,9 +1698,9 @@ st_theme_node_paint_borders (StThemeNode           *node,
                   {
                     verts[4] = width - max_border_radius;
                     verts[5] = border_width[ST_SIDE_TOP];
-                    verts[6] = width - MAX(node->border_radius[corner_id],
+                    verts[6] = width - MAX(border_radius[corner_id],
                                            border_width[ST_SIDE_RIGHT]);
-                    verts[7] = MAX(node->border_radius[corner_id],
+                    verts[7] = MAX(border_radius[corner_id],
                                    border_width[ST_SIDE_TOP]);
                   }
                 break;
@@ -1653,14 +1708,14 @@ st_theme_node_paint_borders (StThemeNode           *node,
                 verts[0] = width - max_border_radius;
                 verts[1] = height - max_border_radius;
                 verts[2] = width - border_width[ST_SIDE_RIGHT];
-                verts[3] = height - MAX(node->border_radius[corner_id],
+                verts[3] = height - MAX(border_radius[corner_id],
                                         border_width[ST_SIDE_BOTTOM]);
                 if (n_rects == 2)
                   {
                     verts[4] = width - max_border_radius;
-                    verts[5] = height - MAX(node->border_radius[corner_id],
+                    verts[5] = height - MAX(border_radius[corner_id],
                                             border_width[ST_SIDE_BOTTOM]);
-                    verts[6] = width - MAX(node->border_radius[corner_id],
+                    verts[6] = width - MAX(border_radius[corner_id],
                                            border_width[ST_SIDE_RIGHT]);
                     verts[7] = height - border_width[ST_SIDE_BOTTOM];
                   }
@@ -1669,13 +1724,13 @@ st_theme_node_paint_borders (StThemeNode           *node,
                 verts[0] = border_width[ST_SIDE_LEFT];
                 verts[1] = height - max_border_radius;
                 verts[2] = max_border_radius;
-                verts[3] = height - MAX(node->border_radius[corner_id],
+                verts[3] = height - MAX(border_radius[corner_id],
                                         border_width[ST_SIDE_BOTTOM]);
                 if (n_rects == 2)
                   {
-                    verts[4] = MAX(node->border_radius[corner_id],
+                    verts[4] = MAX(border_radius[corner_id],
                                    border_width[ST_SIDE_LEFT]);
-                    verts[5] = height - MAX(node->border_radius[corner_id],
+                    verts[5] = height - MAX(border_radius[corner_id],
                                             border_width[ST_SIDE_BOTTOM]);
                     verts[6] = max_border_radius;
                     verts[7] = height - border_width[ST_SIDE_BOTTOM];
