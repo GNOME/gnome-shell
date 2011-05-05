@@ -23,7 +23,7 @@
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
-#include "pango/cogl-pango.h"
+#include <cogl/cogl-pango.h>
 
 #define INSTRUCTIONS \
         "Press v\t\342\236\236\tSwitch horizontal/vertical\n"           \

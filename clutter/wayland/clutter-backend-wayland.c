@@ -336,12 +336,12 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
-#if defined(HAVE_COGL_GL)
+#if defined(COGL_HAS_GL)
 #define _COGL_RENDERABLE_BIT EGL_OPENGL_BIT
-#elif defined(HAVE_COGL_GLES2)
+#elif defined(COGL_HAS_GLES2)
 #define _COGL_GLES_VERSION 2
 #define _COGL_RENDERABLE_BIT EGL_OPENGL_ES2_BIT
-#elif defined(HAVE_COGL_GLES)
+#elif defined(COGL_HAS_GLES1)
 #define _COGL_GLES_VERSION 1
 #define _COGL_RENDERABLE_BIT EGL_OPENGL_ES_BIT
 #endif
@@ -383,7 +383,7 @@ try_create_context (ClutterBackend  *backend,
 
   if (backend_wayland->egl_context == EGL_NO_CONTEXT)
     {
-#if defined(HAVE_COGL_GL)
+#if defined(COGL_HAS_GL)
       static const EGLint *attribs = NULL;
 #else
       static const EGLint attribs[] =
@@ -427,11 +427,11 @@ fail:
     }
 }
 
-#if defined(HAVE_COGL_GL)
+#if defined(COGL_HAS_GL)
 #define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_opengl"
-#elif defined(HAVE_COGL_GLES)
+#elif defined(COGL_HAS_GLES1)
 #define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles1"
-#elif defined(HAVE_COGL_GLES2)
+#elif defined(COGL_HAS_GLES2)
 #define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles2"
 #endif
 
@@ -449,7 +449,7 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
   if (backend_wayland->egl_context != EGL_NO_CONTEXT)
     return TRUE;
 
-#if defined(HAVE_COGL_GL)
+#if defined(COGL_HAS_GL)
   eglBindAPI (EGL_OPENGL_API);
 #else
   eglBindAPI (EGL_OPENGL_ES_API);

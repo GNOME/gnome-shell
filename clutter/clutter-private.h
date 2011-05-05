@@ -30,11 +30,7 @@
 
 #include <glib/gi18n-lib.h>
 
-#ifdef CLUTTER_USING_SYSTEM_COGL
 #include <cogl/cogl-pango.h>
-#else
-#include "pango/cogl-pango.h"
-#endif
 
 #include "clutter-backend.h"
 #include "clutter-effect.h"

@@ -1,1 +1,0 @@
-/* This is a stub header to avoid having to change tess.c */

@@ -53,11 +53,7 @@
 
 #include "x11/clutter-x11-texture-pixmap.h"
 
-#ifdef CLUTTER_USING_SYSTEM_COGL
 #include <cogl/cogl-texture-pixmap-x11.h>
-#else
-#include "cogl/winsys/cogl-texture-pixmap-x11.h"
-#endif
 
 G_DEFINE_TYPE (ClutterGLXTexturePixmap,    \
                clutter_glx_texture_pixmap, \

@@ -5,7 +5,7 @@
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
-#include "pango/cogl-pango.h"
+#include <cogl/cogl-pango.h>
 
 #define FONT "Sans 12"
 

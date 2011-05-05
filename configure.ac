@@ -70,18 +70,6 @@ AC_SUBST([CLUTTER_API_VERSION],    [clutter_api_version])
 AC_SUBST([CLUTTER_API_VERSION_AM], [$CLUTTER_MAJOR_VERSION\_0])
 AC_SUBST([CLUTTER_RELEASE_STATUS], [clutter_release_status])
 
-dnl For Makefile.am compatibility with the standalone build of Cogl:
-AC_SUBST([COGL_1_MINOR_VERSION],[clutter_minor_version])
-AC_SUBST([COGL_1_MICRO_VERSION],[clutter_micro_version])
-AC_SUBST([COGL_1_VERSION],[clutter_version])
-
-AC_SUBST([COGL_MAJOR_VERSION],[2])
-AC_SUBST([COGL_MINOR_VERSION],[0])
-AC_SUBST([COGL_MICRO_VERSION],[0])
-AC_SUBST([COGL_VERSION],[2.0.0])
-AC_SUBST([COGL_API_VERSION],[2.0])
-AC_SUBST([COGL_API_VERSION_AM],[2_0])
-
 m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
 m4_define([lt_revision], [clutter_interface_age])
 m4_define([lt_age],      [m4_eval(clutter_binary_age - clutter_interface_age)])
@@ -128,6 +116,7 @@ AC_HEADER_STDC
 
 # required versions for dependencies
 m4_define([glib_req_version],           [2.26.0])
+m4_define([cogl_req_version],           [1.6.0])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [1.17])
 m4_define([cairo_req_version],          [1.10])
@@ -140,6 +129,7 @@ m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
 
 AC_SUBST([GLIB_REQ_VERSION], [glib_req_version])
+AC_SUBST([COGL_REQ_VERSION], [cogl_req_version])
 AC_SUBST([JSON_GLIB_REQ_VERSION], [json_glib_req_version])
 AC_SUBST([ATK_REQ_VERSION], [atk_req_version])
 AC_SUBST([CAIRO_REQ_VERSION], [cairo_req_version])
@@ -190,7 +180,6 @@ FLAVOUR_CFLAGS=""
 CLUTTER_WINSYS_BASE=
 CLUTTER_WINSYS_BASE_LIB=
 CLUTTER_WINSYS=
-cogl_gl_headers=""
 glesversion=1.1
 use_gles2_wrapper=no
 experimental_backend=no
@@ -206,23 +195,8 @@ AC_ARG_WITH([gles],
                             [Select Clutter GLES version (for EGL backends)])],
             [glesversion=$with_gles])
 
-COGL_REQ=""
-AC_ARG_WITH([system-cogl],
-            [AS_HELP_STRING([--with-system-cogl=@<:@yes/no@:>@],
-                            [Use a system installed Cogl library])],
-            [
-              if test "x$with_system_cogl" = "xyes"; then
-                COGL_REQ="cogl-1.0"
-              fi
-            ],
-            [with_system_cogl=no])
-
-AM_CONDITIONAL(USE_SYSTEM_COGL, [test "x$with_system_cogl" = "xyes"])
-AS_IF([test "x$with_system_cogl" = "xyes"],
-      [ AC_DEFINE([CLUTTER_USING_SYSTEM_COGL], [1], [Built against the system Cogl library])])
-
 # base dependencies for core
-CLUTTER_BASE_PC_FILES="cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION json-glib-1.0 >= $JSON_GLIB_REQ_VERSION $COGL_REQ"
+CLUTTER_BASE_PC_FILES="cogl-1.0 cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
 # backend specific pkg-config files
 BACKEND_PC_FILES=""
@@ -233,14 +207,11 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [glx],
         [
-          cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
 
           SUPPORT_X11=1
           SUPPORT_XLIB=1
           SUPPORT_GLX=1
-
-          COGL_DRIVER="gl"
 
           CLUTTER_WINSYS=glx
           CLUTTER_WINSYS_BASE=x11
@@ -265,7 +236,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [opengl-egl-xlib],
         [
-          cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
           CLUTTER_EGL_BACKEND="generic"
 
@@ -273,8 +243,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_XLIB=1
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
-
-          COGL_DRIVER="gl"
 
           CLUTTER_WINSYS=egl
           CLUTTER_WINSYS_BASE=x11
@@ -290,12 +258,9 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [wayland],
         [
           experimental_backend="yes"
-          cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WAYLAND"
 
           SUPPORT_WAYLAND=1
-
-          COGL_DRIVER="gl"
 
           CLUTTER_WINSYS=wayland
           CLUTTER_SONAME_INFIX=wayland
@@ -308,7 +273,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [eglx],
         [
-          # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
           CLUTTER_EGL_BACKEND="generic"
 
@@ -316,8 +280,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_XLIB=1
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
-
-          COGL_DRIVER="gles"
 
           CLUTTER_WINSYS=egl
           CLUTTER_WINSYS_BASE=x11
@@ -327,7 +289,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [eglnative],
         [
-          # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
           CLUTTER_EGL_BACKEND="generic"
 
@@ -352,8 +313,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
           AS_IF([test "x$have_tslib" = "xyes" -a "x$have_evdev" = "xyes"],
                 [AC_MSG_ERROR([Can't enable both tslib and evdev events])])
 
-          COGL_DRIVER="gles"
-
           FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
 
@@ -368,8 +327,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_GDL=1
-
-          COGL_DRIVER="gles"
 
           # The cex100 is a small specialization of the EGL backend
           CLUTTER_WINSYS=egl
@@ -404,14 +361,9 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [osx],
         [
           experimental_backend="yes"
-          cogl_gl_headers="OpenGL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
 
           AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
-          AC_DEFINE([COGL_HAS_OSX_SUPPORT], [1], [Cogl supports the OSX window system])
-
-          COGL_DRIVER="gl"
-          AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -framework Cocoa -framework OpenGL"
 
@@ -421,14 +373,8 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [win32],
         [
-          cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WIN32"
           AC_DEFINE([HAVE_CLUTTER_WIN32], [1], [Have the Win32 backend])
-          AC_DEFINE([COGL_HAS_WIN32_SUPPORT], [1], [Cogl supports the win32 window system])
-          AC_DEFINE([COGL_HAS_WGL_SUPPORT], [1], [Cogl supports OpenGL using the WGL API])
-
-          COGL_DRIVER="gl"
-          AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -lopengl32 -lgdi32 -lwinmm"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS -D_WIN32_WINNT=0x0500"
@@ -446,20 +392,9 @@ AS_CASE([$CLUTTER_FLAVOUR],
                       win32, eglx or eglnative])]
 )
 
-AS_IF([test "x$SUPPORT_X11" = "x1"],
-      [ AC_DEFINE([COGL_HAS_X11_SUPPORT], [1], [Cogl supports the X11 window system])])
-AS_IF([test "x$SUPPORT_XLIB" = "x1"],
-      [ AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1], [Cogl supports X11 using the Xlib API])])
-
 AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [
-        AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
-
-        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
-
         AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
-
-        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
 
         AC_CHECK_HEADERS([GL/glx.h],
                          [],
@@ -478,7 +413,6 @@ AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
 AS_IF([test "x$SUPPORT_EGL" = "x1"],
       [
         AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
-        AC_DEFINE([COGL_HAS_EGL_SUPPORT], [1], [Cogl supports GLES using the EGL API])
       ])
 
 AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xgeneric"],
@@ -487,28 +421,11 @@ AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xgeneric"],
 AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xcex100"],
       AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend]))
 
-AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_X11" = "x1"],
-      [
-        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
-                  [Cogl supports OpenGL[ES] using the EGL API with PowerVR X11 platform typedefs])
-        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
-      ])
-
-AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"],
-      [
-        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
-                  [Cogl supports OpenGL[ES] using the EGL API with PowerVR NULL platform typedefs])
-        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
-      ])
-
 # winsys conditionals for use in automake files...
 AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "x1"])
 AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "x1"])
 AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "x1"])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_X11" = "x1"])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_GDL, [test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"])
@@ -517,185 +434,8 @@ AM_CONDITIONAL(SUPPORT_STUB, [test "x$CLUTTER_WINSYS" = "xwin32" -o \
 			      "x$CLUTTER_WINSYS" = "xosx" -o \
 			      "x$CLUTTER_WINSYS" = "xwayland"])
 
-dnl === COGL driver backend =====================================================
-
-AS_IF([test "x$COGL_DRIVER" = "xgl"],
-      [ AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
-	NEED_SEPARATE_EGL=yes
-      ])
-
-cogl_gles_version_define=""
-
-AS_IF([test "x$COGL_DRIVER" = "xgles"],
-
-      [
-        AS_CASE([$glesversion],
-
-          [1*],
-          [
-            cogl_gl_headers="GLES/gl.h GLES/glext.h"
-
-            AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-            cogl_gles_version_define="COGL_HAS_GLES1"
-
-            PKG_CHECK_EXISTS([glesv1_cm],
-              [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv1_cm"
-               NEED_SEPARATE_EGL=yes
-              ],
-              [
-                AC_CHECK_HEADERS([$cogl_gl_headers],
-                                 [],
-                                 [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
-                # Check for a GLES 1.x Common Profile library with/without EGL.
-                #
-                # Note: historically GLES 1 libraries shipped with the
-                # EGL and GLES symbols all bundled in one library. Now
-                # the Khronos Implementers Guide defines two naming
-                # schemes: -lGLES_CM should be used for a library that
-                # bundles the GLES and EGL API together and -lGLESv1_CM
-                # would be used for a standalone GLES API.
-                AC_CHECK_LIB(GLES_CM, [eglInitialize],
-                  [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLES_CM"],
-                  [
-                    AC_CHECK_LIB(GLESv1_CM, [glFlush],
-                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv1_CM"
-                       NEED_SEPARATE_EGL=yes
-                      ],
-                      [AC_MSG_ERROR([Unable to locate required GLES 1.x Common Profile library])])
-                  ])
-              ])
-
-            AS_IF([test "x$NEED_SEPARATE_EGL" = "xyes"],
-              [
-                PKG_CHECK_EXISTS([egl],
-                  [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"
-		   NEED_SEPARATE_EGL=yes
-		  ],
-                  [
-                    AC_CHECK_HEADERS([GLES/egl.h],
-                                     [],
-                                     [AC_MSG_ERROR([Unable to locate required EGL headers])])
-
-                    AC_CHECK_LIB(EGL, [eglInitialize],
-                      [FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"],
-                      [AC_MSG_ERROR([Unable to locate required EGL library])])
-                  ])
-              ])
-          ],
-
-          [2*],
-          [
-            cogl_gl_headers="GLES2/gl2.h GLES2/gl2ext.h"
-            use_gles2_wrapper=yes
-            AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
-            cogl_gles_version_define="COGL_HAS_GLES2"
-
-            PKG_CHECK_EXISTS([glesv2],
-              [BACKEND_PC_FILES="$BACKEND_PC_FILES glesv2"],
-              [
-                AC_CHECK_HEADERS([$cogl_gl_headers],
-                                 [],
-                                 [AC_MSG_ERROR([Unable to locate required GLES headers])],
-                                 [[#include <GLES2/gl2.h>
-                                 ]])
-
-                FLAVOUR_LIBS="$FLAVOUR_LIBS -lGLESv2"
-              ])
-
-            PKG_CHECK_EXISTS([egl],
-              [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"],
-              [
-                AC_CHECK_HEADERS([EGL/egl.h],
-                                 [],
-                                 [AC_MSG_ERROR([Unable to locate required EGL headers])])
-
-                AC_CHECK_LIB(EGL, [eglInitialize],
-                  [FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"],
-                  [AC_MSG_ERROR([Unable to locate required EGL library])])
-
-                FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"
-              ]
-              )
-
-	    NEED_SEPARATE_EGL=yes
-          ],
-
-          [AC_MSG_ERROR([Unknown argument for --with-gles])]
-        )
-      ]
-)
-
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 AM_CONDITIONAL(SUPPORT_EVDEV, [test "x$have_evdev" = "xyes"])
-
-AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
-
-dnl The value of this variable will directly go in the install
-dnl cogl-defines.h header
-COGL_DEFINES="";
-dnl Space-separated list of symbols that should be defined in
-dnl cogl-defines.h
-COGL_DEFINES_SYMBOLS="";
-
-if test "x$SUPPORT_X11" = "x1"; then
-  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11 COGL_HAS_X11_SUPPORT"
-fi;
-
-if test "x$SUPPORT_XLIB" = "x1"; then
-  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_XLIB COGL_HAS_XLIB_SUPPORT"
-fi;
-
-if test "x$SUPPORT_GLX" = "x1"; then
-  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLX_SUPPORT"
-fi;
-
-if test "x$SUPPORT_EGL" = "x1"; then
-  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_SUPPORT"
-fi;
-
-if test "x$NEED_SEPARATE_EGL" = "xyes"; then
-  AC_DEFINE([HAVE_STANDALONE_EGL], 1, [Have standalone EGL library])
-fi
-
-if test "x$SUPPORT_EGL_PLATFORM_GDL" = "xyes"; then
-  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_GDL_SUPPORT"
-fi
-
-AS_CASE([$COGL_DRIVER],
-        [gl],
-        [COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GL"
-         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GL"],
-        [gles],
-        [COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLES"
-         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS CLUTTER_COGL_HAS_GLES"
-         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS $cogl_gles_version_define"
-         ],
-        [AC_MSG_ERROR([Unknown cogl driver $COGL_DRIVER])])
-
-dnl Copy all of the words in COGL_DEFINES_SYMBOLS as separate #define
-dnl lines in COGL_DEFINES
-for x in $COGL_DEFINES_SYMBOLS; do
-  COGL_DEFINES="$COGL_DEFINES
-#define $x 1"
-done;
-
-AC_SUBST(COGL_DEFINES)
-
-AS_IF([test "x$cogl_gl_headers" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])
-
-dnl cogl_gl_headers is a space separate list of headers to
-dnl include. We'll now convert them to a single variable with a
-dnl #include line for each header
-COGL_GL_HEADER_INCLUDES=""
-for x in $cogl_gl_headers; do
-  COGL_GL_HEADER_INCLUDES="$COGL_GL_HEADER_INCLUDES
-#include <$x>"
-done;
-AC_SUBST(COGL_GL_HEADER_INCLUDES)
-
-AM_CONDITIONAL([COGL_DRIVER_GLES], [test "x$COGL_DRIVER" = "xgles"])
-AM_CONDITIONAL([COGL_DRIVER_GL],   [test "x$COGL_DRIVER" = "xgl"])
 
 dnl Instead of using AM_CFLAGS to ensure
 dnl COGL_ENABLE_EXPERIMENTAL_2_0_API is defined while compiling clutter
@@ -704,10 +444,6 @@ dnl other tools such as glib-mkenums and gir-scanner don't end up
 dnl using the define also.
 AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
           [Can use Cogl 2.0 API internally])
-
-dnl Cogl can be experimentally be built standalone and there are a few
-dnl tweaks we need to make in the Makefiles when building standalone
-AM_CONDITIONAL(COGL_STANDALONE_BUILD, [false])
 
 dnl === Clutter configuration =================================================
 
@@ -753,49 +489,11 @@ AC_SUBST([CLUTTER_WINSYS_LIB])
 
 dnl === Clutter substitutions kept for backwards compatibility ================
 AC_SUBST([CLUTTER_FLAVOUR])
-CLUTTER_COGL=$COGL_DRIVER
+CLUTTER_COGL=undefined
 AC_SUBST([CLUTTER_COGL])
-
-dnl === Cogl substitutions ====================================================
-AC_SUBST([COGL_IMAGE_BACKEND])
-COGL_WINSYS=$CLUTTER_WINSYS
-AC_SUBST([COGL_WINSYS])
-AC_SUBST([COGL_DRIVER])
 
 dnl === Image loading backend =================================================
 IMAGE_PC_FILES=""
-
-# Peek which winsys the user wants so that we can couple the osx winsys with
-# quartz imageloader.
-AS_IF([test "x$COGL_WINSYS" = "xosx"], [COGL_IMAGE_BACKEND=quartz], [COGL_IMAGE_BACKEND=gdk-pixbuf])
-
-AC_ARG_WITH([imagebackend],
-            [AC_HELP_STRING([--with-imagebackend=@<:@gdk-pixbuf/quartz/internal@:>@],
-                            [Select COGL image loading backend])],
-            [COGL_IMAGE_BACKEND=$with_imagebackend])
-
-AS_CASE([$COGL_IMAGE_BACKEND],
-
-        [quartz],
-        [
-          experimental_image=yes
-          AC_DEFINE([USE_QUARTZ], 1, [Use Core Graphics (Quartz) for loading image data])
-        ],
-
-        [gdk-pixbuf],
-        [
-          AC_DEFINE([USE_GDKPIXBUF], 1, [Use GdkPixbuf for loading image data])
-          IMAGE_PC_FILES="gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQ_VERSION"
-        ],
-
-        [internal],
-        [
-          experimental_image=yes
-          AC_DEFINE([USE_INTERNAL], 1, [Use internal image decoding for loading image data])
-        ],
-
-        [AC_MSG_ERROR([Unknown argument for --with-imagebackend])]
-)
 
 dnl === X11 checks, only for X11-based backends ===============================
 X11_PC_FILES=""
@@ -995,29 +693,6 @@ AS_CASE([$enable_debug],
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
-m4_define([cogl_debug_default], [minimum])
-AC_ARG_ENABLE([cogl-debug],
-              [AC_HELP_STRING([--enable-cogl-debug=@<:@no/yes@:>@],
-                              [Control COGL debugging level @<:@default=cogl_debug_default@:>@])],
-              [],
-              [enable_cogl_debug=cogl_debug_default])
-
-AS_CASE([$enable_cogl_debug],
-
-        [yes],
-        [COGL_EXTRA_CFLAGS="-DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"],
-
-        [minimum],
-        [COGL_EXTRA_CFLAGS="-DCOGL_ENABLE_DEBUG"],
-
-        [no],
-        [COGL_EXTRA_CFLAGS=""],
-
-        [AC_MSG_ERROR([Invalid value for --enable-cogl-debug])]
-)
-
-AC_SUBST(COGL_EXTRA_CFLAGS)
-
 dnl === Conformance test suite ================================================
 
 AC_ARG_ENABLE([conformance],
@@ -1044,7 +719,7 @@ AS_CASE([$enable_profile],
           AS_IF([test "x$GCC" = "xyes"],
                 [
                   PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.3])
-                  CLUTTER_PROFILE_CFLAGS="-DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
+                  CLUTTER_PROFILE_CFLAGS="-DCLUTTER_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
                   CLUTTER_PROFILE_LDFLAGS="$PROFILE_DEP_LIBS"
 
                   AS_IF([test "x$enable_debug" = "xyes"], [CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"])
@@ -1150,11 +825,6 @@ CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LI
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
-dnl For Makefile.am compatibility with the standalone build of Cogl:
-AC_SUBST([COGL_DEP_CFLAGS], [$CLUTTER_CFLAGS])
-AC_SUBST([COGL_DEP_LIBS], [$CLUTTER_LIBS])
-AC_SUBST([COGL_PKG_REQUIRES],[$CLUTTER_REQUIRES])
-
 
 dnl === GObject-Introspection check ===========================================
 
@@ -1243,14 +913,6 @@ AC_CONFIG_FILES([
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
 
-	clutter/cogl/Makefile
-	clutter/cogl/po/Makefile.in
-	clutter/cogl/examples/Makefile
-	clutter/cogl/cogl/Makefile
-	clutter/cogl/cogl/cogl-defines.h
-	clutter/cogl/cogl/cogl-1.0.pc:clutter/cogl/cogl/cogl-1.0-clutter.pc.in
-	clutter/cogl/pango/Makefile
-
 	clutter/egl/clutter-cex100.h
 
 	tests/Makefile
@@ -1266,8 +928,6 @@ AC_CONFIG_FILES([
 	doc/reference/Makefile
 	doc/reference/clutter/Makefile
 	doc/reference/clutter/clutter-docs.xml
-	doc/reference/cogl/Makefile
-	doc/reference/cogl/cogl-docs.xml
 	doc/reference/cally/Makefile
 	doc/reference/cally/cally-docs.xml
 	doc/common/Makefile
@@ -1291,14 +951,13 @@ echo "Clutter - $VERSION (${CLUTTER_RELEASE_STATUS})"
 echo ""
 echo " • Global:"
 echo "        Prefix: ${prefix}"
-echo "        Flavour: ${CLUTTER_WINSYS}/${COGL_DRIVER}"
+echo "        Flavour: ${CLUTTER_WINSYS}"
 echo "        Target library: ${CLUTTER_WINSYS_LIB}"
 
 # Compiler/Debug related flags
 echo ""
 echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
-echo "        COGL debug level: ${enable_cogl_debug}"
 echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
 echo "        Profiling enabled: ${enable_profile}"
 echo "        Enable coverage tests: ${enable_gcov}"
@@ -1314,26 +973,6 @@ echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
 echo "        Build conformance test suite: ${enable_conformance}"
-
-# Cogl flags
-echo ""
-echo " • Cogl Backend:"
-echo "        Driver: ${COGL_DRIVER}"
-echo "        GL header: ${cogl_gl_headers}"
-
-if test "x$COGL_DRIVER" = "xgles"; then
-  if test "x$use_gles2_wrapper" = "xyes"; then
-echo "        GLES version: 2.0"
-  else
-echo "        GLES version: 1.1"
-  fi
-fi
-
-if test "x$experimental_image" = "xno"; then
-echo "        Image backend: ${COGL_IMAGE_BACKEND}"
-else
-echo "        Image backend: ${COGL_IMAGE_BACKEND} (WARNING: Experimental)"
-fi
 
 # Clutter backend related flags
 echo ""

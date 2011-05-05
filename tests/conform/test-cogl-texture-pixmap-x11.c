@@ -7,9 +7,7 @@ static const ClutterColor stage_color = { 0x00, 0x00, 0x00, 0xff };
 #ifdef COGL_HAS_XLIB
 
 #include <clutter/x11/clutter-x11.h>
-/* This gets installed to a different location so a real application
-   would use <cogl/cogl-texture-pixmap-x11.h> */
-#include "cogl/winsys/cogl-texture-pixmap-x11.h"
+#include <cogl/cogl-texture-pixmap-x11.h>
 
 #define PIXMAP_WIDTH 512
 #define PIXMAP_HEIGHT 256

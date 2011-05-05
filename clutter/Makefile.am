@@ -3,11 +3,6 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 # preamble
 NULL =
 
-# we recurse only into Cogl
-if !USE_SYSTEM_COGL
-SUBDIRS = cogl
-endif
-
 # common definitions
 CLEANFILES =
 DISTCLEANFILES =
@@ -26,14 +21,6 @@ INCLUDES = \
 	-I$(top_builddir)				\
 	-I$(top_builddir)/clutter			\
 	$(NULL)
-
-if !USE_SYSTEM_COGL
-INCLUDES += \
-	-I$(top_srcdir)/clutter/cogl			\
-	-I$(top_srcdir)/clutter/cogl/pango		\
-	-I$(top_builddir)/clutter/cogl			\
-	$(NULL)
-endif
 
 AM_CPPFLAGS = \
 	-DCLUTTER_PREFIX=\""$(prefix)"\"	\
@@ -633,15 +620,6 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
 	$(win32_resources)
 
-if !USE_SYSTEM_COGL
-libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD += \
-	$(top_builddir)/clutter/cogl/cogl/libcogl.la \
-	$(top_builddir)/clutter/cogl/pango/libcoglpango.la
-libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_DEPENDENCIES += \
-	$(top_builddir)/clutter/cogl/cogl/libcogl.la \
-	$(top_builddir)/clutter/cogl/pango/libcoglpango.la
-endif
-
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_c) \
 	$(backend_source_h) \
@@ -666,7 +644,7 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LT_LDFLAGS) \
 	$(GCOV_LDFLAGS) \
 	-export-dynamic \
-	-export-symbols-regex "^(clutter|cogl|cally).*" \
+	-export-symbols-regex "^(clutter|cally).*" \
 	-rpath $(libdir) \
 	$(win32_resources_ldflag) \
 	$(NULL)
@@ -689,36 +667,9 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/clutter.h' \
 	--pkg-export=clutter-@CLUTTER_API_VERSION@
-if USE_SYSTEM_COGL
 Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES += Cogl-1.0
-else
-Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS += \
-	$(top_builddir)/clutter/cogl/cogl/libcogl.la \
-	$(top_builddir)/clutter/cogl/pango/libcoglpango.la
-Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS += \
-	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-1.0.gir
-COGL_GIR_DEP=Cogl-1.0.gir
-endif
 
-if !USE_SYSTEM_COGL
-# Cogl.gir is used included into Clutter.gir, so it needs to be built
-# before the typelib is generated
-Clutter-@CLUTTER_API_VERSION@.typelib: Cogl-1.0.gir
-
-# We build Cogl.gir in the cogl/ subdir, but it needs to reference the shared
-# library that it's built into, so we delay compiling the gir into typelib
-# until after we've built the shared library. To create the final Cogl.gir
-# that we compile and install, we transfer the shared-library="" line from
-# Clutter.gir to Cogl.gir
-Cogl-1.0.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir cogl/cogl/Cogl-1.0.gir
-	$(QUIET_GEN) \
-	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
-	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< $(top_builddir)/clutter/cogl/cogl/Cogl-1.0.gir > $@
-
-BUILT_GIRSOURCES += Cogl-1.0.gir
-endif
-
-Cally-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir $(COGL_GIR_DEP)
+Cally-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
 Cally_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cally
 Cally_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
@@ -733,22 +684,13 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 # Note: it's important to pass --include-uninstalled for the Cogl-1.0.gir
 # before the Clutter gir otherwise g-ir-scanner can get upset as it
 # immediatly scans the Clutter gir file and may fail to find a Cogl-1.0.gir
-if USE_SYSTEM_COGL
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS += \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
-else
-Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS += \
-	$(top_builddir)/clutter/cogl/cogl/libcogl.la \
-	$(top_builddir)/clutter/cogl/pango/libcoglpango.la
-Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS += \
-	--include-uninstalled=$(top_builddir)/clutter/Cogl-1.0.gir \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
-endif
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
 
 if SUPPORT_X11
-ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir $(COGL_GIR_DEP)
+ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--identifier-prefix=ClutterX11 \
@@ -763,17 +705,8 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $
 # Note: it's important to pass --include-uninstalled for the Cogl-1.0.gir
 # before the Clutter gir otherwise g-ir-scanner can get upset as it
 # immediatly scans the Clutter gir file and may fail to find a Cogl-1.0.gir
-if USE_SYSTEM_COGL
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS += \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
-else
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS += \
-	--include-uninstalled=$(top_builddir)/clutter/Cogl-1.0.gir \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS += \
-	$(top_builddir)/clutter/cogl/cogl/libcogl.la \
-	$(top_builddir)/clutter/cogl/pango/libcoglpango.la
-endif
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_X11
