@@ -248,7 +248,6 @@ expand_region_inverse (cairo_region_t *region,
   MetaRegionBuilder builder;
   MetaRegionIterator iter;
   cairo_rectangle_int_t extents;
-  cairo_region_t *chunk;
 
   int last_x;
 
@@ -268,16 +267,11 @@ expand_region_inverse (cairo_region_t *region,
                      extents.x, extents.y + extents.height, extents.width, 1,
                      x_amount, y_amount, flip);
 
-  chunk = NULL;
-
   last_x = extents.x;
   for (meta_region_iterator_init (&iter, region);
        !meta_region_iterator_at_end (&iter);
        meta_region_iterator_next (&iter))
     {
-      if (chunk == NULL)
-        chunk = cairo_region_create ();
-
       if (iter.rectangle.x > last_x)
         add_expanded_rect (&builder,
                            last_x, iter.rectangle.y,
