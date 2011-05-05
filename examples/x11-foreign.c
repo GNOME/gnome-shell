@@ -10,7 +10,7 @@ update_cogl_x11_event_mask (CoglOnscreen *onscreen,
                             guint32 event_mask,
                             void *user_data)
 {
-  XDisplay *xdpy = user_data;
+  Display *xdpy = user_data;
   XSetWindowAttributes attrs;
   guint32 xwin;
 
