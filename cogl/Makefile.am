@@ -367,7 +367,7 @@ libcogl_la_LIBADD += -ldl
 endif
 if COGL_STANDALONE_BUILD
 # XXX: The aim is to eventually get rid of all private API exports
-# for coglpango.
+# for cogl-pango.
 libcogl_la_LDFLAGS = \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \

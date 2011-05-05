@@ -16,17 +16,17 @@ source_h_priv = \
 	cogl-pango-pipeline-cache.h
 
 if COGL_STANDALONE_BUILD
-lib_LTLIBRARIES = libcoglpango.la
+lib_LTLIBRARIES = libcogl-pango.la
 else
-noinst_LTLIBRARIES = libcoglpango.la
+noinst_LTLIBRARIES = libcogl-pango.la
 endif
 
-libcoglpango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
-libcoglpango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
-libcoglpango_la_LIBADD = $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
+libcogl_pango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
+libcogl_pango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
+libcogl_pango_la_LIBADD = $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 if COGL_STANDALONE_BUILD
-libcoglpango_la_LIBADD += $(top_builddir)/cogl/libcogl.la
-libcoglpango_la_LDFLAGS = \
+libcogl_pango_la_LIBADD += $(top_builddir)/cogl/libcogl.la
+libcogl_pango_la_LDFLAGS = \
 	-export-dynamic \
 	-export-symbols-regex "^cogl.*"
 	-no-undefined \
@@ -47,11 +47,11 @@ INCLUDES += \
 endif
 
 if COGL_STANDALONE_BUILD
-coglpangoheadersdir = $(includedir)/cogl/cogl
-coglpangoheaders_HEADERS = $(source_h)
+cogl_pangoheadersdir = $(includedir)/cogl/cogl
+cogl_pangoheaders_HEADERS = $(source_h)
 else
-coglpangoheadersdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
-coglpangoheaders_HEADERS = $(source_h)
+cogl_pangoheadersdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
+cogl_pangoheaders_HEADERS = $(source_h)
 endif
 
 pc_files = cogl-pango-1.0.pc \

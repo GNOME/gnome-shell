@@ -1,7 +1,7 @@
 SUBDIRS = cogl
 
 if BUILD_COGL_PANGO
-SUBDIRS += pango
+SUBDIRS += cogl-pango
 endif
 
 if COGL_STANDALONE_BUILD

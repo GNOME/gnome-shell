@@ -8,6 +8,6 @@ requires=@COGL_PKG_REQUIRES@ cogl-2.0
 Name: Cogl
 Description: An object oriented GL/GLES Abstraction/Utility Layer
 Version: @COGL_1_VERSION@
-Libs: -L${libdir} -lcoglpango
+Libs: -L${libdir} -lcogl-pango
 Cflags: -I${includedir}/cogl
 Requires: ${requires}

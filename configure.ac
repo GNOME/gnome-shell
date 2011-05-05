@@ -732,9 +732,9 @@ cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-$COGL_MAJOR_VERSION.0.pc:cogl/cogl.pc.in
 cogl/cogl-defines.h
-pango/Makefile
-pango/cogl-pango-1.0.pc
-pango/cogl-pango-$COGL_MAJOR_VERSION.0.pc:pango/cogl-pango.pc.in
+cogl-pango/Makefile
+cogl-pango/cogl-pango-1.0.pc
+cogl-pango/cogl-pango-$COGL_MAJOR_VERSION.0.pc:cogl-pango/cogl-pango.pc.in
 examples/Makefile
 po/Makefile.in
 )

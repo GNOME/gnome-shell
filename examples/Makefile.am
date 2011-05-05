@@ -16,8 +16,7 @@ AM_CPPFLAGS = \
 
 
 common_ldadd = \
-	$(top_builddir)/cogl/libcogl.la \
-	$(top_builddir)/pango/libcoglpango.la
+	$(top_builddir)/cogl/libcogl.la
 
 noinst_PROGRAMS = hello
 

@@ -8,6 +8,6 @@ requires=@COGL_PKG_REQUIRES@
 Name: Cogl
 Description: An pango integration library for Cogl
 Version: @COGL_VERSION@
-Libs: -L${libdir} -lcoglpango
+Libs: -L${libdir} -lcogl-pango
 Cflags: -I${includedir}/cogl -DCOGL_ENABLE_EXPERIMENTAL_2_0_API
 Requires: ${requires}
