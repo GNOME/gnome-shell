@@ -746,7 +746,7 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                               (height_out - height_in) / 2.0);
       cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
 
-      return dst_pattern;
+      goto out;
     }
 
   /* Read all the code from the cairo_pattern_set_matrix call
@@ -784,6 +784,8 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
 
   cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
 
+ out:
+  g_free (pixels_out);
   return dst_pattern;
 }
 
