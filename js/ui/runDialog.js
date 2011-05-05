@@ -189,7 +189,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
                                    }),
 
                                    'debugexit': Lang.bind(this, function() {
-                                       Meta.exit(Meta.ExitCode.ERROR);
+                                       Meta.quit(Meta.ExitCode.ERROR);
                                    }),
 
                                    // rt is short for "reload theme"

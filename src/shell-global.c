@@ -34,6 +34,8 @@
 #include "shell-wm.h"
 #include "st.h"
 
+static ShellGlobal *the_object = NULL;
+
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
 
 struct _ShellGlobal {
@@ -255,12 +257,27 @@ shell_global_init (ShellGlobal *global)
 }
 
 static void
+shell_global_finalize (GObject *object)
+{
+  ShellGlobal *global = SHELL_GLOBAL (object);
+
+  g_object_unref (global->js_context);
+  gtk_widget_destroy (GTK_WIDGET (global->grab_notifier));
+  g_object_unref (global->settings);
+
+  the_object = NULL;
+
+  G_OBJECT_CLASS(shell_global_parent_class)->finalize (object);
+}
+
+static void
 shell_global_class_init (ShellGlobalClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->get_property = shell_global_get_property;
   gobject_class->set_property = shell_global_set_property;
+  gobject_class->finalize = shell_global_finalize;
 
   /* Emitted from gnome-shell-plugin.c during event handling */
   shell_global_signals[XDND_POSITION_CHANGED] =
@@ -424,8 +441,6 @@ shell_global_class_init (ShellGlobalClass *klass)
 ShellGlobal *
 shell_global_get (void)
 {
-  static ShellGlobal *the_object = NULL;
-
   if (!the_object)
     the_object = g_object_new (SHELL_TYPE_GLOBAL, 0);
 

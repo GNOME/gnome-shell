@@ -453,6 +453,7 @@ main (int argc, char **argv)
 {
   GOptionContext *ctx;
   GError *error = NULL;
+  int ecode;
 
   g_type_init ();
 
@@ -507,5 +508,13 @@ main (int argc, char **argv)
   /* Initialize the global object */
   shell_global_get ();
 
-  return meta_run ();
+  ecode = meta_run ();
+
+  if (g_getenv ("GNOME_SHELL_ENABLE_CLEANUP"))
+    {
+      g_printerr ("Doing final cleanup...\n");
+      g_object_unref (shell_global_get ());
+    }
+
+  return ecode;
 }
