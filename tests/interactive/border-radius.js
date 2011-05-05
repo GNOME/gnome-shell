@@ -51,6 +51,13 @@ addTestCase(" 5px 10px 15px  0px", true);
 addTestCase("10px 15px  0px  5px", true);
 addTestCase("15px  0px  5px 10px", true);
 
+// border-radius reduction
+// these should all take the cairo fallback,
+// so don't bother testing w/ or w/out gradients.
+addTestCase("200px 200px 200px 200px", false);
+addTestCase("200px 200px 0px   200px", false);
+addTestCase("999px 0px   999px 0px",   false);
+
 stage.show();
 Clutter.main();
 stage.destroy();
