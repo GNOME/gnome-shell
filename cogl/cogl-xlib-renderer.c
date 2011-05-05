@@ -40,6 +40,8 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xdamage.h>
 
+#include <stdlib.h>
+
 static char *_cogl_x11_display_name = NULL;
 static GList *_cogl_xlib_renderers = NULL;
 
@@ -162,6 +164,9 @@ _cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error)
 
   if (!assert_xlib_display (renderer, error))
     return FALSE;
+
+  if (getenv ("COGL_X11_SYNC"))
+    XSynchronize (xlib_renderer->xdpy, TRUE);
 
   /* Check whether damage events are supported on this display */
   if (!XDamageQueryExtension (xlib_renderer->xdpy,

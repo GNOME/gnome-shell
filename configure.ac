@@ -968,6 +968,10 @@ doc/reference/cogl/cogl-docs.xml
 doc/reference/cogl-2.0-experimental/Makefile
 doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
 examples/Makefile
+tests/Makefile
+tests/conform/Makefile
+tests/conform/test-launcher.sh
+tests/data/Makefile
 po/Makefile.in
 )
 

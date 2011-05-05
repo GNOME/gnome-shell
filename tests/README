@@ -1,0 +1,63 @@
+Outline of test categories:
+
+The conform/ tests:
+-------------------
+These tests should be non-interactive unit-tests that verify a single
+feature is behaving as documented. See conform/ADDING_NEW_TESTS for more
+details.
+
+Although it may seem a bit awkward; all the tests are built into a
+single binary because it makes building the tests *much* faster by avoiding
+lots of linking.
+
+Each test has a wrapper script generated though so running the individual tests
+should be convenient enough. Running the wrapper script will also print out for
+convenience how you could run the test under gdb or valgrind like this for
+example:
+
+  NOTE: For debugging purposes, you can run this single test as follows:
+  $ libtool --mode=execute \
+            gdb --eval-command="b test_cogl_depth_test" \
+            --args ./test-conformance -p /conform/cogl/test_cogl_depth_test
+  or:
+  $ env G_SLICE=always-malloc \
+    libtool --mode=execute \
+            valgrind ./test-conformance -p /conform/cogl/test_cogl_depth_test
+
+By default the conformance tests are run offscreen. This makes the tests run
+much faster and they also don't interfere with other work you may want to do by
+constantly stealing focus. CoglOnscreen framebuffers obviously don't get tested
+this way so it's important that the tests also get run onscreen every once in a
+while, especially if changes are being made to CoglFramebuffer related code.
+Onscreen testing can be enabled by setting COGL_TEST_ONSCREEN=1 in your
+environment.
+
+The micro-bench/ tests:
+-----------------------
+These should be focused performance tests, ideally testing a
+single metric. Please never forget that these tests are synthetic and if you
+are using them then you understand what metric is being tested. They probably
+don't reflect any real world application loads and the intention is that you
+use these tests once you have already determined the crux of your problem and
+need focused feedback that your changes are indeed improving matters. There is
+no exit status requirements for these tests, but they should give clear
+feedback as to their performance. If the framerate is the feedback metric, then
+the test should forcibly enable FPS debugging.
+
+The data/ directory:
+--------------------
+This contains optional data (like images) that can be referenced by a test.
+
+
+Misc notes:
+-----------
+• All tests should ideally include a detailed description in the source
+explaining exactly what the test is for, how the test was designed to work,
+and possibly a rationale for the approach taken for testing.
+
+• When running tests under Valgrind, you should follow the instructions
+available here:
+
+        http://live.gnome.org/Valgrind
+
+and also use the suppression file available inside the data/ directory.

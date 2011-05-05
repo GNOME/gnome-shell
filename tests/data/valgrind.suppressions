@@ -1,0 +1,173 @@
+{
+   ioctl_1
+   Memcheck:Param
+   ioctl(generic)
+   fun:ioctl
+   fun:driDrawableInitVBlank
+   fun:intelMakeCurrent
+   fun:glXMakeContextCurrent
+}
+
+{
+   ioctl_2
+   Memcheck:Param
+   ioctl(generic)
+   fun:ioctl
+   fun:driDrawableGetMSC32
+   fun:clutter_backend_glx_redraw
+}
+
+{
+   ioctl_3
+   Memcheck:Param
+   ioctl(generic)
+   fun:ioctl
+   fun:driWaitForMSC32
+   fun:clutter_backend_glx_redraw
+}
+
+{
+   mesa_init_context
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:glXCreateNewContext
+}
+
+{
+   type_register
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:g_type_register_*
+}
+
+{
+   type_ref
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:g_type_class_ref
+}
+
+{
+   type_interface_prereq
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:g_type_interface_add_prerequisite
+}
+
+{
+   get_charset
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:g_get_charset
+}
+
+{
+   cogl_features
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:cogl_get_features
+}
+
+{
+   glx_query_version
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:glXQueryVersion
+}
+
+{
+   glx_create_context
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:glXCreateNewContext
+}
+
+{
+   glx_make_current
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:glXMakeContextCurrent
+}
+
+{
+   gl_draw_arrays
+   Memcheck:Leak
+   fun:*malloc
+   ...
+   fun:glDrawArrays
+}
+
+{
+   cogl_clear
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:cogl_clear
+}
+
+{
+   default_font
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:clutter_backend_get_font_name
+}
+
+{
+   id_pool
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:clutter_id_pool_new
+}
+
+{
+   x_open_display
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:XOpenDisplay
+}
+
+# ... and font descriptions from every "sans 12" type string
+{
+   pango_font_description_from_string
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:pango_font_description_from_string
+}
+
+# other lib init
+{
+   fontconfig_init
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:FcConfigParseAndLoad
+}
+
+{
+   freetype_init
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:FT_Open_Face
+}
+
+{
+   x_init_ext
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:XInitExtension
+}
