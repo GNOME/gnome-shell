@@ -170,6 +170,7 @@ AS_CASE(
   [
     test "$cflags_set" = set || CFLAGS="$CFLAGS -g -O0"
     COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"
+    COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES cairo"
   ],
   [no],
   [
@@ -270,6 +271,23 @@ AS_IF(
 )
 
 
+dnl     ============================================================
+dnl     Should cogl-pango be built?
+dnl     ============================================================
+
+AC_ARG_ENABLE(
+  [cogl-pango],
+  [AC_HELP_STRING([--enable-cogl-pango=@<:@no/yes@:>@], [Enable pango support @<:@default=yes@:>@])],
+  [],
+  enable_cogl_pango=yes
+)
+AM_CONDITIONAL([BUILD_COGL_PANGO], [test "x$enable_cogl_pango" = "xyes"])
+
+AS_IF([test "x$enable_cogl_pango" = "xyes"],
+      [
+	COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES pangocairo >= pangocairo_req_version"
+      ]
+)
 
 dnl     ============================================================
 dnl     Determine which drivers and window systems we can support
@@ -645,7 +663,7 @@ AM_PATH_GLIB_2_0([glib_req_version],
                  [gobject gthread gmodule-no-export])
 AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 
-COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glib-2.0 pangocairo >= pangocairo_req_version"
+COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glib-2.0"
 AC_SUBST(COGL_PKG_REQUIRES)
 PKG_CHECK_MODULES(COGL_DEP, [$COGL_PKG_REQUIRES])
 
@@ -739,6 +757,7 @@ if test "x$SUPPORT_EGL" = "xyes"; then
 echo "        EGL Platforms:${EGL_PLATFORMS}"
 fi
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
+echo "        Cogl Pango: ${enable_cogl_pango}"
 
 # Compiler/Debug related flags
 echo ""
