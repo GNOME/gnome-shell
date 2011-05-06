@@ -22,6 +22,9 @@ stamp-marshal
 !/build/autotools/as-compiler-flag.m4
 *.gir
 *.typelib
+/cogl/cogl-defines.h
+/cogl/cogl-enum-types.c
+/cogl/cogl-enum-types.h
 config.*
 configure
 depcomp
@@ -51,6 +54,8 @@ depcomp
 /doc/reference/cogl-2.0/cogl-docs.xml
 /doc/reference/cogl-2.0/*.stamp
 /doc/reference/cogl-2.0/*.bak
+/examples/hello
+/examples/x11-foreign
 gtk-doc.make
 install-sh
 libtool
