@@ -16,10 +16,6 @@ Clutter currently requires:
   • Cairo ≥ @CAIRO_REQ_VERSION@
   • PangoCairo ≥ @PANGO_REQ_VERSION@
 
-Clutter also has optional dependencies:
-
-  • GDK-Pixbuf ≥ @GDK_PIXBUF_REQ_VERSION@
-
 On X11, Clutter depends on the following extensions
 
   • XComposite ≥ @XCOMPOSITE_REQ_VERSION@

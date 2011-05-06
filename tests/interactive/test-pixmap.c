@@ -17,10 +17,10 @@
 # include <X11/Xlib.h>
 # include <X11/extensions/Xcomposite.h>
 
-#define IMAGE   TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png"
+# include <cairo.h>
+# include <cairo-xlib.h>
 
-# ifdef USE_GDKPIXBUF
-# include <gdk-pixbuf/gdk-pixbuf.h>
+#define IMAGE   TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png"
 
 static gboolean disable_x11 = FALSE;
 static gboolean disable_animation = FALSE;
@@ -133,94 +133,44 @@ stage_button_press_cb (ClutterActor    *actor,
 Pixmap
 create_pixmap (guint *width, guint *height, guint *depth)
 {
-  Display      *dpy = clutter_x11_get_default_display ();
-  Pixmap        pixmap;
-  GdkPixbuf    *pixbuf;
-  GError       *error = NULL;
-  XImage       *image;
-  char         *data, *d;
-  guchar       *p, *line, *endofline, *end;
-  guint         w, h, rowstride;
-  GC            gc;
-  XGCValues     gc_values = {0};
+  Display *dpy = clutter_x11_get_default_display ();
+  cairo_surface_t *image;
+  Pixmap pixmap;
+  XVisualInfo xvisinfo;
+  XVisualInfo *xvisinfos;
+  int n;
+  cairo_surface_t *xlib_surface;
+  cairo_t *cr;
+  guint w, h;
 
-  pixbuf = gdk_pixbuf_new_from_file (IMAGE, &error);
-  if (error)
-    g_error ("%s", error->message);
+  image = cairo_image_surface_create_from_png (IMAGE);
+  if (cairo_surface_status (image) != CAIRO_STATUS_SUCCESS)
+    g_error ("Failed to load %s", IMAGE);
 
-  /* We assume that the image had an alpha channel */
-  g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
-
-  w = gdk_pixbuf_get_width  (pixbuf);
-  h = gdk_pixbuf_get_height (pixbuf);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-
-  data = g_malloc (w * h * 4);
-  image = XCreateImage (dpy,
-                        NULL,
-                        32,
-                        ZPixmap,
-                        0,
-                        data,
-                        w, h,
-                        8,
-                        w * 4);
-
-  p = gdk_pixbuf_get_pixels (pixbuf);
-  d  = data;
-  end = p + rowstride*h;
-
-  /* Convert from RGBA as contained in the pixmap to ARGB as used in X */
-  for (line = p; line < end ; line += rowstride)
-  {
-    p = line;
-    endofline = p + 4 * w;
-
-    for (p = line; p < endofline; p += 4, d+=4)
-      {
-
-#  define r ((guint32)(*(p)))
-#  define g ((guint32)(*(p+1)))
-#  define b ((guint32)(*(p+2)))
-#  define a ((guint32)(*(p+3)))
-        guint32 pixel =
-            ((a << 24) & 0xFF000000  ) |
-            ((r << 16) & 0x00FF0000  ) |
-            ((g <<  8) & 0x0000FF00) |
-            ((b)       & 0x000000FF );
-
-        *((guint32 *)d) = pixel;
-
-      }
-#  undef r
-#  undef g
-#  undef b
-#  undef a
-
-  }
-
-  g_object_unref (pixbuf);
+  w = cairo_image_surface_get_width (image);
+  h = cairo_image_surface_get_height (image);
 
   pixmap = XCreatePixmap (dpy,
                           DefaultRootWindow (dpy),
                           w, h,
                           32);
 
-  gc = XCreateGC (dpy,
-                  pixmap,
-                  0,
-                  &gc_values);
+  xvisinfo.depth = 32;
+  xvisinfos  = XGetVisualInfo (dpy, VisualDepthMask, &xvisinfo, &n);
+  if (!xvisinfos)
+    g_error ("Failed to find a 32bit X Visual");
 
-  XPutImage (dpy,
-             pixmap,
-             gc,
-             image,
-             0, 0,
-             0, 0,
-             w, h);
+  xlib_surface =
+    cairo_xlib_surface_create (dpy,
+                               pixmap,
+                               xvisinfos->visual,
+                               w, h);
+  XFree (xvisinfos);
 
-  XFreeGC (dpy, gc);
-  XDestroyImage (image);
+  cr = cairo_create (xlib_surface);
+  cairo_set_source_surface (cr, image, 0, 0);
+  cairo_paint (cr);
+  cairo_surface_destroy (image);
 
   if (width) *width = w;
   if (height) *height = h;
@@ -228,7 +178,6 @@ create_pixmap (guint *width, guint *height, guint *depth)
 
   return pixmap;
 }
-# endif /* USE_GDKPIXBUF */
 
 /* each time the timeline animating the label completes, swap the direction */
 static void
@@ -243,7 +192,6 @@ timeline_completed (ClutterTimeline *timeline,
 G_MODULE_EXPORT int
 test_pixmap_main (int argc, char **argv)
 {
-#ifdef USE_GDKPIXBUF
   GOptionContext      *context;
   Display	      *xdpy;
   int		       screen;
@@ -357,7 +305,6 @@ test_pixmap_main (int argc, char **argv)
   g_timeout_add_seconds (1, (GSourceFunc)draw_arc, GUINT_TO_POINTER (pixmap));
 
   clutter_main ();
-# endif /* USE_GDKPIXBUF */
 
   return EXIT_SUCCESS;
 }
