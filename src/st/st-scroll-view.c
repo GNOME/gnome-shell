@@ -422,8 +422,6 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
   clutter_actor_get_preferred_width (priv->child, -1,
                                      &child_min_width, NULL);
 
-  natural_height = child_natural_height;
-
   if (min_height_p)
     *min_height_p = 0;
 
