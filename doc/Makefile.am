@@ -5,3 +5,5 @@ SUBDIRS += reference
 endif
 
 DIST_SUBDIRS = reference
+
+EXTRA_DIST = CODING_STYLE
