@@ -9,3 +9,5 @@ SUBDIRS += po examples
 endif
 
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
+
+EXTRA_DIST = README.in

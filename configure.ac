@@ -728,6 +728,7 @@ AC_SUBST(MAINTAINER_CFLAGS)
 
 AC_OUTPUT(
 Makefile
+README
 cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-$COGL_MAJOR_VERSION.0.pc:cogl/cogl.pc.in

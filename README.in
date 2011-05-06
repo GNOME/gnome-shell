@@ -1,0 +1,154 @@
+README for Cogl @COGL_VERSION@
+===============================================================================
+
+Cogl is a small open source software library for using 3D graphics
+hardware to draw pretty pictures. The API departs from the flat state
+machine style of OpenGL and is designed to make it easy to write
+orthogonal components that can render without stepping on each others
+toes. Cogl currently supports OpenGL ES 1.1/2.0 and OpenGL > 1.3 (or
+1.2 if you have the GL_ARB_multitexture extension). Having Gallium
+and D3D backends are options for the future.
+
+REQUIREMENTS
+-------------------------------------------------------------------------------
+
+Cogl currently only requires:
+
+  • GLib ≥ @GLIB_REQ_VERSION@
+  • OpenGL ≥ 1.3 (or 1.2 + multitexturing), or OpenGL ES 2.0 (or 1.1)
+  • GLX, AGL, WGL or an EGL implementation
+
+Cogl also has optional dependencies:
+
+  • GDK-Pixbuf ≥ @GDK_PIXBUF_REQ_VERSION@
+     - for image loading
+  • Cairo ≥ @CAIRO_REQ_VERSION@
+     - for debugging texture atlasing (debug builds only)
+
+The optional Cogl Pango library requires:
+  • Cairo ≥ @CAIRO_REQ_VERSION@
+  • PangoCairo ≥ @PANGO_REQ_VERSION@
+
+On X11, Cogl depends on the following extensions
+
+  • XComposite ≥ @XCOMPOSITE_REQ_VERSION@
+  • XDamage
+  • XExt
+  • XFixes ≥ @XFIXES_REQ_VERSION@
+
+When running with OpenGL, Cogl requires at least version 1.3
+or 1.2 with the multitexturing extension. However to build Cogl
+you will need the latest GL headers which can be obtained from:
+
+  http://www.khronos.org
+
+If you are building the API reference you will also need:
+
+  • GTK-Doc ≥ @GTK_DOC_REQ_VERSION@
+
+If you are building the additional documentation you will also need:
+
+  • xsltproc
+  • jw (optional, for generating PDFs)
+
+If you are building the Introspection data you will also need:
+
+  • GObject-Introspection ≥ @GI_REQ_VERSION@
+
+GObject-Introspection is available from:
+
+  git://git.gnome.org/gobject-introspection
+
+If you want support for profiling Cogl you will also need:
+
+  • UProf ≥ @UPROF_REQ_VERSION@
+
+UProf is available from:
+
+  git://github.com/rib/UProf.git
+
+RESOURCES
+-------------------------------------------------------------------------------
+
+The official Cogl website is:
+
+   http://www.clutter-project.org/
+
+The API references for the latest stable release are available at:
+
+   http://docs.clutter-project.org/docs/cogl/stable/
+
+New bug page on Bugzilla:
+
+   http://bugzilla.gnome.org/enter_bug.cgi?product=cogl
+
+Cogl is licensed under the terms of the GNU Lesser General Public
+License, version 2.1 or (at your option) later.
+
+BUILDING AND INSTALLATION
+-------------------------------------------------------------------------------
+
+Please refer to the INSTALL document.
+
+HACKING
+-------------------------------------------------------------------------------
+
+If you want to hack on and improve Cogl please check the HACKING file
+to help you get started!
+
+The CODING_STYLE file contains the rules for writing code conformant to the
+style guidelines used throughout Cogl, please try your best to conform
+to this style because the consistency really helps keep the code
+maintainable.
+
+BUGS
+-------------------------------------------------------------------------------
+
+Bugs should be reported to the Gnome.org Bugzilla at:
+
+  http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
+
+You will need a Bugzilla account.
+
+In the report you should include:
+
+  • what system you're running Cogl on;
+  • which version of Cogl you are using;
+  • which version of GLib and OpenGL (or OpenGL ES) you are using;
+  • which video card and which drivers you are using, including output of
+    glxinfo and xdpyinfo (if applicable);
+  • how to reproduce the bug.
+
+If you cannot reproduce the bug with one of the tests that come with
+Cogl's source code, it can help a lot to include a small test case
+displaying the bad behaviour.
+
+If the bug exposes a crash, the exact text printed out and a stack trace
+obtained using gdb are greatly appreciated.
+
+CONTRIBUTING
+-------------------------------------------------------------------------------
+
+Patches should be submitted using Bugzilla. Patches fixing a bug should be
+attached to the bug report; patches for new features or for fixing bugs not
+yet reported should be attached to a newly opened bug.
+
+Patches should always be in the unified diff format, using:
+
+  diff -Nuarp clutter.source clutter.patched > clutter-patch.diff
+
+If diffing against the Git repository, you should use:
+
+  git diff > clutter-patch.diff
+
+Or, better: commit locally and use `git format-patch` to generate a patch
+containing authorship details, so that members of the Clutter development
+team can credit your contribution properly.
+
+Another useful tool for interacting with Git and Bugzilla is git-bz(1):
+
+  http://git.fishsoup.net/man/git-bz.html
+
+Which is available here:
+
+  http://git.fishsoup.net/cgit/git-bz/
