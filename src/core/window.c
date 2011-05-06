@@ -4214,7 +4214,7 @@ move_attached_dialog (MetaWindow *window,
 {
   MetaWindow *parent = meta_window_get_transient_for (window);
 
-  if (window->type == META_WINDOW_MODAL_DIALOG && parent && parent != window)
+  if (window->type == META_WINDOW_MODAL_DIALOG && parent)
     /* It ignores x,y for such a dialog  */
     meta_window_move (window, FALSE, 0, 0);
 
@@ -9258,46 +9258,17 @@ meta_window_foreach_ancestor (MetaWindow            *window,
                               void                  *user_data)
 {
   MetaWindow *w;
-  MetaWindow *tortoise;
 
   w = window;
-  tortoise = window;
-  while (TRUE)
+  do
     {
       if (w->xtransient_for == None ||
           w->transient_parent_is_root_window)
         break;
 
       w = meta_display_lookup_x_window (w->display, w->xtransient_for);
-
-      if (w == NULL || w == tortoise)
-        break;
-
-      if (!(* func) (w, user_data))
-        break;
-
-      if (w->xtransient_for == None ||
-          w->transient_parent_is_root_window)
-        break;
-
-      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
-
-      if (w == NULL || w == tortoise)
-        break;
-
-      if (!(* func) (w, user_data))
-        break;
-
-      tortoise = meta_display_lookup_x_window (tortoise->display,
-                                               tortoise->xtransient_for);
-
-      /* "w" should have already covered all ground covered by the
-       * tortoise, so the following must hold.
-       */
-      g_assert (tortoise != NULL);
-      g_assert (tortoise->xtransient_for != None);
-      g_assert (!tortoise->transient_parent_is_root_window);
     }
+  while (w && (* func) (w, user_data));
 }
 
 typedef struct

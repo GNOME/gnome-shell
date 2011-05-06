@@ -1468,6 +1468,8 @@ reload_transient_for (MetaWindow    *window,
                       MetaPropValue *value,
                       gboolean       initial)
 {
+  MetaWindow *parent = NULL;
+
   if (window->has_focus && window->xtransient_for != None)
     meta_window_propagate_focus_appearance (window, FALSE);
 
@@ -1477,14 +1479,33 @@ reload_transient_for (MetaWindow    *window,
     window->xtransient_for = value->v.xwindow;
 
   /* Make sure transient_for is valid */
-  if (window->xtransient_for != None &&
-      meta_display_lookup_x_window (window->display, 
-                                    window->xtransient_for) == NULL)
+  if (window->xtransient_for != None)
     {
-      meta_warning (_("Invalid WM_TRANSIENT_FOR window 0x%lx specified "
-                      "for %s.\n"),
-                    window->xtransient_for, window->desc);
-      window->xtransient_for = None;
+      parent = meta_display_lookup_x_window (window->display,
+                                             window->xtransient_for);
+      if (!parent)
+        {
+          meta_warning (_("Invalid WM_TRANSIENT_FOR window 0x%lx specified "
+                          "for %s.\n"),
+                        window->xtransient_for, window->desc);
+          window->xtransient_for = None;
+        }
+    }
+
+  /* Make sure there is not a loop */
+  while (parent)
+    {
+      if (parent == window)
+        {
+          meta_warning (_("WM_TRANSIENT_FOR window 0x%lx for %s "
+                          "would create loop.\n"),
+                        window->xtransient_for, window->desc);
+          window->xtransient_for = None;
+          break;
+        }
+
+      parent = meta_display_lookup_x_window (parent->display,
+                                             parent->xtransient_for);
     }
 
   window->transient_parent_is_root_window =

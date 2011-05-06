@@ -5194,7 +5194,7 @@ prefs_changed_callback (MetaPreference pref,
           MetaWindow *parent = meta_window_get_transient_for (w);
           meta_window_recalc_features (w);
 
-          if (w->type == META_WINDOW_MODAL_DIALOG && parent && parent != w)
+          if (w->type == META_WINDOW_MODAL_DIALOG && parent)
             {
               int x, y;
               /* Forcing a call to move_resize() does two things: first, it handles
