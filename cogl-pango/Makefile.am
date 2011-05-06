@@ -40,7 +40,8 @@ INCLUDES = \
 	-DG_DISABLE_SINGLE_INCLUDES	\
 	-DCLUTTER_COMPILATION		\
 	-DG_LOG_DOMAIN=\"CoglPango\"	\
-	-I$(top_srcdir)
+	-I$(top_srcdir)			\
+	-I$(top_builddir)
 
 cogl_pangoheadersdir = $(includedir)/cogl/cogl
 cogl_pangoheaders_HEADERS = $(source_h)
