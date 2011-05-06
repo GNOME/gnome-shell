@@ -103,6 +103,7 @@ cogl_driver_sources += \
 	$(srcdir)/driver/gl/cogl-feature-functions-gl.h	\
 	$(srcdir)/driver/gl/cogl-gl.c			\
 	$(srcdir)/driver/gl/cogl-texture-driver-gl.c	\
+	$(srcdir)/driver/gl/cogl-context-driver-gl.h	\
 	$(NULL)
 endif
 
@@ -111,6 +112,7 @@ cogl_driver_sources += \
 	$(srcdir)/driver/gles/cogl-feature-functions-gles.h	\
 	$(srcdir)/driver/gles/cogl-gles.c			\
 	$(srcdir)/driver/gles/cogl-texture-driver-gles.c	\
+	$(srcdir)/driver/gles/cogl-context-driver-gles.h	\
 	$(NULL)
 
 endif # COGL_DRIVER_GLES
@@ -306,6 +308,7 @@ cogl_sources_c += \
 	$(srcdir)/cogl-renderer-xlib.c \
 	$(srcdir)/cogl-display-xlib-private.h \
 	$(srcdir)/cogl-xlib.c \
+	$(srcdir)/cogl-xlib-private.h \
 	$(srcdir)/winsys/cogl-texture-pixmap-x11.c \
 	$(srcdir)/winsys/cogl-texture-pixmap-x11-private.h
 endif
