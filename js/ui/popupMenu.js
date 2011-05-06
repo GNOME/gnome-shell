@@ -482,8 +482,8 @@ function PopupSliderMenuItem() {
 PopupSliderMenuItem.prototype = {
     __proto__: PopupBaseMenuItem.prototype,
 
-    _init: function(value) {
-        PopupBaseMenuItem.prototype._init.call(this, { activate: false });
+    _init: function(value, params) {
+        PopupBaseMenuItem.prototype._init.call(this, params ? params : { activate: false });
 
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
 
