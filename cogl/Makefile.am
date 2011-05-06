@@ -23,18 +23,6 @@ INCLUDES = \
 	-I$(srcdir)/driver/$(COGL_DRIVER) 	\
 	$(NULL)
 
-if COGL_STANDALONE_BUILD
-INCLUDES += \
-	-I$(top_srcdir)/clutter/cogl		\
-	-I$(top_builddir)/clutter/cogl          \
-	$(NULL)
-else
-INCLUDES += \
-	-I$(top_srcdir)/clutter/cogl		\
-	-I$(top_builddir)/clutter/cogl          \
-	$(NULL)
-endif
-
 AM_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES 	\
 	-DG_DISABLE_DEPRECATED		\
@@ -55,9 +43,7 @@ pc_files = \
 	cogl-1.0.pc \
 	cogl-gl-1.0.pc
 
-if COGL_STANDALONE_BUILD
 pc_files += cogl-$(COGL_API_VERSION).pc
-endif
 
 cogl-gl-1.0.pc: cogl-1.0.pc
 	$(QUIET_GEN)cp -f $< $(@F)
@@ -355,17 +341,12 @@ glib_enum_c = cogl-enum-types.c
 glib_enum_headers = $(cogl_public_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
-if COGL_STANDALONE_BUILD
 lib_LTLIBRARIES += libcogl.la
-else
-noinst_LTLIBRARIES += libcogl.la
-endif
 
 libcogl_la_LIBADD = -lm $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 if SUPPORT_GLX
 libcogl_la_LIBADD += -ldl
 endif
-if COGL_STANDALONE_BUILD
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
 libcogl_la_LDFLAGS = \
@@ -373,7 +354,6 @@ libcogl_la_LDFLAGS = \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
 	-export-dynamic \
 	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_atlas_texture_new_with_size).*"
-endif
 
 libcogl_la_SOURCES = $(cogl_sources_c)
 nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
@@ -384,15 +364,9 @@ cogl_headers = \
 	$(srcdir)/cogl-deprecated.h \
 	$(NULL)
 
-if COGL_STANDALONE_BUILD
 coglincludedir = $(includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
-else
-coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
-coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
-nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
-endif
 
 -include $(INTROSPECTION_MAKEFILE)
 

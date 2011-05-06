@@ -1,11 +1,7 @@
-SUBDIRS = cogl
+SUBDIRS = cogl examples po
 
 if BUILD_COGL_PANGO
 SUBDIRS += cogl-pango
-endif
-
-if COGL_STANDALONE_BUILD
-SUBDIRS += po examples
 endif
 
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}

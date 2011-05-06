@@ -611,8 +611,6 @@ AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "xyes"])
 AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "xyes"])
 
 
-AM_CONDITIONAL(COGL_STANDALONE_BUILD, [true])
-
 dnl ================================================================
 dnl Compiler stuff.
 dnl ================================================================
