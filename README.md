@@ -17,12 +17,7 @@ Clutter currently requires:
 * [Atk](http://git.gnome.org/browse/atk)
 * [Cairo](http://cairographics.org)
 * [Pango](http://git.gnome.org/browse/pango)
-* [OpenGL ≥ 1.3 (or 1.2 + multitexturing), or OpenGL ES 2.0 (or 1.1)](http://khronos.org)
-* GLX, AGL, WGL or an EGL implementation
-
-Clutter also has optional dependencies:
-
-* [GDK-Pixbuf](http://git.gnome.org/browse/gdk-pixbuf)
+* [Cogl](http://git.gnome.org/browse/cogl)
 
 On X11, Clutter depends on the following extensions:
 
