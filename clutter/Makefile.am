@@ -40,9 +40,6 @@ AM_CPPFLAGS = \
 
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
 
-# these are the gir files we generate by hand
-BUILT_GIRSOURCES =
-
 # these are the gir files we generate using g-ir-scanner
 INTROSPECTION_GIRS =
 
@@ -653,8 +650,6 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 -include $(INTROSPECTION_MAKEFILE)
 
 if HAVE_INTROSPECTION
-INTROSPECTION_GIRS += Clutter-@CLUTTER_API_VERSION@.gir
-
 Clutter-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la Makefile
 
 Clutter_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Clutter
@@ -662,12 +657,13 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
 Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutter_include_HEADERS) $(nodist_clutter_include_HEADERS) $(source_c) $(built_source_c)
 Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
-Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Atk-1.0 Pango-1.0 PangoCairo-1.0 Json-1.0
+Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cogl-1.0 Atk-1.0 Pango-1.0 PangoCairo-1.0 Json-1.0
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/clutter.h' \
 	--pkg-export=clutter-@CLUTTER_API_VERSION@
-Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES += Cogl-1.0
+
+INTROSPECTION_GIRS += Clutter-@CLUTTER_API_VERSION@.gir
 
 Cally-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
@@ -680,11 +676,7 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--identifier-prefix=Cally \
 	--symbol-prefix=cally \
 	--c-include='cally/cally.h' \
-	--pkg-export=cally-@CLUTTER_API_VERSION@
-# Note: it's important to pass --include-uninstalled for the Cogl-1.0.gir
-# before the Clutter gir otherwise g-ir-scanner can get upset as it
-# immediatly scans the Clutter gir file and may fail to find a Cogl-1.0.gir
-Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS += \
+	--pkg-export=cally-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
@@ -696,17 +688,12 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--identifier-prefix=ClutterX11 \
 	--symbol-prefix=clutter_x11 \
 	--c-include='clutter/x11/clutter-x11.h' \
-	--pkg-export=clutter-x11-@CLUTTER_API_VERSION@
+	--pkg-export=clutter-x11-@CLUTTER_API_VERSION@ \
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_introspection)
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
-
-# Note: it's important to pass --include-uninstalled for the Cogl-1.0.gir
-# before the Clutter gir otherwise g-ir-scanner can get upset as it
-# immediatly scans the Clutter gir file and may fail to find a Cogl-1.0.gir
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS += \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_X11
@@ -714,12 +701,12 @@ endif # SUPPORT_X11
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
 girdir = $(datadir)/gir-1.0
-gir_DATA = $(BUILT_GIRSOURCES) $(INTROSPECTION_GIRS)
+gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibsdir = $(libdir)/girepository-1.0/
-typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib) $(INTROSPECTION_GIRS:.gir=.typelib)
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
-CLEANFILES += $(gir_DATA) $(typelibs_DATA)
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif # HAVE_INTROSPECTION
 
 # GCov rules
