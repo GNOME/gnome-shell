@@ -1,4 +1,4 @@
-SUBDIRS = cogl examples po
+SUBDIRS = cogl examples doc po
 
 if BUILD_COGL_PANGO
 SUBDIRS += cogl-pango

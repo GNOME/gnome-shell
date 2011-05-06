@@ -647,7 +647,7 @@ dnl ================================================================
 dnl Documentation stuff.
 dnl ================================================================
 GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
-
+AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes"])
 
 dnl ================================================================
 dnl Check for dependency packages.
@@ -737,6 +737,10 @@ cogl/cogl-defines.h
 cogl-pango/Makefile
 cogl-pango/cogl-pango-1.0.pc
 cogl-pango/cogl-pango-$COGL_MAJOR_VERSION.0.pc:cogl-pango/cogl-pango.pc.in
+doc/Makefile
+doc/reference/Makefile
+doc/reference/cogl/Makefile
+doc/reference/cogl/cogl-docs.xml
 examples/Makefile
 po/Makefile.in
 )
@@ -773,6 +777,7 @@ echo "        Linker flags: ${LDFLAGS} ${COGL_EXTRA_LDFLAGS}"
 # Miscellaneous
 echo ""
 echo " • Extra:"
+echo "        Build API reference: ${enable_gtk_doc}"
 echo "        Build introspection data: ${enable_introspection}"
 
 echo ""

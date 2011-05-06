@@ -18,7 +18,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting the functions and macros.
 # e.g. DOC_SOURCE_DIR=../../../gtk
-DOC_SOURCE_DIR=../../../clutter/cogl/cogl
+DOC_SOURCE_DIR=../../../cogl
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=--type-init-func="g_type_init()"
@@ -45,9 +45,9 @@ FIXXREF_OPTIONS=\
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB=\
-	$(top_srcdir)/clutter/cogl/cogl/*.h \
-	$(top_builddir)/clutter/cogl/cogl/*.h
-CFILE_GLOB=$(top_srcdir)/clutter/cogl/cogl/*.c
+	$(top_srcdir)/cogl/*.h \
+	$(top_builddir)/cogl/*.h
+CFILE_GLOB=$(top_srcdir)/cogl/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -134,8 +134,8 @@ expand_content_files = \
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 
-INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_srcdir)/clutter/cogl -I$(top_builddir)/clutter/cogl -DCOGL_ENABLE_EXPERIMENTAL_API $(CLUTTER_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
+INCLUDES=-I$(top_srcdir) -I$(top_builddir)/cogl -DCOGL_ENABLE_EXPERIMENTAL_API $(COGL_DEP_CFLAGS)
+GTKDOC_LIBS=$(top_builddir)/cogl/libcogl.la $(COGL_DEP_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make
