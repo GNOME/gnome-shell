@@ -302,6 +302,7 @@ AppMenuButton.prototype = {
 
         this._visible = true;
         this.actor.show();
+        this.actor.reactive = true;
 
         if (!this._targetIsCurrent)
             return;
@@ -318,6 +319,7 @@ AppMenuButton.prototype = {
             return;
 
         this._visible = false;
+        this.actor.reactive = false;
         if (!this._targetIsCurrent) {
             this.actor.hide();
             return;
