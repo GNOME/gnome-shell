@@ -39,6 +39,7 @@ shell_tp_client_init (ShellTpClient *self)
       ShellTpClientPrivate);
 
   /* Observer */
+  tp_base_client_set_observer_recover (TP_BASE_CLIENT (self), TRUE);
 
   /* We only care about single-user text-based chats */
   tp_base_client_take_observer_filter (TP_BASE_CLIENT (self),
