@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-26 00:54+0200\n"
-"PO-Revision-Date: 2011-03-26 00:55+0200\n"
+"POT-Creation-Date: 2011-05-09 00:27+0300\n"
+"PO-Revision-Date: 2011-05-09 00:28+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -62,7 +63,7 @@ msgstr "History for command (Alt-F2) dialog"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for the looking glass dialog"
-msgstr "היסטוריית תיבת הדו־שיח של זכוכית המגדלת"
+msgstr "History for the looking glass dialog"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
@@ -187,27 +188,27 @@ msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:230
+#: ../js/ui/appDisplay.js:260
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:328
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:354
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:625
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:628
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -340,13 +341,13 @@ msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:487
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
@@ -367,7 +368,7 @@ msgstr "השבוע"
 msgid "Next week"
 msgstr "בשבוע הבא"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1000
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "הסרה"
 
@@ -492,8 +493,8 @@ msgstr "המערכת תופעל מחדש בעוד %d שניות."
 msgid "Restarting the system."
 msgstr "המערכת מופעלת מחדש"
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
-#: ../js/ui/status/bluetooth.js:466
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:491
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -527,11 +528,11 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:993
+#: ../js/ui/messageTray.js:1030
 msgid "Open"
 msgstr "פתיחה"
 
-#: ../js/ui/messageTray.js:2151
+#: ../js/ui/messageTray.js:2194
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -554,18 +555,18 @@ msgid "Dash"
 msgstr "חלונית"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:533
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:878
+#: ../js/ui/panel.js:913
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:1015
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -598,11 +599,15 @@ msgstr "מנהל"
 msgid "Authenticate"
 msgstr "אימות"
 
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
 msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסליחה."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
 msgstr "ססמה:"
 
@@ -619,11 +624,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:313
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:327
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
@@ -706,9 +711,9 @@ msgstr "ניגודיות גבוהה"
 msgid "Large Text"
 msgstr "טקסט גדול"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
-#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
-#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:358 ../js/ui/status/bluetooth.js:392
+#: ../js/ui/status/bluetooth.js:432 ../js/ui/status/bluetooth.js:465
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -721,101 +726,101 @@ msgid "Send Files to Device..."
 msgstr "שליחת קובץ להתקן..."
 
 #: ../js/ui/status/bluetooth.js:70
-msgid "Setup a New Device..."
+msgid "Set up a New Device..."
 msgstr "הגדרת התקן חדש..."
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "הגדרות Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:188
+#: ../js/ui/status/bluetooth.js:215
 msgid "Connection"
 msgstr "חיבור"
 
-#: ../js/ui/status/bluetooth.js:224
+#: ../js/ui/status/bluetooth.js:251
 msgid "Send Files..."
 msgstr "שליחת קבצים..."
 
-#: ../js/ui/status/bluetooth.js:229
+#: ../js/ui/status/bluetooth.js:256
 msgid "Browse Files..."
 msgstr "עיון בקבצים..."
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:265
 msgid "Error browsing device"
 msgstr "שגיאה בעיון בהתקן"
 
-#: ../js/ui/status/bluetooth.js:239
+#: ../js/ui/status/bluetooth.js:266
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "לא ניתן לעיין בהתקן הנבחר, השגיאה היא '%s'"
 
-#: ../js/ui/status/bluetooth.js:247
+#: ../js/ui/status/bluetooth.js:274
 msgid "Keyboard Settings"
 msgstr "הגדרות מקלדת"
 
-#: ../js/ui/status/bluetooth.js:252
+#: ../js/ui/status/bluetooth.js:279
 msgid "Mouse Settings"
 msgstr "הגדרות עכבר"
 
-#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:286 ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:393
 #, c-format
 msgid "Authorization request from %s"
 msgstr "בקשת אישור מאת %s"
 
-#: ../js/ui/status/bluetooth.js:374
+#: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "ההתקן %s מעוניין לגשת אל השירות '%s'"
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:401
 msgid "Always grant access"
 msgstr "תמיד להעניק גישה"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:402
 msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:403
 msgid "Reject"
 msgstr "סירוב"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:433
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "אישור צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:439 ../js/ui/status/bluetooth.js:473
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ההתקן %s מעוניין בצימוד עם מחשב זה"
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:440
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "נא לאשר האם קוד ה־PIN‏ '%s' תואם את זה שמופיע בהתקן."
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:442
 msgid "Matches"
 msgstr "התאמות"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:443
 msgid "Does not match"
 msgstr "אינו תואם"
 
-#: ../js/ui/status/bluetooth.js:441
+#: ../js/ui/status/bluetooth.js:466
 #, c-format
 msgid "Pairing request for %s"
 msgstr "בקשת צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:449
+#: ../js/ui/status/bluetooth.js:474
 msgid "Please enter the PIN mentioned on the device."
 msgstr "נא להזין את קוד ה־PIN המוזכר בהתקן."
 
-#: ../js/ui/status/bluetooth.js:465
+#: ../js/ui/status/bluetooth.js:490
 msgid "OK"
 msgstr "אישור"
 
@@ -827,139 +832,139 @@ msgstr "הצגת פריסת המקלדת..."
 msgid "Localization Settings"
 msgstr "הגדרות אזוריות"
 
-#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1453
+#: ../js/ui/status/network.js:126
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:311
+#: ../js/ui/status/network.js:343
 msgid "disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:542
 msgid "connecting..."
 msgstr "בהתחברות..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/network.js:545
 msgid "authentication required"
 msgstr "נדרש אימות"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:507
+#: ../js/ui/status/network.js:555
 msgid "firmware missing"
 msgstr "הקושחה חסרה"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:514
+#: ../js/ui/status/network.js:562
 msgid "cable unplugged"
 msgstr "הכבל מנותק"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:519
+#: ../js/ui/status/network.js:567
 msgid "unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:569
 msgid "connection failed"
 msgstr "החיבור נכשל"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:601 ../js/ui/status/network.js:1401
+#: ../js/ui/status/network.js:650 ../js/ui/status/network.js:1459
 msgid "Connected (private)"
 msgstr "מחובר (פרטי)"
 
-#: ../js/ui/status/network.js:682
+#: ../js/ui/status/network.js:735
 msgid "Auto Ethernet"
 msgstr "אתרנט אוטומטי"
 
-#: ../js/ui/status/network.js:757
+#: ../js/ui/status/network.js:803
 msgid "Auto broadband"
 msgstr "פס רחב אוטומטי"
 
-#: ../js/ui/status/network.js:760
+#: ../js/ui/status/network.js:806
 msgid "Auto dial-up"
 msgstr "חיוג אוטומטי"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:903 ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:930 ../js/ui/status/network.js:1471
 #, c-format
 msgid "Auto %s"
 msgstr "%s אוטומטי"
 
-#: ../js/ui/status/network.js:905
+#: ../js/ui/status/network.js:932
 msgid "Auto bluetooth"
 msgstr "Bluetooth אוטומטי"
 
-#: ../js/ui/status/network.js:1415
+#: ../js/ui/status/network.js:1473
 msgid "Auto wireless"
 msgstr "אלחוטי אוטומטי"
 
-#: ../js/ui/status/network.js:1473
+#: ../js/ui/status/network.js:1521
 msgid "More..."
 msgstr "עוד..."
 
-#: ../js/ui/status/network.js:1496
+#: ../js/ui/status/network.js:1563
 msgid "Enable networking"
 msgstr "הפעלת תכונת הרשת"
 
-#: ../js/ui/status/network.js:1508
+#: ../js/ui/status/network.js:1575
 msgid "Wired"
 msgstr "קווי"
 
-#: ../js/ui/status/network.js:1519
+#: ../js/ui/status/network.js:1586
 msgid "Wireless"
 msgstr "אלחוטי"
 
-#: ../js/ui/status/network.js:1529
+#: ../js/ui/status/network.js:1596
 msgid "Mobile broadband"
 msgstr "פס־רחב נייד"
 
-#: ../js/ui/status/network.js:1539
+#: ../js/ui/status/network.js:1606
 msgid "VPN Connections"
 msgstr "חיבורי VPN"
 
-#: ../js/ui/status/network.js:1548
+#: ../js/ui/status/network.js:1618
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: ../js/ui/status/network.js:1843
+#: ../js/ui/status/network.js:1912
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת הפס הרחב הניידת '%s'"
 
-#: ../js/ui/status/network.js:1847
+#: ../js/ui/status/network.js:1916
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת האלחוטית '%s'"
 
-#: ../js/ui/status/network.js:1851
+#: ../js/ui/status/network.js:1920
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת הקווית '%s'"
 
-#: ../js/ui/status/network.js:1855
+#: ../js/ui/status/network.js:1924
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת ה־VPN‏ '%s'"
 
-#: ../js/ui/status/network.js:1860
+#: ../js/ui/status/network.js:1929
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "כעת ישנו חיבור בינך ובין '%s'"
 
-#: ../js/ui/status/network.js:1868
+#: ../js/ui/status/network.js:1937
 msgid "Connection established"
 msgstr "ההתחברות הצליחה"
 
-#: ../js/ui/status/network.js:1990
+#: ../js/ui/status/network.js:2063
 msgid "Networking is disabled"
 msgstr "תכונת הרשת מנוטרלת"
 
-#: ../js/ui/status/network.js:2115
+#: ../js/ui/status/network.js:2188
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
@@ -1065,22 +1070,22 @@ msgstr "עצמה"
 msgid "Microphone"
 msgstr "מיקרופון"
 
-#: ../js/ui/telepathyClient.js:331
+#: ../js/ui/telepathyClient.js:330
 #, c-format
 msgid "%s is online."
 msgstr "%s התחבר/ה."
 
-#: ../js/ui/telepathyClient.js:336
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is offline."
 msgstr "%s התנתק/ה."
 
-#: ../js/ui/telepathyClient.js:339
+#: ../js/ui/telepathyClient.js:338
 #, c-format
 msgid "%s is away."
 msgstr "'%s' מרוחק/ת."
 
-#: ../js/ui/telepathyClient.js:342
+#: ../js/ui/telepathyClient.js:341
 #, c-format
 msgid "%s is busy."
 msgstr "%s עסוק/ה."
@@ -1088,10 +1093,17 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:473
+#: ../js/ui/telepathyClient.js:479
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "נשלח ב־%X בשעה %A"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/telepathyClient.js:524
+#, c-format
+msgid "%s is now known as %s"
+msgstr "השם של %s הוחלף ל־%s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1139,50 +1151,14 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/main.c:446
+#: ../src/main.c:445
 msgid "Print version"
 msgstr "Print version"
 
-#: ../src/shell-app.c:454
+#: ../src/shell-app.c:464
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "אירע כשל בטעינת '%s'"
-
-#: ../src/shell-global.c:1395
-msgid "Less than a minute ago"
-msgstr "לפני פחות מדקה"
-
-#: ../src/shell-global.c:1399
-#, c-format
-msgid "%d minute ago"
-msgid_plural "%d minutes ago"
-msgstr[0] "לפני דקה"
-msgstr[1] "לפני %d דקות"
-msgstr[2] "לפני 2 דקות"
-
-#: ../src/shell-global.c:1404
-#, c-format
-msgid "%d hour ago"
-msgid_plural "%d hours ago"
-msgstr[0] "לפני שעה"
-msgstr[1] "לפני %d שעות"
-msgstr[2] "לפני שעתיים"
-
-#: ../src/shell-global.c:1409
-#, c-format
-msgid "%d day ago"
-msgid_plural "%d days ago"
-msgstr[0] "לפני יום"
-msgstr[1] "לפני %d ימים"
-msgstr[2] "לפני יומיים"
-
-#: ../src/shell-global.c:1414
-#, c-format
-msgid "%d week ago"
-msgid_plural "%d weeks ago"
-msgstr[0] "לפני שבוע"
-msgstr[1] "לפני %d שבועות"
-msgstr[2] "לפני שבועיים"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1215,6 +1191,33 @@ msgstr "מערכת הקבצים"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "לפני פחות מדקה"
+
+#~ msgid "%d minute ago"
+#~ msgid_plural "%d minutes ago"
+#~ msgstr[0] "לפני דקה"
+#~ msgstr[1] "לפני %d דקות"
+#~ msgstr[2] "לפני 2 דקות"
+
+#~ msgid "%d hour ago"
+#~ msgid_plural "%d hours ago"
+#~ msgstr[0] "לפני שעה"
+#~ msgstr[1] "לפני %d שעות"
+#~ msgstr[2] "לפני שעתיים"
+
+#~ msgid "%d day ago"
+#~ msgid_plural "%d days ago"
+#~ msgstr[0] "לפני יום"
+#~ msgstr[1] "לפני %d ימים"
+#~ msgstr[2] "לפני יומיים"
+
+#~ msgid "%d week ago"
+#~ msgid_plural "%d weeks ago"
+#~ msgstr[0] "לפני שבוע"
+#~ msgstr[1] "לפני %d שבועות"
+#~ msgstr[2] "לפני שבועיים"
 
 #~ msgid "Shut Down"
 #~ msgstr "כיבוי"
@@ -1428,17 +1431,19 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 
 #~ msgid "Clock Format"
 #~ msgstr "מבנה השעון"
