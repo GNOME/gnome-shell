@@ -1,1 +1,1 @@
-SUBDIRS = cogl
+SUBDIRS = cogl cogl-2.0

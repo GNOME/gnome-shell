@@ -741,6 +741,8 @@ doc/Makefile
 doc/reference/Makefile
 doc/reference/cogl/Makefile
 doc/reference/cogl/cogl-docs.xml
+doc/reference/cogl-2.0/Makefile
+doc/reference/cogl-2.0/cogl-docs.xml
 examples/Makefile
 po/Makefile.in
 )
