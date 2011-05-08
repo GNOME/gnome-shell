@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-04 20:42+0000\n"
-"PO-Revision-Date: 2011-05-05 15:46+0200\n"
+"POT-Creation-Date: 2011-05-05 17:27+0000\n"
+"PO-Revision-Date: 2011-05-06 10:46+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1384,6 +1384,8 @@ msgstr "PPP de la tipografía"
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
+"La resolución de la tipografía, en 1024 * puntos/pulgada, o -1 para usar la "
+"predeterminada"
 
 #: ../clutter/clutter-settings.c:448
 msgid "Font Hinting"
@@ -1403,30 +1405,31 @@ msgstr "Estilo de contorno de la tipografía"
 #: ../clutter/clutter-settings.c:471
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr ""
+"El estilo del contorno («hintnone», «hintslight», «hintmedium», «hintfull»)"
 
 #: ../clutter/clutter-settings.c:492
 msgid "Font Subpixel Order"
-msgstr ""
+msgstr "Orden de tipografías del subpíxel"
 
 #: ../clutter/clutter-settings.c:493
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
-msgstr ""
+msgstr "El tipo de suavizado del subpíxel («none», «rgb», «bgr», «vrgb», «vbgr»)"
 
 #: ../clutter/clutter-shader.c:249
 msgid "Vertex Source"
-msgstr ""
+msgstr "Origen del vértice"
 
 #: ../clutter/clutter-shader.c:250
 msgid "Source of vertex shader"
-msgstr ""
+msgstr "Origen del sombreado del vértice"
 
 #: ../clutter/clutter-shader.c:264
 msgid "Fragment Source"
-msgstr ""
+msgstr "Origen del fragmento"
 
 #: ../clutter/clutter-shader.c:265
 msgid "Source of fragment shader"
-msgstr ""
+msgstr "Origen del sombreado del fragmento"
 
 #: ../clutter/clutter-shader.c:280
 msgid "Compiled"
@@ -1434,11 +1437,11 @@ msgstr "Compilado"
 
 #: ../clutter/clutter-shader.c:281
 msgid "Whether the shader is compiled and linked"
-msgstr ""
+msgstr "Indica si el sombreado está compilado y enlazado"
 
 #: ../clutter/clutter-shader.c:296
 msgid "Whether the shader is enabled"
-msgstr ""
+msgstr "Indica si el sombreado está activado"
 
 #: ../clutter/clutter-shader.c:501
 #, c-format
@@ -1447,19 +1450,19 @@ msgstr "falló la compilación de %s: %s"
 
 #: ../clutter/clutter-shader.c:502
 msgid "Vertex shader"
-msgstr ""
+msgstr "Sombreado del vértice"
 
 #: ../clutter/clutter-shader.c:503
 msgid "Fragment shader"
-msgstr ""
+msgstr "Sombreado del fragmento"
 
 #: ../clutter/clutter-shader-effect.c:415
 msgid "Shader Type"
-msgstr ""
+msgstr "Tipo de sombreado"
 
 #: ../clutter/clutter-shader-effect.c:416
 msgid "The type of shader used"
-msgstr ""
+msgstr "El tipo de sombreado usado"
 
 #: ../clutter/clutter-snap-constraint.c:322
 msgid "The source of the constraint"
@@ -1479,7 +1482,7 @@ msgstr "Al borde"
 
 #: ../clutter/clutter-snap-constraint.c:351
 msgid "The edge of the source that should be snapped"
-msgstr ""
+msgstr "El borde de la fuente que se debe romper"
 
 #: ../clutter/clutter-snap-constraint.c:367
 msgid "The offset in pixels to apply to the constraint"
@@ -1487,11 +1490,11 @@ msgstr "El desplazamiento en píxeles que aplicar a la restricción"
 
 #: ../clutter/clutter-stage.c:1678
 msgid "Fullscreen Set"
-msgstr ""
+msgstr "Conjunto a pantalla completa"
 
 #: ../clutter/clutter-stage.c:1679
 msgid "Whether the main stage is fullscreen"
-msgstr ""
+msgstr "Indica si el escenario principal está a pantalla completa"
 
 #: ../clutter/clutter-stage.c:1695
 msgid "Offscreen"
@@ -1500,6 +1503,7 @@ msgstr "Fuera de la pantalla"
 #: ../clutter/clutter-stage.c:1696
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
+"Indica si el escenario principal se debe renderizar fuera de la pantalla"
 
 #: ../clutter/clutter-stage.c:1708 ../clutter/clutter-text.c:2667
 msgid "Cursor Visible"
@@ -1507,7 +1511,7 @@ msgstr "Cursor visible"
 
 #: ../clutter/clutter-stage.c:1709
 msgid "Whether the mouse pointer is visible on the main stage"
-msgstr ""
+msgstr "Indica si el puntero del ratón es visible en el escenario principal"
 
 #: ../clutter/clutter-stage.c:1723
 msgid "User Resizable"
@@ -1516,6 +1520,8 @@ msgstr "Redimensionable por el usuario"
 #: ../clutter/clutter-stage.c:1724
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
+"Indica si el escenario se puede redimensionar mediante interacción del "
+"usuario"
 
 #: ../clutter/clutter-stage.c:1737
 msgid "The color of the stage"
@@ -1527,7 +1533,7 @@ msgstr "Perspectiva"
 
 #: ../clutter/clutter-stage.c:1752
 msgid "Perspective projection parameters"
-msgstr ""
+msgstr "Parámetros de proyección de perspectiva"
 
 #: ../clutter/clutter-stage.c:1767
 msgid "Title"
@@ -1543,7 +1549,7 @@ msgstr "Usar niebla"
 
 #: ../clutter/clutter-stage.c:1784
 msgid "Whether to enable depth cueing"
-msgstr ""
+msgstr "Indica si activar el indicador de profundidad"
 
 #: ../clutter/clutter-stage.c:1798
 msgid "Fog"
@@ -1551,7 +1557,7 @@ msgstr "Niebla"
 
 #: ../clutter/clutter-stage.c:1799
 msgid "Settings for the depth cueing"
-msgstr ""
+msgstr "Configuración para el indicador de profundidad"
 
 #: ../clutter/clutter-stage.c:1815
 msgid "Use Alpha"
@@ -1559,11 +1565,11 @@ msgstr "Usar alfa"
 
 #: ../clutter/clutter-stage.c:1816
 msgid "Whether to honour the alpha component of the stage color"
-msgstr ""
+msgstr "Indica si se usa la componente alfa del color del escenario"
 
 #: ../clutter/clutter-stage.c:1832
 msgid "Key Focus"
-msgstr ""
+msgstr "Foco de la tecla"
 
 #: ../clutter/clutter-stage.c:1833
 msgid "The currently key focused actor"
@@ -1981,19 +1987,19 @@ msgstr ""
 msgid "Whether the direction should be reversed when reaching the end"
 msgstr "Indica si se debe invertir la dirección al llegar al final"
 
-#: ../clutter/cogl/cogl/cogl-debug.c:203
+#: ../clutter/cogl/cogl/cogl-debug.c:204
 msgid "Cogl debugging flags to set"
 msgstr "Opciones de depuración de Cogl que establecer"
 
-#: ../clutter/cogl/cogl/cogl-debug.c:205
+#: ../clutter/cogl/cogl/cogl-debug.c:206
 msgid "Cogl debugging flags to unset"
 msgstr "Opciones de depuración de Cogl que quitar"
 
-#: ../clutter/cogl/cogl/cogl-debug.c:238
+#: ../clutter/cogl/cogl/cogl-debug.c:239
 msgid "Cogl Options"
 msgstr "Opciones de Cogl"
 
-#: ../clutter/cogl/cogl/cogl-debug.c:239
+#: ../clutter/cogl/cogl/cogl-debug.c:240
 msgid "Show Cogl options"
 msgstr "Mostrar las opciones de Cogl"
 
