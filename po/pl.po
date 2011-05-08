@@ -1,0 +1,39 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Aviary.pl
+# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
+# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
+# gnomepl@aviary.pl
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2011-05-08 21:28+0200\n"
+"PO-Revision-Date: 2011-05-08 21:30+0200\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Polish <gnomepl@aviary.pl>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Language: Polish\n"
+"X-Poedit-Country: Poland\n"
+
+#: ../cogl/cogl-debug.c:204
+msgid "Cogl debugging flags to set"
+msgstr "Flagi debugowania biblioteki Cogl do ustawienia"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to unset"
+msgstr "Flagi debugowania biblioteki Cogl do usunięcia"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl Options"
+msgstr "Opcje biblioteki Cogl"
+
+#: ../cogl/cogl-debug.c:240
+msgid "Show Cogl options"
+msgstr "Wyświetla opcje biblioteki Cogl"
