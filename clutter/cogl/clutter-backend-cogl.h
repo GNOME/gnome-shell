@@ -22,8 +22,8 @@
  *  Robert Bragg
  */
 
-#ifndef __CLUTTER_BACKEND_EGL_H__
-#define __CLUTTER_BACKEND_EGL_H__
+#ifndef __CLUTTER_BACKEND_COGL_H__
+#define __CLUTTER_BACKEND_COGL_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
@@ -37,8 +37,6 @@
 
 #include "clutter-backend-private.h"
 
-#include "clutter-egl-headers.h"
-
 #ifdef COGL_HAS_X11_SUPPORT
 #include "../x11/clutter-backend-x11.h"
 #endif
@@ -47,17 +45,17 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_EGL                (_clutter_backend_egl_get_type ())
-#define CLUTTER_BACKEND_EGL(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGL))
-#define CLUTTER_IS_BACKEND_EGL(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_EGL))
-#define CLUTTER_BACKEND_EGL_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGLClass))
-#define CLUTTER_IS_BACKEND_EGL_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND_EGL))
-#define CLUTTER_BACKEND_EGL_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGLClass))
+#define CLUTTER_TYPE_BACKEND_COGL                (_clutter_backend_cogl_get_type ())
+#define CLUTTER_BACKEND_COGL(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_COGL, ClutterBackendCogl))
+#define CLUTTER_IS_BACKEND_COGL(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_COGL))
+#define CLUTTER_BACKEND_COGL_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_COGL, ClutterBackendCoglClass))
+#define CLUTTER_IS_BACKEND_COGL_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND_COGL))
+#define CLUTTER_BACKEND_COGL_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_COGL, ClutterBackendCoglClass))
 
-typedef struct _ClutterBackendEGL       ClutterBackendEGL;
-typedef struct _ClutterBackendEGLClass  ClutterBackendEGLClass;
+typedef struct _ClutterBackendCogl       ClutterBackendCogl;
+typedef struct _ClutterBackendCoglClass  ClutterBackendCoglClass;
 
-struct _ClutterBackendEGL
+struct _ClutterBackendCogl
 {
 #ifdef COGL_HAS_XLIB_SUPPORT
   ClutterBackendX11 parent_instance;
@@ -84,7 +82,7 @@ struct _ClutterBackendEGL
   gboolean can_blit_sub_buffer;
 };
 
-struct _ClutterBackendEGLClass
+struct _ClutterBackendCoglClass
 {
 #ifdef COGL_HAS_XLIB_SUPPORT
   ClutterBackendX11Class parent_class;
@@ -93,13 +91,15 @@ struct _ClutterBackendEGLClass
 #endif
 };
 
-GType _clutter_backend_egl_get_type (void) G_GNUC_CONST;
+GType _clutter_backend_cogl_get_type (void) G_GNUC_CONST;
 
-void _clutter_events_egl_init   (ClutterBackendEGL *backend);
-void _clutter_events_egl_uninit (ClutterBackendEGL *backend);
+#ifdef HAVE_TSLIB
+void _clutter_events_tslib_init   (ClutterBackendCogl *backend);
+void _clutter_events_tslib_uninit (ClutterBackendCogl *backend);
+#endif
 
 const gchar *_clutter_backend_egl_get_vblank (void);
 
 G_END_DECLS
 
-#endif /* __CLUTTER_BACKEND_EGL_H__ */
+#endif /* __CLUTTER_BACKEND_COGL_H__ */

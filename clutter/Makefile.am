@@ -353,32 +353,37 @@ clutterx11_includedir = $(clutter_includedir)/x11
 clutterx11_include_HEADERS = $(x11_source_h)
 endif # SUPPORT_X11
 
-# GLX backend rules
-glx_source_c = \
-	$(srcdir)/glx/clutter-backend-glx.c		\
-	$(srcdir)/glx/clutter-glx-texture-pixmap.c	\
-	$(srcdir)/glx/clutter-stage-glx.c		\
+# Shared cogl backend files
+cogl_source_h =
+
+cogl_source_c = \
+	$(srcdir)/cogl/clutter-backend-cogl.c	\
+	$(srcdir)/cogl/clutter-stage-cogl.c	\
 	$(NULL)
 
-glx_source_h = \
-	$(srcdir)/glx/clutter-glx-texture-pixmap.h	\
-	$(srcdir)/glx/clutter-glx.h			\
+cogl_source_h_priv = \
+	$(srcdir)/cogl/clutter-backend-cogl.h	\
+	$(srcdir)/cogl/clutter-stage-cogl.h	\
 	$(NULL)
 
-glx_source_h_priv = \
-	$(srcdir)/glx/clutter-backend-glx.h		\
-	$(srcdir)/glx/clutter-stage-glx.h		\
-	$(NULL)
+cogl_source_c_priv =
 
-if SUPPORT_GLX
-backend_source_h += $(glx_source_h)
-backend_source_c += $(glx_source_c)
-backend_source_h_priv += $(glx_source_h_priv)
-
-# XXX - this is another hack; we installed glx headers under includedir/glx
-# instead of using the same directory.
+if SUPPORT_X11
+# For compatability with the old GLX backend
+#
+# Note: there wasn't actually anything GLX specific so we can add
+# the compatability if clutter supports x11
+glx_source_c = $(srcdir)/cogl/clutter-glx-texture-pixmap.c
+glx_source_h = $(srcdir)/cogl/clutter-glx-texture-pixmap.h \
+	       $(srcdir)/cogl/clutter-glx.h
 clutterglx_includedir = $(clutter_includedir)/glx
 clutterglx_include_HEADERS = $(glx_source_h)
+endif
+
+if SUPPORT_GLX
+backend_source_h += $(cogl_source_h)
+backend_source_c += $(cogl_source_c)
+backend_source_h_priv += $(cogl_source_h_priv)
 endif # SUPPORT_GLX
 
 # Windows backend rules
@@ -429,21 +434,9 @@ EXTRA_DIST += \
 
 # EGL backend rules
 egl_source_h = \
-	$(srcdir)/egl/clutter-egl-headers.h	\
-	$(srcdir)/egl/clutter-egl.h		\
+	$(srcdir)/cogl/clutter-egl-headers.h	\
+	$(srcdir)/cogl/clutter-egl.h		\
 	$(NULL)
-
-egl_source_c = \
-	$(srcdir)/egl/clutter-backend-egl.c	\
-	$(srcdir)/egl/clutter-stage-egl.c	\
-	$(NULL)
-
-egl_source_h_priv = \
-	$(srcdir)/egl/clutter-backend-egl.h	\
-	$(srcdir)/egl/clutter-stage-egl.h	\
-	$(NULL)
-
-egl_source_c_priv =
 
 egl_tslib_c = $(srcdir)/egl/clutter-event-tslib.c
 
@@ -458,29 +451,28 @@ evdev_h_priv = \
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
 	$(NULL)
 
-egl_cex_h = egl/clutter-cex100.h
-BUILT_SOURCES += egl/clutter-cex100.h
-EXTRA_DIST += $(srcdir)/egl/clutter-cex100.h.in
-
-if SUPPORT_EGL
+cex_h = cogl/clutter-cex100.h
+BUILT_SOURCES += $(cex_h)
+EXTRA_DIST += $(srcdir)/$(cex_h).in
 
 if USE_TSLIB
-egl_source_c_priv += $(egl_tslib_c)
+backend_source_c_priv += $(egl_tslib_c)
 endif # SUPPORT_TSLIB
 
 if SUPPORT_EVDEV
-egl_source_c_priv += $(evdev_c_priv)
-egl_source_h_priv += $(evdev_h_priv)
+backend_source_c_priv += $(evdev_c_priv)
+backend_source_h_priv += $(evdev_h_priv)
 endif # SUPPORT_EVDEV
 
 if SUPPORT_CEX100
-egl_source_h += $(egl_cex_h)
+backend_source_h += $(cex_h)
 endif # SUPPORT_CEX100
 
-backend_source_h += $(egl_source_h)
-backend_source_c += $(egl_source_c)
-backend_source_h_priv += $(egl_source_h_priv)
-backend_source_c_priv += $(egl_source_c_priv)
+if SUPPORT_EGL
+backend_source_h += $(cogl_source_h) $(egl_source_h)
+backend_source_c += $(cogl_source_c)
+backend_source_h_priv += $(cogl_source_h_priv)
+backend_source_c_priv += $(cogl_source_c_priv)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)

@@ -207,7 +207,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_XLIB=1
           SUPPORT_GLX=1
 
-          CLUTTER_WINSYS=glx
+          CLUTTER_WINSYS=cogl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           CLUTTER_SONAME_INFIX=glx
@@ -238,7 +238,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
 
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           # I think this winsys can be API and ABI compatible with the
@@ -275,7 +275,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
 
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_WINSYS_BASE=x11
           CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
           CLUTTER_SONAME_INFIX=eglx
@@ -310,7 +310,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
 
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_SONAME_INFIX=eglnative
         ],
 
@@ -323,7 +323,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL_PLATFORM_GDL=1
 
           # The cex100 is a small specialization of the EGL backend
-          CLUTTER_WINSYS=egl
+          CLUTTER_WINSYS=cogl
           CLUTTER_SONAME_INFIX=cex100
 
           found_gdl=no
@@ -939,7 +939,7 @@ AC_CONFIG_FILES([
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
 
-	clutter/egl/clutter-cex100.h
+	clutter/cogl/clutter-cex100.h
 
 	tests/Makefile
 	tests/accessibility/Makefile
