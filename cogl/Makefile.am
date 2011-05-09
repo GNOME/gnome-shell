@@ -319,6 +319,11 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-glx-feature-functions.h \
 	$(srcdir)/winsys/cogl-winsys-glx.c
 endif
+if SUPPORT_WGL
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-wgl.c \
+	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h
+endif
 if SUPPORT_EGL_PLATFORM_POWERVR_X11
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl.c

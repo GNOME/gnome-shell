@@ -30,6 +30,9 @@
 
 #include <glib.h>
 
+#ifdef COGL_HAS_WIN32
+#include <windows.h>
+#endif /* COGL_HAS_WIN32 */
 
 G_BEGIN_DECLS
 
@@ -156,6 +159,18 @@ cogl_onscreen_x11_get_window_xid (CoglOnscreen *onscreen);
 guint32
 cogl_onscreen_x11_get_visual_xid (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_X11 */
+
+#ifdef COGL_HAS_WIN32_SUPPORT
+#define cogl_onscreen_win32_set_foreign_window \
+  cogl_onscreen_win32_set_foreign_window_EXP
+void
+cogl_onscreen_win32_set_foreign_window (CoglOnscreen *onscreen,
+                                        HWND hwnd);
+
+#define cogl_onscreen_win32_get_window cogl_onscreen_win32_get_window_EXP
+HWND
+cogl_onscreen_win32_get_window (CoglOnscreen *onscreen);
+#endif /* COGL_HAS_WIN32_SUPPORT */
 
 #define cogl_onscreen_set_swap_throttled cogl_onscreen_set_swap_throttled_EXP
 void

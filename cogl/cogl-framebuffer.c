@@ -1679,6 +1679,35 @@ cogl_onscreen_x11_get_visual_xid (CoglOnscreen *onscreen)
 }
 #endif /* COGL_HAS_X11_SUPPORT */
 
+#ifdef COGL_HAS_WIN32_SUPPORT
+
+void
+cogl_onscreen_win32_set_foreign_window (CoglOnscreen *onscreen,
+                                        HWND hwnd)
+{
+  onscreen->foreign_hwnd = hwnd;
+}
+
+HWND
+cogl_onscreen_win32_get_window (CoglOnscreen *onscreen)
+{
+  if (onscreen->foreign_hwnd)
+    return onscreen->foreign_hwnd;
+  else
+    {
+      CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+      const CoglWinsysVtable *winsys =
+        _cogl_framebuffer_get_winsys (framebuffer);
+
+      /* This should only be called for win32 onscreens */
+      g_return_val_if_fail (winsys->onscreen_win32_get_window != NULL, 0);
+
+      return winsys->onscreen_win32_get_window (onscreen);
+    }
+}
+
+#endif /* COGL_HAS_WIN32_SUPPORT */
+
 unsigned int
 cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                             CoglSwapBuffersNotify callback,

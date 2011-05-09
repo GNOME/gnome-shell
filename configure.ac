@@ -404,6 +404,7 @@ AS_IF([test "x$enable_gl" = "xyes"],
 	      [
 		COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lopengl32 -lgdi32 -lwinmm"
 		COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -D_WIN32_WINNT=0x0500"
+                ALLOW_WGL=yes
 	      ],
 	      [
 		PKG_CHECK_EXISTS(
@@ -446,6 +447,7 @@ AS_IF([test "x$enable_stub_winsys" = "xyes"],
       [
         GL_WINSYS_APIS="$GL_WINSYS_APIS stub"
         ALLOW_GLX=no
+        ALLOW_WGL=no
       ])
 AM_CONDITIONAL(SUPPORT_STUB, [test "x$enable_stub_winsys" = "xyes"])
 
@@ -481,6 +483,30 @@ AS_IF([test "x$enable_glx" = "xyes"],
       ])
 AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "xyes"])
 
+AC_ARG_ENABLE(
+  [wgl],
+  [AC_HELP_STRING([--enable-wgl=@<:@no/yes@:>@], [Enable support for WGL @<:@default=auto@:>@])],
+  [],
+  [AS_IF([test "x$ALLOW_WGL" = "xyes"], [enable_wgl=yes], [enable_wgl=no])]
+)
+AS_IF([test "x$enable_wgl" = "xyes"],
+      [
+        AS_IF([test "x$enable_stub_winsys" = "xyes"],
+              [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
+
+        AS_IF([test "x$ALLOW_WGL" != "xyes"],
+              [AC_MSG_ERROR([WGL not supported with $COGL_DRIVER driver])])
+
+        SUPPORT_WGL=yes
+        GL_WINSYS_APIS="$GL_WINSYS_APIS wgl"
+
+        AC_DEFINE([COGL_HAS_WGL_SUPPORT], [1], [Cogl supports OpenGL using the WGL API])
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_WIN32_SUPPORT"
+
+        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1],
+                  [Cogl can create its own OpenGL context])
+      ])
+AM_CONDITIONAL(SUPPORT_WGL, [test "x$SUPPORT_WGL" = "xyes"])
 
 EGL_PLATFORM_COUNT=0
 

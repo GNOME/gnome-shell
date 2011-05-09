@@ -38,6 +38,10 @@
 #include <GL/glxext.h>
 #endif
 
+#ifdef COGL_HAS_WIN32_SUPPORT
+#include <windows.h>
+#endif
+
 typedef enum _CoglFramebufferType {
   COGL_FRAMEBUFFER_TYPE_ONSCREEN,
   COGL_FRAMEBUFFER_TYPE_OFFSCREEN
@@ -120,6 +124,10 @@ struct _CoglOnscreen
   guint32 foreign_xid;
   CoglOnscreenX11MaskCallback foreign_update_mask_callback;
   void *foreign_update_mask_data;
+#endif
+
+#ifdef COGL_HAS_WIN32_SUPPORT
+  HWND foreign_hwnd;
 #endif
 
   gboolean swap_throttled;
