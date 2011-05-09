@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2010  Intel Corporation.
+ * Copyright (C) 2010, 2011  Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,252 +35,110 @@
 
 #include <errno.h>
 
-#include <wayland-util.h>
-#include <wayland-client.h>
-#include <xf86drm.h>
-
-#include "clutter-backend-wayland.h"
-#include "clutter-stage-wayland.h"
-#include "clutter-wayland.h"
-
 #include "clutter-debug.h"
-#include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-main.h"
 #include "clutter-stage-private.h"
 
-static ClutterBackendWayland *backend_singleton = NULL;
+#include "wayland/clutter-backend-wayland.h"
+#include "wayland/clutter-device-manager-wayland.h"
+#include "wayland/clutter-event-wayland.h"
+#include "wayland/clutter-stage-wayland.h"
+#include "cogl/clutter-stage-cogl.h"
 
-G_DEFINE_TYPE (ClutterBackendWayland, _clutter_backend_wayland, CLUTTER_TYPE_BACKEND);
+#include <wayland-client.h>
 
-static gboolean
-clutter_backend_wayland_pre_parse (ClutterBackend  *backend,
-				   GError         **error)
-{
-  return TRUE;
-}
+#include <cogl/cogl.h>
 
-static void
-drm_handle_device (void *data, struct wl_drm *drm, const char *device)
-{
-  ClutterBackendWayland *backend_wayland = data;
-  backend_wayland->device_name = g_strdup (device);
-}
+#define clutter_backend_wayland_get_type     _clutter_backend_wayland_get_type
+
+G_DEFINE_TYPE (ClutterBackendWayland, clutter_backend_wayland, CLUTTER_TYPE_BACKEND);
 
 static void
-drm_handle_authenticated (void *data, struct wl_drm *drm)
+clutter_backend_wayland_dispose (GObject *gobject)
 {
-  ClutterBackendWayland *backend_wayland = data;
-  backend_wayland->authenticated = 1;
-}
+  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (gobject);
 
-static const struct wl_drm_listener drm_listener =
-{
-  drm_handle_device,
-  drm_handle_authenticated
-};
-
-static void
-display_handle_geometry (void *data,
-			 struct wl_output *output,
-			 int32_t x, int32_t y,
-			 int32_t width, int32_t height)
-{
-  ClutterBackendWayland *backend_wayland = data;
-
-  backend_wayland->screen_allocation.x = x;
-  backend_wayland->screen_allocation.y = y;
-  backend_wayland->screen_allocation.width = width;
-  backend_wayland->screen_allocation.height = height;
-}
-
-static const struct wl_output_listener output_listener =
-{
-  display_handle_geometry,
-};
-
-
-static void
-handle_configure (void *data, struct wl_shell *shell,
-		  uint32_t timestamp, uint32_t edges,
-		  struct wl_surface *surface,
-		  int32_t width, int32_t height)
-{
-  ClutterStageWayland *stage_wayland;
-
-  stage_wayland = wl_surface_get_user_data (surface);
-
-  if ((stage_wayland->allocation.width != width) ||
-      (stage_wayland->allocation.height != height))
+  if (backend_wayland->device_manager)
     {
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_wayland->wrapper));
+      g_object_unref (backend_wayland->device_manager);
+      backend_wayland->device_manager = NULL;
     }
 
-  stage_wayland->pending_allocation.width = width;
-  stage_wayland->pending_allocation.height = height;
-  stage_wayland->allocation = stage_wayland->pending_allocation;
+  G_OBJECT_CLASS (clutter_backend_wayland_parent_class)->dispose (gobject);
+}
 
-  clutter_actor_set_size (CLUTTER_ACTOR (stage_wayland->wrapper),
-			  width, height);
+static void
+handle_configure (void *data,
+                  struct wl_shell *shell,
+                  uint32_t timestamp,
+                  uint32_t edges,
+                  struct wl_surface *surface,
+                  int32_t width,
+                  int32_t height)
+{
+  ClutterStageCogl *stage_cogl = wl_surface_get_user_data (surface);
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
+
+  if (cogl_framebuffer_get_width (fb) != width ||
+      cogl_framebuffer_get_height (fb) != height)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_cogl->wrapper));
+
+  clutter_actor_set_size (CLUTTER_ACTOR (stage_cogl->wrapper),
+                         width, height);
 
   /* the resize process is complete, so we can ask the stage
    * to set up the GL viewport with the new size
    */
-  clutter_stage_ensure_viewport (stage_wayland->wrapper);
+  clutter_stage_ensure_viewport (stage_cogl->wrapper);
 }
 
 static const struct wl_shell_listener shell_listener = {
-	handle_configure,
+       handle_configure,
 };
 
 static void
 display_handle_global (struct wl_display *display,
                        uint32_t id,
-		       const char *interface,
+                       const char *interface,
                        uint32_t version,
                        void *data)
 {
   ClutterBackendWayland *backend_wayland = data;
 
-  if (strcmp (interface, "compositor") == 0)
+  if (strcmp (interface, "wl_compositor") == 0)
+    backend_wayland->wayland_compositor =
+      wl_display_bind (display, id, &wl_compositor_interface);
+  else if (strcmp (interface, "wl_input_device") == 0)
     {
-      backend_wayland->wayland_compositor = wl_compositor_create (display, id);
+      ClutterDeviceManager *device_manager = backend_wayland->device_manager;
+      _clutter_device_manager_wayland_add_input_group (device_manager, id);
     }
-  else if (strcmp (interface, "output") == 0)
+  else if (strcmp (interface, "wl_shell") == 0)
     {
-      backend_wayland->wayland_output = wl_output_create (display, id);
-      wl_output_add_listener (backend_wayland->wayland_output,
-                              &output_listener, backend_wayland);
-    }
-  else if (strcmp (interface, "input_device") == 0)
-    {
-      _clutter_backend_add_input_device (backend_wayland, id);
-    }
-  else if (strcmp (interface, "shell") == 0)
-    {
-      backend_wayland->wayland_shell = wl_shell_create (display, id);
+      backend_wayland->wayland_shell =
+        wl_display_bind (display, id, &wl_shell_interface);
       wl_shell_add_listener (backend_wayland->wayland_shell,
                              &shell_listener, backend_wayland);
     }
-  else if (strcmp (interface, "drm") == 0)
-    {
-      backend_wayland->wayland_drm = wl_drm_create (display, id);
-      wl_drm_add_listener (backend_wayland->wayland_drm,
-                           &drm_listener, backend_wayland);
-    }
-  else if (strcmp (interface, "shm") == 0)
-    {
-      backend_wayland->wayland_shm = wl_shm_create (display, id);
-    }
+  else if (strcmp (interface, "wl_shm") == 0)
+    backend_wayland->wayland_shm =
+      wl_display_bind (display, id, &wl_shm_interface);
 }
-
-static gboolean
-try_get_display (ClutterBackendWayland *backend_wayland, GError **error)
-{
-  EGLDisplay edpy = EGL_NO_DISPLAY;
-  int drm_fd;
-
-  drm_fd = open (backend_wayland->device_name, O_RDWR);
-
-  backend_wayland->get_drm_display =
-    (PFNEGLGETDRMDISPLAYMESA) eglGetProcAddress ("eglGetDRMDisplayMESA");
-
-  if (backend_wayland->get_drm_display != NULL && drm_fd >= 0)
-     edpy = backend_wayland->get_drm_display (drm_fd);
-
-  if (edpy == EGL_NO_DISPLAY)
-      edpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-
-  if (edpy == EGL_NO_DISPLAY)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Failed to open EGLDisplay");
-      return FALSE;
-    }
-
-  backend_wayland->edpy   = edpy;
-  backend_wayland->drm_fd = drm_fd;
-
-  return TRUE;
-}
-
-static gboolean
-try_enable_drm (ClutterBackendWayland *backend_wayland, GError **error)
-{
-  drm_magic_t magic;
-  const gchar *exts, *glexts;
-
-  if (backend_wayland->drm_fd < 0)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Failed to open drm device");
-      return FALSE;
-    }
-
-  glexts = glGetString(GL_EXTENSIONS);
-  exts = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
-
-  if (!cogl_clutter_check_extension ("EGL_KHR_image_base", exts) ||
-      !cogl_clutter_check_extension ("EGL_MESA_drm_image", exts) ||
-      !cogl_clutter_check_extension ("GL_OES_EGL_image", glexts))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Missing EGL extensions");
-      return FALSE;
-    }
-
-  backend_wayland->create_drm_image =
-    (PFNEGLCREATEDRMIMAGEMESA) eglGetProcAddress ("eglCreateDRMImageMESA");
-  backend_wayland->destroy_image =
-    (PFNEGLDESTROYIMAGEKHRPROC) eglGetProcAddress ("eglDestroyImageKHR");
-  backend_wayland->export_drm_image =
-    (PFNEGLEXPORTDRMIMAGEMESA) eglGetProcAddress ("eglExportDRMImageMESA");
-  backend_wayland->image_target_texture_2d =
-    (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC) eglGetProcAddress ("glEGLImageTargetTexture2DOES");
-
-  if (backend_wayland->create_drm_image == NULL ||
-      backend_wayland->destroy_image == NULL ||
-      backend_wayland->export_drm_image == NULL ||
-      backend_wayland->image_target_texture_2d == NULL)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Missing EGL extensions");
-      return FALSE;
-    }
-
-  if (drmGetMagic (backend_wayland->drm_fd, &magic))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Failed to get drm magic");
-      return FALSE;
-    }
-
-  wl_drm_authenticate (backend_wayland->wayland_drm, magic);
-  wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_WRITABLE);
-  while (!backend_wayland->authenticated)
-    wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
-
-  return TRUE;
-};
 
 static gboolean
 clutter_backend_wayland_post_parse (ClutterBackend  *backend,
-				    GError         **error)
+                                    GError         **error)
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  EGLBoolean status;
 
   /* TODO: expose environment variable/commandline option for this... */
   backend_wayland->wayland_display = wl_display_connect (NULL);
   if (!backend_wayland->wayland_display)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Failed to open Wayland display socket");
+                  CLUTTER_INIT_ERROR_BACKEND,
+                  "Failed to open Wayland display socket");
       return FALSE;
     }
 
@@ -288,340 +146,101 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
     _clutter_event_source_wayland_new (backend_wayland->wayland_display);
   g_source_attach (backend_wayland->wayland_source, NULL);
 
+  /* XXX: We require the device manager to exist as soon as we connect to the
+   * compositor and setup an event handler because we will immediately be
+   * notified of the available input devices which need to be associated with
+   * the device-manager.
+   *
+   * FIXME: At some point we could perhaps just collapse the
+   * _clutter_backend_post_parse(), and _clutter_backend_init_events()
+   * functions into one called something like _clutter_backend_init() which
+   * would allow the real backend to manage the precise order of
+   * initialization.
+   */
+  backend_wayland->device_manager =
+    _clutter_device_manager_wayland_new (backend);
+
   /* Set up listener so we'll catch all events. */
   wl_display_add_global_listener (backend_wayland->wayland_display,
                                   display_handle_global,
                                   backend_wayland);
 
-  /* Process connection events. */
-  wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
-
-  if (!try_get_display(backend_wayland, error))
-    return FALSE;
-
-  status = eglInitialize (backend_wayland->edpy,
-			  &backend_wayland->egl_version_major,
-			  &backend_wayland->egl_version_minor);
-  if (status != EGL_TRUE)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Unable to Initialize EGL");
-      return FALSE;
-    }
-
-  CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
-		backend_wayland->egl_version_major,
-		backend_wayland->egl_version_minor);
-
-  backend_wayland->drm_enabled = try_enable_drm(backend_wayland, error);
-
-  if (!backend_wayland->drm_enabled) {
-    if (backend_wayland->wayland_shm == NULL)
-      return FALSE;
-
-    g_debug("Could not enable DRM buffers, falling back to SHM buffers");
-    g_clear_error(error);
-  }
+  /* Wait until we have been notified about the compositor and shell objects */
+  while (!(backend_wayland->wayland_compositor &&
+           backend_wayland->wayland_shell))
+    wl_display_roundtrip (backend_wayland->wayland_display);
 
   return TRUE;
 }
 
-#if defined(COGL_HAS_GL)
-#define _COGL_RENDERABLE_BIT EGL_OPENGL_BIT
-#elif defined(COGL_HAS_GLES2)
-#define _COGL_GLES_VERSION 2
-#define _COGL_RENDERABLE_BIT EGL_OPENGL_ES2_BIT
-#elif defined(COGL_HAS_GLES1)
-#define _COGL_GLES_VERSION 1
-#define _COGL_RENDERABLE_BIT EGL_OPENGL_ES_BIT
-#endif
-
-static gboolean
-make_dummy_surface (ClutterBackendWayland *backend_wayland)
-{
-  static const EGLint attrs[] = {
-    EGL_WIDTH, 1,
-    EGL_HEIGHT, 1,
-    EGL_RENDERABLE_TYPE, _COGL_RENDERABLE_BIT,
-    EGL_NONE };
-  EGLint num_configs;
-
-  eglGetConfigs(backend_wayland->edpy,
-                &backend_wayland->egl_config, 1, &num_configs);
-  if (num_configs < 1)
-    return FALSE;
-
-  backend_wayland->egl_surface =
-    eglCreatePbufferSurface(backend_wayland->edpy,
-                            backend_wayland->egl_config,
-                            attrs);
-
-  if (backend_wayland->egl_surface == EGL_NO_SURFACE)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-try_create_context (ClutterBackend  *backend,
-                    int retry_cookie,
-                    gboolean *try_fallback,
-                    GError **error)
+static CoglRenderer *
+clutter_backend_wayland_get_renderer (ClutterBackend  *backend,
+                                      GError         **error)
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  const char *error_message;
+  CoglRenderer *renderer;
 
-  if (backend_wayland->egl_context == EGL_NO_CONTEXT)
-    {
-#if defined(COGL_HAS_GL)
-      static const EGLint *attribs = NULL;
-#else
-      static const EGLint attribs[] =
-        { EGL_CONTEXT_CLIENT_VERSION, _COGL_GLES_VERSION, EGL_NONE };
-#endif
+  CLUTTER_NOTE (BACKEND, "Creating a new wayland renderer");
 
-      backend_wayland->egl_context =
-        eglCreateContext (backend_wayland->edpy,
-                          backend_wayland->egl_config,
-                          EGL_NO_CONTEXT,
-                          attribs);
-      if (backend_wayland->egl_context == EGL_NO_CONTEXT)
-        {
-          error_message = "Unable to create a suitable EGL context";
-          goto fail;
-        }
+  renderer = cogl_renderer_new ();
 
-      CLUTTER_NOTE (BACKEND, "Created EGL Context");
-    }
+  cogl_wayland_renderer_set_foreign_display (renderer,
+                                             backend_wayland->wayland_display);
+  cogl_wayland_renderer_set_foreign_compositor (renderer,
+                                                backend_wayland->wayland_compositor);
+  cogl_wayland_renderer_set_foreign_shell (renderer,
+                                           backend_wayland->wayland_shell);
 
-  if (!eglMakeCurrent (backend_wayland->edpy,
-                       backend_wayland->egl_surface,
-                       backend_wayland->egl_surface,
-                       backend_wayland->egl_context))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to MakeCurrent");
-      return FALSE;
-    }
-
-  return TRUE;
-
-fail:
-    {
-      *try_fallback = FALSE;
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "%s", error_message);
-      return FALSE;
-    }
+  return renderer;
 }
 
-#if defined(COGL_HAS_GL)
-#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_opengl"
-#elif defined(COGL_HAS_GLES1)
-#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles1"
-#elif defined(COGL_HAS_GLES2)
-#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles2"
-#endif
-
-static gboolean
-clutter_backend_wayland_create_context (ClutterBackend  *backend,
-					GError         **error)
+static CoglDisplay *
+clutter_backend_wayland_get_display (ClutterBackend  *backend,
+                                     CoglRenderer    *renderer,
+                                     CoglSwapChain   *swap_chain,
+                                     GError         **error)
 {
-  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  const gchar *egl_extensions = NULL;
-  gboolean status;
-  int retry_cookie;
-  gboolean try_fallback;
-  GError *try_error = NULL;
+  CoglOnscreenTemplate *onscreen_template = NULL;
+  CoglDisplay *display;
 
-  if (backend_wayland->egl_context != EGL_NO_CONTEXT)
-    return TRUE;
+  onscreen_template = cogl_onscreen_template_new (swap_chain);
 
-#if defined(COGL_HAS_GL)
-  eglBindAPI (EGL_OPENGL_API);
-#else
-  eglBindAPI (EGL_OPENGL_ES_API);
-#endif
-  egl_extensions = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
+  /* XXX: I have some doubts that this is a good design.
+   * Conceptually should we be able to check an onscreen_template
+   * without more details about the CoglDisplay configuration?
+   */
+  if (!cogl_renderer_check_onscreen_template (renderer,
+                                              onscreen_template,
+                                              error))
+    goto error;
 
-  if (!cogl_clutter_check_extension (_COGL_SURFACELESS_EXTENSION, egl_extensions))
-    {
-      g_debug("Could not find the " _COGL_SURFACELESS_EXTENSION
-              " extension; falling back to binding a dummy surface");
-      if (!make_dummy_surface(backend_wayland))
-        {
-          g_set_error (error, CLUTTER_INIT_ERROR,
-                       CLUTTER_INIT_ERROR_BACKEND,
-                       "Could not create dummy surface");
-          return FALSE;
-        }
-    }
-  else
-    {
-      backend_wayland->egl_config = NULL;
-      backend_wayland->egl_surface = EGL_NO_SURFACE;
-    }
+  display = cogl_display_new (renderer, onscreen_template);
 
-  retry_cookie = 0;
-  while (!(status = try_create_context (backend,
-                                        retry_cookie,
-                                        &try_fallback,
-                                        &try_error)) &&
-         try_fallback)
-    {
-      g_warning ("Failed to create context: %s\nWill try fallback...",
-                 try_error->message);
-      g_error_free (try_error);
-      try_error = NULL;
-      retry_cookie++;
-    }
-  if (!status)
-    g_propagate_error (error, try_error);
+  return display;
 
-  return status;
+error:
+  if (onscreen_template)
+    cogl_object_unref (onscreen_template);
+
+  return NULL;
 }
 
 static void
-clutter_backend_wayland_redraw (ClutterBackend *backend,
-				ClutterStage   *stage)
-{
-  ClutterStageWindow *impl;
-
-  impl = _clutter_stage_get_window (stage);
-  if (!impl)
-    return;
-
-  g_assert (CLUTTER_IS_STAGE_WAYLAND (impl));
-
-  _clutter_stage_wayland_redraw (CLUTTER_STAGE_WAYLAND (impl), stage);
-}
-
-static void
-clutter_backend_wayland_finalize (GObject *gobject)
-{
-  if (backend_singleton)
-    backend_singleton = NULL;
-
-  G_OBJECT_CLASS (_clutter_backend_wayland_parent_class)->finalize (gobject);
-}
-
-static void
-clutter_backend_wayland_dispose (GObject *gobject)
-{
-  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (gobject);
-
-  /* We chain up before disposing our own resources so that
-     ClutterBackend will destroy all of the stages before we destroy
-     the egl context. Otherwise the actors may try to make GL calls
-     during destruction which causes a crash */
-  G_OBJECT_CLASS (_clutter_backend_wayland_parent_class)->dispose (gobject);
-
-  if (backend_wayland->egl_context)
-    {
-      eglDestroyContext (backend_wayland->edpy, backend_wayland->egl_context);
-      backend_wayland->egl_context = NULL;
-    }
-
-  if (backend_wayland->edpy)
-    {
-      eglTerminate (backend_wayland->edpy);
-      backend_wayland->edpy = 0;
-    }
-
-  if (backend_wayland->drm_fd != -1)
-    {
-      close (backend_wayland->drm_fd);
-      backend_wayland->drm_fd = -1;
-    }
-}
-
-static GObject *
-clutter_backend_wayland_constructor (GType                  gtype,
-				     guint                  n_params,
-				     GObjectConstructParam *params)
-{
-  GObjectClass *parent_class;
-  GObject *retval;
-
-  if (!backend_singleton)
-    {
-      parent_class = G_OBJECT_CLASS (_clutter_backend_wayland_parent_class);
-      retval = parent_class->constructor (gtype, n_params, params);
-
-      backend_singleton = CLUTTER_BACKEND_WAYLAND (retval);
-
-      return retval;
-    }
-
-  g_warning ("Attempting to create a new backend object. This should "
-             "never happen, so we return the singleton instance.");
-
-  return g_object_ref (backend_singleton);
-}
-
-static ClutterFeatureFlags
-clutter_backend_wayland_get_features (ClutterBackend *backend)
-{
-  ClutterBackendWayland  *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  ClutterFeatureFlags flags = 0;
-
-  g_assert (backend_wayland->egl_context != NULL);
-
-  flags |=
-    CLUTTER_FEATURE_STAGE_MULTIPLE |
-    CLUTTER_FEATURE_SWAP_EVENTS |
-    CLUTTER_FEATURE_SYNC_TO_VBLANK;
-
-  CLUTTER_NOTE (BACKEND, "Checking features\n"
-                "GL_VENDOR: %s\n"
-                "GL_RENDERER: %s\n"
-                "GL_VERSION: %s\n"
-                "EGL_VENDOR: %s\n"
-                "EGL_VERSION: %s\n"
-                "EGL_EXTENSIONS: %s\n",
-                glGetString (GL_VENDOR),
-                glGetString (GL_RENDERER),
-                glGetString (GL_VERSION),
-                eglQueryString (backend_wayland->edpy, EGL_VENDOR),
-                eglQueryString (backend_wayland->edpy, EGL_VERSION),
-                eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS));
-
-  return flags;
-}
-
-static void
-_clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
+clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
-  gobject_class->constructor = clutter_backend_wayland_constructor;
-  gobject_class->dispose     = clutter_backend_wayland_dispose;
-  gobject_class->finalize    = clutter_backend_wayland_finalize;
+  gobject_class->dispose = clutter_backend_wayland_dispose;
 
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_WAYLAND;
 
-  backend_class->pre_parse        = clutter_backend_wayland_pre_parse;
-  backend_class->post_parse       = clutter_backend_wayland_post_parse;
-  backend_class->get_features     = clutter_backend_wayland_get_features;
-  backend_class->create_context   = clutter_backend_wayland_create_context;
-  backend_class->redraw           = clutter_backend_wayland_redraw;
+  backend_class->post_parse = clutter_backend_wayland_post_parse;
+  backend_class->get_renderer = clutter_backend_wayland_get_renderer;
+  backend_class->get_display = clutter_backend_wayland_get_display;
 }
 
 static void
-_clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
+clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
 {
-  backend_wayland->edpy = EGL_NO_DISPLAY;
-  backend_wayland->egl_context = EGL_NO_CONTEXT;
-
-  backend_wayland->drm_fd = -1;
-}
-
-EGLDisplay
-clutter_wayland_get_egl_display (void)
-{
-  return backend_singleton->edpy;
 }

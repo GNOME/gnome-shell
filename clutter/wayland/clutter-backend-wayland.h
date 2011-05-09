@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2010  Intel Corporation.
+ * Copyright (C) 2010, 2011  Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,11 +29,8 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
-
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
-
-#include "clutter-wayland.h"
+#include <clutter/clutter-backend.h>
+#include <clutter/clutter-device-manager.h>
 
 #include "clutter-backend-private.h"
 
@@ -53,33 +50,16 @@ struct _ClutterBackendWayland
 {
   ClutterBackend parent_instance;
 
-  /* EGL Specific */
-  EGLDisplay edpy;
-  EGLContext egl_context;
-  EGLConfig  egl_config;
-  EGLSurface egl_surface;
-
-  gint egl_version_major;
-  gint egl_version_minor;
+  ClutterDeviceManager *device_manager;
 
   struct wl_display *wayland_display;
-  GSource *wayland_source;
   struct wl_compositor *wayland_compositor;
   struct wl_shell *wayland_shell;
-  struct wl_drm *wayland_drm;
   struct wl_shm *wayland_shm;
-  char *device_name;
-  int authenticated;
-  struct wl_output *wayland_output;
-  ClutterGeometry screen_allocation;
-  int drm_fd;
-  gboolean drm_enabled;
+  GSource *wayland_source;
 
-  PFNEGLGETDRMDISPLAYMESA get_drm_display;
-  PFNEGLCREATEDRMIMAGEMESA create_drm_image;
-  PFNEGLDESTROYIMAGEKHRPROC destroy_image;
-  PFNEGLEXPORTDRMIMAGEMESA export_drm_image;
-  PFNGLEGLIMAGETARGETTEXTURE2DOESPROC image_target_texture_2d;
+  /* event timer */
+  GTimer *event_timer;
 };
 
 struct _ClutterBackendWaylandClass
@@ -88,10 +68,6 @@ struct _ClutterBackendWaylandClass
 };
 
 GType _clutter_backend_wayland_get_type (void) G_GNUC_CONST;
-
-GSource *_clutter_event_source_wayland_new(struct wl_display *display);
-void _clutter_backend_add_input_device (ClutterBackendWayland *backend_wayland,
-					uint32_t id);
 
 G_END_DECLS
 

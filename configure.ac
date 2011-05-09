@@ -306,19 +306,23 @@ AS_IF([test "x$enable_gdk" = "xyes"],
 AS_IF([test "x$enable_wayland" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS wayland"
+        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS wayland"
 
         experimental_backend="yes"
 
         SUPPORT_WAYLAND=1
-        SUPPORT_EVDEV=1
 
-        PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
-        PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"], [])
         PKG_CHECK_EXISTS([wayland-client xkbcommon],
                          [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-client xkbcommon"],
                          [])
 
         AC_DEFINE([HAVE_CLUTTER_WAYLAND], [1], [Have the Wayland backend])
+      ],
+      [
+        # The wayland headers introduce so much symbol shadowing that build
+        # logs become incomprehensible with -Wshadow so we only use it for
+        # non-wayland builds.
+        MAINTAINER_COMPILER_FLAGS="-Wshadow"
       ])
 
 AS_IF([test "x$enable_cex100" = "xyes"],
@@ -456,8 +460,7 @@ AM_CONDITIONAL(SUPPORT_WIN32,   [test "x$SUPPORT_WIN32" = "x1"])
 AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
 AM_CONDITIONAL(SUPPORT_STUB,    [test "x$SUPPORT_WIN32" = "x1" -o \
-                                      "x$SUPPORT_OSX" = "x1" -o \
-                                      "x$SUPPORT_WAYLAND" = "x1"])
+                                      "x$SUPPORT_OSX" = "x1"])
 
 AM_CONDITIONAL(USE_COGL,  [test "x$SUPPORT_COGL" = "x1"])
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
@@ -519,6 +522,9 @@ AS_IF([test "x$SUPPORT_EVDEV" = "x1"],
 AS_IF([test "x$SUPPORT_TSLIB" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_INPUT_TSLIB \"tslib\""])
+AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_INPUT_WAYLAND \"wayland\""])
 
 # the 'null' input backend is special
 CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
@@ -887,7 +893,8 @@ AC_ARG_ENABLE([maintainer-flags],
               [],
               [enable_maintainer_flags=maintainer_flags_default])
 
-MAINTAINER_COMPILER_FLAGS="-Wall -Wshadow -Wcast-align -Wuninitialized
+MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
+                           -Wall -Wcast-align -Wuninitialized
                            -Wno-strict-aliasing -Wempty-body -Wformat
                            -Wformat-security -Winit-self
                            -Wdeclaration-after-statement -Wvla

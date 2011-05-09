@@ -1353,12 +1353,6 @@ clutter_win32_handle_event
 </SECTION>
 
 <SECTION>
-<FILE>clutter-wayland</FILE>
-<TITLE>Wayland Specific Support</TITLE>
-clutter_wayland_get_egl_display
-</SECTION>
-
-<SECTION>
 <FILE>clutter-gdk</FILE>
 <TITLE>GDK Specific Support</TITLE>
 clutter_gdk_disable_event_retrieval

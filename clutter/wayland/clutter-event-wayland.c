@@ -55,10 +55,8 @@ clutter_event_source_wayland_prepare (GSource *base, gint *timeout)
 
   /* We have to add/remove the GPollFD if we want to update our
    * poll event mask dynamically.  Instead, let's just flush all
-   * write on idle instead, which is what this amounts to. */
-
-  while (source->mask & WL_DISPLAY_WRITABLE)
-    wl_display_iterate (source->display, WL_DISPLAY_WRITABLE);
+   * writes on idle */
+  wl_display_flush (source->display);
 
   retval = clutter_events_pending ();
 
