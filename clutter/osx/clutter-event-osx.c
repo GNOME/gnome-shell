@@ -115,6 +115,38 @@
    * to 'unicode_value'  Instead of <Shift>a or <Shift>3 you'd get <Shift>A
    * and <Shift>#
    */
+
+  if ([self type] == NSFlagsChanged)
+    {
+      switch ([self keyCode])
+        {
+        case 54: // Right Command
+          return CLUTTER_KEY_Meta_R;
+        case 55: // Left Command
+          return CLUTTER_KEY_Meta_L;
+        case 57: // Capslock
+          return CLUTTER_KEY_Caps_Lock;
+        case 56: // Left Shift
+          return CLUTTER_KEY_Shift_L;
+        case 60: // Right Shift
+          return CLUTTER_KEY_Shift_R;
+        case 58: // Left Alt
+          return CLUTTER_KEY_Alt_L;
+        case 61: // Right Alt
+          return CLUTTER_KEY_Alt_R;
+        case 59: // Left Ctrl
+          return CLUTTER_KEY_Control_L;
+        case 62: // Right Ctrl
+          return CLUTTER_KEY_Control_R;
+        case 63: // Function
+          return CLUTTER_KEY_function;
+        default: // No such key??!??
+          CLUTTER_NOTE (EVENT, "Got NSFlagsChanged event with keyCode not a known modifier key: %d",
+                              [self keyCode]);
+          return CLUTTER_KEY_VoidSymbol;
+        }
+    }
+
   unichar c = [[self charactersIgnoringModifiers] characterAtIndex:0];
 
   /* Latin-1 characters, 1:1 mapping - this ought to be reliable */
@@ -366,8 +398,49 @@ clutter_event_osx_translate (NSEvent *nsevent,
       process_scroll_event (event, FALSE);
       break;
       
+    case NSFlagsChanged:
+      // FIXME: This logic fails if the user presses both Shift keys at once, for example:
+      // we treat releasing one of them as keyDown.
+      switch ([nsevent keyCode])
+        {
+        case 54: // Right Command
+        case 55: // Left Command
+          if ([nsevent modifierFlags] & NSCommandKeyMask)
+            event->type = CLUTTER_KEY_PRESS;
+          break;
+
+        case 57: // Capslock
+          if ([nsevent modifierFlags] & NSAlphaShiftKeyMask)
+            event->type = CLUTTER_KEY_PRESS;
+          break;
+
+        case 56: // Left Shift
+        case 60: // Right Shift
+          if ([nsevent modifierFlags] & NSShiftKeyMask)
+            event->type = CLUTTER_KEY_PRESS;
+          break;
+
+        case 58: // Left Alt
+        case 61: // Right Alt
+          if ([nsevent modifierFlags] & NSAlternateKeyMask)
+            event->type = CLUTTER_KEY_PRESS;
+          break;
+
+        case 59: // Left Ctrl
+        case 62: // Right Ctrl
+          if ([nsevent modifierFlags] & NSControlKeyMask)
+            event->type = CLUTTER_KEY_PRESS;
+          break;
+
+        case 63: // Function
+          if ([nsevent modifierFlags] & NSFunctionKeyMask)
+            event->type = CLUTTER_KEY_PRESS;
+          break;
+        }
+      /* fall through */
     case NSKeyDown:
-      event->type = CLUTTER_KEY_PRESS;
+      if ([nsevent type] == NSKeyDown)
+        event->type = CLUTTER_KEY_PRESS;
       /* fall through */
     case NSKeyUp:
       if (event->type != CLUTTER_KEY_PRESS)
@@ -376,14 +449,16 @@ clutter_event_osx_translate (NSEvent *nsevent,
       event->key.hardware_keycode = [nsevent keyCode];
       event->key.modifier_state = [nsevent clutterModifierState];
       event->key.keyval = [nsevent clutterKeyVal];
-      event->key.unicode_value = [[nsevent characters] characterAtIndex:0];
+      event->key.unicode_value = ([nsevent type] == NSFlagsChanged)
+                                    ? (gunichar)'\0'
+                                    : [[nsevent characters] characterAtIndex:0];
       clutter_event_set_device (event, manager_osx->core_keyboard);
 
       CLUTTER_NOTE (EVENT, "key %d (%s) (%s) %s, keyval %d",
                     [nsevent keyCode],
-                    [[nsevent characters] UTF8String],
-                    [[nsevent charactersIgnoringModifiers] UTF8String],
-                    event->type == CLUTTER_KEY_PRESS ? "press" : "release",
+                    ([nsevent type] == NSFlagsChanged) ? "NULL" : [[nsevent characters] UTF8String],
+                    ([nsevent type] == NSFlagsChanged) ? "NULL" : [[nsevent charactersIgnoringModifiers] UTF8String],
+                    (event->type == CLUTTER_KEY_PRESS) ? "press" : "release",
                     event->key.keyval);
       return TRUE;
 
