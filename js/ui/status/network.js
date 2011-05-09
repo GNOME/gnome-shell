@@ -526,11 +526,15 @@ NMDevice.prototype = {
 
     getStatusLabel: function() {
         switch(this.device.state) {
-        case NetworkManager.DeviceState.UNMANAGED:
         case NetworkManager.DeviceState.DISCONNECTED:
-        case NetworkManager.DeviceState.DEACTIVATING:
         case NetworkManager.DeviceState.ACTIVATED:
             return null;
+        case NetworkManager.DeviceState.UNMANAGED:
+            /* Translators: this is for network devices that are physically present but are not
+               under NetworkManager's control (and thus cannot be used in the menu) */
+            return _("unmanaged");
+        case NetworkManager.DeviceState.DEACTIVATING:
+            return _("disconnecting...");
         case NetworkManager.DeviceState.PREPARE:
         case NetworkManager.DeviceState.CONFIG:
         case NetworkManager.DeviceState.IP_CONFIG:
@@ -1691,21 +1695,18 @@ NMApplet.prototype = {
 
     _syncSectionTitle: function(category) {
         let devices = this._devices[category].devices;
-        let managedDevices = devices.filter(function(dev) {
-            return dev.device.state != NetworkManager.DeviceState.UNMANAGED;
-        });
         let item = this._devices[category].item;
         let section = this._devices[category].section;
-        if (managedDevices.length == 0)
+        if (devices.length == 0)
             section.actor.hide();
         else {
             section.actor.show();
-            if (managedDevices.length == 1) {
-                let dev = managedDevices[0];
+            if (devices.length == 1) {
+                let dev = devices[0];
                 dev.statusItem.actor.hide();
                 item.updateForDevice(dev);
             } else {
-                managedDevices.forEach(function(dev) {
+                devices.forEach(function(dev) {
                     dev.statusItem.actor.show();
                 });
                 // remove status text from the section title item
