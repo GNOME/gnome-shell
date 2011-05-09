@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-26 15:31+0000\n"
-"PO-Revision-Date: 2011-03-26 20:24+0100\n"
+"POT-Creation-Date: 2011-05-09 08:37+0000\n"
+"PO-Revision-Date: 2011-05-09 12:27+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: Slovenian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: Slovenian\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -138,27 +138,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:230
+#: ../js/ui/appDisplay.js:260
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:328
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:354
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:625
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:628
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -292,12 +292,14 @@ msgstr "Nič ni razporejeno"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:720
+#: ../js/ui/telepathyClient.js:487
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:723
+#: ../js/ui/telepathyClient.js:490
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
@@ -319,7 +321,7 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/dash.js:174
-#: ../js/ui/messageTray.js:1000
+#: ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -447,9 +449,9 @@ msgstr "Sistem se bo samodejno ponovno zagnal čez %d sekund."
 msgid "Restarting the system."
 msgstr "Ponoven zagon sistema."
 
-#: ../js/ui/endSessionDialog.js:415
+#: ../js/ui/endSessionDialog.js:413
 #: ../js/ui/polkitAuthenticationAgent.js:172
-#: ../js/ui/status/bluetooth.js:466
+#: ../js/ui/status/bluetooth.js:491
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -484,11 +486,11 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:993
+#: ../js/ui/messageTray.js:1030
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:2151
+#: ../js/ui/messageTray.js:2194
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -511,18 +513,18 @@ msgid "Dash"
 msgstr "Armaturna plošča"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:533
 #, c-format
 msgid "Quit %s"
 msgstr "Končaj %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:878
+#: ../js/ui/panel.js:913
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:1015
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -555,11 +557,15 @@ msgstr "Skrbnik"
 msgid "Authenticate"
 msgstr "Overi"
 
-#: ../js/ui/polkitAuthenticationAgent.js:260
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
 
-#: ../js/ui/polkitAuthenticationAgent.js:272
+#: ../js/ui/polkitAuthenticationAgent.js:276
 msgid "Password:"
 msgstr "Geslo:"
 
@@ -576,11 +582,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Vnos ukaza:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:313
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:327
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
@@ -666,11 +672,11 @@ msgid "Large Text"
 msgstr "Veliko besedilo"
 
 #: ../js/ui/status/bluetooth.js:42
-#: ../js/ui/status/bluetooth.js:237
-#: ../js/ui/status/bluetooth.js:333
-#: ../js/ui/status/bluetooth.js:367
-#: ../js/ui/status/bluetooth.js:407
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:358
+#: ../js/ui/status/bluetooth.js:392
+#: ../js/ui/status/bluetooth.js:432
+#: ../js/ui/status/bluetooth.js:465
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -683,103 +689,103 @@ msgid "Send Files to Device..."
 msgstr "Pošilji datoteke na napravo ..."
 
 #: ../js/ui/status/bluetooth.js:70
-msgid "Setup a New Device..."
-msgstr "Namestitev nove naprave ..."
+msgid "Set up a New Device..."
+msgstr "Nastavitev nove naprave ..."
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:188
+#: ../js/ui/status/bluetooth.js:215
 msgid "Connection"
 msgstr "Povezava"
 
-#: ../js/ui/status/bluetooth.js:224
+#: ../js/ui/status/bluetooth.js:251
 msgid "Send Files..."
 msgstr "Pošlji datoteke ..."
 
-#: ../js/ui/status/bluetooth.js:229
+#: ../js/ui/status/bluetooth.js:256
 msgid "Browse Files..."
 msgstr "Brskanje datotek ..."
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:265
 msgid "Error browsing device"
 msgstr "Napaka med brskanjem po napravi"
 
-#: ../js/ui/status/bluetooth.js:239
+#: ../js/ui/status/bluetooth.js:266
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Po zahtevani naprave ni mogoče brskati, napaka je '%s'"
 
-#: ../js/ui/status/bluetooth.js:247
+#: ../js/ui/status/bluetooth.js:274
 msgid "Keyboard Settings"
 msgstr "Nastavitve tipkovnice"
 
-#: ../js/ui/status/bluetooth.js:252
+#: ../js/ui/status/bluetooth.js:279
 msgid "Mouse Settings"
 msgstr "Nastavitve miške"
 
-#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/bluetooth.js:286
 #: ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "Nastavitve zvoka"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:393
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Zahteva za pooblastitev od %s"
 
-#: ../js/ui/status/bluetooth.js:374
+#: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Naprava %s želi dostop do storitve '%s'."
 
-#: ../js/ui/status/bluetooth.js:376
+#: ../js/ui/status/bluetooth.js:401
 msgid "Always grant access"
 msgstr "Vedno odobri dostop"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:402
 msgid "Grant this time only"
 msgstr "Odobri le tokrat"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:403
 msgid "Reject"
 msgstr "Zavrni"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:433
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Potrditev razčlenjevanja za %s"
 
-#: ../js/ui/status/bluetooth.js:414
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:473
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Naprava %s se skuša povezati s tem računalnikom"
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:440
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Potrdite, ali se PIN '%s' ujema s tistim na napravi."
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:442
 msgid "Matches"
 msgstr "Ujemanja"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:443
 msgid "Does not match"
 msgstr "Se ne ujema"
 
-#: ../js/ui/status/bluetooth.js:441
+#: ../js/ui/status/bluetooth.js:466
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Zahteva razčlenjevanja za %s"
 
-#: ../js/ui/status/bluetooth.js:449
+#: ../js/ui/status/bluetooth.js:474
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vnesite PIN, ki je naveden na napravi."
 
-#: ../js/ui/status/bluetooth.js:465
+#: ../js/ui/status/bluetooth.js:490
 msgid "OK"
 msgstr "V redu"
 
@@ -791,142 +797,141 @@ msgstr "Pokaži razporeditev tipkovnice ..."
 msgid "Localization Settings"
 msgstr "Krajevne nastavitve"
 
-#: ../js/ui/status/network.js:104
-#: ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:126
 msgid "<unknown>"
 msgstr "<neznano>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:311
+#: ../js/ui/status/network.js:343
 msgid "disabled"
 msgstr "onemogočeno"
 
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:542
 msgid "connecting..."
 msgstr "povezovanje ..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/network.js:545
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:507
+#: ../js/ui/status/network.js:555
 msgid "firmware missing"
 msgstr "manjka strojna programska oprema"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:514
+#: ../js/ui/status/network.js:562
 msgid "cable unplugged"
 msgstr "kabel ni priklopljen"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:519
+#: ../js/ui/status/network.js:567
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:569
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:602
-#: ../js/ui/status/network.js:1402
+#: ../js/ui/status/network.js:650
+#: ../js/ui/status/network.js:1459
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
-#: ../js/ui/status/network.js:683
+#: ../js/ui/status/network.js:735
 msgid "Auto Ethernet"
 msgstr "Samodejni eternet"
 
-#: ../js/ui/status/network.js:758
+#: ../js/ui/status/network.js:803
 msgid "Auto broadband"
 msgstr "Samodejni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:761
+#: ../js/ui/status/network.js:806
 msgid "Auto dial-up"
 msgstr "Samodejni klicni dostop"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:904
-#: ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:930
+#: ../js/ui/status/network.js:1471
 #, c-format
 msgid "Auto %s"
 msgstr "Samodejna povezava z %s"
 
-#: ../js/ui/status/network.js:906
+#: ../js/ui/status/network.js:932
 msgid "Auto bluetooth"
 msgstr "Samodejna povezava z Bluetooth"
 
-#: ../js/ui/status/network.js:1416
+#: ../js/ui/status/network.js:1473
 msgid "Auto wireless"
 msgstr "Samodejni brezžični dostop"
 
-#: ../js/ui/status/network.js:1474
+#: ../js/ui/status/network.js:1521
 msgid "More..."
 msgstr "Več ..."
 
-#: ../js/ui/status/network.js:1497
+#: ../js/ui/status/network.js:1563
 msgid "Enable networking"
 msgstr "Omogoči omrežje"
 
-#: ../js/ui/status/network.js:1509
+#: ../js/ui/status/network.js:1575
 msgid "Wired"
 msgstr "Žično"
 
-#: ../js/ui/status/network.js:1520
+#: ../js/ui/status/network.js:1586
 msgid "Wireless"
 msgstr "Brezžično"
 
-#: ../js/ui/status/network.js:1530
+#: ../js/ui/status/network.js:1596
 msgid "Mobile broadband"
 msgstr "Mobilni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:1540
+#: ../js/ui/status/network.js:1606
 msgid "VPN Connections"
 msgstr "Povezave VPN"
 
-#: ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:1618
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1844
+#: ../js/ui/status/network.js:1912
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Vzpostavljena je povezava z mobilnim širokopasovnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1848
+#: ../js/ui/status/network.js:1916
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Vzpostavljena je povezava z brezžičnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1852
+#: ../js/ui/status/network.js:1920
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Vzpostavljena je povezava z žičnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1856
+#: ../js/ui/status/network.js:1924
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Vzpostavljena je povezava z omrežjem VPN '%s'"
 
-#: ../js/ui/status/network.js:1861
+#: ../js/ui/status/network.js:1929
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Vzpostavljena je povezava z '%s'."
 
-#: ../js/ui/status/network.js:1869
+#: ../js/ui/status/network.js:1937
 msgid "Connection established"
 msgstr "Povezava je vzpostavljena"
 
-#: ../js/ui/status/network.js:1991
+#: ../js/ui/status/network.js:2063
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
-#: ../js/ui/status/network.js:2116
+#: ../js/ui/status/network.js:2188
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -1037,22 +1042,22 @@ msgstr "Glasnost"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:331
+#: ../js/ui/telepathyClient.js:330
 #, c-format
 msgid "%s is online."
 msgstr "%s je povezan."
 
-#: ../js/ui/telepathyClient.js:336
+#: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is offline."
 msgstr "%s ni povezan."
 
-#: ../js/ui/telepathyClient.js:339
+#: ../js/ui/telepathyClient.js:338
 #, c-format
 msgid "%s is away."
 msgstr "%s je odsoten."
 
-#: ../js/ui/telepathyClient.js:342
+#: ../js/ui/telepathyClient.js:341
 #, c-format
 msgid "%s is busy."
 msgstr "%s je zaposlen."
@@ -1060,10 +1065,17 @@ msgstr "%s je zaposlen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:473
+#: ../js/ui/telepathyClient.js:479
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Poslano na %X ob %A"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/telepathyClient.js:524
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s je sedaj znan kot v %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1114,54 +1126,14 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:446
+#: ../src/main.c:445
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/shell-app.c:454
+#: ../src/shell-app.c:464
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Zaganjanje '%s' je spodletelo"
-
-#: ../src/shell-global.c:1395
-msgid "Less than a minute ago"
-msgstr "Pred manj kot eno minuto"
-
-#: ../src/shell-global.c:1399
-#, c-format
-msgid "%d minute ago"
-msgid_plural "%d minutes ago"
-msgstr[0] "Pred %d minutami"
-msgstr[1] "Pred %d minuto"
-msgstr[2] "Pred %d minutama"
-msgstr[3] "Pred %d minutami"
-
-#: ../src/shell-global.c:1404
-#, c-format
-msgid "%d hour ago"
-msgid_plural "%d hours ago"
-msgstr[0] "Pred %d urami"
-msgstr[1] "Pred %d uro"
-msgstr[2] "Pred %d urama"
-msgstr[3] "Pred %d urami"
-
-#: ../src/shell-global.c:1409
-#, c-format
-msgid "%d day ago"
-msgid_plural "%d days ago"
-msgstr[0] "Pred %d dnevi"
-msgstr[1] "Pred %d dnevom"
-msgstr[2] "Pred %d dnevoma"
-msgstr[3] "Pred %d dnevi"
-
-#: ../src/shell-global.c:1414
-#, c-format
-msgid "%d week ago"
-msgid_plural "%d weeks ago"
-msgstr[0] "Pred %d tedni"
-msgstr[1] "Pred %d tednom"
-msgstr[2] "Pred %d tednoma"
-msgstr[3] "Pred %d tedni"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1195,46 +1167,96 @@ msgstr "Datotečni sistem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Less than a minute ago"
+#~ msgstr "Pred manj kot eno minuto"
+
+#~ msgid "%d minute ago"
+
+#~ msgid_plural "%d minutes ago"
+#~ msgstr[0] "Pred %d minutami"
+#~ msgstr[1] "Pred %d minuto"
+#~ msgstr[2] "Pred %d minutama"
+#~ msgstr[3] "Pred %d minutami"
+
+#~ msgid "%d hour ago"
+
+#~ msgid_plural "%d hours ago"
+#~ msgstr[0] "Pred %d urami"
+#~ msgstr[1] "Pred %d uro"
+#~ msgstr[2] "Pred %d urama"
+#~ msgstr[3] "Pred %d urami"
+
+#~ msgid "%d day ago"
+
+#~ msgid_plural "%d days ago"
+#~ msgstr[0] "Pred %d dnevi"
+#~ msgstr[1] "Pred %d dnevom"
+#~ msgstr[2] "Pred %d dnevoma"
+#~ msgstr[3] "Pred %d dnevi"
+
+#~ msgid "%d week ago"
+
+#~ msgid_plural "%d weeks ago"
+#~ msgstr[0] "Pred %d tedni"
+#~ msgstr[1] "Pred %d tednom"
+#~ msgstr[2] "Pred %d tednoma"
+#~ msgstr[3] "Pred %d tedni"
+
 #~ msgid "Shut Down"
 #~ msgstr "Izklopi"
+
 #~ msgid "Click Shut Down to quit these applications and shut down the system."
 #~ msgstr "Kliknite Izklop za končanje teh programov in izklop sistema."
+
 #~ msgid "The system will shut down automatically in %d seconds."
 #~ msgstr "Sistem se bo samodejno izklopil čez %d sekund."
+
 #~ msgid "Shutting down the system."
 #~ msgstr "Izklapljanje sistema."
+
 #~ msgid "Confirm"
 #~ msgstr "Potrdi"
+
 #~ msgid "Panel"
 #~ msgstr "Pult"
+
 #~ msgid "No such application"
 #~ msgstr "Ni takšnega programa"
+
 #~ msgid "Screen Reader"
 #~ msgstr "Zaslonski bralnik"
+
 #~ msgid "Screen Keyboard"
 #~ msgstr "Zaslonska tipkovnica"
-#~ msgid "%s is now known as %s"
-#~ msgstr "%s je sedaj znan kot v %s"
+
 #~ msgid "PREFERENCES"
 #~ msgstr "Možnosti"
+
 #~ msgid "Shut Down..."
 #~ msgstr "Izklopi ..."
+
 #~ msgid "Search your computer"
 #~ msgstr "Iskanje po računalniku"
+
 #~ msgid "Clip the crosshairs at the center"
 #~ msgstr "Ali merek prekriva kazalko miške v središču"
+
 #~ msgid "Color of the crosshairs"
 #~ msgstr "Barva merka"
+
 #~ msgid ""
 #~ "Determines the length of the vertical and horizontal lines that make up "
 #~ "the crosshairs."
 #~ msgstr "Določi dolžino navpične in vodoravne črte, ki določata merek."
+
 #~ msgid ""
 #~ "Determines the transparency of the crosshairs, from fully opaque to fully "
 #~ "transparent."
 #~ msgstr "Določi prosojnost merka, od prekrivne to prozorne."
+
 #~ msgid "Enable lens mode"
 #~ msgstr "Omogočeni način leče"
+
 #~ msgid ""
 #~ "For centered mouse tracking, when the system pointer is at or near the "
 #~ "edge of the screen, the magnified contents continue to scroll such that "
@@ -1243,48 +1265,63 @@ msgstr "%1$s: %2$s"
 #~ "Pri usredinjenem sledenju miški, ko je sistemski kazalnik ob robu "
 #~ "zaslona, približanje vsebine drsi naprej tako, da je rob zaslona v "
 #~ "približanem pogledu."
+
 #~ msgid "Length of the crosshairs"
 #~ msgstr "Dolžina merka"
+
 #~ msgid "Magnification factor"
 #~ msgstr "Faktor približanja"
+
 #~ msgid "Mouse Tracking Mode"
 #~ msgstr "Način sledenja miške"
+
 #~ msgid "Opacity of the crosshairs"
 #~ msgstr "Prosojnost merka"
+
 #~ msgid "Screen position"
 #~ msgstr "Položaj zaslona"
+
 #~ msgid "Scroll magnified contents beyond the edges of the desktop"
 #~ msgstr "Zdrsni približano vsebino preko robov namizja"
+
 #~ msgid "Show or hide crosshairs"
 #~ msgstr "Pokaži ali skrij merek"
+
 #~ msgid "Show or hide the magnifier"
 #~ msgstr "Pokaži ali skrij približevalnik"
+
 #~ msgid "Show or hide the magnifier and all of its zoom regions."
 #~ msgstr "Pokaže ali skrije povečevalo in vsa njegova območja približevanja."
+
 #~ msgid ""
 #~ "The color of the the vertical and horizontal lines that make up the "
 #~ "crosshairs."
 #~ msgstr "Barva navpične in vodoravne črte, ki določata merek."
+
 #~ msgid ""
 #~ "The magnified view either fills the entire screen, or occupies the top-"
 #~ "half, bottom-half, left-half, or right-half of the screen."
 #~ msgstr ""
 #~ "Približan pogled lahko zapolni celoten zaslon, lahko pa zasede zgornjo, "
 #~ "spodnjo, levo ali pa desno polovico zaslona."
+
 #~ msgid ""
 #~ "The power of the magnification. A value of 1.0 means no magnification. A "
 #~ "value of 2.0 doubles the size."
 #~ msgstr ""
 #~ "Vrednost približanja. Vrednost 1.0 pomeni brez približanja, vrednost 2.0 "
 #~ "pa podvoji učinek približanja."
+
 #~ msgid "Thickness of the crosshairs"
 #~ msgstr "Debelina merka"
+
 #~ msgid ""
 #~ "Whether the magnified view should be centered over the location of the "
 #~ "system mouse and move with it."
 #~ msgstr ""
 #~ "Ali naj bo približan pogled usredinjen na mesto sistemske miške in se z "
 #~ "njo premika."
+
 #~ msgid ""
 #~ "Width of the vertical and horizontal lines that make up the crosshairs."
 #~ msgstr "Širina navpične in vodoravne čete, ki določata merek."
@@ -1292,28 +1329,36 @@ msgstr "%1$s: %2$s"
 #, fuzzy
 #~ msgid "Bluetooth Agent"
 #~ msgstr "Agent KAOS"
+
 #~ msgid ""
 #~ "Can't add a new workspace because maximum workspaces limit has been "
 #~ "reached."
 #~ msgstr ""
 #~ "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo največje "
 #~ "dovoljeno število."
+
 #~ msgid "Can't remove the first workspace."
 #~ msgstr "Ni mogoče odstraniti prve delovne površine."
+
 #~ msgid "Clock"
 #~ msgstr "Ura"
+
 #~ msgid "Customize the panel clock"
 #~ msgstr "Prilagodi uro pladnja"
+
 #~ msgid "Custom format of the clock"
 #~ msgstr "Zapis ure po meri"
+
 #~ msgid "Hour format"
 #~ msgstr "Urni zapis"
+
 #~ msgid ""
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
 #~ "Izbrana možnost določa ali \"12-urni\" ali pa \"24-urni\" zapis časa s "
 #~ "prikazanimi sekundami."
+
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
 #~ "is set to \"custom\". You can use conversion specifiers understood by "
@@ -1324,77 +1369,103 @@ msgstr "%1$s: %2$s"
 #~ "zapisa nastavljen kot \"prikrojen\". Za določitev zapisa lahko uporabite "
 #~ "tudi oznake funkcije strftime(), ki so podrobneje zapisane v priročniku "
 #~ "funkcije."
+
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
 #~ msgstr ""
 #~ "Ključ določa zapis ure. Mogoče vrednosti so \"12-urni\", \"24-urni\", "
 #~ "\"unix\" in \"po meri\". Možnost \"unix\" prikazuje čas v sekundah od "
 #~ "začetka ere, torej od 01.01.1970, možnost \"po meri\" pa omogoča "
 #~ "prikrojen zapis. Pri izbiri zapisa \"unix\" ali \"po meri\" sta izbiri "
 #~ "pokaži datum in pokaži sekunde, prezrti."
+
 #~ msgid "Clock Format"
 #~ msgstr "Zapis ure"
+
 #~ msgid "Clock Preferences"
 #~ msgstr "Možnosti ure"
+
 #~ msgid "Panel Display"
 #~ msgstr "Prikazovanje pladnja"
+
 #~ msgid "Show seco_nds"
 #~ msgstr "Pokaži _sekunde"
+
 #~ msgid "Show the _date"
 #~ msgstr "Pokaži _datum"
+
 #~ msgid "_12 hour format"
 #~ msgstr "_12-urni zapis časa"
+
 #~ msgid "_24 hour format"
 #~ msgstr "_24-urni zapis časa"
+
 #~ msgid "Preferences"
 #~ msgstr "Možnosti"
+
 #~ msgid "What's using power..."
 #~ msgstr "Kaj porablja napetost ..."
+
 #~ msgid "Overview workspace view mode"
 #~ msgstr "Način pregleda predogleda delovnih površin"
+
 #~ msgid ""
 #~ "The selected workspace view mode in the overview. Supported values are "
 #~ "\"single\" and \"grid\"."
 #~ msgstr ""
 #~ "Izbrani pogled delovnih površin v predogledu. Podprte vrednosti sta "
 #~ "\"enojno\" in \"mrežno\"."
+
 #~ msgid "Drag here to add favorites"
 #~ msgstr "S potegom na to mesto se izbor doda med priljubljene"
+
 #~ msgid "Find"
 #~ msgstr "Najdi"
+
 #~ msgid "Invisible"
 #~ msgstr "Nevidno"
+
 #~ msgid "System Preferences..."
 #~ msgstr "Sistemske možnosti ..."
+
 #~ msgid "ON"
 #~ msgstr "⚪"
+
 #~ msgid "OFF"
 #~ msgstr "⚫"
+
 #~ msgid "Sidebar"
 #~ msgstr "Stranska vrstica"
+
 #~ msgid "Recent Documents"
 #~ msgstr "Nedavni dokumenti"
+
 #~ msgid "PLACES"
 #~ msgstr "Mesta"
+
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "Rezultati iskanja"
+
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Ni mogoče zakleniti zaslona: %s"
+
 #~ msgid "Can't temporarily set screensaver to blank screen: %s"
 #~ msgstr ""
 #~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
+
 #~ msgid "Can't logout: %s"
 #~ msgstr "Ni se mogoče odjaviti: %s"
+
 #~ msgid "Frequent"
 #~ msgstr "Pogosto"
+
 #~ msgid "(see all)"
 #~ msgstr "(poglej vse)"
+
 #~ msgid "Browse"
 #~ msgstr "Prebrskaj"
-
