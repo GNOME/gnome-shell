@@ -1267,6 +1267,10 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 
+  /* If we never successfully allocated then there's nothing to do */
+  if (egl_onscreen == NULL)
+    return;
+
   if (egl_onscreen->egl_surface != EGL_NO_SURFACE)
     {
       if (eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface)
@@ -1309,6 +1313,9 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
       egl_onscreen->wayland_surface = NULL;
     }
 #endif
+
+  g_slice_free (CoglOnscreenEGL, onscreen->winsys);
+  onscreen->winsys = NULL;
 }
 
 static void

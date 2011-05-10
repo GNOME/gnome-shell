@@ -878,6 +878,10 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
 
+  /* If we never successfully allocated then there's nothing to do */
+  if (glx_onscreen == NULL)
+    return;
+
   _cogl_xlib_trap_errors (&old_state);
 
   if (glx_onscreen->glxwin != None)
@@ -897,6 +901,9 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   XSync (xlib_renderer->xdpy, False);
 
   _cogl_xlib_untrap_errors (&old_state);
+
+  g_slice_free (CoglOnscreenGLX, onscreen->winsys);
+  onscreen->winsys = NULL;
 }
 
 static void

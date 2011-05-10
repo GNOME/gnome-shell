@@ -654,6 +654,10 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglOnscreenWin32 *win32_onscreen = onscreen->winsys;
   CoglOnscreenWgl *wgl_onscreen = onscreen->winsys;
 
+  /* If we never successfully allocated then there's nothing to do */
+  if (wgl_onscreen == NULL)
+    return;
+
   if (wgl_onscreen->client_dc)
     {
       if (wgl_context->current_dc == wgl_onscreen->client_dc)
@@ -669,6 +673,9 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
       SetWindowLongPtrW (win32_onscreen->hwnd, 0, (LONG_PTR) 0);
       DestroyWindow (win32_onscreen->hwnd);
     }
+
+  g_slice_free (CoglOnscreenWgl, onscreen->winsys);
+  onscreen->winsys = NULL;
 }
 
 static gboolean
