@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-05-06 14:11+0000\n"
-"PO-Revision-Date: 2011-05-09 12:57+0200\n"
+"PO-Revision-Date: 2011-05-10 11:12+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1573,11 +1573,11 @@ msgstr "Foco de la tecla"
 
 #: ../clutter/clutter-stage.c:1802
 msgid "The currently key focused actor"
-msgstr ""
+msgstr "El actor que actualmente tiene el foco"
 
 #: ../clutter/clutter-stage.c:1818
 msgid "No Clear Hint"
-msgstr ""
+msgstr "No limpiar el contorno"
 
 #: ../clutter/clutter-stage.c:1819
 msgid "Whether the stage should clear its contents"
@@ -1598,6 +1598,8 @@ msgstr "Estado"
 #: ../clutter/clutter-state.c:1409
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
+"Estado establecido actualmente, (la transición a este estado puede no estar "
+"completa)"
 
 #: ../clutter/clutter-state.c:1423
 msgid "Default transition duration"
@@ -1745,7 +1747,7 @@ msgstr "La posición del cursor"
 
 #: ../clutter/clutter-text.c:2744
 msgid "Selection-bound"
-msgstr ""
+msgstr "Destino de la selección"
 
 #: ../clutter/clutter-text.c:2745
 msgid "The cursor position of the other end of the selection"
@@ -1864,14 +1866,16 @@ msgid ""
 "Forces the underlying texture to be singular and not made of smaller space "
 "saving individual textures"
 msgstr ""
+"Fuerza a la textura subyacente a ser singular y a que no esté hecha de un "
+"espacio menor guardando texturas individuales"
 
 #: ../clutter/clutter-texture.c:1012
 msgid "Tile Waste"
-msgstr ""
+msgstr "Cuadrado sobrante"
 
 #: ../clutter/clutter-texture.c:1013
 msgid "Maximum waste area of a sliced texture"
-msgstr ""
+msgstr "Área máxima sobrante de una textura troceada"
 
 #: ../clutter/clutter-texture.c:1021
 msgid "Horizontal repeat"
@@ -1911,7 +1915,7 @@ msgstr "Textura de Cogl"
 
 #: ../clutter/clutter-texture.c:1056
 msgid "The underlying Cogl texture handle used to draw this actor"
-msgstr ""
+msgstr "La textura Cogl subyacente usada para dibujar este actor"
 
 #: ../clutter/clutter-texture.c:1063
 msgid "Cogl Material"
@@ -1962,11 +1966,11 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1157
 msgid "Pick With Alpha"
-msgstr ""
+msgstr "Seleccionar con alfa"
 
 #: ../clutter/clutter-texture.c:1158
 msgid "Shape actor with alpha channel when picking"
-msgstr ""
+msgstr "Dar forma al actor con canal alfa al seleccionarlo"
 
 #: ../clutter/clutter-timeline.c:264
 msgid "Should the timeline automatically restart"
@@ -1978,7 +1982,7 @@ msgstr "Retardo"
 
 #: ../clutter/clutter-timeline.c:279
 msgid "Delay before start"
-msgstr ""
+msgstr "Retardo antes de empezar"
 
 #: ../clutter/clutter-timeline.c:295
 msgid "Duration of the timeline in milliseconds"
@@ -1990,7 +1994,7 @@ msgstr "Dirección de la línea de tiempo"
 
 #: ../clutter/clutter-timeline.c:326
 msgid "Auto Reverse"
-msgstr ""
+msgstr "Invertir automáticamente"
 
 #: ../clutter/clutter-timeline.c:327
 msgid "Whether the direction should be reversed when reaching the end"
@@ -2014,7 +2018,7 @@ msgstr "Mostrar las opciones de Cogl"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:147
 msgid "sysfs Path"
-msgstr ""
+msgstr "Ruta de sysfs"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:148
 msgid "Path of the device in sysfs"
@@ -2031,6 +2035,8 @@ msgstr "Ruta al nodo del dispositivo"
 #: ../clutter/glx/clutter-backend-glx.c:107
 msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
 msgstr ""
+"Establecer a «none» o a «0» para desactivar el límite de imágenes por segundo "
+"de «vblank»"
 
 #: ../clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
@@ -2058,7 +2064,7 @@ msgstr "Mapa de píxeles"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:550
 msgid "The X11 Pixmap to be bound"
-msgstr ""
+msgstr "EL mapa de píxeles X11 que asociar"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:558
 msgid "Pixmap width"
@@ -2066,7 +2072,7 @@ msgstr "Anchura del mapa de píxeles"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:559
 msgid "The width of the pixmap bound to this texture"
-msgstr ""
+msgstr "La anchura del mapa de píxeles asociado a esta textura"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:567
 msgid "Pixmap height"
@@ -2074,7 +2080,7 @@ msgstr "Altura del mapa de píxeles"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:568
 msgid "The height of the pixmap bound to this texture"
-msgstr ""
+msgstr "La altura del mapa de píxeles asociado a esta textura"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:576
 msgid "Pixmap Depth"
@@ -2083,6 +2089,8 @@ msgstr "Profundidad del mapa de píxeles"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:577
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr ""
+"La profundidad (en número de bits) del mapa de píxeles asociado a esta "
+"textura"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:585
 msgid "Automatic Updates"
@@ -2091,6 +2099,8 @@ msgstr "Actualizaciones automáticas"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:586
 msgid "If the texture should be kept in sync with any pixmap changes."
 msgstr ""
+"Indica si la textura se debe sincronizar con cualquier cambio en el mapa de "
+"píxeles."
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:594
 msgid "Window"
@@ -2102,11 +2112,13 @@ msgstr "La ventana X11 que asociar"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:603
 msgid "Window Redirect Automatic"
-msgstr ""
+msgstr "Redirección automática de la ventana"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:604
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr ""
+"Indica si la redirección de la ventana compuesta está establecida a "
+"«Automática» (o «Manual» si es falso)"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:614
 msgid "Window Mapped"
@@ -2130,7 +2142,7 @@ msgstr "Ventana X"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:634
 msgid "X position of window on screen according to X11"
-msgstr ""
+msgstr "Posición X de la ventana en la pantalla, de acuerdo con X11"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:642
 msgid "Window Y"
@@ -2138,12 +2150,12 @@ msgstr "Ventana Y"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:643
 msgid "Y position of window on screen according to X11"
-msgstr ""
+msgstr "Posición Y de la ventana en la pantalla, de acuerdo con X11"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:650
 msgid "Window Override Redirect"
-msgstr ""
+msgstr "Omitir redirección de la ventana"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:651
 msgid "If this is an override-redirect window"
-msgstr ""
+msgstr "Indica si esta es una ventana que omite la redirección"
