@@ -22,8 +22,8 @@ const DBus = imports.dbus;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
+const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
-const Gdm = imports.gi.Gdm;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Pango = imports.gi.Pango;
@@ -237,7 +237,7 @@ EndSessionDialog.prototype = {
     _init: function() {
         ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'end-session-dialog' });
 
-        this._user = Gdm.UserManager.ref_default().get_user(GLib.get_user_name());
+        this._user = AccountsService.UserManager.get_default().get_user(GLib.get_user_name());
 
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;

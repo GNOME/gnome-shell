@@ -68,7 +68,6 @@ gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 
 CLEANFILES += gnome-shell $(bin_SCRIPTS)
 
-include Makefile-gdmuser.am
 include Makefile-st.am
 include Makefile-tray.am
 include Makefile-gvc.am
@@ -263,7 +262,6 @@ libgnome_shell_la_LIBADD =		\
 	$(GNOME_SHELL_LIBS)	\
 	$(BLUETOOTH_LIBS)	\
 	libst-1.0.la       	\
-	libgdmuser-1.0.la	\
 	libtray.la		\
 	libgvc.la		\
 	$(NULL)
@@ -288,12 +286,3 @@ St_1_0_gir_FILES = $(filter-out %-private.h $(st_non_gir_sources), $(addprefix $
 	$(addprefix $(srcdir)/,$(st_source_c))
 INTROSPECTION_GIRS += St-1.0.gir
 CLEANFILES += St-1.0.gir
-
-Gdm-1.0.gir: libgdmuser-1.0.la
-Gdm_1_0_gir_INCLUDES = GObject-2.0 GdkPixbuf-2.0
-Gdm_1_0_gir_CFLAGS = $(gdmuser_cflags)
-Gdm_1_0_gir_LIBS = libgdmuser-1.0.la
-Gdm_1_0_gir_FILES = $(filter-out %-private.h, $(addprefix $(srcdir)/,$(gdmuser_source_h))) \
-	$(addprefix $(srcdir)/,$(gdmuser_source_c))
-INTROSPECTION_GIRS += Gdm-1.0.gir
-CLEANFILES += Gdm-1.0.gir

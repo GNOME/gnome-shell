@@ -68,7 +68,7 @@ fi
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
 # gvfs, python, pygobject, gnome-python (gconf),
-# icon-naming-utils, zenity, libtasn1-tools
+# icon-naming-utils, zenity, libtasn1-tools accountsservice
 
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
   reqd="
@@ -84,7 +84,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0-0-dev
     libupower-glib-dev libcups2-dev libproxy-dev libdb-dev libproxy-dev
     libsqlite3-dev libgudev-1.0-dev libsane-dev libwebkitgtk-3.0-0
-    libx11-xcb-dev libupower-glib-dev
+    libx11-xcb-dev libupower-glib-dev accountsservice
     "
 
   if apt-cache show libxcb-util0-dev > /dev/null 2> /dev/null; then
@@ -117,7 +117,7 @@ fi
 
 if test "x$system" = xFedora ; then
   reqd="
-    binutils curl gcc gcc-c++ make
+    binutils curl gcc gcc-c++ make accountsservice
     automake bison flex gettext git gnome-common gnome-doc-utils gperf gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
     gnome-python2-gconf jasper-devel libffi-devel libical-devel libjpeg-devel libpng-devel

@@ -23,10 +23,10 @@
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
+const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 const Pango = imports.gi.Pango;
-const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 const Polkit = imports.gi.Polkit;
@@ -92,7 +92,7 @@ AuthenticationDialog.prototype = {
 
         let userName = userNames[0];
 
-        this._user = Gdm.UserManager.ref_default().get_user(userName);
+        this._user = AccountsService.UserManager.get_default().get_user(userName);
         let userRealName = this._user.get_real_name()
         this._userLoadedId = this._user.connect('notify::is_loaded',
                                                 Lang.bind(this, this._onUserChanged));

@@ -1,6 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Gdm = imports.gi.Gdm;
+const AccountsService = imports.gi.AccountsService;
 const DBus = imports.dbus;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -183,10 +183,9 @@ IMStatusChooserItem.prototype = {
                 this._IMStatusChanged(mgr, presence, s, msg);
             }));
 
-        this._gdm = Gdm.UserManager.ref_default();
-        this._gdm.queue_load();
+        this._userManager = AccountsService.UserManager.get_default();
 
-        this._user = this._gdm.get_user(GLib.get_user_name());
+        this._user = this._userManager.get_user(GLib.get_user_name());
 
         this._userLoadedId = this._user.connect('notify::is-loaded',
                                                 Lang.bind(this,
@@ -367,10 +366,9 @@ UserMenuButton.prototype = {
 
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
 
-        this._gdm = Gdm.UserManager.ref_default();
-        this._gdm.queue_load();
+        this._userManager = AccountsService.UserManager.get_default();
 
-        this._user = this._gdm.get_user(GLib.get_user_name());
+        this._user = this._userManager.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
@@ -416,9 +414,12 @@ UserMenuButton.prototype = {
         this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUserName));
 
         this._createSubMenu();
-        this._gdm.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUser));
-        this._gdm.connect('user-added', Lang.bind(this, this._updateSwitchUser));
-        this._gdm.connect('user-removed', Lang.bind(this, this._updateSwitchUser));
+        this._userManager.connect('notify::is-loaded',
+                                  Lang.bind(this, this._updateSwitchUser));
+        this._userManager.connect('user-added',
+                                  Lang.bind(this, this._updateSwitchUser));
+        this._userManager.connect('user-removed',
+                                  Lang.bind(this, this._updateSwitchUser));
         this._lockdownSettings.connect('changed::' + DISABLE_USER_SWITCH_KEY,
                                        Lang.bind(this, this._updateSwitchUser));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
@@ -459,7 +460,7 @@ UserMenuButton.prototype = {
 
     _updateSwitchUser: function() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
-        if (allowSwitch && this._gdm.can_switch ())
+        if (allowSwitch && this._userManager.can_switch ())
             this._loginScreenItem.actor.show();
         else
             this._loginScreenItem.actor.hide();
@@ -619,7 +620,7 @@ UserMenuButton.prototype = {
         // Ensure we only move to GDM after the screensaver has activated; in some
         // OS configurations, the X server may block event processing on VT switch
         this._screenSaverProxy.SetActiveRemote(true, Lang.bind(this, function() {
-            this._gdm.goto_login_session();
+            this._userManager.goto_login_session();
         }));
     },
 
