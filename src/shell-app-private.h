@@ -27,6 +27,9 @@ void _shell_app_do_match (ShellApp         *app,
                           GSList          **prefix_results,
                           GSList          **substring_results);
 
+void _shell_app_set_dbus_name (ShellApp   *app,
+                               const char *name);
+
 G_END_DECLS
 
 #endif /* __SHELL_APP_PRIVATE_H__ */

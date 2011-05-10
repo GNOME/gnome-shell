@@ -49,6 +49,9 @@ struct _ShellWindowTracker
   /* <MetaWindow * window, ShellApp *app> */
   GHashTable *window_to_app;
 
+  /* <int, gchar *> */
+  GHashTable *pid_to_dbus_connection;
+
   /* <int, ShellApp *app> */
   GHashTable *launched_pid_to_app;
 };
@@ -436,6 +439,8 @@ track_window (ShellWindowTracker *self,
               MetaWindow      *window)
 {
   ShellApp *app;
+  GPid pid;
+  gchar *dbus_name;
 
   if (!shell_window_tracker_is_window_interesting (window))
     return;
@@ -450,6 +455,15 @@ track_window (ShellWindowTracker *self,
   g_signal_connect (window, "notify::wm-class", G_CALLBACK (on_wm_class_changed), self);
 
   _shell_app_add_window (app, window);
+
+  /* Try to associate this ShellApp with a GApplication id, if one exists */
+  pid = meta_window_get_pid (window);
+  dbus_name = g_hash_table_lookup (self->pid_to_dbus_connection, GINT_TO_POINTER ((int) pid));
+  if (dbus_name != NULL)
+    {
+      _shell_app_set_dbus_name (app, dbus_name);
+      g_hash_table_remove (self->pid_to_dbus_connection, GINT_TO_POINTER ((int) pid));
+    }
 
   g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 }
@@ -581,13 +595,161 @@ on_startup_sequence_changed (MetaScreen            *screen,
   g_signal_emit (G_OBJECT (self), signals[STARTUP_SEQUENCE_CHANGED], 0, sequence);
 }
 
+typedef struct {
+  ShellWindowTracker *tracker;
+  gchar *bus_name;
+} LookupAppDBusData;
+
+static void
+on_get_connection_unix_pid_reply (GObject      *connection,
+                                  GAsyncResult *result,
+                                  gpointer      user_data)
+{
+  LookupAppDBusData *data = user_data;
+  GError *error = NULL;
+  GVariant *reply;
+  guint32 pid;
+  ShellApp *app;
+
+  reply = g_dbus_connection_call_finish (G_DBUS_CONNECTION (connection), result, &error);
+  if (!reply)
+    {
+      if (!g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_NAME_HAS_NO_OWNER))
+          g_warning ("%s\n", error->message);
+
+      g_clear_error (&error);
+      goto out;
+    }
+  if (!g_variant_is_of_type (reply, G_VARIANT_TYPE ("(u)")))
+    {
+      g_variant_unref (reply);
+      goto out;
+    }
+  g_variant_get (reply, "(u)", &pid);
+  g_variant_unref (reply);
+
+  app = shell_window_tracker_get_app_from_pid (data->tracker, (int)pid);
+  if (app)
+    _shell_app_set_dbus_name (app, data->bus_name);
+  else
+    {
+      g_hash_table_insert (data->tracker->pid_to_dbus_connection,
+                           GINT_TO_POINTER ((int) pid),
+                           data->bus_name);
+      data->bus_name = NULL;
+    }
+
+ out:
+  g_object_unref (data->tracker);
+  g_free (data->bus_name);
+  g_slice_free (LookupAppDBusData, data);
+}
+
+static void
+lookup_application_from_name (ShellWindowTracker *self,
+                              GDBusConnection    *connection,
+                              const gchar        *bus_name)
+{
+  LookupAppDBusData *data;
+
+  data = g_slice_new0 (LookupAppDBusData);
+  data->tracker = g_object_ref (self);
+  data->bus_name = g_strdup (bus_name);
+
+  /*
+   * TODO: Add something to GtkApplication so it definitely knows the .desktop file.
+   */
+  g_dbus_connection_call (connection,
+                          "org.freedesktop.DBus",
+                          "/org/freedesktop/DBus",
+                          "org.freedesktop.DBus",
+                          "GetConnectionUnixProcessID",
+                          g_variant_new ("(s)", bus_name),
+                          NULL, 0, -1, NULL, on_get_connection_unix_pid_reply, data);
+}
+
+static void
+on_application_signal (GDBusConnection  *connection,
+                       const gchar      *sender_name,
+                       const gchar      *object_path,
+                       const gchar      *interface_name,
+                       const gchar      *signal_name,
+                       GVariant         *parameters,
+                       gpointer          user_data)
+{
+  ShellWindowTracker *tracker = SHELL_WINDOW_TRACKER (user_data);
+  gchar *bus_name = NULL;
+
+  g_variant_get (parameters, "(&s)", &bus_name);
+  lookup_application_from_name (tracker, connection, bus_name);
+
+  g_variant_unref (parameters);
+}
+
+static void
+on_list_names_end (GObject      *object,
+                   GAsyncResult *result,
+                   gpointer      user_data)
+{
+  GDBusConnection *connection = G_DBUS_CONNECTION (object);
+  ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
+  GError *error = NULL;
+  GVariantIter iter;
+  gchar *bus_name = NULL;
+
+  GVariant *res = g_dbus_connection_call_finish (connection, result, &error);
+
+  if (!res)
+    {
+      g_warning ("ListNames failed: %s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  g_variant_iter_init (&iter, g_variant_get_child_value (res, 0));
+  while (g_variant_iter_loop (&iter, "s", &bus_name))
+    {
+      if (bus_name[0] == ':')
+        {
+          /* unique name, uninteresting */
+          continue;
+        }
+
+      lookup_application_from_name (self, connection, bus_name);
+    }
+
+  g_variant_unref (res);
+}
+
 static void
 shell_window_tracker_init (ShellWindowTracker *self)
 {
   MetaScreen *screen;
 
-  self->window_to_app = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                               NULL, (GDestroyNotify) g_object_unref);
+  g_dbus_connection_signal_subscribe (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
+                                      NULL,
+                                      "org.gtk.Application",
+                                      "Hello",
+                                      NULL,
+                                      NULL,
+                                      G_DBUS_SIGNAL_FLAGS_NONE,
+                                      on_application_signal,
+                                      self, NULL);
+
+  g_dbus_connection_call (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
+                          "org.freedesktop.DBus",
+                          "/org/freedesktop/DBus",
+                          "org.freedesktop.DBus",
+                          "ListNames",
+                          NULL, /* parameters */
+                          G_VARIANT_TYPE ("(as)"),
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1, /* timeout */
+                          NULL, /* cancellable */
+                          on_list_names_end, self);
+
+  self->window_to_app = g_hash_table_new_full (NULL, NULL, NULL, g_object_unref);
+  self->pid_to_dbus_connection = g_hash_table_new_full (NULL, NULL, NULL, g_free);
 
   self->launched_pid_to_app = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_object_unref);
 
@@ -607,6 +769,7 @@ shell_window_tracker_finalize (GObject *object)
 
   g_hash_table_destroy (self->window_to_app);
   g_hash_table_destroy (self->launched_pid_to_app);
+  g_hash_table_destroy (self->pid_to_dbus_connection);
 
   G_OBJECT_CLASS (shell_window_tracker_parent_class)->finalize(object);
 }
