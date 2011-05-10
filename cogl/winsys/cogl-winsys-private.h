@@ -56,6 +56,8 @@ typedef struct _CoglWinsysVtable
 {
   const char *name;
 
+  /* Required functions */
+
   CoglFuncPtr
   (*get_proc_address) (const char *name);
 
@@ -77,16 +79,6 @@ typedef struct _CoglWinsysVtable
   void
   (*context_deinit) (CoglContext *context);
 
-#ifdef COGL_HAS_EGL_SUPPORT
-  EGLDisplay
-  (*context_egl_get_egl_display) (CoglContext *context);
-#endif
-
-#ifdef COGL_HAS_XLIB_SUPPORT
-  XVisualInfo *
-  (*xlib_get_visual_info) (void);
-#endif
-
   gboolean
   (*onscreen_init) (CoglOnscreen *onscreen, GError **error);
 
@@ -100,12 +92,28 @@ typedef struct _CoglWinsysVtable
   (*onscreen_swap_buffers) (CoglOnscreen *onscreen);
 
   void
+  (*onscreen_update_swap_throttled) (CoglOnscreen *onscreen);
+
+  void
+  (*onscreen_set_visibility) (CoglOnscreen *onscreen,
+                              gboolean visibility);
+
+  /* Optional functions */
+
+  void
   (*onscreen_swap_region) (CoglOnscreen *onscreen,
                            int *rectangles,
                            int n_rectangles);
 
-  void
-  (*onscreen_update_swap_throttled) (CoglOnscreen *onscreen);
+#ifdef COGL_HAS_EGL_SUPPORT
+  EGLDisplay
+  (*context_egl_get_egl_display) (CoglContext *context);
+#endif
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+  XVisualInfo *
+  (*xlib_get_visual_info) (void);
+#endif
 
   guint32
   (*onscreen_x11_get_window_xid) (CoglOnscreen *onscreen);
@@ -118,10 +126,6 @@ typedef struct _CoglWinsysVtable
   void
   (*onscreen_remove_swap_buffers_callback) (CoglOnscreen *onscreen,
                                             unsigned int id);
-
-  void
-  (*onscreen_set_visibility) (CoglOnscreen *onscreen,
-                              gboolean visibility);
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   gboolean

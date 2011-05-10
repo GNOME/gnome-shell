@@ -1412,22 +1412,6 @@ _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 }
 #endif
 
-static unsigned int
-_cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
-                                                 CoglSwapBuffersNotify callback,
-                                                 void *user_data)
-{
-  /* Unsupported feature */
-  return 0;
-}
-
-static void
-_cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
-                                                    unsigned int id)
-{
-  /* Unsupported feature */
-}
-
 static void
 _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 {
@@ -1499,10 +1483,6 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_x11_get_window_xid =
       _cogl_winsys_onscreen_x11_get_window_xid,
 #endif
-    .onscreen_add_swap_buffers_callback =
-      _cogl_winsys_onscreen_add_swap_buffers_callback,
-    .onscreen_remove_swap_buffers_callback =
-      _cogl_winsys_onscreen_remove_swap_buffers_callback,
   };
 
 /* XXX: we use a function because no doubt someone will complain

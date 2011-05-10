@@ -1615,6 +1615,11 @@ cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
     {
       const CoglWinsysVtable *winsys =
         _cogl_framebuffer_get_winsys (framebuffer);
+
+      /* This should only be called if the winsys advertises
+         COGL_WINSYS_FEATURE_SWAP_REGION */
+      g_return_if_fail (winsys->onscreen_swap_region != NULL);
+
       winsys->onscreen_swap_region (COGL_ONSCREEN (framebuffer),
                                     rectangles,
                                     n_rectangles);
@@ -1647,6 +1652,10 @@ cogl_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
   else
     {
       const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+
+      /* This should only be called for x11 onscreens */
+      g_return_val_if_fail (winsys->onscreen_x11_get_window_xid != NULL, 0);
+
       return winsys->onscreen_x11_get_window_xid (onscreen);
     }
 }
@@ -1656,8 +1665,14 @@ cogl_onscreen_x11_get_visual_xid (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
-  XVisualInfo *visinfo = winsys->xlib_get_visual_info ();
-  guint32 id = (guint32)visinfo->visualid;
+  XVisualInfo *visinfo;
+  guint32 id;
+
+  /* This should only be called for xlib based onscreens */
+  g_return_val_if_fail (winsys->xlib_get_visual_info != NULL, 0);
+
+  visinfo = winsys->xlib_get_visual_info ();
+  id = (guint32)visinfo->visualid;
 
   XFree (visinfo);
   return id;
@@ -1675,6 +1690,10 @@ cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
   /* Should this just be cogl_onscreen API instead? */
   g_return_val_if_fail (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN, 0);
 
+  /* This should only be called when
+     COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT is advertised */
+  g_return_val_if_fail (winsys->onscreen_add_swap_buffers_callback != NULL, 0);
+
   return winsys->onscreen_add_swap_buffers_callback (onscreen,
                                                      callback,
                                                      user_data);
@@ -1686,6 +1705,10 @@ cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+
+  /* This should only be called when
+     COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT is advertised */
+  g_return_if_fail (winsys->onscreen_remove_swap_buffers_callback != NULL);
 
   winsys->onscreen_remove_swap_buffers_callback (onscreen, id);
 }
