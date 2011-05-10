@@ -37,6 +37,13 @@ typedef struct {
 
   /* Whether or not we need to resort the windows; this is done on demand */
   gboolean window_sort_stale : 1;
+
+  /* See GApplication documentation */
+  guint             name_watcher_id;
+  gchar            *dbus_name;
+  GDBusActionGroup *remote_actions;
+  GMenuProxy       *remote_menu;
+  GCancellable     *dbus_cancellable;
 } ShellAppRunningState;
 
 /**
@@ -72,11 +79,13 @@ struct _ShellApp
   char *casefolded_exec;
 };
 
-G_DEFINE_TYPE (ShellApp, shell_app, G_TYPE_OBJECT);
-
 enum {
   PROP_0,
-  PROP_STATE
+  PROP_STATE,
+  PROP_ID,
+  PROP_DBUS_ID,
+  PROP_ACTION_GROUP,
+  PROP_MENU
 };
 
 enum {
@@ -88,6 +97,15 @@ static guint shell_app_signals[LAST_SIGNAL] = { 0 };
 
 static void create_running_state (ShellApp *app);
 static void unref_running_state (ShellAppRunningState *state);
+static void on_dbus_name_appeared (GDBusConnection *bus,
+                                   const gchar     *name,
+                                   const gchar     *name_owner,
+                                   gpointer         user_data);
+static void on_dbus_name_disappeared (GDBusConnection *bus,
+                                      const gchar     *name,
+                                      gpointer         user_data);
+
+G_DEFINE_TYPE (ShellApp, shell_app, G_TYPE_OBJECT)
 
 static void
 shell_app_get_property (GObject    *gobject,
@@ -101,6 +119,20 @@ shell_app_get_property (GObject    *gobject,
     {
     case PROP_STATE:
       g_value_set_enum (value, app->state);
+      break;
+    case PROP_ID:
+      g_value_set_string (value, shell_app_get_id (app));
+      break;
+    case PROP_DBUS_ID:
+      g_value_set_string (value, shell_app_get_dbus_id (app));
+      break;
+    case PROP_ACTION_GROUP:
+      if (app->running_state)
+        g_value_set_object (value, app->running_state->remote_actions);
+      break;
+    case PROP_MENU:
+      if (app->running_state)
+        g_value_set_object (value, app->running_state->remote_menu);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -149,6 +181,15 @@ window_backed_app_get_icon (ShellApp *app,
                                                                "icon");
   g_object_set (actor, "width", (float) size, "height", (float) size, NULL);
   return actor;
+}
+
+const char *
+shell_app_get_dbus_id (ShellApp *app)
+{
+  if (app->running_state)
+    return app->running_state->dbus_name;
+  else
+    return NULL;
 }
 
 /**
@@ -903,6 +944,34 @@ shell_app_on_ws_switch (MetaScreen         *screen,
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
 }
 
+static void
+on_dbus_application_id_changed (MetaWindow   *window,
+                                GParamSpec   *pspec,
+                                gpointer      user_data)
+{
+  const char *appid;
+  ShellApp *app = SHELL_APP (user_data);
+
+  /* Ignore changes in the appid after it's set, shouldn't happen */
+  if (app->running_state->dbus_name != NULL)
+    return;
+
+  appid = meta_window_get_dbus_application_id (window);
+
+  if (!appid)
+    return;
+
+  g_assert (app->running_state != NULL);
+  app->running_state->dbus_name = g_strdup (appid);
+  app->running_state->name_watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
+                                                          appid,
+                                                          G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                                          on_dbus_name_appeared,
+                                                          on_dbus_name_disappeared,
+                                                          g_object_ref (app),
+                                                          g_object_unref);
+}
+
 void
 _shell_app_add_window (ShellApp        *app,
                        MetaWindow      *window)
@@ -923,6 +992,9 @@ _shell_app_add_window (ShellApp        *app,
   if (app->state != SHELL_APP_STATE_STARTING)
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
 
+  g_signal_connect (window, "notify::dbus-application-id", G_CALLBACK(on_dbus_application_id_changed), app);
+  on_dbus_application_id_changed (window, NULL, app);
+
   g_object_thaw_notify (G_OBJECT (app));
 
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
@@ -939,6 +1011,7 @@ _shell_app_remove_window (ShellApp   *app,
 
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
+  g_signal_handlers_disconnect_by_func (window, G_CALLBACK(on_dbus_application_id_changed), app);
   g_object_unref (window);
   app->running_state->windows = g_slist_remove (app->running_state->windows, window);
 
@@ -946,6 +1019,113 @@ _shell_app_remove_window (ShellApp   *app,
     shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
 
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
+}
+
+static void
+on_action_group_acquired (GObject      *object,
+                          GAsyncResult *result,
+                          gpointer      user_data)
+{
+  ShellApp *self = SHELL_APP (user_data);
+  ShellAppRunningState *state = self->running_state;
+  GError *error = NULL;
+  char *object_path;
+
+  state->remote_actions = g_dbus_action_group_new_finish (result,
+                                                          &error);
+
+  if (error)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
+          !g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
+        {
+          g_warning ("Unexpected error while reading application actions: %s", error->message);
+        }
+
+      g_clear_error (&error);
+      g_clear_object (&state->dbus_cancellable);
+
+      if (state->name_watcher_id)
+        {
+          g_bus_unwatch_name (state->name_watcher_id);
+          state->name_watcher_id = 0;
+        }
+
+      g_free (state->dbus_name);
+      state->dbus_name = NULL;
+
+      g_object_unref (self);
+      return;
+    }
+
+  object_path = g_strconcat ("/", state->dbus_name, NULL);
+  g_strdelimit (object_path, ".", '/');
+
+  state->remote_menu = g_menu_proxy_get (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
+                                         state->dbus_name,
+                                         object_path);
+
+  g_object_notify (G_OBJECT (self), "dbus-id");
+  g_object_notify (G_OBJECT (self), "action-group");
+  g_object_notify (G_OBJECT (self), "menu");
+
+  g_object_unref (self);
+  g_free (object_path);
+}
+
+static void
+on_dbus_name_appeared (GDBusConnection *bus,
+                       const gchar     *name,
+                       const gchar     *name_owner,
+                       gpointer         user_data)
+{
+  ShellApp *self = SHELL_APP (user_data);
+  ShellAppRunningState *state = self->running_state;
+  char *object_path;
+
+  g_assert (state != NULL);
+
+  object_path = g_strconcat ("/", name, NULL);
+  g_strdelimit (object_path, ".", '/');
+
+  if (!state->dbus_cancellable)
+    state->dbus_cancellable = g_cancellable_new ();
+
+  g_dbus_action_group_new (bus,
+                           name,
+                           object_path,
+                           G_DBUS_ACTION_GROUP_FLAGS_NONE,
+                           state->dbus_cancellable,
+                           on_action_group_acquired,
+                           g_object_ref (self));
+
+  g_free (object_path);
+}
+
+static void
+on_dbus_name_disappeared (GDBusConnection *bus,
+                          const gchar     *name,
+                          gpointer         user_data)
+{
+  ShellApp *self = SHELL_APP (user_data);
+  ShellAppRunningState *state = self->running_state;
+
+  g_assert (state != NULL);
+
+  if (state->dbus_cancellable)
+    {
+      g_cancellable_cancel (state->dbus_cancellable);
+      g_clear_object (&state->dbus_cancellable);
+    }
+
+  g_clear_object (&state->remote_actions);
+  g_clear_object (&state->remote_menu);
+
+  g_free (state->dbus_name);
+  state->dbus_name = NULL;
+
+  g_bus_unwatch_name (state->name_watcher_id);
+  state->name_watcher_id = 0;
 }
 
 /**
@@ -1167,13 +1347,28 @@ unref_running_state (ShellAppRunningState *state)
 {
   MetaScreen *screen;
 
+  g_assert (state->refcount > 0);
+
   state->refcount--;
   if (state->refcount > 0)
     return;
 
   screen = shell_global_get_screen (shell_global_get ());
-
   g_signal_handler_disconnect (screen, state->workspace_switch_id);
+
+  if (state->dbus_cancellable)
+    {
+      g_cancellable_cancel (state->dbus_cancellable);
+      g_object_unref (state->dbus_cancellable);
+    }
+
+  g_clear_object (&state->remote_actions);
+  g_clear_object (&state->remote_menu);
+  g_free (state->dbus_name);
+
+  if (state->name_watcher_id)
+    g_bus_unwatch_name (state->name_watcher_id);
+
   g_slice_free (ShellAppRunningState, state);
 }
 
@@ -1349,6 +1544,9 @@ shell_app_dispose (GObject *object)
       while (app->running_state->windows)
         _shell_app_remove_window (app, app->running_state->windows->data);
     }
+  /* We should have been transitioned when we removed all of our windows */
+  g_assert (app->state == SHELL_APP_STATE_STOPPED);
+  g_assert (app->running_state == NULL);
 
   G_OBJECT_CLASS(shell_app_parent_class)->dispose (object);
 }
@@ -1399,4 +1597,60 @@ shell_app_class_init(ShellAppClass *klass)
                                                       SHELL_TYPE_APP_STATE,
                                                       SHELL_APP_STATE_STOPPED,
                                                       G_PARAM_READABLE));
+
+  /**
+   * ShellApp:id:
+   *
+   * The id of this application (a desktop filename, or a special string
+   * like window:0xabcd1234)
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_ID,
+                                   g_param_spec_string ("id",
+                                                        "Application id",
+                                                        "The desktop file id of this ShellApp",
+                                                        NULL,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * ShellApp:dbus-id:
+   *
+   * The DBus well-known name of the application, if one can be associated
+   * to this ShellApp (it means that the application is using GApplication)
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_DBUS_ID,
+                                   g_param_spec_string ("dbus-id",
+                                                        "Application DBus Id",
+                                                        "The DBus well-known name of the application",
+                                                        NULL,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * ShellApp:action-group:
+   *
+   * The #GDBusActionGroup associated with this ShellApp, if any. See the
+   * documentation of #GApplication and #GActionGroup for details.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_ACTION_GROUP,
+                                   g_param_spec_object ("action-group",
+                                                        "Application Action Group",
+                                                        "The action group exported by the remote application",
+                                                        G_TYPE_DBUS_ACTION_GROUP,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  /**
+   * ShellApp:menu:
+   *
+   * The #GMenuProxy associated with this ShellApp, if any. See the
+   * documentation of #GMenuModel for details.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_MENU,
+                                   g_param_spec_object ("menu",
+                                                        "Application Menu",
+                                                        "The primary menu exported by the remote application",
+                                                        G_TYPE_MENU_PROXY,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
 }
