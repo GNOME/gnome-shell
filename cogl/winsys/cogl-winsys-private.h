@@ -82,9 +82,6 @@ typedef struct _CoglWinsysVtable
   (*context_egl_get_egl_display) (CoglContext *context);
 #endif
 
-  gboolean
-  (*has_feature) (CoglWinsysFeature feature);
-
 #ifdef COGL_HAS_XLIB_SUPPORT
   XVisualInfo *
   (*xlib_get_visual_info) (void);
