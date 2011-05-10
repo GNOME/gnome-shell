@@ -13,6 +13,7 @@ G_BEGIN_DECLS
 typedef struct _ShellApp ShellApp;
 typedef struct _ShellAppClass ShellAppClass;
 typedef struct _ShellAppPrivate ShellAppPrivate;
+typedef struct _ShellAppAction ShellAppAction;
 
 #define SHELL_TYPE_APP              (shell_app_get_type ())
 #define SHELL_APP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_APP, ShellApp))
@@ -36,8 +37,11 @@ typedef enum {
 GType shell_app_get_type (void) G_GNUC_CONST;
 
 const char *shell_app_get_id (ShellApp *app);
+
 GMenuTreeEntry *shell_app_get_tree_entry (ShellApp *app);
 GDesktopAppInfo *shell_app_get_app_info (ShellApp *app);
+
+const char *shell_app_get_dbus_id (ShellApp *app);
 
 ClutterActor *shell_app_create_icon_texture (ShellApp *app, int size);
 ClutterActor *shell_app_get_faded_icon (ShellApp *app, int size);

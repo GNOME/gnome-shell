@@ -1,0 +1,99 @@
+#!/usr/bin/env gjs
+
+const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
+
+function do_action(action, parameter) {
+    print ("Action '" + action.name + "' invoked");
+}
+
+function do_action_param(action, parameter) {
+    print ("Action '" + action.name + "' invoked with parameter " + parameter.print(true));
+}
+
+function do_action_state_change(action) {
+    print ("Action '" + action.name + "' has now state '" + action.state.deep_unpack() + "'");
+}
+
+function main() {
+    Gtk.init(null, null);
+
+    let app = new Gtk.Application({ application_id: 'org.gnome.Shell.GtkApplicationTest' });
+    app.connect('activate', function() {
+	print ("Activated");
+    });
+
+    let group = new Gio.SimpleActionGroup();
+
+    let action = Gio.SimpleAction.new('one', null);
+    action.connect('activate', do_action);
+    group.insert(action);
+
+    let action = Gio.SimpleAction.new('two', null);
+    action.connect('activate', do_action);
+    group.insert(action);
+
+    let action = Gio.SimpleAction.new_stateful('toggle', null, GLib.Variant.new('b', false));
+    action.connect('activate', do_action);
+    action.connect('notify::state', do_action_state_change);
+    group.insert(action);
+
+    let action = Gio.SimpleAction.new('disable', null);
+    action.set_enabled(false);
+    action.connect('activate', do_action);
+    group.insert(action);
+
+    let action = Gio.SimpleAction.new('parameter-int', GLib.VariantType.new('u'));
+    action.connect('activate', do_action_param);
+    group.insert(action);
+
+    let action = Gio.SimpleAction.new('parameter-string', GLib.VariantType.new('s'));
+    action.connect('activate', do_action_param);
+    group.insert(action);
+
+    app.action_group = group;
+
+    let menu = new Gio.Menu();
+    menu.append('An action', 'one');
+
+    let section = new Gio.Menu();
+    section.append('Another action', 'two');
+    section.append('Same as above', 'two');
+    menu.append_section(null, section);
+
+    // another section, to check separators
+    section = new Gio.Menu();
+    section.append('Checkbox', 'toggle');
+    section.append('Disabled', 'disable');
+    menu.append_section(null, section);
+
+    // empty sections or submenus should be invisible
+    menu.append_section('Empty section', new Gio.Menu());
+    menu.append_submenu('Empty submenu', new Gio.Menu());
+
+    let submenu = new Gio.Menu();
+    submenu.append('Open c:\\', 'parameter-string::c:\\');
+    submenu.append('Open /home', 'parameter-string::/home');
+    menu.append_submenu('Recent files', submenu);
+
+    let item = Gio.MenuItem.new('Say 42', null);
+    item.set_action_and_target_value('parameter-int', GLib.Variant.new('u', 42));
+    menu.append_item(item);
+
+    let item = Gio.MenuItem.new('Say 43', null);
+    item.set_action_and_target_value('parameter-int', GLib.Variant.new('u', 43));
+    menu.append_item(item);
+
+    app.menu = menu;
+
+    app.connect('startup', function(app) {
+	let window = new Gtk.Window({ title: "Test Application", application: app });
+	window.present();
+    });
+
+    app.run(null);
+}
+
+main();
