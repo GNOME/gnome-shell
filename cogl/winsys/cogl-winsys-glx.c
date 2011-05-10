@@ -1926,7 +1926,6 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_remove_swap_buffers_callback =
       _cogl_winsys_onscreen_remove_swap_buffers_callback,
     .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
-    .get_vsync_counter = _cogl_winsys_get_vsync_counter,
 
     /* X11 tfp support... */
     /* XXX: instead of having a rather monolithic winsys vtable we could

@@ -1385,13 +1385,6 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
 }
 #endif
 
-static guint32
-_cogl_winsys_get_vsync_counter (void)
-{
-  /* Unsupported feature */
-  return 0;
-}
-
 static void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
@@ -1510,7 +1503,6 @@ static CoglWinsysVtable _cogl_winsys_vtable =
       _cogl_winsys_onscreen_add_swap_buffers_callback,
     .onscreen_remove_swap_buffers_callback =
       _cogl_winsys_onscreen_remove_swap_buffers_callback,
-    .get_vsync_counter = _cogl_winsys_get_vsync_counter
   };
 
 /* XXX: we use a function because no doubt someone will complain
