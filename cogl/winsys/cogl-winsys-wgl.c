@@ -605,6 +605,72 @@ _cogl_winsys_context_deinit (CoglContext *context)
   g_free (context->winsys);
 }
 
+static void
+_cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
+{
+  CoglContext *context;
+  CoglContextWgl *wgl_context;
+  CoglDisplayWgl *wgl_display;
+  CoglOnscreenWgl *wgl_onscreen;
+  CoglRendererWgl *wgl_renderer;
+
+  /* The glx backend tries to bind the dummy context if onscreen ==
+     NULL, but this isn't really going to work because before checking
+     whether onscreen == NULL it reads the pointer to get the
+     context */
+  g_return_if_fail (onscreen != NULL);
+
+  context = COGL_FRAMEBUFFER (onscreen)->context;
+  wgl_context = context->winsys;
+  wgl_display = context->display->winsys;
+  wgl_onscreen = onscreen->winsys;
+  wgl_renderer = context->display->renderer->winsys;
+
+  if (wgl_context->current_dc == wgl_onscreen->client_dc)
+    return;
+
+  wglMakeCurrent (wgl_onscreen->client_dc, wgl_display->wgl_context);
+
+  /* According to the specs for WGL_EXT_swap_control SwapInterval()
+   * applies to the current window not the context so we apply it here
+   * to ensure its up-to-date even for new windows.
+   */
+  if (wgl_renderer->pf_wglSwapInterval)
+    {
+      if (onscreen->swap_throttled)
+        wgl_renderer->pf_wglSwapInterval (1);
+      else
+        wgl_renderer->pf_wglSwapInterval (0);
+    }
+
+  wgl_context->current_dc = wgl_onscreen->client_dc;
+}
+
+static void
+_cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
+{
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglContextWgl *wgl_context = context->winsys;
+  CoglOnscreenWin32 *win32_onscreen = onscreen->winsys;
+  CoglOnscreenWgl *wgl_onscreen = onscreen->winsys;
+
+  if (wgl_onscreen->client_dc)
+    {
+      if (wgl_context->current_dc == wgl_onscreen->client_dc)
+        _cogl_winsys_onscreen_bind (NULL);
+
+      ReleaseDC (win32_onscreen->hwnd, wgl_onscreen->client_dc);
+    }
+
+  if (!win32_onscreen->is_foreign_hwnd && win32_onscreen->hwnd)
+    {
+      /* Drop the pointer to the onscreen in the window so that any
+         further messages won't be processed */
+      SetWindowLongPtrW (win32_onscreen->hwnd, 0, (LONG_PTR) 0);
+      DestroyWindow (win32_onscreen->hwnd);
+    }
+}
+
 static gboolean
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
@@ -690,74 +756,13 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "Error setting pixel format on the window");
-      ReleaseDC (hwnd, wgl_onscreen->client_dc);
+
+      _cogl_winsys_onscreen_deinit (onscreen);
+
       return FALSE;
     }
 
   return TRUE;
-}
-
-static void
-_cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
-{
-  CoglContext *context;
-  CoglContextWgl *wgl_context;
-  CoglDisplayWgl *wgl_display;
-  CoglOnscreenWgl *wgl_onscreen;
-  CoglRendererWgl *wgl_renderer;
-
-  /* The glx backend tries to bind the dummy context if onscreen ==
-     NULL, but this isn't really going to work because before checking
-     whether onscreen == NULL it reads the pointer to get the
-     context */
-  g_return_if_fail (onscreen != NULL);
-
-  context = COGL_FRAMEBUFFER (onscreen)->context;
-  wgl_context = context->winsys;
-  wgl_display = context->display->winsys;
-  wgl_onscreen = onscreen->winsys;
-  wgl_renderer = context->display->renderer->winsys;
-
-  if (wgl_context->current_dc == wgl_onscreen->client_dc)
-    return;
-
-  wglMakeCurrent (wgl_onscreen->client_dc, wgl_display->wgl_context);
-
-  /* According to the specs for WGL_EXT_swap_control SwapInterval()
-   * applies to the current window not the context so we apply it here
-   * to ensure its up-to-date even for new windows.
-   */
-  if (wgl_renderer->pf_wglSwapInterval)
-    {
-      if (onscreen->swap_throttled)
-        wgl_renderer->pf_wglSwapInterval (1);
-      else
-        wgl_renderer->pf_wglSwapInterval (0);
-    }
-
-  wgl_context->current_dc = wgl_onscreen->client_dc;
-}
-
-static void
-_cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
-{
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglContextWgl *wgl_context = context->winsys;
-  CoglOnscreenWin32 *win32_onscreen = onscreen->winsys;
-  CoglOnscreenWgl *wgl_onscreen = onscreen->winsys;
-
-  if (wgl_context->current_dc == wgl_onscreen->client_dc)
-    _cogl_winsys_onscreen_bind (NULL);
-
-  ReleaseDC (win32_onscreen->hwnd, wgl_onscreen->client_dc);
-
-  if (!win32_onscreen->is_foreign_hwnd)
-    {
-      /* Drop the pointer to the onscreen in the window so that any
-         further messages won't be processed */
-      SetWindowLongPtrW (win32_onscreen->hwnd, 0, (LONG_PTR) 0);
-      DestroyWindow (win32_onscreen->hwnd);
-    }
 }
 
 static void
