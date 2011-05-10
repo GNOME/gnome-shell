@@ -964,7 +964,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                                         DefaultRootWindow (xlib_renderer->xdpy),
                                         xvisinfo->visual,
                                         AllocNone);
-      attr.event_mask = COGL_ONSCREEN_X11_EVENT_MASK;
+      xattr.event_mask = COGL_ONSCREEN_X11_EVENT_MASK;
 
       mask = CWBorderPixel | CWColormap | CWEventMask;
 
