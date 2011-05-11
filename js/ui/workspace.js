@@ -237,7 +237,7 @@ WindowClone.prototype = {
         this.emit('zoom-start');
 
         if (!this._zoomLightbox)
-            this._zoomLightbox = new Lightbox.Lightbox(global.stage,
+            this._zoomLightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                        { fadeTime: LIGHTBOX_FADE_TIME });
         this._zoomLightbox.show();
 
@@ -248,7 +248,7 @@ WindowClone.prototype = {
         this._zoomGlobalOrig.setPosition.apply(this._zoomGlobalOrig, this.actor.get_transformed_position());
         this._zoomGlobalOrig.setScale(width / this.actor.width, height / this.actor.height);
 
-        this.actor.reparent(global.stage);
+        this.actor.reparent(Main.uiGroup);
         this._zoomLightbox.highlight(this.actor);
 
         [this.actor.x, this.actor.y]             = this._zoomGlobalOrig.getPosition();
