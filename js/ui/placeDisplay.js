@@ -268,10 +268,7 @@ PlacesManager.prototype = {
         if (!GLib.file_test(this._bookmarksPath, GLib.FileTest.EXISTS))
             return;
 
-        let [success, bookmarksContent, len] = GLib.file_get_contents(this._bookmarksPath);
-
-        if (!success)
-            return;
+        let bookmarksContent = Shell.get_file_contents_utf8_sync(this._bookmarksPath);
 
         let bookmarks = bookmarksContent.split('\n');
 

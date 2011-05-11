@@ -22,8 +22,7 @@ function getDimShader() {
     if (dimShader === null)
         return null;
     if (!dimShader) {
-        let [success, source, length] = GLib.file_get_contents(global.datadir +
-                                                               '/shaders/dim-window.glsl');
+        let source = Shell.get_file_contents_utf8_sync(global.datadir + '/shaders/dim-window.glsl');
         try {
             let shader = new Clutter.Shader();
             shader.set_fragment_source(source, -1);
