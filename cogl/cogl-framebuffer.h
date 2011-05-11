@@ -30,9 +30,9 @@
 
 #include <glib.h>
 
-#ifdef COGL_HAS_WIN32
+#ifdef COGL_HAS_WIN32_SUPPORT
 #include <windows.h>
-#endif /* COGL_HAS_WIN32 */
+#endif /* COGL_HAS_WIN32_SUPPORT */
 
 G_BEGIN_DECLS
 
