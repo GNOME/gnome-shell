@@ -1102,15 +1102,21 @@ _cogl_free_framebuffer_stack (GSList *stack)
     {
       CoglFramebufferStackEntry *entry = l->data;
 
-      if (entry->draw_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
-        _cogl_offscreen_free (COGL_OFFSCREEN (entry->draw_buffer));
-      else
-        _cogl_onscreen_free (COGL_ONSCREEN (entry->draw_buffer));
+      if (entry->draw_buffer)
+        {
+          if (entry->draw_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
+            _cogl_offscreen_free (COGL_OFFSCREEN (entry->draw_buffer));
+          else
+            _cogl_onscreen_free (COGL_ONSCREEN (entry->draw_buffer));
+        }
 
-      if (entry->read_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
-        _cogl_offscreen_free (COGL_OFFSCREEN (entry->read_buffer));
-      else
-        _cogl_onscreen_free (COGL_ONSCREEN (entry->read_buffer));
+      if (entry->read_buffer)
+        {
+          if (entry->read_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
+            _cogl_offscreen_free (COGL_OFFSCREEN (entry->read_buffer));
+          else
+            _cogl_onscreen_free (COGL_ONSCREEN (entry->read_buffer));
+        }
 
       g_slice_free (CoglFramebufferStackEntry, entry);
     }
