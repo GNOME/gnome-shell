@@ -8,7 +8,8 @@ INCLUDES = \
 AM_CFLAGS = \
 	$(COGL_DEP_CFLAGS) \
 	$(COGL_EXTRA_CFLAGS) \
-	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API
+	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API \
+	-DCOGL_EXAMPLES_DATA=\""$(abs_top_srcdir)/examples/"\"
 
 AM_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
@@ -24,6 +25,12 @@ noinst_PROGRAMS = hello
 hello_SOURCES = hello.c
 hello_LDADD = $(common_ldadd)
 
+if BUILD_COGL_PANGO
+noinst_PROGRAMS += crate
+crate_SOURCES = crate.c
+crate_LDADD = $(common_ldadd) $(top_builddir)/cogl-pango/libcogl-pango.la
+endif
+
 if X11_TESTS
 noinst_PROGRAMS += x11-foreign
 x11_foreign_SOURCES = x11-foreign.c
@@ -35,3 +42,5 @@ noinst_PROGRAMS += cogland
 cogland_SOURCES = cogland.c
 cogland_LDADD = $(common_ldadd)
 endif
+
+EXTRA_DIST = crate.jpg
