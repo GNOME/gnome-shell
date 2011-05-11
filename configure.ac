@@ -196,7 +196,7 @@ AC_ARG_ENABLE(
   enable_maintainer_flags=default
 )
 
-MAINTAINER_COMPILER_FLAGS="-Wall -Wshadow -Wcast-align -Wuninitialized
+MAINTAINER_COMPILER_FLAGS="-Wall -Wcast-align -Wuninitialized
                            -Wno-strict-aliasing -Wempty-body -Wformat
                            -Wformat-security -Winit-self
                            -Wdeclaration-after-statement -Wvla
