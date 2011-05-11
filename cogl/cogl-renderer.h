@@ -156,21 +156,21 @@ void
 cogl_renderer_wayland_set_foreign_display (CoglRenderer *renderer,
                                            struct wl_display *display);
 
+#define cogl_renderer_wayland_get_display \
+  cogl_renderer_wayland_get_display_EXP
+struct wl_display *
+cogl_renderer_wayland_get_display (CoglRenderer *renderer);
+
 #define cogl_renderer_wayland_set_foreign_compositor \
   cogl_renderer_wayland_set_foreign_compositor_EXP
 void
 cogl_renderer_wayland_set_foreign_compositor (CoglRenderer *renderer,
                                               struct wl_compositor *compositor);
 
-#define cogl_renderer_wayland_get_foreign_display \
-  cogl_renderer_wayland_get_foreign_display_EXP
-struct wl_display *
-cogl_renderer_wayland_get_foreign_display (CoglRenderer *renderer);
-
-#define cogl_renderer_wayland_get_foreign_compositor \
-  cogl_renderer_wayland_get_foreign_compositor_EXP
+#define cogl_renderer_wayland_get_compositor \
+  cogl_renderer_wayland_get_compositor_EXP
 struct wl_compositor *
-cogl_renderer_wayland_get_foreign_compositor (CoglRenderer *renderer);
+cogl_renderer_wayland_get_compositor (CoglRenderer *renderer);
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
 #define cogl_renderer_check_onscreen_template \

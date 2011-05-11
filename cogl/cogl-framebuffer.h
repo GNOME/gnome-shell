@@ -34,6 +34,10 @@
 #include <windows.h>
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
+#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#include <wayland-client.h>
+#endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
+
 G_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
@@ -171,6 +175,11 @@ cogl_onscreen_win32_set_foreign_window (CoglOnscreen *onscreen,
 HWND
 cogl_onscreen_win32_get_window (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_WIN32_SUPPORT */
+
+#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+struct wl_surface *
+cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen);
+#endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
 #define cogl_onscreen_set_swap_throttled cogl_onscreen_set_swap_throttled_EXP
 void

@@ -1512,3 +1512,79 @@ _cogl_winsys_egl_get_vtable (void)
 {
   return &_cogl_winsys_vtable;
 }
+
+/* FIXME: we should have a separate wayland file for these entry
+ * points... */
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+void
+cogl_renderer_wayland_set_foreign_display (CoglRenderer *renderer,
+                                           struct wl_display *display)
+{
+  g_return_if_fail (cogl_is_renderer (renderer));
+
+  /* NB: Renderers are considered immutable once connected */
+  g_return_if_fail (!renderer->connected);
+
+  renderer->foreign_wayland_display = display;
+}
+
+struct wl_display *
+cogl_renderer_wayland_get_display (CoglRenderer *renderer)
+{
+  g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
+
+  if (renderer->foreign_wayland_display)
+    return renderer->foreign_wayland_display;
+  else if (renderer->connected)
+    {
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      return egl_renderer->wayland_display;
+    }
+  else
+    return NULL;
+}
+
+void
+cogl_renderer_wayland_set_foreign_compositor (CoglRenderer *renderer,
+                                              struct wl_compositor *compositor)
+{
+  g_return_if_fail (cogl_is_renderer (renderer));
+
+  /* NB: Renderers are considered immutable once connected */
+  g_return_if_fail (!renderer->connected);
+
+  renderer->foreign_wayland_compositor = compositor;
+}
+
+struct wl_compositor *
+cogl_renderer_wayland_get_compositor (CoglRenderer *renderer)
+{
+  g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
+
+  if (renderer->foreign_wayland_compositor)
+    return renderer->foreign_wayland_compositor;
+  else if (renderer->connected)
+    {
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      return egl_renderer->wayland_compositor;
+    }
+  else
+    return NULL;
+}
+
+struct wl_surface *
+cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *fb;
+
+  fb = COGL_FRAMEBUFFER (onscreen);
+  if (fb->allocated)
+    {
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      return egl_onscreen->wayland_surface;
+    }
+  else
+    return NULL;
+}
+
+#endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
