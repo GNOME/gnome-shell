@@ -296,6 +296,9 @@ WindowClone.prototype = {
     },
 
     _onDragBegin : function (draggable, time) {
+        if (this._zooming)
+            this._zoomEnd();
+
         [this.dragOrigX, this.dragOrigY] = this.actor.get_position();
         this.dragOrigScale = this.actor.scale_x;
         this.inDrag = true;
