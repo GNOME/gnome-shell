@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-04 10:29+0200\n"
-"PO-Revision-Date: 2011-05-04 10:34+0200\n"
+"POT-Creation-Date: 2011-05-11 00:12+0200\n"
+"PO-Revision-Date: 2011-05-11 21:20+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -32,26 +32,28 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Tillat tilgang til interne feilsøkings og overvåkingsverktøy ved å bruke Alt-"
-"F2-dialogen."
+"Tillat tilgang til interne feilsøkings- og overvåkingsverktøy ved å bruke "
+"Alt-F2-dialogen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
+msgstr "Aktiver interne verktøy for utviklere og testere fra Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
-msgstr ""
+msgstr "Filendelse i bruk ved lagring av skjermvideo"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
-msgstr ""
+msgstr "Bildefrekvens i bruk ved lagring av skjermvideoer."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
 msgstr ""
+"GNOME Shell-utvidelser har en uuid-egenskap. Denne nøkkelen lister "
+"utvidelser som ikke bør lastes."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
@@ -59,11 +61,11 @@ msgstr "Historikk for kommandodialog (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for the looking glass dialog"
-msgstr ""
+msgstr "Historikk for forstørrelsesglass-dialogen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
-msgstr ""
+msgstr "Viser dato i tillegg til tid i klokken hvis «true»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
@@ -71,14 +73,14 @@ msgstr "Viser sekunder i klokken hvis «true»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
-msgstr ""
+msgstr "Viser ISO-ukedato i kalenderen hvis «true»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
+msgstr "Liste av skrivebordfil-ider for favorittprogrammer"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-#, no-c-format
+#, no-c-format, fuzzy
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -90,7 +92,7 @@ msgid ""
 "'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
 "records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
 "at the optimal thread count on the system."
-msgstr ""
+msgstr "Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som brukes for gst-launch."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -109,6 +111,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
+"Programmene som passer til disse identifikatorene vil bli vist i "
+"favorittområdet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
@@ -116,16 +120,21 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
+"Filnavnet for skjermvideoopptak vil være unikt og bestå av gjeldende dato, "
+"og bruke denne filendelsen. Den bør endres når du gjør opptak til et nytt "
+"oppbevaringsformat."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
+"Bildefrekvensen i den ferdige skjermvideoen tatt opp med GNOME Shells "
+"skjermvideoopptaker i bilder per sekund."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
-msgstr ""
+msgstr "Gstreamer-kommandokø brukt til å kode skjermvideoen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
@@ -134,6 +143,10 @@ msgid ""
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
 msgstr ""
+"GNOME Shell vil normalt holde øye med åpne programmer for å kunne vise de "
+"mest bruke (for eksempel i oppstartsmenyer). Denne informasjonen vil bli "
+"holdt privat, men du kan deaktivere denne lagringen av personvernårsaker. "
+"Hvis du slår det av, vil det ikke fjerne allerede lagret informasjon."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
@@ -261,7 +274,7 @@ msgstr "F"
 #: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
-msgstr "S"
+msgstr "L"
 
 #. Translators: Event list abbreviation for Sunday.
 #. *
@@ -278,19 +291,19 @@ msgstr "Sø"
 #: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
-msgstr "M"
+msgstr "Ma"
 
 #. Translators: Event list abbreviation for Tuesday
 #: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
-msgstr "T"
+msgstr "Ti"
 
 #. Translators: Event list abbreviation for Wednesday
 #: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
-msgstr "O"
+msgstr "On"
 
 #. Translators: Event list abbreviation for Thursday
 #: ../js/ui/calendar.js:151
@@ -302,13 +315,13 @@ msgstr "To"
 #: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
-msgstr "F"
+msgstr "Fr"
 
 #. Translators: Event list abbreviation for Saturday
 #: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
-msgstr "S"
+msgstr "Lø"
 
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:704
@@ -811,139 +824,139 @@ msgstr "Vis tastaturutforming …"
 msgid "Localization Settings"
 msgstr "Innstillinger for lokalisering"
 
-#: ../js/ui/status/network.js:113
+#: ../js/ui/status/network.js:126
 msgid "<unknown>"
 msgstr "<ukjent>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:330
+#: ../js/ui/status/network.js:343
 msgid "disabled"
 msgstr "slått av"
 
-#: ../js/ui/status/network.js:528
+#: ../js/ui/status/network.js:542
 msgid "connecting..."
 msgstr "kobler til …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:531
+#: ../js/ui/status/network.js:545
 msgid "authentication required"
 msgstr "autentisering kreves"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:541
+#: ../js/ui/status/network.js:555
 msgid "firmware missing"
 msgstr "fastvare mangler"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:548
+#: ../js/ui/status/network.js:562
 msgid "cable unplugged"
 msgstr "kabel koblet fra"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:553
+#: ../js/ui/status/network.js:567
 msgid "unavailable"
 msgstr "ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:555
+#: ../js/ui/status/network.js:569
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:635 ../js/ui/status/network.js:1440
+#: ../js/ui/status/network.js:650 ../js/ui/status/network.js:1459
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
-#: ../js/ui/status/network.js:720
+#: ../js/ui/status/network.js:735
 msgid "Auto Ethernet"
 msgstr "Automatisk Ethernet"
 
-#: ../js/ui/status/network.js:784
+#: ../js/ui/status/network.js:803
 msgid "Auto broadband"
 msgstr "Automatisk bredbånd"
 
-#: ../js/ui/status/network.js:787
+#: ../js/ui/status/network.js:806
 msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:917 ../js/ui/status/network.js:1452
+#: ../js/ui/status/network.js:930 ../js/ui/status/network.js:1471
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
 
-#: ../js/ui/status/network.js:919
+#: ../js/ui/status/network.js:932
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:1473
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1491
+#: ../js/ui/status/network.js:1521
 msgid "More..."
 msgstr "Mer …"
 
-#: ../js/ui/status/network.js:1533
+#: ../js/ui/status/network.js:1563
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1545
+#: ../js/ui/status/network.js:1575
 msgid "Wired"
 msgstr "Kablet"
 
-#: ../js/ui/status/network.js:1556
+#: ../js/ui/status/network.js:1586
 msgid "Wireless"
 msgstr "Trådløst"
 
-#: ../js/ui/status/network.js:1566
+#: ../js/ui/status/network.js:1596
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:1576
+#: ../js/ui/status/network.js:1606
 msgid "VPN Connections"
 msgstr "VPN-tilkoblinger"
 
-#: ../js/ui/status/network.js:1588
+#: ../js/ui/status/network.js:1618
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1882
+#: ../js/ui/status/network.js:1912
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du er nå koblet til mobil bredbåndstilkobling «%s»"
 
-#: ../js/ui/status/network.js:1886
+#: ../js/ui/status/network.js:1916
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du er nå koblet til trådløst nettverk «%s»"
 
-#: ../js/ui/status/network.js:1890
+#: ../js/ui/status/network.js:1920
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du er nå koblet til kablet nettverk «%s»"
 
-#: ../js/ui/status/network.js:1894
+#: ../js/ui/status/network.js:1924
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du er nå koblet til virtuelt privat nettverk «%s»"
 
-#: ../js/ui/status/network.js:1899
+#: ../js/ui/status/network.js:1929
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du er nå koblet til «%s»"
 
-#: ../js/ui/status/network.js:1907
+#: ../js/ui/status/network.js:1937
 msgid "Connection established"
 msgstr "Tilkobling etablert"
 
-#: ../js/ui/status/network.js:2033
+#: ../js/ui/status/network.js:2063
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
-#: ../js/ui/status/network.js:2158
+#: ../js/ui/status/network.js:2188
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
@@ -1128,14 +1141,14 @@ msgstr "Systemlyder"
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
-#: ../src/shell-app.c:454
+#: ../src/shell-app.c:464
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Klarte ikke å starte «%s»"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr "England"
+msgstr "Storbritannia"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
