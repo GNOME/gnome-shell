@@ -82,6 +82,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-clip-state.h		\
 	$(srcdir)/cogl-framebuffer.h		\
 	$(srcdir)/cogl-clutter.h       		\
+	$(srcdir)/cogl-pango.h       		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
