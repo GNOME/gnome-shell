@@ -27,23 +27,30 @@ void
 _clutter_stage_window_set_title (ClutterStageWindow *window,
                                  const gchar        *title)
 {
-  CLUTTER_STAGE_WINDOW_GET_IFACE (window)->set_title (window, title);
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  if (iface->set_title)
+    iface->set_title (window, title);
 }
 
 void
 _clutter_stage_window_set_fullscreen (ClutterStageWindow *window,
                                       gboolean            is_fullscreen)
 {
-  CLUTTER_STAGE_WINDOW_GET_IFACE (window)->set_fullscreen (window,
-                                                           is_fullscreen);
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  if (iface->set_fullscreen)
+    iface->set_fullscreen (window, is_fullscreen);
 }
 
 void
 _clutter_stage_window_set_cursor_visible (ClutterStageWindow *window,
                                           gboolean            is_visible)
 {
-  CLUTTER_STAGE_WINDOW_GET_IFACE (window)->set_cursor_visible (window,
-                                                               is_visible);
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  if (iface->set_cursor_visible)
+    iface->set_cursor_visible (window, is_visible);
 }
 
 void

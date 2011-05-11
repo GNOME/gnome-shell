@@ -179,32 +179,6 @@ clutter_stage_cogl_get_pending_swaps (ClutterStageWindow *stage_window)
 
 #ifndef COGL_HAS_XLIB_SUPPORT
 
-/* FIXME: Move this warnings up into clutter-stage.c */
-
-static void
-clutter_stage_cogl_set_fullscreen (ClutterStageWindow *stage_window,
-                                  gboolean            fullscreen)
-{
-  g_warning ("Stage of type '%s' do not support ClutterStage::set_fullscreen",
-             G_OBJECT_TYPE_NAME (stage_window));
-}
-
-static void
-clutter_stage_cogl_set_title (ClutterStageWindow *stage_window,
-                             const gchar        *title)
-{
-  g_warning ("Stage of type '%s' do not support ClutterStage::set_title",
-             G_OBJECT_TYPE_NAME (stage_window));
-}
-
-static void
-clutter_stage_cogl_set_cursor_visible (ClutterStageWindow *stage_window,
-                                      gboolean            cursor_visible)
-{
-  g_warning ("Stage of type '%s' do not support ClutterStage::set_cursor_visible",
-             G_OBJECT_TYPE_NAME (stage_window));
-}
-
 static ClutterActor *
 clutter_stage_cogl_get_wrapper (ClutterStageWindow *stage_window)
 {
@@ -583,9 +557,6 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 
   iface->realize = clutter_stage_cogl_realize;
   iface->unrealize = clutter_stage_cogl_unrealize;
-  iface->set_fullscreen = clutter_stage_cogl_set_fullscreen;
-  iface->set_title = clutter_stage_cogl_set_title;
-  iface->set_cursor_visible = clutter_stage_cogl_set_cursor_visible;
   iface->get_wrapper = clutter_stage_cogl_get_wrapper;
   iface->get_geometry = clutter_stage_cogl_get_geometry;
   iface->resize = clutter_stage_cogl_resize;
