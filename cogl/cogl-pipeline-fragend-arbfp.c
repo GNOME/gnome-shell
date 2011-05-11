@@ -558,7 +558,7 @@ fragend_arbfp_args_equal (CoglPipelineFragendARBfpArg *arg0,
    * have one target enabled at a time. */
 
   if (arg0->type == COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_CONSTANT &&
-      arg0->constant_id != arg0->constant_id)
+      arg0->constant_id != arg1->constant_id)
     return FALSE;
 
   if (arg0->swizzle != arg1->swizzle &&
