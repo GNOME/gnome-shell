@@ -1164,7 +1164,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
 
   g_return_if_fail (n_attributes > 0);
 
-  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes + 1);
+  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
 
   i = 0;
   for (l = buffer->submitted_vbos; l; l = l->next)
