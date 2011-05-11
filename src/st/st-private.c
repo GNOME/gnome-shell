@@ -667,6 +667,7 @@ cairo_pattern_t *
 _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                                  cairo_pattern_t *src_pattern)
 {
+  static cairo_user_data_key_t shadow_pattern_user_data;
   cairo_t *cr;
   cairo_surface_t *src_surface;
   cairo_surface_t *surface_in;
@@ -728,6 +729,8 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                                                      width_out,
                                                      height_out,
                                                      rowstride_out);
+  cairo_surface_set_user_data (surface_out, &shadow_pattern_user_data,
+                               pixels_out, (cairo_destroy_func_t) g_free);
 
   dst_pattern = cairo_pattern_create_for_surface (surface_out);
   cairo_surface_destroy (surface_out);
@@ -745,8 +748,7 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                               (width_out - width_in) / 2.0,
                               (height_out - height_in) / 2.0);
       cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
-
-      goto out;
+      return dst_pattern;
     }
 
   /* Read all the code from the cairo_pattern_set_matrix call
@@ -784,8 +786,6 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
 
   cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
 
- out:
-  g_free (pixels_out);
   return dst_pattern;
 }
 
