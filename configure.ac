@@ -396,7 +396,8 @@ AS_IF([test "x$enable_gl" = "xyes"],
       [
         DRIVER_COUNT=$((DRIVER_COUNT + 1))
         COGL_DRIVER=gl
-        ALLOW_GLX=yes
+
+        PKG_CHECK_EXISTS([x11], [ALLOW_GLX=yes])
 
         cogl_gl_headers="GL/gl.h"
 
