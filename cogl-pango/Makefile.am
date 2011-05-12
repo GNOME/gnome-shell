@@ -57,6 +57,42 @@ pkgconfig_DATA = $(pc_files)
 EXTRA_DIST += cogl-pango.pc.in
 DISTCLEANFILES += $(pc_files)
 
+dist-hook: ../build/win32/vs9/cogl-pango.vcproj ../build/win32/vs10/cogl-pango.vcxproj ../build/win32/vs10/cogl-pango.vcxproj.filters
+
+../build/win32/vs9/cogl-pango.vcproj: $(top_srcdir)/build/win32/vs9/cogl-pango.vcprojin
+	for F in $(source_c); do \
+		case $$F in \
+		*.c)	echo '   <File RelativePath="..\..\..\cogl-pango\'$$F'" />' \
+			;; \
+		esac; \
+	done >coglpango.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/cogl-pango.vcprojin >$@
+	rm coglpango.sourcefiles
+	
+../build/win32/vs10/cogl-pango.vcxproj: $(top_srcdir)/build/win32/vs10/cogl-pango.vcxprojin
+	for F in $(source_c); do \
+		case $$F in \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl-pango\'$$F'" />' \
+			;; \
+		esac; \
+	done >coglpango.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl-pango.vcxprojin >$@
+	rm coglpango.vs10.sourcefiles
+	
+../build/win32/vs10/cogl-pango.vcxproj.filters: $(top_srcdir)/build/win32/vs10/cogl-pango.vcxproj.filtersin
+	for F in $(source_c); do \
+		case $$F in \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl-pango\'$$F'"><Filter>Sources</Filter></ClCompile>' \
+			;; \
+		esac; \
+	done >coglpango.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl-pango.vcxproj.filtersin >$@
+	rm coglpango.vs10.sourcefiles.filters
+
+EXTRA_DIST += cogl-pango.symbols
+
+DISTCLEANFILES += ../build/win32/vs9/cogl-pango.vcproj ../build/win32/vs10/cogl-pango.vcxproj ../build/win32/vs10/cogl-pango.vcxproj.filters
+
 -include $(INTROSPECTION_MAKEFILE)
 
 INTROSPECTION_GIRS =

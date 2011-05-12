@@ -1,0 +1,162 @@
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Can use Cogl 2.0 API internally */
+#define COGL_ENABLE_EXPERIMENTAL_2_0_API 1
+
+/* Can use experimental API internally */
+#define COGL_ENABLE_EXPERIMENTAL_API 1
+
+/* Cogl supports OpenGL using the WGL API */
+#define COGL_HAS_WIN32_SUPPORT 1
+
+/* Define to 1 if translation of program messages to the user's native
+   language is requested. */
+#define ENABLE_NLS 1
+
+/* The prefix for our gettext translation domains. */
+#define GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
+
+/* Whether we have cairo or not */
+#define HAVE_CAIRO 1
+
+/* Define to 1 if you have the <CE4100/libgdl.h> header file. */
+/*#undef HAVE_CE4100_LIBGDL_H*/
+
+/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
+   CoreFoundation framework. */
+/*#undef HAVE_CFLOCALECOPYCURRENT*/
+
+/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
+   the CoreFoundation framework. */
+/*#undef HAVE_CFPREFERENCESCOPYAPPVALUE*/
+
+/* Have GL for rendering */
+#define HAVE_COGL_GL 1
+
+/* Have GLES 1.1 for rendering */
+/*#undef HAVE_COGL_GLES*/
+
+/* Have GLES 2.0 for rendering */
+/*#undef HAVE_COGL_GLES2*/
+
+/* Define if the GNU dcgettext() function is already present or preinstalled.
+   */
+#define HAVE_DCGETTEXT 1
+
+/* Defined if the GL library shouldn't be dlopened */
+#define HAVE_DIRECTLY_LINKED_GL_LIBRARY 1
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+/*#undef HAVE_DLFCN_H*/
+
+/* Have libdrm support */
+/*#undef HAVE_DRM*/
+
+/* Define to 1 if you have the <EGL/eglext.h> header file. */
+/*#undef HAVE_EGL_EGLEXT_H*/
+
+/* Define to 1 if you have the <EGL/egl.h> header file. */
+/*#undef HAVE_EGL_EGL_H*/
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#define HAVE_FCNTL_H 1
+
+/* Define to 1 if you have the `ffs' function. */
+/*#undef HAVE_FFS*/
+
+/* Define if the GNU gettext() function is already present or preinstalled. */
+#define HAVE_GETTEXT 1
+
+/* Define to 1 if you have the <GLES/egl.h> header file. */
+/*#undef HAVE_GLES_EGL_H*/
+
+/* Define if you have the iconv() function and it works. */
+#define HAVE_ICONV 1
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#ifndef _MSC_VER
+#define HAVE_INTTYPES_H 1
+#endif
+
+/* Define to 1 if you have the <libgdl.h> header file. */
+/*#undef HAVE_LIBGDL_H*/
+
+/* Define to 1 if you have the `GL' library (-lGL). */
+#define HAVE_LIBGL 1
+
+/* Define to 1 if you have the <limits.h> header file. */
+#define HAVE_LIMITS_H 1
+
+/* Define to 1 if you have the <memory.h> header file. */
+#define HAVE_MEMORY_H 1
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#if ((_MSC_VER >= 1600) || !defined(_MSC_VER))
+#define HAVE_STDINT_H 1
+#endif
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#define HAVE_STDLIB_H 1
+
+/* Define to 1 if you have the <strings.h> header file. */
+#ifndef _MSC_VER
+#define HAVE_STRINGS_H 1
+#endif
+
+/* Define to 1 if you have the <string.h> header file. */
+#define HAVE_STRING_H 1
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#define HAVE_SYS_STAT_H 1
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#define HAVE_SYS_TYPES_H 1
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#ifndef _MSC_VER
+#define HAVE_UNISTD_H 1
+#endif
+
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#define LT_OBJDIR ".libs"
+
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
+#ifdef _MSC_VER
+#define NO_MINUS_C_MINUS_O 1
+#endif
+
+/* Define to the address where bug reports for this package should be sent. */
+#define PACKAGE_BUGREPORT ""
+
+/* Define to the full name of this package. */
+#define PACKAGE_NAME "cogl"
+
+/* Define to the full name and version of this package. */
+#define PACKAGE_STRING "cogl @COGL_VERSION@"
+
+/* Define to the one symbol short name of this package. */
+#define PACKAGE_TARNAME "cogl"
+
+/* Define to the home page for this package. */
+#define PACKAGE_URL ""
+
+/* Define to the version of this package. */
+#define PACKAGE_VERSION "@COGL_VERSION@"
+
+/* Define to 1 if you have the ANSI C header files. */
+#define STDC_HEADERS 1
+
+/* Use GdkPixbuf for loading image data */
+#define USE_GDKPIXBUF 1
+
+/* Use internal image decoding for loading image data */
+/*#undef USE_INTERNAL*/
+
+/* Use Core Graphics (Quartz) for loading image data */
+/*#undef USE_QUARTZ*/
+
+/* Define to empty if `const' does not conform to ANSI C. */
+/*#undef const*/
+
+#include "config-custom.h"

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\Driver_GL">
+      <UniqueIdentifier>{43c6d046-ba3b-4ff2-b7e6-df455affa6bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-wgl.c"><Filter>Sources</Filter></ClCompile>
+	<ClCompile Include="..\..\..\cogl\cogl-win32-renderer.c"><Filter>Sources</Filter></ClCompile>
+#include "cogl.vs10.sourcefiles.filters"
+    <ClCompile Include="..\..\..\cogl\driver\gl\cogl-gl.c"><Filter>Sources\Driver_GL</Filter></ClCompile>
+    <ClCompile Include="..\..\..\cogl\driver\gl\cogl-texture-driver-gl.c"><Filter>Sources\Driver_GL</Filter></ClCompile>
+  </ItemGroup>
+</Project>

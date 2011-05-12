@@ -413,6 +413,48 @@ coglincludedir = $(includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
 
+dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters
+
+# I know those filters below don't look nice, but this is to ensure the right files are in the Project files only *once*
+../build/win32/vs9/cogl.vcproj: $(top_srcdir)/build/win32/vs9/cogl.vcprojin
+	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
+		case $$F in \
+		*-egl.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*.h) ;; \
+		*.c)	echo '   <File RelativePath="..\..\..\cogl\'$$F'" />' \
+			;; \
+		esac; \
+	done >cogl.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/cogl.vcprojin >$@
+	rm cogl.sourcefiles
+
+../build/win32/vs10/cogl.vcxproj: $(top_srcdir)/build/win32/vs10/cogl.vcxprojin
+	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
+		case $$F in \
+		*-egl.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*.h) ;; \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl\'$$F'" />' \
+			;; \
+		esac; \
+	done >cogl.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxprojin >$@
+	rm cogl.vs10.sourcefiles
+
+../build/win32/vs10/cogl.vcxproj.filters: $(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin
+	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
+		case $$F in \
+		*-egl.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*.h) ;; \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl\'$$F'"><Filter>Sources</Filter></ClCompile>' \
+			;; \
+		esac; \
+	done >cogl.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin >$@
+	rm cogl.vs10.sourcefiles.filters
+
+EXTRA_DIST += \
+	cogl-defines.h.win32	\
+	cogl.symbols
+
+DISTCLEANFILES += ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters
+
 -include $(INTROSPECTION_MAKEFILE)
 
 INTROSPECTION_GIRS =
