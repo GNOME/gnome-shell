@@ -644,12 +644,17 @@ AS_IF([test "x$NEED_EGL" = "xyes" && test "x$EGL_CHECKED" != "xyes"],
             COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lEGL"
           ]
           )
+        ])
+
+AS_IF([test "x$NEED_EGL" = "xyes"],
+      [
         SUPPORT_EGL=yes
         GL_WINSYS_APIS="$GL_WINSYS_APIS egl"
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_SUPPORT"
         AC_DEFINE([COGL_HAS_FULL_WINSYS], [1],
                   [Cogl can create its own OpenGL context])
       ])
+
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "xyes"])
 
 
