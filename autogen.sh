@@ -30,11 +30,9 @@ ECT."
 fi
 
 (gtkdocize --version) < /dev/null > /dev/null 2>&1 || {
-	echo
-	echo "You must have gtk-doc installed to compile $PROJECT."
-	echo "Install the appropriate package for your distribution,"
-	echo "or get the source tarball at http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/"
-        exit 1
+	echo "You don't have gtk-doc installed to compile $PROJECT, and thus"
+	echo "won't be able to generate the $PROJECT documentation."
+	NOGTKDOC=1
 }
 
 # NOCONFIGURE is used by gnome-common
@@ -63,7 +61,10 @@ fi
 
 rm -rf autom4te.cache
 
-gtkdocize || exit $?
+if test -z "$NOGTKDOC"; then
+	gtkdocize || exit $?
+fi
+
 autoreconf -vfi || exit $?
 cd $ORIGDIR || exit $?
 

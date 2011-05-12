@@ -141,7 +141,8 @@ INCLUDES=-I$(top_srcdir) -I$(top_builddir)/cogl -DCOGL_ENABLE_EXPERIMENTAL_API $
 GTKDOC_LIBS=$(top_builddir)/cogl/libcogl.la $(COGL_DEP_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
-include $(top_srcdir)/gtk-doc.make
+EXTRA_DIST =
+-include $(top_srcdir)/gtk-doc.make
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in

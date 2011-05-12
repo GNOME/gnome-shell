@@ -697,7 +697,8 @@ AS_ALL_LINGUAS
 dnl ================================================================
 dnl Documentation stuff.
 dnl ================================================================
-GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
+m4_ifdef([GTK_DOC_CHECK],
+         [GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])])
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes"])
 
 dnl ================================================================
