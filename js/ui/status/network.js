@@ -838,7 +838,7 @@ NMDeviceModem.prototype = {
     },
 
     get connected() {
-        return this._enabled && this.device.state == NetworkManager.DeviceState.CONNECTED;
+        return this._enabled && this.device.state == NetworkManager.DeviceState.ACTIVATED;
     },
 
     destroy: function() {
