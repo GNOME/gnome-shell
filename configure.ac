@@ -697,8 +697,11 @@ AS_ALL_LINGUAS
 dnl ================================================================
 dnl Documentation stuff.
 dnl ================================================================
-m4_ifdef([GTK_DOC_CHECK],
-         [GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])])
+# gtkdocize greps for ^GTK_DOC_CHECK and parses it, so you need to have
+# it on it's own line.
+m4_ifdef([GTK_DOC_CHECK], [
+GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
+])
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes"])
 
 dnl ================================================================
