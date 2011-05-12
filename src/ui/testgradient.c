@@ -33,18 +33,20 @@ draw_checkerboard (cairo_t *cr,
                    int      height)
 {
   gint i, j, xcount, ycount;
-  GdkColor color1, color2;
+  GdkRGBA color1, color2;
   
 #define CHECK_SIZE 10
 #define SPACING 2  
 
-  color1.red = 30000;
-  color1.green = 30000;
-  color1.blue = 30000;
+  color1.red = 30000. / 65535.;
+  color1.green = 30000. / 65535.;
+  color1.blue = 30000. / 65535.;
+  color1.alpha = 1.0;
 
-  color2.red = 50000;
-  color2.green = 50000;
-  color2.blue = 50000;
+  color2.red = 50000. / 65535.;
+  color2.green = 50000. / 65535.;
+  color2.blue = 50000. / 65535.;
+  color2.alpha = 1.0;
 
   xcount = 0;
   i = SPACING;
@@ -55,9 +57,9 @@ draw_checkerboard (cairo_t *cr,
       while (j < height)
 	{
 	  if (ycount % 2)
-	    gdk_cairo_set_source_color (cr, &color1);
+	    gdk_cairo_set_source_rgba (cr, &color1);
 	  else
-	    gdk_cairo_set_source_color (cr, &color2);
+	    gdk_cairo_set_source_rgba (cr, &color2);
 
 	  /* If we're outside event->area, this will do nothing.
 	   * It might be mildly more efficient if we handled
@@ -82,10 +84,10 @@ render_simple (cairo_t     *cr,
                gboolean    with_alpha)
 {
   GdkPixbuf *pixbuf;
-  GdkColor from, to;
+  GdkRGBA from, to;
   
-  gdk_color_parse ("blue", &from);
-  gdk_color_parse ("green", &to);
+  gdk_rgba_parse (&from, "blue");
+  gdk_rgba_parse (&to, "green");
 
   pixbuf = meta_gradient_create_simple (width, height,
                                         &from, &to,
@@ -153,13 +155,13 @@ render_multi (cairo_t     *cr,
 {
   GdkPixbuf *pixbuf;
 #define N_COLORS 5
-  GdkColor colors[N_COLORS];
+  GdkRGBA colors[N_COLORS];
 
-  gdk_color_parse ("red", &colors[0]);
-  gdk_color_parse ("blue", &colors[1]);
-  gdk_color_parse ("orange", &colors[2]);
-  gdk_color_parse ("pink", &colors[3]);
-  gdk_color_parse ("green", &colors[4]);
+  gdk_rgba_parse (&colors[0], "red");
+  gdk_rgba_parse (&colors[1], "blue");
+  gdk_rgba_parse (&colors[2], "orange");
+  gdk_rgba_parse (&colors[3], "pink");
+  gdk_rgba_parse (&colors[4], "green");
 
   pixbuf = meta_gradient_create_multi (width, height,
                                        colors, N_COLORS,
@@ -200,12 +202,12 @@ render_interwoven_func (cairo_t *cr,
 {
   GdkPixbuf *pixbuf;
 #define N_COLORS 4
-  GdkColor colors[N_COLORS];
+  GdkRGBA colors[N_COLORS];
 
-  gdk_color_parse ("red", &colors[0]);
-  gdk_color_parse ("blue", &colors[1]);
-  gdk_color_parse ("pink", &colors[2]);
-  gdk_color_parse ("green", &colors[3]);
+  gdk_rgba_parse (&colors[0], "red");
+  gdk_rgba_parse (&colors[1], "blue");
+  gdk_rgba_parse (&colors[2], "pink");
+  gdk_rgba_parse (&colors[3], "green");
 
   pixbuf = meta_gradient_create_interwoven (width, height,
                                             colors, height / 10,
@@ -234,7 +236,7 @@ draw_callback (GtkWidget *widget,
   gtk_style_context_lookup_color (style, "foreground-color", &color);
   gtk_style_context_restore (style);
 
-  cairo_set_source_rgba (cr, color.red, color.green, color.blue, color.alpha);
+  gdk_cairo_set_source_rgba (cr, &color);
 
   (* func) (cr,
             gtk_widget_get_allocated_width (widget),

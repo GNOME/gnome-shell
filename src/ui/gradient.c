@@ -31,27 +31,27 @@
  */
 static GdkPixbuf* meta_gradient_create_horizontal       (int             width,
                                                          int             height,
-                                                         const GdkColor *from,
-                                                         const GdkColor *to);
+                                                         const GdkRGBA  *from,
+                                                         const GdkRGBA  *to);
 static GdkPixbuf* meta_gradient_create_vertical         (int             width,
                                                          int             height,
-                                                         const GdkColor *from,
-                                                         const GdkColor *to);
+                                                         const GdkRGBA  *from,
+                                                         const GdkRGBA  *to);
 static GdkPixbuf* meta_gradient_create_diagonal         (int             width,
                                                          int             height,
-                                                         const GdkColor *from,
-                                                         const GdkColor *to);
+                                                         const GdkRGBA  *from,
+                                                         const GdkRGBA  *to);
 static GdkPixbuf* meta_gradient_create_multi_horizontal (int             width,
                                                          int             height,
-                                                         const GdkColor *colors,
+                                                         const GdkRGBA  *colors,
                                                          int             count);
 static GdkPixbuf* meta_gradient_create_multi_vertical   (int             width,
                                                          int             height,
-                                                         const GdkColor *colors,
+                                                         const GdkRGBA  *colors,
                                                          int             count);
 static GdkPixbuf* meta_gradient_create_multi_diagonal   (int             width,
                                                          int             height,
-                                                         const GdkColor *colors,
+                                                         const GdkRGBA  *colors,
                                                          int             count);
 
 
@@ -100,8 +100,8 @@ blank_pixbuf (int width, int height, gboolean no_padding)
 GdkPixbuf*
 meta_gradient_create_simple (int              width,
                              int              height,
-                             const GdkColor  *from,
-                             const GdkColor  *to,
+                             const GdkRGBA   *from,
+                             const GdkRGBA   *to,
                              MetaGradientType style)
 {
   switch (style)
@@ -136,7 +136,7 @@ meta_gradient_create_simple (int              width,
 GdkPixbuf*
 meta_gradient_create_multi (int              width,
                             int              height,
-                            const GdkColor  *colors,
+                            const GdkRGBA   *colors,
                             int              n_colors,
                             MetaGradientType style)
 {
@@ -181,9 +181,9 @@ meta_gradient_create_multi (int              width,
 GdkPixbuf*
 meta_gradient_create_interwoven (int            width,
                                  int            height,
-                                 const GdkColor colors1[2],
+                                 const GdkRGBA  colors1[2],
                                  int            thickness1,
-                                 const GdkColor colors2[2],
+                                 const GdkRGBA  colors2[2],
                                  int            thickness2)
 {
   
@@ -202,21 +202,21 @@ meta_gradient_create_interwoven (int            width,
   pixels = gdk_pixbuf_get_pixels (pixbuf);
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   
-  r1 = colors1[0].red<<8;
-  g1 = colors1[0].green<<8;
-  b1 = colors1[0].blue<<8;
+  r1 = (long)(colors1[0].red*0xffffff);
+  g1 = (long)(colors1[0].green*0xffffff);
+  b1 = (long)(colors1[0].blue*0xffffff);
 
-  r2 = colors2[0].red<<8;
-  g2 = colors2[0].green<<8;
-  b2 = colors2[0].blue<<8;
+  r2 = (long)(colors2[0].red*0xffffff);
+  g2 = (long)(colors2[0].green*0xffffff);
+  b2 = (long)(colors2[0].blue*0xffffff);
 
-  dr1 = ((colors1[1].red-colors1[0].red)<<8)/(int)height;
-  dg1 = ((colors1[1].green-colors1[0].green)<<8)/(int)height;
-  db1 = ((colors1[1].blue-colors1[0].blue)<<8)/(int)height;
+  dr1 = ((colors1[1].red-colors1[0].red)*0xffffff)/(int)height;
+  dg1 = ((colors1[1].green-colors1[0].green)*0xffffff)/(int)height;
+  db1 = ((colors1[1].blue-colors1[0].blue)*0xffffff)/(int)height;
 
-  dr2 = ((colors2[1].red-colors2[0].red)<<8)/(int)height;
-  dg2 = ((colors2[1].green-colors2[0].green)<<8)/(int)height;
-  db2 = ((colors2[1].blue-colors2[0].blue)<<8)/(int)height;
+  dr2 = ((colors2[1].red-colors2[0].red)*0xffffff)/(int)height;
+  dg2 = ((colors2[1].green-colors2[0].green)*0xffffff)/(int)height;
+  db2 = ((colors2[1].blue-colors2[0].blue)*0xffffff)/(int)height;
 
   for (i=0,k=0,l=0,ll=thickness1; i<height; i++)
     {
@@ -280,8 +280,8 @@ meta_gradient_create_interwoven (int            width,
  */
 static GdkPixbuf*
 meta_gradient_create_horizontal (int width, int height,
-                                 const GdkColor *from,
-                                 const GdkColor *to)
+                                 const GdkRGBA *from,
+                                 const GdkRGBA *to)
 {    
   int i;
   long r, g, b, dr, dg, db;
@@ -300,12 +300,12 @@ meta_gradient_create_horizontal (int width, int height,
   ptr = pixels;
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   
-  r0 = (guchar) (from->red / 256.0);
-  g0 = (guchar) (from->green / 256.0);
-  b0 = (guchar) (from->blue / 256.0);
-  rf = (guchar) (to->red / 256.0);
-  gf = (guchar) (to->green / 256.0);
-  bf = (guchar) (to->blue / 256.0);  
+  r0 = (guchar) (from->red * 0xff);
+  g0 = (guchar) (from->green * 0xff);
+  b0 = (guchar) (from->blue * 0xff);
+  rf = (guchar) (to->red * 0xff);
+  gf = (guchar) (to->green * 0xff);
+  bf = (guchar) (to->blue * 0xff);
   
   r = r0 << 16;
   g = g0 << 16;
@@ -348,8 +348,8 @@ meta_gradient_create_horizontal (int width, int height,
  */
 static GdkPixbuf*
 meta_gradient_create_vertical (int width, int height,
-                               const GdkColor *from,
-                               const GdkColor *to)
+                               const GdkRGBA *from,
+                               const GdkRGBA *to)
 {
   int i, j;
   long r, g, b, dr, dg, db;
@@ -367,12 +367,12 @@ meta_gradient_create_vertical (int width, int height,
   pixels = gdk_pixbuf_get_pixels (pixbuf);
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   
-  r0 = (guchar) (from->red / 256.0);
-  g0 = (guchar) (from->green / 256.0);
-  b0 = (guchar) (from->blue / 256.0);
-  rf = (guchar) (to->red / 256.0);
-  gf = (guchar) (to->green / 256.0);
-  bf = (guchar) (to->blue / 256.0);
+  r0 = (guchar) (from->red * 0xff);
+  g0 = (guchar) (from->green * 0xff);
+  b0 = (guchar) (from->blue * 0xff);
+  rf = (guchar) (to->red * 0xff);
+  gf = (guchar) (to->green * 0xff);
+  bf = (guchar) (to->blue * 0xff);
   
   r = r0<<16;
   g = g0<<16;
@@ -419,8 +419,8 @@ meta_gradient_create_vertical (int width, int height,
 
 static GdkPixbuf*
 meta_gradient_create_diagonal (int width, int height,
-                               const GdkColor *from,
-                               const GdkColor *to)
+                               const GdkRGBA *from,
+                               const GdkRGBA *to)
 {
   GdkPixbuf *pixbuf, *tmp;
   int j;
@@ -467,7 +467,7 @@ meta_gradient_create_diagonal (int width, int height,
 
 static GdkPixbuf*
 meta_gradient_create_multi_horizontal (int width, int height,
-                                       const GdkColor *colors,
+                                       const GdkRGBA *colors,
                                        int count)
 {
   int i, j, k;
@@ -498,16 +498,16 @@ meta_gradient_create_multi_horizontal (int width, int height,
     
   k = 0;
 
-  r = colors[0].red << 8;
-  g = colors[0].green << 8;
-  b = colors[0].blue << 8;
+  r = (long)(colors[0].red * 0xffffff);
+  g = (long)(colors[0].green * 0xffffff);
+  b = (long)(colors[0].blue * 0xffffff);
 
   /* render the first line */
   for (i=1; i<count; i++)
     {
-      dr = ((int)(colors[i].red   - colors[i-1].red)  <<8)/(int)width2;
-      dg = ((int)(colors[i].green - colors[i-1].green)<<8)/(int)width2;
-      db = ((int)(colors[i].blue  - colors[i-1].blue) <<8)/(int)width2;
+      dr = (int)((colors[i].red   - colors[i-1].red)  *0xffffff)/(int)width2;
+      dg = (int)((colors[i].green - colors[i-1].green)*0xffffff)/(int)width2;
+      db = (int)((colors[i].blue  - colors[i-1].blue) *0xffffff)/(int)width2;
       for (j=0; j<width2; j++)
         {
           *ptr++ = (unsigned char)(r>>16);
@@ -518,9 +518,9 @@ meta_gradient_create_multi_horizontal (int width, int height,
           b += db;
           k++;
 	}
-      r = colors[i].red << 8;
-      g = colors[i].green << 8;
-      b = colors[i].blue << 8;
+      r = (long)(colors[i].red   * 0xffffff);
+      g = (long)(colors[i].green * 0xffffff);
+      b = (long)(colors[i].blue  * 0xffffff);
     }
   for (j=k; j<width; j++)
     {
@@ -539,7 +539,7 @@ meta_gradient_create_multi_horizontal (int width, int height,
 
 static GdkPixbuf*
 meta_gradient_create_multi_vertical (int width, int height,
-                                     const GdkColor *colors,
+                                     const GdkRGBA *colors,
                                      int count)
 {
   int i, j, k;
@@ -570,15 +570,15 @@ meta_gradient_create_multi_vertical (int width, int height,
     
   k = 0;
 
-  r = colors[0].red << 8;
-  g = colors[0].green << 8;
-  b = colors[0].blue << 8;
+  r = (long)(colors[0].red * 0xffffff);
+  g = (long)(colors[0].green * 0xffffff);
+  b = (long)(colors[0].blue * 0xffffff);
 
   for (i=1; i<count; i++)
     {
-      dr = ((int)(colors[i].red   - colors[i-1].red)  <<8)/(int)height2;
-      dg = ((int)(colors[i].green - colors[i-1].green)<<8)/(int)height2;
-      db = ((int)(colors[i].blue  - colors[i-1].blue) <<8)/(int)height2;
+      dr = (int)((colors[i].red   - colors[i-1].red)  *0xffffff)/(int)height2;
+      dg = (int)((colors[i].green - colors[i-1].green)*0xffffff)/(int)height2;
+      db = (int)((colors[i].blue  - colors[i-1].blue) *0xffffff)/(int)height2;
 
       for (j=0; j<height2; j++)
         {
@@ -597,9 +597,9 @@ meta_gradient_create_multi_vertical (int width, int height,
           b += db;
           k++;
 	}
-      r = colors[i].red << 8;
-      g = colors[i].green << 8;
-      b = colors[i].blue << 8;
+      r = (long)(colors[i].red   * 0xffffff);
+      g = (long)(colors[i].green * 0xffffff);
+      b = (long)(colors[i].blue  * 0xffffff);
     }
 
   if (k<height)
@@ -629,7 +629,7 @@ meta_gradient_create_multi_vertical (int width, int height,
 
 static GdkPixbuf*
 meta_gradient_create_multi_diagonal (int width, int height,
-                                     const GdkColor *colors,
+                                     const GdkRGBA *colors,
                                      int count)
 {
   GdkPixbuf *pixbuf, *tmp;

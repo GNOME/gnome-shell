@@ -37,19 +37,19 @@ typedef enum
 
 GdkPixbuf* meta_gradient_create_simple     (int               width,
                                             int               height,
-                                            const GdkColor   *from,
-                                            const GdkColor   *to,
+                                            const GdkRGBA    *from,
+                                            const GdkRGBA    *to,
                                             MetaGradientType  style);
 GdkPixbuf* meta_gradient_create_multi      (int               width,
                                             int               height,
-                                            const GdkColor   *colors,
+                                            const GdkRGBA    *colors,
                                             int               n_colors,
                                             MetaGradientType  style);
 GdkPixbuf* meta_gradient_create_interwoven (int               width,
                                             int               height,
-                                            const GdkColor    colors1[2],
+                                            const GdkRGBA     colors1[2],
                                             int               thickness1,
-                                            const GdkColor    colors2[2],
+                                            const GdkRGBA     colors2[2],
                                             int               thickness2);
 
 

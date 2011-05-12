@@ -1020,7 +1020,7 @@ meta_gradient_spec_render (const MetaGradientSpec *spec,
                            int                     height)
 {
   int n_colors;
-  GdkColor *colors;
+  GdkRGBA *colors;
   GSList *tmp;
   int i;
   GdkPixbuf *pixbuf;
@@ -1030,13 +1030,18 @@ meta_gradient_spec_render (const MetaGradientSpec *spec,
   if (n_colors == 0)
     return NULL;
 
-  colors = g_new (GdkColor, n_colors);
+  colors = g_new (GdkRGBA, n_colors);
 
   i = 0;
   tmp = spec->color_specs;
   while (tmp != NULL)
     {
-      meta_color_spec_render (tmp->data, style, &colors[i]);
+      GdkColor gdk_color;
+      meta_color_spec_render (tmp->data, style, &gdk_color);
+
+      colors[i].red = gdk_color.red / 65535.;
+      colors[i].green = gdk_color.green / 65535.;
+      colors[i].blue = gdk_color.blue / 65535.;
 
       tmp = tmp->next;
       ++i;
