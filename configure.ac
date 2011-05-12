@@ -366,8 +366,8 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_gles2" = "xyes"],
       [
-        AS_IF([test "x$platform_win32" != "xyes"],
-	      [AC_MSG_ERROR([GLES 1 not available for win32])])
+        AS_IF([test "x$platform_win32" = "xyes"],
+	      [AC_MSG_ERROR([GLES 2 not available for win32])])
 
         DRIVER_COUNT=$((DRIVER_COUNT + 1))
         COGL_DRIVER=gles
