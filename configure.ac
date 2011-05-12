@@ -325,9 +325,16 @@ AS_IF([test "x$enable_gles1" = "xyes"],
            NEED_EGL=yes
           ],
           [
-            AC_CHECK_HEADERS([$cogl_gl_headers],
-                             [],
-                             [AC_MSG_ERROR([Unable to locate required GLES headers])])
+            # We have to check the two headers independently as GLES/glext.h
+            # needs to include GLES/gl.h to have the GL types defined (eg.
+            # GLenum).
+            AC_CHECK_HEADER([GLES/gl.h],
+                            [],
+                            [AC_MSG_ERROR([Unable to locate GLES/gl.h])])
+            AC_CHECK_HEADER([GLES/glext.h],
+                            [],
+                            [AC_MSG_ERROR([Unable to locate GLES/glext.h])],
+                            [#include <GLES/gl.h>])
 
             # Check for a GLES 1.x Common Profile library with/without EGL.
             #
@@ -374,11 +381,16 @@ AS_IF([test "x$enable_gles2" = "xyes"],
         PKG_CHECK_EXISTS([glesv2],
           [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glesv2"],
           [
-            AC_CHECK_HEADERS([$cogl_gl_headers],
-                             [],
-                             [AC_MSG_ERROR([Unable to locate required GLES headers])],
-                             [[#include <GLES2/gl2.h>
-                             ]])
+            # We have to check the two headers independently as GLES2/gl2ext.h
+            # needs to include GLES2/gl2.h to have the GL types defined (eg.
+            # GLenum).
+            AC_CHECK_HEADER([GLES2/gl2.h],
+                            [],
+                            [AC_MSG_ERROR([Unable to locate GLES2/gl2.h])])
+            AC_CHECK_HEADER([GLES2/gl2ext.h],
+                            [],
+                            [AC_MSG_ERROR([Unable to locate GLES2/gl2ext.h])],
+                            [#include <GLES2/gl2.h>])
 
             COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGLESv2"
           ])
