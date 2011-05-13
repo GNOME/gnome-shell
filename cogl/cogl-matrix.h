@@ -108,6 +108,7 @@ struct _CoglMatrix
   unsigned long  COGL_PRIVATE (flags);
   unsigned long  COGL_PRIVATE (_padding3);
 };
+COGL_STRUCT_SIZE_ASSERT (CoglMatrix, 128 + sizeof (unsigned long) * 3);
 
 /**
  * cogl_matrix_init_identity:

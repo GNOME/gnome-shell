@@ -47,6 +47,16 @@ G_BEGIN_DECLS
 #define COGL_PRIVATE(x) private_member_ ## x
 #endif
 
+/* To help catch accidental changes to public structs that should
+ * be stack allocated we use this macro to compile time assert that
+ * a struct size is as expected.
+ */
+#define COGL_STRUCT_SIZE_ASSERT(TYPE, SIZE) \
+typedef struct { \
+          char compile_time_assert_ ## TYPE ## _size[ \
+              (sizeof (TYPE) == (SIZE)) ? 1 : -1]; \
+        } _ ## TYPE ## SizeCheck
+
 /**
  * CoglHandle:
  *
@@ -344,6 +354,7 @@ struct _CoglColor
   guint32 COGL_PRIVATE (padding1);
   guint32 COGL_PRIVATE (padding2);
 };
+COGL_STRUCT_SIZE_ASSERT (CoglColor, 16);
 
 /**
  * CoglTextureVertex:
@@ -364,6 +375,7 @@ struct _CoglTextureVertex
 
   CoglColor color;
 };
+COGL_STRUCT_SIZE_ASSERT (CoglTextureVertex, 36);
 
 /**
  * CoglTextureFlags:

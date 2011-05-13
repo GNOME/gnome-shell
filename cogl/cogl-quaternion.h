@@ -132,6 +132,7 @@ struct _CoglQuaternion
   float padding2;
   float padding3;
 };
+COGL_STRUCT_SIZE_ASSERT (CoglQuaternion, 32);
 
 /**
  * cogl_quaternion_init:

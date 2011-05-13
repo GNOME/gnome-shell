@@ -157,6 +157,7 @@ struct _CoglEuler
   float padding3;
   float padding4;
 };
+COGL_STRUCT_SIZE_ASSERT (CoglEuler, 32);
 
 /**
  * cogl_euler_init:
