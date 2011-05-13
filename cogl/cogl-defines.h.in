@@ -31,6 +31,17 @@ G_BEGIN_DECLS
 
 @COGL_DEFINES@
 
+#ifdef COGL_HAS_EGL_SUPPORT
+#ifdef COGL_HAS_GLES1
+#include <GLES/gl.h>
+@COGL_GLES1_EGL_INCLUDE@
+#else
+#include <EGL/egl.h>
+#define NativeDisplayType EGLNativeDisplayType
+#define NativeWindowType EGLNativeWindowType
+#endif
+#endif
+
 G_END_DECLS
 
 #endif

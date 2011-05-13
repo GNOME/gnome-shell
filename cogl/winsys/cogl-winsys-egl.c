@@ -55,22 +55,6 @@
 
 #include <glib/gi18n-lib.h>
 
-#ifdef COGL_HAS_GLES1
-
-#include <GLES/gl.h>
-#include <GLES/egl.h>
-
-#else
-
-#include <EGL/egl.h>
-#define NativeDisplayType EGLNativeDisplayType
-#define NativeWindowType EGLNativeWindowType
-
-#endif
-
-
-#include <EGL/egl.h>
-
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 #include <X11/Xlib.h>
 

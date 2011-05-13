@@ -336,6 +336,19 @@ AS_IF([test "x$enable_gles1" = "xyes"],
                             [AC_MSG_ERROR([Unable to locate GLES/glext.h])],
                             [#include <GLES/gl.h>])
 
+            # Early implementations provided only a GLES/egl.h while Khronos's
+            # implementer guide now states EGL/egl.h is the One. Some
+            # implementations keep a GLES/egl.h wrapper around EGL/egl.h for
+            # backward compatibility while others provide EGL/egl.h only.
+            AC_CHECK_HEADERS([GLES/egl.h EGL/egl.h])
+
+            AS_IF([test "x$ac_cv_header_GLES_egl_h" = "xyes"],
+                  [COGL_GLES1_EGL_INCLUDE="#include <GLES/egl.h>"],
+                  [AS_IF([test "x$ac_cv_header_EGL_egl_h" = "xyes"],
+                         [COGL_GLES1_EGL_INCLUDE="#include <EGL/egl.h>"],
+                         [AC_MSG_ERROR([Unable to locate EGL header])])])
+            AC_SUBST([COGL_GLES1_EGL_INCLUDE])
+
             # Check for a GLES 1.x Common Profile library with/without EGL.
             #
             # Note: historically GLES 1 libraries shipped with the

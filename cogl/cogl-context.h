@@ -31,18 +31,8 @@
 #ifndef __COGL_CONTEXT_H__
 #define __COGL_CONTEXT_H__
 
+#include <cogl/cogl-defines.h>
 #include <cogl/cogl-display.h>
-
-#ifdef COGL_HAS_EGL_SUPPORT
-#ifdef COGL_HAS_GLES1
-#include <GLES/gl.h>
-#include <GLES/egl.h>
-#else
-#include <EGL/egl.h>
-#define NativeDisplayType EGLNativeDisplayType
-#define NativeWindowType EGLNativeWindowType
-#endif
-#endif
 
 G_BEGIN_DECLS
 
