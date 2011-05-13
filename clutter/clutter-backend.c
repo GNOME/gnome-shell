@@ -78,6 +78,10 @@
 #include "wayland/clutter-device-manager-wayland.h"
 #endif
 
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#include <wayland-server.h>
+#endif
+
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
 #define DEFAULT_FONT_NAME       "Sans 10"
@@ -107,6 +111,13 @@ enum
 };
 
 static guint backend_signals[LAST_SIGNAL] = { 0, };
+
+/* Global for being able to specify a compositor side wayland display
+ * pointer before clutter initialization */
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+static struct wl_display *_wayland_compositor_display;
+#endif
+
 
 static void
 clutter_backend_dispose (GObject *gobject)
@@ -298,6 +309,11 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
 
   if (backend->cogl_display == NULL)
     goto error;
+
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+  cogl_wayland_display_set_compositor_display (backend->cogl_display,
+                                               _wayland_compositor_display);
+#endif
 
   CLUTTER_NOTE (BACKEND, "Setting up the display");
   if (!cogl_display_setup (backend->cogl_display, &internal_error))
@@ -1307,3 +1323,28 @@ clutter_backend_get_cogl_context (ClutterBackend *backend)
 {
   return backend->cogl_context;
 }
+
+#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+/**
+ * clutter_wayland_set_compositor_display:
+ * @display: A compositor side struct wl_display pointer
+ *
+ * This informs Clutter of your compositor side Wayland display
+ * object. This must be called before calling clutter_init().
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+clutter_wayland_set_compositor_display (struct wl_display *display)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  _wayland_compositor_display = display;
+}
+#endif

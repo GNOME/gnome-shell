@@ -599,6 +599,14 @@ backend_source_c += \
        $(srcdir)/wayland/clutter-device-manager-wayland.c
 endif # SUPPORT_WAYLAND
 
+if SUPPORT_WAYLAND_COMPOSITOR
+backend_source_h += \
+	$(srcdir)/wayland/clutter-wayland-compositor.h		\
+	$(srcdir)/wayland/clutter-wayland-surface.h
+backend_source_c += \
+	$(srcdir)/wayland/clutter-wayland-surface.c
+endif
+
 if SUPPORT_EGL
 backend_source_h += $(egl_source_h)
 backend_source_c += $(egl_source_c)

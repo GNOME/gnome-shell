@@ -317,12 +317,34 @@ AS_IF([test "x$enable_wayland" = "xyes"],
                          [])
 
         AC_DEFINE([HAVE_CLUTTER_WAYLAND], [1], [Have the Wayland backend])
-      ],
+      ])
+
+dnl Note this is orthogonal to the client side support and you can
+dnl use the wayland compositor features with any of the clutter
+dnl backends with corresponding Cogl support.
+AC_ARG_ENABLE([wayland-compositor],
+              [AS_HELP_STRING([--enable-wayland-compositor], [Enable Wayland compositor features])],
+              [],
+              [AS_IF([test "x$SUPPORT_EGL" = "x1"],
+                     [enable_wayland_compositor=yes],
+                     [enable_wayland_compositor=no])
+              ])
+
+AS_IF([test "x$enable_wayland_compositor" = "xyes"],
+      [
+        PKG_CHECK_EXISTS([wayland-server],
+			 [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-server"], [])
+        SUPPORT_WAYLAND_COMPOSITOR=1
+        AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have wayland compositor support])
+      ])
+AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
+
+AS_IF([test "x$enable_wayland_compositor" != "xyes" -a "x$enable_wayland" != "xyes"],
       [
         # The wayland headers introduce so much symbol shadowing that build
         # logs become incomprehensible with -Wshadow so we only use it for
         # non-wayland builds.
-        MAINTAINER_COMPILER_FLAGS="-Wshadow"
+	MAINTAINER_COMPILER_FLAGS="-Wshadow"
       ])
 
 AS_IF([test "x$enable_cex100" = "xyes"],
@@ -1121,6 +1143,8 @@ echo ""
 echo "     - CEx100 backend options:"
 echo "        libGDL include prefix: ${CLUTTER_CEX100_LIBGDL_PREFIX}"
 fi
+
+echo "        Wayland compositor features: ${SUPPORT_WAYLAND_COMPOSITOR}"
 
 echo ""
 

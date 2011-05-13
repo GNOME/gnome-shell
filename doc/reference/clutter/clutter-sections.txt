@@ -1343,6 +1343,21 @@ clutter_glx_texture_pixmap_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-wayland-compositor</FILE>
+<TITLE>Wayland compositor specific support</TITLE>
+clutter_wayland_set_compositor_display
+</SECTION>
+
+<SECTION>
+<FILE>clutter-wayland-surface</FILE>
+ClutterWaylandSurface
+ClutterWaylandSurfaceClass
+clutter_wayland_surface_new
+clutter_wayland_surface_attach_buffer
+clutter_wayland_surface_damage_buffer
+</SECTION>
+
+<SECTION>
 <FILE>clutter-win32</FILE>
 <TITLE>Win32 Specific Support</TITLE>
 clutter_win32_disable_event_retrieval
