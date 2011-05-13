@@ -84,7 +84,7 @@
 
   <repository>
     <GitRepository>
-      <browse rdf:resource="http://git.gnom.org/browse/clutter/"/>
+        <browse rdf:resource="http://git.gnome.org/browse/clutter/"/>
       <location rdf:resource="git://git.gnome.org/clutter"/>
     </GitRepository>
   </repository>
