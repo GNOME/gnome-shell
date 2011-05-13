@@ -1384,6 +1384,9 @@ selection_paint (ClutterText *self)
   ClutterActor *actor = CLUTTER_ACTOR (self);
   guint8 paint_opacity = clutter_actor_get_paint_opacity (actor);
 
+  if (!priv->has_focus)
+    return;
+
   if (priv->editable && priv->cursor_visible)
     {
       const ClutterColor *color;
@@ -1965,8 +1968,7 @@ clutter_text_paint (ClutterActor *self)
                             real_opacity);
   cogl_pango_render_layout (layout, text_x, 0, &color, 0);
 
-  if (priv->has_focus)
-    selection_paint (text);
+  selection_paint (text);
 
   if (clip_set)
     cogl_clip_pop ();
