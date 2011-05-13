@@ -2117,6 +2117,16 @@ clutter_text_allocate (ClutterActor           *self,
   parent_class->allocate (self, box, flags);
 }
 
+static gboolean
+clutter_text_has_overlaps (ClutterActor *self)
+{
+  ClutterTextPrivate *priv = CLUTTER_TEXT (self)->priv;
+
+  return priv->editable ||
+         priv->selectable ||
+         priv->cursor_visible;
+}
+
 static void
 clutter_text_key_focus_in (ClutterActor *actor)
 {
@@ -2587,6 +2597,7 @@ clutter_text_class_init (ClutterTextClass *klass)
   actor_class->motion_event = clutter_text_motion;
   actor_class->key_focus_in = clutter_text_key_focus_in;
   actor_class->key_focus_out = clutter_text_key_focus_out;
+  actor_class->has_overlaps = clutter_text_has_overlaps;
 
   /**
    * ClutterText:font-name:
