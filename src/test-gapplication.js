@@ -13,6 +13,11 @@ function do_action_param(action, parameter) {
     print ("Action '" + action.name + "' invoked with parameter " + parameter.print(true));
 }
 
+function do_action_toggle(action) {
+    action.set_state(GLib.Variant.new('b', !action.state.deep_unpack()));
+    print ("Toggled");
+}
+
 function do_action_state_change(action) {
     print ("Action '" + action.name + "' has now state '" + action.state.deep_unpack() + "'");
 }
@@ -36,7 +41,7 @@ function main() {
     group.insert(action);
 
     let action = Gio.SimpleAction.new_stateful('toggle', null, GLib.Variant.new('b', false));
-    action.connect('activate', do_action);
+    action.connect('activate', do_action_toggle);
     action.connect('notify::state', do_action_state_change);
     group.insert(action);
 

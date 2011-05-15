@@ -3,6 +3,7 @@
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
@@ -235,10 +236,12 @@ const AppMenuButton = new Lang.Class({
     Name: 'AppMenuButton',
     Extends: PanelMenu.Button,
 
-    _init: function() {
-        this.parent(0.0);
+    _init: function(menuManager) {
+        this.parent(0.0, true);
+
         this._startingApps = [];
 
+        this._menuManager = menuManager;
         this._targetApp = null;
 
         let bin = new St.Bin({ name: 'appMenu' });
@@ -263,10 +266,6 @@ const AppMenuButton = new Lang.Class({
         this._container.add_actor(this._label.actor);
 
         this._iconBottomClip = 0;
-
-        this._quitMenu = new PopupMenu.PopupMenuItem('');
-        this.menu.addMenuItem(this._quitMenu);
-        this._quitMenu.connect('activate', Lang.bind(this, this._onQuit));
 
         this._visible = !Main.overview.visible;
         if (!this._visible)
@@ -446,12 +445,6 @@ const AppMenuButton = new Lang.Class({
         }
     },
 
-    _onQuit: function() {
-        if (this._targetApp == null)
-            return;
-        this._targetApp.request_quit();
-    },
-
     _onAppStateChanged: function(appSys, app) {
         let state = app.state;
         if (state != Shell.AppState.STARTING) {
@@ -513,8 +506,10 @@ const AppMenuButton = new Lang.Class({
         }
 
         if (targetApp == this._targetApp) {
-            if (targetApp && targetApp.get_state() != Shell.AppState.STARTING)
+            if (targetApp && targetApp.get_state() != Shell.AppState.STARTING) {
                 this.stopAnimation();
+                this._maybeSetMenu();
+            }
             return;
         }
 
@@ -528,16 +523,40 @@ const AppMenuButton = new Lang.Class({
         let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
 
         this._label.setText(targetApp.get_name());
-        // TODO - _quit() doesn't really work on apps in state STARTING yet
-        this._quitMenu.label.set_text(_("Quit %s").format(targetApp.get_name()));
 
         this._iconBox.set_child(icon);
         this._iconBox.show();
 
         if (targetApp.get_state() == Shell.AppState.STARTING)
             this.startAnimation();
+        else
+            this._maybeSetMenu();
 
         this.emit('changed');
+    },
+
+    _maybeSetMenu: function() {
+        let menu;
+
+        if (this._targetApp.action_group) {
+            if (this.menu instanceof PopupMenu.RemoteMenu &&
+                this.menu.actionGroup == this._targetApp.action_group)
+                return;
+
+            menu = new PopupMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
+        } else {
+            if (this.menu && !(this.menu instanceof PopupMenu.RemoteMenu))
+                return;
+
+            // fallback to older menu
+            menu = new PopupMenu.PopupMenu(this.actor, 0.0, St.Side.TOP, 0);
+            menu.addAction(_("Quit"), Lang.bind(this, function() {
+                this._targetApp.request_quit();
+            }));
+        }
+
+        this.setMenu(menu);
+        this._menuManager.addMenu(menu);
     }
 });
 
@@ -924,9 +943,8 @@ const Panel = new Lang.Class({
             // more cleanly with the rest of the panel
             this._menus.addMenu(this._activitiesButton.menu);
 
-            this._appMenu = new AppMenuButton();
+            this._appMenu = new AppMenuButton(this._menus);
             this._leftBox.add(this._appMenu.actor);
-            this._menus.addMenu(this._appMenu.menu);
         }
 
         /* center */
