@@ -416,7 +416,11 @@ Notification.prototype = {
             styles.push('chat-action');
         }
 
-        this.update(this.source.title, messageBody, { customContent: true, bannerMarkup: true });
+        if (message.direction == NotificationDirection.RECEIVED) {
+            this.update(this.source.title, messageBody, { customContent: true,
+                                                          bannerMarkup: true });
+        }
+
         this._append(messageBody, styles, message.timestamp, noTimestamp);
     },
 
