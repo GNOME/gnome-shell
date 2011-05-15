@@ -96,22 +96,39 @@ const Button = new Lang.Class({
     Name: 'PanelMenuButton',
     Extends: ButtonBox,
 
-    _init: function(menuAlignment) {
+    _init: function(menuAlignment, dontCreateMenu) {
         this.parent({ reactive: true,
                       can_focus: true,
                       track_hover: true });
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('key-press-event', Lang.bind(this, this._onSourceKeyPress));
-        this.menu = new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP);
-        this.menu.actor.add_style_class_name('panel-menu');
-        this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
-        this.menu.actor.connect('key-press-event', Lang.bind(this, this._onMenuKeyPress));
-        Main.uiGroup.add_actor(this.menu.actor);
-        this.menu.actor.hide();
+
+        if (dontCreateMenu)
+            this.menu = null;
+        else
+            this.setMenu(new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, 0));
+    },
+
+    setMenu: function(menu) {
+        if (this.menu)
+            this.menu.destroy();
+
+        this.menu = menu;
+        if (this.menu) {
+            this.menu.actor.add_style_class_name('panel-menu');
+            this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
+            this.menu.actor.connect('key-press-event', Lang.bind(this, this._onMenuKeyPress));
+
+            Main.uiGroup.add_actor(this.menu.actor);
+            this.menu.actor.hide();
+        }
     },
 
     _onButtonPress: function(actor, event) {
+        if (!this.menu)
+            return;
+
         if (!this.menu.isOpen) {
             // Setting the max-height won't do any good if the minimum height of the
             // menu is higher then the screen; it's useful if part of the menu is
@@ -125,6 +142,9 @@ const Button = new Lang.Class({
     },
 
     _onSourceKeyPress: function(actor, event) {
+        if (!this.menu)
+            return false;
+
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.menu.toggle();

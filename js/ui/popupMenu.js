@@ -2,7 +2,9 @@
 
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -1689,6 +1691,254 @@ const PopupComboBoxMenuItem = new Lang.Class({
     _itemActivated: function(menuItem, event, position) {
         this.setActiveItem(position);
         this.emit('active-item-changed', position);
+    }
+});
+
+/**
+ * RemoteMenu:
+ *
+ * A PopupMenu that tracks a GMenuModel and shows its actions
+ * (exposed by GApplication/GActionGroup)
+ */
+const RemoteMenu = new Lang.Class({
+    Name: 'RemoteMenu',
+    Extends: PopupMenu,
+
+    _init: function(sourceActor, model, actionGroup) {
+        this.parent(sourceActor, 0.0, St.Side.TOP);
+
+        this.model = model;
+        this.actionGroup = actionGroup;
+
+        this._actions = { };
+        this._modelChanged(this.model, 0, 0, this.model.get_n_items(), this);
+
+        this._actionStateChangeId = this.actionGroup.connect('action-state-changed', Lang.bind(this, this._actionStateChanged));
+        this._actionEnableChangeId = this.actionGroup.connect('action-enabled-changed', Lang.bind(this, this._actionEnabledChanged));
+    },
+
+    destroy: function() {
+        if (this._actionStateChangeId) {
+            this.actionGroup.disconnect(this._actionStateChangeId);
+            this._actionStateChangeId = 0;
+        }
+
+        if (this._actionEnableChangeId) {
+            this.actionGroup.disconnect(this._actionEnableChangeId);
+            this._actionEnableChangeId = 0;
+        }
+
+        this.parent();
+    },
+
+    _createMenuItem: function(model, index) {
+        let section_link = model.get_item_link(index, Gio.MENU_LINK_SECTION);
+        if (section_link) {
+            let item = new PopupMenuSection();
+            this._modelChanged(section_link, 0, 0, section_link.get_n_items(), item);
+            return [item, true, ''];
+        }
+
+        // labels are not checked for existance, as they're required for all items
+        let label = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_LABEL, null).deep_unpack();
+        // remove all underscores that are not followed by another underscore
+        label = label.replace(/_([^_])/, '$1');
+        let submenu_link = model.get_item_link(index, Gio.MENU_LINK_SUBMENU);
+
+        if (submenu_link) {
+            let item = new PopupSubMenuMenuItem(label);
+            this._modelChanged(submenu_link, 0, 0, submenu_link.get_n_items(), item.menu);
+            return [item, false, ''];
+        }
+
+        let action_id = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_ACTION, null).deep_unpack();
+        if (!this.actionGroup.has_action(action_id)) {
+            // the action may not be there yet, wait for action-added
+            return [null, false, 'action-added'];
+        }
+
+        if (!this._actions[action_id])
+            this._actions[action_id] = { enabled: this.actionGroup.get_action_enabled(action_id),
+                                         state: this.actionGroup.get_action_state(action_id),
+                                         items: [ ],
+                                       };
+        let action = this._actions[action_id];
+        let item, target, destroyId, specificSignalId;
+
+        if (action.state) {
+            // Docs have get_state_hint(), except that the DBus protocol
+            // has no provision for it (so ShellApp does not implement it,
+            // and neither GApplication), and g_action_get_state_hint()
+            // always returns null
+            // Funny :)
+
+            switch (String.fromCharCode(action.state.classify())) {
+            case 'b':
+                item = new PopupSwitchMenuItem(label, action.state.get_boolean());
+                action.items.push(item);
+                specificSignalId = item.connect('toggled', Lang.bind(this, function(item) {
+                    this.actionGroup.change_action_state(action_id, GLib.Variant.new_boolean(item.state));
+                }));
+                break;
+            case 'd':
+                item = new PopupSliderMenuItem(label, action.state.get_double());
+                action.items.push(item);
+                // value-changed is emitted for each motion-event, maybe an idle is more appropriate here?
+                specificSignalId = item.connect('value-changed', Lang.bind(this, function(item) {
+                    this.actionGroup.change_action_state(action_id, GLib.Variant.new_double(item.value));
+                }));
+                break;
+            case 's':
+                item = new PopupMenuItem(label);
+                item._remoteTarget = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null).deep_unpack();
+                action.items.push(item);
+                item.setShowDot(action.state.deep_unpack() == item._remoteTarget);
+                specificSignalId = item.connect('activate', Lang.bind(this, function(item) {
+                    this.actionGroup.change_action_state(action_id, GLib.Variant.new_string(item._remoteTarget));
+                }));
+                break;
+            default:
+                log('Action "%s" has state of type %s, which is not supported'.format(action_id, action.state.get_type_string()));
+                return [null, false, 'action-state-changed'];
+            }
+        } else {
+            target = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null);
+            item = new PopupMenuItem(label);
+            action.items.push(item);
+            specificSignalId = item.connect('activate', Lang.bind(this, function() {
+                this.actionGroup.activate_action(action_id, target);
+            }));
+        }
+
+        item.actor.reactive = item.actor.can_focus = action.enabled;
+        if (action.enabled)
+            item.actor.remove_style_pseudo_class('insensitive');
+        else
+            item.actor.add_style_pseudo_class('insensitive');
+
+        destroyId = item.connect('destroy', Lang.bind(this, function() {
+            item.disconnect(destroyId);
+            item.disconnect(specificSignalId);
+
+            let pos = action.items.indexOf(item);
+            if (pos != -1)
+                action.items.splice(pos, 1);
+        }));
+
+        return [item, false, ''];
+    }, 
+
+    _modelChanged: function(model, position, removed, added, target) {
+        let j, k;
+        let j0, k0;
+
+        let currentItems = target._getMenuItems();
+
+        for (j0 = 0, k0 = 0; j0 < position; j0++, k0++) {
+            if (currentItems[k0] instanceof PopupSeparatorMenuItem)
+                k0++;
+        }
+
+        if (removed == -1) {
+            // special flag to indicate we should destroy everything
+            for (k = k0; k < currentItems.length; k++)
+                currentItems[k].destroy();
+        } else {
+            for (j = j0, k = k0; j < j0 + removed; j++, k++) {
+                currentItems[k].destroy();
+
+                if (currentItems[k] instanceof PopupSeparatorMenuItem)
+                    j--;
+            }
+        }
+
+        for (j = j0, k = k0; j < j0 + added; j++, k++) {
+            let [item, addSeparator, changeSignal] = this._createMenuItem(model, j);
+
+            if (item) {
+                // separators must be added in the parent to make autohiding work
+                if (addSeparator) {
+                    target.addMenuItem(new PopupSeparatorMenuItem(), k+1);
+                    k++;
+                }
+
+                target.addMenuItem(item, k);
+
+                if (addSeparator) {
+                    target.addMenuItem(new PopupSeparatorMenuItem(), k+1);
+                    k++;
+                }
+            } else if (changeSignal) {
+                let signalId = this.actionGroup.connect(changeSignal, Lang.bind(this, function() {
+                    this.actionGroup.disconnect(signalId);
+
+                    // force a full update
+                    this._modelChanged(model, 0, -1, model.get_n_items(), target);
+                }));
+            }
+        }
+
+        if (!model._changedId) {
+            model._changedId = model.connect('items-changed', Lang.bind(this, this._modelChanged, target));
+            model._destroyId = target.connect('destroy', function() {
+                if (model._changedId)
+                    model.disconnect(model._changedId);
+                if (model._destroyId)
+                    target.disconnect(model._destroyId);
+                model._changedId = 0;
+                model._destroyId = 0;
+            });
+        }
+
+        if (target instanceof PopupMenuSection) {
+            target.actor.visible = target.numMenuItems != 0;
+        } else {
+            let sourceItem = target.sourceActor._delegate;
+            if (sourceItem instanceof PopupSubMenuMenuItem)
+                sourceItem.actor.visible = target.numMenuItems != 0;
+        }
+    },
+
+    _actionStateChanged: function(actionGroup, action_id) {
+        let action = this._actions[action_id];
+        if (!action)
+            return;
+
+        action.state = actionGroup.get_action_state(action_id);
+        if (action.items.length) {
+            switch (String.fromCharCode(action.state.classify())) {
+            case 'b':
+                for (let i = 0; i < action.items.length; i++)
+                    action.items[i].setToggleState(action.state.get_boolean());
+                break;
+            case 'd':
+                for (let i = 0; i < action.items.length; i++)
+                    action.items[i].setValue(action.state.get_double());
+                break;
+            case 's':
+                for (let i = 0; i < action.items.length; i++)
+                    action.items[i].setShowDot(action.items[i]._remoteTarget == action.state.deep_unpack());
+            }
+        }
+    },
+
+    _actionEnabledChanged: function(actionGroup, action_id) {
+        let action = this._actions[action_id];
+        if (!action)
+            return;
+
+        action.enabled = actionGroup.get_action_enabled(action_id);
+        if (action.items.length) {
+            for (let i = 0; i < action.items.length; i++) {
+                let item = action.items[i];
+                item.actor.reactive = item.actor.can_focus = action.enabled;
+
+                if (action.enabled)
+                    item.actor.remove_style_pseudo_class('insensitive');
+                else
+                    item.actor.add_style_pseudo_class('insensitive');
+            }
+        }
     }
 });
 
