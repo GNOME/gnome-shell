@@ -79,6 +79,28 @@ XKBIndicator.prototype = {
         });
     },
 
+    _adjust_group_names: function(names) {
+        // Disambiguate duplicate names with a subscript
+        // This is O(N^2) to avoid sorting names
+        // but N <= 4 so who cares?
+
+        for (let i = 0; i < names.length; i++) {
+            let name = names[i];
+            let cnt = 0;
+            for (let j = i + 1; j < names.length; j++) {
+                if (names[j] == name) {
+                    cnt++;
+                    // U+2081 SUBSCRIPT ONE
+                    names[j] = name + String.fromCharCode(0x2081 + cnt);
+                }
+            }
+            if (cnt != 0)
+                names[i] = name + '\u2081';
+        }
+
+        return names;
+    },
+
     _sync_config: function() {
         this._showFlags = this._config.if_flags_shown();
         if (this._showFlags) {
@@ -101,7 +123,7 @@ XKBIndicator.prototype = {
         for (let i = 0; i < this._labelActors.length; i++)
             this._labelActors[i].destroy();
 
-        let short_names = this._config.get_short_group_names();
+        let short_names = this._adjust_group_names(this._config.get_short_group_names());
 
         this._selectedLayout = null;
         this._layoutItems = [ ];
