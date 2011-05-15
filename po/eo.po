@@ -985,11 +985,13 @@ msgstr "%d %s %d %s restas"
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "horo"
+msgstr[1] "horoj"
 
 #: ../js/ui/status/power.js:123
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuto"
+msgstr[1] "minutoj"
 
 #: ../js/ui/status/power.js:126
 #, c-format
