@@ -1683,13 +1683,22 @@ meta_window_actor_update_bounding_region (MetaWindowActor *self,
 
   priv->bounding_region = cairo_region_create_rectangle (&bounding_rectangle);
 
-  /* When we're shaped, we use the shape region to generate the shadow; the shape
-   * region only changes when we get ShapeNotify event; but for unshaped windows
-   * we generate the shadow from the bounding region, so we need to recompute
-   * the shadow when the size changes.
-   */
-  if (!priv->shaped)
-    meta_window_actor_invalidate_shadow (self);
+  if (priv->shaped)
+    {
+      /* If we're shaped, the implicit shape region clipping we need to do needs
+       * to be updated.
+       */
+      meta_window_actor_update_shape (self, TRUE);
+    }
+  else
+    {
+      /* When we're shaped, we use the shape region to generate the shadow; the shape
+       * region only changes when we get ShapeNotify event; but for unshaped windows
+       * we generate the shadow from the bounding region, so we need to recompute
+       * the shadow when the size changes.
+       */
+      meta_window_actor_invalidate_shadow (self);
+    }
 
   g_signal_emit (self, signals[SIZE_CHANGED], 0);
 }
@@ -1710,6 +1719,20 @@ meta_window_actor_update_shape_region (MetaWindowActor *self,
       cairo_rectangle_int_t rect = { rects[i].x, rects[i].y, rects[i].width, rects[i].height };
       cairo_region_union_rectangle (priv->shape_region, &rect);
     }
+
+  /* Our "shape_region" is called the "bounding region" in the X Shape
+   * Extension Documentation.
+   *
+   * Our "bounding_region" is called the "bounding rectangle", which defines
+   * the shape of the window as if it the window was unshaped.
+   *
+   * The X Shape extension requires that the "bounding region" can never
+   * extend outside the "bounding rectangle", and says it must be implicitly
+   * clipped before rendering. The region we get back hasn't been clipped.
+   * We explicitly clip the region here.
+   */
+  if (priv->bounding_region != NULL)
+    cairo_region_intersect (priv->shape_region, priv->bounding_region);
 }
 
 /**
