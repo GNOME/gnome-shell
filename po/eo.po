@@ -1,0 +1,1220 @@
+# Esperanto translation of gnome-shell.
+# Copyright (C) 2011 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+# Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-04-28 21:32+0000\n"
+"PO-Revision-Date: 2011-05-15 17:53+0200\n"
+"Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
+"Language-Team: Esperanto <ubuntu-l10n-eo@lists.launchpad.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME-ŝelo"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Administri fenestrojn kaj lanĉi aplikaĵojn"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Permesas aliron al interna sencimigaj kaj monitoradaj iloj uzante la "
+"dialogon de \"Alt+F2\"."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr "Enŝalti internaj iloj por programistoj kaj testantoj per \"Alt+F2\""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "File extension used for storing the screencast"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "Framerate used for recording screencasts."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid "History for command (Alt-F2) dialog"
+msgstr "Historio de la komando-dialogo (Alt+F2)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Se vera, montri daton en la horloĝo, krom la horo."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "If true, display seconds in time."
+msgstr "Se vera, montri sekundojn en horo."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Listo de la identiloj de la labortablaj dosieroj por favoraj aplikaĵoj"
+
+# Hier blicke ich überhaupt nicht durch.
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show date in clock"
+msgstr "Montri daton en horloĝo"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show the week date in the calendar"
+msgstr "Montri la semajnajntagon en la kalendaro"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr "Montri horon kun sekundoj"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"La aplikaĵoj kiuj korespondas al tiuj identigiloj estos montrata en la "
+"favora areo."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+
+# hmm Enkodieren oder Kodieren?
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#, fuzzy
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"La ŝelo kutime gardas pri la aktivaj aplikaĵoj,         Bonvole atentu ke "
+"jam konservitaj datumoj ne estos forigotaj."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Uuids of extensions to disable"
+msgstr "UUID-oj de la elŝaltotaj etendaĵoj"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "Whether to collect stats about applications usage"
+msgstr "Ĉu kolekti statistikojn pri uzo de aplikaĵoj?"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr "elŝaltitaj \"OpenSearch\"-provizantoj"
+
+#: ../js/misc/util.js:71
+msgid "Command not found"
+msgstr "Komando ne trovita."
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:98
+msgid "Could not parse command:"
+msgstr "Ne eblis analizi komandon:"
+
+#: ../js/misc/util.js:106
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Plenumo de \"%s\" fiaskis:"
+
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:260
+msgid "All"
+msgstr "Ĉiuj"
+
+#: ../js/ui/appDisplay.js:359
+msgid "APPLICATIONS"
+msgstr "APLIKA°JOJ"
+
+#: ../js/ui/appDisplay.js:385
+msgid "SETTINGS"
+msgstr "AGORDOJ"
+
+#: ../js/ui/appDisplay.js:658
+msgid "New Window"
+msgstr "Nova fenestro"
+
+#: ../js/ui/appDisplay.js:661
+msgid "Remove from Favorites"
+msgstr "Forigi de la legosignoj"
+
+#: ../js/ui/appDisplay.js:662
+msgid "Add to Favorites"
+msgstr "Aldoni al la legosignoj"
+
+#: ../js/ui/appFavorites.js:91
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s estas aldonita de la legosignoj."
+
+#: ../js/ui/appFavorites.js:122
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s estas forigita de la legosignoj."
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:66
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Tuttage"
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:71
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#
+# Da wir keine AM/PM-Suffixe haben, die Zeit von Terminen aber eindeutig
+# angezeigt werden soll, wird im Kalender stets das 24h-Format verwendet.
+#
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:78
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%H:%M"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:118
+msgctxt "grid sunday"
+msgid "S"
+msgstr "D"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:120
+msgctxt "grid monday"
+msgid "M"
+msgstr "L"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:122
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "M"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:124
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "M"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:126
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Ĵ"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:128
+msgctxt "grid friday"
+msgid "F"
+msgstr "V"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:130
+msgctxt "grid saturday"
+msgid "S"
+msgstr "S"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:143
+msgctxt "list sunday"
+msgid "Su"
+msgstr "Di"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:145
+msgctxt "list monday"
+msgid "M"
+msgstr "Lu"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:147
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Ma"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:149
+msgctxt "list wednesday"
+msgid "W"
+msgstr "Me"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:151
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Ĵa"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:153
+msgctxt "list friday"
+msgid "F"
+msgstr "Ve"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:155
+msgctxt "list saturday"
+msgid "S"
+msgstr "Sa"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:704
+msgid "Nothing Scheduled"
+msgstr "Nenio estas planita"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:487
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %d. %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:490
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%a, %d. %B %Y"
+
+#: ../js/ui/calendar.js:733
+msgid "Today"
+msgstr "Hodiaŭ"
+
+#: ../js/ui/calendar.js:737
+msgid "Tomorrow"
+msgstr "Morgaŭ"
+
+#: ../js/ui/calendar.js:746
+msgid "This week"
+msgstr "Ĉi tiu semajno"
+
+#: ../js/ui/calendar.js:754
+msgid "Next week"
+msgstr "Sekva semajno"
+
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
+msgid "Remove"
+msgstr "Forigi"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "Agordaro de horo kaj dato"
+
+#: ../js/ui/dateMenu.js:111
+msgid "Open Calendar"
+msgstr "Malfermi kalendaron"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:164
+msgid "%a %b %e, %R:%S"
+msgstr "%a, %e. %b, %R:%S"
+
+#: ../js/ui/dateMenu.js:165
+msgid "%a %b %e, %R"
+msgstr "%a, %e. %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:169
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/dateMenu.js:170
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:177
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a, %e. %b, %l:%M:%S"
+
+#: ../js/ui/dateMenu.js:178
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a, %e. %b, %l:%M"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:182
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S"
+
+#: ../js/ui/dateMenu.js:183
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A, %e. %B %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "LASTTEMPAJ ELEMENTOJ"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Elsaluti %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
+msgid "Log Out"
+msgstr "Elsaluti"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Alklaku \"Elsaluti\" por ĉesi tiujn aplikaĵojn kaj elsaluti de la sistemo."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "%s aŭtomate elsalutos post %d sekundoj."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "Vi aŭtomate elsalutos post %d sekundoj."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Elsalutante de la sistemo."
+
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Elŝalti"
+
+#: ../js/ui/endSessionDialog.js:76
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Alklaku \"Elŝalti\" por ĉesi tiujn aplikaĵojn kaj elŝalti la sistemon."
+
+#: ../js/ui/endSessionDialog.js:77
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "La sistemo aŭtomate elŝaltiĝos post %d sekundoj."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "Elŝaltante la sistemon."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
+msgid "Restart"
+msgstr "Restarti"
+
+#: ../js/ui/endSessionDialog.js:89
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Alklaku \"Restari\" por ĉesi tiujn aplikaĵojn kaj restartigi la sistemon."
+
+#: ../js/ui/endSessionDialog.js:90
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "La sistemo aŭtomate restartos post %d sekundoj."
+
+#: ../js/ui/endSessionDialog.js:91
+msgid "Restarting the system."
+msgstr "Restartigante la sistemon."
+
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:491
+msgid "Cancel"
+msgstr "Nuligi"
+
+#: ../js/ui/lookingGlass.js:588
+msgid "No extensions installed"
+msgstr "Neniu etendaĵo estas instalita"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Enabled"
+msgstr "Enŝaltite"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
+msgid "Disabled"
+msgstr "Elŝaltite"
+
+#: ../js/ui/lookingGlass.js:629
+msgid "Error"
+msgstr "Eraro"
+
+#: ../js/ui/lookingGlass.js:631
+msgid "Out of date"
+msgstr "Neaktuale"
+
+#: ../js/ui/lookingGlass.js:656
+msgid "View Source"
+msgstr "Montri fonton"
+
+#: ../js/ui/lookingGlass.js:662
+msgid "Web Page"
+msgstr "Retpaĝo"
+
+#: ../js/ui/messageTray.js:1030
+msgid "Open"
+msgstr "Malfermi"
+
+#: ../js/ui/messageTray.js:2194
+msgid "System Information"
+msgstr "Sisteminformoj"
+
+#: ../js/ui/overview.js:91
+msgid "Undo"
+msgstr "Malfari"
+
+#: ../js/ui/overview.js:186
+msgid "Windows"
+msgstr "Fenestroj"
+
+#: ../js/ui/overview.js:189
+msgid "Applications"
+msgstr "Aplikaĵoj"
+
+# Würde ich so übernehmen, oder evtl. »Dock«.
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr "Deŝo"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:533
+#, c-format
+msgid "Quit %s"
+msgstr "Ĉesi %s-on"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:913
+msgid "Activities"
+msgstr "Aktivecoj"
+
+#: ../js/ui/panel.js:1015
+msgid "Top Bar"
+msgstr "Supra breto"
+
+#: ../js/ui/placeDisplay.js:122
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Fiaskis demeti '%s'-on"
+
+#: ../js/ui/placeDisplay.js:125
+msgid "Retry"
+msgstr "Reprovi"
+
+#: ../js/ui/placeDisplay.js:165
+msgid "Connect to..."
+msgstr "Konekti al…"
+
+#: ../js/ui/placeDisplay.js:380
+msgid "PLACES & DEVICES"
+msgstr "EJOJ kaj APARATOJ"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Aŭtentigo bezonatas"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administranto"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Aŭtentigi"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Pardonu, tio ne funkcias. Bonvole provu denove."
+
+#: ../js/ui/polkitAuthenticationAgent.js:276
+msgid "Password:"
+msgstr "Pasvorto:"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:679
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:205
+msgid "Please enter a command:"
+msgstr "Bonvole enigu komandon:"
+
+#: ../js/ui/searchDisplay.js:313
+msgid "Searching..."
+msgstr "Serĉante..."
+
+#: ../js/ui/searchDisplay.js:327
+msgid "No matching results."
+msgstr "Neniu rezulto kongruas."
+
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "Elŝalti..."
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "Paŭzigi"
+
+#: ../js/ui/statusMenu.js:184
+msgid "Available"
+msgstr "Disponeble"
+
+#: ../js/ui/statusMenu.js:189
+msgid "Busy"
+msgstr "Okupite"
+
+#: ../js/ui/statusMenu.js:197
+msgid "My Account"
+msgstr "Mia konto"
+
+#: ../js/ui/statusMenu.js:201
+msgid "System Settings"
+msgstr "Sistem-agordoj"
+
+#: ../js/ui/statusMenu.js:208
+msgid "Lock Screen"
+msgstr "Ŝlosi ekranon"
+
+#: ../js/ui/statusMenu.js:213
+msgid "Switch User"
+msgstr "Ŝanĝi uzanton"
+
+#: ../js/ui/statusMenu.js:218
+msgid "Log Out..."
+msgstr "Elsaluti..."
+
+#: ../js/ui/status/accessibility.js:62
+msgid "Zoom"
+msgstr "Zomi"
+
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
+msgid "Visual Alerts"
+msgstr "Videblaj avertoj"
+
+#: ../js/ui/status/accessibility.js:80
+msgid "Sticky Keys"
+msgstr "Fiksaj klavoj"
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Slow Keys"
+msgstr "Malrapidaj klavoj"
+
+#: ../js/ui/status/accessibility.js:86
+msgid "Bounce Keys"
+msgstr "Prokrastaj klavoj"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Mouse Keys"
+msgstr "Musklavoj"
+
+#: ../js/ui/status/accessibility.js:93
+msgid "Universal Access Settings"
+msgstr "Agordoj por universala aliro"
+
+#: ../js/ui/status/accessibility.js:146
+msgid "High Contrast"
+msgstr "Alta kontrasto"
+
+#: ../js/ui/status/accessibility.js:183
+msgid "Large Text"
+msgstr "Granda teksto"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:358 ../js/ui/status/bluetooth.js:392
+#: ../js/ui/status/bluetooth.js:432 ../js/ui/status/bluetooth.js:465
+msgid "Bluetooth"
+msgstr "Bludento"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Videbleco"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Sendi dosierojn al aparato…"
+
+#: ../js/ui/status/bluetooth.js:70
+#| msgid "Setup a New Device..."
+msgid "Set up a New Device..."
+msgstr "Agordi novan aparaton..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Bludento-agordoj"
+
+#: ../js/ui/status/bluetooth.js:215
+msgid "Connection"
+msgstr "Konekto"
+
+#: ../js/ui/status/bluetooth.js:251
+msgid "Send Files..."
+msgstr "Sendi doierojn…"
+
+#: ../js/ui/status/bluetooth.js:256
+msgid "Browse Files..."
+msgstr "Foliumi dosierojn…"
+
+#: ../js/ui/status/bluetooth.js:265
+msgid "Error browsing device"
+msgstr "Eraro dum traserĉo de la aparato"
+
+#: ../js/ui/status/bluetooth.js:266
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "La petata aparato ne estas traserĉebla, eraro estas '%s'"
+
+#: ../js/ui/status/bluetooth.js:274
+msgid "Keyboard Settings"
+msgstr "Klavaragordoj"
+
+#: ../js/ui/status/bluetooth.js:279
+msgid "Mouse Settings"
+msgstr "Musagordoj"
+
+#: ../js/ui/status/bluetooth.js:286 ../js/ui/status/volume.js:66
+msgid "Sound Settings"
+msgstr "Sonagordoj"
+
+#: ../js/ui/status/bluetooth.js:393
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Rajtigpeto de %s"
+
+#: ../js/ui/status/bluetooth.js:399
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Aparato '%s' volas aliron al servo '%s'"
+
+#: ../js/ui/status/bluetooth.js:401
+msgid "Always grant access"
+msgstr "Ĉiam konsenti aliron"
+
+#: ../js/ui/status/bluetooth.js:402
+msgid "Grant this time only"
+msgstr "Konsenti nur ĉi tiun fojon"
+
+#: ../js/ui/status/bluetooth.js:403
+msgid "Reject"
+msgstr "Rifuzi"
+
+#: ../js/ui/status/bluetooth.js:433
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Pariĝkonfirmo por %s"
+
+#: ../js/ui/status/bluetooth.js:439 ../js/ui/status/bluetooth.js:473
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Aparato %s volas pariĝi kun tiu ĉi komputilo"
+
+#: ../js/ui/status/bluetooth.js:440
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Bonvole konfirmu ĉu la PIN-kodo \"%s\" kongras kun tiu sur la aparato."
+
+#: ../js/ui/status/bluetooth.js:442
+msgid "Matches"
+msgstr "Kongruas"
+
+#: ../js/ui/status/bluetooth.js:443
+msgid "Does not match"
+msgstr "Ne kongruas"
+
+#: ../js/ui/status/bluetooth.js:466
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Pariĝ-peto por '%s'"
+
+#: ../js/ui/status/bluetooth.js:474
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Bonvole enigu la PIN-kodon montrante de la aparato."
+
+#: ../js/ui/status/bluetooth.js:490
+msgid "OK"
+msgstr "Bone"
+
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Montri klavararanĝon…"
+
+#: ../js/ui/status/keyboard.js:76
+#, fuzzy
+msgid "Localization Settings"
+msgstr "Agordoj de lokaĵaro"
+
+#: ../js/ui/status/network.js:113
+msgid "<unknown>"
+msgstr "<nekonate>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:330
+msgid "disabled"
+msgstr "elŝaltite"
+
+#: ../js/ui/status/network.js:528
+msgid "connecting..."
+msgstr "konektante…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:531
+msgid "authentication required"
+msgstr "aŭtentokontrolo estas bezonata"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:541
+msgid "firmware missing"
+msgstr "mikroprogramaro mankas"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:548
+msgid "cable unplugged"
+msgstr "kablo ne etas konektite"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:553
+msgid "unavailable"
+msgstr "nedisponeble"
+
+#: ../js/ui/status/network.js:555
+msgid "connection failed"
+msgstr "konekto fiaskis"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:635 ../js/ui/status/network.js:1532
+msgid "Connected (private)"
+msgstr "Konektite (private)"
+
+#: ../js/ui/status/network.js:720
+msgid "Auto Ethernet"
+msgstr "Eterreto (aŭtomate)"
+
+#: ../js/ui/status/network.js:795
+msgid "Auto broadband"
+msgstr "Movebla larĝkapacita konekto (aŭtomate)"
+
+#: ../js/ui/status/network.js:798
+#, fuzzy
+msgid "Auto dial-up"
+msgstr "Tertelefonlineo (aŭtomate)"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:944 ../js/ui/status/network.js:1544
+#, c-format
+msgid "Auto %s"
+msgstr "%s (aŭtomate)"
+
+#: ../js/ui/status/network.js:946
+msgid "Auto bluetooth"
+msgstr "Bludento (aŭtomate)"
+
+#: ../js/ui/status/network.js:1546
+msgid "Auto wireless"
+msgstr "Sendrate (aŭtomate)"
+
+#: ../js/ui/status/network.js:1583
+msgid "More..."
+msgstr "Plu..."
+
+#: ../js/ui/status/network.js:1625
+msgid "Enable networking"
+msgstr "Enŝalti reton"
+
+#: ../js/ui/status/network.js:1637
+msgid "Wired"
+msgstr "Drate"
+
+#: ../js/ui/status/network.js:1648
+msgid "Wireless"
+msgstr "Sendrate"
+
+#: ../js/ui/status/network.js:1658
+msgid "Mobile broadband"
+msgstr "Movebla larĝkapacita konekto"
+
+#: ../js/ui/status/network.js:1668
+msgid "VPN Connections"
+msgstr "VPN-konektoj"
+
+#: ../js/ui/status/network.js:1680
+msgid "Network Settings"
+msgstr "Ret-agordoj"
+
+#: ../js/ui/status/network.js:1974
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Vi nun estas konektate al movebla larĝkapacita konekto '%s'"
+
+#: ../js/ui/status/network.js:1978
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Vi nun estas konektate al sendrata reto '%s'"
+
+#: ../js/ui/status/network.js:1982
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Vi nun estas konektate al drata reto '%s'"
+
+#: ../js/ui/status/network.js:1986
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Vi nun estas konektate al VPN-reto '%s'"
+
+#: ../js/ui/status/network.js:1991
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Vi nun estas konektate al '%s'."
+
+#: ../js/ui/status/network.js:1999
+msgid "Connection established"
+msgstr "Konekto establitis"
+
+#: ../js/ui/status/network.js:2125
+msgid "Networking is disabled"
+msgstr "Reto estas elŝaltite"
+
+#: ../js/ui/status/network.js:2250
+msgid "Network Manager"
+msgstr "Reta administrilo"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Energiagordoj"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "Taksado…"
+
+#: ../js/ui/status/power.js:118
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d horo restas"
+msgstr[1] "%d horoj restas"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:121
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s %d %s restas"
+
+#: ../js/ui/status/power.js:123
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "horo"
+
+#: ../js/ui/status/power.js:123
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minuto"
+
+#: ../js/ui/status/power.js:126
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d minuto restas"
+msgstr[1] "%d minutoj restas"
+
+#: ../js/ui/status/power.js:228
+msgid "AC adapter"
+msgstr ""
+
+#: ../js/ui/status/power.js:230
+msgid "Laptop battery"
+msgstr "Tekkomputila akumulatoro"
+
+#: ../js/ui/status/power.js:232
+msgid "UPS"
+msgstr "NEP"
+
+#: ../js/ui/status/power.js:234
+msgid "Monitor"
+msgstr "Ekrano"
+
+#: ../js/ui/status/power.js:236
+msgid "Mouse"
+msgstr "Muso"
+
+#: ../js/ui/status/power.js:238
+msgid "Keyboard"
+msgstr "Klavaro"
+
+#: ../js/ui/status/power.js:240
+msgid "PDA"
+msgstr "Poŝkomputilo"
+
+#: ../js/ui/status/power.js:242
+msgid "Cell phone"
+msgstr "Poŝtelefono"
+
+#: ../js/ui/status/power.js:244
+#, fuzzy
+msgid "Media player"
+msgstr "Ludilaparato"
+
+#: ../js/ui/status/power.js:246
+msgid "Tablet"
+msgstr ""
+
+#: ../js/ui/status/power.js:248
+msgid "Computer"
+msgstr "Komputilo"
+
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
+msgid "Unknown"
+msgstr "Nekonate"
+
+#: ../js/ui/status/volume.js:45
+msgid "Volume"
+msgstr "Laŭteco"
+
+#: ../js/ui/status/volume.js:58
+msgid "Microphone"
+msgstr "Mikrofono"
+
+#: ../js/ui/telepathyClient.js:330
+#, c-format
+msgid "%s is online."
+msgstr "%s estas konektite."
+
+#: ../js/ui/telepathyClient.js:335
+#, c-format
+msgid "%s is offline."
+msgstr "%s estas malkonektite."
+
+#: ../js/ui/telepathyClient.js:338
+#, c-format
+msgid "%s is away."
+msgstr "%s estas for."
+
+#: ../js/ui/telepathyClient.js:341
+#, c-format
+msgid "%s is busy."
+msgstr "%s estas okupate."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:479
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Sendite je la %A je la %X "
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/telepathyClient.js:524
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s estas konata kiel %s"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "Tajpi por serĉi…"
+
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Serĉi"
+
+#: ../js/ui/windowAttentionHandler.js:42
+#, c-format
+msgid "%s has finished starting"
+msgstr "Starto de %s finiĝis"
+
+#: ../js/ui/windowAttentionHandler.js:44
+#, c-format
+msgid "'%s' is ready"
+msgstr "'%s' prestas"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1098
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u eligo"
+msgstr[1] "%u eligoj"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1108
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u enigo"
+msgstr[1] "%u enigoj"
+
+#: ../src/gvc/gvc-mixer-control.c:1406
+msgid "System Sounds"
+msgstr "Sistemsonoj"
+
+#: ../src/main.c:445
+msgid "Print version"
+msgstr "Presi version"
+
+#: ../src/shell-app.c:454
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Fiaskis lanĉi '%s'"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Britio"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Defaŭlte"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "La dialogo de la aŭtentokontrolo firmiĝitis de la uzanto"
+
+#: ../src/shell-util.c:89
+msgid "Home Folder"
+msgstr "Hejma dosierujo"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-util.c:104
+msgid "File System"
+msgstr "Dosiersistemo"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Vor weniger als einer Minute"
+
+#~ msgid "%d minute ago"
+#~ msgid_plural "%d minutes ago"
+#~ msgstr[0] "Vor %d Minute"
+#~ msgstr[1] "Vor %d Minuten"
+
+#~ msgid "%d hour ago"
+#~ msgid_plural "%d hours ago"
+#~ msgstr[0] "Vor %d Stunde"
+#~ msgstr[1] "Vor %d Stunden"
+
+#~ msgid "%d day ago"
+#~ msgid_plural "%d days ago"
+#~ msgstr[0] "Vor %d Tag"
+#~ msgstr[1] "Vor %d Tagen"
+
+#~ msgid "%d week ago"
+#~ msgid_plural "%d weeks ago"
+#~ msgstr[0] "Vor %d Woche"
+#~ msgstr[1] "Vor %d Wochen"
+
+#~ msgid "Shut Down"
+#~ msgstr "Ausschalten"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr ""
+#~ "Klicken Sie auf »Ausschalten«, um diese Anwendungen zu beenden und das "
+#~ "System auszuschalten."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "Das System wird sich automatisch in %d Sekunden ausschalten."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "Ausschalten des Systems."
+
+#~ msgid "Confirm"
+#~ msgstr "Bestätigen"
+
+#~| msgid "Cancel"
+#~ msgid "Panel"
+#~ msgstr "Panel"
