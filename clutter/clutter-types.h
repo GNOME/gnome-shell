@@ -514,6 +514,11 @@ gboolean            clutter_paint_volume_set_from_allocation (ClutterPaintVolume
  *
  * Masks applied to a #ClutterEvent by modifiers.
  *
+ * Note that Clutter may add internal values to events which include
+ * reserved values such as %CLUTTER_MODIFIER_RESERVED_13_MASK.  Your code
+ * should preserve and ignore them.  You can use %CLUTTER_MODIFIER_MASK to
+ * remove all reserved values.
+ *
  * Since: 0.4
  */
 typedef enum {
@@ -531,14 +536,30 @@ typedef enum {
   CLUTTER_BUTTON4_MASK  = 1 << 11,
   CLUTTER_BUTTON5_MASK  = 1 << 12,
 
-  /* bits 15 to 25 are currently unused; bit 29 is used internally */
+  CLUTTER_MODIFIER_RESERVED_13_MASK  = 1 << 13,
+  CLUTTER_MODIFIER_RESERVED_14_MASK  = 1 << 14,
+  CLUTTER_MODIFIER_RESERVED_15_MASK  = 1 << 15,
+  CLUTTER_MODIFIER_RESERVED_16_MASK  = 1 << 16,
+  CLUTTER_MODIFIER_RESERVED_17_MASK  = 1 << 17,
+  CLUTTER_MODIFIER_RESERVED_18_MASK  = 1 << 18,
+  CLUTTER_MODIFIER_RESERVED_19_MASK  = 1 << 19,
+  CLUTTER_MODIFIER_RESERVED_20_MASK  = 1 << 20,
+  CLUTTER_MODIFIER_RESERVED_21_MASK  = 1 << 21,
+  CLUTTER_MODIFIER_RESERVED_22_MASK  = 1 << 22,
+  CLUTTER_MODIFIER_RESERVED_23_MASK  = 1 << 23,
+  CLUTTER_MODIFIER_RESERVED_24_MASK  = 1 << 24,
+  CLUTTER_MODIFIER_RESERVED_25_MASK  = 1 << 25,
 
   CLUTTER_SUPER_MASK    = 1 << 26,
   CLUTTER_HYPER_MASK    = 1 << 27,
   CLUTTER_META_MASK     = 1 << 28,
 
+  CLUTTER_MODIFIER_RESERVED_29_MASK  = 1 << 29,
+
   CLUTTER_RELEASE_MASK  = 1 << 30,
 
+  /* Combination of CLUTTER_SHIFT_MASK..CLUTTER_BUTTON5_MASK + CLUTTER_SUPER_MASK
+     + CLUTTER_HYPER_MASK + CLUTTER_META_MASK + CLUTTER_RELEASE_MASK */
   CLUTTER_MODIFIER_MASK = 0x5c001fff
 } ClutterModifierType;
 
