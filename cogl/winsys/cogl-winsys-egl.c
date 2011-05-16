@@ -882,9 +882,8 @@ create_context (CoglDisplay *display, GError **error)
                                         &try_error)) &&
          try_fallback)
     {
-      g_error_free (try_error);
+      g_clear_error (error);
       cleanup_context (display);
-      try_error = NULL;
       retry_cookie++;
     }
   if (!status)
