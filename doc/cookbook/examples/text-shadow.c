@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <cogl/cogl.h>
-#include <cogl-pango.h>
+#include <cogl-pango/cogl-pango.h>
 #include <clutter/clutter.h>
 
 #define SHADOW_X_OFFSET         3

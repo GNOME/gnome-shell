@@ -110,7 +110,7 @@
 #include "clutter-version.h" 	/* For flavour define */
 
 #include <cogl/cogl.h>
-#include <cogl/cogl-pango.h>
+#include <cogl-pango/cogl-pango.h>
 
 #include "cally.h" /* For accessibility support */
 

@@ -56,7 +56,7 @@
 #include "clutter-keysyms.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
-#include "clutter-private.h"    /* includes pango/cogl-pango.h */
+#include "clutter-private.h"    /* includes <cogl-pango/cogl-pango.h> */
 #include "clutter-profile.h"
 #include "clutter-units.h"
 
