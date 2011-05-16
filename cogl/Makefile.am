@@ -84,7 +84,6 @@ cogl_public_h = \
 	$(srcdir)/cogl-clip-state.h		\
 	$(srcdir)/cogl-framebuffer.h		\
 	$(srcdir)/cogl-clutter.h       		\
-	$(srcdir)/cogl-pango.h       		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
@@ -379,6 +378,7 @@ nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
 cogl_headers = \
 	$(cogl_public_h) \
 	$(srcdir)/cogl-deprecated.h \
+	$(srcdir)/cogl-pango.h \
 	$(NULL)
 
 coglincludedir = $(includedir)/cogl/cogl
@@ -395,7 +395,7 @@ Cogl-1.0.gir: libcogl.la Makefile
 Cogl_1_0_gir_NAMESPACE = Cogl
 Cogl_1_0_gir_VERSION = 1.0
 Cogl_1_0_gir_LIBS = libcogl.la
-Cogl_1_0_gir_FILES = $(cogl_headers) cogl-enum-types.h
+Cogl_1_0_gir_FILES = $(cogl_public_h) cogl-enum-types.h
 Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
