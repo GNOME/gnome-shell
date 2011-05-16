@@ -60,6 +60,8 @@ DISTCLEANFILES += $(pc_files)
 INTROSPECTION_GIRS =
 
 if HAVE_INTROSPECTION
+INTROSPECTION_COMPILER_ARGS=--includedir=$(top_builddir)/cogl
+
 CoglPango-1.0.gir: libcogl-pango.la Makefile
 
 CoglPango_1_0_gir_NAMESPACE = CoglPango
