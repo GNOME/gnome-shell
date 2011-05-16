@@ -65,12 +65,12 @@ create_map_tile (TestTile *tile)
   unsigned int stride = 0;
   guint8 *line;
 
-  buffer = cogl_pixel_array_new_with_size (TILE_SIZE,
-                                           TILE_SIZE,
-                                           COGL_PIXEL_FORMAT_RGBA_8888,
-                                           &stride);
+  buffer = cogl_pixel_buffer_new_with_size (TILE_SIZE,
+                                            TILE_SIZE,
+                                            COGL_PIXEL_FORMAT_RGBA_8888,
+                                            &stride);
 
-  g_assert (cogl_is_pixel_array (buffer));
+  g_assert (cogl_is_pixel_buffer (buffer));
   g_assert (cogl_is_buffer (buffer));
 
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_DYNAMIC);
@@ -154,12 +154,12 @@ create_set_data_tile (TestTile *tile)
   guchar *data;
   guint i;
 
-  buffer = cogl_pixel_array_new_with_size (TILE_SIZE,
-                                           TILE_SIZE,
-                                           COGL_PIXEL_FORMAT_RGBA_8888,
-                                           &rowstride);
+  buffer = cogl_pixel_buffer_new_with_size (TILE_SIZE,
+                                            TILE_SIZE,
+                                            COGL_PIXEL_FORMAT_RGBA_8888,
+                                            &rowstride);
 
-  g_assert (cogl_is_pixel_array (buffer));
+  g_assert (cogl_is_pixel_buffer (buffer));
   g_assert (cogl_is_buffer (buffer));
   g_assert_cmpint (cogl_buffer_get_size (buffer), ==, rowstride * TILE_SIZE);
 
