@@ -253,8 +253,8 @@ cogl_quaternion_init_from_euler (CoglQuaternion *quaternion,
 
 /**
  * cogl_quaternion_equal:
- * @a: A #CoglQuaternion
- * @b: A #CoglQuaternion
+ * @v1: A #CoglQuaternion
+ * @v2: A #CoglQuaternion
  *
  * Compares that all the components of quaternions @a and @b are
  * equal.
