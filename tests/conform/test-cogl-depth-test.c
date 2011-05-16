@@ -68,28 +68,30 @@ draw_rectangle (TestState *state,
                 int y,
                 TestDepthState *rect_state)
 {
+  CoglDepthState depth_state;
   guint8 Cr = MASK_RED (rect_state->color);
   guint8 Cg = MASK_GREEN (rect_state->color);
   guint8 Cb = MASK_BLUE (rect_state->color);
   guint8 Ca = MASK_ALPHA (rect_state->color);
-  CoglHandle material;
+  CoglPipeline *pipeline;
 
-  material = cogl_material_new ();
-  cogl_material_set_depth_test_enabled (material, rect_state->test_enable);
-  cogl_material_set_depth_test_function (material, rect_state->test_function);
-  cogl_material_set_depth_writing_enabled (material, rect_state->write_enable);
-  if (!cogl_material_set_depth_range (material,
-                                      rect_state->range_near,
-                                      rect_state->range_far,
-                                      NULL))
+  pipeline = cogl_pipeline_new ();
+  cogl_depth_state_init (&depth_state);
+  cogl_depth_state_set_test_enabled (&depth_state, rect_state->test_enable);
+  cogl_depth_state_set_test_function (&depth_state, rect_state->test_function);
+  cogl_depth_state_set_write_enabled (&depth_state, rect_state->write_enable);
+  cogl_depth_state_set_range (&depth_state,
+                              rect_state->range_near,
+                              rect_state->range_far);
+  if (!cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL))
     {
-      cogl_handle_unref (material);
+      cogl_object_unref (pipeline);
       return FALSE;
     }
 
-  cogl_material_set_color4ub (material, Cr, Cg, Cb, Ca);
+  cogl_pipeline_set_color4ub (pipeline, Cr, Cg, Cb, Ca);
 
-  cogl_set_source (material);
+  cogl_set_source (pipeline);
 
   cogl_push_matrix ();
   cogl_translate (0, 0, rect_state->depth);
@@ -99,7 +101,7 @@ draw_rectangle (TestState *state,
                   y * QUAD_WIDTH + QUAD_WIDTH);
   cogl_pop_matrix ();
 
-  cogl_handle_unref (material);
+  cogl_object_unref (pipeline);
 
   return TRUE;
 }
