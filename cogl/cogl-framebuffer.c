@@ -1373,7 +1373,9 @@ bind_gl_framebuffer (CoglContext *ctx,
         _cogl_framebuffer_get_winsys (framebuffer);
       winsys->onscreen_bind (COGL_ONSCREEN (framebuffer));
 #endif
-      GE (glBindFramebuffer (target, 0));
+      /* glBindFramebuffer is an an extension with OpenGL ES 1.1 */
+      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+        GE (glBindFramebuffer (target, 0));
     }
 }
 
