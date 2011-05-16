@@ -87,7 +87,7 @@ _cogl_primitive_new_with_attributes_unref (CoglVerticesMode mode,
                                                   attributes,
                                                   n_attributes);
 
-  for (i = 0; attributes[i]; i++)
+  for (i = 0; i < n_attributes; i++)
     cogl_object_unref (attributes[i]);
 
   return primitive;
@@ -109,8 +109,7 @@ cogl_primitive_new (CoglVerticesMode mode,
     ;
   va_end (ap);
 
-  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
-  attributes[n_attributes] = NULL;
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
 
   va_start (ap, n_vertices);
   for (i = 0; (attribute = va_arg (ap, CoglAttribute *)); i++)
@@ -119,7 +118,7 @@ cogl_primitive_new (CoglVerticesMode mode,
 
   return cogl_primitive_new_with_attributes (mode, n_vertices,
                                              attributes,
-                                             i + 1);
+                                             i);
 }
 
 CoglPrimitive *
