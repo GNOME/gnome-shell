@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-04-15 18:20+0000\n"
-"PO-Revision-Date: 2011-04-06 23:37+0330\n"
+"PO-Revision-Date: 2011-05-17 00:53+0330\n"
 "Last-Translator: Arash Mousavi <mousavi.arash@gmail.com>\n"
 "Language-Team: Persian <translate@ifsug.org>\n"
 "Language: fa\n"
@@ -31,18 +30,12 @@ msgid "Window management and application launching"
 msgstr "مدیریت پنجره‌ها و اجرا کننده‌ی برنامه‌ها"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-"اجازه دسترسی به ابزارهای اشکال‌زدا و پایشگر داخلی با استفاده از محاوره‌ی Alt-"
-"F2."
+msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
+msgstr "اجازه دسترسی به ابزارهای اشکال‌زدا و پایشگر داخلی با استفاده از محاوره‌ی Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"فعال کردن ابزارهای داخلی مفید برای توسعه دهندگان و آزمایش کنندگان از طریق "
-"Alt-F2"
+msgstr "فعال کردن ابزارهای داخلی مفید برای توسعه دهندگان و آزمایش کنندگان از طریق Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
@@ -53,12 +46,8 @@ msgid "Framerate used for recording screencasts."
 msgstr "سرعت فریم استفاده شده در تصویربرداری از صفحه‌نمایش."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should not be loaded."
-msgstr ""
-"افزونه‌های پوسته‌ی گنوم مشخصه‌ی uuid دارند؛ این کلید افزونه‌هایی که نباید بار "
-"شوند را فهرست می‌کند."
+msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded."
+msgstr "افزونه‌های پوسته‌ی گنوم مشخصه‌ی uuid دارند؛ این کلید افزونه‌هایی که نباید بار شوند را فهرست می‌کند."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
@@ -86,17 +75,7 @@ msgstr "فهرست شناسه‌های پرونده‌ی رومیزی برای �
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
-"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
-"at the optimal thread count on the system."
+msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
@@ -112,45 +91,24 @@ msgid "Show time with seconds"
 msgstr "نمایش ساعت همراه با ثانیه"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
+msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
 msgstr "برنامه‌های مشابه این شناسه‌ها در قسمت مورد پسندها نمایش داده می‌شود."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
-"نام پرونده‌ی ضبط شده برای تصویربرداری از صفحه‌نمایش یکتا و براساس تاریخ جاری "
-"خواهد بود و از این افزونه استفاده خواهد کرد. اگر در زمان ضبط از قالب دیگری "
-"استفاده کنید باید تغییر کند."
+msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
+msgstr "نام پرونده‌ی ضبط شده برای تصویربرداری از صفحه‌نمایش یکتا و براساس تاریخ جاری خواهد بود و از این افزونه استفاده خواهد کرد. اگر در زمان ضبط از قالب دیگری استفاده کنید باید تغییر کند."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"سرعت فریم حاصل از تصویربرداری از صفحه نمایش با استفاده از ضبط کننده نمایشگر "
-"پوسته‌ی گنوم بر اساس فریم بر ثانیه"
+msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
+msgstr "سرعت فریم حاصل از تصویربرداری از صفحه نمایش با استفاده از ضبط کننده نمایشگر پوسته‌ی گنوم بر اساس فریم بر ثانیه"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "مجرای ارتباطی gstreamer برای کدگذاری تصویربرداری از صفحه نمایش"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"پوسته گنوم در حالت عادی برنامه‌های فعال را جهت ارائه برنامه‌های بیشتر استفاده "
-"شده پایش می کند. (برای مثال در اجرا کننده‌ها). با اینکه که این اطلاعات به "
-"صورت خصوصی نگاه‌داری می‌شود، ممکن است شما بخواهید این امکان را به دلایل امنیتی "
-"غیرفعال کنید. لطفا توجه کنید این کار باعث پاک شدن اطلاعاتی که تاکنون ذخیره "
-"شده‌اند نمی‌شود."
+msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
+msgstr "پوسته گنوم در حالت عادی برنامه‌های فعال را جهت ارائه برنامه‌های بیشتر استفاده شده پایش می کند. (برای مثال در اجرا کننده‌ها). با اینکه که این اطلاعات به صورت خصوصی نگاه‌داری می‌شود، ممکن است شما بخواهید این امکان را به دلایل امنیتی غیرفعال کنید. لطفا توجه کنید این کار باعث پاک شدن اطلاعاتی که تاکنون ذخیره شده‌اند نمی‌شود."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
@@ -158,8 +116,7 @@ msgstr "شناسه‌های Uuid مربوط به افزونه‌ها که غیر
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
-msgstr ""
-"اینکه اطلاعات برنامه‌ها درباره‌ی میزان استفاده از منابع جمع‌آوری شود یا خیر"
+msgstr "اینکه اطلاعات برنامه‌ها درباره‌ی میزان استفاده از منابع جمع‌آوری شود یا خیر"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
@@ -227,13 +184,13 @@ msgstr "تمام روز"
 #: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
-msgstr "%OH:%OM"
+msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
-msgstr "%OI:%OM"
+msgstr "%l:%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -334,16 +291,18 @@ msgid "Nothing Scheduled"
 msgstr "بدون برنامه‌ریزی"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:492
+#: ../js/ui/calendar.js:720
+#: ../js/ui/telepathyClient.js:492
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A %Od %B "
+msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:495
+#: ../js/ui/calendar.js:723
+#: ../js/ui/telepathyClient.js:495
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A %Od %B %Oy"
+msgstr "%A, %B %d, %Y"
 
 #: ../js/ui/calendar.js:733
 msgid "Today"
@@ -361,7 +320,8 @@ msgstr "این هفته"
 msgid "Next week"
 msgstr "هفته آینده"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
+#: ../js/ui/dash.js:174
+#: ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "حذف"
 
@@ -377,48 +337,48 @@ msgstr "بازکردن تقویم"
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
-msgstr "%a %Od %b %OH:%OM:%OS"
+msgstr "%a %b %e, %R:%S"
 
 #: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %R"
-msgstr "%a %Od %b %OH:%OM"
+msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
-msgstr "%a %OH:%OM:%OS"
+msgstr "%a %R:%S"
 
 #: ../js/ui/dateMenu.js:170
 msgid "%a %R"
-msgstr "%a %OH:%OM"
+msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a Od% %b %OH:%OM:%OS"
+msgstr "%a %b %e, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:178
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %Od %b %OH:%OM"
+msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
-msgstr "%a %OH:%OM:%OS"
+msgstr "%a %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:183
 msgid "%a %l:%M %p"
-msgstr "%a %OH:%OM"
+msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
 #: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
-msgstr "%A %Od %B"
+msgstr "%A %B %e, %Y"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
@@ -429,14 +389,14 @@ msgstr "موارد اخیر"
 msgid "Log Out %s"
 msgstr "خروج از %s"
 
-#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
 msgstr "خروج از سیستم"
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"بر روی خروج از سیستم کلیک کنید تا از این برنامه‌ها خارج و از سیستم خارج شوید."
+msgstr "بر روی خروج از سیستم کلیک کنید تا از این برنامه‌ها خارج و از سیستم خارج شوید."
 
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
@@ -452,7 +412,8 @@ msgstr "شما در مدت %Id ثانیه به طور خودکار از سیست
 msgid "Logging out of the system."
 msgstr "درحال خروج از سیستم."
 
-#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:82
 msgid "Power Off"
 msgstr "خاموش کردن"
 
@@ -469,16 +430,15 @@ msgstr "سیستم در مدت %Id ثانیه به طور خودکار خامو�
 msgid "Powering off the system."
 msgstr "درحال خاموش کردن سیستم."
 
-#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:88
 #: ../js/ui/endSessionDialog.js:93
 msgid "Restart"
 msgstr "راه‌اندازی مجدد"
 
 #: ../js/ui/endSessionDialog.js:89
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
-"بر روی راه‌اندازی مجدد کلیک کنید تا از این برنامه‌ها خارج و سیستم مجددا "
-"راه‌اندازی گردد."
+msgstr "بر روی راه‌اندازی مجدد کلیک کنید تا از این برنامه‌ها خارج و سیستم مجددا راه‌اندازی گردد."
 
 #: ../js/ui/endSessionDialog.js:90
 #, c-format
@@ -489,7 +449,8 @@ msgstr "سیستم در مدت %Id ثانیه به طور خودکار مجدد�
 msgid "Restarting the system."
 msgstr "درحال راه‌اندازی مجدد سیستم."
 
-#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/endSessionDialog.js:413
+#: ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "لغو"
@@ -504,7 +465,8 @@ msgstr "به کار انداختن"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:627
+#: ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "از کار انداختن"
 
@@ -628,12 +590,14 @@ msgstr "درحال حستجو..."
 msgid "No matching results."
 msgstr "نتیجه‌ی منطبقی پیدا نشد."
 
-#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:161
+#: ../js/ui/statusMenu.js:163
 #: ../js/ui/statusMenu.js:228
 msgid "Power Off..."
 msgstr "خاموش کردن..."
 
-#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+#: ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:227
 msgid "Suspend"
 msgstr "تعلیق"
 
@@ -707,9 +671,12 @@ msgstr "کنتراست بالا"
 msgid "Large Text"
 msgstr "متن درشت"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
-#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
-#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:42
+#: ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333
+#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:440
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
@@ -758,7 +725,8 @@ msgstr "تنظیمات صفحه‌کلید"
 msgid "Mouse Settings"
 msgstr "تنظیمات موشی"
 
-#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/volume.js:66
 msgid "Sound Settings"
 msgstr "تنظیمات صدا"
 
@@ -789,7 +757,8 @@ msgstr "رد کردن"
 msgid "Pairing confirmation for %s"
 msgstr "تایید جهت جفت‌شدن با %s"
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:448
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "دستگاه %s می‌خواهد با این رایانه جفت شود"
@@ -797,9 +766,7 @@ msgstr "دستگاه %s می‌خواهد با این رایانه جفت شود
 #: ../js/ui/status/bluetooth.js:415
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr ""
-"لطفا تایید کنید که آیا PIN مربوط به «%s» با همتای آن در دستگاه مطابقت دارد "
-"یا خیر."
+msgstr "لطفا تایید کنید که آیا PIN مربوط به «%s» با همتای آن در دستگاه مطابقت دارد یا خیر."
 
 #: ../js/ui/status/bluetooth.js:417
 msgid "Matches"
@@ -830,7 +797,8 @@ msgstr "نمایش چیدمان صفحه‌کلید..."
 msgid "Localization Settings"
 msgstr "تنظیمات محلی‌سازی"
 
-#: ../js/ui/status/network.js:109 ../js/ui/status/network.js:1498
+#: ../js/ui/status/network.js:109
+#: ../js/ui/status/network.js:1498
 msgid "<unknown>"
 msgstr "<ناشناخته>"
 
@@ -852,7 +820,7 @@ msgstr "تصدیق هویت لازم است"
 #. module, which is missing
 #: ../js/ui/status/network.js:534
 msgid "firmware missing"
-msgstr ""
+msgstr "میان‌افزار پیدا نشد"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:541
@@ -871,7 +839,8 @@ msgstr "اتصال شکست خورد"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:628 ../js/ui/status/network.js:1446
+#: ../js/ui/status/network.js:628
+#: ../js/ui/status/network.js:1446
 msgid "Connected (private)"
 msgstr "متصل شد (خصوصی)"
 
@@ -888,7 +857,8 @@ msgid "Auto dial-up"
 msgstr "دایال‌آپ خودکار"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:937 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:937
+#: ../js/ui/status/network.js:1458
 #, c-format
 msgid "Auto %s"
 msgstr "اتصال بیسیم %s خودکار"
@@ -1048,7 +1018,8 @@ msgstr "لوح‌رایانه"
 msgid "Computer"
 msgstr "رایانه"
 
-#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
+#: ../js/ui/status/power.js:250
+#: ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "ناشناخته"
 
@@ -1096,7 +1067,8 @@ msgstr "ارسال در %X بر روی %A"
 msgid "Type to search..."
 msgstr "برای جستجو تایپ کنید..."
 
-#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:142
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "جستجو"
 
