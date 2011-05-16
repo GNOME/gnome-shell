@@ -110,10 +110,11 @@ shell_public_headers_h =		\
 	shell-global.h			\
 	shell-mobile-providers.h	\
 	shell-mount-operation.h		\
+	shell-network-agent.h		\
 	shell-perf-log.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
-	shell-tp-client.h			\
+	shell-tp-client.h		\
 	shell-tray-icon.h		\
 	shell-tray-manager.h		\
 	shell-util.h			\
@@ -144,6 +145,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-global.c			\
 	shell-mobile-providers.c	\
 	shell-mount-operation.c		\
+	shell-network-agent.c		\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\
@@ -269,7 +271,7 @@ libgnome_shell_la_LIBADD =		\
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 Shell-0.1.gir: libgnome-shell.la St-1.0.gir
-Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 TelepathyLogger-0.2 Soup-2.4 GMenu-3.0
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 TelepathyLogger-0.2 Soup-2.4 GMenu-3.0 NetworkManager-1.0 NMClient-1.0
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 Shell_0_1_gir_LIBS = libgnome-shell.la
 Shell_0_1_gir_FILES = $(libgnome_shell_la_gir_sources)

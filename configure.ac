@@ -93,7 +93,8 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
 			       libcanberra
                                telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
                                telepathy-logger-0.2 >= $TELEPATHY_LOGGER_MIN_VERSION
-                               polkit-agent-1 >= $POLKIT_MIN_VERSION xfixes)
+                               polkit-agent-1 >= $POLKIT_MIN_VERSION xfixes
+                               libnm-glib libnm-util gnome-keyring-1)
 
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
 
@@ -105,12 +106,6 @@ AC_SUBST([GJS_VERSION], ["$GJS_VERSION"])
 
 GOBJECT_INTROSPECTION_CHECK([$GOBJECT_INTROSPECTION_MIN_VERSION])
 JHBUILD_TYPELIBDIR="$INTROSPECTION_TYPELIBDIR"
-# NM is the only typelib we use that we don't jhbuild
-PKG_CHECK_EXISTS([libnm-glib >= 0.8.999],
-        [NM_TYPELIBDIR=`$PKG_CONFIG --variable=libdir libnm-glib`/girepository-1.0
-	 if test "$INTROSPECTION_TYPELIBDIR" != "$NM_TYPELIBDIR"; then
-	     JHBUILD_TYPELIBDIR="$JHBUILD_TYPELIBDIR:$NM_TYPELIBDIR"
-	 fi])
 AC_SUBST(JHBUILD_TYPELIBDIR)
 
 saved_CFLAGS=$CFLAGS
