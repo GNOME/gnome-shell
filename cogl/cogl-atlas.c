@@ -285,12 +285,18 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
                                               NULL);
 
       tex = _cogl_texture_2d_new_from_bitmap (clear_bmp, COGL_TEXTURE_NONE,
-                                              atlas->texture_format);
+                                              atlas->texture_format,
+                                              NULL);
       cogl_object_unref (clear_bmp);
     }
   else
-    tex = _cogl_texture_2d_new_with_size (width, height, COGL_TEXTURE_NONE,
-                                          atlas->texture_format);
+    {
+      _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+      tex = cogl_texture_2d_new_with_size (ctx,
+                                           width, height,
+                                           atlas->texture_format,
+                                           NULL);
+    }
 
   return tex;
 }

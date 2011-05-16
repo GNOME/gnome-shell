@@ -226,6 +226,16 @@ COGL_TEXTURE_MAX_WASTE
 </SECTION>
 
 <SECTION>
+<FILE>cogl-texture-2d</FILE>
+<TITLE>2D textures</TITLE>
+CoglTexture2D
+cogl_is_texture_2d
+cogl_texture_2d_new_with_size
+cogl_texture_2d_new_from_data
+cogl_texture_2d_new_from_foreign
+</SECTION>
+
+<SECTION>
 <FILE>cogl-texture-3d</FILE>
 <TITLE>3D textures</TITLE>
 cogl_texture_3d_new_with_size

@@ -1799,10 +1799,11 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
       else
         {
           glx_tex_pixmap->glx_tex =
-            _cogl_texture_2d_new_with_size (tex_pixmap->width,
-                                            tex_pixmap->height,
-                                            COGL_TEXTURE_NO_ATLAS,
-                                            texture_format);
+            cogl_texture_2d_new_with_size (ctx,
+                                           tex_pixmap->width,
+                                           tex_pixmap->height,
+                                           texture_format,
+                                           NULL);
 
           if (glx_tex_pixmap->glx_tex)
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture 2d for %p",

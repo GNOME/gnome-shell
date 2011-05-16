@@ -57,6 +57,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+GQuark
+cogl_texture_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-texture-error-quark");
+}
+
 /* XXX:
  * The CoglHandle macros don't support any form of inheritance, so for
  * now we implement the CoglHandle support for the CoglTexture
@@ -385,8 +391,12 @@ cogl_texture_new_with_size (unsigned int     width,
 {
   CoglHandle tex;
 
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
   /* First try creating a fast-path non-sliced texture */
-  tex = _cogl_texture_2d_new_with_size (width, height, flags, internal_format);
+  tex = cogl_texture_2d_new_with_size (ctx,
+                                       width, height, internal_format,
+                                       NULL);
 
   /* If it fails resort to sliced textures */
   if (tex == COGL_INVALID_HANDLE)
@@ -451,7 +461,8 @@ cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
   /* If that doesn't work try a fast path 2D texture */
   if ((tex = _cogl_texture_2d_new_from_bitmap (bmp_handle,
                                                flags,
-                                               internal_format)))
+                                               internal_format,
+                                               NULL)))
     return tex;
 
   /* Otherwise create a sliced texture */
@@ -530,10 +541,15 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
                                                      y_pot_waste,
                                                      format);
   else
-    return _cogl_texture_2d_new_from_foreign (gl_handle,
-                                              width,
-                                              height,
-                                              format);
+    {
+      _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+      return cogl_texture_2d_new_from_foreign (ctx,
+                                               gl_handle,
+                                               width,
+                                               height,
+                                               format,
+                                               NULL);
+    }
 }
 
 gboolean

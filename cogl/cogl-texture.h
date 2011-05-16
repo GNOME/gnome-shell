@@ -45,6 +45,33 @@ G_BEGIN_DECLS
 #define COGL_TEXTURE_MAX_WASTE  127
 
 /**
+ * COGL_TEXTURE_ERROR:
+ *
+ * #GError domain for texture errors.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+#define COGL_TEXTURE_ERROR (cogl_texture_error_quark ())
+
+
+/**
+ * CoglTextureError:
+ * @COGL_TEXTURE_ERROR_SIZE: Unsupported size
+ *
+ * Error codes that can be thrown when allocating textures.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+typedef enum {
+  COGL_TEXTURE_ERROR_SIZE,
+  COGL_TEXTURE_ERROR_FORMAT
+} CoglTextureError;
+
+GQuark cogl_texture_error_quark (void);
+
+/**
  * cogl_texture_new_with_size:
  * @width: width of texture in pixels.
  * @height: height of texture in pixels.

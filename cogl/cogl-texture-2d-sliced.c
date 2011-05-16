@@ -1041,6 +1041,8 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   CoglSpan             y_span;
   CoglHandle           tex_2d;
 
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
   /* This should only be called when the texture target is 2D. If a
      rectangle texture is used then _cogl_texture_new_from_foreign
      will create a cogl_texture_rectangle instead */
@@ -1054,10 +1056,12 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
       y_pot_waste < 0 || y_pot_waste >= height)
     return COGL_INVALID_HANDLE;
 
-  tex_2d = _cogl_texture_2d_new_from_foreign (gl_target,
-                                              gl_width,
-                                              gl_height,
-                                              format);
+  tex_2d = cogl_texture_2d_new_from_foreign (ctx,
+                                             gl_target,
+                                             gl_width,
+                                             gl_height,
+                                             format,
+                                             NULL);
 
   if (!tex_2d)
     return COGL_INVALID_HANDLE;

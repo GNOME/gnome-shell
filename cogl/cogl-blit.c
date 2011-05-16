@@ -199,7 +199,7 @@ _cogl_blit_copy_tex_sub_image_begin (CoglBlitData *data)
   _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* This will only work if the target texture is a CoglTexture2D */
-  if (!_cogl_is_texture_2d (data->dst_tex))
+  if (!cogl_is_texture_2d (data->dst_tex))
     return FALSE;
 
   fbo = _cogl_offscreen_new_to_texture_full
