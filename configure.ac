@@ -170,7 +170,15 @@ AS_CASE(
   [
     test "$cflags_set" = set || CFLAGS="$CFLAGS -g -O0"
     COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"
-    COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES cairo"
+
+    # debugging code can use cairo to dump the atlas
+    PKG_CHECK_EXISTS([CAIRO], [cairo], [have_cairo=yes])
+    AS_IF([test "x$have_cairo" = "xyes"],
+          [
+            COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES cairo"
+            AC_DEFINE([HAVE_CAIRO], [1], [Whether we have cairo or not])
+          ])
+
   ],
   [no],
   [
