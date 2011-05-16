@@ -610,6 +610,27 @@ AS_IF([test "x$enable_wayland_egl_platform" == "xyes"],
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_WAYLAND,
                [test "x$enable_wayland_egl_platform" = "xyes"])
 
+dnl Android EGL platform
+AC_ARG_ENABLE(
+  [android-egl-platform],
+  [AC_HELP_STRING([--enable-android-egl-platform=@<:@no/yes@:>@], [Enable support for the Android egl platform @<:@default=no@:>@])],
+  [],
+  enable_android_egl_platform=no
+)
+AS_IF([test "x$enable_android_egl_platform" == "xyes"],
+      [
+        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
+        NEED_EGL=yes
+        EGL_PLATFORMS="$EGL_PLATFORMS android"
+
+        AC_CHECK_HEADER([android/native_window.h],
+                        [],
+                        [AC_MSG_ERROR([Unable to locate android/native_window.h])])
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT"
+      ])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_ANDROID,
+               [test "x$enable_android_egl_platform" = "xyes"])
 
 dnl This should go last, since it's the default fallback and we need
 dnl to check the value of $EGL_PLATFORM_COUNT here.

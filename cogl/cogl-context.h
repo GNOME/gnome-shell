@@ -33,6 +33,9 @@
 
 #include <cogl/cogl-defines.h>
 #include <cogl/cogl-display.h>
+#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+#include <android/native_window.h>
+#endif
 
 G_BEGIN_DECLS
 
@@ -66,6 +69,11 @@ cogl_set_default_context (CoglContext *context);
 #define cogl_context_egl_get_egl_display cogl_context_egl_get_egl_display_EXP
 EGLDisplay
 cogl_context_egl_get_egl_display (CoglContext *context);
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+void
+cogl_android_set_native_window (ANativeWindow *window);
 #endif
 
 G_END_DECLS

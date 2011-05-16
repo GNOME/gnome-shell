@@ -48,6 +48,10 @@
 #include <wayland-egl.h>
 #endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+#include <android/native_window.h>
+#endif
+
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -111,7 +115,8 @@ typedef struct _CoglDisplayEGL
   struct wl_egl_window *wayland_egl_native_window;
   EGLSurface dummy_surface;
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
+      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) || \
+      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
   EGLSurface egl_surface;
   int egl_surface_width;
   int egl_surface_height;
@@ -205,6 +210,16 @@ initialize_function_table (CoglRenderer *renderer)
 
 #include "cogl-winsys-egl-feature-functions.h"
 }
+
+#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+static ANativeWindow *android_native_window;
+
+void
+cogl_android_set_native_window (ANativeWindow *window)
+{
+  android_native_window = window;
+}
+#endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 static CoglOnscreen *
@@ -749,6 +764,58 @@ try_create_context (CoglDisplay *display,
       goto fail;
     }
 
+#elif defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
+  {
+    EGLint format;
+
+    if (android_native_window == NULL)
+      {
+        error_message = "No ANativeWindow window specified with "
+          "cogl_android_set_native_window()";
+        goto fail;
+      }
+
+    /* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
+     * guaranteed to be accepted by ANativeWindow_setBuffersGeometry ().
+     * As soon as we picked a EGLConfig, we can safely reconfigure the
+     * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
+    eglGetConfigAttrib (edpy, config, EGL_NATIVE_VISUAL_ID, &format);
+
+    ANativeWindow_setBuffersGeometry (android_native_window,
+                                      0,
+                                      0,
+                                      format);
+
+    egl_display->egl_surface =
+      eglCreateWindowSurface (edpy,
+                              config,
+                              (NativeWindowType) android_native_window,
+                              NULL);
+    if (egl_display->egl_surface == EGL_NO_SURFACE)
+      {
+        error_message = "Unable to create EGL window surface";
+        goto fail;
+      }
+
+    if (!eglMakeCurrent (egl_renderer->edpy,
+                         egl_display->egl_surface,
+                         egl_display->egl_surface,
+                         egl_display->egl_context))
+      {
+        error_message = "Unable to eglMakeCurrent with egl surface";
+        goto fail;
+      }
+
+    eglQuerySurface (egl_renderer->edpy,
+                     egl_display->egl_surface,
+                     EGL_WIDTH,
+                     &egl_display->egl_surface_width);
+
+    eglQuerySurface (egl_renderer->edpy,
+                     egl_display->egl_surface,
+                     EGL_HEIGHT,
+                     &egl_display->egl_surface_height);
+  }
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
 
   egl_display->egl_surface =
@@ -1219,7 +1286,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   wl_surface_map_toplevel (egl_onscreen->wayland_surface);
 
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
+#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
   if (egl_display->have_onscreen)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -1328,7 +1396,8 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
                       egl_display->dummy_surface,
                       egl_display->egl_context);
       egl_context->current_surface = egl_display->dummy_surface;
-#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
+#elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
       return;
 #else
 #error "Unknown EGL platform"
