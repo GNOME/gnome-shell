@@ -1655,3 +1655,49 @@ StTooltip StLabel {
 .magnifier-zoom-region.full-screen {
     border-width: 0px;
 }
+
+
+/* goa message popup */
+
+.goa-message-table {
+}
+
+.goa-message-base {
+    font-size: 9pt;
+}
+
+.goa-message-from-header {
+    color: #666666;
+    font-weight: bold;
+}
+
+.goa-message-subject-header {
+    color: #666666;
+    font-weight: bold;
+}
+
+.goa-message-date-header {
+    color: #666666;
+    font-weight: bold;
+}
+
+.goa-message-from {
+    font-weight: bold;
+    min-width: 125px;
+}
+
+.goa-message-hbox {
+    spacing: 0.25em;
+    min-width: 300px;
+}
+
+.goa-message-subject {
+}
+
+.goa-message-excerpt {
+    color: rgba(153, 153, 153, 1.0);
+}
+
+.goa-message-date {
+    min-width: 80px;
+}

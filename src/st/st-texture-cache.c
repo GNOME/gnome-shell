@@ -1174,17 +1174,17 @@ load_gicon_with_colors (StTextureCache    *cache,
 {
   AsyncTextureLoadData *request;
   ClutterActor *texture;
-  char *gicon_string;
+  guint gicon_hash;
   char *key;
   GtkIconTheme *theme;
   GtkIconInfo *info;
 
-  gicon_string = g_icon_to_string (icon);
+  gicon_hash = g_icon_hash (icon);
   if (colors)
     {
       /* This raises some doubts about the practice of using string keys */
-      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
-                             gicon_string, size,
+      key = g_strdup_printf (CACHE_PREFIX_GICON "icon_hash=%u,size=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
+                             gicon_hash, size,
                              colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
                              colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
                              colors->error.red, colors->error.blue, colors->error.green, colors->error.alpha,
@@ -1192,10 +1192,9 @@ load_gicon_with_colors (StTextureCache    *cache,
     }
   else
     {
-      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d",
-                             gicon_string, size);
+      key = g_strdup_printf (CACHE_PREFIX_GICON "icon_hash=%u,size=%d",
+                             gicon_hash, size);
     }
-  g_free (gicon_string);
 
   if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
     {

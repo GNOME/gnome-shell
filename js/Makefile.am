@@ -26,6 +26,7 @@ nobase_dist_js_DATA = 	\
 	ui/endSessionDialog.js	\
 	ui/environment.js	\
 	ui/extensionSystem.js	\
+	ui/goaClient.js		\
 	ui/iconGrid.js		\
 	ui/lightbox.js		\
 	ui/link.js		\

@@ -29,6 +29,7 @@ const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const Scripting = imports.ui.scripting;
 const ShellDBus = imports.ui.shellDBus;
 const TelepathyClient = imports.ui.telepathyClient;
+const GoaClient = imports.ui.goaClient;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
@@ -50,6 +51,7 @@ let messageTray = null;
 let notificationDaemon = null;
 let windowAttentionHandler = null;
 let telepathyClient = null;
+let goaClient = null;
 let ctrlAltTabManager = null;
 let recorder = null;
 let shellDBusService = null;
@@ -139,6 +141,7 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
+    goaClient = new GoaClient.Client();
 
     overview.init();
     statusIconDispatcher.start(messageTray.actor);

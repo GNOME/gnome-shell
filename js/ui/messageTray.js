@@ -1301,6 +1301,10 @@ MessageTray.prototype = {
 
     },
 
+    getBusy: function(source) {
+        return this._busy;
+    },
+
     contains: function(source) {
         return this._getIndexOfSummaryItemForSource(source) >= 0;
     },
