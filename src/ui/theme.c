@@ -63,14 +63,14 @@
 
 #define GDK_COLOR_RGBA(color)                                           \
                          ((guint32) (0xff                         |     \
-                                     (((color).red / 256) << 24)   |    \
-                                     (((color).green / 256) << 16) |    \
-                                     (((color).blue / 256) << 8)))
+                                     ((int)((color).red * 255) << 24)   |    \
+                                     ((int)((color).green * 255) << 16) |    \
+                                     ((int)((color).blue * 255) << 8)))
 
 #define GDK_COLOR_RGB(color)                                            \
-                         ((guint32) ((((color).red / 256) << 16)   |    \
-                                     (((color).green / 256) << 8)  |    \
-                                     (((color).blue / 256))))
+                         ((guint32) (((int)((color).red * 255) << 16)   |    \
+                                     ((int)((color).green * 255) << 8)  |    \
+                                     ((int)((color).blue * 255))))
 
 #define ALPHA_TO_UCHAR(d) ((unsigned char) ((d) * 255))
 
@@ -78,8 +78,8 @@
 #define CLAMP_UCHAR(v) ((guchar) (CLAMP (((int)v), (int)0, (int)255)))
 #define INTENSITY(r, g, b) ((r) * 0.30 + (g) * 0.59 + (b) * 0.11)
 
-static void gtk_style_shade		(GdkColor	 *a,
-					 GdkColor	 *b,
+static void gtk_style_shade		(GdkRGBA	 *a,
+					 GdkRGBA	 *b,
 					 gdouble	  k);
 static void rgb_to_hls			(gdouble	 *r,
 					 gdouble	 *g,
@@ -95,7 +95,7 @@ static MetaTheme *meta_current_theme = NULL;
 
 static GdkPixbuf *
 colorize_pixbuf (GdkPixbuf *orig,
-                 GdkColor  *new_color)
+                 GdkRGBA   *new_color)
 {
   GdkPixbuf *pixbuf;
   double intensity;
@@ -138,16 +138,16 @@ colorize_pixbuf (GdkPixbuf *orig,
           if (intensity <= 0.5)
             {
               /* Go from black at intensity = 0.0 to new_color at intensity = 0.5 */
-              dr = (new_color->red * intensity * 2.0) / 65535.0;
-              dg = (new_color->green * intensity * 2.0) / 65535.0;
-              db = (new_color->blue * intensity * 2.0) / 65535.0;
+              dr = new_color->red * intensity * 2.0;
+              dg = new_color->green * intensity * 2.0;
+              db = new_color->blue * intensity * 2.0;
             }
           else
             {
               /* Go from new_color at intensity = 0.5 to white at intensity = 1.0 */
-              dr = (new_color->red + (65535 - new_color->red) * (intensity - 0.5) * 2.0) / 65535.0;
-              dg = (new_color->green + (65535 - new_color->green) * (intensity - 0.5) * 2.0) / 65535.0;
-              db = (new_color->blue + (65535 - new_color->blue) * (intensity - 0.5) * 2.0) / 65535.0;
+              dr = new_color->red + (1.0 - new_color->red) * (intensity - 0.5) * 2.0;
+              dg = new_color->green + (1.0 - new_color->green) * (intensity - 0.5) * 2.0;
+              db = new_color->blue + (1.0 - new_color->blue) * (intensity - 0.5) * 2.0;
             }
           
           dest[0] = CLAMP_UCHAR (255 * dr);
@@ -172,18 +172,15 @@ colorize_pixbuf (GdkPixbuf *orig,
 }
 
 static void
-color_composite (const GdkColor *bg,
-                 const GdkColor *fg,
-                 double          alpha_d,
-                 GdkColor       *color)
+color_composite (const GdkRGBA *bg,
+                 const GdkRGBA *fg,
+                 double         alpha,
+                 GdkRGBA       *color)
 {
-  guint16 alpha;
-
   *color = *bg;
-  alpha = alpha_d * 0xffff;
-  color->red = color->red + (((fg->red - color->red) * alpha + 0x8000) >> 16);
-  color->green = color->green + (((fg->green - color->green) * alpha + 0x8000) >> 16);
-  color->blue = color->blue + (((fg->blue - color->blue) * alpha + 0x8000) >> 16);
+  color->red = color->red + (fg->red - color->red) * alpha;
+  color->green = color->green + (fg->green - color->green) * alpha;
+  color->blue = color->blue + (fg->blue - color->blue) * alpha;
 }
 
 /**
@@ -1036,12 +1033,7 @@ meta_gradient_spec_render (const MetaGradientSpec *spec,
   tmp = spec->color_specs;
   while (tmp != NULL)
     {
-      GdkColor gdk_color;
-      meta_color_spec_render (tmp->data, style, &gdk_color);
-
-      colors[i].red = gdk_color.red / 65535.;
-      colors[i].green = gdk_color.green / 65535.;
-      colors[i].blue = gdk_color.blue / 65535.;
+      meta_color_spec_render (tmp->data, style, &colors[i]);
 
       tmp = tmp->next;
       ++i;
@@ -1386,7 +1378,7 @@ meta_color_spec_new_from_string (const char *str,
     {
       spec = meta_color_spec_new (META_COLOR_SPEC_BASIC);
       
-      if (!gdk_color_parse (str, &spec->data.basic.color))
+      if (!gdk_rgba_parse (&spec->data.basic.color, str))
         {
           g_set_error (err, META_THEME_ERROR,
                        META_THEME_ERROR_FAILED,
@@ -1424,12 +1416,11 @@ meta_color_spec_new_gtk (MetaGtkColorComponent component,
 #define LIGHTNESS_MULT 1.3
 #define DARKNESS_MULT  0.7
 static void
-meta_set_color_from_style (GdkColor              *color,
+meta_set_color_from_style (GdkRGBA               *color,
                            GtkStyleContext       *context,
                            GtkStateType           state,
                            MetaGtkColorComponent  component)
 {
-  GdkRGBA *rgba_color = NULL;
   GtkStateFlags flags;
 
   switch (state)
@@ -1457,39 +1448,16 @@ meta_set_color_from_style (GdkColor              *color,
     case META_GTK_COLOR_MID:
     case META_GTK_COLOR_LIGHT:
     case META_GTK_COLOR_DARK:
-      gtk_style_context_get (context, flags,
-                             "background-color", &rgba_color,
-                             NULL);
+      gtk_style_context_get_background_color (context, flags, color);
       break;
     case META_GTK_COLOR_FG:
     case META_GTK_COLOR_TEXT:
     case META_GTK_COLOR_TEXT_AA:
-      gtk_style_context_get (context, flags,
-                             "color", &rgba_color,
-                             NULL);
+      gtk_style_context_get_color (context, flags, color);
       break;
     case META_GTK_COLOR_LAST:
       g_assert_not_reached ();
       break;
-    }
-
-  if (rgba_color)
-    {
-      color->pixel = 0;
-      color->red = CLAMP ((guint) (rgba_color->red * 65535), 0, 65535);
-      color->green = CLAMP ((guint) (rgba_color->green * 65535), 0, 65535);
-      color->blue = CLAMP ((guint) (rgba_color->blue * 65535), 0, 65535);
-      gdk_rgba_free (rgba_color);
-    }
-  else
-    {
-      meta_warning (_("Failed to retrieve color %s[%s] from GTK+ theme.\n"),
-                    meta_color_component_to_string (component),
-                    meta_gtk_state_to_string (state));
-      color->pixel = 0;
-      color->red = component == META_GTK_COLOR_TEXT ? 0 : 65535;
-      color->green = 0;
-      color->blue = component == META_GTK_COLOR_TEXT ? 0 : 65535;
     }
 
   if (component == META_GTK_COLOR_LIGHT)
@@ -1498,7 +1466,7 @@ meta_set_color_from_style (GdkColor              *color,
     gtk_style_shade (color, color, DARKNESS_MULT);
   else if (component == META_GTK_COLOR_MID)
     {
-      GdkColor light, dark;
+      GdkRGBA light, dark;
 
       gtk_style_shade (color, &light, LIGHTNESS_MULT);
       gtk_style_shade (color, &dark, DARKNESS_MULT);
@@ -1509,7 +1477,7 @@ meta_set_color_from_style (GdkColor              *color,
     }
   else if (component == META_GTK_COLOR_TEXT_AA)
     {
-      GdkColor base;
+      GdkRGBA base;
 
       meta_set_color_from_style (&base, context, state, META_GTK_COLOR_BASE);
       color->red = (color->red + base.red) / 2;
@@ -1521,7 +1489,7 @@ meta_set_color_from_style (GdkColor              *color,
 void
 meta_color_spec_render (MetaColorSpec   *spec,
                         GtkStyleContext *context,
-                        GdkColor        *color)
+                        GdkRGBA         *color)
 {
   g_return_if_fail (spec != NULL);
   g_return_if_fail (GTK_IS_STYLE_CONTEXT (context));
@@ -1541,7 +1509,7 @@ meta_color_spec_render (MetaColorSpec   *spec,
 
     case META_COLOR_SPEC_BLEND:
       {
-        GdkColor bg, fg;
+        GdkRGBA bg, fg;
 
         meta_color_spec_render (spec->data.blend.background, context, &bg);
         meta_color_spec_render (spec->data.blend.foreground, context, &fg);
@@ -3348,7 +3316,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
     case META_DRAW_RECTANGLE:
       if (op->data.rectangle.filled)
         {
-          GdkColor color;
+          GdkRGBA color;
 
           meta_color_spec_render (op->data.rectangle.color_spec,
                                   context,
@@ -3370,7 +3338,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       
     case META_DRAW_TINT:
       {
-        GdkColor color;
+        GdkRGBA color;
         guint32 rgba;
         gboolean has_alpha;
 
@@ -3431,7 +3399,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       {
 	if (op->data.image.colorize_spec)
 	  {
-	    GdkColor color;
+	    GdkRGBA color;
 
             meta_color_spec_render (op->data.image.colorize_spec,
                                     context, &color);
@@ -3590,7 +3558,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                             MetaRectangle        rect,
                             MetaPositionExprEnv *env)
 {
-  GdkColor color;
+  GdkRGBA color;
 
   cairo_save (cr);
   gtk_style_context_save (style_gtk);
@@ -3604,7 +3572,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         int x1, x2, y1, y2;
 
         meta_color_spec_render (op->data.line.color_spec, style_gtk, &color);
-        gdk_cairo_set_source_color (cr, &color);
+        gdk_cairo_set_source_rgba (cr, &color);
 
         if (op->data.line.width > 0)
           cairo_set_line_width (cr, op->data.line.width);
@@ -3680,7 +3648,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
         meta_color_spec_render (op->data.rectangle.color_spec,
                                 style_gtk, &color);
-        gdk_cairo_set_source_color (cr, &color);
+        gdk_cairo_set_source_rgba (cr, &color);
 
         rx = parse_x_position_unchecked (op->data.rectangle.x, env);
         ry = parse_y_position_unchecked (op->data.rectangle.y, env);
@@ -3710,7 +3678,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         double center_x, center_y;
 
         meta_color_spec_render (op->data.arc.color_spec, style_gtk, &color);
-        gdk_cairo_set_source_color (cr, &color);
+        gdk_cairo_set_source_rgba (cr, &color);
 
         rx = parse_x_position_unchecked (op->data.arc.x, env);
         ry = parse_y_position_unchecked (op->data.arc.y, env);
@@ -3766,7 +3734,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
           {
             meta_color_spec_render (op->data.tint.color_spec,
                                     style_gtk, &color);
-            gdk_cairo_set_source_color (cr, &color);
+            gdk_cairo_set_source_rgba (cr, &color);
 
             cairo_rectangle (cr, rx, ry, rwidth, rheight);
             cairo_fill (cr);
@@ -3940,7 +3908,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
           meta_color_spec_render (op->data.title.color_spec,
                                   style_gtk, &color);
-          gdk_cairo_set_source_color (cr, &color);
+          gdk_cairo_set_source_rgba (cr, &color);
 
           rx = parse_x_position_unchecked (op->data.title.x, env);
           ry = parse_y_position_unchecked (op->data.title.y, env);
@@ -6557,17 +6525,17 @@ meta_image_fill_type_to_string (MetaImageFillType fill_type)
  * \param k  amount to scale lightness and saturation by
  */ 
 static void
-gtk_style_shade (GdkColor *a,
-                 GdkColor *b,
+gtk_style_shade (GdkRGBA *a,
+                 GdkRGBA *b,
                  gdouble   k)
 {
   gdouble red;
   gdouble green;
   gdouble blue;
   
-  red = (gdouble) a->red / 65535.0;
-  green = (gdouble) a->green / 65535.0;
-  blue = (gdouble) a->blue / 65535.0;
+  red = a->red;
+  green = a->green;
+  blue = a->blue;
   
   rgb_to_hls (&red, &green, &blue);
   
@@ -6585,9 +6553,9 @@ gtk_style_shade (GdkColor *a,
   
   hls_to_rgb (&red, &green, &blue);
   
-  b->red = red * 65535.0;
-  b->green = green * 65535.0;
-  b->blue = blue * 65535.0;
+  b->red = red;
+  b->green = green;
+  b->blue = blue;
 }
 
 /**
@@ -6774,7 +6742,7 @@ draw_bg_solid_composite (const MetaTextureSpec *bg,
                          int                    width,
                          int                    height)
 {
-  GdkColor bg_color;
+  GdkRGBA bg_color;
 
   g_assert (bg->type == META_TEXTURE_SOLID);
   g_assert (fg->type != META_TEXTURE_COMPOSITE);
@@ -6788,7 +6756,7 @@ draw_bg_solid_composite (const MetaTextureSpec *bg,
     {
     case META_TEXTURE_SOLID:
       {
-        GdkColor fg_color;
+        GdkRGBA fg_color;
 
         meta_color_spec_render (fg->data.solid.color_spec,
                                 widget,

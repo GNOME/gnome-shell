@@ -2612,7 +2612,7 @@ meta_frames_set_window_background (MetaFrames   *frames,
 
   if (frame_exists && style->window_background_color != NULL)
     {
-      GdkColor color;
+      GdkRGBA color;
       GdkVisual *visual;
 
       meta_color_spec_render (style->window_background_color,
@@ -2624,11 +2624,10 @@ meta_frames_set_window_background (MetaFrames   *frames,
       visual = gtk_widget_get_visual (GTK_WIDGET (frames));
       if (gdk_visual_get_depth (visual) == 32) /* we have ARGB */
         {
-          color.pixel = (color.pixel & 0xffffff) &
-            style->window_background_alpha << 24;
+          color.alpha = style->window_background_alpha / 255.0;
         }
 
-      gdk_window_set_background (frame->window, &color);
+      gdk_window_set_background_rgba (frame->window, &color);
     }
   else
     {

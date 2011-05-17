@@ -304,7 +304,7 @@ struct _MetaColorSpec
   union
   {
     struct {
-      GdkColor color;
+      GdkRGBA color;
     } basic;
     struct {
       MetaGtkColorComponent component;
@@ -315,13 +315,13 @@ struct _MetaColorSpec
       MetaColorSpec *background;
       double alpha;
 
-      GdkColor color;
+      GdkRGBA color;
     } blend;
     struct {
       MetaColorSpec *base;
       double factor;
 
-      GdkColor color;
+      GdkRGBA color;
     } shade;
   } data;
 };
@@ -962,7 +962,7 @@ MetaColorSpec* meta_color_spec_new_gtk         (MetaGtkColorComponent component,
 void           meta_color_spec_free            (MetaColorSpec     *spec);
 void           meta_color_spec_render          (MetaColorSpec     *spec,
                                                 GtkStyleContext   *style_gtk,
-                                                GdkColor          *color);
+                                                GdkRGBA           *color);
 
 
 MetaDrawOp*    meta_draw_op_new  (MetaDrawType        type);
