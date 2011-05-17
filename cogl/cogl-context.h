@@ -72,6 +72,7 @@ cogl_context_egl_get_egl_display (CoglContext *context);
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
+#define cogl_android_set_native_window cogl_android_set_native_window_EXP
 void
 cogl_android_set_native_window (ANativeWindow *window);
 #endif
