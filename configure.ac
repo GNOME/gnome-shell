@@ -486,24 +486,6 @@ dnl         ========================================================
 dnl         Check window system integration libraries...
 dnl         ========================================================
 
-dnl The "stub" winsys is a fallback option we use when Cogl doesn't
-dnl yet have support for a window system. It enables a toolkit like
-dnl Clutter to provide external support instead. Currently this is
-dnl not compatible with other window system backends.
-AC_ARG_ENABLE(
-  [stub-winsys],
-  [AC_HELP_STRING([--enable-stub-winsys=@<:@no/yes@:>@], [Enable support stub winsys @<:@default=no@:>@])],
-  [],
-  enable_stub_winsys=no
-)
-AS_IF([test "x$enable_stub_winsys" = "xyes"],
-      [
-        GL_WINSYS_APIS="$GL_WINSYS_APIS stub"
-        ALLOW_GLX=no
-        ALLOW_WGL=no
-      ])
-AM_CONDITIONAL(SUPPORT_STUB, [test "x$enable_stub_winsys" = "xyes"])
-
 AC_ARG_ENABLE(
   [glx],
   [AC_HELP_STRING([--enable-glx=@<:@no/yes@:>@], [Enable support GLX @<:@default=auto@:>@])],
@@ -512,9 +494,6 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_glx" = "xyes"],
       [
-        AS_IF([test "x$enable_stub_winsys" = "xyes"],
-              [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
-
         AS_IF([test "x$ALLOW_GLX" != "xyes"],
               [AC_MSG_ERROR([GLX not supported with $COGL_DRIVER driver])])
 
@@ -523,8 +502,6 @@ AS_IF([test "x$enable_glx" = "xyes"],
         GL_WINSYS_APIS="$GL_WINSYS_APIS glx"
 
         AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
-        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1],
-                  [Cogl can create its own OpenGL context])
 
         # We might fall back to DRM for sync-to-vblank on GLX
         PKG_CHECK_EXISTS([libdrm],
@@ -544,9 +521,6 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_wgl" = "xyes"],
       [
-        AS_IF([test "x$enable_stub_winsys" = "xyes"],
-              [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
-
         AS_IF([test "x$ALLOW_WGL" != "xyes"],
               [AC_MSG_ERROR([WGL not supported with $COGL_DRIVER driver])])
 
@@ -555,9 +529,6 @@ AS_IF([test "x$enable_wgl" = "xyes"],
 
         AC_DEFINE([COGL_HAS_WGL_SUPPORT], [1], [Cogl supports OpenGL using the WGL API])
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_WIN32_SUPPORT"
-
-        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1],
-                  [Cogl can create its own OpenGL context])
       ])
 AM_CONDITIONAL(SUPPORT_WGL, [test "x$SUPPORT_WGL" = "xyes"])
 
@@ -571,9 +542,6 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_null_egl_platform" = "xyes"],
       [
-        AS_IF([test "x$enable_stub_winsys" = "xyes"],
-              [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
-
         EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
         NEED_EGL=yes
         EGL_PLATFORMS="$EGL_PLATFORMS null"
@@ -591,9 +559,6 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_gdl_egl_platform" == "xyes"],
       [
-        AS_IF([test "x$enable_stub_winsys" = "xyes"],
-              [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
-
         EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
         NEED_EGL=yes
         EGL_PLATFORMS="$EGL_PLATFORMS gdl"
@@ -670,9 +635,6 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_xlib_egl_platform" = "xyes"],
       [
-        AS_IF([test "x$enable_stub_winsys" = "xyes"],
-              [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
-
         EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
         NEED_EGL=yes
         NEED_XLIB=yes
@@ -712,8 +674,6 @@ AS_IF([test "x$NEED_EGL" = "xyes"],
         SUPPORT_EGL=yes
         GL_WINSYS_APIS="$GL_WINSYS_APIS egl"
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_SUPPORT"
-        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1],
-                  [Cogl can create its own OpenGL context])
       ])
 
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "xyes"])

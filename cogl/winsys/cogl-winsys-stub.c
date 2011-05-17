@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010 Intel Corporation.
+ * Copyright (C) 2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,8 +16,12 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
+ *
+ * Authors:
+ *  Robert Bragg <robert@linux.intel.com>
  *
  */
 
@@ -25,88 +29,131 @@
 #include "config.h"
 #endif
 
+#include "cogl-renderer-private.h"
+#include "cogl-display-private.h"
+#include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-private.h"
 
-/* This provides a stub winsys implementation for when Clutter still handles
- * creating an OpenGL context. This is useful so we don't have to guard all
- * calls into the winsys layer with #ifdef COGL_HAS_FULL_WINSYS
+#include <string.h>
+
+static int _cogl_winsys_stub_dummy_ptr;
+
+/* This provides a NOP winsys. This can be useful for debugging or for
+ * integrating with toolkits that already have window system
+ * integration code.
  */
 
-CoglFuncPtr
+static CoglFuncPtr
 _cogl_winsys_get_proc_address (const char *name)
 {
   return NULL;
 }
 
-void
-_cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
+static void
+_cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
-
+  renderer->winsys = NULL;
 }
 
-void
-_cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
-                                   int *rectangles,
-                                   int n_rectangles)
+static gboolean
+_cogl_winsys_renderer_connect (CoglRenderer *renderer,
+                               GError **error)
 {
-
+  renderer->winsys = &_cogl_winsys_stub_dummy_ptr;
+  return TRUE;
 }
 
-void
-_cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
+static void
+_cogl_winsys_display_destroy (CoglDisplay *display)
 {
-
+  display->winsys = NULL;
 }
 
-unsigned int
-_cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
-                                                 CoglSwapBuffersNotify callback,
-                                                 void *user_data)
+static gboolean
+_cogl_winsys_display_setup (CoglDisplay *display,
+                            GError **error)
 {
-  g_assert (0);
-  return 0;
+  display->winsys = &_cogl_winsys_stub_dummy_ptr;
+  return TRUE;
 }
 
-void
-_cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
-                                                    unsigned int id)
+static gboolean
+_cogl_winsys_context_init (CoglContext *context, GError **error)
 {
-  g_assert (0);
+  context->winsys = &_cogl_winsys_stub_dummy_ptr;
+
+  if (!_cogl_gl_check_version (error))
+    return FALSE;
+
+  _cogl_gl_update_features (context);
+
+  memset (context->winsys_features, 0, sizeof (context->winsys_features));
+
+  return TRUE;
 }
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-XVisualInfo *
-_cogl_winsys_xlib_get_visual_info (void)
+static void
+_cogl_winsys_context_deinit (CoglContext *context)
 {
-  g_assert (0);
-  return NULL;
+  context->winsys = NULL;
 }
-#endif
 
-#ifdef COGL_HAS_X11_SUPPORT
-guint32
-_cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
-{
-  g_assert (0);
-  return 0;
-}
-#endif
-
-gboolean
+static gboolean
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
   return TRUE;
 }
 
-void
+static void
 _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
-
 }
 
-void
-_cogl_winsys_context_deinit (CoglContext *context)
+static void
+_cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
+}
 
+static void
+_cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
+{
+}
+
+static void
+_cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
+{
+}
+
+static void
+_cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
+                                      gboolean visibility)
+{
+}
+
+static CoglWinsysVtable _cogl_winsys_vtable =
+  {
+    .name = "STUB",
+    .get_proc_address = _cogl_winsys_get_proc_address,
+    .renderer_connect = _cogl_winsys_renderer_connect,
+    .renderer_disconnect = _cogl_winsys_renderer_disconnect,
+    .display_setup = _cogl_winsys_display_setup,
+    .display_destroy = _cogl_winsys_display_destroy,
+    .context_init = _cogl_winsys_context_init,
+    .context_deinit = _cogl_winsys_context_deinit,
+
+    .onscreen_init = _cogl_winsys_onscreen_init,
+    .onscreen_deinit = _cogl_winsys_onscreen_deinit,
+    .onscreen_bind = _cogl_winsys_onscreen_bind,
+    .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
+    .onscreen_update_swap_throttled =
+      _cogl_winsys_onscreen_update_swap_throttled,
+    .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
+  };
+
+const CoglWinsysVtable *
+_cogl_winsys_stub_get_vtable (void)
+{
+  return &_cogl_winsys_vtable;
 }

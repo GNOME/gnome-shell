@@ -303,6 +303,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-point-in-poly-private.h       	\
 	$(srcdir)/cogl-point-in-poly.c       		\
 	$(srcdir)/cogl-clutter.c       			\
+	$(srcdir)/winsys/cogl-winsys-stub.c		\
 	$(NULL)
 
 if SUPPORT_XLIB
@@ -351,10 +352,6 @@ endif
 if SUPPORT_EGL_PLATFORM_ANDROID
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c
-endif
-if SUPPORT_STUB
-cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-stub.c
 endif
 
 EXTRA_DIST += stb_image.c

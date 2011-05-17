@@ -104,18 +104,14 @@ gboolean
 cogl_display_setup (CoglDisplay *display,
                     GError **error)
 {
-#ifdef COGL_HAS_FULL_WINSYS
   const CoglWinsysVtable *winsys;
-#endif
 
   if (display->setup)
     return TRUE;
 
-#ifdef COGL_HAS_FULL_WINSYS
   winsys = _cogl_display_get_winsys (display);
   if (!winsys->display_setup (display, error))
     return FALSE;
-#endif
 
   display->setup = TRUE;
 

@@ -35,6 +35,7 @@
 #include "cogl-private.h"
 #include "cogl-context-private.h"
 #include "cogl-winsys-private.h"
+#include "cogl-winsys-stub-private.h"
 #include "cogl-framebuffer-private.h"
 
 gboolean
@@ -56,7 +57,7 @@ cogl_onscreen_clutter_backend_set_size (int width, int height)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!ctx->stub_winsys)
+  if (_cogl_context_get_winsys (ctx) != _cogl_winsys_stub_get_vtable ())
     return;
 
   framebuffer = COGL_FRAMEBUFFER (ctx->window_buffer);

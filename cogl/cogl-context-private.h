@@ -263,7 +263,6 @@ struct _CoglContext
   unsigned int winsys_features
     [COGL_FLAGS_N_INTS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
   void *winsys;
-  gboolean stub_winsys;
 };
 
 CoglContext *

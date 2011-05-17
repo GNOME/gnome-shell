@@ -39,8 +39,7 @@
 #include "cogl-renderer-private.h"
 #include "cogl-display-private.h"
 #include "cogl-winsys-private.h"
-
-#ifdef COGL_HAS_FULL_WINSYS
+#include "cogl-winsys-stub-private.h"
 
 #ifdef COGL_HAS_GLX_SUPPORT
 extern const CoglWinsysVtable *_cogl_winsys_glx_get_vtable (void);
@@ -65,9 +64,8 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #ifdef COGL_HAS_WGL_SUPPORT
   _cogl_winsys_wgl_get_vtable,
 #endif
+  _cogl_winsys_stub_get_vtable,
 };
-
-#endif /* COGL_HAS_FULL_WINSYS */
 
 static void _cogl_renderer_free (CoglRenderer *renderer);
 
@@ -100,10 +98,8 @@ native_filter_closure_free (CoglNativeFilterClosure *closure)
 static void
 _cogl_renderer_free (CoglRenderer *renderer)
 {
-#ifdef COGL_HAS_FULL_WINSYS
   const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
   winsys->renderer_disconnect (renderer);
-#endif
 
   g_slist_foreach (renderer->event_filters,
                    (GFunc) native_filter_closure_free,
@@ -151,7 +147,6 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
                                        CoglOnscreenTemplate *onscreen_template,
                                        GError **error)
 {
-#ifdef COGL_HAS_FULL_WINSYS
   CoglDisplay *display;
   const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
 
@@ -166,7 +161,7 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
     }
 
   cogl_object_unref (display);
-#endif
+
   return TRUE;
 }
 
@@ -175,16 +170,13 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
 gboolean
 cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 {
-#ifdef COGL_HAS_FULL_WINSYS
   int i;
   char *renderer_name = getenv ("COGL_RENDERER");
-#endif
   GString *error_message;
 
   if (renderer->connected)
     return TRUE;
 
-#ifdef COGL_HAS_FULL_WINSYS
   error_message = g_string_new ("");
   for (i = 0; i < G_N_ELEMENTS (_cogl_winsys_vtable_getters); i++)
     {
@@ -221,10 +213,6 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
     }
 
   return TRUE;
-#else
-  renderer->connected = TRUE;
-  return TRUE;
-#endif
 }
 
 CoglFilterReturn

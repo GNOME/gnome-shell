@@ -30,6 +30,7 @@
 #include "cogl-internal.h"
 #include "cogl-private.h"
 #include "cogl-winsys-private.h"
+#include "cogl-winsys-stub-private.h"
 #include "cogl-profile.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
@@ -162,8 +163,6 @@ cogl_context_new (CoglDisplay *display,
 
   context->display = display;
 
-#ifdef COGL_HAS_FULL_WINSYS
-  context->stub_winsys = FALSE;
   winsys = _cogl_context_get_winsys (context);
   if (!winsys->context_init (context, error))
     {
@@ -171,20 +170,6 @@ cogl_context_new (CoglDisplay *display,
       g_free (context);
       return NULL;
     }
-#else
-  /* In this case Clutter is still responsible for creating a GL
-   * context. */
-  context->stub_winsys = TRUE;
-  if (!_cogl_gl_check_version (error))
-    {
-      g_free (context);
-      return NULL;
-    }
-  _cogl_gl_update_features (context);
-#ifdef COGL_HAS_XLIB_SUPPORT
-  _cogl_xlib_query_damage_extension ();
-#endif
-#endif
 
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);
@@ -284,7 +269,7 @@ cogl_context_new (CoglDisplay *display,
    * the OpenGL binding API and for creating onscreen framebuffers and
    * so we have to add a dummy framebuffer to represent the backend
    * owned window... */
-  if (context->stub_winsys)
+  if (_cogl_context_get_winsys (context) == _cogl_winsys_stub_get_vtable ())
     {
       CoglOnscreen *window = _cogl_onscreen_new ();
       cogl_set_framebuffer (COGL_FRAMEBUFFER (window));

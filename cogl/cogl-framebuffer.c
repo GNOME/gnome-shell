@@ -1372,11 +1372,9 @@ bind_gl_framebuffer (CoglContext *ctx,
                            COGL_OFFSCREEN (framebuffer)->fbo_handle));
   else
     {
-#ifdef COGL_HAS_FULL_WINSYS
       const CoglWinsysVtable *winsys =
         _cogl_framebuffer_get_winsys (framebuffer);
       winsys->onscreen_bind (COGL_ONSCREEN (framebuffer));
-#endif
       /* glBindFramebuffer is an an extension with OpenGL ES 1.1 */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
         GE (glBindFramebuffer (target, 0));
