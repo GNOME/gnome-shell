@@ -32,18 +32,17 @@
 
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
+#include <girepository.h>
 #include <gjs/gjs.h>
 #include <gtk/gtk.h>
 
 #include "shell-global.h"
 #include "shell-global-private.h"
 
-static char **include_path = NULL;
 static char *command = NULL;
 
 static GOptionEntry entries[] = {
   { "command", 'c', 0, G_OPTION_ARG_STRING, &command, "Program passed in as a string", "COMMAND" },
-  { "include-path", 'I', 0, G_OPTION_ARG_STRING_ARRAY, &include_path, "Add the directory DIR to the list of directories to search for js files.", "DIR" },
   { NULL }
 };
 
@@ -130,6 +129,14 @@ main(int argc, char **argv)
   title = g_filename_display_basename (filename);
   clutter_stage_set_title (CLUTTER_STAGE (stage), title);
   g_free (title);
+
+#if HAVE_BLUETOOTH
+  /* The module imports are all so intertwined that if the test
+   * imports anything in js/ui, it will probably eventually end up
+   * pulling in ui/status/bluetooth.js. So we need this.
+   */
+  g_irepository_prepend_search_path (BLUETOOTH_DIR);
+#endif
 
   /* evaluate the script */
   error = NULL;
