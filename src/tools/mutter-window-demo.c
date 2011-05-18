@@ -682,7 +682,7 @@ desktop_cb (GtkAction           *action,
 {
   GtkWidget *window;
   GtkWidget *label;
-  GdkColor desktop_color;
+  GdkRGBA desktop_color;
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   set_gtk_window_type (GTK_WINDOW (window), "_NET_WM_WINDOW_TYPE_DESKTOP");
@@ -691,11 +691,12 @@ desktop_cb (GtkAction           *action,
                                gdk_screen_width (), gdk_screen_height ());
   gtk_window_move (GTK_WINDOW (window), 0, 0);
   
-  desktop_color.red = 0x5144;
-  desktop_color.green = 0x75D6;
-  desktop_color.blue = 0xA699;
+  desktop_color.red = 0.32;
+  desktop_color.green = 0.46;
+  desktop_color.blue = 0.65;
+  desktop_color.alpha = 1.0;
 
-  gtk_widget_modify_bg (window, GTK_STATE_NORMAL, &desktop_color);
+  gtk_widget_override_background_color (window, 0, &desktop_color);
   
   label = focus_label (window);
   
