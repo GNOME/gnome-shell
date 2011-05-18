@@ -4719,8 +4719,8 @@ cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
   CoglPipeline *authority;
   CoglDepthState *orig_state;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), TRUE);
-  g_return_if_fail (depth_state->magic == COGL_DEPTH_STATE_MAGIC);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  g_return_val_if_fail (depth_state->magic == COGL_DEPTH_STATE_MAGIC, FALSE);
 
   authority = _cogl_pipeline_get_authority (pipeline, state);
 
