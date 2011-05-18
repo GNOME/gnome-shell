@@ -49,6 +49,23 @@ typedef struct _ClutterClickActionPrivate       ClutterClickActionPrivate;
 typedef struct _ClutterClickActionClass         ClutterClickActionClass;
 
 /**
+ * ClutterLongPressState:
+ * @CLUTTER_LONG_PRESS_QUERY: Queries the action whether it supports
+ *   long presses
+ * @CLUTTER_LONG_PRESS_ACTIVATE: Activates the action on a long press
+ * @CLUTTER_LONG_PRESS_CANCEL: The long press was cancelled
+ *
+ * The states for the #ClutterClikAction::long-press signal.
+ *
+ * Since: 1.8
+ */
+typedef enum { /*< prefix=CLUTTER_LONG_PRESS >*/
+  CLUTTER_LONG_PRESS_QUERY,
+  CLUTTER_LONG_PRESS_ACTIVATE,
+  CLUTTER_LONG_PRESS_CANCEL
+} ClutterLongPressState;
+
+/**
  * ClutterClickAction:
  *
  * The <structname>ClutterClickAction</structname> structure contains
@@ -67,6 +84,7 @@ struct _ClutterClickAction
 /**
  * ClutterClickActionClass:
  * @clicked: class handler for the #ClutterClickAction::clicked signal
+ * @long_press: class handler for the #ClutterClickAction::long-press signal
  *
  * The <structname>ClutterClickActionClass</structname> structure
  * contains only private data
@@ -79,8 +97,12 @@ struct _ClutterClickActionClass
   ClutterActionClass parent_class;
 
   /*< public >*/
-  void (* clicked) (ClutterClickAction *action,
-                    ClutterActor       *actor);
+  void     (* clicked)    (ClutterClickAction    *action,
+                           ClutterActor          *actor);
+
+  gboolean (* long_press) (ClutterClickAction    *action,
+                           ClutterActor          *actor,
+                           ClutterLongPressState  state);
 
   /*< private >*/
   void (* _clutter_click_action1) (void);
@@ -94,10 +116,14 @@ struct _ClutterClickActionClass
 
 GType clutter_click_action_get_type (void) G_GNUC_CONST;
 
-ClutterAction *clutter_click_action_new        (void);
+ClutterAction *        clutter_click_action_new        (void);
 
 guint                  clutter_click_action_get_button (ClutterClickAction *action);
 ClutterModifierType    clutter_click_action_get_state  (ClutterClickAction *action);
+void                   clutter_click_action_get_coords (ClutterClickAction *action,
+                                                        gfloat             *press_x,
+                                                        gfloat             *press_y);
+
 void                   clutter_click_action_release    (ClutterClickAction *action);
 
 G_END_DECLS

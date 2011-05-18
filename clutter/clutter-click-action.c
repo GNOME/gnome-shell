@@ -45,6 +45,50 @@
  *   g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
  * ]|
  *
+ * #ClutterClickAction also supports long press gestures: a long press is
+ * activated if the pointer remains pressed within a certain threshold (as
+ * defined by the #ClutterClickAction:long-press-threshold property) for a
+ * minimum amount of time (as the defined by the
+ * #ClutterClickAction:long-press-duration property).
+ * The #ClutterClickAction::long-press signal is emitted multiple times,
+ * using different #ClutterLongPressState values; to handle long presses
+ * you should connect to the #ClutterClickAction::long-press signal and
+ * handle the different states:
+ *
+ * |[
+ *   static gboolean
+ *   on_long_press (ClutterClickAction    *action,
+ *                  ClutterActor          *actor,
+ *                  ClutterLongPressState  state)
+ *   {
+ *     switch (state)
+ *       {
+ *       case CLUTTER_LONG_PRESS_QUERY:
+ *         /&ast; return TRUE if the actor should support long press
+ *          &ast; gestures, and FALSE otherwise; this state will be
+ *          &ast; emitted on button presses
+ *          &ast;/
+ *         return TRUE;
+ *
+ *       case CLUTTER_LONG_PRESS_ACTIVATE:
+ *         /&ast; this state is emitted if the minimum duration has
+ *          &ast; been reached without the gesture being cancelled.
+ *          &ast; the return value is not used
+ *          &ast;/
+ *         return TRUE;
+ *
+ *       case CLUTTER_LONG_PRESS_CANCEL:
+ *         /&ast; this state is emitted if the long press was cancelled;
+ *          &ast; for instance, the pointer went outside the actor or the
+ *          &ast; allowed threshold, or the button was released before
+ *          &ast; the minimum duration was reached. the return value is
+ *          &ast; not used
+ *          &ast;/
+ *         return FALSE;
+ *       }
+ *   }
+ * ]|
+ *
  * #ClutterClickAction is available since Clutter 1.4
  */
 
@@ -64,10 +108,17 @@ struct _ClutterClickActionPrivate
   ClutterActor *stage;
 
   guint event_id;
-  gulong capture_id;
+  guint capture_id;
+  guint long_press_id;
+
+  gint long_press_threshold;
+  gint long_press_duration;
+  gint drag_threshold;
 
   guint press_button;
   ClutterModifierType modifier_state;
+  gfloat press_x;
+  gfloat press_y;
 
   guint is_held    : 1;
   guint is_pressed : 1;
@@ -79,15 +130,18 @@ enum
 
   PROP_HELD,
   PROP_PRESSED,
+  PROP_LONG_PRESS_THRESHOLD,
+  PROP_LONG_PRESS_DURATION,
 
   PROP_LAST
 };
 
-static GParamSpec *obj_props[PROP_LAST];
+static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 enum
 {
   CLICKED,
+  LONG_PRESS,
 
   LAST_SIGNAL
 };
@@ -107,11 +161,114 @@ click_action_set_pressed (ClutterClickAction *action,
 {
   ClutterClickActionPrivate *priv = action->priv;
 
+  is_pressed = !!is_pressed;
+
   if (priv->is_pressed == is_pressed)
     return;
 
   priv->is_pressed = is_pressed;
   g_object_notify_by_pspec (G_OBJECT (action), obj_props[PROP_PRESSED]);
+}
+
+static inline void
+click_action_set_held (ClutterClickAction *action,
+                       gboolean            is_held)
+{
+  ClutterClickActionPrivate *priv = action->priv;
+
+  is_held = !!is_held;
+
+  if (priv->is_held == is_held)
+    return;
+
+  priv->is_held = is_held;
+  g_object_notify_by_pspec (G_OBJECT (action), obj_props[PROP_HELD]);
+}
+
+static gboolean
+click_action_emit_long_press (gpointer data)
+{
+  ClutterClickAction *action = data;
+  ClutterClickActionPrivate *priv = action->priv;
+  ClutterActor *actor;
+  gboolean result;
+
+  priv->long_press_id = 0;
+
+  actor = clutter_actor_meta_get_actor (data);
+
+  g_signal_emit (action, click_signals[LONG_PRESS], 0,
+                 actor,
+                 CLUTTER_LONG_PRESS_ACTIVATE,
+                 &result);
+
+  if (priv->capture_id != 0)
+    {
+      g_signal_handler_disconnect (priv->stage, priv->capture_id);
+      priv->capture_id = 0;
+    }
+
+  click_action_set_pressed (action, FALSE);
+  click_action_set_held (action, FALSE);
+
+  return FALSE;
+}
+
+static inline void
+click_action_query_long_press (ClutterClickAction *action)
+{
+  ClutterClickActionPrivate *priv = action->priv;
+  ClutterActor *actor;
+  gboolean result = FALSE;
+  gint timeout;
+
+  if (priv->long_press_duration < 0)
+    {
+      ClutterSettings *settings = clutter_settings_get_default ();
+
+      g_object_get (settings,
+                    "long-press-duration", &timeout,
+                    NULL);
+    }
+  else
+    timeout = priv->long_press_duration;
+
+  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
+
+  g_signal_emit (action, click_signals[LONG_PRESS], 0,
+                 actor,
+                 CLUTTER_LONG_PRESS_QUERY,
+                 &result);
+
+  if (result)
+    {
+      priv->long_press_id =
+        clutter_threads_add_timeout (timeout,
+                                     click_action_emit_long_press,
+                                     action);
+    }
+}
+
+static inline void
+click_action_cancel_long_press (ClutterClickAction *action)
+{
+  ClutterClickActionPrivate *priv = action->priv;
+
+  if (priv->long_press_id != 0)
+    {
+      ClutterActor *actor;
+      gboolean result;
+
+      actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
+
+      g_source_remove (priv->long_press_id);
+      priv->long_press_id = 0;
+
+      g_signal_emit (action, click_signals[LONG_PRESS], 0,
+                     actor,
+                     CLUTTER_LONG_PRESS_CANCEL,
+                     &result);
+    }
 }
 
 static gboolean
@@ -136,9 +293,20 @@ on_event (ClutterActor       *actor,
       if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
         return FALSE;
 
-      priv->is_held = TRUE;
       priv->press_button = clutter_event_get_button (event);
       priv->modifier_state = clutter_event_get_state (event);
+      clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
+
+      if (priv->long_press_threshold < 0)
+        {
+          ClutterSettings *settings = clutter_settings_get_default ();
+
+          g_object_get (settings,
+                        "dnd-drag-threshold", &priv->drag_threshold,
+                        NULL);
+        }
+      else
+        priv->drag_threshold = priv->long_press_threshold;
 
       if (priv->stage == NULL)
         priv->stage = clutter_actor_get_stage (actor);
@@ -148,6 +316,8 @@ on_event (ClutterActor       *actor,
                                                  action);
 
       click_action_set_pressed (action, TRUE);
+      click_action_set_held (action, TRUE);
+      click_action_query_long_press (action);
       break;
 
     case CLUTTER_ENTER:
@@ -156,6 +326,7 @@ on_event (ClutterActor       *actor,
 
     case CLUTTER_LEAVE:
       click_action_set_pressed (action, priv->is_held);
+      click_action_cancel_long_press (action);
       break;
 
     default:
@@ -186,13 +357,20 @@ on_captured_event (ClutterActor       *stage,
           clutter_event_get_click_count (event) != 1)
         return FALSE;
 
-      priv->is_held = FALSE;
+      click_action_set_held (action, FALSE);
+      click_action_cancel_long_press (action);
 
       /* disconnect the capture */
       if (priv->capture_id != 0)
         {
           g_signal_handler_disconnect (priv->stage, priv->capture_id);
           priv->capture_id = 0;
+        }
+
+      if (priv->long_press_id != 0)
+        {
+          g_source_remove (priv->long_press_id);
+          priv->long_press_id = 0;
         }
 
       if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
@@ -218,6 +396,25 @@ on_captured_event (ClutterActor       *stage,
       g_signal_emit (action, click_signals[CLICKED], 0, actor);
       break;
 
+    case CLUTTER_MOTION:
+      {
+        gfloat motion_x, motion_y;
+        gfloat delta_x, delta_y;
+
+        if (!priv->is_held)
+          return FALSE;
+
+        clutter_event_get_coords (event, &motion_x, &motion_y);
+
+        delta_x = ABS (motion_x - priv->press_x);
+        delta_y = ABS (motion_y - priv->press_y);
+
+        if (delta_x > priv->drag_threshold ||
+            delta_y > priv->drag_threshold)
+          click_action_cancel_long_press (action);
+      }
+      break;
+
     default:
       break;
     }
@@ -229,7 +426,8 @@ static void
 clutter_click_action_set_actor (ClutterActorMeta *meta,
                                 ClutterActor     *actor)
 {
-  ClutterClickActionPrivate *priv = CLUTTER_CLICK_ACTION (meta)->priv;
+  ClutterClickAction *action = CLUTTER_CLICK_ACTION (meta);
+  ClutterClickActionPrivate *priv = action->priv;
 
   if (priv->event_id != 0)
     {
@@ -246,12 +444,45 @@ clutter_click_action_set_actor (ClutterActorMeta *meta,
       priv->stage = NULL;
     }
 
+  if (priv->long_press_id != 0)
+    {
+      g_source_remove (priv->long_press_id);
+      priv->long_press_id = 0;
+    }
+
+  click_action_set_pressed (action, FALSE);
+  click_action_set_held (action, FALSE);
+
   if (actor != NULL)
     priv->event_id = g_signal_connect (actor, "event",
                                        G_CALLBACK (on_event),
-                                       meta);
+                                       action);
 
   CLUTTER_ACTOR_META_CLASS (clutter_click_action_parent_class)->set_actor (meta, actor);
+}
+
+static void
+clutter_click_action_set_property (GObject      *gobject,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  ClutterClickActionPrivate *priv = CLUTTER_CLICK_ACTION (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_LONG_PRESS_DURATION:
+      priv->long_press_duration = g_value_get_int (value);
+      break;
+
+    case PROP_LONG_PRESS_THRESHOLD:
+      priv->long_press_threshold = g_value_get_int (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -272,6 +503,14 @@ clutter_click_action_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->is_pressed);
       break;
 
+    case PROP_LONG_PRESS_DURATION:
+      g_value_set_int (value, priv->long_press_duration);
+      break;
+
+    case PROP_LONG_PRESS_THRESHOLD:
+      g_value_set_int (value, priv->long_press_threshold);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -288,6 +527,7 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
 
   meta_class->set_actor = clutter_click_action_set_actor;
 
+  gobject_class->set_property = clutter_click_action_set_property;
   gobject_class->get_property = clutter_click_action_get_property;
 
   /**
@@ -318,6 +558,44 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
                           FALSE,
                           CLUTTER_PARAM_READABLE);
 
+  /**
+   * ClutterClickAction:long-press-duration:
+   *
+   * The minimum duration of a press for it to be recognized as a long
+   * press gesture, in milliseconds.
+   *
+   * A value of -1 will make the #ClutterClickAction use the value of
+   * the #ClutterSettings:long-press-duration property.
+   *
+   * Since: 1.8
+   */
+  obj_props[PROP_LONG_PRESS_DURATION] =
+    g_param_spec_int ("long-press-duration",
+                      P_("Long Press Duration"),
+                      P_("The minimum duration of a long press to recognize the gesture"),
+                      -1, G_MAXINT,
+                      -1,
+                      CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterClickAction:long-press-threshold:
+   *
+   * The maximum allowed distance that can be covered (on both axes) before
+   * a long press gesture is cancelled, in pixels.
+   *
+   * A value of -1 will make the #ClutterClickAction use the value of
+   * the #ClutterSettings:dnd-drag-threshold property.
+   *
+   * Since: 1.8
+   */
+  obj_props[PROP_LONG_PRESS_THRESHOLD] =
+    g_param_spec_int ("long-press-threshold",
+                      P_("Long Press Threshold"),
+                      P_("The maximum threshold before a long press is cancelled"),
+                      -1, G_MAXINT,
+                      -1,
+                      CLUTTER_PARAM_READWRITE);
+
   g_object_class_install_properties (gobject_class,
                                      PROP_LAST,
                                      obj_props);
@@ -342,6 +620,44 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
                   _clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
+
+  /**
+   * ClutterClickAction::long-press:
+   * @action: the #ClutterClickAction that emitted the signal
+   * @actor: the #ClutterActor attached to the @action
+   * @state: the long press state
+   *
+   * The ::long-press signal is emitted during the long press gesture
+   * handling.
+   *
+   * This signal can be emitted multiple times with different states.
+   *
+   * The %CLUTTER_LONG_PRESS_QUERY state will be emitted on button presses,
+   * and its return value will determine whether the long press handling
+   * should be initiated. If the signal handlers will return %TRUE, the
+   * %CLUTTER_LONG_PRESS_QUERY state will be followed either by a signal
+   * emission with the %CLUTTER_LONG_PRESS_ACTIVATE state if the long press
+   * constraints were respected, or by a signal emission with the
+   * %CLUTTER_LONG_PRESS_CANCEL state if the long press was cancelled.
+   *
+   * It is possible to forcibly cancel a long press detection using
+   * clutter_click_action_release().
+   *
+   * Return value: Only the %CLUTTER_LONG_PRESS_QUERY state uses the
+   *   returned value of the handler; other states will ignore it
+   *
+   * Since: 1.8
+   */
+  click_signals[LONG_PRESS] =
+    g_signal_new (I_("long-press"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterClickActionClass, long_press),
+                  NULL, NULL,
+                  _clutter_marshal_BOOLEAN__OBJECT_ENUM,
+                  G_TYPE_BOOLEAN, 2,
+                  CLUTTER_TYPE_ACTOR,
+                  CLUTTER_TYPE_LONG_PRESS_STATE);
 }
 
 static void
@@ -349,6 +665,9 @@ clutter_click_action_init (ClutterClickAction *self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_CLICK_ACTION,
                                             ClutterClickActionPrivate);
+
+  self->priv->long_press_threshold = -1;
+  self->priv->long_press_duration = -1;
 }
 
 /**
@@ -373,6 +692,9 @@ clutter_click_action_new (void)
  * Emulates a release of the pointer button, which ungrabs the pointer
  * and unsets the #ClutterClickAction:pressed state.
  *
+ * This function will also cancel the long press gesture if one was
+ * initiated.
+ *
  * This function is useful to break a grab, for instance after a certain
  * amount of time has passed.
  *
@@ -390,8 +712,6 @@ clutter_click_action_release (ClutterClickAction *action)
   if (!priv->is_held)
     return;
 
-  priv->is_held = FALSE;
-
   /* disconnect the capture */
   if (priv->capture_id != 0)
     {
@@ -399,6 +719,8 @@ clutter_click_action_release (ClutterClickAction *action)
       priv->capture_id = 0;
     }
 
+  click_action_cancel_long_press (action);
+  click_action_set_held (action, FALSE);
   click_action_set_pressed (action, FALSE);
 }
 
@@ -436,4 +758,28 @@ clutter_click_action_get_state (ClutterClickAction *action)
   g_return_val_if_fail (CLUTTER_IS_CLICK_ACTION (action), 0);
 
   return action->priv->modifier_state;
+}
+
+/**
+ * clutter_click_action_get_coords:
+ * @action: a #ClutterClickAction
+ * @press_x: (out): return location for the X coordinate, or %NULL
+ * @press_y: (out): return location for the Y coordinate, or %NULL
+ *
+ * Retrieves the screen coordinates of the button press.
+ *
+ * Since: 1.8
+ */
+void
+clutter_click_action_get_coords (ClutterClickAction *action,
+                                 gfloat             *press_x,
+                                 gfloat             *press_y)
+{
+  g_return_if_fail (CLUTTER_IS_ACTION (action));
+
+  if (press_x != NULL)
+    *press_x = action->priv->press_x;
+
+  if (press_y != NULL)
+    *press_y = action->priv->press_y;
 }
