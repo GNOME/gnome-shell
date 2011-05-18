@@ -26,6 +26,7 @@
  */
 
 #include "draw-workspace.h"
+#include "theme-private.h"
 
 
 static void
@@ -70,13 +71,13 @@ draw_window (GtkWidget                   *widget,
              cairo_t                     *cr,
              const WnckWindowDisplayInfo *win,
              const GdkRectangle          *winrect,
-             GtkStateType                state)
+             GtkStateFlags               state)
 {
   GdkPixbuf *icon;
   int icon_x, icon_y, icon_w, icon_h;
   gboolean is_active;
-  GdkColor *color;
-  GtkStyle *style;
+  GdkRGBA color;
+  GtkStyleContext *style;
 
   is_active = win->is_active;
   
@@ -85,15 +86,12 @@ draw_window (GtkWidget                   *widget,
   cairo_rectangle (cr, winrect->x, winrect->y, winrect->width, winrect->height);
   cairo_clip (cr);
 
-  style = gtk_widget_get_style (widget);
+  style = gtk_widget_get_style_context (widget);
   if (is_active)
-    color = &style->light[state];
+    meta_gtk_style_get_light_color (style, state, &color);
   else
-    color = &style->bg[state];
-  cairo_set_source_rgb (cr,
-                        color->red / 65535.,
-                        color->green / 65535.,
-                        color->blue / 65535.);
+    gtk_style_context_get_background_color (style, state, &color);
+  gdk_cairo_set_source_rgba (cr, &color);
 
   cairo_rectangle (cr,
                    winrect->x + 1, winrect->y + 1,
@@ -144,15 +142,8 @@ draw_window (GtkWidget                   *widget,
       cairo_restore (cr);
     }
 
-  if (is_active)
-    color = &style->fg[state];
-  else
-    color = &style->fg[state];
-
-  cairo_set_source_rgb (cr,
-                        color->red / 65535.,
-                        color->green / 65535.,
-                        color->blue / 65535.);
+  gtk_style_context_get_color (style, state, &color);
+  gdk_cairo_set_source_rgba (cr, &color);
   cairo_set_line_width (cr, 1.0);
   cairo_rectangle (cr,
                    winrect->x + 0.5, winrect->y + 0.5,
@@ -178,8 +169,8 @@ wnck_draw_workspace (GtkWidget                   *widget,
 {
   int i;
   GdkRectangle workspace_rect;
-  GtkStateType state;
-  GtkStyle *style;
+  GtkStateFlags state;
+  GtkStyleContext *style;
 
   workspace_rect.x = x;
   workspace_rect.y = y;
@@ -187,13 +178,13 @@ wnck_draw_workspace (GtkWidget                   *widget,
   workspace_rect.height = height;
 
   if (is_active)
-    state = GTK_STATE_SELECTED;
+    state = GTK_STATE_FLAG_SELECTED;
   else if (workspace_background) 
-    state = GTK_STATE_PRELIGHT;
+    state = GTK_STATE_FLAG_PRELIGHT;
   else
-    state = GTK_STATE_NORMAL;
+    state = GTK_STATE_FLAG_NORMAL;
 
-  style = gtk_widget_get_style (widget);
+  style = gtk_widget_get_style_context (widget);
   
   cairo_save (cr);
 
@@ -204,7 +195,10 @@ wnck_draw_workspace (GtkWidget                   *widget,
     }
   else
     {
-      gdk_cairo_set_source_color (cr, &style->dark[state]);
+      GdkRGBA color;
+
+      meta_gtk_style_get_dark_color (style,state, &color);
+      gdk_cairo_set_source_rgba (cr, &color);
       cairo_rectangle (cr, x, y, width, height);
       cairo_fill (cr);
     }
