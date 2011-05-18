@@ -308,7 +308,7 @@ struct _MetaColorSpec
     } basic;
     struct {
       MetaGtkColorComponent component;
-      GtkStateType state;
+      GtkStateFlags state;
     } gtk;
     struct {
       MetaColorSpec *foreground;
@@ -553,7 +553,7 @@ struct _MetaDrawOp
     } image;
     
     struct {
-      GtkStateType state;
+      GtkStateFlags state;
       GtkShadowType shadow;
       GtkArrowType arrow;
       gboolean filled;
@@ -565,7 +565,7 @@ struct _MetaDrawOp
     } gtk_arrow;
 
     struct {
-      GtkStateType state;
+      GtkStateFlags state;
       GtkShadowType shadow;
       MetaDrawSpec *x;
       MetaDrawSpec *y;
@@ -574,7 +574,7 @@ struct _MetaDrawOp
     } gtk_box;
 
     struct {
-      GtkStateType state;
+      GtkStateFlags state;
       MetaDrawSpec *x;
       MetaDrawSpec *y1;
       MetaDrawSpec *y2;  
@@ -958,7 +958,7 @@ MetaColorSpec* meta_color_spec_new             (MetaColorSpecType  type);
 MetaColorSpec* meta_color_spec_new_from_string (const char        *str,
                                                 GError           **err);
 MetaColorSpec* meta_color_spec_new_gtk         (MetaGtkColorComponent component,
-                                                GtkStateType          state);
+                                                GtkStateFlags         state);
 void           meta_color_spec_free            (MetaColorSpec     *spec);
 void           meta_color_spec_render          (MetaColorSpec     *spec,
                                                 GtkStyleContext   *style_gtk,
@@ -1208,8 +1208,8 @@ const char*           meta_frame_focus_to_string       (MetaFrameFocus         f
 MetaFrameType         meta_frame_type_from_string      (const char            *str);
 MetaGradientType      meta_gradient_type_from_string   (const char            *str);
 const char*           meta_gradient_type_to_string     (MetaGradientType       type);
-GtkStateType          meta_gtk_state_from_string       (const char            *str);
-const char*           meta_gtk_state_to_string         (GtkStateType           state);
+GtkStateFlags         meta_gtk_state_from_string       (const char            *str);
+const char*           meta_gtk_state_to_string         (GtkStateFlags          state);
 GtkShadowType         meta_gtk_shadow_from_string      (const char            *str);
 const char*           meta_gtk_shadow_to_string        (GtkShadowType          shadow);
 GtkArrowType          meta_gtk_arrow_from_string       (const char            *str);

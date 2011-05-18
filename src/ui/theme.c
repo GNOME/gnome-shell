@@ -1185,7 +1185,7 @@ meta_color_spec_new_from_string (const char *str,
       const char *bracket;
       const char *end_bracket;
       char *tmp;
-      GtkStateType state;
+      GtkStateFlags state;
       MetaGtkColorComponent component;
       
       bracket = str;
@@ -1400,7 +1400,7 @@ meta_color_spec_new_from_string (const char *str,
  */
 MetaColorSpec*
 meta_color_spec_new_gtk (MetaGtkColorComponent component,
-                         GtkStateType          state)
+                         GtkStateFlags         state)
 {
   MetaColorSpec *spec;
 
@@ -1436,42 +1436,23 @@ meta_gtk_style_get_dark_color (GtkStyleContext *style,
 static void
 meta_set_color_from_style (GdkRGBA               *color,
                            GtkStyleContext       *context,
-                           GtkStateType           state,
+                           GtkStateFlags          state,
                            MetaGtkColorComponent  component)
 {
   GdkRGBA other;
-  GtkStateFlags flags;
-
-  switch (state)
-    {
-    case GTK_STATE_ACTIVE:
-      flags = GTK_STATE_FLAG_ACTIVE;
-      break;
-    case GTK_STATE_PRELIGHT:
-      flags = GTK_STATE_FLAG_PRELIGHT;
-      break;
-    case GTK_STATE_SELECTED:
-      flags = GTK_STATE_FLAG_SELECTED;
-      break;
-    case GTK_STATE_INSENSITIVE:
-      flags = GTK_STATE_FLAG_INSENSITIVE;
-      break;
-    default:
-      flags = 0;
-    }
 
   switch (component)
     {
     case META_GTK_COLOR_BG:
     case META_GTK_COLOR_BASE:
-      gtk_style_context_get_background_color (context, flags, color);
+      gtk_style_context_get_background_color (context, state, color);
       break;
     case META_GTK_COLOR_FG:
     case META_GTK_COLOR_TEXT:
-      gtk_style_context_get_color (context, flags, color);
+      gtk_style_context_get_color (context, state, color);
       break;
     case META_GTK_COLOR_TEXT_AA:
-      gtk_style_context_get_color (context, flags, color);
+      gtk_style_context_get_color (context, state, color);
       meta_set_color_from_style (&other, context, state, META_GTK_COLOR_BASE);
 
       color->red = (color->red + other.red) / 2;
@@ -1479,18 +1460,18 @@ meta_set_color_from_style (GdkRGBA               *color,
       color->blue = (color->blue + other.blue) / 2;
       break;
     case META_GTK_COLOR_MID:
-      meta_gtk_style_get_light_color (context, flags, color);
-      meta_gtk_style_get_dark_color (context, flags, &other);
+      meta_gtk_style_get_light_color (context, state, color);
+      meta_gtk_style_get_dark_color (context, state, &other);
 
       color->red = (color->red + other.red) / 2;
       color->green = (color->green + other.green) / 2;
       color->blue = (color->blue + other.blue) / 2;
       break;
     case META_GTK_COLOR_LIGHT:
-      meta_gtk_style_get_light_color (context, flags, color);
+      meta_gtk_style_get_light_color (context, state, color);
       break;
     case META_GTK_COLOR_DARK:
-      meta_gtk_style_get_dark_color (context, flags, color);
+      meta_gtk_style_get_dark_color (context, state, color);
       break;
     case META_GTK_COLOR_LAST:
       g_assert_not_reached ();
@@ -3526,29 +3507,6 @@ fill_env (MetaPositionExprEnv *env,
   env->theme = meta_current_theme;
 }
 
-static GtkStateFlags
-state_flags_from_gtk_state (GtkStateType state)
-{
-  switch (state)
-    {
-    case GTK_STATE_NORMAL:
-      return 0;
-    case GTK_STATE_PRELIGHT:
-      return GTK_STATE_FLAG_PRELIGHT;
-    case GTK_STATE_ACTIVE:
-      return GTK_STATE_FLAG_ACTIVE;
-    case GTK_STATE_SELECTED:
-      return GTK_STATE_FLAG_SELECTED;
-    case GTK_STATE_INSENSITIVE:
-      return GTK_STATE_FLAG_INSENSITIVE;
-    case GTK_STATE_INCONSISTENT:
-      return GTK_STATE_FLAG_INCONSISTENT;
-    case GTK_STATE_FOCUSED:
-      return GTK_STATE_FLAG_FOCUSED;
-    }
-  return 0;
-}
-
 
 /* This code was originally rendering anti-aliased using X primitives, and
  * now has been switched to draw anti-aliased using cairo. In general, the
@@ -3852,8 +3810,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             return;
           }
 
-        gtk_style_context_set_state (style_gtk,
-                                     state_flags_from_gtk_state (op->data.gtk_arrow.state));
+        gtk_style_context_set_state (style_gtk, op->data.gtk_arrow.state);
         gtk_render_arrow (style_gtk, cr, angle, rx, ry, size);
       }
       break;
@@ -3867,8 +3824,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_box.width, env);
         rheight = parse_size_unchecked (op->data.gtk_box.height, env);
 
-        gtk_style_context_set_state (style_gtk,
-                                     state_flags_from_gtk_state (op->data.gtk_box.state));
+        gtk_style_context_set_state (style_gtk, op->data.gtk_box.state);
         gtk_render_background (style_gtk, cr, rx, ry, rwidth, rheight);
         gtk_render_frame (style_gtk, cr, rx, ry, rwidth, rheight);
       }
@@ -3882,8 +3838,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         ry1 = parse_y_position_unchecked (op->data.gtk_vline.y1, env);
         ry2 = parse_y_position_unchecked (op->data.gtk_vline.y2, env);
         
-        gtk_style_context_set_state (style_gtk,
-                                     state_flags_from_gtk_state (op->data.gtk_vline.state));
+        gtk_style_context_set_state (style_gtk, op->data.gtk_vline.state);
         gtk_render_line (style_gtk, cr, rx, ry1, rx, ry2);
       }
       break;
@@ -6369,45 +6324,45 @@ meta_gradient_type_to_string (MetaGradientType type)
   return "<unknown>";
 }
 
-GtkStateType
+GtkStateFlags
 meta_gtk_state_from_string (const char *str)
 {
   if (g_ascii_strcasecmp ("normal", str) == 0)
-    return GTK_STATE_NORMAL;
+    return GTK_STATE_FLAG_NORMAL;
   else if (g_ascii_strcasecmp ("prelight", str) == 0)
-    return GTK_STATE_PRELIGHT;
+    return GTK_STATE_FLAG_PRELIGHT;
   else if (g_ascii_strcasecmp ("active", str) == 0)
-    return GTK_STATE_ACTIVE;
+    return GTK_STATE_FLAG_ACTIVE;
   else if (g_ascii_strcasecmp ("selected", str) == 0)
-    return GTK_STATE_SELECTED;
+    return GTK_STATE_FLAG_SELECTED;
   else if (g_ascii_strcasecmp ("insensitive", str) == 0)
-    return GTK_STATE_INSENSITIVE;
+    return GTK_STATE_FLAG_INSENSITIVE;
   else if (g_ascii_strcasecmp ("inconsistent", str) == 0)
-    return GTK_STATE_INCONSISTENT;
+    return GTK_STATE_FLAG_INCONSISTENT;
   else if (g_ascii_strcasecmp ("focused", str) == 0)
-    return GTK_STATE_FOCUSED;
+    return GTK_STATE_FLAG_FOCUSED;
   else
     return -1; /* hack */
 }
 
 const char*
-meta_gtk_state_to_string (GtkStateType state)
+meta_gtk_state_to_string (GtkStateFlags state)
 {
   switch (state)
     {
-    case GTK_STATE_NORMAL:
+    case GTK_STATE_FLAG_NORMAL:
       return "NORMAL";
-    case GTK_STATE_PRELIGHT:
+    case GTK_STATE_FLAG_PRELIGHT:
       return "PRELIGHT";
-    case GTK_STATE_ACTIVE:
+    case GTK_STATE_FLAG_ACTIVE:
       return "ACTIVE";
-    case GTK_STATE_SELECTED:
+    case GTK_STATE_FLAG_SELECTED:
       return "SELECTED";
-    case GTK_STATE_INSENSITIVE:
+    case GTK_STATE_FLAG_INSENSITIVE:
       return "INSENSITIVE";
-    case GTK_STATE_INCONSISTENT:
+    case GTK_STATE_FLAG_INCONSISTENT:
       return "INCONSISTENT";
-    case GTK_STATE_FOCUSED:
+    case GTK_STATE_FLAG_FOCUSED:
       return "FOCUSED";
     }
 
