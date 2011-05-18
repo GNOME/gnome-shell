@@ -1415,12 +1415,31 @@ meta_color_spec_new_gtk (MetaGtkColorComponent component,
 /* Based on set_color() in gtkstyle.c */
 #define LIGHTNESS_MULT 1.3
 #define DARKNESS_MULT  0.7
+void
+meta_gtk_style_get_light_color (GtkStyleContext *style,
+                                GtkStateFlags    state,
+                                GdkRGBA         *color)
+{
+  gtk_style_context_get_background_color (style, state, color);
+  gtk_style_shade (color, color, LIGHTNESS_MULT);
+}
+
+void
+meta_gtk_style_get_dark_color (GtkStyleContext *style,
+                               GtkStateFlags    state,
+                               GdkRGBA         *color)
+{
+  gtk_style_context_get_background_color (style, state, color);
+  gtk_style_shade (color, color, DARKNESS_MULT);
+}
+
 static void
 meta_set_color_from_style (GdkRGBA               *color,
                            GtkStyleContext       *context,
                            GtkStateType           state,
                            MetaGtkColorComponent  component)
 {
+  GdkRGBA other;
   GtkStateFlags flags;
 
   switch (state)
@@ -1445,44 +1464,37 @@ meta_set_color_from_style (GdkRGBA               *color,
     {
     case META_GTK_COLOR_BG:
     case META_GTK_COLOR_BASE:
-    case META_GTK_COLOR_MID:
-    case META_GTK_COLOR_LIGHT:
-    case META_GTK_COLOR_DARK:
       gtk_style_context_get_background_color (context, flags, color);
       break;
     case META_GTK_COLOR_FG:
     case META_GTK_COLOR_TEXT:
+      gtk_style_context_get_color (context, flags, color);
+      break;
     case META_GTK_COLOR_TEXT_AA:
       gtk_style_context_get_color (context, flags, color);
+      meta_set_color_from_style (&other, context, state, META_GTK_COLOR_BASE);
+
+      color->red = (color->red + other.red) / 2;
+      color->green = (color->green + other.green) / 2;
+      color->blue = (color->blue + other.blue) / 2;
+      break;
+    case META_GTK_COLOR_MID:
+      meta_gtk_style_get_light_color (context, flags, color);
+      meta_gtk_style_get_dark_color (context, flags, &other);
+
+      color->red = (color->red + other.red) / 2;
+      color->green = (color->green + other.green) / 2;
+      color->blue = (color->blue + other.blue) / 2;
+      break;
+    case META_GTK_COLOR_LIGHT:
+      meta_gtk_style_get_light_color (context, flags, color);
+      break;
+    case META_GTK_COLOR_DARK:
+      meta_gtk_style_get_dark_color (context, flags, color);
       break;
     case META_GTK_COLOR_LAST:
       g_assert_not_reached ();
       break;
-    }
-
-  if (component == META_GTK_COLOR_LIGHT)
-    gtk_style_shade (color, color, LIGHTNESS_MULT);
-  else if (component == META_GTK_COLOR_DARK)
-    gtk_style_shade (color, color, DARKNESS_MULT);
-  else if (component == META_GTK_COLOR_MID)
-    {
-      GdkRGBA light, dark;
-
-      gtk_style_shade (color, &light, LIGHTNESS_MULT);
-      gtk_style_shade (color, &dark, DARKNESS_MULT);
-
-      color->red = (light.red + dark.red) / 2;
-      color->green = (light.green + dark.green) / 2;
-      color->blue = (light.blue + dark.blue) / 2;
-    }
-  else if (component == META_GTK_COLOR_TEXT_AA)
-    {
-      GdkRGBA base;
-
-      meta_set_color_from_style (&base, context, state, META_GTK_COLOR_BASE);
-      color->red = (color->red + base.red) / 2;
-      color->green = (color->green + base.green) / 2;
-      color->blue = (color->blue + base.blue) / 2;
     }
 }
 

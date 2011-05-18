@@ -1217,6 +1217,13 @@ const char*           meta_gtk_arrow_to_string         (GtkArrowType           a
 MetaImageFillType     meta_image_fill_type_from_string (const char            *str);
 const char*           meta_image_fill_type_to_string   (MetaImageFillType      fill_type);
 
+void                  meta_gtk_style_get_light_color   (GtkStyleContext      *style,
+                                                        GtkStateFlags         state,
+                                                        GdkRGBA              *color);
+void                  meta_gtk_style_get_dark_color    (GtkStyleContext      *style,
+                                                        GtkStateFlags         state,
+                                                        GdkRGBA              *color);
+
 guint meta_theme_earliest_version_with_button (MetaButtonType type);
 
 
