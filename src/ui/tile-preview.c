@@ -55,11 +55,7 @@ meta_tile_preview_draw (GtkWidget *widget,
   if (preview->has_alpha)
     {
       /* Fill the preview area with a transparent color */
-      cairo_set_source_rgba (cr,
-                             preview->preview_color->red,
-                             preview->preview_color->green,
-                             preview->preview_color->blue,
-                             preview->preview_color->alpha);
+      gdk_cairo_set_source_rgba (cr, preview->preview_color);
 
       cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
       cairo_paint (cr);
