@@ -106,17 +106,19 @@ Client.prototype = {
 
 // ----------------------------------------------------------------------------------------------------
 
-function Message(uid, from, subject, excerpt, uri) {
-    this._init(uid, from, subject, excerpt, uri);
+function Message(uid, from, subject, excerpt, uri, can_be_marked_as_spam, can_be_starred) {
+    this._init(uid, from, subject, excerpt, uri, can_be_marked_as_spam, can_be_starred);
 }
 
 Message.prototype = {
-    _init: function(uid, from, subject, excerpt, uri) {
+    _init: function(uid, from, subject, excerpt, uri, can_be_marked_as_spam, can_be_starred) {
         this.uid = uid;
         this.from = from;
         this.subject = subject;
         this.excerpt = excerpt;
         this.uri = uri;
+        this.can_be_marked_as_spam = can_be_marked_as_spam;
+        this.can_be_starred = can_be_starred;
         this.receivedAt = new Date();
     }
 }
@@ -179,11 +181,11 @@ MailMonitor.prototype = {
                                                       Lang.bind(this, this._onMessageReceived));
     },
 
-    _onMessageReceived : function(monitor, uid, from, subject, excerpt, uri) {
-        let message = new Message(uid, from, subject, excerpt, uri);
+    _onMessageReceived : function(monitor, uid, from, subject, excerpt, uri, can_be_marked_as_spam, can_be_starred) {
+        let message = new Message(uid, from, subject, excerpt, uri, can_be_marked_as_spam, can_be_starred);
         if (!Main.messageTray.getBusy()) {
             let source = new Source(this._client, message);
-            let notification = new Notification(source, this._client, message);
+            let notification = new Notification(source, this._client, this, message);
             // If the user is not marked as busy, present the notification to the user
             Main.messageTray.add(source);
             source.notify(notification);
@@ -192,7 +194,26 @@ MailMonitor.prototype = {
             // of pending messages
             this._client.addPendingMessage(message);
         }
+    },
+
+    MessageAddStar: function (message) {
+        this._proxy.call_add_star(message.uid,
+                                  null, /* cancellable */
+                                  Lang.bind(this,
+                                            function(object, asyncRes) {
+                                                this._proxy.call_add_star_finish(asyncRes);
+                                            }));
+    },
+
+    MessageMarkAsSpam: function (message) {
+        this._proxy.call_mark_as_spam(message.uid,
+                                      null, /* cancellable */
+                                      Lang.bind(this,
+                                                function(object, asyncRes) {
+                                                    this._proxy.call_add_star_finish(asyncRes);
+                                                }));
     }
+
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -235,16 +256,17 @@ function _stripEmailAddress(name_and_addr) {
     }
 }
 
-function Notification(source, client, message) {
-    this._init(source, client, message);
+function Notification(source, client, monitor, message) {
+    this._init(source, client, monitor, message);
 }
 
 Notification.prototype = {
     __proto__: MessageTray.Notification.prototype,
 
-    _init : function(source, client, message) {
-        this._message = message;
+    _init : function(source, client, monitor, message) {
         this._client = client;
+        this._monitor = monitor
+        this._message = message;
         this._ignore = false;
         this._alreadyExpanded = false;
 
@@ -264,7 +286,10 @@ Notification.prototype = {
         this.setTransient(true);
 
         this.addButton('ignore', 'Ignore');
-        this.addButton('junk', 'Junk');
+        if (message.can_be_starred)
+            this.addButton('star', 'Star');
+        if (message.can_be_marked_as_spam)
+            this.addButton('spam', 'Junk');
         if (this._message.uri.length > 0) {
             this.addButton('open', 'Open');
         }
@@ -272,8 +297,10 @@ Notification.prototype = {
                                                  function(notification, id) {
                                                      if (id == 'ignore') {
                                                          this._actionIgnore();
-                                                     } else if (id == 'junk') {
-                                                         this._actionJunk();
+                                                     } else if (id == 'star') {
+                                                         this._actionStar();
+                                                     } else if (id == 'spam') {
+                                                         this._actionSpam();
                                                      } else if (id == 'open') {
                                                          this._actionOpen();
                                                      }
@@ -310,9 +337,14 @@ Notification.prototype = {
         this._ignore = true;
     },
 
-    _actionJunk : function() {
+    _actionStar : function() {
         this._ignore = true;
-        log('TODO: actually junk the message');
+        this._monitor.MessageAddStar(this._message);
+    },
+
+    _actionSpam : function() {
+        this._ignore = true;
+        this._monitor.MessageMarkAsSpam(this._message);
     },
 
     _actionOpen : function() {
@@ -436,10 +468,14 @@ MailSource.prototype = {
         this._notification.update(title, banner, { clear: true,
                                                    icon: this.createNotificationIcon() });
         this._notification.addActor(table);
-        this._notification.addButton('clear', 'Clear');
+        this._notification.addButton('close', 'Close');
+        this._notification.addButton('ignore-all', 'Ignore All');
         this._notification.connect('action-invoked', Lang.bind(this,
                                                                function(notification, id) {
-                                                                   if (id == 'clear') {
+                                                                   if (id == 'close') {
+                                                                       // TODO: Can't find another way hide it
+                                                                       notification._onClicked();
+                                                                   } else if (id == 'ignore-all') {
                                                                        this.clearMessages();
                                                                    }
                                                                }));
