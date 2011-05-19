@@ -101,8 +101,7 @@ _clutter_id_pool_remove (ClutterIDPool *id_pool,
 
   array = (void*) id_pool->array->data;
 
-  /* set pointer to a recognizably voided value */
-  array[id_] = (void*)0xdecafbad;
+  array[id_] = NULL;
 
   id_pool->free_ids = g_slist_prepend (id_pool->free_ids,
                                        GUINT_TO_POINTER (id_));
