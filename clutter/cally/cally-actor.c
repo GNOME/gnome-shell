@@ -79,21 +79,20 @@
  *
  * ###
  *
- * #AtkAction implementation. As ClutterActor has signals for "press"
- * and "release", and most of the general Clutter objects are being
- * used as buttons, it has sense to implement #AtkAction on
- * #CallyActor, so this actions were added in this level.
+ * #AtkAction implementation: on previous releases ClutterActor added
+ * the actions "press", "release" and "click", as at that time some
+ * general-purpose actors like textures were directly used as buttons.
  *
- * So we should search a way to extend #AtkAction on subclasses, to
- * add actions. The direct solution would be just extend it normally,
- * but we also should have the option to remove actions if required.
+ * But now, new toolkits appeared, providing high-level widgets, like
+ * buttons. So in this environment, it doesn't make sense to keep
+ * adding them as default.
  *
- * So it was used the solution implemented in GailCell: maintain a
- * list of actions, and add a _add_action and _remove_action public
- * methods.
+ * Anyway, current implementation of AtkAction is done at CallyActor
+ * providing methods to add and remove actions. This is based on the
+ * one used at gailcell, and proposed as a change on #AtkAction
+ * interface:
  *
- * This is another reason to not isolate CALLY as GAIL (although the
- * current idea is to not do that).
+ *  https://bugzilla.gnome.org/show_bug.cgi?id=649804
  *
  */
 
@@ -204,9 +203,6 @@ static G_CONST_RETURN gchar* cally_actor_action_get_name        (AtkAction *acti
 static gboolean              cally_actor_action_set_description (AtkAction   *action,
                                                                 gint         i,
                                                                 const gchar *desc);
-static void                  _cally_actor_press_action          (CallyActor *cally_actor);
-static void                  _cally_actor_release_action        (CallyActor *cally_actor);
-static void                  _cally_actor_click_action          (CallyActor *cally_actor);
 static void                  _cally_actor_destroy_action_info   (gpointer      action_info,
                                                                 gpointer      user_data);
 static void                  _cally_actor_clean_action_list     (CallyActor *cally_actor);
@@ -302,16 +298,6 @@ cally_actor_initialize (AtkObject *obj,
 
   g_object_set_data (G_OBJECT (obj), "atk-component-layer",
                      GINT_TO_POINTER (ATK_LAYER_MDI));
-
-  /* add basic actions */
-  cally_actor_add_action (self, "press", NULL, NULL,
-                         _cally_actor_press_action);
-
-  cally_actor_add_action (self, "release", NULL, NULL,
-                         _cally_actor_release_action);
-
-  cally_actor_add_action (self, "click", NULL, NULL,
-                         _cally_actor_click_action);
 
   /* Depends if the object implement ClutterContainer */
   if (CLUTTER_IS_CONTAINER(actor))
@@ -1300,69 +1286,6 @@ _cally_actor_get_action_info (CallyActor *cally_actor,
     return NULL;
 
   return (CallyActorActionInfo *)(node->data);
-}
-
-static void
-_cally_actor_click_action (CallyActor *cally_actor)
-{
-  ClutterEvent  tmp_event;
-  ClutterActor *stage = NULL;
-  ClutterActor *actor = NULL;
-
-  actor = CALLY_GET_CLUTTER_ACTOR (cally_actor);
-  stage = clutter_actor_get_stage (actor);
-
-  /* press */
-  tmp_event.button.type = CLUTTER_BUTTON_PRESS;
-  tmp_event.button.time = CLUTTER_CURRENT_TIME;
-  tmp_event.button.stage = CLUTTER_STAGE (stage);
-  tmp_event.button.source = actor;
-  tmp_event.button.button = 1;
-
-  clutter_actor_event (actor, &tmp_event, FALSE);
-
-  /* release */
-  tmp_event.button.type = CLUTTER_BUTTON_RELEASE;
-
-  clutter_actor_event (actor, &tmp_event, FALSE);
-}
-
-static void
-_cally_actor_press_action (CallyActor *cally_actor)
-{
-  ClutterEvent  tmp_event;
-  ClutterActor *stage = NULL;
-  ClutterActor *actor = NULL;
-
-  actor = CALLY_GET_CLUTTER_ACTOR (cally_actor);
-  stage = clutter_actor_get_stage (actor);
-
-  tmp_event.button.type = CLUTTER_BUTTON_PRESS;
-  tmp_event.button.time = CLUTTER_CURRENT_TIME;
-  tmp_event.button.stage = CLUTTER_STAGE (stage);
-  tmp_event.button.source = actor;
-  tmp_event.button.button = 1;
-
-  clutter_actor_event (actor, &tmp_event, FALSE);
-}
-
-static void
-_cally_actor_release_action (CallyActor *cally_actor)
-{
-  ClutterEvent  tmp_event;
-  ClutterActor *stage = NULL;
-  ClutterActor *actor = NULL;
-
-  actor = CALLY_GET_CLUTTER_ACTOR (cally_actor);
-  stage = clutter_actor_get_stage (actor);
-
-  tmp_event.button.type = CLUTTER_BUTTON_RELEASE;
-  tmp_event.button.time = CLUTTER_CURRENT_TIME;
-  tmp_event.button.stage = CLUTTER_STAGE (stage);
-  tmp_event.button.source = actor;
-  tmp_event.button.button = 1;
-
-  clutter_actor_event (actor, &tmp_event, FALSE);
 }
 
 /**
