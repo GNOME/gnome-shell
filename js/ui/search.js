@@ -157,7 +157,7 @@ SearchProvider.prototype = {
     },
 
     /**
-     * getResultInfo:
+     * getResultMeta:
      * @id: Result identifier string
      *
      * Return an object with 'id', 'name', (both strings) and 'createIcon'
