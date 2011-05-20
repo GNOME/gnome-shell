@@ -125,6 +125,9 @@ static gboolean queue_calc_showing_func (MetaWindow *window,
 
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
+static void meta_window_move_between_rects (MetaWindow          *window,
+                                            const MetaRectangle *old_area,
+                                            const MetaRectangle *new_area);
 
 static void unmaximize_window_before_freeing (MetaWindow        *window);
 static void unminimize_window_and_all_transient_parents (MetaWindow *window);
@@ -3521,7 +3524,7 @@ meta_window_is_fullscreen (MetaWindow *window)
 gboolean
 meta_window_is_on_primary_monitor (MetaWindow *window)
 {
-  return window->monitor->number == window->screen->primary_monitor_index;
+  return window->monitor->is_primary;
 }
 
 void
@@ -4328,7 +4331,44 @@ meta_window_get_monitor (MetaWindow *window)
   return window->monitor->number;
 }
 
+/* This is called when the monitor setup has changed. The window->monitor
+ * reference is still "valid", but refer to the previous monitor setup */
 void
+meta_window_update_for_monitors_changed (MetaWindow *window)
+{
+  const MetaMonitorInfo *old, *new;
+  int i;
+
+  old = window->monitor;
+
+  /* Start on primary */
+  new = &window->screen->monitor_infos[window->screen->primary_monitor_index];
+
+  /* But, if we can find the old output on a new monitor, use that */
+  for (i = 0; i < window->screen->n_monitor_infos; i++)
+    {
+      MetaMonitorInfo *info = &window->screen->monitor_infos[i];
+
+      if (info->output == old->output)
+        {
+          new = info;
+          break;
+        }
+    }
+
+  /* This will eventually reach meta_window_update_monitor that
+   * will send leave/enter-monitor events. The old != new monitor
+   * check will always fail (due to the new monitor_infos set) so
+   * we will always send the events, even if the new and old monitor
+   * index is the same. That is right, since the enumeration of the
+   * monitors changed and the same index could be refereing
+   * to a different monitor. */
+  meta_window_move_between_rects (window,
+                                  &old->rect,
+                                  &new->rect);
+}
+
+static void
 meta_window_update_monitor (MetaWindow *window)
 {
   const MetaMonitorInfo *old;
@@ -4347,13 +4387,14 @@ meta_window_update_monitor (MetaWindow *window)
        * workspace is when dropping the window on some other workspace thumbnail directly.
        * That should be handled by explicitly moving the window before changing the
        * workspace
-       * Don't do this if old == NULL, because thats what happens when we're updating
-       * the monitors due to a monitors change event, and we don't want to move
-       * everything to the currently active workspace.
+       * Don't do this if old == NULL, because thats what happens when starting up, and
+       * we don't want to move all windows around from a previous WM instance. Nor do
+       * we want it when moving from one primary monitor to another (can happen during
+       * screen reconfiguration.
        */
       if (meta_prefs_get_workspaces_only_on_primary () &&
           meta_window_is_on_primary_monitor (window)  &&
-          old != NULL &&
+          old != NULL && !old->is_primary &&
           window->screen->active_workspace != window->workspace)
         meta_window_change_workspace (window, window->screen->active_workspace);
 
@@ -4924,6 +4965,31 @@ meta_window_move_frame (MetaWindow  *window,
   meta_window_move (window, user_op, x, y);
 }
 
+static void
+meta_window_move_between_rects (MetaWindow  *window,
+                                const MetaRectangle *old_area,
+                                const MetaRectangle *new_area)
+{
+  int rel_x, rel_y;
+  double scale_x, scale_y;
+
+  rel_x = window->user_rect.x - old_area->x;
+  rel_y = window->user_rect.y - old_area->y;
+  scale_x = (double)new_area->width / old_area->width;
+  scale_y = (double)new_area->height / old_area->height;
+
+  window->user_rect.x = new_area->x + rel_x * scale_x;
+  window->user_rect.y = new_area->y + rel_y * scale_y;
+  window->saved_rect.x = window->user_rect.x;
+  window->saved_rect.y = window->user_rect.y;
+
+  meta_window_move_resize (window, FALSE,
+                           window->user_rect.x,
+                           window->user_rect.y,
+                           window->user_rect.width,
+                           window->user_rect.height);
+}
+
 /**
  * meta_window_move_to_monitor:
  * @window: a #MetaWindow
@@ -4937,8 +5003,6 @@ meta_window_move_to_monitor (MetaWindow  *window,
                              int          monitor)
 {
   MetaRectangle old_area, new_area;
-  int rel_x, rel_y;
-  double scale_x, scale_y;
 
   if (monitor == window->monitor->number)
     return;
@@ -4950,21 +5014,7 @@ meta_window_move_to_monitor (MetaWindow  *window,
                                          monitor,
                                          &new_area);
 
-  rel_x = window->user_rect.x - old_area.x;
-  rel_y = window->user_rect.y - old_area.y;
-  scale_x = (double)new_area.width / old_area.width;
-  scale_y = (double)new_area.height / old_area.height;
-
-  window->user_rect.x = new_area.x + rel_x * scale_x;
-  window->user_rect.y = new_area.y + rel_y * scale_y;
-  window->saved_rect.x = window->user_rect.x;
-  window->saved_rect.y = window->user_rect.y;
-
-  meta_window_move_resize (window, FALSE,
-                           window->user_rect.x,
-                           window->user_rect.y,
-                           window->user_rect.width,
-                           window->user_rect.height);
+  meta_window_move_between_rects (window, &old_area, &new_area);
 }
 
 void

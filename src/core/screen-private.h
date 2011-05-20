@@ -45,6 +45,8 @@ struct _MetaMonitorInfo
 {
   int number;
   MetaRectangle rect;
+  gboolean is_primary;
+  XID output; /* The primary or first output for this crtc, None if no xrandr */
 };
 
 typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,

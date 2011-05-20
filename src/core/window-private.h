@@ -640,7 +640,7 @@ void meta_window_update_icon_now (MetaWindow *window);
 
 void meta_window_update_role (MetaWindow *window);
 void meta_window_update_net_wm_type (MetaWindow *window);
-void meta_window_update_monitor (MetaWindow *window);
+void meta_window_update_for_monitors_changed (MetaWindow *window);
 void meta_window_update_on_all_workspaces (MetaWindow *window);
 
 void meta_window_propagate_focus_appearance (MetaWindow *window,

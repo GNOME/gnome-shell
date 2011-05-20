@@ -48,6 +48,9 @@
 #ifdef HAVE_XFREE_XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif
+#ifdef HAVE_RANDR
+#include <X11/extensions/Xrandr.h>
+#endif
 
 #include <X11/Xatom.h>
 #include <locale.h>
@@ -386,6 +389,56 @@ filter_mirrored_monitors (MetaScreen *screen)
     }
 }
 
+#ifdef HAVE_RANDR
+static MetaMonitorInfo *
+find_monitor_with_rect (MetaScreen *screen, int x, int y, int w, int h)
+{
+  MetaMonitorInfo *info;
+  int i;
+
+  for (i = 0; i < screen->n_monitor_infos; i++)
+    {
+      info = &screen->monitor_infos[i];
+      if (x == info->rect.x &&
+          y == info->rect.y &&
+          w == info->rect.width &&
+          h == info->rect.height)
+        return info;
+    }
+  return NULL;
+}
+
+/* In the case of multiple outputs of a single crtc (mirroring), we consider one of the
+ * outputs the "main". This is the one we consider "owning" the windows, so if
+ * the mirroring is changed to a dual monitor setup then the windows are moved to the
+ * crtc that now has that main output. If one of the outputs is the primary that is
+ * always the main, otherwise we just use the first.
+ */
+static XID
+find_main_output_for_crtc (MetaScreen *screen, XRRScreenResources *resources, XRRCrtcInfo *crtc)
+{
+  XRROutputInfo *output;
+  RROutput primary_output;
+  int i;
+  XID res;
+
+  primary_output = XRRGetOutputPrimary (screen->display->xdisplay, screen->xroot);
+
+  res = None;
+  for (i = 0; i < crtc->noutput; i++)
+    {
+      output = XRRGetOutputInfo (screen->display->xdisplay, resources, crtc->outputs[i]);
+      if (output->connection != RR_Disconnected &&
+          (res == None || crtc->outputs[i] == primary_output))
+        res = crtc->outputs[i];
+      XRRFreeOutputInfo (output);
+    }
+
+  return res;
+}
+
+#endif
+
 static void
 reload_monitor_infos (MetaScreen *screen)
 {
@@ -406,10 +459,9 @@ reload_monitor_infos (MetaScreen *screen)
   }
 
   display = screen->display;
-  
-  if (screen->monitor_infos)
-    g_free (screen->monitor_infos);
-  
+
+  /* Any previous screen->monitor_infos is freed by the caller */
+
   screen->monitor_infos = NULL;
   screen->n_monitor_infos = 0;
   screen->last_monitor_index = 0;
@@ -433,7 +485,7 @@ reload_monitor_infos (MetaScreen *screen)
       meta_topic (META_DEBUG_XINERAMA,
                   "Pretending a single monitor has two Xinerama screens\n");
 
-      screen->monitor_infos = g_new (MetaMonitorInfo, 2);
+      screen->monitor_infos = g_new0 (MetaMonitorInfo, 2);
       screen->n_monitor_infos = 2;
 
       screen->monitor_infos[0].number = 0;
@@ -445,7 +497,7 @@ reload_monitor_infos (MetaScreen *screen)
       screen->monitor_infos[1].rect.x = screen->rect.width / 2;
       screen->monitor_infos[1].rect.width = screen->rect.width / 2;
     }
-  
+
 #ifdef HAVE_XFREE_XINERAMA
   if (screen->n_monitor_infos == 0 &&
       XineramaIsActive (display->xdisplay))
@@ -463,7 +515,7 @@ reload_monitor_infos (MetaScreen *screen)
 
       if (n_infos > 0)
         {
-          screen->monitor_infos = g_new (MetaMonitorInfo, n_infos);
+          screen->monitor_infos = g_new0 (MetaMonitorInfo, n_infos);
           screen->n_monitor_infos = n_infos;
           
           i = 0;
@@ -488,6 +540,30 @@ reload_monitor_infos (MetaScreen *screen)
         }
       
       meta_XFree (infos);
+
+#ifdef HAVE_RANDR
+      {
+        XRRScreenResources *resources;
+
+        resources = XRRGetScreenResourcesCurrent (display->xdisplay, screen->xroot);
+        if (resources)
+          {
+            for (i = 0; i < resources->ncrtc; i++)
+              {
+                XRRCrtcInfo *crtc;
+                MetaMonitorInfo *info;
+
+                crtc = XRRGetCrtcInfo (display->xdisplay, resources, resources->crtcs[i]);
+                info = find_monitor_with_rect (screen, crtc->x, crtc->y, (int)crtc->width, (int)crtc->height);
+                if (info)
+                  info->output = find_main_output_for_crtc (screen, resources, crtc);
+
+                XRRFreeCrtcInfo (crtc);
+              }
+            XRRFreeScreenResources (resources);
+          }
+      }
+#endif
     }
   else if (screen->n_monitor_infos > 0)
     {
@@ -524,7 +600,7 @@ reload_monitor_infos (MetaScreen *screen)
 	{
           g_assert (n_monitors > 0);
           
-          screen->monitor_infos = g_new (MetaMonitorInfo, n_monitors);
+          screen->monitor_infos = g_new0 (MetaMonitorInfo, n_monitors);
           screen->n_monitor_infos = n_monitors;
           
           i = 0;
@@ -568,7 +644,7 @@ reload_monitor_infos (MetaScreen *screen)
       meta_topic (META_DEBUG_XINERAMA,
                   "No Xinerama screens, using default screen info\n");
           
-      screen->monitor_infos = g_new (MetaMonitorInfo, 1);
+      screen->monitor_infos = g_new0 (MetaMonitorInfo, 1);
       screen->n_monitor_infos = 1;
           
       screen->monitor_infos[0].number = 0;
@@ -576,6 +652,8 @@ reload_monitor_infos (MetaScreen *screen)
     }
 
   filter_mirrored_monitors (screen);
+
+  screen->monitor_infos[screen->primary_monitor_index].is_primary = TRUE;
 
   g_assert (screen->n_monitor_infos > 0);
   g_assert (screen->monitor_infos != NULL);
@@ -2882,28 +2960,17 @@ meta_screen_resize (MetaScreen *screen,
                     int         height)
 {
   GSList *windows, *tmp;
+  MetaMonitorInfo *old_monitor_infos;
 
   screen->rect.width = width;
   screen->rect.height = height;
 
-  /* Clear monitor for all windows on this screen, as it will become
-   * invalid. */
-  windows = meta_display_list_windows (screen->display,
-                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
-  for (tmp = windows; tmp != NULL; tmp = tmp->next)
-    {
-      MetaWindow *window = tmp->data;
-
-      if (window->screen == screen)
-        {
-          g_signal_emit_by_name (screen, "window-left-monitor", window->monitor->number, window);
-          window->monitor = NULL;
-        }
-    }
+  /* Save the old monitor infos, so they stay valid during the update */
+  old_monitor_infos = screen->monitor_infos;
 
   reload_monitor_infos (screen);
   set_desktop_geometry_hint (screen);
-  
+
   if (screen->display->compositor)
     meta_compositor_sync_screen_size (screen->display->compositor,
 				      screen, width, height);
@@ -2919,9 +2986,10 @@ meta_screen_resize (MetaScreen *screen,
       MetaWindow *window = tmp->data;
 
       if (window->screen == screen)
-        meta_window_update_monitor (window);
+        meta_window_update_for_monitors_changed (window);
     }
 
+  g_free (old_monitor_infos);
   g_slist_free (windows);
 
   g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0, index);
