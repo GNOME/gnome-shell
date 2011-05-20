@@ -182,6 +182,8 @@ cally_root_initialize (AtkObject              *accessible,
       clutter_stage = CLUTTER_STAGE (iter->data);
       cally_stage = clutter_actor_get_accessible (CLUTTER_ACTOR (clutter_stage));
 
+      atk_object_set_parent (cally_stage, ATK_OBJECT (root));
+
       root->priv->stage_list = g_slist_append (root->priv->stage_list,
                                                cally_stage);
     }
@@ -250,6 +252,8 @@ cally_util_stage_added_cb (ClutterStageManager *stage_manager,
   gint index = -1;
 
   cally_stage = clutter_actor_get_accessible (CLUTTER_ACTOR (stage));
+
+  atk_object_set_parent (cally_stage, ATK_OBJECT (root));
 
   root->priv->stage_list = g_slist_append (root->priv->stage_list,
                                            cally_stage);
