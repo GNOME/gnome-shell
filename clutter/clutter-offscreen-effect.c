@@ -273,14 +273,14 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   xexpand = 0.f;
   if (priv->x_offset < 0.f)
     xexpand = -priv->x_offset;
-  if (priv->x_offset + fbo_width > width)
-    xexpand = MAX (xexpand, (priv->x_offset + fbo_width) - width);
+  if (priv->x_offset + priv->target_width > width)
+    xexpand = MAX (xexpand, (priv->x_offset + priv->target_width) - width);
 
   yexpand = 0.f;
   if (priv->y_offset < 0.f)
     yexpand = -priv->y_offset;
-  if (priv->y_offset + fbo_height > height)
-    yexpand = MAX (yexpand, (priv->y_offset + fbo_height) - height);
+  if (priv->y_offset + priv->target_height > height)
+    yexpand = MAX (yexpand, (priv->y_offset + priv->target_height) - height);
 
   /* Set the viewport */
   cogl_set_viewport (-(priv->x_offset + xexpand), -(priv->y_offset + yexpand),
