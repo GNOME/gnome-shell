@@ -28,6 +28,7 @@ SearchResult.prototype = {
                                      x_align: St.Align.START,
                                      y_fill: true });
         this.actor._delegate = this;
+        this._dragActorSource = null;
 
         let content = provider.createResultActor(metaInfo, terms);
         if (content == null) {
@@ -37,7 +38,11 @@ SearchResult.prototype = {
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                              { createIcon: this.metaInfo['createIcon'] });
             content.set_child(icon.actor);
+            this._dragActorSource = icon.icon;
             this.actor.label_actor = icon.label;
+        } else {
+            if (content._delegate && content._delegate.getDragActorSource)
+                this._dragActorSource = content._delegate.getDragActorSource();
         }
         this._content = content;
         this.actor.set_child(content);
@@ -76,6 +81,8 @@ SearchResult.prototype = {
     },
 
     getDragActorSource: function() {
+        if (this._dragActorSource)
+            return this._dragActorSource;
         // not exactly right, but alignment problems are hard to notice
         return this._content;
     },
