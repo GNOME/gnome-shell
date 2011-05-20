@@ -34,16 +34,12 @@
 #include "cally-texture.h"
 #include "cally-actor-private.h"
 
-#define CALLY_TEXTURE_DEFAULT_DESCRIPTION "A texture"
-
 static void cally_texture_class_init (CallyTextureClass *klass);
 static void cally_texture_init       (CallyTexture *texture);
 
 /* AtkObject */
 static void                  cally_texture_real_initialize (AtkObject *obj,
                                                            gpointer   data);
-static G_CONST_RETURN gchar *cally_texture_get_description (AtkObject *obj);
-
 
 G_DEFINE_TYPE (CallyTexture, cally_texture, CALLY_TYPE_ACTOR)
 
@@ -54,7 +50,6 @@ cally_texture_class_init (CallyTextureClass *klass)
   AtkObjectClass *class         = ATK_OBJECT_CLASS (klass);
 
   class->initialize      = cally_texture_real_initialize;
-  class->get_description = cally_texture_get_description;
 }
 
 static void
@@ -98,18 +93,4 @@ cally_texture_real_initialize (AtkObject *obj,
 
   /* default role */
   obj->role = ATK_ROLE_IMAGE;
-}
-
-static G_CONST_RETURN gchar *
-cally_texture_get_description (AtkObject *obj)
-{
-  G_CONST_RETURN gchar *description = NULL;
-
-  g_return_val_if_fail (CALLY_IS_TEXTURE (obj), NULL);
-
-  description = ATK_OBJECT_CLASS (cally_texture_parent_class)->get_description (obj);
-  if (description == NULL)
-    description = CALLY_TEXTURE_DEFAULT_DESCRIPTION;
-
-  return description;
 }

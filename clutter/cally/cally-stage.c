@@ -52,8 +52,6 @@ static void cally_stage_class_init (CallyStageClass *klass);
 static void cally_stage_init       (CallyStage      *stage);
 
 /* AtkObject.h */
-static G_CONST_RETURN gchar *cally_stage_get_name        (AtkObject *obj);
-static G_CONST_RETURN gchar *cally_stage_get_description (AtkObject *obj);
 static void                  cally_stage_real_initialize (AtkObject *obj,
                                                           gpointer   data);
 static AtkStateSet*          cally_stage_ref_state_set   (AtkObject *obj);
@@ -64,9 +62,6 @@ static void                  cally_stage_activate_cb     (ClutterStage *stage,
 static void                  cally_stage_deactivate_cb   (ClutterStage *stage,
                                                           gpointer      data);
 
-
-#define CALLY_STAGE_DEFAULT_NAME        "Stage"
-#define CALLY_STAGE_DEFAULT_DESCRIPTION "Top level 'window' on which child actors are placed and manipulated"
 
 G_DEFINE_TYPE (CallyStage, cally_stage, CALLY_TYPE_GROUP);
 
@@ -86,8 +81,6 @@ cally_stage_class_init (CallyStageClass *klass)
 /*   CallyActorClass *cally_class  = CALLY_ACTOR_CLASS (klass); */
 
   /* AtkObject */
-  class->get_name = cally_stage_get_name;
-  class->get_description = cally_stage_get_description;
   class->initialize = cally_stage_real_initialize;
   class->ref_state_set = cally_stage_ref_state_set;
 
@@ -211,39 +204,6 @@ cally_stage_new (ClutterActor *actor)
   atk_object_initialize (accessible, actor);
 
   return accessible;
-}
-
-/* AtkObject.h */
-static G_CONST_RETURN gchar *
-cally_stage_get_name (AtkObject *obj)
-{
-  G_CONST_RETURN gchar *name = NULL;
-
-  g_return_val_if_fail (CALLY_IS_STAGE (obj), NULL);
-
-  /* parent name */
-  name = ATK_OBJECT_CLASS (cally_stage_parent_class)->get_name (obj);
-
-  if (name == NULL)
-    name = CALLY_STAGE_DEFAULT_NAME;
-
-  return name;
-}
-
-static G_CONST_RETURN gchar *
-cally_stage_get_description (AtkObject *obj)
-{
-  G_CONST_RETURN gchar *description = NULL;
-
-  g_return_val_if_fail (CALLY_IS_STAGE (obj), NULL);
-
-  /* parent description */
-  description = ATK_OBJECT_CLASS (cally_stage_parent_class)->get_description (obj);
-
-  if (description == NULL)
-    description = CALLY_STAGE_DEFAULT_DESCRIPTION;
-
-  return description;
 }
 
 static void

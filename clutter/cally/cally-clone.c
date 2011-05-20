@@ -73,16 +73,12 @@
 #include "cally-clone.h"
 #include "cally-actor-private.h"
 
-#define CALLY_CLONE_DEFAULT_DESCRIPTION "ClutterClone accessibility object"
-
 static void cally_clone_class_init (CallyCloneClass *klass);
 static void cally_clone_init       (CallyClone *clone);
 
 /* AtkObject */
 static void                  cally_clone_real_initialize (AtkObject *obj,
-                                                           gpointer   data);
-static G_CONST_RETURN gchar *cally_clone_get_description (AtkObject *obj);
-
+                                                          gpointer   data);
 
 G_DEFINE_TYPE (CallyClone, cally_clone, CALLY_TYPE_ACTOR)
 
@@ -93,7 +89,6 @@ cally_clone_class_init (CallyCloneClass *klass)
   AtkObjectClass *class         = ATK_OBJECT_CLASS (klass);
 
   class->initialize      = cally_clone_real_initialize;
-  class->get_description = cally_clone_get_description;
 }
 
 static void
@@ -136,18 +131,4 @@ cally_clone_real_initialize (AtkObject *obj,
   ATK_OBJECT_CLASS (cally_clone_parent_class)->initialize (obj, data);
 
   obj->role = ATK_ROLE_IMAGE;
-}
-
-static G_CONST_RETURN gchar *
-cally_clone_get_description (AtkObject *obj)
-{
-  G_CONST_RETURN gchar *description = NULL;
-
-  g_return_val_if_fail (CALLY_IS_CLONE (obj), NULL);
-
-  description = ATK_OBJECT_CLASS (cally_clone_parent_class)->get_description (obj);
-  if (description == NULL)
-    description = CALLY_CLONE_DEFAULT_DESCRIPTION;
-
-  return description;
 }

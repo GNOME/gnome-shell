@@ -33,16 +33,12 @@
 #include "cally-rectangle.h"
 #include "cally-actor-private.h"
 
-#define CALLY_RECTANGLE_DEFAULT_DESCRIPTION "A rectangle"
-
 static void cally_rectangle_class_init (CallyRectangleClass *klass);
 static void cally_rectangle_init       (CallyRectangle *rectangle);
 
 /* AtkObject */
 static void                  cally_rectangle_real_initialize (AtkObject *obj,
-                                                             gpointer   data);
-static G_CONST_RETURN gchar *cally_rectangle_get_description (AtkObject *obj);
-
+                                                              gpointer   data);
 
 G_DEFINE_TYPE (CallyRectangle, cally_rectangle, CALLY_TYPE_ACTOR)
 
@@ -53,7 +49,6 @@ cally_rectangle_class_init (CallyRectangleClass *klass)
   AtkObjectClass *class         = ATK_OBJECT_CLASS (klass);
 
   class->initialize      = cally_rectangle_real_initialize;
-  class->get_description = cally_rectangle_get_description;
 }
 
 static void
@@ -96,18 +91,4 @@ cally_rectangle_real_initialize (AtkObject *obj,
   ATK_OBJECT_CLASS (cally_rectangle_parent_class)->initialize (obj, data);
 
   obj->role = ATK_ROLE_IMAGE;
-}
-
-static G_CONST_RETURN gchar *
-cally_rectangle_get_description                    (AtkObject *obj)
-{
-  G_CONST_RETURN gchar *description = NULL;
-
-  g_return_val_if_fail (CALLY_IS_RECTANGLE (obj), NULL);
-
-  description = ATK_OBJECT_CLASS (cally_rectangle_parent_class)->get_description (obj);
-  if (description == NULL)
-    description = CALLY_RECTANGLE_DEFAULT_DESCRIPTION;
-
-  return description;
 }
