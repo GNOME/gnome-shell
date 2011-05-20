@@ -280,7 +280,13 @@ clutter_media_get_uri (ClutterMedia *media)
  * @media: a #ClutterMedia
  * @playing: %TRUE to start playing
  *
- * Starts or stops playing of @media.
+ * Starts or stops playing of @media. 
+ 
+ * The implementation might be asynchronous, so the way to know whether
+ * the actual playing state of the @media is to use the #GObject::notify
+ * signal on the #ClutterMedia:playing property and then retrieve the
+ * current state with clutter_media_get_playing(). ClutterGstVideoTexture
+ * in clutter-gst is an example of such an asynchronous implementation.
  *
  * Since: 0.2
  */
