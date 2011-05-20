@@ -13,6 +13,8 @@
       href="http://0pointer.de/lennart/projects/"/>
   <repository type="git" name="git.freedesktop.org"
       href="git://anongit.freedesktop.org"/>
+  <repository type="git" name="colord.gitorious.org"
+      href="git://gitorious.org/colord/master.git"/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -194,7 +196,20 @@
       <dep package="libcanberra"/>
       <dep package="gnome-desktop-3"/>
       <dep package="gnome-settings-daemon"/>
+      <dep package="colord"/>
     </dependencies>
+  </autotools>
+
+  <autotools id="colord" autogenargs="--disable-examples">
+    <branch repo="colord.gitorious.org" checkoutdir="colord" module="master"/>
+    <dependencies>
+      <dep package="glib"/>
+      <!-- and cups -->
+      <!-- and sane -->
+    </dependencies>
+    <suggests>
+      <dep package="polkit"/>
+    </suggests>
   </autotools>
 
   <autotools id="glib-networking">
