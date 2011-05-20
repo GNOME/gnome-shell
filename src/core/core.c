@@ -261,25 +261,25 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
 }
 
 void
-meta_core_lower_beneath_focus_window (Display *xdisplay,
-                                      Window   xwindow,
-                                      guint32  timestamp)
+meta_core_lower_beneath_grab_window (Display *xdisplay,
+                                     Window   xwindow,
+                                     guint32  timestamp)
 {
   XWindowChanges changes;
   MetaDisplay *display;
   MetaScreen *screen;
-  MetaWindow *focus_window;
+  MetaWindow *grab_window;
 
   display = meta_display_for_x_display (xdisplay);
   screen = meta_display_screen_for_xwindow (display, xwindow);
-  focus_window = meta_stack_get_top (screen->stack);
+  grab_window = display->grab_window;
 
-  if (focus_window == NULL)
+  if (grab_window == NULL)
     return;
 
   changes.stack_mode = Below;
-  changes.sibling = focus_window->frame ? focus_window->frame->xwindow
-                                        : focus_window->xwindow;
+  changes.sibling = grab_window->frame ? grab_window->frame->xwindow
+                                       : grab_window->xwindow;
 
   meta_stack_tracker_record_lower_below (screen->stack_tracker,
                                          xwindow,
