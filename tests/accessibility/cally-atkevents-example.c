@@ -144,7 +144,12 @@ main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  cally_util_a11y_init (&argc, &argv);
+  if (cally_util_a11y_init (&argc, &argv) == FALSE)
+    {
+      g_error ("This example requires the accessibility support, "
+               "especifically AtkUtil implementation loaded, "
+               "as it tries to register and remove event listeners");
+    }
 
   data1.value = 10;
   data2.value = 20;

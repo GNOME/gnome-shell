@@ -115,18 +115,20 @@ _a11y_invoke_module (const gchar  *module_path,
  *
  * Basically it will load the cally module using gmodule functions.
  *
+ * Returns if it was able to init the a11y support or not.
  */
-void
+gboolean
 cally_util_a11y_init (int *argc, char ***argv)
 {
   gchar *bridge_dir = NULL;
   gchar *bridge_path = NULL;
+  gboolean result = FALSE;
 
   if (clutter_get_accessibility_enabled () == FALSE)
     {
       g_warning ("Accessibility: clutter has no accessibility enabled"
                  " skipping the atk-bridge load");
-      return;
+      return FALSE;
     }
 
   bridge_dir = _a11y_check_custom_bridge (argc, argv);
@@ -135,8 +137,10 @@ cally_util_a11y_init (int *argc, char ***argv)
 
   bridge_path = g_module_build_path (bridge_dir, "libatk-bridge");
 
-  _a11y_invoke_module (bridge_path, TRUE);
+  result = _a11y_invoke_module (bridge_path, TRUE);
 
   g_free (bridge_dir);
   g_free (bridge_path);
+
+  return result;
 }
