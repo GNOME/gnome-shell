@@ -25,6 +25,11 @@
 #include <meta/display.h>
 #include <meta/util.h>
 
+/* Memory report bits */
+#ifdef HAVE_MALLINFO
+#include <malloc.h>
+#endif
+
 #include "shell-enum-types.h"
 #include "shell-global-private.h"
 #include "shell-jsapi-compat-private.h"
@@ -1125,6 +1130,38 @@ shell_global_maybe_gc (ShellGlobal *global)
 {
   gjs_context_maybe_gc (global->js_context);
 }
+
+/**
+ * shell_global_get_memory_info:
+ * @global:
+ * @meminfo: (out caller-allocates): Output location for memory information
+ *
+ * Load process-global data about memory usage.
+ */
+void
+shell_global_get_memory_info (ShellGlobal        *global,
+                              ShellMemoryInfo    *meminfo)
+{
+  JSContext *context;
+
+  memset (meminfo, 0, sizeof (meminfo));
+#ifdef HAVE_MALLINFO
+  {
+    struct mallinfo info = mallinfo ();
+    meminfo->glibc_uordblks = info.uordblks;
+  }
+#endif
+
+  context = gjs_context_get_native_context (global->js_context);
+
+  meminfo->js_bytes = JS_GetGCParameter (JS_GetRuntime (context), JSGC_BYTES);
+
+  meminfo->gjs_boxed = (unsigned int) gjs_counter_boxed.value;
+  meminfo->gjs_gobject = (unsigned int) gjs_counter_object.value;
+  meminfo->gjs_function = (unsigned int) gjs_counter_function.value;
+  meminfo->gjs_closure = (unsigned int) gjs_counter_closure.value;
+}
+
 
 /**
  * shell_global_notify_error:

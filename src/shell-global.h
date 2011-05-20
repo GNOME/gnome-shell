@@ -90,6 +90,21 @@ void    shell_global_get_pointer             (ShellGlobal         *global,
 void     shell_global_gc                   (ShellGlobal *global);
 void     shell_global_maybe_gc             (ShellGlobal *global);
 
+typedef struct {
+  guint glibc_uordblks;
+
+  guint js_bytes;
+
+  guint gjs_boxed;
+  guint gjs_gobject;
+  guint gjs_function;
+  guint gjs_closure;
+} ShellMemoryInfo;
+
+void     shell_global_get_memory_info      (ShellGlobal     *global,
+                                            ShellMemoryInfo *meminfo);
+
+
 gboolean shell_global_set_property_mutable (ShellGlobal *global,
                                             const char  *object,
                                             const char  *property,

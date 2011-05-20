@@ -582,6 +582,53 @@ ErrorLog.prototype = {
     }
 };
 
+function Memory() {
+    this._init();
+}
+
+Memory.prototype = {
+    _init: function() {
+        this.actor = new St.BoxLayout({ vertical: true });
+        this._glibc_uordblks = new St.Label();
+        this.actor.add(this._glibc_uordblks);
+
+        this._js_bytes = new St.Label();
+        this.actor.add(this._js_bytes);
+
+        this._gjs_boxed = new St.Label();
+        this.actor.add(this._gjs_boxed);
+
+        this._gjs_gobject = new St.Label();
+        this.actor.add(this._gjs_gobject);
+
+        this._gjs_function = new St.Label();
+        this.actor.add(this._gjs_function);
+
+        this._gjs_closure = new St.Label();
+        this.actor.add(this._gjs_closure);
+
+        this._gcbutton = new St.Button({ label: 'Full GC',
+                                         style_class: 'lg-obj-inspector-button' });
+        this._gcbutton.connect('clicked', Lang.bind(this, function () { global.gc(); this._renderText(); }));
+        this.actor.add(this._gcbutton, { x_align: St.Align.START,
+                                         x_fill: false });
+
+        this.actor.connect('notify::mapped', Lang.bind(this, this._renderText));
+    },
+
+    _renderText: function() {
+        if (!this.actor.mapped)
+            return;
+        let memInfo = global.get_memory_info();
+        this._glibc_uordblks.text = 'glibc_uordblks: ' + memInfo.glibc_uordblks;
+        this._js_bytes.text = 'js bytes: ' + memInfo.js_bytes;
+        this._gjs_boxed.text = 'gjs_boxed: ' + memInfo.gjs_boxed;
+        this._gjs_gobject.text = 'gjs_gobject: ' + memInfo.gjs_gobject;
+        this._gjs_function.text = 'gjs_function: ' + memInfo.gjs_function;
+        this._gjs_closure.text = 'gjs_closure: ' + memInfo.gjs_closure;
+    }
+};
+
 function Extensions() {
     this._init();
 }
@@ -763,6 +810,9 @@ LookingGlass.prototype = {
 
         this._errorLog = new ErrorLog();
         notebook.appendPage('Errors', this._errorLog.actor);
+
+        this._memory = new Memory();
+        notebook.appendPage('Memory', this._memory.actor);
 
         this._extensions = new Extensions();
         notebook.appendPage('Extensions', this._extensions.actor);
