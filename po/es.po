@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-03 15:01+0000\n"
-"PO-Revision-Date: 2011-05-04 09:55+0200\n"
+"POT-Creation-Date: 2011-05-18 21:09+0000\n"
+"PO-Revision-Date: 2011-05-20 13:26+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -340,7 +340,7 @@ msgstr "Mover la ventana al centro de la pantalla"
 msgid "Bell event"
 msgstr "Evento de campana"
 
-#: ../src/core/core.c:157
+#: ../src/core/core.c:160
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Petición de información de ventana desconocida: %d"
@@ -351,7 +351,6 @@ msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> no está respondiendo."
 
 #: ../src/core/delete.c:114
-#| msgid "<tt>%s</tt> is not responding."
 msgid "Application is not responding."
 msgstr "La aplicación no está respondiendo."
 
@@ -577,12 +576,12 @@ msgid "Error setting no tab popup status: %s\n"
 msgstr ""
 "Error al establecer el estado de las pestañas en ventanas emergentes: %s\n"
 
-#: ../src/core/screen.c:624
+#: ../src/core/screen.c:663
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: ../src/core/screen.c:640
+#: ../src/core/screen.c:679
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -591,7 +590,7 @@ msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas, intente "
 "usar la opción «--replace» para reemplazar el gestor de ventanas activo.\n"
 
-#: ../src/core/screen.c:667
+#: ../src/core/screen.c:706
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -599,12 +598,12 @@ msgstr ""
 "No se ha podido obtener la selección del gestor de ventanas en la ventana %d "
 "en la pantalla «%s»\n"
 
-#: ../src/core/screen.c:722
+#: ../src/core/screen.c:761
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
 
-#: ../src/core/screen.c:907
+#: ../src/core/screen.c:946
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
@@ -709,7 +708,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6860
+#: ../src/core/window.c:6861
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -725,7 +724,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7523
+#: ../src/core/window.c:7524
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -840,47 +839,47 @@ msgstr "Áreas de trabajo sólo en el primario"
 msgid "Usage: %s\n"
 msgstr "Uso: %s\n"
 
-#: ../src/ui/frames.c:1177
+#: ../src/ui/frames.c:1280
 msgid "Close Window"
 msgstr "Cerrar la ventana"
 
-#: ../src/ui/frames.c:1180
+#: ../src/ui/frames.c:1283
 msgid "Window Menu"
 msgstr "Menú de la ventana"
 
-#: ../src/ui/frames.c:1183
+#: ../src/ui/frames.c:1286
 msgid "Minimize Window"
 msgstr "Minimizar la ventana"
 
-#: ../src/ui/frames.c:1186
+#: ../src/ui/frames.c:1289
 msgid "Maximize Window"
 msgstr "Maximizar la ventana"
 
-#: ../src/ui/frames.c:1189
+#: ../src/ui/frames.c:1292
 msgid "Restore Window"
 msgstr "Restablecer la ventana"
 
-#: ../src/ui/frames.c:1192
+#: ../src/ui/frames.c:1295
 msgid "Roll Up Window"
 msgstr "Enrollar ventana"
 
-#: ../src/ui/frames.c:1195
+#: ../src/ui/frames.c:1298
 msgid "Unroll Window"
 msgstr "Desenrollar ventana"
 
-#: ../src/ui/frames.c:1198
+#: ../src/ui/frames.c:1301
 msgid "Keep Window On Top"
 msgstr "Mantener la ventana encima"
 
-#: ../src/ui/frames.c:1201
+#: ../src/ui/frames.c:1304
 msgid "Remove Window From Top"
 msgstr "Quitar ventana de encima"
 
-#: ../src/ui/frames.c:1204
+#: ../src/ui/frames.c:1307
 msgid "Always On Visible Workspace"
 msgstr "Siempre en el área de trabajo visible"
 
-#: ../src/ui/frames.c:1207
+#: ../src/ui/frames.c:1310
 msgid "Put Window On Only One Workspace"
 msgstr "Poner la ventana sólo en un área de trabajo"
 
@@ -1200,14 +1199,19 @@ msgstr "El factor de sombreado «%s» en el color sombreado es negativo"
 msgid "Could not parse color \"%s\""
 msgstr "No se ha podido interpretar el color «%s»"
 
-#: ../src/ui/theme.c:1646
+#: ../src/ui/theme.c:1481
+#, c-format
+msgid "Failed to retrieve color %s[%s] from GTK+ theme.\n"
+msgstr "Falló al obtener el color %s[%s] del tema de GTK+.\n"
+
+#: ../src/ui/theme.c:1713
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 "La expresión de coordenadas contenía un carácter «%s» en cual no está "
 "permitido"
 
-#: ../src/ui/theme.c:1673
+#: ../src/ui/theme.c:1740
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1216,13 +1220,13 @@ msgstr ""
 "La expresión de coordenadas contenía un número de coma flotante «%s» en cual "
 "no pudo ser analizado"
 
-#: ../src/ui/theme.c:1687
+#: ../src/ui/theme.c:1754
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
 
-#: ../src/ui/theme.c:1809
+#: ../src/ui/theme.c:1876
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1231,17 +1235,17 @@ msgstr ""
 "La expresión de coordenadas contenía un operador inválido al inicio de su "
 "texto: «%s»"
 
-#: ../src/ui/theme.c:1866
+#: ../src/ui/theme.c:1933
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "La expresión de coordenadas estaba vacía o no fue entendida"
 
-#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2044 ../src/ui/theme.c:2054 ../src/ui/theme.c:2088
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "La expresión de coordenadas resultó en un error de división por cero"
 
-#: ../src/ui/theme.c:2029
+#: ../src/ui/theme.c:2096
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -1249,7 +1253,7 @@ msgstr ""
 "La expresión de coordenadas intentó usar un operador mod con un número de "
 "coma flotante"
 
-#: ../src/ui/theme.c:2085
+#: ../src/ui/theme.c:2152
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
@@ -1257,19 +1261,19 @@ msgstr ""
 "La expresión de coordenadas tiene un operador «%s» donde se esperaba un "
 "operando"
 
-#: ../src/ui/theme.c:2094
+#: ../src/ui/theme.c:2161
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "La expresión de coordenadas tiene un operando donde se esperaba un operador"
 
-#: ../src/ui/theme.c:2102
+#: ../src/ui/theme.c:2169
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "La expresión de coordenadas termina con una operador en vez de un operando"
 
-#: ../src/ui/theme.c:2112
+#: ../src/ui/theme.c:2179
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1278,42 +1282,42 @@ msgstr ""
 "La expresión de coordenadas tiene el operador «%c» seguido del operador «%c» "
 "sin un operando entre ellos"
 
-#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
+#: ../src/ui/theme.c:2330 ../src/ui/theme.c:2375
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "La expresión de coordenadas tenía una variable o constante desconocida «%s»"
 
-#: ../src/ui/theme.c:2362
+#: ../src/ui/theme.c:2429
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "El parser de la expresión de coordenadas desbordó su búfer."
 
-#: ../src/ui/theme.c:2391
+#: ../src/ui/theme.c:2458
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "La expresión de coordenadas tenía un paréntesis cerrado sin un paréntesis "
 "abierto"
 
-#: ../src/ui/theme.c:2455
+#: ../src/ui/theme.c:2522
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "La expresión de coordenadas tenía un paréntesis abierto sin un paréntesis "
 "cerrado"
 
-#: ../src/ui/theme.c:2466
+#: ../src/ui/theme.c:2533
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "La expresión de coordenadas no parece tener ni operadores ni operandos"
 
-#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
+#: ../src/ui/theme.c:2745 ../src/ui/theme.c:2765 ../src/ui/theme.c:2785
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "El tema contenía una expresión que ha resultado en un error: %s\n"
 
-#: ../src/ui/theme.c:4410
+#: ../src/ui/theme.c:4482
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1322,25 +1326,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
 "especificado para este estilo de marco"
 
-#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
+#: ../src/ui/theme.c:5012 ../src/ui/theme.c:5037
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5013
+#: ../src/ui/theme.c:5085
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Ocurrió un error al cargar el tema «%s»: %s\n"
 
-#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
-#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
+#: ../src/ui/theme.c:5221 ../src/ui/theme.c:5228 ../src/ui/theme.c:5235
+#: ../src/ui/theme.c:5242 ../src/ui/theme.c:5249
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No se configuró <%s> para el tema «%s»"
 
-#: ../src/ui/theme.c:5185
+#: ../src/ui/theme.c:5257
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1349,7 +1353,7 @@ msgstr ""
 "No hay un estilo de marco para el tipo de ventana «%s» en el tema «%s», añada "
 "un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
+#: ../src/ui/theme.c:5707 ../src/ui/theme.c:5769 ../src/ui/theme.c:5832
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1357,7 +1361,7 @@ msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
 "mayúscula; «%s» no lo hace"
 
-#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
+#: ../src/ui/theme.c:5715 ../src/ui/theme.c:5777 ../src/ui/theme.c:5840
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La constante «%s» ya ha sido definida"
