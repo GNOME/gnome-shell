@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-25 20:20+0000\n"
-"PO-Revision-Date: 2011-04-12 18:34+0700\n"
+"PO-Revision-Date: 2011-05-22 21:50+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -551,7 +551,7 @@ msgstr "Ứng dụng"
 #. the left of the overview
 #: ../js/ui/overview.js:205
 msgid "Dash"
-msgstr "Khung ứng dụng"
+msgstr "Neo ứng dụng"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
 #: ../js/ui/panel.js:515
