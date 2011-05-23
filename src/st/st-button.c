@@ -45,6 +45,8 @@
 #include "st-texture-cache.h"
 #include "st-private.h"
 
+#include <st/st-widget-accessible.h>
+
 enum
 {
   PROP_0,
@@ -83,6 +85,8 @@ struct _StButtonPrivate
 static guint button_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (StButton, st_button, ST_TYPE_BIN);
+
+static GType st_button_accessible_get_type (void) G_GNUC_CONST;
 
 static void
 st_button_update_label_style (StButton *button)
@@ -392,6 +396,7 @@ st_button_class_init (StButtonClass *klass)
   actor_class->leave_event = st_button_leave;
 
   widget_class->style_changed = st_button_style_changed;
+  widget_class->get_accessible_type = st_button_accessible_get_type;
 
   pspec = g_param_spec_string ("label",
                                "Label",
@@ -685,4 +690,75 @@ st_button_fake_release (StButton *button)
       button->priv->grabbed = 0;
       clutter_ungrab_pointer ();
     }
+}
+
+/******************************************************************************/
+/*************************** ACCESSIBILITY SUPPORT ****************************/
+/******************************************************************************/
+
+#define ST_TYPE_BUTTON_ACCESSIBLE st_button_accessible_get_type ()
+
+#define ST_BUTTON_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+  ST_TYPE_BUTTON_ACCESSIBLE, StButtonAccessible))
+
+#define ST_IS_BUTTON_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+  ST_TYPE_BUTTON_ACCESSIBLE))
+
+#define ST_BUTTON_ACCESSIBLE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), \
+  ST_TYPE_BUTTON_ACCESSIBLE, StButtonAccessibleClass))
+
+#define ST_IS_BUTTON_ACCESSIBLE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+  ST_TYPE_BUTTON_ACCESSIBLE))
+
+#define ST_BUTTON_ACCESSIBLE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+  ST_TYPE_BUTTON_ACCESSIBLE, StButtonAccessibleClass))
+
+typedef struct _StButtonAccessible  StButtonAccessible;
+typedef struct _StButtonAccessibleClass  StButtonAccessibleClass;
+
+struct _StButtonAccessible
+{
+  StWidgetAccessible parent;
+};
+
+struct _StButtonAccessibleClass
+{
+  StWidgetAccessibleClass parent_class;
+};
+
+static void st_button_accessible_class_init (StButtonAccessibleClass *klass);
+static void st_button_accessible_init       (StButtonAccessible *button);
+
+/* AtkObject */
+static void          st_button_accessible_initialize (AtkObject *obj,
+                                                      gpointer   data);
+
+G_DEFINE_TYPE (StButtonAccessible, st_button_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
+
+static void
+st_button_accessible_class_init (StButtonAccessibleClass *klass)
+{
+  AtkObjectClass *atk_class = ATK_OBJECT_CLASS (klass);
+
+  atk_class->initialize = st_button_accessible_initialize;
+}
+
+static void
+st_button_accessible_init (StButtonAccessible *self)
+{
+  /* initialization done on AtkObject->initialize */
+}
+
+static void
+st_button_accessible_initialize (AtkObject *obj,
+                                gpointer   data)
+{
+  ATK_OBJECT_CLASS (st_button_accessible_parent_class)->initialize (obj, data);
+
+  obj->role = ATK_ROLE_PUSH_BUTTON;
 }
