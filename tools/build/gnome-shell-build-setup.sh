@@ -125,8 +125,10 @@ if test "x$system" = xFedora ; then
     sqlite-devel libgudev1-devel lcms2-devel sane-backends-devel
     "
 
-  if expr $version \>= 14 > /dev/null ; then
+  if expr $version = 14 > /dev/null ; then
       reqd="$reqd gettext-autopoint"
+  elif expr $version \>= 15 > /dev/null ; then
+      reqd="$reqd gettext-devel"
   fi
 
   for pkg in $reqd ; do
