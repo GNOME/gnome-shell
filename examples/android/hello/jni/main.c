@@ -156,7 +156,7 @@ android_main (struct android_app* application)
   /* Make sure glue isn't stripped */
   app_dummy ();
 
-  g_android_init (NULL, NULL, G_ANDROID_INIT_FLAG_LOG_HANDLER);
+  g_android_init ();
 
   memset (&data, 0, sizeof (TestData));
   application->userData = &data;
