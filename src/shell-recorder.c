@@ -412,6 +412,8 @@ recorder_fetch_cursor_image (ShellRecorder *recorder)
       *(guint32 *)(data + i * stride + 4 * j) = cursor_image->pixels[i * cursor_image->width + j];
 
   cairo_surface_mark_dirty (recorder->cursor_image);
+
+  XFree (cursor_image);
 }
 
 /* Overlay the cursor image on the frame. We draw the cursor image
