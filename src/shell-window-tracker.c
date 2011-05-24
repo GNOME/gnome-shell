@@ -509,6 +509,33 @@ on_transient_window_title_changed (MetaWindow      *window,
 }
 
 static void
+update_focus_app (ShellWindowTracker *self)
+{
+  MetaWindow *new_focus_win;
+  ShellApp *new_focus_app;
+
+  new_focus_win = meta_display_get_focus_window (meta_screen_get_display (shell_global_get_screen (shell_global_get ())));
+  new_focus_app = new_focus_win ? shell_window_tracker_get_window_app (self, new_focus_win) : NULL;
+
+  set_focus_app (self, new_focus_app);
+}
+
+static void
+on_wm_class_changed (MetaWindow  *window,
+                     GParamSpec  *pspec,
+                     gpointer     user_data)
+{
+  ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
+
+  /* It's simplest to just treat this as a remove + add. */
+  disassociate_window (self, window);
+  track_window (self, window);
+  /* also just recaulcuate the focused app, in case it was the focused
+     window that changed */
+  update_focus_app (self);
+}
+
+static void
 track_window (ShellWindowTracker *self,
               MetaWindow      *window)
 {
@@ -533,6 +560,8 @@ track_window (ShellWindowTracker *self,
        */
       g_signal_connect (window, "notify::title", G_CALLBACK (on_transient_window_title_changed), self);
     }
+
+  g_signal_connect (window, "notify::wm-class", G_CALLBACK (on_wm_class_changed), self);
 
   _shell_app_add_window (app, window);
 
@@ -884,13 +913,7 @@ on_focus_window_changed (MetaDisplay        *display,
                          GParamSpec         *spec,
                          ShellWindowTracker *tracker)
 {
-  MetaWindow *new_focus_win;
-  ShellApp *new_focus_app;
-
-  new_focus_win = meta_display_get_focus_window (display);
-  new_focus_app = new_focus_win ? shell_window_tracker_get_window_app (tracker, new_focus_win) : NULL;
-
-  set_focus_app (tracker, new_focus_app);
+  update_focus_app (tracker);
 }
 
 /**
