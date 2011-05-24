@@ -1154,7 +1154,6 @@ create_texture_and_ensure_request (StTextureCache        *cache,
     {
       /* Not cached and no pending request, create it */
       *request = g_new0 (AsyncTextureLoadData, 1);
-      (*request)->key = g_strdup (key);
       g_hash_table_insert (cache->priv->outstanding_requests, g_strdup (key), *request);
     }
   else
@@ -1209,9 +1208,10 @@ load_gicon_with_colors (StTextureCache    *cache,
   info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
   if (info != NULL)
     {
+      /* Transfer ownership of key */
+      request->key = key;
       /* hardcoded here for now; we should actually blow this away on
        * icon theme changes probably */
-      request->key = g_strdup (key);
       request->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
       request->icon = g_object_ref (icon);
       request->icon_info = info;
@@ -1227,14 +1227,13 @@ load_gicon_with_colors (StTextureCache    *cache,
        */
        g_slist_foreach (request->textures, (GFunc) g_object_unref, NULL);
        g_slist_free (request->textures);
-       g_free (request->key);
        g_free (request);
        g_hash_table_remove (cache->priv->outstanding_requests, key);
+       g_free (key);
        g_object_unref (texture);
        texture = NULL;
     }
 
-  g_free (key);
   return CLUTTER_ACTOR (texture);
 }
 
