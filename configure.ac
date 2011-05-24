@@ -76,6 +76,7 @@ LIBEDATASERVERUI_MIN_VERSION=2.91.6
 TELEPATHY_GLIB_MIN_VERSION=0.13.12
 TELEPATHY_LOGGER_MIN_VERSION=0.2.4
 POLKIT_MIN_VERSION=0.100
+STARTUP_NOTIFICATION_MIN_VERSION=0.11
 
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
@@ -87,7 +88,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
                                gdk-x11-3.0
 			       clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
 			       clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
-                               libstartup-notification-1.0
+                               libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
                                gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
 			       libcanberra
                                telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
@@ -114,8 +115,6 @@ saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS
 CFLAGS=$GNOME_SHELL_CFLAGS
 LIBS=$GNOME_SHELL_LIBS
-# sn_startup_sequence_get_application_id, we can replace with a version check later
-AC_CHECK_FUNCS(JS_NewGlobalObject sn_startup_sequence_get_application_id XFixesCreatePointerBarrier)
 CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 

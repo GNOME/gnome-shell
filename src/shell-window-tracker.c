@@ -944,7 +944,6 @@ shell_startup_sequence_get_id (ShellStartupSequence *sequence)
 ShellApp *
 shell_startup_sequence_get_app (ShellStartupSequence *sequence)
 {
-#ifdef HAVE_SN_STARTUP_SEQUENCE_GET_APPLICATION_ID
   const char *appid;
   ShellAppSystem *appsys;
   ShellApp *app;
@@ -956,9 +955,6 @@ shell_startup_sequence_get_app (ShellStartupSequence *sequence)
   appsys = shell_app_system_get_default ();
   app = shell_app_system_get_app_for_path (appsys, appid);
   return app;
-#else
-  return NULL;
-#endif
 }
 
 const char *
