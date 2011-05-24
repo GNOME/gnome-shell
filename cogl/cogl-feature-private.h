@@ -61,8 +61,9 @@ struct _CoglFeatureData
   const char *extension_names;
   /* A set of feature flags to enable if the extension is available */
   CoglFeatureFlags feature_flags;
-  /* FIXME: This is now unused */
-  int padding_feature_flags_private;
+  /* A set of private feature flags to enable if the extension is
+   * available */
+  int feature_flags_private;
   /* An optional corresponding winsys feature. */
   CoglWinsysFeature winsys_feature;
   /* A list of functions required for this feature. Terminated with a

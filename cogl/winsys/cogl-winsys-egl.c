@@ -65,11 +65,20 @@
 #define COGL_ONSCREEN_X11_EVENT_MASK StructureNotifyMask
 #endif
 
+typedef enum _CoglEGLWinsysFeature
+{
+  COGL_EGL_WINSYS_FEATURE_SWAP_REGION                   =1L<<0,
+  COGL_EGL_WINSYS_FEATURE_EGL_IMAGE_FROM_X11_PIXMAP     =1L<<1,
+  COGL_EGL_WINSYS_FEATURE_EGL_IMAGE_FROM_WAYLAND_BUFFER =1L<<2
+} CoglEGLWinsysFeature;
+
 typedef struct _CoglRendererEGL
 {
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglRendererXlib _parent;
 #endif
+
+  CoglEGLWinsysFeature private_features;
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   struct wl_display *wayland_display;
@@ -87,7 +96,7 @@ typedef struct _CoglRendererEGL
 #endif
 
   /* Function pointers for GLX specific extensions */
-#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
+#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d)
 
 #define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args) \
   ret (APIENTRY * pf_ ## name) args;
@@ -159,8 +168,7 @@ typedef struct _CoglOnscreenEGL
 /* Define a set of arrays containing the functions required from GL
    for each winsys feature */
 #define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
-                                  feature_flags, feature_flags_private, \
-                                  winsys_feature)                       \
+                                  egl_private_flags)                    \
   static const CoglFeatureFunction                                      \
   cogl_egl_feature_ ## name ## _funcs[] = {
 #define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args)                   \
@@ -173,11 +181,10 @@ typedef struct _CoglOnscreenEGL
 /* Define an array of features */
 #undef COGL_WINSYS_FEATURE_BEGIN
 #define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
-                                  feature_flags, feature_flags_private, \
-                                  winsys_feature)                       \
+                                  egl_private_flags)                    \
   { 255, 255, namespaces, extension_names,                              \
-      feature_flags, feature_flags_private,                             \
-      winsys_feature, \
+      0, egl_private_flags,                                             \
+      0,                                                                \
       cogl_egl_feature_ ## name ## _funcs },
 #undef COGL_WINSYS_FEATURE_FUNCTION
 #define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args)
@@ -314,6 +321,31 @@ force_roundtrip(struct wl_display *display)
 }
 #endif
 
+/* Updates all the function pointers */
+static void
+check_egl_extensions (CoglRenderer *renderer)
+{
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  const CoglWinsysVtable *winsys = renderer->winsys_vtable;
+  const char *egl_extensions;
+  int i;
+
+  egl_extensions = eglQueryString (egl_renderer->edpy, EGL_EXTENSIONS);
+
+  COGL_NOTE (WINSYS, "  EGL Extensions: %s", egl_extensions);
+
+  egl_renderer->private_features = 0;
+  for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
+    if (_cogl_feature_check (winsys,
+                             "EGL", winsys_feature_data + i, 0, 0,
+                             egl_extensions,
+                             egl_renderer))
+      {
+        egl_renderer->private_features |=
+          winsys_feature_data[0].feature_flags_private;
+      }
+}
+
 static gboolean
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
@@ -445,6 +477,8 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   gdl_close ();
 #endif
 
+  check_egl_extensions (renderer);
+
   return TRUE;
 
 error:
@@ -457,18 +491,14 @@ update_winsys_features (CoglContext *context)
 {
   CoglDisplayEGL *egl_display = context->display->winsys;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
-  const char *egl_extensions;
-  int i;
 
   g_return_if_fail (egl_display->egl_context);
 
-  _cogl_gl_update_features (context);
-
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
-  egl_extensions = eglQueryString (egl_renderer->edpy, EGL_EXTENSIONS);
+  check_egl_extensions (context->display->renderer);
 
-  COGL_NOTE (WINSYS, "  EGL Extensions: %s", egl_extensions);
+  _cogl_gl_update_features (context);
 
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT) || \
     defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
@@ -478,22 +508,7 @@ update_winsys_features (CoglContext *context)
                   TRUE);
 #endif
 
-  for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
-    if (_cogl_feature_check (_cogl_context_get_winsys (context),
-                             "EGL", winsys_feature_data + i, 0, 0,
-                             egl_extensions,
-                             egl_renderer))
-      {
-        context->feature_flags |= winsys_feature_data[i].feature_flags;
-        if (winsys_feature_data[i].winsys_feature)
-          COGL_FLAGS_SET (context->winsys_features,
-                          winsys_feature_data[i].winsys_feature,
-                          TRUE);
-      }
-
-  /* FIXME: the winsys_feature_data can currently only have one
-   * winsys feature per extension... */
-  if (egl_renderer->pf_eglSwapBuffersRegion)
+  if (egl_renderer->private_features & COGL_EGL_WINSYS_FEATURE_SWAP_REGION)
     {
       COGL_FLAGS_SET (context->winsys_features,
                       COGL_WINSYS_FEATURE_SWAP_REGION, TRUE);

@@ -28,9 +28,7 @@
 
 /* Macro prototypes:
  * COGL_WINSYS_FEATURE_BEGIN (name, namespaces, extension_names,
- *                            implied_public_feature_flags,
- *                            implied_private_feature_flags,
- *                            implied_winsys_feature)
+ *                            implied_private_egl_feature_flags)
  * COGL_WINSYS_FEATURE_FUNCTION (return_type, function_name,
  *                               (arguments))
  * ...
@@ -46,9 +44,7 @@
 COGL_WINSYS_FEATURE_BEGIN (swap_region,
                            "NOK\0",
                            "swap_region\0",
-                           0,
-                           0,
-                           COGL_WINSYS_FEATURE_SWAP_REGION)
+                           COGL_EGL_WINSYS_FEATURE_SWAP_REGION)
 COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglSwapBuffersRegion,
                               (EGLDisplay dpy,
                                EGLSurface surface,
