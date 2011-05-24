@@ -148,6 +148,8 @@ AS_CASE([$host],
 AC_MSG_RESULT([$platform_win32])
 AM_CONDITIONAL(OS_WIN32, [test "$platform_win32" = "yes"])
 
+AC_CHECK_HEADER([OpenGL/gl.h], [platform_quartz=yes], [platform_quartz=no])
+AM_CONDITIONAL(OS_QUARTZ, [test "$platform_quartz" = "yes"])
 
 dnl ================================================================
 dnl Handle extra configure options
@@ -444,15 +446,22 @@ AS_IF([test "x$enable_gl" = "xyes"],
 
         cogl_gl_headers="GL/gl.h"
 
-        AS_IF([test "x$platform_win32" = "xyes"],
+        AS_IF([test "x$platform_quartz" = "xyes"],
+              [
+                cogl_gl_headers="OpenGL/gl.h"
+                COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -framework OpenGL"
+              ],
+
+              [test "x$platform_win32" = "xyes"],
 	      [
 		COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lopengl32 -lgdi32 -lwinmm"
 		COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -D_WIN32_WINNT=0x0500"
                 ALLOW_WGL=yes
 	      ],
+
 	      [
-		PKG_CHECK_EXISTS(
-		  [gl], [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gl"],
+		PKG_CHECK_EXISTS([gl],
+                  [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gl"],
 		  [AC_CHECK_LIB(GL, [glGetString],
 				[COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lGL"],
 				[AC_MSG_ERROR([Unable to locate required GL library])])
@@ -551,6 +560,29 @@ AS_IF([test "x$enable_wgl" = "xyes"],
                   [Cogl can create its own OpenGL context])
       ])
 AM_CONDITIONAL(SUPPORT_WGL, [test "x$SUPPORT_WGL" = "xyes"])
+
+AC_ARG_ENABLE(
+  [quartz],
+  [AC_HELP_STRING([--enable-quartz=@<:@no/yes@:>@], [Enable support for the Quartz platform @<:@default=no@:>@])],
+  [],
+  [AS_IF([test "x$platform_quartz" = "xyes"], [enable_quartz=yes], [enable_quartz=no])]
+)
+AS_IF([test "x$enable_quartz" = "xyes"],
+  [AS_IF([test "x$platform_quartz" = "xno"],
+         [AC_MSG_ERROR([OpenGL framework not support with $COGL_DRIVER driver])])
+
+   AS_IF([test "x$enable_stub_winsys" = "xyes"],
+         [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
+
+   SUPPORT_QUARTZ=yes
+   GL_WINSYS_APIS="$GL_WINSYS_APIS quartz"
+
+   AC_DEFINE([COGL_HAS_QUARTZ_SUPPORT], [1], [Cogl supports OpenGL using the Quartz framework])
+   COGL_DEFINES_SYMBOLS-"$COGL_DEFINES_SYMBOLS COGL_HAS_QUARTZ_SUPPORT"
+
+   #AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
+  ])
+AM_CONDITIONAL(SUPPORT_QUARTZ, [test "x$SUPPORT_QUARTZ" = "xyes"])
 
 EGL_PLATFORM_COUNT=0
 
