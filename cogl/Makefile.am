@@ -335,23 +335,28 @@ cogl_sources_c += \
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_X11
 cogl_sources_c += \
-	$(srcdir)/winsys/cogl-winsys-egl.c
+	$(srcdir)/winsys/cogl-winsys-egl.c \
+	$(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_NULL
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+       $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 if SUPPORT_EGL_PLATFORM_GDL
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+       $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 if SUPPORT_EGL_PLATFORM_WAYLAND
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+       $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 if SUPPORT_EGL_PLATFORM_ANDROID
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+       $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 
 EXTRA_DIST += stb_image.c

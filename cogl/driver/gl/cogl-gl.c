@@ -155,6 +155,7 @@ static const CoglFeatureData cogl_feature_data[] =
 void
 _cogl_gl_update_features (CoglContext *context)
 {
+  CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
   const char *gl_extensions;
   int max_clip_planes = 0;
@@ -212,8 +213,12 @@ _cogl_gl_update_features (CoglContext *context)
                              gl_major, gl_minor,
                              gl_extensions,
                              context))
-      flags |= cogl_feature_data[i].feature_flags;
+      {
+        private_flags |= cogl_feature_data[i].feature_flags_private;
+        flags |= cogl_feature_data[i].feature_flags;
+      }
 
   /* Cache features */
+  context->private_feature_flags |= private_flags;
   context->feature_flags |= flags;
 }

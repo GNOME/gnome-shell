@@ -51,3 +51,20 @@ COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglSwapBuffersRegion,
                                EGLint numRects,
                                const EGLint *rects))
 COGL_WINSYS_FEATURE_END ()
+/* XXX: These macros can't handle falling back to looking for
+ * EGL_KHR_image if EGL_KHR_image_base and EGL_KHR_image_pixmap aren't
+ * found... */
+COGL_WINSYS_FEATURE_BEGIN (image_base,
+                           "KHR\0",
+                           "image_base\0",
+                           0)
+COGL_WINSYS_FEATURE_FUNCTION (EGLImageKHR, eglCreateImage,
+                              (EGLDisplay dpy,
+                               EGLContext ctx,
+                               EGLenum target,
+                               EGLClientBuffer buffer,
+                               const EGLint *attrib_list))
+COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglDestroyImage,
+                              (EGLDisplay dpy,
+                               EGLImageKHR image))
+COGL_WINSYS_FEATURE_END ()

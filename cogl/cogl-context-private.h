@@ -65,6 +65,7 @@ struct _CoglContext
 
   /* Features cache */
   CoglFeatureFlags feature_flags;
+  CoglPrivateFeatureFlags private_feature_flags;
 
   CoglHandle        default_pipeline;
   CoglHandle        default_layer_0;

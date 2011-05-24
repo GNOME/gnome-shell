@@ -61,6 +61,19 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
                                   CoglPixelFormat  internal_format,
                                   GError         **error);
 
+#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
+/* NB: The reason we require the width, height and format to be passed
+ * even though they may seem redundant is because GLES 1/2 don't
+ * provide a way to query these properties. */
+CoglTexture2D *
+_cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
+                                     int width,
+                                     int height,
+                                     CoglPixelFormat format,
+                                     EGLImageKHR image,
+                                     GError **error);
+#endif
+
 /*
  * _cogl_texture_2d_externally_modified:
  * @handle: A handle to a 2D texture

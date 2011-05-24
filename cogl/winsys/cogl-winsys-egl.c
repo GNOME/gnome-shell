@@ -1638,3 +1638,34 @@ cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen)
 }
 
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
+
+#ifdef EGL_KHR_image_base
+EGLImageKHR
+_cogl_egl_create_image (CoglContext *ctx,
+                        EGLenum target,
+                        EGLClientBuffer buffer,
+                        const EGLint *attribs)
+{
+  CoglDisplayEGL *egl_display = ctx->display->winsys;
+  CoglRendererEGL *egl_renderer = ctx->display->renderer->winsys;
+
+  g_return_val_if_fail (egl_renderer->pf_eglCreateImage, EGL_NO_IMAGE_KHR);
+
+  return egl_renderer->pf_eglCreateImage (egl_renderer->edpy,
+                                          egl_display->egl_context,
+                                          target,
+                                          buffer,
+                                          attribs);
+}
+
+void
+_cogl_egl_destroy_image (CoglContext *ctx,
+                         EGLImageKHR image)
+{
+  CoglRendererEGL *egl_renderer = ctx->display->renderer->winsys;
+
+  g_return_if_fail (egl_renderer->pf_eglDestroyImage);
+
+  egl_renderer->pf_eglDestroyImage (egl_renderer->edpy, image);
+}
+#endif

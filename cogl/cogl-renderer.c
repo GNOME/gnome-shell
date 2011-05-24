@@ -40,12 +40,10 @@
 #include "cogl-display-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-winsys-stub-private.h"
+#include "cogl-winsys-egl-private.h"
 
 #ifdef COGL_HAS_GLX_SUPPORT
 extern const CoglWinsysVtable *_cogl_winsys_glx_get_vtable (void);
-#endif
-#ifdef COGL_HAS_EGL_SUPPORT
-extern const CoglWinsysVtable *_cogl_winsys_egl_get_vtable (void);
 #endif
 #ifdef COGL_HAS_WGL_SUPPORT
 extern const CoglWinsysVtable *_cogl_winsys_wgl_get_vtable (void);

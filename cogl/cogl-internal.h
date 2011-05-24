@@ -126,6 +126,11 @@ typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
   COGL_DRIVER_ERROR_INVALID_VERSION
 } CoglDriverError;
 
+typedef enum
+{
+  COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE = 1L<<0
+} CoglPrivateFeatureFlags;
+
 gboolean
 _cogl_check_extension (const char *name, const char *ext);
 

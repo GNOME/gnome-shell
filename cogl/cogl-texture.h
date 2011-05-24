@@ -66,7 +66,8 @@ G_BEGIN_DECLS
  */
 typedef enum {
   COGL_TEXTURE_ERROR_SIZE,
-  COGL_TEXTURE_ERROR_FORMAT
+  COGL_TEXTURE_ERROR_FORMAT,
+  COGL_TEXTURE_ERROR_BAD_PARAMETER
 } CoglTextureError;
 
 GQuark cogl_texture_error_quark (void);

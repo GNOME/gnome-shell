@@ -139,3 +139,15 @@ COGL_FEATURE_FUNCTION (void *, glMapBuffer,
 COGL_FEATURE_FUNCTION (GLboolean, glUnmapBuffer,
                        (GLenum           target))
 COGL_FEATURE_END ()
+COGL_FEATURE_BEGIN (EGL_image, 255, 255,
+                    "OES\0",
+                    "EGL_image\0",
+                    0,
+                    COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE)
+COGL_FEATURE_FUNCTION (void, glEGLImageTargetTexture2D,
+                       (GLenum           target,
+                        eglImageOES      image))
+COGL_FEATURE_FUNCTION (void, glEGLImageTargetRenderbufferStorage,
+                       (GLenum           target,
+                        eglImageOES      image))
+COGL_FEATURE_END ()

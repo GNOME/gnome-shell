@@ -141,6 +141,7 @@ cogl_context_new (CoglDisplay *display,
 
   /* Init default values */
   context->feature_flags = 0;
+  context->private_feature_flags = 0;
 
   context->texture_types = NULL;
   context->buffer_types = NULL;

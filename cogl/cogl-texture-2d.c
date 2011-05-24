@@ -39,6 +39,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-winsys-egl-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -492,6 +493,53 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
   return _cogl_texture_2d_handle_new (tex_2d);
 }
+
+#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
+/* NB: The reason we require the width, height and format to be passed
+ * even though they may seem redundant is because GLES 1/2 don't
+ * provide a way to query these properties. */
+CoglTexture2D *
+_cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
+                                     int width,
+                                     int height,
+                                     CoglPixelFormat format,
+                                     EGLImageKHR image,
+                                     GError **error)
+{
+  CoglTexture2D *tex_2d;
+  GLenum gl_error;
+
+  g_return_val_if_fail (_cogl_context_get_winsys (ctx) ==
+                        _cogl_winsys_egl_get_vtable (),
+                        NULL);
+
+  g_return_val_if_fail (ctx->private_feature_flags &
+                        COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE,
+                        NULL);
+
+  tex_2d = _cogl_texture_2d_create_base (width, height, COGL_TEXTURE_NONE,
+                                         format);
+
+  _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                   tex_2d->gl_texture,
+                                   FALSE);
+
+  while ((gl_error = glGetError ()) != GL_NO_ERROR)
+    ;
+  ctx->drv.pf_glEGLImageTargetTexture2D (GL_TEXTURE_2D, image);
+  if (glGetError () != GL_NO_ERROR)
+    {
+      g_set_error (error,
+                   COGL_TEXTURE_ERROR,
+                   COGL_TEXTURE_ERROR_BAD_PARAMETER,
+                   "Could not create a CoglTexture2D from a given EGLImage");
+      return NULL;
+    }
+
+  return _cogl_texture_2d_handle_new (tex_2d);
+}
+#endif /* defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base) */
 
 void
 _cogl_texture_2d_externally_modified (CoglHandle handle)
