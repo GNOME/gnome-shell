@@ -180,7 +180,7 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
        * it's enabled now.
        */
       if (!G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)) &&
-          !unit->enabled_gl_target == 0)
+          unit->enabled_gl_target == 0)
         {
           _cogl_set_active_texture_unit (unit_index);
           GE (glEnable (unit->gl_target));
