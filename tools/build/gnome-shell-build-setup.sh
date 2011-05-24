@@ -62,7 +62,7 @@ fi
 # iso-codes, libical, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
-# libgcrypt, libtasn1, libgnome-keyring, libgtop, cups,
+# libgcrypt, libtasn1, libgnome-keyring, libgtop, cups, xcb,
 # libusb, libproxy, libdb, libproxy, sqlite, gudev, lcms2, sane
 #
 # Non-devel packages needed by gnome-shell and its deps:
@@ -122,7 +122,7 @@ if test "x$system" = xFedora ; then
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
     iso-codes-devel libgcrypt-devel libtasn1-devel libtasn1-tools libusb1-devel
     libgnome-keyring-devel libgtop2-devel cups-devel db4-devel libproxy-devel
-    sqlite-devel libgudev1-devel lcms2-devel sane-backends-devel
+    sqlite-devel libgudev1-devel lcms2-devel sane-backends-devel xcb-util-devel
     "
 
   if expr $version = 14 > /dev/null ; then
