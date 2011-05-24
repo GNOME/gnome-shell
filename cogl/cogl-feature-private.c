@@ -33,7 +33,8 @@
 #include "cogl-feature-private.h"
 
 gboolean
-_cogl_feature_check (const char *driver_prefix,
+_cogl_feature_check (const CoglWinsysVtable *winsys,
+                     const char *driver_prefix,
                      const CoglFeatureData *data,
                      unsigned int gl_major,
                      unsigned int gl_minor,
@@ -43,8 +44,6 @@ _cogl_feature_check (const char *driver_prefix,
 {
   const char *suffix = NULL;
   int func_num;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* First check whether the functions should be directly provided by
      GL */
@@ -107,7 +106,7 @@ _cogl_feature_check (const char *driver_prefix,
   /* If we couldn't find anything that provides the functions then
      give up */
   if (suffix == NULL)
-    return FALSE;
+    goto error;
 
   /* Try to get all of the entry points */
   for (func_num = 0; data->functions[func_num].name; func_num++)
@@ -117,28 +116,26 @@ _cogl_feature_check (const char *driver_prefix,
 
       full_function_name = g_strconcat (data->functions[func_num].name,
                                         suffix, NULL);
-      func = cogl_get_proc_address (full_function_name);
+      func = _cogl_get_proc_address (winsys, full_function_name);
       g_free (full_function_name);
 
       if (func == NULL)
-        break;
+        goto error;
 
       /* Set the function pointer in the context */
       *(void **) ((guint8 *) function_table +
                   data->functions[func_num].pointer_offset) = func;
     }
 
-  /* If one of the functions wasn't found then we should set all of
-     the function pointers back to NULL so that the rest of Cogl can
-     safely do feature testing by just looking at the function
-     pointers */
-  if (data->functions[func_num].name)
-    {
-      while (func_num-- > 0)
-        *(void **) ((guint8 *) ctx +
-                    data->functions[func_num].pointer_offset) = NULL;
-      return FALSE;
-    }
-  else
-    return TRUE;
+  return TRUE;
+
+  /* If the extension isn't found or one of the functions wasn't found
+   * then set all of the functions pointers to NULL so Cogl can safely
+   * do feature testing by just looking at the function pointers */
+error:
+  for (func_num = 0; data->functions[func_num].name; func_num++)
+    *(void **) ((guint8 *) function_table +
+                data->functions[func_num].pointer_offset) = NULL;
+
+  return FALSE;
 }

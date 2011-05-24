@@ -71,7 +71,8 @@ struct _CoglFeatureData
 };
 
 gboolean
-_cogl_feature_check (const char *driver_prefix,
+_cogl_feature_check (const CoglWinsysVtable *winsys,
+                     const char *driver_prefix,
                      const CoglFeatureData *data,
                      unsigned int gl_major,
                      unsigned int gl_minor,

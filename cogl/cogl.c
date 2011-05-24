@@ -30,7 +30,6 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-#include <gmodule.h>
 
 #include "cogl-debug.h"
 #include "cogl-internal.h"
@@ -93,32 +92,13 @@ cogl_gl_error_to_string (GLenum error_code)
 CoglFuncPtr
 cogl_get_proc_address (const char* name)
 {
-  void *address;
-  static GModule *module = NULL;
   const CoglWinsysVtable *winsys;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
   winsys = _cogl_context_get_winsys (ctx);
 
-  address = winsys->get_proc_address (name);
-  if (address)
-    return address;
-
-  /* this should find the right function if the program is linked against a
-   * library providing it */
-  if (G_UNLIKELY (module == NULL))
-    module = g_module_open (NULL, 0);
-
-  if (module)
-    {
-      gpointer symbol;
-
-      if (g_module_symbol (module, name, &symbol))
-        return symbol;
-    }
-
-  return NULL;
+  return _cogl_get_proc_address (winsys, name);
 }
 
 gboolean

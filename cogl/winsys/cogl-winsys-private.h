@@ -154,4 +154,8 @@ typedef struct _CoglWinsysVtable
 gboolean
 _cogl_winsys_has_feature (CoglWinsysFeature feature);
 
+CoglFuncPtr
+_cogl_get_proc_address (const CoglWinsysVtable *winsys,
+                        const char *name);
+
 #endif /* __COGL_WINSYS_PRIVATE_H */

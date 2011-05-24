@@ -195,22 +195,6 @@ _cogl_winsys_get_proc_address (const char *name)
   return (CoglFuncPtr) eglGetProcAddress (name);
 }
 
-#undef COGL_WINSYS_FEATURE_BEGIN
-#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
-#undef COGL_WINSYS_FEATURE_FUNCTION
-#define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args) \
-  egl_renderer->pf_ ## name = NULL;
-#undef COGL_WINSYS_FEATURE_END
-#define COGL_WINSYS_FEATURE_END()
-
-static void
-initialize_function_table (CoglRenderer *renderer)
-{
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-
-#include "cogl-winsys-egl-feature-functions.h"
-}
-
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 static ANativeWindow *android_native_window;
 
@@ -494,10 +478,9 @@ update_winsys_features (CoglContext *context)
                   TRUE);
 #endif
 
-  initialize_function_table (context->display->renderer);
-
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
-    if (_cogl_feature_check ("EGL", winsys_feature_data + i, 0, 0,
+    if (_cogl_feature_check (_cogl_context_get_winsys (context),
+                             "EGL", winsys_feature_data + i, 0, 0,
                              egl_extensions,
                              egl_renderer))
       {

@@ -566,7 +566,8 @@ update_winsys_features (CoglContext *context)
       COGL_NOTE (WINSYS, "  WGL Extensions: %s", wgl_extensions);
 
       for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
-        if (_cogl_feature_check ("WGL", winsys_feature_data + i, 0, 0,
+        if (_cogl_feature_check (_cogl_context_get_winsys (context),
+                                 "WGL", winsys_feature_data + i, 0, 0,
                                  wgl_extensions,
                                  wgl_renderer))
           {

@@ -178,22 +178,6 @@ _cogl_winsys_get_proc_address (const char *name)
   return NULL;
 }
 
-#undef COGL_WINSYS_FEATURE_BEGIN
-#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
-#undef COGL_WINSYS_FEATURE_FUNCTION
-#define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args) \
-  glx_renderer->pf_ ## name = NULL;
-#undef COGL_WINSYS_FEATURE_END
-#define COGL_WINSYS_FEATURE_END()
-
-static void
-initialize_function_table (CoglRenderer *renderer)
-{
-  CoglRendererGLX *glx_renderer = renderer->winsys;
-
-#include "cogl-winsys-glx-feature-functions.h"
-}
-
 static CoglOnscreen *
 find_onscreen_for_xid (CoglContext *context, guint32 xid)
 {
@@ -361,10 +345,9 @@ update_winsys_features (CoglContext *context)
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
 
-  initialize_function_table (context->display->renderer);
-
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
-    if (_cogl_feature_check ("GLX", winsys_feature_data + i, 0, 0,
+    if (_cogl_feature_check (_cogl_context_get_winsys (context),
+                             "GLX", winsys_feature_data + i, 0, 0,
                              glx_extensions,
                              glx_renderer))
       {
