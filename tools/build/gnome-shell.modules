@@ -63,6 +63,12 @@
     </dependencies>
   </autotools>
 
+  <tarball id="startup-notification" version="0.12">
+    <source href="http://www.freedesktop.org/software/startup-notification/releases/startup-notification-0.12.tar.gz"
+            hash="sha256:3c391f7e930c583095045cd2d10eb73a64f085c7fde9d260f2652c7cb3cfbe4a"
+            size="355285"/>
+  </tarball>
+
   <autotools id="pango">
     <branch repo="git.gnome.org" module="pango"/>
     <dependencies>
@@ -282,6 +288,7 @@
   <autotools id="gnome-shell" autogenargs="--enable-jhbuild-wrapper-script">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
+        <dep package="startup-notification"/>
         <dep package="evolution-data-server"/>
         <dep package="gobject-introspection"/>
         <dep package="mutter"/>
