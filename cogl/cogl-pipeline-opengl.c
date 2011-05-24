@@ -646,28 +646,59 @@ get_max_activateable_texture_units (void)
 
   if (G_UNLIKELY (ctx->max_activateable_texture_units == -1))
     {
-#if defined (HAVE_COGL_GL)
-      GLint max_tex_coords;
-      GLint max_combined_tex_units;
-      GE (glGetIntegerv (GL_MAX_TEXTURE_COORDS, &max_tex_coords));
-      GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-                         &max_combined_tex_units));
-      ctx->max_activateable_texture_units =
-        MAX (max_tex_coords - 1, max_combined_tex_units);
-#elif defined (HAVE_COGL_GLES2)
-      GLint max_vertex_attribs;
-      GLint max_combined_tex_units;
-      GE (glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, &max_vertex_attribs));
-      GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-                         &max_combined_tex_units));
+      GLint values[3];
+      int n_values = 0;
+      int i;
+
+#ifdef HAVE_COGL_GL
+      /* GL_MAX_TEXTURE_COORDS is provided for both GLSL and ARBfp. It
+         defines the number of texture coordinates that can be
+         uploaded (but doesn't necessarily relate to how many texture
+         images can be sampled) */
+      if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL) ||
+          cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
+        /* Previously this code subtracted the value by one but there
+           was no explanation for why it did this and it doesn't seem
+           to make sense so it has been removed */
+        GE (glGetIntegerv (GL_MAX_TEXTURE_COORDS, values + n_values++));
+
+      /* GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is defined for GLSL but
+         not ARBfp */
+      if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
+        GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                           values + n_values++));
+#endif /* HAVE_COGL_GL */
+
+#ifdef HAVE_COGL_GLES2
+
+      GE (glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, values + n_values));
       /* Two of the vertex attribs need to be used for the position
          and color */
-      ctx->max_activateable_texture_units =
-        MAX (max_vertex_attribs - 2, max_combined_tex_units);
-#else
+      values[n_values++] -= 2;
+
+      GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                         values + n_values++));
+
+#else /* HAVE_COGL_GLES2 */
+
+      /* GL_MAX_TEXTURE_UNITS defines the number of units that are
+         usable from the fixed function pipeline, therefore it isn't
+         available in GLES2. These are also tied to the number of
+         texture coordinates that can be uploaded so it should be less
+         than that available from the shader extensions */
       GE (glGetIntegerv (GL_MAX_TEXTURE_UNITS,
-                         &ctx->max_activateable_texture_units));
-#endif
+                         values + n_values++));
+
+#endif /* HAVE_COGL_GLES2 */
+
+      g_assert (n_values <= G_N_ELEMENTS (values) &&
+                n_values > 0);
+
+      /* Use the maximum value */
+      ctx->max_activateable_texture_units = values[0];
+      for (i = 1; i < n_values; i++)
+        ctx->max_activateable_texture_units =
+          MAX (values[i], ctx->max_activateable_texture_units);
     }
 
   return ctx->max_activateable_texture_units;
