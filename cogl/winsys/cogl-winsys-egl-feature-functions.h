@@ -68,3 +68,8 @@ COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglDestroyImage,
                               (EGLDisplay dpy,
                                EGLImageKHR image))
 COGL_WINSYS_FEATURE_END ()
+COGL_WINSYS_FEATURE_BEGIN (image_pixmap,
+                           "KHR\0",
+                           "image_pixmap\0",
+                           COGL_EGL_WINSYS_FEATURE_EGL_IMAGE_FROM_X11_PIXMAP)
+COGL_WINSYS_FEATURE_END ()

@@ -30,6 +30,7 @@
 
 #include "cogl.h"
 
+#include "cogl-winsys-egl-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-feature-private.h"
 #include "cogl-context-private.h"
@@ -41,6 +42,12 @@
 #include "cogl-renderer-xlib-private.h"
 #include "cogl-display-xlib-private.h"
 #endif
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include "cogl-texture-pixmap-x11-private.h"
+#include "cogl-texture-2d-private.h"
+#endif
+
 #include "cogl-private.h"
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
@@ -164,6 +171,14 @@ typedef struct _CoglOnscreenEGL
 
   EGLSurface egl_surface;
 } CoglOnscreenEGL;
+
+#ifdef EGL_KHR_image_pixmap
+typedef struct _CoglTexturePixmapEGL
+{
+  EGLImageKHR image;
+  CoglHandle texture;
+} CoglTexturePixmapEGL;
+#endif
 
 /* Define a set of arrays containing the functions required from GL
    for each winsys feature */
@@ -1517,6 +1532,103 @@ _cogl_winsys_context_egl_get_egl_display (CoglContext *context)
   return egl_renderer->edpy;
 }
 
+#if defined (COGL_HAS_XLIB_SUPPORT) && defined (EGL_KHR_image_pixmap)
+static gboolean
+_cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
+{
+  CoglTexturePixmapEGL *egl_tex_pixmap;
+  EGLint attribs[] = {EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE};
+  CoglPixelFormat texture_format;
+
+  /* FIXME: It should be possible to get to a CoglContext from any
+   * CoglTexture pointer. */
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (!(ctx->private_feature_flags &
+        COGL_PRIVATE_FEATURE_EGL_IMAGE_FROM_X11_PIXMAP) ||
+      !(ctx->private_feature_flags &
+        COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE))
+    {
+      tex_pixmap->winsys = NULL;
+      return FALSE;
+    }
+
+  egl_tex_pixmap = g_new0 (CoglTexturePixmapEGL, 1);
+
+  egl_tex_pixmap->image =
+    _cogl_egl_create_image (ctx,
+                            EGL_NATIVE_PIXMAP_KHR,
+                            (EGLClientBuffer)tex_pixmap->pixmap,
+                            attribs);
+  if (egl_tex_pixmap->image == EGL_NO_IMAGE_KHR)
+    return FALSE;
+
+  texture_format = (tex_pixmap->depth >= 32 ?
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE :
+                    COGL_PIXEL_FORMAT_RGB_888);
+
+  egl_tex_pixmap->texture =
+    _cogl_egl_texture_2d_new_from_image (ctx,
+                                         tex_pixmap->width,
+                                         tex_pixmap->height,
+                                         texture_format,
+                                         egl_tex_pixmap->image,
+                                         NULL);
+
+  tex_pixmap->winsys = egl_tex_pixmap;
+
+  return TRUE;
+}
+
+static void
+_cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
+{
+  CoglTexturePixmapEGL *egl_tex_pixmap;
+
+  /* FIXME: It should be possible to get to a CoglContext from any
+   * CoglTexture pointer. */
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!tex_pixmap->winsys)
+    return;
+
+  egl_tex_pixmap = tex_pixmap->winsys;
+
+  if (egl_tex_pixmap->texture)
+    cogl_handle_unref (egl_tex_pixmap->texture);
+
+  if (egl_tex_pixmap->image != EGL_NO_IMAGE_KHR)
+    _cogl_egl_destroy_image (ctx, egl_tex_pixmap->image);
+
+  tex_pixmap->winsys = NULL;
+  g_free (egl_tex_pixmap);
+}
+
+static gboolean
+_cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
+                                        gboolean needs_mipmap)
+{
+  if (needs_mipmap)
+    return FALSE;
+
+  return TRUE;
+}
+
+static void
+_cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
+{
+}
+
+static CoglHandle
+_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
+{
+  CoglTexturePixmapEGL *egl_tex_pixmap = tex_pixmap->winsys;
+
+  return egl_tex_pixmap->texture;
+}
+#endif /* defined (COGL_HAS_XLIB_SUPPORT) && defined (EGL_KHR_image_pixmap) */
+
+
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
     .name = "EGL",
@@ -1546,6 +1658,21 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_x11_get_window_xid =
       _cogl_winsys_onscreen_x11_get_window_xid,
 #endif
+#if defined (COGL_HAS_XLIB_SUPPORT) && defined (EGL_KHR_image_pixmap)
+    /* X11 tfp support... */
+    /* XXX: instead of having a rather monolithic winsys vtable we could
+     * perhaps look for a way to separate these... */
+    .texture_pixmap_x11_create =
+      _cogl_winsys_texture_pixmap_x11_create,
+    .texture_pixmap_x11_free =
+      _cogl_winsys_texture_pixmap_x11_free,
+    .texture_pixmap_x11_update =
+      _cogl_winsys_texture_pixmap_x11_update,
+    .texture_pixmap_x11_damage_notify =
+      _cogl_winsys_texture_pixmap_x11_damage_notify,
+    .texture_pixmap_x11_get_texture =
+      _cogl_winsys_texture_pixmap_x11_get_texture,
+#endif /* defined (COGL_HAS_XLIB_SUPPORT) && defined (EGL_KHR_image_pixmap) */
   };
 
 /* XXX: we use a function because no doubt someone will complain
