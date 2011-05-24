@@ -41,24 +41,6 @@
  * have it also track through startup-notification.
  */
 
-/* Title patterns to detect apps that don't set WM class as needed.
- * Format: application ID, title regex pattern, NULL (for GRegex) */
-static struct
-{
-  const char *app_id;
-  const char *pattern;
-  GRegex *regex;
-} title_patterns[] =  {
-    {"mozilla-firefox.desktop", ".* - Mozilla Firefox", NULL}, \
-    {"openoffice.org-writer.desktop", ".* - OpenOffice.org Writer$", NULL}, \
-    {"openoffice.org-calc.desktop", ".* - OpenOffice.org Calc$", NULL}, \
-    {"openoffice.org-impress.desktop", ".* - OpenOffice.org Impress$", NULL}, \
-    {"openoffice.org-draw.desktop", ".* - OpenOffice.org Draw$", NULL}, \
-    {"openoffice.org-base.desktop", ".* - OpenOffice.org Base$", NULL}, \
-    {"openoffice.org-math.desktop", ".* - OpenOffice.org Math$", NULL}, \
-    {NULL, NULL, NULL}
-};
-
 struct _ShellWindowTracker
 {
   GObject parent;
@@ -158,47 +140,6 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                                    NULL, NULL,
                                                    g_cclosure_marshal_VOID__VOID,
                                                    G_TYPE_NONE, 0);
-}
-
-/**
- * get_app_id_from_title:
- *
- * Use a window's "title" property to determine an application ID.
- * This is a temporary crutch for a few applications until we get
- * them correctly setting their WM_CLASS.
- */
-static const char *
-get_app_id_from_title (MetaWindow   *window)
-{
-  static gboolean patterns_initialized = FALSE;
-  const char *title;
-  int i;
-
-  title = meta_window_get_title (window);
-
-  if (!patterns_initialized) /* Generate match patterns once for all */
-    {
-      patterns_initialized = TRUE;
-      for (i = 0; title_patterns[i].app_id; i++)
-        {
-          title_patterns[i].regex = g_regex_new (title_patterns[i].pattern,
-                                                 0, 0, NULL);
-        }
-    }
-
-  /* Match window title patterns to identifiers for non-standard apps */
-  if (title)
-    {
-      for (i = 0; title_patterns[i].app_id; i++)
-        {
-          if (g_regex_match (title_patterns[i].regex, title, 0, NULL))
-            {
-              /* Matched, return the app id we want */
-              return title_patterns[i].app_id;
-            }
-        }
-    }
-  return NULL;
 }
 
 /**
@@ -304,14 +245,6 @@ get_app_from_window_wmclass (MetaWindow  *window)
 
   app = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
   g_free (with_desktop);
-
-  if (app == NULL)
-    {
-      const char *id = get_app_id_from_title (window);
-
-      if (id != NULL)
-        app = shell_app_system_get_app (appsys, id);
-    }
 
   return app;
 }
@@ -480,35 +413,6 @@ _shell_window_tracker_get_app_context (ShellWindowTracker *tracker, ShellApp *ap
 }
 
 static void
-on_transient_window_title_changed (MetaWindow      *window,
-                                   GParamSpec      *spec,
-                                   ShellWindowTracker *self)
-{
-  ShellAppSystem *appsys;
-  ShellApp *app;
-  const char *id;
-
-  /* Check if we now have a mapping using the window title */
-  id = get_app_id_from_title (window);
-  if (id == NULL)
-    return;
-
-  appsys = shell_app_system_get_default ();
-  app = shell_app_system_get_app (appsys, id);
-  if (app == NULL)
-    return;
-  g_object_unref (app);
-
-  /* We found an app, don't listen for further title changes */
-  g_signal_handlers_disconnect_by_func (window, G_CALLBACK (on_transient_window_title_changed),
-                                        self);
-
-  /* It's simplest to just treat this as a remove + add. */
-  disassociate_window (self, window);
-  track_window (self, window);
-}
-
-static void
 update_focus_app (ShellWindowTracker *self)
 {
   MetaWindow *new_focus_win;
@@ -550,16 +454,6 @@ track_window (ShellWindowTracker *self,
 
   /* At this point we've stored the association from window -> application */
   g_hash_table_insert (self->window_to_app, window, app);
-
-  if (shell_app_is_transient (app))
-    {
-      /* For a transient application, it's possible one of our title regexps
-       * will match at a later time, i.e. the application may not have set
-       * its title fully at the time it initially maps a window.  Watch
-       * for title changes and recompute the app.
-       */
-      g_signal_connect (window, "notify::title", G_CALLBACK (on_transient_window_title_changed), self);
-    }
 
   g_signal_connect (window, "notify::wm-class", G_CALLBACK (on_wm_class_changed), self);
 
@@ -738,14 +632,10 @@ static void
 shell_window_tracker_finalize (GObject *object)
 {
   ShellWindowTracker *self = SHELL_WINDOW_TRACKER (object);
-  int i;
 
   g_hash_table_destroy (self->running_apps);
   g_hash_table_destroy (self->window_to_app);
   g_hash_table_destroy (self->launched_pid_to_app);
-
-  for (i = 0; title_patterns[i].app_id; i++)
-    g_regex_unref (title_patterns[i].regex);
 
   G_OBJECT_CLASS (shell_window_tracker_parent_class)->finalize(object);
 }
