@@ -378,6 +378,7 @@
       <dep package="libgnomekbd"/>
       <dep package="libnotify" />
       <dep package="polkit"/>
+      <dep package="colord"/>
     </dependencies>
   </autotools>
 
