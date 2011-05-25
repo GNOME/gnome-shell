@@ -2,6 +2,8 @@
 #include <gmodule.h>
 #include <clutter/clutter.h>
 
+#define RECT_SIZE       128
+
 #define H_PADDING       32
 #define V_PADDING       32
 
@@ -20,6 +22,24 @@ static const gchar *colors[N_RECTS] = {
   "#729fcf", "#3465a4", "#204a87",
   "#ef2929", "#cc0000", "#a40000"
 };
+
+static const gchar *desaturare_glsl_shader =
+"uniform sampler2D tex;\n"
+"uniform float factor;\n"
+"\n"
+"vec3 desaturate (const vec3 color, const float desaturation)\n"
+"{\n"
+"  const vec3 gray_conv = vec3 (0.299, 0.587, 0.114);\n"
+"  vec3 gray = vec3 (dot (gray_conv, color));\n"
+"  return vec3 (mix (color.rgb, gray, desaturation));\n"
+"}\n"
+"\n"
+"void main ()\n"
+"{\n"
+"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));\n"
+"  color.rgb = desaturate (color.rgb, factor);\n"
+"  cogl_color_out = color;\n"
+"}\n";
 
 static gboolean      is_expanded = FALSE;
 
@@ -61,7 +81,7 @@ on_button_release (ClutterActor *actor,
                              "@constraints.x-bind.offset", west_offset,
                              NULL);
       clutter_actor_animate (rects[Center], CLUTTER_LINEAR, 500,
-                             "opacity", 128,
+                             "@effects.desaturate.enabled", TRUE,
                              NULL);
       clutter_actor_animate (rects[East], CLUTTER_EASE_OUT_CUBIC, 500,
                              "opacity", 255,
@@ -88,7 +108,7 @@ on_button_release (ClutterActor *actor,
       gint i;
 
       clutter_actor_animate (rects[Center], CLUTTER_LINEAR, 500,
-                             "opacity", 255,
+                             "@effects.desaturate.enabled", FALSE,
                              NULL);
 
       for (i = NorthWest; i < N_RECTS; i++)
@@ -114,6 +134,7 @@ test_constraints_main (int argc, char *argv[])
 {
   ClutterActor *stage, *rect;
   ClutterConstraint *constraint;
+  ClutterEffect *effect;
   ClutterColor rect_color;
   gint i;
 
@@ -133,7 +154,7 @@ test_constraints_main (int argc, char *argv[])
                     G_CALLBACK (on_button_release),
                     NULL);
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &rect_color);
-  clutter_actor_set_size (rect, 128, 128);
+  clutter_actor_set_size (rect, RECT_SIZE, RECT_SIZE);
   clutter_actor_set_reactive (rect, TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
@@ -142,6 +163,21 @@ test_constraints_main (int argc, char *argv[])
 
   constraint = clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5);
   clutter_actor_add_constraint_with_name (rect, "y-align", constraint);
+
+  /* this is the equivalent of the DesaturateEffect; we cannot animate
+   * the factor because the animation API only understands GObject
+   * properties; so we use the ActorMeta:enabled property to toggle
+   * the shader
+   */
+  effect = clutter_shader_effect_new (CLUTTER_FRAGMENT_SHADER);
+  clutter_shader_effect_set_shader_source (CLUTTER_SHADER_EFFECT (effect),
+                                           desaturare_glsl_shader);
+  clutter_shader_effect_set_uniform (CLUTTER_SHADER_EFFECT (effect),
+                                     "tex", G_TYPE_INT, 1, 0);
+  clutter_shader_effect_set_uniform (CLUTTER_SHADER_EFFECT (effect),
+                                     "factor", G_TYPE_FLOAT, 1, 0.85);
+  clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (effect), FALSE);
+  clutter_actor_add_effect_with_name (rect, "desaturate", effect);
 
   rects[Center] = rect;
 
