@@ -238,7 +238,7 @@ static void
 on_key_group_activate (KeyGroup     *group,
                        ClutterActor *child)
 {
-  g_print ("Child '%d' activated!\n", clutter_actor_get_gid (child));
+  g_print ("Child '%s' activated!\n", clutter_actor_get_name (child));
 }
 
 G_MODULE_EXPORT int
@@ -262,6 +262,7 @@ test_binding_pool_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (key_group),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
                                        "color", CLUTTER_COLOR_Red,
+                                       "name", "Red Rectangle",
                                        "width", 50.0,
                                        "height", 50.0,
                                        "x", 0.0,
@@ -269,6 +270,7 @@ test_binding_pool_main (int argc, char *argv[])
                                        NULL),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
                                        "color", CLUTTER_COLOR_Green,
+                                       "name", "Green Rectangle",
                                        "width", 50.0,
                                        "height", 50.0,
                                        "x", 75.0,
@@ -276,6 +278,7 @@ test_binding_pool_main (int argc, char *argv[])
                                        NULL),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
                                        "color", CLUTTER_COLOR_Blue,
+                                       "name", "Blue Rectangle",
                                        "width", 50.0,
                                        "height", 50.0,
                                        "x", 150.0,
