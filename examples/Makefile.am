@@ -28,3 +28,9 @@ noinst_PROGRAMS += x11-foreign
 x11_foreign_SOURCES = x11-foreign.c
 x11_foreign_LDADD = $(common_ldadd)
 endif
+
+if SUPPORT_WAYLAND_EGL_SERVER
+noinst_PROGRAMS += cogland
+cogland_SOURCES = cogland.c
+cogland_LDADD = $(common_ldadd)
+endif
