@@ -428,13 +428,35 @@ Notification.prototype = {
         this._append(messageBody, styles, message.timestamp, noTimestamp);
     },
 
+    _filterMessages: function() {
+        if (this._history.length < 1)
+            return;
+
+        let lastMessageTime = this._history[0].time;
+        let currentTime = (Date.now() / 1000);
+
+        // Keep the scrollback from growing too long. If the most
+        // recent message (before the one we just added) is within
+        // SCROLLBACK_RECENT_TIME, we will keep
+        // SCROLLBACK_RECENT_LENGTH previous messages. Otherwise
+        // we'll keep SCROLLBACK_IDLE_LENGTH messages.
+
+        let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME) ?
+            SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
+
+        let filteredHistory = this._history.filter(function(item) { return item.realMessage });
+        if (filteredHistory.length > maxLength) {
+            let lastMessageToKeep = filteredHistory[maxLength];
+            let expired = this._history.splice(this._history.indexOf(lastMessageToKeep));
+            for (let i = 0; i < expired.length; i++)
+                expired[i].actor.destroy();
+        }
+    },
+
     _append: function(text, styles, timestamp, noTimestamp) {
         let currentTime = (Date.now() / 1000);
         if (!timestamp)
             timestamp = currentTime;
-        let lastMessageTime = -1;
-        if (this._history.length > 0)
-            lastMessageTime = this._history[0].time;
 
         // Reset the old message timeout
         if (this._timestampTimeoutId)
@@ -457,23 +479,7 @@ Notification.prototype = {
                     Lang.bind(this, this.appendTimestamp));
         }
 
-        if (this._history.length > 1) {
-            // Keep the scrollback from growing too long. If the most
-            // recent message (before the one we just added) is within
-            // SCROLLBACK_RECENT_TIME, we will keep
-            // SCROLLBACK_RECENT_LENGTH previous messages. Otherwise
-            // we'll keep SCROLLBACK_IDLE_LENGTH messages.
-
-            let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME) ?
-                SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
-            let filteredHistory = this._history.filter(function(item) { return item.realMessage });
-            if (filteredHistory.length > maxLength) {
-                let lastMessageToKeep = filteredHistory[maxLength];
-                let expired = this._history.splice(this._history.indexOf(lastMessageToKeep));
-                for (let i = 0; i < expired.length; i++)
-                    expired[i].actor.destroy();
-            }
-        }
+        this._filterMessages();
     },
 
     _formatTimestamp: function(date) {
@@ -515,6 +521,9 @@ Notification.prototype = {
         this._history.unshift({ actor: timeLabel, time: lastMessageTime, realMessage: false });
 
         this._timestampTimeoutId = 0;
+
+        this._filterMessages();
+
         return false;
     },
 
@@ -526,6 +535,8 @@ Notification.prototype = {
         let label = this.addBody(text, true);
         label.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false});
+
+        this._filterMessages();
     },
 
     appendAliasChange: function(oldAlias, newAlias) {
@@ -539,6 +550,8 @@ Notification.prototype = {
         label.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false });
         this.update(newAlias, null, { customContent: true });
+
+        this._filterMessages();
     },
 
     _onEntryActivated: function() {
