@@ -129,3 +129,13 @@ cogl_gdl_display_set_plane (CoglDisplay *display,
 }
 #endif
 
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+void
+cogl_wayland_display_set_compositor_display (CoglDisplay *display,
+                                             struct wl_display *wayland_display)
+{
+  g_return_if_fail (display->setup == FALSE);
+
+  display->wayland_compositor_display = wayland_display;
+}
+#endif

@@ -614,6 +614,21 @@ AS_IF([test "x$enable_wayland_egl_platform" == "xyes"],
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_WAYLAND,
                [test "x$enable_wayland_egl_platform" = "xyes"])
 
+AC_ARG_ENABLE(
+  [wayland-egl-server],
+  [AC_HELP_STRING([--enable-wayland-egl-server=@<:@no/yes@:>@], [Enable server side wayland support @<:@default=no@:>@])],
+  [],
+  enable_wayland_egl_server=no
+)
+AS_IF([test "x$enable_wayland_egl_server" == "xyes"],
+      [
+        NEED_EGL=yes
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-server"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT"
+      ])
+AM_CONDITIONAL(SUPPORT_WAYLAND_EGL_SERVER,
+               [test "x$enable_wayland_egl_server" = "xyes"])
+
 dnl Android EGL platform
 AC_ARG_ENABLE(
   [android-egl-platform],
@@ -875,6 +890,7 @@ echo "        Driver: ${COGL_DRIVER} ${glesversion}"
 echo "        GL Window System APIs:${GL_WINSYS_APIS}"
 if test "x$SUPPORT_EGL" = "xyes"; then
 echo "        EGL Platforms:${EGL_PLATFORMS}"
+echo "        Wayland compositor support: ${enable_wayland_egl_server}"
 fi
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 echo "        Cogl Pango: ${enable_cogl_pango}"

@@ -44,6 +44,10 @@
 #include <string.h>
 #include <math.h>
 
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+#include <wayland-server.h>
+#endif
+
 static void _cogl_texture_2d_free (CoglTexture2D *tex_2d);
 
 COGL_TEXTURE_DEFINE (Texture2D, texture_2d);
@@ -540,6 +544,71 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
   return _cogl_texture_2d_handle_new (tex_2d);
 }
 #endif /* defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base) */
+
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+static CoglPixelFormat
+get_buffer_format (struct wl_buffer *buffer)
+{
+  struct wl_compositor *compositor = buffer->compositor;
+  struct wl_visual *visual = buffer->visual;
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  if (visual == &compositor->premultiplied_argb_visual)
+    return COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+  else if (visual == &compositor->argb_visual)
+    return COGL_PIXEL_FORMAT_ARGB_8888;
+  else if (visual == &compositor->rgb_visual)
+    return COGL_PIXEL_FORMAT_RGB_888;
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+  if (visual == &compositor->premultiplied_argb_visual)
+    return COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+  else if (visual == &compositor->argb_visual)
+    return COGL_PIXEL_FORMAT_BGRA_8888;
+  else if (visual == &compositor->rgb_visual)
+    return COGL_PIXEL_FORMAT_BGR_888;
+#endif
+  else
+    g_return_val_if_reached (COGL_PIXEL_FORMAT_ANY);
+}
+
+CoglTexture2D *
+cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
+                                         struct wl_buffer *buffer,
+                                         GError **error)
+{
+  CoglPixelFormat format = get_buffer_format (buffer);
+
+  if (wl_buffer_is_shm (buffer))
+    {
+      int stride = wl_shm_buffer_get_stride (buffer);
+      return cogl_texture_2d_new_from_data (ctx,
+                                            buffer->width,
+                                            buffer->height,
+                                            format,
+                                            COGL_PIXEL_FORMAT_ANY,
+                                            stride,
+                                            wl_shm_buffer_get_data (buffer),
+                                            error);
+    }
+  else
+    {
+      EGLImageKHR image;
+
+      g_return_val_if_fail (_cogl_context_get_winsys (ctx) ==
+                            _cogl_winsys_egl_get_vtable (),
+                            NULL);
+      image = _cogl_egl_create_image (ctx,
+                                      EGL_WAYLAND_BUFFER_WL,
+                                      buffer,
+                                      NULL);
+      return _cogl_egl_texture_2d_new_from_image (ctx,
+                                                  buffer->width,
+                                                  buffer->height,
+                                                  format,
+                                                  image,
+                                                  error);
+    }
+}
+#endif /* COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT */
 
 void
 _cogl_texture_2d_externally_modified (CoglHandle handle)

@@ -27,6 +27,10 @@
 #ifndef __COGL_TEXURE_2D_H
 #define __COGL_TEXURE_2D_H
 
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+#include <wayland-server.h>
+#endif
+
 #include <glib.h>
 
 G_BEGIN_DECLS
@@ -178,6 +182,37 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
                                   int height,
                                   CoglPixelFormat format,
                                   GError **error);
+
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+/**
+ * cogl_wayland_texture_2d_new_from_buffer:
+ * @ctx: A #CoglContext
+ * @buffer: A Wayland buffer
+ * @error: A #GError for exceptions
+ *
+ * Uploads the given Wayland @buffer to a #CoglTexture2D.
+ *
+ * <note>The results are undefined for passing an invalid @buffer
+ * pointer</note>
+ * <note>It is undefined if future updates to @buffer outside the
+ * control of Cogl will affect the allocated #CoglTexture2D. In some
+ * cases the contents of the buffer are copied (such as shm buffers),
+ * and in other cases the underlying storage is re-used directly (such
+ * as drm buffers)</note>
+ *
+ * Returns: A newly allocated #CoglTexture2D, or if Cogl could not
+ *          validate the @buffer in some way (perhaps because of
+ *          an unsupported format) it will return %NULL and set
+ *          @error.
+ * Since: 2.0
+ */
+#define cogl_wayland_texture_2d_new_from_buffer \
+  cogl_wayland_texture_2d_new_from_buffer_EXP
+CoglTexture2D *
+cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
+                                         struct wl_buffer *buffer,
+                                         GError **error);
+#endif /* COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT */
 
 G_END_DECLS
 

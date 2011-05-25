@@ -1065,6 +1065,9 @@ _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
   CoglDisplayEGL *egl_display;
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+#endif
 
   g_return_val_if_fail (display->winsys == NULL, FALSE);
 
@@ -1074,6 +1077,15 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   if (!gdl_plane_init (display, error))
     goto error;
+#endif
+
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+  if (display->wayland_compositor_display)
+    {
+      struct wl_display *wayland_display = display->wayland_compositor_display;
+      egl_renderer->pf_eglBindWaylandDisplay (egl_renderer->edpy,
+                                              wayland_display);
+    }
 #endif
 
   if (!create_context (display, error))
