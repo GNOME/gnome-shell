@@ -887,6 +887,13 @@ on_user_removed_in_accounts_service (DBusGProxy *proxy,
 
         user = g_hash_table_lookup (manager->priv->users_by_object_path, object_path);
 
+        if (user == NULL) {
+                g_debug ("GdmUserManager: ignoring untracked user %s", object_path);
+                return;
+        } else {
+                g_debug ("GdmUserManager: tracked user %s removed from accounts service", object_path);
+        }
+
         manager->priv->new_users = g_slist_remove (manager->priv->new_users, user);
 
         remove_user (manager, user);
