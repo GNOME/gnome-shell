@@ -9959,6 +9959,8 @@ destroy_shader_data (gpointer data)
  *   or %NULL if no shader is set.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: Use clutter_actor_get_effect() instead.
  */
 ClutterShader *
 clutter_actor_get_shader (ClutterActor *self)
@@ -9991,6 +9993,9 @@ clutter_actor_get_shader (ClutterActor *self)
  *   or removed
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.8: Use #ClutterShaderEffect and
+ *   clutter_actor_add_effect() instead.
  */
 gboolean
 clutter_actor_set_shader (ClutterActor  *self,
@@ -10111,6 +10116,8 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
  * to @actor.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.8: Use clutter_shader_effect_set_uniform_value() instead
  */
 void
 clutter_actor_set_shader_param (ClutterActor *self,
@@ -10150,6 +10157,8 @@ clutter_actor_set_shader_param (ClutterActor *self,
  * to @actor.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.8: Use clutter_shader_effect_set_uniform() instead
  */
 void
 clutter_actor_set_shader_param_float (ClutterActor *self,
@@ -10176,6 +10185,8 @@ clutter_actor_set_shader_param_float (ClutterActor *self,
  * @actor.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.8: Use clutter_shader_effect_set_uniform() instead
  */
 void
 clutter_actor_set_shader_param_int (ClutterActor *self,

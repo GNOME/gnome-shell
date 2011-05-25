@@ -29,7 +29,6 @@
 #define __CLUTTER_SHADER_TYPES_H__
 
 #include <glib-object.h>
-#include <cogl/cogl.h>
 
 G_BEGIN_DECLS
 

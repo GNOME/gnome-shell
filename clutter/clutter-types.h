@@ -53,7 +53,9 @@ typedef struct _ClutterAction           ClutterAction;
 typedef struct _ClutterConstraint       ClutterConstraint;
 typedef struct _ClutterEffect           ClutterEffect;
 
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 typedef struct _ClutterShader           ClutterShader;
+#endif
 
 typedef struct _ClutterColor            ClutterColor;
 
