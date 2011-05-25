@@ -1653,7 +1653,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .context_deinit = _cogl_winsys_context_deinit,
     .context_egl_get_egl_display =
       _cogl_winsys_context_egl_get_egl_display,
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
     .xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info,
 #endif
     .onscreen_init = _cogl_winsys_onscreen_init,
@@ -1666,7 +1666,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
 #endif
     .onscreen_update_swap_throttled =
       _cogl_winsys_onscreen_update_swap_throttled,
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
     .onscreen_x11_get_window_xid =
       _cogl_winsys_onscreen_x11_get_window_xid,
 #endif
