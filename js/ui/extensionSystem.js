@@ -23,8 +23,9 @@ const ExtensionType = {
 const extensionMeta = {};
 // Maps uuid -> importer object (extension directory tree)
 const extensions = {};
-// Array of uuids
+// Arrays of uuids
 var disabledExtensions;
+var enabledExtensions;
 // GFile for user extensions
 var userExtensionsDir = null;
 
@@ -178,6 +179,7 @@ function init() {
     }
 
     disabledExtensions = global.settings.get_strv('disabled-extensions', -1);
+    enabledExtensions = global.settings.get_strv('enabled-extensions', -1);
 }
 
 function _loadExtensionsIn(dir, type) {
@@ -195,7 +197,10 @@ function _loadExtensionsIn(dir, type) {
         if (fileType != Gio.FileType.DIRECTORY)
             continue;
         let name = info.get_name();
-        let enabled = disabledExtensions.indexOf(name) < 0;
+	// Enable all but disabled extensions if enabledExtensions is not set.
+	// If it is set, enable one those, except they are disabled as well.
+        let enabled = (enabledExtensions.length == 0 || enabledExtensions.indexOf(name) >= 0)
+	    && disabledExtensions.indexOf(name) < 0;
         let child = dir.get_child(name);
         loadExtension(child, enabled, type);
     }
