@@ -1366,7 +1366,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  _cogl_xlib_trap_errors (&old_state);
+  _cogl_renderer_xlib_trap_errors (context->display->renderer, &old_state);
 
   if (!xlib_onscreen->is_foreign_xwin && xlib_onscreen->xwin != None)
     {
@@ -1378,7 +1378,8 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
   XSync (xlib_renderer->xdpy, False);
 
-  if (_cogl_xlib_untrap_errors (&old_state) != Success)
+  if (_cogl_renderer_xlib_untrap_errors (context->display->renderer,
+                                         &old_state) != Success)
     g_warning ("X Error while destroying X window");
 #endif
 

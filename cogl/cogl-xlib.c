@@ -100,23 +100,6 @@ _cogl_xlib_remove_filter (CoglNativeFilterFunc func,
 }
 
 void
-_cogl_xlib_trap_errors (CoglXlibTrapState *state)
-{
-  _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
-
-  _cogl_renderer_xlib_trap_errors (ctxt->display->renderer, state);
-  return;
-}
-
-int
-_cogl_xlib_untrap_errors (CoglXlibTrapState *state)
-{
-  _COGL_GET_CONTEXT (ctxt, 0);
-
-  return _cogl_renderer_xlib_untrap_errors (ctxt->display->renderer, state);
-}
-
-void
 _cogl_xlib_query_damage_extension (void)
 {
   int damage_error;

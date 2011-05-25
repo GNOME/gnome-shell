@@ -46,12 +46,6 @@ _cogl_xlib_query_damage_extension (void);
 int
 _cogl_xlib_get_damage_base (void);
 
-void
-_cogl_xlib_trap_errors (CoglXlibTrapState *state);
-
-int
-_cogl_xlib_untrap_errors (CoglXlibTrapState *state);
-
 /*
  * _cogl_xlib_add_filter:
  *

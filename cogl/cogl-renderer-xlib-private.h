@@ -49,13 +49,14 @@ _cogl_renderer_xlib_disconnect (CoglRenderer *renderer);
  * cogl_renderer_xlib_trap_errors:
  * @state: A temporary place to store data for the trap.
  *
- * Traps every X error until _cogl_xlib_untrap_errors() called. You
- * should allocate an uninitialised CoglXlibTrapState struct on the
- * stack to pass to this function. The same pointer should later be
- * passed to _cogl_xlib_untrap_errors(). Calls to
- * _cogl_xlib_trap_errors() can be nested as long as
- * _cogl_xlib_untrap_errors() is called with the corresponding state
- * pointers in reverse order.
+ * Traps every X error until _cogl_renderer_xlib_untrap_errors()
+ * called. You should allocate an uninitialised CoglXlibTrapState
+ * struct on the stack to pass to this function. The same pointer
+ * should later be passed to _cogl_renderer_xlib_untrap_errors().
+ *
+ * Calls to _cogl_renderer_xlib_trap_errors() can be nested as long as
+ * _cogl_renderer_xlib_untrap_errors() is called with the
+ * corresponding state pointers in reverse order.
  */
 void
 _cogl_renderer_xlib_trap_errors (CoglRenderer *renderer,
@@ -63,7 +64,7 @@ _cogl_renderer_xlib_trap_errors (CoglRenderer *renderer,
 
 /*
  * cogl_renderer_xlib_untrap_errors:
- * @state: The state that was passed to _cogl_xlib_trap_errors().
+ * @state: The state that was passed to _cogl_renderer_xlib_trap_errors().
  *
  * Removes the X error trap and returns the current status.
  *
