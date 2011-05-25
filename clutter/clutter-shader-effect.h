@@ -84,20 +84,22 @@ struct _ClutterShaderEffectClass
 
 GType clutter_shader_effect_get_type (void) G_GNUC_CONST;
 
-gboolean   clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,
-                                                    const gchar         *source);
+ClutterEffect * clutter_shader_effect_new               (ClutterShaderType    shader_type);
 
-void       clutter_shader_effect_set_uniform       (ClutterShaderEffect *effect,
-                                                    const gchar         *name,
-                                                    GType                gtype,
-                                                    gsize                n_values,
-                                                    ...);
-void       clutter_shader_effect_set_uniform_value (ClutterShaderEffect *effect,
-                                                    const gchar         *name,
-                                                    const GValue        *value);
+gboolean        clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,
+                                                         const gchar         *source);
 
-CoglHandle clutter_shader_effect_get_shader        (ClutterShaderEffect *effect);
-CoglHandle clutter_shader_effect_get_program       (ClutterShaderEffect *effect);
+void            clutter_shader_effect_set_uniform       (ClutterShaderEffect *effect,
+                                                         const gchar         *name,
+                                                         GType                gtype,
+                                                         gsize                n_values,
+                                                         ...);
+void            clutter_shader_effect_set_uniform_value (ClutterShaderEffect *effect,
+                                                         const gchar         *name,
+                                                         const GValue        *value);
+
+CoglHandle      clutter_shader_effect_get_shader        (ClutterShaderEffect *effect);
+CoglHandle      clutter_shader_effect_get_program       (ClutterShaderEffect *effect);
 
 G_END_DECLS
 

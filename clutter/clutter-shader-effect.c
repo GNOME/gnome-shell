@@ -27,11 +27,11 @@
  * @short_description: Base class for shader effects
  * @See_Also: #ClutterEffect, #ClutterOffscreenEffect
  *
- * #ClutterShaderEffect is an abstract class that implements all the
- * plumbing for creating #ClutterEffect<!-- -->s using GLSL shaders.
+ * #ClutterShaderEffect is a class that implements all the plumbing for
+ * creating #ClutterEffect<!-- -->s using GLSL shaders.
  *
- * #ClutterShaderEffect creates an offscreen buffer and then applies the GLSL
- * shader (after checking whether the compilation and linking were
+ * #ClutterShaderEffect creates an offscreen buffer and then applies the
+ * GLSL shader (after checking whether the compilation and linking were
  * successfull) to the buffer before painting it on screen.
  *
  * <refsect2 id="ClutterShaderEffect-implementing">
@@ -150,9 +150,9 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-G_DEFINE_ABSTRACT_TYPE (ClutterShaderEffect,
-                        clutter_shader_effect,
-                        CLUTTER_TYPE_OFFSCREEN_EFFECT);
+G_DEFINE_TYPE (ClutterShaderEffect,
+               clutter_shader_effect,
+               CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
 static inline void
 clutter_shader_effect_clear (ClutterShaderEffect *self,
@@ -438,6 +438,30 @@ clutter_shader_effect_init (ClutterShaderEffect *effect)
 }
 
 /**
+ * clutter_shader_effect_new:
+ * @shader_type: the type of the shader, either %CLUTTER_FRAGMENT_SHADER,
+ *   or %CLUTTER_VERTEX_SHADER
+ *
+ * Creates a new #ClutterShaderEffect, to be applied to an actor using
+ * clutter_actor_add_effect().
+ *
+ * The effect will be empty until clutter_shader_effect_set_shader_source()
+ * is called.
+ *
+ * Return value: (transfer full): the newly created #ClutterShaderEffect.
+ *   Use g_object_unref() when done.
+ *
+ * Since: 1.8
+ */
+ClutterEffect *
+clutter_shader_effect_new (ClutterShaderType shader_type)
+{
+  return g_object_new (CLUTTER_TYPE_SHADER_EFFECT,
+                       "shader-type", shader_type,
+                       NULL);
+}
+
+/**
  * clutter_shader_effect_get_shader:
  * @effect: a #ClutterShaderEffect
  *
@@ -547,6 +571,9 @@ clutter_shader_effect_add_uniform (ClutterShaderEffect *effect,
       uniform->location =
         cogl_program_get_uniform_location (priv->program, uniform->name);
     }
+
+  if (priv->actor != NULL && !CLUTTER_ACTOR_IN_PAINT (priv->actor))
+    clutter_actor_queue_redraw (priv->actor);
 }
 
 /**
