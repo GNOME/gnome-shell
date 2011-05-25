@@ -184,6 +184,11 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
       if (renderer_name && strcmp (winsys->name, renderer_name) != 0)
         continue;
 
+      /* At least temporarily we will associate this winsys with
+       * the renderer in-case ->renderer_connect calls API that
+       * wants to query the current winsys... */
+      renderer->winsys_vtable = winsys;
+
       if (!winsys->renderer_connect (renderer, &tmp_error))
         {
           g_string_append_c (error_message, '\n');
@@ -192,7 +197,6 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
         }
       else
         {
-          renderer->winsys_vtable = winsys;
           renderer->connected = TRUE;
           g_string_free (error_message, TRUE);
           return TRUE;
