@@ -1,3 +1,40 @@
+3.0.2
+=====
+* Network Menu [Dan Williams
+  - Fix connecting to WPA2 Enterprise access points
+    Fixes https://bugzilla.gnome.org/show_bug.cgi?id=648171
+  - Show the mobile broadband wizard when selecting 3G network
+    Fixes https://bugzilla.gnome.org/show_bug.cgi?id=649318
+  - Miscellaneous bug fixes
+    648648, 650124
+* Fix duplicate icons in the application browser [Owen]
+  https://bugzilla.gnome.org/show_bug.cgi?id=648739
+* Make clicking anywhere on the volume icon slider work [Giovanni]
+  https://bugzilla.gnome.org/show_bug.cgi?id=646660
+* Fix a case where activating and clicking the hot corner
+  at the same time could result in immediately leaving the
+  overview [Rui]
+  https://bugzilla.gnome.org/show_bug.cgi?id=649427
+* Fix a case where applications became misordered in Alt-Tab [Jasper]
+  https://bugzilla.gnome.org/show_bug.cgi?id=643302
+* Fix a bug where messages you send could show up in
+  notifications as if someone else sent them [Jonny]
+  https://bugzilla.gnome.org/show_bug.cgi?id=650219
+* Memory leak fixes [Colin, Maxim]
+  642652, 649508, 649497
+* Miscellaneous minor bug fixes [Adel, Christopher, Jasper]
+  649596,648765, 648983, 649632
+
+Contributors:
+ Christopher Aillon, Giovanni Campagna, Maxim Ermilov,
+ Adel Gadllah, Jonny Lamb, Rui Matos, Jasper St. Pierre,
+ Owen Taylor, Colin Walters, Dan Williams
+
+Translations:
+ Arash Mousavi [fa], Seán de Búrca [ga], Timo Jyrinki [fi],
+ Sigurd Gartmann [nb], Daniel Nylander [se], Peter Mráz [sl],
+ Abduxukur Abdurixit [ug], Nguyễn Thái Ngọc Duy [vi]
+
 3.0.1
 =====
 
