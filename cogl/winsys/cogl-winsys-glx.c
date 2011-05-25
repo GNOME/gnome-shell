@@ -137,7 +137,7 @@ static const CoglFeatureData winsys_feature_data[] =
 #include "cogl-winsys-glx-feature-functions.h"
   };
 
-CoglFuncPtr
+static CoglFuncPtr
 _cogl_winsys_get_proc_address (const char *name)
 {
   static GLXGetProcAddressProc get_proc_func = NULL;
