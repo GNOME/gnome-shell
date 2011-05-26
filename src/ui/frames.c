@@ -880,7 +880,7 @@ apply_cairo_region_to_window (Display        *display,
 
   XShapeCombineRectangles (display, xwindow,
                            ShapeBounding, 0, 0, rects, n_rects,
-                           ShapeSet, YXBanded);
+                           op, YXBanded);
 
   g_free (rects);
 }
