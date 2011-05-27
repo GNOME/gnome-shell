@@ -78,11 +78,11 @@ clutter_input_device_dispose (GObject *gobject)
 
   g_free (device->device_name);
 
-  if (device->device_mode == CLUTTER_INPUT_MODE_SLAVE)
-    _clutter_input_device_remove_slave (device->associated, device);
-
   if (device->associated != NULL)
     {
+      if (device->device_mode == CLUTTER_INPUT_MODE_SLAVE)
+        _clutter_input_device_remove_slave (device->associated, device);
+
       _clutter_input_device_set_associated_device (device->associated, NULL);
       g_object_unref (device->associated);
       device->associated = NULL;
