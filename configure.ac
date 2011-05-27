@@ -165,32 +165,12 @@ AC_ARG_ENABLE(
   [],
   enable_debug=default
 )
-
-PKG_CHECK_EXISTS([CAIRO], [cairo], [have_cairo=yes])
-AC_ARG_ENABLE(
-  [cairo],
-  [AC_HELP_STRING([--enable-cairo=@<:@no/yes@:>@], [Control Cairo usage in Cogl debugging code @<:@default=]default[@:>@])],
-  [],
-  enable_cairo=default
-)
-AS_IF([test "x$enable_cairo" = "xyes" && test "x$have_cairo" != "xyes"],
-      [AC_MSG_ERROR([Could not find Cairo])])
-
-
 AS_CASE(
   [$enable_debug],
   [yes],
   [
     test "$cflags_set" = set || CFLAGS="$CFLAGS -g -O0"
     COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"
-
-    # debugging code can use cairo to dump the atlas
-    AS_IF([test "x$have_cairo" = "xyes" && test "x$enable_cairo" != "xno"],
-          [
-            COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES cairo"
-            AC_DEFINE([HAVE_CAIRO], [1], [Whether we have cairo or not])
-          ])
-
   ],
   [no],
   [
@@ -200,6 +180,32 @@ AS_CASE(
 )
 
 AC_SUBST(COGL_DEBUG_CFLAGS)
+
+
+dnl     ============================================================
+dnl     Enable cairo usage for debugging
+dnl       (debugging code can use cairo to dump the atlas)
+dnl     ============================================================
+
+PKG_CHECK_EXISTS([CAIRO], [cairo], [have_cairo=yes])
+AC_ARG_ENABLE(
+  [cairo],
+  [AC_HELP_STRING([--enable-cairo=@<:@no/yes@:>@], [Control Cairo usage in Cogl debugging code @<:@default=auto@:>@])],
+  [],
+  [
+    AS_IF([test "x$enable_debug" = "xyes"],
+          [enable_cairo=$have_cairo],
+          [enable_cairo=no])
+  ]
+)
+AS_IF([test "x$enable_cairo" = "xyes" && test "x$enable_debug" = "xyes"],
+      [
+        AS_IF([test "x$have_cairo" != "xyes"],
+              [AC_MSG_ERROR([Could not find Cairo])])
+
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES cairo"
+        AC_DEFINE([HAVE_CAIRO], [1], [Whether we have cairo or not])
+      ])
 
 
 dnl     ============================================================
