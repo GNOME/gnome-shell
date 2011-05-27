@@ -3,6 +3,7 @@
 *.o
 .deps
 .libs
+ABOUT-NLS
 ChangeLog
 INSTALL
 Makefile
@@ -29,8 +30,13 @@ m4/
 omf.make
 po/*.gmo
 po/gnome-shell.pot
+po/*.header
+po/*.sed
+po/*.sin
 po/Makefile.in.in
+po/Makevars.template
 po/POTFILES
+po/Rules-quot
 po/stamp-it
 scripts/launcher.pyc
 src/*.gir
