@@ -82,24 +82,6 @@ cogl_xlib_handle_event (XEvent *xevent)
 }
 
 void
-_cogl_xlib_add_filter (CoglNativeFilterFunc func,
-                       void *data)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  cogl_renderer_add_native_filter (ctx->display->renderer, func, data);
-}
-
-void
-_cogl_xlib_remove_filter (CoglNativeFilterFunc func,
-                          void *data)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  cogl_renderer_remove_native_filter (ctx->display->renderer, func, data);
-}
-
-void
 _cogl_xlib_query_damage_extension (void)
 {
   int damage_error;

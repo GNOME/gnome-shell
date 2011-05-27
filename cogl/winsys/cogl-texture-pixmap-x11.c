@@ -234,13 +234,16 @@ _cogl_texture_pixmap_x11_filter (void *native_event, void *data)
 }
 
 static void
-set_damage_object_internal (CoglTexturePixmapX11 *tex_pixmap,
+set_damage_object_internal (CoglContext *ctx,
+                            CoglTexturePixmapX11 *tex_pixmap,
                             Damage damage,
                             CoglTexturePixmapX11ReportLevel report_level)
 {
   if (tex_pixmap->damage)
     {
-      _cogl_xlib_remove_filter (_cogl_texture_pixmap_x11_filter, tex_pixmap);
+      cogl_renderer_remove_native_filter (ctx->display->renderer,
+                                          _cogl_texture_pixmap_x11_filter,
+                                          tex_pixmap);
 
       if (tex_pixmap->damage_owned)
         {
@@ -253,7 +256,9 @@ set_damage_object_internal (CoglTexturePixmapX11 *tex_pixmap,
   tex_pixmap->damage_report_level = report_level;
 
   if (damage)
-    _cogl_xlib_add_filter (_cogl_texture_pixmap_x11_filter, tex_pixmap);
+    cogl_renderer_add_native_filter (ctx->display->renderer,
+                                     _cogl_texture_pixmap_x11_filter,
+                                     tex_pixmap);
 }
 
 CoglHandle
@@ -310,7 +315,8 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
       Damage damage = XDamageCreate (display,
                                      pixmap,
                                      XDamageReportBoundingBox);
-      set_damage_object_internal (tex_pixmap,
+      set_damage_object_internal (ctxt,
+                                  tex_pixmap,
                                   damage,
                                   COGL_TEXTURE_PIXMAP_X11_DAMAGE_BOUNDING_BOX);
       tex_pixmap->damage_owned = TRUE;
@@ -450,7 +456,7 @@ cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
 
   damage_base = _cogl_xlib_get_damage_base ();
   if (damage_base >= 0)
-    set_damage_object_internal (tex_pixmap, damage, report_level);
+    set_damage_object_internal (ctxt, tex_pixmap, damage, report_level);
 }
 
 static void
@@ -922,7 +928,9 @@ _cogl_texture_pixmap_x11_get_height (CoglTexture *tex)
 static void
 _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 {
-  set_damage_object_internal (tex_pixmap, 0, 0);
+  _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+
+  set_damage_object_internal (ctxt, tex_pixmap, 0, 0);
 
   if (tex_pixmap->image)
     XDestroyImage (tex_pixmap->image);

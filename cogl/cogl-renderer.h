@@ -91,7 +91,7 @@ cogl_renderer_handle_native_event (CoglRenderer *renderer,
 
 #define cogl_renderer_add_native_filter cogl_renderer_add_native_filter_EXP
 /*
- * _cogl_renderer_add_native_filter:
+ * cogl_renderer_add_native_filter:
  *
  * Adds a callback function that will receive all native events. The
  * function can stop further processing of the event by return
@@ -107,10 +107,10 @@ cogl_renderer_add_native_filter (CoglRenderer *renderer,
 #define cogl_renderer_remove_native_filter \
   cogl_renderer_remove_native_filter_EXP
 /*
- * _cogl_renderer_remove_native_filter:
+ * cogl_renderer_remove_native_filter:
  *
  * Removes a callback that was previously added with
- * _cogl_renderer_add_native_filter().
+ * cogl_renderer_add_native_filter().
  */
 void
 cogl_renderer_remove_native_filter (CoglRenderer *renderer,

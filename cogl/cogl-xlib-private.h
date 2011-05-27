@@ -46,25 +46,4 @@ _cogl_xlib_query_damage_extension (void);
 int
 _cogl_xlib_get_damage_base (void);
 
-/*
- * _cogl_xlib_add_filter:
- *
- * Adds a callback function that will receive all X11 events. The
- * function can stop further processing of the event by return
- * %COGL_XLIB_FILTER_REMOVE.
- */
-void
-_cogl_xlib_add_filter (CoglNativeFilterFunc func,
-                       void *data);
-
-/*
- * _cogl_xlib_remove_filter:
- *
- * Removes a callback that was previously added with
- * _cogl_xlib_add_filter().
- */
-void
-_cogl_xlib_remove_filter (CoglNativeFilterFunc func,
-                          void *data);
-
 #endif /* __COGL_XLIB_PRIVATE_H */
