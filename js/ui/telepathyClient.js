@@ -240,7 +240,16 @@ Source.prototype = {
         let logMessages = events.map(makeMessageFromTplEvent);
 
         let pendingTpMessages = this._channel.get_pending_messages();
-        let pendingMessages = pendingTpMessages.map(function (tpMessage) { return makeMessageFromTpMessage(tpMessage, NotificationDirection.RECEIVED); });
+        let pendingMessages = [];
+
+        for (let i = 0; i < pendingTpMessages.length; i++) {
+            let message = pendingTpMessages[i];
+
+            if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
+                continue;
+
+            pendingMessages.push(makeMessageFromTpMessage(message, NotificationDirection.RECEIVED));
+        }
 
         let showTimestamp = false;
 
