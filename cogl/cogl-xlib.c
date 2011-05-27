@@ -57,13 +57,7 @@ cogl_xlib_get_display (void)
 {
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  if (!ctx->stub_winsys)
-    return cogl_renderer_xlib_get_display (ctx->display->renderer);
-
-  /* _cogl_xlib_set_display should be called before this function */
-  g_assert (_cogl_xlib_display != NULL);
-
-  return _cogl_xlib_display;
+  return cogl_renderer_xlib_get_display (ctx->display->renderer);
 }
 
 void
@@ -105,35 +99,13 @@ _cogl_xlib_remove_filter (CoglNativeFilterFunc func,
   cogl_renderer_remove_native_filter (ctx->display->renderer, func, data);
 }
 
-static int
-error_handler (Display     *xdpy,
-               XErrorEvent *error)
-{
-  _COGL_GET_CONTEXT (ctxt, 0);
-
-  g_assert (ctxt->trap_state);
-
-  ctxt->trap_state->trapped_error_code = error->error_code;
-
-  return 0;
-}
-
 void
 _cogl_xlib_trap_errors (CoglXlibTrapState *state)
 {
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
-  if (!ctxt->stub_winsys)
-    {
-      _cogl_renderer_xlib_trap_errors (ctxt->display->renderer, state);
-      return;
-    }
-
-  state->trapped_error_code = 0;
-  state->old_error_handler = XSetErrorHandler (error_handler);
-
-  state->old_state = ctxt->trap_state;
-  ctxt->trap_state = state;
+  _cogl_renderer_xlib_trap_errors (ctxt->display->renderer, state);
+  return;
 }
 
 int
@@ -141,18 +113,7 @@ _cogl_xlib_untrap_errors (CoglXlibTrapState *state)
 {
   _COGL_GET_CONTEXT (ctxt, 0);
 
-  if (!ctxt->stub_winsys)
-    {
-      return _cogl_renderer_xlib_untrap_errors (ctxt->display->renderer, state);
-    }
-
-  g_assert (state == ctxt->trap_state);
-
-  XSetErrorHandler (state->old_error_handler);
-
-  ctxt->trap_state = state->old_state;
-
-  return state->trapped_error_code;
+  return _cogl_renderer_xlib_untrap_errors (ctxt->display->renderer, state);
 }
 
 void
@@ -172,13 +133,9 @@ _cogl_xlib_query_damage_extension (void)
 int
 _cogl_xlib_get_damage_base (void)
 {
+  CoglRendererX11 *x11_renderer;
   _COGL_GET_CONTEXT (ctxt, -1);
 
-  if (!ctxt->stub_winsys)
-    {
-      CoglRendererX11 *x11_renderer = ctxt->display->renderer->winsys;
-      return x11_renderer->damage_base;
-    }
-  else
-    return ctxt->damage_base;
+  x11_renderer = ctxt->display->renderer->winsys;
+  return x11_renderer->damage_base;
 }
