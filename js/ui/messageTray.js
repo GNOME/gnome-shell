@@ -829,6 +829,7 @@ Notification.prototype = {
         // Restore banner opacity in case the notification is shown in the
         // banner mode again on update.
         this._bannerLabel.opacity = 255;
+        this.emit('collapsed');
     },
 
     _onActionInvoked: function(actor, mouseButtonClicked, id) {
