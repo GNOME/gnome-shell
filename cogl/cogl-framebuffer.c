@@ -513,6 +513,8 @@ _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                 float width,
                                 float height)
 {
+  g_return_if_fail (width > 0 && height > 0);
+
   if (framebuffer->viewport_x == x &&
       framebuffer->viewport_y == y &&
       framebuffer->viewport_width == width &&
@@ -976,8 +978,10 @@ _cogl_onscreen_new (void)
                           ctx,
                           COGL_FRAMEBUFFER_TYPE_ONSCREEN,
                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                          0xdeadbeef, /* width */
-                          0xdeadbeef); /* height */
+                          0x1eadbeef, /* width */
+                          0x1eadbeef); /* height */
+  /* NB: make sure to pass positive width/height numbers here
+   * because otherwise we'll hit input validation assertions!*/
 
   COGL_FRAMEBUFFER (onscreen)->allocated = TRUE;
 
@@ -1413,9 +1417,8 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
     {
       float gl_viewport_y;
 
-      if (draw_buffer->viewport_width < 0
-          || draw_buffer->viewport_height < 0)
-        return;
+      g_assert (draw_buffer->viewport_width >=0 &&
+                draw_buffer->viewport_height >=0);
 
       /* Convert the Cogl viewport y offset to an OpenGL viewport y offset
        * NB: OpenGL defines its window and viewport origins to be bottom
