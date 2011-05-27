@@ -216,6 +216,8 @@ Source.prototype = {
         this._contact = contact;
         this._client = client;
 
+        this._pendingMessages = [];
+
         this._conn = conn;
         this._channel = channel;
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
@@ -223,10 +225,21 @@ Source.prototype = {
         this._notification = new Notification(this);
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
 
+        // We ack messages when the message box is collapsed if user has
+        // interacted with it before and so read the messages:
+        // - user clicked on it the tray
+        // - user expanded the notification by hovering over the toaster notification
+        this._shouldAck = false;
+
+        this.connect('summary-item-clicked', Lang.bind(this, this._summaryItemClicked));
+        this._notification.connect('expanded', Lang.bind(this, this._notificationExpanded));
+        this._notification.connect('collapsed', Lang.bind(this, this._notificationCollapsed));
+
         this._presence = contact.get_presence_type();
 
         this._sentId = this._channel.connect('message-sent', Lang.bind(this, this._messageSent));
         this._receivedId = this._channel.connect('message-received', Lang.bind(this, this._messageReceived));
+        this._pendingId = this._channel.connect('pending-message-removed', Lang.bind(this, this._pendingRemoved));
 
         this._setSummaryIcon(this.createNotificationIcon());
 
@@ -309,6 +322,8 @@ Source.prototype = {
                 continue;
 
             pendingMessages.push(makeMessageFromTpMessage(message, NotificationDirection.RECEIVED));
+
+            this._pendingMessages.push(message);
         }
 
         let showTimestamp = false;
@@ -345,6 +360,7 @@ Source.prototype = {
     _channelClosed: function() {
         this._channel.disconnect(this._closedId);
         this._channel.disconnect(this._receivedId);
+        this._channel.disconnect(this._pendingId);
         this._channel.disconnect(this._sentId);
 
         this._contact.disconnect(this._notifyAliasId);
@@ -357,6 +373,8 @@ Source.prototype = {
     _messageReceived: function(channel, message) {
         if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
             return;
+
+        this._pendingMessages.push(message);
 
         message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
         this._notification.appendMessage(message);
@@ -422,6 +440,43 @@ Source.prototype = {
         this._notification.appendPresence(msg, shouldNotify);
         if (shouldNotify)
             this.notify();
+    },
+
+    _pendingRemoved: function(channel, message) {
+        let idx = this._pendingMessages.indexOf(message);
+
+        if (idx >= 0)
+            this._pendingMessages.splice(idx, 1);
+        else
+            throw new Error('Message not in our pending list: ' + message);
+    },
+
+    _ackMessages: function() {
+        if (this._pendingMessages.length == 0)
+            return;
+
+        // Don't clear our messages here, tp-glib will send a
+        // 'pending-message-removed' for each one.
+        this._channel.ack_messages_async(this._pendingMessages, Lang.bind(this, function(src, result) {
+            this._channel.ack_messages_finish(result);}));
+    },
+
+    _summaryItemClicked: function(source, button) {
+        if (button != 1)
+            return;
+
+        this._shouldAck = true;
+    },
+
+    _notificationExpanded: function() {
+        this._shouldAck = true;
+    },
+
+    _notificationCollapsed: function() {
+        if (this._shouldAck)
+            this._ackMessages();
+
+        this._shouldAck = false;
     }
 };
 
