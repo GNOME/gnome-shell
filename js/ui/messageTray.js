@@ -1615,6 +1615,8 @@ MessageTray.prototype = {
                  this._clickedSummaryItemMouseButton != button) {
             this._clickedSummaryItem = summaryItem;
             this._clickedSummaryItemMouseButton = button;
+
+            summaryItem.source.emit('summary-item-clicked', button);
         } else {
             this._unsetClickedSummaryItem();
         }
