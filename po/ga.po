@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-22 04:34-0600\n"
-"PO-Revision-Date: 2011-05-23 02:02-0600\n"
+"POT-Creation-Date: 2011-05-30 10:52-0600\n"
+"PO-Revision-Date: 2011-05-30 11:17-0600\n"
 "Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "Language: ga\n"
@@ -47,34 +47,42 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should not be loaded."
+"should be loaded. disabled-extensions overrides this setting for extensions "
+"that appear in both lists."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "History for command (Alt-F2) dialog"
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded. This setting overrides enabled-extensions for "
+"extensions that appear in both lists."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "History for the looking glass dialog"
+msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
+msgid "History for the looking glass dialog"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
+msgid "If true, display date in the clock, in addition to time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
+msgid "If true, display seconds in time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -89,42 +97,42 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show the week date in the calendar"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "Show time with seconds"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -132,21 +140,25 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to disable"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "Uuids of extensions to enable"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "disabled OpenSearch providers"
 msgstr ""
 
 #: ../js/misc/util.js:68
 msgid "Command not found"
-msgstr ""
+msgstr "Ordú gan aimsiú"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
@@ -200,7 +212,7 @@ msgstr "Baineadh %s ó na ceanáin."
 #: ../js/ui/calendar.js:63
 msgctxt "event list time"
 msgid "All Day"
-msgstr "I Rith an Lae"
+msgstr "An Lá ar Fad"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:68
@@ -415,6 +427,8 @@ msgstr "Logáil Amach"
 #: ../js/ui/endSessionDialog.js:62
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
+"Cliceáil Logáil Amach chun scor de na feidhmchláir seo agus logáil amach as "
+"an gcóras."
 
 #: ../js/ui/endSessionDialog.js:63
 #, c-format
@@ -428,7 +442,7 @@ msgstr "Logálfar thú amach go huathoibríoch i gceann %d soicind."
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Logging out of the system."
-msgstr ""
+msgstr "Á logáil amach as an gcóras."
 
 #: ../js/ui/endSessionDialog.js:72 ../js/ui/endSessionDialog.js:79
 msgid "Power Off"
@@ -437,15 +451,16 @@ msgstr "Múch"
 #: ../js/ui/endSessionDialog.js:73
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
+"Cliceáil Múch chun scor de na feidhmchláir seo agus an córas a mhúchadh."
 
 #: ../js/ui/endSessionDialog.js:74
 #, c-format
 msgid "The system will power off automatically in %d seconds."
-msgstr ""
+msgstr "Múchfar an córas go huathoibríoch i gceann %d soicind."
 
 #: ../js/ui/endSessionDialog.js:75
 msgid "Powering off the system."
-msgstr ""
+msgstr "Córas á mhúchadh."
 
 #: ../js/ui/endSessionDialog.js:77 ../js/ui/endSessionDialog.js:85
 #: ../js/ui/endSessionDialog.js:90
@@ -455,15 +470,16 @@ msgstr "Atosaigh"
 #: ../js/ui/endSessionDialog.js:86
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
+"Cliceáil Atosaigh chun scor de na feidhmchláir seo agus an córas a atosú."
 
 #: ../js/ui/endSessionDialog.js:87
 #, c-format
 msgid "The system will restart automatically in %d seconds."
-msgstr ""
+msgstr "Atosófar an córas go huathoibríoch i gceann %d soicind."
 
 #: ../js/ui/endSessionDialog.js:88
 msgid "Restarting the system."
-msgstr ""
+msgstr "Córas á atosú."
 
 #: ../js/ui/endSessionDialog.js:410 ../js/ui/polkitAuthenticationAgent.js:170
 #: ../js/ui/status/bluetooth.js:488
@@ -561,7 +577,7 @@ msgstr "ÁITEANNA & GLÉASANNA"
 
 #: ../js/ui/polkitAuthenticationAgent.js:72
 msgid "Authentication Required"
-msgstr ""
+msgstr "Fíordheimhniú de Dhíth"
 
 #: ../js/ui/polkitAuthenticationAgent.js:106
 msgid "Administrator"
@@ -728,11 +744,11 @@ msgstr ""
 
 #: ../js/ui/status/bluetooth.js:271
 msgid "Keyboard Settings"
-msgstr ""
+msgstr "Socruithe Méarchláir"
 
 #: ../js/ui/status/bluetooth.js:276
 msgid "Mouse Settings"
-msgstr ""
+msgstr "Socruithe Luiche"
 
 #: ../js/ui/status/bluetooth.js:283 ../js/ui/status/volume.js:63
 msgid "Sound Settings"
@@ -802,7 +818,7 @@ msgstr ""
 
 #: ../js/ui/status/keyboard.js:73
 msgid "Localization Settings"
-msgstr ""
+msgstr "Socruithe Logánaithe"
 
 #: ../js/ui/status/network.js:123
 msgid "<unknown>"
@@ -813,130 +829,140 @@ msgstr "<anaithnid>"
 msgid "disabled"
 msgstr "díchumasaithe"
 
-#: ../js/ui/status/network.js:539
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu)
+#: ../js/ui/status/network.js:535
+msgid "unmanaged"
+msgstr "gan bhainistiú"
+
+#: ../js/ui/status/network.js:537
+msgid "disconnecting..."
+msgstr "á dhícheangal..."
+
+#: ../js/ui/status/network.js:543
 msgid "connecting..."
-msgstr ""
+msgstr "á cheangal..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:542
+#: ../js/ui/status/network.js:546
 msgid "authentication required"
-msgstr ""
+msgstr "fíordheimhniú de dhíth"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:552
+#: ../js/ui/status/network.js:556
 msgid "firmware missing"
-msgstr ""
+msgstr "dochtearraí ar iarraidh"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:559
+#: ../js/ui/status/network.js:563
 msgid "cable unplugged"
 msgstr "cábla díphlugáilte"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:564
+#: ../js/ui/status/network.js:568
 msgid "unavailable"
 msgstr "níl ar fáil"
 
-#: ../js/ui/status/network.js:566
+#: ../js/ui/status/network.js:570
 msgid "connection failed"
 msgstr "theip an ceangal"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:647 ../js/ui/status/network.js:1456
+#: ../js/ui/status/network.js:651 ../js/ui/status/network.js:1460
 msgid "Connected (private)"
 msgstr "Ceangailte (príobháideach)"
 
-#: ../js/ui/status/network.js:732
+#: ../js/ui/status/network.js:736
 msgid "Auto Ethernet"
 msgstr "Ethernet uathoibríoch"
 
-#: ../js/ui/status/network.js:800
+#: ../js/ui/status/network.js:804
 msgid "Auto broadband"
 msgstr "Leathanbhanda uathoibríoch"
 
-#: ../js/ui/status/network.js:803
+#: ../js/ui/status/network.js:807
 msgid "Auto dial-up"
 msgstr "Ceangal diailithe uathoibríoch"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:927 ../js/ui/status/network.js:1468
+#: ../js/ui/status/network.js:931 ../js/ui/status/network.js:1472
 #, c-format
 msgid "Auto %s"
 msgstr "%s uathoibríoch"
 
-#: ../js/ui/status/network.js:929
+#: ../js/ui/status/network.js:933
 msgid "Auto bluetooth"
 msgstr "Bluetooth uathoibríoch"
 
-#: ../js/ui/status/network.js:1470
+#: ../js/ui/status/network.js:1474
 msgid "Auto wireless"
 msgstr "Gan sreang uathoibríoch"
 
-#: ../js/ui/status/network.js:1518
+#: ../js/ui/status/network.js:1522
 msgid "More..."
 msgstr "Tuilleadh..."
 
-#: ../js/ui/status/network.js:1560
+#: ../js/ui/status/network.js:1564
 msgid "Enable networking"
 msgstr "Cumasaigh líonrú"
 
-#: ../js/ui/status/network.js:1572
+#: ../js/ui/status/network.js:1576
 msgid "Wired"
 msgstr "Sreangaithe"
 
-#: ../js/ui/status/network.js:1583
+#: ../js/ui/status/network.js:1587
 msgid "Wireless"
 msgstr "Gan sreang"
 
-#: ../js/ui/status/network.js:1593
+#: ../js/ui/status/network.js:1597
 msgid "Mobile broadband"
 msgstr "Leathanbhanda móibíleach"
 
-#: ../js/ui/status/network.js:1603
+#: ../js/ui/status/network.js:1607
 msgid "VPN Connections"
 msgstr "Ceangail VPN"
 
-#: ../js/ui/status/network.js:1615
+#: ../js/ui/status/network.js:1619
 msgid "Network Settings"
 msgstr "Socruithe Líonra"
 
-#: ../js/ui/status/network.js:1909
+#: ../js/ui/status/network.js:1910
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
-msgstr ""
+msgstr "Tá tú ceangailte leis an gceangal leathanbhanda mhóibíligh '%s' anois"
 
-#: ../js/ui/status/network.js:1913
+#: ../js/ui/status/network.js:1914
 #, c-format
 msgid "You're now connected to wireless network '%s'"
-msgstr ""
+msgstr "Tá tú ceangailte leis an líonra gan sreang '%s' anois"
 
-#: ../js/ui/status/network.js:1917
+#: ../js/ui/status/network.js:1918
 #, c-format
 msgid "You're now connected to wired network '%s'"
-msgstr ""
+msgstr "Tá tú ceangailte leis an líonra sreangaithe '%s' anois"
 
-#: ../js/ui/status/network.js:1921
+#: ../js/ui/status/network.js:1922
 #, c-format
 msgid "You're now connected to VPN network '%s'"
-msgstr ""
+msgstr "Tá tú ceangailte leis an líonra VPN '%s' anois"
 
-#: ../js/ui/status/network.js:1926
+#: ../js/ui/status/network.js:1927
 #, c-format
 msgid "You're now connected to '%s'"
-msgstr ""
+msgstr "Tá tú ceangailte le '%s' anois"
 
-#: ../js/ui/status/network.js:1934
+#: ../js/ui/status/network.js:1935
 msgid "Connection established"
-msgstr ""
+msgstr "Bunaíodh ceangal"
 
-#: ../js/ui/status/network.js:2060
+#: ../js/ui/status/network.js:2061
 msgid "Networking is disabled"
-msgstr ""
+msgstr "Tá líonrú díchumasaithe"
 
-#: ../js/ui/status/network.js:2169
+#: ../js/ui/status/network.js:2186
 msgid "Network Manager"
 msgstr "Bainisteoir Líonra"
 
@@ -950,7 +976,7 @@ msgstr "Socruithe Cumhachta"
 msgid "Estimating..."
 msgstr "Á mheasúnú..."
 
-#: ../js/ui/status/power.js:118
+#: ../js/ui/status/power.js:115
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -975,7 +1001,7 @@ msgstr[2] "uaire"
 msgstr[3] "n-uaire"
 msgstr[4] "uair"
 
-#: ../js/ui/status/power.js:123
+#: ../js/ui/status/power.js:120
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "nóiméad"
@@ -984,7 +1010,7 @@ msgstr[2] "nóiméad"
 msgstr[3] "nóiméad"
 msgstr[4] "nóiméad"
 
-#: ../js/ui/status/power.js:126
+#: ../js/ui/status/power.js:123
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -1048,27 +1074,27 @@ msgstr "Airde"
 
 #: ../js/ui/status/volume.js:55
 msgid "Microphone"
-msgstr ""
+msgstr "Micreafón"
 
 #: ../js/ui/telepathyClient.js:330
 #, c-format
 msgid "%s is online."
-msgstr ""
+msgstr "Tá %s ar líne."
 
 #: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is offline."
-msgstr ""
+msgstr "Tá %s ar líne."
 
 #: ../js/ui/telepathyClient.js:338
 #, c-format
 msgid "%s is away."
-msgstr ""
+msgstr "Tá %s amuigh."
 
 #: ../js/ui/telepathyClient.js:341
 #, c-format
 msgid "%s is busy."
-msgstr ""
+msgstr "Tá %s gnóthach."
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
@@ -1076,7 +1102,7 @@ msgstr ""
 #: ../js/ui/telepathyClient.js:483
 #, no-c-format
 msgid "Sent at %X on %A"
-msgstr ""
+msgstr "Seoladh ag %X ar %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1137,56 +1163,12 @@ msgstr ""
 
 #: ../src/main.c:445
 msgid "Print version"
-msgstr ""
+msgstr "Taispeáin leagan"
 
 #: ../src/shell-app.c:464
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr ""
-
-#: ../src/shell-global.c:1395
-msgid "Less than a minute ago"
-msgstr ""
-
-#: ../src/shell-global.c:1399
-#, c-format
-msgid "%d minute ago"
-msgid_plural "%d minutes ago"
-msgstr[0] "%d nóiméad ó shin"
-msgstr[1] "%d nóiméad ó shin"
-msgstr[2] "%d nóiméad ó shin"
-msgstr[3] "%d nóiméad ó shin"
-msgstr[4] "%d nóiméad ó shin"
-
-#: ../src/shell-global.c:1404
-#, c-format
-msgid "%d hour ago"
-msgid_plural "%d hours ago"
-msgstr[0] "%d uair ó shin"
-msgstr[1] "%d uair ó shin"
-msgstr[2] "%d uaire ó shin"
-msgstr[3] "%d n-uaire ó shin"
-msgstr[4] "%d uair ó shin"
-
-#: ../src/shell-global.c:1409
-#, c-format
-msgid "%d day ago"
-msgid_plural "%d days ago"
-msgstr[0] "%d lá ó shin"
-msgstr[1] "%d lá ó shin"
-msgstr[2] "%d lá ó shin"
-msgstr[3] "%d lá ó shin"
-msgstr[4] "%d lá ó shin"
-
-#: ../src/shell-global.c:1414
-#, c-format
-msgid "%d week ago"
-msgid_plural "%d weeks ago"
-msgstr[0] "%d seachtain ó shin"
-msgstr[1] "%d seachtain ó shin"
-msgstr[2] "%d sheachtain ó shin"
-msgstr[3] "%d seachtain ó shin"
-msgstr[4] "%d seachtain ó shin"
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
