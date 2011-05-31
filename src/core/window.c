@@ -150,6 +150,7 @@ enum {
   PROP_FULLSCREEN,
   PROP_MAXIMIZED_HORIZONTALLY,
   PROP_MAXIMIZED_VERTICALLY,
+  PROP_MINIMIZED,
   PROP_WINDOW_TYPE,
   PROP_USER_TIME,
   PROP_DEMANDS_ATTENTION,
@@ -229,6 +230,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_MAXIMIZED_VERTICALLY:
       g_value_set_boolean (value, win->maximized_vertically);
+      break;
+    case PROP_MINIMIZED:
+      g_value_set_boolean (value, win->minimized);
       break;
     case PROP_WINDOW_TYPE:
       g_value_set_enum (value, win->type);
@@ -333,6 +337,13 @@ meta_window_class_init (MetaWindowClass *klass)
                                    g_param_spec_boolean ("maximized-vertically",
                                                          "Maximizing vertically",
                                                          "Whether window is maximized vertically",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+  g_object_class_install_property (object_class,
+                                   PROP_MINIMIZED,
+                                   g_param_spec_boolean ("minimized",
+                                                         "Minimizing",
+                                                         "Whether window is minimized",
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -3147,6 +3158,7 @@ meta_window_minimize (MetaWindow  *window)
                       "Minimizing window %s which doesn't have the focus\n",
                       window->desc);
         }
+      g_object_notify (G_OBJECT (window), "minimized");
     }
 }
 
@@ -3164,6 +3176,7 @@ meta_window_unminimize (MetaWindow  *window)
       meta_window_foreach_transient (window,
                                      queue_calc_showing_func,
                                      NULL);
+      g_object_notify (G_OBJECT (window), "minimized");
     }
 }
 
