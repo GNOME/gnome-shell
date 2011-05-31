@@ -178,6 +178,11 @@ WorkspaceThumbnail.prototype = {
         // Create clones for windows that should be visible in the Overview
         this._windows = [];
         for (let i = 0; i < windows.length; i++) {
+            windows[i].meta_window._minimizedChangedId =
+                windows[i].meta_window.connect('notify::minimized',
+                                               Lang.bind(this,
+                                                         this._updateMinimized));
+
             if (this._isOverviewWindow(windows[i])) {
                 this._addWindowClone(windows[i]);
             }
@@ -257,11 +262,18 @@ WorkspaceThumbnail.prototype = {
             return;
 
         // Check if window still should be here
-        if (win && this._isMyWindow(win))
+        if (win && this._isMyWindow(win) && this._isOverviewWindow(win))
             return;
 
         let clone = this._windows[index];
         this._windows.splice(index, 1);
+
+        if (win && this._isOverviewWindow(win)) {
+            if (metaWin._minimizedChangedId) {
+                metaWin.disconnect(metaWin._minimizedChangedId);
+                delete metaWin._minimizedChangedId;
+            }
+        }
         clone.destroy();
     },
 
@@ -290,6 +302,11 @@ WorkspaceThumbnail.prototype = {
         if (this._lookupIndex (metaWin) != -1)
             return;
 
+        if (!metaWin._minimizedChangedId)
+            metaWin._minimizedChangedId = metaWin.connect('notify::minimized',
+                                                          Lang.bind(this,
+                                                                    this._updateMinimized));
+
         if (!this._isMyWindow(win) || !this._isOverviewWindow(win))
             return;
 
@@ -316,6 +333,13 @@ WorkspaceThumbnail.prototype = {
         }
     },
 
+    _updateMinimized: function(metaWin) {
+        if (metaWin.minimized)
+            this._doRemoveWindow(metaWin);
+        else
+            this._doAddWindow(metaWin);
+    },
+
     destroy : function() {
         this.actor.destroy();
     },
@@ -325,6 +349,14 @@ WorkspaceThumbnail.prototype = {
         this.metaWorkspace.disconnect(this._windowRemovedId);
         global.screen.disconnect(this._windowEnteredMonitorId);
         global.screen.disconnect(this._windowLeftMonitorId);
+
+        for (let i = 0; i < this._windows.length; i++) {
+            let metaWin = this._windows[i].metaWindow;
+            if (metaWin._minimizedChangedId) {
+                metaWin.disconnect(metaWin._minimizedChangedId);
+                delete metaWin._minimizedChangedId;
+            }
+        }
 
         this._windows = [];
         this.actor = null;
@@ -339,7 +371,8 @@ WorkspaceThumbnail.prototype = {
     // Tests if @win should be shown in the Overview
     _isOverviewWindow : function (win) {
         let tracker = Shell.WindowTracker.get_default();
-        return tracker.is_window_interesting(win.get_meta_window());
+        return tracker.is_window_interesting(win.get_meta_window()) &&
+               win.get_meta_window().showing_on_its_workspace();
     },
 
     // Create a clone of a (non-desktop) window and add it to the window list
