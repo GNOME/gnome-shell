@@ -406,7 +406,7 @@ Cogl_1_0_gir_NAMESPACE = Cogl
 Cogl_1_0_gir_VERSION = 1.0
 Cogl_1_0_gir_LIBS = libcogl.la
 Cogl_1_0_gir_FILES = $(cogl_public_h) cogl-enum-types.h
-Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
+Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS)
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
 Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
