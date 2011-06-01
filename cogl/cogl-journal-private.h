@@ -28,6 +28,8 @@
 #include "cogl-handle.h"
 #include "cogl-clip-stack.h"
 
+#define COGL_JOURNAL_VBO_POOL_SIZE 8
+
 typedef struct _CoglJournal
 {
   CoglObject _parent;
@@ -35,6 +37,16 @@ typedef struct _CoglJournal
   GArray *entries;
   GArray *vertices;
   size_t needed_vbo_len;
+
+  /* A pool of attribute buffers is used so that we can avoid repeatedly
+     reallocating buffers. Only one of these buffers at a time will be
+     used by Cogl but we keep more than one alive anyway in case the
+     GL driver is internally using the buffer and it would have to
+     allocate a new one when we start writing to it */
+  CoglAttributeBuffer *vbo_pool[COGL_JOURNAL_VBO_POOL_SIZE];
+  /* The next vbo to use from the pool. We just cycle through them in
+     order */
+  unsigned int next_vbo_in_pool;
 
   int fast_read_pixel_count;
 

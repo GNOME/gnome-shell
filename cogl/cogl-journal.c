@@ -125,10 +125,17 @@ COGL_OBJECT_DEFINE (Journal, journal);
 static void
 _cogl_journal_free (CoglJournal *journal)
 {
+  int i;
+
   if (journal->entries)
     g_array_free (journal->entries, TRUE);
   if (journal->vertices)
     g_array_free (journal->vertices, TRUE);
+
+  for (i = 0; i < COGL_JOURNAL_VBO_POOL_SIZE; i++)
+    if (journal->vbo_pool[i])
+      cogl_object_unref (journal->vbo_pool[i]);
+
   g_slice_free (CoglJournal, journal);
 }
 
@@ -1095,8 +1102,44 @@ compare_entry_clip_stacks (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
   return entry0->clip_stack == entry1->clip_stack;
 }
 
+/* Gets a new vertex array from the pool. A reference is taken on the
+   array so it can be treated as if it was just newly allocated */
 static CoglAttributeBuffer *
-upload_vertices (const CoglJournalEntry *entries,
+create_attribute_buffer (CoglJournal *journal,
+                         gsize n_bytes)
+{
+  CoglAttributeBuffer *vbo;
+
+  /* If CoglBuffers are being emulated with malloc then there's not
+     really any point in using the pool so we'll just allocate the
+     buffer directly */
+  if (!cogl_features_available (COGL_FEATURE_VBOS))
+    return cogl_attribute_buffer_new (n_bytes, NULL);
+
+  vbo = journal->vbo_pool[journal->next_vbo_in_pool];
+
+  if (vbo == NULL)
+    {
+      vbo = cogl_attribute_buffer_new (n_bytes, NULL);
+      journal->vbo_pool[journal->next_vbo_in_pool] = vbo;
+    }
+  else if (cogl_buffer_get_size (COGL_BUFFER (vbo)) < n_bytes)
+    {
+      /* If the buffer is too small then we'll just recreate it */
+      cogl_object_unref (vbo);
+      vbo = cogl_attribute_buffer_new (n_bytes, NULL);
+      journal->vbo_pool[journal->next_vbo_in_pool] = vbo;
+    }
+
+  journal->next_vbo_in_pool = ((journal->next_vbo_in_pool + 1) %
+                               COGL_JOURNAL_VBO_POOL_SIZE);
+
+  return cogl_object_ref (vbo);
+}
+
+static CoglAttributeBuffer *
+upload_vertices (CoglJournal            *journal,
+                 const CoglJournalEntry *entries,
                  int                     n_entries,
                  size_t                  needed_vbo_len,
                  GArray                 *vertices)
@@ -1110,7 +1153,7 @@ upload_vertices (const CoglJournalEntry *entries,
 
   g_assert (needed_vbo_len);
 
-  attribute_buffer = cogl_attribute_buffer_new (needed_vbo_len * 4, NULL);
+  attribute_buffer = create_attribute_buffer (journal, needed_vbo_len * 4);
   buffer = COGL_BUFFER (attribute_buffer);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
 
@@ -1343,11 +1386,12 @@ _cogl_journal_flush (CoglJournal *journal,
 
   /* We upload the vertices after the clip stack pass in case it
      modifies the entries */
-  state.attribute_buffer = upload_vertices (&g_array_index (journal->entries,
-                                                        CoglJournalEntry, 0),
-                                        journal->entries->len,
-                                        journal->needed_vbo_len,
-                                        journal->vertices);
+  state.attribute_buffer =
+    upload_vertices (journal,
+                     &g_array_index (journal->entries, CoglJournalEntry, 0),
+                     journal->entries->len,
+                     journal->needed_vbo_len,
+                     journal->vertices);
   state.array_offset = 0;
 
   /* batch_and_call() batches a list of journal entries according to some
