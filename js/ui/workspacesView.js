@@ -51,7 +51,6 @@ WorkspacesView.prototype = {
         this._y = 0;
         this._workspaceRatioSpacing = 0;
         this._spacing = 0;
-        this._lostWorkspaces = [];
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._animatingScroll = false; // programatically updating the adjustment
@@ -224,27 +223,6 @@ WorkspacesView.prototype = {
                     this._updateVisibility();
             }
         }
-
-        for (let l = 0; l < this._lostWorkspaces.length; l++) {
-            let workspace = this._lostWorkspaces[l];
-
-            Tweener.removeTweens(workspace.actor);
-
-            workspace.actor.show();
-            workspace.hideWindowsOverlays();
-
-            if (showAnimation) {
-                Tweener.addTween(workspace.actor,
-                                 { y: workspace.x,
-                                   time: WORKSPACE_SWITCH_TIME,
-                                   transition: 'easeOutQuad',
-                                   onComplete: Lang.bind(this,
-                                                         this._cleanWorkspaces)
-                                 });
-            } else {
-                this._cleanWorkspaces();
-            }
-        }
     },
 
     _updateVisibility: function() {
@@ -263,17 +241,6 @@ WorkspacesView.prototype = {
                     workspace.actor.visible = (w == active);
             }
         }
-    },
-
-    _cleanWorkspaces: function() {
-        if (this._lostWorkspaces.length == 0)
-            return;
-
-        for (let l = 0; l < this._lostWorkspaces.length; l++)
-            this._lostWorkspaces[l].destroy();
-        this._lostWorkspaces = [];
-
-        this._updateWorkspaceActors(false);
     },
 
     _updateScrollAdjustment: function(index, showAnimation) {
@@ -298,11 +265,8 @@ WorkspacesView.prototype = {
         }
     },
 
-    updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces, lostWorkspaces) {
+    updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces) {
         let active = global.screen.get_active_workspace_index();
-
-        for (let l = 0; l < lostWorkspaces.length; l++)
-            lostWorkspaces[l].disconnectAll();
 
         Tweener.addTween(this._scrollAdjustment,
                          { upper: newNumWorkspaces,
@@ -315,8 +279,6 @@ WorkspacesView.prototype = {
                 this.actor.add_actor(this._workspaces[w].actor);
 
             this._updateWorkspaceActors(false);
-        } else {
-            this._lostWorkspaces = lostWorkspaces;
         }
 
         this._scrollToActive(true);
@@ -846,17 +808,16 @@ WorkspacesDisplay.prototype = {
             lostWorkspaces = this._workspaces.splice(removedIndex,
                                                      removedNum);
 
-            // Don't let the user try to select this workspace as it's
-            // making its exit.
-            for (let l = 0; l < lostWorkspaces.length; l++)
-                lostWorkspaces[l].setReactive(false);
+            for (let l = 0; l < lostWorkspaces.length; l++) {
+                lostWorkspaces[l].disconnectAll();
+                lostWorkspaces[l].destroy();
+            }
 
             this._thumbnailsBox.removeThumbmails(removedIndex, removedNum);
         }
 
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
-                                             newNumWorkspaces,
-                                             lostWorkspaces);
+                                             newNumWorkspaces);
     },
 
     _updateZoom : function() {

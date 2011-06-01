@@ -641,16 +641,6 @@ Workspace.prototype = {
         return this._windows.length == 0;
     },
 
-    /**
-     * setReactive:
-     * @reactive: %true iff the workspace should be reactive
-     *
-     * Set the workspace (desktop) reactive
-     **/
-    setReactive: function(reactive) {
-        this.actor.reactive = reactive;
-    },
-
     // Only use this for n <= 20 say
     _factorial: function(n) {
         let result = 1;
