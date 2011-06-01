@@ -36,53 +36,48 @@ visually attractive and easy to use experience.
 .SH OPTIONS
 
 .TP
-.B \-r, \-\-replace
-Replace the running metacity/gnome-panel
+.B \-\-replace
+Replace the running window manager
 .br
 
 .TP
-.B \-v, \-\-verbose
-Shows details about the results of running `gnome-shell'.
+.B \-\-sm-disable
+Disable connection to the session manager
 .br
 
 .TP
-.B \-g, \-\-debug
-Run under a debugger
+.B \-\-sm-client-id=ID
+Specify session management ID
 .br
 
 .TP
-.B \-\-debug\-command
-Command to use for debugging (defaults to 'gdb \-\-args')
+.B \-\-sm-save-file=FILE
+Initialize session from savefile
+.br
+
+.TP
+.B \-\-screen=SCREEN
+X screen to use
+.br
+
+.TP
+.B \-d, \-\-display=DISPLAY
+X display to use
 .br
 
 .TP
 .B \-\-sync
-.br
-Make X calls synchronously, useful when debugging down X errors
-.br
-
-.TP
-.B \-\-xephyr
-Run a debugging instance inside Xephyr
+Make X calls synchronous
 .br
 
 .TP
-.B \-\-geometry
-Specify Xephyr screen geometry
+.B \-\-version
+Print version and exit
 .br
 
 .TP
-.B \-w, \-\-wide
-Use widescreen (1280x800) with Xephyr
-.br
-
-.TP
-.B \-\-create\-extension
-Create a new GNOME Shell extension
-
-.TP
-.B \-\-eval\-file
-Evaluate the contents of the given JavaScript file
+.B \-\-help
+Display help and exit
 .br
 
 .SH BUGS
