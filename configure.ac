@@ -561,29 +561,6 @@ AS_IF([test "x$enable_wgl" = "xyes"],
       ])
 AM_CONDITIONAL(SUPPORT_WGL, [test "x$SUPPORT_WGL" = "xyes"])
 
-AC_ARG_ENABLE(
-  [quartz],
-  [AC_HELP_STRING([--enable-quartz=@<:@no/yes@:>@], [Enable support for the Quartz platform @<:@default=no@:>@])],
-  [],
-  [AS_IF([test "x$platform_quartz" = "xyes"], [enable_quartz=yes], [enable_quartz=no])]
-)
-AS_IF([test "x$enable_quartz" = "xyes"],
-  [AS_IF([test "x$platform_quartz" = "xno"],
-         [AC_MSG_ERROR([OpenGL framework not support with $COGL_DRIVER driver])])
-
-   AS_IF([test "x$enable_stub_winsys" = "xyes"],
-         [AC_MSG_ERROR([Stub winsys not currently compatible with others])])
-
-   SUPPORT_QUARTZ=yes
-   GL_WINSYS_APIS="$GL_WINSYS_APIS quartz"
-
-   AC_DEFINE([COGL_HAS_QUARTZ_SUPPORT], [1], [Cogl supports OpenGL using the Quartz framework])
-   COGL_DEFINES_SYMBOLS-"$COGL_DEFINES_SYMBOLS COGL_HAS_QUARTZ_SUPPORT"
-
-   #AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
-  ])
-AM_CONDITIONAL(SUPPORT_QUARTZ, [test "x$SUPPORT_QUARTZ" = "xyes"])
-
 EGL_PLATFORM_COUNT=0
 
 AC_ARG_ENABLE(
