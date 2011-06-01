@@ -74,6 +74,24 @@ _cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
   g_assert (0);
 }
 
+#ifdef COGL_HAS_XLIB_SUPPORT
+XVisualInfo *
+_cogl_winsys_xlib_get_visual_info (void)
+{
+  g_assert (0);
+  return NULL;
+}
+#endif
+
+#ifdef COGL_HAS_X11_SUPPORT
+guint32
+_cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
+{
+  g_assert (0);
+  return 0;
+}
+#endif
+
 gboolean
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
