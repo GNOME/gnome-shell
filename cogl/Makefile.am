@@ -331,10 +331,6 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-wgl.c \
 	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h
 endif
-if SUPPORT_QUARTZ
-cogl_sources_c += \
-	$(srcdir)/winsys/cogl-winsys-quartz.c
-endif
 if SUPPORT_EGL_PLATFORM_POWERVR_X11
 cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl.c
@@ -371,15 +367,9 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 lib_LTLIBRARIES += libcogl.la
 
 libcogl_la_LIBADD = -lm $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
-
 if SUPPORT_GLX
 libcogl_la_LIBADD += -ldl
 endif
-
-if SUPPORT_QUARTZ
-libcogl_la_LIBADD += -ldl
-endif
-
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
 libcogl_la_LDFLAGS = \
