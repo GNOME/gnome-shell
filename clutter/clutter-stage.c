@@ -1260,6 +1260,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_timer);
 
   context = _clutter_context_get_default ();
+  clutter_stage_ensure_current (stage);
 
   /* It's possible that we currently have a static scene and have renderered a
    * full, unclipped pick buffer. If so we can simply continue to read from
