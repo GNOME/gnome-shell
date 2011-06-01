@@ -23,6 +23,10 @@ const HISTORY_KEY = 'command-history';
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const DISABLE_COMMAND_LINE_KEY = 'disable-command-line';
 
+const TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';
+const EXEC_KEY = 'exec';
+const EXEC_ARG_KEY = 'exec-arg';
+
 const DIALOG_GROW_TIME = 0.1;
 
 function CommandCompleter() {
@@ -169,6 +173,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
         ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'run-dialog' });
 
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
+        this._terminalSettings = new Gio.Settings({ schema: TERMINAL_SCHEMA });
         global.settings.connect('changed::development-tools', Lang.bind(this, function () {
             this._enableInternalCommands = global.settings.get_boolean('development-tools');
         }));
@@ -309,8 +314,11 @@ __proto__: ModalDialog.ModalDialog.prototype,
             f();
         } else if (input) {
             try {
-                if (inTerminal)
-                    command = 'gnome-terminal -x ' + input;
+                if (inTerminal) {
+                    let exec = this._terminalSettings.get_string(EXEC_KEY);
+                    let exec_arg = this._terminalSettings.get_string(EXEC_ARG_KEY);
+                    command = exec + ' ' + exec_arg + ' ' + input;
+                }
                 Util.trySpawnCommandLine(command);
             } catch (e) {
                 // Mmmh, that failed - see if @input matches an existing file
