@@ -275,8 +275,11 @@ WorkspacesView.prototype = {
                          });
 
         if (newNumWorkspaces > oldNumWorkspaces) {
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+                this._workspaces[w].setGeometry(this._x, this._y,
+                                                this._width, this._height);
                 this.actor.add_actor(this._workspaces[w].actor);
+            }
 
             this._updateWorkspaceActors(false);
         }
