@@ -963,7 +963,7 @@ _clutter_paint_volume_cull (ClutterPaintVolume *pv,
             out++;
         }
 
-      if (out == 4)
+      if (out == vertex_count)
         return CLUTTER_CULL_RESULT_OUT;
       else if (out != 0)
         partial = TRUE;
