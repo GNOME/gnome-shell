@@ -989,6 +989,16 @@ NMDeviceWireless.prototype = {
         for (let i = 0; i < accessPoints.length; i++) {
             // Access points are grouped by network
             let ap = accessPoints[i];
+
+            if (ap.get_ssid() == null) {
+                // hidden access point cannot be added, we need to know
+                // the SSID and security details to connect
+                // nevertheless, the access point can acquire a SSID when
+                // NetworkManager connects to it (via nmcli or the control-center)
+                ap._notifySsidId = ap.connect('notify::ssid', Lang.bind(this, this._notifySsidCb));
+                continue;
+            }
+
             let pos = this._findNetwork(ap);
             let obj;
             if (pos != -1) {
@@ -1015,8 +1025,14 @@ NMDeviceWireless.prototype = {
                 }
             }
         }
+
         if (this.device.active_access_point) {
-            this._activeNetwork = this._networks[this._findNetwork(this.device.active_access_point)];
+            let networkPos = this._findNetwork(this.device.active_access_point);
+
+            if (networkPos == -1) // the connected access point is invisible
+                this._activeNetwork = null;
+            else
+                this._activeNetwork = this._networks[networkPos];
         } else {
             this._activeNetwork = null;
         }
@@ -1102,6 +1118,14 @@ NMDeviceWireless.prototype = {
         }
     },
 
+    _notifySsidCb: function(accessPoint) {
+        if (accessPoint.get_ssid() != null) {
+            accessPoint.disconnect(accessPoint._notifySsidId);
+            accessPoint._notifySsidId = 0;
+            this._accessPointAdded(this.device, accessPoint);
+        }
+    },
+
     _activeApChanged: function() {
         this._activeNetwork = null;
 
@@ -1109,7 +1133,9 @@ NMDeviceWireless.prototype = {
 
         if (activeAp) {
             let pos = this._findNetwork(activeAp);
-            this._activeNetwork = this._networks[pos];
+
+            if (pos != -1)
+                this._activeNetwork = this._networks[pos];
         }
 
         // we don't refresh the view here, setActiveConnection will
@@ -1184,6 +1210,9 @@ NMDeviceWireless.prototype = {
     },
 
     _findNetwork: function(accessPoint) {
+        if (accessPoint.get_ssid() == null)
+            return -1;
+
         for (let i = 0; i < this._networks.length; i++) {
             if (this._networkCompare(this._networks[i], accessPoint))
                 return i;
@@ -1192,6 +1221,13 @@ NMDeviceWireless.prototype = {
     },
 
     _accessPointAdded: function(device, accessPoint) {
+        if (accessPoint.get_ssid() == null) {
+            // This access point is not visible yet
+            // Wait for it to get a ssid
+            accessPoint._notifySsidId = accessPoint.connect('notify::ssid', Lang.bind(this, this._notifySsidCb));
+            return;
+        }
+
         let pos = this._findNetwork(accessPoint);
         let apObj;
         let needsupdate = false;
@@ -1427,13 +1463,12 @@ NMDeviceWireless.prototype = {
     },
 
     _createActiveConnectionItem: function() {
-        let activeAp = this.device.active_access_point;
         let icon, title;
         if (this._activeConnection._connection) {
             let connection = this._activeConnection._connection;
-            if (activeAp)
-                this._activeConnectionItem = new NMNetworkMenuItem([ activeAp ], undefined,
-                                                                       { reactive: false });
+            if (this._activeNetwork)
+                this._activeConnectionItem = new NMNetworkMenuItem(this._activeNetwork.accessPoints, undefined,
+                                                                   { reactive: false });
             else
                 this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(connection._name,
                                                                               'network-wireless-connected',
@@ -1441,9 +1476,9 @@ NMDeviceWireless.prototype = {
         } else {
             // We cannot read the connection (due to ACL, or API incompatibility), but we still show signal if we have it
             let menuItem;
-            if (activeAp)
-                this._activeConnectionItem = new NMNetworkMenuItem([ activeAp ], undefined,
-                                                                       { reactive: false });
+            if (this._activeNetwork)
+                this._activeConnectionItem = new NMNetworkMenuItem(this._activeNetwork.accessPoints, undefined,
+                                                                   { reactive: false });
             else
                 this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(_("Connected (private)"),
                                                                               'network-wireless-connected',
