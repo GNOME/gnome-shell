@@ -82,7 +82,7 @@ st_shadow_ref (StShadow *shadow)
   g_return_val_if_fail (shadow != NULL, NULL);
   g_return_val_if_fail (shadow->ref_count > 0, shadow);
 
-  g_atomic_int_add (&shadow->ref_count, 1);
+  g_atomic_int_inc (&shadow->ref_count);
   return shadow;
 }
 
@@ -100,7 +100,7 @@ st_shadow_unref (StShadow *shadow)
   g_return_if_fail (shadow != NULL);
   g_return_if_fail (shadow->ref_count > 0);
 
-  if (g_atomic_int_exchange_and_add (&shadow->ref_count, -1) - 1 == 0)
+  if (g_atomic_int_dec_and_test (&shadow->ref_count))
     g_slice_free (StShadow, shadow);
 }
 
