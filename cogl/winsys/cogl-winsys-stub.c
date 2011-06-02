@@ -146,29 +146,41 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
 {
 }
 
-static CoglWinsysVtable _cogl_winsys_vtable =
-  {
-    .id = COGL_WINSYS_ID_STUB,
-    .name = "STUB",
-    .renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address,
-    .renderer_connect = _cogl_winsys_renderer_connect,
-    .renderer_disconnect = _cogl_winsys_renderer_disconnect,
-    .display_setup = _cogl_winsys_display_setup,
-    .display_destroy = _cogl_winsys_display_destroy,
-    .context_init = _cogl_winsys_context_init,
-    .context_deinit = _cogl_winsys_context_deinit,
-
-    .onscreen_init = _cogl_winsys_onscreen_init,
-    .onscreen_deinit = _cogl_winsys_onscreen_deinit,
-    .onscreen_bind = _cogl_winsys_onscreen_bind,
-    .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
-    .onscreen_update_swap_throttled =
-      _cogl_winsys_onscreen_update_swap_throttled,
-    .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
-  };
-
 const CoglWinsysVtable *
 _cogl_winsys_stub_get_vtable (void)
 {
-  return &_cogl_winsys_vtable;
+  static gboolean vtable_inited = FALSE;
+  static CoglWinsysVtable vtable;
+
+  /* It would be nice if we could use C99 struct initializers here
+     like the GLX backend does. However this code is more likely to be
+     compiled using Visual Studio which (still!) doesn't support them
+     so we initialize it in code instead */
+
+  if (!vtable_inited)
+    {
+      memset (&vtable, 0, sizeof (vtable));
+
+      vtable.id = COGL_WINSYS_ID_STUB;
+      vtable.name = "STUB";
+      vtable.renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address;
+      vtable.renderer_connect = _cogl_winsys_renderer_connect;
+      vtable.renderer_disconnect = _cogl_winsys_renderer_disconnect;
+      vtable.display_setup = _cogl_winsys_display_setup;
+      vtable.display_destroy = _cogl_winsys_display_destroy;
+      vtable.context_init = _cogl_winsys_context_init;
+      vtable.context_deinit = _cogl_winsys_context_deinit;
+
+      vtable.onscreen_init = _cogl_winsys_onscreen_init;
+      vtable.onscreen_deinit = _cogl_winsys_onscreen_deinit;
+      vtable.onscreen_bind = _cogl_winsys_onscreen_bind;
+      vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
+      vtable.onscreen_update_swap_throttled =
+        _cogl_winsys_onscreen_update_swap_throttled;
+      vtable.onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility;
+
+      vtable_inited = TRUE;
+    }
+
+  return &vtable;
 }
