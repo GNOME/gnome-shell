@@ -53,7 +53,7 @@ st_icon_colors_ref (StIconColors *colors)
   g_return_val_if_fail (colors != NULL, NULL);
   g_return_val_if_fail (colors->ref_count > 0, colors);
 
-  g_atomic_int_add ((volatile int *)&colors->ref_count, 1);
+  g_atomic_int_inc ((volatile int *)&colors->ref_count);
   return colors;
 }
 
@@ -71,7 +71,7 @@ st_icon_colors_unref (StIconColors *colors)
   g_return_if_fail (colors != NULL);
   g_return_if_fail (colors->ref_count > 0);
 
-  if (g_atomic_int_exchange_and_add ((volatile int *)&colors->ref_count, -1) - 1 == 0)
+  if (g_atomic_int_dec_and_test ((volatile int *)&colors->ref_count))
     g_slice_free (StIconColors, colors);
 }
 
