@@ -89,7 +89,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    */
   pspec = g_param_spec_boolean ("playing",
                                 P_("Playing"),
-                                P_("Wheter the actor is playing"),
+                                P_("Whether the actor is playing"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_interface_install_property (iface, pspec);
