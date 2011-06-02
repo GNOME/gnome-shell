@@ -373,12 +373,11 @@ NMDevice.prototype = {
             };
             this._connections.push(obj);
         }
-        this._connections.sort(function(one, two) {
-            return two.timestamp - one.timestamp;
-        });
+        this._connections.sort(this._connectionSortFunction);
         this._activeConnection = null;
         this._activeConnectionItem = null;
         this._autoConnectionItem = null;
+        this._overflowItem = null;
 
         if (this.device) {
             this.statusItem = new NMDeviceTitleMenuItem(this._getDescription());
@@ -482,9 +481,7 @@ NMDevice.prototype = {
             timestamp: connection._timestamp,
         };
         this._connections.push(obj);
-        this._connections.sort(function(one, two) {
-            return two.timestamp - one.timestamp;
-        });
+        this._connections.sort(this._connectionSortFunction);
 
         this._clearSection();
         this._createSection();
@@ -517,6 +514,13 @@ NMDevice.prototype = {
 
     connectionValid: function(connection) {
         return this.device.connection_valid(connection);
+    },
+
+    _connectionSortFunction: function(one, two) {
+        if (one.timestamp == two.timestamp)
+            return GLib.utf8_collate(one.name, two.name);
+
+        return two.timestamp - one.timestamp;
     },
 
     setEnabled: function(enabled) {
@@ -593,6 +597,7 @@ NMDevice.prototype = {
         this.section.removeAll();
         this._autoConnectionItem = null;
         this._activeConnectionItem = null;
+        this._overflowItem = null;
         for (let i = 0; i < this._connections.length; i++) {
             this._connections[i].item = null;
         }
@@ -611,13 +616,23 @@ NMDevice.prototype = {
             this.section.addMenuItem(this._activeConnectionItem);
         }
         if (this._connections.length > 0) {
+            let activeOffset = this._activeConnectionItem ? 1 : 0;
+
             for(let j = 0; j < this._connections.length; ++j) {
                 let obj = this._connections[j];
                 if (this._activeConnection &&
                     obj.connection == this._activeConnection._connection)
                     continue;
                 obj.item = this._createConnectionItem(obj);
-                this.section.addMenuItem(obj.item);
+
+                if (j + activeOffset >= NUM_VISIBLE_NETWORKS) {
+                    if (!this._overflowItem) {
+                        this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
+                        this.section.addMenuItem(this._overflowItem);
+                    }
+                    this._overflowItem.menu.addMenuItem(obj.item);
+                } else
+                    this.section.addMenuItem(obj.item);
             }
         } else if (this._autoConnectionName) {
             this._autoConnectionItem = new PopupMenu.PopupMenuItem(this._autoConnectionName);
@@ -825,7 +840,7 @@ NMDeviceModem.prototype = {
             }));
         }
 
-        NMDevice.prototype._init.call(this, client, device, connections, 1);
+        NMDevice.prototype._init.call(this, client, device, connections);
     },
 
     setEnabled: function(enabled) {
