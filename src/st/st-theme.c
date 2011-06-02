@@ -256,6 +256,30 @@ st_theme_unload_stylesheet (StTheme    *theme,
   cr_stylesheet_unref (stylesheet);
 }
 
+/**
+ * st_theme_get_custom_stylesheets:
+ * @theme: an #StTheme
+ *
+ * Returns: (transfer full) (element-type utf8): the list of stylesheet filenames
+ *          that were loaded with st_theme_load_stylesheet()
+ */
+GSList*
+st_theme_get_custom_stylesheets (StTheme *theme)
+{
+  GSList *result = NULL;
+  GSList *iter;
+
+  for (iter = theme->custom_stylesheets; iter; iter = iter->next)
+    {
+      CRStyleSheet *stylesheet = iter->data;
+      gchar *filename = g_hash_table_lookup (theme->filenames_by_stylesheet, stylesheet);
+
+      result = g_slist_prepend (result, g_strdup (filename));
+    }
+
+  return result;
+}
+
 static GObject *
 st_theme_constructor (GType                  type,
                       guint                  n_construct_properties,
