@@ -2865,78 +2865,66 @@ clutter_actor_paint (ClutterActor *self)
          applications to notify when the value of the
          has_overlaps virtual changes. */
       add_or_remove_flatten_effect (self);
-
-      /* We save the current paint volume so that the next time the
-       * actor queues a redraw we can constrain the redraw to just
-       * cover the union of the new bounding box and the old.
-       *
-       * We also fetch the current paint volume to perform culling so
-       * we can avoid painting actors outside the current clip region.
-       *
-       * If we are painting inside a clone, we should neither update
-       * the paint volume or use it to cull painting, since the paint
-       * box represents the location of the source actor on the
-       * screen.
-       *
-       * XXX: We are starting to do a lot of vertex transforms on
-       * the CPU in a typical paint, so at some point we should
-       * audit these and consider caching some things.
-       */
-      if (!in_clone_paint ())
-        {
-          gboolean success;
-          /* annoyingly gcc warns if uninitialized even though
-           * the initialization is redundant :-( */
-          ClutterCullResult result = CLUTTER_CULL_RESULT_IN;
-
-          if (G_LIKELY ((clutter_paint_debug_flags &
-                         (CLUTTER_DEBUG_DISABLE_CULLING |
-                          CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)) !=
-                        (CLUTTER_DEBUG_DISABLE_CULLING |
-                         CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
-            _clutter_actor_update_last_paint_volume (self);
-
-          success = cull_actor (self, &result);
-
-          if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
-            _clutter_actor_paint_cull_result (self, success, result);
-          else if (result == CLUTTER_CULL_RESULT_OUT && success)
-            goto done;
-        }
-
-      if (priv->effects == NULL)
-        {
-          if (actor_has_shader_data (self))
-            clutter_actor_shader_pre_paint (self, FALSE);
-          priv->next_effect_to_paint = NULL;
-        }
-      else
-        priv->next_effect_to_paint =
-          _clutter_meta_group_peek_metas (priv->effects);
-
-      clutter_actor_continue_paint (self);
-
-      if (priv->effects == NULL &&
-          actor_has_shader_data (self))
-        clutter_actor_shader_post_paint (self);
-
-      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
-        _clutter_actor_draw_paint_volume (self);
     }
   else
+    CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_pick_counter);
+
+  /* We save the current paint volume so that the next time the
+   * actor queues a redraw we can constrain the redraw to just
+   * cover the union of the new bounding box and the old.
+   *
+   * We also fetch the current paint volume to perform culling so
+   * we can avoid painting actors outside the current clip region.
+   *
+   * If we are painting inside a clone, we should neither update
+   * the paint volume or use it to cull painting, since the paint
+   * box represents the location of the source actor on the
+   * screen.
+   *
+   * XXX: We are starting to do a lot of vertex transforms on
+   * the CPU in a typical paint, so at some point we should
+   * audit these and consider caching some things.
+   */
+  if (!in_clone_paint ())
     {
-      ClutterColor col = { 0, };
+      gboolean success;
+      /* annoyingly gcc warns if uninitialized even though
+       * the initialization is redundant :-( */
+      ClutterCullResult result = CLUTTER_CULL_RESULT_IN;
 
-      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_pick_counter);
+      if (G_LIKELY ((clutter_paint_debug_flags &
+                     (CLUTTER_DEBUG_DISABLE_CULLING |
+                      CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)) !=
+                    (CLUTTER_DEBUG_DISABLE_CULLING |
+                     CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+        _clutter_actor_update_last_paint_volume (self);
 
-      _clutter_id_to_color (_clutter_actor_get_pick_id (self), &col);
+      success = cull_actor (self, &result);
 
-      /* Actor will then paint silhouette of itself in supplied
-       * color.  See clutter_stage_get_actor_at_pos() for where
-       * picking is enabled.
-       */
-      g_signal_emit (self, actor_signals[PICK], 0, &col);
+      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
+        _clutter_actor_paint_cull_result (self, success, result);
+      else if (result == CLUTTER_CULL_RESULT_OUT && success)
+        goto done;
     }
+
+  if (priv->effects == NULL)
+    {
+      if (actor_has_shader_data (self))
+        clutter_actor_shader_pre_paint (self, FALSE);
+      priv->next_effect_to_paint = NULL;
+    }
+  else
+    priv->next_effect_to_paint =
+      _clutter_meta_group_peek_metas (priv->effects);
+
+  clutter_actor_continue_paint (self);
+
+  if (priv->effects == NULL &&
+      actor_has_shader_data (self))
+    clutter_actor_shader_post_paint (self);
+
+  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
+    _clutter_actor_draw_paint_volume (self);
 
 done:
   if (clip_set)
@@ -2981,9 +2969,24 @@ clutter_actor_continue_paint (ClutterActor *self)
      actual actor */
   if (priv->next_effect_to_paint == NULL)
     {
-      priv->propagated_one_redraw = FALSE;
+      if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
+        {
+          priv->propagated_one_redraw = FALSE;
 
-      g_signal_emit (self, actor_signals[PAINT], 0);
+          g_signal_emit (self, actor_signals[PAINT], 0);
+        }
+      else
+        {
+          ClutterColor col = { 0, };
+
+          _clutter_id_to_color (_clutter_actor_get_pick_id (self), &col);
+
+          /* Actor will then paint silhouette of itself in supplied
+           * color.  See clutter_stage_get_actor_at_pos() for where
+           * picking is enabled.
+           */
+          g_signal_emit (self, actor_signals[PICK], 0, &col);
+        }
     }
   else
     {
@@ -2997,19 +3000,31 @@ clutter_actor_continue_paint (ClutterActor *self)
       priv->current_effect = priv->next_effect_to_paint->data;
       priv->next_effect_to_paint = priv->next_effect_to_paint->next;
 
-      if (priv->propagated_one_redraw)
+      if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
-          /* If there's an effect queued with this redraw then all
-             effects up to that one will be considered dirty. It is
-             expected the queued effect will paint the cached image
-             and not call clutter_actor_continue_paint again (although
-             it should work ok if it does) */
-          if (priv->effect_to_redraw == NULL ||
-              priv->current_effect != priv->effect_to_redraw)
-            run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
-        }
+          if (priv->propagated_one_redraw)
+            {
+              /* If there's an effect queued with this redraw then all
+                 effects up to that one will be considered dirty. It
+                 is expected the queued effect will paint the cached
+                 image and not call clutter_actor_continue_paint again
+                 (although it should work ok if it does) */
+              if (priv->effect_to_redraw == NULL ||
+                  priv->current_effect != priv->effect_to_redraw)
+                run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+            }
 
-      _clutter_effect_paint (priv->current_effect, run_flags);
+          _clutter_effect_paint (priv->current_effect, run_flags);
+        }
+      else
+        {
+          /* We can't determine when an actor has been modified since
+             its last pick so lets just assume it has always been
+             modified */
+          run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+
+          _clutter_effect_pick (priv->current_effect, run_flags);
+        }
 
       priv->current_effect = old_current_effect;
     }

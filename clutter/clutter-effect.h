@@ -49,7 +49,7 @@ typedef struct _ClutterEffectClass      ClutterEffectClass;
  * should call clutter_actor_continue_paint() to chain to the next
  * effect and can not cache any results from a previous paint.
  *
- * Flags passed to the ‘run’ method of #ClutterEffect.
+ * Flags passed to the ‘paint’ or ‘pick’ method of #ClutterEffect.
  */
 typedef enum
 {
@@ -96,8 +96,10 @@ struct _ClutterEffectClass
   void     (* paint)            (ClutterEffect        *effect,
                                  ClutterEffectRunFlags flags);
 
+  void     (* pick)             (ClutterEffect        *effect,
+                                 ClutterEffectRunFlags flags);
+
   /*< private >*/
-  void (* _clutter_effect3) (void);
   void (* _clutter_effect4) (void);
   void (* _clutter_effect5) (void);
   void (* _clutter_effect6) (void);
