@@ -192,7 +192,7 @@ NMNetworkMenuItem.prototype = {
             apObj.updateId = 0;
         }
 
-        PopupMenu.PopupImageMenuItem.prototype.destroy.call(this);
+        PopupMenu.PopupBaseMenuItem.prototype.destroy.call(this);
     }
 };
 
