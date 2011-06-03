@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-09 00:22+0300\n"
-"PO-Revision-Date: 2011-05-09 00:22+0200\n"
+"POT-Creation-Date: 2011-06-03 11:20+0300\n"
+"PO-Revision-Date: 2011-06-03 11:22+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
@@ -21,51 +21,51 @@ msgstr ""
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
-msgstr "Switch to workspace 1"
+msgstr "מעבר למרחב עבודה 1"
 
 #: ../src/core/all-keybindings.h:90
 msgid "Switch to workspace 2"
-msgstr "Switch to workspace 2"
+msgstr "מעבר למרחב עבודה 2"
 
 #: ../src/core/all-keybindings.h:92
 msgid "Switch to workspace 3"
-msgstr "Switch to workspace 3"
+msgstr "מעבר למרחב עבודה 3"
 
 #: ../src/core/all-keybindings.h:94
 msgid "Switch to workspace 4"
-msgstr "Switch to workspace 4"
+msgstr "מעבר למרחב עבודה 4"
 
 #: ../src/core/all-keybindings.h:96
 msgid "Switch to workspace 5"
-msgstr "Switch to workspace 5"
+msgstr "מעבר למרחב עבודה 5"
 
 #: ../src/core/all-keybindings.h:98
 msgid "Switch to workspace 6"
-msgstr "Switch to workspace 6"
+msgstr "מעבר למרחב עבודה 6"
 
 #: ../src/core/all-keybindings.h:100
 msgid "Switch to workspace 7"
-msgstr "Switch to workspace 7"
+msgstr "מעבר למרחב עבודה 7"
 
 #: ../src/core/all-keybindings.h:102
 msgid "Switch to workspace 8"
-msgstr "Switch to workspace 8"
+msgstr "מעבר למרחב עבודה 8"
 
 #: ../src/core/all-keybindings.h:104
 msgid "Switch to workspace 9"
-msgstr "Switch to workspace 9"
+msgstr "מעבר למרחב עבודה 9"
 
 #: ../src/core/all-keybindings.h:106
 msgid "Switch to workspace 10"
-msgstr "Switch to workspace 10"
+msgstr "מעבר למרחב עבודה 10"
 
 #: ../src/core/all-keybindings.h:108
 msgid "Switch to workspace 11"
-msgstr "Switch to workspace 11"
+msgstr "מעבר למרחב עבודה 11"
 
 #: ../src/core/all-keybindings.h:110
 msgid "Switch to workspace 12"
-msgstr "Switch to workspace 12"
+msgstr "מעבר למרחב עבודה 12"
 
 #: ../src/core/all-keybindings.h:122
 msgid "Switch to workspace on the left of the current workspace"
@@ -137,7 +137,7 @@ msgstr "Hide all normal windows and set focus to the desktop"
 
 #: ../src/core/all-keybindings.h:206
 msgid "Show the panel's main menu"
-msgstr "Show the panel's main menu"
+msgstr "הצגת התפריט הראשי של הלוח"
 
 #: ../src/core/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
@@ -145,31 +145,31 @@ msgstr "Show the panel's \"Run Application\" dialog box"
 
 #: ../src/core/all-keybindings.h:211
 msgid "Start or stop recording the session"
-msgstr "התחלה או עצירה של צילום ההפעלה"
+msgstr "התחלה או עצירה של הקלטת ההפעלה"
 
 #: ../src/core/all-keybindings.h:252
 msgid "Take a screenshot"
-msgstr "Take a screenshot"
+msgstr "צילום תמונת מסך"
 
 #: ../src/core/all-keybindings.h:254
 msgid "Take a screenshot of a window"
-msgstr "Take a screenshot of a window"
+msgstr "צילום החלון"
 
 #: ../src/core/all-keybindings.h:256
 msgid "Run a terminal"
-msgstr "Run a terminal"
+msgstr "הפעלת מסוף"
 
 #: ../src/core/all-keybindings.h:271
 msgid "Activate the window menu"
-msgstr "Activate the window menu"
+msgstr "הפעלת תפריט החלון"
 
 #: ../src/core/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
-msgstr "Toggle fullscreen mode"
+msgstr "כניסה למצב מסך מלא"
 
 #: ../src/core/all-keybindings.h:276
 msgid "Toggle maximization state"
-msgstr "Toggle maximization state"
+msgstr "הפעלה/כיבוי מצב הגדלה"
 
 #: ../src/core/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
@@ -331,7 +331,7 @@ msgstr "Move window to center of screen"
 msgid "Bell event"
 msgstr "אירוע פעמון"
 
-#: ../src/core/core.c:157
+#: ../src/core/core.c:160
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Unknown window information request: %d"
@@ -553,12 +553,12 @@ msgstr "שגיאה בהגדרת מצב מצב החלונות החיים המוס
 msgid "Error setting no tab popup status: %s\n"
 msgstr "שגיאה בהגדרת מצב ללא לשוניות מוקפצות: %s\n"
 
-#: ../src/core/screen.c:624
+#: ../src/core/screen.c:663
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Screen %d on display '%s' is invalid\n"
 
-#: ../src/core/screen.c:640
+#: ../src/core/screen.c:679
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -567,19 +567,19 @@ msgstr ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 
-#: ../src/core/screen.c:667
+#: ../src/core/screen.c:706
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 
-#: ../src/core/screen.c:722
+#: ../src/core/screen.c:761
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Screen %d on display \"%s\" already has a window manager\n"
 
-#: ../src/core/screen.c:907
+#: ../src/core/screen.c:946
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Could not release screen %d on display \"%s\"\n"
@@ -682,7 +682,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6860
+#: ../src/core/window.c:6886
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -698,7 +698,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7523
+#: ../src/core/window.c:7549
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -717,7 +717,7 @@ msgstr "Application set a bogus _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (מעל %s)"
 
-#: ../src/core/window-props.c:1482
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
@@ -808,47 +808,47 @@ msgstr "Workspaces only on primary"
 msgid "Usage: %s\n"
 msgstr "שימוש: %s\n"
 
-#: ../src/ui/frames.c:1177
+#: ../src/ui/frames.c:1280
 msgid "Close Window"
 msgstr "סגור חלון"
 
-#: ../src/ui/frames.c:1180
+#: ../src/ui/frames.c:1283
 msgid "Window Menu"
 msgstr "תפריט חלון"
 
-#: ../src/ui/frames.c:1183
+#: ../src/ui/frames.c:1286
 msgid "Minimize Window"
 msgstr "מזער חלון"
 
-#: ../src/ui/frames.c:1186
+#: ../src/ui/frames.c:1289
 msgid "Maximize Window"
 msgstr "הגדל חלון"
 
-#: ../src/ui/frames.c:1189
+#: ../src/ui/frames.c:1292
 msgid "Restore Window"
 msgstr "שחזר חלון"
 
-#: ../src/ui/frames.c:1192
+#: ../src/ui/frames.c:1295
 msgid "Roll Up Window"
 msgstr "גלול חלון מעלה"
 
-#: ../src/ui/frames.c:1195
+#: ../src/ui/frames.c:1298
 msgid "Unroll Window"
 msgstr "בטל גלילה"
 
-#: ../src/ui/frames.c:1198
+#: ../src/ui/frames.c:1301
 msgid "Keep Window On Top"
 msgstr "שמור על החלון גלוי"
 
-#: ../src/ui/frames.c:1201
+#: ../src/ui/frames.c:1304
 msgid "Remove Window From Top"
 msgstr "בטל שמירת החלון גלוי"
 
-#: ../src/ui/frames.c:1204
+#: ../src/ui/frames.c:1307
 msgid "Always On Visible Workspace"
 msgstr "הראה בכל סביבות העבודה"
 
-#: ../src/ui/frames.c:1207
+#: ../src/ui/frames.c:1310
 msgid "Put Window On Only One Workspace"
 msgstr "הראה את החלון על סביבת עבודה אחת בלבד"
 
@@ -1161,12 +1161,17 @@ msgstr "Shade factor \"%s\" in shaded color is negative"
 msgid "Could not parse color \"%s\""
 msgstr "Could not parse color \"%s\""
 
-#: ../src/ui/theme.c:1646
+#: ../src/ui/theme.c:1481
+#, c-format
+msgid "Failed to retrieve color %s[%s] from GTK+ theme.\n"
+msgstr "Failed to retrieve color %s[%s] from GTK+ theme.\n"
+
+#: ../src/ui/theme.c:1713
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Coordinate expression contains character '%s' which is not allowed"
 
-#: ../src/ui/theme.c:1673
+#: ../src/ui/theme.c:1740
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1175,12 +1180,12 @@ msgstr ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 
-#: ../src/ui/theme.c:1687
+#: ../src/ui/theme.c:1754
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Coordinate expression contains integer '%s' which could not be parsed"
 
-#: ../src/ui/theme.c:1809
+#: ../src/ui/theme.c:1876
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1189,41 +1194,41 @@ msgstr ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 
-#: ../src/ui/theme.c:1866
+#: ../src/ui/theme.c:1933
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Coordinate expression was empty or not understood"
 
-#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2044 ../src/ui/theme.c:2054 ../src/ui/theme.c:2088
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Coordinate expression results in division by zero"
 
-#: ../src/ui/theme.c:2029
+#: ../src/ui/theme.c:2096
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 
-#: ../src/ui/theme.c:2085
+#: ../src/ui/theme.c:2152
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 
-#: ../src/ui/theme.c:2094
+#: ../src/ui/theme.c:2161
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Coordinate expression had an operand where an operator was expected"
 
-#: ../src/ui/theme.c:2102
+#: ../src/ui/theme.c:2169
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Coordinate expression ended with an operator instead of an operand"
 
-#: ../src/ui/theme.c:2112
+#: ../src/ui/theme.c:2179
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1232,38 +1237,38 @@ msgstr ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 
-#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
+#: ../src/ui/theme.c:2330 ../src/ui/theme.c:2375
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Coordinate expression had unknown variable or constant \"%s\""
 
-#: ../src/ui/theme.c:2362
+#: ../src/ui/theme.c:2429
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Coordinate expression parser overflowed its buffer."
 
-#: ../src/ui/theme.c:2391
+#: ../src/ui/theme.c:2458
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Coordinate expression had a close parenthesis with no open parenthesis"
 
-#: ../src/ui/theme.c:2455
+#: ../src/ui/theme.c:2522
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Coordinate expression had an open parenthesis with no close parenthesis"
 
-#: ../src/ui/theme.c:2466
+#: ../src/ui/theme.c:2533
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Coordinate expression doesn't seem to have any operators or operands"
 
-#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
+#: ../src/ui/theme.c:2745 ../src/ui/theme.c:2765 ../src/ui/theme.c:2785
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Theme contained an expression that resulted in an error: %s\n"
 
-#: ../src/ui/theme.c:4410
+#: ../src/ui/theme.c:4482
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1272,25 +1277,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 
-#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
+#: ../src/ui/theme.c:5012 ../src/ui/theme.c:5037
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5013
+#: ../src/ui/theme.c:5085
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Failed to load theme \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
-#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
+#: ../src/ui/theme.c:5221 ../src/ui/theme.c:5228 ../src/ui/theme.c:5235
+#: ../src/ui/theme.c:5242 ../src/ui/theme.c:5249
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No <%s> set for theme \"%s\""
 
-#: ../src/ui/theme.c:5185
+#: ../src/ui/theme.c:5257
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1299,14 +1304,14 @@ msgstr ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 
-#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
+#: ../src/ui/theme.c:5707 ../src/ui/theme.c:5769 ../src/ui/theme.c:5832
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 
-#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
+#: ../src/ui/theme.c:5715 ../src/ui/theme.c:5777 ../src/ui/theme.c:5840
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constant \"%s\" has already been defined"
