@@ -327,7 +327,7 @@ Source.prototype = {
         this._channel.send_message_async(msg, 0, null);
     },
 
-    _presenceChanged: function (contact, presence, type, status, message) {
+    _presenceChanged: function (contact, presence, status, message) {
         let msg, shouldNotify, title;
 
         if (this._presence == presence)
