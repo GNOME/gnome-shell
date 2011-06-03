@@ -58,6 +58,7 @@ StatusMenuButton.prototype = {
         this._presence = new GnomeSession.Presence();
         this._presenceItems = {};
         this._session = new GnomeSession.SessionManager();
+        this._haveShutdown = true;
 
         this._account_mgr = Tp.AccountManager.dup()
 
@@ -90,11 +91,24 @@ StatusMenuButton.prototype = {
                                        Lang.bind(this, this._updateSwitchUser));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
                                        Lang.bind(this, this._updateLogout));
+
         this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
                                        Lang.bind(this, this._updateLockScreen));
         this._updateSwitchUser();
         this._updateLogout();
         this._updateLockScreen();
+
+        // Whether shutdown is available or not depends on both lockdown
+        // settings (disable-log-out) and Polkit policy - the latter doesn't
+        // notify, so we update the menu item each time the menu opens or
+        // the lockdown setting changes, which should be close enough.
+        this.menu.connect('open-state-changed', Lang.bind(this,
+            function(menu, open) {
+                if (open)
+                    this._updateHaveShutdown();
+            }));
+        this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
+                                       Lang.bind(this, this._updateHaveShutdown));
 
         this._upClient.connect('notify::can-suspend', Lang.bind(this, this._updateSuspendOrPowerOff));
     },
@@ -112,13 +126,25 @@ StatusMenuButton.prototype = {
     },
 
     _updateSessionSeparator: function() {
-        let showSeparator = this._loginScreenItem.actor.visible ||
-                            this._logoutItem.actor.visible ||
-                            this._lockScreenItem.actor.visible;
-        if (showSeparator)
+        let sessionItemsVisible = this._loginScreenItem.actor.visible ||
+                                  this._logoutItem.actor.visible ||
+                                  this._lockScreenItem.actor.visible;
+
+        let showSessionSeparator = sessionItemsVisible &&
+                                   this._suspendOrPowerOffItem.actor.visible;
+
+        let showSettingsSeparator = sessionItemsVisible ||
+                                    this._suspendOrPowerOffItem.actor.visible;
+
+        if (showSessionSeparator)
             this._sessionSeparator.actor.show();
         else
             this._sessionSeparator.actor.hide();
+
+        if (showSettingsSeparator)
+            this._settingsSeparator.actor.show();
+        else
+            this._settingsSeparator.actor.hide();
     },
 
     _updateSwitchUser: function() {
@@ -148,16 +174,34 @@ StatusMenuButton.prototype = {
         this._updateSessionSeparator();
     },
 
+    _updateHaveShutdown: function() {
+        this._session.CanShutdownRemote(Lang.bind(this,
+            function(result, error) {
+                if (!error) {
+                    this._haveShutdown = result;
+                    this._updateSuspendOrPowerOff();
+                }
+            }));
+    },
+
     _updateSuspendOrPowerOff: function() {
         this._haveSuspend = this._upClient.get_can_suspend();
 
         if (!this._suspendOrPowerOffItem)
             return;
 
+        if (!this._haveShutdown && !this._haveSuspend)
+            this._suspendOrPowerOffItem.actor.hide();
+        else
+            this._suspendOrPowerOffItem.actor.show();
+         this._updateSessionSeparator();
+
         // If we can't suspend show Power Off... instead
         // and disable the alt key
         if (!this._haveSuspend) {
             this._suspendOrPowerOffItem.updateText(_("Power Off..."), null);
+        } else if (!this._haveShutdown) {
+            this._suspendOrPowerOffItem.updateText(_("Suspend"), null);
         } else {
             this._suspendOrPowerOffItem.updateText(_("Suspend"), _("Power Off..."));
         }
@@ -203,6 +247,7 @@ StatusMenuButton.prototype = {
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
+        this._settingsSeparator = item;
 
         item = new PopupMenu.PopupMenuItem(_("Lock Screen"));
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));

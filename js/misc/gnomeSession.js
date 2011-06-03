@@ -109,7 +109,8 @@ const SessionManagerIface = {
     name: 'org.gnome.SessionManager',
     methods: [
         { name: 'Logout', inSignature: 'u', outSignature: '' },
-        { name: 'Shutdown', inSignature: '', outSignature: '' }
+        { name: 'Shutdown', inSignature: '', outSignature: '' },
+        { name: 'CanShutdown', inSignature: '', outSignature: 'b' }
     ]
 };
 
