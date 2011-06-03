@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-29 00:29+0200\n"
-"PO-Revision-Date: 2011-04-03 23:19+0200\n"
+"PO-Revision-Date: 2011-06-03 19:17+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -527,7 +527,7 @@ msgstr "Fora d'hora"
 
 #: ../js/ui/lookingGlass.js:656
 msgid "View Source"
-msgstr "Visualitza el font"
+msgstr "Mostra el codi font"
 
 #: ../js/ui/lookingGlass.js:662
 msgid "Web Page"
