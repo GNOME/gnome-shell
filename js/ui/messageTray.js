@@ -557,7 +557,7 @@ Notification.prototype = {
         this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
                                                vscrollbar_policy: this._scrollPolicy,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                               vfade: true });
+                                               style_class: 'vfade' });
         this._table.add(this._scrollArea, { row: 1, col: 1 });
         this._contentArea = new St.BoxLayout({ name: 'notification-body',
                                                vertical: true });
@@ -1002,7 +1002,7 @@ SummaryItem.prototype = {
         this.notificationStackView = new St.ScrollView({ name: source.isChat ? '' : 'summary-notification-stack-scrollview',
                                                          vscrollbar_policy: source.isChat ? Gtk.PolicyType.NEVER : Gtk.PolicyType.AUTOMATIC,
                                                          hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                                         vfade: true });
+                                                         style_class: 'vfade' });
         this.notificationStack = new St.BoxLayout({ name: 'summary-notification-stack',
                                                      vertical: true });
         this.notificationStackView.add_actor(this.notificationStack);

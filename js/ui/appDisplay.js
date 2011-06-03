@@ -44,7 +44,7 @@ AlphabeticalView.prototype = {
         this.actor = new St.ScrollView({ x_fill: true,
                                          y_fill: false,
                                          y_align: St.Align.START,
-                                         vfade: true });
+                                         style_class: 'vfade' });
         this.actor.add_actor(box);
         this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.actor.connect('notify::mapped', Lang.bind(this,

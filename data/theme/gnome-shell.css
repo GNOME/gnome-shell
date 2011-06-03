@@ -39,6 +39,11 @@ StScrollBar
   padding: 0px;
 }
 
+StScrollView.vfade
+{
+  -st-vfade-offset: 68px;
+}
+
 StScrollView StScrollBar
 {
   min-width: 16px;

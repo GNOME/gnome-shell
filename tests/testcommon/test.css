@@ -68,3 +68,7 @@ stage {
 .push-button:active {
     background: #ccbb99;
 }
+
+.vfade {
+    -st-fade-offset: 68px;
+}

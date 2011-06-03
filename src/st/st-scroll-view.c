@@ -97,7 +97,6 @@ struct _StScrollViewPrivate
   gfloat        row_size;
   gfloat        column_size;
 
-  gboolean      vfade;
   StScrollViewFade *vfade_effect;
 
   gboolean      row_size_set : 1;
@@ -115,7 +114,6 @@ enum {
   PROP_HSCROLLBAR_POLICY,
   PROP_VSCROLLBAR_POLICY,
   PROP_MOUSE_SCROLL,
-  PROP_VFADE
 };
 
 static void
@@ -143,51 +141,48 @@ st_scroll_view_get_property (GObject    *object,
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
       break;
-    case PROP_VFADE:
-      g_value_set_boolean (value, priv->vfade);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
 /**
- * st_scroll_view_set_vfade:
+ * st_scroll_view_update_vfade_effect:
  * @self: a #StScrollView
- * @vfade: Whether to enable the vertical fade effect
+ * @fade_offset: The length of the fade effect, in pixels.
  *
- * Sets whether to fade the content at the top and bottom of the area when not
- * fully scrolled to that edge.
+ * Sets the height of the fade area area in pixels. A value of 0
+ * disables the effect.
  */
-void
-st_scroll_view_set_vfade (StScrollView *self,
-                          gboolean vfade)
+static void
+st_scroll_view_update_vfade_effect (StScrollView *self,
+                                    float fade_offset)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
 
-  vfade = vfade != FALSE;
-  if (priv->vfade == vfade)
-    return;
-
-  priv->vfade = vfade;
-
-  if (vfade)
+  /* A fade amount of more than 0 enables the effect. */
+  if (fade_offset > 0.)
     {
-      if (priv->vfade_effect == NULL)
+      if (priv->vfade_effect == NULL) {
         priv->vfade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
 
-      clutter_actor_add_effect_with_name (CLUTTER_ACTOR (self), "vfade",
-                                          CLUTTER_EFFECT (priv->vfade_effect));
+        clutter_actor_add_effect_with_name (CLUTTER_ACTOR (self), "vfade",
+                                            CLUTTER_EFFECT (priv->vfade_effect));
+      }
+
+      g_object_set (priv->vfade_effect,
+                    "fade-offset", fade_offset,
+                    NULL);
     }
    else
     {
-      clutter_actor_remove_effect (CLUTTER_ACTOR (self), CLUTTER_EFFECT (priv->vfade_effect));
-      priv->vfade_effect = NULL;
+      if (priv->vfade_effect != NULL) {
+        clutter_actor_remove_effect (CLUTTER_ACTOR (self), CLUTTER_EFFECT (priv->vfade_effect));
+        priv->vfade_effect = NULL;
+      }
     }
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-
-  g_object_notify (G_OBJECT (self), "vfade");
 }
 
 static void
@@ -201,9 +196,6 @@ st_scroll_view_set_property (GObject      *object,
 
   switch (property_id)
     {
-    case PROP_VFADE:
-      st_scroll_view_set_vfade (self, g_value_get_boolean (value));
-      break;
     case PROP_MOUSE_SCROLL:
       st_scroll_view_set_mouse_scrolling (self,
                                           g_value_get_boolean (value));
@@ -661,7 +653,12 @@ st_scroll_view_allocate (ClutterActor          *actor,
 static void
 st_scroll_view_style_changed (StWidget *widget)
 {
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (widget)->priv;
+  StScrollView *self = ST_SCROLL_VIEW (widget);
+  StScrollViewPrivate *priv = self->priv;
+
+  StThemeNode *theme_node = st_widget_get_theme_node (widget);
+  gdouble fade_offset = st_theme_node_get_length (theme_node, "-st-vfade-offset");
+  st_scroll_view_update_vfade_effect (self, fade_offset);
 
   st_widget_style_changed (ST_WIDGET (priv->hscroll));
   st_widget_style_changed (ST_WIDGET (priv->vscroll));
@@ -798,14 +795,6 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                    PROP_MOUSE_SCROLL,
                                    pspec);
 
-  pspec = g_param_spec_boolean ("vfade",
-                                "Vertical Shadows",
-                                "Fade the content at the top and and bottom of the area unless fully scrolled to that edge",
-                                FALSE,
-                                G_PARAM_READWRITE);
-  g_object_class_install_property (object_class,
-                                   PROP_VFADE,
-                                   pspec);
 }
 
 static void

@@ -338,7 +338,7 @@ function toggleFade(button) {
 	button.label = 'No';
 	break;
     }
-    scrollView.set_vfade(vfade.label == 'Yes');
+    scrollView.set_style_class_name(button.label == 'Yes' ? 'vfade' : '');
 }
 
 vfade.connect('clicked', function() { toggleFade(vfade); });

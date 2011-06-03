@@ -192,7 +192,7 @@ SearchResults.prototype = {
 
         let scrollView = new St.ScrollView({ x_fill: true,
                                              y_fill: false,
-                                             vfade: true });
+                                             style_class: 'vfade' });
         scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         scrollView.add_actor(this._content);
 
