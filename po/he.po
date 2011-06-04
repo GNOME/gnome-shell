@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 13:51+0300\n"
-"PO-Revision-Date: 2011-06-04 13:51+0200\n"
+"POT-Creation-Date: 2011-06-04 15:05+0300\n"
+"PO-Revision-Date: 2011-06-04 15:06+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -861,7 +861,7 @@ msgstr "מנוטרל"
 #. under NetworkManager's control (and thus cannot be used in the menu)
 #: ../js/ui/status/network.js:535
 msgid "unmanaged"
-msgstr "ללא ניהול"
+msgstr "לא מנוהל"
 
 #: ../js/ui/status/network.js:537
 msgid "disconnecting..."
