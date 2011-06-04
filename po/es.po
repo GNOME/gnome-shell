@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-25 21:54+0000\n"
+"POT-Creation-Date: 2011-05-30 17:27+0000\n"
 "PO-Revision-Date: 2011-05-23 21:33+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
@@ -50,9 +50,6 @@ msgid "Framerate used for recording screencasts."
 msgstr "Tasa de fotogramas usada para grabar «screencast»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should not be loaded."
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. disabled-extensions overrides this setting for extensions "
@@ -63,17 +60,14 @@ msgstr ""
 "este ajuste para las extensiones que aparecen en ambas listas."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should not be loaded."
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded. This setting overrides enabled-extensions for "
 "extensions that appear in both lists."
 msgstr ""
 "Las extensiones de GNOME Shell tienen una propiedad uuid; esta clave lista "
-"las extensiones que no se deben cargar. Este ajuste sobreescribe"
-"«enabled-extensions» para las extensiones que aparecen en ambas listas."
+"las extensiones que no se deben cargar. Este ajuste sobreescribe«enabled-"
+"extensions» para las extensiones que aparecen en ambas listas."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -184,7 +178,6 @@ msgid "Uuids of extensions to disable"
 msgstr "Uuid de las extensiones que desactivar"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
-#| msgid "Uuids of extensions to disable"
 msgid "Uuids of extensions to enable"
 msgstr "Uuid de las extensiones que activar"
 
@@ -1046,7 +1039,7 @@ msgstr[1] "minutos"
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "Queda %d minuto"
-msgstr[1] "Queda %d minutos"
+msgstr[1] "Quedan %d minutos"
 
 #: ../js/ui/status/power.js:225
 msgid "AC adapter"
