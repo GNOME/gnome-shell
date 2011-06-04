@@ -40,6 +40,7 @@ static const gchar *fade_glsl_shader =
 "uniform float height;\n"
 "uniform float width;\n"
 "uniform float scrollbar_width;\n"
+"uniform float scrollbar_height;\n"
 "uniform float offset_bottom;\n"
 "uniform float offset_top;\n"
 "uniform bool rtl;\n"
@@ -52,10 +53,10 @@ static const gchar *fade_glsl_shader =
 " float ratio = 1.0;\n"
 " float fade_bottom_start = height - offset_bottom;\n"
 " float ratio_top = y / offset_top;\n"
-" float ratio_bottom = (height - y)/(height - fade_bottom_start);\n"
+" float ratio_bottom = (height - scrollbar_height - y)/(height - scrollbar_height - fade_bottom_start);\n"
 " bool in_scroll_area = ((rtl && x > scrollbar_width) || (!rtl && x < (width - scrollbar_width)));\n"
 " bool fade_top = y < offset_top && in_scroll_area;\n"
-" bool fade_bottom = y > fade_bottom_start && in_scroll_area;\n"
+" bool fade_bottom = y > fade_bottom_start && in_scroll_area && (y < (height - scrollbar_height));\n"
 "\n"
 " if (fade_top) {\n"
 "  ratio = ratio_top;\n"
@@ -81,6 +82,7 @@ struct _StScrollViewFade
   gint height_uniform;
   gint width_uniform;
   gint scrollbar_width_uniform;
+  gint scrollbar_height_uniform;
   gint offset_top_uniform;
   gint offset_bottom_uniform;
   gint rtl_uniform;
@@ -145,6 +147,8 @@ st_scroll_view_fade_pre_paint (ClutterEffect *effect)
         cogl_program_get_uniform_location (self->program, "width");
       self->scrollbar_width_uniform =
         cogl_program_get_uniform_location (self->program, "scrollbar_width");
+      self->scrollbar_height_uniform =
+        cogl_program_get_uniform_location (self->program, "scrollbar_height");
       self->rtl_uniform =
         cogl_program_get_uniform_location (self->program, "rtl");
       self->offset_top_uniform =
@@ -177,6 +181,13 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
 
   gdouble value, lower, upper, page_size;
   ClutterActor *vscroll = st_scroll_view_get_vscroll_bar (ST_SCROLL_VIEW (self->actor));
+  ClutterActor *hscroll = st_scroll_view_get_hscroll_bar (ST_SCROLL_VIEW (self->actor));
+  gboolean h_scroll_visible, v_scroll_visible;
+
+  g_object_get (ST_SCROLL_VIEW (self->actor),
+                "hscrollbar-visible", &h_scroll_visible,
+                "vscrollbar-visible", &v_scroll_visible,
+                NULL);
 
   if (self->program == COGL_INVALID_HANDLE)
     goto out;
@@ -204,7 +215,9 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
   if (self->width_uniform > -1)
     cogl_program_set_uniform_1f (self->program, self->width_uniform, clutter_actor_get_width (self->actor));
   if (self->scrollbar_width_uniform > -1)
-    cogl_program_set_uniform_1f (self->program, self->scrollbar_width_uniform, clutter_actor_get_width (vscroll));
+    cogl_program_set_uniform_1f (self->program, self->scrollbar_width_uniform, v_scroll_visible ? clutter_actor_get_width (vscroll) : 0);
+  if (self->scrollbar_height_uniform > -1)
+    cogl_program_set_uniform_1f (self->program, self->scrollbar_height_uniform, h_scroll_visible ? clutter_actor_get_height (hscroll) : 0);
   if (self->rtl_uniform > -1)
     cogl_program_set_uniform_1i (self->program, self->rtl_uniform, (st_widget_get_direction (ST_WIDGET (self->actor)) == ST_TEXT_DIRECTION_RTL));
 
@@ -416,6 +429,7 @@ st_scroll_view_fade_init (StScrollViewFade *self)
   self->height_uniform = -1;
   self->width_uniform = -1;
   self->scrollbar_width_uniform = -1;
+  self->scrollbar_height_uniform = -1;
   self->rtl_uniform = -1;
   self->offset_top_uniform = -1;
   self->offset_bottom_uniform = -1;
