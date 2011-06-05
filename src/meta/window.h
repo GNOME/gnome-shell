@@ -97,6 +97,7 @@ gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
 void meta_window_move(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);
 void meta_window_move_frame(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);
+void meta_window_move_resize_frame (MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw, int w, int h);
 void meta_window_move_to_monitor (MetaWindow *window, int monitor);
 void meta_window_resize(MetaWindow *window, gboolean user_op, int w, int h);
 

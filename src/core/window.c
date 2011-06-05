@@ -4997,6 +4997,41 @@ meta_window_move_between_rects (MetaWindow  *window,
 }
 
 /**
+ * meta_window_move_resize_frame:
+ * @window: a #MetaWindow
+ * @user_op: bool to indicate whether or not this is a user operation
+ * @root_x_nw: new x
+ * @root_y_nw: new y
+ * @w: desired width
+ * @h: desired height
+ *
+ * Resizes the window so that its outer bounds (including frame)
+ * fit within the given rect
+ */
+void
+meta_window_move_resize_frame (MetaWindow  *window,
+                               gboolean     user_op,
+                               int          root_x_nw,
+                               int          root_y_nw,
+                               int          w,
+                               int          h)
+{
+  if (window->frame)
+    {
+      MetaFrameBorders borders;
+      meta_frame_calc_borders (window->frame, &borders);
+      /* offset by the distance between the origin of the window
+       * and the origin of the enclosing window decorations ( + border)
+       */
+      root_x_nw += borders.visible.left;
+      root_y_nw += borders.visible.top;
+      w -= borders.visible.left + borders.visible.right;
+      h -= borders.visible.top + borders.visible.bottom;
+    }
+  meta_window_move_resize (window, user_op, root_x_nw, root_y_nw, w, h);
+}
+
+/**
  * meta_window_move_to_monitor:
  * @window: a #MetaWindow
  * @monitor: desired monitor index
