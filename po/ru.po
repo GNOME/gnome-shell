@@ -1,4 +1,3 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
@@ -6,18 +5,20 @@
 # Sergey V. Kovylov <serejka@gmail.com>, 2009.
 # Marina Zhurakhinskaya <marinaz@redhat.com>, 2009, 2010.
 # Sergey Davidoff <shnatsel@gmail.com>, 2010.
+# Yuri Kozlov <yuray@komyakino.ru>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-25 21:54+0000\n"
-"PO-Revision-Date: 2011-05-28 19:10+0300\n"
+"POT-Creation-Date: 2011-06-04 19:44+0000\n"
+"PO-Revision-Date: 2011-06-05 10:42+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -44,20 +45,12 @@ msgid "Framerate used for recording screencasts."
 msgstr "Частота смены кадров для записи скринкастов."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-#, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should not be loaded."
 msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should be loaded. disabled-extensions overrides this setting for extensions that appear in both lists."
-msgstr "У расширений GNOME Shell есть свойство uuid; этот ключ перечисляет раширения, которые не должны загружаться."
+msgstr "У расширений GNOME Shell есть свойство uuid; в этом ключе перечислены расширения, которые должны быть загружены. Значение disabled-extensions отменяет загрузку расширений, указанных в пользовательском и системном списке."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-#, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should not be loaded."
 msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded. This setting overrides enabled-extensions for extensions that appear in both lists."
-msgstr "У расширений GNOME Shell есть свойство uuid; этот ключ перечисляет раширения, которые не должны загружаться."
+msgstr "У расширений GNOME Shell есть свойство uuid; в этом ключе перечислены расширения, которые не должны загружаться. Это значение отменяет загрузку расширений, указанных в пользовательском и системном списке enabled-extensions."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -102,7 +95,7 @@ msgstr "Показывать секунды"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
-msgstr "Приложения, соответствующие этих идентификаторам, будут показаны в области изобранных приложений."
+msgstr "Приложения, соответствующие этих идентификаторам, будут показаны в области избранных приложений."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
@@ -122,13 +115,11 @@ msgstr "Обычно, оболочка отслеживает активные �
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to disable"
-msgstr "Выключить расширения с uuid"
+msgstr "Uuid выключенных расширений"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
-#, fuzzy
-#| msgid "Uuids of extensions to disable"
 msgid "Uuids of extensions to enable"
-msgstr "Выключить расширения с uuid"
+msgstr "Uuid включенных расширений"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
@@ -308,14 +299,14 @@ msgstr "Нет событий"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:717
-#: ../js/ui/telepathyClient.js:491
+#: ../js/ui/telepathyClient.js:500
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
-#: ../js/ui/telepathyClient.js:494
+#: ../js/ui/telepathyClient.js:503
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
@@ -506,7 +497,7 @@ msgstr "Веб-страница"
 msgid "Open"
 msgstr "Открыть"
 
-#: ../js/ui/messageTray.js:2191
+#: ../js/ui/messageTray.js:2197
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -563,7 +554,7 @@ msgstr "МЕСТА И УСТРОЙСТВА"
 
 #: ../js/ui/polkitAuthenticationAgent.js:72
 msgid "Authentication Required"
-msgstr "Проверка подлинности"
+msgstr "Требуется аутентификация"
 
 #: ../js/ui/polkitAuthenticationAgent.js:106
 msgid "Administrator"
@@ -571,7 +562,7 @@ msgstr "Администратор"
 
 #: ../js/ui/polkitAuthenticationAgent.js:174
 msgid "Authenticate"
-msgstr "Подтвердить"
+msgstr "Аутентифицировать"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -594,7 +585,7 @@ msgstr "Пароль:"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:203
+#: ../js/ui/runDialog.js:208
 msgid "Please enter a command:"
 msgstr "Введите команду:"
 
@@ -826,22 +817,20 @@ msgstr "выключено"
 #. under NetworkManager's control (and thus cannot be used in the menu)
 #: ../js/ui/status/network.js:535
 msgid "unmanaged"
-msgstr ""
+msgstr "не управляется"
 
 #: ../js/ui/status/network.js:537
-#, fuzzy
-#| msgid "connecting..."
 msgid "disconnecting..."
-msgstr "соединение…"
+msgstr "отключение…"
 
 #: ../js/ui/status/network.js:543
 msgid "connecting..."
-msgstr "соединение…"
+msgstr "подключение…"
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:546
 msgid "authentication required"
-msgstr "требуется проверка подлинности"
+msgstr "требуется аутентификация"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
@@ -1066,22 +1055,22 @@ msgstr "Громкость"
 msgid "Microphone"
 msgstr "Микрофон"
 
-#: ../js/ui/telepathyClient.js:330
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is online."
 msgstr "%s в сети."
 
-#: ../js/ui/telepathyClient.js:335
+#: ../js/ui/telepathyClient.js:344
 #, c-format
 msgid "%s is offline."
 msgstr "%s не в сети."
 
-#: ../js/ui/telepathyClient.js:338
+#: ../js/ui/telepathyClient.js:347
 #, c-format
 msgid "%s is away."
 msgstr "%s ушёл."
 
-#: ../js/ui/telepathyClient.js:341
+#: ../js/ui/telepathyClient.js:350
 #, c-format
 msgid "%s is busy."
 msgstr "%s занят."
@@ -1089,14 +1078,14 @@ msgstr "%s занят."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:483
+#: ../js/ui/telepathyClient.js:492
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Отправлено %X %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:528
+#: ../js/ui/telepathyClient.js:537
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s теперь называется %s"
@@ -1167,7 +1156,7 @@ msgstr "По умолчанию"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Пользователь отклонил диалог проверки подлинности"
+msgstr "Пользователь отклонил диалог аутентификации"
 
 #: ../src/shell-util.c:93
 msgid "Home Folder"
@@ -1189,33 +1178,3 @@ msgstr "Файловая система"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "Less than a minute ago"
-#~ msgstr "Меньше минуты назад"
-
-#~ msgid "%d minute ago"
-
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "%d минуту назад"
-#~ msgstr[1] "%d минуты назад"
-#~ msgstr[2] "%d минут назад"
-
-#~ msgid "%d hour ago"
-
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "%d час назад"
-#~ msgstr[1] "%d часа назад"
-#~ msgstr[2] "%d часов назад"
-
-#~ msgid "%d day ago"
-
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "%d день назад"
-#~ msgstr[1] "%d дня назад"
-#~ msgstr[2] "%d дней назад"
-
-#~ msgid "%d week ago"
-
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "%d неделю назад"
-#~ msgstr[1] "%d недели назад"
-#~ msgstr[2] "%d недель назад"
