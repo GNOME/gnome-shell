@@ -8,6 +8,7 @@ const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
+const ScreenSaver = imports.misc.screenSaver;
 
 // This manages the shell "chrome"; the UI that's visible in the
 // normal mode (ie, outside the Overview), that surrounds the main
@@ -48,6 +49,14 @@ Chrome.prototype = {
                              Lang.bind(this, this._overviewShowing));
         Main.overview.connect('hidden',
                              Lang.bind(this, this._overviewHidden));
+
+        this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
+        this._screenSaverProxy.connect('ActiveChanged', Lang.bind(this, this._onScreenSaverActiveChanged));
+        this._screenSaverProxy.GetActiveRemote(Lang.bind(this,
+            function(result, err) {
+                if (!err)
+                    this._onScreenSaverActiveChanged(this._screenSaverProxy, result);
+            }));
 
         this._relayout();
     },
@@ -209,6 +218,11 @@ Chrome.prototype = {
 
         this._updateFullscreen();
         this._updateVisibility();
+        this._queueUpdateRegions();
+    },
+
+    _onScreenSaverActiveChanged: function(proxy, screenSaverActive) {
+        this.actor.visible = !screenSaverActive;
         this._queueUpdateRegions();
     },
 
