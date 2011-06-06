@@ -3132,6 +3132,127 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
+/* This calculates a distance into the view frustum to position the
+ * stage so there is a decent amount of space to position geometry
+ * between the stage and the near clipping plane.
+ *
+ * Some awkward issues with this problem are:
+ * - It's not possible to have a gap as large as the stage size with
+ *   a fov > 53° which is basically always the case since the default
+ *   fov is 60°.
+ *    - This can be deduced if you consider that this requires a
+ *      triangle as wide as it is deep to fit in the frustum in front
+ *      of the z_near plane. That triangle will always have an angle
+ *      of 53.13° at the point sitting on the z_near plane, but if the
+ *      frustum has a wider fov angle the left/right clipping planes
+ *      can never converge with the two corners of our triangle no
+ *      matter what size the triangle has.
+ * - With a fov > 53° there is a trade off between maximizing the gap
+ *   size relative to the stage size but not loosing depth precision.
+ * - Perhaps ideally we wouldn't just consider the fov on the y-axis
+ *   that is usually used to define a perspective, we would consider
+ *   the fov of the axis with the largest stage size so the gap would
+ *   accommodate that size best.
+ *
+ * After going around in circles a few times with how to handle these
+ * issues, we decided in the end to go for the simplest solution to
+ * start with instead of an elaborate function that handles arbitrary
+ * fov angles that we currently have no use-case for.
+ *
+ * The solution assumes a fovy of 60° and for that case gives a gap
+ * that's 85% of the stage height. We can consider more elaborate
+ * functions if necessary later.
+ *
+ * One guide we had to steer the gap size we support is the
+ * interactive test, test-texture-quality which expects to animate an
+ * actor to +400 on the z axis with a stage size of 640x480. A gap
+ * that's 85% of the stage height gives a gap of 408 in that case.
+ */
+static float
+calculate_z_translation (float z_near)
+{
+  /* This solution uses fairly basic trigonometry, but is seems worth
+   * clarifying the particular geometry we are looking at in-case
+   * anyone wants to develop this further later. Not sure how well an
+   * ascii diagram is going to work :-)
+   *
+   *    |--- stage_height ---|
+   *    |     stage line     |
+   *   ╲━━━━━━━━━━━━━━━━━━━━━╱------------
+   *    ╲.  (2)   │        .╱       |   |
+   *   C ╲ .      │      . ╱     gap|   |
+   * =0.5°╲  . a  │    .  ╱         |   |
+   *      b╲(1). D│  .   ╱          |   |
+   *        ╲   B.│.    ╱near plane |   |
+   *      A= ╲━━━━━━━━━╱-------------   |
+   *     120° ╲ c │   ╱  |            z_2d
+   *           ╲  │  ╱  z_near          |
+   *       left ╲ │ ╱    |              |
+   *       clip  60°fovy |              |
+   *       plane  ╳----------------------
+   *              |
+   *              |
+   *         origin line
+   *
+   * The area of interest is the triangle labeled (1) at the top left
+   * marked with the ... line (a) from where the origin line crosses
+   * the near plane to the top left where the stage line cross the
+   * left clip plane.
+   *
+   * The sides of the triangle are a, b and c and the corresponding
+   * angles opposite those sides are A, B and C.
+   *
+   * The angle of C is what trades off the gap size we have relative
+   * to the stage size vs the depth precision we have.
+   *
+   * As mentioned above we arove at the angle for C is by working
+   * backwards from how much space we want for test-texture-quality.
+   * With a stage_height of 480 we want a gap > 400, ideally we also
+   * wanted a somewhat round number as a percentage of the height for
+   * documentation purposes. ~87% or a gap of ~416 is the limit
+   * because that's where we approach a C angle of 0° and effectively
+   * loose all depth precision.
+   *
+   * So for our test app with a stage_height of 480 if we aim for a
+   * gap of 408 (85% of 480) we can get the angle D as
+   * atan (stage_height/2/408) = 30.5°.
+   *
+   * That gives us the angle for B as 90° - 30.5° = 59.5°
+   *
+   * We can already determine that A has an angle of (fovy/2 + 90°) =
+   * 120°
+   *
+   * Therefore C = 180 - A - B = 0.5°
+   *
+   * The length of c = z_near * tan (30°)
+   *
+   * Now we can use the rule a/SinA = c/SinC to calculate the
+   * length of a. After some rearranging that gives us:
+   *
+   *      a              c
+   *  ----------  =  ----------
+   *  sin (120°)     sin (0.5°)
+   *
+   *      c * sin (120°)
+   *  a = --------------
+   *        sin (0.5°)
+   *
+   * And with that we can determine z_2d = cos (D) * a =
+   * cos (30.5°) * a + z_near:
+   *
+   *         c * sin (120°) * cos (30.5°)
+   *  z_2d = --------------------------- + z_near
+   *                 sin (0.5°)
+   */
+#define _DEG_TO_RAD (G_PI / 180.0)
+  return z_near * tanf (30.0f * _DEG_TO_RAD) *
+         sinf (120.0f * _DEG_TO_RAD) * cosf (30.5f * _DEG_TO_RAD) /
+         sinf (0.5f * _DEG_TO_RAD) +
+         z_near;
+#undef _DEG_TO_RAD
+   /* We expect the compiler should boil this down to z_near * CONSTANT */
+}
+
 void
 _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 {
@@ -3140,6 +3261,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
   if (priv->dirty_viewport)
     {
       ClutterPerspective perspective;
+      float z_2d;
 
       CLUTTER_NOTE (PAINT,
                     "Setting up the viewport { w:%f, h:%f }",
@@ -3153,20 +3275,34 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
       perspective = priv->perspective;
 
       /* Ideally we want to regenerate the perspective matrix whenever
-         the size changes but if the user has provided a custom matrix
-         then we don't want to override it */
+       * the size changes but if the user has provided a custom matrix
+       * then we don't want to override it */
       if (!priv->has_custom_perspective)
         {
           perspective.aspect = priv->viewport[2] / priv->viewport[3];
+          z_2d = calculate_z_translation (perspective.z_near);
+
+#define _DEG_TO_RAD (G_PI / 180.0)
+          /* NB: z_2d is only enough room for 85% of the stage_height between
+           * the stage and the z_near plane. For behind the stage plane we
+           * want a more consistent gap of 10 times the stage_height before
+           * hitting the far plane so we calculate that relative to the final
+           * height of the stage plane at the z_2d_distance we got... */
+          perspective.z_far = z_2d +
+            tanf ((perspective.fovy / 2.0f) * _DEG_TO_RAD) * z_2d * 20.0f;
+#undef _DEG_TO_RAD
+
           clutter_stage_set_perspective_internal (stage, &perspective);
         }
+      else
+        z_2d = calculate_z_translation (perspective.z_near);
 
       cogl_matrix_init_identity (&priv->view);
       cogl_matrix_view_2d_in_perspective (&priv->view,
                                           perspective.fovy,
                                           perspective.aspect,
                                           perspective.z_near,
-                                          50, /* depth of 2d plane */
+                                          z_2d,
                                           priv->viewport[2],
                                           priv->viewport[3]);
 
