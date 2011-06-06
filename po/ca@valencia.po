@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-29 18:37+0200\n"
-"PO-Revision-Date: 2011-04-03 23:19+0200\n"
+"POT-Creation-Date: 2011-06-06 07:37+0200\n"
+"PO-Revision-Date: 2011-06-06 07:37+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -362,13 +362,13 @@ msgid "Nothing Scheduled"
 msgstr "No hi ha res apuntat"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:491
+#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:500
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:494
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:503
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %d de %B de %Y"
@@ -544,7 +544,7 @@ msgstr "Fora d'hora"
 
 #: ../js/ui/lookingGlass.js:662
 msgid "View Source"
-msgstr "Visualitza el font"
+msgstr "Mostra el codi font"
 
 #: ../js/ui/lookingGlass.js:668
 msgid "Web Page"
@@ -554,7 +554,7 @@ msgstr "Pàgina web"
 msgid "Open"
 msgstr "Obri"
 
-#: ../js/ui/messageTray.js:2191
+#: ../js/ui/messageTray.js:2197
 msgid "System Information"
 msgstr "Informació de l'ordinador"
 
@@ -642,7 +642,7 @@ msgstr "Contrasenya:"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:203
+#: ../js/ui/runDialog.js:208
 msgid "Please enter a command:"
 msgstr "Introduïu una orde:"
 
@@ -1100,22 +1100,22 @@ msgstr "Volum"
 msgid "Microphone"
 msgstr "Micròfon"
 
-#: ../js/ui/telepathyClient.js:330
+#: ../js/ui/telepathyClient.js:339
 #, c-format
 msgid "%s is online."
 msgstr "%s és en línia."
 
-#: ../js/ui/telepathyClient.js:335
+#: ../js/ui/telepathyClient.js:344
 #, c-format
 msgid "%s is offline."
 msgstr "%s no hi és."
 
-#: ../js/ui/telepathyClient.js:338
+#: ../js/ui/telepathyClient.js:347
 #, c-format
 msgid "%s is away."
 msgstr "%s és lluny."
 
-#: ../js/ui/telepathyClient.js:341
+#: ../js/ui/telepathyClient.js:350
 #, c-format
 msgid "%s is busy."
 msgstr "%s està ocupat."
@@ -1123,14 +1123,14 @@ msgstr "%s està ocupat."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:483
+#: ../js/ui/telepathyClient.js:492
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviat a les %X del %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:528
+#: ../js/ui/telepathyClient.js:537
 #, c-format
 msgid "%s is now known as %s"
 msgstr ""
@@ -1155,7 +1155,7 @@ msgstr "S'ha acabat d'iniciar %s"
 #: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "'%s' is ready"
-msgstr "«%s» ja està apunt"
+msgstr "«%s» ja està a punt"
 
 #. translators:
 #. * The number of sound outputs on a particular device
