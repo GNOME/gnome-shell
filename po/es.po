@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-13 14:46+0000\n"
-"PO-Revision-Date: 2011-05-14 18:12+0200\n"
+"POT-Creation-Date: 2011-06-02 20:17+0000\n"
+"PO-Revision-Date: 2011-06-06 12:58+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -170,12 +170,10 @@ msgid "Opacity of an actor"
 msgstr "Opacidad de un actor"
 
 #: ../clutter/clutter-actor.c:4163
-#| msgid "Offscreen"
 msgid "Offscreen redirect"
 msgstr "Redirección fuera de la pantalla"
 
 #: ../clutter/clutter-actor.c:4164
-#| msgid "Whether the text should be a single line"
 msgid "Whether to flatten the actor into a single image"
 msgstr "Indica si se debe aplanar el actor en una única imagen"
 
@@ -777,7 +775,7 @@ msgid "The layout manager used by the box"
 msgstr "El gestor de distribución usado por la caja"
 
 #: ../clutter/clutter-box.c:557 ../clutter/clutter-rectangle.c:267
-#: ../clutter/clutter-stage.c:1710
+#: ../clutter/clutter-stage.c:1718
 msgid "Color"
 msgstr "Color"
 
@@ -1230,7 +1228,8 @@ msgid "Playing"
 msgstr "Reproduciendo"
 
 #: ../clutter/clutter-media.c:92
-msgid "Wheter the actor is playing"
+#| msgid "Wheter the actor is playing"
+msgid "Whether the actor is playing"
 msgstr "Indica si el actor se está reproduciendo"
 
 #: ../clutter/clutter-media.c:106
@@ -1423,8 +1422,7 @@ msgstr "Orden de tipografías del subpíxel"
 
 #: ../clutter/clutter-settings.c:493
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
-msgstr ""
-"El tipo de suavizado del subpíxel («none», «rgb», «bgr», «vrgb», «vbgr»)"
+msgstr "El tipo de suavizado del subpíxel («none», «rgb», «bgr», «vrgb», «vbgr»)"
 
 #: ../clutter/clutter-shader.c:249
 msgid "Vertex Source"
@@ -1499,106 +1497,106 @@ msgstr "El borde de la fuente que se debe romper"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "El desplazamiento en píxeles que aplicar a la restricción"
 
-#: ../clutter/clutter-stage.c:1652
+#: ../clutter/clutter-stage.c:1660
 msgid "Fullscreen Set"
 msgstr "Conjunto a pantalla completa"
 
-#: ../clutter/clutter-stage.c:1653
+#: ../clutter/clutter-stage.c:1661
 msgid "Whether the main stage is fullscreen"
 msgstr "Indica si el escenario principal está a pantalla completa"
 
-#: ../clutter/clutter-stage.c:1669
+#: ../clutter/clutter-stage.c:1677
 msgid "Offscreen"
 msgstr "Fuera de la pantalla"
 
-#: ../clutter/clutter-stage.c:1670
+#: ../clutter/clutter-stage.c:1678
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 "Indica si el escenario principal se debe renderizar fuera de la pantalla"
 
-#: ../clutter/clutter-stage.c:1682 ../clutter/clutter-text.c:2728
+#: ../clutter/clutter-stage.c:1690 ../clutter/clutter-text.c:2728
 msgid "Cursor Visible"
 msgstr "Cursor visible"
 
-#: ../clutter/clutter-stage.c:1683
+#: ../clutter/clutter-stage.c:1691
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Indica si el puntero del ratón es visible en el escenario principal"
 
-#: ../clutter/clutter-stage.c:1697
+#: ../clutter/clutter-stage.c:1705
 msgid "User Resizable"
 msgstr "Redimensionable por el usuario"
 
-#: ../clutter/clutter-stage.c:1698
+#: ../clutter/clutter-stage.c:1706
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 "Indica si el escenario se puede redimensionar mediante interacción del "
 "usuario"
 
-#: ../clutter/clutter-stage.c:1711
+#: ../clutter/clutter-stage.c:1719
 msgid "The color of the stage"
 msgstr "El color del escenario"
 
-#: ../clutter/clutter-stage.c:1725
+#: ../clutter/clutter-stage.c:1733
 msgid "Perspective"
 msgstr "Perspectiva"
 
-#: ../clutter/clutter-stage.c:1726
+#: ../clutter/clutter-stage.c:1734
 msgid "Perspective projection parameters"
 msgstr "Parámetros de proyección de perspectiva"
 
-#: ../clutter/clutter-stage.c:1741
+#: ../clutter/clutter-stage.c:1749
 msgid "Title"
 msgstr "Título"
 
-#: ../clutter/clutter-stage.c:1742
+#: ../clutter/clutter-stage.c:1750
 msgid "Stage Title"
 msgstr "Título del escenario"
 
-#: ../clutter/clutter-stage.c:1757
+#: ../clutter/clutter-stage.c:1765
 msgid "Use Fog"
 msgstr "Usar niebla"
 
-#: ../clutter/clutter-stage.c:1758
+#: ../clutter/clutter-stage.c:1766
 msgid "Whether to enable depth cueing"
 msgstr "Indica si activar el indicador de profundidad"
 
-#: ../clutter/clutter-stage.c:1772
+#: ../clutter/clutter-stage.c:1780
 msgid "Fog"
 msgstr "Niebla"
 
-#: ../clutter/clutter-stage.c:1773
+#: ../clutter/clutter-stage.c:1781
 msgid "Settings for the depth cueing"
 msgstr "Configuración para el indicador de profundidad"
 
-#: ../clutter/clutter-stage.c:1789
+#: ../clutter/clutter-stage.c:1797
 msgid "Use Alpha"
 msgstr "Usar alfa"
 
-#: ../clutter/clutter-stage.c:1790
+#: ../clutter/clutter-stage.c:1798
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Indica si se usa la componente alfa del color del escenario"
 
-#: ../clutter/clutter-stage.c:1806
+#: ../clutter/clutter-stage.c:1814
 msgid "Key Focus"
 msgstr "Foco de la tecla"
 
-#: ../clutter/clutter-stage.c:1807
+#: ../clutter/clutter-stage.c:1815
 msgid "The currently key focused actor"
 msgstr "El actor que actualmente tiene el foco"
 
-#: ../clutter/clutter-stage.c:1823
+#: ../clutter/clutter-stage.c:1831
 msgid "No Clear Hint"
 msgstr "No limpiar el contorno"
 
-#: ../clutter/clutter-stage.c:1824
+#: ../clutter/clutter-stage.c:1832
 msgid "Whether the stage should clear its contents"
 msgstr "Indica si el escenario debe limpiar su contenido"
 
-#: ../clutter/clutter-stage.c:1837
+#: ../clutter/clutter-stage.c:1845
 msgid "Accept Focus"
 msgstr "Aceptar foco"
 
-#: ../clutter/clutter-stage.c:1838
+#: ../clutter/clutter-stage.c:1846
 msgid "Whether the stage should accept focus on show"
 msgstr "Indica si el escenario debe aceptar el foco al mostrarse"
 
@@ -1859,17 +1857,14 @@ msgid "Whether the text should be a single line"
 msgstr "Indica si el texto debe estar en una única línea"
 
 #: ../clutter/clutter-text.c:3028 ../clutter/clutter-text.c:3029
-#| msgid "Selection Color"
 msgid "Selected Text Color"
 msgstr "Color del texto seleccionado"
 
 #: ../clutter/clutter-text.c:3043
-#| msgid "Selection Color Set"
 msgid "Selected Text Color Set"
 msgstr "Conjunto de colores del texto seleccionado"
 
 #: ../clutter/clutter-text.c:3044
-#| msgid "Whether the selection color has been set"
 msgid "Whether the selected text color has been set"
 msgstr "Indica si se ha establecido el color del texto seleccionado"
 
@@ -1880,8 +1875,8 @@ msgstr "Sincronizar tamaño del actor"
 #: ../clutter/clutter-texture.c:1004
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
-"Sincronizar automáticamente el tamaño del actor a las dimensiones de "
-"«pixbuf» subyacente"
+"Sincronizar automáticamente el tamaño del actor a las dimensiones de «pixbuf» "
+"subyacente"
 
 #: ../clutter/clutter-texture.c:1011
 msgid "Disable Slicing"
@@ -2045,8 +2040,8 @@ msgstr "Ruta al nodo del dispositivo"
 #: ../clutter/glx/clutter-backend-glx.c:107
 msgid "Set to 'none' or '0' to disable throttling framerate to vblank"
 msgstr ""
-"Establecer a «none» o a «0» para desactivar el límite de imágenes por "
-"segundo de «vblank»"
+"Establecer a «none» o a «0» para desactivar el límite de imágenes por segundo "
+"de «vblank»"
 
 #: ../clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
