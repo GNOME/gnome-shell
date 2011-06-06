@@ -180,7 +180,8 @@ static const GDebugKey clutter_paint_debug_keys[] = {
   { "disable-clipped-redraws", CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS },
   { "redraws", CLUTTER_DEBUG_REDRAWS },
   { "paint-volumes", CLUTTER_DEBUG_PAINT_VOLUMES },
-  { "disable-culling", CLUTTER_DEBUG_DISABLE_CULLING }
+  { "disable-culling", CLUTTER_DEBUG_DISABLE_CULLING },
+  { "disable-offscreen-redirect", CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT }
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE

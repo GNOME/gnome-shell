@@ -2700,6 +2700,10 @@ needs_flatten_effect (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
 
+  if (G_UNLIKELY (clutter_paint_debug_flags &
+                  CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT))
+    return FALSE;
+
   switch (priv->offscreen_redirect)
     {
     case CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY:
