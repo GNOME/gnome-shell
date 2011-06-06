@@ -571,10 +571,11 @@ meta_run (void)
 void
 meta_quit (MetaExitCode code)
 {
-  meta_exit_code = code;
-
   if (g_main_loop_is_running (meta_main_loop))
-    g_main_loop_quit (meta_main_loop);
+    {
+      meta_exit_code = code;
+      g_main_loop_quit (meta_main_loop);
+    }
 }
 
 /**
