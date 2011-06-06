@@ -9,13 +9,14 @@
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 # Fran Dieguez <fran.dieguez@glug.es>, 2009.
 # Fran Diéguez <frandieguez@gnome.org>, 2010, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-06 11:12+0200\n"
-"PO-Revision-Date: 2011-03-22 00:54+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2011-06-06 11:22+0200\n"
+"PO-Revision-Date: 2011-06-06 11:23+0200\n"
+"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
@@ -354,9 +355,8 @@ msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> non está respondendo."
 
 #: ../src/core/delete.c:114
-#, fuzzy
 msgid "Application is not responding."
-msgstr "<tt>%s</tt> non está respondendo."
+msgstr "O Aplicativo non está respondendo."
 
 #: ../src/core/delete.c:119
 msgid ""
@@ -1196,7 +1196,7 @@ msgstr "Non foi posíbel analizar a cor «%s»"
 #: ../src/ui/theme.c:1481
 #, c-format
 msgid "Failed to retrieve color %s[%s] from GTK+ theme.\n"
-msgstr ""
+msgstr "Produciuse un fallo ao obter a cor %s[%s] desde o tema de GTK+.\n"
 
 #: ../src/ui/theme.c:1713
 #, c-format
