@@ -40,17 +40,17 @@
  *   <title>Implementing a ClutterEffect</title>
  *   <para>
  *     Creating a sub-class of #ClutterEffect requires overriding the
- *     ‘run’ method. The implementation of the function should look
+ *     ‘paint’ method. The implementation of the function should look
  *     something like this:
  *   </para>
  *   <programlisting>
- * void effect_run (ClutterEffect *effect, ClutterEffectRunFlags flags)
+ * void effect_paint (ClutterEffect *effect, ClutterEffectRunFlags flags)
  * {
  *   /&ast; Set up initialisation of the paint such as binding a
  *      CoglOffscreen or other operations &ast;/
  *
  *   /&ast; Chain to the next item in the paint sequence. This will either call
- *      ‘run’ on the next effect or just paint the actor if this is
+ *      ‘paint’ on the next effect or just paint the actor if this is
  *      the last effect. &ast;/
  *   ClutterActor *actor =
  *     clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
@@ -73,7 +73,7 @@
  *     cached image is still valid.
  *   </para>
  *   <para>
- *     The ‘run’ virtual was added in Clutter 1.8. Prior to that there
+ *     The ‘paint’ virtual was added in Clutter 1.8. Prior to that there
  *     were two separate functions as follows.
  *   </para>
  *   <itemizedlist>
@@ -90,10 +90,10 @@
  *   #ClutterActor's paint sequence.</para>
  *   <para>
  *     With these two functions it is not possible to skip the rest of
- *     the paint sequence. The default implementation of the ‘run’
+ *     the paint sequence. The default implementation of the ‘paint’
  *     virtual calls pre_paint(), clutter_actor_continue_paint() and
  *     then post_paint() so that existing actors that aren't using the
- *     run virtual will continue to work. New actors using the run
+ *     paint virtual will continue to work. New actors using the paint
  *     virtual do not need to implement pre or post paint.
  *   </para>
  *   <example id="ClutterEffect-example">
@@ -102,7 +102,7 @@
  *     painted "behind" the actor, while another will be painted "on
  *     top" of the actor.  The <function>set_actor()</function>
  *     implementation will create the two materials used for the two
- *     different rectangles; the <function>run()</function> function
+ *     different rectangles; the <function>paint()</function> function
  *     will paint the first material using cogl_rectangle(), before
  *     continuing and then it will paint paint the second material
  *     after.</para>
@@ -156,7 +156,7 @@
  *  }
  *
  *  static gboolean
- *  my_effect_run (ClutterEffect *effect)
+ *  my_effect_paint (ClutterEffect *effect)
  *  {
  *    MyEffect *self = MY_EFFECT (effect);
  *    gfloat width, height;
@@ -182,7 +182,7 @@
  *
  *    meta_class-&gt;set_actor = my_effect_set_actor;
  *
- *    klass-&gt;run = my_effect_run;
+ *    klass-&gt;paint = my_effect_paint;
  *  }
  *     </programlisting>
  *   </example>
@@ -228,15 +228,15 @@ clutter_effect_real_get_paint_volume (ClutterEffect      *effect,
 }
 
 static void
-clutter_effect_real_run (ClutterEffect         *effect,
-                         ClutterEffectRunFlags  flags)
+clutter_effect_real_paint (ClutterEffect         *effect,
+                           ClutterEffectRunFlags  flags)
 {
   ClutterActorMeta *actor_meta = CLUTTER_ACTOR_META (effect);
   ClutterActor *actor;
   gboolean pre_paint_succeeded;
 
   /* The default implementation provides a compatibility wrapper for
-     effects that haven't migrated to use the 'run' virtual yet. This
+     effects that haven't migrated to use the 'paint' virtual yet. This
      just calls the old pre and post virtuals before chaining on */
 
   pre_paint_succeeded = _clutter_effect_pre_paint (effect);
@@ -275,7 +275,7 @@ clutter_effect_class_init (ClutterEffectClass *klass)
   klass->pre_paint = clutter_effect_real_pre_paint;
   klass->post_paint = clutter_effect_real_post_paint;
   klass->get_paint_volume = clutter_effect_real_get_paint_volume;
-  klass->run = clutter_effect_real_run;
+  klass->paint = clutter_effect_real_paint;
 }
 
 static void
@@ -300,12 +300,12 @@ _clutter_effect_post_paint (ClutterEffect *effect)
 }
 
 void
-_clutter_effect_run (ClutterEffect         *effect,
-                     ClutterEffectRunFlags  flags)
+_clutter_effect_paint (ClutterEffect         *effect,
+                       ClutterEffectRunFlags  flags)
 {
   g_return_if_fail (CLUTTER_IS_EFFECT (effect));
 
-  CLUTTER_EFFECT_GET_CLASS (effect)->run (effect, flags);
+  CLUTTER_EFFECT_GET_CLASS (effect)->paint (effect, flags);
 }
 
 gboolean
@@ -319,10 +319,10 @@ _clutter_effect_get_paint_volume (ClutterEffect      *effect,
 }
 
 /**
- * clutter_effect_queue_rerun:
+ * clutter_effect_queue_repaint:
  * @effect: A #ClutterEffect which needs redrawing
  *
- * Queues a rerun of the effect. The effect can detect when the ‘run’
+ * Queues a repaint of the effect. The effect can detect when the ‘paint’
  * method is called as a result of this function because it will not
  * have the %CLUTTER_EFFECT_RUN_ACTOR_DIRTY flag set. In that case the
  * effect is free to assume that the actor has not changed its
@@ -339,7 +339,7 @@ _clutter_effect_get_paint_volume (ClutterEffect      *effect,
  * red tint to an actor by redirecting it through a CoglOffscreen
  * might have a property to specify the level of tint. When this value
  * changes, the underlying actor doesn't need to be redrawn so the
- * effect can call clutter_effect_queue_rerun() to make sure the
+ * effect can call clutter_effect_queue_repaint() to make sure the
  * effect is repainted.
  *
  * Note however that modifying the position of the parent of an actor
@@ -361,7 +361,7 @@ _clutter_effect_get_paint_volume (ClutterEffect      *effect,
  * Since: 1.8
  */
 void
-clutter_effect_queue_rerun (ClutterEffect *effect)
+clutter_effect_queue_repaint (ClutterEffect *effect)
 {
   ClutterActor *actor;
 

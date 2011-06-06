@@ -9,7 +9,7 @@ gboolean        _clutter_effect_pre_paint               (ClutterEffect      *eff
 void            _clutter_effect_post_paint              (ClutterEffect      *effect);
 gboolean        _clutter_effect_get_paint_volume        (ClutterEffect      *effect,
                                                          ClutterPaintVolume *volume);
-void            _clutter_effect_run                     (ClutterEffect      *effect,
+void            _clutter_effect_paint                   (ClutterEffect      *effect,
                                                          ClutterEffectRunFlags flags);
 
 G_END_DECLS

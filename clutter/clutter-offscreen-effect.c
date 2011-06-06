@@ -407,8 +407,8 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
 }
 
 static void
-clutter_offscreen_effect_run (ClutterEffect         *effect,
-                              ClutterEffectRunFlags  flags)
+clutter_offscreen_effect_paint (ClutterEffect         *effect,
+                                ClutterEffectRunFlags  flags)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
@@ -423,10 +423,10 @@ clutter_offscreen_effect_run (ClutterEffect         *effect,
       (flags & CLUTTER_EFFECT_RUN_ACTOR_DIRTY) ||
       !cogl_matrix_equal (&matrix, &priv->last_matrix_drawn))
     {
-      /* Chain up to the parent run method which will call the pre and
+      /* Chain up to the parent paint method which will call the pre and
          post paint functions to update the image */
       CLUTTER_EFFECT_CLASS (clutter_offscreen_effect_parent_class)->
-        run (effect, flags);
+        paint (effect, flags);
     }
   else
     clutter_offscreen_effect_paint_texture (self);
@@ -463,7 +463,7 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
 
   effect_class->pre_paint = clutter_offscreen_effect_pre_paint;
   effect_class->post_paint = clutter_offscreen_effect_post_paint;
-  effect_class->run = clutter_offscreen_effect_run;
+  effect_class->paint = clutter_offscreen_effect_paint;
 
   gobject_class->finalize = clutter_offscreen_effect_finalize;
 }

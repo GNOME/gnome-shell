@@ -3009,7 +3009,7 @@ clutter_actor_continue_paint (ClutterActor *self)
             run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
         }
 
-      _clutter_effect_run (priv->current_effect, run_flags);
+      _clutter_effect_paint (priv->current_effect, run_flags);
 
       priv->current_effect = old_current_effect;
     }

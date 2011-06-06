@@ -75,7 +75,7 @@ struct _ClutterEffect
  * @pre_paint: virtual function
  * @post_paint: virtual function
  * @get_paint_volume: virtual function
- * @run: virtual function
+ * @paint: virtual function
  *
  * The #ClutterEffectClass structure contains only private data
  *
@@ -93,7 +93,7 @@ struct _ClutterEffectClass
   gboolean (* get_paint_volume) (ClutterEffect      *effect,
                                  ClutterPaintVolume *volume);
 
-  void     (* run)              (ClutterEffect      *effect,
+  void     (* paint)            (ClutterEffect        *effect,
                                  ClutterEffectRunFlags flags);
 
   /*< private >*/
