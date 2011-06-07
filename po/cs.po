@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-13 14:46+0000\n"
-"PO-Revision-Date: 2011-05-15 21:07+0200\n"
+"POT-Creation-Date: 2011-06-02 20:17+0000\n"
+"PO-Revision-Date: 2011-06-07 11:37+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -171,12 +171,10 @@ msgid "Opacity of an actor"
 msgstr "Úroveň krytí barev účastníka"
 
 #: ../clutter/clutter-actor.c:4163
-#| msgid "Offscreen"
 msgid "Offscreen redirect"
 msgstr "Přesměrování vykreslení v paměti"
 
 #: ../clutter/clutter-actor.c:4164
-#| msgid "Whether the text should be a single line"
 msgid "Whether to flatten the actor into a single image"
 msgstr "Zda by měl být účastník shrnut do jednoho obrázku"
 
@@ -774,7 +772,7 @@ msgid "The layout manager used by the box"
 msgstr "Správce rozvržení použitý boxem"
 
 #: ../clutter/clutter-box.c:557 ../clutter/clutter-rectangle.c:267
-#: ../clutter/clutter-stage.c:1710
+#: ../clutter/clutter-stage.c:1718
 msgid "Color"
 msgstr "Barva"
 
@@ -1228,7 +1226,8 @@ msgid "Playing"
 msgstr "Přehrávání"
 
 #: ../clutter/clutter-media.c:92
-msgid "Wheter the actor is playing"
+#| msgid "Wheter the actor is playing"
+msgid "Whether the actor is playing"
 msgstr "Zda je účastník přehráván"
 
 #: ../clutter/clutter-media.c:106
@@ -1496,103 +1495,103 @@ msgstr "Hrana účastníka, která by se měla přichytávat"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Posun v pixelech, při kterém se má použít omezení"
 
-#: ../clutter/clutter-stage.c:1652
+#: ../clutter/clutter-stage.c:1660
 msgid "Fullscreen Set"
 msgstr "Nastavena celá obrazovka"
 
-#: ../clutter/clutter-stage.c:1653
+#: ../clutter/clutter-stage.c:1661
 msgid "Whether the main stage is fullscreen"
 msgstr "Zda je hlavní scéna v režimu celé obrazovky"
 
-#: ../clutter/clutter-stage.c:1669
+#: ../clutter/clutter-stage.c:1677
 msgid "Offscreen"
 msgstr "V paměti"
 
-#: ../clutter/clutter-stage.c:1670
+#: ../clutter/clutter-stage.c:1678
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Zda by měla být hlavní scéna vykreslována v paměti bez zobrazení"
 
-#: ../clutter/clutter-stage.c:1682 ../clutter/clutter-text.c:2728
+#: ../clutter/clutter-stage.c:1690 ../clutter/clutter-text.c:2728
 msgid "Cursor Visible"
 msgstr "Kurzor viditelný"
 
-#: ../clutter/clutter-stage.c:1683
+#: ../clutter/clutter-stage.c:1691
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Zda je ukazatel myši viditelný na hlavní scéně"
 
-#: ../clutter/clutter-stage.c:1697
+#: ../clutter/clutter-stage.c:1705
 msgid "User Resizable"
 msgstr "Uživatelsky měnitelná velikost"
 
-#: ../clutter/clutter-stage.c:1698
+#: ../clutter/clutter-stage.c:1706
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Zda uživatel může interaktivně měnit velikost scény"
 
-#: ../clutter/clutter-stage.c:1711
+#: ../clutter/clutter-stage.c:1719
 msgid "The color of the stage"
 msgstr "Barva scény"
 
-#: ../clutter/clutter-stage.c:1725
+#: ../clutter/clutter-stage.c:1733
 msgid "Perspective"
 msgstr "Perspektiva"
 
-#: ../clutter/clutter-stage.c:1726
+#: ../clutter/clutter-stage.c:1734
 msgid "Perspective projection parameters"
 msgstr "Parametry perspektivní projekce"
 
-#: ../clutter/clutter-stage.c:1741
+#: ../clutter/clutter-stage.c:1749
 msgid "Title"
 msgstr "Název"
 
-#: ../clutter/clutter-stage.c:1742
+#: ../clutter/clutter-stage.c:1750
 msgid "Stage Title"
 msgstr "Název scény"
 
-#: ../clutter/clutter-stage.c:1757
+#: ../clutter/clutter-stage.c:1765
 msgid "Use Fog"
 msgstr "Použít zamlžení"
 
-#: ../clutter/clutter-stage.c:1758
+#: ../clutter/clutter-stage.c:1766
 msgid "Whether to enable depth cueing"
 msgstr "Zda zapnout zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:1772
+#: ../clutter/clutter-stage.c:1780
 msgid "Fog"
 msgstr "Zamlžení"
 
-#: ../clutter/clutter-stage.c:1773
+#: ../clutter/clutter-stage.c:1781
 msgid "Settings for the depth cueing"
 msgstr "Nastavení pro zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:1789
+#: ../clutter/clutter-stage.c:1797
 msgid "Use Alpha"
 msgstr "Použít alfu"
 
-#: ../clutter/clutter-stage.c:1790
+#: ../clutter/clutter-stage.c:1798
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Zda se řídit komponentou alfa z barvy scény"
 
-#: ../clutter/clutter-stage.c:1806
+#: ../clutter/clutter-stage.c:1814
 msgid "Key Focus"
 msgstr "Hlavní zaměření"
 
-#: ../clutter/clutter-stage.c:1807
+#: ../clutter/clutter-stage.c:1815
 msgid "The currently key focused actor"
 msgstr "Aktuálně hlavní zaměřený účastník"
 
-#: ../clutter/clutter-stage.c:1823
+#: ../clutter/clutter-stage.c:1831
 msgid "No Clear Hint"
 msgstr "Nemazat bez pokynu"
 
-#: ../clutter/clutter-stage.c:1824
+#: ../clutter/clutter-stage.c:1832
 msgid "Whether the stage should clear its contents"
 msgstr "Zda by scéna měla vymazat svůj obsah"
 
-#: ../clutter/clutter-stage.c:1837
+#: ../clutter/clutter-stage.c:1845
 msgid "Accept Focus"
 msgstr "Přijímat zaměření"
 
-#: ../clutter/clutter-stage.c:1838
+#: ../clutter/clutter-stage.c:1846
 msgid "Whether the stage should accept focus on show"
 msgstr "Zda by měla scéna při zobrazení přijímat zaměření"
 
@@ -1849,17 +1848,14 @@ msgid "Whether the text should be a single line"
 msgstr "Zda by měl být text jednořádkový"
 
 #: ../clutter/clutter-text.c:3028 ../clutter/clutter-text.c:3029
-#| msgid "Selection Color"
 msgid "Selected Text Color"
 msgstr "Barva vybraného textu"
 
 #: ../clutter/clutter-text.c:3043
-#| msgid "Selection Color Set"
 msgid "Selected Text Color Set"
 msgstr "Barva vybraného textu nastavena"
 
 #: ../clutter/clutter-text.c:3044
-#| msgid "Whether the selection color has been set"
 msgid "Whether the selected text color has been set"
 msgstr "Zda byla nastavena barva vybraného textu"
 
