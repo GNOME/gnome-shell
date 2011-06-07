@@ -1053,13 +1053,13 @@ clutter_stage_do_redraw (ClutterStage *stage)
 gboolean
 _clutter_stage_do_update (ClutterStage *stage)
 {
-  ClutterStagePrivate *priv;
+  ClutterStagePrivate *priv = stage->priv;
 
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
-
-  priv = stage->priv;
-
-  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+  /* if the stage is being destroyed, or if the destruction already
+   * happened and we don't have an StageWindow any more, then we
+   * should bail out
+   */
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage) || priv->impl == NULL)
     return FALSE;
 
   /* NB: We need to ensure we have an up to date layout *before* we
