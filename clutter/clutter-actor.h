@@ -459,7 +459,7 @@ ClutterOffscreenRedirect
 
 void                  clutter_actor_set_name                  (ClutterActor          *self,
                                                                const gchar           *name);
-G_CONST_RETURN gchar *clutter_actor_get_name                  (ClutterActor          *self);
+const gchar *         clutter_actor_get_name                  (ClutterActor          *self);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
 guint32               clutter_actor_get_gid                   (ClutterActor          *self);

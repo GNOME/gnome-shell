@@ -67,7 +67,7 @@ struct _CbButtonClass
 ClutterActor *cb_button_new (void);
 
 /* getter */
-G_CONST_RETURN gchar * cb_button_get_text (CbButton *self);
+const gchar *cb_button_get_text (CbButton *self);
 
 /* setters - these are wrappers round functions
  * which change properties of the internal actors

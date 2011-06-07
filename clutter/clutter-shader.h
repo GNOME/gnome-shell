@@ -107,8 +107,8 @@ struct _ClutterShaderClass
   GObjectClass parent_class;
 };
 
-GQuark                clutter_shader_error_quark              (void);
-GType                 clutter_shader_get_type                 (void) G_GNUC_CONST;
+GQuark clutter_shader_error_quark (void);
+GType clutter_shader_get_type (void) G_GNUC_CONST;
 
 ClutterShader *       clutter_shader_new                      (void);
 
@@ -128,8 +128,8 @@ void                  clutter_shader_set_fragment_source      (ClutterShader    
                                                                const gchar        *data,
                                                                gssize              length);
 
-G_CONST_RETURN gchar *clutter_shader_get_vertex_source        (ClutterShader      *shader);
-G_CONST_RETURN gchar *clutter_shader_get_fragment_source      (ClutterShader      *shader);
+const gchar *         clutter_shader_get_vertex_source        (ClutterShader      *shader);
+const gchar *         clutter_shader_get_fragment_source      (ClutterShader      *shader);
 
 void                  clutter_shader_set_uniform              (ClutterShader      *shader,
                                                                const gchar        *name,

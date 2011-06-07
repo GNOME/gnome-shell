@@ -103,7 +103,7 @@ ClutterActor *        clutter_text_new_full             (const gchar          *f
 ClutterActor *        clutter_text_new_with_text        (const gchar          *font_name,
                                                          const gchar          *text);
 
-G_CONST_RETURN gchar *clutter_text_get_text             (ClutterText          *self);
+const gchar *         clutter_text_get_text             (ClutterText          *self);
 void                  clutter_text_set_text             (ClutterText          *self,
                                                          const gchar          *text);
 void                  clutter_text_set_markup           (ClutterText          *self,
@@ -114,7 +114,7 @@ void                  clutter_text_get_color            (ClutterText          *s
                                                          ClutterColor         *color);
 void                  clutter_text_set_font_name        (ClutterText          *self,
                                                          const gchar          *font_name);
-G_CONST_RETURN gchar *clutter_text_get_font_name        (ClutterText          *self);
+const gchar *         clutter_text_get_font_name        (ClutterText          *self);
 void                  clutter_text_set_font_description (ClutterText          *self,
                                                          PangoFontDescription *font_desc);
 PangoFontDescription *clutter_text_get_font_description (ClutterText          *self);

@@ -74,21 +74,21 @@ GType clutter_shader_float_get_type  (void) G_GNUC_CONST;
 GType clutter_shader_int_get_type    (void) G_GNUC_CONST;
 GType clutter_shader_matrix_get_type (void) G_GNUC_CONST;
 
-void                    clutter_value_set_shader_float  (GValue       *value,
-                                                         gint          size,
-                                                         const gfloat *floats);
-void                    clutter_value_set_shader_int    (GValue       *value,
-                                                         gint          size,
-                                                         const gint   *ints);
-void                    clutter_value_set_shader_matrix (GValue       *value,
-                                                         gint          size,
-                                                         const gfloat *matrix);
-G_CONST_RETURN gfloat * clutter_value_get_shader_float  (const GValue *value,
-                                                         gsize        *length);
-G_CONST_RETURN gint   * clutter_value_get_shader_int    (const GValue *value,
-                                                         gsize        *length);
-G_CONST_RETURN gfloat * clutter_value_get_shader_matrix (const GValue *value,
-                                                         gsize        *length);
+void            clutter_value_set_shader_float  (GValue       *value,
+                                                 gint          size,
+                                                 const gfloat *floats);
+void            clutter_value_set_shader_int    (GValue       *value,
+                                                 gint          size,
+                                                 const gint   *ints);
+void            clutter_value_set_shader_matrix (GValue       *value,
+                                                 gint          size,
+                                                 const gfloat *matrix);
+const gfloat *  clutter_value_get_shader_float  (const GValue *value,
+                                                 gsize        *length);
+const gint   *  clutter_value_get_shader_int    (const GValue *value,
+                                                 gsize        *length);
+const gfloat *  clutter_value_get_shader_matrix (const GValue *value,
+                                                 gsize        *length);
 
 G_END_DECLS
 

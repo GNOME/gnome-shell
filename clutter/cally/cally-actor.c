@@ -147,7 +147,7 @@ static void cally_actor_finalize   (GObject *obj);
 static AtkObject*            cally_actor_get_parent          (AtkObject *obj);
 static gint                  cally_actor_get_index_in_parent (AtkObject *obj);
 static AtkStateSet*          cally_actor_ref_state_set       (AtkObject *obj);
-static G_CONST_RETURN gchar* cally_actor_get_name            (AtkObject *obj);
+static const gchar*          cally_actor_get_name            (AtkObject *obj);
 static gint                  cally_actor_get_n_children      (AtkObject *obj);
 static AtkObject*            cally_actor_ref_child           (AtkObject *obj,
                                                              gint       i);
@@ -194,11 +194,11 @@ static gboolean              cally_actor_action_do_action       (AtkAction *acti
                                                                 gint       i);
 static gboolean              idle_do_action                    (gpointer data);
 static gint                  cally_actor_action_get_n_actions   (AtkAction *action);
-static G_CONST_RETURN gchar* cally_actor_action_get_description (AtkAction *action,
+static const gchar*          cally_actor_action_get_description (AtkAction *action,
                                                                 gint       i);
-static G_CONST_RETURN gchar* cally_actor_action_get_keybinding  (AtkAction *action,
+static const gchar*          cally_actor_action_get_keybinding  (AtkAction *action,
                                                                 gint       i);
-static G_CONST_RETURN gchar* cally_actor_action_get_name        (AtkAction *action,
+static const gchar*          cally_actor_action_get_name        (AtkAction *action,
                                                                 gint       i);
 static gboolean              cally_actor_action_set_description (AtkAction   *action,
                                                                 gint         i,
@@ -406,10 +406,10 @@ cally_actor_finalize (GObject *obj)
 
 /* AtkObject */
 
-static G_CONST_RETURN gchar*
+static const gchar*
 cally_actor_get_name (AtkObject *obj)
 {
-  G_CONST_RETURN gchar* name = NULL;
+  const gchar* name = NULL;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (obj), NULL);
 
@@ -1043,7 +1043,7 @@ cally_actor_action_get_n_actions (AtkAction *action)
   return g_list_length (priv->action_list);
 }
 
-static G_CONST_RETURN gchar*
+static const gchar*
 cally_actor_action_get_name (AtkAction *action,
                             gint       i)
 {
@@ -1060,7 +1060,7 @@ cally_actor_action_get_name (AtkAction *action,
   return info->name;
 }
 
-static G_CONST_RETURN gchar*
+static const gchar*
 cally_actor_action_get_description (AtkAction *action,
                                    gint       i)
 {
@@ -1098,7 +1098,7 @@ cally_actor_action_set_description (AtkAction   *action,
   return TRUE;
 }
 
-static G_CONST_RETURN gchar*
+static const gchar*
 cally_actor_action_get_keybinding (AtkAction *action,
                                   gint       i)
 {

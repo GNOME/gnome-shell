@@ -786,7 +786,7 @@ clutter_input_device_get_pointer_stage (ClutterInputDevice *device)
  *
  * Since: 1.2
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_input_device_get_device_name (ClutterInputDevice *device)
 {
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);

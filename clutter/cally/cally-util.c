@@ -62,8 +62,8 @@ static guint                 cally_util_add_key_event_listener	    (AtkKeySnoopF
                                                                      gpointer        data);
 static void                  cally_util_remove_key_event_listener    (guint remove_listener);
 static AtkObject*            cally_util_get_root			    (void);
-static G_CONST_RETURN gchar *cally_util_get_toolkit_name		    (void);
-static G_CONST_RETURN gchar *cally_util_get_toolkit_version          (void);
+static const gchar *         cally_util_get_toolkit_name		    (void);
+static const gchar *         cally_util_get_toolkit_version          (void);
 
 /* private */
 static void		     _listener_info_destroy                  (gpointer data);
@@ -162,13 +162,13 @@ cally_util_get_root (void)
   return root;
 }
 
-static G_CONST_RETURN gchar *
+static const gchar *
 cally_util_get_toolkit_name (void)
 {
   return "CALLY";
 }
 
-static G_CONST_RETURN gchar *
+static const gchar *
 cally_util_get_toolkit_version (void)
 {
   /*

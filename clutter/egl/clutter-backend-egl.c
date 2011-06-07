@@ -76,7 +76,7 @@ clutter_backend_at_exit (void)
     g_object_run_dispose (G_OBJECT (backend_singleton));
 }
 
-G_CONST_RETURN gchar*
+const gchar*
 _clutter_backend_egl_get_vblank (void)
 {
   if (clutter_vblank && strcmp (clutter_vblank, "0") == 0)

@@ -158,11 +158,11 @@ void _clutter_actor_set_queue_redraw_clip     (ClutterActor             *self,
 void _clutter_actor_finish_queue_redraw       (ClutterActor             *self,
                                                ClutterPaintVolume       *clip);
 
-gboolean           _clutter_actor_set_default_paint_volume (ClutterActor *self,
-                                                            GType         check_gtype,
-                                                            ClutterPaintVolume *volume);
+gboolean        _clutter_actor_set_default_paint_volume (ClutterActor *self,
+                                                         GType         check_gtype,
+                                                         ClutterPaintVolume *volume);
 
-G_CONST_RETURN gchar *_clutter_actor_get_debug_name (ClutterActor *self);
+const gchar *   _clutter_actor_get_debug_name (ClutterActor *self);
 
 void _clutter_actor_push_clone_paint (void);
 void _clutter_actor_pop_clone_paint  (void);

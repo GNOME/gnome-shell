@@ -179,9 +179,9 @@ GParamSpec *                 clutter_param_spec_units (const gchar        *name,
                                                        gfloat              default_value,
                                                        GParamFlags         flags);
 
-void                         clutter_value_set_units  (GValue             *value,
-                                                       const ClutterUnits *units);
-G_CONST_RETURN ClutterUnits *clutter_value_get_units  (const GValue       *value);
+void                    clutter_value_set_units (GValue             *value,
+                                                 const ClutterUnits *units);
+const ClutterUnits *    clutter_value_get_units (const GValue       *value);
 
 G_END_DECLS
 

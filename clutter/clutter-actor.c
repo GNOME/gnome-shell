@@ -703,7 +703,15 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   G_IMPLEMENT_INTERFACE (ATK_TYPE_IMPLEMENTOR,
                                                          atk_implementor_iface_init));
 
-G_CONST_RETURN gchar *
+/*< private >
+ * clutter_actor_get_debug_name:
+ * @actor: a #ClutterActor
+ *
+ * Retrieves a printable name of @actor for debugging messages
+ *
+ * Return value: a string with a printable name
+ */
+const gchar *
 _clutter_actor_get_debug_name (ClutterActor *actor)
 {
   return actor->priv->name != NULL ? actor->priv->name
@@ -7662,7 +7670,7 @@ clutter_actor_set_name (ClutterActor *self,
  * Return value: the name of the actor, or %NULL. The returned string is
  *   owned by the actor and should not be modified or freed.
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_actor_get_name (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);

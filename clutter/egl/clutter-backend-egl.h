@@ -98,8 +98,7 @@ GType _clutter_backend_egl_get_type (void) G_GNUC_CONST;
 void _clutter_events_egl_init   (ClutterBackendEGL *backend);
 void _clutter_events_egl_uninit (ClutterBackendEGL *backend);
 
-G_CONST_RETURN gchar*
-_clutter_backend_egl_get_vblank (void);
+const gchar *_clutter_backend_egl_get_vblank (void);
 
 G_END_DECLS
 

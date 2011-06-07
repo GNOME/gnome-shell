@@ -66,32 +66,29 @@ struct _ClutterMetaGroupClass
 
 GType _clutter_meta_group_get_type (void) G_GNUC_CONST;
 
-void                  _clutter_meta_group_add_meta    (ClutterMetaGroup *group,
-                                                       ClutterActorMeta *meta);
-void                  _clutter_meta_group_remove_meta (ClutterMetaGroup *group,
-                                                       ClutterActorMeta *meta);
-G_CONST_RETURN GList *_clutter_meta_group_peek_metas  (ClutterMetaGroup *group);
-void                  _clutter_meta_group_clear_metas (ClutterMetaGroup *group);
-ClutterActorMeta *    _clutter_meta_group_get_meta    (ClutterMetaGroup *group,
-                                                       const gchar      *name);
+void                    _clutter_meta_group_add_meta    (ClutterMetaGroup *group,
+                                                         ClutterActorMeta *meta);
+void                    _clutter_meta_group_remove_meta (ClutterMetaGroup *group,
+                                                         ClutterActorMeta *meta);
+const GList *           _clutter_meta_group_peek_metas  (ClutterMetaGroup *group);
+void                    _clutter_meta_group_clear_metas (ClutterMetaGroup *group);
+ClutterActorMeta *      _clutter_meta_group_get_meta    (ClutterMetaGroup *group,
+                                                         const gchar      *name);
 
-GList *
-_clutter_meta_group_get_metas_no_internal (ClutterMetaGroup *group);
-
-void
-_clutter_meta_group_clear_metas_no_internal (ClutterMetaGroup *group);
+GList *                 _clutter_meta_group_get_metas_no_internal   (ClutterMetaGroup *group);
+void                    _clutter_meta_group_clear_metas_no_internal (ClutterMetaGroup *group);
 
 /* ActorMeta */
-void                  _clutter_actor_meta_set_actor   (ClutterActorMeta *meta,
-                                                       ClutterActor     *actor);
+void                    _clutter_actor_meta_set_actor           (ClutterActorMeta *meta,
+                                                                 ClutterActor     *actor);
 
-const gchar *           _clutter_actor_meta_get_debug_name        (ClutterActorMeta *meta);
+const gchar *           _clutter_actor_meta_get_debug_name      (ClutterActorMeta *meta);
 
-void                  _clutter_actor_meta_set_priority (ClutterActorMeta *meta,
-                                                        gint priority);
-int                   _clutter_actor_meta_get_priority (ClutterActorMeta *meta);
+void                    _clutter_actor_meta_set_priority        (ClutterActorMeta *meta,
+                                                                 gint priority);
+int                     _clutter_actor_meta_get_priority        (ClutterActorMeta *meta);
 
-gboolean              _clutter_actor_meta_is_internal  (ClutterActorMeta *meta);
+gboolean                _clutter_actor_meta_is_internal         (ClutterActorMeta *meta);
 
 G_END_DECLS
 

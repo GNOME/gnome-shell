@@ -1730,7 +1730,7 @@ clutter_state_key_get_object (const ClutterStateKey *state_key)
  *
  * Since: 1.4
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_state_key_get_property_name (const ClutterStateKey *state_key)
 {
   g_return_val_if_fail (state_key, NULL);
@@ -1751,7 +1751,7 @@ clutter_state_key_get_property_name (const ClutterStateKey *state_key)
  *
  * Since: 1.4
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_state_key_get_source_state_name (const ClutterStateKey *state_key)
 {
   g_return_val_if_fail (state_key, NULL);
@@ -1775,7 +1775,7 @@ clutter_state_key_get_source_state_name (const ClutterStateKey *state_key)
  *
  * Since: 1.4
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_state_key_get_target_state_name (const ClutterStateKey *state_key)
 {
   g_return_val_if_fail (state_key, NULL);
@@ -1934,7 +1934,7 @@ clutter_state_get_duration (ClutterState *state,
  *
  * Since: 1.4
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_state_get_state (ClutterState *state)
 {
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);

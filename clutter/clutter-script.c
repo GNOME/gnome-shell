@@ -795,7 +795,7 @@ clutter_script_get_type_from_name (ClutterScript *script,
  *
  * Since: 0.6
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_get_script_id (GObject *gobject)
 {
   g_return_val_if_fail (G_IS_OBJECT (gobject), NULL);

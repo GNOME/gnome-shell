@@ -1382,7 +1382,7 @@ clutter_model_remove (ClutterModel *model,
  *
  * Since: 0.6
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_model_get_column_name (ClutterModel *model,
                                guint         column)
 {

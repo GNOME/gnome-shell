@@ -879,7 +879,7 @@ clutter_backend_set_font_name (ClutterBackend *backend,
  *
  * Deprecated: 1.4: Use #ClutterSettings:font-name instead
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_backend_get_font_name (ClutterBackend *backend)
 {
   ClutterBackendPrivate *priv;

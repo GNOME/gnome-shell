@@ -189,7 +189,7 @@ ClutterActor *          _clutter_context_peek_shader_stack      (void);
 guint32                 _clutter_context_acquire_id             (gpointer      key);
 void                    _clutter_context_release_id             (guint32       id_);
 
-G_CONST_RETURN gchar *_clutter_gettext (const gchar *str);
+const gchar *_clutter_gettext (const gchar *str);
 
 gboolean      _clutter_feature_init (GError **error);
 

@@ -406,10 +406,10 @@ definition should be vertically aligned in three columns:
 The maximum width of each column is given by the longest element in the
 column:
 
-  void                  clutter_type_set_property (ClutterType  *type,
-                                                   const gchar  *value,
-                                                   GError      **error);
-  G_CONST_RETURN gchar *clutter_type_get_property (ClutterType  *type);
+  void         clutter_type_set_property (ClutterType  *type,
+                                          const gchar  *value,
+                                          GError      **error);
+  const gchar *clutter_type_get_property (ClutterType  *type);
 
 It is also possible to align the columns to the next tab:
 

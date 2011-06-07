@@ -723,7 +723,7 @@ clutter_binding_pool_override_closure (ClutterBindingPool  *pool,
  *
  * Since: 1.0
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_binding_pool_find_action (ClutterBindingPool  *pool,
                                   guint                key_val,
                                   ClutterModifierType  modifiers)

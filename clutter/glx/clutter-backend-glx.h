@@ -72,8 +72,7 @@ struct _ClutterBackendGLXClass
 
 GType _clutter_backend_glx_get_type (void) G_GNUC_CONST;
 
-G_CONST_RETURN gchar*
-_clutter_backend_glx_get_vblank (void);
+const gchar *_clutter_backend_glx_get_vblank (void);
 
 G_END_DECLS
 

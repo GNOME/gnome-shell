@@ -98,7 +98,7 @@ void                  clutter_binding_pool_override_closure (ClutterBindingPool 
                                                              ClutterModifierType  modifiers,
                                                              GClosure            *closure);
 
-G_CONST_RETURN gchar *clutter_binding_pool_find_action      (ClutterBindingPool  *pool,
+const gchar *         clutter_binding_pool_find_action      (ClutterBindingPool  *pool,
                                                              guint                key_val,
                                                              ClutterModifierType  modifiers);
 void                  clutter_binding_pool_remove_action    (ClutterBindingPool  *pool,

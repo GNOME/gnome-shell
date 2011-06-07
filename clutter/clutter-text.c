@@ -4010,7 +4010,7 @@ clutter_text_get_font_description (ClutterText *self)
  *
  * Since: 1.0
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_text_get_font_name (ClutterText *text)
 {
   g_return_val_if_fail (CLUTTER_IS_TEXT (text), NULL);
@@ -4115,7 +4115,7 @@ out:
  *
  * Since: 1.0
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_text_get_text (ClutterText *self)
 {
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);

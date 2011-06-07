@@ -138,7 +138,7 @@ void              clutter_state_set_animator  (ClutterState    *state,
 ClutterAnimator * clutter_state_get_animator  (ClutterState    *state,
                                                const gchar     *source_state_name,
                                                const gchar     *target_state_name);
-G_CONST_RETURN gchar *clutter_state_get_state (ClutterState    *state);
+const gchar *     clutter_state_get_state     (ClutterState    *state);
 
 /*
  * ClutterStateKey
@@ -152,9 +152,9 @@ gboolean              clutter_state_key_get_value             (const ClutterStat
                                                                GValue                *value);
 GType                 clutter_state_key_get_property_type     (const ClutterStateKey *key);
 GObject *             clutter_state_key_get_object            (const ClutterStateKey *state_key);
-G_CONST_RETURN gchar *clutter_state_key_get_property_name     (const ClutterStateKey *state_key);
-G_CONST_RETURN gchar *clutter_state_key_get_source_state_name (const ClutterStateKey *state_key);
-G_CONST_RETURN gchar *clutter_state_key_get_target_state_name (const ClutterStateKey *state_key);
+const gchar *         clutter_state_key_get_property_name     (const ClutterStateKey *state_key);
+const gchar *         clutter_state_key_get_source_state_name (const ClutterStateKey *state_key);
+const gchar *         clutter_state_key_get_target_state_name (const ClutterStateKey *state_key);
 
 G_END_DECLS
 

@@ -71,7 +71,7 @@ void                        clutter_backend_set_double_click_distance (ClutterBa
 guint                       clutter_backend_get_double_click_distance (ClutterBackend             *backend);
 void                        clutter_backend_set_font_name             (ClutterBackend             *backend,
                                                                        const gchar                *font_name);
-G_CONST_RETURN gchar *      clutter_backend_get_font_name             (ClutterBackend             *backend);
+const gchar *               clutter_backend_get_font_name             (ClutterBackend             *backend);
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 
 gdouble                     clutter_backend_get_resolution            (ClutterBackend             *backend);

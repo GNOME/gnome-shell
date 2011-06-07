@@ -847,7 +847,7 @@ _clutter_shader_release_all (void)
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_shader_get_fragment_source (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
@@ -869,7 +869,7 @@ clutter_shader_get_fragment_source (ClutterShader *shader)
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_shader_get_vertex_source (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);

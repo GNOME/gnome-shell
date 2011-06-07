@@ -282,7 +282,7 @@ clutter_actor_meta_set_name (ClutterActorMeta *meta,
  *
  * Since: 1.4
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_actor_meta_get_name (ClutterActorMeta *meta)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR_META (meta), NULL);
@@ -522,7 +522,7 @@ _clutter_meta_group_remove_meta (ClutterMetaGroup *group,
  *
  * Return value: a const pointer to the #GList of #ClutterActorMeta
  */
-G_CONST_RETURN GList *
+const GList *
 _clutter_meta_group_peek_metas (ClutterMetaGroup *group)
 {
   return group->meta;

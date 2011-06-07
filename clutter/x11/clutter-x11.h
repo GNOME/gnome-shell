@@ -127,7 +127,7 @@ gboolean clutter_x11_has_event_retrieval (void);
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
-G_CONST_RETURN GSList* clutter_x11_get_input_devices (void) G_GNUC_DEPRECATED;
+const GSList* clutter_x11_get_input_devices (void) G_GNUC_DEPRECATED;
 #endif
 
 void     clutter_x11_enable_xinput (void);

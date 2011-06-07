@@ -2726,7 +2726,7 @@ clutter_stage_set_title (ClutterStage       *stage,
  *
  * Since: 0.4
  **/
-G_CONST_RETURN gchar *
+const gchar *
 clutter_stage_get_title (ClutterStage       *stage)
 {
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);

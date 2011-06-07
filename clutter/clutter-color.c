@@ -115,7 +115,7 @@ static const ClutterColor const static_colors[] = {
  *
  * Since: 1.6
  */
-G_CONST_RETURN ClutterColor *
+const ClutterColor *
 clutter_color_get_static (ClutterStaticColor color)
 {
   g_return_val_if_fail (color >= CLUTTER_COLOR_WHITE &&
@@ -1055,7 +1055,7 @@ clutter_value_set_color (GValue             *value,
  *
  * Since: 0.8.4
  */
-G_CONST_RETURN ClutterColor *
+const ClutterColor *
 clutter_value_get_color (const GValue *value)
 {
   g_return_val_if_fail (CLUTTER_VALUE_HOLDS_COLOR (value), NULL);

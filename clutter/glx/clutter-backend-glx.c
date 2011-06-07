@@ -59,7 +59,7 @@ static ClutterBackendGLX *backend_singleton = NULL;
 
 static gchar *clutter_vblank = NULL;
 
-G_CONST_RETURN gchar*
+const gchar *
 _clutter_backend_glx_get_vblank (void)
 {
   if (clutter_vblank && strcmp (clutter_vblank, "0") == 0)

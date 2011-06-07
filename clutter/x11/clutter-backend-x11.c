@@ -1027,7 +1027,7 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
  *   pointer to the internal list of input devices; the returned list is
  *   owned by Clutter and should not be modified or freed
  */
-G_CONST_RETURN GSList *
+const GSList *
 clutter_x11_get_input_devices (void)
 {
   ClutterDeviceManager *manager;

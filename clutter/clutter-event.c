@@ -1203,7 +1203,7 @@ clutter_get_current_event_time (void)
  *
  * Since: 1.2
  */
-G_CONST_RETURN ClutterEvent *
+const ClutterEvent *
 clutter_get_current_event (void)
 {
   ClutterMainContext *context = _clutter_context_get_default ();

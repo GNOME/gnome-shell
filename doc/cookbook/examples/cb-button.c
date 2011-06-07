@@ -429,7 +429,7 @@ cb_button_set_text_color (CbButton           *self,
  *
  * Returns: the button's text. This must not be freed by the application.
  */
-G_CONST_RETURN gchar *
+const gchar *
 cb_button_get_text (CbButton *self)
 {
   g_return_val_if_fail (CB_IS_BUTTON (self), NULL);

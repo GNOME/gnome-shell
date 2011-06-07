@@ -154,7 +154,7 @@ gboolean         clutter_interval_compute_value      (ClutterInterval *interval,
                                                       gdouble          factor,
                                                       GValue          *value);
 
-G_CONST_RETURN GValue *clutter_interval_compute      (ClutterInterval *interval,
+const GValue *   clutter_interval_compute            (ClutterInterval *interval,
                                                       gdouble          factor);
 
 void clutter_interval_register_progress_func (GType               value_type,

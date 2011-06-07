@@ -218,7 +218,7 @@ gboolean      clutter_stage_event             (ClutterStage       *stage,
 
 void                  clutter_stage_set_title          (ClutterStage *stage,
                                                         const gchar  *title);
-G_CONST_RETURN gchar *clutter_stage_get_title          (ClutterStage *stage);
+const gchar *         clutter_stage_get_title          (ClutterStage *stage);
 void                  clutter_stage_set_user_resizable (ClutterStage *stage,
 						        gboolean      resizable);
 gboolean              clutter_stage_get_user_resizable (ClutterStage *stage);

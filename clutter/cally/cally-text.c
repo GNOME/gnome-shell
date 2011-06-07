@@ -80,7 +80,7 @@ static void cally_text_finalize   (GObject *obj);
 /* AtkObject */
 static void                   cally_text_real_initialize (AtkObject *obj,
                                                           gpointer   data);
-static G_CONST_RETURN gchar * cally_text_get_name        (AtkObject *obj);
+static const gchar *          cally_text_get_name        (AtkObject *obj);
 static AtkStateSet*           cally_text_ref_state_set   (AtkObject *obj);
 
 /* atkaction */
@@ -327,10 +327,10 @@ cally_text_real_initialize(AtkObject *obj,
   obj->role = ATK_ROLE_TEXT;
 }
 
-static G_CONST_RETURN gchar *
+static const gchar *
 cally_text_get_name (AtkObject *obj)
 {
-  G_CONST_RETURN gchar *name;
+  const gchar *name;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (obj), NULL);
 

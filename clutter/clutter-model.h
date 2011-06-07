@@ -226,7 +226,7 @@ void                  clutter_model_remove             (ClutterModel     *model,
 
 guint                 clutter_model_get_n_rows         (ClutterModel     *model);
 guint                 clutter_model_get_n_columns      (ClutterModel     *model);
-G_CONST_RETURN gchar *clutter_model_get_column_name    (ClutterModel     *model,
+const gchar *         clutter_model_get_column_name    (ClutterModel     *model,
                                                         guint             column);
 GType                 clutter_model_get_column_type    (ClutterModel     *model,
                                                         guint             column);

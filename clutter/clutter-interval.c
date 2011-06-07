@@ -918,7 +918,7 @@ clutter_interval_compute_value (ClutterInterval *interval,
  *
  * Since: 1.4
  */
-G_CONST_RETURN GValue *
+const GValue *
 clutter_interval_compute (ClutterInterval *interval,
                           gdouble          factor)
 {

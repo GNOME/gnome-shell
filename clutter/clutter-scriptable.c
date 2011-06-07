@@ -104,7 +104,7 @@ clutter_scriptable_set_id (ClutterScriptable *scriptable,
  *
  * Since: 0.6
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_scriptable_get_id (ClutterScriptable *scriptable)
 {
   ClutterScriptableIface *iface;

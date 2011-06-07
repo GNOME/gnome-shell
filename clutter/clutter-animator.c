@@ -2020,7 +2020,7 @@ clutter_animator_key_get_object (const ClutterAnimatorKey *key)
  *
  * Since: 1.2
  */
-G_CONST_RETURN gchar *
+const gchar *
 clutter_animator_key_get_property_name (const ClutterAnimatorKey *key)
 {
   g_return_val_if_fail (key != NULL, NULL);

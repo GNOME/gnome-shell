@@ -485,7 +485,7 @@ clutter_value_set_shader_matrix (GValue       *value,
  *
  * Since: 0.8
  */
-G_CONST_RETURN gfloat *
+const gfloat *
 clutter_value_get_shader_float (const GValue *value,
                                 gsize        *length)
 {
@@ -517,7 +517,7 @@ clutter_value_get_shader_float (const GValue *value,
  *
  * Since: 0.8
  */
-G_CONST_RETURN gint *
+const gint *
 clutter_value_get_shader_int (const GValue *value,
                               gsize        *length)
 {
@@ -549,7 +549,7 @@ clutter_value_get_shader_int (const GValue *value,
  *
  * Since: 0.8
  */
-G_CONST_RETURN gfloat *
+const gfloat *
 clutter_value_get_shader_matrix (const GValue *value,
                                  gsize        *length)
 {

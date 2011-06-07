@@ -68,7 +68,7 @@ clutter_util_next_p2 (gint a)
  *
  * Return value: the translated string
  */
-G_CONST_RETURN gchar *
+const gchar *
 _clutter_gettext (const gchar *str)
 {
   return g_dgettext (GETTEXT_PACKAGE, str);

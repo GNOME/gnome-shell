@@ -54,7 +54,7 @@ static HINSTANCE clutter_hinst = NULL;
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_event_retrieval = FALSE;
 
-G_CONST_RETURN gchar *
+const gchar *
 _clutter_backend_win32_get_vblank (void)
 {
   if (clutter_vblank_name && strcmp (clutter_vblank_name, "0") == 0)
