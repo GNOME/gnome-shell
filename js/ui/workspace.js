@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const GConf = imports.gi.GConf;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -26,6 +27,8 @@ const LIGHTBOX_FADE_TIME = 0.1;
 const CLOSE_BUTTON_FADE_TIME = 0.1;
 
 const DRAGGING_WINDOW_OPACITY = 100;
+
+const BUTTON_LAYOUT_KEY = '/desktop/gnome/shell/windows/button_layout';
 
 // Define a layout scheme for small window counts. For larger
 // counts we fall back to an algorithm. We need more schemes here
@@ -435,9 +438,20 @@ WindowOverlay.prototype = {
         let button = this.closeButton;
         let title = this.title;
 
+        let gconf = GConf.Client.get_default();
+        let layout = gconf.get_string(BUTTON_LAYOUT_KEY);
+        let rtl = St.Widget.get_default_direction() == St.TextDirection.RTL;
+
+        let split = layout.split(":");
+        let side;
+        if (split[0].indexOf("close") > -1)
+            side = rtl ? St.Side.RIGHT : St.Side.LEFT;
+        else
+            side = rtl ? St.Side.LEFT : St.Side.RIGHT;
+
         let buttonX;
         let buttonY = cloneY - (button.height - button._overlap);
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+        if (side == St.Side.LEFT)
             buttonX = cloneX - (button.width - button._overlap);
         else
             buttonX = cloneX + (cloneWidth - button._overlap);
