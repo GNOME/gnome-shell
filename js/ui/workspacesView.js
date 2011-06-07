@@ -149,6 +149,10 @@ WorkspacesView.prototype = {
         return this._workspaces[active];
     },
 
+    getWorkspaceByIndex: function(index) {
+        return this._workspaces[index];
+    },
+
     hide: function() {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
