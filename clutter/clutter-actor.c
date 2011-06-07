@@ -5385,16 +5385,12 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
                                   ClutterPaintVolume *volume,
                                   ClutterEffect      *effect)
 {
+  ClutterActorPrivate *priv = self->priv;
   ClutterPaintVolume allocation_pv;
-  ClutterActorPrivate *priv;
   ClutterPaintVolume *pv;
   gboolean should_free_pv;
   ClutterActor *stage;
   gboolean was_dirty;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  priv = self->priv;
 
   /* Here's an outline of the actor queue redraw mechanism:
    *
@@ -5465,10 +5461,18 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
    * paint.
    */
 
+  /* ignore queueing a redraw for actors being destroyed */
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
+    return;
+
   stage = _clutter_actor_get_stage_internal (self);
 
-  /* Ignore queuing a redraw for actors not descended from a stage */
+  /* Ignore queueing a redraw for actors not descended from a stage */
   if (stage == NULL)
+    return;
+
+  /* ignore queueing a redraw on stages that are being destroyed */
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
     return;
 
   if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
@@ -5581,6 +5585,8 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
 void
 clutter_actor_queue_redraw (ClutterActor *self)
 {
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
   _clutter_actor_queue_redraw_full (self,
                                     0, /* flags */
                                     NULL, /* clip volume */
