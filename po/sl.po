@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: clutter-1.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-14 00:17+0000\n"
-"PO-Revision-Date: 2011-05-14 10:59+0100\n"
+"POT-Creation-Date: 2011-06-02 20:17+0000\n"
+"PO-Revision-Date: 2011-06-06 15:54+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -794,7 +794,7 @@ msgstr "Upravljalnik razporeditev, ki ga uporablja polje"
 
 #: ../clutter/clutter-box.c:557
 #: ../clutter/clutter-rectangle.c:267
-#: ../clutter/clutter-stage.c:1710
+#: ../clutter/clutter-stage.c:1718
 msgid "Color"
 msgstr "Barva"
 
@@ -1250,8 +1250,8 @@ msgid "Playing"
 msgstr "Predvajanje"
 
 #: ../clutter/clutter-media.c:92
-msgid "Wheter the actor is playing"
-msgstr "Ali naj se predmet predvaja"
+msgid "Whether the actor is playing"
+msgstr "Ali se predmet predvaja"
 
 #: ../clutter/clutter-media.c:106
 msgid "Progress"
@@ -1504,104 +1504,104 @@ msgstr "Rob vira, ki je povlečen"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Odmik v slikovnih točkah za uveljavitev omejitev"
 
-#: ../clutter/clutter-stage.c:1652
+#: ../clutter/clutter-stage.c:1660
 msgid "Fullscreen Set"
 msgstr "Celozaslonska nastavitev"
 
-#: ../clutter/clutter-stage.c:1653
+#: ../clutter/clutter-stage.c:1661
 msgid "Whether the main stage is fullscreen"
 msgstr "Ali je glavna postavitev celozaslonska"
 
-#: ../clutter/clutter-stage.c:1669
+#: ../clutter/clutter-stage.c:1677
 msgid "Offscreen"
 msgstr "Izven zaslona"
 
-#: ../clutter/clutter-stage.c:1670
+#: ../clutter/clutter-stage.c:1678
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Ali naj bo glavna postavitev izrisana izven zaslona"
 
-#: ../clutter/clutter-stage.c:1682
+#: ../clutter/clutter-stage.c:1690
 #: ../clutter/clutter-text.c:2728
 msgid "Cursor Visible"
 msgstr "Viden kazalec"
 
-#: ../clutter/clutter-stage.c:1683
+#: ../clutter/clutter-stage.c:1691
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Ali je miškin kazalec viden na glavni postavitvi"
 
-#: ../clutter/clutter-stage.c:1697
+#: ../clutter/clutter-stage.c:1705
 msgid "User Resizable"
 msgstr "Uporabnik lahko spreminja velikost"
 
-#: ../clutter/clutter-stage.c:1698
+#: ../clutter/clutter-stage.c:1706
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Ali lahko uporabnik spreminja velikost postavitve"
 
-#: ../clutter/clutter-stage.c:1711
+#: ../clutter/clutter-stage.c:1719
 msgid "The color of the stage"
 msgstr "Barva postavitve"
 
-#: ../clutter/clutter-stage.c:1725
+#: ../clutter/clutter-stage.c:1733
 msgid "Perspective"
 msgstr "Perspektiva"
 
-#: ../clutter/clutter-stage.c:1726
+#: ../clutter/clutter-stage.c:1734
 msgid "Perspective projection parameters"
 msgstr "Perspektiva nastavitvenih parametrov"
 
-#: ../clutter/clutter-stage.c:1741
+#: ../clutter/clutter-stage.c:1749
 msgid "Title"
 msgstr "Naslov"
 
-#: ../clutter/clutter-stage.c:1742
+#: ../clutter/clutter-stage.c:1750
 msgid "Stage Title"
 msgstr "Naziv postavitve"
 
-#: ../clutter/clutter-stage.c:1757
+#: ../clutter/clutter-stage.c:1765
 msgid "Use Fog"
 msgstr "Uporabi meglo"
 
-#: ../clutter/clutter-stage.c:1758
+#: ../clutter/clutter-stage.c:1766
 msgid "Whether to enable depth cueing"
 msgstr "Ali naj se omogoči globinska izravnava"
 
-#: ../clutter/clutter-stage.c:1772
+#: ../clutter/clutter-stage.c:1780
 msgid "Fog"
 msgstr "Megla"
 
-#: ../clutter/clutter-stage.c:1773
+#: ../clutter/clutter-stage.c:1781
 msgid "Settings for the depth cueing"
 msgstr "Nastavitve globinske izravnave"
 
-#: ../clutter/clutter-stage.c:1789
+#: ../clutter/clutter-stage.c:1797
 msgid "Use Alpha"
 msgstr "Uporabi alfo"
 
-#: ../clutter/clutter-stage.c:1790
+#: ../clutter/clutter-stage.c:1798
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Ali naj se upošteva alfa sestavni del barve postavitve"
 
-#: ../clutter/clutter-stage.c:1806
+#: ../clutter/clutter-stage.c:1814
 msgid "Key Focus"
 msgstr "Žarišče tipke"
 
-#: ../clutter/clutter-stage.c:1807
+#: ../clutter/clutter-stage.c:1815
 msgid "The currently key focused actor"
 msgstr "Trenutna tipka predmeta v žarišču"
 
-#: ../clutter/clutter-stage.c:1823
+#: ../clutter/clutter-stage.c:1831
 msgid "No Clear Hint"
 msgstr "Ni jasnega namiga"
 
-#: ../clutter/clutter-stage.c:1824
+#: ../clutter/clutter-stage.c:1832
 msgid "Whether the stage should clear its contents"
 msgstr "Ali naj postavitev počisti svojo vsebino"
 
-#: ../clutter/clutter-stage.c:1837
+#: ../clutter/clutter-stage.c:1845
 msgid "Accept Focus"
 msgstr "Sprejmi žarišče"
 
-#: ../clutter/clutter-stage.c:1838
+#: ../clutter/clutter-stage.c:1846
 msgid "Whether the stage should accept focus on show"
 msgstr "Ali naj postavitev potrdi žarišče na prikazu"
 
