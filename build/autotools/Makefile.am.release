@@ -1,0 +1,156 @@
+# To make real stable releases or devel snapshots, use either:
+# 	make release-check
+# or	make release-publish
+
+TAR_OPTIONS = --owner=0 --group=0
+
+RELEASE_UPLOAD_HOST = clutter-project.org
+RELEASE_UPLOAD_USER = clutter
+RELEASE_UPLOAD_DIR  = $(RELEASE_UPLOAD_USER)@$(RELEASE_UPLOAD_HOST):~$(RELEASE_UPLOAD_USER)/upload-source
+
+RELEASE_URL_BASE = http://source.clutter-project.org/sources/clutter
+RELEASE_URL      = $(RELEASE_URL_BASE)/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)
+
+RELEASE_ANNOUNCE_LIST = clutter-announce@clutter-project.org
+RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org
+
+RELEASE_DOC_URL = http://docs.clutter-project.org/docs/
+
+tar_file    = $(distdir).tar.bz2
+sha256_file = $(distdir).sha256sum
+
+$(sha256_file): $(tar_file)
+	$(AM_V_GEN)sha256sum $^ > $@
+
+release-tag:
+	@if test "x$(COGL_RELEASE_STATUS)" = "xgit"; then \
+	  echo "Cannot tag a Git version; please, update the Cogl version" >&2; \
+	else \
+	  if test -d "$(top_srcdir)/.git"; then \
+	    echo "Tagging release $(COGL_1_VERSION)..." ; \
+	    $(top_srcdir)/build/missing --run git tag \
+	 	-s \
+	      	-m "Cogl $(COGL_1_VERSION) ($(COGL_RELEASE_STATUS))" \
+		$(COGL_1_VERSION) ; \
+	  else \
+	    echo A git checkout is required to tag a release >&2; \
+	  fi \
+	fi
+
+release-check: release-verify-even-micro release-verify-sane-changelogs release-verify-news
+	TAR_OPTIONS="$(TAR_OPTIONS)" $(MAKE) $(AM_MAKEFLAGS) distcheck
+
+release-verify-news:
+	@echo -n "Checking that the NEWS file has been updated..."
+	@if ! grep -q "$(COGL_1_VERSION)" $(top_srcdir)/NEWS; then \
+	  (echo "Ouch." && \
+	   echo "The version in the NEWS file does not match $(COGL_1_VERSION)." && \
+	   echo "This probably means you haven't updated the NEWS file." && \
+	   false); else :; fi
+	@echo "Good."
+
+release-verify-sane-changelogs: changelogs
+	@echo -n "Checking that the ChangeLog files are sane..."
+	@if grep -q "is required to generate" $(CHANGELOGS); then \
+	  (echo "Ouch." && \
+	   echo "Some of the ChangeLogs are not generated correctly." && \
+	   echo "Remove ChangeLog* and make changelogs" && false); else :; fi
+	@echo "Good."
+
+release-verify-even-micro:
+	@echo -n "Checking that $(VERSION) has an even micro component..."
+	@test "$(COGL_MICRO_VERSION)" = "`echo $(COGL_MICRO_VERSION)/2*2 | bc`" || \
+	  (echo "Ouch." && \
+	   echo "The version micro component '$(COGL_MICRO_VERSION)' is not an even number." && \
+	   echo "The version in configure.ac must be incremented before a new release." && \
+	   false)
+	@echo "Good."
+
+release-upload: $(sha256_file)
+	@echo "Uploading to $(RELEASE_UPLOAD_HOST)..."
+	@scp $(tar_file) $(RELEASE_UPLOAD_DIR)
+	@echo "Uploading to master.gnome.org..."
+	@scp $(tar_file) master.gnome.org:
+	@echo "Running ftpadmin install..."
+	@ssh master.gnome.org ftpadmin install $(tar_file)
+	@mv -f $(sha256_file) $(top_builddir)/build/$(sha256_file)
+	@echo "Done."
+
+release-message:
+	@echo "     Release URL: $(RELEASE_URL)/$(tar_file)"
+	@echo "Release checksum: $(RELEASE_URL)/$(sha256_file)"
+	@echo "Send an email to: $(RELEASE_ANNOUNCE_LIST)"
+	@echo "              Cc: $(RELEASE_ANNOUNCE_CC)"
+	@echo "         Subject: Cogl $(COGL_1_VERSION) ($(COGL_RELEASE_STATUS))"
+	@echo "        Contents:"
+	@csplit -q --prefix=.README-section- $(top_srcdir)/README '/^--$$/' '{*}'
+	@echo "--- CUT HERE ---"
+	@echo "Good news, everyone!"
+	@echo ""
+	@echo "A new Cogl $(COGL_RELEASE_STATUS) is now available at:"
+	@echo ""
+	@echo "  http://source.clutter-project.org/sources/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
+	@echo "  http://download.gnome.org/sources/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
+	@echo ""
+	@echo "SHA256 Checksum:"
+	@echo ""
+	@cat $(top_builddir)/$(sha256_file)
+	@echo ""
+	@echo "Additionally, a git clone of the source tree:"
+	@echo "  git clone git://git.gnome.org/clutter"
+	@echo ""
+	@echo "will include a signed $(COGL_1_VERSION) tag which points to a commit named:"
+	@echo "  `git cat-file tag $(COGL_1_VERSION) | $(GREP) ^object | $(SED) -e 's,object ,,'`"
+	@echo ""
+	@echo "which can be verified with:"
+	@echo "  git verify-tag $(COGL_1_VERSION)"
+	@echo ""
+	@echo "and can be checked out with a command such as:"
+	@echo "  git checkout -b build $(COGL_1_VERSION)"
+	@echo ""
+	@cat .README-section-01
+	@echo ""
+	@cat .README-section-02
+	@echo ""
+	@echo "Documentation:"
+	@echo "      Cogl: $(RELEASE_DOC_URL)/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
+	@echo "      Cogl : $(RELEASE_DOC_URL)/cogl-2.0/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
+	@echo ""
+	@echo "  - The Cogl library exports a stable 1.x API (For third-party Clutter"
+	@echo "    developers to write custom actors) and an experimental 2.0 API which allows"
+	@echo "    standalone application development."
+	@echo ""
+	@echo "  - Internally Clutter depends on the Cogl 2.0 experimental API so we maintain"
+	@echo "    runtime compatibility between the 1.x API and experimental 2.0 APIs, which"
+	@echo "    means developers can mix-and-match their use of the APIs in the same"
+	@echo "    process.  API selection is done per-file by including a line like: '#define"
+	@echo "    COGL_ENABLE_EXPERIMENTAL_2_0_API' before including cogl.h or clutter.h."
+	@echo ""
+	@echo "  - We recommend using the 2.0 API if you don't mind updating your code once in"
+	@echo "    a while as this API evolves and stabilizes. We promise not to break the 2.0"
+	@echo "    API during a 1.x stable cycle and hope that will encourage people to"
+	@echo "    experiment with it and give critical feedback! For example after releasing"
+	@echo "    1.8, the 2.0 API will be stable for 1.8.1, 1.8.2, 1.8.3 etc, but may update"
+	@echo "    for 1.9/1.10."
+	@echo ""
+	@echo "  - Because we export the 1.x and 2.0 APIs from one libcogl.so the library"
+	@echo "    versioning, and thus ABI, can only be considered as stable as our 2.0 API - "
+	@echo "    i.e. during a stable release 1.x cycle."
+	@echo ""
+	@echo "  - Please report bugs using the Cogl Bugzilla product, at:"
+	@echo "    http://bugzilla.gnome.org/enter_bug.cgi?product=cogl"
+	@echo "--- CUT HERE ---"
+
+release-publish: release-check
+	$(MAKE) $(AM_MAKEFLAGS) release-tag
+	$(MAKE) $(AM_MAKEFLAGS) release-upload
+	$(MAKE) $(AM_MAKEFLAGS) release-message
+	
+.PHONY: \
+	release-check \
+	release-message \
+	release-publish \
+	release-tag \
+	release-upload \
+	release-verify-even-micro \
+	release-verify-sane-changelogs
