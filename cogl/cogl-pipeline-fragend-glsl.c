@@ -350,6 +350,15 @@ add_texture_lookup (GlslShaderState *glsl_shader_state,
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   const char *target_string, *tex_coord_swizzle;
 
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
+    {
+      g_string_append (glsl_shader_state->source,
+                       "vec4 (1.0, 1.0, 1.0, 1.0).");
+      g_string_append (glsl_shader_state->source, swizzle);
+
+      return;
+    }
+
   texture = _cogl_pipeline_layer_get_texture (layer);
 
   if (texture == COGL_INVALID_HANDLE)

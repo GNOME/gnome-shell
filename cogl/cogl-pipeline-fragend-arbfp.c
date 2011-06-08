@@ -381,15 +381,22 @@ setup_texture_source (ArbfpProgramState *arbfp_program_state,
 {
   if (!arbfp_program_state->unit_state[unit_index].sampled)
     {
-      g_string_append_printf (arbfp_program_state->source,
-                              "TEMP texel%d;\n"
-                              "TEX texel%d,fragment.texcoord[%d],"
-                              "texture[%d],%s;\n",
-                              unit_index,
-                              unit_index,
-                              unit_index,
-                              unit_index,
-                              gl_target_to_arbfp_string (gl_target));
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
+        g_string_append_printf (arbfp_program_state->source,
+                                "TEMP texel%d;\n"
+                                "MOV texel%d, one;\n",
+                                unit_index,
+                                unit_index);
+      else
+        g_string_append_printf (arbfp_program_state->source,
+                                "TEMP texel%d;\n"
+                                "TEX texel%d,fragment.texcoord[%d],"
+                                "texture[%d],%s;\n",
+                                unit_index,
+                                unit_index,
+                                unit_index,
+                                unit_index,
+                                gl_target_to_arbfp_string (gl_target));
       arbfp_program_state->unit_state[unit_index].sampled = TRUE;
     }
 }
