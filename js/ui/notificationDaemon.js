@@ -165,8 +165,11 @@ NotificationDaemon.prototype = {
         // with a transient one from the same sender, so we
         // always create a new source object for new transient notifications
         // and never add it to this._sources .
-        if (!isForTransientNotification && this._sources[pid])
-            return this._sources[pid];
+        if (!isForTransientNotification && this._sources[pid]) {
+            let source = this._sources[pid];
+            source.setTitle(title);
+            return source;
+        }
 
         let source = new Source(title, pid);
         source.setTransient(isForTransientNotification);

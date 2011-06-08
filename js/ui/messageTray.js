@@ -893,6 +893,11 @@ Source.prototype = {
         this.isTransient = isTransient;
     },
 
+    setTitle: function(newTitle) {
+        this.title = newTitle;
+        this.emit('title-changed');
+    },
+
     // Called to create a new icon actor (of size this.ICON_SIZE).
     // Must be overridden by the subclass if you do not pass icons
     // explicitly to the Notification() constructor.
@@ -994,6 +999,11 @@ SummaryItem.prototype = {
         this._sourceTitle.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._sourceTitleBin.child = this._sourceTitle;
         this._sourceTitleBin.width = 0;
+
+        this.source.connect('title-changed',
+                            Lang.bind(this, function() {
+                                this._sourceTitle.text = source.title;
+                            }));
 
         this._sourceBox.add(this._sourceIcon, { y_fill: false });
         this._sourceBox.add(this._sourceTitleBin, { expand: true, y_fill: false });

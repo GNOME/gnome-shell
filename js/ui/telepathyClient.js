@@ -241,7 +241,7 @@ Source.prototype = {
 
     _updateAlias: function() {
         let oldAlias = this.title;
-        this.title = this._contact.get_alias();
+        this.setTitle(this._contact.get_alias());
         this._notification.appendAliasChange(oldAlias, this.title);
         this.pushNotification(this._notification);
     },
