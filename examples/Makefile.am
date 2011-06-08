@@ -26,7 +26,7 @@ hello_LDADD = $(common_ldadd)
 if X11_TESTS
 noinst_PROGRAMS += x11-foreign
 x11_foreign_SOURCES = x11-foreign.c
-x11_foreign_LDADD = $(common_ldadd)
+x11_foreign_LDADD = $(common_ldadd) -lX11
 endif
 
 if SUPPORT_WAYLAND_EGL_SERVER
