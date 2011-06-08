@@ -157,7 +157,8 @@ typedef enum
   META_PROP_VALUE_WM_HINTS,
   META_PROP_VALUE_CLASS_HINT,
   META_PROP_VALUE_SIZE_HINTS,
-  META_PROP_VALUE_SYNC_COUNTER /* comes back as CARDINAL */
+  META_PROP_VALUE_SYNC_COUNTER,     /* comes back as CARDINAL */
+  META_PROP_VALUE_SYNC_COUNTER_LIST /* comes back as CARDINAL */
 } MetaPropValueType;
 
 /* used to request/return/store property values */
@@ -177,6 +178,11 @@ typedef struct
     XClassHint class_hint;
 #ifdef HAVE_XSYNC
     XSyncCounter xcounter;
+    struct
+    {
+      gulong *counters;
+      int     n_counters;
+    } xcounter_list;
 #endif
     
     struct
