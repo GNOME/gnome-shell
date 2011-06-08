@@ -360,6 +360,8 @@ struct _MetaWindow
   XSyncCounter sync_request_counter;
   guint sync_request_serial;
   GTimeVal sync_request_time;
+  /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
+  XSyncAlarm sync_request_alarm;
 #endif
   
   /* Number of UnmapNotify that are caused by us, if
@@ -633,6 +635,8 @@ void meta_window_refresh_resize_popup (MetaWindow *window);
 
 void meta_window_free_delete_dialog (MetaWindow *window);
 
+void meta_window_create_sync_request_alarm  (MetaWindow *window);
+void meta_window_destroy_sync_request_alarm (MetaWindow *window);
 
 void meta_window_update_keyboard_resize (MetaWindow *window,
                                          gboolean    update_cursor);

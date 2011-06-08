@@ -223,10 +223,6 @@ struct _MetaDisplay
   int         xkb_base_event_type;
   guint32     last_bell_time;
 #endif
-#ifdef HAVE_XSYNC
-  /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
-  XSyncAlarm  grab_sync_request_alarm;
-#endif
   int	      grab_resize_timeout_id;
 
   /* Keybindings stuff */
@@ -374,6 +370,16 @@ void        meta_display_register_x_window   (MetaDisplay *display,
                                               MetaWindow  *window);
 void        meta_display_unregister_x_window (MetaDisplay *display,
                                               Window       xwindow);
+
+#ifdef HAVE_XSYNC
+MetaWindow* meta_display_lookup_sync_alarm     (MetaDisplay *display,
+                                                XSyncAlarm   alarm);
+void        meta_display_register_sync_alarm   (MetaDisplay *display,
+                                                XSyncAlarm  *alarmp,
+                                                MetaWindow  *window);
+void        meta_display_unregister_sync_alarm (MetaDisplay *display,
+                                                XSyncAlarm   alarm);
+#endif /* HAVE_XSYNC */
 
 void        meta_display_notify_window_created (MetaDisplay  *display,
                                                 MetaWindow   *window);

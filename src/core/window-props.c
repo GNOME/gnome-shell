@@ -920,6 +920,8 @@ reload_update_counter (MetaWindow    *window,
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
+      meta_window_destroy_sync_request_alarm (window);
+
 #ifdef HAVE_XSYNC
       XSyncCounter counter = value->v.xcounter;
 

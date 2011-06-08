@@ -525,10 +525,6 @@ meta_display_open (void)
   the_display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
                                                   terminal has the focus */
 
-#ifdef HAVE_XSYNC
-  the_display->grab_sync_request_alarm = None;
-#endif
-  
   /* FIXME copy the checks from GDK probably */
   the_display->static_gravity_works = g_getenv ("MUTTER_USE_STATIC_GRAVITY") != NULL;
   
@@ -1953,15 +1949,20 @@ event_callback (XEvent   *event,
     }
 
 #ifdef HAVE_XSYNC
-  if (META_DISPLAY_HAS_XSYNC (display) && 
-      event->type == (display->xsync_event_base + XSyncAlarmNotify) &&
-      ((XSyncAlarmNotifyEvent*)event)->alarm == display->grab_sync_request_alarm)
+  if (META_DISPLAY_HAS_XSYNC (display) &&
+      event->type == (display->xsync_event_base + XSyncAlarmNotify))
     {
-      XSyncValue value = ((XSyncAlarmNotifyEvent*)event)->counter_value;
-      guint64 new_counter_value;
-      new_counter_value = XSyncValueLow32 (value) + ((gint64)XSyncValueHigh32 (value) << 32);
-      meta_window_update_sync_request_counter (display->grab_window, new_counter_value);
-      filter_out_event = TRUE; /* GTK doesn't want to see this really */
+      MetaWindow *alarm_window = meta_display_lookup_sync_alarm (display,
+                                                                 ((XSyncAlarmNotifyEvent*)event)->alarm);
+
+      if (alarm_window != NULL)
+        {
+          XSyncValue value = ((XSyncAlarmNotifyEvent*)event)->counter_value;
+          guint64 new_counter_value;
+          new_counter_value = XSyncValueLow32 (value) + ((gint64)XSyncValueHigh32 (value) << 32);
+          meta_window_update_sync_request_counter (alarm_window, new_counter_value);
+          filter_out_event = TRUE; /* GTK doesn't want to see this really */
+        }
     }
 #endif /* HAVE_XSYNC */
 
@@ -3589,6 +3590,39 @@ meta_display_unregister_x_window (MetaDisplay *display,
   remove_pending_pings_for_window (display, xwindow);
 }
 
+#ifdef HAVE_XSYNC
+/* We store sync alarms in the window ID hash table, because they are
+ * just more types of XIDs in the same global space, but we have
+ * typesafe functions to register/unregister for readability.
+ */
+
+MetaWindow*
+meta_display_lookup_sync_alarm (MetaDisplay *display,
+                                XSyncAlarm   alarm)
+{
+  return g_hash_table_lookup (display->xids, &alarm);
+}
+
+void
+meta_display_register_sync_alarm (MetaDisplay *display,
+                                  XSyncAlarm  *alarmp,
+                                  MetaWindow  *window)
+{
+  g_return_if_fail (g_hash_table_lookup (display->xids, alarmp) == NULL);
+
+  g_hash_table_insert (display->xids, alarmp, window);
+}
+
+void
+meta_display_unregister_sync_alarm (MetaDisplay *display,
+                                    XSyncAlarm   alarm)
+{
+  g_return_if_fail (g_hash_table_lookup (display->xids, &alarm) != NULL);
+
+  g_hash_table_remove (display->xids, &alarm);
+}
+#endif /* HAVE_XSYNC */
+
 void
 meta_display_notify_window_created (MetaDisplay  *display,
                                     MetaWindow   *window)
@@ -3902,7 +3936,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_motion_notify_time = 0;
   display->grab_old_window_stacking = NULL;
 #ifdef HAVE_XSYNC
-  display->grab_sync_request_alarm = None;
   display->grab_last_user_action_was_snap = FALSE;
 #endif
   display->grab_frame_action = frame_action;
@@ -3923,55 +3956,11 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
 #ifdef HAVE_XSYNC
       if ( meta_grab_op_is_resizing (display->grab_op) &&
-          display->grab_window->sync_request_counter != None)
+           display->grab_window->sync_request_counter != None)
         {
-          XSyncAlarmAttributes values;
-	  XSyncValue init;
-
-          meta_error_trap_push_with_return (display);
-
-	  /* Set the counter to 0, so we know that the application's
-	   * responses to the client messages will always trigger
-	   * a PositiveTransition
-	   */
-	  
-	  XSyncIntToValue (&init, 0);
-	  XSyncSetCounter (display->xdisplay,
-			   display->grab_window->sync_request_counter, init);
-	  
-	  display->grab_window->sync_request_serial = 0;
-	  display->grab_window->sync_request_time.tv_sec = 0;
-	  display->grab_window->sync_request_time.tv_usec = 0;
-	  
-          values.trigger.counter = display->grab_window->sync_request_counter;
-          values.trigger.value_type = XSyncAbsolute;
-          values.trigger.test_type = XSyncPositiveTransition;
-          XSyncIntToValue (&values.trigger.wait_value,
-			   display->grab_window->sync_request_serial + 1);
-	  
-          /* After triggering, increment test_value by this.
-           * (NOT wait_value above)
-           */
-          XSyncIntToValue (&values.delta, 1);
-	  
-          /* we want events (on by default anyway) */
-          values.events = True;
-          
-          display->grab_sync_request_alarm = XSyncCreateAlarm (display->xdisplay,
-                                                         XSyncCACounter |
-                                                         XSyncCAValueType |
-                                                         XSyncCAValue |
-                                                         XSyncCATestType |
-                                                         XSyncCADelta |
-                                                         XSyncCAEvents,
-                                                         &values);
-
-          if (meta_error_trap_pop_with_return (display) != Success)
-	    display->grab_sync_request_alarm = None;
-
-          meta_topic (META_DEBUG_RESIZING,
-                      "Created update alarm 0x%lx\n",
-                      display->grab_sync_request_alarm);
+          meta_window_create_sync_request_alarm (display->grab_window);
+          window->sync_request_time.tv_sec = 0;
+          window->sync_request_time.tv_usec = 0;
         }
 #endif
     }
@@ -4084,14 +4073,6 @@ meta_display_end_grab_op (MetaDisplay *display,
         meta_screen_ungrab_all_keys (display->grab_screen, timestamp);
     }
 
-#ifdef HAVE_XSYNC
-  if (display->grab_sync_request_alarm != None)
-    {
-      XSyncDestroyAlarm (display->xdisplay,
-                         display->grab_sync_request_alarm);
-      display->grab_sync_request_alarm = None;
-    }
-#endif /* HAVE_XSYNC */
   
   display->grab_timestamp = 0;
   display->grab_window = NULL;
