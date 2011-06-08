@@ -1496,6 +1496,9 @@ weak_override_source_destroyed_cb (CoglPipeline *pipeline,
                                    void *user_data)
 {
   VertexBufferMaterialPrivate *pipeline_priv = user_data;
+  /* Unref the weak pipeline copy since it is no longer valid - probably because
+   * one of its ancestors has been changed. */
+  cogl_object_unref (pipeline_priv->real_source);
   pipeline_priv->real_source = NULL;
   /* A reference was added when we copied the weak material so we need
      to unref it here */
