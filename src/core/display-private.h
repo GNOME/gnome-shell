@@ -223,6 +223,9 @@ struct _MetaDisplay
   int         xkb_base_event_type;
   guint32     last_bell_time;
 #endif
+#ifdef HAVE_XSYNC
+  gint64      grab_sync_counter_wait_serial;
+#endif
   int	      grab_resize_timeout_id;
 
   /* Keybindings stuff */

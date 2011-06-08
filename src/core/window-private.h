@@ -352,13 +352,17 @@ struct _MetaWindow
   /* if non-NULL, the opaque region _NET_WM_OPAQUE_REGION */
   cairo_region_t *opaque_region;
 
+  /* if TRUE, the we have the new form of sync request counter which
+   * also handles application frames */
+  guint extended_sync_request_counter : 1;
+
   /* Note: can be NULL */
   GSList *struts;
 
 #ifdef HAVE_XSYNC
   /* XSync update counter */
   XSyncCounter sync_request_counter;
-  guint sync_request_serial;
+  gint64 sync_request_serial;
   GTimeVal sync_request_time;
   /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
   XSyncAlarm sync_request_alarm;
@@ -607,7 +611,7 @@ void meta_window_set_gravity (MetaWindow *window,
 
 #ifdef HAVE_XSYNC
 void meta_window_update_sync_request_counter (MetaWindow *window,
-                                              guint64     new_counter_value);
+                                              gint64      new_counter_value);
 #endif /* HAVE_XSYNC */
 
 void meta_window_handle_mouse_grab_op_event (MetaWindow *window,

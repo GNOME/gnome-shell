@@ -921,13 +921,31 @@ reload_update_counter (MetaWindow    *window,
   if (value->type != META_PROP_VALUE_INVALID)
     {
       meta_window_destroy_sync_request_alarm (window);
+      window->sync_request_counter = None;
 
 #ifdef HAVE_XSYNC
-      XSyncCounter counter = value->v.xcounter;
+      if (value->v.xcounter_list.n_counters == 0)
+        {
+          meta_warning ("_NET_WM_SYNC_REQUEST_COUNTER is empty\n");
+          return;
+        }
 
-      window->sync_request_counter = counter;
-      meta_verbose ("Window has _NET_WM_SYNC_REQUEST_COUNTER 0x%lx\n",
-                    window->sync_request_counter);
+      if (value->v.xcounter_list.n_counters == 1)
+        {
+          window->sync_request_counter = value->v.xcounter_list.counters[0];
+          window->extended_sync_request_counter = FALSE;
+        }
+      else
+        {
+          window->sync_request_counter = value->v.xcounter_list.counters[1];
+          window->extended_sync_request_counter = TRUE;
+        }
+      meta_verbose ("Window has _NET_WM_SYNC_REQUEST_COUNTER 0x%lx (extended=%s)\n",
+                    window->sync_request_counter,
+                    window->extended_sync_request_counter ? "true" : "false");
+
+      if (window->extended_sync_request_counter)
+        meta_window_create_sync_request_alarm (window);
 #endif
     }
 }
@@ -1721,7 +1739,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { XA_WM_ICON_NAME,                 META_PROP_VALUE_TEXT_PROPERTY, reload_wm_icon_name, TRUE,  FALSE },
     { display->atom__NET_WM_DESKTOP,   META_PROP_VALUE_CARDINAL, reload_net_wm_desktop,    TRUE,  FALSE },
     { display->atom__NET_STARTUP_ID,   META_PROP_VALUE_UTF8,     reload_net_startup_id,    TRUE,  FALSE },
-    { display->atom__NET_WM_SYNC_REQUEST_COUNTER, META_PROP_VALUE_SYNC_COUNTER, reload_update_counter, TRUE, FALSE },
+    { display->atom__NET_WM_SYNC_REQUEST_COUNTER, META_PROP_VALUE_SYNC_COUNTER_LIST, reload_update_counter, TRUE, TRUE },
     { XA_WM_NORMAL_HINTS,              META_PROP_VALUE_SIZE_HINTS, reload_normal_hints,    TRUE,  FALSE },
     { display->atom_WM_PROTOCOLS,      META_PROP_VALUE_ATOM_LIST, reload_wm_protocols,     TRUE,  FALSE },
     { XA_WM_HINTS,                     META_PROP_VALUE_WM_HINTS,  reload_wm_hints,         TRUE,  FALSE },

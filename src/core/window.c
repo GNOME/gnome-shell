@@ -4453,17 +4453,38 @@ meta_window_create_sync_request_alarm (MetaWindow *window)
 
   meta_error_trap_push_with_return (window->display);
 
-  /* Set the counter to 0, so we know that the application's
-   * responses to the client messages will always trigger
-   * a PositiveTransition
+  /* In the new (extended style), the counter value is initialized by
+   * the client before mapping the window. In the old style, we're
+   * responsible for setting the initial value of the counter.
    */
-  XSyncIntToValue (&init, 0);
-  XSyncSetCounter (window->display->xdisplay,
-                   window->sync_request_counter, init);
-  window->sync_request_serial = 0;
+  if (window->extended_sync_request_counter)
+    {
+      if (!XSyncQueryCounter(window->display->xdisplay,
+                             window->sync_request_counter,
+                             &init))
+        {
+          meta_error_trap_pop_with_return (window->display);
+          window->sync_request_counter = None;
+          return;
+        }
+
+      window->sync_request_serial =
+        XSyncValueLow32 (init) + ((gint64)XSyncValueHigh32 (init) << 32);
+
+      /* if the value is odd, the window starts off with updates frozen */
+      meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                          meta_window_updates_are_frozen (window));
+    }
+  else
+    {
+      XSyncIntToValue (&init, 0);
+      XSyncSetCounter (window->display->xdisplay,
+                       window->sync_request_counter, init);
+      window->sync_request_serial = 0;
+    }
 
   values.trigger.counter = window->sync_request_counter;
-  values.trigger.test_type = XSyncPositiveTransition;
+  values.trigger.test_type = XSyncPositiveComparison;
 
   /* Initialize to one greater than the current value */
   values.trigger.value_type = XSyncRelative;
@@ -4514,12 +4535,19 @@ meta_window_destroy_sync_request_alarm (MetaWindow *window)
 static void
 send_sync_request (MetaWindow *window)
 {
-  XSyncValue value;
   XClientMessageEvent ev;
+  gint64 wait_serial;
 
-  window->sync_request_serial++;
+  /* For the old style of _NET_WM_SYNC_REQUEST_COUNTER, we just have to
+   * increase the value, but for the new "extended" style we need to
+   * pick an even (unfrozen) value sufficiently ahead of the last serial
+   * that we received from the client; the same code still works
+   * for the old style. The increment of 240 is specified by the EWMH
+   * and is (1 second) * (60fps) * (an increment of 4 per frame).
+   */
+  wait_serial = window->sync_request_serial + 240;
 
-  XSyncIntToValue (&value, window->sync_request_serial);
+  window->display->grab_sync_counter_wait_serial = wait_serial;
 
   ev.type = ClientMessage;
   ev.window = window->xwindow;
@@ -4532,8 +4560,9 @@ send_sync_request (MetaWindow *window)
    * want to use _roundtrip, though?
    */
   ev.data.l[1] = meta_display_get_current_time (window->display);
-  ev.data.l[2] = XSyncValueLow32 (value);
-  ev.data.l[3] = XSyncValueHigh32 (value);
+  ev.data.l[2] = wait_serial & G_GUINT64_CONSTANT(0xffffffff);
+  ev.data.l[3] = wait_serial >> 32;
+  ev.data.l[4] = window->extended_sync_request_counter ? 1 : 0;
 
   /* We don't need to trap errors here as we are already
    * inside an error_trap_push()/pop() pair.
@@ -4560,6 +4589,12 @@ send_sync_request (MetaWindow *window)
 gboolean
 meta_window_updates_are_frozen (MetaWindow *window)
 {
+#ifdef HAVE_XSYNC
+  if (window->extended_sync_request_counter &&
+      window->sync_request_serial % 2 == 1)
+    return TRUE;
+#endif
+
   return window->updates_frozen_for_resize;
 }
 
@@ -9456,13 +9491,17 @@ update_tile_mode (MetaWindow *window)
 #ifdef HAVE_XSYNC
 void
 meta_window_update_sync_request_counter (MetaWindow *window,
-                                         guint64     new_counter_value)
+                                         gint64      new_counter_value)
 {
+  window->sync_request_serial = new_counter_value;
+  meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                      meta_window_updates_are_frozen (window));
+
   if (window->display->grab_op != META_GRAB_OP_NONE &&
       window == window->display->grab_window &&
-      meta_grab_op_is_mouse (window->display->grab_op))
+      meta_grab_op_is_mouse (window->display->grab_op) &&
+      new_counter_value >= window->display->grab_sync_counter_wait_serial)
     {
-
       meta_topic (META_DEBUG_RESIZING,
                   "Alarm event received last motion x = %d y = %d\n",
                   window->display->grab_latest_motion_x,
