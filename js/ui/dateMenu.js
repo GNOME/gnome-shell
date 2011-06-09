@@ -60,7 +60,7 @@ DateMenuButton.prototype = {
         PanelMenu.Button.prototype._init.call(this, menuAlignment);
 
         this._clock = new St.Label();
-        this.actor.set_child(this._clock);
+        this.actor.add_actor(this._clock);
 
         hbox = new St.BoxLayout({name: 'calendarArea' });
         this.menu.addActor(hbox);

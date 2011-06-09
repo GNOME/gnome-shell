@@ -339,7 +339,8 @@ StTooltip StLabel {
 }
 
 .panel-button {
-    padding: 0px 12px;
+    -natural-hpadding: 12px;
+    -minimum-hpadding: 6px;
     font-weight: bold;
     color: #ccc;
     transition-duration: 100;

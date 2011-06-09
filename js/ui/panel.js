@@ -249,7 +249,7 @@ AppMenuButton.prototype = {
         this._targetApp = null;
 
         let bin = new St.Bin({ name: 'appMenu' });
-        this.actor.set_child(bin);
+        this.actor.add_actor(bin);
 
         this.actor.reactive = false;
         this._targetIsCurrent = false;
@@ -564,10 +564,10 @@ ActivitiesButton.prototype = {
         PanelMenu.Button.prototype._init.call(this, 0.0);
 
         let container = new Shell.GenericContainer();
-        container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        container.connect('allocate', Lang.bind(this, this._allocate));
-        this.actor.child = container;
+        container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
+        container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
+        container.connect('allocate', Lang.bind(this, this._containerAllocate));
+        this.actor.add_actor(container);
         this.actor.name = 'panelActivities';
 
         /* Translators: If there is no suitable word for "Activities"
@@ -599,15 +599,15 @@ ActivitiesButton.prototype = {
         this._xdndTimeOut = 0;
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
+    _containerGetPreferredWidth: function(actor, forHeight, alloc) {
         [alloc.min_size, alloc.natural_size] = this._label.get_preferred_width(forHeight);
     },
 
-    _getPreferredHeight: function(actor, forWidth, alloc) {
+    _containerGetPreferredHeight: function(actor, forWidth, alloc) {
         [alloc.min_size, alloc.natural_size] = this._label.get_preferred_height(forWidth);
     },
 
-    _allocate: function(actor, box, flags) {
+    _containerAllocate: function(actor, box, flags) {
         this._label.allocate(box, flags);
 
         // The hot corner needs to be outside any padding/alignment
@@ -1102,16 +1102,17 @@ Panel.prototype = {
         }
 
         icon.height = PANEL_ICON_SIZE;
-        let bin = new St.Bin({ style_class: 'panel-button' });
-        bin.child = icon;
+        let buttonBox = new PanelMenu.ButtonBox();
+        let box = buttonBox.actor;
+        box.add_actor(icon);
 
-        this._insertStatusItem(bin, this._status_area_order.indexOf(role));
+        this._insertStatusItem(box, this._status_area_order.indexOf(role));
     },
 
     _onTrayIconRemoved: function(o, icon) {
-        let bin = icon.get_parent();
-        if (bin && bin instanceof St.Bin)
-            bin.destroy();
+        let box = icon.get_parent();
+        if (box && box._delegate instanceof PanelMenu.ButtonBox)
+            box.destroy();
     },
 
 };
