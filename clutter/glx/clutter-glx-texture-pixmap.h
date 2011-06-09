@@ -28,7 +28,7 @@
 
 #include <clutter/x11/clutter-x11-texture-pixmap.h>
 
-#if !defined(CLUTTER_COMPILATION) || defined(CLUTTER_DISABLE_DEPRECATED)
+#if !defined(CLUTTER_DISABLE_COMPILATION) || defined(CLUTTER_COMPILATION)
 
 G_BEGIN_DECLS
 
@@ -87,6 +87,6 @@ gboolean       clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixm
 
 G_END_DECLS
 
-#endif /* !CLUTTER_DISABLE_DEPRECATED || CLUTTER_COMPILATION */
+#endif /* !CLUTTER_DISABLE_DEPRECATED || !CLUTTER_COMPILATION */
 
 #endif /* __CLUTTER_GLX_TEXTURE_PIXMAP_H__ */

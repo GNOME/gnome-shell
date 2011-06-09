@@ -45,8 +45,6 @@
 
 #include "config.h"
 
-#include "clutter-glx-texture-pixmap.h"
-
 #include <string.h>
 
 #include <GL/glx.h>
@@ -54,6 +52,8 @@
 #include "x11/clutter-x11-texture-pixmap.h"
 
 #include <cogl/cogl-texture-pixmap-x11.h>
+
+#include "clutter-glx-texture-pixmap.h"
 
 G_DEFINE_TYPE (ClutterGLXTexturePixmap,    \
                clutter_glx_texture_pixmap, \
