@@ -5,6 +5,8 @@
 
 static const ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x99 };
 
+static gboolean is_expanded = FALSE;
+
 static void
 update_background (ClutterActor       *tex,
                    const ClutterColor *color,
@@ -95,8 +97,6 @@ on_rect_clicked (ClutterClickAction *action,
                  ClutterActor       *rect,
                  ClutterActor       *box)
 {
-  static gboolean is_expanded = FALSE;
-
   if (!is_expanded)
     clutter_actor_animate (box, CLUTTER_EASE_OUT_BOUNCE, 250,
                            "width", 400.0,
@@ -109,6 +109,30 @@ on_rect_clicked (ClutterClickAction *action,
                            NULL);
 
   is_expanded = !is_expanded;
+}
+
+static gboolean
+on_rect_long_press (ClutterClickAction    *action,
+                    ClutterActor          *rect,
+                    ClutterLongPressState  state,
+                    ClutterActor          *box)
+{
+  switch (state)
+    {
+    case CLUTTER_LONG_PRESS_QUERY:
+      g_print ("*** long press: query ***\n");
+      return is_expanded;
+
+    case CLUTTER_LONG_PRESS_CANCEL:
+      g_print ("*** long press: cancel ***\n");
+      break;
+
+    case CLUTTER_LONG_PRESS_ACTIVATE:
+      g_print ("*** long press: activate ***\n");
+      break;
+    }
+
+  return TRUE;
 }
 
 static void
@@ -219,6 +243,7 @@ test_bin_layout_main (int argc, char *argv[])
   action = clutter_click_action_new ();
   clutter_actor_add_action (rect, action);
   g_signal_connect (action, "clicked", G_CALLBACK (on_rect_clicked), box);
+  g_signal_connect (action, "long-press", G_CALLBACK (on_rect_long_press), box);
   g_signal_connect (box,
                     "enter-event", G_CALLBACK (on_box_enter),
                     rect);
