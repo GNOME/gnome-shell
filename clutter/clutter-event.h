@@ -410,6 +410,8 @@ void                    clutter_event_set_source_device         (ClutterEvent   
                                                                  ClutterInputDevice     *device);
 
 ClutterInputDevice *    clutter_event_get_source_device         (const ClutterEvent     *event);
+void                    clutter_event_set_source                (ClutterEvent           *event,
+                                                                 ClutterActor           *actor);
 ClutterActor *          clutter_event_get_source                (const ClutterEvent     *event);
 void                    clutter_event_set_stage                 (ClutterEvent           *event,
                                                                  ClutterStage           *stage);
