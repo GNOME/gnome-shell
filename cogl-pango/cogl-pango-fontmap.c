@@ -53,7 +53,7 @@ static GQuark cogl_pango_font_map_get_renderer_key (void) G_GNUC_CONST;
  *
  * Creates a new font map.
  *
- * Return value: the newly created #PangoFontMap
+ * Return value: (transfer full): the newly created #PangoFontMap
  *
  * Since: 1.0
  */
@@ -69,7 +69,7 @@ cogl_pango_font_map_new (void)
  *
  * Creates a new #PangoContext from the passed font map.
  *
- * Return value: the newly created #PangoContext
+ * Return value: (transfer full): the newly created #PangoContext
  *
  * Since: 1.0
  */
@@ -89,7 +89,7 @@ cogl_pango_font_map_create_context (CoglPangoFontMap *fm)
  *
  * Retrieves the #CoglPangoRenderer for the passed font map.
  *
- * Return value: a #PangoRenderer
+ * Return value: (transfer none): a #PangoRenderer
  *
  * Since: 1.0
  */
