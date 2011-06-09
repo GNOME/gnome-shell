@@ -59,6 +59,8 @@ struct _ClutterSettings
   gint xft_antialias;
   gchar *xft_hint_style;
   gchar *xft_rgba;
+
+  gint long_press_duration;
 };
 
 struct _ClutterSettingsClass
@@ -84,6 +86,8 @@ enum
   PROP_FONT_HINTING,
   PROP_FONT_HINT_STYLE,
   PROP_FONT_RGBA,
+
+  PROP_LONG_PRESS_DURATION,
 
   PROP_LAST
 };
@@ -251,6 +255,10 @@ clutter_settings_set_property (GObject      *gobject,
       settings_update_font_options (self);
       break;
 
+    case PROP_LONG_PRESS_DURATION:
+      self->long_press_duration = g_value_get_int (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -301,6 +309,10 @@ clutter_settings_get_property (GObject    *gobject,
 
     case PROP_FONT_RGBA:
       g_value_set_string (value, self->xft_rgba);
+      break;
+
+    case PROP_LONG_PRESS_DURATION:
+      g_value_set_int (value, self->long_press_duration);
       break;
 
     default:
@@ -494,6 +506,24 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                          NULL,
                          CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterSettings:long-press-duration:
+   *
+   * Sets the minimum duration for a press to be recognized as a long press
+   * gesture. The duration is expressed in milliseconds.
+   *
+   * See also #ClutterClickAction:long-press-duration.
+   *
+   * Since: 1.8
+   */
+  obj_props[PROP_LONG_PRESS_DURATION] =
+    g_param_spec_int ("long-press-duration",
+                      P_("Long Press Duration"),
+                      P_("The minimum duration for a long press gesture to be recognized"),
+                      0, G_MAXINT,
+                      500,
+                      CLUTTER_PARAM_READWRITE);
+
   gobject_class->set_property = clutter_settings_set_property;
   gobject_class->get_property = clutter_settings_get_property;
   gobject_class->notify = clutter_settings_notify;
@@ -517,6 +547,8 @@ clutter_settings_init (ClutterSettings *self)
   self->xft_hinting = -1;
   self->xft_hint_style = NULL;
   self->xft_rgba = NULL;
+
+  self->long_press_duration = 500;
 }
 
 /**
