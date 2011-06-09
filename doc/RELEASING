@@ -3,15 +3,16 @@ RELEASING
 
 When making a new release;
 
- - Verify that you don't have uncommitted changes; both:
+ - Verify that you don't have uncommitted and unpublished
+   changes, i.e. both this:
 
-     $ git diff HEAD
+     $ git status
 
-   and:
+   and this:
 
      $ git log master..origin/master
 
-   should be empty.
+   should be empty. Commit and push before the next step.
 
  - Clean your work directory:
 
