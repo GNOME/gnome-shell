@@ -1165,7 +1165,7 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n);
  * API to support the deprecate cogl_pipeline_layer_xyz functions...
  */
 
-G_CONST_RETURN GList *
+const GList *
 _cogl_pipeline_get_layers (CoglPipeline *pipeline);
 
 void

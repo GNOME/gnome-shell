@@ -890,7 +890,7 @@ cogl_material_set_layer_matrix (CoglMaterial     *material,
  *    cogl_material_layer_* functions. The list is owned by Cogl and it
  *    should not be modified or freed
  */
-G_CONST_RETURN GList *
+const GList *
 cogl_material_get_layers (CoglMaterial *material);
 
 /**

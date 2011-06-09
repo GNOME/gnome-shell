@@ -279,7 +279,7 @@ cogl_material_set_layer_matrix (CoglMaterial     *material,
                                   layer_index, matrix);
 }
 
-G_CONST_RETURN GList *
+const GList *
 cogl_material_get_layers (CoglMaterial *material)
 {
   return _cogl_pipeline_get_layers (COGL_PIPELINE (material));
