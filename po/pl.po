@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: cogl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-05-08 21:28+0200\n"
+"POT-Creation-Date: 2011-06-09 16:23+0100\n"
 "PO-Revision-Date: 2011-05-08 21:30+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
@@ -22,18 +22,18 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
-#: ../cogl/cogl-debug.c:204
+#: cogl/cogl-debug.c:204
 msgid "Cogl debugging flags to set"
 msgstr "Flagi debugowania biblioteki Cogl do ustawienia"
 
-#: ../cogl/cogl-debug.c:206
+#: cogl/cogl-debug.c:206
 msgid "Cogl debugging flags to unset"
 msgstr "Flagi debugowania biblioteki Cogl do usunięcia"
 
-#: ../cogl/cogl-debug.c:239
+#: cogl/cogl-debug.c:239
 msgid "Cogl Options"
 msgstr "Opcje biblioteki Cogl"
 
-#: ../cogl/cogl-debug.c:240
+#: cogl/cogl-debug.c:240
 msgid "Show Cogl options"
 msgstr "Wyświetla opcje biblioteki Cogl"
