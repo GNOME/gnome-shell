@@ -1721,6 +1721,7 @@ clutter_interval_get_type
 <SECTION>
 <FILE>clutter-cairo-texture</FILE>
 <TITLE>ClutterCairoTexture</TITLE>
+CLUTTER_CAIRO_FORMAT_ARGB32
 ClutterCairoTexture
 ClutterCairoTextureClass
 clutter_cairo_texture_new
@@ -1810,6 +1811,8 @@ clutter_text_set_cursor_color
 clutter_text_get_cursor_color
 clutter_text_set_selection_color
 clutter_text_get_selection_color
+clutter_text_set_selected_text_color
+clutter_text_get_selected_text_color
 clutter_text_set_cursor_position
 clutter_text_get_cursor_position
 clutter_text_set_cursor_visible
@@ -2447,9 +2450,13 @@ ClutterStatePrivate
 <TITLE>ClutterClickAction</TITLE>
 ClutterClickAction
 ClutterClickActionClass
+ClutterLongPressState
 clutter_click_action_new
+
+<SUBSECTION>
 clutter_click_action_get_button
 clutter_click_action_get_state
+clutter_click_action_get_coords
 
 <SUBSECTION>
 clutter_click_action_release
@@ -2512,6 +2519,7 @@ clutter_offscreen_effect_get_type
 ClutterShaderType
 ClutterShaderEffect
 ClutterShaderEffectClass
+clutter_shader_effect_new
 clutter_shader_effect_set_uniform
 clutter_shader_effect_set_uniform_value
 <SUBSECTION>
