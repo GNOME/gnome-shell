@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <gmodule.h>
-#include <cairo/cairo.h>
+#include <cairo.h>
 #include <clutter/clutter.h>
 
 #define N_RECTS         20

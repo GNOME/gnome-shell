@@ -53,7 +53,7 @@
 #include "config.h"
 #endif
 
-#include <cairo/cairo.h>
+#include <cairo.h>
 
 #include "clutter-stage.h"
 

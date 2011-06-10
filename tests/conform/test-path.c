@@ -1,5 +1,5 @@
 #include <clutter/clutter.h>
-#include <cairo/cairo.h>
+#include <cairo.h>
 #include <string.h>
 #include <math.h>
 

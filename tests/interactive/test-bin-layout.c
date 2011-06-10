@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <gmodule.h>
-#include <cairo/cairo.h>
+#include <cairo.h>
 #include <clutter/clutter.h>
 
 static const ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x99 };
