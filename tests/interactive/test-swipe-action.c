@@ -1,48 +1,74 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-static guint VERTICAL = 0;
-static guint HORIZONTAL = 1;
-static guint BOTH = 2;
+enum {
+  VERTICAL      = 0,
+  HORIZONTAL    = 1,
+  BOTH          = 2
+};
 
 static void
 swept_cb (ClutterSwipeAction    *action,
           ClutterActor          *actor,
           ClutterSwipeDirection  direction,
-          guint                  axis)
+          gpointer               data_)
 {
-  gchar *direction_str = "";
+  guint axis = GPOINTER_TO_UINT (data_);
+  gchar *direction_str = g_strdup ("");
 
   if (axis == HORIZONTAL &&
-      (direction == CLUTTER_SWIPE_DIRECTION_UP ||
-       direction == CLUTTER_SWIPE_DIRECTION_DOWN))
-    return;
-  else if (axis == VERTICAL &&
-           (direction == CLUTTER_SWIPE_DIRECTION_LEFT ||
-            direction == CLUTTER_SWIPE_DIRECTION_RIGHT))
-    return;
+      ((direction & CLUTTER_SWIPE_DIRECTION_UP) != 0 ||
+       (direction & CLUTTER_SWIPE_DIRECTION_DOWN) != 0))
+    {
+      g_print ("discarding non-horizontal swipe on '%s'\n",
+               clutter_actor_get_name (actor));
+      return;
+    }
+
+  if (axis == VERTICAL &&
+      ((direction & CLUTTER_SWIPE_DIRECTION_LEFT) != 0 ||
+       (direction & CLUTTER_SWIPE_DIRECTION_RIGHT) != 0))
+    {
+      g_print ("discarding non-vertical swipe on '%s'\n",
+               clutter_actor_get_name (actor));
+      return;
+    }
 
   if (direction & CLUTTER_SWIPE_DIRECTION_UP)
-    direction_str = g_strconcat (direction_str, " up", NULL);
+    {
+      char *old_str = direction_str;
+
+      direction_str = g_strconcat (direction_str, " up", NULL);
+      g_free (old_str);
+    }
 
   if (direction & CLUTTER_SWIPE_DIRECTION_DOWN)
-    direction_str = g_strconcat (direction_str, " down", NULL);
+    {
+      char *old_str = direction_str;
+
+      direction_str = g_strconcat (direction_str, " down", NULL);
+      g_free (old_str);
+    }
 
   if (direction & CLUTTER_SWIPE_DIRECTION_LEFT)
-    direction_str = g_strconcat (direction_str, " left", NULL);
+    {
+      char *old_str = direction_str;
+
+      direction_str = g_strconcat (direction_str, " left", NULL);
+      g_free (old_str);
+    }
 
   if (direction & CLUTTER_SWIPE_DIRECTION_RIGHT)
-    direction_str = g_strconcat (direction_str, " right", NULL);
+    {
+      char *old_str = direction_str;
 
-  g_debug ("swept_cb '%s'%s", clutter_actor_get_name (actor), direction_str);
-}
+      direction_str = g_strconcat (direction_str, " right", NULL);
+      g_free (old_str);
+    }
 
-static gboolean
-gesture_progress_cb (ClutterSwipeAction    *action,
-                     ClutterActor          *actor,
-                     gpointer               user_data)
-{
-  return TRUE;
+  g_print ("swept: '%s': %s\n", clutter_actor_get_name (actor), direction_str);
+
+  g_free (direction_str);
 }
 
 static void
@@ -50,7 +76,7 @@ gesture_cancel_cb (ClutterSwipeAction    *action,
                    ClutterActor          *actor,
                    gpointer               user_data)
 {
-  g_debug ("gesture_cancel_cb '%s'", clutter_actor_get_name (actor));
+  g_debug ("gesture cancelled: '%s'", clutter_actor_get_name (actor));
 }
 
 static void
@@ -60,8 +86,7 @@ attach_action (ClutterActor *actor, guint axis)
 
   action = g_object_new (CLUTTER_TYPE_SWIPE_ACTION, NULL);
   clutter_actor_add_action (actor, action);
-  g_signal_connect (action, "swept", G_CALLBACK (swept_cb), (gpointer) axis);
-  g_signal_connect (action, "gesture-progress", G_CALLBACK (gesture_progress_cb), NULL);
+  g_signal_connect (action, "swept", G_CALLBACK (swept_cb), GUINT_TO_POINTER (axis));
   g_signal_connect (action, "gesture-cancel", G_CALLBACK (gesture_cancel_cb), NULL);
 }
 
@@ -100,6 +125,59 @@ test_swipe_action_main (int argc, char *argv[])
   clutter_actor_set_reactive (rect, TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
   attach_action (rect, BOTH);
+
+  {
+    ClutterLayoutManager *layout = clutter_box_layout_new ();
+    ClutterActor *box, *label;
+    float offset;
+
+    clutter_box_layout_set_vertical (CLUTTER_BOX_LAYOUT (layout), TRUE);
+    clutter_box_layout_set_spacing (CLUTTER_BOX_LAYOUT (layout), 6);
+
+    box = clutter_box_new (layout);
+
+    label = clutter_text_new ();
+    clutter_text_set_markup (CLUTTER_TEXT (label),
+                             "<b>Red</b>: vertical swipes only");
+    clutter_box_layout_pack (CLUTTER_BOX_LAYOUT (layout),
+                             label,
+                             TRUE,
+                             TRUE, TRUE,
+                             CLUTTER_BOX_ALIGNMENT_START,
+                             CLUTTER_BOX_ALIGNMENT_CENTER);
+
+    label = clutter_text_new ();
+    clutter_text_set_markup (CLUTTER_TEXT (label),
+                             "<b>Blue</b>: horizontal swipes only");
+    clutter_box_layout_pack (CLUTTER_BOX_LAYOUT (layout),
+                             label,
+                             TRUE,
+                             TRUE, TRUE,
+                             CLUTTER_BOX_ALIGNMENT_START,
+                             CLUTTER_BOX_ALIGNMENT_CENTER);
+
+    label = clutter_text_new ();
+    clutter_text_set_markup (CLUTTER_TEXT (label),
+                             "<b>Green</b>: both");
+    clutter_box_layout_pack (CLUTTER_BOX_LAYOUT (layout),
+                             label,
+                             TRUE,
+                             TRUE, TRUE,
+                             CLUTTER_BOX_ALIGNMENT_START,
+                             CLUTTER_BOX_ALIGNMENT_CENTER);
+
+    offset = clutter_actor_get_height (stage)
+           - clutter_actor_get_height (box)
+           - 12.0;
+
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+    clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage,
+                                                                    CLUTTER_BIND_X,
+                                                                    12.0));
+    clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage,
+                                                                    CLUTTER_BIND_Y,
+                                                                    offset));
+  }
 
   clutter_actor_show_all (stage);
 
