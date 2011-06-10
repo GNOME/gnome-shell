@@ -26,7 +26,8 @@ const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 
 const ScreenSaverInterface = {
     name: BUS_NAME,
-    methods: [ { name: 'Lock', inSignature: '' } ]
+    methods: [ { name: 'Lock', inSignature: '' },
+               { name: 'SetActive', inSignature: 'b' }]
 };
 
 let ScreenSaverProxy = DBus.makeProxyClass(ScreenSaverInterface);
@@ -269,7 +270,7 @@ StatusMenuButton.prototype = {
 
         if (this._haveSuspend &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
-            this._screenSaverProxy.LockRemote(Lang.bind(this, function() {
+            this._screenSaverProxy.SetActiveRemote(true, Lang.bind(this, function() {
                 this._upClient.suspend_sync(null);
             }));
         } else {
