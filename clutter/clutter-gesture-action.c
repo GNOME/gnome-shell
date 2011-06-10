@@ -271,6 +271,9 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    * The ::gesture_begin signal is emitted when the #ClutterActor to which
    * a #ClutterGestureAction has been applied starts receiving a gesture.
    *
+   * Return value: %TRUE if the gesture should start, and %FALSE if
+   *   the gesture should be ignored.
+   *
    * Since: 1.8
    */
   gesture_signals[GESTURE_BEGIN] =
@@ -290,6 +293,9 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    *
    * The ::gesture-progress signal is emitted for each motion event after
    * the #ClutterGestureAction::gesture-begin signal has been emitted.
+   *
+   * Return value: %TRUE if the gesture should continue, and %FALSE if
+   *   the gesture should be cancelled.
    *
    * Since: 1.8
    */
@@ -332,7 +338,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    * @actor: the #ClutterActor attached to the @action
    *
    * The ::gesture-cancel signal is emitted when the ongoing gesture gets
-   * cancelled.
+   * cancelled from the #ClutterGestureAction::gesture-progress signal handler.
    *
    * This signal is emitted if and only if the #ClutterGestureAction::gesture-begin
    * signal has been emitted first.
@@ -364,7 +370,7 @@ clutter_gesture_action_init (ClutterGestureAction *self)
 /**
  * clutter_gesture_action_new:
  *
- * Creates a new #ClutterGestureAction instance
+ * Creates a new #ClutterGestureAction instance.
  *
  * Return value: the newly created #ClutterGestureAction
  *
@@ -379,7 +385,7 @@ clutter_gesture_action_new (void)
 /**
  * clutter_gesture_action_get_press_coords:
  * @action: a #ClutterGestureAction
- * @device: id of the device we are interested in
+ * @device: currently unused, set to 0
  * @press_x: (out): return location for the press event's X coordinate
  * @press_y: (out): return location for the press event's Y coordinate
  *
@@ -397,10 +403,7 @@ clutter_gesture_action_get_press_coords (ClutterGestureAction *action,
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
 
   if (device != 0)
-    {
-      g_warning ("Multi-device support not yet implemented");
-      return;
-    }
+    g_warning ("Multi-device support not yet implemented");
 
   if (press_x)
     *press_x = action->priv->press_x;
@@ -412,6 +415,7 @@ clutter_gesture_action_get_press_coords (ClutterGestureAction *action,
 /**
  * clutter_gesture_action_get_motion_coords:
  * @action: a #ClutterGestureAction
+ * @device: currently unused, set to 0
  * @motion_x: (out): return location for the latest motion
  *   event's X coordinate
  * @motion_y: (out): return location for the latest motion
@@ -431,10 +435,7 @@ clutter_gesture_action_get_motion_coords (ClutterGestureAction *action,
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
 
   if (device != 0)
-    {
-      g_warning ("Multi-device support not yet implemented");
-      return;
-    }
+    g_warning ("Multi-device support not yet implemented");
 
   if (motion_x)
     *motion_x = action->priv->last_motion_x;
@@ -446,6 +447,7 @@ clutter_gesture_action_get_motion_coords (ClutterGestureAction *action,
 /**
  * clutter_gesture_action_get_release_coords:
  * @action: a #ClutterGestureAction
+ * @device: currently unused, set to 0
  * @release_x: (out): return location for the X coordinate of the last release
  * @release_y: (out): return location for the Y coordinate of the last release
  *
@@ -463,48 +465,11 @@ clutter_gesture_action_get_release_coords (ClutterGestureAction *action,
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
 
   if (device != 0)
-    {
-      g_warning ("Multi-device support not yet implemented");
-      return;
-    }
+    g_warning ("Multi-device support not yet implemented");
 
   if (release_x)
     *release_x = action->priv->release_x;
 
   if (release_y)
     *release_y = action->priv->release_y;
-}
-
-/**
- * clutter_gesture_action_set_required_devices:
- * @action: a #ClutterGestureAction
- * @n_required_devices: the number of pointer devices that are to be tracked
- *
- * Sets the number of pointer devices that are to be tracked by this gesture.
- *
- * Since: 1.8
- */
-void
-clutter_gesture_action_set_required_devices (ClutterGestureAction *action,
-                                             guint                 n_required_devices)
-{
-  if (n_required_devices != 1)
-    {
-      g_warning ("Multi-device support not yet implemented");
-      return;
-    }
-}
-
-/**
- * clutter_gesture_action_get_required_devices:
- * @action: a #ClutterGestureAction
- *
- * Returns the number of devices tracked by this gesture.
- *
- * Since: 1.8
- */
-guint
-clutter_gesture_action_get_required_devices (ClutterGestureAction *action)
-{
-  return 1;
 }

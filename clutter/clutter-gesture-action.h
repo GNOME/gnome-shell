@@ -109,10 +109,6 @@ void            clutter_gesture_action_get_release_coords       (ClutterGestureA
                                                                  gfloat               *release_x,
                                                                  gfloat               *release_y);
 
-void            clutter_gesture_action_set_required_devices     (ClutterGestureAction *action,
-                                                                 guint                 n_required_devices);
-guint           clutter_gesture_action_get_required_devices     (ClutterGestureAction *action);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_GESTURE_ACTION_H__ */
