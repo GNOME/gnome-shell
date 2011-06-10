@@ -203,8 +203,6 @@ clutter_swipe_action_init (ClutterSwipeAction *self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_SWIPE_ACTION,
                                             ClutterSwipeActionPrivate);
-
-  clutter_gesture_action_set_required_devices (CLUTTER_GESTURE_ACTION (self), 1);
 }
 
 /**
