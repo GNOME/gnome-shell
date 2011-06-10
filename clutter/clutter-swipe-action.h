@@ -59,10 +59,10 @@ typedef struct _ClutterSwipeActionClass         ClutterSwipeActionClass;
  *
  * Since: 1.8
  */
-typedef enum { /*< prefix=CLUTTER_SWIPE >*/
-  CLUTTER_SWIPE_DIRECTION_UP   = 1 << 0,
-  CLUTTER_SWIPE_DIRECTION_DOWN = 1 << 1,
-  CLUTTER_SWIPE_DIRECTION_LEFT = 1 << 2,
+typedef enum { /*< prefix=CLUTTER_SWIPE_DIRECTION >*/
+  CLUTTER_SWIPE_DIRECTION_UP    = 1 << 0,
+  CLUTTER_SWIPE_DIRECTION_DOWN  = 1 << 1,
+  CLUTTER_SWIPE_DIRECTION_LEFT  = 1 << 2,
   CLUTTER_SWIPE_DIRECTION_RIGHT = 1 << 3
 } ClutterSwipeDirection;
 
@@ -86,6 +86,9 @@ struct _ClutterSwipeAction
  * ClutterSwipeActionClass:
  * @swept: class handler for the #ClutterSwipeAction::swept signal
  *
+ * The <structname>ClutterSwipeActionClass</structname> structure contains
+ * only private data.
+ *
  * Since: 1.8
  */
 struct _ClutterSwipeActionClass
@@ -95,8 +98,8 @@ struct _ClutterSwipeActionClass
 
   /*< public >*/
   void (* swept)  (ClutterSwipeAction    *action,
-                    ClutterActor          *actor,
-                    ClutterSwipeDirection  direction);
+                   ClutterActor          *actor,
+                   ClutterSwipeDirection  direction);
 
   /*< private >*/
   void (* _clutter_swipe_action1) (void);
@@ -110,7 +113,7 @@ struct _ClutterSwipeActionClass
 
 GType clutter_swipe_action_get_type (void) G_GNUC_CONST;
 
-ClutterAction *clutter_swipe_action_new        (void);
+ClutterAction * clutter_swipe_action_new        (void);
 
 G_END_DECLS
 
