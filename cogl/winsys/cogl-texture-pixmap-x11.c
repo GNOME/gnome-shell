@@ -781,7 +781,7 @@ _cogl_texture_pixmap_x11_can_hardware_repeat (CoglTexture *tex)
 
   child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
 
-  return cogl_texture_get_max_waste (child_tex);
+  return _cogl_texture_can_hardware_repeat (child_tex);
 }
 
 static void
