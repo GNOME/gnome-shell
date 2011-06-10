@@ -113,8 +113,10 @@ release-message:
 	@cat .README-section-02
 	@echo ""
 	@echo "Documentation:"
-	@echo "      Cogl: $(RELEASE_DOC_URL)/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
-	@echo "      Cogl : $(RELEASE_DOC_URL)/cogl-2.0/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
+	@echo "      Cogl:"
+	@echo "        $(RELEASE_DOC_URL)/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
+	@echo "      Cogl experimental 2.0:"
+	@echo "        $(RELEASE_DOC_URL)/cogl-2.0-experimental/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
 	@echo ""
 	@echo "  - The Cogl library exports a stable 1.x API (For third-party Clutter"
 	@echo "    developers to write custom actors) and an experimental 2.0 API which allows"
@@ -145,7 +147,7 @@ release-publish: release-check
 	$(MAKE) $(AM_MAKEFLAGS) release-tag
 	$(MAKE) $(AM_MAKEFLAGS) release-upload
 	$(MAKE) $(AM_MAKEFLAGS) release-message
-	
+
 .PHONY: \
 	release-check \
 	release-message \

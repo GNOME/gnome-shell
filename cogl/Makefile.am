@@ -43,7 +43,7 @@ pc_files = \
 	cogl-1.0.pc \
 	cogl-gl-1.0.pc
 
-pc_files += cogl-$(COGL_API_VERSION).pc
+pc_files += cogl-$(COGL_API_VERSION)-experimental.pc
 
 cogl-gl-1.0.pc: cogl-1.0.pc
 	$(QUIET_GEN)cp -f $< $(@F)

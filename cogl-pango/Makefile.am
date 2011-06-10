@@ -47,7 +47,7 @@ cogl_pangoheadersdir = $(includedir)/cogl/cogl-pango
 cogl_pangoheaders_HEADERS = $(source_h)
 
 pc_files = cogl-pango-1.0.pc \
-	   cogl-pango-$(COGL_API_VERSION).pc
+	   cogl-pango-$(COGL_API_VERSION)-experimental.pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
