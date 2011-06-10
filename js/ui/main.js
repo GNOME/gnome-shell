@@ -208,6 +208,7 @@ function start() {
 
     global.screen.connect('window-entered-monitor', _windowEnteredMonitor);
     global.screen.connect('window-left-monitor', _windowLeftMonitor);
+    global.screen.connect('restacked', _windowsRestacked);
 
     _nWorkspacesChanged();
 }
@@ -308,6 +309,13 @@ function _windowEnteredMonitor(metaScreen, monitorIndex, metaWin) {
     // might make that workspace non-empty
     if (monitorIndex == global.get_primary_monitor_index())
         _queueCheckWorkspaces();
+}
+
+function _windowsRestacked() {
+    // Figure out where the pointer is in case we lost track of
+    // it during a grab. (In particular, if a trayicon popup menu
+    // is dismissed, see if we need to close the message tray.)
+    global.sync_pointer();
 }
 
 function _queueCheckWorkspaces() {
