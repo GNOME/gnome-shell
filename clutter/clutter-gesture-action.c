@@ -68,11 +68,11 @@ struct _ClutterGestureActionPrivate
   guint actor_capture_id;
   gulong stage_capture_id;
 
-  gboolean in_drag;
-
   gfloat press_x, press_y;
   gfloat last_motion_x, last_motion_y;
   gfloat release_x, release_y;
+
+  guint in_drag : 1;
 };
 
 enum
@@ -87,8 +87,7 @@ enum
 
 static guint gesture_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_ABSTRACT_TYPE (ClutterGestureAction, clutter_gesture_action,
-                        CLUTTER_TYPE_ACTION);
+G_DEFINE_TYPE (ClutterGestureAction, clutter_gesture_action, CLUTTER_TYPE_ACTION);
 
 static gboolean
 signal_accumulator (GSignalInvocationHint *ihint,
@@ -213,17 +212,17 @@ actor_captured_event_cb (ClutterActor *actor,
   if (priv->stage == NULL)
     priv->stage = clutter_actor_get_stage (actor);
 
-  priv->stage_capture_id = g_signal_connect_after (priv->stage,
-    "captured-event",
-    G_CALLBACK (stage_captured_event_cb),
-    action);
+  priv->stage_capture_id =
+    g_signal_connect_after (priv->stage, "captured-event",
+                            G_CALLBACK (stage_captured_event_cb),
+                            action);
 
   return FALSE;
 }
 
 static void
 clutter_gesture_action_set_actor (ClutterActorMeta *meta,
-                                ClutterActor     *actor)
+                                  ClutterActor     *actor)
 {
   ClutterGestureActionPrivate *priv = CLUTTER_GESTURE_ACTION (meta)->priv;
   ClutterActorMetaClass *meta_class =
@@ -245,9 +244,12 @@ clutter_gesture_action_set_actor (ClutterActorMeta *meta,
     }
 
   if (actor != NULL)
-    priv->actor_capture_id = g_signal_connect (actor, "captured-event",
-                                       G_CALLBACK (actor_captured_event_cb),
-                                       meta);
+    {
+      priv->actor_capture_id =
+        g_signal_connect (actor, "captured-event",
+                          G_CALLBACK (actor_captured_event_cb),
+                          meta);
+    }
 
   meta_class->set_actor (meta, actor);
 }
@@ -268,6 +270,8 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    *
    * The ::gesture_begin signal is emitted when the #ClutterActor to which
    * a #ClutterGestureAction has been applied starts receiving a gesture.
+   *
+   * Since: 1.8
    */
   gesture_signals[GESTURE_BEGIN] =
     g_signal_new (I_("gesture-begin"),
@@ -286,6 +290,8 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    *
    * The ::gesture-progress signal is emitted for each motion event after
    * the #ClutterGestureAction::gesture-begin signal has been emitted.
+   *
+   * Since: 1.8
    */
   gesture_signals[GESTURE_PROGRESS] =
     g_signal_new (I_("gesture-progress"),
@@ -349,6 +355,10 @@ clutter_gesture_action_init (ClutterGestureAction *self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_GESTURE_ACTION,
                                             ClutterGestureActionPrivate);
+
+  self->priv->press_x = self->priv->press_y = 0.f;
+  self->priv->last_motion_x = self->priv->last_motion_y = 0.f;
+  self->priv->release_x = self->priv->release_y = 0.f;
 }
 
 /**
@@ -476,7 +486,7 @@ clutter_gesture_action_get_release_coords (ClutterGestureAction *action,
  */
 void
 clutter_gesture_action_set_required_devices (ClutterGestureAction *action,
-                                             guint           n_required_devices)
+                                             guint                 n_required_devices)
 {
   if (n_required_devices != 1)
     {
