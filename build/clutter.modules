@@ -223,6 +223,19 @@
     </dependencies>
   </autotools>
 
+  <autotools id="cogl">
+    <branch repo="git.gnome.org"
+            module="cogl"
+            revision="master"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+      <dep package="pango"/>
+      <dep package="gdk-pixbuf"/>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="clutter">
     <branch repo="git.gnome.org"
             module="clutter"
@@ -231,7 +244,7 @@
       <dep package="glib"/>
       <dep package="cairo"/>
       <dep package="pango"/>
-      <dep package="gdk-pixbuf"/>
+      <dep package="cogl"/>
       <dep package="atk"/>
       <dep package="gobject-introspection"/>
       <dep package="json-glib"/>
@@ -294,7 +307,7 @@
   </autotools>
 
   <autotools id="mx" autogenargs="--without-clutter-imcontext --without-clutter-gesture">
-    <branch repo="git.clutter-project.org"
+    <branch repo="github.com/clutter-project"
             module="mx"
             revision="master"/>
     <dependencies>
@@ -359,8 +372,8 @@
   </autotools>
 
   <autotools id="pyclutter">
-    <branch repo="git.clutter-project.org"
-            module="bindings/pyclutter"
+    <branch repo="git.gnome.org"
+            module="pyclutter"
             revision="master"/>
     <dependencies>
       <dep package="pygobject"/>
