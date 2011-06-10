@@ -708,7 +708,7 @@ HotCorner.prototype = {
                  }
             });
 
-        Main.chrome.addActor(this.actor, { visibleInOverview: true, affectsStruts: false });
+        Main.chrome.addActor(this.actor, { affectsStruts: false });
     },
 
     destroy: function() {
@@ -1004,13 +1004,11 @@ Panel.prototype = {
             this.button.checked = false;
         }));
 
-        Main.chrome.addActor(this.actor, { visibleInOverview: true });
-        Main.chrome.addActor(this._leftCorner.actor, { visibleInOverview: true,
-                                                 affectsStruts: false,
-                                                 affectsInputRegion: false });
-        Main.chrome.addActor(this._rightCorner.actor, { visibleInOverview: true,
-                                                  affectsStruts: false,
-                                                  affectsInputRegion: false });
+        Main.chrome.addActor(this.actor);
+        Main.chrome.addActor(this._leftCorner.actor, { affectsStruts: false,
+                                                       affectsInputRegion: false });
+        Main.chrome.addActor(this._rightCorner.actor, { affectsStruts: false,
+                                                        affectsInputRegion: false });
 
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });

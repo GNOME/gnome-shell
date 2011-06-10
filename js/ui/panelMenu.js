@@ -26,8 +26,7 @@ Button.prototype = {
         this.menu = new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, 0);
         this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
         this.menu.actor.connect('key-press-event', Lang.bind(this, this._onMenuKeyPress));
-        Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
-                                                affectsStruts: false });
+        Main.chrome.addActor(this.menu.actor, { affectsStruts: false });
         this.menu.actor.hide();
     },
 

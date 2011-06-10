@@ -14,7 +14,6 @@ const Params = imports.misc.params;
 // workspace content.
 
 const defaultParams = {
-    visibleInOverview: false,
     visibleInFullscreen: false,
     affectsStruts: true,
     affectsInputRegion: true
@@ -73,11 +72,8 @@ Chrome.prototype = {
     // in its visibility will affect the input region, but NOT the
     // struts.
     //
-    // If %visibleInOverview is %true in @params, @actor will remain
-    // visible when the overview is brought up. Otherwise it will
-    // automatically be hidden. Likewise, if %visibleInFullscreen is
-    // %true, the actor will be visible even when a fullscreen window
-    // should be covering it.
+    // If %visibleInFullscreen is %true, the actor will be visible
+    // even when a fullscreen window should be covering it.
     //
     // If %affectsStruts or %affectsInputRegion is %false, the actor
     // will not have the indicated effect.
@@ -96,7 +92,7 @@ Chrome.prototype = {
     //
     // @params can have any of the same values as in addActor(), though
     // some possibilities don't make sense (eg, trying to have a
-    // %visibleInOverview child of a non-%visibleInOverview parent).
+    // %visibleInFullscreen child of a non-%visibleInFullscreen parent).
     // By default, @actor has the same params as its chrome ancestor.
     trackActor: function(actor, params) {
         let ancestor = actor.get_parent();
@@ -189,10 +185,8 @@ Chrome.prototype = {
     _updateVisibility: function() {
         for (let i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];
-            if (this._inOverview && !actorData.visibleInOverview)
-                this.actor.set_skip_paint(actorData.actor, true);
-            else if (!this._inOverview && !actorData.visibleInFullscreen &&
-                     this._findMonitorForActor(actorData.actor).inFullscreen)
+            if (!this._inOverview && !actorData.visibleInFullscreen &&
+                this._findMonitorForActor(actorData.actor).inFullscreen)
                 this.actor.set_skip_paint(actorData.actor, true);
             else
                 this.actor.set_skip_paint(actorData.actor, false);

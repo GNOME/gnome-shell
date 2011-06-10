@@ -1252,7 +1252,6 @@ MessageTray.prototype = {
         this._reNotifyAfterHideNotification = null;
 
         Main.chrome.addActor(this.actor, { affectsStruts: false,
-                                           visibleInOverview: true,
                                            visibleInFullscreen: true });
         Main.chrome.trackActor(this._notificationBin);
         Main.chrome.trackActor(this._summaryBoxPointer.actor);
