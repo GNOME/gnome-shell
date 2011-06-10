@@ -1,0 +1,57 @@
+Cogl 1.7.0                                                         2011-06-10
+===============================================================================
+
+  • List of changes since Clutter 1.6
+
+    » Cogl split out into a standalone project!
+
+    » Added native winsys backends for GLX, WGL, EGL and Android (Quartz in
+      progress)
+      » Supported EGL platforms include: NULL, X11, GDL and Wayland
+
+    » Adds renderer,display,onscreen-template and swap-chain APIs for
+      writing standalone apps using the experimental 2.0 API
+
+    » Added convenience functions cogl_matrix_view_2d_in_frustum/perspective
+      for setting up a Clutter style view transform for a 2d coordinate system
+      inside a projective perspective.
+
+    » Added an experimental Quaternion API
+
+    » Added an experimental Euler API
+
+    » Re-worked the CoglPipeline depth testing state API
+
+    » Added EGL X11 texture-from-pixmap support.
+
+    » Added a tiny Wayland compositor (without input support) under
+      examples/
+
+    » Optimizations:
+      » Optimise paths that are just a rectangle
+      » Journal: Use a pool of vertex-arrays to avoid allocation costs.
+
+  • List of bugs fixes since Clutter 1.6
+
+    http://bugzilla.clutter-project.org:
+    #2538 - crash in gnome-shell
+    #2544 - Using vertex buffers causes memory corruption when you unref the CoglHandle
+    #2561 - Updates to COGL sources regarding non-standard code usage
+    #2588 - Assertion failure in _cogl_pipeline_set_layer_texture_target
+    #2594 - cogl-clip-state: Adapt to experimental cogl2 API.
+    #2620 - _cogl_offscreen_new_to_texture_full() leaks reference when failing
+
+    https://bugzilla.gnome.org:
+    #641197 - mouse events at pixel row zero are ignored
+    #650966 - CoglPipeline doesn't support any layers on fixed function hardware
+    #650979 - cogl-pipeline-fragend-fixed: Fix enabling texture targets
+    #651256 - configure fails for the poor sods who use dash as sh
+
+Many thanks to:
+
+  Neil Roberts
+  Emmanuele Bassi
+  Damien Lespiau
+  James Athey
+  Jasper St. Pierre
+  Piotr Drąg
