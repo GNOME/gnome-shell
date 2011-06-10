@@ -247,3 +247,35 @@ cogl_object_get_user_data (CoglObject *object, CoglUserDataKey *key)
   return NULL;
 }
 
+void
+cogl_debug_object_foreach_type (CoglDebugObjectForeachTypeCallback func,
+                                void *user_data)
+{
+  GHashTableIter iter;
+  unsigned long *instance_count;
+  CoglDebugObjectTypeInfo info;
+
+  g_hash_table_iter_init (&iter, _cogl_debug_instances);
+  while (g_hash_table_iter_next (&iter,
+                                 (void *) &info.name,
+                                 (void *) &instance_count))
+    {
+      info.instance_count = *instance_count;
+      func (&info, user_data);
+    }
+}
+
+static void
+print_instances_cb (const CoglDebugObjectTypeInfo *info,
+                    void *user_data)
+{
+  g_print ("\t%s: %lu\n", info->name, info->instance_count);
+}
+
+void
+cogl_debug_object_print_instances (void)
+{
+  g_print ("Cogl instances:\n");
+
+  cogl_debug_object_foreach_type (print_instances_cb, NULL);
+}

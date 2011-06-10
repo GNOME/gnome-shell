@@ -82,6 +82,37 @@ typedef struct
 typedef void (*CoglUserDataDestroyCallback) (void *user_data);
 
 /**
+ * CoglDebugObjectTypeInfo:
+ * @name: A human readable name for the type.
+ * @instance_count: The number of objects of this type that are
+ *   currently in use
+ *
+ * This struct is used to pass information to the callback when
+ * cogl_debug_object_foreach_type() is called.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+typedef struct
+{
+  const char *name;
+  unsigned long instance_count;
+} CoglDebugObjectTypeInfo;
+
+/**
+ * CoglDebugObjectForeachTypeCallback:
+ * @info: A pointer to a struct containing information about the type.
+ *
+ * A callback function to use for cogl_debug_object_foreach_type().
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+typedef void
+(* CoglDebugObjectForeachTypeCallback) (const CoglDebugObjectTypeInfo *info,
+                                        void *user_data);
+
+/**
  * cogl_object_set_user_data: (skip)
  * @object: The object to associate private data with
  * @key: The address of a #CoglUserDataKey which provides a unique value
@@ -123,5 +154,47 @@ cogl_object_set_user_data (CoglObject *object,
 void *
 cogl_object_get_user_data (CoglObject *object,
                            CoglUserDataKey *key);
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+
+#define cogl_debug_object_foreach_type \
+  cogl_debug_object_foreach_type_EXP
+
+/**
+ * cogl_debug_object_foreach_type:
+ * func: A callback function for each type
+ * user_data: A pointer to pass to @func
+ *
+ * Invokes @func once for each type of object that Cogl uses and
+ * passes a count of the number of objects for that type. This is
+ * intended to be used solely for debugging purposes to track down
+ * issues with objects leaking.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_debug_object_foreach_type (CoglDebugObjectForeachTypeCallback func,
+                                void *user_data);
+
+#define cogl_debug_object_print_instances \
+  cogl_debug_object_print_instances_EXP
+
+/**
+ * cogl_debug_object_print_instances:
+ *
+ * Prints a list of all the object types that Cogl uses along with the
+ * number of objects of that type that are currently in use. This is
+ * intended to be used solely for debugging purposes to track down
+ * issues with objects leaking.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_debug_object_print_instances (void);
+
+#endif /* COGL_ENABLE_EXPERIMENTAL_API */
+
 #endif /* __COGL_OBJECT_H */
 

@@ -84,6 +84,7 @@ static const int n_cogl_behavioural_debug_keys =
   G_N_ELEMENTS (cogl_behavioural_debug_keys);
 
 unsigned int _cogl_debug_flags[COGL_DEBUG_N_INTS];
+GHashTable *_cogl_debug_instances;
 
 static void
 _cogl_parse_debug_string_for_keys (const char *value,
