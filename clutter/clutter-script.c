@@ -231,6 +231,8 @@ struct _ClutterScriptPrivate
 
   ClutterScriptParser *parser;
 
+  GHashTable *states;
+
   gchar **search_paths;
 
   gchar *filename;
@@ -337,6 +339,7 @@ clutter_script_finalize (GObject *gobject)
   g_hash_table_destroy (priv->objects);
   g_strfreev (priv->search_paths);
   g_free (priv->filename);
+  g_hash_table_destroy (priv->states);
 
   G_OBJECT_CLASS (clutter_script_parent_class)->finalize (gobject);
 }
@@ -427,6 +430,9 @@ clutter_script_init (ClutterScript *script)
   priv->objects = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          NULL,
                                          object_info_free);
+  priv->states = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                        g_free,
+                                        (GDestroyNotify) g_object_unref);
 }
 
 /**
@@ -987,14 +993,22 @@ connect_each_object (gpointer key,
         }
       else
         {
-          GObject *state_object;
+          GObject *state_object = NULL;
           const gchar *signal_name, *signal_detail;
           gchar **components;
           GQuark signal_quark;
           guint signal_id;
           HookData *hook_data;
 
-          state_object = clutter_script_get_object (script, sinfo->state);
+          if (sinfo->state == NULL)
+            state_object = (GObject *) clutter_script_get_state (script, NULL);
+          else
+            {
+              state_object = clutter_script_get_object (script, sinfo->state);
+              if (state_object == NULL)
+                state_object = (GObject *) clutter_script_get_state (script, sinfo->state);
+            }
+
           if (state_object == NULL)
             continue;
 
@@ -1252,6 +1266,66 @@ clutter_script_list_objects (ClutterScript *script)
   g_list_free (objects);
 
   return retval;
+}
+
+/**
+ * clutter_script_add_state:
+ * @script: a #ClutterScript
+ * @state_name: (allow-none): a name for the @state, or %NULL to
+ *   set the default #ClutterState
+ *
+ * Adds a #ClutterState using the given name to the #ClutterScript instance.
+ *
+ * The #ClutterScript instance will use @state to resolve target states when
+ * connecting signal handlers.
+ *
+ * The #ClutterScript instance will take a reference on the #ClutterState
+ * passed to this function.
+ *
+ * Since: 1.8
+ */
+void
+clutter_script_add_state (ClutterScript *script,
+                          const gchar   *state_name,
+                          ClutterState  *state)
+{
+  g_return_if_fail (CLUTTER_IS_SCRIPT (script));
+  g_return_if_fail (CLUTTER_IS_STATE (state));
+
+  if (state_name == NULL || *state_name == '\0')
+    state_name = "__clutter_script_default_state";
+
+  g_hash_table_replace (script->priv->states,
+                        g_strdup (state_name),
+                        g_object_ref (state));
+}
+
+/**
+ * clutter_script_get_state:
+ * @script: a #ClutterScript
+ * @state_name: (allow-none): the name of the #ClutterState, or %NULL
+ *
+ * Retrieves the #ClutterState for the given @state_name.
+ *
+ * If @state_name is %NULL, this function will return the default
+ * #ClutterState instance.
+ *
+ * Return value: (transfer none): a pointer to the #ClutterState for the
+ *   given name. The #ClutterState is owned by the #ClutterScript instance
+ *   and it should not be unreferenced
+ *
+ * Since: 1.8
+ */
+ClutterState *
+clutter_script_get_state (ClutterScript *script,
+                          const gchar   *state_name)
+{
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), NULL);
+
+  if (state_name == NULL || *state_name == '\0')
+    state_name = "__clutter_script_default_state";
+
+  return g_hash_table_lookup (script->priv->states, state_name);
 }
 
 /*

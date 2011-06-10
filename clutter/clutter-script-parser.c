@@ -592,20 +592,11 @@ parse_signals (ClutterScript *script,
             }
         }
 
-      /* mandatory: "state" */
-      if (json_object_has_member (object, "state"))
+      /* mandatory: "target-state" or "handler" */
+      if (json_object_has_member (object, "target-state"))
         {
-          const gchar *state;
-          const gchar *target;
-
-          state = json_object_get_string_member (object, "state");
-          if (state == NULL)
-            {
-              _clutter_script_warn_invalid_value (script,
-                                                  "state", "string",
-                                                  val);
-              continue;
-            }
+          const gchar *state = NULL;
+          const gchar *target = NULL;
 
           target = json_object_get_string_member (object, "target-state");
           if (target == NULL)
@@ -616,10 +607,13 @@ parse_signals (ClutterScript *script,
               continue;
             }
 
+          if (json_object_has_member (object, "state"))
+            state = json_object_get_string_member (object, "state");
+
           CLUTTER_NOTE (SCRIPT,
                         "Added signal '%s' (state:%s, target:%s)",
                         name,
-                        state, target);
+                        state != NULL ? state : "<default>", target);
 
           sinfo = g_slice_new0 (SignalInfo);
           sinfo->is_handler = FALSE;
@@ -627,9 +621,7 @@ parse_signals (ClutterScript *script,
           sinfo->state = g_strdup (state);
           sinfo->target = g_strdup (target);
         }
-
-      /* mandatory: "handler" */
-      if (json_object_has_member (object, "handler"))
+      else if (json_object_has_member (object, "handler"))
         {
           const gchar *handler;
           const gchar *connect;
@@ -676,13 +668,12 @@ parse_signals (ClutterScript *script,
           sinfo->object = g_strdup (connect);
           sinfo->flags = flags;
         }
-
-      if (sinfo != NULL)
-        retval = g_list_prepend (retval, sinfo);
       else
         _clutter_script_warn_missing_attribute (script,
                                                 NULL,
                                                 "handler or state");
+      if (sinfo != NULL)
+        retval = g_list_prepend (retval, sinfo);
     }
 
   return retval;

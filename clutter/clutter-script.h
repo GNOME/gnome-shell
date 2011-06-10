@@ -28,7 +28,8 @@
 #ifndef __CLUTTER_SCRIPT_H__
 #define __CLUTTER_SCRIPT_H__
 
-#include <glib-object.h>
+#include <clutter/clutter-types.h>
+#include <clutter/clutter-state.h>
 
 G_BEGIN_DECLS
 
@@ -143,44 +144,48 @@ struct _ClutterScriptClass
   void (*_clutter_reserved8) (void);
 };
 
-GType          clutter_script_get_type        (void) G_GNUC_CONST;
+GType clutter_script_get_type (void) G_GNUC_CONST;
 
-ClutterScript *clutter_script_new                  (void);
-guint          clutter_script_load_from_file       (ClutterScript  *script,
-                                                    const gchar    *filename,
-                                                    GError        **error);
-guint          clutter_script_load_from_data       (ClutterScript  *script,
-                                                    const gchar    *data,
-                                                    gssize          length,
-                                                    GError        **error);
+ClutterScript * clutter_script_new                      (void);
+guint           clutter_script_load_from_file           (ClutterScript             *script,
+                                                         const gchar               *filename,
+                                                         GError                   **error);
+guint           clutter_script_load_from_data           (ClutterScript             *script,
+                                                         const gchar               *data,
+                                                         gssize                     length,
+                                                         GError                   **error);
 
-GObject *      clutter_script_get_object           (ClutterScript  *script,
-                                                    const gchar    *name);
-gint           clutter_script_get_objects          (ClutterScript  *script,
-                                                    const gchar    *first_name,
-                                                    ...) G_GNUC_NULL_TERMINATED;
-GList *        clutter_script_list_objects         (ClutterScript  *script);
+GObject *       clutter_script_get_object               (ClutterScript             *script,
+                                                         const gchar               *name);
+gint            clutter_script_get_objects              (ClutterScript             *script,
+                                                         const gchar               *first_name,
+                                                         ...) G_GNUC_NULL_TERMINATED;
+GList *         clutter_script_list_objects             (ClutterScript             *script);
+void            clutter_script_unmerge_objects          (ClutterScript             *script,
+                                                         guint                      merge_id);
+void            clutter_script_ensure_objects           (ClutterScript             *script);
 
-void           clutter_script_unmerge_objects      (ClutterScript  *script,
-                                                    guint           merge_id);
-void           clutter_script_ensure_objects       (ClutterScript  *script);
+void            clutter_script_add_state                (ClutterScript             *script,
+                                                         const gchar               *state_name,
+                                                         ClutterState              *state);
+ClutterState *  clutter_script_get_state                (ClutterScript             *script,
+                                                         const gchar               *state_name);
 
-GType          clutter_script_get_type_from_name   (ClutterScript  *script,
-                                                    const gchar    *type_name);
+void            clutter_script_connect_signals          (ClutterScript             *script,
+                                                         gpointer                   user_data);
+void            clutter_script_connect_signals_full     (ClutterScript             *script,
+                                                         ClutterScriptConnectFunc   func,
+                                                         gpointer                   user_data);
 
-const gchar *  clutter_get_script_id               (GObject        *gobject);
+void            clutter_script_add_search_paths         (ClutterScript             *script,
+                                                         const gchar * const        paths[],
+                                                         gsize                      n_paths);
+gchar *         clutter_script_lookup_filename          (ClutterScript             *script,
+                                                         const gchar               *filename) G_GNUC_MALLOC;
+GType           clutter_script_get_type_from_name       (ClutterScript             *script,
+                                                         const gchar               *type_name);
 
-void           clutter_script_connect_signals      (ClutterScript  *script,
-                                                    gpointer        user_data);
-void           clutter_script_connect_signals_full (ClutterScript  *script,
-                                                    ClutterScriptConnectFunc func,
-                                                    gpointer        user_data);
-
-void           clutter_script_add_search_paths     (ClutterScript       *script,
-                                                    const gchar * const  paths[],
-                                                    gsize                n_paths);
-gchar *        clutter_script_lookup_filename      (ClutterScript       *script,
-                                                    const gchar         *filename) G_GNUC_MALLOC;
+const gchar *   clutter_get_script_id                   (GObject                   *gobject);
 
 G_END_DECLS
 
