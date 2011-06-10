@@ -788,10 +788,7 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 
       if ((gi->glyph & PANGO_GLYPH_UNKNOWN_FLAG))
 	{
-	  PangoFontMetrics *metrics;
-
-	  if (font == NULL ||
-              (metrics = pango_font_get_metrics (font, NULL)) == NULL)
+	  if (font == NULL)
             {
 	      cogl_pango_renderer_draw_box (renderer,
                                             x,
@@ -801,14 +798,16 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
             }
 	  else
 	    {
-	      cogl_pango_renderer_draw_box (renderer,
-                                            x,
-					    y,
-					    metrics->approximate_char_width
-					    / PANGO_SCALE,
-					    metrics->ascent / PANGO_SCALE);
+              PangoRectangle ink_rect;
 
-	      pango_font_metrics_unref (metrics);
+              pango_font_get_glyph_extents (font, gi->glyph, &ink_rect, NULL);
+              pango_extents_to_pixels (&ink_rect, NULL);
+
+              cogl_pango_renderer_draw_box (renderer,
+                                            x + ink_rect.x,
+                                            y + ink_rect.y + ink_rect.height,
+                                            ink_rect.width,
+                                            ink_rect.height);
 	    }
 	}
       else
