@@ -638,23 +638,32 @@ Extensions.prototype = {
                                         name: 'lookingGlassExtensions' });
         this._noExtensions = new St.Label({ style_class: 'lg-extensions-none',
                                              text: _("No extensions installed") });
+        this._numExtensions = 0;
         this._extensionsList = new St.BoxLayout({ vertical: true,
                                                   style_class: 'lg-extensions-list' });
+        this._extensionsList.add(this._noExtensions);
         this.actor.add(this._extensionsList);
-        this._loadExtensionList();
+
+        for (let uuid in ExtensionSystem.extensionMeta)
+            this._loadExtension(null, uuid);
+
+        ExtensionSystem.connect('extension-loaded',
+                                Lang.bind(this, this._loadExtension));
     },
 
-    _loadExtensionList: function() {
-        let extensions = ExtensionSystem.extensionMeta;
-        let totalExtensions = 0;
-        for (let uuid in extensions) {
-            let extensionDisplay = this._createExtensionDisplay(extensions[uuid]);
-            this._extensionsList.add(extensionDisplay);
-            totalExtensions++;
-        }
-        if (totalExtensions == 0) {
-            this._extensionsList.add(this._noExtensions);
-        }
+    _loadExtension: function(o, uuid) {
+        let extension = ExtensionSystem.extensionMeta[uuid];
+        // There can be cases where we create dummy extension metadata
+        // that's not really a proper extension. Don't bother with these.
+        if (!extension.name)
+            return;
+
+        let extensionDisplay = this._createExtensionDisplay(extension);
+        if (this._numExtensions == 0)
+            this._extensionsList.remove_actor(this._noExtensions);
+
+        this._numExtensions ++;
+        this._extensionsList.add(extensionDisplay);
     },
 
     _onViewSource: function (actor) {
@@ -691,7 +700,7 @@ Extensions.prototype = {
                                    text: meta.name });
         box.add(name, { expand: true });
         let description = new St.Label({ style_class: 'lg-extension-description',
-                                         text: meta.description });
+                                         text: meta.description || 'No description' });
         box.add(description, { expand: true });
 
         let metaBox = new St.BoxLayout();

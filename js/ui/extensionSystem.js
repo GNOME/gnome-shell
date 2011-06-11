@@ -1,5 +1,8 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Lang = imports.lang;
+const Signals = imports.signals;
+
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
@@ -28,6 +31,15 @@ var disabledExtensions;
 var enabledExtensions;
 // GFile for user extensions
 var userExtensionsDir = null;
+
+// We don't really have a class to add signals on. So, create
+// a simple dummy object, add the signal methods, and export those
+// publically.
+var _signals = {};
+Signals.addSignalMethods(_signals);
+
+const connect = Lang.bind(_signals, _signals.connect);
+const disconnect = Lang.bind(_signals, _signals.disconnect);
 
 /**
  * versionCheck:
@@ -166,6 +178,8 @@ function loadExtension(dir, enabled, type) {
         return;
     }
     extensionMeta[meta.uuid].state = ExtensionState.ENABLED;
+
+    _signals.emit('extension-loaded', meta.uuid);
     global.log('Loaded extension ' + meta.uuid);
 }
 
