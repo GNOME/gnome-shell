@@ -165,11 +165,11 @@ void            clutter_script_unmerge_objects          (ClutterScript          
                                                          guint                      merge_id);
 void            clutter_script_ensure_objects           (ClutterScript             *script);
 
-void            clutter_script_add_state                (ClutterScript             *script,
-                                                         const gchar               *state_name,
+void            clutter_script_add_states               (ClutterScript             *script,
+                                                         const gchar               *name,
                                                          ClutterState              *state);
-ClutterState *  clutter_script_get_state                (ClutterScript             *script,
-                                                         const gchar               *state_name);
+ClutterState *  clutter_script_get_states               (ClutterScript             *script,
+                                                         const gchar               *name);
 
 void            clutter_script_connect_signals          (ClutterScript             *script,
                                                          gpointer                   user_data);

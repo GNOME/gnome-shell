@@ -607,11 +607,11 @@ parse_signals (ClutterScript *script,
               continue;
             }
 
-          if (json_object_has_member (object, "state"))
-            state = json_object_get_string_member (object, "state");
+          if (json_object_has_member (object, "states"))
+            state = json_object_get_string_member (object, "states");
 
           CLUTTER_NOTE (SCRIPT,
-                        "Added signal '%s' (state:%s, target:%s)",
+                        "Added signal '%s' (states:%s, target-state:%s)",
                         name,
                         state != NULL ? state : "<default>", target);
 
