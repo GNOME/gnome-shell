@@ -633,6 +633,7 @@ Workspace.prototype = {
             function () {
                 this._dropRect.set_position(x, y);
                 this._dropRect.set_size(width, height);
+                this.positionWindows(WindowPositionFlags.ANIMATE);
                 return false;
             }));
 
