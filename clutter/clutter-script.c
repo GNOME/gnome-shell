@@ -948,6 +948,8 @@ typedef struct {
   ClutterState *state;
   GObject *emitter;
   gchar *target;
+  gulong signal_id;
+  gulong hook_id;
 } HookData;
 
 typedef struct {
@@ -983,6 +985,16 @@ clutter_script_state_change_hook (GSignalInvocationHint *ihint,
     clutter_state_set_state (hook_data->state, hook_data->target);
 
   return TRUE;
+}
+
+static void
+clutter_script_remove_state_change_hook (gpointer  user_data,
+                                         GObject  *object_p)
+{
+  HookData *hook_data = user_data;
+
+  g_signal_remove_emission_hook (hook_data->signal_id,
+                                 hook_data->hook_id);
 }
 
 static void
@@ -1071,11 +1083,16 @@ connect_each_object (gpointer key,
           hook_data->emitter = object;
           hook_data->state = CLUTTER_STATE (state_object);
           hook_data->target = g_strdup (sinfo->target);
+          hook_data->signal_id = signal_id;
+          hook_data->hook_id =
+            g_signal_add_emission_hook (signal_id, signal_quark,
+                                        clutter_script_state_change_hook,
+                                        hook_data,
+                                        hook_data_free);
 
-          g_signal_add_emission_hook (signal_id, signal_quark,
-                                      clutter_script_state_change_hook,
-                                      hook_data,
-                                      hook_data_free);
+          g_object_weak_ref (hook_data->emitter,
+                             clutter_script_remove_state_change_hook,
+                             hook_data);
         }
 
       signal_info_free (sinfo);
