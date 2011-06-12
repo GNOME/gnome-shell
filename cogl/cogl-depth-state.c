@@ -89,12 +89,12 @@ cogl_depth_state_get_test_function (CoglDepthState *state)
 
 void
 cogl_depth_state_set_range (CoglDepthState *state,
-                            float near,
-                            float far)
+                            float near_val,
+                            float far_val)
 {
   g_return_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC);
-  state->range_near = near;
-  state->range_far = far;
+  state->range_near = near_val;
+  state->range_far = far_val;
 }
 
 void
