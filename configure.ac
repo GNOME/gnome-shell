@@ -86,7 +86,7 @@ m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
 
 
-AC_INIT(cogl, [cogl_version])
+AC_INIT(cogl, [cogl_1_version])
 AC_CONFIG_SRCDIR(cogl/cogl.h)
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])

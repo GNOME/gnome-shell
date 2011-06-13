@@ -30,7 +30,7 @@
 #include "cogl-internal.h"
 #include "cogl-private.h"
 #include "cogl-winsys-private.h"
-#include "cogl-winsys-stub-private.h"
+#include "winsys/cogl-winsys-stub-private.h"
 #include "cogl-profile.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"

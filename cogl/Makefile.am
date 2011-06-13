@@ -51,7 +51,7 @@ cogl-gl-1.0.pc: cogl-1.0.pc
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 
-EXTRA_DIST += cogl.pc.in
+EXTRA_DIST += cogl-1.0.pc.in cogl-$(COGL_API_VERSION)-experimental.pc.in
 DISTCLEANFILES += $(pc_files)
 
 # public headers
@@ -234,6 +234,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix.c				\
 	$(srcdir)/cogl-vector.c				\
 	$(srcdir)/cogl-euler.c				\
+	$(srcdir)/cogl-quaternion-private.h 		\
 	$(srcdir)/cogl-quaternion.c			\
 	$(srcdir)/cogl-matrix-private.h			\
 	$(srcdir)/cogl-matrix-stack.c			\
@@ -303,6 +304,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-point-in-poly-private.h       	\
 	$(srcdir)/cogl-point-in-poly.c       		\
 	$(srcdir)/cogl-clutter.c       			\
+	$(srcdir)/winsys/cogl-winsys-stub-private.h	\
 	$(srcdir)/winsys/cogl-winsys-stub.c		\
 	$(NULL)
 
