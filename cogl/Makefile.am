@@ -379,7 +379,7 @@ libcogl_la_LDFLAGS = \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
 	-export-dynamic \
-	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_atlas_texture_new_with_size).*"
+	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_atlas_texture_new_with_size|_cogl_profile_trace_message).*"
 
 libcogl_la_SOURCES = $(cogl_sources_c)
 nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)

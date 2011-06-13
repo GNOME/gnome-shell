@@ -210,6 +210,29 @@ AS_IF([test "x$enable_cairo" = "xyes" && test "x$enable_debug" = "xyes"],
 
 
 dnl     ============================================================
+dnl     Enable profiling
+dnl     ============================================================
+AC_ARG_ENABLE(profile,
+              AC_HELP_STRING([--enable-uprof=@<:@no/yes@:>@],
+                             [Turn on uprof profiling support. yes; All UProf profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into cogl.  @<:@default=no@:>@]),
+              [],
+              [enable_profile=no])
+AS_IF([test "x$enable_profile" = "xyes"],
+      [
+        AS_IF([test "x$GCC" = "xyes"],
+              [
+                COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES uprof-0.3"
+                COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -DCOGL_ENABLE_PROFILE"
+                AS_IF([test "x$enable_debug" = "xyes"], [COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -DUPROF_DEBUG"])
+              ],
+              [
+                AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
+              ])
+      ])
+AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
+
+
+dnl     ============================================================
 dnl     Enable strict compiler flags
 dnl     ============================================================
 
@@ -895,6 +918,7 @@ echo "        Wayland compositor support: ${enable_wayland_egl_server}"
 fi
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 echo "        Cogl Pango: ${enable_cogl_pango}"
+echo "        Profiling: ${enable_profile}"
 
 # Compiler/Debug related flags
 echo ""
