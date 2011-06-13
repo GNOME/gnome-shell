@@ -326,6 +326,8 @@ signal_info_free (gpointer data)
       g_free (sinfo->name);
       g_free (sinfo->handler);
       g_free (sinfo->object);
+      g_free (sinfo->state);
+      g_free (sinfo->target);
 
       g_slice_free (SignalInfo, sinfo);
     }
