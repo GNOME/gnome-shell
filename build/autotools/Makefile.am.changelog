@@ -19,7 +19,6 @@ CHANGELOGS = ChangeLog \
 CLEANFILES += $(srcdir)/ChangeLog.cache-*
 
 changelogs:
-	@cp -f $(top_srcdir)/doc/ChangeLog.pre-git-import $(srcdir)
 	@$(MAKE) $(AM_MAKEFLAGS) $(CHANGELOGS)
 
 dist-hook: changelogs
@@ -46,7 +45,7 @@ $(srcdir)/ChangeLog:
 		 echo A git checkout is required to generate this file >> $@); \
 	fi
 
-DISTCLEANFILES += ChangeLog.cache-* ChangeLog.pre-git-import
+DISTCLEANFILES += ChangeLog.cache-*
 
 ChangeLog.cache-*..: .git
 
