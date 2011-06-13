@@ -173,6 +173,17 @@
  *       "name" : "leave-event",
  *       "states" : "button-states",
  *       "target-state" : "base"
+ *     },
+ *     {
+ *       "name" : "button-press-event",
+ *       "states" : "button-states",
+ *       "target-state" : "active",
+ *     },
+ *     {
+ *       "name" : "key-press-event",
+ *       "states" : "button-states",
+ *       "target-state" : "key-focus",
+ *       "warp" : true
  *     }
  *   ],
  *   ...
@@ -185,9 +196,10 @@
  * instance through the clutter_script_add_states() function. If no
  * "states" key is present, then the default #ClutterState associated to
  * the #ClutterScript instance will be used; the default #ClutterState
- * can be set using clutter_script_add_states() using a %NULL name.
- * State changes on signal emission will not affect the signal emission
- * chain.
+ * can be set using clutter_script_add_states() using a %NULL name. The
+ * "warp" key can be used to warp to a specific state instead of
+ * animating to it. State changes on signal emission will not affect
+ * the signal emission chain.
  *
  * Clutter reserves the following names, so classes defining properties
  * through the usual GObject registration process should avoid using these
@@ -950,6 +962,7 @@ typedef struct {
   gchar *target;
   gulong signal_id;
   gulong hook_id;
+  gboolean warp_to;
 } HookData;
 
 typedef struct {
@@ -982,7 +995,12 @@ clutter_script_state_change_hook (GSignalInvocationHint *ihint,
   emitter = g_value_get_object (&params[0]);
 
   if (emitter == hook_data->emitter)
-    clutter_state_set_state (hook_data->state, hook_data->target);
+    {
+      if (hook_data->warp_to)
+        clutter_state_warp_to_state (hook_data->state, hook_data->target);
+      else
+        clutter_state_set_state (hook_data->state, hook_data->target);
+    }
 
   return TRUE;
 }
@@ -1083,6 +1101,7 @@ connect_each_object (gpointer key,
           hook_data->emitter = object;
           hook_data->state = CLUTTER_STATE (state_object);
           hook_data->target = g_strdup (sinfo->target);
+          hook_data->warp_to = sinfo->warp_to;
           hook_data->signal_id = signal_id;
           hook_data->hook_id =
             g_signal_add_emission_hook (signal_id, signal_quark,

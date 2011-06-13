@@ -597,6 +597,7 @@ parse_signals (ClutterScript *script,
         {
           const gchar *state = NULL;
           const gchar *target = NULL;
+          gboolean warp_to = FALSE;
 
           target = json_object_get_string_member (object, "target-state");
           if (target == NULL)
@@ -610,16 +611,21 @@ parse_signals (ClutterScript *script,
           if (json_object_has_member (object, "states"))
             state = json_object_get_string_member (object, "states");
 
+          if (json_object_has_member (object, "warp"))
+            warp_to = json_object_get_boolean_member (object, "warp");
+
           CLUTTER_NOTE (SCRIPT,
-                        "Added signal '%s' (states:%s, target-state:%s)",
+                        "Added signal '%s' (states:%s, target-state:%s, warp:%s)",
                         name,
-                        state != NULL ? state : "<default>", target);
+                        state != NULL ? state : "<default>", target,
+                        warp_to ? "true" : "false");
 
           sinfo = g_slice_new0 (SignalInfo);
           sinfo->is_handler = FALSE;
           sinfo->name = g_strdup (name);
           sinfo->state = g_strdup (state);
           sinfo->target = g_strdup (target);
+          sinfo->warp_to = warp_to;
         }
       else if (json_object_has_member (object, "handler"))
         {

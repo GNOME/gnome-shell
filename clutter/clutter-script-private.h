@@ -94,6 +94,7 @@ typedef struct {
   GConnectFlags flags;
 
   guint is_handler : 1;
+  guint warp_to    : 1;
 } SignalInfo;
 
 void property_info_free (gpointer data);
