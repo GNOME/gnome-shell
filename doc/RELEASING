@@ -1,0 +1,86 @@
+RELEASING
+=========
+
+When making a new release;
+
+ - Verify that you don't have uncommitted changes; both:
+
+     $ git diff HEAD
+
+   and:
+
+     $ git log master..origin/master
+
+   should be empty.
+
+ - Clean your work directory:
+
+     $ git clean -xdf
+
+   This ensures that you don't have stale files lying around.
+
+ - Run:
+
+     $ ./autogen.sh --enable-gtk-doc --enable-profile
+     $ make all
+     $ make install
+
+   And verify that the code builds and installs from a clean Git snapshot.
+
+ - Test with Clutter:
+
+   Since we haven't migrated the Cogl unit tests from Clutter yet, you
+   should now build Clutter against Cogl and run the conformance tests:
+
+     $ ./autogen.sh
+     $ make all
+     $ make test
+
+ - Update the release documentation:
+
+     - NEWS: new feature details, bugs fixed, acknowledgements
+        - Use git shortlog -n -s to get the list of authors
+        - The following bash snippet may help with extracting the list of
+          bugs closed:
+
+URLS=$(git log $1|grep bugzilla|sort|uniq)
+for i in $URLS
+do
+  ID=$(echo $i|cut -d'=' -f2)
+  TITLE=$(wget --quiet -O - $i|grep -e '<title>.*</title>'|sed -e 's/<title>Bug [0-9]\+ &ndash; \(.*\)<\/title>/\1/')
+  echo "    #$ID - $TITLE"
+done
+
+     - README: dependencies, any behavioural changes relevant to
+       developers;
+
+   then commit the changes.
+
+ - Read the release comments in configure.ac
+    - Bump cogl_1_minor_version to the next even number
+    - Don't change the 2.0 version number
+    - Update the cogl_release_status status to "release" or "snapshot"
+      as appropriate.
+    - commit the changes.
+
+ - Run:
+
+     $ make release-publish
+
+   which will:
+
+     - do sanity checks on the build
+     - distcheck the release
+     - tag the repository with the version number
+     - upload the tarball to the remote server (needs SSH account)
+
+ - Bump cogl_1_micro_version to the next odd number
+ - Revert cogl_release_status to "git"
+
+ - Push the branch and then the tag, e.g.:
+
+     $ git push origin master
+     $ git push origin 1.7.0
+
+ - Announce release to the waiting world on the blog and mailing lists. Use
+   the template printed by `make release-publish`.
