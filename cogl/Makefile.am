@@ -305,6 +305,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-point-in-poly.c       		\
 	$(srcdir)/cogl-clutter.c       			\
 	$(srcdir)/winsys/cogl-winsys-stub-private.h	\
+	$(srcdir)/cogl-queue.h				\
 	$(srcdir)/winsys/cogl-winsys-stub.c		\
 	$(NULL)
 
