@@ -27,6 +27,8 @@
 #ifndef __COGL_TEXURE_2D_H
 #define __COGL_TEXURE_2D_H
 
+#include "cogl-context.h"
+
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 #include <wayland-server.h>
 #endif
