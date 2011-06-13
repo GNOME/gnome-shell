@@ -64,6 +64,12 @@ struct _ClutterGestureAction
 /**
  * ClutterGestureActionClass:
  * @gesture_begin: class handler for the #ClutterGestureAction::gesture-begin signal
+ * @gesture_progress: class handler for the #ClutterGestureAction::gesture-progres signal
+ * @gesture_end: class handler for the #ClutterGestureAction::gesture-end signal
+ * @gesture_cancel: class handler for the #ClutterGestureAction::gesture-cancel signal
+ *
+ * The <structname>ClutterGestureClass</structname> structure contains only
+ * private data.
  *
  * Since: 1.8
  */
