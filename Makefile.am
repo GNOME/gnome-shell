@@ -8,4 +8,6 @@ SUBDIRS += examples doc po
 
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 
-EXTRA_DIST = README.in
+EXTRA_DIST = \
+	README.in \
+	config-custom.h
