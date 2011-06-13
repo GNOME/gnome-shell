@@ -16,6 +16,8 @@ RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org
 
 RELEASE_DOC_URL = http://docs.clutter-project.org/docs/
 
+BUGS_URL = http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
+
 tar_file    = $(distdir).tar.bz2
 sha256_file = $(distdir).sha256sum
 
@@ -130,12 +132,16 @@ release-message:
 	@echo "  Cookbook: $(RELEASE_DOC_URL)/clutter-cookbook/$(CLUTTER_API_VERSION)/"
 	@echo ""
 	@echo "Release Notes:"
+	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xsnapshot"; then \
+	   echo "  - This is an unstable snapshot of Clutter; there are no compatibility"; \
+	   echo "    guarantees for API added during a development cycle." ; \
+	 fi
 	@echo "  - This version is API and ABI compatible with the current stable"
 	@echo "    release of Clutter."
 	@echo "  - Installing the contents of this release will overwrite the files"
 	@echo "    from the installation of the current release of Clutter."
 	@echo "  - Bugs should be reported on the Clutter Bugzilla product, at:"
-	@echo "    http://bugzilla.gnome.org/enter_bug.cgi?product=clutter"
+	@echo "    ${BUGS_URL}"
 	@echo ""
 	@$(SED) -n '1bend;/^Clutter /q;:end;2,$$p' $(top_srcdir)/NEWS | $(GREP) -v '^======'
 	@echo ""
