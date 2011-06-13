@@ -113,8 +113,13 @@ set_texture_to_stage_color (MetaBackgroundActor *self)
   CoglHandle texture;
 
   clutter_stage_get_color (CLUTTER_STAGE (stage), &color);
+
+  /* Slicing will prevent COGL from using hardware texturing for
+   * the tiled 1x1 pixmap, and will cause it to draw the window
+   * background in millions of separate 1x1 rectangles */
   texture = meta_create_color_texture_4ub (color.red, color.green,
-                                           color.blue, 0xff);
+                                           color.blue, 0xff,
+                                           COGL_TEXTURE_NO_SLICING);
   set_texture (self, texture);
   cogl_handle_unref (texture);
 }

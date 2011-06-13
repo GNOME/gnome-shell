@@ -29,6 +29,10 @@
  * @green:
  * @blue:
  * @alpha:
+ * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE;
+ *   %COGL_TEXTURE_NO_SLICING is useful if the texture will be
+ *   repeated to create a constant color fill, since hardware
+ *   repeat can't be used for a sliced texture.
  *
  * Creates a texture that is a single pixel with the specified
  * unpremultiplied color components.
@@ -36,10 +40,11 @@
  * Return value: (transfer full): a newly created Cogl texture
  */
 CoglHandle
-meta_create_color_texture_4ub (guint8 red,
-                               guint8 green,
-                               guint8 blue,
-                               guint8 alpha)
+meta_create_color_texture_4ub (guint8           red,
+                               guint8           green,
+                               guint8           blue,
+                               guint8           alpha,
+                               CoglTextureFlags flags)
 {
   CoglColor color;
   guint8 pixel[4];
@@ -53,7 +58,7 @@ meta_create_color_texture_4ub (guint8 red,
   pixel[3] = cogl_color_get_alpha_byte (&color);
 
   return cogl_texture_new_from_data (1, 1,
-                                     COGL_TEXTURE_NONE,
+                                     flags,
                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                      COGL_PIXEL_FORMAT_ANY,
                                      4, pixel);
@@ -88,7 +93,8 @@ meta_create_texture_material (CoglHandle src_texture)
     {
       CoglHandle dummy_texture;
 
-      dummy_texture = meta_create_color_texture_4ub (0xff, 0xff, 0xff, 0xff);
+      dummy_texture = meta_create_color_texture_4ub (0xff, 0xff, 0xff, 0xff,
+                                                     COGL_TEXTURE_NONE);
 
       texture_material_template = cogl_material_new ();
       cogl_material_set_layer (texture_material_template, 0, dummy_texture);
