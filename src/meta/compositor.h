@@ -153,9 +153,9 @@ void meta_compositor_window_unmapped      (MetaCompositor *compositor,
                                            MetaWindow     *window);
 void meta_compositor_sync_window_geometry (MetaCompositor *compositor,
                                            MetaWindow     *window);
-void meta_compositor_set_updates          (MetaCompositor *compositor,
+void meta_compositor_set_updates_frozen   (MetaCompositor *compositor,
                                            MetaWindow     *window,
-                                           gboolean        updates);
+                                           gboolean        updates_frozen);
 
 void meta_compositor_sync_stack                (MetaCompositor *compositor,
                                                 MetaScreen     *screen,

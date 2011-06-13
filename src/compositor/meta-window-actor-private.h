@@ -45,6 +45,8 @@ void     meta_window_actor_update_shape        (MetaWindowActor *self);
 void     meta_window_actor_update_opacity      (MetaWindowActor *self);
 void     meta_window_actor_mapped              (MetaWindowActor *self);
 void     meta_window_actor_unmapped            (MetaWindowActor *self);
+void     meta_window_actor_set_updates_frozen  (MetaWindowActor *self,
+                                                gboolean         updates_frozen);
 
 cairo_region_t *meta_window_actor_get_obscured_region (MetaWindowActor *self);
 
