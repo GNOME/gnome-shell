@@ -5,6 +5,15 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
+#define X11_FOREIGN_EVENT_MASK \
+  (KeyPressMask | \
+   KeyReleaseMask | \
+   ButtonPressMask | \
+   ButtonReleaseMask | \
+   PointerMotionMask)
+
+CoglColor black;
+
 static void
 update_cogl_x11_event_mask (CoglOnscreen *onscreen,
                             guint32 event_mask,
@@ -14,7 +23,7 @@ update_cogl_x11_event_mask (CoglOnscreen *onscreen,
   XSetWindowAttributes attrs;
   guint32 xwin;
 
-  attrs.event_mask = event_mask;
+  attrs.event_mask = event_mask | X11_FOREIGN_EVENT_MASK;
   xwin = cogl_onscreen_x11_get_window_xid (onscreen);
 
   XChangeWindowAttributes (xdpy,
@@ -41,6 +50,13 @@ main (int argc, char **argv)
   XSetWindowAttributes xattr;
   unsigned long mask;
   Window xwin;
+  CoglVertexP2C4 triangle_vertices[] = {
+      {0, 0.7, 0xff, 0x00, 0x00, 0x80},
+      {-0.7, -0.7, 0x00, 0xff, 0x00, 0xff},
+      {0.7, -0.7, 0x00, 0x00, 0xff, 0xff}
+  };
+  CoglPrimitive *triangle;
+
 
   /* Since we want to test external ownership of the X display,
    * connect to X manually... */
@@ -145,10 +161,25 @@ main (int argc, char **argv)
 
   cogl_push_framebuffer (fb);
 
-  cogl_set_source_color4f (1, 0, 0, 1);
+  triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
+                                      3, triangle_vertices);
   for (;;)
     {
-      cogl_rectangle (-1, 1, 1, -1);
+      while (XPending (xdpy))
+        {
+          XEvent event;
+          XNextEvent (xdpy, &event);
+          switch (event.type)
+            {
+            case KeyRelease:
+            case ButtonRelease:
+              return 0;
+            }
+          /* FIXME: This should be replaced with some equivalent cogl_xlib_ typesafe API... */
+          cogl_renderer_handle_native_event (renderer, &event);
+        }
+      cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
+      cogl_primitive_draw (triangle);
       cogl_framebuffer_swap_buffers (fb);
     }
 
