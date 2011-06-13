@@ -260,6 +260,15 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 
   g_type_class_add_private (gobject_class, sizeof (ClutterBackendPrivate));
 
+  /**
+   * ClutterBackend::resolution-changed:
+   * @backend: the #ClutterBackend that emitted the signal
+   *
+   * The ::resolution-changed signal is emitted each time the font
+   * resolutions has been changed through #ClutterSettings.
+   *
+   * Since: 1.0
+   */
   backend_signals[RESOLUTION_CHANGED] =
     g_signal_new (I_("resolution-changed"),
                   G_TYPE_FROM_CLASS (klass),
@@ -269,6 +278,15 @@ clutter_backend_class_init (ClutterBackendClass *klass)
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * ClutterBackend::font-changed:
+   * @backend: the #ClutterBackend that emitted the signal
+   *
+   * The ::font-changed signal is emitted each time the font options
+   * have been changed through #ClutterSettings.
+   *
+   * Since: 1.0
+   */
   backend_signals[FONT_CHANGED] =
     g_signal_new (I_("font-changed"),
                   G_TYPE_FROM_CLASS (klass),
@@ -278,6 +296,15 @@ clutter_backend_class_init (ClutterBackendClass *klass)
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * ClutterBackend::settings-changed:
+   * @backend: the #ClutterBackend that emitted the signal
+   *
+   * The ::settings-changed signal is emitted each time the #ClutterSettings
+   * properties have been changed.
+   *
+   * Since: 1.4
+   */
   backend_signals[SETTINGS_CHANGED] =
     g_signal_new (I_("settings-changed"),
                   G_TYPE_FROM_CLASS (klass),

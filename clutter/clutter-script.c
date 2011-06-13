@@ -1342,6 +1342,7 @@ clutter_script_list_objects (ClutterScript *script)
  * @script: a #ClutterScript
  * @name: (allow-none): a name for the @state, or %NULL to
  *   set the default #ClutterState
+ * @state: a #ClutterState
  *
  * Associates a #ClutterState to the #ClutterScript instance using the given
  * name.

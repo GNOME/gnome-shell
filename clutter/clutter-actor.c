@@ -12347,12 +12347,18 @@ clutter_actor_get_paint_box (ClutterActor    *self,
  * clutter_actor_has_overlaps:
  * @self: A #ClutterActor
  *
- * Return value: whether the actor may contain overlapping
- * primitives. Clutter uses this to determine whether the painting
- * should be redirected to an offscreen buffer to correctly implement
- * the opacity property. Custom actors can override this by
- * implementing the has_overlaps virtual. See
+ * Asks the actor's implementation whether it may contain overlapping
+ * primitives.
+ *
+ * Clutter uses this to determine whether the painting should be redirected
+ * to an offscreen buffer to correctly implement the opacity property.
+ *
+ * Custom actors can override the default response by implementing the
+ * #ClutterActor <function>has_overlaps</function> virtual function. See
  * clutter_actor_set_offscreen_redirect() for more information.
+ *
+ * Return value: %TRUE if the actor may have overlapping primitives, and
+ *   %FALSE otherwise
  *
  * Since: 1.8
  */
