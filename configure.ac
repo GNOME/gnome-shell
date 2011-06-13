@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 dnl ================================================================
 dnl XXX: If you are making a release then you need to check these
 dnl sections:
-dnl » API versions
+dnl » API versions (Only the 1.x version needs to change)
 dnl   (the pretty numbers that the users see)
 dnl
 dnl » Interface version details for libtool
@@ -24,7 +24,7 @@ m4_define([cogl_version],
 
 dnl Since the core Cogl library has to also maintain support for the
 dnl Cogl 1.x API for Clutter then we track the 1.x version separately.
-m4_define([cogl_1_minor_version], [6])
+m4_define([cogl_1_minor_version], [7])
 m4_define([cogl_1_micro_version], [0])
 m4_define([cogl_1_version], [1.cogl_1_minor_version.cogl_1_micro_version])
 
@@ -70,7 +70,7 @@ dnl ================================================================
 # libtool version info we don't automatically derive this from the
 # pretty version number because we want to test the results of
 # updating the version number in advance of a release.
-m4_define([cogl_release_status], [git])
+m4_define([cogl_release_status], [snapshot])
 
 
 dnl ================================================================
