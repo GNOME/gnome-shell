@@ -201,7 +201,6 @@ cogl_depth_state_get_test_function (CoglDepthState *state);
  * clamped to the range [0, 1]
  * @far_val: The far component of the desired depth range which will be
  * clamped to the range [0, 1]
- * @error: location to store an error of type #CoglError
  *
  * Sets the range to map depth values in normalized device coordinates
  * to before writing out to a depth buffer.
@@ -240,7 +239,7 @@ cogl_depth_state_set_range (CoglDepthState *state,
 
 /**
  * cogl_depth_state_get_range:
- * @pipeline: A #CoglPipeline object
+ * @state: A #CoglDepthState object
  * @near_val: A pointer to store the near component of the depth range
  * @far_val: A pointer to store the far component of the depth range
  *
