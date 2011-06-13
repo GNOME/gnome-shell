@@ -2676,3 +2676,39 @@ CLUTTER_TYPE_SNAP_CONSTRAINT
 ClutterSnapConstraintClass
 clutter_snap_constraint_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-gesture-action</FILE>
+ClutterGestureAction
+ClutterGestureActionClass
+clutter_gesture_action_new
+clutter_gesture_action_get_press_coords
+clutter_gesture_action_get_motion_coords
+clutter_gesture_action_get_release_coords
+<SUBSECTION Standard>
+CLUTTER_GESTURE_ACTION
+CLUTTER_GESTURE_ACTION_CLASS
+CLUTTER_IS_GESTURE_ACTION
+CLUTTER_IS_GESTURE_ACTION_CLASS
+CLUTTER_TYPE_GESTURE_ACTION
+<SUBSECTION Private>
+ClutterGestureActionPrivate
+clutter_gesture_action_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-swipe-action</FILE>
+ClutterSwipeAction
+ClutterSwipeActionClass
+ClutterSwipeDirection
+clutter_swipe_action_new
+<SUBSECTION Standard>
+CLUTTER_SWIPE_ACTION
+CLUTTER_SWIPE_ACTION_CLASS
+CLUTTER_IS_SWIPE_ACTION
+CLUTTER_IS_SWIPE_ACTION_CLASS
+CLUTTER_TYPE_SWIPE_ACTION
+<SUBSECTION Private>
+ClutterSwipeActionPrivate
+clutter_swipe_action_get_type
+</SECTION>

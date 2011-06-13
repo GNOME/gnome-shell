@@ -52,6 +52,7 @@ UNIT_TESTS = \
 	test-drag.c \
 	test-constraints.c \
 	test-scrolling.c \
+	test-swipe-action.c \
 	test-cogl-point-sprites.c \
 	test-table-layout.c \
 	test-path-constraint.c \
