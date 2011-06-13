@@ -108,7 +108,7 @@ static void
 _cogl_pipeline_node_init (CoglPipelineNode *node)
 {
   node->parent = NULL;
-  node->has_children = FALSE;
+  COGL_LIST_INIT (&node->children);
 }
 
 static void
@@ -131,14 +131,7 @@ _cogl_pipeline_node_set_parent_real (CoglPipelineNode *node,
   if (node->parent)
     unparent (node);
 
-  if (G_UNLIKELY (parent->has_children))
-    parent->children = g_list_prepend (parent->children, node);
-  else
-    {
-      parent->has_children = TRUE;
-      parent->first_child = node;
-      parent->children = NULL;
-    }
+  COGL_LIST_INSERT_HEAD (&parent->children, node, list_node);
 
   node->parent = parent;
   node->has_parent_reference = take_strong_reference;
@@ -159,21 +152,9 @@ _cogl_pipeline_node_unparent_real (CoglPipelineNode *node)
   if (parent == NULL)
     return;
 
-  g_return_if_fail (parent->has_children);
+  g_return_if_fail (!COGL_LIST_EMPTY (&parent->children));
 
-  if (parent->first_child == node)
-    {
-      if (parent->children)
-        {
-          parent->first_child = parent->children->data;
-          parent->children =
-            g_list_delete_link (parent->children, parent->children);
-        }
-      else
-        parent->has_children = FALSE;
-    }
-  else
-    parent->children = g_list_remove (parent->children, node);
+  COGL_LIST_REMOVE (node, list_node);
 
   if (node->has_parent_reference)
     cogl_object_unref (parent);
@@ -186,11 +167,10 @@ _cogl_pipeline_node_foreach_child (CoglPipelineNode *node,
                                    CoglPipelineNodeChildCallback callback,
                                    void *user_data)
 {
-  if (node->has_children)
-    {
-      callback (node->first_child, user_data);
-      g_list_foreach (node->children, (GFunc)callback, user_data);
-    }
+  CoglPipelineNode *child, *next;
+
+  COGL_LIST_FOREACH_SAFE (child, &node->children, list_node, next)
+    callback (child, user_data);
 }
 
 /*
@@ -555,7 +535,7 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
                                      destroy_weak_children_cb,
                                      NULL);
 
-  g_assert (!COGL_PIPELINE_NODE (pipeline)->has_children);
+  g_assert (COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (pipeline)->children));
 
   _cogl_pipeline_fragend_free_priv (pipeline);
 
@@ -1334,7 +1314,7 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
   /* If there are still children remaining though we'll need to
    * perform a copy-on-write and reparent the dependants as children
    * of the copy. */
-  if (COGL_PIPELINE_NODE (pipeline)->has_children)
+  if (!COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (pipeline)->children))
     {
       CoglPipeline *new_authority;
 
@@ -1764,7 +1744,7 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
 
   /* Identify the case where the layer is new with no owner or
    * dependants and so we don't need to do anything. */
-  if (COGL_PIPELINE_NODE (layer)->has_children == FALSE &&
+  if (COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (layer)->children) &&
       layer->owner == NULL)
     goto init_layer_state;
 
@@ -1786,7 +1766,7 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
    * they have dependants - either direct children, or another
    * pipeline as an owner.
    */
-  if (COGL_PIPELINE_NODE (layer)->has_children ||
+  if (!COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (layer)->children) ||
       layer->owner != required_owner)
     {
       CoglPipelineLayer *new = _cogl_pipeline_layer_copy (layer);

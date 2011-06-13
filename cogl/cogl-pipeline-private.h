@@ -34,6 +34,7 @@
 #include "cogl-matrix.h"
 #include "cogl-object-private.h"
 #include "cogl-profile.h"
+#include "cogl-queue.h"
 
 #include <glib.h>
 
@@ -259,11 +260,14 @@ typedef struct
 
 } CoglPipelineLayerBigState;
 
+typedef struct _CoglPipelineNode CoglPipelineNode;
+
+COGL_LIST_HEAD (CoglPipelineNodeList, CoglPipelineNode);
+
 /* Materials and layers represent their state in a tree structure where
  * some of the state relating to a given pipeline or layer may actually
  * be owned by one if is ancestors in the tree. We have a common data
  * type to track the tree heirachy so we can share code... */
-typedef struct _CoglPipelineNode CoglPipelineNode;
 struct _CoglPipelineNode
 {
   /* the parent in terms of class hierarchy, so anything inheriting
@@ -273,24 +277,15 @@ struct _CoglPipelineNode
   /* The parent pipeline/layer */
   CoglPipelineNode *parent;
 
+  /* The list entry here contains pointers to the node's siblings */
+  COGL_LIST_ENTRY (CoglPipelineNode) list_node;
+
+  /* List of children */
+  CoglPipelineNodeList children;
+
   /* TRUE if the node took a strong reference on its parent. Weak
    * pipelines for instance don't take a reference on their parent. */
   gboolean has_parent_reference;
-
-  /* As an optimization for creating leaf node pipelines/layers (the
-   * most common) we don't require any list node allocations to link
-   * to a single descendant. */
-  CoglPipelineNode *first_child;
-
-  /* Determines if node->first_child and node->children are
-   * initialized pointers. */
-  gboolean has_children;
-
-  /* Materials and layers are sparse structures defined as a diff
-   * against their parent and may have multiple children which depend
-   * on them to define the values of properties which they don't
-   * change. */
-  GList *children;
 };
 
 #define COGL_PIPELINE_NODE(X) ((CoglPipelineNode *)(X))
