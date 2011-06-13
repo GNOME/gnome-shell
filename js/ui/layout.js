@@ -38,8 +38,22 @@ LayoutManager.prototype = {
         for (let i = 0; i < nMonitors; i++)
             this.monitors.push(screen.get_monitor_geometry(i));
 
-        this.primaryIndex = screen.get_primary_monitor();
+        if (nMonitors == 1) {
+            this.primaryIndex = this.bottomIndex = 0;
+        } else {
+            // If there are monitors below the primary, then we need
+            // to split primary from bottom.
+            this.primaryIndex = this.bottomIndex = screen.get_primary_monitor();
+            for (let i = 0; i < this.monitors.length; i++) {
+                let monitor = this.monitors[i];
+                if (this._isAboveOrBelowPrimary(monitor)) {
+                    if (monitor.y > this.monitors[this.bottomIndex].y)
+                        this.bottomIndex = i;
+                }
+            }
+        }
         this.primaryMonitor = this.monitors[this.primaryIndex];
+        this.bottomMonitor = this.monitors[this.bottomIndex];
     },
 
     _updateHotCorners: function() {
@@ -101,6 +115,20 @@ LayoutManager.prototype = {
         this._updateHotCorners();
 
         this.emit('monitors-changed');
+    },
+
+    _isAboveOrBelowPrimary: function(monitor) {
+        let primary = this.monitors[this.primaryIndex];
+        let monitorLeft = monitor.x, monitorRight = monitor.x + monitor.width;
+        let primaryLeft = primary.x, primaryRight = primary.x + primary.width;
+
+        if ((monitorLeft >= primaryLeft && monitorLeft <= primaryRight) ||
+            (monitorRight >= primaryLeft && monitorRight <= primaryRight) ||
+            (primaryLeft >= monitorLeft && primaryLeft <= monitorRight) ||
+            (primaryRight >= monitorLeft && primaryRight <= monitorRight))
+            return true;
+
+        return false;
     },
 
     get focusIndex() {

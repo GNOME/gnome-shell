@@ -1293,20 +1293,20 @@ MessageTray.prototype = {
     },
 
     _setSizePosition: function() {
-        let primary = Main.layoutManager.primaryMonitor;
-        this.actor.x = primary.x;
-        this.actor.y = primary.y + primary.height - 1;
-        this.actor.width = primary.width;
+        let monitor = Main.layoutManager.bottomMonitor;
+        this.actor.x = monitor.x;
+        this.actor.y = monitor.y + monitor.height - 1;
+        this.actor.width = monitor.width;
         this._notificationBin.x = 0;
-        this._notificationBin.width = primary.width;
+        this._notificationBin.width = monitor.width;
         this._summaryBin.x = 0;
-        this._summaryBin.width = primary.width;
+        this._summaryBin.width = monitor.width;
 
         if (this._pointerBarrier)
             global.destroy_pointer_barrier(this._pointerBarrier);
         this._pointerBarrier =
-            global.create_pointer_barrier(primary.x + primary.width, primary.y + primary.height - this.actor.height,
-                                          primary.x + primary.width, primary.y + primary.height,
+            global.create_pointer_barrier(monitor.x + monitor.width, monitor.y + monitor.height - this.actor.height,
+                                          monitor.x + monitor.width, monitor.y + monitor.height,
                                           4 /* BarrierNegativeX */);
 
 
@@ -1867,18 +1867,18 @@ MessageTray.prototype = {
     },
 
     _showTray: function() {
-        let primary = Main.layoutManager.primaryMonitor;
+        let monitor = Main.layoutManager.bottomMonitor;
         this._tween(this.actor, '_trayState', State.SHOWN,
-                    { y: primary.y + primary.height - this.actor.height,
+                    { y: monitor.y + monitor.height - this.actor.height,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
     },
 
     _hideTray: function() {
-        let primary = Main.layoutManager.primaryMonitor;
+        let monitor = Main.layoutManager.bottomMonitor;
         this._tween(this.actor, '_trayState', State.HIDDEN,
-                    { y: primary.y + primary.height - 1,
+                    { y: monitor.y + monitor.height - 1,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
