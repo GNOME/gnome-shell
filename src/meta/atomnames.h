@@ -174,6 +174,7 @@ item(_NET_WM_FULLSCREEN_MONITORS)
 item(_NET_WM_STATE_FOCUSED)
 item(_NET_WM_BYPASS_COMPOSITOR)
 item(_NET_WM_OPAQUE_REGION)
+item(_NET_WM_FRAME_DRAWN)
 
 #if 0
 /* We apparently never use: */

@@ -97,6 +97,10 @@ struct _MetaWindowActorPrivate
   gint              map_in_progress;
   gint              destroy_in_progress;
 
+  /* If non-zero, the client needs to be sent a _NET_WM_FRAME_DRAWN
+   * client message with this value */
+  gint64            frame_drawn_serial;
+
   guint		    visible                : 1;
   guint		    mapped                 : 1;
   guint		    argb32                 : 1;
@@ -2307,6 +2311,43 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
   check_needs_pixmap (self);
   check_needs_reshape (self);
   check_needs_shadow (self);
+
+  if (priv->window->needs_frame_drawn)
+    {
+      priv->frame_drawn_serial = priv->window->sync_request_serial;
+      priv->window->needs_frame_drawn = FALSE;
+    }
+}
+
+void
+meta_window_actor_post_paint (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->frame_drawn_serial != 0)
+    {
+      MetaScreen  *screen  = priv->screen;
+      MetaDisplay *display = meta_screen_get_display (screen);
+      Display *xdisplay = meta_display_get_xdisplay (display);
+
+      XClientMessageEvent ev;
+
+      ev.type = ClientMessage;
+      ev.window = meta_window_get_xwindow (priv->window);
+      ev.message_type = display->atom_WM_PROTOCOLS;
+      ev.format = 32;
+      ev.data.l[0] = display->atom__NET_WM_FRAME_DRAWN;
+      ev.data.l[1] = 0; /* timestamp */
+      ev.data.l[2] = priv->frame_drawn_serial & G_GUINT64_CONSTANT(0xffffffff);
+      ev.data.l[3] = priv->frame_drawn_serial >> 32;
+      ev.data.l[4] = 0; /* vblank estimate */
+
+      meta_error_trap_push (display);
+      XSendEvent (xdisplay, ev.window, False, 0, (XEvent*) &ev);
+      meta_error_trap_pop (display);
+
+      priv->frame_drawn_serial = 0;
+    }
 }
 
 void

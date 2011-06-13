@@ -356,6 +356,10 @@ struct _MetaWindow
    * also handles application frames */
   guint extended_sync_request_counter : 1;
 
+  /* if TRUE, we still need to send a _NET_WM_FRAME_DRAWN message for the
+   * last update the sync request counter */
+  guint needs_frame_drawn : 1;
+
   /* Note: can be NULL */
   GSList *struts;
 

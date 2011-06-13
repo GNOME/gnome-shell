@@ -470,6 +470,16 @@ meta_check_end_modal (MetaScreen *screen)
     }
 }
 
+static void
+after_stage_paint (ClutterActor   *stage,
+                   MetaCompScreen *info)
+{
+  GList *l;
+
+  for (l = info->windows; l; l = l->next)
+    meta_window_actor_post_paint (l->data);
+}
+
 void
 meta_compositor_manage_screen (MetaCompositor *compositor,
                                MetaScreen     *screen)
@@ -539,6 +549,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   meta_screen_set_cm_selection (screen);
 
   info->stage = clutter_stage_new ();
+  g_signal_connect_after (info->stage, "paint",
+                          G_CALLBACK (after_stage_paint), info);
 
   meta_screen_get_size (screen, &width, &height);
   clutter_actor_realize (info->stage);
