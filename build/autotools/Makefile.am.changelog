@@ -11,7 +11,7 @@ PREV_CHANGELOG_VERSION=$$(if test "x$$(echo "($$version-0.1)*2/2"|bc)" = "x$$(ec
 CHANGELOGS = ChangeLog \
 	`version=$(CURR_CHANGELOG_VERSION); \
 	version=$(PREV_CHANGELOG_VERSION); \
-	while test "x$$version" != xgit-import; do \
+	while test "x$$version" != "xgit-import"; do \
 		echo ChangeLog.pre-$$version; \
 		version=$(PREV_CHANGELOG_VERSION); \
 	done`
@@ -19,6 +19,7 @@ CHANGELOGS = ChangeLog \
 CLEANFILES += $(srcdir)/ChangeLog.cache-*
 
 changelogs:
+	@cp -f $(top_srcdir)/doc/ChangeLog.pre-git-import $(srcdir)
 	@$(MAKE) $(AM_MAKEFLAGS) $(CHANGELOGS)
 
 dist-hook: changelogs
@@ -45,33 +46,33 @@ $(srcdir)/ChangeLog:
 		 echo A git checkout is required to generate this file >> $@); \
 	fi
 
-DISTCLEANFILES += ChangeLog.cache-*
+DISTCLEANFILES += ChangeLog.cache-* ChangeLog.pre-git-import
 
 ChangeLog.cache-*..: .git
 
 ChangeLog%: $(srcdir)/ChangeLog%
 
 $(srcdir)/ChangeLog.cache-% $(srcdir)/ChangeLog.pre-%:
-	@echo Creating $@
+	@echo "Creating $@"
 	@if test -d "$(srcdir)/.git"; then \
-	  (cd "$(srcdir)" && \
-	  version=$$(echo "$@" | sed 's/.*ChangeLog\([.].*-\)\?//'); \
-	  if echo "$@" | grep -q '^ChangeLog[.]cache'; then \
-		spec=$$version; \
+	    (cd "$(srcdir)" && \
+	    version=$$(echo "$@" | sed 's/.*ChangeLog\([.].*-\)\?//'); \
+	    if echo "$@" | grep -q '^ChangeLog[.]cache'; then \
+	      spec=$$version; \
+	    else \
+	      to=$$version; \
+	      test "x$$version" = x && version=$(CURR_CHANGELOG_VERSION); \
+	      from=$(PREV_CHANGELOG_VERSION); \
+	      test "x$$to" = x || to=$$to.0; \
+	      test "x$$from" = xgit-import || from=$$from.0; \
+	      spec=$$from..$$to; \
+	    fi; \
+	    $(top_srcdir)/build/missing --run git log --stat "$$spec") > $@.tmp \
+	    && mv -f $@.tmp $@ \
+	    || ($(RM) $@.tmp; \
+	        echo Failed to generate $@, your $@ may be outdated >&2); \
 	  else \
-		to=$$version; \
-		test "x$$version" = x && version=$(CURR_CHANGELOG_VERSION); \
-		from=$(PREV_CHANGELOG_VERSION); \
-		test "x$$to" = x || to=$$to.0; \
-		test "x$$from" = xgit-import || from=$$from.0; \
-		spec=$$from..$$to; \
-	  fi; \
-	  $(top_srcdir)/build/missing --run git log --stat "$$spec") > $@.tmp \
-	  && mv -f $@.tmp $@ \
-	  || ($(RM) $@.tmp; \
-	      echo Failed to generate $@, your $@ may be outdated >&2); \
-	else \
-	  echo A git checkout is required to generate $@ >&2; \
+	    echo A git checkout is required to generate $@ >&2; \
 	fi
 
 .PHONY: changelogs ChangeLog $(srcdir)/ChangeLog
