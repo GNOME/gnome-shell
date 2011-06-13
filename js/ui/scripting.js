@@ -3,9 +3,10 @@
 const DBus = imports.dbus;
 const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
-
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+
+const Main = imports.ui.main;
 
 // This module provides functionality for driving the shell user interface
 // in an automated fashion. The primary current use case for this is
@@ -246,18 +247,14 @@ function _collect(scriptModule, outputFile) {
         Shell.write_string_to_stream(out, '"events":\n');
         Shell.PerfLog.get_default().dump_events(out);
 
-        let monitors = global.get_monitors();
-        let primary = global.get_primary_monitor();
+        let monitors = Main.layoutManager.monitors;
+        let primary = Main.layoutManager.primaryIndex;
         Shell.write_string_to_stream(out, ',\n"monitors":\n[');
         for (let i = 0; i < monitors.length; i++) {
             let monitor = monitors[i];
-            let is_primary = (monitor.x == primary.x &&
-                              monitor.y == primary.y &&
-                              monitor.width == primary.width &&
-                              monitor.height == primary.height);
             if (i != 0)
                 Shell.write_string_to_stream(out, ', ');
-            Shell.write_string_to_stream(out, '"%s%dx%d+%d+%d"'.format(is_primary ? "*" : "",
+            Shell.write_string_to_stream(out, '"%s%dx%d+%d+%d"'.format(i == primary ? "*" : "",
                                                                        monitor.width, monitor.height,
                                                                        monitor.x, monitor.y));
         }

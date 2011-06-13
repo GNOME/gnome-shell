@@ -6,6 +6,7 @@ const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 const POPUP_ANIMATION_TIME = 0.15;
@@ -329,7 +330,7 @@ BoxPointer.prototype = {
         // We also want to keep it onscreen, and separated from the
         // edge by the same distance as the main part of the box is
         // separated from its sourceActor
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let arrowBase = themeNode.get_length('-arrow-base');

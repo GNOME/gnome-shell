@@ -180,7 +180,7 @@ WindowManager.prototype = {
          */
         this._minimizing.push(actor);
 
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         let xDest = primary.x;
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
             xDest += primary.width;

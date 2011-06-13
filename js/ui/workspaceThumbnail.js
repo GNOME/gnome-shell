@@ -146,7 +146,7 @@ function WorkspaceThumbnail(metaWorkspace) {
 WorkspaceThumbnail.prototype = {
     _init : function(metaWorkspace) {
         this.metaWorkspace = metaWorkspace;
-        this.monitorIndex = global.get_primary_monitor_index();
+        this.monitorIndex = Main.layoutManager.primaryIndex;
 
         this.actor = new St.Group({ reactive: true,
                                     clip_to_allocation: true,
@@ -170,7 +170,7 @@ WorkspaceThumbnail.prototype = {
         this._background = new Clutter.Clone({ source: global.background_actor });
         this._contents.add_actor(this._background);
 
-        let monitor = global.get_primary_monitor();
+        let monitor = Main.layoutManager.primaryMonitor;
         this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
 
         let windows = global.get_window_actors().filter(this._isMyWindow, this);
@@ -528,7 +528,7 @@ ThumbnailsBox.prototype = {
 
         // The "porthole" is the portion of the screen that we show in the workspaces
         let panelHeight = Main.panel.actor.height;
-        let monitor = global.get_primary_monitor();
+        let monitor = Main.layoutManager.primaryMonitor;
         this._porthole = {
             x: monitor.x,
             y: monitor.y + panelHeight,

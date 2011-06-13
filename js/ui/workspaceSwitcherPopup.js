@@ -56,7 +56,7 @@ WorkspaceSwitcherPopup.prototype = {
 
     _getPreferredHeight : function (actor, forWidth, alloc) {
         let children = this._list.get_children();
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
 
         let availHeight = primary.height;
         availHeight -= Main.panel.actor.height;
@@ -82,7 +82,7 @@ WorkspaceSwitcherPopup.prototype = {
     },
 
     _getPreferredWidth : function (actor, forHeight, alloc) {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         this._childWidth = Math.round(this._childHeight * primary.width / primary.height);
 
         alloc.min_size = this._childWidth;
@@ -125,7 +125,7 @@ WorkspaceSwitcherPopup.prototype = {
     },
 
     _position: function() {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         this._container.x = primary.x + Math.floor((primary.width - this._container.width) / 2);
         this._container.y = primary.y + Main.panel.actor.height +
                             Math.floor(((primary.height - Main.panel.actor.height) - this._container.height) / 2);

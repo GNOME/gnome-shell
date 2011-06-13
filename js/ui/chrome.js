@@ -35,8 +35,8 @@ Chrome.prototype = {
 
         this._trackedActors = [];
 
-        global.screen.connect('monitors-changed',
-                              Lang.bind(this, this._monitorsChanged));
+        Main.layoutManager.connect('monitors-changed',
+                                   Lang.bind(this, this._relayout));
         global.screen.connect('restacked',
                               Lang.bind(this, this._windowsRestacked));
 
@@ -49,9 +49,7 @@ Chrome.prototype = {
         Main.overview.connect('hidden',
                              Lang.bind(this, this._overviewHidden));
 
-        this._updateMonitors();
-        this._updateFullscreen();
-        this._queueUpdateRegions();
+        this._relayout();
     },
 
     _allocated: function(actor, box, flags) {
@@ -205,18 +203,13 @@ Chrome.prototype = {
         this._queueUpdateRegions();
     },
 
-    _updateMonitors: function() {
-        let monitors = global.get_monitors();
-        let primary = global.get_primary_monitor();
-        this._monitors = monitors;
-        for (let i = 0; i < monitors.length; i++) {
-            let monitor = monitors[i];
-            if (monitor.x == primary.x &&
-                monitor.y == primary.y &&
-                monitor.width == primary.width &&
-                monitor.height == primary.height)
-                this._primaryMonitor = monitor;
-        }
+    _relayout: function() {
+        this._monitors = Main.layoutManager.monitors;
+        this._primaryMonitor = Main.layoutManager.primaryMonitor;
+
+        this._updateFullscreen();
+        this._updateVisibility();
+        this._queueUpdateRegions();
     },
 
     _findMonitorForRect: function(x, y, w, h) {
@@ -253,15 +246,6 @@ Chrome.prototype = {
         if (monitor)
             return monitor;
         return this._primaryMonitor; // Not on any monitor, pretend its on the primary
-    },
-
-    _monitorsChanged: function() {
-        this._updateMonitors();
-
-        // Update everything that depends on monitor positions
-        this._updateFullscreen();
-        this._updateVisibility();
-        this._queueUpdateRegions();
     },
 
     _queueUpdateRegions: function() {

@@ -74,7 +74,7 @@ AltTabPopup.prototype = {
 
     _allocate: function (actor, box, flags) {
         let childBox = new Clutter.ActorBox();
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
 
         let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
         let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
@@ -618,7 +618,7 @@ SwitcherList.prototype = {
                 this._items[this._highlighted].add_style_pseudo_class('selected');
         }
 
-        let monitor = global.get_primary_monitor();
+        let monitor = Main.layoutManager.primaryMonitor;
         let itemSize = this._items[index].allocation.x2 - this._items[index].allocation.x1;
         let [posX, posY] = this._items[index].get_transformed_position();
         posX += this.actor.x;
@@ -646,7 +646,7 @@ SwitcherList.prototype = {
 
     _scrollToRight : function() {
         this._scrollableLeft = true;
-        let monitor = global.get_primary_monitor();
+        let monitor = Main.layoutManager.primaryMonitor;
         let padding = this.actor.get_theme_node().get_horizontal_padding();
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
         let x = this._items[this._highlighted].allocation.x2 - monitor.width + padding + parentPadding;
@@ -743,7 +743,7 @@ SwitcherList.prototype = {
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
         if (this.actor.allocation.x2 == primary.x + primary.width - parentRightPadding) {
             if (this._squareItems)
@@ -873,7 +873,7 @@ AppSwitcher.prototype = {
            totalSpacing += this._separator.width + this._list.spacing;
 
         // We just assume the whole screen here due to weirdness happing with the passed width
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
         let availWidth = primary.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
         let height = 0;

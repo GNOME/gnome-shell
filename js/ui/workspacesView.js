@@ -70,10 +70,10 @@ WorkspacesView.prototype = {
         this._workspaces[activeWorkspaceIndex].actor.raise_top();
 
         this._extraWorkspaces = [];
-        let monitors = global.get_monitors();
+        let monitors = Main.layoutManager.monitors;
         let m = 0;
         for (let i = 0; i < monitors.length; i++) {
-            if (i == global.get_primary_monitor_index())
+            if (i == Main.layoutManager.primaryIndex)
                 continue;
             let ws = new Workspace.Workspace(null, i);
             this._extraWorkspaces[m++] = ws;
@@ -383,7 +383,7 @@ WorkspacesView.prototype = {
                 this._extraWorkspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
         }
 
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let topWorkspace, bottomWorkspace;
@@ -550,8 +550,8 @@ WorkspacesDisplay.prototype = {
         controls.connect('scroll-event',
                          Lang.bind(this, this._onScrollEvent));
 
-        this._monitorIndex = global.get_primary_monitor_index();
-        this._monitor = global.get_monitors()[this._monitorIndex];
+        this._monitorIndex = Main.layoutManager.primaryIndex;
+        this._monitor = Main.layoutManager.monitors[this._monitorIndex];
 
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         controls.add_actor(this._thumbnailsBox.actor);
@@ -567,7 +567,7 @@ WorkspacesDisplay.prototype = {
 
         this._updateAlwaysZoom();
 
-        global.screen.connect('monitors-changed', Lang.bind(this, this._updateAlwaysZoom));
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateAlwaysZoom));
         global.screen.connect('notify::n-workspaces',
                               Lang.bind(this, this._workspacesChanged));
 
@@ -694,8 +694,8 @@ WorkspacesDisplay.prototype = {
         if (this._alwaysZoomOut)
             return;
 
-        let monitors = global.get_monitors();
-        let primary = global.get_primary_monitor();
+        let monitors = Main.layoutManager.monitors;
+        let primary = Main.layoutManager.primaryMonitor;
 
         /* Look for any monitor to the right of the primary, if there is
          * one, we always keep zoom out, otherwise its hard to reach

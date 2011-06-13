@@ -121,7 +121,7 @@ Overview.prototype = {
                 let spacing = node.get_length('spacing');
                 if (spacing != this._spacing) {
                     this._spacing = spacing;
-                    this.relayout();
+                    this._relayout();
                 }
             }));
 
@@ -202,6 +202,8 @@ Overview.prototype = {
         // the left of the overview
         Main.ctrlAltTabManager.addGroup(this.dash.actor, _("Dash"), 'user-bookmarks');
 
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
+        this._relayout();
     },
 
     _onDragBegin: function() {
@@ -391,7 +393,7 @@ Overview.prototype = {
                 [stageX, stageY] = event.get_coords();
                 let dx = this._dragX - stageX;
                 let dy = this._dragY - stageY;
-                let primary = global.get_primary_monitor();
+                let primary = Main.layoutManager.primaryMonitor;
 
                 this._dragX = stageX;
                 this._dragY = stageY;
@@ -438,8 +440,13 @@ Overview.prototype = {
         return clone;
     },
 
-    relayout: function () {
-        let primary = global.get_primary_monitor();
+    _relayout: function () {
+        // To avoid updating the position and size of the workspaces
+        // we just hide the overview. The positions will be updated
+        // when it is next shown.
+        this.hide();
+
+        let primary = Main.layoutManager.primaryMonitor;
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
         let contentY = Main.panel.actor.height;

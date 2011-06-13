@@ -23,6 +23,7 @@ const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const PlaceDisplay = imports.ui.placeDisplay;
 const RunDialog = imports.ui.runDialog;
+const Layout = imports.ui.layout;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
@@ -59,6 +60,7 @@ let uiGroup = null;
 let magnifier = null;
 let xdndHandler = null;
 let statusIconDispatcher = null;
+let layoutManager = null;
 let _errorLogStack = [];
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -126,6 +128,7 @@ function start() {
     global.overlay_group.reparent(uiGroup);
     global.stage.add_actor(uiGroup);
 
+    layoutManager = new Layout.LayoutManager();
     placesManager = new PlaceDisplay.PlacesManager();
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
@@ -140,6 +143,7 @@ function start() {
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
 
+    layoutManager.init();
     overview.init();
     statusIconDispatcher.start(messageTray.actor);
 
@@ -178,13 +182,8 @@ function start() {
     // Attempt to become a PolicyKit authentication agent
     PolkitAuthenticationAgent.init()
 
-    global.screen.connect('monitors-changed', _relayout);
-
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
-
-    // Perform initial relayout here
-    _relayout();
 
     panel.startStatusArea();
     panel.startupAnimation();
@@ -300,14 +299,14 @@ function _windowRemoved(workspace, window) {
 function _windowLeftMonitor(metaScreen, monitorIndex, metaWin) {
     // If the window left the primary monitor, that
     // might make that workspace empty
-    if (monitorIndex == global.get_primary_monitor_index())
+    if (monitorIndex == layoutManager.primaryIndex)
         _queueCheckWorkspaces();
 }
 
 function _windowEnteredMonitor(metaScreen, monitorIndex, metaWin) {
     // If the window entered the primary monitor, that
     // might make that workspace non-empty
-    if (monitorIndex == global.get_primary_monitor_index())
+    if (monitorIndex == layoutManager.primaryIndex)
         _queueCheckWorkspaces();
 }
 
@@ -479,82 +478,6 @@ function _getAndClearErrorStack() {
     let errors = _errorLogStack;
     _errorLogStack = [];
     return errors;
-}
-
-function _relayout() {
-    let monitors = global.get_monitors();
-    // destroy old corners
-    for (let i = 0; i < hotCorners.length; i++)
-        hotCorners[i].destroy();
-    hotCorners = [];
-
-
-    let primary = global.get_primary_monitor();
-    for (let i = 0; i < monitors.length; i++) {
-        let monitor = monitors[i];
-        let isPrimary = (monitor.x == primary.x &&
-                         monitor.y == primary.y &&
-                         monitor.width == primary.width &&
-                         monitor.height == primary.height);
-
-        let cornerX = monitor.x;
-        let cornerY = monitor.y;
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
-            cornerX += monitor.width;
-
-
-        let haveTopLeftCorner = true;
-
-        /* Check if we have a top left (right for RTL) corner.
-         * I.e. if there is no monitor directly above or to the left(right) */
-        let besideX;
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
-            besideX = monitor.x + 1;
-        else
-            besideX = cornerX - 1;
-        let besideY = cornerY;
-        let aboveX = cornerX;
-        let aboveY = cornerY - 1;
-
-        for (let j = 0; j < monitors.length; j++) {
-            if (i == j)
-                continue;
-            let otherMonitor = monitors[j];
-            if (besideX >= otherMonitor.x &&
-                besideX < otherMonitor.x + otherMonitor.width &&
-                besideY >= otherMonitor.y &&
-                besideY < otherMonitor.y + otherMonitor.height) {
-                haveTopLeftCorner = false;
-                break;
-            }
-            if (aboveX >= otherMonitor.x &&
-                aboveX < otherMonitor.x + otherMonitor.width &&
-                aboveY >= otherMonitor.y &&
-                aboveY < otherMonitor.y + otherMonitor.height) {
-                haveTopLeftCorner = false;
-                break;
-            }
-        }
-
-        /* We only want hot corners where there is a natural top-left
-         * corner, and on the primary monitor */
-        if (!isPrimary && !haveTopLeftCorner)
-            continue;
-
-        let corner = new Panel.HotCorner(isPrimary ? panel.button : null);
-        hotCorners.push(corner);
-        corner.actor.set_position(cornerX, cornerY);
-        if (isPrimary)
-            panel.setHotCorner(corner);
-    }
-
-    panel.relayout();
-    overview.relayout();
-
-    // To avoid updating the position and size of the workspaces
-    // in the overview, we just hide the overview. The positions
-    // will be updated when it is next shown.
-    overview.hide();
 }
 
 function isWindowActorDisplayedOnWorkspace(win, workspaceIndex) {

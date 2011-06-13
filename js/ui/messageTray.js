@@ -1257,7 +1257,7 @@ MessageTray.prototype = {
         Main.chrome.trackActor(this._notificationBin);
         Main.chrome.trackActor(this._summaryBoxPointer.actor);
 
-        global.screen.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
 
         this._setSizePosition();
 
@@ -1293,7 +1293,7 @@ MessageTray.prototype = {
     },
 
     _setSizePosition: function() {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         this.actor.x = primary.x;
         this.actor.y = primary.y + primary.height - 1;
         this.actor.width = primary.width;
@@ -1867,7 +1867,7 @@ MessageTray.prototype = {
     },
 
     _showTray: function() {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         this._tween(this.actor, '_trayState', State.SHOWN,
                     { y: primary.y + primary.height - this.actor.height,
                       time: ANIMATION_TIME,
@@ -1876,7 +1876,7 @@ MessageTray.prototype = {
     },
 
     _hideTray: function() {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: primary.y + primary.height - 1,
                       time: ANIMATION_TIME,
@@ -2047,7 +2047,6 @@ MessageTray.prototype = {
     },
 
     _showSummary: function(timeout) {
-        let primary = global.get_primary_monitor();
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
         this._tween(this._summaryBin, '_summaryState', State.SHOWN,

@@ -32,10 +32,6 @@ ShellGlobal   *shell_global_get                       (void);
 MetaScreen    *shell_global_get_screen                (ShellGlobal *global);
 GdkScreen     *shell_global_get_gdk_screen            (ShellGlobal *global);
 GList         *shell_global_get_window_actors         (ShellGlobal *global);
-GSList        *shell_global_get_monitors              (ShellGlobal *global);
-MetaRectangle *shell_global_get_primary_monitor       (ShellGlobal *global);
-int            shell_global_get_primary_monitor_index (ShellGlobal *global);
-MetaRectangle *shell_global_get_focus_monitor         (ShellGlobal *global);
 GSettings     *shell_global_get_settings              (ShellGlobal *global);
 guint32        shell_global_get_current_time          (ShellGlobal *global);
 

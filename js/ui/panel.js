@@ -1013,6 +1013,9 @@ Panel.prototype = {
 
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
+
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
+        this._relayout();
     },
 
     _xdndShowOverview: function (actor) {
@@ -1086,8 +1089,8 @@ Panel.prototype = {
                          });
     },
 
-    relayout: function() {
-        let primary = global.get_primary_monitor();
+    _relayout: function() {
+        let primary = Main.layoutManager.primaryMonitor;
 
         this.actor.set_position(primary.x, primary.y);
         this.actor.set_size(primary.width, -1);

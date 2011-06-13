@@ -436,7 +436,7 @@ Inspector.prototype = {
         if (!this._eventHandler)
             return;
 
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
 
         let [minWidth, minHeight, natWidth, natHeight] =
             this._eventHandler.get_preferred_size();
@@ -907,7 +907,7 @@ LookingGlass.prototype = {
     },
 
     _resizeTo: function(actor) {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
         let myWidth = primary.width * 0.7;
         let myHeight = primary.height * 0.7;
         let [srcX, srcY] = actor.get_transformed_position();

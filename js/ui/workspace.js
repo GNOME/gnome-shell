@@ -225,8 +225,8 @@ WindowClone.prototype = {
         let [width, height] = this.actor.get_transformed_size();
 
         let monitorIndex = this.metaWindow.get_monitor();
-        let availArea = global.get_monitors()[monitorIndex];
-        if (monitorIndex == global.get_primary_monitor_index()) {
+        let availArea = Main.layoutManager.monitors[monitorIndex];
+        if (monitorIndex == Main.layoutManager.primaryIndex) {
             availArea.y += Main.panel.actor.height;
             availArea.height -= Main.panel.actor.height;
         }
@@ -593,7 +593,7 @@ Workspace.prototype = {
         this._height = 0;
 
         this.monitorIndex = monitorIndex;
-        this._monitor = global.get_monitors()[this.monitorIndex];
+        this._monitor = Main.layoutManager.monitors[this.monitorIndex];
         this._windowOverlaysGroup = new Clutter.Group();
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);

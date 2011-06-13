@@ -153,14 +153,14 @@ CtrlAltTabPopup.prototype = {
     },
 
     _getPreferredWidth: function (actor, forHeight, alloc) {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
 
         alloc.min_size = primary.width;
         alloc.natural_size = primary.width;
     },
 
     _getPreferredHeight: function (actor, forWidth, alloc) {
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
 
         alloc.min_size = primary.height;
         alloc.natural_size = primary.height;
@@ -168,7 +168,7 @@ CtrlAltTabPopup.prototype = {
 
     _allocate: function (actor, box, flags) {
         let childBox = new Clutter.ActorBox();
-        let primary = global.get_primary_monitor();
+        let primary = Main.layoutManager.primaryMonitor;
 
         let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
         let vPadding = this.actor.get_theme_node().get_vertical_padding();
