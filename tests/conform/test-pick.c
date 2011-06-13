@@ -39,8 +39,8 @@ G_DEFINE_TYPE (ShiftEffect,
                CLUTTER_TYPE_SHADER_EFFECT);
 
 static void
-shader_paint (ClutterEffect         *effect,
-              ClutterEffectRunFlags  flags)
+shader_paint (ClutterEffect           *effect,
+              ClutterEffectPaintFlags  flags)
 {
   ClutterShaderEffect *shader = CLUTTER_SHADER_EFFECT (effect);
   float tex_width;
@@ -68,8 +68,8 @@ shader_paint (ClutterEffect         *effect,
 }
 
 static void
-shader_pick (ClutterEffect         *effect,
-             ClutterEffectRunFlags  flags)
+shader_pick (ClutterEffect           *effect,
+             ClutterEffectPaintFlags  flags)
 {
   shader_paint (effect, flags);
 }

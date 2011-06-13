@@ -407,8 +407,8 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
 }
 
 static void
-clutter_offscreen_effect_paint (ClutterEffect         *effect,
-                                ClutterEffectRunFlags  flags)
+clutter_offscreen_effect_paint (ClutterEffect           *effect,
+                                ClutterEffectPaintFlags  flags)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
@@ -420,7 +420,7 @@ clutter_offscreen_effect_paint (ClutterEffect         *effect,
      actor hasn't been redrawn then we can just use the cached image
      in the fbo */
   if (priv->offscreen == NULL ||
-      (flags & CLUTTER_EFFECT_RUN_ACTOR_DIRTY) ||
+      (flags & CLUTTER_EFFECT_PAINT_ACTOR_DIRTY) ||
       !cogl_matrix_equal (&matrix, &priv->last_matrix_drawn))
     {
       /* Chain up to the parent paint method which will call the pre and

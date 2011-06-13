@@ -44,7 +44,7 @@
  *     something like this:
  *   </para>
  *   <programlisting>
- * void effect_paint (ClutterEffect *effect, ClutterEffectRunFlags flags)
+ * void effect_paint (ClutterEffect *effect, ClutterEffectPaintFlags flags)
  * {
  *   /&ast; Set up initialisation of the paint such as binding a
  *      CoglOffscreen or other operations &ast;/
@@ -228,8 +228,8 @@ clutter_effect_real_get_paint_volume (ClutterEffect      *effect,
 }
 
 static void
-clutter_effect_real_paint (ClutterEffect         *effect,
-                           ClutterEffectRunFlags  flags)
+clutter_effect_real_paint (ClutterEffect           *effect,
+                           ClutterEffectPaintFlags  flags)
 {
   ClutterActorMeta *actor_meta = CLUTTER_ACTOR_META (effect);
   ClutterActor *actor;
@@ -249,8 +249,8 @@ clutter_effect_real_paint (ClutterEffect         *effect,
 }
 
 static void
-clutter_effect_real_pick (ClutterEffect         *effect,
-                          ClutterEffectRunFlags  flags)
+clutter_effect_real_pick (ClutterEffect           *effect,
+                          ClutterEffectPaintFlags  flags)
 {
   ClutterActorMeta *actor_meta = CLUTTER_ACTOR_META (effect);
   ClutterActor *actor;
@@ -312,8 +312,8 @@ _clutter_effect_post_paint (ClutterEffect *effect)
 }
 
 void
-_clutter_effect_paint (ClutterEffect         *effect,
-                       ClutterEffectRunFlags  flags)
+_clutter_effect_paint (ClutterEffect           *effect,
+                       ClutterEffectPaintFlags  flags)
 {
   g_return_if_fail (CLUTTER_IS_EFFECT (effect));
 
@@ -321,8 +321,8 @@ _clutter_effect_paint (ClutterEffect         *effect,
 }
 
 void
-_clutter_effect_pick (ClutterEffect         *effect,
-                      ClutterEffectRunFlags  flags)
+_clutter_effect_pick (ClutterEffect           *effect,
+                      ClutterEffectPaintFlags  flags)
 {
   g_return_if_fail (CLUTTER_IS_EFFECT (effect));
 

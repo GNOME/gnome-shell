@@ -43,18 +43,17 @@ G_BEGIN_DECLS
 typedef struct _ClutterEffectClass      ClutterEffectClass;
 
 /**
- * ClutterEffectRunFlags:
- * @CLUTTER_EFFECT_RUN_ACTOR_DIRTY: The actor or one of its children
- * has queued a redraw before this paint. This implies that the effect
- * should call clutter_actor_continue_paint() to chain to the next
- * effect and can not cache any results from a previous paint.
+ * ClutterEffectPaintFlags:
+ * @CLUTTER_EFFECT_PAINT_ACTOR_DIRTY: The actor or one of its children
+ *   has queued a redraw before this paint. This implies that the effect
+ *   should call clutter_actor_continue_paint() to chain to the next
+ *   effect and can not cache any results from a previous paint.
  *
  * Flags passed to the ‘paint’ or ‘pick’ method of #ClutterEffect.
  */
-typedef enum
-{
-  CLUTTER_EFFECT_RUN_ACTOR_DIRTY = (1 << 0)
-} ClutterEffectRunFlags;
+typedef enum { /*< prefix=CLUTTER_EFFECT_PAINT >*/
+  CLUTTER_EFFECT_PAINT_ACTOR_DIRTY = (1 << 0)
+} ClutterEffectPaintFlags;
 
 /**
  * ClutterEffect:
@@ -87,17 +86,16 @@ struct _ClutterEffectClass
   ClutterActorMetaClass parent_class;
 
   /*< public >*/
-  gboolean (* pre_paint)        (ClutterEffect      *effect);
-  void     (* post_paint)       (ClutterEffect      *effect);
+  gboolean (* pre_paint)        (ClutterEffect           *effect);
+  void     (* post_paint)       (ClutterEffect           *effect);
 
-  gboolean (* get_paint_volume) (ClutterEffect      *effect,
-                                 ClutterPaintVolume *volume);
+  gboolean (* get_paint_volume) (ClutterEffect           *effect,
+                                 ClutterPaintVolume      *volume);
 
-  void     (* paint)            (ClutterEffect        *effect,
-                                 ClutterEffectRunFlags flags);
-
-  void     (* pick)             (ClutterEffect        *effect,
-                                 ClutterEffectRunFlags flags);
+  void     (* paint)            (ClutterEffect           *effect,
+                                 ClutterEffectPaintFlags  flags);
+  void     (* pick)             (ClutterEffect           *effect,
+                                 ClutterEffectPaintFlags  flags);
 
   /*< private >*/
   void (* _clutter_effect4) (void);

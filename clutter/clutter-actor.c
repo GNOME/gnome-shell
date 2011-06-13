@@ -2991,7 +2991,7 @@ clutter_actor_continue_paint (ClutterActor *self)
   else
     {
       ClutterEffect *old_current_effect;
-      ClutterEffectRunFlags run_flags = 0;
+      ClutterEffectPaintFlags run_flags = 0;
 
       /* Cache the current effect so that we can put it back before
          returning */
@@ -3011,7 +3011,7 @@ clutter_actor_continue_paint (ClutterActor *self)
                  (although it should work ok if it does) */
               if (priv->effect_to_redraw == NULL ||
                   priv->current_effect != priv->effect_to_redraw)
-                run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+                run_flags |= CLUTTER_EFFECT_PAINT_ACTOR_DIRTY;
             }
 
           _clutter_effect_paint (priv->current_effect, run_flags);
@@ -3021,7 +3021,7 @@ clutter_actor_continue_paint (ClutterActor *self)
           /* We can't determine when an actor has been modified since
              its last pick so lets just assume it has always been
              modified */
-          run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+          run_flags |= CLUTTER_EFFECT_PAINT_ACTOR_DIRTY;
 
           _clutter_effect_pick (priv->current_effect, run_flags);
         }

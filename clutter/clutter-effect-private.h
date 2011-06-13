@@ -5,14 +5,14 @@
 
 G_BEGIN_DECLS
 
-gboolean        _clutter_effect_pre_paint               (ClutterEffect      *effect);
-void            _clutter_effect_post_paint              (ClutterEffect      *effect);
-gboolean        _clutter_effect_get_paint_volume        (ClutterEffect      *effect,
-                                                         ClutterPaintVolume *volume);
-void            _clutter_effect_paint                   (ClutterEffect      *effect,
-                                                         ClutterEffectRunFlags flags);
-void            _clutter_effect_pick                    (ClutterEffect      *effect,
-                                                         ClutterEffectRunFlags flags);
+gboolean        _clutter_effect_pre_paint               (ClutterEffect           *effect);
+void            _clutter_effect_post_paint              (ClutterEffect           *effect);
+gboolean        _clutter_effect_get_paint_volume        (ClutterEffect           *effect,
+                                                         ClutterPaintVolume      *volume);
+void            _clutter_effect_paint                   (ClutterEffect           *effect,
+                                                         ClutterEffectPaintFlags  flags);
+void            _clutter_effect_pick                    (ClutterEffect           *effect,
+                                                         ClutterEffectPaintFlags  flags);
 
 G_END_DECLS
 
