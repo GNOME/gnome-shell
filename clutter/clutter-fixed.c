@@ -37,7 +37,7 @@
 #include "clutter-private.h"
 
 /**
- * clutter_value_set_fixed:
+ * clutter_value_set_fixed: (skip)
  * @value: a #GValue initialized to %COGL_TYPE_FIXED
  * @fixed_: the fixed point value to set
  *
@@ -55,7 +55,7 @@ clutter_value_set_fixed (GValue    *value,
 }
 
 /**
- * clutter_value_get_fixed:
+ * clutter_value_get_fixed: (skip)
  * @value: a #GValue initialized to %COGL_TYPE_FIXED
  *
  * Gets the fixed point value stored inside @value.
