@@ -278,6 +278,33 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.8
+-------------------------------------------------------------------------------
+
+• Cogl has been split out of tree. Clutter depends on Cogl, so users should
+  not notice anything. Developers using pkg-config will gain an extra Cogl
+  dependency.
+
+• The clutter_actor_get_gid() and clutter_get_actor_by_gid() functions have
+  been deprecated. They should not have been public in the first place.
+
+• ClutterShader and its relative API have been deprecated. ClutterShaderEffect
+  and the effect API is the proper way to use GLSL shaders with ClutterActors.
+  It is possible to instantiate a ClutterShaderEffect directly.
+
+• ClutterText's paint volume has been implemented using the ink rectangle of
+  the PangoLayout used to paint, to allow culling to work properly even in
+  the case of glyphs spilling outside the logical rectangle.
+
+• Non fully opaque children of a non fully opaque actor will be composited
+  in an offscreen framebuffer object to preserve the correct overall opacity.
+  This changes the way non fully opaque actors are drawn, and might cause
+  some code relying on the old, unspecified behaviour to produce different
+  results.
+
+• ClutterBoxLayout layout algorithm has been changed to map the more mature
+  and more stable GtkBox one.
+
 Release Notes for Clutter 1.6
 -------------------------------------------------------------------------------
 

@@ -1,3 +1,100 @@
+Clutter 1.7.2                                                        2011-06-13
+===============================================================================
+
+  • List of changes since Clutter 1.6.0
+
+    - Cogl moved out of tree
+    The Clutter OpenGL abstraction library has been moved to a separate
+    repository and can be used as a stand-alone shared library. Clutter
+    has been modified to depend on Cogl's experimental API.
+
+    - Correctly composite non fully opaque children
+    Non fully opauqe actors with non fully opaque children will automatically
+    redirect children paint operations to offscreen buffers, which allow
+    correct composition taking into account the overall opacity of the scene's
+    sub-graph. The same mechanism can be used to create a paint cache, and
+    paint that cache when the actor or its children do not change, instead of
+    painting the whole sub-graph again.
+
+    - Allow connecting signals to ClutterState states in ClutterScript
+    When defining a scene using ClutterScript it's possible to directly
+    connect a state inside a ClutterState object (both defined in
+    ClutterScript or in code) to an object's signal, without using an
+    explicit signal handler in the code.
+
+    - Long-press handling in ClutterClickAction
+    ClutterClickAction will detect a long-press gesture and emit signals
+    to query, activation and cancellation.
+
+    - Added ClutterGestureAction and ClutterSwipeAction
+    ClutterGestureAction is a generic "pointer gesture" action; it doesn't
+    provide an implementation: it's up to the developer to add the gesture
+    recognition code. ClutterSwipeAction is a GestureAction sub-class that
+    implement the "swipe" gesture. The GestureAction API is already future
+    proof for multi-device/multi-touch, even though the multi-touch isn't
+    currently implemented.
+
+    - Allow Effects to influence picking
+    Effects that change the geometry of a ClutterActor should also be
+    allowed to change the picking code to make sure that event handling
+    keeps working. ClutterEffect has a new pick() virtual function for
+    these cases.
+
+  • List of bugs fixes since Clutter 1.6.0
+
+    [bugzilla.clutter-project.org]
+    #2257 - clutter fails to link on OS X (10.6)
+    #2447 - atkevents example crashes is the accessibility is disabled
+    #2482 - Cally should avoid to provide a default name and description
+    #2484 - It would be nice to have the old cally Changelog
+    #2553 - new ClutterText API to access the Pango layout offsets
+    #2555 - Per-framebuffer journal causes corruptions
+    #2562 - Crash upon running Clutter-based programs
+    #2585 - add ClutterAction for slide gestures
+    #2588 - Assertion failure in _cogl_pipeline_set_layer_texture_target
+    #2595 - clutter-text: Add a selected-text-color
+    #2597 - CallyStage doesn't have a proper parent
+    #2599 - The paint volume for ClutterText is wrong
+    #2602 - Expose events ignored when doing clipped redraws
+    #2610 - Add recipe about implementing a ClutterEffect
+    #2619 - Removes the addition of the .exe extension to unit-test scripts,
+            on win32.
+    #2620 - _cogl_offscreen_new_to_texture_full() leaks reference when failing
+    #2621 - Clutter segfaults if you queue a redraw of an unmapped actor inside
+            the notify::mapped callback
+    #2631 - [PATCH] Enable evdev ClutterInputDevice objects on creation, as the
+            other backends do
+    #2632 - [PATCH] GL_IMG_TEXTURE_NPOT enables non-power-of-two features
+    #2633 - Make the pick id pool a per-Stage resource
+    #2640 - [patch] allow single-bit imprecision in some conformance tests
+    #2644 - Quartz backend: "Bare" modifier keypresses not generating events
+    #2652 - clutter_actor_queue_redraw() on destroyed stage
+    #2655 - segfault when disposing a slave device without a master
+    #2656 - Clutter can crash when destroying a stage from an event
+    #2667 - git head won't build under Win32
+
+    [bugzilla.gnome.org]
+    #650665 - CallyActor shouldn't add by default "press", "release"
+              and "click"
+    #647875 - Use Cairo to dump the pick buffers
+    #647876 - Make the pick if pool a per-Stage resource
+    #650487 - Sync allocation in ClutterBoxLayout with the one in GtkBox
+    #650597 - clutter-id-pool: fix warning on bad pick
+    #650650 - clutter-offscreen-effect: use target size when setting up
+              the viewport
+    #651700 - Give a chance to effects for running when picking
+    #652129 - Use "const" instead of G_CONST_RETURN
+
+Many thanks to:
+
+  Neil Roberts, Robert Bragg, nobled, Daniel Mustieles, Elliot Smith,
+  Matej Urbančič, Alejandro Piñeiro, Chris Lord, Marek Černocký,
+  Tomeu Vizoso, Jasper St. Pierre, James Athey, Piotr Drąg, Øyvind Kolås,
+  Adam Jackson, Andrej Žnidaršič, Kjartan Maraas, Adel Gadllah,
+  Alexandre Franke, Christian Kirbach, Craig R. Hughes, Dan Winship,
+  Dioselin, Kristjan SCHMIDT, Mario Blättermann, Miguel Bouzada, Peter Ward,
+  Philippe Normand, Samuel Degrande, Viatcheslav Gachkaylo
+
 Clutter 1.6.6                                                        2011-02-21
 ===============================================================================
 
