@@ -1088,3 +1088,17 @@ _cogl_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-error-quark");
 }
+
+void
+_cogl_init (void)
+{
+  static gsize init_status = 0;
+
+  if (g_once_init_enter (&init_status))
+    {
+      g_type_init ();
+
+      _cogl_debug_check_environment ();
+      g_once_init_leave (&init_status, 1);
+    }
+}

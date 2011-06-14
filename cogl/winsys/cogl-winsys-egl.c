@@ -223,6 +223,8 @@ static ANativeWindow *android_native_window;
 void
 cogl_android_set_native_window (ANativeWindow *window)
 {
+  _cogl_init ();
+
   android_native_window = window;
 }
 #endif

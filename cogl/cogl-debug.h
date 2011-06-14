@@ -116,6 +116,9 @@ extern GHashTable *_cogl_debug_instances;
 
 #endif /* COGL_ENABLE_DEBUG */
 
+void
+_cogl_debug_check_environment (void);
+
 G_END_DECLS
 
 #endif /* __COGL_DEBUG_H__ */

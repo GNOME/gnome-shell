@@ -28,9 +28,9 @@
 #include <stdlib.h>
 #include <glib/gi18n-lib.h>
 
+#include "cogl.h"
+#include "cogl-private.h"
 #include "cogl-debug.h"
-
-#ifdef COGL_ENABLE_DEBUG
 
 /* XXX: If you add a debug option, please also add an option
  * definition to cogl-debug-options.h. This will enable us - for
@@ -176,6 +176,7 @@ _cogl_parse_debug_string (const char *value,
     }
 }
 
+#ifdef COGL_ENABLE_DEBUG
 static gboolean
 cogl_arg_debug_cb (const char *key,
                    const char *value,
@@ -209,13 +210,9 @@ static GOptionEntry cogl_args[] = {
   { NULL, },
 };
 
-static gboolean
-pre_parse_hook (GOptionContext  *context,
-                GOptionGroup    *group,
-                gpointer         data,
-                GError         **error)
+void
+_cogl_debug_check_environment (void)
 {
-#ifdef COGL_ENABLE_DEBUG
   const char *env_string;
 
   env_string = g_getenv ("COGL_DEBUG");
@@ -226,11 +223,22 @@ pre_parse_hook (GOptionContext  *context,
                                 FALSE /* don't ignore help */);
       env_string = NULL;
     }
-#endif /* COGL_ENABLE_DEBUG */
+}
+
+static gboolean
+pre_parse_hook (GOptionContext  *context,
+                GOptionGroup    *group,
+                gpointer         data,
+                GError         **error)
+{
+  _cogl_init ();
 
   return TRUE;
 }
 
+/* XXX: GOption based library initialization is not reliable because the
+ * GOption API has no way to represent dependencies between libraries.
+ */
 GOptionGroup *
 cogl_get_option_group (void)
 {

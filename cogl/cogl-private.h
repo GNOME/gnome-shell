@@ -48,6 +48,9 @@ _cogl_read_pixels_with_rowstride (int x,
                                   guint8 *pixels,
                                   int rowstride);
 
+void
+_cogl_init (void);
+
 G_END_DECLS
 
 #endif /* __COGL_PRIVATE_H__ */

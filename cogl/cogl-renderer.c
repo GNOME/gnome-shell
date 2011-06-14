@@ -33,6 +33,7 @@
 
 #include "cogl.h"
 #include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-object.h"
 
 #include "cogl-renderer.h"
@@ -111,6 +112,8 @@ CoglRenderer *
 cogl_renderer_new (void)
 {
   CoglRenderer *renderer = g_new0 (CoglRenderer, 1);
+
+  _cogl_init ();
 
   renderer->connected = FALSE;
   renderer->event_filters = NULL;
