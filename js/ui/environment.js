@@ -70,12 +70,6 @@ function init() {
             return base;
     };
 
-    // Now close the back door to prevent extensions from trying to
-    // abuse it. We can't actually delete it since
-    // Shell.Global.prototype itself is read-only.
-    global.set_property_mutable('imports.gi.Shell.Global.prototype', 'set_property_mutable', true);
-    Shell.Global.prototype.set_property_mutable = undefined;
-
     // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
     Date.prototype.toLocaleFormat = function(format) {
         return Shell.util_format_date(format, this.getTime());

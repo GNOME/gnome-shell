@@ -105,12 +105,6 @@ void     shell_global_get_memory_info      (ShellGlobal     *global,
                                             ShellMemoryInfo *meminfo);
 
 
-gboolean shell_global_set_property_mutable (ShellGlobal *global,
-                                            const char  *object,
-                                            const char  *property,
-                                            gboolean     mutable);
-
-
 /* Run-at-leisure API */
 void shell_global_begin_work     (ShellGlobal          *global);
 void shell_global_end_work       (ShellGlobal          *global);
