@@ -333,7 +333,13 @@ static void
 clutter_backend_glx_ensure_context (ClutterBackend *backend,
                                     ClutterStage   *stage)
 {
-  ClutterStageGLX *stage_glx =
+  ClutterStageGLX *stage_glx;
+
+  /* ignore ensuring the context on an empty stage */
+  if (stage == NULL)
+    return;
+
+  stage_glx =
     CLUTTER_STAGE_GLX (_clutter_stage_get_window (stage));
 
   cogl_set_framebuffer (COGL_FRAMEBUFFER (stage_glx->onscreen));
