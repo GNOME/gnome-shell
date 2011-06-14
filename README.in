@@ -1,14 +1,30 @@
 README for Cogl @COGL_VERSION@
 ===============================================================================
 
-Cogl is a small open source software library for using 3D graphics
-hardware to draw pretty pictures. The API departs from the flat state
-machine style of OpenGL and is designed to make it easy to write
-orthogonal components that can render without stepping on each others
-toes. Cogl currently supports OpenGL ES 1.1/2.0 and OpenGL > 1.3 (or
-1.2 if you have the GL_ARB_multitexture extension). Having Gallium
-and D3D backends are options for the future.
+Note: This file is delimited with -- markers so it is possible to split
+sections out for other purposes, such as for release notes.
 
+--
+DESCRIPTION
+-------------------------------------------------------------------------------
+
+Cogl is a small open source library for using 3D graphics hardware to draw
+pretty pictures. The API departs from the flat state machine style of
+OpenGL and is designed to make it easy to write orthogonal components that
+can render without stepping on each others toes.
+
+As well aiming for a nice API, we think having a single library as opposed
+to an API specification like OpenGL has a few advantages too; like being
+able to paper over the inconsistencies/bugs of different OpenGL
+implementations in a centralized place, not to mention the myriad of OpenGL
+extensions. It also means we are in a better position to provide utility
+APIs that help software developers since they only need to be implemented
+once and there is no risk of inconsistency between implementations.
+
+Having other backends, besides OpenGL, such as drm, Gallium or D3D are
+options we are interested in for the future.
+
+--
 REQUIREMENTS
 -------------------------------------------------------------------------------
 
@@ -67,50 +83,47 @@ UProf is available from:
 
   git://github.com/rib/UProf.git
 
-RESOURCES
+--
+DOCUMENTATION
 -------------------------------------------------------------------------------
-
-The official Cogl website is:
-
-   http://www.clutter-project.org/
 
 The API references for the latest stable release are available at:
 
    http://docs.clutter-project.org/docs/cogl/stable/
 
-New bug page on Bugzilla:
+The experimental 2.0 API can be found here:
 
-   http://bugzilla.gnome.org/enter_bug.cgi?product=cogl
+   http://docs.clutter-project.org/docs/cogl-2.0-experimental/stable/
 
-Cogl is licensed under the terms of the GNU Lesser General Public
-License, version 2.1 or (at your option) later.
+   Note: The conflicting "stable" at the end refers to the fact
+   to overall Cogl release status, not the documentation specifically.
 
+--
+LICENSE
+-------------------------------------------------------------------------------
+
+Most of Cogl is licensed under the terms of the GNU Lesser General Public
+License, version 2.1 or (at your option) later. Some files are licensed under
+more permissive licenses MIT or BSD style licenses though so please see
+individual files for details.
+
+--
 BUILDING AND INSTALLATION
 -------------------------------------------------------------------------------
 
 Please refer to the INSTALL document.
 
-HACKING
--------------------------------------------------------------------------------
-
-If you want to hack on and improve Cogl please check the HACKING file
-to help you get started!
-
-The CODING_STYLE file contains the rules for writing code conformant to the
-style guidelines used throughout Cogl, please try your best to conform
-to this style because the consistency really helps keep the code
-maintainable.
-
+--
 BUGS
 -------------------------------------------------------------------------------
 
-Bugs should be reported to the Gnome.org Bugzilla at:
+Please report bugs here:
 
   http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
 You will need a Bugzilla account.
 
-In the report you should include:
+Please include the following in bug reports:
 
   • what system you're running Cogl on;
   • which version of Cogl you are using;
@@ -126,29 +139,26 @@ displaying the bad behaviour.
 If the bug exposes a crash, the exact text printed out and a stack trace
 obtained using gdb are greatly appreciated.
 
+--
 CONTRIBUTING
 -------------------------------------------------------------------------------
 
-Patches should be submitted using Bugzilla. Patches fixing a bug should be
-attached to the bug report; patches for new features or for fixing bugs not
-yet reported should be attached to a newly opened bug.
+The CODING_STYLE file describes the coding style we use throughout Cogl,
+please try your best to conform to this style because the consistency
+really helps keep the code maintainable.
 
-Patches should always be in the unified diff format, using:
+We can accept contributions in several ways:
+  • Either as patches attached to bugs on bugzilla
+      - For this you may be interested in using git-bz.
 
-  diff -Nuarp clutter.source clutter.patched > clutter-patch.diff
+        See http://git.fishsoup.net/man/git-bz.html for details
+  • You can email us patches
+      - For this we recommend using git-send-email
 
-If diffing against the Git repository, you should use:
+  • You can create a remote branch and ask us to pull from that for more
+    substantial changes.
+      - For this we recommend using github.
 
-  git diff > clutter-patch.diff
-
-Or, better: commit locally and use `git format-patch` to generate a patch
-containing authorship details, so that members of the Clutter development
-team can credit your contribution properly.
-
-Another useful tool for interacting with Git and Bugzilla is git-bz(1):
-
-  http://git.fishsoup.net/man/git-bz.html
-
-Which is available here:
-
-  http://git.fishsoup.net/cgit/git-bz/
+Ideally standalone patches should be created using git format-patch since
+that makes it easiest to import the patch with a commit message into a
+git repository.
