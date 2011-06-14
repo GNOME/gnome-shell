@@ -1062,6 +1062,9 @@ _clutter_stage_do_update (ClutterStage *stage)
   if (CLUTTER_ACTOR_IN_DESTRUCTION (stage) || priv->impl == NULL)
     return FALSE;
 
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+    return FALSE;
+
   /* NB: We need to ensure we have an up to date layout *before* we
    * check or clear the pending redraws flag since a relayout may
    * queue a redraw.
