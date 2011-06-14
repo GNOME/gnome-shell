@@ -172,10 +172,12 @@ ViewByCategories.prototype = {
         // (used only before the actor is mapped the first time)
         this._currentCategory = -2;
         this._filters = new St.BoxLayout({ vertical: true, reactive: true });
-        this._filters.connect('scroll-event', Lang.bind(this, this._scrollFilter));
-
+        this._filtersBox = new St.ScrollView({ x_fill: false,
+                                               y_fill: false,
+                                               style_class: 'vfade' });
+        this._filtersBox.add_actor(this._filters);
         this.actor.add(this._view.actor, { expand: true, x_fill: true, y_fill: true });
-        this.actor.add(this._filters, { expand: false, y_fill: false, y_align: St.Align.START });
+        this.actor.add(this._filtersBox, { expand: false, y_fill: false, y_align: St.Align.START });
 
         // Always select the "All" filter when switching to the app view
         this.actor.connect('notify::mapped', Lang.bind(this,
@@ -191,14 +193,6 @@ ViewByCategories.prototype = {
         // our real contents
         this._focusDummy = new St.Bin({ can_focus: true });
         this.actor.add(this._focusDummy);
-    },
-
-    _scrollFilter: function(actor, event) {
-        let direction = event.get_scroll_direction();
-        if (direction == Clutter.ScrollDirection.UP)
-            this._selectCategory(Math.max(this._currentCategory - 1, -1))
-        else if (direction == Clutter.ScrollDirection.DOWN)
-            this._selectCategory(Math.min(this._currentCategory + 1, this._sections.length - 1));
     },
 
     _selectCategory: function(num) {
