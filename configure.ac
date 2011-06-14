@@ -97,7 +97,7 @@ AC_CONFIG_HEADERS(config.h)
 cflags_set=${CFLAGS+set}
 
 AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define no-dist-gzip
-                  dist-bzip2])
+                  dist-bzip2 tar-ustar])
 AM_SILENT_RULES([yes])
 
 AH_BOTTOM([#include "config-custom.h"])
