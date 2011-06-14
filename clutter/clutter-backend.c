@@ -478,17 +478,17 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
                         new_stage);
         }
 
-      _clutter_backend_ensure_context_internal (backend, new_stage);
-
       /* XXX: Until Cogl becomes fully responsible for backend windows
        * Clutter need to manually keep it informed of the current window size
        *
        * NB: This must be done after we ensure_context above because Cogl
        * always assumes there is a current GL context.
        */
-      if (new_stage)
+      if (new_stage != NULL)
         {
           float width, height;
+
+          _clutter_backend_ensure_context_internal (backend, new_stage);
 
           clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
 
@@ -501,7 +501,8 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
            * switch between stages.
            *
            * This dirty mechanism will ensure they are asserted before
-           * the next paint... */
+           * the next paint...
+           */
           _clutter_stage_dirty_viewport (stage);
           _clutter_stage_dirty_projection (stage);
         }
@@ -509,7 +510,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
       /* FIXME: With a NULL stage and thus no active context it may make more
        * sense to clean the context but then re call with the default stage 
        * so at least there is some kind of context in place (as to avoid
-       * potential issue of GL calls with no context)
+       * potential issue of GL calls with no context).
        */
       current_context_stage = new_stage;
     }
