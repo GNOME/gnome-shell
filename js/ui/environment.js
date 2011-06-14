@@ -39,35 +39,6 @@ function _patchContainerClass(containerClass) {
     };
 }
 
-// Replace @method with something that throws an error instead
-function _blockMethod(method, replacement, reason) {
-    let match = method.match(/^(.+)\.([^.]+)$/);
-    if (!match)
-        throw new Error('Bad method name "' + method + '"');
-    let proto = 'imports.gi.' + match[1] + '.prototype';
-    let property = match[2];
-
-    if (!global.set_property_mutable(proto, property, true))
-        throw new Error('Bad method name "' + method + '"');
-
-    // eval() is evil in general, but we know it's safe here since
-    // set_property_mutable() would have failed if proto was
-    // malformed.
-    let node = eval(proto);
-
-    let msg = 'Do not use "' + method + '".';
-    if (replacement)
-        msg += ' Use "' + replacement + '" instead.';
-    if (reason)
-        msg += ' (' + reason + ')';
-
-    node[property] = function() {
-        throw new Error(msg);
-    };
-
-    global.set_property_mutable(proto, property, false);
-}
-
 function init() {
     // Add some bindings to the global JS namespace; (gjs keeps the web
     // browser convention of having that namespace be called 'window'.)
@@ -98,11 +69,6 @@ function init() {
         else
             return base;
     };
-
-    _blockMethod('Clutter.Event.get_state', 'Shell.get_event_state',
-                 'gjs\'s handling of Clutter.ModifierType is broken. See bug 597292.');
-    _blockMethod('Gdk.Window.get_device_position', 'global.get_pointer',
-                 'gjs\'s handling of Gdk.ModifierType is broken. See bug 597292.');
 
     // Now close the back door to prevent extensions from trying to
     // abuse it. We can't actually delete it since
