@@ -194,28 +194,6 @@ void
 _cogl_framebuffer_set_clip_stack (CoglFramebuffer *framebuffer,
                                   CoglClipStack *stack);
 
-void
-_cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
-                                float x,
-                                float y,
-                                float width,
-                                float height);
-float
-_cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer);
-
-float
-_cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer);
-
-float
-_cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer);
-
-float
-_cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer);
-
-void
-_cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
-                                   float *viewport);
-
 CoglMatrixStack *
 _cogl_framebuffer_get_modelview_stack (CoglFramebuffer *framebuffer);
 

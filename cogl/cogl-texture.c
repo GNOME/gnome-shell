@@ -1066,7 +1066,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
 
   framebuffer = cogl_get_draw_framebuffer ();
   /* Viewport needs to have some size and be inside the window for this */
-  _cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
+  cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
   if (viewport[0] <  0 || viewport[1] <  0 ||
       viewport[2] <= 0 || viewport[3] <= 0)
     return FALSE;

@@ -1647,8 +1647,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
                               poly, /* points_out */
                               4 /* n_points */);
 
-  _cogl_framebuffer_get_viewport4fv (cogl_get_draw_framebuffer (),
-                                     viewport);
+  cogl_framebuffer_get_viewport4fv (cogl_get_draw_framebuffer (), viewport);
 
 /* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
  * to Cogl window/framebuffer coordinates (ranging from 0 to buffer-size) with

@@ -58,6 +58,35 @@ cogl_framebuffer_get_width (CoglFramebuffer *framebuffer);
 int
 cogl_framebuffer_get_height (CoglFramebuffer *framebuffer);
 
+#define cogl_framebuffer_set_viewport cogl_framebuffer_set_viewport_EXP
+void
+cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
+                               float x,
+                               float y,
+                               float width,
+                               float height);
+
+#define cogl_framebuffer_get_viewport_x cogl_framebuffer_get_viewport_x_EXP
+float
+cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer);
+
+#define cogl_framebuffer_get_viewport_y cogl_framebuffer_get_viewport_y_EXP
+float
+cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer);
+
+#define cogl_framebuffer_get_viewport_width cogl_framebuffer_get_viewport_width_EXP
+float
+cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer);
+
+#define cogl_framebuffer_get_viewport_height cogl_framebuffer_get_viewport_height_EXP
+float
+cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer);
+
+#define cogl_framebuffer_get_viewport4fv cogl_framebuffer_get_viewport4fv_EXP
+void
+cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
+                                  float *viewport);
+
 #define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
 void
 cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);

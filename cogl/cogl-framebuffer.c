@@ -507,11 +507,11 @@ _cogl_framebuffer_set_clip_stack (CoglFramebuffer *framebuffer,
 }
 
 void
-_cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
-                                float x,
-                                float y,
-                                float width,
-                                float height)
+cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
+                               float x,
+                               float y,
+                               float width,
+                               float height)
 {
   g_return_if_fail (width > 0 && height > 0);
 
@@ -533,32 +533,32 @@ _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
 }
 
 float
-_cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer)
+cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_x;
 }
 
 float
-_cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer)
+cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_y;
 }
 
 float
-_cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer)
+cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_width;
 }
 
 float
-_cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer)
+cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_height;
 }
 
 void
-_cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
-                                   float *viewport)
+cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
+                                  float *viewport)
 {
   viewport[0] = framebuffer->viewport_x;
   viewport[1] = framebuffer->viewport_y;

@@ -349,11 +349,11 @@ cogl_set_viewport (int x,
 
   framebuffer = cogl_get_draw_framebuffer ();
 
-  _cogl_framebuffer_set_viewport (framebuffer,
-                                  x,
-                                  y,
-                                  width,
-                                  height);
+  cogl_framebuffer_set_viewport (framebuffer,
+                                 x,
+                                 y,
+                                 width,
+                                 height);
 }
 
 /* XXX: This should be deprecated, and we should expose a way to also
@@ -393,7 +393,7 @@ cogl_get_viewport (float viewport[4])
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   framebuffer = cogl_get_draw_framebuffer ();
-  _cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
+  cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
 }
 
 void
