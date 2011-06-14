@@ -687,6 +687,38 @@ AS_CASE([$enable_debug],
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
+dnl === Enable deprecation guards ==================================================
+
+m4_define([deprecated_default],
+          [m4_if(m4_eval(clutter_minor_version % 2),
+                 [1],
+                 [no],
+                 [yes])])
+
+AC_ARG_ENABLE([deprecated],
+              [AS_HELP_STRING([--enable-deprecated=@<:@no/yes@:>@],
+                              [Whether deprecated symbols should be disabled when compiling Clutter])],
+              [],
+              [enable_deprecated=deprecated_default])
+
+AS_CASE([$enable_deprecated],
+
+        [no],
+        [
+          CLUTTER_DEPRECATED_CFLAGS="-DG_DISABLE_DEPRECATED -DG_DISABLE_SINGLE_INCLUDES -DCOGL_DISABLE_DEPRECATED -DCLUTTER_DISABLE_DEPRECATED"
+        ],
+
+        [yes],
+        [
+          CLUTTER_DEPRECATED_CFLAGS=""
+        ],
+
+        [AC_MSG_ERROR([Unknown argument for --enable-deprecated])]
+)
+
+AC_SUBST([CLUTTER_DEPRECATED_CFLAGS])
+
+
 dnl === Conformance test suite ================================================
 
 AC_ARG_ENABLE([conformance],
@@ -955,6 +987,7 @@ echo "        Clutter debug level: ${enable_debug}"
 echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
 echo "        Profiling enabled: ${enable_profile}"
 echo "        Enable coverage tests: ${enable_gcov}"
+echo "        Enable deprecated symbols: ${enable_deprecated}"
 
 # Documentation
 echo ""
