@@ -59,10 +59,6 @@ struct _ClutterBackendGLX
   CoglContext *cogl_context;
 
   gboolean can_blit_sub_buffer;
-
-  /* props */
-  Atom atom_WM_STATE;
-  Atom atom_WM_STATE_FULLSCREEN;
 };
 
 struct _ClutterBackendGLXClass
