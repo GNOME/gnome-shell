@@ -1531,7 +1531,7 @@ NMDeviceWireless.prototype = {
             }));
         }
         if (position < NUM_VISIBLE_NETWORKS)
-            this.section.addMenuItem(apObj.item);
+            this.section.addMenuItem(apObj.item, position);
         else {
             if (!this._overflowItem) {
                 this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
