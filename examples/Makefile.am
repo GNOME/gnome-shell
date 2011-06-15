@@ -16,6 +16,7 @@ AM_CPPFLAGS = \
 
 
 common_ldadd = \
+	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la
 
 noinst_PROGRAMS = hello
@@ -26,7 +27,7 @@ hello_LDADD = $(common_ldadd)
 if X11_TESTS
 noinst_PROGRAMS += x11-foreign
 x11_foreign_SOURCES = x11-foreign.c
-x11_foreign_LDADD = $(common_ldadd) -lX11
+x11_foreign_LDADD = $(common_ldadd)
 endif
 
 if SUPPORT_WAYLAND_EGL_SERVER
