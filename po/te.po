@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-05-30 17:27+0000\n"
-"PO-Revision-Date: 2011-06-15 15:36+0530\n"
+"PO-Revision-Date: 2011-06-15 20:02+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
 "Language: te\n"
@@ -79,7 +79,7 @@ msgstr "ఒకవేళ నిజమైతే, క్యాలెండరుల
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
-msgstr "ప్రియమైన అనువర్తనాల కోసం డెస్క్‌టాప్ ఫైల్ ఐడీల యొక్క జాబితా"
+msgstr "ప్రియమైన అనువర్తనాల కోసం డెస్క్‍టాప్‌ ఫైల్ ఐడీల యొక్క జాబితా"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
@@ -870,7 +870,7 @@ msgstr "ప్రమాణీకరణ అవసరం"
 #. module, which is missing
 #: ../js/ui/status/network.js:551
 msgid "firmware missing"
-msgstr "ఫర్మ్‌వేర్ తప్పిపోయింది"
+msgstr "ఫర్మ్‍వేర్‌ తప్పిపోయింది"
 
 #. Translators: this is for wired network devices that are physically disconnected
 #: ../js/ui/status/network.js:558
@@ -1226,4 +1226,5 @@ msgstr "ఫైల్ వ్యవస్థ"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
 
