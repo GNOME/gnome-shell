@@ -22,7 +22,7 @@ stamp-marshal
 /clutter/clutter-version.h
 /clutter/gcov-report.txt
 /clutter/clutter-json.h
-/clutter/egl/clutter-cex100.h
+/clutter/cogl/clutter-cex100.h
 /build/autotools/*.m4
 !/build/autotools/introspection.m4
 !/build/autotools/as-linguas.m4
