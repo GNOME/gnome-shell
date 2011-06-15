@@ -30,6 +30,7 @@
 #define __CLUTTER_TEXT_H__
 
 #include <clutter/clutter-actor.h>
+#include <clutter/clutter-text-buffer.h>
 #include <pango/pango.h>
 
 G_BEGIN_DECLS
@@ -102,7 +103,10 @@ ClutterActor *        clutter_text_new_full             (const gchar          *f
                                                          const ClutterColor   *color);
 ClutterActor *        clutter_text_new_with_text        (const gchar          *font_name,
                                                          const gchar          *text);
-
+ClutterActor *        clutter_text_new_with_buffer      (ClutterTextBuffer    *buffer);
+ClutterTextBuffer *   clutter_text_get_buffer           (ClutterText          *self);
+void                  clutter_text_set_buffer           (ClutterText          *self,
+                                                         ClutterTextBuffer    *buffer);
 const gchar *         clutter_text_get_text             (ClutterText          *self);
 void                  clutter_text_set_text             (ClutterText          *self,
                                                          const gchar          *text);

@@ -38,8 +38,6 @@
  * #ClutterText is available since Clutter 1.0
  */
 
-/* TODO: undo/redo hooks? */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -58,6 +56,7 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"    /* includes <cogl-pango/cogl-pango.h> */
 #include "clutter-profile.h"
+#include "clutter-text-buffer.h"
 #include "clutter-units.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-scriptable.h"
@@ -112,11 +111,8 @@ struct _ClutterTextPrivate
 {
   PangoFontDescription *font_desc;
 
-  /* the text passed to set_text and set_markup */
-  gchar *contents;
-
   /* the displayed text */
-  gchar *text;
+  ClutterTextBuffer *buffer;
 
   gchar *font_name;
 
@@ -162,12 +158,6 @@ struct _ClutterTextPrivate
    * default for now */
   gint text_y;
 
-  /* the length of the text, in bytes */
-  gint n_bytes;
-
-  /* the length of the text, in characters */
-  gint n_chars;
-
   /* Where to draw the cursor */
   ClutterGeometry cursor_pos;
   ClutterColor cursor_color;
@@ -183,8 +173,6 @@ struct _ClutterTextPrivate
   ClutterColor selection_color;
 
   ClutterColor selected_text_color;
-
-  gint max_length;
 
   gunichar password_char;
 
@@ -226,6 +214,7 @@ enum
 {
   PROP_0,
 
+  PROP_BUFFER,
   PROP_FONT_NAME,
   PROP_FONT_DESCRIPTION,
   PROP_TEXT,
@@ -273,6 +262,9 @@ enum
 static guint text_signals[LAST_SIGNAL] = { 0, };
 
 static void clutter_text_settings_changed_cb (ClutterText *text);
+static void buffer_connect_signals (ClutterText *self);
+static void buffer_disconnect_signals (ClutterText *self);
+static ClutterTextBuffer *get_buffer (ClutterText *self);
 
 static void
 clutter_text_dirty_paint_volume (ClutterText *text)
@@ -342,22 +334,30 @@ static gchar *
 clutter_text_get_display_text (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
+  ClutterTextBuffer *buffer;
+  const gchar *text;
+
+  buffer = get_buffer (self);
+  text = clutter_text_buffer_get_text (buffer);
 
   /* simple short-circuit to avoid going through GString
    * with an empty text and a password char set
    */
-  if (priv->text[0] == '\0')
+  if (text[0] == '\0')
     return g_strdup ("");
 
-  if (priv->password_char == 0)
-    return g_strndup (priv->text, priv->n_bytes);
+  if (G_LIKELY (priv->password_char == 0))
+    return g_strdup (text);
   else
     {
-      GString *str = g_string_sized_new (priv->n_bytes);
+      GString *str;
       gunichar invisible_char;
       gchar buf[7];
       gint char_len, i;
+      guint n_chars;
 
+      n_chars = clutter_text_buffer_get_length (buffer);
+      str = g_string_sized_new (clutter_text_buffer_get_bytes (buffer));
       invisible_char = priv->password_char;
 
       /* we need to convert the string built of invisible
@@ -371,15 +371,15 @@ clutter_text_get_display_text (ClutterText *self)
         {
           char *last_char;
 
-          for (i = 0; i < priv->n_chars - 1; i++)
+          for (i = 0; i < n_chars - 1; i++)
             g_string_append_len (str, buf, char_len);
 
-          last_char = g_utf8_offset_to_pointer (priv->text, priv->n_chars - 1);
+          last_char = g_utf8_offset_to_pointer (text, n_chars - 1);
           g_string_append (str, last_char);
         }
       else
         {
-          for (i = 0; i < priv->n_chars; i++)
+          for (i = 0; i < n_chars; i++)
             g_string_append_len (str, buf, char_len);
         }
 
@@ -570,7 +570,7 @@ clutter_text_set_font_description_internal (ClutterText          *self,
 
   clutter_text_dirty_cache (self);
 
-  if (priv->text[0] != '\0')
+  if (clutter_text_buffer_get_length (get_buffer (self)) != 0)
     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_DESCRIPTION]);
@@ -868,15 +868,15 @@ clutter_text_position_to_coords (ClutterText *self,
   gint n_chars;
   gint password_char_bytes = 1;
   gint index_;
+  gsize n_bytes;
 
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
 
   priv = self->priv;
 
+  n_chars = clutter_text_buffer_get_length (get_buffer (self));
   if (priv->preedit_set)
-    n_chars = priv->n_chars + priv->preedit_n_chars;
-  else
-    n_chars = priv->n_chars;
+    n_chars += priv->preedit_n_chars;
 
   if (position < -1 || position > n_chars)
     return FALSE;
@@ -888,10 +888,11 @@ clutter_text_position_to_coords (ClutterText *self,
     {
       if (priv->password_char == 0)
         {
+          n_bytes = clutter_text_buffer_get_bytes (get_buffer (self));
           if (priv->editable && priv->preedit_set)
-            index_ = priv->n_bytes + strlen (priv->preedit_str);
+            index_ = n_bytes + strlen (priv->preedit_str);
           else
-            index_ = priv->n_bytes;
+            index_ = n_bytes;
         }
       else
         index_ = n_chars * password_char_bytes;
@@ -957,7 +958,7 @@ clutter_text_ensure_cursor_position (ClutterText *self)
   if (priv->editable && priv->preedit_set)
     {
       if (position == -1)
-        position = priv->n_chars;
+        position = clutter_text_buffer_get_length (get_buffer (self));
       position += priv->preedit_cursor_pos;
     }
 
@@ -1009,16 +1010,18 @@ clutter_text_delete_selection (ClutterText *self)
   gint start_index;
   gint end_index;
   gint old_position, old_selection;
+  guint n_chars;
 
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
 
   priv = self->priv;
 
-  if (priv->text[0] == '\0')
+  n_chars = clutter_text_buffer_get_length (get_buffer (self));
+  if (n_chars == 0)
     return TRUE;
 
-  start_index = offset_real (priv->text, priv->position);
-  end_index = offset_real (priv->text, priv->selection_bound);
+  start_index = priv->position == -1 ? n_chars : priv->position;
+  end_index = priv->selection_bound == -1 ? n_chars : priv->selection_bound;
 
   if (end_index == start_index)
     return FALSE;
@@ -1064,95 +1067,6 @@ clutter_text_set_positions (ClutterText *self,
 }
 
 static inline void
-clutter_text_set_contents (ClutterText *self,
-                           const gchar *str)
-{
-  ClutterTextPrivate *priv = self->priv;
-
-  g_free (priv->contents);
-
-  if (str == NULL || *str == '\0')
-    priv->contents = g_strdup ("");
-  else
-    priv->contents = g_strdup (str);
-}
-
-static inline void
-clutter_text_set_text_internal (ClutterText *self,
-                                const gchar *text)
-{
-  ClutterTextPrivate *priv = self->priv;
-
-  g_assert (text != NULL);
-
-  g_signal_emit (self, text_signals[DELETE_TEXT], 0, 0, -1);
-
-  /* emit ::insert-text only if we have text to insert; we need
-   * to emit this before actually changing the contents of the
-   * actor so that people connected to this signal will be able
-   * to intercept it
-   */
-  if (text[0] != '\0')
-    {
-      gint tmp_pos = 0;
-
-      g_signal_emit (self, text_signals[INSERT_TEXT], 0,
-                     text,
-                     strlen (text),
-                     &tmp_pos);
-    }
-
-  g_object_freeze_notify (G_OBJECT (self));
-
-  if (priv->max_length > 0)
-    {
-      gint len = g_utf8_strlen (text, -1);
-
-      if (len < priv->max_length)
-        {
-           g_free (priv->text);
-
-           priv->text = g_strdup (text);
-           priv->n_bytes = strlen (text);
-           priv->n_chars = len;
-        }
-      else
-        {
-          gchar *p = g_utf8_offset_to_pointer (text, priv->max_length);
-          gchar *n = g_malloc0 ((p - text) + 1);
-
-          g_free (priv->text);
-
-          g_utf8_strncpy (n, text, priv->max_length);
-
-          priv->text = n;
-          priv->n_bytes = strlen (n);
-          priv->n_chars = priv->max_length;
-        }
-    }
-  else
-    {
-      g_free (priv->text);
-
-      priv->text = g_strdup (text);
-      priv->n_bytes = strlen (text);
-      priv->n_chars = g_utf8_strlen (text, -1);
-    }
-
-  if (priv->n_bytes == 0)
-    clutter_text_set_positions (self, -1, -1);
-
-  clutter_text_dirty_cache (self);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
-
-  g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
-
-  g_object_thaw_notify (G_OBJECT (self));
-}
-
-static inline void
 clutter_text_set_markup_internal (ClutterText *self,
                                   const gchar *str)
 {
@@ -1187,9 +1101,11 @@ clutter_text_set_markup_internal (ClutterText *self,
       return;
     }
 
-  clutter_text_set_text_internal (self, text ? text : "");
-
-  g_free (text);
+  if (text)
+    {
+      clutter_text_buffer_set_text (get_buffer (self), text, strlen (text));
+      g_free (text);
+    }
 
   /* Store the new markup attributes */
   if (priv->markup_attrs != NULL)
@@ -1216,16 +1132,17 @@ clutter_text_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
+    case PROP_BUFFER:
+      clutter_text_set_buffer (self, g_value_get_object (value));
+      break;
+
     case PROP_TEXT:
       {
         const char *str = g_value_get_string (value);
-
-        clutter_text_set_contents (self, str);
-
         if (self->priv->use_markup)
           clutter_text_set_markup_internal (self, str ? str : "");
         else
-          clutter_text_set_text_internal (self, str ? str : "");
+          clutter_text_buffer_set_text (get_buffer (self), str ? str : "", -1);
       }
       break;
 
@@ -1332,12 +1249,17 @@ clutter_text_get_property (GObject    *gobject,
                            GValue     *value,
                            GParamSpec *pspec)
 {
-  ClutterTextPrivate *priv = CLUTTER_TEXT (gobject)->priv;
+  ClutterText *self = CLUTTER_TEXT (gobject);
+  ClutterTextPrivate *priv = self->priv;
 
   switch (prop_id)
     {
+    case PROP_BUFFER:
+      g_value_set_object (value, clutter_text_get_buffer (self));
+      break;
+
     case PROP_TEXT:
-      g_value_set_string (value, priv->text);
+      g_value_set_string (value, clutter_text_buffer_get_text (get_buffer (self)));
       break;
 
     case PROP_FONT_NAME:
@@ -1405,7 +1327,7 @@ clutter_text_get_property (GObject    *gobject,
       break;
 
     case PROP_MAX_LENGTH:
-      g_value_set_int (value, priv->max_length);
+      g_value_set_int (value, clutter_text_buffer_get_max_length (get_buffer (self)));
       break;
 
     case PROP_SINGLE_LINE_MODE:
@@ -1477,6 +1399,8 @@ clutter_text_dispose (GObject *gobject)
       priv->password_hint_id = 0;
     }
 
+  clutter_text_set_buffer (self, NULL);
+
   G_OBJECT_CLASS (clutter_text_parent_class)->dispose (gobject);
 }
 
@@ -1500,8 +1424,7 @@ clutter_text_finalize (GObject *gobject)
 
   clutter_text_dirty_paint_volume (self);
 
-  g_free (priv->contents);
-  g_free (priv->text);
+  clutter_text_set_buffer (self, NULL);
   g_free (priv->font_name);
 
   G_OBJECT_CLASS (clutter_text_parent_class)->finalize (gobject);
@@ -1698,7 +1621,7 @@ clutter_text_move_word_backward (ClutterText *self,
 {
   gint retval = start;
 
-  if (start > 0)
+  if (clutter_text_buffer_get_length (get_buffer (self)) > 0 && start > 0)
     {
       PangoLayout *layout = clutter_text_get_layout (self);
       PangoLogAttr *log_attrs = NULL;
@@ -1720,10 +1643,11 @@ static gint
 clutter_text_move_word_forward (ClutterText *self,
                                 gint         start)
 {
-  ClutterTextPrivate *priv = self->priv;
   gint retval = start;
+  guint n_chars;
 
-  if (start < priv->n_chars)
+  n_chars = clutter_text_buffer_get_length (get_buffer (self));
+  if (n_chars > 0 && start < n_chars)
     {
       PangoLayout *layout = clutter_text_get_layout (self);
       PangoLogAttr *log_attrs = NULL;
@@ -1732,7 +1656,7 @@ clutter_text_move_word_forward (ClutterText *self,
       pango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
 
       retval = start + 1;
-      while (retval < priv->n_chars && !log_attrs[retval].is_word_end)
+      while (retval < n_chars && !log_attrs[retval].is_word_end)
         retval += 1;
 
       g_free (log_attrs);
@@ -1745,19 +1669,20 @@ static gint
 clutter_text_move_line_start (ClutterText *self,
                               gint         start)
 {
-  ClutterTextPrivate *priv = self->priv;
   PangoLayoutLine *layout_line;
   PangoLayout *layout;
   gint line_no;
   gint index_;
   gint position;
+  const gchar *text;
 
   layout = clutter_text_get_layout (self);
+  text = clutter_text_buffer_get_text (get_buffer (self));
 
   if (start == 0)
     index_ = 0;
   else
-    index_ = offset_to_bytes (priv->text, start);
+    index_ = offset_to_bytes (text, start);
 
   pango_layout_index_to_line_x (layout, index_,
                                 0,
@@ -1769,7 +1694,7 @@ clutter_text_move_line_start (ClutterText *self,
 
   pango_layout_line_x_to_index (layout_line, 0, &index_, NULL);
 
-  position = bytes_to_offset (priv->text, index_);
+  position = bytes_to_offset (text, index_);
 
   return position;
 }
@@ -1785,13 +1710,15 @@ clutter_text_move_line_end (ClutterText *self,
   gint index_;
   gint trailing;
   gint position;
+  const gchar *text;
 
   layout = clutter_text_get_layout (self);
+  text = clutter_text_buffer_get_text (get_buffer (self));
 
   if (start == 0)
     index_ = 0;
   else
-    index_ = offset_to_bytes (priv->text, priv->position);
+    index_ = offset_to_bytes (text, priv->position);
 
   pango_layout_index_to_line_x (layout, index_,
                                 0,
@@ -1804,7 +1731,7 @@ clutter_text_move_line_end (ClutterText *self,
   pango_layout_line_x_to_index (layout_line, G_MAXINT, &index_, &trailing);
   index_ += trailing;
 
-  position = bytes_to_offset (priv->text, index_);
+  position = bytes_to_offset (text, index_);
 
   return position;
 }
@@ -1860,7 +1787,7 @@ clutter_text_button_press (ClutterActor       *actor,
    * set up the dragging of the selection since there's nothing
    * to select
    */
-  if (priv->text[0] == '\0')
+  if (clutter_text_buffer_get_length (get_buffer (self)) == 0)
     {
       clutter_text_set_positions (self, -1, -1);
 
@@ -1874,9 +1801,11 @@ clutter_text_button_press (ClutterActor       *actor,
   if (res)
     {
       gint offset;
+      const char *text;
 
       index_ = clutter_text_coords_to_position (self, x, y);
-      offset = bytes_to_offset (priv->text, index_);
+      text = clutter_text_buffer_get_text (get_buffer (self));
+      offset = bytes_to_offset (text, index_);
 
       /* what we select depends on the number of button clicks we
        * receive:
@@ -1915,6 +1844,7 @@ clutter_text_motion (ClutterActor       *actor,
   gfloat x, y;
   gint index_, offset;
   gboolean res;
+  const gchar *text;
 
   if (!priv->in_select_drag)
     return CLUTTER_EVENT_PROPAGATE;
@@ -1926,7 +1856,8 @@ clutter_text_motion (ClutterActor       *actor,
     return CLUTTER_EVENT_PROPAGATE;
 
   index_ = clutter_text_coords_to_position (self, x, y);
-  offset = bytes_to_offset (priv->text, index_);
+  text = clutter_text_buffer_get_text (get_buffer (self));
+  offset = bytes_to_offset (text, index_);
 
   if (priv->selectable)
     clutter_text_set_cursor_position (self, offset);
@@ -2057,21 +1988,22 @@ clutter_text_paint (ClutterActor *self)
   guint8 real_opacity;
   gint text_x = priv->text_x;
   gboolean clip_set = FALSE;
+  guint n_chars;
 
   /* Note that if anything in this paint method changes it needs to be
      reflected in the get_paint_volume implementation which is tightly
      tied to the workings of this function */
 
-  if (G_UNLIKELY (priv->font_desc == NULL))
+  n_chars = clutter_text_buffer_get_length (get_buffer (text));
+  if (G_UNLIKELY (priv->font_desc == NULL || n_chars == 0))
     {
-      CLUTTER_NOTE (ACTOR, "No font description for '%s'",
-                    _clutter_actor_get_debug_name (self));
+      CLUTTER_NOTE (ACTOR, "desc: %p",
+                    priv->font_desc ? priv->font_desc : 0x0);
       return;
     }
 
   /* don't bother painting an empty text actor */
-  if (priv->text[0] == '\0' &&
-      (!priv->editable || !priv->cursor_visible))
+  if (n_chars > 0 && (!priv->editable || !priv->cursor_visible))
     return;
 
   clutter_actor_get_allocation_box (self, &alloc);
@@ -2190,7 +2122,8 @@ clutter_text_paint (ClutterActor *self)
                * priv->text_color.alpha
                / 255;
 
-  CLUTTER_NOTE (PAINT, "painting text (text: '%s')", priv->text);
+  CLUTTER_NOTE (PAINT, "painting text (text: '%s')",
+                clutter_text_buffer_get_text (get_buffer (text)));
 
   cogl_color_init_from_4ub (&color,
                             priv->text_color.red,
@@ -2500,7 +2433,7 @@ clutter_text_real_move_left (ClutterText         *self,
   gint new_pos = 0;
   gint len;
 
-  len = priv->n_chars;
+  len = clutter_text_buffer_get_length (get_buffer (self));
 
   g_object_freeze_notify (G_OBJECT (self));
 
@@ -2540,7 +2473,7 @@ clutter_text_real_move_right (ClutterText         *self,
 {
   ClutterTextPrivate *priv = self->priv;
   gint pos = priv->position;
-  gint len = priv->n_chars;
+  gint len = clutter_text_buffer_get_length (get_buffer (self));
   gint new_pos = 0;
 
   g_object_freeze_notify (G_OBJECT (self));
@@ -2582,13 +2515,15 @@ clutter_text_real_move_up (ClutterText         *self,
   gint index_, trailing;
   gint pos;
   gint x;
+  const gchar *text;
 
   layout = clutter_text_get_layout (self);
+  text = clutter_text_buffer_get_text (get_buffer (self));
 
   if (priv->position == 0)
     index_ = 0;
   else
-    index_ = offset_to_bytes (priv->text, priv->position);
+    index_ = offset_to_bytes (text, priv->position);
 
   pango_layout_index_to_line_x (layout, index_,
                                 0,
@@ -2609,7 +2544,7 @@ clutter_text_real_move_up (ClutterText         *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  pos = bytes_to_offset (priv->text, index_);
+  pos = bytes_to_offset (text, index_);
   clutter_text_set_cursor_position (self, pos + trailing);
 
   /* Store the target x position to avoid drifting left and right when
@@ -2637,13 +2572,15 @@ clutter_text_real_move_down (ClutterText         *self,
   gint index_, trailing;
   gint x;
   gint pos;
+  const gchar *text;
 
   layout = clutter_text_get_layout (self);
+  text = clutter_text_buffer_get_text (get_buffer (self));
 
   if (priv->position == 0)
     index_ = 0;
   else
-    index_ = offset_to_bytes (priv->text, priv->position);
+    index_ = offset_to_bytes (text, priv->position);
 
   pango_layout_index_to_line_x (layout, index_,
                                 0,
@@ -2660,7 +2597,7 @@ clutter_text_real_move_down (ClutterText         *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  pos = bytes_to_offset (priv->text, index_);
+  pos = bytes_to_offset (text, index_);
   clutter_text_set_cursor_position (self, pos + trailing);
 
   /* Store the target x position to avoid drifting left and right when
@@ -2725,7 +2662,8 @@ clutter_text_real_select_all (ClutterText         *self,
                               guint                keyval,
                               ClutterModifierType  modifiers)
 {
-  clutter_text_set_positions (self, 0, self->priv->n_chars);
+  guint n_chars = clutter_text_buffer_get_length (get_buffer (self));
+  clutter_text_set_positions (self, 0, n_chars);
 
   return TRUE;
 }
@@ -2744,7 +2682,7 @@ clutter_text_real_del_next (ClutterText         *self,
     return TRUE;
 
   pos = priv->position;
-  len = priv->n_chars;
+  len = clutter_text_buffer_get_length (get_buffer (self));
 
   if (len && pos != -1 && pos < len)
     clutter_text_delete_text (self, pos, pos + 1);
@@ -2763,7 +2701,7 @@ clutter_text_real_del_word_next (ClutterText         *self,
   gint len;
 
   pos = priv->position;
-  len = priv->n_chars;
+  len = clutter_text_buffer_get_length (get_buffer (self));
 
   if (len && pos != -1 && pos < len)
     {
@@ -2802,7 +2740,7 @@ clutter_text_real_del_prev (ClutterText         *self,
     return TRUE;
 
   pos = priv->position;
-  len = priv->n_chars;
+  len = clutter_text_buffer_get_length (get_buffer (self));
 
   if (pos != 0 && len != 0)
     {
@@ -2834,7 +2772,7 @@ clutter_text_real_del_word_prev (ClutterText         *self,
   gint len;
 
   pos = priv->position;
-  len = priv->n_chars;
+  len = clutter_text_buffer_get_length (get_buffer (self));
 
   if (pos != 0 && len != 0)
     {
@@ -2982,6 +2920,23 @@ clutter_text_class_init (ClutterTextClass *klass)
   actor_class->key_focus_in = clutter_text_key_focus_in;
   actor_class->key_focus_out = clutter_text_key_focus_out;
   actor_class->has_overlaps = clutter_text_has_overlaps;
+
+  /**
+   * ClutterText:buffer:
+   *
+   * The buffer which stores the text for this #ClutterText.
+   *
+   * If set to %NULL, a default buffer will be created.
+   *
+   * Since: 1.8
+   */
+  pspec = g_param_spec_object ("buffer",
+                               P_("Buffer"),
+                               P_("The buffer for the text"),
+                               CLUTTER_TYPE_TEXT_BUFFER,
+                               CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_BUFFER] = pspec;
+  g_object_class_install_property (gobject_class, PROP_BUFFER, pspec);
 
   /**
    * ClutterText:font-name:
@@ -3653,8 +3608,7 @@ clutter_text_init (ClutterText *self)
    * return a valid string and we can safely call strlen()
    * or strcmp() on it
    */
-  priv->text = g_strdup ("");
-  priv->contents = g_strdup ("");
+  priv->buffer = NULL;
 
   priv->text_color = default_text_color;
   priv->cursor_color = default_cursor_color;
@@ -3691,8 +3645,6 @@ clutter_text_init (ClutterText *self)
   priv->password_char = 0;
   priv->show_password_hint = password_hint_time > 0;
   priv->password_hint_timeout = password_hint_time;
-
-  priv->max_length = 0;
 
   priv->text_y = 0;
 
@@ -3780,6 +3732,213 @@ clutter_text_new_with_text (const gchar *font_name,
                        "font-name", font_name,
                        "text", text,
                        NULL);
+}
+
+static ClutterTextBuffer*
+get_buffer (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+
+  if (priv->buffer == NULL)
+    {
+      ClutterTextBuffer *buffer;
+      buffer = clutter_text_buffer_new ();
+      clutter_text_set_buffer (self, buffer);
+      g_object_unref (buffer);
+    }
+
+  return priv->buffer;
+}
+
+/* GtkEntryBuffer signal handlers
+ */
+static void
+buffer_inserted_text (ClutterTextBuffer *buffer,
+                      guint              position,
+                      const gchar       *chars,
+                      guint              n_chars,
+                      ClutterText       *self)
+{
+  ClutterTextPrivate *priv;
+  gint new_position;
+  gint new_selection_bound;
+  gsize n_bytes;
+
+  priv = self->priv;
+  if (priv->position >= 0 || priv->selection_bound >= 0)
+    {
+      new_position = priv->position;
+      new_selection_bound = priv->selection_bound;
+
+      if (position <= new_position)
+        new_position += n_chars;
+      if (position <= new_selection_bound)
+        new_selection_bound += n_chars;
+
+      if (priv->position != new_position || priv->selection_bound != new_selection_bound)
+        clutter_text_set_positions (self, new_position, new_selection_bound);
+    }
+
+  n_bytes = g_utf8_offset_to_pointer (chars, n_chars) - chars;
+  g_signal_emit (self, text_signals[INSERT_TEXT], 0, chars,
+                 n_bytes, &position);
+
+  /* TODO: What are we supposed to with the out value of position? */
+}
+
+static void
+buffer_deleted_text (ClutterTextBuffer *buffer,
+                     guint              position,
+                     guint              n_chars,
+                     ClutterText       *self)
+{
+  ClutterTextPrivate *priv;
+  gint new_position;
+  gint new_selection_bound;
+
+  priv = self->priv;
+  if (priv->position >= 0 || priv->selection_bound >= 0)
+    {
+      new_position = priv->position;
+      new_selection_bound = priv->selection_bound;
+
+      if (position < new_position)
+        new_position -= n_chars;
+      if (position < new_selection_bound)
+        new_selection_bound -= n_chars;
+
+      if (priv->position != new_position || priv->selection_bound != new_selection_bound)
+        clutter_text_set_positions (self, new_position, new_selection_bound);
+    }
+
+  g_signal_emit (self, text_signals[DELETE_TEXT], 0, position, position + n_chars);
+}
+
+static void
+buffer_notify_text (ClutterTextBuffer *buffer,
+                    GParamSpec        *spec,
+                    ClutterText       *self)
+{
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_text_dirty_cache (self);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+  g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
+
+  g_object_thaw_notify (G_OBJECT (self));
+}
+
+static void
+buffer_notify_max_length (ClutterTextBuffer *buffer,
+                          GParamSpec        *spec,
+                          ClutterText       *self)
+{
+  g_object_notify (G_OBJECT (self), "max-length");
+}
+
+static void
+buffer_connect_signals (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+  g_signal_connect (priv->buffer, "inserted-text", G_CALLBACK (buffer_inserted_text), self);
+  g_signal_connect (priv->buffer, "deleted-text", G_CALLBACK (buffer_deleted_text), self);
+  g_signal_connect (priv->buffer, "notify::text", G_CALLBACK (buffer_notify_text), self);
+  g_signal_connect (priv->buffer, "notify::max-length", G_CALLBACK (buffer_notify_max_length), self);
+}
+
+static void
+buffer_disconnect_signals (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+  g_signal_handlers_disconnect_by_func (priv->buffer, buffer_inserted_text, self);
+  g_signal_handlers_disconnect_by_func (priv->buffer, buffer_deleted_text, self);
+  g_signal_handlers_disconnect_by_func (priv->buffer, buffer_notify_text, self);
+  g_signal_handlers_disconnect_by_func (priv->buffer, buffer_notify_max_length, self);
+}
+
+/**
+ * clutter_text_new_with_buffer:
+ * @buffer: The buffer to use for the new #ClutterText.
+ *
+ * Creates a new entry with the specified text buffer.
+ *
+ * Return value: a new #ClutterText
+ *
+ * Since: 1.8
+ */
+ClutterActor *
+clutter_text_new_with_buffer (ClutterTextBuffer *buffer)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT_BUFFER (buffer), NULL);
+  return g_object_new (CLUTTER_TYPE_TEXT, "buffer", buffer, NULL);
+}
+
+/**
+ * clutter_text_get_buffer:
+ * @self: a #ClutterText
+ *
+ * Get the #ClutterTextBuffer object which holds the text for
+ * this widget.
+ *
+ * Returns: (transfer none): A #GtkEntryBuffer object.
+ *
+ * Since: 1.8
+ */
+ClutterTextBuffer*
+clutter_text_get_buffer (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
+
+  return get_buffer (self);
+}
+
+/**
+ * clutter_text_set_buffer:
+ * @self: a #ClutterText
+ * @buffer: a #ClutterTextBuffer
+ *
+ * Set the #ClutterTextBuffer object which holds the text for
+ * this widget.
+ *
+ * Since: 1.8
+ */
+void
+clutter_text_set_buffer (ClutterText       *self,
+                         ClutterTextBuffer *buffer)
+{
+  ClutterTextPrivate *priv;
+  GObject *obj;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (buffer)
+    {
+      g_return_if_fail (CLUTTER_IS_TEXT_BUFFER (buffer));
+      g_object_ref (buffer);
+    }
+
+  if (priv->buffer)
+    {
+      buffer_disconnect_signals (self);
+      g_object_unref (priv->buffer);
+    }
+
+  priv->buffer = buffer;
+
+  if (priv->buffer)
+     buffer_connect_signals (self);
+
+  obj = G_OBJECT (self);
+  g_object_freeze_notify (obj);
+  g_object_notify (obj, "buffer");
+  g_object_notify (obj, "text");
+  g_object_notify (obj, "max-length");
+  g_object_thaw_notify (obj);
 }
 
 /**
@@ -4105,17 +4264,16 @@ clutter_text_set_selection (ClutterText *self,
                             gssize       start_pos,
                             gssize       end_pos)
 {
-  ClutterTextPrivate *priv;
+  guint n_chars;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = self->priv;
-
+  n_chars = clutter_text_buffer_get_length (get_buffer (self));
   if (end_pos < 0)
-    end_pos = priv->n_chars;
+    end_pos = n_chars;
 
-  start_pos = MIN (priv->n_chars, start_pos);
-  end_pos = MIN (priv->n_chars, end_pos);
+  start_pos = MIN (n_chars, start_pos);
+  end_pos = MIN (n_chars, end_pos);
 
   clutter_text_set_positions (self, start_pos, end_pos);
 }
@@ -4140,6 +4298,7 @@ clutter_text_get_selection (ClutterText *self)
   gint len;
   gint start_index, end_index;
   gint start_offset, end_offset;
+  const gchar *text;
 
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
 
@@ -4159,12 +4318,13 @@ clutter_text_get_selection (ClutterText *self)
       end_index = temp;
     }
 
-  start_offset = offset_to_bytes (priv->text, start_index);
-  end_offset = offset_to_bytes (priv->text, end_index);
+  text = clutter_text_buffer_get_text (get_buffer (self));
+  start_offset = offset_to_bytes (text, start_index);
+  end_offset = offset_to_bytes (text, end_index);
   len = end_offset - start_offset;
 
   str = g_malloc (len + 1);
-  g_utf8_strncpy (str, priv->text + start_offset, end_index - start_index);
+  g_utf8_strncpy (str, text + start_offset, end_index - start_index);
 
   return str;
 }
@@ -4193,7 +4353,7 @@ clutter_text_set_selection_bound (ClutterText *self,
 
   if (priv->selection_bound != selection_bound)
     {
-      gint len = priv->n_chars;
+      gint len = clutter_text_buffer_get_length (get_buffer (self));;
 
       if (selection_bound < 0 || selection_bound >= len)
         priv->selection_bound = -1;
@@ -4513,7 +4673,7 @@ clutter_text_get_text (ClutterText *self)
 {
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
 
-  return self->priv->text;
+  return clutter_text_buffer_get_text (get_buffer (self));
 }
 
 static inline void
@@ -4567,8 +4727,7 @@ clutter_text_set_text (ClutterText *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   clutter_text_set_use_markup_internal (self, FALSE);
-  clutter_text_set_contents (self, text);
-  clutter_text_set_text_internal (self, text ? text : "");
+  clutter_text_buffer_set_text (get_buffer (self), text, -1);
 }
 
 /**
@@ -4597,8 +4756,10 @@ clutter_text_set_markup (ClutterText *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   clutter_text_set_use_markup_internal (self, TRUE);
-  clutter_text_set_contents (self, markup);
-  clutter_text_set_markup_internal (self, markup ? markup : "");
+  if (markup != NULL && *markup != '\0')
+    clutter_text_set_markup_internal (self, markup);
+  else
+    clutter_text_buffer_set_text (get_buffer (self), "", 0);
 }
 
 /**
@@ -4980,23 +5141,16 @@ void
 clutter_text_set_use_markup (ClutterText *self,
 			     gboolean     setting)
 {
-  ClutterTextPrivate *priv;
-  gchar *str;
+  const gchar *text;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = self->priv;
-
-  str = g_strdup (priv->contents);
+  text = clutter_text_buffer_get_text (get_buffer (self));
 
   clutter_text_set_use_markup_internal (self, setting);
 
   if (setting)
-    clutter_text_set_markup_internal (self, str);
-  else
-    clutter_text_set_text_internal (self, str);
-
-  g_free (str);
+    clutter_text_set_markup_internal (self, text);
 
   clutter_text_dirty_cache (self);
 
@@ -5117,7 +5271,7 @@ clutter_text_set_cursor_position (ClutterText *self,
   if (priv->position == position)
     return;
 
-  len = priv->n_chars;
+  len = clutter_text_buffer_get_length (get_buffer (self));
 
   if (position < 0 || position >= len)
     priv->position = -1;
@@ -5256,26 +5410,8 @@ void
 clutter_text_set_max_length (ClutterText *self,
                              gint         max)
 {
-  ClutterTextPrivate *priv;
-  gchar *new = NULL;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
-
-  priv = self->priv;
-
-  if (priv->max_length != max)
-    {
-      if (max < 0)
-        max = priv->n_chars;
-
-      priv->max_length = max;
-
-      new = g_strdup (priv->text);
-      clutter_text_set_text (self, new);
-      g_free (new);
-
-      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAX_LENGTH]);
-    }
+  clutter_text_buffer_set_max_length (get_buffer (self), max);
 }
 
 /**
@@ -5295,7 +5431,7 @@ clutter_text_get_max_length (ClutterText *self)
 {
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), 0);
 
-  return self->priv->max_length;
+  return clutter_text_buffer_get_max_length (get_buffer (self));
 }
 
 /**
@@ -5313,30 +5449,14 @@ clutter_text_insert_unichar (ClutterText *self,
                              gunichar     wc)
 {
   ClutterTextPrivate *priv;
-  GString *new = NULL;
-  glong pos;
-
-  g_return_if_fail (CLUTTER_IS_TEXT (self));
-  g_return_if_fail (g_unichar_validate (wc));
-
-  if (wc == 0)
-    return;
+  GString *new;
 
   priv = self->priv;
 
-  new = g_string_new (priv->text);
+  new = g_string_new ("");
+  g_string_append_unichar (new, wc);
 
-  pos = offset_to_bytes (priv->text, priv->position);
-  new = g_string_insert_unichar (new, pos, wc);
-
-  g_signal_emit (self, text_signals[INSERT_TEXT], 0, &wc, 1, &pos);
-
-  clutter_text_set_text_internal (self, new->str);
-
-  if (priv->position >= 0)
-    clutter_text_set_positions (self,
-                                priv->position + 1,
-                                priv->position + 1);
+  clutter_text_buffer_insert_text (get_buffer (self), priv->position, new->str, 1);
 
   g_string_free (new, TRUE);
 }
@@ -5361,35 +5481,11 @@ clutter_text_insert_text (ClutterText *self,
                           const gchar *text,
                           gssize       position)
 {
-  ClutterTextPrivate *priv;
-  GString *new = NULL;
-  gint pos_bytes;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
   g_return_if_fail (text != NULL);
 
-  priv = self->priv;
-
-  pos_bytes = offset_to_bytes (priv->text, position);
-
-  new = g_string_new (priv->text);
-  new = g_string_insert (new, pos_bytes, text);
-
-  g_signal_emit (self, text_signals[INSERT_TEXT], 0,
-                 text,
-                 g_utf8_strlen (text, -1),
-                 &position);
-
-  clutter_text_set_text_internal (self, new->str);
-
-  if (position >= 0 && priv->position >= position)
-    {
-      gint new_pos = priv->position + g_utf8_strlen (text, -1);
-
-      clutter_text_set_positions (self, new_pos, new_pos);
-    }
-
-  g_string_free (new, TRUE);
+  clutter_text_buffer_insert_text (get_buffer (self), position, text,
+                                   g_utf8_strlen (text, -1));
 }
 
 /**
@@ -5411,36 +5507,9 @@ clutter_text_delete_text (ClutterText *self,
                           gssize       start_pos,
                           gssize       end_pos)
 {
-  ClutterTextPrivate *priv;
-  GString *new = NULL;
-  gint start_bytes;
-  gint end_bytes;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = self->priv;
-
-  if (priv->text[0] == '\0')
-    return;
-
-  if (start_pos == 0)
-    start_bytes = 0;
-  else
-    start_bytes = offset_to_bytes (priv->text, start_pos);
-
-  if (end_pos == -1)
-    end_bytes = offset_to_bytes (priv->text, priv->n_chars);
-  else
-    end_bytes = offset_to_bytes (priv->text, end_pos);
-
-  new = g_string_new (priv->text);
-  new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
-
-  g_signal_emit (self, text_signals[DELETE_TEXT], 0, start_pos, end_pos);
-
-  clutter_text_set_text_internal (self, new->str);
-
-  g_string_free (new, TRUE);
+  clutter_text_buffer_delete_text (get_buffer (self), start_pos, end_pos - start_pos);
 }
 
 /**
@@ -5451,6 +5520,9 @@ clutter_text_delete_text (ClutterText *self,
  * Deletes @n_chars inside a #ClutterText actor, starting from the
  * current cursor position.
  *
+ * Somewhat awkwardly, the cursor position is decremented by the same
+ * number of characters you've deleted.
+ *
  * Since: 1.0
  */
 void
@@ -5458,44 +5530,15 @@ clutter_text_delete_chars (ClutterText *self,
                            guint        n_chars)
 {
   ClutterTextPrivate *priv;
-  GString *new = NULL;
-  gint pos;
-  gint num_pos;
-  gint start_pos;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   priv = self->priv;
 
-  if (priv->text[0] == '\0')
-    return;
-
-  new = g_string_new (priv->text);
-
-  if (priv->position == -1)
-    {
-      num_pos = offset_to_bytes (priv->text, priv->n_chars - n_chars);
-      new = g_string_erase (new, num_pos, -1);
-    }
-  else
-    {
-      pos = offset_to_bytes (priv->text, priv->position - n_chars);
-      num_pos = offset_to_bytes (priv->text, priv->position);
-      new = g_string_erase (new, pos, num_pos - pos);
-    }
-
-  start_pos = clutter_text_get_cursor_position (self);
-  g_signal_emit (self, text_signals[DELETE_TEXT], 0,
-                 start_pos, start_pos + n_chars);
-
-  clutter_text_set_text_internal (self, new->str);
+  clutter_text_buffer_delete_text (get_buffer (self), priv->position, n_chars);
 
   if (priv->position > 0)
     clutter_text_set_cursor_position (self, priv->position - n_chars);
-
-  g_string_free (new, TRUE);
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
 }
 
 /**
@@ -5520,25 +5563,25 @@ clutter_text_get_chars (ClutterText *self,
                         gssize       start_pos,
                         gssize       end_pos)
 {
-  ClutterTextPrivate *priv;
   gint start_index, end_index;
+  guint n_chars;
+  const gchar *text;
 
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
 
-  priv = self->priv;
+  n_chars = clutter_text_buffer_get_length (get_buffer (self));
+  text = clutter_text_buffer_get_text (get_buffer (self));
 
   if (end_pos < 0)
-    end_pos = priv->n_chars;
+    end_pos = n_chars;
 
-  start_pos = MIN (priv->n_chars, start_pos);
-  end_pos = MIN (priv->n_chars, end_pos);
+  start_pos = MIN (n_chars, start_pos);
+  end_pos = MIN (n_chars, end_pos);
 
-  start_index = g_utf8_offset_to_pointer (priv->text, start_pos)
-              - priv->text;
-  end_index   = g_utf8_offset_to_pointer (priv->text, end_pos)
-              - priv->text;
+  start_index = g_utf8_offset_to_pointer (text, start_pos) - text;
+  end_index   = g_utf8_offset_to_pointer (text, end_pos) - text;
 
-  return g_strndup (priv->text + start_index, end_index - start_index);
+  return g_strndup (text + start_index, end_index - start_index);
 }
 
 /**

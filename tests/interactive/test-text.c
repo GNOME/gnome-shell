@@ -15,9 +15,10 @@ test_text_main (gint    argc,
                 gchar **argv)
 {
   ClutterActor *stage;
-  ClutterActor *text;
+  ClutterActor *text, *text2;
   ClutterColor  text_color = { 0x33, 0xff, 0x33, 0xff };
   ClutterColor  cursor_color = { 0xff, 0x33, 0x33, 0xff };
+  ClutterTextBuffer *buffer;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
@@ -27,7 +28,11 @@ test_text_main (gint    argc,
   clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  text = clutter_text_new_full (FONT, "·", &text_color);
+  buffer = clutter_text_buffer_new_with_text ("·", -1);
+
+  text = clutter_text_new_with_buffer (buffer);
+  clutter_text_set_font_name (CLUTTER_TEXT (text), FONT);
+  clutter_text_set_color (CLUTTER_TEXT (text), &text_color);
 
   clutter_container_add (CLUTTER_CONTAINER (stage), text, NULL);
   clutter_actor_set_position (text, 40, 30);
@@ -41,6 +46,19 @@ test_text_main (gint    argc,
   clutter_text_set_selectable (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_cursor_color (CLUTTER_TEXT (text), &cursor_color);
   clutter_text_set_selected_text_color (CLUTTER_TEXT (text), CLUTTER_COLOR_Blue);
+
+  text2 = clutter_text_new_with_buffer (buffer);
+  clutter_text_set_color (CLUTTER_TEXT (text2), &text_color);
+  clutter_container_add (CLUTTER_CONTAINER (stage), text2, NULL);
+  clutter_actor_set_position (text2, 40, 300);
+  clutter_actor_set_width (text2, 1024);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (text2), TRUE);
+
+  clutter_actor_set_reactive (text2, TRUE);
+  clutter_text_set_editable (CLUTTER_TEXT (text2), TRUE);
+  clutter_text_set_selectable (CLUTTER_TEXT (text2), TRUE);
+  clutter_text_set_cursor_color (CLUTTER_TEXT (text2), &cursor_color);
+  clutter_text_set_selected_text_color (CLUTTER_TEXT (text2), CLUTTER_COLOR_Green);
 
   if (argv[1])
     {
@@ -65,6 +83,8 @@ test_text_main (gint    argc,
   clutter_actor_show (stage);
 
   clutter_main ();
+
+  g_object_unref (stage);
 
   return EXIT_SUCCESS;
 }
