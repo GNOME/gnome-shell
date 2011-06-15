@@ -107,9 +107,6 @@ meta_core_get (Display *xdisplay,
       case META_CORE_GET_CLIENT_HEIGHT:
         *((gint*)answer) = window->rect.height;
         break;
-      case META_CORE_IS_TITLEBAR_ONSCREEN:
-        *((gboolean*)answer) = meta_window_titlebar_is_onscreen (window);
-        break;
       case META_CORE_GET_CLIENT_XWINDOW:
         *((Window*)answer) = window->xwindow;
         break;
