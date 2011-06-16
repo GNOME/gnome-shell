@@ -148,10 +148,7 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  */
 #define MAXIMUM_PAUSE_TIME 1000
 
-/* The default pipeline. videorate is used to give a constant stream of
- * frames to theora even if there is a pause because nothing is moving.
- * (Theora does have some support for frames at non-uniform times, but
- * things seem to break down if there are large gaps.)
+/* The default pipeline.
  */
 #define DEFAULT_PIPELINE "vp9enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux"
 
