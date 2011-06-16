@@ -434,7 +434,6 @@ clutter_paint_volume_union (ClutterPaintVolume *pv,
                             const ClutterPaintVolume *another_pv)
 {
   ClutterPaintVolume aligned_pv;
-  static const int key_vertices[4] = { 0, 1, 3, 4 };
 
   g_return_if_fail (pv != NULL);
   g_return_if_fail (pv->is_axis_aligned);
@@ -452,10 +451,7 @@ clutter_paint_volume_union (ClutterPaintVolume *pv,
 
   if (pv->is_empty)
     {
-      int i;
-      for (i = 0; i < 4; i++)
-        pv->vertices[key_vertices[i]] = another_pv->vertices[key_vertices[i]];
-      pv->is_2d = another_pv->is_2d;
+      _clutter_paint_volume_set_from_volume (pv, another_pv);
       goto done;
     }
 
