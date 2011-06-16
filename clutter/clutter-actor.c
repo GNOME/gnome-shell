@@ -2905,7 +2905,8 @@ clutter_actor_paint (ClutterActor *self)
 
       success = cull_actor (self, &result);
 
-      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
+      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
+                      pick_mode == CLUTTER_PICK_NONE))
         _clutter_actor_paint_cull_result (self, success, result);
       else if (result == CLUTTER_CULL_RESULT_OUT && success)
         goto done;
@@ -2927,7 +2928,8 @@ clutter_actor_paint (ClutterActor *self)
       actor_has_shader_data (self))
     clutter_actor_shader_post_paint (self);
 
-  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
+  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES &&
+                  pick_mode == CLUTTER_PICK_NONE))
     _clutter_actor_draw_paint_volume (self);
 
 done:
