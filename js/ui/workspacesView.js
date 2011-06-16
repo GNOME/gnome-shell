@@ -855,7 +855,7 @@ WorkspacesDisplay.prototype = {
         if (Main.overview.animationInProgress)
             return;
 
-        let shouldZoom = this._alwaysZoomOut || this._controls.hover || (this._inDrag && !this._cancelledDrag);
+        let shouldZoom = this._alwaysZoomOut || this._controls.hover;
         if (shouldZoom != this._zoomOut) {
             this._zoomOut = shouldZoom;
             this._updateWorkspacesGeometry();
@@ -879,12 +879,22 @@ WorkspacesDisplay.prototype = {
     _dragBegin: function() {
         this._inDrag = true;
         this._cancelledDrag = false;
-        this._updateZoom();
+        this._dragMonitor = {
+            dragMotion: Lang.bind(this, this._onDragMotion)
+        };
+        DND.addDragMonitor(this._dragMonitor);
     },
 
     _dragCancelled: function() {
         this._cancelledDrag = true;
-        this._updateZoom();
+        DND.removeDragMonitor(this._dragMonitor);
+    },
+
+    _onDragMotion: function(dragEvent) {
+        let controlsHovered = this._controls.contains(dragEvent.targetActor);
+        this._controls.set_hover(controlsHovered);
+
+        return DND.DragMotionResult.CONTINUE;
     },
 
     _dragEnd: function() {
