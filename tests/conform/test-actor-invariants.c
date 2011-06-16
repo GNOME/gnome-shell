@@ -199,15 +199,15 @@ test_show_on_set_parent (TestConformSimpleFixture *fixture,
                                group);
 
   actor = clutter_rectangle_new ();
-  g_object_get (G_OBJECT (actor),
+  g_object_get (actor,
                 "show-on-set-parent", &show_on_set_parent,
                 NULL);
 
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (actor)));
   g_assert (show_on_set_parent == TRUE);
 
-  clutter_group_add (group, actor);
-  g_object_get (G_OBJECT (actor),
+  clutter_container_add_actor (CLUTTER_CONTAINER (group), actor);
+  g_object_get (actor,
                 "show-on-set-parent", &show_on_set_parent,
                 NULL);
 
@@ -216,7 +216,7 @@ test_show_on_set_parent (TestConformSimpleFixture *fixture,
 
   g_object_ref (actor);
   clutter_actor_unparent (actor);
-  g_object_get (G_OBJECT (actor),
+  g_object_get (actor,
                 "show-on-set-parent", &show_on_set_parent,
                 NULL);
 

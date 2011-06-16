@@ -70,7 +70,7 @@ test_scale_main (int argc, char *argv[])
   clutter_actor_set_size (rect, 100, 100);
   clutter_actor_set_position (rect, 100, 100);
 
-  clutter_group_add (CLUTTER_GROUP (stage), rect);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
   label = clutter_text_new_with_text ("Sans 20px", "");
   clutter_text_set_color (CLUTTER_TEXT (label),
@@ -80,7 +80,7 @@ test_scale_main (int argc, char *argv[])
                               clutter_actor_get_y (rect)
                               + clutter_actor_get_height (rect));
 
-  clutter_group_add (CLUTTER_GROUP (stage), label);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 
   rect_color.alpha = 0xff;
   rect = clutter_rectangle_new_with_color (&rect_color);
@@ -88,7 +88,7 @@ test_scale_main (int argc, char *argv[])
   clutter_actor_set_size (rect, 100, 100);
   set_next_gravity (rect);
 
-  clutter_group_add (CLUTTER_GROUP (stage), rect);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
   timeline = clutter_timeline_new (750);
   alpha    = clutter_alpha_new_with_func (timeline,

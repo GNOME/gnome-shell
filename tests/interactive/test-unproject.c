@@ -115,7 +115,7 @@ test_unproject_main (int argc, char *argv[])
   clutter_actor_set_rotation (rect, CLUTTER_X_AXIS, rotate_x, 0, 0, 0);
   clutter_actor_set_rotation (rect, CLUTTER_Y_AXIS, rotate_y, 0, 0, 0);
   clutter_actor_set_rotation (rect, CLUTTER_Z_AXIS, rotate_z, 0, 0, 0);
-  clutter_group_add (CLUTTER_GROUP (stage), rect);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
   test_rectangle = rect;
 
   txt = g_strdup_printf ("Rectangle: L %d, R %d, T %d, B %d\n"
@@ -128,7 +128,7 @@ test_unproject_main (int argc, char *argv[])
   clutter_text_set_color (CLUTTER_TEXT (label0), &white);
 
   clutter_actor_set_position (label0, 10, 10);
-  clutter_group_add (CLUTTER_GROUP (stage), label0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label0);
 
   g_free (txt);
 
@@ -138,7 +138,7 @@ test_unproject_main (int argc, char *argv[])
   clutter_text_set_color (CLUTTER_TEXT (label), &blue);
 
   clutter_actor_set_position (label, 10, 50);
-  clutter_group_add (CLUTTER_GROUP (stage), label);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 
   clutter_actor_show_all (stage);
 
