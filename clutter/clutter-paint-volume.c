@@ -143,7 +143,9 @@ void
 _clutter_paint_volume_set_from_volume (ClutterPaintVolume       *pv,
                                        const ClutterPaintVolume *src)
 {
+  gboolean is_static = pv->is_static;
   memcpy (pv, src, sizeof (ClutterPaintVolume));
+  pv->is_static = is_static;
 }
 
 /**
