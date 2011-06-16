@@ -143,7 +143,7 @@ AM_PATH_GLIB_2_0([glib_req_version],
 
 # Check for -Bsymbolic-functions to avoid intra-library PLT jumps
 AC_ARG_ENABLE([Bsymbolic],
-              [AC_HELP_STRING([--disable-Bsymbolic],
+              [AS_HELP_STRING([--disable-Bsymbolic],
                               [Avoid linking with -Bsymbolic])],
               [],
               [
@@ -180,12 +180,12 @@ experimental_backend=no
 experimental_image=no
 
 AC_ARG_WITH([flavour],
-            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/cex100@:>@],
+            [AS_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/cex100@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_FLAVOUR=$with_flavour])
 
 AC_ARG_WITH([gles],
-            [AC_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
+            [AS_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
                             [Select Clutter GLES version (for EGL backends)])],
             [glesversion=$with_gles])
 
@@ -663,7 +663,7 @@ dnl === Enable debug level ====================================================
 
 m4_define([debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [minimum])])
 AC_ARG_ENABLE([debug],
-              [AC_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
+              [AS_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
                               [Control Clutter debugging level @<:@default=debug_default@:>@])],
               [],
               [enable_debug=debug_default])
@@ -722,7 +722,7 @@ AC_SUBST([CLUTTER_DEPRECATED_CFLAGS])
 dnl === Conformance test suite ================================================
 
 AC_ARG_ENABLE([conformance],
-              [AC_HELP_STRING([--enable-conformance=@<:@no/yes@:>@],
+              [AS_HELP_STRING([--enable-conformance=@<:@no/yes@:>@],
                               [Build conformance test suite @<:@default=yes@:>@])],
               [],
               [enable_conformance=yes])
@@ -733,7 +733,7 @@ dnl === Profiling =============================================================
 
 m4_define([profile_default], [no])
 AC_ARG_ENABLE(profile,
-              AC_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
+              AS_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
                              [Turn on profiling support. yes; All profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into clutter.  @<:@default=no@:>@]),
               [],
               [enable_profile=profile_default])
@@ -803,7 +803,7 @@ dnl === Enable strict compiler flags ==========================================
 # distcheck will take care of turning this on when making a release
 m4_define([maintainer_flags_default], [m4_if(m4_eval(clutter_micro_version % 2), [1], [yes], [no])])
 AC_ARG_ENABLE([maintainer-flags],
-              [AC_HELP_STRING([--enable-maintainer-flags=@<:@no/yes/error@:>@],
+              [AS_HELP_STRING([--enable-maintainer-flags=@<:@no/yes/error@:>@],
                               [Use strict compiler flags @<:@default=maintainer_flags_default@:>@])],
               [],
               [enable_maintainer_flags=maintainer_flags_default])
@@ -883,7 +883,7 @@ AC_SUBST(ATK_PREFIX)
 dnl === Manual ================================================================
 
 AC_ARG_ENABLE([docs],
-              [AC_HELP_STRING([--enable-docs=@<:@no/yes@:>@],
+              [AS_HELP_STRING([--enable-docs=@<:@no/yes@:>@],
                               [Build optional documentation; requires xsltproc and jw.])],
               [enable_docs=$enableval],
               [enable_docs=no])
