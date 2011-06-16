@@ -549,33 +549,45 @@ done:
 void
 _clutter_paint_volume_complete (ClutterPaintVolume *pv)
 {
-  if (pv->is_complete || pv->is_empty)
+  float dx_l2r, dy_l2r, dz_l2r;
+  float dx_t2b, dy_t2b, dz_t2b;
+
+  if (pv->is_empty)
     return;
 
-  /* TODO: it is possible to complete non axis aligned volumes too. */
-  g_return_if_fail (pv->is_axis_aligned);
+  /* Find the vector that takes us from any vertex on the left face to
+   * the corresponding vertex on the right face. */
+  dx_l2r = pv->vertices[1].x - pv->vertices[0].x;
+  dy_l2r = pv->vertices[1].y - pv->vertices[0].y;
+  dz_l2r = pv->vertices[1].z - pv->vertices[0].z;
+
+  /* Find the vector that takes us from any vertex on the top face to
+   * the corresponding vertex on the bottom face. */
+  dx_t2b = pv->vertices[3].x - pv->vertices[0].x;
+  dy_t2b = pv->vertices[3].y - pv->vertices[0].y;
+  dz_t2b = pv->vertices[3].z - pv->vertices[0].z;
 
   /* front-bottom-right */
-  pv->vertices[2].x = pv->vertices[1].x;
-  pv->vertices[2].y = pv->vertices[3].y;
-  pv->vertices[2].z = pv->vertices[0].z;
+  pv->vertices[2].x = pv->vertices[3].x + dx_l2r;
+  pv->vertices[2].y = pv->vertices[3].y + dy_l2r;
+  pv->vertices[2].z = pv->vertices[3].z + dz_l2r;
 
   if (G_UNLIKELY (!pv->is_2d))
     {
       /* back-top-right */
-      pv->vertices[5].x = pv->vertices[1].x;
-      pv->vertices[5].y = pv->vertices[0].y;
-      pv->vertices[5].z = pv->vertices[4].z;
+      pv->vertices[5].x = pv->vertices[4].x + dx_l2r;
+      pv->vertices[5].y = pv->vertices[4].y + dy_l2r;
+      pv->vertices[5].z = pv->vertices[4].z + dz_l2r;
 
       /* back-bottom-right */
-      pv->vertices[6].x = pv->vertices[1].x;
-      pv->vertices[6].y = pv->vertices[3].y;
-      pv->vertices[6].z = pv->vertices[4].z;
+      pv->vertices[6].x = pv->vertices[5].x + dx_t2b;
+      pv->vertices[6].y = pv->vertices[5].y + dy_t2b;
+      pv->vertices[6].z = pv->vertices[5].z + dz_t2b;
 
       /* back-bottom-left */
-      pv->vertices[7].x = pv->vertices[0].x;
-      pv->vertices[7].y = pv->vertices[3].y;
-      pv->vertices[7].z = pv->vertices[4].z;
+      pv->vertices[7].x = pv->vertices[4].x + dx_t2b;
+      pv->vertices[7].y = pv->vertices[4].y + dy_t2b;
+      pv->vertices[7].z = pv->vertices[4].z + dz_t2b;
     }
 
   pv->is_complete = TRUE;
