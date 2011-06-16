@@ -84,16 +84,16 @@ main (int argc, char *argv[])
     clutter_actor_set_geometry (group[i], &geom);
 
     if (i > 0)
-      clutter_group_add (CLUTTER_GROUP (group[i]), group [i - 1]);
+      clutter_container_add_actor (CLUTTER_CONTAINER (group[i]), group [i - 1]);
 
     clutter_actor_show_all (group[i]);
   }
 
-  clutter_group_add (CLUTTER_GROUP (stage), button1);
-  clutter_group_add (CLUTTER_GROUP (stage), button2);
-  clutter_group_add (CLUTTER_GROUP (stage), button3);
-  clutter_group_add (CLUTTER_GROUP (stage), group[3]);
-  clutter_group_add (CLUTTER_GROUP (group[0]), button4);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button1);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button2);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button3);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group[3]);
+  clutter_container_add_actor (CLUTTER_CONTAINER (group[0]), button4);
 
   clutter_actor_show_all (stage);
 

@@ -123,9 +123,9 @@ make_ui (ClutterActor *stage)
       rectangle = clutter_rectangle_new_with_color (&color_rect);
       clutter_actor_set_geometry (rectangle, &editable_geom);
 
-      clutter_group_add (CLUTTER_GROUP (stage), label);
-      clutter_group_add (CLUTTER_GROUP (stage), editable);
-      clutter_group_add (CLUTTER_GROUP (stage), rectangle);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), editable);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), rectangle);
 
       label_geom.y += HEIGHT_STEP;
       editable_geom.y += HEIGHT_STEP;
