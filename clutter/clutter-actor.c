@@ -2413,7 +2413,7 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
                                        const CoglColor *color)
 {
   static CoglMaterial *outline = NULL;
-  CoglHandle vbo;
+  CoglPrimitive *prim;
   ClutterVertex line_ends[12 * 2];
   int n_vertices;
 
@@ -2445,20 +2445,13 @@ _clutter_actor_draw_paint_volume_full (ClutterActor *self,
       line_ends[22] = pv->vertices[3]; line_ends[23] = pv->vertices[7];
     }
 
-  vbo = cogl_vertex_buffer_new (n_vertices);
-  cogl_vertex_buffer_add (vbo,
-                          "gl_Vertex",
-                          3, /* n_components */
-                          COGL_ATTRIBUTE_TYPE_FLOAT,
-                          FALSE, /* normalized */
-                          0, /* stride */
-                          line_ends);
+  prim = cogl_primitive_new_p3 (COGL_VERTICES_MODE_LINES, n_vertices,
+                                (CoglVertexP3 *)line_ends);
 
   cogl_material_set_color (outline, color);
   cogl_set_source (outline);
-  cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINES,
-                           0 , n_vertices);
-  cogl_object_unref (vbo);
+  cogl_primitive_draw (prim);
+  cogl_object_unref (prim);
 
   if (label)
     {
