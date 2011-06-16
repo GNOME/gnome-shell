@@ -190,7 +190,6 @@ clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
   int i;
 
   g_return_if_fail (pv != NULL);
-  g_return_if_fail (pv->is_axis_aligned);
 
   dx = origin->x - pv->vertices[0].x;
   dy = origin->y - pv->vertices[0].y;
