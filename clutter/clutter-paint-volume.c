@@ -762,8 +762,6 @@ _clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
   if (pv->is_empty)
     return;
 
-  g_return_if_fail (pv->is_complete);
-
   if (G_LIKELY (pv->is_axis_aligned))
     return;
 
@@ -774,6 +772,9 @@ _clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
       pv->is_axis_aligned = TRUE;
       return;
     }
+
+  if (!pv->is_complete)
+    _clutter_paint_volume_complete (pv);
 
   origin = pv->vertices[0];
   max_x = pv->vertices[0].x;
