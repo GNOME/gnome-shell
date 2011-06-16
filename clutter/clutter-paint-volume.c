@@ -424,8 +424,10 @@ clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
  *      union
  * @another_pv: A second #ClutterPaintVolume to union with @pv
  *
- * Updates the geometry of @pv to be the union bounding box that
- * encompases @pv and @another_pv.
+ * Updates the geometry of @pv to encompass @pv and @another_pv.
+ *
+ * <note>There are no guarantees about how precisely the two volumes
+ * will be encompassed.</note>
  *
  * Since: 1.6
  */
@@ -436,8 +438,10 @@ clutter_paint_volume_union (ClutterPaintVolume *pv,
   ClutterPaintVolume aligned_pv;
 
   g_return_if_fail (pv != NULL);
-  g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (another_pv != NULL);
+
+  /* Both volumes have to belong to the same local coordinate space */
+  g_return_if_fail (pv->actor == another_pv->actor);
 
   /* NB: we only have to update vertices 0, 1, 3 and 4
    * (See the ClutterPaintVolume typedef for more details) */
@@ -454,6 +458,9 @@ clutter_paint_volume_union (ClutterPaintVolume *pv,
       _clutter_paint_volume_set_from_volume (pv, another_pv);
       goto done;
     }
+
+  if (!pv->is_axis_aligned)
+    _clutter_paint_volume_axis_align (pv);
 
   if (!another_pv->is_axis_aligned)
     {
