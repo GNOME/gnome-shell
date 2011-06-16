@@ -681,7 +681,12 @@ WorkspacesDisplay.prototype = {
     },
 
     _updateAlwaysZoom: function()  {
-        this._alwaysZoomOut = false;
+        // Always show the pager if workspaces are actually used,
+        // e.g. there are windows on more than one
+        this._alwaysZoomOut = global.screen.n_workspaces > 2;
+
+        if (this._alwaysZoomOut)
+            return;
 
         let monitors = global.get_monitors();
         let primary = global.get_primary_monitor();
@@ -825,6 +830,8 @@ WorkspacesDisplay.prototype = {
 
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces);
+        this._updateAlwaysZoom();
+        this._updateZoom();
     },
 
     _updateZoom : function() {
