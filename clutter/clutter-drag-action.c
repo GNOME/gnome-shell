@@ -164,7 +164,14 @@ emit_drag_begin (ClutterDragAction *action,
   ClutterDragActionPrivate *priv = action->priv;
 
   if (priv->stage != NULL)
-    clutter_stage_set_motion_events_enabled (priv->stage, FALSE);
+    {
+      clutter_stage_set_motion_events_enabled (priv->stage, FALSE);
+      _clutter_stage_add_drag_actor (priv->stage,
+                                     clutter_event_get_device (event),
+                                     priv->drag_handle != NULL
+                                       ? priv->drag_handle
+                                       : actor);
+    }
 
   g_signal_emit (action, drag_signals[DRAG_BEGIN], 0,
                  actor,
@@ -264,6 +271,8 @@ emit_drag_end (ClutterDragAction *action,
 
   clutter_stage_set_motion_events_enabled (priv->stage,
                                            priv->motion_events_enabled);
+  _clutter_stage_remove_drag_actor (priv->stage,
+                                    clutter_event_get_device (event));
 
   priv->in_drag = FALSE;
 }
