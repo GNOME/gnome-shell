@@ -44,6 +44,7 @@
 #include "clutter-input-device-evdev.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-stage-manager.h"
 #include "clutter-xkb-utils.h"
 
 #include "clutter-device-manager-evdev.h"
@@ -268,8 +269,13 @@ clutter_event_dispatch (GSource     *g_source,
   ClutterEvent *event;
   gint len, i, dx = 0, dy = 0;
   uint32_t _time;
+  ClutterStageManager *stage_manager;
+  ClutterStage *default_stage;
 
   clutter_threads_enter ();
+
+  stage_manager = clutter_stage_manager_get_default ();
+  default_stage = clutter_stage_manager_get_default_stage (stage_manager);
 
   /* Don't queue more events if we haven't finished handling the previous batch
    */
@@ -302,6 +308,10 @@ clutter_event_dispatch (GSource     *g_source,
            }
          goto out;
        }
+
+       /* Drop events if we don't have any stage to forward them to */
+       if (!default_stage)
+         goto out;
 
        for (i = 0; i < len / sizeof (ev[0]); i++)
          {
