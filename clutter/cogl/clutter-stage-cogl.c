@@ -102,7 +102,6 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 #endif
   ClutterBackend *backend;
-  ClutterBackendCogl *backend_cogl;
   CoglFramebuffer *framebuffer;
   GError *error = NULL;
   gfloat width = 800;
@@ -113,23 +112,22 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
                 G_OBJECT_TYPE_NAME (stage_cogl),
                 stage_cogl);
 
-  backend     = clutter_get_default_backend ();
-  backend_cogl = CLUTTER_BACKEND_COGL (backend);
+  backend = clutter_get_default_backend ();
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
 #endif
 
   stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
-                                           width, height);
+                                            width, height);
+
 #ifdef COGL_HAS_XLIB_SUPPORT
   if (stage_x11->xwin != None)
     {
-      cogl_onscreen_x11_set_foreign_window_xid (
-                                  stage_cogl->onscreen,
-                                  stage_x11->xwin,
-                                  _clutter_stage_x11_update_foreign_event_mask,
-                                  stage_x11);
+      cogl_onscreen_x11_set_foreign_window_xid (stage_cogl->onscreen,
+                                                stage_x11->xwin,
+                                                _clutter_stage_x11_update_foreign_event_mask,
+                                                stage_x11);
 
     }
 #endif
@@ -147,6 +145,7 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
       stage_cogl->onscreen = NULL;
       return FALSE;
     }
+
   /* FIXME: for fullscreen Cogl platforms then the size we gave above
    * will be ignored, so we need to make sure the stage size is
    * updated to this size. */
