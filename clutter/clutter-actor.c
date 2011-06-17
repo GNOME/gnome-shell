@@ -415,6 +415,11 @@ struct _ClutterActorPrivate
   guint last_paint_volume_valid     : 1;
   guint in_clone_paint              : 1;
   guint transform_valid             : 1;
+  /* This is TRUE if anything has queued a redraw since we were last
+     painted. In this case effect_to_redraw will point to an effect
+     the redraw was queued from or it will be NULL if the redraw was
+     queued without an effect. */
+  guint is_dirty                    : 1;
 
   gfloat clip[4];
 
@@ -485,7 +490,9 @@ struct _ClutterActorPrivate
      redraw can be queued to start from a particular effect. This is
      used by parametrised effects that can cache an image of the
      actor. If a parameter of the effect changes then it only needs to
-     redraw the cached image, not the actual actor */
+     redraw the cached image, not the actual actor. The pointer is
+     only valid if is_dirty == TRUE. If the pointer is NULL then the
+     whole actor is dirty. */
   ClutterEffect *effect_to_redraw;
 
   ClutterPaintVolume paint_volume;
@@ -1910,6 +1917,14 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     return;
 
+  /* If the queue redraw is coming from a child then the actor has
+     become dirty and any queued effect is no longer valid */
+  if (self != origin)
+    {
+      self->priv->is_dirty = TRUE;
+      self->priv->effect_to_redraw = NULL;
+    }
+
   /* If the actor isn't visible, we still had to emit the signal
    * to allow for a ClutterClone, but the appearance of the parent
    * won't change so we don't have to propagate up the hierarchy.
@@ -1933,14 +1948,6 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
     }
 
   self->priv->propagated_one_redraw = TRUE;
-
-  /* If the queue redraw is coming from a child actor then we'll
-     assume the queued effect is no longer valid. If this actor has
-     had a redraw queued then that will mean it will instead redraw
-     the whole actor. If it hasn't had a redraw queued then it will
-     stay that way */
-  if (self != origin)
-    self->priv->effect_to_redraw = NULL;
 
   /* notify parents, if they are all visible eventually we'll
    * queue redraw on the stage, which queues the redraw idle.
@@ -2779,6 +2786,9 @@ clutter_actor_paint (ClutterActor *self)
 
   pick_mode = _clutter_context_get_pick_mode ();
 
+  if (pick_mode == CLUTTER_PICK_NONE)
+    priv->propagated_one_redraw = FALSE;
+
   /* It's an important optimization that we consider painting of
    * actors with 0 opacity to be a NOP... */
   if (pick_mode == CLUTTER_PICK_NONE &&
@@ -2787,10 +2797,7 @@ clutter_actor_paint (ClutterActor *self)
       /* Use the override opacity if its been set */
       ((priv->opacity_override >= 0) ?
        priv->opacity_override : priv->opacity) == 0)
-    {
-      priv->propagated_one_redraw = FALSE;
-      return;
-    }
+    return;
 
   /* if we aren't paintable (not in a toplevel with all
    * parents paintable) then do nothing.
@@ -2906,6 +2913,11 @@ clutter_actor_paint (ClutterActor *self)
     _clutter_actor_draw_paint_volume (self);
 
 done:
+  /* If we make it here then the actor has run through a complete
+     paint run including all the effects so it's no longer dirty */
+  if (pick_mode == CLUTTER_PICK_NONE)
+    priv->is_dirty = FALSE;
+
   if (clip_set)
     cogl_clip_pop();
 
@@ -2949,11 +2961,7 @@ clutter_actor_continue_paint (ClutterActor *self)
   if (priv->next_effect_to_paint == NULL)
     {
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
-        {
-          priv->propagated_one_redraw = FALSE;
-
-          g_signal_emit (self, actor_signals[PAINT], 0);
-        }
+        g_signal_emit (self, actor_signals[PAINT], 0);
       else
         {
           ClutterColor col = { 0, };
@@ -2981,7 +2989,7 @@ clutter_actor_continue_paint (ClutterActor *self)
 
       if (_clutter_context_get_pick_mode () == CLUTTER_PICK_NONE)
         {
-          if (priv->propagated_one_redraw)
+          if (priv->is_dirty)
             {
               /* If there's an effect queued with this redraw then all
                  effects up to that one will be considered dirty. It
@@ -5392,7 +5400,6 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
   ClutterPaintVolume *pv;
   gboolean should_free_pv;
   ClutterActor *stage;
-  gboolean was_dirty;
 
   /* Here's an outline of the actor queue redraw mechanism:
    *
@@ -5515,8 +5522,6 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
       should_free_pv = FALSE;
     }
 
-  was_dirty = priv->queue_redraw_entry != NULL;
-
   self->priv->queue_redraw_entry =
     _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
                                        priv->queue_redraw_entry,
@@ -5528,7 +5533,7 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
 
   /* If this is the first redraw queued then we can directly use the
      effect parameter */
-  if (!was_dirty)
+  if (!priv->is_dirty)
     priv->effect_to_redraw = effect;
   /* Otherwise we need to merge it with the existing effect parameter */
   else if (effect)
@@ -5561,6 +5566,8 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
     /* If no effect is specified then we need to redraw the whole
        actor */
     priv->effect_to_redraw = NULL;
+
+  priv->is_dirty = TRUE;
 }
 
 /**
