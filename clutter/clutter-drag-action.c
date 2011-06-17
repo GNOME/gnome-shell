@@ -516,6 +516,8 @@ clutter_drag_action_dispose (GObject *gobject)
       priv->button_press_id = 0;
     }
 
+  clutter_drag_action_set_drag_handle (CLUTTER_DRAG_ACTION (gobject), NULL);
+
   G_OBJECT_CLASS (clutter_drag_action_parent_class)->dispose (gobject);
 }
 
@@ -837,12 +839,19 @@ clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
     *y_threshold = y_res;
 }
 
+static void
+on_drag_handle_destroy (ClutterActor      *actor,
+                        ClutterDragAction *action)
+{
+  action->priv->drag_handle = NULL;
+}
+
 /**
  * clutter_drag_action_set_drag_handle:
  * @action: a #ClutterDragAction
- * @handle: a #ClutterActor
+ * @handle: (allow-none): a #ClutterActor, or %NULL to unset
  *
- * Sets the actor to be used as the drag handle
+ * Sets the actor to be used as the drag handle.
  *
  * Since: 1.4
  */
@@ -853,14 +862,24 @@ clutter_drag_action_set_drag_handle (ClutterDragAction *action,
   ClutterDragActionPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_DRAG_ACTION (action));
-  g_return_if_fail (CLUTTER_IS_ACTOR (handle));
+  g_return_if_fail (handle == NULL || CLUTTER_IS_ACTOR (handle));
 
   priv = action->priv;
 
   if (priv->drag_handle == handle)
     return;
 
+  if (priv->drag_handle != NULL)
+    g_signal_handlers_disconnect_by_func (priv->drag_handle,
+                                          G_CALLBACK (on_drag_handle_destroy),
+                                          action);
+
   priv->drag_handle = handle;
+
+  if (priv->drag_handle != NULL)
+    g_signal_connect (priv->drag_handle, "destroy",
+                      G_CALLBACK (on_drag_handle_destroy),
+                      action);
 
   g_object_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_HANDLE]);
 }
