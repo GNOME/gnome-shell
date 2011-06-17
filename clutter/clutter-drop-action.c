@@ -1,3 +1,57 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright © 2011  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
+/**
+ * SECTION:clutter-drop-action
+ * @Title: ClutterDropAction
+ * @short_description: An action for drop targets
+ *
+ * #ClutterDropAction is a #ClutterAction that allows a #ClutterActor
+ * implementation to control what happens when a dragged actor crosses
+ * the target area or when a dragged actor is released (or "dropped")
+ * on the target area.
+ *
+ * A trivial use of #ClutterDropAction consists in connecting to the
+ * #ClutterDropAction::drop signal and handling the drop from there,
+ * for instance:
+ *
+ * |[
+ *   ClutterAction *action = clutter_drop_action ();
+ *
+ *   g_signal_connect (action, "drop", G_CALLBACK (on_drop), NULL);
+ *   clutter_actor_add_action (an_actor, action);
+ * ]|
+ *
+ * The #ClutterDropAction::can-drop can be used to control whether the
+ * #ClutterDropAction::drop signal is going to be emitted; returning %FALSE
+ * from a handler connected to the #ClutterDropAction::can-drop signal will
+ * cause the #ClutterDropAction::drop signal to be skipped when the input
+ * device button is released.
+ *
+ * #ClutterDropAction is available since Clutter 1.8
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -17,8 +71,6 @@ struct _ClutterDropActionPrivate
   ClutterActor *stage;
 
   gulong mapped_id;
-
-  guint is_inside : 1;
 };
 
 typedef struct _DropTarget {
@@ -299,6 +351,23 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
 
   klass->can_drop = clutter_drop_action_real_can_drop;
 
+  /**
+   * ClutterDropAction::can-drop:
+   * @action: the #ClutterDropAction that emitted the signal
+   * @actor: the #ClutterActor attached to the @action
+   *
+   * The ::can-drop signal is emitted when the dragged actor is dropped
+   * on @actor. The return value of the ::can-drop signal will determine
+   * whether or not the #ClutterDropAction::drop signal is going to be
+   * emitted on @action.
+   *
+   * The default implementation of #ClutterDropAction returns %TRUE for
+   * this signal.
+   *
+   * Return value: %TRUE if the drop is accepted, and %FALSE otherwise
+   *
+   * Since: 1.8
+   */
   drop_signals[CAN_DROP] =
     g_signal_new (I_("can-drop"),
                   G_TYPE_FROM_CLASS (klass),
@@ -311,6 +380,16 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
                   G_TYPE_FLOAT,
                   G_TYPE_FLOAT);
 
+  /**
+   * ClutterDropAction::over-in:
+   * @action: the #ClutterDropAction that emitted the signal
+   * @actor: the #ClutterActor attached to the @action
+   *
+   * The ::over-in signal is emitted when the dragged actor crosses
+   * into @actor.
+   *
+   * Since: 1.8
+   */
   drop_signals[OVER_IN] =
     g_signal_new (I_("over-in"),
                   G_TYPE_FROM_CLASS (klass),
@@ -321,6 +400,16 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
 
+  /**
+   * ClutterDropAction::over-out:
+   * @action: the #ClutterDropAction that emitted the signal
+   * @actor: the #ClutterActor attached to the @action
+   *
+   * The ::over-out signal is emitted when the dragged actor crosses
+   * outside @actor.
+   *
+   * Since: 1.8
+   */
   drop_signals[OVER_OUT] =
     g_signal_new (I_("over-out"),
                   G_TYPE_FROM_CLASS (klass),
@@ -331,6 +420,17 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
 
+  /**
+   * ClutterDropAction::drop:
+   * @action: the #ClutterDropAction that emitted the signal
+   * @actor: the #ClutterActor attached to the @action
+   *
+   * The ::drop signal is emitted when the dragged actor is dropped
+   * on @actor. This signal is only emitted if at least an handler of
+   * #ClutterDropAction::can-drop returns %TRUE.
+   *
+   * Since: 1.8
+   */
   drop_signals[DROP] =
     g_signal_new (I_("drop"),
                   G_TYPE_FROM_CLASS (klass),
@@ -351,6 +451,17 @@ clutter_drop_action_init (ClutterDropAction *self)
                                             ClutterDropActionPrivate);
 }
 
+/**
+ * clutter_drop_action_new:
+ *
+ * Creates a new #ClutterDropAction.
+ *
+ * Use clutter_actor_add_action() to add the action to a #ClutterActor.
+ *
+ * Return value: the newly created #ClutterDropAction
+ *
+ * Since: 1.8
+ */
 ClutterAction *
 clutter_drop_action_new (void)
 {

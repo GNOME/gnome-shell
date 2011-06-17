@@ -1,3 +1,27 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright © 2011  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be directly included."
 #endif
@@ -38,6 +62,10 @@ struct _ClutterDropAction
 
 /**
  * ClutterDropActionClass:
+ * @can_drop: class handler for the #ClutterDropAction::can-drop signal
+ * @over_in: class handler for the #ClutterDropAction::over-in signal
+ * @over_out: class handler for the #ClutterDropAction::over-out signal
+ * @drop: class handler for the #ClutterDropAction::drop signal
  *
  * The <structname>ClutterDropActionClass</structname> structure contains
  * only private data.

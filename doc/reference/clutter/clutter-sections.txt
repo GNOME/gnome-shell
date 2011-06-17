@@ -2717,3 +2717,20 @@ CLUTTER_TYPE_SWIPE_ACTION
 ClutterSwipeActionPrivate
 clutter_swipe_action_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-drop-action</FILE>
+ClutterDropAction
+ClutterDropActionClass
+clutter_drop_action_new
+<SUBSECTION Standard>
+CLUTTER_TYPE_DROP_ACTION
+CLUTTER_DROP_ACTION
+CLUTTER_DROP_ACTION_CLASS
+CLUTTER_IS_DROP_ACTION
+CLUTTER_IS_DROP_ACTION_CLASS
+CLUTTER_DROP_ACTION_GET_CLASS
+<SUBSECTION Private>
+ClutterDropActionClass
+clutter_drop_action_get_type
+</SECTION>

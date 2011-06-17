@@ -31,6 +31,7 @@ clutter_deform_effect_get_type
 clutter_desaturate_effect_get_type
 clutter_device_manager_get_type
 clutter_drag_action_get_type
+clutter_drop_action_get_type
 clutter_effect_get_type
 clutter_fixed_layout_get_type
 clutter_flow_layout_get_type
