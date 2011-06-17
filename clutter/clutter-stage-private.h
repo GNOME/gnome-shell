@@ -99,6 +99,14 @@ void            _clutter_stage_release_pick_id          (ClutterStage *stage,
 ClutterActor *  _clutter_stage_get_actor_by_pick_id     (ClutterStage *stage,
                                                          gint32        pick_id);
 
+void            _clutter_stage_add_drag_actor           (ClutterStage       *stage,
+                                                         ClutterInputDevice *device,
+                                                         ClutterActor       *actor);
+ClutterActor *  _clutter_stage_get_drag_actor           (ClutterStage       *stage,
+                                                         ClutterInputDevice *device);
+void            _clutter_stage_remove_drag_actor        (ClutterStage       *stage,
+                                                         ClutterInputDevice *device);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_PRIVATE_H__ */

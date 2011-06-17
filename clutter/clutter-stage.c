@@ -4091,3 +4091,51 @@ _clutter_stage_get_actor_by_pick_id (ClutterStage *stage,
 
   return _clutter_id_pool_lookup (priv->pick_id_pool, pick_id);
 }
+
+void
+_clutter_stage_add_drag_actor (ClutterStage       *stage,
+                               ClutterInputDevice *device,
+                               ClutterActor       *actor)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  if (drag_actors == NULL)
+    {
+      drag_actors = g_hash_table_new (NULL, NULL);
+      g_object_set_data_full (G_OBJECT (stage), "__clutter_stage_drag_actors",
+                              drag_actors,
+                              (GDestroyNotify) g_hash_table_destroy);
+    }
+
+  g_hash_table_replace (drag_actors, device, actor);
+}
+
+ClutterActor *
+_clutter_stage_get_drag_actor (ClutterStage       *stage,
+                               ClutterInputDevice *device)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  if (drag_actors == NULL)
+    return NULL;
+
+  return g_hash_table_lookup (drag_actors, device);
+}
+
+void
+_clutter_stage_remove_drag_actor (ClutterStage       *stage,
+                                  ClutterInputDevice *device)
+{
+  GHashTable *drag_actors;
+
+  drag_actors = g_object_get_data (G_OBJECT (stage), "__clutter_stage_drag_actors");
+  if (drag_actors == NULL)
+    return;
+
+  g_hash_table_remove (drag_actors, device);
+
+  if (g_hash_table_size (drag_actors) == 0)
+    g_object_set_data (G_OBJECT (stage), "__clutter_stage_drag_actors", NULL);
+}
