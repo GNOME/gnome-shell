@@ -1004,21 +1004,12 @@ _clutter_paint_volume_get_stage_paint_box (ClutterPaintVolume *pv,
 
   _clutter_paint_volume_copy_static (pv, &projected_pv);
 
-  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
-   * include the transformation between stage coordinates and OpenGL
-   * eye coordinates, we have to explicitly use the
-   * stage->apply_transform to get that... */
   cogl_matrix_init_identity (&modelview);
 
   /* If the paint volume isn't already in eye coordinates... */
   if (pv->actor)
-    {
-      ClutterActor *stage_actor = CLUTTER_ACTOR (stage);
-      _clutter_actor_apply_modelview_transform (stage_actor, &modelview);
-      _clutter_actor_apply_modelview_transform_recursive (pv->actor,
-                                                          stage_actor,
-                                                          &modelview);
-    }
+    _clutter_actor_apply_modelview_transform_recursive (pv->actor, NULL,
+                                                        &modelview);
 
   _clutter_stage_get_projection_matrix (stage, &projection);
   _clutter_stage_get_viewport (stage,
@@ -1052,25 +1043,6 @@ _clutter_paint_volume_transform_relative (ClutterPaintVolume *pv,
   _clutter_paint_volume_set_reference_actor (pv, relative_to_ancestor);
 
   cogl_matrix_init_identity (&matrix);
-
-  if (relative_to_ancestor == NULL)
-    {
-      /* NB: _clutter_actor_apply_modelview_transform_recursive will never
-       * include the transformation between stage coordinates and OpenGL
-       * eye coordinates, we have to explicitly use the
-       * stage->apply_transform to get that... */
-      ClutterActor *stage = _clutter_actor_get_stage_internal (actor);
-
-      /* We really can't do anything meaningful in this case so don't try
-       * to do any transform */
-      if (G_UNLIKELY (stage == NULL))
-        return;
-
-      _clutter_actor_apply_modelview_transform (stage, &matrix);
-
-      relative_to_ancestor = stage;
-    }
-
   _clutter_actor_apply_modelview_transform_recursive (actor,
                                                       relative_to_ancestor,
                                                       &matrix);

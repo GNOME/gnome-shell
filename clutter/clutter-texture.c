@@ -530,15 +530,7 @@ update_fbo (ClutterActor *self)
       if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
         {
           CoglMatrix modelview;
-
-          /* NB: _clutter_actor_apply_modelview_transform_recursive
-           * will never include the transformation between stage
-           * coordinates and OpenGL window coordinates, we have to
-           * explicitly use the stage->apply_transform to get that...
-           */
-
           cogl_matrix_init_identity (&modelview);
-          _clutter_actor_apply_modelview_transform (stage, &modelview);
           _clutter_actor_apply_modelview_transform_recursive (source_parent,
                                                               NULL,
                                                               &modelview);

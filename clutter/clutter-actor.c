@@ -2039,10 +2039,6 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
-   * include the transformation between stage coordinates and OpenGL
-   * eye coordinates, we have to explicitly use the
-   * stage->apply_transform to get that... */
   stage = _clutter_actor_get_stage_internal (self);
 
   /* We really can't do anything meaningful in this case so don't try
@@ -2050,10 +2046,10 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
   if (stage == NULL)
     return FALSE;
 
-  /* Setup the modelview */
-  cogl_matrix_init_identity (&modelview);
-  _clutter_actor_apply_modelview_transform (stage, &modelview);
-  _clutter_actor_apply_modelview_transform_recursive (self, stage, &modelview);
+  /* Note: we pass NULL as the ancestor because we don't just want the modelview
+   * that gets us to stage coordinates, we want to go all the way to eye
+   * coordinates */
+  _clutter_actor_apply_modelview_transform_recursive (self, NULL, &modelview);
 
   /* Fetch the projection and viewport */
   _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
@@ -2098,21 +2094,7 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
 /* _clutter_actor_get_relative_modelview:
  *
  * Retrieves the modelview transformation relative to some ancestor
- * actor, or the stage if NULL is given for the ancestor.
- *
- * Note: This will never include the transformations from
- * stage::apply_transform since that would give you a modelview
- * transform relative to the OpenGL window coordinate space that the
- * stage lies within.
- *
- * If you need to do a full modelview + projective transform and get
- * to window coordinates then you should explicitly apply the stage
- * transform to an identity matrix and use
- * _clutter_actor_apply_modelview_transform like:
- *
- *   cogl_matrix_init_identity (&mtx);
- *   stage = _clutter_actor_get_stage_internal (self);
- *   _clutter_actor_apply_modelview_transform (stage, &mtx);
+ * actor, or eye coordinates if NULL is given for the ancestor.
  */
 /* FIXME: We should be caching the stage relative modelview along with the
  * actor itself */
@@ -2121,8 +2103,6 @@ _clutter_actor_get_relative_modelview (ClutterActor *self,
                                        ClutterActor *ancestor,
                                        CoglMatrix *matrix)
 {
-  g_return_if_fail (ancestor != NULL);
-
   cogl_matrix_init_identity (matrix);
 
   _clutter_actor_apply_modelview_transform_recursive (self, ancestor, matrix);
