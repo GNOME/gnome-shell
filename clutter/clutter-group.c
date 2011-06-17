@@ -350,12 +350,14 @@ clutter_group_dispose (GObject *object)
   ClutterGroup *self = CLUTTER_GROUP (object);
   ClutterGroupPrivate *priv = self->priv;
 
-  if (priv->children)
+  /* Note: we are careful to consider that destroying children could
+   * have the side-effect of destroying other children so
+   * priv->children may be modified during clutter_actor_destroy. */
+  while (priv->children)
     {
-      g_list_foreach (priv->children, (GFunc) clutter_actor_destroy, NULL);
-      g_list_free (priv->children);
-
-      priv->children = NULL;
+      ClutterActor *child = priv->children->data;
+      priv->children = g_list_delete_link (priv->children, priv->children);
+      clutter_actor_destroy (child);
     }
 
   if (priv->layout)
