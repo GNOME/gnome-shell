@@ -1008,8 +1008,8 @@ _clutter_paint_volume_get_stage_paint_box (ClutterPaintVolume *pv,
 
   /* If the paint volume isn't already in eye coordinates... */
   if (pv->actor)
-    _clutter_actor_apply_modelview_transform_recursive (pv->actor, NULL,
-                                                        &modelview);
+    _clutter_actor_apply_relative_transformation_matrix (pv->actor, NULL,
+                                                         &modelview);
 
   _clutter_stage_get_projection_matrix (stage, &projection);
   _clutter_stage_get_viewport (stage,
@@ -1043,8 +1043,8 @@ _clutter_paint_volume_transform_relative (ClutterPaintVolume *pv,
   _clutter_paint_volume_set_reference_actor (pv, relative_to_ancestor);
 
   cogl_matrix_init_identity (&matrix);
-  _clutter_actor_apply_modelview_transform_recursive (actor,
-                                                      relative_to_ancestor,
+  _clutter_actor_apply_relative_transformation_matrix (actor,
+                                                       relative_to_ancestor,
                                                       &matrix);
 
   _clutter_paint_volume_transform (pv, &matrix);

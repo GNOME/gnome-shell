@@ -121,9 +121,9 @@ ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
 
 void _clutter_actor_apply_modelview_transform           (ClutterActor *self,
                                                          CoglMatrix *matrix);
-void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
-						         ClutterActor *ancestor,
-                                                         CoglMatrix *matrix);
+void _clutter_actor_apply_relative_transformation_matrix (ClutterActor *self,
+                                                          ClutterActor *ancestor,
+                                                          CoglMatrix *matrix);
 
 void _clutter_actor_rerealize (ClutterActor    *self,
                                ClutterCallback  callback,

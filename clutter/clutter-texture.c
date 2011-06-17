@@ -531,9 +531,9 @@ update_fbo (ClutterActor *self)
         {
           CoglMatrix modelview;
           cogl_matrix_init_identity (&modelview);
-          _clutter_actor_apply_modelview_transform_recursive (source_parent,
-                                                              NULL,
-                                                              &modelview);
+          _clutter_actor_apply_relative_transformation_matrix (source_parent,
+                                                               NULL,
+                                                               &modelview);
           cogl_set_modelview_matrix (&modelview);
         }
     }

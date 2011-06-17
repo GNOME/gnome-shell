@@ -683,9 +683,9 @@ static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 
 static void _clutter_actor_queue_only_relayout (ClutterActor *self);
 
-static void _clutter_actor_get_relative_modelview (ClutterActor *self,
-                                                   ClutterActor *ancestor,
-                                                   CoglMatrix *matrix);
+static void _clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
+                                                               ClutterActor *ancestor,
+                                                               CoglMatrix *matrix);
 
 static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor *self);
 
@@ -2029,7 +2029,7 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
       return;
     }
 
-  _clutter_actor_get_relative_modelview (self, ancestor, &matrix);
+  _clutter_actor_get_relative_transformation_matrix (self, ancestor, &matrix);
   cogl_matrix_transform_point (&matrix, &vertex->x, &vertex->y, &vertex->z, &w);
 }
 
@@ -2056,7 +2056,7 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
   /* Note: we pass NULL as the ancestor because we don't just want the modelview
    * that gets us to stage coordinates, we want to go all the way to eye
    * coordinates */
-  _clutter_actor_apply_modelview_transform_recursive (self, NULL, &modelview);
+  _clutter_actor_apply_relative_transformation_matrix (self, NULL, &modelview);
 
   /* Fetch the projection and viewport */
   _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
@@ -2098,21 +2098,43 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
   _clutter_actor_fully_transform_vertices (self, point, vertex, 1);
 }
 
-/* _clutter_actor_get_relative_modelview:
+/*
+ * _clutter_actor_get_relative_transformation_matrix:
+ * @self: The actor whose coordinate space you want to transform from.
+ * @ancestor: The ancestor actor whose coordinate space you want to transform too
+ *            or %NULL if you want to transform all the way to eye coordinates.
+ * @matrix: A #CoglMatrix to store the transformation
  *
- * Retrieves the modelview transformation relative to some ancestor
- * actor, or eye coordinates if NULL is given for the ancestor.
+ * This gets a transformation @matrix that will transform coordinates from the
+ * coordinate space of @self into the coordinate space of @ancestor.
+ *
+ * For example if you need a matrix that can transform the local actor
+ * coordinates of @self into stage coordinates you would pass the actor's stage
+ * pointer as the @ancestor.
+ *
+ * If you pass %NULL then the transformation will take you all the way through
+ * to eye coordinates. This can be useful if you want to extract the entire
+ * modelview transform that Clutter applies before applying the projection
+ * transformation. If you want to explicitly set a modelview on a CoglFramebuffer
+ * using cogl_set_modelview_matrix() for example then you would want a matrix
+ * that transforms into eye coordinates.
+ *
+ * <note>This function explicitly initializes the given @matrix. If you just
+ * want clutter to multiply a relative transformation with an existing matrix
+ * you can use clutter_actor_apply_relative_transformation_matrix() instead.
+ * </note>
+ *
  */
-/* FIXME: We should be caching the stage relative modelview along with the
- * actor itself */
+/* XXX: We should consider caching the stage relative modelview along with
+ * the actor itself */
 static void
-_clutter_actor_get_relative_modelview (ClutterActor *self,
-                                       ClutterActor *ancestor,
-                                       CoglMatrix *matrix)
+_clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
+                                                   ClutterActor *ancestor,
+                                                   CoglMatrix *matrix)
 {
   cogl_matrix_init_identity (matrix);
 
-  _clutter_actor_apply_modelview_transform_recursive (self, ancestor, matrix);
+  _clutter_actor_apply_relative_transformation_matrix (self, ancestor, matrix);
 }
 
 /* Project the given @box into stage window coordinates, writing the
@@ -2220,7 +2242,8 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
   vertices[3].y = box.y2;
   vertices[3].z = 0;
 
-  _clutter_actor_get_relative_modelview (self, ancestor, &modelview);
+  _clutter_actor_get_relative_transformation_matrix (self, ancestor,
+                                                     &modelview);
 
   cogl_matrix_transform_points (&modelview,
                                 3,
@@ -2366,14 +2389,37 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self,
   CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
 
-/* Recursively applies the transforms associated with this actor and
- * its ancestors to the given matrix. Use NULL if you want this
- * to go all the way down to the stage.
+/*
+ * clutter_actor_apply_relative_transformation_matrix:
+ * @self: The actor whose coordinate space you want to transform from.
+ * @ancestor: The ancestor actor whose coordinate space you want to transform too
+ *            or %NULL if you want to transform all the way to eye coordinates.
+ * @matrix: A #CoglMatrix to apply the transformation too.
+ *
+ * This multiplies a transform with @matrix that will transform coordinates
+ * from the coordinate space of @self into the coordinate space of @ancestor.
+ *
+ * For example if you need a matrix that can transform the local actor
+ * coordinates of @self into stage coordinates you would pass the actor's stage
+ * pointer as the @ancestor.
+ *
+ * If you pass %NULL then the transformation will take you all the way through
+ * to eye coordinates. This can be useful if you want to extract the entire
+ * modelview transform that Clutter applies before applying the projection
+ * transformation. If you want to explicitly set a modelview on a CoglFramebuffer
+ * using cogl_set_modelview_matrix() for example then you would want a matrix
+ * that transforms into eye coordinates.
+ *
+ * <note>This function doesn't initialize the given @matrix, it simply
+ * multiplies the requested transformation matrix with the existing contents of
+ * @matrix. You can use cogl_matrix_init_identity() to initialize the @matrix
+ * before calling this function, or you can use
+ * clutter_actor_get_relative_transformation_matrix() instead.</note>
  */
 void
-_clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
-						    ClutterActor *ancestor,
-                                                    CoglMatrix *matrix)
+_clutter_actor_apply_relative_transformation_matrix (ClutterActor *self,
+                                                     ClutterActor *ancestor,
+                                                     CoglMatrix *matrix)
 {
   ClutterActor *parent;
 
@@ -2387,8 +2433,8 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   parent = clutter_actor_get_parent (self);
 
   if (parent != NULL)
-    _clutter_actor_apply_modelview_transform_recursive (parent, ancestor,
-                                                        matrix);
+    _clutter_actor_apply_relative_transformation_matrix (parent, ancestor,
+                                                         matrix);
 
   _clutter_actor_apply_modelview_transform (self, matrix);
 }
