@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-04 19:44+0000\n"
-"PO-Revision-Date: 2011-06-05 10:42+0300\n"
+"POT-Creation-Date: 2011-06-15 19:58+0000\n"
+"PO-Revision-Date: 2011-06-19 13:43+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr "Управление окнами и запуск приложений"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "Разрешает доступ ко внутренней отладке и инструментам наблюдения, используя диалог Alt-F2."
+msgstr "Разрешает доступ к внутренней отладке и инструментам наблюдения, используя диалог Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -62,11 +62,11 @@ msgstr "История просмотра прозрачного диалога"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display date in the clock, in addition to time."
-msgstr "Если установлено, то в часах будет показана дата."
+msgstr "Если установлено, в часах будет показана дата."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display seconds in time."
-msgstr "Если установлено, то время будет указано с секундами."
+msgstr "Если установлено, время будет указано с секундами."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
@@ -299,14 +299,14 @@ msgstr "Нет событий"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:717
-#: ../js/ui/telepathyClient.js:500
+#: ../js/ui/telepathyClient.js:564
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
-#: ../js/ui/telepathyClient.js:503
+#: ../js/ui/telepathyClient.js:567
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
@@ -328,7 +328,7 @@ msgid "Next week"
 msgstr "Следующая неделя"
 
 #: ../js/ui/dash.js:172
-#: ../js/ui/messageTray.js:1034
+#: ../js/ui/messageTray.js:1044
 msgid "Remove"
 msgstr "Удалить"
 
@@ -413,7 +413,7 @@ msgstr "Пользователь %s будет автоматически выв
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
 msgid "You will be logged out automatically in %d seconds."
-msgstr "Вы автоматически выйдете систему через %d сек."
+msgstr "Вы автоматически покините систему через %d сек."
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Logging out of the system."
@@ -462,42 +462,42 @@ msgstr "Перезапуск системы."
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../js/ui/lookingGlass.js:594
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "Расширения не установлены"
 
-#: ../js/ui/lookingGlass.js:631
+#: ../js/ui/lookingGlass.js:678
 msgid "Enabled"
 msgstr "Включено"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:633
+#: ../js/ui/lookingGlass.js:680
 #: ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Выключено"
 
-#: ../js/ui/lookingGlass.js:635
+#: ../js/ui/lookingGlass.js:682
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../js/ui/lookingGlass.js:637
+#: ../js/ui/lookingGlass.js:684
 msgid "Out of date"
 msgstr "Устарело"
 
-#: ../js/ui/lookingGlass.js:662
+#: ../js/ui/lookingGlass.js:709
 msgid "View Source"
 msgstr "Показать код"
 
-#: ../js/ui/lookingGlass.js:668
+#: ../js/ui/lookingGlass.js:715
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: ../js/ui/messageTray.js:1027
+#: ../js/ui/messageTray.js:1037
 msgid "Open"
 msgstr "Открыть"
 
-#: ../js/ui/messageTray.js:2197
+#: ../js/ui/messageTray.js:2207
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -597,42 +597,42 @@ msgstr "Поиск…"
 msgid "No matching results."
 msgstr "Нет совпадений."
 
-#: ../js/ui/statusMenu.js:159
-#: ../js/ui/statusMenu.js:161
-#: ../js/ui/statusMenu.js:226
+#: ../js/ui/statusMenu.js:160
+#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:227
 msgid "Power Off..."
 msgstr "Выключить…"
 
-#: ../js/ui/statusMenu.js:161
-#: ../js/ui/statusMenu.js:225
+#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:226
 msgid "Suspend"
 msgstr "Ждущий режим"
 
-#: ../js/ui/statusMenu.js:182
+#: ../js/ui/statusMenu.js:183
 msgid "Available"
 msgstr "Доступен"
 
-#: ../js/ui/statusMenu.js:187
+#: ../js/ui/statusMenu.js:188
 msgid "Busy"
 msgstr "Занят"
 
-#: ../js/ui/statusMenu.js:195
+#: ../js/ui/statusMenu.js:196
 msgid "My Account"
 msgstr "Моя учётная запись"
 
-#: ../js/ui/statusMenu.js:199
+#: ../js/ui/statusMenu.js:200
 msgid "System Settings"
 msgstr "Системные параметры"
 
-#: ../js/ui/statusMenu.js:206
+#: ../js/ui/statusMenu.js:207
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
 
-#: ../js/ui/statusMenu.js:211
+#: ../js/ui/statusMenu.js:212
 msgid "Switch User"
 msgstr "Сменить пользователя"
 
-#: ../js/ui/statusMenu.js:216
+#: ../js/ui/statusMenu.js:217
 msgid "Log Out..."
 msgstr "Завершить сеанс…"
 
@@ -815,140 +815,141 @@ msgstr "выключено"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:535
+#: ../js/ui/status/network.js:539
 msgid "unmanaged"
 msgstr "не управляется"
 
-#: ../js/ui/status/network.js:537
+#: ../js/ui/status/network.js:541
 msgid "disconnecting..."
 msgstr "отключение…"
 
-#: ../js/ui/status/network.js:543
+#: ../js/ui/status/network.js:547
 msgid "connecting..."
 msgstr "подключение…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:546
+#: ../js/ui/status/network.js:550
 msgid "authentication required"
 msgstr "требуется аутентификация"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:556
+#: ../js/ui/status/network.js:560
 msgid "firmware missing"
 msgstr "отсутствует прошивка"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:563
+#: ../js/ui/status/network.js:567
 msgid "cable unplugged"
 msgstr "кабель не подключен"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:568
+#: ../js/ui/status/network.js:572
 msgid "unavailable"
 msgstr "недоступное"
 
-#: ../js/ui/status/network.js:570
+#: ../js/ui/status/network.js:574
 msgid "connection failed"
 msgstr "сбой подключения"
 
+#: ../js/ui/status/network.js:630
+#: ../js/ui/status/network.js:1537
+msgid "More..."
+msgstr "Ещё…"
+
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:651
-#: ../js/ui/status/network.js:1460
+#: ../js/ui/status/network.js:666
+#: ../js/ui/status/network.js:1475
 msgid "Connected (private)"
 msgstr "Подключено (частное)"
 
-#: ../js/ui/status/network.js:736
+#: ../js/ui/status/network.js:751
 msgid "Auto Ethernet"
 msgstr "Автоматическое Ethernet"
 
-#: ../js/ui/status/network.js:804
+#: ../js/ui/status/network.js:819
 msgid "Auto broadband"
 msgstr "Автоматическое широкополосное"
 
-#: ../js/ui/status/network.js:807
+#: ../js/ui/status/network.js:822
 msgid "Auto dial-up"
 msgstr "Автоматическое коммутируемое"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:931
-#: ../js/ui/status/network.js:1472
+#: ../js/ui/status/network.js:946
+#: ../js/ui/status/network.js:1487
 #, c-format
 msgid "Auto %s"
 msgstr "Автоматическое %s"
 
-#: ../js/ui/status/network.js:933
+#: ../js/ui/status/network.js:948
 msgid "Auto bluetooth"
 msgstr "Автоматическое bluetooth"
 
-#: ../js/ui/status/network.js:1474
+#: ../js/ui/status/network.js:1489
 msgid "Auto wireless"
 msgstr "Автоматическое беспроводное"
 
-#: ../js/ui/status/network.js:1522
-msgid "More..."
-msgstr "Ещё…"
-
-#: ../js/ui/status/network.js:1564
+#: ../js/ui/status/network.js:1579
 msgid "Enable networking"
 msgstr "Включить сеть"
 
-#: ../js/ui/status/network.js:1576
+#: ../js/ui/status/network.js:1591
 msgid "Wired"
 msgstr "Проводное"
 
-#: ../js/ui/status/network.js:1587
+#: ../js/ui/status/network.js:1602
 msgid "Wireless"
 msgstr "Беспроводное"
 
-#: ../js/ui/status/network.js:1597
+#: ../js/ui/status/network.js:1612
 msgid "Mobile broadband"
 msgstr "Мобильное широкополосное"
 
-#: ../js/ui/status/network.js:1607
+#: ../js/ui/status/network.js:1622
 msgid "VPN Connections"
 msgstr "Соединения VPN"
 
-#: ../js/ui/status/network.js:1619
+#: ../js/ui/status/network.js:1634
 msgid "Network Settings"
 msgstr "Сетевые параметры"
 
-#: ../js/ui/status/network.js:1910
+#: ../js/ui/status/network.js:1925
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Вы подключены по мобильному широкополосному соединению «%s»"
 
-#: ../js/ui/status/network.js:1914
+#: ../js/ui/status/network.js:1929
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Вы подключены к беспроводной сети «%s»"
 
-#: ../js/ui/status/network.js:1918
+#: ../js/ui/status/network.js:1933
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Вы подключены к проводной сети «%s»"
 
-#: ../js/ui/status/network.js:1922
+#: ../js/ui/status/network.js:1937
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Вы подключены к сети VPN «%s»"
 
-#: ../js/ui/status/network.js:1927
+#: ../js/ui/status/network.js:1942
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Вы подключены к «%s»"
 
-#: ../js/ui/status/network.js:1935
+#: ../js/ui/status/network.js:1950
 msgid "Connection established"
 msgstr "Соединение установлено"
 
-#: ../js/ui/status/network.js:2061
+#: ../js/ui/status/network.js:2076
 msgid "Networking is disabled"
 msgstr "Сеть отключена"
 
-#: ../js/ui/status/network.js:2186
+#: ../js/ui/status/network.js:2201
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
@@ -1055,22 +1056,22 @@ msgstr "Громкость"
 msgid "Microphone"
 msgstr "Микрофон"
 
-#: ../js/ui/telepathyClient.js:339
+#: ../js/ui/telepathyClient.js:397
 #, c-format
 msgid "%s is online."
 msgstr "%s в сети."
 
-#: ../js/ui/telepathyClient.js:344
+#: ../js/ui/telepathyClient.js:402
 #, c-format
 msgid "%s is offline."
 msgstr "%s не в сети."
 
-#: ../js/ui/telepathyClient.js:347
+#: ../js/ui/telepathyClient.js:405
 #, c-format
 msgid "%s is away."
 msgstr "%s ушёл."
 
-#: ../js/ui/telepathyClient.js:350
+#: ../js/ui/telepathyClient.js:408
 #, c-format
 msgid "%s is busy."
 msgstr "%s занят."
@@ -1078,17 +1079,17 @@ msgstr "%s занят."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:492
+#: ../js/ui/telepathyClient.js:556
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Отправлено %X %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:537
+#: ../js/ui/telepathyClient.js:606
 #, c-format
 msgid "%s is now known as %s"
-msgstr "%s теперь называется %s"
+msgstr "%s теперь известен как %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1111,7 +1112,7 @@ msgstr "Приложение %s завершило запуск"
 #: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "'%s' is ready"
-msgstr "Приложение «%s» готово"
+msgstr "Окно «%s» ожидает"
 
 #. translators:
 #. * The number of sound outputs on a particular device
