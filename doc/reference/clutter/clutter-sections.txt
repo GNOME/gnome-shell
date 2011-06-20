@@ -2731,6 +2731,6 @@ CLUTTER_IS_DROP_ACTION
 CLUTTER_IS_DROP_ACTION_CLASS
 CLUTTER_DROP_ACTION_GET_CLASS
 <SUBSECTION Private>
-ClutterDropActionClass
+ClutterDropActionPrivate
 clutter_drop_action_get_type
 </SECTION>
