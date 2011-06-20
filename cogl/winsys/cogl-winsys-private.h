@@ -24,6 +24,8 @@
 #ifndef __COGL_WINSYS_PRIVATE_H
 #define __COGL_WINSYS_PRIVATE_H
 
+#include "cogl-renderer.h"
+
 #include "cogl-framebuffer-private.h"
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-texture-pixmap-x11-private.h"
@@ -54,6 +56,8 @@ typedef enum
 
 typedef struct _CoglWinsysVtable
 {
+  CoglWinsysID id;
+
   const char *name;
 
   /* Required functions */

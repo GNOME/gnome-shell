@@ -172,7 +172,6 @@ gboolean
 cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 {
   int i;
-  char *renderer_name = getenv ("COGL_RENDERER");
   GString *error_message;
 
   if (renderer->connected)
@@ -184,8 +183,17 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
       const CoglWinsysVtable *winsys = _cogl_winsys_vtable_getters[i]();
       GError *tmp_error = NULL;
 
-      if (renderer_name && strcmp (winsys->name, renderer_name) != 0)
-        continue;
+      if (renderer->winsys_id_override != COGL_WINSYS_ID_ANY)
+        {
+          if (renderer->winsys_id_override != winsys->id)
+            continue;
+        }
+      else
+        {
+          char *user_choice = getenv ("COGL_RENDERER");
+          if (user_choice && strcmp (winsys->name, user_choice) != 0)
+            continue;
+        }
 
       /* At least temporarily we will associate this winsys with
        * the renderer in-case ->renderer_connect calls API that
@@ -281,4 +289,21 @@ cogl_renderer_remove_native_filter (CoglRenderer *renderer,
           break;
         }
     }
+}
+
+void
+cogl_renderer_set_winsys_id (CoglRenderer *renderer,
+                             CoglWinsysID winsys_id)
+{
+  g_return_if_fail (!renderer->connected);
+
+  renderer->winsys_id_override = winsys_id;
+}
+
+CoglWinsysID
+cogl_renderer_get_winsys_id (CoglRenderer *renderer)
+{
+  g_return_val_if_fail (renderer->connected, 0);
+
+  return renderer->winsys_vtable->id;
 }

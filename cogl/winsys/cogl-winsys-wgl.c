@@ -827,6 +827,7 @@ _cogl_winsys_wgl_get_vtable (void)
     {
       memset (&vtable, 0, sizeof (vtable));
 
+      vtable.id = COGL_WINSYS_ID_EGL;
       vtable.name = "WGL";
       vtable.get_proc_address = _cogl_winsys_get_proc_address;
       vtable.renderer_connect = _cogl_winsys_renderer_connect;

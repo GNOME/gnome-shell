@@ -67,6 +67,61 @@ cogl_renderer_new (void);
 
 /* optional configuration APIs */
 
+/**
+ * CoglWinsysID:
+ * @COGL_WINSYS_ID_ANY: Implies no preference for which backend is used
+ * @COGL_WINSYS_ID_STUB: Use the no-op stub backend
+ * @COGL_WINSYS_ID_GLX: Use the GLX window system binding API
+ * @COGL_WINSYS_ID_EGL: Use the Khronos EGL window system binding API
+ * @COGL_WINSYS_ID_WGL: Use the Microsoft Windows WGL binding API
+ *
+ * Identifies specific window system backends that Cogl supports.
+ *
+ * These can be used to query what backend Cogl is using or to try and
+ * explicitly select a backend to use.
+ */
+typedef enum
+{
+  COGL_WINSYS_ID_ANY,
+  COGL_WINSYS_ID_STUB,
+  COGL_WINSYS_ID_GLX,
+  COGL_WINSYS_ID_EGL,
+  COGL_WINSYS_ID_WGL
+} CoglWinsysID;
+
+/**
+ * cogl_renderer_set_winsys_id:
+ * @renderer: A #CoglRenderer
+ * @winsys_id: An ID of the winsys you explicitly want to use.
+ *
+ * This allows you to explicitly select a winsys backend to use instead
+ * of letting Cogl automatically select a backend.
+ *
+ * if you select an unsupported backend then cogl_renderer_connect()
+ * will fail and report an error.
+ *
+ * This may only be called on an un-connected #CoglRenderer.
+ */
+#define cogl_renderer_set_winsys_id cogl_renderer_set_winsys_id_EXP
+void
+cogl_renderer_set_winsys_id (CoglRenderer *renderer,
+                             CoglWinsysID winsys_id);
+
+/**
+ * cogl_renderer_get_winsys_id:
+ * @renderer: A #CoglRenderer
+ *
+ * Queries which window system backend Cogl has chosen to use.
+ *
+ * This may only be called on a connected #CoglRenderer.
+ *
+ * Returns: The #CoglWinsysID corresponding to the chosen window
+ *          system backend.
+ */
+#define cogl_renderer_get_winsys_id cogl_renderer_get_winsys_id_EXP
+CoglWinsysID
+cogl_renderer_get_winsys_id (CoglRenderer *renderer);
+
 #define cogl_renderer_handle_native_event cogl_renderer_handle_native_event_EXP
 /*
  * cogl_renderer_handle_native_event:
