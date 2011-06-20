@@ -63,7 +63,7 @@
     <xi:include href="xml/cogl-object.xml"/>
     <xi:include href="xml/cogl-context.xml"/>
 
-    <section id="cogl-buffer-apis">
+    <section id="cogl-pipeline-apis">
       <title>Setting Up A GPU Pipeline</title>
       <xi:include href="blend-strings.xml"/>
       <xi:include href="xml/cogl-pipeline.xml"/>
