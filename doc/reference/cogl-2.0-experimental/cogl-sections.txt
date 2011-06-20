@@ -33,6 +33,20 @@ cogl_renderer_wayland_get_compositor
 </SECTION>
 
 <SECTION>
+<FILE>cogl-swap-chain</FILE>
+<TITLE>CoglSwapChain: Describe a set of back buffers for flipping between</TITLE>
+cogl_swap_chain_new
+cogl_swap_chain_set_has_alpha
+cogl_swap_chain_set_length
+</SECTION>
+
+<SECTION>
+<FILE>cogl-onscreen-template</FILE>
+<TITLE>CoglOnscreenTemplate: Describe a template for onscreen framebuffers</TITLE>
+cogl_onscreen_template_new
+</SECTION>
+
+<SECTION>
 <FILE>cogl-display</FILE>
 <TITLE>CoglDisplay: Setup a display pipeline</TITLE>
 cogl_display_new
