@@ -33,6 +33,19 @@ cogl_renderer_wayland_get_compositor
 </SECTION>
 
 <SECTION>
+<FILE>cogl-display</FILE>
+<TITLE>CoglDisplay: Setup a display pipeline</TITLE>
+cogl_display_new
+cogl_display_setup
+
+</SUBSECTION>
+cogl_gdl_display_set_plane
+
+</SUBSECTION>
+cogl_wayland_display_set_compositor_display
+</SECTION>
+
+<SECTION>
 <FILE>cogl-context</FILE>
 <TITLE>The Top-Level Context</TITLE>
 
