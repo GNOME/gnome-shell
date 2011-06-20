@@ -3974,23 +3974,69 @@ _clutter_stage_has_device (ClutterStage       *stage,
   return g_hash_table_lookup (priv->devices, device) != NULL;
 }
 
+/**
+ * clutter_stage_set_motion_events_enabled:
+ * @stage: a #ClutterStage
+ * @enabled: %TRUE to enable the motion events delivery, and %FALSE
+ *   otherwise
+ *
+ * Sets whether per-actor motion events (and relative crossing
+ * events) should be disabled or not.
+ *
+ * The default is %TRUE.
+ *
+ * If @enable is %FALSE the following events will not be delivered
+ * to the actors children of @stage.
+ *
+ * <itemizedlist>
+ *   <listitem><para>#ClutterActor::motion-event</para></listitem>
+ *   <listitem><para>#ClutterActor::enter-event</para></listitem>
+ *   <listitem><para>#ClutterActor::leave-event</para></listitem>
+ * </itemizedlist>
+ *
+ * The events will still be delivered to the #ClutterStage.
+ *
+ * The main side effect of this function is that disabling the motion
+ * events will disable picking to detect the #ClutterActor underneath
+ * the pointer for each motion event. This is useful, for instance,
+ * when dragging a #ClutterActor across the @stage: the actor underneath
+ * the pointer is not going to change, so it's meaningless to perform
+ * a pick.
+ *
+ * Since: 1.8
+ */
 void
-_clutter_stage_set_motion_events_enabled (ClutterStage *stage,
-                                          gboolean      enabled)
+clutter_stage_set_motion_events_enabled (ClutterStage *stage,
+                                         gboolean      enabled)
 {
-  ClutterStagePrivate *priv = stage->priv;
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
 
   enabled = !!enabled;
 
   if (priv->motion_events_enabled != enabled)
-    {
-      priv->motion_events_enabled = enabled;
-    }
+    priv->motion_events_enabled = enabled;
 }
 
+/**
+ * clutter_stage_get_motion_events_enabled:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the value set using clutter_stage_set_motion_events_enabled().
+ *
+ * Return value: %TRUE if the per-actor motion event delivery is enabled
+ *   and %FALSE otherwise
+ *
+ * Since: 1.8
+ */
 gboolean
-_clutter_stage_get_motion_events_enabled (ClutterStage *stage)
+clutter_stage_get_motion_events_enabled (ClutterStage *stage)
 {
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
   return stage->priv->motion_events_enabled;
 }
 

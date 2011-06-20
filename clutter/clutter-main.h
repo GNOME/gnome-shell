@@ -143,8 +143,10 @@ guint            clutter_threads_add_repaint_func      (GSourceFunc    func,
                                                         GDestroyNotify notify);
 void             clutter_threads_remove_repaint_func   (guint          handle_id);
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
 void             clutter_set_motion_events_enabled   (gboolean enable);
 gboolean         clutter_get_motion_events_enabled   (void);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 void             clutter_set_default_frame_rate      (guint    frames_per_sec);
 guint            clutter_get_default_frame_rate      (void);
@@ -165,7 +167,6 @@ ClutterInputDevice *clutter_get_input_device_for_id  (gint id_);
 
 void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
                                                       gint           id_);
-
 void             clutter_ungrab_pointer_for_device   (gint id_);
 
 PangoFontMap *   clutter_get_font_map                (void);

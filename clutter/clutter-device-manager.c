@@ -422,7 +422,7 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
        * since the source of the events will always be set to be
        * the stage
        */
-      if (!_clutter_stage_get_motion_events_enabled (device->stage))
+      if (!clutter_stage_get_motion_events_enabled (device->stage))
         continue;
 
       _clutter_input_device_update (device, TRUE);

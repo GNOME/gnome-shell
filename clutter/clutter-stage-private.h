@@ -90,10 +90,6 @@ void            _clutter_stage_remove_device    (ClutterStage       *stage,
 gboolean        _clutter_stage_has_device       (ClutterStage       *stage,
                                                  ClutterInputDevice *device);
 
-void     _clutter_stage_set_motion_events_enabled (ClutterStage *stage,
-                                                   gboolean      enabled);
-gboolean _clutter_stage_get_motion_events_enabled (ClutterStage *stage);
-
 CoglFramebuffer *_clutter_stage_get_active_framebuffer (ClutterStage *stage);
 
 gint32          _clutter_stage_acquire_pick_id          (ClutterStage *stage,

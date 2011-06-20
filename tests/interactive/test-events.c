@@ -70,17 +70,20 @@ blue_button_cb (ClutterActor    *actor,
 }
 
 static gboolean
-red_button_cb (ClutterActor    *actor,
-		ClutterEvent    *event,
-		gpointer         data)
+red_button_cb (ClutterActor *actor,
+               ClutterEvent *event,
+               gpointer      data)
 {
+  ClutterActor *stage;
 
   if (IsMotion)
     IsMotion = FALSE;
   else
     IsMotion = TRUE;
 
-  clutter_set_motion_events_enabled (IsMotion);
+  stage = clutter_actor_get_stage (actor);
+  clutter_stage_set_motion_events_enabled (CLUTTER_STAGE (stage),
+                                           IsMotion);
 
   g_print ("*** Per actor motion events %s ***\n",
            IsMotion ? "enabled" : "disabled");

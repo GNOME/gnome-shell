@@ -107,10 +107,16 @@ green_press_cb (ClutterActor    *actor,
                 ClutterEvent    *event,
                 gpointer         data)
 {
-  clutter_set_motion_events_enabled (!clutter_get_motion_events_enabled ());
+  ClutterActor *stage;
+  gboolean enabled;
+
+  stage = clutter_actor_get_stage (actor);
+  enabled = !clutter_stage_get_motion_events_enabled (CLUTTER_STAGE (stage));
+
+  clutter_stage_set_motion_events_enabled (CLUTTER_STAGE (stage), enabled);
 
   g_print ("per actor motion events are now %s\n",
-           clutter_get_motion_events_enabled () ? "enabled" : "disabled");
+           enabled ? "enabled" : "disabled");
 
   return FALSE;
 }
