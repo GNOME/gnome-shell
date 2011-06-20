@@ -220,7 +220,6 @@
     <xi:include href="xml/clutter-backend.xml"/>
     <xi:include href="xml/clutter-x11.xml"/>
     <xi:include href="xml/clutter-x11-texture-pixmap.xml"/>
-    <xi:include href="xml/clutter-glx.xml"/>
     <xi:include href="xml/clutter-glx-texture-pixmap.xml"/>
     <xi:include href="xml/clutter-win32.xml"/>
     <xi:include href="xml/clutter-egl.xml"/>

@@ -29,7 +29,9 @@
 
 /**
  * SECTION:clutter-glx-texture-pixmap
- * @short_description: A texture which displays the content of an X Pixmap.
+ * @Title: ClutterGLXTexturePixmap
+ * @short_description: A texture which displays the content of an X Pixmap
+ * @Deprecated: 1.4: Use #ClutterX11TexturePixmap instead.
  *
  * #ClutterGLXTexturePixmap is a class for displaying the content of an
  * X Pixmap as a ClutterActor. Used together with the X Composite extension,

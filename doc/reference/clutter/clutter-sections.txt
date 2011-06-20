@@ -1922,11 +1922,6 @@ clutter_binding_pool_get_type
 </SECTION>
 
 <SECTION>
-<TITLE>GLX Specific Support</TITLE>
-<FILE>clutter-glx</FILE>
-</SECTION>
-
-<SECTION>
 <TITLE>EGL Specific Support</TITLE>
 <FILE>clutter-egl</FILE>
 clutter_egl_display
