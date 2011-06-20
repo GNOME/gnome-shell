@@ -12,6 +12,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const AutomountManager = imports.ui.automountManager;
 const AutorunManager = imports.ui.autorunManager;
 const Chrome = imports.ui.chrome;
 const CtrlAltTab = imports.ui.ctrlAltTab;
@@ -40,6 +41,7 @@ const Util = imports.misc.util;
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
+let automountManager = null;
 let autorunManager = null;
 let chrome = null;
 let panel = null;
@@ -144,6 +146,7 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
+    automountManager = new AutomountManager.AutomountManager();
     autorunManager = new AutorunManager.AutorunManager();
 
     layoutManager.init();

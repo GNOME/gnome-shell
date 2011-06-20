@@ -118,6 +118,11 @@ AutorunManager.prototype = {
     },
 
     _onMountAdded: function(monitor, mount) {
+        // don't do anything if our session is not the currently
+        // active one
+        if (!Main.automountManager.ckListener.sessionActive)
+            return;
+
         let discoverer = new ContentTypeDiscoverer(Lang.bind (this,
             function (mount, contentTypes) {
                 this._transDispatcher.addMount(mount, contentTypes);
