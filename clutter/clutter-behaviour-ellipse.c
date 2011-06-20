@@ -37,6 +37,9 @@
  * behaviour will update the actor's position and depth and set them
  * to what is dictated by the ellipses initial position.</para></note>
  *
+ * Deprecated: 1.6: Use clutter_actor_animate(), #ClutterPath and a
+ *   #ClutterPathConstraint instead.
+ *
  * Since: 0.4
  */
 

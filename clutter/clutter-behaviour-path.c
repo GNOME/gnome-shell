@@ -58,6 +58,9 @@
  * starting #ClutterKnot.</note>
  *
  * #ClutterBehaviourPath is available since Clutter 0.2
+ *
+ * Deprecated: 1.6: Use #ClutterPath and #ClutterPathConstraint with
+ *   clutter_actor_animate() instead.
  */
 
 #ifdef HAVE_CONFIG_H

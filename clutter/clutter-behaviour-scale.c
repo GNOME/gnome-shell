@@ -29,6 +29,10 @@
  *   and #ClutterActor:scale-y instead.
  *
  * A #ClutterBehaviourScale interpolates actors size between two values.
+ *
+ * Deprecated: 1.6: Use the #ClutterActor:scale-x and #ClutterActor:scale-y
+ *   properties, and clutter_actor_animate(), or #ClutterAnimator or
+ *   #ClutterState instead.
  */
 
 #ifdef HAVE_CONFIG_H

@@ -44,6 +44,10 @@
  * depth of a set of actors between a start and end depth.
  *
  * #ClutterBehaviourDepth is available since Clutter 0.4.
+ *
+ * Deprecated: 1.6: Use the #ClutterActor:depth property and
+ *   clutter_actor_animate(), or #ClutterAnimator, or #ClutterState
+ *   instead.
  */
 
 G_DEFINE_TYPE (ClutterBehaviourDepth,

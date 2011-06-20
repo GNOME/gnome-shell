@@ -30,6 +30,10 @@
  * #ClutterBehaviourOpacity controls the opacity of a set of actors.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6: Use the #ClutterActor:opacity property and
+ *   clutter_actor_animate(), or #ClutterAnimator, or #ClutterState
+ *   instead.
  */
 
 #ifdef HAVE_CONFIG_H
