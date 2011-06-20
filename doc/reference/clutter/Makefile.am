@@ -42,24 +42,27 @@ FIXXREF_OPTIONS=\
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/glib \
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/gobject \
 	--extra-dir=$(CAIRO_PREFIX)/share/gtk-doc/html/cairo \
-	--extra-dir=$(PANGO_PREFIX)/share/gtk-doc/html/pango
+	--extra-dir=$(PANGO_PREFIX)/share/gtk-doc/html/pango \
+	--extra-dir=$(COGL_PREFIX)/share/gtk-doc/html/cogl
 
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/clutter/*.h \
+HFILE_GLOB=\
+	$(top_srcdir)/clutter/*.h \
 	$(top_builddir)/clutter/*.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \
-	$(top_srcdir)/clutter/egl/clutter-egl.h \
-	$(top_srcdir)/clutter/egl/clutter-cex100.h \
+	$(top_srcdir)/clutter/cogl/clutter-glx-texture-pixmap.h \
+	$(top_srcdir)/clutter/cogl/clutter-egl.h \
+	$(top_srcdir)/clutter/cogl/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h
-CFILE_GLOB=$(top_srcdir)/clutter/*.c \
+
+CFILE_GLOB=\
+	$(top_srcdir)/clutter/*.c \
+	$(top_srcdir)/clutter/cogl/*.c \
 	$(top_srcdir)/clutter/x11/*.c \
-	$(top_srcdir)/clutter/glx/*.c \
-	$(top_srcdir)/clutter/win32/*.c \
-	$(top_srcdir)/clutter/egl/*.c
+	$(top_srcdir)/clutter/win32/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -94,9 +97,7 @@ IGNORE_HFILES=\
 	clutter-timeout-interval.h 	\
 	cally				\
 	cogl 				\
-	egl 				\
 	evdev				\
-	glx 				\
 	osx 				\
 	x11 				\
 	wayland				\
@@ -105,9 +106,9 @@ IGNORE_HFILES=\
 EXTRA_HFILES=\
         $(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \
-	$(top_srcdir)/clutter/egl/clutter-egl.h \
-	$(top_srcdir)/clutter/egl/clutter-cex100.h \
+	$(top_srcdir)/clutter/cogl/clutter-glx-texture-pixmap.h \
+	$(top_srcdir)/clutter/cogl/clutter-egl.h \
+	$(top_srcdir)/clutter/cogl/clutter-cex100.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h
 

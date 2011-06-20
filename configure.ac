@@ -123,16 +123,16 @@ m4_define([gtk_doc_req_version],        [1.13])
 m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
 
-AC_SUBST([GLIB_REQ_VERSION], [glib_req_version])
-AC_SUBST([COGL_REQ_VERSION], [cogl_req_version])
-AC_SUBST([JSON_GLIB_REQ_VERSION], [json_glib_req_version])
-AC_SUBST([ATK_REQ_VERSION], [atk_req_version])
-AC_SUBST([CAIRO_REQ_VERSION], [cairo_req_version])
-AC_SUBST([PANGO_REQ_VERSION], [pango_req_version])
-AC_SUBST([GI_REQ_VERSION], [gi_req_version])
-AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
-AC_SUBST([GTK_DOC_REQ_VERSION], [gtk_doc_req_version])
-AC_SUBST([XFIXES_REQ_VERSION], [xfixes_req_version])
+AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
+AC_SUBST([COGL_REQ_VERSION],       [cogl_req_version])
+AC_SUBST([JSON_GLIB_REQ_VERSION],  [json_glib_req_version])
+AC_SUBST([ATK_REQ_VERSION],        [atk_req_version])
+AC_SUBST([CAIRO_REQ_VERSION],      [cairo_req_version])
+AC_SUBST([PANGO_REQ_VERSION],      [pango_req_version])
+AC_SUBST([GI_REQ_VERSION],         [gi_req_version])
+AC_SUBST([UPROF_REQ_VERSION],      [uprof_req_version])
+AC_SUBST([GTK_DOC_REQ_VERSION],    [gtk_doc_req_version])
+AC_SUBST([XFIXES_REQ_VERSION],     [xfixes_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -305,7 +305,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
           # Make sure we don't enable tslib and evdev at the same time, we
           # don't support multiple event backends yet.
           AS_IF([test "x$have_tslib" = "xyes" -a "x$have_evdev" = "xyes"],
-                [AC_MSG_ERROR([Can't enable both tslib and evdev events])])
+                [AC_MSG_ERROR([Cannot enable both tslib and evdev events])])
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
@@ -425,8 +425,8 @@ AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$CLUTTER_WINSYS" = "xwayland"])
 AM_CONDITIONAL(SUPPORT_STUB, [test "x$CLUTTER_WINSYS" = "xwin32" -o \
-			      "x$CLUTTER_WINSYS" = "xosx" -o \
-			      "x$CLUTTER_WINSYS" = "xwayland"])
+                                   "x$CLUTTER_WINSYS" = "xosx" -o \
+                                   "x$CLUTTER_WINSYS" = "xwayland"])
 
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 AM_CONDITIONAL(SUPPORT_EVDEV, [test "x$have_evdev" = "xyes"])
@@ -436,8 +436,7 @@ dnl COGL_ENABLE_EXPERIMENTAL_2_0_API is defined while compiling clutter
 dnl and cogl code we use a define in config.h instead. This helps ensure
 dnl other tools such as glib-mkenums and gir-scanner don't end up
 dnl using the define also.
-AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
-          [Can use Cogl 2.0 API internally])
+AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1], [Can use Cogl 2.0 API internally])
 
 dnl === Clutter configuration =================================================
 
@@ -874,10 +873,12 @@ AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "
 CAIRO_PREFIX="`$PKG_CONFIG --variable=prefix cairo`"
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
+COGL_PREFIX="`$PKG_CONFIG --variable=prefix cogl-1.0`"
 ATK_PREFIX="`$PKG_CONFIG --variable=prefix atk`"
 AC_SUBST(CAIRO_PREFIX)
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(PANGO_PREFIX)
+AC_SUBST(COGL_PREFIX)
 AC_SUBST(ATK_PREFIX)
 
 dnl === Manual ================================================================
