@@ -58,8 +58,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
-AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define no-dist-gzip dist-bzip2])
-
+AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define no-dist-gzip dist-xz tar-ustar])
 AM_SILENT_RULES([yes])
 
 AC_SUBST([CLUTTER_MAJOR_VERSION],  [clutter_major_version])
