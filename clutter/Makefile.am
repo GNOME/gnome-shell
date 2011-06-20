@@ -383,8 +383,8 @@ clutterglx_include_HEADERS = $(glx_source_h)
 endif
 
 if SUPPORT_GLX
-backend_source_h += $(cogl_source_h)
-backend_source_c += $(cogl_source_c)
+backend_source_h += $(cogl_source_h) $(glx_source_h)
+backend_source_c += $(cogl_source_c) $(glx_source_c)
 backend_source_h_priv += $(cogl_source_h_priv)
 endif # SUPPORT_GLX
 
