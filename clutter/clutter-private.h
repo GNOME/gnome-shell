@@ -178,16 +178,17 @@ typedef struct
 gboolean _clutter_threads_dispatch      (gpointer data);
 void     _clutter_threads_dispatch_free (gpointer data);
 
-ClutterMainContext *    _clutter_context_get_default            (void);
-gboolean                _clutter_context_is_initialized         (void);
-PangoContext *          _clutter_context_create_pango_context   (void);
-PangoContext *          _clutter_context_get_pango_context      (void);
-ClutterPickMode         _clutter_context_get_pick_mode          (void);
-void                    _clutter_context_push_shader_stack      (ClutterActor *actor);
-ClutterActor *          _clutter_context_pop_shader_stack       (ClutterActor *actor);
-ClutterActor *          _clutter_context_peek_shader_stack      (void);
-guint32                 _clutter_context_acquire_id             (gpointer      key);
-void                    _clutter_context_release_id             (guint32       id_);
+ClutterMainContext *    _clutter_context_get_default                    (void);
+gboolean                _clutter_context_is_initialized                 (void);
+PangoContext *          _clutter_context_create_pango_context           (void);
+PangoContext *          _clutter_context_get_pango_context              (void);
+ClutterPickMode         _clutter_context_get_pick_mode                  (void);
+void                    _clutter_context_push_shader_stack              (ClutterActor *actor);
+ClutterActor *          _clutter_context_pop_shader_stack               (ClutterActor *actor);
+ClutterActor *          _clutter_context_peek_shader_stack              (void);
+guint32                 _clutter_context_acquire_id                     (gpointer      key);
+void                    _clutter_context_release_id                     (guint32       id_);
+gboolean                _clutter_context_get_motion_events_enabled      (void);
 
 const gchar *_clutter_gettext (const gchar *str);
 

@@ -303,9 +303,7 @@ clutter_set_motion_events_enabled (gboolean enable)
 gboolean
 clutter_get_motion_events_enabled (void)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  return context->motion_events_per_actor;
+  return _clutter_context_get_motion_events_enabled ();
 }
 
 ClutterActor *
@@ -3098,4 +3096,12 @@ _clutter_context_pop_shader_stack (ClutterActor *actor)
   context->shaders = g_slist_remove (context->shaders, actor);
 
   return _clutter_context_peek_shader_stack ();
+}
+
+gboolean
+_clutter_context_get_motion_events_enabled (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return context->motion_events_per_actor;
 }
