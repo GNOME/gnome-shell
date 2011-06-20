@@ -11,6 +11,28 @@ cogl_object_set_user_data
 </SECTION>
 
 <SECTION>
+<FILE>cogl-renderer</FILE>
+<TITLE>CoglRenderer: Connect to a backend renderer</TITLE>
+cogl_renderer_new
+cogl_renderer_connect
+
+</SUBSECTION>
+cogl_renderer_xlib_set_foreign_display
+cogl_renderer_xlib_get_foreign_display
+
+</SUBSECTION>
+cogl_renderer_add_native_filter
+cogl_renderer_remove_native_filter
+cogl_renderer_handle_native_event
+
+</SUBSECTION>
+cogl_renderer_wayland_set_foreign_display
+cogl_renderer_wayland_get_display
+cogl_renderer_wayland_set_foreign_compositor
+cogl_renderer_wayland_get_compositor
+</SECTION>
+
+<SECTION>
 <FILE>cogl-context</FILE>
 <TITLE>The Top-Level Context</TITLE>
 
