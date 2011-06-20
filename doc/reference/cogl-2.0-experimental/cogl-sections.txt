@@ -549,6 +549,22 @@ cogl_buffer_usage_hint_get_type
 </SECTION>
 
 <SECTION>
+<FILE>cogl-attribute-buffer</FILE>
+<TITLE>CoglAttributeBuffer: Buffers of vertex attributes</TITLE>
+CoglAttributeBuffer
+cogl_attribute_buffer_new
+cogl_is_attribute_buffer
+</SECTION>
+
+<SECTION>
+<FILE>cogl-index-buffer</FILE>
+<TITLE>CoglIndexBuffer: Buffers of vertex indices</TITLE>
+CoglIndexBuffer
+cogl_index_buffer_new
+cogl_is_index_buffer
+</SECTION>
+
+<SECTION>
 <FILE>cogl-vector</FILE>
 <TITLE>3 Component Vectors</TITLE>
 cogl_vector3_init
