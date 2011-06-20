@@ -72,8 +72,8 @@
     <section id="cogl-buffer-apis">
       <title>Allocating GPU Memory</title>
       <xi:include href="xml/cogl-buffer.xml"/>
-      <xi:include href="xml/cogl-vertex-array.xml"/>
-      <xi:include href="xml/cogl-index-array.xml"/>
+      <xi:include href="xml/cogl-attribute-buffer.xml"/>
+      <xi:include href="xml/cogl-index-buffer.xml"/>
     </section>
 
     <section id="cogl-buffer-layout-apis">
