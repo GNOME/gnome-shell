@@ -75,6 +75,7 @@ struct _ClutterEffect
  * @post_paint: virtual function
  * @get_paint_volume: virtual function
  * @paint: virtual function
+ * @pick: virtual function
  *
  * The #ClutterEffectClass structure contains only private data
  *
@@ -105,7 +106,7 @@ struct _ClutterEffectClass
 
 GType clutter_effect_get_type (void) G_GNUC_CONST;
 
-void           clutter_effect_queue_rerun          (ClutterEffect *effect);
+void    clutter_effect_queue_repaint    (ClutterEffect *effect);
 
 /*
  * ClutterActor API

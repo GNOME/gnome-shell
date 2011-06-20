@@ -264,7 +264,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
   meta_class->set_actor = clutter_gesture_action_set_actor;
 
   /**
-   * ClutterGestureAction::gesture_begin:
+   * ClutterGestureAction::gesture-begin:
    * @action: the #ClutterGestureAction that emitted the signal
    * @actor: the #ClutterActor attached to the @action
    *

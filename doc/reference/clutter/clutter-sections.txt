@@ -612,6 +612,8 @@ clutter_stage_set_no_clear_hint
 clutter_stage_get_no_clear_hint
 clutter_stage_set_accept_focus
 clutter_stage_get_accept_focus
+clutter_stage_get_motion_events_enabled
+clutter_stage_set_motion_events_enabled
 
 <SUBSECTION>
 ClutterPerspective
@@ -2482,8 +2484,8 @@ ClutterClickActionPrivate
 <FILE>clutter-effect</FILE>
 ClutterEffect
 ClutterEffectClass
-ClutterEffectRunFlags
-clutter_effect_queue_rerun
+ClutterEffectPaintFlags
+clutter_effect_queue_repaint
 <SUBSECTION Standard>
 CLUTTER_TYPE_EFFECT
 CLUTTER_EFFECT
