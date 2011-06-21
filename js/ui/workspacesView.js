@@ -49,6 +49,10 @@ WorkspacesView.prototype = {
         this._height = 0;
         this._x = 0;
         this._y = 0;
+        this._clipX = 0;
+        this._clipY = 0;
+        this._clipWidth = 0;
+        this._clipHeight = 0;
         this._workspaceRatioSpacing = 0;
         this._spacing = 0;
         this._animating = false; // tweening
@@ -92,7 +96,8 @@ WorkspacesView.prototype = {
         this._overviewShownId =
             Main.overview.connect('shown',
                                  Lang.bind(this, function() {
-                this.actor.set_clip(this._x, this._y, this._width, this._height);
+                this.actor.set_clip(this._clipX, this._clipY,
+                                    this._clipWidth, this._clipHeight);
         }));
 
         this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
@@ -134,6 +139,13 @@ WorkspacesView.prototype = {
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setGeometry(x, y, width, height);
+    },
+
+    setClipRect: function(x, y, width, height) {
+        this._clipX = x;
+        this._clipY = y;
+        this._clipWidth = width;
+        this._clipHeight = height;
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -750,6 +762,13 @@ WorkspacesDisplay.prototype = {
         let [x, y] = this.actor.get_transformed_position();
 
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+
+        let clipWidth = width - controlsVisible;
+        let clipHeight = (fullHeight / fullWidth) * clipWidth;
+        let clipX = rtl ? x + controlsVisible : x;
+        let clipY = y + (fullHeight - clipHeight) / 2;
+
+        this.workspacesView.setClipRect(clipX, clipY, clipWidth, clipHeight);
 
         if (this._zoomOut) {
             width -= controlsNatural;
