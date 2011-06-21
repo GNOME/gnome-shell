@@ -142,7 +142,6 @@ void     shell_global_reexec_self               (ShellGlobal  *global);
 
 void     shell_global_launch_calendar_server    (ShellGlobal  *global);
 
-
 typedef void (*ShellGlobalScreenshotCallback)  (ShellGlobal *global, gboolean success);
 
 void    shell_global_screenshot_area           (ShellGlobal  *global,
@@ -160,6 +159,12 @@ gboolean shell_global_screenshot_window         (ShellGlobal  *global,
 void    shell_global_screenshot                (ShellGlobal  *global,
                                                 const char *filename,
                                                 ShellGlobalScreenshotCallback callback);
+typedef enum {
+  SHELL_SESSION_USER,
+  SHELL_SESSION_GDM
+} ShellSessionType;
+
+ShellSessionType shell_global_get_session_type  (ShellGlobal  *global);
 
 G_END_DECLS
 

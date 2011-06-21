@@ -56,6 +56,8 @@ struct _ShellGlobal {
   MetaScreen *meta_screen;
   GdkScreen *gdk_screen;
 
+  ShellSessionType session_type;
+
   /* We use this window to get a notification from GTK+ when
    * a widget in our process does a GTK+ grab.  See
    * http://bugzilla.gnome.org/show_bug.cgi?id=570641
@@ -90,6 +92,7 @@ struct _ShellGlobal {
 enum {
   PROP_0,
 
+  PROP_SESSION_TYPE,
   PROP_OVERLAY_GROUP,
   PROP_SCREEN,
   PROP_GDK_SCREEN,
@@ -135,7 +138,9 @@ shell_global_set_property(GObject         *object,
     case PROP_STAGE_INPUT_MODE:
       shell_global_set_stage_input_mode (global, g_value_get_enum (value));
       break;
-
+    case PROP_SESSION_TYPE:
+      global->session_type = g_value_get_enum (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -152,6 +157,9 @@ shell_global_get_property(GObject         *object,
 
   switch (prop_id)
     {
+    case PROP_SESSION_TYPE:
+      g_value_set_enum (value, shell_global_get_session_type (global));
+      break;
     case PROP_OVERLAY_GROUP:
       g_value_set_object (value, meta_get_overlay_group_for_screen (global->meta_screen));
       break;
@@ -330,6 +338,14 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_STRING,
                     G_TYPE_STRING);
 
+  g_object_class_install_property (gobject_class,
+                                   PROP_SESSION_TYPE,
+                                   g_param_spec_enum ("session-type",
+                                                      "Session Type",
+                                                      "The type of session",
+                                                      SHELL_TYPE_SESSION_TYPE,
+                                                      SHELL_SESSION_USER,
+                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (gobject_class,
                                    PROP_OVERLAY_GROUP,
                                    g_param_spec_object ("overlay-group",
@@ -1885,4 +1901,33 @@ shell_global_screenshot_window (ShellGlobal  *global,
   cairo_surface_destroy (image);
 
   return status == CAIRO_STATUS_SUCCESS;
+}
+
+/**
+ * shell_global_get_session_type:
+ * @global: The #ShellGlobal.
+ *
+ * Gets the type of session gnome-shell provides.
+ *
+ * The type determines what UI elements are displayed,
+ * what keybindings work, and generally how the shell
+ * behaves.
+ *
+ * A session type of #SHELL_SESSION_USER means gnome-shell
+ * will enable the activities overview, status menu, run dialog,
+ * etc. This is the default.
+ *
+ * A session type of #SHELL_SESSION_GDM means gnome-shell
+ * will enable a login dialog and run in a more confined
+ * way. This type is suitable for the display manager.
+ *
+ * Returns the type of session gnome-shell is providing.
+ */
+ShellSessionType
+shell_global_get_session_type (ShellGlobal  *global)
+{
+  g_return_val_if_fail (SHELL_IS_GLOBAL (global),
+                        SHELL_SESSION_USER);
+
+  return global->session_type;
 }

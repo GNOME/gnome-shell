@@ -23,6 +23,7 @@
 #include <telepathy-glib/debug-sender.h>
 
 #include "shell-a11y.h"
+#include "shell-global.h"
 #include "shell-global-private.h"
 #include "shell-perf-log.h"
 #include "st.h"
@@ -31,6 +32,8 @@ extern GType gnome_shell_plugin_get_type (void);
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
+
+static gboolean is_gdm_mode = FALSE;
 
 static void
 shell_dbus_init (gboolean replace)
@@ -466,6 +469,12 @@ GOptionEntry gnome_shell_options[] = {
     N_("Print version"),
     NULL
   },
+  {
+    "gdm-mode", 0, 0, G_OPTION_ARG_NONE,
+    &is_gdm_mode,
+    N_("Mode used by GDM for login screen"),
+    NULL
+  },
   { NULL }
 };
 
@@ -474,6 +483,7 @@ main (int argc, char **argv)
 {
   GOptionContext *ctx;
   GError *error = NULL;
+  ShellSessionType session_type;
   int ecode;
   TpDebugSender *sender;
 
@@ -540,7 +550,12 @@ main (int argc, char **argv)
   g_log_set_default_handler (default_log_handler, sender);
 
   /* Initialize the global object */
-  _shell_global_init (NULL);
+  if (is_gdm_mode)
+      session_type = SHELL_SESSION_GDM;
+  else
+      session_type = SHELL_SESSION_USER;
+
+  _shell_global_init ("session-type", session_type, NULL);
 
   ecode = meta_run ();
 

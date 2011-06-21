@@ -16,6 +16,9 @@ GjsContext *_shell_global_get_gjs_context (ShellGlobal  *global);
 gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
                                          XEvent       *xev);
 
+void     _shell_global_set_session_type (ShellGlobal      *global,
+                                         ShellSessionType  session_type);
+
 /* Used for async screenshot grabbing */
 typedef struct _screenshot_data {
   ShellGlobal  *global;
