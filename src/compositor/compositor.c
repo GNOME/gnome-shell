@@ -11,6 +11,7 @@
 #include <meta/compositor-mutter.h>
 #include "xprops.h"
 #include <meta/prefs.h>
+#include <meta/main.h>
 #include <meta/meta-shadow-factory.h>
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
@@ -474,20 +475,37 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   gint            width, height;
   XWindowAttributes attr;
   long            event_mask;
+  guint           n_retries;
+  guint           max_retries;
 
   /* Check if the screen is already managed */
   if (meta_screen_get_compositor_data (screen))
     return;
 
-  meta_error_trap_push_with_return (display);
-  XCompositeRedirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
-  XSync (xdisplay, FALSE);
+  if (meta_get_replace_current_wm ())
+    max_retries = 5;
+  else
+    max_retries = 1;
 
-  if (meta_error_trap_pop_with_return (display))
+  n_retries = 0;
+
+  /* We can race with an exiting process to claim compositing over the root window;
+   * There's really not a great way to deal with this, so we just sleep and retry.
+   */
+  while (TRUE)
     {
-      g_warning ("Another compositing manager is running on screen %i",
-                 screen_number);
-      return;
+      meta_error_trap_push_with_return (display);
+      XCompositeRedirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
+      XSync (xdisplay, FALSE);
+
+      if (!meta_error_trap_pop_with_return (display))
+        break;
+
+      if (n_retries == max_retries)
+        g_error ("Another compositing manager is running on screen %i", screen_number);
+
+      n_retries++;
+      g_usleep (G_USEC_PER_SEC);
     }
 
   info = g_new0 (MetaCompScreen, 1);
