@@ -7,6 +7,7 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
@@ -80,6 +81,7 @@ Indicator.prototype = {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this.menu.addAction(_("Power Settings"),function() {
+            Main.overview.hide();
             let app = Shell.AppSystem.get_default().get_app('gnome-power-panel.desktop');
             app.activate(-1);
         });

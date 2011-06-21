@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
@@ -68,9 +69,11 @@ XKBIndicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Show Keyboard Layout..."), Lang.bind(this, function() {
+            Main.overview.hide();
             Util.spawn(['gkbd-keyboard-display', '-g', String(this._config.get_current_group() + 1)]);
         }));
         this.menu.addAction(_("Localization Settings"), function() {
+            Main.overview.hide();
             let app = Shell.AppSystem.get_default().get_app('gnome-region-panel.desktop');
             app.activate(-1);
         });

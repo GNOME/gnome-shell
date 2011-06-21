@@ -9,6 +9,7 @@ const Gvc = imports.gi.Gvc;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
@@ -61,6 +62,7 @@ Indicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Sound Settings"), function() {
+            Main.overview.hide();
             let app = Shell.AppSystem.get_default().get_app('gnome-sound-panel.desktop');
             app.activate(-1);
         });

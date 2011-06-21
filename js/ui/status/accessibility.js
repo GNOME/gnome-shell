@@ -10,6 +10,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
@@ -88,6 +89,7 @@ ATIndicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Universal Access Settings"), function() {
+            Main.overview.hide();
             let app = Shell.AppSystem.get_default().get_app('gnome-universal-access-panel.desktop');
             app.activate(-1);
         });

@@ -90,6 +90,7 @@ Indicator.prototype = {
         this._updateFullMenu();
 
         this.menu.addAction(_("Bluetooth Settings"), function() {
+            Main.overview.hide()
             let app = Shell.AppSystem.get_default().get_app('bluetooth-properties.desktop');
             app.activate(-1);
         });
