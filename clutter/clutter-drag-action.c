@@ -78,6 +78,7 @@ struct _ClutterDragActionPrivate
   ClutterActor *drag_handle;
   ClutterDragAxis drag_axis;
 
+  ClutterInputDevice *device;
   gulong button_press_id;
   gulong capture_id;
 
@@ -290,6 +291,9 @@ on_captured_event (ClutterActor      *stage,
   if (!priv->in_drag)
     return FALSE;
 
+  if (clutter_event_get_device (event) != priv->device)
+    return FALSE;
+
   switch (clutter_event_type (event))
     {
     case CLUTTER_MOTION:
@@ -343,6 +347,8 @@ on_button_press (ClutterActor      *actor,
 
   clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
   priv->press_state = clutter_event_get_state (event);
+
+  priv->device = clutter_event_get_device (event);
 
   priv->last_motion_x = priv->press_x;
   priv->last_motion_y = priv->press_y;
