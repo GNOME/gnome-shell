@@ -556,6 +556,9 @@ WorkspacesDisplay.prototype = {
         this._updateAlwaysZoom();
 
         global.screen.connect('monitors-changed', Lang.bind(this, this._updateAlwaysZoom));
+        global.screen.connect('notify::n-workspaces',
+                              Lang.bind(this, this._workspacesChanged));
+
         Main.xdndHandler.connect('drag-begin', Lang.bind(this, function(){
             this._alwaysZoomOut = true;
         }));
@@ -565,7 +568,6 @@ WorkspacesDisplay.prototype = {
             this._updateAlwaysZoom();
         }));
 
-        this._nWorkspacesNotifyId = 0;
         this._switchWorkspaceNotifyId = 0;
 
         this._itemDragBeginId = 0;
@@ -594,10 +596,6 @@ WorkspacesDisplay.prototype = {
             this.workspacesView.destroy();
         this.workspacesView = new WorkspacesView(this._workspaces);
         this._updateWorkspacesGeometry();
-
-        this._nWorkspacesNotifyId =
-            global.screen.connect('notify::n-workspaces',
-                                  Lang.bind(this, this._workspacesChanged));
 
         this._restackedNotifyId =
             global.screen.connect('restacked',
@@ -629,10 +627,6 @@ WorkspacesDisplay.prototype = {
         this._controls.hide();
         this._thumbnailsBox.hide();
 
-        if (this._nWorkspacesNotifyId > 0) {
-            global.screen.disconnect(this._nWorkspacesNotifyId);
-            this._nWorkspacesNotifyId = 0;
-        }
         if (this._restackedNotifyId > 0){
             global.screen.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
@@ -795,6 +789,12 @@ WorkspacesDisplay.prototype = {
         if (oldNumWorkspaces == newNumWorkspaces)
             return;
 
+        this._updateAlwaysZoom();
+        this._updateZoom();
+
+        if (this.workspacesView == null)
+            return;
+
         let lostWorkspaces = [];
         if (newNumWorkspaces > oldNumWorkspaces) {
             // Assume workspaces are only added at the end
@@ -830,8 +830,6 @@ WorkspacesDisplay.prototype = {
 
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces);
-        this._updateAlwaysZoom();
-        this._updateZoom();
     },
 
     _updateZoom : function() {
