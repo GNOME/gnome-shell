@@ -7,6 +7,7 @@ const Gio = imports.gi.Gio;
 const Params = imports.misc.params;
 
 const Main = imports.ui.main;
+const ShellMountOperation = imports.ui.shellMountOperation;
 const ScreenSaver = imports.misc.screenSaver;
 
 // GSettings keys
@@ -157,8 +158,12 @@ AutomountManager.prototype = {
             return;
         }
 
-        // TODO: mount op
-        this._mountVolume(volume, null);
+        if (params.useMountOp) {
+            let operation = new ShellMountOperation.ShellMountOperation(volume);
+            this._mountVolume(volume, operation.mountOp);
+        } else {
+            this._mountVolume(volume, null);
+        }
     },
 
     _mountVolume: function(volume, operation) {

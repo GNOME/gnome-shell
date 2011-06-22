@@ -108,6 +108,7 @@ shell_public_headers_h =		\
 	shell-gtk-embed.h		\
 	shell-global.h			\
 	shell-mobile-providers.h	\
+	shell-mount-operation.h		\
 	shell-perf-log.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
@@ -141,6 +142,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-gtk-embed.c		\
 	shell-global.c			\
 	shell-mobile-providers.c	\
+	shell-mount-operation.c		\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\

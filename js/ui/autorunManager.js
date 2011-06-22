@@ -7,6 +7,7 @@ const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const ShellMountOperation = imports.ui.shellMountOperation;
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
@@ -202,13 +203,13 @@ AutorunManager.prototype = {
     },
 
     ejectMount: function(mount) {
-        // TODO: we need to have a StMountOperation here to e.g. trigger
-        // shell dialogs when applications are blocking the mount.
+        let mountOp = new ShellMountOperation.ShellMountOperation(mount);
+
         if (mount.can_eject())
-            mount.eject_with_operation(0, null, null,
+            mount.eject_with_operation(0, mountOp.mountOp, null,
                                        Lang.bind(this, this._onMountEject));
         else
-            mount.unmount_with_operation(0, null, null,
+            mount.unmount_with_operation(0, mountOp.mountOp, null,
                                          Lang.bind(this, this._onMountEject));
     },
 
@@ -219,6 +220,9 @@ AutorunManager.prototype = {
             else
                 mount.unmount_with_operation_finish(res);
         } catch (e) {
+            // FIXME: we need to ignore G_IO_ERROR_FAILED_HANDLED errors here
+            // but we can't access the error code from JS.
+            // See https://bugzilla.gnome.org/show_bug.cgi?id=591480
             log('Unable to eject the mount ' + mount.get_name() 
                 + ': ' + e.toString());
         }
