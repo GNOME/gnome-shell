@@ -30,7 +30,7 @@ function ignoreAutorunForMount(mount) {
     let volume = mount.get_volume();
 
     if ((root.is_native() && !isMountRootHidden(root)) ||
-        (volume && volume.should_automount()))
+        (volume && volume.allowAutorun && volume.should_automount()))
         return false;
 
     return true;

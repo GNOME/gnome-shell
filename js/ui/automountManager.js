@@ -13,6 +13,8 @@ const ScreenSaver = imports.misc.screenSaver;
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
 const SETTING_ENABLE_AUTOMOUNT = 'automount';
 
+const AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
+
 const ConsoleKitSessionIface = {
     name: 'org.freedesktop.ConsoleKit.Session',
     methods: [{ name: 'IsActive',
@@ -128,13 +130,6 @@ AutomountManager.prototype = {
         params = Params.parse(params, { checkSession: true,
                                         useMountOp: true });
 
-        if (!this._settings.get_boolean(SETTING_ENABLE_AUTOMOUNT))
-            return;
-
-        if (!volume.should_automount() ||
-            !volume.can_mount())
-            return;
-
         if (params.checkSession) {
             // if we're not in the current ConsoleKit session,
             // don't attempt automount
@@ -149,16 +144,32 @@ AutomountManager.prototype = {
             }
         }
 
+        if (!this._settings.get_boolean(SETTING_ENABLE_AUTOMOUNT) ||
+            !volume.should_automount() ||
+            !volume.can_mount()) {
+	    // allow the autorun to run anyway; this can happen if the
+            // mount gets added programmatically later, even if 
+            // should_automount() or can_mount() are false, like for
+            // blank optical media.
+            this._allowAutorun(volume);
+            this._allowAutorunExpire(volume);
+
+            return;
+        }
+
         // TODO: mount op
         this._mountVolume(volume, null);
     },
 
     _mountVolume: function(volume, operation) {
+        this._allowAutorun(volume);
         volume.mount(0, operation, null,
                      Lang.bind(this, this._onVolumeMounted));
     },
 
     _onVolumeMounted: function(volume, res) {
+        this._allowAutorunExpire(volume);
+
         try {
             volume.mount_finish(res);
         } catch (e) {
@@ -172,5 +183,16 @@ AutomountManager.prototype = {
             this._volumeQueue.filter(function(element) {
                 return (element != volume);
             });
+    },
+
+    _allowAutorun: function(volume) {
+        volume.allowAutorun = true;
+    },
+
+    _allowAutorunExpire: function(volume) {
+        Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, function() {
+            volume.allowAutorun = false;
+            return false;
+        });
     }
 }
