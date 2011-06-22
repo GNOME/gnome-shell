@@ -242,7 +242,8 @@ _clutter_paint_volume_update_is_empty (ClutterPaintVolume *pv)
  * @pv: a #ClutterPaintVolume
  * @width: the width of the paint volume, in pixels
  *
- * Sets the width of the paint volume.
+ * Sets the width of the paint volume. The width is measured along
+ * the x axis in the actor coordinates that @pv is associated with.
  *
  * Since: 1.6
  */
@@ -253,13 +254,15 @@ clutter_paint_volume_set_width (ClutterPaintVolume *pv,
   gfloat right_xpos;
 
   g_return_if_fail (pv != NULL);
-  g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (width >= 0.0f);
 
   /* If the volume is currently empty then only the origin is
    * currently valid */
   if (pv->is_empty)
     pv->vertices[1] = pv->vertices[3] = pv->vertices[4] = pv->vertices[0];
+
+  if (!pv->is_axis_aligned)
+    _clutter_paint_volume_axis_align (pv);
 
   right_xpos = pv->vertices[0].x + width;
 
@@ -279,9 +282,30 @@ clutter_paint_volume_set_width (ClutterPaintVolume *pv,
  * clutter_paint_volume_get_width:
  * @pv: a #ClutterPaintVolume
  *
- * Retrieves the width set using clutter_paint_volume_get_width()
+ * Retrieves the width of the volume's, axis aligned, bounding box.
  *
- * Return value: the width, in pixels
+ * In other words; this takes into account what actor's coordinate
+ * space @pv belongs too and conceptually fits an axis aligned box
+ * around the volume. It returns the size of that bounding box as
+ * measured along the x-axis.
+ *
+ * <note>If, for example, clutter_actor_get_transformed_paint_volume()
+ * is used to transform a 2D child actor that is 100px wide, 100px
+ * high and 0px deep into container coordinates then the width might
+ * not simply be 100px if the child actor has a 3D rotation applied to
+ * it.
+ *
+ * Remember; after clutter_actor_get_transformed_paint_volume() is
+ * used then a transformed child volume will be defined relative to the
+ * ancestor container actor and so a 2D child actor
+ * can have a 3D bounding volume.</note>
+ *
+ * <note>There are no accuracy guarantees for the reported width,
+ * except that it must always be >= to the true width. This is
+ * because actors may report simple, loose fitting paint-volumes
+ * for efficiency</note>
+
+ * Return value: the width, in units of @pv's local coordinate system.
  *
  * Since: 1.6
  */
@@ -289,10 +313,19 @@ gfloat
 clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
 {
   g_return_val_if_fail (pv != NULL, 0.0);
-  g_return_val_if_fail (pv->is_axis_aligned, 0);
 
   if (pv->is_empty)
     return 0;
+  else if (!pv->is_axis_aligned)
+    {
+      ClutterPaintVolume tmp;
+      float width;
+      _clutter_paint_volume_copy_static (pv, &tmp);
+      _clutter_paint_volume_axis_align (&tmp);
+      width = tmp.vertices[1].x - tmp.vertices[0].x;
+      clutter_paint_volume_free (&tmp);
+      return width;
+    }
   else
     return pv->vertices[1].x - pv->vertices[0].x;
 }
@@ -302,7 +335,8 @@ clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
  * @pv: a #ClutterPaintVolume
  * @height: the height of the paint volume, in pixels
  *
- * Sets the height of the paint volume.
+ * Sets the height of the paint volume. The height is measured along
+ * the y axis in the actor coordinates that @pv is associated with.
  *
  * Since: 1.6
  */
@@ -313,13 +347,15 @@ clutter_paint_volume_set_height (ClutterPaintVolume *pv,
   gfloat height_ypos;
 
   g_return_if_fail (pv != NULL);
-  g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (height >= 0.0f);
 
   /* If the volume is currently empty then only the origin is
    * currently valid */
   if (pv->is_empty)
     pv->vertices[1] = pv->vertices[3] = pv->vertices[4] = pv->vertices[0];
+
+  if (!pv->is_axis_aligned)
+    _clutter_paint_volume_axis_align (pv);
 
   height_ypos = pv->vertices[0].y + height;
 
@@ -338,10 +374,30 @@ clutter_paint_volume_set_height (ClutterPaintVolume *pv,
  * clutter_paint_volume_get_height:
  * @pv: a #ClutterPaintVolume
  *
- * Retrieves the height of the paint volume set using
- * clutter_paint_volume_get_height()
+ * Retrieves the height of the volume's, axis aligned, bounding box.
  *
- * Return value: the height of the paint volume, in pixels
+ * In other words; this takes into account what actor's coordinate
+ * space @pv belongs too and conceptually fits an axis aligned box
+ * around the volume. It returns the size of that bounding box as
+ * measured along the y-axis.
+ *
+ * <note>If, for example, clutter_actor_get_transformed_paint_volume()
+ * is used to transform a 2D child actor that is 100px wide, 100px
+ * high and 0px deep into container coordinates then the height might
+ * not simply be 100px if the child actor has a 3D rotation applied to
+ * it.
+ *
+ * Remember; after clutter_actor_get_transformed_paint_volume() is
+ * used then a transformed child volume will be defined relative to the
+ * ancestor container actor and so a 2D child actor
+ * can have a 3D bounding volume.</note>
+ *
+ * <note>There are no accuracy guarantees for the reported height,
+ * except that it must always be >= to the true height. This is
+ * because actors may report simple, loose fitting paint-volumes
+ * for efficiency</note>
+ *
+ * Return value: the height, in units of @pv's local coordinate system.
  *
  * Since: 1.6
  */
@@ -349,10 +405,19 @@ gfloat
 clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
 {
   g_return_val_if_fail (pv != NULL, 0.0);
-  g_return_val_if_fail (pv->is_axis_aligned, 0);
 
   if (pv->is_empty)
     return 0;
+  else if (!pv->is_axis_aligned)
+    {
+      ClutterPaintVolume tmp;
+      float height;
+      _clutter_paint_volume_copy_static (pv, &tmp);
+      _clutter_paint_volume_axis_align (&tmp);
+      height = tmp.vertices[3].y - tmp.vertices[0].y;
+      clutter_paint_volume_free (&tmp);
+      return height;
+    }
   else
     return pv->vertices[3].y - pv->vertices[0].y;
 }
@@ -362,7 +427,8 @@ clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
  * @pv: a #ClutterPaintVolume
  * @depth: the depth of the paint volume, in pixels
  *
- * Sets the depth of the paint volume.
+ * Sets the depth of the paint volume. The depth is measured along
+ * the z axis in the actor coordinates that @pv is associated with.
  *
  * Since: 1.6
  */
@@ -373,13 +439,15 @@ clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
   gfloat depth_zpos;
 
   g_return_if_fail (pv != NULL);
-  g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (depth >= 0.0f);
 
   /* If the volume is currently empty then only the origin is
    * currently valid */
   if (pv->is_empty)
     pv->vertices[1] = pv->vertices[3] = pv->vertices[4] = pv->vertices[0];
+
+  if (!pv->is_axis_aligned)
+    _clutter_paint_volume_axis_align (pv);
 
   depth_zpos = pv->vertices[0].z + depth;
 
@@ -399,10 +467,30 @@ clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
  * clutter_paint_volume_get_depth:
  * @pv: a #ClutterPaintVolume
  *
- * Retrieves the depth of the paint volume set using
- * clutter_paint_volume_get_depth()
+ * Retrieves the depth of the volume's, axis aligned, bounding box.
  *
- * Return value: the depth
+ * In other words; this takes into account what actor's coordinate
+ * space @pv belongs too and conceptually fits an axis aligned box
+ * around the volume. It returns the size of that bounding box as
+ * measured along the z-axis.
+ *
+ * <note>If, for example, clutter_actor_get_transformed_paint_volume()
+ * is used to transform a 2D child actor that is 100px wide, 100px
+ * high and 0px deep into container coordinates then the depth might
+ * not simply be 0px if the child actor has a 3D rotation applied to
+ * it.
+ *
+ * Remember; after clutter_actor_get_transformed_paint_volume() is
+ * used then the transformed volume will be defined relative to the
+ * container actor and in container coordinates a 2D child actor
+ * can have a 3D bounding volume.</note>
+ *
+ * <note>There are no accuracy guarantees for the reported depth,
+ * except that it must always be >= to the true depth. This is
+ * because actors may report simple, loose fitting paint-volumes
+ * for efficiency.</note>
+ *
+ * Return value: the depth, in units of @pv's local coordinate system.
  *
  * Since: 1.6
  */
@@ -410,10 +498,19 @@ gfloat
 clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
 {
   g_return_val_if_fail (pv != NULL, 0.0);
-  g_return_val_if_fail (pv->is_axis_aligned, 0);
 
   if (pv->is_empty)
     return 0;
+  else if (!pv->is_axis_aligned)
+    {
+      ClutterPaintVolume tmp;
+      float depth;
+      _clutter_paint_volume_copy_static (pv, &tmp);
+      _clutter_paint_volume_axis_align (&tmp);
+      depth = tmp.vertices[4].z - tmp.vertices[0].z;
+      clutter_paint_volume_free (&tmp);
+      return depth;
+    }
   else
     return pv->vertices[4].z - pv->vertices[0].z;
 }
