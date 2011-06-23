@@ -45,7 +45,7 @@ function spawn(argv) {
 // occur when trying to parse or start the program.
 function spawnCommandLine(command_line) {
     try {
-        let [success, argc, argv] = GLib.shell_parse_argv(command_line);
+        let [success, argv] = GLib.shell_parse_argv(command_line);
         trySpawn(argv);
     } catch (err) {
         _handleSpawnError(command_line, err);
