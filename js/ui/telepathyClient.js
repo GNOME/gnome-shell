@@ -103,7 +103,7 @@ Client.prototype = {
             this._finishObserveChannels(account, conn, channels, context);
         } else {
             Shell.get_self_contact_features(conn,
-                                            contactFeatures.length, contactFeatures,
+                                            contactFeatures,
                                             Lang.bind(this, function() {
                                                 this._finishObserveChannels(account, conn, channels, context);
                                             }));
@@ -123,8 +123,8 @@ Client.prototype = {
                continue;
 
             /* Request a TpContact */
-            Shell.get_tp_contacts(conn, 1, [targetHandle],
-                    contactFeatures.length, contactFeatures,
+            Shell.get_tp_contacts(conn, [targetHandle],
+                    contactFeatures,
                     Lang.bind(this,  function (connection, contacts, failed) {
                         if (contacts.length < 1)
                             return;
