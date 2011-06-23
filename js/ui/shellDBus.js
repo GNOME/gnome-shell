@@ -2,6 +2,7 @@
 
 const DBus = imports.dbus;
 
+const ExtensionSystem = imports.ui.extensionSystem;
 const Main = imports.ui.main;
 
 const GnomeShellIface = {
@@ -9,7 +10,15 @@ const GnomeShellIface = {
     methods: [{ name: 'Eval',
                 inSignature: 's',
                 outSignature: 'bs'
-              }
+              },
+              { name: 'ListExtensions',
+                inSignature: '',
+                outSignature: 'a{sa{sv}}'
+              },
+              { name: 'GetExtensionInfo',
+                inSignature: 's',
+                outSignature: 'a{sv}'
+              },
              ],
     signals: [],
     properties: [{ name: 'OverviewActive',
@@ -54,6 +63,14 @@ GnomeShell.prototype = {
             success = false;
         }
         return [success, returnValue];
+    },
+
+    ListExtensions: function() {
+        return ExtensionSystem.extensionMeta;
+    },
+
+    GetExtensionInfo: function(uuid) {
+        return ExtensionSystem.extensionMeta[uuid] || {};
     },
 
     get OverviewActive() {
