@@ -77,18 +77,18 @@ Client.prototype = {
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
         let dbus = Tp.DBusDaemon.dup();
-        this._tp_client = new Shell.TpClient({ 'dbus_daemon': dbus,
-                                               'name': 'GnomeShell',
-                                               'uniquify-name': true })
-        this._tp_client.set_observe_channels_func(
+        this._tpClient = new Shell.TpClient({ 'dbus_daemon': dbus,
+                                              'name': 'GnomeShell',
+                                              'uniquify-name': true })
+        this._tpClient.set_observe_channels_func(
             Lang.bind(this, this._observeChannels));
-        this._tp_client.set_approve_channels_func(
+        this._tpClient.set_approve_channels_func(
             Lang.bind(this, this._approveChannels));
-        this._tp_client.set_handle_channels_func(
+        this._tpClient.set_handle_channels_func(
             Lang.bind(this, this._handleChannels));
 
         try {
-            this._tp_client.register();
+            this._tpClient.register();
         } catch (e) {
             throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
         }
@@ -141,12 +141,12 @@ Client.prototype = {
         if (this._sources[channel.get_object_path()])
             return;
 
-        let source = new Source(account, conn, channel, contact, this._tp_client);
+        let source = new Source(account, conn, channel, contact, this._tpClient);
 
         this._sources[channel.get_object_path()] = source;
         source.connect('destroy', Lang.bind(this,
                        function() {
-                           if (this._tp_client.is_handling_channel(channel)) {
+                           if (this._tpClient.is_handling_channel(channel)) {
                                // The chat box has been destroyed so it can't
                                // handle the channel any more.
                                channel.close_async(null);
@@ -167,7 +167,7 @@ Client.prototype = {
                 continue;
             }
 
-            if (this._tp_client.is_handling_channel(channel)) {
+            if (this._tpClient.is_handling_channel(channel)) {
                 // We are already handling the channel, display the source
                 let source = this._sources[channel.get_object_path()];
                 if (source)
@@ -179,7 +179,7 @@ Client.prototype = {
     _approveChannels: function(approver, account, conn, channels,
                                dispatchOp, context) {
         // Approve the channels right away as we are going to handle it
-        dispatchOp.claim_with_async(this._tp_client,
+        dispatchOp.claim_with_async(this._tpClient,
                                     Lang.bind (this, function(dispatchOp, result) {
             try {
                 dispatchOp.claim_with_finish(result);
