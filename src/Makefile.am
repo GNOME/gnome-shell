@@ -222,21 +222,21 @@ shell-marshal.c: Makefile shell-marshal.list
 shell-enum-types.h: stamp-shell-enum-types.h Makefile
 	@true
 stamp-shell-enum-types.h: $(srcdir)/shell-enum-types.h.in $(shell_public_headers_h)
-	$(AM_V_GEN) ( cd $(srcdir) && \
+	$(AM_V_GEN) ( \
 	  $(GLIB_MKENUMS) \
 	    --template $< \
-	  $(shell_public_headers_h) ) > $(@F).tmp && \
+	  $(addprefix $(srcdir)/,$(shell_public_headers_h)) ) > $(@F).tmp && \
 	(cmp -s $(@F).tmp shell-enum-types.h || mv $(@F).tmp shell-enum-types.h) && \
 	rm -f $(@F).tmp && \
 	echo timestamp > $(@F)
 EXTRA_DIST += shell-enum-types.h.in
 CLEANFILES += stamp-shell-enum-types.h
 
-shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
-	$(AM_V_GEN) ( cd $(srcdir) && \
+shell-enum-types.c: $(srcdir)/shell-enum-types.c.in stamp-shell-enum-types.h
+	$(AM_V_GEN) ( \
 	  $(GLIB_MKENUMS) \
 	    --template $< \
-	  $(shell_public_headers_h) ) > $(@F).tmp && \
+	  $(addprefix $(srcdir)/,$(shell_public_headers_h)) ) > $(@F).tmp && \
 	mv $(@F).tmp $(@F) && \
 	rm -f $(@F).tmp
 EXTRA_DIST += shell-enum-types.c.in
@@ -258,7 +258,7 @@ Shell-0.1.gir: libgnome-shell.la St-1.0.gir
 Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 TelepathyLogger-0.2
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 Shell_0_1_gir_LIBS = libgnome-shell.la
-Shell_0_1_gir_FILES = $(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources))
+Shell_0_1_gir_FILES = $(libgnome_shell_la_gir_sources)
 Shell_0_1_gir_SCANNERFLAGS = --include-uninstalled=$(builddir)/St-1.0.gir \
 	--add-include-path=$(MUTTER_GIR_DIR)
 INTROSPECTION_GIRS += Shell-0.1.gir

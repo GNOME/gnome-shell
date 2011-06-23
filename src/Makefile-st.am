@@ -47,20 +47,20 @@ st-marshal.c: Makefile st/st-marshal.list
 
 st-enum-types.h: stamp-st-enum-types.h Makefile
 	@true
-stamp-st-enum-types.h: $(source_h) st/st-enum-types.h.in $(st_source_h)
-	$(AM_V_GEN) ( cd $(srcdir) &&					\
+stamp-st-enum-types.h: $(source_h) $(srcdir)/st/st-enum-types.h.in $(st_source_h)
+	$(AM_V_GEN) (							\
 	  $(GLIB_MKENUMS)						\
-	    --template st/st-enum-types.h.in				\
-	  $(st_source_h) ) >> $@.tmp &&					\
+	    --template $(srcdir)/st/st-enum-types.h.in				\
+	  $(addprefix $(srcdir)/, $(st_source_h)) ) >> $@.tmp &&		\
 	(cmp -s $@.tmp st-enum-types.h || cp $@.tmp st-enum-types.h) &&	\
 	rm -f $@.tmp &&							\
 	echo timestamp > $(@F)
 
-st-enum-types.c: stamp-st-enum-types.h st/st-enum-types.c.in
-	$(AM_V_GEN) ( cd $(srcdir) &&		\
+st-enum-types.c: stamp-st-enum-types.h $(srcdir)/st/st-enum-types.c.in
+	$(AM_V_GEN) (				\
 	  $(GLIB_MKENUMS)			\
-	    --template st/st-enum-types.c.in	\
-	  $(st_source_h) ) >> $@.tmp &&		\
+	    --template $(srcdir)/st/st-enum-types.c.in	\
+	  $(addprefix $(srcdir)/,$(st_source_h)) ) >> $@.tmp &&		\
 	cp $@.tmp $@ &&				\
 	rm -f $@.tmp
 
