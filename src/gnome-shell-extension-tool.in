@@ -3,6 +3,7 @@
 
 import os
 import re
+import socket
 import subprocess
 import sys
 import optparse
@@ -41,7 +42,7 @@ Examples are: "Make windows visible on click", "Block advertisement popups"
     underifier = re.compile('[^A-Za-z]')
     sample_uuid = underifier.sub('_', name)
     # TODO use evolution data server
-    hostname = subprocess.Popen(['hostname'], stdout=subprocess.PIPE).communicate()[0].strip()
+    hostname = socket.gethostname()
     sample_uuid = sample_uuid + '@' + hostname
 
     print
