@@ -35,6 +35,14 @@ const GnomeShellIface = {
               { name: 'Screenshot',
                 inSignature: 's',
                 outSignature: 'b'
+              },
+              { name: 'EnableExtension',
+                inSignature: 's',
+                outSignature: ''
+              },
+              { name: 'DisableExtension',
+                inSignature: 's',
+                outSignature: ''
               }
              ],
     signals: [],
@@ -142,6 +150,20 @@ GnomeShell.prototype = {
 
     GetExtensionErrors: function(uuid) {
         return ExtensionSystem.errors[uuid] || [];
+    },
+
+    EnableExtension: function(uuid) {
+        let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
+        if (enabledExtensions.indexOf(uuid) == -1)
+            enabledExtensions.push(uuid);
+        global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
+    },
+
+    DisableExtension: function(uuid) {
+        let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
+        while (enabledExtensions.indexOf(uuid) != -1)
+            enabledExtensions.splice(enabledExtensions.indexOf(uuid), 1);
+        global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
     },
 
     get OverviewActive() {

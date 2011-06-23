@@ -14,7 +14,11 @@ const ExtensionState = {
     ENABLED: 1,
     DISABLED: 2,
     ERROR: 3,
-    OUT_OF_DATE: 4
+    OUT_OF_DATE: 4,
+
+    // Used as an error state for operations on unknown extensions,
+    // should never be in a real extensionMeta object.
+    UNINSTALLED: 99
 };
 
 const ExtensionType = {
@@ -26,6 +30,8 @@ const ExtensionType = {
 const extensionMeta = {};
 // Maps uuid -> importer object (extension directory tree)
 const extensions = {};
+// Maps uuid -> extension state object (returned from init())
+const extensionStateObjs = {};
 // Arrays of uuids
 var enabledExtensions;
 // GFile for user extensions
@@ -73,6 +79,46 @@ function versionCheck(required, current) {
             return true;
     }
     return false;
+}
+
+function disableExtension(uuid) {
+    let meta = extensionMeta[uuid];
+    if (!meta)
+        return;
+
+    if (meta.state != ExtensionState.ENABLED)
+        return;
+
+    let extensionState = extensionStateObjs[uuid];
+
+    try {
+        extensionState.disable();
+    } catch(e) {
+        logExtensionError(uuid, e.toString());
+        return;
+    }
+
+    meta.state = ExtensionState.DISABLED;
+}
+
+function enableExtension(uuid) {
+    let meta = extensionMeta[uuid];
+    if (!meta)
+        return;
+
+    if (meta.state != ExtensionState.DISABLED)
+        return;
+
+    let extensionState = extensionStateObjs[uuid];
+
+    try {
+        extensionState.enable();
+    } catch(e) {
+        logExtensionError(uuid, e.toString());
+        return;
+    }
+
+    meta.state = ExtensionState.ENABLED;
 }
 
 function logExtensionError(uuid, message) {
@@ -136,16 +182,12 @@ function loadExtension(dir, enabled, type) {
         return;
     }
 
-    extensionMeta[meta.uuid] = meta;
-    extensionMeta[meta.uuid].type = type;
-    extensionMeta[meta.uuid].path = dir.get_path();
-    if (!enabled) {
-        extensionMeta[meta.uuid].state = ExtensionState.DISABLED;
-        return;
-    }
+    extensionMeta[uuid] = meta;
+    meta.type = type;
+    meta.path = dir.get_path();
 
     // Default to error, we set success as the last step
-    extensionMeta[meta.uuid].state = ExtensionState.ERROR;
+    meta.state = ExtensionState.ERROR;
 
     let extensionJs = dir.get_child('extension.js');
     if (!extensionJs.query_exists(null)) {
@@ -166,6 +208,7 @@ function loadExtension(dir, enabled, type) {
     }
 
     let extensionModule;
+    let extensionState = null;
     try {
         global.add_extension_importer('imports.ui.extensionSystem.extensions', meta.uuid, dir.get_path());
         extensionModule = extensions[meta.uuid].extension;
@@ -175,22 +218,63 @@ function loadExtension(dir, enabled, type) {
         logExtensionError(uuid, e);
         return;
     }
-    if (!extensionModule.main) {
-        logExtensionError(uuid, 'missing \'main\' function');
+
+    if (!extensionModule.init) {
+        logExtensionError(uuid, 'missing \'init\' function');
         return;
     }
+
     try {
-        extensionModule.main(meta);
+        extensionState = extensionModule.init(meta);
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
         logExtensionError(uuid, 'Failed to evaluate init function:' + e);
         return;
     }
-    extensionMeta[meta.uuid].state = ExtensionState.ENABLED;
+
+    if (!extensionState)
+        extensionState = extensionModule;
+    extensionStateObjs[uuid] = extensionState;
+
+    if (!extensionState.enable) {
+        logExtensionError(uuid, 'missing \'enable\' function');
+        return;
+    }
+    if (!extensionState.disable) {
+        logExtensionError(uuid, 'missing \'disable\' function');
+        return;
+    }
+
+    meta.state = ExtensionState.DISABLED;
+
+    if (enabled)
+        enableExtension(uuid);
 
     _signals.emit('extension-loaded', meta.uuid);
     global.log('Loaded extension ' + meta.uuid);
+}
+
+function onEnabledExtensionsChanged() {
+    let newEnabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+
+    // Find and enable all the newly enabled extensions: UUIDs found in the
+    // new setting, but not in the old one.
+    newEnabledExtensions.filter(function(uuid) {
+        return enabledExtensions.indexOf(uuid) == -1;
+    }).forEach(function(uuid) {
+        enableExtension(uuid);
+    });
+
+    // Find and disable all the newly disabled extensions: UUIDs found in the
+    // old setting, but not in the new one.
+    enabledExtensions.filter(function(item) {
+        return newEnabledExtensions.indexOf(item) == -1;
+    }).forEach(function(uuid) {
+        disableExtension(uuid);
+    });
+
+    enabledExtensions = newEnabledExtensions;
 }
 
 function init() {
@@ -202,6 +286,7 @@ function init() {
         global.logError('' + e);
     }
 
+    global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
 }
 
