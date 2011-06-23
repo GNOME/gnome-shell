@@ -239,7 +239,6 @@
             md5sum="43ad483c17446dcc7d1c8d3fa49dcc90" size="1240410"/>
     <dependencies>
       <dep package="glib"/>
-      <dep package="libxml2"/>
       <dep package="libsoup"/>
     </dependencies>
     <suggests>
