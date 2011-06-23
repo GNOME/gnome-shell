@@ -41,6 +41,9 @@ Signals.addSignalMethods(_signals);
 const connect = Lang.bind(_signals, _signals.connect);
 const disconnect = Lang.bind(_signals, _signals.disconnect);
 
+// UUID => Array of error messages
+var errors = {};
+
 /**
  * versionCheck:
  * @required: an array of versions we're compatible with
@@ -71,13 +74,19 @@ function versionCheck(required, current) {
     return false;
 }
 
+function logExtensionError(uuid, message) {
+    if (!errors[uuid]) errors[uuid] = [];
+    errors[uuid].push(message);
+    global.logError('Extension "%s" had error: %s'.format(uuid, message));
+}
+
 function loadExtension(dir, enabled, type) {
     let info;
-    let baseErrorString = 'While loading extension from "' + dir.get_parse_name() + '": ';
+    let uuid = dir.get_basename();
 
     let metadataFile = dir.get_child('metadata.json');
     if (!metadataFile.query_exists(null)) {
-        global.logError(baseErrorString + 'Missing metadata.json');
+        logExtensionError(uuid, 'Missing metadata.json');
         return;
     }
 
@@ -85,44 +94,44 @@ function loadExtension(dir, enabled, type) {
     try {
         metadataContents = Shell.get_file_contents_utf8_sync(metadataFile.get_path());
     } catch (e) {
-        global.logError(baseErrorString + 'Failed to load metadata.json: ' + e);
+        logExtensionError(uuid, 'Failed to load metadata.json: ' + e);
         return;
     }
     let meta;
     try {
         meta = JSON.parse(metadataContents);
     } catch (e) {
-        global.logError(baseErrorString + 'Failed to parse metadata.json: ' + e);
+        logExtensionError(uuid, 'Failed to parse metadata.json: ' + e);
         return;
     }
+
     let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
     for (let i = 0; i < requiredProperties.length; i++) {
         let prop = requiredProperties[i];
         if (!meta[prop]) {
-            global.logError(baseErrorString + 'missing "' + prop + '" property in metadata.json');
+            logExtensionError(uuid, 'missing "' + prop + '" property in metadata.json');
             return;
         }
     }
 
-    if (extensions[meta.uuid] != undefined) {
-        global.logError(baseErrorString + "extension already loaded");
+    if (extensions[uuid] != undefined) {
+        logExtensionError(uuid, "extension already loaded");
         return;
     }
 
     // Encourage people to add this
     if (!meta['url']) {
-        global.log(baseErrorString + 'Warning: Missing "url" property in metadata.json');
+        global.log('Warning: Missing "url" property in metadata.json');
     }
 
-    let base = dir.get_basename();
-    if (base != meta.uuid) {
-        global.logError(baseErrorString + 'uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + base + '"');
+    if (uuid != meta.uuid) {
+        logExtensionError(uuid, 'uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + uuid + '"');
         return;
     }
 
     if (!versionCheck(meta['shell-version'], Config.PACKAGE_VERSION) ||
         (meta['js-version'] && !versionCheck(meta['js-version'], Config.GJS_VERSION))) {
-        global.logError(baseErrorString + 'extension is not compatible with current GNOME Shell and/or GJS version');
+        logExtensionError(uuid, 'extension is not compatible with current GNOME Shell and/or GJS version');
         return;
     }
 
@@ -139,7 +148,7 @@ function loadExtension(dir, enabled, type) {
 
     let extensionJs = dir.get_child('extension.js');
     if (!extensionJs.query_exists(null)) {
-        global.logError(baseErrorString + 'Missing extension.js');
+        logExtensionError(uuid, 'Missing extension.js');
         return;
     }
     let stylesheetPath = null;
@@ -150,7 +159,7 @@ function loadExtension(dir, enabled, type) {
         try {
             theme.load_stylesheet(stylesheetFile.get_path());
         } catch (e) {
-            global.logError(baseErrorString + 'Stylesheet parse error: ' + e);
+            logExtensionError(uuid, 'Stylesheet parse error: ' + e);
             return;
         }
     }
@@ -162,11 +171,11 @@ function loadExtension(dir, enabled, type) {
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
-        global.logError(baseErrorString + e);
+        logExtensionError(uuid, e);
         return;
     }
     if (!extensionModule.main) {
-        global.logError(baseErrorString + 'missing \'main\' function');
+        logExtensionError(uuid, 'missing \'main\' function');
         return;
     }
     try {
@@ -174,7 +183,7 @@ function loadExtension(dir, enabled, type) {
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
-        global.logError(baseErrorString + 'Failed to evaluate main function:' + e);
+        logExtensionError(uuid, 'Failed to evaluate init function:' + e);
         return;
     }
     extensionMeta[meta.uuid].state = ExtensionState.ENABLED;

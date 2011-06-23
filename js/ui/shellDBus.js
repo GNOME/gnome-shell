@@ -20,6 +20,10 @@ const GnomeShellIface = {
                 inSignature: 's',
                 outSignature: 'a{sv}'
               },
+              { name: 'GetExtensionErrors',
+                inSignature: 's',
+                outSignature: 'as'
+              }
              ],
     signals: [],
     properties: [{ name: 'OverviewActive',
@@ -78,6 +82,10 @@ GnomeShell.prototype = {
 
     GetExtensionInfo: function(uuid) {
         return ExtensionSystem.extensionMeta[uuid] || {};
+    },
+
+    GetExtensionErrors: function(uuid) {
+        return ExtensionSystem.errors[uuid] || [];
     },
 
     get OverviewActive() {
