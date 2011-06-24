@@ -91,6 +91,11 @@ Client.prototype = {
         this._tpClient.set_handle_channels_func(
             Lang.bind(this, this._handleChannels));
 
+        // Allow other clients (such as Empathy) to pre-empt our channels if
+        // needed
+        this._tpClient.set_delegated_channels_callback(
+            Lang.bind(this, this._delegatedChannelsCb));
+
         try {
             this._tpClient.register();
         } catch (e) {
@@ -245,6 +250,11 @@ Client.prototype = {
                               requests, user_action_time, context) {
         this._handlingChannels(account, conn, channels);
         context.accept();
+    },
+
+    _delegatedChannelsCb: function(client, channels) {
+        // Nothing to do as we don't make a distinction between observed and
+        // handled channels.
     }
 };
 
