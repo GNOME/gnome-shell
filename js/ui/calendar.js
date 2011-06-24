@@ -358,26 +358,13 @@ Calendar.prototype = {
                                                            this._update(false);
                                                        }));
 
-        // FIXME: This is actually the fallback method for GTK+ for the week start;
-        // GTK+ by preference uses nl_langinfo (NL_TIME_FIRST_WEEKDAY). We probably
-        // should add a C function so we can do the full handling.
-        this._weekStart = NaN;
+        this._weekStart = Shell.util_get_week_start();
         this._weekdate = NaN;
         this._digitWidth = NaN;
         this._settings = new Gio.Settings({ schema: 'org.gnome.shell.calendar' });
 
         this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
-
-        let weekStartString = Gettext_gtk30.gettext('calendar:week_start:0');
-        if (weekStartString.indexOf('calendar:week_start:') == 0) {
-            this._weekStart = parseInt(weekStartString.substring(20));
-        }
-
-        if (isNaN(this._weekStart) || this._weekStart < 0 || this._weekStart > 6) {
-            log('Translation of "calendar:week_start:0" in GTK+ is not correct');
-            this._weekStart = 0;
-        }
 
         // Find the ordering for month/year in the calendar heading
         this._headerFormatWithoutYear = '%B';
@@ -638,17 +625,7 @@ EventsList.prototype = {
         this._eventSource.connect('changed', Lang.bind(this, this._update));
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._update));
-        let weekStartString = Gettext_gtk30.gettext('calendar:week_start:0');
-        if (weekStartString.indexOf('calendar:week_start:') == 0) {
-            this._weekStart = parseInt(weekStartString.substring(20));
-        }
-
-        if (isNaN(this._weekStart) ||
-                  this._weekStart < 0 ||
-                  this._weekStart > 6) {
-            log('Translation of "calendar:week_start:0" in GTK+ is not correct');
-            this._weekStart = 0;
-        }
+        this._weekStart = Shell.util_get_week_start();
 
         this._update();
     },

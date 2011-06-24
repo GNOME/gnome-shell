@@ -20,6 +20,7 @@ void     shell_util_set_hidden_from_pick       (ClutterActor     *actor,
 void     shell_util_get_transformed_allocation (ClutterActor     *actor,
                                                 ClutterActorBox  *box);
 
+int      shell_util_get_week_start             (void);
 char    *shell_util_format_date                (const char       *format,
                                                 gint64            time_ms);
 

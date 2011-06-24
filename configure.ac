@@ -156,6 +156,17 @@ AC_CHECK_FUNCS(fdwalk)
 AC_CHECK_FUNCS(mallinfo)
 AC_CHECK_HEADERS([sys/resource.h])
 
+# _NL_TIME_FIRST_WEEKDAY is an enum and not a define
+AC_MSG_CHECKING([for _NL_TIME_FIRST_WEEKDAY])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <langinfo.h>]],
+                                   [[nl_langinfo(_NL_TIME_FIRST_WEEKDAY);]])],
+               [langinfo_ok=yes], [langinfo_ok=no])
+AC_MSG_RESULT($langinfo_ok)
+if test "$langinfo_ok" = "yes"; then
+  AC_DEFINE([HAVE__NL_TIME_FIRST_WEEKDAY], [1],
+            [Define if _NL_TIME_FIRST_WEEKDAY is available])
+fi
+
 # Sets GLIB_GENMARSHAL and GLIB_MKENUMS
 AM_PATH_GLIB_2_0()
 G_IR_SCANNER=`$PKG_CONFIG --variable=g_ir_scanner gobject-introspection-1.0`

@@ -6,6 +6,10 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 
+#ifdef HAVE__NL_TIME_FIRST_WEEKDAY
+#include <langinfo.h>
+#endif
+
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -539,6 +543,62 @@ shell_util_format_date (const char *format,
 
   g_date_time_unref (datetime);
   return result;
+}
+
+/**
+ * shell_util_get_week_start:
+ *
+ * Gets the first week day for the current locale, expressed as a
+ * number in the range 0..6, representing week days from Sunday to
+ * Saturday.
+ *
+ * Returns: A number representing the first week day for the current
+ *          locale
+ */
+/* Copied from gtkcalendar.c */
+int
+shell_util_get_week_start ()
+{
+  int week_start;
+#ifdef HAVE__NL_TIME_FIRST_WEEKDAY
+  union { unsigned int word; char *string; } langinfo;
+  int week_1stday = 0;
+  int first_weekday = 1;
+  guint week_origin;
+#else
+  char *gtk_week_start;
+#endif
+
+#ifdef HAVE__NL_TIME_FIRST_WEEKDAY
+  langinfo.string = nl_langinfo (_NL_TIME_FIRST_WEEKDAY);
+  first_weekday = langinfo.string[0];
+  langinfo.string = nl_langinfo (_NL_TIME_WEEK_1STDAY);
+  week_origin = langinfo.word;
+  if (week_origin == 19971130) /* Sunday */
+    week_1stday = 0;
+  else if (week_origin == 19971201) /* Monday */
+    week_1stday = 1;
+  else
+    g_warning ("Unknown value of _NL_TIME_WEEK_1STDAY.\n");
+
+  week_start = (week_1stday + first_weekday - 1) % 7;
+#else
+  gtk_week_start = dgettext ("gtk30", "calendar:week_start:0");
+
+  if (strncmp (gtk_week_start, "calendar:week_start:", 20) == 0)
+    week_start = *(gtk_week_start + 20) - '0';
+  else
+    week_start = -1;
+
+  if (week_start < 0 || week_start > 6)
+    {
+      g_warning ("Whoever translated calendar:week_start:0 for GTK+ "
+                 "did so wrongly.\n");
+      week_start = 0;
+    }
+#endif
+
+  return week_start;
 }
 
 /**
