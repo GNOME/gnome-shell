@@ -880,14 +880,72 @@ Source.prototype = {
 
     _init: function(title) {
         this.title = title;
+
+        this.actor = new Shell.GenericContainer();
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+
+        this._counterLabel = new St.Label();
+        this._counterBin = new St.Bin({ style_class: 'summary-source-counter',
+                                        child: this._counterLabel });
+        this._counterBin.hide();
+
         this._iconBin = new St.Bin({ width: this.ICON_SIZE,
                                      height: this.ICON_SIZE,
                                      x_fill: true,
                                      y_fill: true });
+
+        this.actor.add_actor(this._iconBin);
+        this.actor.add_actor(this._counterBin);
+
         this.isTransient = false;
         this.isChat = false;
 
         this.notifications = [];
+    },
+
+    _getPreferredWidth: function (actor, forHeight, alloc) {
+        let [min, nat] = this._iconBin.get_preferred_width(forHeight);
+        alloc.min_size = min; alloc.nat_size = nat;
+    },
+
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        let [min, nat] = this._iconBin.get_preferred_height(forWidth);
+        alloc.min_size = min; alloc.nat_size = nat;
+    },
+
+    _allocate: function(actor, box, flags) {
+        // the iconBin should fill our entire box
+        this._iconBin.allocate(box, flags);
+
+        let childBox = new Clutter.ActorBox();
+
+        let [minWidth, minHeight, naturalWidth, naturalHeight] = this._counterBin.get_preferred_size();
+        let direction = this.actor.get_direction();
+
+        if (direction == St.TextDirection.LTR) {
+            // allocate on the right in LTR
+            childBox.x1 = box.x2 - naturalWidth;
+            childBox.x2 = box.x2;
+        } else {
+            // allocate on the left in RTL
+            childBox.x1 = 0;
+            childBox.x2 = naturalWidth;
+        }
+
+        childBox.y1 = box.y2 - naturalHeight;
+        childBox.y2 = box.y2;
+
+        this._counterBin.allocate(childBox, flags);
+    },
+
+    _setCount: function(count, visible) {
+        if (!parseInt(count))
+            throw new Error("Invalid notification count: " + count);
+
+        this._counterBin.visible = visible;
+        this._counterLabel.set_text(count.toString());
     },
 
     setTransient: function(isTransient) {
@@ -909,7 +967,7 @@ Source.prototype = {
     // Unlike createNotificationIcon, this always returns the same actor;
     // there is only one summary icon actor for a Source.
     getSummaryIcon: function() {
-        return this._iconBin;
+        return this.actor;
     },
 
     pushNotification: function(notification) {

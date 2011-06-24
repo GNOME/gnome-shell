@@ -1261,6 +1261,16 @@ StTooltip StLabel {
     padding-left: 4px;
 }
 
+.summary-source-counter {
+    color: white;
+    background-color: #3465A4;
+    text-shadow: black 1px 1px 0;
+    font-size: 9pt;
+    border-radius: 1em;
+    min-height: 1em;
+    min-width: 1em;
+}
+
 .source-title {
     font-size: 9pt;
     font-weight: bold;
