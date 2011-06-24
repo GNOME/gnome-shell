@@ -948,6 +948,11 @@ Source.prototype = {
         this._counterLabel.set_text(count.toString());
     },
 
+    _updateCount: function() {
+        let count = this.notifications.length;
+        this._setCount(count, count > 1);
+    },
+
     setTransient: function(isTransient) {
         this.isTransient = isTransient;
     },
@@ -986,7 +991,11 @@ Source.prototype = {
                 this.notifications.splice(index, 1);
                 if (this.notifications.length == 0)
                     this._lastNotificationRemoved();
+
+                this._updateCount();
             }));
+
+        this._updateCount();
     },
 
     notify: function(notification) {
@@ -1023,6 +1032,8 @@ Source.prototype = {
         for (let i = this.notifications.length - 1; i >= 0; i--)
             if (!this.notifications[i].resident)
                 this.notifications[i].destroy();
+
+        this._updateCount();
     },
 
     // Default implementation is to destroy this source, but subclasses can override
