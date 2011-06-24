@@ -69,8 +69,6 @@ struct _ShellGlobal {
 
   GdkWindow    *stage_window;
 
-  gint last_change_screen_width, last_change_screen_height;
-
   guint work_count;
   GSList *leisure_closures;
   guint leisure_function_id;
@@ -243,9 +241,6 @@ shell_global_init (ShellGlobal *global)
   global->stage_window = NULL;
 
   global->input_mode = SHELL_STAGE_INPUT_MODE_NORMAL;
-
-  global->last_change_screen_width = 0;
-  global->last_change_screen_height = 0;
 
   ca_context_create (&global->sound_context);
   ca_context_change_props (global->sound_context, CA_PROP_APPLICATION_NAME, PACKAGE_NAME, CA_PROP_APPLICATION_ID, "org.gnome.Shell", NULL);
@@ -700,23 +695,6 @@ shell_global_get_window_actors (ShellGlobal *global)
   return meta_plugin_get_window_actors (global->plugin);
 }
 
-static gboolean
-update_screen_size (gpointer data)
-{
-  int width, height;
-  ShellGlobal *global = SHELL_GLOBAL (data);
-
-  meta_plugin_query_screen_size (global->plugin, &width, &height);
-
-  if (global->last_change_screen_width == width && global->last_change_screen_height == height)
-    return FALSE;
-
-  global->last_change_screen_width = width;
-  global->last_change_screen_height = height;
-
-  return FALSE;
-}
-
 static void
 global_stage_notify_width (GObject    *gobject,
                            GParamSpec *pspec,
@@ -725,11 +703,6 @@ global_stage_notify_width (GObject    *gobject,
   ShellGlobal *global = SHELL_GLOBAL (data);
 
   g_object_notify (G_OBJECT (global), "screen-width");
-
-  meta_later_add (META_LATER_BEFORE_REDRAW,
-                  update_screen_size,
-                  global,
-                  NULL);
 }
 
 static void
@@ -740,11 +713,6 @@ global_stage_notify_height (GObject    *gobject,
   ShellGlobal *global = SHELL_GLOBAL (data);
 
   g_object_notify (G_OBJECT (global), "screen-height");
-
-  meta_later_add (META_LATER_BEFORE_REDRAW,
-                  update_screen_size,
-                  global,
-                  NULL);
 }
 
 static void
@@ -783,7 +751,6 @@ _shell_global_set_plugin (ShellGlobal *global,
                     G_CALLBACK (global_stage_notify_width), global);
   g_signal_connect (stage, "notify::height",
                     G_CALLBACK (global_stage_notify_height), global);
-  update_screen_size (global);
 
   g_signal_connect (stage, "paint",
                     G_CALLBACK (global_stage_before_paint), global);
