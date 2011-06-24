@@ -55,12 +55,6 @@
  *                             explain this better)
  *      or 0 if no flag applies.
  *
- *   5) a string representing the default binding.
- *          If this is NULL, the action is unbound by default.
- *          Please use NULL and not "disabled".
- *   6) a short description.
- *          It must be marked translatable (i.e. inside "_(...)").
- *
  * Don't try to do XML entity escaping anywhere in the strings.
  */
 
@@ -84,30 +78,18 @@
 /* convenience, since in this file they must always be set together */
 #define REVERSES_AND_REVERSED (BINDING_REVERSES | BINDING_IS_REVERSED)
 
-keybind (switch_to_workspace_1,  handle_switch_to_workspace, 0, 0, NULL,
-        _("Switch to workspace 1"))
-keybind (switch_to_workspace_2,  handle_switch_to_workspace, 1, 0, NULL,
-        _("Switch to workspace 2"))
-keybind (switch_to_workspace_3,  handle_switch_to_workspace, 2, 0, NULL,
-        _("Switch to workspace 3"))
-keybind (switch_to_workspace_4,  handle_switch_to_workspace, 3, 0, NULL,
-        _("Switch to workspace 4"))
-keybind (switch_to_workspace_5,  handle_switch_to_workspace, 4, 0, NULL,
-        _("Switch to workspace 5"))
-keybind (switch_to_workspace_6,  handle_switch_to_workspace, 5, 0, NULL,
-        _("Switch to workspace 6"))
-keybind (switch_to_workspace_7,  handle_switch_to_workspace, 6, 0, NULL,
-        _("Switch to workspace 7"))
-keybind (switch_to_workspace_8,  handle_switch_to_workspace, 7, 0, NULL,
-        _("Switch to workspace 8"))
-keybind (switch_to_workspace_9,  handle_switch_to_workspace, 8, 0, NULL,
-        _("Switch to workspace 9"))
-keybind (switch_to_workspace_10, handle_switch_to_workspace, 9, 0, NULL,
-        _("Switch to workspace 10"))
-keybind (switch_to_workspace_11, handle_switch_to_workspace, 10, 0, NULL,
-        _("Switch to workspace 11"))
-keybind (switch_to_workspace_12, handle_switch_to_workspace, 11, 0, NULL,
-        _("Switch to workspace 12"))
+keybind (switch-to-workspace-1,  handle_switch_to_workspace, 0, 0)
+keybind (switch-to-workspace-2,  handle_switch_to_workspace, 1, 0)
+keybind (switch-to-workspace-3,  handle_switch_to_workspace, 2, 0)
+keybind (switch-to-workspace-4,  handle_switch_to_workspace, 3, 0)
+keybind (switch-to-workspace-5,  handle_switch_to_workspace, 4, 0)
+keybind (switch-to-workspace-6,  handle_switch_to_workspace, 5, 0)
+keybind (switch-to-workspace-7,  handle_switch_to_workspace, 6, 0)
+keybind (switch-to-workspace-8,  handle_switch_to_workspace, 7, 0)
+keybind (switch-to-workspace-9,  handle_switch_to_workspace, 8, 0)
+keybind (switch-to-workspace-10, handle_switch_to_workspace, 9, 0)
+keybind (switch-to-workspace-11, handle_switch_to_workspace, 10, 0)
+keybind (switch-to-workspace-12, handle_switch_to_workspace, 11, 0)
 
 /* META_MOTION_* are negative, and so distinct from workspace numbers,
  * which are always zero or positive.
@@ -117,21 +99,17 @@ keybind (switch_to_workspace_12, handle_switch_to_workspace, 11, 0, NULL,
  * workspace.h, of course.
  */
 
-keybind (switch_to_workspace_left, handle_switch_to_workspace,
-         META_MOTION_LEFT, 0, "<Control><Alt>Left",
-        _("Switch to workspace on the left of the current workspace"))
+keybind (switch-to-workspace-left, handle_switch_to_workspace,
+         META_MOTION_LEFT, 0)
 
-keybind (switch_to_workspace_right, handle_switch_to_workspace,
-         META_MOTION_RIGHT, 0, "<Control><Alt>Right",
-        _("Switch to workspace on the right of the current workspace"))
+keybind (switch-to-workspace-right, handle_switch_to_workspace,
+         META_MOTION_RIGHT, 0)
 
-keybind (switch_to_workspace_up, handle_switch_to_workspace,
-         META_MOTION_UP, 0, "<Control><Alt>Up",
-        _("Switch to workspace above the current workspace"))
+keybind (switch-to-workspace-up, handle_switch_to_workspace,
+         META_MOTION_UP, 0)
 
-keybind (switch_to_workspace_down, handle_switch_to_workspace,
-         META_MOTION_DOWN, 0, "<Control><Alt>Down",
-        _("Switch to workspace below the current workspace"))
+keybind (switch-to-workspace-down, handle_switch_to_workspace,
+         META_MOTION_DOWN, 0)
 
 /***********************************/
 
@@ -145,45 +123,25 @@ keybind (switch_to_workspace_down, handle_switch_to_workspace,
  * same function checking a bit in the parameter for difference.
  */
 
-keybind (switch_group,              handle_switch,        META_TAB_LIST_GROUP,
-         BINDING_REVERSES,       "<Alt>Above_Tab",
-        _("Move between windows of an application, using a popup window"))
-keybind (switch_group_backward,    handle_switch,        META_TAB_LIST_GROUP,
-         REVERSES_AND_REVERSED,  NULL,
-        _("Move backward between windows of an application, "
-          "using a popup window"))
-keybind (switch_windows,            handle_switch,        META_TAB_LIST_NORMAL,
-         BINDING_REVERSES,       "<Alt>Tab",
-        _("Move between windows, using a popup window"))
-keybind (switch_windows_backward,  handle_switch,        META_TAB_LIST_NORMAL,
-         REVERSES_AND_REVERSED,  NULL,
-        _("Move backward between windows, using a popup window"))
-keybind (switch_panels,             handle_switch,        META_TAB_LIST_DOCKS,
-         BINDING_REVERSES,       "<Control><Alt>Tab",
-        _("Move between panels and the desktop, using a popup window"))
-keybind (switch_panels_backward,   handle_switch,        META_TAB_LIST_DOCKS,
-         REVERSES_AND_REVERSED,  NULL,
-         _("Move backward between panels and the desktop, "
-          "using a popup window"))
+keybind (switch-group, handle_switch, META_TAB_LIST_GROUP, BINDING_REVERSES)
+keybind (switch-group-backward, handle_switch,
+         META_TAB_LIST_GROUP, REVERSES_AND_REVERSED)
+keybind (switch-windows, handle_switch, META_TAB_LIST_NORMAL, BINDING_REVERSES)
+keybind (switch-windows-backward, handle_switch, META_TAB_LIST_NORMAL,
+         REVERSES_AND_REVERSED)
+keybind (switch-panels, handle_switch, META_TAB_LIST_DOCKS, BINDING_REVERSES)
+keybind (switch-panels-backward, handle_switch, META_TAB_LIST_DOCKS,
+         REVERSES_AND_REVERSED)
 
-keybind (cycle_group,               handle_cycle,         META_TAB_LIST_GROUP,
-        BINDING_REVERSES,        "<Alt>F6",
-        _("Move between windows of an application immediately"))
-keybind (cycle_group_backward,     handle_cycle,         META_TAB_LIST_GROUP,
-        REVERSES_AND_REVERSED,   NULL,
-        _("Move backward between windows of an application immediately"))
-keybind (cycle_windows,             handle_cycle,         META_TAB_LIST_NORMAL,
-        BINDING_REVERSES,        "<Alt>Escape",
-        _("Move between windows immediately"))
-keybind (cycle_windows_backward,   handle_cycle,         META_TAB_LIST_NORMAL,
-        REVERSES_AND_REVERSED,   NULL,
-        _("Move backward between windows immediately"))
-keybind (cycle_panels,              handle_cycle,         META_TAB_LIST_DOCKS,
-        BINDING_REVERSES,        "<Control><Alt>Escape",
-        _("Move between panels and the desktop immediately"))
-keybind (cycle_panels_backward,    handle_cycle,         META_TAB_LIST_DOCKS,
-        REVERSES_AND_REVERSED,   NULL,
-        _("Move backward between panels and the desktop immediately"))
+keybind (cycle-group, handle_cycle, META_TAB_LIST_GROUP, BINDING_REVERSES)
+keybind (cycle-group-backward, handle_cycle, META_TAB_LIST_GROUP,
+        REVERSES_AND_REVERSED)
+keybind (cycle-windows, handle_cycle, META_TAB_LIST_NORMAL, BINDING_REVERSES)
+keybind (cycle-windows-backward, handle_cycle, META_TAB_LIST_NORMAL,
+        REVERSES_AND_REVERSED)
+keybind (cycle-panels, handle_cycle, META_TAB_LIST_DOCKS, BINDING_REVERSES)
+keybind (cycle-panels-backward, handle_cycle, META_TAB_LIST_DOCKS,
+        REVERSES_AND_REVERSED)
 
 /***********************************/
 
@@ -192,71 +150,20 @@ keybind (cycle_panels_backward,    handle_cycle,         META_TAB_LIST_DOCKS,
  * grab is in effect, they are invoked for releasing the primary modifier
  * or pressing some unbound key, respectively.
  */
-keybind (tab_popup_select,        handle_tab_popup_select, 0, 0, NULL,
-         "Select window from tab popup")
-keybind (tab_popup_cancel,        handle_tab_popup_cancel, 0, 0, NULL,
-         "Cancel tab popup")
+keybind (tab-popup-select, handle_tab_popup_select, 0, 0)
+keybind (tab-popup-cancel, handle_tab_popup_cancel, 0, 0)
 
 /***********************************/
      
-keybind (show_desktop, handle_show_desktop, 0, 0, "<Control><Alt>d",
-      _("Hide all normal windows and set focus to the desktop"))
-keybind (panel_main_menu, handle_panel,
-       META_KEYBINDING_ACTION_PANEL_MAIN_MENU, 0, "<Alt>F1",
-      _("Show the panel's main menu"))
-keybind (panel_run_dialog, handle_panel,
-       META_KEYBINDING_ACTION_PANEL_RUN_DIALOG, 0, "<Alt>F2",
-      _("Show the panel's \"Run Application\" dialog box"))
-keybind (toggle_recording, handle_toggle_recording, 0, 0, "<Control><Shift><Alt>r",
-         _("Start or stop recording the session"))
+keybind (show-desktop, handle_show_desktop, 0, 0)
+keybind (panel-main-menu, handle_panel,
+       META_KEYBINDING_ACTION_PANEL_MAIN_MENU, 0)
+keybind (panel-run-dialog, handle_panel,
+       META_KEYBINDING_ACTION_PANEL_RUN_DIALOG, 0)
+keybind (toggle-recording, handle_toggle_recording, 0, 0)
 
-/* Yes, the param is offset by one.  Historical reasons.  (Maybe worth fixing
- * at some point.)  The description is NULL here because the stanza is
- * irregularly shaped in mutter.schemas.in.  This will probably be fixed
- * as well.
- */
-keybind (run_command_1,  handle_run_command,  0, 0, NULL, NULL)
-keybind (run_command_2,  handle_run_command,  1, 0, NULL, NULL)
-keybind (run_command_3,  handle_run_command,  2, 0, NULL, NULL)
-keybind (run_command_4,  handle_run_command,  3, 0, NULL, NULL)
-keybind (run_command_5,  handle_run_command,  4, 0, NULL, NULL)
-keybind (run_command_6,  handle_run_command,  5, 0, NULL, NULL)
-keybind (run_command_7,  handle_run_command,  6, 0, NULL, NULL)
-keybind (run_command_8,  handle_run_command,  7, 0, NULL, NULL)
-keybind (run_command_9,  handle_run_command,  8, 0, NULL, NULL)
-keybind (run_command_10, handle_run_command,  9, 0, NULL, NULL)
-keybind (run_command_11, handle_run_command, 10, 0, NULL, NULL)
-keybind (run_command_12, handle_run_command, 11, 0, NULL, NULL)
-keybind (run_command_13, handle_run_command, 12, 0, NULL, NULL)
-keybind (run_command_14, handle_run_command, 13, 0, NULL, NULL)
-keybind (run_command_15, handle_run_command, 14, 0, NULL, NULL)
-keybind (run_command_16, handle_run_command, 15, 0, NULL, NULL)
-keybind (run_command_17, handle_run_command, 16, 0, NULL, NULL)
-keybind (run_command_18, handle_run_command, 17, 0, NULL, NULL)
-keybind (run_command_19, handle_run_command, 18, 0, NULL, NULL)
-keybind (run_command_20, handle_run_command, 19, 0, NULL, NULL)
-keybind (run_command_21, handle_run_command, 20, 0, NULL, NULL)
-keybind (run_command_22, handle_run_command, 21, 0, NULL, NULL)
-keybind (run_command_23, handle_run_command, 22, 0, NULL, NULL)
-keybind (run_command_24, handle_run_command, 23, 0, NULL, NULL)
-keybind (run_command_25, handle_run_command, 24, 0, NULL, NULL)
-keybind (run_command_26, handle_run_command, 25, 0, NULL, NULL)
-keybind (run_command_27, handle_run_command, 26, 0, NULL, NULL)
-keybind (run_command_28, handle_run_command, 27, 0, NULL, NULL)
-keybind (run_command_29, handle_run_command, 28, 0, NULL, NULL)
-keybind (run_command_30, handle_run_command, 29, 0, NULL, NULL)
-keybind (run_command_31, handle_run_command, 30, 0, NULL, NULL)
-keybind (run_command_32, handle_run_command, 31, 0, NULL, NULL)
-
-keybind (run_command_screenshot, handle_run_command, 32, 0, "Print",
-      _("Take a screenshot"))
-keybind (run_command_window_screenshot, handle_run_command, 33, 0,"<Alt>Print",
-      _("Take a screenshot of a window"))
-
-keybind (run_command_terminal, handle_run_terminal, 0, 0, NULL, _("Run a terminal"))
-
-/* No description because this is undocumented */
-keybind (set_spew_mark, handle_set_spew_mark, 0, 0, NULL, NULL)
+/* FIXME: No description because this is undocumented */
+keybind (set-spew-mark, handle_set_spew_mark, 0, 0)
 
 #undef REVERSES_AND_REVERSED
 
@@ -266,70 +173,34 @@ keybind (set_spew_mark, handle_set_spew_mark, 0, 0, NULL, NULL)
  * if no window is active.
  */
  
-keybind (activate_window_menu, handle_activate_window_menu, 0,
-        BINDING_PER_WINDOW, "<Alt>space",
-        _("Activate the window menu"))
-keybind (toggle_fullscreen, handle_toggle_fullscreen, 0, BINDING_PER_WINDOW,
-        NULL,
-        _("Toggle fullscreen mode"))
-keybind (toggle_maximized, handle_toggle_maximized, 0, BINDING_PER_WINDOW, "<Alt>F10",
-        _("Toggle maximization state"))
-keybind (toggle_above, handle_toggle_above, 0, BINDING_PER_WINDOW, NULL,
-        _("Toggle whether a window will always be visible over other windows"))
-keybind (maximize, handle_maximize, 0, BINDING_PER_WINDOW, NULL,
-        _("Maximize window"))
-keybind (unmaximize, handle_unmaximize, 0, BINDING_PER_WINDOW, "<Alt>F5",
-        _("Restore window"))
-keybind (toggle_shaded, handle_toggle_shaded, 0, BINDING_PER_WINDOW, NULL,
-        _("Toggle shaded state"))
-keybind (minimize, handle_minimize, 0, BINDING_PER_WINDOW, "<Alt>F9",
-        _("Minimize window"))
-keybind (close, handle_close, 0, BINDING_PER_WINDOW, "<Alt>F4",
-        _("Close window"))
-keybind (begin_move, handle_begin_move, 0, BINDING_PER_WINDOW, "<Alt>F7",
-        _("Move window"))
-keybind (begin_resize, handle_begin_resize, 0, BINDING_PER_WINDOW, "<Alt>F8",
-        _("Resize window"))
-keybind (toggle_on_all_workspaces, handle_toggle_on_all_workspaces, 0,
-         BINDING_PER_WINDOW, NULL,
-        _("Toggle whether window is on all workspaces or just one"))
+keybind (activate-window-menu, handle_activate_window_menu, 0,
+        BINDING_PER_WINDOW)
+keybind (toggle-fullscreen, handle_toggle_fullscreen, 0, BINDING_PER_WINDOW)
+keybind (toggle-maximized, handle_toggle_maximized, 0, BINDING_PER_WINDOW)
+keybind (toggle-above, handle_toggle_above, 0, BINDING_PER_WINDOW)
+keybind (maximize, handle_maximize, 0, BINDING_PER_WINDOW)
+keybind (unmaximize, handle_unmaximize, 0, BINDING_PER_WINDOW)
+keybind (toggle-shaded, handle_toggle_shaded, 0, BINDING_PER_WINDOW)
+keybind (minimize, handle_minimize, 0, BINDING_PER_WINDOW)
+keybind (close, handle_close, 0, BINDING_PER_WINDOW)
+keybind (begin-move, handle_begin_move, 0, BINDING_PER_WINDOW)
+keybind (begin-resize, handle_begin_resize, 0, BINDING_PER_WINDOW)
+keybind (toggle-on-all-workspaces, handle_toggle_on_all_workspaces, 0,
+         BINDING_PER_WINDOW)
 
-keybind (move_to_workspace_1, handle_move_to_workspace, 0, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 1"))
-keybind (move_to_workspace_2, handle_move_to_workspace, 1, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 2"))
-keybind (move_to_workspace_3, handle_move_to_workspace, 2, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 3"))
-keybind (move_to_workspace_4, handle_move_to_workspace, 3, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 4"))
-keybind (move_to_workspace_5, handle_move_to_workspace, 4, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 5"))
-keybind (move_to_workspace_6, handle_move_to_workspace, 5, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 6"))
-keybind (move_to_workspace_7, handle_move_to_workspace, 6, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 7"))
-keybind (move_to_workspace_8, handle_move_to_workspace, 7, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 8"))
-keybind (move_to_workspace_9, handle_move_to_workspace, 8, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 9"))
-keybind (move_to_workspace_10, handle_move_to_workspace, 9, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 10"))
-keybind (move_to_workspace_11, handle_move_to_workspace, 10, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 11"))
-keybind (move_to_workspace_12, handle_move_to_workspace, 11, BINDING_PER_WINDOW,
-        NULL,
-        _("Move window to workspace 12"))
+keybind (move-to-workspace-1, handle_move_to_workspace, 0, BINDING_PER_WINDOW)
+keybind (move-to-workspace-2, handle_move_to_workspace, 1, BINDING_PER_WINDOW)
+keybind (move-to-workspace-3, handle_move_to_workspace, 2, BINDING_PER_WINDOW)
+keybind (move-to-workspace-4, handle_move_to_workspace, 3, BINDING_PER_WINDOW)
+keybind (move-to-workspace-5, handle_move_to_workspace, 4, BINDING_PER_WINDOW)
+keybind (move-to-workspace-6, handle_move_to_workspace, 5, BINDING_PER_WINDOW)
+keybind (move-to-workspace-7, handle_move_to_workspace, 6, BINDING_PER_WINDOW)
+keybind (move-to-workspace-8, handle_move_to_workspace, 7, BINDING_PER_WINDOW)
+keybind (move-to-workspace-9, handle_move_to_workspace, 8, BINDING_PER_WINDOW)
+keybind (move-to-workspace-10, handle_move_to_workspace, 9, BINDING_PER_WINDOW)
+keybind (move-to-workspace-11, handle_move_to_workspace, 10, BINDING_PER_WINDOW)
+keybind (move-to-workspace-12, handle_move_to_workspace, 11, BINDING_PER_WINDOW)
+
 
 /* META_MOTION_* are negative, and so distinct from workspace numbers,
  * which are always zero or positive.
@@ -339,62 +210,34 @@ keybind (move_to_workspace_12, handle_move_to_workspace, 11, BINDING_PER_WINDOW,
  * workspace.h, of course.
  */
 
-keybind (move_to_workspace_left, handle_move_to_workspace,
-         META_MOTION_LEFT, BINDING_PER_WINDOW, "<Control><Shift><Alt>Left",
-        _("Move window one workspace to the left"))
-keybind (move_to_workspace_right, handle_move_to_workspace,
-         META_MOTION_RIGHT, BINDING_PER_WINDOW, "<Control><Shift><Alt>Right",
-        _("Move window one workspace to the right"))
-keybind (move_to_workspace_up, handle_move_to_workspace,
-         META_MOTION_UP, BINDING_PER_WINDOW, "<Control><Shift><Alt>Up",
-        _("Move window one workspace up"))
-keybind (move_to_workspace_down, handle_move_to_workspace,
-         META_MOTION_DOWN, BINDING_PER_WINDOW, "<Control><Shift><Alt>Down",
-        _("Move window one workspace down"))
+keybind (move-to-workspace-left, handle_move_to_workspace,
+         META_MOTION_LEFT, BINDING_PER_WINDOW)
+keybind (move-to-workspace-right, handle_move_to_workspace,
+         META_MOTION_RIGHT, BINDING_PER_WINDOW)
+keybind (move-to-workspace-up, handle_move_to_workspace,
+         META_MOTION_UP, BINDING_PER_WINDOW)
+keybind (move-to-workspace-down, handle_move_to_workspace,
+         META_MOTION_DOWN, BINDING_PER_WINDOW)
 
-keybind (raise_or_lower, handle_raise_or_lower, 0, BINDING_PER_WINDOW, NULL,
-        _("Raise window if it's covered by another window, otherwise lower it"))
-keybind (raise, handle_raise, 0, BINDING_PER_WINDOW, NULL,
-        _("Raise window above other windows"))
-keybind (lower, handle_lower, 0, BINDING_PER_WINDOW, NULL,
-        _("Lower window below other windows"))
+keybind (raise-or-lower, handle_raise_or_lower, 0, BINDING_PER_WINDOW)
+keybind (raise, handle_raise, 0, BINDING_PER_WINDOW)
+keybind (lower, handle_lower, 0, BINDING_PER_WINDOW)
 
-keybind (maximize_vertically, handle_maximize_vertically, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Maximize window vertically"))
+keybind (maximize-vertically, handle_maximize_vertically, 0, BINDING_PER_WINDOW)
 
-keybind (maximize_horizontally, handle_maximize_horizontally, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Maximize window horizontally"))
+keybind (maximize-horizontally, handle_maximize_horizontally, 0,
+        BINDING_PER_WINDOW)
 
-keybind (move_to_corner_nw, handle_move_to_corner_nw, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to north-west (top left) corner"))
-keybind (move_to_corner_ne, handle_move_to_corner_ne, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to north-east (top right) corner"))
-keybind (move_to_corner_sw, handle_move_to_corner_sw, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to south-west (bottom left) corner"))
-keybind (move_to_corner_se, handle_move_to_corner_se, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to south-east (bottom right) corner"))
+keybind (move-to-corner-nw, handle_move_to_corner_nw, 0, BINDING_PER_WINDOW)
+keybind (move-to-corner-ne, handle_move_to_corner_ne, 0, BINDING_PER_WINDOW)
+keybind (move-to-corner-sw, handle_move_to_corner_sw, 0, BINDING_PER_WINDOW)
+keybind (move-to-corner-se, handle_move_to_corner_se, 0, BINDING_PER_WINDOW)
 
-keybind (move_to_side_n, handle_move_to_side_n, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to north (top) side of screen"))
-keybind (move_to_side_s, handle_move_to_side_s, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to south (bottom) side of screen"))
-keybind (move_to_side_e, handle_move_to_side_e, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to east (right) side of screen"))
-keybind (move_to_side_w, handle_move_to_side_w, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to west (left) side of screen"))
-keybind (move_to_center, handle_move_to_center, 0,
-        BINDING_PER_WINDOW, NULL,
-        _("Move window to center of screen"))
+keybind (move-to-side-n, handle_move_to_side_n, 0, BINDING_PER_WINDOW)
+keybind (move-to-side-s, handle_move_to_side_s, 0, BINDING_PER_WINDOW)
+keybind (move-to-side-e, handle_move_to_side_e, 0, BINDING_PER_WINDOW)
+keybind (move-to-side-w, handle_move_to_side_w, 0, BINDING_PER_WINDOW)
+keybind (move-to-center, handle_move_to_center, 0, BINDING_PER_WINDOW)
 
 /* eof all-keybindings.h */
 

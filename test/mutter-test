@@ -195,10 +195,6 @@ class test_ansi(BuildTest):
     def run(self):
         return self.run_build(c='ansi')
 
-class test_gconfoff(BuildTest):
-    def run(self):
-        return self.run_build(autogen='--disable-gconf')
-
 class test_compositoroff(BuildTest):
     def run(self):
         return self.run_build(autogen='--disable-compositor')

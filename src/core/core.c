@@ -212,7 +212,7 @@ lower_window_and_transients (MetaWindow *window,
 
   meta_window_foreach_transient (window, lower_window_and_transients, NULL);
 
-  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+  if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK &&
       meta_prefs_get_raise_on_click ())
     {
       /* Move window to the back of the focusing workspace's MRU list.
@@ -538,70 +538,70 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
       break;
     case META_MENU_OP_UNSTICK:
     case META_MENU_OP_STICK:
-      name = "toggle_on_all_workspaces";
+      name = "toggle-on-all-workspaces";
       break;
     case META_MENU_OP_ABOVE:
     case META_MENU_OP_UNABOVE:
-      name = "toggle_above";
+      name = "toggle-above";
       break;
     case META_MENU_OP_WORKSPACES:
       switch (workspace)
         {
         case 1:
-          name = "move_to_workspace_1";
+          name = "move-to-workspace-1";
           break;
         case 2:
-          name = "move_to_workspace_2";
+          name = "move-to-workspace-2";
           break;
         case 3:
-          name = "move_to_workspace_3";
+          name = "move-to-workspace-3";
           break; 
         case 4:
-          name = "move_to_workspace_4";
+          name = "move-to-workspace-4";
           break; 
         case 5:
-          name = "move_to_workspace_5";
+          name = "move-to-workspace-5";
           break; 
         case 6:
-          name = "move_to_workspace_6";
+          name = "move-to-workspace-6";
           break; 
         case 7:
-          name = "move_to_workspace_7";
+          name = "move-to-workspace-7";
           break; 
         case 8:
-          name = "move_to_workspace_8";
+          name = "move-to-workspace-8";
           break; 
         case 9:
-          name = "move_to_workspace_9";
+          name = "move-to-workspace-9";
           break; 
         case 10:
-          name = "move_to_workspace_10";
+          name = "move-to-workspace-10";
           break;
         case 11:
-          name = "move_to_workspace_11";
+          name = "move-to-workspace-11";
           break;
         case 12:
-          name = "move_to_workspace_12";
+          name = "move-to-workspace-12";
           break;
         }
       break;
     case META_MENU_OP_MOVE:
-      name = "begin_move";
+      name = "begin-move";
       break;
     case META_MENU_OP_RESIZE:
-      name = "begin_resize";
+      name = "begin-resize";
       break;
     case META_MENU_OP_MOVE_LEFT:
-      name = "move_to_workspace_left";
+      name = "move-to-workspace-left";
       break;
     case META_MENU_OP_MOVE_RIGHT:
-      name = "move_to_workspace_right";
+      name = "move-to-workspace-right";
       break;
     case META_MENU_OP_MOVE_UP:
-      name = "move_to_workspace_up";
+      name = "move-to-workspace-up";
       break;
     case META_MENU_OP_MOVE_DOWN:
-      name = "move_to_workspace_down";
+      name = "move-to-workspace-down";
       break;
     case META_MENU_OP_RECOVER:
       /* No keybinding for this one */

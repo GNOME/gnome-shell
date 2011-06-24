@@ -18,8 +18,7 @@ COMPILING MUTTER
 You need GTK+ 2.2.  For startup notification to work you need
 libstartup-notification at
 http://www.freedesktop.org/software/startup-notification/ or on the
-GNOME ftp site. You also need GConf 1.2 (unless building a funky
-extra-small embedded metacity with --disable-gconf, see below).
+GNOME ftp site.
 You need Clutter 1.0. You need gobject-introspection 0.6.3.
 
 REPORTING BUGS AND SUBMITTING PATCHES
@@ -59,25 +58,24 @@ MUTTER FEATURES
    and should work with KWin, fvwm2, and other EWMH-compliant WMs.)
 
  - Has a simple theme system and a couple of extra themes come with it.
-   Change themes via gconf-editor or gconftool or GNOME themes control
-   panel:
-     gconftool-2 --type=string --set /apps/metacity/general/theme Crux
-     gconftool-2 --type=string --set /apps/metacity/general/theme Gorilla
-     gconftool-2 --type=string --set /apps/metacity/general/theme Atlanta
-     gconftool-2 --type=string --set /apps/metacity/general/theme Bright
+   Change themes via gsettings:
+     gsettings set org.gnome.desktop.wm.preferences theme Crux
+     gsettings set org.gnome.desktop.wm.preferences theme Gorilla
+     gsettings set org.gnome.desktop.wm.preferences theme Atlanta
+     gsettings set org.gnome.desktop.wm.preferences theme Bright
 
    See theme-format.txt for docs on the theme format. Use 
    metacity-theme-viewer to preview themes.
 
- - Change number of workspaces via gconf-editor or gconftool:
-     gconftool-2 --type=int --set /apps/metacity/general/num_workspaces 5
+ - Change number of workspaces via gsettings:
+     gsettings set org.gnome.desktop.wm.preferences num-workspaces 5
 
    Can also change workspaces from GNOME 2 pager.
 
  - Change focus mode:
-     gconftool-2 --type=string --set /apps/metacity/general/focus_mode mouse
-     gconftool-2 --type=string --set /apps/metacity/general/focus_mode sloppy
-     gconftool-2 --type=string --set /apps/metacity/general/focus_mode click
+     gsettings set org.gnome.desktop.wm.preferences focus-mode mouse
+     gsettings set org.gnome.desktop.wm.preferences focus-mode sloppy
+     gsettings set org.gnome.desktop.wm.preferences focus-mode click
 
  - Global keybinding defaults include:   
 
@@ -92,10 +90,9 @@ MUTTER FEATURES
 
    Change keybindings for example:
 
-     unst gconftool-2 --type=string --set /apps/metacity/global_keybindings/switch_to_workspace_1 '<Alt>F1'
+     gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 '[<Alt>F1]'
    
-   Also try the GNOME keyboard shortcuts control panel, or
-   gconf-editor.
+   Also try the GNOME keyboard shortcuts control panel.
 
  - Window keybindings:
 

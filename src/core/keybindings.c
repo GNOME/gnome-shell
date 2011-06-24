@@ -49,7 +49,7 @@
 static gboolean all_bindings_disabled = FALSE;
 
 /* Prototypes for handlers */
-#define keybind(name, handler, param, flags, stroke, description) \
+#define keybind(name, handler, param, flags) \
 static void \
 handler (MetaDisplay    *display,\
          MetaScreen     *screen,\
@@ -103,7 +103,7 @@ static gboolean process_workspace_switch_grab (MetaDisplay *display,
 static void regrab_key_bindings         (MetaDisplay *display);
 
 
-#define keybind(name, handler, param, flags, stroke, description) \
+#define keybind(name, handler, param, flags) \
   { #name, handler, handler, param, flags, NULL, NULL },
 static MetaKeyHandler key_handlers[] = {
 #include "all-keybindings.h"
@@ -2183,7 +2183,7 @@ process_tab_grab (MetaDisplay *display,
         {
           if (end_keyboard_grab (display, event->xkey.keycode))
             {
-              invoke_handler_by_name (display, screen, "tab_popup_select", NULL, event);
+              invoke_handler_by_name (display, screen, "tab-popup-select", NULL, event);
 
               /* We return FALSE to end the grab; if the handler ended the grab itself
                * that will be a noop. If the handler didn't end the grab, then it's a
@@ -2239,7 +2239,7 @@ process_tab_grab (MetaDisplay *display,
         }
 
       /* Some unhandled key press */
-      invoke_handler_by_name (display, screen, "tab_popup_cancel", NULL, event);
+      invoke_handler_by_name (display, screen, "tab-popup-cancel", NULL, event);
       return FALSE;
     }
 
@@ -2493,138 +2493,6 @@ handle_switch_to_workspace (MetaDisplay    *display,
   else
     {
       /* We could offer to create it I suppose */
-    }
-}
-
-static void
-error_on_command (int         command_index,
-                  const char *command,
-                  const char *message,
-                  MetaScreen *screen,
-                  guint32     timestamp)
-{
-  if (command_index < 0)
-    meta_warning ("Error on terminal command \"%s\": %s\n", command, message);  
-  else
-    meta_warning ("Error on command %d \"%s\": %s\n",
-                  command_index, command, message);  
-
-  /*
-    mutter-dialog said:
-        
-    FIXME offer to change the value of the command's gconf key
-  */
-
-  if (command && strcmp(command, "")!=0)
-    {
-      char *text = g_strdup_printf (
-                                    /* Displayed when a keybinding which is
-                                     * supposed to launch a program fails.
-                                     */
-                                    _("There was an error running "
-                                      "<tt>%s</tt>:\n\n%s"),
-                                    command,
-                                    message);
-
-      meta_show_dialog ("--error",
-                        text,
-                        NULL,
-                        screen->screen_name,
-                        NULL, NULL, 0,
-                        NULL, NULL);
-
-      g_free (text);
-
-    }
-  else
-    {
-      meta_show_dialog ("--error",
-                        message,
-                        NULL,
-                        screen->screen_name,
-                        NULL, NULL, 0,
-                        NULL, NULL);
-    }
-}
-
-static void
-set_display_setup_func (void *data)
-{
-  const char *screen_name = data;
-  char *full;
-
-  full = g_strdup_printf ("DISPLAY=%s", screen_name);
-
-  putenv (full);
-
-  /* do not free full, because putenv is lame */
-} 
-
-static gboolean
-meta_spawn_command_line_async_on_screen (const gchar *command_line,
-                                         MetaScreen  *screen,
-                                         GError     **error)
-{
-  gboolean retval;
-  gchar **argv = NULL;
-
-  g_return_val_if_fail (command_line != NULL, FALSE);
-
-  if (!g_shell_parse_argv (command_line,
-                           NULL, &argv,
-                           error))
-    return FALSE;
-  
-  retval = g_spawn_async (NULL,
-                          argv,
-                          NULL,
-                          G_SPAWN_SEARCH_PATH,
-                          set_display_setup_func,
-                          screen->screen_name,
-                          NULL,
-                          error);
-  g_strfreev (argv);
-
-  return retval;
-}
-
-
-static void
-handle_run_command (MetaDisplay    *display,
-                    MetaScreen     *screen,
-                    MetaWindow     *window,
-                    XEvent         *event,
-                    MetaKeyBinding *binding,
-                    gpointer        dummy)
-{
-  gint which = binding->handler->data;
-  const char *command;
-  GError *err;
-  
-  command = meta_prefs_get_command (which);
-
-  if (command == NULL)
-    {
-      char *s;
-
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "No command %d to run in response to keybinding press\n",
-                  which);
-      
-      s = g_strdup_printf (_("No command %d has been defined.\n"),
-                           which + 1);
-      error_on_command (which, NULL, s, screen, event->xkey.time);
-      g_free (s);
-      
-      return;
-    }
-
-  err = NULL;
-  if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
-    {
-      error_on_command (which, command, err->message, screen, event->xkey.time);
-      
-      g_error_free (err);
     }
 }
 
@@ -3600,44 +3468,6 @@ meta_set_keybindings_disabled (gboolean setting)
   all_bindings_disabled = setting;
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Keybindings %s\n", all_bindings_disabled ? "disabled" : "enabled");
-}
-
-static void
-handle_run_terminal (MetaDisplay    *display,
-                     MetaScreen     *screen,
-                     MetaWindow     *window,
-                     XEvent         *event,
-                     MetaKeyBinding *binding,
-                     gpointer        dummy)
-{
-  const char *command;
-  GError *err;
-  
-  command = meta_prefs_get_terminal_command ();
-
-  if (command == NULL)
-    {
-      char *s;
-
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "No terminal command to run in response to "
-		  "keybinding press\n");
-      
-      s = g_strdup_printf (_("No terminal command has been defined.\n"));
-      error_on_command (-1, NULL, s, screen, event->xkey.time);
-      g_free (s);
-      
-      return;
-    }
-
-  err = NULL;
-  if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
-    {
-      error_on_command (-1, command, err->message, screen,
-                        event->xkey.time);
-      
-      g_error_free (err);
-    }
 }
 
 gboolean

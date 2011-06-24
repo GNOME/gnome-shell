@@ -28,7 +28,9 @@
 /* This header is a "common" one between the UI and core side */
 #include <meta/common.h>
 #include <pango/pango-font.h>
+#include <gdesktop-enums.h>
 
+/* Keep in sync with GSettings schemas! */
 typedef enum
 {
   META_PREF_MOUSE_BUTTON_MODS,
@@ -47,8 +49,6 @@ typedef enum
   META_PREF_APPLICATION_BASED,
   META_PREF_KEYBINDINGS,
   META_PREF_DISABLE_WORKAROUNDS,
-  META_PREF_COMMANDS,
-  META_PREF_TERMINAL_COMMAND,
   META_PREF_BUTTON_LAYOUT,
   META_PREF_WORKSPACE_NAMES,
   META_PREF_VISUAL_BELL,
@@ -77,16 +77,16 @@ void meta_prefs_remove_listener (MetaPrefsChangedFunc func,
 
 void meta_prefs_init (void);
 
-void meta_prefs_override_preference_location (const char *original_key,
-                                              const char *new_key);
+void meta_prefs_override_preference_schema (const char *key,
+                                            const char *schema);
 
 const char* meta_preference_to_string (MetaPreference pref);
 
 MetaVirtualModifier         meta_prefs_get_mouse_button_mods  (void);
 guint                       meta_prefs_get_mouse_button_resize (void);
 guint                       meta_prefs_get_mouse_button_menu  (void);
-MetaFocusMode               meta_prefs_get_focus_mode         (void);
-MetaFocusNewWindows         meta_prefs_get_focus_new_windows  (void);
+GDesktopFocusMode           meta_prefs_get_focus_mode         (void);
+GDesktopFocusNewWindows     meta_prefs_get_focus_new_windows  (void);
 gboolean                    meta_prefs_get_attach_modal_dialogs (void);
 gboolean                    meta_prefs_get_raise_on_click     (void);
 const char*                 meta_prefs_get_theme              (void);
@@ -101,19 +101,18 @@ gboolean                    meta_prefs_get_gnome_accessibility (void);
 gboolean                    meta_prefs_get_gnome_animations   (void);
 gboolean                    meta_prefs_get_edge_tiling        (void);
 
-const char*                 meta_prefs_get_command            (int i);
+const char*                 meta_prefs_get_screenshot_command (void);
 
-char*                       meta_prefs_get_gconf_key_for_command (int i);
+const char*                 meta_prefs_get_window_screenshot_command (void);
 
 const char*                 meta_prefs_get_terminal_command   (void);
-const char*                 meta_prefs_get_gconf_key_for_terminal_command (void);
 
 void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
 
 /* Double, right, middle click can be configured to any titlebar meta-action */
-MetaActionTitlebar          meta_prefs_get_action_double_click_titlebar (void);
-MetaActionTitlebar          meta_prefs_get_action_middle_click_titlebar (void);
-MetaActionTitlebar          meta_prefs_get_action_right_click_titlebar (void);
+GDesktopTitlebarAction      meta_prefs_get_action_double_click_titlebar (void);
+GDesktopTitlebarAction      meta_prefs_get_action_middle_click_titlebar (void);
+GDesktopTitlebarAction      meta_prefs_get_action_right_click_titlebar (void);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
 
@@ -187,41 +186,6 @@ typedef enum _MetaKeyBindingAction
   META_KEYBINDING_ACTION_PANEL_MAIN_MENU,
   META_KEYBINDING_ACTION_PANEL_RUN_DIALOG,
   META_KEYBINDING_ACTION_TOGGLE_RECORDING,
-  META_KEYBINDING_ACTION_COMMAND_1,
-  META_KEYBINDING_ACTION_COMMAND_2,
-  META_KEYBINDING_ACTION_COMMAND_3,
-  META_KEYBINDING_ACTION_COMMAND_4,
-  META_KEYBINDING_ACTION_COMMAND_5,
-  META_KEYBINDING_ACTION_COMMAND_6,
-  META_KEYBINDING_ACTION_COMMAND_7,
-  META_KEYBINDING_ACTION_COMMAND_8,
-  META_KEYBINDING_ACTION_COMMAND_9,
-  META_KEYBINDING_ACTION_COMMAND_10,
-  META_KEYBINDING_ACTION_COMMAND_11,
-  META_KEYBINDING_ACTION_COMMAND_12,
-  META_KEYBINDING_ACTION_COMMAND_13,
-  META_KEYBINDING_ACTION_COMMAND_14,
-  META_KEYBINDING_ACTION_COMMAND_15,
-  META_KEYBINDING_ACTION_COMMAND_16,
-  META_KEYBINDING_ACTION_COMMAND_17,
-  META_KEYBINDING_ACTION_COMMAND_18,
-  META_KEYBINDING_ACTION_COMMAND_19,
-  META_KEYBINDING_ACTION_COMMAND_20,
-  META_KEYBINDING_ACTION_COMMAND_21,
-  META_KEYBINDING_ACTION_COMMAND_22,
-  META_KEYBINDING_ACTION_COMMAND_23,
-  META_KEYBINDING_ACTION_COMMAND_24,
-  META_KEYBINDING_ACTION_COMMAND_25,
-  META_KEYBINDING_ACTION_COMMAND_26,
-  META_KEYBINDING_ACTION_COMMAND_27,
-  META_KEYBINDING_ACTION_COMMAND_28,
-  META_KEYBINDING_ACTION_COMMAND_29,
-  META_KEYBINDING_ACTION_COMMAND_30,
-  META_KEYBINDING_ACTION_COMMAND_31,
-  META_KEYBINDING_ACTION_COMMAND_32,
-  META_KEYBINDING_ACTION_COMMAND_SCREENSHOT,
-  META_KEYBINDING_ACTION_COMMAND_WINDOW_SCREENSHOT,
-  META_KEYBINDING_ACTION_COMMAND_TERMINAL,
   META_KEYBINDING_ACTION_SET_SPEW_MARK,
   META_KEYBINDING_ACTION_ACTIVATE_WINDOW_MENU,
   META_KEYBINDING_ACTION_TOGGLE_FULLSCREEN,
@@ -279,13 +243,10 @@ typedef struct
 typedef struct
 {
   const char   *name;
-  const char   *default_keybinding;
   /**
    * A list of MetaKeyCombos. Each of them is bound to
    * this keypref. If one has keysym==modifiers==0, it is
-   * ignored. For historical reasons, the first entry is
-   * governed by the pref FOO and the remainder are
-   * governed by the pref FOO_list.
+   * ignored.
    */
   GSList *bindings;
 
@@ -307,17 +268,8 @@ void meta_prefs_get_window_binding (const char          *name,
 
 void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
 
-typedef enum
-{
-  META_VISUAL_BELL_INVALID = 0,
-  META_VISUAL_BELL_FULLSCREEN_FLASH,
-  META_VISUAL_BELL_FRAME_FLASH
-
-} MetaVisualBellType;
-
-gboolean           meta_prefs_get_visual_bell      (void);
 gboolean           meta_prefs_bell_is_audible      (void);
-MetaVisualBellType meta_prefs_get_visual_bell_type (void);
+GDesktopVisualBellType meta_prefs_get_visual_bell_type (void);
 
 #endif
 

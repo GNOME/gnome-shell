@@ -226,7 +226,7 @@ typelib_DATA = Meta-$(api_version).typelib
 INTROSPECTION_GIRS = Meta-$(api_version).gir
 
 Meta-$(api_version).gir: libmutter.la
-@META_GIR@_INCLUDES = GObject-2.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0
+@META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0
 @META_GIR@_PACKAGES = clutter-1.0 gtk+-3.0
 @META_GIR@_CFLAGS = $(INCLUDES)
 @META_GIR@_LIBS = libmutter.la
@@ -262,20 +262,12 @@ wmproperties_in_files=mutter-wm.desktop.in
 wmproperties_files=$(wmproperties_in_files:.desktop.in=.desktop)
 wmproperties_DATA = $(wmproperties_files)
 
-schemadir   = $(GCONF_SCHEMA_FILE_DIR)
-schema_in_files = mutter.schemas.in
-schema_DATA = $(schema_in_files:.schemas.in=.schemas)
-
+gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
+@GSETTINGS_RULES@
 
-@INTLTOOL_SCHEMAS_RULE@
-
-if GCONF_SCHEMAS_INSTALL
-install-data-local:
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schema_DATA)
-else
-install-data-local:
-endif
+convertdir = $(datadir)/GConf/gsettings
+convert_DATA=$(srcdir)/mutter-schemas.convert
 
 IMAGES=stock_maximize.png stock_minimize.png stock_delete.png
 VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
@@ -287,7 +279,7 @@ CLEANFILES =					\
 	inlinepixbufs.h				\
 	mutter.desktop				\
 	mutter-wm.desktop			\
-	mutter.schemas				\
+	org.gnome.mutter.gschema.xml		\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
 	$(gir_DATA)
@@ -304,7 +296,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(IMAGES) 			\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
-	$(schema_in_files)		\
+	org.gnome.mutter.gschema.xml.in \
 	libmutter.pc.in \
 	mutter-plugins.pc.in  \
 	mutter-enum-types.h.in \

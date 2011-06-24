@@ -1186,7 +1186,7 @@ prefs_changed_callback (MetaPreference pref,
   
   if (pref == META_PREF_NUM_WORKSPACES)
     {
-      /* GConf doesn't provide timestamps, but luckily update_num_workspaces
+      /* GSettings doesn't provide timestamps, but luckily update_num_workspaces
        * often doesn't need it...
        */
       guint32 timestamp = 

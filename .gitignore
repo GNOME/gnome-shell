@@ -48,7 +48,8 @@ libmutter.pc
 mutter
 mutter-theme-viewer
 mutter.desktop
-mutter.schemas
+org.gnome.mutter.gschema.valid
+org.gnome.mutter.gschema.xml
 testasyncgetprop
 testboxes
 testgradient
