@@ -1215,10 +1215,10 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextureClass, load_finished),
 		  NULL, NULL,
-		  _clutter_marshal_VOID__POINTER,
+		  _clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE,
 		  1,
-                  G_TYPE_POINTER);
+                  G_TYPE_ERROR);
 }
 
 static ClutterScriptableIface *parent_scriptable_iface = NULL;
