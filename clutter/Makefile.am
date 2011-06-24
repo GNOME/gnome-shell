@@ -380,6 +380,11 @@ glx_source_h = $(srcdir)/cogl/clutter-glx-texture-pixmap.h \
 	       $(srcdir)/cogl/clutter-glx.h
 clutterglx_includedir = $(clutter_includedir)/glx
 clutterglx_include_HEADERS = $(glx_source_h)
+
+clutter-glx-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-glx-$(CLUTTER_API_VERSION).pc
 endif
 
 if SUPPORT_GLX
