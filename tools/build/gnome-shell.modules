@@ -117,9 +117,21 @@
     </dependencies>
   </autotools>
 
-  <autotools id="clutter">
-    <branch repo="git.gnome.org" module="clutter" revision="clutter-1.6"/>
+  <autotools id="cogl">
+    <branch repo="git.gnome.org" module="cogl"/>
     <dependencies>
+        <dep package="glib"/>
+        <dep package="gobject-introspection"/>
+        <dep package="cairo"/>
+        <dep package="pango"/>
+        <dep package="gdk-pixbuf"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="clutter">
+    <branch repo="git.gnome.org" module="clutter"/>
+    <dependencies>
+        <dep package="cogl"/>
         <dep package="json-glib"/>
         <dep package="gobject-introspection"/>
         <dep package="atk"/>
