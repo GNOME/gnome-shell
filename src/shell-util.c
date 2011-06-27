@@ -4,7 +4,6 @@
 
 #include "shell-util.h"
 #include <glib/gi18n-lib.h>
-#include <gconf/gconf-client.h>
 #include <gtk/gtk.h>
 
 #include <libxml/parser.h>
@@ -72,7 +71,8 @@ shell_util_get_file_display_name_if_mount (GFile *file)
   return ret;
 }
 
-#define HOME_NAME_KEY           "/apps/nautilus/desktop/home_icon_name"
+#define HOME_NAME_SCHEMA        "org.gnome.nautilus.desktop"
+#define HOME_NAME_KEY           "home-icon-name"
 static char *
 shell_util_get_file_display_for_common_files (GFile *file)
 {
@@ -81,20 +81,23 @@ shell_util_get_file_display_for_common_files (GFile *file)
   compare = g_file_new_for_path (g_get_home_dir ());
   if (g_file_equal (file, compare))
     {
-      char *gconf_name;
+      GSettings *settings;
+      char *name;
 
       g_object_unref (compare);
 
-      gconf_name = gconf_client_get_string (gconf_client_get_default (),
-                                            HOME_NAME_KEY, NULL);
-      if (!(gconf_name && gconf_name[0]))
+      settings = g_settings_new (HOME_NAME_SCHEMA);
+      name = g_settings_get_string (settings, HOME_NAME_KEY);
+      g_object_unref (settings);
+
+      if (!(name && name[0]))
         {
-          g_free (gconf_name);
+          g_free (name);
           return g_strdup (_("Home Folder"));
         }
       else
         {
-          return gconf_name;
+          return name;
         }
     }
   g_object_unref (compare);
