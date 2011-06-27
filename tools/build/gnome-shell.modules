@@ -207,6 +207,26 @@
     </dependencies>
   </autotools>
 
+  <autotools id="librest">
+    <branch />
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="libsoup"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-online-accounts">
+    <branch repo="git.gnome.org" module="gnome-online-accounts"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gnome-keyring"/>
+      <dep package="gtk3"/>
+      <dep package="json-glib"/>
+      <dep package="libnotify"/>
+      <dep package="librest"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-control-center">
     <branch repo="git.gnome.org" module="gnome-control-center"/>
     <dependencies>
@@ -214,6 +234,7 @@
       <dep package="libcanberra"/>
       <dep package="gnome-desktop-3"/>
       <dep package="gnome-settings-daemon"/>
+      <dep package="gnome-online-accounts"/>
       <dep package="colord"/>
     </dependencies>
   </autotools>
@@ -270,6 +291,7 @@
     <dependencies>
      <dep package="libgweather"/>
      <dep package="libgdata"/>
+     <dep package="gnome-online-accounts"/>
      <dep package="gtk3"/>
     </dependencies>
   </autotools>
