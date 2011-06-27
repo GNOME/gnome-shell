@@ -449,7 +449,7 @@ WorkspacesView.prototype = {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
-        DND.removeMonitor(this._dragMonitor);
+        DND.removeDragMonitor(this._dragMonitor);
         this._inDrag = false;
 
         for (let i = 0; i < this._workspaces.length; i++)

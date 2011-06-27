@@ -61,7 +61,7 @@ function addDragMonitor(monitor) {
     dragMonitors.push(monitor);
 }
 
-function removeMonitor(monitor) {
+function removeDragMonitor(monitor) {
     for (let i = 0; i < dragMonitors.length; i++)
         if (dragMonitors[i] == monitor) {
             dragMonitors.splice(i, 1);

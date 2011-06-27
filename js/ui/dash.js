@@ -324,7 +324,7 @@ Dash.prototype = {
                     this._favRemoveTarget = null;
                 }));
         }
-        DND.removeMonitor(this._dragMonitor);
+        DND.removeDragMonitor(this._dragMonitor);
     },
 
     _onDragMotion: function(dragEvent) {
