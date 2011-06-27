@@ -104,6 +104,9 @@ AutomountManager.prototype = {
         this._volumeMonitor.connect('drive-disconnected',
                                     Lang.bind(this,
                                               this._onDriveDisconnected));
+        this._volumeMonitor.connect('drive-eject-button',
+                                    Lang.bind(this,
+                                              this._onDriveEjectButton));
 
         Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
     },
@@ -151,6 +154,37 @@ AutomountManager.prototype = {
             return;
 
         global.play_theme_sound(0, 'device-removed-media');        
+    },
+
+    _onDriveEjectButton: function(monitor, drive) {
+        // TODO: this code path is not tested, as the GVfs volume monitor
+        // doesn't emit this signal just yet.
+        if (!this.ckListener.sessionActive)
+            return;
+
+        // we force stop/eject in this case, so we don't have to pass a
+        // mount operation object
+        if (drive.can_stop()) {
+            drive.stop
+                (Gio.MountUnmountFlags.FORCE, null, null,
+                 Lang.bind(this, function(drive, res) {
+                     try {
+                         drive.stop_finish(res);
+                     } catch (e) {
+                         log("Unable to stop the drive after drive-eject-button " + e.toString());
+                     }
+                 }));
+        } else if (drive.can_eject()) {
+            drive.eject_with_operation 
+                (Gio.MountUnmountFlags.FORCE, null, null,
+                 Lang.bind(this, function(drive, res) {
+                     try {
+                         drive.eject_with_operation_finish(res);
+                     } catch (e) {
+                         log("Unable to eject the drive after drive-eject-button " + e.toString());
+                     }
+                 }));
+        }
     },
 
     _onVolumeAdded: function(monitor, volume) {
