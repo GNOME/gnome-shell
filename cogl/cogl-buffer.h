@@ -39,11 +39,24 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-buffer
- * @short_description: Buffer creation and manipulation
+ * @short_description: Common buffer functions, including data upload APIs
  * @stability: Unstable
  *
- * COGL allows the creation and the manipulation of buffers. If the underlying
- * OpenGL implementation allows it, COGL will use Pixel Buffer Objects.
+ * The CoglBuffer API provides a common interface to manipulate
+ * buffers that have been allocated either via cogl_pixel_buffer_new()
+ * or cogl_attribute_buffer_new(). The API allows you to upload data
+ * to these buffers and define usage hints that help Cogl manage your
+ * buffer optimally.
+ *
+ * Data can either be uploaded by supplying a pointer and size so Cogl
+ * can copy your data, or you can mmap() a CoglBuffer and then you can
+ * copy data to the buffer directly.
+ *
+ * One of the most common uses for CoglBuffers is to upload texture
+ * data asynchronously since the ability to mmap the buffers into
+ * the CPU makes it possible for another thread to handle the IO
+ * of loading an image file and unpacking it into the mapped buffer
+ * without blocking other Cogl operations.
  */
 
 /* All of the cogl-buffer API is currently experimental so we suffix
