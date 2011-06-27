@@ -1213,8 +1213,6 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
                                   const CoglColor  *new_color,
                                   gboolean          from_layer_change)
 {
-  int i;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* If primitives have been logged in the journal referencing the
@@ -1267,69 +1265,53 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
     _cogl_pipeline_set_vertend (pipeline, COGL_PIPELINE_VERTEND_UNDEFINED);
 #endif
 
-  /* To simplify things for the backends we are careful about how
-   * we report STATE_LAYERS changes.
+  /* XXX:
+   * To simplify things for the vertex, fragment and program backends
+   * we are careful about how we report STATE_LAYERS changes.
    *
-   * All STATE_LAYERS changes with the exception of ->n_layers
-   * will also result in layer_pre_change_notifications. For
-   * backends that perform code generation for fragment processing
-   * they typically need to understand the details of how layers
-   * get changed to determine if they need to repeat codegen. It
-   * doesn't help them to report a pipeline STATE_LAYERS change
-   * for all layer changes since it's so broad, they really need
-   * to wait for the layer change to be notified.  What does help
-   * though is to report a STATE_LAYERS change for a change in
-   * ->n_layers because they typically do need to repeat codegen
-   *  in that case.
+   * All STATE_LAYERS change notification with the exception of
+   * ->n_layers will also result in layer_pre_change_notifications.
+   *  For backends that perform code generation for fragment
+   *  processing they typically need to understand the details of how
+   *  layers get changed to determine if they need to repeat codegen.
+   *  It doesn't help them to
+   * report a pipeline STATE_LAYERS change for all layer changes since
+   * it's so broad, they really need to wait for the specific layer
+   * change to be notified.  What does help though is to report a
+   * STATE_LAYERS change for a change in
+   * ->n_layers because they typically do need to repeat codegen in
+   *  that case.
    *
-   * This just ensures backends only get a single pipeline or
-   * layer pre-change notification for any particular change.
+   * Here we ensure that change notifications against a pipeline or
+   * against a layer are mutually exclusive as far as fragment, vertex
+   * and program backends are concerned.
    */
-  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
-      _cogl_pipeline_fragends[pipeline->fragend]->pipeline_pre_change_notify)
-    {
-      const CoglPipelineFragend *fragend =
-        _cogl_pipeline_fragends[pipeline->fragend];
-
-      if (!from_layer_change)
-        fragend->pipeline_pre_change_notify (pipeline, change, new_color);
-    }
-
-  if (pipeline->vertend != COGL_PIPELINE_VERTEND_UNDEFINED &&
-      _cogl_pipeline_vertends[pipeline->vertend]->pipeline_pre_change_notify)
-    {
-      const CoglPipelineVertend *vertend =
-        _cogl_pipeline_vertends[pipeline->vertend];
-
-      /* To simplify things for the backends we are careful about how
-       * we report STATE_LAYERS changes.
-       *
-       * All STATE_LAYERS changes with the exception of ->n_layers
-       * will also result in layer_pre_change_notifications. For
-       * backends that perform code generation for fragment processing
-       * they typically need to understand the details of how layers
-       * get changed to determine if they need to repeat codegen. It
-       * doesn't help them to report a pipeline STATE_LAYERS change
-       * for all layer changes since it's so broad, they really need
-       * to wait for the layer change to be notified.  What does help
-       * though is to report a STATE_LAYERS change for a change in
-       * ->n_layers because they typically do need to repeat codegen
-       *  in that case.
-       *
-       * This just ensures backends only get a single pipeline or
-       * layer pre-change notification for any particular change.
-       */
-      if (!from_layer_change)
-        vertend->pipeline_pre_change_notify (pipeline, change, new_color);
-    }
-
-  /* Notify all of the progends */
   if (!from_layer_change)
-    for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
-      if (_cogl_pipeline_progends[i]->pipeline_pre_change_notify)
-        _cogl_pipeline_progends[i]->pipeline_pre_change_notify (pipeline,
-                                                                change,
-                                                                new_color);
+    {
+      int i;
+
+      if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
+          _cogl_pipeline_fragends[pipeline->fragend]->pipeline_pre_change_notify)
+        {
+          const CoglPipelineFragend *fragend =
+            _cogl_pipeline_fragends[pipeline->fragend];
+          fragend->pipeline_pre_change_notify (pipeline, change, new_color);
+        }
+
+      if (pipeline->vertend != COGL_PIPELINE_VERTEND_UNDEFINED &&
+          _cogl_pipeline_vertends[pipeline->vertend]->pipeline_pre_change_notify)
+        {
+          const CoglPipelineVertend *vertend =
+            _cogl_pipeline_vertends[pipeline->vertend];
+          vertend->pipeline_pre_change_notify (pipeline, change, new_color);
+        }
+
+      for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
+        if (_cogl_pipeline_progends[i]->pipeline_pre_change_notify)
+          _cogl_pipeline_progends[i]->pipeline_pre_change_notify (pipeline,
+                                                                  change,
+                                                                  new_color);
+    }
 
   /* There may be an arbitrary tree of descendants of this pipeline;
    * any of which may indirectly depend on this pipeline as the
@@ -1460,10 +1442,15 @@ _cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
    * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
+  /* Note: the last argument to _cogl_pipeline_pre_change_notify is
+   * needed to differentiate STATE_LAYER changes which don't affect
+   * the number of layers from those that do. NB: Layer change
+   * notifications that don't change the number of layers don't get
+   * forwarded to the fragend. */
   _cogl_pipeline_pre_change_notify (pipeline,
                                     COGL_PIPELINE_STATE_LAYERS,
                                     NULL,
-                                    FALSE);
+                                    !inc_n_layers);
 
   pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
 
@@ -1474,10 +1461,6 @@ _cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
     pipeline->n_layers++;
 }
 
-/* NB: If you are calling this it's your responsibility to have
- * already called:
- *   _cogl_pipeline_pre_change_notify (m, _CHANGE_LAYERS, NULL);
- */
 static void
 _cogl_pipeline_remove_layer_difference (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
@@ -1490,10 +1473,15 @@ _cogl_pipeline_remove_layer_difference (CoglPipeline *pipeline,
    * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
+  /* Note: the last argument to _cogl_pipeline_pre_change_notify is
+   * needed to differentiate STATE_LAYER changes which don't affect
+   * the number of layers from those that do. NB: Layer change
+   * notifications that don't change the number of layers don't get
+   * forwarded to the fragend. */
   _cogl_pipeline_pre_change_notify (pipeline,
                                     COGL_PIPELINE_STATE_LAYERS,
                                     NULL,
-                                    FALSE);
+                                    !dec_n_layers);
 
   layer->owner = NULL;
   cogl_object_unref (layer);
@@ -1558,7 +1546,6 @@ typedef struct
 {
   int keep_n;
   int current_pos;
-  gboolean needs_pruning;
   int first_index_to_prune;
 } CoglPipelinePruneLayersInfo;
 
@@ -1569,7 +1556,6 @@ update_prune_layers_info_cb (CoglPipelineLayer *layer, void *user_data)
 
   if (state->current_pos == state->keep_n)
     {
-      state->needs_pruning = TRUE;
       state->first_index_to_prune = layer->index;
       return FALSE;
     }
@@ -1580,25 +1566,28 @@ update_prune_layers_info_cb (CoglPipelineLayer *layer, void *user_data)
 void
 _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
 {
+  CoglPipeline *authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
   CoglPipelinePruneLayersInfo state;
-  gboolean notified_change = TRUE;
   GList *l;
   GList *next;
 
+  if (authority->n_layers <= n)
+    return;
+
+  _cogl_pipeline_pre_change_notify (pipeline,
+                                    COGL_PIPELINE_STATE_LAYERS,
+                                    NULL,
+                                    FALSE);
+
   state.keep_n = n;
   state.current_pos = 0;
-  state.needs_pruning = FALSE;
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          update_prune_layers_info_cb,
                                          &state);
 
+  pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
   pipeline->n_layers = n;
-
-  if (!state.needs_pruning)
-    return;
-
-  if (!(pipeline->differences & COGL_PIPELINE_STATE_LAYERS))
-    return;
 
   /* It's possible that this pipeline owns some of the layers being
    * discarded, so we'll need to unlink them... */
@@ -1608,28 +1597,10 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
       next = l->next; /* we're modifying the list we're iterating */
 
       if (layer->index > state.first_index_to_prune)
-        {
-          if (!notified_change)
-            {
-              /* - Flush journal primitives referencing the current
-               *   state.
-               * - Make sure the pipeline has no dependants so it may
-               *   be modified.
-               * - If the pipeline isn't currently an authority for
-               *   the state being changed, then initialize that state
-               *   from the current authority.
-               */
-              _cogl_pipeline_pre_change_notify (pipeline,
-                                                COGL_PIPELINE_STATE_LAYERS,
-                                                NULL,
-                                                FALSE);
-              notified_change = TRUE;
-            }
-
-          pipeline->layer_differences =
-            g_list_delete_link (pipeline->layer_differences, l);
-        }
+        _cogl_pipeline_remove_layer_difference (pipeline, layer, FALSE);
     }
+
+  pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
 }
 
 static void
