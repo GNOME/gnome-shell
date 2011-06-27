@@ -161,7 +161,7 @@ msgstr "Запусціць тэрмінал"
 
 #: ../src/core/all-keybindings.h:271
 msgid "Activate the window menu"
-msgstr "Адкрыць меню акна"
+msgstr "Адчыніць меню акна"
 
 #: ../src/core/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
