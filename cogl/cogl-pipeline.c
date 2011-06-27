@@ -2384,10 +2384,9 @@ get_texture_target (CoglHandle texture)
   GLuint ignore_handle;
   GLenum gl_target;
 
-  if (texture)
-    cogl_texture_get_gl_texture (texture, &ignore_handle, &gl_target);
-  else
-    return 0;/* XXX: An invalid GL target enum */
+  g_return_val_if_fail (texture, 0);
+
+  cogl_texture_get_gl_texture (texture, &ignore_handle, &gl_target);
 
   return gl_target;
 }
@@ -2410,9 +2409,14 @@ cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
    * do need to see if they use the same texture targets. Making this
    * distinction is much simpler if they are in different state
    * groups.
+   *
+   * Note: if a NULL texture is set then we leave the target unchanged
+   * so we can avoid needlessly invalidating any associated fragment
+   * program.
    */
-  _cogl_pipeline_set_layer_texture_target (pipeline, layer_index,
-                                           get_texture_target (texture));
+  if (texture)
+    _cogl_pipeline_set_layer_texture_target (pipeline, layer_index,
+                                             get_texture_target (texture));
   _cogl_pipeline_set_layer_texture_data (pipeline, layer_index, texture);
 }
 
