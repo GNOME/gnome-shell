@@ -370,6 +370,8 @@ ChatSource.prototype = {
             this._pendingMessages.push(message);
         }
 
+        this._updateCount();
+
         let showTimestamp = false;
 
         for (let i = 0; i < logMessages.length; i++) {
@@ -414,11 +416,16 @@ ChatSource.prototype = {
         this.destroy();
     },
 
+    _updateCount: function() {
+        this._setCount(this._pendingMessages.length, this._pendingMessages.length > 0);
+    },
+
     _messageReceived: function(channel, message) {
         if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
             return;
 
         this._pendingMessages.push(message);
+        this._updateCount();
 
         message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
         this._notification.appendMessage(message);
@@ -489,8 +496,10 @@ ChatSource.prototype = {
     _pendingRemoved: function(channel, message) {
         let idx = this._pendingMessages.indexOf(message);
 
-        if (idx >= 0)
+        if (idx >= 0) {
             this._pendingMessages.splice(idx, 1);
+            this._updateCount();
+        }
         else
             throw new Error('Message not in our pending list: ' + message);
     },
