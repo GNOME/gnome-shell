@@ -33,6 +33,8 @@ extern GType gnome_shell_plugin_get_type (void);
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
+#define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
+
 static gboolean is_gdm_mode = FALSE;
 
 #define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
@@ -309,16 +311,14 @@ shell_fonts_init (void)
 static void
 shell_prefs_init (void)
 {
-  meta_prefs_override_preference_location ("/apps/mutter/general/attach_modal_dialogs",
-                                           "/desktop/gnome/shell/windows/attach_modal_dialogs");
-  meta_prefs_override_preference_location ("/apps/mutter/general/workspaces_only_on_primary",
-                                           "/desktop/gnome/shell/windows/workspaces_only_on_primary");
-  meta_prefs_override_preference_location ("/apps/metacity/general/button_layout",
-                                           "/desktop/gnome/shell/windows/button_layout");
-  meta_prefs_override_preference_location ("/apps/metacity/general/edge_tiling",
-                                           "/desktop/gnome/shell/windows/edge_tiling");
-  meta_prefs_override_preference_location ("/apps/metacity/general/theme",
-                                           "/desktop/gnome/shell/windows/theme");
+  meta_prefs_override_preference_schema ("attach-modal-dialogs",
+                                         OVERRIDES_SCHEMA);
+  meta_prefs_override_preference_schema ("workspaces-only-on-primary",
+                                         OVERRIDES_SCHEMA);
+  meta_prefs_override_preference_schema ("button-layout",
+                                         OVERRIDES_SCHEMA);
+  meta_prefs_override_preference_schema ("edge-tiling",
+                                         OVERRIDES_SCHEMA);
 }
 
 /* This is an IBus workaround. The flow of events with IBus is that every time

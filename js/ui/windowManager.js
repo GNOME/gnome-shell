@@ -121,15 +121,15 @@ WindowManager.prototype = {
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
 
         this._workspaceSwitcherPopup = null;
-        this.setKeybindingHandler('switch_to_workspace_left', Lang.bind(this, this._showWorkspaceSwitcher));
-        this.setKeybindingHandler('switch_to_workspace_right', Lang.bind(this, this._showWorkspaceSwitcher));
-        this.setKeybindingHandler('switch_to_workspace_up', Lang.bind(this, this._showWorkspaceSwitcher));
-        this.setKeybindingHandler('switch_to_workspace_down', Lang.bind(this, this._showWorkspaceSwitcher));
-        this.setKeybindingHandler('switch_windows', Lang.bind(this, this._startAppSwitcher));
-        this.setKeybindingHandler('switch_group', Lang.bind(this, this._startAppSwitcher));
-        this.setKeybindingHandler('switch_windows_backward', Lang.bind(this, this._startAppSwitcher));
-        this.setKeybindingHandler('switch_group_backward', Lang.bind(this, this._startAppSwitcher));
-        this.setKeybindingHandler('switch_panels', Lang.bind(this, this._startA11ySwitcher));
+        this.setKeybindingHandler('switch-to-workspace-left', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch-to-workspace-right', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch-to-workspace-up', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch-to-workspace-down', Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setKeybindingHandler('switch-windows', Lang.bind(this, this._startAppSwitcher));
+        this.setKeybindingHandler('switch-group', Lang.bind(this, this._startAppSwitcher));
+        this.setKeybindingHandler('switch-windows-backward', Lang.bind(this, this._startAppSwitcher));
+        this.setKeybindingHandler('switch-group-backward', Lang.bind(this, this._startAppSwitcher));
+        this.setKeybindingHandler('switch-panels', Lang.bind(this, this._startA11ySwitcher));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -556,15 +556,15 @@ WindowManager.prototype = {
         if (this._workspaceSwitcherPopup == null)
             this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
 
-        if (binding == 'switch_to_workspace_up')
+        if (binding == 'switch-to-workspace-up')
             this.actionMoveWorkspaceUp();
-        else if (binding == 'switch_to_workspace_down')
+        else if (binding == 'switch-to-workspace-down')
             this.actionMoveWorkspaceDown();
         // left/right would effectively act as synonyms for up/down if we enabled them;
         // but that could be considered confusing.
-        // else if (binding == 'switch_to_workspace_left')
+        // else if (binding == 'switch-to-workspace-left')
         //   this.actionMoveWorkspaceLeft();
-        // else if (binding == 'switch_to_workspace_right')
+        // else if (binding == 'switch-to-workspace-right')
         //   this.actionMoveWorkspaceRight();
     },
 

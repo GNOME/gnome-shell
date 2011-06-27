@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const GConf = imports.gi.GConf;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -28,7 +28,8 @@ const CLOSE_BUTTON_FADE_TIME = 0.1;
 
 const DRAGGING_WINDOW_OPACITY = 100;
 
-const BUTTON_LAYOUT_KEY = '/desktop/gnome/shell/windows/button_layout';
+const BUTTON_LAYOUT_SCHEMA = 'org.gnome.shell.overrides';
+const BUTTON_LAYOUT_KEY = 'button-layout';
 
 // Define a layout scheme for small window counts. For larger
 // counts we fall back to an algorithm. We need more schemes here
@@ -527,8 +528,8 @@ WindowOverlay.prototype = {
         let button = this.closeButton;
         let title = this.title;
 
-        let gconf = GConf.Client.get_default();
-        let layout = gconf.get_string(BUTTON_LAYOUT_KEY);
+        let settings = new Gio.Settings({ schema: BUTTON_LAYOUT_SCHEMA });
+        let layout = settings.get_string(BUTTON_LAYOUT_KEY);
         let rtl = St.Widget.get_default_direction() == St.TextDirection.RTL;
 
         let split = layout.split(":");

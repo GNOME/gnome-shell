@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const GConf = imports.gi.GConf;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -135,13 +134,13 @@ function _initUserSession() {
 
     let shellwm = global.window_manager;
 
-    shellwm.takeover_keybinding('panel_run_dialog');
-    shellwm.connect('keybinding::panel_run_dialog', function () {
+    shellwm.takeover_keybinding('panel-run-dialog');
+    shellwm.connect('keybinding::panel-run-dialog', function () {
        getRunDialog().open();
     });
 
-    shellwm.takeover_keybinding('panel_main_menu');
-    shellwm.connect('keybinding::panel_main_menu', function () {
+    shellwm.takeover_keybinding('panel-main-menu');
+    shellwm.connect('keybinding::panel-main-menu', function () {
         overview.toggle();
     });
 
@@ -576,16 +575,6 @@ function _globalKeyPressHandler(actor, event) {
 
     // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
     let action = global.display.get_keybinding_action(keyCode, modifierState);
-
-    // The screenshot action should always be available (even if a
-    // modal dialog is present)
-    if (action == Meta.KeyBindingAction.COMMAND_SCREENSHOT) {
-        let gconf = GConf.Client.get_default();
-        let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
-        if (command != null && command != '')
-            Util.spawnCommandLine(command);
-        return true;
-    }
 
     // Other bindings are only available to the user session when the overview is up and
     // no modal dialog is present.

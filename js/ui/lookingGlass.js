@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const Cogl = imports.gi.Cogl;
-const GConf = imports.gi.GConf;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
