@@ -82,7 +82,9 @@ IGNORE_HFILES=\
 	cogl-primitives-private.h		\
 	cogl-private.h				\
 	cogl-program-private.h			\
+	cogl-program.h				\
 	cogl-shader-private.h			\
+	cogl-shader.h				\
 	cogl-sub-texture-private.h		\
 	cogl-texture-2d-private.h		\
 	cogl-texture-2d-sliced-private.h	\

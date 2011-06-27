@@ -1,7 +1,7 @@
 
 <SECTION>
 <FILE>cogl-object</FILE>
-<TITLE>The Base Object</TITLE>
+<TITLE>The Object Interface</TITLE>
 CoglObject
 cogl_object_ref
 cogl_object_unref
@@ -16,16 +16,16 @@ cogl_object_set_user_data
 cogl_renderer_new
 cogl_renderer_connect
 
-</SUBSECTION>
+<SUBSECTION>
 cogl_renderer_xlib_set_foreign_display
 cogl_renderer_xlib_get_foreign_display
 
-</SUBSECTION>
+<SUBSECTION>
 cogl_renderer_add_native_filter
 cogl_renderer_remove_native_filter
 cogl_renderer_handle_native_event
 
-</SUBSECTION>
+<SUBSECTION>
 cogl_renderer_wayland_set_foreign_display
 cogl_renderer_wayland_get_display
 cogl_renderer_wayland_set_foreign_compositor
@@ -52,10 +52,10 @@ cogl_onscreen_template_new
 cogl_display_new
 cogl_display_setup
 
-</SUBSECTION>
+<SUBSECTION>
 cogl_gdl_display_set_plane
 
-</SUBSECTION>
+<SUBSECTION>
 cogl_wayland_display_set_compositor_display
 </SECTION>
 
@@ -64,11 +64,7 @@ cogl_wayland_display_set_compositor_display
 <TITLE>The Top-Level Context</TITLE>
 
 <SUBSECTION>
-CoglFeatureFlags
-cogl_get_features
-cogl_features_available
-cogl_get_proc_address
-cogl_get_option_group
+cogl_context_new
 
 <SUBSECTION>
 cogl_push_matrix
@@ -90,11 +86,6 @@ cogl_set_viewport
 cogl_get_viewport
 
 <SUBSECTION>
-cogl_clear
-cogl_set_backface_culling_enabled
-cogl_get_backface_culling_enabled
-
-<SUBSECTION>
 cogl_set_source
 cogl_set_source_color
 cogl_set_source_color4ub
@@ -103,6 +94,10 @@ cogl_set_source_texture
 cogl_get_source
 cogl_push_source
 cogl_pop_source
+
+<SUBSECTION>
+COGL_TYPE_BUFFER_BIT
+cogl_clear
 
 <SUBSECTION>
 CoglReadPixelsFlags
@@ -117,7 +112,6 @@ cogl_end_gl
 COGL_TYPE_ATTRIBUTE_TYPE
 COGL_TYPE_BLEND_STRING_ERROR
 COGL_TYPE_BUFFER_ACCESS
-COGL_TYPE_BUFFER_BIT
 COGL_TYPE_BUFFER_TARGET
 COGL_TYPE_BUFFER_UPDATE_HINT
 COGL_TYPE_BUFFER_USAGE_HINT
@@ -168,13 +162,6 @@ cogl_clip_pop
 </SECTION>
 
 <SECTION>
-<FILE>cogl-vertex-array</FILE>
-<TITLE>Vertex Arrays</TITLE>
-cogl_vertex_array_new
-cogl_is_vertex_array
-</SECTION>
-
-<SECTION>
 <FILE>cogl-index-array</FILE>
 <TITLE>Index Arrays</TITLE>
 cogl_index_array_new
@@ -182,10 +169,10 @@ cogl_is_index_array
 </SECTION>
 
 <SECTION>
-<FILE>cogl-vertex-attribute</FILE>
+<FILE>cogl-attribute</FILE>
 <TITLE>Vertex Attributes</TITLE>
-cogl_vertex_attribute_new
-cogl_is_vertex_attribute
+cogl_attribute_new
+cogl_is_attribute
 </SECTION>
 
 <SECTION>
@@ -198,6 +185,7 @@ cogl_is_indices
 <SECTION>
 <FILE>cogl-primitive</FILE>
 <TITLE>Primitives</TITLE>
+CoglPrimitive
 cogl_primitive_new
 cogl_primitive_new_with_attributes_array
 cogl_primitive_new_with_p3_attributes
@@ -274,18 +262,8 @@ cogl_draw_indexed_vertex_attributes_array
 </SECTION>
 
 <SECTION>
-<FILE>cogl-bitmap</FILE>
-<TITLE>Bitmaps</TITLE>
-cogl_bitmap_new_from_file
-cogl_bitmap_get_size_from_file
-cogl_is_bitmap
-CoglBitmapError
-COGL_BITMAP_ERROR
-</SECTION>
-
-<SECTION>
 <FILE>cogl-texture</FILE>
-<TITLE>The Base Texture</TITLE>
+<TITLE>The Texture Interface</TITLE>
 CoglTextureVertex
 CoglTextureFlags
 cogl_texture_new_with_size
@@ -321,7 +299,7 @@ cogl_is_texture_3d
 
 <SECTION>
 <FILE>cogl-framebuffer</FILE>
-<TITLE>CoglFramebuffer: The Base Framebuffer Type</TITLE>
+<TITLE>CoglFramebuffer: The Framebuffer Interface</TITLE>
 cogl_set_framebuffer
 cogl_push_framebuffer
 cogl_pop_framebuffer
@@ -520,7 +498,7 @@ cogl_depth_state_get_range
 
 <SECTION>
 <FILE>cogl-buffer</FILE>
-<TITLE>CoglBuffer: The Base Buffer Type</TITLE>
+<TITLE>CoglBuffer: The Buffer Interface</TITLE>
 cogl_is_buffer
 cogl_buffer_get_size
 CoglBufferUsageHint
