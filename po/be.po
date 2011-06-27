@@ -358,7 +358,7 @@ msgstr "Настройкі даты і часу"
 
 #: ../js/ui/dateMenu.js:109
 msgid "Open Calendar"
-msgstr "Адкрыць каляндар"
+msgstr "Адчыніць каляндар"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
@@ -516,7 +516,7 @@ msgstr "Сеціўная старонка"
 
 #: ../js/ui/messageTray.js:1037
 msgid "Open"
-msgstr "Адкрыць"
+msgstr "Адчыніць"
 
 #: ../js/ui/messageTray.js:2208
 msgid "System Information"
