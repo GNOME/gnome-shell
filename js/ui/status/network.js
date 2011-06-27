@@ -1281,12 +1281,29 @@ NMDeviceWireless.prototype = {
         if (apObj.accessPoints.length == 0) {
             if (apObj.item)
                 apObj.item.destroy();
-            this._networks.splice(pos, 1);
-            if (this._overflowItem &&
-                this._overflowItem.menu.length == 0) {
-                this._overflowItem.destroy();
-                this._overflowItem = null;
+
+            if (this._overflowItem) {
+                if (!apObj.isMore) {
+                    // we removed an item in the main menu, and we have a more submenu
+                    // we need to extract the first item in more and move it to the submenu
+
+                    let apObj = this._overflowItem.menu.firstMenuItem;
+                    if (apObj.item) {
+                        apObj.item.destroy();
+
+                        this._createNetworkItem(apObj, NUM_VISIBLE_NETWORKS-1);
+                    }
+                }
+
+                // This can happen if the removed connection is from the overflow
+                // menu, or if we just moved the last connection out from the menu
+                if (this._overflowItem.menu.length == 0) {
+                    this._overflowItem.destroy();
+                    this._overflowItem = null;
+                }
             }
+            this._networks.splice(pos, 1);
+
         } else if (apObj.item)
             apObj.item.updateAccessPoints(apObj.accessPoints);
     },
@@ -1482,14 +1499,16 @@ NMDeviceWireless.prototype = {
                 }
             }));
         }
-        if (position < NUM_VISIBLE_NETWORKS)
+        if (position < NUM_VISIBLE_NETWORKS) {
+            apObj.isMore = false;
             this.section.addMenuItem(apObj.item, position);
-        else {
+        } else {
             if (!this._overflowItem) {
                 this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
                 this.section.addMenuItem(this._overflowItem);
             }
             this._overflowItem.menu.addMenuItem(apObj.item, position - NUM_VISIBLE_NETWORKS);
+            apObj.isMore = true;
         }
     },
 

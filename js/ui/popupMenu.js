@@ -946,6 +946,14 @@ PopupMenuBase.prototype = {
         });
     },
 
+    get firstMenuItem() {
+        let items = this._getMenuItems();
+        if (items.length)
+            return items[0];
+        else
+            return null;
+    },
+
     removeAll: function() {
         let children = this._getMenuItems();
         for (let i = 0; i < children.length; i++) {
