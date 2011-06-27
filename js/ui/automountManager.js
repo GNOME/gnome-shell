@@ -98,6 +98,12 @@ AutomountManager.prototype = {
         this._volumeMonitor.connect('volume-removed',
                                     Lang.bind(this,
                                               this._onVolumeRemoved));
+        this._volumeMonitor.connect('drive-connected',
+                                    Lang.bind(this,
+                                              this._onDriveConnected));
+        this._volumeMonitor.connect('drive-disconnected',
+                                    Lang.bind(this,
+                                              this._onDriveDisconnected));
 
         Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
     },
@@ -121,6 +127,30 @@ AutomountManager.prototype = {
         }));
 
         return false;
+    },
+
+    _onDriveConnected: function() {
+        // if we're not in the current ConsoleKit session,
+        // or screensaver is active, don't play sounds
+        if (!this.ckListener.sessionActive)
+            return;        
+
+        if (this._ssProxy.screenSaverActive)
+            return;
+
+        global.play_theme_sound(0, 'device-added-media');
+    },
+
+    _onDriveDisconnected: function() {
+        // if we're not in the current ConsoleKit session,
+        // or screensaver is active, don't play sounds
+        if (!this.ckListener.sessionActive)
+            return;        
+
+        if (this._ssProxy.screenSaverActive)
+            return;
+
+        global.play_theme_sound(0, 'device-removed-media');        
     },
 
     _onVolumeAdded: function(monitor, volume) {
