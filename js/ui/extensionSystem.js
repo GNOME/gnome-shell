@@ -16,6 +16,7 @@ const ExtensionState = {
     DISABLED: 2,
     ERROR: 3,
     OUT_OF_DATE: 4,
+    DOWNLOADING: 5,
 
     // Used as an error state for operations on unknown extensions,
     // should never be in a real extensionMeta object.
@@ -112,6 +113,12 @@ function installExtensionFromManifestURL(uuid, url) {
                 logExtensionError(uuid, 'manifest: manifest uuids do not match');
                 return;
             }
+
+            let meta = extensionMeta[uuid] = { uuid: uuid,
+                                               state: ExtensionState.DOWNLOADING,
+                                               error: '' };
+
+            _signals.emit('extension-state-changed', meta);
 
             installExtensionFromManifest(manifest, meta);
         });

@@ -690,6 +690,8 @@ Extensions.prototype = {
                 return _("Error");
             case ExtensionSystem.ExtensionState.OUT_OF_DATE:
                 return _("Out of date");
+            case ExtensionSystem.ExtensionState.DOWNLOADING:
+                return _("Downloading");
         }
         return 'Unknown'; // Not translated, shouldn't appear
     },
