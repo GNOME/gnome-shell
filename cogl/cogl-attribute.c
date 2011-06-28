@@ -1156,8 +1156,7 @@ cogl_vdraw_attributes (CoglVerticesMode mode,
     ;
   va_end (ap);
 
-  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
-  attributes[n_attributes] = NULL;
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
 
   va_start (ap, n_vertices);
   for (i = 0; (attribute = va_arg (ap, CoglAttribute *)); i++)
@@ -1165,7 +1164,7 @@ cogl_vdraw_attributes (CoglVerticesMode mode,
   va_end (ap);
 
   cogl_draw_attributes (mode, first_vertex, n_vertices,
-                        attributes, i + 1);
+                        attributes, n_attributes);
 }
 
 static size_t
@@ -1274,8 +1273,7 @@ cogl_vdraw_indexed_attributes (CoglVerticesMode mode,
     ;
   va_end (ap);
 
-  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
-  attributes[n_attributes] = NULL;
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
 
   va_start (ap, indices);
   for (i = 0; (attribute = va_arg (ap, CoglAttribute *)); i++)
