@@ -255,7 +255,7 @@ libgnome_shell_la_LIBADD =		\
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 Shell-0.1.gir: libgnome-shell.la St-1.0.gir
-Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 TelepathyLogger-0.2
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 TelepathyLogger-0.2 Soup-2.4
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 Shell_0_1_gir_LIBS = libgnome-shell.la
 Shell_0_1_gir_FILES = $(libgnome_shell_la_gir_sources)

@@ -343,6 +343,7 @@
         <dep package="telepathy-glib"/>
         <dep package="telepathy-logger"/>
         <dep package="upower"/>
+        <dep package="libsoup"/>
     </dependencies>
   </autotools>
 
