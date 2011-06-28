@@ -382,7 +382,9 @@ Source.prototype = {
         }
 
         let msg = Tp.ClientMessage.new_text(type, text);
-        this._channel.send_message_async(msg, 0, Lang.bind(this, function (src, result) { this._channel.send_message_finish(src, result);  }));
+        this._channel.send_message_async(msg, 0, Lang.bind(this, function (src, result) {
+            this._channel.send_message_finish(result); 
+        }));
     },
 
     _presenceChanged: function (contact, presence, status, message) {
