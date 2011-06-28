@@ -334,6 +334,9 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-glx.c
 endif
 if SUPPORT_WGL
+cogl_public_h += \
+	$(srcdir)/cogl-win32-renderer.h
+
 cogl_sources_c += \
 	$(srcdir)/cogl-win32-renderer.c \
 	$(srcdir)/winsys/cogl-winsys-wgl.c \
