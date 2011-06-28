@@ -91,6 +91,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-framebuffer.h>
 #ifdef COGL_HAS_XLIB
 #include <cogl/cogl-xlib.h>
+#include <cogl/cogl-xlib-renderer.h>
 #endif
 /* XXX: This will definitly go away once all the Clutter winsys
  * code has been migrated down into Cogl! */

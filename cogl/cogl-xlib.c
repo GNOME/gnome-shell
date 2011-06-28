@@ -36,7 +36,7 @@
 #include <cogl-framebuffer-private.h>
 #include <cogl-display-private.h>
 #include <cogl-renderer-private.h>
-#include <cogl-renderer-xlib-private.h>
+#include <cogl-xlib-renderer-private.h>
 
 #include <X11/Xlib.h>
 #include <X11/extensions/Xdamage.h>
@@ -45,7 +45,7 @@
 
 /* FIXME: when we remove the last X11 based Clutter backend then we
  * will get rid of these functions and instead rely on the equivalent
- * _cogl_renderer_xlib API
+ * _cogl_xlib_renderer API
  */
 
 /* This can't be in the Cogl context because it can be set before
@@ -57,7 +57,7 @@ cogl_xlib_get_display (void)
 {
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  return cogl_renderer_xlib_get_display (ctx->display->renderer);
+  return cogl_xlib_renderer_get_display (ctx->display->renderer);
 }
 
 void
@@ -98,7 +98,7 @@ _cogl_xlib_query_damage_extension (void)
 int
 _cogl_xlib_get_damage_base (void)
 {
-  CoglRendererX11 *x11_renderer;
+  CoglX11Renderer *x11_renderer;
   _COGL_GET_CONTEXT (ctxt, -1);
 
   x11_renderer = ctxt->display->renderer->winsys;

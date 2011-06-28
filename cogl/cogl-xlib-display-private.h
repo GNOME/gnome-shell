@@ -27,9 +27,9 @@
 
 #include <X11/Xlib.h>
 
-typedef struct _CoglDisplayXlib
+typedef struct _CoglXlibDisplay
 {
   Window dummy_xwin;
-} CoglDisplayXlib;
+} CoglXlibDisplay;
 
 #endif /* __COGL_DISPLAY_XLIB_PRIVATE_H */

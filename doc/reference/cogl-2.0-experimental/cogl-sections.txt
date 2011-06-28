@@ -17,8 +17,8 @@ cogl_renderer_new
 cogl_renderer_connect
 
 <SUBSECTION>
-cogl_renderer_xlib_set_foreign_display
-cogl_renderer_xlib_get_foreign_display
+cogl_xlib_renderer_set_foreign_display
+cogl_xlib_renderer_get_foreign_display
 
 <SUBSECTION>
 CoglXlibFilterFunc

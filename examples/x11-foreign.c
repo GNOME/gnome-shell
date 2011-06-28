@@ -71,7 +71,7 @@ main (int argc, char **argv)
   renderer = cogl_renderer_new ();
   /* FIXME: This should conceptually be part of the configuration of
    * a renderer. */
-  cogl_renderer_xlib_set_foreign_display (renderer, xdpy);
+  cogl_xlib_renderer_set_foreign_display (renderer, xdpy);
   if (!cogl_renderer_connect (renderer, &error))
     {
       fprintf (stderr, "Failed to connect to a renderer: %s\n",

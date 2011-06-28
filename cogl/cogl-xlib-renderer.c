@@ -33,8 +33,8 @@
 #include "cogl-object.h"
 
 #include "cogl-renderer-private.h"
-#include "cogl-renderer-xlib-private.h"
-#include "cogl-renderer-x11-private.h"
+#include "cogl-xlib-renderer-private.h"
+#include "cogl-x11-renderer-private.h"
 #include "cogl-winsys-private.h"
 
 #include <X11/Xlib.h>
@@ -69,7 +69,7 @@ get_renderer_for_xdisplay (Display *xdpy)
   for (l = _cogl_xlib_renderers; l; l = l->next)
     {
       CoglRenderer *renderer = l->data;
-      CoglRendererXlib *xlib_renderer = renderer->winsys;
+      CoglXlibRenderer *xlib_renderer = renderer->winsys;
 
       if (xlib_renderer->xdpy == xdpy)
         return renderer;
@@ -83,7 +83,7 @@ error_handler (Display *xdpy,
                XErrorEvent *error)
 {
   CoglRenderer *renderer;
-  CoglRendererXlib *xlib_renderer;
+  CoglXlibRenderer *xlib_renderer;
 
   renderer = get_renderer_for_xdisplay (xdpy);
 
@@ -96,10 +96,10 @@ error_handler (Display *xdpy,
 }
 
 void
-_cogl_renderer_xlib_trap_errors (CoglRenderer *renderer,
+_cogl_xlib_renderer_trap_errors (CoglRenderer *renderer,
                                  CoglXlibTrapState *state)
 {
-  CoglRendererXlib *xlib_renderer;
+  CoglXlibRenderer *xlib_renderer;
 
   xlib_renderer = renderer->winsys;
 
@@ -111,10 +111,10 @@ _cogl_renderer_xlib_trap_errors (CoglRenderer *renderer,
 }
 
 int
-_cogl_renderer_xlib_untrap_errors (CoglRenderer *renderer,
+_cogl_xlib_renderer_untrap_errors (CoglRenderer *renderer,
                                    CoglXlibTrapState *state)
 {
-  CoglRendererXlib *xlib_renderer;
+  CoglXlibRenderer *xlib_renderer;
 
   xlib_renderer = renderer->winsys;
   g_assert (state == xlib_renderer->trap_state);
@@ -129,8 +129,8 @@ _cogl_renderer_xlib_untrap_errors (CoglRenderer *renderer,
 static Display *
 assert_xlib_display (CoglRenderer *renderer, GError **error)
 {
-  Display *xdpy = cogl_renderer_xlib_get_foreign_display (renderer);
-  CoglRendererXlib *xlib_renderer = renderer->winsys;
+  Display *xdpy = cogl_xlib_renderer_get_foreign_display (renderer);
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
 
   /* A foreign display may have already been set... */
   if (xdpy)
@@ -154,10 +154,10 @@ assert_xlib_display (CoglRenderer *renderer, GError **error)
 }
 
 gboolean
-_cogl_renderer_xlib_connect (CoglRenderer *renderer, GError **error)
+_cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error)
 {
-  CoglRendererXlib *xlib_renderer = renderer->winsys;
-  CoglRendererX11 *x11_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
+  CoglX11Renderer *x11_renderer = renderer->winsys;
   int damage_error;
 
   if (!assert_xlib_display (renderer, error))
@@ -177,9 +177,9 @@ _cogl_renderer_xlib_connect (CoglRenderer *renderer, GError **error)
 }
 
 void
-_cogl_renderer_xlib_disconnect (CoglRenderer *renderer)
+_cogl_xlib_renderer_disconnect (CoglRenderer *renderer)
 {
-  CoglRendererXlib *xlib_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer = renderer->winsys;
 
   if (!renderer->foreign_xdpy)
     XCloseDisplay (xlib_renderer->xdpy);
@@ -188,9 +188,9 @@ _cogl_renderer_xlib_disconnect (CoglRenderer *renderer)
 }
 
 Display *
-cogl_renderer_xlib_get_display (CoglRenderer *renderer)
+cogl_xlib_renderer_get_display (CoglRenderer *renderer)
 {
-  CoglRendererXlib *xlib_renderer;
+  CoglXlibRenderer *xlib_renderer;
 
   g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
 

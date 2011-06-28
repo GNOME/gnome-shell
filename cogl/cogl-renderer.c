@@ -123,7 +123,7 @@ cogl_renderer_new (void)
 
 #if COGL_HAS_XLIB_SUPPORT
 void
-cogl_renderer_xlib_set_foreign_display (CoglRenderer *renderer,
+cogl_xlib_renderer_set_foreign_display (CoglRenderer *renderer,
                                         Display *xdisplay)
 {
   g_return_if_fail (cogl_is_renderer (renderer));
@@ -135,7 +135,7 @@ cogl_renderer_xlib_set_foreign_display (CoglRenderer *renderer,
 }
 
 Display *
-cogl_renderer_xlib_get_foreign_display (CoglRenderer *renderer)
+cogl_xlib_renderer_get_foreign_display (CoglRenderer *renderer)
 {
   g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
 

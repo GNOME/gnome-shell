@@ -22,36 +22,40 @@
  *
  */
 
-#ifndef __COGL_DISPLAY_GLX_PRIVATE_H
-#define __COGL_DISPLAY_GLX_PRIVATE_H
+#ifndef __COGL_RENDERER_GLX_PRIVATE_H
+#define __COGL_RENDERER_GLX_PRIVATE_H
 
 #include "cogl-object-private.h"
-#include "cogl-display-xlib-private.h"
+#include "cogl-xlib-renderer-private.h"
 
-typedef struct _CoglGLXCachedConfig
+typedef struct _CoglGLXRenderer
 {
-  /* This will be -1 if there is no cached config in this slot */
-  int depth;
-  gboolean found;
-  GLXFBConfig fb_config;
-  gboolean can_mipmap;
-} CoglGLXCachedConfig;
+  CoglXlibRenderer _parent;
 
-#define COGL_GLX_N_CACHED_CONFIGS 3
+  int glx_major;
+  int glx_minor;
 
-typedef struct _CoglDisplayGLX
-{
-  CoglDisplayXlib _parent;
+  int glx_error_base;
+  int glx_event_base;
 
-  CoglGLXCachedConfig glx_cached_configs[COGL_GLX_N_CACHED_CONFIGS];
+  gboolean is_direct;
 
-  gboolean found_fbconfig;
-  gboolean fbconfig_has_rgba_visual;
-  GLXFBConfig fbconfig;
+  /* Vblank stuff */
+  int dri_fd;
 
-  /* Single context for all wins */
-  GLXContext glx_context;
-  GLXWindow dummy_glxwin;
-} CoglDisplayGLX;
+  /* Function pointers for GLX specific extensions */
+#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
 
-#endif /* __COGL_DISPLAY_GLX_PRIVATE_H */
+#define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args) \
+  ret (APIENTRY * pf_ ## name) args;
+
+#define COGL_WINSYS_FEATURE_END()
+
+#include "cogl-winsys-glx-feature-functions.h"
+
+#undef COGL_WINSYS_FEATURE_BEGIN
+#undef COGL_WINSYS_FEATURE_FUNCTION
+#undef COGL_WINSYS_FEATURE_END
+} CoglGLXRenderer;
+
+#endif /* __COGL_RENDERER_GLX_PRIVATE_H */
