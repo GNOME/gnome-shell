@@ -5,6 +5,7 @@
 
 #include <gio/gio.h>
 #include <clutter/clutter.h>
+#include <libsoup/soup.h>
 
 G_BEGIN_DECLS
 
@@ -24,6 +25,10 @@ char    *shell_util_format_date                (const char       *format,
 
 ClutterModifierType
          shell_get_event_state                 (ClutterEvent     *event);
+
+void     shell_write_soup_message_to_stream    (GOutputStream    *stream,
+                                                SoupMessage      *message,
+                                                GError          **error);
 
 gboolean shell_write_string_to_stream          (GOutputStream    *stream,
                                                 const char       *str,
