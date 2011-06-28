@@ -370,8 +370,8 @@ clutter_win32_handle_event (const MSG *msg)
 
   /* Give Cogl a chance to handle the message first */
   if (backend->cogl_renderer != NULL &&
-      cogl_renderer_handle_native_event (backend->cogl_renderer,
-                                         (void *) msg) == COGL_FILTER_REMOVE)
+      cogl_win32_renderer_handle_event (backend->cogl_renderer,
+                                        (void *) msg) == COGL_FILTER_REMOVE)
     return TRUE;
 
   manager = clutter_device_manager_get_default ();
