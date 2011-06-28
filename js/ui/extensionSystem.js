@@ -182,6 +182,7 @@ function disableExtension(uuid) {
     }
 
     meta.state = ExtensionState.DISABLED;
+    _signals.emit('extension-state-changed', meta);
 }
 
 function enableExtension(uuid) {
@@ -202,12 +203,16 @@ function enableExtension(uuid) {
     }
 
     meta.state = ExtensionState.ENABLED;
+    _signals.emit('extension-state-changed', meta);
 }
 
 function logExtensionError(uuid, message) {
     if (!errors[uuid]) errors[uuid] = [];
     errors[uuid].push(message);
     global.logError('Extension "%s" had error: %s'.format(uuid, message));
+    _signals.emit('extension-state-changed', { uuid: uuid,
+                                               error: message,
+                                               state: ExtensionState.ERROR });
 }
 
 function loadExtension(dir, enabled, type) {
@@ -268,6 +273,7 @@ function loadExtension(dir, enabled, type) {
     extensionMeta[uuid] = meta;
     meta.type = type;
     meta.path = dir.get_path();
+    meta.error = '';
 
     // Default to error, we set success as the last step
     meta.state = ExtensionState.ERROR;
@@ -335,6 +341,7 @@ function loadExtension(dir, enabled, type) {
         enableExtension(uuid);
 
     _signals.emit('extension-loaded', meta.uuid);
+    _signals.emit('extension-state-changed', meta);
     global.log('Loaded extension ' + meta.uuid);
 }
 

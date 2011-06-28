@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const DBus = imports.dbus;
+const Lang = imports.lang;
 
 const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
@@ -49,7 +50,8 @@ const GnomeShellIface = {
                 outSignature: ''
               }
              ],
-    signals: [],
+    signals: [{ name: 'ExtensionStatusChanged',
+                inSignature: 'sis' }],
     properties: [{ name: 'OverviewActive',
                    signature: 'b',
                    access: 'readwrite' },
@@ -68,6 +70,8 @@ function GnomeShell() {
 GnomeShell.prototype = {
     _init: function() {
         DBus.session.exportObject('/org/gnome/Shell', this);
+        ExtensionSystem.connect('extension-state-changed',
+                                Lang.bind(this, this._extensionStateChanged));
     },
 
     /**
@@ -187,7 +191,14 @@ GnomeShell.prototype = {
 
     ApiVersion: 1,
 
-    ShellVersion: Config.PACKAGE_VERSION
+    ShellVersion: Config.PACKAGE_VERSION,
+
+    _extensionStateChanged: function(_, newState) {
+        DBus.session.emit_signal('/org/gnome/Shell',
+                                 'org.gnome.Shell',
+                                 'ExtensionStatusChanged', 'sis',
+                                 [newState.uuid, newState.state, newState.error]);
+    }
 };
 
 DBus.conformExport(GnomeShell.prototype, GnomeShellIface);
