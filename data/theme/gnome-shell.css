@@ -836,9 +836,9 @@ StTooltip StLabel {
 
 /* Calendar popup */
 
-#calendarArea {
-    /* this is the width of the entire popup */
-    min-width: 600px;
+#calendarEventsArea {
+    /* this is the width of the second column of the popup */
+    min-width: 400px;
 }
 
 .calendar-vertical-separator {

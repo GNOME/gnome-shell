@@ -61,7 +61,7 @@ DateMenuButton.prototype = {
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
 
-        hbox = new St.BoxLayout({name: 'calendarArea'});
+        hbox = new St.BoxLayout({name: 'calendarArea' });
         this.menu.addActor(hbox);
 
         // Fill up the first column
@@ -101,8 +101,8 @@ DateMenuButton.prototype = {
         hbox.add(item);
 
         // Fill up the second column
-
-        vbox = new St.BoxLayout({vertical: true});
+        vbox = new St.BoxLayout({name: 'calendarEventsArea',
+                                 vertical: true});
         hbox.add(vbox, { expand: true });
 
         // Event list
