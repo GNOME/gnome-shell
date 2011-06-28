@@ -149,7 +149,9 @@ Client.prototype = {
                            if (this._tpClient.is_handling_channel(channel)) {
                                // The chat box has been destroyed so it can't
                                // handle the channel any more.
-                               channel.close_async(null);
+                               channel.close_async(function(src, result) {
+                                   channel.close_finish(result);
+                               });
                            }
 
                            delete this._sources[channel.get_object_path()];
