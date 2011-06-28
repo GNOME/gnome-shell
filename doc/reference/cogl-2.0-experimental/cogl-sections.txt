@@ -33,10 +33,10 @@ cogl_win32_renderer_remove_native_filter
 cogl_win32_renderer_handle_native_event
 
 <SUBSECTION>
-cogl_renderer_wayland_set_foreign_display
-cogl_renderer_wayland_get_display
-cogl_renderer_wayland_set_foreign_compositor
-cogl_renderer_wayland_get_compositor
+cogl_wayland_renderer_set_foreign_display
+cogl_wayland_renderer_get_display
+cogl_wayland_renderer_set_foreign_compositor
+cogl_wayland_renderer_get_compositor
 </SECTION>
 
 <SECTION>

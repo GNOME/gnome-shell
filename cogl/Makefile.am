@@ -355,6 +355,9 @@ cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 if SUPPORT_EGL_PLATFORM_WAYLAND
+cogl_public_h += \
+	$(srcdir)/cogl-wayland-renderer.h
+
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c \
        $(srcdir)/winsys/cogl-winsys-egl-private.h
