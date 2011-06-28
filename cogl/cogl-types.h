@@ -671,28 +671,6 @@ typedef enum _CoglWinsysFeature
   COGL_WINSYS_FEATURE_N_FEATURES
 } CoglWinsysFeature;
 
-/* XXX: Note these enum types are only referenced by experimental API
- * so although they aren't explicitly guarded they are implicitly
- * experimental too. */
-
-/*
- * CoglNativeFilterFunc:
- * @native_event: A pointer to the native system event
- * @data: The data that was given when the filter was added
- *
- * A callback function that can be registered with
- * cogl_renderer_add_native_filter(). The function should return
- * %COGL_FILTER_REMOVE if it wants to prevent further processing or
- * %COGL_FILTER_CONTINUE otherwise.
- *
- * The type that @native_event points to depends on the type of the
- * underlying renderer. On xlib based renderers this would point to an
- * XEvent struct and on Windows it would point to a MSG struct.
- */
-typedef CoglFilterReturn (* CoglNativeFilterFunc) (void *native_event,
-                                                   void *data);
-
-
 G_END_DECLS
 
 #endif /* __COGL_TYPES_H__ */

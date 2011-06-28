@@ -41,6 +41,7 @@
 #include "cogl-onscreen-template-private.h"
 #include "cogl-private.h"
 #include "cogl-feature-private.h"
+#include "cogl-win32-renderer.h"
 
 typedef struct _CoglRendererWgl
 {
@@ -166,9 +167,8 @@ find_onscreen_for_hwnd (CoglContext *context, HWND hwnd)
 }
 
 static CoglFilterReturn
-win32_event_filter_cb (void *native_event, void *data)
+win32_event_filter_cb (MSG *msg, void *data)
 {
-  MSG *msg = native_event;
   CoglContext *context = data;
 
   if (msg->message == WM_SIZE)
@@ -217,7 +217,7 @@ window_proc (HWND hwnd, UINT umsg,
      the window proc is. We want the application to forward on all
      messages through Cogl so that it can have a chance to process
      them which might mean that that in it's GetMessage loop it could
-     call cogl_renderer_handle_native_event for every message. However
+     call cogl_win32_renderer_handle_event for every message. However
      the message loop would usually call DispatchMessage as well which
      mean this window proc would be invoked and Cogl would see the
      message twice. However we can't just ignore messages in the
@@ -260,7 +260,7 @@ window_proc (HWND hwnd, UINT umsg,
       renderer = COGL_FRAMEBUFFER (onscreen)->context->display->renderer;
 
       message_handled =
-        cogl_renderer_handle_native_event (renderer, &msg);
+        cogl_win32_renderer_handle_event (renderer, &msg);
     }
 
   if (!message_handled)
@@ -587,9 +587,9 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
 
   wgl_context = context->winsys = g_new0 (CoglContextWgl, 1);
 
-  cogl_renderer_add_native_filter (context->display->renderer,
-                                   win32_event_filter_cb,
-                                   context);
+  cogl_win32_renderer_add_filter (context->display->renderer,
+                                  win32_event_filter_cb,
+                                  context);
 
   update_winsys_features (context);
 
@@ -599,9 +599,9 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
 static void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
-  cogl_renderer_remove_native_filter (context->display->renderer,
-                                      win32_event_filter_cb,
-                                      context);
+  cogl_win32_renderer_remove_filter (context->display->renderer,
+                                     win32_event_filter_cb,
+                                     context);
 
   g_free (context->winsys);
 }

@@ -252,9 +252,8 @@ find_onscreen_for_xid (CoglContext *context, guint32 xid)
 }
 
 static CoglFilterReturn
-event_filter_cb (void *event, void *data)
+event_filter_cb (XEvent *event, void *data)
 {
-  XEvent *xevent = event;
   CoglContext *context = data;
 
   if (xevent->type == ConfigureNotify)
@@ -1108,9 +1107,9 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
   context->winsys = g_new0 (CoglContextEGL, 1);
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  cogl_renderer_add_native_filter (context->display->renderer,
-                                   event_filter_cb,
-                                   context);
+  cogl_xlib_renderer_add_filter (context->display->renderer,
+                                 event_filter_cb,
+                                 context);
 #endif
   update_winsys_features (context);
 
@@ -1121,9 +1120,9 @@ static void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  cogl_renderer_remove_native_filter (context->display->renderer,
-                                      event_filter_cb,
-                                      context);
+  cogl_xlib_renderer_remove_filter (context->display->renderer,
+                                    event_filter_cb,
+                                    context);
 #endif
   g_free (context->winsys);
 }

@@ -229,8 +229,8 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 }
 
 CoglFilterReturn
-cogl_renderer_handle_native_event (CoglRenderer *renderer,
-                                   void *event)
+_cogl_renderer_handle_native_event (CoglRenderer *renderer,
+                                    void *event)
 {
   GSList *l, *next;
 
@@ -254,9 +254,9 @@ cogl_renderer_handle_native_event (CoglRenderer *renderer,
 }
 
 void
-cogl_renderer_add_native_filter (CoglRenderer *renderer,
-                                 CoglNativeFilterFunc func,
-                                 void *data)
+_cogl_renderer_add_native_filter (CoglRenderer *renderer,
+                                  CoglNativeFilterFunc func,
+                                  void *data)
 {
   CoglNativeFilterClosure *closure;
 
@@ -268,9 +268,9 @@ cogl_renderer_add_native_filter (CoglRenderer *renderer,
 }
 
 void
-cogl_renderer_remove_native_filter (CoglRenderer *renderer,
-                                    CoglNativeFilterFunc func,
-                                    void *data)
+_cogl_renderer_remove_native_filter (CoglRenderer *renderer,
+                                     CoglNativeFilterFunc func,
+                                     void *data)
 {
   GSList *l, *prev = NULL;
 

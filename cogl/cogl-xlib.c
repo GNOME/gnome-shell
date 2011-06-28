@@ -78,7 +78,7 @@ cogl_xlib_handle_event (XEvent *xevent)
   _COGL_GET_CONTEXT (ctx, COGL_FILTER_CONTINUE);
 
   /* Pass the event on to the renderer */
-  return cogl_renderer_handle_native_event (ctx->display->renderer, xevent);
+  return cogl_xlib_renderer_handle_event (ctx->display->renderer, xevent);
 }
 
 void

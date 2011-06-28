@@ -198,3 +198,29 @@ cogl_renderer_xlib_get_display (CoglRenderer *renderer)
 
   return xlib_renderer->xdpy;
 }
+
+CoglFilterReturn
+cogl_xlib_renderer_handle_event (CoglRenderer *renderer,
+                                 XEvent *event)
+{
+  return _cogl_renderer_handle_native_event (renderer, event);
+}
+
+void
+cogl_xlib_renderer_add_filter (CoglRenderer *renderer,
+                               CoglXlibFilterFunc func,
+                               void *data)
+{
+  _cogl_renderer_add_native_filter (renderer,
+                                    (CoglNativeFilterFunc)func, data);
+}
+
+void
+cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
+                                  CoglXlibFilterFunc func,
+                                  void *data)
+{
+  _cogl_renderer_remove_native_filter (renderer,
+                                       (CoglNativeFilterFunc)func, data);
+}
+

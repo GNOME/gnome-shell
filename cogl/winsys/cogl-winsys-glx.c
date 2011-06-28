@@ -220,9 +220,8 @@ notify_swap_buffers (CoglContext *context, GLXDrawable drawable)
 }
 
 static CoglFilterReturn
-glx_event_filter_cb (void *native_event, void *data)
+glx_event_filter_cb (XEvent *xevent, void *data)
 {
-  XEvent *xevent = native_event;
   CoglContext *context = data;
 #ifdef GLX_INTEL_swap_event
   CoglRendererGLX *glx_renderer;
@@ -672,9 +671,9 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   context->winsys = g_new0 (CoglContextGLX, 1);
 
-  cogl_renderer_add_native_filter (context->display->renderer,
-                                   glx_event_filter_cb,
-                                   context);
+  cogl_xlib_renderer_add_filter (context->display->renderer,
+                                 glx_event_filter_cb,
+                                 context);
   update_winsys_features (context);
 
   return TRUE;
@@ -683,9 +682,9 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
 static void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
-  cogl_renderer_remove_native_filter (context->display->renderer,
-                                      glx_event_filter_cb,
-                                      context);
+  cogl_xlib_renderer_remove_filter (context->display->renderer,
+                                    glx_event_filter_cb,
+                                    context);
   g_free (context->winsys);
 }
 

@@ -53,4 +53,21 @@ struct _CoglRenderer
   void *winsys;
 };
 
+typedef CoglFilterReturn (* CoglNativeFilterFunc) (void *native_event,
+                                                   void *data);
+
+CoglFilterReturn
+_cogl_renderer_handle_native_event (CoglRenderer *renderer,
+                                    void *event);
+
+void
+_cogl_renderer_add_native_filter (CoglRenderer *renderer,
+                                  CoglNativeFilterFunc func,
+                                  void *data);
+
+void
+_cogl_renderer_remove_native_filter (CoglRenderer *renderer,
+                                     CoglNativeFilterFunc func,
+                                     void *data);
+
 #endif /* __COGL_RENDERER_PRIVATE_H */
