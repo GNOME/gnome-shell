@@ -302,7 +302,7 @@ clutter_backend_cogl_create_context (ClutterBackend  *backend,
 
   backend->cogl_renderer = cogl_renderer_new ();
 #ifdef COGL_HAS_XLIB_SUPPORT
-  cogl_renderer_xlib_set_foreign_display (backend->cogl_renderer,
+  cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
                                           backend_x11->xdpy);
 #endif
   if (!cogl_renderer_connect (backend->cogl_renderer, error))
