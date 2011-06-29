@@ -208,7 +208,7 @@
   </autotools>
 
   <autotools id="librest">
-    <branch />
+    <branch/>
     <dependencies>
       <dep package="glib"/>
       <dep package="libsoup"/>
