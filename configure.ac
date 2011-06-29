@@ -159,12 +159,12 @@ dnl ================================================================
 dnl     ============================================================
 dnl     Enable debugging
 dnl     ============================================================
-m4_define([default], [m4_if(cogl_release_status, [git], [yes], [no])])
+m4_define([debug_default], [m4_if(cogl_release_status, [git], [yes], [no])])
 AC_ARG_ENABLE(
   [debug],
-  [AC_HELP_STRING([--enable-debug=@<:@no/yes@:>@], [Control Cogl debugging level @<:@default=]default[@:>@])],
+  [AC_HELP_STRING([--enable-debug=@<:@no/yes@:>@], [Control Cogl debugging level @<:@default=]debug_default[@:>@])],
   [],
-  enable_debug=default
+  enable_debug=debug_default
 )
 AS_CASE(
   [$enable_debug],
@@ -238,12 +238,12 @@ dnl     ============================================================
 
 # use strict compiler flags only when building from git; the rules for
 # distcheck will take care of turning this on when making a release
-m4_define([default], [m4_if(cogl_release_status, [git], [yes], [no])])
+m4_define([maintainer_default], [m4_if(cogl_release_status, [git], [yes], [no])])
 AC_ARG_ENABLE(
   [maintainer-flags],
-  [AC_HELP_STRING([--enable-maintainer-flags=@<:@no/yes/error@:>@], [Use strict compiler flags @<:@default=]default[@:>@])],
+  [AC_HELP_STRING([--enable-maintainer-flags=@<:@no/yes/error@:>@], [Use strict compiler flags @<:@default=]maintainer_default[@:>@])],
   [],
-  enable_maintainer_flags=default
+  enable_maintainer_flags=maintainer_default
 )
 
 MAINTAINER_COMPILER_FLAGS="-Wall -Wcast-align -Wuninitialized
