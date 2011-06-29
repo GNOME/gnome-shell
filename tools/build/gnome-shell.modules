@@ -208,7 +208,7 @@
   </autotools>
 
   <autotools id="librest">
-    <branch/>
+    <branch repo="git.gnome.org" module="librest"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="libsoup"/>
