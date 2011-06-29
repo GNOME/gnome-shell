@@ -113,6 +113,8 @@ enum {
   PROP_VSCROLL,
   PROP_HSCROLLBAR_POLICY,
   PROP_VSCROLLBAR_POLICY,
+  PROP_HSCROLLBAR_VISIBLE,
+  PROP_VSCROLLBAR_VISIBLE,
   PROP_MOUSE_SCROLL,
 };
 
@@ -137,6 +139,12 @@ st_scroll_view_get_property (GObject    *object,
       break;
     case PROP_VSCROLLBAR_POLICY:
       g_value_set_enum (value, priv->vscrollbar_policy);
+      break;
+    case PROP_HSCROLLBAR_VISIBLE:
+      g_value_set_boolean (value, priv->hscrollbar_visible);
+      break;
+    case PROP_VSCROLLBAR_VISIBLE:
+      g_value_set_boolean (value, priv->vscrollbar_visible);
       break;
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
@@ -646,8 +654,22 @@ st_scroll_view_allocate (ClutterActor          *actor,
   if (priv->child)
     clutter_actor_allocate (priv->child, &child_box, flags);
 
-  priv->hscrollbar_visible = hscrollbar_visible;
-  priv->vscrollbar_visible = vscrollbar_visible;
+  if (priv->hscrollbar_visible != hscrollbar_visible)
+    {
+      g_object_freeze_notify (G_OBJECT (actor));
+      priv->hscrollbar_visible = hscrollbar_visible;
+      g_object_notify (G_OBJECT (actor), "hscrollbar-visible");
+      g_object_thaw_notify (G_OBJECT (actor));
+    }
+
+  if (priv->vscrollbar_visible != vscrollbar_visible)
+    {
+      g_object_freeze_notify (G_OBJECT (actor));
+      priv->vscrollbar_visible = vscrollbar_visible;
+      g_object_notify (G_OBJECT (actor), "vscrollbar-visible");
+      g_object_thaw_notify (G_OBJECT (actor));
+    }
+
 }
 
 static void
@@ -785,6 +807,20 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                              GTK_POLICY_AUTOMATIC,
                              G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_HSCROLLBAR_POLICY, pspec);
+
+  pspec = g_param_spec_boolean ("hscrollbar-visible",
+                                "Horizontal Scrollbar Visibility",
+                                "Whether the horizontal scrollbar is visible",
+                                TRUE,
+                                G_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_HSCROLLBAR_VISIBLE, pspec);
+
+  pspec = g_param_spec_boolean ("vscrollbar-visible",
+                                "Vertical Scrollbar Visibility",
+                                "Whether the vertical scrollbar is visible",
+                                TRUE,
+                                G_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_VSCROLLBAR_VISIBLE, pspec);
 
   pspec = g_param_spec_boolean ("enable-mouse-scrolling",
                                 "Enable Mouse Scrolling",
