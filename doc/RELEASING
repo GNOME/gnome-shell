@@ -10,7 +10,7 @@ When making a new release;
 
    and this:
 
-     $ git log master..origin/master
+     $ git diff --stat master origin/master
 
    should be empty. Commit and push before the next step.
 
