@@ -219,7 +219,6 @@
     <branch repo="git.gnome.org" module="gnome-online-accounts"/>
     <dependencies>
       <dep package="glib"/>
-      <dep package="gnome-keyring"/>
       <dep package="gtk3"/>
       <dep package="json-glib"/>
       <dep package="libnotify"/>
