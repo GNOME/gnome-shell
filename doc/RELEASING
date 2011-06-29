@@ -9,7 +9,7 @@ When making a new release;
 
    and:
 
-     $ git log master..origin/master
+     $ git diff --stat master origin/master
 
    should be empty.
 
