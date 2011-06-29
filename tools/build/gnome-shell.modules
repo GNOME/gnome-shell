@@ -245,10 +245,8 @@
     </dependencies>
   </autotools>
 
-  <tarball id="libgdata" version="0.8.0">
-    <source href="http://download.gnome.org/sources/libgdata/0.8/libgdata-0.8.0.tar.bz2"
-            hash="sha256:1a816dda7de8ce162e00cc1c782a5ae25230a36d56c590a67d86848058797c9f"
-            md5sum="43ad483c17446dcc7d1c8d3fa49dcc90" size="1240410"/>
+  <autotools id="libgdata">
+    <branch repo="git.gnome.org" module="libgdata"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="libsoup"/>
@@ -256,7 +254,7 @@
     <suggests>
       <dep package="gobject-introspection"/>
     </suggests>
-  </tarball>
+  </autotools>
 
   <autotools id="libgweather">
     <branch repo="git.gnome.org" module="libgweather"/>
