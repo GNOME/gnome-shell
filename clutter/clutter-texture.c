@@ -1581,7 +1581,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 /**
  * clutter_texture_set_from_rgb_data:
  * @texture: A #ClutterTexture
- * @data: Image data in RGBA type colorspace.
+ * @data: (array): Image data in RGBA type colorspace.
  * @has_alpha: Set to TRUE if image data has an alpha channel.
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
@@ -1659,7 +1659,7 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
 /**
  * clutter_texture_set_from_yuv_data:
  * @texture: A #ClutterTexture
- * @data: Image data in YUV type colorspace.
+ * @data: (array): Image data in YUV type colorspace.
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
  * @flags: #ClutterTextureFlags
@@ -2257,7 +2257,7 @@ clutter_texture_get_base_size (ClutterTexture *texture,
 /**
  * clutter_texture_set_area_from_rgb_data:
  * @texture: A #ClutterTexture
- * @data: Image data in RGB type colorspace.
+ * @data: (array): Image data in RGB type colorspace.
  * @has_alpha: Set to TRUE if image data has an alpha channel.
  * @x: X coordinate of upper left corner of region to update.
  * @y: Y coordinate of upper left corner of region to update.
