@@ -284,13 +284,13 @@ _Draggable.prototype = {
             this._dragOffsetY = actorStageY - this._dragStartY;
 
             // Set the actor's scale such that it will keep the same
-            // transformed size when it's reparented to the stage
+            // transformed size when it's reparented to the uiGroup
             let [scaledWidth, scaledHeight] = this.actor.get_transformed_size();
             this.actor.set_scale(scaledWidth / this.actor.width,
                                  scaledHeight / this.actor.height);
         }
 
-        this._dragActor.reparent(this.actor.get_stage());
+        this._dragActor.reparent(Main.uiGroup);
         this._dragActor.raise_top();
         Shell.util_set_hidden_from_pick(this._dragActor, true);
 
@@ -442,7 +442,7 @@ _Draggable.prototype = {
                         return true;
                     // If it accepted the drop without taking the actor,
                     // handle it ourselves.
-                    if (this._dragActor.get_parent() == this._dragActor.get_stage()) {
+                    if (this._dragActor.get_parent() == Main.uiGroup) {
                         if (this._restoreOnSuccess) {
                             this._restoreDragActor(event.get_time());
                             return true;
