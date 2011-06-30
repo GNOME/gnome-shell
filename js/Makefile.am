@@ -2,6 +2,7 @@
 jsdir = $(pkgdatadir)/js
 
 nobase_dist_js_DATA = 	\
+	gdm/batch.js		\
 	misc/config.js		\
 	misc/docInfo.js		\
 	misc/fileUtils.js	\
