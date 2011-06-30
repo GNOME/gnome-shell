@@ -55,57 +55,69 @@ typedef struct
      program changes then we may need to redecide whether to generate
      a shader at all */
   unsigned int user_program_age;
-} CoglPipelineVertendPrivate;
+} CoglPipelineShaderState;
 
-static CoglUserDataKey glsl_priv_key;
+static CoglUserDataKey shader_state_key;
 
-static CoglPipelineVertendPrivate *
-get_glsl_priv (CoglPipeline *pipeline)
+static CoglPipelineShaderState *
+shader_state_new (void)
 {
-  return cogl_object_get_user_data (COGL_OBJECT (pipeline), &glsl_priv_key);
+  CoglPipelineShaderState *shader_state;
+
+  shader_state = g_slice_new0 (CoglPipelineShaderState);
+  shader_state->ref_count = 1;
+
+  return shader_state;
+}
+
+static CoglPipelineShaderState *
+get_shader_state (CoglPipeline *pipeline)
+{
+  return cogl_object_get_user_data (COGL_OBJECT (pipeline), &shader_state_key);
 }
 
 static void
-destroy_glsl_priv (void *user_data)
+destroy_shader_state (void *user_data)
 {
-  CoglPipelineVertendPrivate *priv = user_data;
+  CoglPipelineShaderState *shader_state = user_data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (--priv->ref_count == 0)
+  if (--shader_state->ref_count == 0)
     {
-      if (priv->gl_shader)
-        GE( ctx, glDeleteShader (priv->gl_shader) );
+      if (shader_state->gl_shader)
+        GE( ctx, glDeleteShader (shader_state->gl_shader) );
 
-      g_slice_free (CoglPipelineVertendPrivate, priv);
+      g_slice_free (CoglPipelineShaderState, shader_state);
     }
 }
 
 static void
-set_glsl_priv (CoglPipeline *pipeline, CoglPipelineVertendPrivate *priv)
+set_shader_state (CoglPipeline *pipeline,
+                  CoglPipelineShaderState *shader_state)
 {
   cogl_object_set_user_data (COGL_OBJECT (pipeline),
-                             &glsl_priv_key,
-                             priv,
-                             destroy_glsl_priv);
+                             &shader_state_key,
+                             shader_state,
+                             destroy_shader_state);
 }
 
 static void
-dirty_glsl_shader_state (CoglPipeline *pipeline)
+dirty_shader_state (CoglPipeline *pipeline)
 {
   cogl_object_set_user_data (COGL_OBJECT (pipeline),
-                             &glsl_priv_key,
+                             &shader_state_key,
                              NULL,
-                             destroy_glsl_priv);
+                             NULL);
 }
 
 GLuint
 _cogl_pipeline_vertend_glsl_get_shader (CoglPipeline *pipeline)
 {
-  CoglPipelineVertendPrivate *priv = get_glsl_priv (pipeline);
+  CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
 
-  if (priv)
-    return priv->gl_shader;
+  if (shader_state)
+    return shader_state->gl_shader;
   else
     return 0;
 }
@@ -115,7 +127,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
                                    unsigned long pipelines_difference)
 {
-  CoglPipelineVertendPrivate *priv;
+  CoglPipelineShaderState *shader_state;
   CoglProgram *user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -134,9 +146,9 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
 
   /* Now lookup our glsl backend private state (allocating if
    * necessary) */
-  priv = get_glsl_priv (pipeline);
+  shader_state = get_shader_state (pipeline);
 
-  if (priv == NULL)
+  if (shader_state == NULL)
     {
       CoglPipeline *authority;
 
@@ -148,42 +160,41 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
          ~COGL_PIPELINE_STATE_LAYERS,
          COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN);
 
-      priv = get_glsl_priv (authority);
+      shader_state = get_shader_state (authority);
 
-      if (priv == NULL)
+      if (shader_state == NULL)
         {
-          priv = g_slice_new0 (CoglPipelineVertendPrivate);
-          priv->ref_count = 1;
-          set_glsl_priv (authority, priv);
+          shader_state = shader_state_new ();
+          set_shader_state (authority, shader_state);
         }
 
       if (authority != pipeline)
         {
-          priv->ref_count++;
-          set_glsl_priv (pipeline, priv);
+          shader_state->ref_count++;
+          set_shader_state (pipeline, shader_state);
         }
     }
 
-  if (priv->gl_shader)
+  if (shader_state->gl_shader)
     {
       /* If we already have a valid GLSL shader then we don't need to
          generate a new one. However if there's a user program and it
          has changed since the last link then we do need a new shader */
       if (user_program == NULL ||
-          priv->user_program_age == user_program->age)
+          shader_state->user_program_age == user_program->age)
         return TRUE;
 
       /* We need to recreate the shader so destroy the existing one */
-      GE( ctx, glDeleteShader (priv->gl_shader) );
-      priv->gl_shader = 0;
+      GE( ctx, glDeleteShader (shader_state->gl_shader) );
+      shader_state->gl_shader = 0;
     }
 
-  /* If we make it here then we have a priv struct without a gl_shader
+  /* If we make it here then we have a shader_state struct without a gl_shader
      either because this is the first time we've encountered it or
      because the user program has changed */
 
   if (user_program)
-    priv->user_program_age = user_program->age;
+    shader_state->user_program_age = user_program->age;
 
   /* If the user program contains a vertex shader then we don't need
      to generate one */
@@ -198,10 +209,10 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
      add_layer callback is invoked */
   g_string_set_size (ctx->codegen_header_buffer, 0);
   g_string_set_size (ctx->codegen_source_buffer, 0);
-  priv->header = ctx->codegen_header_buffer;
-  priv->source = ctx->codegen_source_buffer;
+  shader_state->header = ctx->codegen_header_buffer;
+  shader_state->source = ctx->codegen_source_buffer;
 
-  g_string_append (priv->source,
+  g_string_append (shader_state->source,
                    "void\n"
                    "main ()\n"
                    "{\n");
@@ -209,7 +220,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
   if (ctx->driver == COGL_DRIVER_GLES2)
     /* There is no builtin uniform for the pointsize on GLES2 so we need
        to copy it from the custom uniform in the vertex shader */
-    g_string_append (priv->source,
+    g_string_append (shader_state->source,
                      "  cogl_point_size_out = cogl_point_size_in;\n");
   /* On regular OpenGL we'll just flush the point size builtin */
   else if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
@@ -232,12 +243,12 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
                                        CoglPipelineLayer *layer,
                                        unsigned long layers_difference)
 {
-  CoglPipelineVertendPrivate *priv;
+  CoglPipelineShaderState *shader_state;
   int unit_index;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  priv = get_glsl_priv (pipeline);
+  shader_state = get_shader_state (pipeline);
 
   unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
@@ -263,7 +274,7 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
         }
     }
 
-  if (priv->source == NULL)
+  if (shader_state->source == NULL)
     return TRUE;
 
   /* Transform the texture coordinates by the layer's user matrix.
@@ -277,7 +288,7 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
    * avoid setting them if not
    */
 
-  g_string_append_printf (priv->source,
+  g_string_append_printf (shader_state->source,
                           "  cogl_tex_coord_out[%i] = "
                           "cogl_texture_matrix[%i] * cogl_tex_coord%i_in;\n",
                           unit_index, unit_index, unit_index);
@@ -289,13 +300,13 @@ static gboolean
 _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference)
 {
-  CoglPipelineVertendPrivate *priv;
+  CoglPipelineShaderState *shader_state;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  priv = get_glsl_priv (pipeline);
+  shader_state = get_shader_state (pipeline);
 
-  if (priv->source)
+  if (shader_state->source)
     {
       const char *source_strings[2];
       GLint lengths[2];
@@ -310,7 +321,7 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
                            0 /* no application private data */);
       COGL_COUNTER_INC (_cogl_uprof_context, vertend_glsl_compile_counter);
 
-      g_string_append (priv->source,
+      g_string_append (shader_state->source,
                        "  cogl_position_out = "
                        "cogl_modelview_projection_matrix * "
                        "cogl_position_in;\n"
@@ -319,10 +330,10 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
 
       GE_RET( shader, ctx, glCreateShader (GL_VERTEX_SHADER) );
 
-      lengths[0] = priv->header->len;
-      source_strings[0] = priv->header->str;
-      lengths[1] = priv->source->len;
-      source_strings[1] = priv->source->str;
+      lengths[0] = shader_state->header->len;
+      source_strings[0] = shader_state->header->str;
+      lengths[1] = shader_state->source->len;
+      source_strings[1] = shader_state->source->str;
 
       n_layers = cogl_pipeline_get_n_layers (pipeline);
 
@@ -345,9 +356,9 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
           g_warning ("Shader compilation failed:\n%s", shader_log);
         }
 
-      priv->header = NULL;
-      priv->source = NULL;
-      priv->gl_shader = shader;
+      shader_state->header = NULL;
+      shader_state->source = NULL;
+      shader_state->gl_shader = shader;
     }
 
   return TRUE;
@@ -359,7 +370,7 @@ _cogl_pipeline_vertend_glsl_pre_change_notify (CoglPipeline *pipeline,
                                                const CoglColor *new_color)
 {
   if ((change & COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN))
-    dirty_glsl_shader_state (pipeline);
+    dirty_shader_state (pipeline);
 }
 
 /* NB: layers are considered immutable once they have any dependants
@@ -376,15 +387,15 @@ _cogl_pipeline_vertend_glsl_layer_pre_change_notify (
                                                 CoglPipelineLayer *layer,
                                                 CoglPipelineLayerState change)
 {
-  CoglPipelineVertendPrivate *priv;
+  CoglPipelineShaderState *shader_state;
 
-  priv = get_glsl_priv (owner);
-  if (!priv)
+  shader_state = get_shader_state (owner);
+  if (!shader_state)
     return;
 
   if ((change & COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN))
     {
-      dirty_glsl_shader_state (owner);
+      dirty_shader_state (owner);
       return;
     }
 

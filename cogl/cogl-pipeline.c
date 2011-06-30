@@ -448,7 +448,6 @@ _cogl_pipeline_copy (CoglPipeline *src, gboolean is_weak)
   pipeline->deprecated_get_layers_list_dirty = TRUE;
 
   pipeline->fragend = src->fragend;
-  pipeline->fragend_priv_set_mask = 0;
 
   pipeline->vertend = src->vertend;
 
@@ -501,18 +500,6 @@ cogl_pipeline_new (void)
   return new;
 }
 
-static void
-_cogl_pipeline_fragend_free_priv (CoglPipeline *pipeline)
-{
-  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
-      _cogl_pipeline_fragends[pipeline->fragend]->free_priv)
-    {
-      const CoglPipelineFragend *fragend =
-        _cogl_pipeline_fragends[pipeline->fragend];
-      fragend->free_priv (pipeline);
-    }
-}
-
 static gboolean
 destroy_weak_children_cb (CoglPipelineNode *node,
                           void *user_data)
@@ -544,8 +531,6 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
                                      NULL);
 
   g_assert (COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (pipeline)->children));
-
-  _cogl_pipeline_fragend_free_priv (pipeline);
 
   _cogl_pipeline_unparent (COGL_PIPELINE_NODE (pipeline));
 
@@ -970,7 +955,6 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
 void
 _cogl_pipeline_set_fragend (CoglPipeline *pipeline, int fragend)
 {
-  _cogl_pipeline_fragend_free_priv (pipeline);
   pipeline->fragend = fragend;
 }
 

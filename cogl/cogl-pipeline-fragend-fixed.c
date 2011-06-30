@@ -363,7 +363,6 @@ const CoglPipelineFragend _cogl_pipeline_fixed_fragend =
   NULL, /* pipeline_change_notify */
   NULL, /* pipeline_set_parent_notify */
   NULL, /* layer_change_notify */
-  NULL /* free_priv */
 };
 
 #endif /* COGL_PIPELINE_FRAGEND_FIXED */

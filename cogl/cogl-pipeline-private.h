@@ -649,10 +649,6 @@ struct _CoglPipeline
    * pipeline in comparison to its parent. */
   unsigned long    differences;
 
-  /* The fragment processing backends can associate private data with a
-   * pipeline. */
-  void		  *fragend_privs[COGL_PIPELINE_N_FRAGENDS];
-
   /* Whenever a pipeline is modified we increment the age. There's no
    * guarantee that it won't wrap but it can nevertheless be a
    * convenient mechanism to determine when a pipeline has been
@@ -703,17 +699,6 @@ struct _CoglPipeline
    */
 
   /* bitfields */
-
-  /* A pipeline can have private data associated with it for multiple
-   * fragment processing backends. Although only one backend is
-   * associated with a pipeline the backends may want to cache private
-   * state with the ancestors of other pipelines and those ancestors
-   * could currently be associated with different backends.
-   *
-   * Each set bit indicates if the corresponding ->fragend_privs[]
-   * entry is valid.
-   */
-  unsigned int          fragend_priv_set_mask:COGL_PIPELINE_N_FRAGENDS;
 
   /* Weak pipelines don't count as dependants on their parents which
    * means that the parent pipeline can be modified without
@@ -771,8 +756,6 @@ typedef struct _CoglPipelineFragend
   void (*layer_pre_change_notify) (CoglPipeline *owner,
                                    CoglPipelineLayer *layer,
                                    CoglPipelineLayerState change);
-
-  void (*free_priv) (CoglPipeline *pipeline);
 } CoglPipelineFragend;
 
 typedef struct _CoglPipelineVertend
