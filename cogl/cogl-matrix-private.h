@@ -39,7 +39,7 @@ G_BEGIN_DECLS
     }
 
 void
-_cogl_matrix_print (CoglMatrix *matrix);
+_cogl_matrix_print (const CoglMatrix *matrix);
 
 G_END_DECLS
 

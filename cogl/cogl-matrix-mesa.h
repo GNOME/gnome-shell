@@ -82,72 +82,72 @@ enum CoglMatrixType {
 } ;
 
 void
-_math_matrix_multiply (CoglMatrix *result,
+_cogl_matrix_multiply (CoglMatrix *result,
                        const CoglMatrix *a,
                        const CoglMatrix *b);
 
 void
-_math_matrix_multiply_array (CoglMatrix *result, const float *b);
+_cogl_matrix_multiply_array (CoglMatrix *result, const float *b);
 
 void
-_math_matrix_init_from_array (CoglMatrix *matrix, const float *array);
+_cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array);
 
 void
-_math_matrix_init_from_quaternion (CoglMatrix *matrix,
+_cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
                                    CoglQuaternion *quaternion);
 
 void
-_math_matrix_translate (CoglMatrix *matrix, float x, float y, float z);
+_cogl_matrix_translate (CoglMatrix *matrix, float x, float y, float z);
 
 void
-_math_matrix_rotate (CoglMatrix *matrix, float angle,
+_cogl_matrix_rotate (CoglMatrix *matrix, float angle,
 		     float x, float y, float z);
 
 void
-_math_matrix_scale (CoglMatrix *matrix, float x, float y, float z);
+_cogl_matrix_scale (CoglMatrix *matrix, float x, float y, float z);
 
 void
-_math_matrix_ortho (CoglMatrix *matrix,
+_cogl_matrix_ortho (CoglMatrix *matrix,
 		    float left, float right,
 		    float bottom, float top,
 		    float nearval, float farval);
 
 void
-_math_matrix_frustum (CoglMatrix *matrix,
+_cogl_matrix_frustum (CoglMatrix *matrix,
 		      float left, float right,
 		      float bottom, float top,
 		      float nearval, float farval);
 
 void
-_math_matrix_viewport (CoglMatrix *matrix,
+_cogl_matrix_viewport (CoglMatrix *matrix,
                        float x, float y, float width, float height,
                        float z_near, float z_far, float depth_max);
 
 void
-_math_matrix_init_identity (CoglMatrix *matrix);
+_cogl_matrix_init_identity (CoglMatrix *matrix);
 
 gboolean
-_math_matrix_update_inverse (CoglMatrix *matrix);
+_cogl_matrix_update_inverse (CoglMatrix *matrix);
 
 void
-_math_matrix_update_type_and_flags (CoglMatrix *matrix);
+_cogl_matrix_update_type_and_flags (CoglMatrix *matrix);
 
 void
-_math_matrix_print (const CoglMatrix *matrix);
+_cogl_matrix_print (const CoglMatrix *matrix);
 
 gboolean
-_math_matrix_is_length_preserving (const CoglMatrix *matrix);
+_cogl_matrix_is_length_preserving (const CoglMatrix *matrix);
 
 gboolean
-_math_matrix_has_rotation (const CoglMatrix *matrix);
+_cogl_matrix_has_rotation (const CoglMatrix *matrix);
 
 gboolean
-_math_matrix_is_general_scale (const CoglMatrix *matrix);
+_cogl_matrix_is_general_scale (const CoglMatrix *matrix);
 
 gboolean
-_math_matrix_is_dirty (const CoglMatrix *matrix);
+_cogl_matrix_is_dirty (const CoglMatrix *matrix);
 
 void
-_math_transposef ( float to[16], const float from[16]);
+_cogl_matrix_util_transposef ( float to[16], const float from[16]);
 
 #endif

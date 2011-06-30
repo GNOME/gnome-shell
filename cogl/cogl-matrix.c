@@ -52,16 +52,6 @@ COGL_GTYPE_DEFINE_BOXED ("Matrix", matrix,
 #endif
 
 void
-_cogl_matrix_print (CoglMatrix *matrix)
-{
-  float *m = (float *)matrix;
-  int y;
-
-  for (y = 0; y < 4; y++)
-    g_print ("\t%6.4f %6.4f %6.4f %6.4f\n", m[y], m[4+y], m[8+y], m[12+y]);
-}
-
-void
 cogl_matrix_init_identity (CoglMatrix *matrix)
 {
 #ifndef USE_MESA_MATRIX_API
@@ -70,7 +60,7 @@ cogl_matrix_init_identity (CoglMatrix *matrix)
   matrix->zx = 0; matrix->zy = 0; matrix->zz = 1; matrix->zw = 0;
   matrix->wx = 0; matrix->wy = 0; matrix->wz = 0; matrix->ww = 1;
 #else
-  _math_matrix_init_identity (matrix);
+  _cogl_matrix_init_identity (matrix);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -79,7 +69,7 @@ void
 cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
                                   CoglQuaternion *quaternion)
 {
-  _math_matrix_init_from_quaternion (matrix, quaternion);
+  _cogl_matrix_init_from_quaternion (matrix, quaternion);
 }
 
 void
@@ -121,7 +111,7 @@ cogl_matrix_multiply (CoglMatrix *result,
 
   *result = r;
 #else
-  _math_matrix_multiply (result, a, b);
+  _cogl_matrix_multiply (result, a, b);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (result);
 }
@@ -165,7 +155,7 @@ cogl_matrix_rotate (CoglMatrix *matrix,
   cogl_matrix_multiply (&result, matrix, &rotation);
   *matrix = result;
 #else
-  _math_matrix_rotate (matrix, angle, x, y, z);
+  _cogl_matrix_rotate (matrix, angle, x, y, z);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -182,7 +172,7 @@ cogl_matrix_translate (CoglMatrix *matrix,
   matrix->zw = matrix->zx * x + matrix->zy * y + matrix->zz * z + matrix->zw;
   matrix->ww = matrix->wx * x + matrix->wy * y + matrix->wz * z + matrix->ww;
 #else
-  _math_matrix_translate (matrix, x, y, z);
+  _cogl_matrix_translate (matrix, x, y, z);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -199,7 +189,7 @@ cogl_matrix_scale (CoglMatrix *matrix,
   matrix->zx *= sx; matrix->zy *= sy; matrix->zz *= sz;
   matrix->wx *= sx; matrix->wy *= sy; matrix->wz *= sz;
 #else
-  _math_matrix_scale (matrix, sx, sy, sz);
+  _cogl_matrix_scale (matrix, sx, sy, sz);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -246,7 +236,7 @@ cogl_matrix_frustum (CoglMatrix *matrix,
 
   cogl_matrix_multiply (matrix, matrix, &frustum);
 #else
-  _math_matrix_frustum (matrix, left, right, bottom, top, z_near, z_far);
+  _cogl_matrix_frustum (matrix, left, right, bottom, top, z_near, z_far);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -308,7 +298,7 @@ cogl_matrix_ortho (CoglMatrix *matrix,
 
   cogl_matrix_multiply (matrix, matrix, &ortho);
 #else
-  _math_matrix_ortho (matrix, left, right, bottom, top, near_val, far_val);
+  _cogl_matrix_ortho (matrix, left, right, bottom, top, near_val, far_val);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -376,7 +366,7 @@ cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 #ifndef USE_MESA_MATRIX_API
   memcpy (matrix, array, sizeof (float) * 16);
 #else
-  _math_matrix_init_from_array (matrix, array);
+  _cogl_matrix_init_from_array (matrix, array);
 #endif
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -455,7 +445,7 @@ cogl_matrix_get_inverse (const CoglMatrix *matrix, CoglMatrix *inverse)
   cogl_matrix_init_identity (inverse);
   return FALSE;
 #else
-  if (_math_matrix_update_inverse ((CoglMatrix *)matrix))
+  if (_cogl_matrix_update_inverse ((CoglMatrix *)matrix))
     {
       cogl_matrix_init_from_array (inverse, matrix->inv);
       return TRUE;

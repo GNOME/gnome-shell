@@ -58,10 +58,10 @@
  * - instead of allocating matrix->m and matrix->inv using malloc, our
  *   public CoglMatrix typedef is large enough to directly contain the
  *   matrix, its inverse, a type and a set of flags.
- * - instead of having a _math_matrix_analyse which updates the type,
- *   flags and inverse, we have _math_matrix_update_inverse which
+ * - instead of having a _cogl_matrix_analyse which updates the type,
+ *   flags and inverse, we have _cogl_matrix_update_inverse which
  *   essentially does the same thing (internally making use of
- *   _math_matrix_update_type_and_flags()) but with additional guards in
+ *   _cogl_matrix_update_type_and_flags()) but with additional guards in
  *   place to bail out when the inverse matrix is still valid.
  * - when initializing a matrix with the identity matrix we don't
  *   immediately initialize the inverse matrix; rather we just set the
@@ -290,7 +290,7 @@ matrix_multiply_array_with_flags (CoglMatrix *result,
  * otherwise.
  */
 void
-_math_matrix_multiply (CoglMatrix *result,
+_cogl_matrix_multiply (CoglMatrix *result,
                        const CoglMatrix *a,
                        const CoglMatrix *b)
 {
@@ -315,7 +315,7 @@ _math_matrix_multiply (CoglMatrix *result,
  * Calls matrix_multiply4x4() for the multiplication.
  */
 void
-_math_matrix_multiply_array (CoglMatrix *result, const float *array)
+_cogl_matrix_multiply_array (CoglMatrix *result, const float *array)
 {
   result->flags |= (MAT_FLAG_GENERAL |
                   MAT_DIRTY_TYPE |
@@ -330,7 +330,7 @@ _math_matrix_multiply_array (CoglMatrix *result, const float *array)
  *
  * @m matrix array.
  *
- * Called by _math_matrix_print() to print a matrix or its inverse.
+ * Called by _cogl_matrix_print() to print a matrix or its inverse.
  */
 static void
 print_matrix_floats (const float m[16])
@@ -346,7 +346,7 @@ print_matrix_floats (const float m[16])
  * @m pointer to the CoglMatrix structure.
  */
 void
-_math_matrix_print (const CoglMatrix *matrix)
+_cogl_matrix_print (const CoglMatrix *matrix)
 {
   g_print ("Matrix type: %s, flags: %x\n",
            types[matrix->type], (int)matrix->flags);
@@ -844,12 +844,12 @@ static inv_mat_func inv_mat_tab[7] = {
  * and copies the identity matrix into CoglMatrix::inv.
  */
 gboolean
-_math_matrix_update_inverse (CoglMatrix *matrix)
+_cogl_matrix_update_inverse (CoglMatrix *matrix)
 {
   if (matrix->flags & MAT_DIRTY_FLAGS ||
       matrix->flags & MAT_DIRTY_INVERSE)
     {
-      _math_matrix_update_type_and_flags (matrix);
+      _cogl_matrix_update_type_and_flags (matrix);
 
       if (inv_mat_tab[matrix->type](matrix))
         matrix->flags &= ~MAT_FLAG_SINGULAR;
@@ -877,7 +877,7 @@ _math_matrix_update_inverse (CoglMatrix *matrix)
  * Optimizations contributed by Rudolf Opalla (rudi@khm.de).
  */
 void
-_math_matrix_rotate (CoglMatrix *matrix,
+_cogl_matrix_rotate (CoglMatrix *matrix,
                      float angle,
                      float x,
                      float y,
@@ -1078,7 +1078,7 @@ _math_matrix_rotate (CoglMatrix *matrix,
  * MAT_FLAG_PERSPECTIVE flag.
  */
 void
-_math_matrix_frustum (CoglMatrix *matrix,
+_cogl_matrix_frustum (CoglMatrix *matrix,
                       float left,
                       float right,
                       float bottom,
@@ -1121,7 +1121,7 @@ _math_matrix_frustum (CoglMatrix *matrix,
  * MAT_FLAG_GENERAL_SCALE and MAT_FLAG_TRANSLATION flags.
  */
 void
-_math_matrix_ortho (CoglMatrix *matrix,
+_cogl_matrix_ortho (CoglMatrix *matrix,
                     float left,
                     float right,
                     float bottom,
@@ -1172,7 +1172,7 @@ _math_matrix_ortho (CoglMatrix *matrix,
  * MAT_DIRTY_INVERSE dirty flags.
  */
 void
-_math_matrix_scale (CoglMatrix *matrix, float x, float y, float z)
+_cogl_matrix_scale (CoglMatrix *matrix, float x, float y, float z)
 {
   float *m = (float *)matrix;
   m[0] *= x;   m[4] *= y;   m[8]  *= z;
@@ -1201,7 +1201,7 @@ _math_matrix_scale (CoglMatrix *matrix, float x, float y, float z)
  * dirty flags.
  */
 void
-_math_matrix_translate (CoglMatrix *matrix, float x, float y, float z)
+_cogl_matrix_translate (CoglMatrix *matrix, float x, float y, float z)
 {
   float *m = (float *)matrix;
   m[12] = m[0] * x + m[4] * y + m[8]  * z + m[12];
@@ -1219,7 +1219,7 @@ _math_matrix_translate (CoglMatrix *matrix, float x, float y, float z)
  * Transforms Normalized Device Coords to window/Z values.
  */
 void
-_math_matrix_viewport (CoglMatrix *matrix,
+_cogl_matrix_viewport (CoglMatrix *matrix,
                        float x, float y,
                        float width, float height,
                        float zNear, float zFar, float depthMax)
@@ -1246,7 +1246,7 @@ _math_matrix_viewport (CoglMatrix *matrix,
  * doesn't initialize the inverse matrix, it just marks it dirty.
  */
 void
-_math_matrix_init_identity (CoglMatrix *matrix)
+_cogl_matrix_init_identity (CoglMatrix *matrix)
 {
   memcpy (matrix, identity, 16 * sizeof (float));
 
@@ -1469,7 +1469,7 @@ analyse_from_flags (CoglMatrix *matrix)
  * then calls matrix_invert(). Finally clears the dirty flags.
  */
 void
-_math_matrix_update_type_and_flags (CoglMatrix *matrix)
+_cogl_matrix_update_type_and_flags (CoglMatrix *matrix)
 {
   if (matrix->flags & MAT_DIRTY_TYPE)
     {
@@ -1486,7 +1486,7 @@ _math_matrix_update_type_and_flags (CoglMatrix *matrix)
  * Test if the given matrix preserves vector lengths.
  */
 gboolean
-_math_matrix_is_length_preserving (const CoglMatrix *m)
+_cogl_matrix_is_length_preserving (const CoglMatrix *m)
 {
   return TEST_MAT_FLAGS (m, MAT_FLAGS_LENGTH_PRESERVING);
 }
@@ -1496,7 +1496,7 @@ _math_matrix_is_length_preserving (const CoglMatrix *m)
  * (or perhaps if the upper-left 3x3 is non-identity)
  */
 gboolean
-_math_matrix_has_rotation (const CoglMatrix *matrix)
+_cogl_matrix_has_rotation (const CoglMatrix *matrix)
 {
   if (matrix->flags & (MAT_FLAG_GENERAL |
                        MAT_FLAG_ROTATION |
@@ -1508,13 +1508,13 @@ _math_matrix_has_rotation (const CoglMatrix *matrix)
 }
 
 gboolean
-_math_matrix_is_general_scale (const CoglMatrix *matrix)
+_cogl_matrix_is_general_scale (const CoglMatrix *matrix)
 {
   return (matrix->flags & MAT_FLAG_GENERAL_SCALE) ? TRUE : FALSE;
 }
 
 gboolean
-_math_matrix_is_dirty (const CoglMatrix *matrix)
+_cogl_matrix_is_dirty (const CoglMatrix *matrix)
 {
   return (matrix->flags & MAT_DIRTY_ALL) ? TRUE : FALSE;
 }
@@ -1530,14 +1530,14 @@ _math_matrix_is_dirty (const CoglMatrix *matrix)
  * flags.
  */
 void
-_math_matrix_init_from_array (CoglMatrix *matrix, const float *array)
+_cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 {
   memcpy (matrix, array, 16 * sizeof (float));
   matrix->flags = (MAT_FLAG_GENERAL | MAT_DIRTY_ALL);
 }
 
 void
-_math_matrix_init_from_quaternion (CoglMatrix *matrix,
+_cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
                                    CoglQuaternion *quaternion)
 {
   float qnorm = _COGL_QUATERNION_NORM (quaternion);
