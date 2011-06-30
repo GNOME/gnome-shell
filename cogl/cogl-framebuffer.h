@@ -87,6 +87,66 @@ void
 cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
                                   float *viewport);
 
+/**
+ * cogl_framebuffer_get_red_bits:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Retrieves the number of red bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+#define cogl_framebuffer_get_red_bits cogl_framebuffer_get_red_bits_EXP
+int
+cogl_framebuffer_get_red_bits (CoglFramebuffer *framebuffer);
+
+/**
+ * cogl_framebuffer_get_green_bits:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Retrieves the number of green bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+#define cogl_framebuffer_get_green_bits cogl_framebuffer_get_green_bits_EXP
+int
+cogl_framebuffer_get_green_bits (CoglFramebuffer *framebuffer);
+
+/**
+ * cogl_framebuffer_get_blue_bits:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Retrieves the number of blue bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+#define cogl_framebuffer_get_blue_bits cogl_framebuffer_get_blue_bits_EXP
+int
+cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer);
+
+/**
+ * cogl_framebuffer_get_alpha_bits:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Retrieves the number of alpha bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+#define cogl_framebuffer_get_blue_bits cogl_framebuffer_get_blue_bits_EXP
+int
+cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
+
 #define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
 void
 cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);
