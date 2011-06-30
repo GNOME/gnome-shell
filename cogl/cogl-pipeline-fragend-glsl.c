@@ -44,6 +44,7 @@
 #include "cogl-handle.h"
 #include "cogl-shader-private.h"
 #include "cogl-program-private.h"
+#include "cogl-pipeline-cache.h"
 
 #include <glib.h>
 
@@ -154,6 +155,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;
+  CoglPipeline *template_pipeline = NULL;
   CoglProgram *user_program;
   int i;
 
@@ -197,8 +199,30 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
        */
       if (shader_state == NULL)
         {
-          shader_state = shader_state_new (n_layers);
+          /* Check if there is already a similar cached pipeline whose
+             shader state we can share */
+          if (G_LIKELY (!(COGL_DEBUG_ENABLED
+                          (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
+            {
+              template_pipeline =
+                _cogl_pipeline_cache_get_fragment_template (ctx->pipeline_cache,
+                                                            authority);
+
+              shader_state = get_shader_state (template_pipeline);
+            }
+
+          if (shader_state)
+            shader_state->ref_count++;
+          else
+            shader_state = shader_state_new (n_layers);
+
           set_shader_state (authority, shader_state);
+
+          if (template_pipeline)
+            {
+              shader_state->ref_count++;
+              set_shader_state (template_pipeline, shader_state);
+            }
         }
 
       /* If the pipeline isn't actually its own glsl-authority

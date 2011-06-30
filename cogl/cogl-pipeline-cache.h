@@ -47,4 +47,31 @@ CoglPipeline *
 _cogl_pipeline_cache_get_fragment_template (CoglPipelineCache *cache,
                                             CoglPipeline *key_pipeline);
 
+/*
+ * Gets a pipeline from the cache that has the same state as
+ * @key_pipeline for the state in
+ * COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN. If there is no
+ * matching pipline already then a copy of key_pipeline is stored in
+ * the cache so that it will be used next time the function is called
+ * with a similar pipeline. In that case the copy itself will be
+ * returned
+ */
+CoglPipeline *
+_cogl_pipeline_cache_get_vertex_template (CoglPipelineCache *cache,
+                                          CoglPipeline *key_pipeline);
+
+/*
+ * Gets a pipeline from the cache that has the same state as
+ * @key_pipeline for the combination of the state state in
+ * COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN and
+ * COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN. If there is no
+ * matching pipline already then a copy of key_pipeline is stored in
+ * the cache so that it will be used next time the function is called
+ * with a similar pipeline. In that case the copy itself will be
+ * returned
+ */
+CoglPipeline *
+_cogl_pipeline_cache_get_combined_template (CoglPipelineCache *cache,
+                                            CoglPipeline *key_pipeline);
+
 #endif /* __COGL_PIPELINE_CACHE_H__ */

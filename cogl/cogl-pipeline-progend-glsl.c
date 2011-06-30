@@ -41,6 +41,7 @@
 #include "cogl-program-private.h"
 #include "cogl-pipeline-fragend-glsl-private.h"
 #include "cogl-pipeline-vertend-glsl-private.h"
+#include "cogl-pipeline-cache.h"
 
 #ifdef HAVE_COGL_GLES2
 
@@ -538,6 +539,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
   gboolean program_changed = FALSE;
   UpdateUniformsState state;
   CoglProgram *user_program;
+  CoglPipeline *template_pipeline = NULL;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -570,9 +572,31 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 
       if (program_state == NULL)
         {
-          program_state
-            = program_state_new (cogl_pipeline_get_n_layers (pipeline));
+          /* Check if there is already a similar cached pipeline whose
+             program state we can share */
+          if (G_LIKELY (!(COGL_DEBUG_ENABLED
+                          (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
+            {
+              template_pipeline =
+                _cogl_pipeline_cache_get_combined_template (ctx->pipeline_cache,
+                                                            authority);
+
+              program_state = get_program_state (template_pipeline);
+            }
+
+          if (program_state)
+            program_state->ref_count++;
+          else
+            program_state
+              = program_state_new (cogl_pipeline_get_n_layers (authority));
+
           set_program_state (authority, program_state);
+
+          if (template_pipeline)
+            {
+              program_state->ref_count++;
+              set_program_state (template_pipeline, program_state);
+            }
         }
 
       if (authority != pipeline)

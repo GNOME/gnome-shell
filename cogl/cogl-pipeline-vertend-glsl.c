@@ -128,6 +128,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                                    unsigned long pipelines_difference)
 {
   CoglPipelineShaderState *shader_state;
+  CoglPipeline *template_pipeline = NULL;
   CoglProgram *user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -164,8 +165,30 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
 
       if (shader_state == NULL)
         {
-          shader_state = shader_state_new ();
+          /* Check if there is already a similar cached pipeline whose
+             shader state we can share */
+          if (G_LIKELY (!(COGL_DEBUG_ENABLED
+                          (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
+            {
+              template_pipeline =
+                _cogl_pipeline_cache_get_vertex_template (ctx->pipeline_cache,
+                                                          authority);
+
+              shader_state = get_shader_state (template_pipeline);
+            }
+
+          if (shader_state)
+            shader_state->ref_count++;
+          else
+            shader_state = shader_state_new ();
+
           set_shader_state (authority, shader_state);
+
+          if (template_pipeline)
+            {
+              shader_state->ref_count++;
+              set_shader_state (template_pipeline, shader_state);
+            }
         }
 
       if (authority != pipeline)
