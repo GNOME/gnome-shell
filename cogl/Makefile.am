@@ -256,6 +256,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-vertend-fixed-private.h	\
 	$(srcdir)/cogl-pipeline-progend-glsl.c		\
 	$(srcdir)/cogl-pipeline-progend-glsl-private.h	\
+	$(srcdir)/cogl-pipeline-cache.h			\
+	$(srcdir)/cogl-pipeline-cache.c			\
 	$(srcdir)/cogl-material-compat.c		\
 	$(srcdir)/cogl-program.c			\
 	$(srcdir)/cogl-program-private.h		\

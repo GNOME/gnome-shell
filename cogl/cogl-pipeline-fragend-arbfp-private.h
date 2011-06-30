@@ -32,12 +32,5 @@
 
 extern const CoglPipelineFragend _cogl_pipeline_arbfp_fragend;
 
-unsigned int
-_cogl_pipeline_fragend_arbfp_hash (const void *pipeline);
-
-gboolean
-_cogl_pipeline_fragend_arbfp_equal (const void *pipeline0,
-                                    const void *pipeline1);
-
 #endif /* __COGL_PIPELINE_ARBFP_PRIVATE_H */
 

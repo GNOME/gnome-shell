@@ -288,10 +288,7 @@ cogl_context_new (CoglDisplay *display,
 
   context->legacy_depth_test_enabled = FALSE;
 
-#ifdef HAVE_COGL_GL
-  _context->arbfp_cache = g_hash_table_new (_cogl_pipeline_fragend_arbfp_hash,
-                                            _cogl_pipeline_fragend_arbfp_equal);
-#endif
+  context->pipeline_cache = cogl_pipeline_cache_new ();
 
   for (i = 0; i < COGL_BUFFER_BIND_TARGET_COUNT; i++)
     context->current_buffer[i] = NULL;
@@ -468,9 +465,7 @@ _cogl_context_free (CoglContext *context)
     cogl_object_unref (_context->flushed_projection_stack);
 #endif
 
-#ifdef HAVE_COGL_GL
-  g_hash_table_unref (context->arbfp_cache);
-#endif
+  cogl_pipeline_cache_free (context->pipeline_cache);
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 

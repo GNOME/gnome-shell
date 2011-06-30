@@ -42,6 +42,7 @@
 #include "cogl-bitmask.h"
 #include "cogl-atlas.h"
 #include "cogl-texture-driver.h"
+#include "cogl-pipeline-cache.h"
 
 typedef struct
 {
@@ -106,9 +107,7 @@ struct _CoglContext
 
   int               legacy_state_set;
 
-#ifdef HAVE_COGL_GL
-  GHashTable       *arbfp_cache;
-#endif
+  CoglPipelineCache *pipeline_cache;
 
   /* Textures */
   CoglHandle        default_gl_texture_2d_tex;

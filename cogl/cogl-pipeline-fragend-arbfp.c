@@ -69,9 +69,6 @@ typedef struct
 {
   int ref_count;
 
-  /* XXX: only valid during codegen */
-  CoglPipeline *arbfp_authority;
-
   CoglHandle user_program;
   /* XXX: only valid during codegen */
   GString *source;
@@ -155,6 +152,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;
+  CoglPipeline *template_pipeline;
   CoglHandle user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -184,8 +182,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
         return FALSE;
     }
 
-  /* Now lookup our ARBfp backend private state (allocating if
-   * necessary) */
+  /* Now lookup our ARBfp backend private state */
   shader_state = get_shader_state (pipeline);
 
   /* If we have a valid shader_state then we are all set and don't
@@ -219,111 +216,71 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 
   /* If we haven't yet found an existing program then before we resort to
    * generating a new arbfp program we see if we can find a suitable
-   * program in the arbfp_cache. */
+   * program in the pipeline_cache. */
   if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
     {
-      shader_state = g_hash_table_lookup (ctx->arbfp_cache, authority);
-      if (shader_state)
-        {
-          shader_state->ref_count++;
-          set_shader_state (pipeline, shader_state);
+      template_pipeline =
+        _cogl_pipeline_cache_get_fragment_template (ctx->pipeline_cache,
+                                                    authority);
 
-          /* Since we have already resolved the arbfp-authority at this point
-           * we might as well also associate any program we find from the cache
-           * with the authority too... */
-          if (authority != pipeline)
+      shader_state = get_shader_state (template_pipeline);
+
+      if (shader_state)
+        shader_state->ref_count++;
+    }
+
+  /* If we still haven't got a shader state then we'll have to create
+     a new one */
+  if (shader_state == NULL)
+    {
+      shader_state = shader_state_new (n_layers);
+
+      shader_state->user_program = user_program;
+      if (user_program == COGL_INVALID_HANDLE)
+        {
+          int i;
+
+          /* We reuse a single grow-only GString for code-gen */
+          g_string_set_size (ctx->codegen_source_buffer, 0);
+          shader_state->source = ctx->codegen_source_buffer;
+          g_string_append (shader_state->source,
+                           "!!ARBfp1.0\n"
+                           "TEMP output;\n"
+                           "TEMP tmp0, tmp1, tmp2, tmp3, tmp4;\n"
+                           "PARAM half = {.5, .5, .5, .5};\n"
+                           "PARAM one = {1, 1, 1, 1};\n"
+                           "PARAM two = {2, 2, 2, 2};\n"
+                           "PARAM minus_one = {-1, -1, -1, -1};\n");
+
+          for (i = 0; i < n_layers; i++)
             {
-              shader_state->ref_count++;
-              set_shader_state (authority, shader_state);
+              shader_state->unit_state[i].sampled = FALSE;
+              shader_state->unit_state[i].dirty_combine_constant = FALSE;
             }
-          return TRUE;
+          shader_state->next_constant_id = 0;
         }
     }
 
-  /* If we still haven't found an existing program then start
-   * generating code for a new program...
-   */
-
-  shader_state = shader_state_new (n_layers);
   set_shader_state (pipeline, shader_state);
 
-  /* Since we have already resolved the arbfp-authority at this point we might
-   * as well also associate any program we generate with the authority too...
-   */
+  /* Since we have already resolved the arbfp-authority at this point
+   * we might as well also associate any program we find from the cache
+   * with the authority too... */
   if (authority != pipeline)
     {
       shader_state->ref_count++;
       set_shader_state (authority, shader_state);
     }
 
-  shader_state->user_program = user_program;
-  if (user_program == COGL_INVALID_HANDLE)
+  /* If we found a template then we'll attach it to that too so that
+     next time a similar pipeline is used it can use the same state */
+  if (template_pipeline)
     {
-      int i;
-
-      /* We reuse a single grow-only GString for code-gen */
-      g_string_set_size (ctx->codegen_source_buffer, 0);
-      shader_state->source = ctx->codegen_source_buffer;
-      g_string_append (shader_state->source,
-                       "!!ARBfp1.0\n"
-                       "TEMP output;\n"
-                       "TEMP tmp0, tmp1, tmp2, tmp3, tmp4;\n"
-                       "PARAM half = {.5, .5, .5, .5};\n"
-                       "PARAM one = {1, 1, 1, 1};\n"
-                       "PARAM two = {2, 2, 2, 2};\n"
-                       "PARAM minus_one = {-1, -1, -1, -1};\n");
-
-      /* At the end of code-gen we'll add the program to a cache and
-       * we'll use the authority pipeline as the basis for key into
-       * that cache... */
-      shader_state->arbfp_authority = authority;
-
-      for (i = 0; i < n_layers; i++)
-        {
-          shader_state->unit_state[i].sampled = FALSE;
-          shader_state->unit_state[i].dirty_combine_constant = FALSE;
-        }
-      shader_state->next_constant_id = 0;
+      shader_state->ref_count++;
+      set_shader_state (template_pipeline, shader_state);
     }
 
   return TRUE;
-}
-
-unsigned int
-_cogl_pipeline_fragend_arbfp_hash (const void *data)
-{
-  unsigned int fragment_state;
-  unsigned int layer_fragment_state;
-
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  fragment_state =
-    _cogl_pipeline_get_state_for_fragment_codegen (ctx);
-  layer_fragment_state =
-    _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx);
-
-  return _cogl_pipeline_hash ((CoglPipeline *)data,
-
-                              fragment_state, layer_fragment_state,
-                              0);
-}
-
-gboolean
-_cogl_pipeline_fragend_arbfp_equal (const void *a, const void *b)
-{
-  unsigned int fragment_state;
-  unsigned int layer_fragment_state;
-
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  fragment_state =
-    _cogl_pipeline_get_state_for_fragment_codegen (ctx);
-  layer_fragment_state =
-    _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx);
-
-  return _cogl_pipeline_equal ((CoglPipeline *)a, (CoglPipeline *)b,
-                               fragment_state, layer_fragment_state,
-                               0);
 }
 
 static const char *
@@ -889,51 +846,6 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
         }
 
       shader_state->source = NULL;
-
-      if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
-        {
-          CoglPipeline *key;
-
-          /* XXX: I wish there was a way to insert into a GHashTable
-           * with a pre-calculated hash value since there is a cost to
-           * calculating the hash of a CoglPipeline and in this case
-           * we know we have already called _cogl_pipeline_hash during
-           * _cogl_pipeline_fragend_arbfp_backend_start so we could pass the
-           * value through to here to avoid hashing it again.
-           */
-
-          /* XXX: Any keys referenced by the hash table need to remain
-           * valid all the while that there are corresponding values,
-           * so for now we simply make a copy of the current authority
-           * pipeline.
-           *
-           * FIXME: A problem with this is that our key into the cache
-           * may hold references to some arbitrary user textures which
-           * will now be kept alive indefinitly which is a shame. A
-           * better solution will be to derive a special "key
-           * pipeline" from the authority which derives from the base
-           * Cogl pipeline (to avoid affecting the lifetime of any
-           * other pipelines) and only takes a copy of the state that
-           * relates to the arbfp program and references small dummy
-           * textures instead of potentially large user textures. */
-          key = cogl_pipeline_copy (shader_state->arbfp_authority);
-          shader_state->ref_count++;
-          g_hash_table_insert (ctx->arbfp_cache, key, shader_state);
-          if (G_UNLIKELY (g_hash_table_size (ctx->arbfp_cache) > 50))
-            {
-              static gboolean seen = FALSE;
-              if (!seen)
-                g_warning ("Over 50 separate ARBfp programs have been "
-                           "generated which is very unusual, so something "
-                           "is probably wrong!\n");
-              seen = TRUE;
-            }
-        }
-
-      /* The authority is only valid during codegen since the program
-       * state may have a longer lifetime than the original authority
-       * it is created for. */
-      shader_state->arbfp_authority = NULL;
     }
 
   if (shader_state->user_program != COGL_INVALID_HANDLE)
