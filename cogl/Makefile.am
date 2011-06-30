@@ -290,8 +290,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-journal.c			\
 	$(srcdir)/cogl-framebuffer-private.h		\
 	$(srcdir)/cogl-framebuffer.c 			\
-	$(srcdir)/cogl-matrix-mesa.h 			\
-	$(srcdir)/cogl-matrix-mesa.c 			\
 	$(srcdir)/cogl-profile.h 			\
 	$(srcdir)/cogl-profile.c 			\
 	$(srcdir)/cogl-flags.h				\
