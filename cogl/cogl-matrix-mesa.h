@@ -56,23 +56,20 @@
 #include <glib.h>
 
 /*
- * \name Symbolic names to some of the entries in the matrix
+ * Symbolic names to some of the entries in the matrix
  *
  * These are handy for the viewport mapping, which is expressed as a matrix.
  */
-/*@{*/
 #define MAT_SX 0
 #define MAT_SY 5
 #define MAT_SZ 10
 #define MAT_TX 12
 #define MAT_TY 13
 #define MAT_TZ 14
-/*@}*/
-
 
 /*
- * Different kinds of 4x4 transformation matrices.
- * We use these to select specific optimized vertex transformation routines.
+ * These identify different kinds of 4x4 transformation matrices and we use
+ * this information to find fast-paths when available.
  */
 enum CoglMatrixType {
    COGL_MATRIX_TYPE_GENERAL,	/**< general 4x4 matrix */
@@ -83,22 +80,6 @@ enum CoglMatrixType {
    COGL_MATRIX_TYPE_2D_NO_ROT,	/**< 2-D scale & translate only */
    COGL_MATRIX_TYPE_3D		/**< 3-D transformation */
 } ;
-
-
-#if 0
-/*
- * Matrix type to represent 4x4 transformation matrices.
- */
-typedef struct {
-   float *m;		/**< 16 matrix elements (16-byte aligned) */
-   float *inv;	/**< optional 16-element inverse (16-byte aligned) */
-   unsigned int flags;        /**< possible values determined by (of \link
-                         * MatFlags MAT_FLAG_* flags\endlink)
-                         */
-   enum CoglMatrixType type;
-} CoglMatrix;
-#endif
-
 
 void
 _math_matrix_multiply (CoglMatrix *result,
@@ -166,66 +147,7 @@ _math_matrix_is_general_scale (const CoglMatrix *matrix);
 gboolean
 _math_matrix_is_dirty (const CoglMatrix *matrix);
 
-
-/*
- * \name Related functions that don't actually operate on CoglMatrix structs
- */
-/*@{*/
-
 void
 _math_transposef ( float to[16], const float from[16]);
-
-void
-_math_transposed (double to[16], const double from[16]);
-
-void
-_math_transposefd (float to[16], const double from[16]);
-
-
-/*
- * Transform a point (column vector) by a matrix:   Q = M * P
- */
-#define TRANSFORM_POINT( Q, M, P )					\
-   Q[0] = M[0] * P[0] + M[4] * P[1] + M[8] *  P[2] + M[12] * P[3];	\
-   Q[1] = M[1] * P[0] + M[5] * P[1] + M[9] *  P[2] + M[13] * P[3];	\
-   Q[2] = M[2] * P[0] + M[6] * P[1] + M[10] * P[2] + M[14] * P[3];	\
-   Q[3] = M[3] * P[0] + M[7] * P[1] + M[11] * P[2] + M[15] * P[3];
-
-
-#define TRANSFORM_POINT3( Q, M, P )				\
-   Q[0] = M[0] * P[0] + M[4] * P[1] + M[8] *  P[2] + M[12];	\
-   Q[1] = M[1] * P[0] + M[5] * P[1] + M[9] *  P[2] + M[13];	\
-   Q[2] = M[2] * P[0] + M[6] * P[1] + M[10] * P[2] + M[14];	\
-   Q[3] = M[3] * P[0] + M[7] * P[1] + M[11] * P[2] + M[15];
-
-
-/*
- * Transform a normal (row vector) by a matrix:  [NX NY NZ] = N * MAT
- */
-#define TRANSFORM_NORMAL( TO, N, MAT )				\
-do {								\
-   TO[0] = N[0] * MAT[0] + N[1] * MAT[1] + N[2] * MAT[2];	\
-   TO[1] = N[0] * MAT[4] + N[1] * MAT[5] + N[2] * MAT[6];	\
-   TO[2] = N[0] * MAT[8] + N[1] * MAT[9] + N[2] * MAT[10];	\
-} while (0)
-
-
-/*
- * Transform a direction by a matrix.
- */
-#define TRANSFORM_DIRECTION( TO, DIR, MAT )			\
-do {								\
-   TO[0] = DIR[0] * MAT[0] + DIR[1] * MAT[4] + DIR[2] * MAT[8];	\
-   TO[1] = DIR[0] * MAT[1] + DIR[1] * MAT[5] + DIR[2] * MAT[9];	\
-   TO[2] = DIR[0] * MAT[2] + DIR[1] * MAT[6] + DIR[2] * MAT[10];\
-} while (0)
-
-
-void
-_mesa_transform_vector (float u[4], const float v[4], const float m[16]);
-
-
-/*@}*/
-
 
 #endif

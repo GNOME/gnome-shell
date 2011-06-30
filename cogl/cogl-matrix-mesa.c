@@ -105,7 +105,6 @@ do { \
  *
  * Bitmasks to indicate different kinds of 4x4 matrices in CoglMatrix::flags
  */
-/*@{*/
 #define MAT_FLAG_IDENTITY       0     /*< is an identity matrix flag.
                                        *   (Not actually used - the identity
                                        *   matrix is identified by the absense
@@ -155,16 +154,14 @@ do { \
 			    MAT_DIRTY_FLAGS | \
 			    MAT_DIRTY_INVERSE)
 
-/*@}*/
-
 
 /*
  * Test geometry related matrix flags.
  *
- * \param mat a pointer to a CoglMatrix structure.
- * \param a flags mask.
+ * @mat a pointer to a CoglMatrix structure.
+ * @a flags mask.
  *
- * \returns non-zero if all geometry related matrix flags are contained within
+ * Returns: non-zero if all geometry related matrix flags are contained within
  * the mask, or zero otherwise.
  */
 #define TEST_MAT_FLAGS(mat, a)  \
@@ -197,11 +194,6 @@ static float identity[16] = {
 };
 
 
-
-/**********************************************************************/
-/* \name Matrix multiplication */
-/*@{*/
-
 #define A(row,col)  a[(col<<2)+row]
 #define B(row,col)  b[(col<<2)+row]
 #define R(row,col)  result[(col<<2)+row]
@@ -209,15 +201,13 @@ static float identity[16] = {
 /*
  * Perform a full 4x4 matrix multiplication.
  *
- * \param a matrix.
- * \param b matrix.
- * \param product will receive the product of \p a and \p b.
+ * @a matrix.
+ * @b matrix.
+ * @product will receive the product of \p a and \p b.
  *
- * \warning Is assumed that \p product != \p b. \p product == \p a is allowed.
+ * <note>It'ss assumed that @product != @b. @product == @a is allowed.</note>
  *
- * \note KW: 4*16 = 64 multiplications
- *
- * \author This \c matmul was contributed by Thomas Malik
+ * <note>KW: 4*16 = 64 multiplications</note>
  */
 static void
 matrix_multiply4x4 (float *result, const float *a, const float *b)
@@ -237,9 +227,9 @@ matrix_multiply4x4 (float *result, const float *a, const float *b)
  * Multiply two matrices known to occupy only the top three rows, such
  * as typical model matrices, and orthogonal matrices.
  *
- * \param a matrix.
- * \param b matrix.
- * \param product will receive the product of \p a and \p b.
+ * @a matrix.
+ * @b matrix.
+ * @product will receive the product of \p a and \p b.
  */
 static void
 matrix_multiply3x4 (float *result, const float *a, const float *b)
@@ -266,10 +256,10 @@ matrix_multiply3x4 (float *result, const float *a, const float *b)
 /*
  * Multiply a matrix by an array of floats with known properties.
  *
- * \param mat pointer to a CoglMatrix structure containing the left multiplication
+ * @mat pointer to a CoglMatrix structure containing the left multiplication
  * matrix, and that will receive the product result.
- * \param m right multiplication matrix array.
- * \param flags flags of the matrix \p m.
+ * @m right multiplication matrix array.
+ * @flags flags of the matrix \p m.
  *
  * Joins both flags and marks the type and inverse as dirty.  Calls
  * matrix_multiply3x4() if both matrices are 3D, or matrix_multiply4x4()
@@ -291,9 +281,9 @@ matrix_multiply_array_with_flags (CoglMatrix *result,
 /*
  * Matrix multiplication.
  *
- * \param dest destination matrix.
- * \param a left matrix.
- * \param b right matrix.
+ * @dest destination matrix.
+ * @a left matrix.
+ * @b right matrix.
  *
  * Joins both flags and marks the type and inverse as dirty.  Calls
  * matrix_multiply3x4() if both matrices are 3D, or matrix_multiply4x4()
@@ -318,8 +308,8 @@ _math_matrix_multiply (CoglMatrix *result,
 /*
  * Matrix multiplication.
  *
- * \param dest left and destination matrix.
- * \param m right matrix array.
+ * @dest left and destination matrix.
+ * @m right matrix array.
  *
  * Marks the matrix flags with general flag, and type and inverse dirty flags.
  * Calls matrix_multiply4x4() for the multiplication.
@@ -335,17 +325,10 @@ _math_matrix_multiply_array (CoglMatrix *result, const float *array)
   matrix_multiply4x4 ((float *)result, (float *)result, (float *)array);
 }
 
-/*@}*/
-
-
-/**********************************************************************/
-/* \name Matrix output */
-/*@{*/
-
 /*
  * Print a matrix array.
  *
- * \param m matrix array.
+ * @m matrix array.
  *
  * Called by _math_matrix_print() to print a matrix or its inverse.
  */
@@ -360,7 +343,7 @@ print_matrix_floats (const float m[16])
 /*
  * Dumps the contents of a CoglMatrix structure.
  *
- * \param m pointer to the CoglMatrix structure.
+ * @m pointer to the CoglMatrix structure.
  */
 void
 _math_matrix_print (const CoglMatrix *matrix)
@@ -381,26 +364,18 @@ _math_matrix_print (const CoglMatrix *matrix)
     g_print ("  - not available\n");
 }
 
-/*@}*/
-
-
 /*
  * References an element of 4x4 matrix.
  *
- * \param m matrix array.
- * \param c column of the desired element.
- * \param r row of the desired element.
+ * @m matrix array.
+ * @c column of the desired element.
+ * @r row of the desired element.
  *
- * \return value of the desired element.
+ * Returns: value of the desired element.
  *
  * Calculate the linear storage index of the element and references it.
  */
 #define MAT(m,r,c) (m)[(c)*4+(r)]
-
-
-/**********************************************************************/
-/* \name Matrix inversion */
-/*@{*/
 
 /*
  * Swaps the values of two floating pointer variables.
@@ -412,10 +387,10 @@ _math_matrix_print (const CoglMatrix *matrix)
 /*
  * Compute inverse of 4x4 transformation matrix.
  *
- * \param mat pointer to a CoglMatrix structure. The matrix inverse will be
+ * @mat pointer to a CoglMatrix structure. The matrix inverse will be
  * stored in the CoglMatrix::inv attribute.
  *
- * \return TRUE for success, FALSE for failure (\p singular matrix).
+ * Returns: %TRUE for success, %FALSE for failure (\p singular matrix).
  *
  * \author
  * Code contributed by Jacques Leroy jle@star.be
@@ -551,10 +526,10 @@ invert_matrix_general (CoglMatrix *matrix)
 /*
  * Compute inverse of a general 3d transformation matrix.
  *
- * \param mat pointer to a CoglMatrix structure. The matrix inverse will be
+ * @mat pointer to a CoglMatrix structure. The matrix inverse will be
  * stored in the CoglMatrix::inv attribute.
  *
- * \return TRUE for success, FALSE for failure (\p singular matrix).
+ * Returns: %TRUE for success, %FALSE for failure (\p singular matrix).
  *
  * \author Adapted from graphics gems II.
  *
@@ -635,10 +610,10 @@ invert_matrix_3d_general (CoglMatrix *matrix)
 /*
  * Compute inverse of a 3d transformation matrix.
  *
- * \param mat pointer to a CoglMatrix structure. The matrix inverse will be
+ * @mat pointer to a CoglMatrix structure. The matrix inverse will be
  * stored in the CoglMatrix::inv attribute.
  *
- * \return TRUE for success, FALSE for failure (\p singular matrix).
+ * Returns: %TRUE for success, %FALSE for failure (\p singular matrix).
  *
  * If the matrix is not an angle preserving matrix then calls
  * invert_matrix_3d_general for the actual calculation. Otherwise calculates
@@ -721,10 +696,10 @@ invert_matrix_3d (CoglMatrix *matrix)
 /*
  * Compute inverse of an identity transformation matrix.
  *
- * \param mat pointer to a CoglMatrix structure. The matrix inverse will be
+ * @mat pointer to a CoglMatrix structure. The matrix inverse will be
  * stored in the CoglMatrix::inv attribute.
  *
- * \return always TRUE.
+ * Returns: always %TRUE.
  *
  * Simply copies identity into CoglMatrix::inv.
  */
@@ -738,10 +713,10 @@ invert_matrix_identity (CoglMatrix *matrix)
 /*
  * Compute inverse of a no-rotation 3d transformation matrix.
  *
- * \param mat pointer to a CoglMatrix structure. The matrix inverse will be
+ * @mat pointer to a CoglMatrix structure. The matrix inverse will be
  * stored in the CoglMatrix::inv attribute.
  *
- * \return TRUE for success, FALSE for failure (\p singular matrix).
+ * Returns: %TRUE for success, %FALSE for failure (\p singular matrix).
  *
  * Calculates the
  */
@@ -772,10 +747,10 @@ invert_matrix_3d_no_rotation (CoglMatrix *matrix)
 /*
  * Compute inverse of a no-rotation 2d transformation matrix.
  *
- * \param mat pointer to a CoglMatrix structure. The matrix inverse will be
+ * @mat pointer to a CoglMatrix structure. The matrix inverse will be
  * stored in the CoglMatrix::inv attribute.
  *
- * \return TRUE for success, FALSE for failure (\p singular matrix).
+ * Returns: %TRUE for success, %FALSE for failure (\p singular matrix).
  *
  * Calculates the inverse matrix by applying the inverse scaling and
  * translation to the identity matrix.
@@ -859,10 +834,10 @@ static inv_mat_func inv_mat_tab[7] = {
 /*
  * Compute inverse of a transformation matrix.
  *
- * \param mat pointer to a CoglMatrix structure. The matrix inverse will be
+ * @mat pointer to a CoglMatrix structure. The matrix inverse will be
  * stored in the CoglMatrix::inv attribute.
  *
- * \return TRUE for success, FALSE for failure (\p singular matrix).
+ * Returns: %TRUE for success, %FALSE for failure (\p singular matrix).
  *
  * Calls the matrix inversion function in inv_mat_tab corresponding to the
  * given matrix type.  In case of failure, updates the MAT_FLAG_SINGULAR flag,
@@ -892,13 +867,6 @@ _math_matrix_update_inverse (CoglMatrix *matrix)
   else
     return TRUE;
 }
-
-/*@}*/
-
-
-/**********************************************************************/
-/* \name Matrix generation */
-/*@{*/
 
 /*
  * Generate a 4x4 transformation matrix from glRotate parameters, and
@@ -1098,13 +1066,13 @@ _math_matrix_rotate (CoglMatrix *matrix,
 /*
  * Apply a perspective projection matrix.
  *
- * \param mat matrix to apply the projection.
- * \param left left clipping plane coordinate.
- * \param right right clipping plane coordinate.
- * \param bottom bottom clipping plane coordinate.
- * \param top top clipping plane coordinate.
- * \param nearval distance to the near clipping plane.
- * \param farval distance to the far clipping plane.
+ * @mat matrix to apply the projection.
+ * @left left clipping plane coordinate.
+ * @right right clipping plane coordinate.
+ * @bottom bottom clipping plane coordinate.
+ * @top top clipping plane coordinate.
+ * @nearval distance to the near clipping plane.
+ * @farval distance to the far clipping plane.
  *
  * Creates the projection matrix and multiplies it with \p mat, marking the
  * MAT_FLAG_PERSPECTIVE flag.
@@ -1141,13 +1109,13 @@ _math_matrix_frustum (CoglMatrix *matrix,
 /*
  * Apply an orthographic projection matrix.
  *
- * \param mat matrix to apply the projection.
- * \param left left clipping plane coordinate.
- * \param right right clipping plane coordinate.
- * \param bottom bottom clipping plane coordinate.
- * \param top top clipping plane coordinate.
- * \param nearval distance to the near clipping plane.
- * \param farval distance to the far clipping plane.
+ * @mat matrix to apply the projection.
+ * @left left clipping plane coordinate.
+ * @right right clipping plane coordinate.
+ * @bottom bottom clipping plane coordinate.
+ * @top top clipping plane coordinate.
+ * @nearval distance to the near clipping plane.
+ * @farval distance to the far clipping plane.
  *
  * Creates the projection matrix and multiplies it with \p mat, marking the
  * MAT_FLAG_GENERAL_SCALE and MAT_FLAG_TRANSLATION flags.
@@ -1193,10 +1161,10 @@ _math_matrix_ortho (CoglMatrix *matrix,
 /*
  * Multiply a matrix with a general scaling matrix.
  *
- * \param mat matrix.
- * \param x x axis scale factor.
- * \param y y axis scale factor.
- * \param z z axis scale factor.
+ * @mat matrix.
+ * @x x axis scale factor.
+ * @y y axis scale factor.
+ * @z z axis scale factor.
  *
  * Multiplies in-place the elements of \p mat by the scale factors. Checks if
  * the scales factors are roughly the same, marking the MAT_FLAG_UNIFORM_SCALE
@@ -1223,10 +1191,10 @@ _math_matrix_scale (CoglMatrix *matrix, float x, float y, float z)
 /*
  * Multiply a matrix with a translation matrix.
  *
- * \param mat matrix.
- * \param x translation vector x coordinate.
- * \param y translation vector y coordinate.
- * \param z translation vector z coordinate.
+ * @mat matrix.
+ * @x translation vector x coordinate.
+ * @y translation vector y coordinate.
+ * @z translation vector z coordinate.
  *
  * Adds the translation coordinates to the elements of \p mat in-place.  Marks
  * the MAT_FLAG_TRANSLATION flag, and the MAT_DIRTY_TYPE and MAT_DIRTY_INVERSE
@@ -1245,7 +1213,6 @@ _math_matrix_translate (CoglMatrix *matrix, float x, float y, float z)
                     MAT_DIRTY_TYPE |
                     MAT_DIRTY_INVERSE);
 }
-
 
 /*
  * Set matrix to do viewport and depthrange mapping.
@@ -1272,7 +1239,7 @@ _math_matrix_viewport (CoglMatrix *matrix,
 /*
  * Set a matrix to the identity matrix.
  *
- * \param mat matrix.
+ * @mat matrix.
  *
  * Copies ::identity into \p CoglMatrix::m, and into CoglMatrix::inv if
  * not NULL. Sets the matrix type to identity, resets the flags. It
@@ -1286,13 +1253,6 @@ _math_matrix_init_identity (CoglMatrix *matrix)
   matrix->type = COGL_MATRIX_TYPE_IDENTITY;
   matrix->flags = MAT_DIRTY_INVERSE;
 }
-
-/*@}*/
-
-
-/**********************************************************************/
-/* \name Matrix analysis */
-/*@{*/
 
 #define ZERO(x) (1<<x)
 #define ONE(x)  (1<<(x+16))
@@ -1337,7 +1297,7 @@ _math_matrix_init_identity (CoglMatrix *matrix)
 /*
  * Determine type and flags from scratch.
  *
- * \param mat matrix.
+ * @mat matrix.
  *
  * This is expensive enough to only want to do it once.
  */
@@ -1501,7 +1461,7 @@ analyse_from_flags (CoglMatrix *matrix)
 /*
  * Analyze and update the type and flags of a matrix.
  *
- * \param mat matrix.
+ * @mat matrix.
  *
  * If the matrix type is dirty then calls either analyse_from_scratch() or
  * analyse_from_flags() to determine its type, according to whether the flags
@@ -1522,9 +1482,6 @@ _math_matrix_update_type_and_flags (CoglMatrix *matrix)
   matrix->flags &= ~(MAT_DIRTY_FLAGS | MAT_DIRTY_TYPE);
 }
 
-/*@}*/
-
-
 /*
  * Test if the given matrix preserves vector lengths.
  */
@@ -1533,7 +1490,6 @@ _math_matrix_is_length_preserving (const CoglMatrix *m)
 {
   return TEST_MAT_FLAGS (m, MAT_FLAGS_LENGTH_PRESERVING);
 }
-
 
 /*
  * Test if the given matrix does any rotation.
@@ -1551,13 +1507,11 @@ _math_matrix_has_rotation (const CoglMatrix *matrix)
     return FALSE;
 }
 
-
 gboolean
 _math_matrix_is_general_scale (const CoglMatrix *matrix)
 {
   return (matrix->flags & MAT_FLAG_GENERAL_SCALE) ? TRUE : FALSE;
 }
-
 
 gboolean
 _math_matrix_is_dirty (const CoglMatrix *matrix)
@@ -1565,16 +1519,11 @@ _math_matrix_is_dirty (const CoglMatrix *matrix)
   return (matrix->flags & MAT_DIRTY_ALL) ? TRUE : FALSE;
 }
 
-
-/**********************************************************************/
-/* \name Matrix setup */
-/*@{*/
-
 /*
  * Loads a matrix array into CoglMatrix.
  *
- * \param m matrix array.
- * \param mat matrix.
+ * @m matrix array.
+ * @mat matrix.
  *
  * Copies \p m into CoglMatrix::m and marks the MAT_FLAG_GENERAL and
  * MAT_DIRTY_ALL
@@ -1587,8 +1536,6 @@ _math_matrix_init_from_array (CoglMatrix *matrix, const float *array)
   matrix->flags = (MAT_FLAG_GENERAL | MAT_DIRTY_ALL);
 }
 
-/*
- */
 void
 _math_matrix_init_from_quaternion (CoglMatrix *matrix,
                                    CoglQuaternion *quaternion)
@@ -1624,18 +1571,11 @@ _math_matrix_init_from_quaternion (CoglMatrix *matrix,
   matrix->flags = (MAT_FLAG_GENERAL | MAT_DIRTY_ALL);
 }
 
-/*@}*/
-
-
-/**********************************************************************/
-/* \name Matrix transpose */
-/*@{*/
-
 /*
  * Transpose a float matrix.
  *
- * \param to destination array.
- * \param from source array.
+ * @to destination array.
+ * @from source array.
  */
 void
 _math_transposef (float to[16], const float from[16])
@@ -1657,82 +1597,3 @@ _math_transposef (float to[16], const float from[16])
   to[14] = from[11];
   to[15] = from[15];
 }
-
-/*
- * Transpose a double matrix.
- *
- * \param to destination array.
- * \param from source array.
- */
-void
-_math_transposed (double to[16], const double from[16])
-{
-  to[0] = from[0];
-  to[1] = from[4];
-  to[2] = from[8];
-  to[3] = from[12];
-  to[4] = from[1];
-  to[5] = from[5];
-  to[6] = from[9];
-  to[7] = from[13];
-  to[8] = from[2];
-  to[9] = from[6];
-  to[10] = from[10];
-  to[11] = from[14];
-  to[12] = from[3];
-  to[13] = from[7];
-  to[14] = from[11];
-  to[15] = from[15];
-}
-
-/*
- * Transpose a double matrix and convert to float.
- *
- * \param to destination array.
- * \param from source array.
- */
-void
-_math_transposefd (float to[16], const double from[16])
-{
-  to[0] = (float)from[0];
-  to[1] = (float)from[4];
-  to[2] = (float)from[8];
-  to[3] = (float)from[12];
-  to[4] = (float)from[1];
-  to[5] = (float)from[5];
-  to[6] = (float)from[9];
-  to[7] = (float)from[13];
-  to[8] = (float)from[2];
-  to[9] = (float)from[6];
-  to[10] = (float)from[10];
-  to[11] = (float)from[14];
-  to[12] = (float)from[3];
-  to[13] = (float)from[7];
-  to[14] = (float)from[11];
-  to[15] = (float)from[15];
-}
-
-/*@}*/
-
-
-/*
- * Transform a 4-element row vector (1x4 matrix) by a 4x4 matrix.  This
- * function is used for transforming clipping plane equations and spotlight
- * directions.
- * Mathematically,  u = v * m.
- * Input:  v - input vector
- *         m - transformation matrix
- * Output:  u - transformed vector
- */
-void
-_mesa_transform_vector (float u[4], const float v[4], const float m[16])
-{
-  const float v0 = v[0], v1 = v[1], v2 = v[2], v3 = v[3];
-#define M(row,col)  m[row + col*4]
-  u[0] = v0 * M (0,0) + v1 * M (1,0) + v2 * M (2,0) + v3 * M (3,0);
-  u[1] = v0 * M (0,1) + v1 * M (1,1) + v2 * M (2,1) + v3 * M (3,1);
-  u[2] = v0 * M (0,2) + v1 * M (1,2) + v2 * M (2,2) + v3 * M (3,2);
-  u[3] = v0 * M (0,3) + v1 * M (1,3) + v2 * M (2,3) + v3 * M (3,3);
-#undef M
-}
-
