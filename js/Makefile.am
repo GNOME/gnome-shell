@@ -27,6 +27,7 @@ nobase_dist_js_DATA = 	\
 	ui/environment.js	\
 	ui/extensionSystem.js	\
 	ui/iconGrid.js		\
+	ui/layout.js		\
 	ui/lightbox.js		\
 	ui/link.js		\
 	ui/lookingGlass.js	\
