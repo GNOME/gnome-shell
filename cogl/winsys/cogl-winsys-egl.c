@@ -252,7 +252,7 @@ find_onscreen_for_xid (CoglContext *context, guint32 xid)
 }
 
 static CoglFilterReturn
-event_filter_cb (XEvent *event, void *data)
+event_filter_cb (XEvent *xevent, void *data)
 {
   CoglContext *context = data;
 
