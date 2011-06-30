@@ -111,5 +111,8 @@ void shell_get_contact_events (TplLogManager *log_manager,
                                guint num_events,
                                GAsyncReadyCallback callback);
 
+void shell_decline_dispatch_op (TpAddDispatchOperationContext *context,
+                                const gchar *message);
+
 G_END_DECLS
 #endif /* __SHELL_TP_CLIENT_H__ */

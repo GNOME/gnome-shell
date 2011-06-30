@@ -178,19 +178,63 @@ Client.prototype = {
         }
     },
 
+    _displayRoomInvitation: function(conn, channel, dispatchOp, context) {
+        // We can only approve the rooms if we have been invited to it
+        let selfHandle = channel.group_get_self_handle();
+        if (selfHandle == 0) {
+            Shell.decline_dispatch_op(context, 'Not invited to the room');
+            return;
+        }
+
+        let [invited, inviter, reason, msg] = channel.group_get_local_pending_info(selfHandle);
+        if (!invited) {
+            Shell.decline_dispatch_op(context, 'Not invited to the room');
+            return;
+        }
+
+        // Request a TpContact for the inviter
+        Shell.get_tp_contacts(conn, [inviter],
+                contactFeatures,
+                Lang.bind(this, this._createRoomInviteSource, channel, context, dispatchOp));
+
+        context.delay();
+     },
+
+    _createRoomInviteSource: function(connection, contacts, failed, channel, context, dispatchOp) {
+        if (contacts.length < 1) {
+            Shell.decline_dispatch_op(context, 'Failed to get inviter');
+            return;
+        }
+
+        // We got the TpContact
+        let source = new RoomInviteSource(dispatchOp);
+        Main.messageTray.add(source);
+
+        let notif = new RoomInviteNotification(source, dispatchOp, channel, contacts[0]);
+        source.notify(notif);
+        context.accept();
+    },
+
     _approveChannels: function(approver, account, conn, channels,
                                dispatchOp, context) {
-        // Approve the channels right away as we are going to handle it
-        dispatchOp.claim_with_async(this._tpClient,
-                                    Lang.bind (this, function(dispatchOp, result) {
-            try {
-                dispatchOp.claim_with_finish(result);
-                this._handlingChannels(account, conn, channels);
-            } catch (err) {
-                global.logError('Failed to Claim channel: ' + err);
-            }}));
+        let channel = channels[0];
+        let [targetHandle, targetHandleType] = channel.get_handle();
 
-        context.accept();
+        if (targetHandleType == Tp.HandleType.CONTACT) {
+            // Approve private text channels right away as we are going to handle it
+            dispatchOp.claim_with_async(this._tpClient,
+                                        Lang.bind(this, function(dispatchOp, result) {
+                try {
+                    dispatchOp.claim_with_finish(result);
+                    this._handlingChannels(account, conn, channels);
+                } catch (err) {
+                    throw new Error('Failed to Claim channel: ' + err);
+                }}));
+
+            context.accept();
+        } else {
+            this._displayRoomInvitation(conn, channel, dispatchOp, context);
+        }
     },
 
     _handleChannels: function(handler, account, conn, channels,
@@ -682,5 +726,88 @@ ChatNotification.prototype = {
         // see Source._messageSent
         this._responseEntry.set_text('');
         this.source.respond(text);
+    }
+};
+
+function RoomInviteSource(dispatchOp) {
+    this._init(dispatchOp);
+}
+
+RoomInviteSource.prototype = {
+    __proto__: MessageTray.Source.prototype,
+
+    _init: function(dispatchOp) {
+        MessageTray.Source.prototype._init.call(this, _("Invitation"));
+
+        this._setSummaryIcon(this.createNotificationIcon());
+
+        this._dispatchOp = dispatchOp;
+
+        // Destroy the source if the channel dispatch operation is invalidated
+        // as we can't approve any more.
+        this._invalidId = dispatchOp.connect('invalidated',
+                                             Lang.bind(this, function(domain, code, msg) {
+            this.destroy();
+        }));
+    },
+
+    destroy: function() {
+        if (this._invalidId != 0) {
+            this._dispatchOp.disconnect(this._invalidId);
+            this._invalidId = 0;
+        }
+
+        MessageTray.Source.prototype.destroy.call(this);
+    },
+
+    createNotificationIcon: function() {
+        // FIXME: We don't have a 'chat room' icon (bgo #653737) use
+        // system-users for now as Empathy does.
+        return new St.Icon({ icon_name: 'system-users',
+                             icon_type: St.IconType.FULLCOLOR,
+                             icon_size: this.ICON_SIZE });
+    }
+}
+
+function RoomInviteNotification(source, dispatchOp, channel, inviter) {
+    this._init(source, dispatchOp, channel, inviter);
+}
+
+RoomInviteNotification.prototype = {
+    __proto__: MessageTray.Notification.prototype,
+
+    _init: function(source, dispatchOp, channel, inviter) {
+        MessageTray.Notification.prototype._init.call(this,
+                                                      source,
+                                                      /* translators: argument is a room name like
+                                                       * room@jabber.org for example. */
+                                                      _("Invitation to %s").format(channel.get_identifier()),
+                                                      null,
+                                                      { customContent: true });
+        this.setResident(true);
+
+        /* translators: first argument is the name of a contact and the second
+         * one the name of a room. "Alice is inviting you to join room@jabber.org
+         * for example. */
+        this.addBody(_("%s is inviting you to join %s").format(inviter.get_alias(), channel.get_identifier()));
+
+        this.addButton('decline', _("Decline"));
+        this.addButton('accept', _("Accept"));
+
+        this.connect('action-invoked', Lang.bind(this, function(self, action) {
+            switch (action) {
+            case 'decline':
+                dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE,
+                                                '', function(src, result) {
+                    src.leave_channels_finish(result)});
+                break;
+            case 'accept':
+                dispatchOp.handle_with_time_async('', global.get_current_time(),
+                                                  function(src, result) {
+                    src.handle_with_time_finish(result)});
+                break;
+            }
+            this.destroy();
+        }));
     }
 };
