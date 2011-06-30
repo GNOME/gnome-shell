@@ -2,6 +2,7 @@
 
 const DBus = imports.dbus;
 
+const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Main = imports.ui.main;
 
@@ -23,7 +24,13 @@ const GnomeShellIface = {
     signals: [],
     properties: [{ name: 'OverviewActive',
                    signature: 'b',
-                   access: 'readwrite' }]
+                   access: 'readwrite' },
+                 { name: 'ApiVersion',
+                   signature: 'i',
+                   access: 'read' },
+                 { name: 'ShellVersion',
+                   signature: 's',
+                   access: 'read' }]
 };
 
 function GnomeShell() {
@@ -82,7 +89,11 @@ GnomeShell.prototype = {
             Main.overview.show();
         else
             Main.overview.hide();
-    }
+    },
+
+    ApiVersion: 1,
+
+    ShellVersion: Config.PACKAGE_VERSION
 };
 
 DBus.conformExport(GnomeShell.prototype, GnomeShellIface);
