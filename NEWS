@@ -1,3 +1,120 @@
+3.1.2
+=====
+* Fix problem with "user theme extension" breaking the CSS for other
+  extensions [Giovanni; #650971]
+* Telepathy IM framework integration
+  - Switch to using telepathy-glib rather than talking to
+    Telepathy via D-Bus [Guillaume, Jasper; #645585, #649633, #651138, #651227]
+  - Acknowledge messages when the user clicks on them [Guillaume, #647893]
+  - Fix problem with telepathy icon blinking for incoming messages
+    even though the user has been notified of them [Guillaume; #643594]
+* Networking
+  - keep wirelesss networks in predictable order [Giovanni; #646580, #652313]
+  - Show unmanaged devices in the menu [Giovanni; #646946]
+  - Fix overflow when too many VPN connections [Giovanni; #651602]
+* Bluetooth
+  - Show "hardware disabled" when disabled by rfkill [Giovanni; #648048]
+  - Fix bug updating status of devices [Giovanni; #647565]
+* LookingGlass console:
+  - Add a "Memory" tab [Colin; #650692]
+  - Make escape work from any page [Dan Winship; #647303]
+  - Provide a way to refer to panel items as, e.g.,
+    Main.panel._activities [Dan Winship; #646915]
+* User menu
+  - Fix problem with suspend menu option locking the screen even when the user
+    disabled that. [Florian; #652327]
+  - Hide "power off..." option if shutdown is disabled via PolicyKit
+    [Florian; #652038]
+* Track changes to WM_CLASS (fixes problems with LibreOffice tracking)
+  [Colin; #649315]
+* Remove app tracking workarounds for Firefox and LibreOffice [Colin; #651015]
+* Use upstream gettext autoconfigury rather than glib version [Javier; #631576]
+* Show messages in the message tray when an application is fullscreen
+  [Dan Winship; #608667]
+* Don't autohide the workspace pager if there is more than one workspace
+  [Florian; #652714, #653078, #653142]
+* Don't always slide out the workspace pager at drag begin [Florian; #652730]
+* Only offer to remove a favorite app when dragging it's icon [Owen; #642895]
+* Allow dropping an icon anywhere on a workspace [Adel; #652079]
+* st-scroll-view: Make the fade effect and offset themable [Jasper; #651813]
+* Obey the user's preference when running an application in a terminal
+  from the run dialog [Florian; #648422]
+* Consistently exit overview when launching external applications
+  [Colin; #653095]
+* Adapt to changes in GJS for how GObject APIs are bound
+  [Alex, Colin, Florian, Jasper, Marc-Antoine; #649981, #652597]
+* Fix problems with scrolling in overflow for alt-Tab switcher
+  [Dan Winship, Adel; #647807]
+* Mark relationships between labels and actors for accessibility [Alejandro]
+* Add org.gnome.shell.enabled-extensions complementing disabled-extensions
+  GSetting [Tassilo; #651088]
+* Visual tweaks [Jakub, Jasper; #646261, #652715]
+* Switch to building against clutter-1.7 with independent Cogl [Adel; #653397]
+* Code cleanups [Colin, Dan Winship, Florian; #633620, #645031, #648755, #648758,
+  #648760, #649203, #649517, #650317, #652730]
+* Memory leak fixes [Colin, Maxim; #649508, #650934]
+* Build Fixes [Colin, Dan Winship, Florian, Ionut, Morten, Owen, Sean; #647395,
+  #648006, #650869, #653199, #653275
+* Miscellaneous bug fixes [Adam, Adel, Dan Williams, Dan Winship, Florian,
+  Ionut, Jasper, Maxim, Ray; #620105, #639459, #641570, #642793, #643513,
+  #645848, #646919, #647186, #648305, #648410, #648562, #648894, #649001,
+  #645990, #647893, #647907, #651012, #651086, #651606, #651569, #651866,
+  #652388,  #653511]
+
+Contributors:
+ Ionut Biru, Giovanni Campagna, Guillaume Desmottes, Adam Dingle,
+ Maxim Ermilov, Adel Gadllah, Tassilo Horn, Javier Jardón, Jonny Lamb,
+ Alexander Larsson, Rui Matos, Morten Mjelva, Florian Müllner,
+ Marc-Antoine Perennou, Alejandro Piñeiro, Jasper St. Pierre, Jakub Steiner,
+ Ray Strode, Owen Taylor, Colin Walters, Dan Williams, Sean Wilson, Dan Winship
+
+Translations:
+ Daniel Martinez Cucalon [ar], Ihar Hrachyshka [be], Carles Ferrando,
+ Gil Forcada, Sílvia Miranda [ca], Kristjan Schmidt [eo], Jorge González,
+ Daniel Mustieles [es], Seán de Búrca [ga], Fran Diéguez [gl],
+ Yaron Shahrabani [he], Kjartan Maraas [nb], Misha Shnurapet,
+ Yuri Myasoedov [ru], Daniel Nylander [se], Peter Mráz [sk],
+ Matej Urbančič [sl], Krishnababu Krothapalli [te], Daniel Korostil [uk],
+ Aron Xu [zh_CN]
+
+
+3.0.2
+=====
+* Network Menu [Dan Williams]
+  - Fix connecting to WPA2 Enterprise access points
+    Fixes https://bugzilla.gnome.org/show_bug.cgi?id=648171
+  - Show the mobile broadband wizard when selecting 3G network
+    Fixes https://bugzilla.gnome.org/show_bug.cgi?id=649318
+  - Miscellaneous bug fixes
+    648648, 650124
+* Fix duplicate icons in the application browser [Owen]
+  https://bugzilla.gnome.org/show_bug.cgi?id=648739
+* Make clicking anywhere on the volume icon slider work [Giovanni]
+  https://bugzilla.gnome.org/show_bug.cgi?id=646660
+* Fix a case where activating and clicking the hot corner
+  at the same time could result in immediately leaving the
+  overview [Rui]
+  https://bugzilla.gnome.org/show_bug.cgi?id=649427
+* Fix a case where applications became misordered in Alt-Tab [Jasper]
+  https://bugzilla.gnome.org/show_bug.cgi?id=643302
+* Fix a bug where messages you send could show up in
+  notifications as if someone else sent them [Jonny]
+  https://bugzilla.gnome.org/show_bug.cgi?id=650219
+* Memory leak fixes [Colin, Maxim]
+  642652, 649508, 649497
+* Miscellaneous minor bug fixes [Adel, Christopher, Jasper]
+  649596, 648765, 648983, 649632
+
+Contributors:
+ Christopher Aillon, Giovanni Campagna, Maxim Ermilov,
+ Adel Gadllah, Jonny Lamb, Rui Matos, Jasper St. Pierre,
+ Owen Taylor, Colin Walters, Dan Williams
+
+Translations:
+ Arash Mousavi [fa], Seán de Búrca [ga], Timo Jyrinki [fi],
+ Sigurd Gartmann [nb], Daniel Nylander [se], Peter Mráz [sl],
+ Abduxukur Abdurixit [ug], Nguyễn Thái Ngọc Duy [vi]
+
 3.0.1
 =====
 
