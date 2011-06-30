@@ -69,8 +69,8 @@ function Client() {
 
 Client.prototype = {
     _init : function() {
-        // channel path -> Source
-        this._sources = {};
+        // channel path -> ChatSource
+        this._chatSources = {};
 
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
@@ -138,12 +138,12 @@ Client.prototype = {
     },
 
     _createSource: function(account, conn, channel, contact) {
-        if (this._sources[channel.get_object_path()])
+        if (this._chatSources[channel.get_object_path()])
             return;
 
-        let source = new Source(account, conn, channel, contact, this._tpClient);
+        let source = new ChatSource(account, conn, channel, contact, this._tpClient);
 
-        this._sources[channel.get_object_path()] = source;
+        this._chatSources[channel.get_object_path()] = source;
         source.connect('destroy', Lang.bind(this,
                        function() {
                            if (this._tpClient.is_handling_channel(channel)) {
@@ -154,7 +154,7 @@ Client.prototype = {
                                });
                            }
 
-                           delete this._sources[channel.get_object_path()];
+                           delete this._chatSources[channel.get_object_path()];
                        }));
     },
 
@@ -171,7 +171,7 @@ Client.prototype = {
 
             if (this._tpClient.is_handling_channel(channel)) {
                 // We are already handling the channel, display the source
-                let source = this._sources[channel.get_object_path()];
+                let source = this._chatSources[channel.get_object_path()];
                 if (source)
                     source.notify();
             }
@@ -200,11 +200,11 @@ Client.prototype = {
     }
 };
 
-function Source(account, conn, channel, contact, client) {
+function ChatSource(account, conn, channel, contact, client) {
     this._init(account, conn, channel, contact, client);
 }
 
-Source.prototype = {
+ChatSource.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
     _init: function(account, conn, channel, contact, client) {
@@ -222,7 +222,7 @@ Source.prototype = {
         this._channel = channel;
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
 
-        this._notification = new Notification(this);
+        this._notification = new ChatNotification(this);
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
 
         // We ack messages when the message box is collapsed if user has
@@ -480,11 +480,11 @@ Source.prototype = {
     }
 };
 
-function Notification(source) {
+function ChatNotification(source) {
     this._init(source);
 }
 
-Notification.prototype = {
+ChatNotification.prototype = {
     __proto__:  MessageTray.Notification.prototype,
 
     _init: function(source) {
