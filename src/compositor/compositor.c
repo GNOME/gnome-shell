@@ -489,8 +489,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   n_retries = 0;
 
-  /* We can race with an exiting process to claim compositing over the root window;
-   * There's really not a great way to deal with this, so we just sleep and retry.
+  /* Some compositors (like old versions of Mutter) might not properly unredirect
+   * subwindows before destroying the WM selection window; so we wait a while
+   * for such a compositor to exit before giving up.
    */
   while (TRUE)
     {
@@ -502,7 +503,12 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
         break;
 
       if (n_retries == max_retries)
-        g_error ("Another compositing manager is running on screen %i", screen_number);
+        {
+          /* This probably means that a non-WM compositor like xcompmgr is running;
+           * we have no way to get it to exit */
+          meta_fatal (_("Another compositing manager is already running on screen %i on display \"%s\"."),
+                      screen_number, display->name);
+        }
 
       n_retries++;
       g_usleep (G_USEC_PER_SEC);
@@ -605,6 +611,14 @@ void
 meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                  MetaScreen     *screen)
 {
+  MetaDisplay    *display       = meta_screen_get_display (screen);
+  Display        *xdisplay      = meta_display_get_xdisplay (display);
+  Window          xroot         = meta_screen_get_xroot (screen);
+
+  /* This is the most important part of cleanup - we have to do this
+   * before giving up the window manager selection or the next
+   * window manager won't be able to redirect subwindows */
+  XCompositeUnredirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
 }
 
 void
