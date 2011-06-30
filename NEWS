@@ -1,3 +1,66 @@
+3.1.3
+=====
+* Support dark window theme variants for windows with a dark
+  widget theme; this is selected by the _GTK_THEME_VARIANT
+  property [Florian, #645355]
+* Don't draw a shadow under windows with an alpha-channel - this
+  fixes transparency for GNOME Terminal [Owen, Jasper; #635268]
+* Add a MetaWindow:wm-class property for notification [Jasper; #649315]
+* Add a MetaWindow:minimized property for notification [Florian]
+* Fix handing of unusual window shapes that Wine was setting
+  causing some applications to draw wrong [Jasper; #627880]
+* Improve replacing another compositor and being replaced:
+  release compositor selection in the right order and wait for
+  compositors that get it wrong. [Colin, Owen; #653121]
+* Remove behavior where left clicking on a window border with
+  the titlebar offscreen gave the window menu [Florian; #652369]
+* Don't set the global default textdomain, since Mutter is
+  a library as well as an application [Dan; #649202]
+* Exit with the right (success or failure) exit status [Dan]
+* Code cleanup [Florian]
+* Miscellaneous bug fixes [Owen; #649114, #652507]
+
+Contributors:
+ Florian Müllner, Jasper St. Pierre, Owen Taylor, Colin Walters, Dan Winship
+
+Translations:
+ Ihar Hrachyshka [be], Daniel Mustieles [es], Yaron Shahrabani [he],
+ Carles Ferrando [ca@valencia], Takeshi Aihana [ja], Fran Diéguez [gl],
+ Matej Urbančič [sl], Miroslav Nikolic [sr], Muhammet Kara [tr],
+ Daniel Korostil [uk]
+
+3.0.2.1
+=======
+* When saving the session, use the "program name" rather than
+  harcoding mutter, fixing session saving for gnome-shell [Matthias]
+  https://bugzilla.gnome.org/show_bug.cgi?id=648828
+
+Contributors:
+ Matthias Clasen
+
+3.0.2
+=====
+
+* Fix a crash when running without XKB support [Adam]
+  https://bugzilla.gnome.org/show_bug.cgi?id=647777
+* Fix smallish memory leaks [Colin]
+  https://bugzilla.gnome.org/show_bug.cgi?id=649500
+  https://bugzilla.gnome.org/show_bug.cgi?id=649504
+* Ignore mirrored monitors when listing monitors, fixing
+  drag-and-drop problems in GNOME Shell [Owen]
+  https://bugzilla.gnome.org/show_bug.cgi?id=649299
+* Don't allow side-by-side tiling of non-maximizable windows
+  like dialogs and utility windows [Dan]
+* Fix interaction of _NET_WM_WINDOW_OPACITY with window effects,
+  making it work again with GNOME Shell
+  https://bugzilla.gnome.org/show_bug.cgi?id=648613
+
+Contributors:
+ Adam Jackson, Colin Walters, Dan Winship
+
+Translations:
+ Abduxukur Abdurixit [ug]
+
 3.0.1
 =====
 
