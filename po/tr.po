@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-15 19:35+0000\n"
-"PO-Revision-Date: 2011-06-26 00:26+0300\n"
+"POT-Creation-Date: 2011-06-30 21:06+0000\n"
+"PO-Revision-Date: 2011-07-01 01:50+0300\n"
 "Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:509
+#, c-format
+#| msgid ""
+#| "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr ""
+"\"%2$s\" monitöründeki %1$i ekranında zaten başka bir birleştirme yöneticisi "
+"çalışıyor."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
