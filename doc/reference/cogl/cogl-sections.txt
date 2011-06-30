@@ -469,6 +469,7 @@ cogl_matrix_get_inverse
 cogl_matrix_transform_point
 cogl_matrix_project_points
 cogl_matrix_transform_points
+cogl_matrix_is_identity
 </SECTION>
 
 <SECTION>

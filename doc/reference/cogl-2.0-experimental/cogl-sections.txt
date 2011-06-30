@@ -387,6 +387,7 @@ cogl_matrix_scale
 cogl_matrix_init_from_array
 cogl_matrix_get_array
 cogl_matrix_get_inverse
+cogl_matrix_is_identity
 </SECTION>
 
 <FILE>cogl-euler</FILE>

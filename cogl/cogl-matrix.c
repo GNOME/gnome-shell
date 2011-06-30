@@ -2041,3 +2041,13 @@ cogl_matrix_project_points (const CoglMatrix *matrix,
                                       n_points);
     }
 }
+
+gboolean
+cogl_matrix_is_identity (const CoglMatrix *matrix)
+{
+  if (!(matrix->flags & MAT_DIRTY_TYPE) &&
+      matrix->type == COGL_MATRIX_TYPE_IDENTITY)
+    return TRUE;
+  else
+    return memcmp (matrix, identity, sizeof (float) * 16) == 0;
+}

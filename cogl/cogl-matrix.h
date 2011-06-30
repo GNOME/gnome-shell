@@ -585,6 +585,18 @@ cogl_matrix_project_points (const CoglMatrix *matrix,
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
+/**
+ * cogl_matrix_is_identity:
+ * @matrix: A #CoglMatrix
+ *
+ * Determines if the given matrix is an identity matrix.
+ *
+ * Returns: %TRUE if @matrix is an identity matrix else %FALSE
+ * Since: 1.8
+ */
+gboolean
+cogl_matrix_is_identity (const CoglMatrix *matrix);
+
 #ifdef _COGL_SUPPORTS_GTYPE_INTEGRATION
 
 #define COGL_GTYPE_TYPE_MATRIX (cogl_gtype_matrix_get_type ())
