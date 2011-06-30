@@ -376,17 +376,22 @@ cogl_color_equal
 <TITLE>Matrices</TITLE>
 CoglMatrix
 cogl_matrix_init_identity
+cogl_matrix_init_from_array
+cogl_matrix_copy
+cogl_matrix_equal
+cogl_matrix_free
 cogl_matrix_frustum
 cogl_matrix_ortho
 cogl_matrix_perspective
-cogl_matrix_transform_point
 cogl_matrix_multiply
 cogl_matrix_rotate
 cogl_matrix_translate
 cogl_matrix_scale
-cogl_matrix_init_from_array
 cogl_matrix_get_array
 cogl_matrix_get_inverse
+cogl_matrix_transform_point
+cogl_matrix_transform_points
+cogl_matrix_project_points
 cogl_matrix_is_identity
 </SECTION>
 
