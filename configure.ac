@@ -111,7 +111,7 @@ AC_HEADER_STDC
 
 # required versions for dependencies
 m4_define([glib_req_version],           [2.26.0])
-m4_define([cogl_req_version],           [1.6.0])
+m4_define([cogl_req_version],           [1.7.2])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [1.17])
 m4_define([cairo_req_version],          [1.10])
