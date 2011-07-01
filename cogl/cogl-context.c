@@ -498,16 +498,6 @@ _cogl_context_get_default (void)
   return _context;
 }
 
-void
-cogl_set_default_context (CoglContext *context)
-{
-  cogl_object_ref (context);
-
-  if (_context)
-    cogl_object_unref (_context);
-  _context = context;
-}
-
 #ifdef COGL_HAS_EGL_SUPPORT
 EGLDisplay
 cogl_context_egl_get_egl_display (CoglContext *context)

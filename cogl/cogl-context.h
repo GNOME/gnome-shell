@@ -61,10 +61,6 @@ CoglContext *
 cogl_context_new (CoglDisplay *display,
                   GError **error);
 
-#define cogl_set_default_context cogl_set_default_context_EXP
-void
-cogl_set_default_context (CoglContext *context);
-
 #ifdef COGL_HAS_EGL_SUPPORT
 #define cogl_context_egl_get_egl_display cogl_context_egl_get_egl_display_EXP
 EGLDisplay

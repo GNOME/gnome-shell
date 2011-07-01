@@ -104,9 +104,6 @@ main (int argc, char **argv)
       fprintf (stderr, "Failed to create context: %s\n", error->message);
       return 1;
     }
-  /* Eventually we want to get rid of any "default context" but for now it's
-   * needed...  */
-  cogl_set_default_context (ctx);
 
   onscreen = cogl_onscreen_new (ctx, 640, 480);
 
