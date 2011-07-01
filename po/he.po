@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-03 11:20+0300\n"
-"PO-Revision-Date: 2011-06-03 11:22+0200\n"
+"POT-Creation-Date: 2011-07-01 19:31+0300\n"
+"PO-Revision-Date: 2011-07-01 19:33+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
@@ -18,6 +18,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10.2\n"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:509
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr "מנהל תצוגת חלונות אחר כבר פועל במסך %i בתצוגה \"%s\"."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -331,7 +340,7 @@ msgstr "Move window to center of screen"
 msgid "Bell event"
 msgstr "אירוע פעמון"
 
-#: ../src/core/core.c:160
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Unknown window information request: %d"
