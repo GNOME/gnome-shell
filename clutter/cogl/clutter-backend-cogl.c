@@ -504,7 +504,7 @@ clutter_egl_get_egl_display (void)
       return 0;
     }
 
-  return cogl_context_egl_get_egl_display (backend_singleton->cogl_context);
+  return cogl_egl_context_get_egl_display (backend_singleton->cogl_context);
 }
 #endif
 
