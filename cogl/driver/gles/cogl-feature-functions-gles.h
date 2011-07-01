@@ -146,8 +146,8 @@ COGL_FEATURE_BEGIN (EGL_image, 255, 255,
                     COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE)
 COGL_FEATURE_FUNCTION (void, glEGLImageTargetTexture2D,
                        (GLenum           target,
-                        eglImageOES      image))
+                        GLeglImageOES    image))
 COGL_FEATURE_FUNCTION (void, glEGLImageTargetRenderbufferStorage,
                        (GLenum           target,
-                        eglImageOES      image))
+                        GLeglImageOES    image))
 COGL_FEATURE_END ()
