@@ -72,6 +72,11 @@ dnl ================================================================
 # updating the version number in advance of a release.
 m4_define([cogl_release_status], [git])
 
+AC_INIT(cogl, [cogl_1_version])
+AC_CONFIG_SRCDIR(cogl/cogl.h)
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_MACRO_DIR([build/autotools])
+AC_CONFIG_HEADERS(config.h)
 
 dnl ================================================================
 dnl Required versions for dependencies
@@ -84,13 +89,18 @@ m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.13])
 m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
+m4_define([cairo_req_version],          [1.10])
 
-
-AC_INIT(cogl, [cogl_1_version])
-AC_CONFIG_SRCDIR(cogl/cogl.h)
-AC_CONFIG_AUX_DIR([build])
-AC_CONFIG_MACRO_DIR([build/autotools])
-AC_CONFIG_HEADERS(config.h)
+dnl These variables get copied into the generated README
+AC_SUBST([GLIB_REQ_VERSION], [glib_req_version])
+AC_SUBST([GDK_PIXBUF_REQ_VERSION], [gdk_pixbuf_req_version])
+AC_SUBST([CAIRO_REQ_VERSION], [cairo_req_version])
+AC_SUBST([PANGOCAIRO_REQ_VERSION], [pangocairo_req_version])
+AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
+AC_SUBST([XFIXES_REQ_VERSION], [xfixes_req_version])
+AC_SUBST([GTK_DOC_REQ_VERSION], [gtk_doc_req_version])
+AC_SUBST([GI_REQ_VERSION], [gi_req_version])
+AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
 
 # Save this value here, since automake will set cflags later and we
 # want to know if the user specified custom cflags or not.
@@ -188,7 +198,7 @@ dnl     Enable cairo usage for debugging
 dnl       (debugging code can use cairo to dump the atlas)
 dnl     ============================================================
 
-PKG_CHECK_EXISTS([CAIRO], [cairo], [have_cairo=yes])
+PKG_CHECK_EXISTS([CAIRO], [cairo >= cairo_req_version], [have_cairo=yes])
 AC_ARG_ENABLE(
   [cairo],
   [AC_HELP_STRING([--enable-cairo=@<:@no/yes@:>@], [Control Cairo usage in Cogl debugging code @<:@default=auto@:>@])],
@@ -204,7 +214,7 @@ AS_IF([test "x$enable_cairo" = "xyes" && test "x$enable_debug" = "xyes"],
         AS_IF([test "x$have_cairo" != "xyes"],
               [AC_MSG_ERROR([Could not find Cairo])])
 
-        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES cairo"
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES cairo >= cairo_req_version"
         AC_DEFINE([HAVE_CAIRO], [1], [Whether we have cairo or not])
       ])
 

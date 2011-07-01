@@ -43,7 +43,7 @@ Cogl also has optional dependencies:
 
 The optional Cogl Pango library requires:
   • Cairo ≥ @CAIRO_REQ_VERSION@
-  • PangoCairo ≥ @PANGO_REQ_VERSION@
+  • PangoCairo ≥ @PANGOCAIRO_REQ_VERSION@
 
 On X11, Cogl depends on the following extensions
 
