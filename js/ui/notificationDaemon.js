@@ -122,7 +122,7 @@ NotificationDaemon.prototype = {
         } else if (hints['image-data']) {
             let [width, height, rowStride, hasAlpha,
                  bitsPerSample, nChannels, data] = hints['image-data'];
-            return textureCache.load_from_raw(data, data.length, hasAlpha,
+            return textureCache.load_from_raw(data, hasAlpha,
                                               width, height, rowStride, size);
         } else {
             let stockIcon;
