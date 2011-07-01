@@ -59,9 +59,9 @@ release-verify-sane-changelogs: changelogs
 
 release-verify-even-micro:
 	@echo -n "Checking that $(VERSION) has an even micro component..."
-	@test "$(COGL_MICRO_VERSION)" = "`echo $(COGL_MICRO_VERSION)/2*2 | bc`" || \
+	@test "$(COGL_1_MICRO_VERSION)" = "`echo $(COGL_1_MICRO_VERSION)/2*2 | bc`" || \
 	  (echo "Ouch." && \
-	   echo "The version micro component '$(COGL_MICRO_VERSION)' is not an even number." && \
+	   echo "The version micro component '$(COGL_1_MICRO_VERSION)' is not an even number." && \
 	   echo "The version in configure.ac must be incremented before a new release." && \
 	   false)
 	@echo "Good."
