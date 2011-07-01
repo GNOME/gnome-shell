@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 15:05+0300\n"
-"PO-Revision-Date: 2011-06-04 15:06+0200\n"
+"POT-Creation-Date: 2011-07-01 19:55+0300\n"
+"PO-Revision-Date: 2011-07-01 19:56+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -357,13 +357,13 @@ msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:500
+#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:623
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:503
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:626
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
@@ -384,7 +384,7 @@ msgstr "השבוע"
 msgid "Next week"
 msgstr "בשבוע הבא"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1034
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1045
 msgid "Remove"
 msgstr "הסרה"
 
@@ -510,45 +510,45 @@ msgid "Restarting the system."
 msgstr "המערכת מופעלת מחדש"
 
 #: ../js/ui/endSessionDialog.js:410 ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:488
+#: ../js/ui/status/bluetooth.js:497
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ../js/ui/lookingGlass.js:594
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
-#: ../js/ui/lookingGlass.js:631
+#: ../js/ui/lookingGlass.js:678
 msgid "Enabled"
 msgstr "פעיל"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:633 ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:680 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/lookingGlass.js:635
+#: ../js/ui/lookingGlass.js:682
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../js/ui/lookingGlass.js:637
+#: ../js/ui/lookingGlass.js:684
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: ../js/ui/lookingGlass.js:662
+#: ../js/ui/lookingGlass.js:709
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: ../js/ui/lookingGlass.js:668
+#: ../js/ui/lookingGlass.js:715
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:1027
+#: ../js/ui/messageTray.js:1038
 msgid "Open"
 msgstr "פתיחה"
 
-#: ../js/ui/messageTray.js:2197
+#: ../js/ui/messageTray.js:2210
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -582,7 +582,7 @@ msgstr "יציאה מ־%s"
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:1015
+#: ../js/ui/panel.js:1013
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -640,52 +640,53 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
-#: ../js/ui/searchDisplay.js:311
+#: ../js/ui/searchDisplay.js:318
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/searchDisplay.js:325
+#: ../js/ui/searchDisplay.js:332
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
-#: ../js/ui/statusMenu.js:159 ../js/ui/statusMenu.js:161
-#: ../js/ui/statusMenu.js:226
+#: ../js/ui/statusMenu.js:202 ../js/ui/statusMenu.js:206
+#: ../js/ui/statusMenu.js:272
 msgid "Power Off..."
 msgstr "כיבוי..."
 
-#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:225
+#: ../js/ui/statusMenu.js:204 ../js/ui/statusMenu.js:206
+#: ../js/ui/statusMenu.js:271
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../js/ui/statusMenu.js:182
+#: ../js/ui/statusMenu.js:227
 msgid "Available"
 msgstr "פנוי"
 
-#: ../js/ui/statusMenu.js:187
+#: ../js/ui/statusMenu.js:232
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:195
+#: ../js/ui/statusMenu.js:240
 msgid "My Account"
 msgstr "החשבון שלי"
 
-#: ../js/ui/statusMenu.js:199
+#: ../js/ui/statusMenu.js:244
 msgid "System Settings"
 msgstr "הגדרות המערכת"
 
-#: ../js/ui/statusMenu.js:206
+#: ../js/ui/statusMenu.js:252
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:211
+#: ../js/ui/statusMenu.js:257
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/statusMenu.js:216
+#: ../js/ui/statusMenu.js:262
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/status/accessibility.js:59
+#: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
 msgstr "תקריב"
 
@@ -695,41 +696,41 @@ msgstr "תקריב"
 #. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
 #. 'screen-keyboard-enabled');
 #. this.menu.addMenuItem(screenKeyboard);
-#: ../js/ui/status/accessibility.js:74
+#: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
 msgstr "התראות חזותיות"
 
-#: ../js/ui/status/accessibility.js:77
+#: ../js/ui/status/accessibility.js:78
 msgid "Sticky Keys"
 msgstr "מקשים דביקים"
 
-#: ../js/ui/status/accessibility.js:80
+#: ../js/ui/status/accessibility.js:81
 msgid "Slow Keys"
 msgstr "מקשים אטיים"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:84
 msgid "Bounce Keys"
 msgstr "מקשים קופצים"
 
-#: ../js/ui/status/accessibility.js:86
+#: ../js/ui/status/accessibility.js:87
 msgid "Mouse Keys"
 msgstr "מקשי עכבר"
 
-#: ../js/ui/status/accessibility.js:90
+#: ../js/ui/status/accessibility.js:91
 msgid "Universal Access Settings"
 msgstr "הגדרות גישה אוניברסלית"
 
-#: ../js/ui/status/accessibility.js:143
+#: ../js/ui/status/accessibility.js:145
 msgid "High Contrast"
 msgstr "ניגודיות גבוהה"
 
-#: ../js/ui/status/accessibility.js:180
+#: ../js/ui/status/accessibility.js:182
 msgid "Large Text"
 msgstr "טקסט גדול"
 
-#: ../js/ui/status/bluetooth.js:39 ../js/ui/status/bluetooth.js:261
-#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:389
-#: ../js/ui/status/bluetooth.js:429 ../js/ui/status/bluetooth.js:462
+#: ../js/ui/status/bluetooth.js:39 ../js/ui/status/bluetooth.js:270
+#: ../js/ui/status/bluetooth.js:364 ../js/ui/status/bluetooth.js:398
+#: ../js/ui/status/bluetooth.js:438 ../js/ui/status/bluetooth.js:471
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -749,102 +750,115 @@ msgstr "הגדרת התקן חדש..."
 msgid "Bluetooth Settings"
 msgstr "הגדרות Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:212
+#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
+#: ../js/ui/status/bluetooth.js:116
+msgid "hardware disabled"
+msgstr "מנוטרל חומרתית"
+
+#: ../js/ui/status/bluetooth.js:217
 msgid "Connection"
 msgstr "חיבור"
 
-#: ../js/ui/status/bluetooth.js:248
+#: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:493
+msgid "disconnecting..."
+msgstr "בהליכי ניתוק..."
+
+#: ../js/ui/status/bluetooth.js:239 ../js/ui/status/network.js:499
+msgid "connecting..."
+msgstr "בהתחברות..."
+
+#: ../js/ui/status/bluetooth.js:257
 msgid "Send Files..."
 msgstr "שליחת קבצים..."
 
-#: ../js/ui/status/bluetooth.js:253
+#: ../js/ui/status/bluetooth.js:262
 msgid "Browse Files..."
 msgstr "עיון בקבצים..."
 
-#: ../js/ui/status/bluetooth.js:262
+#: ../js/ui/status/bluetooth.js:271
 msgid "Error browsing device"
 msgstr "שגיאה בעיון בהתקן"
 
-#: ../js/ui/status/bluetooth.js:263
+#: ../js/ui/status/bluetooth.js:272
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "לא ניתן לעיין בהתקן הנבחר, השגיאה היא '%s'"
 
-#: ../js/ui/status/bluetooth.js:271
+#: ../js/ui/status/bluetooth.js:280
 msgid "Keyboard Settings"
 msgstr "הגדרות מקלדת"
 
-#: ../js/ui/status/bluetooth.js:276
+#: ../js/ui/status/bluetooth.js:285
 msgid "Mouse Settings"
 msgstr "הגדרות עכבר"
 
-#: ../js/ui/status/bluetooth.js:283 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:292 ../js/ui/status/volume.js:64
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
-#: ../js/ui/status/bluetooth.js:390
+#: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Authorization request from %s"
 msgstr "בקשת אישור מאת %s"
 
-#: ../js/ui/status/bluetooth.js:396
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "ההתקן %s מעוניין לגשת אל השירות '%s'"
 
-#: ../js/ui/status/bluetooth.js:398
+#: ../js/ui/status/bluetooth.js:407
 msgid "Always grant access"
 msgstr "תמיד להעניק גישה"
 
-#: ../js/ui/status/bluetooth.js:399
+#: ../js/ui/status/bluetooth.js:408
 msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
-#: ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:409
 msgid "Reject"
 msgstr "סירוב"
 
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:439
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "אישור צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:436 ../js/ui/status/bluetooth.js:470
+#: ../js/ui/status/bluetooth.js:445 ../js/ui/status/bluetooth.js:479
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ההתקן %s מעוניין בצימוד עם מחשב זה"
 
-#: ../js/ui/status/bluetooth.js:437
+#: ../js/ui/status/bluetooth.js:446
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "נא לאשר האם קוד ה־PIN‏ '%s' תואם את זה שמופיע בהתקן."
 
-#: ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:448
 msgid "Matches"
 msgstr "התאמות"
 
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:449
 msgid "Does not match"
 msgstr "אינו תואם"
 
-#: ../js/ui/status/bluetooth.js:463
+#: ../js/ui/status/bluetooth.js:472
 #, c-format
 msgid "Pairing request for %s"
 msgstr "בקשת צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:471
+#: ../js/ui/status/bluetooth.js:480
 msgid "Please enter the PIN mentioned on the device."
 msgstr "נא להזין את קוד ה־PIN המוזכר בהתקן."
 
-#: ../js/ui/status/bluetooth.js:487
+#: ../js/ui/status/bluetooth.js:496
 msgid "OK"
 msgstr "אישור"
 
-#: ../js/ui/status/keyboard.js:70
+#: ../js/ui/status/keyboard.js:71
 msgid "Show Keyboard Layout..."
 msgstr "הצגת פריסת המקלדת..."
 
-#: ../js/ui/status/keyboard.js:73
+#: ../js/ui/status/keyboard.js:75
 msgid "Localization Settings"
 msgstr "הגדרות אזוריות"
 
@@ -853,158 +867,150 @@ msgid "<unknown>"
 msgstr "<לא ידוע>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:340
+#: ../js/ui/status/network.js:292
 msgid "disabled"
 msgstr "מנוטרל"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:535
+#: ../js/ui/status/network.js:491
 msgid "unmanaged"
 msgstr "לא מנוהל"
 
-#: ../js/ui/status/network.js:537
-msgid "disconnecting..."
-msgstr "בהליכי ניתוק..."
-
-#: ../js/ui/status/network.js:543
-msgid "connecting..."
-msgstr "בהתחברות..."
-
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:546
+#: ../js/ui/status/network.js:502
 msgid "authentication required"
 msgstr "נדרש אימות"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:556
+#: ../js/ui/status/network.js:512
 msgid "firmware missing"
 msgstr "הקושחה חסרה"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:563
+#: ../js/ui/status/network.js:519
 msgid "cable unplugged"
 msgstr "הכבל מנותק"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:568
+#: ../js/ui/status/network.js:524
 msgid "unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/status/network.js:570
+#: ../js/ui/status/network.js:526
 msgid "connection failed"
 msgstr "החיבור נכשל"
 
+#: ../js/ui/status/network.js:582 ../js/ui/status/network.js:1489
+msgid "More..."
+msgstr "עוד..."
+
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:651 ../js/ui/status/network.js:1460
+#: ../js/ui/status/network.js:618 ../js/ui/status/network.js:1427
 msgid "Connected (private)"
 msgstr "מחובר (פרטי)"
 
-#: ../js/ui/status/network.js:736
+#: ../js/ui/status/network.js:703
 msgid "Auto Ethernet"
 msgstr "אתרנט אוטומטי"
 
-#: ../js/ui/status/network.js:804
+#: ../js/ui/status/network.js:771
 msgid "Auto broadband"
 msgstr "פס רחב אוטומטי"
 
-#: ../js/ui/status/network.js:807
+#: ../js/ui/status/network.js:774
 msgid "Auto dial-up"
 msgstr "חיוג אוטומטי"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:931 ../js/ui/status/network.js:1472
+#: ../js/ui/status/network.js:898 ../js/ui/status/network.js:1439
 #, c-format
 msgid "Auto %s"
 msgstr "%s אוטומטי"
 
-#: ../js/ui/status/network.js:933
+#: ../js/ui/status/network.js:900
 msgid "Auto bluetooth"
 msgstr "Bluetooth אוטומטי"
 
-#: ../js/ui/status/network.js:1474
+#: ../js/ui/status/network.js:1441
 msgid "Auto wireless"
 msgstr "אלחוטי אוטומטי"
 
-#: ../js/ui/status/network.js:1522
-msgid "More..."
-msgstr "עוד..."
-
-#: ../js/ui/status/network.js:1564
+#: ../js/ui/status/network.js:1531
 msgid "Enable networking"
 msgstr "הפעלת תכונת הרשת"
 
-#: ../js/ui/status/network.js:1576
+#: ../js/ui/status/network.js:1543
 msgid "Wired"
 msgstr "קווי"
 
-#: ../js/ui/status/network.js:1587
+#: ../js/ui/status/network.js:1554
 msgid "Wireless"
 msgstr "אלחוטי"
 
-#: ../js/ui/status/network.js:1597
+#: ../js/ui/status/network.js:1564
 msgid "Mobile broadband"
 msgstr "פס־רחב נייד"
 
-#: ../js/ui/status/network.js:1607
+#: ../js/ui/status/network.js:1574
 msgid "VPN Connections"
 msgstr "חיבורי VPN"
 
-#: ../js/ui/status/network.js:1619
+#: ../js/ui/status/network.js:1586
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: ../js/ui/status/network.js:1910
+#: ../js/ui/status/network.js:1878
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת הפס הרחב הניידת '%s'"
 
-#: ../js/ui/status/network.js:1914
+#: ../js/ui/status/network.js:1882
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת האלחוטית '%s'"
 
-#: ../js/ui/status/network.js:1918
+#: ../js/ui/status/network.js:1886
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת הקווית '%s'"
 
-#: ../js/ui/status/network.js:1922
+#: ../js/ui/status/network.js:1890
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת ה־VPN‏ '%s'"
 
-#: ../js/ui/status/network.js:1927
+#: ../js/ui/status/network.js:1895
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "כעת ישנו חיבור בינך ובין '%s'"
 
-#: ../js/ui/status/network.js:1935
+#: ../js/ui/status/network.js:1903
 msgid "Connection established"
 msgstr "ההתחברות הצליחה"
 
-#: ../js/ui/status/network.js:2061
+#: ../js/ui/status/network.js:2029
 msgid "Networking is disabled"
 msgstr "תכונת הרשת מנוטרלת"
 
-#: ../js/ui/status/network.js:2186
+#: ../js/ui/status/network.js:2154
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
-#: ../js/ui/status/power.js:82
+#: ../js/ui/status/power.js:83
 msgid "Power Settings"
 msgstr "הגדרות צריכת החשמל"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:108
+#: ../js/ui/status/power.js:110
 msgid "Estimating..."
 msgstr "מתבצע שיערוך..."
 
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:117
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1013,26 +1019,26 @@ msgstr[1] "נותרו %d שעות"
 msgstr[2] "נותרו שעתיים"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:118
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s נותרו"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:122
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "שעה"
 msgstr[1] "שעות"
 msgstr[2] "שעתיים"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:122
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "דקה"
 msgstr[1] "דקות"
 msgstr[2] "דקות"
 
-#: ../js/ui/status/power.js:123
+#: ../js/ui/status/power.js:125
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -1040,78 +1046,78 @@ msgstr[0] "דקה אחת נותרה"
 msgstr[1] "%d דקות נותרו"
 msgstr[2] "שתי דקות נותרו"
 
-#: ../js/ui/status/power.js:225
+#: ../js/ui/status/power.js:227
 msgid "AC adapter"
 msgstr "מתאם חשמל"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:229
 msgid "Laptop battery"
 msgstr "סוללת נייד"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:231
 msgid "UPS"
 msgstr "אל־פסק"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:233
 msgid "Monitor"
 msgstr "צג"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:235
 msgid "Mouse"
 msgstr "עכבר"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:237
 msgid "Keyboard"
 msgstr "מקלדת"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:239
 msgid "PDA"
 msgstr "מחשב כף יד"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:241
 msgid "Cell phone"
 msgstr "טלפון סלולרי"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:243
 msgid "Media player"
 msgstr "נגן מדיה"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:245
 msgid "Tablet"
 msgstr "טבלת שליטה"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:247
 msgid "Computer"
 msgstr "מחשב"
 
-#: ../js/ui/status/power.js:247 ../src/shell-app-system.c:1088
+#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:43
 msgid "Volume"
 msgstr "עצמה"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:56
 msgid "Microphone"
 msgstr "מיקרופון"
 
-#: ../js/ui/telepathyClient.js:339
+#: ../js/ui/telepathyClient.js:419
 #, c-format
 msgid "%s is online."
 msgstr "%s התחבר/ה."
 
-#: ../js/ui/telepathyClient.js:344
+#: ../js/ui/telepathyClient.js:424
 #, c-format
 msgid "%s is offline."
 msgstr "%s התנתק/ה."
 
-#: ../js/ui/telepathyClient.js:347
+#: ../js/ui/telepathyClient.js:427
 #, c-format
 msgid "%s is away."
 msgstr "'%s' מרוחק/ת."
 
-#: ../js/ui/telepathyClient.js:350
+#: ../js/ui/telepathyClient.js:430
 #, c-format
 msgid "%s is busy."
 msgstr "%s עסוק/ה."
@@ -1119,14 +1125,14 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:492
+#: ../js/ui/telepathyClient.js:615
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "נשלח ב־%X בשעה %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:537
+#: ../js/ui/telepathyClient.js:665
 #, c-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
@@ -1139,7 +1145,7 @@ msgstr "השם של %s הוחלף ל־%s"
 msgid "Type to search..."
 msgstr "יש להקליד כדי לחפש..."
 
-#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:254
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:257
 msgid "Search"
 msgstr "חיפוש"
 
@@ -1198,13 +1204,13 @@ msgstr "בררת מחדל"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 
-#: ../src/shell-util.c:93
+#: ../src/shell-util.c:96
 msgid "Home Folder"
 msgstr "תיקיית הבית"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:111
 msgid "File System"
 msgstr "מערכת הקבצים"
 
@@ -1213,7 +1219,7 @@ msgstr "מערכת הקבצים"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:307
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
