@@ -225,7 +225,7 @@ typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
                                              void *user_data);
 
 /**
- * cogl_onscreen_x11_set_foreign_window_xid:
+ * cogl_x11_onscreen_set_foreign_window_xid:
  * @onscreen: The unallocated framebuffer to associated with an X
  *            window.
  * @xid: The XID of an existing X window
@@ -263,7 +263,7 @@ typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
  *
  * {
  *   *snip*
- *   cogl_onscreen_x11_set_foreign_window_xid (onscreen,
+ *   cogl_x11_onscreen_set_foreign_window_xid (onscreen,
  *                                             data->xwin,
  *                                             my_update_cogl_x11_event_mask,
  *                                             data);
@@ -274,33 +274,33 @@ typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
  * Since: 2.0
  * Stability: Unstable
  */
-#define cogl_onscreen_x11_set_foreign_window_xid \
-  cogl_onscreen_x11_set_foreign_window_xid_EXP
+#define cogl_x11_onscreen_set_foreign_window_xid \
+  cogl_x11_onscreen_set_foreign_window_xid_EXP
 void
-cogl_onscreen_x11_set_foreign_window_xid (CoglOnscreen *onscreen,
+cogl_x11_onscreen_set_foreign_window_xid (CoglOnscreen *onscreen,
                                           guint32 xid,
                                           CoglOnscreenX11MaskCallback update,
                                           void *user_data);
 
-#define cogl_onscreen_x11_get_window_xid cogl_onscreen_x11_get_window_xid_EXP
+#define cogl_x11_onscreen_get_window_xid cogl_x11_onscreen_get_window_xid_EXP
 guint32
-cogl_onscreen_x11_get_window_xid (CoglOnscreen *onscreen);
+cogl_x11_onscreen_get_window_xid (CoglOnscreen *onscreen);
 
-#define cogl_onscreen_x11_get_visual_xid cogl_onscreen_x11_get_visual_xid_EXP
+#define cogl_x11_onscreen_get_visual_xid cogl_x11_onscreen_get_visual_xid_EXP
 guint32
-cogl_onscreen_x11_get_visual_xid (CoglOnscreen *onscreen);
+cogl_x11_onscreen_get_visual_xid (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_X11 */
 
 #ifdef COGL_HAS_WIN32_SUPPORT
-#define cogl_onscreen_win32_set_foreign_window \
-  cogl_onscreen_win32_set_foreign_window_EXP
+#define cogl_win32_onscreen_set_foreign_window \
+  cogl_win32_onscreen_set_foreign_window_EXP
 void
-cogl_onscreen_win32_set_foreign_window (CoglOnscreen *onscreen,
+cogl_win32_onscreen_set_foreign_window (CoglOnscreen *onscreen,
                                         HWND hwnd);
 
-#define cogl_onscreen_win32_get_window cogl_onscreen_win32_get_window_EXP
+#define cogl_win32_onscreen_get_window cogl_win32_onscreen_get_window_EXP
 HWND
-cogl_onscreen_win32_get_window (CoglOnscreen *onscreen);
+cogl_win32_onscreen_get_window (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
 #if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT

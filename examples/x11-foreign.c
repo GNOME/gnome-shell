@@ -24,7 +24,7 @@ update_cogl_x11_event_mask (CoglOnscreen *onscreen,
   guint32 xwin;
 
   attrs.event_mask = event_mask | X11_FOREIGN_EVENT_MASK;
-  xwin = cogl_onscreen_x11_get_window_xid (onscreen);
+  xwin = cogl_x11_onscreen_get_window_xid (onscreen);
 
   XChangeWindowAttributes (xdpy,
                            (Window)xwin,
@@ -112,7 +112,7 @@ main (int argc, char **argv)
 
   /* We want to test that Cogl can handle foreign X windows... */
 
-  visual = cogl_onscreen_x11_get_visual_xid (onscreen);
+  visual = cogl_x11_onscreen_get_visual_xid (onscreen);
   if (!visual)
     {
       fprintf (stderr, "Failed to query an X visual suitable for the "
@@ -144,7 +144,7 @@ main (int argc, char **argv)
 
   XFree (xvisinfo);
 
-  cogl_onscreen_x11_set_foreign_window_xid (onscreen, xwin,
+  cogl_x11_onscreen_set_foreign_window_xid (onscreen, xwin,
                                             update_cogl_x11_event_mask,
                                             xdpy);
 
