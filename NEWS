@@ -1,3 +1,11 @@
+3.1.3.1
+=======
+* Back API version down to "3.0" - the change to Meta-3.1.gir
+  was unintentional [Owen]
+
+Translations:
+ Yaron Shahrabani [he], Kjartan Maraas [nb], Muhammet Kara [tr]
+
 3.1.3
 =====
 * Support dark window theme variants for windows with a dark
