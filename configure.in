@@ -215,7 +215,12 @@ GOBJECT_INTROSPECTION_CHECK([$INTROSPECTION_VERSION])
 if test x$found_introspection != xno; then
   AC_DEFINE(HAVE_INTROSPECTION, 1, [Define if GObject introspection is available])
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES gobject-introspection-1.0"
-  META_GIR=[Meta_]mutter_major_version[_]mutter_minor_version[_gir]
+  # Since we don't make any guarantees about stability and we don't support
+  # parallel install, there's no real reason to change directories, filenames,
+  # etc. as we change the Mutter tarball version. Note that this must match
+  # api_version in src/Makefile.am
+  META_GIR=Meta_3_0_gir
+  # META_GIR=[Meta_]mutter_major_version[_]mutter_minor_version[_gir]
   AC_SUBST(META_GIR)
 fi
 

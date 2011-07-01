@@ -204,7 +204,11 @@ mutter_LDADD = $(MUTTER_LIBS) libmutter.la
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
 
-api_version = $(MUTTER_MAJOR_VERSION).$(MUTTER_MINOR_VERSION)
+# Since we don't make any guarantees about stability and we don't support
+# parallel install, there's no real reason to change directories, filenames,
+# etc. as we change the Mutter tarball version.
+#api_version = $(MUTTER_MAJOR_VERSION).$(MUTTER_MINOR_VERSION)
+api_version = 3.0
 
 # These files are in package-private directories, even though they may be used
 # by plugins.  If you're writing a plugin, use g-ir-compiler --add-include-path
