@@ -81,23 +81,23 @@ release-message:
 	@echo "Release checksum: $(RELEASE_URL)/$(sha256_file)"
 	@echo "Send an email to: $(RELEASE_ANNOUNCE_LIST)"
 	@echo "              Cc: $(RELEASE_ANNOUNCE_CC)"
-	@echo "         Subject: Cogl $(COGL_1_VERSION) ($(COGL_RELEASE_STATUS))"
+	@echo "         Subject: Release Cogl $(COGL_1_VERSION) ($(COGL_RELEASE_STATUS))"
 	@echo "        Contents:"
-	@csplit -q --prefix=.README-section- $(top_srcdir)/README '/^--$$/' '{*}'
+	@csplit -q --prefix=.README-section- $(top_builddir)/README '/^--$$/' '{*}'
 	@echo "--- CUT HERE ---"
 	@echo "Good news, everyone!"
 	@echo ""
 	@echo "A new Cogl $(COGL_RELEASE_STATUS) is now available at:"
 	@echo ""
-	@echo "  http://source.clutter-project.org/sources/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
-	@echo "  http://download.gnome.org/sources/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
+	@echo "  http://source.clutter-project.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"
+	@echo "  http://download.gnome.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"
 	@echo ""
 	@echo "SHA256 Checksum:"
 	@echo ""
 	@cat $(top_builddir)/$(sha256_file)
 	@echo ""
 	@echo "Additionally, a git clone of the source tree:"
-	@echo "  git clone git://git.gnome.org/clutter"
+	@echo "  git clone git://git.gnome.org/cogl"
 	@echo ""
 	@echo "will include a signed $(COGL_1_VERSION) tag which points to a commit named:"
 	@echo "  `git cat-file tag $(COGL_1_VERSION) | $(GREP) ^object | $(SED) -e 's,object ,,'`"
@@ -108,19 +108,30 @@ release-message:
 	@echo "and can be checked out with a command such as:"
 	@echo "  git checkout -b build $(COGL_1_VERSION)"
 	@echo ""
-	@cat .README-section-01
+	@tail -n +2 .README-section-01
 	@echo ""
-	@cat .README-section-02
+	@tail -n +2 .README-section-02
 	@echo ""
-	@echo "Documentation:"
-	@echo "      Cogl:"
-	@echo "        $(RELEASE_DOC_URL)/cogl/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
-	@echo "      Cogl experimental 2.0:"
-	@echo "        $(RELEASE_DOC_URL)/cogl-2.0-experimental/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)/"
 	@echo ""
-	@echo "  - The Cogl library exports a stable 1.x API (For third-party Clutter"
-	@echo "    developers to write custom actors) and an experimental 2.0 API which allows"
-	@echo "    standalone application development."
+	@echo "DOCUMENTATION"
+	@echo "-------------------------------------------------------------------------------"
+	@echo ""
+	@echo "The 1.x API is documented here:"
+	@echo "  http://docs.clutter-project.org/docs/cogl/1.$(COGL_1_MINOR_VERSION)"
+	@echo "The experimental 2.0 API is documented here:"
+	@echo "  http://docs.clutter-project.org/docs/cogl-2.0-experimental/1.$(COGL_1_MINOR_VERSION)"
+	@echo ""
+	@echo ""
+	@echo "RELEASE NOTES"
+	@echo "-------------------------------------------------------------------------------"
+	@if test "x$(COGL_RELEASE_STATUS)" = "xsnapshot"; then \
+		echo "  - This is a development snapshot release so there are not API or ABI stability"; \
+		echo "    guarantees at this point for new APIs since the last stable release."; \
+		echo ""; \
+	fi
+	@echo "  - This Cogl release exports a 1.x API (For third-party Clutter"
+	@echo "    developers to write custom actors) and an experimental 2.0 API which"
+	@echo "    allows standalone application development."
 	@echo ""
 	@echo "  - Internally Clutter depends on the Cogl 2.0 experimental API so we maintain"
 	@echo "    runtime compatibility between the 1.x API and experimental 2.0 APIs, which"
