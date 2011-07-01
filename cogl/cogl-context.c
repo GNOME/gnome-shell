@@ -500,7 +500,7 @@ _cogl_context_get_default (void)
 
 #ifdef COGL_HAS_EGL_SUPPORT
 EGLDisplay
-cogl_context_egl_get_egl_display (CoglContext *context)
+cogl_egl_context_get_egl_display (CoglContext *context)
 {
   const CoglWinsysVtable *winsys = _cogl_context_get_winsys (context);
 

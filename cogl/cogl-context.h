@@ -62,9 +62,9 @@ cogl_context_new (CoglDisplay *display,
                   GError **error);
 
 #ifdef COGL_HAS_EGL_SUPPORT
-#define cogl_context_egl_get_egl_display cogl_context_egl_get_egl_display_EXP
+#define cogl_egl_context_get_egl_display cogl_egl_context_get_egl_display_EXP
 EGLDisplay
-cogl_context_egl_get_egl_display (CoglContext *context);
+cogl_egl_context_get_egl_display (CoglContext *context);
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
