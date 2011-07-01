@@ -97,7 +97,6 @@ IGNORE_HFILES=\
 	cogl-vertex-buffer-private.h		\
 	cogl-blend-string.h 			\
 	cogl-clip-stack.h 			\
-	cogl-context.h 				\
 	cogl-debug.h 				\
 	cogl-defines.h 				\
 	cogl-deprecated.h 			\

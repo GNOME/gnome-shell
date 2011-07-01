@@ -112,8 +112,6 @@ cogl_read_pixels
 
 <SUBSECTION>
 cogl_flush
-cogl_begin_gl
-cogl_end_gl
 
 <SUBSECTION Standard>
 COGL_TYPE_ATTRIBUTE_TYPE
@@ -339,6 +337,7 @@ cogl_pop_framebuffer
 <TITLE>CoglOnscreen: The Onscreen Framebuffer Interface</TITLE>
 CoglOnscreen
 COGL_ONSCREEN
+cogl_onscreen_new
 cogl_onscreen_x11_set_foreign_window_xid
 cogl_onscreen_x11_get_window_xid
 cogl_onscreen_x11_get_visual_xid
