@@ -1,3 +1,43 @@
+Cogl 1.7.2                                                         2011-07-01
+===============================================================================
+
+  • List of changes since Clutter 1.7.0
+
+   » Add an example program to draw a 3D crate
+
+   » Add experimental API to get and set the viewport on a framebuffer
+     without going through the implicit context.
+
+   » Add API to select the winsys backend without having to use an
+     environment variable.
+
+   » Various documentation fixes.
+
+   » Add winsys-specific typesafe APIs to replace the old
+     cogl_renderer_handle_native_event functions.
+
+   » Rename platform-specific APIs so that we consistently have
+     cogl_<platform>_symbol_name instead of cogl_symbol_name_<platform>.
+
+   » Fixed building against GLES.
+
+  • List of bugs fixes since Clutter 1.7.0
+
+    https://bugzilla.gnome.org:
+
+    #652672 - Typo fix in cogl-framebuffer
+    #653615 - cogl_release_status='snapshot' breaks linking on 64-bit
+              systems due to namespace conflict with ltoptions.m4
+    #653229 - pipeline: Don't regenerate shaders when not changing the
+              number of layers
+    #653231 - pipeline: Don't trigger a change when binding the invalid
+              texture target
+
+Many thanks to:
+  Robert Bragg
+  Adam Jackson
+  Emmanuele Bassi
+
 Cogl 1.7.0                                                         2011-06-10
 ===============================================================================
 
