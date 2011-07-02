@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-06 21:27+0000\n"
-"PO-Revision-Date: 2011-06-10 20:09+0100\n"
+"POT-Creation-Date: 2011-07-02 06:54+0000\n"
+"PO-Revision-Date: 2011-07-02 20:25+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -22,6 +22,13 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:509
+#, c-format
+msgid "Another compositing manager is already running on screen %i on display \"%s\"."
+msgstr "Drug upravljalnik sestavljanja je že zagnan na zaslonu %i prikaza \"%s\"."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -340,7 +347,7 @@ msgstr "Premakni okno na sredino zaslona"
 msgid "Bell event"
 msgstr "Dogodek zvonjenja"
 
-#: ../src/core/core.c:160
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Zahteva izpisa podrobnosti neznanega okna: %d"
