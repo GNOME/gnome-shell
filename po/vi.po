@@ -709,9 +709,8 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Cửa sổ %s gọi ý MWM nói rằng nó không thể bị thay đổi kích thước, nhưng đặt "
-"kích thước tối thiểu %d x %d và tối đa %d x %d; điều này có vẻ cũng hơi hợp "
-"lý.\n"
+"Cửa sổ %s đặt gợi ý MWM rằng nó không thể bị thay đổi kích thước, nhưng đặt "
+"kích thước tối thiểu %d x %d và tối đa %d x %d; không hợp lý lắm.\n"
 
 #: ../src/core/window-props.c:309
 #, c-format
