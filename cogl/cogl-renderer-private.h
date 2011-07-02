@@ -34,7 +34,7 @@
 #include <X11/Xlib.h>
 #endif
 
-#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 #include <wayland-client.h>
 #endif
 
@@ -53,7 +53,7 @@ struct _CoglRenderer
   GModule *libgl_module;
 #endif
 
-#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
   struct wl_display *foreign_wayland_display;
   struct wl_compositor *foreign_wayland_compositor;
 #endif

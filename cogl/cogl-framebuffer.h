@@ -34,7 +34,7 @@
 #include <windows.h>
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
-#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 #include <wayland-client.h>
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
@@ -379,7 +379,7 @@ HWND
 cogl_win32_onscreen_get_window (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
-#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 struct wl_surface *
 cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */

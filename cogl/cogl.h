@@ -93,7 +93,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-xlib.h>
 #include <cogl/cogl-xlib-renderer.h>
 #endif
-#if COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 #include <cogl/cogl-wayland-renderer.h>
 #endif
 /* XXX: This will definitly go away once all the Clutter winsys
