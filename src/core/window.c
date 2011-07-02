@@ -70,6 +70,8 @@ static void     set_wm_state_on_xwindow   (MetaDisplay    *display,
 static void     set_wm_state              (MetaWindow     *window,
                                            int             state);
 static void     set_net_wm_state          (MetaWindow     *window);
+static void     meta_window_set_above     (MetaWindow     *window,
+                                           gboolean        new_value);
 
 static void     send_configure_notify     (MetaWindow     *window);
 static gboolean process_property_notify   (MetaWindow     *window,
@@ -157,6 +159,8 @@ enum {
   PROP_URGENT,
   PROP_MUTTER_HINTS,
   PROP_APPEARS_FOCUSED,
+  PROP_RESIZEABLE,
+  PROP_ABOVE,
   PROP_WM_CLASS
 };
 
@@ -254,6 +258,12 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_WM_CLASS:
       g_value_set_string (value, win->res_class);
+      break;
+    case PROP_RESIZEABLE:
+      g_value_set_boolean (value, win->has_resize_func);
+      break;
+    case PROP_ABOVE:
+      g_value_set_boolean (value, win->wm_state_above);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -394,6 +404,22 @@ meta_window_class_init (MetaWindowClass *klass)
                                    g_param_spec_boolean ("appears-focused",
                                                          "Appears focused",
                                                          "Whether the window is drawn as being focused",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_RESIZEABLE,
+                                   g_param_spec_boolean ("resizeable",
+                                                         "Resizeable",
+                                                         "Whether the window can be resized",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_ABOVE,
+                                   g_param_spec_boolean ("above",
+                                                         "Above",
+                                                         "Whether the window is shown as always-on-top",
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -3722,10 +3748,8 @@ meta_window_make_above (MetaWindow  *window)
 {
   g_return_if_fail (!window->override_redirect);
 
-  window->wm_state_above = TRUE;
-  meta_window_update_layer (window);
+  meta_window_set_above (window, TRUE);
   meta_window_raise (window);
-  set_net_wm_state (window);
 }
 
 void
@@ -3733,10 +3757,22 @@ meta_window_unmake_above (MetaWindow  *window)
 {
   g_return_if_fail (!window->override_redirect);
 
-  window->wm_state_above = FALSE;
+  meta_window_set_above (window, FALSE);
   meta_window_raise (window);
+}
+
+static void
+meta_window_set_above (MetaWindow *window,
+                       gboolean    new_value)
+{
+  new_value = new_value != FALSE;
+  if (new_value == window->wm_state_above)
+    return;
+
+  window->wm_state_above = new_value;
   meta_window_update_layer (window);
   set_net_wm_state (window);
+  g_object_notify (G_OBJECT (window), "above");
 }
 
 void
@@ -6154,12 +6190,9 @@ meta_window_client_message (MetaWindow *window,
       if (first == display->atom__NET_WM_STATE_ABOVE ||
           second == display->atom__NET_WM_STATE_ABOVE)
         {
-          window->wm_state_above =
+          meta_window_set_above(window,
             (action == _NET_WM_STATE_ADD) ||
-            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_above);
-
-          meta_window_update_layer (window);
-          set_net_wm_state (window);
+            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_above));
         }
 
       if (first == display->atom__NET_WM_STATE_BELOW ||
@@ -7733,6 +7766,9 @@ recalc_window_features (MetaWindow *window)
       old_has_shade_func != window->has_shade_func       ||
       old_always_sticky != window->always_sticky)
     set_allowed_actions_hint (window);
+
+  if (window->has_resize_func != old_has_resize_func)
+    g_object_notify (G_OBJECT (window), "resizeable");
 
   /* FIXME perhaps should ensure if we don't have a shade func,
    * we aren't shaded, etc.
