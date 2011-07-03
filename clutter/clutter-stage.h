@@ -267,6 +267,8 @@ void                  clutter_stage_set_motion_events_enabled (ClutterStage *sta
                                                                gboolean      enabled);
 gboolean              clutter_stage_get_motion_events_enabled (ClutterStage *stage);
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 /* Commodity macro, for mallum only */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \
   if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \
@@ -275,6 +277,8 @@ gboolean              clutter_stage_get_motion_events_enabled (ClutterStage *sta
       ClutterActor *_actor = (ClutterActor *) (actor);                  \
       clutter_container_add_actor (_container, _actor);                 \
     }                                                   } G_STMT_END
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
