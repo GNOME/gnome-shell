@@ -4085,10 +4085,10 @@ adjust_for_gravity (MetaWindow        *window,
 
   if (borders)
     {
-      child_x = borders->visible.left;
-      child_y = borders->visible.top;
-      frame_width = child_x + rect->width + borders->visible.right;
-      frame_height = child_y + rect->height + borders->visible.bottom;
+      child_x = borders->total.left;
+      child_y = borders->total.top;
+      frame_width = child_x + rect->width + borders->total.left;
+      frame_height = child_y + rect->height + borders->total.top;
     }
   else
     {
@@ -4454,12 +4454,12 @@ meta_window_move_resize_internal (MetaWindow          *window,
     {
       int new_w, new_h;
 
-      new_w = window->rect.width + borders.visible.left + borders.visible.right;
+      new_w = window->rect.width + borders.total.left + borders.total.right;
 
       if (window->shaded)
-        new_h = borders.visible.top;
+        new_h = borders.total.top;
       else
-        new_h = window->rect.height + borders.visible.top + borders.visible.bottom;
+        new_h = window->rect.height + borders.total.top + borders.total.bottom;
 
       frame_size_dx = new_w - window->frame->rect.width;
       frame_size_dy = new_h - window->frame->rect.height;
@@ -4501,8 +4501,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
       int frame_pos_dx, frame_pos_dy;
 
       /* Compute new frame coords */
-      new_x = root_x_nw - borders.visible.left;
-      new_y = root_y_nw - borders.visible.top;
+      new_x = root_x_nw - borders.total.left;
+      new_y = root_y_nw - borders.total.top;
 
       frame_pos_dx = new_x - window->frame->rect.x;
       frame_pos_dy = new_y - window->frame->rect.y;
@@ -4525,8 +4525,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
        * remember they are the server coords
        */
 
-      new_x = borders.visible.left;
-      new_y = borders.visible.top;
+      new_x = borders.total.left;
+      new_y = borders.total.top;
 
       if (need_resize_frame && need_move_frame &&
           static_gravity_works (window->display))
@@ -4597,15 +4597,15 @@ meta_window_move_resize_internal (MetaWindow          *window,
   /* If frame extents have changed, fill in other frame fields and
      change frame's extents property. */
   if (window->frame &&
-      (window->frame->child_x != borders.visible.left ||
-       window->frame->child_y != borders.visible.top ||
-       window->frame->right_width != borders.visible.right ||
-       window->frame->bottom_height != borders.visible.bottom))
+      (window->frame->child_x != borders.total.left ||
+       window->frame->child_y != borders.total.top ||
+       window->frame->right_width != borders.total.right ||
+       window->frame->bottom_height != borders.total.bottom))
     {
-      window->frame->child_x = borders.visible.left;
-      window->frame->child_y = borders.visible.top;
-      window->frame->right_width = borders.visible.right;
-      window->frame->bottom_height = borders.visible.bottom;
+      window->frame->child_x = borders.total.left;
+      window->frame->child_y = borders.total.top;
+      window->frame->right_width = borders.total.right;
+      window->frame->bottom_height = borders.total.bottom;
 
       update_net_frame_extents (window);
     }
