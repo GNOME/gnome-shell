@@ -2015,10 +2015,6 @@ clutter_text_paint (ClutterActor *self)
                   text_x = text_x + (actor_width - cursor_x) - TEXT_PADDING;
                 }
             }
-          /* Update the absolute cursor position as it may have moved due to
-           * scrolling */
-          priv->text_x = text_x;
-          clutter_text_ensure_cursor_position (text);
         }
       else
         {
@@ -2028,7 +2024,11 @@ clutter_text_paint (ClutterActor *self)
   else
     text_x = 0;
 
-  priv->text_x = text_x;
+  if (priv->text_x != text_x)
+    {
+      priv->text_x = text_x;
+      clutter_text_ensure_cursor_position (text);
+    }
 
   real_opacity = clutter_actor_get_paint_opacity (self)
                * priv->text_color.alpha
