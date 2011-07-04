@@ -12,8 +12,8 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
-const BUS_NAME = 'org.gnome.PowerManager';
-const OBJECT_PATH = '/org/gnome/PowerManager';
+const BUS_NAME = 'org.gnome.SettingsDaemon';
+const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
 
 const UPDeviceType = {
     UNKNOWN: 0,
@@ -41,7 +41,7 @@ const UPDeviceState = {
 };
 
 const PowerManagerInterface = {
-    name: 'org.gnome.PowerManager',
+    name: 'org.gnome.SettingsDaemon.Power',
     methods: [
         { name: 'GetDevices', inSignature: '', outSignature: 'a(susbut)' },
         { name: 'GetPrimaryDevice', inSignature: '', outSignature: '(susbut)' },
