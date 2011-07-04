@@ -13,7 +13,7 @@ pretty pictures. The API departs from the flat state machine style of
 OpenGL and is designed to make it easy to write orthogonal components that
 can render without stepping on each others toes.
 
-As well aiming for a nice API, we think having a single library as opposed
+As well as aiming for a nice API, we think having a single library as opposed
 to an API specification like OpenGL has a few advantages too; like being
 able to paper over the inconsistencies/bugs of different OpenGL
 implementations in a centralized place, not to mention the myriad of OpenGL
