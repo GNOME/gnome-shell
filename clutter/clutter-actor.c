@@ -2813,6 +2813,8 @@ clutter_actor_paint (ClutterActor *self)
   ClutterActorPrivate *priv;
   ClutterPickMode pick_mode;
   gboolean clip_set = FALSE;
+  gboolean shader_applied = FALSE;
+
   CLUTTER_STATIC_COUNTER (actor_paint_counter,
                           "Actor real-paint counter",
                           "Increments each time any actor is painted",
@@ -2940,8 +2942,12 @@ clutter_actor_paint (ClutterActor *self)
 
   if (priv->effects == NULL)
     {
-      if (actor_has_shader_data (self))
-        clutter_actor_shader_pre_paint (self, FALSE);
+      if (pick_mode == CLUTTER_PICK_NONE &&
+          actor_has_shader_data (self))
+        {
+          clutter_actor_shader_pre_paint (self, FALSE);
+          shader_applied = TRUE;
+        }
       priv->next_effect_to_paint = NULL;
     }
   else
@@ -2950,8 +2956,7 @@ clutter_actor_paint (ClutterActor *self)
 
   clutter_actor_continue_paint (self);
 
-  if (priv->effects == NULL &&
-      actor_has_shader_data (self))
+  if (shader_applied)
     clutter_actor_shader_post_paint (self);
 
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES &&
