@@ -56,7 +56,7 @@ clutter/clutter-texture.c
 clutter/clutter-timeline.c
 clutter/clutter-units.c
 clutter/evdev/clutter-input-device-evdev.c
-clutter/glx/clutter-backend-glx.c
+clutter/cogl/clutter-backend-glx.c
 clutter/x11/clutter-backend-x11.c
 clutter/x11/clutter-keymap-x11.c
 clutter/x11/clutter-x11-texture-pixmap.c
