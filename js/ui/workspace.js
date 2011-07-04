@@ -973,17 +973,28 @@ Workspace.prototype = {
                                       });
                 }
 
+                clone.actor.opacity = 0;
                 Tweener.addTween(clone.actor,
-                                 { x: x,
-                                   y: y,
-                                   scale_x: scale,
-                                   scale_y: scale,
+                                 { opacity: 255,
                                    time: Overview.ANIMATION_TIME,
-                                   transition: 'easeOutQuad',
+                                   transition: 'easeInOutQuad',
                                    onComplete: Lang.bind(this, function() {
                                       this._showWindowOverlay(clone, overlay, true);
                                    })
                                  });
+                // Tweener.addTween(clone.actor,
+                //                  { x: x,
+                //                    y: y,
+                //                    scale_x: scale,
+                //                    scale_y: scale,
+                //                    time: Overview.ANIMATION_TIME,
+                //                    transition: 'easeInOutQuad',
+                //                    onComplete: Lang.bind(this, function() {
+                //                       this._showWindowOverlay(clone, overlay, true);
+                //                    })
+                //                  });
+                clone.actor.set_position(x, y);
+                clone.actor.set_scale(scale, scale);
             } else {
                 clone.actor.set_position(x, y);
                 clone.actor.set_scale(scale, scale);
@@ -1248,14 +1259,18 @@ Workspace.prototype = {
 
             if (clone.metaWindow.showing_on_its_workspace()) {
                 Tweener.addTween(clone.actor,
-                                 { x: clone.origX,
-                                   y: clone.origY,
-                                   scale_x: 1.0,
-                                   scale_y: 1.0,
+                                 { opacity: 0,
                                    time: Overview.ANIMATION_TIME,
-                                   opacity: 255,
-                                   transition: 'easeOutQuad'
+                                   transition: 'easeInOutQuad'
                                  });
+                // Tweener.addTween(clone.actor,
+                //                  { x: clone.origX,
+                //                    y: clone.origY,
+                //                    scale_x: 1.0,
+                //                    scale_y: 1.0,
+                //                    time: Overview.ANIMATION_TIME,
+                //                    transition: 'easeInOutQuad'
+                //                  });
             } else {
                 // The window is hidden, make it shrink and fade it out
                 Tweener.addTween(clone.actor,

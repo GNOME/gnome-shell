@@ -535,7 +535,15 @@ Overview.prototype = {
         //
         // If we switched to displaying the actors in the Overview rather than
         // clones of them, this would obviously no longer be necessary.
-        global.window_group.hide();
+
+        global.window_group.raise(global.overlay_group);
+        Tweener.addTween(global.window_group,
+                         { opacity: 0,
+                           time: ANIMATION_TIME,
+                           transition: 'easeInOutQuad',
+                           onComplete: function() { global.window_group.hide(); }
+                         });
+
         this._group.show();
         this._background.show();
 
@@ -664,6 +672,14 @@ Overview.prototype = {
         this.animationInProgress = true;
         this._hideInProgress = true;
 
+        global.window_group.raise(global.overlay_group);
+        global.window_group.show();
+        Tweener.addTween(global.window_group,
+                         { opacity: 255,
+                           time: ANIMATION_TIME,
+                           transition: 'easeInOutQuad'
+                         });
+
         if (!this.workspaces.getActiveWorkspace().hasMaximizedWindows()) {
             this._desktopFade.opacity = 0;
             this._desktopFade.show();
@@ -704,8 +720,6 @@ Overview.prototype = {
     },
 
     _hideDone: function() {
-        global.window_group.show();
-
         this.workspaces.destroy();
         this.workspaces = null;
 
