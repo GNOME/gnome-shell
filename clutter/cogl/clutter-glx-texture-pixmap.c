@@ -49,8 +49,6 @@
 
 #include <string.h>
 
-#include <GL/glx.h>
-
 #include "x11/clutter-x11-texture-pixmap.h"
 
 #include <cogl/cogl-texture-pixmap-x11.h>
