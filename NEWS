@@ -1,3 +1,65 @@
+Clutter 1.7.4                                                        2011-07-04
+===============================================================================
+
+  • List of changes since Clutter 1.7.2
+
+    - Unify the GLX and EGL backends to be a single code base
+    The GLX and EGL backends shared most of their code, and with the split
+    out Cogl, we can unify the code base into a single backend. The API as
+    well as the ABI are preserved.
+
+    - Restore a wider range of Z values for actors
+    The computation for the near and far planes given the perspective
+    transformation used to set up the viewport was broken in 1.7.2, and
+    the distance from the focal point was greatly reduced. This has now
+    been fixed.
+
+    - Bump up the dependency of Cogl
+    New windowing system API in Cogl required bumping the minimum version
+    to the latest development snapshot, 1.7.2.
+
+    - Add ClutterDropAction
+    The ClutterDropAction is an action for allowing ClutterActors to react
+    when an actor being dragged through ClutterDragAction crosses, or is
+    dropped over, them.
+
+    - Add a performance test suite
+    This suite is an addition to our conformance and interactive test
+    suites; the infrastructure can be used by buildbots and report tools
+    to track performance regressions across various commits.
+
+    - Documentation and annotation fixes
+
+    - Build fixes
+
+  • List of bug fixes since Clutter 1.7.2
+
+    [bugzilla.gnome.org]
+
+    #650329 - ClutterModifierType: Port fix from GDK to clutter's GDK copy
+    #652566 - Clutter-CRITICAL **: _clutter_stage_get_window: assertion
+              `CLUTTER_IS_STAGE (stage)' failed
+    #651784 - transition=spin / transition=spin-text is broken in pinpoint
+              with Clutter master
+    #652842 - Add a Drop action
+    #653066 - ClutterDragAction does not support multiple pointers
+    #653307 - Change the signature of ClutterTexture::load-finished to give
+              a GError, instead of a gpointer
+    #653607 - Arrays not annotated as such for introspection bindings
+    #651079 - ClutterText "blinks" when deleting text after going out of
+              bounds
+    #650675 - clutter-media: mention the asynchronous behavior of
+              set_playing()
+
+    [buzgilla.clutter-project.org]
+
+    #2625 - The furthest visible z value is really low
+
+Many thanks to:
+
+  Robert Bragg, Neil Roberts, Peter Ward, Colin Walters, Daniel Mustieles,
+  Jasper St. Pierre, Samuel Degrande, Øyvind Kolås
+
 Clutter 1.7.2                                                        2011-06-13
 ===============================================================================
 
