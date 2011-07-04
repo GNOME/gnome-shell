@@ -375,7 +375,7 @@ if SUPPORT_X11
 #
 # Note: there wasn't actually anything GLX specific so we can add
 # the compatability if clutter supports x11
-glx_source_c = $(srcdir)/cogl/clutter-glx-texture-pixmap.c
+backend_source_c += $(srcdir)/cogl/clutter-glx-texture-pixmap.c
 glx_source_h = $(srcdir)/cogl/clutter-glx-texture-pixmap.h \
 	       $(srcdir)/cogl/clutter-glx.h
 clutterglx_includedir = $(clutter_includedir)/glx
