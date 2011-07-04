@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-06 11:22+0200\n"
-"PO-Revision-Date: 2011-06-06 11:23+0200\n"
+"POT-Creation-Date: 2011-07-04 22:23+0200\n"
+"PO-Revision-Date: 2011-07-04 22:23+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -24,6 +24,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.2\n"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:509
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr ""
+"Non foi posíbel obter a selección do xestor de xanelas na pantalla %i na "
+"visualización «%s»"
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -344,7 +355,7 @@ msgstr "Mover a xanela ao centro da pantalla"
 msgid "Bell event"
 msgstr "Evento de campá"
 
-#: ../src/core/core.c:160
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Petición de información de xanela descoñecida: %d"
