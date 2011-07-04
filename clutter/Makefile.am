@@ -445,7 +445,7 @@ egl_source_h = \
 	$(srcdir)/cogl/clutter-egl.h		\
 	$(NULL)
 
-egl_tslib_c = $(srcdir)/egl/clutter-event-tslib.c
+egl_tslib_c = $(srcdir)/cogl/clutter-event-tslib.c
 
 evdev_c_priv = \
 	$(srcdir)/evdev/clutter-xkb-utils.c 		\
