@@ -154,7 +154,7 @@ test_using_all_layers (TestState *state, int x, int y)
 
   /* FIXME: Cogl doesn't provide a way to query the maximum number of
      texture layers so for now we'll just ask GL directly. */
-#ifdef HAVE_COGL_GLES2
+#ifdef COGL_HAS_GLES2
   {
     GLint n_image_units, n_attribs;
     /* GLES 2 doesn't have GL_MAX_TEXTURE_UNITS and it uses
