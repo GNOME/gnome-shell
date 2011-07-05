@@ -57,6 +57,7 @@ depcomp
 /doc/reference/cogl-2.0-experimental/*.bak
 /examples/hello
 /examples/x11-foreign
+/examples/crate
 gtk-doc.make
 install-sh
 libtool
