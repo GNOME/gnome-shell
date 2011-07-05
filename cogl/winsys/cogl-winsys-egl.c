@@ -358,7 +358,7 @@ check_egl_extensions (CoglRenderer *renderer)
                              egl_renderer))
       {
         egl_renderer->private_features |=
-          winsys_feature_data[0].feature_flags_private;
+          winsys_feature_data[i].feature_flags_private;
       }
 }
 
