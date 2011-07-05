@@ -301,8 +301,11 @@ StatusMenuButton.prototype = {
 
     _onLoginScreenActivate: function() {
         Main.overview.hide();
-        this._gdm.goto_login_session();
-        this._onLockScreenActivate();
+        // Ensure we only move to GDM after the screensaver has activated; in some
+        // OS configurations, the X server may block event processing on VT switch
+        this._screenSaverProxy.setActiveRemote(true, Lang.bind(this, function() {
+            this._gdm.goto_login_session();
+        }));
     },
 
     _onQuitSessionActivate: function() {
@@ -315,6 +318,7 @@ StatusMenuButton.prototype = {
 
         if (this._haveSuspend &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
+            // Ensure we only suspend after the screensaver has activated
             this._screenSaverProxy.SetActiveRemote(true, Lang.bind(this, function() {
                 this._upClient.suspend_sync(null);
             }));
