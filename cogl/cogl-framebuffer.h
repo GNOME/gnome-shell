@@ -181,7 +181,7 @@ cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer);
  * Since: 1.8
  * Stability: unstable
  */
-#define cogl_framebuffer_get_blue_bits cogl_framebuffer_get_blue_bits_EXP
+#define cogl_framebuffer_get_alpha_bits cogl_framebuffer_get_alpha_bits_EXP
 int
 cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
 
