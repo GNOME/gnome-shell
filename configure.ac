@@ -937,7 +937,7 @@ doc/reference/Makefile
 doc/reference/cogl/Makefile
 doc/reference/cogl/cogl-docs.xml
 doc/reference/cogl-2.0-experimental/Makefile
-doc/reference/cogl-2.0-experimental/cogl-docs.xml
+doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
 examples/Makefile
 po/Makefile.in
 )
