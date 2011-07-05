@@ -14,7 +14,8 @@ const Tweener = imports.ui.tweener;
 
 const POPUP_APPICON_SIZE = 96;
 const POPUP_SCROLL_TIME = 0.10; // seconds
-const POPUP_FADE_TIME = 0.1; // seconds
+const POPUP_FADE_IN_TIME = 0.4; // seconds
+const POPUP_FADE_OUT_TIME = 0.1; // seconds
 
 const APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
 
@@ -182,10 +183,15 @@ AltTabPopup.prototype = {
             return false;
         }
 
+        // Using easeInOutExpo over 400ms gives us 150ms of "nearly
+        // invisible" (less than 10% opacity), followed by a 100ms
+        // tween in (to 90% opacity, with the last 10% coming over the
+        // next 150ms). So if the user releases Alt quickly after we
+        // start tweening, they'll never see the switcher.
         Tweener.addTween(this.actor,
                          { opacity: 255,
-                           time: POPUP_FADE_TIME,
-                           transition: 'easeOutQuad'
+                           time: POPUP_FADE_IN_TIME,
+                           transition: 'easeInOutExpo'
                          });
 
         return true;
@@ -368,7 +374,7 @@ AltTabPopup.prototype = {
         if (this.actor.visible) {
             Tweener.addTween(this.actor,
                              { opacity: 0,
-                               time: POPUP_FADE_TIME,
+                               time: POPUP_FADE_OUT_TIME,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this,
                                    function() {
