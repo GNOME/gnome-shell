@@ -1553,13 +1553,16 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
   CoglTexturePixmapEGL *egl_tex_pixmap;
   EGLint attribs[] = {EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE};
   CoglPixelFormat texture_format;
+  CoglRendererEGL *egl_renderer;
 
   /* FIXME: It should be possible to get to a CoglContext from any
    * CoglTexture pointer. */
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (!(ctx->private_feature_flags &
-        COGL_PRIVATE_FEATURE_EGL_IMAGE_FROM_X11_PIXMAP) ||
+  egl_renderer = ctx->display->renderer->winsys;
+
+  if (!(egl_renderer->private_features &
+        COGL_EGL_WINSYS_FEATURE_EGL_IMAGE_FROM_X11_PIXMAP) ||
       !(ctx->private_feature_flags &
         COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE))
     {
