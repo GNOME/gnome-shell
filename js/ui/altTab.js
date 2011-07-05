@@ -119,7 +119,7 @@ AltTabPopup.prototype = {
         }
     },
 
-    show : function(backward, switch_group) {
+    show : function(backward, binding) {
         let tracker = Shell.WindowTracker.get_default();
         let apps = tracker.get_running_apps ('');
 
@@ -150,7 +150,7 @@ AltTabPopup.prototype = {
         this.actor.get_allocation_box();
 
         // Make the initial selection
-        if (switch_group) {
+        if (binding == 'switch_group') {
             if (backward) {
                 this._select(0, this._appIcons[0].cachedWindows.length - 1);
             } else {
@@ -159,6 +159,10 @@ AltTabPopup.prototype = {
                 else
                     this._select(0, 0);
             }
+        } else if (binding == 'switch_group_backward') {
+            this._select(0, this._appIcons[0].cachedWindows.length - 1);
+        } else if (binding == 'switch_windows_backward') {
+            this._select(this._appIcons.length - 1);
         } else if (this._appIcons.length == 1) {
             this._select(0);
         } else if (backward) {
@@ -221,8 +225,12 @@ AltTabPopup.prototype = {
             this.destroy();
         } else if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
             this._select(this._currentApp, backwards ? this._previousWindow() : this._nextWindow());
+        } else if (action == Meta.KeyBindingAction.SWITCH_GROUP_BACKWARD) {
+            this._select(this._currentApp, this._previousWindow());
         } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
             this._select(backwards ? this._previousApp() : this._nextApp());
+        } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD) {
+            this._select(this._previousApp());
         } else if (this._thumbnailsFocused) {
             if (keysym == Clutter.Left)
                 this._select(this._currentApp, this._previousWindow());
