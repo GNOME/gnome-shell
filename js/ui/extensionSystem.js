@@ -128,6 +128,12 @@ function installExtensionFromManifest(manifest, meta) {
     let uuid = manifest['uuid'];
     let name = manifest['name'];
 
+    if (!versionCheck(manifest['shell-version'], Config.PACKAGE_VERSION)) {
+        meta.state = ExtensionState.OUT_OF_DATE;
+        logExtensionError(uuid, 'version: ' + name + ' is not compatible with current GNOME Shell version', meta.state);
+        return;
+    }
+
     let url = manifest['__installer'];
     _httpSession.queue_message(Soup.Message.new('GET', url),
                                function(session, message) {
@@ -213,13 +219,14 @@ function enableExtension(uuid) {
     _signals.emit('extension-state-changed', meta);
 }
 
-function logExtensionError(uuid, message) {
+function logExtensionError(uuid, message, state) {
     if (!errors[uuid]) errors[uuid] = [];
     errors[uuid].push(message);
     global.logError('Extension "%s" had error: %s'.format(uuid, message));
+    state = state || ExtensionState.ERROR;
     _signals.emit('extension-state-changed', { uuid: uuid,
                                                error: message,
-                                               state: ExtensionState.ERROR });
+                                               state: state });
 }
 
 function loadExtension(dir, enabled, type) {
@@ -284,6 +291,13 @@ function loadExtension(dir, enabled, type) {
 
     // Default to error, we set success as the last step
     meta.state = ExtensionState.ERROR;
+
+    if (!versionCheck(meta['shell-version'], Config.PACKAGE_VERSION) ||
+        (meta['js-version'] && !versionCheck(meta['js-version'], Config.GJS_VERSION))) {
+        logExtensionError(uuid, 'extension is not compatible with current GNOME Shell and/or GJS version', ExtensionState.OUT_OF_DATE);
+        meta.state = ExtensionState.OUT_OF_DATE;
+        return;
+    }
 
     let extensionJs = dir.get_child('extension.js');
     if (!extensionJs.query_exists(null)) {
