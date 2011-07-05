@@ -159,9 +159,9 @@ clutter_snap_constraint_update_allocation (ClutterConstraint *constraint,
 
     case CLUTTER_SNAP_EDGE_RIGHT:
       if (self->from_edge == CLUTTER_SNAP_EDGE_RIGHT)
-        allocation->x2 = source_x + source_height + self->offset;
+        allocation->x2 = source_x + source_width + self->offset;
       else if (self->from_edge == CLUTTER_SNAP_EDGE_LEFT)
-        allocation->x1 = source_x + source_height + self->offset;
+        allocation->x1 = source_x + source_width + self->offset;
       else
         warn_horizontal_edge ("right", self->actor, self->source);
       break;
