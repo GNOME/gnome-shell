@@ -53,7 +53,7 @@ typedef struct _ClutterBindConstraintClass      ClutterBindConstraintClass;
  * @CLUTTER_BIND_X: Bind the X coordinate
  * @CLUTTER_BIND_Y: Bind the Y coordinate
  * @CLUTTER_BIND_WIDTH: Bind the width
- * @CLUTTER_BIND_HEIGHT: Bidng the height
+ * @CLUTTER_BIND_HEIGHT: Bind the height
  * @CLUTTER_BIND_POSITION: Equivalent to to %CLUTTER_BIND_X and
  *   %CLUTTER_BIND_Y
  * @CLUTTER_BIND_SIZE: Equivalent to %CLUTTER_BIND_WIDTH and
