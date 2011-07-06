@@ -50,19 +50,6 @@
 #include <glib/gprintf.h>
 #include <string.h>
 
-/*
- * GL/GLES compatability defines for pipeline thingies:
- */
-
-#ifdef HAVE_COGL_GL
-#define glProgramString ctx->glProgramString
-#define glBindProgram ctx->glBindProgram
-#define glDeletePrograms ctx->glDeletePrograms
-#define glGenPrograms ctx->glGenPrograms
-#define glProgramLocalParameter4fv ctx->glProgramLocalParameter4fv
-#define glUseProgram ctx->glUseProgram
-#endif
-
 /* This might not be defined on GLES */
 #ifndef GL_TEXTURE_3D
 #define GL_TEXTURE_3D                           0x806F
@@ -135,7 +122,7 @@ arbfp_program_state_unref (ArbfpProgramState *state)
     {
       if (state->gl_program)
         {
-          GE (glDeletePrograms (1, &state->gl_program));
+          GE (ctx, glDeletePrograms (1, &state->gl_program));
           state->gl_program = 0;
         }
 
@@ -866,9 +853,9 @@ update_constants_cb (CoglPipeline *pipeline,
       _cogl_pipeline_get_layer_combine_constant (pipeline,
                                                  layer_index,
                                                  constant);
-      GE (glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB,
-                                      unit_state->constant_id,
-                                      constant));
+      GE (ctx, glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB,
+                                           unit_state->constant_id,
+                                           constant));
       unit_state->dirty_combine_constant = FALSE;
     }
   return TRUE;
@@ -901,22 +888,22 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
       if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_SHOW_SOURCE)))
         g_message ("pipeline program:\n%s", arbfp_program_state->source->str);
 
-      GE (glGenPrograms (1, &arbfp_program_state->gl_program));
+      GE (ctx, glGenPrograms (1, &arbfp_program_state->gl_program));
 
-      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB,
+      GE (ctx, glBindProgram (GL_FRAGMENT_PROGRAM_ARB,
                          arbfp_program_state->gl_program));
 
-      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
         ;
-      glProgramString (GL_FRAGMENT_PROGRAM_ARB,
-                       GL_PROGRAM_FORMAT_ASCII_ARB,
-                       arbfp_program_state->source->len,
-                       arbfp_program_state->source->str);
-      if (glGetError () != GL_NO_ERROR)
+      ctx->glProgramString (GL_FRAGMENT_PROGRAM_ARB,
+                            GL_PROGRAM_FORMAT_ASCII_ARB,
+                            arbfp_program_state->source->len,
+                            arbfp_program_state->source->str);
+      if (ctx->glGetError () != GL_NO_ERROR)
         {
           g_warning ("\n%s\n%s",
                      arbfp_program_state->source->str,
-                     glGetString (GL_PROGRAM_ERROR_STRING_ARB));
+                     ctx->glGetString (GL_PROGRAM_ERROR_STRING_ARB));
         }
 
       arbfp_program_state->source = NULL;
@@ -979,7 +966,7 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
   else
     gl_program = arbfp_program_state->gl_program;
 
-  GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, gl_program));
+  GE (ctx, glBindProgram (GL_FRAGMENT_PROGRAM_ARB, gl_program));
   _cogl_use_fragment_program (0, COGL_PIPELINE_PROGRAM_TYPE_ARBFP);
 
   if (arbfp_program_state->user_program == COGL_INVALID_HANDLE)

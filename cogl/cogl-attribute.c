@@ -47,30 +47,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#if defined (HAVE_COGL_GL)
-
-#define glGenBuffers ctx->glGenBuffers
-#define glBindBuffer ctx->glBindBuffer
-#define glBufferData ctx->glBufferData
-#define glBufferSubData ctx->glBufferSubData
-#define glGetBufferSubData ctx->glGetBufferSubData
-#define glDeleteBuffers ctx->glDeleteBuffers
-#define glMapBuffer ctx->glMapBuffer
-#define glUnmapBuffer ctx->glUnmapBuffer
-#define glClientActiveTexture ctx->glClientActiveTexture
-#ifndef GL_ARRAY_BUFFER
-#define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
-#endif
-
-#define glVertexAttribPointer ctx->glVertexAttribPointer
-#define glEnableVertexAttribArray ctx->glEnableVertexAttribArray
-#define glDisableVertexAttribArray ctx->glDisableVertexAttribArray
-#define MAY_HAVE_PROGRAMABLE_GL
-
-#define glDrawRangeElements(mode, start, end, count, type, indices) \
-  ctx->glDrawRangeElements (mode, start, end, count, type, indices)
-
-#else /* GLES 1/2 */
+#if ! defined (HAVE_COGL_GL)
 
 /* GLES doesn't have glDrawRangeElements, so we simply pretend it does
  * but that it makes no use of the start, end constraints: */
@@ -433,23 +410,23 @@ toggle_enabled_cb (int bit_num, void *user_data)
   const CoglBitmask *new_values = user_data;
   gboolean enabled = _cogl_bitmask_get (new_values, bit_num);
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
 #ifdef HAVE_COGL_GLES2
 
   if (enabled)
-    GE( glEnableVertexAttribArray (bit_num) );
+    GE( ctx, glEnableVertexAttribArray (bit_num) );
   else
-    GE( glDisableVertexAttribArray (bit_num) );
+    GE( ctx, glDisableVertexAttribArray (bit_num) );
 
 #else /* HAVE_COGL_GLES2 */
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  GE( glClientActiveTexture (GL_TEXTURE0 + bit_num) );
+  GE( ctx, glClientActiveTexture (GL_TEXTURE0 + bit_num) );
 
   if (enabled)
-    GE( glEnableClientState (GL_TEXTURE_COORD_ARRAY) );
+    GE( ctx, glEnableClientState (GL_TEXTURE_COORD_ARRAY) );
   else
-    GE( glDisableClientState (GL_TEXTURE_COORD_ARRAY) );
+    GE( ctx, glDisableClientState (GL_TEXTURE_COORD_ARRAY) );
 
 #endif /* HAVE_COGL_GLES2 */
 }
@@ -619,7 +596,8 @@ enable_gl_state (CoglDrawFlags flags,
             _cogl_pipeline_progend_glsl_get_color_attribute (source);
           if (attrib_location != -1)
             {
-              GE( glVertexAttribPointer (attrib_location,
+              GE( ctx,
+                  glVertexAttribPointer (attrib_location,
                                          attribute->n_components,
                                          attribute->type,
                                          TRUE, /* normalize */
@@ -632,11 +610,11 @@ enable_gl_state (CoglDrawFlags flags,
 #else
 
           enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-          /* GE (glEnableClientState (GL_COLOR_ARRAY)); */
-          GE (glColorPointer (attribute->n_components,
-                              attribute->type,
-                              attribute->stride,
-                              base + attribute->offset));
+          /* GE (ctx, glEnableClientState (GL_COLOR_ARRAY)); */
+          GE (ctx, glColorPointer (attribute->n_components,
+                                   attribute->type,
+                                   attribute->stride,
+                                   base + attribute->offset));
 
 #endif
 
@@ -648,7 +626,8 @@ enable_gl_state (CoglDrawFlags flags,
             _cogl_pipeline_progend_glsl_get_normal_attribute (source);
           if (attrib_location != -1)
             {
-              GE( glVertexAttribPointer (attrib_location,
+              GE( ctx,
+                  glVertexAttribPointer (attrib_location,
                                          attribute->n_components,
                                          attribute->type,
                                          TRUE, /* normalize */
@@ -660,10 +639,10 @@ enable_gl_state (CoglDrawFlags flags,
 #else
 
           /* FIXME: go through cogl cache to enable normal array */
-          GE (glEnableClientState (GL_NORMAL_ARRAY));
-          GE (glNormalPointer (attribute->type,
-                               attribute->stride,
-                               base + attribute->offset));
+          GE (ctx, glEnableClientState (GL_NORMAL_ARRAY));
+          GE (ctx, glNormalPointer (attribute->type,
+                                    attribute->stride,
+                                    base + attribute->offset));
 
 #endif
 
@@ -675,7 +654,8 @@ enable_gl_state (CoglDrawFlags flags,
                                              (source, attribute->texture_unit);
           if (attrib_location != -1)
             {
-              GE( glVertexAttribPointer (attrib_location,
+              GE( ctx,
+                  glVertexAttribPointer (attrib_location,
                                          attribute->n_components,
                                          attribute->type,
                                          FALSE, /* normalize */
@@ -685,12 +665,12 @@ enable_gl_state (CoglDrawFlags flags,
             }
 #else
 
-          GE (glClientActiveTexture (GL_TEXTURE0 +
-                                     attribute->texture_unit));
-          GE (glTexCoordPointer (attribute->n_components,
-                                 attribute->type,
-                                 attribute->stride,
-                                 base + attribute->offset));
+          GE (ctx, glClientActiveTexture (GL_TEXTURE0 +
+                                          attribute->texture_unit));
+          GE (ctx, glTexCoordPointer (attribute->n_components,
+                                      attribute->type,
+                                      attribute->stride,
+                                      base + attribute->offset));
           _cogl_bitmask_set (&ctx->temp_bitmask,
                              attribute->texture_unit, TRUE);
 
@@ -703,7 +683,8 @@ enable_gl_state (CoglDrawFlags flags,
             _cogl_pipeline_progend_glsl_get_position_attribute (source);
           if (attrib_location != -1)
             {
-              GE( glVertexAttribPointer (attrib_location,
+              GE( ctx,
+                  glVertexAttribPointer (attrib_location,
                                          attribute->n_components,
                                          attribute->type,
                                          FALSE, /* normalize */
@@ -715,11 +696,11 @@ enable_gl_state (CoglDrawFlags flags,
 #else
 
           enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
-          /* GE (glEnableClientState (GL_VERTEX_ARRAY)); */
-          GE (glVertexPointer (attribute->n_components,
-                               attribute->type,
-                               attribute->stride,
-                               base + attribute->offset));
+          /* GE (ctx, glEnableClientState (GL_VERTEX_ARRAY)); */
+          GE (ctx, glVertexPointer (attribute->n_components,
+                                    attribute->type,
+                                    attribute->stride,
+                                    base + attribute->offset));
 
 #endif
           break;
@@ -729,13 +710,13 @@ enable_gl_state (CoglDrawFlags flags,
             /* FIXME: go through cogl cache to enable generic array. */
             /* FIXME: this is going to end up just using the builtins
                on GLES 2 */
-            GE (glEnableVertexAttribArray (generic_index++));
-            GE (glVertexAttribPointer (generic_index,
-                                       attribute->n_components,
-                                       attribute->type,
-                                       attribute->normalized,
-                                       attribute->stride,
-                                       base + attribute->offset));
+            GE (ctx, glEnableVertexAttribArray (generic_index++));
+            GE (ctx, glVertexAttribPointer (generic_index,
+                                            attribute->n_components,
+                                            attribute->type,
+                                            attribute->normalized,
+                                            attribute->stride,
+                                            base + attribute->offset));
 #endif
           }
           break;
@@ -788,12 +769,12 @@ disable_gl_state (CoglAttribute **attributes,
       switch (attribute->name_id)
         {
         case COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
-          /* GE (glDisableClientState (GL_COLOR_ARRAY)); */
+          /* GE (ctx, glDisableClientState (GL_COLOR_ARRAY)); */
           break;
         case COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
           /* FIXME: go through cogl cache to enable normal array */
 #ifndef HAVE_COGL_GLES2
-          GE (glDisableClientState (GL_NORMAL_ARRAY));
+          GE (ctx, glDisableClientState (GL_NORMAL_ARRAY));
 #endif
           break;
         case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
@@ -804,12 +785,12 @@ disable_gl_state (CoglAttribute **attributes,
              required */
           break;
         case COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
-          /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */
+          /* GE (ctx, glDisableClientState (GL_VERTEX_ARRAY)); */
           break;
         case COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
 #ifdef MAY_HAVE_PROGRAMABLE_GL
           /* FIXME: go through cogl cache to enable generic array */
-          GE (glDisableVertexAttribArray (generic_index++));
+          GE (ctx, glDisableVertexAttribArray (generic_index++));
 #endif
           break;
         default:
@@ -1109,11 +1090,13 @@ _cogl_draw_attributes (CoglVerticesMode mode,
   ValidateLayerState state;
   CoglPipeline *source;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   flush_state (flags, &state);
 
   source = enable_gl_state (flags, attributes, n_attributes, &state);
 
-  GE (glDrawArrays ((GLenum)mode, first_vertex, n_vertices));
+  GE (ctx, glDrawArrays ((GLenum)mode, first_vertex, n_vertices));
 
   /* FIXME: we shouldn't be disabling state after drawing we should
    * just disable the things not needed after enabling state. */
@@ -1223,10 +1206,10 @@ _cogl_draw_indexed_attributes (CoglVerticesMode mode,
       break;
     }
 
-  GE (glDrawElements ((GLenum)mode,
-                      n_vertices,
-                      indices_gl_type,
-                      base + buffer_offset + index_size * first_vertex));
+  GE (ctx, glDrawElements ((GLenum)mode,
+                           n_vertices,
+                           indices_gl_type,
+                           base + buffer_offset + index_size * first_vertex));
 
   _cogl_buffer_unbind (buffer);
 

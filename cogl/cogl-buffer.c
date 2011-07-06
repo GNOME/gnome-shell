@@ -49,21 +49,6 @@
  * GL/GLES compatibility defines for the buffer API:
  */
 
-#if defined (HAVE_COGL_GL)
-
-#define glGenBuffers ctx->glGenBuffers
-#define glBindBuffer ctx->glBindBuffer
-#define glBufferData ctx->glBufferData
-#define glBufferSubData ctx->glBufferSubData
-#define glGetBufferSubData ctx->glGetBufferSubData
-#define glDeleteBuffers ctx->glDeleteBuffers
-
-#endif
-
-/* These two are always accessed through an extension, even on GLES */
-#define glMapBuffer ctx->glMapBuffer
-#define glUnmapBuffer ctx->glUnmapBuffer
-
 #ifndef GL_PIXEL_PACK_BUFFER
 #define GL_PIXEL_PACK_BUFFER 0x88EB
 #endif
@@ -165,16 +150,21 @@ bo_map (CoglBuffer       *buffer,
    * store is created. */
   if (!buffer->store_created || (hints & COGL_BUFFER_MAP_HINT_DISCARD))
     {
-      GE( glBufferData (gl_target,
-                        buffer->size,
-                        NULL,
-                        _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
-                                                       buffer->update_hint)) );
+      GLenum gl_enum;
+
+      gl_enum = _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
+                                               buffer->update_hint);
+
+
+      GE( ctx, glBufferData (gl_target,
+                             buffer->size,
+                             NULL,
+                             gl_enum) );
       buffer->store_created = TRUE;
     }
 
-  GE_RET( data, glMapBuffer (gl_target,
-                             _cogl_buffer_access_to_gl_enum (access)) );
+  GE_RET( data, ctx, glMapBuffer (gl_target,
+                                  _cogl_buffer_access_to_gl_enum (access)) );
   if (data)
     buffer->flags |= COGL_BUFFER_FLAG_MAPPED;
 
@@ -190,7 +180,8 @@ bo_unmap (CoglBuffer *buffer)
 
   _cogl_buffer_bind (buffer, buffer->last_target);
 
-  GE( glUnmapBuffer (convert_bind_target_to_gl_target (buffer->last_target)) );
+  GE( ctx, glUnmapBuffer (convert_bind_target_to_gl_target
+                          (buffer->last_target)) );
   buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED;
 
   _cogl_buffer_unbind (buffer);
@@ -217,15 +208,16 @@ bo_set_data (CoglBuffer   *buffer,
    * store is created. */
   if (!buffer->store_created)
     {
-      GE( glBufferData (gl_target,
-                        buffer->size,
-                        NULL,
-                        _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
-                                                       buffer->update_hint)) );
+      GLenum gl_enum = _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
+                                                      buffer->update_hint);
+      GE( ctx, glBufferData (gl_target,
+                             buffer->size,
+                             NULL,
+                             gl_enum) );
       buffer->store_created = TRUE;
     }
 
-  GE( glBufferSubData (gl_target, offset, size, data) );
+  GE( ctx, glBufferSubData (gl_target, offset, size, data) );
 
   _cogl_buffer_unbind (buffer);
 
@@ -294,7 +286,7 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
       buffer->vtable.unmap = bo_unmap;
       buffer->vtable.set_data = bo_set_data;
 
-      GE( glGenBuffers (1, &buffer->gl_handle) );
+      GE( ctx, glGenBuffers (1, &buffer->gl_handle) );
       buffer->flags |= COGL_BUFFER_FLAG_BUFFER_OBJECT;
     }
 }
@@ -308,7 +300,7 @@ _cogl_buffer_fini (CoglBuffer *buffer)
   g_return_if_fail (buffer->immutable_ref == 0);
 
   if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
-    GE( glDeleteBuffers (1, &buffer->gl_handle) );
+    GE( ctx, glDeleteBuffers (1, &buffer->gl_handle) );
   else
     g_free (buffer->data);
 }
@@ -372,7 +364,7 @@ _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
   if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     {
       GLenum gl_target = convert_bind_target_to_gl_target (buffer->last_target);
-      GE( glBindBuffer (gl_target, buffer->gl_handle) );
+      GE( ctx, glBindBuffer (gl_target, buffer->gl_handle) );
       return NULL;
     }
   else
@@ -392,7 +384,7 @@ _cogl_buffer_unbind (CoglBuffer *buffer)
   if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     {
       GLenum gl_target = convert_bind_target_to_gl_target (buffer->last_target);
-      GE( glBindBuffer (gl_target, 0) );
+      GE( ctx, glBindBuffer (gl_target, 0) );
     }
 
   ctx->current_buffer[buffer->last_target] = NULL;

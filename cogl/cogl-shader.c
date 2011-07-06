@@ -36,22 +36,6 @@
 
 #include <string.h>
 
-#ifdef HAVE_COGL_GL
-#define glCreateShader             ctx->glCreateShader
-#define glGetShaderiv              ctx->glGetShaderiv
-#define glGetShaderInfoLog         ctx->glGetShaderInfoLog
-#define glCompileShader            ctx->glCompileShader
-#define glShaderSource             ctx->glShaderSource
-#define glDeleteShader             ctx->glDeleteShader
-#define glProgramString            ctx->glProgramString
-#define glBindProgram              ctx->glBindProgram
-#define glDeletePrograms           ctx->glDeletePrograms
-#define glGenPrograms              ctx->glGenPrograms
-#define GET_CONTEXT         _COGL_GET_CONTEXT
-#else
-#define GET_CONTEXT(CTXVAR,RETVAL) G_STMT_START { } G_STMT_END
-#endif
-
 static void _cogl_shader_free (CoglShader *shader);
 
 COGL_HANDLE_DEFINE (Shader, shader);
@@ -70,12 +54,12 @@ _cogl_shader_free (CoglShader *shader)
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
     {
       if (shader->gl_handle)
-        GE (glDeletePrograms (1, &shader->gl_handle));
+        GE (ctx, glDeletePrograms (1, &shader->gl_handle));
     }
   else
 #endif
     if (shader->gl_handle)
-      GE (glDeleteShader (shader->gl_handle));
+      GE (ctx, glDeleteShader (shader->gl_handle));
 
 #endif /* HAVE_COGL_GLES */
 
@@ -87,7 +71,7 @@ cogl_create_shader (CoglShaderType type)
 {
   CoglShader *shader;
 
-  GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
   switch (type)
     {
@@ -122,13 +106,13 @@ delete_shader (CoglShader *shader)
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
     {
       if (shader->gl_handle)
-        GE (glDeletePrograms (1, &shader->gl_handle));
+        GE (ctx, glDeletePrograms (1, &shader->gl_handle));
     }
   else
 #endif
     {
       if (shader->gl_handle)
-        GE (glDeleteShader (shader->gl_handle));
+        GE (ctx, glDeleteShader (shader->gl_handle));
     }
 
   shader->gl_handle = 0;
@@ -211,7 +195,7 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
   char *tex_coord_declarations = NULL;
 #endif
 
-  GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
 #ifdef HAVE_COGL_GLES2
   if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
@@ -295,8 +279,8 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
       g_string_free (buf, TRUE);
     }
 
-  GE( glShaderSource (shader_gl_handle, count,
-                      (const char **) strings, lengths) );
+  GE( ctx, glShaderSource (shader_gl_handle, count,
+                           (const char **) strings, lengths) );
 
 #ifdef HAVE_COGL_GLES2
   g_free (tex_coord_declarations);
@@ -325,30 +309,30 @@ _cogl_shader_compile_real (CoglHandle handle,
       if (shader->gl_handle)
         return;
 
-      GE (glGenPrograms (1, &shader->gl_handle));
+      GE (ctx, glGenPrograms (1, &shader->gl_handle));
 
-      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, shader->gl_handle));
+      GE (ctx, glBindProgram (GL_FRAGMENT_PROGRAM_ARB, shader->gl_handle));
 
       if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_SHOW_SOURCE)))
         g_message ("user ARBfp program:\n%s", shader->source);
 
 #ifdef COGL_GL_DEBUG
-      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
         ;
 #endif
-      glProgramString (GL_FRAGMENT_PROGRAM_ARB,
-                       GL_PROGRAM_FORMAT_ASCII_ARB,
-                       strlen (shader->source),
-                       shader->source);
+      ctx->glProgramString (GL_FRAGMENT_PROGRAM_ARB,
+                            GL_PROGRAM_FORMAT_ASCII_ARB,
+                            strlen (shader->source),
+                            shader->source);
 #ifdef COGL_GL_DEBUG
-      gl_error = glGetError ();
+      gl_error = ctx->glGetError ();
       if (gl_error != GL_NO_ERROR)
         {
           g_warning ("%s: GL error (%d): Failed to compile ARBfp:\n%s\n%s",
                      G_STRLOC,
                      gl_error,
                      shader->source,
-                     glGetString (GL_PROGRAM_ERROR_STRING_ARB));
+                     ctx->glGetString (GL_PROGRAM_ERROR_STRING_ARB));
         }
 #endif
     }
@@ -380,7 +364,7 @@ _cogl_shader_compile_real (CoglHandle handle,
           break;
         }
 
-      shader->gl_handle = glCreateShader (gl_type);
+      shader->gl_handle = ctx->glCreateShader (gl_type);
 
       _cogl_shader_set_source_with_boilerplate (shader->gl_handle,
                                                 gl_type,
@@ -389,7 +373,7 @@ _cogl_shader_compile_real (CoglHandle handle,
                                                 (const char **) &shader->source,
                                                 NULL);
 
-      GE (glCompileShader (shader->gl_handle));
+      GE (ctx, glCompileShader (shader->gl_handle));
 
 #ifdef HAVE_COGL_GLES2
       shader->n_tex_coord_attribs = n_tex_coord_attribs;
@@ -420,7 +404,7 @@ cogl_shader_get_info_log (CoglHandle handle)
 
   CoglShader *shader;
 
-  GET_CONTEXT (ctx, NULL);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   if (!cogl_is_shader (handle))
     return NULL;
@@ -455,7 +439,7 @@ cogl_shader_get_info_log (CoglHandle handle)
       if (!shader->gl_handle)
         _cogl_shader_compile_real (handle, 4);
 
-      glGetShaderInfoLog (shader->gl_handle, 511, &len, buffer);
+      ctx->glGetShaderInfoLog (shader->gl_handle, 511, &len, buffer);
       buffer[len] = '\0';
       return g_strdup (buffer);
     }
@@ -468,7 +452,7 @@ cogl_shader_get_type (CoglHandle  handle)
 {
   CoglShader *shader;
 
-  GET_CONTEXT (ctx, COGL_SHADER_TYPE_VERTEX);
+  _COGL_GET_CONTEXT (ctx, COGL_SHADER_TYPE_VERTEX);
 
   if (!cogl_is_shader (handle))
     {
@@ -492,7 +476,7 @@ cogl_shader_is_compiled (CoglHandle handle)
   GLint status;
   CoglShader *shader;
 
-  GET_CONTEXT (ctx, FALSE);
+  _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (!cogl_is_shader (handle))
     return FALSE;
@@ -523,7 +507,7 @@ cogl_shader_is_compiled (CoglHandle handle)
       if (!shader->gl_handle)
         _cogl_shader_compile_real (handle, 4);
 
-      GE (glGetShaderiv (shader->gl_handle, GL_COMPILE_STATUS, &status));
+      GE (ctx, glGetShaderiv (shader->gl_handle, GL_COMPILE_STATUS, &status));
       if (status == GL_TRUE)
         return TRUE;
       else

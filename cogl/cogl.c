@@ -47,10 +47,6 @@
 #include "cogl-attribute-private.h"
 #include "cogl-framebuffer-private.h"
 
-#ifdef HAVE_COGL_GL
-#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
-#endif
-
 #ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
 static const struct {
@@ -154,14 +150,14 @@ toggle_flag (CoglContext *ctx,
     {
       if (!(ctx->enable_flags & flag))
 	{
-	  GE( glEnable (gl_flag) );
+	  GE( ctx, glEnable (gl_flag) );
 	  ctx->enable_flags |= flag;
 	  return TRUE;
 	}
     }
   else if (ctx->enable_flags & flag)
     {
-      GE( glDisable (gl_flag) );
+      GE( ctx, glDisable (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
 
@@ -191,14 +187,14 @@ toggle_client_flag (CoglContext *ctx,
     {
       if (!(ctx->enable_flags & flag))
 	{
-	  GE( glEnableClientState (gl_flag) );
+	  GE( ctx, glEnableClientState (gl_flag) );
 	  ctx->enable_flags |= flag;
 	  return TRUE;
 	}
     }
   else if (ctx->enable_flags & flag)
     {
-      GE( glDisableClientState (gl_flag) );
+      GE( ctx, glDisableClientState (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
 
@@ -307,9 +303,9 @@ _cogl_flush_face_winding (void)
     {
 
       if (winding == COGL_FRONT_WINDING_CLOCKWISE)
-        GE (glFrontFace (GL_CW));
+        GE (ctx, glFrontFace (GL_CW));
       else
-        GE (glFrontFace (GL_CCW));
+        GE (ctx, glFrontFace (GL_CCW));
       ctx->flushed_front_winding = winding;
     }
 }
@@ -574,9 +570,9 @@ _cogl_read_pixels_with_rowstride (int x,
 
       _cogl_texture_driver_prep_gl_for_pixels_download (4 * width, 4);
 
-      GE( glReadPixels (x, y, width, height,
-                        GL_RGBA, GL_UNSIGNED_BYTE,
-                        tmp_data) );
+      GE( ctx, glReadPixels (x, y, width, height,
+                             GL_RGBA, GL_UNSIGNED_BYTE,
+                             tmp_data) );
 
       /* CoglBitmap doesn't currently have a way to convert without
          allocating its own buffer so we have to copy the data
@@ -604,7 +600,7 @@ _cogl_read_pixels_with_rowstride (int x,
     {
       _cogl_texture_driver_prep_gl_for_pixels_download (rowstride, bpp);
 
-      GE( glReadPixels (x, y, width, height, gl_format, gl_type, pixels) );
+      GE( ctx, glReadPixels (x, y, width, height, gl_format, gl_type, pixels) );
 
       /* Convert to the premult format specified by the caller
          in-place. This will do nothing if the premult status is already

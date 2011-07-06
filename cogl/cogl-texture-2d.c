@@ -136,6 +136,8 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* Only set the wrap mode if it's different from the current value
      to avoid too many GL calls. Texture 2D doesn't make use of the r
      coordinate so we can ignore its wrap mode */
@@ -145,8 +147,12 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
       _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                        tex_2d->gl_texture,
                                        tex_2d->is_foreign);
-      GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode_s) );
-      GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode_t) );
+      GE( ctx, glTexParameteri (GL_TEXTURE_2D,
+                                GL_TEXTURE_WRAP_S,
+                                wrap_mode_s) );
+      GE( ctx, glTexParameteri (GL_TEXTURE_2D,
+                                GL_TEXTURE_WRAP_T,
+                                wrap_mode_t) );
 
       tex_2d->wrap_mode_s = wrap_mode_s;
       tex_2d->wrap_mode_t = wrap_mode_t;
@@ -262,8 +268,8 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
-  GE( glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
-                    width, height, 0, gl_format, gl_type, NULL) );
+  GE( ctx, glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
+                         width, height, 0, gl_format, gl_type, NULL) );
 
   return _cogl_texture_2d_handle_new (tex_2d);
 }
@@ -405,15 +411,15 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
     return COGL_INVALID_HANDLE;
 
   /* Make sure it is a valid GL texture object */
-  if (!glIsTexture (gl_handle))
+  if (!ctx->glIsTexture (gl_handle))
     return COGL_INVALID_HANDLE;
 
   /* Make sure binding succeeds */
-  while ((gl_error = glGetError ()) != GL_NO_ERROR)
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
     ;
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D, gl_handle, TRUE);
-  if (glGetError () != GL_NO_ERROR)
+  if (ctx->glGetError () != GL_NO_ERROR)
     return COGL_INVALID_HANDLE;
 
   /* Obtain texture parameters
@@ -421,16 +427,16 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
 #if HAVE_COGL_GL
 
-  GE( glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                                GL_TEXTURE_COMPRESSED,
-                                &gl_compressed) );
+  GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
+                                     GL_TEXTURE_COMPRESSED,
+                                     &gl_compressed) );
 
   {
     GLint val;
 
-    GE( glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                                  GL_TEXTURE_INTERNAL_FORMAT,
-                                  &val) );
+    GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
+                                       GL_TEXTURE_INTERNAL_FORMAT,
+                                       &val) );
 
     gl_int_format = val;
   }
@@ -529,10 +535,10 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                                    tex_2d->gl_texture,
                                    FALSE);
 
-  while ((gl_error = glGetError ()) != GL_NO_ERROR)
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
     ;
   ctx->glEGLImageTargetTexture2D (GL_TEXTURE_2D, image);
-  if (glGetError () != GL_NO_ERROR)
+  if (ctx->glGetError () != GL_NO_ERROR)
     {
       g_set_error (error,
                    COGL_TEXTURE_ERROR,
@@ -630,6 +636,8 @@ _cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
 {
   CoglTexture2D *tex_2d;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   g_return_if_fail (cogl_is_texture_2d (handle));
 
   tex_2d = COGL_TEXTURE_2D (handle);
@@ -644,11 +652,11 @@ _cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
 
-  glCopyTexSubImage2D (GL_TEXTURE_2D,
-                       0, /* level */
-                       dst_x, dst_y,
-                       src_x, src_y,
-                       width, height);
+  ctx->glCopyTexSubImage2D (GL_TEXTURE_2D,
+                            0, /* level */
+                            dst_x, dst_y,
+                            src_x, src_y,
+                            width, height);
 
   tex_2d->mipmaps_dirty = TRUE;
 }
@@ -721,6 +729,8 @@ _cogl_texture_2d_set_filters (CoglTexture *tex,
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (min_filter == tex_2d->min_filter
       && mag_filter == tex_2d->mag_filter)
     return;
@@ -733,8 +743,8 @@ _cogl_texture_2d_set_filters (CoglTexture *tex,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
-  GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter) );
-  GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter) );
+  GE( ctx, glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter) );
+  GE( ctx, glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter) );
 }
 
 static void
@@ -760,16 +770,16 @@ _cogl_texture_2d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
 #ifndef HAVE_COGL_GLES2
       else
         {
-          GE( glTexParameteri (GL_TEXTURE_2D,
-                               GL_GENERATE_MIPMAP,
-                               GL_TRUE) );
-          GE( glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, 1, 1,
-                               tex_2d->first_pixel.gl_format,
-                               tex_2d->first_pixel.gl_type,
-                               tex_2d->first_pixel.data) );
-          GE( glTexParameteri (GL_TEXTURE_2D,
-                               GL_GENERATE_MIPMAP,
-                               GL_FALSE) );
+          GE( ctx, glTexParameteri (GL_TEXTURE_2D,
+                                    GL_GENERATE_MIPMAP,
+                                    GL_TRUE) );
+          GE( ctx, glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, 1, 1,
+                                    tex_2d->first_pixel.gl_format,
+                                    tex_2d->first_pixel.gl_type,
+                                    tex_2d->first_pixel.data) );
+          GE( ctx, glTexParameteri (GL_TEXTURE_2D,
+                                    GL_GENERATE_MIPMAP,
+                                    GL_FALSE) );
         }
 #endif
 

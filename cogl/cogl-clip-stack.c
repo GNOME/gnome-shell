@@ -117,9 +117,9 @@ set_clip_plane (GLint plane_num,
 #if defined (HAVE_COGL_GLES2)
   g_assert_not_reached ();
 #elif defined (HAVE_COGL_GLES)
-  GE( glClipPlanef (plane_num, plane) );
+  GE( ctx, glClipPlanef (plane_num, plane) );
 #else
-  GE( glClipPlane (plane_num, plane) );
+  GE( ctx, glClipPlane (plane_num, plane) );
 #endif
 
   _cogl_matrix_stack_pop (modelview_stack);
@@ -213,15 +213,15 @@ add_stencil_clip_rectangle (float x_1,
 
   if (first)
     {
-      GE( glEnable (GL_STENCIL_TEST) );
+      GE( ctx, glEnable (GL_STENCIL_TEST) );
 
       /* Initially disallow everything */
-      GE( glClearStencil (0) );
-      GE( glClear (GL_STENCIL_BUFFER_BIT) );
+      GE( ctx, glClearStencil (0) );
+      GE( ctx, glClear (GL_STENCIL_BUFFER_BIT) );
 
       /* Punch out a hole to allow the rectangle */
-      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
-      GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
+      GE( ctx, glStencilFunc (GL_NEVER, 0x1, 0x1) );
+      GE( ctx, glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
 
       _cogl_rectangle_immediate (x_1, y_1, x_2, y_2);
     }
@@ -229,14 +229,14 @@ add_stencil_clip_rectangle (float x_1,
     {
       /* Add one to every pixel of the stencil buffer in the
 	 rectangle */
-      GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
-      GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+      GE( ctx, glStencilFunc (GL_NEVER, 0x1, 0x3) );
+      GE( ctx, glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
       _cogl_rectangle_immediate (x_1, y_1, x_2, y_2);
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
 	 rectangle are set will be valid */
-      GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
+      GE( ctx, glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
 
       _cogl_matrix_stack_push (projection_stack);
       _cogl_matrix_stack_load_identity (projection_stack);
@@ -256,8 +256,8 @@ add_stencil_clip_rectangle (float x_1,
     }
 
   /* Restore the stencil mode */
-  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
-  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+  GE( ctx, glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+  GE( ctx, glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 
   /* restore the original source pipeline */
   cogl_pop_source ();
@@ -266,25 +266,31 @@ add_stencil_clip_rectangle (float x_1,
 static void
 disable_stencil_buffer (void)
 {
-  GE( glDisable (GL_STENCIL_TEST) );
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( ctx, glDisable (GL_STENCIL_TEST) );
 }
 
 static void
 enable_clip_planes (void)
 {
-  GE( glEnable (GL_CLIP_PLANE0) );
-  GE( glEnable (GL_CLIP_PLANE1) );
-  GE( glEnable (GL_CLIP_PLANE2) );
-  GE( glEnable (GL_CLIP_PLANE3) );
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( ctx, glEnable (GL_CLIP_PLANE0) );
+  GE( ctx, glEnable (GL_CLIP_PLANE1) );
+  GE( ctx, glEnable (GL_CLIP_PLANE2) );
+  GE( ctx, glEnable (GL_CLIP_PLANE3) );
 }
 
 static void
 disable_clip_planes (void)
 {
-  GE( glDisable (GL_CLIP_PLANE3) );
-  GE( glDisable (GL_CLIP_PLANE2) );
-  GE( glDisable (GL_CLIP_PLANE1) );
-  GE( glDisable (GL_CLIP_PLANE0) );
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( ctx, glDisable (GL_CLIP_PLANE3) );
+  GE( ctx, glDisable (GL_CLIP_PLANE2) );
+  GE( ctx, glDisable (GL_CLIP_PLANE1) );
+  GE( ctx, glDisable (GL_CLIP_PLANE0) );
 }
 
 static gpointer
@@ -612,7 +618,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
       COGL_NOTE (CLIPPING, "Flushed empty clip stack");
 
       ctx->current_clip_stack_uses_stencil = FALSE;
-      GE (glDisable (GL_SCISSOR_TEST));
+      GE (ctx, glDisable (GL_SCISSOR_TEST));
       return;
     }
 
@@ -654,10 +660,10 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
              scissor_x0, scissor_y0,
              scissor_x1, scissor_y1);
 
-  GE (glEnable (GL_SCISSOR_TEST));
-  GE (glScissor (scissor_x0, scissor_y_start,
-                 scissor_x1 - scissor_x0,
-                 scissor_y1 - scissor_y0));
+  GE (ctx, glEnable (GL_SCISSOR_TEST));
+  GE (ctx, glScissor (scissor_x0, scissor_y_start,
+                      scissor_x1 - scissor_x0,
+                      scissor_y1 - scissor_y0));
 
   /* Add all of the entries. This will end up adding them in the
      reverse order that they were specified but as all of the clips

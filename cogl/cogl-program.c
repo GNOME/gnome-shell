@@ -48,32 +48,6 @@ COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (program);
    an array and then flushed whenever the material backend requests
    it. */
 
-#ifndef HAVE_COGL_GLES2
-
-#define glGetUniformLocation       ctx->glGetUniformLocation
-#define glUniform1f                ctx->glUniform1f
-#define glUniform2f                ctx->glUniform2f
-#define glUniform3f                ctx->glUniform3f
-#define glUniform4f                ctx->glUniform4f
-#define glUniform1fv               ctx->glUniform1fv
-#define glUniform2fv               ctx->glUniform2fv
-#define glUniform3fv               ctx->glUniform3fv
-#define glUniform4fv               ctx->glUniform4fv
-#define glUniform1i                ctx->glUniform1i
-#define glUniform2i                ctx->glUniform2i
-#define glUniform3i                ctx->glUniform3i
-#define glUniform4i                ctx->glUniform4i
-#define glUniform1iv               ctx->glUniform1iv
-#define glUniform2iv               ctx->glUniform2iv
-#define glUniform3iv               ctx->glUniform3iv
-#define glUniform4iv               ctx->glUniform4iv
-#define glUniformMatrix2fv         ctx->glUniformMatrix2fv
-#define glUniformMatrix3fv         ctx->glUniformMatrix3fv
-#define glUniformMatrix4fv         ctx->glUniformMatrix4fv
-#define glProgramLocalParameter4fv ctx->glProgramLocalParameter4fv
-
-#endif /* HAVE_COGL_GLES2 */
-
 static void
 _cogl_program_free (CoglProgram *program)
 {
@@ -448,10 +422,10 @@ _cogl_program_flush_uniform_glsl (GLint location,
 
         switch (value->size)
           {
-          case 1: glUniform1iv (location, value->count, ptr); break;
-          case 2: glUniform2iv (location, value->count, ptr); break;
-          case 3: glUniform3iv (location, value->count, ptr); break;
-          case 4: glUniform4iv (location, value->count, ptr); break;
+          case 1: ctx->glUniform1iv (location, value->count, ptr); break;
+          case 2: ctx->glUniform2iv (location, value->count, ptr); break;
+          case 3: ctx->glUniform3iv (location, value->count, ptr); break;
+          case 4: ctx->glUniform4iv (location, value->count, ptr); break;
           }
       }
       break;
@@ -467,10 +441,10 @@ _cogl_program_flush_uniform_glsl (GLint location,
 
         switch (value->size)
           {
-          case 1: glUniform1fv (location, value->count, ptr); break;
-          case 2: glUniform2fv (location, value->count, ptr); break;
-          case 3: glUniform3fv (location, value->count, ptr); break;
-          case 4: glUniform4fv (location, value->count, ptr); break;
+          case 1: ctx->glUniform1fv (location, value->count, ptr); break;
+          case 2: ctx->glUniform2fv (location, value->count, ptr); break;
+          case 3: ctx->glUniform3fv (location, value->count, ptr); break;
+          case 4: ctx->glUniform4fv (location, value->count, ptr); break;
           }
       }
       break;
@@ -487,13 +461,16 @@ _cogl_program_flush_uniform_glsl (GLint location,
         switch (value->size)
           {
           case 2:
-            glUniformMatrix2fv (location, value->count, value->transpose, ptr);
+            ctx->glUniformMatrix2fv (location, value->count,
+                                     value->transpose, ptr);
             break;
           case 3:
-            glUniformMatrix3fv (location, value->count, value->transpose, ptr);
+            ctx->glUniformMatrix3fv (location, value->count,
+                                     value->transpose, ptr);
             break;
           case 4:
-            glUniformMatrix4fv (location, value->count, value->transpose, ptr);
+            ctx->glUniformMatrix4fv (location, value->count,
+                                     value->transpose, ptr);
             break;
           }
       }
@@ -517,8 +494,8 @@ _cogl_program_flush_uniform_arbfp (GLint location,
       g_return_if_fail (value->size == 4);
       g_return_if_fail (value->count == 1);
 
-      GE( glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB, location,
-                                      value->v.float_value) );
+      GE( ctx, glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB, location,
+                                           value->v.float_value) );
     }
 }
 
@@ -552,7 +529,7 @@ _cogl_program_flush_uniforms (CoglProgram *program,
               if (_cogl_program_get_language (program) ==
                   COGL_SHADER_LANGUAGE_GLSL)
                 uniform->location =
-                  glGetUniformLocation (gl_program, uniform->name);
+                  ctx->glGetUniformLocation (gl_program, uniform->name);
               else
                 uniform->location =
                   get_local_param_index (uniform->name);

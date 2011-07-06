@@ -42,21 +42,7 @@
 #include "cogl-pipeline-fragend-glsl-private.h"
 #include "cogl-pipeline-vertend-glsl-private.h"
 
-#ifndef HAVE_COGL_GLES2
-
-#define glCreateProgram      ctx->glCreateProgram
-#define glAttachShader       ctx->glAttachShader
-#define glUseProgram         ctx->glUseProgram
-#define glLinkProgram        ctx->glLinkProgram
-#define glDeleteProgram      ctx->glDeleteProgram
-#define glGetProgramInfoLog  ctx->glGetProgramInfoLog
-#define glGetProgramiv       ctx->glGetProgramiv
-#define glGetUniformLocation ctx->glGetUniformLocation
-#define glUniform1i          ctx->glUniform1i
-#define glUniform1f          ctx->glUniform1f
-#define glUniform4fv         ctx->glUniform4fv
-
-#else
+#ifdef HAVE_COGL_GLES2
 
 /* These are used to generalise updating some uniforms that are
    required when building for GLES2 */
@@ -178,12 +164,14 @@ _cogl_pipeline_progend_glsl_get_position_attribute (CoglPipeline *pipeline)
 {
   CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
 
+  _COGL_GET_CONTEXT (ctx, -1);
+
   g_return_val_if_fail (priv != NULL, -1);
   g_return_val_if_fail (priv->program != 0, -1);
 
   if (priv->position_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
     GE_RET( priv->position_attribute_location,
-            glGetAttribLocation (priv->program, "cogl_position_in") );
+            ctx, glGetAttribLocation (priv->program, "cogl_position_in") );
 
   return priv->position_attribute_location;
 }
@@ -193,12 +181,14 @@ _cogl_pipeline_progend_glsl_get_color_attribute (CoglPipeline *pipeline)
 {
   CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
 
+  _COGL_GET_CONTEXT (ctx, -1);
+
   g_return_val_if_fail (priv != NULL, -1);
   g_return_val_if_fail (priv->program != 0, -1);
 
   if (priv->color_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
     GE_RET( priv->color_attribute_location,
-            glGetAttribLocation (priv->program, "cogl_color_in") );
+            ctx, glGetAttribLocation (priv->program, "cogl_color_in") );
 
   return priv->color_attribute_location;
 }
@@ -208,12 +198,14 @@ _cogl_pipeline_progend_glsl_get_normal_attribute (CoglPipeline *pipeline)
 {
   CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
 
+  _COGL_GET_CONTEXT (ctx, -1);
+
   g_return_val_if_fail (priv != NULL, -1);
   g_return_val_if_fail (priv->program != 0, -1);
 
   if (priv->normal_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
     GE_RET( priv->normal_attribute_location,
-            glGetAttribLocation (priv->program, "cogl_normal_in") );
+            ctx, glGetAttribLocation (priv->program, "cogl_normal_in") );
 
   return priv->normal_attribute_location;
 }
@@ -224,6 +216,8 @@ _cogl_pipeline_progend_glsl_get_tex_coord_attribute (CoglPipeline *pipeline,
 {
   CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
 
+  _COGL_GET_CONTEXT (ctx, -1);
+
   g_return_val_if_fail (priv != NULL, -1);
   g_return_val_if_fail (priv->program != 0, -1);
 
@@ -231,7 +225,8 @@ _cogl_pipeline_progend_glsl_get_tex_coord_attribute (CoglPipeline *pipeline,
     {
       if (priv->tex_coord0_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
         GE_RET( priv->tex_coord0_attribute_location,
-                glGetAttribLocation (priv->program, "cogl_tex_coord0_in") );
+                ctx, glGetAttribLocation (priv->program,
+                                          "cogl_tex_coord0_in") );
 
       return priv->tex_coord0_attribute_location;
     }
@@ -256,7 +251,7 @@ _cogl_pipeline_progend_glsl_get_tex_coord_attribute (CoglPipeline *pipeline,
 
       if (locations[unit - 1] == ATTRIBUTE_LOCATION_UNKNOWN)
         GE_RET( locations[unit - 1],
-                glGetAttribLocation (priv->program, name) );
+                ctx, glGetAttribLocation (priv->program, name) );
 
       g_free (name);
 
@@ -311,7 +306,7 @@ destroy_glsl_priv (void *user_data)
 #endif
 
       if (priv->program)
-        GE( glDeleteProgram (priv->program) );
+        GE( ctx, glDeleteProgram (priv->program) );
 
       g_free (priv->unit_state);
 
@@ -344,9 +339,9 @@ link_program (GLint gl_program)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  GE( glLinkProgram (gl_program) );
+  GE( ctx, glLinkProgram (gl_program) );
 
-  GE( glGetProgramiv (gl_program, GL_LINK_STATUS, &link_status) );
+  GE( ctx, glGetProgramiv (gl_program, GL_LINK_STATUS, &link_status) );
 
   if (!link_status)
     {
@@ -354,12 +349,12 @@ link_program (GLint gl_program)
       GLsizei out_log_length;
       char *log;
 
-      GE( glGetProgramiv (gl_program, GL_INFO_LOG_LENGTH, &log_length) );
+      GE( ctx, glGetProgramiv (gl_program, GL_INFO_LOG_LENGTH, &log_length) );
 
       log = g_malloc (log_length);
 
-      GE( glGetProgramInfoLog (gl_program, log_length,
-                               &out_log_length, log) );
+      GE( ctx, glGetProgramInfoLog (gl_program, log_length,
+                                    &out_log_length, log) );
 
       g_warning ("Failed to link GLSL program:\n%.*s\n",
                  log_length, log);
@@ -395,23 +390,23 @@ get_uniform_cb (CoglPipeline *pipeline,
                           "_cogl_sampler_%i", state->unit);
 
   GE_RET( uniform_location,
-          glGetUniformLocation (state->gl_program,
-                                ctx->codegen_source_buffer->str) );
+          ctx, glGetUniformLocation (state->gl_program,
+                                     ctx->codegen_source_buffer->str) );
 
   /* We can set the uniform immediately because the samplers are the
      unit index not the texture object number so it will never
      change. Unfortunately GL won't let us use a constant instead of a
      uniform */
   if (uniform_location != -1)
-    GE( glUniform1i (uniform_location, state->unit) );
+    GE( ctx, glUniform1i (uniform_location, state->unit) );
 
   g_string_set_size (ctx->codegen_source_buffer, 0);
   g_string_append_printf (ctx->codegen_source_buffer,
                           "_cogl_layer_constant_%i", state->unit);
 
   GE_RET( uniform_location,
-          glGetUniformLocation (state->gl_program,
-                                ctx->codegen_source_buffer->str) );
+          ctx, glGetUniformLocation (state->gl_program,
+                                     ctx->codegen_source_buffer->str) );
 
   unit_state->combine_constant_uniform = uniform_location;
 
@@ -422,8 +417,8 @@ get_uniform_cb (CoglPipeline *pipeline,
                           "cogl_texture_matrix[%i]", state->unit);
 
   GE_RET( uniform_location,
-          glGetUniformLocation (state->gl_program,
-                                ctx->codegen_source_buffer->str) );
+          ctx, glGetUniformLocation (state->gl_program,
+                                     ctx->codegen_source_buffer->str) );
 
   unit_state->texture_matrix_uniform = uniform_location;
 
@@ -452,8 +447,8 @@ update_constants_cb (CoglPipeline *pipeline,
       _cogl_pipeline_get_layer_combine_constant (pipeline,
                                                  layer_index,
                                                  constant);
-      GE (glUniform4fv (unit_state->combine_constant_uniform,
-                        1, constant));
+      GE (ctx, glUniform4fv (unit_state->combine_constant_uniform,
+                             1, constant));
       unit_state->dirty_combine_constant = FALSE;
     }
 
@@ -467,8 +462,8 @@ update_constants_cb (CoglPipeline *pipeline,
 
       matrix = _cogl_pipeline_get_layer_matrix (pipeline, layer_index);
       array = cogl_matrix_get_array (matrix);
-      GE (glUniformMatrix4fv (unit_state->texture_matrix_uniform,
-                              1, FALSE, array));
+      GE (ctx, glUniformMatrix4fv (unit_state->texture_matrix_uniform,
+                                   1, FALSE, array));
       unit_state->dirty_texture_matrix = FALSE;
     }
 
@@ -575,7 +570,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       (user_program->age != priv->user_program_age ||
        n_tex_coord_attribs > priv->n_tex_coord_attribs))
     {
-      GE( glDeleteProgram (priv->program) );
+      GE( ctx, glDeleteProgram (priv->program) );
       priv->program = 0;
     }
 
@@ -584,7 +579,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       GLuint backend_shader;
       GSList *l;
 
-      GE_RET( priv->program, glCreateProgram () );
+      GE_RET( priv->program, ctx, glCreateProgram () );
 
       /* Attach all of the shader from the user program */
       if (user_program)
@@ -613,8 +608,8 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 
               g_assert (shader->language == COGL_SHADER_LANGUAGE_GLSL);
 
-              GE( glAttachShader (priv->program,
-                                  shader->gl_handle) );
+              GE( ctx, glAttachShader (priv->program,
+                                       shader->gl_handle) );
             }
 
           priv->user_program_age = user_program->age;
@@ -623,10 +618,10 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       /* Attach any shaders from the GLSL backends */
       if (pipeline->fragend == COGL_PIPELINE_FRAGEND_GLSL &&
           (backend_shader = _cogl_pipeline_fragend_glsl_get_shader (pipeline)))
-        GE( glAttachShader (priv->program, backend_shader) );
+        GE( ctx, glAttachShader (priv->program, backend_shader) );
       if (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL &&
           (backend_shader = _cogl_pipeline_vertend_glsl_get_shader (pipeline)))
-        GE( glAttachShader (priv->program, backend_shader) );
+        GE( ctx, glAttachShader (priv->program, backend_shader) );
 
       link_program (priv->program);
 
@@ -669,20 +664,20 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 
       for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
         GE_RET( priv->builtin_uniform_locations[i],
-                glGetUniformLocation (gl_program,
-                                      builtin_uniforms[i].uniform_name) );
+                ctx, glGetUniformLocation (gl_program,
+                                           builtin_uniforms[i].uniform_name) );
 
       GE_RET( priv->modelview_uniform,
-              glGetUniformLocation (gl_program,
-                                    "cogl_modelview_matrix") );
+              ctx, glGetUniformLocation (gl_program,
+                                         "cogl_modelview_matrix") );
 
       GE_RET( priv->projection_uniform,
-              glGetUniformLocation (gl_program,
-                                    "cogl_projection_matrix") );
+              ctx, glGetUniformLocation (gl_program,
+                                         "cogl_projection_matrix") );
 
       GE_RET( priv->mvp_uniform,
-              glGetUniformLocation (gl_program,
-                                    "cogl_modelview_projection_matrix") );
+              ctx, glGetUniformLocation (gl_program,
+                                         "cogl_modelview_projection_matrix") );
     }
   if (program_changed ||
       priv->last_used_for_pipeline != pipeline)
@@ -775,8 +770,10 @@ flush_modelview_cb (gboolean is_identity,
 {
   CoglPipelineProgendPrivate *priv = user_data;
 
-  GE( glUniformMatrix4fv (priv->modelview_uniform, 1, FALSE,
-                          cogl_matrix_get_array (matrix)) );
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( ctx, glUniformMatrix4fv (priv->modelview_uniform, 1, FALSE,
+                               cogl_matrix_get_array (matrix)) );
 }
 
 static void
@@ -786,8 +783,10 @@ flush_projection_cb (gboolean is_identity,
 {
   CoglPipelineProgendPrivate *priv = user_data;
 
-  GE( glUniformMatrix4fv (priv->projection_uniform, 1, FALSE,
-                          cogl_matrix_get_array (matrix)) );
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( ctx, glUniformMatrix4fv (priv->projection_uniform, 1, FALSE,
+                               cogl_matrix_get_array (matrix)) );
 }
 
 typedef struct
@@ -804,19 +803,23 @@ flush_combined_step_two_cb (gboolean is_identity,
   FlushCombinedData *data = user_data;
   CoglMatrix mvp_matrix;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* If the modelview is the identity then we can bypass the matrix
      multiplication */
   if (is_identity)
-    GE( glUniformMatrix4fv (data->priv->mvp_uniform, 1, FALSE,
-                            cogl_matrix_get_array (data->projection_matrix)) );
+    {
+      const float *array = cogl_matrix_get_array (data->projection_matrix);
+      GE( ctx, glUniformMatrix4fv (data->priv->mvp_uniform, 1, FALSE, array ) );
+    }
   else
     {
       cogl_matrix_multiply (&mvp_matrix,
                             data->projection_matrix,
                             matrix);
 
-      GE( glUniformMatrix4fv (data->priv->mvp_uniform, 1, FALSE,
-                              cogl_matrix_get_array (&mvp_matrix)) );
+      GE( ctx, glUniformMatrix4fv (data->priv->mvp_uniform, 1, FALSE,
+                                   cogl_matrix_get_array (&mvp_matrix)) );
     }
 }
 
@@ -927,8 +930,10 @@ update_float_uniform (CoglPipeline *pipeline,
   float (* float_getter_func) (CoglPipeline *) = getter_func;
   float value;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   value = float_getter_func (pipeline);
-  GE( glUniform1f (uniform_location, value) );
+  GE( ctx, glUniform1f (uniform_location, value) );
 }
 
 #endif

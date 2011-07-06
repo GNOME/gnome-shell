@@ -62,7 +62,7 @@ _cogl_disable_texture_unit (int unit_index)
   if (unit->enabled_gl_target)
     {
       _cogl_set_active_texture_unit (unit_index);
-      GE (glDisable (unit->enabled_gl_target));
+      GE (ctx, glDisable (unit->enabled_gl_target));
       unit->enabled_gl_target = 0;
     }
 }
@@ -77,8 +77,8 @@ get_max_texture_units (void)
   if (ctx->max_texture_units == -1)
     {
       ctx->max_texture_units = 1;
-      GE (glGetIntegerv (GL_MAX_TEXTURE_UNITS,
-                         &ctx->max_texture_units));
+      GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_UNITS,
+                              &ctx->max_texture_units));
     }
 
   return ctx->max_texture_units;
@@ -162,12 +162,12 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
         {
           /* Disable the previous target if it's still enabled */
           if (unit->enabled_gl_target)
-            GE (glDisable (unit->enabled_gl_target));
+            GE (ctx, glDisable (unit->enabled_gl_target));
 
           /* Enable the new target */
           if (!G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
             {
-              GE (glEnable (gl_target));
+              GE (ctx, glEnable (gl_target));
               unit->enabled_gl_target = gl_target;
             }
         }
@@ -183,7 +183,7 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
           unit->enabled_gl_target == 0)
         {
           _cogl_set_active_texture_unit (unit_index);
-          GE (glEnable (unit->gl_target));
+          GE (ctx, glEnable (unit->gl_target));
           unit->enabled_gl_target = unit->gl_target;
         }
     }
@@ -195,15 +195,15 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
                                             COGL_PIPELINE_LAYER_STATE_COMBINE);
       CoglPipelineLayerBigState *big_state = authority->big_state;
 
-      GE (glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE));
+      GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE));
 
       /* Set the combiner functions... */
-      GE (glTexEnvi (GL_TEXTURE_ENV,
-                     GL_COMBINE_RGB,
-                     big_state->texture_combine_rgb_func));
-      GE (glTexEnvi (GL_TEXTURE_ENV,
-                     GL_COMBINE_ALPHA,
-                     big_state->texture_combine_alpha_func));
+      GE (ctx, glTexEnvi (GL_TEXTURE_ENV,
+                          GL_COMBINE_RGB,
+                          big_state->texture_combine_rgb_func));
+      GE (ctx, glTexEnvi (GL_TEXTURE_ENV,
+                          GL_COMBINE_ALPHA,
+                          big_state->texture_combine_alpha_func));
 
       /*
        * Setup the function arguments...
@@ -213,46 +213,46 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
       n_rgb_func_args =
         _cogl_get_n_args_for_combine_func (big_state->texture_combine_rgb_func);
 
-      GE (glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB,
-                     big_state->texture_combine_rgb_src[0]));
-      GE (glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,
-                     big_state->texture_combine_rgb_op[0]));
+      GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB,
+                          big_state->texture_combine_rgb_src[0]));
+      GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,
+                          big_state->texture_combine_rgb_op[0]));
       if (n_rgb_func_args > 1)
         {
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_RGB,
-                         big_state->texture_combine_rgb_src[1]));
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,
-                         big_state->texture_combine_rgb_op[1]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_RGB,
+                              big_state->texture_combine_rgb_src[1]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,
+                              big_state->texture_combine_rgb_op[1]));
         }
       if (n_rgb_func_args > 2)
         {
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_SRC2_RGB,
-                         big_state->texture_combine_rgb_src[2]));
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND2_RGB,
-                         big_state->texture_combine_rgb_op[2]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC2_RGB,
+                              big_state->texture_combine_rgb_src[2]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND2_RGB,
+                              big_state->texture_combine_rgb_op[2]));
         }
 
       /* For the Alpha component */
       n_alpha_func_args =
         _cogl_get_n_args_for_combine_func (big_state->texture_combine_alpha_func);
 
-      GE (glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA,
-                     big_state->texture_combine_alpha_src[0]));
-      GE (glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA,
-                     big_state->texture_combine_alpha_op[0]));
+      GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA,
+                          big_state->texture_combine_alpha_src[0]));
+      GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA,
+                          big_state->texture_combine_alpha_op[0]));
       if (n_alpha_func_args > 1)
         {
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA,
-                         big_state->texture_combine_alpha_src[1]));
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA,
-                         big_state->texture_combine_alpha_op[1]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA,
+                              big_state->texture_combine_alpha_src[1]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA,
+                              big_state->texture_combine_alpha_op[1]));
         }
       if (n_alpha_func_args > 2)
         {
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_SRC2_ALPHA,
-                         big_state->texture_combine_alpha_src[2]));
-          GE (glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND2_ALPHA,
-                         big_state->texture_combine_alpha_op[2]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_SRC2_ALPHA,
+                              big_state->texture_combine_alpha_src[2]));
+          GE (ctx, glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND2_ALPHA,
+                              big_state->texture_combine_alpha_op[2]));
         }
     }
 
@@ -263,8 +263,8 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
         (layer, COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT);
       CoglPipelineLayerBigState *big_state = authority->big_state;
 
-      GE (glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
-                      big_state->texture_combine_constant));
+      GE (ctx, glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
+                           big_state->texture_combine_constant));
     }
 
   return TRUE;
@@ -315,9 +315,9 @@ _cogl_pipeline_fragend_fixed_end (CoglPipeline *pipeline,
           fogColor[2] = cogl_color_get_blue_float (&fog_state->color);
           fogColor[3] = cogl_color_get_alpha_float (&fog_state->color);
 
-          GE (glEnable (GL_FOG));
+          GE (ctx, glEnable (GL_FOG));
 
-          GE (glFogfv (GL_FOG_COLOR, fogColor));
+          GE (ctx, glFogfv (GL_FOG_COLOR, fogColor));
 
 #if HAVE_COGL_GLES
           switch (fog_state->mode)
@@ -336,15 +336,15 @@ _cogl_pipeline_fragend_fixed_end (CoglPipeline *pipeline,
           /* TODO: support other modes for GLES2 */
 
           /* NB: GLES doesn't have glFogi */
-          GE (glFogf (GL_FOG_MODE, gl_mode));
-          GE (glHint (GL_FOG_HINT, GL_NICEST));
+          GE (ctx, glFogf (GL_FOG_MODE, gl_mode));
+          GE (ctx, glHint (GL_FOG_HINT, GL_NICEST));
 
-          GE (glFogf (GL_FOG_DENSITY, fog_state->density));
-          GE (glFogf (GL_FOG_START, fog_state->z_near));
-          GE (glFogf (GL_FOG_END, fog_state->z_far));
+          GE (ctx, glFogf (GL_FOG_DENSITY, fog_state->density));
+          GE (ctx, glFogf (GL_FOG_START, fog_state->z_near));
+          GE (ctx, glFogf (GL_FOG_END, fog_state->z_far));
         }
       else
-        GE (glDisable (GL_FOG));
+        GE (ctx, glDisable (GL_FOG));
     }
 
   return TRUE;

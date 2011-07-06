@@ -534,7 +534,7 @@ get_wgl_extensions_string (HDC dc)
      extensions isn't supported then we can at least fake it to
      support the swap control extension */
   if (_cogl_check_extension ("WGL_EXT_swap_control",
-                             (char *) glGetString (GL_EXTENSIONS)))
+                             (char *) ctx->glGetString (GL_EXTENSIONS)))
     return "WGL_EXT_swap_control";
 
   return NULL;

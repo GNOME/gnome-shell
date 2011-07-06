@@ -1116,7 +1116,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
    *   additional extension so we can report the limited region of
    *   the window damage to X/compositors.
    */
-  glFinish ();
+  context->glFinish ();
 
   if (have_counter && can_wait)
     {
@@ -1148,7 +1148,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
       int i;
       /* XXX: checkout how this state interacts with the code to use
        * glBlitFramebuffer in Neil's texture atlasing branch */
-      glDrawBuffer (GL_FRONT);
+      context->glDrawBuffer (GL_FRONT);
       for (i = 0; i < n_rectangles; i++)
         {
           int *rect = &rectangles[4 * i];
@@ -1158,7 +1158,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                       rect[0], rect[1], x2, y2,
                                       GL_COLOR_BUFFER_BIT, GL_NEAREST);
         }
-      glDrawBuffer (GL_BACK);
+      context->glDrawBuffer (GL_BACK);
     }
 
   /* NB: unlike glXSwapBuffers, glXCopySubBuffer and
@@ -1166,7 +1166,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
    * have to flush ourselves if we want the request to complete in
    * a finite amount of time since otherwise the driver can batch
    * the command indefinitely. */
-  glFlush ();
+  context->glFlush ();
 
   /* NB: It's important we save the counter we read before acting on
    * the swap request since if we are mixing and matching different
@@ -1237,7 +1237,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
            * obviously does not happen when we use _GLX_SWAP and let
            * the driver do the right thing
            */
-          glFinish ();
+          context->glFinish ();
 
           if (have_counter && can_wait)
             {
@@ -1844,7 +1844,7 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
 
       COGL_NOTE (TEXTURE_PIXMAP, "Rebinding GLXPixmap for %p", tex_pixmap);
 
-      GE( _cogl_bind_gl_texture_transient (gl_target, gl_handle, FALSE) );
+      _cogl_bind_gl_texture_transient (gl_target, gl_handle, FALSE);
 
       if (glx_tex_pixmap->pixmap_bound)
         glx_renderer->pf_glXReleaseTexImage (xlib_renderer->xdpy,

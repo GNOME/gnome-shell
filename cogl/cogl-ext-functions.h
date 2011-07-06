@@ -48,6 +48,219 @@
  * @extension_names: A list of extension names to try. If any of these
  * extensions match then it will be used.
  */
+
+/* These are the core GL functions which we assume will always be
+   available */
+COGL_EXT_BEGIN (core,
+                0, 0,
+                COGL_EXT_IN_GLES | COGL_EXT_IN_GLES2,
+                "\0",
+                "\0")
+COGL_EXT_FUNCTION (void, glBindTexture,
+                   (GLenum target, GLuint texture))
+COGL_EXT_FUNCTION (void, glBlendFunc,
+                   (GLenum sfactor, GLenum dfactor))
+COGL_EXT_FUNCTION (void, glClear,
+                   (GLbitfield mask))
+COGL_EXT_FUNCTION (void, glClearColor,
+                   (GLclampf red,
+                    GLclampf green,
+                    GLclampf blue,
+                    GLclampf alpha))
+COGL_EXT_FUNCTION (void, glClearStencil,
+                   (GLint s))
+COGL_EXT_FUNCTION (void, glColorMask,
+                   (GLboolean red,
+                    GLboolean green,
+                    GLboolean blue,
+                    GLboolean alpha))
+COGL_EXT_FUNCTION (void, glCopyTexSubImage2D,
+                   (GLenum target,
+                    GLint level,
+                    GLint xoffset,
+                    GLint yoffset,
+                    GLint x,
+                    GLint y,
+                    GLsizei width,
+                    GLsizei height))
+COGL_EXT_FUNCTION (void, glDeleteTextures,
+                   (GLsizei n, const GLuint* textures))
+COGL_EXT_FUNCTION (void, glDepthFunc,
+                   (GLenum func))
+COGL_EXT_FUNCTION (void, glDepthMask,
+                   (GLboolean flag))
+COGL_EXT_FUNCTION (void, glDisable,
+                   (GLenum cap))
+COGL_EXT_FUNCTION (void, glDrawArrays,
+                   (GLenum mode, GLint first, GLsizei count))
+COGL_EXT_FUNCTION (void, glDrawElements,
+                   (GLenum mode,
+                    GLsizei count,
+                    GLenum type,
+                    const GLvoid* indices))
+COGL_EXT_FUNCTION (void, glEnable,
+                   (GLenum cap))
+COGL_EXT_FUNCTION (void, glFinish,
+                   (void))
+COGL_EXT_FUNCTION (void, glFlush,
+                   (void))
+COGL_EXT_FUNCTION (void, glFrontFace,
+                   (GLenum mode))
+COGL_EXT_FUNCTION (void, glGenTextures,
+                   (GLsizei n, GLuint* textures))
+COGL_EXT_FUNCTION (GLenum, glGetError,
+                   (void))
+COGL_EXT_FUNCTION (void, glGetIntegerv,
+                   (GLenum pname, GLint* params))
+COGL_EXT_FUNCTION (const GLubyte*, glGetString,
+                   (GLenum name))
+COGL_EXT_FUNCTION (void, glHint,
+                   (GLenum target, GLenum mode))
+COGL_EXT_FUNCTION (GLboolean, glIsTexture,
+                   (GLuint texture))
+COGL_EXT_FUNCTION (void, glPixelStorei,
+                   (GLenum pname, GLint param))
+COGL_EXT_FUNCTION (void, glReadPixels,
+                   (GLint x,
+                    GLint y,
+                    GLsizei width,
+                    GLsizei height,
+                    GLenum format,
+                    GLenum type,
+                    GLvoid* pixels))
+COGL_EXT_FUNCTION (void, glScissor,
+                   (GLint x, GLint y, GLsizei width, GLsizei height))
+COGL_EXT_FUNCTION (void, glStencilFunc,
+                   (GLenum func, GLint ref, GLuint mask))
+COGL_EXT_FUNCTION (void, glStencilMask,
+                   (GLuint mask))
+COGL_EXT_FUNCTION (void, glStencilOp,
+                   (GLenum fail, GLenum zfail, GLenum zpass))
+COGL_EXT_FUNCTION (void, glTexImage2D,
+                   (GLenum target,
+                    GLint level,
+                    GLint internalformat,
+                    GLsizei width,
+                    GLsizei height,
+                    GLint border,
+                    GLenum format,
+                    GLenum type,
+                    const GLvoid* pixels))
+COGL_EXT_FUNCTION (void, glTexParameterfv,
+                   (GLenum target, GLenum pname, const GLfloat* params))
+COGL_EXT_FUNCTION (void, glTexParameteri,
+                   (GLenum target, GLenum pname, GLint param))
+COGL_EXT_FUNCTION (void, glTexSubImage2D,
+                   (GLenum target,
+                    GLint level,
+                    GLint xoffset,
+                    GLint yoffset,
+                    GLsizei width,
+                    GLsizei height,
+                    GLenum format,
+                    GLenum type,
+                    const GLvoid* pixels))
+COGL_EXT_FUNCTION (void, glViewport,
+                   (GLint x, GLint y, GLsizei width, GLsizei height))
+COGL_EXT_END ()
+
+/* These are the core GL functions which are available when the API
+   supports fixed-function (ie, GL and GLES1.1) */
+COGL_EXT_BEGIN (fixed_function_core,
+                0, 0,
+                COGL_EXT_IN_GLES,
+                "\0",
+                "\0")
+COGL_EXT_FUNCTION (void, glAlphaFunc,
+                   (GLenum func, GLclampf ref))
+COGL_EXT_FUNCTION (void, glFogf,
+                   (GLenum pname, GLfloat param))
+COGL_EXT_FUNCTION (void, glFogfv,
+                   (GLenum pname, const GLfloat *params))
+COGL_EXT_FUNCTION (void, glLoadMatrixf,
+                   (const GLfloat *m))
+COGL_EXT_FUNCTION (void, glMaterialfv,
+                   (GLenum face, GLenum pname, const GLfloat *params))
+COGL_EXT_FUNCTION (void, glPointSize,
+                   (GLfloat size))
+COGL_EXT_FUNCTION (void, glTexEnvfv,
+                   (GLenum target, GLenum pname, const GLfloat *params))
+COGL_EXT_FUNCTION (void, glColor4ub,
+                   (GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha))
+COGL_EXT_FUNCTION (void, glColorPointer,
+                   (GLint size,
+                    GLenum type,
+                    GLsizei stride,
+                    const GLvoid *pointer))
+COGL_EXT_FUNCTION (void, glDisableClientState,
+                   (GLenum array))
+COGL_EXT_FUNCTION (void, glEnableClientState,
+                   (GLenum array))
+COGL_EXT_FUNCTION (void, glLoadIdentity,
+                   (void))
+COGL_EXT_FUNCTION (void, glMatrixMode,
+                   (GLenum mode))
+COGL_EXT_FUNCTION (void, glNormalPointer,
+                   (GLenum type, GLsizei stride, const GLvoid *pointer))
+COGL_EXT_FUNCTION (void, glTexCoordPointer,
+                   (GLint size,
+                    GLenum type,
+                    GLsizei stride,
+                    const GLvoid *pointer))
+COGL_EXT_FUNCTION (void, glTexEnvi,
+                   (GLenum target,
+                    GLenum pname,
+                    GLint param))
+COGL_EXT_FUNCTION (void, glVertexPointer,
+                   (GLint size,
+                    GLenum type,
+                    GLsizei stride,
+                    const GLvoid *pointer))
+COGL_EXT_END ()
+
+/* These are the core GL functions which are only available in big
+   GL */
+COGL_EXT_BEGIN (only_in_big_gl,
+                0, 0,
+                0, /* not in GLES */
+                "\0",
+                "\0")
+COGL_EXT_FUNCTION (void, glGetTexLevelParameteriv,
+                   (GLenum target, GLint level,
+                    GLenum pname, GLint *params))
+COGL_EXT_FUNCTION (void, glGetTexImage,
+                   (GLenum target, GLint level,
+                    GLenum format, GLenum type,
+                    GLvoid *pixels))
+COGL_EXT_FUNCTION (void, glClipPlane,
+                   (GLenum plane, const double *equation))
+COGL_EXT_FUNCTION (void, glDepthRange,
+                   (double near_val, double far_val))
+COGL_EXT_FUNCTION (void, glDrawBuffer,
+                   (GLenum mode))
+COGL_EXT_END ()
+
+/* These functions are only available in GLES and are used as
+   replacements for some GL equivalents that only accept double
+   arguments */
+COGL_EXT_BEGIN (only_in_gles1,
+                255, 255,
+                COGL_EXT_IN_GLES,
+                "\0",
+                "\0")
+COGL_EXT_FUNCTION (void, glClipPlanef,
+                   (GLenum plane, const GLfloat *equation))
+COGL_EXT_END ()
+COGL_EXT_BEGIN (only_in_both_gles,
+                255, 255,
+                COGL_EXT_IN_GLES |
+                COGL_EXT_IN_GLES2,
+                "\0",
+                "\0")
+COGL_EXT_FUNCTION (void, glDepthRangef,
+                   (GLfloat near_val, GLfloat far_val))
+COGL_EXT_END ()
+
 COGL_EXT_BEGIN (offscreen,
                 255, 255,
                 COGL_EXT_IN_GLES2,
@@ -302,6 +515,12 @@ COGL_EXT_FUNCTION (void, glGetProgramInfoLog,
                     GLsizei               bufSize,
                     GLsizei              *length,
                     GLchar               *infoLog))
+
+COGL_EXT_FUNCTION (void, glVertexAttrib4f,
+                   (GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w))
+
+COGL_EXT_FUNCTION (GLint, glGetAttribLocation,
+                   (GLuint program, const GLchar *name))
 
 COGL_EXT_END ()
 

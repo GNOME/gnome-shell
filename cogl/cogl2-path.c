@@ -381,15 +381,15 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
 
   _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE, 0);
 
-  GE( glEnable (GL_STENCIL_TEST) );
+  GE( ctx, glEnable (GL_STENCIL_TEST) );
 
-  GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
-  GE( glDepthMask (FALSE) );
+  GE( ctx, glColorMask (FALSE, FALSE, FALSE, FALSE) );
+  GE( ctx, glDepthMask (FALSE) );
 
   if (merge)
     {
-      GE (glStencilMask (2));
-      GE (glStencilFunc (GL_LEQUAL, 0x2, 0x6));
+      GE (ctx, glStencilMask (2));
+      GE (ctx, glStencilFunc (GL_LEQUAL, 0x2, 0x6));
     }
   else
     {
@@ -407,18 +407,18 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
       else
         {
           /* Just clear the bounding box */
-          GE( glStencilMask (~(GLuint) 0) );
-          GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
+          GE( ctx, glStencilMask (~(GLuint) 0) );
+          GE( ctx, glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
           _cogl_rectangle_immediate (data->path_nodes_min.x,
                                      data->path_nodes_min.y,
                                      data->path_nodes_max.x,
                                      data->path_nodes_max.y);
         }
-      GE (glStencilMask (1));
-      GE (glStencilFunc (GL_LEQUAL, 0x1, 0x3));
+      GE (ctx, glStencilMask (1));
+      GE (ctx, glStencilFunc (GL_LEQUAL, 0x1, 0x3));
     }
 
-  GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
+  GE (ctx, glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
   if (path->data->path_nodes->len >= 3)
     _cogl_path_fill_nodes (path);
@@ -427,9 +427,9 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
     {
       /* Now we have the new stencil buffer in bit 1 and the old
          stencil buffer in bit 0 so we need to intersect them */
-      GE (glStencilMask (3));
-      GE (glStencilFunc (GL_NEVER, 0x2, 0x3));
-      GE (glStencilOp (GL_DECR, GL_DECR, GL_DECR));
+      GE (ctx, glStencilMask (3));
+      GE (ctx, glStencilFunc (GL_NEVER, 0x2, 0x3));
+      GE (ctx, glStencilOp (GL_DECR, GL_DECR, GL_DECR));
       /* Decrement all of the bits twice so that only pixels where the
          value is 3 will remain */
 
@@ -450,12 +450,12 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
       _cogl_matrix_stack_pop (projection_stack);
     }
 
-  GE (glStencilMask (~(GLuint) 0));
-  GE (glDepthMask (TRUE));
-  GE (glColorMask (TRUE, TRUE, TRUE, TRUE));
+  GE (ctx, glStencilMask (~(GLuint) 0));
+  GE (ctx, glDepthMask (TRUE));
+  GE (ctx, glColorMask (TRUE, TRUE, TRUE, TRUE));
 
-  GE (glStencilFunc (GL_EQUAL, 0x1, 0x1));
-  GE (glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP));
+  GE (ctx, glStencilFunc (GL_EQUAL, 0x1, 0x1));
+  GE (ctx, glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP));
 
   /* restore the original pipeline */
   cogl_pop_source ();

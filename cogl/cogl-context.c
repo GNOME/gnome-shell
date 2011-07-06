@@ -47,7 +47,6 @@
 
 #ifdef HAVE_COGL_GL
 #include "cogl-pipeline-fragend-arbfp-private.h"
-#define glActiveTexture _context->glActiveTexture
 #endif
 
 /* This isn't defined in the GLES headers */
@@ -199,7 +198,7 @@ cogl_context_new (CoglDisplay *display,
   /* See cogl-pipeline.c for more details about why we leave texture unit 1
    * active by default... */
   context->active_texture_unit = 1;
-  GE (glActiveTexture (GL_TEXTURE1));
+  GE (context, glActiveTexture (GL_TEXTURE1));
 
   context->legacy_fog_state.enabled = FALSE;
 
@@ -307,7 +306,7 @@ cogl_context_new (CoglDisplay *display,
    * makes things a bit simpler for us. Under GLES2 the alpha test is
    * implemented in the fragment shader so there is no enable for it
    */
-  GE (glEnable (GL_ALPHA_TEST));
+  GE (context, glEnable (GL_ALPHA_TEST));
 #endif
 
 #ifdef HAVE_COGL_GLES2
@@ -355,7 +354,7 @@ cogl_context_new (CoglDisplay *display,
      sprites are handled using a builtin varying in the shader. */
 #ifndef HAVE_COGL_GLES2
   if (cogl_features_available (COGL_FEATURE_POINT_SPRITE))
-    GE (glEnable (GL_POINT_SPRITE));
+    GE (context, glEnable (GL_POINT_SPRITE));
 #endif
 
   return _cogl_context_object_new (context);

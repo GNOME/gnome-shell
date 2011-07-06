@@ -49,20 +49,6 @@
  * GL/GLES compatability defines for pipeline thingies:
  */
 
-#ifdef HAVE_COGL_GL
-#define glActiveTexture ctx->glActiveTexture
-#define glClientActiveTexture ctx->glClientActiveTexture
-#define glBlendEquation ctx->glBlendEquation
-#define glBlendColor ctx->glBlendColor
-
-#define glProgramString ctx->glProgramString
-#define glBindProgram ctx->glBindProgram
-#define glDeletePrograms ctx->glDeletePrograms
-#define glGenPrograms ctx->glGenPrograms
-#define glProgramLocalParameter4fv ctx->glProgramLocalParameter4fv
-#define glUseProgram ctx->glUseProgram
-#endif
-
 /* These aren't defined in the GLES headers */
 #ifndef GL_POINT_SPRITE
 #define GL_POINT_SPRITE 0x8861
@@ -144,7 +130,7 @@ _cogl_set_active_texture_unit (int unit_index)
 
   if (ctx->active_texture_unit != unit_index)
     {
-      GE (glActiveTexture (GL_TEXTURE0 + unit_index));
+      GE (ctx, glActiveTexture (GL_TEXTURE0 + unit_index));
       ctx->active_texture_unit = unit_index;
     }
 }
@@ -196,7 +182,7 @@ _cogl_bind_gl_texture_transient (GLenum gl_target,
       !unit->is_foreign)
     return;
 
-  GE (glBindTexture (gl_target, gl_texture));
+  GE (ctx, glBindTexture (gl_target, gl_texture));
 
   unit->dirty_gl_texture = TRUE;
   unit->is_foreign = is_foreign;
@@ -222,7 +208,7 @@ _cogl_delete_gl_texture (GLuint gl_texture)
         }
     }
 
-  GE (glDeleteTextures (1, &gl_texture));
+  GE (ctx, glDeleteTextures (1, &gl_texture));
 }
 
 /* Whenever the underlying GL texture storage of a CoglTexture is
@@ -266,14 +252,14 @@ set_glsl_program (GLuint gl_program)
     {
       GLenum gl_error;
 
-      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
         ;
-      glUseProgram (gl_program);
-      if (glGetError () == GL_NO_ERROR)
+      ctx->glUseProgram (gl_program);
+      if (ctx->glGetError () == GL_NO_ERROR)
         ctx->current_gl_program = gl_program;
       else
         {
-          GE( glUseProgram (0) );
+          GE( ctx, glUseProgram (0) );
           ctx->current_gl_program = 0;
         }
     }
@@ -302,7 +288,7 @@ _cogl_use_fragment_program (GLuint gl_program, CoglPipelineProgramType type)
 
         case COGL_PIPELINE_PROGRAM_TYPE_ARBFP:
 #ifdef HAVE_COGL_GL
-          GE( glDisable (GL_FRAGMENT_PROGRAM_ARB) );
+          GE( ctx, glDisable (GL_FRAGMENT_PROGRAM_ARB) );
 #endif
           break;
 
@@ -316,7 +302,7 @@ _cogl_use_fragment_program (GLuint gl_program, CoglPipelineProgramType type)
         {
         case COGL_PIPELINE_PROGRAM_TYPE_ARBFP:
 #ifdef HAVE_COGL_GL
-          GE( glEnable (GL_FRAGMENT_PROGRAM_ARB) );
+          GE( ctx, glEnable (GL_FRAGMENT_PROGRAM_ARB) );
 #endif
           break;
 
@@ -421,8 +407,8 @@ _cogl_get_max_texture_image_units (void)
   if (G_UNLIKELY (ctx->max_texture_image_units == -1))
     {
       ctx->max_texture_image_units = 1;
-      GE (glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS,
-                         &ctx->max_texture_image_units));
+      GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS,
+                              &ctx->max_texture_image_units));
     }
 
   return ctx->max_texture_image_units;
@@ -449,14 +435,14 @@ flush_depth_state (CoglDepthState *depth_state)
 
   if (ctx->depth_test_function_cache != depth_state->test_function)
     {
-      GE (glDepthFunc (depth_state->test_function));
+      GE (ctx, glDepthFunc (depth_state->test_function));
       ctx->depth_test_function_cache = depth_state->test_function;
     }
 
   if (ctx->depth_writing_enabled_cache != depth_state->write_enabled)
     {
-      GE (glDepthMask (depth_state->write_enabled ?
-                       GL_TRUE : GL_FALSE));
+      GE (ctx, glDepthMask (depth_state->write_enabled ?
+                            GL_TRUE : GL_FALSE));
       ctx->depth_writing_enabled_cache = depth_state->write_enabled;
     }
 
@@ -465,11 +451,11 @@ flush_depth_state (CoglDepthState *depth_state)
       ctx->depth_range_far_cache != depth_state->range_far)
     {
 #ifdef COGL_HAS_GLES2
-      GE (glDepthRangef (depth_state->range_near,
-                         depth_state->range_far));
+      GE (ctx, glDepthRangef (depth_state->range_near,
+                              depth_state->range_far));
 #else
-      GE (glDepthRange (depth_state->range_near,
-                        depth_state->range_far));
+      GE (ctx, glDepthRange (depth_state->range_near,
+                             depth_state->range_far));
 #endif
       ctx->depth_range_near_cache = depth_state->range_near;
       ctx->depth_range_far_cache = depth_state->range_far;
@@ -496,10 +482,10 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         {
           CoglPipeline *authority =
             _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
-          GE (glColor4ub (cogl_color_get_red_byte (&authority->color),
-                          cogl_color_get_green_byte (&authority->color),
-                          cogl_color_get_blue_byte (&authority->color),
-                          cogl_color_get_alpha_byte (&authority->color)));
+          GE (ctx, glColor4ub (cogl_color_get_red_byte (&authority->color),
+                               cogl_color_get_green_byte (&authority->color),
+                               cogl_color_get_blue_byte (&authority->color),
+                               cogl_color_get_alpha_byte (&authority->color)));
         }
     }
 #endif
@@ -539,28 +525,28 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
             cogl_color_get_alpha_float (&blend_state->blend_constant);
 
 
-          GE (glBlendColor (red, green, blue, alpha));
+          GE (ctx, glBlendColor (red, green, blue, alpha));
         }
 
       if (have_blend_equation_seperate &&
           blend_state->blend_equation_rgb != blend_state->blend_equation_alpha)
-        GE (ctx->glBlendEquationSeparate (blend_state->blend_equation_rgb,
+        GE (ctx, glBlendEquationSeparate (blend_state->blend_equation_rgb,
                                           blend_state->blend_equation_alpha));
       else
-        GE (glBlendEquation (blend_state->blend_equation_rgb));
+        GE (ctx, glBlendEquation (blend_state->blend_equation_rgb));
 
       if (have_blend_func_separate &&
           (blend_state->blend_src_factor_rgb != blend_state->blend_src_factor_alpha ||
            (blend_state->blend_src_factor_rgb !=
             blend_state->blend_src_factor_alpha)))
-        GE (ctx->glBlendFuncSeparate (blend_state->blend_src_factor_rgb,
+        GE (ctx, glBlendFuncSeparate (blend_state->blend_src_factor_rgb,
                                       blend_state->blend_dst_factor_rgb,
                                       blend_state->blend_src_factor_alpha,
                                       blend_state->blend_dst_factor_alpha));
       else
 #endif
-        GE (glBlendFunc (blend_state->blend_src_factor_rgb,
-                         blend_state->blend_dst_factor_rgb));
+        GE (ctx, glBlendFunc (blend_state->blend_src_factor_rgb,
+                              blend_state->blend_dst_factor_rgb));
     }
 
 #ifndef HAVE_COGL_GLES2
@@ -576,8 +562,8 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         &authority->big_state->alpha_state;
 
       /* NB: Currently the Cogl defines are compatible with the GL ones: */
-      GE (glAlphaFunc (alpha_state->alpha_func,
-                       alpha_state->alpha_func_reference));
+      GE (ctx, glAlphaFunc (alpha_state->alpha_func,
+                            alpha_state->alpha_func_reference));
     }
 
   /* Under GLES2 the lighting parameters are implemented as uniforms
@@ -589,16 +575,16 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
       CoglPipelineLightingState *lighting_state =
         &authority->big_state->lighting_state;
 
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,
-                        lighting_state->ambient));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,
-                        lighting_state->diffuse));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,
-                        lighting_state->specular));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,
-                        lighting_state->emission));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
-                        &lighting_state->shininess));
+      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,
+                             lighting_state->ambient));
+      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,
+                             lighting_state->diffuse));
+      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,
+                             lighting_state->specular));
+      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,
+                             lighting_state->emission));
+      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
+                             &lighting_state->shininess));
     }
 
 #endif /* HAVE_COGL_GLES2 */
@@ -613,14 +599,14 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         {
           if (ctx->depth_test_enabled_cache != TRUE)
             {
-              GE (glEnable (GL_DEPTH_TEST));
+              GE (ctx, glEnable (GL_DEPTH_TEST));
               ctx->depth_test_enabled_cache = depth_state->test_enabled;
             }
           flush_depth_state (depth_state);
         }
       else if (ctx->depth_test_enabled_cache != FALSE)
         {
-          GE (glDisable (GL_DEPTH_TEST));
+          GE (ctx, glDisable (GL_DEPTH_TEST));
           ctx->depth_test_enabled_cache = depth_state->test_enabled;
         }
     }
@@ -628,9 +614,9 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
   if (pipeline->real_blend_enable != ctx->gl_blend_enable_cache)
     {
       if (pipeline->real_blend_enable)
-        GE (glEnable (GL_BLEND));
+        GE (ctx, glEnable (GL_BLEND));
       else
-        GE (glDisable (GL_BLEND));
+        GE (ctx, glDisable (GL_BLEND));
       /* XXX: we shouldn't update any other blend state if blending
        * is disabled! */
       ctx->gl_blend_enable_cache = pipeline->real_blend_enable;
@@ -658,24 +644,24 @@ get_max_activateable_texture_units (void)
         /* Previously this code subtracted the value by one but there
            was no explanation for why it did this and it doesn't seem
            to make sense so it has been removed */
-        GE (glGetIntegerv (GL_MAX_TEXTURE_COORDS, values + n_values++));
+        GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_COORDS, values + n_values++));
 
       /* GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is defined for GLSL but
          not ARBfp */
       if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
-        GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-                           values + n_values++));
+        GE (ctx, glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                                values + n_values++));
 #endif /* HAVE_COGL_GL */
 
 #ifdef HAVE_COGL_GLES2
 
-      GE (glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, values + n_values));
+      GE (ctx, glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, values + n_values));
       /* Two of the vertex attribs need to be used for the position
          and color */
       values[n_values++] -= 2;
 
-      GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-                         values + n_values++));
+      GE (ctx, glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                              values + n_values++));
 
 #else /* HAVE_COGL_GLES2 */
 
@@ -684,8 +670,8 @@ get_max_activateable_texture_units (void)
          available in GLES2. These are also tied to the number of
          texture coordinates that can be uploaded so it should be less
          than that available from the shader extensions */
-      GE (glGetIntegerv (GL_MAX_TEXTURE_UNITS,
-                         values + n_values++));
+      GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_UNITS,
+                              values + n_values++));
 
 #endif /* HAVE_COGL_GLES2 */
 
@@ -784,7 +770,7 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
           if (unit_index == 1)
             unit->dirty_gl_texture = TRUE;
           else
-            GE (glBindTexture (gl_target, gl_texture));
+            GE (ctx, glBindTexture (gl_target, gl_texture));
           unit->gl_texture = gl_texture;
           unit->gl_target = gl_target;
         }
@@ -810,8 +796,8 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
 
       _cogl_set_active_texture_unit (unit_index);
 
-      GE (glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE,
-                     big_state->point_sprite_coords));
+      GE (ctx, glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE,
+                          big_state->point_sprite_coords));
     }
 #endif /* HAVE_COGL_GLES2 */
 
@@ -1321,7 +1307,8 @@ done:
 
       attribute = _cogl_pipeline_progend_glsl_get_color_attribute (pipeline);
       if (attribute != -1)
-        GE (glVertexAttrib4f (attribute,
+        GE (ctx,
+            glVertexAttrib4f (attribute,
                               cogl_color_get_red_float (&authority->color),
                               cogl_color_get_green_float (&authority->color),
                               cogl_color_get_blue_float (&authority->color),
@@ -1352,7 +1339,7 @@ done:
   if (cogl_pipeline_get_n_layers (pipeline) > 1 && unit1->dirty_gl_texture)
     {
       _cogl_set_active_texture_unit (1);
-      GE (glBindTexture (unit1->gl_target, unit1->gl_texture));
+      GE (ctx, glBindTexture (unit1->gl_target, unit1->gl_texture));
       unit1->dirty_gl_texture = FALSE;
     }
 

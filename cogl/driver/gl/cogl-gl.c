@@ -40,8 +40,10 @@ _cogl_get_gl_version (int *major_out, int *minor_out)
   const char *version_string, *major_end, *minor_end;
   int major = 0, minor = 0;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   /* Get the OpenGL version number */
-  if ((version_string = (const char *) glGetString (GL_VERSION)) == NULL)
+  if ((version_string = (const char *) ctx->glGetString (GL_VERSION)) == NULL)
     return FALSE;
 
   /* Extract the major number */
@@ -75,6 +77,8 @@ _cogl_gl_check_version (GError **error)
   int major, minor;
   const char *gl_extensions;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   if (!_cogl_get_gl_version (&major, &minor))
     {
       g_set_error (error,
@@ -88,7 +92,7 @@ _cogl_gl_check_version (GError **error)
   if (COGL_CHECK_GL_VERSION (major, minor, 1, 3))
     return TRUE;
 
-  gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
+  gl_extensions = (const char*) ctx->glGetString (GL_EXTENSIONS);
 
   /* OpenGL 1.2 is only supported if we have the multitexturing
      extension */
@@ -131,16 +135,25 @@ _cogl_gl_update_features (CoglContext *context)
   int num_stencil_bits = 0;
   int gl_major = 0, gl_minor = 0;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* We have to special case getting the pointer to the glGetString
+     function because we need to use it to determine what functions we
+     can expect */
+  context->glGetString =
+    (void *) _cogl_get_proc_address (_cogl_context_get_winsys (context),
+                                     "glGetString");
+
   COGL_NOTE (WINSYS,
              "Checking features\n"
              "  GL_VENDOR: %s\n"
              "  GL_RENDERER: %s\n"
              "  GL_VERSION: %s\n"
              "  GL_EXTENSIONS: %s",
-             glGetString (GL_VENDOR),
-             glGetString (GL_RENDERER),
-             glGetString (GL_VERSION),
-             glGetString (GL_EXTENSIONS));
+             ctx->glGetString (GL_VENDOR),
+             ctx->glGetString (GL_RENDERER),
+             ctx->glGetString (GL_VERSION),
+             ctx->glGetString (GL_EXTENSIONS));
 
   _cogl_get_gl_version (&gl_major, &gl_minor);
 
@@ -148,7 +161,7 @@ _cogl_gl_update_features (CoglContext *context)
            | COGL_FEATURE_UNSIGNED_INT_INDICES
            | COGL_FEATURE_DEPTH_RANGE);
 
-  gl_extensions = (const char *)glGetString (GL_EXTENSIONS);
+  gl_extensions = (const char *)ctx->glGetString (GL_EXTENSIONS);
 
   _cogl_feature_check_ext_functions (context,
                                      gl_major,
@@ -172,12 +185,12 @@ _cogl_gl_update_features (CoglContext *context)
     }
 #endif
 
-  GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
+  GE( ctx, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
   if (num_stencil_bits > 2)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
-  GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+  GE( ctx, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 

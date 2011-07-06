@@ -45,17 +45,6 @@
 #include "cogl-shader-private.h"
 #include "cogl-program-private.h"
 
-#ifndef HAVE_COGL_GLES2
-
-#define glCreateShader       ctx->glCreateShader
-#define glGetShaderiv        ctx->glGetShaderiv
-#define glGetShaderInfoLog   ctx->glGetShaderInfoLog
-#define glCompileShader      ctx->glCompileShader
-#define glShaderSource       ctx->glShaderSource
-#define glDeleteShader       ctx->glDeleteShader
-
-#endif /* HAVE_COGL_GLES2 */
-
 #include <glib.h>
 
 /*
@@ -124,7 +113,7 @@ glsl_shader_state_unref (GlslShaderState *state)
   if (state->ref_count == 0)
     {
       if (state->gl_shader)
-        GE( glDeleteShader (state->gl_shader) );
+        GE( ctx, glDeleteShader (state->gl_shader) );
 
       g_free (state->unit_state);
 
@@ -277,7 +266,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
         return TRUE;
 
       /* We need to recreate the shader so destroy the existing one */
-      GE( glDeleteShader (priv->glsl_shader_state->gl_shader) );
+      GE( ctx, glDeleteShader (priv->glsl_shader_state->gl_shader) );
       priv->glsl_shader_state->gl_shader = 0;
     }
 
@@ -798,7 +787,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
 
       g_string_append (glsl_shader_state->source, "}\n");
 
-      GE_RET( shader, glCreateShader (GL_FRAGMENT_SHADER) );
+      GE_RET( shader, ctx, glCreateShader (GL_FRAGMENT_SHADER) );
 
       lengths[0] = glsl_shader_state->header->len;
       source_strings[0] = glsl_shader_state->header->str;
@@ -817,17 +806,17 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
                                                 2, /* count */
                                                 source_strings, lengths);
 
-      GE( glCompileShader (shader) );
-      GE( glGetShaderiv (shader, GL_COMPILE_STATUS, &compile_status) );
+      GE( ctx, glCompileShader (shader) );
+      GE( ctx, glGetShaderiv (shader, GL_COMPILE_STATUS, &compile_status) );
 
       if (!compile_status)
         {
           GLint len = 0;
           char *shader_log;
 
-          GE( glGetShaderiv (shader, GL_INFO_LOG_LENGTH, &len) );
+          GE( ctx, glGetShaderiv (shader, GL_INFO_LOG_LENGTH, &len) );
           shader_log = g_alloca (len);
-          GE( glGetShaderInfoLog (shader, len, &len, shader_log) );
+          GE( ctx, glGetShaderInfoLog (shader, len, &len, shader_log) );
           g_warning ("Shader compilation failed:\n%s", shader_log);
         }
 

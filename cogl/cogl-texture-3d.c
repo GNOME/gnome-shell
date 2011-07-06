@@ -49,9 +49,6 @@
 #define GL_TEXTURE_WRAP_R                       0x8072
 #endif
 
-#define glTexImage3D ctx->glTexImage3D
-#define glTexSubImage3D ctx->glTexSubImage3D
-
 static void _cogl_texture_3d_free (CoglTexture3D *tex_3d);
 
 COGL_TEXTURE_DEFINE (Texture3D, texture_3d);
@@ -140,6 +137,8 @@ _cogl_texture_3d_set_wrap_mode_parameters (CoglTexture *tex,
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* Only set the wrap mode if it's different from the current value
      to avoid too many GL calls. */
   if (tex_3d->wrap_mode_s != wrap_mode_s ||
@@ -149,9 +148,15 @@ _cogl_texture_3d_set_wrap_mode_parameters (CoglTexture *tex,
       _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                        tex_3d->gl_texture,
                                        FALSE);
-      GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, wrap_mode_s) );
-      GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, wrap_mode_t) );
-      GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrap_mode_p) );
+      GE( ctx, glTexParameteri (GL_TEXTURE_3D,
+                                GL_TEXTURE_WRAP_S,
+                                wrap_mode_s) );
+      GE( ctx, glTexParameteri (GL_TEXTURE_3D,
+                                GL_TEXTURE_WRAP_T,
+                                wrap_mode_t) );
+      GE( ctx, glTexParameteri (GL_TEXTURE_3D,
+                                GL_TEXTURE_WRAP_R,
+                                wrap_mode_p) );
 
       tex_3d->wrap_mode_s = wrap_mode_s;
       tex_3d->wrap_mode_t = wrap_mode_t;
@@ -295,8 +300,8 @@ cogl_texture_3d_new_with_size (unsigned int     width,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                    tex_3d->gl_texture,
                                    FALSE);
-  GE( glTexImage3D (GL_TEXTURE_3D, 0, gl_intformat,
-                    width, height, depth, 0, gl_format, gl_type, NULL) );
+  GE( ctx, glTexImage3D (GL_TEXTURE_3D, 0, gl_intformat,
+                         width, height, depth, 0, gl_format, gl_type, NULL) );
 
   return _cogl_texture_3d_handle_new (tex_3d);
 }
@@ -536,6 +541,8 @@ _cogl_texture_3d_set_filters (CoglTexture *tex,
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (min_filter == tex_3d->min_filter
       && mag_filter == tex_3d->mag_filter)
     return;
@@ -548,8 +555,8 @@ _cogl_texture_3d_set_filters (CoglTexture *tex,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                    tex_3d->gl_texture,
                                    FALSE);
-  GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, mag_filter) );
-  GE( glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, min_filter) );
+  GE( ctx, glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, mag_filter) );
+  GE( ctx, glTexParameteri (GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, min_filter) );
 }
 
 static void
@@ -574,23 +581,23 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
 #ifndef HAVE_COGL_GLES2
       else
         {
-          GE( glTexParameteri (GL_TEXTURE_3D,
-                               GL_GENERATE_MIPMAP,
-                               GL_TRUE) );
-          GE( glTexSubImage3D (GL_TEXTURE_3D,
-                               0, /* level */
-                               0, /* xoffset */
-                               0, /* yoffset */
-                               0, /* zoffset */
-                               1, /* width */
-                               1, /* height */
-                               1, /* depth */
-                               tex_3d->first_pixel.gl_format,
-                               tex_3d->first_pixel.gl_type,
-                               tex_3d->first_pixel.data) );
-          GE( glTexParameteri (GL_TEXTURE_3D,
-                               GL_GENERATE_MIPMAP,
-                               GL_FALSE) );
+          GE( ctx, glTexParameteri (GL_TEXTURE_3D,
+                                    GL_GENERATE_MIPMAP,
+                                    GL_TRUE) );
+          GE( ctx, glTexSubImage3D (GL_TEXTURE_3D,
+                                    0, /* level */
+                                    0, /* xoffset */
+                                    0, /* yoffset */
+                                    0, /* zoffset */
+                                    1, /* width */
+                                    1, /* height */
+                                    1, /* depth */
+                                    tex_3d->first_pixel.gl_format,
+                                    tex_3d->first_pixel.gl_type,
+                                    tex_3d->first_pixel.data) );
+          GE( ctx, glTexParameteri (GL_TEXTURE_3D,
+                                    GL_GENERATE_MIPMAP,
+                                    GL_FALSE) );
         }
 #endif
 

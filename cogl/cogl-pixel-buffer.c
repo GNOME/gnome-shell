@@ -52,15 +52,6 @@
 
 #if defined (HAVE_COGL_GL)
 
-#define glGenBuffers ctx->drv.pf_glGenBuffers
-#define glBindBuffer ctx->drv.pf_glBindBuffer
-#define glBufferData ctx->drv.pf_glBufferData
-#define glBufferSubData ctx->drv.pf_glBufferSubData
-#define glGetBufferSubData ctx->drv.pf_glGetBufferSubData
-#define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
-#define glMapBuffer ctx->drv.pf_glMapBuffer
-#define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
-
 #ifndef GL_PIXEL_UNPACK_BUFFER
 #define GL_PIXEL_UNPACK_BUFFER GL_PIXEL_UNPACK_BUFFER_ARB
 #endif

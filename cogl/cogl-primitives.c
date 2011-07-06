@@ -42,11 +42,6 @@
 
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
-#ifdef HAVE_COGL_GL
-#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
-#endif
-
-
 typedef struct _TextureSlicedQuadState
 {
   CoglPipeline *pipeline;

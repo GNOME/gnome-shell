@@ -46,9 +46,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define glTexImage3D ctx->glTexImage3D
-#define glTexSubImage3D ctx->glTexSubImage3D
-
 #ifndef GL_TEXTURE_3D
 #define GL_TEXTURE_3D 0x806F
 #endif
@@ -63,7 +60,9 @@ _cogl_texture_driver_gen (GLenum   gl_target,
 {
   unsigned int i;
 
-  GE (glGenTextures (n, textures));
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE (ctx, glGenTextures (n, textures));
 
   for (i = 0; i < n; i++)
     {
@@ -74,7 +73,9 @@ _cogl_texture_driver_gen (GLenum   gl_target,
         case GL_TEXTURE_2D:
         case GL_TEXTURE_3D:
           /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
-          GE( glTexParameteri (gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
+          GE( ctx, glTexParameteri (gl_target,
+                                    GL_TEXTURE_MIN_FILTER,
+                                    GL_LINEAR) );
           break;
 
         default:
@@ -143,6 +144,8 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   CoglBitmap *slice_bmp;
   int rowstride;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* If we are copying a sub region of the source bitmap then we need
      to copy it because GLES does not support GL_UNPACK_ROW_LENGTH */
   if (src_x != 0 || src_y != 0 ||
@@ -177,12 +180,12 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  GE( glTexSubImage2D (gl_target, 0,
-                       dst_x, dst_y,
-                       width, height,
-                       source_gl_format,
-                       source_gl_type,
-                       data) );
+  GE( ctx, glTexSubImage2D (gl_target, 0,
+                            dst_x, dst_y,
+                            width, height,
+                            source_gl_format,
+                            source_gl_type,
+                            data) );
 
   _cogl_bitmap_unbind (slice_bmp);
 
@@ -205,6 +208,8 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   CoglBitmap *bmp;
   guint8 *data;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   bmp = prepare_bitmap_alignment_for_upload (source_bmp);
   rowstride = _cogl_bitmap_get_rowstride (bmp);
 
@@ -215,13 +220,13 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
 
   data = _cogl_bitmap_bind (bmp, COGL_BUFFER_ACCESS_READ, 0);
 
-  GE( glTexImage2D (gl_target, 0,
-                    internal_gl_format,
-                    bmp_width, bmp_height,
-                    0,
-                    source_gl_format,
-                    source_gl_type,
-                    data) );
+  GE( ctx, glTexImage2D (gl_target, 0,
+                         internal_gl_format,
+                         bmp_width, bmp_height,
+                         0,
+                         source_gl_format,
+                         source_gl_type,
+                         data) );
 
   _cogl_bitmap_unbind (bmp);
 
@@ -264,16 +269,16 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
       /* Initialize the texture with empty data and then upload each
          image with a sub-region update */
 
-      GE( glTexImage3D (gl_target,
-                        0, /* level */
-                        internal_gl_format,
-                        bmp_width,
-                        height,
-                        depth,
-                        0,
-                        source_gl_format,
-                        source_gl_type,
-                        NULL) );
+      GE( ctx, glTexImage3D (gl_target,
+                             0, /* level */
+                             internal_gl_format,
+                             bmp_width,
+                             height,
+                             depth,
+                             0,
+                             source_gl_format,
+                             source_gl_type,
+                             NULL) );
 
       bmp = _cogl_bitmap_new_from_data (g_malloc (bpp * bmp_width * height),
                                         _cogl_bitmap_get_format (source_bmp),
@@ -295,17 +300,17 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
           data = _cogl_bitmap_bind (bmp,
                                     COGL_BUFFER_ACCESS_READ, 0);
 
-          GE( glTexSubImage3D (gl_target,
-                               0, /* level */
-                               0, /* xoffset */
-                               0, /* yoffset */
-                               i, /* zoffset */
-                               bmp_width, /* width */
-                               height, /* height */
-                               1, /* depth */
-                               source_gl_format,
-                               source_gl_type,
-                               data) );
+          GE( ctx, glTexSubImage3D (gl_target,
+                                    0, /* level */
+                                    0, /* xoffset */
+                                    0, /* yoffset */
+                                    i, /* zoffset */
+                                    bmp_width, /* width */
+                                    height, /* height */
+                                    1, /* depth */
+                                    source_gl_format,
+                                    source_gl_type,
+                                    data) );
 
           _cogl_bitmap_unbind (bmp);
         }
@@ -318,16 +323,16 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
 
       _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
 
-      GE( glTexImage3D (gl_target,
-                        0, /* level */
-                        internal_gl_format,
-                        bmp_width,
-                        height,
-                        depth,
-                        0,
-                        source_gl_format,
-                        source_gl_type,
-                        data) );
+      GE( ctx, glTexImage3D (gl_target,
+                             0, /* level */
+                             internal_gl_format,
+                             bmp_width,
+                             height,
+                             depth,
+                             0,
+                             source_gl_format,
+                             source_gl_type,
+                             data) );
 
       _cogl_bitmap_unbind (source_bmp);
     }
@@ -355,10 +360,12 @@ _cogl_texture_driver_size_supported_3d (GLenum gl_target,
 {
   GLint max_size;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   /* GLES doesn't support a proxy texture target so let's at least
      check whether the size is greater than
      GL_MAX_3D_TEXTURE_SIZE_OES */
-  GE( glGetIntegerv (GL_MAX_3D_TEXTURE_SIZE_OES, &max_size) );
+  GE( ctx, glGetIntegerv (GL_MAX_3D_TEXTURE_SIZE_OES, &max_size) );
 
   return width <= max_size && height <= max_size && depth <= max_size;
 }
@@ -372,9 +379,11 @@ _cogl_texture_driver_size_supported (GLenum gl_target,
 {
   GLint max_size;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   /* GLES doesn't support a proxy texture target so let's at least
      check whether the size is greater than GL_MAX_TEXTURE_SIZE */
-  GE( glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_size) );
+  GE( ctx, glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_size) );
 
   return width <= max_size && height <= max_size;
 }
@@ -491,7 +500,9 @@ void
 _cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
 {
 #ifdef HAVE_COGL_GLES2
-  GE( glGenerateMipmap (gl_target) );
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( ctx, glGenerateMipmap (gl_target) );
 #endif
 }
 

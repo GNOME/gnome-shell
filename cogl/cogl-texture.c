@@ -250,27 +250,31 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (!(pixels_rowstride & 0x7))
-    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 8) );
+    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 8) );
   else if (!(pixels_rowstride & 0x3))
-    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 4) );
+    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 4) );
   else if (!(pixels_rowstride & 0x1))
-    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 2) );
+    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 2) );
   else
-    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 1) );
+    GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT, 1) );
 }
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (!(pixels_rowstride & 0x7))
-    GE( glPixelStorei (GL_PACK_ALIGNMENT, 8) );
+    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 8) );
   else if (!(pixels_rowstride & 0x3))
-    GE( glPixelStorei (GL_PACK_ALIGNMENT, 4) );
+    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 4) );
   else if (!(pixels_rowstride & 0x1))
-    GE( glPixelStorei (GL_PACK_ALIGNMENT, 2) );
+    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 2) );
   else
-    GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
+    GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, 1) );
 }
 
 /* FIXME: wrap modes should be set on pipelines not textures */
@@ -1119,10 +1123,10 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
      still doesn't seem to have an alpha buffer. This might be just
      a PowerVR issue.
   GLint r_bits, g_bits, b_bits, a_bits;
-  GE( glGetIntegerv (GL_ALPHA_BITS, &a_bits) );
-  GE( glGetIntegerv (GL_RED_BITS, &r_bits) );
-  GE( glGetIntegerv (GL_GREEN_BITS, &g_bits) );
-  GE( glGetIntegerv (GL_BLUE_BITS, &b_bits) );
+  GE( ctx, glGetIntegerv (GL_ALPHA_BITS, &a_bits) );
+  GE( ctx, glGetIntegerv (GL_RED_BITS, &r_bits) );
+  GE( ctx, glGetIntegerv (GL_GREEN_BITS, &g_bits) );
+  GE( ctx, glGetIntegerv (GL_BLUE_BITS, &b_bits) );
   printf ("R bits: %d\n", r_bits);
   printf ("G bits: %d\n", g_bits);
   printf ("B bits: %d\n", b_bits);

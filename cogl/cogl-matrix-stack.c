@@ -402,15 +402,17 @@ flush_to_fixed_api_gl (gboolean is_identity,
 {
   CoglMatrixStack *stack = user_data;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (is_identity)
     {
       if (!stack->flushed_identity)
-        GE (glLoadIdentity ());
+        GE (ctx, glLoadIdentity ());
       stack->flushed_identity = TRUE;
     }
   else
     {
-      GE (glLoadMatrixf (cogl_matrix_get_array (matrix)) );
+      GE (ctx, glLoadMatrixf (cogl_matrix_get_array (matrix)) );
       stack->flushed_identity = FALSE;
     }
 }
@@ -516,7 +518,7 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
           break;
         }
 
-      GE (glMatrixMode (gl_mode));
+      GE (ctx, glMatrixMode (gl_mode));
       ctx->flushed_matrix_mode = mode;
     }
 

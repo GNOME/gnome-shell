@@ -54,18 +54,25 @@ _cogl_gl_update_features (CoglContext *context)
 #endif
   int num_stencil_bits = 0;
 
+  /* We have to special case getting the pointer to the glGetString
+     function because we need to use it to determine what functions we
+     can expect */
+  context->glGetString =
+    (void *) _cogl_get_proc_address (_cogl_context_get_winsys (context),
+                                     "glGetString");
+
   COGL_NOTE (WINSYS,
              "Checking features\n"
              "  GL_VENDOR: %s\n"
              "  GL_RENDERER: %s\n"
              "  GL_VERSION: %s\n"
              "  GL_EXTENSIONS: %s",
-             glGetString (GL_VENDOR),
-             glGetString (GL_RENDERER),
-             glGetString (GL_VERSION),
-             glGetString (GL_EXTENSIONS));
+             context->glGetString (GL_VENDOR),
+             context->glGetString (GL_RENDERER),
+             context->glGetString (GL_VERSION),
+             context->glGetString (GL_EXTENSIONS));
 
-  gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
+  gl_extensions = (const char*) context->glGetString (GL_EXTENSIONS);
 
   _cogl_feature_check_ext_functions (context,
                                      -1 /* GL major version */,
@@ -78,13 +85,13 @@ _cogl_gl_update_features (CoglContext *context)
 #endif
                                      );
 
-  GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
+  GE( context, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
   if (num_stencil_bits > 2)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
 #ifndef HAVE_COGL_GLES2
-  GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+  GE( context, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 #endif

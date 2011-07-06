@@ -104,7 +104,7 @@ _cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
 
       if (ctx->point_size_cache != authority->big_state->point_size)
         {
-          GE( glPointSize (authority->big_state->point_size) );
+          GE( ctx, glPointSize (authority->big_state->point_size) );
           ctx->point_size_cache = authority->big_state->point_size;
         }
     }
