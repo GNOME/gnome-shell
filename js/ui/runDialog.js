@@ -333,30 +333,43 @@ __proto__: ModalDialog.ModalDialog.prototype,
 
                 if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
                     let file = Gio.file_new_for_path(path);
-                    Gio.app_info_launch_default_for_uri(file.get_uri(),
-                                                        global.create_app_launch_context());
-                } else {
-                    this._commandError = true;
-
-                    this._errorMessage.set_text(e.message);
-
-                    if (!this._errorBox.visible) {
-                        let [errorBoxMinHeight, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
-
-                        let parentActor = this._errorBox.get_parent();
-                        Tweener.addTween(parentActor,
-                                         { height: parentActor.height + errorBoxNaturalHeight,
-                                           time: DIALOG_GROW_TIME,
-                                           transition: 'easeOutQuad',
-                                           onComplete: Lang.bind(this,
-                                               function() {
-                                                    parentActor.set_height(-1);
-                                                    this._errorBox.show();
-                                               })
-                                         });
+                    try {
+                        Gio.app_info_launch_default_for_uri(file.get_uri(),
+                                                            global.create_app_launch_context());
+                    } catch (e) {
+                        // The exception from gjs contains an error string like:
+                        //     Error invoking Gio.app_info_launch_default_for_uri: No application
+                        //     is registered as handling this file
+                        // We are only interested in the part after the first colon.
+                        let message = e.message.replace(/[^:]*: *(.+)/, '$1');
+                        this._showError(message);
                     }
+                } else {
+                    this._showError(e.message);
                 }
             }
+        }
+    },
+
+    _showError : function(message) {
+        this._commandError = true;
+
+        this._errorMessage.set_text(message);
+
+        if (!this._errorBox.visible) {
+            let [errorBoxMinHeight, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
+
+            let parentActor = this._errorBox.get_parent();
+            Tweener.addTween(parentActor,
+                             { height: parentActor.height + errorBoxNaturalHeight,
+                               time: DIALOG_GROW_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this,
+                                                     function() {
+                                                         parentActor.set_height(-1);
+                                                         this._errorBox.show();
+                                                     })
+                             });
         }
     },
 
