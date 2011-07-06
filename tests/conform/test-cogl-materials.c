@@ -223,6 +223,51 @@ test_invalid_texture_layers_with_constant_colors (TestState *state,
 }
 
 static void
+basic_ref_counting_destroy_cb (void *user_data)
+{
+  gboolean *destroyed_flag = user_data;
+
+  g_assert (*destroyed_flag == FALSE);
+
+  *destroyed_flag = TRUE;
+}
+
+static void
+test_basic_ref_counting (void)
+{
+  CoglMaterial *material_parent;
+  gboolean parent_destroyed = FALSE;
+  CoglMaterial *material_child;
+  gboolean child_destroyed = FALSE;
+  static CoglUserDataKey user_data_key;
+
+  /* This creates a material with a copy and then just unrefs them
+     both without setting them as a source. They should immediately be
+     freed. We can test whether they were freed or not by registering
+     a destroy callback with some user data */
+
+  material_parent = cogl_material_new ();
+  /* Set some user data so we can detect when the material is
+     destroyed */
+  cogl_object_set_user_data (COGL_OBJECT (material_parent),
+                             &user_data_key,
+                             &parent_destroyed,
+                             basic_ref_counting_destroy_cb);
+
+  material_child = cogl_material_copy (material_parent);
+  cogl_object_set_user_data (COGL_OBJECT (material_child),
+                             &user_data_key,
+                             &child_destroyed,
+                             basic_ref_counting_destroy_cb);
+
+  cogl_object_unref (material_child);
+  cogl_object_unref (material_parent);
+
+  g_assert (parent_destroyed);
+  g_assert (child_destroyed);
+}
+
+static void
 on_paint (ClutterActor *actor, TestState *state)
 {
   test_invalid_texture_layers (state,
@@ -234,6 +279,8 @@ on_paint (ClutterActor *actor, TestState *state)
   test_using_all_layers (state,
                          2, 0 /* position */
                          );
+
+  test_basic_ref_counting ();
 
   /* Comment this out if you want visual feedback for what this test paints */
 #if 1
