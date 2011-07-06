@@ -562,6 +562,8 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
       g_list_free (pipeline->layer_differences);
     }
 
+  g_list_free (pipeline->deprecated_get_layers_list);
+
   g_slice_free (CoglPipeline, pipeline);
 }
 
