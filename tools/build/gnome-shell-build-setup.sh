@@ -84,8 +84,14 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0-0-dev
     libupower-glib-dev libcups2-dev libproxy-dev libdb-dev libproxy-dev
     libsqlite3-dev libgudev-1.0-dev libsane-dev libwebkitgtk-3.0-0
-    libx11-xcb-dev libxcb-event1-dev libxcb-aux0-dev
+    libx11-xcb-dev
     "
+
+  if apt-cache show libxcb-util0-dev > /dev/null 2> /dev/null; then
+    reqd="$reqd libxcb-util0-dev"
+  else
+    reqd="$reqd libxcb-event1-dev libxcb-aux0-dev"
+  fi
 
   if apt-cache show autopoint > /dev/null 2> /dev/null; then
     reqd="$reqd autopoint"
