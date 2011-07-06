@@ -133,6 +133,7 @@ static AtkAttributeSet*      cally_text_get_run_attributes       (AtkText *text,
                                                                   gint    offset,
                                                                   gint    *start_offset,
                                                                   gint    *end_offset);
+static AtkAttributeSet*      cally_text_get_default_attributes   (AtkText *text);
 static void                  _cally_text_get_selection_bounds    (ClutterText *clutter_text,
                                                                   gint        *start_offset,
                                                                   gint        *end_offset);
@@ -178,6 +179,9 @@ static AtkAttributeSet*     _cally_misc_layout_get_run_attributes (AtkAttributeS
                                                                    gint            offset,
                                                                    gint            *start_offset,
                                                                    gint            *end_offset);
+
+static AtkAttributeSet*     _cally_misc_layout_get_default_attributes (AtkAttributeSet *attrib_set,
+                                                                       ClutterText *text);
 
 G_DEFINE_TYPE_WITH_CODE (CallyText,
                          cally_text,
@@ -393,7 +397,7 @@ cally_text_text_interface_init (AtkTextIface *iface)
   iface->remove_selection        = cally_text_remove_selection;
   iface->set_selection           = cally_text_set_selection;
   iface->get_run_attributes      = cally_text_get_run_attributes;
-/*   iface->get_default_attributes  = cally_text_get_default_attributes; */
+  iface->get_default_attributes  = cally_text_get_default_attributes;
 /*   iface->get_character_extents = */
 /*   iface->get_offset_at_point = */
 
@@ -753,6 +757,24 @@ cally_text_get_run_attributes (AtkText *text,
                                                   offset,
                                                   start_offset,
                                                   end_offset);
+
+  return at_set;
+}
+
+static AtkAttributeSet*
+cally_text_get_default_attributes (AtkText *text)
+{
+  ClutterActor    *actor        = NULL;
+  ClutterText     *clutter_text = NULL;
+  AtkAttributeSet *at_set       = NULL;
+
+  actor = CALLY_GET_CLUTTER_ACTOR (text);
+  if (actor == NULL) /* State is defunct */
+    return NULL;
+
+  clutter_text = CLUTTER_TEXT (actor);
+
+  at_set = _cally_misc_layout_get_default_attributes (at_set, clutter_text);
 
   return at_set;
 }
@@ -1341,3 +1363,180 @@ _cally_misc_layout_get_run_attributes (AtkAttributeSet *attrib_set,
 }
 
 
+/**
+ * _cally_misc_layout_get_default_attributes:
+ *
+ * Reimplementation of gail_misc_layout_get_default_attributes (check this
+ * function for more documentation).
+ *
+ * Returns: A pointer to the #AtkAttributeSet.
+ **/
+static AtkAttributeSet*
+_cally_misc_layout_get_default_attributes (AtkAttributeSet *attrib_set,
+                                           ClutterText *clutter_text)
+{
+  PangoLayout *layout;
+  PangoContext *context;
+  PangoLanguage* language;
+  PangoFontDescription* font;
+  PangoWrapMode mode;
+  gchar *value = NULL;
+  gint int_value;
+  ClutterTextDirection text_direction;
+  PangoAttrIterator *iter;
+  PangoAttrList *attr;
+
+  text_direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (clutter_text));
+  switch (text_direction)
+    {
+    case CLUTTER_TEXT_DIRECTION_DEFAULT:
+      value = g_strdup ("none");
+      break;
+
+    case CLUTTER_TEXT_DIRECTION_LTR:
+      value = g_strdup ("ltr");
+      break;
+
+    case CLUTTER_TEXT_DIRECTION_RTL:
+      value = g_strdup ("rtl");
+      break;
+
+    default:
+      value = g_strdup ("none");
+      break;
+    }
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_DIRECTION,
+                                          value);
+
+  layout = clutter_text_get_layout (clutter_text);
+  context = pango_layout_get_context (layout);
+  if (context)
+    {
+      if ((language = pango_context_get_language (context)))
+        {
+          value = g_strdup (pango_language_to_string (language));
+          attrib_set = _cally_misc_add_attribute (attrib_set,
+                                                  ATK_TEXT_ATTR_LANGUAGE, value);
+        }
+
+      if ((font = pango_context_get_font_description (context)))
+        {
+          value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_STYLE,
+                                                          pango_font_description_get_style (font)));
+          attrib_set = _cally_misc_add_attribute (attrib_set,
+                                                  ATK_TEXT_ATTR_STYLE,
+                                                  value);
+
+          value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_VARIANT,
+                                                          pango_font_description_get_variant (font)));
+          attrib_set = _cally_misc_add_attribute (attrib_set,
+                                                  ATK_TEXT_ATTR_VARIANT, value);
+
+          value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_STRETCH,
+                                                          pango_font_description_get_stretch (font)));
+          attrib_set = _cally_misc_add_attribute (attrib_set,
+                                                  ATK_TEXT_ATTR_STRETCH, value);
+
+          value = g_strdup (pango_font_description_get_family (font));
+          attrib_set = _cally_misc_add_attribute (attrib_set,
+                                                  ATK_TEXT_ATTR_FAMILY_NAME, value);
+          value = g_strdup_printf ("%d", pango_font_description_get_weight (font));
+          attrib_set = _cally_misc_add_attribute (attrib_set,
+                                                  ATK_TEXT_ATTR_WEIGHT, value);
+
+          value = g_strdup_printf ("%i", pango_font_description_get_size (font) / PANGO_SCALE);
+          attrib_set = _cally_misc_add_attribute (attrib_set,
+                                                  ATK_TEXT_ATTR_SIZE, value);
+
+        }
+
+    }
+
+  if (pango_layout_get_justify (layout))
+    int_value = 3;
+  else
+    {
+      PangoAlignment align;
+
+      align = pango_layout_get_alignment (layout);
+      if (align == PANGO_ALIGN_LEFT)
+        int_value = 0;
+      else if (align == PANGO_ALIGN_CENTER)
+        int_value = 2;
+      else /* if (align == PANGO_ALIGN_RIGHT) */
+        int_value = 1;
+    }
+  value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION,
+                                                  int_value));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_JUSTIFICATION,
+                                          value);
+
+  mode = pango_layout_get_wrap (layout);
+  if (mode == PANGO_WRAP_WORD)
+    int_value = 2;
+  else /* if (mode == PANGO_WRAP_CHAR) */
+    int_value = 1;
+  value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_WRAP_MODE,
+                                                  int_value));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_WRAP_MODE, value);
+
+  if ((attr = clutter_text_get_attributes (clutter_text)))
+    {
+      iter = pango_attr_list_get_iterator (attr);
+      /* Get attributes */
+      attrib_set = _cally_misc_layout_atk_attributes_from_pango (attrib_set, iter);
+      pango_attr_iterator_destroy (iter);
+    }
+
+
+  if (!_cally_misc_find_atk_attribute (attrib_set, ATK_TEXT_ATTR_FG_COLOR))
+    attrib_set = _cally_misc_add_actor_color_to_attribute_set (attrib_set,
+                                                               clutter_text);
+
+  value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_FG_STIPPLE, 0));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_FG_STIPPLE,
+                                          value);
+
+  value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_BG_STIPPLE, 0));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_BG_STIPPLE,
+                                          value);
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_BG_FULL_HEIGHT,
+                                          g_strdup_printf ("%i", 0));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_PIXELS_INSIDE_WRAP,
+                                          g_strdup_printf ("%i", 0));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_PIXELS_BELOW_LINES,
+                                          g_strdup_printf ("%i", 0));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_PIXELS_ABOVE_LINES,
+                                          g_strdup_printf ("%i", 0));
+  value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_EDITABLE,
+                                                  clutter_text_get_editable (clutter_text)));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_EDITABLE,
+                                          value);
+
+  value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_INVISIBLE,
+                                                  !CLUTTER_ACTOR_IS_VISIBLE (clutter_text)));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_INVISIBLE, value);
+
+  value = g_strdup_printf ("%i", pango_layout_get_indent (layout));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_INDENT, value);
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_RIGHT_MARGIN,
+                                          g_strdup_printf ("%i", 0));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_LEFT_MARGIN,
+                                          g_strdup_printf ("%i", 0));
+
+  return attrib_set;
+}

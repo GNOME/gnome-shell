@@ -126,6 +126,32 @@ test_atk_text (ClutterActor *actor)
 
 }
 
+static void
+dump_actor_default_atk_attributes (ClutterActor *actor)
+{
+  AtkObject       *object     = NULL;
+  AtkText         *cally_text = NULL;
+  AtkAttributeSet *at_set     = NULL;
+  GSList          *attrs;
+  const gchar     *text_value = NULL;
+
+  object = atk_gobject_accessible_for_object (G_OBJECT (actor));
+  cally_text = ATK_TEXT (object);
+
+  if (!cally_text)
+      return;
+
+  text_value = clutter_text_get_text (CLUTTER_TEXT (actor));
+  g_print ("text value = %s\n", text_value);
+
+  at_set = atk_text_get_default_attributes (cally_text);
+  attrs = (GSList*) at_set;
+  while (attrs) {
+      AtkAttribute *at = (AtkAttribute *) attrs->data;
+      g_print ("text default %s = %s\n", at->name, at->value);
+      attrs = g_slist_next (attrs);
+  }
+}
 
 static gboolean
 button_press_cb (ClutterActor *actor,
@@ -155,9 +181,12 @@ make_ui (ClutterActor *stage)
 
   /* text */
   text_actor = clutter_text_new_full ("Sans Bold 32px",
-                                      "Lorem ipsum dolor sit amet",
+                                      "",
                                       &color_text);
+  clutter_text_set_markup (CLUTTER_TEXT(text_actor),
+                           "<span fgcolor=\"#FFFF00\" bgcolor=\"#00FF00\"><s>Lorem ipsum dolor sit amet</s></span>");
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text_actor);
+  dump_actor_default_atk_attributes (text_actor);
 
   /* text_editable */
   text_editable_actor = clutter_text_new_full ("Sans Bold 32px",
@@ -171,6 +200,7 @@ make_ui (ClutterActor *stage)
   clutter_text_set_line_wrap (CLUTTER_TEXT (text_editable_actor), TRUE);
   clutter_actor_grab_key_focus (text_editable_actor);
   clutter_actor_set_reactive (text_editable_actor, TRUE);
+  dump_actor_default_atk_attributes (text_editable_actor);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text_editable_actor);
 
