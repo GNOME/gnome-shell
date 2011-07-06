@@ -47,7 +47,7 @@
 
 #ifdef HAVE_COGL_GL
 #include "cogl-pipeline-fragend-arbfp-private.h"
-#define glActiveTexture _context->drv.pf_glActiveTexture
+#define glActiveTexture _context->glActiveTexture
 #endif
 
 /* This isn't defined in the GLES headers */

@@ -42,22 +42,22 @@
 
 #ifndef HAVE_COGL_GLES2
 
-#define glGenRenderbuffers                ctx->drv.pf_glGenRenderbuffers
-#define glDeleteRenderbuffers             ctx->drv.pf_glDeleteRenderbuffers
-#define glBindRenderbuffer                ctx->drv.pf_glBindRenderbuffer
-#define glRenderbufferStorage             ctx->drv.pf_glRenderbufferStorage
-#define glGenFramebuffers                 ctx->drv.pf_glGenFramebuffers
-#define glBindFramebuffer                 ctx->drv.pf_glBindFramebuffer
-#define glFramebufferTexture2D            ctx->drv.pf_glFramebufferTexture2D
-#define glFramebufferRenderbuffer         ctx->drv.pf_glFramebufferRenderbuffer
-#define glCheckFramebufferStatus          ctx->drv.pf_glCheckFramebufferStatus
-#define glDeleteFramebuffers              ctx->drv.pf_glDeleteFramebuffers
+#define glGenRenderbuffers                ctx->glGenRenderbuffers
+#define glDeleteRenderbuffers             ctx->glDeleteRenderbuffers
+#define glBindRenderbuffer                ctx->glBindRenderbuffer
+#define glRenderbufferStorage             ctx->glRenderbufferStorage
+#define glGenFramebuffers                 ctx->glGenFramebuffers
+#define glBindFramebuffer                 ctx->glBindFramebuffer
+#define glFramebufferTexture2D            ctx->glFramebufferTexture2D
+#define glFramebufferRenderbuffer         ctx->glFramebufferRenderbuffer
+#define glCheckFramebufferStatus          ctx->glCheckFramebufferStatus
+#define glDeleteFramebuffers              ctx->glDeleteFramebuffers
 #define glGetFramebufferAttachmentParameteriv \
-                                          ctx->drv.pf_glGetFramebufferAttachmentParameteriv
+                                          ctx->glGetFramebufferAttachmentParameteriv
 
 #endif
 
-#define glBlitFramebuffer                 ctx->drv.pf_glBlitFramebuffer
+#define glBlitFramebuffer                 ctx->glBlitFramebuffer
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40

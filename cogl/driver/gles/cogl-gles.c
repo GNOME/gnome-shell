@@ -39,37 +39,6 @@ _cogl_gl_check_version (GError **error)
   return TRUE;
 }
 
-/* Define a set of arrays containing the functions required from GL
-   for each feature */
-#define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
-                           namespaces, extension_names,                 \
-                           feature_flags, feature_flags_private)        \
-  static const CoglFeatureFunction cogl_feature_ ## name ## _funcs[] = {
-#define COGL_FEATURE_FUNCTION(ret, name, args)                          \
-  { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglContext, drv.pf_ ## name) },
-#define COGL_FEATURE_END()                      \
-  { NULL, 0 },                                  \
-  };
-#include "cogl-feature-functions-gles.h"
-
-/* Define an array of features */
-#undef COGL_FEATURE_BEGIN
-#define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
-                           namespaces, extension_names,                 \
-                           feature_flags, feature_flags_private)        \
-  { min_gl_major, min_gl_minor, namespaces,                             \
-    extension_names, feature_flags, feature_flags_private, 0,           \
-    cogl_feature_ ## name ## _funcs },
-#undef COGL_FEATURE_FUNCTION
-#define COGL_FEATURE_FUNCTION(ret, name, args)
-#undef COGL_FEATURE_END
-#define COGL_FEATURE_END()
-
-static const CoglFeatureData cogl_feature_data[] =
-  {
-#include "cogl-feature-functions-gles.h"
-  };
-
 /* Query the GL extensions and lookup the corresponding function
  * pointers. Theoretically the list of extensions can change for
  * different GL contexts so it is the winsys backend's responsiblity
@@ -84,7 +53,6 @@ _cogl_gl_update_features (CoglContext *context)
   int max_clip_planes = 0;
 #endif
   int num_stencil_bits = 0;
-  int i;
 
   COGL_NOTE (WINSYS,
              "Checking features\n"
@@ -99,6 +67,16 @@ _cogl_gl_update_features (CoglContext *context)
 
   gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 
+  _cogl_feature_check_ext_functions (context,
+                                     -1 /* GL major version */,
+                                     -1 /* GL minor version */,
+                                     gl_extensions,
+#ifdef HAVE_COGL_GLES2
+                                     COGL_EXT_IN_GLES2
+#else
+                                     COGL_EXT_IN_GLES
+#endif
+                                     );
 
   GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
@@ -124,16 +102,32 @@ _cogl_gl_update_features (CoglContext *context)
   /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
   flags |= COGL_FEATURE_POINT_SPRITE;
 
-  for (i = 0; i < G_N_ELEMENTS (cogl_feature_data); i++)
-    if (_cogl_feature_check (_cogl_context_get_winsys (context),
-                             "GL", cogl_feature_data + i,
-                             0, 0,
-                             gl_extensions,
-                             context))
-      {
-        private_flags |= cogl_feature_data[i].feature_flags_private;
-        flags |= cogl_feature_data[i].feature_flags;
-      }
+  if (context->glGenRenderbuffers)
+    flags |= COGL_FEATURE_OFFSCREEN;
+
+  if (context->glBlitFramebuffer)
+    flags |= COGL_FEATURE_OFFSCREEN_BLIT;
+
+  if (_cogl_check_extension ("GL_OES_element_index_uint", gl_extensions))
+    flags |= COGL_FEATURE_UNSIGNED_INT_INDICES;
+
+  if (_cogl_check_extension ("GL_OES_texture_npot", gl_extensions) ||
+      _cogl_check_extension ("GL_IMG_texture_npot", gl_extensions))
+    flags |= (COGL_FEATURE_TEXTURE_NPOT |
+              COGL_FEATURE_TEXTURE_NPOT_BASIC |
+              COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
+              COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+
+  if (context->glTexImage3D)
+    flags |= COGL_FEATURE_TEXTURE_3D;
+
+  if (context->glMapBuffer)
+    /* The GL_OES_mapbuffer extension doesn't support mapping for
+       read */
+    flags |= COGL_FEATURE_MAP_BUFFER_FOR_WRITE;
+
+  if (context->glEGLImageTargetTexture2D)
+    flags |= COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE;
 
   /* Cache features */
   context->private_feature_flags |= private_flags;

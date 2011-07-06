@@ -51,18 +51,18 @@
 
 #if defined (HAVE_COGL_GL)
 
-#define glGenBuffers ctx->drv.pf_glGenBuffers
-#define glBindBuffer ctx->drv.pf_glBindBuffer
-#define glBufferData ctx->drv.pf_glBufferData
-#define glBufferSubData ctx->drv.pf_glBufferSubData
-#define glGetBufferSubData ctx->drv.pf_glGetBufferSubData
-#define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
+#define glGenBuffers ctx->glGenBuffers
+#define glBindBuffer ctx->glBindBuffer
+#define glBufferData ctx->glBufferData
+#define glBufferSubData ctx->glBufferSubData
+#define glGetBufferSubData ctx->glGetBufferSubData
+#define glDeleteBuffers ctx->glDeleteBuffers
 
 #endif
 
 /* These two are always accessed through an extension, even on GLES */
-#define glMapBuffer ctx->drv.pf_glMapBuffer
-#define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
+#define glMapBuffer ctx->glMapBuffer
+#define glUnmapBuffer ctx->glUnmapBuffer
 
 #ifndef GL_PIXEL_PACK_BUFFER
 #define GL_PIXEL_PACK_BUFFER 0x88EB

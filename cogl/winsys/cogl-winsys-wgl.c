@@ -107,7 +107,7 @@ typedef struct _CoglOnscreenWgl
 #define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
                                   feature_flags, feature_flags_private, \
                                   winsys_feature)                       \
-  { 255, 255, namespaces, extension_names,                              \
+  { 255, 255, 0, namespaces, extension_names,                            \
       feature_flags, feature_flags_private,                             \
       winsys_feature,                                                   \
       cogl_wgl_feature_ ## name ## _funcs },
@@ -567,7 +567,7 @@ update_winsys_features (CoglContext *context)
 
       for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
         if (_cogl_feature_check (_cogl_context_get_winsys (context),
-                                 "WGL", winsys_feature_data + i, 0, 0,
+                                 "WGL", winsys_feature_data + i, 0, 0, 0,
                                  wgl_extensions,
                                  wgl_renderer))
           {

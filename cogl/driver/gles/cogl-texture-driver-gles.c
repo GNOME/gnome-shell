@@ -46,8 +46,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define glTexImage3D ctx->drv.pf_glTexImage3D
-#define glTexSubImage3D ctx->drv.pf_glTexSubImage3D
+#define glTexImage3D ctx->glTexImage3D
+#define glTexSubImage3D ctx->glTexSubImage3D
 
 #ifndef GL_TEXTURE_3D
 #define GL_TEXTURE_3D 0x806F

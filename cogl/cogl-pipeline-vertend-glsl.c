@@ -43,12 +43,12 @@
 
 #ifndef HAVE_COGL_GLES2
 
-#define glCreateShader       ctx->drv.pf_glCreateShader
-#define glGetShaderiv        ctx->drv.pf_glGetShaderiv
-#define glGetShaderInfoLog   ctx->drv.pf_glGetShaderInfoLog
-#define glCompileShader      ctx->drv.pf_glCompileShader
-#define glShaderSource       ctx->drv.pf_glShaderSource
-#define glDeleteShader       ctx->drv.pf_glDeleteShader
+#define glCreateShader       ctx->glCreateShader
+#define glGetShaderiv        ctx->glGetShaderiv
+#define glGetShaderInfoLog   ctx->glGetShaderInfoLog
+#define glCompileShader      ctx->glCompileShader
+#define glShaderSource       ctx->glShaderSource
+#define glDeleteShader       ctx->glDeleteShader
 
 #endif /* HAVE_COGL_GLES2 */
 

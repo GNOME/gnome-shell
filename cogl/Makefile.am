@@ -104,7 +104,6 @@ cogl_driver_sources =
 
 if COGL_DRIVER_GL
 cogl_driver_sources += \
-	$(srcdir)/driver/gl/cogl-feature-functions-gl.h	\
 	$(srcdir)/driver/gl/cogl-gl.c			\
 	$(srcdir)/driver/gl/cogl-texture-driver-gl.c	\
 	$(srcdir)/driver/gl/cogl-context-driver-gl.h	\
@@ -113,7 +112,6 @@ endif
 
 if COGL_DRIVER_GLES
 cogl_driver_sources += \
-	$(srcdir)/driver/gles/cogl-feature-functions-gles.h	\
 	$(srcdir)/driver/gles/cogl-gles.c			\
 	$(srcdir)/driver/gles/cogl-texture-driver-gles.c	\
 	$(srcdir)/driver/gles/cogl-context-driver-gles.h	\
@@ -210,6 +208,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-clip-state.c			\
 	$(srcdir)/cogl2-clip-state.h 			\
 	$(srcdir)/cogl2-clip-state.c 			\
+	$(srcdir)/cogl-ext-functions.h			\
 	$(srcdir)/cogl-feature-private.h                \
 	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\

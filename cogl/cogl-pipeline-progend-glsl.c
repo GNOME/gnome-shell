@@ -44,17 +44,17 @@
 
 #ifndef HAVE_COGL_GLES2
 
-#define glCreateProgram      ctx->drv.pf_glCreateProgram
-#define glAttachShader       ctx->drv.pf_glAttachShader
-#define glUseProgram         ctx->drv.pf_glUseProgram
-#define glLinkProgram        ctx->drv.pf_glLinkProgram
-#define glDeleteProgram      ctx->drv.pf_glDeleteProgram
-#define glGetProgramInfoLog  ctx->drv.pf_glGetProgramInfoLog
-#define glGetProgramiv       ctx->drv.pf_glGetProgramiv
-#define glGetUniformLocation ctx->drv.pf_glGetUniformLocation
-#define glUniform1i          ctx->drv.pf_glUniform1i
-#define glUniform1f          ctx->drv.pf_glUniform1f
-#define glUniform4fv         ctx->drv.pf_glUniform4fv
+#define glCreateProgram      ctx->glCreateProgram
+#define glAttachShader       ctx->glAttachShader
+#define glUseProgram         ctx->glUseProgram
+#define glLinkProgram        ctx->glLinkProgram
+#define glDeleteProgram      ctx->glDeleteProgram
+#define glGetProgramInfoLog  ctx->glGetProgramInfoLog
+#define glGetProgramiv       ctx->glGetProgramiv
+#define glGetUniformLocation ctx->glGetUniformLocation
+#define glUniform1i          ctx->glUniform1i
+#define glUniform1f          ctx->glUniform1f
+#define glUniform4fv         ctx->glUniform4fv
 
 #else
 

@@ -36,8 +36,9 @@ gboolean
 _cogl_feature_check (const CoglWinsysVtable *winsys,
                      const char *driver_prefix,
                      const CoglFeatureData *data,
-                     unsigned int gl_major,
-                     unsigned int gl_minor,
+                     int gl_major,
+                     int gl_minor,
+                     CoglExtGlesAvailability gles_version,
                      const char *extensions_string,
                      void *function_table)
 
@@ -48,7 +49,8 @@ _cogl_feature_check (const CoglWinsysVtable *winsys,
   /* First check whether the functions should be directly provided by
      GL */
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor,
-                             data->min_gl_major, data->min_gl_minor))
+                             data->min_gl_major, data->min_gl_minor) ||
+      (gles_version & data->gles_availability))
     suffix = "";
   else
     {
@@ -86,16 +88,16 @@ _cogl_feature_check (const CoglWinsysVtable *winsys,
                                    namespace, namespace_len);
               g_string_append_c (full_extension_name, '_');
               g_string_append (full_extension_name, extension);
-              if (!_cogl_check_extension (full_extension_name->str,
-                                          extensions_string))
+              if (_cogl_check_extension (full_extension_name->str,
+                                         extensions_string))
                 break;
             }
 
           g_string_free (full_extension_name, TRUE);
 
-          /* If we found all of the extensions with this namespace
-             then use it as the suffix */
-          if (*extension == '\0')
+          /* If we found an extension with this namespace then use it
+             as the suffix */
+          if (*extension)
             {
               suffix = namespace_suffix;
               break;
@@ -138,4 +140,55 @@ error:
                 data->functions[func_num].pointer_offset) = NULL;
 
   return FALSE;
+}
+
+/* Define a set of arrays containing the functions required from GL
+   for each feature */
+#define COGL_EXT_BEGIN(name,                                            \
+                       min_gl_major, min_gl_minor,                      \
+                       gles_availability,                               \
+                       namespaces, extension_names)                     \
+  static const CoglFeatureFunction cogl_ext_ ## name ## _funcs[] = {
+#define COGL_EXT_FUNCTION(ret, name, args)                          \
+  { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglContext, name) },
+#define COGL_EXT_END()                      \
+  { NULL, 0 },                                  \
+  };
+#include "cogl-ext-functions.h"
+
+/* Define an array of features */
+#undef COGL_EXT_BEGIN
+#define COGL_EXT_BEGIN(name,                                            \
+                       min_gl_major, min_gl_minor,                      \
+                       gles_availability,                               \
+                       namespaces, extension_names)                     \
+  { min_gl_major, min_gl_minor, gles_availability, namespaces,          \
+      extension_names, 0, 0, 0,                                         \
+    cogl_ext_ ## name ## _funcs },
+#undef COGL_EXT_FUNCTION
+#define COGL_EXT_FUNCTION(ret, name, args)
+#undef COGL_EXT_END
+#define COGL_EXT_END()
+
+static const CoglFeatureData
+cogl_feature_ext_functions_data[] =
+  {
+#include "cogl-ext-functions.h"
+  };
+
+void
+_cogl_feature_check_ext_functions (CoglContext *context,
+                                   int gl_major,
+                                   int gl_minor,
+                                   const char *gl_extensions,
+                                   CoglExtGlesAvailability gles_version)
+{
+  int i;
+
+  for (i = 0; i < G_N_ELEMENTS (cogl_feature_ext_functions_data); i++)
+    _cogl_feature_check (_cogl_context_get_winsys (context),
+                         "GL", cogl_feature_ext_functions_data + i,
+                         gl_major, gl_minor, gles_version,
+                         gl_extensions,
+                         context);
 }

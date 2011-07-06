@@ -264,6 +264,27 @@ struct _CoglContext
   unsigned int winsys_features
     [COGL_FLAGS_N_INTS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
   void *winsys;
+
+  /* This defines a list of function pointers that Cogl uses from
+     either GL or GLES. All functions are accessed indirectly through
+     these pointers rather than linking to them directly */
+#ifndef APIENTRY
+#define APIENTRY
+#endif
+
+#define COGL_EXT_BEGIN(name, \
+                       min_gl_major, min_gl_minor, \
+                       gles_availability, \
+                       extension_suffixes, extension_names)
+#define COGL_EXT_FUNCTION(ret, name, args) \
+  ret (APIENTRY * name) args;
+#define COGL_EXT_END()
+
+#include "cogl-ext-functions.h"
+
+#undef COGL_EXT_BEGIN
+#undef COGL_EXT_FUNCTION
+#undef COGL_EXT_END
 };
 
 CoglContext *

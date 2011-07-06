@@ -33,6 +33,12 @@
   ((driver_major) > (target_major) || \
    ((driver_major) == (target_major) && (driver_minor) >= (target_minor)))
 
+typedef enum
+{
+  COGL_EXT_IN_GLES = (1 << 0),
+  COGL_EXT_IN_GLES2 = (1 << 1)
+} CoglExtGlesAvailability;
+
 typedef struct _CoglFeatureFunction CoglFeatureFunction;
 
 struct _CoglFeatureFunction
@@ -50,11 +56,14 @@ struct _CoglFeatureData
   /* A minimum GL version which the functions should be defined in
      without needing an extension. Set to 255,255 if it's only
      provided in an extension */
-  guint8 min_gl_major, min_gl_minor;
+  int min_gl_major, min_gl_minor;
+  /* Flags specifying which versions of GLES the feature is available
+     in core in */
+  CoglExtGlesAvailability gles_availability;
   /* \0 separated list of namespaces to try. Eg "EXT\0ARB\0" */
   const char *namespaces;
   /* \0 separated list of required extension names without the GL_EXT
-     or GL_ARB prefix. All of the extensions must be available for the
+     or GL_ARB prefix. Any of the extensions must be available for the
      feature to be considered available. If the suffix for an
      extension is different from the namespace, you can specify it
      with a ':' after the namespace */
@@ -75,9 +84,17 @@ gboolean
 _cogl_feature_check (const CoglWinsysVtable *winsys,
                      const char *driver_prefix,
                      const CoglFeatureData *data,
-                     unsigned int gl_major,
-                     unsigned int gl_minor,
+                     int gl_major,
+                     int gl_minor,
+                     CoglExtGlesAvailability gles_version,
                      const char *extensions_string,
                      void *function_table);
+
+void
+_cogl_feature_check_ext_functions (CoglContext *context,
+                                   int gl_major,
+                                   int gl_minor,
+                                   const char *gl_extensions,
+                                   CoglExtGlesAvailability gles_version);
 
 #endif /* __COGL_FEATURE_PRIVATE_H */

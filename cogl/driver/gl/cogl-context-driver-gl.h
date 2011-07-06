@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,28 +26,10 @@
 
 #include "cogl.h"
 
-#ifndef APIENTRY
-#define APIENTRY
-#endif
-
-#define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
-
-#define COGL_FEATURE_FUNCTION(ret, name, args) \
-  ret (APIENTRY * pf_ ## name) args;
-
-#define COGL_FEATURE_END()
-
 typedef struct _CoglContextDriver
 {
-  /* This defines a list of function pointers */
-#include "cogl-feature-functions-gl.h"
-
   GLint gl_max_program_temoraries_arb;
 } CoglContextDriver;
-
-#undef COGL_FEATURE_BEGIN
-#undef COGL_FEATURE_FUNCTION
-#undef COGL_FEATURE_END
 
 #endif /* __COGL_CONTEXT_DRIVER_H */
 

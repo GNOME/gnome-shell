@@ -50,27 +50,27 @@ COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (program);
 
 #ifndef HAVE_COGL_GLES2
 
-#define glGetUniformLocation       ctx->drv.pf_glGetUniformLocation
-#define glUniform1f                ctx->drv.pf_glUniform1f
-#define glUniform2f                ctx->drv.pf_glUniform2f
-#define glUniform3f                ctx->drv.pf_glUniform3f
-#define glUniform4f                ctx->drv.pf_glUniform4f
-#define glUniform1fv               ctx->drv.pf_glUniform1fv
-#define glUniform2fv               ctx->drv.pf_glUniform2fv
-#define glUniform3fv               ctx->drv.pf_glUniform3fv
-#define glUniform4fv               ctx->drv.pf_glUniform4fv
-#define glUniform1i                ctx->drv.pf_glUniform1i
-#define glUniform2i                ctx->drv.pf_glUniform2i
-#define glUniform3i                ctx->drv.pf_glUniform3i
-#define glUniform4i                ctx->drv.pf_glUniform4i
-#define glUniform1iv               ctx->drv.pf_glUniform1iv
-#define glUniform2iv               ctx->drv.pf_glUniform2iv
-#define glUniform3iv               ctx->drv.pf_glUniform3iv
-#define glUniform4iv               ctx->drv.pf_glUniform4iv
-#define glUniformMatrix2fv         ctx->drv.pf_glUniformMatrix2fv
-#define glUniformMatrix3fv         ctx->drv.pf_glUniformMatrix3fv
-#define glUniformMatrix4fv         ctx->drv.pf_glUniformMatrix4fv
-#define glProgramLocalParameter4fv ctx->drv.pf_glProgramLocalParameter4fv
+#define glGetUniformLocation       ctx->glGetUniformLocation
+#define glUniform1f                ctx->glUniform1f
+#define glUniform2f                ctx->glUniform2f
+#define glUniform3f                ctx->glUniform3f
+#define glUniform4f                ctx->glUniform4f
+#define glUniform1fv               ctx->glUniform1fv
+#define glUniform2fv               ctx->glUniform2fv
+#define glUniform3fv               ctx->glUniform3fv
+#define glUniform4fv               ctx->glUniform4fv
+#define glUniform1i                ctx->glUniform1i
+#define glUniform2i                ctx->glUniform2i
+#define glUniform3i                ctx->glUniform3i
+#define glUniform4i                ctx->glUniform4i
+#define glUniform1iv               ctx->glUniform1iv
+#define glUniform2iv               ctx->glUniform2iv
+#define glUniform3iv               ctx->glUniform3iv
+#define glUniform4iv               ctx->glUniform4iv
+#define glUniformMatrix2fv         ctx->glUniformMatrix2fv
+#define glUniformMatrix3fv         ctx->glUniformMatrix3fv
+#define glUniformMatrix4fv         ctx->glUniformMatrix4fv
+#define glProgramLocalParameter4fv ctx->glProgramLocalParameter4fv
 
 #endif /* HAVE_COGL_GLES2 */
 

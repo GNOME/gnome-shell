@@ -123,7 +123,7 @@ typedef struct _CoglTexturePixmapGLX
 #define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
                                   feature_flags, feature_flags_private, \
                                   winsys_feature)                       \
-  { 255, 255, namespaces, extension_names,                              \
+  { 255, 255, 0, namespaces, extension_names,                           \
       feature_flags, feature_flags_private,                             \
       winsys_feature, \
       cogl_glx_feature_ ## name ## _funcs },
@@ -346,7 +346,7 @@ update_winsys_features (CoglContext *context)
 
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
     if (_cogl_feature_check (_cogl_context_get_winsys (context),
-                             "GLX", winsys_feature_data + i, 0, 0,
+                             "GLX", winsys_feature_data + i, 0, 0, 0,
                              glx_extensions,
                              glx_renderer))
       {
@@ -384,7 +384,7 @@ update_winsys_features (CoglContext *context)
     }
 #endif
 
-  if (glx_renderer->pf_glXCopySubBuffer || context->drv.pf_glBlitFramebuffer)
+  if (glx_renderer->pf_glXCopySubBuffer || context->glBlitFramebuffer)
     COGL_FLAGS_SET (context->winsys_features,
                     COGL_WINSYS_FEATURE_SWAP_REGION, TRUE);
 
@@ -1143,7 +1143,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                              rect[0], rect[1], rect[2], rect[3]);
         }
     }
-  else if (context->drv.pf_glBlitFramebuffer)
+  else if (context->glBlitFramebuffer)
     {
       int i;
       /* XXX: checkout how this state interacts with the code to use
@@ -1154,9 +1154,9 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
           int *rect = &rectangles[4 * i];
           int x2 = rect[0] + rect[2];
           int y2 = rect[1] + rect[3];
-          context->drv.pf_glBlitFramebuffer (rect[0], rect[1], x2, y2,
-                                             rect[0], rect[1], x2, y2,
-                                             GL_COLOR_BUFFER_BIT, GL_NEAREST);
+          context->glBlitFramebuffer (rect[0], rect[1], x2, y2,
+                                      rect[0], rect[1], x2, y2,
+                                      GL_COLOR_BUFFER_BIT, GL_NEAREST);
         }
       glDrawBuffer (GL_BACK);
     }

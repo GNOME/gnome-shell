@@ -37,16 +37,16 @@
 #include <string.h>
 
 #ifdef HAVE_COGL_GL
-#define glCreateShader             ctx->drv.pf_glCreateShader
-#define glGetShaderiv              ctx->drv.pf_glGetShaderiv
-#define glGetShaderInfoLog         ctx->drv.pf_glGetShaderInfoLog
-#define glCompileShader            ctx->drv.pf_glCompileShader
-#define glShaderSource             ctx->drv.pf_glShaderSource
-#define glDeleteShader             ctx->drv.pf_glDeleteShader
-#define glProgramString            ctx->drv.pf_glProgramString
-#define glBindProgram              ctx->drv.pf_glBindProgram
-#define glDeletePrograms           ctx->drv.pf_glDeletePrograms
-#define glGenPrograms              ctx->drv.pf_glGenPrograms
+#define glCreateShader             ctx->glCreateShader
+#define glGetShaderiv              ctx->glGetShaderiv
+#define glGetShaderInfoLog         ctx->glGetShaderInfoLog
+#define glCompileShader            ctx->glCompileShader
+#define glShaderSource             ctx->glShaderSource
+#define glDeleteShader             ctx->glDeleteShader
+#define glProgramString            ctx->glProgramString
+#define glBindProgram              ctx->glBindProgram
+#define glDeletePrograms           ctx->glDeletePrograms
+#define glGenPrograms              ctx->glGenPrograms
 #define GET_CONTEXT         _COGL_GET_CONTEXT
 #else
 #define GET_CONTEXT(CTXVAR,RETVAL) G_STMT_START { } G_STMT_END

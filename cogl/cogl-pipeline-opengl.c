@@ -50,19 +50,17 @@
  */
 
 #ifdef HAVE_COGL_GL
-#define glActiveTexture ctx->drv.pf_glActiveTexture
-#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
-#define glBlendFuncSeparate ctx->drv.pf_glBlendFuncSeparate
-#define glBlendEquation ctx->drv.pf_glBlendEquation
-#define glBlendColor ctx->drv.pf_glBlendColor
-#define glBlendEquationSeparate ctx->drv.pf_glBlendEquationSeparate
+#define glActiveTexture ctx->glActiveTexture
+#define glClientActiveTexture ctx->glClientActiveTexture
+#define glBlendEquation ctx->glBlendEquation
+#define glBlendColor ctx->glBlendColor
 
-#define glProgramString ctx->drv.pf_glProgramString
-#define glBindProgram ctx->drv.pf_glBindProgram
-#define glDeletePrograms ctx->drv.pf_glDeletePrograms
-#define glGenPrograms ctx->drv.pf_glGenPrograms
-#define glProgramLocalParameter4fv ctx->drv.pf_glProgramLocalParameter4fv
-#define glUseProgram ctx->drv.pf_glUseProgram
+#define glProgramString ctx->glProgramString
+#define glBindProgram ctx->glBindProgram
+#define glDeletePrograms ctx->glDeletePrograms
+#define glGenPrograms ctx->glGenPrograms
+#define glProgramLocalParameter4fv ctx->glProgramLocalParameter4fv
+#define glUseProgram ctx->glUseProgram
 #endif
 
 /* These aren't defined in the GLES headers */
@@ -519,9 +517,9 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
 #elif defined (HAVE_COGL_GL)
       gboolean have_blend_equation_seperate = FALSE;
       gboolean have_blend_func_separate = FALSE;
-      if (ctx->drv.pf_glBlendEquationSeparate) /* Only GL 2.0 + */
+      if (ctx->glBlendEquationSeparate) /* Only GL 2.0 + */
         have_blend_equation_seperate = TRUE;
-      if (ctx->drv.pf_glBlendFuncSeparate) /* Only GL 1.4 + */
+      if (ctx->glBlendFuncSeparate) /* Only GL 1.4 + */
         have_blend_func_separate = TRUE;
 #endif
 
@@ -546,8 +544,8 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
 
       if (have_blend_equation_seperate &&
           blend_state->blend_equation_rgb != blend_state->blend_equation_alpha)
-        GE (glBlendEquationSeparate (blend_state->blend_equation_rgb,
-                                     blend_state->blend_equation_alpha));
+        GE (ctx->glBlendEquationSeparate (blend_state->blend_equation_rgb,
+                                          blend_state->blend_equation_alpha));
       else
         GE (glBlendEquation (blend_state->blend_equation_rgb));
 
@@ -555,10 +553,10 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
           (blend_state->blend_src_factor_rgb != blend_state->blend_src_factor_alpha ||
            (blend_state->blend_src_factor_rgb !=
             blend_state->blend_src_factor_alpha)))
-        GE (glBlendFuncSeparate (blend_state->blend_src_factor_rgb,
-                                 blend_state->blend_dst_factor_rgb,
-                                 blend_state->blend_src_factor_alpha,
-                                 blend_state->blend_dst_factor_alpha));
+        GE (ctx->glBlendFuncSeparate (blend_state->blend_src_factor_rgb,
+                                      blend_state->blend_dst_factor_rgb,
+                                      blend_state->blend_src_factor_alpha,
+                                      blend_state->blend_dst_factor_alpha));
       else
 #endif
         GE (glBlendFunc (blend_state->blend_src_factor_rgb,

@@ -55,12 +55,12 @@
  */
 
 #ifdef HAVE_COGL_GL
-#define glProgramString ctx->drv.pf_glProgramString
-#define glBindProgram ctx->drv.pf_glBindProgram
-#define glDeletePrograms ctx->drv.pf_glDeletePrograms
-#define glGenPrograms ctx->drv.pf_glGenPrograms
-#define glProgramLocalParameter4fv ctx->drv.pf_glProgramLocalParameter4fv
-#define glUseProgram ctx->drv.pf_glUseProgram
+#define glProgramString ctx->glProgramString
+#define glBindProgram ctx->glBindProgram
+#define glDeletePrograms ctx->glDeletePrograms
+#define glGenPrograms ctx->glGenPrograms
+#define glProgramLocalParameter4fv ctx->glProgramLocalParameter4fv
+#define glUseProgram ctx->glUseProgram
 #endif
 
 /* This might not be defined on GLES */

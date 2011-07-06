@@ -46,8 +46,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define glGenerateMipmap ctx->drv.pf_glGenerateMipmap
-#define glTexImage3D ctx->drv.pf_glTexImage3D
+#define glGenerateMipmap ctx->glGenerateMipmap
+#define glTexImage3D ctx->glTexImage3D
 
 void
 _cogl_texture_driver_gen (GLenum   gl_target,

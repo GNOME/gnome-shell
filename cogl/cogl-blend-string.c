@@ -222,7 +222,7 @@ validate_blend_statements (CoglBlendStringStatement *statements,
   if (n_statements == 2)
     {
       /* glBlendEquationSeperate is GL 2.0 only */
-      if (!ctx->drv.pf_glBlendEquationSeparate &&
+      if (!ctx->glBlendEquationSeparate &&
           statements[0].function->type != statements[1].function->type)
         {
           error_string = "Separate blend functions for the RGB an A "

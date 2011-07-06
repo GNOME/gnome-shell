@@ -531,7 +531,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 
   while ((gl_error = glGetError ()) != GL_NO_ERROR)
     ;
-  ctx->drv.pf_glEGLImageTargetTexture2D (GL_TEXTURE_2D, image);
+  ctx->glEGLImageTargetTexture2D (GL_TEXTURE_2D, image);
   if (glGetError () != GL_NO_ERROR)
     {
       g_set_error (error,

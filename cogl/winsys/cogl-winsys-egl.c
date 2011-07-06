@@ -197,7 +197,7 @@ typedef struct _CoglTexturePixmapEGL
 #undef COGL_WINSYS_FEATURE_BEGIN
 #define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
                                   egl_private_flags)                    \
-  { 255, 255, namespaces, extension_names,                              \
+  { 255, 255, 0, namespaces, extension_names,                           \
       0, egl_private_flags,                                             \
       0,                                                                \
       cogl_egl_feature_ ## name ## _funcs },
@@ -353,7 +353,7 @@ check_egl_extensions (CoglRenderer *renderer)
   egl_renderer->private_features = 0;
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
     if (_cogl_feature_check (winsys,
-                             "EGL", winsys_feature_data + i, 0, 0,
+                             "EGL", winsys_feature_data + i, 0, 0, 0,
                              egl_extensions,
                              egl_renderer))
       {
