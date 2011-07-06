@@ -375,37 +375,40 @@ _cogl_pipeline_promote_weak_ancestors (CoglPipeline *strong)
 
   g_return_if_fail (!strong->is_weak);
 
-  for (n = COGL_PIPELINE_NODE (strong)->parent; n; n = n->parent)
-    {
-      CoglPipeline *pipeline = COGL_PIPELINE (n);
+  /* If the parent of strong is weak, then we want to promote it by
+     taking a reference on strong's grandparent. We don't need to take
+     a reference on strong's direct parent */
 
-      cogl_object_ref (pipeline);
+  if (COGL_PIPELINE_NODE (strong)->parent == NULL)
+    return;
 
-      if (!pipeline->is_weak)
-        return;
-    }
+  for (n = COGL_PIPELINE_NODE (strong)->parent;
+       /* We can assume that all weak pipelines have a parent */
+       COGL_PIPELINE (n)->is_weak;
+       n = n->parent)
+    /* 'n' is weak so we take a reference on its parent */
+    cogl_object_ref (n->parent);
 }
 
 static void
 _cogl_pipeline_revert_weak_ancestors (CoglPipeline *strong)
 {
-  CoglPipeline *parent = _cogl_pipeline_get_parent (strong);
   CoglPipelineNode *n;
 
   g_return_if_fail (!strong->is_weak);
 
-  if (!parent || !parent->is_weak)
+  /* This reverts the effect of calling
+     _cogl_pipeline_promote_weak_ancestors */
+
+  if (COGL_PIPELINE_NODE (strong)->parent == NULL)
     return;
 
-  for (n = COGL_PIPELINE_NODE (strong)->parent; n; n = n->parent)
-    {
-      CoglPipeline *pipeline = COGL_PIPELINE (n);
-
-      cogl_object_unref (pipeline);
-
-      if (!pipeline->is_weak)
-        return;
-    }
+  for (n = COGL_PIPELINE_NODE (strong)->parent;
+       /* We can assume that all weak pipelines have a parent */
+       COGL_PIPELINE (n)->is_weak;
+       n = n->parent)
+    /* 'n' is weak so we unref its parent */
+    cogl_object_unref (n->parent);
 }
 
 /* XXX: Always have an eye out for opportunities to lower the cost of
