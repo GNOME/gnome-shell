@@ -148,7 +148,7 @@ NotificationDaemon.prototype = {
     //
     // Either a pid or ndata.notification is needed to retrieve or
     // create a source.
-    _getSource: function(title, pid, ndata) {
+    _getSource: function(title, pid, ndata, sender) {
         if (!pid && !(ndata && ndata.notification))
             return null;
 
@@ -171,7 +171,7 @@ NotificationDaemon.prototype = {
             return source;
         }
 
-        let source = new Source(title, pid);
+        let source = new Source(title, pid, sender);
         source.setTransient(isForTransientNotification);
 
         if (!isForTransientNotification) {
@@ -245,7 +245,7 @@ NotificationDaemon.prototype = {
         let sender = DBus.getCurrentMessageContext().sender;
         let pid = this._senderToPid[sender];
 
-        let source = this._getSource(appName, pid, ndata);
+        let source = this._getSource(appName, pid, ndata, sender);
 
         if (source) {
             this._notifyForSource(source, ndata);
@@ -266,7 +266,7 @@ NotificationDaemon.prototype = {
                 if (!ndata)
                     return;
 
-                source = this._getSource(appName, pid, ndata);
+                source = this._getSource(appName, pid, ndata, sender);
 
                 // We only store sender-pid entries for persistent sources.
                 // Removing the entries once the source is destroyed
@@ -415,7 +415,7 @@ NotificationDaemon.prototype = {
     },
 
     _onTrayIconAdded: function(o, icon) {
-        let source = this._getSource(icon.title || icon.wm_class || _("Unknown"), icon.pid, null);
+        let source = this._getSource(icon.title || icon.wm_class || _("Unknown"), icon.pid, null, null);
         source.setTrayIcon(icon);
     },
 
@@ -428,24 +428,42 @@ NotificationDaemon.prototype = {
 
 DBus.conformExport(NotificationDaemon.prototype, NotificationDaemonIface);
 
-function Source(title, pid) {
-    this._init(title, pid);
+function Source(title, pid, sender) {
+    this._init(title, pid, sender);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(title, pid) {
+    _init: function(title, pid, sender) {
         MessageTray.Source.prototype._init.call(this, title);
 
         this._pid = pid;
-        this._appStateChangedId = 0;
+        if (sender)
+            // TODO: dbus-glib implementation of watch_name() doesn’t return an id to be used for
+            // unwatch_name() or implement unwatch_name(), however when we move to using GDBus implementation,
+            // we should save the id here and call unwatch_name() with it in destroy().
+            // Moving to GDBus is the work in progress: https://bugzilla.gnome.org/show_bug.cgi?id=648651
+            // and https://bugzilla.gnome.org/show_bug.cgi?id=622921 .
+            DBus.session.watch_name(sender,
+                                    false,
+                                    null,
+                                    Lang.bind(this, this._onNameVanished));
+
         this._setApp();
         if (this.app)
             this.title = this.app.get_name();
         else
             this.useNotificationIcon = true;
         this._trayIcon = null;
+    },
+
+    _onNameVanished: function() {
+        // Destroy the notification source when its sender is removed from DBus.
+        // Sender being removed from DBus would normally result in a tray icon being removed,
+        // so allow the code path that handles the tray icon being removed to handle that case.
+        if (!this.trayIcon)
+            this.destroy();
     },
 
     processNotification: function(notification, icon) {
@@ -500,10 +518,6 @@ Source.prototype = {
         if (!this.app)
             return;
 
-        // We only update the app if this.app is null, so we can't disconnect the old this._appStateChangedId
-        // even if it were non-zero for some reason.
-        this._appStateChangedId = this.app.connect('notify::state', Lang.bind(this,  this._appStateChanged));
-
         // Only override the icon if we were previously using
         // notification-based icons (ie, not a trayicon) or if it was unset before
         if (!this._trayIcon) {
@@ -528,19 +542,6 @@ Source.prototype = {
             this.destroy();
     },
 
-    _appStateChanged: function() {
-        // Destroy notification sources when their apps exit.
-        // The app exiting would normally result in a tray icon being removed,
-        // so the associated source would be destroyed through the code path
-        // that handles the tray icon being removed. We should not destroy
-        // the source associated with a tray icon when the application state
-        // is Shell.AppState.STOPPED because running applications that have
-        // no open windows would also have that state. This is often the case
-        // for applications that use tray icons.
-        if (!this._trayIcon && this.app.get_state() == Shell.AppState.STOPPED)
-            this.destroy();
-    },
-
     openApp: function() {
         if (this.app == null)
             return;
@@ -553,10 +554,6 @@ Source.prototype = {
     },
 
     destroy: function() {
-        if (this.app && this._appStateChangedId) {
-            this.app.disconnect(this._appStateChangedId);
-            this._appStateChangedId = 0;
-        }
         MessageTray.Source.prototype.destroy.call(this);
     }
 };
