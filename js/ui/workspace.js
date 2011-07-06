@@ -225,7 +225,11 @@ WindowClone.prototype = {
         let [width, height] = this.actor.get_transformed_size();
 
         let monitorIndex = this.metaWindow.get_monitor();
-        let availArea = Main.layoutManager.monitors[monitorIndex];
+        let monitor = Main.layoutManager.monitors[monitorIndex];
+        let availArea = new Meta.Rectangle({ x: monitor.x,
+                                             y: monitor.y,
+                                             width: monitor.width,
+                                             height: monitor.height });
         if (monitorIndex == Main.layoutManager.primaryIndex) {
             availArea.y += Main.panel.actor.height;
             availArea.height -= Main.panel.actor.height;
