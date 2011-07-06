@@ -151,6 +151,8 @@ static const gchar*          cally_actor_get_name            (AtkObject *obj);
 static gint                  cally_actor_get_n_children      (AtkObject *obj);
 static AtkObject*            cally_actor_ref_child           (AtkObject *obj,
                                                              gint       i);
+static AtkAttributeSet *     cally_actor_get_attributes      (AtkObject *obj);
+
 static gboolean             _cally_actor_all_parents_visible (ClutterActor *actor);
 
 /* ClutterContainer */
@@ -353,6 +355,7 @@ cally_actor_class_init (CallyActorClass *klass)
   class->initialize          = cally_actor_initialize;
   class->get_n_children      = cally_actor_get_n_children;
   class->ref_child           = cally_actor_ref_child;
+  class->get_attributes      = cally_actor_get_attributes;
 
   g_type_class_add_private (gobject_class, sizeof (CallyActorPrivate));
 }
@@ -632,6 +635,21 @@ cally_actor_ref_child (AtkObject *obj,
     }
 
   return result;
+}
+
+static AtkAttributeSet *
+cally_actor_get_attributes (AtkObject *obj)
+{
+  AtkAttributeSet *attributes;
+  AtkAttribute *toolkit;
+
+  toolkit = g_new (AtkAttribute, 1);
+  toolkit->name = g_strdup ("toolkit");
+  toolkit->value = g_strdup ("clutter");
+
+  attributes = g_slist_append (NULL, toolkit);
+
+  return attributes;
 }
 
 /* ClutterContainer */

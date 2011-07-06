@@ -165,18 +165,13 @@ cally_util_get_root (void)
 static const gchar *
 cally_util_get_toolkit_name (void)
 {
-  return "CALLY";
+  return "clutter";
 }
 
 static const gchar *
 cally_util_get_toolkit_version (void)
 {
-  /*
-   * FIXME:
-   * Version is passed in as a -D flag when this file is
-   * compiled.
-   */
-  return "0.1";
+  return CLUTTER_VERSION_S;
 }
 
 
