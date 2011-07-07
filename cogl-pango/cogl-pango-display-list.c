@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include "cogl-pango-display-list.h"
+#include "cogl/cogl-context-private.h"
 
 typedef enum
 {
@@ -265,6 +266,8 @@ emit_rectangles_through_journal (CoglPangoDisplayListNode *node)
 static void
 emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* It's expensive to go through the Cogl journal for large runs
    * of text in part because the journal transforms the quads in software
    * to avoid changing the modelview matrix. So for larger runs of text
@@ -293,29 +296,27 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
       node->d.texture.vertex_buffer = vb;
     }
 
-
 #ifdef CLUTTER_COGL_HAS_GL
+  if (ctx->driver == COGL_DRIVER_GL)
+    cogl_vertex_buffer_draw (node->d.texture.vertex_buffer,
+                             GL_QUADS,
+                             0, node->d.texture.verts->len);
+  else
+#endif
+    {
+      /* GLES doesn't support GL_QUADS so instead we use a VBO with
+         indexed vertices to generate GL_TRIANGLES from the quads */
 
-  cogl_vertex_buffer_draw (node->d.texture.vertex_buffer,
-                           GL_QUADS,
-                           0, node->d.texture.verts->len);
+      int n_indices = node->d.texture.verts->len / 4 * 6;
+      CoglHandle indices_vbo
+        = cogl_vertex_buffer_indices_get_for_quads (n_indices);
 
-#else /* CLUTTER_COGL_HAS_GL */
-  {
-    /* GLES doesn't support GL_QUADS so instead we use a VBO with
-       indexed vertices to generate GL_TRIANGLES from the quads */
-
-    int n_indices = node->d.texture.verts->len / 4 * 6;
-    CoglHandle indices_vbo
-      = cogl_vertex_buffer_indices_get_for_quads (n_indices);
-
-    cogl_vertex_buffer_draw_elements (node->d.texture.vertex_buffer,
-                                      COGL_VERTICES_MODE_TRIANGLES,
-                                      indices_vbo,
-                                      0, node->d.texture.verts->len - 1,
-                                      0, n_indices);
-  }
-#endif /* CLUTTER_COGL_HAS_GL */
+      cogl_vertex_buffer_draw_elements (node->d.texture.vertex_buffer,
+                                        COGL_VERTICES_MODE_TRIANGLES,
+                                        indices_vbo,
+                                        0, node->d.texture.verts->len - 1,
+                                        0, n_indices);
+    }
 }
 
 static void

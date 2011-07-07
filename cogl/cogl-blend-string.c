@@ -214,32 +214,33 @@ validate_blend_statements (CoglBlendStringStatement *statements,
   const char *error_string;
   CoglBlendStringError detail = COGL_BLEND_STRING_ERROR_INVALID_ERROR;
 
-#ifdef HAVE_COGL_GL
   _COGL_GET_CONTEXT (ctx, 0);
-#endif
 
-#ifdef HAVE_COGL_GL
-  if (n_statements == 2)
+  if (ctx->driver == COGL_DRIVER_GL)
     {
-      /* glBlendEquationSeperate is GL 2.0 only */
-      if (!ctx->glBlendEquationSeparate &&
-          statements[0].function->type != statements[1].function->type)
+      if (n_statements == 2)
+        {
+          /* glBlendEquationSeperate is GL 2.0 only */
+          if (!ctx->glBlendEquationSeparate &&
+              statements[0].function->type != statements[1].function->type)
+            {
+              error_string = "Separate blend functions for the RGB an A "
+                "channels isn't supported by the driver";
+              detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
+              goto error;
+            }
+        }
+    }
+  else if (ctx->driver == COGL_DRIVER_GLES1)
+    {
+      if (n_statements != 1)
         {
           error_string = "Separate blend functions for the RGB an A "
-                         "channels isn't supported by the driver";
+            "channels isn't supported by the GLES 1";
           detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
           goto error;
         }
     }
-#elif defined(HAVE_COGL_GLES)
-  if (n_statements != 1)
-    {
-      error_string = "Separate blend functions for the RGB an A "
-                     "channels isn't supported by the GLES 1";
-      detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
-      goto error;
-    }
-#endif
 
   for (i = 0; i < n_statements; i++)
     for (j = 0; j < statements[i].function->argc; j++)
@@ -261,15 +262,15 @@ validate_blend_statements (CoglBlendStringStatement *statements,
             goto error;
           }
 
-#ifdef HAVE_COGL_GLES
-        if (arg->factor.is_color &&
-            arg->factor.source.info->type == COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT)
+        if (ctx->driver == COGL_DRIVER_GLES1 &&
+            arg->factor.is_color &&
+            (arg->factor.source.info->type ==
+             COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT))
           {
             error_string = "GLES Doesn't support constant blend factors";
             detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
             goto error;
           }
-#endif
       }
 
   return TRUE;

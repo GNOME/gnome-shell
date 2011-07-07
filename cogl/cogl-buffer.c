@@ -316,33 +316,25 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
     return GL_READ_ONLY;
 }
 
-/* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
-#if defined (COGL_HAS_GLES)
-GLenum
-_cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint usage_hint,
-                               CoglBufferUpdateHint update_hint)
-{
-  /* usage hint is always TEXTURE for now */
-  if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
-      return GL_STATIC_DRAW;
-  return GL_DYNAMIC_DRAW;
-}
-#else
 GLenum
 _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
                                CoglBufferUpdateHint update_hint)
 {
+  _COGL_GET_CONTEXT (ctx, 0);
+
   /* usage hint is always TEXTURE for now */
   if (update_hint == COGL_BUFFER_UPDATE_HINT_STATIC)
     return GL_STATIC_DRAW;
   if (update_hint == COGL_BUFFER_UPDATE_HINT_DYNAMIC)
     return GL_DYNAMIC_DRAW;
+  /* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
+#ifdef HAVE_COGL_GL
   if (update_hint == COGL_BUFFER_UPDATE_HINT_STREAM)
     return GL_STREAM_DRAW;
+#endif
 
   return GL_STATIC_DRAW;
 }
-#endif
 
 void *
 _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)

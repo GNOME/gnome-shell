@@ -28,9 +28,12 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "cogl.h"
 #include "cogl-private.h"
 #include "cogl-object.h"
+#include "cogl-internal.h"
 
 #include "cogl-display-private.h"
 #include "cogl-renderer-private.h"

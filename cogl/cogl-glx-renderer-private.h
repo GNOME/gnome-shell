@@ -25,6 +25,7 @@
 #ifndef __COGL_RENDERER_GLX_PRIVATE_H
 #define __COGL_RENDERER_GLX_PRIVATE_H
 
+#include <gmodule.h>
 #include "cogl-object-private.h"
 #include "cogl-xlib-renderer-private.h"
 
@@ -42,6 +43,56 @@ typedef struct _CoglGLXRenderer
 
   /* Vblank stuff */
   int dri_fd;
+
+  /* GModule pointing to libGL which we use to get glX functions out of */
+  GModule *libgl_module;
+
+  /* Function pointers for core GLX functionality. We can't just link
+     against these directly because we need to conditionally load
+     libGL when we are using GLX so that it won't conflict with a GLES
+     library if we are using EGL + GLES */
+  void
+  (* glXDestroyContext) (Display *dpy, GLXContext ctx);
+  void
+  (* glXSwapBuffers) (Display *dpy, GLXDrawable drawable);
+  Bool
+  (* glXQueryExtension) (Display *dpy, int *errorb, int *event);
+  const char *
+  (* glXQueryExtensionsString) (Display *dpy, int screen);
+  Bool
+  (* glXQueryVersion) (Display *dpy, int *maj, int *min);
+  Bool
+  (* glXIsDirect) (Display *dpy, GLXContext ctx);
+  int
+  (* glXGetFBConfigAttrib) (Display *dpy, GLXFBConfig config,
+                            int attribute, int *value);
+  GLXWindow
+  (* glXCreateWindow) (Display *dpy, GLXFBConfig config,
+                       Window win, const int *attribList);
+  void
+  (* glXDestroyWindow) (Display *dpy, GLXWindow window);
+  GLXPixmap
+  (* glXCreatePixmap) (Display *dpy, GLXFBConfig config,
+                       Pixmap pixmap, const int *attribList);
+  void
+  (* glXDestroyPixmap) (Display *dpy, GLXPixmap pixmap);
+  GLXContext
+  (* glXCreateNewContext) (Display *dpy, GLXFBConfig config,
+                           int renderType, GLXContext shareList,
+                           Bool direct);
+  Bool
+  (* glXMakeContextCurrent) (Display *dpy, GLXDrawable draw,
+                             GLXDrawable read, GLXContext ctx);
+  void
+  (* glXSelectEvent) (Display *dpy, GLXDrawable drawable,
+                      unsigned long mask);
+  GLXFBConfig *
+  (* glXGetFBConfigs) (Display *dpy, int screen, int *nelements);
+  GLXFBConfig *
+  (* glXChooseFBConfig) (Display *dpy, int screen,
+                         const int *attrib_list, int *nelements);
+  XVisualInfo *
+  (* glXGetVisualFromFBConfig) (Display *dpy, GLXFBConfig config);
 
   /* Function pointers for GLX specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)

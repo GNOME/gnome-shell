@@ -38,7 +38,7 @@ _cogl_feature_check (const CoglWinsysVtable *winsys,
                      const CoglFeatureData *data,
                      int gl_major,
                      int gl_minor,
-                     CoglExtGlesAvailability gles_version,
+                     CoglDriver driver,
                      const char *extensions_string,
                      void *function_table)
 
@@ -48,9 +48,13 @@ _cogl_feature_check (const CoglWinsysVtable *winsys,
 
   /* First check whether the functions should be directly provided by
      GL */
-  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor,
-                             data->min_gl_major, data->min_gl_minor) ||
-      (gles_version & data->gles_availability))
+  if ((driver == COGL_DRIVER_GL &&
+       COGL_CHECK_GL_VERSION (gl_major, gl_minor,
+                              data->min_gl_major, data->min_gl_minor)) ||
+      (driver == COGL_DRIVER_GLES1 &&
+       (data->gles_availability & COGL_EXT_IN_GLES)) ||
+      (driver == COGL_DRIVER_GLES2 &&
+       (data->gles_availability & COGL_EXT_IN_GLES2)))
     suffix = "";
   else
     {
@@ -180,15 +184,14 @@ void
 _cogl_feature_check_ext_functions (CoglContext *context,
                                    int gl_major,
                                    int gl_minor,
-                                   const char *gl_extensions,
-                                   CoglExtGlesAvailability gles_version)
+                                   const char *gl_extensions)
 {
   int i;
 
   for (i = 0; i < G_N_ELEMENTS (cogl_feature_ext_functions_data); i++)
     _cogl_feature_check (_cogl_context_get_winsys (context),
                          "GL", cogl_feature_ext_functions_data + i,
-                         gl_major, gl_minor, gles_version,
+                         gl_major, gl_minor, context->driver,
                          gl_extensions,
                          context);
 }

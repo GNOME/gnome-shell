@@ -71,11 +71,8 @@ set_clip_plane (GLint plane_num,
 		const float *vertex_a,
 		const float *vertex_b)
 {
-#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
-  GLfloat plane[4];
-#else
-  GLdouble plane[4];
-#endif
+  GLfloat planef[4];
+  double planed[4];
   GLfloat angle;
   CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
@@ -110,17 +107,29 @@ set_clip_plane (GLint plane_num,
 
   _cogl_matrix_stack_flush_to_gl (modelview_stack, COGL_MATRIX_MODELVIEW);
 
-  plane[0] = 0;
-  plane[1] = -1.0;
-  plane[2] = 0;
-  plane[3] = vertex_a[1];
-#if defined (HAVE_COGL_GLES2)
-  g_assert_not_reached ();
-#elif defined (HAVE_COGL_GLES)
-  GE( ctx, glClipPlanef (plane_num, plane) );
-#else
-  GE( ctx, glClipPlane (plane_num, plane) );
-#endif
+  planef[0] = 0;
+  planef[1] = -1.0;
+  planef[2] = 0;
+  planef[3] = vertex_a[1];
+
+  switch (ctx->driver)
+    {
+    default:
+      g_assert_not_reached ();
+      break;
+
+    case COGL_DRIVER_GLES1:
+      GE( ctx, glClipPlanef (plane_num, planef) );
+      break;
+
+    case COGL_DRIVER_GL:
+      planed[0] = planef[0];
+      planed[1] = planef[1];
+      planed[2] = planef[2];
+      planed[3] = planef[3];
+      GE( ctx, glClipPlane (plane_num, planed) );
+      break;
+    }
 
   _cogl_matrix_stack_pop (modelview_stack);
 }

@@ -430,37 +430,38 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
      (only level 0 we are interested in) */
 
 #if HAVE_COGL_GL
+  if (ctx->driver == COGL_DRIVER_GL)
+    {
+      GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
+                                         GL_TEXTURE_COMPRESSED,
+                                         &gl_compressed) );
 
-  GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                                     GL_TEXTURE_COMPRESSED,
-                                     &gl_compressed) );
+      {
+        GLint val;
 
-  {
-    GLint val;
+        GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
+                                           GL_TEXTURE_INTERNAL_FORMAT,
+                                           &val) );
 
-    GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                                       GL_TEXTURE_INTERNAL_FORMAT,
-                                       &val) );
+        gl_int_format = val;
+      }
 
-    gl_int_format = val;
-  }
-
-  /* If we can query GL for the actual pixel format then we'll ignore
-     the passed in format and use that. */
-  if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
-                                                           &format))
-    return COGL_INVALID_HANDLE;
-
-#else
-
-  /* Otherwise we'll assume we can derive the GL format from the
-     passed in format */
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           &gl_int_format,
-                                           NULL,
-                                           NULL);
-
+      /* If we can query GL for the actual pixel format then we'll ignore
+         the passed in format and use that. */
+      if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
+                                                               &format))
+        return COGL_INVALID_HANDLE;
+    }
+  else
 #endif
+    {
+      /* Otherwise we'll assume we can derive the GL format from the
+         passed in format */
+      ctx->texture_driver->pixel_format_to_gl (format,
+                                               &gl_int_format,
+                                               NULL,
+                                               NULL);
+    }
 
   /* Note: We always trust the given width and height without querying
    * the texture object because the user may be creating a Cogl
@@ -772,7 +773,7 @@ _cogl_texture_2d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
          GL_GENERATE_MIPMAP and reuploading the first pixel */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
         ctx->texture_driver->gl_generate_mipmaps (GL_TEXTURE_2D);
-#ifndef HAVE_COGL_GLES2
+#if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GL)
       else
         {
           GE( ctx, glTexParameteri (GL_TEXTURE_2D,

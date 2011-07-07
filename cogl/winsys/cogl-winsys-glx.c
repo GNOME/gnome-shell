@@ -265,9 +265,66 @@ glx_event_filter_cb (XEvent *xevent, void *data)
 static void
 _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
+  CoglGLXRenderer *glx_renderer = renderer->winsys;
+
   _cogl_xlib_renderer_disconnect (renderer);
 
+  if (glx_renderer->libgl_module)
+    g_module_close (glx_renderer->libgl_module);
+
   g_slice_free (CoglGLXRenderer, renderer->winsys);
+}
+
+static gboolean
+resolve_core_glx_functions (CoglRenderer *renderer,
+                            GError **error)
+{
+  CoglGLXRenderer *glx_renderer;
+
+  glx_renderer = renderer->winsys;
+
+  if (!g_module_symbol (glx_renderer->libgl_module, "glXCreatePixmap",
+                        (void **) &glx_renderer->glXCreatePixmap) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXDestroyPixmap",
+                        (void **) &glx_renderer->glXDestroyPixmap) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXChooseFBConfig",
+                        (void **) &glx_renderer->glXChooseFBConfig) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXCreateNewContext",
+                        (void **) &glx_renderer->glXCreateNewContext) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXGetFBConfigAttrib",
+                        (void **) &glx_renderer->glXGetFBConfigAttrib) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXQueryVersion",
+                        (void **) &glx_renderer->glXQueryVersion) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXDestroyContext",
+                        (void **) &glx_renderer->glXDestroyContext) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXMakeContextCurrent",
+                        (void **) &glx_renderer->glXMakeContextCurrent) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXSwapBuffers",
+                        (void **) &glx_renderer->glXSwapBuffers) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXQueryExtension",
+                        (void **) &glx_renderer->glXQueryExtension) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXIsDirect",
+                        (void **) &glx_renderer->glXIsDirect) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXGetVisualFromFBConfig",
+                        (void **) &glx_renderer->glXGetVisualFromFBConfig) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXSelectEvent",
+                        (void **) &glx_renderer->glXSelectEvent) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXCreateWindow",
+                        (void **) &glx_renderer->glXCreateWindow) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXGetFBConfigs",
+                        (void **) &glx_renderer->glXGetFBConfigs) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXDestroyWindow",
+                        (void **) &glx_renderer->glXDestroyWindow) ||
+      !g_module_symbol (glx_renderer->libgl_module, "glXQueryExtensionsString",
+                        (void **) &glx_renderer->glXQueryExtensionsString))
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "Failed to resolve required GLX symbol");
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 static gboolean
@@ -276,6 +333,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 {
   CoglGLXRenderer *glx_renderer;
   CoglXlibRenderer *xlib_renderer;
+  char *libgl_module_path;
 
   renderer->winsys = g_slice_new0 (CoglGLXRenderer);
 
@@ -285,9 +343,28 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (!_cogl_xlib_renderer_connect (renderer, error))
     goto error;
 
-  if (!glXQueryExtension (xlib_renderer->xdpy,
-                          &glx_renderer->glx_error_base,
-                          &glx_renderer->glx_event_base))
+  libgl_module_path = g_module_build_path (NULL, /* standard lib search path */
+                                           COGL_GL_LIBNAME);
+
+  glx_renderer->libgl_module = g_module_open (libgl_module_path,
+                                              G_MODULE_BIND_LAZY);
+
+  g_free (libgl_module_path);
+
+  if (glx_renderer->libgl_module == NULL)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "Failed to dynamically open the OpenGL library");
+      goto error;
+    }
+
+  if (!resolve_core_glx_functions (renderer, error))
+    goto error;
+
+  if (!glx_renderer->glXQueryExtension (xlib_renderer->xdpy,
+                                        &glx_renderer->glx_error_base,
+                                        &glx_renderer->glx_event_base))
     {
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
@@ -298,9 +375,9 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   /* XXX: Note: For a long time Mesa exported a hybrid GLX, exporting
    * extensions specified to require GLX 1.3, but still reporting 1.2
    * via glXQueryVersion. */
-  if (!glXQueryVersion (xlib_renderer->xdpy,
-                        &glx_renderer->glx_major,
-                        &glx_renderer->glx_minor)
+  if (!glx_renderer->glXQueryVersion (xlib_renderer->xdpy,
+                                      &glx_renderer->glx_major,
+                                      &glx_renderer->glx_minor)
       || !(glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 2))
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -325,17 +402,19 @@ update_winsys_features (CoglContext *context)
   CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   const char *glx_extensions;
+  int default_screen;
   int i;
 
   g_return_if_fail (glx_display->glx_context);
 
-  _cogl_gl_update_features (context);
+  _cogl_context_update_features (context);
 
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
+  default_screen = DefaultScreen (xlib_renderer->xdpy);
   glx_extensions =
-    glXQueryExtensionsString (xlib_renderer->xdpy,
-                              DefaultScreen (xlib_renderer->xdpy));
+    glx_renderer->glXQueryExtensionsString (xlib_renderer->xdpy,
+                                            default_screen);
 
   COGL_NOTE (WINSYS, "  GLX Extensions: %s", glx_extensions);
 
@@ -346,7 +425,8 @@ update_winsys_features (CoglContext *context)
 
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
     if (_cogl_feature_check (_cogl_context_get_winsys (context),
-                             "GLX", winsys_feature_data + i, 0, 0, 0,
+                             "GLX", winsys_feature_data + i, 0, 0,
+                             COGL_DRIVER_GL, /* the driver isn't used */
                              glx_extensions,
                              glx_renderer))
       {
@@ -407,6 +487,7 @@ find_fbconfig (CoglDisplay *display,
                GError **error)
 {
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglGLXRenderer *glx_renderer = display->renderer->winsys;
   GLXFBConfig *configs = NULL;
   int n_configs, i;
   static const int attributes[] = {
@@ -424,10 +505,10 @@ find_fbconfig (CoglDisplay *display,
   gboolean ret = TRUE;
   int xscreen_num = DefaultScreen (xlib_renderer->xdpy);
 
-  configs = glXChooseFBConfig (xlib_renderer->xdpy,
-                               xscreen_num,
-                               attributes,
-                               &n_configs);
+  configs = glx_renderer->glXChooseFBConfig (xlib_renderer->xdpy,
+                                             xscreen_num,
+                                             attributes,
+                                             &n_configs);
   if (!configs || n_configs == 0)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -443,7 +524,8 @@ find_fbconfig (CoglDisplay *display,
         {
           XVisualInfo *vinfo;
 
-          vinfo = glXGetVisualFromFBConfig (xlib_renderer->xdpy, configs[i]);
+          vinfo = glx_renderer->glXGetVisualFromFBConfig (xlib_renderer->xdpy,
+                                                          configs[i]);
           if (vinfo == NULL)
             continue;
 
@@ -519,11 +601,12 @@ create_context (CoglDisplay *display, GError **error)
   COGL_NOTE (WINSYS, "Creating GLX Context (display: %p)",
              xlib_renderer->xdpy);
 
-  glx_display->glx_context = glXCreateNewContext (xlib_renderer->xdpy,
-                                                  config,
-                                                  GLX_RGBA_TYPE,
-                                                  NULL,
-                                                  True);
+  glx_display->glx_context =
+    glx_renderer->glXCreateNewContext (xlib_renderer->xdpy,
+                                       config,
+                                       GLX_RGBA_TYPE,
+                                       NULL,
+                                       True);
   if (glx_display->glx_context == NULL)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -533,7 +616,7 @@ create_context (CoglDisplay *display, GError **error)
     }
 
   glx_renderer->is_direct =
-    glXIsDirect (xlib_renderer->xdpy, glx_display->glx_context);
+    glx_renderer->glXIsDirect (xlib_renderer->xdpy, glx_display->glx_context);
 
   COGL_NOTE (WINSYS, "Setting %s context",
              glx_renderer->is_direct ? "direct" : "indirect");
@@ -543,7 +626,8 @@ create_context (CoglDisplay *display, GError **error)
    * framebuffer is in use.
    */
 
-  xvisinfo = glXGetVisualFromFBConfig (xlib_renderer->xdpy, config);
+  xvisinfo = glx_renderer->glXGetVisualFromFBConfig (xlib_renderer->xdpy,
+                                                     config);
   if (xvisinfo == NULL)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -577,10 +661,11 @@ create_context (CoglDisplay *display, GError **error)
    * drawables. */
   if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 3)
     {
-      glx_display->dummy_glxwin = glXCreateWindow (xlib_renderer->xdpy,
-                                                   config,
-                                                   xlib_display->dummy_xwin,
-                                                   NULL);
+      glx_display->dummy_glxwin =
+        glx_renderer->glXCreateWindow (xlib_renderer->xdpy,
+                                       config,
+                                       xlib_display->dummy_xwin,
+                                       NULL);
     }
 
   if (glx_display->dummy_glxwin)
@@ -591,10 +676,10 @@ create_context (CoglDisplay *display, GError **error)
   COGL_NOTE (WINSYS, "Selecting dummy 0x%x for the GLX context",
              (unsigned int) dummy_drawable);
 
-  glXMakeContextCurrent (xlib_renderer->xdpy,
-                         dummy_drawable,
-                         dummy_drawable,
-                         glx_display->glx_context);
+  glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                       dummy_drawable,
+                                       dummy_drawable,
+                                       glx_display->glx_context);
 
   XFree (xvisinfo);
 
@@ -615,19 +700,23 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   CoglGLXDisplay *glx_display = display->winsys;
   CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+  CoglGLXRenderer *glx_renderer = display->renderer->winsys;
 
   g_return_if_fail (glx_display != NULL);
 
   if (glx_display->glx_context)
     {
-      glXMakeContextCurrent (xlib_renderer->xdpy, None, None, NULL);
-      glXDestroyContext (xlib_renderer->xdpy, glx_display->glx_context);
+      glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                           None, None, NULL);
+      glx_renderer->glXDestroyContext (xlib_renderer->xdpy,
+                                       glx_display->glx_context);
       glx_display->glx_context = NULL;
     }
 
   if (glx_display->dummy_glxwin)
     {
-      glXDestroyWindow (xlib_renderer->xdpy, glx_display->dummy_glxwin);
+      glx_renderer->glXDestroyWindow (xlib_renderer->xdpy,
+                                      glx_display->dummy_glxwin);
       glx_display->dummy_glxwin = None;
     }
 
@@ -761,8 +850,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
       _cogl_xlib_renderer_trap_errors (display->renderer, &state);
 
-      xvisinfo = glXGetVisualFromFBConfig (xlib_renderer->xdpy,
-                                           glx_display->fbconfig);
+      xvisinfo = glx_renderer->glXGetVisualFromFBConfig (xlib_renderer->xdpy,
+                                                         glx_display->fbconfig);
       if (xvisinfo == NULL)
         {
           g_set_error (error, COGL_WINSYS_ERROR,
@@ -825,10 +914,10 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 3)
     {
       glx_onscreen->glxwin =
-        glXCreateWindow (xlib_renderer->xdpy,
-                         glx_display->fbconfig,
-                         xlib_onscreen->xwin,
-                         NULL);
+        glx_renderer->glXCreateWindow (xlib_renderer->xdpy,
+                                       glx_display->fbconfig,
+                                       xlib_onscreen->xwin,
+                                       NULL);
     }
 
 #ifdef GLX_INTEL_swap_event
@@ -841,9 +930,9 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
        * because we rely on it to advance the master clock, and
        * drive redraw/relayout, animations and event handling.
        */
-      glXSelectEvent (xlib_renderer->xdpy,
-                      drawable,
-                      GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK);
+      glx_renderer->glXSelectEvent (xlib_renderer->xdpy,
+                                    drawable,
+                                    GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK);
     }
 #endif /* GLX_INTEL_swap_event */
 
@@ -856,6 +945,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
   CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
+  CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   CoglXlibTrapState old_state;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
@@ -868,7 +958,8 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
   if (glx_onscreen->glxwin != None)
     {
-      glXDestroyWindow (xlib_renderer->xdpy, glx_onscreen->glxwin);
+      glx_renderer->glXDestroyWindow (xlib_renderer->xdpy,
+                                      glx_onscreen->glxwin);
       glx_onscreen->glxwin = None;
     }
 
@@ -913,9 +1004,9 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 
       _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
 
-      glXMakeContextCurrent (xlib_renderer->xdpy,
-                             drawable, drawable,
-                             glx_display->glx_context);
+      glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                           drawable, drawable,
+                                           glx_display->glx_context);
     }
   else
     {
@@ -934,10 +1025,10 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
                  xlib_onscreen->is_foreign_xwin ? "foreign" : "native",
                  glx_display->glx_context);
 
-      glXMakeContextCurrent (xlib_renderer->xdpy,
-                             drawable,
-                             drawable,
-                             glx_display->glx_context);
+      glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                           drawable,
+                                           drawable,
+                                           glx_display->glx_context);
 
       /* In case we are using GLX_SGI_swap_control for vblank syncing
        * we need call glXSwapIntervalSGI here to make sure that it
@@ -1252,7 +1343,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   else
     have_counter = FALSE;
 
-  glXSwapBuffers (xlib_renderer->xdpy, drawable);
+  glx_renderer->glXSwapBuffers (xlib_renderer->xdpy, drawable);
 
   if (have_counter)
     glx_onscreen->last_swap_vsync_counter = _cogl_winsys_get_vsync_counter ();
@@ -1341,6 +1432,7 @@ _cogl_winsys_xlib_get_visual_info (void)
 {
   CoglGLXDisplay *glx_display;
   CoglXlibRenderer *xlib_renderer;
+  CoglGLXRenderer *glx_renderer;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
@@ -1348,11 +1440,13 @@ _cogl_winsys_xlib_get_visual_info (void)
 
   glx_display = ctx->display->winsys;
   xlib_renderer = ctx->display->renderer->winsys;
+  glx_renderer = ctx->display->renderer->winsys;
 
   if (!glx_display->found_fbconfig)
     return NULL;
 
-  return glXGetVisualFromFBConfig (xlib_renderer->xdpy, glx_display->fbconfig);
+  return glx_renderer->glXGetVisualFromFBConfig (xlib_renderer->xdpy,
+                                                 glx_display->fbconfig);
 }
 
 static gboolean
@@ -1362,6 +1456,7 @@ get_fbconfig_for_depth (CoglContext *context,
                         gboolean *can_mipmap_ret)
 {
   CoglXlibRenderer *xlib_renderer;
+  CoglGLXRenderer *glx_renderer;
   CoglGLXDisplay *glx_display;
   Display *dpy;
   GLXFBConfig *fbconfigs;
@@ -1371,6 +1466,7 @@ get_fbconfig_for_depth (CoglContext *context,
   gboolean found = FALSE;
 
   xlib_renderer = context->display->renderer->winsys;
+  glx_renderer = context->display->renderer->winsys;
   glx_display = context->display->winsys;
 
   /* Check if we've already got a cached config for this depth */
@@ -1386,7 +1482,8 @@ get_fbconfig_for_depth (CoglContext *context,
 
   dpy = xlib_renderer->xdpy;
 
-  fbconfigs = glXGetFBConfigs (dpy, DefaultScreen (dpy), &n_elements);
+  fbconfigs = glx_renderer->glXGetFBConfigs (dpy, DefaultScreen (dpy),
+                                             &n_elements);
 
   db = G_MAXSHORT;
   stencil = G_MAXSHORT;
@@ -1398,7 +1495,7 @@ get_fbconfig_for_depth (CoglContext *context,
       XVisualInfo *vi;
       int visual_depth;
 
-      vi = glXGetVisualFromFBConfig (dpy, fbconfigs[i]);
+      vi = glx_renderer->glXGetVisualFromFBConfig (dpy, fbconfigs[i]);
       if (vi == NULL)
         continue;
 
@@ -1409,24 +1506,24 @@ get_fbconfig_for_depth (CoglContext *context,
       if (visual_depth != depth)
         continue;
 
-      glXGetFBConfigAttrib (dpy,
-                            fbconfigs[i],
-                            GLX_ALPHA_SIZE,
-                            &alpha);
-      glXGetFBConfigAttrib (dpy,
-                            fbconfigs[i],
-                            GLX_BUFFER_SIZE,
-                            &value);
+      glx_renderer->glXGetFBConfigAttrib (dpy,
+                                          fbconfigs[i],
+                                          GLX_ALPHA_SIZE,
+                                          &alpha);
+      glx_renderer->glXGetFBConfigAttrib (dpy,
+                                          fbconfigs[i],
+                                          GLX_BUFFER_SIZE,
+                                          &value);
       if (value != depth && (value - alpha) != depth)
         continue;
 
       value = 0;
       if (depth == 32)
         {
-          glXGetFBConfigAttrib (dpy,
-                                fbconfigs[i],
-                                GLX_BIND_TO_TEXTURE_RGBA_EXT,
-                                &value);
+          glx_renderer->glXGetFBConfigAttrib (dpy,
+                                              fbconfigs[i],
+                                              GLX_BIND_TO_TEXTURE_RGBA_EXT,
+                                              &value);
           if (value)
             rgba = 1;
         }
@@ -1436,27 +1533,27 @@ get_fbconfig_for_depth (CoglContext *context,
           if (rgba)
             continue;
 
-          glXGetFBConfigAttrib (dpy,
-                                fbconfigs[i],
-                                GLX_BIND_TO_TEXTURE_RGB_EXT,
-                                &value);
+          glx_renderer->glXGetFBConfigAttrib (dpy,
+                                              fbconfigs[i],
+                                              GLX_BIND_TO_TEXTURE_RGB_EXT,
+                                              &value);
           if (!value)
             continue;
         }
 
-      glXGetFBConfigAttrib (dpy,
-                            fbconfigs[i],
-                            GLX_DOUBLEBUFFER,
-                            &value);
+      glx_renderer->glXGetFBConfigAttrib (dpy,
+                                          fbconfigs[i],
+                                          GLX_DOUBLEBUFFER,
+                                          &value);
       if (value > db)
         continue;
 
       db = value;
 
-      glXGetFBConfigAttrib (dpy,
-                            fbconfigs[i],
-                            GLX_STENCIL_SIZE,
-                            &value);
+      glx_renderer->glXGetFBConfigAttrib (dpy,
+                                          fbconfigs[i],
+                                          GLX_STENCIL_SIZE,
+                                          &value);
       if (value > stencil)
         continue;
 
@@ -1465,10 +1562,10 @@ get_fbconfig_for_depth (CoglContext *context,
       /* glGenerateMipmap is defined in the offscreen extension */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
         {
-          glXGetFBConfigAttrib (dpy,
-                                fbconfigs[i],
-                                GLX_BIND_TO_MIPMAP_TEXTURE_EXT,
-                                &value);
+          glx_renderer->glXGetFBConfigAttrib (dpy,
+                                              fbconfigs[i],
+                                              GLX_BIND_TO_MIPMAP_TEXTURE_EXT,
+                                              &value);
 
           if (value < mipmap)
             continue;
@@ -1548,6 +1645,7 @@ try_create_glx_pixmap (CoglContext *context,
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
   CoglRenderer *renderer;
   CoglXlibRenderer *xlib_renderer;
+  CoglGLXRenderer *glx_renderer;
   Display *dpy;
   /* We have to initialize this *opaque* variable because gcc tries to
    * be too smart for its own good and warns that the variable may be
@@ -1560,6 +1658,7 @@ try_create_glx_pixmap (CoglContext *context,
 
   renderer = context->display->renderer;
   xlib_renderer = renderer->winsys;
+  glx_renderer = renderer->winsys;
   dpy = xlib_renderer->xdpy;
 
   if (!get_fbconfig_for_depth (context,
@@ -1606,10 +1705,11 @@ try_create_glx_pixmap (CoglContext *context,
 
   _cogl_xlib_renderer_trap_errors (renderer, &trap_state);
 
-  glx_tex_pixmap->glx_pixmap = glXCreatePixmap (dpy,
-                                                fb_config,
-                                                tex_pixmap->pixmap,
-                                                attribs);
+  glx_tex_pixmap->glx_pixmap =
+    glx_renderer->glXCreatePixmap (dpy,
+                                   fb_config,
+                                   tex_pixmap->pixmap,
+                                   attribs);
   glx_tex_pixmap->has_mipmap_space = mipmap;
 
   XSync (dpy, False);
@@ -1618,7 +1718,7 @@ try_create_glx_pixmap (CoglContext *context,
     {
       COGL_NOTE (TEXTURE_PIXMAP, "Failed to create pixmap for %p", tex_pixmap);
       _cogl_xlib_renderer_trap_errors (renderer, &trap_state);
-      glXDestroyPixmap (dpy, glx_tex_pixmap->glx_pixmap);
+      glx_renderer->glXDestroyPixmap (dpy, glx_tex_pixmap->glx_pixmap);
       XSync (dpy, False);
       _cogl_xlib_renderer_untrap_errors (renderer, &trap_state);
 
@@ -1702,7 +1802,8 @@ free_glx_pixmap (CoglContext *context,
    *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2324
    */
   _cogl_xlib_renderer_trap_errors (renderer, &trap_state);
-  glXDestroyPixmap (xlib_renderer->xdpy, glx_tex_pixmap->glx_pixmap);
+  glx_renderer->glXDestroyPixmap (xlib_renderer->xdpy,
+                                  glx_tex_pixmap->glx_pixmap);
   XSync (xlib_renderer->xdpy, False);
   _cogl_xlib_renderer_untrap_errors (renderer, &trap_state);
 

@@ -206,17 +206,13 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                    "main ()\n"
                    "{\n");
 
-#ifdef HAVE_COGL_GLES2
-
-  /* There is no builtin uniform for the pointsize on GLES2 so we need
-     to copy it from the custom uniform in the vertex shader */
-  g_string_append (priv->source,
-                   "  cogl_point_size_out = cogl_point_size_in;\n");
-
-#else /* HAVE_COGL_GLES2 */
-
+  if (ctx->driver == COGL_DRIVER_GLES2)
+    /* There is no builtin uniform for the pointsize on GLES2 so we need
+       to copy it from the custom uniform in the vertex shader */
+    g_string_append (priv->source,
+                     "  cogl_point_size_out = cogl_point_size_in;\n");
   /* On regular OpenGL we'll just flush the point size builtin */
-  if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
+  else if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
     {
       CoglPipeline *authority =
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
@@ -227,8 +223,6 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
           ctx->point_size_cache = authority->big_state->point_size;
         }
     }
-
-#endif /* HAVE_COGL_GLES2 */
 
   return TRUE;
 }
@@ -241,31 +235,33 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
   CoglPipelineVertendPrivate *priv;
   int unit_index;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   priv = get_glsl_priv (pipeline);
 
   unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
-#ifndef HAVE_COGL_GLES2
-
-  /* We are using the fixed function uniforms for the user matrices
-     and the only way to set them is with the fixed function API so we
-     still need to flush them here */
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
+  if (ctx->driver != COGL_DRIVER_GLES2)
     {
-      CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
-      CoglPipelineLayer *authority =
-        _cogl_pipeline_layer_get_authority (layer, state);
-      CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
+      /* We are using the fixed function uniforms for the user matrices
+         and the only way to set them is with the fixed function API so we
+         still need to flush them here */
+      if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
+        {
+          CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
+          CoglPipelineLayer *authority =
+            _cogl_pipeline_layer_get_authority (layer, state);
+          CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
 
-      _cogl_matrix_stack_set (unit->matrix_stack,
-                              &authority->big_state->matrix);
+          _cogl_matrix_stack_set (unit->matrix_stack,
+                                  &authority->big_state->matrix);
 
-      _cogl_set_active_texture_unit (unit_index);
+          _cogl_set_active_texture_unit (unit_index);
 
-      _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
+          _cogl_matrix_stack_flush_to_gl (unit->matrix_stack,
+                                          COGL_MATRIX_TEXTURE);
+        }
     }
-
-#endif /* HAVE_COGL_GLES2 */
 
   if (priv->source == NULL)
     return TRUE;

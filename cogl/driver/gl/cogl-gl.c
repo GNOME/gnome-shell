@@ -72,12 +72,11 @@ _cogl_get_gl_version (int *major_out, int *minor_out)
 }
 
 gboolean
-_cogl_gl_check_version (GError **error)
+_cogl_gl_check_gl_version (CoglContext *ctx,
+                           GError **error)
 {
   int major, minor;
   const char *gl_extensions;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (!_cogl_get_gl_version (&major, &minor))
     {
@@ -166,8 +165,7 @@ _cogl_gl_update_features (CoglContext *context)
   _cogl_feature_check_ext_functions (context,
                                      gl_major,
                                      gl_minor,
-                                     gl_extensions,
-                                     0 /* gles_version */);
+                                     gl_extensions);
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
       _cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))

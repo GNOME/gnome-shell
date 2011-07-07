@@ -240,12 +240,6 @@ _cogl_pipeline_texture_storage_change_notify (CoglHandle texture)
 static void
 set_glsl_program (GLuint gl_program)
 {
-#ifdef HAVE_COGL_GLES
-
-  g_return_if_reached ();
-
-#else /* HAVE_COGL_GLES */
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (ctx->current_gl_program != gl_program)
@@ -263,8 +257,6 @@ set_glsl_program (GLuint gl_program)
           ctx->current_gl_program = 0;
         }
     }
-
-#endif /* HAVE_COGL_GLES */
 }
 
 void
@@ -415,7 +407,7 @@ _cogl_get_max_texture_image_units (void)
 }
 #endif
 
-#ifndef HAVE_COGL_GLES
+#if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
 
 static gboolean
 blend_factor_uses_constant (GLenum blend_factor)
@@ -446,21 +438,20 @@ flush_depth_state (CoglDepthState *depth_state)
       ctx->depth_writing_enabled_cache = depth_state->write_enabled;
     }
 
-#ifndef COGL_HAS_GLES
-  if (ctx->depth_range_near_cache != depth_state->range_near ||
-      ctx->depth_range_far_cache != depth_state->range_far)
+  if (ctx->driver != COGL_DRIVER_GLES1 &&
+      (ctx->depth_range_near_cache != depth_state->range_near ||
+       ctx->depth_range_far_cache != depth_state->range_far))
     {
-#ifdef COGL_HAS_GLES2
-      GE (ctx, glDepthRangef (depth_state->range_near,
-                              depth_state->range_far));
-#else
-      GE (ctx, glDepthRange (depth_state->range_near,
-                             depth_state->range_far));
-#endif
+      if (ctx->driver == COGL_DRIVER_GLES2)
+        GE (ctx, glDepthRangef (depth_state->range_near,
+                                depth_state->range_far));
+      else
+        GE (ctx, glDepthRange (depth_state->range_near,
+                               depth_state->range_far));
+
       ctx->depth_range_near_cache = depth_state->range_near;
       ctx->depth_range_far_cache = depth_state->range_far;
     }
-#endif /* COGL_HAS_GLES */
 }
 
 static void
@@ -472,8 +463,8 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* On GLES2 we'll flush the color later */
-#ifndef HAVE_COGL_GLES2
-  if (!skip_gl_color)
+  if (ctx->driver != COGL_DRIVER_GLES2 &&
+      !skip_gl_color)
     {
       if ((pipelines_difference & COGL_PIPELINE_STATE_COLOR) ||
           /* Assume if we were previously told to skip the color, then
@@ -488,7 +479,6 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
                                cogl_color_get_alpha_byte (&authority->color)));
         }
     }
-#endif
 
   if (pipelines_difference & COGL_PIPELINE_STATE_BLEND)
     {
@@ -497,97 +487,103 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
       CoglPipelineBlendState *blend_state =
         &authority->big_state->blend_state;
 
-#if defined (HAVE_COGL_GLES2)
-      gboolean have_blend_equation_seperate = TRUE;
-      gboolean have_blend_func_separate = TRUE;
-#elif defined (HAVE_COGL_GL)
-      gboolean have_blend_equation_seperate = FALSE;
-      gboolean have_blend_func_separate = FALSE;
-      if (ctx->glBlendEquationSeparate) /* Only GL 2.0 + */
-        have_blend_equation_seperate = TRUE;
-      if (ctx->glBlendFuncSeparate) /* Only GL 1.4 + */
-        have_blend_func_separate = TRUE;
-#endif
-
-#ifndef HAVE_COGL_GLES /* GLES 1 only has glBlendFunc */
-      if (blend_factor_uses_constant (blend_state->blend_src_factor_rgb) ||
-          blend_factor_uses_constant (blend_state->blend_src_factor_alpha) ||
-          blend_factor_uses_constant (blend_state->blend_dst_factor_rgb) ||
-          blend_factor_uses_constant (blend_state->blend_dst_factor_alpha))
+      /* GLES 1 only has glBlendFunc */
+      if (ctx->driver == COGL_DRIVER_GLES1)
         {
-          float red =
-            cogl_color_get_red_float (&blend_state->blend_constant);
-          float green =
-            cogl_color_get_green_float (&blend_state->blend_constant);
-          float blue =
-            cogl_color_get_blue_float (&blend_state->blend_constant);
-          float alpha =
-            cogl_color_get_alpha_float (&blend_state->blend_constant);
+          GE (ctx, glBlendFunc (blend_state->blend_src_factor_rgb,
+                                blend_state->blend_dst_factor_rgb));
+        }
+#if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
+      else
+        {
+          if (blend_factor_uses_constant (blend_state->blend_src_factor_rgb) ||
+              blend_factor_uses_constant (blend_state
+                                          ->blend_src_factor_alpha) ||
+              blend_factor_uses_constant (blend_state->blend_dst_factor_rgb) ||
+              blend_factor_uses_constant (blend_state->blend_dst_factor_alpha))
+            {
+              float red =
+                cogl_color_get_red_float (&blend_state->blend_constant);
+              float green =
+                cogl_color_get_green_float (&blend_state->blend_constant);
+              float blue =
+                cogl_color_get_blue_float (&blend_state->blend_constant);
+              float alpha =
+                cogl_color_get_alpha_float (&blend_state->blend_constant);
 
 
-          GE (ctx, glBlendColor (red, green, blue, alpha));
+              GE (ctx, glBlendColor (red, green, blue, alpha));
+            }
+
+          if (ctx->glBlendEquationSeparate &&
+              blend_state->blend_equation_rgb !=
+              blend_state->blend_equation_alpha)
+            GE (ctx,
+                glBlendEquationSeparate (blend_state->blend_equation_rgb,
+                                         blend_state->blend_equation_alpha));
+          else
+            GE (ctx, glBlendEquation (blend_state->blend_equation_rgb));
+
+          if (ctx->glBlendFuncSeparate &&
+              (blend_state->blend_src_factor_rgb !=
+               blend_state->blend_src_factor_alpha ||
+               (blend_state->blend_src_factor_rgb !=
+                blend_state->blend_src_factor_alpha)))
+            GE (ctx, glBlendFuncSeparate (blend_state->blend_src_factor_rgb,
+                                          blend_state->blend_dst_factor_rgb,
+                                          blend_state->blend_src_factor_alpha,
+                                          blend_state->blend_dst_factor_alpha));
+          else
+            GE (ctx, glBlendFunc (blend_state->blend_src_factor_rgb,
+                                  blend_state->blend_dst_factor_rgb));
+        }
+#endif
+    }
+
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
+
+  if (ctx->driver != COGL_DRIVER_GLES2)
+    {
+      /* Under GLES2 the alpha function is implemented as part of the
+         fragment shader */
+      if (pipelines_difference & (COGL_PIPELINE_STATE_ALPHA_FUNC |
+                                  COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
+        {
+          CoglPipeline *authority =
+            _cogl_pipeline_get_authority (pipeline,
+                                          COGL_PIPELINE_STATE_ALPHA_FUNC);
+          CoglPipelineAlphaFuncState *alpha_state =
+            &authority->big_state->alpha_state;
+
+          /* NB: Currently the Cogl defines are compatible with the GL ones: */
+          GE (ctx, glAlphaFunc (alpha_state->alpha_func,
+                                alpha_state->alpha_func_reference));
         }
 
-      if (have_blend_equation_seperate &&
-          blend_state->blend_equation_rgb != blend_state->blend_equation_alpha)
-        GE (ctx, glBlendEquationSeparate (blend_state->blend_equation_rgb,
-                                          blend_state->blend_equation_alpha));
-      else
-        GE (ctx, glBlendEquation (blend_state->blend_equation_rgb));
+      /* Under GLES2 the lighting parameters are implemented as uniforms
+         in the progend */
+      if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
+        {
+          CoglPipeline *authority =
+            _cogl_pipeline_get_authority (pipeline,
+                                          COGL_PIPELINE_STATE_LIGHTING);
+          CoglPipelineLightingState *lighting_state =
+            &authority->big_state->lighting_state;
 
-      if (have_blend_func_separate &&
-          (blend_state->blend_src_factor_rgb != blend_state->blend_src_factor_alpha ||
-           (blend_state->blend_src_factor_rgb !=
-            blend_state->blend_src_factor_alpha)))
-        GE (ctx, glBlendFuncSeparate (blend_state->blend_src_factor_rgb,
-                                      blend_state->blend_dst_factor_rgb,
-                                      blend_state->blend_src_factor_alpha,
-                                      blend_state->blend_dst_factor_alpha));
-      else
+          GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,
+                                 lighting_state->ambient));
+          GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,
+                                 lighting_state->diffuse));
+          GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,
+                                 lighting_state->specular));
+          GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,
+                                 lighting_state->emission));
+          GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
+                                 &lighting_state->shininess));
+        }
+    }
+
 #endif
-        GE (ctx, glBlendFunc (blend_state->blend_src_factor_rgb,
-                              blend_state->blend_dst_factor_rgb));
-    }
-
-#ifndef HAVE_COGL_GLES2
-
-  /* Under GLES2 the alpha function is implemented as part of the
-     fragment shader */
-  if (pipelines_difference & (COGL_PIPELINE_STATE_ALPHA_FUNC |
-                              COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
-    {
-      CoglPipeline *authority =
-        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_ALPHA_FUNC);
-      CoglPipelineAlphaFuncState *alpha_state =
-        &authority->big_state->alpha_state;
-
-      /* NB: Currently the Cogl defines are compatible with the GL ones: */
-      GE (ctx, glAlphaFunc (alpha_state->alpha_func,
-                            alpha_state->alpha_func_reference));
-    }
-
-  /* Under GLES2 the lighting parameters are implemented as uniforms
-     in the progend */
-  if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
-    {
-      CoglPipeline *authority =
-        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
-      CoglPipelineLightingState *lighting_state =
-        &authority->big_state->lighting_state;
-
-      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,
-                             lighting_state->ambient));
-      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,
-                             lighting_state->diffuse));
-      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,
-                             lighting_state->specular));
-      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,
-                             lighting_state->emission));
-      GE (ctx, glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
-                             &lighting_state->shininess));
-    }
-
-#endif /* HAVE_COGL_GLES2 */
 
   if (pipelines_difference & COGL_PIPELINE_STATE_DEPTH)
     {
@@ -635,45 +631,54 @@ get_max_activateable_texture_units (void)
       int i;
 
 #ifdef HAVE_COGL_GL
-      /* GL_MAX_TEXTURE_COORDS is provided for both GLSL and ARBfp. It
-         defines the number of texture coordinates that can be
-         uploaded (but doesn't necessarily relate to how many texture
-         images can be sampled) */
-      if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL) ||
-          cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
-        /* Previously this code subtracted the value by one but there
-           was no explanation for why it did this and it doesn't seem
-           to make sense so it has been removed */
-        GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_COORDS, values + n_values++));
+      if (ctx->driver == COGL_DRIVER_GL)
+        {
+          /* GL_MAX_TEXTURE_COORDS is provided for both GLSL and ARBfp. It
+             defines the number of texture coordinates that can be
+             uploaded (but doesn't necessarily relate to how many texture
+             images can be sampled) */
+          if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL) ||
+              cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
+            /* Previously this code subtracted the value by one but there
+               was no explanation for why it did this and it doesn't seem
+               to make sense so it has been removed */
+            GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_COORDS,
+                                    values + n_values++));
 
-      /* GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is defined for GLSL but
-         not ARBfp */
-      if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
-        GE (ctx, glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-                                values + n_values++));
+          /* GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is defined for GLSL but
+             not ARBfp */
+          if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
+            GE (ctx, glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                                    values + n_values++));
+        }
 #endif /* HAVE_COGL_GL */
 
 #ifdef HAVE_COGL_GLES2
+      if (ctx->driver == COGL_DRIVER_GLES2)
+        {
+          GE (ctx, glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, values + n_values));
+          /* Two of the vertex attribs need to be used for the position
+             and color */
+          values[n_values++] -= 2;
 
-      GE (ctx, glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, values + n_values));
-      /* Two of the vertex attribs need to be used for the position
-         and color */
-      values[n_values++] -= 2;
+          GE (ctx, glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                                  values + n_values++));
+        }
+#endif
 
-      GE (ctx, glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-                              values + n_values++));
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES) /* not GLES2 */
+      if (ctx->driver != COGL_DRIVER_GLES2)
+        {
+          /* GL_MAX_TEXTURE_UNITS defines the number of units that are
+             usable from the fixed function pipeline, therefore it isn't
+             available in GLES2. These are also tied to the number of
+             texture coordinates that can be uploaded so it should be less
+             than that available from the shader extensions */
+          GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_UNITS,
+                                  values + n_values++));
 
-#else /* HAVE_COGL_GLES2 */
-
-      /* GL_MAX_TEXTURE_UNITS defines the number of units that are
-         usable from the fixed function pipeline, therefore it isn't
-         available in GLES2. These are also tied to the number of
-         texture coordinates that can be uploaded so it should be less
-         than that available from the shader extensions */
-      GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_UNITS,
-                              values + n_values++));
-
-#endif /* HAVE_COGL_GLES2 */
+        }
+#endif
 
       g_assert (n_values <= G_N_ELEMENTS (values) &&
                 n_values > 0);
@@ -786,8 +791,9 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
 
   /* Under GLES2 the fragment shader will use gl_PointCoord instead of
      replacing the texture coordinates */
-#ifndef HAVE_COGL_GLES2
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS)
+#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GL)
+  if (ctx->driver != COGL_DRIVER_GLES2 &&
+      (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS))
     {
       CoglPipelineState change = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
       CoglPipelineLayer *authority =
@@ -799,7 +805,7 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       GE (ctx, glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE,
                           big_state->point_sprite_coords));
     }
-#endif /* HAVE_COGL_GLES2 */
+#endif
 
   cogl_handle_ref (layer);
   if (unit->layer != COGL_INVALID_HANDLE)
@@ -1299,7 +1305,7 @@ done:
      of the program object so they could be overridden by any
      attribute changes in another program */
 #ifdef HAVE_COGL_GLES2
-  if (!skip_gl_color)
+  if (ctx->driver == COGL_DRIVER_GLES2 && !skip_gl_color)
     {
       int attribute;
       CoglPipeline *authority =

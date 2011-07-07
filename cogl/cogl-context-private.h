@@ -56,6 +56,8 @@ struct _CoglContext
 
   CoglDisplay *display;
 
+  CoglDriver driver;
+
   /* vtable for the texture driver functions */
   const CoglTextureDriver *texture_driver;
 
@@ -86,10 +88,8 @@ struct _CoglContext
      API. We keep track of the matrix stack that Cogl is trying to
      flush so we can flush it later after the program is generated. A
      reference is taken on the stacks. */
-#ifdef HAVE_COGL_GLES2
   CoglMatrixStack  *flushed_modelview_stack;
   CoglMatrixStack  *flushed_projection_stack;
-#endif /* HAVE_COGL_GLES2 */
 
   GArray           *texture_units;
   int               active_texture_unit;
@@ -286,6 +286,18 @@ _cogl_context_get_default ();
 
 const CoglWinsysVtable *
 _cogl_context_get_winsys (CoglContext *context);
+
+/* Check whether the current GL context is supported by Cogl */
+gboolean
+_cogl_context_check_gl_version (CoglContext *context,
+                                GError **error);
+
+/* Query the GL extensions and lookup the corresponding function
+ * pointers. Theoretically the list of extensions can change for
+ * different GL contexts so it is the winsys backend's responsiblity
+ * to know when to re-query the GL extensions. */
+void
+_cogl_context_update_features (CoglContext *context);
 
 /* Obtains the context and returns retval if NULL */
 #define _COGL_GET_CONTEXT(ctxvar, retval) \

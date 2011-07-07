@@ -92,7 +92,12 @@ _cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
 {
   CoglHandle user_program;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FIXED)))
+    return FALSE;
+
+  if (ctx->driver == COGL_DRIVER_GLES2)
     return FALSE;
 
   /* If there is a user program with a fragment shader then the
@@ -319,20 +324,19 @@ _cogl_pipeline_fragend_fixed_end (CoglPipeline *pipeline,
 
           GE (ctx, glFogfv (GL_FOG_COLOR, fogColor));
 
-#if HAVE_COGL_GLES
-          switch (fog_state->mode)
-            {
-            case COGL_FOG_MODE_LINEAR:
-              gl_mode = GL_LINEAR;
-              break;
-            case COGL_FOG_MODE_EXPONENTIAL:
-              gl_mode = GL_EXP;
-              break;
-            case COGL_FOG_MODE_EXPONENTIAL_SQUARED:
-              gl_mode = GL_EXP2;
-              break;
-            }
-#endif
+          if (ctx->driver == COGL_DRIVER_GLES1)
+            switch (fog_state->mode)
+              {
+              case COGL_FOG_MODE_LINEAR:
+                gl_mode = GL_LINEAR;
+                break;
+              case COGL_FOG_MODE_EXPONENTIAL:
+                gl_mode = GL_EXP;
+                break;
+              case COGL_FOG_MODE_EXPONENTIAL_SQUARED:
+                gl_mode = GL_EXP2;
+                break;
+              }
           /* TODO: support other modes for GLES2 */
 
           /* NB: GLES doesn't have glFogi */

@@ -41,57 +41,96 @@
 typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #define COGL_PIPELINE_LAYER(OBJECT) ((CoglPipelineLayer *)OBJECT)
 
-#if defined (HAVE_COGL_GL)
+#ifdef HAVE_COGL_GL
 
-/* NB: pipeline->fragend is currently a 3bit unsigned int bitfield */
-#define COGL_PIPELINE_FRAGEND_ARBFP      0
-#define COGL_PIPELINE_FRAGEND_ARBFP_MASK (1L<<0)
-#define COGL_PIPELINE_FRAGEND_FIXED      1
-#define COGL_PIPELINE_FRAGEND_FIXED_MASK (1L<<1)
-#define COGL_PIPELINE_FRAGEND_GLSL       2
-#define COGL_PIPELINE_FRAGEND_GLSL_MASK  (1L<<2)
+#define COGL_PIPELINE_FRAGEND_ARBFP 0
+#define COGL_PIPELINE_FRAGEND_FIXED 1
+#define COGL_PIPELINE_FRAGEND_GLSL  2
+#define COGL_PIPELINE_N_FRAGENDS    3
 
-#define COGL_PIPELINE_N_FRAGENDS         3
+#else /* HAVE_COGL_GL */
 
-#elif defined (HAVE_COGL_GLES2)
+#ifdef HAVE_COGL_GLES2
 
-#define COGL_PIPELINE_FRAGEND_GLSL       0
-#define COGL_PIPELINE_FRAGEND_GLSL_MASK  (1L<<0)
+#define COGL_PIPELINE_FRAGEND_GLSL 0
+#ifdef HAVE_COGL_GLES
+#define COGL_PIPELINE_FRAGEND_FIXED 1
+#define COGL_PIPELINE_N_FRAGENDS    2
+#else
+#define COGL_PIPELINE_N_FRAGENDS    1
+#endif
 
-#define COGL_PIPELINE_N_FRAGENDS         1
+#else /* HAVE_COGL_GLES2 */
 
-#else /* HAVE_COGL_GLES */
+#ifdef HAVE_COGL_GLES
+#define COGL_PIPELINE_FRAGEND_FIXED 0
+#define COGL_PIPELINE_N_FRAGENDS    1
+#else
+#error No drivers defined
+#endif
 
-#define COGL_PIPELINE_FRAGEND_FIXED      0
-#define COGL_PIPELINE_FRAGEND_FIXED_MASK (1L<<0)
+#endif /* HAVE_COGL_GLES2 */
 
-#define COGL_PIPELINE_N_FRAGENDS         1
+#endif /* HAVE_COGL_GL */
 
+#ifdef COGL_PIPELINE_FRAGEND_ARBFP
+#define COGL_PIPELINE_FRAGEND_ARBFP_MASK \
+  (1 << COGL_PIPELINE_FRAGEND_ARBFP)
+#endif
+#ifdef COGL_PIPELINE_FRAGEND_FIXED
+#define COGL_PIPELINE_FRAGEND_FIXED_MASK \
+  (1 << COGL_PIPELINE_FRAGEND_FIXED)
+#endif
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
+#define COGL_PIPELINE_FRAGEND_GLSL_MASK \
+  (1 << COGL_PIPELINE_FRAGEND_GLSL)
 #endif
 
 #define COGL_PIPELINE_FRAGEND_DEFAULT    0
 #define COGL_PIPELINE_FRAGEND_UNDEFINED  3
 
-#if defined (HAVE_COGL_GL)
+#ifdef HAVE_COGL_GL
 
-#define COGL_PIPELINE_VERTEND_FIXED      0
-#define COGL_PIPELINE_VERTEND_GLSL       1
+#define COGL_PIPELINE_VERTEND_FIXED 0
+#define COGL_PIPELINE_VERTEND_GLSL  1
+#define COGL_PIPELINE_N_VERTENDS    2
 
-#define COGL_PIPELINE_N_VERTENDS         2
+#else /* HAVE_COGL_GL */
 
-#elif defined (HAVE_COGL_GLES2)
+#ifdef HAVE_COGL_GLES2
 
-#define COGL_PIPELINE_VERTEND_GLSL       0
-
-#define COGL_PIPELINE_N_VERTENDS         1
-
-#else /* HAVE_COGL_GLES */
-
-#define COGL_PIPELINE_VERTEND_FIXED      0
-
-#define COGL_PIPELINE_N_VERTENDS         1
-
+#define COGL_PIPELINE_VERTEND_GLSL  0
+#ifdef HAVE_COGL_GLES
+#define COGL_PIPELINE_VERTEND_FIXED 1
+#define COGL_PIPELINE_N_VERTENDS    2
+#else
+#define COGL_PIPELINE_N_VERTENDS    1
 #endif
+
+#else /* HAVE_COGL_GLES2 */
+
+#ifdef HAVE_COGL_GLES
+#define COGL_PIPELINE_VERTEND_FIXED 0
+#define COGL_PIPELINE_N_VERTENDS    1
+#else
+#error No drivers defined
+#endif /* HAVE_COGL_GLES */
+
+#endif /* HAVE_COGL_GLES2 */
+
+#endif /* HAVE_COGL_GL */
+
+#ifdef COGL_PIPELINE_VERTEND_FIXED
+#define COGL_PIPELINE_VERTEND_FIXED_MASK \
+  (1 << COGL_PIPELINE_VERTEND_FIXED)
+#endif
+#ifdef COGL_PIPELINE_VERTEND_GLSL
+#define COGL_PIPELINE_VERTEND_GLSL_MASK \
+  (1 << COGL_PIPELINE_VERTEND_GLSL)
+#endif
+
+#define COGL_PIPELINE_VERTEND_DEFAULT    0
+#define COGL_PIPELINE_VERTEND_UNDEFINED  3
 
 #define COGL_PIPELINE_VERTEND_DEFAULT    0
 #define COGL_PIPELINE_VERTEND_UNDEFINED  3
@@ -186,23 +225,6 @@ typedef enum
   (COGL_PIPELINE_LAYER_STATE_FILTERS | \
    COGL_PIPELINE_LAYER_STATE_WRAP_MODES | \
    COGL_PIPELINE_LAYER_STATE_COMBINE)
-
-/* FIXME: Only texture target changes should really affect the
- * codegen, but this is difficult to detect */
-#ifdef HAVE_COGL_GLES2
-/* On GLES2 we need to use a different varying for the texture lookups
- * when point sprite coords are enabled */
-#define COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN \
-  (COGL_PIPELINE_LAYER_STATE_COMBINE | \
-   COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET | \
-   COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS | \
-   COGL_PIPELINE_LAYER_STATE_UNIT)
-#else
-#define COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN \
-  (COGL_PIPELINE_LAYER_STATE_COMBINE | \
-   COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET | \
-   COGL_PIPELINE_LAYER_STATE_UNIT)
-#endif
 
 #define COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN 0
 
@@ -491,19 +513,6 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_DEPTH | \
    COGL_PIPELINE_STATE_FOG)
 
-#ifdef HAVE_COGL_GLES2
-  /* Under GLES2 the alpha func becomes part of the fragment program
-     so we can't share programs there */
-#define COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN \
-  (COGL_PIPELINE_STATE_LAYERS | \
-   COGL_PIPELINE_STATE_ALPHA_FUNC | \
-   COGL_PIPELINE_STATE_USER_SHADER)
-#else
-#define COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN \
-  (COGL_PIPELINE_STATE_LAYERS | \
-   COGL_PIPELINE_STATE_USER_SHADER)
-#endif
-
 #define COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN \
   (COGL_PIPELINE_STATE_LAYERS | \
    COGL_PIPELINE_STATE_USER_SHADER)
@@ -546,7 +555,7 @@ typedef enum _CoglPipelineBlendEnable
 typedef struct
 {
   /* Determines how this pipeline is blended with other primitives */
-#ifndef HAVE_COGL_GLES
+#if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
   GLenum    blend_equation_rgb;
   GLenum    blend_equation_alpha;
   GLint     blend_src_factor_alpha;
@@ -1239,6 +1248,12 @@ _cogl_pipeline_init_state_hash_functions (void);
 
 void
 _cogl_pipeline_init_layer_state_hash_functions (void);
+
+CoglPipelineLayerState
+_cogl_pipeline_get_layer_state_for_fragment_codegen (CoglContext *context);
+
+CoglPipelineState
+_cogl_pipeline_get_state_for_fragment_codegen (CoglContext *context);
 
 #endif /* __COGL_PIPELINE_PRIVATE_H */
 

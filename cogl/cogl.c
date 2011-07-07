@@ -164,15 +164,7 @@ toggle_flag (CoglContext *ctx,
   return FALSE;
 }
 
-#ifdef HAVE_COGL_GLES2
-
-/* Under GLES2 there are no builtin client flags so toggle_client_flag
-   should never be reached */
-
-#define toggle_client_flag(ctx, new_flags, flag, gl_flag) \
-  g_assert (((new_flags) & (flag)) == 0)
-
-#else /* HAVE_COGL_GLES2 */
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
 
 static gboolean
 toggle_client_flag (CoglContext *ctx,
@@ -180,6 +172,8 @@ toggle_client_flag (CoglContext *ctx,
 		    unsigned long flag,
 		    GLenum gl_flag)
 {
+  g_return_val_if_fail (ctx->driver != COGL_DRIVER_GLES2, FALSE);
+
   /* Toggles and caches a single client-side enable flag
    * on or off by comparing to current state
    */
@@ -201,7 +195,7 @@ toggle_client_flag (CoglContext *ctx,
   return FALSE;
 }
 
-#endif /* HAVE_COGL_GLES2 */
+#endif
 
 void
 _cogl_enable (unsigned long flags)
@@ -215,13 +209,18 @@ _cogl_enable (unsigned long flags)
                COGL_ENABLE_BACKFACE_CULLING,
                GL_CULL_FACE);
 
-  toggle_client_flag (ctx, flags,
-		      COGL_ENABLE_VERTEX_ARRAY,
-		      GL_VERTEX_ARRAY);
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
+  if (ctx->driver != COGL_DRIVER_GLES2)
+    {
+      toggle_client_flag (ctx, flags,
+                          COGL_ENABLE_VERTEX_ARRAY,
+                          GL_VERTEX_ARRAY);
 
-  toggle_client_flag (ctx, flags,
-		      COGL_ENABLE_COLOR_ARRAY,
-		      GL_COLOR_ARRAY);
+      toggle_client_flag (ctx, flags,
+                          COGL_ENABLE_COLOR_ARRAY,
+                          GL_COLOR_ARRAY);
+    }
+#endif
 }
 
 unsigned long
@@ -557,9 +556,9 @@ _cogl_read_pixels_with_rowstride (int x,
      GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary. We also need
      to use this intermediate buffer if the rowstride has padding
      because GLES does not support setting GL_ROW_LENGTH */
-#ifndef COGL_HAS_GL
-  if (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
-      rowstride != 4 * width)
+  if (ctx->driver != COGL_DRIVER_GL &&
+      (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
+       rowstride != 4 * width))
     {
       CoglBitmap *tmp_bmp, *dst_bmp;
       guint8 *tmp_data = g_malloc (width * height * 4);
@@ -599,7 +598,6 @@ _cogl_read_pixels_with_rowstride (int x,
       cogl_object_unref (tmp_bmp);
     }
   else
-#endif
     {
       ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
 

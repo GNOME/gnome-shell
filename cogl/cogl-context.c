@@ -54,8 +54,12 @@
 #define GL_POINT_SPRITE 0x8861
 #endif
 
+#ifdef HAVE_COGL_GL
 extern const CoglTextureDriver _cogl_texture_driver_gl;
+#endif
+#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
 extern const CoglTextureDriver _cogl_texture_driver_gles;
+#endif
 
 static void _cogl_context_free (CoglContext *context);
 
@@ -168,6 +172,11 @@ cogl_context_new (CoglDisplay *display,
 
   context->display = display;
 
+  /* This is duplicated data, but it's much more convenient to have
+     the driver attached to the context and the value is accessed a
+     lot throughout Cogl */
+  context->driver = display->renderer->driver;
+
   winsys = _cogl_context_get_winsys (context);
   if (!winsys->context_init (context, error))
     {
@@ -176,11 +185,24 @@ cogl_context_new (CoglDisplay *display,
       return NULL;
     }
 
+  switch (context->driver)
+    {
 #ifdef HAVE_COGL_GL
-  context->texture_driver = &_cogl_texture_driver_gl;
-#else
-  context->texture_driver = &_cogl_texture_driver_gles;
+    case COGL_DRIVER_GL:
+      context->texture_driver = &_cogl_texture_driver_gl;
+      break;
 #endif
+
+#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
+    case COGL_DRIVER_GLES1:
+    case COGL_DRIVER_GLES2:
+      context->texture_driver = &_cogl_texture_driver_gles;
+      break;
+#endif
+
+    default:
+      g_assert_not_reached ();
+    }
 
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);
@@ -308,14 +330,15 @@ cogl_context_new (CoglDisplay *display,
   context->texture_download_pipeline = COGL_INVALID_HANDLE;
   context->blit_texture_pipeline = COGL_INVALID_HANDLE;
 
-#ifndef HAVE_COGL_GLES2
-  /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
-   * the test being disabled therefore we assume that for all drivers there
-   * will be no performance impact if we always leave the test enabled which
-   * makes things a bit simpler for us. Under GLES2 the alpha test is
-   * implemented in the fragment shader so there is no enable for it
-   */
-  GE (context, glEnable (GL_ALPHA_TEST));
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
+  if (context->driver != COGL_DRIVER_GLES2)
+    /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
+     * the test being disabled therefore we assume that for all drivers there
+     * will be no performance impact if we always leave the test enabled which
+     * makes things a bit simpler for us. Under GLES2 the alpha test is
+     * implemented in the fragment shader so there is no enable for it
+     */
+    GE (context, glEnable (GL_ALPHA_TEST));
 #endif
 
 #ifdef HAVE_COGL_GLES2
@@ -361,10 +384,9 @@ cogl_context_new (CoglDisplay *display,
      each pipeline to track whether any layers have point sprite
      coords enabled. We don't need to do this for GLES2 because point
      sprites are handled using a builtin varying in the shader. */
-#ifndef HAVE_COGL_GLES2
-  if (cogl_features_available (COGL_FEATURE_POINT_SPRITE))
+  if (_context->driver != COGL_DRIVER_GLES2 &&
+      cogl_features_available (COGL_FEATURE_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
-#endif
 
   return _cogl_context_object_new (context);
 }
@@ -499,3 +521,37 @@ cogl_context_egl_get_egl_display (CoglContext *context)
 }
 #endif
 
+gboolean
+_cogl_context_check_gl_version (CoglContext *context,
+                                GError **error)
+{
+#ifdef HAVE_COGL_GL
+  if (context->driver == COGL_DRIVER_GL)
+    return _cogl_gl_check_gl_version (context, error);
+#endif
+
+#if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GLES2)
+  return _cogl_gles_check_gl_version (context, error);
+#endif
+
+  g_assert_not_reached ();
+}
+
+void
+_cogl_context_update_features (CoglContext *context)
+{
+#ifdef HAVE_COGL_GL
+  if (context->driver == COGL_DRIVER_GL)
+    {
+      _cogl_gl_update_features (context);
+      return;
+    }
+#endif
+
+#if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GLES2)
+  _cogl_gles_update_features (context);
+  return;
+#endif
+
+  g_assert_not_reached ();
+}

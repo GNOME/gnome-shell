@@ -33,7 +33,7 @@
 #include "cogl-feature-private.h"
 
 gboolean
-_cogl_gl_check_version (GError **error)
+_cogl_gles_check_gl_version (GError **error)
 {
   /* The GLES backend doesn't have any particular version requirements */
   return TRUE;
@@ -44,14 +44,11 @@ _cogl_gl_check_version (GError **error)
  * different GL contexts so it is the winsys backend's responsiblity
  * to know when to re-query the GL extensions. */
 void
-_cogl_gl_update_features (CoglContext *context)
+_cogl_gles_update_features (CoglContext *context)
 {
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
   const char *gl_extensions;
-#ifndef HAVE_COGL_GLES2
-  int max_clip_planes = 0;
-#endif
   int num_stencil_bits = 0;
 
   /* We have to special case getting the pointer to the glGetString
@@ -77,32 +74,31 @@ _cogl_gl_update_features (CoglContext *context)
   _cogl_feature_check_ext_functions (context,
                                      -1 /* GL major version */,
                                      -1 /* GL minor version */,
-                                     gl_extensions,
-#ifdef HAVE_COGL_GLES2
-                                     COGL_EXT_IN_GLES2
-#else
-                                     COGL_EXT_IN_GLES
-#endif
-                                     );
+                                     gl_extensions);
 
   GE( context, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
   if (num_stencil_bits > 2)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
-#ifndef HAVE_COGL_GLES2
-  GE( context, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
-  if (max_clip_planes >= 4)
-    flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+#ifdef HAVE_COGL_GLES
+  if (context->driver == COGL_DRIVER_GLES1)
+    {
+      int max_clip_planes;
+      GE( context, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+      if (max_clip_planes >= 4)
+        flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+    }
 #endif
 
-#ifdef HAVE_COGL_GLES2
-  flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;
-  /* Note GLES 2 core doesn't support mipmaps for npot textures or
-   * repeat modes other than CLAMP_TO_EDGE. */
-  flags |= COGL_FEATURE_TEXTURE_NPOT_BASIC;
-  flags |= COGL_FEATURE_DEPTH_RANGE;
-#endif
+  if (context->driver == COGL_DRIVER_GLES2)
+    {
+      flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;
+      /* Note GLES 2 core doesn't support mipmaps for npot textures or
+       * repeat modes other than CLAMP_TO_EDGE. */
+      flags |= COGL_FEATURE_TEXTURE_NPOT_BASIC;
+      flags |= COGL_FEATURE_DEPTH_RANGE;
+    }
 
   flags |= COGL_FEATURE_VBOS;
 

@@ -28,6 +28,9 @@ AM_CPPFLAGS = \
 	-DG_DISABLE_DEPRECATED		\
 	-DG_LOG_DOMAIN=\"Cogl\" 	\
 	-DCLUTTER_COMPILATION		\
+	-DCOGL_GL_LIBNAME=\"$(COGL_GL_LIBNAME)\" \
+	-DCOGL_GLES1_LIBNAME=\"$(COGL_GLES1_LIBNAME)\" \
+	-DCOGL_GLES2_LIBNAME=\"$(COGL_GLES2_LIBNAME)\" \
 	$(NULL)
 
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
@@ -102,20 +105,19 @@ cogl_experimental_h = \
 # driver sources
 cogl_driver_sources =
 
-if COGL_DRIVER_GL
+if COGL_DRIVER_GL_SUPPORTED
 cogl_driver_sources += \
 	$(srcdir)/driver/gl/cogl-gl.c			\
 	$(srcdir)/driver/gl/cogl-texture-driver-gl.c	\
 	$(NULL)
 endif
 
-if COGL_DRIVER_GLES
+if COGL_DRIVER_GLES_SUPPORTED
 cogl_driver_sources += \
 	$(srcdir)/driver/gles/cogl-gles.c			\
 	$(srcdir)/driver/gles/cogl-texture-driver-gles.c	\
 	$(NULL)
-
-endif # COGL_DRIVER_GLES
+endif
 
 # winsys sources, common to all backends
 cogl_winsys_common_sources = \
@@ -387,7 +389,7 @@ libcogl_la_LDFLAGS = \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
 	-export-dynamic \
-	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_atlas_texture_new_with_size|_cogl_profile_trace_message).*"
+	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_atlas_texture_new_with_size|_cogl_profile_trace_message|_cogl_context_get_default).*"
 
 libcogl_la_SOURCES = $(cogl_sources_c)
 nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)

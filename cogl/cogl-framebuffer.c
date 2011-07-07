@@ -615,8 +615,9 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
     return;
 
 #ifdef HAVE_COGL_GL
-  if (cogl_features_available (COGL_FEATURE_OFFSCREEN)
-      && framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
+  if (ctx->driver == COGL_DRIVER_GL &&
+      cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
+      framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
     {
       GLenum attachment, pname;
 
@@ -812,6 +813,8 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
   CoglFramebufferTryFBOData data;
   gboolean            fbo_created;
 
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
   if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
     return COGL_INVALID_HANDLE;
 
@@ -866,7 +869,8 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
       if ((have_working_flags &&
            try_creating_fbo (offscreen, flags, &data)) ||
 #ifdef HAVE_COGL_GL
-          try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, &data) ||
+          (ctx->driver == COGL_DRIVER_GL &&
+           try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, &data)) ||
 #endif
           try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL,
                             &data) ||

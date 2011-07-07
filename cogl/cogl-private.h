@@ -27,10 +27,18 @@
 G_BEGIN_DECLS
 
 gboolean
-_cogl_gl_check_version (GError **error);
+_cogl_gl_check_gl_version (CoglContext *context,
+                           GError **error);
 
 void
 _cogl_gl_update_features (CoglContext *context);
+
+gboolean
+_cogl_gles_check_gl_version (CoglContext *context,
+                             GError **error);
+
+void
+_cogl_gles_update_features (CoglContext *context);
 
 gboolean
 _cogl_check_extension (const char *name, const char *ext);

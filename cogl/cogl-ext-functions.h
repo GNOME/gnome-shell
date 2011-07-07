@@ -563,19 +563,6 @@ COGL_EXT_FUNCTION (GLboolean, glUnmapBuffer,
                    (GLenum		 target))
 COGL_EXT_END ()
 
-COGL_EXT_BEGIN (draw_range_elements, 1, 2,
-                0, /* not in either GLES */
-                "\0",
-                "\0")
-COGL_EXT_FUNCTION (void, glDrawRangeElements,
-                   (GLenum                mode,
-                    GLuint                start,
-                    GLuint                end,
-                    GLsizei               count,
-                    GLenum                type,
-                    const GLvoid         *indices))
-COGL_EXT_END ()
-
 COGL_EXT_BEGIN (blending, 1, 2,
                 COGL_EXT_IN_GLES2,
                 "\0",

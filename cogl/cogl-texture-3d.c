@@ -580,8 +580,8 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
          GL_GENERATE_MIPMAP and reuploading the first pixel */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
         ctx->texture_driver->gl_generate_mipmaps (GL_TEXTURE_3D);
-#ifndef HAVE_COGL_GLES2
-      else
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
+      else if (ctx->driver != COGL_DRIVER_GLES2)
         {
           GE( ctx, glTexParameteri (GL_TEXTURE_3D,
                                     GL_GENERATE_MIPMAP,

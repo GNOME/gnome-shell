@@ -100,6 +100,11 @@ _cogl_renderer_free (CoglRenderer *renderer)
   const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
   winsys->renderer_disconnect (renderer);
 
+#ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
+  if (renderer->libgl_module)
+    g_module_close (renderer->libgl_module);
+#endif
+
   g_slist_foreach (renderer->event_filters,
                    (GFunc) native_filter_closure_free,
                    NULL);
@@ -166,6 +171,75 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
   return TRUE;
 }
 
+static gboolean
+_cogl_renderer_choose_driver (CoglRenderer *renderer,
+                              GError **error)
+{
+  const char *driver_name = g_getenv ("COGL_DRIVER");
+  const char *libgl_name;
+#ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
+  char *libgl_module_path;
+#endif
+
+#ifdef HAVE_COGL_GL
+  if (driver_name == NULL || !strcmp (driver_name, "gl"))
+    {
+      renderer->driver = COGL_DRIVER_GL;
+      libgl_name = COGL_GL_LIBNAME;
+      goto found;
+    }
+#endif
+
+#ifdef HAVE_COGL_GLES2
+  if (driver_name == NULL || !strcmp (driver_name, "gles2"))
+    {
+      renderer->driver = COGL_DRIVER_GLES2;
+      libgl_name = COGL_GLES2_LIBNAME;
+      goto found;
+    }
+#endif
+
+#ifdef HAVE_COGL_GLES
+  if (driver_name == NULL || !strcmp (driver_name, "gles1"))
+    {
+      renderer->driver = COGL_DRIVER_GLES1;
+      libgl_name = COGL_GLES1_LIBNAME;
+      goto found;
+    }
+#endif
+
+  g_set_error (error,
+               COGL_DRIVER_ERROR,
+               COGL_DRIVER_ERROR_NO_SUITABLE_DRIVER_FOUND,
+               "No suitable driver found");
+  return FALSE;
+
+ found:
+
+#ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
+
+  libgl_module_path = g_module_build_path (NULL, /* standard lib search path */
+                                           libgl_name);
+
+  renderer->libgl_module = g_module_open (libgl_module_path,
+                                          G_MODULE_BIND_LAZY);
+
+  g_free (libgl_module_path);
+
+  if (renderer->libgl_module == NULL)
+    {
+      g_set_error (error, COGL_DRIVER_ERROR,
+                   COGL_DRIVER_ERROR_FAILED_TO_LOAD_LIBRARY,
+                   "Failed to dynamically open the GL library \"%s\"",
+                   libgl_name);
+      return FALSE;
+    }
+
+#endif /* HAVE_DIRECTLY_LINKED_GL_LIBRARY */
+
+  return TRUE;
+}
+
 /* Final connection API */
 
 gboolean
@@ -176,6 +250,12 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 
   if (renderer->connected)
     return TRUE;
+
+  /* The driver needs to be chosen before connecting the renderer
+     because eglInitialize requires the library containing the GL API
+     to be loaded before its called */
+  if (!_cogl_renderer_choose_driver (renderer, error))
+    return FALSE;
 
   error_message = g_string_new ("");
   for (i = 0; i < G_N_ELEMENTS (_cogl_winsys_vtable_getters); i++)

@@ -513,6 +513,8 @@ get_wgl_extensions_string (HDC dc)
   const char * (APIENTRY *pf_wglGetExtensionsStringARB) (HDC);
   const char * (APIENTRY *pf_wglGetExtensionsStringEXT) (void);
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   /* According to the docs for these two extensions, you are supposed
      to use wglGetProcAddress to detect their availability so
      presumably it will return NULL if they are not available */
@@ -550,7 +552,7 @@ update_winsys_features (CoglContext *context)
 
   g_return_if_fail (wgl_display->wgl_context);
 
-  _cogl_gl_update_features (context);
+  _cogl_context_update_features (context);
 
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
@@ -567,7 +569,8 @@ update_winsys_features (CoglContext *context)
 
       for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
         if (_cogl_feature_check (_cogl_context_get_winsys (context),
-                                 "WGL", winsys_feature_data + i, 0, 0, 0,
+                                 "WGL", winsys_feature_data + i, 0, 0,
+                                 COGL_DRIVER_GL,
                                  wgl_extensions,
                                  wgl_renderer))
           {

@@ -499,11 +499,10 @@ _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
 static void
 _cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
 {
-#ifdef HAVE_COGL_GLES2
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  GE( ctx, glGenerateMipmap (gl_target) );
-#endif
+  if (ctx->driver == COGL_DRIVER_GLES2)
+    GE( ctx, glGenerateMipmap (gl_target) );
 }
 
 static CoglPixelFormat

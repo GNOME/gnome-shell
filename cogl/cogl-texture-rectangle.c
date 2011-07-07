@@ -372,37 +372,36 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
   /* Obtain texture parameters */
 
 #if HAVE_COGL_GL
+  if (ctx->driver == COGL_DRIVER_GL)
+    {
+      GLint val;
 
-  GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_RECTANGLE_ARB, 0,
-                                     GL_TEXTURE_COMPRESSED,
-                                     &gl_compressed) );
+      GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_RECTANGLE_ARB, 0,
+                                         GL_TEXTURE_COMPRESSED,
+                                         &gl_compressed) );
 
-  {
-    GLint val;
+      GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_RECTANGLE_ARB, 0,
+                                         GL_TEXTURE_INTERNAL_FORMAT,
+                                         &val) );
 
-    GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_RECTANGLE_ARB, 0,
-                                       GL_TEXTURE_INTERNAL_FORMAT,
-                                       &val) );
+      gl_int_format = val;
 
-    gl_int_format = val;
-  }
-
-  /* If we can query GL for the actual pixel format then we'll ignore
-     the passed in format and use that. */
-  if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
-                                                           &format))
-    return COGL_INVALID_HANDLE;
-
-#else
-
-  /* Otherwise we'll assume we can derive the GL format from the
-     passed in format */
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           &gl_int_format,
-                                           NULL,
-                                           NULL);
-
+      /* If we can query GL for the actual pixel format then we'll ignore
+         the passed in format and use that. */
+      if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
+                                                               &format))
+        return COGL_INVALID_HANDLE;
+    }
+  else
 #endif
+    {
+      /* Otherwise we'll assume we can derive the GL format from the
+         passed in format */
+      ctx->texture_driver->pixel_format_to_gl (format,
+                                               &gl_int_format,
+                                               NULL,
+                                               NULL);
+    }
 
   /* Note: We always trust the given width and height without querying
    * the texture object because the user may be creating a Cogl

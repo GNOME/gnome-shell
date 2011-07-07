@@ -227,9 +227,9 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
        */
       authority = _cogl_pipeline_find_equivalent_parent
         (pipeline,
-         COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN &
+         _cogl_pipeline_get_state_for_fragment_codegen (ctx) &
          ~COGL_PIPELINE_STATE_LAYERS,
-         COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN);
+         _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx));
 
       authority_priv = get_glsl_priv (authority);
       if (!authority_priv)
@@ -339,6 +339,8 @@ add_texture_lookup (GlslShaderState *glsl_shader_state,
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   const char *target_string, *tex_coord_swizzle;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
     {
       g_string_append (glsl_shader_state->source,
@@ -362,7 +364,7 @@ add_texture_lookup (GlslShaderState *glsl_shader_state,
       cogl_texture_get_gl_texture (texture, NULL, &gl_target);
       switch (gl_target)
         {
-#ifndef HAVE_COGL_GLES2
+#ifdef HAVE_COGL_GL
         case GL_TEXTURE_1D:
           target_string = "1D";
           tex_coord_swizzle = "s";
@@ -413,14 +415,13 @@ add_texture_lookup (GlslShaderState *glsl_shader_state,
      supports the gl_PointCoord variable, it requires GLSL 1.2 which
      would mean we would have to declare the GLSL version and check
      for it */
-#ifdef HAVE_COGL_GLES2
-  if (cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
+  if (ctx->driver == COGL_DRIVER_GLES2 &&
+      cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
                                                            layer->index))
     g_string_append_printf (glsl_shader_state->source,
                             "gl_PointCoord.%s",
                             tex_coord_swizzle);
   else
-#endif
     g_string_append_printf (glsl_shader_state->source,
                             "cogl_tex_coord_in[%d].%s",
                             unit_index, tex_coord_swizzle);
@@ -782,7 +783,8 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       COGL_COUNTER_INC (_cogl_uprof_context, fragend_glsl_compile_counter);
 
 #ifdef HAVE_COGL_GLES2
-      add_alpha_test_snippet (pipeline, glsl_shader_state);
+      if (ctx->driver == COGL_DRIVER_GLES2)
+        add_alpha_test_snippet (pipeline, glsl_shader_state);
 #endif
 
       g_string_append (glsl_shader_state->source, "}\n");
@@ -833,7 +835,9 @@ _cogl_pipeline_fragend_glsl_pre_change_notify (CoglPipeline *pipeline,
                                                CoglPipelineState change,
                                                const CoglColor *new_color)
 {
-  if ((change & COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN))
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if ((change & _cogl_pipeline_get_state_for_fragment_codegen (ctx)))
     dirty_glsl_shader_state (pipeline);
 }
 
@@ -853,11 +857,13 @@ _cogl_pipeline_fragend_glsl_layer_pre_change_notify (
 {
   CoglPipelineFragendGlslPrivate *priv;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   priv = get_glsl_priv (owner);
   if (!priv)
     return;
 
-  if ((change & COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN))
+  if ((change & _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx)))
     {
       dirty_glsl_shader_state (owner);
       return;

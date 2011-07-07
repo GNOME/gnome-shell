@@ -106,13 +106,11 @@ cogl_program_attach_shader (CoglHandle program_handle,
   shader = _cogl_shader_pointer_from_handle (shader_handle);
 
   /* Only one shader is allowed if the type is ARBfp */
-#ifdef HAVE_COGL_GL
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
     g_return_if_fail (program->attached_shaders == NULL);
   else if (shader->language == COGL_SHADER_LANGUAGE_GLSL)
     g_return_if_fail (_cogl_program_get_language (program) ==
                       COGL_SHADER_LANGUAGE_GLSL);
-#endif
 
   program->attached_shaders
     = g_slist_prepend (program->attached_shaders,
@@ -366,8 +364,6 @@ cogl_program_uniform_matrix (int uniform_no,
                                    uniform_no, size, count, transpose, value);
 }
 
-#ifndef HAVE_COGL_GLES
-
 /* ARBfp local parameters can be referenced like:
  *
  * "program.local[5]"
@@ -478,8 +474,6 @@ _cogl_program_flush_uniform_glsl (GLint location,
     }
 }
 
-#endif /* HAVE_COGL_GLES */
-
 #ifdef HAVE_COGL_GL
 
 static void
@@ -506,16 +500,12 @@ _cogl_program_flush_uniforms (CoglProgram *program,
                               GLuint gl_program,
                               gboolean gl_program_changed)
 {
-#ifdef HAVE_COGL_GLES
-
-  g_return_if_reached ();
-
-#else /* HAVE_COGL_GLES */
-
   CoglProgramUniform *uniform;
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (ctx->driver != COGL_DRIVER_GLES1);
 
   for (i = 0; i < program->custom_uniforms->len; i++)
     {
@@ -548,20 +538,18 @@ _cogl_program_flush_uniforms (CoglProgram *program,
                                                     &uniform->value);
                   break;
 
-#ifdef HAVE_COGL_GL
                 case COGL_SHADER_LANGUAGE_ARBFP:
+#ifdef HAVE_COGL_GL
                   _cogl_program_flush_uniform_arbfp (uniform->location,
                                                      &uniform->value);
-                  break;
 #endif
+                  break;
                 }
             }
 
           uniform->dirty = FALSE;
         }
     }
-
-#endif /* HAVE_COGL_GLES */
 }
 
 CoglShaderLanguage

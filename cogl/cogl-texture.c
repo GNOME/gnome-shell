@@ -194,54 +194,54 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
      limited number of formats so we must convert using the Cogl
      bitmap code instead */
 
-#ifdef HAVE_COGL_GL
-
-  /* If the source format does not have the same premult flag as the
-     dst format then we need to copy and convert it */
-  if (_cogl_texture_needs_premult_conversion (src_format,
-                                              dst_format))
+  if (ctx->driver == COGL_DRIVER_GL)
     {
-      dst_bmp = _cogl_bitmap_copy (src_bmp);
-
-      if (!_cogl_bitmap_convert_premult_status (dst_bmp,
-                                                src_format ^
-                                                COGL_PREMULT_BIT))
+      /* If the source format does not have the same premult flag as the
+         dst format then we need to copy and convert it */
+      if (_cogl_texture_needs_premult_conversion (src_format,
+                                                  dst_format))
         {
-          cogl_object_unref (dst_bmp);
-          return NULL;
+          dst_bmp = _cogl_bitmap_copy (src_bmp);
+
+          if (!_cogl_bitmap_convert_premult_status (dst_bmp,
+                                                    src_format ^
+                                                    COGL_PREMULT_BIT))
+            {
+              cogl_object_unref (dst_bmp);
+              return NULL;
+            }
         }
+      else
+        dst_bmp = cogl_object_ref (src_bmp);
+
+      /* Use the source format from the src bitmap type and the internal
+         format from the dst format type so that GL can do the
+         conversion */
+      ctx->texture_driver->pixel_format_to_gl (src_format,
+                                               NULL, /* internal format */
+                                               out_glformat,
+                                               out_gltype);
+      ctx->texture_driver->pixel_format_to_gl (dst_format,
+                                               out_glintformat,
+                                               NULL,
+                                               NULL);
+
     }
   else
-    dst_bmp = cogl_object_ref (src_bmp);
+    {
+      CoglPixelFormat closest_format;
 
-  /* Use the source format from the src bitmap type and the internal
-     format from the dst format type so that GL can do the
-     conversion */
-  ctx->texture_driver->pixel_format_to_gl (src_format,
-                                           NULL, /* internal format */
-                                           out_glformat,
-                                           out_gltype);
-  ctx->texture_driver->pixel_format_to_gl (dst_format,
-                                           out_glintformat,
-                                           NULL,
-                                           NULL);
+      closest_format = ctx->texture_driver->pixel_format_to_gl (dst_format,
+                                                                out_glintformat,
+                                                                out_glformat,
+                                                                out_gltype);
 
-#else /* HAVE_COGL_GL */
-  {
-    CoglPixelFormat closest_format;
-
-    closest_format = ctx->texture_driver->pixel_format_to_gl (dst_format,
-                                                              out_glintformat,
-                                                              out_glformat,
-                                                              out_gltype);
-
-    if (closest_format != src_format)
-      dst_bmp = _cogl_bitmap_convert_format_and_premult (src_bmp,
-                                                         closest_format);
-    else
-      dst_bmp = cogl_object_ref (src_bmp);
-  }
-#endif /* HAVE_COGL_GL */
+      if (closest_format != src_format)
+        dst_bmp = _cogl_bitmap_convert_format_and_premult (src_bmp,
+                                                           closest_format);
+      else
+        dst_bmp = cogl_object_ref (src_bmp);
+    }
 
   if (dst_format_out)
     *dst_format_out = dst_format;

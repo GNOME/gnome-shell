@@ -301,8 +301,11 @@ destroy_glsl_priv (void *user_data)
   if (--priv->ref_count == 0)
     {
 #ifdef HAVE_COGL_GLES2
-      clear_attribute_cache (priv);
-      clear_flushed_matrix_stacks (priv);
+      if (ctx->driver == COGL_DRIVER_GLES2)
+        {
+          clear_attribute_cache (priv);
+          clear_flushed_matrix_stacks (priv);
+        }
 #endif
 
       if (priv->program)
@@ -411,17 +414,18 @@ get_uniform_cb (CoglPipeline *pipeline,
   unit_state->combine_constant_uniform = uniform_location;
 
 #ifdef HAVE_COGL_GLES2
+  if (ctx->driver == COGL_DRIVER_GLES2)
+    {
+      g_string_set_size (ctx->codegen_source_buffer, 0);
+      g_string_append_printf (ctx->codegen_source_buffer,
+                              "cogl_texture_matrix[%i]", state->unit);
 
-  g_string_set_size (ctx->codegen_source_buffer, 0);
-  g_string_append_printf (ctx->codegen_source_buffer,
-                          "cogl_texture_matrix[%i]", state->unit);
+      GE_RET( uniform_location,
+              ctx, glGetUniformLocation (state->gl_program,
+                                         ctx->codegen_source_buffer->str) );
 
-  GE_RET( uniform_location,
-          ctx, glGetUniformLocation (state->gl_program,
-                                     ctx->codegen_source_buffer->str) );
-
-  unit_state->texture_matrix_uniform = uniform_location;
-
+      unit_state->texture_matrix_uniform = uniform_location;
+    }
 #endif
 
   state->unit++;
@@ -454,7 +458,8 @@ update_constants_cb (CoglPipeline *pipeline,
 
 #ifdef HAVE_COGL_GLES2
 
-  if (unit_state->texture_matrix_uniform != -1 &&
+  if (ctx->driver == COGL_DRIVER_GLES2 &&
+      unit_state->texture_matrix_uniform != -1 &&
       (state->update_all || unit_state->dirty_texture_matrix))
     {
       const CoglMatrix *matrix;
@@ -529,9 +534,9 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       authority = _cogl_pipeline_find_equivalent_parent
         (pipeline,
          (COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN |
-          COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN) &
+          _cogl_pipeline_get_state_for_fragment_codegen (ctx)) &
          ~COGL_PIPELINE_STATE_LAYERS,
-         COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN |
+         _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx) |
          COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN);
 
       priv = get_glsl_priv (authority);
@@ -591,7 +596,8 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
           /* Find the largest count of texture coordinate attributes
            * associated with each of the shaders so we can ensure a consistent
            * _cogl_tex_coord[] array declaration across all of the shaders.*/
-          if (user_program)
+          if (ctx->driver == COGL_DRIVER_GLES2 &&
+              user_program)
             for (l = user_program->attached_shaders; l; l = l->next)
               {
                 CoglShader *shader = l->data;
@@ -655,35 +661,40 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
                                &state);
 
 #ifdef HAVE_COGL_GLES2
-  if (program_changed)
+  if (ctx->driver == COGL_DRIVER_GLES2)
     {
-      int i;
+      if (program_changed)
+        {
+          int i;
 
-      clear_attribute_cache (priv);
-      clear_flushed_matrix_stacks (priv);
+          clear_attribute_cache (priv);
+          clear_flushed_matrix_stacks (priv);
 
-      for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-        GE_RET( priv->builtin_uniform_locations[i],
-                ctx, glGetUniformLocation (gl_program,
-                                           builtin_uniforms[i].uniform_name) );
+          for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
+            GE_RET( priv->builtin_uniform_locations[i],
+                    ctx,
+                    glGetUniformLocation (gl_program,
+                                          builtin_uniforms[i].uniform_name) );
 
-      GE_RET( priv->modelview_uniform,
-              ctx, glGetUniformLocation (gl_program,
-                                         "cogl_modelview_matrix") );
+          GE_RET( priv->modelview_uniform,
+                  ctx, glGetUniformLocation (gl_program,
+                                             "cogl_modelview_matrix") );
 
-      GE_RET( priv->projection_uniform,
-              ctx, glGetUniformLocation (gl_program,
-                                         "cogl_projection_matrix") );
+          GE_RET( priv->projection_uniform,
+                  ctx, glGetUniformLocation (gl_program,
+                                             "cogl_projection_matrix") );
 
-      GE_RET( priv->mvp_uniform,
-              ctx, glGetUniformLocation (gl_program,
-                                         "cogl_modelview_projection_matrix") );
+          GE_RET( priv->mvp_uniform,
+                  ctx,
+                  glGetUniformLocation (gl_program,
+                                        "cogl_modelview_projection_matrix") );
+        }
+      if (program_changed ||
+          priv->last_used_for_pipeline != pipeline)
+        priv->dirty_builtin_uniforms = ~(unsigned long) 0;
+
+      update_builtin_uniforms (pipeline, gl_program, priv);
     }
-  if (program_changed ||
-      priv->last_used_for_pipeline != pipeline)
-    priv->dirty_builtin_uniforms = ~(unsigned long) 0;
-
-  update_builtin_uniforms (pipeline, gl_program, priv);
 #endif
 
   if (user_program)
@@ -701,10 +712,12 @@ _cogl_pipeline_progend_glsl_pre_change_notify (CoglPipeline *pipeline,
                                                CoglPipelineState change,
                                                const CoglColor *new_color)
 {
-  if ((change & COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN))
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if ((change & _cogl_pipeline_get_state_for_fragment_codegen (ctx)))
     dirty_glsl_program_state (pipeline);
 #ifdef HAVE_COGL_GLES2
-  else
+  else if (ctx->driver == COGL_DRIVER_GLES2)
     {
       int i;
 
@@ -734,7 +747,9 @@ _cogl_pipeline_progend_glsl_layer_pre_change_notify (
                                                 CoglPipelineLayer *layer,
                                                 CoglPipelineLayerState change)
 {
-  if ((change & COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN))
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if ((change & _cogl_pipeline_get_state_for_fragment_codegen (ctx)))
     {
       dirty_glsl_program_state (owner);
       return;
@@ -849,6 +864,9 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
   gboolean projection_changed;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->driver != COGL_DRIVER_GLES2)
+    return;
 
   /* We only need to update the matrices if we're using the the GLSL
      vertend, but this is a requirement on GLES2 anyway */

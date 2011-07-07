@@ -393,7 +393,7 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
   stack->age++;
 }
 
-#ifndef HAVE_COGL_GLES2
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
 
 static void
 flush_to_fixed_api_gl (gboolean is_identity,
@@ -417,7 +417,7 @@ flush_to_fixed_api_gl (gboolean is_identity,
     }
 }
 
-#endif /* HAVE_COGL_GLES2 */
+#endif
 
 void
 _cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
@@ -462,72 +462,74 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
 
   state = _cogl_matrix_stack_top (stack);
 
-#ifdef HAVE_COGL_GLES2
-
-  /* Under GLES2 we need to flush the matrices differently because
-     they are stored in uniforms attached to the program instead of
-     the global GL context state. At this point we can't be sure that
-     the right program will be generated so instead we'll just store a
-     reference to the matrix stack that is intended to be flushed and
-     update the uniform once the program is ready. */
-
-  switch (mode)
+  if (ctx->driver == COGL_DRIVER_GLES2)
     {
-    case COGL_MATRIX_MODELVIEW:
-      cogl_object_ref (stack);
-      if (ctx->flushed_modelview_stack)
-        cogl_object_unref (ctx->flushed_modelview_stack);
-      ctx->flushed_modelview_stack = stack;
-      break;
-
-    case COGL_MATRIX_PROJECTION:
-      cogl_object_ref (stack);
-      if (ctx->flushed_projection_stack)
-        cogl_object_unref (ctx->flushed_projection_stack);
-      ctx->flushed_projection_stack = stack;
-      break;
-
-    case COGL_MATRIX_TEXTURE:
-      /* This shouldn't happen because the texture matrices are
-         handled by the GLSL pipeline backend */
-      g_assert_not_reached ();
-      break;
-    }
-
-#else /* HAVE_COGL_GLES2 */
-
-  if (stack->flushed_state == state)
-    return;
-
-  if (ctx->flushed_matrix_mode != mode)
-    {
-      GLenum gl_mode = 0;
+      /* Under GLES2 we need to flush the matrices differently because
+         they are stored in uniforms attached to the program instead of
+         the global GL context state. At this point we can't be sure that
+         the right program will be generated so instead we'll just store a
+         reference to the matrix stack that is intended to be flushed and
+         update the uniform once the program is ready. */
 
       switch (mode)
         {
         case COGL_MATRIX_MODELVIEW:
-          gl_mode = GL_MODELVIEW;
+          cogl_object_ref (stack);
+          if (ctx->flushed_modelview_stack)
+            cogl_object_unref (ctx->flushed_modelview_stack);
+          ctx->flushed_modelview_stack = stack;
           break;
 
         case COGL_MATRIX_PROJECTION:
-          gl_mode = GL_PROJECTION;
+          cogl_object_ref (stack);
+          if (ctx->flushed_projection_stack)
+            cogl_object_unref (ctx->flushed_projection_stack);
+          ctx->flushed_projection_stack = stack;
           break;
 
         case COGL_MATRIX_TEXTURE:
-          gl_mode = GL_TEXTURE;
+          /* This shouldn't happen because the texture matrices are
+             handled by the GLSL pipeline backend */
+          g_assert_not_reached ();
           break;
         }
-
-      GE (ctx, glMatrixMode (gl_mode));
-      ctx->flushed_matrix_mode = mode;
     }
 
-  _cogl_matrix_stack_prepare_for_flush (stack,
-                                        mode,
-                                        flush_to_fixed_api_gl,
-                                        stack);
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
+  else
+    {
+      if (stack->flushed_state == state)
+        return;
 
-#endif /* HAVE_COGL_GLES2 */
+      if (ctx->flushed_matrix_mode != mode)
+        {
+          GLenum gl_mode = 0;
+
+          switch (mode)
+            {
+            case COGL_MATRIX_MODELVIEW:
+              gl_mode = GL_MODELVIEW;
+              break;
+
+            case COGL_MATRIX_PROJECTION:
+              gl_mode = GL_PROJECTION;
+              break;
+
+            case COGL_MATRIX_TEXTURE:
+              gl_mode = GL_TEXTURE;
+              break;
+            }
+
+          GE (ctx, glMatrixMode (gl_mode));
+          ctx->flushed_matrix_mode = mode;
+        }
+
+      _cogl_matrix_stack_prepare_for_flush (stack,
+                                            mode,
+                                            flush_to_fixed_api_gl,
+                                            stack);
+    }
+#endif
 
   stack->flushed_state = state;
 }

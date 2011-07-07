@@ -123,8 +123,17 @@ _cogl_transform_point (const CoglMatrix *matrix_mv,
 
 typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
   COGL_DRIVER_ERROR_UNKNOWN_VERSION,
-  COGL_DRIVER_ERROR_INVALID_VERSION
+  COGL_DRIVER_ERROR_INVALID_VERSION,
+  COGL_DRIVER_ERROR_NO_SUITABLE_DRIVER_FOUND,
+  COGL_DRIVER_ERROR_FAILED_TO_LOAD_LIBRARY
 } CoglDriverError;
+
+typedef enum
+{
+  COGL_DRIVER_GL,
+  COGL_DRIVER_GLES1,
+  COGL_DRIVER_GLES2
+} CoglDriver;
 
 typedef enum
 {
