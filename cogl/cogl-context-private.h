@@ -33,14 +33,6 @@
 #include "cogl-xlib-private.h"
 #endif
 
-#if HAVE_COGL_GL
-#include "cogl-context-driver-gl.h"
-#endif
-
-#if HAVE_COGL_GLES || HAVE_COGL_GLES2
-#include "cogl-context-driver-gles.h"
-#endif
-
 #include "cogl-display-private.h"
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"
@@ -258,8 +250,6 @@ struct _CoglContext
      these is expected to be allocated on the stack by the caller */
   CoglXlibTrapState *trap_state;
 #endif
-
-  CoglContextDriver drv;
 
   unsigned int winsys_features
     [COGL_FLAGS_N_INTS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
