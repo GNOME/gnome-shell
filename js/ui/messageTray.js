@@ -941,7 +941,7 @@ Source.prototype = {
     },
 
     _setCount: function(count, visible) {
-        if (!parseInt(count))
+        if (isNaN(parseInt(count)))
             throw new Error("Invalid notification count: " + count);
 
         this._counterBin.visible = visible;
