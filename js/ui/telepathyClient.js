@@ -24,6 +24,9 @@ const SCROLLBACK_IDLE_LENGTH = 5;
 // See Source._displayPendingMessages
 const SCROLLBACK_HISTORY_LINES = 10;
 
+// See Notification._onEntryChanged
+const COMPOSING_STOP_TIMEOUT = 5;
+
 const NotificationDirection = {
     SENT: 'chat-sent',
     RECEIVED: 'chat-received'
@@ -71,6 +74,7 @@ Client.prototype = {
     _init : function() {
         // channel path -> ChatSource
         this._chatSources = {};
+        this._chatState = Tp.ChannelChatState.ACTIVE;
 
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
@@ -458,6 +462,19 @@ ChatSource.prototype = {
         }));
     },
 
+    setChatState: function(state) {
+        // We don't want to send COMPOSING every time a letter is typed into
+        // the entry. We send the state only when it changes. Telepathy/Empathy
+        // might change it behind our back if the user is using both
+        // gnome-shell's entry and the Empathy conversation window. We could
+        // keep track of it with the ChatStateChanged signal but it is good
+        // enough right now.
+        if (state != this._chatState) {
+          this._chatState = state;
+          this._channel.set_chat_state_async(state, null);
+        }
+    },
+
     _presenceChanged: function (contact, presence, status, message) {
         let msg, shouldNotify, title;
 
@@ -547,6 +564,7 @@ ChatNotification.prototype = {
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
                                              can_focus: true });
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
+        this._responseEntry.clutter_text.connect('text-changed', Lang.bind(this, this._onEntryChanged));
         this.setActionArea(this._responseEntry);
 
         this._oldMaxScrollAdjustment = 0;
@@ -563,6 +581,7 @@ ChatNotification.prototype = {
 
         this._history = [];
         this._timestampTimeoutId = 0;
+        this._composingTimeoutId = 0;
     },
 
     /**
@@ -735,6 +754,39 @@ ChatNotification.prototype = {
         // see Source._messageSent
         this._responseEntry.set_text('');
         this.source.respond(text);
+    },
+
+    _composingStopTimeout: function() {
+        this._composingTimeoutId = 0;
+
+        this.source.setChatState(Tp.ChannelChatState.PAUSED);
+
+        return false;
+    },
+
+    _onEntryChanged: function() {
+        let text = this._responseEntry.get_text();
+
+        // If we're typing, we want to send COMPOSING.
+        // If we empty the entry, we want to send ACTIVE.
+        // If we've stopped typing for COMPOSING_STOP_TIMEOUT
+        //    seconds, we want to send PAUSED.
+
+        // Remove composing timeout.
+        if (this._composingTimeoutId > 0) {
+            Mainloop.source_remove(this._composingTimeoutId);
+            this._composingTimeoutId = 0;
+        }
+
+        if (text != '') {
+            this.source.setChatState(Tp.ChannelChatState.COMPOSING);
+
+            this._composingTimeoutId = Mainloop.timeout_add_seconds(
+                COMPOSING_STOP_TIMEOUT,
+                Lang.bind(this, this._composingStopTimeout));
+        } else {
+            this.source.setChatState(Tp.ChannelChatState.ACTIVE);
+        }
     }
 };
 
