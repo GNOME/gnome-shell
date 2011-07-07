@@ -177,6 +177,8 @@ _cogl_texture_2d_can_create (unsigned int width,
   GLenum gl_intformat;
   GLenum gl_type;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   /* If NPOT textures aren't supported then the size must be a power
      of two */
   if (!cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) &&
@@ -184,13 +186,13 @@ _cogl_texture_2d_can_create (unsigned int width,
        !_cogl_util_is_pot (height)))
     return FALSE;
 
-  _cogl_pixel_format_to_gl (internal_format,
-                            &gl_intformat,
-                            NULL,
-                            &gl_type);
+  ctx->texture_driver->pixel_format_to_gl (internal_format,
+                                           &gl_intformat,
+                                           NULL,
+                                           &gl_type);
 
   /* Check that the driver can create a texture with that size */
-  if (!_cogl_texture_driver_size_supported (GL_TEXTURE_2D,
+  if (!ctx->texture_driver->size_supported (GL_TEXTURE_2D,
                                             gl_intformat,
                                             gl_type,
                                             width,
@@ -256,15 +258,15 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
       return NULL;
     }
 
-  internal_format = _cogl_pixel_format_to_gl (internal_format,
-                                              &gl_intformat,
-                                              &gl_format,
-                                              &gl_type);
+  internal_format = ctx->texture_driver->pixel_format_to_gl (internal_format,
+                                                             &gl_intformat,
+                                                             &gl_format,
+                                                             &gl_type);
 
   tex_2d = _cogl_texture_2d_create_base (width, height, COGL_TEXTURE_NONE,
                                          internal_format);
 
-  _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
+  ctx->texture_driver->gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
@@ -286,6 +288,8 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
   GLenum         gl_format;
   GLenum         gl_type;
   guint8        *data;
+
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
   g_return_val_if_fail (bmp != NULL, COGL_INVALID_HANDLE);
 
@@ -337,8 +341,8 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
       _cogl_bitmap_unmap (dst_bmp);
     }
 
-  _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
-  _cogl_texture_driver_upload_to_gl (GL_TEXTURE_2D,
+  ctx->texture_driver->gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
+  ctx->texture_driver->upload_to_gl (GL_TEXTURE_2D,
                                      tex_2d->gl_texture,
                                      FALSE,
                                      dst_bmp,
@@ -407,7 +411,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   GLenum         gl_int_format = 0;
   CoglTexture2D *tex_2d;
 
-  if (!_cogl_texture_driver_allows_foreign_gl_target (GL_TEXTURE_2D))
+  if (!ctx->texture_driver->allows_foreign_gl_target (GL_TEXTURE_2D))
     return COGL_INVALID_HANDLE;
 
   /* Make sure it is a valid GL texture object */
@@ -443,17 +447,18 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
   /* If we can query GL for the actual pixel format then we'll ignore
      the passed in format and use that. */
-  if (!_cogl_pixel_format_from_gl_internal (gl_int_format, &format))
+  if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
+                                                           &format))
     return COGL_INVALID_HANDLE;
 
 #else
 
   /* Otherwise we'll assume we can derive the GL format from the
      passed in format */
-  _cogl_pixel_format_to_gl (format,
-                            &gl_int_format,
-                            NULL,
-                            NULL);
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           &gl_int_format,
+                                           NULL,
+                                           NULL);
 
 #endif
 
@@ -530,7 +535,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
   tex_2d = _cogl_texture_2d_create_base (width, height, COGL_TEXTURE_NONE,
                                          format);
 
-  _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
+  ctx->texture_driver->gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    FALSE);
@@ -766,7 +771,7 @@ _cogl_texture_2d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
          available we'll fallback to temporarily enabling
          GL_GENERATE_MIPMAP and reuploading the first pixel */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
-        _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_2D);
+        ctx->texture_driver->gl_generate_mipmaps (GL_TEXTURE_2D);
 #ifndef HAVE_COGL_GLES2
       else
         {
@@ -808,10 +813,12 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
   GLenum         gl_type;
   guint8        *data;
 
-  _cogl_pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
-                            NULL, /* internal format */
-                            &gl_format,
-                            &gl_type);
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  ctx->texture_driver->pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
+                                           NULL, /* internal format */
+                                           &gl_format,
+                                           &gl_type);
 
   /* If this touches the first pixel then we'll update our copy */
   if (dst_x == 0 && dst_y == 0 &&
@@ -830,7 +837,7 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
     }
 
   /* Send data to GL */
-  _cogl_texture_driver_upload_subregion_to_gl (GL_TEXTURE_2D,
+  ctx->texture_driver->upload_subregion_to_gl (GL_TEXTURE_2D,
                                                tex_2d->gl_texture,
                                                FALSE,
                                                src_x, src_y,
@@ -856,19 +863,21 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
   GLenum           gl_format;
   GLenum           gl_type;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   bpp = _cogl_get_format_bpp (format);
 
-  _cogl_pixel_format_to_gl (format,
-                            NULL, /* internal format */
-                            &gl_format,
-                            &gl_type);
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           NULL, /* internal format */
+                                           &gl_format,
+                                           &gl_type);
 
-  _cogl_texture_driver_prep_gl_for_pixels_download (rowstride, bpp);
+  ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
-  return _cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_2D,
+  return ctx->texture_driver->gl_get_tex_image (GL_TEXTURE_2D,
                                                 gl_format,
                                                 gl_type,
                                                 data);

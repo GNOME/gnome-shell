@@ -41,6 +41,7 @@
 #include "cogl-buffer-private.h"
 #include "cogl-bitmask.h"
 #include "cogl-atlas.h"
+#include "cogl-texture-driver.h"
 
 typedef struct
 {
@@ -54,6 +55,9 @@ struct _CoglContext
   CoglObject _parent;
 
   CoglDisplay *display;
+
+  /* vtable for the texture driver functions */
+  const CoglTextureDriver *texture_driver;
 
   /* Features cache */
   CoglFeatureFlags feature_flags;

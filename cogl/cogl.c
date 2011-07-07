@@ -542,7 +542,10 @@ _cogl_read_pixels_with_rowstride (int x,
                                     bmp_format, width, height, rowstride,
                                     NULL, NULL);
 
-  _cogl_pixel_format_to_gl (format, &gl_intformat, &gl_format, &gl_type);
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           &gl_intformat,
+                                           &gl_format,
+                                           &gl_type);
 
   /* Under GLES only GL_RGBA with GL_UNSIGNED_BYTE as well as an
      implementation specific format under
@@ -568,7 +571,7 @@ _cogl_read_pixels_with_rowstride (int x,
                                             (CoglBitmapDestroyNotify) g_free,
                                             NULL);
 
-      _cogl_texture_driver_prep_gl_for_pixels_download (4 * width, 4);
+      ctx->texture_driver->prep_gl_for_pixels_download (4 * width, 4);
 
       GE( ctx, glReadPixels (x, y, width, height,
                              GL_RGBA, GL_UNSIGNED_BYTE,
@@ -598,7 +601,7 @@ _cogl_read_pixels_with_rowstride (int x,
   else
 #endif
     {
-      _cogl_texture_driver_prep_gl_for_pixels_download (rowstride, bpp);
+      ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
 
       GE( ctx, glReadPixels (x, y, width, height, gl_format, gl_type, pixels) );
 

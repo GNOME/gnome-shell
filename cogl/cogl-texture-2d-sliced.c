@@ -723,6 +723,8 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
 
   int   (*slices_for_size) (int, int, int, GArray*);
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   /* Initialize size of largest slice according to supported features */
   if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT))
     {
@@ -737,7 +739,10 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
       slices_for_size = _cogl_pot_slices_for_size;
     }
 
-  _cogl_pixel_format_to_gl (format, &gl_intformat, NULL, &gl_type);
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           &gl_intformat,
+                                           NULL,
+                                           &gl_type);
 
   /* Negative number means no slicing forced by the user */
   if (tex_2ds->max_waste <= -1)
@@ -745,7 +750,7 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
       CoglSpan span;
 
       /* Check if size supported else bail out */
-      if (!_cogl_texture_driver_size_supported (GL_TEXTURE_2D,
+      if (!ctx->texture_driver->size_supported (GL_TEXTURE_2D,
                                                 gl_intformat,
                                                 gl_type,
                                                 max_width,
@@ -779,7 +784,7 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
   else
     {
       /* Decrease the size of largest slice until supported by GL */
-      while (!_cogl_texture_driver_size_supported (GL_TEXTURE_2D,
+      while (!ctx->texture_driver->size_supported (GL_TEXTURE_2D,
                                                    gl_intformat,
                                                    gl_type,
                                                    max_width,
@@ -1318,10 +1323,12 @@ _cogl_texture_2d_sliced_set_region (CoglTexture    *tex,
   GLenum               gl_format;
   GLenum               gl_type;
 
-  _cogl_pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
-                            NULL, /* internal format */
-                            &gl_format,
-                            &gl_type);
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  ctx->texture_driver->pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
+                                           NULL, /* internal format */
+                                           &gl_format,
+                                           &gl_type);
 
   /* Send data to GL */
   _cogl_texture_2d_sliced_upload_subregion_to_gl (tex_2ds,

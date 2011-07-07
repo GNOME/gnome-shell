@@ -181,6 +181,8 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
   CoglPixelFormat src_format = _cogl_bitmap_get_format (src_bmp);
   CoglBitmap *dst_bmp;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   dst_format = _cogl_texture_determine_internal_format (src_format,
                                                         dst_format);
 
@@ -215,23 +217,23 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
   /* Use the source format from the src bitmap type and the internal
      format from the dst format type so that GL can do the
      conversion */
-  _cogl_pixel_format_to_gl (src_format,
-                            NULL, /* internal format */
-                            out_glformat,
-                            out_gltype);
-  _cogl_pixel_format_to_gl (dst_format,
-                            out_glintformat,
-                            NULL,
-                            NULL);
+  ctx->texture_driver->pixel_format_to_gl (src_format,
+                                           NULL, /* internal format */
+                                           out_glformat,
+                                           out_gltype);
+  ctx->texture_driver->pixel_format_to_gl (dst_format,
+                                           out_glintformat,
+                                           NULL,
+                                           NULL);
 
 #else /* HAVE_COGL_GL */
   {
     CoglPixelFormat closest_format;
 
-    closest_format = _cogl_pixel_format_to_gl (dst_format,
-                                               out_glintformat,
-                                               out_glformat,
-                                               out_gltype);
+    closest_format = ctx->texture_driver->pixel_format_to_gl (dst_format,
+                                                              out_glintformat,
+                                                              out_glformat,
+                                                              out_gltype);
 
     if (closest_format != src_format)
       dst_bmp = _cogl_bitmap_convert_format_and_premult (src_bmp,
@@ -1378,6 +1380,8 @@ cogl_texture_get_data (CoglHandle       handle,
 
   CoglTextureGetData tg_data;
 
+  _COGL_GET_CONTEXT (ctx, 0);
+
   if (!cogl_is_texture (handle))
     return 0;
 
@@ -1401,7 +1405,7 @@ cogl_texture_get_data (CoglHandle       handle,
     return byte_size;
 
   closest_format =
-    _cogl_texture_driver_find_best_gl_get_data_format (format,
+    ctx->texture_driver->find_best_gl_get_data_format (format,
                                                        &closest_gl_format,
                                                        &closest_gl_type);
   closest_bpp = _cogl_get_format_bpp (closest_format);

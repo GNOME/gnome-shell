@@ -54,6 +54,9 @@
 #define GL_POINT_SPRITE 0x8861
 #endif
 
+extern const CoglTextureDriver _cogl_texture_driver_gl;
+extern const CoglTextureDriver _cogl_texture_driver_gles;
+
 static void _cogl_context_free (CoglContext *context);
 
 COGL_OBJECT_DEFINE (Context, context);
@@ -172,6 +175,12 @@ cogl_context_new (CoglDisplay *display,
       g_free (context);
       return NULL;
     }
+
+#ifdef HAVE_COGL_GL
+  context->texture_driver = &_cogl_texture_driver_gl;
+#else
+  context->texture_driver = &_cogl_texture_driver_gles;
+#endif
 
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);

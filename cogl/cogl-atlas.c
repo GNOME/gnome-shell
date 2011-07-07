@@ -175,10 +175,12 @@ _cogl_atlas_get_initial_size (CoglPixelFormat format,
   GLenum gl_intformat;
   GLenum gl_type;
 
-  _cogl_pixel_format_to_gl (format,
-                            &gl_intformat,
-                            NULL, /* gl_format */
-                            &gl_type);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           &gl_intformat,
+                                           NULL, /* gl_format */
+                                           &gl_type);
 
   /* At least on Intel hardware, the texture size will be rounded up
      to at least 1MB so we might as well try to aim for that as an
@@ -193,7 +195,7 @@ _cogl_atlas_get_initial_size (CoglPixelFormat format,
   /* Some platforms might not support this large size so we'll
      decrease the size until it can */
   while (size > 1 &&
-         !_cogl_texture_driver_size_supported (GL_TEXTURE_2D,
+         !ctx->texture_driver->size_supported (GL_TEXTURE_2D,
                                                gl_intformat,
                                                gl_type,
                                                size, size))
@@ -213,14 +215,16 @@ _cogl_atlas_create_map (CoglPixelFormat          format,
   GLenum gl_intformat;
   GLenum gl_type;
 
-  _cogl_pixel_format_to_gl (format,
-                            &gl_intformat,
-                            NULL, /* gl_format */
-                            &gl_type);
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           &gl_intformat,
+                                           NULL, /* gl_format */
+                                           &gl_type);
 
   /* Keep trying increasingly larger atlases until we can fit all of
      the textures */
-  while (_cogl_texture_driver_size_supported (GL_TEXTURE_2D,
+  while (ctx->texture_driver->size_supported (GL_TEXTURE_2D,
                                               gl_intformat,
                                               gl_type,
                                               map_width, map_height))

@@ -80,7 +80,7 @@ struct _CoglTextureVtable
 
   /* This should copy the image data of the texture into @data. The
      requested format will have been first passed through
-     _cogl_texture_driver_find_best_gl_get_data_format so it should
+     ctx->texture_driver->find_best_gl_get_data_format so it should
      always be a format that is valid for GL (ie, no conversion should
      be necessary). */
   gboolean (* get_data) (CoglTexture     *tex,

@@ -46,7 +46,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-void
+static void
 _cogl_texture_driver_gen (GLenum   gl_target,
                           GLsizei  n,
                           GLuint  *textures)
@@ -107,7 +107,7 @@ prep_gl_for_pixels_upload_full (int pixels_rowstride,
   _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
 }
 
-void
+static void
 _cogl_texture_driver_prep_gl_for_pixels_upload (int pixels_rowstride,
                                                 int pixels_bpp)
 {
@@ -136,14 +136,14 @@ prep_gl_for_pixels_download_full (int pixels_rowstride,
   _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);
 }
 
-void
+static void
 _cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
                                                   int pixels_bpp)
 {
   prep_gl_for_pixels_download_full (pixels_rowstride, 0, 0, 0, pixels_bpp);
 }
 
-void
+static void
 _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                              GLuint       gl_handle,
                                              gboolean     is_foreign,
@@ -183,7 +183,7 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   _cogl_bitmap_unbind (source_bmp);
 }
 
-void
+static void
 _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       gl_handle,
                                    gboolean     is_foreign,
@@ -217,7 +217,7 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
   _cogl_bitmap_unbind (source_bmp);
 }
 
-void
+static void
 _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       gl_handle,
                                       gboolean     is_foreign,
@@ -257,7 +257,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
   _cogl_bitmap_unbind (source_bmp);
 }
 
-gboolean
+static gboolean
 _cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
                                        GLenum  dest_gl_format,
                                        GLenum  dest_gl_type,
@@ -273,7 +273,7 @@ _cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
   return TRUE;
 }
 
-gboolean
+static gboolean
 _cogl_texture_driver_size_supported_3d (GLenum gl_target,
                                         GLenum gl_format,
                                         GLenum gl_type,
@@ -303,7 +303,7 @@ _cogl_texture_driver_size_supported_3d (GLenum gl_target,
   return new_width != 0;
 }
 
-gboolean
+static gboolean
 _cogl_texture_driver_size_supported (GLenum gl_target,
                                      GLenum gl_format,
                                      GLenum gl_type,
@@ -336,7 +336,7 @@ _cogl_texture_driver_size_supported (GLenum gl_target,
   return new_width != 0;
 }
 
-void
+static void
 _cogl_texture_driver_try_setting_gl_border_color (
                                               GLuint   gl_target,
                                               const GLfloat *transparent_color)
@@ -350,9 +350,9 @@ _cogl_texture_driver_try_setting_gl_border_color (
                              transparent_color) );
 }
 
-gboolean
-_cogl_pixel_format_from_gl_internal (GLenum            gl_int_format,
-				     CoglPixelFormat  *out_format)
+static gboolean
+_cogl_texture_driver_pixel_format_from_gl_internal (GLenum gl_int_format,
+                                                    CoglPixelFormat  *out_format)
 {
   /* It doesn't really matter we convert to exact same
      format (some have no cogl match anyway) since format
@@ -390,11 +390,11 @@ _cogl_pixel_format_from_gl_internal (GLenum            gl_int_format,
   return FALSE;
 }
 
-CoglPixelFormat
-_cogl_pixel_format_to_gl (CoglPixelFormat  format,
-			  GLenum          *out_glintformat,
-			  GLenum          *out_glformat,
-			  GLenum          *out_gltype)
+static CoglPixelFormat
+_cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
+                                         GLenum          *out_glintformat,
+                                         GLenum          *out_glformat,
+                                         GLenum          *out_gltype)
 {
   CoglPixelFormat required_format;
   GLenum          glintformat = 0;
@@ -497,7 +497,7 @@ _cogl_pixel_format_to_gl (CoglPixelFormat  format,
   return required_format;
 }
 
-gboolean
+static gboolean
 _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
 {
   /* GL_ARB_texture_rectangle textures are supported if they are
@@ -513,7 +513,7 @@ _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
   return TRUE;
 }
 
-void
+static void
 _cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -521,16 +521,35 @@ _cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
   GE( ctx, glGenerateMipmap (gl_target) );
 }
 
-CoglPixelFormat
+static CoglPixelFormat
 _cogl_texture_driver_find_best_gl_get_data_format (
                                              CoglPixelFormat  format,
                                              GLenum          *closest_gl_format,
                                              GLenum          *closest_gl_type)
 {
   /* Find closest format that's supported by GL */
-  return _cogl_pixel_format_to_gl (format,
-                                   NULL, /* don't need */
-                                   closest_gl_format,
-                                   closest_gl_type);
+  return _cogl_texture_driver_pixel_format_to_gl (format,
+                                                  NULL, /* don't need */
+                                                  closest_gl_format,
+                                                  closest_gl_type);
 }
 
+const CoglTextureDriver
+_cogl_texture_driver_gl =
+  {
+    _cogl_texture_driver_gen,
+    _cogl_texture_driver_prep_gl_for_pixels_upload,
+    _cogl_texture_driver_upload_subregion_to_gl,
+    _cogl_texture_driver_upload_to_gl,
+    _cogl_texture_driver_upload_to_gl_3d,
+    _cogl_texture_driver_prep_gl_for_pixels_download,
+    _cogl_texture_driver_gl_get_tex_image,
+    _cogl_texture_driver_size_supported,
+    _cogl_texture_driver_size_supported_3d,
+    _cogl_texture_driver_try_setting_gl_border_color,
+    _cogl_texture_driver_pixel_format_from_gl_internal,
+    _cogl_texture_driver_pixel_format_to_gl,
+    _cogl_texture_driver_allows_foreign_gl_target,
+    _cogl_texture_driver_gl_generate_mipmaps,
+    _cogl_texture_driver_find_best_gl_get_data_format
+  };

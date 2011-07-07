@@ -196,16 +196,18 @@ _cogl_texture_rectangle_can_create (unsigned int width,
   GLenum gl_intformat;
   GLenum gl_type;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   if (!cogl_features_available (COGL_FEATURE_TEXTURE_RECTANGLE))
     return FALSE;
 
-  _cogl_pixel_format_to_gl (internal_format,
-                            &gl_intformat,
-                            NULL,
-                            &gl_type);
+  ctx->texture_driver->pixel_format_to_gl (internal_format,
+                                           &gl_intformat,
+                                           NULL,
+                                           &gl_type);
 
   /* Check that the driver can create a texture with that size */
-  if (!_cogl_texture_driver_size_supported (GL_TEXTURE_RECTANGLE_ARB,
+  if (!ctx->texture_driver->size_supported (GL_TEXTURE_RECTANGLE_ARB,
                                             gl_intformat,
                                             gl_type,
                                             width,
@@ -262,15 +264,15 @@ _cogl_texture_rectangle_new_with_size (unsigned int     width,
   if (!_cogl_texture_rectangle_can_create (width, height, internal_format))
     return COGL_INVALID_HANDLE;
 
-  internal_format = _cogl_pixel_format_to_gl (internal_format,
-                                              &gl_intformat,
-                                              &gl_format,
-                                              &gl_type);
+  internal_format = ctx->texture_driver->pixel_format_to_gl (internal_format,
+                                                             &gl_intformat,
+                                                             &gl_format,
+                                                             &gl_type);
 
   tex_rect = _cogl_texture_rectangle_create_base (width, height, flags,
                                                   internal_format);
 
-  _cogl_texture_driver_gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);
+  ctx->texture_driver->gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                    tex_rect->gl_texture,
                                    tex_rect->is_foreign);
@@ -290,6 +292,8 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
   GLenum                gl_intformat;
   GLenum                gl_format;
   GLenum                gl_type;
+
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
   g_return_val_if_fail (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
 
@@ -317,8 +321,8 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
                                                   flags,
                                                   internal_format);
 
-  _cogl_texture_driver_gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);
-  _cogl_texture_driver_upload_to_gl (GL_TEXTURE_RECTANGLE_ARB,
+  ctx->texture_driver->gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);
+  ctx->texture_driver->upload_to_gl (GL_TEXTURE_RECTANGLE_ARB,
                                      tex_rect->gl_texture,
                                      FALSE,
                                      dst_bmp,
@@ -350,7 +354,7 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  if (!_cogl_texture_driver_allows_foreign_gl_target (GL_TEXTURE_RECTANGLE_ARB))
+  if (!ctx->texture_driver->allows_foreign_gl_target (GL_TEXTURE_RECTANGLE_ARB))
     return COGL_INVALID_HANDLE;
 
   /* Make sure it is a valid GL texture object */
@@ -385,17 +389,18 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
 
   /* If we can query GL for the actual pixel format then we'll ignore
      the passed in format and use that. */
-  if (!_cogl_pixel_format_from_gl_internal (gl_int_format, &format))
+  if (!ctx->texture_driver->pixel_format_from_gl_internal (gl_int_format,
+                                                           &format))
     return COGL_INVALID_HANDLE;
 
 #else
 
   /* Otherwise we'll assume we can derive the GL format from the
      passed in format */
-  _cogl_pixel_format_to_gl (format,
-                            &gl_int_format,
-                            NULL,
-                            NULL);
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           &gl_int_format,
+                                           NULL,
+                                           NULL);
 
 #endif
 
@@ -558,13 +563,15 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
   GLenum                gl_format;
   GLenum                gl_type;
 
-  _cogl_pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
-                            NULL, /* internal format */
-                            &gl_format,
-                            &gl_type);
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  ctx->texture_driver->pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
+                                           NULL, /* internal format */
+                                           &gl_format,
+                                           &gl_type);
 
   /* Send data to GL */
-  _cogl_texture_driver_upload_subregion_to_gl (GL_TEXTURE_RECTANGLE_ARB,
+  ctx->texture_driver->upload_subregion_to_gl (GL_TEXTURE_RECTANGLE_ARB,
                                                tex_rect->gl_texture,
                                                FALSE,
                                                src_x, src_y,
@@ -592,17 +599,17 @@ _cogl_texture_rectangle_get_data (CoglTexture     *tex,
 
   bpp = _cogl_get_format_bpp (format);
 
-  _cogl_pixel_format_to_gl (format,
-                            NULL, /* internal format */
-                            &gl_format,
-                            &gl_type);
+  ctx->texture_driver->pixel_format_to_gl (format,
+                                           NULL, /* internal format */
+                                           &gl_format,
+                                           &gl_type);
 
-  _cogl_texture_driver_prep_gl_for_pixels_download (rowstride, bpp);
+  ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                    tex_rect->gl_texture,
                                    tex_rect->is_foreign);
-  return _cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_RECTANGLE_ARB,
+  return ctx->texture_driver->gl_get_tex_image (GL_TEXTURE_RECTANGLE_ARB,
                                                 gl_format,
                                                 gl_type,
                                                 data);
