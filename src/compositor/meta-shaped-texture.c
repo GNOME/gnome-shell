@@ -34,7 +34,6 @@
 #include <string.h>
 
 static void meta_shaped_texture_dispose  (GObject    *object);
-static void meta_shaped_texture_finalize (GObject    *object);
 static void meta_shaped_texture_notify   (GObject    *object,
 					  GParamSpec *pspec);
 
@@ -65,10 +64,9 @@ struct _MetaShapedTexturePrivate
   CoglHandle material_unshaped;
 
   cairo_region_t *clip_region;
+  cairo_region_t *shape_region;
 
   guint mask_width, mask_height;
-
-  GArray *rectangles;
 
   guint create_mipmaps : 1;
 };
@@ -81,7 +79,6 @@ meta_shaped_texture_class_init (MetaShapedTextureClass *klass)
   ClutterX11TexturePixmapClass *x11_texture_class = (ClutterX11TexturePixmapClass *) klass;
 
   gobject_class->dispose = meta_shaped_texture_dispose;
-  gobject_class->finalize = meta_shaped_texture_finalize;
   gobject_class->notify = meta_shaped_texture_notify;
 
   actor_class->paint = meta_shaped_texture_paint;
@@ -99,8 +96,7 @@ meta_shaped_texture_init (MetaShapedTexture *self)
 
   priv = self->priv = META_SHAPED_TEXTURE_GET_PRIVATE (self);
 
-  priv->rectangles = g_array_new (FALSE, FALSE, sizeof (XRectangle));
-
+  priv->shape_region = NULL;
   priv->paint_tower = meta_texture_tower_new ();
   priv->mask_texture = COGL_INVALID_HANDLE;
   priv->create_mipmaps = TRUE;
@@ -129,20 +125,10 @@ meta_shaped_texture_dispose (GObject *object)
       priv->material_unshaped = COGL_INVALID_HANDLE;
     }
 
+  meta_shaped_texture_set_shape_region (self, NULL);
   meta_shaped_texture_set_clip_region (self, NULL);
 
   G_OBJECT_CLASS (meta_shaped_texture_parent_class)->dispose (object);
-}
-
-static void
-meta_shaped_texture_finalize (GObject *object)
-{
-  MetaShapedTexture *self = (MetaShapedTexture *) object;
-  MetaShapedTexturePrivate *priv = self->priv;
-
-  g_array_free (priv->rectangles, TRUE);
-
-  G_OBJECT_CLASS (meta_shaped_texture_parent_class)->finalize (object);
 }
 
 static void
@@ -210,19 +196,23 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
   if (priv->mask_texture == COGL_INVALID_HANDLE)
     {
       guchar *mask_data;
-      const XRectangle *rect;
+      int i;
+      int n_rects;
       GLenum paint_gl_target;
 
       /* Create data for an empty image */
       mask_data = g_malloc0 (tex_width * tex_height);
 
-      /* Cut out a hole for each rectangle */
-      for (rect = (XRectangle *) priv->rectangles->data
-             + priv->rectangles->len;
-           rect-- > (XRectangle *) priv->rectangles->data;)
+      n_rects = cairo_region_num_rectangles (priv->shape_region);
+
+      /* Fill in each rectangle. */
+      for (i = 0; i < n_rects; i ++)
         {
-          gint x1 = rect->x, x2 = x1 + rect->width;
-          gint y1 = rect->y, y2 = y1 + rect->height;
+          cairo_rectangle_int_t rect;
+          cairo_region_get_rectangle (priv->shape_region, i, &rect);
+
+          gint x1 = rect.x, x2 = x1 + rect.width;
+          gint y1 = rect.y, y2 = y1 + rect.height;
           guchar *p;
 
           /* Clip the rectangle to the size of the texture */
@@ -321,9 +311,9 @@ meta_shaped_texture_paint (ClutterActor *actor)
   if (tex_width == 0 || tex_height == 0) /* no contents yet */
     return;
 
-  if (priv->rectangles->len < 1)
+  if (priv->shape_region == NULL)
     {
-      /* If there are no rectangles use a single-layer texture */
+      /* No region means an unclipped shape. Use a single-layer texture. */
 
       if (priv->material_unshaped == COGL_INVALID_HANDLE) 
         {
@@ -423,8 +413,8 @@ meta_shaped_texture_pick (ClutterActor       *actor,
   MetaShapedTexture *stex = (MetaShapedTexture *) actor;
   MetaShapedTexturePrivate *priv = stex->priv;
 
-  /* If there are no rectangles then use the regular pick */
-  if (priv->rectangles->len < 1)
+  /* If there is no region then use the regular pick */
+  if (priv->shape_region == NULL)
     CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)
       ->pick (actor, color);
   else if (clutter_actor_should_pick_paint (actor))
@@ -544,7 +534,8 @@ meta_shaped_texture_clear (MetaShapedTexture *stex)
 }
 
 void
-meta_shaped_texture_clear_rectangles (MetaShapedTexture *stex)
+meta_shaped_texture_set_shape_region (MetaShapedTexture *stex,
+                                      cairo_region_t    *region)
 {
   MetaShapedTexturePrivate *priv;
 
@@ -552,32 +543,17 @@ meta_shaped_texture_clear_rectangles (MetaShapedTexture *stex)
 
   priv = stex->priv;
 
-  g_array_set_size (priv->rectangles, 0);
-  meta_shaped_texture_dirty_mask (stex);
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
-}
+  if (priv->shape_region != NULL)
+    {
+      cairo_region_destroy (priv->shape_region);
+      priv->shape_region = NULL;
+    }
 
-void
-meta_shaped_texture_add_rectangle (MetaShapedTexture *stex,
-				   const XRectangle  *rect)
-{
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
-
-  meta_shaped_texture_add_rectangles (stex, 1, rect);
-}
-
-void
-meta_shaped_texture_add_rectangles (MetaShapedTexture *stex,
-				    size_t             num_rects,
-				    const XRectangle  *rects)
-{
-  MetaShapedTexturePrivate *priv;
-
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
-
-  priv = stex->priv;
-
-  g_array_append_vals (priv->rectangles, rects, num_rects);
+  if (region != NULL)
+    {
+      cairo_region_reference (region);
+      priv->shape_region = region;
+    }
 
   meta_shaped_texture_dirty_mask (stex);
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));

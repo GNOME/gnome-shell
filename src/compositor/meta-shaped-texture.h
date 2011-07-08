@@ -65,13 +65,8 @@ void meta_shaped_texture_set_create_mipmaps (MetaShapedTexture *stex,
 
 void meta_shaped_texture_clear (MetaShapedTexture *stex);
 
-void meta_shaped_texture_clear_rectangles (MetaShapedTexture *stex);
-
-void meta_shaped_texture_add_rectangle  (MetaShapedTexture *stex,
-					 const XRectangle  *rect);
-void meta_shaped_texture_add_rectangles (MetaShapedTexture *stex,
-					 size_t             num_rects,
-					 const XRectangle  *rects);
+void meta_shaped_texture_set_shape_region (MetaShapedTexture *stex,
+                                           cairo_region_t    *region);
 
 /* Assumes ownership of clip_region */
 void meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,

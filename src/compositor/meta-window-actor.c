@@ -1701,20 +1701,15 @@ meta_window_actor_update_bounding_region (MetaWindowActor *self,
 
 static void
 meta_window_actor_update_shape_region (MetaWindowActor *self,
-                                       int              n_rects,
-                                       XRectangle      *rects)
+                                       cairo_region_t  *region)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  int i;
 
   meta_window_actor_clear_shape_region (self);
 
-  priv->shape_region = cairo_region_create ();
-  for (i = 0; i < n_rects; i++)
-    {
-      cairo_rectangle_int_t rect = { rects[i].x, rects[i].y, rects[i].width, rects[i].height };
-      cairo_region_union_rectangle (priv->shape_region, &rect);
-    }
+  /* region must be non-null */
+  priv->shape_region = region;
+  cairo_region_reference (region);
 
   /* Our "shape_region" is called the "bounding region" in the X Shape
    * Extension Documentation.
@@ -2106,12 +2101,12 @@ check_needs_reshape (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
   MetaScreen *screen = priv->screen;
   MetaDisplay *display = meta_screen_get_display (screen);
+  cairo_region_t *region;
 
   if (!priv->needs_reshape)
     return;
 
-  meta_shaped_texture_clear_rectangles (META_SHAPED_TEXTURE (priv->actor));
-  meta_window_actor_clear_shape_region (self);
+  region = NULL;
 
 #ifdef HAVE_SHAPE
   if (priv->shaped)
@@ -2130,15 +2125,29 @@ check_needs_reshape (MetaWindowActor *self)
 
       if (rects)
         {
-          meta_shaped_texture_add_rectangles (META_SHAPED_TEXTURE (priv->actor),
-                                              n_rects, rects);
+          int i;
 
-          meta_window_actor_update_shape_region (self, n_rects, rects);
+          region = cairo_region_create ();
 
+          for (i = 0; i < n_rects; i ++)
+            {
+              cairo_rectangle_int_t rect = { rects[i].x,
+                                             rects[i].y,
+                                             rects[i].width,
+                                             rects[i].height };
+              cairo_region_union_rectangle (region, &rect);
+            }
           XFree (rects);
         }
     }
 #endif
+
+  meta_shaped_texture_set_shape_region (META_SHAPED_TEXTURE (priv->actor),
+                                        region);
+
+  meta_window_actor_update_shape_region (self, region);
+
+  cairo_region_destroy (region);
 
   priv->needs_reshape = FALSE;
   meta_window_actor_invalidate_shadow (self);
