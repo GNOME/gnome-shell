@@ -1,3 +1,4 @@
+#undef CLUTTER_DISABLE_DEPRECATED
 
 #include <clutter/clutter.h>
 

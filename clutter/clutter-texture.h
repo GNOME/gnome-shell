@@ -166,7 +166,11 @@ GType clutter_texture_get_type (void) G_GNUC_CONST;
 ClutterActor *       clutter_texture_new                    (void);
 ClutterActor *       clutter_texture_new_from_file          (const gchar            *filename,
                                                              GError                **error);
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 ClutterActor *       clutter_texture_new_from_actor         (ClutterActor           *actor);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
+
 gboolean             clutter_texture_set_from_file          (ClutterTexture         *texture,
                                                              const gchar            *filename,
                                                              GError                **error);

@@ -2541,6 +2541,10 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *
  * Return value: A newly created #ClutterTexture object, or %NULL on failure.
  *
+ * Deprecated: 1.8: Use the #ClutterOffscreenEffect and #ClutterShaderEffect
+ *   directly on the intended #ClutterActor to replace the functionality of
+ *   this function.
+ *
  * Since: 0.6
  */
 ClutterActor *
