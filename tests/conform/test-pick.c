@@ -47,7 +47,8 @@ shader_paint (ClutterEffect           *effect,
   ClutterActor *actor =
     clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
 
-  g_debug ("shader_paint");
+  if (g_test_verbose ())
+    g_debug ("shader_paint");
 
   clutter_shader_effect_set_shader_source (shader,
     "uniform sampler2D tex;\n"
