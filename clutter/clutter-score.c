@@ -74,6 +74,9 @@
  * The state can be queried using clutter_score_is_playing().
  *
  * #ClutterScore is available since Clutter 0.6
+ *
+ * Deprecated: 1.8: Use #ClutterAnimator or #ClutterState to create
+ *   complex animations involving multiple timelines.
  */
 
 #ifdef HAVE_CONFIG_H

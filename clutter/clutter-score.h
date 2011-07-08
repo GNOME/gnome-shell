@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
+
 #define CLUTTER_TYPE_SCORE              (clutter_score_get_type ())
 
 #define CLUTTER_SCORE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_SCORE, ClutterScore))
@@ -123,6 +125,8 @@ void             clutter_score_stop             (ClutterScore    *score);
 void             clutter_score_pause            (ClutterScore    *score);
 void             clutter_score_rewind           (ClutterScore    *score);
 gboolean         clutter_score_is_playing       (ClutterScore    *score);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
