@@ -711,7 +711,6 @@ PopupSwitchMenuItem.prototype = {
         this._statusLabel = new St.Label({ text: '',
                                            style_class: 'popup-inactive-menu-item'
                                          });
-        this._switch = new Switch(false);
         this._statusBin.child = this._switch.actor;
     },
 
