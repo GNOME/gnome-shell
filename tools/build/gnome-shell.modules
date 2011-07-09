@@ -295,19 +295,6 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gnome-power-manager">
-    <branch repo="git.gnome.org" module="gnome-power-manager" />
-    <dependencies>
-        <dep package="gtk3"/>
-        <dep package="glib"/>
-        <dep package="gconf"/>
-        <dep package="cairo"/>
-        <dep package="libnotify"/>
-        <dep package="libcanberra"/>
-	<dep package="gnome-control-center"/>
-    </dependencies>
-  </autotools>
-
   <autotools id="telepathy-glib" autogenargs="--disable-Werror" >
     <branch repo="git.freedesktop.org" module="telepathy/telepathy-glib" />
     <dependencies>
@@ -360,7 +347,6 @@
       <dep package="librsvg"/>
       <dep package="gnome-themes-standard"/>
       <dep package="gnome-shell"/>
-      <dep package="gnome-power-manager"/>
     </dependencies>
   </metamodule>
 
