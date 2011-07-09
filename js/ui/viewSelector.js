@@ -95,8 +95,8 @@ const ViewSelector = new Lang.Class({
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
                                              _("Windows"), 'emblem-documents-symbolic');
 
-        this._appDisplay = new AppDisplay.AppDisplay();
-        this._appsPage = this._addPage(this._appDisplay.actor,
+        this.appDisplay = new AppDisplay.AppDisplay();
+        this._appsPage = this._addPage(this.appDisplay.actor,
                                        _("Applications"), 'view-grid-symbolic');
 
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
@@ -523,6 +523,13 @@ const ViewSelector = new Lang.Class({
             return ViewPage.APPS;
         else
             return ViewPage.SEARCH;
+    },
+
+    setActivePage: function(page) {
+        if (page == ViewPage.WINDOWS)
+            this._showPage(this._workspacesPage);
+        else
+            this._showPage(this._appsPage);
     },
 
     fadeIn: function() {

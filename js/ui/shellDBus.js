@@ -13,6 +13,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Hash = imports.misc.hash;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
+const ViewSelector = imports.ui.viewSelector;
 
 const GnomeShellIface = <interface name="org.gnome.Shell">
 <method name="Eval">
@@ -23,6 +24,9 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 <method name="FocusSearch"/>
 <method name="ShowOSD">
     <arg type="a{sv}" direction="in" name="params"/>
+</method>
+<method name="FocusApp">
+    <arg type="s" direction="in" name="id"/>
 </method>
 <method name="GrabAccelerator">
     <arg type="s" direction="in" name="accelerator"/>
@@ -133,6 +137,14 @@ const GnomeShell = new Lang.Class({
         Main.osdWindow.setLevel(params['level']);
 
         Main.osdWindow.show();
+    },
+
+    FocusApp: function(id) {
+        let overview = Main.overview;
+
+        overview.show();
+        overview.viewSelector.setActivePage(ViewSelector.ViewPage.APPS);
+        overview.viewSelector.appDisplay.selectApp(id);
     },
 
     GrabAcceleratorAsync: function(params, invocation) {

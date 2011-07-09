@@ -108,8 +108,38 @@ const AlphabeticalView = new Lang.Class({
                 continue;
             this._grid.addItem(this._items[id].actor);
         }
+
+        this.emit('view-loaded');
+    },
+
+    _selectAppInternal: function(id) {
+        if (this._items[id])
+            this._items[id].actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        else
+            log('No such application ' + id);
+    },
+
+    selectApp: function(id) {
+        if (this._items[id] && this._items[id].actor.mapped) {
+            this._selectAppInternal(id);
+        } else if (this._items[id]) {
+            // Need to wait until the view is mapped
+            let signalId = this._items[id].actor.connect('notify::mapped', Lang.bind(this, function(actor) {
+                if (actor.mapped) {
+                    actor.disconnect(signalId);
+                    this._selectAppInternal(id);
+                }
+            }));
+        } else {
+            // Need to wait until the view is built
+            let signalId = this.connect('view-loaded', Lang.bind(this, function() {
+                this.disconnect(signalId);
+                this.selectApp(id);
+            }));
+        }
     }
 });
+Signals.addSignalMethods(AlphabeticalView.prototype);
 
 const FolderView = new Lang.Class({
     Name: 'FolderView',
@@ -509,7 +539,12 @@ const AppDisplay = new Lang.Class({
             if (focused)
                 this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         }
-    }
+    },
+
+    selectApp: function(id) {
+        this._showView(Views.ALL);
+        this._views[Views.ALL].view.selectApp(id);
+    },
 });
 
 const AppSearchProvider = new Lang.Class({

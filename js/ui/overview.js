@@ -265,7 +265,7 @@ const Overview = new Lang.Class({
         // Create controls
         this._controls = new OverviewControls.ControlsManager(this._searchEntry);
         this._dash = this._controls.dash;
-        this._viewSelector = this._controls.viewSelector;
+        this.viewSelector = this._controls.viewSelector;
 
         // Add our same-line elements after the search entry
         this._overview.add(this._controls.actor, { y_fill: true, expand: true });
@@ -285,11 +285,11 @@ const Overview = new Lang.Class({
     },
 
     addSearchProvider: function(provider) {
-        this._viewSelector.addSearchProvider(provider);
+        this.viewSelector.addSearchProvider(provider);
     },
 
     removeSearchProvider: function(provider) {
-        this._viewSelector.removeSearchProvider(provider);
+        this.viewSelector.removeSearchProvider(provider);
     },
 
     //
@@ -513,7 +513,7 @@ const Overview = new Lang.Class({
         this._activationTime = Date.now() / 1000;
 
         Meta.disable_unredirect_for_screen(global.screen);
-        this._viewSelector.show();
+        this.viewSelector.show();
 
         this._stack.opacity = 0;
         Tweener.addTween(this._stack,
@@ -620,7 +620,7 @@ const Overview = new Lang.Class({
         this.animationInProgress = true;
         this.visibleTarget = false;
 
-        this._viewSelector.zoomFromOverview();
+        this.viewSelector.zoomFromOverview();
 
         // Make other elements fade out.
         Tweener.addTween(this._stack,
@@ -655,7 +655,7 @@ const Overview = new Lang.Class({
         // Re-enable unredirection
         Meta.enable_unredirect_for_screen(global.screen);
 
-        this._viewSelector.hide();
+        this.viewSelector.hide();
         this._desktopFade.hide();
         this._coverPane.hide();
 
