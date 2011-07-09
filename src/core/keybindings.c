@@ -1250,31 +1250,6 @@ primary_modifier_still_pressed (MetaDisplay *display,
     return TRUE;
 }
 
-static gboolean
-process_overlay_key (MetaDisplay *display,
-                     MetaScreen *Screen,
-                     XEvent *event,
-                     KeySym keysym)
-{
-  if (event->xkey.keycode != display->overlay_key_combo.keycode)
-    {
-      display->overlay_key_only_pressed = FALSE;
-      return FALSE;
-    }
-
-  if (event->xkey.type == KeyPress)
-    {
-      display->overlay_key_only_pressed = TRUE;
-    }
-  else if (event->xkey.type == KeyRelease && display->overlay_key_only_pressed)
-    {
-      display->overlay_key_only_pressed = FALSE;
-      meta_display_overlay_key_activate (display);
-    }
-
-  return TRUE;
-}
-
 static void
 invoke_handler (MetaDisplay    *display,
                 MetaScreen     *screen,
@@ -1380,6 +1355,73 @@ process_event (MetaKeyBinding       *bindings,
   return FALSE;
 }
 
+static gboolean
+process_overlay_key (MetaDisplay *display,
+                     MetaScreen *screen,
+                     XEvent *event,
+                     KeySym keysym)
+{
+  if (display->overlay_key_only_pressed)
+    {
+      if (event->xkey.keycode != display->overlay_key_combo.keycode)
+        {
+          display->overlay_key_only_pressed = FALSE;
+
+          /* OK, the user hit modifier+key rather than pressing and
+           * releasing the ovelay key. We want to handle the key
+           * sequence "normally". Unfortunately, using
+           * XAllowEvents(..., ReplayKeyboard, ...) doesn't quite
+           * work, since global keybindings won't be activated ("this
+           * time, however, the function ignores any passive grabs at
+           * above (toward the root of) the grab_window of the grab
+           * just released.") So, we first explicitly check for one of
+           * our global keybindings, and if not found, we then replay
+           * the event. Other clients with global grabs will be out of
+           * luck.
+           */
+          if (process_event (display->key_bindings,
+                             display->n_key_bindings,
+                             display, screen, NULL, event, keysym,
+                             FALSE))
+            {
+              /* As normally, after we've handled a global key
+               * binding, we unfreeze the keyboard but keep the grab
+               * (this is important for something like cycling
+               * windows */
+              XAllowEvents (display->xdisplay, AsyncKeyboard, event->xkey.time);
+            }
+          else
+            {
+              /* Replay the event so it gets delivered to our
+               * per-window key bindings or to the application */
+              XAllowEvents (display->xdisplay, ReplayKeyboard, event->xkey.time);
+            }
+        }
+      else if (event->xkey.type == KeyRelease)
+        {
+          display->overlay_key_only_pressed = FALSE;
+          /* We want to unfreeze events, but keep the grab so that if the user
+           * starts typing into the overlay we get all the keys */
+          XAllowEvents (display->xdisplay, AsyncKeyboard, event->xkey.time);
+          meta_display_overlay_key_activate (display);
+        }
+
+      return TRUE;
+    }
+  else if (event->xkey.type == KeyPress &&
+           event->xkey.keycode == display->overlay_key_combo.keycode)
+    {
+      display->overlay_key_only_pressed = TRUE;
+      /* We keep the keyboard frozen - this allows us to use ReplayKeyboard
+       * on the next event if it's not the release of the overlay key */
+      XAllowEvents (display->xdisplay, SyncKeyboard, event->xkey.time);
+
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
 /* Handle a key event. May be called recursively: some key events cause
  * grabs to be ended and then need to be processed again in their own
  * right. This cannot cause infinite recursion because we never call
@@ -1406,11 +1448,19 @@ meta_display_process_key_event (MetaDisplay *display,
   const char *str;
   MetaScreen *screen;
 
-  XAllowEvents (display->xdisplay,
-                all_bindings_disabled ? ReplayKeyboard : AsyncKeyboard,
-                event->xkey.time);
   if (all_bindings_disabled)
-    return FALSE;
+    {
+      /* In this mode, we try to pretend we don't have grabs, so we
+       * immediately replay events and drop the grab. (This still
+       * messes up global passive grabs from other clients.) The
+       * FALSE return here is a little suspect, but we don't really
+       * know if we'll see the event again or not, and it's pretty
+       * poorly defined how this mode is supposed to interact with
+       * plugins.
+       */
+      XAllowEvents (display->xdisplay, ReplayKeyboard, event->xkey.time);
+      return FALSE;
+    }
 
   /* if key event was on root window, we have a shortcut */
   screen = meta_display_screen_for_root (display, event->xkey.window);
@@ -1440,8 +1490,17 @@ meta_display_process_key_event (MetaDisplay *display,
               str ? str : "none", event->xkey.state,
               window ? window->desc : "(no window)");
 
-  keep_grab = TRUE;
   all_keys_grabbed = window ? window->all_keys_grabbed : screen->all_keys_grabbed;
+  if (!all_keys_grabbed)
+    {
+      handled = process_overlay_key (display, screen, event, keysym);
+      if (handled)
+        return TRUE;
+    }
+
+  XAllowEvents (display->xdisplay, AsyncKeyboard, event->xkey.time);
+
+  keep_grab = TRUE;
   if (all_keys_grabbed)
     {
       if (display->grab_op == META_GRAB_OP_NONE)
@@ -1526,10 +1585,6 @@ meta_display_process_key_event (MetaDisplay *display,
 
       return TRUE;
     }
-  
-  handled = process_overlay_key (display, screen, event, keysym);
-  if (handled)
-    return TRUE;
   
   /* Do the normal keybindings */
   return process_event (display->key_bindings,
