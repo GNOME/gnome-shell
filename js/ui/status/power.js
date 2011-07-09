@@ -93,7 +93,6 @@ Indicator.prototype = {
     _readPrimaryDevice: function() {
         this._proxy.GetPrimaryDeviceRemote(Lang.bind(this, function(device, error) {
             if (error) {
-                this._checkError(error);
                 this._hasPrimary = false;
                 this._primaryDeviceId = null;
                 this._batteryItem.actor.hide();
@@ -145,7 +144,6 @@ Indicator.prototype = {
             this._deviceItems = [];
 
             if (error) {
-                this._checkError(error);
                 this._deviceSep.actor.hide();
                 return;
             }
@@ -176,21 +174,12 @@ Indicator.prototype = {
                 this.setGIcon(gicon);
                 this.actor.show();
             } else {
-                this._checkError(error);
                 this.menu.close();
                 this.actor.hide();
             }
         }));
         this._readPrimaryDevice();
         this._readOtherDevices();
-    },
-
-    _checkError: function(error) {
-        if (!this._restarted && error && error.message.match(/org\.freedesktop\.DBus\.Error\.(UnknownMethod|InvalidArgs)/)) {
-            Util.killall('gnome-power-manager');
-            Util.spawn(['gnome-power-manager']);
-            this._restarted = true;
-        }
     }
 };
 
