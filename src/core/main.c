@@ -301,9 +301,11 @@ static GSourceFuncs event_funcs = {
 static void
 meta_clutter_init (void)
 {
+  clutter_x11_enable_xinput ();
+
   clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   clutter_x11_disable_event_retrieval ();
-  
+
   if (CLUTTER_INIT_SUCCESS == clutter_init (NULL, NULL))
     {
       GSource *source = g_source_new (&event_funcs, sizeof (GSource));
