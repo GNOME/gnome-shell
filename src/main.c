@@ -491,6 +491,8 @@ main (int argc, char **argv)
       exit (1);
     }
 
+  g_option_context_free (ctx);
+
   meta_plugin_type_register (gnome_shell_plugin_get_type ());
 
   /* Prevent meta_init() from causing gtk to load gail and at-bridge */
