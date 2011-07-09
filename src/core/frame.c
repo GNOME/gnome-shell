@@ -67,7 +67,6 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->current_cursor = 0;
 
   frame->mapped = FALSE;
-  frame->need_reapply_frame_shape = TRUE;
   frame->is_flashing = FALSE;
   
   meta_verbose ("Framing window %s: visual %s default, depth %d default depth %d\n",
@@ -167,14 +166,6 @@ meta_window_ensure_frame (MetaWindow *window)
   /* Move keybindings to frame instead of window */
   meta_window_grab_keys (window);
 
-  /* Shape mask */
-  meta_ui_apply_frame_shape (frame->window->screen->ui,
-                             frame->xwindow,
-                             frame->rect.width,
-                             frame->rect.height,
-                             frame->window->has_shape);
-  frame->need_reapply_frame_shape = FALSE;
-  
   meta_display_ungrab (window->display);
 }
 
@@ -329,35 +320,12 @@ meta_frame_calc_geometry (MetaFrame         *frame,
   *geomp = geom;
 }
 
-static gboolean
-update_shape (MetaFrame *frame)
-{
-  if (frame->need_reapply_frame_shape)
-    {
-      meta_ui_apply_frame_shape (frame->window->screen->ui,
-                                 frame->xwindow,
-                                 frame->rect.width,
-                                 frame->rect.height,
-                                 frame->window->has_shape);
-      frame->need_reapply_frame_shape = FALSE;
-
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
 gboolean
 meta_frame_sync_to_window (MetaFrame *frame,
                            int        resize_gravity,
                            gboolean   need_move,
                            gboolean   need_resize)
 {
-  if (!(need_move || need_resize))
-    {
-      return update_shape (frame);
-    }
-
   meta_topic (META_DEBUG_GEOMETRY,
               "Syncing frame geometry %d,%d %dx%d (SE: %d,%d)\n",
               frame->rect.x, frame->rect.y,
@@ -372,19 +340,8 @@ meta_frame_sync_to_window (MetaFrame *frame,
                                   frame->xwindow,
                                   frame->rect.width,
                                   frame->rect.height);
-
-      /* we need new shape if we're resized */
-      frame->need_reapply_frame_shape = TRUE;
     }
 
-  /* Done before the window resize, because doing it before means
-   * part of the window being resized becomes unshaped, which may
-   * be sort of hard to see with bg = None. If we did it after
-   * window resize, part of the window being resized would become
-   * shaped, which might be more visible.
-   */
-  update_shape (frame);
-  
   meta_ui_move_resize_frame (frame->window->screen->ui,
 			     frame->xwindow,
 			     frame->rect.x,

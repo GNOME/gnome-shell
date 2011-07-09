@@ -99,12 +99,6 @@ void meta_ui_unflicker_frame_bg (MetaUI *ui,
 void meta_ui_reset_frame_bg     (MetaUI *ui,
                                  Window  xwindow);
 
-void meta_ui_apply_frame_shape  (MetaUI  *ui,
-                                 Window   xwindow,
-                                 int      new_window_width,
-                                 int      new_window_height,
-                                 gboolean window_has_shape);
-
 cairo_region_t *meta_ui_get_frame_bounds (MetaUI  *ui,
                                           Window   xwindow,
                                           int      window_width,

@@ -1696,13 +1696,6 @@ event_callback (XEvent   *event,
                               "Window %s shape changed\n",
                               window->desc);
                 }
-
-              if (window->frame)
-                {
-                  window->frame->need_reapply_frame_shape = TRUE;
-		  meta_warning("from event callback\n");		  
-                  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
-                }
             }
         }
       else
@@ -4100,8 +4093,6 @@ meta_display_queue_retheme_all_windows (MetaDisplay *display)
       meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
       if (window->frame)
         {
-          window->frame->need_reapply_frame_shape = TRUE;
-          
           meta_frame_queue_draw (window->frame);
         }
       

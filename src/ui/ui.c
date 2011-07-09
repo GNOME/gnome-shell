@@ -465,18 +465,6 @@ meta_ui_reset_frame_bg (MetaUI *ui,
   meta_frames_reset_bg (ui->frames, xwindow);
 }
 
-void
-meta_ui_apply_frame_shape  (MetaUI  *ui,
-                            Window   xwindow,
-                            int      new_window_width,
-                            int      new_window_height,
-                            gboolean window_has_shape)
-{
-  meta_frames_apply_shapes (ui->frames, xwindow,
-                            new_window_width, new_window_height,
-                            window_has_shape);
-}
-
 cairo_region_t *
 meta_ui_get_frame_bounds (MetaUI  *ui,
                           Window   xwindow,
