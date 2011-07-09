@@ -371,7 +371,7 @@ meta_shadow_get_bounds  (MetaShadow            *shadow,
                          cairo_rectangle_int_t *bounds)
 {
   bounds->x = window_x - shadow->outer_border_left;
-  bounds->y = window_x - shadow->outer_border_top;
+  bounds->y = window_y - shadow->outer_border_top;
   bounds->width = window_width + shadow->outer_border_left + shadow->outer_border_right;
   bounds->height = window_height + shadow->outer_border_top + shadow->outer_border_bottom;
 }
