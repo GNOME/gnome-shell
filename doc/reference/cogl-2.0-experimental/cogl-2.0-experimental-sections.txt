@@ -424,6 +424,7 @@ cogl_matrix_free
 cogl_matrix_frustum
 cogl_matrix_ortho
 cogl_matrix_perspective
+cogl_matrix_look_at
 cogl_matrix_multiply
 cogl_matrix_rotate
 cogl_matrix_translate

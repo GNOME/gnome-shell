@@ -193,6 +193,62 @@ cogl_matrix_scale (CoglMatrix *matrix,
 		   float sy,
 		   float sz);
 
+#define cogl_matrix_look_at cogl_matrix_look_at_EXP
+/**
+ * cogl_matrix_look_at:
+ * @matrix: A 4x4 transformation matrix
+ * @eye_position_x: The X coordinate to look from
+ * @eye_position_y: The Y coordinate to look from
+ * @eye_position_z: The Z coordinate to look from
+ * @object_x: The X coordinate of the object to look at
+ * @object_y: The Y coordinate of the object to look at
+ * @object_z: The Z coordinate of the object to look at
+ * @world_up_x: The X component of the world's up direction vector
+ * @world_up_y: The Y component of the world's up direction vector
+ * @world_up_z: The Z component of the world's up direction vector
+ *
+ * Applies a view transform @matrix that positions the camera at
+ * the coordinate (@eye_position_x, @eye_position_y, @eye_position_z)
+ * looking towards an object at the coordinate (@object_x, @object_y,
+ * @object_z). The top of the camera is aligned to the given world up
+ * vector, which is normally simply (0, 1, 0) to map up to the
+ * positive direction of the y axis.
+ *
+ * Because there is a lot of missleading documentation online for
+ * gluLookAt regarding the up vector we want to try and be a bit
+ * clearer here.
+ *
+ * The up vector should simply be relative to your world coordinates
+ * and does not need to change as you move the eye and object
+ * positions.  Many online sources may claim that the up vector needs
+ * to be perpendicular to the vector between the eye and object
+ * position (partly because the man page is somewhat missleading) but
+ * that is not necessary for this function.
+ *
+ * <note>You should never look directly along the world-up
+ * vector.</note>
+ *
+ * <note>It is assumed you are using a typical projection matrix where
+ * your origin maps to the center of your viewport.</note>
+ *
+ * <note>Almost always when you use this function it should be the first
+ * transform applied to a new modelview transform</note>
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_matrix_look_at (CoglMatrix *matrix,
+                     float eye_position_x,
+                     float eye_position_y,
+                     float eye_position_z,
+                     float object_x,
+                     float object_y,
+                     float object_z,
+                     float world_up_x,
+                     float world_up_y,
+                     float world_up_z);
+
 /**
  * cogl_matrix_frustum:
  * @matrix: A 4x4 transformation matrix
