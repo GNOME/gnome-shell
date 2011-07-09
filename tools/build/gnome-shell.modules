@@ -342,7 +342,6 @@
         <dep package="gnome-bluetooth"/>
         <dep package="telepathy-glib"/>
         <dep package="telepathy-logger"/>
-        <dep package="upower"/>
         <dep package="libsoup"/>
     </dependencies>
   </autotools>
@@ -383,19 +382,6 @@
     </dependencies>
     <suggests>
       <dep package="gobject-introspection"/>
-    </suggests>
-  </tarball>
-
-  <tarball id="upower" version="0.9.8">
-    <source href="http://upower.freedesktop.org/releases/upower-0.9.8.tar.bz2"
-            hash="sha256:7afaec3cb10ebbc898308c7abd250c27fd58e10379a42e80444d7a4b32f2eb91"
-            size="462754"/>
-    <dependencies>
-      <dep package="polkit"/>
-    </dependencies>
-    <suggests>
-      <dep package="gobject-introspection"/>
-      <dep package="gudev"/>
     </suggests>
   </tarball>
 

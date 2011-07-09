@@ -59,7 +59,7 @@ fi
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, expat, GL, gnome-menus, gstreamer, libffi,
 # libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
-# iso-codes, libical, libxml2, ORBit2, pam, python, readline,
+# iso-codes, libical, libxml2, ORBit2, pam, python, readline, upower,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
 # libgcrypt, libtasn1, libgnome-keyring, libgtop, cups, xcb, WebKit-gtk
@@ -84,7 +84,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0-0-dev
     libupower-glib-dev libcups2-dev libproxy-dev libdb-dev libproxy-dev
     libsqlite3-dev libgudev-1.0-dev libsane-dev libwebkitgtk-3.0-0
-    libx11-xcb-dev
+    libx11-xcb-dev libupower-glib-dev
     "
 
   if apt-cache show libxcb-util0-dev > /dev/null 2> /dev/null; then
@@ -125,7 +125,7 @@ if test "x$system" = xFedora ; then
     pulseaudio-libs-devel python-devel pygobject2 readline-devel xulrunner-devel
     libXdamage-devel libcroco-devel libxml2-devel gstreamer-devel
     gstreamer-plugins-base gstreamer-plugins-good glx-utils expat-devel
-    startup-notification-devel zenity webkitgtk3-devel
+    startup-notification-devel zenity webkitgtk3-devel upower-devel
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
     iso-codes-devel libgcrypt-devel libtasn1-devel libtasn1-tools libusb1-devel
     libgnome-keyring-devel libgtop2-devel cups-devel db4-devel libproxy-devel
