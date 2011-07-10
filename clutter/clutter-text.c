@@ -1487,8 +1487,8 @@ clutter_text_foreach_selection_rectangle (ClutterText              *self,
 
       for (i = 0; i < n_ranges; i++)
         {
-          gint range_x;
-          gint range_width;
+          gfloat range_x;
+          gfloat range_width;
 
           range_x = ranges[i * 2] / PANGO_SCALE;
 
@@ -1497,11 +1497,11 @@ clutter_text_foreach_selection_rectangle (ClutterText              *self,
             range_x += priv->text_x;
 
 
-          range_width = (ranges[i * 2 + 1] - ranges[i * 2])
-            / PANGO_SCALE;
+          range_width = ((gfloat) ranges[i * 2 + 1] - (gfloat) ranges[i * 2])
+                      / PANGO_SCALE;
 
           box.x1 = range_x;
-          box.x2 = range_x + range_width;
+          box.x2 = ceilf (range_x + range_width + .5f);
 
           func (self, &box, user_data);
         }
@@ -1513,9 +1513,9 @@ clutter_text_foreach_selection_rectangle (ClutterText              *self,
 }
 
 static void
-clutter_text_add_selection_rectangle_to_path (ClutterText           *text,
-                                              const ClutterActorBox *box,
-                                              gpointer               user_data)
+add_selection_rectangle_to_path (ClutterText           *text,
+                                 const ClutterActorBox *box,
+                                 gpointer               user_data)
 {
   cogl_path_rectangle (user_data, box->x1, box->y1, box->x2, box->y2);
 }
@@ -1578,10 +1578,9 @@ selection_paint (ClutterText *self)
                                     color->blue,
                                     paint_opacity * color->alpha / 255);
 
-          clutter_text_foreach_selection_rectangle
-            (self,
-             clutter_text_add_selection_rectangle_to_path,
-             selection_path);
+          clutter_text_foreach_selection_rectangle (self,
+                                                    add_selection_rectangle_to_path,
+                                                    selection_path);
 
           cogl_path_fill (selection_path);
 
@@ -2051,9 +2050,9 @@ clutter_text_paint (ClutterActor *self)
 }
 
 static void
-clutter_text_add_selection_to_paint_volume_cb (ClutterText           *text,
-                                               const ClutterActorBox *box,
-                                               gpointer               user_data)
+add_selection_to_paint_volume (ClutterText           *text,
+                               const ClutterActorBox *box,
+                               gpointer               user_data)
 {
   ClutterPaintVolume *total_volume = user_data;
   ClutterPaintVolume rect_volume;
@@ -2093,8 +2092,9 @@ clutter_text_get_paint_volume_for_cursor (ClutterText        *text,
     }
   else
     {
-      clutter_text_foreach_selection_rectangle
-        (text, clutter_text_add_selection_to_paint_volume_cb, volume);
+      clutter_text_foreach_selection_rectangle (text,
+                                                add_selection_to_paint_volume,
+                                                volume);
     }
 }
 
