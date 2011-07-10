@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-27 15:22+0000\n"
-"PO-Revision-Date: 2011-07-04 23:22+0530\n"
+"POT-Creation-Date: 2011-07-07 09:19+0000\n"
+"PO-Revision-Date: 2011-07-10 16:37+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -60,9 +60,6 @@ msgstr ""
 "ਜੋ ਲੋਡ ਨਹੀਂ ਹਨ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should not be loaded."
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded. This setting overrides enabled-extensions for "
@@ -71,8 +68,7 @@ msgstr ""
 "ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ uuid ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ, "
 "ਜੋ ਲੋਡ ਨਹੀਂ ਹਨ। "
 "ਇਹ ਸੈਟਿੰਗ ਇਕਸਟੈਨਸ਼ਣ ਲਈ ਚਾਲੂ-ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰਦੀ ਹੈ, ਜੋ ਕਿ ਦੋਵੇਂ "
-"ਲਿਸਟ ਵਿੱਚ "
-"ਆਉਂਦੀਆਂ ਹਨ।"
+"ਲਿਸਟ ਵਿੱਚ ਆਉਂਦੀਆਂ ਹਨ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -222,27 +218,27 @@ msgid "Execution of '%s' failed:"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:252
 msgid "All"
 msgstr "ਸਭ"
 
-#: ../js/ui/appDisplay.js:357
+#: ../js/ui/appDisplay.js:351
 msgid "APPLICATIONS"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../js/ui/appDisplay.js:383
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "ਸੈਟਿੰਗ"
 
-#: ../js/ui/appDisplay.js:656
+#: ../js/ui/appDisplay.js:650
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:659
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
@@ -375,13 +371,13 @@ msgid "Nothing Scheduled"
 msgstr "ਕੋਈ ਵੀ ਸੈਡਿਊਲ ਨਹੀਂ ਹੈ"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:564
+#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:667
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:567
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:670
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
@@ -402,7 +398,7 @@ msgstr "ਇਹ ਹਫ਼ਤਾ"
 msgid "Next week"
 msgstr "ਹਫ਼ਤਾ ਅੱਗੇ"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1044
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1114
 msgid "Remove"
 msgstr "ਹਟਾਓ"
 
@@ -564,11 +560,11 @@ msgstr "ਸਰੋਤ ਵੇਖੋ"
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/messageTray.js:1037
+#: ../js/ui/messageTray.js:1107
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ"
 
-#: ../js/ui/messageTray.js:2208
+#: ../js/ui/messageTray.js:2278
 msgid "System Information"
 msgstr "ਸਿਸਟਮ ਜਾਣਕਾਰੀ"
 
@@ -598,11 +594,11 @@ msgstr "%s ਬੰਦ ਕਰੋ"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:913
+#: ../js/ui/panel.js:914
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
-#: ../js/ui/panel.js:1015
+#: ../js/ui/panel.js:1014
 msgid "Top Bar"
 msgstr "ਉੱਤਲੀ ਪੱਟੀ"
 
@@ -668,40 +664,41 @@ msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
 msgid "No matching results."
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
 
-#: ../js/ui/statusMenu.js:160 ../js/ui/statusMenu.js:162
-#: ../js/ui/statusMenu.js:227
+#: ../js/ui/statusMenu.js:202 ../js/ui/statusMenu.js:206
+#: ../js/ui/statusMenu.js:272
 msgid "Power Off..."
 msgstr "...ਬੰਦ ਕਰੋ"
 
-#: ../js/ui/statusMenu.js:162 ../js/ui/statusMenu.js:226
+#: ../js/ui/statusMenu.js:204 ../js/ui/statusMenu.js:206
+#: ../js/ui/statusMenu.js:271
 msgid "Suspend"
 msgstr "ਸਸਪੈਂਡ"
 
-#: ../js/ui/statusMenu.js:183
+#: ../js/ui/statusMenu.js:227
 msgid "Available"
 msgstr "ਉਪਲੱਬਧ"
 
-#: ../js/ui/statusMenu.js:188
+#: ../js/ui/statusMenu.js:232
 msgid "Busy"
 msgstr "ਰੁਝਿਆ"
 
-#: ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:240
 msgid "My Account"
 msgstr "ਮੇਰਾ ਅਕਾਊਂਟ"
 
-#: ../js/ui/statusMenu.js:200
+#: ../js/ui/statusMenu.js:244
 msgid "System Settings"
 msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
 
-#: ../js/ui/statusMenu.js:207
+#: ../js/ui/statusMenu.js:252
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
 
-#: ../js/ui/statusMenu.js:212
+#: ../js/ui/statusMenu.js:257
 msgid "Switch User"
 msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
 
-#: ../js/ui/statusMenu.js:217
+#: ../js/ui/statusMenu.js:262
 msgid "Log Out..."
 msgstr "...ਲਾਗਆਉਟ"
 
@@ -762,7 +759,6 @@ msgid "Send Files to Device..."
 msgstr "...ਜੰਤਰ ਨੂੰ ਫਾਇਲਾਂ ਭੇਜੋ"
 
 #: ../js/ui/status/bluetooth.js:67
-#| msgid "Setup a New Device..."
 msgid "Set up a New Device..."
 msgstr "...ਨਵਾਂ ਜੰਤਰ ਸੈਟਅੱਪ"
 
@@ -772,7 +768,6 @@ msgstr "ਬਲਿਊਟੁੱਥ ਸੈਟਿੰਗ"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:116
-#| msgid "disabled"
 msgid "hardware disabled"
 msgstr "ਹਾਰਡਵੇਅਰ ਬੰਦ ਹੈ"
 
@@ -781,7 +776,6 @@ msgid "Connection"
 msgstr "ਕੁਨੈਕਸ਼ਨ"
 
 #: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:493
-#| msgid "connecting..."
 msgid "disconnecting..."
 msgstr "ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
@@ -1120,22 +1114,22 @@ msgstr "ਆਵਾਜ਼"
 msgid "Microphone"
 msgstr "ਮਾਈਕਰੋਫੋਨ"
 
-#: ../js/ui/telepathyClient.js:397
+#: ../js/ui/telepathyClient.js:463
 #, c-format
 msgid "%s is online."
 msgstr "%s ਆਨਲਾਈਨ ਹੈ।"
 
-#: ../js/ui/telepathyClient.js:402
+#: ../js/ui/telepathyClient.js:468
 #, c-format
 msgid "%s is offline."
 msgstr "%s ਆਫਲਾਈਨ ਹੈ।"
 
-#: ../js/ui/telepathyClient.js:405
+#: ../js/ui/telepathyClient.js:471
 #, c-format
 msgid "%s is away."
 msgstr "%s ਦੂਰ ਹੈ।"
 
-#: ../js/ui/telepathyClient.js:408
+#: ../js/ui/telepathyClient.js:474
 #, c-format
 msgid "%s is busy."
 msgstr "%s ਰੁੱਝਿਆ/ਰੁੱਝੀ ਹੈ।"
@@ -1143,17 +1137,44 @@ msgstr "%s ਰੁੱਝਿਆ/ਰੁੱਝੀ ਹੈ।"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:556
+#: ../js/ui/telepathyClient.js:659
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "%2$A ਨੂੰ %1$X ਵਜੇ ਭੇਜਿਆ"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:606
+#: ../js/ui/telepathyClient.js:709
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s ਨੂੰ ਹੁਣ %s ਵਜੋਂ ਜਾਣਿਆ ਜਾਵੇਗਾ"
+
+#: ../js/ui/telepathyClient.js:740
+msgid "Invitation"
+msgstr "ਸੱਦਾ"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/telepathyClient.js:784
+#, c-format
+msgid "Invitation to %s"
+msgstr "%s ਲਈ ਸੱਦਾ"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/telepathyClient.js:792
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "%s ਤੁਹਾਨੂੰ %s ਜੁਆਇੰਨ ਕਰਨ ਲਈ ਸੱਦ ਰਿਹਾ ਹੈ"
+
+#: ../js/ui/telepathyClient.js:794
+msgid "Decline"
+msgstr "ਇਨਕਾਰ"
+
+#: ../js/ui/telepathyClient.js:795
+msgid "Accept"
+msgstr "ਮਨਜ਼ੂਰ"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1163,7 +1184,7 @@ msgstr "%s ਨੂੰ ਹੁਣ %s ਵਜੋਂ ਜਾਣਿਆ ਜਾਵੇਗ�
 msgid "Type to search..."
 msgstr "...ਲੱਭਣ ਲਈ ਲਿਖੋ"
 
-#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:254
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:257
 msgid "Search"
 msgstr "ਖੋਜ"
 
@@ -1199,7 +1220,7 @@ msgstr[1] "%u ਇੰਪੁੱਟ"
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../src/main.c:445
+#: ../src/main.c:466
 msgid "Print version"
 msgstr "ਵਰਜਨ ਛਾਪੋ"
 
@@ -1220,13 +1241,13 @@ msgstr "ਡਿਫਾਲਟ"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "ਪਰਮਾਣਕਿਤਾ ਡਾਈਲਾਗ ਯੂਜ਼ਰ ਵਲੋਂ ਰੱਦ ਕੀਤਾ"
 
-#: ../src/shell-util.c:93
+#: ../src/shell-util.c:96
 msgid "Home Folder"
 msgstr "ਘਰ ਫੋਲਡਰ"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:111
 msgid "File System"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ"
 
@@ -1235,7 +1256,7 @@ msgstr "ਫਾਇਲ ਸਿਸਟਮ"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:307
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
