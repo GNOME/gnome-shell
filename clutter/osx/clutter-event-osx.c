@@ -106,6 +106,8 @@
 
 - (guint)clutterKeyVal
 {
+  unichar c;
+
   /* FIXME: doing this right is a lot of work, see gdkkeys-quartz.c in gtk+
    * For now handle some common/simple keys only. Might not work with other
    * hardware than mine (MacBook Pro, finnish layout). Sorry.
@@ -147,7 +149,7 @@
         }
     }
 
-  unichar c = [[self charactersIgnoringModifiers] characterAtIndex:0];
+  c = [[self charactersIgnoringModifiers] characterAtIndex:0];
 
   /* Latin-1 characters, 1:1 mapping - this ought to be reliable */
   if ((c >= 0x0020 && c <= 0x007e) ||
