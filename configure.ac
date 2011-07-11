@@ -223,8 +223,8 @@ dnl     ============================================================
 dnl     Enable profiling
 dnl     ============================================================
 AC_ARG_ENABLE(profile,
-              AC_HELP_STRING([--enable-uprof=@<:@no/yes@:>@],
-                             [Turn on uprof profiling support. yes; All UProf profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into cogl.  @<:@default=no@:>@]),
+              [AC_HELP_STRING([--enable-uprof=@<:@no/yes@:>@],
+                             [Turn on uprof profiling support. yes; All UProf profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into cogl.  @<:@default=no@:>@])],
               [],
               [enable_profile=no])
 AS_IF([test "x$enable_profile" = "xyes"],
