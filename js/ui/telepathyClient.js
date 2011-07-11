@@ -230,6 +230,16 @@ Client.prototype = {
     _approveChannels: function(approver, account, conn, channels,
                                dispatchOp, context) {
         let channel = channels[0];
+        let chanType = channel.get_channel_type();
+
+        if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT)
+            this._approveTextChannel(account, conn, channel, dispatchOp, context);
+        else if (chanType == Tp.IFACE_CHANNEL_TYPE_STREAMED_MEDIA ||
+                 chanType == 'org.freedesktop.Telepathy.Channel.Type.Call.DRAFT')
+            this._approveCall(account, conn, channel, dispatchOp, context);
+    },
+
+    _approveTextChannel: function(account, conn, channel, dispatchOp, context) {
         let [targetHandle, targetHandleType] = channel.get_handle();
 
         if (targetHandleType == Tp.HandleType.CONTACT) {
@@ -247,6 +257,37 @@ Client.prototype = {
         } else {
             this._displayRoomInvitation(conn, channel, dispatchOp, context);
         }
+    },
+
+    _approveCall: function(account, conn, channel, dispatchOp, context) {
+        let [targetHandle, targetHandleType] = channel.get_handle();
+
+        Shell.get_tp_contacts(conn, [targetHandle],
+                contactFeatures,
+                Lang.bind(this, this._createAudioVideoSource, channel, context, dispatchOp));
+    },
+
+    _createAudioVideoSource: function(connection, contacts, failed, channel, context, dispatchOp) {
+        if (contacts.length < 1) {
+            Shell.decline_dispatch_op(context, 'Failed to get inviter');
+            return;
+        }
+
+        let isVideo = false;
+
+        let props = channel.borrow_immutable_properties();
+
+        if (props['org.freedesktop.Telepathy.Channel.Type.Call.DRAFT.InitialVideo'] ||
+            props[Tp.PROP_CHANNEL_TYPE_STREAMED_MEDIA_INITIAL_VIDEO])
+          isVideo = true;
+
+        // We got the TpContact
+        let source = new ApproverSource(dispatchOp, _("Call"), isVideo ? 'camera-web' : 'audio-input-microphone');
+        Main.messageTray.add(source);
+
+        let notif = new AudioVideoNotification(source, dispatchOp, channel, contacts[0], isVideo);
+        source.notify(notif);
+        context.accept();
     },
 
     _handleChannels: function(handler, account, conn, channels,
@@ -875,6 +916,52 @@ RoomInviteNotification.prototype = {
                     src.leave_channels_finish(result)});
                 break;
             case 'accept':
+                dispatchOp.handle_with_time_async('', global.get_current_time(),
+                                                  function(src, result) {
+                    src.handle_with_time_finish(result)});
+                break;
+            }
+            this.destroy();
+        }));
+    }
+};
+
+// Audio Video
+function AudioVideoNotification(source, dispatchOp, channel, contact, isVideo) {
+    this._init(source, dispatchOp, channel, contact, isVideo);
+}
+
+AudioVideoNotification.prototype = {
+    __proto__: MessageTray.Notification.prototype,
+
+    _init: function(source, dispatchOp, channel, contact, isVideo) {
+        let title = '';
+
+        if (isVideo)
+             /* translators: argument is a contact name like Alice for example. */
+            title = _("Video call from %s").format(contact.get_alias());
+        else
+             /* translators: argument is a contact name like Alice for example. */
+            title = _("Call from %s").format(contact.get_alias());
+
+        MessageTray.Notification.prototype._init.call(this,
+                                                      source,
+                                                      title,
+                                                      null,
+                                                      { customContent: true });
+        this.setResident(true);
+
+        this.addButton('reject', _("Reject"));
+        this.addButton('answer', _("Answer"));
+
+        this.connect('action-invoked', Lang.bind(this, function(self, action) {
+            switch (action) {
+            case 'reject':
+                dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE,
+                                                '', function(src, result) {
+                    src.leave_channels_finish(result)});
+                break;
+            case 'answer':
                 dispatchOp.handle_with_time_async('', global.get_current_time(),
                                                   function(src, result) {
                     src.handle_with_time_finish(result)});

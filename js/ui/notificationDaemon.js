@@ -190,10 +190,11 @@ NotificationDaemon.prototype = {
                      actions, hints, timeout) {
         let id;
 
-        // Filter out chat, presence and invitation notifications from Empathy, since we
-        // handle that information from telepathyClient.js
+        // Filter out chat, presence, calls and invitation notifications from
+        // Empathy, since we handle that information from telepathyClient.js
         if (appName == 'Empathy' && (hints['category'] == 'im.received' ||
               hints['category'] == 'x-empathy.im.room-invitation' ||
+              hints['category'] == 'x-empathy.call.incoming' ||
               hints['category'] == 'presence.online' ||
               hints['category'] == 'presence.offline')) {
             // Ignore replacesId since we already sent back a
