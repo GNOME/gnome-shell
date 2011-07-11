@@ -39,7 +39,6 @@ check_pixel (TestState *state, int x, int y, guint32 color)
 
   /* See what we got... */
 
-  /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
   y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
