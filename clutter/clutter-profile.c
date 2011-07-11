@@ -204,9 +204,9 @@ _clutter_uprof_report_prepare (UProfReport *report,
                                        counter_per_frame_cb,
                                        state);
   uprof_report_add_timers_attribute (clutter_uprof_report,
+                                     "Per Frame\nmsecs",
                                      "Per Frame",
-                                     "Per Frame",
-                                     "The amount of timer per frame",
+                                     "The time spent in the timer per frame",
                                      UPROF_ATTRIBUTE_TYPE_FLOAT,
                                      timer_per_frame_cb,
                                      state);
