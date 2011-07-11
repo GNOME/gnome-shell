@@ -10,6 +10,16 @@ const MessageTray = imports.ui.messageTray;
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
 const SETTING_DISABLE_AUTORUN = 'autorun-never';
+const SETTING_START_APP = 'autorun-x-content-start-app';
+const SETTING_IGNORE = 'autorun-x-content-ignore';
+const SETTING_OPEN_FOLDER = 'autorun-x-content-open-folder';
+
+const AutorunSetting = {
+    RUN: 0,
+    IGNORE: 1,
+    FILES: 2,
+    ASK: 3
+};
 
 const HOTPLUG_ICON_SIZE = 16;
 
@@ -35,15 +45,19 @@ function isMountRootHidden(root) {
 function startAppForMount(app, mount) {
     let files = [];
     let root = mount.get_root();
+    let retval = false;
+
     files.push(root);
 
     try {
-        app.launch(files, 
-                   global.create_app_launch_context())
+        retval = app.launch(files, 
+                            global.create_app_launch_context())
     } catch (e) {
         log('Unable to launch the application ' + app.get_name()
             + ': ' + e.toString());
     }
+
+    return retval;
 }
 
 /******************************************/
@@ -328,6 +342,22 @@ AutorunTransientDispatcher.prototype = {
         this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
     },
 
+    _getAutorunSettingForType: function(contentType) {
+        let runApp = this._settings.get_strv(SETTING_START_APP);
+        if (runApp.indexOf(contentType) != -1)
+            return AutorunSetting.RUN;
+
+        let ignore = this._settings.get_strv(SETTING_IGNORE);
+        if (ignore.indexOf(contentType) != -1)
+            return AutorunSetting.IGNORE;
+
+        let openFiles = this._settings.get_strv(SETTING_OPEN_FOLDER);
+        if (openFiles.indexOf(contentType) != -1)
+            return AutorunSetting.FILES;
+
+        return AutorunSetting.ASK;
+    },
+
     _getSourceForMount: function(mount) {
         let filtered =
             this._sources.filter(function (source) {
@@ -343,6 +373,16 @@ AutorunTransientDispatcher.prototype = {
         return null;
     },
 
+    _addSource: function(mount, contentTypes) {
+        // if we already have a source showing for this 
+        // mount, return
+        if (this._getSourceForMount(mount))
+            return;
+     
+        // add a new source
+        this._sources.push(new AutorunTransientSource(mount, contentTypes));
+    },
+
     addMount: function(mount, contentTypes) {
         // if autorun is disabled globally, return
         if (this._settings.get_boolean(SETTING_DISABLE_AUTORUN))
@@ -352,13 +392,29 @@ AutorunTransientDispatcher.prototype = {
         if (ignoreAutorunForMount(mount))
             return;
 
-        // finally, if we already have a source showing for this 
-        // mount, return
-        if (this._getSourceForMount(mount))
-            return;
-     
-        // add a new source
-        this._sources.push(new AutorunTransientSource(mount, contentTypes));
+        let setting = this._getAutorunSettingForType(contentTypes[0]);
+
+        // check at the settings for the first content type
+        // to see whether we should ask
+        if (setting == AutorunSetting.IGNORE)
+            return; // return right away
+
+        let success = false;
+        let app = null;
+
+        if (setting == AutorunSetting.RUN) {
+            app = Gio.app_info_get_default_for_type(type, false);
+        } else if (setting == AutorunSetting.FILES) {
+            app = Gio.app_info_get_default_for_type('inode/directory', false);
+        }
+
+        if (app)
+            success = startAppForMount(app, mount);
+
+        // we fallback here also in case the settings did not specify 'ask',
+        // but we failed launching the default app or the default file manager
+        if (!success)
+            this._addSource(mount, contentTypes);
     },
 
     removeMount: function(mount) {
