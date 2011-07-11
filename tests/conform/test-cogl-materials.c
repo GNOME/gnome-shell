@@ -126,6 +126,15 @@ test_invalid_texture_layers (TestState *state, int x, int y)
   test_material_with_primitives (state, x, y, 0xffffffff);
 }
 
+static gboolean
+using_gles2_driver (void)
+{
+  /* FIXME: This should probably be replaced with some way to query
+     the driver from Cogl */
+  return g_str_has_prefix ((const char *) glGetString (GL_VERSION),
+                           "OpenGL ES 2");
+}
+
 static void
 test_using_all_layers (TestState *state, int x, int y)
 {
@@ -154,22 +163,28 @@ test_using_all_layers (TestState *state, int x, int y)
   /* FIXME: Cogl doesn't provide a way to query the maximum number of
      texture layers so for now we'll just ask GL directly. */
 #ifdef COGL_HAS_GLES2
-  {
-    GLint n_image_units, n_attribs;
-    /* GLES 2 doesn't have GL_MAX_TEXTURE_UNITS and it uses
-       GL_MAX_TEXTURE_IMAGE_UNITS instead */
-    glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n_image_units);
-    /* Cogl needs a vertex attrib for each layer to upload the texture
-       coordinates */
-    glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, &n_attribs);
-    /* We can't use two of the attribs because they are used by the
-       position and color */
-    n_attribs -= 2;
-    n_layers = MIN (n_attribs, n_image_units);
-  }
-#else
-  glGetIntegerv (GL_MAX_TEXTURE_UNITS, &n_layers);
+  if (using_gles2_driver ())
+    {
+      GLint n_image_units, n_attribs;
+      /* GLES 2 doesn't have GL_MAX_TEXTURE_UNITS and it uses
+         GL_MAX_TEXTURE_IMAGE_UNITS instead */
+      glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n_image_units);
+      /* Cogl needs a vertex attrib for each layer to upload the texture
+         coordinates */
+      glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, &n_attribs);
+      /* We can't use two of the attribs because they are used by the
+         position and color */
+      n_attribs -= 2;
+      n_layers = MIN (n_attribs, n_image_units);
+    }
+  else
 #endif
+    {
+#if defined(COGL_HAS_GLES1) || defined(COGL_HAS_GL)
+      glGetIntegerv (GL_MAX_TEXTURE_UNITS, &n_layers);
+#endif
+    }
+
   /* FIXME: is this still true? */
   /* Cogl currently can't cope with more than 32 layers so we'll also
      limit the maximum to that. */
