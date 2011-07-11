@@ -952,7 +952,7 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
                                          GType               check_gtype,
                                          ClutterPaintVolume *volume)
 {
-  ClutterGeometry geometry = { 0, };
+  ClutterActorBox box;
 
   if (check_gtype != G_TYPE_INVALID)
     {
@@ -967,14 +967,14 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
   if (!clutter_actor_has_allocation (self))
     return FALSE;
 
-  clutter_actor_get_allocation_geometry (self, &geometry);
+  clutter_actor_get_allocation_box (self, &box);
 
   /* a zero-sized actor has no paint volume */
-  if (geometry.width == 0 || geometry.height == 0)
+  if (box.x1 == box.x2 || box.y1 == box.y2)
     return FALSE;
 
-  clutter_paint_volume_set_width (volume, geometry.width);
-  clutter_paint_volume_set_height (volume, geometry.height);
+  clutter_paint_volume_set_width (volume, box.x2 - box.x1);
+  clutter_paint_volume_set_height (volume, box.y2 - box.y1);
 
   return TRUE;
 }
