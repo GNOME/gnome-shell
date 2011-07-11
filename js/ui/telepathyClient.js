@@ -216,7 +216,10 @@ Client.prototype = {
         }
 
         // We got the TpContact
-        let source = new RoomInviteSource(dispatchOp);
+
+        // FIXME: We don't have a 'chat room' icon (bgo #653737) use
+        // system-users for now as Empathy does.
+        let source = new ApproverSource(dispatchOp, _("Invitation"), 'system-users');
         Main.messageTray.add(source);
 
         let notif = new RoomInviteNotification(source, dispatchOp, channel, contacts[0]);
@@ -800,16 +803,17 @@ ChatNotification.prototype = {
     }
 };
 
-function RoomInviteSource(dispatchOp) {
-    this._init(dispatchOp);
+function ApproverSource(dispatchOp, text, icon) {
+    this._init(dispatchOp, text, icon);
 }
 
-RoomInviteSource.prototype = {
+ApproverSource.prototype = {
     __proto__: MessageTray.Source.prototype,
 
-    _init: function(dispatchOp) {
-        MessageTray.Source.prototype._init.call(this, _("Invitation"));
+    _init: function(dispatchOp, text, icon) {
+        MessageTray.Source.prototype._init.call(this, text);
 
+        this._icon = icon;
         this._setSummaryIcon(this.createNotificationIcon());
 
         this._dispatchOp = dispatchOp;
@@ -832,9 +836,7 @@ RoomInviteSource.prototype = {
     },
 
     createNotificationIcon: function() {
-        // FIXME: We don't have a 'chat room' icon (bgo #653737) use
-        // system-users for now as Empathy does.
-        return new St.Icon({ icon_name: 'system-users',
+        return new St.Icon({ icon_name: this._icon,
                              icon_type: St.IconType.FULLCOLOR,
                              icon_size: this.ICON_SIZE });
     }
