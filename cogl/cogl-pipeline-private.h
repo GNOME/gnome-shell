@@ -428,6 +428,7 @@ typedef enum
   COGL_PIPELINE_STATE_DEPTH_INDEX,
   COGL_PIPELINE_STATE_FOG_INDEX,
   COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
+  COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
 
   /* non-sparse */
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -471,6 +472,8 @@ typedef enum _CoglPipelineState
     1L<<COGL_PIPELINE_STATE_FOG_INDEX,
   COGL_PIPELINE_STATE_POINT_SIZE =
     1L<<COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
+  COGL_PIPELINE_STATE_LOGIC_OPS =
+    1L<<COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
 
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE =
     1L<<COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -504,14 +507,16 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_USER_SHADER | \
    COGL_PIPELINE_STATE_DEPTH | \
    COGL_PIPELINE_STATE_FOG | \
-   COGL_PIPELINE_STATE_POINT_SIZE)
+   COGL_PIPELINE_STATE_POINT_SIZE | \
+   COGL_PIPELINE_STATE_LOGIC_OPS)
 
 #define COGL_PIPELINE_STATE_MULTI_PROPERTY \
   (COGL_PIPELINE_STATE_LAYERS | \
    COGL_PIPELINE_STATE_LIGHTING | \
    COGL_PIPELINE_STATE_BLEND | \
    COGL_PIPELINE_STATE_DEPTH | \
-   COGL_PIPELINE_STATE_FOG)
+   COGL_PIPELINE_STATE_FOG | \
+   COGL_PIPELINE_STATE_LOGIC_OPS)
 
 #define COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN \
   (COGL_PIPELINE_STATE_LAYERS | \
@@ -578,6 +583,11 @@ typedef struct
 
 typedef struct
 {
+  CoglColorMask color_mask;
+} CoglPipelineLogicOpsState;
+
+typedef struct
+{
   CoglPipelineLightingState lighting_state;
   CoglPipelineAlphaFuncState alpha_state;
   CoglPipelineBlendState blend_state;
@@ -585,6 +595,7 @@ typedef struct
   CoglDepthState depth_state;
   CoglPipelineFogState fog_state;
   float point_size;
+  CoglPipelineLogicOpsState logic_ops_state;
 } CoglPipelineBigState;
 
 typedef enum

@@ -75,6 +75,7 @@ struct _CoglFramebuffer
   int                 alpha_bits;
 
   gboolean            dither_enabled;
+  CoglColorMask       color_mask;
 
   /* We journal the textured rectangles we want to submit to OpenGL so
    * we have an oppertunity to batch them together into less draw

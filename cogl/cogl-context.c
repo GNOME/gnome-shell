@@ -277,6 +277,7 @@ cogl_context_new (CoglDisplay *display,
   context->current_gl_program = 0;
 
   context->current_gl_dither_enabled = TRUE;
+  context->current_gl_color_mask = COGL_COLOR_MASK_ALL;
 
   context->gl_blend_enable_cache = FALSE;
 

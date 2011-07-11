@@ -196,6 +196,7 @@ _cogl_pipeline_init_default_pipeline (void)
   CoglPipelineAlphaFuncState *alpha_state = &big_state->alpha_state;
   CoglPipelineBlendState *blend_state = &big_state->blend_state;
   CoglDepthState *depth_state = &big_state->depth_state;
+  CoglPipelineLogicOpsState *logic_ops_state = &big_state->logic_ops_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -300,6 +301,8 @@ _cogl_pipeline_init_default_pipeline (void)
   depth_state->range_far = 1;
 
   big_state->point_size = 1.0f;
+
+  logic_ops_state->color_mask = COGL_COLOR_MASK_ALL;
 
   ctx->default_pipeline = _cogl_pipeline_object_new (pipeline);
 }
@@ -1067,6 +1070,13 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
   if (differences & COGL_PIPELINE_STATE_POINT_SIZE)
     big_state->point_size = src->big_state->point_size;
 
+  if (differences & COGL_PIPELINE_STATE_LOGIC_OPS)
+    {
+      memcpy (&big_state->logic_ops_state,
+              &src->big_state->logic_ops_state,
+              sizeof (CoglPipelineLogicOpsState));
+    }
+
   /* XXX: we shouldn't bother doing this in most cases since
    * _copy_differences is typically used to initialize pipeline state
    * by copying it from the current authority, so it's not actually
@@ -1135,6 +1145,13 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
         memcpy (&pipeline->big_state->fog_state,
                 &authority->big_state->fog_state,
                 sizeof (CoglPipelineFogState));
+        break;
+      }
+    case COGL_PIPELINE_STATE_LOGIC_OPS:
+      {
+        memcpy (&pipeline->big_state->logic_ops_state,
+                &authority->big_state->logic_ops_state,
+                sizeof (CoglPipelineLogicOpsState));
         break;
       }
     }
@@ -3481,6 +3498,16 @@ _cogl_pipeline_point_size_equal (CoglPipeline *authority0,
 }
 
 static gboolean
+_cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
+                                      CoglPipeline *authority1)
+{
+  CoglPipelineLogicOpsState *logic_ops_state0 = &authority0->big_state->logic_ops_state;
+  CoglPipelineLogicOpsState *logic_ops_state1 = &authority1->big_state->logic_ops_state;
+
+  return logic_ops_state0->color_mask == logic_ops_state1->color_mask;
+}
+
+static gboolean
 _cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1)
 {
@@ -3792,6 +3819,12 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                               pipelines_difference,
                               COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
                               _cogl_pipeline_point_size_equal))
+    goto done;
+
+  if (!simple_property_equal (authorities0, authorities1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
+                              _cogl_pipeline_logic_ops_state_equal))
     goto done;
 
   if (!simple_property_equal (authorities0, authorities1,
@@ -4743,6 +4776,49 @@ cogl_pipeline_get_depth_state (CoglPipeline *pipeline,
   authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
   *state = authority->big_state->depth_state;
+}
+
+CoglColorMask
+cogl_pipeline_get_color_mask (CoglPipeline *pipeline)
+{
+  CoglPipeline *authority;
+
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0);
+
+  authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LOGIC_OPS);
+
+  return authority->big_state->logic_ops_state.color_mask;
+}
+
+void
+cogl_pipeline_set_color_mask (CoglPipeline *pipeline,
+                              CoglColorMask color_mask)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_LOGIC_OPS;
+  CoglPipeline *authority;
+  CoglPipelineLogicOpsState *logic_ops_state;
+
+  g_return_if_fail (cogl_is_pipeline (pipeline));
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  logic_ops_state = &authority->big_state->logic_ops_state;
+  if (logic_ops_state->color_mask == color_mask)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
+
+  logic_ops_state = &pipeline->big_state->logic_ops_state;
+  logic_ops_state->color_mask = color_mask;
+
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_logic_ops_state_equal);
 }
 
 static void
@@ -6193,6 +6269,15 @@ _cogl_pipeline_hash_point_size_state (CoglPipeline *authority,
                                                sizeof (point_size));
 }
 
+static void
+_cogl_pipeline_hash_logic_ops_state (CoglPipeline *authority,
+                                     HashState *state)
+{
+  CoglPipelineLogicOpsState *logic_ops_state = &authority->big_state->logic_ops_state;
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash, &logic_ops_state->color_mask,
+                                               sizeof (CoglColorMask));
+}
+
 typedef void (*StateHashFunction) (CoglPipeline *authority, HashState *state);
 
 static StateHashFunction
@@ -6226,9 +6311,11 @@ _cogl_pipeline_init_state_hash_functions (void)
     _cogl_pipeline_hash_fog_state;
   state_hash_functions[COGL_PIPELINE_STATE_POINT_SIZE_INDEX] =
     _cogl_pipeline_hash_point_size_state;
+  state_hash_functions[COGL_PIPELINE_STATE_LOGIC_OPS_INDEX] =
+    _cogl_pipeline_hash_logic_ops_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 11);
+  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 12);
 }
 
 unsigned int

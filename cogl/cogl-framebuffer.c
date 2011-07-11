@@ -155,6 +155,8 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
 
   framebuffer->dirty_bitmasks   = TRUE;
 
+  framebuffer->color_mask       = COGL_COLOR_MASK_ALL;
+
   /* Initialise the clip stack */
   _cogl_clip_state_init (&framebuffer->clip_state);
 
@@ -238,8 +240,24 @@ _cogl_clear4f (unsigned long buffers,
 
   if (buffers & COGL_BUFFER_BIT_COLOR)
     {
+      CoglFramebuffer *draw_framebuffer;
+
       GE( ctx, glClearColor (red, green, blue, alpha) );
       gl_buffers |= GL_COLOR_BUFFER_BIT;
+
+      draw_framebuffer = cogl_get_draw_framebuffer ();
+      if (ctx->current_gl_color_mask != draw_framebuffer->color_mask)
+        {
+          CoglColorMask color_mask = draw_framebuffer->color_mask;
+          GE( ctx, glColorMask (!!(color_mask & COGL_COLOR_MASK_RED),
+                                !!(color_mask & COGL_COLOR_MASK_GREEN),
+                                !!(color_mask & COGL_COLOR_MASK_BLUE),
+                                !!(color_mask & COGL_COLOR_MASK_ALPHA)));
+          ctx->current_gl_color_mask = color_mask;
+          /* Make sure the ColorMask is updated when the next primitive is drawn */
+          ctx->current_pipeline_changes_since_flush |=
+            COGL_PIPELINE_STATE_LOGIC_OPS;
+        }
     }
 
   if (buffers & COGL_BUFFER_BIT_DEPTH)
@@ -1490,6 +1508,26 @@ cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer)
   _cogl_framebuffer_init_bits (framebuffer);
 
   return framebuffer->alpha_bits;
+}
+
+CoglColorMask
+cogl_framebuffer_get_color_mask (CoglFramebuffer *framebuffer)
+{
+  return framebuffer->color_mask;
+}
+
+void
+cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
+                                 CoglColorMask color_mask)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_flush (); /* XXX: Currently color mask changes don't go through the journal */
+  framebuffer->color_mask = color_mask;
+
+  /* Make sure the ColorMask is updated when the next primitive is drawn */
+  ctx->current_pipeline_changes_since_flush |=
+    COGL_PIPELINE_STATE_LOGIC_OPS;
 }
 
 gboolean

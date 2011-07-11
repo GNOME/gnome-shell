@@ -204,6 +204,7 @@ struct _CoglContext
   GLuint                  current_gl_program;
 
   gboolean current_gl_dither_enabled;
+  CoglColorMask current_gl_color_mask;
 
   /* List of types that will be considered a subclass of CoglTexture in
      cogl_is_texture */

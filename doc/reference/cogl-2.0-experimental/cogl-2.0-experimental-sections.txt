@@ -320,6 +320,8 @@ cogl_framebuffer_get_red_bits
 cogl_framebuffer_get_green_bits
 cogl_framebuffer_get_blue_bits
 cogl_framebuffer_get_blue_bits
+cogl_framebuffer_get_color_mask
+cogl_framebuffer_set_color_mask
 cogl_framebuffer_swap_buffers
 cogl_framebuffer_swap_region
 cogl_framebuffer_add_swap_buffers_callback
@@ -504,6 +506,9 @@ cogl_pipeline_set_blend_constant
 cogl_pipeline_set_point_size
 cogl_pipeline_get_point_size
 
+cogl_pipeline_get_color_mask
+cogl_pipeline_set_color_mask
+
 cogl_pipeline_set_layer_texture
 cogl_pipeline_get_layer_texture
 CoglMaterialFilter
@@ -620,6 +625,7 @@ CoglPixelFormat
 CoglBufferTarget
 CoglBufferBit
 CoglAttributeType
+CoglColorMask
 </SECTION>
 
 <SECTION>

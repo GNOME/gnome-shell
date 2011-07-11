@@ -607,6 +607,24 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         }
     }
 
+  if (pipelines_difference & COGL_PIPELINE_STATE_LOGIC_OPS)
+    {
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LOGIC_OPS);
+      CoglPipelineLogicOpsState *logic_ops_state = &authority->big_state->logic_ops_state;
+      CoglColorMask color_mask = logic_ops_state->color_mask;
+      CoglFramebuffer *draw_framebuffer = cogl_get_draw_framebuffer ();
+
+      if (draw_framebuffer)
+        color_mask &= draw_framebuffer->color_mask;
+
+      GE (ctx, glColorMask (!!(color_mask & COGL_COLOR_MASK_RED),
+                            !!(color_mask & COGL_COLOR_MASK_GREEN),
+                            !!(color_mask & COGL_COLOR_MASK_BLUE),
+                            !!(color_mask & COGL_COLOR_MASK_ALPHA)));
+      ctx->current_gl_color_mask = color_mask;
+    }
+
   if (pipeline->real_blend_enable != ctx->gl_blend_enable_cache)
     {
       if (pipeline->real_blend_enable)
