@@ -825,6 +825,40 @@ meta_frames_get_borders (MetaFrames *frames,
 }
 
 void
+meta_frames_get_corner_radiuses (MetaFrames *frames,
+                                 Window      xwindow,
+                                 float      *top_left,
+                                 float      *top_right,
+                                 float      *bottom_left,
+                                 float      *bottom_right)
+{
+  MetaUIFrame *frame;
+  MetaFrameGeometry fgeom;
+
+  frame = meta_frames_lookup_window (frames, xwindow);
+
+  meta_frames_calc_geometry (frames, frame, &fgeom);
+
+  /* For compatibility with the code in get_visible_rect(), there's
+   * a mysterious sqrt() added to the corner radiuses:
+   *
+   *   const float radius = sqrt(corner) + corner;
+   *
+   * It's unclear why the radius is calculated like this, but we
+   * need to be consistent with it.
+   */
+
+  if (top_left)
+    *top_left = fgeom.top_left_corner_rounded_radius + sqrt(fgeom.top_left_corner_rounded_radius);
+  if (top_right)
+    *top_right = fgeom.top_right_corner_rounded_radius + sqrt(fgeom.top_right_corner_rounded_radius);
+  if (bottom_left)
+    *bottom_left = fgeom.bottom_left_corner_rounded_radius + sqrt(fgeom.bottom_left_corner_rounded_radius);
+  if (bottom_right)
+    *bottom_right = fgeom.bottom_right_corner_rounded_radius + sqrt(fgeom.bottom_right_corner_rounded_radius);
+}
+
+void
 meta_frames_reset_bg (MetaFrames *frames,
                       Window  xwindow)
 {
