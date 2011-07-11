@@ -342,13 +342,13 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                         0 /* no application private data */);
   CLUTTER_STATIC_TIMER (swapbuffers_timer,
                         "Redrawing", /* parent */
-                        "eglSwapBuffers",
-                        "The time spent blocked by eglSwapBuffers",
+                        "SwapBuffers",
+                        "The time spent blocked by SwapBuffers",
                         0 /* no application private data */);
   CLUTTER_STATIC_TIMER (blit_sub_buffer_timer,
                         "Redrawing", /* parent */
-                        "egl_blit_sub_buffer",
-                        "The time spent in _egl_blit_sub_buffer",
+                        "blit_sub_buffer",
+                        "The time spent in blit_sub_buffer",
                         0 /* no application private data */);
 
 #ifdef COGL_HAS_X11_SUPPORT
