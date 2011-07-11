@@ -340,32 +340,14 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-wgl.c \
 	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h
 endif
-if SUPPORT_EGL_PLATFORM_POWERVR_X11
-cogl_sources_c += \
-	$(srcdir)/winsys/cogl-winsys-egl.c \
-	$(srcdir)/winsys/cogl-winsys-egl-private.h
-endif
-if SUPPORT_EGL_PLATFORM_POWERVR_NULL
-cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c \
-       $(srcdir)/winsys/cogl-winsys-egl-private.h
-endif
-if SUPPORT_EGL_PLATFORM_GDL
-cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c \
-       $(srcdir)/winsys/cogl-winsys-egl-private.h
-endif
 if SUPPORT_EGL_PLATFORM_WAYLAND
 cogl_public_h += \
 	$(srcdir)/cogl-wayland-renderer.h
-
-cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c \
-       $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
-if SUPPORT_EGL_PLATFORM_ANDROID
+if SUPPORT_EGL
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-egl-feature-functions.h \
        $(srcdir)/winsys/cogl-winsys-egl-private.h
 endif
 
