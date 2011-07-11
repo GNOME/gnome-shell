@@ -198,10 +198,13 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
       guchar *mask_data;
       int i;
       int n_rects;
+      int stride;
       GLenum paint_gl_target;
 
+      stride = cairo_format_stride_for_width (CAIRO_FORMAT_A8, tex_width);
+
       /* Create data for an empty image */
-      mask_data = g_malloc0 (tex_width * tex_height);
+      mask_data = g_malloc0 (stride * tex_height);
 
       n_rects = cairo_region_num_rectangles (priv->shape_region);
 
@@ -222,9 +225,9 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
           y2 = CLAMP (y2, y1, (gint) tex_height);
 
           /* Fill the rectangle */
-          for (p = mask_data + y1 * tex_width + x1;
+          for (p = mask_data + y1 * stride + x1;
                y1 < y2;
-               y1++, p += tex_width)
+               y1++, p += stride)
             memset (p, 255, x2 - x1);
         }
 
@@ -243,7 +246,7 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
                                           /* internal cogl format */
                                           COGL_PIXEL_FORMAT_A_8,
                                           /* rowstride */
-                                          tex_width,
+                                          stride,
                                           mask_data);
         }
       else
@@ -252,7 +255,7 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
                                                          COGL_TEXTURE_NONE,
                                                          COGL_PIXEL_FORMAT_A_8,
                                                          COGL_PIXEL_FORMAT_ANY,
-                                                         tex_width,
+                                                         stride,
                                                          mask_data);
 
       g_free (mask_data);
