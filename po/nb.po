@@ -6,10 +6,10 @@
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 2.91.x\n"
+"Project-Id-Version: gnome-shell 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-28 22:55+0200\n"
-"PO-Revision-Date: 2011-06-28 22:56+0200\n"
+"POT-Creation-Date: 2011-07-12 19:59+0200\n"
+"PO-Revision-Date: 2011-07-12 20:00+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -52,17 +52,17 @@ msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. disabled-extensions overrides this setting for extensions "
 "that appear in both lists."
-msgstr "GNOME Shell-utvidelser har en uuid-egenskap. Denne nøkkelen lister utvidelser som ikke bør lastes. disabled-extensions overstyrer denne innstillingen for utvidelser som finnes i begge listene."
+msgstr ""
+"GNOME Shell-utvidelser har en uuid-egenskap. Denne nøkkelen lister "
+"utvidelser som ikke bør lastes. disabled-extensions overstyrer denne "
+"innstillingen for utvidelser som finnes i begge listene."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-#, fuzzy
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded. This setting overrides enabled-extensions for "
 "extensions that appear in both lists."
-msgstr ""
-"GNOME Shell-utvidelser har en uuid-egenskap. Denne nøkkelen lister "
-"utvidelser som ikke bør lastes."
+msgstr "GNOME Shell-utvidelser har en uuid-egenskap. Denne nøkkelen lister utvidelser som ikke bør lastes. Denne innstillingen overstyrer enabled-extensions for utvidelser som finnes i begge listene."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -191,27 +191,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:252
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:357
+#: ../js/ui/appDisplay.js:351
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:383
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "INNSTILLINGER"
 
-#: ../js/ui/appDisplay.js:656
+#: ../js/ui/appDisplay.js:650
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:659
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -344,13 +344,13 @@ msgid "Nothing Scheduled"
 msgstr "Ingenting planlagt"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:568
+#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:705
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:571
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:708
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
@@ -371,7 +371,7 @@ msgstr "Denne uken"
 msgid "Next week"
 msgstr "Neste uke"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1044
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1114
 msgid "Remove"
 msgstr "Fjern"
 
@@ -535,11 +535,11 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1037
+#: ../js/ui/messageTray.js:1107
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:2207
+#: ../js/ui/messageTray.js:2278
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -569,11 +569,11 @@ msgstr "Avslutt %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:913
+#: ../js/ui/panel.js:914
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:1013
+#: ../js/ui/panel.js:1014
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1089,22 +1089,22 @@ msgstr "Volum"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:401
+#: ../js/ui/telepathyClient.js:497
 #, c-format
 msgid "%s is online."
 msgstr "%s er tilkoblet."
 
-#: ../js/ui/telepathyClient.js:406
+#: ../js/ui/telepathyClient.js:502
 #, c-format
 msgid "%s is offline."
 msgstr "%s er frakoblet."
 
-#: ../js/ui/telepathyClient.js:409
+#: ../js/ui/telepathyClient.js:505
 #, c-format
 msgid "%s is away."
 msgstr "«%s» er borte."
 
-#: ../js/ui/telepathyClient.js:412
+#: ../js/ui/telepathyClient.js:508
 #, c-format
 msgid "%s is busy."
 msgstr "%s er opptatt."
@@ -1112,17 +1112,44 @@ msgstr "%s er opptatt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:560
+#: ../js/ui/telepathyClient.js:697
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Sendt %X på %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:610
+#: ../js/ui/telepathyClient.js:747
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s er nå kjent som %s"
+
+#: ../js/ui/telepathyClient.js:811
+msgid "Invitation"
+msgstr "Invitasjon"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/telepathyClient.js:855
+#, c-format
+msgid "Invitation to %s"
+msgstr "Invitasjon til %s"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/telepathyClient.js:863
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "%s inviterer deg til å bli med i %s"
+
+#: ../js/ui/telepathyClient.js:865
+msgid "Decline"
+msgstr "Avslå"
+
+#: ../js/ui/telepathyClient.js:866
+msgid "Accept"
+msgstr "Godta"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1132,7 +1159,7 @@ msgstr "%s er nå kjent som %s"
 msgid "Type to search..."
 msgstr "Skriv for å søke …"
 
-#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:254
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:257
 msgid "Search"
 msgstr "Søk"
 
@@ -1168,7 +1195,7 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/main.c:445
+#: ../src/main.c:466
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
@@ -1189,13 +1216,13 @@ msgstr "Forvalg"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Autentiseringsdialogen ble lukket av brukeren"
 
-#: ../src/shell-util.c:93
+#: ../src/shell-util.c:96
 msgid "Home Folder"
 msgstr "Hjemmemappe"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:111
 msgid "File System"
 msgstr "Filsystem"
 
@@ -1204,7 +1231,7 @@ msgstr "Filsystem"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:307
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
