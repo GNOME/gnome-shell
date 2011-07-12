@@ -310,6 +310,11 @@ struct _MetaFrameBorders
    * and an outer portion that is invisible but responds to events.
    */
   GtkBorder visible;
+  GtkBorder invisible;
+
+  /* For convenience, we have a "total" border which is equal to the sum
+   * of the two borders above. */
+  GtkBorder total;
 };
 
 /* sets all dimensions to zero */

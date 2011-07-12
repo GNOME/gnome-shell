@@ -56,6 +56,7 @@
 #include "theme-private.h"
 #include <meta/util.h>
 #include <meta/gradient.h>
+#include <meta/prefs.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
@@ -402,7 +403,7 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
                                MetaFrameFlags         flags,
                                MetaFrameBorders      *borders)
 {
-  int buttons_height, title_height;
+  int buttons_height, title_height, draggable_borders;
   
   g_return_if_fail (layout != NULL);
 
@@ -428,6 +429,22 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
       meta_frame_borders_clear (borders);
       return;
     }
+
+  draggable_borders = meta_prefs_get_draggable_border_width ();
+
+  borders->invisible.left   = MAX (0, draggable_borders - borders->visible.left);
+  borders->invisible.right  = MAX (0, draggable_borders - borders->visible.right);
+  borders->invisible.bottom = MAX (0, draggable_borders - borders->visible.bottom);
+
+  /* borders.visible is the height of the *title bar*. We can't do the same
+   * algorithm here, titlebars are expectedly much bigger. Just subtract a couple
+   * pixels to get a proper feel. */
+  borders->invisible.top    = MAX (0, draggable_borders - 2);
+
+  borders->total.left   = borders->invisible.left   + borders->visible.left;
+  borders->total.right  = borders->invisible.right  + borders->visible.right;
+  borders->total.bottom = borders->invisible.bottom + borders->visible.bottom;
+  borders->total.top    = borders->invisible.top    + borders->visible.top;
 }
 
 static MetaButtonType
