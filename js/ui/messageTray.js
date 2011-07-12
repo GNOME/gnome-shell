@@ -885,6 +885,11 @@ Source.prototype = {
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('destroy', Lang.bind(this,
+            function() {
+                this._actorDestroyed = true;
+            }));
+        this._actorDestroyed = false;
 
         this._counterLabel = new St.Label();
         this._counterBin = new St.Bin({ style_class: 'summary-source-counter',
@@ -949,6 +954,9 @@ Source.prototype = {
     },
 
     _updateCount: function() {
+        if (this._actorDestroyed)
+            return;
+
         let count = this.notifications.length;
         this._setCount(count, count > 1);
     },
