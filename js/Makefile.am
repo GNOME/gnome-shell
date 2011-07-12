@@ -16,6 +16,7 @@ nobase_dist_js_DATA = 	\
 	ui/altTab.js		\
 	ui/appDisplay.js	\
 	ui/appFavorites.js	\
+	ui/autorunManager.js    \
 	ui/boxpointer.js	\
 	ui/calendar.js		\
 	ui/chrome.js		\

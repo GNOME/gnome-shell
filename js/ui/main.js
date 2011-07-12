@@ -12,6 +12,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const AutorunManager = imports.ui.autorunManager;
 const Chrome = imports.ui.chrome;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const EndSessionDialog = imports.ui.endSessionDialog;
@@ -39,6 +40,7 @@ const Util = imports.misc.util;
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
+let autorunManager = null;
 let chrome = null;
 let panel = null;
 let hotCorners = [];
@@ -142,6 +144,7 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
+    autorunManager = new AutorunManager.AutorunManager();
 
     layoutManager.init();
     overview.init();

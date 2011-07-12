@@ -1139,6 +1139,83 @@ StTooltip StLabel {
     icon-size: 36px;
 }
 
+.hotplug-transient-box {
+    spacing: 6px;
+    padding: 2px 72px 2px 12px;
+}
+
+.hotplug-notification-item {
+    background-color: #3c3c3c;
+    padding: 0px 10px;
+    border-radius: 8px;
+    border: 1px solid #181818;
+}
+
+.hotplug-notification-item:hover {
+    border: 1px solid #a1a1a1;
+}
+
+.hotplug-notification-item:focus {
+    background-color: #666666;
+}
+
+.hotplug-notification-item:active {
+    border: 1px solid #a1a1a1;
+    background-color: #2b2b2b;
+}
+
+.hotplug-notification-item-icon {
+    icon-size: 24px;
+    padding: 2px 5px;
+}
+
+.hotplug-resident-box {
+    spacing: 8px;
+}
+
+.hotplug-resident-mount {
+    spacing: 8px;
+    border-radius: 4px;
+
+    color: #ccc;
+}
+
+.hotplug-resident-mount:hover {
+    background-gradient-direction: horizontal;
+    background-gradient-start: rgba(255, 255, 255, 0.1);
+    background-gradient-end: rgba(255, 255, 255, 0);
+
+    color: #fff;
+}
+
+.hotplug-resident-mount-label {
+    color: inherit;
+    padding-left: 6px;
+}
+
+.hotplug-resident-mount-icon {
+    icon-size: 24px;
+    padding-left: 6px;
+}
+
+.hotplug-resident-eject-icon {
+    icon-size: 16px;
+}
+
+.hotplug-resident-eject-button {
+    padding: 2px;
+    border: 1px solid #2b2b2b;
+    border-radius: 5px;
+
+    color: #ccc;
+}
+
+.hotplug-resident-eject-button:hover {
+    color: #fff;
+    background-color: #2b2b2b;
+    border: 1px solid #a1a1a1;
+}
+
 .chat-log-message {
     color: #888888;
 }
