@@ -313,8 +313,17 @@ meta_frames_destroy (GtkWidget *object)
     }
   g_slist_free (winlist);
 
-  g_object_unref (frames->normal_style);
-  g_hash_table_destroy (frames->style_variants);
+  if (frames->normal_style)
+    {
+      g_object_unref (frames->normal_style);
+      frames->normal_style = NULL;
+    }
+
+  if (frames->style_variants)
+    {
+      g_hash_table_destroy (frames->style_variants);
+      frames->style_variants = NULL;
+    }
 
   GTK_WIDGET_CLASS (meta_frames_parent_class)->destroy (object);
 }
