@@ -6122,10 +6122,10 @@ clutter_actor_get_allocation_geometry (ClutterActor    *self,
 
   clutter_actor_get_allocation_box (self, &box);
 
-  geom->x = clutter_actor_box_get_x (&box);
-  geom->y = clutter_actor_box_get_y (&box);
-  geom->width = clutter_actor_box_get_width (&box);
-  geom->height = clutter_actor_box_get_height (&box);
+  geom->x = CLUTTER_NEARBYINT (clutter_actor_box_get_x (&box));
+  geom->y = CLUTTER_NEARBYINT (clutter_actor_box_get_y (&box));
+  geom->width = CLUTTER_NEARBYINT (clutter_actor_box_get_width (&box));
+  geom->height = CLUTTER_NEARBYINT (clutter_actor_box_get_height (&box));
 }
 
 /**
