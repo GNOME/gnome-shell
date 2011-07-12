@@ -324,6 +324,25 @@ clutter_stage_cogl_add_redraw_clip (ClutterStageWindow *stage_window,
   stage_cogl->initialized_redraw_clip = TRUE;
 }
 
+static gboolean
+clutter_stage_cogl_get_redraw_clip_bounds (ClutterStageWindow *stage_window,
+                                           cairo_rectangle_int_t *stage_clip)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+
+  if (stage_cogl->using_clipped_redraw)
+    {
+      stage_clip->x = stage_cogl->bounding_redraw_clip.x;
+      stage_clip->y = stage_cogl->bounding_redraw_clip.y;
+      stage_clip->width = stage_cogl->bounding_redraw_clip.width;
+      stage_clip->height = stage_cogl->bounding_redraw_clip.height;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 /* XXX: This is basically identical to clutter_stage_glx_redraw */
 static void
 clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
@@ -401,6 +420,9 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                     stage_cogl->bounding_redraw_clip.y,
                     stage_cogl->bounding_redraw_clip.width,
                     stage_cogl->bounding_redraw_clip.height);
+
+      stage_cogl->using_clipped_redraw = TRUE;
+
       cogl_clip_push_window_rectangle (stage_cogl->bounding_redraw_clip.x,
                                        stage_cogl->bounding_redraw_clip.y,
                                        stage_cogl->bounding_redraw_clip.width,
@@ -408,6 +430,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       _clutter_stage_do_paint (CLUTTER_STAGE (wrapper),
                                &stage_cogl->bounding_redraw_clip);
       cogl_clip_pop ();
+
+      stage_cogl->using_clipped_redraw = FALSE;
     }
   else
     {
@@ -568,6 +592,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->add_redraw_clip = clutter_stage_cogl_add_redraw_clip;
   iface->has_redraw_clips = clutter_stage_cogl_has_redraw_clips;
   iface->ignoring_redraw_clips = clutter_stage_cogl_ignoring_redraw_clips;
+  iface->get_redraw_clip_bounds = clutter_stage_cogl_get_redraw_clip_bounds;
   iface->redraw = clutter_stage_cogl_redraw;
   iface->get_active_framebuffer = clutter_stage_cogl_get_active_framebuffer;
 }

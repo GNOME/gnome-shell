@@ -175,6 +175,21 @@ _clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *window)
   return TRUE;
 }
 
+gboolean
+_clutter_stage_window_get_redraw_clip_bounds (ClutterStageWindow    *window,
+                                              cairo_rectangle_int_t *stage_clip)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), FALSE);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->get_redraw_clip_bounds)
+    return iface->get_redraw_clip_bounds (window, stage_clip);
+
+  return FALSE;
+}
+
 void
 _clutter_stage_window_set_accept_focus (ClutterStageWindow *window,
                                         gboolean            accept_focus)
