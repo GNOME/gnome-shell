@@ -6,6 +6,7 @@ bin_SCRIPTS =
 libexec_PROGRAMS =
 noinst_LTLIBRARIES =
 noinst_PROGRAMS =
+service_in_files =
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
@@ -14,6 +15,15 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(MUTTER_TYPEL
 
 typelibdir = $(pkglibdir)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+servicedir = $(datadir)/dbus-1/services
+service_DATA = $(service_in_files:.service.in=.service)
+
+$(service_DATA): $(service_in_files) Makefile
+	$(AM_V_GEN)									\
+		[ -d $(@D) ] || $(mkdir_p) $(@D) ;					\
+		sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
+CLEANFILES += $(service_DATA)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
@@ -62,6 +72,7 @@ include Makefile-st.am
 include Makefile-tray.am
 include Makefile-gvc.am
 include Makefile-calendar-server.am
+include Makefile-hotplug-sniffer.am
 
 gnome_shell_cflags =				\
 	$(GNOME_SHELL_CFLAGS)			\
