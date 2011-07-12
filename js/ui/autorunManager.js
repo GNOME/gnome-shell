@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Lang = imports.lang;
+const DBus = imports.dbus;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
@@ -62,6 +63,26 @@ function startAppForMount(app, mount) {
 
 /******************************************/
 
+const HotplugSnifferIface = {
+    name: 'org.gnome.Shell.HotplugSniffer',
+    methods: [{ name: 'SniffURI',
+                inSignature: 's',
+                outSignature: 'as' }]
+};
+
+const HotplugSniffer = function() {
+    this._init();
+};
+
+HotplugSniffer.prototype = {
+    _init: function() {
+        DBus.session.proxifyObject(this,
+                                   'org.gnome.Shell.HotplugSniffer',
+                                   '/org/gnome/Shell/HotplugSniffer');
+    },
+};
+DBus.proxifyPrototype(HotplugSniffer.prototype, HotplugSnifferIface);
+
 function ContentTypeDiscoverer(callback) {
     this._init(callback);
 }
@@ -88,12 +109,41 @@ ContentTypeDiscoverer.prototype = {
                 + ': ' + e.toString());
         }
 
+        if (contentTypes.length) {
+            this._emitCallback(mount, contentTypes);
+        } else {
+            let root = mount.get_root();
+
+            let hotplugSniffer = new HotplugSniffer();
+            hotplugSniffer.SniffURIRemote
+                (root.get_uri(), DBus.CALL_FLAG_START,
+                 Lang.bind(this, function(contentTypes) {
+                     this._emitCallback(mount, contentTypes);
+                 }));
+        }
+    },
+
+    _emitCallback: function(mount, contentTypes) {
+        if (!contentTypes)
+            contentTypes = [];
+
         // we're not interested in win32 software content types here
         contentTypes = contentTypes.filter(function(type) {
             return (type != 'x-content/win32-software');
         });
 
-        this._callback(mount, contentTypes);
+        let apps = [];
+        contentTypes.forEach(function(type) {
+            let app = Gio.app_info_get_default_for_type(type, false);
+
+            if (app)
+                apps.push(app);
+        });
+
+        if (apps.length == 0)
+            apps.push(Gio.app_info_get_default_for_type('inode/directory', false));
+
+        this._callback(mount, apps, contentTypes);
     }
 }
 
@@ -123,8 +173,8 @@ AutorunManager.prototype = {
 
         mounts.forEach(Lang.bind(this, function (mount) {
             let discoverer = new ContentTypeDiscoverer(Lang.bind (this, 
-                function (mount, contentTypes) {
-                    this._residentSource.addMount(mount, contentTypes);
+                function (mount, apps) {
+                    this._residentSource.addMount(mount, apps);
                 }));
 
             discoverer.guessContentTypes(mount);
@@ -138,9 +188,9 @@ AutorunManager.prototype = {
             return;
 
         let discoverer = new ContentTypeDiscoverer(Lang.bind (this,
-            function (mount, contentTypes) {
-                this._transDispatcher.addMount(mount, contentTypes);
-                this._residentSource.addMount(mount, contentTypes);
+            function (mount, apps, contentTypes) {
+                this._transDispatcher.addMount(mount, apps, contentTypes);
+                this._residentSource.addMount(mount, apps);
             }));
 
         discoverer.guessContentTypes(mount);
@@ -191,7 +241,7 @@ AutorunResidentSource.prototype = {
         this._setSummaryIcon(this.createNotificationIcon(HOTPLUG_ICON_SIZE));
     },
 
-    addMount: function(mount, contentTypes) {
+    addMount: function(mount, apps) {
         if (ignoreAutorunForMount(mount))
             return;
 
@@ -202,7 +252,7 @@ AutorunResidentSource.prototype = {
         if (filtered.length != 0)
             return;
 
-        let element = { mount: mount, contentTypes: contentTypes };
+        let element = { mount: mount, apps: apps };
         this._mounts.push(element);
         this._redisplay();
     },
@@ -269,13 +319,13 @@ AutorunResidentNotification.prototype = {
         for (let idx = 0; idx < mounts.length; idx++) {
             let element = mounts[idx];
 
-            let actor = this._itemForMount(element.mount, element.contentTypes);
+            let actor = this._itemForMount(element.mount, element.apps);
             this._layout.add(actor, { x_fill: true,
                                       expand: true });
         }
     },
 
-    _itemForMount: function(mount, contentTypes) {
+    _itemForMount: function(mount, apps) {
         let item = new St.BoxLayout();
 
         // prepare the mount button content
@@ -312,16 +362,9 @@ AutorunResidentNotification.prototype = {
                             child: ejectIcon });
         item.add(ejectButton, { x_align: St.Align.END });
 
-        // TODO: need to do something better here...
-        if (!contentTypes.length)
-            contentTypes.push('inode/directory');
-
         // now connect signals
         mountButton.connect('clicked', Lang.bind(this, function(actor, event) {
-            let app = Gio.app_info_get_default_for_type(contentTypes[0], false);
-
-            if (app)
-                startAppForMount(app, mount);
+            startAppForMount(apps[0], mount);
         }));
 
         ejectButton.connect('clicked', Lang.bind(this, function() {
@@ -373,17 +416,17 @@ AutorunTransientDispatcher.prototype = {
         return null;
     },
 
-    _addSource: function(mount, contentTypes) {
+    _addSource: function(mount, apps) {
         // if we already have a source showing for this 
         // mount, return
         if (this._getSourceForMount(mount))
             return;
      
         // add a new source
-        this._sources.push(new AutorunTransientSource(mount, contentTypes));
+        this._sources.push(new AutorunTransientSource(mount, apps));
     },
 
-    addMount: function(mount, contentTypes) {
+    addMount: function(mount, apps, contentTypes) {
         // if autorun is disabled globally, return
         if (this._settings.get_boolean(SETTING_DISABLE_AUTORUN))
             return;
@@ -414,7 +457,7 @@ AutorunTransientDispatcher.prototype = {
         // we fallback here also in case the settings did not specify 'ask',
         // but we failed launching the default app or the default file manager
         if (!success)
-            this._addSource(mount, contentTypes);
+            this._addSource(mount, apps);
     },
 
     removeMount: function(mount) {
@@ -429,18 +472,18 @@ AutorunTransientDispatcher.prototype = {
     }
 }
 
-function AutorunTransientSource(mount, contentTypes) {
-    this._init(mount, contentTypes);
+function AutorunTransientSource(mount, apps) {
+    this._init(mount, apps);
 }
 
 AutorunTransientSource.prototype = {
     __proto__: MessageTray.Source.prototype,
 
-    _init: function(mount, contentTypes) {
+    _init: function(mount, apps) {
         MessageTray.Source.prototype._init.call(this, mount.get_name());
 
         this.mount = mount;
-        this.contentTypes = contentTypes;
+        this.apps = apps;
 
         this._notification = new AutorunTransientNotification(this);
         this._setSummaryIcon(this.createNotificationIcon(this.ICON_SIZE));
@@ -474,24 +517,13 @@ AutorunTransientNotification.prototype = {
 
         this._mount = source.mount;
 
-        source.contentTypes.forEach(Lang.bind(this, function (type) {
-            let actor = this._buttonForContentType(type);
+        source.apps.forEach(Lang.bind(this, function (app) {
+            let actor = this._buttonForApp(app);
 
             if (actor)
                 this._box.add(actor, { x_fill: true,
                                        x_align: St.Align.START });
         }));
-
-        // TODO: ideally we never want to show the file manager entry here,
-        // but we want to detect which kind of files are present on the device,
-        // and use those to present a more meaningful choice.
-        if (this._contentTypes.length == 0) {
-            let button = this._buttonForContentType('inode/directory');
-
-            if (button)
-                this._box.add (button, { x_fill: true,
-                                         x_align: St.Align.START });
-        }
 
         this._box.add(this._buttonForEject(), { x_fill: true,
                                                 x_align: St.Align.START });
@@ -502,14 +534,8 @@ AutorunTransientNotification.prototype = {
         this.setUrgency(MessageTray.Urgency.CRITICAL);
     },
 
-    _buttonForContentType: function(type) {
-        let app = Gio.app_info_get_default_for_type(type, false);
-
-        if (!app)
-            return null;
-
+    _buttonForApp: function(app) {
         let box = new St.BoxLayout();
-
         let icon = new St.Icon({ gicon: app.get_icon(),
                                  style_class: 'hotplug-notification-item-icon' });
         box.add(icon);
@@ -521,6 +547,8 @@ AutorunTransientNotification.prototype = {
         box.add(label);
 
         let button = new St.Button({ child: box,
+                                     x_fill: true,
+                                     x_align: St.Align.START,
                                      button_mask: St.ButtonMask.ONE,
                                      style_class: 'hotplug-notification-item' });
 
