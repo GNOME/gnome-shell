@@ -4311,11 +4311,7 @@ process_request_frame_extents (MetaDisplay    *display,
                                          &hints);
   if ((hints_set && hints->decorations) || !hints_set)
     {
-      int top = 0;
-      int bottom = 0;
-      int left = 0;
-      int right = 0;
-
+      MetaFrameBorders borders;
       MetaScreen *screen;
 
       screen = meta_display_screen_for_xwindow (display,
@@ -4333,15 +4329,11 @@ process_request_frame_extents (MetaDisplay    *display,
       meta_ui_theme_get_frame_borders (screen->ui,
                                        META_FRAME_TYPE_NORMAL,
                                        0,
-                                       &top,
-                                       &bottom,
-                                       &left,
-                                       &right);
-
-      data[0] = left;
-      data[1] = right;
-      data[2] = top;
-      data[3] = bottom;
+                                       &borders);
+      data[0] = borders.visible.left;
+      data[1] = borders.visible.right;
+      data[2] = borders.visible.top;
+      data[3] = borders.visible.bottom;
     }
 
   meta_topic (META_DEBUG_GEOMETRY,

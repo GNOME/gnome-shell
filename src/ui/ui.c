@@ -306,14 +306,12 @@ meta_ui_free (MetaUI *ui)
 }
 
 void
-meta_ui_get_frame_geometry (MetaUI *ui,
-                            Window frame_xwindow,
-                            int *top_height, int *bottom_height,
-                            int *left_width, int *right_width)
+meta_ui_get_frame_borders (MetaUI *ui,
+                           Window frame_xwindow,
+                           MetaFrameBorders *borders)
 {
-  meta_frames_get_geometry (ui->frames, frame_xwindow,
-                            top_height, bottom_height,
-                            left_width, right_width);
+  meta_frames_get_borders (ui->frames, frame_xwindow,
+                           borders);
 }
 
 Window
@@ -712,10 +710,7 @@ void
 meta_ui_theme_get_frame_borders (MetaUI *ui,
                                  MetaFrameType      type,
                                  MetaFrameFlags     flags,
-                                 int               *top_height,
-                                 int               *bottom_height,
-                                 int               *left_width,
-                                 int               *right_width)
+                                 MetaFrameBorders  *borders)
 {
   int text_height;
   GtkStyleContext *style = NULL;
@@ -737,12 +732,14 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
 
       meta_theme_get_frame_borders (meta_theme_get_current (),
                                     type, text_height, flags,
-                                    top_height, bottom_height,
-                                    left_width, right_width);
+                                    borders);
     }
   else
     {
-      *top_height = *bottom_height = *left_width = *right_width = 0;
+      borders->visible.top = 0;
+      borders->visible.bottom = 0;
+      borders->visible.left = 0;
+      borders->visible.right = 0;
     }
 
   if (style != NULL)

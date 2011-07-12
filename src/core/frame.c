@@ -302,22 +302,12 @@ meta_frame_get_flags (MetaFrame *frame)
 }
 
 void
-meta_frame_calc_geometry (MetaFrame         *frame,
-                          MetaFrameGeometry *geomp)
+meta_frame_calc_borders (MetaFrame        *frame,
+                         MetaFrameBorders *borders)
 {
-  MetaFrameGeometry geom;
-  MetaWindow *window;
-
-  window = frame->window;
-
-  meta_ui_get_frame_geometry (window->screen->ui,
-                              frame->xwindow,
-                              &geom.top_height,
-                              &geom.bottom_height,
-                              &geom.left_width,
-                              &geom.right_width);
-  
-  *geomp = geom;
+  meta_ui_get_frame_borders (frame->window->screen->ui,
+                             frame->xwindow,
+                             borders);
 }
 
 gboolean

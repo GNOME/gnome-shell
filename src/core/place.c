@@ -90,7 +90,7 @@ northwestcmp (gconstpointer a, gconstpointer b)
 
 static void
 find_next_cascade (MetaWindow *window,
-                   MetaFrameGeometry *fgeom,
+                   MetaFrameBorders *borders,
                    /* visible windows on relevant workspaces */
                    GList      *windows,
                    int         x,
@@ -120,10 +120,10 @@ find_next_cascade (MetaWindow *window,
    * manually cascade.
    */
 #define CASCADE_FUZZ 15
-  if (fgeom)
+  if (borders)
     {
-      x_threshold = MAX (fgeom->left_width, CASCADE_FUZZ);
-      y_threshold = MAX (fgeom->top_height, CASCADE_FUZZ);
+      x_threshold = MAX (borders->visible.left, CASCADE_FUZZ);
+      y_threshold = MAX (borders->visible.top, CASCADE_FUZZ);
     }
   else
     {
@@ -224,21 +224,21 @@ find_next_cascade (MetaWindow *window,
   g_list_free (sorted);
 
   /* Convert coords to position of window, not position of frame. */
-  if (fgeom == NULL)
+  if (borders == NULL)
     {
       *new_x = cascade_x;
       *new_y = cascade_y;
     }
   else
     {
-      *new_x = cascade_x + fgeom->left_width;
-      *new_y = cascade_y + fgeom->top_height;
+      *new_x = cascade_x + borders->visible.left;
+      *new_y = cascade_y + borders->visible.top;
     }
 }
 
 static void
 find_most_freespace (MetaWindow *window,
-                     MetaFrameGeometry *fgeom,
+                     MetaFrameBorders *borders,
                      /* visible windows on relevant workspaces */
                      MetaWindow *focus_window,
                      int         x,
@@ -255,8 +255,8 @@ find_most_freespace (MetaWindow *window,
   MetaRectangle avoid;
   MetaRectangle outer;
 
-  frame_size_left = fgeom ? fgeom->left_width : 0;
-  frame_size_top  = fgeom ? fgeom->top_height : 0;
+  frame_size_left = borders ? borders->visible.left : 0;
+  frame_size_top  = borders ? borders->visible.top : 0;
 
   meta_window_get_work_area_current_monitor (focus_window, &work_area);
   meta_window_get_outer_rect (focus_window, &avoid);
@@ -336,7 +336,7 @@ find_most_freespace (MetaWindow *window,
 
 static void
 avoid_being_obscured_as_second_modal_dialog (MetaWindow *window,
-                                             MetaFrameGeometry *fgeom,
+                                             MetaFrameBorders *borders,
                                              int        *x,
                                              int        *y)
 {
@@ -366,7 +366,7 @@ avoid_being_obscured_as_second_modal_dialog (MetaWindow *window,
                                 &focus_window->rect,
                                 &overlap))
     {
-      find_most_freespace (window, fgeom, focus_window, *x, *y, x, y);
+      find_most_freespace (window, borders, focus_window, *x, *y, x, y);
       meta_topic (META_DEBUG_PLACEMENT,
                   "Dialog window %s was denied focus but may be modal "
                   "to the focus window; had to move it to avoid the "
@@ -506,7 +506,7 @@ center_tile_rect_in_area (MetaRectangle *rect,
  */
 static gboolean
 find_first_fit (MetaWindow *window,
-                MetaFrameGeometry *fgeom,
+                MetaFrameBorders *borders,
                 /* visible windows on relevant workspaces */
                 GList      *windows,
 		int         monitor,
@@ -544,10 +544,10 @@ find_first_fit (MetaWindow *window,
   rect.width = window->rect.width;
   rect.height = window->rect.height;
   
-  if (fgeom)
+  if (borders)
     {
-      rect.width += fgeom->left_width + fgeom->right_width;
-      rect.height += fgeom->top_height + fgeom->bottom_height;
+      rect.width += borders->visible.left + borders->visible.right;
+      rect.height += borders->visible.top + borders->visible.bottom;
     }
 
 #ifdef WITH_VERBOSE_MODE
@@ -570,10 +570,10 @@ find_first_fit (MetaWindow *window,
       {
         *new_x = rect.x;
         *new_y = rect.y;
-        if (fgeom)
+        if (borders)
           {
-            *new_x += fgeom->left_width;
-            *new_y += fgeom->top_height;
+            *new_x += borders->visible.left;
+            *new_y += borders->visible.top;
           }
     
         retval = TRUE;
@@ -598,10 +598,10 @@ find_first_fit (MetaWindow *window,
           {
             *new_x = rect.x;
             *new_y = rect.y;
-            if (fgeom)
+            if (borders)
               {
-                *new_x += fgeom->left_width;
-                *new_y += fgeom->top_height;
+                *new_x += borders->visible.left;
+                *new_y += borders->visible.top;
               }
           
             retval = TRUE;
@@ -629,10 +629,10 @@ find_first_fit (MetaWindow *window,
           {
             *new_x = rect.x;
             *new_y = rect.y;
-            if (fgeom)
+            if (borders)
               {
-                *new_x += fgeom->left_width;
-                *new_y += fgeom->top_height;
+                *new_x += borders->visible.left;
+                *new_y += borders->visible.top;
               }
         
             retval = TRUE;
@@ -652,7 +652,7 @@ find_first_fit (MetaWindow *window,
 
 void
 meta_window_place (MetaWindow        *window,
-                   MetaFrameGeometry *fgeom,
+                   MetaFrameBorders  *borders,
                    int                x,
                    int                y,
                    int               *new_x,
@@ -662,12 +662,12 @@ meta_window_place (MetaWindow        *window,
   const MetaMonitorInfo *xi;
 
   /* frame member variables should NEVER be used in here, only
-   * MetaFrameGeometry. But remember fgeom == NULL
+   * MetaFrameBorders. But remember borders == NULL
    * for undecorated windows. Also, this function should
    * NEVER have side effects other than computing the
    * placement coordinates.
    */
-  
+
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
 
   windows = NULL;
@@ -756,7 +756,7 @@ meta_window_place (MetaWindow        *window,
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Not placing window with PPosition or USPosition set\n");
-          avoid_being_obscured_as_second_modal_dialog (window, fgeom, &x, &y);
+          avoid_being_obscured_as_second_modal_dialog (window, borders, &x, &y);
           goto done_no_constraints;
         }
     }
@@ -791,13 +791,13 @@ meta_window_place (MetaWindow        *window,
           y += (parent->rect.height - window->rect.height)/3;
 
           /* put top of child's frame, not top of child's client */
-          if (fgeom)
-            y += fgeom->top_height;
+          if (borders)
+            y += borders->visible.top;
 
           meta_topic (META_DEBUG_PLACEMENT, "Centered window %s over transient parent\n",
                       window->desc);
           
-          avoid_being_obscured_as_second_modal_dialog (window, fgeom, &x, &y);
+          avoid_being_obscured_as_second_modal_dialog (window, borders, &x, &y);
 
           goto done;
         }
@@ -866,7 +866,7 @@ meta_window_place (MetaWindow        *window,
   x = xi->rect.x;
   y = xi->rect.y;
 
-  if (find_first_fit (window, fgeom, windows,
+  if (find_first_fit (window, borders, windows,
                       xi->number,
                       x, y, &x, &y))
     goto done_check_denied_focus;
@@ -900,7 +900,7 @@ meta_window_place (MetaWindow        *window,
    * fully overlapping window (e.g. starting multiple terminals)
    * */
   if (x == xi->rect.x && y == xi->rect.y)  
-    find_next_cascade (window, fgeom, windows, x, y, &x, &y);
+    find_next_cascade (window, borders, windows, x, y, &x, &y);
 
  done_check_denied_focus:
   /* If the window is being denied focus and isn't a transient of the
@@ -934,7 +934,7 @@ meta_window_place (MetaWindow        *window,
           x = xi->rect.x;
           y = xi->rect.y;
 
-          found_fit = find_first_fit (window, fgeom, focus_window_list,
+          found_fit = find_first_fit (window, borders, focus_window_list,
                                       xi->number,
                                       x, y, &x, &y);
           g_list_free (focus_window_list);
@@ -944,7 +944,7 @@ meta_window_place (MetaWindow        *window,
        * as possible.
        */
       if (!found_fit)
-        find_most_freespace (window, fgeom, focus_window, x, y, &x, &y);
+        find_most_freespace (window, borders, focus_window, x, y, &x, &y);
     }
   
  done:

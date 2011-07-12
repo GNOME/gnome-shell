@@ -400,10 +400,7 @@ void
 meta_frame_layout_get_borders (const MetaFrameLayout *layout,
                                int                    text_height,
                                MetaFrameFlags         flags,
-                               int                   *top_height,
-                               int                   *bottom_height,
-                               int                   *left_width,
-                               int                   *right_width)
+                               MetaFrameBorders      *borders)
 {
   int buttons_height, title_height;
   
@@ -418,34 +415,20 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
     layout->title_vertical_pad +
     layout->title_border.top + layout->title_border.bottom;
 
-  if (top_height)
-    {
-      *top_height = MAX (buttons_height, title_height);
-    }
-
-  if (left_width)
-    *left_width = layout->left_width;
-  if (right_width)
-    *right_width = layout->right_width;
-
-  if (bottom_height)
-    {
-      if (flags & META_FRAME_SHADED)
-        *bottom_height = 0;
-      else
-        *bottom_height = layout->bottom_height;
-    }
+  borders->visible.top   = MAX (buttons_height, title_height);
+  borders->visible.left  = layout->left_width;
+  borders->visible.right = layout->right_width;
+  if (flags & META_FRAME_SHADED)
+    borders->visible.bottom = 0;
+  else
+    borders->visible.bottom = layout->bottom_height;
 
   if (flags & META_FRAME_FULLSCREEN)
     {
-      if (top_height)
-        *top_height = 0;
-      if (bottom_height)
-        *bottom_height = 0;
-      if (left_width)
-        *left_width = 0;
-      if (right_width)
-        *right_width = 0;
+      borders->visible.top = 0;
+      borders->visible.bottom = 0;
+      borders->visible.left = 0;
+      borders->visible.right = 0;
     }
 }
 
@@ -634,13 +617,18 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   gboolean left_buttons_has_spacer[MAX_BUTTONS_PER_CORNER];
   GdkRectangle *right_bg_rects[MAX_BUTTONS_PER_CORNER];
   gboolean right_buttons_has_spacer[MAX_BUTTONS_PER_CORNER];
+
+  MetaFrameBorders borders;
   
   meta_frame_layout_get_borders (layout, text_height,
                                  flags,
-                                 &fgeom->top_height,
-                                 &fgeom->bottom_height,
-                                 &fgeom->left_width,
-                                 &fgeom->right_width);
+                                 &borders);
+
+
+  fgeom->left_width = borders.visible.left;
+  fgeom->right_width = borders.visible.right;
+  fgeom->top_height = borders.visible.top;
+  fgeom->bottom_height = borders.visible.bottom;
 
   width = client_width + fgeom->left_width + fgeom->right_width;
 
@@ -5585,30 +5573,23 @@ meta_theme_draw_frame_by_name (MetaTheme              *theme,
 }
 
 void
-meta_theme_get_frame_borders (MetaTheme      *theme,
-                              MetaFrameType   type,
-                              int             text_height,
-                              MetaFrameFlags  flags,
-                              int            *top_height,
-                              int            *bottom_height,
-                              int            *left_width,
-                              int            *right_width)
+meta_theme_get_frame_borders (MetaTheme        *theme,
+                              MetaFrameType     type,
+                              int               text_height,
+                              MetaFrameFlags    flags,
+                              MetaFrameBorders *borders)
 {
   MetaFrameStyle *style;
 
   g_return_if_fail (type < META_FRAME_TYPE_LAST);
-  
-  if (top_height)
-    *top_height = 0;
-  if (bottom_height)
-    *bottom_height = 0;
-  if (left_width)
-    *left_width = 0;
-  if (right_width)
-    *right_width = 0;
-  
+
   style = theme_get_style (theme, type, flags);
-  
+
+  borders->visible.top = 0;
+  borders->visible.left = 0;
+  borders->visible.right = 0;
+  borders->visible.bottom = 0;
+
   /* Parser is not supposed to allow this currently */
   if (style == NULL)
     return;
@@ -5616,8 +5597,7 @@ meta_theme_get_frame_borders (MetaTheme      *theme,
   meta_frame_layout_get_borders (style->layout,
                                  text_height,
                                  flags,
-                                 top_height, bottom_height,
-                                 left_width, right_width);
+                                 borders);
 }
 
 void

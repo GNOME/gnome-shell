@@ -94,10 +94,10 @@ meta_preview_init (MetaPreview *preview)
     META_FRAME_ALLOWS_SHADE |
     META_FRAME_ALLOWS_MOVE;
   
-  preview->left_width = -1;
-  preview->right_width = -1;
-  preview->top_height = -1;
-  preview->bottom_height = -1;
+  preview->borders.visible.left = -1;
+  preview->borders.visible.right = -1;
+  preview->borders.visible.top = -1;
+  preview->borders.visible.bottom = -1;
 }
 
 GtkWidget*
@@ -168,7 +168,7 @@ ensure_info (MetaPreview *preview)
       pango_font_description_free (font_desc);
     }
 
-  if (preview->top_height < 0)
+  if (preview->borders.visible.top < 0)
     {
       if (preview->theme)
         {
@@ -176,17 +176,14 @@ ensure_info (MetaPreview *preview)
                                         preview->type,
                                         preview->text_height,
                                         preview->flags,
-                                        &preview->top_height,
-                                        &preview->bottom_height,
-                                        &preview->left_width,
-                                        &preview->right_width);
+                                        &preview->borders);
         }
       else
         {
-          preview->top_height = 0;
-          preview->bottom_height = 0;
-          preview->left_width = 0;
-          preview->right_width = 0;
+          preview->borders.visible.top = 0;
+          preview->borders.visible.bottom = 0;
+          preview->borders.visible.left = 0;
+          preview->borders.visible.right = 0;
         }
     }
 }
@@ -215,8 +212,8 @@ meta_preview_draw (GtkWidget *widget,
       ensure_info (preview);
       cairo_save (cr);
 
-      client_width = allocation.width - preview->left_width - preview->right_width;
-      client_height = allocation.height - preview->top_height - preview->bottom_height;
+      client_width = allocation.width - preview->borders.visible.left - preview->borders.visible.right;
+      client_height = allocation.height - preview->borders.visible.top - preview->borders.visible.bottom;
 
       if (client_width < 0)
         client_width = 1;
@@ -258,7 +255,7 @@ meta_preview_get_preferred_width (GtkWidget *widget,
 
   ensure_info (preview);
 
-  *minimum = *natural = preview->left_width + preview->right_width;
+  *minimum = *natural = preview->borders.visible.left + preview->borders.visible.right;
 
   child = gtk_bin_get_child (GTK_BIN (preview));
   if (child && gtk_widget_get_visible (child))
@@ -289,7 +286,7 @@ meta_preview_get_preferred_height (GtkWidget *widget,
 
   ensure_info (preview);
 
-  *minimum = *natural = preview->top_height + preview->bottom_height;
+  *minimum = *natural = preview->borders.visible.top + preview->borders.visible.bottom;
 
   child = gtk_bin_get_child (GTK_BIN (preview));
   if (child && gtk_widget_get_visible (child))
@@ -326,11 +323,11 @@ meta_preview_size_allocate (GtkWidget         *widget,
   if (child && gtk_widget_get_visible (child))
     {
       gtk_widget_get_allocation (widget, &widget_allocation);
-      child_allocation.x = widget_allocation.x + preview->left_width;
-      child_allocation.y = widget_allocation.y + preview->top_height;
-      
-      child_allocation.width = MAX (1, widget_allocation.width - preview->left_width - preview->right_width);
-      child_allocation.height = MAX (1, widget_allocation.height - preview->top_height - preview->bottom_height);
+      child_allocation.x = widget_allocation.x + preview->borders.visible.left;
+      child_allocation.y = widget_allocation.y + preview->borders.visible.top;
+
+      child_allocation.width = MAX (1, widget_allocation.width - preview->borders.visible.left - preview->borders.visible.right);
+      child_allocation.height = MAX (1, widget_allocation.height - preview->borders.visible.top - preview->borders.visible.bottom);
 
       gtk_widget_size_allocate (child, &child_allocation);
     }
@@ -345,10 +342,10 @@ clear_cache (MetaPreview *preview)
       preview->layout = NULL;
     }
 
-  preview->left_width = -1;
-  preview->right_width = -1;
-  preview->top_height = -1;
-  preview->bottom_height = -1;
+  preview->borders.visible.left = -1;
+  preview->borders.visible.right = -1;
+  preview->borders.visible.top = -1;
+  preview->borders.visible.bottom = -1;
 }
 
 void

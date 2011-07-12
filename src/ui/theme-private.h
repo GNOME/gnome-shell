@@ -928,10 +928,7 @@ void             meta_frame_layout_unref         (MetaFrameLayout       *layout)
 void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
                                                   int                    text_height,
                                                   MetaFrameFlags         flags,
-                                                  int                   *top_height,
-                                                  int                   *bottom_height,
-                                                  int                   *left_width,
-                                                  int                   *right_width);
+                                                  MetaFrameBorders      *borders);
 void             meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                                   int                     text_height,
                                                   MetaFrameFlags          flags,
@@ -1124,10 +1121,8 @@ void meta_theme_get_frame_borders (MetaTheme         *theme,
                                    MetaFrameType      type,
                                    int                text_height,
                                    MetaFrameFlags     flags,
-                                   int               *top_height,
-                                   int               *bottom_height,
-                                   int               *left_width,
-                                   int               *right_width);
+                                   MetaFrameBorders  *borders);
+
 void meta_theme_calc_geometry (MetaTheme              *theme,
                                MetaFrameType           type,
                                int                     text_height,
@@ -1136,7 +1131,7 @@ void meta_theme_calc_geometry (MetaTheme              *theme,
                                int                     client_height,
                                const MetaButtonLayout *button_layout,
                                MetaFrameGeometry      *fgeom);
-                                   
+
 MetaFrameLayout*   meta_theme_lookup_layout       (MetaTheme         *theme,
                                                    const char        *name);
 void               meta_theme_insert_layout       (MetaTheme         *theme,

@@ -60,14 +60,10 @@ void    meta_ui_free (MetaUI *ui);
 void meta_ui_theme_get_frame_borders (MetaUI *ui,
                                       MetaFrameType      type,
                                       MetaFrameFlags     flags,
-                                      int               *top_height,
-                                      int               *bottom_height,
-                                      int               *left_width,
-                                      int               *right_width);
-void meta_ui_get_frame_geometry (MetaUI *ui,
-                                 Window frame_xwindow,
-                                 int *top_height, int *bottom_height,
-                                 int *left_width, int *right_width);
+                                      MetaFrameBorders *borders);
+void meta_ui_get_frame_borders (MetaUI *ui,
+                                Window frame_xwindow,
+                                MetaFrameBorders *borders);
 Window meta_ui_create_frame_window (MetaUI *ui,
                                     Display *xdisplay,
                                     Visual *xvisual,

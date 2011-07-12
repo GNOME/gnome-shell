@@ -3530,12 +3530,12 @@ meta_window_can_tile_side_by_side (MetaWindow *window)
 
   if (window->frame)
     {
-      MetaFrameGeometry fgeom;
+      MetaFrameBorders borders;
 
-      meta_frame_calc_geometry (window->frame, &fgeom);
+      meta_frame_calc_borders (window->frame, &borders);
 
-      tile_area.width  -= (fgeom.left_width + fgeom.right_width);
-      tile_area.height -= (fgeom.top_height + fgeom.bottom_height);
+      tile_area.width  -= (borders.visible.left + borders.visible.right);
+      tile_area.height -= (borders.visible.top + borders.visible.bottom);
     }
 
   return tile_area.width >= window->size_hints.min_width &&
@@ -4068,7 +4068,7 @@ meta_window_activate_with_workspace (MetaWindow     *window,
  */
 static void
 adjust_for_gravity (MetaWindow        *window,
-                    MetaFrameGeometry *fgeom,
+                    MetaFrameBorders  *borders,
                     gboolean           coords_assume_border,
                     int                gravity,
                     MetaRectangle     *rect)
@@ -4083,12 +4083,12 @@ adjust_for_gravity (MetaWindow        *window,
   else
     bw = 0;
 
-  if (fgeom)
+  if (borders)
     {
-      child_x = fgeom->left_width;
-      child_y = fgeom->top_height;
-      frame_width = child_x + rect->width + fgeom->right_width;
-      frame_height = child_y + rect->height + fgeom->bottom_height;
+      child_x = borders->visible.left;
+      child_y = borders->visible.top;
+      frame_width = child_x + rect->width + borders->visible.right;
+      frame_height = child_y + rect->height + borders->visible.bottom;
     }
   else
     {
@@ -4344,7 +4344,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   XWindowChanges values;
   unsigned int mask;
   gboolean need_configure_notify;
-  MetaFrameGeometry fgeom;
+  MetaFrameBorders borders;
   gboolean need_move_client = FALSE;
   gboolean need_move_frame = FALSE;
   gboolean need_resize_client = FALSE;
@@ -4389,8 +4389,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
               old_rect.x, old_rect.y, old_rect.width, old_rect.height);
 
   if (window->frame)
-    meta_frame_calc_geometry (window->frame,
-                              &fgeom);
+    meta_frame_calc_borders (window->frame,
+                             &borders);
 
   new_rect.x = root_x_nw;
   new_rect.y = root_y_nw;
@@ -4417,7 +4417,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   else if (is_configure_request || do_gravity_adjust)
     {
       adjust_for_gravity (window,
-                          window->frame ? &fgeom : NULL,
+                          window->frame ? &borders : NULL,
                           /* configure request coords assume
                            * the border width existed
                            */
@@ -4432,7 +4432,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
     }
 
   meta_window_constrain (window,
-                         window->frame ? &fgeom : NULL,
+                         window->frame ? &borders : NULL,
                          flags,
                          gravity,
                          &old_rect,
@@ -4454,12 +4454,12 @@ meta_window_move_resize_internal (MetaWindow          *window,
     {
       int new_w, new_h;
 
-      new_w = window->rect.width + fgeom.left_width + fgeom.right_width;
+      new_w = window->rect.width + borders.visible.left + borders.visible.right;
 
       if (window->shaded)
-        new_h = fgeom.top_height;
+        new_h = borders.visible.top;
       else
-        new_h = window->rect.height + fgeom.top_height + fgeom.bottom_height;
+        new_h = window->rect.height + borders.visible.top + borders.visible.bottom;
 
       frame_size_dx = new_w - window->frame->rect.width;
       frame_size_dy = new_h - window->frame->rect.height;
@@ -4501,8 +4501,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
       int frame_pos_dx, frame_pos_dy;
 
       /* Compute new frame coords */
-      new_x = root_x_nw - fgeom.left_width;
-      new_y = root_y_nw - fgeom.top_height;
+      new_x = root_x_nw - borders.visible.left;
+      new_y = root_y_nw - borders.visible.top;
 
       frame_pos_dx = new_x - window->frame->rect.x;
       frame_pos_dy = new_y - window->frame->rect.y;
@@ -4525,8 +4525,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
        * remember they are the server coords
        */
 
-      new_x = fgeom.left_width;
-      new_y = fgeom.top_height;
+      new_x = borders.visible.left;
+      new_y = borders.visible.top;
 
       if (need_resize_frame && need_move_frame &&
           static_gravity_works (window->display))
@@ -4597,15 +4597,15 @@ meta_window_move_resize_internal (MetaWindow          *window,
   /* If frame extents have changed, fill in other frame fields and
      change frame's extents property. */
   if (window->frame &&
-      (window->frame->child_x != fgeom.left_width ||
-       window->frame->child_y != fgeom.top_height ||
-       window->frame->right_width != fgeom.right_width ||
-       window->frame->bottom_height != fgeom.bottom_height))
+      (window->frame->child_x != borders.visible.left ||
+       window->frame->child_y != borders.visible.top ||
+       window->frame->right_width != borders.visible.right ||
+       window->frame->bottom_height != borders.visible.bottom))
     {
-      window->frame->child_x = fgeom.left_width;
-      window->frame->child_y = fgeom.top_height;
-      window->frame->right_width = fgeom.right_width;
-      window->frame->bottom_height = fgeom.bottom_height;
+      window->frame->child_x = borders.visible.left;
+      window->frame->child_y = borders.visible.top;
+      window->frame->right_width = borders.visible.right;
+      window->frame->bottom_height = borders.visible.bottom;
 
       update_net_frame_extents (window);
     }

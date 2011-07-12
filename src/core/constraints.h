@@ -39,7 +39,7 @@ typedef enum
 } MetaMoveResizeFlags;
 
 void meta_window_constrain (MetaWindow          *window,
-                            MetaFrameGeometry   *orig_fgeom,
+                            MetaFrameBorders    *orig_borders,
                             MetaMoveResizeFlags  flags,
                             int                  resize_gravity,
                             const MetaRectangle *orig,

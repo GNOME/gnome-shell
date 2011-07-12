@@ -25,9 +25,10 @@
 #ifndef META_COMMON_H
 #define META_COMMON_H
 
-/* Don't include GTK or core headers here */
+/* Don't include core headers here */
 #include <X11/Xlib.h>
 #include <glib.h>
+#include <gtk/gtk.h>
 
 typedef struct _MetaResizePopup MetaResizePopup;
 
@@ -302,6 +303,14 @@ struct _MetaButtonLayout
   gboolean right_buttons_has_spacer[MAX_BUTTONS_PER_CORNER];
 };
 
+typedef struct _MetaFrameBorders MetaFrameBorders;
+struct _MetaFrameBorders
+{
+  /* The frame border is made up of two pieces - an inner visible portion
+   * and an outer portion that is invisible but responds to events.
+   */
+  GtkBorder visible;
+};
 /* should investigate changing these to whatever most apps use */
 #define META_ICON_WIDTH 32
 #define META_ICON_HEIGHT 32
