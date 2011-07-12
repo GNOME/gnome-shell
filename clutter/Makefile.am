@@ -202,6 +202,7 @@ source_h_priv = \
 	$(srcdir)/clutter-bezier.h			\
 	$(srcdir)/clutter-debug.h 			\
 	$(srcdir)/clutter-device-manager-private.h	\
+	$(srcdir)/clutter-easing.h			\
 	$(srcdir)/clutter-effect-private.h		\
 	$(srcdir)/clutter-event-translator.h		\
 	$(srcdir)/clutter-event-private.h		\
@@ -221,6 +222,7 @@ source_h_priv = \
 
 # private source code; these should not be introspected
 source_c_priv = \
+	$(srcdir)/clutter-easing.c		\
 	$(srcdir)/clutter-event-translator.c	\
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-profile.c		\

@@ -108,6 +108,7 @@
 #include "clutter-alpha.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-easing.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
@@ -436,7 +437,7 @@ clutter_alpha_get_alpha (ClutterAlpha *alpha)
 
       g_value_init (&params, CLUTTER_TYPE_ALPHA);
       g_value_set_object (&params, alpha);
-		     
+
       g_closure_invoke (priv->closure, &result_value, 1, &params, NULL);
 
       retval = g_value_get_double (&result_value);
@@ -486,7 +487,7 @@ clutter_alpha_set_closure_internal (ClutterAlpha *alpha,
     {
       GClosureMarshal marshal = _clutter_marshal_DOUBLE__VOID;
 
-      g_closure_set_marshal (closure, marshal);
+      g_closure_set_marshal (priv->closure, marshal);
     }
 }
 
@@ -729,511 +730,6 @@ clutter_alpha_get_mode (ClutterAlpha *alpha)
   return alpha->priv->mode;
 }
 
-static gdouble
-clutter_linear (ClutterAlpha *alpha,
-                gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-
-  return clutter_timeline_get_progress (timeline);
-}
-
-static gdouble
-clutter_ease_in_quad (ClutterAlpha *alpha,
-                      gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble progress = clutter_timeline_get_progress (timeline);
-
-  return progress * progress;
-}
-
-static gdouble
-clutter_ease_out_quad (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble p = clutter_timeline_get_progress (timeline);
-
-  return -1.0 * p * (p - 2);
-}
-
-static gdouble
-clutter_ease_in_out_quad (ClutterAlpha *alpha,
-                          gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / (d / 2);
-
-  if (p < 1)
-    return 0.5 * p * p;
-
-  p -= 1;
-
-  return -0.5 * (p * (p - 2) - 1);
-}
-
-static gdouble
-clutter_ease_in_cubic (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble p = clutter_timeline_get_progress (timeline);
-
-  return p * p * p;
-}
-
-static gdouble
-clutter_ease_out_cubic (ClutterAlpha *alpha,
-                        gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / d - 1;
-
-  return p * p * p + 1;
-}
-
-static gdouble
-clutter_ease_in_out_cubic (ClutterAlpha *alpha,
-                           gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / (d / 2);
-
-  if (p < 1)
-    return 0.5 * p * p * p;
-
-  p -= 2;
-
-  return 0.5 * (p * p * p + 2);
-}
-
-static gdouble
-clutter_ease_in_quart (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble p = clutter_timeline_get_progress (timeline);
-
-  return p * p * p * p;
-}
-
-static gdouble
-clutter_ease_out_quart (ClutterAlpha *alpha,
-                        gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / d - 1;
-
-  return -1.0 * (p * p * p * p - 1);
-}
-
-static gdouble
-clutter_ease_in_out_quart (ClutterAlpha *alpha,
-                           gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / (d / 2);
-
-  if (p < 1)
-    return 0.5 * p * p * p * p;
-
-  p -= 2;
-
-  return -0.5 * (p * p * p * p - 2);
-}
-
-static gdouble
-clutter_ease_in_quint (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
- {
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble p = clutter_timeline_get_progress (timeline);
-
-  return p * p * p * p * p;
-}
-
-static gdouble
-clutter_ease_out_quint (ClutterAlpha *alpha,
-                        gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / d - 1;
-
-  return p * p * p * p * p + 1;
-}
-
-static gdouble
-clutter_ease_in_out_quint (ClutterAlpha *alpha,
-                           gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / (d / 2);
-
-  if (p < 1)
-    return 0.5 * p * p * p * p * p;
-
-  p -= 2;
-
-  return 0.5 * (p * p * p * p * p + 2);
-}
-
-static gdouble
-clutter_ease_in_sine (ClutterAlpha *alpha,
-                      gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  return -1.0 * cos (t / d * G_PI_2) + 1.0;
-}
-
-static gdouble
-clutter_ease_out_sine (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  return sin (t / d * G_PI_2);
-}
-
-static gdouble
-clutter_ease_in_out_sine (ClutterAlpha *alpha,
-                          gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  return -0.5 * (cos (G_PI * t / d) - 1);
-}
-
-static gdouble
-clutter_ease_in_expo (ClutterAlpha *alpha,
-                      gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  return (t == 0) ? 0.0 : pow (2, 10 * (t / d - 1));
-}
-
-static gdouble
-clutter_ease_out_expo (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  return (t == d) ? 1.0 : -pow (2, -10 * t / d) + 1;
-}
-
-static gdouble
-clutter_ease_in_out_expo (ClutterAlpha *alpha,
-                          gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p;
-
-  if (t == 0)
-    return 0.0;
-
-  if (t == d)
-    return 1.0;
-
-  p = t / (d / 2);
-
-  if (p < 1)
-    return 0.5 * pow (2, 10 * (p - 1));
-
-  p -= 1;
-
-  return 0.5 * (-pow (2, -10 * p) + 2);
-}
-
-static gdouble
-clutter_ease_in_circ (ClutterAlpha *alpha,
-                      gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble p = clutter_timeline_get_progress (timeline);
-
-  return -1.0 * (sqrt (1 - p * p) - 1);
-}
-
-static gdouble
-clutter_ease_out_circ (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / d - 1;
-
-  return sqrt (1 - p * p);
-}
-
-static gdouble
-clutter_ease_in_out_circ (ClutterAlpha *alpha,
-                          gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / (d / 2);
-
-  if (p < 1)
-    return -0.5 * (sqrt (1 - p * p) - 1);
-
-  p -= 2;
-
-  return 0.5 * (sqrt (1 - p * p) + 1);
-}
-
-static gdouble
-clutter_ease_in_elastic (ClutterAlpha *alpha,
-                         gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = d * .3;
-  gdouble s = p / 4;
-  gdouble q = t / d;
-
-  if (q == 1)
-    return 1.0;
-
-  q -= 1;
-
-  return -(pow (2, 10 * q) * sin ((q * d - s) * (2 * G_PI) / p));
-}
-
-static gdouble
-clutter_ease_out_elastic (ClutterAlpha *alpha,
-                          gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = d * .3;
-  gdouble s = p / 4;
-  gdouble q = t / d;
-
-  if (q == 1)
-    return 1.0;
-
-  return pow (2, -10 * q) * sin ((q * d - s) * (2 * G_PI) / p) + 1.0;
-}
-
-static gdouble
-clutter_ease_in_out_elastic (ClutterAlpha *alpha,
-                             gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = d * (.3 * 1.5);
-  gdouble s = p / 4;
-  gdouble q = t / (d / 2);
-
-  if (q == 2)
-    return 1.0;
-
-  if (q < 1)
-    {
-      q -= 1;
-
-      return -.5 * (pow (2, 10 * q) * sin ((q * d - s) * (2 * G_PI) / p));
-    }
-  else
-    {
-      q -= 1;
-
-      return pow (2, -10 * q)
-           * sin ((q * d - s) * (2 * G_PI) / p)
-           * .5 + 1.0;
-    }
-}
-
-static gdouble
-clutter_ease_in_back (ClutterAlpha *alpha,
-                      gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble p = clutter_timeline_get_progress (timeline);
-
-  return p * p * ((1.70158 + 1) * p - 1.70158);
-}
-
-static gdouble
-clutter_ease_out_back (ClutterAlpha *alpha,
-                       gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / d - 1;
-
-  return p * p * ((1.70158 + 1) * p + 1.70158) + 1;
-}
-
-static gdouble
-clutter_ease_in_out_back (ClutterAlpha *alpha,
-                          gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-  gdouble p = t / (d / 2);
-  gdouble s = 1.70158 * 1.525;
-
-  if (p < 1)
-    return 0.5 * (p * p * ((s + 1) * p - s));
-
-  p -= 2;
-
-  return 0.5 * (p * p * ((s + 1) * p + s) + 2);
-}
-
-static gdouble
-ease_out_bounce_internal (gdouble t,
-                          gdouble d)
-{
-  gdouble p = t / d;
-
-  if (p < (1 / 2.75))
-    return 7.5625 * p * p;
-  else if (p < (2 / 2.75))
-    {
-      p -= (1.5 / 2.75);
-
-      return 7.5625 * p * p + .75;
-    }
-  else if (p < (2.5 / 2.75))
-    {
-      p -= (2.25 / 2.75);
-
-      return 7.5625 * p * p + .9375;
-    }
-  else
-    {
-      p -= (2.625 / 2.75);
-
-      return 7.5625 * p * p + .984375;
-    }
-}
-
-static gdouble
-ease_in_bounce_internal (gdouble t,
-                         gdouble d)
-{
-  return 1.0 - ease_out_bounce_internal (d - t, d);
-}
-
-static gdouble
-clutter_ease_in_bounce (ClutterAlpha *alpha,
-                        gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  return ease_in_bounce_internal (t, d);
-}
-
-static gdouble
-clutter_ease_out_bounce (ClutterAlpha *alpha,
-                         gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  return ease_out_bounce_internal (t, d);
-}
-
-static gdouble
-clutter_ease_in_out_bounce (ClutterAlpha *alpha,
-                            gpointer      dummy G_GNUC_UNUSED)
-{
-  ClutterTimeline *timeline = alpha->priv->timeline;
-  gdouble t = clutter_timeline_get_elapsed_time (timeline);
-  gdouble d = clutter_timeline_get_duration (timeline);
-
-  if (t < d / 2)
-    return ease_in_bounce_internal (t * 2, d) * 0.5;
-  else
-    return ease_out_bounce_internal (t * 2 - d, d) * 0.5 + 1.0 * 0.5;
-}
-
-/* static enum/function mapping table for the animation modes
- * we provide internally
- *
- * XXX - keep in sync with ClutterAnimationMode
- */
-static const struct {
-  gulong mode;
-  ClutterAlphaFunc func;
-} animation_modes[] = {
-  { CLUTTER_CUSTOM_MODE,         NULL },
-
-  { CLUTTER_LINEAR,              clutter_linear },
-  { CLUTTER_EASE_IN_QUAD,        clutter_ease_in_quad },
-  { CLUTTER_EASE_OUT_QUAD,       clutter_ease_out_quad },
-  { CLUTTER_EASE_IN_OUT_QUAD,    clutter_ease_in_out_quad },
-  { CLUTTER_EASE_IN_CUBIC,       clutter_ease_in_cubic },
-  { CLUTTER_EASE_OUT_CUBIC,      clutter_ease_out_cubic },
-  { CLUTTER_EASE_IN_OUT_CUBIC,   clutter_ease_in_out_cubic },
-  { CLUTTER_EASE_IN_QUART,       clutter_ease_in_quart },
-  { CLUTTER_EASE_OUT_QUART,      clutter_ease_out_quart },
-  { CLUTTER_EASE_IN_OUT_QUART,   clutter_ease_in_out_quart },
-  { CLUTTER_EASE_IN_QUINT,       clutter_ease_in_quint },
-  { CLUTTER_EASE_OUT_QUINT,      clutter_ease_out_quint },
-  { CLUTTER_EASE_IN_OUT_QUINT,   clutter_ease_in_out_quint },
-  { CLUTTER_EASE_IN_SINE,        clutter_ease_in_sine },
-  { CLUTTER_EASE_OUT_SINE,       clutter_ease_out_sine },
-  { CLUTTER_EASE_IN_OUT_SINE,    clutter_ease_in_out_sine },
-  { CLUTTER_EASE_IN_EXPO,        clutter_ease_in_expo },
-  { CLUTTER_EASE_OUT_EXPO,       clutter_ease_out_expo },
-  { CLUTTER_EASE_IN_OUT_EXPO,    clutter_ease_in_out_expo },
-  { CLUTTER_EASE_IN_CIRC,        clutter_ease_in_circ },
-  { CLUTTER_EASE_OUT_CIRC,       clutter_ease_out_circ },
-  { CLUTTER_EASE_IN_OUT_CIRC,    clutter_ease_in_out_circ },
-  { CLUTTER_EASE_IN_ELASTIC,     clutter_ease_in_elastic },
-  { CLUTTER_EASE_OUT_ELASTIC,    clutter_ease_out_elastic },
-  { CLUTTER_EASE_IN_OUT_ELASTIC, clutter_ease_in_out_elastic },
-  { CLUTTER_EASE_IN_BACK,        clutter_ease_in_back },
-  { CLUTTER_EASE_OUT_BACK,       clutter_ease_out_back },
-  { CLUTTER_EASE_IN_OUT_BACK,    clutter_ease_in_out_back },
-  { CLUTTER_EASE_IN_BOUNCE,      clutter_ease_in_bounce },
-  { CLUTTER_EASE_OUT_BOUNCE,     clutter_ease_out_bounce },
-  { CLUTTER_EASE_IN_OUT_BOUNCE,  clutter_ease_in_out_bounce },
-
-  { CLUTTER_ANIMATION_LAST,      NULL },
-};
-
 typedef struct _AlphaData {
   guint closure_set : 1;
 
@@ -1244,6 +740,76 @@ typedef struct _AlphaData {
 } AlphaData;
 
 static GPtrArray *clutter_alphas = NULL;
+
+/*< private >
+ * _clutter_animation_modes:
+ *
+ * A mapping of animation modes and easing functions.
+ */
+static const struct {
+  ClutterAnimationMode mode;
+  ClutterEasingFunc func;
+  const char *name;
+} _clutter_animation_modes[] = {
+  { CLUTTER_CUSTOM_MODE,         NULL, "custom" },
+
+  { CLUTTER_LINEAR,              clutter_linear, "linear" },
+  { CLUTTER_EASE_IN_QUAD,        clutter_ease_in_quad, "easeInQuad" },
+  { CLUTTER_EASE_OUT_QUAD,       clutter_ease_out_quad, "easeOutQuad" },
+  { CLUTTER_EASE_IN_OUT_QUAD,    clutter_ease_in_out_quad, "easeInOutQuad" },
+  { CLUTTER_EASE_IN_CUBIC,       clutter_ease_in_cubic, "easeInCubic" },
+  { CLUTTER_EASE_OUT_CUBIC,      clutter_ease_out_cubic, "easeOutCubic" },
+  { CLUTTER_EASE_IN_OUT_CUBIC,   clutter_ease_in_out_cubic, "easeInOutCubic" },
+  { CLUTTER_EASE_IN_QUART,       clutter_ease_in_quart, "easeInQuart" },
+  { CLUTTER_EASE_OUT_QUART,      clutter_ease_out_quart, "easeOutQuart" },
+  { CLUTTER_EASE_IN_OUT_QUART,   clutter_ease_in_out_quart, "easeInOutQuart" },
+  { CLUTTER_EASE_IN_QUINT,       clutter_ease_in_quint, "easeInQuint" },
+  { CLUTTER_EASE_OUT_QUINT,      clutter_ease_out_quint, "easeOutQuint" },
+  { CLUTTER_EASE_IN_OUT_QUINT,   clutter_ease_in_out_quint, "easeInOutQuint" },
+  { CLUTTER_EASE_IN_SINE,        clutter_ease_in_sine, "easeInSine" },
+  { CLUTTER_EASE_OUT_SINE,       clutter_ease_out_sine, "easeOutSine" },
+  { CLUTTER_EASE_IN_OUT_SINE,    clutter_ease_in_out_sine, "easeInOutSine" },
+  { CLUTTER_EASE_IN_EXPO,        clutter_ease_in_expo, "easeInExpo" },
+  { CLUTTER_EASE_OUT_EXPO,       clutter_ease_out_expo, "easeOutExpo" },
+  { CLUTTER_EASE_IN_OUT_EXPO,    clutter_ease_in_out_expo, "easeInOutExpo" },
+  { CLUTTER_EASE_IN_CIRC,        clutter_ease_in_circ, "easeInCirc" },
+  { CLUTTER_EASE_OUT_CIRC,       clutter_ease_out_circ, "easeOutCirc" },
+  { CLUTTER_EASE_IN_OUT_CIRC,    clutter_ease_in_out_circ, "easeInOutCirc" },
+  { CLUTTER_EASE_IN_ELASTIC,     clutter_ease_in_elastic, "easeInElastic" },
+  { CLUTTER_EASE_OUT_ELASTIC,    clutter_ease_out_elastic, "easeOutElastic" },
+  { CLUTTER_EASE_IN_OUT_ELASTIC, clutter_ease_in_out_elastic, "easeInOutElastic" },
+  { CLUTTER_EASE_IN_BACK,        clutter_ease_in_back, "easeInBack" },
+  { CLUTTER_EASE_OUT_BACK,       clutter_ease_out_back, "easeOutBack" },
+  { CLUTTER_EASE_IN_OUT_BACK,    clutter_ease_in_out_back, "easeInOutBack" },
+  { CLUTTER_EASE_IN_BOUNCE,      clutter_ease_in_bounce, "easeInBounce" },
+  { CLUTTER_EASE_OUT_BOUNCE,     clutter_ease_out_bounce, "easeOutBounce" },
+  { CLUTTER_EASE_IN_OUT_BOUNCE,  clutter_ease_in_out_bounce, "easeInOutBounce" },
+
+  { CLUTTER_ANIMATION_LAST,      NULL, "sentinel" },
+};
+
+static gdouble
+clutter_alpha_easing_func (ClutterAlpha *alpha,
+                           gpointer      data G_GNUC_UNUSED)
+{
+  ClutterAlphaPrivate *priv = alpha->priv;
+  ClutterTimeline *timeline = priv->timeline;
+  ClutterEasingFunc easing_func;
+  gdouble t, d;
+
+  if (G_UNLIKELY (priv->timeline == NULL))
+    return 0.0;
+
+  g_assert (_clutter_animation_modes[priv->mode].mode == priv->mode);
+  g_assert (_clutter_animation_modes[priv->mode].func != NULL);
+
+  t = clutter_timeline_get_elapsed_time (timeline);
+  d = clutter_timeline_get_duration (timeline);
+
+  easing_func = _clutter_animation_modes[priv->mode].func;
+
+  return easing_func (t, d);
+}
 
 /**
  * clutter_alpha_set_mode:
@@ -1279,16 +845,20 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
       /* sanity check to avoid getting an out of sync
        * enum/function mapping
        */
-      g_assert (animation_modes[mode].mode == mode);
-      g_assert (animation_modes[mode].func != NULL);
+      g_assert (_clutter_animation_modes[mode].mode == mode);
+      g_assert (_clutter_animation_modes[mode].func != NULL);
 
       clutter_alpha_set_closure_internal (alpha, NULL);
 
-      priv->func = animation_modes[mode].func;
+      priv->mode = mode;
+
+      CLUTTER_NOTE (ANIMATION, "New easing mode '%s'[%lu]\n",
+                    _clutter_animation_modes[priv->mode].name,
+                    _clutter_animation_modes[priv->mode].mode);
+
+      priv->func = clutter_alpha_easing_func;
       priv->user_data = NULL;
       priv->notify = NULL;
-
-      priv->mode = mode;
     }
   else if (mode > CLUTTER_ANIMATION_LAST)
     {
