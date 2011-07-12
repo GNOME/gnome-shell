@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageOSX      ClutterStageOSX;
 typedef struct _ClutterStageOSXClass ClutterStageOSXClass;
 
-@interface ClutterGLWindow : NSWindow
+@interface ClutterGLWindow : NSWindow <NSWindowDelegate>
 {
 @public
   ClutterStageOSX *stage_osx;
@@ -67,6 +67,7 @@ struct _ClutterStageOSX
   ClutterStageState stage_state;
 
   gboolean acceptFocus;
+  gboolean isHiding;
 
   gfloat scroll_pos_x;
   gfloat scroll_pos_y;

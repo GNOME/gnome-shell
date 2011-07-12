@@ -111,7 +111,8 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   if (self->stage_osx->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
     {
       [self setLevel: NSNormalWindowLevel];
-      [self orderBack: nil];
+      if (!self->stage_osx->isHiding)
+        [self orderBack: nil];
     }
 
   clutter_stage_osx_state_update (self->stage_osx, CLUTTER_STAGE_STATE_ACTIVATED, 0);
@@ -396,6 +397,7 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
     [self->window orderFront: nil];
 
   [self->view setHidden:isViewHidden];
+  [self->window setExcludedFromWindowsMenu:NO];
 
   /*
    * After hiding we cease to be first responder.
@@ -414,9 +416,13 @@ clutter_stage_osx_hide (ClutterStageWindow *stage_window)
 
   CLUTTER_NOTE (BACKEND, "[%p] hide", self);
 
+  self->isHiding = true;
   [self->window orderOut: nil];
+  [self->window setExcludedFromWindowsMenu:YES];
 
   clutter_actor_unmap (CLUTTER_ACTOR (self->wrapper));
+
+  self->isHiding = false;
 
   CLUTTER_OSX_POOL_RELEASE();
 }
