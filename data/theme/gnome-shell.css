@@ -123,6 +123,20 @@ StScrollBar StButton#vhandle:active {
     background-image: url("checkbox-focused.svg");
 }
 
+/* Slider */
+
+.slider {
+    height: 1em;
+    min-width: 15em;
+    -slider-height: 0.3em;
+    -slider-background-color: #333333;
+    -slider-border-color: #5f5f5f;
+    -slider-active-background-color: #76b0ec;
+    -slider-active-border-color: #1f6dbc;
+    -slider-border-width: 1px;
+    -slider-handle-radius: 0.5em;
+}
+
 /* PopupMenu */
 
 .popup-menu-ornament {
@@ -220,18 +234,6 @@ StScrollBar StButton#vhandle:active {
 
 .popup-alternating-menu-item:alternate {
     font-weight: bold;
-}
-
-.popup-slider-menu-item {
-    height: 1em;
-    min-width: 15em;
-    -slider-height: 0.3em;
-    -slider-background-color: #333333;
-    -slider-border-color: #5f5f5f;
-    -slider-active-background-color: #76b0ec;
-    -slider-active-border-color: #1f6dbc;
-    -slider-border-width: 1px;
-    -slider-handle-radius: 0.5em;
 }
 
 .popup-device-menu-item {

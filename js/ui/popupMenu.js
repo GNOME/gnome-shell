@@ -15,9 +15,8 @@ const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Separator = imports.ui.separator;
+const Slider = imports.ui.slider;
 const Tweener = imports.ui.tweener;
-
-const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
 
 const Ornament = {
     NONE: 0,
@@ -515,21 +514,9 @@ const PopupSliderMenuItem = new Lang.Class({
     _init: function(value) {
         this.parent({ activate: false });
 
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
-
-        if (isNaN(value))
-            // Avoid spreading NaNs around
-            throw TypeError('The slider value must be a number');
-        this._value = Math.max(Math.min(value, 1), 0);
-
-        this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
-        this.addActor(this._slider, { span: -1, expand: true });
-        this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
-        this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
-        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-        this.actor.connect('notify::mapped', Lang.bind(this, function() {
-            if (!this.actor.mapped)
-                this._endDragging();
+        this._slider = new Slider.Slider(value);
+        this._slider.connect('value-changed', Lang.bind(this, function(actor, value) {
+            this.emit('value-changed', value);
         }));
 
         this._releaseId = this._motionId = 0;
@@ -537,191 +524,11 @@ const PopupSliderMenuItem = new Lang.Class({
     },
 
     setValue: function(value) {
-        if (isNaN(value))
-            throw TypeError('The slider value must be a number');
-
-        this._value = Math.max(Math.min(value, 1), 0);
-        this._slider.queue_repaint();
-    },
-
-    _sliderRepaint: function(area) {
-        let cr = area.get_context();
-        let themeNode = area.get_theme_node();
-        let [width, height] = area.get_surface_size();
-
-        let handleRadius = themeNode.get_length('-slider-handle-radius');
-
-        let handleBorderWidth = themeNode.get_length('-slider-handle-border-width');
-        let [hasHandleColor, handleBorderColor] =
-            themeNode.lookup_color('-slider-handle-border-color', false);
-
-        let sliderWidth = width - 2 * handleRadius;
-        let sliderHeight = themeNode.get_length('-slider-height');
-
-        let sliderBorderWidth = themeNode.get_length('-slider-border-width');
-
-        let sliderBorderColor = themeNode.get_color('-slider-border-color');
-        let sliderColor = themeNode.get_color('-slider-background-color');
-
-        let sliderActiveBorderColor = themeNode.get_color('-slider-active-border-color');
-        let sliderActiveColor = themeNode.get_color('-slider-active-background-color');
-
-        cr.setSourceRGBA (
-            sliderActiveColor.red / 255,
-            sliderActiveColor.green / 255,
-            sliderActiveColor.blue / 255,
-            sliderActiveColor.alpha / 255);
-        cr.rectangle(handleRadius, (height - sliderHeight) / 2, sliderWidth * this._value, sliderHeight);
-        cr.fillPreserve();
-        cr.setSourceRGBA (
-            sliderActiveBorderColor.red / 255,
-            sliderActiveBorderColor.green / 255,
-            sliderActiveBorderColor.blue / 255,
-            sliderActiveBorderColor.alpha / 255);
-        cr.setLineWidth(sliderBorderWidth);
-        cr.stroke();
-
-        cr.setSourceRGBA (
-            sliderColor.red / 255,
-            sliderColor.green / 255,
-            sliderColor.blue / 255,
-            sliderColor.alpha / 255);
-        cr.rectangle(handleRadius + sliderWidth * this._value, (height - sliderHeight) / 2, sliderWidth * (1 - this._value), sliderHeight);
-        cr.fillPreserve();
-        cr.setSourceRGBA (
-            sliderBorderColor.red / 255,
-            sliderBorderColor.green / 255,
-            sliderBorderColor.blue / 255,
-            sliderBorderColor.alpha / 255);
-        cr.setLineWidth(sliderBorderWidth);
-        cr.stroke();
-
-        let handleY = height / 2;
-        let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
-
-        let color = themeNode.get_foreground_color();
-        cr.setSourceRGBA (
-            color.red / 255,
-            color.green / 255,
-            color.blue / 255,
-            color.alpha / 255);
-        cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
-        cr.fillPreserve();
-        if (hasHandleColor && handleBorderWidth) {
-          cr.setSourceRGBA(
-              handleBorderColor.red / 255,
-              handleBorderColor.green / 255,
-              handleBorderColor.blue / 255,
-              handleBorderColor.alpha / 255);
-          cr.setLineWidth(handleBorderWidth);
-          cr.stroke();
-        }
-        cr.$dispose();
-    },
-
-    _startDragging: function(actor, event) {
-        if (this._dragging) // don't allow two drags at the same time
-            return false;
-
-        this._dragging = true;
-
-        // FIXME: we should only grab the specific device that originated
-        // the event, but for some weird reason events are still delivered
-        // outside the slider if using clutter_grab_pointer_for_device
-        Clutter.grab_pointer(this._slider);
-        this._releaseId = this._slider.connect('button-release-event', Lang.bind(this, this._endDragging));
-        this._motionId = this._slider.connect('motion-event', Lang.bind(this, this._motionEvent));
-        let absX, absY;
-        [absX, absY] = event.get_coords();
-        this._moveHandle(absX, absY);
-
-        return true;
-    },
-
-    _endDragging: function() {
-        if (this._dragging) {
-            this._slider.disconnect(this._releaseId);
-            this._slider.disconnect(this._motionId);
-
-            Clutter.ungrab_pointer();
-            this._dragging = false;
-
-            this.emit('drag-end');
-        }
-        return true;
-    },
-
-    scroll: function(event) {
-        let direction = event.get_scroll_direction();
-        let delta;
-
-        if (event.is_pointer_emulated())
-            return;
-
-        if (direction == Clutter.ScrollDirection.DOWN) {
-            delta = -SLIDER_SCROLL_STEP;
-        } else if (direction == Clutter.ScrollDirection.UP) {
-            delta = +SLIDER_SCROLL_STEP;
-        } else if (direction == Clutter.ScrollDirection.SMOOTH) {
-            let [dx, dy] = event.get_scroll_delta();
-            // Even though the slider is horizontal, use dy to match
-            // the UP/DOWN above.
-            delta = -dy / 10;
-        }
-
-        this._value = Math.min(Math.max(0, this._value + delta), 1);
-
-        this._slider.queue_repaint();
-        this.emit('value-changed', this._value);
-    },
-
-    _onScrollEvent: function(actor, event) {
-        this.scroll(event);
-    },
-
-    _motionEvent: function(actor, event) {
-        let absX, absY;
-        [absX, absY] = event.get_coords();
-        this._moveHandle(absX, absY);
-        return true;
-    },
-
-    _moveHandle: function(absX, absY) {
-        let relX, relY, sliderX, sliderY;
-        [sliderX, sliderY] = this._slider.get_transformed_position();
-        relX = absX - sliderX;
-        relY = absY - sliderY;
-
-        let width = this._slider.width;
-        let handleRadius = this._slider.get_theme_node().get_length('-slider-handle-radius');
-
-        let newvalue;
-        if (relX < handleRadius)
-            newvalue = 0;
-        else if (relX > width - handleRadius)
-            newvalue = 1;
-        else
-            newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
-        this._value = newvalue;
-        this._slider.queue_repaint();
-        this.emit('value-changed', this._value);
+        this._slider.setValue(value);
     },
 
     get value() {
-        return this._value;
-    },
-
-    _onKeyPressEvent: function (actor, event) {
-        let key = event.get_key_symbol();
-        if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
-            let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
-            this._value = Math.max(0, Math.min(this._value + delta, 1));
-            this._slider.queue_repaint();
-            this.emit('value-changed', this._value);
-            this.emit('drag-end');
-            return true;
-        }
-        return false;
+        return this._slider.value;
     }
 });
 
