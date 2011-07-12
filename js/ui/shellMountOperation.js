@@ -12,6 +12,7 @@ const ModalDialog = imports.ui.modalDialog;
 
 const LIST_ITEM_ICON_SIZE = 48;
 
+/* ------ Common Utils ------- */
 function _setLabelText(label, text) {
     if (text) {
         label.set_text(text);
@@ -21,6 +22,30 @@ function _setLabelText(label, text) {
         label.hide();
     }
 }
+
+function _setButtonsForChoices(dialog, choices) {
+    let buttons = [];
+
+    for (let idx = 0; idx < choices.length; idx++) {
+        let button = idx;
+        buttons.unshift({ label: choices[idx],
+                          action: Lang.bind(dialog, function() {
+                              dialog.emit('response', button);
+                          })});
+    }
+
+    dialog.setButtons(buttons);
+}
+
+function _setLabelsForMessage(dialog, message) {
+    let labels = message.split('\n');
+
+    _setLabelText(dialog.subjectLabel, labels[0]);
+    if (labels.length > 1)
+        _setLabelText(dialog.descriptionLabel, labels[1]);
+}
+
+/* -------------------------------------------------------- */
 
 function ListItem(app) {
     this._init(app);
@@ -67,6 +92,7 @@ function ShellMountOperation(source) {
 
 ShellMountOperation.prototype = {
     _init: function(source) {
+        this._dialog = null;
         this._processesDialog = null;
 
         this.mountOp = new Shell.MountOperation();
@@ -85,7 +111,19 @@ ShellMountOperation.prototype = {
     },
 
     _onAskQuestion: function(op, message, choices) {
-        // TODO
+        this._dialog = new ShellMountQuestionDialog(this._icon);
+
+        this._dialog.connect('response',
+                               Lang.bind(this, function(object, choice) {
+                                   this.mountOp.set_choice(choice);
+                                   this.mountOp.reply(Gio.MountOperationResult.HANDLED);
+
+                                   this._dialog.close(global.get_current_time());
+                                   this._dialog = null;
+                               }));
+
+        this._dialog.update(message, choices);
+        this._dialog.open(global.get_current_time());
     },
 
     _onAskPassword: function(op, message, defaultUser, defaultDomain, flags) {
@@ -93,7 +131,11 @@ ShellMountOperation.prototype = {
     },
 
     _onAborted: function(op) {
-        // TODO
+        if (!this._dialog)
+            return;
+
+        this._dialog.close(global.get_current_time());
+        this._dialog = null;
     },
 
     _onShowProcesses2: function(op) {
@@ -103,7 +145,9 @@ ShellMountOperation.prototype = {
 
         if (!this._processesDialog) {
             this._processesDialog = new ShellProcessesDialog(this._icon);
-            this._processesDialog.connect('choice-chosen', 
+            this._dialog = this._processesDialog;
+
+            this._processesDialog.connect('response', 
                                           Lang.bind(this, function(object, choice) {
                                               if (choice == -1) {
                                                   this.mountOp.reply(Gio.MountOperationResult.ABORTED);
@@ -113,6 +157,7 @@ ShellMountOperation.prototype = {
                                               }
 
                                               this._processesDialog.close(global.get_current_time());
+                                              this._dialog = null;
                                           }));
             this._processesDialog.open(global.get_current_time());
         }
@@ -120,6 +165,53 @@ ShellMountOperation.prototype = {
         this._processesDialog.update(message, processes, choices);
     },
 }
+
+function ShellMountQuestionDialog(icon) {
+    this._init(icon);
+}
+
+ShellMountQuestionDialog.prototype = {
+    __proto__: ModalDialog.ModalDialog.prototype,
+
+    _init: function(icon) {
+        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'mount-question-dialog' });
+
+        let mainContentLayout = new St.BoxLayout();
+        this.contentLayout.add(mainContentLayout, { x_fill: true,
+                                                    y_fill: false });
+
+        this._iconBin = new St.Bin({ child: icon });
+        mainContentLayout.add(this._iconBin,
+                              { x_fill:  true,
+                                y_fill:  false,
+                                x_align: St.Align.END,
+                                y_align: St.Align.MIDDLE });
+
+        let messageLayout = new St.BoxLayout({ vertical: true });
+        mainContentLayout.add(messageLayout,
+                              { y_align: St.Align.START });
+
+        this.subjectLabel = new St.Label({ style_class: 'mount-question-dialog-subject' });
+
+        messageLayout.add(this.subjectLabel,
+                          { y_fill:  false,
+                            y_align: St.Align.START });
+
+        this.descriptionLabel = new St.Label({ style_class: 'mount-question-dialog-description' });
+        this.descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.descriptionLabel.clutter_text.line_wrap = true;
+
+        messageLayout.add(this.descriptionLabel,
+                          { y_fill:  true,
+                            y_align: St.Align.START });
+    },
+
+    update: function(message, choices) {
+        _setLabelsForMessage(this, message);
+        _setButtonsForChoices(this, choices);
+    }
+}
+Signals.addSignalMethods(ShellMountQuestionDialog.prototype);
 
 function ShellProcessesDialog(icon) {
     this._init(icon);
@@ -146,17 +238,17 @@ ShellProcessesDialog.prototype = {
         mainContentLayout.add(messageLayout,
                               { y_align: St.Align.START });
 
-        this._subjectLabel = new St.Label({ style_class: 'show-processes-dialog-subject' });
+        this.subjectLabel = new St.Label({ style_class: 'show-processes-dialog-subject' });
 
-        messageLayout.add(this._subjectLabel,
+        messageLayout.add(this.subjectLabel,
                           { y_fill:  false,
                             y_align: St.Align.START });
 
-        this._descriptionLabel = new St.Label({ style_class: 'show-processes-dialog-description' });
-        this._descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this._descriptionLabel.clutter_text.line_wrap = true;
+        this.descriptionLabel = new St.Label({ style_class: 'show-processes-dialog-description' });
+        this.descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.descriptionLabel.clutter_text.line_wrap = true;
 
-        messageLayout.add(this._descriptionLabel,
+        messageLayout.add(this.descriptionLabel,
                           { y_fill:  true,
                             y_align: St.Align.START });
 
@@ -188,20 +280,6 @@ ShellProcessesDialog.prototype = {
                                       }));
     },
 
-    _setButtonsForChoices: function(choices) {
-        let buttons = [];
-
-        for (let idx = 0; idx < choices.length; idx++) {
-            let button = idx;
-            buttons.unshift({ label: choices[idx],
-                              action: Lang.bind(this, function() {
-                                  this.emit('choice-chosen', button);
-                              })});
-        }
-
-        this.setButtons(buttons);
-    },
-
     _setAppsForPids: function(pids) {
         // remove all the items
         this._applicationList.destroy_children();
@@ -219,23 +297,15 @@ ShellProcessesDialog.prototype = {
             item.connect('activate',
                          Lang.bind(this, function() {
                              // use -1 to indicate Cancel
-                             this.emit('choice-chosen', -1);
+                             this.emit('response', -1);
                          }));
         }));
     },
 
-    _setLabelsForMessage: function(message) {
-        let labels = message.split('\n');
-
-        _setLabelText(this._subjectLabel, labels[0]);
-        if (labels.length > 1)
-            _setLabelText(this._descriptionLabel, labels[1]);
-    },
-
     update: function(message, processes, choices) {
-        this._setLabelsForMessage(message);
         this._setAppsForPids(processes);
-        this._setButtonsForChoices(choices);
+        _setLabelsForMessage(this, message);
+        _setButtonsForChoices(this, choices);
     }
 }
 Signals.addSignalMethods(ShellProcessesDialog.prototype);

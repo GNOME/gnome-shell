@@ -1673,16 +1673,18 @@ StTooltip StLabel {
     color: #444444;
 }
 
-/* Show Processes Dialog */
+/* ShellMountOperation Dialogs */
 .shell-mount-operation-icon {
     icon-size: 48px;
 }
 
-.show-processes-dialog {
+.show-processes-dialog,
+.mount-question-dialog {
     spacing: 24px;
 }
 
-.show-processes-dialog-subject {
+.show-processes-dialog-subject,
+.mount-question-dialog-subject {
     font-size: 12pt;
     font-weight: bold;
     color: #666666;
@@ -1691,19 +1693,22 @@ StTooltip StLabel {
     padding-bottom: 6px;
 }
 
-.show-processes-dialog-subject:rtl {
+.show-processes-dialog-subject:rtl,
+.mount-question-dialog-subject:rtl {
     padding-left: 0px;
     padding-right: 17px;
 }
 
-.show-processes-dialog-description {
+.show-processes-dialog-description,
+.mount-question-dialog-description {
     font-size: 10pt;
     color: white;
     padding-left: 17px;
     width: 28em;
 }
 
-.show-processes-dialog-description:rtl {
+.show-processes-dialog-description:rtl,
+.mount-question-dialog-description:rtl {
     padding-right: 17px;
 }
 
