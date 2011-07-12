@@ -2863,7 +2863,7 @@ clutter_text_class_init (ClutterTextClass *klass)
   pspec = g_param_spec_boolean ("editable",
                                 P_("Editable"),
                                 P_("Whether the text is editable"),
-                                TRUE,
+                                FALSE,
                                 G_PARAM_READWRITE);
   obj_props[PROP_EDITABLE] = pspec;
   g_object_class_install_property (gobject_class, PROP_EDITABLE, pspec);
