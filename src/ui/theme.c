@@ -639,16 +639,12 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                  flags,
                                  &borders);
 
+  fgeom->borders = borders;
 
-  fgeom->left_width = borders.visible.left;
-  fgeom->right_width = borders.visible.right;
-  fgeom->top_height = borders.visible.top;
-  fgeom->bottom_height = borders.visible.bottom;
-
-  width = client_width + fgeom->left_width + fgeom->right_width;
+  width = client_width + borders.total.left + borders.total.right;
 
   height = ((flags & META_FRAME_SHADED) ? 0: client_height) +
-    fgeom->top_height + fgeom->bottom_height;
+    borders.total.top + borders.total.bottom;
 
   fgeom->width = width;
   fgeom->height = height;
@@ -665,7 +661,7 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   switch (layout->button_sizing)
     {
     case META_BUTTON_SIZING_ASPECT:
-      button_height = fgeom->top_height - layout->button_border.top - layout->button_border.bottom;
+      button_height = borders.visible.top - layout->button_border.top - layout->button_border.bottom;
       button_width = button_height / layout->button_aspect;
       break;
     case META_BUTTON_SIZING_FIXED:
@@ -850,11 +846,11 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   fgeom->n_right_buttons = n_right;
   
   /* center buttons vertically */
-  button_y = (fgeom->top_height -
-              (button_height + layout->button_border.top + layout->button_border.bottom)) / 2 + layout->button_border.top;
+  button_y = (borders.visible.top -
+              (button_height + layout->button_border.top + layout->button_border.bottom)) / 2 + layout->button_border.top + borders.invisible.top;
 
   /* right edge of farthest-right button */
-  x = width - layout->right_titlebar_edge;
+  x = width - layout->right_titlebar_edge - borders.invisible.right;
   
   i = n_right - 1;
   while (i >= 0)
@@ -902,7 +898,7 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   /* Now x changes to be position from the left and we go through
    * the left-side buttons
    */
-  x = layout->left_titlebar_edge;
+  x = layout->left_titlebar_edge + borders.invisible.left;
   for (i = 0; i < n_left; i++)
     {
       MetaButtonSpace *rect;
@@ -945,9 +941,9 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
    * rather than centering it like the buttons
    */
   fgeom->title_rect.x = x + layout->title_border.left;
-  fgeom->title_rect.y = layout->title_border.top;
+  fgeom->title_rect.y = layout->title_border.top + borders.invisible.top;
   fgeom->title_rect.width = title_right_edge - fgeom->title_rect.x;
-  fgeom->title_rect.height = fgeom->top_height - layout->title_border.top - layout->title_border.bottom;
+  fgeom->title_rect.height = borders.visible.top - layout->title_border.top - layout->title_border.bottom;
 
   /* Nuke title if it won't fit */
   if (fgeom->title_rect.width < 0 ||
@@ -967,14 +963,14 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   fgeom->bottom_left_corner_rounded_radius = 0;
   fgeom->bottom_right_corner_rounded_radius = 0;
 
-  if (fgeom->top_height + fgeom->left_width >= min_size_for_rounding)
+  if (borders.visible.top + borders.visible.left >= min_size_for_rounding)
     fgeom->top_left_corner_rounded_radius = layout->top_left_corner_rounded_radius;
-  if (fgeom->top_height + fgeom->right_width >= min_size_for_rounding)
+  if (borders.visible.top + borders.visible.right >= min_size_for_rounding)
     fgeom->top_right_corner_rounded_radius = layout->top_right_corner_rounded_radius;
 
-  if (fgeom->bottom_height + fgeom->left_width >= min_size_for_rounding)
+  if (borders.visible.bottom + borders.visible.left >= min_size_for_rounding)
     fgeom->bottom_left_corner_rounded_radius = layout->bottom_left_corner_rounded_radius;
-  if (fgeom->bottom_height + fgeom->right_width >= min_size_for_rounding)
+  if (borders.visible.bottom + borders.visible.right >= min_size_for_rounding)
     fgeom->bottom_right_corner_rounded_radius = layout->bottom_right_corner_rounded_radius;
 }
 
@@ -3573,10 +3569,10 @@ fill_env (MetaPositionExprEnv *env,
   env->object_height = -1;
   if (info->fgeom)
     {
-      env->left_width = info->fgeom->left_width;
-      env->right_width = info->fgeom->right_width;
-      env->top_height = info->fgeom->top_height;
-      env->bottom_height = info->fgeom->bottom_height;
+      env->left_width = info->fgeom->borders.visible.left;
+      env->right_width = info->fgeom->borders.visible.right;
+      env->top_height = info->fgeom->borders.visible.top;
+      env->bottom_height = info->fgeom->borders.visible.bottom;
       env->frame_x_center = info->fgeom->width / 2 - logical_region.x;
       env->frame_y_center = info->fgeom->height / 2 - logical_region.y;
     }
@@ -4625,6 +4621,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
                                   GdkPixbuf               *icon)
 {
   int i, j;
+  GdkRectangle visible_rect;
   GdkRectangle titlebar_rect;
   GdkRectangle left_titlebar_edge;
   GdkRectangle right_titlebar_edge;
@@ -4633,11 +4630,19 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
   GdkRectangle left_edge, right_edge, bottom_edge;
   PangoRectangle logical_rect;
   MetaDrawInfo draw_info;
-  
-  titlebar_rect.x = 0;
-  titlebar_rect.y = 0;
-  titlebar_rect.width = fgeom->width;
-  titlebar_rect.height = fgeom->top_height;
+  const MetaFrameBorders *borders;
+
+  borders = &fgeom->borders;
+
+  visible_rect.x = borders->invisible.left;
+  visible_rect.y = borders->invisible.top;
+  visible_rect.width = fgeom->width - borders->invisible.left - borders->invisible.right;
+  visible_rect.height = fgeom->height - borders->invisible.top - borders->invisible.bottom;
+
+  titlebar_rect.x = visible_rect.x;
+  titlebar_rect.y = visible_rect.y;
+  titlebar_rect.width = visible_rect.width;
+  titlebar_rect.height = borders->visible.top;
 
   left_titlebar_edge.x = titlebar_rect.x;
   left_titlebar_edge.y = titlebar_rect.y + fgeom->top_titlebar_edge;
@@ -4659,20 +4664,20 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
   bottom_titlebar_edge.height = fgeom->bottom_titlebar_edge;
   bottom_titlebar_edge.y = titlebar_rect.y + titlebar_rect.height - bottom_titlebar_edge.height;
 
-  left_edge.x = 0;
-  left_edge.y = fgeom->top_height;
-  left_edge.width = fgeom->left_width;
-  left_edge.height = fgeom->height - fgeom->top_height - fgeom->bottom_height;
+  left_edge.x = visible_rect.x;
+  left_edge.y = visible_rect.y + borders->visible.top;
+  left_edge.width = borders->visible.left;
+  left_edge.height = visible_rect.height - borders->visible.top - borders->visible.bottom;
 
-  right_edge.x = fgeom->width - fgeom->right_width;
-  right_edge.y = fgeom->top_height;
-  right_edge.width = fgeom->right_width;
-  right_edge.height = fgeom->height - fgeom->top_height - fgeom->bottom_height;
+  right_edge.x = visible_rect.x + visible_rect.width - borders->visible.right;
+  right_edge.y = visible_rect.y + borders->visible.top;
+  right_edge.width = borders->visible.right;
+  right_edge.height = visible_rect.height - borders->visible.top - borders->visible.bottom;
 
-  bottom_edge.x = 0;
-  bottom_edge.y = fgeom->height - fgeom->bottom_height;
-  bottom_edge.width = fgeom->width;
-  bottom_edge.height = fgeom->bottom_height;
+  bottom_edge.x = visible_rect.x;
+  bottom_edge.y = visible_rect.y + visible_rect.height - borders->visible.bottom;
+  bottom_edge.width = visible_rect.width;
+  bottom_edge.height = borders->visible.bottom;
 
   if (title_layout)
     pango_layout_get_pixel_extents (title_layout,
@@ -4694,10 +4699,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
       switch ((MetaFramePiece) i)
         {
         case META_FRAME_PIECE_ENTIRE_BACKGROUND:
-          rect.x = 0;
-          rect.y = 0;
-          rect.width = fgeom->width;
-          rect.height = fgeom->height;
+          rect = visible_rect;
           break;
 
         case META_FRAME_PIECE_TITLEBAR:
@@ -4745,10 +4747,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
           break;
 
         case META_FRAME_PIECE_OVERLAY:
-          rect.x = 0;
-          rect.y = 0;
-          rect.width = fgeom->width;
-          rect.height = fgeom->height;
+          rect = visible_rect;
           break;
 
         case META_FRAME_PIECE_LAST:

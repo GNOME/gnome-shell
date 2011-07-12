@@ -217,10 +217,7 @@ struct _MetaButtonSpace
  */
 struct _MetaFrameGeometry
 {
-  int left_width;
-  int right_width;
-  int top_height;
-  int bottom_height;
+  MetaFrameBorders borders;
 
   int width;
   int height;  
