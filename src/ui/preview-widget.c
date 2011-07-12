@@ -93,11 +93,8 @@ meta_preview_init (MetaPreview *preview)
     META_FRAME_HAS_FOCUS |
     META_FRAME_ALLOWS_SHADE |
     META_FRAME_ALLOWS_MOVE;
-  
-  preview->borders.visible.left = -1;
-  preview->borders.visible.right = -1;
-  preview->borders.visible.top = -1;
-  preview->borders.visible.bottom = -1;
+
+  preview->borders_cached = FALSE;
 }
 
 GtkWidget*
@@ -168,23 +165,17 @@ ensure_info (MetaPreview *preview)
       pango_font_description_free (font_desc);
     }
 
-  if (preview->borders.visible.top < 0)
+  if (!preview->borders_cached)
     {
       if (preview->theme)
-        {
-          meta_theme_get_frame_borders (preview->theme,
-                                        preview->type,
-                                        preview->text_height,
-                                        preview->flags,
-                                        &preview->borders);
-        }
+        meta_theme_get_frame_borders (preview->theme,
+                                      preview->type,
+                                      preview->text_height,
+                                      preview->flags,
+                                      &preview->borders);
       else
-        {
-          preview->borders.visible.top = 0;
-          preview->borders.visible.bottom = 0;
-          preview->borders.visible.left = 0;
-          preview->borders.visible.right = 0;
-        }
+        meta_frame_borders_clear (&preview->borders);
+      preview->borders_cached = TRUE;
     }
 }
 
@@ -342,10 +333,7 @@ clear_cache (MetaPreview *preview)
       preview->layout = NULL;
     }
 
-  preview->borders.visible.left = -1;
-  preview->borders.visible.right = -1;
-  preview->borders.visible.top = -1;
-  preview->borders.visible.bottom = -1;
+  preview->borders_cached = FALSE;
 }
 
 void

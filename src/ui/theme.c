@@ -425,10 +425,8 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
 
   if (flags & META_FRAME_FULLSCREEN)
     {
-      borders->visible.top = 0;
-      borders->visible.bottom = 0;
-      borders->visible.left = 0;
-      borders->visible.right = 0;
+      meta_frame_borders_clear (borders);
+      return;
     }
 }
 
@@ -5585,10 +5583,7 @@ meta_theme_get_frame_borders (MetaTheme        *theme,
 
   style = theme_get_style (theme, type, flags);
 
-  borders->visible.top = 0;
-  borders->visible.left = 0;
-  borders->visible.right = 0;
-  borders->visible.bottom = 0;
+  meta_frame_borders_clear (borders);
 
   /* Parser is not supposed to allow this currently */
   if (style == NULL)
