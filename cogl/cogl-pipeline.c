@@ -444,6 +444,7 @@ _cogl_pipeline_copy (CoglPipeline *src, gboolean is_weak)
    */
 
   pipeline->layers_cache_dirty = TRUE;
+  pipeline->deprecated_get_layers_list = NULL;
   pipeline->deprecated_get_layers_list_dirty = TRUE;
 
   pipeline->fragend = src->fragend;
