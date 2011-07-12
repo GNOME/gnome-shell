@@ -1678,6 +1678,10 @@ StTooltip StLabel {
     icon-size: 48px;
 }
 
+.mount-password-reask {
+    color: red;
+}
+
 .show-processes-dialog,
 .mount-question-dialog {
     spacing: 24px;

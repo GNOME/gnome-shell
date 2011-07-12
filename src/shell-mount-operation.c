@@ -26,7 +26,8 @@
  * object from JS but we can't yet; the default GMountOperation impl
  * automatically calls g_mount_operation_reply(UNHANDLED) after an idle,
  * in interactive methods. We want to handle the reply outselves
- * instead, so we just override the default methods with empty ones.
+ * instead, so we just override the default methods with empty ones,
+ * except for ask-password, as we don't want to handle that.
  *
  * Also, we need to workaround the fact that gjs doesn't support type
  * annotations for signals yet (so we can't effectively forward e.g. 

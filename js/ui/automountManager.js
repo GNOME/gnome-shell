@@ -178,8 +178,14 @@ AutomountManager.prototype = {
         try {
             volume.mount_finish(res);
         } catch (e) {
-            log('Unable to mount volume ' + volume.get_name() + ': ' +
-                e.toString());
+            let string = e.toString();
+
+            // FIXME: needs proper error code handling instead of this
+            // See https://bugzilla.gnome.org/show_bug.cgi?id=591480
+            if (string.indexOf('No key available with this passphrase') != -1)
+                this._reaskPassword(volume);
+            else
+                log('Unable to mount volume ' + volume.get_name() + ': ' + string);
         }
     },
 
@@ -188,6 +194,11 @@ AutomountManager.prototype = {
             this._volumeQueue.filter(function(element) {
                 return (element != volume);
             });
+    },
+
+    _reaskPassword: function(volume) {
+        let operation = new ShellMountOperation.ShellMountOperation(volume, { reaskPassword: true });
+        this._mountVolume(volume, operation.mountOp);        
     },
 
     _allowAutorun: function(volume) {

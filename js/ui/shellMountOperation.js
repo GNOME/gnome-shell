@@ -8,7 +8,10 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
+const Params = imports.misc.params;
 
 const LIST_ITEM_ICON_SIZE = 48;
 
@@ -86,12 +89,16 @@ ListItem.prototype = {
 };
 Signals.addSignalMethods(ListItem.prototype);
 
-function ShellMountOperation(source) {
-    this._init(source);
+function ShellMountOperation(source, params) {
+    this._init(source, params);
 }
 
 ShellMountOperation.prototype = {
-    _init: function(source) {
+    _init: function(source, params) {
+        params = Params.parse(params, { reaskPassword: false });
+
+        this._reaskPassword = params.reaskPassword;
+
         this._dialog = null;
         this._processesDialog = null;
 
@@ -126,8 +133,27 @@ ShellMountOperation.prototype = {
         this._dialog.open(global.get_current_time());
     },
 
-    _onAskPassword: function(op, message, defaultUser, defaultDomain, flags) {
-        // TODO
+    _onAskPassword: function(op, message) {
+        this._notificationShowing = true;
+        this._source = new ShellMountPasswordSource(message, this._icon, this._reaskPassword);
+
+        this._source.connect('password-ready',
+                             Lang.bind(this, function(source, password) {
+                                 this.mountOp.set_password(password);
+                                 this.mountOp.reply(Gio.MountOperationResult.HANDLED);
+
+                                 this._notificationShowing = false;
+                                 this._source.destroy();
+                             }));
+
+        this._source.connect('destroy',
+                             Lang.bind(this, function() {
+                                 if (!this._notificationShowing)
+                                     return;
+
+                                 this._notificationShowing = false;
+                                 this.mountOp.reply(Gio.MountOperationResult.ABORTED);
+                             }));
     },
 
     _onAborted: function(op) {
@@ -212,6 +238,74 @@ ShellMountQuestionDialog.prototype = {
     }
 }
 Signals.addSignalMethods(ShellMountQuestionDialog.prototype);
+
+function ShellMountPasswordSource(message, icon, reaskPassword) {
+    this._init(message, icon, reaskPassword);
+}
+
+ShellMountPasswordSource.prototype = {
+    __proto__: MessageTray.Source.prototype,
+
+    _init: function(message, icon, reaskPassword) {
+        let strings = message.split('\n');
+        MessageTray.Source.prototype._init.call(this, strings[0]);
+
+        this._notification = new ShellMountPasswordNotification(this, strings, icon, reaskPassword);
+
+        // add ourselves as a source, and popup the notification
+        Main.messageTray.add(this);
+        this.notify(this._notification);
+    },
+}
+Signals.addSignalMethods(ShellMountPasswordSource.prototype);
+
+function ShellMountPasswordNotification(source, strings, icon, reaskPassword) {
+    this._init(source, strings, icon, reaskPassword);
+}
+
+ShellMountPasswordNotification.prototype = {
+    __proto__: MessageTray.Notification.prototype,
+
+    _init: function(source, strings, icon, reaskPassword) {
+        MessageTray.Notification.prototype._init.call(this, source,
+                                                      strings[0], null,
+                                                      { customContent: true,
+                                                        icon: icon });
+
+        // set the notification to transient and urgent, so that it
+        // expands out
+        this.setTransient(true);
+        this.setUrgency(MessageTray.Urgency.CRITICAL);
+
+        if (strings[1])
+            this.addBody(strings[1]);
+
+        if (reaskPassword) {
+            let label = new St.Label({ style_class: 'mount-password-reask',
+                                       text: _("Wrong password, please try again") });
+
+            this.addActor(label);
+        }
+
+        this._responseEntry = new St.Entry({ style_class: 'mount-password-entry',
+                                             can_focus: true });
+        this.setActionArea(this._responseEntry);
+
+        this._responseEntry.clutter_text.connect('activate',
+                                                 Lang.bind(this, this._onEntryActivated));
+        this._responseEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
+
+        this._responseEntry.grab_key_focus();
+    },
+
+    _onEntryActivated: function() {
+        let text = this._responseEntry.get_text();
+        if (text == '')
+            return;
+
+        this.source.emit('password-ready', text);
+    }
+}
 
 function ShellProcessesDialog(icon) {
     this._init(icon);
