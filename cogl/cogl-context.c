@@ -213,6 +213,8 @@ cogl_context_new (CoglDisplay *display,
   _cogl_pipeline_init_layer_state_hash_functions ();
 
   context->enable_flags = 0;
+  context->current_clip_stack_valid = FALSE;
+  context->current_clip_stack = NULL;
 
   context->enable_backface_culling = FALSE;
   context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
@@ -308,8 +310,6 @@ cogl_context_new (CoglDisplay *display,
       cogl_set_framebuffer (COGL_FRAMEBUFFER (window));
       cogl_object_unref (COGL_FRAMEBUFFER (window));
     }
-
-  _context->current_clip_stack_valid = FALSE;
 
   context->dirty_bound_framebuffer = TRUE;
   context->dirty_gl_viewport = TRUE;
