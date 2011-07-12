@@ -14,23 +14,13 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const ScreenSaver = imports.misc.screenSaver;
 const Util = imports.misc.util;
-
-const BUS_NAME = 'org.gnome.ScreenSaver';
-const OBJECT_PATH = '/org/gnome/ScreenSaver';
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
-
-const ScreenSaverInterface = {
-    name: BUS_NAME,
-    methods: [ { name: 'Lock', inSignature: '' },
-               { name: 'SetActive', inSignature: 'b' }]
-};
-
-let ScreenSaverProxy = DBus.makeProxyClass(ScreenSaverInterface);
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -63,7 +53,7 @@ StatusMenuButton.prototype = {
         this._account_mgr = Tp.AccountManager.dup()
 
         this._upClient = new UPowerGlib.Client();
-        this._screenSaverProxy = new ScreenSaverProxy(DBus.session, BUS_NAME, OBJECT_PATH);
+        this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
