@@ -2730,20 +2730,16 @@ needs_flatten_effect (ClutterActor *self)
                   CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT))
     return FALSE;
 
-  switch (priv->offscreen_redirect)
+  if (priv->offscreen_redirect & CLUTTER_OFFSCREEN_REDIRECT_ALWAYS)
+    return TRUE;
+  else if (priv->offscreen_redirect & CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY)
     {
-    case CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY:
-      if (!clutter_actor_has_overlaps (self))
-        return FALSE;
-      /* flow through */
-    case CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY:
-      return clutter_actor_get_paint_opacity (self) < 255;
-
-    case CLUTTER_OFFSCREEN_REDIRECT_ALWAYS:
-      return TRUE;
+      if (clutter_actor_get_paint_opacity (self) < 255 &&
+          clutter_actor_has_overlaps (self))
+        return TRUE;
     }
 
-  g_assert_not_reached ();
+  return FALSE;
 }
 
 static void
@@ -3823,11 +3819,9 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
 static gboolean
 clutter_actor_real_has_overlaps (ClutterActor *self)
 {
-  /* By default we'll assume that all actors need an offscreen
-     redirect to get the correct opacity. This effectively favours
-     accuracy over efficiency. Actors such as ClutterTexture that
-     would never need an offscreen redirect can override this to
-     return FALSE. */
+  /* By default we'll assume that all actors need an offscreen redirect to get
+   * the correct opacity. Actors such as ClutterTexture that would never need
+   * an offscreen redirect can override this to return FALSE. */
   return TRUE;
 }
 
@@ -4225,18 +4219,21 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:offscreen-redirect:
    *
-   * Whether to flatten the actor into a single image. See
+   * Determines the conditions in which the actor will be redirected
+   * to an offscreen framebuffer while being painted. For example this
+   * can be used to cache an actor in a framebuffer or for improved
+   * handling of transparent actors. See
    * clutter_actor_set_offscreen_redirect() for details.
    *
    * Since: 1.8
    */
-  pspec = g_param_spec_enum ("offscreen-redirect",
-                             P_("Offscreen redirect"),
-                             P_("Whether to flatten the actor into a "
-                                "single image"),
-                             CLUTTER_TYPE_OFFSCREEN_REDIRECT,
-                             CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY,
-                             CLUTTER_PARAM_READWRITE);
+  pspec = g_param_spec_flags ("offscreen-redirect",
+                              P_("Offscreen redirect"),
+                              P_("Flags controlling when to flatten the "
+                                 "actor into a single image"),
+                              CLUTTER_TYPE_OFFSCREEN_REDIRECT,
+                              0,
+                              CLUTTER_PARAM_READWRITE);
   obj_props[PROP_OFFSCREEN_REDIRECT] = pspec;
   g_object_class_install_property (object_class,
                                    PROP_OFFSCREEN_REDIRECT,
@@ -5288,7 +5285,6 @@ clutter_actor_init (ClutterActor *self)
   priv->parent_actor = NULL;
   priv->has_clip = FALSE;
   priv->opacity = 0xff;
-  priv->offscreen_redirect = CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY;
   priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
   priv->scale_x = 1.0;
@@ -7598,15 +7594,16 @@ clutter_actor_get_opacity (ClutterActor *self)
 /**
  * clutter_actor_set_offscreen_redirect:
  * @self: A #ClutterActor
- * @redirect: New offscreen redirect value for the actor.
+ * @redirect: New offscreen redirect flags for the actor.
  *
- * Sets whether to redirect the actor into an offscreen image. The
- * offscreen image is used to flatten the actor into a single image
- * while painting for two main reasons. Firstly, when the actor is
- * painted a second time without any of its contents changing it can
- * simply repaint the cached image without descending further down the
- * actor hierarchy. Secondly, it will make the opacity look correct
- * even if there are overlapping primitives in the actor.
+ * Defines the circumstances where the actor should be redirected into
+ * an offscreen image. The offscreen image is used to flatten the
+ * actor into a single image while painting for two main reasons.
+ * Firstly, when the actor is painted a second time without any of its
+ * contents changing it can simply repaint the cached image without
+ * descending further down the actor hierarchy. Secondly, it will make
+ * the opacity look correct even if there are overlapping primitives
+ * in the actor.
  *
  * Caching the actor could in some cases be a performance win and in
  * some cases be a performance lose so it is important to determine
@@ -7643,13 +7640,15 @@ clutter_actor_get_opacity (ClutterActor *self)
  *   <graphic fileref="offscreen-redirect.png" format="PNG"/>
  * </figure>
  *
- * The default behaviour is
- * %CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY. This will end up
- * redirecting actors whenever they are semi-transparent unless their
- * has_overlaps() virtual returns %FALSE. This should mean that
- * generally all actors will be rendered with the correct opacity and
- * certain actors that don't need the offscreen redirect (such as
- * #ClutterTexture) will paint directly for efficiency.
+ * The default value for this property is 0, so we effectively will
+ * never redirect an actor offscreen by default. This means that there
+ * are times that transparent actors may look glassy as described
+ * above. The reason this is the default is because there is a
+ * performance trade off between quality and performance here. In many
+ * cases the default form of glassy opacity looks good enough, but if
+ * it's not you will need to set the
+ * %CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY flag to enable
+ * redirection for opacity.
  *
  * Custom actors that don't contain any overlapping primitives are
  * recommended to override the has_overlaps() virtual to return %FALSE
@@ -12408,8 +12407,9 @@ clutter_actor_get_paint_box (ClutterActor    *self,
  * Asks the actor's implementation whether it may contain overlapping
  * primitives.
  *
- * Clutter uses this to determine whether the painting should be redirected
- * to an offscreen buffer to correctly implement the opacity property.
+ * For example; Clutter may use this to determine whether the painting
+ * should be redirected to an offscreen buffer to correctly implement
+ * the opacity property.
  *
  * Custom actors can override the default response by implementing the
  * #ClutterActor <function>has_overlaps</function> virtual function. See

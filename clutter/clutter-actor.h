@@ -121,21 +121,17 @@ typedef enum
  * @CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY: Only redirect
  *   the actor if it is semi-transparent and its has_overlaps()
  *   virtual returns %TRUE. This is the default.
- * @CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY: Always redirect the
- *   actor if it is semi-transparent regardless of the return value of
- *   its has_overlaps() virtual.
  * @CLUTTER_OFFSCREEN_REDIRECT_ALWAYS: Always redirect the actor to an
  *   offscreen buffer even if it is fully opaque.
  *
- * Possible values to pass to clutter_actor_set_offscreen_redirect().
+ * Possible flags to pass to clutter_actor_set_offscreen_redirect().
  *
  * Since: 1.8
  */
 typedef enum
 {
-  CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY,
-  CLUTTER_OFFSCREEN_REDIRECT_ALWAYS_FOR_OPACITY,
-  CLUTTER_OFFSCREEN_REDIRECT_ALWAYS
+  CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY = 1<<0,
+  CLUTTER_OFFSCREEN_REDIRECT_ALWAYS = 1<<1
 } ClutterOffscreenRedirect;
 
 /**
