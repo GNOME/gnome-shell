@@ -237,7 +237,6 @@ AppMenuButton.prototype = {
 
     _init: function() {
         PanelMenu.Button.prototype._init.call(this, 0.0);
-        this._metaDisplay = global.screen.get_display();
         this._startingApps = [];
 
         this._targetApp = null;

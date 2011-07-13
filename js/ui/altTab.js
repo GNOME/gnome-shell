@@ -223,7 +223,7 @@ AltTabPopup.prototype = {
         let keysym = event.get_key_symbol();
         let event_state = Shell.get_event_state(event);
         let backwards = event_state & Clutter.ModifierType.SHIFT_MASK;
-        let action = global.screen.get_display().get_keybinding_action(event.get_key_code(), event_state);
+        let action = global.display.get_keybinding_action(event.get_key_code(), event_state);
 
         this._disableHover();
 

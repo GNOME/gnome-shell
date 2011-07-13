@@ -135,9 +135,7 @@ LayoutManager.prototype = {
     },
 
     get focusIndex() {
-        let screen = global.screen;
-        let display = screen.get_display();
-        let focusWindow = display.focus_window;
+        let focusWindow = global.display.focus_window;
 
         if (focusWindow) {
             let wrect = focusWindow.get_outer_rect();

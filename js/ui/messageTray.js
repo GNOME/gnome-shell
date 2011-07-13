@@ -234,9 +234,7 @@ FocusGrabber.prototype = {
 
         this.actor = actor;
 
-        let metaDisplay = global.screen.get_display();
-
-        this._prevFocusedWindow = metaDisplay.focus_window;
+        this._prevFocusedWindow = global.display.focus_window;
         this._prevKeyFocusActor = global.stage.get_key_focus();
 
         if (!Main.overview.visible)
@@ -290,8 +288,6 @@ FocusGrabber.prototype = {
         if (!this._hasFocus)
             return;
 
-        let metaDisplay = global.screen.get_display();
-
         if (this._focusActorChangedId > 0) {
             global.stage.disconnect(this._focusActorChangedId);
             this._focusActorChangedId = 0;
@@ -310,8 +306,8 @@ FocusGrabber.prototype = {
         this._hasFocus = false;
         this.emit('focus-ungrabbed');
 
-        if (this._prevFocusedWindow && !metaDisplay.focus_window) {
-            metaDisplay.set_input_focus_window(this._prevFocusedWindow, false, global.get_current_time());
+        if (this._prevFocusedWindow && !global.display.focus_window) {
+            global.display.set_input_focus_window(this._prevFocusedWindow, false, global.get_current_time());
             this._prevFocusedWindow = null;
         }
         if (this._prevKeyFocusActor) {

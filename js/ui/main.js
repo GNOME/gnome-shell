@@ -194,8 +194,7 @@ function start() {
     panel.startStatusArea();
     panel.startupAnimation();
 
-    let display = global.screen.get_display();
-    display.connect('overlay-key', Lang.bind(overview, overview.toggle));
+    global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
 
@@ -524,9 +523,8 @@ function _globalKeyPressHandler(actor, event) {
     let keyCode = event.get_key_code();
     let modifierState = Shell.get_event_state(event);
 
-    let display = global.screen.get_display();
     // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
-    let action = display.get_keybinding_action(keyCode, modifierState);
+    let action = global.display.get_keybinding_action(keyCode, modifierState);
 
     // The screenshot action should always be available (even if a
     // modal dialog is present)

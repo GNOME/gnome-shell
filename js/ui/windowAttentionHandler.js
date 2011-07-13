@@ -16,8 +16,7 @@ WindowAttentionHandler.prototype = {
         this._tracker = Shell.WindowTracker.get_default();
         this._tracker.connect('startup-sequence-changed', Lang.bind(this, this._onStartupSequenceChanged));
 
-        let display = global.screen.get_display();
-        display.connect('window-demands-attention', Lang.bind(this, this._onWindowDemandsAttention));
+        global.display.connect('window-demands-attention', Lang.bind(this, this._onWindowDemandsAttention));
     },
 
     _onStartupSequenceChanged : function(tracker) {

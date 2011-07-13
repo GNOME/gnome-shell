@@ -93,6 +93,7 @@ enum {
   PROP_OVERLAY_GROUP,
   PROP_SCREEN,
   PROP_GDK_SCREEN,
+  PROP_DISPLAY,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
@@ -159,6 +160,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_GDK_SCREEN:
       g_value_set_object (value, global->gdk_screen);
+      break;
+    case PROP_DISPLAY:
+      g_value_set_object (value, global->meta_display);
       break;
     case PROP_SCREEN_WIDTH:
       {
@@ -364,6 +368,14 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                      "Screen height, in pixels",
                                                      0, G_MAXINT, 1,
                                                      G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_DISPLAY,
+                                   g_param_spec_object ("display",
+                                                        "Display",
+                                                        "Metacity display object for the shell",
+                                                        META_TYPE_DISPLAY,
+                                                        G_PARAM_READABLE));
+
   g_object_class_install_property (gobject_class,
                                    PROP_STAGE,
                                    g_param_spec_object ("stage",
@@ -665,6 +677,17 @@ shell_global_get_gdk_screen (ShellGlobal *global)
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
 
   return global->gdk_screen;
+}
+
+/**
+ * shell_global_get_display:
+ *
+ * Return value: (transfer none): The default #MetaDisplay
+ */
+MetaDisplay *
+shell_global_get_display (ShellGlobal  *global)
+{
+  return global->meta_display;
 }
 
 /**

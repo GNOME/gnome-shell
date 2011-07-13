@@ -161,7 +161,7 @@ WindowClone.prototype = {
             // will look funny.
 
             if (!this._selected &&
-                this.metaWindow != global.screen.get_display().focus_window)
+                this.metaWindow != global.display.focus_window)
                 this._zoomEnd();
         }
     },
