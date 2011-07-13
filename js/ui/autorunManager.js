@@ -164,11 +164,7 @@ AutorunManager.prototype = {
                                               this._onMountRemoved));
 
         this._transDispatcher = new AutorunTransientDispatcher();
-        this._residentSource = new AutorunResidentSource();
-        this._residentSource.connect('destroy', Lang.bind(this,
-            function() {
-                this._residentSource = new AutorunResidentSource();
-            }));
+        this._createResidentSource();
 
         let mounts = this._volumeMonitor.get_mounts();
 
@@ -180,6 +176,13 @@ AutorunManager.prototype = {
 
             discoverer.guessContentTypes(mount);
         }));
+    },
+
+    _createResidentSource: function() {
+        this._residentSource = new AutorunResidentSource();
+        this._residentSource.connect('destroy',
+                                     Lang.bind(this,
+                                               this._createResidentSource));
     },
 
     _onMountAdded: function(monitor, mount) {
