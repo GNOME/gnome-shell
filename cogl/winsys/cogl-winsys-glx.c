@@ -395,8 +395,8 @@ error:
   return FALSE;
 }
 
-static void
-update_winsys_features (CoglContext *context)
+static gboolean
+update_winsys_features (CoglContext *context, GError **error)
 {
   CoglGLXDisplay *glx_display = context->display->winsys;
   CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
@@ -405,9 +405,10 @@ update_winsys_features (CoglContext *context)
   int default_screen;
   int i;
 
-  g_return_if_fail (glx_display->glx_context);
+  g_return_val_if_fail (glx_display->glx_context, FALSE);
 
-  _cogl_context_update_features (context);
+  if (!_cogl_context_update_features (context, error))
+    return FALSE;
 
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
@@ -475,6 +476,8 @@ update_winsys_features (CoglContext *context)
       _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_WAIT))
     COGL_FLAGS_SET (context->winsys_features,
                     COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE, TRUE);
+
+  return TRUE;
 }
 
 /* It seems the GLX spec never defined an invalid GLXFBConfig that
@@ -763,9 +766,7 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
   cogl_xlib_renderer_add_filter (context->display->renderer,
                                  glx_event_filter_cb,
                                  context);
-  update_winsys_features (context);
-
-  return TRUE;
+  return update_winsys_features (context, error);
 }
 
 static void

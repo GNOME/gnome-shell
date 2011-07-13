@@ -542,17 +542,18 @@ get_wgl_extensions_string (HDC dc)
   return NULL;
 }
 
-static void
-update_winsys_features (CoglContext *context)
+static gboolean
+update_winsys_features (CoglContext *context, GError **error)
 {
   CoglDisplayWgl *wgl_display = context->display->winsys;
   CoglRendererWgl *wgl_renderer = context->display->renderer->winsys;
   const char *wgl_extensions;
   int i;
 
-  g_return_if_fail (wgl_display->wgl_context);
+  g_return_val_if_fail (wgl_display->wgl_context, FALSE);
 
-  _cogl_context_update_features (context);
+  if (!_cogl_context_update_features (context, error))
+    return FALSE;
 
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
@@ -581,6 +582,8 @@ update_winsys_features (CoglContext *context)
                               TRUE);
           }
     }
+
+  return TRUE;
 }
 
 static gboolean
@@ -594,9 +597,7 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
                                   win32_event_filter_cb,
                                   context);
 
-  update_winsys_features (context);
-
-  return TRUE;
+  return update_winsys_features (context, error);
 }
 
 static void

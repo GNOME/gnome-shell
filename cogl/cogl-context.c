@@ -509,35 +509,16 @@ cogl_egl_context_get_egl_display (CoglContext *context)
 #endif
 
 gboolean
-_cogl_context_check_gl_version (CoglContext *context,
-                                GError **error)
+_cogl_context_update_features (CoglContext *context,
+                               GError **error)
 {
 #ifdef HAVE_COGL_GL
   if (context->driver == COGL_DRIVER_GL)
-    return _cogl_gl_check_gl_version (context, error);
+    return _cogl_gl_update_features (context, error);
 #endif
 
 #if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GLES2)
-  return _cogl_gles_check_gl_version (context, error);
-#endif
-
-  g_assert_not_reached ();
-}
-
-void
-_cogl_context_update_features (CoglContext *context)
-{
-#ifdef HAVE_COGL_GL
-  if (context->driver == COGL_DRIVER_GL)
-    {
-      _cogl_gl_update_features (context);
-      return;
-    }
-#endif
-
-#if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GLES2)
-  _cogl_gles_update_features (context);
-  return;
+  return _cogl_gles_update_features (context, error);
 #endif
 
   g_assert_not_reached ();

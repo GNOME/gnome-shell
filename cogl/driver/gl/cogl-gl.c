@@ -71,9 +71,9 @@ _cogl_get_gl_version (int *major_out, int *minor_out)
   return TRUE;
 }
 
-gboolean
-_cogl_gl_check_gl_version (CoglContext *ctx,
-                           GError **error)
+static gboolean
+check_gl_version (CoglContext *ctx,
+                  GError **error)
 {
   int major, minor;
   const char *gl_extensions;
@@ -120,12 +120,9 @@ _cogl_gl_check_gl_version (CoglContext *ctx,
   return TRUE;
 }
 
-/* Query the GL extensions and lookup the corresponding function
- * pointers. Theoretically the list of extensions can change for
- * different GL contexts so it is the winsys backend's responsiblity
- * to know when to re-query the GL extensions. */
-void
-_cogl_gl_update_features (CoglContext *context)
+gboolean
+_cogl_gl_update_features (CoglContext *context,
+                          GError **error)
 {
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
@@ -134,7 +131,7 @@ _cogl_gl_update_features (CoglContext *context)
   int num_stencil_bits = 0;
   int gl_major = 0, gl_minor = 0;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* We have to special case getting the pointer to the glGetString
      function because we need to use it to determine what functions we
@@ -142,6 +139,9 @@ _cogl_gl_update_features (CoglContext *context)
   context->glGetString =
     (void *) _cogl_get_proc_address (_cogl_context_get_winsys (context),
                                      "glGetString");
+
+  if (!check_gl_version (context, error))
+    return FALSE;
 
   COGL_NOTE (WINSYS,
              "Checking features\n"
@@ -231,4 +231,6 @@ _cogl_gl_update_features (CoglContext *context)
   /* Cache features */
   context->private_feature_flags |= private_flags;
   context->feature_flags |= flags;
+
+  return TRUE;
 }

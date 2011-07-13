@@ -33,18 +33,8 @@
 #include "cogl-feature-private.h"
 
 gboolean
-_cogl_gles_check_gl_version (GError **error)
-{
-  /* The GLES backend doesn't have any particular version requirements */
-  return TRUE;
-}
-
-/* Query the GL extensions and lookup the corresponding function
- * pointers. Theoretically the list of extensions can change for
- * different GL contexts so it is the winsys backend's responsiblity
- * to know when to re-query the GL extensions. */
-void
-_cogl_gles_update_features (CoglContext *context)
+_cogl_gles_update_features (CoglContext *context,
+                            GError **error)
 {
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
@@ -135,4 +125,6 @@ _cogl_gles_update_features (CoglContext *context)
   /* Cache features */
   context->private_feature_flags |= private_flags;
   context->feature_flags |= flags;
+
+  return TRUE;
 }

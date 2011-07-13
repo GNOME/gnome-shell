@@ -288,17 +288,15 @@ _cogl_context_get_default ();
 const CoglWinsysVtable *
 _cogl_context_get_winsys (CoglContext *context);
 
-/* Check whether the current GL context is supported by Cogl */
-gboolean
-_cogl_context_check_gl_version (CoglContext *context,
-                                GError **error);
-
 /* Query the GL extensions and lookup the corresponding function
  * pointers. Theoretically the list of extensions can change for
  * different GL contexts so it is the winsys backend's responsiblity
- * to know when to re-query the GL extensions. */
-void
-_cogl_context_update_features (CoglContext *context);
+ * to know when to re-query the GL extensions. The backend should also
+ * check whether the GL context is supported by Cogl. If not it should
+ * return FALSE and set @error */
+gboolean
+_cogl_context_update_features (CoglContext *context,
+                               GError **error);
 
 /* Obtains the context and returns retval if NULL */
 #define _COGL_GET_CONTEXT(ctxvar, retval) \

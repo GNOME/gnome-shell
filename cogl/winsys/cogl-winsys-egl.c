@@ -503,19 +503,20 @@ error:
   return FALSE;
 }
 
-static void
-update_winsys_features (CoglContext *context)
+static gboolean
+update_winsys_features (CoglContext *context, GError **error)
 {
   CoglDisplayEGL *egl_display = context->display->winsys;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
 
-  g_return_if_fail (egl_display->egl_context);
+  g_return_val_if_fail (egl_display->egl_context, FALSE);
 
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
   check_egl_extensions (context->display->renderer);
 
-  _cogl_context_update_features (context);
+  if (!_cogl_context_update_features (context, error))
+    return FALSE;
 
 #if defined (COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT) || \
     defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
@@ -532,6 +533,8 @@ update_winsys_features (CoglContext *context)
       COGL_FLAGS_SET (context->winsys_features,
                       COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE, TRUE);
     }
+
+  return TRUE;
 }
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
@@ -1114,9 +1117,7 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
                                  event_filter_cb,
                                  context);
 #endif
-  update_winsys_features (context);
-
-  return TRUE;
+  return update_winsys_features (context, error);
 }
 
 static void
