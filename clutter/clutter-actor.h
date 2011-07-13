@@ -385,25 +385,15 @@ void                  clutter_actor_allocate_align_fill       (ClutterActor     
                                                                ClutterAllocationFlags flags);
 void                  clutter_actor_get_allocation_box        (ClutterActor          *self,
                                                                ClutterActorBox       *box);
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 void                  clutter_actor_get_allocation_geometry   (ClutterActor          *self,
-                                                               ClutterGeometry       *geom)
-                                                               G_GNUC_DEPRECATED_FOR(clutter_actor_get_allocation_box);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
+                                                               ClutterGeometry       *geom);
 void                  clutter_actor_get_allocation_vertices   (ClutterActor          *self,
 							       ClutterActor          *ancestor,
                                                                ClutterVertex          verts[]);
-#ifndef CLUTTER_DISABLE_DEPRECATED
 void                  clutter_actor_set_geometry              (ClutterActor          *self,
-                                                               const ClutterGeometry *geometry)
-                                                               G_GNUC_DEPRECATED;
+                                                               const ClutterGeometry *geometry);
 void                  clutter_actor_get_geometry              (ClutterActor          *self,
-                                                               ClutterGeometry       *geometry)
-                                                               G_GNUC_DEPRECATED;
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
+                                                               ClutterGeometry       *geometry);
 void                  clutter_actor_set_size                  (ClutterActor          *self,
                                                                gfloat                 width,
                                                                gfloat                 height);
