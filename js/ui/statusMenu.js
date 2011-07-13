@@ -293,7 +293,7 @@ StatusMenuButton.prototype = {
         Main.overview.hide();
         // Ensure we only move to GDM after the screensaver has activated; in some
         // OS configurations, the X server may block event processing on VT switch
-        this._screenSaverProxy.setActiveRemote(true, Lang.bind(this, function() {
+        this._screenSaverProxy.SetActiveRemote(true, Lang.bind(this, function() {
             this._gdm.goto_login_session();
         }));
     },
