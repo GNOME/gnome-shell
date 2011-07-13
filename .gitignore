@@ -52,7 +52,7 @@ depcomp
 /doc/reference/cogl-2.0-experimental/cogl.interfaces
 /doc/reference/cogl-2.0-experimental/cogl.prerequisites
 /doc/reference/cogl-2.0-experimental/cogl.signals
-/doc/reference/cogl-2.0-experimental/cogl-docs.xml
+/doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
 /doc/reference/cogl-2.0-experimental/*.stamp
 /doc/reference/cogl-2.0-experimental/*.bak
 /examples/hello
