@@ -153,16 +153,17 @@ clutter_backend_osx_create_context (ClutterBackend  *backend,
 #endif
 
       backend_osx->pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-      backend_osx->context = [[NSOpenGLContext alloc]
-                              initWithFormat: backend_osx->pixel_format
-                              shareContext: nil];
+
+      backend_osx->context = [[NSOpenGLContext alloc] initWithFormat: backend_osx->pixel_format
+                                                        shareContext: nil];
+
       /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html */
       [backend_osx->context setValues:&sw forParameter: NSOpenGLCPSwapInterval];
+
+      CLUTTER_NOTE (BACKEND, "Context was created");
     }
 
   [backend_osx->context makeCurrentContext];
-
-  CLUTTER_NOTE (BACKEND, "Context was created");
 
   CLUTTER_OSX_POOL_RELEASE();
 
