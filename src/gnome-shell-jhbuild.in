@@ -532,7 +532,7 @@ def restore_gnome():
         component = client.get_string(gconf_path)
 
         if component == None or component == "":
-            return
+            return False
 
         # See gnome-session/gsm-util.c:gsm_util_find_desktop_file_for_app_name()
         # The one difference is that we don't search the autostart directories,
@@ -549,9 +549,15 @@ def restore_gnome():
 
         if appinfo:
             appinfo.launch()
+            return True
+        return False
 
-    launch_component("/desktop/gnome/session/required_components/windowmanager")
-    launch_component("/desktop/gnome/session/required_components/panel")
+    # GNOME2 fallback
+    wm    = launch_component("/desktop/gnome/session/required_components/windowmanager")
+    panel = launch_component("/desktop/gnome/session/required_components/panel")
+
+    if not wm and not panel: # Probably GNOME3
+        subprocess.Popen(['gnome-shell'])
 
 # Main program
 
