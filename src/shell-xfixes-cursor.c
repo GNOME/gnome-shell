@@ -232,11 +232,7 @@ xfixes_cursor_reset_image (ShellXFixesCursor *xfixes_cursor)
   sprite = cogl_texture_new_from_data (cursor_image->width,
                                        cursor_image->height,
                                        COGL_TEXTURE_NONE,
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-                                       COGL_PIXEL_FORMAT_BGRA_8888_PRE,
-#else
-                                       COGL_PIXEL_FORMAT_ARGB_8888_PRE,
-#endif
+                                       CLUTTER_CAIRO_FORMAT_ARGB32,
                                        COGL_PIXEL_FORMAT_ANY,
                                        cursor_image->width * 4, /* stride */
                                        cursor_data);

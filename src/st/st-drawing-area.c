@@ -36,15 +36,6 @@
 
 #include <cairo.h>
 
-/* Cairo stores the data in native byte order as ARGB but Cogl's pixel
-   formats specify the actual byte order. Therefore we need to use a
-   different format depending on the architecture */
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-#define PIXEL_FORMAT COGL_PIXEL_FORMAT_BGRA_8888_PRE
-#else
-#define PIXEL_FORMAT COGL_PIXEL_FORMAT_ARGB_8888_PRE
-#endif
-
 G_DEFINE_TYPE(StDrawingArea, st_drawing_area, ST_TYPE_WIDGET);
 
 struct _StDrawingAreaPrivate {
@@ -122,7 +113,7 @@ st_drawing_area_paint (ClutterActor *self)
         {
           priv->texture = cogl_texture_new_with_size (width, height,
                                                       COGL_TEXTURE_NONE,
-                                                      PIXEL_FORMAT);
+                                                      CLUTTER_CAIRO_FORMAT_ARGB32);
           priv->needs_repaint = TRUE;
         }
 
@@ -142,7 +133,7 @@ st_drawing_area_paint (ClutterActor *self)
           priv->context = NULL;
 
           cogl_texture_set_region (priv->texture, 0, 0, 0, 0, width, height, width, height,
-                                   PIXEL_FORMAT,
+                                   CLUTTER_CAIRO_FORMAT_ARGB32,
                                    cairo_image_surface_get_stride (surface),
                                    cairo_image_surface_get_data (surface));
 

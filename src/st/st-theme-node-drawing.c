@@ -167,11 +167,7 @@ create_corner_material (StCornerSpec *corner)
 
   texture = cogl_texture_new_from_data (size, size,
                                         COGL_TEXTURE_NONE,
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-                                        COGL_PIXEL_FORMAT_BGRA_8888_PRE,
-#else
-                                        COGL_PIXEL_FORMAT_ARGB_8888_PRE,
-#endif
+                                        CLUTTER_CAIRO_FORMAT_ARGB32,
                                         COGL_PIXEL_FORMAT_ANY,
                                         rowstride,
                                         data);
@@ -1250,14 +1246,7 @@ st_theme_node_prerender_background (StThemeNode *node)
   texture = cogl_texture_new_from_data (paint_box.x2 - paint_box.x1,
                                         paint_box.y2 - paint_box.y1,
                                         COGL_TEXTURE_NONE,
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-                                        COGL_PIXEL_FORMAT_BGRA_8888_PRE,
-#elif G_BYTE_ORDER == G_BIG_ENDIAN
-                                        COGL_PIXEL_FORMAT_ARGB_8888_PRE,
-#else
-                                        COGL_PIXEL_FORMAT_ANY,
-#error unknown endianness type
-#endif
+                                        CLUTTER_CAIRO_FORMAT_ARGB32,
                                         COGL_PIXEL_FORMAT_ANY,
                                         rowstride,
                                         data);
