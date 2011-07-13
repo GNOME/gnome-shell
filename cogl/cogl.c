@@ -47,6 +47,10 @@
 #include "cogl-attribute-private.h"
 #include "cogl-framebuffer-private.h"
 
+#ifndef GL_PACK_INVERT_MESA
+#define GL_PACK_INVERT_MESA 0x8758
+#endif
+
 #ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
 static const struct {
@@ -474,6 +478,7 @@ _cogl_read_pixels_with_rowstride (int x,
   GLenum           gl_format;
   GLenum           gl_type;
   CoglPixelFormat  bmp_format;
+  gboolean         pack_invert_set;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -546,6 +551,17 @@ _cogl_read_pixels_with_rowstride (int x,
                                            &gl_format,
                                            &gl_type);
 
+  /* NB: All offscreen rendering is done upside down so there is no need
+   * to flip in this case... */
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
+      !cogl_is_offscreen (framebuffer))
+    {
+      GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, TRUE));
+      pack_invert_set = TRUE;
+    }
+  else
+    pack_invert_set = FALSE;
+
   /* Under GLES only GL_RGBA with GL_UNSIGNED_BYTE as well as an
      implementation specific format under
      GL_IMPLEMENTATION_COLOR_READ_FORMAT_OES and
@@ -609,14 +625,17 @@ _cogl_read_pixels_with_rowstride (int x,
       _cogl_bitmap_convert_premult_status (bmp, format);
     }
 
+  /* Currently this function owns the pack_invert state and we don't want this
+   * to interfere with other Cogl components so all other code can assume that
+   * we leave the pack_invert state off. */
+  if (pack_invert_set)
+    GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, FALSE));
+
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
-  if (!cogl_is_offscreen (framebuffer))
+  if (!cogl_is_offscreen (framebuffer) && !pack_invert_set)
     {
       guint8 *temprow = g_alloca (rowstride * sizeof (guint8));
-
-      /* TODO: consider using the GL_MESA_pack_invert extension in the future
-       * to avoid this flip... */
 
       /* vertically flip the buffer in-place */
       for (y = 0; y < height / 2; y++)

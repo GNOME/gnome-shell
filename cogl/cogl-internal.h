@@ -138,6 +138,7 @@ typedef enum
 typedef enum
 {
   COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE = 1L<<0,
+  COGL_PRIVATE_FEATURE_MESA_PACK_INVERT = 1L<<1
 } CoglPrivateFeatureFlags;
 
 gboolean

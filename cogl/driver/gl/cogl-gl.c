@@ -183,6 +183,9 @@ _cogl_gl_update_features (CoglContext *context)
     }
 #endif
 
+  if (_cogl_check_extension ("GL_MESA_pack_invert", gl_extensions))
+    private_flags |= COGL_PRIVATE_FEATURE_MESA_PACK_INVERT;
+
   GE( ctx, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
   if (num_stencil_bits > 2)
