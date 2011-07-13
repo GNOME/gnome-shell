@@ -359,7 +359,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [osx],
         [
-          experimental_backend="yes"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
 
           AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
