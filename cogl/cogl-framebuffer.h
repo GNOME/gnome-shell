@@ -185,6 +185,48 @@ cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer);
 int
 cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
 
+/**
+ * cogl_framebuffer_get_dither_enabled:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Returns whether dithering has been requested for the given @framebuffer.
+ * See cogl_framebuffer_set_dither_enabled() for more details about dithering.
+ *
+ * <note>This may return %TRUE even when the underlying @framebuffer
+ * display pipeline does not support dithering. This value only represents
+ * the user's request for dithering.</note>
+ *
+ * Return value: %TRUE if dithering has been requested or %FALSE if not.
+ */
+gboolean
+cogl_framebuffer_get_dither_enabled (CoglFramebuffer *framebuffer);
+
+/**
+ * cogl_framebuffer_set_dither_enabled:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ * @dither_enabled: %TRUE to enable dithering or %FALSE to disable
+ *
+ * Enables or disabled dithering if supported by the hardware.
+ *
+ * Dithering is a hardware dependent technique to increase the visible
+ * color resolution beyond what the underlying hardware supports by playing
+ * tricks with the colors placed into the framebuffer to give the illusion
+ * of other colors. (For example this can be compared to half-toning used
+ * by some news papers to show varying levels of grey even though their may
+ * only be black and white are available).
+ *
+ * If the current display pipeline for @framebuffer does not support dithering
+ * then this has no affect.
+ *
+ * Dithering is enabled by default.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
+                                     gboolean dither_enabled);
+
 #define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
 void
 cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);

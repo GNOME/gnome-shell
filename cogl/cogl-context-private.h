@@ -203,6 +203,8 @@ struct _CoglContext
   CoglPipelineProgramType current_vertex_program_type;
   GLuint                  current_gl_program;
 
+  gboolean current_gl_dither_enabled;
+
   /* List of types that will be considered a subclass of CoglTexture in
      cogl_is_texture */
   GSList           *texture_types;

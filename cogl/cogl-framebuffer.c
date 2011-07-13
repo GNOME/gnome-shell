@@ -148,6 +148,7 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
   framebuffer->viewport_y       = 0;
   framebuffer->viewport_width   = width;
   framebuffer->viewport_height  = height;
+  framebuffer->dither_enabled   = TRUE;
 
   framebuffer->modelview_stack  = _cogl_matrix_stack_new ();
   framebuffer->projection_stack = _cogl_matrix_stack_new ();
@@ -1436,6 +1437,15 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
   _cogl_framebuffer_init_bits (draw_buffer);
   _cogl_framebuffer_init_bits (read_buffer);
 
+  if (ctx->current_gl_dither_enabled != draw_buffer->dither_enabled)
+    {
+      if (draw_buffer->dither_enabled)
+        GE (ctx, glEnable (GL_DITHER));
+      else
+        GE (ctx, glDisable (GL_DITHER));
+      ctx->current_gl_dither_enabled = draw_buffer->dither_enabled;
+    }
+
   /* XXX: Flushing clip state may trash the modelview and projection
    * matrices so we must do it before flushing the matrices...
    */
@@ -1480,6 +1490,23 @@ cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer)
   _cogl_framebuffer_init_bits (framebuffer);
 
   return framebuffer->alpha_bits;
+}
+
+gboolean
+cogl_framebuffer_get_dither_enabled (CoglFramebuffer *framebuffer)
+{
+  return framebuffer->dither_enabled;
+}
+
+void
+cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
+                                     gboolean dither_enabled)
+{
+  if (framebuffer->dither_enabled == dither_enabled)
+    return;
+
+  cogl_flush (); /* Currently dithering changes aren't tracked in the journal */
+  framebuffer->dither_enabled = dither_enabled;
 }
 
 gboolean

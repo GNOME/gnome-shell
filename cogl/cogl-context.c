@@ -276,6 +276,8 @@ cogl_context_new (CoglDisplay *display,
   context->current_vertex_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
   context->current_gl_program = 0;
 
+  context->current_gl_dither_enabled = TRUE;
+
   context->gl_blend_enable_cache = FALSE;
 
   context->depth_test_enabled_cache = FALSE;
