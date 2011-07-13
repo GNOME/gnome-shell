@@ -568,7 +568,7 @@ AS_IF([test "x$enable_glx" = "xyes"],
         SUPPORT_GLX=yes
         GL_WINSYS_APIS="$GL_WINSYS_APIS glx"
 
-        AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLX_SUPPORT"
 
         # We might fall back to DRM for sync-to-vblank on GLX
         PKG_CHECK_EXISTS([libdrm],
