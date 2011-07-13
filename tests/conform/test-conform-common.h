@@ -25,6 +25,25 @@ typedef struct _TestConformTodo
   void (* func) (TestConformSimpleFixture *, gconstpointer);
 } TestConformTodo;
 
+typedef struct _TestConformGLFunctions
+{
+  const GLubyte * (* glGetString) (GLenum name);
+  void (* glGetIntegerv) (GLenum pname, GLint *params);
+  void (* glPixelStorei) (GLenum pname, GLint param);
+  void (* glBindTexture) (GLenum target, GLuint texture);
+  void (* glGenTextures) (GLsizei n, GLuint *textures);
+  GLenum (* glGetError) (void);
+  void (* glDeleteTextures) (GLsizei n, const GLuint *textures);
+  void (* glTexImage2D) (GLenum target, GLint level,
+                         GLint internalFormat,
+                         GLsizei width, GLsizei height,
+                         GLint border, GLenum format, GLenum type,
+                         const GLvoid *pixels);
+  void (* glTexParameteri) (GLenum target, GLenum pname, GLint param);
+} TestConformGLFunctions;
+
+void test_conform_get_gl_functions (TestConformGLFunctions *functions);
+
 void test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
 					gconstpointer data);
 void test_conform_simple_fixture_teardown (TestConformSimpleFixture *fixture,

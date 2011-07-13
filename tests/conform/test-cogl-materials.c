@@ -8,6 +8,8 @@
 
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
+static TestConformGLFunctions gl_functions;
+
 #define QUAD_WIDTH 20
 
 #define RED 0
@@ -131,7 +133,7 @@ using_gles2_driver (void)
 {
   /* FIXME: This should probably be replaced with some way to query
      the driver from Cogl */
-  return g_str_has_prefix ((const char *) glGetString (GL_VERSION),
+  return g_str_has_prefix ((const char *) gl_functions.glGetString (GL_VERSION),
                            "OpenGL ES 2");
 }
 
@@ -168,10 +170,10 @@ test_using_all_layers (TestState *state, int x, int y)
       GLint n_image_units, n_attribs;
       /* GLES 2 doesn't have GL_MAX_TEXTURE_UNITS and it uses
          GL_MAX_TEXTURE_IMAGE_UNITS instead */
-      glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n_image_units);
+      gl_functions.glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n_image_units);
       /* Cogl needs a vertex attrib for each layer to upload the texture
          coordinates */
-      glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, &n_attribs);
+      gl_functions.glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, &n_attribs);
       /* We can't use two of the attribs because they are used by the
          position and color */
       n_attribs -= 2;
@@ -181,7 +183,7 @@ test_using_all_layers (TestState *state, int x, int y)
 #endif
     {
 #if defined(COGL_HAS_GLES1) || defined(COGL_HAS_GL)
-      glGetIntegerv (GL_MAX_TEXTURE_UNITS, &n_layers);
+      gl_functions.glGetIntegerv (GL_MAX_TEXTURE_UNITS, &n_layers);
 #endif
     }
 
@@ -318,6 +320,8 @@ test_cogl_materials (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   ClutterActor *group;
   guint idle_source;
+
+  test_conform_get_gl_functions (&gl_functions);
 
   stage = clutter_stage_get_default ();
 

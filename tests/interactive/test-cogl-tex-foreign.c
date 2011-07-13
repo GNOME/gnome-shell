@@ -70,6 +70,25 @@ struct _TestCoglboxPrivate
 {
   GLuint     gl_handle;
   CoglHandle cogl_handle;
+
+  void
+  (* glGetIntegerv) (GLenum pname, GLint *params);
+  void
+  (* glPixelStorei) (GLenum pname, GLint param);
+  void
+  (* glTexParameteri) (GLenum target, GLenum pname, GLint param);
+  void
+  (* glTexImage2D) (GLenum target, GLint level,
+                    GLint internalFormat,
+                    GLsizei width, GLsizei height,
+                    GLint border, GLenum format, GLenum type,
+                    const GLvoid *pixels);
+  void
+  (* glGenTextures) (GLsizei n, GLuint *textures);
+  void
+  (* glDeleteTextures) (GLsizei n, const GLuint *textures);
+  void
+  (* glBindTexture) (GLenum target, GLuint texture);
 };
 
 /* Coglbox implementation
@@ -111,7 +130,7 @@ test_coglbox_dispose (GObject *object)
   priv = TEST_COGLBOX_GET_PRIVATE (object);
   
   cogl_handle_unref (priv->cogl_handle);
-  glDeleteTextures (1, &priv->gl_handle);
+  priv->glDeleteTextures (1, &priv->gl_handle);
   
   G_OBJECT_CLASS (test_coglbox_parent_class)->dispose (object);
 }
@@ -133,27 +152,35 @@ test_coglbox_init (TestCoglbox *self)
   data[6] =   0; data[7]  =   0; data[8]  = 255;
   data[9] =   0; data[10] =   0; data[11] =   0;
 
+  priv->glGetIntegerv = (void *) cogl_get_proc_address ("glGetIntegerv");
+  priv->glPixelStorei = (void *) cogl_get_proc_address ("glPixelStorei");
+  priv->glTexParameteri = (void *) cogl_get_proc_address ("glTexParameteri");
+  priv->glTexImage2D = (void *) cogl_get_proc_address ("glTexImage2D");
+  priv->glGenTextures = (void *) cogl_get_proc_address ("glGenTextures");
+  priv->glDeleteTextures = (void *) cogl_get_proc_address ("glDeleteTextures");
+  priv->glBindTexture = (void *) cogl_get_proc_address ("glBindTexture");
+
   /* We are about to use OpenGL directly to create a TEXTURE_2D
    * texture so we need to save the state that we modify so we can
    * restore it afterwards and be sure not to interfere with any state
    * caching that Cogl may do internally.
    */
-  glGetIntegerv (GL_UNPACK_ALIGNMENT, &prev_unpack_alignment);
-  glGetIntegerv (GL_TEXTURE_BINDING_2D, &prev_2d_texture_binding);
+  priv->glGetIntegerv (GL_UNPACK_ALIGNMENT, &prev_unpack_alignment);
+  priv->glGetIntegerv (GL_TEXTURE_BINDING_2D, &prev_2d_texture_binding);
 
-  glGenTextures (1, &priv->gl_handle);
-  glBindTexture (GL_TEXTURE_2D, priv->gl_handle);
+  priv->glGenTextures (1, &priv->gl_handle);
+  priv->glBindTexture (GL_TEXTURE_2D, priv->gl_handle);
   
-  glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-  glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB,
+  priv->glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+  priv->glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB,
 		2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   /* Now restore the original GL state as Cogl had left it */
-  glPixelStorei (GL_UNPACK_ALIGNMENT, prev_unpack_alignment);
-  glBindTexture (GL_TEXTURE_2D, prev_2d_texture_binding);
+  priv->glPixelStorei (GL_UNPACK_ALIGNMENT, prev_unpack_alignment);
+  priv->glBindTexture (GL_TEXTURE_2D, prev_2d_texture_binding);
   
-  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  priv->glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  priv->glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   
   /* Create texture from foreign */
   

@@ -74,3 +74,27 @@ test_conform_simple_fixture_teardown (TestConformSimpleFixture *fixture,
   /* const TestConformSharedState *shared_state = data; */
 }
 
+void
+test_conform_get_gl_functions (TestConformGLFunctions *functions)
+{
+  functions->glGetString = (void *) cogl_get_proc_address ("glGetString");
+  g_assert (functions->glGetString != NULL);
+  functions->glGetIntegerv = (void *) cogl_get_proc_address ("glGetIntegerv");
+  g_assert (functions->glGetIntegerv != NULL);
+  functions->glPixelStorei = (void *) cogl_get_proc_address ("glPixelStorei");
+  g_assert (functions->glPixelStorei != NULL);
+  functions->glBindTexture = (void *) cogl_get_proc_address ("glBindTexture");
+  g_assert (functions->glBindTexture != NULL);
+  functions->glGenTextures = (void *) cogl_get_proc_address ("glGenTextures");
+  g_assert (functions->glGenTextures != NULL);
+  functions->glGetError = (void *) cogl_get_proc_address ("glGetError");
+  g_assert (functions->glGetError != NULL);
+  functions->glDeleteTextures =
+    (void *) cogl_get_proc_address ("glDeleteTextures");
+  g_assert (functions->glDeleteTextures != NULL);
+  functions->glTexImage2D = (void *) cogl_get_proc_address ("glTexImage2D");
+  g_assert (functions->glTexImage2D != NULL);
+  functions->glTexParameteri =
+    (void *) cogl_get_proc_address ("glTexParameteri");
+  g_assert (functions->glTexParameteri != NULL);
+}

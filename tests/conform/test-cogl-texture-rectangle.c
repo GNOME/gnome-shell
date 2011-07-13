@@ -5,6 +5,8 @@
 
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
+static TestConformGLFunctions gl_functions;
+
 typedef struct _TestState
 {
   ClutterActor *stage;
@@ -39,33 +41,34 @@ create_source_rect (void)
    * restore it afterwards and be sure not to interfere with any state
    * caching that Cogl may do internally.
    */
-  glGetIntegerv (GL_UNPACK_ROW_LENGTH, &prev_unpack_row_length);
-  glGetIntegerv (GL_UNPACK_ALIGNMENT, &prev_unpack_alignment);
-  glGetIntegerv (GL_UNPACK_SKIP_ROWS, &prev_unpack_skip_rows);
-  glGetIntegerv (GL_UNPACK_SKIP_PIXELS, &prev_unpack_skip_pixles);
-  glGetIntegerv (GL_TEXTURE_BINDING_RECTANGLE_ARB, &prev_rectangle_binding);
+  gl_functions.glGetIntegerv (GL_UNPACK_ROW_LENGTH, &prev_unpack_row_length);
+  gl_functions.glGetIntegerv (GL_UNPACK_ALIGNMENT, &prev_unpack_alignment);
+  gl_functions.glGetIntegerv (GL_UNPACK_SKIP_ROWS, &prev_unpack_skip_rows);
+  gl_functions.glGetIntegerv (GL_UNPACK_SKIP_PIXELS, &prev_unpack_skip_pixles);
+  gl_functions.glGetIntegerv (GL_TEXTURE_BINDING_RECTANGLE_ARB,
+                              &prev_rectangle_binding);
 
-  glPixelStorei (GL_UNPACK_ROW_LENGTH, 256);
-  glPixelStorei (GL_UNPACK_ALIGNMENT, 8);
-  glPixelStorei (GL_UNPACK_SKIP_ROWS, 0);
-  glPixelStorei (GL_UNPACK_SKIP_PIXELS, 0);
+  gl_functions.glPixelStorei (GL_UNPACK_ROW_LENGTH, 256);
+  gl_functions.glPixelStorei (GL_UNPACK_ALIGNMENT, 8);
+  gl_functions.glPixelStorei (GL_UNPACK_SKIP_ROWS, 0);
+  gl_functions.glPixelStorei (GL_UNPACK_SKIP_PIXELS, 0);
 
-  glGenTextures (1, &gl_tex);
-  glBindTexture (GL_TEXTURE_RECTANGLE_ARB, gl_tex);
-  glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0,
-                GL_RGBA, 256, 256, 0,
-                GL_RGBA,
-                GL_UNSIGNED_BYTE,
-                data);
+  gl_functions.glGenTextures (1, &gl_tex);
+  gl_functions.glBindTexture (GL_TEXTURE_RECTANGLE_ARB, gl_tex);
+  gl_functions.glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0,
+                             GL_RGBA, 256, 256, 0,
+                             GL_RGBA,
+                             GL_UNSIGNED_BYTE,
+                             data);
 
   /* Now restore the original GL state as Cogl had left it */
-  glPixelStorei (GL_UNPACK_ROW_LENGTH, prev_unpack_row_length);
-  glPixelStorei (GL_UNPACK_ALIGNMENT, prev_unpack_alignment);
-  glPixelStorei (GL_UNPACK_SKIP_ROWS, prev_unpack_skip_rows);
-  glPixelStorei (GL_UNPACK_SKIP_PIXELS, prev_unpack_skip_pixles);
-  glBindTexture (GL_TEXTURE_RECTANGLE_ARB, prev_rectangle_binding);
+  gl_functions.glPixelStorei (GL_UNPACK_ROW_LENGTH, prev_unpack_row_length);
+  gl_functions.glPixelStorei (GL_UNPACK_ALIGNMENT, prev_unpack_alignment);
+  gl_functions.glPixelStorei (GL_UNPACK_SKIP_ROWS, prev_unpack_skip_rows);
+  gl_functions.glPixelStorei (GL_UNPACK_SKIP_PIXELS, prev_unpack_skip_pixles);
+  gl_functions.glBindTexture (GL_TEXTURE_RECTANGLE_ARB, prev_rectangle_binding);
 
-  g_assert (glGetError () == GL_NO_ERROR);
+  g_assert (gl_functions.glGetError () == GL_NO_ERROR);
 
   g_free (data);
 
@@ -153,7 +156,7 @@ draw_frame (TestState *state)
 
   /* Cogl doesn't destroy foreign textures so we have to do it manually */
   cogl_texture_get_gl_texture (tex_rect, &gl_tex, NULL);
-  glDeleteTextures (1, &gl_tex);
+  gl_functions.glDeleteTextures (1, &gl_tex);
   cogl_handle_unref (tex_rect);
 }
 
@@ -214,7 +217,8 @@ static gboolean
 check_rectangle_extension (void)
 {
   static const char rect_extension[] = "GL_ARB_texture_rectangle";
-  const char *extensions = (const char *) glGetString (GL_EXTENSIONS);
+  const char *extensions =
+    (const char *) gl_functions.glGetString (GL_EXTENSIONS);
   const char *extensions_end;
 
   extensions_end = extensions + strlen (extensions);
@@ -245,6 +249,8 @@ test_cogl_texture_rectangle (TestConformSimpleFixture *fixture,
   guint paint_handler;
 
   state.stage = clutter_stage_get_default ();
+
+  test_conform_get_gl_functions (&gl_functions);
 
   /* Check whether GL supports the rectangle extension. If not we'll
      just assume the test passes */
