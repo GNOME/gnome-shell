@@ -949,14 +949,14 @@ Source.prototype = {
         if (isNaN(parseInt(count)))
             throw new Error("Invalid notification count: " + count);
 
+        if (this._actorDestroyed)
+            return;
+
         this._counterBin.visible = visible;
         this._counterLabel.set_text(count.toString());
     },
 
     _updateCount: function() {
-        if (this._actorDestroyed)
-            return;
-
         let count = this.notifications.length;
         this._setCount(count, count > 1);
     },
