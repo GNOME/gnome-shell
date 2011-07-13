@@ -94,6 +94,9 @@ AS_CASE([$host],
 AC_MSG_RESULT([$platform_win32])
 AM_CONDITIONAL(OS_WIN32, [test "$platform_win32" = "yes"])
 
+AC_CHECK_HEADER([OpenGL/gl.h], [platform_quartz=yes], [platform_quartz=no])
+AM_CONDITIONAL(OS_QUARTZ, [test "$platform_quartz" = "yes"])
+
 AC_SUBST(CLUTTER_LT_VERSION)
 AC_SUBST(CLUTTER_LT_LDFLAGS)
 
@@ -167,7 +170,10 @@ AC_SUBST(CLUTTER_LINK_FLAGS)
 dnl ========================================================================
 
 # defaults
-CLUTTER_FLAVOUR=glx
+AS_IF([test "x$platform_win32" = "xyes"],  [CLUTTER_FLAVOUR=win32],
+      [test "x$platform_quartz" = "xyes"], [CLUTTER_FLAVOUR=osx],
+      [CLUTTER_FLAVOUR=glx])
+
 FLAVOUR_LIBS=""
 FLAVOUR_CFLAGS=""
 CLUTTER_WINSYS_BASE=
