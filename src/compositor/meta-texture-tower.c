@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "meta-texture-tower.h"
+#include "meta-texture-rectangle.h"
 
 #ifndef M_LOG2E
 #define M_LOG2E 1.4426950408889634074
@@ -109,22 +110,6 @@ texture_is_rectangle (CoglHandle texture)
 }
 #endif /* GL_TEXTURE_RECTANGLE_ARB */
 
-static void
-free_texture (CoglHandle texture)
-{
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-  GLuint gl_tex;
-  GLenum gl_target;
-
-  cogl_texture_get_gl_texture (texture, &gl_tex, &gl_target);
-
-  if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    glDeleteTextures (1, &gl_tex);
-#endif /* GL_TEXTURE_RECTANGLE_ARB */
-
-  cogl_handle_unref (texture);
-}
-
 /**
  * meta_texture_tower_update_area:
  * @tower: a MetaTextureTower
@@ -152,7 +137,7 @@ meta_texture_tower_set_base_texture (MetaTextureTower *tower,
         {
           if (tower->textures[i] != COGL_INVALID_HANDLE)
             {
-              free_texture (tower->textures[i]);
+              cogl_handle_unref (tower->textures[i]);
               tower->textures[i] = COGL_INVALID_HANDLE;
             }
 
@@ -384,23 +369,18 @@ texture_tower_create_texture (MetaTextureTower *tower,
   if ((!is_power_of_two (width) || !is_power_of_two (height)) &&
       texture_is_rectangle (tower->textures[level - 1]))
     {
-      GLuint tex = 0;
-
-      glGenTextures (1, &tex);
-      glBindTexture (GL_TEXTURE_RECTANGLE_ARB, tex);
-      glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0,
-                    GL_RGBA, width,height,
-#if TEXTURE_FORMAT == COGL_PIXEL_FORMAT_BGRA_8888_PRE
-                    0, GL_BGRA, GL_UNSIGNED_BYTE,
-#else /* assume big endian */
-                    0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV,
-#endif
-                    NULL);
-
-      tower->textures[level] = cogl_texture_new_from_foreign (tex, GL_TEXTURE_RECTANGLE_ARB,
-                                                              width, height,
-                                                              0, 0,
-                                                              TEXTURE_FORMAT);
+      tower->textures[level] =
+        meta_texture_rectangle_new (width, height,
+                                    0, /* flags */
+                                    /* data format */
+                                    TEXTURE_FORMAT,
+                                    /* internal GL format */
+                                    GL_RGBA,
+                                    /* internal cogl format */
+                                    TEXTURE_FORMAT,
+                                    /* rowstride */
+                                    width * 4,
+                                    NULL);
     }
   else
 #endif /* GL_TEXTURE_RECTANGLE_ARB */

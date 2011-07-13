@@ -27,6 +27,7 @@
 
 #include "meta-shaped-texture.h"
 #include "meta-texture-tower.h"
+#include "meta-texture-rectangle.h"
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
@@ -181,17 +182,6 @@ meta_shaped_texture_dirty_mask (MetaShapedTexture *stex)
 
   if (priv->mask_texture != COGL_INVALID_HANDLE)
     {
-      GLuint mask_gl_tex;
-      GLenum mask_gl_target;
-
-      cogl_texture_get_gl_texture (priv->mask_texture,
-                                   &mask_gl_tex, &mask_gl_target);
-
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-      if (mask_gl_target == GL_TEXTURE_RECTANGLE_ARB)
-        glDeleteTextures (1, &mask_gl_tex);
-#endif
-
       cogl_handle_unref (priv->mask_texture);
       priv->mask_texture = COGL_INVALID_HANDLE;
 
@@ -258,24 +248,18 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
 #ifdef GL_TEXTURE_RECTANGLE_ARB
       if (paint_gl_target == GL_TEXTURE_RECTANGLE_ARB)
         {
-          GLuint tex;
-
-          glGenTextures (1, &tex);
-          glBindTexture (GL_TEXTURE_RECTANGLE_ARB, tex);
-          glPixelStorei (GL_UNPACK_ROW_LENGTH, tex_width);
-          glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-          glPixelStorei (GL_UNPACK_SKIP_ROWS, 0);
-          glPixelStorei (GL_UNPACK_SKIP_PIXELS, 0);
-          glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0,
-                        GL_ALPHA, tex_width, tex_height,
-                        0, GL_ALPHA, GL_UNSIGNED_BYTE, mask_data);
-
           priv->mask_texture
-            = cogl_texture_new_from_foreign (tex,
-                                             GL_TEXTURE_RECTANGLE_ARB,
-                                             tex_width, tex_height,
-                                             0, 0,
-                                             COGL_PIXEL_FORMAT_A_8);
+            = meta_texture_rectangle_new (tex_width, tex_height,
+                                          0, /* flags */
+                                          /* data format */
+                                          COGL_PIXEL_FORMAT_A_8,
+                                          /* internal GL format */
+                                          GL_ALPHA,
+                                          /* internal cogl format */
+                                          COGL_PIXEL_FORMAT_A_8,
+                                          /* rowstride */
+                                          tex_width,
+                                          mask_data);
         }
       else
 #endif /* GL_TEXTURE_RECTANGLE_ARB */
