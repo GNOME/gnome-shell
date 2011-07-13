@@ -45,7 +45,17 @@ static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data
 
 struct _ShellGlobal {
   GObject parent;
-  
+
+  ClutterStage *stage;
+  Window stage_xwindow;
+  GdkWindow *stage_gdk_window;
+
+  MetaDisplay *meta_display;
+  GdkDisplay *gdk_display;
+  Display *xdisplay;
+  MetaScreen *meta_screen;
+  GdkScreen *gdk_screen;
+
   /* We use this window to get a notification from GTK+ when
    * a widget in our process does a GTK+ grab.  See
    * http://bugzilla.gnome.org/show_bug.cgi?id=570641
@@ -66,8 +76,6 @@ struct _ShellGlobal {
   const char *imagedir;
   const char *userdatadir;
   StFocusManager *focus_manager;
-
-  GdkWindow    *stage_window;
 
   guint work_count;
   GSList *leisure_closures;
@@ -147,10 +155,10 @@ shell_global_get_property(GObject         *object,
       g_value_set_object (value, meta_plugin_get_overlay_group (global->plugin));
       break;
     case PROP_SCREEN:
-      g_value_set_object (value, shell_global_get_screen (global));
+      g_value_set_object (value, global->meta_screen);
       break;
     case PROP_GDK_SCREEN:
-      g_value_set_object (value, shell_global_get_gdk_screen (global));
+      g_value_set_object (value, global->gdk_screen);
       break;
     case PROP_SCREEN_WIDTH:
       {
@@ -169,7 +177,7 @@ shell_global_get_property(GObject         *object,
       }
       break;
     case PROP_STAGE:
-      g_value_set_object (value, meta_plugin_get_stage (global->plugin));
+      g_value_set_object (value, global->stage);
       break;
     case PROP_STAGE_INPUT_MODE:
       g_value_set_enum (value, global->input_mode);
@@ -237,8 +245,6 @@ shell_global_init (ShellGlobal *global)
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
   global->gtk_grab_active = FALSE;
-
-  global->stage_window = NULL;
 
   global->input_mode = SHELL_STAGE_INPUT_MODE_NORMAL;
 
@@ -462,14 +468,8 @@ focus_window_changed (MetaDisplay *display,
 static void
 shell_global_focus_stage (ShellGlobal *global)
 {
-  Display *xdpy;
-  ClutterActor *stage;
-  Window xstage;
-
-  stage = meta_plugin_get_stage (global->plugin);
-  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-  xdpy = meta_plugin_get_xdisplay (global->plugin);
-  XSetInputFocus (xdpy, xstage, RevertToPointerRoot,
+  XSetInputFocus (global->xdisplay, global->stage_xwindow,
+                  RevertToPointerRoot,
                   shell_global_get_current_time (global));
 }
 
@@ -556,7 +556,7 @@ shell_global_set_cursor (ShellGlobal *global,
       g_return_if_reached ();
     }
 
-  cursor = gdk_cursor_new_from_name (gdk_display_get_default (), name);
+  cursor = gdk_cursor_new_from_name (global->gdk_display, name);
   if (!cursor)
     {
       GdkCursorType cursor_type;
@@ -581,15 +581,8 @@ shell_global_set_cursor (ShellGlobal *global,
         }
       cursor = gdk_cursor_new (cursor_type);
     }
-  if (!global->stage_window)
-    {
-      ClutterStage *stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
 
-      global->stage_window = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
-                                                                     clutter_x11_get_stage_window (stage));
-    }
-
-  gdk_window_set_cursor (global->stage_window, cursor);
+  gdk_window_set_cursor (global->stage_gdk_window, cursor);
 
   gdk_cursor_unref (cursor);
 }
@@ -603,10 +596,7 @@ shell_global_set_cursor (ShellGlobal *global,
 void
 shell_global_unset_cursor (ShellGlobal  *global)
 {
-  if (!global->stage_window) /* cursor has never been set */
-    return;
-
-  gdk_window_set_cursor (global->stage_window, NULL);
+  gdk_window_set_cursor (global->stage_gdk_window, NULL);
 }
 
 /**
@@ -623,9 +613,6 @@ void
 shell_global_set_stage_input_region (ShellGlobal *global,
                                      GSList      *rectangles)
 {
-  MetaScreen *screen = meta_plugin_get_screen (global->plugin);
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdpy = meta_display_get_xdisplay (display);
   MetaRectangle *rect;
   XRectangle *rects;
   int nrects, i;
@@ -645,9 +632,9 @@ shell_global_set_stage_input_region (ShellGlobal *global,
     }
 
   if (global->input_region)
-    XFixesDestroyRegion (xdpy, global->input_region);
+    XFixesDestroyRegion (global->xdisplay, global->input_region);
 
-  global->input_region = XFixesCreateRegion (xdpy, rects, nrects);
+  global->input_region = XFixesCreateRegion (global->xdisplay, rects, nrects);
   g_free (rects);
 
   /* set_stage_input_mode() will figure out whether or not we
@@ -664,7 +651,7 @@ shell_global_set_stage_input_region (ShellGlobal *global,
 MetaScreen *
 shell_global_get_screen (ShellGlobal  *global)
 {
-  return meta_plugin_get_screen (global->plugin);
+  return global->meta_screen;
 }
 
 /**
@@ -677,7 +664,7 @@ shell_global_get_gdk_screen (ShellGlobal *global)
 {
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
 
-  return gdk_screen_get_default ();
+  return global->gdk_screen;
 }
 
 /**
@@ -735,26 +722,33 @@ void
 _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
 {
-  ClutterActor *stage;
-  MetaScreen *screen;
-  MetaDisplay *display;
-
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
 
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
 
-  stage = meta_plugin_get_stage (plugin);
+  global->meta_screen = meta_plugin_get_screen (plugin);
+  global->meta_display = meta_screen_get_display (global->meta_screen);
+  global->xdisplay = meta_display_get_xdisplay (global->meta_display);
 
-  g_signal_connect (stage, "notify::width",
+  global->gdk_display = gdk_x11_lookup_xdisplay (global->xdisplay);
+  global->gdk_screen = gdk_display_get_screen (global->gdk_display,
+                                               meta_screen_get_screen_number (global->meta_screen));
+
+  global->stage = CLUTTER_STAGE (meta_plugin_get_stage (plugin));
+  global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
+  global->stage_gdk_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,
+                                                                     global->stage_xwindow);
+
+  g_signal_connect (global->stage, "notify::width",
                     G_CALLBACK (global_stage_notify_width), global);
-  g_signal_connect (stage, "notify::height",
+  g_signal_connect (global->stage, "notify::height",
                     G_CALLBACK (global_stage_notify_height), global);
 
-  g_signal_connect (stage, "paint",
+  g_signal_connect (global->stage, "paint",
                     G_CALLBACK (global_stage_before_paint), global);
-  g_signal_connect_after (stage, "paint",
+  g_signal_connect_after (global->stage, "paint",
                           G_CALLBACK (global_stage_after_paint), global);
 
   shell_perf_log_define_event (shell_perf_log_get_default(),
@@ -766,12 +760,10 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "End of stage page repaint",
                                "");
 
-  screen = meta_plugin_get_screen (global->plugin);
-  display = meta_screen_get_display (screen);
-  g_signal_connect (display, "notify::focus-window",
+  g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
 
-  global->focus_manager = st_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
+  global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 }
 
 GjsContext *
@@ -800,10 +792,8 @@ gboolean
 shell_global_begin_modal (ShellGlobal *global,
                           guint32      timestamp)
 {
-  ClutterStage *stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
-  Window stagewin = clutter_x11_get_stage_window (stage);
-
-  return meta_plugin_begin_modal (global->plugin, stagewin, None, 0, timestamp);
+  return meta_plugin_begin_modal (global->plugin, global->stage_xwindow,
+                                  None, 0, timestamp);
 }
 
 /**
@@ -838,12 +828,9 @@ shell_global_create_pointer_barrier (ShellGlobal *global,
                                      int directions)
 {
 #if HAVE_XFIXESCREATEPOINTERBARRIER
-  Display *xdpy;
-
-  xdpy = meta_plugin_get_xdisplay (global->plugin);
-
   return (guint32)
-    XFixesCreatePointerBarrier (xdpy, DefaultRootWindow(xdpy),
+    XFixesCreatePointerBarrier (global->xdisplay,
+                                DefaultRootWindow (global->xdisplay),
                                 x1, y1,
                                 x2, y2,
                                 directions,
@@ -864,12 +851,9 @@ void
 shell_global_destroy_pointer_barrier (ShellGlobal *global, guint32 barrier)
 {
 #if HAVE_XFIXESCREATEPOINTERBARRIER
-  Display *xdpy;
-
   g_return_if_fail (barrier > 0);
 
-  xdpy = meta_plugin_get_xdisplay (global->plugin);
-  XFixesDestroyPointerBarrier (xdpy, (PointerBarrier)barrier);
+  XFixesDestroyPointerBarrier (global->xdisplay, (PointerBarrier)barrier);
 #endif
 }
 
@@ -1168,29 +1152,24 @@ grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
  */
 void shell_global_init_xdnd (ShellGlobal *global)
 {
+  Window output_window = meta_get_overlay_window (global->meta_screen);
   long xdnd_version = 5;
 
-  MetaScreen *screen = shell_global_get_screen (global);
-  Window output_window = meta_get_overlay_window (screen);
+  XChangeProperty (global->xdisplay, global->stage_xwindow,
+                   gdk_x11_get_xatom_by_name ("XdndAware"), XA_ATOM,
+                   32, PropModeReplace, (const unsigned char *)&xdnd_version, 1);
 
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
-
-  ClutterStage *stage = CLUTTER_STAGE(meta_plugin_get_stage (global->plugin));
-  Window stage_win = clutter_x11_get_stage_window (stage);
-
-  XChangeProperty (xdisplay, stage_win, gdk_x11_get_xatom_by_name ("XdndAware"), XA_ATOM,
-                  32, PropModeReplace, (const unsigned char *)&xdnd_version, 1);
-
-  XChangeProperty (xdisplay, output_window, gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
-                  32, PropModeReplace, (const unsigned char *)&stage_win, 1);
+  XChangeProperty (global->xdisplay, output_window,
+                   gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
+                   32, PropModeReplace, (const unsigned char *)&global->stage_xwindow, 1);
 
   /*
    * XdndProxy is additionally set on the proxy window as verification that the
    * XdndProxy property on the target window isn't a left-over
    */
-  XChangeProperty (xdisplay, stage_win, gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
-                  32, PropModeReplace, (const unsigned char *)&stage_win, 1);
+  XChangeProperty (global->xdisplay, global->stage_xwindow,
+                   gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
+                   32, PropModeReplace, (const unsigned char *)&global->stage_xwindow, 1);
 }
 
 /**
@@ -1213,7 +1192,7 @@ shell_global_get_pointer (ShellGlobal         *global,
 {
   GdkModifierType raw_mods;
 
-  gdk_display_get_pointer (gdk_display_get_default (), NULL, x, y, &raw_mods);
+  gdk_display_get_pointer (global->gdk_display, NULL, x, y, &raw_mods);
   *mods = raw_mods & GDK_MODIFIER_MASK;
 }
 
@@ -1232,7 +1211,7 @@ shell_global_sync_pointer (ShellGlobal *global)
   GdkModifierType mods;
   ClutterMotionEvent event;
 
-  gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, &mods);
+  gdk_display_get_pointer (global->gdk_display, NULL, &x, &y, &mods);
 
   event.type = CLUTTER_MOTION;
   event.time = shell_global_get_current_time (global);
@@ -1241,7 +1220,7 @@ shell_global_sync_pointer (ShellGlobal *global)
    * pointer is not inside the bounds of the stage given the current
    * stage_input_mode. For our current purposes however, this works.
    */
-  event.stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
+  event.stage = global->stage;
   event.x = x;
   event.y = y;
   event.modifier_state = mods;
@@ -1286,7 +1265,6 @@ guint32
 shell_global_get_current_time (ShellGlobal *global)
 {
   guint32 time;
-  MetaDisplay *display;
   const ClutterEvent *clutter_event;
 
   /* In case we have a xdnd timestamp use it */
@@ -1306,8 +1284,7 @@ shell_global_get_current_time (ShellGlobal *global)
      to clutter_get_current_event_time().
    */
 
-  display = meta_screen_get_display (shell_global_get_screen (global));
-  time = meta_display_get_current_time (display);
+  time = meta_display_get_current_time (global->meta_display);
   if (time != CLUTTER_CURRENT_TIME)
       return time;
   /*
@@ -1341,7 +1318,7 @@ shell_global_create_app_launch_context (ShellGlobal *global)
 
   // Make sure that the app is opened on the current workspace even if
   // the user switches before it starts
-  gdk_app_launch_context_set_desktop (context, meta_screen_get_active_workspace_index (shell_global_get_screen (global)));
+  gdk_app_launch_context_set_desktop (context, meta_screen_get_active_workspace_index (global->meta_screen));
 
   return (GAppLaunchContext *)context;
 }
@@ -1529,15 +1506,9 @@ shell_global_cancel_theme_sound (ShellGlobal *global,
 gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
                                          XEvent       *xev)
 {
-  MetaScreen *screen = meta_plugin_get_screen (global->plugin);
-  Window output_window = meta_get_overlay_window (screen);
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Window output_window = meta_get_overlay_window (global->meta_screen);
 
-  ClutterStage *stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
-  Window stage_win = clutter_x11_get_stage_window (stage);
-
-  if (xev->xany.window != output_window && xev->xany.window != stage_win)
+  if (xev->xany.window != output_window && xev->xany.window != global->stage_xwindow)
     return FALSE;
 
   if (xev->xany.type == ClientMessage && xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndPosition"))
@@ -1547,7 +1518,7 @@ gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
 
       memset (&xevent, 0, sizeof(xevent));
       xevent.xany.type = ClientMessage;
-      xevent.xany.display = xdisplay;
+      xevent.xany.display = global->xdisplay;
       xevent.xclient.window = src;
       xevent.xclient.message_type = gdk_x11_get_xatom_by_name ("XdndStatus");
       xevent.xclient.format = 32;
@@ -1556,7 +1527,7 @@ gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
       xevent.xclient.data.l[1] = 2;
       xevent.xclient.data.l[4] = None;
 
-      XSendEvent (xdisplay, src, False, 0, &xevent);
+      XSendEvent (global->xdisplay, src, False, 0, &xevent);
 
       /* Store the timestamp of the xdnd position event */
       global->xdnd_timestamp = xev->xclient.data.l[3];
