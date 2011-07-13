@@ -667,7 +667,7 @@ dnl === Enable debug level ====================================================
 m4_define([debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [minimum])])
 AC_ARG_ENABLE([debug],
               [AS_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
-                              [Control Clutter debugging level @<:@default=debug_default@:>@])],
+                              [Control Clutter debugging level @<:@default=]debug_default[@:>@])],
               [],
               [enable_debug=debug_default])
 
@@ -700,7 +700,7 @@ m4_define([deprecated_default],
 
 AC_ARG_ENABLE([deprecated],
               [AS_HELP_STRING([--enable-deprecated=@<:@no/yes@:>@],
-                              [Whether deprecated symbols should be disabled when compiling Clutter])],
+                              [Whether deprecated symbols should be disabled when compiling Clutter @<:@default=]deprecated_default[@:>@])],
               [],
               [enable_deprecated=deprecated_default])
 
@@ -807,7 +807,7 @@ dnl === Enable strict compiler flags ==========================================
 m4_define([maintainer_flags_default], [m4_if(m4_eval(clutter_micro_version % 2), [1], [yes], [no])])
 AC_ARG_ENABLE([maintainer-flags],
               [AS_HELP_STRING([--enable-maintainer-flags=@<:@no/yes/error@:>@],
-                              [Use strict compiler flags @<:@default=maintainer_flags_default@:>@])],
+                              [Use strict compiler flags @<:@default=]maintainer_flags_default[@:>@])],
               [],
               [enable_maintainer_flags=maintainer_flags_default])
 
