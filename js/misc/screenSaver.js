@@ -2,7 +2,6 @@
 
 const DBus = imports.dbus;
 const Lang = imports.lang;
-const Signals = imports.signals;
 
 const ScreenSaverIface = {
     name: 'org.gnome.ScreenSaver',
@@ -32,28 +31,23 @@ ScreenSaverProxy.prototype = {
                                 Lang.bind(this, this._onSSAppeared),
                                 Lang.bind(this, this._onSSVanished));
 
+        this.screenSaverActive = false;
         this.connect('ActiveChanged',
                      Lang.bind(this, this._onActiveChanged));
     },
 
     _onSSAppeared: function(owner) {
         this.GetActiveRemote(Lang.bind(this, function(isActive) {
-            this._screenSaverActive = isActive;
+            this.screenSaverActive = isActive;
         }))
     },
 
     _onSSVanished: function(oldOwner) {
-        this._screenSaverActive = false;
+        this.screenSaverActive = false;
     },
 
     _onActiveChanged: function(object, isActive) {
-        this._screenSaverActive = isActive;
-        this.emit('active-changed', this._screenSaverActive);
-    },
-
-    getActive: function() {
-        return this._screenSaverActive;
+        this.screenSaverActive = isActive;
     }
 };
 DBus.proxifyPrototype(ScreenSaverProxy.prototype, ScreenSaverIface);
-Signals.addSignalMethods(ScreenSaverProxy.prototype);

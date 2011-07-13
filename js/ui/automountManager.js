@@ -86,7 +86,7 @@ AutomountManager.prototype = {
         this.ckListener = new ConsoleKitManager();
 
         this._ssProxy = new ScreenSaver.ScreenSaverProxy();
-        this._ssProxy.connect('active-changed',
+        this._ssProxy.connect('ActiveChanged',
                               Lang.bind(this,
                                         this._screenSaverActiveChanged));
 
@@ -201,7 +201,7 @@ AutomountManager.prototype = {
             if (!this.ckListener.sessionActive)
                 return;
 
-            if (this._ssProxy.getActive()) {
+            if (this._ssProxy.screenSaverActive) {
                 if (this._volumeQueue.indexOf(volume) == -1)
                     this._volumeQueue.push(volume);
 
