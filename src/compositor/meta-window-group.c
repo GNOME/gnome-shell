@@ -103,11 +103,9 @@ actor_is_untransformed (ClutterActor *actor,
 static void
 meta_window_group_paint (ClutterActor *actor)
 {
-  MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   cairo_region_t *visible_region;
-  GLboolean scissor_test;
-  cairo_rectangle_int_t screen_rect = { 0 };
-  cairo_rectangle_int_t scissor_rect;
+  ClutterActor *stage;
+  cairo_rectangle_int_t visible_rect;
   GList *children, *l;
 
   /* We walk the list from top to bottom (opposite of painting order),
@@ -117,39 +115,17 @@ meta_window_group_paint (ClutterActor *actor)
   children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
   children = g_list_reverse (children);
 
-  /* Start off with the full screen area (for a multihead setup, we
-   * might want to use a more accurate union of the monitors to avoid
-   * painting in holes from mismatched monitor sizes. That's just an
-   * optimization, however.)
-   */
-  meta_screen_get_size (window_group->screen, &screen_rect.width, &screen_rect.height);
+  /* Get the clipped redraw bounds from Clutter so that we can avoid
+   * painting shadows on windows that don't need to be painted in this
+   * frame. In the case of a multihead setup with mismatched monitor
+   * sizes, we could intersect this with an accurate union of the
+   * monitors to avoid painting shadows that are visible only in the
+   * holes. */
+  stage = clutter_actor_get_stage (actor);
+  clutter_stage_get_redraw_clip_bounds (CLUTTER_STAGE (stage),
+                                        &visible_rect);
 
-  /* When doing a partial stage paint, Clutter will set the GL scissor
-   * box to the clip rectangle for the partial repaint. We combine the screen
-   * rectangle with the scissor box to get the region we need to
-   * paint. (Strangely, the scissor box sometimes seems to be bigger
-   * than the stage ... Clutter should probably be clampimg)
-   */
-  glGetBooleanv (GL_SCISSOR_TEST, &scissor_test);
-
-  if (scissor_test)
-    {
-      GLint scissor_box[4];
-      glGetIntegerv (GL_SCISSOR_BOX, scissor_box);
-
-      scissor_rect.x = scissor_box[0];
-      scissor_rect.y = screen_rect.height - (scissor_box[1] + scissor_box[3]);
-      scissor_rect.width = scissor_box[2];
-      scissor_rect.height = scissor_box[3];
-
-      gdk_rectangle_intersect (&scissor_rect, &screen_rect, &scissor_rect);
-    }
-  else
-    {
-      scissor_rect = screen_rect;
-    }
-
-  visible_region = cairo_region_create_rectangle (&scissor_rect);
+  visible_region = cairo_region_create_rectangle (&visible_rect);
 
   for (l = children; l; l = l->next)
     {

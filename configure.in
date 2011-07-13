@@ -185,7 +185,7 @@ else
   AC_MSG_ERROR([no. Mutter requires the Xcomposite extension to build.])
 fi
 
-CLUTTER_VERSION=1.2.0
+CLUTTER_VERSION=1.7.5
 CLUTTER_PACKAGE=clutter-1.0
 AC_SUBST(CLUTTER_PACKAGE)
 if $PKG_CONFIG --atleast-version $CLUTTER_VERSION $CLUTTER_PACKAGE ; then
