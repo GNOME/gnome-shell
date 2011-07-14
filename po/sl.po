@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-28 19:42+0000\n"
-"PO-Revision-Date: 2011-06-28 22:20+0100\n"
+"POT-Creation-Date: 2011-07-13 21:51+0000\n"
+"PO-Revision-Date: 2011-07-14 08:04+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: Slovenian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: Slovenian\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -146,27 +146,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:252
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:357
+#: ../js/ui/appDisplay.js:351
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:383
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:656
+#: ../js/ui/appDisplay.js:650
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:659
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -300,14 +300,14 @@ msgstr "Nič ni razporejeno"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:717
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:705
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:708
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
@@ -329,7 +329,7 @@ msgid "Next week"
 msgstr "Naslednji teden"
 
 #: ../js/ui/dash.js:172
-#: ../js/ui/messageTray.js:1044
+#: ../js/ui/messageTray.js:1122
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -494,11 +494,11 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:1037
+#: ../js/ui/messageTray.js:1115
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:2207
+#: ../js/ui/messageTray.js:2286
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -528,11 +528,11 @@ msgstr "Končaj %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:913
+#: ../js/ui/panel.js:914
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:1013
+#: ../js/ui/panel.js:1014
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -598,43 +598,43 @@ msgstr "Iskanje ..."
 msgid "No matching results."
 msgstr "Ni zadetkov iskanja"
 
-#: ../js/ui/statusMenu.js:202
-#: ../js/ui/statusMenu.js:206
-#: ../js/ui/statusMenu.js:272
+#: ../js/ui/statusMenu.js:192
+#: ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:262
 msgid "Power Off..."
 msgstr "Izklop ..."
 
-#: ../js/ui/statusMenu.js:204
-#: ../js/ui/statusMenu.js:206
-#: ../js/ui/statusMenu.js:271
+#: ../js/ui/statusMenu.js:194
+#: ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:261
 msgid "Suspend"
 msgstr "Zaustavi"
 
-#: ../js/ui/statusMenu.js:227
+#: ../js/ui/statusMenu.js:217
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/statusMenu.js:232
+#: ../js/ui/statusMenu.js:222
 msgid "Busy"
 msgstr "Zaposleno"
 
-#: ../js/ui/statusMenu.js:240
+#: ../js/ui/statusMenu.js:230
 msgid "My Account"
 msgstr "Račun"
 
-#: ../js/ui/statusMenu.js:244
+#: ../js/ui/statusMenu.js:234
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/statusMenu.js:252
+#: ../js/ui/statusMenu.js:242
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/statusMenu.js:257
+#: ../js/ui/statusMenu.js:247
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/statusMenu.js:262
+#: ../js/ui/statusMenu.js:252
 msgid "Log Out..."
 msgstr "Odjava ..."
 
@@ -863,14 +863,14 @@ msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
 #: ../js/ui/status/network.js:582
-#: ../js/ui/status/network.js:1489
+#: ../js/ui/status/network.js:1507
 msgid "More..."
 msgstr "Več ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
 #: ../js/ui/status/network.js:618
-#: ../js/ui/status/network.js:1427
+#: ../js/ui/status/network.js:1444
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
@@ -888,7 +888,7 @@ msgstr "Samodejni klicni dostop"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
 #: ../js/ui/status/network.js:898
-#: ../js/ui/status/network.js:1439
+#: ../js/ui/status/network.js:1456
 #, c-format
 msgid "Auto %s"
 msgstr "Samodejna povezava z %s"
@@ -897,68 +897,68 @@ msgstr "Samodejna povezava z %s"
 msgid "Auto bluetooth"
 msgstr "Samodejna povezava z Bluetooth"
 
-#: ../js/ui/status/network.js:1441
+#: ../js/ui/status/network.js:1458
 msgid "Auto wireless"
 msgstr "Samodejni brezžični dostop"
 
-#: ../js/ui/status/network.js:1531
+#: ../js/ui/status/network.js:1550
 msgid "Enable networking"
 msgstr "Omogoči omrežje"
 
-#: ../js/ui/status/network.js:1543
+#: ../js/ui/status/network.js:1562
 msgid "Wired"
 msgstr "Žično"
 
-#: ../js/ui/status/network.js:1554
+#: ../js/ui/status/network.js:1573
 msgid "Wireless"
 msgstr "Brezžično"
 
-#: ../js/ui/status/network.js:1564
+#: ../js/ui/status/network.js:1583
 msgid "Mobile broadband"
 msgstr "Mobilni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:1574
+#: ../js/ui/status/network.js:1593
 msgid "VPN Connections"
 msgstr "Povezave VPN"
 
-#: ../js/ui/status/network.js:1586
+#: ../js/ui/status/network.js:1605
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1878
+#: ../js/ui/status/network.js:1897
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Vzpostavljena je povezava z mobilnim širokopasovnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1882
+#: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Vzpostavljena je povezava z brezžičnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1886
+#: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Vzpostavljena je povezava z žičnim omrežjem '%s'."
 
-#: ../js/ui/status/network.js:1890
+#: ../js/ui/status/network.js:1909
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Vzpostavljena je povezava z omrežjem VPN '%s'"
 
-#: ../js/ui/status/network.js:1895
+#: ../js/ui/status/network.js:1914
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Vzpostavljena je povezava z '%s'."
 
-#: ../js/ui/status/network.js:1903
+#: ../js/ui/status/network.js:1922
 msgid "Connection established"
 msgstr "Povezava je vzpostavljena"
 
-#: ../js/ui/status/network.js:2029
+#: ../js/ui/status/network.js:2048
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
-#: ../js/ui/status/network.js:2154
+#: ../js/ui/status/network.js:2173
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -968,11 +968,11 @@ msgstr "Upravljanje napajanja"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:109
 msgid "Estimating..."
 msgstr "Ocenjevanje ...."
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:116
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -982,12 +982,12 @@ msgstr[2] "preostajata še %d uri"
 msgstr[3] "preostajajo še %d ure"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:119
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "Preostaja še %d %s %d %s"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:121
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ur"
@@ -995,7 +995,7 @@ msgstr[1] "ura"
 msgstr[2] "uri"
 msgstr[3] "ure"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:121
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minut"
@@ -1003,7 +1003,7 @@ msgstr[1] "minuta"
 msgstr[2] "minuti"
 msgstr[3] "minute"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:124
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -1012,51 +1012,51 @@ msgstr[1] "preostaja še %d minuta"
 msgstr[2] "preostajata še %d minuti"
 msgstr[3] "preostajajo še %d minute"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:216
 msgid "AC adapter"
 msgstr "Električni prilagodilnik"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:218
 msgid "Laptop battery"
 msgstr "Baterija prenosnika"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:220
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:222
 msgid "Monitor"
 msgstr "Zaslon"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:224
 msgid "Mouse"
 msgstr "Miška"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:226
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:228
 msgid "PDA"
 msgstr "Dlančnik"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:230
 msgid "Cell phone"
 msgstr "Mobilni telefon"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:232
 msgid "Media player"
 msgstr "Predstavni predvajalnik"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:234
 msgid "Tablet"
 msgstr "Tablični računalnik"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:236
 msgid "Computer"
 msgstr "Računalnik"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:238
 #: ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Neznano"
@@ -1069,22 +1069,22 @@ msgstr "Glasnost"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:401
+#: ../js/ui/telepathyClient.js:497
 #, c-format
 msgid "%s is online."
 msgstr "%s je povezan."
 
-#: ../js/ui/telepathyClient.js:406
+#: ../js/ui/telepathyClient.js:502
 #, c-format
 msgid "%s is offline."
 msgstr "%s ni povezan."
 
-#: ../js/ui/telepathyClient.js:409
+#: ../js/ui/telepathyClient.js:505
 #, c-format
 msgid "%s is away."
 msgstr "%s je odsoten."
 
-#: ../js/ui/telepathyClient.js:412
+#: ../js/ui/telepathyClient.js:508
 #, c-format
 msgid "%s is busy."
 msgstr "%s je zaposlen."
@@ -1092,17 +1092,44 @@ msgstr "%s je zaposlen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:560
+#: ../js/ui/telepathyClient.js:697
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Poslano na %X ob %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:610
+#: ../js/ui/telepathyClient.js:747
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
+
+#: ../js/ui/telepathyClient.js:811
+msgid "Invitation"
+msgstr "Povabilo"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/telepathyClient.js:855
+#, c-format
+msgid "Invitation to %s"
+msgstr "Povabilo v %s"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/telepathyClient.js:863
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "%s vas vabi, da se pridružite v %s"
+
+#: ../js/ui/telepathyClient.js:865
+msgid "Decline"
+msgstr "Zavrni"
+
+#: ../js/ui/telepathyClient.js:866
+msgid "Accept"
+msgstr "Sprejmi"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1113,7 +1140,7 @@ msgid "Type to search..."
 msgstr "Vtipkajte za iskanje ..."
 
 #: ../js/ui/viewSelector.js:140
-#: ../src/shell-util.c:254
+#: ../src/shell-util.c:257
 msgid "Search"
 msgstr "Poišči"
 
@@ -1153,7 +1180,7 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:445
+#: ../src/main.c:466
 msgid "Print version"
 msgstr "Izpiši različico"
 
@@ -1174,13 +1201,13 @@ msgstr "Privzeto"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
-#: ../src/shell-util.c:93
+#: ../src/shell-util.c:96
 msgid "Home Folder"
 msgstr "Domača mapa"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:111
 msgid "File System"
 msgstr "Datotečni sistem"
 
@@ -1189,7 +1216,7 @@ msgstr "Datotečni sistem"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:307
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
@@ -1400,11 +1427,10 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
 #~ msgstr ""
 #~ "Ključ določa zapis ure. Mogoče vrednosti so \"12-urni\", \"24-urni\", "
 #~ "\"unix\" in \"po meri\". Možnost \"unix\" prikazuje čas v sekundah od "
