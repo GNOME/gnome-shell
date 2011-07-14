@@ -12,6 +12,7 @@ const Signals = imports.signals;
 
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
+const Layout = imports.ui.layout;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -23,8 +24,6 @@ const Tweener = imports.ui.tweener;
 const PANEL_ICON_SIZE = 24;
 
 const STARTUP_ANIMATION_TIME = 0.2;
-
-const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
@@ -557,11 +556,20 @@ ActivitiesButton.prototype = {
     _init: function() {
         PanelMenu.Button.prototype._init.call(this, 0.0);
 
+        let container = new Shell.GenericContainer();
+        container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        container.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.child = container;
+        this.actor.name = 'panelActivities';
+
         /* Translators: If there is no suitable word for "Activities"
            in your language, you can use the word for "Overview". */
-        let label = new St.Label({ text: _("Activities") });
-        this.actor.child = label;
-        this.actor.name = 'panelActivities';
+        this._label = new St.Label({ text: _("Activities") });
+        container.add_actor(this._label);
+
+        this._hotCorner = new Layout.HotCorner();
+        container.add_actor(this._hotCorner.actor);
 
         // Hack up our menu...
         this.menu.open = Lang.bind(this, this._onMenuOpenRequest);
@@ -581,12 +589,38 @@ ActivitiesButton.prototype = {
             this._escapeMenuGrab();
         }));
 
-        this._hotCorner = null;
         this._xdndTimeOut = 0;
     },
 
-    setHotCorner: function(corner) {
-        this._hotCorner = corner;
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        [alloc.min_size, alloc.natural_size] = this._label.get_preferred_width(forHeight);
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        [alloc.min_size, alloc.natural_size] = this._label.get_preferred_height(forWidth);
+    },
+
+    _allocate: function(actor, box, flags) {
+        this._label.allocate(box, flags);
+
+        // The hot corner needs to be outside any padding/alignment
+        // that has been imposed on us
+        let primary = Main.layoutManager.primaryMonitor;
+        let hotBox = new Clutter.ActorBox();
+        let ok, x, y;
+        if (actor.get_direction() == St.TextDirection.LTR) {
+            [ok, x, y] = actor.transform_stage_point(primary.x, primary.y)
+        } else {
+            [ok, x, y] = actor.transform_stage_point(primary.x + primary.width, primary.y);
+            // hotCorner.actor has northeast gravity, so we don't need
+            // to adjust x for its width
+        }
+
+        hotBox.x1 = Math.round(x);
+        hotBox.x2 = hotBox.x1 + this._hotCorner.actor.width;
+        hotBox.y1 = Math.round(y);
+        hotBox.y2 = hotBox.y1 + this._hotCorner.actor.height;
+        this._hotCorner.actor.allocate(hotBox, flags);
     },
 
     handleDragOver: function(source, actor, x, y, time) {
@@ -749,182 +783,6 @@ PanelCorner.prototype = {
     }
 };
 
-/**
- * HotCorner:
- *
- * This class manages the "hot corner" that can toggle switching to
- * overview.
- */
-function HotCorner(button) {
-    this._init(button);
-}
-
-HotCorner.prototype = {
-    _init : function(button) {
-        // This is the activities button associated with this hot corner,
-        // if this is on the primary monitor (or null with the corner is
-        // on a different monitor)
-        this._button = button;
-
-        // We use this flag to mark the case where the user has entered the
-        // hot corner and has not left both the hot corner and a surrounding
-        // guard area (the "environs"). This avoids triggering the hot corner
-        // multiple times due to an accidental jitter.
-        this._entered = false;
-
-        this.actor = new Clutter.Group({ width: 3,
-                                         height: 3,
-                                         reactive: true });
-
-        this._corner = new Clutter.Rectangle({ width: 1,
-                                               height: 1,
-                                               opacity: 0,
-                                               reactive: true });
-
-        this.actor.add_actor(this._corner);
-
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
-            this._corner.set_position(this.actor.width - this._corner.width, 0);
-            this.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-        } else {
-            this._corner.set_position(0, 0);
-        }
-
-        this._activationTime = 0;
-
-        this.actor.connect('enter-event',
-                           Lang.bind(this, this._onEnvironsEntered));
-        this.actor.connect('leave-event',
-                           Lang.bind(this, this._onEnvironsLeft));
-        // Clicking on the hot corner environs should result in the same bahavior
-        // as clicking on the hot corner.
-        this.actor.connect('button-release-event',
-                           Lang.bind(this, this._onCornerClicked));
-
-        // In addition to being triggered by the mouse enter event, the hot corner
-        // can be triggered by clicking on it. This is useful if the user wants to
-        // undo the effect of triggering the hot corner once in the hot corner.
-        this._corner.connect('enter-event',
-                             Lang.bind(this, this._onCornerEntered));
-        this._corner.connect('button-release-event',
-                             Lang.bind(this, this._onCornerClicked));
-        this._corner.connect('leave-event',
-                             Lang.bind(this, this._onCornerLeft));
-
-        this._corner._delegate = this._corner;
-        this._corner.handleDragOver = Lang.bind(this,
-            function(source, actor, x, y, time) {
-                 if (source == Main.xdndHandler) {
-                    if(!Main.overview.visible && !Main.overview.animationInProgress) {
-                        this.rippleAnimation();
-                        Main.overview.showTemporarily();
-                        Main.overview.beginItemDrag(actor);
-                    }
-                 }
-            });
-
-        Main.chrome.addActor(this.actor, { affectsStruts: false });
-    },
-
-    destroy: function() {
-        this.actor.destroy();
-    },
-
-    _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
-        // We draw a ripple by using a source image and animating it scaling
-        // outwards and fading away. We want the ripples to move linearly
-        // or it looks unrealistic, but if the opacity of the ripple goes
-        // linearly to zero it fades away too quickly, so we use Tweener's
-        // 'onUpdate' to give a non-linear curve to the fade-away and make
-        // it more visible in the middle section.
-
-        let [x, y] = this._corner.get_transformed_position();
-        let ripple = new St.BoxLayout({ style_class: 'ripple-box',
-                                        opacity: 255 * Math.sqrt(startOpacity),
-                                        scale_x: startScale,
-                                        scale_y: startScale,
-                                        x: x,
-                                        y: y });
-        ripple._opacity =  startOpacity;
-        if (ripple.get_direction() == St.TextDirection.RTL)
-            ripple.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-        Tweener.addTween(ripple, { _opacity: finalOpacity,
-                                   scale_x: finalScale,
-                                   scale_y: finalScale,
-                                   delay: delay,
-                                   time: time,
-                                   transition: 'linear',
-                                   onUpdate: function() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
-                                   onComplete: function() { ripple.destroy(); } });
-        Main.uiGroup.add_actor(ripple);
-    },
-
-    rippleAnimation: function() {
-        // Show three concentric ripples expanding outwards; the exact
-        // parameters were found by trial and error, so don't look
-        // for them to make perfect sense mathematically
-
-        //              delay  time  scale opacity => scale opacity
-        this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
-        this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
-        this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
-    },
-
-    _onEnvironsEntered : function() {
-        if (this._button)
-            this._button.hover = true;
-    },
-
-    _onCornerEntered : function() {
-        if (!this._entered) {
-            this._entered = true;
-            if (!Main.overview.animationInProgress) {
-                this._activationTime = Date.now() / 1000;
-
-                this.rippleAnimation();
-                Main.overview.toggle();
-            }
-        }
-        return false;
-    },
-
-    _onCornerClicked : function() {
-        if (this.shouldToggleOverviewOnClick())
-            Main.overview.toggle();
-        return true;
-    },
-
-    _onCornerLeft : function(actor, event) {
-        if (event.get_related() != this.actor)
-            this._entered = false;
-        // Consume event, otherwise this will confuse onEnvironsLeft
-        return true;
-    },
-
-    _onEnvironsLeft : function(actor, event) {
-        if (this._button)
-            this._button.hover = false;
-
-        if (event.get_related() != this._corner)
-            this._entered = false;
-        return false;
-    },
-
-    // Checks if the Activities button is currently sensitive to
-    // clicks. The first call to this function within the
-    // HOT_CORNER_ACTIVATION_TIMEOUT time of the hot corner being
-    // triggered will return false. This avoids opening and closing
-    // the overview if the user both triggered the hot corner and
-    // clicked the Activities button.
-    shouldToggleOverviewOnClick: function() {
-        if (Main.overview.animationInProgress)
-            return false;
-        if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > HOT_CORNER_ACTIVATION_TIMEOUT)
-            return true;
-        return false;
-    }
-}
-
 
 function Panel() {
     this._init();
@@ -1030,7 +888,7 @@ Panel.prototype = {
 
         /* Button on the left side of the panel. */
         this._activitiesButton = new ActivitiesButton();
-        this._activities = this.button = this._activitiesButton.actor;
+        this._activities = this._activitiesButton.actor;
         this._leftBox.add(this._activities);
 
         // The activities button has a pretend menu, so as to integrate
@@ -1038,7 +896,7 @@ Panel.prototype = {
         this._menus.addMenu(this._activitiesButton.menu);
 
         // Synchronize the button's pseudo classes with its corner
-        this.button.connect('style-changed', Lang.bind(this,
+        this._activities.connect('style-changed', Lang.bind(this,
             function(actor) {
                 let rtl = actor.get_direction() == St.TextDirection.RTL;
                 let corner = rtl ? this._rightCorner : this._leftCorner;
@@ -1095,13 +953,6 @@ Panel.prototype = {
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
-    },
-
-    // While there can be multiple hotcorners (one per monitor), the hot corner
-    // that is on top of the Activities button is special since it needs special
-    // coordination with clicking on that button
-    setHotCorner: function(corner) {
-        this._activitiesButton.setHotCorner(corner);
     },
 
     startStatusArea: function() {
