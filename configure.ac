@@ -592,6 +592,23 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
               [AC_MSG_ERROR([not found])]
         )
 
+        # X Generic Extensions (optional)
+        clutter_save_CPPFLAGS="$CPPFLAGS"
+        CPPFLAGS="$CPPFLAGS $X11_CFLAGS"
+
+        clutter_save_LIBS="$LIBS"
+        LIBS="$LIBS $X11_LIBS"
+
+        have_xge=no
+        AC_CHECK_FUNC([XGetEventData],
+                      [
+                        AC_DEFINE(HAVE_XGE, 1, [Define to 1 if X Generic Extensions is available])
+                        have_xge=yes
+                      ])
+
+        CPPFLAGS="$clutter_save_CPPFLAGS"
+        LIBS="$clutter_save_LIBS"
+
         # XI (optional)
         AC_ARG_ENABLE([xinput],
                       [AS_HELP_STRING([--enable-xinput], [Use the XI X extension])],
@@ -1020,6 +1037,7 @@ fi
 if test "x$SUPPORT_XLIB" = "x1"; then
 echo "        Enable XComposite: ${have_xcomposite}"
 echo "        Enable XInput: ${have_xinput}"
+echo "        Enable Xge: ${have_xge}"
 echo "        Enable XI2: ${have_xinput2}"
 echo "        Enable XKB: ${have_xkb}"
 echo "        Enable X11 tests: ${x11_tests}"

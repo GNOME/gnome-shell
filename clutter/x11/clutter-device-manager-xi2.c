@@ -562,27 +562,21 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
   cookie = &xevent->xcookie;
 
-  if (!XGetEventData (backend_x11->xdpy, cookie))
-    return CLUTTER_TRANSLATE_CONTINUE;
-
   if (cookie->type != GenericEvent ||
       cookie->extension != manager_xi2->opcode)
-    {
-      XFreeEventData (backend_x11->xdpy, cookie);
-      return CLUTTER_TRANSLATE_CONTINUE;
-    }
+    return CLUTTER_TRANSLATE_CONTINUE;
 
   xi_event = (XIEvent *) cookie->data;
+
+  if (!xi_event)
+    return CLUTTER_TRANSLATE_REMOVE;
 
   if (!(xi_event->evtype == XI_HierarchyChanged ||
         xi_event->evtype == XI_DeviceChanged))
     {
       stage = get_event_stage (translator, xi_event);
       if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
-        {
-          XFreeEventData (backend_x11->xdpy, cookie);
-          return CLUTTER_TRANSLATE_CONTINUE;
-        }
+        return CLUTTER_TRANSLATE_CONTINUE;
       else
         stage_x11 = CLUTTER_STAGE_X11 (_clutter_stage_get_window (stage));
     }
@@ -901,8 +895,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
       retval = CLUTTER_TRANSLATE_CONTINUE;
       break;
     }
-
-  XFreeEventData (backend_x11->xdpy, cookie);
 
   return retval;
 }
