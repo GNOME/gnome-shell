@@ -264,7 +264,7 @@ StTooltip StLabel {
 }
 
 .panel-corner:active,
-.panel-corner:checked,
+.panel-corner:overview,
 .panel-corner:focus {
     -panel-corner-inner-border-color: rgba(255,255,255,0.8);
 }
@@ -301,7 +301,7 @@ StTooltip StLabel {
 }
 
 .panel-button:active,
-.panel-button:checked,
+.panel-button:overview,
 .panel-button:focus {
     border-image: url("panel-button-border.svg") 10 10 0 2;
     background-image: url("panel-button-highlight-wide.svg");

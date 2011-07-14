@@ -544,37 +544,41 @@ AppMenuButton.prototype = {
 
 Signals.addSignalMethods(AppMenuButton.prototype);
 
-// Activities button.
+// Activities button. Because everything else in the top bar is a
+// PanelMenu.Button, it simplifies some things to make this be one too.
+// We just hack it up to not actually have a menu attached to it.
 function ActivitiesButton() {
     this._init.apply(this, arguments);
 }
 
 ActivitiesButton.prototype = {
+    __proto__: PanelMenu.Button.prototype,
+
     _init: function() {
+        PanelMenu.Button.prototype._init.call(this, 0.0);
+
         /* Translators: If there is no suitable word for "Activities"
            in your language, you can use the word for "Overview". */
         let label = new St.Label({ text: _("Activities") });
-        this.actor = new St.Button({ name: 'panelActivities',
-                                     style_class: 'panel-button',
-                                     reactive: true,
-                                     can_focus: true });
-        this.actor.set_child(label);
-        this.actor._delegate = this;
+        this.actor.child = label;
+        this.actor.name = 'panelActivities';
 
-        this.actor.connect('clicked', Lang.bind(this, function(b) {
-            if (!Main.overview.animationInProgress) {
-                this._hotCorner.maybeToggleOverviewOnClick();
-                return true;
-            } else {
-                return false;
-            }
-        }));
+        // Hack up our menu...
+        this.menu.open = Lang.bind(this, this._onMenuOpenRequest);
+        this.menu.close = Lang.bind(this, this._onMenuCloseRequest);
+        this.menu.toggle = Lang.bind(this, this._onMenuToggleRequest);
+
+        this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+        this.actor.connect_after('button-release-event', Lang.bind(this, this._onButtonRelease));
+        this.actor.connect_after('key-release-event', Lang.bind(this, this._onKeyRelease));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
-            this.actor.checked = true;
+            this.actor.add_style_pseudo_class('overview');
+            this._escapeMenuGrab();
         }));
         Main.overview.connect('hiding', Lang.bind(this, function() {
-            this.actor.checked = false;
+            this.actor.remove_style_pseudo_class('overview');
+            this._escapeMenuGrab();
         }));
 
         this._hotCorner = null;
@@ -593,6 +597,50 @@ ActivitiesButton.prototype = {
             Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
                                                  Lang.bind(this, this._xdndShowOverview, actor));
+    },
+
+    _escapeMenuGrab: function() {
+        if (this.menu.isOpen)
+            this.menu.close();
+    },
+
+    _onCapturedEvent: function(actor, event) {
+        if (event.type() == Clutter.EventType.BUTTON_PRESS) {
+            if (!this._hotCorner.shouldToggleOverviewOnClick())
+                return true;
+        }
+        return false;
+    },
+
+    _onMenuOpenRequest: function() {
+        this.menu.isOpen = true;
+        this.menu.emit('open-state-changed', true);
+    },
+
+    _onMenuCloseRequest: function() {
+        this.menu.isOpen = false;
+        this.menu.emit('open-state-changed', false);
+    },
+
+    _onMenuToggleRequest: function() {
+        this.menu.isOpen = !this.menu.isOpen;
+        this.menu.emit('open-state-changed', this.menu.isOpen);
+    },
+
+    _onButtonRelease: function() {
+        if (this.menu.isOpen) {
+            this.menu.close();
+            Main.overview.toggle();
+        }
+    },
+
+    _onKeyRelease: function(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
+            if (this.menu.isOpen)
+                this.menu.close();
+            Main.overview.toggle();
+        }
     },
 
     _xdndShowOverview: function(actor) {
@@ -841,9 +889,9 @@ HotCorner.prototype = {
     },
 
     _onCornerClicked : function() {
-         if (!Main.overview.animationInProgress)
-             this.maybeToggleOverviewOnClick();
-         return true;
+        if (this.shouldToggleOverviewOnClick())
+            Main.overview.toggle();
+        return true;
     },
 
     _onCornerLeft : function(actor, event) {
@@ -862,13 +910,18 @@ HotCorner.prototype = {
         return false;
     },
 
-    // Toggles the overview unless this is the first click on the Activities button within the HOT_CORNER_ACTIVATION_TIMEOUT time
-    // of the hot corner being triggered. This check avoids opening and closing the overview if the user both triggered the hot corner
-    // and clicked the Activities button.
-    maybeToggleOverviewOnClick: function() {
+    // Checks if the Activities button is currently sensitive to
+    // clicks. The first call to this function within the
+    // HOT_CORNER_ACTIVATION_TIMEOUT time of the hot corner being
+    // triggered will return false. This avoids opening and closing
+    // the overview if the user both triggered the hot corner and
+    // clicked the Activities button.
+    shouldToggleOverviewOnClick: function() {
+        if (Main.overview.animationInProgress)
+            return false;
         if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > HOT_CORNER_ACTIVATION_TIMEOUT)
-            Main.overview.toggle();
-        this._activationTime = 0;
+            return true;
+        return false;
     }
 }
 
@@ -979,6 +1032,10 @@ Panel.prototype = {
         this._activitiesButton = new ActivitiesButton();
         this._activities = this.button = this._activitiesButton.actor;
         this._leftBox.add(this._activities);
+
+        // The activities button has a pretend menu, so as to integrate
+        // more cleanly with the rest of the panel
+        this._menus.addMenu(this._activitiesButton.menu);
 
         // Synchronize the button's pseudo classes with its corner
         this.button.connect('style-changed', Lang.bind(this,
