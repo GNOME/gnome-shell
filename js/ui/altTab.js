@@ -134,11 +134,40 @@ AltTabPopup.prototype = {
         }
     },
 
-    show : function(backward, binding, mask) {
+    _getAppLists: function() {
+        let tracker = Shell.WindowTracker.get_default();
         let appSys = Shell.AppSystem.get_default();
-        let apps = appSys.get_running ();
+        let allApps = appSys.get_running ();
 
-        if (!apps.length)
+        let screen = global.screen;
+        let display = screen.get_display();
+        let windows = display.get_tab_list(Meta.TabList.NORMAL, screen,
+                                           screen.get_active_workspace());
+
+        // windows is only the windows on the current workspace. For
+        // each one, if it corresponds to an app we know, move that
+        // app from allApps to apps.
+        let apps = [];
+        for (let i = 0; i < windows.length && allApps.length != 0; i++) {
+            let app = tracker.get_window_app(windows[i]);
+            let index = allApps.indexOf(app);
+            if (index != -1) {
+                apps.push(app);
+                allApps.splice(index, 1);
+            }
+        }
+
+        // Now @apps is a list of apps on the current workspace, in
+        // standard Alt+Tab order (MRU except for minimized windows),
+        // and allApps is a list of apps that only appear on other
+        // workspaces, sorted by user_time, which is good enough.
+        return [apps, allApps];
+    },
+
+    show : function(backward, binding, mask) {
+        let [localApps, otherApps] = this._getAppLists();
+
+        if (localApps.length == 0 && otherApps.length == 0)
             return false;
 
         if (!Main.pushModal(this.actor))
@@ -152,7 +181,7 @@ AltTabPopup.prototype = {
         this.actor.connect('button-press-event', Lang.bind(this, this._clickedOutside));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
 
-        this._appSwitcher = new AppSwitcher(apps, this);
+        this._appSwitcher = new AppSwitcher(localApps, otherApps, this);
         this.actor.add_actor(this._appSwitcher.actor);
         this._appSwitcher.connect('item-activated', Lang.bind(this, this._appActivated));
         this._appSwitcher.connect('item-entered', Lang.bind(this, this._appEntered));
@@ -846,33 +875,32 @@ AppIcon.prototype = {
     }
 };
 
-function AppSwitcher(apps, altTabPopup) {
-    this._init(apps, altTabPopup);
+function AppSwitcher() {
+    this._init.apply(this, arguments);
 }
 
 AppSwitcher.prototype = {
     __proto__ : SwitcherList.prototype,
 
-    _init : function(apps, altTabPopup) {
+    _init : function(localApps, otherApps, altTabPopup) {
         SwitcherList.prototype._init.call(this, true);
 
-        // Construct the AppIcons, sort by time, add to the popup
+        // Construct the AppIcons, add to the popup
         let activeWorkspace = global.screen.get_active_workspace();
         let workspaceIcons = [];
         let otherIcons = [];
-        for (let i = 0; i < apps.length; i++) {
-            let appIcon = new AppIcon(apps[i]);
+        for (let i = 0; i < localApps.length; i++) {
+            let appIcon = new AppIcon(localApps[i]);
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = appIcon.app.get_windows();
-            if (this._hasWindowsOnWorkspace(appIcon, activeWorkspace))
-              workspaceIcons.push(appIcon);
-            else
-              otherIcons.push(appIcon);
+            workspaceIcons.push(appIcon);
         }
-
-        workspaceIcons.sort(Lang.bind(this, this._sortAppIcon));
-        otherIcons.sort(Lang.bind(this, this._sortAppIcon));
+        for (let i = 0; i < otherApps.length; i++) {
+            let appIcon = new AppIcon(otherApps[i]);
+            appIcon.cachedWindows = appIcon.app.get_windows();
+            otherIcons.push(appIcon);
+        }
 
         this.icons = [];
         this._arrows = [];
@@ -1012,19 +1040,6 @@ AppSwitcher.prototype = {
 
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
-    },
-
-    _hasWindowsOnWorkspace: function(appIcon, workspace) {
-        let windows = appIcon.cachedWindows;
-        for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_workspace() == workspace)
-                return true;
-        }
-        return false;
-    },
-
-    _sortAppIcon : function(appIcon1, appIcon2) {
-        return appIcon1.app.compare(appIcon2.app);
     }
 };
 
