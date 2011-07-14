@@ -278,7 +278,6 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
 
   klass->gesture_begin = default_event_handler;
   klass->gesture_progress = default_event_handler;
-  klass->gesture_end = default_event_handler;
 
   /**
    * ClutterGestureAction::gesture-begin:
