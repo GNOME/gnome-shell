@@ -96,6 +96,9 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 #include <cogl/cogl-wayland-renderer.h>
 #endif
+#if COGL_HAS_WIN32_SUPPORT
+#include <cogl/cogl-win32-renderer.h>
+#endif
 /* XXX: This will definitly go away once all the Clutter winsys
  * code has been migrated down into Cogl! */
 #include <cogl/cogl-clutter.h>
