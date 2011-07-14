@@ -544,6 +544,72 @@ AppMenuButton.prototype = {
 
 Signals.addSignalMethods(AppMenuButton.prototype);
 
+// Activities button.
+function ActivitiesButton() {
+    this._init.apply(this, arguments);
+}
+
+ActivitiesButton.prototype = {
+    _init: function() {
+        /* Translators: If there is no suitable word for "Activities"
+           in your language, you can use the word for "Overview". */
+        let label = new St.Label({ text: _("Activities") });
+        this.actor = new St.Button({ name: 'panelActivities',
+                                     style_class: 'panel-button',
+                                     reactive: true,
+                                     can_focus: true });
+        this.actor.set_child(label);
+        this.actor._delegate = this;
+
+        this.actor.connect('clicked', Lang.bind(this, function(b) {
+            if (!Main.overview.animationInProgress) {
+                this._hotCorner.maybeToggleOverviewOnClick();
+                return true;
+            } else {
+                return false;
+            }
+        }));
+
+        Main.overview.connect('showing', Lang.bind(this, function() {
+            this.actor.checked = true;
+        }));
+        Main.overview.connect('hiding', Lang.bind(this, function() {
+            this.actor.checked = false;
+        }));
+
+        this._hotCorner = null;
+        this._xdndTimeOut = 0;
+    },
+
+    setHotCorner: function(corner) {
+        this._hotCorner = corner;
+    },
+
+    handleDragOver: function(source, actor, x, y, time) {
+        if (source != Main.xdndHandler)
+            return;
+
+        if (this._xdndTimeOut != 0)
+            Mainloop.source_remove(this._xdndTimeOut);
+        this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
+                                                 Lang.bind(this, this._xdndShowOverview, actor));
+    },
+
+    _xdndShowOverview: function(actor) {
+        let [x, y, mask] = global.get_pointer();
+        let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
+
+        if (pickedActor == this.actor) {
+            if (!Main.overview.visible && !Main.overview.animationInProgress) {
+                Main.overview.showTemporarily();
+                Main.overview.beginItemDrag(actor);
+            }
+        }
+
+        Mainloop.source_remove(this._xdndTimeOut);
+        this._xdndTimeOut = 0;
+    }
+};
 
 function PanelCorner(panel, side) {
     this._init(panel, side);
@@ -910,31 +976,11 @@ Panel.prototype = {
         }));
 
         /* Button on the left side of the panel. */
-        /* Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
-        let label = new St.Label({ text: _("Activities") });
-        this.button = new St.Button({ name: 'panelActivities',
-                                      style_class: 'panel-button',
-                                      reactive: true,
-                                      can_focus: true });
-        this._activities = this.button;
-        this.button.set_child(label);
-        this.button._delegate = this.button;
-        this.button._xdndTimeOut = 0;
-        this.button.handleDragOver = Lang.bind(this,
-            function(source, actor, x, y, time) {
-                 if (source == Main.xdndHandler) {
-                    if (this.button._xdndTimeOut != 0)
-                        Mainloop.source_remove(this.button._xdndTimeOut);
-                    this.button._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
-                                                                    Lang.bind(this,
-                                                                                function() {
-                                                                                    this._xdndShowOverview(actor);
-                                                                                }));
-                 }
-            });
-        this._leftBox.add(this.button);
+        this._activitiesButton = new ActivitiesButton();
+        this._activities = this.button = this._activitiesButton.actor;
+        this._leftBox.add(this._activities);
 
-        // Synchronize the buttons pseudo classes with its corner
+        // Synchronize the button's pseudo classes with its corner
         this.button.connect('style-changed', Lang.bind(this,
             function(actor) {
                 let rtl = actor.get_direction() == St.TextDirection.RTL;
@@ -942,8 +988,6 @@ Panel.prototype = {
                 let pseudoClass = actor.get_style_pseudo_class();
                 corner.actor.set_style_pseudo_class(pseudoClass);
             }));
-
-        this._hotCorner = null;
 
         this._appMenu = new AppMenuButton();
         this._leftBox.add(this._appMenu.actor);
@@ -983,28 +1027,6 @@ Panel.prototype = {
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
-        // TODO: decide what to do with the rest of the panel in the Overview mode (make it fade-out, become non-reactive, etc.)
-        // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
-        // have the Overview act like a menu that allows the user to release the mouse on the activity the user wants
-        // to switch to.
-        this.button.connect('clicked', Lang.bind(this, function(b) {
-            if (!Main.overview.animationInProgress) {
-                this._hotCorner.maybeToggleOverviewOnClick();
-                return true;
-            } else {
-                return false;
-            }
-        }));
-        // In addition to pressing the button, the Overview can be entered and exited by other means, such as
-        // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the Overview is entered
-        // and to be released when it is exited regardless of how it was triggered.
-        Main.overview.connect('showing', Lang.bind(this, function() {
-            this.button.checked = true;
-        }));
-        Main.overview.connect('hiding', Lang.bind(this, function() {
-            this.button.checked = false;
-        }));
-
         Main.chrome.addActor(this.actor);
         Main.chrome.addActor(this._leftCorner.actor, { affectsStruts: false,
                                                        affectsInputRegion: false });
@@ -1018,31 +1040,11 @@ Panel.prototype = {
         this._relayout();
     },
 
-    _xdndShowOverview: function (actor) {
-        let [x, y, mask] = global.get_pointer();
-        let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
-
-        if (pickedActor != this.button) {
-            Mainloop.source_remove(this.button._xdndTimeOut);
-            this.button._xdndTimeOut = 0;
-            return;
-        }
-
-        if(!Main.overview.visible && !Main.overview.animationInProgress) {
-            Main.overview.showTemporarily();
-            Main.overview.beginItemDrag(actor);
-        }
-
-        Mainloop.source_remove(this.button._xdndTimeOut);
-        this.button._xdndTimeOut = 0;
-    },
-
-
     // While there can be multiple hotcorners (one per monitor), the hot corner
     // that is on top of the Activities button is special since it needs special
     // coordination with clicking on that button
     setHotCorner: function(corner) {
-        this._hotCorner = corner;
+        this._activitiesButton.setHotCorner(corner);
     },
 
     startStatusArea: function() {
