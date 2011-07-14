@@ -6,7 +6,7 @@
 #
 # Hendrik Brandt <heb@gnome-de.org>, 2009.
 # Hendrik Richter <hendrikr@gnome.org>, 2009, 2010, 2011.
-# Mario Blättermann <mariobl@gnome.org>, 2009, 2010, 2011.
+# Mario Blättermann <mariobl@freenet.de>, 2009, 2010, 2011.
 # Mario Klug <mario@klug.me>, 2010.
 # Jakob Kramer <jakob.kramer@gmx.de>, 2010.
 # Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2010, 2011.
@@ -17,9 +17,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-14 07:48+0000\n"
-"PO-Revision-Date: 2011-06-23 23:08+0200\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"POT-Creation-Date: 2011-07-14 18:02+0000\n"
+"PO-Revision-Date: 2011-07-14 20:25+0100\n"
+"Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,8 +73,8 @@ msgid ""
 "extensions that appear in both lists."
 msgstr ""
 "Die Erweiterungen der GNOME-Shell besitzen eine UUID-Eigenschaft. Dieser "
-"Schlüssel listet Erweiterungen auf, welche nicht geladen werden sollen. "
-"Diese Einstellung überschreibt »enabled-extensions« für Erweiterungen, die in "
+"Schlüssel listet Erweiterungen auf, welche nicht geladen werden sollen. Diese "
+"Einstellung überschreibt »enabled-extensions« für Erweiterungen, die in "
 "beiden Listen erscheinen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
@@ -124,11 +124,11 @@ msgstr ""
 "Auffüllung haben; die Ausgabe dieser Auffüllung wird in die Ausgabedatei "
 "geschrieben. Die Weiterleitung kann auch mit ihrer eigenen Ausgabe umgehen. "
 "Das kann zum Senden der Ausgabe über shout2send an einen Icecast-Server oder "
-"Ähnliches verwendet werden. Falls nicht (oder auf einen leeren Wert) "
-"gesetzt, so wird die vorgegebene Weiterleitung verwendet, welche derzeit "
-"»videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux« lautet "
-"und nach WEBM mittels des VP8-Codecs aufzeichnet. %T wird als Platzhalter "
-"für die vermutete optimale Threadanzahl auf dem System verwendet."
+"Ähnliches verwendet werden. Falls nicht (oder auf einen leeren Wert) gesetzt, "
+"so wird die vorgegebene Weiterleitung verwendet, welche derzeit »videorate ! "
+"vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux« lautet und nach WEBM "
+"mittels des VP8-Codecs aufzeichnet. %T wird als Platzhalter für die vermutete "
+"optimale Threadanzahl auf dem System verwendet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
@@ -147,8 +147,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-"
-"Bereich angezeigt."
+"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-Bereich "
+"angezeigt."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
@@ -778,10 +778,8 @@ msgstr "Bluetooth-Einstellungen"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:116
-#, fuzzy
-#| msgid "disabled"
 msgid "hardware disabled"
-msgstr "Deaktiviert"
+msgstr "Hardware deaktiviert"
 
 #: ../js/ui/status/bluetooth.js:217
 msgid "Connection"
@@ -1133,7 +1131,7 @@ msgstr "Mikrofon"
 #. system-users for now as Empathy does.
 #: ../js/ui/telepathyClient.js:222
 msgid "Invitation"
-msgstr ""
+msgstr "Einladung"
 
 #: ../js/ui/telepathyClient.js:500
 #, c-format
@@ -1175,7 +1173,7 @@ msgstr "%s heißt jetzt %s"
 #: ../js/ui/telepathyClient.js:857
 #, c-format
 msgid "Invitation to %s"
-msgstr ""
+msgstr "Einladung zum Betreten von %s"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
@@ -1183,15 +1181,15 @@ msgstr ""
 #: ../js/ui/telepathyClient.js:865
 #, c-format
 msgid "%s is inviting you to join %s"
-msgstr ""
+msgstr "%s lädt Sie ein, %s beizutreten"
 
 #: ../js/ui/telepathyClient.js:867
 msgid "Decline"
-msgstr ""
+msgstr "Ablehnen"
 
 #: ../js/ui/telepathyClient.js:868
 msgid "Accept"
-msgstr ""
+msgstr "Annehmen"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
