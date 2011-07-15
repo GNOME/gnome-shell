@@ -185,6 +185,7 @@
 #include <string.h>
 
 #include "clutter-alpha.h"
+#include "clutter-animatable.h"
 #include "clutter-animator.h"
 #include "clutter-enum-types.h"
 #include "clutter-interval.h"
@@ -255,6 +256,7 @@ typedef struct _ClutterStateKey
   ClutterInterval *interval;     /* The interval this key uses for
                                     interpolation */
 
+  guint            is_animatable : 1;
   guint            is_inert : 1; /* set if the key is being destroyed due to
                                     weak reference */
   gint             ref_count;    /* reference count for boxed life time */
@@ -345,6 +347,7 @@ clutter_state_key_new (State       *state,
   state_key->object = object;
   state_key->property_name = g_intern_string (property_name);
   state_key->mode = mode;
+  state_key->is_animatable = CLUTTER_IS_ANIMATABLE (object);
 
   state_key->alpha = clutter_alpha_new ();
   g_object_ref_sink (state_key->alpha);
@@ -578,11 +581,10 @@ clutter_state_new_frame (ClutterTimeline *timeline,
 
           if (found_specific || key->source_state == NULL)
             {
-              const GValue *value;
               gdouble pre_delay = key->pre_delay + key->pre_pre_delay;
 
-              sub_progress = (progress - pre_delay) /
-                             (1.0 - (pre_delay + key->post_delay));
+              sub_progress = (progress - pre_delay)
+                           / (1.0 - (pre_delay + key->post_delay));
 
               if (sub_progress >= 0.0)
                 {
@@ -593,9 +595,38 @@ clutter_state_new_frame (ClutterTimeline *timeline,
                                             sub_progress * SLAVE_TIMELINE_LENGTH);
                   sub_progress = clutter_alpha_get_alpha (key->alpha);
 
-                  value = clutter_interval_compute (key->interval, sub_progress);
-                  if (value != NULL)
-                    g_object_set_property (key->object, key->property_name, value);
+                  if (key->is_animatable)
+                    {
+                      ClutterAnimatable *animatable;
+                      GValue value = { 0, };
+                      gboolean res;
+
+                      animatable = CLUTTER_ANIMATABLE (key->object);
+
+                      g_value_init (&value, clutter_state_key_get_property_type (key));
+
+                      res =
+                        clutter_animatable_interpolate_value (animatable,
+                                                              key->property_name,
+                                                              key->interval,
+                                                              sub_progress,
+                                                              &value);
+
+                      if (res)
+                        clutter_animatable_set_final_state (animatable,
+                                                            key->property_name,
+                                                            &value);
+
+                      g_value_unset (&value);
+                    }
+                  else
+                    {
+                      const GValue *value;
+
+                      value = clutter_interval_compute (key->interval, sub_progress);
+                      if (value != NULL)
+                        g_object_set_property (key->object, key->property_name, value);
+                    }
                 }
 
               /* XXX: should the target value of the default destination be
@@ -710,7 +741,18 @@ clutter_state_change (ClutterState *state,
           key->pre_pre_delay = 0;
 
           g_value_init (&initial, clutter_interval_get_value_type (key->interval));
-          g_object_get_property (key->object, key->property_name, &initial);
+
+          if (key->is_animatable)
+            {
+              ClutterAnimatable *animatable;
+
+              animatable = CLUTTER_ANIMATABLE (key->object);
+              clutter_animatable_get_initial_state (animatable,
+                                                    key->property_name,
+                                                    &initial);
+            }
+          else
+            g_object_get_property (key->object, key->property_name, &initial);
 
           if (clutter_alpha_get_mode (key->alpha) != key->mode)
             clutter_alpha_set_mode (key->alpha, key->mode);
@@ -796,10 +838,21 @@ static GParamSpec *
 get_property_from_object (GObject     *gobject,
                           const gchar *property_name)
 {
-  GObjectClass *klass = G_OBJECT_GET_CLASS (gobject);
   GParamSpec *pspec;
 
-  pspec = g_object_class_find_property (klass, property_name);
+  if (CLUTTER_IS_ANIMATABLE (gobject))
+    {
+      ClutterAnimatable *animatable = CLUTTER_ANIMATABLE (gobject);
+
+      pspec = clutter_animatable_find_property (animatable, property_name);
+    }
+  else
+    {
+      GObjectClass *klass = G_OBJECT_GET_CLASS (gobject);
+
+      pspec = g_object_class_find_property (klass, property_name);
+    }
+
   if (pspec == NULL)
     {
       g_warning ("Cannot bind property '%s': objects of type '%s' "
@@ -1045,7 +1098,18 @@ clutter_state_set_key_internal (ClutterState    *state,
 
           g_value_init (&initial,
                         clutter_interval_get_value_type (key->interval));
-          g_object_get_property (key->object, key->property_name, &initial);
+
+          if (key->is_animatable)
+            {
+              ClutterAnimatable *animatable;
+
+              animatable = CLUTTER_ANIMATABLE (key->object);
+              clutter_animatable_get_initial_state (animatable,
+                                                    key->property_name,
+                                                    &initial);
+            }
+          else
+            g_object_get_property (key->object, key->property_name, &initial);
 
           if (clutter_alpha_get_mode (key->alpha) != key->mode)
             clutter_alpha_set_mode (key->alpha, key->mode);
@@ -2061,8 +2125,7 @@ parse_state_transition (JsonArray *array,
         }
 
       property = json_array_get_string_element (key, 1);
-      pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject),
-                                            property);
+      pspec = get_property_from_object (gobject, property);
       if (pspec == NULL)
         {
           g_warning ("The object of type '%s' and name '%s' has no "

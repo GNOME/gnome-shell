@@ -122,6 +122,8 @@ test_state_main (gint    argc,
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
       clutter_actor_set_position (actor, 320.0, 240.0);
       clutter_actor_set_reactive (actor, TRUE);
+      clutter_actor_add_effect_with_name (actor, "fade",
+                                          clutter_desaturate_effect_new (0.0));
 
 
       clutter_state_set (layout_state, NULL, "active",
@@ -162,10 +164,12 @@ test_state_main (gint    argc,
       clutter_state_set (a_state, NULL, "normal",
                          actor, "opacity", CLUTTER_LINEAR, 0x77,
                          actor, "rotation-angle-z", CLUTTER_LINEAR, 0.0,
+                         actor, "@effects.fade.factor", CLUTTER_LINEAR, 0.0,
                          NULL);
       clutter_state_set (a_state, NULL, "hover",
                          actor, "opacity", CLUTTER_LINEAR, 0xff,
                          actor, "rotation-angle-z", CLUTTER_LINEAR, 10.0,
+                         actor, "@effects.fade.factor", CLUTTER_LINEAR, 1.0,
                          NULL);
       clutter_actor_set_opacity (actor, 0x77);
 
