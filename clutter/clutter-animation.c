@@ -1104,16 +1104,10 @@ on_alpha_notify (GObject          *gobject,
 
       if (is_animatable)
         {
-          const GValue *initial, *final;
-
-          initial = clutter_interval_peek_initial_value (interval);
-          final   = clutter_interval_peek_final_value (interval);
-
-          apply = clutter_animatable_animate_property (animatable, animation,
-                                                       p_name,
-                                                       initial, final,
-                                                       alpha_value,
-                                                       &value);
+          apply = clutter_animatable_interpolate_value (animatable, p_name,
+                                                        interval,
+                                                        alpha_value,
+                                                        &value);
         }
       else
         {
