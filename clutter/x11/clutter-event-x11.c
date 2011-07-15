@@ -243,6 +243,7 @@ events_queue (ClutterBackend *backend)
 #ifdef HAVE_XGE
       XGetEventData (xdisplay, &xevent.xcookie);
 #endif
+
       if (_clutter_backend_translate_event (backend, &xevent, event))
         _clutter_event_push (event, FALSE);
       else
@@ -280,11 +281,11 @@ clutter_x11_handle_event (XEvent *xevent)
 {
   ClutterX11FilterReturn result;
   ClutterBackend *backend;
-  ClutterBackendX11 *backend_x11;
-  Display *xdisplay;
   ClutterEvent *event;
   gint spin = 1;
 #ifdef HAVE_XGE
+  ClutterBackendX11 *backend_x11;
+  Display *xdisplay;
   gboolean allocated_event;
 #endif
 
@@ -302,12 +303,13 @@ clutter_x11_handle_event (XEvent *xevent)
   clutter_threads_enter ();
 
   backend = clutter_get_default_backend ();
-  backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  xdisplay = backend_x11->xdpy;
 
   event = clutter_event_new (CLUTTER_NOTHING);
 
 #ifdef HAVE_XGE
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  xdisplay = backend_x11->xdpy;
+
   allocated_event = XGetEventData (xdisplay, &xevent->xcookie);
 #endif
 
