@@ -9490,8 +9490,6 @@ clutter_actor_find_property (ClutterAnimatable *animatable,
       klass = G_OBJECT_GET_CLASS (meta);
 
       pspec = g_object_class_find_property (klass, p_name);
-
-      g_free (p_name);
     }
   else
     {
@@ -9499,6 +9497,8 @@ clutter_actor_find_property (ClutterAnimatable *animatable,
 
       pspec = g_object_class_find_property (klass, property_name);
     }
+
+  g_free (p_name);
 
   return pspec;
 }
