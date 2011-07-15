@@ -336,6 +336,9 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   else
     tex_pixmap->use_winsys_texture = FALSE;
 
+  if (!tex_pixmap->use_winsys_texture)
+    tex_pixmap->winsys = NULL;
+
   return _cogl_texture_pixmap_x11_handle_new (tex_pixmap);
 }
 
