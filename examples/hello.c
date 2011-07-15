@@ -2,6 +2,8 @@
 #include <glib.h>
 #include <stdio.h>
 
+CoglColor black;
+
 int
 main (int argc, char **argv)
 {
@@ -38,6 +40,7 @@ main (int argc, char **argv)
     triangle = cogl_primitive_new_p2c4 (COGL_VERTICES_MODE_TRIANGLES,
                                         3, triangle_vertices);
     for (;;) {
+        cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
         cogl_primitive_draw (triangle);
         cogl_framebuffer_swap_buffers (fb);
     }
