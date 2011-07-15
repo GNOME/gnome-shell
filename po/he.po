@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-01 19:55+0300\n"
-"PO-Revision-Date: 2011-07-01 19:56+0200\n"
+"POT-Creation-Date: 2011-07-15 10:53+0300\n"
+"PO-Revision-Date: 2011-07-15 10:54+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -204,27 +204,27 @@ msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:252
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:357
+#: ../js/ui/appDisplay.js:351
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:383
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:656
+#: ../js/ui/appDisplay.js:650
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:659
+#: ../js/ui/appDisplay.js:653
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:654
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -357,13 +357,13 @@ msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:623
+#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:708
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:626
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:711
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
@@ -384,7 +384,7 @@ msgstr "השבוע"
 msgid "Next week"
 msgstr "בשבוע הבא"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1045
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1122
 msgid "Remove"
 msgstr "הסרה"
 
@@ -544,11 +544,11 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:1038
+#: ../js/ui/messageTray.js:1115
 msgid "Open"
 msgstr "פתיחה"
 
-#: ../js/ui/messageTray.js:2210
+#: ../js/ui/messageTray.js:2286
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -571,18 +571,18 @@ msgid "Dash"
 msgstr "חלונית"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:533
+#: ../js/ui/panel.js:532
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:913
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:1013
+#: ../js/ui/panel.js:951
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -648,41 +648,41 @@ msgstr "בחיפוש..."
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
-#: ../js/ui/statusMenu.js:202 ../js/ui/statusMenu.js:206
-#: ../js/ui/statusMenu.js:272
+#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:262
 msgid "Power Off..."
 msgstr "כיבוי..."
 
-#: ../js/ui/statusMenu.js:204 ../js/ui/statusMenu.js:206
-#: ../js/ui/statusMenu.js:271
+#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:261
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../js/ui/statusMenu.js:227
+#: ../js/ui/statusMenu.js:217
 msgid "Available"
 msgstr "פנוי"
 
-#: ../js/ui/statusMenu.js:232
+#: ../js/ui/statusMenu.js:222
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:240
+#: ../js/ui/statusMenu.js:230
 msgid "My Account"
 msgstr "החשבון שלי"
 
-#: ../js/ui/statusMenu.js:244
+#: ../js/ui/statusMenu.js:234
 msgid "System Settings"
 msgstr "הגדרות המערכת"
 
-#: ../js/ui/statusMenu.js:252
+#: ../js/ui/statusMenu.js:242
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:257
+#: ../js/ui/statusMenu.js:247
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/statusMenu.js:262
+#: ../js/ui/statusMenu.js:252
 msgid "Log Out..."
 msgstr "ניתוק..."
 
@@ -903,13 +903,13 @@ msgstr "לא זמין"
 msgid "connection failed"
 msgstr "החיבור נכשל"
 
-#: ../js/ui/status/network.js:582 ../js/ui/status/network.js:1489
+#: ../js/ui/status/network.js:582 ../js/ui/status/network.js:1507
 msgid "More..."
 msgstr "עוד..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:618 ../js/ui/status/network.js:1427
+#: ../js/ui/status/network.js:618 ../js/ui/status/network.js:1444
 msgid "Connected (private)"
 msgstr "מחובר (פרטי)"
 
@@ -926,7 +926,7 @@ msgid "Auto dial-up"
 msgstr "חיוג אוטומטי"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:898 ../js/ui/status/network.js:1439
+#: ../js/ui/status/network.js:898 ../js/ui/status/network.js:1456
 #, c-format
 msgid "Auto %s"
 msgstr "%s אוטומטי"
@@ -935,68 +935,68 @@ msgstr "%s אוטומטי"
 msgid "Auto bluetooth"
 msgstr "Bluetooth אוטומטי"
 
-#: ../js/ui/status/network.js:1441
+#: ../js/ui/status/network.js:1458
 msgid "Auto wireless"
 msgstr "אלחוטי אוטומטי"
 
-#: ../js/ui/status/network.js:1531
+#: ../js/ui/status/network.js:1550
 msgid "Enable networking"
 msgstr "הפעלת תכונת הרשת"
 
-#: ../js/ui/status/network.js:1543
+#: ../js/ui/status/network.js:1562
 msgid "Wired"
 msgstr "קווי"
 
-#: ../js/ui/status/network.js:1554
+#: ../js/ui/status/network.js:1573
 msgid "Wireless"
 msgstr "אלחוטי"
 
-#: ../js/ui/status/network.js:1564
+#: ../js/ui/status/network.js:1583
 msgid "Mobile broadband"
 msgstr "פס־רחב נייד"
 
-#: ../js/ui/status/network.js:1574
+#: ../js/ui/status/network.js:1593
 msgid "VPN Connections"
 msgstr "חיבורי VPN"
 
-#: ../js/ui/status/network.js:1586
+#: ../js/ui/status/network.js:1605
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: ../js/ui/status/network.js:1878
+#: ../js/ui/status/network.js:1897
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת הפס הרחב הניידת '%s'"
 
-#: ../js/ui/status/network.js:1882
+#: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת האלחוטית '%s'"
 
-#: ../js/ui/status/network.js:1886
+#: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת הקווית '%s'"
 
-#: ../js/ui/status/network.js:1890
+#: ../js/ui/status/network.js:1909
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת ה־VPN‏ '%s'"
 
-#: ../js/ui/status/network.js:1895
+#: ../js/ui/status/network.js:1914
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "כעת ישנו חיבור בינך ובין '%s'"
 
-#: ../js/ui/status/network.js:1903
+#: ../js/ui/status/network.js:1922
 msgid "Connection established"
 msgstr "ההתחברות הצליחה"
 
-#: ../js/ui/status/network.js:2029
+#: ../js/ui/status/network.js:2048
 msgid "Networking is disabled"
 msgstr "תכונת הרשת מנוטרלת"
 
-#: ../js/ui/status/network.js:2154
+#: ../js/ui/status/network.js:2173
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
@@ -1006,11 +1006,11 @@ msgstr "הגדרות צריכת החשמל"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:109
 msgid "Estimating..."
 msgstr "מתבצע שיערוך..."
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:116
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1019,26 +1019,26 @@ msgstr[1] "נותרו %d שעות"
 msgstr[2] "נותרו שעתיים"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:119
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s נותרו"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:121
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "שעה"
 msgstr[1] "שעות"
 msgstr[2] "שעתיים"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:121
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "דקה"
 msgstr[1] "דקות"
 msgstr[2] "דקות"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:124
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -1046,51 +1046,51 @@ msgstr[0] "דקה אחת נותרה"
 msgstr[1] "%d דקות נותרו"
 msgstr[2] "שתי דקות נותרו"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:216
 msgid "AC adapter"
 msgstr "מתאם חשמל"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:218
 msgid "Laptop battery"
 msgstr "סוללת נייד"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:220
 msgid "UPS"
 msgstr "אל־פסק"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:222
 msgid "Monitor"
 msgstr "צג"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:224
 msgid "Mouse"
 msgstr "עכבר"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:226
 msgid "Keyboard"
 msgstr "מקלדת"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:228
 msgid "PDA"
 msgstr "מחשב כף יד"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:230
 msgid "Cell phone"
 msgstr "טלפון סלולרי"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:232
 msgid "Media player"
 msgstr "נגן מדיה"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:234
 msgid "Tablet"
 msgstr "טבלת שליטה"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:236
 msgid "Computer"
 msgstr "מחשב"
 
-#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1088
+#: ../js/ui/status/power.js:238 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "לא ידוע"
 
@@ -1102,22 +1102,29 @@ msgstr "עצמה"
 msgid "Microphone"
 msgstr "מיקרופון"
 
-#: ../js/ui/telepathyClient.js:419
+#. We got the TpContact
+#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
+#. system-users for now as Empathy does.
+#: ../js/ui/telepathyClient.js:222
+msgid "Invitation"
+msgstr "הזמנה"
+
+#: ../js/ui/telepathyClient.js:500
 #, c-format
 msgid "%s is online."
 msgstr "%s התחבר/ה."
 
-#: ../js/ui/telepathyClient.js:424
+#: ../js/ui/telepathyClient.js:505
 #, c-format
 msgid "%s is offline."
 msgstr "%s התנתק/ה."
 
-#: ../js/ui/telepathyClient.js:427
+#: ../js/ui/telepathyClient.js:508
 #, c-format
 msgid "%s is away."
 msgstr "'%s' מרוחק/ת."
 
-#: ../js/ui/telepathyClient.js:430
+#: ../js/ui/telepathyClient.js:511
 #, c-format
 msgid "%s is busy."
 msgstr "%s עסוק/ה."
@@ -1125,17 +1132,40 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:615
+#: ../js/ui/telepathyClient.js:700
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "נשלח ב־%X בשעה %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:665
+#: ../js/ui/telepathyClient.js:750
 #, c-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/telepathyClient.js:857
+#, c-format
+msgid "Invitation to %s"
+msgstr "הזמנה ל־%s"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/telepathyClient.js:865
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "הוזמנת על ידי %s להצטרף אל %s"
+
+#: ../js/ui/telepathyClient.js:867
+msgid "Decline"
+msgstr "דחייה"
+
+#: ../js/ui/telepathyClient.js:868
+msgid "Accept"
+msgstr "אישור"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1183,7 +1213,7 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/main.c:445
+#: ../src/main.c:466
 msgid "Print version"
 msgstr "Print version"
 
