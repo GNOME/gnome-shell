@@ -9544,26 +9544,9 @@ clutter_actor_set_final_state (ClutterAnimatable *animatable,
   g_free (p_name);
 }
 
-static gboolean
-clutter_actor_animate_property (ClutterAnimatable *animatable,
-                                ClutterAnimation  *animation,
-                                const gchar       *property_name,
-                                const GValue      *initial,
-                                const GValue      *final,
-                                gdouble            progress,
-                                GValue            *new_value)
-{
-  ClutterInterval *interval;
-
-  interval = clutter_animation_get_interval (animation, property_name);
-
-  return clutter_interval_compute_value (interval, progress, new_value);
-}
-
 static void
 clutter_animatable_iface_init (ClutterAnimatableIface *iface)
 {
-  iface->animate_property = clutter_actor_animate_property;
   iface->find_property = clutter_actor_find_property;
   iface->get_initial_state = clutter_actor_get_initial_state;
   iface->set_final_state = clutter_actor_set_final_state;
