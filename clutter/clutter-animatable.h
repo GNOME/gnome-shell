@@ -53,13 +53,15 @@ typedef struct _ClutterAnimatableIface          ClutterAnimatableIface;
 /**
  * ClutterAnimatableIface:
  * @animate_property: virtual function for custom interpolation of a
- *   property
+ *   property. This virtual function is deprecated
  * @find_property: virtual function for retrieving the #GParamSpec of
  *   an animatable property
  * @get_initial_state: virtual function for retrieving the initial
  *   state of an animatable property
  * @set_final_state: virtual function for setting the state of an
  *   animatable property
+ * @interpolate_value: virtual function for interpolating the progress
+ *   of a property
  *
  * Base interface for #GObject<!-- -->s that can be animated by a
  * a #ClutterAnimation.
@@ -87,10 +89,16 @@ struct _ClutterAnimatableIface
   void        (* set_final_state)   (ClutterAnimatable *animatable,
                                      const gchar       *property_name,
                                      const GValue      *value);
+  gboolean    (* interpolate_value) (ClutterAnimatable *animatable,
+                                     const gchar       *property_name,
+                                     ClutterInterval   *interval,
+                                     gdouble            progress,
+                                     GValue            *value);
 };
 
 GType clutter_animatable_get_type (void) G_GNUC_CONST;
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
 gboolean    clutter_animatable_animate_property  (ClutterAnimatable *animatable,
                                                   ClutterAnimation  *animation,
                                                   const gchar       *property_name,
@@ -98,6 +106,7 @@ gboolean    clutter_animatable_animate_property  (ClutterAnimatable *animatable,
                                                   const GValue      *final_value,
                                                   gdouble            progress,
                                                   GValue            *value);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 GParamSpec *clutter_animatable_find_property     (ClutterAnimatable *animatable,
                                                   const gchar       *property_name);
@@ -107,6 +116,11 @@ void        clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
 void        clutter_animatable_set_final_state   (ClutterAnimatable *animatable,
                                                   const gchar       *property_name,
                                                   const GValue      *value);
+gboolean    clutter_animatable_interpolate_value (ClutterAnimatable *animatable,
+                                                  const gchar       *property_name,
+                                                  ClutterInterval   *interval,
+                                                  gdouble            progress,
+                                                  GValue            *value);
 
 G_END_DECLS
 
