@@ -602,7 +602,7 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
         have_xge=no
         AC_CHECK_FUNC([XGetEventData],
                       [
-                        AC_DEFINE(HAVE_XGE, 1, [Define to 1 if X Generic Extensions is available])
+                        AC_DEFINE([HAVE_XGE], [1], [Define to 1 if X Generic Extensions is available])
                         have_xge=yes
                       ])
 
