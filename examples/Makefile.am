@@ -32,9 +32,11 @@ crate_LDADD = $(common_ldadd) $(top_builddir)/cogl-pango/libcogl-pango.la
 endif
 
 if X11_TESTS
-noinst_PROGRAMS += x11-foreign
+noinst_PROGRAMS += x11-foreign x11-tfp
 x11_foreign_SOURCES = x11-foreign.c
 x11_foreign_LDADD = $(common_ldadd)
+x11_tfp_SOURCES = x11-tfp.c
+x11_tfp_LDADD = $(common_ldadd)
 endif
 
 if SUPPORT_WAYLAND_EGL_SERVER
