@@ -131,6 +131,10 @@ struct _ClutterAlphaPrivate
 
   GClosure *closure;
 
+  ClutterAlphaFunc func;
+  gpointer user_data;
+  GDestroyNotify notify;
+
   gulong mode;
 };
 
@@ -216,7 +220,9 @@ clutter_alpha_finalize (GObject *object)
 {
   ClutterAlphaPrivate *priv = CLUTTER_ALPHA (object)->priv;
 
-  if (priv->closure)
+  if (priv->notify != NULL)
+    priv->notify (priv->user_data);
+  else if (priv->closure != NULL)
     g_closure_unref (priv->closure);
 
   G_OBJECT_CLASS (clutter_alpha_parent_class)->finalize (object);
@@ -415,7 +421,11 @@ clutter_alpha_get_alpha (ClutterAlpha *alpha)
 
   priv = alpha->priv;
 
-  if (G_LIKELY (priv->closure))
+  if (G_LIKELY (priv->func))
+    {
+      return priv->func (alpha, priv->user_data);
+    }
+  else if (priv->closure)
     {
       GValue params = { 0, };
       GValue result_value = { 0, };
@@ -455,8 +465,17 @@ clutter_alpha_set_closure_internal (ClutterAlpha *alpha,
 {
   ClutterAlphaPrivate *priv = alpha->priv;
 
-  if (priv->closure)
+  if (priv->notify != NULL)
+    priv->notify (priv->user_data);
+  else if (priv->closure != NULL)
     g_closure_unref (priv->closure);
+
+  priv->func = NULL;
+  priv->user_data = NULL;
+  priv->notify = NULL;
+
+  if (closure == NULL)
+    return;
 
   /* need to take ownership of the closure before sinking it */
   priv->closure = g_closure_ref (closure);
@@ -520,17 +539,28 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
                         GDestroyNotify   destroy)
 {
   ClutterAlphaPrivate *priv;
-  GClosure *closure;
 
   g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
   g_return_if_fail (func != NULL);
 
   priv = alpha->priv;
 
-  closure = g_cclosure_new (G_CALLBACK (func), data, (GClosureNotify) destroy);
-  clutter_alpha_set_closure_internal (alpha, closure);
+  if (priv->notify != NULL)
+    {
+      priv->notify (priv->user_data);
+    }
+  else if (priv->closure != NULL)
+    {
+      g_closure_unref (priv->closure);
+      priv->closure = NULL;
+    }
+
+  priv->func = func;
+  priv->user_data = data;
+  priv->notify = destroy;
 
   priv->mode = CLUTTER_CUSTOM_MODE;
+
   g_object_notify_by_pspec (G_OBJECT (alpha), obj_props[PROP_MODE]);
 }
 
@@ -1243,7 +1273,8 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
     }
   else if (mode < CLUTTER_ANIMATION_LAST)
     {
-      GClosure *closure;
+      if (priv->mode == mode)
+        return;
 
       /* sanity check to avoid getting an out of sync
        * enum/function mapping
@@ -1251,10 +1282,11 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
       g_assert (animation_modes[mode].mode == mode);
       g_assert (animation_modes[mode].func != NULL);
 
-      closure = g_cclosure_new (G_CALLBACK (animation_modes[mode].func),
-                                NULL,
-                                NULL);
-      clutter_alpha_set_closure_internal (alpha, closure);
+      clutter_alpha_set_closure_internal (alpha, NULL);
+
+      priv->func = animation_modes[mode].func;
+      priv->user_data = NULL;
+      priv->notify = NULL;
 
       priv->mode = mode;
     }
@@ -1262,6 +1294,9 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
     {
       AlphaData *alpha_data = NULL;
       gulong real_index = 0;
+
+      if (priv->mode == mode)
+        return;
 
       if (G_UNLIKELY (clutter_alphas == NULL))
         {
@@ -1285,12 +1320,11 @@ clutter_alpha_set_mode (ClutterAlpha *alpha,
         clutter_alpha_set_closure (alpha, alpha_data->closure);
       else
         {
-          GClosure *closure;
+          clutter_alpha_set_closure_internal (alpha, NULL);
 
-          closure = g_cclosure_new (G_CALLBACK (alpha_data->func),
-                                    alpha_data->data,
-                                    NULL);
-          clutter_alpha_set_closure_internal (alpha, closure);
+          priv->func = alpha_data->func;
+          priv->user_data = alpha_data->data;
+          priv->notify = NULL;
         }
 
       priv->mode = mode;
