@@ -233,7 +233,6 @@ meta_background_actor_paint (ClutterActor *actor)
     }
 }
 
-#if CLUTTER_CHECK_VERSION(1, 5, 2)
 static gboolean
 meta_background_actor_get_paint_volume (ClutterActor       *actor,
                                         ClutterPaintVolume *volume)
@@ -248,7 +247,6 @@ meta_background_actor_get_paint_volume (ClutterActor       *actor,
 
   return TRUE;
 }
-#endif
 
 static void
 meta_background_actor_class_init (MetaBackgroundActorClass *klass)
@@ -261,9 +259,7 @@ meta_background_actor_class_init (MetaBackgroundActorClass *klass)
   actor_class->get_preferred_width = meta_background_actor_get_preferred_width;
   actor_class->get_preferred_height = meta_background_actor_get_preferred_height;
   actor_class->paint = meta_background_actor_paint;
-#if CLUTTER_CHECK_VERSION(1, 5, 2)
   actor_class->get_paint_volume = meta_background_actor_get_paint_volume;
-#endif
 }
 
 static void

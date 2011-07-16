@@ -142,10 +142,10 @@ static void meta_window_actor_get_property (GObject      *object,
                                             GParamSpec   *pspec);
 
 static void meta_window_actor_paint (ClutterActor *actor);
-#if CLUTTER_CHECK_VERSION(1, 5, 2)
+
 static gboolean meta_window_actor_get_paint_volume (ClutterActor       *actor,
                                                     ClutterPaintVolume *volume);
-#endif
+
 
 static void     meta_window_actor_detach     (MetaWindowActor *self);
 static gboolean meta_window_actor_has_shadow (MetaWindowActor *self);
@@ -220,9 +220,7 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
   object_class->constructed  = meta_window_actor_constructed;
 
   actor_class->paint = meta_window_actor_paint;
-#if CLUTTER_CHECK_VERSION(1, 5, 2)
   actor_class->get_paint_volume = meta_window_actor_get_paint_volume;
-#endif
 
   pspec = g_param_spec_object ("meta-window",
                                "MetaWindow",
@@ -679,7 +677,6 @@ meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
     bounds->x = bounds->y = bounds->width = bounds->height = 0;
 }
 
-#if CLUTTER_CHECK_VERSION(1, 5, 2)
 static void
 meta_window_actor_get_shadow_bounds (MetaWindowActor       *self,
                                      gboolean               appears_focused,
@@ -700,7 +697,6 @@ meta_window_actor_get_shadow_bounds (MetaWindowActor       *self,
                           shape_bounds.height,
                           bounds);
 }
-#endif
 
 /* If we have an ARGB32 window that we decorate with a frame, it's
  * probably something like a translucent terminal - something where
@@ -769,7 +765,6 @@ meta_window_actor_paint (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (meta_window_actor_parent_class)->paint (actor);
 }
 
-#if CLUTTER_CHECK_VERSION(1, 5, 2)
 static gboolean
 meta_window_actor_get_paint_volume (ClutterActor       *actor,
                                     ClutterPaintVolume *volume)
@@ -811,7 +806,6 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
 
   return TRUE;
 }
-#endif /* CLUTTER_CHECK_VERSION */
 
 static gboolean
 is_shaped (MetaDisplay *display, Window xwindow)
