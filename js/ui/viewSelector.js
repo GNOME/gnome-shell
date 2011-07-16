@@ -141,13 +141,19 @@ SearchTab.prototype = {
                                      'edit-find');
 
         this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
-        this._text.connect('activate', Lang.bind(this, function (se) {
-            if (this._searchTimeoutId > 0) {
-                Mainloop.source_remove(this._searchTimeoutId);
-                this._doSearch();
+        this._text.connect('key-press-event', Lang.bind(this, function (o, e) {
+            // We can't connect to 'activate' here because search providers
+            // might want to do something with the modifiers in activateSelected.
+            let symbol = e.get_key_symbol();
+            if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
+                if (this._searchTimeoutId > 0) {
+                    Mainloop.source_remove(this._searchTimeoutId);
+                    this._doSearch();
+                }
+                this._searchResults.activateSelected();
+                return true;
             }
-            this._searchResults.activateSelected();
-            return true;
+            return false;
         }));
 
         this._entry.connect('notify::mapped', Lang.bind(this, this._onMapped));

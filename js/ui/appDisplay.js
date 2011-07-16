@@ -327,8 +327,16 @@ BaseAppSearchProvider.prototype = {
         params = Params.parse(params, { workspace: null,
                                         timestamp: null });
 
+        let workspace = params.workspace ? params.workspace.index() : -1;
+        let event = Clutter.get_current_event();
+        let modifiers = event ? Shell.get_event_state(event) : 0;
+        let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
+
         let app = this._appSys.get_app(id);
-        app.activate(params.workspace ? params.workspace.index() : -1);
+        if (openNewWindow)
+            app.open_new_window(workspace);
+        else
+            app.activate(workspace);
     },
 
     dragActivateResult: function(id, params) {
