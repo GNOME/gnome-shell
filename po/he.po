@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-15 10:53+0300\n"
-"PO-Revision-Date: 2011-07-15 10:54+0200\n"
+"POT-Creation-Date: 2011-07-16 17:26+0300\n"
+"PO-Revision-Date: 2011-07-16 17:27+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -357,13 +357,13 @@ msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:708
+#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:749
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:711
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:752
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
@@ -814,7 +814,7 @@ msgstr "תמיד להעניק גישה"
 msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
-#: ../js/ui/status/bluetooth.js:409
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:954
 msgid "Reject"
 msgstr "סירוב"
 
@@ -1109,22 +1109,27 @@ msgstr "מיקרופון"
 msgid "Invitation"
 msgstr "הזמנה"
 
-#: ../js/ui/telepathyClient.js:500
+#. We got the TpContact
+#: ../js/ui/telepathyClient.js:285
+msgid "Call"
+msgstr "התקשרות"
+
+#: ../js/ui/telepathyClient.js:541
 #, c-format
 msgid "%s is online."
 msgstr "%s התחבר/ה."
 
-#: ../js/ui/telepathyClient.js:505
+#: ../js/ui/telepathyClient.js:546
 #, c-format
 msgid "%s is offline."
 msgstr "%s התנתק/ה."
 
-#: ../js/ui/telepathyClient.js:508
+#: ../js/ui/telepathyClient.js:549
 #, c-format
 msgid "%s is away."
 msgstr "'%s' מרוחק/ת."
 
-#: ../js/ui/telepathyClient.js:511
+#: ../js/ui/telepathyClient.js:552
 #, c-format
 msgid "%s is busy."
 msgstr "%s עסוק/ה."
@@ -1132,21 +1137,21 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:700
+#: ../js/ui/telepathyClient.js:741
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "נשלח ב־%X בשעה %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:750
+#: ../js/ui/telepathyClient.js:791
 #, c-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:857
+#: ../js/ui/telepathyClient.js:898
 #, c-format
 msgid "Invitation to %s"
 msgstr "הזמנה ל־%s"
@@ -1154,18 +1159,34 @@ msgstr "הזמנה ל־%s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:865
+#: ../js/ui/telepathyClient.js:906
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "הוזמנת על ידי %s להצטרף אל %s"
 
-#: ../js/ui/telepathyClient.js:867
+#: ../js/ui/telepathyClient.js:908
 msgid "Decline"
 msgstr "דחייה"
 
-#: ../js/ui/telepathyClient.js:868
+#: ../js/ui/telepathyClient.js:909
 msgid "Accept"
 msgstr "אישור"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:942
+#, c-format
+msgid "Video call from %s"
+msgstr "שיחת וידאו מאת %s"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:945
+#, c-format
+msgid "Call from %s"
+msgstr "שיחה מאת %s"
+
+#: ../js/ui/telepathyClient.js:955
+msgid "Answer"
+msgstr "מענה"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
