@@ -68,11 +68,11 @@ XKBIndicator.prototype = {
         this._sync_config();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addAction(_("Show Keyboard Layout..."), Lang.bind(this, function() {
+        this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, function() {
             Main.overview.hide();
             Util.spawn(['gkbd-keyboard-display', '-g', String(this._config.get_current_group() + 1)]);
         }));
-        this.menu.addAction(_("Localization Settings"), function() {
+        this.menu.addAction(_("Region and Language Settings"), function() {
             Main.overview.hide();
             let app = Shell.AppSystem.get_default().get_app('gnome-region-panel.desktop');
             app.activate(-1);
