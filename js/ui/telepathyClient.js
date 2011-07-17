@@ -248,7 +248,7 @@ Client.prototype = {
                                         Lang.bind(this, function(dispatchOp, result) {
                 try {
                     dispatchOp.claim_with_finish(result);
-                    this._handlingChannels(account, conn, channels);
+                    this._handlingChannels(account, conn, [channel]);
                 } catch (err) {
                     throw new Error('Failed to Claim channel: ' + err);
                 }}));
