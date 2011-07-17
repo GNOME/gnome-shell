@@ -139,14 +139,14 @@ Client.prototype = {
                             return;
 
                         /* We got the TpContact */
-                        this._createSource(account, conn, channel, contacts[0]);
+                        this._createChatSource(account, conn, channel, contacts[0]);
                     }), null);
         }
 
         context.accept();
     },
 
-    _createSource: function(account, conn, channel, contact) {
+    _createChatSource: function(account, conn, channel, contact) {
         if (this._chatSources[channel.get_object_path()])
             return;
 
@@ -165,6 +165,12 @@ Client.prototype = {
 
                            delete this._chatSources[channel.get_object_path()];
                        }));
+    },
+
+    _handleChannels: function(handler, account, conn, channels,
+                              requests, user_action_time, context) {
+        this._handlingChannels(account, conn, channels);
+        context.accept();
     },
 
     _handlingChannels: function(account, conn, channels) {
@@ -287,12 +293,6 @@ Client.prototype = {
 
         let notif = new AudioVideoNotification(source, dispatchOp, channel, contacts[0], isVideo);
         source.notify(notif);
-        context.accept();
-    },
-
-    _handleChannels: function(handler, account, conn, channels,
-                              requests, user_action_time, context) {
-        this._handlingChannels(account, conn, channels);
         context.accept();
     },
 
