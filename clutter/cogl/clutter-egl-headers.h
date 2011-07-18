@@ -22,25 +22,9 @@
 #ifndef __CLUTTER_EGL_HEADERS_H__
 #define __CLUTTER_EGL_HEADERS_H__
 
+/* Clutter relies on Cogl to abstract GLES1/2/OpenGL and GLX/EGL etc
+ * so we simply include the Cogl header to pull in the appropriate EGL
+ * header. */
 #include <cogl/cogl.h>
-
-#if defined(COGL_HAS_GLES1)
-#include <GLES/gl.h>
-#include <GLES/egl.h>
-#else
-
-#include <EGL/egl.h>
-#define NativeDisplayType EGLNativeDisplayType
-#define NativeWindowType EGLNativeWindowType
-
-#if defined(COGL_HAS_GLES2)
-#include <GLES2/gl2.h>
-#elif defined(COGL_HAS_GL)
-#include <GL/gl.h>
-#else
-#error Unknown Cogl backend
-#endif
-
-#endif /* !COGL_HAS_GLES1 */
 
 #endif /* __CLUTTER_EGL_HEADERS_H__ */
