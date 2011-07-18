@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-12 20:06+0200\n"
-"PO-Revision-Date: 2011-07-12 20:07+0200\n"
+"POT-Creation-Date: 2011-07-18 14:00+0200\n"
+"PO-Revision-Date: 2011-07-18 14:03+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -388,7 +388,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2468
+#: ../src/core/keybindings.c:2523
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -399,12 +399,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2558
+#: ../src/core/keybindings.c:2613
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er definert\n"
 
-#: ../src/core/keybindings.c:3570
+#: ../src/core/keybindings.c:3625
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
@@ -1111,28 +1111,25 @@ msgid "Gradients should have at least two colors"
 msgstr "Gradienter må ha minst to farger"
 
 #: ../src/ui/theme.c:1206
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-msgstr ""
-"GTK-fargespesifikasjon må ha en avsluttende klamme etter tilstanden, f.eks. "
-"gtk:fg[NORMAL], hvor NORMAL er tilstanden; kunne ikke lese «%s»"
+msgstr "Egendefinert GTK-fargespesifikasjon må ha fargenavn og reserve i parantes, f.eks gtk:custom(foo,bar); kunne ikke lese «%s»"
 
 #: ../src/ui/theme.c:1222
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
-msgstr ""
+msgstr "Ugyldig tegn «%c» i parameter color_name for gtk:custom, kun A-Za-z0-9-_ er gyldig"
 
 #: ../src/ui/theme.c:1236
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
-msgstr ""
-"Skyggeformatet er «shade/base_color/factor», «%s» passer ikke i formatet"
+msgstr "Gtk:custom-format er «gtk:custom(color_name,fallback)», «%s» passer ikke i formatet"
 
 #: ../src/ui/theme.c:1272
 #, c-format
