@@ -1768,7 +1768,7 @@ dump_region (cairo_region_t *region)
   for (i = 0; i < n_rects; i++)
     {
       cairo_rectangle_int_t rect;
-      cairo_region_get_rectangle (region, &rect);
+      cairo_region_get_rectangle (region, i, &rect);
       g_print ("+%d+%dx%dx%d ",
                rect.x, rect.y, rect.width, rect.height);
     }
