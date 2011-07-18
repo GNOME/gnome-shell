@@ -387,7 +387,7 @@ AS_IF([test "x$enable_gles1" = "xyes"],
 
         PKG_CHECK_EXISTS([glesv1_cm],
           [COGL_PKG_REQUIRES_GL="$COGL_PKG_REQUIRES_GL glesv1_cm"
-           COGL_GLES1_LIBNAME="GLESv1_CM"
+           COGL_GLES1_LIBNAME="libGLESv1_CM.so"
            NEED_EGL=yes
           ],
           [
@@ -430,10 +430,10 @@ AS_IF([test "x$enable_gles1" = "xyes"],
             # bundles the GLES and EGL API together and -lGLESv1_CM
             # would be used for a standalone GLES API.
             AC_CHECK_LIB(GLES_CM, [eglInitialize],
-              [COGL_GLES1_LIBNAME="GLES_CM"],
+              [COGL_GLES1_LIBNAME="libGLES_CM.so"],
               [
                 AC_CHECK_LIB(GLESv1_CM, [glFlush],
-                  [COGL_GLES1_LIBNAME="GLESv1_CM"
+                  [COGL_GLES1_LIBNAME="libGLESv1_CM.so"
                    NEED_SEPARATE_EGL=yes
                   ],
                   [AC_MSG_ERROR([Unable to locate required GLES 1.x Common Profile library])])
@@ -463,7 +463,7 @@ AS_IF([test "x$enable_gles2" = "xyes"],
 
         PKG_CHECK_EXISTS([glesv2],
           [COGL_PKG_REQUIRES_GL="$COGL_PKG_REQUIRES_GL glesv2"
-           COGL_GLES2_LIBNAME="GLESv2"
+           COGL_GLES2_LIBNAME="libGLESv2.so"
           ],
           [
             # We have to check the two headers independently as GLES2/gl2ext.h
@@ -477,7 +477,7 @@ AS_IF([test "x$enable_gles2" = "xyes"],
                             [AC_MSG_ERROR([Unable to locate GLES2/gl2ext.h])],
                             [#include <GLES2/gl2.h>])
 
-            COGL_GLES2_LIBNAME="GLESv2"
+            COGL_GLES2_LIBNAME="libGLESv2.so"
           ])
 
         NEED_EGL=yes
@@ -527,7 +527,7 @@ AS_IF([test "x$enable_gl" = "xyes"],
 				,
 				[AC_MSG_ERROR([Unable to locate required GL library])])
 		  ])
-                COGL_GL_LIBNAME="GL"
+                COGL_GL_LIBNAME="libGL.so.1"
 	      ])
 
         AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])

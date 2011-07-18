@@ -333,7 +333,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 {
   CoglGLXRenderer *glx_renderer;
   CoglXlibRenderer *xlib_renderer;
-  char *libgl_module_path;
 
   renderer->winsys = g_slice_new0 (CoglGLXRenderer);
 
@@ -343,13 +342,8 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (!_cogl_xlib_renderer_connect (renderer, error))
     goto error;
 
-  libgl_module_path = g_module_build_path (NULL, /* standard lib search path */
-                                           COGL_GL_LIBNAME);
-
-  glx_renderer->libgl_module = g_module_open (libgl_module_path,
+  glx_renderer->libgl_module = g_module_open (COGL_GL_LIBNAME,
                                               G_MODULE_BIND_LAZY);
-
-  g_free (libgl_module_path);
 
   if (glx_renderer->libgl_module == NULL)
     {

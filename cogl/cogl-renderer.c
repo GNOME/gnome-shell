@@ -177,9 +177,6 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 {
   const char *driver_name = g_getenv ("COGL_DRIVER");
   const char *libgl_name;
-#ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
-  char *libgl_module_path;
-#endif
 
 #ifdef HAVE_COGL_GL
   if (driver_name == NULL || !strcmp (driver_name, "gl"))
@@ -218,13 +215,8 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
 
-  libgl_module_path = g_module_build_path (NULL, /* standard lib search path */
-                                           libgl_name);
-
-  renderer->libgl_module = g_module_open (libgl_module_path,
+  renderer->libgl_module = g_module_open (libgl_name,
                                           G_MODULE_BIND_LAZY);
-
-  g_free (libgl_module_path);
 
   if (renderer->libgl_module == NULL)
     {
