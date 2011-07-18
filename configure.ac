@@ -540,6 +540,20 @@ AM_CONDITIONAL([COGL_DRIVER_GL_SUPPORTED], [test "x$enable_gl" = "xyes"])
 AM_CONDITIONAL([COGL_DRIVER_GLES_SUPPORTED],
                [test "x$enable_gles1" = "xyes" || test "x$enable_gles2" = "xyes"])
 
+dnl Allow the GL library names to be overridden with configure options
+AC_ARG_WITH([gl-libname],
+            [AS_HELP_STRING([--with-gl-libname],
+                            override the name of the GL library to dlopen)],
+            [COGL_GL_LIBNAME="$withval"])
+AC_ARG_WITH([gles1-libname],
+            [AS_HELP_STRING([--with-gles1-libname],
+                            override the name of the GLESv1 library to dlopen)],
+            [COGL_GLES1_LIBNAME="$withval"])
+AC_ARG_WITH([gles2-libname],
+            [AS_HELP_STRING([--with-gles2-libname],
+                            override the name of the GLESv2 library to dlopen)],
+            [COGL_GLES2_LIBNAME="$withval"])
+
 AC_SUBST([COGL_GL_LIBNAME])
 AC_SUBST([COGL_GLES1_LIBNAME])
 AC_SUBST([COGL_GLES2_LIBNAME])
@@ -957,6 +971,12 @@ echo ""
 # Features
 echo " • Features:"
 echo "        Drivers: ${enabled_drivers}"
+AS_IF([test "x$GL_LIBRARY_DIRECTLY_LINKED" != xyes],
+      [for driver in $enabled_drivers; do
+         driver=`echo $driver | tr "[gles]" "[GLES]"`
+         libname=`eval echo \\$COGL_${driver}_LIBNAME`
+         echo "        Library name for $driver: $libname"
+       done])
 echo "        GL Window System APIs:${GL_WINSYS_APIS}"
 if test "x$SUPPORT_EGL" = "xyes"; then
 echo "        EGL Platforms:${EGL_PLATFORMS}"
