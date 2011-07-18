@@ -550,8 +550,10 @@ emit_frame_signal (ClutterTimeline *timeline)
 {
   ClutterTimelinePrivate *priv = timeline->priv;
 
-  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
-                 priv->elapsed_time);
+  /* see bug https://bugzilla.gnome.org/show_bug.cgi?id=654066 */
+  gint elapsed = (gint) priv->elapsed_time;
+
+  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0, elapsed);
 }
 
 static gboolean
