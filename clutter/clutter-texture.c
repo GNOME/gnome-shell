@@ -1554,7 +1554,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
       g_set_error (&inner_error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-                   "Failed to create Cogl texture");
+                   _("Failed to load the image data"));
 
       g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, inner_error);
 
@@ -1574,6 +1574,49 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   cogl_handle_unref (new_texture);
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
+
+  return TRUE;
+}
+
+static inline gboolean
+get_pixel_format_from_texture_flags (gint                 bpp,
+                                     gboolean             has_alpha,
+                                     ClutterTextureFlags  flags,
+                                     CoglPixelFormat     *source_format)
+{
+  /* Convert the flags to a CoglPixelFormat */
+  if (has_alpha)
+    {
+      if (G_UNLIKELY (bpp != 4))
+	{
+          g_warning ("Unsupported bits per pixel value '%d': "
+                     "Clutter supports only a  value of 4 "
+                     "for RGBA data",
+                     bpp);
+	  return FALSE;
+	}
+
+      *source_format = COGL_PIXEL_FORMAT_RGBA_8888;
+    }
+  else
+    {
+      if (G_UNLIKELY (bpp != 3))
+	{
+          g_warning ("Unsupported bits per pixel value '%d': "
+                     "Clutter supports only a BPP value of 3 "
+                     "for RGB data",
+                     bpp);
+	  return FALSE;
+	}
+
+      *source_format = COGL_PIXEL_FORMAT_RGB_888;
+    }
+
+  if ((flags & CLUTTER_TEXTURE_RGB_FLAG_BGR))
+    *source_format |= COGL_BGR_BIT;
+
+  if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
+    *source_format |= COGL_PREMULT_BIT;
 
   return TRUE;
 }
@@ -1612,42 +1655,13 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
 
-  /* Convert the flags to a CoglPixelFormat */
-  if (has_alpha)
+  if (!get_pixel_format_from_texture_flags (bpp,
+                                            has_alpha,
+                                            flags,
+                                            &source_format))
     {
-      if (bpp != 4)
-	{
-	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
-		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported bits per pixel value '%d': "
-                       "Clutter supports only a BPP value of 4 "
-                       "for RGBA data",
-                       bpp);
-	  return FALSE;
-	}
-
-      source_format = COGL_PIXEL_FORMAT_RGBA_8888;
+      return FALSE;
     }
-  else
-    {
-      if (bpp != 3)
-	{
-	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
-		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported bits per pixel value '%d': "
-                       "Clutter supports only a BPP value of 3 "
-                       "for RGB data",
-                       bpp);
-	  return FALSE;
-	}
-
-      source_format = COGL_PIXEL_FORMAT_RGB_888;
-    }
-
-  if ((flags & CLUTTER_TEXTURE_RGB_FLAG_BGR))
-    source_format |= COGL_BGR_BIT;
-  if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
-    source_format |= COGL_PREMULT_BIT;
 
   return clutter_texture_set_from_data (texture, data,
 					source_format,
@@ -1686,7 +1700,7 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_NO_YUV,
-                   "YUV textures are not supported");
+                   _("YUV textures are not supported"));
       return FALSE;
     }
 
@@ -1695,7 +1709,7 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "YUV2 textues are not supported");
+		   _("YUV2 textues are not supported"));
       return FALSE;
     }
 
@@ -1950,7 +1964,7 @@ clutter_texture_async_load (ClutterTexture *self,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "Failed to create Cogl texture");
+                   _("Failed to load the image data"));
       return FALSE;
     }
   else
@@ -2045,7 +2059,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
     {
       g_set_error (&internal_error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "Failed to create Cogl texture");
+		   _("Failed to load the image data"));
     }
 
   if (internal_error != NULL)
@@ -2291,36 +2305,11 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   CoglPixelFormat source_format;
   CoglHandle cogl_texture;
 
-  if (has_alpha)
+  if (!get_pixel_format_from_texture_flags (bpp, has_alpha, flags,
+                                            &source_format))
     {
-      if (bpp != 4)
-	{
-	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
-		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported BPP");
-	  return FALSE;
-	}
-
-      source_format = COGL_PIXEL_FORMAT_RGBA_8888;
+      return FALSE;
     }
-  else
-    {
-      if (bpp != 3)
-	{
-	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
-		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported BPP");
-	  return FALSE;
-	}
-
-      source_format = COGL_PIXEL_FORMAT_RGB_888;
-    }
-
-  if ((flags & CLUTTER_TEXTURE_RGB_FLAG_BGR))
-    source_format |= COGL_BGR_BIT;
-
-  if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
-    source_format |= COGL_PREMULT_BIT;
 
   /* attempt to realize ... */
   if (!CLUTTER_ACTOR_IS_REALIZED (texture) &&
@@ -2336,9 +2325,8 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   cogl_texture = clutter_texture_get_cogl_texture (texture);
   if (cogl_texture == COGL_INVALID_HANDLE)
     {
-      g_set_error (error, CLUTTER_TEXTURE_ERROR,
-		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "Failed to realize actor");
+      g_warning ("Failed to realize actor '%s'",
+                 _clutter_actor_get_debug_name (CLUTTER_ACTOR (texture)));
       return FALSE;
     }
 
@@ -2352,7 +2340,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "Failed to upload Cogl texture data");
+		   _("Failed to load the image data"));
       return FALSE;
     }
 
