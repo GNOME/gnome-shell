@@ -3034,7 +3034,7 @@ _clutter_context_release_id (guint32 id_)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
-  return _clutter_id_pool_remove (context->id_pool, id_);
+  _clutter_id_pool_remove (context->id_pool, id_);
 }
 
 void
