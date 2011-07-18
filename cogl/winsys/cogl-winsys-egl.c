@@ -1582,7 +1582,10 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
                             (EGLClientBuffer)tex_pixmap->pixmap,
                             attribs);
   if (egl_tex_pixmap->image == EGL_NO_IMAGE_KHR)
-    return FALSE;
+    {
+      g_free (egl_tex_pixmap);
+      return FALSE;
+    }
 
   texture_format = (tex_pixmap->depth >= 32 ?
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE :
