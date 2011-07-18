@@ -432,7 +432,10 @@ _cogl_bitmap_unmap (CoglBitmap *bitmap)
 {
   /* Divert to another bitmap if this data is shared */
   if (bitmap->shared_bmp)
-    return _cogl_bitmap_unmap (bitmap->shared_bmp);
+    {
+      _cogl_bitmap_unmap (bitmap->shared_bmp);
+      return;
+    }
 
   g_assert (bitmap->mapped);
   bitmap->mapped = FALSE;
@@ -484,7 +487,10 @@ _cogl_bitmap_unbind (CoglBitmap *bitmap)
 {
   /* Divert to another bitmap if this data is shared */
   if (bitmap->shared_bmp)
-    return _cogl_bitmap_unbind (bitmap->shared_bmp);
+    {
+      _cogl_bitmap_unbind (bitmap->shared_bmp);
+      return;
+    }
 
   g_assert (bitmap->bound);
   bitmap->bound = FALSE;
