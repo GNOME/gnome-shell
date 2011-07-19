@@ -68,8 +68,7 @@ struct _MetaWindowActorPrivate
 
   /* If the window is shaped, a region that matches the shape */
   cairo_region_t   *shape_region;
-  /* A rectangular region with the unshaped extends of the window
-   * texture */
+  /* A rectangular region with the visible extents of the window */
   cairo_region_t   *bounding_region;
   /* The region we should clip to when painting the shadow */
   cairo_region_t   *shadow_clip;
@@ -79,6 +78,7 @@ struct _MetaWindowActorPrivate
 
   gint              last_width;
   gint              last_height;
+  MetaFrameBorders  last_borders;
 
   gint              freeze_count;
 
@@ -1267,7 +1267,7 @@ meta_window_actor_sync_actor_position (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
   MetaRectangle window_rect;
 
-  meta_window_get_outer_rect (priv->window, &window_rect);
+  meta_window_get_input_rect (priv->window, &window_rect);
 
   if (priv->last_width != window_rect.width ||
       priv->last_height != window_rect.height)
@@ -1547,21 +1547,59 @@ meta_window_actor_clear_shadow_clip (MetaWindowActor *self)
 }
 
 static void
-meta_window_actor_update_bounding_region (MetaWindowActor *self,
-                                          int              width,
-                                          int              height)
+meta_window_actor_update_bounding_region_and_borders (MetaWindowActor *self,
+                                                      int              width,
+                                                      int              height)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  cairo_rectangle_int_t bounding_rectangle = { 0, 0, width, height };
+  MetaFrame *frame;
+  MetaFrameBorders borders;
+  cairo_rectangle_int_t bounding_rectangle;
+
+  bounding_rectangle.x = 0;
+  bounding_rectangle.y = 0;
+
+  frame = priv->window->frame;
+  if (frame != NULL)
+    {
+      meta_frame_calc_borders (frame, &borders);
+
+      bounding_rectangle.x = borders.invisible.left;
+      bounding_rectangle.y = borders.invisible.top;
+
+      width -= borders.invisible.left + borders.invisible.right;
+      height -= borders.invisible.top + borders.invisible.bottom;
+    }
+
+  bounding_rectangle.width = width;
+  bounding_rectangle.height = height;
 
   if (priv->bounding_region != NULL)
     {
       cairo_rectangle_int_t old_bounding_rectangle;
       cairo_region_get_extents (priv->bounding_region, &old_bounding_rectangle);
 
-      if (old_bounding_rectangle.width == width && old_bounding_rectangle.height == height)
-        return;
+      if (bounding_rectangle.width == old_bounding_rectangle.width &&
+          bounding_rectangle.height == old_bounding_rectangle.height)
+        {
+
+          if (priv->last_borders.invisible.left != borders.invisible.left &&
+              priv->last_borders.invisible.right != borders.invisible.right &&
+              priv->last_borders.invisible.top != borders.invisible.top &&
+              priv->last_borders.invisible.bottom != borders.invisible.bottom)
+            {
+              /* Because the bounding region doesn't include the invisible borders,
+               * we need to make sure that the border sizes haven't changed before
+               * short-circuiting early. If they have, update the mask texture here.
+               */
+              meta_window_actor_update_shape (self);
+            }
+
+          return;
+        }
     }
+
+  priv->last_borders = borders;
 
   meta_window_actor_clear_bounding_region (self);
 
@@ -1800,7 +1838,7 @@ check_needs_pixmap (MetaWindowActor *self)
       if (priv->back_pixmap == None)
         {
           meta_verbose ("Unable to get named pixmap for %p\n", self);
-          meta_window_actor_update_bounding_region (self, 0, 0);
+          meta_window_actor_update_bounding_region_and_borders (self, 0, 0);
           return;
         }
 
@@ -1824,7 +1862,7 @@ check_needs_pixmap (MetaWindowActor *self)
                     "pixmap-height", &pxm_height,
                     NULL);
 
-      meta_window_actor_update_bounding_region (self, pxm_width, pxm_height);
+      meta_window_actor_update_bounding_region_and_borders (self, pxm_width, pxm_height);
     }
 
   meta_error_trap_pop (display);
@@ -2003,8 +2041,11 @@ check_needs_reshape (MetaWindowActor *self)
 
       if (priv->window->frame)
         {
-          client_area.x = priv->window->frame->child_x;
-          client_area.y = priv->window->frame->child_y;
+          MetaFrameBorders borders;
+          meta_frame_calc_borders (priv->window->frame, &borders);
+
+          client_area.x = borders.total.left;
+          client_area.y = borders.total.top;
         }
       else
         {
