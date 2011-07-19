@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-13 21:51+0000\n"
-"PO-Revision-Date: 2011-07-14 08:04+0100\n"
+"POT-Creation-Date: 2011-07-18 11:50+0000\n"
+"PO-Revision-Date: 2011-07-19 21:45+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Language: Slovenian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: Slovenian\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -150,23 +150,23 @@ msgstr "Izvedba '%s' je spodletela:"
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:351
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "Programi"
 
-#: ../js/ui/appDisplay.js:377
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:650
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:654
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -300,14 +300,14 @@ msgstr "Nič ni razporejeno"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:717
-#: ../js/ui/telepathyClient.js:705
+#: ../js/ui/telepathyClient.js:749
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
-#: ../js/ui/telepathyClient.js:708
+#: ../js/ui/telepathyClient.js:752
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
@@ -521,18 +521,18 @@ msgid "Dash"
 msgstr "Armaturna plošča"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:533
+#: ../js/ui/panel.js:532
 #, c-format
 msgid "Quit %s"
 msgstr "Končaj %s"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:914
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:1014
+#: ../js/ui/panel.js:951
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -773,6 +773,7 @@ msgid "Grant this time only"
 msgstr "Odobri le tokrat"
 
 #: ../js/ui/status/bluetooth.js:409
+#: ../js/ui/telepathyClient.js:954
 msgid "Reject"
 msgstr "Zavrni"
 
@@ -1069,22 +1070,34 @@ msgstr "Glasnost"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/telepathyClient.js:497
+#. We got the TpContact
+#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
+#. system-users for now as Empathy does.
+#: ../js/ui/telepathyClient.js:228
+msgid "Invitation"
+msgstr "Povabilo"
+
+#. We got the TpContact
+#: ../js/ui/telepathyClient.js:291
+msgid "Call"
+msgstr "Pokliči"
+
+#: ../js/ui/telepathyClient.js:541
 #, c-format
 msgid "%s is online."
 msgstr "%s je povezan."
 
-#: ../js/ui/telepathyClient.js:502
+#: ../js/ui/telepathyClient.js:546
 #, c-format
 msgid "%s is offline."
 msgstr "%s ni povezan."
 
-#: ../js/ui/telepathyClient.js:505
+#: ../js/ui/telepathyClient.js:549
 #, c-format
 msgid "%s is away."
 msgstr "%s je odsoten."
 
-#: ../js/ui/telepathyClient.js:508
+#: ../js/ui/telepathyClient.js:552
 #, c-format
 msgid "%s is busy."
 msgstr "%s je zaposlen."
@@ -1092,25 +1105,21 @@ msgstr "%s je zaposlen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:697
+#: ../js/ui/telepathyClient.js:741
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Poslano na %X ob %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:747
+#: ../js/ui/telepathyClient.js:791
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
-#: ../js/ui/telepathyClient.js:811
-msgid "Invitation"
-msgstr "Povabilo"
-
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:855
+#: ../js/ui/telepathyClient.js:898
 #, c-format
 msgid "Invitation to %s"
 msgstr "Povabilo v %s"
@@ -1118,18 +1127,34 @@ msgstr "Povabilo v %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:863
+#: ../js/ui/telepathyClient.js:906
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s vas vabi, da se pridružite v %s"
 
-#: ../js/ui/telepathyClient.js:865
+#: ../js/ui/telepathyClient.js:908
 msgid "Decline"
 msgstr "Zavrni"
 
-#: ../js/ui/telepathyClient.js:866
+#: ../js/ui/telepathyClient.js:909
 msgid "Accept"
 msgstr "Sprejmi"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:942
+#, c-format
+msgid "Video call from %s"
+msgstr "%s želi vzpostaviti video klic"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:945
+#, c-format
+msgid "Call from %s"
+msgstr "%s kliče"
+
+#: ../js/ui/telepathyClient.js:955
+msgid "Answer"
+msgstr "Odgovori"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1427,10 +1452,11 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Ključ določa zapis ure. Mogoče vrednosti so \"12-urni\", \"24-urni\", "
 #~ "\"unix\" in \"po meri\". Možnost \"unix\" prikazuje čas v sekundah od "
