@@ -83,3 +83,16 @@ graph. The same will happen for (f).
 The child (g) has the same size, but its needs_* flags will have been cleared,
 so its allocate() implementation will be invoked; this will cause the (h) and
 (i) children to be allocated as well.
+
+Fixed preferred size
+--------------------
+
+If an actor has a fixed size then that size will take precedence over the cached
+size and the actor's implementation of the get_preferred_* virtual functions.
+
+Constraints
+-----------
+
+Constraints only affect the allocation phase; each constraint is allowed to
+modify the allocation passed to clutter_actor_allocate(), before it will be
+checked and eventually discarded.
