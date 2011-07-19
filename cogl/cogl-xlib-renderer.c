@@ -181,7 +181,7 @@ _cogl_xlib_renderer_disconnect (CoglRenderer *renderer)
 {
   CoglXlibRenderer *xlib_renderer = renderer->winsys;
 
-  if (!renderer->foreign_xdpy)
+  if (!renderer->foreign_xdpy && xlib_renderer->xdpy)
     XCloseDisplay (xlib_renderer->xdpy);
 
   unregister_xlib_renderer (renderer);
