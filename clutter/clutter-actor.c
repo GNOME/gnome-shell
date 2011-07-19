@@ -6154,7 +6154,7 @@ clutter_actor_allocate (ClutterActor           *self,
   ClutterActorPrivate *priv;
   ClutterActorClass *klass;
   ClutterActorBox alloc;
-  gboolean child_moved;
+  gboolean origin_changed, child_moved, size_changed;
   gboolean stage_allocation_changed;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -6185,13 +6185,15 @@ clutter_actor_allocate (ClutterActor           *self,
         }
     }
 
+  origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED);
+
   child_moved = (alloc.x1 != priv->allocation.x1 ||
                  alloc.y1 != priv->allocation.y1);
 
-  if (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED ||
-      child_moved ||
-      alloc.x2 != priv->allocation.x2 ||
-      alloc.y2 != priv->allocation.y2)
+  size_changed = (alloc.x2 != priv->allocation.x2 ||
+                  alloc.y2 != priv->allocation.y2);
+
+  if (origin_changed || child_moved || size_changed)
     stage_allocation_changed = TRUE;
   else
     stage_allocation_changed = FALSE;
