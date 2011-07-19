@@ -41,7 +41,7 @@ Indicator.prototype = {
         this._outputVolumeId = 0;
         this._outputMutedId = 0;
         this._outputTitle = new PopupMenu.PopupMenuItem(_("Volume"), { reactive: false });
-        this._outputSlider = new VolumeSliderMenuItem(0);
+        this._outputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._outputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_output'));
         this._outputSlider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
         this.menu.addMenuItem(this._outputTitle);
@@ -54,7 +54,7 @@ Indicator.prototype = {
         this._inputVolumeId = 0;
         this._inputMutedId = 0;
         this._inputTitle = new PopupMenu.PopupMenuItem(_("Microphone"), { reactive: false });
-        this._inputSlider = new VolumeSliderMenuItem(0);
+        this._inputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._inputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_input'));
         this._inputSlider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
         this.menu.addMenuItem(this._inputTitle);
@@ -229,32 +229,5 @@ Indicator.prototype = {
         this[property+'Slider'].setValue(this[property].volume / maxVolume);
         if (property == '_output' && !this._output.is_muted)
             this.setIcon(this._volumeToIcon(this._output.volume));
-    }
-};
-
-function VolumeSliderMenuItem() {
-    this._init.apply(this, arguments);
-}
-
-VolumeSliderMenuItem.prototype = {
-    __proto__: PopupMenu.PopupSliderMenuItem.prototype,
-
-    _init: function(value) {
-        PopupMenu.PopupSliderMenuItem.prototype._init.call(this, value, { activate: true });
-
-        this.actor.connect('motion-event', Lang.bind(this, this._onMotionEvent));
-    },
-
-    activate: function(event) {
-        this._motionEvent(this.actor, event);
-        this.emit('drag-end');
-        this.emit('activate', event);
-    },
-
-    _onMotionEvent: function(actor, event) {
-        let button_pressed = Shell.get_event_state(event) & Clutter.ModifierType.BUTTON1_MASK;
-        if (button_pressed && !this._dragging)
-            return this._motionEvent(actor, event);
-        return false;
     }
 };
