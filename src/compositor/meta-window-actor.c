@@ -37,8 +37,6 @@ static guint signals[LAST_SIGNAL] = {0};
 
 struct _MetaWindowActorPrivate
 {
-  XWindowAttributes attrs;
-
   MetaWindow       *window;
   Window            xwindow;
   MetaScreen       *screen;
@@ -78,6 +76,9 @@ struct _MetaWindowActorPrivate
 
   /* Extracted size-invariant shape used for shadows */
   MetaWindowShape  *shadow_shape;
+
+  gint              last_width;
+  gint              last_height;
 
   gint              freeze_count;
 
@@ -155,52 +156,6 @@ static void meta_window_actor_clear_shape_region    (MetaWindowActor *self);
 static void meta_window_actor_clear_bounding_region (MetaWindowActor *self);
 static void meta_window_actor_clear_shadow_clip     (MetaWindowActor *self);
 
-/*
- * Register GType wrapper for XWindowAttributes, so we do not have to
- * query window attributes in the MetaWindowActor constructor but can pass
- * them as a property to the constructor (so we can gracefully handle the case
- * where no attributes can be retrieved).
- *
- * NB -- we only need a subset of the attributes; at some point we might want
- * to just store the relevant values rather than the whole struct.
- */
-#define META_TYPE_XATTRS (meta_xattrs_get_type ())
-
-static GType meta_xattrs_get_type   (void) G_GNUC_CONST;
-
-static XWindowAttributes *
-meta_xattrs_copy (const XWindowAttributes *attrs)
-{
-  XWindowAttributes *result;
-
-  g_return_val_if_fail (attrs != NULL, NULL);
-
-  result = (XWindowAttributes*) g_malloc (sizeof (XWindowAttributes));
-  *result = *attrs;
-
-  return result;
-}
-
-static void
-meta_xattrs_free (XWindowAttributes *attrs)
-{
-  g_return_if_fail (attrs != NULL);
-
-  g_free (attrs);
-}
-
-static GType
-meta_xattrs_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (!our_type)
-    our_type = g_boxed_type_register_static ("XWindowAttributes",
-		                     (GBoxedCopyFunc) meta_xattrs_copy,
-				     (GBoxedFreeFunc) meta_xattrs_free);
-  return our_type;
-}
-
 G_DEFINE_TYPE (MetaWindowActor, meta_window_actor, CLUTTER_TYPE_GROUP);
 
 static void
@@ -250,16 +205,6 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
 
   g_object_class_install_property (object_class,
                                    PROP_X_WINDOW,
-                                   pspec);
-
-  pspec = g_param_spec_boxed ("x-window-attributes",
-			      "XWindowAttributes",
-			      "XWindowAttributes",
-			      META_TYPE_XATTRS,
-			      G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-
-  g_object_class_install_property (object_class,
-                                   PROP_X_WINDOW_ATTRIBUTES,
                                    pspec);
 
   pspec = g_param_spec_boolean ("no-shadow",
@@ -322,7 +267,6 @@ window_decorated_notify (MetaWindow *mw,
   MetaDisplay            *display  = meta_screen_get_display (screen);
   Display                *xdisplay = meta_display_get_xdisplay (display);
   Window                  new_xwindow;
-  XWindowAttributes       attrs;
 
   /*
    * Basically, we have to reconstruct the the internals of this object
@@ -354,16 +298,6 @@ window_decorated_notify (MetaWindow *mw,
 
   priv->xwindow = new_xwindow;
 
-  if (!XGetWindowAttributes (xdisplay, new_xwindow, &attrs))
-    {
-      g_warning ("Could not obtain attributes for window 0x%x after "
-                 "decoration change",
-                 (guint) new_xwindow);
-      return;
-    }
-
-  g_object_set (self, "x-window-attributes", &attrs, NULL);
-
   /*
    * Recreate the contents.
    */
@@ -386,16 +320,14 @@ meta_window_actor_constructed (GObject *object)
   MetaScreen             *screen   = priv->screen;
   MetaDisplay            *display  = meta_screen_get_display (screen);
   Window                  xwindow  = priv->xwindow;
+  MetaWindow             *window   = priv->window;
   Display                *xdisplay = meta_display_get_xdisplay (display);
   XRenderPictFormat      *format;
 
-  if (priv->attrs.class == InputOnly)
-    priv->damage = None;
-  else
-    priv->damage = XDamageCreate (xdisplay, xwindow,
-                                  XDamageReportBoundingBox);
+  priv->damage = XDamageCreate (xdisplay, xwindow,
+                                XDamageReportBoundingBox);
 
-  format = XRenderFindVisualFormat (xdisplay, priv->attrs.visual);
+  format = XRenderFindVisualFormat (xdisplay, window->xvisual);
 
   if (format && format->type == PictTypeDirect && format->direct.alphaMask)
     priv->argb32 = TRUE;
@@ -415,9 +347,9 @@ meta_window_actor_constructed (GObject *object)
        */
       g_object_ref (priv->actor);
 
-      g_signal_connect (priv->window, "notify::decorated",
+      g_signal_connect (window, "notify::decorated",
                         G_CALLBACK (window_decorated_notify), self);
-      g_signal_connect (priv->window, "notify::appears-focused",
+      g_signal_connect (window, "notify::appears-focused",
                         G_CALLBACK (window_appears_focused_notify), self);
     }
   else
@@ -544,9 +476,6 @@ meta_window_actor_set_property (GObject      *object,
     case PROP_X_WINDOW:
       priv->xwindow = g_value_get_ulong (value);
       break;
-    case PROP_X_WINDOW_ATTRIBUTES:
-      priv->attrs = *((XWindowAttributes*)g_value_get_boxed (value));
-      break;
     case PROP_NO_SHADOW:
       {
         gboolean newv = g_value_get_boolean (value);
@@ -596,9 +525,6 @@ meta_window_actor_get_property (GObject      *object,
       break;
     case PROP_X_WINDOW:
       g_value_set_ulong (value, priv->xwindow);
-      break;
-    case PROP_X_WINDOW_ATTRIBUTES:
-      g_value_set_boxed (value, &priv->attrs);
       break;
     case PROP_NO_SHADOW:
       g_value_set_boolean (value, priv->no_shadow);
@@ -842,7 +768,7 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
   /*
    * Add shadows to override redirect windows (e.g., Gtk menus).
    */
-  if (priv->attrs.override_redirect)
+  if (priv->window->override_redirect)
     {
       meta_verbose ("Window 0x%x has shadow because it is override redirect.\n",
 		    (guint)priv->xwindow);
@@ -1343,18 +1269,15 @@ meta_window_actor_sync_actor_position (MetaWindowActor *self)
 
   meta_window_get_outer_rect (priv->window, &window_rect);
 
-  if (priv->attrs.width != window_rect.width ||
-      priv->attrs.height != window_rect.height)
+  if (priv->last_width != window_rect.width ||
+      priv->last_height != window_rect.height)
     {
       priv->size_changed = TRUE;
       meta_window_actor_queue_create_pixmap (self);
-    }
 
-  /* XXX deprecated: please use meta_window_get_outer_rect instead */
-  priv->attrs.width = window_rect.width;
-  priv->attrs.height = window_rect.height;
-  priv->attrs.x = window_rect.x;
-  priv->attrs.y = window_rect.y;
+      priv->last_width = window_rect.width;
+      priv->last_height = window_rect.height;
+    }
 
   if (meta_window_actor_effect_in_progress (self))
     return;
@@ -1513,13 +1436,11 @@ MetaWindowActor *
 meta_window_actor_new (MetaWindow *window)
 {
   MetaScreen	 	 *screen = meta_window_get_screen (window);
-  MetaDisplay            *display = meta_screen_get_display (screen);
   MetaCompScreen         *info = meta_screen_get_compositor_data (screen);
   MetaWindowActor        *self;
   MetaWindowActorPrivate *priv;
   MetaFrame		 *frame;
   Window		  top_window;
-  XWindowAttributes	  attrs;
 
   frame = meta_window_get_frame (window);
   if (frame)
@@ -1529,19 +1450,16 @@ meta_window_actor_new (MetaWindow *window)
 
   meta_verbose ("add window: Meta %p, xwin 0x%x\n", window, (guint)top_window);
 
-  /* FIXME: Remove the redundant data we store in self->priv->attrs, and
-   * simply query metacity core for the data. */
-  if (!XGetWindowAttributes (meta_display_get_xdisplay (display), top_window, &attrs))
-    return NULL;
-
   self = g_object_new (META_TYPE_WINDOW_ACTOR,
                        "meta-window",         window,
                        "x-window",            top_window,
                        "meta-screen",         screen,
-                       "x-window-attributes", &attrs,
                        NULL);
 
   priv = self->priv;
+
+  priv->last_width = -1;
+  priv->last_height = -1;
 
   priv->mapped = meta_window_toplevel_is_mapped (priv->window);
   if (priv->mapped)
