@@ -598,13 +598,18 @@ COGL_EXT_END ()
 
 /* Available in GL 1.3, the multitexture extension or GLES. These are
    required */
-COGL_EXT_BEGIN (multitexture, 1, 3,
+COGL_EXT_BEGIN (multitexture_part0, 1, 3,
                 COGL_EXT_IN_GLES |
                 COGL_EXT_IN_GLES2,
                 "ARB\0",
                 "multitexture\0")
 COGL_EXT_FUNCTION (void, glActiveTexture,
                    (GLenum                texture))
+COGL_EXT_END ()
+COGL_EXT_BEGIN (multitexture_part1, 1, 3,
+                COGL_EXT_IN_GLES,
+                "ARB\0",
+                "multitexture\0")
 COGL_EXT_FUNCTION (void, glClientActiveTexture,
                    (GLenum                texture))
 COGL_EXT_END ()
