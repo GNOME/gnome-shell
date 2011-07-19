@@ -120,7 +120,7 @@ _cogl_gles_update_features (CoglContext *context,
     flags |= COGL_FEATURE_MAP_BUFFER_FOR_WRITE;
 
   if (context->glEGLImageTargetTexture2D)
-    flags |= COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE;
+    private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE;
 
   /* Cache features */
   context->private_feature_flags |= private_flags;
