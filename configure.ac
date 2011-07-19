@@ -980,8 +980,6 @@ AC_CONFIG_FILES([
 	doc/reference/cally/Makefile
 	doc/reference/cally/cally-docs.xml
 	doc/common/Makefile
-	doc/manual/Makefile
-	doc/manual/clutter-manual.xml
 	doc/cookbook/Makefile
 	doc/cookbook/clutter-cookbook.xml
 	doc/cookbook/examples/Makefile
