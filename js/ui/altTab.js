@@ -14,7 +14,7 @@ const Tweener = imports.ui.tweener;
 
 const POPUP_APPICON_SIZE = 96;
 const POPUP_SCROLL_TIME = 0.10; // seconds
-const POPUP_FADE_IN_TIME = 0.4; // seconds
+const POPUP_DELAY_TIMEOUT = 150; // milliseconds
 const POPUP_FADE_OUT_TIME = 0.1; // seconds
 
 const APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
@@ -53,6 +53,7 @@ AltTabPopup.prototype = {
         this._currentWindow = -1;
         this._thumbnailTimeoutId = 0;
         this._motionTimeoutId = 0;
+        this._initialDelayTimeoutId = 0;
 
         this.thumbnailsVisible = false;
 
@@ -146,8 +147,6 @@ AltTabPopup.prototype = {
 
         // Need to force an allocation so we can figure out whether we
         // need to scroll when selecting
-        this.actor.opacity = 0;
-        this.actor.show();
         this.actor.get_allocation_box();
 
         // Make the initial selection
@@ -183,16 +182,13 @@ AltTabPopup.prototype = {
             return false;
         }
 
-        // Using easeInOutExpo over 400ms gives us 150ms of "nearly
-        // invisible" (less than 10% opacity), followed by a 100ms
-        // tween in (to 90% opacity, with the last 10% coming over the
-        // next 150ms). So if the user releases Alt quickly after we
-        // start tweening, they'll never see the switcher.
-        Tweener.addTween(this.actor,
-                         { opacity: 255,
-                           time: POPUP_FADE_IN_TIME,
-                           transition: 'easeInOutExpo'
-                         });
+        // We delay showing the popup so that fast Alt+Tab users aren't
+        // disturbed by the popup briefly flashing.
+        this._initialDelayTimeoutId = Mainloop.timeout_add(POPUP_DELAY_TIMEOUT,
+                                                           Lang.bind(this, function () {
+                                                               this.actor.show();
+                                                               this._initialDelayTimeoutId = 0;
+                                                           }));
 
         return true;
     },
@@ -395,6 +391,8 @@ AltTabPopup.prototype = {
             Mainloop.source_remove(this._motionTimeoutId);
         if (this._thumbnailTimeoutId != 0)
             Mainloop.source_remove(this._thumbnailTimeoutId);
+        if (this._initialDelayTimeoutId != 0)
+            Mainloop.source_remove(this._initialDelayTimeoutId);
     },
 
     /**
