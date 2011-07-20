@@ -257,6 +257,7 @@ _cogl_clear4f (unsigned long buffers,
           /* Make sure the ColorMask is updated when the next primitive is drawn */
           ctx->current_pipeline_changes_since_flush |=
             COGL_PIPELINE_STATE_LOGIC_OPS;
+          ctx->current_pipeline_age--;
         }
     }
 
@@ -1528,6 +1529,7 @@ cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
   /* Make sure the ColorMask is updated when the next primitive is drawn */
   ctx->current_pipeline_changes_since_flush |=
     COGL_PIPELINE_STATE_LOGIC_OPS;
+  ctx->current_pipeline_age--;
 }
 
 gboolean
