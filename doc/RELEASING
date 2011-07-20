@@ -59,6 +59,7 @@ done
  - Read the release comments in configure.ac
     - Bump cogl_1_minor_version to the next even number
     - Don't change the 2.0 version number
+    - Update the libtool versioning
     - Update the cogl_release_status status to "release" or "snapshot"
       as appropriate.
     - commit the changes.
