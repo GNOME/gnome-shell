@@ -68,5 +68,22 @@
         </long>
       </locale>
     </schema>
+
+    <schema>
+      <key>/schemas/apps/mutter/general/draggable_border_width</key>
+      <applyto>/apps/mutter/general/draggable_border_width</applyto>
+      <owner>mutter</owner>
+      <type>int</type>
+      <default>10</default>
+      <locale name="C">
+        <short>Draggable border width</short>
+        <long>
+          The amount of total draggable borders. If the theme's visible
+          borders are not enough, invisible borders will be added to meet
+          this value.
+        </long>
+      </locale>
+    </schema>
+
     </schemalist>
 </gconfschemafile>

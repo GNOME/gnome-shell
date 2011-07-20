@@ -68,6 +68,7 @@
 
 #define KEY_LIVE_HIDDEN_WINDOWS "/apps/mutter/general/live_hidden_windows"
 #define KEY_WORKSPACES_ONLY_ON_PRIMARY "/apps/mutter/general/workspaces_only_on_primary"
+#define KEY_DRAGGABLE_BORDER_WIDTH "/apps/mutter/general/draggable_border_width"
 
 #define KEY_NO_TAB_POPUP "/apps/metacity/general/no_tab_popup"
 
@@ -100,6 +101,7 @@ static gboolean gnome_accessibility = FALSE;
 static gboolean gnome_animations = TRUE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
+static int   draggable_border_width = 10;
 static gboolean resize_with_right_button = FALSE;
 static gboolean edge_tiling = FALSE;
 static gboolean force_fullscreen = TRUE;
@@ -492,6 +494,11 @@ static MetaIntPreference preferences_int[] =
       META_PREF_CURSOR_SIZE,
       &cursor_size,
       1, 128, 24,
+    },
+    { "/apps/mutter/general/draggable_border_width",
+      META_PREF_DRAGGABLE_BORDER_WIDTH,
+      &draggable_border_width,
+      0, 64, 10,
     },
     { NULL, 0, NULL, 0, 0, 0, },
   };
@@ -1987,6 +1994,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_NO_TAB_POPUP:
       return "NO_TAB_POPUP";
+
+    case META_PREF_DRAGGABLE_BORDER_WIDTH:
+      return "DRAGGABLE_BORDER_WIDTH";
     }
 
   return "(unknown)";
@@ -3038,6 +3048,12 @@ meta_prefs_set_no_tab_popup (gboolean whether)
 #else
   no_tab_popup = whether;
 #endif
+}
+
+int
+meta_prefs_get_draggable_border_width (void)
+{
+  return draggable_border_width;
 }
 
 #ifndef HAVE_GCONF

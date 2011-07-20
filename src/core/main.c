@@ -594,6 +594,7 @@ prefs_changed_callback (MetaPreference pref,
   switch (pref)
     {
     case META_PREF_THEME:
+    case META_PREF_DRAGGABLE_BORDER_WIDTH:
       meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
       meta_display_retheme_all ();
       break;
