@@ -64,6 +64,9 @@ void meta_compositor_manage_screen   (MetaCompositor *compositor,
 void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
+void meta_compositor_window_shape_changed (MetaCompositor *compositor,
+                                           MetaWindow     *window);
+
 gboolean meta_compositor_process_event (MetaCompositor *compositor,
                                         XEvent         *event,
                                         MetaWindow     *window);

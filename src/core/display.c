@@ -1696,6 +1696,10 @@ event_callback (XEvent   *event,
                               "Window %s shape changed\n",
                               window->desc);
                 }
+
+              if (display->compositor)
+                meta_compositor_window_shape_changed (display->compositor,
+                                                      window);
             }
         }
       else

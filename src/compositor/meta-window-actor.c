@@ -96,7 +96,6 @@ struct _MetaWindowActorPrivate
 
   guint		    visible                : 1;
   guint		    mapped                 : 1;
-  guint		    shaped                 : 1;
   guint		    argb32                 : 1;
   guint		    disposed               : 1;
   guint             redecorating           : 1;
@@ -156,8 +155,6 @@ static void meta_window_actor_clear_shape_region    (MetaWindowActor *self);
 static void meta_window_actor_clear_bounding_region (MetaWindowActor *self);
 static void meta_window_actor_clear_shadow_clip     (MetaWindowActor *self);
 
-static gboolean is_shaped                (MetaDisplay  *display,
-                                          Window        xwindow);
 /*
  * Register GType wrapper for XWindowAttributes, so we do not have to
  * query window attributes in the MetaWindowActor constructor but can pass
@@ -392,14 +389,6 @@ meta_window_actor_constructed (GObject *object)
   Display                *xdisplay = meta_display_get_xdisplay (display);
   XRenderPictFormat      *format;
 
-#ifdef HAVE_SHAPE
-  /* Listen for ShapeNotify events on the window */
-  if (meta_display_has_shape (display))
-    XShapeSelectInput (xdisplay, xwindow, ShapeNotifyMask);
-#endif
-
-  priv->shaped = is_shaped (display, xwindow);
-
   if (priv->attrs.class == InputOnly)
     priv->damage = None;
   else
@@ -441,7 +430,7 @@ meta_window_actor_constructed (GObject *object)
     }
 
   meta_window_actor_update_opacity (self);
-  meta_window_actor_update_shape (self, priv->shaped);
+  meta_window_actor_update_shape (self);
 }
 
 static void
@@ -671,7 +660,7 @@ meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
    * where getting the shape fails on a window being destroyed
    * and similar.
    */
-  if (priv->shaped && priv->shape_region)
+  if (priv->shape_region)
     cairo_region_get_extents (priv->shape_region, bounds);
   else if (priv->bounding_region)
     cairo_region_get_extents (priv->bounding_region, bounds);
@@ -807,25 +796,6 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
   clutter_paint_volume_set_height (volume, bounds.height);
 
   return TRUE;
-}
-
-static gboolean
-is_shaped (MetaDisplay *display, Window xwindow)
-{
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  gint     xws, yws, xbs, ybs;
-  guint    wws, hws, wbs, hbs;
-  gint     bounding_shaped, clip_shaped;
-
-  if (meta_display_has_shape (display))
-    {
-      XShapeQueryExtents (xdisplay, xwindow, &bounding_shaped,
-                          &xws, &yws, &wws, &hws, &clip_shaped,
-                          &xbs, &ybs, &wbs, &hbs);
-      return (bounding_shaped != 0);
-    }
-
-  return FALSE;
 }
 
 static gboolean
@@ -1679,22 +1649,7 @@ meta_window_actor_update_bounding_region (MetaWindowActor *self,
 
   priv->bounding_region = cairo_region_create_rectangle (&bounding_rectangle);
 
-  if (priv->shaped)
-    {
-      /* If we're shaped, the implicit shape region clipping we need to do needs
-       * to be updated.
-       */
-      meta_window_actor_update_shape (self, TRUE);
-    }
-  else
-    {
-      /* When we're shaped, we use the shape region to generate the shadow; the shape
-       * region only changes when we get ShapeNotify event; but for unshaped windows
-       * we generate the shadow from the bounding region, so we need to recompute
-       * the shadow when the size changes.
-       */
-      meta_window_actor_invalidate_shadow (self);
-    }
+  meta_window_actor_update_shape (self);
 
   g_signal_emit (self, signals[SIZE_CHANGED], 0);
 }
@@ -1743,7 +1698,7 @@ meta_window_actor_get_obscured_region (MetaWindowActor *self)
 
   if (!priv->argb32 && priv->opacity == 0xff && priv->back_pixmap)
     {
-      if (priv->shaped)
+      if (priv->shape_region)
         return priv->shape_region;
       else
         return priv->bounding_region;
@@ -1793,16 +1748,10 @@ meta_window_actor_set_visible_region (MetaWindowActor *self,
   /* Get the area of the window texture that would be drawn if
    * we weren't obscured at all
    */
-  if (priv->shaped)
-    {
-      if (priv->shape_region)
-        texture_clip_region = cairo_region_copy (priv->shape_region);
-    }
-  else
-    {
-      if (priv->bounding_region)
-        texture_clip_region = cairo_region_copy (priv->bounding_region);
-    }
+  if (priv->shape_region)
+    texture_clip_region = cairo_region_copy (priv->shape_region);
+  else if (priv->bounding_region)
+    texture_clip_region = cairo_region_copy (priv->bounding_region);
 
   if (!texture_clip_region)
     texture_clip_region = cairo_region_create ();
@@ -2014,7 +1963,7 @@ check_needs_shadow (MetaWindowActor *self)
     {
       if (priv->shadow_shape == NULL)
         {
-          if (priv->shaped && priv->shape_region)
+          if (priv->shape_region)
             priv->shadow_shape = meta_window_shape_new (priv->shape_region);
           else if (priv->bounding_region)
             priv->shadow_shape = meta_window_shape_new (priv->bounding_region);
@@ -2106,18 +2055,51 @@ check_needs_reshape (MetaWindowActor *self)
   if (!priv->needs_reshape)
     return;
 
-  region = NULL;
+  meta_shaped_texture_set_shape_region (META_SHAPED_TEXTURE (priv->actor), NULL);
+  meta_window_actor_clear_shape_region (self);
+
+  region = meta_window_get_frame_bounds (priv->window);
+  if (region != NULL)
+    {
+      /* This returns the window's internal frame bounds region,
+       * so we need to copy it because we modify it below. */
+      region = cairo_region_copy (region);
+    }
+  else
+    {
+      /* If we have no region, we have no frame. We have no frame,
+       * so just use the bounding region instead */
+      region = cairo_region_copy (priv->bounding_region);
+    }
 
 #ifdef HAVE_SHAPE
-  if (priv->shaped)
+  if (priv->window->has_shape)
     {
       Display *xdisplay = meta_display_get_xdisplay (display);
       XRectangle *rects;
       int n_rects, ordering;
+      cairo_rectangle_int_t client_area;
+
+      client_area.width = priv->window->rect.width;
+      client_area.height = priv->window->rect.height;
+
+      if (priv->window->frame)
+        {
+          client_area.x = priv->window->frame->child_x;
+          client_area.y = priv->window->frame->child_y;
+        }
+      else
+        {
+          client_area.x = 0;
+          client_area.y = 0;
+        }
+
+      /* Punch out client area. */
+      cairo_region_subtract_rectangle (region, &client_area);
 
       meta_error_trap_push (display);
       rects = XShapeGetRectangles (xdisplay,
-                                   priv->xwindow,
+                                   priv->window->xwindow,
                                    ShapeBounding,
                                    &n_rects,
                                    &ordering);
@@ -2126,13 +2108,10 @@ check_needs_reshape (MetaWindowActor *self)
       if (rects)
         {
           int i;
-
-          region = cairo_region_create ();
-
           for (i = 0; i < n_rects; i ++)
             {
-              cairo_rectangle_int_t rect = { rects[i].x,
-                                             rects[i].y,
+              cairo_rectangle_int_t rect = { rects[i].x + client_area.x,
+                                             rects[i].y + client_area.y,
                                              rects[i].width,
                                              rects[i].height };
               cairo_region_union_rectangle (region, &rect);
@@ -2154,12 +2133,10 @@ check_needs_reshape (MetaWindowActor *self)
 }
 
 void
-meta_window_actor_update_shape (MetaWindowActor   *self,
-                                gboolean        shaped)
+meta_window_actor_update_shape (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  priv->shaped = shaped;
   priv->needs_reshape = TRUE;
   if (priv->shadow_shape != NULL)
     {

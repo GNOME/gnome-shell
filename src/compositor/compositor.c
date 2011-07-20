@@ -109,28 +109,6 @@ process_damage (MetaCompositor     *compositor,
   meta_window_actor_process_damage (window_actor, event);
 }
 
-#ifdef HAVE_SHAPE
-static void
-process_shape (MetaCompositor *compositor,
-               XShapeEvent    *event,
-               MetaWindow     *window)
-{
-  MetaWindowActor *window_actor;
-
-  if (window == NULL)
-    return;
-
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (window_actor == NULL)
-    return;
-
-  if (event->kind == ShapeBounding)
-    {
-      meta_window_actor_update_shape (window_actor, event->shaped);
-    }
-}
-#endif
-
 static void
 process_property_notify (MetaCompositor	*compositor,
                          XPropertyEvent *event,
@@ -674,6 +652,16 @@ is_grabbed_event (XEvent *event)
 
   return FALSE;
 }
+
+void
+meta_compositor_window_shape_changed (MetaCompositor *compositor,
+                                      MetaWindow     *window)
+{
+  MetaWindowActor *window_actor;
+  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  meta_window_actor_update_shape (window_actor);
+}
+
 /**
  * meta_compositor_process_event: (skip)
  *
@@ -753,13 +741,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
 	  DEBUG_TRACE ("meta_compositor_process_event (process_damage)\n");
           process_damage (compositor, (XDamageNotifyEvent *) event, window);
         }
-#ifdef HAVE_SHAPE
-      else if (event->type == meta_display_get_shape_event_base (compositor->display) + ShapeNotify)
-	{
-	  DEBUG_TRACE ("meta_compositor_process_event (process_shape)\n");
-	  process_shape (compositor, (XShapeEvent *) event, window);
-	}
-#endif /* HAVE_SHAPE */
       break;
     }
 
