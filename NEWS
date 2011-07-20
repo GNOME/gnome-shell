@@ -1,7 +1,68 @@
+Cogl 1.7.4                                                         2011-07-20
+===============================================================================
+
+  • List of changes since Cogl 1.7.2
+
+   » Optimize pipeline unparent operation using embedded lists instead
+     of using GList API.
+   » Remove the old matrix operation code we had before pulling in the
+     mesa based code, and flatten all our matrix utilities back into one
+     maintainable file.
+   » Expose cogl_framebuffer_get_red/green/blue/alpha bits to query
+     the precision for a framebuffer's color channels.
+   » Numerous reference manual updates
+   » Fix some memory leaks in CoglPipeline that weren't captured in
+     bugzilla.
+   » Fix some EGL winsys issues that weren't captured in bugzilla.
+   » Switch to dynamically loading libGL, libGLESv2 or libGLES[v1]_CM
+     at runtime so it's possible to distribute a libcogl that can choose
+     to work with any of these at runtime. This can simplify packaging
+     on distros that have numerous packages that provide a platform
+     specific GL/GLES driver and certainly helps during the development
+     process when evaluating the pros-and-cons of different drivers for
+     a given platform.
+   » Clean up lots of inconsistencies with platform specific APIs, so
+     we follow the naming convention of cogl_<platform>_object_method.
+   » Remove cogl_set_default_context from experimental 2.0 api, since
+     we are aiming to remove the default context for 2.0
+   » Ensure the experimental 2.0 reference manual gets a unique
+     DOC_MODULE name so that distro's trying to package cogl don't end
+     up installing the 1.x and 2.0 manuals to the same location
+   » Add a program cache for the GLSL backend, a bit like we have for
+     the ARBfp backend. This can be a big boost in performance for some
+     apps depending on your platform.
+   » Adds dither_enable getter and setter API for CoglFramebuffer so
+     that Clutter doesn't need to use the GL API directly when picking.
+     We need to get to the point where Clutter doesn't need to link
+     against libGL directly so Clutter can take advantage of runtime
+     driver selection by Cogl.
+   » Use MESA_pack_invert extension in cogl_read_pixels to avoid
+     needing to manually flip pixel data read in bottom-up order to a
+     top-down order.
+   » Fix the hello example to actually clear the framebuffer at the
+     start of the frame instead of unintentionally relying on the driver
+     to have cleared the framebuffer.
+
+  • List of bugs fixes since Cogl 1.7.2
+
+    https://bugzilla.gnome.org:
+
+    #652514 - CoglPipeline could embed the list nodes for the
+              children directly in the CoglPipeline struct
+    #654440 - _cogl_winsys_context_init crash
+    #654718 - clutter 1.6.16 compile issues
+    #654593 - dlopening an unversionaed Shared Object is illegal.
+
+Many thanks to:
+    Neil Roberts
+    Damien Lespiau
+    Emmanuele Bassi
+    Takeshi AIHANA
+
 Cogl 1.7.2                                                         2011-07-01
 ===============================================================================
 
-  • List of changes since Clutter 1.7.0
+  • List of changes since Cogl 1.7.0
 
    » Add an example program to draw a 3D crate
 
@@ -21,7 +82,7 @@ Cogl 1.7.2                                                         2011-07-01
 
    » Fixed building against GLES.
 
-  • List of bugs fixes since Clutter 1.7.0
+  • List of bugs fixes since Cogl 1.7.0
 
     https://bugzilla.gnome.org:
 
