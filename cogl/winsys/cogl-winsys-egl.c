@@ -1809,11 +1809,21 @@ _cogl_egl_create_image (CoglContext *ctx,
 {
   CoglDisplayEGL *egl_display = ctx->display->winsys;
   CoglRendererEGL *egl_renderer = ctx->display->renderer->winsys;
+  EGLContext egl_ctx;
 
   g_return_val_if_fail (egl_renderer->pf_eglCreateImage, EGL_NO_IMAGE_KHR);
 
+  /* The EGL_KHR_image_pixmap spec explicitly states that EGL_NO_CONTEXT must
+   * always be used in conjunction with the EGL_NATIVE_PIXMAP_KHR target */
+#ifdef EGL_KHR_image_pixmap
+  if (target == EGL_NATIVE_PIXMAP_KHR)
+    egl_ctx = EGL_NO_CONTEXT;
+  else
+#endif
+    egl_ctx = egl_display->egl_context;
+
   return egl_renderer->pf_eglCreateImage (egl_renderer->edpy,
-                                          egl_display->egl_context,
+                                          egl_ctx,
                                           target,
                                           buffer,
                                           attribs);
