@@ -486,6 +486,18 @@ function _getAndClearErrorStack() {
     return errors;
 }
 
+function logStackTrace(msg) {
+    try {
+        throw new Error();
+    } catch (e) {
+        // e.stack must have at least two lines, with the first being
+        // logStackTrace() (which we strip off), and the second being
+        // our caller.
+        let trace = e.stack.substr(e.stack.indexOf('\n') + 1);
+        log(msg ? (msg + '\n' + trace) : trace);
+    }
+}
+
 function isWindowActorDisplayedOnWorkspace(win, workspaceIndex) {
     return win.get_workspace() == workspaceIndex ||
         (win.get_meta_window() && win.get_meta_window().is_on_all_workspaces());
