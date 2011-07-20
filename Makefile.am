@@ -18,6 +18,4 @@ DISTCLEANFILES=
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags --enable-profile
 
-# .release requires .changelog rules
-include $(top_srcdir)/build/autotools/Makefile.am.changelog
 include $(top_srcdir)/build/autotools/Makefile.am.release

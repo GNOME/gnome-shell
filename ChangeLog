@@ -1,0 +1,20 @@
+Cogl does not distribute a static Changelog with releases because we feel that
+the Git log does a better job of tracking all the detailed source code changes
+that are made to Cogl.
+
+If you just want a high level overview of what has changed between Cogl
+releases then please see the NEWS file that we distribute.
+
+You can clone Cogl via Git using:
+
+$ git clone git://git.gnome.org/cogl.git
+
+You can see the log using:
+
+$ git log
+
+Or you can look at the log for a particular release by specifying
+a release tag name like:
+
+$ git log 1.7.2
+

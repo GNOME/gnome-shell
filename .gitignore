@@ -16,7 +16,6 @@ compile
 README
 stamp-enum-types
 stamp-marshal
-/ChangeLog*
 /build/autotools/*.m4
 !/build/autotools/introspection.m4
 !/build/autotools/as-linguas.m4
