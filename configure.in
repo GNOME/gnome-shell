@@ -192,19 +192,6 @@ if $PKG_CONFIG --atleast-version $CLUTTER_VERSION $CLUTTER_PACKAGE ; then
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES $CLUTTER_PACKAGE "
   PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
   AC_DEFINE(WITH_CLUTTER, , [Building with Clutter compositor])
-
-  dnl Check for the clutter-glx-texture-pixmap header
-  mutter_save_cppflags="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS $CLUTTER_CFLAGS"
-  AC_CHECK_HEADER([clutter/glx/clutter-glx-texture-pixmap.h],
-                  [have_glx_texture_pixmap=yes],
-                  [have_glx_texture_pixmap=no])
-  CPPFLAGS="$mutter_save_cppflags"
-
-  if test x$have_glx_texture_pixmap = xyes; then
-    AC_DEFINE(HAVE_GLX_TEXTURE_PIXMAP, ,
-              [Is ClutterGLXTexturePixmap available?])
-  fi
 else
   AC_MSG_ERROR([no. Mutter requires Clutter version $CLUTTER_VERSION.])
 fi
