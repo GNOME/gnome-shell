@@ -697,12 +697,11 @@ function PanelCorner(panel, side) {
 }
 
 PanelCorner.prototype = {
-    _init: function(panel, side) {
-        this._panel = panel;
+    _init: function(side) {
         this._side = side;
         this.actor = new St.DrawingArea({ style_class: 'panel-corner' });
+        this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
         this.actor.connect('repaint', Lang.bind(this, this._repaint));
-        this.actor.connect('style-changed', Lang.bind(this, this.relayout));
     },
 
     _repaint: function() {
@@ -765,20 +764,14 @@ PanelCorner.prototype = {
         cr.restore();
     },
 
-    relayout: function() {
+    _styleChanged: function() {
         let node = this.actor.get_theme_node();
 
         let cornerRadius = node.get_length("-panel-corner-radius");
         let innerBorderWidth = node.get_length('-panel-corner-inner-border-width');
 
-        this.actor.set_size(cornerRadius,
-                            innerBorderWidth + cornerRadius);
-        if (this._side == St.Side.LEFT)
-            this.actor.set_position(this._panel.actor.x,
-                                    this._panel.actor.y + this._panel.actor.height - innerBorderWidth);
-        else
-            this.actor.set_position(this._panel.actor.x + this._panel.actor.width - cornerRadius,
-                                    this._panel.actor.y + this._panel.actor.height - innerBorderWidth);
+        this.actor.set_size(cornerRadius, innerBorderWidth + cornerRadius);
+        this.actor.set_anchor_point(0, innerBorderWidth);
     }
 };
 
@@ -789,9 +782,8 @@ function Panel() {
 
 Panel.prototype = {
     _init : function() {
-        this.actor = new St.BoxLayout({ style_class: 'menu-bar',
-                                        name: 'panel',
-                                        reactive: true });
+        this.actor = new Shell.GenericContainer({ name: 'panel',
+                                                  reactive: true });
         this.actor._delegate = this;
 
         this._statusArea = {};
@@ -808,82 +800,20 @@ Panel.prototype = {
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
+        this.actor.add_actor(this._leftBox);
         this._centerBox = new St.BoxLayout({ name: 'panelCenter' });
+        this.actor.add_actor(this._centerBox);
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
+        this.actor.add_actor(this._rightBox);
 
-        this._leftCorner = new PanelCorner(this, St.Side.LEFT);
-        this._rightCorner = new PanelCorner(this, St.Side.RIGHT);
+        this._leftCorner = new PanelCorner(St.Side.LEFT);
+        this.actor.add_actor(this._leftCorner.actor);
+        this._rightCorner = new PanelCorner(St.Side.RIGHT);
+        this.actor.add_actor(this._rightCorner.actor);
 
-        /* This box container ensures that the centerBox is positioned in the *absolute*
-         * center, but can be pushed aside if necessary. */
-        this._boxContainer = new Shell.GenericContainer();
-        this.actor.add(this._boxContainer, { expand: true });
-        this._boxContainer.add_actor(this._leftBox);
-        this._boxContainer.add_actor(this._centerBox);
-        this._boxContainer.add_actor(this._rightBox);
-        this._boxContainer.connect('get-preferred-width', Lang.bind(this, function(box, forHeight, alloc) {
-            let children = box.get_children();
-            for (let i = 0; i < children.length; i++) {
-                let [childMin, childNatural] = children[i].get_preferred_width(forHeight);
-                alloc.min_size += childMin;
-                alloc.natural_size += childNatural;
-            }
-        }));
-        this._boxContainer.connect('get-preferred-height', Lang.bind(this, function(box, forWidth, alloc) {
-            let children = box.get_children();
-            for (let i = 0; i < children.length; i++) {
-                let [childMin, childNatural] = children[i].get_preferred_height(forWidth);
-                if (childMin > alloc.min_size)
-                    alloc.min_size = childMin;
-                if (childNatural > alloc.natural_size)
-                    alloc.natural_size = childNatural;
-            }
-        }));
-        this._boxContainer.connect('allocate', Lang.bind(this, function(container, box, flags) {
-            let allocWidth = box.x2 - box.x1;
-            let allocHeight = box.y2 - box.y1;
-            let [leftMinWidth, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
-            let [centerMinWidth, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
-            let [rightMinWidth, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
-
-            let sideWidth, centerWidth;
-            centerWidth = centerNaturalWidth;
-            sideWidth = (allocWidth - centerWidth) / 2;
-
-            let childBox = new Clutter.ActorBox();
-
-            childBox.y1 = 0;
-            childBox.y2 = allocHeight;
-            if (this.actor.get_direction() == St.TextDirection.RTL) {
-                childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
-                                                    leftNaturalWidth);
-                childBox.x2 = allocWidth;
-            } else {
-                childBox.x1 = 0;
-                childBox.x2 = Math.min(Math.floor(sideWidth),
-                                       leftNaturalWidth);
-            }
-            this._leftBox.allocate(childBox, flags);
-
-            childBox.x1 = Math.ceil(sideWidth);
-            childBox.y1 = 0;
-            childBox.x2 = childBox.x1 + centerWidth;
-            childBox.y2 = allocHeight;
-            this._centerBox.allocate(childBox, flags);
-
-            childBox.y1 = 0;
-            childBox.y2 = allocHeight;
-            if (this.actor.get_direction() == St.TextDirection.RTL) {
-                childBox.x1 = 0;
-                childBox.x2 = Math.min(Math.floor(sideWidth),
-                                       rightNaturalWidth);
-            } else {
-                childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
-                                                    rightNaturalWidth);
-                childBox.x2 = allocWidth;
-            }
-            this._rightBox.allocate(childBox, flags);
-        }));
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         /* Button on the left side of the panel. */
         this._activitiesButton = new ActivitiesButton();
@@ -942,14 +872,86 @@ Panel.prototype = {
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
         Main.chrome.addActor(this.actor, { affectsStruts: true });
-        Main.chrome.addActor(this._leftCorner.actor, { affectsInputRegion: false });
-        Main.chrome.addActor(this._rightCorner.actor, { affectsInputRegion: false });
 
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        alloc.min_size = -1;
+        alloc.natural_size = Main.layoutManager.primaryMonitor.width;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        // We don't need to implement this; it's forced by the CSS
+        alloc.min_size = -1;
+        alloc.natural_size = -1;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let allocWidth = box.x2 - box.x1;
+        let allocHeight = box.y2 - box.y1;
+
+        let [leftMinWidth, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
+        let [centerMinWidth, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
+        let [rightMinWidth, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
+
+        let sideWidth, centerWidth;
+        centerWidth = centerNaturalWidth;
+        sideWidth = (allocWidth - centerWidth) / 2;
+
+        let childBox = new Clutter.ActorBox();
+
+        childBox.y1 = 0;
+        childBox.y2 = allocHeight;
+        if (this.actor.get_direction() == St.TextDirection.RTL) {
+            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
+                                                leftNaturalWidth);
+            childBox.x2 = allocWidth;
+        } else {
+            childBox.x1 = 0;
+            childBox.x2 = Math.min(Math.floor(sideWidth),
+                                   leftNaturalWidth);
+        }
+        this._leftBox.allocate(childBox, flags);
+
+        childBox.x1 = Math.ceil(sideWidth);
+        childBox.y1 = 0;
+        childBox.x2 = childBox.x1 + centerWidth;
+        childBox.y2 = allocHeight;
+        this._centerBox.allocate(childBox, flags);
+
+        childBox.y1 = 0;
+        childBox.y2 = allocHeight;
+        if (this.actor.get_direction() == St.TextDirection.RTL) {
+            childBox.x1 = 0;
+            childBox.x2 = Math.min(Math.floor(sideWidth),
+                                   rightNaturalWidth);
+        } else {
+            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
+                                                rightNaturalWidth);
+            childBox.x2 = allocWidth;
+        }
+        this._rightBox.allocate(childBox, flags);
+
+        let [cornerMinWidth, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
+        let [cornerMinHeight, cornerHeight] = this._leftCorner.actor.get_preferred_width(-1);
+        childBox.x1 = 0;
+        childBox.x2 = cornerWidth;
+        childBox.y1 = allocHeight;
+        childBox.y2 = allocHeight + cornerHeight;
+        this._leftCorner.actor.allocate(childBox, flags);
+
+        let [cornerMinWidth, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
+        let [cornerMinHeight, cornerHeight] = this._rightCorner.actor.get_preferred_width(-1);
+        childBox.x1 = allocWidth - cornerWidth;
+        childBox.x2 = allocWidth;
+        childBox.y1 = allocHeight;
+        childBox.y2 = allocHeight + cornerHeight;
+        this._rightCorner.actor.allocate(childBox, flags);
     },
 
     startStatusArea: function() {
@@ -980,20 +982,6 @@ Panel.prototype = {
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
-
-        let oldCornerY = this._leftCorner.actor.y;
-        this._leftCorner.actor.y = oldCornerY - this.actor.height;
-        this._rightCorner.actor.y = oldCornerY - this.actor.height;
-        Tweener.addTween(this._leftCorner.actor,
-                         { y: oldCornerY,
-                           time: STARTUP_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
-        Tweener.addTween(this._rightCorner.actor,
-                         { y: oldCornerY,
-                           time: STARTUP_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
     },
 
     _relayout: function() {
@@ -1015,9 +1003,6 @@ Panel.prototype = {
             global.create_pointer_barrier(primary.x + primary.width, primary.y,
                                           primary.x + primary.width, primary.y + this.actor.height,
                                           4 /* BarrierNegativeX */);
-
-        this._leftCorner.relayout();
-        this._rightCorner.relayout();
     },
 
     _onTrayIconAdded: function(o, icon, role) {
