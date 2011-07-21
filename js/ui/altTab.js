@@ -147,6 +147,8 @@ AltTabPopup.prototype = {
 
         // Need to force an allocation so we can figure out whether we
         // need to scroll when selecting
+        this.actor.opacity = 0;
+        this.actor.show();
         this.actor.get_allocation_box();
 
         // Make the initial selection
@@ -186,7 +188,7 @@ AltTabPopup.prototype = {
         // disturbed by the popup briefly flashing.
         this._initialDelayTimeoutId = Mainloop.timeout_add(POPUP_DELAY_TIMEOUT,
                                                            Lang.bind(this, function () {
-                                                               this.actor.show();
+                                                               this.actor.opacity = 255;
                                                                this._initialDelayTimeoutId = 0;
                                                            }));
 
@@ -478,6 +480,10 @@ AltTabPopup.prototype = {
         this._thumbnails.connect('item-entered', Lang.bind(this, this._windowEntered));
 
         this.actor.add_actor(this._thumbnails.actor);
+
+        // Need to force an allocation so we can figure out whether we
+        // need to scroll when selecting
+        this._thumbnails.actor.get_allocation_box();
 
         this._thumbnails.actor.opacity = 0;
         Tweener.addTween(this._thumbnails.actor,
