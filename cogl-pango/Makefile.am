@@ -28,8 +28,8 @@ lib_LTLIBRARIES = libcogl-pango.la
 
 libcogl_pango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
 libcogl_pango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
-libcogl_pango_la_LIBADD = $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
-libcogl_pango_la_LIBADD += $(top_builddir)/cogl/libcogl.la
+libcogl_pango_la_LIBADD = $(top_builddir)/cogl/libcogl.la
+libcogl_pango_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 libcogl_pango_la_LDFLAGS = \
 	-export-dynamic \
 	-export-symbols-regex "^cogl_pango_.*"
