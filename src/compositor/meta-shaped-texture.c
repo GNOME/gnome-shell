@@ -50,13 +50,8 @@ static void meta_shaped_texture_update_area (ClutterX11TexturePixmap *texture,
 
 static void meta_shaped_texture_dirty_mask (MetaShapedTexture *stex);
 
-#ifdef HAVE_GLX_TEXTURE_PIXMAP
-G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
-               CLUTTER_GLX_TYPE_TEXTURE_PIXMAP);
-#else /* HAVE_GLX_TEXTURE_PIXMAP */
 G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
                CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
-#endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
 #define META_SHAPED_TEXTURE_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_SHAPED_TEXTURE, \
