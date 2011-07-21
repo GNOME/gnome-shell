@@ -11,6 +11,8 @@
 #include <X11/extensions/Xrender.h>
 
 #include <clutter/x11/clutter-x11.h>
+#define COGL_ENABLE_EXPERIMENTAL_API
+#include <cogl/cogl-texture-pixmap-x11.h>
 #include <gdk/gdk.h> /* for gdk_rectangle_union() */
 
 #include <meta/display.h>
@@ -1869,6 +1871,19 @@ meta_window_actor_reset_visible_regions (MetaWindowActor *self)
   meta_window_actor_clear_shadow_clip (self);
 }
 
+static gboolean
+texture_pixmap_using_extension (ClutterX11TexturePixmap *texture)
+{
+  ClutterTexture *self = CLUTTER_TEXTURE (texture);
+  CoglHandle handle;
+
+  handle = clutter_texture_get_cogl_texture (self);
+
+  return handle != NULL &&
+         cogl_is_texture_pixmap_x11 (handle) &&
+         cogl_texture_pixmap_x11_is_using_tfp_extension (handle);
+}
+
 static void
 check_needs_pixmap (MetaWindowActor *self)
 {
@@ -1939,11 +1954,8 @@ check_needs_pixmap (MetaWindowActor *self)
        * do it here.
        * See: http://bugzilla.clutter-project.org/show_bug.cgi?id=2236
        */
-#ifdef HAVE_GLX_TEXTURE_PIXMAP
-      if (G_UNLIKELY (!clutter_glx_texture_pixmap_using_extension (
-                                  CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor))))
+      if (G_UNLIKELY (!texture_pixmap_using_extension (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor))))
         g_warning ("NOTE: Not using GLX TFP!\n");
-#endif
 
       g_object_get (priv->actor,
                     "pixmap-width", &pxm_width,
