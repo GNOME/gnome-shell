@@ -16,7 +16,7 @@ const ScreenSaver = imports.misc.screenSaver;
 
 const defaultParams = {
     visibleInFullscreen: false,
-    affectsStruts: true,
+    affectsStruts: false,
     affectsInputRegion: true
 };
 
@@ -71,19 +71,18 @@ Chrome.prototype = {
     // @actor: an actor to add to the chrome layer
     // @params: (optional) additional params
     //
-    // Adds @actor to the chrome layer and extends the input region
-    // and window manager struts to include it. (Window manager struts
-    // will only be affected if @actor is touching a screen edge.)
-    // Changes in @actor's size and position will automatically result
-    // in appropriate changes to the input region and struts. Changes
-    // in its visibility will affect the input region, but NOT the
-    // struts.
+    // Adds @actor to the chrome layer and (unless %affectsInputRegion
+    // is %false) extends the input region to include it. Changes in
+    // @actor's size, position, and visibility will automatically
+    // result in appropriate changes to the input region.
+    //
+    // If %affectsStruts is %true (and @actor is along a screen edge),
+    // then @actor's size and position will also affect the window
+    // manager struts. Changes to @actor's visibility will NOT affect
+    // whether or not the strut is present, however.
     //
     // If %visibleInFullscreen is %true, the actor will be visible
     // even when a fullscreen window should be covering it.
-    //
-    // If %affectsStruts or %affectsInputRegion is %false, the actor
-    // will not have the indicated effect.
     addActor: function(actor, params) {
         this.actor.add_actor(actor);
         this._trackActor(actor, params);

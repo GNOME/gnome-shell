@@ -941,11 +941,9 @@ Panel.prototype = {
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
-        Main.chrome.addActor(this.actor);
-        Main.chrome.addActor(this._leftCorner.actor, { affectsStruts: false,
-                                                       affectsInputRegion: false });
-        Main.chrome.addActor(this._rightCorner.actor, { affectsStruts: false,
-                                                        affectsInputRegion: false });
+        Main.chrome.addActor(this.actor, { affectsStruts: true });
+        Main.chrome.addActor(this._leftCorner.actor, { affectsInputRegion: false });
+        Main.chrome.addActor(this._rightCorner.actor, { affectsInputRegion: false });
 
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });

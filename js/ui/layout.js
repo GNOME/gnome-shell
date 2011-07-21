@@ -109,7 +109,7 @@ LayoutManager.prototype = {
             let corner = new HotCorner();
             this._hotCorners.push(corner);
             corner.actor.set_position(cornerX, cornerY);
-            Main.chrome.addActor(corner.actor, { affectsStruts: false });
+            Main.chrome.addActor(corner.actor);
         }
     },
 
