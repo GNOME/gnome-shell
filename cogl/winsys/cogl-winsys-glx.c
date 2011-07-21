@@ -312,6 +312,14 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (!_cogl_xlib_renderer_connect (renderer, error))
     goto error;
 
+  if (renderer->driver != COGL_DRIVER_GL)
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "GLX Backend can only be used in conjunction with OpenGL");
+      goto error;
+    }
+
   glx_renderer->libgl_module = g_module_open (COGL_GL_LIBNAME,
                                               G_MODULE_BIND_LAZY);
 
