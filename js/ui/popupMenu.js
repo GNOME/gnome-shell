@@ -15,6 +15,17 @@ const Tweener = imports.ui.tweener;
 
 const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
 
+function _ensureStyle(actor) {
+    if (actor.get_children) {
+        let children = actor.get_children();
+        for (let i = 0; i < children.length; i++)
+            _ensureStyle(children[i]);
+    }
+
+    if (actor instanceof St.Widget)
+        actor.ensure_style();
+}
+
 function PopupBaseMenuItem(params) {
     this._init(params);
 }
@@ -1039,6 +1050,10 @@ PopupMenuBase.prototype = {
             return null;
     },
 
+    get numMenuItems() {
+        return this._getMenuItems().length;
+    },
+
     removeAll: function() {
         let children = this._getMenuItems();
         for (let i = 0; i < children.length; i++) {
@@ -1404,6 +1419,193 @@ PopupSubMenuMenuItem.prototype = {
     }
 };
 
+function PopupComboMenu() {
+    this._init.apply(this, arguments);
+}
+
+PopupComboMenu.prototype = {
+    __proto__: PopupMenuBase.prototype,
+
+    _init: function(sourceActor) {
+        PopupMenuBase.prototype._init.call(this,
+                                           sourceActor, 'popup-combo-menu');
+        this.actor = this.box;
+        this.actor._delegate = this;
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
+        this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+        this._activeItemPos = -1;
+        global.focus_manager.add_group(this.actor);
+    },
+
+    _onKeyPressEvent: function(actor, event) {
+        if (event.get_key_symbol() == Clutter.Escape) {
+            this.close(true);
+            return true;
+        }
+
+        return false;
+    },
+
+    _onKeyFocusIn: function(actor) {
+        let items = this._getMenuItems();
+        let activeItem = items[this._activeItemPos];
+        activeItem.actor.grab_key_focus();
+    },
+
+    open: function() {
+        if (this.isOpen)
+            return;
+
+        this.isOpen = true;
+
+        let [sourceX, sourceY] = this.sourceActor.get_transformed_position();
+        let items = this._getMenuItems();
+        let activeItem = items[this._activeItemPos];
+
+        this.actor.set_position(sourceX, sourceY - activeItem.actor.y);
+        this.actor.width = Math.max(this.actor.width, this.sourceActor.width);
+        this.actor.raise_top();
+
+        this.actor.opacity = 0;
+        this.actor.show();
+
+        Tweener.addTween(this.actor,
+                         { opacity: 255,
+                           transition: 'linear',
+                           time: BoxPointer.POPUP_ANIMATION_TIME });
+
+        this.emit('open-state-changed', true);
+    },
+
+    close: function() {
+        if (!this.isOpen)
+            return;
+
+        this.isOpen = false;
+        Tweener.addTween(this.actor,
+                         { opacity: 0,
+                           transition: 'linear',
+                           time: BoxPointer.POPUP_ANIMATION_TIME,
+                           onComplete: Lang.bind(this,
+                               function() {
+                                   this.actor.hide();
+                               })
+                         });
+
+        this.emit('open-state-changed', false);
+    },
+
+    setActiveItem: function(position) {
+        this._activeItemPos = position;
+    },
+
+    setItemVisible: function(position, visible) {
+        if (!visible && position == this._activeItemPos) {
+            log('Trying to hide the active menu item.');
+            return;
+        }
+
+        this._getMenuItems()[position].actor.visible = visible;
+    }
+};
+
+function PopupComboBoxMenuItem() {
+    this._init.apply(this, arguments);
+}
+
+PopupComboBoxMenuItem.prototype = {
+    __proto__: PopupBaseMenuItem.prototype,
+
+    _init: function (params) {
+        PopupBaseMenuItem.prototype._init.call(this, params);
+
+        this._itemBox = new Shell.Stack();
+        this.addActor(this._itemBox);
+
+        let expander = new St.Label({ text: '\u2304' });
+        this.addActor(expander, { align: St.Align.END });
+
+        this._menu = new PopupComboMenu(this.actor);
+        Main.uiGroup.add_actor(this._menu.actor);
+        this._menu.actor.hide();
+
+        if (params.style_class)
+            this._menu.actor.add_style_class_name(params.style_class);
+
+        this._activeItemPos = -1;
+        this._items = [];
+    },
+
+    _getTopMenu: function() {
+        let actor = this.actor.get_parent();
+        while (actor) {
+            if (actor._delegate &&
+                (actor._delegate instanceof PopupMenu ||
+                 actor._delegate instanceof PopupComboMenu))
+                return actor._delegate;
+
+            actor = actor.get_parent();
+        }
+
+        return null;
+    },
+
+    activate: function(event) {
+        let topMenu = this._getTopMenu();
+        if (!topMenu)
+            return;
+
+        topMenu.addChildMenu(this._menu);
+        this._menu.toggle();
+    },
+
+    addMenuItem: function(menuItem, position) {
+        if (position === undefined)
+            position = this._menu.numMenuItems;
+
+        this._menu.addMenuItem(menuItem, position);
+        _ensureStyle(this._menu.actor);
+
+        let item = new St.BoxLayout({ style_class: 'popup-combobox-item' });
+
+        let children = menuItem.actor.get_children();
+        for (let i = 0; i < children.length; i++) {
+            let clone = new Clutter.Clone({ source: children[i] });
+            item.add(clone, { y_fill: false });
+        }
+
+        let oldItem = this._items[position];
+        if (oldItem)
+            this._itemBox.remove_actor(oldItem);
+
+        this._items[position] = item;
+        this._itemBox.add_actor(item);
+
+        menuItem.connect('activate',
+                         Lang.bind(this, this._itemActivated, position));
+    },
+
+    setActiveItem: function(position) {
+        let item = this._items[position];
+        if (!item)
+            return;
+        if (this._activeItemPos == position)
+            return;
+        this._menu.setActiveItem(position);
+        this._activeItemPos = position;
+        for (let i = 0; i < this._items.length; i++)
+            this._items[i].visible = (i == this._activeItemPos);
+    },
+
+    setItemVisible: function(position, visible) {
+        this._menu.setItemVisible(position, visible);
+    },
+
+    _itemActivated: function(menuItem, event, position) {
+        this.setActiveItem(position);
+        this.emit('active-item-changed', position);
+    }
+};
 
 /* Basic implementation of a menu manager.
  * Call addMenu to add menus
