@@ -503,7 +503,6 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
     {
       ClutterGeometry *clip = &stage_cogl->bounding_redraw_clip;
       int copy_area[4];
-      ClutterActor *actor;
 
       /* XXX: It seems there will be a race here in that the stage
        * window may be resized before the cogl_framebuffer_swap_region
@@ -514,9 +513,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
        * artefacts.
        */
 
-      actor = CLUTTER_ACTOR (wrapper);
       copy_area[0] = clip->x;
-      copy_area[1] = clutter_actor_get_height (actor) - clip->y - clip->height;
+      copy_area[1] = clip->y;
       copy_area[2] = clip->width;
       copy_area[3] = clip->height;
 
