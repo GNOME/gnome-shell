@@ -91,7 +91,7 @@ cogl_display_setup (CoglDisplay *display,
   cogl_gdl_display_set_plane_EXP
 void
 cogl_gdl_display_set_plane (CoglDisplay *display,
-                            struct gdl_plane *plane);
+                            gdl_plane_id_t plane);
 #endif
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT

@@ -47,7 +47,7 @@ struct _CoglDisplay
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  struct gdl_plane *gdl_plane;
+  gdl_plane_id_t gdl_plane;
 #endif
 
   void *winsys;
