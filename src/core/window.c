@@ -682,7 +682,16 @@ meta_window_should_attach_to_parent (MetaWindow *window)
   if (!parent)
     return FALSE;
 
-  return TRUE;
+  switch (parent->type)
+    {
+    case META_WINDOW_NORMAL:
+    case META_WINDOW_DIALOG:
+    case META_WINDOW_MODAL_DIALOG:
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
 }
 
 MetaWindow*
