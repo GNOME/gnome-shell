@@ -1114,7 +1114,7 @@ _cogl_winsys_get_vsync_counter (void)
 
 static void
 _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
-                                   int *rectangles,
+                                   const int *user_rectangles,
                                    int n_rectangles)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
@@ -1128,6 +1128,19 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
   guint32 end_frame_vsync_counter = 0;
   gboolean have_counter;
   gboolean can_wait;
+  int framebuffer_height =  cogl_framebuffer_get_height (framebuffer);
+  int *rectangles = g_alloca (sizeof (int) * n_rectangles * 4);
+  int i;
+
+  /* glXCopySubBuffer expects rectangles relative to the bottom left corner but
+   * we are given rectangles relative to the top left so we need to flip
+   * them... */
+  memcpy (rectangles, user_rectangles, sizeof (int) * n_rectangles * 4);
+  for (i = 0; i < n_rectangles; i++)
+    {
+      int *rect = &rectangles[4 * i];
+      rect[1] = framebuffer_height - rect[1] - rect[3];
+    }
 
   _cogl_framebuffer_flush_state (framebuffer,
                                  framebuffer,

@@ -1512,12 +1512,26 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 
 static void
 _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
-                                   int *rectangles,
+                                   const int *user_rectangles,
                                    int n_rectangles)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  int framebuffer_height  = cogl_framebuffer_get_height (framebuffer);
+  int *rectangles = g_alloca (sizeof (int) * n_rectangles * 4);
+  int i;
+
+  /* eglSwapBuffersRegion expects rectangles relative to the bottom left corner
+   * but we are given rectangles relative to the top left so we need to flip
+   * them... */
+  memcpy (rectangles, user_rectangles, sizeof (int) * n_rectangles * 4);
+  for (i = 0; i < n_rectangles; i++)
+    {
+      int *rect = &rectangles[4 * i];
+      rect[1] = framebuffer_height - rect[1] - rect[3];
+    }
 
   if (egl_renderer->pf_eglSwapBuffersRegion (egl_renderer->edpy,
                                              egl_onscreen->egl_surface,

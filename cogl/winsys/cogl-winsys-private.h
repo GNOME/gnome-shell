@@ -107,7 +107,7 @@ typedef struct _CoglWinsysVtable
 
   void
   (*onscreen_swap_region) (CoglOnscreen *onscreen,
-                           int *rectangles,
+                           const int *rectangles,
                            int n_rectangles);
 
 #ifdef COGL_HAS_EGL_SUPPORT

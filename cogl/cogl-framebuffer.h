@@ -333,7 +333,7 @@ cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);
 #define cogl_framebuffer_swap_region cogl_framebuffer_swap_region_EXP
 void
 cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
-                              int *rectangles,
+                              const int *rectangles,
                               int n_rectangles);
 
 

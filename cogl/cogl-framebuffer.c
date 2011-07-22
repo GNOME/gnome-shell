@@ -1666,7 +1666,7 @@ cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer)
 
 void
 cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
-                              int *rectangles,
+                              const int *rectangles,
                               int n_rectangles)
 {
   /* FIXME: we shouldn't need to flush *all* journals here! */
