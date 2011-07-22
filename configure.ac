@@ -413,13 +413,15 @@ AS_IF([test "x$enable_gles1" = "xyes"],
                   [test "x$ac_cv_header_EGL_egl_h" = "xyes"],
                   [
                     COGL_EGL_INCLUDES="#include <EGL/egl.h>"
-                    AC_CHECK_HEADERS([EGL/eglext.h],
-                                     [COGL_EGL_INCLUDES="$COGL_EGL_INCLUDE
-#include <EGL/eglext.h>"],
-                                     [])
                   ],
                   [AC_MSG_ERROR([Unable to locate EGL header])])
             AC_SUBST([COGL_EGL_INCLUDES])
+
+            AC_CHECK_HEADERS([EGL/eglext.h],
+                             [COGL_EGL_INCLUDES="$COGL_EGL_INCLUDE
+#include <EGL/eglext.h>"],
+                             [],
+                             [$COGL_EGL_INCLUDES])
 
             # Check for a GLES 1.x Common Profile library with/without EGL.
             #
@@ -752,9 +754,14 @@ AS_IF([test "x$NEED_EGL" = "xyes" && test "x$EGL_CHECKED" != "xyes"],
           [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES egl"],
           [
             AC_CHECK_HEADERS(
-              [EGL/egl.h EGL/eglext.h],
+              [EGL/egl.h],
               [],
               [AC_MSG_ERROR([Unable to locate required EGL headers])])
+            AC_CHECK_HEADERS(
+              [EGL/eglext.h],
+              [],
+              [AC_MSG_ERROR([Unable to locate required EGL headers])],
+              [#include <EGL/egl.h>])
 
             AC_CHECK_LIB(EGL, [eglInitialize],
               [COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lEGL"],
