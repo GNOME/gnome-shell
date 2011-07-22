@@ -23,6 +23,7 @@ stamp-marshal
 *.gir
 *.typelib
 /cogl/cogl-defines.h
+/cogl/cogl-display.h
 /cogl/cogl-enum-types.c
 /cogl/cogl-enum-types.h
 config.*

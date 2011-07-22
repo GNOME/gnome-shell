@@ -652,9 +652,13 @@ AS_IF([test "x$enable_gdl_egl_platform" == "xyes"],
           [
             AC_CHECK_HEADERS(
               [CE4100/libgdl.h],
-              [COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I/usr/include/CE4100"],
+              [
+               COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I/usr/include/CE4100",
+               COGL_CEX100_LIBGDL_PREFIX=CE4100/
+              ],
               [AC_MSG_ERROR([libgdl.h not found])])
           ])
+        AC_SUBST([COGL_CEX100_LIBGDL_PREFIX])
 
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_GDL_SUPPORT"
       ])
@@ -950,6 +954,7 @@ cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-2.0-experimental.pc
 cogl/cogl-defines.h
+cogl/cogl-display.h
 cogl-pango/Makefile
 cogl-pango/cogl-pango-1.0.pc
 cogl-pango/cogl-pango-2.0-experimental.pc
