@@ -1679,6 +1679,7 @@ button_layout_handler (MetaPreference pref,
   if (string_value)
     sides = g_strsplit (string_value, ":", 2);
 
+  i = 0;
   if (sides != NULL && sides[0] != NULL)
     {
       char **buttons;
@@ -1733,12 +1734,13 @@ button_layout_handler (MetaPreference pref,
           ++b;
         }
 
-      new_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
-      new_layout.left_buttons_has_spacer[i] = FALSE;
-      
       g_strfreev (buttons);
     }
 
+  new_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
+  new_layout.left_buttons_has_spacer[i] = FALSE;
+
+  i = 0;
   if (sides != NULL && sides[0] != NULL && sides[1] != NULL)
     {
       char **buttons;
@@ -1792,11 +1794,11 @@ button_layout_handler (MetaPreference pref,
           ++b;
         }
 
-      new_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
-      new_layout.right_buttons_has_spacer[i] = FALSE;
-      
       g_strfreev (buttons);
     }
+
+  new_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
+  new_layout.right_buttons_has_spacer[i] = FALSE;
 
   g_strfreev (sides);
   
