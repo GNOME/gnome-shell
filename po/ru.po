@@ -9,15 +9,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-15 19:58+0000\n"
-"PO-Revision-Date: 2011-06-19 13:43+0300\n"
-"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-07-20 19:45+0000\n"
+"PO-Revision-Date: 2011-07-23 19:07+0400\n"
+"Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 1.0\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -29,8 +31,12 @@ msgid "Window management and application launching"
 msgstr "Управление окнами и запуск приложений"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
-msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "Разрешает доступ к внутренней отладке и инструментам наблюдения, используя диалог Alt-F2."
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Разрешает доступ к внутренней отладке и инструментам наблюдения, используя "
+"диалог Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -45,12 +51,26 @@ msgid "Framerate used for recording screencasts."
 msgstr "Частота смены кадров для записи скринкастов."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should be loaded. disabled-extensions overrides this setting for extensions that appear in both lists."
-msgstr "У расширений GNOME Shell есть свойство uuid; в этом ключе перечислены расширения, которые должны быть загружены. Значение disabled-extensions отменяет загрузку расширений, указанных в пользовательском и системном списке."
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should be loaded. disabled-extensions overrides this setting for extensions "
+"that appear in both lists."
+msgstr ""
+"У расширений GNOME Shell есть свойство uuid; в этом ключе перечислены "
+"расширения, которые должны быть загружены. Значение disabled-extensions "
+"отменяет загрузку расширений, указанных в пользовательском и системном "
+"списке."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded. This setting overrides enabled-extensions for extensions that appear in both lists."
-msgstr "У расширений GNOME Shell есть свойство uuid; в этом ключе перечислены расширения, которые не должны загружаться. Это значение отменяет загрузку расширений, указанных в пользовательском и системном списке enabled-extensions."
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded. This setting overrides enabled-extensions for "
+"extensions that appear in both lists."
+msgstr ""
+"У расширений GNOME Shell есть свойство uuid; в этом ключе перечислены "
+"расширения, которые не должны загружаться. Это значение отменяет загрузку "
+"расширений, указанных в пользовательском и системном списке enabled-"
+"extensions."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -78,8 +98,29 @@ msgstr "Список идентификаторов desktop-файлов для 
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 #, no-c-format
-msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-msgstr "Устанавливает конвейер GStreamer для кодирования записей. Соответствует синтаксису, используемому для gst-launch. Конвейер должен иметь неподключенный входной коннектор, где происходит запись видео. Выход коннектора обычно отключён, выход с этого коннектора записывается в файл вывода. Однако конвейер также может позаботиться о своём выводе, что можно использовать для отправки вывода на сервер icecast через shout2send или нечто подобное. При сбросе или установке пустого значения будет использоваться конвейер по умолчанию. В данный момент это «videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux»; запись выполняется в WEBM с помощью кодека VP8. %T используется как заполнитель для определения оптимального количества потоков в системе."
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+"Устанавливает конвейер GStreamer для кодирования записей. Соответствует "
+"синтаксису, используемому для gst-launch. Конвейер должен иметь "
+"неподключенный входной коннектор, где происходит запись видео. Выход "
+"коннектора обычно отключён, выход с этого коннектора записывается в файл "
+"вывода. Однако конвейер также может позаботиться о своём выводе, что можно "
+"использовать для отправки вывода на сервер icecast через shout2send или "
+"нечто подобное. При сбросе или установке пустого значения будет "
+"использоваться конвейер по умолчанию. В данный момент это «videorate ! vp8enc "
+"quality=10 speed=2 threads=%T ! queue ! webmmux»; запись выполняется в WEBM "
+"с помощью кодека VP8. %T используется как заполнитель для определения "
+"оптимального количества потоков в системе."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
@@ -94,24 +135,46 @@ msgid "Show time with seconds"
 msgstr "Показывать секунды"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
-msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
-msgstr "Приложения, соответствующие этих идентификаторам, будут показаны в области избранных приложений."
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Приложения, соответствующие этих идентификаторам, будут показаны в области "
+"избранных приложений."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
-msgstr "Имя файла записанного скринкаста будет уникальным именем, основанным на текущей дате, и использует это расширение. Оно должно быть изменено, если запись выполняется в другой контейнерный формат."
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Имя файла записанного скринкаста будет уникальным именем, основанным на "
+"текущей дате, и использует это расширение. Оно должно быть изменено, если "
+"запись выполняется в другой контейнерный формат."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
-msgstr "Частота смены кадров в скринкасте, записанном с помощью GNOME Shell (кадров/сек)."
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Частота смены кадров в скринкасте, записанном с помощью GNOME Shell (кадров/"
+"сек)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Конвейер gstreamer, используемый для кодирования скринкастов"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
-msgstr "Обычно, оболочка отслеживает активные приложения, чтобы определить наиболее используемые приложения. Хотя эти данные хранятся как личные, возможно вы захотите отключить эту возможность из соображений безопасности. Это не приведёт к удалению уже сохранённых данных."
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Обычно, оболочка отслеживает активные приложения, чтобы определить наиболее "
+"используемые приложения. Хотя эти данные хранятся как личные, возможно вы "
+"захотите отключить эту возможность из соображений безопасности. Это не "
+"приведёт к удалению уже сохранённых данных."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to disable"
@@ -145,27 +208,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Не удалось выполнить «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:252
 msgid "All"
 msgstr "Все"
 
-#: ../js/ui/appDisplay.js:357
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "ПРИЛОЖЕНИЯ"
 
-#: ../js/ui/appDisplay.js:383
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "ПАРАМЕТРЫ"
 
-#: ../js/ui/appDisplay.js:656
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "Новое окно"
 
-#: ../js/ui/appDisplay.js:659
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "Удалить из избранного"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
@@ -298,15 +361,13 @@ msgid "Nothing Scheduled"
 msgstr "Нет событий"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
-#: ../js/ui/telepathyClient.js:564
+#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:749
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
-#: ../js/ui/telepathyClient.js:567
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:752
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
@@ -327,8 +388,7 @@ msgstr "Эта неделя"
 msgid "Next week"
 msgstr "Следующая неделя"
 
-#: ../js/ui/dash.js:172
-#: ../js/ui/messageTray.js:1044
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1122
 msgid "Remove"
 msgstr "Удалить"
 
@@ -396,14 +456,14 @@ msgstr "НЕДАВНИЕ ДОКУМЕНТЫ"
 msgid "Log Out %s"
 msgstr "Вывести из системы пользователя %s"
 
-#: ../js/ui/endSessionDialog.js:61
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
 msgid "Log Out"
 msgstr "Выйти из системы"
 
 #: ../js/ui/endSessionDialog.js:62
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Нажмите «Выйти из системы», чтобы закрыть эти приложения и выйти из системы."
+msgstr ""
+"Нажмите «Выйти из системы», чтобы закрыть эти приложения и выйти из системы."
 
 #: ../js/ui/endSessionDialog.js:63
 #, c-format
@@ -413,14 +473,13 @@ msgstr "Пользователь %s будет автоматически выв
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
 msgid "You will be logged out automatically in %d seconds."
-msgstr "Вы автоматически покините систему через %d сек."
+msgstr "Вы автоматически покинете систему через %d секунд."
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Logging out of the system."
 msgstr "Выход из системы."
 
-#: ../js/ui/endSessionDialog.js:72
-#: ../js/ui/endSessionDialog.js:79
+#: ../js/ui/endSessionDialog.js:72 ../js/ui/endSessionDialog.js:79
 msgid "Power Off"
 msgstr "Выключить"
 
@@ -437,15 +496,15 @@ msgstr "Система будет автоматически выключена 
 msgid "Powering off the system."
 msgstr "Выключение системы."
 
-#: ../js/ui/endSessionDialog.js:77
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:77 ../js/ui/endSessionDialog.js:85
 #: ../js/ui/endSessionDialog.js:90
 msgid "Restart"
 msgstr "Перезапустить"
 
 #: ../js/ui/endSessionDialog.js:86
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "Нажмите «Перезапустить», чтобы закрыть эти приложения и перезапустить систему."
+msgstr ""
+"Нажмите «Перезапустить», чтобы закрыть эти приложения и перезапустить систему."
 
 #: ../js/ui/endSessionDialog.js:87
 #, c-format
@@ -456,9 +515,8 @@ msgstr "Система будет автоматически перезапущ�
 msgid "Restarting the system."
 msgstr "Перезапуск системы."
 
-#: ../js/ui/endSessionDialog.js:410
-#: ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:488
+#: ../js/ui/endSessionDialog.js:410 ../js/ui/polkitAuthenticationAgent.js:170
+#: ../js/ui/status/bluetooth.js:497
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -472,8 +530,7 @@ msgstr "Включено"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:680
-#: ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:680 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Выключено"
 
@@ -493,11 +550,11 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: ../js/ui/messageTray.js:1037
+#: ../js/ui/messageTray.js:1115
 msgid "Open"
 msgstr "Открыть"
 
-#: ../js/ui/messageTray.js:2207
+#: ../js/ui/messageTray.js:2286
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -520,18 +577,18 @@ msgid "Dash"
 msgstr "Приборная панель"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:533
+#: ../js/ui/panel.js:532
 #, c-format
 msgid "Quit %s"
 msgstr "Закрыть %s"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:913
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "Обзор"
 
-#: ../js/ui/panel.js:1015
+#: ../js/ui/panel.js:951
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -589,54 +646,53 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Введите команду:"
 
-#: ../js/ui/searchDisplay.js:311
+#: ../js/ui/searchDisplay.js:318
 msgid "Searching..."
 msgstr "Поиск…"
 
-#: ../js/ui/searchDisplay.js:325
+#: ../js/ui/searchDisplay.js:332
 msgid "No matching results."
 msgstr "Нет совпадений."
 
-#: ../js/ui/statusMenu.js:160
-#: ../js/ui/statusMenu.js:162
-#: ../js/ui/statusMenu.js:227
+#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:262
 msgid "Power Off..."
 msgstr "Выключить…"
 
-#: ../js/ui/statusMenu.js:162
-#: ../js/ui/statusMenu.js:226
+#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:261
 msgid "Suspend"
 msgstr "Ждущий режим"
 
-#: ../js/ui/statusMenu.js:183
+#: ../js/ui/statusMenu.js:217
 msgid "Available"
 msgstr "Доступен"
 
-#: ../js/ui/statusMenu.js:188
+#: ../js/ui/statusMenu.js:222
 msgid "Busy"
 msgstr "Занят"
 
-#: ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:230
 msgid "My Account"
 msgstr "Моя учётная запись"
 
-#: ../js/ui/statusMenu.js:200
+#: ../js/ui/statusMenu.js:234
 msgid "System Settings"
 msgstr "Системные параметры"
 
-#: ../js/ui/statusMenu.js:207
+#: ../js/ui/statusMenu.js:242
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
 
-#: ../js/ui/statusMenu.js:212
+#: ../js/ui/statusMenu.js:247
 msgid "Switch User"
 msgstr "Сменить пользователя"
 
-#: ../js/ui/statusMenu.js:217
+#: ../js/ui/statusMenu.js:252
 msgid "Log Out..."
 msgstr "Завершить сеанс…"
 
-#: ../js/ui/status/accessibility.js:59
+#: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
 msgstr "Масштабирование"
 
@@ -646,44 +702,41 @@ msgstr "Масштабирование"
 #. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
 #. 'screen-keyboard-enabled');
 #. this.menu.addMenuItem(screenKeyboard);
-#: ../js/ui/status/accessibility.js:74
+#: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
 msgstr "Визуальные предупреждения"
 
-#: ../js/ui/status/accessibility.js:77
+#: ../js/ui/status/accessibility.js:78
 msgid "Sticky Keys"
 msgstr "Залипающие клавиши"
 
-#: ../js/ui/status/accessibility.js:80
+#: ../js/ui/status/accessibility.js:81
 msgid "Slow Keys"
 msgstr "Медленные клавиши"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:84
 msgid "Bounce Keys"
 msgstr "Отскакивающие клавиши"
 
-#: ../js/ui/status/accessibility.js:86
+#: ../js/ui/status/accessibility.js:87
 msgid "Mouse Keys"
 msgstr "Клавиши мыши"
 
-#: ../js/ui/status/accessibility.js:90
+#: ../js/ui/status/accessibility.js:91
 msgid "Universal Access Settings"
 msgstr "Параметры универсального доступа"
 
-#: ../js/ui/status/accessibility.js:143
+#: ../js/ui/status/accessibility.js:145
 msgid "High Contrast"
 msgstr "Высокая контрастность"
 
-#: ../js/ui/status/accessibility.js:180
+#: ../js/ui/status/accessibility.js:182
 msgid "Large Text"
 msgstr "Крупный текст"
 
-#: ../js/ui/status/bluetooth.js:39
-#: ../js/ui/status/bluetooth.js:261
-#: ../js/ui/status/bluetooth.js:355
-#: ../js/ui/status/bluetooth.js:389
-#: ../js/ui/status/bluetooth.js:429
-#: ../js/ui/status/bluetooth.js:462
+#: ../js/ui/status/bluetooth.js:39 ../js/ui/status/bluetooth.js:270
+#: ../js/ui/status/bluetooth.js:364 ../js/ui/status/bluetooth.js:398
+#: ../js/ui/status/bluetooth.js:438 ../js/ui/status/bluetooth.js:471
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -703,104 +756,115 @@ msgstr "Настроить новое устройство…"
 msgid "Bluetooth Settings"
 msgstr "Параметры Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:212
+#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
+#: ../js/ui/status/bluetooth.js:116
+msgid "hardware disabled"
+msgstr "устройство выключено"
+
+#: ../js/ui/status/bluetooth.js:217
 msgid "Connection"
 msgstr "Соединение"
 
-#: ../js/ui/status/bluetooth.js:248
+#: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:493
+msgid "disconnecting..."
+msgstr "отключение…"
+
+#: ../js/ui/status/bluetooth.js:239 ../js/ui/status/network.js:499
+msgid "connecting..."
+msgstr "подключение…"
+
+#: ../js/ui/status/bluetooth.js:257
 msgid "Send Files..."
 msgstr "Отправить файлы…"
 
-#: ../js/ui/status/bluetooth.js:253
+#: ../js/ui/status/bluetooth.js:262
 msgid "Browse Files..."
 msgstr "Обзор файлов…"
 
-#: ../js/ui/status/bluetooth.js:262
+#: ../js/ui/status/bluetooth.js:271
 msgid "Error browsing device"
 msgstr "Ошибка обзора устройства"
 
-#: ../js/ui/status/bluetooth.js:263
+#: ../js/ui/status/bluetooth.js:272
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Не удалось выполнить обзор запрошенного устройства: %s"
 
-#: ../js/ui/status/bluetooth.js:271
+#: ../js/ui/status/bluetooth.js:280
 msgid "Keyboard Settings"
 msgstr "Параметры клавиатуры"
 
-#: ../js/ui/status/bluetooth.js:276
+#: ../js/ui/status/bluetooth.js:285
 msgid "Mouse Settings"
 msgstr "Параметры мыши"
 
-#: ../js/ui/status/bluetooth.js:283
-#: ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:292 ../js/ui/status/volume.js:64
 msgid "Sound Settings"
 msgstr "Параметры звука"
 
-#: ../js/ui/status/bluetooth.js:390
+#: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Запрос авторизации от %s"
 
-#: ../js/ui/status/bluetooth.js:396
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Устройство %s пытается получить доступ к службе «%s»"
 
-#: ../js/ui/status/bluetooth.js:398
+#: ../js/ui/status/bluetooth.js:407
 msgid "Always grant access"
 msgstr "Всегда предоставлять доступ"
 
-#: ../js/ui/status/bluetooth.js:399
+#: ../js/ui/status/bluetooth.js:408
 msgid "Grant this time only"
 msgstr "Предоставить единовременно"
 
-#: ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:954
 msgid "Reject"
 msgstr "Извлечь"
 
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:439
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Подтверждение на сопряжение с %s"
 
-#: ../js/ui/status/bluetooth.js:436
-#: ../js/ui/status/bluetooth.js:470
+#: ../js/ui/status/bluetooth.js:445 ../js/ui/status/bluetooth.js:479
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Устройство %s пытается выполнить сопряжение с этим компьютером"
 
-#: ../js/ui/status/bluetooth.js:437
+#: ../js/ui/status/bluetooth.js:446
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Подтвердите, совпадает ли PIN-код «%s» с кодом устройства."
 
-#: ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:448
 msgid "Matches"
 msgstr "Совпадает"
 
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:449
 msgid "Does not match"
 msgstr "Не совпадает"
 
-#: ../js/ui/status/bluetooth.js:463
+#: ../js/ui/status/bluetooth.js:472
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Запрос на сопряжение для %s"
 
-#: ../js/ui/status/bluetooth.js:471
+#: ../js/ui/status/bluetooth.js:480
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Введите PIN-код устройства."
 
-#: ../js/ui/status/bluetooth.js:487
+#: ../js/ui/status/bluetooth.js:496
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:70
+#: ../js/ui/status/keyboard.js:71
 msgid "Show Keyboard Layout..."
 msgstr "Показать раскладку клавиатуры…"
 
-#: ../js/ui/status/keyboard.js:73
+#: ../js/ui/status/keyboard.js:75
 msgid "Localization Settings"
 msgstr "Параметры локализации"
 
@@ -809,161 +873,150 @@ msgid "<unknown>"
 msgstr "<неизвестно>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:340
+#: ../js/ui/status/network.js:292
 msgid "disabled"
 msgstr "выключено"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:539
+#: ../js/ui/status/network.js:491
 msgid "unmanaged"
 msgstr "не управляется"
 
-#: ../js/ui/status/network.js:541
-msgid "disconnecting..."
-msgstr "отключение…"
-
-#: ../js/ui/status/network.js:547
-msgid "connecting..."
-msgstr "подключение…"
-
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:550
+#: ../js/ui/status/network.js:502
 msgid "authentication required"
 msgstr "требуется аутентификация"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:560
+#: ../js/ui/status/network.js:512
 msgid "firmware missing"
 msgstr "отсутствует прошивка"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:567
+#: ../js/ui/status/network.js:519
 msgid "cable unplugged"
 msgstr "кабель не подключен"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:572
+#: ../js/ui/status/network.js:524
 msgid "unavailable"
 msgstr "недоступное"
 
-#: ../js/ui/status/network.js:574
+#: ../js/ui/status/network.js:526
 msgid "connection failed"
 msgstr "сбой подключения"
 
-#: ../js/ui/status/network.js:630
-#: ../js/ui/status/network.js:1537
+#: ../js/ui/status/network.js:582 ../js/ui/status/network.js:1507
 msgid "More..."
 msgstr "Ещё…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:666
-#: ../js/ui/status/network.js:1475
+#: ../js/ui/status/network.js:618 ../js/ui/status/network.js:1444
 msgid "Connected (private)"
 msgstr "Подключено (частное)"
 
-#: ../js/ui/status/network.js:751
+#: ../js/ui/status/network.js:703
 msgid "Auto Ethernet"
 msgstr "Автоматическое Ethernet"
 
-#: ../js/ui/status/network.js:819
+#: ../js/ui/status/network.js:771
 msgid "Auto broadband"
 msgstr "Автоматическое широкополосное"
 
-#: ../js/ui/status/network.js:822
+#: ../js/ui/status/network.js:774
 msgid "Auto dial-up"
 msgstr "Автоматическое коммутируемое"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:946
-#: ../js/ui/status/network.js:1487
+#: ../js/ui/status/network.js:898 ../js/ui/status/network.js:1456
 #, c-format
 msgid "Auto %s"
 msgstr "Автоматическое %s"
 
-#: ../js/ui/status/network.js:948
+#: ../js/ui/status/network.js:900
 msgid "Auto bluetooth"
 msgstr "Автоматическое bluetooth"
 
-#: ../js/ui/status/network.js:1489
+#: ../js/ui/status/network.js:1458
 msgid "Auto wireless"
 msgstr "Автоматическое беспроводное"
 
-#: ../js/ui/status/network.js:1579
+#: ../js/ui/status/network.js:1550
 msgid "Enable networking"
 msgstr "Включить сеть"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1562
 msgid "Wired"
 msgstr "Проводное"
 
-#: ../js/ui/status/network.js:1602
+#: ../js/ui/status/network.js:1573
 msgid "Wireless"
 msgstr "Беспроводное"
 
-#: ../js/ui/status/network.js:1612
+#: ../js/ui/status/network.js:1583
 msgid "Mobile broadband"
 msgstr "Мобильное широкополосное"
 
-#: ../js/ui/status/network.js:1622
+#: ../js/ui/status/network.js:1593
 msgid "VPN Connections"
 msgstr "Соединения VPN"
 
-#: ../js/ui/status/network.js:1634
+#: ../js/ui/status/network.js:1605
 msgid "Network Settings"
 msgstr "Сетевые параметры"
 
-#: ../js/ui/status/network.js:1925
+#: ../js/ui/status/network.js:1897
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Вы подключены по мобильному широкополосному соединению «%s»"
 
-#: ../js/ui/status/network.js:1929
+#: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Вы подключены к беспроводной сети «%s»"
 
-#: ../js/ui/status/network.js:1933
+#: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Вы подключены к проводной сети «%s»"
 
-#: ../js/ui/status/network.js:1937
+#: ../js/ui/status/network.js:1909
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Вы подключены к сети VPN «%s»"
 
-#: ../js/ui/status/network.js:1942
+#: ../js/ui/status/network.js:1914
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Вы подключены к «%s»"
 
-#: ../js/ui/status/network.js:1950
+#: ../js/ui/status/network.js:1922
 msgid "Connection established"
 msgstr "Соединение установлено"
 
-#: ../js/ui/status/network.js:2076
+#: ../js/ui/status/network.js:2048
 msgid "Networking is disabled"
 msgstr "Сеть отключена"
 
-#: ../js/ui/status/network.js:2201
+#: ../js/ui/status/network.js:2173
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
-#: ../js/ui/status/power.js:82
+#: ../js/ui/status/power.js:83
 msgid "Power Settings"
 msgstr "Параметры питания"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:108
+#: ../js/ui/status/power.js:109
 msgid "Estimating..."
 msgstr "Выполняется подсчёт…"
 
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:116
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -972,26 +1025,26 @@ msgstr[1] "Осталось %d часа"
 msgstr[2] "Осталось %d часов"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:118
+#: ../js/ui/status/power.js:119
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "Осталось %d %s %d %s"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "час"
 msgstr[1] "часа"
 msgstr[2] "часов"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:121
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "минута"
 msgstr[1] "минуты"
 msgstr[2] "минут"
 
-#: ../js/ui/status/power.js:123
+#: ../js/ui/status/power.js:124
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -999,79 +1052,90 @@ msgstr[0] "Осталась %d минута"
 msgstr[1] "Осталось %d минуты"
 msgstr[2] "Осталось %d минут"
 
-#: ../js/ui/status/power.js:225
+#: ../js/ui/status/power.js:216
 msgid "AC adapter"
 msgstr "Адаптер переменного тока"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:218
 msgid "Laptop battery"
 msgstr "Батарея ноутбука"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:220
 msgid "UPS"
 msgstr "ИБП"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:222
 msgid "Monitor"
 msgstr "Монитор"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:224
 msgid "Mouse"
 msgstr "Мышь"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:226
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:228
 msgid "PDA"
 msgstr "КПК"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:230
 msgid "Cell phone"
 msgstr "Мобильный телефон"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:232
 msgid "Media player"
 msgstr "Медиаплеер"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:234
 msgid "Tablet"
 msgstr "Планшет"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:236
 msgid "Computer"
 msgstr "Компьютер"
 
-#: ../js/ui/status/power.js:247
-#: ../src/shell-app-system.c:1088
+#: ../js/ui/status/power.js:238 ../src/shell-app-system.c:1088
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:43
 msgid "Volume"
 msgstr "Громкость"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:56
 msgid "Microphone"
 msgstr "Микрофон"
 
-#: ../js/ui/telepathyClient.js:397
+#. We got the TpContact
+#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
+#. system-users for now as Empathy does.
+#: ../js/ui/telepathyClient.js:228
+msgid "Invitation"
+msgstr "Приглашение"
+
+#. We got the TpContact
+#: ../js/ui/telepathyClient.js:291
+msgid "Call"
+msgstr "Вызов"
+
+#: ../js/ui/telepathyClient.js:541
 #, c-format
 msgid "%s is online."
 msgstr "%s в сети."
 
-#: ../js/ui/telepathyClient.js:402
+#: ../js/ui/telepathyClient.js:546
 #, c-format
 msgid "%s is offline."
 msgstr "%s не в сети."
 
-#: ../js/ui/telepathyClient.js:405
+#: ../js/ui/telepathyClient.js:549
 #, c-format
 msgid "%s is away."
 msgstr "%s ушёл."
 
-#: ../js/ui/telepathyClient.js:408
+#: ../js/ui/telepathyClient.js:552
 #, c-format
 msgid "%s is busy."
 msgstr "%s занят."
@@ -1079,17 +1143,56 @@ msgstr "%s занят."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:556
+#: ../js/ui/telepathyClient.js:741
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Отправлено %X %A"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:606
+#: ../js/ui/telepathyClient.js:791
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s теперь известен как %s"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/telepathyClient.js:898
+#, c-format
+msgid "Invitation to %s"
+msgstr "Приглашение в %s"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/telepathyClient.js:906
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "%s приглашает вас присоединиться к %s"
+
+#: ../js/ui/telepathyClient.js:908
+msgid "Decline"
+msgstr "Отказаться"
+
+#: ../js/ui/telepathyClient.js:909
+msgid "Accept"
+msgstr "Принять"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:942
+#, c-format
+msgid "Video call from %s"
+msgstr "Вас вызывает %s по видео"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:945
+#, c-format
+msgid "Call from %s"
+msgstr "Вас вызывает %s"
+
+#: ../js/ui/telepathyClient.js:955
+msgid "Answer"
+msgstr "Ответить"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1099,8 +1202,7 @@ msgstr "%s теперь известен как %s"
 msgid "Type to search..."
 msgstr "Найти…"
 
-#: ../js/ui/viewSelector.js:140
-#: ../src/shell-util.c:254
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:257
 msgid "Search"
 msgstr "Поиск"
 
@@ -1138,7 +1240,7 @@ msgstr[2] "%u входов"
 msgid "System Sounds"
 msgstr "Системные звуки"
 
-#: ../src/main.c:445
+#: ../src/main.c:466
 msgid "Print version"
 msgstr "Показать номер версии"
 
@@ -1159,13 +1261,13 @@ msgstr "По умолчанию"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Пользователь отклонил диалог аутентификации"
 
-#: ../src/shell-util.c:93
+#: ../src/shell-util.c:96
 msgid "Home Folder"
 msgstr "Домашняя папка"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:111
 msgid "File System"
 msgstr "Файловая система"
 
@@ -1174,8 +1276,7 @@ msgstr "Файловая система"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:307
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
