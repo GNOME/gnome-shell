@@ -189,6 +189,8 @@ function SearchResults(searchSystem, openSearchSystem) {
 SearchResults.prototype = {
     _init: function(searchSystem, openSearchSystem) {
         this._searchSystem = searchSystem;
+        this._searchSystem.connect('search-updated', Lang.bind(this, this._updateCurrentResults));
+        this._searchSystem.connect('search-completed', Lang.bind(this, this._updateResults));
         this._openSearchSystem = openSearchSystem;
 
         this.actor = new St.BoxLayout({ name: 'searchResults',
@@ -223,9 +225,11 @@ SearchResults.prototype = {
         this._selectedProvider = -1;
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
-        for (let i = 0; i < this._providers.length; i++)
+        this._providerMetaResults = {};
+        for (let i = 0; i < this._providers.length; i++) {
             this.createProviderMeta(this._providers[i]);
-
+            this._providerMetaResults[this.providers[i].title] = [];
+        }
         this._searchProvidersBox = new St.BoxLayout({ style_class: 'search-providers-box' });
         this.actor.add(this._searchProvidersBox);
 
@@ -305,6 +309,12 @@ SearchResults.prototype = {
         }
     },
 
+    _clearDisplayForProvider: function(index) {
+        let meta = this._providerMeta[index];
+        meta.resultDisplay.clear();
+        meta.actor.hide();
+    },
+
     reset: function() {
         this._searchSystem.reset();
         this._statusText.hide();
@@ -319,15 +329,24 @@ SearchResults.prototype = {
         this._statusText.show();
     },
 
+    doSearch: function (searchString) {
+        this._searchSystem.updateSearch(searchString);
+    },
+
     _metaForProvider: function(provider) {
         return this._providerMeta[this._providers.indexOf(provider)];
     },
 
-    updateSearch: function (searchString) {
-        let results = this._searchSystem.updateSearch(searchString);
+    _updateCurrentResults: function(searchSystem, provider, results) {
+        let terms = searchSystem.getTerms();
+        let meta = this._metaForProvider(provider);
+        meta.resultDisplay.clear();
+        meta.actor.show();
+        meta.resultDisplay.renderResults(results, terms);
+        return true;
+    },
 
-        this._clearDisplay();
-
+    _updateResults: function(searchSystem, results) {
         if (results.length == 0) {
             this._statusText.set_text(_("No matching results."));
             this._statusText.show();
@@ -337,7 +356,7 @@ SearchResults.prototype = {
             this._statusText.hide();
         }
 
-        let terms = this._searchSystem.getTerms();
+        let terms = searchSystem.getTerms();
         this._openSearchSystem.setSearchTerms(terms);
 
         // To avoid CSS transitions causing flickering
@@ -349,9 +368,15 @@ SearchResults.prototype = {
 
         for (let i = 0; i < results.length; i++) {
             let [provider, providerResults] = results[i];
-            let meta = this._metaForProvider(provider);
-            meta.actor.show();
-            meta.resultDisplay.renderResults(providerResults, terms);
+            if (providerResults.length == 0) {
+                this._clearDisplayForProvider(i);
+            } else {
+                this._providerMetaResults[provider.title] = providerResults;
+                this._clearDisplayForProvider(i);
+                let meta = this._metaForProvider(provider);
+                meta.actor.show();
+                meta.resultDisplay.renderResults(providerResults, terms);
+            }
         }
 
         if (this._selectedOpenSearchButton == -1)
