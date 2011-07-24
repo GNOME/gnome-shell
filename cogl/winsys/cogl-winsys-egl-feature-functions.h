@@ -54,6 +54,7 @@ COGL_WINSYS_FEATURE_END ()
 /* XXX: These macros can't handle falling back to looking for
  * EGL_KHR_image if EGL_KHR_image_base and EGL_KHR_image_pixmap aren't
  * found... */
+#ifdef EGL_KHR_image_base
 COGL_WINSYS_FEATURE_BEGIN (image_base,
                            "KHR\0",
                            "image_base\0",
@@ -68,6 +69,7 @@ COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglDestroyImage,
                               (EGLDisplay dpy,
                                EGLImageKHR image))
 COGL_WINSYS_FEATURE_END ()
+#endif
 COGL_WINSYS_FEATURE_BEGIN (image_pixmap,
                            "KHR\0",
                            "image_pixmap\0",
