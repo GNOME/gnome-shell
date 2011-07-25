@@ -23,8 +23,6 @@ const Tweener = imports.ui.tweener;
 
 const PANEL_ICON_SIZE = 24;
 
-const STARTUP_ANIMATION_TIME = 0.2;
-
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
 const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
@@ -795,8 +793,6 @@ Panel.prototype = {
             this.actor.remove_style_class_name('in-overview');
         }));
 
-        this._leftPointerBarrier = 0;
-        this._rightPointerBarrier = 0;
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -871,13 +867,9 @@ Panel.prototype = {
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
-        Main.layoutManager.addChrome(this.actor, { affectsStruts: true });
-
+        Main.layoutManager.panelBox.add(this.actor);
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
-
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
-        this._relayout();
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -992,37 +984,6 @@ Panel.prototype = {
         }));
 
         return indicator;
-    },
-
-    startupAnimation: function() {
-        let oldY = this.actor.y;
-        this.actor.y = oldY - this.actor.height;
-        Tweener.addTween(this.actor,
-                         { y: oldY,
-                           time: STARTUP_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
-    },
-
-    _relayout: function() {
-        let primary = Main.layoutManager.primaryMonitor;
-
-        this.actor.set_position(primary.x, primary.y);
-        this.actor.set_size(primary.width, -1);
-
-        if (this._leftPointerBarrier)
-            global.destroy_pointer_barrier(this._leftPointerBarrier);
-        if (this._rightPointerBarrier)
-            global.destroy_pointer_barrier(this._rightPointerBarrier);
-
-        this._leftPointerBarrier =
-            global.create_pointer_barrier(primary.x, primary.y,
-                                          primary.x, primary.y + this.actor.height,
-                                          1 /* BarrierPositiveX */);
-        this._rightPointerBarrier =
-            global.create_pointer_barrier(primary.x + primary.width, primary.y,
-                                          primary.x + primary.width, primary.y + this.actor.height,
-                                          4 /* BarrierNegativeX */);
     },
 
     _onTrayIconAdded: function(o, icon, role) {

@@ -192,8 +192,6 @@ function start() {
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
 
-    panel.startupAnimation();
-
     global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
 
     global.stage.connect('captured-event', _globalKeyPressHandler);

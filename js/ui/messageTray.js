@@ -1329,7 +1329,9 @@ MessageTray.prototype = {
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
 
-        Main.layoutManager.addChrome(this.actor, { visibleInFullscreen: true });
+        Main.layoutManager.trayBox.add_actor(this.actor);
+        this.actor.y = -1;
+        Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.trackChrome(this._notificationBin);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
@@ -1369,22 +1371,10 @@ MessageTray.prototype = {
 
     _setSizePosition: function() {
         let monitor = Main.layoutManager.bottomMonitor;
-        this.actor.x = monitor.x;
-        this.actor.y = monitor.y + monitor.height - 1;
-        this.actor.width = monitor.width;
         this._notificationBin.x = 0;
         this._notificationBin.width = monitor.width;
         this._summaryBin.x = 0;
         this._summaryBin.width = monitor.width;
-
-        if (this._pointerBarrier)
-            global.destroy_pointer_barrier(this._pointerBarrier);
-        this._pointerBarrier =
-            global.create_pointer_barrier(monitor.x + monitor.width, monitor.y + monitor.height - this.actor.height,
-                                          monitor.x + monitor.width, monitor.y + monitor.height,
-                                          4 /* BarrierNegativeX */);
-
-
     },
 
     contains: function(source) {
@@ -1935,18 +1925,16 @@ MessageTray.prototype = {
     },
 
     _showTray: function() {
-        let monitor = Main.layoutManager.bottomMonitor;
         this._tween(this.actor, '_trayState', State.SHOWN,
-                    { y: monitor.y + monitor.height - this.actor.height,
+                    { y: -this.actor.height,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
     },
 
     _hideTray: function() {
-        let monitor = Main.layoutManager.bottomMonitor;
         this._tween(this.actor, '_trayState', State.HIDDEN,
-                    { y: monitor.y + monitor.height - 1,
+                    { y: -1,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
@@ -2034,7 +2022,7 @@ MessageTray.prototype = {
 
     _notificationTimeout: function() {
         let [x, y, mods] = global.get_pointer();
-        if (y > this._lastSeenMouseY + 10 && y < this.actor.y) {
+        if (y > this._lastSeenMouseY + 10 && !this.actor.hover) {
             // The mouse is moving towards the notification, so don't
             // hide it yet. (We just create a new timeout (and destroy
             // the old one) each time because the bookkeeping is

@@ -15,6 +15,8 @@ const Tweener = imports.ui.tweener;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
+const STARTUP_ANIMATION_TIME = 0.2;
+
 function LayoutManager() {
     this._init.apply(this, arguments);
 }
@@ -26,12 +28,26 @@ LayoutManager.prototype = {
         this.primaryMonitor = null;
         this.primaryIndex = -1;
         this._hotCorners = [];
-
-        global.screen.connect('monitors-changed', Lang.bind(this, this._monitorsChanged));
-        this._updateMonitors();
+        this._leftPanelBarrier = 0;
+        this._rightPanelBarrier = 0;
+        this._trayBarrier = 0;
 
         this._chrome = new Chrome(this);
-        this._updateHotCorners();
+
+        this.panelBox = new St.BoxLayout({ name: 'panelBox',
+                                           vertical: true });
+        this.addChrome(this.panelBox, { affectsStruts: true });
+        this.panelBox.connect('allocation-changed',
+                              Lang.bind(this, this._updatePanelBarriers));
+
+        this.trayBox = new St.BoxLayout({ name: 'trayBox' }); 
+        this.trayBox.connect('allocation-changed',
+                             Lang.bind(this, this._updateTrayBarrier));
+        this.addChrome(this.trayBox, { visibleInFullscreen: true });
+
+        global.screen.connect('monitors-changed',
+                              Lang.bind(this, this._monitorsChanged));
+        this._monitorsChanged();
     },
 
     // This is called by Main after everything else is constructed;
@@ -39,6 +55,8 @@ LayoutManager.prototype = {
     // yet when the LayoutManager was constructed.
     init: function() {
         this._chrome.init();
+
+        this._startupAnimation();
     },
 
     _updateMonitors: function() {
@@ -121,8 +139,56 @@ LayoutManager.prototype = {
         }
     },
 
+    _updateBoxes: function() {
+        this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
+        this.panelBox.set_size(this.primaryMonitor.width, -1);
+
+        this.trayBox.set_position(this.bottomMonitor.x,
+                                  this.bottomMonitor.y + this.bottomMonitor.height);
+        this.trayBox.set_size(this.bottomMonitor.width, -1);
+    },
+
+    _updatePanelBarriers: function() {
+        if (this._leftPanelBarrier)
+            global.destroy_pointer_barrier(this._leftPanelBarrier);
+        if (this._rightPanelBarrier)
+            global.destroy_pointer_barrier(this._rightPanelBarrier);
+
+        if (this.panelBox.height) {
+            let primary = this.primaryMonitor;
+            this._leftPanelBarrier =
+                global.create_pointer_barrier(primary.x, primary.y,
+                                              primary.x, primary.y + this.panelBox.height,
+                                              1 /* BarrierPositiveX */);
+            this._rightPanelBarrier =
+                global.create_pointer_barrier(primary.x + primary.width, primary.y,
+                                              primary.x + primary.width, primary.y + this.panelBox.height,
+                                              4 /* BarrierNegativeX */);
+        } else {
+            this._leftPanelBarrier = 0;
+            this._rightPanelBarrier = 0;
+        }
+    },
+
+    _updateTrayBarrier: function() {
+        let monitor = this.bottomMonitor;
+
+        if (this._trayBarrier)
+            global.destroy_pointer_barrier(this._trayBarrier);
+
+        if (Main.messageTray) {
+            this._trayBarrier =
+                global.create_pointer_barrier(monitor.x + monitor.width, monitor.y + monitor.height - Main.messageTray.actor.height,
+                                              monitor.x + monitor.width, monitor.y + monitor.height,
+                                              4 /* BarrierNegativeX */);
+        } else {
+            this._trayBarrier = 0;
+        }
+    },
+
     _monitorsChanged: function() {
         this._updateMonitors();
+        this._updateBoxes();
         this._updateHotCorners();
 
         this.emit('monitors-changed');
@@ -162,6 +228,15 @@ LayoutManager.prototype = {
 
     get focusMonitor() {
         return this.monitors[this.focusIndex];
+    },
+
+    _startupAnimation: function() {
+        this.panelBox.anchor_y = this.panelBox.height;
+        Tweener.addTween(this.panelBox,
+                         { anchor_y: 0,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
     },
 
     // addChrome:
