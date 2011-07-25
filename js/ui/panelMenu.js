@@ -27,7 +27,7 @@ Button.prototype = {
         this.menu.actor.add_style_class_name('panel-menu');
         this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
         this.menu.actor.connect('key-press-event', Lang.bind(this, this._onMenuKeyPress));
-        Main.chrome.addActor(this.menu.actor);
+        Main.layoutManager.addChrome(this.menu.actor);
         this.menu.actor.hide();
     },
 

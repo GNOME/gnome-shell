@@ -27,15 +27,18 @@ LayoutManager.prototype = {
         this.primaryIndex = -1;
         this._hotCorners = [];
 
+        global.screen.connect('monitors-changed', Lang.bind(this, this._monitorsChanged));
         this._updateMonitors();
+
+        this._chrome = new Chrome(this);
+        this._updateHotCorners();
     },
 
     // This is called by Main after everything else is constructed;
-    // _updateHotCorners needs access to Main.panel, which didn't exist
+    // Chrome.init() needs access to Main.overview, which didn't exist
     // yet when the LayoutManager was constructed.
     init: function() {
-        global.screen.connect('monitors-changed', Lang.bind(this, this._monitorsChanged));
-        this._updateHotCorners();
+        this._chrome.init();
     },
 
     _updateMonitors: function() {
@@ -114,7 +117,7 @@ LayoutManager.prototype = {
             let corner = new HotCorner();
             this._hotCorners.push(corner);
             corner.actor.set_position(cornerX, cornerY);
-            Main.chrome.addActor(corner.actor);
+            this._chrome.addActor(corner.actor);
         }
     },
 
@@ -159,6 +162,60 @@ LayoutManager.prototype = {
 
     get focusMonitor() {
         return this.monitors[this.focusIndex];
+    },
+
+    // addChrome:
+    // @actor: an actor to add to the chrome layer
+    // @params: (optional) additional params
+    //
+    // Adds @actor to the chrome layer and (unless %affectsInputRegion
+    // in @params is %false) extends the input region to include it.
+    // Changes in @actor's size, position, and visibility will
+    // automatically result in appropriate changes to the input
+    // region.
+    //
+    // If %affectsStruts in @params is %true (and @actor is along a
+    // screen edge), then @actor's size and position will also affect
+    // the window manager struts. Changes to @actor's visibility will
+    // NOT affect whether or not the strut is present, however.
+    //
+    // If %visibleInFullscreen in @params is %true, the actor will be
+    // visible even when a fullscreen window should be covering it.
+    addChrome: function(actor, params) {
+        this._chrome.addActor(actor, params);
+    },
+
+    // trackChrome:
+    // @actor: a descendant of the chrome to begin tracking
+    // @params: parameters describing how to track @actor
+    //
+    // Tells the chrome to track @actor, which must be a descendant
+    // of an actor added via addChrome(). This can be used to extend the
+    // struts or input region to cover specific children.
+    //
+    // @params can have any of the same values as in addChrome(),
+    // though some possibilities don't make sense (eg, trying to have
+    // a %visibleInFullscreen child of a non-%visibleInFullscreen
+    // parent). By default, @actor has the same params as its chrome
+    // ancestor.
+    trackChrome: function(actor, params) {
+        this._chrome.trackActor(actor, params);
+    },
+
+    // untrackChrome:
+    // @actor: an actor previously tracked via trackChrome()
+    //
+    // Undoes the effect of trackChrome()
+    untrackChrome: function(actor) {
+        this._chrome.untrackActor(actor);
+    },
+
+    // removeChrome:
+    // @actor: a child of the chrome layer
+    //
+    // Removes @actor from the chrome layer
+    removeChrome: function(actor) {
+        this._chrome.removeActor(actor);
     }
 };
 Signals.addSignalMethods(LayoutManager.prototype);
@@ -337,11 +394,13 @@ const defaultParams = {
 };
 
 function Chrome() {
-    this._init();
+    this._init.apply(this, arguments);
 }
 
 Chrome.prototype = {
-    _init: function() {
+    _init: function(layoutManager) {
+        this._layoutManager = layoutManager;
+
         // The group itself has zero size so it doesn't interfere with DND
         this.actor = new Shell.GenericContainer({ width: 0, height: 0 });
         Main.uiGroup.add_actor(this.actor);
@@ -352,19 +411,14 @@ Chrome.prototype = {
 
         this._trackedActors = [];
 
-        Main.layoutManager.connect('monitors-changed',
-                                   Lang.bind(this, this._relayout));
+        this._layoutManager.connect('monitors-changed',
+                                    Lang.bind(this, this._relayout));
         global.screen.connect('restacked',
                               Lang.bind(this, this._windowsRestacked));
 
         // Need to update struts on new workspaces when they are added
         global.screen.connect('notify::n-workspaces',
                               Lang.bind(this, this._queueUpdateRegions));
-
-        Main.overview.connect('showing',
-                             Lang.bind(this, this._overviewShowing));
-        Main.overview.connect('hidden',
-                             Lang.bind(this, this._overviewHidden));
 
         this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
         this._screenSaverProxy.connect('ActiveChanged', Lang.bind(this, this._onScreenSaverActiveChanged));
@@ -377,45 +431,24 @@ Chrome.prototype = {
         this._relayout();
     },
 
+    init: function() {
+        Main.overview.connect('showing',
+                             Lang.bind(this, this._overviewShowing));
+        Main.overview.connect('hidden',
+                             Lang.bind(this, this._overviewHidden));
+    },
+
     _allocated: function(actor, box, flags) {
         let children = this.actor.get_children();
         for (let i = 0; i < children.length; i++)
             children[i].allocate_preferred_size(flags);
     },
 
-    // addActor:
-    // @actor: an actor to add to the chrome layer
-    // @params: (optional) additional params
-    //
-    // Adds @actor to the chrome layer and (unless %affectsInputRegion
-    // is %false) extends the input region to include it. Changes in
-    // @actor's size, position, and visibility will automatically
-    // result in appropriate changes to the input region.
-    //
-    // If %affectsStruts is %true (and @actor is along a screen edge),
-    // then @actor's size and position will also affect the window
-    // manager struts. Changes to @actor's visibility will NOT affect
-    // whether or not the strut is present, however.
-    //
-    // If %visibleInFullscreen is %true, the actor will be visible
-    // even when a fullscreen window should be covering it.
     addActor: function(actor, params) {
         this.actor.add_actor(actor);
         this._trackActor(actor, params);
     },
 
-    // trackActor:
-    // @actor: a descendant of the chrome to begin tracking
-    // @params: parameters describing how to track @actor
-    //
-    // Tells the chrome to track @actor, which must be a descendant
-    // of an actor added via addActor(). This can be used to extend the
-    // struts or input region to cover specific children.
-    //
-    // @params can have any of the same values as in addActor(), though
-    // some possibilities don't make sense (eg, trying to have a
-    // %visibleInFullscreen child of a non-%visibleInFullscreen parent).
-    // By default, @actor has the same params as its chrome ancestor.
     trackActor: function(actor, params) {
         let ancestor = actor.get_parent();
         let index = this._findActor(ancestor);
@@ -439,18 +472,10 @@ Chrome.prototype = {
         this._trackActor(actor, params);
     },
 
-    // untrackActor:
-    // @actor: an actor previously tracked via trackActor()
-    //
-    // Undoes the effect of trackActor()
     untrackActor: function(actor) {
         this._untrackActor(actor);
     },
 
-    // removeActor:
-    // @actor: a child of the chrome layer
-    //
-    // Removes @actor from the chrome layer
     removeActor: function(actor) {
         this.actor.remove_actor(actor);
         this._untrackActor(actor);
@@ -528,8 +553,8 @@ Chrome.prototype = {
     },
 
     _relayout: function() {
-        this._monitors = Main.layoutManager.monitors;
-        this._primaryMonitor = Main.layoutManager.primaryMonitor;
+        this._monitors = this._layoutManager.monitors;
+        this._primaryMonitor = this._layoutManager.primaryMonitor;
 
         this._updateFullscreen();
         this._updateVisibility();
@@ -757,4 +782,3 @@ Chrome.prototype = {
         return false;
     }
 };
-Signals.addSignalMethods(Chrome.prototype);

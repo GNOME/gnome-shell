@@ -871,7 +871,7 @@ Panel.prototype = {
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
-        Main.chrome.addActor(this.actor, { affectsStruts: true });
+        Main.layoutManager.addChrome(this.actor, { affectsStruts: true });
 
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });

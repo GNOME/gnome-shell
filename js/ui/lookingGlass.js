@@ -752,7 +752,7 @@ LookingGlass.prototype = {
 
         // we add it to the chrome because we want it to appear to slide
         // out from underneath the panel
-        Main.chrome.addActor(this.actor);
+        Main.layoutManager.addChrome(this.actor);
 
         this._objInspector = new ObjInspector();
         Main.uiGroup.add_actor(this._objInspector.actor);

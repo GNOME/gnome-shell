@@ -42,7 +42,6 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let automountManager = null;
 let autorunManager = null;
-let chrome = null;
 let panel = null;
 let hotCorners = [];
 let placesManager = null;
@@ -136,7 +135,6 @@ function start() {
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();
-    chrome = new Layout.Chrome();
     magnifier = new Magnifier.Magnifier();
     statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     panel = new Panel.Panel();

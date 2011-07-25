@@ -1279,7 +1279,7 @@ MessageTray.prototype = {
                                                               track_hover: true });
         this._summaryBoxPointer.actor.style_class = 'summary-boxpointer';
         this._summaryBoxPointer.actor.hide();
-        Main.chrome.addActor(this._summaryBoxPointer.actor, { visibleInFullscreen: true });
+        Main.layoutManager.addChrome(this._summaryBoxPointer.actor, { visibleInFullscreen: true });
 
         this._summaryBoxPointerItem = null;
         this._summaryBoxPointerContentUpdatedId = 0;
@@ -1329,8 +1329,8 @@ MessageTray.prototype = {
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
 
-        Main.chrome.addActor(this.actor, { visibleInFullscreen: true });
-        Main.chrome.trackActor(this._notificationBin);
+        Main.layoutManager.addChrome(this.actor, { visibleInFullscreen: true });
+        Main.layoutManager.trackChrome(this._notificationBin);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
 
