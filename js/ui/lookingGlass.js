@@ -750,7 +750,9 @@ LookingGlass.prototype = {
                                         Lang.bind(this, this._updateFont));
         this._updateFont();
 
-        Main.uiGroup.add_actor(this.actor);
+        // we add it to the chrome because we want it to appear to slide
+        // out from underneath the panel
+        Main.chrome.addActor(this.actor);
 
         this._objInspector = new ObjInspector();
         Main.uiGroup.add_actor(this._objInspector.actor);
@@ -961,7 +963,7 @@ LookingGlass.prototype = {
 
         this._notebook.selectIndex(0);
         this.actor.show();
-        this.actor.lower(Main.chrome.actor);
+        this.actor.lower_bottom();
         this._open = true;
         this._history.lastItem();
 
@@ -992,6 +994,7 @@ LookingGlass.prototype = {
 
         Main.popModal(this._entry);
 
+        this.actor.lower_bottom();
         Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,
