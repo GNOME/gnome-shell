@@ -128,6 +128,7 @@ test_invalid_texture_layers (TestState *state, int x, int y)
   test_material_with_primitives (state, x, y, 0xffffffff);
 }
 
+#ifdef COGL_HAS_GLES2
 static gboolean
 using_gles2_driver (void)
 {
@@ -136,6 +137,7 @@ using_gles2_driver (void)
   return g_str_has_prefix ((const char *) gl_functions.glGetString (GL_VERSION),
                            "OpenGL ES 2");
 }
+#endif
 
 static void
 test_using_all_layers (TestState *state, int x, int y)
