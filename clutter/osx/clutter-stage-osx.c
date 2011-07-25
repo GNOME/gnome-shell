@@ -131,6 +131,11 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   else 
     return [self frame].size;
 }
+
+- (void)windowDidChangeScreen:(NSNotification *)notification
+{
+  clutter_redraw(CLUTTER_STAGE(self->stage_osx->wrapper));
+}
 @end
 
 /*************************************************************************/
