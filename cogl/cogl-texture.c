@@ -627,11 +627,11 @@ cogl_texture_new_from_buffer_EXP (CoglHandle          buffer,
     }
 
   /* Wrap the buffer into a bitmap */
-  bmp = _cogl_bitmap_new_from_buffer (cogl_buffer,
-                                      format,
-                                      width, height,
-                                      rowstride,
-                                      offset);
+  bmp = cogl_bitmap_new_from_buffer (cogl_buffer,
+                                     format,
+                                     width, height,
+                                     rowstride,
+                                     offset);
 
   texture = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
 
@@ -852,14 +852,14 @@ _cogl_texture_ensure_non_quad_rendering (CoglHandle handle)
 }
 
 gboolean
-_cogl_texture_set_region_from_bitmap (CoglHandle    handle,
-                                      int           src_x,
-                                      int           src_y,
-                                      int           dst_x,
-                                      int           dst_y,
-                                      unsigned int  dst_width,
-                                      unsigned int  dst_height,
-                                      CoglBitmap   *bmp)
+cogl_texture_set_region_from_bitmap (CoglHandle handle,
+                                     int src_x,
+                                     int src_y,
+                                     int dst_x,
+                                     int dst_y,
+                                     unsigned int dst_width,
+                                     unsigned int dst_height,
+                                     CoglBitmap *bmp)
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
   GLenum       closest_gl_format;
@@ -924,11 +924,11 @@ cogl_texture_set_region (CoglHandle       handle,
                                            NULL, /* destroy_fn */
                                            NULL); /* destroy_fn_data */
 
-  ret = _cogl_texture_set_region_from_bitmap (handle,
-                                              src_x, src_y,
-                                              dst_x, dst_y,
-                                              dst_width, dst_height,
-                                              source_bmp);
+  ret = cogl_texture_set_region_from_bitmap (handle,
+                                             src_x, src_y,
+                                             dst_x, dst_y,
+                                             dst_width, dst_height,
+                                             source_bmp);
 
   cogl_object_unref (source_bmp);
 

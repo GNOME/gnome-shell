@@ -29,6 +29,7 @@
 #define __COGL_BITMAP_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-buffer.h>
 
 G_BEGIN_DECLS
 
@@ -61,6 +62,37 @@ typedef struct _CoglBitmap CoglBitmap;
 CoglBitmap *
 cogl_bitmap_new_from_file (const char *filename,
                            GError **error);
+
+#if defined (COGL_ENABLE_EXPERIMENTAL_API)
+
+#define cogl_bitmap_new_from_buffer cogl_bitmap_new_from_buffer_EXP
+/**
+ * cogl_bitmap_new_from_buffer:
+ * @buffer: A #CoglBuffer containing image data
+ * @format: The #CoglPixelFormat defining the format of the image data
+ *          in the given @buffer.
+ * @width: The width of the image data in the given @buffer.
+ * @height: The height of the image data in the given @buffer.
+ * @rowstride: The rowstride in bytes of the image data in the given @buffer.
+ * @offset: The offset into the given @buffer to the first pixel that
+ *          should be considered part of the #CoglBitmap.
+ *
+ * Wraps some image data that has been uploaded into a #CoglBuffer as
+ * a #CoglBitmap. The data is not copied in this process.
+ *
+ * Return value: a #CoglBitmap encapsulating the given @buffer.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+CoglBitmap *
+cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
+                             CoglPixelFormat format,
+                             int width,
+                             int height,
+                             int rowstride,
+                             int offset);
+#endif
 
 /**
  * cogl_bitmap_get_size_from_file:

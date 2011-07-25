@@ -83,17 +83,6 @@ _cogl_bitmap_new_shared (CoglBitmap      *shared_bmp,
                          int              height,
                          int              rowstride);
 
-/* This creates a cogl bitmap that internally references a pixel
-   array. The data is not copied. _cogl_bitmap_map will divert to
-   mapping the pixel array */
-CoglBitmap *
-_cogl_bitmap_new_from_buffer (CoglBuffer      *buffer,
-                              CoglPixelFormat  format,
-                              int              width,
-                              int              height,
-                              int              rowstride,
-                              int              offset);
-
 gboolean
 _cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
 

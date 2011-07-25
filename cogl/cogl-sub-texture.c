@@ -409,12 +409,12 @@ _cogl_sub_texture_set_region (CoglTexture    *tex,
 {
   CoglSubTexture  *sub_tex = COGL_SUB_TEXTURE (tex);
 
-  return _cogl_texture_set_region_from_bitmap (sub_tex->full_texture,
-                                               src_x, src_y,
-                                               dst_x + sub_tex->sub_x,
-                                               dst_y + sub_tex->sub_y,
-                                               dst_width, dst_height,
-                                               bmp);
+  return cogl_texture_set_region_from_bitmap (sub_tex->full_texture,
+                                              src_x, src_y,
+                                              dst_x + sub_tex->sub_x,
+                                              dst_y + sub_tex->sub_y,
+                                              dst_width, dst_height,
+                                              bmp);
 }
 
 static CoglPixelFormat

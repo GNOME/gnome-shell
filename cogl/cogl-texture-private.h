@@ -280,16 +280,6 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
 gboolean
 _cogl_texture_is_foreign (CoglHandle handle);
 
-gboolean
-_cogl_texture_set_region_from_bitmap (CoglHandle    handle,
-                                      int           src_x,
-                                      int           src_y,
-                                      int           dst_x,
-                                      int           dst_y,
-                                      unsigned int  dst_width,
-                                      unsigned int  dst_height,
-                                      CoglBitmap   *bmp);
-
 void
 _cogl_texture_associate_framebuffer (CoglHandle handle,
                                      CoglFramebuffer *framebuffer);

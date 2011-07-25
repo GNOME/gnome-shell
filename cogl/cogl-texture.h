@@ -367,6 +367,41 @@ cogl_texture_set_region (CoglHandle       handle,
                          unsigned int     rowstride,
                          const guint8    *data);
 
+#if defined (COGL_ENABLE_EXPERIMENTAL_API)
+
+#define cogl_texture_set_region_from_bitmap \
+  cogl_texture_set_region_from_bitmap_EXP
+/**
+ * cogl_texture_set_region_from_bitmap:
+ * @handle: a #CoglHandle for a texture
+ * @src_x: upper left coordinate to use from the source bitmap.
+ * @src_y: upper left coordinate to use from the source bitmap
+ * @dst_x: upper left destination horizontal coordinate.
+ * @dst_y: upper left destination vertical coordinate.
+ * @dst_width: width of destination region to write.
+ * @dst_height: height of destination region to write.
+ * @bitmap: The source bitmap to read from
+ *
+ * Copies a specified source region from @bitmap to the position
+ * (@src_x, @src_y) of the given destination texture @handle.
+ *
+ * Return value: %TRUE if the subregion upload was successful, and
+ *   %FALSE otherwise
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+gboolean
+cogl_texture_set_region_from_bitmap (CoglHandle handle,
+                                     int src_x,
+                                     int src_y,
+                                     int dst_x,
+                                     int dst_y,
+                                     unsigned int dst_width,
+                                     unsigned int dst_height,
+                                     CoglBitmap *bitmap);
+#endif
+
 /**
  * cogl_texture_new_from_sub_texture:
  * @full_texture: a #CoglHandle to an existing texture

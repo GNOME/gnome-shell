@@ -327,12 +327,12 @@ cogl_bitmap_new_from_file (const char  *filename,
 }
 
 CoglBitmap *
-_cogl_bitmap_new_from_buffer (CoglBuffer      *buffer,
-                              CoglPixelFormat  format,
-                              int              width,
-                              int              height,
-                              int              rowstride,
-                              int              offset)
+cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
+                             CoglPixelFormat format,
+                             int width,
+                             int height,
+                             int rowstride,
+                             int offset)
 {
   CoglBitmap *bmp;
 
