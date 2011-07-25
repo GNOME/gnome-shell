@@ -68,6 +68,7 @@ struct _ClutterStageOSX
 
   gboolean acceptFocus;
   gboolean isHiding;
+  gboolean haveRealized;
 
   gfloat scroll_pos_x;
   gfloat scroll_pos_y;

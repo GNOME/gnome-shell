@@ -306,7 +306,6 @@ static gboolean
 clutter_stage_osx_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
-  ClutterBackendOSX *backend_osx;
   gfloat width, height;
   NSRect rect;
 
@@ -314,33 +313,39 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
 
   CLUTTER_NOTE (BACKEND, "[%p] realize", self);
 
-  backend_osx = CLUTTER_BACKEND_OSX (self->backend);
+  if (!self->haveRealized)
+    {
+      ClutterBackendOSX *backend_osx;
 
-  /* Call get_size - this will either get the geometry size (which
-   * before we create the window is set to 640x480), or if a size
-   * is set, it will get that. This lets you set a size on the
-   * stage before it's realized.
-   */
-  clutter_actor_get_size (CLUTTER_ACTOR (self->wrapper), &width, &height);
-  self->requisition_width = width; 
-  self->requisition_height = height;
+      backend_osx = CLUTTER_BACKEND_OSX (self->backend);
 
-  rect = NSMakeRect(0, 0, self->requisition_width, self->requisition_height);
+      /* Call get_size - this will either get the geometry size (which
+       * before we create the window is set to 640x480), or if a size
+       * is set, it will get that. This lets you set a size on the
+       * stage before it's realized.
+       */
+      clutter_actor_get_size (CLUTTER_ACTOR (self->wrapper), &width, &height);
+      self->requisition_width = width;
+      self->requisition_height= height;
 
-  self->view = [[ClutterGLView alloc]
-                initWithFrame: rect
-                  pixelFormat: backend_osx->pixel_format
-                        stage: self];
-  [self->view setOpenGLContext: backend_osx->context];
+      rect = NSMakeRect (0, 0, self->requisition_width, self->requisition_height);
 
-  self->window = [[ClutterGLWindow alloc]
-                  initWithView: self->view
-                     UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self->wrapper))
-                         stage: self];
-  /* looks better than positioning to 0,0 (bottom right) */
-  [self->window center];
+      self->view = [[ClutterGLView alloc]
+                    initWithFrame: rect
+                      pixelFormat: backend_osx->pixel_format
+                            stage: self];
+      [self->view setOpenGLContext:backend_osx->context];
 
-  CLUTTER_NOTE (BACKEND, "Stage successfully realized");
+      self->window = [[ClutterGLWindow alloc]
+                      initWithView: self->view
+                         UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self->wrapper))
+                             stage: self];
+      /* looks better than positioning to 0,0 (bottom right) */
+      [self->window center];
+      self->haveRealized = true;
+
+      CLUTTER_NOTE (BACKEND, "Stage successfully realized");
+    }
 
   CLUTTER_OSX_POOL_RELEASE();
 
@@ -364,6 +369,7 @@ clutter_stage_osx_unrealize (ClutterStageWindow *stage_window)
 
   self->view = NULL;
   self->window = NULL;
+  self->haveRealized = false;
 
   CLUTTER_OSX_POOL_RELEASE();
 }
@@ -605,6 +611,10 @@ _clutter_stage_osx_new (ClutterBackend *backend,
   self = g_object_new (CLUTTER_TYPE_STAGE_OSX, NULL);
   self->backend = backend;
   self->wrapper = wrapper;
+  self->isHiding = false;
+  self->haveRealized = false;
+  self->view = NULL;
+  self->window = NULL;
 
   return CLUTTER_STAGE_WINDOW(self);
 }
