@@ -14,7 +14,6 @@ const St = imports.gi.St;
 
 const AutomountManager = imports.ui.automountManager;
 const AutorunManager = imports.ui.autorunManager;
-const Chrome = imports.ui.chrome;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const EndSessionDialog = imports.ui.endSessionDialog;
 const PolkitAuthenticationAgent = imports.ui.polkitAuthenticationAgent;
@@ -137,7 +136,7 @@ function start() {
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();
-    chrome = new Chrome.Chrome();
+    chrome = new Layout.Chrome();
     magnifier = new Magnifier.Magnifier();
     statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     panel = new Panel.Panel();
