@@ -153,8 +153,6 @@ static AtkObject*            cally_actor_ref_child           (AtkObject *obj,
                                                              gint       i);
 static AtkAttributeSet *     cally_actor_get_attributes      (AtkObject *obj);
 
-static gboolean             _cally_actor_all_parents_visible (ClutterActor *actor);
-
 /* ClutterContainer */
 static gint cally_actor_add_actor          (ClutterActor *container,
                                            ClutterActor *actor,
@@ -185,7 +183,6 @@ static void     cally_actor_remove_focus_handler     (AtkComponent *component,
                                                       guint handler_id);
 static void     cally_actor_focus_event              (AtkObject   *obj,
                                                       gboolean    focus_in);
-static gboolean _is_actor_on_screen                 (ClutterActor *actor);
 
 /* AtkAction.h */
 static void                  cally_actor_action_interface_init  (AtkActionIface *iface);
@@ -543,9 +540,11 @@ cally_actor_ref_state_set (AtkObject *obj)
         {
           atk_state_set_add_state (state_set, ATK_STATE_VISIBLE);
 
-          if (_is_actor_on_screen (actor) &&
-              _cally_actor_all_parents_visible (actor))
+          /* It would be good to also check if the actor is on screen,
+             like the old and removed clutter_actor_is_on_stage*/
+          if (clutter_actor_get_paint_visibility (actor))
             atk_state_set_add_state (state_set, ATK_STATE_SHOWING);
+
         }
 
       /* See focus section on implementation notes */
@@ -888,18 +887,6 @@ cally_actor_remove_focus_handler (AtkComponent *component,
   g_signal_handler_disconnect (component, handler_id);
 }
 
-/* This method should check if the actor is currently on screen */
-static gboolean
-_is_actor_on_screen (ClutterActor *actor)
-{
-  /* FIXME: FILL ME!!
-   * You could get some ideas from clutter_actor_is_on_stage, a private clutter
-   * function (note: it doesn't exists in the last versions of clutter)
-   * A occlusion check could be a good idea too
-   */
-
-  return TRUE;
-}
 
 /*
  *
@@ -1137,41 +1124,6 @@ cally_actor_action_get_keybinding (AtkAction *action,
 }
 
 /* Misc functions */
-
-/*
- * Checks if the parent actor, and his parent, etc is all visible
- * Used to check the showing property
- *
- * FIXME: the same functionality is implemented on clutter since version 0.8.4
- * by clutter_actor_get_paint_visibility, so we should change this function
- * if a clutter version update is made
- */
-static gboolean
-_cally_actor_all_parents_visible (ClutterActor *actor)
-{
-  ClutterActor *iter_parent = NULL;
-  gboolean      result      = TRUE;
-  ClutterActor *stage       = NULL;
-
-  stage = clutter_actor_get_stage (actor);
-
-  for (iter_parent = clutter_actor_get_parent(actor); iter_parent;
-       iter_parent = clutter_actor_get_parent(iter_parent))
-    {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (iter_parent))
-        {
-          /* stage parent */
-          if (iter_parent != stage)
-            result = FALSE;
-          else
-            result = TRUE;
-
-          break;
-        }
-    }
-
-  return result;
-}
 
 /*
  * This function is a signal handler for key_focus_in and
