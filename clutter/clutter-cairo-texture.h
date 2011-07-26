@@ -102,32 +102,41 @@ struct _ClutterCairoTextureClass
                                        guint                width,
                                        guint                height);
 
+  gboolean         (* draw)           (ClutterCairoTexture *texture,
+                                       cairo_t             *cr);
+
   /*< private >*/
-  void (*_clutter_cairo_2) (void);
   void (*_clutter_cairo_3) (void);
   void (*_clutter_cairo_4) (void);
 };
 
-GType         clutter_cairo_texture_get_type         (void) G_GNUC_CONST;
-ClutterActor *clutter_cairo_texture_new              (guint                width,
-                                                      guint                height);
-cairo_t *     clutter_cairo_texture_create_region    (ClutterCairoTexture *self,
-                                                      gint                 x_offset,
-                                                      gint                 y_offset,
-                                                      gint                 width,
-                                                      gint                 height);
-cairo_t *     clutter_cairo_texture_create           (ClutterCairoTexture *self);
-void          clutter_cairo_texture_set_surface_size (ClutterCairoTexture *self,
-                                                      guint                width,
-                                                      guint                height);
-void          clutter_cairo_texture_get_surface_size (ClutterCairoTexture *self,
-                                                      guint               *width,
-                                                      guint               *height);
+GType clutter_cairo_texture_get_type (void) G_GNUC_CONST;
 
-void          clutter_cairo_texture_clear            (ClutterCairoTexture *self);
+ClutterActor *  clutter_cairo_texture_new                       (guint                  width,
+                                                                 guint                  height);
 
-void          clutter_cairo_set_source_color         (cairo_t             *cr,
-						      const ClutterColor  *color);
+cairo_t *       clutter_cairo_texture_create_region             (ClutterCairoTexture   *self,
+                                                                 gint                   x_offset,
+                                                                 gint                   y_offset,
+                                                                 gint                   width,
+                                                                 gint                   height);
+cairo_t *       clutter_cairo_texture_create                    (ClutterCairoTexture   *self);
+
+void            clutter_cairo_texture_set_surface_size          (ClutterCairoTexture   *self,
+                                                                 guint                  width,
+                                                                 guint                  height);
+void            clutter_cairo_texture_get_surface_size          (ClutterCairoTexture   *self,
+                                                                 guint                 *width,
+                                                                 guint                 *height);
+
+void            clutter_cairo_texture_clear                     (ClutterCairoTexture   *self);
+
+void            clutter_cairo_texture_invalidate_rectangle      (ClutterCairoTexture   *self,
+                                                                 cairo_rectangle_int_t *rect);
+void            clutter_cairo_texture_invalidate                (ClutterCairoTexture   *self);
+
+void            clutter_cairo_set_source_color                  (cairo_t               *cr,
+						                 const ClutterColor    *color);
 
 G_END_DECLS
 

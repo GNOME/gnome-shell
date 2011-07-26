@@ -9,7 +9,7 @@
  *              Iain Holmes <iain@o-hand.com>
  *              Neil Roberts <neil@linux.intel.com>
  *
- * Copyright (C) 2008, 2009, 2010  Intel Corporation.
+ * Copyright (C) 2008, 2009, 2010, 2011  Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,40 +34,31 @@
  * Cairo image surface which will then be uploaded to a GL texture when
  * needed.
  *
- * #ClutterCairoTexture will provide a #cairo_t context by using the
- * clutter_cairo_texture_create() and clutter_cairo_texture_create_region()
- * functions; you can use the Cairo API to draw on the context and then
- * call cairo_destroy() when done.
- *
- * As soon as the context is destroyed with cairo_destroy(), the contents
- * of the surface will be uploaded into the #ClutterCairoTexture actor:
- *
- * |[
- *   cairo_t *cr;
- *
- *   cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (texture));
- *
- *   /&ast; draw on the context &ast;/
- *
- *   cairo_destroy (cr);
- * ]|
- *
- * Although a new #cairo_t is created each time you call
- * clutter_cairo_texture_create() or
- * clutter_cairo_texture_create_region(), it uses the same
- * #cairo_surface_t each time. You can call
- * clutter_cairo_texture_clear() to erase the contents between calls.
- *
- * <warning><para>Note that you should never use the code above inside the
- * #ClutterActor::paint or #ClutterActor::pick virtual functions or
- * signal handlers because it will lead to performance
- * degradation.</para></warning>
- *
  * <note><para>Since #ClutterCairoTexture uses a Cairo image surface
  * internally all the drawing operations will be performed in
  * software and not using hardware acceleration. This can lead to
  * performance degradation if the contents of the texture change
  * frequently.</para></note>
+ *
+ * In order to use a #ClutterCairoTexture you should connect to the
+ * #ClutterCairoTexture::draw signal; the signal is emitted each time
+ * the #ClutterCairoTexture has been told to invalidate its contents,
+ * by using clutter_cairo_texture_invalidate_rectangle() or its
+ * sister function, clutter_cairo_texture_invalidate().
+ *
+ * Each callback to the #ClutterCairoTexture::draw signal will receive
+ * a #cairo_t context which can be used for drawing; the Cairo context
+ * is owned by the #ClutterCairoTexture and should not be destroyed
+ * explicitly.
+ *
+ * <example id="cairo-texture-example">
+ *   <title>A simple ClutterCairoTexture canvas</title>
+ *   <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-cairo-clock.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *   </programlisting>
+ * </example>
  *
  * #ClutterCairoTexture is available since Clutter 1.0.
  */
@@ -104,6 +95,7 @@ enum
 enum
 {
   CREATE_SURFACE,
+  DRAW,
 
   LAST_SIGNAL
 };
@@ -128,19 +120,45 @@ static guint cairo_signals[LAST_SIGNAL] = { 0, };
 struct _ClutterCairoTexturePrivate
 {
   cairo_surface_t *cr_surface;
-  gint surface_width;
-  gint surface_height;
 
-  guint width;
-  guint height;
+  guint surface_width;
+  guint surface_height;
+
+  cairo_t *cr_context;
 };
 
 typedef struct {
-  ClutterCairoTexture *cairo;
+  ClutterCairoTexture *texture;
+
   cairo_rectangle_int_t rect;
-} ClutterCairoTextureContext;
+
+  guint is_clipped : 1;
+} DrawContext;
 
 static const cairo_user_data_key_t clutter_cairo_texture_context_key;
+
+static DrawContext *
+draw_context_create (ClutterCairoTexture *texture)
+{
+  DrawContext *context = g_slice_new0 (DrawContext);
+
+  context->texture = g_object_ref (texture);
+
+  return context;
+}
+
+static void
+draw_context_destroy (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    {
+      DrawContext *context = data;
+
+      g_object_unref (context->texture);
+
+      g_slice_free (DrawContext, data);
+    }
+}
 
 static void
 clutter_cairo_texture_set_property (GObject      *object,
@@ -155,11 +173,11 @@ clutter_cairo_texture_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_SURFACE_WIDTH:
-      priv->width = g_value_get_uint (value);
+      priv->surface_width = g_value_get_uint (value);
       break;
 
     case PROP_SURFACE_HEIGHT:
-      priv->height = g_value_get_uint (value);
+      priv->surface_height = g_value_get_uint (value);
       break;
 
     default:
@@ -181,11 +199,11 @@ clutter_cairo_texture_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_SURFACE_WIDTH:
-      g_value_set_uint (value, priv->width);
+      g_value_set_uint (value, priv->surface_width);
       break;
 
     case PROP_SURFACE_HEIGHT:
-      g_value_set_uint (value, priv->height);
+      g_value_set_uint (value, priv->surface_height);
       break;
 
     default:
@@ -220,12 +238,108 @@ get_surface (ClutterCairoTexture *self)
   if (priv->cr_surface == NULL)
     {
       g_signal_emit (self, cairo_signals[CREATE_SURFACE], 0,
-                     priv->width,
-                     priv->height,
+                     priv->surface_width,
+                     priv->surface_height,
                      &priv->cr_surface);
     }
 
   return priv->cr_surface;
+}
+
+static void
+clutter_cairo_texture_context_destroy (void *data)
+{
+  DrawContext *ctxt = data;
+  ClutterCairoTexture *cairo = ctxt->texture;
+  ClutterCairoTexturePrivate *priv = cairo->priv;
+  guint8 *cairo_data;
+  gint cairo_width, cairo_height, cairo_stride;
+  gint surface_width, surface_height;
+  CoglHandle cogl_texture;
+
+  if (priv->cr_surface == NULL)
+    {
+      /* the surface went away before we could use it */
+      draw_context_destroy (ctxt);
+      return;
+    }
+
+  /* for any other surface type, we presume that there exists a native
+   * communication between Cairo and GL that is triggered by cairo_destroy().
+   *
+   * for instance, cairo-drm will flush the outstanding modifications to the
+   * surface upon context destruction and so the texture is automatically
+   * updated.
+   */
+  if (cairo_surface_get_type (priv->cr_surface) != CAIRO_SURFACE_TYPE_IMAGE)
+    goto out;
+
+  surface_width  = cairo_image_surface_get_width (priv->cr_surface);
+  surface_height = cairo_image_surface_get_height (priv->cr_surface);
+
+  cairo_width  = MIN (ctxt->rect.width, surface_width);
+  cairo_height = MIN (ctxt->rect.height, surface_height);
+
+  cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (cairo));
+  if (cairo_width == 0 ||
+      cairo_height == 0 ||
+      cogl_texture == COGL_INVALID_HANDLE)
+    {
+      draw_context_destroy (ctxt);
+      return;
+    }
+
+  cairo_stride = cairo_image_surface_get_stride (priv->cr_surface);
+  cairo_data = cairo_image_surface_get_data (priv->cr_surface);
+  cairo_data += cairo_stride * ctxt->rect.y;
+  cairo_data += 4 * ctxt->rect.x;
+
+  cogl_texture_set_region (cogl_texture,
+                           0, 0,
+                           ctxt->rect.x, ctxt->rect.y,
+                           cairo_width, cairo_height,
+                           cairo_width, cairo_height,
+                           CLUTTER_CAIRO_FORMAT_ARGB32,
+                           cairo_stride,
+                           cairo_data);
+
+out:
+  draw_context_destroy (ctxt);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (cairo));
+}
+
+static inline void
+clutter_cairo_texture_emit_draw (ClutterCairoTexture        *self,
+                                 DrawContext *ctxt)
+{
+  gboolean result;
+  cairo_t *cr;
+
+  g_assert (self->priv->cr_surface != NULL);
+
+  cr = cairo_create (self->priv->cr_surface);
+  cairo_set_user_data (cr, &clutter_cairo_texture_context_key,
+                       ctxt,
+                       clutter_cairo_texture_context_destroy);
+
+  if (ctxt->is_clipped)
+    {
+      cairo_rectangle (cr,
+                       ctxt->rect.x,
+                       ctxt->rect.y,
+                       ctxt->rect.width,
+                       ctxt->rect.height);
+      cairo_clip (cr);
+    }
+
+  /* store the cairo_t as a guard */
+  self->priv->cr_context = cr;
+
+  g_signal_emit (self, cairo_signals[DRAW], 0, cr, &result);
+
+  self->priv->cr_context = NULL;
+
+  cairo_destroy (cr);
 }
 
 static inline void
@@ -245,8 +359,8 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
           gint surface_width = cairo_image_surface_get_width (surface);
           gint surface_height = cairo_image_surface_get_height (surface);
 
-          if (priv->width == surface_width &&
-              priv->height == surface_height)
+          if (priv->surface_width == surface_width &&
+              priv->surface_height == surface_height)
             return;
         }
 
@@ -255,12 +369,13 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
       priv->cr_surface = NULL;
     }
 
-  if (priv->width == 0 || priv->height == 0)
+  if (priv->surface_width == 0 ||
+      priv->surface_height == 0)
     return;
 
   g_signal_emit (cairo, cairo_signals[CREATE_SURFACE], 0,
-                 priv->width,
-                 priv->height,
+                 priv->surface_width,
+                 priv->surface_height,
                  &priv->cr_surface);
 }
 
@@ -273,8 +388,9 @@ clutter_cairo_texture_notify (GObject    *object,
      that if both the width and height properties are set using a
      single call to g_object_set then the surface will only be resized
      once because the notifications will be frozen in between */
-  if (strcmp ("surface-width", pspec->name) == 0 ||
-      strcmp ("surface-height", pspec->name) == 0)
+
+  if (obj_props[PROP_SURFACE_WIDTH]->name == pspec->name ||
+      obj_props[PROP_SURFACE_HEIGHT]->name == pspec->name)
     {
       ClutterCairoTexture *cairo = CLUTTER_CAIRO_TEXTURE (object);
 
@@ -297,7 +413,7 @@ clutter_cairo_texture_get_preferred_width (ClutterActor *actor,
     *min_width = 0;
 
   if (natural_width)
-    *natural_width = (gfloat) priv->width;
+    *natural_width = (gfloat) priv->surface_width;
 }
 
 static void
@@ -312,7 +428,7 @@ clutter_cairo_texture_get_preferred_height (ClutterActor *actor,
     *min_height = 0;
 
   if (natural_height)
-    *natural_height = (gfloat) priv->height;
+    *natural_height = (gfloat) priv->surface_height;
 }
 
 static gboolean
@@ -341,9 +457,6 @@ clutter_cairo_texture_create_surface (ClutterCairoTexture *self,
   cairo_stride = cairo_image_surface_get_stride (surface);
   cairo_data = cairo_image_surface_get_data (surface);
 
-  self->priv->surface_width = width;
-  self->priv->surface_height = height;
-
   /* create a backing Cogl texture */
   cogl_texture = cogl_texture_new_from_data (width, height,
                                              COGL_TEXTURE_NONE,
@@ -367,6 +480,28 @@ create_surface_accum (GSignalInvocationHint *ihint,
 
   /* stop on the first non-NULL return value */
   return g_value_get_boxed (handler_return) == NULL;
+}
+
+static void
+clutter_cairo_texture_draw_marshaller (GClosure     *closure,
+                                       GValue       *return_value,
+                                       guint         n_param_values,
+                                       const GValue *param_values,
+                                       gpointer      invocation_hint,
+                                       gpointer      marshal_data)
+{
+  cairo_t *cr = g_value_get_boxed (&param_values[1]);
+
+  cairo_save (cr);
+
+  _clutter_marshal_BOOLEAN__BOXED (closure,
+                                   return_value,
+                                   n_param_values,
+                                   param_values,
+                                   invocation_hint,
+                                   marshal_data);
+
+  cairo_restore (cr);
 }
 
 static void
@@ -449,13 +584,44 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
   cairo_signals[CREATE_SURFACE] =
     g_signal_new (I_("create-surface"),
                   G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE,
                   G_STRUCT_OFFSET (ClutterCairoTextureClass, create_surface),
                   create_surface_accum, NULL,
                   _clutter_marshal_BOXED__UINT_UINT,
                   CAIRO_GOBJECT_TYPE_SURFACE, 2,
                   G_TYPE_UINT,
                   G_TYPE_UINT);
+
+  /**
+   * ClutterCairoTexture::draw:
+   * @self: the #ClutterCairoTexture that emitted the signal
+   * @cr: the Cairo context to use to draw
+   *
+   * The ::draw signal is emitted each time a #ClutterCairoTexture has
+   * been invalidated.
+   *
+   * The passed Cairo context passed will be clipped to the invalidated
+   * area.
+   *
+   * It is safe to connect multiple callbacks to this signals; the state
+   * of the Cairo context passed to each callback is automatically saved
+   * and restored, so it's not necessary to call cairo_save() and
+   * cairo_restore().
+   *
+   * Return value: %TRUE if the signal emission should stop, and %FALSE
+   *   to continue
+   *
+   * Since: 1.8
+   */
+  cairo_signals[DRAW] =
+    g_signal_new (I_("draw"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE,
+                  G_STRUCT_OFFSET (ClutterCairoTextureClass, draw),
+                  _clutter_boolean_handled_accumulator, NULL,
+                  clutter_cairo_texture_draw_marshaller,
+                  G_TYPE_BOOLEAN, 1,
+                  CAIRO_GOBJECT_TYPE_CONTEXT);
 }
 
 static void
@@ -502,62 +668,6 @@ clutter_cairo_texture_new (guint width,
                        "surface-width", width,
                        "surface-height", height,
                        NULL);
-}
-
-static void
-clutter_cairo_texture_context_destroy (void *data)
-{
-  ClutterCairoTextureContext *ctxt = data;
-  ClutterCairoTexture *cairo = ctxt->cairo;
-  ClutterCairoTexturePrivate *priv = cairo->priv;
-  guint8 *cairo_data;
-  gint cairo_width, cairo_height, cairo_stride;
-  gint surface_width, surface_height;
-  CoglHandle cogl_texture;
-
-  if (priv->cr_surface == NULL)
-    return;
-
-  /* for any other surface type, we presume that there exists a native
-   * communication between Cairo and GL that is triggered by cairo_destroy().
-   *
-   * for instance, cairo-drm will flush the outstanding modifications to the
-   * surface upon context destruction and so the texture is automatically
-   * updated.
-   */
-  if (cairo_surface_get_type (priv->cr_surface) != CAIRO_SURFACE_TYPE_IMAGE)
-    goto out;
-
-  surface_width  = cairo_image_surface_get_width (priv->cr_surface);
-  surface_height = cairo_image_surface_get_height (priv->cr_surface);
-
-  cairo_width  = MIN (ctxt->rect.width, surface_width);
-  cairo_height = MIN (ctxt->rect.height, surface_height);
-
-  cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (cairo));
-  if (!cairo_width || !cairo_height || cogl_texture == COGL_INVALID_HANDLE)
-    {
-      g_slice_free (ClutterCairoTextureContext, ctxt);
-      return;
-    }
-
-  cairo_stride = cairo_image_surface_get_stride (priv->cr_surface);
-  cairo_data = cairo_image_surface_get_data (priv->cr_surface);
-  cairo_data += cairo_stride * ctxt->rect.y;
-  cairo_data += 4 * ctxt->rect.x;
-
-  cogl_texture_set_region (cogl_texture,
-                           0, 0,
-                           ctxt->rect.x, ctxt->rect.y,
-                           cairo_width, cairo_height,
-                           cairo_width, cairo_height,
-                           CLUTTER_CAIRO_FORMAT_ARGB32,
-                           cairo_stride,
-                           cairo_data);
-
-out:
-  g_slice_free (ClutterCairoTextureContext, ctxt);
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (cairo));
 }
 
 static void
@@ -617,7 +727,7 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
                                      gint                 height)
 {
   ClutterCairoTexturePrivate *priv;
-  ClutterCairoTextureContext *ctxt;
+  DrawContext *ctxt;
   cairo_rectangle_int_t region, area, inter;
   cairo_surface_t *surface;
   cairo_t *cr;
@@ -629,10 +739,10 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
   priv = self->priv;
 
   if (width < 0)
-    width = priv->width;
+    width = priv->surface_width;
 
   if (height < 0)
-    height = priv->height;
+    height = priv->surface_height;
 
   if (width == 0 || height == 0)
     {
@@ -645,8 +755,7 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
 
   surface = get_surface (self);
 
-  ctxt = g_slice_new0 (ClutterCairoTextureContext);
-  ctxt->cairo = self;
+  ctxt = draw_context_create (self);
 
   region.x = x_offset;
   region.y = y_offset;
@@ -655,8 +764,8 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
 
   area.x = 0;
   area.y = 0;
-  area.width = priv->width;
-  area.height = priv->height;
+  area.width = priv->surface_width;
+  area.height = priv->surface_height;
 
   /* Limit the region to the visible rectangle */
   intersect_rectangles (&area, &region, &inter);
@@ -669,6 +778,88 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
                        clutter_cairo_texture_context_destroy);
 
   return cr;
+}
+
+/**
+ * clutter_cairo_texture_invalidate_rectangle:
+ * @self: a #ClutterCairoTexture
+ * @rect: (allow-none): a rectangle with the area to invalida,
+ *   or %NULL to perform an unbounded invalidation
+ *
+ * Invalidates a rectangular region of a #ClutterCairoTexture.
+ *
+ * The invalidation will cause the #ClutterCairoTexture::draw signal
+ * to be emitted.
+ *
+ * See also: clutter_cairo_texture_invalidate()
+ *
+ * Since: 1.8
+ */
+void
+clutter_cairo_texture_invalidate_rectangle (ClutterCairoTexture   *self,
+                                            cairo_rectangle_int_t *rect)
+{
+  DrawContext *ctxt = NULL;
+
+  g_return_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self));
+
+  if (self->priv->cr_context != NULL)
+    {
+      g_warning ("It is not possible to invalidate a Cairo texture"
+                 "while drawing into it.");
+      return;
+    }
+
+  ctxt = draw_context_create (self);
+
+  if (rect != NULL)
+    {
+      cairo_rectangle_int_t area, inter;
+
+      area.x = 0;
+      area.y = 0;
+      area.width = self->priv->surface_width;
+      area.height = self->priv->surface_height;
+
+      /* Limit the region to the visible rectangle */
+      intersect_rectangles (&area, rect, &inter);
+
+      ctxt->is_clipped = TRUE;
+      ctxt->rect = inter;
+    }
+  else
+    {
+      ctxt->is_clipped = FALSE;
+      ctxt->rect.x = ctxt->rect.y = 0;
+      ctxt->rect.width = self->priv->surface_width;
+      ctxt->rect.height = self->priv->surface_height;
+    }
+
+  /* XXX - it might be good to move the emission inside the paint cycle
+   * using a repaint function, to avoid blocking inside this function
+   */
+  clutter_cairo_texture_emit_draw (self, ctxt);
+}
+
+/**
+ * clutter_cairo_texture_invalidate:
+ * @self: a #ClutterCairoTexture
+ *
+ * Invalidates the whole surface of a #ClutterCairoTexture.
+ *
+ * This function will cause the #ClutterCairoTexture::draw signal
+ * to be emitted.
+ *
+ * See also: clutter_cairo_texture_invalidate_rectangle()
+ *
+ * Since: 1.8
+ */
+void
+clutter_cairo_texture_invalidate (ClutterCairoTexture *self)
+{
+  g_return_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self));
+
+  clutter_cairo_texture_invalidate_rectangle (self, NULL);
 }
 
 /**
@@ -705,7 +896,15 @@ clutter_cairo_texture_create (ClutterCairoTexture *self)
  * @color: a #ClutterColor
  *
  * Utility function for setting the source color of @cr using
- * a #ClutterColor.
+ * a #ClutterColor. This function is the equivalent of:
+ *
+ * |[
+ *   cairo_set_source_rgba (cr,
+ *                          color->red / 255.0,
+ *                          color->green / 255.0,
+ *                          color->blue / 255.0,
+ *                          color->alpha / 255.0);
+ * ]|
  *
  * Since: 1.0
  */
@@ -737,6 +936,11 @@ clutter_cairo_set_source_color (cairo_t            *cr,
  *
  * Resizes the Cairo surface used by @self to @width and @height.
  *
+ * This function will not invalidate the contents of the Cairo
+ * texture: you will have to explicitly call either
+ * clutter_cairo_texture_invalidate_rectangle() or
+ * clutter_cairo_texture_invalidate().
+ *
  * Since: 1.0
  */
 void
@@ -750,20 +954,21 @@ clutter_cairo_texture_set_surface_size (ClutterCairoTexture *self,
 
   priv = self->priv;
 
-  if (width == priv->width && height == priv->height)
+  if (width == priv->surface_width &&
+      height == priv->surface_height)
     return;
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (priv->width != width)
+  if (priv->surface_width != width)
     {
-      priv->width = width;
+      priv->surface_width = width;
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_WIDTH]);
     }
 
-  if (priv->height != height)
+  if (priv->surface_height != height)
     {
-      priv->height = height;
+      priv->surface_height = height;
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SURFACE_HEIGHT]);
     }
 
@@ -790,10 +995,10 @@ clutter_cairo_texture_get_surface_size (ClutterCairoTexture *self,
   g_return_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self));
 
   if (width)
-    *width = self->priv->width;
+    *width = self->priv->surface_width;
 
   if (height)
-    *height = self->priv->height;
+    *height = self->priv->surface_height;
 }
 
 /**
@@ -804,20 +1009,44 @@ clutter_cairo_texture_get_surface_size (ClutterCairoTexture *self,
  * will replace the previous contents of the #ClutterCairoTexture
  * rather than adding to it.
  *
+ * Calling this function from within a #ClutterCairoTexture::draw
+ * signal handler will clear the invalidated area.
+ *
  * Since: 1.0
  */
 void
 clutter_cairo_texture_clear (ClutterCairoTexture *self)
 {
-  cairo_surface_t *surface;
+  ClutterCairoTexturePrivate *priv;
   cairo_t *cr;
 
   g_return_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self));
 
-  surface = get_surface (self);
+  priv = self->priv;
 
-  cr = cairo_create (surface);
+  /* if we got called outside of a ::draw signal handler
+   * then we clear the whole surface by creating a temporary
+   * cairo_t; otherwise, we clear the current cairo_t, which
+   * will take into account the clip region.
+   */
+  if (priv->cr_context == NULL)
+    {
+      cairo_surface_t *surface;
+
+      surface = get_surface (self);
+
+      cr = cairo_create (surface);
+    }
+  else
+    cr = priv->cr_context;
+
+  cairo_save (cr);
+
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr);
-  cairo_destroy (cr);
+
+  cairo_restore (cr);
+
+  if (priv->cr_context == NULL)
+    cairo_destroy (cr);
 }
