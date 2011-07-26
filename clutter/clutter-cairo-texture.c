@@ -67,7 +67,7 @@
 #include "config.h"
 #endif
 
-#include <string.h>
+#include <math.h>
 
 #include <cairo-gobject.h>
 
@@ -88,6 +88,7 @@ enum
 
   PROP_SURFACE_WIDTH,
   PROP_SURFACE_HEIGHT,
+  PROP_AUTO_RESIZE,
 
   PROP_LAST
 };
@@ -125,6 +126,8 @@ struct _ClutterCairoTexturePrivate
   guint surface_height;
 
   cairo_t *cr_context;
+
+  guint auto_resize : 1;
 };
 
 typedef struct {
@@ -173,11 +176,19 @@ clutter_cairo_texture_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_SURFACE_WIDTH:
+      /* we perform the resize on notify to coalesce separate
+       * surface-width/surface-height property set
+       */
       priv->surface_width = g_value_get_uint (value);
       break;
 
     case PROP_SURFACE_HEIGHT:
       priv->surface_height = g_value_get_uint (value);
+      break;
+
+    case PROP_AUTO_RESIZE:
+      clutter_cairo_texture_set_auto_resize (CLUTTER_CAIRO_TEXTURE (object),
+                                             g_value_get_boolean (value));
       break;
 
     default:
@@ -204,6 +215,10 @@ clutter_cairo_texture_get_property (GObject    *object,
 
     case PROP_SURFACE_HEIGHT:
       g_value_set_uint (value, priv->surface_height);
+      break;
+
+    case PROP_AUTO_RESIZE:
+      g_value_set_boolean (value, priv->auto_resize);
       break;
 
     default:
@@ -431,6 +446,32 @@ clutter_cairo_texture_get_preferred_height (ClutterActor *actor,
     *natural_height = (gfloat) priv->surface_height;
 }
 
+static void
+clutter_cairo_texture_allocate (ClutterActor           *self,
+                                const ClutterActorBox  *allocation,
+                                ClutterAllocationFlags  flags)
+{
+  ClutterCairoTexturePrivate *priv = CLUTTER_CAIRO_TEXTURE (self)->priv;
+  ClutterActorClass *parent_class;
+
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_cairo_texture_parent_class);
+  parent_class->allocate (self, allocation, flags);
+
+  if (priv->auto_resize)
+    {
+      ClutterCairoTexture *texture = CLUTTER_CAIRO_TEXTURE (self);
+      gfloat width, height;
+
+      clutter_actor_box_get_size (allocation, &width, &height);
+
+      priv->surface_width = ceilf (width + 0.5);
+      priv->surface_height = ceilf (height + 0.5);
+
+      clutter_cairo_texture_surface_resize_internal (texture);
+      clutter_cairo_texture_invalidate (texture);
+    }
+}
+
 static gboolean
 clutter_cairo_texture_get_paint_volume (ClutterActor       *self,
                                         ClutterPaintVolume *volume)
@@ -521,6 +562,8 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
     clutter_cairo_texture_get_preferred_width;
   actor_class->get_preferred_height =
     clutter_cairo_texture_get_preferred_height;
+  actor_class->allocate =
+    clutter_cairo_texture_allocate;
 
   klass->create_surface = clutter_cairo_texture_create_surface;
 
@@ -557,9 +600,24 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                        0,
                        CLUTTER_PARAM_READWRITE);
 
-  g_object_class_install_properties (gobject_class,
-                                     PROP_LAST,
-                                     obj_props);
+  /**
+   * ClutterCairoTexture:auto-resize:
+   *
+   * Controls whether the #ClutterCairoTexture should automatically
+   * resize the Cairo surface whenever the actor's allocation changes.
+   * If :auto-resize is set to %TRUE the surface contents will also
+   * be invalidated automatically.
+   *
+   * Since: 1.8
+   */
+  obj_props[PROP_AUTO_RESIZE] =
+    g_param_spec_boolean ("auto-resize",
+                          P_("Auto Resize"),
+                          P_("Whether the surface should match the allocation"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
+
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 
   /**
    * ClutterCairoTexture::create-surface:
@@ -1057,4 +1115,58 @@ clutter_cairo_texture_clear (ClutterCairoTexture *self)
 
   if (priv->cr_context == NULL)
     cairo_destroy (cr);
+}
+
+/**
+ * clutter_cairo_texture_set_auto_resize:
+ * @self: a #ClutterCairoTexture
+ * @value: %TRUE if the #ClutterCairoTexture should bind the surface
+ *   size to the allocation
+ *
+ * Sets whether the #ClutterCairoTexture should ensure that the
+ * backing Cairo surface used matches the allocation assigned to
+ * the actor. If the allocation changes, the contents of the
+ * #ClutterCairoTexture will also be invalidated automatically.
+ *
+ * Since: 1.8
+ */
+void
+clutter_cairo_texture_set_auto_resize (ClutterCairoTexture *self,
+                                       gboolean             value)
+{
+  ClutterCairoTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self));
+
+  value = !!value;
+
+  priv = self->priv;
+
+  if (priv->auto_resize == value)
+    return;
+
+  priv->auto_resize = value;
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_AUTO_RESIZE]);
+}
+
+/**
+ * clutter_cairo_texture_get_auto_resize:
+ * @self: a #ClutterCairoTexture
+ *
+ * Retrieves the value set using clutter_cairo_texture_set_auto_resize().
+ *
+ * Return value: %TRUE if the #ClutterCairoTexture should track the
+ *   allocation, and %FALSE otherwise
+ *
+ * Since: 1.8
+ */
+gboolean
+clutter_cairo_texture_get_auto_resize (ClutterCairoTexture *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), FALSE);
+
+  return self->priv->auto_resize;
 }

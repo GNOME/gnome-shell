@@ -131,6 +131,9 @@ void            clutter_cairo_texture_set_surface_size          (ClutterCairoTex
 void            clutter_cairo_texture_get_surface_size          (ClutterCairoTexture   *self,
                                                                  guint                 *width,
                                                                  guint                 *height);
+void            clutter_cairo_texture_set_auto_resize           (ClutterCairoTexture   *self,
+                                                                 gboolean               value);
+gboolean        clutter_cairo_texture_get_auto_resize           (ClutterCairoTexture   *self);
 
 void            clutter_cairo_texture_clear                     (ClutterCairoTexture   *self);
 

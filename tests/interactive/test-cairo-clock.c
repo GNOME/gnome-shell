@@ -78,16 +78,23 @@ test_cairo_clock_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return EXIT_FAILURE;
 
-  /* create a fixed size stage */
+  /* create a resizable stage */
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "2D Clock");
   clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
+  clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_size (stage, 300, 300);
   clutter_actor_show (stage);
 
   /* our 2D canvas, courtesy of Cairo */
   canvas = clutter_cairo_texture_new (300, 300);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), canvas);
+
+  /* bind the size of the canvas to that of the stage */
+  clutter_actor_add_constraint (canvas, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0));
+
+  /* make sure to match allocation to canvas size */
+  clutter_cairo_texture_set_auto_resize (CLUTTER_CAIRO_TEXTURE (canvas), TRUE);
 
   /* quit on destroy */
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
