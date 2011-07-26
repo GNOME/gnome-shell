@@ -845,6 +845,40 @@ try_create_context (CoglDisplay *display,
                      EGL_HEIGHT,
                      &egl_display->egl_surface_height);
   }
+
+#elif defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
+
+  egl_display->egl_surface =
+    eglCreateWindowSurface (edpy,
+                            config,
+                            (NativeWindowType) display->gdl_plane,
+                            NULL);
+
+  if (egl_display->egl_surface == EGL_NO_SURFACE)
+    {
+      error_message = "Unable to create EGL window surface";
+      goto fail;
+    }
+
+  if (!eglMakeCurrent (egl_renderer->edpy,
+                       egl_display->egl_surface,
+                       egl_display->egl_surface,
+                       egl_display->egl_context))
+    {
+      error_message = "Unable to eglMakeCurrent with egl surface";
+      goto fail;
+    }
+
+  eglQuerySurface (egl_renderer->edpy,
+                   egl_display->egl_surface,
+                   EGL_WIDTH,
+                   &egl_display->egl_surface_width);
+
+  eglQuerySurface (egl_renderer->edpy,
+                   egl_display->egl_surface,
+                   EGL_HEIGHT,
+                   &egl_display->egl_surface_height);
+
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
 
   egl_display->egl_surface =
@@ -1007,6 +1041,7 @@ gdl_plane_init (CoglDisplay *display, GError **error)
 {
   gboolean ret = TRUE;
   gdl_color_space_t colorSpace = GDL_COLOR_SPACE_RGB;
+  gdl_pixel_format_t pixfmt = GDL_PF_ARGB_32;
   gdl_rectangle_t dstRect;
   gdl_display_info_t display_info;
   gdl_ret_t rc = GDL_SUCCESS;
@@ -1043,9 +1078,9 @@ gdl_plane_init (CoglDisplay *display, GError **error)
   dstRect.height = display_info.tvmode.height;
 
   /* Configure the plane attribute. */
-  rc = gdl_plane_reset (plane);
+  rc = gdl_plane_reset (display->gdl_plane);
   if (rc == GDL_SUCCESS)
-    rc = gdl_plane_config_begin (plane);
+    rc = gdl_plane_config_begin (display->gdl_plane);
 
   if (rc == GDL_SUCCESS)
     rc = gdl_plane_set_attr (GDL_PLANE_SRC_COLOR_SPACE, &colorSpace);
@@ -1073,6 +1108,8 @@ gdl_plane_init (CoglDisplay *display, GError **error)
     }
 
   gdl_close ();
+
+  return TRUE;
 }
 #endif
 
@@ -1326,7 +1363,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   wl_surface_map_toplevel (egl_onscreen->wayland_surface);
 
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
+      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
+      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
   if (egl_display->have_onscreen)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -1437,7 +1475,8 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
                       egl_display->egl_context);
       egl_context->current_surface = egl_display->dummy_surface;
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
+      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
+      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
       return;
 #else
 #error "Unknown EGL platform"
