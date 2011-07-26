@@ -359,6 +359,8 @@ clutter_bin_layout_get_preferred_width (ClutterLayoutManager *manager,
 
   if (nat_width_p)
     *nat_width_p = nat_width;
+
+  g_list_free (children);
 }
 
 static void
@@ -392,6 +394,8 @@ clutter_bin_layout_get_preferred_height (ClutterLayoutManager *manager,
 
   if (nat_height_p)
     *nat_height_p = nat_height;
+
+  g_list_free (children);
 }
 
 static gdouble
