@@ -594,7 +594,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
 
   /**
    * ClutterCairoTexture::draw:
-   * @self: the #ClutterCairoTexture that emitted the signal
+   * @texture: the #ClutterCairoTexture that emitted the signal
    * @cr: the Cairo context to use to draw
    *
    * The ::draw signal is emitted each time a #ClutterCairoTexture has

@@ -847,7 +847,7 @@ get_property_from_object (GObject     *gobject,
  * @first_object: a #GObject
  * @first_property_name: a property of @first_object to specify a key for
  * @first_mode: the id of the alpha function to use
- * @Varargs: the value @first_property_name should have in @target_state_name,
+ * @...: the value @first_property_name should have in @target_state_name,
  *   followed by object, property name, mode, value tuples, terminated
  *   by %NULL
  *

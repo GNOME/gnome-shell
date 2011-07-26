@@ -1161,7 +1161,7 @@ clutter_animator_get_duration  (ClutterAnimator *animator)
  * @first_mode: the id of the alpha function to use
  * @first_progress: at which stage of the animation this value applies; the
  *   range is a normalized floating point value between 0 and 1
- * @Varargs: the value first_property_name should have for first_object
+ * @...: the value first_property_name should have for first_object
  *   at first_progress, followed by more (object, property_name, mode,
  *   progress, value) tuples, followed by %NULL
  *

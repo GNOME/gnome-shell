@@ -2007,7 +2007,7 @@ animation_create_for_actor (ClutterActor *actor)
  * @actor: a #ClutterActor
  * @alpha: a #ClutterAlpha
  * @first_property_name: the name of a property
- * @Varargs: a %NULL terminated list of property names and
+ * @...: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current
@@ -2064,7 +2064,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  * @mode: an animation mode logical id
  * @timeline: a #ClutterTimeline
  * @first_property_name: the name of a property
- * @Varargs: a %NULL terminated list of property names and
+ * @...: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current
@@ -2115,7 +2115,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * @mode: an animation mode logical id
  * @duration: duration of the animation, in milliseconds
  * @first_property_name: the name of a property
- * @Varargs: a %NULL terminated list of property names and
+ * @...: a %NULL terminated list of property names and
  *   property values
  *
  * Animates the given list of properties of @actor between the current

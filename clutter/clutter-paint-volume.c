@@ -290,16 +290,15 @@ clutter_paint_volume_set_width (ClutterPaintVolume *pv,
  * around the volume. It returns the size of that bounding box as
  * measured along the x-axis.
  *
- * <note>If, for example, clutter_actor_get_transformed_paint_volume()
+ * <note><para>If, for example, clutter_actor_get_transformed_paint_volume()
  * is used to transform a 2D child actor that is 100px wide, 100px
  * high and 0px deep into container coordinates then the width might
  * not simply be 100px if the child actor has a 3D rotation applied to
- * it.
- *
- * Remember; after clutter_actor_get_transformed_paint_volume() is
+ * it.</para>
+ * <para>Remember; after clutter_actor_get_transformed_paint_volume() is
  * used then a transformed child volume will be defined relative to the
  * ancestor container actor and so a 2D child actor
- * can have a 3D bounding volume.</note>
+ * can have a 3D bounding volume.</para></note>
  *
  * <note>There are no accuracy guarantees for the reported width,
  * except that it must always be >= to the true width. This is
@@ -382,16 +381,15 @@ clutter_paint_volume_set_height (ClutterPaintVolume *pv,
  * around the volume. It returns the size of that bounding box as
  * measured along the y-axis.
  *
- * <note>If, for example, clutter_actor_get_transformed_paint_volume()
+ * <note><para>If, for example, clutter_actor_get_transformed_paint_volume()
  * is used to transform a 2D child actor that is 100px wide, 100px
  * high and 0px deep into container coordinates then the height might
  * not simply be 100px if the child actor has a 3D rotation applied to
- * it.
- *
- * Remember; after clutter_actor_get_transformed_paint_volume() is
+ * it.</para>
+ * <para>Remember; after clutter_actor_get_transformed_paint_volume() is
  * used then a transformed child volume will be defined relative to the
  * ancestor container actor and so a 2D child actor
- * can have a 3D bounding volume.</note>
+ * can have a 3D bounding volume.</para></note>
  *
  * <note>There are no accuracy guarantees for the reported height,
  * except that it must always be >= to the true height. This is
@@ -475,16 +473,15 @@ clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
  * around the volume. It returns the size of that bounding box as
  * measured along the z-axis.
  *
- * <note>If, for example, clutter_actor_get_transformed_paint_volume()
+ * <note><para>If, for example, clutter_actor_get_transformed_paint_volume()
  * is used to transform a 2D child actor that is 100px wide, 100px
  * high and 0px deep into container coordinates then the depth might
  * not simply be 0px if the child actor has a 3D rotation applied to
- * it.
- *
- * Remember; after clutter_actor_get_transformed_paint_volume() is
+ * it.</para>
+ * <para>Remember; after clutter_actor_get_transformed_paint_volume() is
  * used then the transformed volume will be defined relative to the
  * container actor and in container coordinates a 2D child actor
- * can have a 3D bounding volume.</note>
+ * can have a 3D bounding volume.</para></note>
  *
  * <note>There are no accuracy guarantees for the reported depth,
  * except that it must always be >= to the true depth. This is

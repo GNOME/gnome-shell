@@ -896,7 +896,7 @@ layout_get_property_internal (ClutterLayoutManager *manager,
  * @container: a #ClutterContainer using @manager
  * @actor: a #ClutterActor child of @container
  * @first_property: the first property name
- * @Varargs: a list of property name and value pairs
+ * @...: a list of property name and value pairs
  *
  * Sets a list of properties and their values on the #ClutterLayoutMeta
  * associated by @manager to a child of @container
@@ -1038,7 +1038,7 @@ clutter_layout_manager_child_set_property (ClutterLayoutManager *manager,
  * @container: a #ClutterContainer using @manager
  * @actor: a #ClutterActor child of @container
  * @first_property: the name of the first property
- * @Varargs: a list of property name and return location for the value pairs
+ * @...: a list of property name and return location for the value pairs
  *
  * Retrieves the values for a list of properties out of the
  * #ClutterLayoutMeta created by @manager and attached to the

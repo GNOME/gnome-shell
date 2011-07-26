@@ -1074,7 +1074,7 @@ static void clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
 /**
  * clutter_model_append:
  * @model: a #ClutterModel
- * @Varargs: pairs of column number and value, terminated with -1
+ * @...: pairs of column number and value, terminated with -1
  *
  * Creates and appends a new row to the #ClutterModel, setting the
  * row values upon creation. For example, to append a new row where
@@ -1164,7 +1164,7 @@ clutter_model_prependv (ClutterModel *model,
 /**
  * clutter_model_prepend:
  * @model: a #ClutterModel
- * @Varargs: pairs of column number and value, terminated with -1
+ * @...: pairs of column number and value, terminated with -1
  *
  * Creates and prepends a new row to the #ClutterModel, setting the row
  * values upon creation. For example, to prepend a new row where column 0
@@ -1206,7 +1206,7 @@ clutter_model_prepend (ClutterModel *model,
  * clutter_model_insert:
  * @model: a #ClutterModel
  * @row: the position to insert the new row
- * @Varargs: pairs of column number and value, terminated with -1
+ * @...: pairs of column number and value, terminated with -1
  *
  * Inserts a new row to the #ClutterModel at @row, setting the row
  * values upon creation. For example, to insert a new row at index 100,
@@ -2068,7 +2068,7 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
 /**
  * clutter_model_iter_get:
  * @iter: a #ClutterModelIter
- * @Varargs: a list of column/return location pairs, terminated by -1
+ * @...: a list of column/return location pairs, terminated by -1
  *
  * Gets the value of one or more cells in the row referenced by @iter. The
  * variable argument list should contain integer column numbers, each column
@@ -2191,7 +2191,7 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
 /**
  * clutter_model_iter_set:
  * @iter: a #ClutterModelIter
- * @Varargs: a list of column/return location pairs, terminated by -1
+ * @...: a list of column/return location pairs, terminated by -1
  *
  * Sets the value of one or more cells in the row referenced by @iter. The
  * variable argument list should contain integer column numbers, each column

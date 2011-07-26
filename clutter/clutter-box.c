@@ -807,7 +807,7 @@ clutter_box_set_property_valist (ClutterBox   *box,
  * @box: a #ClutterBox
  * @actor: a #ClutterActor
  * @first_property: the name of the first property to set, or %NULL
- * @Varargs: a list of property name and value pairs, terminated by %NULL
+ * @...: a list of property name and value pairs, terminated by %NULL
  *
  * Adds @actor to @box and sets layout properties at the same time,
  * if the #ClutterLayoutManager used by @box has them
@@ -847,7 +847,7 @@ clutter_box_pack (ClutterBox   *box,
  * @actor: a #ClutterActor
  * @sibling: (allow-none): a #ClutterActor or %NULL
  * @first_property: the name of the first property to set, or %NULL
- * @Varargs: a list of property name and value pairs, terminated by %NULL
+ * @...: a list of property name and value pairs, terminated by %NULL
  *
  * Adds @actor to @box, placing it after @sibling, and sets layout
  * properties at the same time, if the #ClutterLayoutManager used by
@@ -891,7 +891,7 @@ clutter_box_pack_after (ClutterBox   *box,
  * @actor: a #ClutterActor
  * @sibling: (allow-none): a #ClutterActor or %NULL
  * @first_property: the name of the first property to set, or %NULL
- * @Varargs: a list of property name and value pairs, terminated by %NULL
+ * @...: a list of property name and value pairs, terminated by %NULL
  *
  * Adds @actor to @box, placing it before @sibling, and sets layout
  * properties at the same time, if the #ClutterLayoutManager used by
@@ -935,7 +935,7 @@ clutter_box_pack_before (ClutterBox   *box,
  * @actor: a #ClutterActor
  * @position: the position to insert the @actor at
  * @first_property: the name of the first property to set, or %NULL
- * @Varargs: a list of property name and value pairs, terminated by %NULL
+ * @...: a list of property name and value pairs, terminated by %NULL
  *
  * Adds @actor to @box, placing it at @position, and sets layout
  * properties at the same time, if the #ClutterLayoutManager used by

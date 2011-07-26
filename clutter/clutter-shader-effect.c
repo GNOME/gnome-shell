@@ -727,7 +727,7 @@ add_uniform:
  * @name: the name of the uniform to set
  * @gtype: the type of the uniform to set
  * @n_values: the number of values
- * @Varargs: a list of values
+ * @...: a list of values
  *
  * Sets a list of values as the payload for the uniform @name inside
  * the shader effect

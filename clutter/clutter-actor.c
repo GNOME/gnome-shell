@@ -2119,10 +2119,10 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
  * using cogl_set_modelview_matrix() for example then you would want a matrix
  * that transforms into eye coordinates.
  *
- * <note>This function explicitly initializes the given @matrix. If you just
+ * <note><para>This function explicitly initializes the given @matrix. If you just
  * want clutter to multiply a relative transformation with an existing matrix
- * you can use clutter_actor_apply_relative_transformation_matrix() instead.
- * </note>
+ * you can use clutter_actor_apply_relative_transformation_matrix()
+ * instead.</para></note>
  *
  */
 /* XXX: We should consider caching the stage relative modelview along with

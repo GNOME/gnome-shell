@@ -495,7 +495,7 @@ clutter_interval_get_interval_valist (ClutterInterval *interval,
 /**
  * clutter_interval_new:
  * @gtype: the type of the values in the interval
- * @Varargs: the initial value and the final value of the interval
+ * @...: the initial value and the final value of the interval
  *
  * Creates a new #ClutterInterval holding values of type @gtype.
  *
@@ -785,7 +785,7 @@ clutter_interval_peek_final_value (ClutterInterval *interval)
 /**
  * clutter_interval_set_interval:
  * @interval: a #ClutterInterval
- * @Varargs: the initial and final values of the interval
+ * @...: the initial and final values of the interval
  *
  * Variable arguments wrapper for clutter_interval_set_initial_value()
  * and clutter_interval_set_final_value() that avoids using the
@@ -819,7 +819,7 @@ clutter_interval_set_interval (ClutterInterval *interval,
 /**
  * clutter_interval_get_interval:
  * @interval: a #ClutterInterval
- * @Varargs: return locations for the initial and final values of
+ * @...: return locations for the initial and final values of
  *   the interval
  *
  * Variable arguments wrapper for clutter_interval_get_initial_value()

@@ -661,7 +661,7 @@ clutter_script_get_objects_valist (ClutterScript *script,
  * clutter_script_get_objects:
  * @script: a #ClutterScript
  * @first_name: the name of the first object to retrieve
- * @Varargs: return location for a #GObject, then additional names, ending
+ * @...: return location for a #GObject, then additional names, ending
  *   with %NULL
  *
  * Retrieves a list of objects for the given names. After @script, object

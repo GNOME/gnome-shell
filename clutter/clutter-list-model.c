@@ -718,7 +718,7 @@ clutter_list_model_init (ClutterListModel *model)
 /**
  * clutter_list_model_new:
  * @n_columns: number of columns in the model
- * @Varargs: @n_columns number of #GType and string pairs
+ * @...: @n_columns number of #GType and string pairs
  *
  * Creates a new default model with @n_columns columns with the types 
  * and names passed in.
