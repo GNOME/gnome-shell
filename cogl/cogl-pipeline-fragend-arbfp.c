@@ -152,7 +152,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;
-  CoglPipeline *template_pipeline;
+  CoglPipeline *template_pipeline = NULL;
   CoglHandle user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
