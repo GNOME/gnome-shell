@@ -97,8 +97,10 @@ NotificationDaemon.prototype = {
         this._notifications = {};
         this._busProxy = new Bus();
 
-        Main.statusIconDispatcher.connect('message-icon-added', Lang.bind(this, this._onTrayIconAdded));
-        Main.statusIconDispatcher.connect('message-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+        Main.connect('initialized', Lang.bind(this, function() {
+            Main.statusIconDispatcher.connect('message-icon-added', Lang.bind(this, this._onTrayIconAdded));
+            Main.statusIconDispatcher.connect('message-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+        }));
 
         Shell.WindowTracker.get_default().connect('notify::focus-app',
             Lang.bind(this, this._onFocusAppChanged));

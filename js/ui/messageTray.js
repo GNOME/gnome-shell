@@ -1301,9 +1301,9 @@ MessageTray.prototype = {
         this._focusGrabber.connect('focus-grabbed', Lang.bind(this,
             function() {
                 if (this._summaryBoxPointer.bin.child)
-                    this._lock();
+                    this.lock();
             }));
-        this._focusGrabber.connect('focus-ungrabbed', Lang.bind(this, this._unlock));
+        this._focusGrabber.connect('focus-ungrabbed', Lang.bind(this, this.unlock));
         this._focusGrabber.connect('button-pressed', Lang.bind(this,
            function(focusGrabber, source) {
                if (this._clickedSummaryItem && !this._clickedSummaryItem.actor.contains(source))
@@ -1313,7 +1313,7 @@ MessageTray.prototype = {
         this._focusGrabber.connect('escape-pressed', Lang.bind(this, this._escapeTray));
 
         this._trayState = State.HIDDEN;
-        this._locked = false;
+        this._locked = 0;
         this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
@@ -1329,9 +1329,9 @@ MessageTray.prototype = {
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
 
-        Main.chrome.addActor(this.actor, { affectsStruts: false,
-                                           visibleInFullscreen: true });
+        Main.layoutManager.topBox.add_actor(this.actor);
         Main.chrome.trackActor(this._notificationBin);
+        Main.chrome.trackActor(this._summaryBin);
         Main.chrome.trackActor(this._summaryBoxPointer.actor);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
@@ -1341,9 +1341,9 @@ MessageTray.prototype = {
         Main.overview.connect('showing', Lang.bind(this,
             function() {
                 this._overviewVisible = true;
-                if (this._locked) {
+                if (this._locked > 0) {
                     this._unsetClickedSummaryItem();
-                    this._unlock();
+                    this.unlock();
                 } else {
                     this._updateState();
                 }
@@ -1351,9 +1351,9 @@ MessageTray.prototype = {
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
                 this._overviewVisible = false;
-                if (this._locked) {
+                if (this._locked > 0) {
                     this._unsetClickedSummaryItem();
-                    this._unlock();
+                    this.unlock();
                 } else {
                     this._updateState();
                 }
@@ -1372,7 +1372,7 @@ MessageTray.prototype = {
     _setSizePosition: function() {
         let monitor = Main.layoutManager.bottomMonitor;
         this.actor.x = monitor.x;
-        this.actor.y = monitor.y + monitor.height - 1;
+        this.actor.y = -1;
         this.actor.width = monitor.width;
         this._notificationBin.x = 0;
         this._notificationBin.width = monitor.width;
@@ -1524,15 +1524,16 @@ MessageTray.prototype = {
             this._notificationQueue.splice(index, 1);
     },
 
-    _lock: function() {
-        this._locked = true;
+    lock: function() {
+        this._locked += 1;
+        this._updateState();
     },
 
-    _unlock: function() {
-        if (!this._locked)
-            return;
-        this._locked = false;
-        this._pointerInTray = this.actor.hover && !this._summaryBoxPointer.bin.hover;
+    unlock: function() {
+        if (this._locked > 0)
+            this._locked -= 1;
+        this._pointerInSummary = false;
+        this._pointerInTray = false;
         this._updateState();
     },
 
@@ -1816,7 +1817,7 @@ MessageTray.prototype = {
     },
 
     _escapeTray: function() {
-        this._unlock();
+        this.unlock();
         this._pointerInTray = false;
         this._pointerInSummary = false;
         this._updateNotificationTimeout(0);
@@ -1834,7 +1835,7 @@ MessageTray.prototype = {
         let notificationsPending = this._notificationQueue.length > 0 && (!this._busy || notificationUrgent);
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
-        let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked) || this._notificationRemoved;
+        let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && (this._locked == 0)) || this._notificationRemoved;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
@@ -1850,17 +1851,17 @@ MessageTray.prototype = {
         }
 
         // Summary
-        let summarySummoned = this._pointerInSummary || this._overviewVisible;
-        let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned || this._locked;
+        let summarySummoned = this._pointerInSummary || this._overviewVisible ||  (this._locked > 0);
+        let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned;
         let summaryHovered = this._pointerInTray || this._pointerInSummary;
-        let summaryVisibleWithNoHover = (this._overviewVisible || this._locked) && !summaryHovered;
+        let summaryVisibleWithNoHover = (this._overviewVisible || this._locked > 0) && !summaryHovered;
         let summaryNotificationIsForExpandedSummaryItem = (this._clickedSummaryItem == this._expandedSummaryItem);
 
         let notificationsVisible = (this._notificationState == State.SHOWING ||
                                     this._notificationState == State.SHOWN);
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
-        let summaryOptionalInOverview = this._overviewVisible && !this._locked && !summaryHovered;
+        let summaryOptionalInOverview = this._overviewVisible && (this._locked == 0) && !summaryHovered;
         let mustHideSummary = (notificationsPending && (notificationUrgent || summaryOptionalInOverview))
                               || notificationsVisible;
 
@@ -1944,18 +1945,16 @@ MessageTray.prototype = {
     },
 
     _showTray: function() {
-        let monitor = Main.layoutManager.bottomMonitor;
         this._tween(this.actor, '_trayState', State.SHOWN,
-                    { y: monitor.y + monitor.height - this.actor.height,
+                    { y: 0,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
     },
 
     _hideTray: function() {
-        let monitor = Main.layoutManager.bottomMonitor;
         this._tween(this.actor, '_trayState', State.HIDDEN,
-                    { y: monitor.y + monitor.height - 1,
+                    { y: Main.layoutManager.topBox.height - 1,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });

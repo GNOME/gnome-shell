@@ -40,6 +40,8 @@ const KEY_TEXT_SCALING_FACTOR = 'text-scaling-factor';
 
 const HIGH_CONTRAST_THEME = 'HighContrast';
 
+const KEYBOARD_SCHEMA = 'org.gnome.shell.keyboard'
+
 function ATIndicator() {
     this._init.apply(this, arguments);
 }
@@ -68,9 +70,9 @@ ATIndicator.prototype = {
 //                                                               'screen-reader-enabled');
 //        this.menu.addMenuItem(screenReader);
 
-//        let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-//                                                                   'screen-keyboard-enabled');
-//        this.menu.addMenuItem(screenKeyboard);
+        let screenKeyboard = this._buildItem(_("Screen Keyboard"), KEYBOARD_SCHEMA,
+                                                                   'show-keyboard');
+        this.menu.addMenuItem(screenKeyboard);
 
         let visualBell = this._buildItemGConf(_("Visual Alerts"), client, KEY_VISUAL_BELL);
         this.menu.addMenuItem(visualBell);

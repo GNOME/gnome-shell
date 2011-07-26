@@ -4,6 +4,7 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
+const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const Util = imports.misc.util;
@@ -38,10 +39,10 @@ StatusIconDispatcher.prototype = {
         // status icons
         // http://bugzilla.gnome.org/show_bug.cgi=id=621382
         Util.killall('indicator-application-service');
-    },
 
-    start: function(themeWidget) {
-        this._traymanager.manage_stage(global.stage, themeWidget);
+        Main.connect('initialized', Lang.bind(this, function() {
+            this._traymanager.manage_stage(global.stage, Main.messageTray.actor);
+        }));
     },
 
     _onTrayIconAdded: function(o, icon) {

@@ -317,6 +317,7 @@
         <dep package="gobject-introspection"/>
         <dep package="mutter"/>
         <dep package="gjs"/>
+        <dep package="caribou"/>
         <dep package="dconf"/>
         <dep package="gconf"/>
         <dep package="glib"/>
@@ -410,7 +411,7 @@
     </dependencies>
   </tarball>
 
-  <autotools id="caribou">
+  <autotools id="caribou" autogenargs="--enable-gtk3-im">
     <branch repo="git.gnome.org" module="caribou"/>
   </autotools>
 

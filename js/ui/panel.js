@@ -939,9 +939,6 @@ Panel.prototype = {
                 corner.actor.set_style_pseudo_class(pseudoClass);
             }));
 
-        Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
-        Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
-
         Main.chrome.addActor(this.actor);
         Main.chrome.addActor(this._leftCorner.actor, { affectsStruts: false,
                                                        affectsInputRegion: false });
@@ -970,8 +967,11 @@ Panel.prototype = {
             this._statusArea[role] = indicator;
         }
 
+        Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+
         // PopupMenuManager depends on menus being added in order for
-        // keyboard navigation
+        // keyboard navigation, so we couldn't add this before
         this._menus.addMenu(this._userMenu.menu);
     },
 

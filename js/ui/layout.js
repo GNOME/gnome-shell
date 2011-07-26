@@ -6,7 +6,16 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Main = imports.ui.main;
+const Meta = imports.gi.Meta;
+const Panel = imports.ui.panel;
 const Tweener = imports.ui.tweener;
+
+const State = {
+    HIDDEN:  0,
+    SHOWING: 1,
+    SHOWN:   2,
+    HIDING:  3
+};
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
@@ -21,8 +30,95 @@ LayoutManager.prototype = {
         this.primaryMonitor = null;
         this.primaryIndex = -1;
         this._hotCorners = [];
+        this.bottomBox = new Clutter.Group();
+        this.topBox = new Clutter.Group({ clip_to_allocation: true });
+        this.bottomBox.add_actor(this.topBox);
 
+        global.screen.connect('monitors-changed', Lang.bind(this, this._monitorsChanged));
         this._updateMonitors();
+
+        Main.connect('layout-initialized', Lang.bind(this, this._initChrome));
+
+        Main.connect('main-ui-initialized', Lang.bind(this, this._finishInit));
+    },
+
+    _initChrome: function() {
+        Main.chrome.addActor(this.bottomBox, { affectsStruts: false,
+                                               visibleInFullscreen: true });
+    },
+
+    // _updateHotCorners needs access to Main.panel
+    _finishInit: function() {
+        this._updateHotCorners();
+
+        this.topBox.height = Main.messageTray.actor.height;
+        this.topBox.y = - Main.messageTray.actor.height;
+
+        this._keyboardState = Main.keyboard.actor.visible ? State.SHOWN : State.HIDDEN;
+        this._traySummoned = true;
+
+        Main.keyboard.actor.connect('allocation-changed', Lang.bind(this, this._reposition));
+    },
+
+    _reposition: function () {
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function () { this._updateForKeyboard(); }));
+    },
+
+    _updateForKeyboard: function () {
+        if (Tweener.isTweening(this.bottomBox))
+            return;
+
+        this.topBox.y = - Main.messageTray.actor.height;
+        let bottom = this.bottomMonitor.y + this.bottomMonitor.height;
+        if (this._keyboardState == State.SHOWN)
+            this.bottomBox.y = bottom - Main.keyboard.actor.height;
+        else {
+            this.bottomBox.y = bottom;
+            this._keyboardState = State.HIDDEN;
+        }
+
+    },
+
+    updateForTray: function () {
+        if (this._keyboardState == State.SHOWN) {
+            if (this._traySummoned) {
+                Main.messageTray.lock();
+                this._traySummoned = false;
+            }
+            else {
+                Main.messageTray.unlock();
+                this._traySummoned = true;
+            }
+        }
+        else {
+            Main.messageTray.unlock();
+            this._traySummoned = false;
+        }
+    },
+
+    showKeyboard: function () {
+        let bottom = this.bottomMonitor.y + this.bottomMonitor.height;
+        // Keyboard height cannot be found directly since the first
+        // call to this method may be when Keyboard.Keyboard() has
+        // not returned; therefore the keyboard would be null
+        Tweener.addTween(this.bottomBox,
+                         { y: bottom - Main.keyboard.actor.height,
+                           time: 0.5,
+                           transition: 'easeOutQuad',
+                         });
+        this._keyboardState = State.SHOWN;
+        this.updateForTray();
+    },
+
+    hideKeyboard: function () {
+        let bottom = this.bottomMonitor.y + this.bottomMonitor.height;
+        Tweener.addTween(this.bottomBox,
+                         { y: bottom,
+                           time: 0.5,
+                           transition: 'easeOutQuad'
+                         });
+        this._keyboardState = State.HIDDEN;
+        this.updateForTray();
     },
 
     // This is called by Main after everything else is constructed;
@@ -57,6 +153,9 @@ LayoutManager.prototype = {
         }
         this.primaryMonitor = this.monitors[this.primaryIndex];
         this.bottomMonitor = this.monitors[this.bottomIndex];
+
+        this.bottomBox.set_position(0, this.bottomMonitor.y + this.bottomMonitor.height);
+        this.bottomBox.width = this.bottomMonitor.width;
     },
 
     _updateHotCorners: function() {

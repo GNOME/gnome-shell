@@ -36,6 +36,10 @@ Chrome.prototype = {
 
         this._trackedActors = [];
 
+        Main.connect('initialized', Lang.bind(this, this._finishInit));
+    },
+
+    _finishInit: function() {
         Main.layoutManager.connect('monitors-changed',
                                    Lang.bind(this, this._relayout));
         global.screen.connect('restacked',

@@ -62,6 +62,7 @@
     <child name="clock" schema="org.gnome.shell.clock"/>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="recorder" schema="org.gnome.shell.recorder"/>
+    <child name="keyboard" schema="org.gnome.shell.keyboard"/>
   </schema>
 
   <schema id="org.gnome.shell.calendar" path="/org/gnome/shell/calendar/"
@@ -73,6 +74,38 @@
         If true, display the ISO week date in the calendar.
       </_description>
       </key>
+  </schema>
+
+  <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="show-keyboard" type="b">
+      <default>false</default>
+      <_summary>Show the onscreen keyboard</_summary>
+      <_description>
+        If true, display onscreen keyboard.
+      </_description>
+    </key>
+    <key name="keyboard-type" type="s">
+      <default>'touch'</default>
+      <_summary>Which keyboard to use</_summary>
+      <_description>
+        The type of keyboard to use.
+      </_description>
+    </key>
+    <key name="enable-drag" type="b">
+      <default>false</default>
+      <_summary>Enable keyboard dragging</_summary>
+      <_description>
+        If true, enable keyboard dragging.
+      </_description>
+    </key>
+    <key name="enable-float" type="b">
+      <default>false</default>
+      <_summary>Enable floating keyboard</_summary>
+      <_description>
+        If true, enable floating keyboard.
+      </_description>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.clock" path="/org/gnome/shell/clock/"

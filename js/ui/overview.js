@@ -153,6 +153,18 @@ Overview.prototype = {
 
         this._coverPane.hide();
 
+        this._windowSwitchTimeoutId = 0;
+        this._windowSwitchTimestamp = 0;
+        this._lastActiveWorkspaceIndex = -1;
+        this._lastHoveredWindow = null;
+        this._needsFakePointerEvent = false;
+
+        this.workspaces = null;
+
+        Main.connect('initialized', Lang.bind(this, this._finishInit));
+    },
+
+    _finishInit: function() {
         // XDND
         this._dragMonitor = {
             dragMotion: Lang.bind(this, this._onDragMotion)
@@ -161,22 +173,11 @@ Overview.prototype = {
         Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
 
-        this._windowSwitchTimeoutId = 0;
-        this._windowSwitchTimestamp = 0;
-        this._lastActiveWorkspaceIndex = -1;
-        this._lastHoveredWindow = null;
-        this._needsFakePointerEvent = false;
-
-        this.workspaces = null;
-    },
-
-    // The members we construct that are implemented in JS might
-    // want to access the overview as Main.overview to connect
-    // signal handlers and so forth. So we create them after
-    // construction in this init() method.
-    init: function() {
         this.shellInfo = new ShellInfo();
 
+        // The members we construct that are implemented in JS might
+        // want to access the overview as Main.overview to connect
+        // signal handlers and so forth. So we create them here.
         this.viewSelector = new ViewSelector.ViewSelector();
         this._group.add_actor(this.viewSelector.actor);
 
@@ -449,19 +450,16 @@ Overview.prototype = {
         let primary = Main.layoutManager.primaryMonitor;
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
-        let contentY = Main.panel.actor.height;
-        let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
-
         this._group.set_position(primary.x, primary.y);
         this._group.set_size(primary.width, primary.height);
 
-        this._coverPane.set_position(0, contentY);
-        this._coverPane.set_size(primary.width, contentHeight);
+        this._coverPane.set_position(primary.x, primary.y);
+        this._coverPane.set_size(primary.width, primary.height);
 
         let dashWidth = Math.round(DASH_SPLIT_FRACTION * primary.width);
         let viewWidth = primary.width - dashWidth - this._spacing;
-        let viewHeight = contentHeight - 2 * this._spacing;
-        let viewY = contentY + this._spacing;
+        let viewHeight = primary.height - 2 * this._spacing;
+        let viewY = primary.y + this._spacing;
         let viewX = rtl ? 0 : dashWidth + this._spacing;
 
         // Set the dash's x position - y is handled by a constraint
