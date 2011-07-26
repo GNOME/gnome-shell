@@ -305,6 +305,19 @@ Release Notes for Clutter 1.8
 • ClutterBoxLayout layout algorithm has been changed to map the more mature
   and more stable GtkBox one.
 
+• The ClutterText:editable property was incorrectly defined in the GParamSpec
+  as being TRUE by default, but it was initialized to FALSE. To avoid breaking
+  existing code, the default value inside the GParamSpec (and inside the
+  documentation) has been changed to FALSE as well.
+
+• The preferred way to draw inside a ClutterCairoTexture is connecting to
+  its ::draw signal, and calling the invalidate() method. The old pattern
+  of creating the Cairo context using the create() method is deprecated but
+  still working as intended.
+
+• ClutterScore has been deprecated; the preferred way to chain up multiple
+  animations is to use the ClutterAnimator or ClutterState classes.
+
 Release Notes for Clutter 1.6
 -------------------------------------------------------------------------------
 

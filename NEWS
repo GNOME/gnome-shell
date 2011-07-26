@@ -1,3 +1,74 @@
+Clutter 1.7.6                                                        2011-07-26
+===============================================================================
+
+  • List of changes since Clutter 1.7.4
+
+    - Accessibility fixes in Cally
+    Fix the implementation of the AtkText interface for ClutterText.
+
+    - Depend on the new Cogl windowing system API.
+
+    - Add functions for retrieving the clip boundaries on the Stage
+    The clutter_stage_get_redraw_clip_bounds() function is useful for
+    window managers (like Mutter) that need to retrieve the clipped
+    region used on the Stage.
+
+    - Auto-detect the default flavour when building
+    The default flavour used when building should be set depending
+    on the platform.
+
+    - Mark the OSX backend as non-experimental
+    The OSX backend is being developed, and maintained, so it should
+    not be considered experimental.
+
+    - Make sure that Gestures are cancelled when missing release events
+
+    - Correct the rounding for paint volumes
+    Try to provide stable results against potential floating point rounding
+    margins when projecting 3D paint volumes into screen bounding boxes;
+    this should avoid re-creating FBOs and always correctly handle clipped
+    redraws.
+
+    - Do not clobber XI2 events data
+    This allows to play along with other toolkits using XI2.
+
+    - Fix ClutterSnapConstraint's right edge snapping
+
+    - Deprecations
+    ClutterScore, clutter_texture_new_from_actor(),
+    clutter_cairo_texture_create*()
+
+  • List of bugs fixed since Clutter 1.7.4
+
+    [bugzilla.gnome.org]
+
+    #653959 - clutter-actor: Don't apply shaders during picking
+    #654361 - uprof: Rename timers to remove the EGL specific bits
+    #654363 - uprof: Add the units in the name of the "Per Frame"
+              timer attribute
+    #654103 - Fixed typo
+    #654656 - Improve XGenericEventCookie allocation wrt other toolkits
+    #654024 - snap-constraint: Fix allocation for CLUTTER_SNAP_EDGE_RIGHT
+    #654066 - ClutterTimeline new-frame signal not working correctly on
+              some platforms
+    #654718 - clutter-1.6.16 compile issues
+    #654726 - text: Fix the default value of "editable"
+    #654727 - alpha: Don't use the GClosure to compute the alpha when
+              possible
+    #655342 - memory leak in clutter_bin_layout_get_preferred_width/height
+
+    [bugzilla.clutter-project.org]
+
+    #1733 - AtkText implementation on CallyText is not complete
+    #2421 - Way to get current repaint bounds
+
+Many thanks to:
+
+  Robert Bragg, Philippe Normand, Neil Roberts, Damien Lespiau, Tomeu Vizoso,
+  Gil Forcada, Alejandro Piñeiro, Bastian Winkler, Carlos Garnacho,
+  Christian Kirbach, Daniel Mustieles, Dinh Bowman, Kjartan Maraas,
+  Marek Černocký, Mario Blättermann, Matej Urbančič, Piotr Drąg
+
 Clutter 1.7.4                                                        2011-07-04
 ===============================================================================
 
