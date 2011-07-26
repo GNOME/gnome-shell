@@ -718,6 +718,10 @@ intersect_rectangles (cairo_rectangle_int_t *a,
  *   to upload the contents of the context when done drawing
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.8: Use the #ClutterCairoTexture::draw signal and
+ *   clutter_cairo_texture_invalidate_rectangle() to obtain a
+ *   clipped Cairo context for 2D drawing.
  */
 cairo_t *
 clutter_cairo_texture_create_region (ClutterCairoTexture *self,
@@ -879,6 +883,10 @@ clutter_cairo_texture_invalidate (ClutterCairoTexture *self)
  *   to upload the contents of the context when done drawing
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.8: Use the #ClutterCairoTexture::draw signal and
+ *   the clutter_cairo_texture_invalidate() function to obtain a
+ *   Cairo context for 2D drawing.
  */
 cairo_t *
 clutter_cairo_texture_create (ClutterCairoTexture *self)

@@ -7,15 +7,15 @@ static const ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x99 };
 
 static gboolean is_expanded = FALSE;
 
-static void
-update_background (ClutterActor       *tex,
-                   const ClutterColor *color,
-                   gfloat              width,
-                   gfloat              height)
+static gboolean
+draw_background (ClutterCairoTexture *texture,
+                 cairo_t             *cr)
 {
-  cairo_t *cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (tex));
   cairo_pattern_t *pat;
   gfloat x, y;
+  guint width, height;
+
+  clutter_cairo_texture_get_surface_size (texture, &width, &height);
 
 #define BG_ROUND_RADIUS         12
 
@@ -33,7 +33,7 @@ update_background (ClutterActor       *tex,
 
   cairo_close_path (cr);
 
-  clutter_cairo_set_source_color (cr, color);
+  clutter_cairo_set_source_color (cr, &bg_color);
   cairo_stroke (cr);
 
   x += 4;
@@ -63,9 +63,10 @@ update_background (ClutterActor       *tex,
   cairo_fill (cr);
 
   cairo_pattern_destroy (pat);
-  cairo_destroy (cr);
 
 #undef BG_ROUND_RADIUS
+
+  return TRUE;
 }
 
 static gboolean
@@ -147,8 +148,7 @@ on_box_allocation_changed (ClutterActor           *box,
   clutter_cairo_texture_set_surface_size (CLUTTER_CAIRO_TEXTURE (background),
                                           new_width,
                                           new_height);
-
-  update_background (background, &bg_color, new_width, new_height);
+  clutter_cairo_texture_invalidate (CLUTTER_CAIRO_TEXTURE (background));
 }
 
 G_MODULE_EXPORT int
@@ -183,6 +183,7 @@ test_bin_layout_main (int argc, char *argv[])
    * box's size
    */
   rect = clutter_cairo_texture_new (100, 100);
+  g_signal_connect (rect, "draw", G_CALLBACK (draw_background), NULL);
 
   /* first method: use clutter_box_pack() */
   clutter_box_pack (CLUTTER_BOX (box), rect,

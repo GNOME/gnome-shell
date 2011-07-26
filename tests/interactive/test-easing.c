@@ -50,6 +50,9 @@ static ClutterActor *easing_mode_label = NULL;
 
 static ClutterAnimation *last_animation = NULL;
 
+static ClutterColor stage_color = { 0x88, 0x88, 0xdd, 0xff };
+static ClutterColor bouncer_color = { 0xee, 0x33, 0, 0xff };
+
 static void
 on_animation_completed (ClutterAnimation *animation,
                         ClutterActor     *rectangle)
@@ -126,23 +129,19 @@ on_button_press (ClutterActor       *actor,
   return TRUE;
 }
 
-static ClutterActor *
-make_bouncer (const ClutterColor *base_color,
-              gfloat              width,
-              gfloat              height)
+static gboolean
+draw_bouncer (ClutterCairoTexture *texture,
+              cairo_t             *cr)
 {
-  ClutterActor *retval;
-  cairo_t *cr;
+  guint width, height;
+  float radius;
   cairo_pattern_t *pattern;
-  gfloat radius = MAX (width, height);
 
-  retval = clutter_cairo_texture_new (width, height);
+  clutter_cairo_texture_get_surface_size (texture, &width, &height);
 
-  cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (retval));
+  radius = MAX (width, height);
 
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
+  clutter_cairo_texture_clear (texture);
 
   cairo_arc (cr, radius / 2, radius / 2, radius / 2, 0.0, 2.0 * G_PI);
 
@@ -150,27 +149,40 @@ make_bouncer (const ClutterColor *base_color,
                                          radius, radius, radius);
   cairo_pattern_add_color_stop_rgba (pattern,
                                      0,
-                                     base_color->red / 255.0,
-                                     base_color->green / 255.0,
-                                     base_color->blue / 255.0,
-                                     base_color->alpha / 255.0);
+                                     bouncer_color.red / 255.0,
+                                     bouncer_color.green / 255.0,
+                                     bouncer_color.blue / 255.0,
+                                     bouncer_color.alpha / 255.0);
   cairo_pattern_add_color_stop_rgba (pattern,
                                      0.9,
-                                     base_color->red / 255.0,
-                                     base_color->green / 255.0,
-                                     base_color->blue / 255.0,
+                                     bouncer_color.red / 255.0,
+                                     bouncer_color.green / 255.0,
+                                     bouncer_color.blue / 255.0,
                                      0.1);
 
   cairo_set_source (cr, pattern);
   cairo_fill_preserve (cr);
 
   cairo_pattern_destroy (pattern);
-  cairo_destroy (cr);
+
+  return TRUE;
+}
+
+static ClutterActor *
+make_bouncer (gfloat width,
+              gfloat height)
+{
+  ClutterActor *retval;
+
+  retval = clutter_cairo_texture_new (width, height);
+  g_signal_connect (retval, "draw", G_CALLBACK (draw_bouncer), NULL);
 
   clutter_actor_set_name (retval, "bouncer");
   clutter_actor_set_size (retval, width, height);
   clutter_actor_set_anchor_point (retval, width / 2, height / 2);
   clutter_actor_set_reactive (retval, TRUE);
+
+  clutter_cairo_texture_invalidate (CLUTTER_CAIRO_TEXTURE (retval));
 
   return retval;
 }
@@ -198,8 +210,6 @@ G_MODULE_EXPORT int
 test_easing_main (int argc, char *argv[])
 {
   ClutterActor *stage, *rect, *label;
-  ClutterColor stage_color = { 0x88, 0x88, 0xdd, 0xff };
-  ClutterColor rect_color = { 0xee, 0x33, 0, 0xff };
   gchar *text;
   gfloat stage_width, stage_height;
   gfloat label_width, label_height;
@@ -212,13 +222,15 @@ test_easing_main (int argc, char *argv[])
                               &error) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Easing Modes");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   main_stage = stage;
 
   clutter_actor_get_size (stage, &stage_width, &stage_height);
 
-  rect = make_bouncer (&rect_color, 50, 50);
+  rect = make_bouncer (50, 50);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
   clutter_actor_set_position (rect, stage_width / 2, stage_height / 2);
 
