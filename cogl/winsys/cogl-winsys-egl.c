@@ -953,7 +953,14 @@ cleanup_context (CoglDisplay *display)
       egl_display->egl_context = EGL_NO_CONTEXT;
     }
 
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
+    defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
+  if (egl_display->egl_surface != EGL_NO_SURFACE)
+    {
+      eglDestroySurface (egl_renderer->edpy, egl_display->egl_surface);
+      egl_display->egl_surface = EGL_NO_SURFACE;
+    }
+#elif COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   if (egl_display->dummy_surface != EGL_NO_SURFACE)
     {
       eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);

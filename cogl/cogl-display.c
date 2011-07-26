@@ -49,9 +49,24 @@ cogl_display_error_quark (void)
   return g_quark_from_static_string ("cogl-display-error-quark");
 }
 
+static const CoglWinsysVtable *
+_cogl_display_get_winsys (CoglDisplay *display)
+{
+  return display->renderer->winsys_vtable;
+}
+
 static void
 _cogl_display_free (CoglDisplay *display)
 {
+  const CoglWinsysVtable *winsys;
+
+  if (display->setup)
+    {
+      winsys = _cogl_display_get_winsys (display);
+      winsys->display_destroy (display);
+      display->setup = FALSE;
+    }
+
   if (display->renderer)
     {
       cogl_object_unref (display->renderer);
@@ -102,12 +117,6 @@ cogl_display_new (CoglRenderer *renderer,
 #endif
 
   return _cogl_display_object_new (display);
-}
-
-static const CoglWinsysVtable *
-_cogl_display_get_winsys (CoglDisplay *display)
-{
-  return display->renderer->winsys_vtable;
 }
 
 gboolean
