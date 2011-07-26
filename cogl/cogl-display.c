@@ -97,6 +97,10 @@ cogl_display_new (CoglRenderer *renderer,
 
   display->setup = FALSE;
 
+#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+  display->gdl_plane = GDL_PLANE_ID_UPP_C;
+#endif
+
   return _cogl_display_object_new (display);
 }
 

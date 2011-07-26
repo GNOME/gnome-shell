@@ -1091,9 +1091,13 @@ gdl_plane_init (CoglDisplay *display, GError **error)
   if (rc == GDL_SUCCESS)
     rc = gdl_plane_set_attr (GDL_PLANE_DST_RECT, &dstRect);
 
+  /* Default to triple buffering if we don't have an onscreen template */
   if (rc == GDL_SUCCESS)
-    rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES,
-                             display->swap_chain->length);
+    if (display->onscreen_template)
+      rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES,
+                               display->onscreen_template->swap_chain->length);
+    else
+      rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES, 3);
 
   if (rc == GDL_SUCCESS)
     rc = gdl_plane_config_end (GDL_FALSE);
