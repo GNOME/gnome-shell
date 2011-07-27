@@ -1,3 +1,50 @@
+3.1.4
+=====
+* Take over inserted media handling and autorun from gnome-session [Cosimo]
+* Message Tray
+  - Display a count of unread notifications on icons
+    [Jasper, Guillaume; #649356, #654139]
+  - Only remove icons when the sender quits from D-Bus, not when it
+    closes its last window [Neha, Marina; #645764]
+  - Solve problems switching chats between shell and Empathy
+    [Guillaume; #654237]
+  - Fix handling of bad GMarkup in messages [Dan; #650298]
+  - Never show notifications when the screensaver is active [Dan; #654550]
+* Telepathy integrationpp
+  - Implement Telepathy Debug interface to enable empathy-debugger
+    [Guillaume; #652816]
+  - Allow approving room invitations, and audio/video calls
+    [Guillaume; #653740 #653939]
+  - Send typing notifications [Jonny; #650196]
+* Fix selection highlighting for light-on-dark entries [Jasper; #643768]
+* Make control-Return in the overview open a new window [Maxim]
+* Delay showing the alt-Tab switcher to reduce visual noise when
+  flipping betweeen windows [Dan; #652346]
+* When we have vertically stacked monitors, put the message tray
+  on the bottom one [Dan; #636963]
+* Fix various problems with keynav and the Activities button
+  [Dan; #641253 #645759]
+* Ensure screensaver is locked when switching users [Colin; #654565]
+* Improve extension creation tool [Jasper; #653206]
+* Fix compatibility with latest GJS [Giovanni; #654349]
+* Code cleanups [Adel, Dan, Jasper; #645759 #654577 #654791 #654987]
+* Misc bug fixes [Richard, Dan, Florian, Giovanni, Jasper, Marc-Antoine, Rui;
+  #647175 #649513 #650452 #651082 #653700 #653989 #654105 #654791 #654267
+  #654269 #654527 #655446]
+* Build fixes [Florian, Siegfried; #654300]
+
+Contributors:
+ Giovanni Campagna, Cosimo Cecchi, Guillaume Desmottes, Neha Doijode,
+ Maxim Ermilov, Adel Gadllah, Siegfried-Angel Gevatter Pujals, Richard Hughes,
+ Jonny Lamb, Rui Matos, Florian Müllner, Marc-Antoine Perennou, Colin Walters,
+ Dan Winship, Marina Zhurakhinskaya
+
+Translations:
+ Mario Blättermann, Paul Seyfert [de], Jorge González, Daniel Mustieles [es],
+ Fran Dieguez [gl], Yaron Shahrabani [he], Luca Ferretti [it],
+ Rudolfs Mazurs [lv], Kjartan Maraas [nb], A S Alam [pa], Yuri Kozlov [ru],
+ Michal Štrba, Matej Urbančič [sl]
+
 3.1.3
 =====
 * Fix problem with "user theme extension" breaking the CSS for other
