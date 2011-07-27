@@ -28,6 +28,7 @@ CLEANFILES += $(service_DATA)
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
 bin_SCRIPTS += gnome-shell-extension-tool
+EXTRA_DIST += gnome-shell-extension-tool.in
 bin_PROGRAMS = gnome-shell-real
 
 if USE_JHBUILD_WRAPPER_SCRIPT
@@ -36,6 +37,7 @@ bin_SCRIPTS += gnome-shell-jhbuild
 else
 gnome_shell = gnome-shell-real
 endif
+EXTRA_DIST += gnome-shell-jhbuild.in
 
 noinst_DATA = gnome-shell
 gnome-shell: $(gnome_shell) Makefile
@@ -65,7 +67,6 @@ gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
 
 CLEANFILES += gnome-shell $(bin_SCRIPTS)
-EXTRA_DIST += $(bin_SCRIPTS:=.in)
 
 include Makefile-gdmuser.am
 include Makefile-st.am
