@@ -1816,9 +1816,16 @@ StTooltip StLabel {
 }
 
 .polkit-dialog-password-entry {
-    background-color: white;
+    background-gradient-start: rgb(236,236,236);
+    background-gradient-end: white;
+    background-gradient-direction: vertical;
     color: black;
     border-radius: 5px;
+    border: 2px solid #555753;
+}
+
+.polkit-dialog-password-entry:focus {
+    border: 2px solid #3465a4;
 }
 
 .polkit-dialog-error-label {
