@@ -8745,8 +8745,7 @@ update_resize (MetaWindow *window,
        */
       if (old.width != new_w || old.height != new_h)
         {
-          if ((window->display->grab_resize_unmaximize == new_unmaximize))
-            meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
+          meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
         }
     }
   else
