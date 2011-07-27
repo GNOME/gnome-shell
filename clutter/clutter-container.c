@@ -490,7 +490,8 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
  * clutter_container_raise_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
- * @sibling: the sibling to raise to, or %NULL to raise to the top
+ * @sibling: (allow-none): the sibling to raise to, or %NULL to raise
+ *   to the top
  *
  * Raises @actor to @sibling level, in the depth ordering.
  *
@@ -545,7 +546,8 @@ clutter_container_raise_child (ClutterContainer *container,
  * clutter_container_lower_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
- * @sibling: the sibling to lower to, or %NULL to lower to the bottom
+ * @sibling: (allow-none): the sibling to lower to, or %NULL to lower
+ *   to the bottom
  *
  * Lowers @actor to @sibling level, in the depth ordering.
  *

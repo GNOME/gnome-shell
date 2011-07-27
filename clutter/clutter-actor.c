@@ -10319,7 +10319,8 @@ _clutter_actor_get_stage_internal (ClutterActor *actor)
  *
  * Retrieves the #ClutterStage where @actor is contained.
  *
- * Return value: (transfer none): the stage containing the actor, or %NULL
+ * Return value: (transfer none) (type Clutter.Actor): the stage
+ *   containing the actor, or %NULL
  *
  * Since: 0.8
  */

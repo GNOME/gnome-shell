@@ -377,7 +377,7 @@ clutter_behaviour_path_new_with_description (ClutterAlpha *alpha,
 /**
  * clutter_behaviour_path_new_with_knots:
  * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
- * @knots: an array of #ClutterKnot<!-- -->s
+ * @knots: (array length=n_knots): an array of #ClutterKnot<!-- -->s
  * @n_knots: number of entries in @knots
  *
  * Creates a new path behaviour that will make the actors visit all of

@@ -2113,8 +2113,9 @@ clutter_stage_init (ClutterStage *self)
  *
  * Clutter guarantess the existence of the default stage.
  *
- * Return value: (transfer none): the main #ClutterStage.  You should never
- *   destroy or unref the returned actor.
+ * Return value: (transfer none) (type Clutter.Stage): the main
+ *   #ClutterStage.  You should never destroy or unref the returned
+ *   actor.
  */
 ClutterActor *
 clutter_stage_get_default (void)
@@ -3042,7 +3043,7 @@ clutter_stage_set_fog (ClutterStage *stage,
 /**
  * clutter_stage_get_fog:
  * @stage: the #ClutterStage
- * @fog: return location for a #ClutterFog structure
+ * @fog: (out): return location for a #ClutterFog structure
  *
  * Retrieves the current depth cueing settings from the stage.
  *

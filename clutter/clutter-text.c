@@ -3555,7 +3555,7 @@ clutter_text_new_full (const gchar        *font_name,
 
 /**
  * clutter_text_new_with_text:
- * @font_name: a string with a font description
+ * @font_name: (allow-none): a string with a font description
  * @text: the contents of the actor
  *
  * Creates a new #ClutterText actor, using @font_name as the font
@@ -3863,7 +3863,7 @@ clutter_text_set_cursor_color (ClutterText        *self,
 /**
  * clutter_text_get_cursor_color:
  * @self: a #ClutterText
- * @color: return location for a #ClutterColor
+ * @color: (out): return location for a #ClutterColor
  *
  * Retrieves the color of the cursor of a #ClutterText actor.
  *

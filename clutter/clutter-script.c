@@ -1172,7 +1172,8 @@ clutter_script_error_quark (void)
 /**
  * clutter_script_add_search_paths:
  * @script: a #ClutterScript
- * @paths: an array of strings containing different search paths
+ * @paths: (array length=n_paths): an array of strings containing
+ *   different search paths
  * @n_paths: the length of the passed array
  *
  * Adds @paths to the list of search paths held by @script.

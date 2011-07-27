@@ -77,7 +77,7 @@ typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 /**
  * ClutterCallback:
  * @actor: a #ClutterActor
- * @data: user data
+ * @data: (closure): user data
  *
  * Generic callback
  */

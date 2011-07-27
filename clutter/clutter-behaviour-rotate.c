@@ -545,8 +545,8 @@ clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
 /**
  * clutter_behaviour_rotate_get_bounds:
  * @rotate: a #ClutterBehaviourRotate
- * @angle_start: return value for the initial angle
- * @angle_end: return value for the final angle
+ * @angle_start: (out): return value for the initial angle
+ * @angle_end: (out): return value for the final angle
  *
  * Retrieves the rotation boundaries of the rotate behaviour.
  *
