@@ -212,9 +212,19 @@ static const CoglFeatureData winsys_feature_data[] =
   };
 
 static CoglFuncPtr
-_cogl_winsys_get_proc_address (const char *name)
+_cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
+                                        const char *name)
 {
-  return (CoglFuncPtr) eglGetProcAddress (name);
+  void *ptr;
+
+  ptr = eglGetProcAddress (name);
+
+  /* eglGetProcAddress doesn't support fetching core API so we need to
+     get that separately with GModule */
+  if (ptr == NULL)
+    g_module_symbol (renderer->libgl_module, name, &ptr);
+
+  return ptr;
 }
 
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
@@ -342,7 +352,6 @@ static void
 check_egl_extensions (CoglRenderer *renderer)
 {
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  const CoglWinsysVtable *winsys = renderer->winsys_vtable;
   const char *egl_extensions;
   int i;
 
@@ -352,7 +361,7 @@ check_egl_extensions (CoglRenderer *renderer)
 
   egl_renderer->private_features = 0;
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
-    if (_cogl_feature_check (winsys,
+    if (_cogl_feature_check (renderer,
                              "EGL", winsys_feature_data + i, 0, 0,
                              COGL_DRIVER_GL, /* the driver isn't used */
                              egl_extensions,
@@ -1657,7 +1666,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
   {
     .id = COGL_WINSYS_ID_EGL,
     .name = "EGL",
-    .get_proc_address = _cogl_winsys_get_proc_address,
+    .renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,
     .display_setup = _cogl_winsys_display_setup,

@@ -46,6 +46,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-attribute-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-renderer-private.h"
 
 #ifndef GL_PACK_INVERT_MESA
 #define GL_PACK_INVERT_MESA 0x8758
@@ -92,13 +93,9 @@ cogl_gl_error_to_string (GLenum error_code)
 CoglFuncPtr
 cogl_get_proc_address (const char* name)
 {
-  const CoglWinsysVtable *winsys;
-
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  winsys = _cogl_context_get_winsys (ctx);
-
-  return _cogl_get_proc_address (winsys, name);
+  return _cogl_renderer_get_proc_address (ctx->display->renderer, name);
 }
 
 gboolean

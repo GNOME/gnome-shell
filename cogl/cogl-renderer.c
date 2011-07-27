@@ -379,3 +379,12 @@ cogl_renderer_get_winsys_id (CoglRenderer *renderer)
 
   return renderer->winsys_vtable->id;
 }
+
+void *
+_cogl_renderer_get_proc_address (CoglRenderer *renderer,
+                                 const char *name)
+{
+  const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
+
+  return winsys->renderer_get_proc_address (renderer, name);
+}

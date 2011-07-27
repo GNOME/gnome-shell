@@ -79,4 +79,8 @@ _cogl_renderer_remove_native_filter (CoglRenderer *renderer,
                                      CoglNativeFilterFunc func,
                                      void *data);
 
+void *
+_cogl_renderer_get_proc_address (CoglRenderer *renderer,
+                                 const char *name);
+
 #endif /* __COGL_RENDERER_PRIVATE_H */

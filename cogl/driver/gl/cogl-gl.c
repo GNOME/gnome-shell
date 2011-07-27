@@ -33,6 +33,7 @@
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-feature-private.h"
+#include "cogl-renderer-private.h"
 
 static gboolean
 _cogl_get_gl_version (int *major_out, int *minor_out)
@@ -137,8 +138,8 @@ _cogl_gl_update_features (CoglContext *context,
      function because we need to use it to determine what functions we
      can expect */
   context->glGetString =
-    (void *) _cogl_get_proc_address (_cogl_context_get_winsys (context),
-                                     "glGetString");
+    (void *) _cogl_renderer_get_proc_address (context->display->renderer,
+                                              "glGetString");
 
   if (!check_gl_version (context, error))
     return FALSE;

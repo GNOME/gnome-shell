@@ -63,7 +63,8 @@ typedef struct _CoglWinsysVtable
   /* Required functions */
 
   CoglFuncPtr
-  (*get_proc_address) (const char *name);
+  (*renderer_get_proc_address) (CoglRenderer *renderer,
+                                const char *name);
 
   gboolean
   (*renderer_connect) (CoglRenderer *renderer, GError **error);
@@ -157,9 +158,5 @@ typedef struct _CoglWinsysVtable
 
 gboolean
 _cogl_winsys_has_feature (CoglWinsysFeature feature);
-
-CoglFuncPtr
-_cogl_get_proc_address (const CoglWinsysVtable *winsys,
-                        const char *name);
 
 #endif /* __COGL_WINSYS_PRIVATE_H */

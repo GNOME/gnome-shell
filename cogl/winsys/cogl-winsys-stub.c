@@ -45,8 +45,24 @@ static int _cogl_winsys_stub_dummy_ptr;
  */
 
 static CoglFuncPtr
-_cogl_winsys_get_proc_address (const char *name)
+_cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
+                                        const char *name)
 {
+  static GModule *module = NULL;
+
+  /* this should find the right function if the program is linked against a
+   * library providing it */
+  if (G_UNLIKELY (module == NULL))
+    module = g_module_open (NULL, 0);
+
+  if (module)
+    {
+      void *symbol;
+
+      if (g_module_symbol (module, name, &symbol))
+        return symbol;
+    }
+
   return NULL;
 }
 
@@ -134,7 +150,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
   {
     .id = COGL_WINSYS_ID_STUB,
     .name = "STUB",
-    .get_proc_address = _cogl_winsys_get_proc_address,
+    .renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,
     .display_setup = _cogl_winsys_display_setup,

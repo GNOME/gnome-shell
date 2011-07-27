@@ -31,6 +31,7 @@
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-feature-private.h"
+#include "cogl-renderer-private.h"
 
 gboolean
 _cogl_gles_update_features (CoglContext *context,
@@ -45,8 +46,8 @@ _cogl_gles_update_features (CoglContext *context,
      function because we need to use it to determine what functions we
      can expect */
   context->glGetString =
-    (void *) _cogl_get_proc_address (_cogl_context_get_winsys (context),
-                                     "glGetString");
+    (void *) _cogl_renderer_get_proc_address (context->display->renderer,
+                                              "glGetString");
 
   COGL_NOTE (WINSYS,
              "Checking features\n"

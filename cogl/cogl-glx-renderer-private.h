@@ -94,6 +94,9 @@ typedef struct _CoglGLXRenderer
   XVisualInfo *
   (* glXGetVisualFromFBConfig) (Display *dpy, GLXFBConfig config);
 
+  void *
+  (* glXGetProcAddress) (const GLubyte *procName);
+
   /* Function pointers for GLX specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
 

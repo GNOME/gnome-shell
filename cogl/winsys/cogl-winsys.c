@@ -45,32 +45,3 @@ _cogl_winsys_has_feature (CoglWinsysFeature feature)
 
   return COGL_FLAGS_GET (ctx->winsys_features, feature);
 }
-
-/* XXX: we would call this _cogl_winsys_get_proc_address but that
- * currently collides with the per winsys implementation names we use.
- * */
-CoglFuncPtr
-_cogl_get_proc_address (const CoglWinsysVtable *winsys,
-                        const char *name)
-{
-  void *address = winsys->get_proc_address (name);
-  static GModule *module = NULL;
-
-  if (address)
-    return address;
-
-  /* this should find the right function if the program is linked against a
-   * library providing it */
-  if (G_UNLIKELY (module == NULL))
-    module = g_module_open (NULL, 0);
-
-  if (module)
-    {
-      gpointer symbol;
-
-      if (g_module_symbol (module, name, &symbol))
-        return symbol;
-    }
-
-  return NULL;
-}

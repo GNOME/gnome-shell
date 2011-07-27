@@ -56,8 +56,6 @@
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 
-typedef CoglFuncPtr (*GLXGetProcAddressProc) (const GLubyte *procName);
-
 #ifdef HAVE_DRM
 #include <drm.h>
 #include <sys/ioctl.h>
@@ -138,44 +136,12 @@ static const CoglFeatureData winsys_feature_data[] =
   };
 
 static CoglFuncPtr
-_cogl_winsys_get_proc_address (const char *name)
+_cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
+                                        const char *name)
 {
-  static GLXGetProcAddressProc get_proc_func = NULL;
-  static void *dlhand = NULL;
+  CoglGLXRenderer *glx_renderer = renderer->winsys;
 
-  if (get_proc_func == NULL && dlhand == NULL)
-    {
-      dlhand = dlopen (NULL, RTLD_LAZY);
-
-      if (!dlhand)
-        {
-          g_warning ("Failed to dlopen (NULL, RTDL_LAZY): %s", dlerror ());
-          return NULL;
-        }
-
-      dlerror ();
-
-      get_proc_func =
-        (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddress");
-
-      if (dlerror () != NULL)
-        {
-          get_proc_func =
-            (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddressARB");
-        }
-
-      if (dlerror () != NULL)
-        {
-          get_proc_func = NULL;
-          g_warning ("failed to bind GLXGetProcAddress "
-                     "or GLXGetProcAddressARB");
-        }
-    }
-
-  if (get_proc_func)
-    return get_proc_func ((GLubyte *) name);
-
-  return NULL;
+  return glx_renderer->glXGetProcAddress ((const GLubyte *) name);
 }
 
 static CoglOnscreen *
@@ -316,7 +282,11 @@ resolve_core_glx_functions (CoglRenderer *renderer,
       !g_module_symbol (glx_renderer->libgl_module, "glXDestroyWindow",
                         (void **) &glx_renderer->glXDestroyWindow) ||
       !g_module_symbol (glx_renderer->libgl_module, "glXQueryExtensionsString",
-                        (void **) &glx_renderer->glXQueryExtensionsString))
+                        (void **) &glx_renderer->glXQueryExtensionsString) ||
+      (!g_module_symbol (glx_renderer->libgl_module, "glXGetProcAddress",
+                         (void **) &glx_renderer->glXGetProcAddress) &&
+       !g_module_symbol (glx_renderer->libgl_module, "glXGetProcAddressARB",
+                         (void **) &glx_renderer->glXGetProcAddress)))
     {
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
@@ -419,7 +389,7 @@ update_winsys_features (CoglContext *context, GError **error)
                   TRUE);
 
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
-    if (_cogl_feature_check (_cogl_context_get_winsys (context),
+    if (_cogl_feature_check (context->display->renderer,
                              "GLX", winsys_feature_data + i, 0, 0,
                              COGL_DRIVER_GL, /* the driver isn't used */
                              glx_extensions,
@@ -1992,7 +1962,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
   {
     .id = COGL_WINSYS_ID_GLX,
     .name = "GLX",
-    .get_proc_address = _cogl_winsys_get_proc_address,
+    .renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,
     .display_setup = _cogl_winsys_display_setup,

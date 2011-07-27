@@ -31,9 +31,10 @@
 #include "cogl-context-private.h"
 
 #include "cogl-feature-private.h"
+#include "cogl-renderer-private.h"
 
 gboolean
-_cogl_feature_check (const CoglWinsysVtable *winsys,
+_cogl_feature_check (CoglRenderer *renderer,
                      const char *driver_prefix,
                      const CoglFeatureData *data,
                      int gl_major,
@@ -122,7 +123,7 @@ _cogl_feature_check (const CoglWinsysVtable *winsys,
 
       full_function_name = g_strconcat (data->functions[func_num].name,
                                         suffix, NULL);
-      func = _cogl_get_proc_address (winsys, full_function_name);
+      func = _cogl_renderer_get_proc_address (renderer, full_function_name);
       g_free (full_function_name);
 
       if (func == NULL)
@@ -189,7 +190,7 @@ _cogl_feature_check_ext_functions (CoglContext *context,
   int i;
 
   for (i = 0; i < G_N_ELEMENTS (cogl_feature_ext_functions_data); i++)
-    _cogl_feature_check (_cogl_context_get_winsys (context),
+    _cogl_feature_check (context->display->renderer,
                          "GL", cogl_feature_ext_functions_data + i,
                          gl_major, gl_minor, context->driver,
                          gl_extensions,

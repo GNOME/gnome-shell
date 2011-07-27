@@ -28,7 +28,8 @@
 #include "cogl.h"
 
 CoglFuncPtr
-_cogl_winsys_get_proc_address (const char *name)
+_cogl_winsys_get_proc_address (CoglRenderer *renderer,
+                               const char *name)
 {
   return NULL;
 }
