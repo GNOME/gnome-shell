@@ -1275,12 +1275,11 @@ MessageTray.prototype = {
         this._summaryMotionId = 0;
 
         this._summaryBoxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
-                                                           { reactive: true,
-                                                             track_hover: true });
+                                                            { reactive: true,
+                                                              track_hover: true });
         this._summaryBoxPointer.actor.style_class = 'summary-boxpointer';
-        this.actor.add_actor(this._summaryBoxPointer.actor);
-        this._summaryBoxPointer.actor.lower_bottom();
         this._summaryBoxPointer.actor.hide();
+        Main.chrome.addActor(this._summaryBoxPointer.actor, { visibleInFullscreen: true });
 
         this._summaryBoxPointerItem = null;
         this._summaryBoxPointerContentUpdatedId = 0;
@@ -1332,7 +1331,6 @@ MessageTray.prototype = {
 
         Main.chrome.addActor(this.actor, { visibleInFullscreen: true });
         Main.chrome.trackActor(this._notificationBin);
-        Main.chrome.trackActor(this._summaryBoxPointer.actor);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
 
@@ -1532,7 +1530,7 @@ MessageTray.prototype = {
         if (!this._locked)
             return;
         this._locked = false;
-        this._pointerInTray = this.actor.hover && !this._summaryBoxPointer.bin.hover;
+        this._pointerInTray = this.actor.hover;
         this._updateState();
     },
 
@@ -1718,13 +1716,6 @@ MessageTray.prototype = {
             // the tray yet. We need to check for this case because sometimes _onTrayHoverChanged() gets called
             // multiple times while this.actor.hover is true.
             if (this._useLongerTrayLeftTimeout && !this._trayLeftTimeoutId)
-                return;
-
-            // Don't do anything if the mouse is over the summary notification as this should be considered as
-            // leaving the tray. The tray is locked when the summary notification is visible anyway, but we
-            // should treat the mouse being over the summary notification as the tray being left for collapsing
-            // any expanded summary item other than the one related to the notification.
-            if (this._summaryBoxPointer.bin.hover)
                 return;
 
             this._useLongerTrayLeftTimeout = false;

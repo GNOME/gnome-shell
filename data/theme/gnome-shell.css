@@ -1045,6 +1045,7 @@ StTooltip StLabel {
     -arrow-border-color: #a5a5a5;
     -arrow-base: 24px;
     -arrow-rise: 11px;
+    color: white;
 }
 
 .summary-boxpointer #notification {
