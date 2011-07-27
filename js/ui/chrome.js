@@ -289,6 +289,11 @@ Chrome.prototype = {
 
         for (let i = windows.length - 1; i > -1; i--) {
             let window = windows[i];
+
+            // Skip minimized windows
+            if (!window.showing_on_its_workspace())
+                continue;
+
             let layer = window.get_meta_window().get_layer();
 
             if (layer == Meta.StackLayer.FULLSCREEN) {
