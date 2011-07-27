@@ -1,3 +1,29 @@
+3.1.4
+=====
+* Use better, much more subtle shadow definitions [Jakub; #649374]
+* Add the ability to use named GTK+ colors in theme files as
+  gtk:custom(name,fallback) [Florian; #648709]
+* Port from GdkColor to GdkRGBA and from GtkStyle to GtkStyleContext
+  [Florian; #650586]
+* Try to fix window bindings using the Super key [Owen; #624869]
+* Update to using more modern Cogl and Clutter APIs
+  [Adel, Emmanuele, Neil; #654551 #654729 #654730 #655064]
+* Fix for srcdir != builddir builds [Thierry; #624910]
+* Make handling of focus appearance for attached dialogs more robust
+  [Dan; #647712]
+* Misc bug fixes
+  [Dan, Florian, Jasper, Owen, Rui; #642957 #649374 #650661 #654489 #654539]
+
+Contributors:
+ Emmanuele Bassi, Adel Gadllah, Rui Matos, Florian Müllner, Neil Roberts,
+ Jasper St. Pierre, Jakub Steiner, Owen Taylor
+
+Translations:
+ Ihar Hrachyshka [be], Jorge González, Daniel Mustieles [es],
+ Fran Dieguez [gl], Yaron Shahrabani [he], Takeshi Aihana [ja],
+ Kjartan Maraas [nb], Rudolfs Mazurs [lv], Matej Urbančič [sl],
+ Abduxukur Abdurixit [ug], Nguyễn Thái Ngọc Duy [vi]
+
 3.1.3.1
 =======
 * Back API version down to "3.0" - the change to Meta-3.1.gir
