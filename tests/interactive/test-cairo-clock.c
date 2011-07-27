@@ -43,7 +43,6 @@ draw_clock (ClutterCairoTexture *canvas,
 
   /* the minutes hand */
   clutter_cairo_set_source_color (cr, CLUTTER_COLOR_DarkChameleon);
-  cairo_set_source_rgba (cr, 0.2, 0.2, 1, 0.6);
   cairo_move_to (cr, 0, 0);
   cairo_line_to (cr, sinf (minutes) * 0.4, -cosf (minutes) * 0.4);
   cairo_stroke (cr);
