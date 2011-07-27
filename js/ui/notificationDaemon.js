@@ -461,9 +461,11 @@ Source.prototype = {
 
     _onNameVanished: function() {
         // Destroy the notification source when its sender is removed from DBus.
+        // Only do so if this.app is set to avoid removing "notify-send" sources, senders
+        // of which аre removed from DBus immediately.
         // Sender being removed from DBus would normally result in a tray icon being removed,
         // so allow the code path that handles the tray icon being removed to handle that case.
-        if (!this.trayIcon)
+        if (!this.trayIcon && this.app)
             this.destroy();
     },
 
