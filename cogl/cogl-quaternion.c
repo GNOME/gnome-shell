@@ -121,7 +121,10 @@ void
 cogl_quaternion_init_from_array (CoglQuaternion *quaternion,
                                  const float *array)
 {
-  memcpy (&quaternion->x, array, sizeof (float) * 4);
+  quaternion->w = array[0];
+  quaternion->x = array[1];
+  quaternion->y = array[2];
+  quaternion->z = array[3];
 }
 
 void
@@ -389,8 +392,8 @@ cogl_quaternion_get_rotation_axis (const CoglQuaternion *quaternion,
   one_over_sin_angle_over_2 = 1.0f / sqrtf (sin_half_angle_sqr);
 
   vector->x = quaternion->x * one_over_sin_angle_over_2;
-  vector->x = quaternion->x * one_over_sin_angle_over_2;
-  vector->x = quaternion->x * one_over_sin_angle_over_2;
+  vector->y = quaternion->y * one_over_sin_angle_over_2;
+  vector->z = quaternion->z * one_over_sin_angle_over_2;
 }
 
 void
