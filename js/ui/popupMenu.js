@@ -717,7 +717,8 @@ PopupSwitchMenuItem.prototype = {
         this.addActor(this.label);
 
         this._statusBin = new St.Bin({ x_align: St.Align.END });
-        this.addActor(this._statusBin, { align: St.Align.END });
+        this.addActor(this._statusBin,
+                      { expand: true, span: -1, align: St.Align.END });
 
         this._statusLabel = new St.Label({ text: '',
                                            style_class: 'popup-inactive-menu-item'
