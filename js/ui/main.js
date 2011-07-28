@@ -421,6 +421,19 @@ function loadTheme() {
 }
 
 /**
+ * notify:
+ * @msg: A message
+ * @details: Additional information
+ */
+function notify(msg, details) {
+    let source = new MessageTray.SystemNotificationSource();
+    messageTray.add(source);
+    let notification = new MessageTray.Notification(source, msg, details);
+    notification.setTransient(true);
+    source.notify(notification);
+}
+
+/**
  * notifyError:
  * @msg: An error message
  * @details: Additional information
@@ -434,11 +447,7 @@ function notifyError(msg, details) {
     else
         log("error: " + msg)
 
-    let source = new MessageTray.SystemNotificationSource();
-    messageTray.add(source);
-    let notification = new MessageTray.Notification(source, msg, details);
-    notification.setTransient(true);
-    source.notify(notification);
+    notify(msg, details);
 }
 
 /**
