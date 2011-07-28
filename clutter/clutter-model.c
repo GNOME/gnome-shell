@@ -1980,17 +1980,27 @@ clutter_model_iter_init (ClutterModelIter *self)
  *  Public functions
  */
 
+static inline void
+clutter_model_iter_set_value_internal (ClutterModelIter *iter,
+                                       guint             column,
+                                       const GValue     *value)
+{
+  ClutterModelIterClass *klass;
+
+  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
+  if (klass && klass->set_value)
+    klass->set_value (iter, column, value);
+}
+
 static void
 clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
                                         va_list           args)
 {
-  ClutterModel *model;
-  ClutterModelIterPrivate *priv;
+  ClutterModelIterPrivate *priv = iter->priv;
+  ClutterModel *model = priv->model;
   guint column = 0;
   gboolean sort = FALSE;
   
-  priv = iter->priv;
-  model = priv->model;
   g_assert (CLUTTER_IS_MODEL (model));
 
   column = va_arg (args, gint);
@@ -2002,6 +2012,7 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
     {
       GValue value = { 0, };
       gchar *error = NULL;
+      GType col_type;
 
       if (column < 0 || column >= clutter_model_get_n_columns (model))
         { 
@@ -2010,9 +2021,10 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
                      G_STRLOC, column);
           break;
         }
-      g_value_init (&value, clutter_model_get_column_type (model, column));
 
-      G_VALUE_COLLECT (&value, args, 0, &error);
+      col_type = clutter_model_get_column_type (model, column);
+
+      G_VALUE_COLLECT_INIT (&value, col_type, args, 0, &error);
       if (error)
         {
           g_warning ("%s: %s", G_STRLOC, error);
@@ -2022,7 +2034,7 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
           break;
         }
 
-      clutter_model_iter_set_value (iter, column, &value);
+      clutter_model_iter_set_value_internal (iter, column, &value);
       
       g_value_unset (&value);
       
@@ -2035,6 +2047,17 @@ clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
   priv->ignore_sort = FALSE;
   if (sort)
     clutter_model_resort (model);
+}
+
+static void inline
+clutter_model_iter_emit_row_changed (ClutterModelIter *iter)
+{
+  ClutterModelIterPrivate *priv = iter->priv;
+  ClutterModel *model = priv->model;
+
+  g_assert (CLUTTER_IS_MODEL (model));
+
+  g_signal_emit (model, model_signals[ROW_CHANGED], 0, iter);
 }
 
 /**
@@ -2051,18 +2074,10 @@ void
 clutter_model_iter_set_valist (ClutterModelIter *iter,
                                va_list           args)
 {
-  ClutterModelIterPrivate *priv;
-  ClutterModel *model;
-
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
 
   clutter_model_iter_set_internal_valist (iter, args);
-
-  priv = iter->priv;
-  model = priv->model;
-  g_assert (CLUTTER_IS_MODEL (model));
-
-  g_signal_emit (model, model_signals[ROW_CHANGED], 0, iter);
+  clutter_model_iter_emit_row_changed (iter);
 }
 
 /**
@@ -2214,10 +2229,10 @@ clutter_model_iter_set (ClutterModelIter *iter,
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
 
   va_start (args, iter);
-  clutter_model_iter_set_valist (iter, args);
+  clutter_model_iter_set_internal_valist (iter, args);
+  clutter_model_iter_emit_row_changed (iter);
   va_end (args);
 }
-
 
 /**
  * clutter_model_iter_set_value:
@@ -2235,13 +2250,10 @@ clutter_model_iter_set_value (ClutterModelIter *iter,
                               guint             column,
                               const GValue     *value)
 {
-  ClutterModelIterClass *klass;
-
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
-  
-  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
-  if (klass && klass->set_value)
-    klass->set_value (iter, column, value);
+
+  clutter_model_iter_set_value_internal (iter, column, value);
+  clutter_model_iter_emit_row_changed (iter);
 }
 
 /**
