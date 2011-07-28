@@ -22,10 +22,336 @@ const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 
+const WRAP_WIDTH = 150;
+const DIALOG_ICON_SIZE = 64;
+
+const IMStatus = {
+    AVAILABLE: 0,
+    BUSY: 1,
+    HIDDEN: 2,
+    AWAY: 3,
+    IDLE: 4,
+    OFFLINE: 5,
+    LAST: 6
+};
+
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
+
+
+function IMStatusItem(label, iconName) {
+    this._init(label, iconName);
+}
+
+IMStatusItem.prototype = {
+    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+
+    _init: function(label, iconName) {
+        PopupMenu.PopupBaseMenuItem.prototype._init.call(this);
+
+        this.actor.add_style_class_name('status-chooser-status-item');
+
+        this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
+        this.addActor(this._icon);
+
+        if (iconName)
+            this._icon.icon_name = iconName;
+
+        this.label = new St.Label({ text: label });
+        this.addActor(this.label);
+    }
+};
+
+function IMUserNameItem() {
+    this._init();
+}
+
+IMUserNameItem.prototype = {
+    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+
+    _init: function() {
+        PopupMenu.PopupBaseMenuItem.prototype._init.call(this,
+                                                         { reactive: false,
+                                                           style_class: 'status-chooser-user-name' });
+
+        this._wrapper = new Shell.GenericContainer();
+        this._wrapper.connect('get-preferred-width',
+                              Lang.bind(this, this._wrapperGetPreferredWidth));
+        this._wrapper.connect('get-preferred-height',
+                              Lang.bind(this, this._wrapperGetPreferredHeight));
+        this._wrapper.connect('allocate',
+                              Lang.bind(this, this._wrapperAllocate));
+        this.addActor(this._wrapper, { expand: true, span: -1 });
+
+        this.label = new St.Label();
+        this.label.clutter_text.set_line_wrap(true);
+        this._wrapper.add_actor(this.label);
+    },
+
+    _wrapperGetPreferredWidth: function(actor, forHeight, alloc) {
+        [alloc.min_size, alloc.natural_size] = this.label.get_preferred_width(-1);
+        if (alloc.natural_size > WRAP_WIDTH)
+            alloc.natural_size = WRAP_WIDTH;
+    },
+
+    _wrapperGetPreferredHeight: function(actor, forWidth, alloc) {
+        let minWidth, natWidth;
+        [alloc.min_size, alloc.natural_size] = this.label.get_preferred_height(forWidth);
+        [minWidth, natWidth] = this.label.get_preferred_width(-1);
+        if (natWidth > WRAP_WIDTH) {
+            alloc.min_size *= 2;
+            alloc.natural_size *= 2;
+        }
+    },
+
+    _wrapperAllocate: function(actor, box, flags) {
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+        this.label.allocate(box, flags);
+    }
+};
+
+function IMStatusChooserItem() {
+    this._init();
+}
+
+IMStatusChooserItem.prototype = {
+    __proto__: PopupMenu.PopupBaseMenuItem.prototype,
+
+    _init: function() {
+        PopupMenu.PopupBaseMenuItem.prototype._init.call (this,
+                                                          { reactive: false,
+                                                            style_class: 'status-chooser' });
+
+        this._iconBin = new St.Button({ style_class: 'status-chooser-user-icon' });
+        this.addActor(this._iconBin);
+
+        this._iconBin.connect('clicked', Lang.bind(this,
+            function() {
+                this.activate();
+            }));
+
+        this._section = new PopupMenu.PopupMenuSection();
+        this.addActor(this._section.actor);
+
+        this._name = new IMUserNameItem();
+        this._section.addMenuItem(this._name);
+
+        this._combo = new PopupMenu.PopupComboBoxMenuItem({ style_class: 'status-chooser-combo' });
+        this._section.addMenuItem(this._combo);
+
+        let item;
+
+        item = new IMStatusItem(_("Available"), 'user-available');
+        this._combo.addMenuItem(item, IMStatus.AVAILABLE);
+
+        item = new IMStatusItem(_("Busy"), 'user-busy');
+        this._combo.addMenuItem(item, IMStatus.BUSY);
+
+        item = new IMStatusItem(_("Hidden"), 'user-invisible');
+        this._combo.addMenuItem(item, IMStatus.HIDDEN);
+
+        item = new IMStatusItem(_("Away"), 'user-away');
+        this._combo.addMenuItem(item, IMStatus.AWAY);
+
+        item = new IMStatusItem(_("Idle"), 'user-idle');
+        this._combo.addMenuItem(item, IMStatus.IDLE);
+
+        item = new IMStatusItem(_("Unavailable"), 'user-offline');
+        this._combo.addMenuItem(item, IMStatus.OFFLINE);
+
+        this._combo.connect('active-item-changed',
+                            Lang.bind(this, this._changeIMStatus));
+
+        this._presence = new GnomeSession.Presence();
+        this._presence.getStatus(Lang.bind(this, this._sessionStatusChanged));
+        this._presence.connect('StatusChanged',
+                               Lang.bind(this, this._sessionStatusChanged));
+
+        this._previousPresence = undefined;
+
+        this._accountMgr = Tp.AccountManager.dup()
+        this._accountMgr.connect('most-available-presence-changed',
+                                 Lang.bind(this, this._IMStatusChanged));
+        this._accountMgr.prepare_async(null, Lang.bind(this,
+            function(mgr) {
+                let [presence, s, msg] = mgr.get_most_available_presence();
+
+                this._previousPresence = presence;
+                this._IMStatusChanged(mgr, presence, s, msg);
+            }));
+
+        this._gdm = Gdm.UserManager.ref_default();
+        this._gdm.queue_load();
+
+        this._user = this._gdm.get_user(GLib.get_user_name());
+
+        this._userLoadedId = this._user.connect('notify::is-loaded',
+                                                Lang.bind(this,
+                                                          this._updateUser));
+        this._userChangedId = this._user.connect('changed',
+                                                 Lang.bind(this,
+                                                           this._updateUser));
+    },
+
+    // Override getColumnWidths()/setColumnWidths() to make the item
+    // independent from the overall column layout of the menu
+    getColumnWidths: function() {
+        return [];
+    },
+
+    setColumnWidths: function(widths) {
+        this._columnWidths = PopupMenu.PopupBaseMenuItem.prototype.getColumnWidths.call(this);
+        let sectionWidths = this._section.getColumnWidths();
+        this._section.setColumnWidths(sectionWidths);
+    },
+
+    _updateUser: function() {
+        let iconFile = null;
+        if (this._user.is_loaded) {
+            this._name.label.set_text(this._user.get_real_name());
+            iconFile = this._user.get_icon_file();
+            if (!GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+                iconFile = null;
+        } else {
+            this._name.label.set_text("");
+        }
+
+        if (iconFile)
+            this._setIconFromFile(iconFile);
+        else
+            this._setIconFromName('avatar-default');
+    },
+
+    _setIconFromFile: function(iconFile) {
+        this._iconBin.set_style('background-image: url("' + iconFile + '");');
+    },
+
+    _setIconFromName: function(iconName) {
+        this._iconBin.set_style(null);
+
+        if (iconName != null) {
+            let textureCache = St.TextureCache.get_default();
+            let icon = textureCache.load_icon_name(this._iconBin.get_theme_node(),
+                                                   iconName,
+                                                   St.IconType.SYMBOLIC,
+                                                   DIALOG_ICON_SIZE);
+
+            this._iconBin.child = icon;
+            this._iconBin.show();
+        } else {
+            this._iconBin.child = null;
+            this._iconBin.hide();
+        }
+    },
+
+    _statusForPresence: function(presence) {
+        switch(presence) {
+            case Tp.ConnectionPresenceType.AVAILABLE:
+                return _("Available");
+            case Tp.ConnectionPresenceType.BUSY:
+                return _("Busy");
+            case Tp.ConnectionPresenceType.OFFLINE:
+                return _("Unavailable");
+            case Tp.ConnectionPresenceType.HIDDEN:
+                return _("Hidden");
+            case Tp.ConnectionPresenceType.AWAY:
+                return _("Away");
+            case Tp.ConnectionPresenceType.EXTENDED_AWAY:
+                return _("Idle");
+            default:
+                return _("Unknown");
+        }
+    },
+
+    _IMStatusChanged: function(accountMgr, presence, status, message) {
+        if (presence == Tp.ConnectionPresenceType.AVAILABLE)
+            this._presence.setStatus(GnomeSession.PresenceStatus.AVAILABLE);
+
+        if (!this._expectedPresence || presence != this._expectedPresence)
+            this._previousPresence = presence;
+        else
+            this._expectedPresence = undefined;
+
+        let activatedItem;
+
+        if (presence == Tp.ConnectionPresenceType.AVAILABLE)
+            activatedItem = IMStatus.AVAILABLE;
+        else if (presence == Tp.ConnectionPresenceType.BUSY)
+            activatedItem = IMStatus.BUSY;
+        else if (presence == Tp.ConnectionPresenceType.HIDDEN)
+            activatedItem = IMStatus.HIDDEN;
+        else if (presence == Tp.ConnectionPresenceType.AWAY)
+            activatedItem = IMStatus.AWAY;
+        else if (presence == Tp.ConnectionPresenceType.EXTENDED_AWAY)
+            activatedItem = IMStatus.IDLE;
+        else
+            activatedItem = IMStatus.OFFLINE;
+
+        this._combo.setActiveItem(activatedItem);
+        for (let i = 0; i < IMStatus.LAST; i++) {
+            if (i == IMStatus.AVAILABLE || i == IMStatus.OFFLINE)
+                continue;   // always visible
+
+            this._combo.setItemVisible(i, i == activatedItem);
+        }
+    },
+
+    _changeIMStatus: function(menuItem, id) {
+        let [presence, s, msg] = this._accountMgr.get_most_available_presence();
+        let newPresence, status;
+
+        if (id == IMStatus.AVAILABLE) {
+            newPresence = Tp.ConnectionPresenceType.AVAILABLE;
+        } else if (id == IMStatus.OFFLINE) {
+            newPresence = Tp.ConnectionPresenceType.OFFLINE;
+        } else
+            return;
+
+        status = this._statusForPresence(newPresence);
+        msg = msg ? msg : "";
+        this._accountMgr.set_all_requested_presences(newPresence, status, msg);
+    },
+
+    _sessionStatusChanged: function(sessionPresence, sessionStatus) {
+        let [presence, s, msg] = this._accountMgr.get_most_available_presence();
+        let newPresence, status;
+
+        if (sessionStatus == GnomeSession.PresenceStatus.AVAILABLE) {
+            newPresence = this._previousPresence;
+        } else if (sessionStatus == GnomeSession.PresenceStatus.BUSY) {
+            // Only change presence if the current one is "more present" than
+            // busy, or if coming back from idle
+            if (presence == Tp.ConnectionPresenceType.AVAILABLE ||
+                presence == Tp.ConnectionPresenceType.EXTENDED_AWAY) {
+                newPresence = Tp.ConnectionPresenceType.BUSY;
+            } else {
+                return;
+            }
+        } else if (sessionStatus == GnomeSession.PresenceStatus.IDLE) {
+            // Only change presence if the current one is "more present" than
+            // idle
+            if (presence != Tp.ConnectionPresenceType.OFFLINE)
+                newPresence = Tp.ConnectionPresenceType.EXTENDED_AWAY;
+            else
+                return;
+        } else {
+            return;
+        }
+
+        if (newPresence == undefined)
+            return;
+
+        status = this._statusForPresence(newPresence);
+        msg = msg ? msg : "";
+
+        this._expectedPresence = newPresence;
+        this._accountMgr.set_all_requested_presences(newPresence, status, msg);
+    }
+};
+
 
 function UserMenuButton() {
     this._init();
@@ -46,7 +372,6 @@ UserMenuButton.prototype = {
 
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
-        this._presenceItems = {};
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
 
@@ -60,13 +385,30 @@ UserMenuButton.prototype = {
         box.add(this._iconBox, { y_align: St.Align.MIDDLE, y_fill: false });
 
         let textureCache = St.TextureCache.get_default();
-        this._availableIcon = new St.Icon({ icon_name: 'user-available', style_class: 'popup-menu-icon' });
-        this._busyIcon = new St.Icon({ icon_name: 'user-busy', style_class: 'popup-menu-icon' });
-        this._invisibleIcon = new St.Icon({ icon_name: 'user-invisible', style_class: 'popup-menu-icon' });
-        this._idleIcon = new St.Icon({ icon_name: 'user-idle', style_class: 'popup-menu-icon' });
+        this._offlineIcon = new St.Icon({ icon_name: 'user-offline',
+                                          style_class: 'popup-menu-icon' });
+        this._availableIcon = new St.Icon({ icon_name: 'user-available',
+                                            style_class: 'popup-menu-icon' });
+        this._busyIcon = new St.Icon({ icon_name: 'user-busy',
+                                       style_class: 'popup-menu-icon' });
+        this._invisibleIcon = new St.Icon({ icon_name: 'user-invisible',
+                                            style_class: 'popup-menu-icon' });
+        this._awayIcon = new St.Icon({ icon_name: 'user-away',
+                                       style_class: 'popup-menu-icon' });
+        this._idleIcon = new St.Icon({ icon_name: 'user-idle',
+                                       style_class: 'popup-menu-icon' });
 
-        this._presence.connect('StatusChanged', Lang.bind(this, this._updatePresenceIcon));
-        this._presence.getStatus(Lang.bind(this, this._updatePresenceIcon));
+        this._presence.connect('StatusChanged',
+                               Lang.bind(this, this._updateSwitch));
+        this._presence.getStatus(Lang.bind(this, this._updateSwitch));
+
+        this._account_mgr.connect('most-available-presence-changed',
+                                  Lang.bind(this, this._updatePresenceIcon));
+        this._account_mgr.prepare_async(null, Lang.bind(this,
+            function(mgr) {
+                let [presence, s, msg] = mgr.get_most_available_presence();
+                this._updatePresenceIcon(mgr, presence, s, msg);
+            }));
 
         this._name = new St.Label();
         box.add(this._name, { y_align: St.Align.MIDDLE, y_fill: false });
@@ -110,9 +452,9 @@ UserMenuButton.prototype = {
 
     _updateUserName: function() {
         if (this._user.is_loaded)
-          this._name.set_text(this._user.get_real_name());
+            this._name.set_text(this._user.get_real_name());
         else
-          this._name.set_text("");
+            this._name.set_text("");
     },
 
     _updateSwitchUser: function() {
@@ -171,38 +513,43 @@ UserMenuButton.prototype = {
         }
     },
 
-    _updatePresenceIcon: function(presence, status) {
-        if (status == GnomeSession.PresenceStatus.AVAILABLE)
-            this._iconBox.child = this._availableIcon;
-        else if (status == GnomeSession.PresenceStatus.BUSY)
-            this._iconBox.child = this._busyIcon;
-        else if (status == GnomeSession.PresenceStatus.INVISIBLE)
-            this._iconBox.child = this._invisibleIcon;
-        else
-            this._iconBox.child = this._idleIcon;
+    _updateSwitch: function(presence, status) {
+        let active = status == GnomeSession.PresenceStatus.BUSY;
+        this._dontDisturbSwitch.setToggleState(active);
+    },
 
-        for (let itemStatus in this._presenceItems)
-            this._presenceItems[itemStatus].setShowDot(itemStatus == status);
+    _updatePresenceIcon: function(accountMgr, presence, status, message) {
+        if (presence == Tp.ConnectionPresenceType.AVAILABLE)
+            this._iconBox.child = this._availableIcon;
+        else if (presence == Tp.ConnectionPresenceType.BUSY)
+            this._iconBox.child = this._busyIcon;
+        else if (presence == Tp.ConnectionPresenceType.HIDDEN)
+            this._iconBox.child = this._invisibleIcon;
+        else if (presence == Tp.ConnectionPresenceType.AWAY)
+            this._iconBox.child = this._awayIcon;
+        else if (presence == Tp.ConnectionPresenceType.EXTENDED_AWAY)
+            this._iconBox.child = this._idleIcon;
+        else
+            this._iconBox.child = this._offlineIcon;
     },
 
     _createSubMenu: function() {
         let item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Available"), 'user-available');
-        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
+        item = new IMStatusChooserItem();
+        item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
-        this._presenceItems[GnomeSession.PresenceStatus.AVAILABLE] = item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'user-busy');
-        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
+        item = new PopupMenu.PopupSwitchMenuItem(_("Do Not Disturb"));
+        item.connect('activate', Lang.bind(this, this._updatePresenceStatus));
         this.menu.addMenuItem(item);
-        this._presenceItems[GnomeSession.PresenceStatus.BUSY] = item;
+        this._dontDisturbSwitch = item;
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("My Account"));
-        item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
+        item = new PopupMenu.PopupMenuItem(_("Online Accounts"));
+        item.connect('activate', Lang.bind(this, this._onOnlineAccountsActivate));
         this.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupMenuItem(_("System Settings"));
@@ -238,16 +585,22 @@ UserMenuButton.prototype = {
         this._updateSuspendOrPowerOff();
     },
 
-    _setPresenceStatus: function(item, event, status) {
+    _updatePresenceStatus: function(item, event) {
+        let status = item.state ? GnomeSession.PresenceStatus.BUSY
+                                : GnomeSession.PresenceStatus.AVAILABLE;
         this._presence.setStatus(status);
-
-        this._setIMStatus(status);
     },
 
     _onMyAccountActivate: function() {
         Main.overview.hide();
         let app = Shell.AppSystem.get_default().lookup_setting('gnome-user-accounts-panel.desktop');
         app.activate();
+    },
+
+    _onOnlineAccountsActivate: function() {
+        Main.overview.hide();
+        let app = Shell.AppSystem.get_default().lookup_setting('gnome-online-accounts-panel.desktop');
+        app.activate(-1);
     },
 
     _onPreferencesActivate: function() {
@@ -287,31 +640,5 @@ UserMenuButton.prototype = {
         } else {
             this._session.ShutdownRemote();
         }
-    },
-
-    _setIMStatus: function(session_status) {
-        let [presence_type, presence_status, msg] = this._account_mgr.get_most_available_presence();
-        let type, status;
-
-        // We change the IM presence only if there are connected accounts
-        if (presence_type == Tp.ConnectionPresenceType.UNSET ||
-            presence_type == Tp.ConnectionPresenceType.OFFLINE ||
-            presence_type == Tp.ConnectionPresenceType.UNKNOWN ||
-            presence_type == Tp.ConnectionPresenceType.ERROR)
-          return;
-
-        if (session_status == GnomeSession.PresenceStatus.AVAILABLE) {
-            type = Tp.ConnectionPresenceType.AVAILABLE;
-            status = "available";
-        }
-        else if (session_status == GnomeSession.PresenceStatus.BUSY) {
-            type = Tp.ConnectionPresenceType.BUSY;
-            status = "busy";
-        }
-        else {
-          return;
-        }
-
-        this._account_mgr.set_all_requested_presences(type, status, msg);
     }
 };

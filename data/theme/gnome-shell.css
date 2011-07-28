@@ -387,6 +387,49 @@ StTooltip StLabel {
     spacing: 4px;
 }
 
+.status-chooser {
+    spacing: .4em;
+}
+
+.status-chooser .popup-menu-item,
+.status-chooser-combo .popup-menu-item {
+    padding: .4em;
+}
+
+.status-chooser-user-icon {
+    border: 2px solid #8b8b8b;
+    border-radius: 5px;
+    width: 48pt;
+    height: 48pt;
+}
+
+.status-chooser-user-icon:hover {
+    border: 2px solid #bbbbbb;
+}
+
+.status-chooser-user-name {
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.status-chooser-combo {
+    border: 1px solid transparent;
+}
+
+.status-chooser-combo.popup-combo-menu {
+    background-color: rgba(0,0,0,0.7);
+    padding: .4em 0em;
+    border-radius: 4px;
+    border: 1px solid #5f5f5f;
+    color: #ffffff;
+    font-size: 10.5pt;
+}
+
+.status-chooser-status-item,
+.status-chooser-combo > .popup-combobox-item {
+    spacing: .4em;
+}
+
 #legacyTray {
     spacing: 14px;
     padding-left: 14px;
