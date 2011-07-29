@@ -45,6 +45,8 @@
 
 typedef struct _CoglRendererWgl
 {
+  GModule *gl_module;
+
   /* Function pointers for GLX specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
 
@@ -125,12 +127,32 @@ static CoglFuncPtr
 _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
                                         const char *name)
 {
-  return (CoglFuncPtr) wglGetProcAddress ((LPCSTR) name);
+  CoglRendererWgl *wgl_renderer = renderer->winsys;
+  void *proc = wglGetProcAddress ((LPCSTR) name);
+
+  /* The documentation for wglGetProcAddress implies that it only
+     returns pointers to extension functions so if it fails we'll try
+     resolving the symbol directly from the the GL library */
+  if (proc == NULL)
+    {
+      if (wgl_renderer->gl_module == NULL)
+        wgl_renderer->gl_module = g_module_open ("opengl32", 0);
+
+      if (wgl_renderer->gl_module)
+        g_module_symbol (wgl_renderer->gl_module, name, &proc);
+    }
+
+  return proc;
 }
 
 static void
 _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
+  CoglRendererWgl *wgl_renderer = renderer->winsys;
+
+  if (wgl_renderer->gl_module)
+    g_module_close (wgl_renderer->gl_module);
+
   g_slice_free (CoglRendererWgl, renderer->winsys);
 }
 
