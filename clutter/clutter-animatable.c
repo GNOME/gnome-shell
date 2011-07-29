@@ -224,6 +224,31 @@ clutter_animatable_set_final_state (ClutterAnimatable *animatable,
     g_object_set_property (G_OBJECT (animatable), property_name, value);
 }
 
+/**
+ * clutter_animatable_interpolate_value:
+ * @animatable: a #ClutterAnimatable
+ * @property_name: the name of the property to interpolate
+ * @interval: a #ClutterInterval with the animation range
+ * @progress: the progress to use to interpolate between the
+ *   initial and final values of the @interval
+ * @value: (out): return location for an initialized #GValue
+ *   using the same type of the @interval
+ *
+ * Asks a #ClutterAnimatable implementation to interpolate a
+ * a named property between the initial and final values of
+ * a #ClutterInterval, using @progress as the interpolation
+ * value, and store the result inside @value.
+ *
+ * This function should be used for every property animation
+ * involving #ClutterAnimatable<!-- -->s.
+ *
+ * This function replaces clutter_animatable_animate_property().
+ *
+ * Return value: %TRUE if the interpolation was successful,
+ *   and %FALSE otherwise
+ *
+ * Since: 1.8
+ */
 gboolean
 clutter_animatable_interpolate_value (ClutterAnimatable *animatable,
                                       const gchar       *property_name,
