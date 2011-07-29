@@ -1086,7 +1086,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
 
   for (i = 0; i < n_layers; i++)
     {
-      const char *names[] = {
+      static const char *names[] = {
           "cogl_tex_coord0_in",
           "cogl_tex_coord1_in",
           "cogl_tex_coord2_in",
@@ -1096,8 +1096,13 @@ cogl_polygon (const CoglTextureVertex *vertices,
           "cogl_tex_coord6_in",
           "cogl_tex_coord7_in"
       };
-      char *name = i < 8 ? (char *)names[i] :
-        g_strdup_printf ("cogl_tex_coord%d_in", i);
+      char *allocated_name = NULL;
+      const char *name;
+
+      if (i < 8)
+        name = names[i];
+      else
+        name = allocated_name = g_strdup_printf ("cogl_tex_coord%d_in", i);
 
       attributes[i + 1] = cogl_attribute_new (attribute_buffer,
                                               name,
@@ -1106,6 +1111,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
                                               12 + 8 * i,
                                               2,
                                               COGL_ATTRIBUTE_TYPE_FLOAT);
+
+      g_free (allocated_name);
     }
 
   if (use_color)
@@ -1170,5 +1177,9 @@ cogl_polygon (const CoglTextureVertex *vertices,
 
   if (pipeline != validate_state.original_pipeline)
     cogl_object_unref (pipeline);
-}
 
+  cogl_object_unref (attribute_buffer);
+
+  for (i = 0; i < n_attributes; i++)
+    cogl_object_unref (attributes[i]);
+}
