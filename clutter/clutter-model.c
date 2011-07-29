@@ -2125,7 +2125,6 @@ clutter_model_iter_get_value (ClutterModelIter *iter,
                               guint             column,
                               GValue           *value)
 {
-  ClutterModelIterClass *klass;
   ClutterModel *model;
 
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
