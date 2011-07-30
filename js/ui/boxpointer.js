@@ -180,7 +180,7 @@ BoxPointer.prototype = {
         this.bin.allocate(childBox, flags);
 
         if (this._sourceActor && this._sourceActor.mapped)
-            this._reposition(this._sourceActor, this._gap, this._alignment);
+            this._reposition(this._sourceActor, this._alignment);
     },
 
     _drawBorder: function(area) {
@@ -306,19 +306,18 @@ BoxPointer.prototype = {
         cr.stroke();
     },
 
-    setPosition: function(sourceActor, gap, alignment) {
+    setPosition: function(sourceActor, alignment) {
         // We need to show it now to force an allocation,
         // so that we can query the correct size.
         this.actor.show();
 
         this._sourceActor = sourceActor;
-        this._gap = gap;
         this._alignment = alignment;
 
-        this._reposition(sourceActor, gap, alignment);
+        this._reposition(sourceActor, alignment);
     },
 
-    _reposition: function(sourceActor, gap, alignment) {
+    _reposition: function(sourceActor, alignment) {
         // Position correctly relative to the sourceActor
         let sourceNode = sourceActor.get_theme_node();
         let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
@@ -337,6 +336,9 @@ BoxPointer.prototype = {
         let borderRadius = themeNode.get_length('-arrow-border-radius');
         let margin = (4 * borderRadius + borderWidth + arrowBase);
         let halfMargin = margin / 2;
+
+        let themeNode = this.actor.get_theme_node();
+        let gap = themeNode.get_length('-boxpointer-gap');
 
         let resX, resY;
 

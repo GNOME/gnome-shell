@@ -985,12 +985,11 @@ function PopupMenu() {
 PopupMenu.prototype = {
     __proto__: PopupMenuBase.prototype,
 
-    _init: function(sourceActor, alignment, arrowSide, gap) {
+    _init: function(sourceActor, alignment, arrowSide) {
         PopupMenuBase.prototype._init.call (this, sourceActor, 'popup-menu-content');
 
         this._alignment = alignment;
         this._arrowSide = arrowSide;
-        this._gap = gap;
 
         this._boxPointer = new BoxPointer.BoxPointer(arrowSide,
                                                      { x_fill: true,
@@ -1048,7 +1047,7 @@ PopupMenu.prototype = {
 
         this.isOpen = true;
 
-        this._boxPointer.setPosition(this.sourceActor, this._gap, this._alignment);
+        this._boxPointer.setPosition(this.sourceActor, this._alignment);
         this._boxPointer.show(animate);
 
         this.emit('open-state-changed', true);

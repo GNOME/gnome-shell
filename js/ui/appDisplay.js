@@ -609,7 +609,7 @@ AppIconMenu.prototype = {
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
             side = St.Side.RIGHT;
 
-        PopupMenu.PopupMenu.prototype._init.call(this, source.actor, 0.5, side, 0);
+        PopupMenu.PopupMenu.prototype._init.call(this, source.actor, 0.5, side);
 
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;

@@ -321,6 +321,10 @@ StTooltip StLabel {
     icon-shadow: black 0px 2px 2px;
 }
 
+.panel-menu {
+    -boxpointer-gap: 4px
+}
+
 /* The rounded panel corners we draw don't
  * support transitions, so disable transitions
  * for the buttons at the left/right edges
