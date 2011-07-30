@@ -93,12 +93,12 @@ StTooltip StLabel {
 /* PopupMenu */
 
 .popup-menu-boxpointer {
-    -arrow-border-radius: 9px;
+    -arrow-border-radius: 8px;
     -arrow-background-color: rgba(0,0,0,0.9);
     -arrow-border-width: 2px;
-    -arrow-border-color: #5f5f5f;
-    -arrow-base: 30px;
-    -arrow-rise: 15px;
+    -arrow-border-color: #a5a5a5;
+    -arrow-base: 24px;
+    -arrow-rise: 11px;
 }
 
 .popup-menu {
