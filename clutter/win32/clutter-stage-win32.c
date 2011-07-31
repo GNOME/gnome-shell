@@ -467,7 +467,7 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
       SetWindowLongPtrW (stage_win32->hwnd, 0, (LONG_PTR) stage_win32);
     }
 
-  cogl_onscreen_win32_set_foreign_window (stage_win32->onscreen,
+  cogl_win32_onscreen_set_foreign_window (stage_win32->onscreen,
                                           stage_win32->hwnd);
 
   clutter_vblank = _clutter_backend_win32_get_vblank ();
