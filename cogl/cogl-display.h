@@ -37,7 +37,7 @@
 G_BEGIN_DECLS
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-#include <@COGL_CEX100_LIBGDL_PREFIX@libgdl.h>
+#include <libgdl.h>
 #endif
 
 /**
