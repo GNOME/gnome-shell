@@ -427,6 +427,37 @@ st_container_dispose (GObject *object)
   G_OBJECT_CLASS (st_container_parent_class)->dispose (object);
 }
 
+static gboolean
+st_container_get_paint_volume (ClutterActor *actor,
+                               ClutterPaintVolume *volume)
+{
+  StContainerPrivate *priv = ST_CONTAINER (actor)->priv;
+  GList *l;
+
+  if (!CLUTTER_ACTOR_CLASS (st_container_parent_class)->get_paint_volume (actor, volume))
+    return FALSE;
+
+  if (!clutter_actor_get_clip_to_allocation (actor))
+    {
+      /* Based on ClutterGroup/ClutterBox; include the children's
+       * paint volumes, since they may paint outside our allocation.
+       */
+      for (l = priv->children; l != NULL; l = l->next)
+        {
+          ClutterActor *child = l->data;
+          const ClutterPaintVolume *child_volume;
+
+          child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
+          if (!child_volume)
+            return FALSE;
+
+          clutter_paint_volume_union (volume, child_volume);
+        }
+    }
+
+  return TRUE;
+}
+
 /* filter @children to contain only only actors that overlap @rbox
  * when moving in @direction. (Assuming no transformations.)
  */
@@ -719,12 +750,15 @@ static void
 st_container_class_init (StContainerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   StContainerClass *container_class = ST_CONTAINER_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (StContainerPrivate));
 
   object_class->dispose = st_container_dispose;
+
+  actor_class->get_paint_volume = st_container_get_paint_volume;
 
   widget_class->navigate_focus = st_container_navigate_focus;
 

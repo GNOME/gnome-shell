@@ -231,34 +231,6 @@ st_group_hide_all (ClutterActor *actor)
                              NULL);
 }
 
-/* Based on implementation from clutter-group.c */
-static gboolean
-st_group_get_paint_volume (ClutterActor *actor,
-                            ClutterPaintVolume *volume)
-{
-  GList *l, *children;
-
-  children = st_container_get_children_list (ST_CONTAINER (actor));
-
-  CLUTTER_ACTOR_CLASS (st_group_parent_class)->get_paint_volume (actor, volume);
-
-  for (l = children; l != NULL; l = l->next)
-    {
-      ClutterActor *child = l->data;
-      const ClutterPaintVolume *child_volume;
-
-      /* This gets the paint volume of the child transformed into the
-       * group's coordinate space... */
-      child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
-      if (!child_volume)
-        return FALSE;
-
-      clutter_paint_volume_union (volume, child_volume);
-    }
-
-  return TRUE;
-}
-
 
 static void
 st_group_class_init (StGroupClass *klass)
@@ -269,7 +241,6 @@ st_group_class_init (StGroupClass *klass)
   actor_class->get_preferred_height = st_group_get_preferred_height;
   actor_class->allocate = st_group_allocate;
   actor_class->paint = st_group_paint;
-  actor_class->get_paint_volume = st_group_get_paint_volume;
   actor_class->pick = st_group_pick;
   actor_class->show_all = st_group_show_all;
   actor_class->hide_all = st_group_hide_all;

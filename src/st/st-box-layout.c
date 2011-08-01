@@ -1020,7 +1020,8 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
   gdouble x, y;
 
-  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume);
+  if (!CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume))
+    return FALSE;
 
   /* When scrolled, st_box_layout_apply_transform() includes the scroll offset
    * and affects paint volumes. This is right for our children, but our paint volume

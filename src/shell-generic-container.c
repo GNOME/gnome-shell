@@ -247,34 +247,6 @@ shell_generic_container_finalize (GObject *object)
   G_OBJECT_CLASS (shell_generic_container_parent_class)->finalize (object);
 }
 
-/* Based on implementation from clutter-group.c */
-static gboolean
-shell_generic_container_get_paint_volume (ClutterActor *actor,
-                                          ClutterPaintVolume *volume)
-{
-  GList *l, *children;
-
-  children = st_container_get_children_list (ST_CONTAINER (actor));
-
-  CLUTTER_ACTOR_CLASS (shell_generic_container_parent_class)->get_paint_volume (actor, volume);
-
-  for (l = children; l != NULL; l = l->next)
-    {
-      ClutterActor *child = l->data;
-      const ClutterPaintVolume *child_volume;
-
-      /* This gets the paint volume of the child transformed into the
-       * group's coordinate space... */
-      child_volume = clutter_actor_get_transformed_paint_volume (child, actor);
-      if (!child_volume)
-        return FALSE;
-
-      clutter_paint_volume_union (volume, child_volume);
-    }
-
-  return TRUE;
-}
-
 static void
 shell_generic_container_class_init (ShellGenericContainerClass *klass)
 {
@@ -287,7 +259,6 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
   actor_class->get_preferred_width = shell_generic_container_get_preferred_width;
   actor_class->get_preferred_height = shell_generic_container_get_preferred_height;
   actor_class->allocate = shell_generic_container_allocate;
-  actor_class->get_paint_volume = shell_generic_container_get_paint_volume;
   actor_class->paint = shell_generic_container_paint;
   actor_class->pick = shell_generic_container_pick;
 
