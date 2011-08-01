@@ -35,7 +35,7 @@ struct _StContainerPrivate
   GList *children;
   ClutterActor *first_child;
   ClutterActor *last_child;
-  gboolean block_update_pseude_classes;
+  gboolean block_update_pseudo_classes;
 };
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
@@ -51,7 +51,7 @@ st_container_update_pseudo_classes (StContainer *container)
   ClutterActor *first_child, *last_child;
   StContainerPrivate *priv = container->priv;
 
-  if (priv->block_update_pseude_classes)
+  if (priv->block_update_pseudo_classes)
     return;
 
   first_item = priv->children;
@@ -106,12 +106,12 @@ st_container_destroy_children (StContainer *container)
 {
   StContainerPrivate *priv = container->priv;
 
-  priv->block_update_pseude_classes = TRUE;
+  priv->block_update_pseudo_classes = TRUE;
 
   while (priv->children)
     clutter_actor_destroy (priv->children->data);
 
-  priv->block_update_pseude_classes = FALSE;
+  priv->block_update_pseudo_classes = FALSE;
 
   st_container_update_pseudo_classes (container);
 }
