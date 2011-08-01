@@ -3,6 +3,7 @@ data/org.gnome.shell.gschema.xml.in
 js/misc/util.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
+js/ui/autorunManager.js
 js/ui/calendar.js
 js/ui/dash.js
 js/ui/dateMenu.js
@@ -10,6 +11,7 @@ js/ui/docDisplay.js
 js/ui/endSessionDialog.js
 js/ui/lookingGlass.js
 js/ui/messageTray.js
+js/ui/notificationDaemon.js
 js/ui/overview.js
 js/ui/panel.js
 js/ui/placeDisplay.js
@@ -17,19 +19,18 @@ js/ui/polkitAuthenticationAgent.js
 js/ui/popupMenu.js
 js/ui/runDialog.js
 js/ui/searchDisplay.js
-js/ui/statusMenu.js
+js/ui/shellMountOperation.js
 js/ui/status/accessibility.js
 js/ui/status/bluetooth.js
 js/ui/status/keyboard.js
+js/ui/statusMenu.js
 js/ui/status/network.js
 js/ui/status/power.js
 js/ui/status/volume.js
 js/ui/telepathyClient.js
 js/ui/viewSelector.js
 js/ui/windowAttentionHandler.js
-js/ui/workspacesView.js
 src/gvc/gvc-mixer-control.c
-src/gdmuser/gdm-user.c
 src/main.c
 src/shell-app.c
 src/shell-app-system.c
