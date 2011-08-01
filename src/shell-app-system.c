@@ -347,6 +347,11 @@ reread_menus (ShellAppSystem *self)
           g_warning ("Failed to load apps: %s", error->message);
           return;
         }
+      if (!gmenu_tree_load_sync (self->priv->settings_tree, &error))
+        {
+          g_warning ("Failed to load settings: %s", error->message);
+          return;
+        }
       self->priv->loaded = TRUE;
     }
 
