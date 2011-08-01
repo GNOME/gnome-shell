@@ -674,7 +674,7 @@ NMDevice.prototype = {
         let dev_product = this.device.get_product();
         let dev_vendor = this.device.get_vendor();
         if (!dev_product || !dev_vendor)
-	    return null;
+	    return '';
 
         let product = Util.fixupPCIDescription(dev_product);
         let vendor = Util.fixupPCIDescription(dev_vendor);
