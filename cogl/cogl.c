@@ -826,6 +826,10 @@ cogl_frustum (float        left,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* XXX: The projection matrix isn't currently tracked in the journal
+   * so we need to flush all journaled primitives first... */
+  cogl_flush ();
+
   _cogl_matrix_stack_load_identity (projection_stack);
 
   _cogl_matrix_stack_frustum (projection_stack,
@@ -850,6 +854,10 @@ cogl_ortho (float left,
     _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* XXX: The projection matrix isn't currently tracked in the journal
+   * so we need to flush all journaled primitives first... */
+  cogl_flush ();
 
   cogl_matrix_init_identity (&ortho);
   cogl_matrix_ortho (&ortho, left, right, bottom, top, z_near, z_far);
@@ -888,10 +896,13 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
+
+  /* XXX: The projection matrix isn't currently tracked in the journal
+   * so we need to flush all journaled primitives first... */
+  cogl_flush ();
+
   _cogl_matrix_stack_set (projection_stack, matrix);
 
-  /* FIXME: Update the inverse projection matrix!! Presumably use
-   * of clip planes must currently be broken if this API is used. */
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
