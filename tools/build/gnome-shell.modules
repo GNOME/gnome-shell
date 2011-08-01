@@ -320,6 +320,7 @@
         <dep package="dconf"/>
         <dep package="gconf"/>
         <dep package="glib"/>
+        <dep package="gnome-menus"/>
         <dep package="gnome-desktop-3"/>
         <dep package="gsettings-desktop-schemas"/>
         <dep package="gnome-icon-theme"/>
@@ -376,6 +377,14 @@
     <dependencies>
       <dep package="glib"/>
       <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-menus">
+    <branch repo="git.gnome.org" module="gnome-menus"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
     </dependencies>
   </autotools>
 
