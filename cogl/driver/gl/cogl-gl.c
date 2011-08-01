@@ -209,6 +209,10 @@ _cogl_gl_update_features (CoglContext *context,
       _cogl_check_extension ("GL_EXT_pixel_buffer_object", gl_extensions))
     flags |= COGL_FEATURE_PBOS;
 
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
+      _cogl_check_extension ("GL_ARB_point_sprite", gl_extensions))
+    flags |= COGL_FEATURE_POINT_SPRITE;
+
   if (context->glGenPrograms)
     flags |= COGL_FEATURE_SHADERS_ARBFP;
 
