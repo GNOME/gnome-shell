@@ -738,18 +738,18 @@ ChatNotification.prototype = {
              If applicable, replace %X with a strftime format valid for your
              locale, without seconds. */
             // xgettext:no-c-format
-            format = _("Sent at %X on %A");
-
-        // FIXME: The next two are stolen from calendar.js with the comment to avoid
-        // a string-freeze break. They should be replaced with better strings
-        // with 'Sent at', appropriate context and appropriate translator comment.
+            format = _("Sent at <b>%X</b> on <b>%A</b>");
 
         } else if (date.getYear() == now.getYear()) {
-            /* Translators: Shown on calendar heading when selected day occurs on current year */
-            format = C_("calendar heading", "%A, %B %d");
+            /* Translators: this is a time format in the style of "Wednesday, May 25",
+             shown when you get a chat message in the same year. */
+            // xgettext:no-c-format
+            format = _("Sent on <b>%A</b>, <b>%B %d</b>");
         } else {
-            /* Translators: Shown on calendar heading when selected day occurs on different year */
-            format = C_("calendar heading", "%A, %B %d, %Y");
+            /* Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+             shown when you get a chat message in a different year. */
+            // xgettext:no-c-format
+            format = _("Sent on <b>%A</b>, <b>%B %d</b>, %Y");
         }
 
         return date.toLocaleFormat(format);
