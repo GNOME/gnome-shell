@@ -56,10 +56,13 @@ mutter-mag
 mutter-message
 mutter-window-demo
 focus-window
+test-attached
 test-gravity
 test-resizing
 test-size-hints
-wm-tester
+# We can't say just "wm-tester" here or it will ignore the directory
+# rather than the binary
+src/wm-tester/wm-tester
 INSTALL
 mkinstalldirs
 src/mutter-enum-types.[ch]

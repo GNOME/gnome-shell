@@ -16,10 +16,14 @@ test_resizing_SOURCES=				\
 test_size_hints_SOURCES=			\
 	test-size-hints.c
 
-noinst_PROGRAMS=wm-tester test-gravity test-resizing focus-window test-size-hints
+test_attached_SOURCES=				\
+	test-attached.c
+
+noinst_PROGRAMS=wm-tester test-gravity test-resizing focus-window test-size-hints test-attached
 
 wm_tester_LDADD= @MUTTER_LIBS@
 test_gravity_LDADD= @MUTTER_LIBS@
 test_resizing_LDADD= @MUTTER_LIBS@
 test_size_hints_LDADD= @MUTTER_LIBS@
 focus_window_LDADD= @MUTTER_LIBS@
+test_attached_LDADD= @MUTTER_LIBS@
