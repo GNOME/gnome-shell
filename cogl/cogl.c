@@ -136,7 +136,7 @@ cogl_check_extension (const char *name, const char *ext)
 void
 cogl_clear (const CoglColor *color, unsigned long buffers)
 {
-  _cogl_framebuffer_clear (cogl_get_draw_framebuffer (), buffers, color);
+  cogl_framebuffer_clear (cogl_get_draw_framebuffer (), buffers, color);
 }
 
 static gboolean

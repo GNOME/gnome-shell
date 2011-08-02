@@ -288,12 +288,12 @@ _cogl_framebuffer_dirty (CoglFramebuffer *framebuffer)
 }
 
 void
-_cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
-                           unsigned long buffers,
-                           float red,
-                           float green,
-                           float blue,
-                           float alpha)
+cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
+                          unsigned long buffers,
+                          float red,
+                          float green,
+                          float blue,
+                          float alpha)
 {
   CoglClipStack *clip_stack = _cogl_framebuffer_get_clip_stack (framebuffer);
   int scissor_x0;
@@ -442,35 +442,23 @@ cleared:
     _cogl_framebuffer_dirty (framebuffer);
 }
 
-/* XXX: We'll need to consider if this API is a good approach for the
- * planned, public, CoglFramebuffer API. A framebuffer may have
- * multiple color buffers associated with it and the user may want to
- * only clear a subset of those buffers. Flags aren't a great
- * mechanism for handling this, but I don't think it would be very
- * convenient if you had to explicitly enumerate the individual
- * ancillary buffers to clear them.
- *
- * My current expectation is that we'll keep this flag based API but
- * also add a way to enumerate the individual color buffers for
- * clearing individually.
- *
- * Note: the 'buffers' and 'color' arguments were switched around on
+/* Note: the 'buffers' and 'color' arguments were switched around on
  * purpose compared to the original cogl_clear API since it was odd
  * that you would be expected to specify a color before even
  * necessarily choosing to clear the color buffer.
  */
 void
-_cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
-                         unsigned long buffers,
-                         const CoglColor *color)
+cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
+                        unsigned long buffers,
+                        const CoglColor *color)
 {
   g_return_if_fail (framebuffer->allocated);
 
-  _cogl_framebuffer_clear4f (framebuffer, buffers,
-                             cogl_color_get_red_float (color),
-                             cogl_color_get_green_float (color),
-                             cogl_color_get_blue_float (color),
-                             cogl_color_get_alpha_float (color));
+  cogl_framebuffer_clear4f (framebuffer, buffers,
+                            cogl_color_get_red_float (color),
+                            cogl_color_get_green_float (color),
+                            cogl_color_get_blue_float (color),
+                            cogl_color_get_alpha_float (color));
 }
 
 int

@@ -277,6 +277,55 @@ cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
 CoglContext *
 cogl_framebuffer_get_context (CoglFramebuffer *framebuffer);
 
+#define cogl_framebuffer_clear cogl_framebuffer_clear_EXP
+/**
+ * cogl_framebuffer_clear:
+ * @framebuffer: A #CoglFramebuffer
+ * @buffers: A mask of #CoglBufferBit<!-- -->'s identifying which auxiliary
+ *   buffers to clear
+ * @color: The color to clear the color buffer too if specified in
+ *         @buffers.
+ *
+ * Clears all the auxiliary buffers identified in the @buffers mask, and if
+ * that includes the color buffer then the specified @color is used.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
+                        unsigned long buffers,
+                        const CoglColor *color);
+
+#define cogl_framebuffer_clear4f cogl_framebuffer_clear4f_EXP
+/**
+ * cogl_framebuffer_clear4f:
+ * @framebuffer: A #CoglFramebuffer
+ * @buffers: A mask of #CoglBufferBit<!-- -->'s identifying which auxiliary
+ *   buffers to clear
+ * @red: The red component of color to clear the color buffer too if
+ *       specified in @buffers.
+ * @green: The green component of color to clear the color buffer too if
+ *         specified in @buffers.
+ * @blue: The blue component of color to clear the color buffer too if
+ *        specified in @buffers.
+ * @alpha: The alpha component of color to clear the color buffer too if
+ *         specified in @buffers.
+ *
+ * Clears all the auxiliary buffers identified in the @buffers mask, and if
+ * that includes the color buffer then the specified @color is used.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
+                          unsigned long buffers,
+                          float red,
+                          float green,
+                          float blue,
+                          float alpha);
+
 #define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
 void
 cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);

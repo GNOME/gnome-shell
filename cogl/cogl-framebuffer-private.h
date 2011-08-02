@@ -154,19 +154,6 @@ _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
                                          float alpha);
 
 void
-_cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
-                         unsigned long buffers,
-                         const CoglColor *color);
-
-void
-_cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
-                           unsigned long buffers,
-                           float red,
-                           float green,
-                           float blue,
-                           float alpha);
-
-void
 _cogl_framebuffer_dirty (CoglFramebuffer *framebuffer);
 
 CoglClipState *
