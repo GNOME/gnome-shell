@@ -1505,7 +1505,7 @@ StTooltip StLabel {
     border-radius: 24px;
     background-color: rgba(0.0, 0.0, 0.0, 0.9);
     border: 2px solid #868686;
-    color: #ffffff;
+    color: #babdb6;
 
     padding-right: 42px;
     padding-left: 42px;
@@ -1521,25 +1521,31 @@ StTooltip StLabel {
     border: 1px solid #8b8b8b;
     border-radius: 18px;
     font-size: 10.5pt;
+    color: white;
 
     margin-left: 10px;
     margin-right: 10px;
 
     padding-left: 32px;
     padding-right: 32px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
 
     background-gradient-direction: vertical;
-    background-gradient-start: #29323b;
-    background-gradient-end: #121a24;
+    background-gradient-start: rgba(255, 255, 255, 0.2);
+    background-gradient-end: rgba(255, 255, 255, 0);
+}
+
+.modal-dialog-button:hover {
+    background-gradient-start: rgba(255, 255, 255, 0.3);
+    background-gradient-end: rgba(255, 255, 255, 0.1);
 }
 
 .modal-dialog-button:active,
 .modal-dialog-button:pressed {
     border-color: #a5a5a5;
-    background-gradient-start: #121a24;
-    background-gradient-end: #29323b;
+    background-gradient-start: rgba(255, 255, 255, 0);
+    background-gradient-end: rgba(255, 255, 255, 0.2);
 }
 
 .modal-dialog-button:focus {
