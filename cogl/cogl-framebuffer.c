@@ -1450,12 +1450,6 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
       ctx->dirty_gl_viewport = FALSE;
     }
 
-  /* since we might have changed the framebuffer, we should initialize
-   * the bits; this is a no-op if they have already been initialized
-   */
-  _cogl_framebuffer_init_bits (draw_buffer);
-  _cogl_framebuffer_init_bits (read_buffer);
-
   if (ctx->current_gl_dither_enabled != draw_buffer->dither_enabled)
     {
       if (draw_buffer->dither_enabled)
