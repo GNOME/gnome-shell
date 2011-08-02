@@ -62,6 +62,7 @@ mutter-message
 mutter-window-demo
 focus-window
 test-attached
+test-focus
 test-gravity
 test-resizing
 test-size-hints
