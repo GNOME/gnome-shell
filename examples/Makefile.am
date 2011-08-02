@@ -29,6 +29,7 @@ if BUILD_COGL_PANGO
 noinst_PROGRAMS += crate
 crate_SOURCES = crate.c
 crate_LDADD = $(common_ldadd) $(top_builddir)/cogl-pango/libcogl-pango.la
+crate_CFLAGS = $(AM_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 endif
 
 if X11_TESTS

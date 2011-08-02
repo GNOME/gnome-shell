@@ -27,9 +27,9 @@ source_h_priv = \
 lib_LTLIBRARIES = libcogl-pango.la
 
 libcogl_pango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
-libcogl_pango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
+libcogl_pango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
 libcogl_pango_la_LIBADD = $(top_builddir)/cogl/libcogl.la
-libcogl_pango_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
+libcogl_pango_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_PANGO_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 libcogl_pango_la_LDFLAGS = \
 	-export-dynamic \
 	-export-symbols-regex "^cogl_pango_.*"
@@ -70,7 +70,7 @@ CoglPango_1_0_gir_NAMESPACE = CoglPango
 CoglPango_1_0_gir_VERSION = 1.0
 CoglPango_1_0_gir_LIBS = libcogl-pango.la
 CoglPango_1_0_gir_FILES = $(source_h) $(source_c)
-CoglPango_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS)
+CoglPango_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 CoglPango_1_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0
 CoglPango_1_0_gir_EXPORT_PACKAGES = cogl-pango-1.0
 CoglPango_1_0_gir_SCANNERFLAGS = \

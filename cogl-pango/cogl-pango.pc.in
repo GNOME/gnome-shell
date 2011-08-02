@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 apiversion=@COGL_API_VERSION@
-requires=@COGL_PKG_REQUIRES@
+requires=@COGL_PKG_REQUIRES@ @COGL_PANGO_PKG_REQUIRES@
 
 Name: Cogl
 Description: An pango integration library for Cogl

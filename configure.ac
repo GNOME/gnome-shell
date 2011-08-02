@@ -345,7 +345,7 @@ AM_CONDITIONAL([BUILD_COGL_PANGO], [test "x$enable_cogl_pango" = "xyes"])
 
 AS_IF([test "x$enable_cogl_pango" = "xyes"],
       [
-	COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES pangocairo >= pangocairo_req_version"
+	COGL_PANGO_PKG_REQUIRES="$COGL_PANGO_PKG_REQUIRES pangocairo >= pangocairo_req_version"
       ]
 )
 
@@ -885,6 +885,8 @@ if test -n "$COGL_PKG_REQUIRES_GL"; then
   COGL_DEP_CFLAGS="$COGL_DEP_CFLAGS $COGL_DEP_CFLAGS_GL"
   COGL_DEP_LIBS="$COGL_DEP_LIBS $gl_libs"
 fi
+AC_SUBST(COGL_PANGO_PKG_REQUIRES)
+PKG_CHECK_MODULES(COGL_PANGO_DEP, [$COGL_PANGO_PKG_REQUIRES])
 
 dnl ================================================================
 dnl Misc program dependencies.
@@ -940,6 +942,8 @@ AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
 
 AC_SUBST(COGL_DEP_CFLAGS)
 AC_SUBST(COGL_DEP_LIBS)
+AC_SUBST(COGL_PANGO_DEP_CFLAGS)
+AC_SUBST(COGL_PANGO_DEP_LIBS)
 AC_SUBST(COGL_EXTRA_CFLAGS)
 AC_SUBST(COGL_EXTRA_LDFLAGS)
 
