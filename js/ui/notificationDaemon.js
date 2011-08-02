@@ -331,8 +331,15 @@ NotificationDaemon.prototype = {
 
         if (actions.length) {
             notification.setUseActionIcons(hints['action-icons'] == true);
-            for (let i = 0; i < actions.length - 1; i += 2)
-                notification.addButton(actions[i], actions[i + 1]);
+            for (let i = 0; i < actions.length - 1; i += 2) {
+                if (actions[i] == 'default')
+                    notification.connect('clicked', Lang.bind(this,
+                        function() {
+                            this._emitActionInvoked(id, "default");
+                        });
+                else
+                    notification.addButton(actions[i], actions[i + 1]);
+            }
         }
         switch (hints.urgency) {
             case Urgency.LOW:
