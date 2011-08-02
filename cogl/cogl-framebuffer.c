@@ -1549,6 +1549,14 @@ cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
   framebuffer->dither_enabled = dither_enabled;
 }
 
+CoglContext *
+cogl_framebuffer_get_context (CoglFramebuffer *framebuffer)
+{
+  g_return_val_if_fail (framebuffer != NULL, NULL);
+
+  return framebuffer->context;
+}
+
 gboolean
 _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
                                        int x,

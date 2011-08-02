@@ -261,6 +261,22 @@ void
 cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
                                  CoglColorMask color_mask);
 
+#define cogl_framebuffer_get_context cogl_framebuffer_get_context_EXP
+/**
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Can be used to query the #CoglContext a given @framebuffer was
+ * instantiated within. This is the #CoglContext that was passed to
+ * cogl_onscreen_new() for example.
+ *
+ * Return value: The #CoglContext that the given @framebuffer was
+ *               instantiated within.
+ * Since: 1.8
+ * Stability: unstable
+ */
+CoglContext *
+cogl_framebuffer_get_context (CoglFramebuffer *framebuffer);
+
 #define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
 void
 cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);
