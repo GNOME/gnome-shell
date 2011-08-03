@@ -991,7 +991,11 @@ NMDeviceWireless.prototype = {
                 obj = this._networks[pos];
                 obj.accessPoints.push(ap);
             } else {
-                obj = { ssid: ap.get_ssid(),
+                let ssid = ap.get_ssid();
+                if (ssid == null)
+                    continue;
+
+                obj = { ssid: ssid,
                         mode: ap.mode,
                         security: this._getApSecurityType(ap),
                         connections: [ ],
@@ -1190,7 +1194,12 @@ NMDeviceWireless.prototype = {
     _accessPointAdded: function(device, accessPoint) {
         let pos = this._findNetwork(accessPoint);
         let apObj;
+        let ssid;
         let needsupdate = false;
+
+        ssid = accessPoint.get_ssid();
+        if (ssid == null)
+            return;
 
         if (pos != -1) {
             apObj = this._networks[pos];
@@ -1203,7 +1212,7 @@ NMDeviceWireless.prototype = {
             if (apObj.item)
                 apObj.item.updateAccessPoints(apObj.accessPoints);
         } else {
-            apObj = { ssid: accessPoint.get_ssid(),
+            apObj = { ssid: ssid,
                       mode: accessPoint.mode,
                       security: this._getApSecurityType(accessPoint),
                       connections: [ ],
