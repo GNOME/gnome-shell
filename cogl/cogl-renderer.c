@@ -42,6 +42,7 @@
 #include "cogl-winsys-private.h"
 #include "cogl-winsys-stub-private.h"
 #include "cogl-winsys-egl-private.h"
+#include "cogl-config-private.h"
 
 #ifdef COGL_HAS_GLX_SUPPORT
 extern const CoglWinsysVtable *_cogl_winsys_glx_get_vtable (void);
@@ -178,6 +179,9 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
   const char *driver_name = g_getenv ("COGL_DRIVER");
   const char *libgl_name;
 
+  if (!driver_name)
+    driver_name = _cogl_config_driver;
+
 #ifdef HAVE_COGL_GL
   if (driver_name == NULL || !strcmp (driver_name, "gl"))
     {
@@ -263,6 +267,8 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
       else
         {
           char *user_choice = getenv ("COGL_RENDERER");
+          if (!user_choice)
+            user_choice = _cogl_config_renderer;
           if (user_choice && strcmp (winsys->name, user_choice) != 0)
             continue;
         }

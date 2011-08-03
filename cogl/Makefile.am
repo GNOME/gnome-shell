@@ -306,6 +306,8 @@ cogl_sources_c = \
 	$(srcdir)/winsys/cogl-winsys-stub-private.h	\
 	$(srcdir)/cogl-queue.h				\
 	$(srcdir)/winsys/cogl-winsys-stub.c		\
+	$(srcdir)/cogl-config-private.h			\
+	$(srcdir)/cogl-config.c				\
 	$(NULL)
 
 if SUPPORT_XLIB

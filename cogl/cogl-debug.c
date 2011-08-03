@@ -126,7 +126,7 @@ _cogl_parse_debug_string_for_keys (const char *value,
     }
 }
 
-static void
+void
 _cogl_parse_debug_string (const char *value,
                           gboolean enable,
                           gboolean ignore_help)
@@ -220,6 +220,15 @@ _cogl_debug_check_environment (void)
     {
       _cogl_parse_debug_string (env_string,
                                 TRUE /* enable the flags */,
+                                FALSE /* don't ignore help */);
+      env_string = NULL;
+    }
+
+  env_string = g_getenv ("COGL_NO_DEBUG");
+  if (env_string != NULL)
+    {
+      _cogl_parse_debug_string (env_string,
+                                FALSE /* disable the flags */,
                                 FALSE /* don't ignore help */);
       env_string = NULL;
     }
