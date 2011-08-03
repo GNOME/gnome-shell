@@ -146,11 +146,12 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
                                       int width, int height);
 
 void
-_cogl_clear4f (unsigned long buffers,
-               float red,
-               float green,
-               float blue,
-               float alpha);
+_cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
+                                         unsigned long buffers,
+                                         float red,
+                                         float green,
+                                         float blue,
+                                         float alpha);
 
 void
 _cogl_framebuffer_clear (CoglFramebuffer *framebuffer,

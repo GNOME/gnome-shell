@@ -146,11 +146,13 @@ cogl_clip_pop (void)
 }
 
 void
-_cogl_clip_state_flush (CoglClipState *clip_state)
+_cogl_clip_state_flush (CoglClipState *clip_state,
+                        CoglFramebuffer *framebuffer)
 {
   /* Flush the topmost stack. The clip stack code will bail out early
      if this is already flushed */
-  _cogl_clip_stack_flush (clip_state->stacks->data);
+  _cogl_clip_stack_flush (clip_state->stacks->data,
+                          framebuffer);
 }
 
 /* XXX: This should never have been made public API! */
@@ -166,7 +168,7 @@ cogl_clip_ensure (void)
      application however so it makes sense to flush the journal
      here */
   _cogl_framebuffer_flush_journal (framebuffer);
-  _cogl_clip_state_flush (clip_state);
+  _cogl_clip_state_flush (clip_state, framebuffer);
 }
 
 static void

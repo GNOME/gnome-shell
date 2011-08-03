@@ -26,6 +26,7 @@
 
 #include "cogl2-path.h"
 #include "cogl-matrix.h"
+#include "cogl.h"
 
 /* The clip stack works like a GSList where only a pointer to the top
    of the stack is stored. The empty clip stack is represented simply
@@ -178,7 +179,8 @@ _cogl_clip_stack_get_bounds (CoglClipStack *stack,
                              int *scissor_y1);
 
 void
-_cogl_clip_stack_flush (CoglClipStack *stack);
+_cogl_clip_stack_flush (CoglClipStack *stack,
+                        CoglFramebuffer *framebuffer);
 
 CoglClipStack *
 _cogl_clip_stack_ref (CoglClipStack *stack);

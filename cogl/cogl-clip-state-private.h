@@ -41,7 +41,8 @@ void
 _cogl_clip_state_destroy (CoglClipState *state);
 
 void
-_cogl_clip_state_flush (CoglClipState *clip_state);
+_cogl_clip_state_flush (CoglClipState *clip_state,
+                        CoglFramebuffer *framebuffer);
 
 CoglClipStack *
 _cogl_clip_state_get_stack (CoglClipState *clip_state);

@@ -95,6 +95,8 @@ typedef struct _CoglJournalFlushState
 {
   CoglJournal         *journal;
 
+  CoglFramebuffer     *framebuffer;
+
   CoglAttributeBuffer *attribute_buffer;
   GArray              *attributes;
   int                  current_attribute;
@@ -705,7 +707,7 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:  clip stack batch len = %d\n", batch_len);
 
-  _cogl_clip_stack_flush (batch_start->clip_stack);
+  _cogl_clip_stack_flush (batch_start->clip_stack, state->framebuffer);
 
   _cogl_matrix_stack_push (state->modelview_stack);
 
@@ -1352,6 +1354,7 @@ _cogl_journal_flush (CoglJournal *journal,
    * that the timer isn't started recursively. */
   COGL_TIMER_START (_cogl_uprof_context, flush_timer);
 
+  state.framebuffer = framebuffer;
   cogl_push_framebuffer (framebuffer);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))

@@ -228,11 +228,12 @@ _cogl_framebuffer_get_winsys (CoglFramebuffer *framebuffer)
  * needed when doing operations that may be called whiling flushing
  * the journal */
 void
-_cogl_clear4f (unsigned long buffers,
-               float red,
-               float green,
-               float blue,
-               float alpha)
+_cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
+                                         unsigned long buffers,
+                                         float red,
+                                         float green,
+                                         float blue,
+                                         float alpha)
 {
   GLbitfield gl_buffers = 0;
 
@@ -240,15 +241,12 @@ _cogl_clear4f (unsigned long buffers,
 
   if (buffers & COGL_BUFFER_BIT_COLOR)
     {
-      CoglFramebuffer *draw_framebuffer;
-
       GE( ctx, glClearColor (red, green, blue, alpha) );
       gl_buffers |= GL_COLOR_BUFFER_BIT;
 
-      draw_framebuffer = cogl_get_draw_framebuffer ();
-      if (ctx->current_gl_color_mask != draw_framebuffer->color_mask)
+      if (ctx->current_gl_color_mask != framebuffer->color_mask)
         {
-          CoglColorMask color_mask = draw_framebuffer->color_mask;
+          CoglColorMask color_mask = framebuffer->color_mask;
           GE( ctx, glColorMask (!!(color_mask & COGL_COLOR_MASK_RED),
                                 !!(color_mask & COGL_COLOR_MASK_GREEN),
                                 !!(color_mask & COGL_COLOR_MASK_BLUE),
@@ -396,7 +394,8 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (framebuffer, framebuffer, 0);
 
-  _cogl_clear4f (buffers, red, green, blue, alpha);;
+  _cogl_framebuffer_clear_without_flush4f (framebuffer, buffers,
+                                           red, green, blue, alpha);
 
   /* This is a debugging variable used to visually display the quad
    * batches from the journal. It is reset here to increase the
@@ -1463,7 +1462,8 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
    * matrices so we must do it before flushing the matrices...
    */
   if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE))
-    _cogl_clip_state_flush (&draw_buffer->clip_state);
+    _cogl_clip_state_flush (&draw_buffer->clip_state,
+                            draw_buffer);
 
   if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW))
     _cogl_matrix_stack_flush_to_gl (draw_buffer->modelview_stack,
@@ -1651,7 +1651,7 @@ _cogl_blit_framebuffer (unsigned int src_x,
      by the scissor and we want to hide this feature for the Cogl API
      because it's not obvious to an app how the clip state will affect
      the scissor */
-  _cogl_clip_stack_flush (NULL);
+  _cogl_clip_stack_flush (NULL, draw_buffer);
 
   ctx->glBlitFramebuffer (src_x, src_y,
                      src_x + width, src_y + height,

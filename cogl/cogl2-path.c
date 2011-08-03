@@ -401,9 +401,11 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
            will have set up a scissor for the minimum bounding box of
            all of the clips. That box will likely mean that this
            _cogl_clear won't need to clear the entire
-           buffer. _cogl_clear4f is used instead of cogl_clear because
-           it won't try to flush the journal */
-        _cogl_clear4f (COGL_BUFFER_BIT_STENCIL, 0, 0, 0, 0);
+           buffer. _cogl_framebuffer_clear_without_flush4f is used instead
+           of cogl_clear because it won't try to flush the journal */
+        _cogl_framebuffer_clear_without_flush4f (framebuffer,
+                                                 COGL_BUFFER_BIT_STENCIL,
+                                                 0, 0, 0, 0);
       else
         {
           /* Just clear the bounding box */

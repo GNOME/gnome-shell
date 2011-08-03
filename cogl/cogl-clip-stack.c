@@ -67,14 +67,14 @@ project_vertex (const CoglMatrix *modelview_projection,
 }
 
 static void
-set_clip_plane (GLint plane_num,
+set_clip_plane (CoglFramebuffer *framebuffer,
+                GLint plane_num,
 		const float *vertex_a,
 		const float *vertex_b)
 {
   GLfloat planef[4];
   double planed[4];
   GLfloat angle;
-  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
@@ -135,12 +135,12 @@ set_clip_plane (GLint plane_num,
 }
 
 static void
-set_clip_planes (float x_1,
+set_clip_planes (CoglFramebuffer *framebuffer,
+                 float x_1,
 		 float y_1,
 		 float x_2,
 		 float y_2)
 {
-  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrix modelview_matrix;
@@ -179,29 +179,29 @@ set_clip_planes (float x_1,
   if (signed_area > 0.0f)
     {
       /* counter-clockwise */
-      set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_bl);
-      set_clip_plane (GL_CLIP_PLANE1, vertex_bl, vertex_br);
-      set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_tr);
-      set_clip_plane (GL_CLIP_PLANE3, vertex_tr, vertex_tl);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE0, vertex_tl, vertex_bl);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE1, vertex_bl, vertex_br);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE2, vertex_br, vertex_tr);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE3, vertex_tr, vertex_tl);
     }
   else
     {
       /* clockwise */
-      set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
-      set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
-      set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
-      set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE0, vertex_tl, vertex_tr);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE1, vertex_tr, vertex_br);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE2, vertex_br, vertex_bl);
+      set_clip_plane (framebuffer, GL_CLIP_PLANE3, vertex_bl, vertex_tl);
     }
 }
 
 static void
-add_stencil_clip_rectangle (float x_1,
+add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
+                            float x_1,
                             float y_1,
                             float x_2,
                             float y_2,
                             gboolean first)
 {
-  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
@@ -584,7 +584,8 @@ _cogl_clip_stack_get_bounds (CoglClipStack *stack,
 }
 
 void
-_cogl_clip_stack_flush (CoglClipStack *stack)
+_cogl_clip_stack_flush (CoglClipStack *stack,
+                        CoglFramebuffer *framebuffer)
 {
   int has_clip_planes;
   gboolean using_clip_planes = FALSE;
@@ -613,7 +614,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
   ctx->current_clip_stack = _cogl_clip_stack_ref (stack);
 
   modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
 
   has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
 
@@ -644,8 +645,6 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
     scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = scissor_y_start = 0;
   else
     {
-      CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
-
       /* We store the entry coordinates in Cogl coordinate space
        * but OpenGL requires the window origin to be the bottom
        * left so we may need to convert the incoming coordinates.
@@ -714,7 +713,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
                 {
                   COGL_NOTE (CLIPPING, "Adding clip planes clip for rectangle");
 
-                  set_clip_planes (rect->x0,
+                  set_clip_planes (framebuffer,
+                                   rect->x0,
                                    rect->y0,
                                    rect->x1,
                                    rect->y1);
@@ -726,7 +726,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
                 {
                   COGL_NOTE (CLIPPING, "Adding stencil clip for rectangle");
 
-                  add_stencil_clip_rectangle (rect->x0,
+                  add_stencil_clip_rectangle (framebuffer,
+                                              rect->x0,
                                               rect->y0,
                                               rect->x1,
                                               rect->y1,
