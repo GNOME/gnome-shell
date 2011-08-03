@@ -202,6 +202,8 @@ xfixes_cursor_reset_image (ShellXFixesCursor *xfixes_cursor)
     return;
 
   cursor_image = XFixesGetCursorImage (clutter_x11_get_default_display ());
+  if (!cursor_image)
+    return;
 
   /* Like all X APIs, XFixesGetCursorImage() returns arrays of 32-bit
    * quantities as arrays of long; we need to convert on 64 bit */

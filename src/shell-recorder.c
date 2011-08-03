@@ -393,6 +393,8 @@ recorder_fetch_cursor_image (ShellRecorder *recorder)
     return;
 
   cursor_image = XFixesGetCursorImage (clutter_x11_get_default_display ());
+  if (!cursor_image)
+    return;
 
   recorder->cursor_hot_x = cursor_image->xhot;
   recorder->cursor_hot_y = cursor_image->yhot;
