@@ -301,8 +301,6 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
   int scissor_x1;
   int scissor_y1;
 
-  g_return_if_fail (framebuffer->allocated);
-
   _cogl_clip_stack_get_bounds (clip_stack,
                                &scissor_x0, &scissor_y0,
                                &scissor_x1, &scissor_y1);
@@ -452,8 +450,6 @@ cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
                         unsigned long buffers,
                         const CoglColor *color)
 {
-  g_return_if_fail (framebuffer->allocated);
-
   cogl_framebuffer_clear4f (framebuffer, buffers,
                             cogl_color_get_red_float (color),
                             cogl_color_get_green_float (color),
@@ -617,6 +613,8 @@ static inline void
 _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;
+
+  cogl_framebuffer_allocate (framebuffer, NULL);
 
   if (G_LIKELY (!framebuffer->dirty_bitmasks))
     return;
@@ -1382,6 +1380,10 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
                                CoglFramebufferFlushFlags flags)
 {
   CoglContext *ctx = draw_buffer->context;
+
+  /* Lazily ensure the framebuffer has been allocated */
+  cogl_framebuffer_allocate (draw_buffer, NULL);
+  cogl_framebuffer_allocate (read_buffer, NULL);
 
   if (ctx->dirty_bound_framebuffer)
     {
