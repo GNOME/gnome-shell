@@ -336,7 +336,7 @@ NotificationDaemon.prototype = {
                     notification.connect('clicked', Lang.bind(this,
                         function() {
                             this._emitActionInvoked(id, "default");
-                        });
+                        }));
                 else
                     notification.addButton(actions[i], actions[i + 1]);
             }
