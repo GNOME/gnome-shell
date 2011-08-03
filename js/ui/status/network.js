@@ -102,6 +102,13 @@ function sortAccessPoints(accessPoints) {
     });
 }
 
+function ssidToLabel(ssid) {
+    let label = NetworkManager.utils_ssid_to_utf8(ssid);
+    if (!label)
+        label = _("<unknown>");
+    return label;
+}
+
 function NMNetworkMenuItem() {
     this._init.apply(this, arguments);
 }
@@ -117,10 +124,7 @@ NMNetworkMenuItem.prototype = {
 
         if (!title) {
             let ssid = this.bestAP.get_ssid();
-            if (ssid)
-                title = NetworkManager.utils_ssid_to_utf8(ssid);
-            if (!title)
-                title = _("<unknown>");
+            title = ssidToLabel(ssid);
         }
 
         this._label = new St.Label({ text: title });
@@ -1002,7 +1006,7 @@ NMDeviceWireless.prototype = {
                         item: null,
                         accessPoints: [ ap ]
                       };
-                obj.ssidText = NetworkManager.utils_ssid_to_utf8(obj.ssid);
+                obj.ssidText = ssidToLabel(obj.ssid);
                 this._networks.push(obj);
             }
 
@@ -1219,7 +1223,7 @@ NMDeviceWireless.prototype = {
                       item: null,
                       accessPoints: [ accessPoint ]
                     };
-            apObj.ssidText = NetworkManager.utils_ssid_to_utf8(apObj.ssid);
+            apObj.ssidText = ssidToLabel(apObj.ssid);
             needsupdate = true;
         }
 
