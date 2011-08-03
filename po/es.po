@@ -2,22 +2,22 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-15 16:19+0000\n"
-"PO-Revision-Date: 2011-07-17 11:59+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-08-01 13:42+0000\n"
+"PO-Revision-Date: 2011-08-03 21:53+0200\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bits\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -210,23 +210,23 @@ msgstr "Falló la ejecución de «%s»:"
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:351
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:377
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:650
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:654
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -239,6 +239,16 @@ msgstr "Se ha añadido %s a sus favoritos."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
+
+#: ../js/ui/autorunManager.js:591
+#, c-format
+msgid "Open with %s"
+msgstr "Abrir con %s"
+
+#: ../js/ui/autorunManager.js:617
+#| msgid "Reject"
+msgid "Eject"
+msgstr "Expulsar"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -386,7 +396,7 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "La semana que viene"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1122
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1127
 msgid "Remove"
 msgstr "Quitar"
 
@@ -422,21 +432,21 @@ msgstr "%a %R"
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:175
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %e de %b, %H:%M:%S"
+msgstr "%a %e de %b, %l:%M:%S"
 
 #: ../js/ui/dateMenu.js:176
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %e de %b, %H:%M"
+msgstr "%a %e de %b, %l:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:180
 msgid "%a %l:%M:%S %p"
-msgstr "%a %H:%M:%S"
+msgstr "%a %l:%M:%S"
 
 #: ../js/ui/dateMenu.js:181
 msgid "%a %l:%M %p"
-msgstr "%a %H:%M"
+msgstr "%a %l:%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
@@ -549,13 +559,18 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1115
+#: ../js/ui/messageTray.js:1120
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2286
+#: ../js/ui/messageTray.js:2291
 msgid "System Information"
 msgstr "Información del sistema"
+
+#: ../js/ui/notificationDaemon.js:419 ../js/ui/status/power.js:238
+#: ../src/shell-app-system.c:1088
+msgid "Unknown"
+msgstr "Desconocido"
 
 #: ../js/ui/overview.js:89
 msgid "Undo"
@@ -653,43 +668,9 @@ msgstr "Buscando…"
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
-#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:262
-msgid "Power Off..."
-msgstr "Apagar…"
-
-#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:261
-msgid "Suspend"
-msgstr "Suspender"
-
-#: ../js/ui/statusMenu.js:217
-msgid "Available"
-msgstr "Disponible"
-
-#: ../js/ui/statusMenu.js:222
-msgid "Busy"
-msgstr "Ocupado"
-
-#: ../js/ui/statusMenu.js:230
-msgid "My Account"
-msgstr "Mi cuenta"
-
-#: ../js/ui/statusMenu.js:234
-msgid "System Settings"
-msgstr "Configuración del sistema"
-
-#: ../js/ui/statusMenu.js:242
-msgid "Lock Screen"
-msgstr "Bloquear la pantalla"
-
-#: ../js/ui/statusMenu.js:247
-msgid "Switch User"
-msgstr "Cambiar de usuario"
-
-#: ../js/ui/statusMenu.js:252
-msgid "Log Out..."
-msgstr "Cerrar la sesión…"
+#: ../js/ui/shellMountOperation.js:285
+msgid "Wrong password, please try again"
+msgstr "Contraseña incorrecta; inténtelo de nuevo"
 
 #: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
@@ -860,12 +841,52 @@ msgid "OK"
 msgstr "Aceptar"
 
 #: ../js/ui/status/keyboard.js:71
-msgid "Show Keyboard Layout..."
-msgstr "Mostrar la distribución del teclado…"
+#| msgid "Show Keyboard Layout..."
+msgid "Show Keyboard Layout"
+msgstr "Mostrar la distribución del teclado"
 
 #: ../js/ui/status/keyboard.js:75
-msgid "Localization Settings"
-msgstr "Configuración regional"
+#| msgid "Date and Time Settings"
+msgid "Region and Language Settings"
+msgstr "Configuración de región e idioma"
+
+#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:262
+msgid "Power Off..."
+msgstr "Apagar…"
+
+#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:261
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../js/ui/statusMenu.js:217
+msgid "Available"
+msgstr "Disponible"
+
+#: ../js/ui/statusMenu.js:222
+msgid "Busy"
+msgstr "Ocupado"
+
+#: ../js/ui/statusMenu.js:230
+msgid "My Account"
+msgstr "Mi cuenta"
+
+#: ../js/ui/statusMenu.js:234
+msgid "System Settings"
+msgstr "Configuración del sistema"
+
+#: ../js/ui/statusMenu.js:242
+msgid "Lock Screen"
+msgstr "Bloquear la pantalla"
+
+#: ../js/ui/statusMenu.js:247
+msgid "Switch User"
+msgstr "Cambiar de usuario"
+
+#: ../js/ui/statusMenu.js:252
+msgid "Log Out..."
+msgstr "Cerrar la sesión…"
 
 #: ../js/ui/status/network.js:123
 msgid "<unknown>"
@@ -1091,10 +1112,6 @@ msgstr "Tableta"
 msgid "Computer"
 msgstr "Equipo"
 
-#: ../js/ui/status/power.js:238 ../src/shell-app-system.c:1088
-msgid "Unknown"
-msgstr "Desconocido"
-
 #: ../js/ui/status/volume.js:43
 msgid "Volume"
 msgstr "Volumen"
@@ -1106,13 +1123,12 @@ msgstr "Micrófono"
 #. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:222
+#: ../js/ui/telepathyClient.js:228
 msgid "Invitation"
 msgstr "Invitación"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:285
-#| msgid "Cancel"
+#: ../js/ui/telepathyClient.js:291
 msgid "Call"
 msgstr "Llamar"
 
@@ -1274,6 +1290,9 @@ msgstr "Sistema de archivos"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Localization Settings"
+#~ msgstr "Configuración regional"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Hace menos de un minuto"
