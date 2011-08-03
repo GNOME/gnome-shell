@@ -36,8 +36,6 @@
 
 G_BEGIN_DECLS
 
-#define COGL_BUFFER(buffer)     ((CoglBuffer *)(buffer))
-
 typedef struct _CoglBufferVtable CoglBufferVtable;
 
 struct _CoglBufferVtable

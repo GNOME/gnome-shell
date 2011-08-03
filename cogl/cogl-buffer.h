@@ -74,6 +74,8 @@ G_BEGIN_DECLS
 #define cogl_buffer_unmap cogl_buffer_unmap_EXP
 #define cogl_buffer_set_data cogl_buffer_set_data_EXP
 
+#define COGL_BUFFER(buffer)     ((CoglBuffer *)(buffer))
+
 typedef struct _CoglBuffer CoglBuffer;
 
 /**
