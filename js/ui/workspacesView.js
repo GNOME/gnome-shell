@@ -551,7 +551,6 @@ WorkspacesDisplay.prototype = {
                          Lang.bind(this, this._onScrollEvent));
 
         this._monitorIndex = Main.layoutManager.primaryIndex;
-        this._monitor = Main.layoutManager.monitors[this._monitorIndex];
 
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         controls.add_actor(this._thumbnailsBox.actor);
