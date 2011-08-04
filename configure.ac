@@ -404,14 +404,6 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [
         AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
-
-        AC_CHECK_HEADERS([GL/glx.h],
-                         [],
-                         [AC_MSG_ERROR([Unable to locate required GLX headers])])
-
-        AC_CHECK_LIB(GL, [glXCreateContext],
-                     [HAVE_LIBGLX=yes],
-                     [AC_MSG_ERROR([Required GLX library not found])])
       ])
 
 AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
