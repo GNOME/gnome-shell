@@ -355,14 +355,12 @@ on_paint (ClutterActor *actor, TestState *state)
                     "RGBA = INTERPOLATE (PREVIOUS, TEXTURE, PRIMARY)",
                     0x18181818); /* expected */
 
-#if 0 /* using TEXTURE_N appears to be broken in cogl-blend-string.c */
   test_tex_combine (state, 0, 1, /* position */
                     0xDEADBEEF, /* texture 0 color (not used) */
                     0x11223344, /* texture 1 color */
                     TEX_CONSTANT_UNUSED,
                     "RGBA = ADD (TEXTURE_1, TEXTURE)", /* tex combine */
                     0x22446688); /* expected */
-#endif
 
   test_tex_combine (state, 1, 1, /* position */
                     0x21314151, /* texture 0 color */
