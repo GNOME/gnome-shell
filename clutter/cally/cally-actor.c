@@ -1203,6 +1203,11 @@ cally_actor_real_notify_clutter (GObject    *obj,
       state = ATK_STATE_VISIBLE;
       value = CLUTTER_ACTOR_IS_VISIBLE (actor);
     }
+  else if (g_strcmp0 (pspec->name, "mapped") == 0)
+    {
+      state = ATK_STATE_SHOWING;
+      value = CLUTTER_ACTOR_IS_MAPPED (actor);
+    }
   else if (g_strcmp0 (pspec->name, "reactive") == 0)
     {
       state = ATK_STATE_SENSITIVE;
