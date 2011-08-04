@@ -381,7 +381,7 @@ COGL_EXT_FUNCTION (GLuint, glCreateShader,
 COGL_EXT_FUNCTION (void, glShaderSource,
                    (GLuint                shader,
                     GLsizei               count,
-                    const GLchar        **string,
+                    const char          **string,
                     const GLint          *length))
 COGL_EXT_FUNCTION (void, glCompileShader,
                    (GLuint                shader))
@@ -396,14 +396,14 @@ COGL_EXT_FUNCTION (void, glUseProgram,
                    (GLuint                program))
 COGL_EXT_FUNCTION (GLint, glGetUniformLocation,
                    (GLuint                program,
-                    const GLchar         *name))
+                    const char           *name))
 COGL_EXT_FUNCTION (void, glDeleteProgram,
                    (GLuint                program))
 COGL_EXT_FUNCTION (void, glGetShaderInfoLog,
                    (GLuint                shader,
                     GLsizei               maxLength,
                     GLsizei              *length,
-                    GLchar               *infoLog))
+                    char                 *infoLog))
 COGL_EXT_FUNCTION (void, glGetShaderiv,
                    (GLuint                shader,
                     GLenum                pname,
@@ -514,13 +514,13 @@ COGL_EXT_FUNCTION (void, glGetProgramInfoLog,
                    (GLuint                program,
                     GLsizei               bufSize,
                     GLsizei              *length,
-                    GLchar               *infoLog))
+                    char                 *infoLog))
 
 COGL_EXT_FUNCTION (void, glVertexAttrib4f,
                    (GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w))
 
 COGL_EXT_FUNCTION (GLint, glGetAttribLocation,
-                   (GLuint program, const GLchar *name))
+                   (GLuint program, const char *name))
 
 COGL_EXT_END ()
 
