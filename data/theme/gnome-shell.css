@@ -223,6 +223,39 @@ StTooltip StLabel {
     spacing: .5em;
 }
 
+/* Shared button properties */
+
+.dash-search-button, .notification-button, .notification-icon-button,
+.hotplug-notification-item, .hotplug-resident-eject-button,
+.modal-dialog-button {
+    color: white;
+    border: 1px solid #8b8b8b;
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.2);
+    background-gradient-end: rgba(255, 255, 255, 0);
+}
+
+.dash-search-button:hover, .notification-button:hover,
+.notification-icon-button:hover, .hotplug-notification-item:hover,
+.hotplug-resident-eject-button:hover, .modal-dialog-button:hover {
+    background-gradient-start: rgba(255, 255, 255, 0.3);
+    background-gradient-end: rgba(255, 255, 255, 0.1);
+}
+
+.dash-search-button:selected, .notification-button:focus,
+.notification-icon-button:focus, .hotplug-notification-item:focus,
+.modal-dialog-button:focus {
+    border: 2px solid #8b8b8b;
+}
+
+.dash-search-button:active, .dash-search-button:pressed,
+.notification-button:active, .notification-icon-button:active,
+.hotplug-notification-item:active, .hotplug-resident-eject-button:active,
+.modal-dialog-button:active, .modal-dialog-button:pressed {
+    background-gradient-start: rgba(255, 255, 255, 0);
+    background-gradient-end: rgba(255, 255, 255, 0.2);
+}
+
 /* Panel */
 
 #panel {
@@ -556,27 +589,26 @@ StTooltip StLabel {
     spacing: 12px;
 }
 
+/* Text labels are an odd number of pixels tall. The uneven top and bottom
+ * padding compensates for this and ensures that the label is vertically
+ * centered */
 .dash-search-button {
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(255, 255, 255, 0.2);
-    background-gradient-end: rgba(255, 255, 255, 0);
-    border: 1px solid #808080;
     border-radius: 16px;
-    height: 32px;
+    padding-top: 4px;
+    padding-bottom: 5px;
     width: 300px;
     font-weight: bold;
 }
 
-.dash-search-button:selected,
-.dash-search-button:hover {
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(255, 255, 255, 0.4);
-    background-gradient-end: rgba(255, 255, 255, 0.2);
+.dash-search-button:selected {
+    padding-top: 3px;
+    padding-bottom: 4px;
+    width: 298px;
 }
 
 .dash-search-button-label {
-    color: #cccccc;
-    font-size: 12pt;
+    color: white;
+    font-size: 11pt;
 }
 
 /* Apps */
@@ -1099,45 +1131,26 @@ StTooltip StLabel {
 }
 
 #notification-actions {
-    spacing: 5px;
+    spacing: 10px;
 }
 
 .notification-button {
-    background-color: #3c3c3c;
-    padding: 2px 14px;
-    border-radius: 12px;
-    border: 1px solid #181818;
-}
-
-.notification-button:hover {
-    border: 1px solid #a1a1a1;
+    border-radius: 18px;
+    font-size: 11pt;
+    padding: 4px 42px 5px;
 }
 
 .notification-button:focus {
-    background-color: #666666;
-}
-
-.notification-button:active {
-    border: 1px solid #a1a1a1;
-    background-color: #2b2b2b;
+    padding: 3px 41px 4px;
 }
 
 .notification-icon-button {
-    border: 2px rgba(0,0,0,0.0);
     border-radius: 5px;
     padding: 5px;
 }
 
-.notification-icon-button:hover {
-    border: 2px rgba(161,161,161,0.7);
-}
-
 .notification-icon-button:focus {
-    background: rgba(192,192,192,0.7);
-}
-
-.notification-icon-button:active {
-    background:  rgba(128,128,128,0.7);
+    padding: 4px;
 }
 
 .notification-icon-button > StIcon {
@@ -1150,23 +1163,13 @@ StTooltip StLabel {
 }
 
 .hotplug-notification-item {
-    background-color: #3c3c3c;
-    padding: 0px 10px;
-    border-radius: 8px;
-    border: 1px solid #181818;
-}
-
-.hotplug-notification-item:hover {
-    border: 1px solid #a1a1a1;
+    padding: 2px 10px;
+    border-radius: 18px;
+    font-size: 10.5pt;
 }
 
 .hotplug-notification-item:focus {
-    background-color: #666666;
-}
-
-.hotplug-notification-item:active {
-    border: 1px solid #a1a1a1;
-    background-color: #2b2b2b;
+    padding: 1px 71px 1px 11px;
 }
 
 .hotplug-notification-item-icon {
@@ -1208,17 +1211,9 @@ StTooltip StLabel {
 }
 
 .hotplug-resident-eject-button {
-    padding: 2px;
-    border: 1px solid #2b2b2b;
+    padding: 7px;
     border-radius: 5px;
-
     color: #ccc;
-}
-
-.hotplug-resident-eject-button:hover {
-    color: #fff;
-    background-color: #2b2b2b;
-    border: 1px solid #a1a1a1;
 }
 
 .chat-log-message {
@@ -1526,43 +1521,17 @@ StTooltip StLabel {
 }
 
 .modal-dialog-button {
-    border: 1px solid #8b8b8b;
     border-radius: 18px;
-    font-size: 10.5pt;
+    font-size: 11pt;
     color: white;
 
     margin-left: 10px;
     margin-right: 10px;
-
-    padding-left: 32px;
-    padding-right: 32px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(255, 255, 255, 0.2);
-    background-gradient-end: rgba(255, 255, 255, 0);
-}
-
-.modal-dialog-button:hover {
-    background-gradient-start: rgba(255, 255, 255, 0.3);
-    background-gradient-end: rgba(255, 255, 255, 0.1);
-}
-
-.modal-dialog-button:active,
-.modal-dialog-button:pressed {
-    border-color: #a5a5a5;
-    background-gradient-start: rgba(255, 255, 255, 0);
-    background-gradient-end: rgba(255, 255, 255, 0.2);
+    padding: 4px 32px 5px;
 }
 
 .modal-dialog-button:focus {
-    border: 2px solid #a5a5a5;
-
-    padding-left: 31px;
-    padding-right: 31px;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding: 3px 31px 4px;
 }
 
 /* Run Dialog */
