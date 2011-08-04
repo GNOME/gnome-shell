@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-08-03 22:15+0000\n"
-"PO-Revision-Date: 2011-08-04 09:29+0200\n"
+"PO-Revision-Date: 2011-08-04 11:35+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -255,7 +255,7 @@ msgstr "Expulsar"
 #: ../js/ui/calendar.js:63
 msgctxt "event list time"
 msgid "All Day"
-msgstr "Todo el día"
+msgstr "Todo el día"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:68
@@ -385,7 +385,7 @@ msgstr "Hoy"
 
 #: ../js/ui/calendar.js:734
 msgid "Tomorrow"
-msgstr "Mañana"
+msgstr "Mañana"
 
 #: ../js/ui/calendar.js:743
 msgid "This week"
@@ -461,11 +461,11 @@ msgstr "ELEMENTOS RECIENTES"
 #: ../js/ui/endSessionDialog.js:60
 #, c-format
 msgid "Log Out %s"
-msgstr "Cerrar la sesión %s"
+msgstr "Cerrar la sesión %s"
 
 #: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
 msgid "Log Out"
-msgstr "Cerrar la sesión"
+msgstr "Cerrar la sesión"
 
 #: ../js/ui/endSessionDialog.js:62
 msgid "Click Log Out to quit these applications and log out of the system."
@@ -498,7 +498,7 @@ msgstr "Pulse «Apagar» para salir de esas aplicaciones y apagar el sistema."
 #: ../js/ui/endSessionDialog.js:74
 #, c-format
 msgid "The system will power off automatically in %d seconds."
-msgstr "El sistema se apagará automáticamente en %d segundos."
+msgstr "El sistema se apagará automáticamente en %d segundos."
 
 #: ../js/ui/endSessionDialog.js:75
 msgid "Powering off the system."
@@ -517,7 +517,7 @@ msgstr ""
 #: ../js/ui/endSessionDialog.js:87
 #, c-format
 msgid "The system will restart automatically in %d seconds."
-msgstr "El sistema se reiniciará automáticamente en %d segundos."
+msgstr "El sistema se reiniciará automáticamente en %d segundos."
 
 #: ../js/ui/endSessionDialog.js:88
 msgid "Restarting the system."
@@ -564,7 +564,7 @@ msgstr "Abrir"
 
 #: ../js/ui/messageTray.js:2277
 msgid "System Information"
-msgstr "Información del sistema"
+msgstr "Información del sistema"
 
 #: ../js/ui/notificationDaemon.js:426 ../js/ui/status/power.js:238
 #: ../src/shell-app-system.c:1115
@@ -644,7 +644,7 @@ msgstr "Inténtelo de nuevo,"
 
 #: ../js/ui/polkitAuthenticationAgent.js:274
 msgid "Password:"
-msgstr "Contraseña:"
+msgstr "Contraseña:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -669,11 +669,11 @@ msgstr "No se encontró ningún resultado coincidente."
 
 #: ../js/ui/shellMountOperation.js:285
 msgid "Wrong password, please try again"
-msgstr "Contraseña incorrecta; inténtelo de nuevo"
+msgstr "Contraseña incorrecta; inténtelo de nuevo"
 
 #: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
-msgstr "Ampliación"
+msgstr "Ampliación"
 
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
@@ -699,7 +699,7 @@ msgstr "Rechazo de teclas"
 
 #: ../js/ui/status/accessibility.js:87
 msgid "Mouse Keys"
-msgstr "Teclas del ratón"
+msgstr "Teclas del ratón"
 
 #: ../js/ui/status/accessibility.js:91
 msgid "Universal Access Settings"
@@ -742,7 +742,7 @@ msgstr "hardware desactivado"
 
 #: ../js/ui/status/bluetooth.js:217
 msgid "Connection"
-msgstr "Conexión"
+msgstr "Conexión"
 
 #: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:493
 msgid "disconnecting..."
@@ -775,16 +775,16 @@ msgstr "Configuración del teclado"
 
 #: ../js/ui/status/bluetooth.js:285
 msgid "Mouse Settings"
-msgstr "Ajustes del ratón…"
+msgstr "Ajustes del ratón…"
 
 #: ../js/ui/status/bluetooth.js:292 ../js/ui/status/volume.js:64
 msgid "Sound Settings"
-msgstr "Configuración del sonido"
+msgstr "Configuración del sonido"
 
 #: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Authorization request from %s"
-msgstr "Solicitud de autorización de %s"
+msgstr "Solicitud de autorización de %s"
 
 #: ../js/ui/status/bluetooth.js:405
 #, c-format
@@ -806,7 +806,7 @@ msgstr "Rechazar"
 #: ../js/ui/status/bluetooth.js:439
 #, c-format
 msgid "Pairing confirmation for %s"
-msgstr "Confirmación de emparejamiento para «%s»"
+msgstr "Confirmación de emparejamiento para «%s»"
 
 #: ../js/ui/status/bluetooth.js:445 ../js/ui/status/bluetooth.js:479
 #, c-format
@@ -841,11 +841,11 @@ msgstr "Aceptar"
 
 #: ../js/ui/status/keyboard.js:71
 msgid "Show Keyboard Layout"
-msgstr "Mostrar la distribución del teclado"
+msgstr "Mostrar la distribución del teclado"
 
 #: ../js/ui/status/keyboard.js:75
 msgid "Region and Language Settings"
-msgstr "Configuración de región e idioma"
+msgstr "Configuración de región e idioma"
 
 #: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
 #: ../js/ui/statusMenu.js:262
@@ -871,7 +871,7 @@ msgstr "Mi cuenta"
 
 #: ../js/ui/statusMenu.js:234
 msgid "System Settings"
-msgstr "Configuración del sistema"
+msgstr "Configuración del sistema"
 
 #: ../js/ui/statusMenu.js:242
 msgid "Lock Screen"
@@ -883,7 +883,7 @@ msgstr "Cambiar de usuario"
 
 #: ../js/ui/statusMenu.js:252
 msgid "Log Out..."
-msgstr "Cerrar la sesión…"
+msgstr "Cerrar la sesión…"
 
 #: ../js/ui/status/network.js:123
 msgid "<unknown>"
@@ -928,7 +928,7 @@ msgstr "falló la conexión"
 
 #: ../js/ui/status/network.js:582 ../js/ui/status/network.js:1507
 msgid "More..."
-msgstr "Más…"
+msgstr "Más…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
@@ -938,7 +938,7 @@ msgstr "Conectada (privada)"
 
 #: ../js/ui/status/network.js:703
 msgid "Auto Ethernet"
-msgstr "Ethernet automática"
+msgstr "Ethernet automática"
 
 #: ../js/ui/status/network.js:771
 msgid "Auto broadband"
@@ -972,11 +972,11 @@ msgstr "Cableada"
 
 #: ../js/ui/status/network.js:1573
 msgid "Wireless"
-msgstr "Inalámbrica"
+msgstr "Inalámbrica"
 
 #: ../js/ui/status/network.js:1583
 msgid "Mobile broadband"
-msgstr "Banda ancha móvil"
+msgstr "Banda ancha móvil"
 
 #: ../js/ui/status/network.js:1593
 msgid "VPN Connections"
@@ -984,7 +984,7 @@ msgstr "Conexiones VPN"
 
 #: ../js/ui/status/network.js:1605
 msgid "Network Settings"
-msgstr "Configuración de la red"
+msgstr "Configuración de la red"
 
 #: ../js/ui/status/network.js:1897
 #, c-format
@@ -994,26 +994,26 @@ msgstr "Ahora está conectado a la red de banda ancha móvil «%s»"
 #: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to wireless network '%s'"
-msgstr "Ahora está conectado a la red inalámbrica «%s»"
+msgstr "Ahora está conectado a la red inalámbrica «%s»"
 
 #: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to wired network '%s'"
-msgstr "Ahora está conectado a la red cableada «%s»"
+msgstr "Ahora está conectado a la red cableada «%s»"
 
 #: ../js/ui/status/network.js:1909
 #, c-format
 msgid "You're now connected to VPN network '%s'"
-msgstr "Ahora está conectado a la VPN «%s»"
+msgstr "Ahora está conectado a la VPN «%s»"
 
 #: ../js/ui/status/network.js:1914
 #, c-format
 msgid "You're now connected to '%s'"
-msgstr "Ahora está conectado a «%s»"
+msgstr "Ahora está conectado a «%s»"
 
 #: ../js/ui/status/network.js:1922
 msgid "Connection established"
-msgstr "Conexión establecida"
+msgstr "Conexión establecida"
 
 #: ../js/ui/status/network.js:2048
 msgid "Networking is disabled"
@@ -1264,7 +1264,7 @@ msgstr "Sonidos del sistema"
 
 #: ../src/main.c:466
 msgid "Print version"
-msgstr "Imprimir versión"
+msgstr "Imprimir versión"
 
 #: ../src/shell-app.c:464
 #, c-format
@@ -1281,7 +1281,7 @@ msgstr "Predeterminada"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr "El usuario rechazó el diálogo de autenticación"
+msgstr "El usuario rechazó el diálogo de autenticación"
 
 #: ../src/shell-util.c:96
 msgid "Home Folder"
