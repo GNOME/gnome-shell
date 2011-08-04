@@ -759,7 +759,9 @@ ChatNotification.prototype = {
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
-        let timeLabel = this.addBody(this._formatTimestamp(lastMessageDate), false, { expand: true, x_fill: false, x_align: St.Align.END });
+        let timeLabel = this.addBody(this._formatTimestamp(lastMessageDate),
+                                     true,
+                                     { expand: true, x_fill: false, x_align: St.Align.END });
         timeLabel.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: timeLabel, time: lastMessageTime, realMessage: false });
 
