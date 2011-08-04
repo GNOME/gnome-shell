@@ -2,15 +2,16 @@
 # Copyright (C) 2010 GNOME i18n Project for Vietnamese.
 # This file is distributed under the same license as the gnome-shell package.
 # Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010-2011.
+# Ngô Chin <ndtrung4419@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-03 22:15+0000\n"
-"PO-Revision-Date: 2011-08-04 09:10+0700\n"
-"Last-Translator: Duy <pclouds@gmail.com>\n"
+"POT-Creation-Date: 2011-08-04 02:01+0000\n"
+"PO-Revision-Date: 2011-08-03 23:11+0700\n"
+"Last-Translator: Ngô Chin <ndtrung4419@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,30 +48,24 @@ msgid "Framerate used for recording screencasts."
 msgstr "Tốc độ khung dùng lưu screencast."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
-#, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should not be loaded."
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. disabled-extensions overrides this setting for extensions "
 "that appear in both lists."
 msgstr ""
 "Phần mở rộng GNOME Shell có thuộc tính uuid. Khoá này liệt kê danh sách phần "
-"mở rộng không nên nạp."
+"mở rộng cần phải nạp. disabled-extensions ghi đè vào khóa này đối với những "
+"phần mở rộng có mặt ở cả hai danh sách."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-#, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should not be loaded."
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded. This setting overrides enabled-extensions for "
 "extensions that appear in both lists."
 msgstr ""
 "Phần mở rộng GNOME Shell có thuộc tính uuid. Khoá này liệt kê danh sách phần "
-"mở rộng không nên nạp."
+"mở rộng không nên nạp. Thiết lập này sẽ ghi đè khoá enabled-extensions đối "
+"với những phần mở rộng có mặt ở cả hai danh sách."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -177,10 +172,8 @@ msgid "Uuids of extensions to disable"
 msgstr "UUID của phần mở rộng cần tắt"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
-#, fuzzy
-#| msgid "Uuids of extensions to disable"
 msgid "Uuids of extensions to enable"
-msgstr "UUID của phần mở rộng cần tắt"
+msgstr "UUID của phần mở rộng cần bật"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
@@ -243,13 +236,11 @@ msgstr "Đã bỏ đánh dấu ưa thích cho %s"
 #: ../js/ui/autorunManager.js:591
 #, c-format
 msgid "Open with %s"
-msgstr ""
+msgstr "Mở bằng %s"
 
 #: ../js/ui/autorunManager.js:617
-#, fuzzy
-#| msgid "Reject"
 msgid "Eject"
-msgstr "Từ chối"
+msgstr "Đẩy ra"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -608,7 +599,7 @@ msgstr "Thanh đỉnh"
 #: ../js/ui/placeDisplay.js:120
 #, c-format
 msgid "Failed to unmount '%s'"
-msgstr "Lỗi bỏ gắn '%s'"
+msgstr "Lỗi bỏ gắn kết '%s'"
 
 #: ../js/ui/placeDisplay.js:123
 msgid "Retry"
@@ -669,7 +660,7 @@ msgstr "Không tìm thấy."
 
 #: ../js/ui/shellMountOperation.js:285
 msgid "Wrong password, please try again"
-msgstr ""
+msgstr "Nhập sai mật khẩu, xin hãy thử lại"
 
 #: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
@@ -728,8 +719,6 @@ msgid "Send Files to Device..."
 msgstr "Gửi tập tin đến thiết bị..."
 
 #: ../js/ui/status/bluetooth.js:67
-#, fuzzy
-#| msgid "Setup a New Device..."
 msgid "Set up a New Device..."
 msgstr "Thiết lập thiết bị mới..."
 
@@ -739,20 +728,16 @@ msgstr "Thiết lập Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:116
-#, fuzzy
-#| msgid "disabled"
 msgid "hardware disabled"
-msgstr "tắt"
+msgstr "tắt bởi phần cứng"
 
 #: ../js/ui/status/bluetooth.js:217
 msgid "Connection"
 msgstr "Kết nối"
 
 #: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:493
-#, fuzzy
-#| msgid "connecting..."
 msgid "disconnecting..."
-msgstr "đang kết nối..."
+msgstr "đang ngắt kết nối..."
 
 #: ../js/ui/status/bluetooth.js:239 ../js/ui/status/network.js:499
 msgid "connecting..."
@@ -846,16 +831,12 @@ msgid "OK"
 msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:71
-#, fuzzy
-#| msgid "Show Keyboard Layout..."
 msgid "Show Keyboard Layout"
-msgstr "Hiện bố trí bàn phím..."
+msgstr "Hiện bố trí bàn phím"
 
 #: ../js/ui/status/keyboard.js:75
-#, fuzzy
-#| msgid "Date and Time Settings"
 msgid "Region and Language Settings"
-msgstr "Thiết lập ngày giờ"
+msgstr "Thiết lập Lãnh thổ và Ngôn ngữ"
 
 #: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
 #: ../js/ui/statusMenu.js:262
@@ -908,7 +889,7 @@ msgstr "tắt"
 #. under NetworkManager's control (and thus cannot be used in the menu)
 #: ../js/ui/status/network.js:491
 msgid "unmanaged"
-msgstr ""
+msgstr "không được quản lý"
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:502
@@ -1073,7 +1054,7 @@ msgstr[0] "%d phút còn lại"
 
 #: ../js/ui/status/power.js:216
 msgid "AC adapter"
-msgstr "Bộ đổi điện AC"
+msgstr "Nguồn AC"
 
 #: ../js/ui/status/power.js:218
 msgid "Laptop battery"
@@ -1105,7 +1086,7 @@ msgstr "Điện thoại cầm tay"
 
 #: ../js/ui/status/power.js:232
 msgid "Media player"
-msgstr "Máy phát"
+msgstr "Máy nghe nhạc"
 
 #: ../js/ui/status/power.js:234
 msgid "Tablet"
@@ -1128,24 +1109,22 @@ msgstr "Micrô"
 #. system-users for now as Empathy does.
 #: ../js/ui/telepathyClient.js:228
 msgid "Invitation"
-msgstr ""
+msgstr "Lời mời"
 
 #. We got the TpContact
 #: ../js/ui/telepathyClient.js:291
-#, fuzzy
-#| msgid "Cancel"
 msgid "Call"
-msgstr "Thôi"
+msgstr "Gọi"
 
 #: ../js/ui/telepathyClient.js:541
 #, c-format
 msgid "%s is online."
-msgstr "%s trực tuyến."
+msgstr "%s đang trực tuyến."
 
 #: ../js/ui/telepathyClient.js:546
 #, c-format
 msgid "%s is offline."
-msgstr "%s ngoại tuyến."
+msgstr "%s đã ngoại tuyến."
 
 #: ../js/ui/telepathyClient.js:549
 #, c-format
@@ -1185,14 +1164,14 @@ msgstr ""
 #: ../js/ui/telepathyClient.js:791
 #, c-format
 msgid "%s is now known as %s"
-msgstr ""
+msgstr "%s bây giờ đổi thành %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
 #: ../js/ui/telepathyClient.js:898
 #, c-format
 msgid "Invitation to %s"
-msgstr ""
+msgstr "Mời vào phòng %s"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
@@ -1200,31 +1179,31 @@ msgstr ""
 #: ../js/ui/telepathyClient.js:906
 #, c-format
 msgid "%s is inviting you to join %s"
-msgstr ""
+msgstr "%s đang mời bạn vào phòng %s"
 
 #: ../js/ui/telepathyClient.js:908
 msgid "Decline"
-msgstr ""
+msgstr "Từ chối"
 
 #: ../js/ui/telepathyClient.js:909
 msgid "Accept"
-msgstr ""
+msgstr "Đồng ý"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/telepathyClient.js:942
 #, c-format
 msgid "Video call from %s"
-msgstr ""
+msgstr "Cuộc gọi video từ %s"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/telepathyClient.js:945
 #, c-format
 msgid "Call from %s"
-msgstr ""
+msgstr "Cuộc gọi từ %s"
 
 #: ../js/ui/telepathyClient.js:955
 msgid "Answer"
-msgstr ""
+msgstr "Trả lời"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1291,13 +1270,13 @@ msgstr "Hộp thoại xác thực bị người dùng bỏ qua"
 
 #: ../src/shell-util.c:96
 msgid "Home Folder"
-msgstr "Thư mục chính"
+msgstr "Thư mục riêng"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
 #: ../src/shell-util.c:111
 msgid "File System"
-msgstr "Hệ tập tin"
+msgstr "Hệ thống tập tin"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
