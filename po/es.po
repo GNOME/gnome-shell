@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-01 13:42+0000\n"
-"PO-Revision-Date: 2011-08-03 21:53+0200\n"
+"POT-Creation-Date: 2011-08-03 22:15+0000\n"
+"PO-Revision-Date: 2011-08-04 09:29+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -246,7 +246,6 @@ msgid "Open with %s"
 msgstr "Abrir con %s"
 
 #: ../js/ui/autorunManager.js:617
-#| msgid "Reject"
 msgid "Eject"
 msgstr "Expulsar"
 
@@ -369,13 +368,13 @@ msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:749
+#: ../js/ui/calendar.js:717
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:752
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
@@ -396,7 +395,7 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "La semana que viene"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1127
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1123
 msgid "Remove"
 msgstr "Quitar"
 
@@ -529,46 +528,46 @@ msgstr "Reiniciando el sistema."
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:640
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
-#: ../js/ui/lookingGlass.js:678
+#: ../js/ui/lookingGlass.js:677
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:680 ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:679 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:682
+#: ../js/ui/lookingGlass.js:681
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:684
+#: ../js/ui/lookingGlass.js:683
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:709
+#: ../js/ui/lookingGlass.js:708
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:715
+#: ../js/ui/lookingGlass.js:714
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1120
+#: ../js/ui/messageTray.js:1116
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2291
+#: ../js/ui/messageTray.js:2277
 msgid "System Information"
 msgstr "Información del sistema"
 
-#: ../js/ui/notificationDaemon.js:419 ../js/ui/status/power.js:238
-#: ../src/shell-app-system.c:1088
+#: ../js/ui/notificationDaemon.js:426 ../js/ui/status/power.js:238
+#: ../src/shell-app-system.c:1115
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -591,18 +590,18 @@ msgid "Dash"
 msgstr "Tablero"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:532
+#: ../js/ui/panel.js:531
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:567
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:951
+#: ../js/ui/panel.js:876
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -841,12 +840,10 @@ msgid "OK"
 msgstr "Aceptar"
 
 #: ../js/ui/status/keyboard.js:71
-#| msgid "Show Keyboard Layout..."
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
 #: ../js/ui/status/keyboard.js:75
-#| msgid "Date and Time Settings"
 msgid "Region and Language Settings"
 msgstr "Configuración de región e idioma"
 
@@ -1157,8 +1154,23 @@ msgstr "%s está ocupado/a."
 #. locale, without seconds.
 #: ../js/ui/telepathyClient.js:741
 #, no-c-format
-msgid "Sent at %X on %A"
-msgstr "Enviado a las %X el %A"
+#| msgid "Sent at %X on %A"
+msgid "Sent at <b>%X</b> on <b>%A</b>"
+msgstr "Enviado el <b>%A</b> a las <b>%H:%M</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25",
+#. shown when you get a chat message in the same year.
+#: ../js/ui/telepathyClient.js:747
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+msgstr "Enviado el <b>%A</b>, <b>%d de %B</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+#. shown when you get a chat message in a different year.
+#: ../js/ui/telepathyClient.js:752
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr "Enviado el <b>%A</b>, <b>%d de %B</b> de %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1218,12 +1230,12 @@ msgstr "Teclear para buscar…"
 msgid "Search"
 msgstr "Buscar"
 
-#: ../js/ui/windowAttentionHandler.js:40
+#: ../js/ui/windowAttentionHandler.js:39
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s finalizó su lanzamiento"
 
-#: ../js/ui/windowAttentionHandler.js:42
+#: ../js/ui/windowAttentionHandler.js:41
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
