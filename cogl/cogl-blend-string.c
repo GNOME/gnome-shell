@@ -439,18 +439,18 @@ get_color_src_info (const char *mark,
       array_len = G_N_ELEMENTS (tex_combine_color_sources);
     }
 
+  if (len >= 8 &&
+      strncmp (mark, "TEXTURE_", 8) == 0 &&
+      g_ascii_isdigit (mark[8]))
+    {
+      return &tex_combine_texture_n_color_source;
+    }
+
   for (i = 0; i < array_len; i++)
     {
       if (len >= sources[i].name_len
           && strncmp (mark, sources[i].name, sources[i].name_len) == 0)
         return &sources[i];
-    }
-
-  if (len >= 9 &&
-      strncmp (mark, "TEXTURE_", 8) == 0 &&
-      g_ascii_isdigit (mark[8]))
-    {
-      return &tex_combine_texture_n_color_source;
     }
 
   return NULL;
