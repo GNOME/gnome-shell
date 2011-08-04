@@ -232,6 +232,7 @@
       <dep package="gtk3"/>
       <dep package="libcanberra"/>
       <dep package="gnome-desktop-3"/>
+      <dep package="gnome-menus"/>
       <dep package="gnome-settings-daemon"/>
       <dep package="gnome-online-accounts"/>
       <dep package="colord"/>
