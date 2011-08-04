@@ -182,7 +182,6 @@ CLUTTER_WINSYS=
 glesversion=1.1
 use_gles2_wrapper=no
 experimental_backend=no
-experimental_image=no
 
 AC_ARG_WITH([flavour],
             [AS_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/cex100@:>@],
@@ -1049,9 +1048,7 @@ fi
 echo ""
 
 # General warning about experimental features
-if test "x$experimental_backend" = "xyes" ||
-   test "x$experimental_image" = "xyes"
-then
+if test "x$experimental_backend" = "xyes"; then
 echo ""
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo " *WARNING*"
