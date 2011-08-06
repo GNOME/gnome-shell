@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-16 17:26+0300\n"
-"PO-Revision-Date: 2011-07-16 17:27+0200\n"
+"POT-Creation-Date: 2011-08-06 15:57+0300\n"
+"PO-Revision-Date: 2011-08-06 16:00+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -208,23 +208,23 @@ msgstr "ההרצה של '%s' נכשלה:"
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:351
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:377
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:650
+#: ../js/ui/appDisplay.js:658
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:661
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:654
+#: ../js/ui/appDisplay.js:662
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -237,6 +237,15 @@ msgstr "%s נוסף למועדפים שלך."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s הוסר מהמועדפים שלך."
+
+#: ../js/ui/autorunManager.js:591
+#, c-format
+msgid "Open with %s"
+msgstr "פתיחה באמצעות %s"
+
+#: ../js/ui/autorunManager.js:617
+msgid "Eject"
+msgstr "שליפה"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -357,13 +366,13 @@ msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:749
+#: ../js/ui/calendar.js:717
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:752
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
@@ -384,7 +393,7 @@ msgstr "השבוע"
 msgid "Next week"
 msgstr "בשבוע הבא"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1122
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1123
 msgid "Remove"
 msgstr "הסרה"
 
@@ -514,43 +523,48 @@ msgstr "המערכת מופעלת מחדש"
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:640
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
-#: ../js/ui/lookingGlass.js:678
+#: ../js/ui/lookingGlass.js:686
 msgid "Enabled"
 msgstr "פעיל"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:680 ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/lookingGlass.js:682
+#: ../js/ui/lookingGlass.js:690
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../js/ui/lookingGlass.js:684
+#: ../js/ui/lookingGlass.js:692
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: ../js/ui/lookingGlass.js:709
+#: ../js/ui/lookingGlass.js:717
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: ../js/ui/lookingGlass.js:715
+#: ../js/ui/lookingGlass.js:723
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:1115
+#: ../js/ui/messageTray.js:1116
 msgid "Open"
 msgstr "פתיחה"
 
-#: ../js/ui/messageTray.js:2286
+#: ../js/ui/messageTray.js:2277
 msgid "System Information"
 msgstr "פרטי המערכת"
+
+#: ../js/ui/notificationDaemon.js:426 ../js/ui/status/power.js:238
+#: ../src/shell-app-system.c:1115
+msgid "Unknown"
+msgstr "לא ידוע"
 
 #: ../js/ui/overview.js:89
 msgid "Undo"
@@ -571,18 +585,18 @@ msgid "Dash"
 msgstr "חלונית"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:532
+#: ../js/ui/panel.js:531
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:567
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:951
+#: ../js/ui/panel.js:876
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -648,43 +662,9 @@ msgstr "בחיפוש..."
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
-#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:262
-msgid "Power Off..."
-msgstr "כיבוי..."
-
-#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:261
-msgid "Suspend"
-msgstr "השהיה"
-
-#: ../js/ui/statusMenu.js:217
-msgid "Available"
-msgstr "פנוי"
-
-#: ../js/ui/statusMenu.js:222
-msgid "Busy"
-msgstr "עסוק"
-
-#: ../js/ui/statusMenu.js:230
-msgid "My Account"
-msgstr "החשבון שלי"
-
-#: ../js/ui/statusMenu.js:234
-msgid "System Settings"
-msgstr "הגדרות המערכת"
-
-#: ../js/ui/statusMenu.js:242
-msgid "Lock Screen"
-msgstr "נעילת המסך"
-
-#: ../js/ui/statusMenu.js:247
-msgid "Switch User"
-msgstr "החלפת משתמש"
-
-#: ../js/ui/statusMenu.js:252
-msgid "Log Out..."
-msgstr "ניתוק..."
+#: ../js/ui/shellMountOperation.js:285
+msgid "Wrong password, please try again"
+msgstr "ססמה שגויה, נא לנסות שוב"
 
 #: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
@@ -814,7 +794,7 @@ msgstr "תמיד להעניק גישה"
 msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
-#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:954
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:953
 msgid "Reject"
 msgstr "סירוב"
 
@@ -855,12 +835,50 @@ msgid "OK"
 msgstr "אישור"
 
 #: ../js/ui/status/keyboard.js:71
-msgid "Show Keyboard Layout..."
-msgstr "הצגת פריסת המקלדת..."
+msgid "Show Keyboard Layout"
+msgstr "הצגת פריסת המקלדת"
 
 #: ../js/ui/status/keyboard.js:75
-msgid "Localization Settings"
-msgstr "הגדרות אזוריות"
+msgid "Region and Language Settings"
+msgstr "הגדרות אזור ושפה"
+
+#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:262
+msgid "Power Off..."
+msgstr "כיבוי..."
+
+#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:261
+msgid "Suspend"
+msgstr "השהיה"
+
+#: ../js/ui/statusMenu.js:217
+msgid "Available"
+msgstr "פנוי"
+
+#: ../js/ui/statusMenu.js:222
+msgid "Busy"
+msgstr "עסוק"
+
+#: ../js/ui/statusMenu.js:230
+msgid "My Account"
+msgstr "החשבון שלי"
+
+#: ../js/ui/statusMenu.js:234
+msgid "System Settings"
+msgstr "הגדרות המערכת"
+
+#: ../js/ui/statusMenu.js:242
+msgid "Lock Screen"
+msgstr "נעילת המסך"
+
+#: ../js/ui/statusMenu.js:247
+msgid "Switch User"
+msgstr "החלפת משתמש"
+
+#: ../js/ui/statusMenu.js:252
+msgid "Log Out..."
+msgstr "ניתוק..."
 
 #: ../js/ui/status/network.js:123
 msgid "<unknown>"
@@ -1090,10 +1108,6 @@ msgstr "טבלת שליטה"
 msgid "Computer"
 msgstr "מחשב"
 
-#: ../js/ui/status/power.js:238 ../src/shell-app-system.c:1088
-msgid "Unknown"
-msgstr "לא ידוע"
-
 #: ../js/ui/status/volume.js:43
 msgid "Volume"
 msgstr "עצמה"
@@ -1105,12 +1119,12 @@ msgstr "מיקרופון"
 #. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:222
+#: ../js/ui/telepathyClient.js:228
 msgid "Invitation"
 msgstr "הזמנה"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:285
+#: ../js/ui/telepathyClient.js:291
 msgid "Call"
 msgstr "התקשרות"
 
@@ -1137,21 +1151,35 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:741
+#: ../js/ui/telepathyClient.js:738
 #, no-c-format
-msgid "Sent at %X on %A"
-msgstr "נשלח ב־%X בשעה %A"
+msgid "Sent at <b>%X</b> on <b>%A</b>"
+msgstr "נשלח ב־<b>%X</b> בשעה <b>%A</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25",
+#. shown when you get a chat message in the same year.
+#: ../js/ui/telepathyClient.js:744
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+msgstr "נשלח ב<b>%A</b>, <b>ה־%d ב%B</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+#. shown when you get a chat message in a different year.
+#: ../js/ui/telepathyClient.js:749
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr "נשלח ב<b>%A</b>, <b>ה־%d ב%B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:791
+#: ../js/ui/telepathyClient.js:790
 #, c-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:898
+#: ../js/ui/telepathyClient.js:897
 #, c-format
 msgid "Invitation to %s"
 msgstr "הזמנה ל־%s"
@@ -1159,32 +1187,32 @@ msgstr "הזמנה ל־%s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:906
+#: ../js/ui/telepathyClient.js:905
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "הוזמנת על ידי %s להצטרף אל %s"
 
-#: ../js/ui/telepathyClient.js:908
+#: ../js/ui/telepathyClient.js:907
 msgid "Decline"
 msgstr "דחייה"
 
-#: ../js/ui/telepathyClient.js:909
+#: ../js/ui/telepathyClient.js:908
 msgid "Accept"
 msgstr "אישור"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:942
+#: ../js/ui/telepathyClient.js:941
 #, c-format
 msgid "Video call from %s"
 msgstr "שיחת וידאו מאת %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:945
+#: ../js/ui/telepathyClient.js:944
 #, c-format
 msgid "Call from %s"
 msgstr "שיחה מאת %s"
 
-#: ../js/ui/telepathyClient.js:955
+#: ../js/ui/telepathyClient.js:954
 msgid "Answer"
 msgstr "מענה"
 
@@ -1200,12 +1228,12 @@ msgstr "יש להקליד כדי לחפש..."
 msgid "Search"
 msgstr "חיפוש"
 
-#: ../js/ui/windowAttentionHandler.js:40
+#: ../js/ui/windowAttentionHandler.js:39
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s סיים את תהליך ההתחלה"
 
-#: ../js/ui/windowAttentionHandler.js:42
+#: ../js/ui/windowAttentionHandler.js:41
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' מוכן"
@@ -1274,6 +1302,9 @@ msgstr "מערכת הקבצים"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Localization Settings"
+#~ msgstr "הגדרות אזוריות"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "לפני פחות מדקה"
