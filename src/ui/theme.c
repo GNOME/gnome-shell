@@ -1195,8 +1195,15 @@ meta_color_spec_new_from_string (const char *str,
       str[8] == 'o' && str[9] == 'm')
     {
       const char *color_name_start, *fallback_str_start, *end;
-      char *color_name, *fallback_str;
+      char *color_name;
       MetaColorSpec *fallback = NULL;
+      static gboolean debug, debug_set = FALSE;
+
+      if (!debug_set)
+        {
+          debug = g_getenv ("MUTTER_DISABLE_FALLBACK_COLOR") != NULL;
+          debug_set = TRUE;
+        }
 
       if (str[10] != '(')
         {
@@ -1237,9 +1244,18 @@ meta_color_spec_new_from_string (const char *str,
           return NULL;
         }
 
-      fallback_str = g_strndup (fallback_str_start, end - fallback_str_start);
-      fallback = meta_color_spec_new_from_string (fallback_str, err);
-      g_free (fallback_str);
+      if (!debug)
+        {
+          char *fallback_str;
+          fallback_str = g_strndup (fallback_str_start,
+                                    end - fallback_str_start);
+          fallback = meta_color_spec_new_from_string (fallback_str, err);
+          g_free (fallback_str);
+        }
+      else
+        {
+          fallback = meta_color_spec_new_from_string ("pink", err);
+        }
 
       if (fallback == NULL)
         return NULL;
