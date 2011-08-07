@@ -278,13 +278,22 @@ HotCorner.prototype = {
                              Lang.bind(this, this._onCornerClicked));
         this._corner.connect('leave-event',
                              Lang.bind(this, this._onCornerLeft));
+
+        // Cache the three ripples instead of dynamically creating and destroying them.
+        this._ripple1 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0 });
+        this._ripple2 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0 });
+        this._ripple3 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0 });
+
+        Main.uiGroup.add_actor(this._ripple1);
+        Main.uiGroup.add_actor(this._ripple2);
+        Main.uiGroup.add_actor(this._ripple3);
     },
 
     destroy: function() {
         this.actor.destroy();
     },
 
-    _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
+    _animRipple : function(ripple, delay, time, startScale, startOpacity, finalScale) {
         // We draw a ripple by using a source image and animating it scaling
         // outwards and fading away. We want the ripples to move linearly
         // or it looks unrealistic, but if the opacity of the ripple goes
@@ -292,25 +301,27 @@ HotCorner.prototype = {
         // 'onUpdate' to give a non-linear curve to the fade-away and make
         // it more visible in the middle section.
 
-        let [x, y] = this._corner.get_transformed_position();
-        let ripple = new St.BoxLayout({ style_class: 'ripple-box',
-                                        opacity: 255 * Math.sqrt(startOpacity),
-                                        scale_x: startScale,
-                                        scale_y: startScale,
-                                        x: x,
-                                        y: y });
-        ripple._opacity =  startOpacity;
+        ripple._opacity = startOpacity;
+
         if (ripple.get_direction() == St.TextDirection.RTL)
             ripple.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-        Tweener.addTween(ripple, { _opacity: finalOpacity,
+
+        ripple.visible = true;
+        ripple.opacity = 255 * Math.sqrt(startOpacity);
+        ripple.scale_x = ripple.scale_y = startScale;
+
+        let [x, y] = this._corner.get_transformed_position();
+        ripple.x = x;
+        ripple.y = y;
+
+        Tweener.addTween(ripple, { _opacity: 0,
                                    scale_x: finalScale,
                                    scale_y: finalScale,
                                    delay: delay,
                                    time: time,
                                    transition: 'linear',
                                    onUpdate: function() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
-                                   onComplete: function() { ripple.destroy(); } });
-        Main.uiGroup.add_actor(ripple);
+                                   onComplete: function() { ripple.visible = false; } });
     },
 
     rippleAnimation: function() {
@@ -318,10 +329,10 @@ HotCorner.prototype = {
         // parameters were found by trial and error, so don't look
         // for them to make perfect sense mathematically
 
-        //              delay  time  scale opacity => scale opacity
-        this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
-        this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
-        this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
+        //                              delay  time  scale opacity => scale
+        this._animRipple(this._ripple1, 0.0,   0.83,  0.25,  1.0,     1.5);
+        this._animRipple(this._ripple2, 0.05,  1.0,   0.0,   0.7,     1.25);
+        this._animRipple(this._ripple3, 0.35,  1.0,   0.0,   0.3,     1);
     },
 
     handleDragOver: function(source, actor, x, y, time) {
