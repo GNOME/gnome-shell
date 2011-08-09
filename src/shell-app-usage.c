@@ -11,7 +11,6 @@
 #include <gdk/gdkx.h>
 #include <glib.h>
 #include <gio/gio.h>
-#include <dbus/dbus-glib.h>
 #include <meta/display.h>
 #include <meta/group.h>
 #include <meta/window.h>
@@ -82,7 +81,7 @@ struct _ShellAppUsage
   GObject parent;
 
   GFile *configfile;
-  DBusGProxy *session_proxy;
+  GDBusProxy *session_proxy;
   GdkDisplay *display;
   gulong last_idle;
   guint idle_focus_change_id;
@@ -116,7 +115,7 @@ struct UsageData
 
 static void shell_app_usage_finalize (GObject *object);
 
-static void on_session_status_changed (DBusGProxy *proxy, guint status, ShellAppUsage *self);
+static void on_session_status_changed (GDBusProxy *proxy, guint status, ShellAppUsage *self);
 static void on_focus_app_changed (ShellWindowTracker *tracker, GParamSpec *spec, ShellAppUsage *self);
 static void ensure_queued_save (ShellAppUsage *self);
 static UsageData * get_app_usage_for_context_and_id (ShellAppUsage  *self,
@@ -343,7 +342,7 @@ on_focus_app_changed (ShellWindowTracker *tracker,
 }
 
 static void
-on_session_status_changed (DBusGProxy      *proxy,
+on_session_status_changed (GDBusProxy      *proxy,
                            guint            status,
                            ShellAppUsage *self)
 {
@@ -375,11 +374,22 @@ on_session_status_changed (DBusGProxy      *proxy,
 }
 
 static void
+session_proxy_signal (GDBusProxy *proxy, gchar *sender_name, gchar *signal_name, GVariant *parameters, gpointer user_data)
+{
+  if (g_str_equal (signal_name, "StatusChanged"))
+    {
+      guint status;
+      g_variant_get (parameters, "(u)", &status);
+      on_session_status_changed (proxy, status, SHELL_APP_USAGE (user_data));
+    }
+}
+
+static void
 shell_app_usage_init (ShellAppUsage *self)
 {
   ShellGlobal *global;
   char *shell_userdata_dir, *path;
-  DBusGConnection *session_bus;
+  GDBusConnection *session_bus;
   ShellWindowTracker *tracker;
 
   global = shell_global_get ();
@@ -390,14 +400,17 @@ shell_app_usage_init (ShellAppUsage *self)
   g_signal_connect (tracker, "notify::focus-app", G_CALLBACK (on_focus_app_changed), self);
   g_signal_connect (tracker, "app-state-changed", G_CALLBACK (on_app_state_changed), self);
 
-  session_bus = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
-  self->session_proxy = dbus_g_proxy_new_for_name (session_bus, "org.gnome.SessionManager",
-                                                   "/org/gnome/SessionManager/Presence",
-                                                   "org.gnome.SessionManager");
-  dbus_g_proxy_add_signal (self->session_proxy, "StatusChanged",
-                           G_TYPE_UINT, G_TYPE_INVALID, G_TYPE_INVALID);
-  dbus_g_proxy_connect_signal (self->session_proxy, "StatusChanged",
-                               G_CALLBACK (on_session_status_changed), self, NULL);
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  self->session_proxy = g_dbus_proxy_new_sync (session_bus,
+                                               G_DBUS_PROXY_FLAGS_NONE,
+                                               NULL, /* interface info */
+                                               "org.gnome.SessionManager",
+                                               "/org/gnome/SessionManager/Presence",
+                                               "org.gnome.SessionManager",
+                                               NULL, /* cancellable */
+                                               NULL /* error */);
+  g_signal_connect (self->session_proxy, "g-signal", G_CALLBACK (session_proxy_signal), self);
+  g_object_unref (session_bus);
 
   self->last_idle = 0;
   self->currently_idle = FALSE;
@@ -432,6 +445,8 @@ shell_app_usage_finalize (GObject *object)
                                self->settings_notify);
 
   g_object_unref (self->configfile);
+
+  g_object_unref (self->session_proxy);
 
   G_OBJECT_CLASS (shell_app_usage_parent_class)->finalize(object);
 }
