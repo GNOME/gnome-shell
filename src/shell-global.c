@@ -17,7 +17,6 @@
 #include <canberra.h>
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
-#include <dbus/dbus-glib.h>
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <gjs/gjs-module.h>
