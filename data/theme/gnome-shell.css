@@ -1025,9 +1025,9 @@ StTooltip StLabel {
 }
 
 #notification {
-    font-size: 12pt;
-    border-radius: 5px 5px 0px 0px;
-    background: rgba(0,0,0,0.9);
+    font-size: 11pt;
+    border-radius: 10px 10px 0px 0px;
+    background: rgba(0,0,0,0.8);
     padding: 8px 8px 4px 8px;
     spacing-rows: 10px;
     spacing-columns: 10px;
