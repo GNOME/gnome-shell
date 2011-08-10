@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-18 13:48+0200\n"
-"PO-Revision-Date: 2011-07-18 13:50+0200\n"
+"POT-Creation-Date: 2011-08-10 15:20+0200\n"
+"PO-Revision-Date: 2011-08-10 15:23+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -103,7 +103,9 @@ msgid ""
 "'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
 "records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
 "at the optimal thread count on the system."
-msgstr "Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som brukes for gst-launch."
+msgstr ""
+"Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som "
+"brukes for gst-launch."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
@@ -225,6 +227,15 @@ msgstr "%s ble lagt til i dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra dine favoritter."
 
+#: ../js/ui/autorunManager.js:591
+#, c-format
+msgid "Open with %s"
+msgstr "Åpne med %s"
+
+#: ../js/ui/autorunManager.js:617
+msgid "Eject"
+msgstr "Løs ut"
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
@@ -339,39 +350,39 @@ msgid "S"
 msgstr "Lø"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:678
 msgid "Nothing Scheduled"
 msgstr "Ingenting planlagt"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:749
+#: ../js/ui/calendar.js:694
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:752
+#: ../js/ui/calendar.js:697
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:707
 msgid "Today"
 msgstr "I dag"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:711
 msgid "Tomorrow"
 msgstr "I morgen"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:720
 msgid "This week"
 msgstr "Denne uken"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:728
 msgid "Next week"
 msgstr "Neste uke"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1122
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1123
 msgid "Remove"
 msgstr "Fjern"
 
@@ -505,43 +516,48 @@ msgstr "Starter systemet på nytt."
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:640
 msgid "No extensions installed"
 msgstr "Ingen utvidelser installert"
 
-#: ../js/ui/lookingGlass.js:678
+#: ../js/ui/lookingGlass.js:686
 msgid "Enabled"
 msgstr "Aktivert"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:680 ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: ../js/ui/lookingGlass.js:682
+#: ../js/ui/lookingGlass.js:690
 msgid "Error"
 msgstr "Feil"
 
-#: ../js/ui/lookingGlass.js:684
+#: ../js/ui/lookingGlass.js:692
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:709
+#: ../js/ui/lookingGlass.js:717
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:715
+#: ../js/ui/lookingGlass.js:723
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1115
+#: ../js/ui/messageTray.js:1116
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:2286
+#: ../js/ui/messageTray.js:2277
 msgid "System Information"
 msgstr "Systeminformasjon"
+
+#: ../js/ui/notificationDaemon.js:426 ../js/ui/status/power.js:238
+#: ../src/shell-app-system.c:1115
+msgid "Unknown"
+msgstr "Ukjent"
 
 #: ../js/ui/overview.js:89
 msgid "Undo"
@@ -562,18 +578,18 @@ msgid "Dash"
 msgstr "Favoritter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:532
+#: ../js/ui/panel.js:531
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:567
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:951
+#: ../js/ui/panel.js:876
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -639,43 +655,9 @@ msgstr "Søker …"
 msgid "No matching results."
 msgstr "Ingen treff."
 
-#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:262
-msgid "Power Off..."
-msgstr "Slå av …"
-
-#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:261
-msgid "Suspend"
-msgstr "Hvilemodus"
-
-#: ../js/ui/statusMenu.js:217
-msgid "Available"
-msgstr "Tilgjengelig"
-
-#: ../js/ui/statusMenu.js:222
-msgid "Busy"
-msgstr "Opptatt"
-
-#: ../js/ui/statusMenu.js:230
-msgid "My Account"
-msgstr "Min konto"
-
-#: ../js/ui/statusMenu.js:234
-msgid "System Settings"
-msgstr "Systeminnstillinger"
-
-#: ../js/ui/statusMenu.js:242
-msgid "Lock Screen"
-msgstr "Lås skjerm"
-
-#: ../js/ui/statusMenu.js:247
-msgid "Switch User"
-msgstr "Bytt bruker"
-
-#: ../js/ui/statusMenu.js:252
-msgid "Log Out..."
-msgstr "Logg ut …"
+#: ../js/ui/shellMountOperation.js:285
+msgid "Wrong password, please try again"
+msgstr "Feil passord. Prøv igjen"
 
 #: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
@@ -805,7 +787,7 @@ msgstr "Alltid gi tilgang"
 msgid "Grant this time only"
 msgstr "Gi tilgang kun denne ene gangen"
 
-#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:954
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:953
 msgid "Reject"
 msgstr "Avvis"
 
@@ -846,12 +828,50 @@ msgid "OK"
 msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:71
-msgid "Show Keyboard Layout..."
-msgstr "Vis tastaturutforming …"
+msgid "Show Keyboard Layout"
+msgstr "Vis tastaturutforming"
 
 #: ../js/ui/status/keyboard.js:75
-msgid "Localization Settings"
-msgstr "Innstillinger for lokalisering"
+msgid "Region and Language Settings"
+msgstr "Innstillinger for region og språk"
+
+#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:262
+msgid "Power Off..."
+msgstr "Slå av …"
+
+#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:261
+msgid "Suspend"
+msgstr "Hvilemodus"
+
+#: ../js/ui/statusMenu.js:217
+msgid "Available"
+msgstr "Tilgjengelig"
+
+#: ../js/ui/statusMenu.js:222
+msgid "Busy"
+msgstr "Opptatt"
+
+#: ../js/ui/statusMenu.js:230
+msgid "My Account"
+msgstr "Min konto"
+
+#: ../js/ui/statusMenu.js:234
+msgid "System Settings"
+msgstr "Systeminnstillinger"
+
+#: ../js/ui/statusMenu.js:242
+msgid "Lock Screen"
+msgstr "Lås skjerm"
+
+#: ../js/ui/statusMenu.js:247
+msgid "Switch User"
+msgstr "Bytt bruker"
+
+#: ../js/ui/statusMenu.js:252
+msgid "Log Out..."
+msgstr "Logg ut …"
 
 #: ../js/ui/status/network.js:123
 msgid "<unknown>"
@@ -1077,10 +1097,6 @@ msgstr "Nettbrett"
 msgid "Computer"
 msgstr "Datamaskin"
 
-#: ../js/ui/status/power.js:238 ../src/shell-app-system.c:1088
-msgid "Unknown"
-msgstr "Ukjent"
-
 #: ../js/ui/status/volume.js:43
 msgid "Volume"
 msgstr "Volum"
@@ -1124,21 +1140,35 @@ msgstr "%s er opptatt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:741
+#: ../js/ui/telepathyClient.js:738
 #, no-c-format
-msgid "Sent at %X on %A"
-msgstr "Sendt %X på %A"
+msgid "Sent at <b>%X</b> on <b>%A</b>"
+msgstr "Sendt <b>%X</b> på <b>%A</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25",
+#. shown when you get a chat message in the same year.
+#: ../js/ui/telepathyClient.js:744
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+msgstr "Sendt  <b>%A</b>, <b>%B %d</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+#. shown when you get a chat message in a different year.
+#: ../js/ui/telepathyClient.js:749
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr "Sendt <b>%A</b>, <b>%B %d</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:791
+#: ../js/ui/telepathyClient.js:790
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s er nå kjent som %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:898
+#: ../js/ui/telepathyClient.js:897
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitasjon til %s"
@@ -1146,32 +1176,32 @@ msgstr "Invitasjon til %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:906
+#: ../js/ui/telepathyClient.js:905
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s inviterer deg til å bli med i %s"
 
-#: ../js/ui/telepathyClient.js:908
+#: ../js/ui/telepathyClient.js:907
 msgid "Decline"
 msgstr "Avslå"
 
-#: ../js/ui/telepathyClient.js:909
+#: ../js/ui/telepathyClient.js:908
 msgid "Accept"
 msgstr "Godta"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:942
+#: ../js/ui/telepathyClient.js:941
 #, c-format
 msgid "Video call from %s"
 msgstr "Videosamtale fra %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:945
+#: ../js/ui/telepathyClient.js:944
 #, c-format
 msgid "Call from %s"
 msgstr "Samtale fra %s"
 
-#: ../js/ui/telepathyClient.js:955
+#: ../js/ui/telepathyClient.js:954
 msgid "Answer"
 msgstr "Svar"
 
@@ -1183,16 +1213,16 @@ msgstr "Svar"
 msgid "Type to search..."
 msgstr "Skriv for å søke …"
 
-#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:257
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:261
 msgid "Search"
 msgstr "Søk"
 
-#: ../js/ui/windowAttentionHandler.js:40
+#: ../js/ui/windowAttentionHandler.js:39
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s er ferdig startet"
 
-#: ../js/ui/windowAttentionHandler.js:42
+#: ../js/ui/windowAttentionHandler.js:41
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» er klar"
@@ -1240,13 +1270,13 @@ msgstr "Forvalg"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Autentiseringsdialogen ble lukket av brukeren"
 
-#: ../src/shell-util.c:96
+#: ../src/shell-util.c:100
 msgid "Home Folder"
 msgstr "Hjemmemappe"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:111
+#: ../src/shell-util.c:115
 msgid "File System"
 msgstr "Filsystem"
 
@@ -1255,7 +1285,11 @@ msgstr "Filsystem"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:307
+#: ../src/shell-util.c:311
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#: ../src/shell-util.c:586
+msgid "calendar:week_start:0"
+msgstr "calendar:week_start:1"
