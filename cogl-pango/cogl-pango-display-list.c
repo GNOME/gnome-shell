@@ -40,7 +40,6 @@ typedef enum
 } CoglPangoDisplayListNodeType;
 
 typedef struct _CoglPangoDisplayListNode CoglPangoDisplayListNode;
-typedef struct _CoglPangoDisplayListVertex CoglPangoDisplayListVertex;
 
 struct _CoglPangoDisplayList
 {
@@ -68,8 +67,8 @@ struct _CoglPangoDisplayListNode
       CoglHandle  texture;
       /* Array of vertex data to render out of this texture */
       GArray     *verts;
-      /* A VBO representing those vertices */
-      CoglHandle  vertex_buffer;
+      /* A primitive representing those vertices */
+      CoglPrimitive *primitive;
     } texture;
 
     struct
@@ -88,11 +87,6 @@ struct _CoglPangoDisplayListNode
       float x_22;
     } trapezoid;
   } d;
-};
-
-struct _CoglPangoDisplayListVertex
-{
-  float x, y, t_x, t_y;
 };
 
 CoglPangoDisplayList *
@@ -138,7 +132,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
                                       float tx_2, float ty_2)
 {
   CoglPangoDisplayListNode *node;
-  CoglPangoDisplayListVertex *verts;
+  CoglVertexP2T2 *verts;
 
   /* Add to the last node if it is a texture node with the same
      target texture */
@@ -150,10 +144,10 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
           : !node->color_override))
     {
       /* Get rid of the vertex buffer so that it will be recreated */
-      if (node->d.texture.vertex_buffer != COGL_INVALID_HANDLE)
+      if (node->d.texture.primitive != NULL)
         {
-          cogl_handle_unref (node->d.texture.vertex_buffer);
-          node->d.texture.vertex_buffer = COGL_INVALID_HANDLE;
+          cogl_object_unref (node->d.texture.primitive);
+          node->d.texture.primitive = NULL;
         }
     }
   else
@@ -167,8 +161,8 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       node->pipeline = NULL;
       node->d.texture.texture = cogl_handle_ref (texture);
       node->d.texture.verts
-        = g_array_new (FALSE, FALSE, sizeof (CoglPangoDisplayListVertex));
-      node->d.texture.vertex_buffer = COGL_INVALID_HANDLE;
+        = g_array_new (FALSE, FALSE, sizeof (CoglVertexP2T2));
+      node->d.texture.primitive = NULL;
 
       _cogl_pango_display_list_append_node (dl, node);
     }
@@ -176,28 +170,28 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
   g_array_set_size (node->d.texture.verts,
                     node->d.texture.verts->len + 4);
   verts = &g_array_index (node->d.texture.verts,
-                          CoglPangoDisplayListVertex,
+                          CoglVertexP2T2,
                           node->d.texture.verts->len - 4);
 
   verts->x = x_1;
   verts->y = y_1;
-  verts->t_x = tx_1;
-  verts->t_y = ty_1;
+  verts->s = tx_1;
+  verts->t = ty_1;
   verts++;
   verts->x = x_1;
   verts->y = y_2;
-  verts->t_x = tx_1;
-  verts->t_y = ty_2;
+  verts->s = tx_1;
+  verts->t = ty_2;
   verts++;
   verts->x = x_2;
   verts->y = y_2;
-  verts->t_x = tx_2;
-  verts->t_y = ty_2;
+  verts->s = tx_2;
+  verts->t = ty_2;
   verts++;
   verts->x = x_2;
   verts->y = y_1;
-  verts->t_x = tx_2;
-  verts->t_y = ty_1;
+  verts->s = tx_2;
+  verts->t = ty_1;
 }
 
 void
@@ -251,15 +245,15 @@ emit_rectangles_through_journal (CoglPangoDisplayListNode *node)
 
   for (i = 0; i < node->d.texture.verts->len; i += 4)
     {
-      CoglPangoDisplayListVertex *v0 =
+      CoglVertexP2T2 *v0 =
         &g_array_index (node->d.texture.verts,
-                        CoglPangoDisplayListVertex, i);
-      CoglPangoDisplayListVertex *v1 =
+                        CoglVertexP2T2, i);
+      CoglVertexP2T2 *v1 =
         &g_array_index (node->d.texture.verts,
-                        CoglPangoDisplayListVertex, i + 2);
+                        CoglVertexP2T2, i + 2);
       cogl_rectangle_with_texture_coords (v0->x, v0->y, v1->x, v1->y,
-                                          v0->t_x, v0->t_y,
-                                          v1->t_x, v1->t_y);
+                                          v0->s, v0->t,
+                                          v1->s, v1->t);
     }
 }
 
@@ -276,47 +270,60 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
    * be re-used avoiding the repeated cost of validating the data and
    * mapping it into the GPU... */
 
-  if (node->d.texture.vertex_buffer == COGL_INVALID_HANDLE)
+  if (node->d.texture.primitive == NULL)
     {
-      CoglHandle vb = cogl_vertex_buffer_new (node->d.texture.verts->len);
+      CoglAttributeBuffer *buffer;
+      CoglAttribute *attributes[2];
+      CoglPrimitive *prim;
 
-      cogl_vertex_buffer_add (vb, "gl_Vertex", 2,
-                              COGL_ATTRIBUTE_TYPE_FLOAT, FALSE,
-                              sizeof (CoglPangoDisplayListVertex),
-                              &g_array_index (node->d.texture.verts,
-                                              CoglPangoDisplayListVertex, 0).x);
-      cogl_vertex_buffer_add (vb, "gl_MultiTexCoord0", 2,
-                              COGL_ATTRIBUTE_TYPE_FLOAT, FALSE,
-                              sizeof (CoglPangoDisplayListVertex),
-                              &g_array_index (node->d.texture.verts,
-                                              CoglPangoDisplayListVertex,
-                                              0).t_x);
-      cogl_vertex_buffer_submit (vb);
+      buffer
+        = cogl_attribute_buffer_new (node->d.texture.verts->len
+                                     * sizeof (CoglVertexP2T2),
+                                     node->d.texture.verts->data);
+      attributes[0] = cogl_attribute_new (buffer,
+                                          "cogl_position_in",
+                                          sizeof (CoglVertexP2T2),
+                                          G_STRUCT_OFFSET (CoglVertexP2T2, x),
+                                          2, /* n_components */
+                                          COGL_ATTRIBUTE_TYPE_FLOAT);
+      attributes[1] = cogl_attribute_new (buffer,
+                                          "cogl_tex_coord0_in",
+                                          sizeof (CoglVertexP2T2),
+                                          G_STRUCT_OFFSET (CoglVertexP2T2, s),
+                                          2, /* n_components */
+                                          COGL_ATTRIBUTE_TYPE_FLOAT);
 
-      node->d.texture.vertex_buffer = vb;
-    }
+      prim = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                                 node->d.texture.verts->len,
+                                                 attributes,
+                                                 2 /* n_attributes */);
 
 #ifdef CLUTTER_COGL_HAS_GL
-  if (ctx->driver == COGL_DRIVER_GL)
-    cogl_vertex_buffer_draw (node->d.texture.vertex_buffer,
-                             GL_QUADS,
-                             0, node->d.texture.verts->len);
-  else
+      if (ctx->driver == COGL_DRIVER_GL)
+        cogl_primitive_set_mode (prim, GL_QUADS);
+      else
 #endif
-    {
-      /* GLES doesn't support GL_QUADS so instead we use a VBO with
-         indexed vertices to generate GL_TRIANGLES from the quads */
+        {
+          /* GLES doesn't support GL_QUADS so instead we use a VBO
+             with indexed vertices to generate GL_TRIANGLES from the
+             quads */
 
-      int n_indices = node->d.texture.verts->len / 4 * 6;
-      CoglHandle indices_vbo
-        = cogl_vertex_buffer_indices_get_for_quads (n_indices);
+          CoglIndices *indices =
+            cogl_get_rectangle_indices (node->d.texture.verts->len / 4);
 
-      cogl_vertex_buffer_draw_elements (node->d.texture.vertex_buffer,
-                                        COGL_VERTICES_MODE_TRIANGLES,
-                                        indices_vbo,
-                                        0, node->d.texture.verts->len - 1,
-                                        0, n_indices);
+          cogl_primitive_set_indices (prim, indices);
+          cogl_primitive_set_n_vertices (prim,
+                                         node->d.texture.verts->len / 4 * 6);
+        }
+
+      node->d.texture.primitive = prim;
+
+      cogl_object_unref (buffer);
+      cogl_object_unref (attributes[0]);
+      cogl_object_unref (attributes[1]);
     }
+
+  cogl_primitive_draw (node->d.texture.primitive);
 }
 
 static void
@@ -418,8 +425,8 @@ _cogl_pango_display_list_node_free (CoglPangoDisplayListNode *node)
       g_array_free (node->d.texture.verts, TRUE);
       if (node->d.texture.texture != COGL_INVALID_HANDLE)
         cogl_handle_unref (node->d.texture.texture);
-      if (node->d.texture.vertex_buffer != COGL_INVALID_HANDLE)
-        cogl_handle_unref (node->d.texture.vertex_buffer);
+      if (node->d.texture.primitive != NULL)
+        cogl_object_unref (node->d.texture.primitive);
     }
 
   if (node->pipeline)
