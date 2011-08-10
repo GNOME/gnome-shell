@@ -15,7 +15,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl
-LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 AM_CFLAGS = \
 	$(CLUTTER_CFLAGS) \
 	$(MAINTAINER_CFLAGS) \
@@ -26,8 +26,6 @@ perf-report: check
 
 check:
 	for a in $(noinst_PROGRAMS);do ./$$a;done;true
-
-AM_LDFLAGS = $(CLUTTER_LIBS)
 
 test_picking_SOURCES = test-picking.c
 test_text_perf_SOURCES = test-text-perf.c

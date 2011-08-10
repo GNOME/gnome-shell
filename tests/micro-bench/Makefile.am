@@ -1,5 +1,7 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
+common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+
 noinst_PROGRAMS = \
 	test-text \
 	test-picking \
@@ -20,7 +22,7 @@ AM_CFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
 
-AM_LDFLAGS = $(CLUTTER_LIBS)
+LDADD = $(common_ldadd) $(CLUTTER_LIBS)
 
 test_text_SOURCES = test-text.c
 test_picking_SOURCES = test-picking.c
