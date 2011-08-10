@@ -15,6 +15,7 @@
 #include "shell-app-private.h"
 #include "shell-window-tracker-private.h"
 #include "shell-global.h"
+#include "shell-util.h"
 #include "st.h"
 
 /* Vendor prefixes are something that can be preprended to a .desktop
@@ -619,20 +620,6 @@ sort_and_concat_results (ShellAppSystem *system,
   return g_slist_concat (multiple_prefix_matches, g_slist_concat (prefix_matches, g_slist_concat (multiple_substring_matches, substring_matches)));
 }
 
-static char *
-normalize_and_casefold (const char *str)
-{
-  char *normalized, *result;
-
-  if (str == NULL)
-    return NULL;
-
-  normalized = g_utf8_normalize (str, -1, G_NORMALIZE_ALL);
-  result = g_utf8_casefold (normalized, -1);
-  g_free (normalized);
-  return result;
-}
-
 /**
  * normalize_terms:
  * @terms: (element-type utf8): Input search terms
@@ -647,7 +634,7 @@ normalize_terms (GSList *terms)
   for (iter = terms; iter; iter = iter->next)
     {
       const char *term = iter->data;
-      normalized_terms = g_slist_prepend (normalized_terms, normalize_and_casefold (term));
+      normalized_terms = g_slist_prepend (normalized_terms, shell_util_normalize_and_casefold (term));
     }
   return normalized_terms;
 }

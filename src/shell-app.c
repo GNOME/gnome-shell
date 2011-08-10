@@ -11,6 +11,7 @@
 #include "shell-app-private.h"
 #include "shell-enum-types.h"
 #include "shell-global.h"
+#include "shell-util.h"
 #include "shell-window-tracker-private.h"
 #include "st.h"
 
@@ -1126,20 +1127,6 @@ unref_running_state (ShellAppRunningState *state)
 }
 
 static char *
-normalize_and_casefold (const char *str)
-{
-  char *normalized, *result;
-
-  if (str == NULL)
-    return NULL;
-
-  normalized = g_utf8_normalize (str, -1, G_NORMALIZE_ALL);
-  result = g_utf8_casefold (normalized, -1);
-  g_free (normalized);
-  return result;
-}
-
-static char *
 trim_exec_line (const char *str)
 {
   const char *start, *end, *pos;
@@ -1166,13 +1153,13 @@ shell_app_init_search_data (ShellApp *app)
 
   appinfo = gmenu_tree_entry_get_app_info (app->entry);
   name = g_app_info_get_name (G_APP_INFO (appinfo));
-  app->casefolded_name = normalize_and_casefold (name);
+  app->casefolded_name = shell_util_normalize_and_casefold (name);
 
   comment = g_app_info_get_description (G_APP_INFO (appinfo));
-  app->casefolded_description = normalize_and_casefold (comment);
+  app->casefolded_description = shell_util_normalize_and_casefold (comment);
 
   exec = g_app_info_get_executable (G_APP_INFO (appinfo));
-  normalized_exec = normalize_and_casefold (exec);
+  normalized_exec = shell_util_normalize_and_casefold (exec);
   app->casefolded_exec = trim_exec_line (normalized_exec);
   g_free (normalized_exec);
 }
