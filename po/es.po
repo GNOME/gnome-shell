@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-03 22:15+0000\n"
-"PO-Revision-Date: 2011-08-04 11:35+0200\n"
+"POT-Creation-Date: 2011-08-09 23:03+0000\n"
+"PO-Revision-Date: 2011-08-10 13:25+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -363,35 +363,35 @@ msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:678
 msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:694
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:697
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:707
 msgid "Today"
 msgstr "Hoy"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:711
 msgid "Tomorrow"
 msgstr "Mañana"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:720
 msgid "This week"
 msgstr "Esta semana"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:728
 msgid "Next week"
 msgstr "La semana que viene"
 
@@ -532,29 +532,29 @@ msgstr "Cancelar"
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
-#: ../js/ui/lookingGlass.js:677
+#: ../js/ui/lookingGlass.js:686
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:679 ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:681
+#: ../js/ui/lookingGlass.js:690
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:683
+#: ../js/ui/lookingGlass.js:692
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:708
+#: ../js/ui/lookingGlass.js:717
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:714
+#: ../js/ui/lookingGlass.js:723
 msgid "Web Page"
 msgstr "Página web"
 
@@ -799,7 +799,7 @@ msgstr "Conceder acceso siempre"
 msgid "Grant this time only"
 msgstr "Conceder sólo esta vez"
 
-#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:954
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:953
 msgid "Reject"
 msgstr "Rechazar"
 
@@ -1152,36 +1152,35 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:741
+#: ../js/ui/telepathyClient.js:738
 #, no-c-format
-#| msgid "Sent at %X on %A"
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Enviado el <b>%A</b> a las <b>%H:%M</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:747
+#: ../js/ui/telepathyClient.js:744
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Enviado el <b>%A</b>, <b>%d de %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:752
+#: ../js/ui/telepathyClient.js:749
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Enviado el <b>%A</b>, <b>%d de %B</b> de %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:791
+#: ../js/ui/telepathyClient.js:790
 #, c-format
 msgid "%s is now known as %s"
 msgstr "Ahora %s se llama %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:898
+#: ../js/ui/telepathyClient.js:897
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitación a %s"
@@ -1189,32 +1188,32 @@ msgstr "Invitación a %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:906
+#: ../js/ui/telepathyClient.js:905
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s le está invitando a unirse a %s"
 
-#: ../js/ui/telepathyClient.js:908
+#: ../js/ui/telepathyClient.js:907
 msgid "Decline"
 msgstr "Rechazar"
 
-#: ../js/ui/telepathyClient.js:909
+#: ../js/ui/telepathyClient.js:908
 msgid "Accept"
 msgstr "Aceptar"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:942
+#: ../js/ui/telepathyClient.js:941
 #, c-format
 msgid "Video call from %s"
 msgstr "Videollamada de %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:945
+#: ../js/ui/telepathyClient.js:944
 #, c-format
 msgid "Call from %s"
 msgstr "Llamada de %s"
 
-#: ../js/ui/telepathyClient.js:955
+#: ../js/ui/telepathyClient.js:954
 msgid "Answer"
 msgstr "Responder"
 
@@ -1226,7 +1225,7 @@ msgstr "Responder"
 msgid "Type to search..."
 msgstr "Teclear para buscar…"
 
-#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:257
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:261
 msgid "Search"
 msgstr "Buscar"
 
@@ -1283,13 +1282,13 @@ msgstr "Predeterminada"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "El usuario rechazó el diálogo de autenticación"
 
-#: ../src/shell-util.c:96
+#: ../src/shell-util.c:100
 msgid "Home Folder"
 msgstr "Carpeta personal"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:111
+#: ../src/shell-util.c:115
 msgid "File System"
 msgstr "Sistema de archivos"
 
@@ -1298,10 +1297,14 @@ msgstr "Sistema de archivos"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:307
+#: ../src/shell-util.c:311
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#: ../src/shell-util.c:586
+msgid "calendar:week_start:0"
+msgstr "calendar:week_start:1"
 
 #~ msgid "Localization Settings"
 #~ msgstr "Configuración regional"
