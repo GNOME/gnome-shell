@@ -777,11 +777,7 @@ _shell_app_new_for_window (MetaWindow      *window)
 
   app = g_object_new (SHELL_TYPE_APP, NULL);
 
-  /* For windows, its id is simply its pointer address as a string.
-   * There are various other alternatives, but the address is unique
-   * and unchanging, which is pretty much the best we can do.
-   */
-  app->window_id_string = g_strdup_printf ("window:%p", window);
+  app->window_id_string = g_strdup_printf ("window:%d", meta_window_get_stable_sequence (window));
 
   _shell_app_add_window (app, window);
 
