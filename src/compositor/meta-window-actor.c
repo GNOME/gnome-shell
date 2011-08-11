@@ -1579,24 +1579,17 @@ meta_window_actor_update_bounding_region_and_borders (MetaWindowActor *self,
       cairo_rectangle_int_t old_bounding_rectangle;
       cairo_region_get_extents (priv->bounding_region, &old_bounding_rectangle);
 
+      /* Because the bounding region doesn't include the invisible borders,
+       * we need to make sure that the border sizes haven't changed before
+       * short-circuiting early.
+       */
       if (bounding_rectangle.width == old_bounding_rectangle.width &&
-          bounding_rectangle.height == old_bounding_rectangle.height)
-        {
-
-          if (priv->last_borders.invisible.left != borders.invisible.left &&
-              priv->last_borders.invisible.right != borders.invisible.right &&
-              priv->last_borders.invisible.top != borders.invisible.top &&
-              priv->last_borders.invisible.bottom != borders.invisible.bottom)
-            {
-              /* Because the bounding region doesn't include the invisible borders,
-               * we need to make sure that the border sizes haven't changed before
-               * short-circuiting early. If they have, update the mask texture here.
-               */
-              meta_window_actor_update_shape (self);
-            }
-
-          return;
-        }
+          bounding_rectangle.height == old_bounding_rectangle.height &&
+          priv->last_borders.invisible.left == borders.invisible.left &&
+          priv->last_borders.invisible.right == borders.invisible.right &&
+          priv->last_borders.invisible.top == borders.invisible.top &&
+          priv->last_borders.invisible.bottom == borders.invisible.bottom)
+        return;
     }
 
   priv->last_borders = borders;
