@@ -207,7 +207,7 @@ ViewByCategories.prototype = {
                 var app = this._appSystem.lookup_app_by_tree_entry(entry);
                 appList.push(app);
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
-                _loadCategory(iter.get_directory(), appList);
+                this._loadCategory(iter.get_directory(), appList);
             }
         }
     },
