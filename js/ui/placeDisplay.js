@@ -60,13 +60,13 @@ PlaceInfo.prototype = {
 // Helper function to translate launch parameters into a GAppLaunchContext
 function _makeLaunchContext(params)
 {
-    params = Params.parse(params, { workspace: null,
-                                    timestamp: null });
+    params = Params.parse(params, { workspace: -1,
+                                    timestamp: 0 });
 
     let launchContext = global.create_app_launch_context();
-    if (params.workspace != null)
-        launchContext.set_desktop(params.workspace.index());
-    if (params.timestamp != null)
+    if (params.workspace != -1)
+        launchContext.set_desktop(params.workspace);
+    if (params.timestamp != 0)
         launchContext.set_timestamp(params.timestamp);
 
     return launchContext;

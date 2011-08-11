@@ -1440,7 +1440,7 @@ Workspace.prototype = {
                                                  time);
             return true;
         } else if (source.shellWorkspaceLaunch) {
-            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace,
+            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
                                           timestamp: time });
             return true;
         }

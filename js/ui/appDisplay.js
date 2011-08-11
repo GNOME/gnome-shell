@@ -334,10 +334,9 @@ AppSearchProvider.prototype = {
     },
 
     activateResult: function(id, params) {
-        params = Params.parse(params, { workspace: null,
-                                        timestamp: null });
+        params = Params.parse(params, { workspace: -1,
+                                        timestamp: 0 });
 
-        let workspace = params.workspace ? params.workspace.index() : -1;
         let event = Clutter.get_current_event();
         let modifiers = event ? Shell.get_event_state(event) : 0;
         let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
@@ -346,15 +345,15 @@ AppSearchProvider.prototype = {
         if (openNewWindow)
             app.open_new_window(workspace);
         else
-            app.activate(workspace);
+            app.activate_full(params.workspace, params.timestamp);
     },
 
     dragActivateResult: function(id, params) {
-        params = Params.parse(params, { workspace: null,
-                                        timestamp: null });
+        params = Params.parse(params, { workspace: -1,
+                                        timestamp: 0 });
 
         let app = this._appSys.lookup_app(id);
-        app.open_new_window(params.workspace ? params.workspace.index() : -1);
+        app.open_new_window(workspace);
     },
 
     createResultActor: function (resultMeta, terms) {
@@ -395,10 +394,10 @@ SettingsSearchProvider.prototype = {
     },
 
     activateResult: function(pref, params) {
-        params = Params.parse(params, { workspace: null,
-                                        timestamp: null });
+        params = Params.parse(params, { workspace: -1,
+                                        timestamp: 0 });
 
-        pref.activate(params.workspace);
+        pref.activate_full(params.workspace, params.timestamp);
     },
 
     dragActivateResult: function(pref, params) {
@@ -596,17 +595,17 @@ AppWellIcon.prototype = {
                 && this.app.state == Shell.AppState.RUNNING) {
                 this.app.open_new_window(-1);
             } else {
-                this.app.activate(-1);
+                this.app.activate();
             }
         }
         Main.overview.hide();
     },
 
     shellWorkspaceLaunch : function(params) {
-        params = Params.parse(params, { workspace: null,
-                                        timestamp: null });
+        params = Params.parse(params, { workspace: -1,
+                                        timestamp: 0 });
 
-        this.app.open_new_window(params.workspace ? params.workspace.index() : -1);
+        this.app.open_new_window(params.workspace);
     },
 
     getDragActor: function() {

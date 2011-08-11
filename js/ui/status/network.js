@@ -1605,7 +1605,7 @@ NMApplet.prototype = {
         this.menu.addAction(_("Network Settings"), function() {
             Main.overview.hide();
             let app = Shell.AppSystem.get_default().lookup_setting('gnome-network-panel.desktop');
-            app.activate(-1);
+            app.activate();
         });
 
         this._activeConnections = [ ];

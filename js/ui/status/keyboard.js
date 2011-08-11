@@ -75,7 +75,7 @@ XKBIndicator.prototype = {
         this.menu.addAction(_("Region and Language Settings"), function() {
             Main.overview.hide();
             let app = Shell.AppSystem.get_default().lookup_setting('gnome-region-panel.desktop');
-            app.activate(-1);
+            app.activate();
         });
     },
 

@@ -508,8 +508,22 @@ shell_app_activate_window (ShellApp     *app,
 /**
  * shell_app_activate:
  * @app: a #ShellApp
+ *
+ * Like shell_app_activate_full(), but using the default workspace and
+ * event timestamp.
+ */
+void
+shell_app_activate (ShellApp      *app)
+{
+  return shell_app_activate_full (app, -1, 0);
+}
+
+/**
+ * shell_app_activate_full:
+ * @app: a #ShellApp
  * @workspace: launch on this workspace, or -1 for default. Ignored if
  *   activating an existing window
+ * @timestamp: Event timestamp
  *
  * Perform an appropriate default action for operating on this application,
  * dependent on its current state.  For example, if the application is not
@@ -518,8 +532,9 @@ shell_app_activate_window (ShellApp     *app,
  * recently used transient for that window).
  */
 void
-shell_app_activate (ShellApp      *app,
-                    int            workspace)
+shell_app_activate_full (ShellApp      *app,
+                         int            workspace,
+                         guint32        timestamp)
 {
   switch (app->state)
     {
@@ -527,7 +542,7 @@ shell_app_activate (ShellApp      *app,
         {
           GError *error = NULL;
           if (!shell_app_launch (app,
-                                 0,
+                                 timestamp,
                                  NULL,
                                  workspace,
                                  NULL,
@@ -546,7 +561,7 @@ shell_app_activate (ShellApp      *app,
       case SHELL_APP_STATE_STARTING:
         break;
       case SHELL_APP_STATE_RUNNING:
-        shell_app_activate_window (app, NULL, shell_global_get_current_time (shell_global_get ()));
+        shell_app_activate_window (app, NULL, timestamp);
         break;
     }
 }

@@ -30,11 +30,11 @@ DocSearchProvider.prototype = {
     },
 
     activateResult: function(id, params) {
-        params = Params.parse(params, { workspace: null,
-                                        timestamp: null });
+        params = Params.parse(params, { workspace: -1,
+                                        timestamp: 0 });
 
         let docInfo = this._docManager.lookupByUri(id);
-        docInfo.launch(params.workspace ? params.workspace.index() : -1);
+        docInfo.launch(params.workspace);
     },
 
     getInitialResultSet: function(terms) {
