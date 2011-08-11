@@ -39,8 +39,8 @@ const char *shell_app_get_id (ShellApp *app);
 GMenuTreeEntry *shell_app_get_tree_entry (ShellApp *app);
 GDesktopAppInfo *shell_app_get_app_info (ShellApp *app);
 
-ClutterActor *shell_app_create_icon_texture (ShellApp *app, float size);
-ClutterActor *shell_app_get_faded_icon (ShellApp *app, float size);
+ClutterActor *shell_app_create_icon_texture (ShellApp *app, int size);
+ClutterActor *shell_app_get_faded_icon (ShellApp *app, int size);
 const char *shell_app_get_name (ShellApp *app);
 const char *shell_app_get_description (ShellApp *app);
 gboolean shell_app_is_window_backed (ShellApp *app);

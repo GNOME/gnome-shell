@@ -133,7 +133,7 @@ window_backed_app_get_window (ShellApp     *app)
  */
 ClutterActor *
 shell_app_create_icon_texture (ShellApp   *app,
-                               float size)
+                               int         size)
 {
   GIcon *icon;
   ClutterActor *ret;
@@ -150,12 +150,12 @@ shell_app_create_icon_texture (ShellApp   *app,
 
   icon = g_app_info_get_icon (G_APP_INFO (gmenu_tree_entry_get_app_info (app->entry)));
   if (icon != NULL)
-    ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, (int)size);
+    ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, size);
 
   if (ret == NULL)
     {
       icon = g_themed_icon_new ("application-x-executable");
-      ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, (int)size);
+      ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, size);
       g_object_unref (icon);
     }
 
@@ -199,7 +199,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   if (icon != NULL)
     {
       info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                             icon, (int) (size + 0.5),
+                                             icon, size,
                                              GTK_ICON_LOOKUP_FORCE_SIZE);
     }
 
@@ -207,7 +207,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
     {
       icon = g_themed_icon_new ("application-x-executable");
       info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                             icon, (int) (size + 0.5),
+                                             icon, size,
                                              GTK_ICON_LOOKUP_FORCE_SIZE);
       g_object_unref (icon);
     }
@@ -273,7 +273,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
  * Return value: (transfer none): A floating #ClutterActor, or %NULL if no icon
  */
 ClutterActor *
-shell_app_get_faded_icon (ShellApp *app, float size)
+shell_app_get_faded_icon (ShellApp *app, int size)
 {
   CoglHandle texture;
   ClutterActor *result;
@@ -293,9 +293,9 @@ shell_app_get_faded_icon (ShellApp *app, float size)
     }
     
 
-  cache_key = g_strdup_printf ("faded-icon:%s,size=%f", shell_app_get_id (app), size);
+  cache_key = g_strdup_printf ("faded-icon:%s,size=%d", shell_app_get_id (app), size);
   data.app = app;
-  data.size = (int) (0.5 + size);
+  data.size = size;
   texture = st_texture_cache_load (st_texture_cache_get_default (),
                                    cache_key,
                                    ST_TEXTURE_CACHE_POLICY_FOREVER,
@@ -312,7 +312,7 @@ shell_app_get_faded_icon (ShellApp *app, float size)
   else
     {
       result = clutter_texture_new ();
-      g_object_set (result, "opacity", 0, "width", size, "height", size, NULL);
+      g_object_set (result, "opacity", 0, "width", (float) size, "height", (float) size, NULL);
 
     }
   return result;
