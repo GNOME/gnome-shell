@@ -123,6 +123,18 @@ window_backed_app_get_window (ShellApp     *app)
   return app->running_state->windows->data;
 }
 
+static ClutterActor *
+window_backed_app_get_icon (ShellApp *app,
+                            int       size)
+{
+  MetaWindow *window = window_backed_app_get_window (app);
+  ClutterActor *actor = st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
+                                                               G_OBJECT (window),
+                                                               "icon");
+  g_object_set (actor, "width", (float) size, "height", (float) size, NULL);
+  return actor;
+}
+
 /**
  * shell_app_create_icon_texture:
  *
@@ -141,12 +153,7 @@ shell_app_create_icon_texture (ShellApp   *app,
   ret = NULL;
 
   if (app->entry == NULL)
-    {
-      MetaWindow *window = window_backed_app_get_window (app);
-      return st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
-                                                    G_OBJECT (window),
-                                                    "icon");
-    }
+    return window_backed_app_get_icon (app, size);
 
   icon = g_app_info_get_icon (G_APP_INFO (gmenu_tree_entry_get_app_info (app->entry)));
   if (icon != NULL)
@@ -285,13 +292,7 @@ shell_app_get_faded_icon (ShellApp *app, int size)
    * app-tracked from not.
    */
   if (!app->entry)
-    {
-      MetaWindow *window = window_backed_app_get_window (app);
-      return st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
-                                                    G_OBJECT (window),
-                                                    "icon");
-    }
-    
+    return window_backed_app_get_icon (app, size);
 
   cache_key = g_strdup_printf ("faded-icon:%s,size=%d", shell_app_get_id (app), size);
   data.app = app;
