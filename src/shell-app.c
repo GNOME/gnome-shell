@@ -1065,7 +1065,7 @@ shell_app_launch (ShellApp     *app,
   screen = shell_global_get_screen (global);
 
   if (timestamp == 0)
-    timestamp = clutter_get_current_event_time ();
+    timestamp = shell_global_get_current_time (global);
 
   if (workspace < 0)
     workspace = meta_screen_get_active_workspace_index (screen);
