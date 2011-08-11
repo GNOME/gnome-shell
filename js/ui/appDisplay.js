@@ -673,17 +673,18 @@ AppIconMenu.prototype = {
             item._window = windows[i];
         }
 
-        if (windows.length > 0)
+        if (!this._source.app.is_window_backed()) {
+            if (windows.length > 0)
+                this._appendSeparator();
+
+            let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+
+            this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
             this._appendSeparator();
 
-        let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
-
-        this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
-        this._appendSeparator();
-
-        this._toggleFavoriteMenuItem = this._appendMenuItem(isFavorite ? _("Remove from Favorites")
-                                                                    : _("Add to Favorites"));
-
+            this._toggleFavoriteMenuItem = this._appendMenuItem(isFavorite ? _("Remove from Favorites")
+                                                                : _("Add to Favorites"));
+        }
     },
 
     _appendSeparator: function () {
