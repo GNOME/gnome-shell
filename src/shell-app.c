@@ -58,7 +58,13 @@ struct _ShellApp
 
   ShellAppState state;
 
-  GMenuTreeEntry *entry; /* If NULL, this app is backend by exactly one MetaWindow */
+  GMenuTreeEntry *entry; /* If NULL, this app is backed by one or more
+                          * MetaWindow.  For purposes of app title
+                          * etc., we use the first window added,
+                          * because it's most likely to be what we
+                          * want (e.g. it will be of TYPE_NORMAL from
+                          * the way shell-window-tracker.c works).
+                          */
 
   ShellAppRunningState *running_state;
 
