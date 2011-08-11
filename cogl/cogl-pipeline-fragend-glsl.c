@@ -65,6 +65,23 @@ typedef struct _UnitState
   unsigned int combine_constant_used:1;
 } UnitState;
 
+typedef struct _LayerData LayerData;
+
+COGL_LIST_HEAD (LayerDataList, LayerData);
+
+struct _LayerData
+{
+  COGL_LIST_ENTRY (LayerData) list_node;
+
+  /* Layer index for the for the previous layer. This isn't
+     necessarily the same as this layer's index - 1 because the
+     indices can have gaps. If this is the first layer then it will be
+     -1 */
+  int previous_layer_index;
+
+  CoglPipelineLayer *layer;
+};
+
 typedef struct
 {
   int ref_count;
@@ -72,6 +89,12 @@ typedef struct
   GLuint gl_shader;
   GString *header, *source;
   UnitState *unit_state;
+
+  /* List of layers that we haven't generated code for yet. These are
+     in reverse order. As soon as we're about to generate code for
+     layer we'll remove it from the list so we don't generate it
+     again */
+  LayerDataList layers;
 
   /* Age of the user program that was current when the shader was
      generated. We need to keep track of this because if the user
@@ -81,6 +104,10 @@ typedef struct
 } CoglPipelineShaderState;
 
 static CoglUserDataKey shader_state_key;
+
+static void
+ensure_layer_generated (CoglPipeline *pipeline,
+                        int layer_num);
 
 static CoglPipelineShaderState *
 shader_state_new (int n_layers)
@@ -271,6 +298,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
   g_string_set_size (ctx->codegen_source_buffer, 0);
   shader_state->header = ctx->codegen_header_buffer;
   shader_state->source = ctx->codegen_source_buffer;
+  COGL_LIST_INIT (&shader_state->layers);
 
   g_string_append (shader_state->source,
                    "void\n"
@@ -436,6 +464,7 @@ static void
 add_arg (CoglPipelineShaderState *shader_state,
          CoglPipeline *pipeline,
          CoglPipelineLayer *layer,
+         int previous_layer_index,
          CoglPipelineCombineSource src,
          CoglPipelineCombineOp operand,
          const char *swizzle)
@@ -477,9 +506,12 @@ add_arg (CoglPipelineShaderState *shader_state,
       break;
 
     case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
-      if (_cogl_pipeline_layer_get_unit_index (layer) > 0)
+      if (previous_layer_index >= 0)
         {
-          g_string_append_printf (shader_source, "cogl_color_out.%s", swizzle);
+          g_string_append_printf (shader_source,
+                                  "layer%i.%s",
+                                  previous_layer_index,
+                                  swizzle);
           break;
         }
       /* flow through */
@@ -512,8 +544,31 @@ add_arg (CoglPipelineShaderState *shader_state,
 }
 
 static void
+ensure_arg_generated (CoglPipeline *pipeline,
+                      CoglPipelineLayer *layer,
+                      int previous_layer_index,
+                      CoglPipelineCombineSource src)
+{
+  switch (src)
+    {
+    case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
+    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
+    case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
+    default:
+      /* These don't involve any other layers */
+      break;
+
+    case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
+      if (previous_layer_index >= 0)
+        ensure_layer_generated (pipeline, previous_layer_index);
+      break;
+    }
+}
+
+static void
 append_masked_combine (CoglPipeline *pipeline,
                        CoglPipelineLayer *layer,
+                       int previous_layer_index,
                        const char *swizzle,
                        CoglPipelineCombineFunc function,
                        CoglPipelineCombineSource *src,
@@ -521,38 +576,47 @@ append_masked_combine (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
   GString *shader_source = shader_state->source;
+  int n_args;
+  int i;
+
+  n_args = _cogl_get_n_args_for_combine_func (function);
+
+  for (i = 0; i < n_args; i++)
+    ensure_arg_generated (pipeline, layer, previous_layer_index, src[i]);
 
   g_string_append_printf (shader_state->source,
-                          "  cogl_color_out.%s = ", swizzle);
+                          "  layer%i.%s = ",
+                          layer->index,
+                          swizzle);
 
   switch (function)
     {
     case COGL_PIPELINE_COMBINE_FUNC_REPLACE:
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], swizzle);
       break;
 
     case COGL_PIPELINE_COMBINE_FUNC_MODULATE:
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " * ");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], swizzle);
       break;
 
     case COGL_PIPELINE_COMBINE_FUNC_ADD:
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " + ");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], swizzle);
       break;
 
     case COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED:
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " + ");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], swizzle);
       g_string_append_printf (shader_source,
                               " - vec4(0.5, 0.5, 0.5, 0.5).%s",
@@ -560,26 +624,26 @@ append_masked_combine (CoglPipeline *pipeline,
       break;
 
     case COGL_PIPELINE_COMBINE_FUNC_SUBTRACT:
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " - ");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], swizzle);
       break;
 
     case COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE:
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " * ");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[2], op[2], swizzle);
       g_string_append (shader_source, " + ");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], swizzle);
       g_string_append_printf (shader_source,
                               " * (vec4(1.0, 1.0, 1.0, 1.0).%s - ",
                               swizzle);
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[2], op[2], swizzle);
       g_string_append_c (shader_source, ')');
       break;
@@ -587,22 +651,22 @@ append_masked_combine (CoglPipeline *pipeline,
     case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB:
     case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA:
       g_string_append (shader_source, "vec4(4.0 * ((");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], "r");
       g_string_append (shader_source, " - 0.5) * (");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], "r");
       g_string_append (shader_source, " - 0.5) + (");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], "g");
       g_string_append (shader_source, " - 0.5) * (");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], "g");
       g_string_append (shader_source, " - 0.5) + (");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[0], op[0], "b");
       g_string_append (shader_source, " - 0.5) * (");
-      add_arg (shader_state, pipeline, layer,
+      add_arg (shader_state, pipeline, layer, previous_layer_index,
                src[1], op[1], "b");
       g_string_append_printf (shader_source, " - 0.5))).%s", swizzle);
       break;
@@ -611,19 +675,42 @@ append_masked_combine (CoglPipeline *pipeline,
   g_string_append_printf (shader_source, ";\n");
 }
 
-static gboolean
-_cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
-                                        CoglPipelineLayer *layer,
-                                        unsigned long layers_difference)
+static void
+ensure_layer_generated (CoglPipeline *pipeline,
+                        int layer_index)
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
-  CoglPipelineLayer *combine_authority =
+  CoglPipelineLayer *combine_authority;
+  CoglPipelineLayerBigState *big_state;
+  CoglPipelineLayer *layer;
+  LayerData *layer_data;
+
+  /* Find the layer that corresponds to this layer_num */
+  COGL_LIST_FOREACH (layer_data, &shader_state->layers, list_node)
+    {
+      layer = layer_data->layer;
+
+      if (layer->index == layer_index)
+        goto found;
+    }
+
+  /* If we didn't find it then we can assume the layer has already
+     been generated */
+  return;
+
+ found:
+
+  /* Remove the layer from the list so we don't generate it again */
+  COGL_LIST_REMOVE (layer_data, list_node);
+
+  combine_authority =
     _cogl_pipeline_layer_get_authority (layer,
                                         COGL_PIPELINE_LAYER_STATE_COMBINE);
-  CoglPipelineLayerBigState *big_state = combine_authority->big_state;
+  big_state = combine_authority->big_state;
 
-  if (!shader_state->source)
-    return TRUE;
+  g_string_append_printf (shader_state->source,
+                          "  vec4 layer%i;\n",
+                          layer_index);
 
   if (!_cogl_pipeline_need_texture_combine_separate (combine_authority) ||
       /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
@@ -633,6 +720,7 @@ _cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
       COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA)
     append_masked_combine (pipeline,
                            layer,
+                           layer_data->previous_layer_index,
                            "rgba",
                            big_state->texture_combine_rgb_func,
                            big_state->texture_combine_rgb_src,
@@ -641,31 +729,45 @@ _cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
     {
       append_masked_combine (pipeline,
                              layer,
+                             layer_data->previous_layer_index,
                              "rgb",
                              big_state->texture_combine_rgb_func,
                              big_state->texture_combine_rgb_src,
                              big_state->texture_combine_rgb_op);
       append_masked_combine (pipeline,
                              layer,
+                             layer_data->previous_layer_index,
                              "a",
                              big_state->texture_combine_alpha_func,
                              big_state->texture_combine_alpha_src,
                              big_state->texture_combine_alpha_op);
     }
 
-  return TRUE;
+  g_slice_free (LayerData, layer_data);
 }
 
-gboolean
-_cogl_pipeline_fragend_glsl_passthrough (CoglPipeline *pipeline)
+static gboolean
+_cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
+                                        CoglPipelineLayer *layer,
+                                        unsigned long layers_difference)
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
+  LayerData *layer_data;
 
   if (!shader_state->source)
     return TRUE;
 
-  g_string_append (shader_state->source,
-                   "  cogl_color_out = cogl_color_in;\n");
+  /* Store the layers in reverse order */
+  layer_data = g_slice_new (LayerData);
+  layer_data->layer = layer;
+
+  if (COGL_LIST_EMPTY (&shader_state->layers))
+    layer_data->previous_layer_index = -1;
+  else
+    layer_data->previous_layer_index
+      = COGL_LIST_FIRST (&shader_state->layers)->layer->index;
+
+  COGL_LIST_INSERT_HEAD (&shader_state->layers, layer_data, list_node);
 
   return TRUE;
 }
@@ -761,6 +863,30 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
                            0 /* no application private data */);
       COGL_COUNTER_INC (_cogl_uprof_context, fragend_glsl_compile_counter);
 
+      /* We only need to generate code to calculate the fragment value
+         for the last layer. If the value of this layer depends on any
+         previous layers then it will recursively generate the code
+         for those layers */
+      if (!COGL_LIST_EMPTY (&shader_state->layers))
+        {
+          CoglPipelineLayer *last_layer;
+          LayerData *layer_data, *tmp;
+
+          last_layer = COGL_LIST_FIRST (&shader_state->layers)->layer;
+
+          ensure_layer_generated (pipeline, last_layer->index);
+          g_string_append_printf (shader_state->source,
+                                  "  cogl_color_out = layer%i;\n",
+                                  last_layer->index);
+
+          COGL_LIST_FOREACH_SAFE (layer_data, &shader_state->layers,
+                                  list_node, tmp)
+            g_slice_free (LayerData, layer_data);
+        }
+      else
+        g_string_append (shader_state->source,
+                         "  cogl_color_out = cogl_color_in;\n");
+
 #ifdef HAVE_COGL_GLES2
       if (ctx->driver == COGL_DRIVER_GLES2)
         add_alpha_test_snippet (pipeline, shader_state);
@@ -851,7 +977,7 @@ const CoglPipelineFragend _cogl_pipeline_glsl_fragend =
 {
   _cogl_pipeline_fragend_glsl_start,
   _cogl_pipeline_fragend_glsl_add_layer,
-  _cogl_pipeline_fragend_glsl_passthrough,
+  NULL, /* passthrough */
   _cogl_pipeline_fragend_glsl_end,
   _cogl_pipeline_fragend_glsl_pre_change_notify,
   NULL, /* pipeline_set_parent_notify */
