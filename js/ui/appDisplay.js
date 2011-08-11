@@ -333,7 +333,7 @@ AppSearchProvider.prototype = {
         return this._appSys.subsearch(previousResults, terms);
     },
 
-    activateResult: function(id, params) {
+    activateResult: function(app, params) {
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
 
@@ -341,7 +341,6 @@ AppSearchProvider.prototype = {
         let modifiers = event ? Shell.get_event_state(event) : 0;
         let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
 
-        let app = this._appSys.lookup_app(id);
         if (openNewWindow)
             app.open_new_window(workspace);
         else
