@@ -78,8 +78,8 @@ static void set_focus_app (ShellWindowTracker  *tracker,
                            ShellApp            *new_focus_app);
 static void on_focus_window_changed (MetaDisplay *display, GParamSpec *spec, ShellWindowTracker *tracker);
 
-static void track_window (ShellWindowTracker *monitor, MetaWindow *window);
-static void disassociate_window (ShellWindowTracker *monitor, MetaWindow *window);
+static void track_window (ShellWindowTracker *tracker, MetaWindow *window);
+static void disassociate_window (ShellWindowTracker *tracker, MetaWindow *window);
 
 
 static void
@@ -261,7 +261,7 @@ get_app_from_window_wmclass (MetaWindow  *window)
  * Return value: (transfer full): A newly-referenced #ShellApp, or %NULL
  */
 static ShellApp*
-get_app_from_window_group (ShellWindowTracker  *monitor,
+get_app_from_window_group (ShellWindowTracker  *tracker,
                            MetaWindow          *window)
 {
   ShellApp *result;
@@ -285,7 +285,7 @@ get_app_from_window_group (ShellWindowTracker  *monitor,
       if (meta_window_get_window_type (group_window) != META_WINDOW_NORMAL)
         continue;
 
-      result = g_hash_table_lookup (monitor->window_to_app, group_window);
+      result = g_hash_table_lookup (tracker->window_to_app, group_window);
       if (result)
         break;
     }
@@ -300,7 +300,7 @@ get_app_from_window_group (ShellWindowTracker  *monitor,
 
 /**
  * get_app_from_window_pid:
- * @monitor: a #ShellWindowTracker
+ * @tracker: a #ShellWindowTracker
  * @window: a #MetaWindow
  *
  * Check if the pid associated with @window corresponds to an
@@ -340,7 +340,7 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
  * Returns: (transfer full): a #ShellApp, or NULL if none is found
  */
 static ShellApp *
-get_app_for_window (ShellWindowTracker    *monitor,
+get_app_for_window (ShellWindowTracker    *tracker,
                     MetaWindow            *window)
 {
   ShellApp *result = NULL;
@@ -352,7 +352,7 @@ get_app_for_window (ShellWindowTracker    *monitor,
   if (meta_window_get_window_type (window) == META_WINDOW_NORMAL
       || meta_window_is_remote (window))
     {
-      result = g_hash_table_lookup (monitor->window_to_app, window);
+      result = g_hash_table_lookup (tracker->window_to_app, window);
       if (result != NULL)
         {
           g_object_ref (result);
@@ -370,7 +370,7 @@ get_app_for_window (ShellWindowTracker    *monitor,
   if (result != NULL)
     return result;
 
-  result = get_app_from_window_pid (monitor, window);
+  result = get_app_from_window_pid (tracker, window);
   if (result != NULL)
     return result;
 
@@ -380,7 +380,7 @@ get_app_for_window (ShellWindowTracker    *monitor,
     {
       GSList *iter, *sequences;
 
-      sequences = shell_window_tracker_get_startup_sequences (monitor);
+      sequences = shell_window_tracker_get_startup_sequences (tracker);
       for (iter = sequences; iter; iter = iter->next)
         {
           ShellStartupSequence *sequence = iter->data;
@@ -401,7 +401,7 @@ get_app_for_window (ShellWindowTracker    *monitor,
    * any other windows in the group.
    */
   if (result == NULL)
-    result = get_app_from_window_group (monitor, window);
+    result = get_app_from_window_group (tracker, window);
 
   /* Our last resort - we create a fake app from the window */
   if (result == NULL)
@@ -510,7 +510,7 @@ shell_window_tracker_on_window_removed (MetaWorkspace   *workspace,
 }
 
 static void
-load_initial_windows (ShellWindowTracker *monitor)
+load_initial_windows (ShellWindowTracker *tracker)
 {
   GList *workspaces, *iter;
   MetaScreen *screen = shell_global_get_screen (shell_global_get ());
@@ -525,7 +525,7 @@ load_initial_windows (ShellWindowTracker *monitor)
       for (window_iter = windows; window_iter; window_iter = window_iter->next)
         {
           MetaWindow *window = window_iter->data;
-          track_window (monitor, window);
+          track_window (tracker, window);
         }
 
       g_list_free (windows);
@@ -649,14 +649,14 @@ shell_window_tracker_finalize (GObject *object)
 
 /**
  * shell_window_tracker_get_window_app:
- * @monitor: An app monitor instance
+ * @tracker: An app monitor instance
  * @metawin: A #MetaWindow
  *
  * Returns: (transfer full): Application associated with window
  */
 ShellApp *
-shell_window_tracker_get_window_app (ShellWindowTracker *monitor,
-                                  MetaWindow      *metawin)
+shell_window_tracker_get_window_app (ShellWindowTracker *tracker,
+                                     MetaWindow         *metawin)
 {
   MetaWindow *transient_for;
   ShellApp *app;
@@ -665,7 +665,7 @@ shell_window_tracker_get_window_app (ShellWindowTracker *monitor,
   if (transient_for != NULL)
     metawin = transient_for;
 
-  app = g_hash_table_lookup (monitor->window_to_app, metawin);
+  app = g_hash_table_lookup (tracker->window_to_app, metawin);
   if (app)
     g_object_ref (app);
 
@@ -718,7 +718,7 @@ shell_window_tracker_get_app_from_pid (ShellWindowTracker *self,
 
 /**
  * shell_window_tracker_get_running_apps:
- * @monitor: An app monitor instance
+ * @tracker: An app monitor instance
  * @context: Activity identifier
  *
  * Returns the set of applications which currently have at least one open
@@ -728,21 +728,21 @@ shell_window_tracker_get_app_from_pid (ShellWindowTracker *self,
  * Returns: (element-type ShellApp) (transfer full): Active applications
  */
 GSList *
-shell_window_tracker_get_running_apps (ShellWindowTracker *monitor,
-                                    const char      *context)
+shell_window_tracker_get_running_apps (ShellWindowTracker *tracker,
+                                       const char         *context)
 {
   gpointer key, value;
   GSList *ret;
   GHashTableIter iter;
 
-  g_hash_table_iter_init (&iter, monitor->running_apps);
+  g_hash_table_iter_init (&iter, tracker->running_apps);
 
   ret = NULL;
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       ShellApp *app = value;
 
-      if (strcmp (context, _shell_window_tracker_get_app_context (monitor, app)) != 0)
+      if (strcmp (context, _shell_window_tracker_get_app_context (tracker, app)) != 0)
         continue;
 
       ret = g_slist_prepend (ret, g_object_ref (app));
