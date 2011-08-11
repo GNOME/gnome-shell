@@ -205,7 +205,24 @@ DateMenuButton.prototype = {
 
     _onOpenCalendarActivate: function() {
         this.menu.close();
-        // TODO: pass the selected day
-        Util.spawn(['evolution', '-c', 'calendar']);
+        let calendarSettings = new Gio.Settings({ schema: 'org.gnome.desktop.default-applications.office.calendar' });
+        let tool = calendarSettings.get_string('exec');
+        if (tool.length == 0 || tool == 'evolution') {
+            // TODO: pass the selected day
+            Util.spawn(['evolution', '-c', 'calendar']);
+        } else {
+            let needTerm = calendarSettings.get_boolean('needs-term');
+            if (needTerm) {
+                let terminalSettings = new Gio.Settings({ schema: 'org.gnome.desktop.default-applications.terminal' });
+                let term = terminalSettings.get_string('exec');
+                let arg = terminalSettings.get_string('exec-arg');
+                if (arg != '')
+                    Util.spawn([term, arg, tool]);
+                else
+                    Util.spawn([term, tool]);
+            } else {
+                Util.spawnCommandLine(tool)
+            }
+        }
     }
 };
