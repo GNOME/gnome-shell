@@ -543,6 +543,13 @@ shell_app_activate_full (ShellApp      *app,
                          int            workspace,
                          guint32        timestamp)
 {
+  ShellGlobal *global;
+
+  global = shell_global_get ();
+
+  if (timestamp == 0)
+    timestamp = shell_global_get_current_time (global);
+
   switch (app->state)
     {
       case SHELL_APP_STATE_STOPPED:
@@ -557,7 +564,7 @@ shell_app_activate_full (ShellApp      *app,
             {
               char *msg;
               msg = g_strdup_printf (_("Failed to launch '%s'"), shell_app_get_name (app));
-              shell_global_notify_error (shell_global_get (),
+              shell_global_notify_error (global,
                                          msg,
                                          error->message);
               g_free (msg);
