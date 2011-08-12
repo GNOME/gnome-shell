@@ -969,3 +969,29 @@ _clutter_backend_remove_event_translator (ClutterBackend         *backend,
   priv->event_translators =
     g_list_remove (priv->event_translators, translator);
 }
+
+/**
+ * clutter_backend_get_cogl_context:
+ * @backend: a #ClutterBackend
+ *
+ * Retrieves the #CoglContext associated with the given clutter
+ * @backend. A #CoglContext is required when using some of the
+ * experimental 2.0 Cogl API.
+ *
+ * <note>Since CoglContext is itself experimental API this API should
+ * be considered experimental too.</note>
+ *
+ * <note>This API is not yet supported on OSX because OSX still
+ * uses the stub Cogl winsys and the Clutter backend doesn't
+ * explicitly create a CoglContext.</note>
+ *
+ * Return value: The #CoglContext associated with @backend.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+CoglContext *
+clutter_backend_get_cogl_context (ClutterBackend *backend)
+{
+  return backend->cogl_context;
+}
