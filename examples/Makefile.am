@@ -46,4 +46,14 @@ cogland_SOURCES = cogland.c
 cogland_LDADD = $(common_ldadd)
 endif
 
-EXTRA_DIST = crate.jpg
+EXTRA_DIST = \
+	crate.jpg \
+	android/hello/AndroidManifest.xml \
+	android/hello/jni/Application.mk \
+	android/hello/jni/Android.mk \
+	android/hello/jni/main.c \
+	android/hello/res/values \
+	android/hello/res/values/strings.xml \
+	android/hello/.gitignore \
+	android/hello/build.xml
+
