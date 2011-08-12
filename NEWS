@@ -1,3 +1,49 @@
+Cogl 1.7.6                                                         2011-08-12
+===============================================================================
+
+  • List of changes since Cogl 1.7.4
+
+   » Add an experimental cogl_matrix_look_at function
+   » Fix flipping the y-coordinates for cogl_framebuffer_swap_region
+   » Automatically allocate framebuffers on first use
+   » Add experimental cogl_framebuffer_clear functions
+   » Add a function to get the context given a framebuffer
+   » Add support for a cogl.conf config file
+   » Fix using TEXTURE_n as the source for a layer combine
+   » Some fixes for the WGL backend
+   » Add experimental API to upload a texture subregion from a CoglBuffer
+
+  • List of bugs fixes since Cogl 1.7.4
+
+    https://bugzilla.gnome.org:
+
+    #655026 - cogl-pango should not link to systemwide libcogl during make
+              install
+    #655216 - egl: Guard the feature discovery of eglCreateImage()
+    #655228 - Bugs in cogl-quaternion library functions
+              cogl_quaternion_init_from_array and
+              cogl_quaternion_get_rotation_axis.
+    #655355 - Make Cogl master work on EGL/GDL again
+    #655400 - cogl-pipeline-fragend-arbfp: Initialise template_pipeline
+    #655412 - Don't use the 'NULL' GModule to resolve GL symbols
+    #655510 - Access Violation (a.k.a Segfault) in cogl/driver/gl/cogl-gl.c
+    #655556 - Memory leak in function cogl_polygon in cogl-primitives.c
+    #655723 - egl-gdl: Silence a gcc warning
+    #655724 - egl-gdl: Don't generate cogl-display.h
+    #656303 - Improve cogl-pango's journal usage
+    #655792 - android: Commit the build.xml file
+    #655791 - android: Update the hello example to the latest glib-android
+              API change
+
+Many thanks to:
+    Robert Bragg
+    Damien Lespiau
+    Chun-wei Fan
+    Alexandre Rostovtsev
+    Kirk A. Baker
+    Philip Withnall
+    Florian Renaut
+
 Cogl 1.7.4                                                         2011-07-20
 ===============================================================================
 
