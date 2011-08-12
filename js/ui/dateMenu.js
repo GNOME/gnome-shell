@@ -157,12 +157,12 @@ DateMenuButton.prototype = {
         switch (format) {
             case '24h':
                 if (showDate)
-	            /* Translators: This is the time format with date used
+                    /* Translators: This is the time format with date used
                        in 24-hour mode. */
                     clockFormat = showSeconds ? _("%a %b %e, %R:%S")
                                               : _("%a %b %e, %R");
                 else
-	            /* Translators: This is the time format without date used
+                    /* Translators: This is the time format without date used
                        in 24-hour mode. */
                     clockFormat = showSeconds ? _("%a %R:%S")
                                               : _("%a %R");
@@ -170,12 +170,12 @@ DateMenuButton.prototype = {
             case '12h':
             default:
                 if (showDate)
-	            /* Translators: This is a time format with date used
+                    /* Translators: This is a time format with date used
                        for AM/PM. */
                     clockFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
                                               : _("%a %b %e, %l:%M %p");
                 else
-	            /* Translators: This is a time format without date used
+                    /* Translators: This is a time format without date used
                        for AM/PM. */
                     clockFormat = showSeconds ? _("%a %l:%M:%S %p")
                                               : _("%a %l:%M %p");
