@@ -14,6 +14,7 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
+const UPowerGlib = imports.gi.UPowerGlib;
 
 // in org.gnome.desktop.interface
 const CLOCK_FORMAT_KEY        = 'clock-format';
@@ -141,6 +142,10 @@ DateMenuButton.prototype = {
         this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._updateClockAndDate));
         this._clockSettings.connect('changed', Lang.bind(this, this._updateClockAndDate));
+
+        // https://bugzilla.gnome.org/show_bug.cgi?id=655129
+        this._upClient = new UPowerGlib.Client();
+        this._upClient.connect('notify-resume', Lang.bind(this, this._updateClockAndDate));
 
         // Start the clock
         this._updateClockAndDate();
