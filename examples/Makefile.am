@@ -52,7 +52,6 @@ EXTRA_DIST = \
 	android/hello/jni/Application.mk \
 	android/hello/jni/Android.mk \
 	android/hello/jni/main.c \
-	android/hello/res/values \
 	android/hello/res/values/strings.xml \
 	android/hello/.gitignore \
 	android/hello/build.xml
