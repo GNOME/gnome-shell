@@ -337,10 +337,9 @@ add_constant_lookup (CoglPipelineShaderState *shader_state,
 }
 
 static void
-add_texture_lookup (CoglPipelineShaderState *shader_state,
-                    CoglPipeline *pipeline,
-                    CoglPipelineLayer *layer,
-                    const char *swizzle)
+ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
+                                 CoglPipeline *pipeline,
+                                 CoglPipelineLayer *layer)
 {
   CoglHandle texture;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
@@ -348,11 +347,19 @@ add_texture_lookup (CoglPipelineShaderState *shader_state,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  if (shader_state->unit_state[unit_index].sampled)
+    return;
+
+  shader_state->unit_state[unit_index].sampled = TRUE;
+
+  g_string_append_printf (shader_state->source,
+                          "  vec4 texel%i = ",
+                          unit_index);
+
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
     {
       g_string_append (shader_state->source,
-                       "vec4 (1.0, 1.0, 1.0, 1.0).");
-      g_string_append (shader_state->source, swizzle);
+                       "vec4 (1.0, 1.0, 1.0, 1.0);\n");
 
       return;
     }
@@ -400,15 +407,11 @@ add_texture_lookup (CoglPipelineShaderState *shader_state,
         }
     }
 
-  /* Create a sampler uniform for this layer if we haven't already */
-  if (!shader_state->unit_state[unit_index].sampled)
-    {
-      g_string_append_printf (shader_state->header,
-                              "uniform sampler%s _cogl_sampler_%i;\n",
-                              target_string,
-                              unit_index);
-      shader_state->unit_state[unit_index].sampled = TRUE;
-    }
+  /* Create a sampler uniform */
+  g_string_append_printf (shader_state->header,
+                          "uniform sampler%s _cogl_sampler_%i;\n",
+                          target_string,
+                          unit_index);
 
   g_string_append_printf (shader_state->source,
                           "texture%s (_cogl_sampler_%i, ",
@@ -433,31 +436,7 @@ add_texture_lookup (CoglPipelineShaderState *shader_state,
                             "cogl_tex_coord_in[%d].%s",
                             unit_index, tex_coord_swizzle);
 
-  g_string_append_printf (shader_state->source, ").%s", swizzle);
-}
-
-typedef struct
-{
-  int unit_index;
-  CoglPipelineLayer *layer;
-} FindPipelineLayerData;
-
-static gboolean
-find_pipeline_layer_cb (CoglPipelineLayer *layer,
-                        void *user_data)
-{
-  FindPipelineLayerData *data = user_data;
-  int unit_index;
-
-  unit_index = _cogl_pipeline_layer_get_unit_index (layer);
-
-  if (unit_index == data->unit_index)
-    {
-      data->layer = layer;
-      return FALSE;
-    }
-
-  return TRUE;
+  g_string_append (shader_state->source, ");\n");
 }
 
 static void
@@ -492,10 +471,10 @@ add_arg (CoglPipelineShaderState *shader_state,
   switch (src)
     {
     case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
-      add_texture_lookup (shader_state,
-                          pipeline,
-                          layer,
-                          swizzle);
+      g_string_append_printf (shader_source,
+                              "texel%i.%s",
+                              _cogl_pipeline_layer_get_unit_index (layer),
+                              swizzle);
       break;
 
     case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
@@ -522,6 +501,70 @@ add_arg (CoglPipelineShaderState *shader_state,
     default:
       if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
           src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
+        g_string_append_printf (shader_source,
+                                "texel%i.%s",
+                                src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0,
+                                swizzle);
+      break;
+    }
+
+  g_string_append_c (shader_source, ')');
+}
+
+
+typedef struct
+{
+  int unit_index;
+  CoglPipelineLayer *layer;
+} FindPipelineLayerData;
+
+static gboolean
+find_pipeline_layer_cb (CoglPipelineLayer *layer,
+                        void *user_data)
+{
+  FindPipelineLayerData *data = user_data;
+  int unit_index;
+
+  unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+
+  if (unit_index == data->unit_index)
+    {
+      data->layer = layer;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+ensure_arg_generated (CoglPipeline *pipeline,
+                      CoglPipelineLayer *layer,
+                      int previous_layer_index,
+                      CoglPipelineCombineSource src)
+{
+  CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
+
+  switch (src)
+    {
+    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
+    case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
+      /* These don't involve any other layers */
+      break;
+
+    case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
+      if (previous_layer_index >= 0)
+        ensure_layer_generated (pipeline, previous_layer_index);
+      break;
+
+    case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
+      ensure_texture_lookup_generated (shader_state,
+                                       pipeline,
+                                       layer);
+      break;
+
+    default:
+      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
+          src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
         {
           FindPipelineLayerData data;
 
@@ -532,35 +575,10 @@ add_arg (CoglPipelineShaderState *shader_state,
                                                  find_pipeline_layer_cb,
                                                  &data);
 
-          add_texture_lookup (shader_state,
-                              pipeline,
-                              data.layer,
-                              swizzle);
+          ensure_texture_lookup_generated (shader_state,
+                                           pipeline,
+                                           data.layer);
         }
-      break;
-    }
-
-  g_string_append_c (shader_source, ')');
-}
-
-static void
-ensure_arg_generated (CoglPipeline *pipeline,
-                      CoglPipelineLayer *layer,
-                      int previous_layer_index,
-                      CoglPipelineCombineSource src)
-{
-  switch (src)
-    {
-    case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
-    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
-    case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
-    default:
-      /* These don't involve any other layers */
-      break;
-
-    case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
-      if (previous_layer_index >= 0)
-        ensure_layer_generated (pipeline, previous_layer_index);
       break;
     }
 }
