@@ -216,6 +216,9 @@ test_actors_main (int argc, char *argv[])
   oh->group = clutter_group_new();
   clutter_actor_set_name (oh->group, "Group");
   g_signal_connect (oh->group, "destroy", G_CALLBACK (on_group_destroy), oh);
+  clutter_actor_add_constraint (oh->group, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
+  clutter_actor_add_constraint (oh->group, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
+  clutter_actor_add_constraint (oh->group, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.0f));
 
   oh->hand = g_new (ClutterActor*, n_hands);
 
