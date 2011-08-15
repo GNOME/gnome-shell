@@ -15,7 +15,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl
-LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+
 AM_CFLAGS = \
 	$(CLUTTER_CFLAGS) \
 	$(MAINTAINER_CFLAGS) \
