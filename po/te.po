@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-07-26 14:01+0100\n"
+"POT-Creation-Date: 2011-08-15 14:49+0100\n"
 "PO-Revision-Date: 2011-03-22 15:07+0000\n"
 "Last-Translator: veeven <veeven@gmail.com>\n"
 "Language-Team: Telugu <te@li.org>\n"
@@ -489,7 +489,7 @@ msgid "The mode of the animation"
 msgstr ""
 
 #: clutter/clutter-animation.c:499 clutter/clutter-animator.c:1786
-#: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
+#: clutter/clutter-media.c:194 clutter/clutter-state.c:1486
 #: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "నిడివి"
@@ -879,20 +879,28 @@ msgstr ""
 msgid "The duration of the animations"
 msgstr ""
 
-#: clutter/clutter-cairo-texture.c:539
+#: clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
 msgstr ""
 
-#: clutter/clutter-cairo-texture.c:540
+#: clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
 msgstr ""
 
-#: clutter/clutter-cairo-texture.c:554
+#: clutter/clutter-cairo-texture.c:597
 msgid "Surface Height"
 msgstr ""
 
-#: clutter/clutter-cairo-texture.c:555
+#: clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
+msgstr ""
+
+#: clutter/clutter-cairo-texture.c:615
+msgid "Auto Resize"
+msgstr ""
+
+#: clutter/clutter-cairo-texture.c:616
+msgid "Whether the surface should match the allocation"
 msgstr ""
 
 #: clutter/clutter-child-meta.c:127
@@ -1586,15 +1594,15 @@ msgstr ""
 msgid "Whether the stage should accept focus on show"
 msgstr ""
 
-#: clutter/clutter-state.c:1408
+#: clutter/clutter-state.c:1472
 msgid "State"
 msgstr ""
 
-#: clutter/clutter-state.c:1409
+#: clutter/clutter-state.c:1473
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 
-#: clutter/clutter-state.c:1423
+#: clutter/clutter-state.c:1487
 msgid "Default transition duration"
 msgstr ""
 

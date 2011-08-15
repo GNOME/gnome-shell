@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-07-26 14:01+0100\n"
+"POT-Creation-Date: 2011-08-15 14:49+0100\n"
 "PO-Revision-Date: 2011-03-22 15:07+0000\n"
 "Last-Translator: chaoweilun <chaoweilun@gmail.com>\n"
 "Language-Team: Chinese Traditional <zh_TW@li.org>\n"
@@ -491,7 +491,7 @@ msgid "The mode of the animation"
 msgstr "動畫的模式"
 
 #: clutter/clutter-animation.c:499 clutter/clutter-animator.c:1786
-#: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
+#: clutter/clutter-media.c:194 clutter/clutter-state.c:1486
 #: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "持續時間"
@@ -881,21 +881,30 @@ msgstr "簡易持續時間"
 msgid "The duration of the animations"
 msgstr "動畫的持續時間"
 
-#: clutter/clutter-cairo-texture.c:539
+#: clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
 msgstr "表面寬度"
 
-#: clutter/clutter-cairo-texture.c:540
+#: clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
 msgstr "Cairo 表面的寬度"
 
-#: clutter/clutter-cairo-texture.c:554
+#: clutter/clutter-cairo-texture.c:597
 msgid "Surface Height"
 msgstr "表面高度"
 
-#: clutter/clutter-cairo-texture.c:555
+#: clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
 msgstr "Cairo 表面的高度"
+
+#: clutter/clutter-cairo-texture.c:615
+msgid "Auto Resize"
+msgstr ""
+
+#: clutter/clutter-cairo-texture.c:616
+#, fuzzy
+msgid "Whether the surface should match the allocation"
+msgstr "每個項目是否應該獲得相同的配置"
 
 #: clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -1608,15 +1617,15 @@ msgstr "按鍵焦點"
 msgid "Whether the stage should accept focus on show"
 msgstr "舞臺是否應該清空它的內容"
 
-#: clutter/clutter-state.c:1408
+#: clutter/clutter-state.c:1472
 msgid "State"
 msgstr "狀態"
 
-#: clutter/clutter-state.c:1409
+#: clutter/clutter-state.c:1473
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr "目前設定狀態，(有可能尚未完全轉換到這個狀態)"
 
-#: clutter/clutter-state.c:1423
+#: clutter/clutter-state.c:1487
 msgid "Default transition duration"
 msgstr "預設轉換時間"
 

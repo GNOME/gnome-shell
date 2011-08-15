@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-07-26 14:01+0100\n"
+"POT-Creation-Date: 2011-08-15 14:49+0100\n"
 "PO-Revision-Date: 2011-03-22 15:07+0000\n"
 "Last-Translator: yurchor <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -493,7 +493,7 @@ msgid "The mode of the animation"
 msgstr "Режим анімації"
 
 #: clutter/clutter-animation.c:499 clutter/clutter-animator.c:1786
-#: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
+#: clutter/clutter-media.c:194 clutter/clutter-state.c:1486
 #: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "Тривалість"
@@ -894,21 +894,32 @@ msgstr "Тривалість влаштовування"
 msgid "The duration of the animations"
 msgstr "Тривалість анімації"
 
-#: clutter/clutter-cairo-texture.c:539
+#: clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
 msgstr "Ширина поверхні"
 
-#: clutter/clutter-cairo-texture.c:540
+#: clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
 msgstr "Ширина поверхні Cairo"
 
-#: clutter/clutter-cairo-texture.c:554
+#: clutter/clutter-cairo-texture.c:597
 msgid "Surface Height"
 msgstr "Висота поверхні"
 
-#: clutter/clutter-cairo-texture.c:555
+#: clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
 msgstr "Висота поверхні Cairo"
+
+#: clutter/clutter-cairo-texture.c:615
+msgid "Auto Resize"
+msgstr ""
+
+#: clutter/clutter-cairo-texture.c:616
+#, fuzzy
+msgid "Whether the surface should match the allocation"
+msgstr ""
+"Визначає, чи має кожен елемент отримувати однаковий простір для "
+"розташовування"
 
 #: clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -1623,15 +1634,15 @@ msgstr "Ключ фокусування"
 msgid "Whether the stage should accept focus on show"
 msgstr "Визначає, чи слід спорожняти вміст сцени"
 
-#: clutter/clutter-state.c:1408
+#: clutter/clutter-state.c:1472
 msgid "State"
 msgstr "Стан"
 
-#: clutter/clutter-state.c:1409
+#: clutter/clutter-state.c:1473
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr "Поточний встановлений стан (перехід до цього стану може бути неповним)"
 
-#: clutter/clutter-state.c:1423
+#: clutter/clutter-state.c:1487
 msgid "Default transition duration"
 msgstr "Типова тривалість переходу"
 

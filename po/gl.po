@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-07-26 14:01+0100\n"
+"POT-Creation-Date: 2011-08-15 14:49+0100\n"
 "PO-Revision-Date: 2011-05-12 13:12+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
@@ -494,7 +494,7 @@ msgid "The mode of the animation"
 msgstr "O modo de animación"
 
 #: clutter/clutter-animation.c:499 clutter/clutter-animator.c:1786
-#: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
+#: clutter/clutter-media.c:194 clutter/clutter-state.c:1486
 #: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "Duración"
@@ -891,21 +891,31 @@ msgstr "Duración do relaxamento"
 msgid "The duration of the animations"
 msgstr "A duración das animacións"
 
-#: clutter/clutter-cairo-texture.c:539
+#: clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
 msgstr "Largura da superficie"
 
-#: clutter/clutter-cairo-texture.c:540
+#: clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
 msgstr "A largura da superficie de Cairo"
 
-#: clutter/clutter-cairo-texture.c:554
+#: clutter/clutter-cairo-texture.c:597
 msgid "Surface Height"
 msgstr "Altura da superficie"
 
-#: clutter/clutter-cairo-texture.c:555
+#: clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
 msgstr "A altura da superficie de Cairo"
+
+#: clutter/clutter-cairo-texture.c:615
+#, fuzzy
+msgid "Auto Resize"
+msgstr "Inversión automática"
+
+#: clutter/clutter-cairo-texture.c:616
+#, fuzzy
+msgid "Whether the surface should match the allocation"
+msgstr "Cando cada elemento debe recibir a mesma asignación"
 
 #: clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -1612,17 +1622,17 @@ msgstr "Aceptar foco"
 msgid "Whether the stage should accept focus on show"
 msgstr "Se o paso debe aceptar o foco ao mostralo"
 
-#: clutter/clutter-state.c:1408
+#: clutter/clutter-state.c:1472
 msgid "State"
 msgstr "Estado"
 
-#: clutter/clutter-state.c:1409
+#: clutter/clutter-state.c:1473
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 "Estado actual da configuración (é posíbel que a transición a este estado non "
 "fose completada)"
 
-#: clutter/clutter-state.c:1423
+#: clutter/clutter-state.c:1487
 msgid "Default transition duration"
 msgstr "Duración predeterminada da transición"
 

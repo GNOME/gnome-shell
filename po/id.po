@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter 1.3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-07-26 14:01+0100\n"
+"POT-Creation-Date: 2011-08-15 14:49+0100\n"
 "PO-Revision-Date: 2010-10-05 20:42+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
@@ -500,7 +500,7 @@ msgid "The mode of the animation"
 msgstr "Mode animasi gambar"
 
 #: clutter/clutter-animation.c:499 clutter/clutter-animator.c:1786
-#: clutter/clutter-media.c:194 clutter/clutter-state.c:1422
+#: clutter/clutter-media.c:194 clutter/clutter-state.c:1486
 #: clutter/clutter-timeline.c:294
 msgid "Duration"
 msgstr "Durasi"
@@ -935,22 +935,30 @@ msgstr "Durasi animasi"
 msgid "The duration of the animations"
 msgstr "Aktifkan animasi"
 
-#: clutter/clutter-cairo-texture.c:539
+#: clutter/clutter-cairo-texture.c:582
 #, fuzzy
 msgid "Surface Width"
 msgstr "_Lebar tetap:"
 
-#: clutter/clutter-cairo-texture.c:540
+#: clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
 msgstr ""
 
-#: clutter/clutter-cairo-texture.c:554
+#: clutter/clutter-cairo-texture.c:597
 #, fuzzy
 msgid "Surface Height"
 msgstr "<b>Tinggi:</b> %d piksel\n"
 
-#: clutter/clutter-cairo-texture.c:555
+#: clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
+msgstr ""
+
+#: clutter/clutter-cairo-texture.c:615
+msgid "Auto Resize"
+msgstr ""
+
+#: clutter/clutter-cairo-texture.c:616
+msgid "Whether the surface should match the allocation"
 msgstr ""
 
 #: clutter/clutter-child-meta.c:127
@@ -1724,16 +1732,16 @@ msgstr "Ambil Fokus"
 msgid "Whether the stage should accept focus on show"
 msgstr ""
 
-#: clutter/clutter-state.c:1408
+#: clutter/clutter-state.c:1472
 #, fuzzy
 msgid "State"
 msgstr "Kondisi"
 
-#: clutter/clutter-state.c:1409
+#: clutter/clutter-state.c:1473
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 
-#: clutter/clutter-state.c:1423
+#: clutter/clutter-state.c:1487
 msgid "Default transition duration"
 msgstr ""
 
