@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-08-15 14:49+0100\n"
+"POT-Creation-Date: 2011-08-16 00:01+0100\n"
 "PO-Revision-Date: 2011-03-22 15:07+0000\n"
 "Last-Translator: chaoweilun <chaoweilun@gmail.com>\n"
 "Language-Team: Chinese Traditional <zh_TW@li.org>\n"
@@ -18,390 +18,390 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: clutter/clutter-actor.c:3847
+#: clutter/clutter-actor.c:3857
 msgid "X coordinate"
 msgstr "X 座標"
 
-#: clutter/clutter-actor.c:3848
+#: clutter/clutter-actor.c:3858
 msgid "X coordinate of the actor"
 msgstr "演員的 X 座標"
 
-#: clutter/clutter-actor.c:3863
+#: clutter/clutter-actor.c:3873
 msgid "Y coordinate"
 msgstr "Y 座標"
 
-#: clutter/clutter-actor.c:3864
+#: clutter/clutter-actor.c:3874
 msgid "Y coordinate of the actor"
 msgstr "演員的 Y 座標"
 
-#: clutter/clutter-actor.c:3879 clutter/clutter-behaviour-ellipse.c:477
+#: clutter/clutter-actor.c:3889 clutter/clutter-behaviour-ellipse.c:477
 msgid "Width"
 msgstr "寬度"
 
-#: clutter/clutter-actor.c:3880
+#: clutter/clutter-actor.c:3890
 msgid "Width of the actor"
 msgstr "演員的寬度"
 
-#: clutter/clutter-actor.c:3894 clutter/clutter-behaviour-ellipse.c:493
+#: clutter/clutter-actor.c:3904 clutter/clutter-behaviour-ellipse.c:493
 msgid "Height"
 msgstr "高度"
 
-#: clutter/clutter-actor.c:3895
+#: clutter/clutter-actor.c:3905
 msgid "Height of the actor"
 msgstr "演員的高度"
 
-#: clutter/clutter-actor.c:3913
+#: clutter/clutter-actor.c:3923
 msgid "Fixed X"
 msgstr "固定 X 座標"
 
-#: clutter/clutter-actor.c:3914
+#: clutter/clutter-actor.c:3924
 msgid "Forced X position of the actor"
 msgstr "演員的強制 X 位置"
 
-#: clutter/clutter-actor.c:3932
+#: clutter/clutter-actor.c:3942
 msgid "Fixed Y"
 msgstr "固定 Y 座標"
 
-#: clutter/clutter-actor.c:3933
+#: clutter/clutter-actor.c:3943
 msgid "Forced Y position of the actor"
 msgstr "演員的強制 Y 位置"
 
-#: clutter/clutter-actor.c:3949
+#: clutter/clutter-actor.c:3959
 msgid "Fixed position set"
 msgstr "固定的位置設定"
 
-#: clutter/clutter-actor.c:3950
+#: clutter/clutter-actor.c:3960
 msgid "Whether to use fixed positioning for the actor"
 msgstr "演員是否要使用固定的位置"
 
-#: clutter/clutter-actor.c:3972
+#: clutter/clutter-actor.c:3982
 msgid "Min Width"
 msgstr "最小寬度"
 
-#: clutter/clutter-actor.c:3973
+#: clutter/clutter-actor.c:3983
 msgid "Forced minimum width request for the actor"
 msgstr "演員要求強制最小寬度"
 
-#: clutter/clutter-actor.c:3992
+#: clutter/clutter-actor.c:4002
 msgid "Min Height"
 msgstr "最小高度"
 
-#: clutter/clutter-actor.c:3993
+#: clutter/clutter-actor.c:4003
 msgid "Forced minimum height request for the actor"
 msgstr "演員要求強制最小高度"
 
-#: clutter/clutter-actor.c:4012
+#: clutter/clutter-actor.c:4022
 msgid "Natural Width"
 msgstr "自然寬度"
 
-#: clutter/clutter-actor.c:4013
+#: clutter/clutter-actor.c:4023
 msgid "Forced natural width request for the actor"
 msgstr "演員要求強制自然寬度"
 
-#: clutter/clutter-actor.c:4032
+#: clutter/clutter-actor.c:4042
 msgid "Natural Height"
 msgstr "自然高度"
 
-#: clutter/clutter-actor.c:4033
+#: clutter/clutter-actor.c:4043
 msgid "Forced natural height request for the actor"
 msgstr "演員要求強制自然高度"
 
-#: clutter/clutter-actor.c:4049
+#: clutter/clutter-actor.c:4059
 msgid "Minimum width set"
 msgstr "最小寬度設定"
 
-#: clutter/clutter-actor.c:4050
+#: clutter/clutter-actor.c:4060
 msgid "Whether to use the min-width property"
 msgstr "是否使用最小寬度屬性"
 
-#: clutter/clutter-actor.c:4065
+#: clutter/clutter-actor.c:4075
 msgid "Minimum height set"
 msgstr "最小高度設定"
 
-#: clutter/clutter-actor.c:4066
+#: clutter/clutter-actor.c:4076
 msgid "Whether to use the min-height property"
 msgstr "是否使用最小高度屬性"
 
-#: clutter/clutter-actor.c:4081
+#: clutter/clutter-actor.c:4091
 msgid "Natural width set"
 msgstr "自然寬度設定"
 
-#: clutter/clutter-actor.c:4082
+#: clutter/clutter-actor.c:4092
 msgid "Whether to use the natural-width property"
 msgstr "是否使用自然寬度屬性"
 
-#: clutter/clutter-actor.c:4099
+#: clutter/clutter-actor.c:4109
 msgid "Natural height set"
 msgstr "自然高度設定"
 
-#: clutter/clutter-actor.c:4100
+#: clutter/clutter-actor.c:4110
 msgid "Whether to use the natural-height property"
 msgstr "是否使用自然高度屬性"
 
-#: clutter/clutter-actor.c:4119
+#: clutter/clutter-actor.c:4129
 msgid "Allocation"
 msgstr "定位"
 
-#: clutter/clutter-actor.c:4120
+#: clutter/clutter-actor.c:4130
 msgid "The actor's allocation"
 msgstr "演員的定位"
 
-#: clutter/clutter-actor.c:4176
+#: clutter/clutter-actor.c:4186
 msgid "Request Mode"
 msgstr "請求模式"
 
-#: clutter/clutter-actor.c:4177
+#: clutter/clutter-actor.c:4187
 msgid "The actor's request mode"
 msgstr "演員的要求模式"
 
-#: clutter/clutter-actor.c:4192
+#: clutter/clutter-actor.c:4202
 msgid "Depth"
 msgstr "色深"
 
-#: clutter/clutter-actor.c:4193
+#: clutter/clutter-actor.c:4203
 msgid "Position on the Z axis"
 msgstr "在 Z 軸上的位置"
 
-#: clutter/clutter-actor.c:4207
+#: clutter/clutter-actor.c:4217
 msgid "Opacity"
 msgstr "濁度"
 
-#: clutter/clutter-actor.c:4208
+#: clutter/clutter-actor.c:4218
 msgid "Opacity of an actor"
 msgstr "演員的濁度"
 
-#: clutter/clutter-actor.c:4224
+#: clutter/clutter-actor.c:4234
 #, fuzzy
 msgid "Offscreen redirect"
 msgstr "幕後潤算"
 
-#: clutter/clutter-actor.c:4225
+#: clutter/clutter-actor.c:4235
 #, fuzzy
 msgid "Whether to flatten the actor into a single image"
 msgstr "文字是否只應使用一列"
 
-#: clutter/clutter-actor.c:4243
+#: clutter/clutter-actor.c:4253
 msgid "Visible"
 msgstr "可見度"
 
-#: clutter/clutter-actor.c:4244
+#: clutter/clutter-actor.c:4254
 msgid "Whether the actor is visible or not"
 msgstr "是否演員為可見"
 
-#: clutter/clutter-actor.c:4259
+#: clutter/clutter-actor.c:4269
 msgid "Mapped"
 msgstr "映射"
 
-#: clutter/clutter-actor.c:4260
+#: clutter/clutter-actor.c:4270
 msgid "Whether the actor will be painted"
 msgstr "是否演員將被繪製"
 
-#: clutter/clutter-actor.c:4274
+#: clutter/clutter-actor.c:4284
 msgid "Realized"
 msgstr "實現"
 
-#: clutter/clutter-actor.c:4275
+#: clutter/clutter-actor.c:4285
 msgid "Whether the actor has been realized"
 msgstr "是否演員已被實現"
 
-#: clutter/clutter-actor.c:4291
+#: clutter/clutter-actor.c:4301
 msgid "Reactive"
 msgstr "重新活躍"
 
-#: clutter/clutter-actor.c:4292
+#: clutter/clutter-actor.c:4302
 msgid "Whether the actor is reactive to events"
 msgstr "是否演員對於事件重新活躍"
 
-#: clutter/clutter-actor.c:4304
+#: clutter/clutter-actor.c:4314
 msgid "Has Clip"
 msgstr "具有裁剪"
 
-#: clutter/clutter-actor.c:4305
+#: clutter/clutter-actor.c:4315
 msgid "Whether the actor has a clip set"
 msgstr "是否演員有裁剪設定"
 
-#: clutter/clutter-actor.c:4320
+#: clutter/clutter-actor.c:4330
 msgid "Clip"
 msgstr "裁剪"
 
-#: clutter/clutter-actor.c:4321
+#: clutter/clutter-actor.c:4331
 msgid "The clip region for the actor"
 msgstr "演員的裁剪區域"
 
-#: clutter/clutter-actor.c:4335 clutter/clutter-actor-meta.c:207
+#: clutter/clutter-actor.c:4345 clutter/clutter-actor-meta.c:207
 #: clutter/clutter-binding-pool.c:319 clutter/clutter-input-device.c:236
 msgid "Name"
 msgstr "名稱"
 
-#: clutter/clutter-actor.c:4336
+#: clutter/clutter-actor.c:4346
 msgid "Name of the actor"
 msgstr "演員的名稱"
 
-#: clutter/clutter-actor.c:4350
+#: clutter/clutter-actor.c:4360
 msgid "Scale X"
 msgstr "伸縮 X 座標"
 
-#: clutter/clutter-actor.c:4351
+#: clutter/clutter-actor.c:4361
 msgid "Scale factor on the X axis"
 msgstr "在 X 軸上的伸縮比值"
 
-#: clutter/clutter-actor.c:4366
+#: clutter/clutter-actor.c:4376
 msgid "Scale Y"
 msgstr "伸縮 Y 座標"
 
-#: clutter/clutter-actor.c:4367
+#: clutter/clutter-actor.c:4377
 msgid "Scale factor on the Y axis"
 msgstr "在 Y 軸上的伸縮比值"
 
-#: clutter/clutter-actor.c:4382
+#: clutter/clutter-actor.c:4392
 msgid "Scale Center X"
 msgstr "伸縮中心 X 座標"
 
-#: clutter/clutter-actor.c:4383
+#: clutter/clutter-actor.c:4393
 msgid "Horizontal scale center"
 msgstr "水平伸縮中心"
 
-#: clutter/clutter-actor.c:4398
+#: clutter/clutter-actor.c:4408
 msgid "Scale Center Y"
 msgstr "伸縮中心 Y 座標"
 
-#: clutter/clutter-actor.c:4399
+#: clutter/clutter-actor.c:4409
 msgid "Vertical scale center"
 msgstr "垂直伸縮中心"
 
-#: clutter/clutter-actor.c:4414
+#: clutter/clutter-actor.c:4424
 msgid "Scale Gravity"
 msgstr "伸縮引力"
 
-#: clutter/clutter-actor.c:4415
+#: clutter/clutter-actor.c:4425
 msgid "The center of scaling"
 msgstr "伸縮的中心"
 
-#: clutter/clutter-actor.c:4432
+#: clutter/clutter-actor.c:4442
 msgid "Rotation Angle X"
 msgstr "旋轉角度 X 座標"
 
-#: clutter/clutter-actor.c:4433
+#: clutter/clutter-actor.c:4443
 msgid "The rotation angle on the X axis"
 msgstr "在 X 軸上的旋轉角度"
 
-#: clutter/clutter-actor.c:4448
+#: clutter/clutter-actor.c:4458
 msgid "Rotation Angle Y"
 msgstr "旋轉角度 Y 座標"
 
-#: clutter/clutter-actor.c:4449
+#: clutter/clutter-actor.c:4459
 msgid "The rotation angle on the Y axis"
 msgstr "在 Y 軸上的旋轉角度"
 
-#: clutter/clutter-actor.c:4464
+#: clutter/clutter-actor.c:4474
 msgid "Rotation Angle Z"
 msgstr "旋轉角度 Z 座標"
 
-#: clutter/clutter-actor.c:4465
+#: clutter/clutter-actor.c:4475
 msgid "The rotation angle on the Z axis"
 msgstr "在 Z 軸上的旋轉角度"
 
-#: clutter/clutter-actor.c:4480
+#: clutter/clutter-actor.c:4490
 msgid "Rotation Center X"
 msgstr "旋轉中心 X 座標"
 
-#: clutter/clutter-actor.c:4481
+#: clutter/clutter-actor.c:4491
 msgid "The rotation center on the X axis"
 msgstr "在 X 軸上的旋轉中心"
 
-#: clutter/clutter-actor.c:4497
+#: clutter/clutter-actor.c:4507
 msgid "Rotation Center Y"
 msgstr "旋轉中心 Y 座標"
 
-#: clutter/clutter-actor.c:4498
+#: clutter/clutter-actor.c:4508
 msgid "The rotation center on the Y axis"
 msgstr "在 Y 軸上的旋轉中心"
 
-#: clutter/clutter-actor.c:4514
+#: clutter/clutter-actor.c:4524
 msgid "Rotation Center Z"
 msgstr "旋轉中心 Z 座標"
 
-#: clutter/clutter-actor.c:4515
+#: clutter/clutter-actor.c:4525
 msgid "The rotation center on the Z axis"
 msgstr "在 Z 軸上的旋轉中心"
 
-#: clutter/clutter-actor.c:4531
+#: clutter/clutter-actor.c:4541
 msgid "Rotation Center Z Gravity"
 msgstr "旋轉中心 Z 引力"
 
-#: clutter/clutter-actor.c:4532
+#: clutter/clutter-actor.c:4542
 msgid "Center point for rotation around the Z axis"
 msgstr "圍繞 Z 軸旋轉的中心點"
 
-#: clutter/clutter-actor.c:4550
+#: clutter/clutter-actor.c:4560
 msgid "Anchor X"
 msgstr "錨點 X 座標"
 
-#: clutter/clutter-actor.c:4551
+#: clutter/clutter-actor.c:4561
 msgid "X coordinate of the anchor point"
 msgstr "錨點的 X 座標"
 
-#: clutter/clutter-actor.c:4567
+#: clutter/clutter-actor.c:4577
 msgid "Anchor Y"
 msgstr "錨點 Y 座標"
 
-#: clutter/clutter-actor.c:4568
+#: clutter/clutter-actor.c:4578
 msgid "Y coordinate of the anchor point"
 msgstr "錨點的 Y 座標"
 
-#: clutter/clutter-actor.c:4583
+#: clutter/clutter-actor.c:4593
 msgid "Anchor Gravity"
 msgstr "錨點引力"
 
-#: clutter/clutter-actor.c:4584
+#: clutter/clutter-actor.c:4594
 msgid "The anchor point as a ClutterGravity"
 msgstr "錨點做為 ClutterGravity"
 
-#: clutter/clutter-actor.c:4603
+#: clutter/clutter-actor.c:4613
 msgid "Show on set parent"
 msgstr "設定為上層時顯示"
 
-#: clutter/clutter-actor.c:4604
+#: clutter/clutter-actor.c:4614
 msgid "Whether the actor is shown when parented"
 msgstr "演員設定為上層時是否顯示"
 
-#: clutter/clutter-actor.c:4624
+#: clutter/clutter-actor.c:4634
 msgid "Clip to Allocation"
 msgstr "裁剪到定位"
 
-#: clutter/clutter-actor.c:4625
+#: clutter/clutter-actor.c:4635
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "設定裁剪區域以追蹤演員的定位"
 
-#: clutter/clutter-actor.c:4635
+#: clutter/clutter-actor.c:4645
 msgid "Text Direction"
 msgstr "文字方向"
 
-#: clutter/clutter-actor.c:4636
+#: clutter/clutter-actor.c:4646
 msgid "Direction of the text"
 msgstr "文字的方向"
 
-#: clutter/clutter-actor.c:4654
+#: clutter/clutter-actor.c:4664
 msgid "Has Pointer"
 msgstr "具有指標"
 
-#: clutter/clutter-actor.c:4655
+#: clutter/clutter-actor.c:4665
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "是否演員含有輸入裝置的指標"
 
-#: clutter/clutter-actor.c:4672
+#: clutter/clutter-actor.c:4682
 msgid "Actions"
 msgstr "動作"
 
-#: clutter/clutter-actor.c:4673
+#: clutter/clutter-actor.c:4683
 msgid "Adds an action to the actor"
 msgstr "加入一項動作給演員"
 
-#: clutter/clutter-actor.c:4687
+#: clutter/clutter-actor.c:4697
 msgid "Constraints"
 msgstr "條件約束"
 
-#: clutter/clutter-actor.c:4688
+#: clutter/clutter-actor.c:4698
 msgid "Adds a constraint to the actor"
 msgstr "加入條件約束給演員"
 

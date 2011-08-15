@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-08-15 14:49+0100\n"
+"POT-Creation-Date: 2011-08-16 00:01+0100\n"
 "PO-Revision-Date: 2011-07-23 19:05+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <gnome-dl@llistes.softcatala.org>\n"
@@ -17,389 +17,389 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: clutter/clutter-actor.c:3847
+#: clutter/clutter-actor.c:3857
 msgid "X coordinate"
 msgstr "Coordenada X"
 
-#: clutter/clutter-actor.c:3848
+#: clutter/clutter-actor.c:3858
 msgid "X coordinate of the actor"
 msgstr "Coordenada X de l'actor"
 
-#: clutter/clutter-actor.c:3863
+#: clutter/clutter-actor.c:3873
 msgid "Y coordinate"
 msgstr "Coordenada Y"
 
-#: clutter/clutter-actor.c:3864
+#: clutter/clutter-actor.c:3874
 msgid "Y coordinate of the actor"
 msgstr "Coordenada Y de l'actor"
 
-#: clutter/clutter-actor.c:3879 clutter/clutter-behaviour-ellipse.c:477
+#: clutter/clutter-actor.c:3889 clutter/clutter-behaviour-ellipse.c:477
 msgid "Width"
 msgstr "Amplada"
 
-#: clutter/clutter-actor.c:3880
+#: clutter/clutter-actor.c:3890
 msgid "Width of the actor"
 msgstr "Amplada de l'actor"
 
-#: clutter/clutter-actor.c:3894 clutter/clutter-behaviour-ellipse.c:493
+#: clutter/clutter-actor.c:3904 clutter/clutter-behaviour-ellipse.c:493
 msgid "Height"
 msgstr "Alçada"
 
-#: clutter/clutter-actor.c:3895
+#: clutter/clutter-actor.c:3905
 msgid "Height of the actor"
 msgstr "Alçada de l'actor"
 
-#: clutter/clutter-actor.c:3913
+#: clutter/clutter-actor.c:3923
 msgid "Fixed X"
 msgstr "X fixada"
 
-#: clutter/clutter-actor.c:3914
+#: clutter/clutter-actor.c:3924
 msgid "Forced X position of the actor"
 msgstr "Posició X forçada de l'actor"
 
-#: clutter/clutter-actor.c:3932
+#: clutter/clutter-actor.c:3942
 msgid "Fixed Y"
 msgstr "Y fixada"
 
-#: clutter/clutter-actor.c:3933
+#: clutter/clutter-actor.c:3943
 msgid "Forced Y position of the actor"
 msgstr "Posició Y forçada de l'actor"
 
-#: clutter/clutter-actor.c:3949
+#: clutter/clutter-actor.c:3959
 msgid "Fixed position set"
 msgstr "Ús de la posició fixa"
 
-#: clutter/clutter-actor.c:3950
+#: clutter/clutter-actor.c:3960
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Si s'ha d'utilitzar el posicionament fixat per a l'actor"
 
-#: clutter/clutter-actor.c:3972
+#: clutter/clutter-actor.c:3982
 msgid "Min Width"
 msgstr "Amplada mínima"
 
-#: clutter/clutter-actor.c:3973
+#: clutter/clutter-actor.c:3983
 msgid "Forced minimum width request for the actor"
 msgstr "Amplada mínima forçada sol·licitada per l'actor"
 
-#: clutter/clutter-actor.c:3992
+#: clutter/clutter-actor.c:4002
 msgid "Min Height"
 msgstr "Alçada mínima"
 
-#: clutter/clutter-actor.c:3993
+#: clutter/clutter-actor.c:4003
 msgid "Forced minimum height request for the actor"
 msgstr "Alçada mínima forçada sol·licitada per l'actor"
 
-#: clutter/clutter-actor.c:4012
+#: clutter/clutter-actor.c:4022
 msgid "Natural Width"
 msgstr "Amplada natural"
 
-#: clutter/clutter-actor.c:4013
+#: clutter/clutter-actor.c:4023
 msgid "Forced natural width request for the actor"
 msgstr "Amplada natural forçada sol·licitada per l'actor"
 
-#: clutter/clutter-actor.c:4032
+#: clutter/clutter-actor.c:4042
 msgid "Natural Height"
 msgstr "Alçada natural"
 
-#: clutter/clutter-actor.c:4033
+#: clutter/clutter-actor.c:4043
 msgid "Forced natural height request for the actor"
 msgstr "Alçada natural forçada sol·licitada per l'actor"
 
-#: clutter/clutter-actor.c:4049
+#: clutter/clutter-actor.c:4059
 msgid "Minimum width set"
 msgstr "Ús de l'amplada mínima"
 
-#: clutter/clutter-actor.c:4050
+#: clutter/clutter-actor.c:4060
 msgid "Whether to use the min-width property"
 msgstr "Si s'ha d'utilitzar la propietat «amplada mínima»"
 
-#: clutter/clutter-actor.c:4065
+#: clutter/clutter-actor.c:4075
 msgid "Minimum height set"
 msgstr "Ús de l'alçada mínima"
 
-#: clutter/clutter-actor.c:4066
+#: clutter/clutter-actor.c:4076
 msgid "Whether to use the min-height property"
 msgstr "Si s'ha d'utilitzar la propietat «alçada mínima»"
 
-#: clutter/clutter-actor.c:4081
+#: clutter/clutter-actor.c:4091
 msgid "Natural width set"
 msgstr "Ús de l'amplada natural"
 
-#: clutter/clutter-actor.c:4082
+#: clutter/clutter-actor.c:4092
 msgid "Whether to use the natural-width property"
 msgstr "Si s'ha d'utilitzar la propietat «amplada natural»"
 
-#: clutter/clutter-actor.c:4099
+#: clutter/clutter-actor.c:4109
 msgid "Natural height set"
 msgstr "Ús de l'alçada natural"
 
-#: clutter/clutter-actor.c:4100
+#: clutter/clutter-actor.c:4110
 msgid "Whether to use the natural-height property"
 msgstr "Si s'ha d'utilitzar la propietat «alçada natural»"
 
-#: clutter/clutter-actor.c:4119
+#: clutter/clutter-actor.c:4129
 msgid "Allocation"
 msgstr "Ubicació"
 
-#: clutter/clutter-actor.c:4120
+#: clutter/clutter-actor.c:4130
 msgid "The actor's allocation"
 msgstr "La ubicació de l'actor"
 
-#: clutter/clutter-actor.c:4176
+#: clutter/clutter-actor.c:4186
 msgid "Request Mode"
 msgstr "Mode sol·licitat"
 
-#: clutter/clutter-actor.c:4177
+#: clutter/clutter-actor.c:4187
 msgid "The actor's request mode"
 msgstr "El mode sol·licitat per l'actor"
 
-#: clutter/clutter-actor.c:4192
+#: clutter/clutter-actor.c:4202
 msgid "Depth"
 msgstr "Profunditat"
 
-#: clutter/clutter-actor.c:4193
+#: clutter/clutter-actor.c:4203
 msgid "Position on the Z axis"
 msgstr "Posició en l'eix de la Z"
 
-#: clutter/clutter-actor.c:4207
+#: clutter/clutter-actor.c:4217
 msgid "Opacity"
 msgstr "Opacitat"
 
-#: clutter/clutter-actor.c:4208
+#: clutter/clutter-actor.c:4218
 msgid "Opacity of an actor"
 msgstr "Opacitat d'un actor"
 
-#: clutter/clutter-actor.c:4224
+#: clutter/clutter-actor.c:4234
 msgid "Offscreen redirect"
 msgstr "Redireccionament fora de pantalla"
 
-#: clutter/clutter-actor.c:4225
+#: clutter/clutter-actor.c:4235
 msgid "Whether to flatten the actor into a single image"
 msgstr "Si s'ha d'aplanar l'actor en una sola imatge"
 
-#: clutter/clutter-actor.c:4243
+#: clutter/clutter-actor.c:4253
 msgid "Visible"
 msgstr "Visible"
 
-#: clutter/clutter-actor.c:4244
+#: clutter/clutter-actor.c:4254
 msgid "Whether the actor is visible or not"
 msgstr "Si l'actor és visible"
 
-#: clutter/clutter-actor.c:4259
+#: clutter/clutter-actor.c:4269
 msgid "Mapped"
 msgstr "Mapat"
 
-#: clutter/clutter-actor.c:4260
+#: clutter/clutter-actor.c:4270
 msgid "Whether the actor will be painted"
 msgstr "Si l'actor es pintarà"
 
-#: clutter/clutter-actor.c:4274
+#: clutter/clutter-actor.c:4284
 msgid "Realized"
 msgstr "Realitzat"
 
-#: clutter/clutter-actor.c:4275
+#: clutter/clutter-actor.c:4285
 msgid "Whether the actor has been realized"
 msgstr "Si l'actor s'ha realitzat"
 
-#: clutter/clutter-actor.c:4291
+#: clutter/clutter-actor.c:4301
 msgid "Reactive"
 msgstr "Reactiu"
 
-#: clutter/clutter-actor.c:4292
+#: clutter/clutter-actor.c:4302
 msgid "Whether the actor is reactive to events"
 msgstr "Si l'actor reacciona a esdeveniments"
 
-#: clutter/clutter-actor.c:4304
+#: clutter/clutter-actor.c:4314
 msgid "Has Clip"
 msgstr "Té un retallat"
 
-#: clutter/clutter-actor.c:4305
+#: clutter/clutter-actor.c:4315
 msgid "Whether the actor has a clip set"
 msgstr "Si l'actor té un retallat establit"
 
-#: clutter/clutter-actor.c:4320
+#: clutter/clutter-actor.c:4330
 msgid "Clip"
 msgstr "Retallat"
 
-#: clutter/clutter-actor.c:4321
+#: clutter/clutter-actor.c:4331
 msgid "The clip region for the actor"
 msgstr "La regió de retallat de l'actor"
 
-#: clutter/clutter-actor.c:4335 clutter/clutter-actor-meta.c:207
+#: clutter/clutter-actor.c:4345 clutter/clutter-actor-meta.c:207
 #: clutter/clutter-binding-pool.c:319 clutter/clutter-input-device.c:236
 msgid "Name"
 msgstr "Nom"
 
-#: clutter/clutter-actor.c:4336
+#: clutter/clutter-actor.c:4346
 msgid "Name of the actor"
 msgstr "El nom de l'actor"
 
-#: clutter/clutter-actor.c:4350
+#: clutter/clutter-actor.c:4360
 msgid "Scale X"
 msgstr "Escala X"
 
-#: clutter/clutter-actor.c:4351
+#: clutter/clutter-actor.c:4361
 msgid "Scale factor on the X axis"
 msgstr "El factor d'escala en l'eix de les X"
 
-#: clutter/clutter-actor.c:4366
+#: clutter/clutter-actor.c:4376
 msgid "Scale Y"
 msgstr "Escala Y"
 
-#: clutter/clutter-actor.c:4367
+#: clutter/clutter-actor.c:4377
 msgid "Scale factor on the Y axis"
 msgstr "El factor d'escala en l'eix de les Y"
 
-#: clutter/clutter-actor.c:4382
+#: clutter/clutter-actor.c:4392
 msgid "Scale Center X"
 msgstr "Centre de l'escala X"
 
-#: clutter/clutter-actor.c:4383
+#: clutter/clutter-actor.c:4393
 msgid "Horizontal scale center"
 msgstr "Centre horitzontal de l'escala"
 
-#: clutter/clutter-actor.c:4398
+#: clutter/clutter-actor.c:4408
 msgid "Scale Center Y"
 msgstr "Centre de l'escala Y"
 
-#: clutter/clutter-actor.c:4399
+#: clutter/clutter-actor.c:4409
 msgid "Vertical scale center"
 msgstr "Centre vertical de l'escala"
 
-#: clutter/clutter-actor.c:4414
+#: clutter/clutter-actor.c:4424
 msgid "Scale Gravity"
 msgstr "Gravetat de l'escala"
 
-#: clutter/clutter-actor.c:4415
+#: clutter/clutter-actor.c:4425
 msgid "The center of scaling"
 msgstr "El centre de l'escalat"
 
-#: clutter/clutter-actor.c:4432
+#: clutter/clutter-actor.c:4442
 msgid "Rotation Angle X"
 msgstr "Angle de rotació X"
 
-#: clutter/clutter-actor.c:4433
+#: clutter/clutter-actor.c:4443
 msgid "The rotation angle on the X axis"
 msgstr "L'angle de rotació en l'eix de les X"
 
-#: clutter/clutter-actor.c:4448
+#: clutter/clutter-actor.c:4458
 msgid "Rotation Angle Y"
 msgstr "Angle de rotació Y"
 
-#: clutter/clutter-actor.c:4449
+#: clutter/clutter-actor.c:4459
 msgid "The rotation angle on the Y axis"
 msgstr "L'angle de rotació en l'eix de les Y"
 
-#: clutter/clutter-actor.c:4464
+#: clutter/clutter-actor.c:4474
 msgid "Rotation Angle Z"
 msgstr "Angle de rotació Z"
 
-#: clutter/clutter-actor.c:4465
+#: clutter/clutter-actor.c:4475
 msgid "The rotation angle on the Z axis"
 msgstr "L'angle de rotació en l'eix de les Z"
 
-#: clutter/clutter-actor.c:4480
+#: clutter/clutter-actor.c:4490
 msgid "Rotation Center X"
 msgstr "Centre de rotació X"
 
-#: clutter/clutter-actor.c:4481
+#: clutter/clutter-actor.c:4491
 msgid "The rotation center on the X axis"
 msgstr "El centre de rotació en l'eix de les X"
 
-#: clutter/clutter-actor.c:4497
+#: clutter/clutter-actor.c:4507
 msgid "Rotation Center Y"
 msgstr "Centre de rotació Y"
 
-#: clutter/clutter-actor.c:4498
+#: clutter/clutter-actor.c:4508
 msgid "The rotation center on the Y axis"
 msgstr "El centre de rotació en l'eix de les Y"
 
-#: clutter/clutter-actor.c:4514
+#: clutter/clutter-actor.c:4524
 msgid "Rotation Center Z"
 msgstr "Centre de rotació Z"
 
-#: clutter/clutter-actor.c:4515
+#: clutter/clutter-actor.c:4525
 msgid "The rotation center on the Z axis"
 msgstr "El centre de rotació en l'eix de les Z"
 
-#: clutter/clutter-actor.c:4531
+#: clutter/clutter-actor.c:4541
 msgid "Rotation Center Z Gravity"
 msgstr "Gravetat del centre de rotació Z"
 
-#: clutter/clutter-actor.c:4532
+#: clutter/clutter-actor.c:4542
 msgid "Center point for rotation around the Z axis"
 msgstr "Punt del centre de rotació al voltant de l'eix de les Z"
 
-#: clutter/clutter-actor.c:4550
+#: clutter/clutter-actor.c:4560
 msgid "Anchor X"
 msgstr "Àncora X"
 
-#: clutter/clutter-actor.c:4551
+#: clutter/clutter-actor.c:4561
 msgid "X coordinate of the anchor point"
 msgstr "Coordenada X del punt de l'àncora"
 
-#: clutter/clutter-actor.c:4567
+#: clutter/clutter-actor.c:4577
 msgid "Anchor Y"
 msgstr "Àncora Y"
 
-#: clutter/clutter-actor.c:4568
+#: clutter/clutter-actor.c:4578
 msgid "Y coordinate of the anchor point"
 msgstr "Coordenada Y del punt de l'àncora"
 
-#: clutter/clutter-actor.c:4583
+#: clutter/clutter-actor.c:4593
 msgid "Anchor Gravity"
 msgstr "Gravetat de l'àncora"
 
-#: clutter/clutter-actor.c:4584
+#: clutter/clutter-actor.c:4594
 msgid "The anchor point as a ClutterGravity"
 msgstr "El punt d'àncora com a «ClutterGravity»"
 
-#: clutter/clutter-actor.c:4603
+#: clutter/clutter-actor.c:4613
 msgid "Show on set parent"
 msgstr "Mostra si és pare"
 
-#: clutter/clutter-actor.c:4604
+#: clutter/clutter-actor.c:4614
 msgid "Whether the actor is shown when parented"
 msgstr "Si s'ha de mostrar l'actor si se'l fa pare d'un element"
 
-#: clutter/clutter-actor.c:4624
+#: clutter/clutter-actor.c:4634
 msgid "Clip to Allocation"
 msgstr "Retalla a la ubicació"
 
-#: clutter/clutter-actor.c:4625
+#: clutter/clutter-actor.c:4635
 msgid "Sets the clip region to track the actor's allocation"
 msgstr ""
 "Estableix la regió de retallat per fer un seguiment de la ubicació de l'actor"
 
-#: clutter/clutter-actor.c:4635
+#: clutter/clutter-actor.c:4645
 msgid "Text Direction"
 msgstr "Direcció del text"
 
-#: clutter/clutter-actor.c:4636
+#: clutter/clutter-actor.c:4646
 msgid "Direction of the text"
 msgstr "La direcció del text"
 
-#: clutter/clutter-actor.c:4654
+#: clutter/clutter-actor.c:4664
 msgid "Has Pointer"
 msgstr "Té un punter"
 
-#: clutter/clutter-actor.c:4655
+#: clutter/clutter-actor.c:4665
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Si l'actor conté el punter d'un dispositiu d'entrada"
 
-#: clutter/clutter-actor.c:4672
+#: clutter/clutter-actor.c:4682
 msgid "Actions"
 msgstr "Accions"
 
-#: clutter/clutter-actor.c:4673
+#: clutter/clutter-actor.c:4683
 msgid "Adds an action to the actor"
 msgstr "Afig una acció a l'actor"
 
-#: clutter/clutter-actor.c:4687
+#: clutter/clutter-actor.c:4697
 msgid "Constraints"
 msgstr "Restriccions"
 
-#: clutter/clutter-actor.c:4688
+#: clutter/clutter-actor.c:4698
 msgid "Adds a constraint to the actor"
 msgstr "Afig una restricció a l'actor"
 
