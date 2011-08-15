@@ -38,12 +38,12 @@ MKTMPL_OPTIONS=
 # Extra options to supply to gtkdoc-fixref. Not normally needed.
 # e.g. FIXXREF_OPTIONS=--extra-dir=../gdk-pixbuf/html --extra-dir=../gdk/html
 FIXXREF_OPTIONS=\
-	--extra-dir=../cogl/html \
 	--extra-dir=../clutter/html \
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/glib \
 	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/gobject \
 	--extra-dir=$(CAIRO_PREFIX)/share/gtk-doc/html/cairo \
-	--extra-dir=$(PANGO_PREFIX)/share/gtk-doc/html/pango
+	--extra-dir=$(PANGO_PREFIX)/share/gtk-doc/html/pango \
+	--extra-dir=$(COGL_PREFIX)/share/gtk-doc/html/cogl
 
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h

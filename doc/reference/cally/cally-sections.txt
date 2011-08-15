@@ -40,8 +40,10 @@ cally_clone_get_type
 CallyActor
 CallyActorClass
 CallyActionFunc
+CallyActionCallback
 cally_actor_new
 cally_actor_add_action
+cally_actor_add_action_full
 cally_actor_remove_action
 cally_actor_remove_action_by_name
 <SUBSECTION Standard>
