@@ -1,3 +1,27 @@
+Clutter 1.7.10                                                       2011-08-15
+===============================================================================
+
+  • List of changes since Clutter 1.7.8
+
+    - Do not update the last paint volume when picking
+    Last minute fix for an issue that was most prominently manifesting itself
+    when using GNOME Shell with Clutter 1.7; this should resolve the issue
+    that dragging icons from the dash left around some stale pixels.
+
+    - Fix building the tests
+    The performance and micro-benchmark tests did not pick up changes in
+    local dependencies, e.g. under a JHBuild root.
+
+  • List of bugs fixed since Clutter 1.7.8
+
+    [bugzilla.gnome.org]
+
+    #656588 - Outdated FSF Address in code files
+
+Many thanks to:
+
+  Alejandro Piñeiro, Robert Bragg
+
 Clutter 1.7.8                                                        2011-08-15
 ===============================================================================
 
