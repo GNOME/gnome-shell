@@ -1,3 +1,57 @@
+Clutter 1.7.8                                                        2011-08-15
+===============================================================================
+
+  • List of changes since Clutter 1.7.6
+
+    - Various fixes in Cally
+    Make sure to use Clutter's API and remove old workarounds that were put
+    into place when Cally was a separate project and targeting pre-1.0 API
+    versions of Clutter.
+
+    - Add ClutterCairoTexture:auto-resize
+    This property makes it easier to create 2D canvas surfaces by tracking
+    the actor's allocation in a backward compatible way.
+
+    - Add ClutterAnimatable.interpolate_value()
+    This new virtual function deprecates the animate_property() virtual of the
+    Animatable interface, which was sub-optimal in different ways.
+
+    - Allow using Animatable implementations with ClutterState
+    Thanks to the new interpolate_value() virtual it is now possible to use
+    the Animatable interface with ClutterState; this allows animating
+    action, constraint and effect properties using the same "@" syntax also
+    used by ClutterAnimation and clutter_actor_animate().
+
+    - Improve ClutterModel's implementation
+    Avoid a bunch of needless checks, and make sure that the ::row-changed
+    signal is emitted in all cases when a row has been changed through the
+    ClutterModelIter API. The conformance test unit for ClutterModel has
+    also been improved to avoid future regressions.
+
+    - Improve ClutterStage behaviour on OS X
+    Make sure that the fullscreen, multi-screen and key focusing are
+    well-behaved on OS X, by implementing the correct delegate methods.
+
+  • List of bugs fixed since Clutter 1.7.6
+
+  [bugzilla.gnome.org]
+
+  #655387 - Missing GObject introspection annotations
+  #655306 - Added windowDidChangeScreen delegate to fix pick errors when
+            window moved to different screen
+  #655311 - Prevent hiding of unrelated application windows when stage returns
+            from fullscreen
+  #655307 - Fix resource leak on subsequent calls to clutter_stage_osx_realize
+  #648633 - gnome-shell notification pop-ups do not emit
+            object:state-changed:showing
+
+Many thanks to:
+
+  Kirk A. Baker, Neil Roberts, Alejandro Piñeiro, Alejo Pacin,
+  Daniel Mustieles, Evan Nemerson, Marek Černocký, Philippe Normand,
+  Robert Bragg
+
+
 Clutter 1.7.6                                                        2011-07-26
 ===============================================================================
 
