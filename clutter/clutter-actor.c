@@ -2916,8 +2916,19 @@ clutter_actor_paint (ClutterActor *self)
    * XXX: We are starting to do a lot of vertex transforms on
    * the CPU in a typical paint, so at some point we should
    * audit these and consider caching some things.
+   *
+   * NB: We don't perform culling while picking at this point because
+   * clutter-stage.c doesn't setup the clipping planes appropriately.
+   *
+   * NB: We don't want to update the last-paint-volume during picking
+   * because the last-paint-volume is used to determine the old screen
+   * space location of an actor that has moved so we can know the
+   * minimal region to redraw to clear an old view of the actor. If we
+   * update this during picking then by the time we come around to
+   * paint then the last-paint-volume would likely represent the new
+   * actor position not the old.
    */
-  if (!in_clone_paint ())
+  if (!in_clone_paint () && pick_mode == CLUTTER_PICK_NONE)
     {
       gboolean success;
       /* annoyingly gcc warns if uninitialized even though
@@ -2933,8 +2944,7 @@ clutter_actor_paint (ClutterActor *self)
 
       success = cull_actor (self, &result);
 
-      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
-                      pick_mode == CLUTTER_PICK_NONE))
+      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS))
         _clutter_actor_paint_cull_result (self, success, result);
       else if (result == CLUTTER_CULL_RESULT_OUT && success)
         goto done;
