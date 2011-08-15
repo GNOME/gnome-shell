@@ -1883,7 +1883,7 @@ clutter_animatable_animate_property
 clutter_animatable_find_property
 clutter_animatable_get_initial_state
 clutter_animatable_set_final_state
-clutter_animatable_interpolate_property
+clutter_animatable_interpolate_value
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_ANIMATABLE
