@@ -309,7 +309,9 @@ IMStatusChooserItem.prototype = {
         this._setComboboxPresence(presence);
 
         if (!this._sessionPresenceRestored) {
-            this._sessionStatusChanged(this._presence.status);
+            this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
+		this._sessionStatusChanged(status);
+	    }));
             return;
         }
 
@@ -468,6 +470,10 @@ UserMenuButton.prototype = {
                                        style_class: 'popup-menu-icon' });
         this._idleIcon = new St.Icon({ icon_name: 'user-idle',
                                        style_class: 'popup-menu-icon' });
+
+        this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
+	    this._updateSwitch(status);
+	}));
 
         this._accountMgr.connect('most-available-presence-changed',
                                   Lang.bind(this, this._updatePresenceIcon));
