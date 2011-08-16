@@ -79,17 +79,17 @@ clutter_stage_win32_hide (ClutterStageWindow *stage_window)
 }
 
 static void
-clutter_stage_win32_get_geometry (ClutterStageWindow *stage_window,
-                                  ClutterGeometry    *geometry)
+clutter_stage_win32_get_geometry (ClutterStageWindow    *stage_window,
+                                  cairo_rectangle_int_t *geometry)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
 
   if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
     {
-      geometry->width = (stage_win32->fullscreen_rect.right
-                         - stage_win32->fullscreen_rect.left);
-      geometry->height = (stage_win32->fullscreen_rect.bottom
-                          - stage_win32->fullscreen_rect.top);
+      geometry->width = stage_win32->fullscreen_rect.right
+                      - stage_win32->fullscreen_rect.left;
+      geometry->height = stage_win32->fullscreen_rect.bottom
+                       - stage_win32->fullscreen_rect.top;
       return;
     }
 

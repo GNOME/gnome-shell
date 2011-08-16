@@ -35,8 +35,10 @@ typedef struct _ClutterStageQueueRedrawEntry ClutterStageQueueRedrawEntry;
 
 /* stage */
 ClutterStageWindow *_clutter_stage_get_default_window    (void);
-void                _clutter_stage_do_paint              (ClutterStage          *stage,
-                                                          const ClutterGeometry *clip);
+
+void                _clutter_stage_do_paint              (ClutterStage                *stage,
+                                                          const cairo_rectangle_int_t *clip);
+
 void                _clutter_stage_set_window            (ClutterStage          *stage,
                                                           ClutterStageWindow    *stage_window);
 ClutterStageWindow *_clutter_stage_get_window            (ClutterStage          *stage);

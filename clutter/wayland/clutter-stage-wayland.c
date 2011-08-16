@@ -91,7 +91,7 @@ get_visual (struct wl_display *display, CoglPixelFormat format)
 }
 static ClutterStageWaylandWaylandBuffer *
 wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
-                           ClutterGeometry *geom)
+                           cairo_rectangle_int_t *geom)
 {
   ClutterStageWaylandWaylandBufferSHM *buffer;
   struct wl_visual *visual;
@@ -105,9 +105,9 @@ wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
 
   buffer->buffer.type = BUFFER_TYPE_SHM;
 
-  tex = cogl_texture_new_with_size ((unsigned int)geom->width,
-			       (unsigned int)geom->height,
-			       flags, format);
+  tex = cogl_texture_new_with_size ((unsigned int) geom->width,
+			            (unsigned int) geom->height,
+			            flags, format);
   buffer->format = format;
   buffer->stride = cogl_texture_get_rowstride(tex);
   buffer->size = cogl_texture_get_data(tex, format, buffer->stride, NULL);
@@ -134,7 +134,7 @@ wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
 
 static ClutterStageWaylandWaylandBuffer *
 wayland_create_drm_buffer (ClutterBackendWayland *backend_wayland,
-                           ClutterGeometry *geom)
+                           cairo_rectangle_int_t *geom)
 {
   EGLDisplay edpy = clutter_wayland_get_egl_display ();
   struct wl_visual *visual;
@@ -181,7 +181,7 @@ wayland_create_drm_buffer (ClutterBackendWayland *backend_wayland,
 }
 
 static ClutterStageWaylandWaylandBuffer *
-wayland_create_buffer (ClutterGeometry *geom)
+wayland_create_buffer (cairo_rectangle_int_t *geom)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
@@ -346,13 +346,14 @@ clutter_stage_wayland_hide (ClutterStageWindow *stage_window)
 }
 
 static void
-clutter_stage_wayland_get_geometry (ClutterStageWindow *stage_window,
-				    ClutterGeometry    *geometry)
+clutter_stage_wayland_get_geometry (ClutterStageWindow    *stage_window,
+				    cairo_rectangle_int_t *geometry)
 {
-  ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
-
-  if (geometry)
+  if (geometry != NULL)
     {
+      ClutterStageWayland *stage_wayland =
+        CLUTTER_STAGE_WAYLAND (stage_window);
+
       *geometry = stage_wayland->allocation;
     }
 }
@@ -363,7 +364,6 @@ clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
 			      gint                height)
 {
   ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
-  cairo_rectangle_int_t rect;
 
   fprintf (stderr, "resize %dx%d\n", width, height);
 
@@ -371,11 +371,8 @@ clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
   stage_wayland->pending_allocation.height = height;
 
   /* FIXME: Shouldn't the stage repaint everything when it gets resized? */
-  rect.x = stage_wayland->pending_allocation.x;
-  rect.y = stage_wayland->pending_allocation.y;
-  rect.width = stage_wayland->pending_allocation.width;
-  rect.height = stage_wayland->pending_allocation.height;
-  cairo_region_union_rectangle (stage_wayland->repaint_region, &rect);
+  cairo_region_union_rectangle (stage_wayland->repaint_region,
+                                &stage_wayland->pending_allocation);
 }
 
 #define CAIRO_REGION_FULL ((cairo_region_t *) 1)
@@ -393,26 +390,16 @@ clutter_stage_wayland_ignoring_redraw_clips (ClutterStageWindow *stage_window)
 }
 
 static void
-clutter_stage_wayland_add_redraw_clip (ClutterStageWindow *stage_window,
-				       ClutterGeometry    *stage_clip)
+clutter_stage_wayland_add_redraw_clip (ClutterStageWindow    *stage_window,
+				       cairo_rectangle_int_t *stage_clip)
 {
   ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
   cairo_rectangle_int_t rect;
 
   if (stage_clip == NULL)
-    {
-      rect.x = stage_wayland->allocation.x;
-      rect.y = stage_wayland->allocation.y;
-      rect.width = stage_wayland->allocation.width;
-      rect.height = stage_wayland->allocation.height;
-    }
+    rect = stage_wayland->allocation;
   else
-    {
-      rect.x = stage_clip->x;
-      rect.y = stage_clip->y;
-      rect.width = stage_clip->width;
-      rect.height = stage_clip->height;
-    }
+    rect = stage_clip;
 
   if (stage_wayland->repaint_region == NULL)
     stage_wayland->repaint_region = cairo_region_create_rectangle (&rect);
@@ -606,7 +593,6 @@ void
 _clutter_stage_wayland_repaint_region (ClutterStageWayland *stage_wayland,
 				       ClutterStage        *stage)
 {
-  ClutterGeometry geom;
   cairo_rectangle_int_t rect;
   int i, count;
 
@@ -615,13 +601,11 @@ _clutter_stage_wayland_repaint_region (ClutterStageWayland *stage_wayland,
     {
       cairo_region_get_rectangle (stage_wayland->repaint_region, i, &rect);
 
-      cogl_clip_push_window_rectangle (rect.x - 1, rect.y - 1,
-				       rect.width + 2, rect.height + 2);
+      cogl_clip_push_window_rectangle (rect.x - 1,
+                                       rect.y - 1,
+                                       rect.width + 2,
+                                       rect.height + 2);
 
-      geom.x = rect.x;
-      geom.y = rect.y;
-      geom.width = rect.width;
-      geom.height = rect.height;
       /* FIXME: We should pass geom in as second arg, but some actors
        * cull themselves a little to much.  Disable for now.*/
       _clutter_stage_do_paint (stage, NULL);
@@ -637,8 +621,10 @@ _clutter_stage_wayland_redraw (ClutterStageWayland *stage_wayland,
   stage_wayland->allocation = stage_wayland->pending_allocation;
 
   if (!stage_wayland->back_buffer)
+    {
       stage_wayland->back_buffer =
-	wayland_create_buffer (&stage_wayland->allocation);
+        wayland_create_buffer (&stage_wayland->allocation);
+    }
 
   cogl_set_framebuffer (stage_wayland->back_buffer->offscreen);
   _clutter_stage_maybe_setup_viewport (stage_wayland->wrapper);
