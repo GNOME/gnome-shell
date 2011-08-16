@@ -1,71 +1,70 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const DBus = imports.dbus;
 const Lang = imports.lang;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 
 const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Main = imports.ui.main;
 
-const GnomeShellIface = {
-    name: 'org.gnome.Shell',
-    methods: [{ name: 'Eval',
-                inSignature: 's',
-                outSignature: 'bs'
-              },
-              { name: 'ListExtensions',
-                inSignature: '',
-                outSignature: 'a{sa{sv}}'
-              },
-              { name: 'GetExtensionInfo',
-                inSignature: 's',
-                outSignature: 'a{sv}'
-              },
-              { name: 'GetExtensionErrors',
-                inSignature: 's',
-                outSignature: 'as'
-              },
-              { name: 'ScreenshotArea',
-                inSignature: 'iiiis',
-                outSignature: 'b'
-              },
-              { name: 'ScreenshotWindow',
-                inSignature: 'bs',
-                outSignature: 'b'
-              },
-              { name: 'Screenshot',
-                inSignature: 's',
-                outSignature: 'b'
-              },
-              { name: 'EnableExtension',
-                inSignature: 's',
-                outSignature: ''
-              },
-              { name: 'DisableExtension',
-                inSignature: 's',
-                outSignature: ''
-              },
-              { name: 'InstallRemoteExtension',
-                inSignature: 'ss',
-                outSignature: ''
-              },
-              { name: 'UninstallExtension',
-                inSignature: 's',
-                outSignature: 'b'
-              }
-             ],
-    signals: [{ name: 'ExtensionStatusChanged',
-                inSignature: 'sis' }],
-    properties: [{ name: 'OverviewActive',
-                   signature: 'b',
-                   access: 'readwrite' },
-                 { name: 'ApiVersion',
-                   signature: 'i',
-                   access: 'read' },
-                 { name: 'ShellVersion',
-                   signature: 's',
-                   access: 'read' }]
-};
+const GnomeShellIface = <interface name="org.gnome.Shell">
+<method name="Eval">
+    <arg type="s" direction="in" name="script" />
+    <arg type="b" direction="out" name="success" />
+    <arg type="s" direction="out" name="result" />
+</method>
+<method name="ListExtensions">
+    <arg type="a{sa{sv}}" direction="out" name="extensions" />
+</method>
+<method name="GetExtensionInfo">
+    <arg type="s" direction="in" name="extension" />
+    <arg type="a{sv}" direction="out" name="info" />
+</method>
+<method name="GetExtensionErrors">
+    <arg type="s" direction="in" name="extension" />
+    <arg type="as" direction="out" name="errors" />
+</method>
+<method name="ScreenshotArea">
+    <arg type="i" direction="in" name="x"/>
+    <arg type="i" direction="in" name="y"/>
+    <arg type="i" direction="in" name="width"/>
+    <arg type="i" direction="in" name="height"/>
+    <arg type="s" direction="in" name="filename"/>
+    <arg type="b" direction="out" name="success"/>
+</method>
+<method name="ScreenshotWindow">
+    <arg type="b" direction="in" name="include_frame"/>
+    <arg type="s" direction="in" name="filename"/>
+    <arg type="b" direction="out" name="success"/>
+</method>
+<method name="Screenshot">
+    <arg type="s" direction="in" name="filename"/>
+    <arg type="b" direction="out" name="success"/>
+</method>
+<method name="EnableExtension">
+    <arg type="s" direction="in" name="uuid"/>
+</method>
+<method name="DisableExtension">
+    <arg type="s" direction="in" name="uuid"/>
+</method>
+<method name="InstallRemoteExtension">
+    <arg type="s" direction="in" name="uuid"/>
+    <arg type="s" direction="in" name="version"/>
+</method>
+<method name="UninstallExtension">
+    <arg type="s" direction="in" name="uuid"/>
+    <arg type="b" direction="out" name="success"/>
+</method>
+<property name="OverviewActive" type="b" access="readwrite" />
+<property name="ApiVersion" type="i" access="read" />
+<property name="ShellVersion" type="s" access="read" />
+<signal name="ExtensionStatusChanged">
+    <arg type="s" name="uuid"/>
+    <arg type="i" name="state"/>
+    <arg type="s" name="error"/>
+</signal>
+</interface>;
 
 function GnomeShell() {
     this._init();
@@ -73,7 +72,8 @@ function GnomeShell() {
 
 GnomeShell.prototype = {
     _init: function() {
-        DBus.session.exportObject('/org/gnome/Shell', this);
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
+        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
         ExtensionSystem.connect('extension-state-changed',
                                 Lang.bind(this, this._extensionStateChanged));
     },
@@ -156,11 +156,33 @@ GnomeShell.prototype = {
     },
 
     ListExtensions: function() {
-        return ExtensionSystem.extensionMeta;
+        let out;
+        for (let uuid in ExtensionSystem.extensionMeta) {
+            let dbusObj = this.GetExtensionInfo(uuid);
+            out[uuid] = dbusObj;
+        }
+        return out;
     },
 
     GetExtensionInfo: function(uuid) {
-        return ExtensionSystem.extensionMeta[uuid] || {};
+        let meta = ExtensionSystem.extensionMeta[uuid] || {};
+        let out;
+        for (let key in meta) {
+            let val = meta[key];
+            let type;
+            switch (typeof val) {
+            case 'object':
+                throw Error('Extension had a nested object in the metadata. This is not supported');
+            case 'string':
+                type = 's';
+                break;
+            case 'number':
+                type = 'd';
+                break;
+            }
+            out[key] = GLib.Variant.new(type, val);
+        }
+        return out;
     },
 
     GetExtensionErrors: function(uuid) {
@@ -211,6 +233,3 @@ GnomeShell.prototype = {
                                  [newState.uuid, newState.state, newState.error]);
     }
 };
-
-DBus.conformExport(GnomeShell.prototype, GnomeShellIface);
-

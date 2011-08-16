@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const DBus = imports.dbus;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -163,11 +162,6 @@ function start() {
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     shellDBusService = new ShellDBus.GnomeShell();
-    // Force a connection now; dbus.js will do this internally
-    // if we use its name acquisition stuff but we aren't right
-    // now; to do so we'd need to convert from its async calls
-    // back into sync ones.
-    DBus.session.flush();
 
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
     // also initialize ShellAppSystem first.  ShellAppSystem

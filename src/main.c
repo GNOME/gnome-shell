@@ -11,7 +11,6 @@
 #include <cogl-pango/cogl-pango.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#include <dbus/dbus-glib.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
@@ -36,35 +35,41 @@ extern GType gnome_shell_plugin_get_type (void);
 
 static gboolean is_gdm_mode = FALSE;
 
+#define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
+#define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER 4
+
 static void
-shell_dbus_acquire_name (DBusGProxy *bus,
+shell_dbus_acquire_name (GDBusProxy *bus,
                          guint32     request_name_flags,
                          guint32    *request_name_result,
                          gchar      *name,
                          gboolean    fatal)
 {
   GError *error = NULL;
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, name,
-                          G_TYPE_UINT, request_name_flags,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, request_name_result,
-                          G_TYPE_INVALID))
+  GVariant *request_name_variant;
+
+  if (!(request_name_variant = g_dbus_proxy_call_sync (bus,
+                                                       "RequestName",
+                                                       g_variant_new ("(su)", name, request_name_flags),
+                                                       0, /* call flags */
+                                                       -1, /* timeout */
+                                                       NULL, /* cancellable */
+                                                       &error)))
     {
-      g_printerr ("failed to acquire %s: %s\n", name, error->message);
-      if (fatal)
-        exit (1);
+      g_printerr ("failed to acquire org.gnome.Shell: %s\n", error->message);
+      exit (1);
     }
+  g_variant_get (request_name_variant, "(u)", request_name_result);
 }
 
 static void
-shell_dbus_acquire_names (DBusGProxy *bus,
+shell_dbus_acquire_names (GDBusProxy *bus,
                           guint32     request_name_flags,
                           gchar      *name,
                           gboolean    fatal, ...) G_GNUC_NULL_TERMINATED;
 
 static void
-shell_dbus_acquire_names (DBusGProxy *bus,
+shell_dbus_acquire_names (GDBusProxy *bus,
                           guint32     request_name_flags,
                           gchar      *name,
                           gboolean    fatal, ...)
@@ -89,27 +94,32 @@ shell_dbus_acquire_names (DBusGProxy *bus,
 static void
 shell_dbus_init (gboolean replace)
 {
-  DBusGConnection *session;
-  DBusGProxy *bus;
+  GDBusConnection *session;
+  GDBusProxy *bus;
+  GError *error = NULL;
   guint32 request_name_flags;
   guint32 request_name_result;
 
-  /* TODO:
-   * In the future we should use GDBus for this.  However, in
-   * order to do that, we need to port all of the JavaScript
-   * code.  Otherwise, the name will be claimed on the wrong
-   * connection.
-   */
-  session = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
+  session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
 
-  bus = dbus_g_proxy_new_for_name (session,
-                                   DBUS_SERVICE_DBUS,
-                                   DBUS_PATH_DBUS,
-                                   DBUS_INTERFACE_DBUS);
+  if (error) {
+    g_printerr ("Failed to connect to session bus: %s", error->message);
+    exit (1);
+  }
 
-  request_name_flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
+  bus = g_dbus_proxy_new_sync (session,
+                               G_DBUS_PROXY_FLAGS_NONE,
+                               NULL, /* interface info */
+                               "org.freedesktop.DBus",
+                               "/org/freedesktop/DBus",
+                               "org.freedesktop.DBus",
+                               NULL, /* cancellable */
+                               &error);
+
+  request_name_flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
   if (replace)
     request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
+
   shell_dbus_acquire_name (bus,
                            request_name_flags,
                            &request_name_result,
@@ -117,8 +127,7 @@ shell_dbus_init (gboolean replace)
   if (!(request_name_result == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER
         || request_name_result == DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER))
     {
-      g_printerr ("%s already exists on bus and --replace not specified\n",
-                  SHELL_DBUS_SERVICE);
+      g_printerr (SHELL_DBUS_SERVICE " already exists on bus and --replace not specified\n");
       exit (1);
     }
 
@@ -126,7 +135,8 @@ shell_dbus_init (gboolean replace)
    * We always specify REPLACE_EXISTING to ensure we kill off
    * the existing service if it was running.
    */
-  request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
+  request_name_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
+
   shell_dbus_acquire_names (bus,
                             request_name_flags,
   /* Also grab org.gnome.Panel to replace any existing panel process */
@@ -142,6 +152,7 @@ shell_dbus_init (gboolean replace)
                            &request_name_result,
                            "org.gnome.Caribou.Keyboard", FALSE);
   g_object_unref (bus);
+  g_object_unref (session);
 }
 
 static void
