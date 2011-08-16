@@ -127,6 +127,14 @@ shell_tp_client_init (ShellTpClient *self)
         TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT, TP_HANDLE_TYPE_CONTACT,
         NULL));
 
+  /* Approve file transfers. We let Empathy handle the transfer itself. */
+  tp_base_client_take_approver_filter (TP_BASE_CLIENT (self),
+      tp_asv_new (
+        TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING,
+          TP_IFACE_CHANNEL_TYPE_FILE_TRANSFER,
+        TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT, TP_HANDLE_TYPE_CONTACT,
+        NULL));
+
   /* Handler */
   tp_base_client_add_handler_filter (TP_BASE_CLIENT (self), filter);
 

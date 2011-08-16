@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const DBus = imports.dbus;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -244,6 +245,8 @@ Client.prototype = {
         else if (chanType == Tp.IFACE_CHANNEL_TYPE_STREAMED_MEDIA ||
                  chanType == 'org.freedesktop.Telepathy.Channel.Type.Call.DRAFT')
             this._approveCall(account, conn, channel, dispatchOp, context);
+        else if (chanType == Tp.IFACE_CHANNEL_TYPE_FILE_TRANSFER)
+            this._approveFileTransfer(account, conn, channel, dispatchOp, context);
     },
 
     _approveTextChannel: function(account, conn, channel, dispatchOp, context) {
@@ -295,6 +298,32 @@ Client.prototype = {
         Main.messageTray.add(source);
 
         let notif = new AudioVideoNotification(source, dispatchOp, channel, contacts[0], isVideo);
+        source.notify(notif);
+        context.accept();
+    },
+
+    _approveFileTransfer: function(account, conn, channel, dispatchOp, context) {
+        let [targetHandle, targetHandleType] = channel.get_handle();
+
+        Shell.get_tp_contacts(conn, [targetHandle],
+                contactFeatures,
+                Lang.bind(this, this._createFileTransferSource, channel, context, dispatchOp));
+    },
+
+    _createFileTransferSource: function(connection, contacts, failed, channel, context, dispatchOp) {
+        if (contacts.length < 1) {
+            Shell.decline_dispatch_op(context, 'Failed to get file sender');
+            return;
+        }
+
+        // Use the icon of the file being transferred
+        let gicon = Gio.content_type_get_icon(channel.get_mime_type());
+
+        // We got the TpContact
+        let source = new ApproverSource(dispatchOp, _("File Transfer"), gicon);
+        Main.messageTray.add(source);
+
+        let notif = new FileTransferNotification(source, dispatchOp, channel, contacts[0]);
         source.notify(notif);
         context.accept();
     },
@@ -964,6 +993,49 @@ AudioVideoNotification.prototype = {
                     src.leave_channels_finish(result)});
                 break;
             case 'answer':
+                dispatchOp.handle_with_time_async('', global.get_current_time(),
+                                                  function(src, result) {
+                    src.handle_with_time_finish(result)});
+                break;
+            }
+            this.destroy();
+        }));
+    }
+};
+
+// File Transfer
+function FileTransferNotification(source, dispatchOp, channel, contact) {
+    this._init(source, dispatchOp, channel, contact);
+}
+
+FileTransferNotification.prototype = {
+    __proto__: MessageTray.Notification.prototype,
+
+    _init: function(source, dispatchOp, channel, contact) {
+        MessageTray.Notification.prototype._init.call(this,
+                                                      source,
+                                                      /* To translators: The first parameter is
+                                                       * the contact's alias and the second one is the
+                                                       * file name. The string will be something
+                                                       * like: "Alice is sending you test.ogg"
+                                                       */
+                                                      _("%s is sending you %s").format(contact.get_alias(),
+                                                                                       channel.get_filename()),
+                                                      null,
+                                                      { customContent: true });
+        this.setResident(true);
+
+        this.addButton('decline', _("Decline"));
+        this.addButton('accept', _("Accept"));
+
+        this.connect('action-invoked', Lang.bind(this, function(self, action) {
+            switch (action) {
+            case 'decline':
+                dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE,
+                                                '', function(src, result) {
+                    src.leave_channels_finish(result)});
+                break;
+            case 'accept':
                 dispatchOp.handle_with_time_async('', global.get_current_time(),
                                                   function(src, result) {
                     src.handle_with_time_finish(result)});

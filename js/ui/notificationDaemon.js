@@ -195,6 +195,7 @@ NotificationDaemon.prototype = {
         if (appName == 'Empathy' && (hints['category'] == 'im.received' ||
               hints['category'] == 'x-empathy.im.room-invitation' ||
               hints['category'] == 'x-empathy.call.incoming' ||
+              hints['category'] == 'x-empathy.call.incoming"' ||
               hints['category'] == 'presence.online' ||
               hints['category'] == 'presence.offline')) {
             // Ignore replacesId since we already sent back a
