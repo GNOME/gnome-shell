@@ -225,7 +225,8 @@ Client.prototype = {
 
         // FIXME: We don't have a 'chat room' icon (bgo #653737) use
         // system-users for now as Empathy does.
-        let source = new ApproverSource(dispatchOp, _("Invitation"), 'system-users');
+        let source = new ApproverSource(dispatchOp, _("Invitation"),
+                                        Shell.util_icon_from_string('system-users'));
         Main.messageTray.add(source);
 
         let notif = new RoomInviteNotification(source, dispatchOp, channel, contacts[0]);
@@ -288,7 +289,9 @@ Client.prototype = {
           isVideo = true;
 
         // We got the TpContact
-        let source = new ApproverSource(dispatchOp, _("Call"), isVideo ? 'camera-web' : 'audio-input-microphone');
+        let source = new ApproverSource(dispatchOp, _("Call"), isVideo ?
+                                        Shell.util_icon_from_string('camera-web') :
+                                        Shell.util_icon_from_string('audio-input-microphone'));
         Main.messageTray.add(source);
 
         let notif = new AudioVideoNotification(source, dispatchOp, channel, contacts[0], isVideo);
@@ -843,17 +846,17 @@ ChatNotification.prototype = {
     }
 };
 
-function ApproverSource(dispatchOp, text, icon) {
-    this._init(dispatchOp, text, icon);
+function ApproverSource(dispatchOp, text, gicon) {
+    this._init(dispatchOp, text, gicon);
 }
 
 ApproverSource.prototype = {
     __proto__: MessageTray.Source.prototype,
 
-    _init: function(dispatchOp, text, icon) {
+    _init: function(dispatchOp, text, gicon) {
         MessageTray.Source.prototype._init.call(this, text);
 
-        this._icon = icon;
+        this._gicon = gicon;
         this._setSummaryIcon(this.createNotificationIcon());
 
         this._dispatchOp = dispatchOp;
@@ -876,7 +879,7 @@ ApproverSource.prototype = {
     },
 
     createNotificationIcon: function() {
-        return new St.Icon({ icon_name: this._icon,
+        return new St.Icon({ gicon: this._gicon,
                              icon_type: St.IconType.FULLCOLOR,
                              icon_size: this.ICON_SIZE });
     }
