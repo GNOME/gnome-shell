@@ -2646,6 +2646,7 @@ get_control (MetaFrames *frames,
 {
   MetaFrameGeometry fgeom;
   MetaFrameFlags flags;
+  MetaFrameType type;
   gboolean has_vert, has_horiz;
   cairo_rectangle_int_t client;
 
@@ -2667,6 +2668,7 @@ get_control (MetaFrames *frames,
   meta_core_get (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                  frame->xwindow,
                  META_CORE_GET_FRAME_FLAGS, &flags,
+                 META_CORE_GET_FRAME_TYPE, &type,
                  META_CORE_GET_END);
   
   has_vert = (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE) != 0;
@@ -2674,7 +2676,7 @@ get_control (MetaFrames *frames,
   
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
     {
-      if (has_vert && y <= TOP_RESIZE_HEIGHT)
+      if (has_vert && y <= TOP_RESIZE_HEIGHT && (type != META_FRAME_TYPE_ATTACHED))
         return META_FRAME_CONTROL_RESIZE_N;
       else
         return META_FRAME_CONTROL_TITLE;
