@@ -157,8 +157,9 @@ IMStatusChooserItem.prototype = {
                             Lang.bind(this, this._changeIMStatus));
 
         this._presence = new GnomeSession.Presence();
-        this._presence.connect('StatusChanged',
-                               Lang.bind(this, this._sessionStatusChanged));
+        this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
+	    this._sessionStatusChanged(status);
+        }));
 
         this._sessionPresenceRestored = false;
         this._imPresenceRestored = false;
@@ -292,7 +293,9 @@ IMStatusChooserItem.prototype = {
         this._setComboboxPresence(presence);
 
         if (!this._sessionPresenceRestored) {
-            this._presence.getStatus(Lang.bind(this, this._sessionStatusChanged));
+            this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
+		this._sessionStatusChanged(status);
+	    }));
             return;
         }
 
@@ -376,14 +379,14 @@ IMStatusChooserItem.prototype = {
         return this._currentPresence;
     },
 
-    _sessionStatusChanged: function(sessionPresence, sessionStatus) {
+    _sessionStatusChanged: function(sessionStatus) {
         if (!this._imPresenceRestored)
             return;
 
         if (!this._sessionPresenceRestored) {
             let savedStatus = global.settings.get_int('saved-session-presence');
             if (sessionStatus != savedStatus) {
-                this._presence.setStatus(savedStatus);
+                this._presence.status = savedStatus;
                 return;
             }
             this._sessionPresenceRestored = true;
@@ -452,9 +455,9 @@ UserMenuButton.prototype = {
         this._idleIcon = new St.Icon({ icon_name: 'user-idle',
                                        style_class: 'popup-menu-icon' });
 
-        this._presence.connect('StatusChanged',
-                               Lang.bind(this, this._updateSwitch));
-        this._presence.getStatus(Lang.bind(this, this._updateSwitch));
+        this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
+	    this._updateSwitch(status);
+	}));
 
         this._accountMgr.connect('most-available-presence-changed',
                                   Lang.bind(this, this._updatePresenceIcon));
@@ -575,7 +578,7 @@ UserMenuButton.prototype = {
         }
     },
 
-    _updateSwitch: function(presence, status) {
+    _updateSwitch: function(status) {
         let active = status == GnomeSession.PresenceStatus.AVAILABLE;
         this._notificationsSwitch.setToggleState(active);
     },

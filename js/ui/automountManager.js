@@ -86,9 +86,8 @@ AutomountManager.prototype = {
         this.ckListener = new ConsoleKitManager();
 
         this._ssProxy = new ScreenSaver.ScreenSaverProxy();
-        this._ssProxy.connect('ActiveChanged',
-                              Lang.bind(this,
-                                        this._screenSaverActiveChanged));
+        this._ssProxy.connectSignal('ActiveChanged',
+                                    Lang.bind(this, this._screenSaverActiveChanged));
 
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
@@ -111,7 +110,7 @@ AutomountManager.prototype = {
         Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
     },
 
-    _screenSaverActiveChanged: function(object, isActive) {
+    _screenSaverActiveChanged: function(object, senderName, [isActive]) {
         if (!isActive) {
             this._volumeQueue.forEach(Lang.bind(this, function(volume) {
                 this._checkAndMountVolume(volume);
