@@ -386,9 +386,20 @@ AS_CASE([$CLUTTER_FLAVOUR],
           CLUTTER_SONAME_INFIX=win32
         ],
 
-        [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx,
-                      win32, eglx or eglnative])]
+        [AC_MSG_ERROR([Invalid backend for Clutter])]
 )
+
+AS_IF([test "x$SUPPORT_X11" = "x1"],
+      [
+        # we use fontconfig API and pango-fc when the fontconfig
+        # configuration changes
+        PKG_CHECK_EXISTS([pangoft2],
+                         [
+                           AC_DEFINE([HAVE_PANGO_FT2], [1], [Supports PangoFt2])
+                           BACKEND_PC_FILES="$BACKEND_PC_FILES pangoft2"
+                         ],
+                         [])
+      ])
 
 AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [
