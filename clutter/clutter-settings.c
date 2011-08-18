@@ -23,6 +23,12 @@
 
 #include "clutter-settings.h"
 
+#ifdef HAVE_PANGO_FT2
+/* for pango_fc_font_map_cache_clear() */
+#define PANGO_ENABLE_BACKEND
+#include <pango/pangofc-fontmap.h>
+#endif /* HAVE_PANGO_FT2 */
+
 #include "clutter-debug.h"
 #include "clutter-private.h"
 
@@ -61,6 +67,8 @@ struct _ClutterSettings
   gchar *xft_rgba;
 
   gint long_press_duration;
+
+  guint last_fontconfig_timestamp;
 };
 
 struct _ClutterSettingsClass
@@ -88,6 +96,8 @@ enum
   PROP_FONT_RGBA,
 
   PROP_LONG_PRESS_DURATION,
+
+  PROP_FONTCONFIG_TIMESTAMP,
 
   PROP_LAST
 };
@@ -185,6 +195,37 @@ settings_update_resolution (ClutterSettings *self)
 }
 
 static void
+settings_update_fontmap (ClutterSettings *self,
+                         guint            stamp)
+{
+#ifdef HAVE_PANGO_FT2
+  CLUTTER_NOTE (BACKEND, "Update fontmaps (stamp: %d)", stamp);
+
+  if (self->last_fontconfig_timestamp != stamp)
+    {
+      PangoFontMap *fontmap;
+      gboolean update_needed = FALSE;
+
+      fontmap = clutter_get_font_map ();
+
+      if (PANGO_IS_FC_FONT_MAP (fontmap) &&
+          !FcConfigUptoDate (NULL))
+        {
+          pango_fc_font_map_cache_clear (PANGO_FC_FONT_MAP (fontmap));
+
+          if (FcInitReinitialize ())
+            update_needed = TRUE;
+        }
+
+      self->last_fontconfig_timestamp = stamp;
+
+      if (update_needed)
+        g_signal_emit_by_name (self->backend, "font-changed");
+    }
+#endif /* HAVE_PANGO_FT2 */
+}
+
+static void
 clutter_settings_finalize (GObject *gobject)
 {
   ClutterSettings *self = CLUTTER_SETTINGS (gobject);
@@ -259,6 +300,10 @@ clutter_settings_set_property (GObject      *gobject,
       self->long_press_duration = g_value_get_int (value);
       break;
 
+    case PROP_FONTCONFIG_TIMESTAMP:
+      settings_update_fontmap (self, g_value_get_uint (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -322,11 +367,18 @@ clutter_settings_get_property (GObject    *gobject,
 }
 
 static void
-clutter_settings_notify (GObject    *gobject,
-                         GParamSpec *pspec)
+clutter_settings_dispatch_properties_changed (GObject     *gobject,
+                                              guint        n_pspecs,
+                                              GParamSpec **pspecs)
 {
   ClutterSettings *self = CLUTTER_SETTINGS (gobject);
+  GObjectClass *klass;
 
+  /* chain up to emit ::notify */
+  klass = G_OBJECT_CLASS (clutter_settings_parent_class);
+  klass->dispatch_properties_changed (gobject, n_pspecs, pspecs);
+
+  /* emit settings-changed just once for multiple properties */
   g_signal_emit_by_name (self->backend, "settings-changed");
 }
 
@@ -524,9 +576,18 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       500,
                       CLUTTER_PARAM_READWRITE);
 
+  obj_props[PROP_FONTCONFIG_TIMESTAMP] =
+    g_param_spec_uint ("fontconfig-timestamp",
+                       P_("Fontconfig configuration timestamp"),
+                       P_("Timestamp of the current fontconfig configuration"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_WRITABLE);
+
   gobject_class->set_property = clutter_settings_set_property;
   gobject_class->get_property = clutter_settings_get_property;
-  gobject_class->notify = clutter_settings_notify;
+  gobject_class->dispatch_properties_changed =
+    clutter_settings_dispatch_properties_changed;
   gobject_class->finalize = clutter_settings_finalize;
   g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
