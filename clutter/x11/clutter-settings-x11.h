@@ -14,7 +14,8 @@ static const struct {
   { "Xft/DPI",                 "font-dpi" },
   { "Xft/Hinting",             "font-hinting" },
   { "Xft/HintStyle",           "font-hint-style" },
-  { "Xft/RGBA",                "font-subpixel-order" }
+  { "Xft/RGBA",                "font-subpixel-order" },
+  { "Fontconfig/Timestamp",    "fontconfig-timestamp" },
 };
 
 static const gint _n_clutter_settings_map = G_N_ELEMENTS (_clutter_settings_map);
