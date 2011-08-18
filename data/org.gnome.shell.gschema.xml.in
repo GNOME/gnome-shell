@@ -11,15 +11,6 @@
         using the Alt-F2 dialog.
       </_description>
     </key>
-    <key name="disabled-extensions" type="as">
-      <default>[]</default>
-      <_summary>Uuids of extensions to disable</_summary>
-      <_description>
-        GNOME Shell extensions have a uuid property; this key lists extensions
-        which should not be loaded.  This setting overrides enabled-extensions
-        for extensions that appear in both lists.
-      </_description>
-    </key>
     <key name="enabled-extensions" type="as">
       <default>[]</default>
       <_summary>Uuids of extensions to enable</_summary>
