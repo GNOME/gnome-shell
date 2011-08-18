@@ -864,9 +864,9 @@ dnl     ============================================================
 AM_PATH_GLIB_2_0([glib_req_version],
                  [have_glib=yes], [have_glib=no],
                  [gobject gthread gmodule-no-export])
-AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
+AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([gobject-2.0 is required]))
 
-COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES glib-2.0"
+COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
 AC_SUBST(COGL_PKG_REQUIRES)
 PKG_CHECK_MODULES(COGL_DEP, [$COGL_PKG_REQUIRES])
 if test -n "$COGL_PKG_REQUIRES_GL"; then
