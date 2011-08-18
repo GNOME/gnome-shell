@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:57+0300\n"
-"PO-Revision-Date: 2011-08-06 16:00+0200\n"
+"POT-Creation-Date: 2011-08-18 23:52+0300\n"
+"PO-Revision-Date: 2011-08-18 23:55+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -204,27 +204,27 @@ msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:252
+#: ../js/ui/appDisplay.js:253
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:359
+#: ../js/ui/appDisplay.js:315
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:385
+#: ../js/ui/appDisplay.js:373
 msgid "SETTINGS"
 msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:658
+#: ../js/ui/appDisplay.js:681
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:661
+#: ../js/ui/appDisplay.js:684
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:662
+#: ../js/ui/appDisplay.js:685
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -361,35 +361,35 @@ msgid "S"
 msgstr "ש׳"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:678
 msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:694
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:697
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:707
 msgid "Today"
 msgstr "היום"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:711
 msgid "Tomorrow"
 msgstr "מחר"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:720
 msgid "This week"
 msgstr "השבוע"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:728
 msgid "Next week"
 msgstr "בשבוע הבא"
 
@@ -397,58 +397,58 @@ msgstr "בשבוע הבא"
 msgid "Remove"
 msgstr "הסרה"
 
-#: ../js/ui/dateMenu.js:89
+#: ../js/ui/dateMenu.js:90
 msgid "Date and Time Settings"
 msgstr "הגדרות תאריך ושעה"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:110
 msgid "Open Calendar"
 msgstr "פתיחת היומן"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:167
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:168
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:172
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:173
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:180
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:176
+#: ../js/ui/dateMenu.js:181
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:180
+#: ../js/ui/dateMenu.js:185
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:186
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:192
+#: ../js/ui/dateMenu.js:197
 msgid "%A %B %e, %Y"
 msgstr "%A ה־%e ב%B, %Y"
 
@@ -561,8 +561,8 @@ msgstr "פתיחה"
 msgid "System Information"
 msgstr "פרטי המערכת"
 
-#: ../js/ui/notificationDaemon.js:426 ../js/ui/status/power.js:238
-#: ../src/shell-app-system.c:1115
+#: ../js/ui/notificationDaemon.js:427 ../js/ui/status/power.js:238
+#: ../src/shell-app.c:340
 msgid "Unknown"
 msgstr "לא ידוע"
 
@@ -739,11 +739,11 @@ msgstr "מנוטרל חומרתית"
 msgid "Connection"
 msgstr "חיבור"
 
-#: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:493
+#: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:497
 msgid "disconnecting..."
 msgstr "בהליכי ניתוק..."
 
-#: ../js/ui/status/bluetooth.js:239 ../js/ui/status/network.js:499
+#: ../js/ui/status/bluetooth.js:239 ../js/ui/status/network.js:503
 msgid "connecting..."
 msgstr "בהתחברות..."
 
@@ -794,7 +794,7 @@ msgstr "תמיד להעניק גישה"
 msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
-#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:953
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:985
 msgid "Reject"
 msgstr "סירוב"
 
@@ -880,141 +880,141 @@ msgstr "החלפת משתמש"
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/status/network.js:123
+#: ../js/ui/status/network.js:108
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:292
+#: ../js/ui/status/network.js:296
 msgid "disabled"
 msgstr "מנוטרל"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:495
 msgid "unmanaged"
 msgstr "לא מנוהל"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:502
+#: ../js/ui/status/network.js:506
 msgid "authentication required"
 msgstr "נדרש אימות"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:512
+#: ../js/ui/status/network.js:516
 msgid "firmware missing"
 msgstr "הקושחה חסרה"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:519
+#: ../js/ui/status/network.js:523
 msgid "cable unplugged"
 msgstr "הכבל מנותק"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:524
+#: ../js/ui/status/network.js:528
 msgid "unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/status/network.js:526
+#: ../js/ui/status/network.js:530
 msgid "connection failed"
 msgstr "החיבור נכשל"
 
-#: ../js/ui/status/network.js:582 ../js/ui/status/network.js:1507
+#: ../js/ui/status/network.js:586 ../js/ui/status/network.js:1511
 msgid "More..."
 msgstr "עוד..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:618 ../js/ui/status/network.js:1444
+#: ../js/ui/status/network.js:622 ../js/ui/status/network.js:1448
 msgid "Connected (private)"
 msgstr "מחובר (פרטי)"
 
-#: ../js/ui/status/network.js:703
+#: ../js/ui/status/network.js:707
 msgid "Auto Ethernet"
 msgstr "אתרנט אוטומטי"
 
-#: ../js/ui/status/network.js:771
+#: ../js/ui/status/network.js:775
 msgid "Auto broadband"
 msgstr "פס רחב אוטומטי"
 
-#: ../js/ui/status/network.js:774
+#: ../js/ui/status/network.js:778
 msgid "Auto dial-up"
 msgstr "חיוג אוטומטי"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:898 ../js/ui/status/network.js:1456
+#: ../js/ui/status/network.js:902 ../js/ui/status/network.js:1460
 #, c-format
 msgid "Auto %s"
 msgstr "%s אוטומטי"
 
-#: ../js/ui/status/network.js:900
+#: ../js/ui/status/network.js:904
 msgid "Auto bluetooth"
 msgstr "Bluetooth אוטומטי"
 
-#: ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:1462
 msgid "Auto wireless"
 msgstr "אלחוטי אוטומטי"
 
-#: ../js/ui/status/network.js:1550
+#: ../js/ui/status/network.js:1554
 msgid "Enable networking"
 msgstr "הפעלת תכונת הרשת"
 
-#: ../js/ui/status/network.js:1562
+#: ../js/ui/status/network.js:1566
 msgid "Wired"
 msgstr "קווי"
 
-#: ../js/ui/status/network.js:1573
+#: ../js/ui/status/network.js:1577
 msgid "Wireless"
 msgstr "אלחוטי"
 
-#: ../js/ui/status/network.js:1583
+#: ../js/ui/status/network.js:1587
 msgid "Mobile broadband"
 msgstr "פס־רחב נייד"
 
-#: ../js/ui/status/network.js:1593
+#: ../js/ui/status/network.js:1597
 msgid "VPN Connections"
 msgstr "חיבורי VPN"
 
-#: ../js/ui/status/network.js:1605
+#: ../js/ui/status/network.js:1609
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: ../js/ui/status/network.js:1897
+#: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת הפס הרחב הניידת '%s'"
 
-#: ../js/ui/status/network.js:1901
+#: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת האלחוטית '%s'"
 
-#: ../js/ui/status/network.js:1905
+#: ../js/ui/status/network.js:1909
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין הרשת הקווית '%s'"
 
-#: ../js/ui/status/network.js:1909
+#: ../js/ui/status/network.js:1913
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "כרגע ישנו חיבור בינך ובין רשת ה־VPN‏ '%s'"
 
-#: ../js/ui/status/network.js:1914
+#: ../js/ui/status/network.js:1918
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "כעת ישנו חיבור בינך ובין '%s'"
 
-#: ../js/ui/status/network.js:1922
+#: ../js/ui/status/network.js:1926
 msgid "Connection established"
 msgstr "ההתחברות הצליחה"
 
-#: ../js/ui/status/network.js:2048
+#: ../js/ui/status/network.js:2052
 msgid "Networking is disabled"
 msgstr "תכונת הרשת מנוטרלת"
 
-#: ../js/ui/status/network.js:2173
+#: ../js/ui/status/network.js:2177
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
@@ -1119,31 +1119,36 @@ msgstr "מיקרופון"
 #. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:228
+#: ../js/ui/telepathyClient.js:229
 msgid "Invitation"
 msgstr "הזמנה"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:291
+#: ../js/ui/telepathyClient.js:295
 msgid "Call"
 msgstr "התקשרות"
 
-#: ../js/ui/telepathyClient.js:541
+#. We got the TpContact
+#: ../js/ui/telepathyClient.js:323
+msgid "File Transfer"
+msgstr "העברת קבצים"
+
+#: ../js/ui/telepathyClient.js:573
 #, c-format
 msgid "%s is online."
 msgstr "%s התחבר/ה."
 
-#: ../js/ui/telepathyClient.js:546
+#: ../js/ui/telepathyClient.js:578
 #, c-format
 msgid "%s is offline."
 msgstr "%s התנתק/ה."
 
-#: ../js/ui/telepathyClient.js:549
+#: ../js/ui/telepathyClient.js:581
 #, c-format
 msgid "%s is away."
 msgstr "'%s' מרוחק/ת."
 
-#: ../js/ui/telepathyClient.js:552
+#: ../js/ui/telepathyClient.js:584
 #, c-format
 msgid "%s is busy."
 msgstr "%s עסוק/ה."
@@ -1151,35 +1156,35 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:738
+#: ../js/ui/telepathyClient.js:770
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "נשלח ב־<b>%X</b> בשעה <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:744
+#: ../js/ui/telepathyClient.js:776
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "נשלח ב<b>%A</b>, <b>ה־%d ב%B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:749
+#: ../js/ui/telepathyClient.js:781
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "נשלח ב<b>%A</b>, <b>ה־%d ב%B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:790
+#: ../js/ui/telepathyClient.js:822
 #, c-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:897
+#: ../js/ui/telepathyClient.js:929
 #, c-format
 msgid "Invitation to %s"
 msgstr "הזמנה ל־%s"
@@ -1187,34 +1192,44 @@ msgstr "הזמנה ל־%s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:905
+#: ../js/ui/telepathyClient.js:937
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "הוזמנת על ידי %s להצטרף אל %s"
 
-#: ../js/ui/telepathyClient.js:907
+#: ../js/ui/telepathyClient.js:939 ../js/ui/telepathyClient.js:1028
 msgid "Decline"
 msgstr "דחייה"
 
-#: ../js/ui/telepathyClient.js:908
+#: ../js/ui/telepathyClient.js:940 ../js/ui/telepathyClient.js:1029
 msgid "Accept"
 msgstr "אישור"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:941
+#: ../js/ui/telepathyClient.js:973
 #, c-format
 msgid "Video call from %s"
 msgstr "שיחת וידאו מאת %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:944
+#: ../js/ui/telepathyClient.js:976
 #, c-format
 msgid "Call from %s"
 msgstr "שיחה מאת %s"
 
-#: ../js/ui/telepathyClient.js:954
+#: ../js/ui/telepathyClient.js:986
 msgid "Answer"
 msgstr "מענה"
+
+#. To translators: The first parameter is
+#. * the contact's alias and the second one is the
+#. * file name. The string will be something
+#. * like: "Alice is sending you test.ogg"
+#.
+#: ../js/ui/telepathyClient.js:1022
+#, c-format
+msgid "%s is sending you %s"
+msgstr "%s שולח/ת אליך %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1224,7 +1239,7 @@ msgstr "מענה"
 msgid "Type to search..."
 msgstr "יש להקליד כדי לחפש..."
 
-#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:257
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:261
 msgid "Search"
 msgstr "חיפוש"
 
@@ -1266,7 +1281,7 @@ msgstr "צלילי מערכת"
 msgid "Print version"
 msgstr "Print version"
 
-#: ../src/shell-app.c:464
+#: ../src/shell-app.c:566
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "אירע כשל בטעינת '%s'"
@@ -1283,13 +1298,13 @@ msgstr "בררת מחדל"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 
-#: ../src/shell-util.c:96
+#: ../src/shell-util.c:100
 msgid "Home Folder"
 msgstr "תיקיית הבית"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:111
+#: ../src/shell-util.c:115
 msgid "File System"
 msgstr "מערכת הקבצים"
 
@@ -1298,10 +1313,14 @@ msgstr "מערכת הקבצים"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:307
+#: ../src/shell-util.c:311
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#: ../src/shell-util.c:600
+msgid "calendar:week_start:0"
+msgstr "calendar:week_start:0"
 
 #~ msgid "Localization Settings"
 #~ msgstr "הגדרות אזוריות"
