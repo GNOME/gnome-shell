@@ -93,6 +93,10 @@ ModalDialog.prototype = {
         this._savedKeyFocus = null;
     },
 
+    destroy: function() {
+        this._group.destroy();
+    },
+
     setButtons: function(buttons) {
         this._buttonLayout.destroy_children();
         this._actionKeys = {};
@@ -104,10 +108,10 @@ ModalDialog.prototype = {
             let action = buttonInfo['action'];
             let key = buttonInfo['key'];
 
-            let button = new St.Button({ style_class: 'modal-dialog-button',
-                                         reactive:    true,
-                                         can_focus:   true,
-                                         label:       label });
+            buttonInfo.button = new St.Button({ style_class: 'modal-dialog-button',
+                                                reactive:    true,
+                                                can_focus:   true,
+                                                label:       label });
 
             let x_alignment;
             if (buttons.length == 1)
@@ -119,15 +123,15 @@ ModalDialog.prototype = {
             else
                 x_alignment = St.Align.MIDDLE;
 
-            this._initialKeyFocus = button;
-            this._buttonLayout.add(button,
+            this._initialKeyFocus = buttonInfo.button;
+            this._buttonLayout.add(buttonInfo.button,
                                    { expand: true,
                                      x_fill: false,
                                      y_fill: false,
                                      x_align: x_alignment,
                                      y_align: St.Align.MIDDLE });
 
-            button.connect('clicked', action);
+            buttonInfo.button.connect('clicked', action);
 
             if (key)
                 this._actionKeys[key] = action;

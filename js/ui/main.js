@@ -26,6 +26,7 @@ const PlaceDisplay = imports.ui.placeDisplay;
 const RunDialog = imports.ui.runDialog;
 const Layout = imports.ui.layout;
 const LookingGlass = imports.ui.lookingGlass;
+const NetworkAgent = imports.ui.networkAgent;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const Scripting = imports.ui.scripting;
@@ -63,6 +64,7 @@ let magnifier = null;
 let xdndHandler = null;
 let statusIconDispatcher = null;
 let layoutManager = null;
+let networkAgent = null;
 let _errorLogStack = [];
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -145,6 +147,7 @@ function start() {
     telepathyClient = new TelepathyClient.Client();
     automountManager = new AutomountManager.AutomountManager();
     autorunManager = new AutorunManager.AutorunManager();
+    networkAgent = new NetworkAgent.NetworkAgent();
 
     layoutManager.init();
     overview.init();

@@ -1531,6 +1531,10 @@ StTooltip StLabel {
     padding: 4px 32px 5px;
 }
 
+.modal-dialog-button:disabled {
+    color: rgb(60, 60, 60);
+}
+
 .modal-dialog-button:focus {
     padding: 3px 31px 4px;
 }
@@ -1824,6 +1828,17 @@ StTooltip StLabel {
     padding-bottom: 8px;
 }
 
+.network-dialog-show-password-checkbox {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 10pt;
+    color: white;
+    spacing: 10px;
+}
+
+.network-dialog-secret-table {
+    spacing-rows: 15px;
+}
 
 /* Magnifier */
 

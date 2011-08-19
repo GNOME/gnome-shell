@@ -38,6 +38,7 @@ nobase_dist_js_DATA = 	\
 	ui/main.js		\
 	ui/messageTray.js	\
 	ui/modalDialog.js	\
+	ui/networkAgent.js	\
 	ui/shellMountOperation.js \
 	ui/notificationDaemon.js \
 	ui/overview.js		\
