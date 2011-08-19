@@ -649,3 +649,14 @@ COGL_EXT_FUNCTION (void, glEGLImageTargetRenderbufferStorage,
                    (GLenum           target,
                     GLeglImageOES    image))
 COGL_EXT_END ()
+
+COGL_EXT_BEGIN (framebuffer_discard, 255, 255,
+                0, /* not in either GLES */
+                "EXT\0",
+                "framebuffer_discard\0")
+COGL_EXT_FUNCTION (void, glDiscardFramebuffer,
+                   (GLenum           target,
+                    GLsizei          numAttachments,
+                    const GLenum    *attachments))
+COGL_EXT_END ()
+
