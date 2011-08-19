@@ -47,8 +47,7 @@ Indicator.prototype = {
         this.menu.addMenuItem(this._outputTitle);
         this.menu.addMenuItem(this._outputSlider);
 
-        this._separator = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(this._separator);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._input = null;
         this._inputVolumeId = 0;
@@ -145,7 +144,6 @@ Indicator.prototype = {
             this._mutedChanged (null, null, '_input');
             this._volumeChanged (null, null, '_input');
         } else {
-            this._separator.actor.hide();
             this._inputTitle.actor.hide();
             this._inputSlider.actor.hide();
         }
@@ -168,11 +166,9 @@ Indicator.prototype = {
             }
         }
         if (showInput) {
-            this._separator.actor.show();
             this._inputTitle.actor.show();
             this._inputSlider.actor.show();
         } else {
-            this._separator.actor.hide();
             this._inputTitle.actor.hide();
             this._inputSlider.actor.hide();
         }

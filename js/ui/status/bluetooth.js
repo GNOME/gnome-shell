@@ -67,7 +67,6 @@ Indicator.prototype = {
                                new PopupMenu.PopupMenuItem(_("Set up a New Device...")),
                                new PopupMenu.PopupSeparatorMenuItem()];
         this._hasDevices = false;
-        this._deviceSep = this._fullMenuItems[0]; // hidden if no device exists
 
         this._fullMenuItems[1].connect('activate', function() {
             GLib.spawn_command_line_async('bluetooth-sendto');
@@ -162,10 +161,6 @@ Indicator.prototype = {
                 this._hasDevices = true;
             }
         }
-        if (this._hasDevices)
-            this._deviceSep.actor.show();
-        else
-            this._deviceSep.actor.hide();
     },
 
     _updateDeviceItem: function(item, device) {
@@ -303,8 +298,6 @@ Indicator.prototype = {
             this._showAll(this._fullMenuItems);
             if (this._hasDevices)
                 this._showAll(this._deviceItems);
-            else
-                this._deviceSep.actor.hide();
         } else {
             this._hideAll(this._fullMenuItems);
             this._hideAll(this._deviceItems);

@@ -1558,9 +1558,9 @@ NMApplet.prototype = {
         this._statusSection.addAction(_("Enable networking"), Lang.bind(this, function() {
             this._client.networking_enabled = true;
         }));
-        this._statusSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._statusSection.actor.hide();
         this.menu.addMenuItem(this._statusSection);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._devices = { };
 
@@ -1571,9 +1571,9 @@ NMApplet.prototype = {
         };
 
         this._devices.wired.section.addMenuItem(this._devices.wired.item);
-        this._devices.wired.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._devices.wired.section.actor.hide();
         this.menu.addMenuItem(this._devices.wired.section);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
@@ -1581,9 +1581,9 @@ NMApplet.prototype = {
             item: this._makeToggleItem('wireless', _("Wireless"))
         };
         this._devices.wireless.section.addMenuItem(this._devices.wireless.item);
-        this._devices.wireless.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._devices.wireless.section.actor.hide();
         this.menu.addMenuItem(this._devices.wireless.section);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._devices.wwan = {
             section: new PopupMenu.PopupMenuSection(),
@@ -1591,9 +1591,9 @@ NMApplet.prototype = {
             item: this._makeToggleItem('wwan', _("Mobile broadband"))
         };
         this._devices.wwan.section.addMenuItem(this._devices.wwan.item);
-        this._devices.wwan.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._devices.wwan.section.actor.hide();
         this.menu.addMenuItem(this._devices.wwan.section);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._devices.vpn = {
             section: new PopupMenu.PopupMenuSection(),
@@ -1606,9 +1606,9 @@ NMApplet.prototype = {
         this._devices.vpn.item.updateForDevice(this._devices.vpn.device);
         this._devices.vpn.section.addMenuItem(this._devices.vpn.item);
         this._devices.vpn.section.addMenuItem(this._devices.vpn.device.section);
-        this._devices.vpn.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._devices.vpn.section.actor.hide();
         this.menu.addMenuItem(this._devices.vpn.section);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this.menu.addAction(_("Network Settings"), function() {
             Main.overview.hide();

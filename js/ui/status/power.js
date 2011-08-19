@@ -75,8 +75,7 @@ Indicator.prototype = {
         this._batteryItem.addActor(this._primaryPercentage, { align: St.Align.END });
         this.menu.addMenuItem(this._batteryItem);
 
-        this._deviceSep = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(this._deviceSep);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._otherDevicePosition = 2;
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -96,7 +95,6 @@ Indicator.prototype = {
                 this._hasPrimary = false;
                 this._primaryDeviceId = null;
                 this._batteryItem.actor.hide();
-                this._deviceSep.actor.hide();
                 return;
             }
             let [device_id, device_type, icon, percentage, state, seconds] = device;
@@ -126,12 +124,9 @@ Indicator.prototype = {
                 }
                 this._primaryPercentage.text = Math.round(percentage) + '%';
                 this._batteryItem.actor.show();
-                if (this._deviceItems.length > 0)
-                    this._deviceSep.actor.show();
             } else {
                 this._hasPrimary = false;
                 this._batteryItem.actor.hide();
-                this._deviceSep.actor.hide();
             }
 
             this._primaryDeviceId = device_id;
@@ -144,7 +139,6 @@ Indicator.prototype = {
             this._deviceItems = [];
 
             if (error) {
-                this._deviceSep.actor.hide();
                 return;
             }
 
@@ -159,11 +153,6 @@ Indicator.prototype = {
                 this.menu.addMenuItem(item, this._otherDevicePosition + position);
                 position++;
             }
-
-            if (this._hasPrimary && position > 0)
-                this._deviceSep.actor.show();
-            else
-                this._deviceSep.actor.hide();
         }));
     },
 

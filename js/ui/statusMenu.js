@@ -115,35 +115,12 @@ StatusMenuButton.prototype = {
           this._name.set_text("");
     },
 
-    _updateSessionSeparator: function() {
-        let sessionItemsVisible = this._loginScreenItem.actor.visible ||
-                                  this._logoutItem.actor.visible ||
-                                  this._lockScreenItem.actor.visible;
-
-        let showSessionSeparator = sessionItemsVisible &&
-                                   this._suspendOrPowerOffItem.actor.visible;
-
-        let showSettingsSeparator = sessionItemsVisible ||
-                                    this._suspendOrPowerOffItem.actor.visible;
-
-        if (showSessionSeparator)
-            this._sessionSeparator.actor.show();
-        else
-            this._sessionSeparator.actor.hide();
-
-        if (showSettingsSeparator)
-            this._settingsSeparator.actor.show();
-        else
-            this._settingsSeparator.actor.hide();
-    },
-
     _updateSwitchUser: function() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
         if (allowSwitch && this._gdm.can_switch ())
             this._loginScreenItem.actor.show();
         else
             this._loginScreenItem.actor.hide();
-        this._updateSessionSeparator();
     },
 
     _updateLogout: function() {
@@ -152,7 +129,6 @@ StatusMenuButton.prototype = {
             this._logoutItem.actor.show();
         else
             this._logoutItem.actor.hide();
-        this._updateSessionSeparator();
     },
 
     _updateLockScreen: function() {
@@ -161,7 +137,6 @@ StatusMenuButton.prototype = {
             this._lockScreenItem.actor.show();
         else
             this._lockScreenItem.actor.hide();
-        this._updateSessionSeparator();
     },
 
     _updateHaveShutdown: function() {
@@ -184,7 +159,6 @@ StatusMenuButton.prototype = {
             this._suspendOrPowerOffItem.actor.hide();
         else
             this._suspendOrPowerOffItem.actor.show();
-         this._updateSessionSeparator();
 
         // If we can't suspend show Power Off... instead
         // and disable the alt key
@@ -237,7 +211,6 @@ StatusMenuButton.prototype = {
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
-        this._settingsSeparator = item;
 
         item = new PopupMenu.PopupMenuItem(_("Lock Screen"));
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
@@ -256,7 +229,6 @@ StatusMenuButton.prototype = {
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
-        this._sessionSeparator = item;
 
         item = new PopupMenu.PopupAlternatingMenuItem(_("Suspend"),
                                                       _("Power Off..."));

@@ -860,6 +860,39 @@ PopupMenuBase.prototype = {
         }));
     },
 
+    _updateSeparatorVisibility: function(menuItem) {
+        let children = this.box.get_children();
+
+        let index = children.indexOf(menuItem.actor);
+
+        if (index < 0)
+            return;
+
+        let childBeforeIndex = index - 1;
+
+        while (childBeforeIndex >= 0 && !children[childBeforeIndex].visible)
+            childBeforeIndex--;
+
+        if (childBeforeIndex < 0
+            || children[childBeforeIndex]._delegate instanceof PopupSeparatorMenuItem) {
+            menuItem.actor.hide();
+            return;
+        }
+
+        let childAfterIndex = index + 1;
+
+        while (childAfterIndex < children.length && !children[childAfterIndex].visible)
+            childAfterIndex++;
+
+        if (childAfterIndex >= children.length
+            || children[childAfterIndex]._delegate instanceof PopupSeparatorMenuItem) {
+            menuItem.actor.hide();
+            return;
+        }
+
+        menuItem.actor.show();
+    },
+
     addMenuItem: function(menuItem, position) {
         let before_item = null;
         if (position == undefined) {
@@ -891,6 +924,14 @@ PopupMenuBase.prototype = {
                 if (!open)
                     menuItem.menu.close(false);
             });
+        } else if (menuItem instanceof PopupSeparatorMenuItem) {
+            this._connectItemSignals(menuItem);
+
+            // updateSeparatorVisibility needs to get called any time the
+            // separator's adjacent siblings change visibility or position.
+            // open-state-changed isn't exactly that, but doing it in more
+            // precise ways would require a lot more bookkeeping.
+            this.connect('open-state-changed', Lang.bind(this, function() { this._updateSeparatorVisibility(menuItem); }));
         } else if (menuItem instanceof PopupBaseMenuItem)
             this._connectItemSignals(menuItem);
         else
