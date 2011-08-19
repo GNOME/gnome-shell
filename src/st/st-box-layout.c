@@ -1206,6 +1206,17 @@ st_box_layout_get_pack_start (StBoxLayout *box)
   return box->priv->is_pack_start;
 }
 
+/**
+ * st_box_layout_insert_actor:
+ * @self: A #StBoxLayout
+ * @actor: A #ClutterActor
+ * @pos: position to insert actor
+ *
+ * Adds @actor to @self at position @pos.  If @pos is
+ * negative or larger than the number of elements in the
+ * list then @actor is added after all the others previously
+ * added.
+ */
 void
 st_box_layout_insert_actor (StBoxLayout  *self,
                             ClutterActor *actor,
@@ -1215,6 +1226,16 @@ st_box_layout_insert_actor (StBoxLayout  *self,
   st_container_move_child (ST_CONTAINER (self), actor, pos);
 }
 
+/**
+ * st_box_layout_insert_before:
+ * @self: A #StBoxLayout
+ * @actor: A #ClutterActor
+ * @sibling: A previously added #ClutterActor
+ *
+ * Adds @actor to @self at the position before @sibling.
+ * @sibling cannot be %NULL and must be already a child
+ * of @self.
+ */
 void
 st_box_layout_insert_before (StBoxLayout  *self,
                              ClutterActor *actor,
