@@ -485,6 +485,15 @@ glx_attributes_from_framebuffer_config (CoglDisplay *display,
   attributes[i++] = GLX_STENCIL_SIZE;
   attributes[i++] = config->need_stencil ? 1: GLX_DONT_CARE;
 
+  if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 4 &&
+      config->samples_per_pixel)
+    {
+       attributes[i++] = GLX_SAMPLE_BUFFERS;
+       attributes[i++] = 1;
+       attributes[i++] = GLX_SAMPLES;
+       attributes[i++] = config->samples_per_pixel;
+    }
+
   attributes[i++] = None;
 
   g_assert (i < MAX_GLX_CONFIG_ATTRIBS);

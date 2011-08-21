@@ -43,6 +43,34 @@ typedef struct _CoglOnscreenTemplate	      CoglOnscreenTemplate;
 CoglOnscreenTemplate *
 cogl_onscreen_template_new (CoglSwapChain *swap_chain);
 
+/**
+ * cogl_onscreen_template_set_samples_per_pixel:
+ * @onscreen: A #CoglOnscreenTemplate template framebuffer
+ * @n: The minimum number of samples per pixel
+ *
+ * Requires that any future CoglOnscreen framebuffers derived from
+ * this template must support making at least @n samples per pixel
+ * which will all contribute to the final resolved color for that
+ * pixel.
+ *
+ * By default this value is usually set to 0 and that is referred to
+ * as "single-sample" rendering. A value of 1 or greater is referred
+ * to as "multisample" rendering.
+ *
+ * <note>There are some semantic differences between single-sample
+ * rendering and multisampling with just 1 point sample such as it
+ * being redundant to use the cogl_framebuffer_resolve_samples() and
+ * cogl_framebuffer_resolve_samples_region() apis with single-sample
+ * rendering.</note>
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_onscreen_template_set_samples_per_pixel (
+                                          CoglOnscreenTemplate *onscreen_template,
+                                          int n);
+
 G_END_DECLS
 
 #endif /* __COGL_ONSCREEN_TEMPLATE_H__ */

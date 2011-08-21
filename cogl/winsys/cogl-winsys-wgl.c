@@ -324,6 +324,10 @@ choose_pixel_format (CoglFramebufferConfig *config,
 
   num_formats = DescribePixelFormat (dc, 0, sizeof (best_pfd), NULL);
 
+  /* XXX: currently we don't support multisampling on windows... */
+  if (config->samples_per_pixel)
+    return best_pf;
+
   for (i = 1; i <= num_formats; i++)
     {
       memset (pfd, 0, sizeof (*pfd));
