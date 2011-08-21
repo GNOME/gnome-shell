@@ -1005,8 +1005,7 @@ create_context (CoglDisplay *display, GError **error)
 
   g_return_val_if_fail (egl_display->egl_context == NULL, TRUE);
 
-  if (display->onscreen_template &&
-      display->onscreen_template->swap_chain &&
+  if (display->onscreen_template->swap_chain &&
       display->onscreen_template->swap_chain->has_alpha)
     support_transparent_windows = TRUE;
   else
@@ -1098,10 +1097,12 @@ gdl_plane_init (CoglDisplay *display, GError **error)
   if (rc == GDL_SUCCESS)
     rc = gdl_plane_set_attr (GDL_PLANE_DST_RECT, &dstRect);
 
-  /* Default to triple buffering if we don't have an onscreen template */
+  /* Default to triple buffering if the swap_chain doesn't have an explicit
+   * length */
   if (rc == GDL_SUCCESS)
     {
-      if (display->onscreen_template)
+      if (display->onscreen_template->swap_chain &&
+          display->onscreen_template->swap_chain->length != -1)
         rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES,
                                  display->onscreen_template->swap_chain->length);
       else

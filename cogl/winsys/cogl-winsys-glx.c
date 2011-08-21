@@ -550,8 +550,7 @@ create_context (CoglDisplay *display, GError **error)
 
   g_return_val_if_fail (glx_display->glx_context == NULL, TRUE);
 
-  if (display->onscreen_template &&
-      display->onscreen_template->swap_chain &&
+  if (display->onscreen_template->swap_chain &&
       display->onscreen_template->swap_chain->has_alpha)
     support_transparent_windows = TRUE;
   else
