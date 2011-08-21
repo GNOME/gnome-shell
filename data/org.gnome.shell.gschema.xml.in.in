@@ -61,7 +61,6 @@ value here is from the TpConnectionPresenceType enumeration.</_summary>
       <_summary>Internally used to store the last session presence status for the user. The
 value here is from the GsmPresenceStatus enumeration.</_summary>
     </key>
-    <child name="clock" schema="org.gnome.shell.clock"/>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="recorder" schema="org.gnome.shell.recorder"/>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
@@ -104,24 +103,6 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
       <_summary>Which keyboard to use</_summary>
       <_description>
         The type of keyboard to use.
-      </_description>
-    </key>
-  </schema>
-
-  <schema id="org.gnome.shell.clock" path="/org/gnome/shell/clock/"
-          gettext-domain="@GETTEXT_PACKAGE@">
-    <key name="show-seconds" type="b">
-      <default>false</default>
-      <_summary>Show time with seconds</_summary>
-      <_description>
-        If true, display seconds in time.
-      </_description>
-    </key>
-    <key name="show-date" type="b">
-      <default>false</default>
-      <_summary>Show date in clock</_summary>
-      <_description>
-        If true, display date in the clock, in addition to time.
       </_description>
     </key>
   </schema>
