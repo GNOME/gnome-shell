@@ -14,15 +14,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-26 09:51+0000\n"
-"PO-Revision-Date: 2011-06-26 09:55+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-08-18 14:39+0000\n"
+"PO-Revision-Date: 2011-08-21 22:29+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -56,16 +57,18 @@ msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. disabled-extensions overrides this setting for extensions "
 "that appear in both lists."
-msgstr "GNOME Shell 扩展有一个 uuid 属性，此键列出了不应该加载的扩展。"
-"disabled-extensions 会覆盖同时出现在两个列表里的扩展的设置。"
+msgstr ""
+"GNOME Shell 扩展有一个 uuid 属性，此键列出了不应该加载的扩展。disabled-"
+"extensions 会覆盖同时出现在两个列表里的扩展的设置。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded. This setting overrides enabled-extensions for "
 "extensions that appear in both lists."
-msgstr "GNOME Shell 扩展有一个 uuid 属性，此键列出了不应该加载的扩展。"
-"此设置会覆盖 enable-extensions 中同时出现在两个列表里的扩展的设置。"
+msgstr ""
+"GNOME Shell 扩展有一个 uuid 属性，此键列出了不应该加载的扩展。此设置会覆盖 "
+"enable-extensions 中同时出现在两个列表里的扩展的设置。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -195,27 +198,27 @@ msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:253
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:357
+#: ../js/ui/appDisplay.js:315
 msgid "APPLICATIONS"
 msgstr "应用程序"
 
-#: ../js/ui/appDisplay.js:383
+#: ../js/ui/appDisplay.js:373
 msgid "SETTINGS"
 msgstr "设置"
 
-#: ../js/ui/appDisplay.js:656
+#: ../js/ui/appDisplay.js:681
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:659
+#: ../js/ui/appDisplay.js:684
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:685
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
@@ -228,6 +231,15 @@ msgstr "%s 已经添加到了您的收藏夹。"
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s 已经从您的收藏夹移除。"
+
+#: ../js/ui/autorunManager.js:591
+#, c-format
+msgid "Open with %s"
+msgstr "使用 %s 打开"
+
+#: ../js/ui/autorunManager.js:617
+msgid "Eject"
+msgstr "弹出"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -343,94 +355,94 @@ msgid "S"
 msgstr "星期六"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:678
 msgid "Nothing Scheduled"
 msgstr "无计划"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717 ../js/ui/telepathyClient.js:564
+#: ../js/ui/calendar.js:694
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:567
+#: ../js/ui/calendar.js:697
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:707
 msgid "Today"
 msgstr "今天"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:711
 msgid "Tomorrow"
 msgstr "明天"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:720
 msgid "This week"
 msgstr "本周"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:728
 msgid "Next week"
 msgstr "下周"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1044
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1123
 msgid "Remove"
 msgstr "移除"
 
-#: ../js/ui/dateMenu.js:89
+#: ../js/ui/dateMenu.js:90
 msgid "Date and Time Settings"
 msgstr "日期和时间设置"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:110
 msgid "Open Calendar"
 msgstr "打开日历"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:167
 msgid "%a %b %e, %R:%S"
 msgstr "%m月%d日%R:%S%A"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:168
 msgid "%a %b %e, %R"
 msgstr "%m月%d日%R%A"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:172
 msgid "%a %R:%S"
 msgstr "%A %R:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:173
 msgid "%a %R"
 msgstr "%A %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:180
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%m月%d日%A %I:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:176
+#: ../js/ui/dateMenu.js:181
 msgid "%a %b %e, %l:%M %p"
 msgstr "%m月%d日%A %I:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:180
+#: ../js/ui/dateMenu.js:185
 msgid "%a %l:%M:%S %p"
 msgstr "%A %I:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:186
 msgid "%a %l:%M %p"
 msgstr "%I:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:192
+#: ../js/ui/dateMenu.js:197
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%d日%A"
 
@@ -501,47 +513,52 @@ msgid "Restarting the system."
 msgstr "重启计算机。"
 
 #: ../js/ui/endSessionDialog.js:410 ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:489
+#: ../js/ui/status/bluetooth.js:497
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:640
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
-#: ../js/ui/lookingGlass.js:678
+#: ../js/ui/lookingGlass.js:686
 msgid "Enabled"
 msgstr "已启用"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:680 ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1091
 msgid "Disabled"
 msgstr "已禁用"
 
-#: ../js/ui/lookingGlass.js:682
+#: ../js/ui/lookingGlass.js:690
 msgid "Error"
 msgstr "错误"
 
-#: ../js/ui/lookingGlass.js:684
+#: ../js/ui/lookingGlass.js:692
 msgid "Out of date"
 msgstr "过时"
 
-#: ../js/ui/lookingGlass.js:709
+#: ../js/ui/lookingGlass.js:717
 msgid "View Source"
 msgstr "查看源"
 
-#: ../js/ui/lookingGlass.js:715
+#: ../js/ui/lookingGlass.js:723
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:1037
+#: ../js/ui/messageTray.js:1116
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:2208
+#: ../js/ui/messageTray.js:2277
 msgid "System Information"
 msgstr "系统信息"
+
+#: ../js/ui/notificationDaemon.js:427 ../js/ui/status/power.js:238
+#: ../src/shell-app.c:340
+msgid "Unknown"
+msgstr "未知"
 
 #: ../js/ui/overview.js:89
 msgid "Undo"
@@ -562,18 +579,18 @@ msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:533
+#: ../js/ui/panel.js:531
 #, c-format
 msgid "Quit %s"
 msgstr "退出 %s"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:913
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:567
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/panel.js:1015
+#: ../js/ui/panel.js:876
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -639,42 +656,9 @@ msgstr "正在搜索..."
 msgid "No matching results."
 msgstr "无匹配结果。"
 
-#: ../js/ui/statusMenu.js:160 ../js/ui/statusMenu.js:162
-#: ../js/ui/statusMenu.js:227
-msgid "Power Off..."
-msgstr "关机..."
-
-#: ../js/ui/statusMenu.js:162 ../js/ui/statusMenu.js:226
-msgid "Suspend"
-msgstr "挂起"
-
-#: ../js/ui/statusMenu.js:183
-msgid "Available"
-msgstr "可用"
-
-#: ../js/ui/statusMenu.js:188
-msgid "Busy"
-msgstr "忙碌"
-
-#: ../js/ui/statusMenu.js:196
-msgid "My Account"
-msgstr "我的帐户"
-
-#: ../js/ui/statusMenu.js:200
-msgid "System Settings"
-msgstr "系统设置"
-
-#: ../js/ui/statusMenu.js:207
-msgid "Lock Screen"
-msgstr "锁定"
-
-#: ../js/ui/statusMenu.js:212
-msgid "Switch User"
-msgstr "切换用户"
-
-#: ../js/ui/statusMenu.js:217
-msgid "Log Out..."
-msgstr "注销..."
+#: ../js/ui/shellMountOperation.js:285
+msgid "Wrong password, please try again"
+msgstr "口令错误，请重试"
 
 #: ../js/ui/status/accessibility.js:60
 msgid "Zoom"
@@ -718,9 +702,9 @@ msgstr "高对比度"
 msgid "Large Text"
 msgstr "大号文本"
 
-#: ../js/ui/status/bluetooth.js:39 ../js/ui/status/bluetooth.js:262
-#: ../js/ui/status/bluetooth.js:356 ../js/ui/status/bluetooth.js:390
-#: ../js/ui/status/bluetooth.js:430 ../js/ui/status/bluetooth.js:463
+#: ../js/ui/status/bluetooth.js:39 ../js/ui/status/bluetooth.js:270
+#: ../js/ui/status/bluetooth.js:364 ../js/ui/status/bluetooth.js:398
+#: ../js/ui/status/bluetooth.js:438 ../js/ui/status/bluetooth.js:471
 msgid "Bluetooth"
 msgstr "蓝牙"
 
@@ -740,248 +724,291 @@ msgstr "安装新设备..."
 msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
-#: ../js/ui/status/bluetooth.js:213
+#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
+#: ../js/ui/status/bluetooth.js:116
+msgid "hardware disabled"
+msgstr "已通过硬件开关禁用"
+
+#: ../js/ui/status/bluetooth.js:217
 msgid "Connection"
 msgstr "连接"
 
-#: ../js/ui/status/bluetooth.js:249
+#: ../js/ui/status/bluetooth.js:226 ../js/ui/status/network.js:497
+msgid "disconnecting..."
+msgstr "正在断开..."
+
+#: ../js/ui/status/bluetooth.js:239 ../js/ui/status/network.js:503
+msgid "connecting..."
+msgstr "正在连接..."
+
+#: ../js/ui/status/bluetooth.js:257
 msgid "Send Files..."
 msgstr "发送文件..."
 
-#: ../js/ui/status/bluetooth.js:254
+#: ../js/ui/status/bluetooth.js:262
 msgid "Browse Files..."
 msgstr "浏览文件..."
 
-#: ../js/ui/status/bluetooth.js:263
+#: ../js/ui/status/bluetooth.js:271
 msgid "Error browsing device"
 msgstr "浏览设备出错"
 
-#: ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:272
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "无法浏览请求的设备，错误为 %s"
 
-#: ../js/ui/status/bluetooth.js:272
+#: ../js/ui/status/bluetooth.js:280
 msgid "Keyboard Settings"
 msgstr "键盘设置"
 
-#: ../js/ui/status/bluetooth.js:277
+#: ../js/ui/status/bluetooth.js:285
 msgid "Mouse Settings"
 msgstr "鼠标设置"
 
-#: ../js/ui/status/bluetooth.js:284 ../js/ui/status/volume.js:64
+#: ../js/ui/status/bluetooth.js:292 ../js/ui/status/volume.js:64
 msgid "Sound Settings"
 msgstr "声音设置"
 
-#: ../js/ui/status/bluetooth.js:391
+#: ../js/ui/status/bluetooth.js:399
 #, c-format
 msgid "Authorization request from %s"
 msgstr "来自 %s 的认证请求"
 
-#: ../js/ui/status/bluetooth.js:397
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "设备 %s 希望访问 %s 服务"
 
-#: ../js/ui/status/bluetooth.js:399
+#: ../js/ui/status/bluetooth.js:407
 msgid "Always grant access"
 msgstr "始终允许"
 
-#: ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:408
 msgid "Grant this time only"
 msgstr "允许一次"
 
-#: ../js/ui/status/bluetooth.js:401
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:985
 msgid "Reject"
 msgstr "拒绝"
 
-#: ../js/ui/status/bluetooth.js:431
+#: ../js/ui/status/bluetooth.js:439
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s 的配对确认"
 
-#: ../js/ui/status/bluetooth.js:437 ../js/ui/status/bluetooth.js:471
+#: ../js/ui/status/bluetooth.js:445 ../js/ui/status/bluetooth.js:479
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "设备 %s 希望与此电脑配对"
 
-#: ../js/ui/status/bluetooth.js:438
+#: ../js/ui/status/bluetooth.js:446
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "请确认 PIN 码 %s 和要配对的设备是否相同。"
 
-#: ../js/ui/status/bluetooth.js:440
+#: ../js/ui/status/bluetooth.js:448
 msgid "Matches"
 msgstr "相同"
 
-#: ../js/ui/status/bluetooth.js:441
+#: ../js/ui/status/bluetooth.js:449
 msgid "Does not match"
 msgstr "不同"
 
-#: ../js/ui/status/bluetooth.js:464
+#: ../js/ui/status/bluetooth.js:472
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s 的配对请求"
 
-#: ../js/ui/status/bluetooth.js:472
+#: ../js/ui/status/bluetooth.js:480
 msgid "Please enter the PIN mentioned on the device."
 msgstr "请输入设备上的 PIN 码。"
 
-#: ../js/ui/status/bluetooth.js:488
+#: ../js/ui/status/bluetooth.js:496
 msgid "OK"
 msgstr "确定"
 
 #: ../js/ui/status/keyboard.js:71
-msgid "Show Keyboard Layout..."
-msgstr "显示键盘布局..."
+msgid "Show Keyboard Layout"
+msgstr "显示键盘布局"
 
 #: ../js/ui/status/keyboard.js:75
-msgid "Localization Settings"
-msgstr "本地化设置"
+msgid "Region and Language Settings"
+msgstr "区域和语言设置"
 
-#: ../js/ui/status/network.js:123
+#: ../js/ui/statusMenu.js:192 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:262
+msgid "Power Off..."
+msgstr "关机..."
+
+#: ../js/ui/statusMenu.js:194 ../js/ui/statusMenu.js:196
+#: ../js/ui/statusMenu.js:261
+msgid "Suspend"
+msgstr "挂起"
+
+#: ../js/ui/statusMenu.js:217
+msgid "Available"
+msgstr "可用"
+
+#: ../js/ui/statusMenu.js:222
+msgid "Busy"
+msgstr "忙碌"
+
+#: ../js/ui/statusMenu.js:230
+msgid "My Account"
+msgstr "我的帐户"
+
+#: ../js/ui/statusMenu.js:234
+msgid "System Settings"
+msgstr "系统设置"
+
+#: ../js/ui/statusMenu.js:242
+msgid "Lock Screen"
+msgstr "锁定"
+
+#: ../js/ui/statusMenu.js:247
+msgid "Switch User"
+msgstr "切换用户"
+
+#: ../js/ui/statusMenu.js:252
+msgid "Log Out..."
+msgstr "注销..."
+
+#: ../js/ui/status/network.js:108
 msgid "<unknown>"
 msgstr "<未知>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:340
+#: ../js/ui/status/network.js:296
 msgid "disabled"
 msgstr "已禁用"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:539
+#: ../js/ui/status/network.js:495
 msgid "unmanaged"
 msgstr "设备未托管"
 
-#: ../js/ui/status/network.js:541
-msgid "disconnecting..."
-msgstr "正在断开..."
-
-#: ../js/ui/status/network.js:547
-msgid "connecting..."
-msgstr "正在连接..."
-
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:550
+#: ../js/ui/status/network.js:506
 msgid "authentication required"
 msgstr "需要认证"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:560
+#: ../js/ui/status/network.js:516
 msgid "firmware missing"
 msgstr "固件缺失"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:567
+#: ../js/ui/status/network.js:523
 msgid "cable unplugged"
 msgstr "线缆被拔出"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:572
+#: ../js/ui/status/network.js:528
 msgid "unavailable"
 msgstr "不可用"
 
-#: ../js/ui/status/network.js:574
+#: ../js/ui/status/network.js:530
 msgid "connection failed"
 msgstr "连接失败"
 
-#: ../js/ui/status/network.js:630 ../js/ui/status/network.js:1537
+#: ../js/ui/status/network.js:586 ../js/ui/status/network.js:1511
 msgid "More..."
 msgstr "更多..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:666 ../js/ui/status/network.js:1475
+#: ../js/ui/status/network.js:622 ../js/ui/status/network.js:1448
 msgid "Connected (private)"
 msgstr "已连接(私有网络)"
 
-#: ../js/ui/status/network.js:751
+#: ../js/ui/status/network.js:707
 msgid "Auto Ethernet"
 msgstr "自动以太网"
 
-#: ../js/ui/status/network.js:819
+#: ../js/ui/status/network.js:775
 msgid "Auto broadband"
 msgstr "自动移动宽带"
 
-#: ../js/ui/status/network.js:822
+#: ../js/ui/status/network.js:778
 msgid "Auto dial-up"
 msgstr "自动拨号"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:946 ../js/ui/status/network.js:1487
+#: ../js/ui/status/network.js:902 ../js/ui/status/network.js:1460
 #, c-format
 msgid "Auto %s"
 msgstr "自动 %s"
 
-#: ../js/ui/status/network.js:948
+#: ../js/ui/status/network.js:904
 msgid "Auto bluetooth"
 msgstr "自动蓝牙"
 
-#: ../js/ui/status/network.js:1489
+#: ../js/ui/status/network.js:1462
 msgid "Auto wireless"
 msgstr "自动无线"
 
-#: ../js/ui/status/network.js:1579
+#: ../js/ui/status/network.js:1554
 msgid "Enable networking"
 msgstr "启用联网"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1566
 msgid "Wired"
 msgstr "有线"
 
-#: ../js/ui/status/network.js:1602
+#: ../js/ui/status/network.js:1577
 msgid "Wireless"
 msgstr "无线"
 
-#: ../js/ui/status/network.js:1612
+#: ../js/ui/status/network.js:1587
 msgid "Mobile broadband"
 msgstr "移动宽带"
 
-#: ../js/ui/status/network.js:1622
+#: ../js/ui/status/network.js:1597
 msgid "VPN Connections"
 msgstr "VPN 连接"
 
-#: ../js/ui/status/network.js:1634
+#: ../js/ui/status/network.js:1609
 msgid "Network Settings"
 msgstr "网络设置"
 
-#: ../js/ui/status/network.js:1926
+#: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "您已连接至移动宽带连接 %s"
 
-#: ../js/ui/status/network.js:1930
+#: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "您已连接至无线网络 %s"
 
-#: ../js/ui/status/network.js:1934
+#: ../js/ui/status/network.js:1909
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "您已连接至有线网络 %s"
 
-#: ../js/ui/status/network.js:1938
+#: ../js/ui/status/network.js:1913
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "您已连接至 VPN 网络 %s"
 
-#: ../js/ui/status/network.js:1943
+#: ../js/ui/status/network.js:1918
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "您已连接至 %s"
 
-#: ../js/ui/status/network.js:1951
+#: ../js/ui/status/network.js:1926
 msgid "Connection established"
 msgstr "连接已建立"
 
-#: ../js/ui/status/network.js:2077
+#: ../js/ui/status/network.js:2052
 msgid "Networking is disabled"
 msgstr "联网已禁用"
 
-#: ../js/ui/status/network.js:2202
+#: ../js/ui/status/network.js:2177
 msgid "Network Manager"
 msgstr "网络管理器"
 
@@ -991,85 +1018,81 @@ msgstr "电源设置"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:109
 msgid "Estimating..."
 msgstr "估计中..."
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:116
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "剩余 %d 小时"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:119
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "剩余 %d %s %d %s"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:121
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "小时"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:121
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "分钟"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:124
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "剩余 %d 分钟"
 
-#: ../js/ui/status/power.js:227
+#: ../js/ui/status/power.js:216
 msgid "AC adapter"
 msgstr "AC 适配器"
 
-#: ../js/ui/status/power.js:229
+#: ../js/ui/status/power.js:218
 msgid "Laptop battery"
 msgstr "笔记本电池"
 
-#: ../js/ui/status/power.js:231
+#: ../js/ui/status/power.js:220
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:233
+#: ../js/ui/status/power.js:222
 msgid "Monitor"
 msgstr "显示器"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:224
 msgid "Mouse"
 msgstr "鼠标"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:226
 msgid "Keyboard"
 msgstr "键盘"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:228
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:230
 msgid "Cell phone"
 msgstr "手机"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:232
 msgid "Media player"
 msgstr "媒体播放器"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:234
 msgid "Tablet"
 msgstr "触摸板"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:236
 msgid "Computer"
 msgstr "计算机"
-
-#: ../js/ui/status/power.js:249 ../src/shell-app-system.c:1088
-msgid "Unknown"
-msgstr "未知"
 
 #: ../js/ui/status/volume.js:43
 msgid "Volume"
@@ -1079,22 +1102,39 @@ msgstr "音量"
 msgid "Microphone"
 msgstr "麦克风"
 
-#: ../js/ui/telepathyClient.js:397
+#. We got the TpContact
+#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
+#. system-users for now as Empathy does.
+#: ../js/ui/telepathyClient.js:229
+msgid "Invitation"
+msgstr "邀请"
+
+#. We got the TpContact
+#: ../js/ui/telepathyClient.js:295
+msgid "Call"
+msgstr "呼叫"
+
+#. We got the TpContact
+#: ../js/ui/telepathyClient.js:323
+msgid "File Transfer"
+msgstr "文件传送"
+
+#: ../js/ui/telepathyClient.js:573
 #, c-format
 msgid "%s is online."
 msgstr "%s 在线。"
 
-#: ../js/ui/telepathyClient.js:402
+#: ../js/ui/telepathyClient.js:578
 #, c-format
 msgid "%s is offline."
 msgstr "%s 离线。"
 
-#: ../js/ui/telepathyClient.js:405
+#: ../js/ui/telepathyClient.js:581
 #, c-format
 msgid "%s is away."
 msgstr "%s 离开。"
 
-#: ../js/ui/telepathyClient.js:408
+#: ../js/ui/telepathyClient.js:584
 #, c-format
 msgid "%s is busy."
 msgstr "%s 忙碌。"
@@ -1102,17 +1142,80 @@ msgstr "%s 忙碌。"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:556
+#: ../js/ui/telepathyClient.js:770
 #, no-c-format
-msgid "Sent at %X on %A"
-msgstr "发送于 %X，在 %A"
+msgid "Sent at <b>%X</b> on <b>%A</b>"
+msgstr "发送于 <b>%X</b>，在 <b>%A</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25",
+#. shown when you get a chat message in the same year.
+#: ../js/ui/telepathyClient.js:776
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+msgstr "发送于 <b>%A</b>，<b>%B %d</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+#. shown when you get a chat message in a different year.
+#: ../js/ui/telepathyClient.js:781
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr "发送于 <b>%A</b>，<b>%B %d</b>，%Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:606
+#: ../js/ui/telepathyClient.js:822
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s 现在叫做 %s"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/telepathyClient.js:929
+#, c-format
+msgid "Invitation to %s"
+msgstr "邀请 %s"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/telepathyClient.js:937
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "%s 要请您加入 %s"
+
+#: ../js/ui/telepathyClient.js:939 ../js/ui/telepathyClient.js:1028
+msgid "Decline"
+msgstr "拒绝"
+
+#: ../js/ui/telepathyClient.js:940 ../js/ui/telepathyClient.js:1029
+msgid "Accept"
+msgstr "接受"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:973
+#, c-format
+msgid "Video call from %s"
+msgstr "来自 %s 的视频呼叫"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/telepathyClient.js:976
+#, c-format
+msgid "Call from %s"
+msgstr "来自 %s 的呼叫"
+
+#: ../js/ui/telepathyClient.js:986
+msgid "Answer"
+msgstr "接听"
+
+#. To translators: The first parameter is
+#. * the contact's alias and the second one is the
+#. * file name. The string will be something
+#. * like: "Alice is sending you test.ogg"
+#.
+#: ../js/ui/telepathyClient.js:1022
+#, c-format
+msgid "%s is sending you %s"
+msgstr "%s 正在向您发送 %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1122,16 +1225,16 @@ msgstr "%s 现在叫做 %s"
 msgid "Type to search..."
 msgstr "搜索..."
 
-#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:254
+#: ../js/ui/viewSelector.js:140 ../src/shell-util.c:261
 msgid "Search"
 msgstr "搜索"
 
-#: ../js/ui/windowAttentionHandler.js:40
+#: ../js/ui/windowAttentionHandler.js:39
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s 已启动"
 
-#: ../js/ui/windowAttentionHandler.js:42
+#: ../js/ui/windowAttentionHandler.js:41
 #, c-format
 msgid "'%s' is ready"
 msgstr "%s 已就绪"
@@ -1156,11 +1259,11 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/main.c:445
+#: ../src/main.c:466
 msgid "Print version"
 msgstr "打印版本"
 
-#: ../src/shell-app.c:464
+#: ../src/shell-app.c:566
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "启动 %s 失败"
@@ -1177,13 +1280,13 @@ msgstr "默认"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "认证对话框被用户驳回"
 
-#: ../src/shell-util.c:93
+#: ../src/shell-util.c:100
 msgid "Home Folder"
 msgstr "主文件夹"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:115
 msgid "File System"
 msgstr "文件系统"
 
@@ -1192,10 +1295,17 @@ msgstr "文件系统"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:311
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#: ../src/shell-util.c:600
+msgid "calendar:week_start:0"
+msgstr "calendar:week_start:0"
+
+#~ msgid "Localization Settings"
+#~ msgstr "本地化设置"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "少于一分钟前"
@@ -1282,17 +1392,16 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
 #~ msgstr ""
-#~ "此键指定面板时钟使用的时间格式。可能的值为 \"12-hour\"、\"24-hour"
-#~ "\"、\"unix\" 和 \"custom\"。如果设为 unix，时钟将显示从 Epoch(也就是 "
-#~ "1970-1-1 UTC)开始的秒数。如果设为 \"custom\"，时钟将根据在 custom_format "
-#~ "键中设定的格式规则显示时间。注意，如果设置为 \"unix\" 或 \"custom\"，"
-#~ "show_date 和 show_seconds 键将被忽略。"
+#~ "此键指定面板时钟使用的时间格式。可能的值为 \"12-hour\"、\"24-hour\"、"
+#~ "\"unix\" 和 \"custom\"。如果设为 unix，时钟将显示从 Epoch(也就是 1970-1-1 "
+#~ "UTC)开始的秒数。如果设为 \"custom\"，时钟将根据在 custom_format 键中设定的"
+#~ "格式规则显示时间。注意，如果设置为 \"unix\" 或 \"custom\"，show_date 和 "
+#~ "show_seconds 键将被忽略。"
 
 #~ msgid "Clip the crosshairs at the center"
 #~ msgstr "将十字夹在中间"
