@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-16 17:16+0200\n"
-"PO-Revision-Date: 2011-08-10 15:23+0200\n"
+"POT-Creation-Date: 2011-08-21 21:42+0200\n"
+"PO-Revision-Date: 2011-08-21 21:43+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -554,7 +554,7 @@ msgstr "Åpne"
 msgid "System Information"
 msgstr "Systeminformasjon"
 
-#: ../js/ui/notificationDaemon.js:426 ../js/ui/status/power.js:238
+#: ../js/ui/notificationDaemon.js:427 ../js/ui/status/power.js:238
 #: ../src/shell-app.c:340
 msgid "Unknown"
 msgstr "Ukjent"
@@ -787,7 +787,7 @@ msgstr "Alltid gi tilgang"
 msgid "Grant this time only"
 msgstr "Gi tilgang kun denne ene gangen"
 
-#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:953
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:985
 msgid "Reject"
 msgstr "Avvis"
 
@@ -914,13 +914,13 @@ msgstr "ikke tilgjengelig"
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:586 ../js/ui/status/network.js:1520
+#: ../js/ui/status/network.js:586 ../js/ui/status/network.js:1511
 msgid "More..."
 msgstr "Mer …"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:622 ../js/ui/status/network.js:1457
+#: ../js/ui/status/network.js:622 ../js/ui/status/network.js:1448
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
@@ -937,7 +937,7 @@ msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:902 ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:902 ../js/ui/status/network.js:1460
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
@@ -946,68 +946,68 @@ msgstr "Automatisk %s"
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1471
+#: ../js/ui/status/network.js:1462
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1563
+#: ../js/ui/status/network.js:1554
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1575
+#: ../js/ui/status/network.js:1566
 msgid "Wired"
 msgstr "Kablet"
 
-#: ../js/ui/status/network.js:1586
+#: ../js/ui/status/network.js:1577
 msgid "Wireless"
 msgstr "Trådløst"
 
-#: ../js/ui/status/network.js:1596
+#: ../js/ui/status/network.js:1587
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:1606
+#: ../js/ui/status/network.js:1597
 msgid "VPN Connections"
 msgstr "VPN-tilkoblinger"
 
-#: ../js/ui/status/network.js:1618
+#: ../js/ui/status/network.js:1609
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1910
+#: ../js/ui/status/network.js:1901
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du er nå koblet til mobil bredbåndstilkobling «%s»"
 
-#: ../js/ui/status/network.js:1914
+#: ../js/ui/status/network.js:1905
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du er nå koblet til trådløst nettverk «%s»"
 
-#: ../js/ui/status/network.js:1918
+#: ../js/ui/status/network.js:1909
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du er nå koblet til kablet nettverk «%s»"
 
-#: ../js/ui/status/network.js:1922
+#: ../js/ui/status/network.js:1913
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du er nå koblet til virtuelt privat nettverk «%s»"
 
-#: ../js/ui/status/network.js:1927
+#: ../js/ui/status/network.js:1918
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du er nå koblet til «%s»"
 
-#: ../js/ui/status/network.js:1935
+#: ../js/ui/status/network.js:1926
 msgid "Connection established"
 msgstr "Tilkobling etablert"
 
-#: ../js/ui/status/network.js:2061
+#: ../js/ui/status/network.js:2052
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
-#: ../js/ui/status/network.js:2186
+#: ../js/ui/status/network.js:2177
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
@@ -1108,31 +1108,36 @@ msgstr "Mikrofon"
 #. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:228
+#: ../js/ui/telepathyClient.js:229
 msgid "Invitation"
 msgstr "Invitasjon"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:291
+#: ../js/ui/telepathyClient.js:295
 msgid "Call"
 msgstr "Ring"
 
-#: ../js/ui/telepathyClient.js:541
+#. We got the TpContact
+#: ../js/ui/telepathyClient.js:323
+msgid "File Transfer"
+msgstr "Filoverføring"
+
+#: ../js/ui/telepathyClient.js:573
 #, c-format
 msgid "%s is online."
 msgstr "%s er tilkoblet."
 
-#: ../js/ui/telepathyClient.js:546
+#: ../js/ui/telepathyClient.js:578
 #, c-format
 msgid "%s is offline."
 msgstr "%s er frakoblet."
 
-#: ../js/ui/telepathyClient.js:549
+#: ../js/ui/telepathyClient.js:581
 #, c-format
 msgid "%s is away."
 msgstr "«%s» er borte."
 
-#: ../js/ui/telepathyClient.js:552
+#: ../js/ui/telepathyClient.js:584
 #, c-format
 msgid "%s is busy."
 msgstr "%s er opptatt."
@@ -1140,35 +1145,35 @@ msgstr "%s er opptatt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:738
+#: ../js/ui/telepathyClient.js:770
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Sendt <b>%X</b> på <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:744
+#: ../js/ui/telepathyClient.js:776
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Sendt  <b>%A</b>, <b>%B %d</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:749
+#: ../js/ui/telepathyClient.js:781
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Sendt <b>%A</b>, <b>%B %d</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:790
+#: ../js/ui/telepathyClient.js:822
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s er nå kjent som %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:897
+#: ../js/ui/telepathyClient.js:929
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitasjon til %s"
@@ -1176,34 +1181,44 @@ msgstr "Invitasjon til %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:905
+#: ../js/ui/telepathyClient.js:937
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s inviterer deg til å bli med i %s"
 
-#: ../js/ui/telepathyClient.js:907
+#: ../js/ui/telepathyClient.js:939 ../js/ui/telepathyClient.js:1028
 msgid "Decline"
 msgstr "Avslå"
 
-#: ../js/ui/telepathyClient.js:908
+#: ../js/ui/telepathyClient.js:940 ../js/ui/telepathyClient.js:1029
 msgid "Accept"
 msgstr "Godta"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:941
+#: ../js/ui/telepathyClient.js:973
 #, c-format
 msgid "Video call from %s"
 msgstr "Videosamtale fra %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:944
+#: ../js/ui/telepathyClient.js:976
 #, c-format
 msgid "Call from %s"
 msgstr "Samtale fra %s"
 
-#: ../js/ui/telepathyClient.js:954
+#: ../js/ui/telepathyClient.js:986
 msgid "Answer"
 msgstr "Svar"
+
+#. To translators: The first parameter is
+#. * the contact's alias and the second one is the
+#. * file name. The string will be something
+#. * like: "Alice is sending you test.ogg"
+#.
+#: ../js/ui/telepathyClient.js:1022
+#, c-format
+msgid "%s is sending you %s"
+msgstr "%s sender deg %s"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
