@@ -342,7 +342,7 @@ AppSearchProvider.prototype = {
         let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
 
         if (openNewWindow)
-            app.open_new_window(workspace);
+            app.open_new_window(params.workspace);
         else
             app.activate_full(params.workspace, params.timestamp);
     },
