@@ -351,12 +351,14 @@ function Calendar(eventSource) {
 
 Calendar.prototype = {
     _init: function(eventSource) {
-        this._eventSource = eventSource;
+        if (eventSource) {
+            this._eventSource = eventSource;
 
-        this._eventSource.connect('changed', Lang.bind(this,
-                                                       function() {
-                                                           this._update(false);
-                                                       }));
+            this._eventSource.connect('changed', Lang.bind(this,
+                                                           function() {
+                                                               this._update(false);
+                                                           }));
+        }
 
         this._weekStart = Shell.util_get_week_start();
         this._weekdate = NaN;
@@ -554,13 +556,16 @@ Calendar.prototype = {
         while (true) {
             let button = new St.Button({ label: iter.getDate().toString() });
 
+            if (!this._eventSource)
+                button.reactive = false;
+
             let iterStr = iter.toUTCString();
             button.connect('clicked', Lang.bind(this, function() {
                 let newlySelectedDate = new Date(iterStr);
                 this.setDate(newlySelectedDate, false);
             }));
 
-            let hasEvents = this._eventSource.hasEvents(iter);
+            let hasEvents = this._eventSource && this._eventSource.hasEvents(iter);
             let styleClass = 'calendar-day-base calendar-day';
             if (_isWorkDay(iter))
                 styleClass += ' calendar-work-day'
@@ -607,7 +612,8 @@ Calendar.prototype = {
         }
         // Signal to the event source that we are interested in events
         // only from this date range
-        this._eventSource.requestRange(beginDate, iter, forceReload);
+        if (this._eventSource)
+            this._eventSource.requestRange(beginDate, iter, forceReload);
     }
 };
 
@@ -644,6 +650,9 @@ EventsList.prototype = {
     },
 
     _addPeriod: function(header, begin, end, includeDayName, showNothingScheduled) {
+        if (!this._eventSource)
+            return;
+
         let events = this._eventSource.getEvents(begin, end);
 
         let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);;

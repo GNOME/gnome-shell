@@ -9,6 +9,7 @@ const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const Params = imports.misc.params;
 const Util = imports.misc.util;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -40,18 +41,18 @@ function _onVertSepRepaint (area)
 };
 
 function DateMenuButton() {
-    this._init();
+    this._init.apply(this, arguments);
 }
 
 DateMenuButton.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
-    _init: function() {
+    _init: function(params) {
+        params = Params.parse(params, { showEvents: true });
+
         let item;
         let hbox;
         let vbox;
-
-        this._eventSource = new Calendar.DBusEventSource();
 
         let menuAlignment = 0.25;
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
@@ -74,12 +75,23 @@ DateMenuButton.prototype = {
         this._date.style_class = 'datemenu-date-label';
         vbox.add(this._date);
 
-        this._eventList = new Calendar.EventsList(this._eventSource);
+        if (params.showEvents) {
+            this._eventSource = new Calendar.DBusEventSource();
+            this._eventList = new Calendar.EventsList(this._eventSource);
+        } else {
+            this._eventSource = null;
+            this._eventList = null;
+        }
 
         // Calendar
         this._calendar = new Calendar.Calendar(this._eventSource);
+
         this._calendar.connect('selected-date-changed',
                                Lang.bind(this, function(calendar, date) {
+                                  // we know this._eventList is defined here, because selected-data-changed
+                                  // only gets emitted when the user clicks a date in the calendar,
+                                  // and the calender makes those dates unclickable when instantiated with
+                                  // a null event source
                                    this._eventList.setDate(date);
                                }));
         vbox.add(this._calendar.actor);
@@ -93,25 +105,27 @@ DateMenuButton.prototype = {
         item.actor.can_focus = false;
         item.actor.reparent(vbox);
 
-        // Add vertical separator
+        if (params.showEvents) {
+            // Add vertical separator
 
-        item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
-                                    pseudo_class: 'highlighted' });
-        item.connect('repaint', Lang.bind(this, _onVertSepRepaint));
-        hbox.add(item);
+            item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
+                                        pseudo_class: 'highlighted' });
+            item.connect('repaint', Lang.bind(this, _onVertSepRepaint));
+            hbox.add(item);
 
-        // Fill up the second column
-        vbox = new St.BoxLayout({name: 'calendarEventsArea',
-                                 vertical: true});
-        hbox.add(vbox, { expand: true });
+            // Fill up the second column
+            vbox = new St.BoxLayout({name:     'calendarEventsArea',
+                                     vertical: true});
+            hbox.add(vbox, { expand: true });
 
-        // Event list
-        vbox.add(this._eventList.actor, { expand: true });
+            // Event list
+            vbox.add(this._eventList.actor, { expand: true });
 
-        item = new PopupMenu.PopupMenuItem(_("Open Calendar"));
-        item.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
-        item.actor.can_focus = false;
-        vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+            item = new PopupMenu.PopupMenuItem(_("Open Calendar"));
+            item.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
+            item.actor.can_focus = false;
+            vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+        }
 
         // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
