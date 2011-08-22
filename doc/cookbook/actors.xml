@@ -974,6 +974,12 @@ star_actor_pick (ClutterActor *actor,
           </listitem>
         </itemizedlist>
 
+        <para>One important drawback of using Cogl path primitives is that
+        they will not produce high quality results; more specifically,
+        Cogl does not draw anti-aliased primitives. It is recommended to use
+        the Cairo API to draw during the paint sequence, and the Cogl API
+        to draw during the pick sequence.</para>
+
         <para>If you need more flexibility than is available in the Cogl path
         API, you can make direct use of the <type>CoglVertexBuffer</type>
         API instead. This is a lower-level API, but could potentially
