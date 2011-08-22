@@ -358,6 +358,7 @@ ChatSource.prototype = {
 
         this._notification = new ChatNotification(this);
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
+        this._notifyTimeoutId = 0;
 
         // We ack messages when the message box is collapsed if user has
         // interacted with it before and so read the messages:
@@ -519,7 +520,22 @@ ChatSource.prototype = {
 
         message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
         this._notification.appendMessage(message);
-        this.notify();
+
+        // Wait a bit before notifying for the received message, a handler
+        // could ack it in the meantime.
+        if (this._notifyTimeoutId != 0)
+            Mainloop.source_remove(this._notifyTimeoutId);
+        this._notifyTimeoutId = Mainloop.timeout_add(500,
+            Lang.bind(this, this._notifyTimeout));
+    },
+
+    _notifyTimeout: function() {
+        if (this._pendingMessages.length != 0)
+            this.notify();
+
+        this._notifyTimeoutId = 0;
+
+        return false;
     },
 
     // This is called for both messages we send from
