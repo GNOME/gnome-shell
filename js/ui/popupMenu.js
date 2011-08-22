@@ -214,7 +214,7 @@ PopupBaseMenuItem.prototype = {
                 let child = this._children[i];
                 if (i > 0)
                     width += this._spacing;
-                let [min, natural] = child.actor.get_preferred_width(forHeight);
+                let [min, natural] = child.actor.get_preferred_width(-1);
                 width += natural;
             }
         }
@@ -225,7 +225,7 @@ PopupBaseMenuItem.prototype = {
         let height = 0;
         for (let i = 0; i < this._children.length; i++) {
             let child = this._children[i];
-            let [min, natural] = child.actor.get_preferred_height(-1);
+            let [min, natural] = child.actor.get_preferred_height(forWidth);
             if (natural > height)
                 height = natural;
         }
@@ -319,7 +319,7 @@ PopupBaseMenuItem.prototype = {
                 }
             }
 
-            let [minHeight, naturalHeight] = child.actor.get_preferred_height(-1);
+            let [minHeight, naturalHeight] = child.actor.get_preferred_height(childBox.x2 - childBox.x1);
             childBox.y1 = Math.round(box.y1 + (height - naturalHeight) / 2);
             childBox.y2 = childBox.y1 + naturalHeight;
 
