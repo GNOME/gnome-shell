@@ -71,7 +71,7 @@
         <para>As Clutter is a GObject-based library, it relies
         heavily on GObject concepts and idioms. If you are unfamiliar with
         GObject, please read
-        <ulink url="http://library.gnome.org/devel/gobject/unstable/">the GObject
+        <ulink url="http://developer.gnome.org/gobject/stable/">the GObject
         Reference Manual</ulink> before proceeding. You might also find
         <ulink url="http://diuf.unifr.ch/pai/wiki/doku.php/research:projects:gobject_tutorial">this
         tutorial</ulink> a useful introduction.</para>
