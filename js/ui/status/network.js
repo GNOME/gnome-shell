@@ -45,17 +45,6 @@ const NM80211ApSecurityFlags = NetworkManager['80211ApSecurityFlags'];
 // (the remaining are placed into More...)
 const NUM_VISIBLE_NETWORKS = 5;
 
-const NMAppletHelperInterface = {
-    name: 'org.gnome.network_manager_applet',
-    methods: [
-        { name: 'ConnectToHiddenNetwork', inSignature: '', outSignature: '' },
-        { name: 'CreateWifiNetwork', inSignature: '', outSignature: '' },
-        { name: 'ConnectTo8021xNetwork', inSignature: 'oo', outSignature: '' },
-        { name: 'ConnectTo3gNetwork', inSignature: 'o', outSignature: '' }
-    ],
-};
-const NMAppletProxy = DBus.makeProxyClass(NMAppletHelperInterface);
-
 function macToArray(string) {
     return string.split(':').map(function(el) {
         return parseInt(el, 16);
@@ -635,15 +624,8 @@ NMDevice.prototype = {
             this.emit('network-lost');
         }
 
-        switch(newstate) {
-        case NetworkManager.DeviceState.NEED_AUTH:
-            // FIXME: make this have a real effect
-            // (currently we rely on a running nm-applet)
-            this.emit('need-auth');
-            break;
-        case NetworkManager.DeviceState.FAILED:
+        if (newstate == NetworkManager.DeviceState.FAILED) {
             this.emit('activation-failed', reason);
-            break;
         }
 
         this._updateStatusItem();
@@ -752,10 +734,6 @@ NMDeviceModem.prototype = {
         this.mobileDevice = null;
         this._connectionType = 'ppp';
 
-        this._applet_proxy = new NMAppletProxy(DBus.session,
-                                               'org.gnome.network_manager_applet',
-                                               '/org/gnome/network_manager_applet');
-
         this._capabilities = device.current_capabilities;
         if (this._capabilities & NetworkManager.DeviceModemCapabilities.GSM_UMTS) {
             is_wwan = true;
@@ -857,12 +835,10 @@ NMDeviceModem.prototype = {
     },
 
     _createAutomaticConnection: function() {
-        // Mobile wizard is handled by nm-applet for now...
-        this._applet_proxy.ConnectTo3gNetworkRemote(this.device.get_path(),
-                                                    Lang.bind(this, function(results, err) {
-                                                        if (err)
-                                                            log(err);
-                                                    }));
+        // Mobile wizard is too complex for the shell UI and
+        // is handled by the network panel
+        Util.spawn(['gnome-control-center', 'network',
+                    'connect-3g', this.device.get_path()]);
         return null;
     }
 };
@@ -973,10 +949,6 @@ NMDeviceWireless.prototype = {
 
         this._overflowItem = null;
         this._networks = [ ];
-
-        this._applet_proxy = new NMAppletProxy(DBus.session,
-                                               'org.gnome.network_manager_applet',
-                                               '/org/gnome/network_manager_applet');
 
         // breaking the layers with this, but cannot call
         // this.connectionValid until I have a device
@@ -1525,13 +1497,10 @@ NMDeviceWireless.prototype = {
                 let accessPoints = sortAccessPoints(apObj.accessPoints);
                 if (   (accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
                     || (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
-                    // 802.1x-enabled APs get handled by nm-applet for now...
-                    this._applet_proxy.ConnectTo8021xNetworkRemote(this.device.get_path(),
-                                                                   accessPoints[0].dbus_path,
-                                                                   Lang.bind(this, function(results, err) {
-                                                                       if (err)
-                                                                           log(err);
-                                                                   }));
+                    // 802.1x-enabled APs require further configuration, so they're
+                    // handled in gnome-control-center
+                    Util.spawn(['gnome-control-center', 'network', 'connect-8021x-wifi',
+                                this.device.get_path(), accessPoints[0].dbus_path]);
                 } else {
                     let connection = this._createAutomaticConnection(apObj);
                     this._client.add_and_activate_connection(connection, this.device, accessPoints[0].dbus_path, null)
@@ -1699,8 +1668,7 @@ NMApplet.prototype = {
     _ensureSource: function() {
         if (!this._source) {
             this._source = new NMMessageTraySource();
-            this._source._destroyId = this._source.connect('destroy', Lang.bind(this, function() {
-                this._source._destroyId = 0;
+            this._source.connect('destroy', Lang.bind(this, function() {
                 this._source = null;
             }));
             Main.messageTray.add(this._source);
@@ -1748,6 +1716,28 @@ NMApplet.prototype = {
         }
     },
 
+    _notifyForDevice: function(device, iconName, title, text, urgency) {
+        if (device._notification)
+            device._notification.destroy();
+
+        /* must call after destroying previous notification,
+           or this._source will be cleared */
+        this._ensureSource();
+
+        let icon = new St.Icon({ icon_name: iconName,
+                                 icon_type: St.IconType.SYMBOLIC,
+                                 icon_size: this._source.ICON_SIZE
+                               });
+        device._notification = new MessageTray.Notification(this._source, title, text,
+                                                            { icon: icon });
+        device._notification.setUrgency(urgency);
+        device._notification.setTransient(true);
+        device._notification.connect('destroy', function() {
+            device._notification = null;
+        });
+        this._source.notify(device._notification);
+    },
+
     _deviceAdded: function(client, device) {
         if (device._delegate) {
             // already seen, not adding again
@@ -1757,42 +1747,29 @@ NMApplet.prototype = {
         if (wrapperClass) {
             let wrapper = new wrapperClass(this._client, device, this._connections);
 
-            // FIXME: these notifications are duplicate with those exposed by nm-applet
-            // uncomment this code in 3.2, when we'll conflict with and kill nm-applet
-            /* wrapper._networkLostId = wrapper.connect('network-lost', Lang.bind(this, function(emitter) {
-                this._ensureSource();
-                let icon = new St.Icon({ icon_name: 'network-offline',
-                                         icon_type: St.IconType.SYMBOLIC,
-                                         icon_size: this._source.ICON_SIZE
-                                       });
-                let notification = new MessageTray.Notification(this._source,
-                                                                _("Connectivity lost"),
-                                                                _("You're no longer connected to the network"),
-                                                                { icon: icon });
-                this._source.notify(notification);
+            wrapper._networkLostId = wrapper.connect('network-lost', Lang.bind(this, function(device) {
+                this._notifyForDevice(device, 'network-offline',
+                                      _("Connectivity lost"),
+                                      _("You're no longer connected to the network"),
+                                      // set critical urgency to popup the notification automatically
+                                      MessageTray.Urgency.CRITICAL);
             }));
-            wrapper._activationFailedId = wrapper.connect('activation-failed', Lang.bind(this, function(wrapper, reason) {
-                this._ensureSource();
-                let icon = new St.Icon({ icon_name: 'network-error',
-                                         icon_type: St.IconType.SYMBOLIC,
-                                         icon_size: this._source.ICON_SIZE,
-                                       });
-                let banner;
+            wrapper._activationFailedId = wrapper.connect('activation-failed', Lang.bind(this, function(device, reason) {
                 // XXX: nm-applet has no special text depending on reason
                 // but I'm not sure of this generic message
-                let notification = new MessageTray.Notification(this._source,
-                                                                _("Connection failed"),
-                                                                _("Activation of network connection failed"),
-                                                                { icon: icon });
-                this._source.notify(notification);
-            })); */
+                this._notifyForDevice(device, 'network-error',
+                                      _("Connection failed"),
+                                      _("Activation of network connection failed"),
+                                     MessageTray.Urgency.HIGH);
+            }));
             wrapper._deviceStateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
                 this._syncSectionTitle(dev.category);
             }));
             wrapper._destroyId = wrapper.connect('destroy', function(wrapper) {
-                //wrapper.disconnect(wrapper._networkLostId);
-                //wrapper.disconnect(wrapper._activationFailedId);
+                wrapper.disconnect(wrapper._networkLostId);
+                wrapper.disconnect(wrapper._activationFailedId);
                 wrapper.disconnect(wrapper._deviceStateChangedId);
+                wrapper.disconnect(wrapper._destroyId);
             });
             let section = this._devices[wrapper.category].section;
             let devices = this._devices[wrapper.category].devices;
@@ -1837,11 +1814,8 @@ NMApplet.prototype = {
                 active._primaryDevice.setActiveConnection(null);
                 active._primaryDevice = null;
             }
-            if (active._notifyStateId) {
-                active.disconnect(active._notifyStateId);
-                active._notifyStateId = 0;
-            }
             if (active._inited) {
+                active.disconnect(active._notifyStateId);
                 active.disconnect(active._notifyDefaultId);
                 active.disconnect(active._notifyDefault6Id);
                 active._inited = false;
@@ -1859,14 +1833,7 @@ NMApplet.prototype = {
             if (!a._inited) {
                 a._notifyDefaultId = a.connect('notify::default', Lang.bind(this, this._updateIcon));
                 a._notifyDefault6Id = a.connect('notify::default6', Lang.bind(this, this._updateIcon));
-                if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING) // prepare to notify to the user
-                    a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._notifyActiveConnection));
-                else {
-                    // notify as soon as possible
-                    Mainloop.idle_add(Lang.bind(this, function() {
-                        this._notifyActiveConnection(a);
-                    }));
-                }
+                a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._updateIcon));
 
                 a._inited = true;
             }
@@ -1914,63 +1881,6 @@ NMApplet.prototype = {
         }
 
         this._mainConnection = activating || default_ip4 || default_ip6 || this._activeConnections[0] || null;
-    },
-
-    _notifyActiveConnection: function(active) {
-        // FIXME: duplicate notifications when nm-applet is running
-        // This code will come back when nm-applet is killed
-        this._syncNMState();
-        return;
-
-        if (active.state == NetworkManager.ActiveConnectionState.ACTIVATED) {
-
-            // notify only connections that are visible
-            if (active._connection) {
-                this._ensureSource();
-
-                let icon;
-                let banner;
-                switch (active._section) {
-                case NMConnectionCategory.WWAN:
-                    icon = 'network-cellular-signal-excellent';
-                    banner = _("You're now connected to mobile broadband connection '%s'").format(active._connection._name);
-                    break;
-                case NMConnectionCategory.WIRELESS:
-                    icon = 'network-wireless-signal-excellent';
-                    banner = _("You're now connected to wireless network '%s'").format(active._connection._name);
-                    break;
-                case NMConnectionCategory.WIRED:
-                    icon = 'network-wired';
-                    banner = _("You're now connected to wired network '%s'").format(active._connection._name);
-                    break;
-                case NMConnectionCategory.VPN:
-                    icon = 'network-vpn';
-                    banner = _("You're now connected to VPN network '%s'").format(active._connection._name);
-                    break;
-                default:
-                    // a fallback for a generic 'connected' icon
-                    icon = 'network-transmit-receive';
-                    banner = _("You're now connected to '%s'").format(active._connection._name);
-                }
-
-                let iconActor = new St.Icon({ icon_name: icon,
-                                              icon_type: St.IconType.SYMBOLIC,
-                                              icon_size: this._source.ICON_SIZE
-                                            });
-                let notification = new MessageTray.Notification(this._source,
-                                                                _("Connection established"),
-                                                                banner,
-                                                                { icon: iconActor });
-                this._source.notify(notification);
-            }
-
-            if (active._stateChangeId) {
-                active.disconnect(active._stateChangeId);
-                active._stateChangeId = 0;
-            }
-        }
-
-        this._syncNMState();
     },
 
     _readConnections: function() {
