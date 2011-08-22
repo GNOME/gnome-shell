@@ -31,7 +31,7 @@ struct _CoglOnscreenTemplate
 {
   CoglObject _parent;
 
-  CoglSwapChain *swap_chain;
+  CoglFramebufferConfig config;
 };
 
 #endif /* __COGL_ONSCREEN_TEMPLATE_PRIVATE_H */

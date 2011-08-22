@@ -316,7 +316,8 @@ pixel_format_is_better (const PIXELFORMATDESCRIPTOR *pfa,
 }
 
 static int
-choose_pixel_format (HDC dc, PIXELFORMATDESCRIPTOR *pfd)
+choose_pixel_format (CoglFramebufferConfig *config,
+                     HDC dc, PIXELFORMATDESCRIPTOR *pfd)
 {
   int i, num_formats, best_pf = 0;
   PIXELFORMATDESCRIPTOR best_pfd;
@@ -341,6 +342,11 @@ choose_pixel_format (HDC dc, PIXELFORMATDESCRIPTOR *pfd)
              already found */
           (best_pf == 0 || pixel_format_is_better (&best_pfd, pfd)))
         {
+          if (config->swap_chain->has_alpha && pfd->cAlphaBits == 0)
+            continue;
+          if (config->need_stencil && pfd->cStencilBits == 0)
+            continue;
+
           best_pf = i;
           best_pfd = *pfd;
         }
@@ -445,7 +451,8 @@ create_context (CoglDisplay *display, GError **error)
 
       wgl_display->dummy_dc = GetDC (wgl_display->dummy_hwnd);
 
-      pf = choose_pixel_format (wgl_display->dummy_dc, &pfd);
+      pf = choose_pixel_format (&display->onscreen_template->config,
+                                wgl_display->dummy_dc, &pfd);
 
       if (pf == 0 || !SetPixelFormat (wgl_display->dummy_dc, pf, &pfd))
         {
@@ -784,9 +791,10 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   wgl_onscreen->client_dc = GetDC (hwnd);
 
   /* Use the same pixel format as the dummy DC from the renderer */
-  pf = GetPixelFormat (wgl_display->dummy_dc);
-  DescribePixelFormat (wgl_display->dummy_dc, pf, sizeof (pfd), &pfd);
-  if (!SetPixelFormat (wgl_onscreen->client_dc, pf, &pfd))
+  pf = choose_pixel_format (&framebuffer->config,
+                            wgl_onscreen->client_dc, &pfd);
+
+  if (pf == 0 || !SetPixelFormat (wgl_onscreen->client_dc, pf, &pfd))
     {
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,

@@ -44,6 +44,8 @@
 #include "cogl-texture-2d-private.h"
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-framebuffer-private.h"
+#include "cogl-swap-chain-private.h"
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -63,6 +65,7 @@
 #endif
 
 #define COGL_ONSCREEN_X11_EVENT_MASK StructureNotifyMask
+#define MAX_GLX_CONFIG_ATTRIBS 30
 
 typedef struct _CoglContextGLX
 {
@@ -452,33 +455,59 @@ update_winsys_features (CoglContext *context, GError **error)
   return TRUE;
 }
 
+static void
+glx_attributes_from_framebuffer_config (CoglDisplay *display,
+                                        CoglFramebufferConfig *config,
+                                        int *attributes)
+{
+  CoglGLXRenderer *glx_renderer = display->renderer->winsys;
+  int i = 0;
+
+  attributes[i++] = GLX_DRAWABLE_TYPE;
+  attributes[i++] = GLX_WINDOW_BIT;
+
+  attributes[i++] = GLX_RENDER_TYPE;
+  attributes[i++] = GLX_RGBA_BIT;
+
+  attributes[i++] = GLX_DOUBLEBUFFER;
+  attributes[i++] = GL_TRUE;
+
+  attributes[i++] = GLX_RED_SIZE;
+  attributes[i++] = 1;
+  attributes[i++] = GLX_GREEN_SIZE;
+  attributes[i++] = 1;
+  attributes[i++] = GLX_BLUE_SIZE;
+  attributes[i++] = 1;
+  attributes[i++] = GLX_ALPHA_SIZE;
+  attributes[i++] = config->swap_chain->has_alpha ? 1 : GLX_DONT_CARE;
+  attributes[i++] = GLX_DEPTH_SIZE;
+  attributes[i++] = 1;
+  attributes[i++] = GLX_STENCIL_SIZE;
+  attributes[i++] = config->need_stencil ? 1: GLX_DONT_CARE;
+
+  attributes[i++] = None;
+
+  g_assert (i < MAX_GLX_CONFIG_ATTRIBS);
+}
+
 /* It seems the GLX spec never defined an invalid GLXFBConfig that
  * we could overload as an indication of error, so we have to return
  * an explicit boolean status. */
 static gboolean
 find_fbconfig (CoglDisplay *display,
-               gboolean with_alpha,
+               CoglFramebufferConfig *config,
                GLXFBConfig *config_ret,
                GError **error)
 {
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
   GLXFBConfig *configs = NULL;
-  int n_configs, i;
-  static const int attributes[] = {
-    GLX_DRAWABLE_TYPE,    GLX_WINDOW_BIT,
-    GLX_RENDER_TYPE,      GLX_RGBA_BIT,
-    GLX_DOUBLEBUFFER,     GL_TRUE,
-    GLX_RED_SIZE,         1,
-    GLX_GREEN_SIZE,       1,
-    GLX_BLUE_SIZE,        1,
-    GLX_ALPHA_SIZE,       1,
-    GLX_DEPTH_SIZE,       1,
-    GLX_STENCIL_SIZE,     1,
-    None
-  };
+  int n_configs;
+  static int attributes[MAX_GLX_CONFIG_ATTRIBS];
   gboolean ret = TRUE;
   int xscreen_num = DefaultScreen (xlib_renderer->xdpy);
+
+  glx_attributes_from_framebuffer_config (display, config, attributes);
 
   configs = glx_renderer->glXChooseFBConfig (xlib_renderer->xdpy,
                                              xscreen_num,
@@ -493,8 +522,10 @@ find_fbconfig (CoglDisplay *display,
       goto done;
     }
 
-  if (with_alpha)
+  if (config->swap_chain->has_alpha)
     {
+      int i;
+
       for (i = 0; i < n_configs; i++)
         {
           XVisualInfo *vinfo;
@@ -540,7 +571,8 @@ create_context (CoglDisplay *display, GError **error)
   CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
-  gboolean support_transparent_windows;
+  gboolean support_transparent_windows =
+    display->onscreen_template->config.swap_chain->has_alpha;
   GLXFBConfig config;
   GError *fbconfig_error = NULL;
   XSetWindowAttributes attrs;
@@ -550,14 +582,8 @@ create_context (CoglDisplay *display, GError **error)
 
   g_return_val_if_fail (glx_display->glx_context == NULL, TRUE);
 
-  if (display->onscreen_template->swap_chain &&
-      display->onscreen_template->swap_chain->has_alpha)
-    support_transparent_windows = TRUE;
-  else
-    support_transparent_windows = FALSE;
-
   glx_display->found_fbconfig =
-    find_fbconfig (display, support_transparent_windows, &config,
+    find_fbconfig (display, &display->onscreen_template->config, &config,
                    &fbconfig_error);
   if (!glx_display->found_fbconfig)
     {
@@ -762,8 +788,22 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   Window xwin;
   CoglOnscreenXlib *xlib_onscreen;
   CoglOnscreenGLX *glx_onscreen;
+  GLXFBConfig fbconfig;
+  GError *fbconfig_error = NULL;
 
   g_return_val_if_fail (glx_display->glx_context, FALSE);
+
+  if (!find_fbconfig (display, &framebuffer->config,
+                      &fbconfig,
+                      &fbconfig_error))
+    {
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "Unable to find suitable fbconfig for the GLX context: %s",
+                   fbconfig_error->message);
+      g_error_free (fbconfig_error);
+      return FALSE;
+    }
 
   /* FIXME: We need to explicitly Select for ConfigureNotify events.
    * For foreign windows we need to be careful not to mess up any
@@ -823,7 +863,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       _cogl_xlib_renderer_trap_errors (display->renderer, &state);
 
       xvisinfo = glx_renderer->glXGetVisualFromFBConfig (xlib_renderer->xdpy,
-                                                         glx_display->fbconfig);
+                                                         fbconfig);
       if (xvisinfo == NULL)
         {
           g_set_error (error, COGL_WINSYS_ERROR,
@@ -887,7 +927,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
     {
       glx_onscreen->glxwin =
         glx_renderer->glXCreateWindow (xlib_renderer->xdpy,
-                                       glx_display->fbconfig,
+                                       fbconfig,
                                        xlib_onscreen->xwin,
                                        NULL);
     }

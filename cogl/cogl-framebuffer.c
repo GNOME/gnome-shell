@@ -36,6 +36,7 @@
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-onscreen-template-private.h"
 #include "cogl-clip-stack.h"
 #include "cogl-journal-private.h"
 #include "cogl-winsys-private.h"
@@ -957,6 +958,16 @@ _cogl_offscreen_free (CoglOffscreen *offscreen)
   g_free (offscreen);
 }
 
+static void
+_cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
+                                   CoglOnscreenTemplate *onscreen_template)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+
+  framebuffer->config = onscreen_template->config;
+  cogl_object_ref (framebuffer->config.swap_chain);
+}
+
 /* XXX: While we still have backend in Clutter we need a dummy object
  * to represent the CoglOnscreen framebuffer that the backend
  * creates... */
@@ -975,6 +986,8 @@ _cogl_onscreen_new (void)
                           0x1eadbeef); /* height */
   /* NB: make sure to pass positive width/height numbers here
    * because otherwise we'll hit input validation assertions!*/
+
+  _cogl_onscreen_init_from_template (onscreen, ctx->display->onscreen_template);
 
   COGL_FRAMEBUFFER (onscreen)->allocated = TRUE;
 
@@ -1007,6 +1020,9 @@ cogl_onscreen_new (CoglContext *ctx, int width, int height)
                           width, /* width */
                           height); /* height */
 
+  _cogl_onscreen_init_from_template (onscreen, ctx->display->onscreen_template);
+
+  /* FIXME: This should be configurable via the template too */
   onscreen->swap_throttled = TRUE;
 
   return _cogl_onscreen_object_new (onscreen);
