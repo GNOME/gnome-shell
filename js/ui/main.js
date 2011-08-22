@@ -149,6 +149,7 @@ function start() {
     layoutManager.init();
     overview.init();
     statusIconDispatcher.start(messageTray.actor);
+    panel.startStatusArea();
 
     _startDate = new Date();
 
@@ -188,7 +189,6 @@ function start() {
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
 
-    panel.startStatusArea();
     panel.startupAnimation();
 
     global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
