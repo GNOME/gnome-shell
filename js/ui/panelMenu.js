@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Lang = imports.lang;
@@ -80,8 +81,18 @@ Button.prototype = {
             this.actor.add_style_pseudo_class('active');
         else
             this.actor.remove_style_pseudo_class('active');
+    },
+
+    destroy: function() {
+        this.actor._delegate = null;
+
+        this.menu.destroy();
+        this.actor.destroy();
+
+        this.emit('destroy');
     }
 };
+Signals.addSignalMethods(Button.prototype);
 
 /* SystemStatusButton:
  *

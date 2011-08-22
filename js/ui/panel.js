@@ -962,16 +962,36 @@ Panel.prototype = {
                 // This icon is not implemented (this is a bug)
                 continue;
             }
-            let indicator = new constructor();
-            this._statusBox.add(indicator.actor);
-            this._menus.addMenu(indicator.menu);
 
-            this._statusArea[role] = indicator;
+            let indicator = new constructor();
+            this.addToStatusArea(role, indicator, i-1);
         }
 
         // PopupMenuManager depends on menus being added in order for
         // keyboard navigation
         this._menus.addMenu(this._userMenu.menu);
+    },
+
+    addToStatusArea: function(role, indicator, position) {
+        if (this._statusArea[role])
+            throw new Error('Extension point conflict: there is already a status indicator for role ' + role);
+
+        if (!(indicator instanceof PanelMenu.Button))
+            throw new TypeError('Status indicator must be an instance of PanelMenu.Button');
+
+        if (!position)
+            position = 0;
+
+        this._statusBox.insert_actor(indicator.actor, position);
+        this._menus.addMenu(indicator.menu);
+
+        this._statusArea[role] = indicator;
+        let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
+            this._statusArea[role] = null;
+            emitter.disconnect(destroyId);
+        }));
+
+        return indicator;
     },
 
     startupAnimation: function() {
