@@ -402,6 +402,7 @@ StTooltip StLabel {
 .status-chooser-user-name {
     font-weight: bold;
     font-size: 1.3em;
+    min-width: 120pt;
 }
 
 .status-chooser-combo {

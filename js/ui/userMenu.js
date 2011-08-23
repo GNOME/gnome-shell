@@ -5,6 +5,7 @@ const DBus = imports.dbus;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Tp = imports.gi.TelepathyGLib;
@@ -22,7 +23,6 @@ const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 
-const WRAP_WIDTH = 150;
 const DIALOG_ICON_SIZE = 64;
 
 const IMStatus = {
@@ -87,28 +87,20 @@ IMUserNameItem.prototype = {
 
         this.label = new St.Label();
         this.label.clutter_text.set_line_wrap(true);
+        this.label.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
         this._wrapper.add_actor(this.label);
     },
 
     _wrapperGetPreferredWidth: function(actor, forHeight, alloc) {
-        [alloc.min_size, alloc.natural_size] = this.label.get_preferred_width(-1);
-        if (alloc.natural_size > WRAP_WIDTH)
-            alloc.natural_size = WRAP_WIDTH;
+        alloc.min_size = 1;
+        alloc.natural_size = 1;
     },
 
     _wrapperGetPreferredHeight: function(actor, forWidth, alloc) {
-        let minWidth, natWidth;
         [alloc.min_size, alloc.natural_size] = this.label.get_preferred_height(forWidth);
-        [minWidth, natWidth] = this.label.get_preferred_width(-1);
-        if (natWidth > WRAP_WIDTH) {
-            alloc.min_size *= 2;
-            alloc.natural_size *= 2;
-        }
     },
 
     _wrapperAllocate: function(actor, box, flags) {
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
         this.label.allocate(box, flags);
     }
 };
@@ -207,9 +199,6 @@ IMStatusChooserItem.prototype = {
     },
 
     setColumnWidths: function(widths) {
-        this._columnWidths = PopupMenu.PopupBaseMenuItem.prototype.getColumnWidths.call(this);
-        let sectionWidths = this._section.getColumnWidths();
-        this._section.setColumnWidths(sectionWidths);
     },
 
     _updateUser: function() {

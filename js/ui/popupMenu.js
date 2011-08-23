@@ -1580,7 +1580,8 @@ PopupComboBoxMenuItem.prototype = {
         this.addActor(this._itemBox);
 
         let expander = new St.Label({ text: '\u2304' });
-        this.addActor(expander, { align: St.Align.END });
+        this.addActor(expander, { align: St.Align.END,
+                                  span: -1 });
 
         this._menu = new PopupComboMenu(this.actor);
         Main.uiGroup.add_actor(this._menu.actor);
