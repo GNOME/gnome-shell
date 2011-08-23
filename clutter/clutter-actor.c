@@ -8329,7 +8329,17 @@ clutter_actor_unparent (ClutterActor *self)
 
    /* We take this opportunity to invalidate any queue redraw entry
     * associated with the actor and descendants since we won't be able to
-    * determine the appropriate stage after this. */
+    * determine the appropriate stage after this.
+    *
+    * we do this after we updated the mapped state because actors might
+    * end up queueing redraws inside their mapped/unmapped virtual
+    * functions, and if we invalidate the redraw entry we could end up
+    * with an inconsistent state and weird memory corruption. see
+    * bugs:
+    *
+    *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2621
+    *   https://bugzilla.gnome.org/show_bug.cgi?id=652036
+    */
   _clutter_actor_traverse (self,
                            0,
                            invalidate_queue_redraw_entry,
