@@ -88,11 +88,7 @@ Indicator.prototype = {
         this._applet.connect('notify::show-full-menu', Lang.bind(this, this._updateFullMenu));
         this._updateFullMenu();
 
-        this.menu.addAction(_("Bluetooth Settings"), function() {
-            Main.overview.hide()
-            let app = Shell.AppSystem.get_default().lookup_setting('bluetooth-properties.desktop');
-            app.activate();
-        });
+        this.menu.addSettingsAction(_("Bluetooth Settings"), 'bluetooth-properties.desktop');
 
         this._applet.connect('pincode-request', Lang.bind(this, this._pinRequest));
         this._applet.connect('confirm-request', Lang.bind(this, this._confirmRequest));
@@ -272,21 +268,15 @@ Indicator.prototype = {
 
         switch (device.type) {
         case GnomeBluetoothApplet.Type.KEYBOARD:
-            item.menu.addAction(_("Keyboard Settings"), function() {
-                GLib.spawn_command_line_async('gnome-control-center keyboard');
-            });
+            item.menu.addSettingsAction(_("Keyboard Settings"), 'gnome-keyboard-panel.desktop');
             break;
         case GnomeBluetoothApplet.Type.MOUSE:
-            item.menu.addAction(_("Mouse Settings"), function() {
-                GLib.spawn_command_line_async('gnome-control-center mouse');
-            });
+            item.menu.addSettingsAction(_("Mouse Settings"), 'gnome-mouse-panel.desktop');
             break;
         case GnomeBluetoothApplet.Type.HEADSET:
         case GnomeBluetoothApplet.Type.HEADPHONES:
         case GnomeBluetoothApplet.Type.OTHER_AUDIO:
-            item.menu.addAction(_("Sound Settings"), function() {
-                GLib.spawn_command_line_async('gnome-control-center sound');
-            });
+            item.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
             break;
         default:
             break;

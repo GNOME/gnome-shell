@@ -60,11 +60,7 @@ Indicator.prototype = {
         this.menu.addMenuItem(this._inputSlider);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addAction(_("Sound Settings"), function() {
-            Main.overview.hide();
-            let app = Shell.AppSystem.get_default().lookup_setting('gnome-sound-panel.desktop');
-            app.activate();
-        });
+        this.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
 
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         this._control.open();

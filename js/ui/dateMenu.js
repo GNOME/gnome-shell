@@ -84,13 +84,14 @@ DateMenuButton.prototype = {
                                }));
         vbox.add(this._calendar.actor);
 
-        item = new PopupMenu.PopupSeparatorMenuItem();
-        item.setColumnWidths(1);
-        vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
-        item = new PopupMenu.PopupMenuItem(_("Date and Time Settings"));
-        item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
+        item = this.menu.addSettingsAction(_("Date and Time Settings"), 'gnome-datetime-panel.desktop');
+
+        let separator = new PopupMenu.PopupSeparatorMenuItem();
+        separator.setColumnWidths(1);
+        vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+
         item.actor.can_focus = false;
-        vbox.add(item.actor);
+        item.actor.reparent(vbox);
 
         // Add vertical separator
 
@@ -199,13 +200,6 @@ DateMenuButton.prototype = {
 
         Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateClockAndDate));
         return false;
-    },
-
-    _onPreferencesActivate: function() {
-        this.menu.close();
-        Main.overview.hide();
-        let app = Shell.AppSystem.get_default().lookup_setting('gnome-datetime-panel.desktop');
-        app.activate();
     },
 
     _onOpenCalendarActivate: function() {

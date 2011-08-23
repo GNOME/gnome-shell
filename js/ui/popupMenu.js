@@ -803,11 +803,28 @@ PopupMenuBase.prototype = {
     },
 
     addAction: function(title, callback) {
-        var menuItem = new PopupMenuItem(title);
+        let menuItem = new PopupMenuItem(title);
         this.addMenuItem(menuItem);
         menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             callback(event);
         }));
+
+        return menuItem;
+    },
+
+    addSettingsAction: function(title, desktopFile) {
+        let menuItem = this.addAction(title, function() {
+                           let app = Shell.AppSystem.get_default().lookup_setting(desktopFile);
+
+                           if (!app) {
+                               log('Settings panel for desktop file ' + desktopFile + ' could not be loaded!');
+                               return;
+                           }
+
+                           Main.overview.hide();
+                           app.activate();
+                       });
+        return menuItem;
     },
 
     /**

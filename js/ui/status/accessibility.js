@@ -88,11 +88,7 @@ ATIndicator.prototype = {
         this.menu.addMenuItem(mouseKeys);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addAction(_("Universal Access Settings"), function() {
-            Main.overview.hide();
-            let app = Shell.AppSystem.get_default().lookup_setting('gnome-universal-access-panel.desktop');
-            app.activate();
-        });
+        this.menu.addSettingsAction(_("Universal Access Settings"), 'gnome-universal-access-panel.desktop');
     },
 
     _buildItemExtended: function(string, initial_value, writable, on_set) {

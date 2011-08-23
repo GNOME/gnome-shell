@@ -1609,12 +1609,7 @@ NMApplet.prototype = {
         this._devices.vpn.section.actor.hide();
         this.menu.addMenuItem(this._devices.vpn.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this.menu.addAction(_("Network Settings"), function() {
-            Main.overview.hide();
-            let app = Shell.AppSystem.get_default().lookup_setting('gnome-network-panel.desktop');
-            app.activate();
-        });
+        this.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
 
         this._activeConnections = [ ];
         this._connections = [ ];

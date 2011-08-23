@@ -72,11 +72,7 @@ XKBIndicator.prototype = {
             Main.overview.hide();
             Util.spawn(['gkbd-keyboard-display', '-g', String(this._config.get_current_group() + 1)]);
         }));
-        this.menu.addAction(_("Region and Language Settings"), function() {
-            Main.overview.hide();
-            let app = Shell.AppSystem.get_default().lookup_setting('gnome-region-panel.desktop');
-            app.activate();
-        });
+        this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
     },
 
     _adjust_group_names: function(names) {

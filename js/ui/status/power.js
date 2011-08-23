@@ -77,13 +77,9 @@ Indicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._otherDevicePosition = 2;
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this.menu.addAction(_("Power Settings"),function() {
-            Main.overview.hide();
-            let app = Shell.AppSystem.get_default().lookup_setting('gnome-power-panel.desktop');
-            app.activate();
-        });
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
 
         this._proxy.connect('Changed', Lang.bind(this, this._devicesChanged));
         this._devicesChanged();
