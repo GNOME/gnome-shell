@@ -44,11 +44,16 @@ let contactFeatures = [Tp.ContactFeature.ALIAS,
 
 function makeMessageFromTpMessage(tpMessage, direction) {
     let [text, flags] = tpMessage.to_text();
+
+    let timestamp = tpMessage.get_sent_timestamp();
+    if (timestamp == 0)
+        timestamp = tpMessage.get_received_timestamp();
+
     return {
         messageType: tpMessage.get_message_type(),
         text: text,
         sender: tpMessage.sender.alias,
-        timestamp: tpMessage.get_received_timestamp(),
+        timestamp: timestamp,
         direction: direction
     };
 }
