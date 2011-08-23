@@ -133,8 +133,22 @@ static ClutterActor *
 window_backed_app_get_icon (ShellApp *app,
                             int       size)
 {
-  MetaWindow *window = window_backed_app_get_window (app);
-  ClutterActor *actor = st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
+  MetaWindow *window;
+  ClutterActor *actor;
+
+  /* During a state transition from running to not-running for
+   * window-backend apps, it's possible we get a request for the icon.
+   * Avoid asserting here and just return an empty image.
+   */
+  if (app->running_state == NULL)
+    {
+      actor = clutter_texture_new ();
+      g_object_set (actor, "opacity", 0, "width", (float) size, "height", (float) size, NULL);
+      return actor;
+    }
+
+  window = window_backed_app_get_window (app);
+  actor = st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
                                                                G_OBJECT (window),
                                                                "icon");
   g_object_set (actor, "width", (float) size, "height", (float) size, NULL);
