@@ -54,6 +54,12 @@ typedef struct
   int samples_per_pixel;
 } CoglFramebufferConfig;
 
+/* Flags to pass to _cogl_offscreen_new_to_texture_full */
+typedef enum
+{
+  COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL = 1
+} CoglOffscreenFlags;
+
 struct _CoglFramebuffer
 {
   CoglObject          _parent;
@@ -121,13 +127,15 @@ typedef struct _CoglOffscreen
   GSList          *renderbuffers;
 
   CoglTexture    *texture;
-} CoglOffscreen;
+  int             texture_level;
+  int             texture_level_width;
+  int             texture_level_height;
 
-/* Flags to pass to _cogl_offscreen_new_to_texture_full */
-typedef enum
-{
-  COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL = 1
-} CoglOffscreenFlags;
+  /* FIXME: _cogl_offscreen_new_to_texture_full should be made to use
+   * fb->config to configure if we want a depth or stencil buffer so
+   * we can get rid of these flags */
+  CoglOffscreenFlags create_flags;
+} CoglOffscreen;
 
 #define COGL_OFFSCREEN(X) ((CoglOffscreen *)(X))
 

@@ -202,8 +202,8 @@ _cogl_gl_update_features (CoglContext *context,
   if (context->glBlitFramebuffer)
     flags |= COGL_FEATURE_OFFSCREEN_BLIT;
 
-  if (context->glRenderbufferStorageMultisample)
-    flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
+  if (context->glRenderbufferStorageMultisampleIMG)
+      flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 1) ||
       _cogl_check_extension ("GL_EXT_pixel_buffer_object", gl_extensions))

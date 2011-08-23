@@ -120,6 +120,12 @@ COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (offscreen);
  * abstract class manually.
  */
 
+GQuark
+cogl_framebuffer_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-framebuffer-error-quark");
+}
+
 gboolean
 _cogl_is_framebuffer (void *object)
 {
@@ -681,144 +687,17 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
   framebuffer->dirty_bitmasks = FALSE;
 }
 
-typedef struct
-{
-  CoglTexture *texture;
-  unsigned int level;
-  unsigned int level_width;
-  unsigned int level_height;
-} CoglFramebufferTryFBOData;
-
-static gboolean
-try_creating_fbo (CoglOffscreen *offscreen,
-                  TryFBOFlags flags,
-                  CoglFramebufferTryFBOData *data)
-{
-  GLuint gl_depth_stencil_handle;
-  GLuint gl_depth_handle;
-  GLuint gl_stencil_handle;
-  GLuint tex_gl_handle;
-  GLenum tex_gl_target;
-  GLuint fbo_gl_handle;
-  GLenum status;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
-  if (!cogl_texture_get_gl_texture (data->texture,
-                                    &tex_gl_handle, &tex_gl_target))
-    return FALSE;
-
-  if (tex_gl_target != GL_TEXTURE_2D
-#ifdef HAVE_COGL_GL
-      && tex_gl_target != GL_TEXTURE_RECTANGLE_ARB
-#endif
-      )
-    return FALSE;
-
-  /* We are about to generate and bind a new fbo, so we pretend to
-   * change framebuffer state so that the old framebuffer will be
-   * rebound again before drawing. */
-  ctx->dirty_bound_framebuffer = 1;
-
-  /* Generate framebuffer */
-  ctx->glGenFramebuffers (1, &fbo_gl_handle);
-  GE (ctx, glBindFramebuffer (GL_FRAMEBUFFER, fbo_gl_handle));
-  offscreen->fbo_handle = fbo_gl_handle;
-
-  GE (ctx, glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                                   tex_gl_target, tex_gl_handle, data->level));
-
-  if (flags & _TRY_DEPTH_STENCIL)
-    {
-      /* Create a renderbuffer for depth and stenciling */
-      GE (ctx, glGenRenderbuffers (1, &gl_depth_stencil_handle));
-      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_stencil_handle));
-      GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_STENCIL,
-                                      data->level_width,
-                                      data->level_height));
-      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, 0));
-      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
-                                          GL_STENCIL_ATTACHMENT,
-                                          GL_RENDERBUFFER,
-                                          gl_depth_stencil_handle));
-      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
-                                          GL_DEPTH_ATTACHMENT,
-                                          GL_RENDERBUFFER,
-                                          gl_depth_stencil_handle));
-      offscreen->renderbuffers =
-        g_slist_prepend (offscreen->renderbuffers,
-                         GUINT_TO_POINTER (gl_depth_stencil_handle));
-    }
-
-  if (flags & _TRY_DEPTH)
-    {
-      GE (ctx, glGenRenderbuffers (1, &gl_depth_handle));
-      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_handle));
-      /* For now we just ask for GL_DEPTH_COMPONENT16 since this is all that's
-       * available under GLES */
-      GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT16,
-                                 data->level_width,
-                                 data->level_height));
-      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, 0));
-      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
-                                     GL_DEPTH_ATTACHMENT,
-                                     GL_RENDERBUFFER, gl_depth_handle));
-      offscreen->renderbuffers =
-        g_slist_prepend (offscreen->renderbuffers,
-                         GUINT_TO_POINTER (gl_depth_handle));
-    }
-
-  if (flags & _TRY_STENCIL)
-    {
-      GE (ctx, glGenRenderbuffers (1, &gl_stencil_handle));
-      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, gl_stencil_handle));
-      GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, GL_STENCIL_INDEX8,
-                                 data->level_width,
-                                 data->level_height));
-      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, 0));
-      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
-                                     GL_STENCIL_ATTACHMENT,
-                                     GL_RENDERBUFFER, gl_stencil_handle));
-      offscreen->renderbuffers =
-        g_slist_prepend (offscreen->renderbuffers,
-                         GUINT_TO_POINTER (gl_stencil_handle));
-    }
-
-  /* Make sure it's complete */
-  status = ctx->glCheckFramebufferStatus (GL_FRAMEBUFFER);
-
-  if (status != GL_FRAMEBUFFER_COMPLETE)
-    {
-      GSList *l;
-
-      GE (ctx, glDeleteFramebuffers (1, &fbo_gl_handle));
-
-      for (l = offscreen->renderbuffers; l; l = l->next)
-        {
-          GLuint renderbuffer = GPOINTER_TO_UINT (l->data);
-          GE (ctx, glDeleteRenderbuffers (1, &renderbuffer));
-        }
-
-      g_slist_free (offscreen->renderbuffers);
-      offscreen->renderbuffers = NULL;
-
-      return FALSE;
-    }
-
-  return TRUE;
-}
-
 CoglHandle
 _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
                                      unsigned int level)
 {
-  CoglOffscreen      *offscreen;
-  static TryFBOFlags  flags;
-  static gboolean     have_working_flags = FALSE;
-  unsigned int        i;
-  CoglFramebufferTryFBOData data;
-  gboolean            fbo_created;
+  CoglOffscreen *offscreen;
+  CoglFramebuffer *fb;
+  int level_width;
+  int level_height;
+  int i;
+  CoglHandle ret;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -833,98 +712,49 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
   if (cogl_texture_is_sliced (texture))
     return COGL_INVALID_HANDLE;
 
-  data.texture = texture;
-  data.level = level;
-
   /* Calculate the size of the texture at this mipmap level to ensure
      that it's a valid level */
-  data.level_width = cogl_texture_get_width (texture);
-  data.level_height = cogl_texture_get_height (texture);
+  level_width = cogl_texture_get_width (texture);
+  level_height = cogl_texture_get_height (texture);
 
   for (i = 0; i < level; i++)
     {
       /* If neither dimension can be further divided then the level is
          invalid */
-      if (data.level_width == 1 && data.level_height == 1)
-        return COGL_INVALID_HANDLE;
+      if (level_width == 1 && level_height == 1)
+        {
+          g_warning ("Invalid texture level passed to "
+                     "_cogl_offscreen_new_to_texture_full");
+          return COGL_INVALID_HANDLE;
+        }
 
-      if (data.level_width > 1)
-        data.level_width >>= 1;
-      if (data.level_height > 1)
-        data.level_height >>= 1;
+      if (level_width > 1)
+        level_width >>= 1;
+      if (level_height > 1)
+        level_height >>= 1;
     }
-
-  /* XXX: The framebuffer_object spec isn't clear in defining whether attaching
-   * a texture as a renderbuffer with mipmap filtering enabled while the
-   * mipmaps have not been uploaded should result in an incomplete framebuffer
-   * object. (different drivers make different decisions)
-   *
-   * To avoid an error with drivers that do consider this a problem we
-   * explicitly set non mipmapped filters here. These will later be reset when
-   * the texture is actually used for rendering according to the filters set on
-   * the corresponding CoglPipeline.
-   */
-  _cogl_texture_set_filters (texture, GL_NEAREST, GL_NEAREST);
 
   offscreen = g_new0 (CoglOffscreen, 1);
-  offscreen->texture = texture;
+  offscreen->texture = cogl_object_ref (texture);
+  offscreen->texture_level = level;
+  offscreen->texture_level_width = level_width;
+  offscreen->texture_level_height = level_height;
+  offscreen->create_flags = create_flags;
 
-  if ((create_flags & COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL))
-    fbo_created = try_creating_fbo (offscreen, 0, &data);
-  else
-    {
-      if ((have_working_flags &&
-           try_creating_fbo (offscreen, flags, &data)) ||
-#ifdef HAVE_COGL_GL
-          (ctx->driver == COGL_DRIVER_GL &&
-           try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, &data)) ||
-#endif
-          try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL,
-                            &data) ||
-          try_creating_fbo (offscreen, flags = _TRY_STENCIL, &data) ||
-          try_creating_fbo (offscreen, flags = _TRY_DEPTH, &data) ||
-          try_creating_fbo (offscreen, flags = 0, &data))
-        {
-          /* Record that the last set of flags succeeded so that we can
-             try that set first next time */
-          have_working_flags = TRUE;
-          fbo_created = TRUE;
-        }
-      else
-        fbo_created = FALSE;
-    }
+  fb = COGL_FRAMEBUFFER (offscreen);
 
-  if (fbo_created)
-    {
-      CoglOffscreen *ret;
-      CoglFramebuffer *fb = COGL_FRAMEBUFFER (offscreen);
+  _cogl_framebuffer_init (fb,
+                          ctx,
+                          COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
+                          cogl_texture_get_format (texture),
+                          level_width,
+                          level_height);
 
-      _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+  ret = _cogl_offscreen_object_new (offscreen);
 
-      _cogl_framebuffer_init (fb,
-                              ctx,
-                              COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
-                              cogl_texture_get_format (texture),
-                              data.level_width,
-                              data.level_height);
+  _cogl_texture_associate_framebuffer (texture, fb);
 
-      cogl_object_ref (offscreen->texture);
-
-      ret = _cogl_offscreen_object_new (offscreen);
-      _cogl_texture_associate_framebuffer (texture, COGL_FRAMEBUFFER (ret));
-
-      fb->allocated = TRUE;
-
-      return ret;
-    }
-  else
-    {
-      g_free (offscreen);
-      /* XXX: This API should probably have been defined to take a GError */
-      g_warning ("%s: Failed to create an OpenGL framebuffer", G_STRLOC);
-
-      return COGL_INVALID_HANDLE;
-    }
+  return ret;
 }
 
 CoglHandle
@@ -1028,6 +858,221 @@ cogl_onscreen_new (CoglContext *ctx, int width, int height)
   return _cogl_onscreen_object_new (onscreen);
 }
 
+static gboolean
+try_creating_fbo (CoglOffscreen *offscreen,
+                  TryFBOFlags flags)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (offscreen);
+  CoglContext *ctx = fb->context;
+  GLuint gl_depth_stencil_handle;
+  GLuint gl_depth_handle;
+  GLuint gl_stencil_handle;
+  GLuint tex_gl_handle;
+  GLenum tex_gl_target;
+  GLuint fbo_gl_handle;
+  GLenum status;
+  int n_samples;
+  int height;
+  int width;
+
+  if (!cogl_texture_get_gl_texture (offscreen->texture,
+                                    &tex_gl_handle, &tex_gl_target))
+    return FALSE;
+
+  if (tex_gl_target != GL_TEXTURE_2D
+#ifdef HAVE_COGL_GL
+      && tex_gl_target != GL_TEXTURE_RECTANGLE_ARB
+#endif
+      )
+    return FALSE;
+
+  if (fb->config.samples_per_pixel)
+    {
+      if (!ctx->glFramebufferTexture2DMultisampleIMG)
+        return FALSE;
+      n_samples = fb->config.samples_per_pixel;
+    }
+  else
+    n_samples = 0;
+
+  width = offscreen->texture_level_width;
+  height = offscreen->texture_level_height;
+
+  /* We are about to generate and bind a new fbo, so we pretend to
+   * change framebuffer state so that the old framebuffer will be
+   * rebound again before drawing. */
+  ctx->dirty_bound_framebuffer = 1;
+
+  /* Generate framebuffer */
+  ctx->glGenFramebuffers (1, &fbo_gl_handle);
+  GE (ctx, glBindFramebuffer (GL_FRAMEBUFFER, fbo_gl_handle));
+  offscreen->fbo_handle = fbo_gl_handle;
+
+  if (n_samples)
+    {
+      GE (ctx, glFramebufferTexture2DMultisampleIMG (GL_FRAMEBUFFER,
+                                                     GL_COLOR_ATTACHMENT0,
+                                                     tex_gl_target, tex_gl_handle,
+                                                     n_samples,
+                                                     offscreen->texture_level));
+    }
+  else
+    GE (ctx, glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                                     tex_gl_target, tex_gl_handle,
+                                     offscreen->texture_level));
+
+  if (flags & _TRY_DEPTH_STENCIL)
+    {
+      /* Create a renderbuffer for depth and stenciling */
+      GE (ctx, glGenRenderbuffers (1, &gl_depth_stencil_handle));
+      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_stencil_handle));
+      if (n_samples)
+        GE (ctx, glRenderbufferStorageMultisampleIMG (GL_RENDERBUFFER,
+                                                      n_samples,
+                                                      GL_DEPTH_STENCIL,
+                                                      width, height));
+      else
+        GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_STENCIL,
+                                        width, height));
+      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, 0));
+      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                          GL_STENCIL_ATTACHMENT,
+                                          GL_RENDERBUFFER,
+                                          gl_depth_stencil_handle));
+      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                          GL_DEPTH_ATTACHMENT,
+                                          GL_RENDERBUFFER,
+                                          gl_depth_stencil_handle));
+      offscreen->renderbuffers =
+        g_slist_prepend (offscreen->renderbuffers,
+                         GUINT_TO_POINTER (gl_depth_stencil_handle));
+    }
+
+  if (flags & _TRY_DEPTH)
+    {
+      GE (ctx, glGenRenderbuffers (1, &gl_depth_handle));
+      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_handle));
+      /* For now we just ask for GL_DEPTH_COMPONENT16 since this is all that's
+       * available under GLES */
+      if (n_samples)
+        GE (ctx, glRenderbufferStorageMultisampleIMG (GL_RENDERBUFFER,
+                                                      n_samples,
+                                                      GL_DEPTH_COMPONENT16,
+                                                      width, height));
+      else
+        GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT16,
+                                        width, height));
+      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, 0));
+      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                          GL_DEPTH_ATTACHMENT,
+                                          GL_RENDERBUFFER, gl_depth_handle));
+      offscreen->renderbuffers =
+        g_slist_prepend (offscreen->renderbuffers,
+                         GUINT_TO_POINTER (gl_depth_handle));
+    }
+
+  if (flags & _TRY_STENCIL)
+    {
+      GE (ctx, glGenRenderbuffers (1, &gl_stencil_handle));
+      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, gl_stencil_handle));
+      if (n_samples)
+        GE (ctx, glRenderbufferStorageMultisampleIMG (GL_RENDERBUFFER,
+                                                      n_samples,
+                                                      GL_STENCIL_INDEX8,
+                                                      width, height));
+      else
+        GE (ctx, glRenderbufferStorage (GL_RENDERBUFFER, GL_STENCIL_INDEX8,
+                                        width, height));
+      GE (ctx, glBindRenderbuffer (GL_RENDERBUFFER, 0));
+      GE (ctx, glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+                                          GL_STENCIL_ATTACHMENT,
+                                          GL_RENDERBUFFER, gl_stencil_handle));
+      offscreen->renderbuffers =
+        g_slist_prepend (offscreen->renderbuffers,
+                         GUINT_TO_POINTER (gl_stencil_handle));
+    }
+
+  /* Make sure it's complete */
+  status = ctx->glCheckFramebufferStatus (GL_FRAMEBUFFER);
+
+  if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+      GSList *l;
+
+      GE (ctx, glDeleteFramebuffers (1, &fbo_gl_handle));
+
+      for (l = offscreen->renderbuffers; l; l = l->next)
+        {
+          GLuint renderbuffer = GPOINTER_TO_UINT (l->data);
+          GE (ctx, glDeleteRenderbuffers (1, &renderbuffer));
+        }
+
+      g_slist_free (offscreen->renderbuffers);
+      offscreen->renderbuffers = NULL;
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+_cogl_offscreen_allocate (CoglOffscreen *offscreen,
+                          GError **error)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (offscreen);
+  CoglContext *ctx = fb->context;
+  static TryFBOFlags flags;
+  static gboolean have_working_flags = FALSE;
+  gboolean fbo_created;
+
+  /* XXX: The framebuffer_object spec isn't clear in defining whether attaching
+   * a texture as a renderbuffer with mipmap filtering enabled while the
+   * mipmaps have not been uploaded should result in an incomplete framebuffer
+   * object. (different drivers make different decisions)
+   *
+   * To avoid an error with drivers that do consider this a problem we
+   * explicitly set non mipmapped filters here. These will later be reset when
+   * the texture is actually used for rendering according to the filters set on
+   * the corresponding CoglPipeline.
+   */
+  _cogl_texture_set_filters (offscreen->texture, GL_NEAREST, GL_NEAREST);
+
+  if ((offscreen->create_flags & COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL))
+    fbo_created = try_creating_fbo (offscreen, 0);
+  else
+    {
+      if ((have_working_flags &&
+           try_creating_fbo (offscreen, flags)) ||
+#ifdef HAVE_COGL_GL
+          (ctx->driver == COGL_DRIVER_GL &&
+           try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL)) ||
+#endif
+          try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL) ||
+          try_creating_fbo (offscreen, flags = _TRY_STENCIL) ||
+          try_creating_fbo (offscreen, flags = _TRY_DEPTH) ||
+          try_creating_fbo (offscreen, flags = 0))
+        {
+          /* Record that the last set of flags succeeded so that we can
+             try that set first next time */
+          have_working_flags = TRUE;
+          fbo_created = TRUE;
+        }
+      else
+        fbo_created = FALSE;
+    }
+
+  if (!fbo_created)
+    {
+      g_set_error (error, COGL_FRAMEBUFFER_ERROR,
+                   COGL_FRAMEBUFFER_ERROR_ALLOCATE,
+                   "Failed to create an OpenGL framebuffer object");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 gboolean
 cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
                            GError **error)
@@ -1038,13 +1083,16 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
   if (framebuffer->allocated)
     return TRUE;
 
-  /* XXX: with the current cogl_offscreen_new_to_texture() API the
-   * framebuffer is implicitly allocated before returning. */
-  g_return_val_if_fail (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN,
-                        TRUE);
-
-  if (!winsys->onscreen_init (onscreen, error))
-    return FALSE;
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      if (!winsys->onscreen_init (onscreen, error))
+        return FALSE;
+    }
+  else
+    {
+      if (!_cogl_offscreen_allocate (COGL_OFFSCREEN (framebuffer), error))
+        return FALSE;
+    }
 
   framebuffer->allocated = TRUE;
 
@@ -1589,6 +1637,61 @@ CoglPixelFormat
 cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer)
 {
   return framebuffer->format;
+}
+
+void
+cogl_framebuffer_set_samples_per_pixel (CoglFramebuffer *framebuffer,
+                                        int samples_per_pixel)
+{
+  g_return_if_fail (!framebuffer->allocated);
+
+  framebuffer->config.samples_per_pixel = samples_per_pixel;
+}
+
+void
+cogl_framebuffer_resolve_samples (CoglFramebuffer *framebuffer)
+{
+  cogl_framebuffer_resolve_samples_region (framebuffer,
+                                           0, 0,
+                                           framebuffer->width,
+                                           framebuffer->height);
+
+  /* TODO: Make this happen implicitly when the resolve texture next gets used
+   * as a source, either via cogl_texture_get_data(), via cogl_read_pixels() or
+   * if used as a source for rendering. We would also implicitly resolve if
+   * necessary before freeing a CoglFramebuffer.
+   *
+   * This API should still be kept but it is optional, only necessary
+   * if the user wants to explicitly control when the resolve happens e.g.
+   * to ensure it's done in advance of it being used as a source.
+   *
+   * Every texture should have a CoglFramebuffer *needs_resolve member
+   * internally. When the texture gets validated before being used as a source
+   * we should first check the needs_resolve pointer and if set we'll
+   * automatically call cogl_framebuffer_resolve_samples ().
+   *
+   * Calling cogl_framebuffer_resolve_samples() or
+   * cogl_framebuffer_resolve_samples_region() should reset the textures
+   * needs_resolve pointer to NULL.
+   *
+   * Rendering anything to a framebuffer will cause the corresponding
+   * texture's ->needs_resolve pointer to be set.
+   *
+   * XXX: Note: we only need to address this TODO item when adding support for
+   * EXT_framebuffer_multisample because currently we only support hardware
+   * that resolves implicitly anyway.
+   */
+}
+
+void
+cogl_framebuffer_resolve_samples_region (CoglFramebuffer *framebuffer,
+                                         int x,
+                                         int y,
+                                         int width,
+                                         int height)
+{
+  /* NOP for now since we don't support EXT_framebuffer_multisample yet which
+   * requires an explicit resolve. */
 }
 
 CoglContext *
