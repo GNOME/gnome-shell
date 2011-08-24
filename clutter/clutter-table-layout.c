@@ -1403,7 +1403,9 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
   col_spacing = (priv->col_spacing);
   row_spacing = (priv->row_spacing);
 
-  calculate_table_dimensions (self, container, box->x2 - box->x1, box->y2 - box->y1);
+  calculate_table_dimensions (self, container,
+                              box->x2 - box->x1,
+                              box->y2 - box->y1);
 
   rows = (DimensionData *) priv->rows->data;
   columns = (DimensionData *) priv->columns->data;
@@ -1472,7 +1474,7 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
         }
 
       /* calculate child x */
-      child_x = 0.0f;
+      child_x = clutter_actor_box_get_x (box);
       for (i = 0; i < col; i++)
         {
           if (columns[i].visible)
@@ -1483,7 +1485,7 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
         }
 
       /* calculate child y */
-      child_y = 0.0f;
+      child_y = clutter_actor_box_get_y (box);
       for (i = 0; i < row; i++)
         {
           if (rows[i].visible)
