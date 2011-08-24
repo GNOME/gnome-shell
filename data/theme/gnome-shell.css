@@ -1220,11 +1220,11 @@ StTooltip StLabel {
     color: #888888;
 }
 
-.chat-received {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(255, 255, 255, 0.2);
-    background-gradient-end: rgba(255, 255, 255, 0);
+.chat-group-sent, .chat-group-meta {
+    padding: 8px 0;
+}
 
+.chat-sent {
     padding-left: 4px;
     border-radius: 4px;
 }
@@ -1235,17 +1235,14 @@ StTooltip StLabel {
 }
 
 .chat-sent {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(255, 255, 255, 0);
-    background-gradient-end: rgba(255, 255, 255, 0.2);
-
-    padding-left: 4px;
+    padding-left: 18pt;
     border-radius: 4px;
+    color: #7E7E7E;
 }
 
 .chat-sent:rtl {
     padding-left: 0px;
-    padding-right: 4px;
+    padding-right: 18pt;
 }
 
 .chat-meta-message {

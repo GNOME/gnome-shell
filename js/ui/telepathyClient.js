@@ -12,6 +12,7 @@ const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 
 const History = imports.misc.history;
+const Params = imports.misc.params;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
@@ -673,6 +674,8 @@ ChatNotification.prototype = {
 
         this._oldMaxScrollAdjustment = 0;
         this._createScrollArea();
+        this._lastGroup = null;
+        this._lastGroupActor = null;
 
         this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
             let currentValue = adjustment.value + adjustment.page_size;
@@ -700,12 +703,10 @@ ChatNotification.prototype = {
      * @noTimestamp: Whether to add a timestamp. If %true, no timestamp
      *   will be added, regardless of the difference since the
      *   last timestamp
-     * @styles: A list of CSS class names.
      */
-    appendMessage: function(message, noTimestamp, styles) {
+    appendMessage: function(message, noTimestamp) {
         let messageBody = GLib.markup_escape_text(message.text, -1);
-        styles = styles || [];
-        styles.push(message.direction);
+        let styles = [message.direction];
 
         if (message.messageType == Tp.ChannelTextMessageType.ACTION) {
             let senderAlias = GLib.markup_escape_text(message.sender, -1);
@@ -718,7 +719,14 @@ ChatNotification.prototype = {
                                                           bannerMarkup: true });
         }
 
-        this._append(messageBody, styles, message.timestamp, noTimestamp);
+        let group = (message.direction == NotificationDirection.RECEIVED ?
+                     'received' : 'sent');
+
+        this._append({ body: messageBody,
+                       group: group,
+                       styles: styles,
+                       timestamp: message.timestamp,
+                       noTimestamp: noTimestamp });
     },
 
     _filterMessages: function() {
@@ -744,24 +752,65 @@ ChatNotification.prototype = {
             for (let i = 0; i < expired.length; i++)
                 expired[i].actor.destroy();
         }
+
+        let groups = this._contentArea.get_children();
+        for (let i = 0; i < groups.length; i ++) {
+            let group = groups[i];
+            if (group.get_children().length == 0)
+                group.destroy();
+        }
     },
 
-    _append: function(text, styles, timestamp, noTimestamp) {
+    /**
+     * _append:
+     * @props: An object with the properties:
+     *  body: The text of the message.
+     *  group: The group of the message, one of:
+     *         'received', 'sent', 'meta'.
+     *  styles: Style class names for the message to have.
+     *  timestamp: The timestamp of the message.
+     *  noTimestamp: suppress timestamp signal?
+     *  childProps: props to add the actor with.
+     */
+    _append: function(props) {
         let currentTime = (Date.now() / 1000);
-        if (!timestamp)
-            timestamp = currentTime;
+        props = Params.parse(props, { body: null,
+                                      group: null,
+                                      styles: [],
+                                      timestamp: currentTime,
+                                      noTimestamp: false,
+                                      childProps: null });
 
         // Reset the old message timeout
         if (this._timestampTimeoutId)
             Mainloop.source_remove(this._timestampTimeoutId);
 
-        let body = this.addBody(text, true);
+        let highlighter = new MessageTray.URLHighlighter(props.body,
+                                                         true,  // line wrap?
+                                                         true); // allow markup?
+
+        let body = highlighter.actor;
+
+        let styles = props.styles;
         for (let i = 0; i < styles.length; i ++)
             body.add_style_class_name(styles[i]);
 
-        this._history.unshift({ actor: body, time: timestamp, realMessage: true });
+        let group = props.group;
+        if (group != this._lastGroup) {
+            let style = 'chat-group-' + group;
+            this._lastGroup = group;
+            this._lastGroupActor = new St.BoxLayout({ style_class: style,
+                                                      vertical: true });
+            this.addActor(this._lastGroupActor);
+        }
 
-        if (!noTimestamp) {
+        this._lastGroupActor.add(body, props.childProps);
+
+        let timestamp = props.timestamp;
+        this._history.unshift({ actor: body, time: timestamp,
+                                realMessage: group != 'meta' });
+
+        if (!props.noTimestamp) {
             if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME)
                 this.appendTimestamp();
             else
@@ -809,13 +858,13 @@ ChatNotification.prototype = {
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
-        let timeLabel = this.addBody(this._formatTimestamp(lastMessageDate),
-                                     true,
-                                     { expand: true, x_fill: false, x_align: St.Align.END });
-        timeLabel.add_style_class_name('chat-meta-message');
-        this._history.unshift({ actor: timeLabel, time: lastMessageTime, realMessage: false });
-
-        this._timestampTimeoutId = 0;
+        let timeLabel = this._append({ body: this._formatTimestamp(lastMessageDate),
+                                       group: 'meta',
+                                       styles: ['chat-meta-message'],
+                                       childProps: { expand: true, x_fill: false,
+                                                     x_align: St.Align.END },
+                                       noTimestamp: true,
+                                       timestamp: lastMessageTime });
 
         this._filterMessages();
 
@@ -827,9 +876,10 @@ ChatNotification.prototype = {
             this.update(text, null, { customContent: true, titleMarkup: true });
         else
             this.update(this.source.title, null, { customContent: true });
-        let label = this.addBody(text, true);
-        label.add_style_class_name('chat-meta-message');
-        this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false});
+
+        let label = this._append({ body: text,
+                                   group: 'meta',
+                                   styles: ['chat-meta-message'] });
 
         this._filterMessages();
     },
@@ -841,9 +891,11 @@ ChatNotification.prototype = {
         /* Translators: this is the other person changing their old IM name to their new
            IM name. */
         let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
-        let label = this.addBody(message, true);
-        label.add_style_class_name('chat-meta-message');
-        this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false });
+
+        let label = this._append({ body: text,
+                                   group: 'meta',
+                                   styles: ['chat-meta-message'] });
+
         this.update(newAlias, null, { customContent: true });
 
         this._filterMessages();
