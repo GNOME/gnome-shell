@@ -23,6 +23,18 @@ const GnomeShellIface = {
               { name: 'GetExtensionErrors',
                 inSignature: 's',
                 outSignature: 'as'
+              },
+              { name: 'ScreenshotArea',
+                inSignature: 'iiiis',
+                outSignature: 'b'
+              },
+              { name: 'ScreenshotWindow',
+                inSignature: 'bs',
+                outSignature: 'b'
+              },
+              { name: 'Screenshot',
+                inSignature: 's',
+                outSignature: 'b'
               }
              ],
     signals: [],
@@ -74,6 +86,50 @@ GnomeShell.prototype = {
             success = false;
         }
         return [success, returnValue];
+    },
+
+    /**
+     * ScreenshotArea:
+     * @x: The X coordinate of the area
+     * @y: The Y coordinate of the area
+     * @width: The width of the area
+     * @height: The height of the area
+     * @filename: The filename for the screenshot
+     *
+     * Takes a screenshot of the passed in area and saves it
+     * in @filename as png image, it returns a boolean
+     * indicating whether the operation was successful or not.
+     *
+     */
+    ScreenshotAreaAsync : function (x, y, width, height, filename, callback) {
+        global.screenshot_area (x, y, width, height, filename, function (obj, result) { callback(result); });
+    },
+
+    /**
+     * ScreenshotWindow:
+     * @include_frame: Whether to include the frame or not
+     * @filename: The filename for the screenshot
+     *
+     * Takes a screenshot of the focused window (optionally omitting the frame)
+     * and saves it in @filename as png image, it returns a boolean
+     * indicating whether the operation was successful or not.
+     *
+     */
+    ScreenshotWindow : function (include_frame, filename) {
+        return global.screenshot_window (include_frame, filename);
+    },
+
+    /**
+     * Screenshot:
+     * @filename: The filename for the screenshot
+     *
+     * Takes a screenshot of the whole screen and saves it
+     * in @filename as png image, it returns a boolean
+     * indicating whether the operation was successful or not.
+     *
+     */
+    ScreenshotAsync : function (filename, callback) {
+        global.screenshot(filename, function (obj, result) { callback(result); });
     },
 
     ListExtensions: function() {

@@ -142,6 +142,25 @@ void     shell_global_reexec_self               (ShellGlobal  *global);
 
 void     shell_global_launch_calendar_server    (ShellGlobal  *global);
 
+
+typedef void (*ShellGlobalScreenshotCallback)  (ShellGlobal *global, gboolean success);
+
+void    shell_global_screenshot_area           (ShellGlobal  *global,
+                                                int x,
+                                                int y,
+                                                int width,
+                                                int height,
+                                                const char *filename,
+                                                ShellGlobalScreenshotCallback callback);
+
+gboolean shell_global_screenshot_window         (ShellGlobal  *global,
+                                                gboolean include_frame,
+                                                const char *filename);
+
+void    shell_global_screenshot                (ShellGlobal  *global,
+                                                const char *filename,
+                                                ShellGlobalScreenshotCallback callback);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */
