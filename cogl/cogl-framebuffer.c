@@ -1533,6 +1533,12 @@ cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
   framebuffer->dither_enabled = dither_enabled;
 }
 
+CoglPixelFormat
+cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer)
+{
+  return framebuffer->format;
+}
+
 CoglContext *
 cogl_framebuffer_get_context (CoglFramebuffer *framebuffer)
 {

@@ -261,6 +261,22 @@ void
 cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
                                  CoglColorMask color_mask);
 
+#define cogl_framebuffer_get_color_format cogl_framebuffer_get_color_format_EXP
+/**
+ * cogl_framebuffer_get_color_format:
+ * @framebuffer: A #CoglFramebuffer framebuffer
+ *
+ * Queries the common #CoglPixelFormat of all color buffers attached
+ * to this framebuffer. For an offscreen framebuffer created with
+ * cogl_offscreen_new_to_texture() this will correspond to the format
+ * of the texture.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+CoglPixelFormat
+cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer);
+
 #define cogl_framebuffer_get_context cogl_framebuffer_get_context_EXP
 /**
  * @framebuffer: A #CoglFramebuffer
