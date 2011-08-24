@@ -384,13 +384,20 @@ clutter_box_real_allocate (ClutterActor           *actor,
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
   ClutterActorClass *klass;
+  ClutterActorBox box;
+  gfloat w, h;
 
   klass = CLUTTER_ACTOR_CLASS (clutter_box_parent_class);
   klass->allocate (actor, allocation, flags);
 
+  clutter_actor_box_get_size (allocation, &w, &h);
+
+  clutter_actor_box_set_origin (&box, 0.f, 0.f);
+  clutter_actor_box_set_size (&box, w, h);
+
   clutter_layout_manager_allocate (priv->manager,
                                    CLUTTER_CONTAINER (actor),
-                                   allocation, flags);
+                                   &box, flags);
 }
 
 static void
