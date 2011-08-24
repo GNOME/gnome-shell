@@ -903,21 +903,25 @@ Panel.prototype = {
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         /* Button on the left side of the panel. */
-        this._activitiesButton = new ActivitiesButton();
-        this._activities = this._activitiesButton.actor;
-        this._leftBox.add(this._activities);
+        if (global.session_type == Shell.SessionType.USER) {
+            this._activitiesButton = new ActivitiesButton();
+            this._activities = this._activitiesButton.actor;
+            this._leftBox.add(this._activities);
 
-        // The activities button has a pretend menu, so as to integrate
-        // more cleanly with the rest of the panel
-        this._menus.addMenu(this._activitiesButton.menu);
+            // The activities button has a pretend menu, so as to integrate
+            // more cleanly with the rest of the panel
+            this._menus.addMenu(this._activitiesButton.menu);
 
-        this._appMenu = new AppMenuButton();
-        this._leftBox.add(this._appMenu.actor);
-
-        this._menus.addMenu(this._appMenu.menu);
+            this._appMenu = new AppMenuButton();
+            this._leftBox.add(this._appMenu.actor);
+            this._menus.addMenu(this._appMenu.menu);
+        }
 
         /* center */
-        this._dateMenu = new DateMenu.DateMenuButton();
+        if (global.session_type == Shell.SessionType.USER)
+            this._dateMenu = new DateMenu.DateMenuButton({ showEvents: true });
+        else
+            this._dateMenu = new DateMenu.DateMenuButton({ showEvents: false });
         this._centerBox.add(this._dateMenu.actor, { y_fill: true });
         this._menus.addMenu(this._dateMenu.menu);
 
@@ -933,9 +937,11 @@ Panel.prototype = {
         this._rightBox.add(this._trayBox);
         this._rightBox.add(this._statusBox);
 
-        this._userMenu = new StatusMenu.StatusMenuButton();
-        this._userMenu.actor.name = 'panelStatus';
-        this._rightBox.add(this._userMenu.actor);
+        if (global.session_type == Shell.SessionType.USER) {
+            this._userMenu = new StatusMenu.StatusMenuButton();
+            this._userMenu.actor.name = 'panelStatus';
+            this._rightBox.add(this._userMenu.actor);
+        }
 
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
@@ -1034,7 +1040,8 @@ Panel.prototype = {
 
         // PopupMenuManager depends on menus being added in order for
         // keyboard navigation
-        this._menus.addMenu(this._userMenu.menu);
+        if (this._userMenu)
+            this._menus.addMenu(this._userMenu.menu);
     },
 
     addToStatusArea: function(role, indicator, position) {

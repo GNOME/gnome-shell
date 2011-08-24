@@ -74,92 +74,19 @@ let _cssStylesheet = null;
 
 let background = null;
 
-function start() {
-    // Monkey patch utility functions into the global proxy;
-    // This is easier and faster than indirecting down into global
-    // if we want to call back up into JS.
-    global.logError = _logError;
-    global.log = _logDebug;
-
-    // Chain up async errors reported from C
-    global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
-
-    Gio.DesktopAppInfo.set_desktop_env('GNOME');
-
-    shellDBusService = new ShellDBus.GnomeShell();
-    // Force a connection now; dbus.js will do this internally
-    // if we use its name acquisition stuff but we aren't right
-    // now; to do so we'd need to convert from its async calls
-    // back into sync ones.
-    DBus.session.flush();
-
+function _createUserSession() {
     // Load the calendar server. Note that we are careful about
     // not loading any events until the user presses the clock
     global.launch_calendar_server();
 
-    // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
-    // also initialize ShellAppSystem first.  ShellAppSystem
-    // needs to load all the .desktop files, and ShellWindowTracker
-    // will use those to associate with windows.  Right now
-    // the Monitor doesn't listen for installed app changes
-    // and recalculate application associations, so to avoid
-    // races for now we initialize it here.  It's better to
-    // be predictable anyways.
-    Shell.WindowTracker.get_default();
-    Shell.AppUsage.get_default();
-
-    // The stage is always covered so Clutter doesn't need to clear it; however
-    // the color is used as the default contents for the Mutter root background
-    // actor so set it anyways.
-    global.stage.color = DEFAULT_BACKGROUND_COLOR;
-    global.stage.no_clear_hint = true;
-
-    _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
-    loadTheme();
-
-    let shellwm = global.window_manager;
-    shellwm.takeover_keybinding('panel_main_menu');
-    shellwm.connect('keybinding::panel_main_menu', function () {
-        overview.toggle();
-    });
-    shellwm.takeover_keybinding('panel_run_dialog');
-    shellwm.connect('keybinding::panel_run_dialog', function () {
-       getRunDialog().open();
-    });
-
-    // Set up stage hierarchy to group all UI actors under one container.
-    uiGroup = new Clutter.Group();
-    St.set_ui_root(global.stage, uiGroup);
-    global.window_group.reparent(uiGroup);
-    global.overlay_group.reparent(uiGroup);
-    global.stage.add_actor(uiGroup);
-
-    layoutManager = new Layout.LayoutManager();
     placesManager = new PlaceDisplay.PlacesManager();
-    xdndHandler = new XdndHandler.XdndHandler();
-    ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
-    overview = new Overview.Overview();
-    magnifier = new Magnifier.Magnifier();
-    statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
-    panel = new Panel.Panel();
-    wm = new WindowManager.WindowManager();
-    messageTray = new MessageTray.MessageTray();
-    keyboard = new Keyboard.Keyboard();
-    notificationDaemon = new NotificationDaemon.NotificationDaemon();
-    windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
     automountManager = new AutomountManager.AutomountManager();
     autorunManager = new AutorunManager.AutorunManager();
     networkAgent = new NetworkAgent.NetworkAgent();
+}
 
-    layoutManager.init();
-    keyboard.init();
-    overview.init();
-    statusIconDispatcher.start(messageTray.actor);
-    panel.startStatusArea();
-
-    _startDate = new Date();
-
+function _initRecorder() {
     let recorderSettings = new Gio.Settings({ schema: 'org.gnome.shell.recorder' });
 
     global.screen.connect('toggle-recording', function() {
@@ -183,8 +110,103 @@ function start() {
             recorder.record();
         }
     });
+}
+
+function _initUserSession() {
+    _initRecorder();
+
+    keyboard.init();
 
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT, false, -1, 1);
+
+    ExtensionSystem.init();
+    ExtensionSystem.loadExtensions();
+
+    let shellwm = global.window_manager;
+
+    shellwm.takeover_keybinding('panel_run_dialog');
+    shellwm.connect('keybinding::panel_run_dialog', function () {
+       getRunDialog().open();
+    });
+
+    shellwm.takeover_keybinding('panel_main_menu');
+    shellwm.connect('keybinding::panel_main_menu', function () {
+        overview.toggle();
+    });
+
+    global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
+
+}
+
+function start() {
+    // Monkey patch utility functions into the global proxy;
+    // This is easier and faster than indirecting down into global
+    // if we want to call back up into JS.
+    global.logError = _logError;
+    global.log = _logDebug;
+
+    // Chain up async errors reported from C
+    global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
+
+    Gio.DesktopAppInfo.set_desktop_env('GNOME');
+
+    shellDBusService = new ShellDBus.GnomeShell();
+    // Force a connection now; dbus.js will do this internally
+    // if we use its name acquisition stuff but we aren't right
+    // now; to do so we'd need to convert from its async calls
+    // back into sync ones.
+    DBus.session.flush();
+
+    // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
+    // also initialize ShellAppSystem first.  ShellAppSystem
+    // needs to load all the .desktop files, and ShellWindowTracker
+    // will use those to associate with windows.  Right now
+    // the Monitor doesn't listen for installed app changes
+    // and recalculate application associations, so to avoid
+    // races for now we initialize it here.  It's better to
+    // be predictable anyways.
+    Shell.WindowTracker.get_default();
+    Shell.AppUsage.get_default();
+
+    // The stage is always covered so Clutter doesn't need to clear it; however
+    // the color is used as the default contents for the Mutter root background
+    // actor so set it anyways.
+    global.stage.color = DEFAULT_BACKGROUND_COLOR;
+    global.stage.no_clear_hint = true;
+
+    _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
+    loadTheme();
+
+    // Set up stage hierarchy to group all UI actors under one container.
+    uiGroup = new Clutter.Group();
+    St.set_ui_root(global.stage, uiGroup);
+    global.window_group.reparent(uiGroup);
+    global.overlay_group.reparent(uiGroup);
+    global.stage.add_actor(uiGroup);
+
+    layoutManager = new Layout.LayoutManager();
+    xdndHandler = new XdndHandler.XdndHandler();
+    ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
+    // This overview object is just a stub for non-user sessions
+    overview = new Overview.Overview({ isDummy: global.session_type != Shell.SessionType.USER });
+    magnifier = new Magnifier.Magnifier();
+    statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
+    panel = new Panel.Panel();
+    wm = new WindowManager.WindowManager();
+    messageTray = new MessageTray.MessageTray();
+    keyboard = new Keyboard.Keyboard();
+    notificationDaemon = new NotificationDaemon.NotificationDaemon();
+    windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
+    _createUserSession();
+
+    panel.startStatusArea();
+
+    keyboard.init();
+    overview.init();
+
+    if (global.session_type == Shell.SessionType.USER)
+        _initUserSession();
+    statusIconDispatcher.start(messageTray.actor);
 
     // Provide the bus object for gnome-session to
     // initiate logouts.
@@ -193,10 +215,7 @@ function start() {
     // Attempt to become a PolicyKit authentication agent
     PolkitAuthenticationAgent.init()
 
-    ExtensionSystem.init();
-    ExtensionSystem.loadExtensions();
-
-    global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
+    _startDate = new Date();
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
 
@@ -558,6 +577,15 @@ function _globalKeyPressHandler(actor, event) {
         return true;
     }
 
+    if (action == Meta.KeyBindingAction.SWITCH_PANELS) {
+        ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK);
+        return true;
+    }
+
+    // None of the other bindings are relevant outside of the user's session
+    if (global.session_type != Shell.SessionType.USER)
+        return false;
+
     switch (action) {
         // left/right would effectively act as synonyms for up/down if we enabled them;
         // but that could be considered confusing; we also disable them in the main view.
@@ -580,9 +608,6 @@ function _globalKeyPressHandler(actor, event) {
             return true;
         case Meta.KeyBindingAction.PANEL_MAIN_MENU:
             overview.hide();
-            return true;
-        case Meta.KeyBindingAction.SWITCH_PANELS:
-            ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK);
             return true;
     }
 
