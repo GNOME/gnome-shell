@@ -108,7 +108,7 @@ _cogl_pipeline_set_layer_unit (CoglPipeline *required_owner,
   return layer;
 }
 
-CoglHandle
+CoglTexture *
 _cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer)
 {
   CoglPipelineLayer *authority =
@@ -118,7 +118,7 @@ _cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer)
   return authority->texture;
 }
 
-CoglHandle
+CoglTexture *
 _cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
                                   int layer_index)
 {
@@ -201,7 +201,7 @@ changed:
 static void
 _cogl_pipeline_set_layer_texture_data (CoglPipeline *pipeline,
                                        int layer_index,
-                                       CoglHandle texture)
+                                       CoglTexture *texture)
 {
   CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA;
   CoglPipelineLayer *layer;
@@ -282,7 +282,7 @@ changed:
  * with no associated CoglTexture will have a texture target of 0.
  */
 static GLenum
-get_texture_target (CoglHandle texture)
+get_texture_target (CoglTexture *texture)
 {
   GLuint ignore_handle;
   GLenum gl_target;
@@ -297,7 +297,7 @@ get_texture_target (CoglHandle texture)
 void
 cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
                                  int layer_index,
-                                 CoglHandle texture)
+                                 CoglTexture *texture)
 {
   /* For the convenience of fragend code we separate texture state
    * into the "target" and the "data", and setting a layer texture
@@ -1305,7 +1305,7 @@ cogl_pipeline_set_layer_matrix (CoglPipeline *pipeline,
 
 /* FIXME: deprecate and replace with
  * cogl_pipeline_get_layer_texture() instead. */
-CoglHandle
+CoglTexture *
 _cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer)
 {
   g_return_val_if_fail (_cogl_is_pipeline_layer (layer), NULL);

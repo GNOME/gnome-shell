@@ -39,7 +39,7 @@ void _cogl_pango_display_list_set_color_override (CoglPangoDisplayList *dl,
 void _cogl_pango_display_list_remove_color_override (CoglPangoDisplayList *dl);
 
 void _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
-                                           CoglHandle texture,
+                                           CoglTexture *texture,
                                            float x_1, float y_1,
                                            float x_2, float y_2,
                                            float tx_1, float ty_1,

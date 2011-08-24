@@ -71,7 +71,7 @@ static void
 cogl_pango_glyph_cache_value_free (CoglPangoGlyphCacheValue *value)
 {
   if (value->texture)
-    cogl_handle_unref (value->texture);
+    cogl_object_unref (value->texture);
   g_slice_free (CoglPangoGlyphCacheValue, value);
 }
 
@@ -178,8 +178,8 @@ cogl_pango_glyph_cache_update_position_cb (void *user_data,
   float tex_width, tex_height;
 
   if (value->texture)
-    cogl_handle_unref (value->texture);
-  value->texture = cogl_handle_ref (new_texture);
+    cogl_object_unref (value->texture);
+  value->texture = cogl_object_ref (new_texture);
 
   tex_width = cogl_texture_get_width (new_texture);
   tex_height = cogl_texture_get_height (new_texture);
@@ -202,7 +202,7 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
                                             PangoGlyph glyph,
                                             CoglPangoGlyphCacheValue *value)
 {
-  CoglHandle texture;
+  CoglTexture *texture;
 
   if (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SHARED_ATLAS))
     return FALSE;
@@ -217,7 +217,7 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
                                                COGL_TEXTURE_NONE,
                                                COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
-  if (texture == COGL_INVALID_HANDLE)
+  if (texture == NULL)
     return FALSE;
 
   value->texture = texture;
@@ -310,7 +310,7 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
       PangoRectangle ink_rect;
 
       value = g_slice_new (CoglPangoGlyphCacheValue);
-      value->texture = COGL_INVALID_HANDLE;
+      value->texture = NULL;
 
       pango_font_get_glyph_extents (font, glyph, &ink_rect, NULL);
       pango_extents_to_pixels (&ink_rect, NULL);

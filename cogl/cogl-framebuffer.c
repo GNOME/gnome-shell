@@ -682,7 +682,7 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
 
 typedef struct
 {
-  CoglHandle texture;
+  CoglTexture *texture;
   unsigned int level;
   unsigned int level_width;
   unsigned int level_height;
@@ -808,7 +808,7 @@ try_creating_fbo (CoglOffscreen *offscreen,
 }
 
 CoglHandle
-_cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
+_cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
                                      unsigned int level)
 {
@@ -824,21 +824,21 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
   if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
     return COGL_INVALID_HANDLE;
 
-  /* Make texhandle is a valid texture object */
-  if (!cogl_is_texture (texhandle))
+  /* Make texture is a valid texture object */
+  if (!cogl_is_texture (texture))
     return COGL_INVALID_HANDLE;
 
   /* The texture must not be sliced */
-  if (cogl_texture_is_sliced (texhandle))
+  if (cogl_texture_is_sliced (texture))
     return COGL_INVALID_HANDLE;
 
-  data.texture = texhandle;
+  data.texture = texture;
   data.level = level;
 
   /* Calculate the size of the texture at this mipmap level to ensure
      that it's a valid level */
-  data.level_width = cogl_texture_get_width (texhandle);
-  data.level_height = cogl_texture_get_height (texhandle);
+  data.level_width = cogl_texture_get_width (texture);
+  data.level_height = cogl_texture_get_height (texture);
 
   for (i = 0; i < level; i++)
     {
@@ -863,10 +863,10 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
    * the texture is actually used for rendering according to the filters set on
    * the corresponding CoglPipeline.
    */
-  _cogl_texture_set_filters (texhandle, GL_NEAREST, GL_NEAREST);
+  _cogl_texture_set_filters (texture, GL_NEAREST, GL_NEAREST);
 
   offscreen = g_new0 (CoglOffscreen, 1);
-  offscreen->texture = texhandle;
+  offscreen->texture = texture;
 
   if ((create_flags & COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL))
     fbo_created = try_creating_fbo (offscreen, 0, &data);
@@ -903,15 +903,14 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
       _cogl_framebuffer_init (fb,
                               ctx,
                               COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
-                              cogl_texture_get_format (texhandle),
+                              cogl_texture_get_format (texture),
                               data.level_width,
                               data.level_height);
 
-      /* take a reference on the texture */
-      cogl_handle_ref (offscreen->texture);
+      cogl_object_ref (offscreen->texture);
 
       ret = _cogl_offscreen_object_new (offscreen);
-      _cogl_texture_associate_framebuffer (texhandle, COGL_FRAMEBUFFER (ret));
+      _cogl_texture_associate_framebuffer (texture, COGL_FRAMEBUFFER (ret));
 
       fb->allocated = TRUE;
 
@@ -928,9 +927,9 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
 }
 
 CoglHandle
-cogl_offscreen_new_to_texture (CoglHandle texhandle)
+cogl_offscreen_new_to_texture (CoglTexture *texture)
 {
-  return _cogl_offscreen_new_to_texture_full (texhandle, 0, 0);
+  return _cogl_offscreen_new_to_texture_full (texture, 0, 0);
 }
 
 static void
@@ -953,7 +952,7 @@ _cogl_offscreen_free (CoglOffscreen *offscreen)
   GE (ctx, glDeleteFramebuffers (1, &offscreen->fbo_handle));
 
   if (offscreen->texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (offscreen->texture);
+    cogl_object_unref (offscreen->texture);
 
   g_free (offscreen);
 }

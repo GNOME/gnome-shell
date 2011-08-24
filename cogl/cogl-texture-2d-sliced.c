@@ -67,7 +67,7 @@ typedef struct
 } ForeachData;
 
 static void
-_cogl_texture_2d_sliced_foreach_cb (CoglHandle handle,
+_cogl_texture_2d_sliced_foreach_cb (CoglTexture *texture,
                                     const float *slice_coords,
                                     const float *virtual_coords_in,
                                     void *user_data)
@@ -86,7 +86,7 @@ _cogl_texture_2d_sliced_foreach_cb (CoglHandle handle,
   virtual_coords_out[3] = (virtual_coords_in[3] * data->y_span->size +
                            data->y_span->start) / data->tex->height;
 
-  data->callback (handle,
+  data->callback (texture,
                   slice_coords,
                   virtual_coords_out,
                   data->user_data);

@@ -339,14 +339,14 @@ validate_layer_cb (CoglPipeline *pipeline,
                    int layer_index,
                    void *user_data)
 {
-  CoglHandle texture =
+  CoglTexture *texture =
     _cogl_pipeline_get_layer_texture (pipeline, layer_index);
   ValidateLayerState *state = user_data;
   gboolean status = TRUE;
 
   /* invalid textures will be handled correctly in
    * _cogl_pipeline_flush_layers_gl_state */
-  if (texture == COGL_INVALID_HANDLE)
+  if (texture == NULL)
     goto validated;
 
   _cogl_texture_flush_journal_rendering (texture);

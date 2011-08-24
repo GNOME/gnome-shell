@@ -387,9 +387,9 @@ struct _CoglPipelineLayer
   /* Each layer is directly associated with a single texture unit */
   int                        unit_index;
 
-  /* The texture for this layer, or COGL_INVALID_HANDLE for an empty
+  /* The texture for this layer, or NULL for an empty
    * layer */
-  CoglHandle                 texture;
+  CoglTexture               *texture;
   GLenum                     target;
 
   CoglPipelineFilter         mag_filter;
@@ -1006,7 +1006,7 @@ typedef struct _CoglPipelineFlushOptions
 
   guint32                       fallback_layers;
   guint32                       disable_layers;
-  CoglHandle                    layer0_override_texture;
+  CoglTexture                  *layer0_override_texture;
 } CoglPipelineFlushOptions;
 
 void
@@ -1194,7 +1194,7 @@ _cogl_pipeline_get_layer_matrix (CoglPipeline *pipeline,
                                  int layer_index);
 
 void
-_cogl_pipeline_texture_storage_change_notify (CoglHandle texture);
+_cogl_pipeline_texture_storage_change_notify (CoglTexture *texture);
 
 void
 _cogl_pipeline_apply_legacy_state (CoglPipeline *pipeline);
@@ -1229,7 +1229,7 @@ _cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
                                        CoglPipelineState pipeline_state,
                                        CoglPipelineLayerState layer_state);
 
-CoglHandle
+CoglTexture *
 _cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
                                   int layer_index);
 
@@ -1273,10 +1273,10 @@ typedef enum {
 CoglPipelineLayerType
 _cogl_pipeline_layer_get_type (CoglPipelineLayer *layer);
 
-CoglHandle
+CoglTexture *
 _cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer);
 
-CoglHandle
+CoglTexture *
 _cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer);
 
 CoglPipelineFilter
@@ -1302,7 +1302,7 @@ CoglPipelineLayer *
 _cogl_pipeline_layer_get_authority (CoglPipelineLayer *layer,
                                     unsigned long difference);
 
-CoglHandle
+CoglTexture *
 _cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer);
 
 typedef gboolean (*CoglPipelineInternalLayerCallback) (CoglPipelineLayer *layer,

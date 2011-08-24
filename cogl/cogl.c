@@ -1004,13 +1004,13 @@ cogl_set_source (void *material_or_pipeline)
 }
 
 void
-cogl_set_source_texture (CoglHandle texture_handle)
+cogl_set_source_texture (CoglTexture *texture)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (texture_handle != NULL);
+  g_return_if_fail (texture != NULL);
 
-  cogl_pipeline_set_layer_texture (ctx->texture_pipeline, 0, texture_handle);
+  cogl_pipeline_set_layer_texture (ctx->texture_pipeline, 0, texture);
   cogl_set_source (ctx->texture_pipeline);
 }
 

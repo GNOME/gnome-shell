@@ -72,7 +72,7 @@ struct _CoglPangoDisplayListNode
     struct
     {
       /* The texture to render these coords from */
-      CoglHandle texture;
+      CoglTexture *texture;
       /* Array of rectangles in the format expected by
          cogl_rectangles_with_texture_coords */
       GArray *rectangles;
@@ -134,7 +134,7 @@ _cogl_pango_display_list_remove_color_override (CoglPangoDisplayList *dl)
 
 void
 _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
-                                      CoglHandle texture,
+                                      CoglTexture *texture,
                                       float x_1, float y_1,
                                       float x_2, float y_2,
                                       float tx_1, float ty_1,
@@ -168,7 +168,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       node->color_override = dl->color_override;
       node->color = dl->color;
       node->pipeline = NULL;
-      node->d.texture.texture = cogl_handle_ref (texture);
+      node->d.texture.texture = cogl_object_ref (texture);
       node->d.texture.rectangles
         = g_array_new (FALSE, FALSE, sizeof (CoglPangoDisplayListRectangle));
       node->d.texture.primitive = NULL;
@@ -465,8 +465,8 @@ _cogl_pango_display_list_node_free (CoglPangoDisplayListNode *node)
   if (node->type == COGL_PANGO_DISPLAY_LIST_TEXTURE)
     {
       g_array_free (node->d.texture.rectangles, TRUE);
-      if (node->d.texture.texture != COGL_INVALID_HANDLE)
-        cogl_handle_unref (node->d.texture.texture);
+      if (node->d.texture.texture != NULL)
+        cogl_object_unref (node->d.texture.texture);
       if (node->d.texture.primitive != NULL)
         cogl_object_unref (node->d.texture.primitive);
     }

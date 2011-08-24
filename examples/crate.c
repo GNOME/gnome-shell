@@ -10,7 +10,7 @@ typedef struct _Data
   CoglMatrix view;
 
   CoglPrimitive *prim;
-  CoglHandle texture;
+  CoglTexture *texture;
   CoglPipeline *crate_pipeline;
 
   /* The cube continually rotates around each axis. */

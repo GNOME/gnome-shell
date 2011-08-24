@@ -108,7 +108,7 @@ typedef struct _CoglOffscreen
   CoglFramebuffer  _parent;
   GLuint          fbo_handle;
   GSList          *renderbuffers;
-  CoglHandle      texture;
+  CoglTexture     *texture;
 } CoglOffscreen;
 
 /* Flags to pass to _cogl_offscreen_new_to_texture_full */
@@ -244,7 +244,7 @@ _cogl_free_framebuffer_stack (GSList *stack);
 
 /*
  * _cogl_offscreen_new_to_texture_full:
- * @texhandle: A handle to the texture to target
+ * @texture: A #CoglTexture pointer
  * @create_flags: Flags specifying how to create the FBO
  * @level: The mipmap level within the texture to target
  *
@@ -256,7 +256,7 @@ _cogl_free_framebuffer_stack (GSList *stack);
  * Return value: the new CoglOffscreen object.
  */
 CoglHandle
-_cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
+_cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
                                      unsigned int level);
 

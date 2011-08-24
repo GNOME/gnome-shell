@@ -217,7 +217,7 @@ _cogl_delete_gl_texture (GLuint gl_texture)
  * if it is reused again with the same texture unit.
  */
 void
-_cogl_pipeline_texture_storage_change_notify (CoglHandle texture)
+_cogl_pipeline_texture_storage_change_notify (CoglTexture *texture)
 {
   int i;
 
@@ -781,11 +781,11 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       unsigned long state = COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA;
       CoglPipelineLayer *authority =
         _cogl_pipeline_layer_get_authority (layer, state);
-      CoglHandle texture;
-      GLuint     gl_texture;
-      GLenum     gl_target;
+      CoglTexture *texture;
+      GLuint gl_texture;
+      GLenum gl_target;
 
-      texture = (authority->texture == COGL_INVALID_HANDLE ?
+      texture = (authority->texture == NULL ?
                  ctx->default_gl_texture_2d_tex :
                  authority->texture);
 
@@ -897,12 +897,12 @@ _cogl_pipeline_flush_common_gl_state (CoglPipeline  *pipeline,
  */
 static void
 _cogl_pipeline_layer_forward_wrap_modes (CoglPipelineLayer *layer,
-                                         CoglHandle texture)
+                                         CoglTexture *texture)
 {
   CoglPipelineWrapModeInternal wrap_mode_s, wrap_mode_t, wrap_mode_p;
   GLenum gl_wrap_mode_s, gl_wrap_mode_t, gl_wrap_mode_p;
 
-  if (texture == COGL_INVALID_HANDLE)
+  if (texture == NULL)
     return;
 
   _cogl_pipeline_layer_get_wrap_modes (layer,
@@ -964,9 +964,9 @@ foreach_texture_unit_update_filter_and_wrap_modes (void)
 
       if (unit->layer)
         {
-          CoglHandle texture = _cogl_pipeline_layer_get_texture (unit->layer);
+          CoglTexture *texture = _cogl_pipeline_layer_get_texture (unit->layer);
 
-          if (texture != COGL_INVALID_HANDLE)
+          if (texture != NULL)
             {
               CoglPipelineFilter min;
               CoglPipelineFilter mag;

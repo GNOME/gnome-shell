@@ -1449,7 +1449,7 @@ static gboolean
 add_framebuffer_deps_cb (CoglPipelineLayer *layer, void *user_data)
 {
   CoglFramebuffer *framebuffer = user_data;
-  CoglHandle texture = _cogl_pipeline_layer_get_texture_real (layer);
+  CoglTexture *texture = _cogl_pipeline_layer_get_texture_real (layer);
   const GList *l;
 
   if (!texture)
@@ -1466,7 +1466,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                         const float  *position,
                         CoglPipeline *pipeline,
                         int           n_layers,
-                        CoglHandle    layer0_override_texture,
+                        CoglTexture  *layer0_override_texture,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
 {

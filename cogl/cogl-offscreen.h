@@ -29,6 +29,7 @@
 #define __COGL_OFFSCREEN_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-texture.h>
 
 G_BEGIN_DECLS
 
@@ -44,14 +45,14 @@ G_BEGIN_DECLS
 
 /**
  * cogl_offscreen_new_to_texture:
- * @handle: A CoglHandle for a Cogl texture
+ * @texture: A #CoglTexture pointer
  *
- * This creates an offscreen buffer object using the given texture as the
+ * This creates an offscreen buffer object using the given @texture as the
  * primary color buffer. It doesn't just initialize the contents of the
- * offscreen buffer with the texture; they are tightly bound so that
+ * offscreen buffer with the @texture; they are tightly bound so that
  * drawing to the offscreen buffer effectivly updates the contents of the
  * given texture. You don't need to destroy the offscreen buffer before
- * you can use the texture again.
+ * you can use the @texture again.
  *
  * Note: This does not work with sliced Cogl textures.
  *
@@ -59,7 +60,7 @@ G_BEGIN_DECLS
  *   buffer or %COGL_INVALID_HANDLE if it wasn't possible to create the
  *   buffer.
  */
-CoglHandle      cogl_offscreen_new_to_texture (CoglHandle         handle);
+CoglHandle cogl_offscreen_new_to_texture (CoglTexture *texture);
 
 /**
  * cogl_is_offscreen:

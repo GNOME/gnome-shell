@@ -243,8 +243,8 @@ cogl_context_new (CoglDisplay *display,
 
   context->legacy_state_set = 0;
 
-  context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
-  context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
+  context->default_gl_texture_2d_tex = NULL;
+  context->default_gl_texture_rect_tex = NULL;
 
   context->framebuffers = NULL;
 
@@ -410,9 +410,9 @@ _cogl_context_free (CoglContext *context)
     cogl_handle_unref (context->current_path);
 
   if (context->default_gl_texture_2d_tex)
-    cogl_handle_unref (context->default_gl_texture_2d_tex);
+    cogl_object_unref (context->default_gl_texture_2d_tex);
   if (context->default_gl_texture_rect_tex)
-    cogl_handle_unref (context->default_gl_texture_rect_tex);
+    cogl_object_unref (context->default_gl_texture_rect_tex);
 
   if (context->opaque_color_pipeline)
     cogl_handle_unref (context->opaque_color_pipeline);

@@ -2149,7 +2149,7 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
 
   COGL_COUNTER_INC (_cogl_uprof_context, layer_fallback_counter);
 
-  if (G_LIKELY (texture != COGL_INVALID_HANDLE))
+  if (G_LIKELY (texture != NULL))
     cogl_texture_get_gl_texture (texture, NULL, &gl_target);
   else
     gl_target = GL_TEXTURE_2D;
@@ -3161,7 +3161,7 @@ _cogl_pipeline_layer_pre_paint (CoglPipelineLayer *layer)
     _cogl_pipeline_layer_get_authority (layer,
                                         COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
 
-  if (texture_authority->texture != COGL_INVALID_HANDLE)
+  if (texture_authority->texture != NULL)
     {
       CoglTexturePrePaintFlags flags = 0;
       CoglPipelineFilter min_filter;

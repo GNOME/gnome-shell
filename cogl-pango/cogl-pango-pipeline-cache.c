@@ -49,7 +49,7 @@ struct _CoglPangoPipelineCacheEntry
 {
   /* This will take a reference or it can be NULL to represent the
      pipeline used to render colors */
-  CoglHandle texture;
+  CoglTexture *texture;
 
   /* This will only take a weak reference */
   CoglHandle pipeline;
@@ -155,7 +155,7 @@ get_base_texture_alpha_pipeline (CoglPangoPipelineCache *cache)
 typedef struct
 {
   CoglPangoPipelineCache *cache;
-  CoglHandle texture;
+  CoglTexture *texture;
 } PipelineDestroyNotifyData;
 
 static void
@@ -188,7 +188,7 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
     {
       CoglPipeline *base;
 
-      entry->texture = cogl_handle_ref (texture);
+      entry->texture = cogl_object_ref (texture);
 
       if (cogl_texture_get_format (entry->texture) == COGL_PIXEL_FORMAT_A_8)
         base = get_base_texture_alpha_pipeline (cache);
@@ -216,7 +216,7 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
                              pipeline_destroy_notify_cb);
 
   g_hash_table_insert (cache->hash_table,
-                       texture ? cogl_handle_ref (texture) : NULL,
+                       texture ? cogl_object_ref (texture) : NULL,
                        entry);
 
   /* This doesn't take a reference on the pipeline so that it will use

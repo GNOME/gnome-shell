@@ -307,9 +307,9 @@ _cogl_path_fill_nodes (CoglPath *path)
   for (l = _cogl_pipeline_get_layers (cogl_get_source ()); l; l = l->next)
     {
       CoglHandle layer = l->data;
-      CoglHandle texture = _cogl_pipeline_layer_get_texture (layer);
+      CoglTexture *texture = _cogl_pipeline_layer_get_texture (layer);
 
-      if (texture != COGL_INVALID_HANDLE &&
+      if (texture != NULL &&
           (cogl_texture_is_sliced (texture) ||
            !_cogl_texture_can_hardware_repeat (texture)))
         {

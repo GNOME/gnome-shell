@@ -693,10 +693,10 @@ cogl_set_source_color4f (float red,
 
 /**
  * cogl_set_source_texture:
- * @texture_handle: The Cogl texture you want as your source
+ * @texture: The #CoglTexture you want as your source
  *
  * This is a convenience function for creating a material with the first
- * layer set to #texture_handle and setting that material as the source with
+ * layer set to @texture and setting that material as the source with
  * cogl_set_source.
  *
  * Note: There is no interaction between calls to cogl_set_source_color
@@ -712,7 +712,7 @@ cogl_set_source_color4f (float red,
  * Since: 1.0
  */
 void
-cogl_set_source_texture (CoglHandle texture_handle);
+cogl_set_source_texture (CoglTexture *texture);
 
 /**
  * SECTION:cogl-clipping

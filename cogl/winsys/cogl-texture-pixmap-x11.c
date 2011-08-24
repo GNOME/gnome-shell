@@ -637,7 +637,7 @@ _cogl_texture_pixmap_x11_set_use_winsys_texture (CoglTexturePixmapX11 *tex_pixma
       /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture
        * if the CoglTexture is reused with the same texture unit. */
-      _cogl_pipeline_texture_storage_change_notify (tex_pixmap);
+      _cogl_pipeline_texture_storage_change_notify (COGL_TEXTURE (tex_pixmap));
 
       tex_pixmap->use_winsys_texture = new_value;
     }

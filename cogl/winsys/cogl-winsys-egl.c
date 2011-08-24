@@ -176,7 +176,7 @@ typedef struct _CoglOnscreenEGL
 typedef struct _CoglTexturePixmapEGL
 {
   EGLImageKHR image;
-  CoglHandle texture;
+  CoglTexture *texture;
 } CoglTexturePixmapEGL;
 #endif
 
@@ -1667,13 +1667,13 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE :
                     COGL_PIXEL_FORMAT_RGB_888);
 
-  egl_tex_pixmap->texture =
+  egl_tex_pixmap->texture = COGL_TEXTURE (
     _cogl_egl_texture_2d_new_from_image (ctx,
                                          tex_pixmap->width,
                                          tex_pixmap->height,
                                          texture_format,
                                          egl_tex_pixmap->image,
-                                         NULL);
+                                         NULL));
 
   tex_pixmap->winsys = egl_tex_pixmap;
 
@@ -1695,7 +1695,7 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
   egl_tex_pixmap = tex_pixmap->winsys;
 
   if (egl_tex_pixmap->texture)
-    cogl_handle_unref (egl_tex_pixmap->texture);
+    cogl_object_unref (egl_tex_pixmap->texture);
 
   if (egl_tex_pixmap->image != EGL_NO_IMAGE_KHR)
     _cogl_egl_destroy_image (ctx, egl_tex_pixmap->image);

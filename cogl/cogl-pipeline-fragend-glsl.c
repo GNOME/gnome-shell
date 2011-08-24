@@ -366,7 +366,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
 
   texture = _cogl_pipeline_layer_get_texture (layer);
 
-  if (texture == COGL_INVALID_HANDLE)
+  if (texture == NULL)
     {
       target_string = "2D";
       tex_coord_swizzle = "st";

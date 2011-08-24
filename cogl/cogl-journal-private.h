@@ -76,7 +76,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                         const float  *position,
                         CoglPipeline *pipeline,
                         int           n_layers,
-                        CoglHandle    layer0_override_texture,
+                        CoglTexture  *layer0_override_texture,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len);
 

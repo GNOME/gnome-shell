@@ -35,20 +35,20 @@ typedef struct _CoglPangoGlyphCacheValue CoglPangoGlyphCacheValue;
 
 struct _CoglPangoGlyphCacheValue
 {
-  CoglHandle texture;
+  CoglTexture *texture;
 
-  float      tx1;
-  float      ty1;
-  float      tx2;
-  float      ty2;
+  float tx1;
+  float ty1;
+  float tx2;
+  float ty2;
 
-  int        tx_pixel;
-  int        ty_pixel;
+  int tx_pixel;
+  int ty_pixel;
 
-  int        draw_x;
-  int        draw_y;
-  int        draw_width;
-  int        draw_height;
+  int draw_x;
+  int draw_y;
+  int draw_width;
+  int draw_height;
 
   /* This will be set to TRUE when the glyph atlas is reorganized
      which means the glyph will need to be redrawn */

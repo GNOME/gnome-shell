@@ -28,12 +28,9 @@
 #include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
 
-#define COGL_TEXTURE(tex) ((CoglTexture *)(tex))
-
-typedef struct _CoglTexture           CoglTexture;
 typedef struct _CoglTextureVtable     CoglTextureVtable;
 
-typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
+typedef void (*CoglTextureSliceCallback) (CoglTexture *texture,
                                           const float *slice_coords,
                                           const float *virtual_coords,
                                           void *user_data);
@@ -136,7 +133,7 @@ struct _CoglTextureVtable
 
 struct _CoglTexture
 {
-  CoglHandleObject         _parent;
+  CoglObject               _parent;
   GList                   *framebuffers;
   const CoglTextureVtable *vtable;
 };
@@ -193,7 +190,7 @@ _cogl_texture_register_texture_type (GQuark type);
                                         ## type_name ## _get_type ()))
 
 void
-_cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
+_cogl_texture_foreach_sub_texture_in_region (CoglTexture *texture,
                                              float virtual_tx_1,
                                              float virtual_ty_1,
                                              float virtual_tx_2,
@@ -202,36 +199,36 @@ _cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
                                              void *user_data);
 
 gboolean
-_cogl_texture_can_hardware_repeat (CoglHandle handle);
+_cogl_texture_can_hardware_repeat (CoglTexture *texture);
 
 void
-_cogl_texture_transform_coords_to_gl (CoglHandle handle,
+_cogl_texture_transform_coords_to_gl (CoglTexture *texture,
                                       float *s,
                                       float *t);
 CoglTransformResult
-_cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
+_cogl_texture_transform_quad_coords_to_gl (CoglTexture *texture,
                                            float *coords);
 
 GLenum
-_cogl_texture_get_gl_format (CoglHandle handle);
+_cogl_texture_get_gl_format (CoglTexture *texture);
 
 void
-_cogl_texture_set_wrap_mode_parameters (CoglHandle handle,
+_cogl_texture_set_wrap_mode_parameters (CoglTexture *texture,
                                         GLenum wrap_mode_s,
                                         GLenum wrap_mode_t,
                                         GLenum wrap_mode_p);
 
 
 void
-_cogl_texture_set_filters (CoglHandle handle,
+_cogl_texture_set_filters (CoglTexture *texture,
                            GLenum min_filter,
                            GLenum mag_filter);
 
 void
-_cogl_texture_pre_paint (CoglHandle handle, CoglTexturePrePaintFlags flags);
+_cogl_texture_pre_paint (CoglTexture *texture, CoglTexturePrePaintFlags flags);
 
 void
-_cogl_texture_ensure_non_quad_rendering (CoglHandle handle);
+_cogl_texture_ensure_non_quad_rendering (CoglTexture *texture);
 
 /* Utility function to determine which pixel format to use when
    dst_format is COGL_PIXEL_FORMAT_ANY. If dst_format is not ANY then
@@ -274,22 +271,22 @@ _cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
    texture via the framebuffer */
 
 gboolean
-_cogl_texture_draw_and_read (CoglHandle   handle,
+_cogl_texture_draw_and_read (CoglTexture *texture,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type);
 
 gboolean
-_cogl_texture_is_foreign (CoglHandle handle);
+_cogl_texture_is_foreign (CoglTexture *texture);
 
 void
-_cogl_texture_associate_framebuffer (CoglHandle handle,
+_cogl_texture_associate_framebuffer (CoglTexture *texture,
                                      CoglFramebuffer *framebuffer);
 
 const GList *
-_cogl_texture_get_associated_framebuffers (CoglHandle handle);
+_cogl_texture_get_associated_framebuffers (CoglTexture *texture);
 
 void
-_cogl_texture_flush_journal_rendering (CoglHandle handle);
+_cogl_texture_flush_journal_rendering (CoglTexture *texture);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

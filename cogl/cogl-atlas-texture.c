@@ -384,7 +384,7 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
       /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture
        * if the CoglTexture is reused with the same texture unit. */
-      _cogl_pipeline_texture_storage_change_notify (atlas_tex);
+      _cogl_pipeline_texture_storage_change_notify (COGL_TEXTURE (atlas_tex));
 
       /* We need to unref the sub texture after doing the copy because
          the copy can involve rendering which might cause the texture

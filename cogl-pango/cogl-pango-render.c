@@ -94,7 +94,7 @@ typedef struct
 } CoglPangoRendererSliceCbData;
 
 void
-cogl_pango_renderer_slice_cb (CoglHandle handle,
+cogl_pango_renderer_slice_cb (CoglTexture *texture,
                               const float *slice_coords,
                               const float *virtual_coords,
                               void *user_data)
@@ -106,7 +106,7 @@ cogl_pango_renderer_slice_cb (CoglHandle handle,
      coordinates based on the virtual_coords */
 
   _cogl_pango_display_list_add_texture (data->display_list,
-                                        handle,
+                                        texture,
                                         data->x1,
                                         data->y1,
                                         data->x2,
@@ -486,7 +486,7 @@ cogl_pango_renderer_set_dirty_glyph (PangoFont *font,
   /* Glyphs that don't take up any space will end up without a
      texture. These should never become dirty so they shouldn't end up
      here */
-  g_return_if_fail (value->texture != COGL_INVALID_HANDLE);
+  g_return_if_fail (value->texture != NULL);
 
   if (cogl_texture_get_format (value->texture) == COGL_PIXEL_FORMAT_A_8)
     {

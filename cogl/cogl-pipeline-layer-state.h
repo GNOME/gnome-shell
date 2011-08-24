@@ -121,7 +121,7 @@ typedef enum {
  * cogl_pipeline_set_layer:
  * @pipeline: A #CoglPipeline object
  * @layer_index: the index of the layer
- * @texture: a #CoglHandle for the layer object
+ * @texture: a #CoglTexture for the layer object
  *
  * In addition to the standard OpenGL lighting model a Cogl pipeline may have
  * one or more layers comprised of textures that can be blended together in
@@ -139,7 +139,7 @@ typedef enum {
 void
 cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
                                  int           layer_index,
-                                 CoglHandle    texture);
+                                 CoglTexture  *texture);
 
 #define cogl_pipeline_remove_layer cogl_pipeline_remove_layer_EXP
 /**
