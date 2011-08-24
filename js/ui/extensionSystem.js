@@ -7,6 +7,7 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
+const Soup = imports.gi.Soup;
 
 const Config = imports.misc.config;
 
@@ -25,6 +26,15 @@ const ExtensionType = {
     SYSTEM: 1,
     PER_USER: 2
 };
+
+const _httpSession = new Soup.SessionAsync();
+
+// The unfortunate state of gjs, gobject-introspection and libsoup
+// means that I have to do a hack to add a feature.
+// See: https://bugzilla.gnome.org/show_bug.cgi?id=655189 for context.
+
+if (Soup.Session.prototype.add_feature != null)
+    Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
 
 // Maps uuid -> metadata object
 const extensionMeta = {};
@@ -79,6 +89,79 @@ function versionCheck(required, current) {
             return true;
     }
     return false;
+}
+
+function installExtensionFromManifestURL(uuid, url) {
+    _httpSession.queue_message(
+        Soup.Message.new('GET', url),
+        function(session, message) {
+            if (message.status_code != Soup.KnownStatusCode.OK) {
+                logExtensionError(uuid, 'downloading manifest: ' + message.status_code.toString());
+                return;
+            }
+
+            let manifest;
+            try {
+                manifest = JSON.parse(message.response_body.data);
+            } catch (e) {
+                logExtensionError(uuid, 'parsing: ' + e.toString());
+                return;
+            }
+
+            if (uuid != manifest['uuid']) {
+                logExtensionError(uuid, 'manifest: manifest uuids do not match');
+                return;
+            }
+
+            installExtensionFromManifest(manifest, meta);
+        });
+}
+
+function installExtensionFromManifest(manifest, meta) {
+    let uuid = manifest['uuid'];
+    let name = manifest['name'];
+
+    let url = manifest['__installer'];
+    _httpSession.queue_message(Soup.Message.new('GET', url),
+                               function(session, message) {
+                                   gotExtensionZipFile(session, message, uuid);
+                               });
+}
+
+function gotExtensionZipFile(session, message, uuid) {
+    if (message.status_code != Soup.KnownStatusCode.OK) {
+        logExtensionError(uuid, 'downloading extension: ' + message.status_code);
+        return;
+    }
+
+    // FIXME: use a GFile mkstemp-type method once one exists
+    let fd, tmpzip;
+    try {
+        [fd, tmpzip] = GLib.file_open_tmp('XXXXXX.shell-extension.zip');
+    } catch (e) {
+        logExtensionError(uuid, 'tempfile: ' + e.toString());
+        return;
+    }
+
+    let stream = new Gio.UnixOutputStream({ fd: fd });
+    let dir = userExtensionsDir.get_child(uuid);
+    Shell.write_soup_message_to_stream(stream, message);
+    stream.close(null);
+    let [success, pid] = GLib.spawn_async(null,
+                                          ['unzip', '-uod', dir.get_path(), '--', tmpzip],
+                                          null,
+                                          GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                                          null);
+
+    if (!success) {
+        logExtensionError(uuid, 'extract: could not extract');
+        return;
+    }
+
+    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function(pid, status) {
+        GLib.spawn_close_pid(pid);
+        loadExtension(dir, true, ExtensionType.PER_USER);
+    });
 }
 
 function disableExtension(uuid) {

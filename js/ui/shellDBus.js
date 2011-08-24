@@ -43,6 +43,10 @@ const GnomeShellIface = {
               { name: 'DisableExtension',
                 inSignature: 's',
                 outSignature: ''
+              },
+              { name: 'InstallRemoteExtension',
+                inSignature: 's',
+                outSignature: ''
               }
              ],
     signals: [],
@@ -164,6 +168,10 @@ GnomeShell.prototype = {
         while (enabledExtensions.indexOf(uuid) != -1)
             enabledExtensions.splice(enabledExtensions.indexOf(uuid), 1);
         global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
+    },
+
+    InstallRemoteExtension: function(uuid, url) {
+        ExtensionSystem.installExtensionFromManifestURL(uuid, url);
     },
 
     get OverviewActive() {
