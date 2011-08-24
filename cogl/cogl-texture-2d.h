@@ -56,6 +56,7 @@ G_BEGIN_DECLS
 typedef struct _CoglTexture2D CoglTexture2D;
 #define COGL_TEXTURE_2D(X) ((CoglTexture2D *)X)
 
+#define cogl_is_texture_2d cogl_is_texture_2d_EXP
 /**
  * cogl_is_texture_2d:
  * @object: A #CoglObject
@@ -66,10 +67,10 @@ typedef struct _CoglTexture2D CoglTexture2D;
  * Return value: %TRUE if the object references a #CoglTexture2D,
  *   %FALSE otherwise
  */
-#define cogl_is_texture_2d cogl_is_texture_2d_EXP
 gboolean
 cogl_is_texture_2d (void *object);
 
+#define cogl_texture_2d_new_with_size cogl_texture_2d_new_with_size_EXP
 /**
  * cogl_texture_2d_new_with_size:
  * @ctx: A #CoglContext
@@ -96,7 +97,6 @@ cogl_is_texture_2d (void *object);
  *
  * Since: 2.0
  */
-#define cogl_texture_2d_new_with_size cogl_texture_2d_new_with_size_EXP
 CoglTexture2D *
 cogl_texture_2d_new_with_size (CoglContext *ctx,
                                int width,
@@ -104,6 +104,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
                                CoglPixelFormat internal_format,
                                GError **error);
 
+#define cogl_texture_2d_new_from_data cogl_texture_2d_new_from_data_EXP
 /**
  * cogl_texture_2d_new_from_data:
  * @ctx: A #CoglContext
@@ -141,7 +142,6 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
  *
  * Since: 2.0
  */
-#define cogl_texture_2d_new_from_data cogl_texture_2d_new_from_data_EXP
 CoglTexture2D *
 cogl_texture_2d_new_from_data (CoglContext *ctx,
                                int width,
@@ -152,6 +152,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                const guint8 *data,
                                GError **error);
 
+#define cogl_texture_2d_new_from_foreign cogl_texture_2d_new_from_foreign_EXP
 /**
  * cogl_texture_2d_new_from_foreign:
  * @ctx: A #CoglContext
@@ -176,7 +177,6 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
  *
  * Since: 2.0
  */
-#define cogl_texture_2d_new_from_foreign cogl_texture_2d_new_from_foreign_EXP
 CoglTexture2D *
 cogl_texture_2d_new_from_foreign (CoglContext *ctx,
                                   unsigned int gl_handle,
@@ -186,6 +186,8 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
                                   GError **error);
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+#define cogl_wayland_texture_2d_new_from_buffer \
+  cogl_wayland_texture_2d_new_from_buffer_EXP
 /**
  * cogl_wayland_texture_2d_new_from_buffer:
  * @ctx: A #CoglContext
@@ -208,8 +210,6 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
  *          @error.
  * Since: 2.0
  */
-#define cogl_wayland_texture_2d_new_from_buffer \
-  cogl_wayland_texture_2d_new_from_buffer_EXP
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          struct wl_buffer *buffer,
