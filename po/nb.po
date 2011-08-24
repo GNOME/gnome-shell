@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-21 21:42+0200\n"
-"PO-Revision-Date: 2011-08-21 21:43+0200\n"
+"POT-Creation-Date: 2011-08-24 22:16+0200\n"
+"PO-Revision-Date: 2011-08-24 22:17+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -57,40 +57,30 @@ msgstr ""
 "innstillingen for utvidelser som finnes i begge listene."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should not be loaded. This setting overrides enabled-extensions for "
-"extensions that appear in both lists."
-msgstr ""
-"GNOME Shell-utvidelser har en uuid-egenskap. Denne nøkkelen lister "
-"utvidelser som ikke bør lastes. Denne innstillingen overstyrer enabled-"
-"extensions for utvidelser som finnes i begge listene."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historikk for kommandodialog (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for the looking glass dialog"
 msgstr "Historikk for forstørrelsesglass-dialogen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Viser dato i tillegg til tid i klokken hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "Viser sekunder i klokken hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Viser ISO-ukedato i kalenderen hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Liste av skrivebordfil-ider for favorittprogrammer"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, fuzzy, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -107,19 +97,19 @@ msgstr ""
 "Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som "
 "brukes for gst-launch."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Vis dato i klokken"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Vis dato for uken i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Vis tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -127,7 +117,7 @@ msgstr ""
 "Programmene som passer til disse identifikatorene vil bli vist i "
 "favorittområdet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -137,7 +127,7 @@ msgstr ""
 "og bruke denne filendelsen. Den bør endres når du gjør opptak til et nytt "
 "oppbevaringsformat."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -145,11 +135,11 @@ msgstr ""
 "Bildefrekvensen i den ferdige skjermvideoen tatt opp med GNOME Shells "
 "skjermvideoopptaker i bilder per sekund."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Gstreamer-kommandokø brukt til å kode skjermvideoen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -161,19 +151,15 @@ msgstr ""
 "holdt privat, men du kan deaktivere denne lagringen av personvernårsaker. "
 "Hvis du slår det av, vil det ikke fjerne allerede lagret informasjon."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid "Uuids of extensions to disable"
-msgstr "Uuider på utvidelser som skal slås av"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to enable"
 msgstr "Uuider på utvidelser som skal slås på"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "Om det skal samles statistikk om bruk av programmer"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "OpenSearch tilbydere slått av"
 
@@ -538,11 +524,15 @@ msgstr "Feil"
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:717
+#: ../js/ui/lookingGlass.js:694
+msgid "Downloading"
+msgstr "Laster ned"
+
+#: ../js/ui/lookingGlass.js:719
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:725
 msgid "Web Page"
 msgstr "Nettside"
 
@@ -555,7 +545,7 @@ msgid "System Information"
 msgstr "Systeminformasjon"
 
 #: ../js/ui/notificationDaemon.js:427 ../js/ui/status/power.js:238
-#: ../src/shell-app.c:340
+#: ../src/shell-app.c:354
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -787,7 +777,7 @@ msgstr "Alltid gi tilgang"
 msgid "Grant this time only"
 msgstr "Gi tilgang kun denne ene gangen"
 
-#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:985
+#: ../js/ui/status/bluetooth.js:409 ../js/ui/telepathyClient.js:1058
 msgid "Reject"
 msgstr "Avvis"
 
@@ -914,13 +904,13 @@ msgstr "ikke tilgjengelig"
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:586 ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:586 ../js/ui/status/network.js:1546
 msgid "More..."
 msgstr "Mer …"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:622 ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:622 ../js/ui/status/network.js:1483
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
@@ -937,7 +927,7 @@ msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:902 ../js/ui/status/network.js:1460
+#: ../js/ui/status/network.js:902 ../js/ui/status/network.js:1495
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
@@ -946,68 +936,68 @@ msgstr "Automatisk %s"
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1462
+#: ../js/ui/status/network.js:1497
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1554
+#: ../js/ui/status/network.js:1589
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1566
+#: ../js/ui/status/network.js:1601
 msgid "Wired"
 msgstr "Kablet"
 
-#: ../js/ui/status/network.js:1577
+#: ../js/ui/status/network.js:1612
 msgid "Wireless"
 msgstr "Trådløst"
 
-#: ../js/ui/status/network.js:1587
+#: ../js/ui/status/network.js:1622
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:1597
+#: ../js/ui/status/network.js:1632
 msgid "VPN Connections"
 msgstr "VPN-tilkoblinger"
 
-#: ../js/ui/status/network.js:1609
+#: ../js/ui/status/network.js:1644
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1901
+#: ../js/ui/status/network.js:1936
 #, c-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Du er nå koblet til mobil bredbåndstilkobling «%s»"
 
-#: ../js/ui/status/network.js:1905
+#: ../js/ui/status/network.js:1940
 #, c-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Du er nå koblet til trådløst nettverk «%s»"
 
-#: ../js/ui/status/network.js:1909
+#: ../js/ui/status/network.js:1944
 #, c-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Du er nå koblet til kablet nettverk «%s»"
 
-#: ../js/ui/status/network.js:1913
+#: ../js/ui/status/network.js:1948
 #, c-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Du er nå koblet til virtuelt privat nettverk «%s»"
 
-#: ../js/ui/status/network.js:1918
+#: ../js/ui/status/network.js:1953
 #, c-format
 msgid "You're now connected to '%s'"
 msgstr "Du er nå koblet til «%s»"
 
-#: ../js/ui/status/network.js:1926
+#: ../js/ui/status/network.js:1961
 msgid "Connection established"
 msgstr "Tilkobling etablert"
 
-#: ../js/ui/status/network.js:2052
+#: ../js/ui/status/network.js:2087
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
-#: ../js/ui/status/network.js:2177
+#: ../js/ui/status/network.js:2212
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
@@ -1108,36 +1098,36 @@ msgstr "Mikrofon"
 #. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:229
+#: ../js/ui/telepathyClient.js:235
 msgid "Invitation"
 msgstr "Invitasjon"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:295
+#: ../js/ui/telepathyClient.js:301
 msgid "Call"
 msgstr "Ring"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:323
+#: ../js/ui/telepathyClient.js:329
 msgid "File Transfer"
 msgstr "Filoverføring"
 
-#: ../js/ui/telepathyClient.js:573
+#: ../js/ui/telepathyClient.js:595
 #, c-format
 msgid "%s is online."
 msgstr "%s er tilkoblet."
 
-#: ../js/ui/telepathyClient.js:578
+#: ../js/ui/telepathyClient.js:600
 #, c-format
 msgid "%s is offline."
 msgstr "%s er frakoblet."
 
-#: ../js/ui/telepathyClient.js:581
+#: ../js/ui/telepathyClient.js:603
 #, c-format
 msgid "%s is away."
 msgstr "«%s» er borte."
 
-#: ../js/ui/telepathyClient.js:584
+#: ../js/ui/telepathyClient.js:606
 #, c-format
 msgid "%s is busy."
 msgstr "%s er opptatt."
@@ -1145,35 +1135,35 @@ msgstr "%s er opptatt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:770
+#: ../js/ui/telepathyClient.js:840
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Sendt <b>%X</b> på <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:776
+#: ../js/ui/telepathyClient.js:846
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Sendt  <b>%A</b>, <b>%B %d</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:781
+#: ../js/ui/telepathyClient.js:851
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Sendt <b>%A</b>, <b>%B %d</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:822
+#: ../js/ui/telepathyClient.js:893
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s er nå kjent som %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:929
+#: ../js/ui/telepathyClient.js:1002
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitasjon til %s"
@@ -1181,32 +1171,32 @@ msgstr "Invitasjon til %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:937
+#: ../js/ui/telepathyClient.js:1010
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s inviterer deg til å bli med i %s"
 
-#: ../js/ui/telepathyClient.js:939 ../js/ui/telepathyClient.js:1028
+#: ../js/ui/telepathyClient.js:1012 ../js/ui/telepathyClient.js:1101
 msgid "Decline"
 msgstr "Avslå"
 
-#: ../js/ui/telepathyClient.js:940 ../js/ui/telepathyClient.js:1029
+#: ../js/ui/telepathyClient.js:1013 ../js/ui/telepathyClient.js:1102
 msgid "Accept"
 msgstr "Godta"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:973
+#: ../js/ui/telepathyClient.js:1046
 #, c-format
 msgid "Video call from %s"
 msgstr "Videosamtale fra %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:976
+#: ../js/ui/telepathyClient.js:1049
 #, c-format
 msgid "Call from %s"
 msgstr "Samtale fra %s"
 
-#: ../js/ui/telepathyClient.js:986
+#: ../js/ui/telepathyClient.js:1059
 msgid "Answer"
 msgstr "Svar"
 
@@ -1215,7 +1205,7 @@ msgstr "Svar"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1022
+#: ../js/ui/telepathyClient.js:1095
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sender deg %s"
@@ -1268,7 +1258,7 @@ msgstr "Systemlyder"
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
-#: ../src/shell-app.c:566
+#: ../src/shell-app.c:580
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Klarte ikke å starte «%s»"
