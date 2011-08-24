@@ -29,6 +29,7 @@ dist_theme_DATA =				\
 	theme/dash-placeholder.svg		\
 	theme/filter-selected-ltr.svg		\
 	theme/filter-selected-rtl.svg		\
+	theme/gdm.css				\
 	theme/gnome-shell.css			\
 	theme/panel-border.svg			\
 	theme/panel-button-border.svg		\

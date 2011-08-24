@@ -45,6 +45,14 @@ try {
     log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
 }
 
+const GDM_TRAY_ICON_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'battery'];
+const GDM_TRAY_ICON_SHELL_IMPLEMENTATION = {
+    'a11y': imports.ui.status.accessibility.ATIndicator,
+    'volume': imports.ui.status.volume.Indicator,
+    'battery': imports.ui.status.power.Indicator,
+    'keyboard': imports.ui.status.keyboard.XKBIndicator
+};
+
 // To make sure the panel corners blend nicely with the panel,
 // we draw background and borders the same way, e.g. drawing
 // them as filled shapes from the outside inwards instead of
@@ -876,6 +884,14 @@ Panel.prototype = {
             this.actor.remove_style_class_name('in-overview');
         }));
 
+        if (global.session_type == Shell.SessionType.GDM) {
+            this._tray_icon_order = GDM_TRAY_ICON_ORDER;
+            this._tray_icon_shell_implementation = GDM_TRAY_ICON_SHELL_IMPLEMENTATION;
+        } else {
+            this._tray_icon_order = STANDARD_TRAY_ICON_ORDER;
+            this._tray_icon_shell_implementation = STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION;
+        }
+
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -1026,9 +1042,9 @@ Panel.prototype = {
     },
 
     startStatusArea: function() {
-        for (let i = 0; i < STANDARD_TRAY_ICON_ORDER.length; i++) {
-            let role = STANDARD_TRAY_ICON_ORDER[i];
-            let constructor = STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role];
+        for (let i = 0; i < this._tray_icon_order.length; i++) {
+            let role = this._tray_icon_order[i];
+            let constructor = this._tray_icon_shell_implementation[role];
             if (!constructor) {
                 // This icon is not implemented (this is a bug)
                 continue;
@@ -1069,13 +1085,13 @@ Panel.prototype = {
     _onTrayIconAdded: function(o, icon, role) {
         icon.height = PANEL_ICON_SIZE;
 
-        if (STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role]) {
+        if (this._tray_icon_shell_implementation[role]) {
             // This icon is legacy, and replaced by a Shell version
             // Hide it
             return;
         }
         // Figure out the index in our well-known order for this icon
-        let position = STANDARD_TRAY_ICON_ORDER.indexOf(role);
+        let position = this._tray_icon_order.indexOf(role);
         icon._rolePosition = position;
         let children = this._trayBox.get_children();
         let i;

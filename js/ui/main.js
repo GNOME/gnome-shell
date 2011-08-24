@@ -71,6 +71,7 @@ let _errorLogStack = [];
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
+let _gdmCssStylesheet = null;
 
 let background = null;
 
@@ -84,6 +85,17 @@ function _createUserSession() {
     automountManager = new AutomountManager.AutomountManager();
     autorunManager = new AutorunManager.AutorunManager();
     networkAgent = new NetworkAgent.NetworkAgent();
+}
+
+function _createGDMSession() {
+    // We do this this here instead of at the top to prevent GDM
+    // related code from getting loaded in normal user sessions
+    const LoginDialog = imports.gdm.loginDialog;
+
+    let loginDialog = new LoginDialog.LoginDialog();
+    loginDialog.connect('loaded', function() {
+                            loginDialog.open();
+                        });
 }
 
 function _initRecorder() {
@@ -175,6 +187,7 @@ function start() {
     global.stage.no_clear_hint = true;
 
     _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
+    _gdmCssStylesheet = global.datadir + '/theme/gdm.css';
     loadTheme();
 
     // Set up stage hierarchy to group all UI actors under one container.
@@ -197,7 +210,11 @@ function start() {
     keyboard = new Keyboard.Keyboard();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
-    _createUserSession();
+
+    if (global.session_type == Shell.SessionType.USER)
+        _createUserSession();
+    else if (global.session_type == Shell.SessionType.GDM)
+        _createGDMSession();
 
     panel.startStatusArea();
 
@@ -433,6 +450,9 @@ function loadTheme() {
         cssStylesheet = _cssStylesheet;
 
     let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
+
+    if (global.session_type == Shell.SessionType.GDM)
+        theme.load_stylesheet(_gdmCssStylesheet);
 
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();
