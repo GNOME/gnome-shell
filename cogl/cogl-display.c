@@ -119,6 +119,12 @@ cogl_display_new (CoglRenderer *renderer,
   return _cogl_display_object_new (display);
 }
 
+CoglRenderer *
+cogl_display_get_renderer (CoglDisplay *display)
+{
+  return display->renderer;
+}
+
 gboolean
 cogl_display_setup (CoglDisplay *display,
                     GError **error)

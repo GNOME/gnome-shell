@@ -57,6 +57,7 @@ cogl_onscreen_template_new
 <FILE>cogl-display</FILE>
 <TITLE>CoglDisplay: Setup a display pipeline</TITLE>
 cogl_display_new
+cogl_display_get_renderer
 cogl_display_setup
 
 <SUBSECTION>
