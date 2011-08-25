@@ -964,7 +964,7 @@ Panel.prototype = {
             }
 
             let indicator = new constructor();
-            this.addToStatusArea(role, indicator, i-1);
+            this.addToStatusArea(role, indicator, i);
         }
 
         // PopupMenuManager depends on menus being added in order for
