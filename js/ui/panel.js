@@ -16,7 +16,6 @@ const Layout = imports.ui.layout;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
-const UserMenu = imports.ui.userMenu;
 const DateMenu = imports.ui.dateMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -28,25 +27,26 @@ const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const SPINNER_ANIMATION_TIME = 0.2;
 
-const STANDARD_TRAY_ICON_ORDER = ['a11y', 'keyboard', 'volume', 'bluetooth', 'network', 'battery'];
-const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
+const STANDARD_STATUS_AREA_ORDER = ['a11y', 'keyboard', 'volume', 'bluetooth', 'network', 'battery', 'userMenu'];
+const STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'volume': imports.ui.status.volume.Indicator,
     'battery': imports.ui.status.power.Indicator,
-    'keyboard': imports.ui.status.keyboard.XKBIndicator
+    'keyboard': imports.ui.status.keyboard.XKBIndicator,
+    'userMenu': imports.ui.userMenu.UserMenuButton
 };
 
 if (Config.HAVE_BLUETOOTH)
-    STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
+    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
 
 try {
-    STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['network'] = imports.ui.status.network.NMApplet;
+    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['network'] = imports.ui.status.network.NMApplet;
 } catch(e) {
     log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
 }
 
-const GDM_TRAY_ICON_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'battery'];
-const GDM_TRAY_ICON_SHELL_IMPLEMENTATION = {
+const GDM_STATUS_AREA_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'battery'];
+const GDM_STATUS_AREA_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'volume': imports.ui.status.volume.Indicator,
     'battery': imports.ui.status.power.Indicator,
@@ -901,14 +901,6 @@ Panel.prototype = {
             this.actor.remove_style_class_name('in-overview');
         }));
 
-        if (global.session_type == Shell.SessionType.GDM) {
-            this._tray_icon_order = GDM_TRAY_ICON_ORDER;
-            this._tray_icon_shell_implementation = GDM_TRAY_ICON_SHELL_IMPLEMENTATION;
-        } else {
-            this._tray_icon_order = STANDARD_TRAY_ICON_ORDER;
-            this._tray_icon_shell_implementation = STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION;
-        }
-
         this._menus = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -959,14 +951,12 @@ Panel.prototype = {
         this._menus.addMenu(this._dateMenu.menu);
 
         /* right */
-
-        this._statusBox = new St.BoxLayout({ name: 'statusTray' });
-        this._rightBox.add(this._statusBox);
-
-        if (global.session_type == Shell.SessionType.USER) {
-            this._userMenu = new UserMenu.UserMenuButton();
-            this._userMenu.actor.name = 'panelStatus';
-            this._rightBox.add(this._userMenu.actor);
+        if (global.session_type == Shell.SessionType.GDM) {
+            this._status_area_order = GDM_STATUS_AREA_ORDER;
+            this._status_area_shell_implementation = GDM_STATUS_AREA_SHELL_IMPLEMENTATION;
+        } else {
+            this._status_area_order = STANDARD_STATUS_AREA_ORDER;
+            this._status_area_shell_implementation = STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION;
         }
 
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
@@ -1052,9 +1042,9 @@ Panel.prototype = {
     },
 
     startStatusArea: function() {
-        for (let i = 0; i < this._tray_icon_order.length; i++) {
-            let role = this._tray_icon_order[i];
-            let constructor = this._tray_icon_shell_implementation[role];
+        for (let i = 0; i < this._status_area_order.length; i++) {
+            let role = this._status_area_order[i];
+            let constructor = this._status_area_shell_implementation[role];
             if (!constructor) {
                 // This icon is not implemented (this is a bug)
                 continue;
@@ -1071,20 +1061,19 @@ Panel.prototype = {
     },
 
     _insertStatusItem: function(actor, position) {
-        let children = this._statusBox.get_children();
+        let children = this._rightBox.get_children();
         let i;
         for (i = children.length - 1; i >= 0; i--) {
             let rolePosition = children[i]._rolePosition;
             if (position > rolePosition) {
-                this._statusBox.insert_actor(actor, i + 1);
+                this._rightBox.insert_actor(actor, i + 1);
                 break;
             }
         }
         if (i == -1) {
             // If we didn't find a position, we must be first
-            this._statusBox.insert_actor(actor, 0);
+            this._rightBox.insert_actor(actor, 0);
         }
-
         actor._rolePosition = position;
     },
 
@@ -1110,7 +1099,7 @@ Panel.prototype = {
     },
 
     _onTrayIconAdded: function(o, icon, role) {
-        if (this._tray_icon_shell_implementation[role]) {
+        if (this._status_area_shell_implementation[role]) {
             // This icon is legacy, and replaced by a Shell version
             // Hide it
             return;
@@ -1120,7 +1109,7 @@ Panel.prototype = {
         let bin = new St.Bin({ style_class: 'panel-button' });
         bin.child = icon;
 
-        this._insertStatusItem(bin, this._tray_icon_order.indexOf(role));
+        this._insertStatusItem(bin, this._status_area_order.indexOf(role));
     },
 
     _onTrayIconRemoved: function(o, icon) {
