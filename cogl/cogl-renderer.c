@@ -35,6 +35,7 @@
 #include "cogl-internal.h"
 #include "cogl-private.h"
 #include "cogl-object.h"
+#include "cogl-context-private.h"
 
 #include "cogl-renderer.h"
 #include "cogl-renderer-private.h"
@@ -393,4 +394,19 @@ _cogl_renderer_get_proc_address (CoglRenderer *renderer,
   const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
 
   return winsys->renderer_get_proc_address (renderer, name);
+}
+
+int
+cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer)
+{
+  int n = 0;
+
+  _COGL_GET_CONTEXT (ctx, 0);
+
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES2)
+  if (ctx->driver == COGL_DRIVER_GL || ctx->driver == COGL_DRIVER_GLES2)
+    GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n));
+#endif
+
+  return n;
 }

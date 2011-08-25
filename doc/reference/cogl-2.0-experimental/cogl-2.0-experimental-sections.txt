@@ -14,6 +14,7 @@ cogl_object_set_user_data
 <FILE>cogl-renderer</FILE>
 <TITLE>CoglRenderer: Connect to a backend renderer</TITLE>
 cogl_renderer_new
+cogl_renderer_get_n_fragment_texture_units
 cogl_renderer_connect
 
 <SUBSECTION>
