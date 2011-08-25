@@ -495,6 +495,12 @@ _cogl_context_get_default (void)
   return _context;
 }
 
+CoglDisplay *
+cogl_context_get_display (CoglContext *context)
+{
+  return context->display;
+}
+
 #ifdef COGL_HAS_EGL_SUPPORT
 EGLDisplay
 cogl_egl_context_get_egl_display (CoglContext *context)
