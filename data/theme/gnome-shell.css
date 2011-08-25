@@ -418,20 +418,6 @@ StTooltip StLabel {
     spacing: .4em;
 }
 
-#legacyTray {
-    spacing: 14px;
-    padding-left: 14px;
-}
-
-#legacyTray:rtl {
-    padding-left: 0px;
-    padding-right: 14px;
-}
-
-#legacyTray:compact {
-    spacing: 8px;
-}
-
 .system-status-icon {
     icon-size: 1.14em;
 }

@@ -960,14 +960,7 @@ Panel.prototype = {
 
         /* right */
 
-        // System status applets live in statusBox, while legacy tray icons
-        // live in trayBox
-        // The trayBox is hidden when there are no tray icons.
-        this._trayBox = new St.BoxLayout({ name: 'legacyTray' });
         this._statusBox = new St.BoxLayout({ name: 'statusTray' });
-
-        this._trayBox.hide();
-        this._rightBox.add(this._trayBox);
         this._rightBox.add(this._statusBox);
 
         if (global.session_type == Shell.SessionType.USER) {
@@ -1077,6 +1070,24 @@ Panel.prototype = {
             this._menus.addMenu(this._userMenu.menu);
     },
 
+    _insertStatusItem: function(actor, position) {
+        let children = this._statusBox.get_children();
+        let i;
+        for (i = children.length - 1; i >= 0; i--) {
+            let rolePosition = children[i]._rolePosition;
+            if (position > rolePosition) {
+                this._statusBox.insert_actor(actor, i + 1);
+                break;
+            }
+        }
+        if (i == -1) {
+            // If we didn't find a position, we must be first
+            this._statusBox.insert_actor(actor, 0);
+        }
+
+        actor._rolePosition = position;
+    },
+
     addToStatusArea: function(role, indicator, position) {
         if (this._statusArea[role])
             throw new Error('Extension point conflict: there is already a status indicator for role ' + role);
@@ -1086,8 +1097,7 @@ Panel.prototype = {
 
         if (!position)
             position = 0;
-
-        this._statusBox.insert_actor(indicator.actor, position);
+        this._insertStatusItem(indicator.actor, position);
         this._menus.addMenu(indicator.menu);
 
         this._statusArea[role] = indicator;
@@ -1100,39 +1110,23 @@ Panel.prototype = {
     },
 
     _onTrayIconAdded: function(o, icon, role) {
-        icon.height = PANEL_ICON_SIZE;
-
         if (this._tray_icon_shell_implementation[role]) {
             // This icon is legacy, and replaced by a Shell version
             // Hide it
             return;
         }
-        // Figure out the index in our well-known order for this icon
-        let position = this._tray_icon_order.indexOf(role);
-        icon._rolePosition = position;
-        let children = this._trayBox.get_children();
-        let i;
-        // Walk children backwards, until we find one that isn't
-        // well-known, or one where we should follow
-        for (i = children.length - 1; i >= 0; i--) {
-            let rolePosition = children[i]._rolePosition;
-            if (!rolePosition || position > rolePosition) {
-                this._trayBox.insert_actor(icon, i + 1);
-                break;
-            }
-        }
-        if (i == -1) {
-            // If we didn't find a position, we must be first
-            this._trayBox.insert_actor(icon, 0);
-        }
 
-        // Make sure the trayBox is shown.
-        this._trayBox.show();
+        icon.height = PANEL_ICON_SIZE;
+        let bin = new St.Bin({ style_class: 'panel-button' });
+        bin.child = icon;
+
+        this._insertStatusItem(bin, this._tray_icon_order.indexOf(role));
     },
 
     _onTrayIconRemoved: function(o, icon) {
-        if (icon.get_parent() != null)
-            this._trayBox.remove_actor(icon);
+        let bin = icon.get_parent();
+        if (bin && bin instanceof St.Bin)
+            bin.destroy();
     },
 
 };
