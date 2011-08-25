@@ -305,7 +305,7 @@ NotificationDaemon.prototype = {
             ndata.notification = notification;
             notification.connect('destroy', Lang.bind(this,
                 function(n, reason) {
-                    delete this._notifications[id];
+                    delete this._notifications[ndata.id];
                     let notificationClosedReason;
                     switch (reason) {
                         case MessageTray.NotificationDestroyedReason.EXPIRED:
@@ -318,11 +318,11 @@ NotificationDaemon.prototype = {
                             notificationClosedReason = NotificationClosedReason.APP_CLOSED;
                             break;
                     }
-                    this._emitNotificationClosed(id, notificationClosedReason);
+                    this._emitNotificationClosed(ndata.id, notificationClosedReason);
                 }));
             notification.connect('action-invoked', Lang.bind(this,
                 function(n, actionId) {
-                    this._emitActionInvoked(id, actionId);
+                    this._emitActionInvoked(ndata.id, actionId);
                 }));
         } else {
             notification.update(summary, body, { icon: iconActor,
@@ -336,7 +336,7 @@ NotificationDaemon.prototype = {
                 if (actions[i] == 'default')
                     notification.connect('clicked', Lang.bind(this,
                         function() {
-                            this._emitActionInvoked(id, "default");
+                            this._emitActionInvoked(ndata.id, "default");
                         }));
                 else
                     notification.addButton(actions[i], actions[i + 1]);
