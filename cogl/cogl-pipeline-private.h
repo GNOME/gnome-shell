@@ -916,11 +916,6 @@ typedef struct _CoglPipelineFlushOptions
   CoglHandle                    layer0_override_texture;
 } CoglPipelineFlushOptions;
 
-
-int
-_cogl_get_max_texture_image_units (void);
-
-
 void
 _cogl_use_fragment_program (GLuint gl_program, CoglPipelineProgramType type);
 

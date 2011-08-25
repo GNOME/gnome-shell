@@ -269,7 +269,6 @@ cogl_context_new (CoglDisplay *display,
   _cogl_bitmask_init (&context->arrays_to_change);
 
   context->max_texture_units = -1;
-  context->max_texture_image_units = -1;
   context->max_activateable_texture_units = -1;
 
   context->current_program = COGL_INVALID_HANDLE;

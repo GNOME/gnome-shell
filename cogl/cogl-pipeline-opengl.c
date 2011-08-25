@@ -387,26 +387,6 @@ _cogl_use_vertex_program (GLuint gl_program, CoglPipelineProgramType type)
   ctx->current_vertex_program_type = type;
 }
 
-#if defined (COGL_PIPELINE_FRAGEND_GLSL) || \
-    defined (COGL_PIPELINE_FRAGEND_ARBFP)
-int
-_cogl_get_max_texture_image_units (void)
-{
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  /* This function is called quite often so we cache the value to
-     avoid too many GL calls */
-  if (G_UNLIKELY (ctx->max_texture_image_units == -1))
-    {
-      ctx->max_texture_image_units = 1;
-      GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS,
-                              &ctx->max_texture_image_units));
-    }
-
-  return ctx->max_texture_image_units;
-}
-#endif
-
 #if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
 
 static gboolean
