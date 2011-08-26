@@ -2117,6 +2117,8 @@ check_needs_reshape (MetaWindowActor *self)
 
   if (priv->window->frame)
     meta_frame_calc_borders (priv->window->frame, &borders);
+  else
+    meta_frame_borders_clear (&borders);
 
   region = meta_window_get_frame_bounds (priv->window);
   if (region != NULL)
