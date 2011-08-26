@@ -226,6 +226,23 @@ AS_CASE([$CLUTTER_FLAVOUR],
                            [])
         ],
 
+	[gdk],
+	[
+	  CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_COGL"
+
+	  # We don't claim to support X11 (even though that's the preferred
+	  # GDK backend), to avoid building all the ClutterX11 stuff
+	  SUPPORT_GDK=1
+
+	  CLUTTER_WINSYS=cogl
+	  CLUTTER_WINSYS_BASE=gdk
+	  CLUTTER_WINSYS_BASE_LIB="gdk/libclutter-gdk.la"
+	  CLUTTER_SONAME_INFIX=gdk
+
+	  BACKEND_PC_FILES="$BACKEND_PC_FILES gdk-3.0"
+	  PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
+	],
+
         [opengl-egl-xlib],
         [
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
@@ -419,6 +436,7 @@ AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xcex100"],
 AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "x1"])
 AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "x1"])
 AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "x1"])
+AM_CONDITIONAL(SUPPORT_GDK, [test "x$SUPPORT_GDK" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
@@ -446,6 +464,9 @@ CLUTTER_CONFIG_DEFINES=
 AS_IF([test "x$SUPPORT_XLIB" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_X11 1"])
+AS_IF([test "x$SUPPORT_GDK" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_GDK 1"])
 AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_GLX 1"])

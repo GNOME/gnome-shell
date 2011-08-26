@@ -30,6 +30,17 @@
 #include "config.h"
 #endif
 
+#include "clutter-config.h"
+
+#ifdef CLUTTER_WINDOWING_GDK
+#include <gdk/gdk.h>
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
+
+#endif
+
 #include "clutter-stage-cogl.h"
 #include "clutter-backend-cogl.h"
 
@@ -43,7 +54,7 @@
 #include "clutter-stage-private.h"
 #include "clutter-util.h"
 
-#ifdef COGL_HAS_X11_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK)
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
 #endif
 
@@ -51,8 +62,10 @@ static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageCogl,
                          _clutter_stage_cogl,
-#ifdef COGL_HAS_X11_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
                          CLUTTER_TYPE_STAGE_X11,
+#elif defined(CLUTTER_WINDOWING_GDK)
+			 CLUTTER_TYPE_STAGE_GDK,
 #else
                          G_TYPE_OBJECT,
 #endif
@@ -66,7 +79,7 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
 
   CLUTTER_NOTE (BACKEND, "Unrealizing Cogl stage [%p]", stage_cogl);
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK)
   /* chain up to the StageX11 implementation */
   clutter_stage_window_parent_iface->unrealize (stage_window);
 #endif
@@ -101,8 +114,10 @@ static gboolean
 clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+#elif defined(CLUTTER_WINDOWING_GDK)
+  ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 #endif
   ClutterBackend *backend;
   CoglFramebuffer *framebuffer;
@@ -115,16 +130,25 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
                 G_OBJECT_TYPE_NAME (stage_cogl),
                 stage_cogl);
 
+#if defined(CLUTTER_WINDOWING_GDK)
+  /* we need to chain early to parent in the Gdk case, as the X window
+     must be created by GDK, not Cogl */
+  if (!clutter_stage_window_parent_iface->realize (stage_window))
+    return FALSE;
+#endif
+
   backend = clutter_get_default_backend ();
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
   clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
+#elif defined(CLUTTER_WINDOWING_GDK)
+  clutter_actor_get_size (CLUTTER_ACTOR (stage_gdk->wrapper), &width, &height);
 #endif
 
   stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
                                             width, height);
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
   if (stage_x11->xwin != None)
     {
       cogl_x11_onscreen_set_foreign_window_xid (stage_cogl->onscreen,
@@ -132,6 +156,24 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
                                                 _clutter_stage_x11_update_foreign_event_mask,
                                                 stage_x11);
 
+    }
+#elif defined(CLUTTER_WINDOWING_GDK)
+#if defined(COGL_HAS_XLIB_SUPPORT) && defined(GDK_WINDOWING_X11)
+  if (GDK_IS_X11_WINDOW (stage_gdk->window))
+    {
+      cogl_x11_onscreen_set_foreign_window_xid (stage_cogl->onscreen,
+						gdk_x11_window_get_xid (stage_gdk->window),
+						_clutter_stage_gdk_update_foreign_event_mask,
+						stage_gdk);
+    }
+  else
+#endif
+    {
+      g_warning ("Unsupported GdkWindow type %s", G_OBJECT_TYPE_NAME (stage_gdk->window));
+
+      cogl_object_unref (stage_cogl->onscreen);
+      stage_cogl->onscreen = NULL;
+      return FALSE;
     }
 #endif
 
@@ -161,7 +203,7 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
                                                     stage_cogl);
     }
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
   if (stage_x11->xwin == None)
     stage_x11->xwin = cogl_x11_onscreen_get_window_xid (stage_cogl->onscreen);
 
@@ -179,7 +221,7 @@ clutter_stage_cogl_get_pending_swaps (ClutterStageWindow *stage_window)
   return stage_cogl->pending_swaps;
 }
 
-#ifndef COGL_HAS_XLIB_SUPPORT
+#if !(defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK))
 
 static ClutterActor *
 clutter_stage_cogl_get_wrapper (ClutterStageWindow *stage_window)
@@ -238,7 +280,7 @@ clutter_stage_cogl_resize (ClutterStageWindow *stage_window,
 {
 }
 
-#endif /* COGL_HAS_XLIB_SUPPORT */
+#endif /* X11 || GDK */
 
 static gboolean
 clutter_stage_cogl_has_redraw_clips (ClutterStageWindow *stage_window)
@@ -368,10 +410,14 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                         "The time spent in blit_sub_buffer",
                         0 /* no application private data */);
 
-#ifdef COGL_HAS_X11_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_cogl);
 
   wrapper = CLUTTER_ACTOR (stage_x11->wrapper);
+#elif defined(CLUTTER_WINDOWING_GDK)
+  ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_cogl);
+
+  wrapper = CLUTTER_ACTOR (stage_gdk->wrapper);
 #else
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
 #endif
@@ -390,7 +436,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
       G_LIKELY (stage_cogl->frame_count > 3)
-#ifdef COGL_HAS_X11_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
       /* While resizing a window clipped redraws are disabled to avoid
        * artefacts. See clutter-event-x11.c:event_translate for a
        * detailed explanation */
@@ -564,7 +610,7 @@ clutter_stage_cogl_get_active_framebuffer (ClutterStageWindow *stage_window)
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
-#ifdef COGL_HAS_X11_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK)
   clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
 
   iface->realize = clutter_stage_cogl_realize;

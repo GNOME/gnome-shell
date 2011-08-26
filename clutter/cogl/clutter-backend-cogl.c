@@ -36,6 +36,17 @@
 
 #include <errno.h>
 
+#include "clutter-config.h"
+
+#ifdef CLUTTER_WINDOWING_GDK
+#include <gdk/gdk.h>
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
+
+#endif
+
 #include "clutter-backend-cogl.h"
 #include "clutter-stage-cogl.h"
 
@@ -67,8 +78,10 @@ static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
 static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
 #endif
 
-#ifdef COGL_HAS_X11_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
 G_DEFINE_TYPE (ClutterBackendCogl, _clutter_backend_cogl, CLUTTER_TYPE_BACKEND_X11);
+#elif defined(CLUTTER_WINDOWING_GDK)
+G_DEFINE_TYPE (ClutterBackendCogl, _clutter_backend_cogl, CLUTTER_TYPE_BACKEND_GDK);
 #else
 G_DEFINE_TYPE (ClutterBackendCogl, _clutter_backend_cogl, CLUTTER_TYPE_BACKEND);
 #endif
@@ -87,7 +100,7 @@ clutter_backend_cogl_pre_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
   const gchar *env_string;
-#ifdef COGL_HAS_X11_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK)
   ClutterBackendClass *parent_class =
     CLUTTER_BACKEND_CLASS (_clutter_backend_cogl_parent_class);
 
@@ -109,7 +122,7 @@ static gboolean
 clutter_backend_cogl_post_parse (ClutterBackend  *backend,
                                  GError         **error)
 {
-#ifdef COGL_HAS_X11_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK)
   ClutterBackendClass *parent_class =
     CLUTTER_BACKEND_CLASS (_clutter_backend_cogl_parent_class);
 
@@ -122,7 +135,7 @@ clutter_backend_cogl_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
-#ifndef COGL_HAS_XLIB_SUPPORT
+#if !(defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK))
 static ClutterDeviceManager *
 clutter_backend_cogl_get_device_manager (ClutterBackend *backend)
 {
@@ -140,7 +153,7 @@ clutter_backend_cogl_get_device_manager (ClutterBackend *backend)
 
   return backend_cogl->device_manager;
 }
-#endif
+#endif /* !(X11 || GDK) */
 
 static void
 clutter_backend_cogl_init_events (ClutterBackend *backend)
@@ -152,8 +165,8 @@ clutter_backend_cogl_init_events (ClutterBackend *backend)
 #ifdef HAVE_EVDEV
   _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
 #endif
-#ifdef COGL_HAS_X11_SUPPORT
-  /* Chain up to the X11 backend */
+#if defined (CLUTTER_WINDOWING_X11) || defined (CLUTTER_WINDOWING_GDK)
+  /* Chain up to the X11 or GDK backend */
   CLUTTER_BACKEND_CLASS (_clutter_backend_cogl_parent_class)->
     init_events (backend);
 #endif
@@ -227,15 +240,15 @@ static ClutterFeatureFlags
 clutter_backend_cogl_get_features (ClutterBackend *backend)
 {
   ClutterBackendCogl *backend_cogl = CLUTTER_BACKEND_COGL (backend);
-#ifdef COGL_HAS_XLIB_SUPPORT
-  ClutterBackendClass *parent_class;
-#endif
   ClutterFeatureFlags flags = 0;
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-  parent_class = CLUTTER_BACKEND_CLASS (_clutter_backend_cogl_parent_class);
+#if defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK)
+  {
+    ClutterBackendClass *parent_class;
+    parent_class = CLUTTER_BACKEND_CLASS (_clutter_backend_cogl_parent_class);
 
-  flags = parent_class->get_features (backend);
+    flags = parent_class->get_features (backend);
+  }
 #endif
 
   if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
@@ -272,7 +285,7 @@ clutter_backend_cogl_get_features (ClutterBackend *backend)
   return flags;
 }
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
 static XVisualInfo *
 clutter_backend_cogl_get_visual_info (ClutterBackendX11 *backend_x11)
 {
@@ -284,8 +297,10 @@ static gboolean
 clutter_backend_cogl_create_context (ClutterBackend  *backend,
                                      GError         **error)
 {
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+#elif CLUTTER_WINDOWING_GDK
+  ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
 #endif
   CoglSwapChain *swap_chain = NULL;
   CoglOnscreenTemplate *onscreen_template = NULL;
@@ -295,17 +310,34 @@ clutter_backend_cogl_create_context (ClutterBackend  *backend,
     return TRUE;
 
   backend->cogl_renderer = cogl_renderer_new ();
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
   cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
                                           backend_x11->xdpy);
+#elif defined(CLUTTER_WINDOWING_GDK)
+#if defined(COGL_HAS_XLIB_SUPPORT) && defined(GDK_WINDOWING_X11)
+  if (GDK_IS_X11_DISPLAY (backend_gdk->display))
+    {
+      cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
+					      gdk_x11_display_get_xdisplay (backend_gdk->display));
+    }
+  else
 #endif
+    {
+      g_warning ("Unsupported GdkDisplay type %s", G_OBJECT_TYPE_NAME (backend_gdk->display));
+      goto error;
+    }
+#endif /* GDK */
+  
   if (!cogl_renderer_connect (backend->cogl_renderer, error))
     goto error;
 
   swap_chain = cogl_swap_chain_new ();
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
   cogl_swap_chain_set_has_alpha (swap_chain,
                                  clutter_x11_get_use_argb_visual ());
+#elif defined(CLUTTER_WINDOWING_GDK)
+  cogl_swap_chain_set_has_alpha (swap_chain,
+				 gdk_screen_get_rgba_visual (backend_gdk->screen) != NULL);
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
@@ -387,7 +419,7 @@ clutter_backend_cogl_create_stage (ClutterBackend  *backend,
                                    ClutterStage    *wrapper,
                                    GError         **error)
 {
-#ifdef COGL_HAS_XLIB_SUPPORT
+#if defined(CLUTTER_WINDOWING_X11)
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterEventTranslator *translator;
   ClutterStageWindow *stage;
@@ -408,7 +440,14 @@ clutter_backend_cogl_create_stage (ClutterBackend  *backend,
                 backend_x11->xscreen_num,
                 (unsigned int) backend_x11->xwin_root);
 
-#else /* COGL_HAS_XLIB_SUPPORT */
+  return stage;
+
+#elif defined(CLUTTER_WINDOWING_GDK)
+  return g_object_new (CLUTTER_TYPE_STAGE_COGL,
+		       "wrapper", wrapper,
+		       "backend", backend,
+		       NULL);
+#else
 
   ClutterBackendCogl *backend_cogl = CLUTTER_BACKEND_COGL (backend);
   ClutterStageWindow *stage;
@@ -431,9 +470,8 @@ clutter_backend_cogl_create_stage (ClutterBackend  *backend,
 
   backend_cogl->stage = stage;
 
-#endif /* COGL_HAS_XLIB_SUPPORT */
-
   return stage;
+#endif /* CLUTTER_WINDOWING_X11 || CLUTTER_WINDOWING_GDK */
 }
 
 static void
@@ -457,7 +495,7 @@ _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
-#ifdef COGL_HAS_X11_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
   ClutterBackendX11Class *backendx11_class = CLUTTER_BACKEND_X11_CLASS (klass);
 #endif
 
@@ -468,7 +506,7 @@ _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
   backend_class->pre_parse          = clutter_backend_cogl_pre_parse;
   backend_class->post_parse         = clutter_backend_cogl_post_parse;
   backend_class->get_features       = clutter_backend_cogl_get_features;
-#ifndef COGL_HAS_XLIB_SUPPORT
+#if !(defined(CLUTTER_WINDOWING_X11) || defined(CLUTTER_WINDOWING_GDK))
   backend_class->get_device_manager = clutter_backend_cogl_get_device_manager;
 #endif
   backend_class->init_events        = clutter_backend_cogl_init_events;
@@ -476,7 +514,7 @@ _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
   backend_class->create_context     = clutter_backend_cogl_create_context;
   backend_class->ensure_context     = clutter_backend_cogl_ensure_context;
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
   backendx11_class->get_visual_info = clutter_backend_cogl_get_visual_info;
 #endif
 }

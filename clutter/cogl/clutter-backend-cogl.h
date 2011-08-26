@@ -37,8 +37,11 @@
 
 #include "clutter-backend-private.h"
 
-#ifdef COGL_HAS_X11_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
 #include "../x11/clutter-backend-x11.h"
+#endif
+#ifdef CLUTTER_WINDOWING_GDK
+#include "../gdk/clutter-backend-gdk.h"
 #endif
 
 G_BEGIN_DECLS
@@ -55,10 +58,13 @@ typedef struct _ClutterBackendCoglClass  ClutterBackendCoglClass;
 
 struct _ClutterBackendCogl
 {
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
   ClutterBackendX11 parent_instance;
 
-#else /* COGL_HAS_X11_SUPPORT */
+#elif defined(CLUTTER_WINDOWING_GDK)
+  ClutterBackendGdk parent_instance;
+
+#else
   ClutterBackend parent_instance;
 
   /* main stage singleton */
@@ -73,7 +79,7 @@ struct _ClutterBackendCogl
   /* event timer */
   GTimer *event_timer;
 
-#endif /* COGL_HAS_X11_SUPPORT */
+#endif /* CLUTTER_WINDOWING_X11 || CLUTTER_WINDOWING_GDK */
 
   CoglContext *cogl_context;
 
@@ -82,8 +88,10 @@ struct _ClutterBackendCogl
 
 struct _ClutterBackendCoglClass
 {
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifdef CLUTTER_WINDOWING_X11
   ClutterBackendX11Class parent_class;
+#elif defined(CLUTTER_WINDOWING_GDK)
+  ClutterBackendGdkClass parent_class;
 #else
   ClutterBackendClass parent_class;
 #endif

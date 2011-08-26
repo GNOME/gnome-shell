@@ -4,7 +4,7 @@
 
 static const ClutterColor stage_color = { 0x00, 0x00, 0x00, 0xff };
 
-#ifdef COGL_HAS_XLIB
+#ifdef CLUTTER_WINDOWING_X11
 
 #include <clutter/x11/clutter-x11.h>
 #include <cogl/cogl-texture-pixmap-x11.h>
@@ -195,13 +195,13 @@ queue_redraw (gpointer stage)
   return TRUE;
 }
 
-#endif /* COGL_HAS_XLIB */
+#endif /* CLUTTER_WINDOWING_X11 */
 
 void
 test_cogl_texture_pixmap_x11 (TestConformSimpleFixture *fixture,
                               gconstpointer data)
 {
-#ifdef COGL_HAS_XLIB
+#ifdef CLUTTER_WINDOWING_X11
 
   TestState state;
   guint idle_handler;
@@ -235,11 +235,11 @@ test_cogl_texture_pixmap_x11 (TestConformSimpleFixture *fixture,
   if (g_test_verbose ())
     g_print ("OK\n");
 
-#else /* COGL_HAS_XLIB */
+#else /* CLUTTER_WINDOWING_X11 */
 
   if (g_test_verbose ())
    g_print ("Skipping\n");
 
-#endif /* COGL_HAS_XLIB */
+#endif /* CLUTTER_WINDOWING_X11 */
 }
 

@@ -416,6 +416,34 @@ backend_source_c += $(cogl_source_c) $(glx_source_c)
 backend_source_h_priv += $(cogl_source_h_priv)
 endif # SUPPORT_GLX
 
+# GDK backend rules
+gdk_source_c = \
+	$(srcdir)/gdk/clutter-backend-gdk.c 		\
+	$(srcdir)/gdk/clutter-device-manager-gdk.c 	\
+	$(srcdir)/gdk/clutter-input-device-gdk.c 	\
+	$(srcdir)/gdk/clutter-event-gdk.c 		\
+	$(srcdir)/gdk/clutter-stage-gdk.c		\
+	$(NULL)
+
+gdk_source_h = \
+	$(srcdir)/gdk/clutter-gdk.h			\
+	$(NULL)
+
+gdk_source_h_priv = \
+	$(srcdir)/gdk/clutter-settings-gdk.h		\
+	$(srcdir)/gdk/clutter-backend-gdk.h 		\
+	$(srcdir)/gdk/clutter-device-manager-gdk.h 	\
+	$(srcdir)/gdk/clutter-input-device-gdk.h 	\
+	$(srcdir)/gdk/clutter-event-gdk.h 		\
+	$(srcdir)/gdk/clutter-stage-gdk.h		\
+	$(NULL)
+
+if SUPPORT_GDK
+backend_source_h += $(cogl_source_h) $(gdk_source_h)
+backend_source_c += $(cogl_source_c) $(gdk_source_c)
+backend_source_h_priv += $(cogl_source_h_priv) $(gdk_source_h_priv)
+endif # SUPPORT_GDK
+
 # Windows backend rules
 win32_source_c = \
 	$(srcdir)/win32/clutter-backend-win32.c		\
