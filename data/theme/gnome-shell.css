@@ -1275,7 +1275,7 @@ StTooltip StLabel {
 
 #notification StEntry:focus {
     border: 1px solid #8b8b8b;
-    color: #545454;
+    color: #333333;
     background-gradient-direction: vertical;
     background-gradient-start: rgb(200,200,200);
     background-gradient-end: white;
