@@ -102,6 +102,7 @@ shell_public_headers_h =		\
 	shell-app-system.h		\
 	shell-app-usage.h		\
 	shell-arrow.h			\
+	shell-contact-system.h	\
 	shell-doc-system.h		\
 	shell-embedded-window.h		\
 	shell-generic-container.h	\
@@ -137,6 +138,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-app-system.c		\
 	shell-app-usage.c		\
 	shell-arrow.c			\
+	shell-contact-system.c	\
 	shell-doc-system.c		\
 	shell-embedded-window.c		\
 	shell-generic-container.c	\
@@ -269,7 +271,7 @@ libgnome_shell_la_LIBADD =		\
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 Shell-0.1.gir: libgnome-shell.la St-1.0.gir
-Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 TelepathyLogger-0.2 Soup-2.4 GMenu-3.0 NetworkManager-1.0 NMClient-1.0
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 TelepathyLogger-0.2 Soup-2.4 GMenu-3.0 NetworkManager-1.0 NMClient-1.0 Folks-0.6
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 Shell_0_1_gir_LIBS = libgnome-shell.la
 Shell_0_1_gir_FILES = $(libgnome_shell_la_gir_sources)

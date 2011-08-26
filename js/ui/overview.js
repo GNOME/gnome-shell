@@ -11,6 +11,7 @@ const Shell = imports.gi.Shell;
 const Gdk = imports.gi.Gdk;
 
 const AppDisplay = imports.ui.appDisplay;
+const ContactDisplay = imports.ui.contactDisplay;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const DocDisplay = imports.ui.docDisplay;
@@ -211,6 +212,7 @@ Overview.prototype = {
         this._viewSelector.addSearchProvider(new AppDisplay.SettingsSearchProvider());
         this._viewSelector.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
         this._viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
+        this._viewSelector.addSearchProvider(new ContactDisplay.ContactSearchProvider());
 
         // TODO - recalculate everything when desktop size changes
         this._dash = new Dash.Dash();

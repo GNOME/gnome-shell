@@ -16,6 +16,38 @@
   <repository type="git" name="colord.gitorious.org"
       href="git://gitorious.org/colord/master.git"/>
 
+  <tarball id="libgee" version="0.6.0">
+    <pkg-config/>
+    <source hash="sha256:e586678d0a88637abeaaf850b62231000772e79ea6d9c4b45dc3cea99f778a7a" href="http://download.gnome.org/sources/libgee/0.6/libgee-0.6.0.tar.bz2" md5sum="4eb513b23ab6ea78884989518a4acf6f" size="477609"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+    <suggests>
+      <dep package="gobject-introspection"/>
+    </suggests>
+  </tarball>
+
+  <tarball id="folks" version="0.6.0">
+    <source hash="sha256:50539da0b42564887bbce67d3a4107f3a7dbd8c6ae3b5d3a2d422b4f75a2b519" href="http://ftp.gnome.org/pub/GNOME/sources/folks/0.6/folks-0.6.0.tar.bz2" md5sum="4d5a3619c8b6e0714d02941c92826160" size="1261916"/>
+    <dependencies>
+      <dep package="libgee"/>
+      <dep package="vala"/>
+      <dep package="gobject-introspection"/>
+      <dep package="telepathy-glib"/>
+      <dep package="evolution-data-server"/>
+    </dependencies>
+  </tarball>
+
+  <tarball id="gnome-contacts">
+    <source hash="sha256:db52d4521e5d3335b5bf77ce5d1a7ec2cdea9ebf37ce12ddadda0503a2968cf9" href="http://ftp.gnome.org/pub/GNOME/sources/gnome-contacts/0.1/gnome-contacts-0.1.2.tar.bz2" size="377930"/>
+    <dependencies>
+      <dep package="folks"/>
+      <dep package="glib"/>
+      <dep package="gtk3"/>
+      <dep package="vala"/>
+    </dependencies>
+  </tarball>
+
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
     <dependencies>
@@ -320,8 +352,10 @@
         <dep package="gjs"/>
         <dep package="caribou"/>
         <dep package="dconf"/>
+        <dep package="folks"/>
         <dep package="gconf"/>
         <dep package="glib"/>
+        <dep package="gnome-contacts"/>
         <dep package="gnome-menus"/>
         <dep package="gnome-desktop-3"/>
         <dep package="gsettings-desktop-schemas"/>

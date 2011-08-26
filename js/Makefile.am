@@ -22,6 +22,7 @@ nobase_dist_js_DATA = 	\
 	ui/autorunManager.js    \
 	ui/boxpointer.js	\
 	ui/calendar.js		\
+	ui/contactDisplay.js \
 	ui/ctrlAltTab.js	\
 	ui/dash.js		\
 	ui/dateMenu.js		\
