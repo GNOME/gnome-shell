@@ -27,6 +27,15 @@
 #include <unistd.h>
 #endif
 
+#include <cogl/cogl.h>
+#include <gdk/gdk.h>
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
+#ifdef GDK_WINDOWING_WIN32
+#include <gdk/gdkwin32.h>
+#endif
+
 #include "clutter-backend-gdk.h"
 #include "clutter-stage-gdk.h"
 #include "clutter-gdk.h"
@@ -43,29 +52,22 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
-#include "cogl/cogl.h"
-
 static void clutter_stage_window_iface_init     (ClutterStageWindowIface     *iface);
+
+static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
 
 #define clutter_stage_gdk_get_type      _clutter_stage_gdk_get_type
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageGdk,
                          clutter_stage_gdk,
-                         G_TYPE_OBJECT,
+                         CLUTTER_TYPE_STAGE_COGL,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
-enum {
-  PROP_0,
-  PROP_WRAPPER,
-  PROP_BACKEND,
-  PROP_LAST
-};
-
-void
-_clutter_stage_gdk_update_foreign_event_mask (CoglOnscreen *onscreen,
-					      guint32 event_mask,
-					      void *user_data)
+static void
+clutter_stage_gdk_update_foreign_event_mask (CoglOnscreen *onscreen,
+					     guint32 event_mask,
+					     void *user_data)
 {
   ClutterStageGdk *stage_gdk = user_data;
 
@@ -79,7 +81,8 @@ static void
 clutter_stage_gdk_set_gdk_geometry (ClutterStageGdk *stage)
 {
   GdkGeometry geometry;
-  gboolean resize = clutter_stage_get_user_resizable (stage->wrapper);
+  ClutterStage *wrapper = CLUTTER_STAGE_COGL (stage)->wrapper;
+  gboolean resize = clutter_stage_get_user_resizable (wrapper);
 
   if (!resize)
     {
@@ -92,7 +95,7 @@ clutter_stage_gdk_set_gdk_geometry (ClutterStageGdk *stage)
     }
   else
     {
-      clutter_stage_get_minimum_size (stage->wrapper,
+      clutter_stage_get_minimum_size (wrapper,
 				      (guint *)&geometry.min_width,
 				      (guint *)&geometry.min_height);
 
@@ -108,7 +111,7 @@ clutter_stage_gdk_get_geometry (ClutterStageWindow *stage_window,
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
-  if (stage_gdk->window)
+  if (stage_gdk->window != NULL)
     {
       geometry->width = gdk_window_get_width (stage_gdk->window);
       geometry->height = gdk_window_get_height (stage_gdk->window);
@@ -139,7 +142,7 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
-  CLUTTER_SET_PRIVATE_FLAGS (stage_gdk->wrapper,
+  CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_STAGE_COGL (stage_gdk)->wrapper,
 			     CLUTTER_IN_RESIZE);
 
   gdk_window_resize (stage_gdk->window, width, height);
@@ -150,7 +153,7 @@ clutter_stage_gdk_unrealize (ClutterStageWindow *stage_window)
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
-  if (stage_gdk->window)
+  if (stage_gdk->window != NULL)
     {
       g_object_set_data (G_OBJECT (stage_gdk->window),
 			 "clutter-stage-window", NULL);
@@ -166,20 +169,22 @@ static gboolean
 clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
-  ClutterBackendGdk *backend_gdk = stage_gdk->backend;
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
+  ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
   GdkWindowAttr attributes;
   gboolean cursor_visible;
   gboolean use_alpha;
   gfloat   width, height;
 
   if (stage_gdk->foreign_window &&
-      stage_gdk->window)
+      stage_gdk->window != NULL)
     {
       /* complete realizing the stage */
       ClutterGeometry geometry;
 
       clutter_stage_gdk_get_geometry (stage_window, &geometry);
-      clutter_actor_set_geometry (CLUTTER_ACTOR (stage_gdk->wrapper), &geometry);
+      clutter_actor_set_geometry (CLUTTER_ACTOR (stage_cogl->wrapper), &geometry);
 
       gdk_window_ensure_native (stage_gdk->window);
       gdk_window_set_events (stage_gdk->window,
@@ -189,7 +194,7 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
     }
 
   attributes.title = NULL;
-  g_object_get (stage_gdk->wrapper,
+  g_object_get (stage_cogl->wrapper,
 		"cursor-visible", &cursor_visible,
 		"title", &attributes.title,
 		"width", &width,
@@ -212,14 +217,16 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
       attributes.cursor = stage_gdk->blank_cursor;
     }
 
+  attributes.visual = NULL;
   if (use_alpha)
     {
       attributes.visual = gdk_screen_get_rgba_visual (backend_gdk->screen);
 
       if (attributes.visual == NULL)
-	clutter_stage_set_use_alpha (stage_gdk->wrapper, FALSE);
+	clutter_stage_set_use_alpha (stage_cogl->wrapper, FALSE);
     }
-  else
+
+  if (attributes.visual == NULL)
     {
       /* This could still be an RGBA visual, although normally it's not */
       attributes.visual = gdk_screen_get_system_visual (backend_gdk->screen);
@@ -228,12 +235,8 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
   if (stage_gdk->window != NULL)
     {
       g_critical ("Stage realized more than once");
-      g_object_set_data (G_OBJECT (stage_gdk->window),
-			 "clutter-stage-window", NULL);
-      if (stage_gdk->foreign_window)
-	g_object_unref (stage_gdk->window);
-      else
-	gdk_window_destroy (stage_gdk->window);
+
+      return FALSE;
     }
 
   stage_gdk->foreign_window = FALSE;
@@ -248,9 +251,41 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
 
   g_free (attributes.title);
 
-  CLUTTER_NOTE (BACKEND, "Successfully realized stage");
+  stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
+					    width, height);
 
-  return TRUE;
+#if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
+  if (GDK_IS_X11_WINDOW (stage_gdk->window))
+    {
+      cogl_x11_onscreen_set_foreign_window_xid (stage_cogl->onscreen,
+                                                GDK_WINDOW_XID (stage_gdk->window),
+                                                clutter_stage_gdk_update_foreign_event_mask,
+                                                stage_gdk);
+    }
+  else
+#endif
+#if defined(GDK_WINDOWING_WIN32) && defined(COGL_HAS_WIN32_SUPPORT)
+  if (GDK_IS_WIN32_WINDOW (stage_gdk->window))
+    {
+      cogl_win32_onscreen_set_foreign_window (stage_cogl->onscreen,
+					      gdk_win32_window_get_handle (stage_gdk->window));
+    }
+  else
+#endif
+    {
+      g_warning ("Cannot find an appropriate CoglWinsys for a "
+		 "GdkWindow of type %s", G_OBJECT_TYPE_NAME (stage_gdk->window));
+
+      cogl_object_unref (stage_cogl->onscreen);
+      stage_cogl->onscreen = NULL;
+
+      gdk_window_destroy (stage_gdk->window);
+      stage_gdk->window = NULL;
+
+      return FALSE;
+    }
+
+  return clutter_stage_window_parent_iface->realize (stage_window);
 }
 
 static void
@@ -258,7 +293,7 @@ clutter_stage_gdk_set_fullscreen (ClutterStageWindow *stage_window,
                                   gboolean            is_fullscreen)
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
-  ClutterStage *stage = stage_gdk->wrapper;
+  ClutterStage *stage = CLUTTER_STAGE_COGL (stage_window)->wrapper;
 
   if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
     return;
@@ -347,7 +382,7 @@ clutter_stage_gdk_show (ClutterStageWindow *stage_window,
 
   g_return_if_fail (stage_gdk->window != NULL);
 
-  clutter_actor_map (CLUTTER_ACTOR (stage_gdk->wrapper));
+  clutter_actor_map (CLUTTER_ACTOR (CLUTTER_STAGE_COGL (stage_gdk)->wrapper));
 
   if (do_raise)
     gdk_window_show (stage_gdk->window);
@@ -362,14 +397,8 @@ clutter_stage_gdk_hide (ClutterStageWindow *stage_window)
 
   g_return_if_fail (stage_gdk->window != NULL);
 
-  clutter_actor_unmap (CLUTTER_ACTOR (stage_gdk->wrapper));
+  clutter_actor_unmap (CLUTTER_ACTOR (CLUTTER_STAGE_COGL (stage_gdk)->wrapper));
   gdk_window_hide (stage_gdk->window);
-}
-
-static ClutterActor *
-clutter_stage_gdk_get_wrapper (ClutterStageWindow *stage_window)
-{
-  return CLUTTER_ACTOR (CLUTTER_STAGE_GDK (stage_window)->wrapper);
 }
 
 static void
@@ -377,7 +406,7 @@ clutter_stage_gdk_dispose (GObject *gobject)
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (gobject);
 
-  if (stage_gdk->window)
+  if (stage_gdk->window != NULL)
     {
       g_object_set_data (G_OBJECT (stage_gdk->window),
 			 "clutter-stage-window", NULL);
@@ -388,7 +417,7 @@ clutter_stage_gdk_dispose (GObject *gobject)
       stage_gdk->window = NULL;
     }
 
-  if (stage_gdk->blank_cursor)
+  if (stage_gdk->blank_cursor != NULL)
     {
       g_object_unref (stage_gdk->blank_cursor);
       stage_gdk->blank_cursor = NULL;
@@ -398,50 +427,11 @@ clutter_stage_gdk_dispose (GObject *gobject)
 }
 
 static void
-clutter_stage_gdk_set_property (GObject      *gobject,
-				guint         prop_id,
-				const GValue *value,
-				GParamSpec   *pspec)
-{
-  ClutterStageGdk *self = CLUTTER_STAGE_GDK (gobject);
-
-  switch (prop_id)
-    {
-    case PROP_WRAPPER:
-      self->wrapper = CLUTTER_STAGE (g_value_get_object (value));
-      break;
-
-    case PROP_BACKEND:
-      self->backend = CLUTTER_BACKEND_GDK (g_value_get_object (value));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-    }
-}
-
-static void
 clutter_stage_gdk_class_init (ClutterStageGdkClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_gdk_dispose;
-  gobject_class->set_property = clutter_stage_gdk_set_property;
-
-  g_object_class_install_property (gobject_class, PROP_WRAPPER,
-				   g_param_spec_object ("wrapper",
-							"Wrapper",
-							"ClutterStage wrapping this native stage",
-							CLUTTER_TYPE_STAGE,
-							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_install_property (gobject_class, PROP_BACKEND,
-				   g_param_spec_object ("backend",
-							"ClutterBackend",
-							"The Clutter backend singleton",
-							CLUTTER_TYPE_BACKEND_GDK,
-							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -453,7 +443,8 @@ clutter_stage_gdk_init (ClutterStageGdk *stage)
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
-  iface->get_wrapper = clutter_stage_gdk_get_wrapper;
+  clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
+
   iface->set_title = clutter_stage_gdk_set_title;
   iface->set_fullscreen = clutter_stage_gdk_set_fullscreen;
   iface->set_cursor_visible = clutter_stage_gdk_set_cursor_visible;
@@ -507,7 +498,7 @@ clutter_gdk_get_stage_from_window (GdkWindow *window)
   ClutterStageGdk *stage_gdk = g_object_get_data (G_OBJECT (window), "clutter-stage-window");
 
   if (stage_gdk != NULL && CLUTTER_IS_STAGE_GDK (stage_gdk))
-    return stage_gdk->wrapper;
+    return CLUTTER_STAGE_COGL (stage_gdk)->wrapper;
 
   return NULL;
 }

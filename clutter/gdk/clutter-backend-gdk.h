@@ -30,6 +30,7 @@
 #include "clutter-gdk.h"
 
 #include "clutter-backend-private.h"
+#include "cogl/clutter-backend-cogl.h"
 
 G_BEGIN_DECLS
 
@@ -45,7 +46,7 @@ typedef struct _ClutterBackendGdkClass  ClutterBackendGdkClass;
 
 struct _ClutterBackendGdk
 {
-  ClutterBackend parent_instance;
+  ClutterBackendCogl parent_instance;
 
   GdkDisplay *display;
   GdkScreen  *screen;
@@ -55,7 +56,7 @@ struct _ClutterBackendGdk
 
 struct _ClutterBackendGdkClass
 {
-  ClutterBackendClass parent_class;
+  ClutterBackendCoglClass parent_class;
 
   /* nothing here, for now */
 };

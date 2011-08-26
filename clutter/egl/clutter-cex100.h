@@ -1,0 +1,91 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2010 Intel Corporation
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *   Damien Lespiau <damien.lespiau@intel.com>
+ */
+
+/**
+ * SECTION:clutter-cex100
+ * @short_description: Intel CE3100, CE4100 Specific API
+ *
+ * The CEX100 backend for Clutter provides some Intel CE3100/CE4100
+ * specific API
+ *
+ * You need to include
+ * <filename class="headerfile">&lt;clutter/egl/clutter-cex100.h&gt;</filename>
+ * to have access to the functions documented here.
+ */
+
+#ifndef __CLUTTER_CEX100_H__
+#define __CLUTTER_CEX100_H__
+
+#include <glib.h>
+
+#include <libgdl.h>
+
+G_BEGIN_DECLS
+
+/**
+ * clutter_cex100_set_plane:
+ * @plane: a GDL plane
+ *
+ * Intel CE3100 and CE4100 have several planes (frame buffers) and a
+ * hardware blender to blend the planes togeteher and produce the final
+ * image.
+ *
+ * clutter_cex100_set_plane() let's you configure the GDL plane where
+ * the stage will be drawn. By default Clutter will pick UPP_C
+ * (GDL_PLANE_ID_UPP_C).
+ *
+ * <note>This function has to be called before clutter_init()</note>
+ */
+void clutter_cex100_set_plane (gdl_plane_id_t plane);
+
+/**
+ * ClutterCex100BufferingMode:
+ * @CLUTTER_CEX100_DOUBLE_BUFFERING: The GDL plane will be double buffered
+ * @CLUTTER_CEX100_TRIPLE_BUFFERING: The GDL plane will be triple buffered
+ *
+ * Enum passed to clutter_cex100_set_buffering_mode().
+ */
+typedef enum /*< prefix=CLUTTER_CEX100 >*/
+{
+  CLUTTER_CEX100_DOUBLE_BUFFERING = 2,
+  CLUTTER_CEX100_TRIPLE_BUFFERING = 3
+} ClutterCex100BufferingMode;
+
+/**
+ * clutter_cex100_set_buffering_mode:
+ * @mode: a #ClutterCex100BufferingMode
+ *
+ * Configure the buffering mode of the underlying GDL plane. The GDL
+ * surface used by Clutter to draw can be backed up by either one or two
+ * back buffers thus being double or triple buffered, respectively.
+ *
+ * Clutter defaults to %CLUTTER_CEX100_TRIPLE_BUFFERING.
+ *
+ * <note>This function has to be called before clutter_init()</note>
+ */
+void clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode);
+
+G_END_DECLS
+
+#endif /* __CLUTTER_CEX100_H__ */

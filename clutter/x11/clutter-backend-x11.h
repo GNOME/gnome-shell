@@ -31,6 +31,7 @@
 
 #include "clutter-backend-private.h"
 #include "clutter-keymap-x11.h"
+#include "cogl/clutter-backend-cogl.h"
 
 #include "xsettings/xsettings-client.h"
 
@@ -67,7 +68,7 @@ struct _ClutterEventX11
 
 struct _ClutterBackendX11
 {
-  ClutterBackend parent_instance;
+  ClutterBackendCogl parent_instance;
 
   Display *xdpy;
   gchar   *display_name;
@@ -112,14 +113,7 @@ struct _ClutterBackendX11
 
 struct _ClutterBackendX11Class
 {
-  ClutterBackendClass parent_class;
-
-  /*
-   * To support foreign stage windows the we need a way to ask for an
-   * XVisualInfo that may be used by toolkits to create an XWindow, and this
-   * may need to be handled differently for different backends.
-   */
-  XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend);
+  ClutterBackendCoglClass parent_class;
 };
 
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);

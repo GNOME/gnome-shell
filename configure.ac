@@ -199,15 +199,14 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [glx],
         [
-          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
+          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_X11"
 
           SUPPORT_X11=1
           SUPPORT_XLIB=1
           SUPPORT_GLX=1
 
-          CLUTTER_WINSYS=cogl
-          CLUTTER_WINSYS_BASE=x11
-          CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
+          CLUTTER_WINSYS=x11
+          CLUTTER_WINSYS_BASE=cogl
           CLUTTER_SONAME_INFIX=glx
 
           # Mesa 7.3 added a GL pkg-config file, finally
@@ -228,15 +227,14 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
 	[gdk],
 	[
-	  CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_COGL"
+	  CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GDK"
 
 	  # We don't claim to support X11 (even though that's the preferred
 	  # GDK backend), to avoid building all the ClutterX11 stuff
 	  SUPPORT_GDK=1
 
-	  CLUTTER_WINSYS=cogl
-	  CLUTTER_WINSYS_BASE=gdk
-	  CLUTTER_WINSYS_BASE_LIB="gdk/libclutter-gdk.la"
+	  CLUTTER_WINSYS=gdk
+	  CLUTTER_WINSYS_BASE=cogl
 	  CLUTTER_SONAME_INFIX=gdk
 
 	  BACKEND_PC_FILES="$BACKEND_PC_FILES gdk-3.0"
@@ -245,7 +243,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [opengl-egl-xlib],
         [
-          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
+          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_X11"
           CLUTTER_EGL_BACKEND="generic"
 
           SUPPORT_X11=1
@@ -253,9 +251,8 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
 
-          CLUTTER_WINSYS=cogl
-          CLUTTER_WINSYS_BASE=x11
-          CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
+          CLUTTER_WINSYS=x11
+          CLUTTER_WINSYS_BASE=cogl
           # I think this winsys can be API and ABI compatible with the
           # glx flavour so we can also be cheeky and use the same soname
           CLUTTER_SONAME_INFIX=glx
@@ -282,7 +279,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
         [eglx],
         [
-          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
+          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_X11"
           CLUTTER_EGL_BACKEND="generic"
 
           SUPPORT_X11=1
@@ -290,9 +287,8 @@ AS_CASE([$CLUTTER_FLAVOUR],
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_X11=1
 
-          CLUTTER_WINSYS=cogl
-          CLUTTER_WINSYS_BASE=x11
-          CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
+          CLUTTER_WINSYS=x11
+          CLUTTER_WINSYS_BASE=cogl
           CLUTTER_SONAME_INFIX=eglx
         ],
 
@@ -494,7 +490,6 @@ dnl === Clutter substitutions =================================================
 AC_SUBST([CLUTTER_WINSYS])
 # The same goes for the winsys-base...
 AC_SUBST([CLUTTER_WINSYS_BASE])
-AC_SUBST([CLUTTER_WINSYS_BASE_LIB])
 AC_SUBST(CLUTTER_STAGE_TYPE)
 AC_SUBST(CLUTTER_SONAME_INFIX)
 

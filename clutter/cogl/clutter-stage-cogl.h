@@ -15,13 +15,6 @@
 #include <X11/Xutil.h>
 #endif
 
-#ifdef CLUTTER_WINDOWING_X11
-#include "../x11/clutter-stage-x11.h"
-#endif
-#ifdef CLUTTER_WINDOWING_GDK
-#include "../gdk/clutter-stage-gdk.h"
-#endif
-
 #include "clutter-backend-cogl.h"
 
 G_BEGIN_DECLS
@@ -38,13 +31,6 @@ typedef struct _ClutterStageCoglClass    ClutterStageCoglClass;
 
 struct _ClutterStageCogl
 {
-#ifdef CLUTTER_WINDOWING_X11
-  ClutterStageX11 parent_instance;
-
-#elif defined(CLUTTER_WINDOWING_GDK)
-  ClutterStageGdk parent_instance;
-
-#else
   GObject parent_instance;
 
  /* the stage wrapper */
@@ -52,8 +38,6 @@ struct _ClutterStageCogl
 
   /* back pointer to the backend */
   ClutterBackendCogl *backend;
-
-#endif
 
   CoglOnscreen *onscreen;
 
@@ -76,11 +60,7 @@ struct _ClutterStageCogl
 
 struct _ClutterStageCoglClass
 {
-#ifdef CLUTTER_WINDOWING_X11
-  ClutterStageX11Class parent_class;
-#elif defined(CLUTTER_WINDOWING_GDK)
   GObjectClass parent_class;
-#endif
 };
 
 GType _clutter_stage_cogl_get_type (void) G_GNUC_CONST;

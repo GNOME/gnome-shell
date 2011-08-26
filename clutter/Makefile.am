@@ -368,12 +368,6 @@ backend_source_c_priv += $(x11_source_c_priv)
 # the list of files we want to introspect on X11
 x11_introspection = $(x11_source_c) $(x11_source_h)
 
-# pkg-config file for the X11 meta-backend
-clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-x11-$(CLUTTER_API_VERSION).pc
-
 clutterx11_includedir = $(clutter_includedir)/x11
 clutterx11_include_HEADERS = $(x11_source_h)
 endif # SUPPORT_X11
@@ -393,14 +387,20 @@ cogl_source_h_priv = \
 
 cogl_source_c_priv =
 
+# pkg-config file for the cogl meta-backend
+clutter-cogl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-cogl-$(CLUTTER_API_VERSION).pc
+
 if SUPPORT_X11
 # For compatability with the old GLX backend
 #
 # Note: there wasn't actually anything GLX specific so we can add
 # the compatability if clutter supports x11
-backend_source_c += $(srcdir)/cogl/clutter-glx-texture-pixmap.c
-glx_source_h = $(srcdir)/cogl/clutter-glx-texture-pixmap.h \
-	       $(srcdir)/cogl/clutter-glx.h
+backend_source_c += $(srcdir)/x11/clutter-glx-texture-pixmap.c
+glx_source_h = $(srcdir)/x11/clutter-glx-texture-pixmap.h \
+	       $(srcdir)/x11/clutter-glx.h
 clutterglx_includedir = $(clutter_includedir)/glx
 clutterglx_include_HEADERS = $(glx_source_h)
 
@@ -442,6 +442,9 @@ if SUPPORT_GDK
 backend_source_h += $(cogl_source_h) $(gdk_source_h)
 backend_source_c += $(cogl_source_c) $(gdk_source_c)
 backend_source_h_priv += $(cogl_source_h_priv) $(gdk_source_h_priv)
+
+cluttergdk_includedir = $(clutter_includedir)/gdk
+cluttergdk_include_HEADERS = $(gdk_source_h)
 endif # SUPPORT_GDK
 
 # Windows backend rules

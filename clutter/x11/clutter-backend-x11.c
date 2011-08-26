@@ -70,7 +70,7 @@
 
 #define clutter_backend_x11_get_type    _clutter_backend_x11_get_type
 
-G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
+G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND_COGL);
 
 /* atoms; remember to add the code that assigns the atom value to
  * the member of the ClutterBackendX11 structure if you add an
@@ -91,9 +91,6 @@ static const gchar *atom_names[] = {
 };
 
 #define N_ATOM_NAMES G_N_ELEMENTS (atom_names)
-
-/* singleton object */
-static ClutterBackendX11 *backend_singleton = NULL;
 
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_xevent_retrieval = FALSE;
@@ -334,7 +331,8 @@ _clutter_backend_x11_pre_parse (ClutterBackend  *backend,
       env_string = NULL;
     }
 
-  return TRUE;
+  return CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->pre_parse (backend,
+									      error);
 }
 
 gboolean
@@ -462,7 +460,8 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
                 (unsigned int) backend_x11->xwin_root,
                 clutter_backend_get_resolution (backend));
 
-  return TRUE;
+  return CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->post_parse (backend,
+									       error);
 }
 
 
@@ -526,9 +525,6 @@ clutter_backend_x11_finalize (GObject *gobject)
 
   XCloseDisplay (backend_x11->xdpy);
 
-  if (backend_singleton)
-    backend_singleton = NULL;
-
   G_OBJECT_CLASS (clutter_backend_x11_parent_class)->finalize (gobject);
 }
 
@@ -549,34 +545,14 @@ clutter_backend_x11_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_x11_parent_class)->dispose (gobject);
 }
 
-static GObject *
-clutter_backend_x11_constructor (GType                  gtype,
-                                 guint                  n_params,
-                                 GObjectConstructParam *params)
-{
-  GObjectClass *parent_class;
-  GObject *retval;
-
-  if (backend_singleton == NULL)
-    {
-      parent_class = G_OBJECT_CLASS (clutter_backend_x11_parent_class);
-      retval = parent_class->constructor (gtype, n_params, params);
-
-      backend_singleton = CLUTTER_BACKEND_X11 (retval);
-
-      return retval;
-    }
-
-  g_warning ("Attempting to create a new backend object. This should "
-             "never happen, so we return the singleton instance.");
-
-  return g_object_ref (backend_singleton);
-}
-
 static ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend)
 {
-  return CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
+  ClutterFeatureFlags flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
+
+  flags |= CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->get_features (backend);
+
+  return flags;
 }
 
 static void
@@ -706,13 +682,124 @@ clutter_backend_x11_translate_event (ClutterBackend *backend,
   return parent_class->translate_event (backend, native, event);
 }
 
+static gboolean
+clutter_backend_x11_create_context (ClutterBackend  *backend,
+				    GError         **error)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  CoglOnscreenTemplate *onscreen_template = NULL;
+  CoglSwapChain *swap_chain = NULL;
+  gboolean status;
+
+  if (backend->cogl_context != NULL)
+    return TRUE;
+
+  backend->cogl_renderer = cogl_renderer_new ();
+  cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
+                                          backend_x11->xdpy);
+  if (!cogl_renderer_connect (backend->cogl_renderer, error))
+    goto error;
+
+  swap_chain = cogl_swap_chain_new ();
+  cogl_swap_chain_set_has_alpha (swap_chain,
+                                 clutter_x11_get_use_argb_visual ());
+
+  onscreen_template = cogl_onscreen_template_new (swap_chain);
+  cogl_object_unref (swap_chain);
+
+  /* XXX: I have some doubts that this is a good design.
+   * Conceptually should we be able to check an onscreen_template
+   * without more details about the CoglDisplay configuration?
+   */
+  status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                                  onscreen_template,
+                                                  error);
+  if (!status && clutter_x11_get_use_argb_visual ())
+    {
+      g_clear_error (error);
+
+      /* It's possible that the current renderer doesn't support transparency
+       * in a swap_chain so lets see if we can fallback to not having any
+       * transparency...
+       *
+       * XXX: It might be nice to have a CoglRenderer feature we could
+       * explicitly check for ahead of time.
+       */
+      cogl_swap_chain_set_has_alpha (swap_chain, FALSE);
+      status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                                      onscreen_template,
+                                                      error);
+    }
+
+  if (!status)
+    goto error;
+
+  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
+                                            onscreen_template);
+
+  cogl_object_unref (backend->cogl_renderer);
+  cogl_object_unref (onscreen_template);
+
+  if (!cogl_display_setup (backend->cogl_display, error))
+    goto error;
+
+  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
+  if (backend->cogl_context == NULL)
+    goto error;
+
+  return TRUE;
+
+error:
+  if (backend->cogl_display != NULL)
+    {
+      cogl_object_unref (backend->cogl_display);
+      backend->cogl_display = NULL;
+    }
+
+  if (onscreen_template != NULL)
+    cogl_object_unref (onscreen_template);
+  if (swap_chain != NULL)
+    cogl_object_unref (swap_chain);
+
+  if (backend->cogl_renderer != NULL)
+    {
+      cogl_object_unref (backend->cogl_renderer);
+      backend->cogl_renderer = NULL;
+    }
+  return FALSE;
+}
+
+static ClutterStageWindow *
+clutter_backend_x11_create_stage (ClutterBackend  *backend,
+				  ClutterStage    *wrapper,
+				  GError         **error)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterEventTranslator *translator;
+  ClutterStageWindow *stage;
+
+  stage = g_object_new (CLUTTER_TYPE_STAGE_X11,
+			"backend", backend,
+			"wrapper", wrapper,
+			NULL);
+
+  translator = CLUTTER_EVENT_TRANSLATOR (stage);
+  _clutter_backend_add_event_translator (backend, translator);
+
+  CLUTTER_NOTE (MISC, "Cogl stage created (display:%p, screen:%d, root:%u)",
+                backend_x11->xdpy,
+                backend_x11->xscreen_num,
+                (unsigned int) backend_x11->xwin_root);
+
+  return stage;
+}
+
 static void
 clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
-  gobject_class->constructor = clutter_backend_x11_constructor;
   gobject_class->dispose = clutter_backend_x11_dispose;
   gobject_class->finalize = clutter_backend_x11_finalize;
 
@@ -725,6 +812,8 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   backend_class->copy_event_data = clutter_backend_x11_copy_event_data;
   backend_class->free_event_data = clutter_backend_x11_free_event_data;
   backend_class->translate_event = clutter_backend_x11_translate_event;
+  backend_class->create_context = clutter_backend_x11_create_context;
+  backend_class->create_stage = clutter_backend_x11_create_stage;
 }
 
 static void
@@ -784,13 +873,15 @@ clutter_x11_untrap_x_errors (void)
 Display *
 clutter_x11_get_default_display (void)
 {
-  if (!backend_singleton)
+  ClutterBackend *backend = clutter_get_default_backend ();
+
+  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
     {
       g_critical ("X11 backend has not been initialised");
       return NULL;
     }
 
-  return backend_singleton->xdpy;
+  return CLUTTER_BACKEND_X11 (backend)->xdpy;
 }
 
 /**
@@ -913,13 +1004,15 @@ clutter_x11_has_event_retrieval (void)
 int
 clutter_x11_get_default_screen (void)
 {
-  if (!backend_singleton)
+ ClutterBackend *backend = clutter_get_default_backend ();
+
+  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
     {
       g_critical ("X11 backend has not been initialised");
       return 0;
     }
 
-  return backend_singleton->xscreen_num;
+  return CLUTTER_BACKEND_X11 (backend)->xscreen_num;
 }
 
 /**
@@ -934,13 +1027,15 @@ clutter_x11_get_default_screen (void)
 Window
 clutter_x11_get_root_window (void)
 {
-  if (!backend_singleton)
+ ClutterBackend *backend = clutter_get_default_backend ();
+
+  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
     {
       g_critical ("X11 backend has not been initialised");
       return None;
     }
 
-  return backend_singleton->xwin_root;
+  return CLUTTER_BACKEND_X11 (backend)->xwin_root;
 }
 
 /**
@@ -957,21 +1052,25 @@ clutter_x11_add_filter (ClutterX11FilterFunc func,
                         gpointer             data)
 {
   ClutterX11EventFilter *filter;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
 
   g_return_if_fail (func != NULL);
 
-  if (!backend_singleton)
+  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
     {
       g_critical ("X11 backend has not been initialised");
       return;
     }
 
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
   filter = g_new0 (ClutterX11EventFilter, 1);
   filter->func = func;
   filter->data = data;
 
-  backend_singleton->event_filters =
-    g_slist_append (backend_singleton->event_filters, filter);
+  backend_x11->event_filters =
+    g_slist_append (backend_x11->event_filters, filter);
 
   return;
 }
@@ -991,10 +1090,20 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
 {
   GSList                *tmp_list, *this;
   ClutterX11EventFilter *filter;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
 
   g_return_if_fail (func != NULL);
 
-  tmp_list = backend_singleton->event_filters;
+  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("X11 backend has not been initialised");
+      return;
+    }
+
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  tmp_list = backend_x11->event_filters;
 
   while (tmp_list)
     {
@@ -1004,8 +1113,8 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
 
       if (filter->func == func && filter->data == data)
         {
-          backend_singleton->event_filters =
-            g_slist_remove_link (backend_singleton->event_filters, this);
+          backend_x11->event_filters =
+            g_slist_remove_link (backend_x11->event_filters, this);
 
           g_slist_free_1 (this);
           g_free (filter);
@@ -1052,10 +1161,15 @@ gboolean
 clutter_x11_has_xinput (void)
 {
 #if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
-  if (backend_singleton != NULL)
-    return backend_singleton->has_xinput;
+ ClutterBackend *backend = clutter_get_default_backend ();
 
-  return FALSE;
+  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("X11 backend has not been initialised");
+      return FALSE;
+    }
+
+  return CLUTTER_BACKEND_X11 (backend)->has_xinput;
 #else
   return FALSE;
 #endif
@@ -1159,15 +1273,7 @@ clutter_x11_get_use_argb_visual (void)
 XVisualInfo *
 _clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 {
-  ClutterBackendX11Class *klass;
-
-  g_return_val_if_fail (CLUTTER_IS_BACKEND_X11 (backend_x11), NULL);
-
-  klass = CLUTTER_BACKEND_X11_GET_CLASS (backend_x11);
-  if (klass->get_visual_info)
-    return klass->get_visual_info (backend_x11);
-
-  return NULL;
+  return cogl_clutter_winsys_xlib_get_visual_info ();
 }
 
 /**
@@ -1241,4 +1347,10 @@ _clutter_x11_input_device_translate_screen_coord (ClutterInputDevice *device,
     *axis_value = offset + scale * (value - info->min_value);
 
   return TRUE;
+}
+
+GType
+_clutter_backend_impl_get_type (void)
+{
+  return _clutter_backend_x11_get_type ();
 }

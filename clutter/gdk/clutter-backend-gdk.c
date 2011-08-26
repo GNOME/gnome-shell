@@ -35,10 +35,16 @@
 
 #include <gdk/gdk.h>
 #include <cogl/cogl.h>
+
+#include <cogl/cogl-xlib.h>
+
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #endif
-/* other backends not yet supported */
+
+#ifdef GDK_WINDOWING_WIN32
+#include <gdk/gdkwin32.h>
+#endif
 
 #include "clutter-backend-gdk.h"
 #include "clutter-device-manager-gdk.h"
@@ -54,10 +60,7 @@
 #include "clutter-private.h"
 
 #define clutter_backend_gdk_get_type _clutter_backend_gdk_get_type
-G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND);
-
-/* singleton object */
-static ClutterBackendGdk *backend_singleton = NULL;
+G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND_COGL);
 
 /* global for pre init setup calls */
 static GdkDisplay  *_foreign_dpy = NULL;
@@ -132,20 +135,12 @@ cogl_gdk_filter (GdkXEvent  *xevent,
 }
 
 static gboolean
-_clutter_backend_gdk_pre_parse (ClutterBackend  *backend,
-				GError         **error)
-{
-  /* nothing to do here */
-  return TRUE;
-}
-
-static gboolean
 _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
                                  GError         **error)
 {
   ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
 
-  if (_foreign_dpy)
+  if (_foreign_dpy != NULL)
     backend_gdk->display = _foreign_dpy;
 
   /* Init Gdk, if outside code did not already */
@@ -181,7 +176,8 @@ _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
                 "Gdk Display '%s' opened",
                 gdk_display_get_name (backend_gdk->display));
 
-  return TRUE;
+  return CLUTTER_BACKEND_CLASS (clutter_backend_gdk_parent_class)->post_parse (backend,
+									       error);
 }
 
 
@@ -200,9 +196,6 @@ clutter_backend_gdk_finalize (GObject *gobject)
 
   gdk_window_remove_filter (NULL, cogl_gdk_filter, NULL);
   g_object_unref (backend_gdk->display);
-
-  if (backend_singleton)
-    backend_singleton = NULL;
 
   G_OBJECT_CLASS (clutter_backend_gdk_parent_class)->finalize (gobject);
 }
@@ -224,34 +217,14 @@ clutter_backend_gdk_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_gdk_parent_class)->dispose (gobject);
 }
 
-static GObject *
-clutter_backend_gdk_constructor (GType                  gtype,
-                                 guint                  n_params,
-                                 GObjectConstructParam *params)
-{
-  GObjectClass *parent_class;
-  GObject *retval;
-
-  if (backend_singleton == NULL)
-    {
-      parent_class = G_OBJECT_CLASS (clutter_backend_gdk_parent_class);
-      retval = parent_class->constructor (gtype, n_params, params);
-
-      backend_singleton = CLUTTER_BACKEND_GDK (retval);
-
-      return retval;
-    }
-
-  g_critical ("Attempting to create a new backend object. This should "
-	      "never happen, so we return the singleton instance.");
-
-  return g_object_ref (backend_singleton);
-}
-
 static ClutterFeatureFlags
 clutter_backend_gdk_get_features (ClutterBackend *backend)
 {
-  return CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
+  ClutterFeatureFlags flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
+
+  flags |= CLUTTER_BACKEND_CLASS (clutter_backend_gdk_parent_class)->get_features (backend);
+
+  return flags;
 }
 
 static void
@@ -293,23 +266,128 @@ clutter_backend_gdk_get_device_manager (ClutterBackend *backend)
   return backend_gdk->device_manager;
 }
 
+static gboolean
+clutter_backend_gdk_create_context (ClutterBackend  *backend,
+				    GError         **error)
+{
+  ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
+  CoglSwapChain *swap_chain = NULL;
+  CoglOnscreenTemplate *onscreen_template = NULL;
+  GdkVisual *rgba_visual = NULL;
+
+  if (backend->cogl_context != NULL)
+    return TRUE;
+
+  backend->cogl_renderer = cogl_renderer_new ();
+
+#if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
+  if (GDK_IS_X11_DISPLAY (backend_gdk->display))
+    {
+      cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
+					      gdk_x11_display_get_xdisplay (backend_gdk->display));
+    }
+  else
+#endif
+#if defined(GDK_WINDOWING_WIN32)
+  if (GDK_IS_WIN32_DISPLAY (backend_gdk->display))
+    {
+      /* Force a WGL winsys on windows */
+      cogl_renderer_set_winsys_id (backend_cogl->cogl_renderer, COGL_WINSYS_ID_WGL);
+    }
+  else
+#endif
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Could not find a suitable CoglWinsys for"
+                   "a GdkDisplay of type %s", G_OBJECT_TYPE_NAME (backend_gdk->display));
+      goto error;
+    }
+
+
+  if (!cogl_renderer_connect (backend->cogl_renderer, error))
+    goto error;
+
+  swap_chain = cogl_swap_chain_new ();
+
+  rgba_visual = gdk_screen_get_rgba_visual (backend_gdk->screen);
+  cogl_swap_chain_set_has_alpha (swap_chain, rgba_visual != NULL);
+
+  onscreen_template = cogl_onscreen_template_new (swap_chain);
+  cogl_object_unref (swap_chain);
+
+  /* XXX: I have some doubts that this is a good design.
+   * Conceptually should we be able to check an onscreen_template
+   * without more details about the CoglDisplay configuration?
+   */
+  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                              onscreen_template,
+                                              error))
+    goto error;
+
+  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
+                                            onscreen_template);
+
+  cogl_object_unref (backend->cogl_renderer);
+  cogl_object_unref (onscreen_template);
+
+  if (!cogl_display_setup (backend->cogl_display, error))
+    goto error;
+
+  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
+  if (backend->cogl_context == NULL)
+    goto error;
+
+  return TRUE;
+
+error:
+  if (backend->cogl_display != NULL)
+    {
+      cogl_object_unref (backend->cogl_display);
+      backend->cogl_display = NULL;
+    }
+
+  if (onscreen_template != NULL)
+    cogl_object_unref (onscreen_template);
+  if (swap_chain != NULL)
+    cogl_object_unref (swap_chain);
+
+  if (backend->cogl_renderer != NULL)
+    {
+      cogl_object_unref (backend->cogl_renderer);
+      backend->cogl_renderer = NULL;
+    }
+  return FALSE;
+}
+
+static ClutterStageWindow *
+clutter_backend_gdk_create_stage (ClutterBackend  *backend,
+				  ClutterStage    *wrapper,
+				  GError         **error)
+{
+  return g_object_new (CLUTTER_TYPE_STAGE_GDK,
+		       "backend", backend,
+		       "wrapper", wrapper,
+		       NULL);
+}
+
 static void
 clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
-  gobject_class->constructor = clutter_backend_gdk_constructor;
   gobject_class->dispose = clutter_backend_gdk_dispose;
   gobject_class->finalize = clutter_backend_gdk_finalize;
 
-  backend_class->pre_parse = _clutter_backend_gdk_pre_parse;
   backend_class->post_parse = _clutter_backend_gdk_post_parse;
   backend_class->init_events = clutter_backend_gdk_init_events;
   backend_class->get_features = clutter_backend_gdk_get_features;
   backend_class->get_device_manager = clutter_backend_gdk_get_device_manager;
   backend_class->copy_event_data = clutter_backend_gdk_copy_event_data;
   backend_class->free_event_data = clutter_backend_gdk_free_event_data;
+  backend_class->create_context = clutter_backend_gdk_create_context;
+  backend_class->create_stage = clutter_backend_gdk_create_stage;
 }
 
 static void
@@ -330,13 +408,15 @@ clutter_backend_gdk_init (ClutterBackendGdk *backend_gdk)
 GdkDisplay *
 clutter_gdk_get_default_display (void)
 {
-  if (!backend_singleton)
+  ClutterBackend *backend = clutter_get_default_backend ();
+
+  if (!backend || !CLUTTER_IS_BACKEND_GDK (backend))
     {
       g_critical ("GDK backend has not been initialised");
       return NULL;
     }
 
-  return backend_singleton->display;
+  return CLUTTER_BACKEND_GDK (backend)->display;
 }
 
 /**
@@ -365,4 +445,10 @@ clutter_gdk_set_display (GdkDisplay *display)
     }
 
   _foreign_dpy = g_object_ref (display);
+}
+
+GType
+_clutter_backend_impl_get_type (void)
+{
+  return _clutter_backend_gdk_get_type ();
 }

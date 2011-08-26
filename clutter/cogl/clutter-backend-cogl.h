@@ -37,13 +37,6 @@
 
 #include "clutter-backend-private.h"
 
-#ifdef CLUTTER_WINDOWING_X11
-#include "../x11/clutter-backend-x11.h"
-#endif
-#ifdef CLUTTER_WINDOWING_GDK
-#include "../gdk/clutter-backend-gdk.h"
-#endif
-
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_COGL                (_clutter_backend_cogl_get_type ())
@@ -58,51 +51,17 @@ typedef struct _ClutterBackendCoglClass  ClutterBackendCoglClass;
 
 struct _ClutterBackendCogl
 {
-#ifdef CLUTTER_WINDOWING_X11
-  ClutterBackendX11 parent_instance;
-
-#elif defined(CLUTTER_WINDOWING_GDK)
-  ClutterBackendGdk parent_instance;
-
-#else
   ClutterBackend parent_instance;
-
-  /* main stage singleton */
-  ClutterStageWindow *stage;
-
-  /* device manager (ie evdev) */
-  ClutterDeviceManager *device_manager;
-
-  /* event source */
-  GSource *event_source;
-
-  /* event timer */
-  GTimer *event_timer;
-
-#endif /* CLUTTER_WINDOWING_X11 || CLUTTER_WINDOWING_GDK */
-
-  CoglContext *cogl_context;
 
   gboolean can_blit_sub_buffer;
 };
 
 struct _ClutterBackendCoglClass
 {
-#ifdef CLUTTER_WINDOWING_X11
-  ClutterBackendX11Class parent_class;
-#elif defined(CLUTTER_WINDOWING_GDK)
-  ClutterBackendGdkClass parent_class;
-#else
   ClutterBackendClass parent_class;
-#endif
 };
 
 GType _clutter_backend_cogl_get_type (void) G_GNUC_CONST;
-
-#ifdef HAVE_TSLIB
-void _clutter_events_tslib_init   (ClutterBackendCogl *backend);
-void _clutter_events_tslib_uninit (ClutterBackendCogl *backend);
-#endif
 
 const gchar *_clutter_backend_cogl_get_vblank (void);
 

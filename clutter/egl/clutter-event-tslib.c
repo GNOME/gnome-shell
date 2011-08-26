@@ -95,7 +95,7 @@ get_backend_time (void)
 #endif
 
 void
-_clutter_events_tslib_init (ClutterBackendEGL *backend_egl)
+_clutter_events_tslib_init (ClutterBackendEglNative *backend_egl)
 {
 #ifdef HAVE_TSLIB
   ClutterEventSource *event_source;
@@ -151,7 +151,7 @@ _clutter_events_tslib_init (ClutterBackendEGL *backend_egl)
 }
 
 void
-_clutter_events_egl_uninit (ClutterBackendEGL *backend_egl)
+_clutter_events_egl_uninit (ClutterBackendEglNative *backend_egl)
 {
 #ifdef HAVE_TSLIB
   if (backend_egl->event_timer != NULL)

@@ -28,6 +28,7 @@
 #include <gdk/gdk.h>
 
 #include "clutter-backend-gdk.h"
+#include "cogl/clutter-stage-cogl.h"
 
 G_BEGIN_DECLS
 
@@ -43,21 +44,17 @@ typedef struct _ClutterStageGdkClass    ClutterStageGdkClass;
 
 struct _ClutterStageGdk
 {
-  GObject parent_instance;
+  ClutterStageCogl parent_instance;
 
   GdkWindow *window;
   GdkCursor *blank_cursor;
-
-  /* backpointers */
-  ClutterStage *wrapper;
-  ClutterBackendGdk *backend;
 
   gboolean foreign_window;
 };
 
 struct _ClutterStageGdkClass
 {
-  GObjectClass parent_class;
+  ClutterStageCoglClass parent_class;
 };
 
 #define CLUTTER_STAGE_GDK_EVENT_MASK \
