@@ -69,7 +69,19 @@ struct _MetaBackgroundActor
   MetaScreenBackground *background;
   CoglHandle material;
   cairo_region_t *visible_region;
+  float dim_factor;
 };
+
+enum
+{
+  PROP_0,
+
+  PROP_DIM_FACTOR,
+
+  PROP_LAST
+};
+
+static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (MetaBackgroundActor, meta_background_actor, CLUTTER_TYPE_ACTOR);
 
@@ -284,13 +296,19 @@ static void
 meta_background_actor_paint (ClutterActor *actor)
 {
   MetaBackgroundActor *self = META_BACKGROUND_ACTOR (actor);
-  guchar opacity = clutter_actor_get_paint_opacity (actor);
+  guint8 opacity = clutter_actor_get_paint_opacity (actor);
+  guint8 color_component;
   int width, height;
 
   meta_screen_get_size (self->background->screen, &width, &height);
 
+  color_component = (int)(0.5 + opacity * self->dim_factor);
+
   cogl_material_set_color4ub (self->material,
-                              opacity, opacity, opacity, opacity);
+                              color_component,
+                              color_component,
+                              color_component,
+                              opacity);
 
   cogl_set_source (self->material);
 
@@ -338,22 +356,93 @@ meta_background_actor_get_paint_volume (ClutterActor       *actor,
 }
 
 static void
+meta_background_actor_set_dim_factor (MetaBackgroundActor *self,
+                                      gfloat               dim_factor)
+{
+  if (self->dim_factor == dim_factor)
+    return;
+
+  self->dim_factor = dim_factor;
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DIM_FACTOR]);
+}
+
+static void
+meta_background_actor_get_property(GObject         *object,
+                                   guint            prop_id,
+                                   GValue          *value,
+                                   GParamSpec      *pspec)
+{
+  MetaBackgroundActor *self = META_BACKGROUND_ACTOR (object);
+
+  switch (prop_id)
+    {
+    case PROP_DIM_FACTOR:
+      g_value_set_float (value, self->dim_factor);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_background_actor_set_property(GObject         *object,
+                                   guint            prop_id,
+                                   const GValue    *value,
+                                   GParamSpec      *pspec)
+{
+  MetaBackgroundActor *self = META_BACKGROUND_ACTOR (object);
+
+  switch (prop_id)
+    {
+    case PROP_DIM_FACTOR:
+      meta_background_actor_set_dim_factor (self, g_value_get_float (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 meta_background_actor_class_init (MetaBackgroundActorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   object_class->dispose = meta_background_actor_dispose;
+  object_class->get_property = meta_background_actor_get_property;
+  object_class->set_property = meta_background_actor_set_property;
 
   actor_class->get_preferred_width = meta_background_actor_get_preferred_width;
   actor_class->get_preferred_height = meta_background_actor_get_preferred_height;
   actor_class->paint = meta_background_actor_paint;
   actor_class->get_paint_volume = meta_background_actor_get_paint_volume;
+
+  /**
+   * MetaBackgroundActor:dim-factor:
+   *
+   * Factor to dim the background by, between 0.0 (black) and 1.0 (original
+   * colors)
+   */
+  pspec = g_param_spec_float ("dim-factor",
+                              "Dim factor",
+                              "Factor to dim the background by",
+                              0.0, 1.0,
+                              1.0,
+                              G_PARAM_READWRITE);
+  obj_props[PROP_DIM_FACTOR] = pspec;
+  g_object_class_install_property (object_class, PROP_DIM_FACTOR, pspec);
 }
 
 static void
-meta_background_actor_init (MetaBackgroundActor *background_actor)
+meta_background_actor_init (MetaBackgroundActor *self)
 {
+  self->dim_factor = 1.0;
 }
 
 /**
