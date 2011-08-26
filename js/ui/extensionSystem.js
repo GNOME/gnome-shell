@@ -392,7 +392,8 @@ function init() {
     let userExtensionsPath = GLib.build_filenamev([global.userdatadir, 'extensions']);
     userExtensionsDir = Gio.file_new_for_path(userExtensionsPath);
     try {
-        userExtensionsDir.make_directory_with_parents(null);
+        if (!userExtensionsDir.query_exists(null))
+            userExtensionsDir.make_directory_with_parents(null);
     } catch (e) {
         global.logError('' + e);
     }
