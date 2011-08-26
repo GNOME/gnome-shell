@@ -196,6 +196,7 @@ NotificationDaemon.prototype = {
               hints['category'] == 'x-empathy.im.room-invitation' ||
               hints['category'] == 'x-empathy.call.incoming' ||
               hints['category'] == 'x-empathy.call.incoming"' ||
+              hints['category'] == 'x-empathy.im.subscription-request' ||
               hints['category'] == 'presence.online' ||
               hints['category'] == 'presence.offline')) {
             // Ignore replacesId since we already sent back a

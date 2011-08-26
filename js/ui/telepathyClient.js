@@ -87,8 +87,8 @@ Client.prototype = {
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
-        let dbus = Tp.DBusDaemon.dup();
-        this._tpClient = new Shell.TpClient({ 'dbus_daemon': dbus,
+        this._accountManager = Tp.AccountManager.dup();
+        this._tpClient = new Shell.TpClient({ 'account-manager': this._accountManager,
                                               'name': 'GnomeShell',
                                               'uniquify-name': true })
         this._tpClient.set_observe_channels_func(
@@ -97,6 +97,11 @@ Client.prototype = {
             Lang.bind(this, this._approveChannels));
         this._tpClient.set_handle_channels_func(
             Lang.bind(this, this._handleChannels));
+
+        // Workaround for gjs not supporting GPtrArray in signals.
+        // See BGO bug #653941 for context.
+        this._tpClient.set_contact_list_changed_func(
+            Lang.bind(this, this._contactListChanged));
 
         // Allow other clients (such as Empathy) to pre-empt our channels if
         // needed
@@ -108,6 +113,21 @@ Client.prototype = {
         } catch (e) {
             throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
         }
+
+
+        // Watch subscription requests and connection errors
+        this._subscriptionSource = null;
+        let factory = this._accountManager.get_factory();
+        factory.add_account_features([Tp.Account.get_feature_quark_connection()]);
+        factory.add_connection_features([Tp.Connection.get_feature_quark_contact_list()]);
+        factory.add_contact_features([Tp.ContactFeature.SUBSCRIPTION_STATES,
+                                      Tp.ContactFeature.ALIAS,
+                                      Tp.ContactFeature.AVATAR_DATA]);
+
+        this._accountManager.connect('account-validity-changed',
+            Lang.bind(this, this._accountValidityChanged));
+
+        this._accountManager.prepare_async(null, Lang.bind(this, this._accountManagerPrepared));
     },
 
     _observeChannels: function(observer, account, conn, channels,
@@ -337,6 +357,79 @@ Client.prototype = {
     _delegatedChannelsCb: function(client, channels) {
         // Nothing to do as we don't make a distinction between observed and
         // handled channels.
+    },
+
+    _accountManagerPrepared: function(am, result) {
+        am.prepare_finish(result);
+
+        let accounts = am.get_valid_accounts();
+        for (let i = 0; i < accounts.length; i++) {
+            this._accountValidityChanged(am, accounts[i], true);
+        }
+    },
+
+    _accountValidityChanged: function(am, account, valid) {
+        if (!valid)
+            return;
+
+        account.connect('notify::connection',
+                        Lang.bind(this, this._connectionChanged));
+        this._connectionChanged(account);
+    },
+
+    _connectionChanged: function(account) {
+        let conn = account.get_connection();
+        if (conn == null)
+            return;
+
+        this._tpClient.grab_contact_list_changed(conn);
+        if (conn.get_contact_list_state() == Tp.ContactListState.SUCCESS) {
+            this._contactListChanged(conn, conn.dup_contact_list(), []);
+        }
+    },
+
+    _contactListChanged: function(conn, added, removed) {
+        for (let i = 0; i < added.length; i++) {
+            let contact = added[i];
+
+            contact.connect('subscription-states-changed',
+                            Lang.bind(this, this._subscriptionStateChanged));
+            this._subscriptionStateChanged(contact);
+        }
+    },
+
+    _subscriptionStateChanged: function(contact) {
+        if (contact.get_publish_state() != Tp.SubscriptionState.ASK)
+            return;
+
+        /* Implicitly accept publish requests if contact is already subscribed */
+        if (contact.get_subscribe_state() == Tp.SubscriptionState.YES ||
+            contact.get_subscribe_state() == Tp.SubscriptionState.ASK) {
+
+            contact.authorize_publication_async(function(src, result) {
+                src.authorize_publication_finish(result)});
+
+            return;
+        }
+
+        /* Display notification to ask user to accept/reject request */
+        let source = this._ensureSubscriptionSource();
+        Main.messageTray.add(source);
+
+        let notif = new SubscriptionRequestNotification(source, contact);
+        source.notify(notif);
+    },
+
+    _ensureSubscriptionSource: function() {
+        if (this._subscriptionSource == null) {
+            this._subscriptionSource = new MultiNotificationSource(
+                _("Subscription request"), 'gtk-dialog-question');
+            this._subscriptionSource.connect('destroy', Lang.bind(this, function () {
+                this._subscriptionSource = null;
+            }));
+        }
+
+        return this._subscriptionSource;
     }
 };
 
@@ -1116,5 +1209,139 @@ FileTransferNotification.prototype = {
             }
             this.destroy();
         }));
+    }
+};
+
+// A notification source that can embed multiple notifications
+function MultiNotificationSource(title, icon) {
+    this._init(title, icon);
+}
+
+MultiNotificationSource.prototype = {
+    __proto__: MessageTray.Source.prototype,
+
+    _init: function(title, icon) {
+        MessageTray.Source.prototype._init.call(this, title);
+
+        this._icon = icon;
+        this._setSummaryIcon(this.createNotificationIcon());
+        this._nbNotifications = 0;
+    },
+
+    notify: function(notification) {
+        MessageTray.Source.prototype.notify.call(this, notification);
+
+        this._nbNotifications += 1;
+
+        // Display the source while there is at least one notification
+        notification.connect('destroy', Lang.bind(this, function () {
+            this._nbNotifications -= 1;
+
+            if (this._nbNotifications == 0)
+                this.destroy();
+        }));
+    },
+
+    createNotificationIcon: function() {
+        return new St.Icon({ gicon: Shell.util_icon_from_string(this._icon),
+                             icon_type: St.IconType.FULLCOLOR,
+                             icon_size: this.ICON_SIZE });
+    }
+};
+
+// Subscription request
+function SubscriptionRequestNotification(source, contact) {
+    this._init(source, contact);
+}
+
+SubscriptionRequestNotification.prototype = {
+    __proto__: MessageTray.Notification.prototype,
+
+    _init: function(source, contact) {
+        MessageTray.Notification.prototype._init.call(this, source,
+            /* To translators: The parameter is the contact's alias */
+            _("%s would like permission to see when you are online").format(contact.get_alias()),
+            null, { customContent: true });
+
+        this._contact = contact;
+        this._connection = contact.get_connection();
+
+        let layout = new St.BoxLayout({ vertical: false });
+
+        // Display avatar
+        let iconBox = new St.Bin({ style_class: 'avatar-box' });
+        iconBox._size = 48;
+
+        let textureCache = St.TextureCache.get_default();
+        let file = contact.get_avatar_file();
+
+        if (file) {
+            let uri = file.get_uri();
+            iconBox.child = textureCache.load_uri_async(uri, iconBox._size, iconBox._size);
+        }
+        else {
+            iconBox.child = new St.Icon({ icon_name: 'avatar-default',
+                                          icon_type: St.IconType.FULLCOLOR,
+                                          icon_size: iconBox._size });
+        }
+
+        layout.add(iconBox);
+
+        // subscription request message
+        let label = new St.Label({ style_class: 'subscription-message',
+                                   text: contact.get_publish_request() });
+
+        layout.add(label);
+
+        this.addActor(layout);
+
+        this.addButton('decline', _("Decline"));
+        this.addButton('accept', _("Accept"));
+
+        this.connect('action-invoked', Lang.bind(this, function(self, action) {
+            switch (action) {
+            case 'decline':
+                contact.remove_async(function(src, result) {
+                    src.remove_finish(result)});
+                break;
+            case 'accept':
+                // Authorize the contact and request to see his status as well
+                contact.authorize_publication_async(function(src, result) {
+                    src.authorize_publication_finish(result)});
+
+                contact.request_subscription_async('', function(src, result) {
+                    src.request_subscription_finish(result)});
+                break;
+            }
+
+            // rely on _subscriptionStatesChangedCb to destroy the
+            // notification
+        }));
+
+        this._changedId = contact.connect('subscription-states-changed',
+            Lang.bind(this, this._subscriptionStatesChangedCb));
+        this._invalidatedId = this._connection.connect('invalidated',
+            Lang.bind(this, this.destroy));
+    },
+
+    destroy: function() {
+        if (this._changedId != 0) {
+            this._contact.disconnect(this._changedId);
+            this._changedId = 0;
+        }
+
+        if (this._invalidatedId != 0) {
+            this._connection.disconnect(this._invalidatedId);
+            this._invalidatedId = 0;
+        }
+
+        MessageTray.Notification.prototype.destroy.call(this);
+    },
+
+    _subscriptionStatesChangedCb: function(contact, subscribe, publish, msg) {
+        // Destroy the notification if the subscription request has been
+        // answered
+        if (publish != Tp.SubscriptionState.ASK)
+            this.destroy();
     }
 };

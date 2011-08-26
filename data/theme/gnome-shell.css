@@ -1257,6 +1257,10 @@ StTooltip StLabel {
     padding-right: 4px;
 }
 
+.subscription-message {
+    font-style: italic;
+}
+
 #notification StEntry {
     padding: 4px;
     border-radius: 4px;
