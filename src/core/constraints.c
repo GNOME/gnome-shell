@@ -805,8 +805,14 @@ constrain_maximization (MetaWindow         *window,
     return TRUE;
 
   /* Calculate target_size = maximized size of (window + frame) */
-  if (window->maximized_horizontally && window->maximized_vertically)
-    target_size = info->work_area_monitor;
+  if (META_WINDOW_TILED_MAXIMIZED (window))
+    {
+      meta_window_get_current_tile_area (window, &target_size);
+    }
+  else if (META_WINDOW_MAXIMIZED (window))
+    {
+      target_size = info->work_area_monitor;
+    }
   else
     {
       /* Amount of maximization possible in a single direction depends
