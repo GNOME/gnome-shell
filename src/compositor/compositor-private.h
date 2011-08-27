@@ -8,6 +8,7 @@
 #include <meta/compositor.h>
 #include <meta/display.h>
 #include "meta-plugin-manager.h"
+#include "meta-window-actor-private.h"
 #include <clutter/clutter.h>
 
 typedef struct _MetaCompScreen MetaCompScreen;
@@ -40,6 +41,10 @@ struct _MetaCompScreen
   GList                 *windows;
   GHashTable            *windows_by_xid;
   Window                 output;
+
+  /* Used for unredirecting fullscreen windows */
+  guint                   disable_unredirect_count;
+  MetaWindowActor             *unredirected_window;
 
   /* Before we create the output window */
   XserverRegion     pending_input_region;

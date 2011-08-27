@@ -7,6 +7,7 @@
 
 #include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
 
+#include "compositor-private.h"
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
 #include "meta-background-actor-private.h"
@@ -104,9 +105,18 @@ static void
 meta_window_group_paint (ClutterActor *actor)
 {
   cairo_region_t *visible_region;
+  cairo_region_t *unredirected_window_region = NULL;
   ClutterActor *stage;
-  cairo_rectangle_int_t visible_rect;
+  cairo_rectangle_int_t visible_rect, unredirected_rect;
   GList *children, *l;
+
+  MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
+  MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
+  if (info->unredirected_window != NULL)
+    {
+      meta_window_actor_get_shape_bounds (META_WINDOW_ACTOR (info->unredirected_window), &unredirected_rect);
+      unredirected_window_region = cairo_region_create_rectangle (&unredirected_rect);
+    }
 
   /* We walk the list from top to bottom (opposite of painting order),
    * and subtract the opaque area of each window out of the visible
@@ -126,6 +136,9 @@ meta_window_group_paint (ClutterActor *actor)
                                         &visible_rect);
 
   visible_region = cairo_region_create_rectangle (&visible_rect);
+
+  if (unredirected_window_region)
+    cairo_region_subtract (visible_region, unredirected_window_region);
 
   for (l = children; l; l = l->next)
     {
@@ -163,6 +176,9 @@ meta_window_group_paint (ClutterActor *actor)
     }
 
   cairo_region_destroy (visible_region);
+
+  if (unredirected_window_region)
+    cairo_region_destroy (unredirected_window_region);
 
   CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
 

@@ -114,6 +114,8 @@ struct _MetaWindowActorPrivate
   guint             no_shadow              : 1;
 
   guint             no_more_x_calls        : 1;
+
+  guint             unredirected           : 1;
 };
 
 enum
@@ -575,7 +577,7 @@ meta_window_actor_get_shadow_params (MetaWindowActor  *self,
                                   params);
 }
 
-static void
+void
 meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
                                     cairo_rectangle_int_t *bounds)
 {
@@ -1208,6 +1210,62 @@ meta_window_actor_detach (MetaWindowActor *self)
   priv->back_pixmap = None;
 
   meta_window_actor_queue_create_pixmap (self);
+}
+
+gboolean
+meta_window_actor_should_unredirect (MetaWindowActor *self)
+{
+  MetaWindow *metaWindow = meta_window_actor_get_meta_window (self);
+  MetaScreen *screen = meta_window_get_screen (metaWindow);
+
+  if (meta_window_is_override_redirect (metaWindow))
+    {
+      int screen_width, screen_height;
+      MetaRectangle window_rect;
+      meta_screen_get_size (screen, &screen_width, &screen_height);
+      meta_window_get_outer_rect (metaWindow, &window_rect);
+
+      if (window_rect.x == 0 && window_rect.y == 0 &&
+          window_rect.width == screen_width && window_rect.height == screen_height)
+           return TRUE;
+      else
+        {
+          int num_monitors = meta_screen_get_n_monitors (screen);
+          int i;
+          MetaRectangle monitor_rect;
+
+          for (i = 0; i < num_monitors; i++)
+            {
+              meta_screen_get_monitor_geometry (screen , i, &monitor_rect);
+              if (monitor_rect.x == window_rect.x && monitor_rect.y == window_rect.y &&
+                  monitor_rect.width == window_rect.width && monitor_rect.height == window_rect.height)
+                    return TRUE;
+            }
+        }
+    }
+
+  return FALSE;
+}
+
+void
+meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state)
+{
+  MetaWindow *metaWindow = meta_window_actor_get_meta_window (self);
+
+  Display *xdisplay = meta_display_get_xdisplay (meta_window_get_display (metaWindow));
+  Window  xwin = meta_window_actor_get_x_window (self);
+
+  if (state)
+    {
+      XCompositeRedirectWindow (xdisplay, xwin, CompositeRedirectManual);
+      meta_window_actor_queue_create_pixmap (self);
+      self->priv->unredirected = FALSE;
+    }
+  else
+    {
+      XCompositeUnredirectWindow (xdisplay, xwin, CompositeRedirectManual);
+      self->priv->unredirected = TRUE;
+    }
 }
 
 void
@@ -1945,6 +2003,10 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
 
   priv->received_damage = TRUE;
 
+  /* Drop damage event for unredirected windows */
+  if (self->priv->unredirected)
+    return;
+
   if (is_frozen (self))
     {
       /* The window is frozen due to an effect in progress: we ignore damage
@@ -2226,7 +2288,7 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
       return;
     }
 
-  if (priv->received_damage)
+  if (priv->received_damage && !self->unredirected)
     {
       meta_error_trap_push (display);
       XDamageSubtract (xdisplay, priv->damage, None, None);

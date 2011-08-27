@@ -26,9 +26,17 @@ void meta_window_actor_unmaximize (MetaWindowActor *self,
 
 void meta_window_actor_process_damage (MetaWindowActor    *self,
                                        XDamageNotifyEvent *event);
+
 void meta_window_actor_pre_paint      (MetaWindowActor    *self);
 
 void meta_window_actor_invalidate_shadow (MetaWindowActor *self);
+
+void meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state);
+
+gboolean meta_window_actor_should_unredirect (MetaWindowActor *self);
+
+void meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
+                                          cairo_rectangle_int_t *bounds);
 
 gboolean meta_window_actor_effect_in_progress  (MetaWindowActor *self);
 void     meta_window_actor_sync_actor_position (MetaWindowActor *self);

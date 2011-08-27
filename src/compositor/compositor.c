@@ -598,6 +598,38 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
   XCompositeUnredirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
 }
 
+/*
+ * Shapes the cow so that the given window is exposed,
+ * when xwin is None it clears the shape again
+ */
+static void
+meta_shape_cow_for_window (MetaScreen *screen,
+                           Window xwin)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+  Display *xdisplay = meta_display_get_xdisplay (meta_screen_get_display (screen));
+
+  if (xwin == None)
+    XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
+  else
+    {
+      XserverRegion output_region;
+      XRectangle screen_rect;
+      int width, height;
+
+      meta_screen_get_size (screen, &width, &height);
+      screen_rect.x = 0;
+      screen_rect.y = 0;
+      screen_rect.width = width;
+      screen_rect.height = height;
+
+      output_region = XFixesCreateRegionFromWindow (xdisplay, xwin, WindowRegionBounding);
+      XFixesInvertRegion (xdisplay, output_region, &screen_rect, output_region);
+      XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, output_region);
+      XFixesDestroyRegion (xdisplay, output_region);
+    }
+}
+
 void
 meta_compositor_add_window (MetaCompositor    *compositor,
                             MetaWindow        *window)
@@ -618,11 +650,24 @@ meta_compositor_remove_window (MetaCompositor *compositor,
                                MetaWindow     *window)
 {
   MetaWindowActor         *window_actor     = NULL;
+  MetaScreen *screen;
+  MetaCompScreen *info;
 
   DEBUG_TRACE ("meta_compositor_remove_window\n");
   window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
   if (!window_actor)
     return;
+
+  screen = meta_window_get_screen (window);
+  info = meta_screen_get_compositor_data (screen);
+
+  if (window_actor == info->unredirected_window)
+    {
+      meta_window_actor_set_redirected (window_actor, TRUE);
+      meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
+                                 None);
+      info->unredirected_window = NULL;
+    }
 
   meta_window_actor_destroy (window_actor);
 }
@@ -1097,6 +1142,33 @@ static void
 pre_paint_windows (MetaCompScreen *info)
 {
   GList *l;
+  MetaWindowActor *top_window;
+  MetaWindowActor *expected_unredirected_window = NULL;
+
+  top_window = g_list_last (info->windows)->data;
+
+  if (meta_window_actor_should_unredirect (top_window) &&
+      info->disable_unredirect_count == 0)
+    expected_unredirected_window = top_window;
+
+  if (info->unredirected_window != expected_unredirected_window)
+    {
+      if (info->unredirected_window != NULL)
+        {
+          meta_window_actor_set_redirected (info->unredirected_window, TRUE);
+          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
+                                     None);
+        }
+
+      if (expected_unredirected_window != NULL)
+        {
+          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (top_window)),
+                                     meta_window_actor_get_x_window (top_window));
+          meta_window_actor_set_redirected (top_window, FALSE);
+        }
+
+      info->unredirected_window = expected_unredirected_window;
+    }
 
   for (l = info->windows; l; l = l->next)
     meta_window_actor_pre_paint (l->data);
@@ -1198,6 +1270,37 @@ meta_get_overlay_window (MetaScreen *screen)
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   return info->output;
+}
+
+/**
+ * meta_disable_unredirect_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Disables unredirection, can be usefull in situations where having
+ * unredirected windows is undesireable like when recording a video.
+ *
+ */
+void
+meta_disable_unredirect_for_screen (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+  if (info != NULL)
+    info->disable_unredirect_count = info->disable_unredirect_count + 1;
+}
+
+/**
+ * meta_enable_unredirect_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Enables unredirection which reduces the overhead for apps like games.
+ *
+ */
+void
+meta_enable_unredirect_for_screen (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+  if (info != NULL)
+   info->disable_unredirect_count = MAX(0, info->disable_unredirect_count - 1);
 }
 
 #define FLASH_TIME_MS 50
