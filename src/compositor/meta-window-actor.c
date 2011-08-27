@@ -2008,6 +2008,7 @@ update_corners (MetaWindowActor   *self,
   cairo_region_t *corner_region;
   cairo_path_t *corner_path;
   float top_left, top_right, bottom_left, bottom_right;
+  float x, y;
 
   /* need these to build a path */
   cairo_t *cr;
@@ -2033,50 +2034,55 @@ update_corners (MetaWindowActor   *self,
   cr = cairo_create (surface);
 
   /* top left */
+  x = borders->invisible.left;
+  y = borders->invisible.top;
+
   set_integral_bounding_rect (&corner_rects[0],
-                              borders->invisible.left,
-                              borders->invisible.top,
-                              top_left, top_left);
+                              x, y, top_left, top_left);
 
   cairo_arc (cr,
-             corner_rects[0].x + top_left,
-             corner_rects[0].y + top_left,
+             x + top_left,
+             y + top_left,
              top_left,
              0, M_PI*2);
 
+
   /* top right */
+  x = borders->invisible.left + outer.width - top_right;
+  y = borders->invisible.top;
+
   set_integral_bounding_rect (&corner_rects[1],
-                              borders->invisible.left + outer.width - top_right,
-                              borders->invisible.top,
-                              top_right, top_right);
+                              x, y, top_right, top_right);
 
   cairo_arc (cr,
-             corner_rects[1].x,
-             corner_rects[1].y + top_right,
+             x,
+             y + top_right,
              top_right,
              0, M_PI*2);
 
   /* bottom left */
+  x = borders->invisible.left;
+  y = borders->invisible.top + outer.height - bottom_left;
+
   set_integral_bounding_rect (&corner_rects[2],
-                              borders->invisible.left,
-                              borders->invisible.top + outer.height - bottom_left,
-                              bottom_left, bottom_left);
+                              x, y, bottom_left, bottom_left);
 
   cairo_arc (cr,
-             corner_rects[2].x + bottom_left,
-             corner_rects[2].y,
+             x + bottom_left,
+             y,
              bottom_left,
              0, M_PI*2);
 
   /* bottom right */
+  x = borders->invisible.left + outer.width - bottom_right;
+  y = borders->invisible.top + outer.height - bottom_right;
+
   set_integral_bounding_rect (&corner_rects[3],
-                              borders->invisible.left + outer.width - bottom_right,
-                              borders->invisible.top + outer.height - bottom_right,
-                              bottom_right, bottom_right);
+                              x, y, bottom_right, bottom_right);
 
   cairo_arc (cr,
-             corner_rects[3].x,
-             corner_rects[3].y,
+             x,
+             y,
              bottom_right,
              0, M_PI*2);
 
