@@ -22,7 +22,7 @@ AM_CFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
 
-LDADD = $(common_ldadd) $(CLUTTER_LIBS)
+LDADD = $(common_ldadd) $(CLUTTER_LIBS) -lm
 
 test_text_SOURCES = test-text.c
 test_picking_SOURCES = test-picking.c

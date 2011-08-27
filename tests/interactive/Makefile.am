@@ -123,7 +123,7 @@ test_interactive_CPPFLAGS = \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DCLUTTER_DISABLE_DEPRECATED
 test_interactive_LDFLAGS = -export-dynamic
-test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
+test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd) -lm
 
 EXTRA_DIST = wrapper.sh.in
 DISTCLEANFILES = wrapper.sh .gitignore
