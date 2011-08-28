@@ -356,6 +356,14 @@ SearchSystem.prototype = {
         this._providers.push(provider);
     },
 
+    unregisterProvider: function (provider) {
+        let index = this._providers.indexOf(provider);
+        if (index == -1)
+            return;
+        provider.searchSystem = null;
+        this._providers.splice(index, 1);
+    },
+
     getProviders: function() {
         return this._providers;
     },

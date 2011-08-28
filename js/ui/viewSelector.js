@@ -210,6 +210,11 @@ SearchTab.prototype = {
         this._searchResults.createProviderMeta(provider);
     },
 
+    removeSearchProvider: function(provider) {
+        this._searchSystem.unregisterProvider(provider);
+        this._searchResults.destroyProviderMeta(provider);
+    },
+
     startSearch: function(event) {
         global.stage.set_key_focus(this._text);
         this._text.event(event, false);
@@ -563,6 +568,10 @@ ViewSelector.prototype = {
 
     addSearchProvider: function(provider) {
         this._searchTab.addSearchProvider(provider);
+    },
+
+    removeSearchProvider: function(provider) {
+        this._searchTab.removeSearchProvider(provider);
     }
 };
 Signals.addSignalMethods(ViewSelector.prototype);

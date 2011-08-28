@@ -237,6 +237,10 @@ Overview.prototype = {
         this._viewSelector.addSearchProvider(provider);
     },
 
+    removeSearchProvider: function(provider) {
+        this._viewSelector.removeSearchProvider(provider);
+    },
+
     setMessage: function(text, undoCallback, undoLabel) {
         if (this.isDummy)
             return;

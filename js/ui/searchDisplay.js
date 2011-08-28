@@ -294,9 +294,21 @@ SearchResults.prototype = {
         }
         resultDisplayBin.set_child(resultDisplay.actor);
 
-        this._providerMeta.push({ actor: providerBox,
+        this._providerMeta.push({ provider: provider,
+                                  actor: providerBox,
                                   resultDisplay: resultDisplay });
         this._content.add(providerBox);
+    },
+
+    destroyProviderMeta: function(provider) {
+        for (let i=0; i < this._providerMeta.length; i++) {
+            let meta = this._providerMeta[i];
+            if (meta.provider == provider) {
+                meta.actor.destroy();
+                this._providerMeta.splice(i, 1);
+                break;
+            }
+        }
     },
 
     _clearDisplay: function() {
