@@ -695,11 +695,94 @@ function PanelCorner(panel, side) {
 }
 
 PanelCorner.prototype = {
-    _init: function(side) {
+    _init: function(box, side) {
         this._side = side;
+
+        this._box = box;
+        this._box.connect('style-changed', Lang.bind(this, this._boxStyleChanged));
+
         this.actor = new St.DrawingArea({ style_class: 'panel-corner' });
         this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
         this.actor.connect('repaint', Lang.bind(this, this._repaint));
+    },
+
+    _findRightmostButton: function(container) {
+        if (!container.get_children)
+            return null;
+
+        let children = container.get_children();
+
+        if (!children || children.length == 0)
+            return null;
+
+        // Start at the back and work backward
+        let index = children.length - 1;
+        while (!children[index].visible && index >= 0)
+            index--;
+
+        if (index < 0)
+            return null;
+
+        if (!(children[index].has_style_class_name('panel-menu')) &&
+            !(children[index].has_style_class_name('panel-button')))
+            return this._findRightmostButton(children[index]);
+
+        return children[index];
+    },
+
+    _findLeftmostButton: function(container) {
+        if (!container.get_children)
+            return null;
+
+        let children = container.get_children();
+
+        if (!children || children.length == 0)
+            return null;
+
+        // Start at the front and work forward
+        let index = 0;
+        while (!children[index].visible && index < children.length)
+            index++;
+
+        if (index == children.length)
+            return null;
+
+        if (!(children[index].has_style_class_name('panel-menu')) &&
+            !(children[index].has_style_class_name('panel-button')))
+            return this._findLeftmostButton(children[index]);
+
+        return children[index];
+    },
+
+    _boxStyleChanged: function() {
+        let button;
+
+        if (this._side == St.Side.LEFT)
+            button = this._findLeftmostButton(this._box);
+        else if (this._side == St.Side.RIGHT)
+            button = this._findRightmostButton(this._box);
+
+        if (button) {
+            if (this._button && this._buttonStyleChangedSignalId)
+                this._button.disconnect(this._buttonStyleChangedSignalId);
+
+            this._button = button;
+
+            button.connect('destroy', Lang.bind(this,
+                function() {
+                    if (this._button == button) {
+                        this._button = null;
+                        this._buttonStyleChangedSignalId = 0;
+                    }
+                }));
+
+            // Synchronize the locate button's pseudo classes with this corner
+            this._buttonStyleChangedSignalId = button.connect('style-changed', Lang.bind(this,
+                function(actor) {
+                    let pseudoClass = button.get_style_pseudo_class();
+                    this.actor.set_style_pseudo_class(pseudoClass);
+                }));
+        }
     },
 
     _repaint: function() {
@@ -802,9 +885,17 @@ Panel.prototype = {
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
         this.actor.add_actor(this._rightBox);
 
-        this._leftCorner = new PanelCorner(St.Side.LEFT);
+        if (this.actor.get_direction() == St.TextDirection.RTL)
+            this._leftCorner = new PanelCorner(this._rightBox, St.Side.LEFT);
+        else
+            this._leftCorner = new PanelCorner(this._leftBox, St.Side.LEFT);
+
         this.actor.add_actor(this._leftCorner.actor);
-        this._rightCorner = new PanelCorner(St.Side.RIGHT);
+
+        if (this.actor.get_direction() == St.TextDirection.RTL)
+            this._rightCorner = new PanelCorner(this._leftBox, St.Side.RIGHT);
+        else
+            this._rightCorner = new PanelCorner(this._rightBox, St.Side.RIGHT);
         this.actor.add_actor(this._rightCorner.actor);
 
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -819,15 +910,6 @@ Panel.prototype = {
         // The activities button has a pretend menu, so as to integrate
         // more cleanly with the rest of the panel
         this._menus.addMenu(this._activitiesButton.menu);
-
-        // Synchronize the button's pseudo classes with its corner
-        this._activities.connect('style-changed', Lang.bind(this,
-            function(actor) {
-                let rtl = actor.get_direction() == St.TextDirection.RTL;
-                let corner = rtl ? this._rightCorner : this._leftCorner;
-                let pseudoClass = actor.get_style_pseudo_class();
-                corner.actor.set_style_pseudo_class(pseudoClass);
-            }));
 
         this._appMenu = new AppMenuButton();
         this._leftBox.add(this._appMenu.actor);
@@ -854,15 +936,6 @@ Panel.prototype = {
         this._userMenu = new StatusMenu.StatusMenuButton();
         this._userMenu.actor.name = 'panelStatus';
         this._rightBox.add(this._userMenu.actor);
-
-        // Synchronize the buttons pseudo classes with its corner
-        this._userMenu.actor.connect('style-changed', Lang.bind(this,
-            function(actor) {
-                let rtl = actor.get_direction() == St.TextDirection.RTL;
-                let corner = rtl ? this._leftCorner : this._rightCorner;
-                let pseudoClass = actor.get_style_pseudo_class();
-                corner.actor.set_style_pseudo_class(pseudoClass);
-            }));
 
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
