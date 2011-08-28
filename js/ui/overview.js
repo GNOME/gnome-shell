@@ -177,26 +177,26 @@ Overview.prototype = {
     init: function() {
         this.shellInfo = new ShellInfo();
 
-        this.viewSelector = new ViewSelector.ViewSelector();
-        this._group.add_actor(this.viewSelector.actor);
+        this._viewSelector = new ViewSelector.ViewSelector();
+        this._group.add_actor(this._viewSelector.actor);
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this.viewSelector.addViewTab('windows', _("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
+        this._viewSelector.addViewTab('windows', _("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
 
         let appView = new AppDisplay.AllAppDisplay();
-        this.viewSelector.addViewTab('applications', _("Applications"), appView.actor, 'system-run');
+        this._viewSelector.addViewTab('applications', _("Applications"), appView.actor, 'system-run');
 
         // Default search providers
-        this.viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());
-        this.viewSelector.addSearchProvider(new AppDisplay.SettingsSearchProvider());
-        this.viewSelector.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
-        this.viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
+        this._viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());
+        this._viewSelector.addSearchProvider(new AppDisplay.SettingsSearchProvider());
+        this._viewSelector.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
+        this._viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
 
         // TODO - recalculate everything when desktop size changes
         this.dash = new Dash.Dash();
         this._group.add_actor(this.dash.actor);
-        this.dash.actor.add_constraint(this.viewSelector.constrainY);
-        this.dash.actor.add_constraint(this.viewSelector.constrainHeight);
+        this.dash.actor.add_constraint(this._viewSelector.constrainY);
+        this.dash.actor.add_constraint(this._viewSelector.constrainHeight);
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
@@ -474,8 +474,8 @@ Overview.prototype = {
         }
         this.dash.actor.set_x(dashX);
 
-        this.viewSelector.actor.set_position(viewX, viewY);
-        this.viewSelector.actor.set_size(viewWidth, viewHeight);
+        this._viewSelector.actor.set_position(viewX, viewY);
+        this._viewSelector.actor.set_size(viewWidth, viewHeight);
     },
 
     //// Public methods ////

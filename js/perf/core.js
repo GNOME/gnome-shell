@@ -113,10 +113,10 @@ function run() {
 
     for (let i = 0; i < 2; i++) {
         Scripting.scriptEvent('applicationsShowStart');
-        Main.overview.viewSelector.switchTab('applications');
+        Main.overview._viewSelector.switchTab('applications');
         yield Scripting.waitLeisure();
         Scripting.scriptEvent('applicationsShowDone');
-        Main.overview.viewSelector.switchTab('windows');
+        Main.overview._viewSelector.switchTab('windows');
         yield Scripting.waitLeisure();
     }
 }
