@@ -125,8 +125,7 @@ process_property_notify (MetaCompositor	*compositor,
 	  MetaScreen  *screen = l->data;
           if (event->window == meta_screen_get_xroot (screen))
             {
-              MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-              meta_background_actor_update (META_BACKGROUND_ACTOR (info->background_actor));
+              meta_background_actor_update (screen);
               return;
             }
         }
@@ -1087,7 +1086,7 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
 
   clutter_actor_set_size (info->stage, width, height);
 
-  meta_background_actor_screen_size_changed (META_BACKGROUND_ACTOR (info->background_actor));
+  meta_background_actor_screen_size_changed (screen);
 
   meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
 		meta_screen_get_screen_number (screen),

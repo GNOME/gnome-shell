@@ -50,9 +50,10 @@ GType meta_background_actor_get_type (void);
 
 ClutterActor *meta_background_actor_new (MetaScreen *screen);
 
-void meta_background_actor_update              (MetaBackgroundActor *actor);
 void meta_background_actor_set_visible_region  (MetaBackgroundActor *self,
                                                 cairo_region_t      *visible_region);
-void meta_background_actor_screen_size_changed (MetaBackgroundActor *self);
+
+void meta_background_actor_update              (MetaScreen *screen);
+void meta_background_actor_screen_size_changed (MetaScreen *screen);
 
 #endif /* META_BACKGROUND_ACTOR_H */

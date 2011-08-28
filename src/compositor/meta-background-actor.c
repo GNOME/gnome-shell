@@ -35,6 +35,28 @@
 #include <meta/errors.h>
 #include "meta-background-actor.h"
 
+/* We allow creating multiple MetaBackgroundActors for the same MetaScreen to
+ * allow different rendering options to be set for different copies.
+ * But we want to share the same underlying CoglTexture for efficiency and
+ * to avoid driver bugs that might occur if we created multiple CoglTexturePixmaps
+ * for the same pixmap.
+ *
+ * This structure holds common information.
+ */
+typedef struct _MetaScreenBackground MetaScreenBackground;
+
+struct _MetaScreenBackground
+{
+  MetaScreen *screen;
+  GSList *actors;
+
+  float texture_width;
+  float texture_height;
+  CoglHandle texture;
+  CoglMaterialWrapMode wrap_mode;
+  guint have_pixmap : 1;
+};
+
 struct _MetaBackgroundActorClass
 {
   ClutterActorClass parent_class;
@@ -44,58 +66,137 @@ struct _MetaBackgroundActor
 {
   ClutterActor parent;
 
+  MetaScreenBackground *background;
   CoglHandle material;
-  MetaScreen *screen;
   cairo_region_t *visible_region;
-  float texture_width;
-  float texture_height;
-
-  guint have_pixmap : 1;
 };
 
 G_DEFINE_TYPE (MetaBackgroundActor, meta_background_actor, CLUTTER_TYPE_ACTOR);
 
-static void
-update_wrap_mode (MetaBackgroundActor *self)
-{
-  int width, height;
-  CoglMaterialWrapMode wrap_mode;
+static void set_texture                (MetaScreenBackground *background,
+                                        CoglHandle            texture);
+static void set_texture_to_stage_color (MetaScreenBackground *background);
 
-  meta_screen_get_size (self->screen, &width, &height);
+static void
+on_notify_stage_color (GObject              *stage,
+                       GParamSpec           *pspec,
+                       MetaScreenBackground *background)
+{
+  if (!background->have_pixmap)
+    set_texture_to_stage_color (background);
+}
+
+static void
+free_screen_background (MetaScreenBackground *background)
+{
+  set_texture (background, COGL_INVALID_HANDLE);
+
+  if (background->screen != NULL)
+    {
+      ClutterActor *stage = meta_get_stage_for_screen (background->screen);
+      g_signal_handlers_disconnect_by_func (stage,
+                                            (gpointer) on_notify_stage_color,
+                                            background);
+      background->screen = NULL;
+    }
+}
+
+static MetaScreenBackground *
+meta_screen_background_get (MetaScreen *screen)
+{
+  MetaScreenBackground *background;
+
+  background = g_object_get_data (G_OBJECT (screen), "meta-screen-background");
+  if (background == NULL)
+    {
+      ClutterActor *stage;
+
+      background = g_new0 (MetaScreenBackground, 1);
+
+      background->screen = screen;
+      g_object_set_data_full (G_OBJECT (screen), "meta-screen-background",
+                              background, (GDestroyNotify) free_screen_background);
+
+      stage = meta_get_stage_for_screen (screen);
+      g_signal_connect (stage, "notify::color",
+                        G_CALLBACK (on_notify_stage_color), background);
+
+      meta_background_actor_update (screen);
+    }
+
+  return background;
+}
+
+static void
+update_wrap_mode_of_actor (MetaBackgroundActor *self)
+{
+  cogl_material_set_layer_wrap_mode (self->material, 0, self->background->wrap_mode);
+}
+
+static void
+update_wrap_mode (MetaScreenBackground *background)
+{
+  GSList *l;
+  int width, height;
+
+  meta_screen_get_size (background->screen, &width, &height);
 
   /* We turn off repeating when we have a full-screen pixmap to keep from
    * getting artifacts from one side of the image sneaking into the other
    * side of the image via bilinear filtering.
    */
-  if (width == self->texture_width && height == self->texture_height)
-    wrap_mode = COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE;
+  if (width == background->texture_width && height == background->texture_height)
+    background->wrap_mode = COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE;
   else
-    wrap_mode = COGL_MATERIAL_WRAP_MODE_REPEAT;
+    background->wrap_mode = COGL_MATERIAL_WRAP_MODE_REPEAT;
 
-  cogl_material_set_layer_wrap_mode (self->material, 0, wrap_mode);
+  for (l = background->actors; l; l = l->next)
+    update_wrap_mode_of_actor (l->data);
 }
 
 static void
-set_texture (MetaBackgroundActor *self,
-             CoglHandle           texture)
+set_texture_on_actor (MetaBackgroundActor *self)
 {
-  MetaDisplay *display;
-
-  display = meta_screen_get_display (self->screen);
+  MetaDisplay *display = meta_screen_get_display (self->background->screen);
 
   /* This may trigger destruction of an old texture pixmap, which, if
    * the underlying X pixmap is already gone has the tendency to trigger
    * X errors inside DRI. For safety, trap errors */
   meta_error_trap_push (display);
-  cogl_material_set_layer (self->material, 0, texture);
+  cogl_material_set_layer (self->material, 0, self->background->texture);
   meta_error_trap_pop (display);
 
-  self->texture_width = cogl_texture_get_width (texture);
-  self->texture_height = cogl_texture_get_height (texture);
-
-  update_wrap_mode (self);
-
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
+static void
+set_texture (MetaScreenBackground *background,
+             CoglHandle            texture)
+{
+  MetaDisplay *display = meta_screen_get_display (background->screen);
+  GSList *l;
+
+  /* This may trigger destruction of an old texture pixmap, which, if
+   * the underlying X pixmap is already gone has the tendency to trigger
+   * X errors inside DRI. For safety, trap errors */
+  meta_error_trap_push (display);
+  if (background->texture != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (background->texture);
+      background->texture = COGL_INVALID_HANDLE;
+    }
+  meta_error_trap_pop (display);
+
+  if (texture != COGL_INVALID_HANDLE)
+    background->texture = cogl_handle_ref (texture);
+
+  background->texture_width = cogl_texture_get_width (background->texture);
+  background->texture_height = cogl_texture_get_height (background->texture);
+
+  for (l = background->actors; l; l = l->next)
+    set_texture_on_actor (l->data);
+
+  update_wrap_mode (background);
 }
 
 /* Sets our material to paint with a 1x1 texture of the stage's background
@@ -106,9 +207,9 @@ set_texture (MetaBackgroundActor *self,
  * actually pick up the (small?) performance win. This is just a fallback.
  */
 static void
-set_texture_to_stage_color (MetaBackgroundActor *self)
+set_texture_to_stage_color (MetaScreenBackground *background)
 {
-  ClutterActor *stage = meta_get_stage_for_screen (self->screen);
+  ClutterActor *stage = meta_get_stage_for_screen (background->screen);
   ClutterColor color;
   CoglHandle texture;
 
@@ -120,17 +221,8 @@ set_texture_to_stage_color (MetaBackgroundActor *self)
   texture = meta_create_color_texture_4ub (color.red, color.green,
                                            color.blue, 0xff,
                                            COGL_TEXTURE_NO_SLICING);
-  set_texture (self, texture);
+  set_texture (background, texture);
   cogl_handle_unref (texture);
-}
-
-static void
-on_notify_stage_color (GObject             *stage,
-                       GParamSpec          *pspec,
-                       MetaBackgroundActor *self)
-{
-  if (!self->have_pixmap)
-    set_texture_to_stage_color (self);
 }
 
 static void
@@ -140,19 +232,16 @@ meta_background_actor_dispose (GObject *object)
 
   meta_background_actor_set_visible_region (self, NULL);
 
+  if (self->background != NULL)
+    {
+      self->background->actors = g_slist_remove (self->background->actors, self);
+      self->background = NULL;
+    }
+
   if (self->material != COGL_INVALID_HANDLE)
     {
       cogl_handle_unref (self->material);
       self->material = COGL_INVALID_HANDLE;
-    }
-
-  if (self->screen != NULL)
-    {
-      ClutterActor *stage = meta_get_stage_for_screen (self->screen);
-      g_signal_handlers_disconnect_by_func (stage,
-                                            (gpointer) on_notify_stage_color,
-                                            self);
-      self->screen = NULL;
     }
 }
 
@@ -165,7 +254,7 @@ meta_background_actor_get_preferred_width (ClutterActor *actor,
   MetaBackgroundActor *self = META_BACKGROUND_ACTOR (actor);
   int width, height;
 
-  meta_screen_get_size (self->screen, &width, &height);
+  meta_screen_get_size (self->background->screen, &width, &height);
 
   if (min_width_p)
     *min_width_p = width;
@@ -183,7 +272,7 @@ meta_background_actor_get_preferred_height (ClutterActor *actor,
   MetaBackgroundActor *self = META_BACKGROUND_ACTOR (actor);
   int width, height;
 
-  meta_screen_get_size (self->screen, &width, &height);
+  meta_screen_get_size (self->background->screen, &width, &height);
 
   if (min_height_p)
     *min_height_p = height;
@@ -198,7 +287,7 @@ meta_background_actor_paint (ClutterActor *actor)
   guchar opacity = clutter_actor_get_paint_opacity (actor);
   int width, height;
 
-  meta_screen_get_size (self->screen, &width, &height);
+  meta_screen_get_size (self->background->screen, &width, &height);
 
   cogl_material_set_color4ub (self->material,
                               opacity, opacity, opacity, opacity);
@@ -217,10 +306,10 @@ meta_background_actor_paint (ClutterActor *actor)
 
           cogl_rectangle_with_texture_coords (rect.x, rect.y,
                                               rect.x + rect.width, rect.y + rect.height,
-                                              rect.x / self->texture_width,
-                                              rect.y / self->texture_height,
-                                              (rect.x + rect.width) / self->texture_width,
-                                              (rect.y + rect.height) / self->texture_height);
+                                              rect.x / self->background->texture_width,
+                                              rect.y / self->background->texture_height,
+                                              (rect.x + rect.width) / self->background->texture_width,
+                                              (rect.y + rect.height) / self->background->texture_height);
         }
     }
   else
@@ -228,8 +317,8 @@ meta_background_actor_paint (ClutterActor *actor)
       cogl_rectangle_with_texture_coords (0.0f, 0.0f,
                                           width, height,
                                           0.0f, 0.0f,
-                                          width / self->texture_width,
-                                          height / self->texture_height);
+                                          width / self->background->texture_width,
+                                          height / self->background->texture_height);
     }
 }
 
@@ -240,7 +329,7 @@ meta_background_actor_get_paint_volume (ClutterActor       *actor,
   MetaBackgroundActor *self = META_BACKGROUND_ACTOR (actor);
   int width, height;
 
-  meta_screen_get_size (self->screen, &width, &height);
+  meta_screen_get_size (self->background->screen, &width, &height);
 
   clutter_paint_volume_set_width (volume, width);
   clutter_paint_volume_set_height (volume, height);
@@ -279,30 +368,25 @@ ClutterActor *
 meta_background_actor_new (MetaScreen *screen)
 {
   MetaBackgroundActor *self;
-  ClutterActor *stage;
 
   g_return_val_if_fail (META_IS_SCREEN (screen), NULL);
 
   self = g_object_new (META_TYPE_BACKGROUND_ACTOR, NULL);
 
-  self->screen = screen;
+  self->background = meta_screen_background_get (screen);
+  self->background->actors = g_slist_prepend (self->background->actors, self);
 
   self->material = meta_create_texture_material (NULL);
-  cogl_material_set_layer_wrap_mode (self->material, 0,
-                                     COGL_MATERIAL_WRAP_MODE_REPEAT);
 
-  stage = meta_get_stage_for_screen (self->screen);
-  g_signal_connect (stage, "notify::color",
-                    G_CALLBACK (on_notify_stage_color), self);
-
-  meta_background_actor_update (self);
+  set_texture_on_actor (self);
+  update_wrap_mode_of_actor (self);
 
   return CLUTTER_ACTOR (self);
 }
 
 /**
  * meta_background_actor_update:
- * @self: a #MetaBackgroundActor
+ * @screen: a #MetaScreen
  *
  * Refetches the _XROOTPMAP_ID property for the root window and updates
  * the contents of the background actor based on that. There's no attempt
@@ -312,8 +396,9 @@ meta_background_actor_new (MetaScreen *screen)
  * a PropertyNotify event for the property.
  */
 void
-meta_background_actor_update (MetaBackgroundActor *self)
+meta_background_actor_update (MetaScreen *screen)
 {
+  MetaScreenBackground *background;
   MetaDisplay *display;
   MetaCompositor *compositor;
   Atom type;
@@ -323,14 +408,13 @@ meta_background_actor_update (MetaBackgroundActor *self)
   guchar *data;
   Pixmap root_pixmap_id;
 
-  g_return_if_fail (META_IS_BACKGROUND_ACTOR (self));
-
-  display = meta_screen_get_display (self->screen);
+  background = meta_screen_background_get (screen);
+  display = meta_screen_get_display (screen);
   compositor = meta_display_get_compositor (display);
 
   root_pixmap_id = None;
   if (!XGetWindowProperty (meta_display_get_xdisplay (display),
-                           meta_screen_get_xroot  (self->screen),
+                           meta_screen_get_xroot (screen),
                            compositor->atom_x_root_pixmap,
                            0, LONG_MAX,
                            False,
@@ -358,16 +442,16 @@ meta_background_actor_update (MetaBackgroundActor *self)
 
       if (texture != COGL_INVALID_HANDLE)
         {
-          set_texture (self, texture);
+          set_texture (background, texture);
           cogl_handle_unref (texture);
 
-          self->have_pixmap = True;
+          background->have_pixmap = True;
           return;
         }
     }
 
-  self->have_pixmap = False;
-  set_texture_to_stage_color (self);
+  background->have_pixmap = False;
+  set_texture_to_stage_color (background);
 }
 
 /**
@@ -394,7 +478,7 @@ meta_background_actor_set_visible_region (MetaBackgroundActor *self,
   if (visible_region)
     {
       cairo_rectangle_int_t screen_rect = { 0 };
-      meta_screen_get_size (self->screen, &screen_rect.width, &screen_rect.height);
+      meta_screen_get_size (self->background->screen, &screen_rect.width, &screen_rect.height);
 
       /* Doing the intersection here is probably unnecessary - MetaWindowGroup
        * should never compute a visible area that's larger than the root screen!
@@ -407,13 +491,18 @@ meta_background_actor_set_visible_region (MetaBackgroundActor *self,
 
 /**
  * meta_background_actor_screen_size_changed:
- * @self: a #MetaBackgroundActor
+ * @screen: a #MetaScreen
  *
  * Called by the compositor when the size of the #MetaScreen changes
  */
 void
-meta_background_actor_screen_size_changed (MetaBackgroundActor *self)
+meta_background_actor_screen_size_changed (MetaScreen *screen)
 {
-  update_wrap_mode (self);
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+  MetaScreenBackground *background = meta_screen_background_get (screen);
+  GSList *l;
+
+  update_wrap_mode (background);
+
+  for (l = background->actors; l; l = l->next)
+    clutter_actor_queue_relayout (l->data);
 }
