@@ -35,10 +35,12 @@ function ModalDialog() {
 
 ModalDialog.prototype = {
     _init: function(params) {
-        params = Params.parse(params, { styleClass: null });
+        params = Params.parse(params, { shellReactive: false,
+                                        styleClass: null });
 
         this.state = State.CLOSED;
         this._hasModal = false;
+        this._shellReactive = params.shellReactive;
 
         this._group = new St.Group({ visible: false,
                                      x: 0,
@@ -54,26 +56,30 @@ ModalDialog.prototype = {
         this._actionKeys = {};
         this._group.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
 
-        this._lightbox = new Lightbox.Lightbox(this._group,
-                                               { inhibitEvents: true });
-
         this._backgroundBin = new St.Bin();
-
         this._group.add_actor(this._backgroundBin);
-        this._lightbox.highlight(this._backgroundBin);
-
-        this._backgroundStack = new Shell.Stack();
-        this._backgroundBin.child = this._backgroundStack;
-
-        this._eventBlocker = new Clutter.Group({ reactive: true });
-        this._backgroundStack.add_actor(this._eventBlocker);
 
         this._dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
                                                 vertical:    true });
         if (params.styleClass != null) {
             this._dialogLayout.add_style_class_name(params.styleClass);
         }
-        this._backgroundStack.add_actor(this._dialogLayout);
+
+        if (!this._shellReactive) {
+            this._lightbox = new Lightbox.Lightbox(this._group,
+                                                   { inhibitEvents: true });
+            this._lightbox.highlight(this._backgroundBin);
+
+            let stack = new Shell.Stack();
+            this._backgroundBin.child = stack;
+
+            this._eventBlocker = new Clutter.Group({ reactive: true });
+            stack.add_actor(this._eventBlocker);
+            stack.add_actor(this._dialogLayout);
+        } else {
+            this._backgroundBin.child = this._dialogLayout;
+        }
+
 
         this.contentLayout = new St.BoxLayout({ vertical: true });
         this._dialogLayout.add(this.contentLayout,
@@ -179,7 +185,8 @@ ModalDialog.prototype = {
         this.state = State.OPENING;
 
         this._dialogLayout.opacity = 255;
-        this._lightbox.show();
+        if (this._lightbox)
+            this._lightbox.show();
         this._group.opacity = 0;
         this._group.show();
         Tweener.addTween(this._group,
@@ -245,7 +252,8 @@ ModalDialog.prototype = {
         global.gdk_screen.get_display().sync();
         this._hasModal = false;
 
-        this._eventBlocker.raise_top();
+        if (!this._shellReactive)
+            this._eventBlocker.raise_top();
     },
 
     pushModal: function (timestamp) {
@@ -261,7 +269,8 @@ ModalDialog.prototype = {
         } else
             this._initialKeyFocus.grab_key_focus();
 
-        this._eventBlocker.lower_bottom();
+        if (!this._shellReactive)
+            this._eventBlocker.lower_bottom();
         return true;
     },
 
