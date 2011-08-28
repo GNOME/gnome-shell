@@ -88,7 +88,7 @@ SearchResult.prototype = {
     },
 
     getDragActor: function(stageX, stageY) {
-        return this.metaInfo['createIcon'](Main.overview.dash.iconSize);
+        return this.metaInfo['createIcon'](Main.overview.dashIconSize);
     },
 
     shellWorkspaceLaunch: function(params) {

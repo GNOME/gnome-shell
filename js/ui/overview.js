@@ -193,14 +193,19 @@ Overview.prototype = {
         this._viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
 
         // TODO - recalculate everything when desktop size changes
-        this.dash = new Dash.Dash();
-        this._group.add_actor(this.dash.actor);
-        this.dash.actor.add_constraint(this._viewSelector.constrainY);
-        this.dash.actor.add_constraint(this._viewSelector.constrainHeight);
+        this._dash = new Dash.Dash();
+        this._group.add_actor(this._dash.actor);
+        this._dash.actor.add_constraint(this._viewSelector.constrainY);
+        this._dash.actor.add_constraint(this._viewSelector.constrainHeight);
+        this.dashIconSize = this._dash.iconSize;
+        this._dash.connect('icon-size-changed',
+                           Lang.bind(this, function() {
+                               this.dashIconSize = this._dash.iconSize;
+                           }));
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
-        Main.ctrlAltTabManager.addGroup(this.dash.actor, _("Dash"), 'user-bookmarks');
+        Main.ctrlAltTabManager.addGroup(this._dash.actor, _("Dash"), 'user-bookmarks');
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
@@ -467,12 +472,12 @@ Overview.prototype = {
         // Set the dash's x position - y is handled by a constraint
         let dashX;
         if (rtl) {
-            this.dash.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+            this._dash.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
             dashX = primary.width;
         } else {
             dashX = 0;
         }
-        this.dash.actor.set_x(dashX);
+        this._dash.actor.set_x(dashX);
 
         this._viewSelector.actor.set_position(viewX, viewY);
         this._viewSelector.actor.set_size(viewWidth, viewHeight);

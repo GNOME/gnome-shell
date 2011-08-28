@@ -437,6 +437,7 @@ Dash.prototype = {
 
         let oldIconSize = this.iconSize;
         this.iconSize = newIconSize;
+        this.emit('icon-size-changed');
 
         let scale = oldIconSize / newIconSize;
         for (let i = 0; i < iconChildren.length; i++) {
