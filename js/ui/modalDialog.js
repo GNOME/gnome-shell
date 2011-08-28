@@ -18,6 +18,7 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 const OPEN_AND_CLOSE_TIME = 0.1;
+const FADE_IN_BUTTONS_TIME = 0.33;
 const FADE_OUT_DIALOG_TIME = 1.0;
 
 const State = {
@@ -98,6 +99,8 @@ ModalDialog.prototype = {
     },
 
     setButtons: function(buttons) {
+        let hadChildren = this._buttonLayout.get_children() > 0;
+
         this._buttonLayout.destroy_children();
         this._actionKeys = {};
 
@@ -137,6 +140,22 @@ ModalDialog.prototype = {
                 this._actionKeys[key] = action;
             i++;
         }
+
+        // Fade in buttons if there weren't any before
+        if (!hadChildren && i > 0) {
+            this._buttonLayout.opacity = 0;
+            Tweener.addTween(this._buttonLayout,
+                             { opacity: 255,
+                               time: FADE_IN_BUTTONS_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this, function() {
+                                   this.emit('buttons-set');
+                               })
+                             });
+        } else {
+            this.emit('buttons-set');
+        }
+
     },
 
     _onKeyPressEvent: function(object, keyPressEvent) {
