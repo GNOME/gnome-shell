@@ -118,9 +118,9 @@ PlaceDeviceInfo.prototype = {
                 this._mount.unmount_finish(res);
         } catch (e) {
             let message = _("Failed to unmount '%s'").format(o.get_name());
-            Main.overview.shellInfo.setMessage(message,
-                                             Lang.bind(this, this.remove),
-                                             _("Retry"));
+            Main.overview.setMessage(message,
+                                     Lang.bind(this, this.remove),
+                                     _("Retry"));
         }
     }
 };

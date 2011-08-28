@@ -175,7 +175,7 @@ Overview.prototype = {
     // signal handlers and so forth. So we create them after
     // construction in this init() method.
     init: function() {
-        this.shellInfo = new ShellInfo();
+        this._shellInfo = new ShellInfo();
 
         this._viewSelector = new ViewSelector.ViewSelector();
         this._group.add_actor(this._viewSelector.actor);
@@ -209,6 +209,10 @@ Overview.prototype = {
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
+    },
+
+    setMessage: function(text, undoCallback, undoLabel) {
+        this._shellInfo.setMessage(text, undoCallback, undoLabel);
     },
 
     _onDragBegin: function() {
