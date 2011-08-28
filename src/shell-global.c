@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <math.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -448,6 +449,37 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         G_PARAM_READABLE));
 }
 
+/**•
+ * _shell_global_init: (skip)•
+ * @first_property_name: the name of the first property
+ * @...: the value of the first property, followed optionally by more
+ *  name/value pairs, followed by %NULL
+ *•
+ * Initializes the shell global singleton with the construction-time
+ * properties.
+ *
+ * There are currently no such properties, so @first_property_name should
+ * always be %NULL.
+ *
+ * This call must be called before shell_global_get() and shouldn't be called
+ * more than once.
+ */
+void
+_shell_global_init (const char *first_property_name,
+                    ...)
+{
+  va_list argument_list;
+
+  g_return_if_fail (the_object == NULL);
+
+  va_start (argument_list, first_property_name);
+  the_object = SHELL_GLOBAL (g_object_new_valist (SHELL_TYPE_GLOBAL,
+                                                  first_property_name,
+                                                  argument_list));
+  va_end (argument_list);
+
+}
+
 /**
  * shell_global_get:
  *
@@ -458,9 +490,6 @@ shell_global_class_init (ShellGlobalClass *klass)
 ShellGlobal *
 shell_global_get (void)
 {
-  if (!the_object)
-    the_object = g_object_new (SHELL_TYPE_GLOBAL, 0);
-
   return the_object;
 }
 

@@ -23,7 +23,7 @@
 #include <telepathy-glib/debug-sender.h>
 
 #include "shell-a11y.h"
-#include "shell-global.h"
+#include "shell-global-private.h"
 #include "shell-perf-log.h"
 #include "st.h"
 
@@ -540,7 +540,7 @@ main (int argc, char **argv)
   g_log_set_default_handler (default_log_handler, sender);
 
   /* Initialize the global object */
-  shell_global_get ();
+  _shell_global_init (NULL);
 
   ecode = meta_run ();
 
