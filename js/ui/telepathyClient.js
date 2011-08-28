@@ -117,6 +117,7 @@ Client.prototype = {
 
         // Watch subscription requests and connection errors
         this._subscriptionSource = null;
+        this._accountSource = null;
         let factory = this._accountManager.get_factory();
         factory.add_account_features([Tp.Account.get_feature_quark_connection()]);
         factory.add_connection_features([Tp.Connection.get_feature_quark_contact_list()]);
@@ -372,6 +373,11 @@ Client.prototype = {
         if (!valid)
             return;
 
+        // It would be better to connect to "status-changed" but we cannot.
+        // See discussion in https://bugzilla.gnome.org/show_bug.cgi?id=654159
+        account.connect("notify::connection-status",
+                        Lang.bind(this, this._accountConnectionStatusNotifyCb));
+
         account.connect('notify::connection',
                         Lang.bind(this, this._connectionChanged));
         this._connectionChanged(account);
@@ -430,6 +436,34 @@ Client.prototype = {
         }
 
         return this._subscriptionSource;
+    },
+
+    _accountConnectionStatusNotifyCb: function(account) {
+        let connectionError = account.connection_error;
+
+        if (account.connection_status != Tp.ConnectionStatus.DISCONNECTED ||
+            connectionError == Tp.error_get_dbus_name(Tp.Error.CANCELLED)) {
+            return;
+        }
+
+        /* Display notification that account failed to connect */
+        let source = this._ensureAccountSource();
+        Main.messageTray.add(source);
+
+        let notif = new AccountNotification(source, account, connectionError);
+        source.notify(notif);
+    },
+
+    _ensureAccountSource: function() {
+        if (this._accountSource == null) {
+            this._accountSource = new MultiNotificationSource(
+                _("Connection error"), 'gtk-dialog-error');
+            this._accountSource.connect('destroy', Lang.bind(this, function () {
+                this._accountSource = null;
+            }));
+        }
+
+        return this._accountSource;
     }
 };
 
@@ -1343,5 +1377,146 @@ SubscriptionRequestNotification.prototype = {
         // answered
         if (publish != Tp.SubscriptionState.ASK)
             this.destroy();
+    }
+};
+
+
+function AccountNotification(source, account, connectionError) {
+    this._init(source, account, connectionError);
+}
+
+// Messages from empathy/libempathy/empathy-utils.c
+// create_errors_to_message_hash()
+
+/* Translator note: these should be the same messages that are
+ * used in Empathy, so just copy and paste from there. */
+let _connectionErrorMessages = {};
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.NETWORK_ERROR)]
+  = _("Network error");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.AUTHENTICATION_FAILED)]
+  = _("Authentication failed");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ENCRYPTION_ERROR)]
+  = _("Encryption error");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_NOT_PROVIDED)]
+  = _("Certificate not provided");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_UNTRUSTED)]
+  = _("Certificate untrusted");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_EXPIRED)]
+  = _("Certificate expired");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_NOT_ACTIVATED)]
+  = _("Certificate not activated");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_HOSTNAME_MISMATCH)]
+  = _("Certificate hostname mismatch");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_FINGERPRINT_MISMATCH)]
+  = _("Certificate fingerprint mismatch");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_SELF_SIGNED)]
+  = _("Certificate self-signed");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CANCELLED)]
+  = _("Status is set to offline");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ENCRYPTION_NOT_AVAILABLE)]
+  = _("Encryption is not available");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_INVALID)]
+  = _("Certificate is invalid");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_REFUSED)]
+  = _("Connection has been refused");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_FAILED)]
+  = _("Connection can't be established");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_LOST)]
+  = _("Connection has been lost");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ALREADY_CONNECTED)]
+  = _("This resource is already connected to the server");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_REPLACED)]
+  = _("Connection has been replaced by a new connection using the "
+    + "same resource");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.REGISTRATION_EXISTS)]
+  = _("The account already exists on the server");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.SERVICE_BUSY)]
+  = _("Server is currently too busy to handle the connection");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_REVOKED)]
+  = _("Certificate has been revoked");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_INSECURE)]
+  = _("Certificate uses an insecure cipher algorithm or is "
+    + "cryptographically weak");
+_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_LIMIT_EXCEEDED)]
+  = _("The length of the server certificate, or the depth of the "
+    + "server certificate chain, exceed the limits imposed by the "
+    + "cryptography library");
+
+AccountNotification.prototype = {
+    __proto__: MessageTray.Notification.prototype,
+
+    _init: function(source, account, connectionError) {
+        MessageTray.Notification.prototype._init.call(this, source,
+            /* translators: argument is the account name, like
+             * name@jabber.org for example. */
+            _("Connection to %s failed").format(account.get_display_name()),
+            null, { customContent: true });
+
+        let message;
+        if (connectionError in _connectionErrorMessages) {
+            message = _connectionErrorMessages[connectionError];
+        } else {
+            message = _("Unknown reason");
+        }
+
+        this._account = account;
+
+        this.addBody(message);
+
+        this.addButton('reconnect', _("Reconnect"));
+        this.addButton('edit', _("Edit account"));
+
+        this.connect('action-invoked', Lang.bind(this, function(self, action) {
+            switch (action) {
+            case 'reconnect':
+                // If it fails again, a new notification should pop up with the
+                // new error.
+                account.reconnect_async(null, null);
+                break;
+            case 'edit':
+                let cmd = '/usr/bin/empathy-accounts'
+                        + ' --select-account=%s'
+                        .format(account.get_path_suffix());
+                let app_info = Gio.app_info_create_from_commandline(cmd, null, 0,
+                    null);
+                app_info.launch([], null, null);
+                break;
+            }
+            this.destroy();
+        }));
+
+        this._enabledId = account.connect('notify::enabled',
+                                          Lang.bind(this, function() {
+                                              if (!account.is_enabled())
+                                                  this.destroy();
+                                          }));
+
+        this._invalidatedId = account.connect('invalidated',
+                                              Lang.bind(this, this.destroy));
+
+        this._connectionStatusId = account.connect('notify::connection-status',
+            Lang.bind(this, function() {
+                if (account.connection_status != Tp.ConnectionStatus.DISCONNECTED)
+                    this.destroy();
+            }));
+    },
+
+    destroy: function() {
+        if (this._enabledId != 0) {
+            this._account.disconnect(this._enabledId);
+            this._enabledId = 0;
+        }
+
+        if (this._invalidatedId != 0) {
+            this._account.disconnect(this._invalidatedId);
+            this._invalidatedId = 0;
+        }
+
+        if (this._connectionStatusId != 0) {
+            this._account.disconnect(this._connectionStatusId);
+            this._connectionStatusId = 0;
+        }
+
+        MessageTray.Notification.prototype.destroy.call(this);
     }
 };
