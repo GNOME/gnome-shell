@@ -100,17 +100,17 @@ SearchResult.prototype = {
 };
 
 
-function GridSearchResults(provider) {
-    this._init(provider);
+function GridSearchResults(provider, grid) {
+    this._init(provider, grid);
 }
 
 GridSearchResults.prototype = {
     __proto__: Search.SearchResultDisplay.prototype,
 
-    _init: function(provider) {
+    _init: function(provider, grid) {
         Search.SearchResultDisplay.prototype._init.call(this, provider);
-        this._grid = new IconGrid.IconGrid({ rowLimit: MAX_SEARCH_RESULTS_ROWS,
-                                             xAlign: St.Align.START });
+        this._grid = grid || new IconGrid.IconGrid({ rowLimit: MAX_SEARCH_RESULTS_ROWS,
+                                                     xAlign: St.Align.START });
         this.actor = new St.Bin({ x_align: St.Align.START });
 
         this.actor.set_child(this._grid.actor);
