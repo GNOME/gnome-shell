@@ -18,6 +18,7 @@ const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Panel = imports.ui.panel;
+const Params = imports.misc.params;
 const PlaceDisplay = imports.ui.placeDisplay;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
@@ -96,11 +97,24 @@ ShellInfo.prototype = {
 };
 
 function Overview() {
-    this._init();
+    this._init.apply(this, arguments);
 }
 
 Overview.prototype = {
-    _init : function() {
+    _init : function(params) {
+        params = Params.parse(params, { isDummy: false });
+
+        this.isDummy = params.isDummy;
+
+        // We only have an overview in user sessions, so
+        // create a dummy overview in other cases
+        if (this.isDummy) {
+            this.animationInProgress = false;
+            this.visible = false;
+            this.workspaces = null;
+            return;
+        }
+
         // The actual global.background_actor is inside global.window_group,
         // which is hidden when displaying the overview, so we display a clone.
         this._background = new Clutter.Clone({ source: global.background_actor });
@@ -175,6 +189,9 @@ Overview.prototype = {
     // signal handlers and so forth. So we create them after
     // construction in this init() method.
     init: function() {
+        if (this.isDummy)
+            return;
+
         this._shellInfo = new ShellInfo();
 
         this._viewSelector = new ViewSelector.ViewSelector();
@@ -212,6 +229,9 @@ Overview.prototype = {
     },
 
     setMessage: function(text, undoCallback, undoLabel) {
+        if (this.isDummy)
+            return;
+
         this._shellInfo.setMessage(text, undoCallback, undoLabel);
     },
 
@@ -284,6 +304,9 @@ Overview.prototype = {
     },
 
     setScrollAdjustment: function(adjustment, direction) {
+        if (this.isDummy)
+            return;
+
         this._scrollAdjustment = adjustment;
         if (this._scrollAdjustment == null)
             this._scrollDirection = SwipeScrollDirection.NONE;
@@ -517,6 +540,8 @@ Overview.prototype = {
     //
     // Animates the overview visible and grabs mouse and keyboard input
     show : function() {
+        if (this.isDummy)
+            return;
         if (this._shown)
             return;
         // Do this manually instead of using _syncInputMode, to handle failure
@@ -587,6 +612,9 @@ Overview.prototype = {
     // will result in the overview not being hidden until hideTemporarily() is
     // called.
     showTemporarily: function() {
+        if (this.isDummy)
+            return;
+
         if (this._shownTemporarily)
             return;
 
@@ -599,6 +627,9 @@ Overview.prototype = {
     //
     // Reverses the effect of show()
     hide: function() {
+        if (this.isDummy)
+            return;
+
         if (!this._shown)
             return;
 
@@ -617,6 +648,9 @@ Overview.prototype = {
     //
     // Reverses the effect of showTemporarily()
     hideTemporarily: function() {
+        if (this.isDummy)
+            return;
+
         if (!this._shownTemporarily)
             return;
 
@@ -628,6 +662,9 @@ Overview.prototype = {
     },
 
     toggle: function() {
+        if (this.isDummy)
+            return;
+
         if (this._shown)
             this.hide();
         else
