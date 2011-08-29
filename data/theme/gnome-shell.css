@@ -1065,7 +1065,7 @@ StTooltip StLabel {
     width: 34em;
 }
 
-.multi-line-notification {
+#notification.multi-line-notification {
     padding-bottom: 8px;
 }
 
