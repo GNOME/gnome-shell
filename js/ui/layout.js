@@ -14,8 +14,8 @@ const ScreenSaver = imports.misc.screenSaver;
 const Tweener = imports.ui.tweener;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
-
 const STARTUP_ANIMATION_TIME = 0.2;
+const KEYBOARD_ANIMATION_TIME = 0.5;
 
 function LayoutManager() {
     this._init.apply(this, arguments);
@@ -40,10 +40,20 @@ LayoutManager.prototype = {
         this.panelBox.connect('allocation-changed',
                               Lang.bind(this, this._updatePanelBarriers));
 
+        // bottomBox contains the tray and keyboard (which move
+        // together, since the tray slides up from the top of the
+        // keyboard when the keyboard is visible).
+        this._bottomBox = new St.BoxLayout({ name: 'bottomBox',
+                                             vertical: true });
+        this.addChrome(this._bottomBox, { visibleInFullscreen: true });
+
         this.trayBox = new St.BoxLayout({ name: 'trayBox' }); 
         this.trayBox.connect('allocation-changed',
                              Lang.bind(this, this._updateTrayBarrier));
-        this.addChrome(this.trayBox, { visibleInFullscreen: true });
+        this._bottomBox.add_actor(this.trayBox);
+
+        this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox' });
+        this._bottomBox.add_actor(this.keyboardBox);
 
         global.screen.connect('monitors-changed',
                               Lang.bind(this, this._monitorsChanged));
@@ -143,9 +153,18 @@ LayoutManager.prototype = {
         this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
         this.panelBox.set_size(this.primaryMonitor.width, -1);
 
-        this.trayBox.set_position(this.bottomMonitor.x,
-                                  this.bottomMonitor.y + this.bottomMonitor.height);
-        this.trayBox.set_size(this.bottomMonitor.width, -1);
+        this._bottomBox.set_position(this.bottomMonitor.x,
+                                     this.bottomMonitor.y + this.bottomMonitor.height);
+        this._bottomBox.set_size(this.bottomMonitor.width, -1);
+
+        this.trayBox.width = this.bottomMonitor.width;
+
+        // Set trayBox's clip to show things above it, but not below
+        // it (so it's not visible behind the keyboard). The exact
+        // height of the clip doesn't matter, as long as it's taller
+        // than any Notification.actor.
+        this.trayBox.set_clip(0, -this.bottomMonitor.height,
+                              this.bottomMonitor.width, this.bottomMonitor.height);
     },
 
     _updatePanelBarriers: function() {
@@ -237,6 +256,42 @@ LayoutManager.prototype = {
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
+    },
+
+    showKeyboard: function () {
+        Main.messageTray.hide();
+        Tweener.addTween(this._bottomBox,
+                         { anchor_y: this._bottomBox.height,
+                           time: KEYBOARD_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._showKeyboardComplete,
+                           onCompleteScope: this
+                         });
+    },
+
+    _showKeyboardComplete: function() {
+        // Poke Chrome to update the input shape; it doesn't notice
+        // anchor point changes
+        this._chrome.updateRegions();
+
+        this._bottomBox.connect('notify::height', Lang.bind(this, function () {
+            this._bottomBoxAnchor = this._bottomBox.height;
+        }));
+    },
+
+    hideKeyboard: function (immediate) {
+        Main.messageTray.hide();
+        Tweener.addTween(this._bottomBox,
+                         { anchor_y: 0,
+                           time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._showKeyboardComplete,
+                           onCompleteScope: this
+                         });
+    },
+
+    _hideKeyboardComplete: function() {
+        this._chrome.updateRegions();
     },
 
     // addChrome:
@@ -690,7 +745,7 @@ Chrome.prototype = {
 
     _queueUpdateRegions: function() {
         if (!this._updateRegionIdle)
-            this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this._updateRegions),
+            this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this.updateRegions),
                                                        Meta.PRIORITY_BEFORE_REDRAW);
     },
 
@@ -759,10 +814,13 @@ Chrome.prototype = {
         }
     },
 
-    _updateRegions: function() {
+    updateRegions: function() {
         let rects = [], struts = [], i;
 
-        delete this._updateRegionIdle;
+        if (this._updateRegionIdle) {
+            Mainloop.source_remove(this._updateRegionIdle);
+            delete this._updateRegionIdle;
+        }
 
         for (i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];

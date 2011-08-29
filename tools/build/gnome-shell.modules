@@ -318,6 +318,7 @@
         <dep package="gobject-introspection"/>
         <dep package="mutter"/>
         <dep package="gjs"/>
+        <dep package="caribou"/>
         <dep package="dconf"/>
         <dep package="gconf"/>
         <dep package="glib"/>
@@ -422,6 +423,12 @@
 
   <autotools id="caribou">
     <branch repo="git.gnome.org" module="caribou"/>
+    <dependencies>
+      <dep package="gtk3"/>
+      <dep package="clutter"/>
+      <dep package="libxklavier"/>
+      <dep package="vala"/>
+    </dependencies>
   </autotools>
 
 </moduleset>

@@ -269,7 +269,7 @@ FocusGrabber.prototype = {
         let source = event.get_source();
         switch (event.type()) {
             case Clutter.EventType.BUTTON_PRESS:
-                if (!this.actor.contains(source))
+                if (!this.actor.contains(source) && !Main.keyboard.actor.contains(source))
                     this.emit('button-pressed', source);
                 break;
             case Clutter.EventType.KEY_PRESS:
@@ -1314,6 +1314,7 @@ MessageTray.prototype = {
 
         this._trayState = State.HIDDEN;
         this._locked = false;
+        this._traySummoned = false;
         this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
@@ -1521,6 +1522,18 @@ MessageTray.prototype = {
             return;
         this._locked = false;
         this._pointerInTray = this.actor.hover;
+        this._updateState();
+    },
+
+    toggle: function() {
+        this._traySummoned = !this._traySummoned;
+        this._updateState();
+    },
+
+    hide: function() {
+        this._traySummoned = false;
+        this.actor.set_hover(false);
+        this._summary.set_hover(false);
         this._updateState();
     },
 
@@ -1831,7 +1844,7 @@ MessageTray.prototype = {
         }
 
         // Summary
-        let summarySummoned = this._pointerInSummary || this._overviewVisible;
+        let summarySummoned = this._pointerInSummary || this._overviewVisible ||  this._traySummoned;
         let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned || this._locked;
         let summaryHovered = this._pointerInTray || this._pointerInSummary;
         let summaryVisibleWithNoHover = (this._overviewVisible || this._locked) && !summaryHovered;
