@@ -603,6 +603,12 @@ Overview.prototype = {
                            onCompleteScope: this
                          });
 
+        Tweener.addTween(this._background,
+                         { dim_factor: 0.4,
+                           time: ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+
         this._coverPane.raise_top();
         this._coverPane.show();
         this.emit('showing');
@@ -731,6 +737,12 @@ Overview.prototype = {
                            time: ANIMATION_TIME,
                            onComplete: this._hideDone,
                            onCompleteScope: this
+                         });
+
+        Tweener.addTween(this._background,
+                         { dim_factor: 1.0,
+                           time: ANIMATION_TIME,
+                           transition: 'easeOutQuad'
                          });
 
         this._coverPane.raise_top();

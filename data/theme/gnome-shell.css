@@ -396,7 +396,6 @@ StTooltip StLabel {
 
 #overview {
     spacing: 12px;
-    background-color: rgba(0,0,0,0.6);
 }
 
 .window-caption {
