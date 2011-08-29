@@ -226,6 +226,7 @@ IMStatusChooserItem.prototype = {
 
     _setIconFromFile: function(iconFile) {
         this._iconBin.set_style('background-image: url("' + iconFile + '");');
+        this._iconBin.child = null;
     },
 
     _setIconFromName: function(iconName) {
