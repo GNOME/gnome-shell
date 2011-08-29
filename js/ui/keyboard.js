@@ -15,8 +15,10 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
 const KEYBOARD_SCHEMA = 'org.gnome.shell.keyboard';
-const SHOW_KEYBOARD = 'show-keyboard';
 const KEYBOARD_TYPE = 'keyboard-type';
+
+const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
+const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
 // Key constants taken from Antler
 // FIXME: ought to be moved into libcaribou
@@ -207,6 +209,8 @@ Keyboard.prototype = {
 
         this._keyboardSettings = new Gio.Settings({ schema: KEYBOARD_SCHEMA });
         this._keyboardSettings.connect('changed', Lang.bind(this, this._settingsChanged));
+        this._a11yApplicationsSettings = new Gio.Settings({ schema: A11Y_APPLICATIONS_SCHEMA });
+        this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._settingsChanged));
         this._settingsChanged();
     },
 
@@ -215,7 +219,7 @@ Keyboard.prototype = {
     },
 
     _settingsChanged: function () {
-        this._enableKeyboard = this._keyboardSettings.get_boolean(SHOW_KEYBOARD);
+        this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
         if (!this._enableKeyboard && !this._keyboard)
             return;
         if (this._enableKeyboard && this._keyboard &&

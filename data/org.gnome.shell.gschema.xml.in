@@ -69,13 +69,6 @@
 
   <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"
           gettext-domain="@GETTEXT_PACKAGE@">
-    <key name="show-keyboard" type="b">
-      <default>false</default>
-      <_summary>Show the onscreen keyboard</_summary>
-      <_description>
-        If true, display onscreen keyboard.
-      </_description>
-    </key>
     <key name="keyboard-type" type="s">
       <default>'touch'</default>
       <_summary>Which keyboard to use</_summary>
