@@ -53,16 +53,6 @@ struct _StAdjustmentPrivate
   gdouble  step_increment;
   gdouble  page_increment;
   gdouble  page_size;
-
-  /* For interpolation */
-  ClutterTimeline *interpolation;
-  gdouble          old_position;
-  gdouble          new_position;
-
-  /* For elasticity */
-  gboolean      elastic;
-  guint         bounce_source;
-  ClutterAlpha *bounce_alpha;
 };
 
 enum
@@ -75,8 +65,6 @@ enum
   PROP_STEP_INC,
   PROP_PAGE_INC,
   PROP_PAGE_SIZE,
-
-  PROP_ELASTIC,
 };
 
 enum
@@ -152,10 +140,6 @@ st_adjustment_get_property (GObject    *gobject,
       g_value_set_double (value, priv->page_size);
       break;
 
-    case PROP_ELASTIC:
-      g_value_set_boolean (value, priv->elastic);
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -196,47 +180,10 @@ st_adjustment_set_property (GObject      *gobject,
       st_adjustment_set_page_size (adj, g_value_get_double (value));
       break;
 
-    case PROP_ELASTIC:
-      st_adjustment_set_elastic (adj, g_value_get_boolean (value));
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
-}
-
-static void
-stop_interpolation (StAdjustment *adjustment)
-{
-  StAdjustmentPrivate *priv = adjustment->priv;
-
-  if (priv->interpolation)
-    {
-      clutter_timeline_stop (priv->interpolation);
-      g_object_unref (priv->interpolation);
-      priv->interpolation = NULL;
-
-      if (priv->bounce_alpha)
-        {
-          g_object_unref (priv->bounce_alpha);
-          priv->bounce_alpha = NULL;
-        }
-    }
-
-  if (priv->bounce_source)
-    {
-      g_source_remove (priv->bounce_source);
-      priv->bounce_source = 0;
-    }
-}
-
-static void
-st_adjustment_dispose (GObject *object)
-{
-  stop_interpolation (ST_ADJUSTMENT (object));
-
-  G_OBJECT_CLASS (st_adjustment_parent_class)->dispose (object);
 }
 
 static void
@@ -249,7 +196,6 @@ st_adjustment_class_init (StAdjustmentClass *klass)
   object_class->constructed = st_adjustment_constructed;
   object_class->get_property = st_adjustment_get_property;
   object_class->set_property = st_adjustment_set_property;
-  object_class->dispose = st_adjustment_dispose;
 
   g_object_class_install_property (object_class,
                                    PROP_LOWER,
@@ -311,18 +257,6 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         0.0,
                                                         ST_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
-  g_object_class_install_property (object_class,
-                                   PROP_ELASTIC,
-                                   g_param_spec_boolean ("elastic",
-                                                         "Elastic",
-                                                         "Make interpolation "
-                                                         "behave in an "
-                                                         "'elastic' way and "
-                                                         "stop clamping value.",
-                                                         FALSE,
-                                                         ST_PARAM_READWRITE |
-                                                         G_PARAM_CONSTRUCT));
-
   /**
    * StAdjustment::changed:
    *
@@ -373,14 +307,7 @@ st_adjustment_get_value (StAdjustment *adjustment)
 
   priv = adjustment->priv;
 
-  if (priv->interpolation)
-    {
-      return MAX (priv->lower,
-                  MIN (priv->upper - priv->page_size,
-                       priv->new_position));
-    }
-  else
-    return priv->value;
+  return priv->value;
 }
 
 void
@@ -393,15 +320,12 @@ st_adjustment_set_value (StAdjustment *adjustment,
 
   priv = adjustment->priv;
 
-  stop_interpolation (adjustment);
-
   /* Defer clamp until after construction. */
   if (!priv->is_constructing)
     {
-      if (!priv->elastic)
-        value = CLAMP (value,
-                       priv->lower,
-                       MAX (priv->lower, priv->upper - priv->page_size));
+      value = CLAMP (value,
+                     priv->lower,
+                     MAX (priv->lower, priv->upper - priv->page_size));
     }
 
   if (priv->value != value)
@@ -423,8 +347,6 @@ st_adjustment_clamp_page (StAdjustment *adjustment,
   g_return_if_fail (ST_IS_ADJUSTMENT (adjustment));
 
   priv = adjustment->priv;
-
-  stop_interpolation (adjustment);
 
   lower = CLAMP (lower, priv->lower, priv->upper - priv->page_size);
   upper = CLAMP (upper, priv->lower + priv->page_size, priv->upper);
@@ -578,8 +500,6 @@ st_adjustment_set_values (StAdjustment *adjustment,
 
   priv = adjustment->priv;
 
-  stop_interpolation (adjustment);
-
   emit_changed = FALSE;
 
   g_object_freeze_notify (G_OBJECT (adjustment));
@@ -648,137 +568,3 @@ st_adjustment_get_values (StAdjustment *adjustment,
     *page_size = priv->page_size;
 }
 
-static void
-interpolation_new_frame_cb (ClutterTimeline *timeline,
-                            guint            msecs,
-                            StAdjustment    *adjustment)
-{
-  StAdjustmentPrivate *priv = adjustment->priv;
-
-  priv->interpolation = NULL;
-
-  if (priv->elastic)
-    {
-      gdouble progress = clutter_alpha_get_alpha (priv->bounce_alpha) / 1.0;
-      gdouble dx = priv->old_position
-                   + (priv->new_position - priv->old_position)
-                   * progress;
-
-      st_adjustment_set_value (adjustment, dx);
-    }
-  else
-    st_adjustment_set_value (adjustment,
-                             priv->old_position +
-                             (priv->new_position - priv->old_position) *
-                             clutter_timeline_get_progress (timeline));
-
-  priv->interpolation = timeline;
-}
-
-static void
-interpolation_completed_cb (ClutterTimeline *timeline,
-                            StAdjustment    *adjustment)
-{
-  StAdjustmentPrivate *priv = adjustment->priv;
-
-  stop_interpolation (adjustment);
-  st_adjustment_set_value (adjustment, priv->new_position);
-}
-
-/* Note, there's super-optimal code that does a similar thing in
- * clutter-alpha.c
- *
- * Tried this instead of CLUTTER_ALPHA_SINE_INC, but I think SINE_INC looks
- * better. Leaving code here in case this is revisited.
- */
-/*
-   static guint32
-   bounce_alpha_func (ClutterAlpha *alpha,
-                   gpointer      user_data)
-   {
-   ClutterFixed progress, angle;
-   ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
-
-   progress = clutter_timeline_get_progressx (timeline);
-   angle = clutter_qmulx (CFX_PI_2 + CFX_PI_4/2, progress);
-
-   return clutter_sinx (angle) +
-    (CFX_ONE - clutter_sinx (CFX_PI_2 + CFX_PI_4/2));
-   }
- */
-
-void
-st_adjustment_interpolate (StAdjustment *adjustment,
-                           gdouble       value,
-                           guint         duration)
-{
-  StAdjustmentPrivate *priv = adjustment->priv;
-
-  stop_interpolation (adjustment);
-
-  if (duration <= 1)
-    {
-      st_adjustment_set_value (adjustment, value);
-      return;
-    }
-
-  priv->old_position = priv->value;
-  priv->new_position = value;
-
-  priv->interpolation = clutter_timeline_new (duration);
-
-  if (priv->elastic)
-    priv->bounce_alpha = clutter_alpha_new_full (priv->interpolation,
-                                                 CLUTTER_LINEAR);
-
-  g_signal_connect (priv->interpolation,
-                    "new-frame",
-                    G_CALLBACK (interpolation_new_frame_cb),
-                    adjustment);
-  g_signal_connect (priv->interpolation,
-                    "completed",
-                    G_CALLBACK (interpolation_completed_cb),
-                    adjustment);
-
-  clutter_timeline_start (priv->interpolation);
-}
-
-gboolean
-st_adjustment_get_elastic (StAdjustment *adjustment)
-{
-  return adjustment->priv->elastic;
-}
-
-void
-st_adjustment_set_elastic (StAdjustment *adjustment,
-                           gboolean      elastic)
-{
-  adjustment->priv->elastic = elastic;
-}
-
-gboolean
-st_adjustment_clamp (StAdjustment *adjustment,
-                     gboolean      interpolate,
-                     guint         duration)
-{
-  StAdjustmentPrivate *priv = adjustment->priv;
-  gdouble dest = priv->value;
-
-  if (priv->value < priv->lower)
-    dest = priv->lower;
-
-  if (priv->value > priv->upper - priv->page_size)
-    dest = priv->upper - priv->page_size;
-
-  if (dest != priv->value)
-    {
-      if (interpolate)
-        st_adjustment_interpolate (adjustment, dest, duration);
-      else
-        st_adjustment_set_value (adjustment, dest);
-
-      return TRUE;
-    }
-
-  return FALSE;
-}

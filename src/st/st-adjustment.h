@@ -99,19 +99,6 @@ void          st_adjustment_get_values  (StAdjustment *adjustment,
                                          gdouble      *step_increment,
                                          gdouble      *page_increment,
                                          gdouble      *page_size);
-
-void          st_adjustment_interpolate (StAdjustment *adjustment,
-                                         gdouble       value,
-                                         guint         duration);
-
-gboolean      st_adjustment_get_elastic (StAdjustment *adjustment);
-void          st_adjustment_set_elastic (StAdjustment *adjustment,
-                                         gboolean      elastic);
-
-gboolean      st_adjustment_clamp       (StAdjustment *adjustment,
-                                         gboolean      interpolate,
-                                         guint         duration);
-
 G_END_DECLS
 
 #endif /* __ST_ADJUSTMENT_H__ */
