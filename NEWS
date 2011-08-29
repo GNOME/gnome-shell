@@ -1,3 +1,46 @@
+Clutter 1.7.12                                                       2011-08-29
+===============================================================================
+
+  • List of changes since Clutter 1.7.10
+
+    - Reload the font caches on X11 when the user installs a new font
+    Whenever the user installs a new font inside one of the directories that
+    ware being watched by a session daemon, or changes the fontconfig
+    configuration, the toolkits using FontConfig (either directly or indirectly
+    e.g. through Pango, like Clutter) should listen to the Fontconfig/Timestamp
+    XSETTINGS key and release all the font configuration caches. This allows
+    selecting the newly installed fonts without requiring the user to restart
+    the application.
+
+    - Allow using "font-description" as a ClutterScript alias for "font-name"
+    ClutterText:font-description allows passing a PangoFontDescription
+    directly to a ClutterText; when defining a ClutterText instance inside a
+    ClutterScript file, :font-description should be an alias for :font-name,
+    which takes a string and converts it to a PangoFontDescription.
+
+    - Make sure that LayoutManager subclasses take the allocation origin
+      into account when allocating the children
+    A LayoutManager should be resilient against allocations with an origin
+    not positioned at (0, 0); this allows actors using a layout manager
+    instance to munge the box and implement things like margin and padding
+    without the layout manager having knowledge of those concepts.
+
+    - Build fixes
+    Always link against libm when building Clutter (and its tests); don't
+    rely on libraries lower on the stack to do so.
+
+    - Documentation fixes
+
+  • List of bugs fixed since Clutter 1.7.10
+
+  [bugzilla.gnome.org]
+
+  #657529 - Build failure
+
+Many thanks to:
+
+  Robert Bragg, Daniel Mustieles, Fran Dieguez, Kjartan Maraas
+
 Clutter 1.7.10                                                       2011-08-15
 ===============================================================================
 
