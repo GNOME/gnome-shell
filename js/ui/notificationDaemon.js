@@ -119,11 +119,6 @@ NotificationDaemon.prototype = {
                 return new St.Icon({ icon_name: icon,
                                      icon_type: St.IconType.FULLCOLOR,
                                      icon_size: size });
-        } else if (hints['image-data']) {
-            let [width, height, rowStride, hasAlpha,
-                 bitsPerSample, nChannels, data] = hints['image-data'];
-            return textureCache.load_from_raw(data, hasAlpha,
-                                              width, height, rowStride, size);
         } else {
             let stockIcon;
             switch (hints.urgency) {
@@ -220,14 +215,18 @@ NotificationDaemon.prototype = {
 
         hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
 
-        // Be compatible with the various hints for image data
-        // 'image-data' is the latest name of this hint, introduced in 1.2
-        if (!hints['image-data']) {
+        // Be compatible with the various hints for image data and image path
+        // 'image-data' and 'image-path' are the latest name of these hints, introduced in 1.2
+
+        if (!hints['image-path'] && hints['image_path'])
+            hints['image-path'] = hints['image_path']; // version 1.1 of the spec
+
+        if (!hints['image-data'])
             if (hints['image_data'])
                 hints['image-data'] = hints['image_data']; // version 1.1 of the spec
-            else if (hints['icon_data'])
-                hints['image-data'] = hints['icon_data']; // previous versions of the spec
-        }
+            else if (hints['icon_data'] && !hints['image-path'])
+                // early versions of the spec; 'icon_data' should only be used if 'image-path' is not available
+                hints['image-data'] = hints['icon_data'];
 
         let ndata = { appName: appName,
                       icon: icon,
@@ -329,6 +328,23 @@ NotificationDaemon.prototype = {
             notification.update(summary, body, { icon: iconActor,
                                                  bannerMarkup: true,
                                                  clear: true });
+        }
+
+        if (hints['image-data'] || hints['image-path']) {
+            let image = null;
+            if (hints['image-data']) {
+                let [width, height, rowStride, hasAlpha,
+                 bitsPerSample, nChannels, data] = hints['image-data'];
+                image = St.TextureCache.get_default().load_from_raw(data, hasAlpha,
+                                                                    width, height, rowStride, notification.IMAGE_SIZE);
+            } else if (hints['image-path']) {
+                image = St.TextureCache.get_default().load_uri_async(GLib.filename_to_uri(hints['image-path'], null),
+                                                                     notification.IMAGE_SIZE,
+                                                                     notification.IMAGE_SIZE);
+            }
+            notification.setImage(image);
+        } else {
+            notification.unsetImage();
         }
 
         if (actions.length) {

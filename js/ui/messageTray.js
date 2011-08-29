@@ -396,6 +396,8 @@ function Notification(source, title, banner, params) {
 }
 
 Notification.prototype = {
+    IMAGE_SIZE: 125,
+
     _init: function(source, title, banner, params) {
         this.source = source;
         this.urgency = Urgency.NORMAL;
@@ -412,6 +414,7 @@ Notification.prototype = {
         this._titleDirection = St.TextDirection.NONE;
         this._spacing = 0;
         this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
+        this._imageBin = null;
 
         source.connect('destroy', Lang.bind(this,
             function (source, reason) {
@@ -441,8 +444,18 @@ Notification.prototype = {
         this._bannerBox.connect('allocate', Lang.bind(this, this._bannerBoxAllocate));
         this._table.add(this._bannerBox, { row: 0,
                                            col: 1,
+                                           col_span: 2,
+                                           x_expand: false,
                                            y_expand: false,
                                            y_fill: false });
+
+        // This is an empty cell that overlaps with this._bannerBox cell to ensure
+        // that this._bannerBox cell expands horizontally, while not forcing the
+        // this._imageBin that is also in col: 2 to expand horizontally.
+        this._table.add(new St.Bin(), { row: 0,
+                                        col: 2,
+                                        y_expand: false,
+                                        y_fill: false });
 
         this._titleLabel = new St.Label();
         this._bannerBox.add_actor(this._titleLabel);
@@ -495,7 +508,10 @@ Notification.prototype = {
             this._actionArea = null;
             this._buttonBox = null;
         }
-        if (!this._scrollArea && !this._actionArea)
+        if (this._imageBin && params.clear)
+            this.unsetImage();
+
+        if (!this._scrollArea && !this._actionArea && !this._imageBin)
             this._table.remove_style_class_name('multi-line-notification');
 
         this._icon = params.icon || this.source.createNotificationIcon();
@@ -559,7 +575,9 @@ Notification.prototype = {
                                                vscrollbar_policy: this._scrollPolicy,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER,
                                                style_class: 'vfade' });
-        this._table.add(this._scrollArea, { row: 1, col: 1 });
+        this._table.add(this._scrollArea, { row: 1,
+                                            col: 2 });
+        this._updateLastColumnSettings();
         this._contentArea = new St.BoxLayout({ name: 'notification-body',
                                                vertical: true });
         this._scrollArea.add_actor(this._contentArea);
@@ -636,11 +654,47 @@ Notification.prototype = {
         if (!props)
             props = {};
         props.row = 2;
-        props.col = 1;
+        props.col = 2;
 
         this._table.add_style_class_name('multi-line-notification');
         this._table.add(this._actionArea, props);
+        this._updateLastColumnSettings();
         this._updated();
+    },
+
+    _updateLastColumnSettings: function() {
+        if (this._scrollArea)
+            this._table.child_set(this._scrollArea, { col: this._imageBin ? 2 : 1,
+                                                      col_span: this._imageBin ? 1 : 2 });
+        if (this._actionArea)
+            this._table.child_set(this._actionArea, { col: this._imageBin ? 2 : 1,
+                                                      col_span: this._imageBin ? 1 : 2 });
+    },
+
+    setImage: function(image) {
+        if (this._imageBin)
+            this.unsetImage();
+        this._imageBin = new St.Bin();
+        this._imageBin.child = image;
+        this._imageBin.opacity = 230;
+        this._table.add_style_class_name('notification-with-image');
+        this._updateLastColumnSettings();
+        this._table.add(this._imageBin, { row: 1,
+                                          col: 1,
+                                          row_span: 2,
+                                          x_expand: false,
+                                          y_expand: false,
+                                          x_fill: false,
+                                          y_fill: false });
+    },
+
+    unsetImage: function() {
+        if (this._imageBin) {
+            this._table.remove_style_class_name('notification-with-image');
+            this._table.remove_actor(this._imageBin);
+            this._imageBin = null;
+            this._updateLastColumnSettings();
+        }
     },
 
     // addButton:
@@ -658,7 +712,9 @@ Notification.prototype = {
 
             let box = new St.BoxLayout({ name: 'notification-actions' });
             this.setActionArea(box, { x_expand: false,
+                                      y_expand: false,
                                       x_fill: false,
+                                      y_fill: false,
                                       x_align: St.Align.END });
             this._buttonBox = box;
         }
