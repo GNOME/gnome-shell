@@ -677,6 +677,7 @@ Notification.prototype = {
         this._imageBin = new St.Bin();
         this._imageBin.child = image;
         this._imageBin.opacity = 230;
+        this._table.add_style_class_name('multi-line-notification');
         this._table.add_style_class_name('notification-with-image');
         this._updateLastColumnSettings();
         this._table.add(this._imageBin, { row: 1,
@@ -694,6 +695,8 @@ Notification.prototype = {
             this._table.remove_actor(this._imageBin);
             this._imageBin = null;
             this._updateLastColumnSettings();
+            if (!this._scrollArea && !this._actionArea)
+                this._table.remove_style_class_name('multi-line-notification');
         }
     },
 
