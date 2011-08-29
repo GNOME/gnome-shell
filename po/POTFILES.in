@@ -9,8 +9,10 @@ js/ui/dash.js
 js/ui/dateMenu.js
 js/ui/docDisplay.js
 js/ui/endSessionDialog.js
+js/ui/keyboard.js
 js/ui/lookingGlass.js
 js/ui/messageTray.js
+js/ui/networkAgent.js
 js/ui/notificationDaemon.js
 js/ui/overview.js
 js/ui/panel.js
