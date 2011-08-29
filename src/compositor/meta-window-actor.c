@@ -1749,22 +1749,9 @@ meta_window_actor_set_visible_region (MetaWindowActor *self,
                                       cairo_region_t  *visible_region)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  cairo_region_t *texture_clip_region = NULL;
 
-  /* Get the area of the window texture that would be drawn if
-   * we weren't obscured at all
-   */
-  texture_clip_region = meta_shaped_texture_get_visible_pixels_region (META_SHAPED_TEXTURE (priv->actor));
-  texture_clip_region = cairo_region_copy (texture_clip_region);
-
-  /* Then intersect that with the visible region to get the region
-   * that we actually need to redraw.
-   */
-  cairo_region_intersect (texture_clip_region, visible_region);
-
-  /* Assumes ownership */
   meta_shaped_texture_set_clip_region (META_SHAPED_TEXTURE (priv->actor),
-                                       texture_clip_region);
+                                       visible_region);
 }
 
 /**

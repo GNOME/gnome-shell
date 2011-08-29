@@ -76,8 +76,6 @@ struct _MetaShapedTexturePrivate
   cairo_region_t *overlay_region;
   cairo_path_t *overlay_path;
 
-  cairo_region_t *visible_pixels_region;
-
   guint tex_width, tex_height;
   guint mask_width, mask_height;
 
@@ -110,7 +108,6 @@ meta_shaped_texture_init (MetaShapedTexture *self)
   priv->shape_region = NULL;
   priv->overlay_path = NULL;
   priv->overlay_region = NULL;
-  priv->visible_pixels_region = NULL;
   priv->paint_tower = meta_texture_tower_new ();
   priv->texture = COGL_INVALID_HANDLE;
   priv->mask_texture = COGL_INVALID_HANDLE;
@@ -157,84 +154,14 @@ meta_shaped_texture_dirty_mask (MetaShapedTexture *stex)
 {
   MetaShapedTexturePrivate *priv = stex->priv;
 
-  if (priv->visible_pixels_region != NULL)
+  if (priv->mask_texture != COGL_INVALID_HANDLE)
     {
-      cairo_region_destroy (priv->visible_pixels_region);
-      priv->visible_pixels_region = NULL;
-
-      if (priv->mask_texture != COGL_INVALID_HANDLE)
-        {
-          cogl_handle_unref (priv->mask_texture);
-          priv->mask_texture = COGL_INVALID_HANDLE;
-        }
-
-      if (priv->material != COGL_INVALID_HANDLE)
-        cogl_material_set_layer (priv->material, 1, COGL_INVALID_HANDLE);
+      cogl_handle_unref (priv->mask_texture);
+      priv->mask_texture = COGL_INVALID_HANDLE;
     }
-}
 
-static void
-scan_visible_region (MetaShapedTexture *stex,
-                     guchar            *mask_data,
-                     int                stride)
-{
-  MetaShapedTexturePrivate *priv = stex->priv;
-  cairo_region_t *visible_pixels_region;
-  cairo_region_t *overlay_region;
-  int i, n_rects;
-
-  /* The visible pixels region contains all pixel values above 0.
-   * This is somewhat complicated when there's an overlay: we
-   * need to scan all regions potentially modified by it.
-   */
-
-  if (priv->visible_pixels_region)
-    cairo_region_destroy (priv->visible_pixels_region);
-
-  priv->visible_pixels_region = cairo_region_copy (priv->shape_region);
-
-  visible_pixels_region = priv->visible_pixels_region;
-  overlay_region = priv->overlay_region;
-
-  /* With no overlay region, the visible region is defined
-   * by the mask region, so we don't need to scan anything. */
-  if (overlay_region == NULL)
-      return;
-
-  /* Subtract all the rectangles in the overlay region so that we can
-   * scan all the pixels potentially added by the overlay path. */
-  cairo_region_subtract (visible_pixels_region, overlay_region);
-
-  n_rects = cairo_region_num_rectangles (overlay_region);
-
-  for (i = 0; i < n_rects; i++)
-    {
-      int x, y;
-      cairo_rectangle_int_t rect;
-
-      cairo_region_get_rectangle (overlay_region, i, &rect);
-
-      for (y = rect.y; y < (rect.y + rect.height); y++)
-        {
-          for (x = rect.x; x < (rect.x + rect.width); x++)
-            {
-              int w = x;
-              while (mask_data[y * stride + w] > 0 && w < (rect.x + rect.width))
-                w++;
-
-              if (w > 0)
-                {
-                  cairo_rectangle_int_t tmp;
-                  tmp.x = x;
-                  tmp.y = y;
-                  tmp.width = w - x;
-                  tmp.height = 1;
-                  cairo_region_union_rectangle (visible_pixels_region, &tmp);
-                  x = w;
-                }
-            }
-        }
-    }
+  if (priv->material != COGL_INVALID_HANDLE)
+    cogl_material_set_layer (priv->material, 1, COGL_INVALID_HANDLE);
 }
 
 static void
@@ -312,7 +239,7 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
     meta_shaped_texture_dirty_mask (stex);
 
   /* If we don't have a mask texture yet then create one */
-  if (priv->visible_pixels_region == NULL)
+  if (priv->mask_texture == COGL_INVALID_HANDLE)
     {
       guchar *mask_data;
       int i;
@@ -326,10 +253,6 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
           (priv->overlay_region == NULL ||
            cairo_region_num_rectangles (priv->overlay_region) == 0))
         {
-          /* With no mask, the visible region is just
-           * {0, 0, tex_width, tex_height}. */
-          cairo_rectangle_int_t rect = { 0, 0, tex_width, tex_height };
-          priv->visible_pixels_region = cairo_region_create_rectangle (&rect);
           return;
         }
 
@@ -364,7 +287,6 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
         }
 
       install_overlay_path (stex, mask_data, tex_width, tex_height, stride);
-      scan_visible_region (stex, mask_data, stride);
 
       cogl_texture_get_gl_texture (paint_tex, NULL, &paint_gl_target);
 
@@ -499,6 +421,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
     {
       int n_rects;
       int i;
+      cairo_rectangle_int_t tex_rect = { 0, 0, tex_width, tex_height };
 
       /* Limit to how many separate rectangles we'll draw; beyond this just
        * fall back and draw the whole thing */
@@ -515,6 +438,9 @@ meta_shaped_texture_paint (ClutterActor *actor)
 	      cairo_rectangle_int_t rect;
 
 	      cairo_region_get_rectangle (priv->clip_region, i, &rect);
+
+	      if (!gdk_rectangle_intersect (&tex_rect, &rect, &rect))
+		continue;
 
 	      x1 = rect.x;
 	      y1 = rect.y;
@@ -752,24 +678,6 @@ set_cogl_texture (MetaShapedTexture *stex,
 }
 
 /**
- * meta_shaped_texture_get_visible_pixels_region:
- * @stex: a #MetaShapedTexture
- *
- * Return a region enclosing only visible pixels: those with
- * alpha values above 0.
- *
- * Returns: a #cairo_region_t
- */
-cairo_region_t *
-meta_shaped_texture_get_visible_pixels_region (MetaShapedTexture *stex)
-{
-  g_return_val_if_fail (META_IS_SHAPED_TEXTURE (stex), NULL);
-
-  meta_shaped_texture_ensure_mask (stex);
-  return stex->priv->visible_pixels_region;
-}
-
-/**
  * meta_shaped_texture_set_pixmap:
  * @stex: The #MetaShapedTexture
  * @pixmap: The pixmap you want the stex to assume
@@ -857,8 +765,7 @@ meta_shaped_texture_set_overlay_path (MetaShapedTexture *stex,
  * meta_shaped_texture_set_clip_region:
  * @stex: a #MetaShapedTexture
  * @clip_region: (transfer full): the region of the texture that
- *   is visible and should be painted. OWNERSHIP IS ASSUMED BY
- *   THE FUNCTION (for efficiency to avoid a copy.)
+ *   is visible and should be painted.
  *
  * Provides a hint to the texture about what areas of the texture
  * are not completely obscured and thus need to be painted. This
@@ -884,7 +791,10 @@ meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,
       priv->clip_region = NULL;
     }
 
-  priv->clip_region = clip_region;
+  if (clip_region)
+    priv->clip_region = cairo_region_copy (clip_region);
+  else
+    priv->clip_region = NULL;
 }
 
 /**
