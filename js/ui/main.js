@@ -108,6 +108,7 @@ function _initRecorder() {
 
         if (recorder.is_recording()) {
             recorder.pause();
+            Meta.enable_unredirect_for_screen(global.screen);
         } else {
             // read the parameters from GSettings always in case they have changed
             recorder.set_framerate(recorderSettings.get_int('framerate'));
@@ -119,6 +120,7 @@ function _initRecorder() {
             else
                 recorder.set_pipeline(null);
 
+            Meta.disable_unredirect_for_screen(global.screen);
             recorder.record();
         }
     });

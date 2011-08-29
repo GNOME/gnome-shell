@@ -574,6 +574,9 @@ Overview.prototype = {
         //
         // If we switched to displaying the actors in the Overview rather than
         // clones of them, this would obviously no longer be necessary.
+        //
+        // Disable unredirection while in the overview
+        Meta.disable_unredirect_for_screen(global.screen);
         global.window_group.hide();
         this._group.show();
         this._background.show();
@@ -767,6 +770,9 @@ Overview.prototype = {
     },
 
     _hideDone: function() {
+        // Re-enable unredirection
+        Meta.enable_unredirect_for_screen(global.screen);
+
         global.window_group.show();
 
         this.workspaces.destroy();
