@@ -1,5 +1,6 @@
 data/gnome-shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
+js/gdm/loginDialog.js
 js/misc/util.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
