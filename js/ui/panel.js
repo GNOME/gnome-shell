@@ -16,7 +16,7 @@ const Layout = imports.ui.layout;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
-const StatusMenu = imports.ui.statusMenu;
+const UserMenu = imports.ui.userMenu;
 const DateMenu = imports.ui.dateMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -954,7 +954,7 @@ Panel.prototype = {
         this._rightBox.add(this._statusBox);
 
         if (global.session_type == Shell.SessionType.USER) {
-            this._userMenu = new StatusMenu.StatusMenuButton();
+            this._userMenu = new UserMenu.UserMenuButton();
             this._userMenu.actor.name = 'panelStatus';
             this._rightBox.add(this._userMenu.actor);
         }

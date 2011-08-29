@@ -56,7 +56,6 @@ nobase_dist_js_DATA = 	\
 	ui/searchDisplay.js	\
 	ui/shellDBus.js		\
 	ui/statusIconDispatcher.js	\
-	ui/statusMenu.js	\
 	ui/status/accessibility.js	\
 	ui/status/keyboard.js	\
 	ui/status/network.js	\
@@ -65,6 +64,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/bluetooth.js	\
 	ui/telepathyClient.js	\
 	ui/tweener.js		\
+	ui/userMenu.js		\
 	ui/viewSelector.js	\
 	ui/windowAttentionHandler.js	\
 	ui/windowManager.js	\

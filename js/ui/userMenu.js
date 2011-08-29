@@ -27,11 +27,11 @@ const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-function StatusMenuButton() {
+function UserMenuButton() {
     this._init();
 }
 
-StatusMenuButton.prototype = {
+UserMenuButton.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
     _init: function() {
