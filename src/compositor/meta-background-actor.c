@@ -269,7 +269,7 @@ meta_background_actor_get_preferred_width (ClutterActor *actor,
   if (min_width_p)
     *min_width_p = width;
   if (natural_width_p)
-    *natural_width_p = height;
+    *natural_width_p = width;
 }
 
 static void
