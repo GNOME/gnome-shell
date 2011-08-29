@@ -97,13 +97,14 @@ DateMenuButton.prototype = {
         vbox.add(this._calendar.actor);
 
         item = this.menu.addSettingsAction(_("Date and Time Settings"), 'gnome-datetime-panel.desktop');
+        if (item) {
+            let separator = new PopupMenu.PopupSeparatorMenuItem();
+            separator.setColumnWidths(1);
+            vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
-        let separator = new PopupMenu.PopupSeparatorMenuItem();
-        separator.setColumnWidths(1);
-        vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
-
-        item.actor.can_focus = false;
-        item.actor.reparent(vbox);
+            item.actor.can_focus = false;
+            item.actor.reparent(vbox);
+        }
 
         if (params.showEvents) {
             // Add vertical separator
