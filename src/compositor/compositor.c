@@ -15,7 +15,7 @@
 #include <meta/meta-shadow-factory.h>
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
-#include "meta-background-actor.h"
+#include "meta-background-actor-private.h"
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() */
 #include <X11/extensions/shape.h>
@@ -533,7 +533,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   XSelectInput (xdisplay, xwin, event_mask);
 
   info->window_group = meta_window_group_new (screen);
-  info->background_actor = meta_background_actor_new (screen);
+  info->background_actor = meta_background_actor_new_for_screen (screen);
   info->overlay_group = clutter_group_new ();
   info->hidden_group = clutter_group_new ();
 

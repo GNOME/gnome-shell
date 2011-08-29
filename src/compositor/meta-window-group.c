@@ -9,7 +9,7 @@
 
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
-#include "meta-background-actor.h"
+#include "meta-background-actor-private.h"
 
 struct _MetaWindowGroupClass
 {
