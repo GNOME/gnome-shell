@@ -94,22 +94,38 @@ function WindowClone(realWindow) {
 
 WindowClone.prototype = {
     _init : function(realWindow) {
-        this.actor = new Clutter.Clone({ source: realWindow.get_texture(),
-                                         reactive: true,
-                                         x: realWindow.x,
-                                         y: realWindow.y });
-        this.actor._delegate = this;
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
         this.metaWindow._delegate = this;
-        this.origX = realWindow.x;
-        this.origY = realWindow.y;
+
+        let [borderX, borderY] = this._getInvisibleBorderPadding();
+        this._windowClone = new Clutter.Clone({ source: realWindow.get_texture(),
+                                                x: -borderX,
+                                                y: -borderY });
+
+        this.origX = realWindow.x + borderX;
+        this.origY = realWindow.y + borderY;
+
+        let outerRect = realWindow.meta_window.get_outer_rect();
+
+        // The MetaShapedTexture that we clone has a size that includes
+        // the invisible border; this is inconvenient; rather than trying
+        // to compensate all over the place we insert a ClutterGroup into
+        // the hierarchy that is sized to only the visible portion.
+        this.actor = new Clutter.Group({ reactive: true,
+                                         x: this.origX,
+                                         y: this.origY,
+                                         width: outerRect.width,
+                                         height: outerRect.height });
+
+        this.actor.add_actor(this._windowClone);
+
+        this.actor._delegate = this;
 
         this._stackAbove = null;
 
-        this._sizeChangedId = this.realWindow.connect('size-changed', Lang.bind(this, function() {
-            this.emit('size-changed');
-        }));
+        this._sizeChangedId = this.realWindow.connect('size-changed',
+            Lang.bind(this, this._onRealWindowSizeChanged));
         this._realWindowDestroyId = this.realWindow.connect('destroy',
             Lang.bind(this, this._disconnectRealWindowSignals));
 
@@ -174,6 +190,32 @@ WindowClone.prototype = {
         if (this._realWindowDestroyId > 0)
             this.realWindow.disconnect(this._realWindowDestroyId);
         this._realWindowDestroyId = 0;
+    },
+
+    _getInvisibleBorderPadding: function() {
+        // We need to adjust the position of the actor because of the
+        // consequences of invisible borders -- in reality, the texture
+        // has an extra set of "padding" around it that we need to trim
+        // down.
+
+        // The outer rect paradoxically is the smaller rectangle,
+        // containing the positions of the visible frame. The input
+        // rect contains everything, including the invisible border
+        // padding.
+        let outerRect = this.metaWindow.get_outer_rect();
+        let inputRect = this.metaWindow.get_input_rect();
+        let [borderX, borderY] = [outerRect.x - inputRect.x,
+                                  outerRect.y - inputRect.y];
+
+        return [borderX, borderY];
+    },
+
+    _onRealWindowSizeChanged: function() {
+        let [borderX, borderY] = this._getInvisibleBorderPadding();
+        let outerRect = this.metaWindow.get_outer_rect();
+        this.actor.set_size(outerRect.width, outerRect.height);
+        this._windowClone.set_position(-borderX, -borderY);
+        this.emit('size-changed');
     },
 
     _onDestroy: function() {
