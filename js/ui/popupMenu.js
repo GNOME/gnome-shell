@@ -1112,6 +1112,8 @@ PopupMenu.prototype = {
         this._boxPointer.setPosition(this.sourceActor, this._alignment);
         this._boxPointer.show(animate);
 
+        this.actor.raise_top();
+
         this.emit('open-state-changed', true);
     },
 
