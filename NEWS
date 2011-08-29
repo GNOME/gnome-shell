@@ -1,3 +1,34 @@
+3.1.90
+======
+* Extend the draggable portion of window borders outside the visible frame
+  for easy resizing with thin borders. (New draggable_border_width GConf key
+  controls the total width of visible and invisible borders.)
+  [Jasper; #644930]
+* Draw rounded window corners with antialising [Jasper; #628195]
+* Unredirect override-redirect fullscreen windows, such as full-screen
+  3D games to avoid any performance impact [Adel; #597014]
+* Add :resizable and :above properties to MetaWindow. [Tim; #653858]
+* Add MUTTER_DISABLE_FALLBACK_COLOR environment variable to allow visualizing
+  places where a color is missing for gtk:custom() colors [Florian; #656112]
+* Don't attach modal dialogs to special windows like the desktop;
+  add meta_window_is_attached_dialog() [Dan, #646761]
+* Make MetaBackgroundActor public, allow creating multiple instances
+  (sharing a common texture), and add a :dim-factor property
+  [Rui, Owen; #656433]
+* Fix attached dialogs to not be resizable from the top and to be
+  position correctly [Jasper; #656619]
+* Misc bug fixes [Jasper, Rui; #656335, #657583]
+
+Contributors:
+ Tim Cuthbertson, Adel Gadllah, Rui Matos, Florian Müllner, Jasper St. Pierre,
+ Owen Taylor, Dan Winship
+
+Translations:
+ Alexander Shopov [bg], Jorge González [es], Fran Dieguez [gl],
+ Yaron Shahrabani [he], Takeshi Aihana [ja], Aurimas Černius [lt],
+ Kjartan Maraas [nb], A S Alam [pa], Yuri Kozlov [ru], Daniel Nylander [se],
+ Theppitak Karoonboonyanan [th], Abduxukur Abdurixit [ug], Aron Xu [zh_CN]
+
 3.1.4
 =====
 * Use better, much more subtle shadow definitions [Jakub; #649374]
