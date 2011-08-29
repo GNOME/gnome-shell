@@ -2288,7 +2288,7 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
       return;
     }
 
-  if (priv->received_damage && !self->unredirected)
+  if (priv->received_damage && !self->priv->unredirected)
     {
       meta_error_trap_push (display);
       XDamageSubtract (xdisplay, priv->damage, None, None);
