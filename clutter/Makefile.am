@@ -613,6 +613,7 @@ nodist_clutter_include_HEADERS = \
 lib_LTLIBRARIES += libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
+	-lm \
 	$(CLUTTER_LIBS) \
 	$(CLUTTER_PROFILE_LIBS)
 
