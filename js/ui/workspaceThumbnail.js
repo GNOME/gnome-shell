@@ -167,7 +167,7 @@ WorkspaceThumbnail.prototype = {
                 return true;
             }));
 
-        this._background = new Clutter.Clone({ source: global.background_actor });
+        this._background = Meta.BackgroundActor.new_for_screen(global.screen);
         this._contents.add_actor(this._background);
 
         let monitor = Main.layoutManager.primaryMonitor;

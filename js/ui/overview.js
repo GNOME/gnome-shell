@@ -115,9 +115,12 @@ Overview.prototype = {
             return;
         }
 
-        // The actual global.background_actor is inside global.window_group,
-        // which is hidden when displaying the overview, so we display a clone.
-        this._background = new Clutter.Clone({ source: global.background_actor });
+        // The main BackgroundActor is inside global.window_group which is
+        // hidden when displaying the overview, so we create a new
+        // one. Instances of this class share a single CoglTexture behind the
+        // scenes which allows us to show the background with different
+        // rendering options without duplicating the texture data.
+        this._background = Meta.BackgroundActor.new_for_screen(global.screen);
         this._background.hide();
         global.overlay_group.add_actor(this._background);
 
