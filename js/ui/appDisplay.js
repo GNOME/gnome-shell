@@ -205,7 +205,8 @@ ViewByCategories.prototype = {
             if (nextType == GMenu.TreeItemType.ENTRY) {
                 var entry = iter.get_entry();
                 var app = this._appSystem.lookup_app_by_tree_entry(entry);
-                appList.push(app);
+                if (!entry.get_app_info().get_nodisplay())
+                    appList.push(app);
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 this._loadCategory(iter.get_directory(), appList);
             }

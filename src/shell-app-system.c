@@ -582,7 +582,8 @@ shell_app_system_get_all (ShellAppSystem  *self)
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       ShellApp *app = value;
-      result = g_slist_prepend (result, app);
+      if (!g_desktop_app_info_get_nodisplay (shell_app_get_app_info (app)))
+        result = g_slist_prepend (result, app);
     }
   return result;
 }
