@@ -1,3 +1,75 @@
+3.1.90
+======
+* Add an on-screen keyboard that uses Caribou as a backend
+  [Nohemi, Dan; #612662]
+* Allow searching for people in the overview using libfolks
+  as the backend [Morten; #643018]
+* Add a "Login Screen" mode to be used when GDM is running; this
+  mode has a stripped down user interface, and also contains the
+  code to display the user list and authentication. [Ray; #657082]
+* Rework user menu to separate out "Do Not Disturb" from the IM
+  status and to visually match GNOME Contacts. [Florian; #652837]
+* Implement displaying images such as cover-art in notifications
+  [Neha, Marina; #621009]
+* Support default actions for notifications [Florian; #655818]
+* Networking
+  - Stop using nm-applet for dialogs; do them as proper system modal
+    dialogs in the shell code. [Giovanni; #650244]
+  - Fix handling of hidden access points [Giovanni; #646454]
+* Telepathy integration
+  - Support subscription requests [Guillaume, Xavier; #653941]
+  - Notify on account connection errors [Alban, Jasper, Xavier; #654159]
+  - Allow approving file transfers [Guillaume; #653940]
+  - Improve styling of messages [Jasper; #640271]
+* Extension system [Jasper; #654770]
+  - Support live enabling and disabling of extensions
+  - Add the ability to install extensions from HTTP
+  - Enhance D-Bus interface for controlling extensions
+  - Collect errors separately for each extension
+* Add Main.panel.addToStatusArea for extension convenience
+  [Giovanni, Jasper, Marc-Antoine; #653205]
+* Port to the new gnome-menus API. Clean up and speed up
+  application information loading [Colin; #648149, #656546]
+* Use the accountsservice library rather than cut-and-pasted GDM code
+  [Florian; #650893]
+* Add a D-Bus interface to take a screenshot; this will avoid various race
+  conditions with the current gnome-screenshot approach [Adel; #652952]
+* Show numeric indicators to distinguish duplicate keyboard names
+  [Giovanni; #650128]
+* Add GNOME Documents to the favorites list [Adel; #657520]
+* Update the clock immediately on resume from suspend [Colin; #656403]
+* Remove animation support from StAdjustment [Ray; #657082]
+* Support configuration of calendar applications via gsettings
+  [Tassilo; #651190]
+* Don't fade in alt-Tab - wait a bit and show it instantly [Rui; #652346]
+* Darken workspace background on all workspaces [Rui; #656433]
+* Improve detection of the starting day of the week [Florian; #649078]
+* Add StButtonAccessible [Alejandro]
+* Visual tweaks to match mockups
+  [Allan, Dan, Jasper, Marina; #640271, #655627, #655428, #656732]
+* Misc bug fixes [Dan, Florian, Giovanni, Guillaume, Jasper, Jeremy, Rui;
+  #645708, #646761, #653119, #654398, #656125, #654707, #654898, #654638,
+  #656335, #657111]
+* Code cleanups [Colin, Dan, Guillaume, Ray;
+  #652718, #654639, #648651, #655813, #657082]
+* String tweaks [Jasper, Jeremy; #652984, #640271]
+* Build fixes [Jasper, Nohemi; #644275, #655812]
+
+Contributors:
+ Jeremy Bicha, Giovanni Campagna, Xavier Claessens, Alban Crequy,
+ Guillaume Desmottes, Allan Day, Neha Doijode, Nohemi Fernandez,
+ Tassilo Horn, Rui Matos, Morten Mjelva, Florian Müllner, Alejandro Piñeiro,
+ Jasper St. Pierre, Ray Strode, Colin Walters, Dan Winship,
+ Marina Zhurakhinskaya
+
+Translations:
+ Ivaylo Valkov [bg], Mario Blättermann [de], Diego Escalante Urrelo,
+ Jorge González, Daniel Mustieles [es], Arash Mousavi [fa], Fran Dieguez [gl],
+ Yaron Shahrabani [he], Andika Triwidada, Wibiharto [id],
+ Aurimas Černius [lt], Umarzuki Bin Mochlis Moktar [ml], Kjartan Maraas [nb],
+ A S Alam [pa], Daniel Nylander [se], Ngô Chin, Nguyễn Thái Ngọc Duy [vi],
+ Aron Xu [zh_CN], Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.1.4
 =====
 * Take over inserted media handling and autorun from gnome-session [Cosimo]
