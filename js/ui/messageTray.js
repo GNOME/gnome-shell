@@ -111,12 +111,21 @@ URLHighlighter.prototype = {
 
         this.setMarkup(text, allowMarkup);
         this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+            // Don't try to URL highlight when invisible.
+            // The MessageTray doesn't actually hide us, so
+            // we need to check for paint opacities as well.
+            if (!actor.visible || actor.get_paint_opacity() == 0)
+                return false;
+
             // Keep Notification.actor from seeing this and taking
             // a pointer grab, which would block our button-release-event
             // handler, if an URL is clicked
             return this._findUrlAtPos(event) != -1;
         }));
         this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
+            if (!actor.visible || actor.get_paint_opacity() == 0)
+                return false;
+
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1) {
                 let url = this._urls[urlId].url;
@@ -134,6 +143,9 @@ URLHighlighter.prototype = {
             return false;
         }));
         this.actor.connect('motion-event', Lang.bind(this, function(actor, event) {
+            if (!actor.visible || actor.get_paint_opacity() == 0)
+                return false;
+
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1 && !this._cursorChanged) {
                 global.set_cursor(Shell.Cursor.POINTING_HAND);
@@ -145,6 +157,9 @@ URLHighlighter.prototype = {
             return false;
         }));
         this.actor.connect('leave-event', Lang.bind(this, function() {
+            if (!this.actor.visible || this.actor.get_paint_opacity() == 0)
+                return;
+
             if (this._cursorChanged) {
                 this._cursorChanged = false;
                 global.unset_cursor();
