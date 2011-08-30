@@ -134,11 +134,14 @@ do_match (ShellContactSystem  *self,
       const char *p;
 
       /* Match on alias */
-      p = strstr (alias, term);
-      if (p == alias)
-        have_alias_prefix = TRUE;
-      else if (p != NULL)
-        have_alias_substring = TRUE;
+      if (alias != NULL)
+	{
+	  p = strstr (alias, term);
+	  if (p == alias)
+	    have_alias_prefix = TRUE;
+	  else if (p != NULL)
+	    have_alias_substring = TRUE;
+	}
 
       /* Match on one or more IM addresses */
       im_addrs_iter = gee_iterable_iterator (GEE_ITERABLE (im_addrs));
