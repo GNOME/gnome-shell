@@ -256,6 +256,7 @@ utf8_fputs (const char *str,
 
 /**
  * meta_free_gslist_and_elements: (skip)
+ *
  */
 void
 meta_free_gslist_and_elements (GSList *list_to_deep_free)
@@ -608,6 +609,7 @@ append_argument (GPtrArray  *args,
 
 /**
  * meta_show_dialog: (skip)
+ *
  */
 GPid
 meta_show_dialog (const char *type,
