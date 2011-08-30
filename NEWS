@@ -1,3 +1,12 @@
+3.1.90.1
+========
+* Fix crash when no windows are open [Adel; #657692]
+* Fix annotations for new strictness in gobject-introspection [Jasper, Owen]
+* Fix some errors with rounded frame drawing [Jasper; #657661]
+
+Contributors:
+ Adel Gadllah, Jasper St. Pierre, Owen Taylor
+
 3.1.90
 ======
 * Extend the draggable portion of window borders outside the visible frame
