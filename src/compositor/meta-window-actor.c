@@ -2122,30 +2122,30 @@ update_corners (MetaWindowActor   *self,
              top_right,
              0, M_PI*2);
 
-  /* bottom left */
-  x = borders->invisible.left;
-  y = borders->invisible.top + outer.height - bottom_left;
-
-  set_integral_bounding_rect (&corner_rects[2],
-                              x, y, bottom_left, bottom_left);
-
-  cairo_arc (cr,
-             x + bottom_left,
-             y,
-             bottom_left,
-             0, M_PI*2);
-
   /* bottom right */
   x = borders->invisible.left + outer.width - bottom_right;
   y = borders->invisible.top + outer.height - bottom_right;
 
-  set_integral_bounding_rect (&corner_rects[3],
+  set_integral_bounding_rect (&corner_rects[2],
                               x, y, bottom_right, bottom_right);
 
   cairo_arc (cr,
              x,
              y,
              bottom_right,
+             0, M_PI*2);
+
+  /* bottom left */
+  x = borders->invisible.left;
+  y = borders->invisible.top + outer.height - bottom_left;
+
+  set_integral_bounding_rect (&corner_rects[3],
+                              x, y, bottom_left, bottom_left);
+
+  cairo_arc (cr,
+             x + bottom_left,
+             y,
+             bottom_left,
              0, M_PI*2);
 
   corner_path = cairo_copy_path (cr);
