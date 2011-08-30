@@ -2,22 +2,22 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011.
-# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
+# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-29 20:11+0000\n"
-"PO-Revision-Date: 2011-08-30 17:48+0200\n"
-"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-08-30 19:25+0000\n"
+"PO-Revision-Date: 2011-08-30 21:30+0200\n"
+"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -72,7 +72,6 @@ msgid "If true, display date in the clock, in addition to time."
 msgstr "Si es cierta, muestra la fecha en el reloj, además de la hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-#| msgid "If true, display seconds in time."
 msgid "If true, display onscreen keyboard."
 msgstr "Si es cierta, muestra el teclado en pantalla."
 
@@ -103,23 +102,22 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
-"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
-"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
-"punto se escibirá en el archivo de salida. No obstante la tubería también "
-"puede tomar parte en su propia salida; esto se puede usar para enviar la "
-"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
-"está establecido o lo está a un valor vacío, se usará la tubería "
-"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 threads="
-"%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T como "
-"suposición para el número de hilos óptimos en el sistema."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
+"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
+"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
+"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
+"también puede tomar parte en su propia salida; esto se puede usar para "
+"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
+"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
+"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 "
+"threads=%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T "
+"como suposición para el número de hilos óptimos en el sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
 msgstr "Mostrar la fecha en el reloj"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
-#| msgid "Screen Keyboard"
 msgid "Show the onscreen keyboard"
 msgstr "Mostrar el teclado en pantalla"
 
@@ -195,13 +193,12 @@ msgid "disabled OpenSearch providers"
 msgstr "proveedores OpenSearch desactivados"
 
 #: ../js/gdm/loginDialog.js:601
-#| msgid "Searching..."
 msgid "Session..."
 msgstr "Sesión…"
 
 #: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
 msgid "Sign In"
-msgstr ""
+msgstr "Iniciar sesión"
 
 #: ../js/gdm/loginDialog.js:816
 msgid "Not listed?"
@@ -214,7 +211,6 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: ../js/gdm/loginDialog.js:1251
-#| msgid "New Window"
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -423,6 +419,31 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "La semana que viene"
 
+#: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:354
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:147
+msgid "Available"
+msgstr "Disponible"
+
+#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:156
+msgid "Away"
+msgstr "Ausente"
+
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:150
+msgid "Busy"
+msgstr "Ocupado"
+
+#: ../js/ui/contactDisplay.js:93
+msgid "Offline"
+msgstr "Desconectado"
+
+#: ../js/ui/contactDisplay.js:140
+msgid "CONTACTS"
+msgstr "CONTACTOS"
+
 #: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1182
 msgid "Remove"
 msgstr "Quitar"
@@ -598,12 +619,10 @@ msgid "System Information"
 msgstr "Información del sistema"
 
 #: ../js/ui/networkAgent.js:138
-#| msgid "Password:"
 msgid "Show password"
 msgstr "Mostrar contraseña"
 
 #: ../js/ui/networkAgent.js:153
-#| msgid "Connection"
 msgid "Connect"
 msgstr "Conectar"
 
@@ -611,7 +630,6 @@ msgstr "Conectar"
 #: ../js/ui/networkAgent.js:248 ../js/ui/networkAgent.js:260
 #: ../js/ui/networkAgent.js:287 ../js/ui/networkAgent.js:307
 #: ../js/ui/networkAgent.js:317
-#| msgid "Password:"
 msgid "Password: "
 msgstr "Contraseña: "
 
@@ -640,29 +658,28 @@ msgid "Service: "
 msgstr "Servicio:"
 
 #: ../js/ui/networkAgent.js:334
-#, fuzzy
 #| msgid "Authentication Required"
 msgid "Authentication required by wireless network"
-msgstr "Se necesita autenticación"
+msgstr "La red inalámbrica requiere autenticación"
 
 #: ../js/ui/networkAgent.js:335
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network '%"
-"s'."
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
 msgstr ""
+"Se necesitan contraseñas o claves de cifrado para acceder a la red "
+"inalámbrica «%s»."
 
 #: ../js/ui/networkAgent.js:339
 msgid "Wired 802.1X authentication"
-msgstr ""
+msgstr "Autenticación 802.1X cableada"
 
 #: ../js/ui/networkAgent.js:341
-#| msgid "Network Manager"
 msgid "Network name: "
 msgstr "Nombre de la red"
 
 #: ../js/ui/networkAgent.js:346
-#| msgid "authentication required"
 msgid "DSL authentication"
 msgstr "Autenticación DSL"
 
@@ -672,43 +689,36 @@ msgstr "Código PIN requerido"
 
 #: ../js/ui/networkAgent.js:354
 msgid "PIN code is needed for the mobile broadband device"
-msgstr ""
+msgstr "Se necesita un código PIN para el dispositivo de banda ancha móvil"
 
 #: ../js/ui/networkAgent.js:355
 msgid "PIN: "
 msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:361
-#| msgid "Mobile broadband"
 msgid "Mobile broadband network password"
 msgstr "Contraseña de la red de banda ancha móvil"
 
 #: ../js/ui/networkAgent.js:362
 #, c-format
-#| msgid "You're now connected to '%s'"
 msgid "A password is required to connect to '%s'."
 msgstr "Se requiere una contraseña para conectar a «%s»."
 
-#: ../js/ui/notificationDaemon.js:444 ../js/ui/status/power.js:223
-#: ../js/ui/userMenu.js:265 ../src/shell-app.c:354
-msgid "Unknown"
-msgstr "Desconocido"
-
-#: ../js/ui/overview.js:90
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/overview.js:204
+#: ../js/ui/overview.js:205
 msgid "Windows"
 msgstr "Ventanas"
 
-#: ../js/ui/overview.js:207
+#: ../js/ui/overview.js:208
 msgid "Applications"
 msgstr "Aplicaciones"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:228
+#: ../js/ui/overview.js:230
 msgid "Dash"
 msgstr "Tablero"
 
@@ -782,11 +792,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
-#: ../js/ui/searchDisplay.js:318
+#: ../js/ui/searchDisplay.js:328
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/searchDisplay.js:332
+#: ../js/ui/searchDisplay.js:351
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
@@ -1072,23 +1082,19 @@ msgid "Network Settings"
 msgstr "Configuración de la red"
 
 #: ../js/ui/status/network.js:1747
-#| msgid "Connection"
 msgid "Connectivity lost"
 msgstr "Conectividad perdida"
 
 #: ../js/ui/status/network.js:1748
-#, fuzzy
 #| msgid "You're now connected to wired network '%s'"
 msgid "You're no longer connected to the network"
-msgstr "Ahora está conectado a la red cableada «%s»"
+msgstr "Ya no está conectado a la red"
 
 #: ../js/ui/status/network.js:1756
-#| msgid "connection failed"
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
 #: ../js/ui/status/network.js:1757
-#| msgid "connection failed"
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -1208,12 +1214,10 @@ msgid "File Transfer"
 msgstr "Transferencia de archivos"
 
 #: ../js/ui/telepathyClient.js:432
-#| msgid "Authorization request from %s"
 msgid "Subscription request"
 msgstr "Solicitud de suscripción"
 
 #: ../js/ui/telepathyClient.js:460
-#| msgid "Connection"
 msgid "Connection error"
 msgstr "Error de conexión"
 
@@ -1321,15 +1325,13 @@ msgstr "%s le está enviando %s"
 #: ../js/ui/telepathyClient.js:1297
 #, c-format
 msgid "%s would like permission to see when you are online"
-msgstr ""
+msgstr "%s solicita permiso para ver cuándo está en línea"
 
 #: ../js/ui/telepathyClient.js:1395
-#| msgid "Network Manager"
 msgid "Network error"
 msgstr "Error de la red"
 
 #: ../js/ui/telepathyClient.js:1397
-#| msgid "Authentication Required"
 msgid "Authentication failed"
 msgstr "Falló la autenticación"
 
@@ -1347,7 +1349,7 @@ msgstr ""
 
 #: ../js/ui/telepathyClient.js:1405
 msgid "Certificate expired"
-msgstr ""
+msgstr "Certificado caducado"
 
 #: ../js/ui/telepathyClient.js:1407
 msgid "Certificate not activated"
@@ -1363,10 +1365,9 @@ msgstr ""
 
 #: ../js/ui/telepathyClient.js:1413
 msgid "Certificate self-signed"
-msgstr ""
+msgstr "Certificado autofirmado"
 
 #: ../js/ui/telepathyClient.js:1415
-#| msgid "%s is offline."
 msgid "Status is set to offline"
 msgstr "El estado está establecido a «desconectado»"
 
@@ -1379,17 +1380,14 @@ msgid "Certificate is invalid"
 msgstr "El certificado no es válido"
 
 #: ../js/ui/telepathyClient.js:1421
-#| msgid "Connection established"
 msgid "Connection has been refused"
 msgstr "Se ha rechazado la conexión"
 
 #: ../js/ui/telepathyClient.js:1423
-#| msgid "Connection established"
 msgid "Connection can't be established"
 msgstr "No se puede establecer la conexión"
 
 #: ../js/ui/telepathyClient.js:1425
-#| msgid "Connection established"
 msgid "Connection has been lost"
 msgstr "Se ha perdido la conexión"
 
@@ -1398,8 +1396,9 @@ msgid "This resource is already connected to the server"
 msgstr "Este recurso ya está conectado al servidor"
 
 #: ../js/ui/telepathyClient.js:1429
+#, fuzzy
 msgid "Connection has been replaced by a new connection using the "
-msgstr ""
+msgstr "Se ha sustituido la conexión por una nueva conexión usando la "
 
 #: ../js/ui/telepathyClient.js:1432
 msgid "The account already exists on the server"
@@ -1408,97 +1407,82 @@ msgstr "La cuenta ya existe en el servidor"
 #: ../js/ui/telepathyClient.js:1434
 msgid "Server is currently too busy to handle the connection"
 msgstr ""
+"Actualmente el servidor está muy ocupado intentando gestionar la conexión"
 
 #: ../js/ui/telepathyClient.js:1436
 msgid "Certificate has been revoked"
 msgstr "Se ha revocado el certificado"
 
 #: ../js/ui/telepathyClient.js:1438
+#, fuzzy
 msgid "Certificate uses an insecure cipher algorithm or is "
-msgstr ""
+msgstr "El certificado usa un algoritmo de cifrado inseguro o es "
 
 #: ../js/ui/telepathyClient.js:1441
+#, fuzzy
 msgid "The length of the server certificate, or the depth of the "
-msgstr ""
+msgstr "La longitud del certificado del servidor o la profundidad del"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
 #: ../js/ui/telepathyClient.js:1452
 #, c-format
-#| msgid "connection failed"
 msgid "Connection to %s failed"
 msgstr "Falló la conexión a %s"
 
 #: ../js/ui/telepathyClient.js:1459
-#| msgid "Unknown"
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
 #: ../js/ui/telepathyClient.js:1466
-#| msgid "Reject"
 msgid "Reconnect"
 msgstr "Reconectar"
 
 #: ../js/ui/telepathyClient.js:1467
-#| msgid "My Account"
 msgid "Edit account"
 msgstr "Editar cuenta"
 
-#: ../js/ui/userMenu.js:147 ../js/ui/userMenu.js:253
-msgid "Available"
-msgstr "Disponible"
-
-#: ../js/ui/userMenu.js:150 ../js/ui/userMenu.js:255
-msgid "Busy"
-msgstr "Ocupado"
-
-#: ../js/ui/userMenu.js:153 ../js/ui/userMenu.js:259
+#: ../js/ui/userMenu.js:153
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ../js/ui/userMenu.js:156 ../js/ui/userMenu.js:261
-msgid "Away"
-msgstr ""
-
-#: ../js/ui/userMenu.js:159 ../js/ui/userMenu.js:263
+#: ../js/ui/userMenu.js:159
 msgid "Idle"
-msgstr ""
+msgstr "Inactivo"
 
-#: ../js/ui/userMenu.js:162 ../js/ui/userMenu.js:257
-#| msgid "unavailable"
+#: ../js/ui/userMenu.js:162
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:508 ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:581
+#: ../js/ui/userMenu.js:510 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:583
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/userMenu.js:510 ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:580
+#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:582
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/userMenu.js:543
+#: ../js/ui/userMenu.js:545
 msgid "Do Not Disturb"
 msgstr "No molestar"
 
-#: ../js/ui/userMenu.js:551
-#| msgid "My Account"
+#: ../js/ui/userMenu.js:553
 msgid "Online Accounts"
 msgstr "Cuentas en línea"
 
-#: ../js/ui/userMenu.js:555
+#: ../js/ui/userMenu.js:557
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/userMenu.js:562
+#: ../js/ui/userMenu.js:564
 msgid "Lock Screen"
 msgstr "Bloquear la pantalla"
 
-#: ../js/ui/userMenu.js:567
+#: ../js/ui/userMenu.js:569
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:572
+#: ../js/ui/userMenu.js:574
 msgid "Log Out..."
 msgstr "Cerrar la sesión…"
 
@@ -1552,7 +1536,7 @@ msgstr "Imprimir versión"
 
 #: ../src/main.c:475
 msgid "Mode used by GDM for login screen"
-msgstr ""
+msgstr "Modo usado por GDM para la pantalla de inicio"
 
 #: ../src/shell-app.c:580
 #, c-format
@@ -1841,8 +1825,8 @@ msgstr "calendar:week_start:1"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
-#~ "en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
+#~ "segundos en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -1859,18 +1843,19 @@ msgstr "calendar:week_start:1"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
-#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
-#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
-#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
-#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
-#~ "ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
+#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
+#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
+#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
+#~ "especificado en la clave «custom_format». Note que si se establece a "
+#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
