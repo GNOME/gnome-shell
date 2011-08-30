@@ -254,6 +254,9 @@ utf8_fputs (const char *str,
   return retval;
 }
 
+/**
+ * meta_free_gslist_and_elements: (skip)
+ */
 void
 meta_free_gslist_and_elements (GSList *list_to_deep_free)
 {
@@ -603,6 +606,9 @@ append_argument (GPtrArray  *args,
   g_ptr_array_add (args, locale_arg);
 }
 
+/**
+ * meta_show_dialog: (skip)
+ */
 GPid
 meta_show_dialog (const char *type,
                   const char *message,

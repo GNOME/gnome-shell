@@ -5058,7 +5058,7 @@ meta_display_stack_cmp (const void *a,
  * An example of using this would be to sort the list of transient dialogs for a
  * window into their current stacking order.
  *
- * Returns: (transfer container): Input windows sorted by stacking order, from lowest to highest
+ * Returns: (transfer container) (element-type MetaWindow): Input windows sorted by stacking order, from lowest to highest
  */
 GSList *
 meta_display_sort_windows_by_stacking (MetaDisplay *display,
