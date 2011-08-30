@@ -1145,6 +1145,9 @@ pre_paint_windows (MetaCompScreen *info)
   MetaWindowActor *top_window;
   MetaWindowActor *expected_unredirected_window = NULL;
 
+  if (info->windows == NULL)
+    return;
+
   top_window = g_list_last (info->windows)->data;
 
   if (meta_window_actor_should_unredirect (top_window) &&
