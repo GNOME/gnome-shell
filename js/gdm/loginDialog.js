@@ -32,7 +32,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const GdmGreeter = imports.gi.GdmGreeter;
 
-const Batch = imports.misc.batch;
+const Batch = imports.gdm.batch;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
