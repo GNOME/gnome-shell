@@ -1003,7 +1003,7 @@ get_visible_region (MetaFrames        *frames,
       for (i=0; i<corner; i++)
         {
           const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
-          rect.x = frame_rect.x + frame_rect.width + width;
+          rect.x = frame_rect.x + frame_rect.width - width;
           rect.y = frame_rect.y + frame_rect.height - i - 1;
           rect.width = width;
           rect.height = 1;
