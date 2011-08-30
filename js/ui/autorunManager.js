@@ -330,7 +330,8 @@ AutorunResidentSource.prototype = {
     },
 
     createNotificationIcon: function(iconSize) {
-        return new St.Icon ({ icon_name: 'drive-harddisk',
+        return new St.Icon ({ icon_name: 'media-removable',
+                              icon_type: St.IconType.FULLCOLOR,
                               icon_size: iconSize ? iconSize : this.ICON_SIZE });
     }
 }
