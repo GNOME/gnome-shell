@@ -38,16 +38,6 @@
 #include "cally-stage.h"
 #include "cally-actor-private.h"
 
-enum {
-  ACTIVATE,
-  CREATE,
-  DEACTIVATE,
-  DESTROY,
-  LAST_SIGNAL
-};
-
-static guint cally_stage_signals [LAST_SIGNAL] = { 0, };
-
 static void cally_stage_class_init (CallyStageClass *klass);
 static void cally_stage_init       (CallyStage      *stage);
 
@@ -56,6 +46,9 @@ static void                  cally_stage_real_initialize (AtkObject *obj,
                                                           gpointer   data);
 static AtkStateSet*          cally_stage_ref_state_set   (AtkObject *obj);
 
+/* AtkWindow */
+static void                  cally_stage_window_interface_init (AtkWindowIface *iface);
+
 /* Auxiliar */
 static void                  cally_stage_activate_cb     (ClutterStage *stage,
                                                           gpointer      data);
@@ -63,7 +56,11 @@ static void                  cally_stage_deactivate_cb   (ClutterStage *stage,
                                                           gpointer      data);
 
 
-G_DEFINE_TYPE (CallyStage, cally_stage, CALLY_TYPE_GROUP);
+G_DEFINE_TYPE_WITH_CODE (CallyStage,
+                         cally_stage,
+                         CALLY_TYPE_GROUP,
+                         G_IMPLEMENT_INTERFACE (ATK_TYPE_WINDOW,
+                                                cally_stage_window_interface_init));
 
 #define CALLY_STAGE_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CALLY_TYPE_STAGE, CallyStagePrivate))
@@ -85,88 +82,6 @@ cally_stage_class_init (CallyStageClass *klass)
   class->ref_state_set = cally_stage_ref_state_set;
 
   g_type_class_add_private (gobject_class, sizeof (CallyStagePrivate));
-
-  /**
-   * CallyStage::activate:
-   * @cally_actor: the object which received the signal
-   *
-   * The ::activate signal is emitted when the stage receives the key
-   * focus from the underlying window system.
-   *
-   * Toolkit implementation note: it is used when anyone adds a global
-   * event listener to "window:activate"
-   *
-   * Since: 1.4
-   */
-  cally_stage_signals [ACTIVATE] =
-    g_signal_new ("activate",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0, /* default signal handler */
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-
-  /**
-   * CallyStage::create:
-   * @cally_actor: the object which received the signal
-   *
-   * The ::create signal is emitted when the stage is created.
-   *
-   * Toolkit implementation note: it is used when anyone adds a global
-   * event listener to "window:create"
-   *
-   * Since: 1.4
-   */
-  cally_stage_signals [CREATE] =
-    g_signal_new ("create",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0, /* default signal handler */
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-
-  /**
-   * CallyStage::deactivate:
-   * @cally_actor: the object which received the signal
-   *
-   * The ::deactivate signal is emitted when the stage loses key focus
-   * from the underlying window system.
-   *
-   * Toolkit implementation note: it is used when anyone adds a global
-   * event listener to "window:deactivate"
-   *
-   * Since: 1.4
-   */
-  cally_stage_signals [DEACTIVATE] =
-    g_signal_new ("deactivate",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0, /* default signal handler */
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-
-  /**
-   * CallyStage::destroy:
-   * @cally_actor: the object which received the signal
-   *
-   * The ::destroy signal is emitted when the stage is destroyed.
-   *
-   * Toolkit implementation note: it is used when anyone adds a global
-   * event listener to "window:destroy"
-   *
-   * Since: 1.4
-   */
-  cally_stage_signals [DESTROY] =
-    g_signal_new ("destroy",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0, /* default signal handler */
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -246,6 +161,13 @@ cally_stage_ref_state_set   (AtkObject *obj)
   return state_set;
 }
 
+/* AtkWindow */
+static void
+cally_stage_window_interface_init (AtkWindowIface *iface)
+{
+  /* At this moment AtkWindow is just about signals */
+}
+
 /* Auxiliar */
 static void
 cally_stage_activate_cb     (ClutterStage *stage,
@@ -262,7 +184,7 @@ cally_stage_activate_cb     (ClutterStage *stage,
   atk_object_notify_state_change (ATK_OBJECT (cally_stage),
                                   ATK_STATE_ACTIVE, TRUE);
 
-  g_signal_emit (cally_stage, cally_stage_signals [ACTIVATE], 0);
+  g_signal_emit_by_name (cally_stage, "activate", 0);
 }
 
 static void
@@ -280,5 +202,5 @@ cally_stage_deactivate_cb   (ClutterStage *stage,
   atk_object_notify_state_change (ATK_OBJECT (cally_stage),
                                   ATK_STATE_ACTIVE, FALSE);
 
-  g_signal_emit (cally_stage, cally_stage_signals [DEACTIVATE], 0);
+  g_signal_emit_by_name (cally_stage, "deactivate", 0);
 }

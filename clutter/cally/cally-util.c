@@ -89,7 +89,6 @@ static void                  insert_hf                               (gpointer k
                                                                       gpointer value,
                                                                       gpointer data);
 static AtkKeyEventStruct *  atk_key_event_from_clutter_event_key     (ClutterKeyEvent *event);
-static void                 do_window_event_initialization           (void);
 
 
 /* This is just a copy of the Gail one, a shared library or place to
@@ -184,33 +183,7 @@ cally_util_add_global_event_listener (GSignalEmissionHook listener,
 
   split_string = g_strsplit (event_type, ":", 3);
 
-  if (split_string)
-    {
-      if (!strcmp ("window", split_string[0]))
-        {
-          /* Using ClutterStage as the window equivalent, although
-             several methods (move, etc) are missing. This would be
-             probably defined for other window-related classes (MxWindow)
-
-             FIXME: for this reason, this process should be extendable
-             on the future.*/
-          static gboolean initialized = FALSE;
-
-          if (initialized == FALSE)
-            {
-              do_window_event_initialization ();
-              initialized = TRUE;
-            }
-
-          rc = add_listener (listener, "CallyStage", split_string[1], event_type);
-        }
-      else
-        {
-          rc = add_listener (listener, split_string[1], split_string[2], event_type);
-        }
-
-      g_strfreev (split_string);
-    }
+  rc = add_listener (listener, split_string[1], split_string[2], event_type);
 
   return rc;
 }
@@ -542,13 +515,4 @@ cally_util_stage_removed_cb (ClutterStageManager *stage_manager,
   GCallback cally_key_snooper_cb = G_CALLBACK (data);
 
   g_signal_handlers_disconnect_by_func (stage, cally_key_snooper_cb, NULL);
-}
-
-static void
-do_window_event_initialization (void)
-{
-  /*
-   * Ensure that CallyStageClass exists.
-   */
-  g_type_class_unref (g_type_class_ref (CALLY_TYPE_STAGE));
 }
