@@ -250,19 +250,19 @@ IMStatusChooserItem.prototype = {
     _statusForPresence: function(presence) {
         switch(presence) {
             case Tp.ConnectionPresenceType.AVAILABLE:
-                return _("Available");
+                return 'available';
             case Tp.ConnectionPresenceType.BUSY:
-                return _("Busy");
+                return 'busy';
             case Tp.ConnectionPresenceType.OFFLINE:
-                return _("Unavailable");
+                return 'offline';
             case Tp.ConnectionPresenceType.HIDDEN:
-                return _("Hidden");
+                return 'hidden';
             case Tp.ConnectionPresenceType.AWAY:
-                return _("Away");
+                return 'away';
             case Tp.ConnectionPresenceType.EXTENDED_AWAY:
-                return _("Idle");
+                return 'xa';
             default:
-                return _("Unknown");
+                return 'unknown';
         }
     },
 
