@@ -1426,8 +1426,7 @@ _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_LOST)]
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ALREADY_CONNECTED)]
   = _("This resource is already connected to the server");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_REPLACED)]
-  = _("Connection has been replaced by a new connection using the "
-    + "same resource");
+  = _("Connection has been replaced by a new connection using the same resource");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.REGISTRATION_EXISTS)]
   = _("The account already exists on the server");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.SERVICE_BUSY)]
@@ -1435,12 +1434,9 @@ _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.SERVICE_BUSY)]
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_REVOKED)]
   = _("Certificate has been revoked");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_INSECURE)]
-  = _("Certificate uses an insecure cipher algorithm or is "
-    + "cryptographically weak");
+  = _("Certificate uses an insecure cipher algorithm or is cryptographically weak");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_LIMIT_EXCEEDED)]
-  = _("The length of the server certificate, or the depth of the "
-    + "server certificate chain, exceed the limits imposed by the "
-    + "cryptography library");
+  = _("The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library");
 
 AccountNotification.prototype = {
     __proto__: MessageTray.Notification.prototype,
