@@ -508,6 +508,11 @@ gvc_mixer_stream_change_port (GvcMixerStream *stream,
         return GVC_MIXER_STREAM_GET_CLASS (stream)->change_port (stream, port);
 }
 
+/**
+ * gvc_mixer_stream_get_ports:
+ *
+ * Return value: (transfer none) (element-type GvcMixerStreamPort):
+ */
 const GList *
 gvc_mixer_stream_get_ports (GvcMixerStream *stream)
 {
@@ -526,6 +531,10 @@ sort_ports (GvcMixerStreamPort *a,
         return -1;
 }
 
+/**
+ * gvc_mixer_stream_set_ports:
+ * @ports: (transfer full) (element-type GvcMixerStreamPort):
+ */
 gboolean
 gvc_mixer_stream_set_ports (GvcMixerStream *stream,
                             GList          *ports)

@@ -1051,7 +1051,7 @@ _gather_pid_callback (GDesktopAppInfo   *gapp,
 /**
  * shell_app_launch:
  * @timestamp: Event timestamp, or 0 for current event timestamp
- * @uris: List of uris to pass to application
+ * @uris: (element-type utf8): List of uris to pass to application
  * @workspace: Start on this workspace, or -1 for default
  * @startup_id: (out): Returned startup notification ID, or %NULL if none
  * @error: A #GError

@@ -263,6 +263,11 @@ gvc_mixer_card_change_profile (GvcMixerCard *card,
         return TRUE;
 }
 
+/**
+ * gvc_mixer_card_get_profiles:
+ *
+ * Return value: (transfer none) (element-type GvcMixerCardProfile):
+ */
 const GList *
 gvc_mixer_card_get_profiles (GvcMixerCard *card)
 {
@@ -281,6 +286,10 @@ sort_profiles (GvcMixerCardProfile *a,
         return -1;
 }
 
+/**
+ * gvc_mixer_card_set_profiles:
+ * @profiles: (transfer full) (element-type GvcMixerCardProfile):
+ */
 gboolean
 gvc_mixer_card_set_profiles (GvcMixerCard *card,
                              GList        *profiles)
