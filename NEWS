@@ -1,3 +1,20 @@
+3.1.90.1
+========
+
+* Fix typo that was breaking the "Login Screen" mode [Marc-Antoine]
+* Fix build with new gobject-introspection [Dan]
+* Use a better icon for removable devices [Cosimo; #657757]
+* Add support for asynchronous search provides [Philippe, Jasper, Seif; #655220]
+* Misc bug fixes [Alex, Guillaume, Jasper; #657657, #657696]
+* Misc build fixes [Adel; #657697]
+
+Contributors:
+ Cosimo Cecchi, Guillaume Desmottes, Adel Gadllah, Alexander Larsson, Seif Lotfy,
+ Philippe Normand, Marc-Antoine Perennou, Jasper St. Pierre, Dan Winship
+
+Translations:
+ Jorge González, Daniel Mustieles [es], Stas Solovey [ru]
+
 3.1.90
 ======
 * Add an on-screen keyboard that uses Caribou as a backend
