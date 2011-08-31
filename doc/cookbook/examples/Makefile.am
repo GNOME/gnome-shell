@@ -2,6 +2,8 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
+EXTRA_DIST =
+
 noinst_PROGRAMS = \
 	actors-composite-main 			\
 	animations-complex			\
@@ -11,15 +13,15 @@ noinst_PROGRAMS = \
 	animations-moving-animator		\
 	animations-moving-implicit		\
 	animations-moving-state			\
-	animations-path			\
+	animations-path				\
 	animations-path-circle			\
 	animations-path-easing			\
 	animations-reuse			\
 	animations-rotating			\
 	animations-scaling			\
 	animations-scaling-zoom			\
-	effects-basic			\
-	effects-built-in      \
+	effects-basic				\
+	effects-built-in      			\
 	effects-custom-deform			\
 	text-shadow				\
 	textures-reflection			\
@@ -43,6 +45,7 @@ noinst_PROGRAMS = \
 	textures-crossfade-slideshow		\
 	script-ui				\
 	script-signals				\
+	script-states				\
 	events-buttons				\
 	events-buttons-click			\
 	events-buttons-lasso			\
@@ -51,10 +54,7 @@ noinst_PROGRAMS = \
 INCLUDES = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
-	-I$(top_srcdir)/clutter/cogl \
-	-I$(top_srcdir)/clutter/cogl/pango \
 	-I$(top_builddir)/clutter \
-	-I$(top_builddir)/clutter/cogl \
 	$(NULL)
 
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
@@ -113,8 +113,19 @@ textures_crossfade_cogl_SOURCES            = textures-crossfade-cogl.c
 textures_crossfade_slideshow_SOURCES       = textures-crossfade-slideshow.c
 script_ui_SOURCES                          = script-ui.c
 script_signals_SOURCES                     = script-signals.c
+script_states_SOURCES			   = script-states.c
 events_buttons_SOURCES                     = events-buttons.c
 events_buttons_click_SOURCES               = events-buttons-click.c
 events_buttons_lasso_SOURCES               = events-buttons-lasso.c
+
+EXTRA_DIST += \
+	animations-complex.json			\
+	animations-complex-overlapping.json	\
+	animations-reuse-animation.json		\
+	animations-reuse-ui.json		\
+	script-signals.json			\
+	script-states.json			\
+	script-ui.json				\
+	$(NULL)
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore

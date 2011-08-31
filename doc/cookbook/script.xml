@@ -727,4 +727,131 @@ g_signal_connect (button,
 
   </section>
 
+  <section id="script-state">
+    <title>Connecting <type>ClutterState</type> states in <type>ClutterScript</type></title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You have declared an actor using JSON, and want to connect
+      signals to <type>ClutterState</type> transitions.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Connect the <type>ClutterState</type> states to the signals
+      using the <varname>states</varname> and <varname>target-state</varname>
+      keys of the <varname>signals</varname> definition, and call
+      <function>clutter_script_connect_signals()</function>; for instance,
+      the following JSON declares that the <emphasis>enter-event</emphasis>
+      signal should transition to the <emphasis>hover</emphasis> state
+      and the <emphasis>leave-event</emphasis> should transition to the
+      <emphasis>base</emphasis> state:</para>
+
+      <informalexample>
+        <programlisting>
+{
+  "id" : "rectangle",
+  "type" : "ClutterRectangle",
+  "width" : 200,
+  "height" : 200,
+  "reactive" : true,
+
+  <emphasis>"signals" : [
+    { "name" : "enter-event", "states" : "rectangle-states", "target-state" : "hover" },
+    { "name" : "leave-event", "states" : "rectangle-states", "target-state" : "base" }
+  ]</emphasis>
+}
+        </programlisting>
+      </informalexample>
+
+      <para>The <emphasis>rectangle-states</emphasis> state machine holds
+      the various states.</para>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Connecting a <type>ClutterState</type> state transition to
+      a signal defined inside a <type>ClutterScript</type> JSON without
+      requiring a real function to wrap <function>clutter_state_set_state()</function>
+      allows to minimize the amount of code that has to be written, and
+      ties the state to the UI element being defined.</para>
+
+      <para>The connection between a signal and a <type>ClutterState</type>
+      state is similar to the connection between a signal and a handler
+      function. Each definition must contain the name of the signal; the
+      script id of the <type>ClutterState</type> object that is used to
+      store the target state definition; and the target state of the
+      transition.</para>
+
+      <para>The <emphasis>states</emphasis> key can also contain a full
+      definition of the <type>ClutterState</type>.</para>
+
+      <para>The <emphasis>target-state</emphasis> key works exactly like
+      the argument of <function>clutter_state_set_state()</function>: it
+      will transition the <type>ClutterState</type> from the current state
+      to the desired state.</para>
+
+      <para>The <type>ClutterState</type> instance that will be used to
+      resolve the target state can be defined in JSON like any other
+      object, but it is also possible to create a <type>ClutterState</type>
+      in code, and associate it to a <type>ClutterScript</type> instance
+      prior to parsing the signal connection JSON, through the
+      <function>clutter_script_add_states()</function> function of
+      <type>ClutterScript</type>.</para>
+
+      <para>The <emphasis>warp</emphasis> boolean key can be used to
+      perform a transition to the target state without an animation,
+      similarly to what <function>clutter_state_warp_to_state()</function>
+      does, for instance:</para>
+
+      <informalexample>
+        <programlisting>
+{
+  <emphasis>"signals" : [
+    {
+      "name" : "enter-event",
+      "states" : "rectangle-states",
+      "target-state" : "hover",
+      "warp" : true
+    }
+  ]</emphasis>
+}
+        </programlisting>
+      </informalexample>
+
+      <para>will not animate the transition between the current state
+      and the target <emphasis>hover</emphasis> state when the signal
+      is emitted.</para>
+
+    </section>
+
+    <section>
+      <title>Full examples</title>
+
+      <example id="script-states-example-1">
+        <title><type>ClutterScript</type> JSON with state definitions</title>
+        <programlisting>
+<xi:include href="examples/script-states.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="script-states-examples-2">
+        <title>Loading a JSON file into a <type>ClutterScript</type> and connecting states</title>
+        <programlisting>
+<xi:include href="examples/script-states.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
 </chapter>

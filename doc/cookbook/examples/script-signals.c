@@ -42,7 +42,10 @@ foo_button_clicked_cb (ClutterClickAction *action,
                                         CLUTTER_Z_AXIS,
                                         NULL, NULL, NULL);
 
-  z_angle += 90.0;
+  if (clutter_click_action_get_button (action) == 1)
+    z_angle += 90.0;
+  else
+    z_angle -= 90.0;
 
   /* animate to new rotation angle */
   clutter_actor_animate (rectangle,
