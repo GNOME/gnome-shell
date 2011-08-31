@@ -35,7 +35,6 @@ Indicator.prototype = {
         this._control.connect('stream-added', Lang.bind(this, this._maybeShowInput));
         this._control.connect('stream-removed', Lang.bind(this, this._maybeShowInput));
         this._volumeMax = this._control.get_vol_max_norm();
-        this._volumeMaxAmplified = this._control.get_vol_max_amplified();
 
         this._output = null;
         this._outputVolumeId = 0;
@@ -66,21 +65,13 @@ Indicator.prototype = {
         this._control.open();
     },
 
-    _getMaxVolume: function(property) {
-        if (this[property].get_can_decibel())
-            return this._volumeMaxAmplified;
-        else
-            return this._volumeMax;
-    },
-
     _onScrollEvent: function(actor, event) {
         let direction = event.get_scroll_direction();
         let currentVolume = this._output.volume;
-        let maxVolume = this._getMaxVolume('_output');
 
         if (direction == Clutter.ScrollDirection.DOWN) {
             let prev_muted = this._output.is_muted;
-            this._output.volume = Math.max(0, currentVolume - maxVolume * VOLUME_ADJUSTMENT_STEP);
+            this._output.volume = Math.max(0, currentVolume - this._volumeMax * VOLUME_ADJUSTMENT_STEP);
             if (this._output.volume < 1) {
                 this._output.volume = 0;
                 if (!prev_muted)
@@ -89,7 +80,7 @@ Indicator.prototype = {
             this._output.push_volume();
         }
         else if (direction == Clutter.ScrollDirection.UP) {
-            this._output.volume = Math.min(maxVolume, currentVolume + maxVolume * VOLUME_ADJUSTMENT_STEP);
+            this._output.volume = Math.min(this._volumeMax, currentVolume + this._volumeMax * VOLUME_ADJUSTMENT_STEP);
             this._output.change_is_muted(false);
             this._output.push_volume();
         }
@@ -171,11 +162,10 @@ Indicator.prototype = {
     },
 
     _volumeToIcon: function(volume) {
-        let maxVolume = this._getMaxVolume('_output');
         if (volume <= 0) {
             return 'audio-volume-muted';
         } else {
-            let n = Math.floor(3 * volume / maxVolume) + 1;
+            let n = Math.floor(3 * volume / this._volumeMax) + 1;
             if (n < 2)
                 return 'audio-volume-low';
             if (n >= 3)
@@ -189,7 +179,7 @@ Indicator.prototype = {
             log ('Volume slider changed for %s, but %s does not exist'.format(property, property));
             return;
         }
-        let volume = value * this._getMaxVolume(property);
+        let volume = value * this._volumeMax;
         let prev_muted = this[property].is_muted;
         if (volume < 1) {
             this[property].volume = 0;
@@ -211,8 +201,7 @@ Indicator.prototype = {
     _mutedChanged: function(object, param_spec, property) {
         let muted = this[property].is_muted;
         let slider = this[property+'Slider'];
-        let maxVolume = this._getMaxVolume(property);
-        slider.setValue(muted ? 0 : (this[property].volume / maxVolume));
+        slider.setValue(muted ? 0 : (this[property].volume / this._volumeMax));
         if (property == '_output') {
             if (muted)
                 this.setIcon('audio-volume-muted');
@@ -222,8 +211,7 @@ Indicator.prototype = {
     },
 
     _volumeChanged: function(object, param_spec, property) {
-        let maxVolume = this._getMaxVolume(property);
-        this[property+'Slider'].setValue(this[property].volume / maxVolume);
+        this[property+'Slider'].setValue(this[property].volume / this._volumeMax);
         if (property == '_output' && !this._output.is_muted)
             this.setIcon(this._volumeToIcon(this._output.volume));
     }
