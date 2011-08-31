@@ -564,10 +564,12 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  ctx->texture_driver->pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
-                                           NULL, /* internal format */
-                                           &gl_format,
-                                           &gl_type);
+  bmp = _cogl_texture_prepare_for_upload (bmp,
+                                          cogl_texture_get_format (tex),
+                                          NULL,
+                                          NULL,
+                                          &gl_format,
+                                          &gl_type);
 
   /* Send data to GL */
   ctx->texture_driver->upload_subregion_to_gl (GL_TEXTURE_RECTANGLE_ARB,
@@ -579,6 +581,8 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
                                                bmp,
                                                gl_format,
                                                gl_type);
+
+  cogl_object_unref (bmp);
 
   return TRUE;
 }

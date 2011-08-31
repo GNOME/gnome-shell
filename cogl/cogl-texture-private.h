@@ -67,8 +67,10 @@ struct _CoglTextureVtable
      backend */
 
   /* This should update the specified sub region of the texture with a
-     sub region of the given bitmap. The bitmap will have first been
-     converted to a suitable format for uploading if neccessary. */
+     sub region of the given bitmap. The bitmap is not converted
+     before being passed so the implementation is expected to call
+     _cogl_texture_prepare_for_upload with a suitable destination
+     format before uploading */
   gboolean (* set_region) (CoglTexture    *tex,
                            int             src_x,
                            int             src_y,

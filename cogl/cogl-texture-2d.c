@@ -816,10 +816,12 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  ctx->texture_driver->pixel_format_to_gl (_cogl_bitmap_get_format (bmp),
-                                           NULL, /* internal format */
-                                           &gl_format,
-                                           &gl_type);
+  bmp = _cogl_texture_prepare_for_upload (bmp,
+                                          cogl_texture_get_format (tex),
+                                          NULL,
+                                          NULL,
+                                          &gl_format,
+                                          &gl_type);
 
   /* If this touches the first pixel then we'll update our copy */
   if (dst_x == 0 && dst_y == 0 &&
@@ -849,6 +851,8 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
                                                gl_type);
 
   tex_2d->mipmaps_dirty = TRUE;
+
+  cogl_object_unref (bmp);
 
   return TRUE;
 }

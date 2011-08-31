@@ -862,30 +862,24 @@ cogl_texture_set_region_from_bitmap (CoglHandle handle,
                                      CoglBitmap *bmp)
 {
   CoglTexture *tex = COGL_TEXTURE (handle);
-  GLenum       closest_gl_format;
-  GLenum       closest_gl_type;
   gboolean     ret;
 
   /* Shortcut out early if the image is empty */
   if (dst_width == 0 || dst_height == 0)
     return TRUE;
 
-  /* Prepare the bitmap so that it will do the premultiplication
-     conversion */
-  bmp = _cogl_texture_prepare_for_upload (bmp,
-                                          cogl_texture_get_format (handle),
-                                          NULL,
-                                          NULL,
-                                          &closest_gl_format,
-                                          &closest_gl_type);
+  /* Note that we don't prepare the bitmap for upload here because
+     some backends may be internally using a different format for the
+     actual GL texture than that reported by
+     cogl_texture_get_format. For example the atlas textures are
+     always stored in an RGBA texture even if the texture format is
+     advertised as RGB. */
 
   ret = tex->vtable->set_region (handle,
                                  src_x, src_y,
                                  dst_x, dst_y,
                                  dst_width, dst_height,
                                  bmp);
-
-  cogl_object_unref (bmp);
 
   return ret;
 }

@@ -488,6 +488,52 @@ _cogl_atlas_texture_set_region_with_border (CoglAtlasTexture *atlas_tex,
   return TRUE;
 }
 
+static CoglBitmap *
+_cogl_atlas_texture_prepare_for_upload (CoglAtlasTexture *atlas_tex,
+                                        CoglBitmap *bmp)
+{
+  CoglPixelFormat internal_format;
+  CoglBitmap *converted_bmp;
+  CoglBitmap *override_bmp;
+
+  /* We'll prepare to upload using the format of the actual texture of
+     the atlas texture instead of the format reported by
+     cogl_texture_get_format which would be the original internal
+     format specified when the texture was created. However we'll
+     preserve the premult status of the internal format because the
+     images are all stored in the original premult format of the
+     orignal format so we do need to trigger the conversion */
+
+  internal_format = (COGL_PIXEL_FORMAT_RGBA_8888 |
+                     (atlas_tex->format & COGL_PREMULT_BIT));
+
+  converted_bmp = _cogl_texture_prepare_for_upload (bmp,
+                                                    internal_format,
+                                                    NULL, /* dst_format_out */
+                                                    NULL, /* glintformat */
+                                                    NULL, /* glformat */
+                                                    NULL /* gltype */);
+
+  if (converted_bmp == NULL)
+    return NULL;
+
+  /* We'll create another bitmap which uses the same data but
+     overrides the format to remove the premult flag so that uploads
+     to the atlas texture won't trigger the conversion again */
+
+  override_bmp =
+    _cogl_bitmap_new_shared (converted_bmp,
+                             _cogl_bitmap_get_format (converted_bmp) &
+                             ~COGL_PREMULT_BIT,
+                             _cogl_bitmap_get_width (converted_bmp),
+                             _cogl_bitmap_get_height (converted_bmp),
+                             _cogl_bitmap_get_rowstride (converted_bmp));
+
+  cogl_object_unref (converted_bmp);
+
+  return override_bmp;
+}
+
 static gboolean
 _cogl_atlas_texture_set_region (CoglTexture    *tex,
                                 int             src_x,
@@ -506,12 +552,8 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
     {
       gboolean ret;
 
-      bmp = _cogl_bitmap_new_shared (bmp,
-                                     _cogl_bitmap_get_format (bmp) &
-                                     ~COGL_PREMULT_BIT,
-                                     _cogl_bitmap_get_width (bmp),
-                                     _cogl_bitmap_get_height (bmp),
-                                     _cogl_bitmap_get_rowstride (bmp));
+      bmp = _cogl_atlas_texture_prepare_for_upload (atlas_tex,
+                                                    bmp);
 
       /* Upload the data ignoring the premult bit */
       ret = _cogl_atlas_texture_set_region_with_border (atlas_tex,
@@ -684,10 +726,6 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
   CoglHandle atlas_tex_handle;
   CoglAtlasTexture *atlas_tex;
   CoglBitmap *dst_bmp;
-  CoglBitmap *override_bmp;
-  GLenum gl_intformat;
-  GLenum gl_format;
-  GLenum gl_type;
   int bmp_width;
   int bmp_height;
   CoglPixelFormat bmp_format;
@@ -711,12 +749,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
 
   atlas_tex = atlas_tex_handle;
 
-  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
-                                              internal_format,
-                                              &internal_format,
-                                              &gl_intformat,
-                                              &gl_format,
-                                              &gl_type);
+  dst_bmp = _cogl_atlas_texture_prepare_for_upload (atlas_tex,
+                                                    bmp);
 
   if (dst_bmp == NULL)
     {
@@ -724,19 +758,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
       return COGL_INVALID_HANDLE;
     }
 
-  /* Make another bitmap so that we can override the format */
-  override_bmp = _cogl_bitmap_new_shared (dst_bmp,
-                                          _cogl_bitmap_get_format (dst_bmp) &
-                                          ~COGL_PREMULT_BIT,
-                                          _cogl_bitmap_get_width (dst_bmp),
-                                          _cogl_bitmap_get_height (dst_bmp),
-                                          _cogl_bitmap_get_rowstride (dst_bmp));
-  cogl_object_unref (dst_bmp);
-
   /* Defer to set_region so that we can share the code for copying the
-     edge pixels to the border. We don't want to pass the actual
-     format of the converted texture because otherwise it will get
-     unpremultiplied. */
+     edge pixels to the border. */
   _cogl_atlas_texture_set_region_with_border (atlas_tex,
                                               0, /* src_x */
                                               0, /* src_y */
@@ -744,9 +767,9 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
                                               0, /* dst_y */
                                               bmp_width, /* dst_width */
                                               bmp_height, /* dst_height */
-                                              override_bmp);
+                                              dst_bmp);
 
-  cogl_object_unref (override_bmp);
+  cogl_object_unref (dst_bmp);
 
   return atlas_tex_handle;
 }
