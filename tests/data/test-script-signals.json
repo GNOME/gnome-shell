@@ -21,7 +21,7 @@
       { "name" : "enter-event", "states" : "button-states", "target-state" : "hover" },
       { "name" : "leave-event", "states" : "button-states", "target-state" : "base" },
       { "name" : "button-press-event", "states" : "button-states", "target-state" : "active" },
-      { "name" : "button-release-event", "states" : "button-states", "target-state" : "base" }
+      { "name" : "button-release-event", "states" : "button-states", "target-state" : "hover" }
     ]
   },
 
