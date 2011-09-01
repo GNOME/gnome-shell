@@ -128,4 +128,7 @@ EXTRA_DIST += \
 	script-ui.json				\
 	$(NULL)
 
+examplesdir = $(datadir)/clutter-1.0/cookbook/examples
+examples_DATA = *.c *.h *.json
+
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
