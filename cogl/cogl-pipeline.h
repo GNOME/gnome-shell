@@ -522,9 +522,6 @@ cogl_pipeline_get_alpha_test_reference (CoglPipeline *pipeline);
  *   &lt;channel-mask&gt;=ADD(SRC_COLOR*(&lt;factor&gt;), DST_COLOR*(&lt;factor&gt;))
  * ]|
  *
- * <warning>The brackets around blend factors are currently not
- * optional!</warning>
- *
  * This is the list of source-names usable as blend factors:
  * <itemizedlist>
  *   <listitem><para>SRC_COLOR: The color of the in comming fragment</para></listitem>

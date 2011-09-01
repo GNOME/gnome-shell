@@ -482,6 +482,7 @@ parse_argument (const char *string, /* original user string */
   const char *error_string = NULL;
   ParserArgState state = PARSER_ARG_STATE_START;
   gboolean parsing_factor = FALSE;
+  gboolean implicit_factor_brace;
 
   arg->source.is_zero = FALSE;
   arg->source.info = NULL;
@@ -631,11 +632,21 @@ parse_argument (const char *string, /* original user string */
         case PARSER_ARG_STATE_EXPECT_OPEN_PAREN:
           if (*p != '(')
             {
-              error_string = "Expected '(' before blend factor - the parser "
-                             "currently requires that all blend factors "
-                             "following a '*' be surrounded in brackets";
-              goto error;
+              if (is_alphanum_char (*p))
+                {
+                  p--; /* compensate for implicit brace and ensure this
+                        * char gets considered part of the blend factor */
+                  implicit_factor_brace = TRUE;
+                }
+              else
+                {
+                  error_string = "Expected '(' around blend factor or alpha "
+                                 "numeric character for blend factor name";
+                  goto error;
+                }
             }
+          else
+            implicit_factor_brace = FALSE;
           parsing_factor = TRUE;
           state = PARSER_ARG_STATE_EXPECT_FACTOR;
           continue;
@@ -676,6 +687,12 @@ parse_argument (const char *string, /* original user string */
         case PARSER_ARG_STATE_MAYBE_MINUS:
           if (*p == '-')
             {
+              if (implicit_factor_brace)
+                {
+                  error_string = "Expected ( ) braces around blend factor with "
+                                 "a subtraction";
+                  goto error;
+                }
               arg->factor.source.one_minus = TRUE;
               state = PARSER_ARG_STATE_EXPECT_COLOR_SRC_NAME;
             }
@@ -687,6 +704,12 @@ parse_argument (const char *string, /* original user string */
           continue;
 
         case PARSER_ARG_STATE_EXPECT_CLOSE_PAREN:
+          if (implicit_factor_brace)
+            {
+              p--;
+              state = PARSER_ARG_STATE_EXPECT_END;
+              continue;
+            }
           if (*p != ')')
             {
               error_string = "Expected closing parenthesis after blend factor";
