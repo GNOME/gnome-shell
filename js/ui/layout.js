@@ -46,6 +46,7 @@ LayoutManager.prototype = {
         this._bottomBox = new St.BoxLayout({ name: 'bottomBox',
                                              vertical: true });
         this.addChrome(this._bottomBox, { visibleInFullscreen: true });
+        this._keyboardHeightNotifyId = 0;
 
         this.trayBox = new St.BoxLayout({ name: 'trayBox' }); 
         this.trayBox.connect('allocation-changed',
@@ -283,18 +284,22 @@ LayoutManager.prototype = {
         // anchor point changes
         this._chrome.updateRegions();
 
-        this._bottomBox.connect('notify::height', Lang.bind(this, function () {
-            this._bottomBoxAnchor = this._bottomBox.height;
+        this._keyboardHeightNotifyId = this._bottomBox.connect('notify::height', Lang.bind(this, function () {
+            this._bottomBox.anchor_y = this._bottomBox.height;
         }));
     },
 
     hideKeyboard: function (immediate) {
         Main.messageTray.hide();
+        if (this._keyboardHeightNotifyId) {
+            this._bottomBox.disconnect(this._keyboardHeightNotifyId);
+            this._keyboardHeightNotifyId = 0;
+        }
         Tweener.addTween(this._bottomBox,
                          { anchor_y: 0,
                            time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: this._showKeyboardComplete,
+                           onComplete: this._hideKeyboardComplete,
                            onCompleteScope: this
                          });
     },
