@@ -220,6 +220,7 @@ function start() {
 
     panel.startStatusArea();
 
+    layoutManager.init();
     keyboard.init();
     overview.init();
 
