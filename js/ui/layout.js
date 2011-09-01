@@ -40,21 +40,14 @@ LayoutManager.prototype = {
         this.panelBox.connect('allocation-changed',
                               Lang.bind(this, this._updatePanelBarriers));
 
-        // bottomBox contains the tray and keyboard (which move
-        // together, since the tray slides up from the top of the
-        // keyboard when the keyboard is visible).
-        this._bottomBox = new St.BoxLayout({ name: 'bottomBox',
-                                             vertical: true });
-        this.addChrome(this._bottomBox, { visibleInFullscreen: true });
-        this._keyboardHeightNotifyId = 0;
-
         this.trayBox = new St.BoxLayout({ name: 'trayBox' }); 
+        this.addChrome(this.trayBox, { visibleInFullscreen: true });
         this.trayBox.connect('allocation-changed',
                              Lang.bind(this, this._updateTrayBarrier));
-        this._bottomBox.add_actor(this.trayBox);
 
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox' });
-        this._bottomBox.add_actor(this.keyboardBox);
+        this.addChrome(this.keyboardBox, { visibleInFullscreen: true });
+        this._keyboardHeightNotifyId = 0;
 
         global.screen.connect('monitors-changed',
                               Lang.bind(this, this._monitorsChanged));
@@ -154,11 +147,13 @@ LayoutManager.prototype = {
         this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
         this.panelBox.set_size(this.primaryMonitor.width, -1);
 
-        this._bottomBox.set_position(this.bottomMonitor.x,
-                                     this.bottomMonitor.y + this.bottomMonitor.height);
-        this._bottomBox.set_size(this.bottomMonitor.width, -1);
+        this.keyboardBox.set_position(this.bottomMonitor.x,
+                                      this.bottomMonitor.y + this.bottomMonitor.height);
+        this.keyboardBox.set_size(this.bottomMonitor.width, -1);
 
-        this.trayBox.width = this.bottomMonitor.width;
+        this.trayBox.set_position(this.bottomMonitor.x,
+                                  this.bottomMonitor.y + this.bottomMonitor.height);
+        this.trayBox.set_size(this.bottomMonitor.width, -1);
 
         // Set trayBox's clip to show things above it, but not below
         // it (so it's not visible behind the keyboard). The exact
@@ -270,12 +265,17 @@ LayoutManager.prototype = {
 
     showKeyboard: function () {
         Main.messageTray.hide();
-        Tweener.addTween(this._bottomBox,
-                         { anchor_y: this._bottomBox.height,
+        Tweener.addTween(this.keyboardBox,
+                         { anchor_y: this.keyboardBox.height,
                            time: KEYBOARD_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._showKeyboardComplete,
                            onCompleteScope: this
+                         });
+        Tweener.addTween(this.trayBox,
+                         { anchor_y: this.keyboardBox.height,
+                           time: KEYBOARD_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
                          });
     },
 
@@ -284,23 +284,29 @@ LayoutManager.prototype = {
         // anchor point changes
         this._chrome.updateRegions();
 
-        this._keyboardHeightNotifyId = this._bottomBox.connect('notify::height', Lang.bind(this, function () {
-            this._bottomBox.anchor_y = this._bottomBox.height;
+        this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', Lang.bind(this, function () {
+            this.keyboardBox.anchor_y = this.keyboardBox.height;
+            this.trayBox.anchor_y = this.keyboardBox.height;
         }));
     },
 
     hideKeyboard: function (immediate) {
         Main.messageTray.hide();
         if (this._keyboardHeightNotifyId) {
-            this._bottomBox.disconnect(this._keyboardHeightNotifyId);
+            this.keyboardBox.disconnect(this._keyboardHeightNotifyId);
             this._keyboardHeightNotifyId = 0;
         }
-        Tweener.addTween(this._bottomBox,
+        Tweener.addTween(this.keyboardBox,
                          { anchor_y: 0,
                            time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._hideKeyboardComplete,
                            onCompleteScope: this
+                         });
+        Tweener.addTween(this.trayBox,
+                         { anchor_y: 0,
+                           time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
                          });
     },
 
