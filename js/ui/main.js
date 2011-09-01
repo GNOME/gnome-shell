@@ -193,7 +193,13 @@ function start() {
     loadTheme();
 
     // Set up stage hierarchy to group all UI actors under one container.
-    uiGroup = new Clutter.Group();
+    uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
+    uiGroup.connect('allocate',
+                    function (actor, box, flags) {
+                        let children = uiGroup.get_children();
+                        for (let i = 0; i < children.length; i++)
+                            children[i].allocate_preferred_size(flags);
+                    });
     St.set_ui_root(global.stage, uiGroup);
     global.window_group.reparent(uiGroup);
     global.overlay_group.reparent(uiGroup);

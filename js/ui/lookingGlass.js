@@ -974,7 +974,7 @@ LookingGlass.prototype = {
 
         this._notebook.selectIndex(0);
         this.actor.show();
-        this.actor.lower_bottom();
+        this.actor.lower(Main.layoutManager.panelBox);
         this._open = true;
         this._history.lastItem();
 
@@ -1005,7 +1005,7 @@ LookingGlass.prototype = {
 
         Main.popModal(this._entry);
 
-        this.actor.lower_bottom();
+        this.actor.lower(Main.layoutManager.panelBox);
         Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,

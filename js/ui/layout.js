@@ -309,11 +309,11 @@ LayoutManager.prototype = {
     },
 
     // addChrome:
-    // @actor: an actor to add to the chrome layer
+    // @actor: an actor to add to the chrome
     // @params: (optional) additional params
     //
-    // Adds @actor to the chrome layer and (unless %affectsInputRegion
-    // in @params is %false) extends the input region to include it.
+    // Adds @actor to the chrome, and (unless %affectsInputRegion in
+    // @params is %false) extends the input region to include it.
     // Changes in @actor's size, position, and visibility will
     // automatically result in appropriate changes to the input
     // region.
@@ -355,9 +355,9 @@ LayoutManager.prototype = {
     },
 
     // removeChrome:
-    // @actor: a child of the chrome layer
+    // @actor: a chrome actor
     //
-    // Removes @actor from the chrome layer
+    // Removes @actor from the chrome
     removeChrome: function(actor) {
         this._chrome.removeActor(actor);
     }
@@ -556,11 +556,6 @@ Chrome.prototype = {
     _init: function(layoutManager) {
         this._layoutManager = layoutManager;
 
-        // The group itself has zero size so it doesn't interfere with DND
-        this.actor = new Shell.GenericContainer({ width: 0, height: 0 });
-        Main.uiGroup.add_actor(this.actor);
-        this.actor.connect('allocate', Lang.bind(this, this._allocated));
-
         this._monitors = [];
         this._inOverview = false;
         this._updateRegionIdle = 0;
@@ -577,6 +572,7 @@ Chrome.prototype = {
         global.screen.connect('notify::n-workspaces',
                               Lang.bind(this, this._queueUpdateRegions));
 
+        this._screenSaverActive = false;
         this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
         this._screenSaverProxy.connect('ActiveChanged', Lang.bind(this, this._onScreenSaverActiveChanged));
         this._screenSaverProxy.GetActiveRemote(Lang.bind(this,
@@ -595,14 +591,8 @@ Chrome.prototype = {
                              Lang.bind(this, this._overviewHidden));
     },
 
-    _allocated: function(actor, box, flags) {
-        let children = this.actor.get_children();
-        for (let i = 0; i < children.length; i++)
-            children[i].allocate_preferred_size(flags);
-    },
-
     addActor: function(actor, params) {
-        this.actor.add_actor(actor);
+        Main.uiGroup.add_actor(actor);
         this._trackActor(actor, params);
     },
 
@@ -614,7 +604,7 @@ Chrome.prototype = {
             index = this._findActor(ancestor);
         }
         if (!ancestor)
-            throw new Error('actor is not a descendent of the chrome layer');
+            throw new Error('actor is not a descendent of a chrome actor');
 
         let ancestorData = this._trackedActors[index];
         if (!params)
@@ -634,7 +624,7 @@ Chrome.prototype = {
     },
 
     removeActor: function(actor) {
-        this.actor.remove_actor(actor);
+        Main.uiGroup.remove_actor(actor);
         this._untrackActor(actor);
     },
 
@@ -653,6 +643,7 @@ Chrome.prototype = {
 
         let actorData = Params.parse(params, defaultParams);
         actorData.actor = actor;
+        actorData.isToplevel = actor.get_parent() == Main.uiGroup;
         actorData.visibleId = actor.connect('notify::visible',
                                             Lang.bind(this, this._queueUpdateRegions));
         actorData.allocationId = actor.connect('notify::allocation',
@@ -682,18 +673,29 @@ Chrome.prototype = {
     },
 
     _actorReparented: function(actor, oldParent) {
-        if (!this.actor.contains(actor))
+        let newParent = actor.get_parent();
+        if (!newParent)
             this._untrackActor(actor);
+        else
+            actorData.isToplevel = (newParent == Main.uiGroup);
     },
 
     _updateVisibility: function() {
         for (let i = 0; i < this._trackedActors.length; i++) {
-            let actorData = this._trackedActors[i];
-            if (!this._inOverview && !actorData.visibleInFullscreen &&
-                this._findMonitorForActor(actorData.actor).inFullscreen)
-                this.actor.set_skip_paint(actorData.actor, true);
+            let actorData = this._trackedActors[i], visible;
+            if (!actorData.isToplevel)
+                continue;
+
+            if (this._screenSaverActive)
+                visible = false;
+            else if (this._inOverview)
+                visible = true;
+            else if (!actorData.visibleInFullscreen &&
+                     this._findMonitorForActor(actorData.actor).inFullscreen)
+                visible = false;
             else
-                this.actor.set_skip_paint(actorData.actor, false);
+                visible = true;
+            Main.uiGroup.set_skip_paint(actorData.actor, !visible);
         }
     },
 
@@ -719,7 +721,8 @@ Chrome.prototype = {
     },
 
     _onScreenSaverActiveChanged: function(proxy, screenSaverActive) {
-        this.actor.visible = !screenSaverActive;
+        this._screenSaverActive = screenSaverActive;
+        this._updateVisibility();
         this._queueUpdateRegions();
     },
 
@@ -783,7 +786,7 @@ Chrome.prototype = {
         for (let i = 0; i < this._monitors.length; i++)
             this._monitors[i].inFullscreen = false;
 
-        // The chrome layer should be visible unless there is a window
+        // Ordinary chrome should be visible unless there is a window
         // with layer FULLSCREEN, or a window with layer
         // OVERRIDE_REDIRECT that covers the whole screen.
         // ('override_redirect' is not actually a layer above all
@@ -864,7 +867,7 @@ Chrome.prototype = {
 
             if (actorData.affectsInputRegion &&
                 actorData.actor.get_paint_visibility() &&
-                !this.actor.get_skip_paint(actorData.actor))
+                !Main.uiGroup.get_skip_paint(actorData.actor))
                 rects.push(rect);
 
             if (!actorData.affectsStruts)
