@@ -2648,6 +2648,7 @@ get_control (MetaFrames *frames,
   MetaFrameFlags flags;
   MetaFrameType type;
   gboolean has_vert, has_horiz;
+  gboolean has_north_resize;
   cairo_rectangle_int_t client;
 
   meta_frames_calc_geometry (frames, frame, &fgeom);
@@ -2670,13 +2671,14 @@ get_control (MetaFrames *frames,
                  META_CORE_GET_FRAME_FLAGS, &flags,
                  META_CORE_GET_FRAME_TYPE, &type,
                  META_CORE_GET_END);
-  
+
+  has_north_resize = (type != META_FRAME_TYPE_ATTACHED);
   has_vert = (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE) != 0;
   has_horiz = (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE) != 0;
-  
+
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
     {
-      if (has_vert && y <= TOP_RESIZE_HEIGHT && (type != META_FRAME_TYPE_ATTACHED))
+      if (has_vert && y <= TOP_RESIZE_HEIGHT && has_north_resize)
         return META_FRAME_CONTROL_RESIZE_N;
       else
         return META_FRAME_CONTROL_TITLE;
@@ -2739,13 +2741,13 @@ get_control (MetaFrames *frames,
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_SW;
-      else if (has_vert)
+      else if (has_vert && has_north_resize)
         return META_FRAME_CONTROL_RESIZE_S;
       else if (has_horiz)
         return META_FRAME_CONTROL_RESIZE_W;
     }
   else if (y < (fgeom.borders.invisible.top + RESIZE_EXTENDS) &&
-           x <= (fgeom.borders.total.left + RESIZE_EXTENDS))
+           x <= (fgeom.borders.total.left + RESIZE_EXTENDS) && has_north_resize)
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_NW;
@@ -2755,7 +2757,7 @@ get_control (MetaFrames *frames,
         return META_FRAME_CONTROL_RESIZE_W;
     }
   else if (y < (fgeom.borders.invisible.top + RESIZE_EXTENDS) &&
-           x >= (fgeom.width - fgeom.borders.total.right - RESIZE_EXTENDS))
+           x >= (fgeom.width - fgeom.borders.total.right - RESIZE_EXTENDS) && has_north_resize)
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_NE;
@@ -2766,7 +2768,7 @@ get_control (MetaFrames *frames,
     }
   else if (y < (fgeom.borders.invisible.top + TOP_RESIZE_HEIGHT))
     {
-      if (has_vert)
+      if (has_vert && has_north_resize)
         return META_FRAME_CONTROL_RESIZE_N;
     }
   else if (y >= (fgeom.height - fgeom.borders.total.bottom - RESIZE_EXTENDS))
