@@ -200,10 +200,9 @@ Keyboard.prototype = {
     _init: function () {
         DBus.session.exportObject('/org/gnome/Caribou/Keyboard', this);
 
+        this.actor = null;
+
         this._timestamp = global.get_current_time();
-        this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
-        Main.layoutManager.keyboardBox.add_actor(this.actor);
-        Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._redraw));
 
         this._keyboardSettings = new Gio.Settings({ schema: KEYBOARD_SCHEMA });
@@ -212,8 +211,7 @@ Keyboard.prototype = {
     },
 
     init: function () {
-        if (this._enableKeyboard)
-            this._redraw();
+        this._redraw();
     },
 
     _settingsChanged: function () {
@@ -238,12 +236,17 @@ Keyboard.prototype = {
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
         this._keyboard = null;
-        this.actor.destroy_children();
+        this.actor.destroy();
+        this.actor = null;
 
         this._destroySource();
     },
 
     _setupKeyboard: function() {
+        this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
+        Main.layoutManager.keyboardBox.add_actor(this.actor);
+        Main.layoutManager.trackChrome(this.actor);
+
         this._keyboard = new Caribou.KeyboardModel({ keyboard_type: this._keyboardSettings.get_string(KEYBOARD_TYPE) });
         this._groups = {};
         this._current_page = null;
@@ -358,6 +361,9 @@ Keyboard.prototype = {
     },
 
     _redraw: function () {
+        if (!this._enableKeyboard)
+            return;
+
         let monitor = Main.layoutManager.bottomMonitor;
         let maxHeight = monitor.height / 3;
         this.actor.width = monitor.width;
