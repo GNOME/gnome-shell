@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-30 19:25+0000\n"
-"PO-Revision-Date: 2011-08-30 21:30+0200\n"
+"POT-Creation-Date: 2011-09-01 13:20+0000\n"
+"PO-Revision-Date: 2011-09-01 19:40+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -264,12 +264,12 @@ msgstr "Se ha añadido %s a sus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
 
-#: ../js/ui/autorunManager.js:591
+#: ../js/ui/autorunManager.js:592
 #, c-format
 msgid "Open with %s"
 msgstr "Abrir con %s"
 
-#: ../js/ui/autorunManager.js:617
+#: ../js/ui/autorunManager.js:618
 msgid "Eject"
 msgstr "Expulsar"
 
@@ -658,7 +658,6 @@ msgid "Service: "
 msgstr "Servicio:"
 
 #: ../js/ui/networkAgent.js:334
-#| msgid "Authentication Required"
 msgid "Authentication required by wireless network"
 msgstr "La red inalámbrica requiere autenticación"
 
@@ -1086,7 +1085,6 @@ msgid "Connectivity lost"
 msgstr "Conectividad perdida"
 
 #: ../js/ui/status/network.js:1748
-#| msgid "You're now connected to wired network '%s'"
 msgid "You're no longer connected to the network"
 msgstr "Ya no está conectado a la red"
 
@@ -1345,7 +1343,7 @@ msgstr "Certificado no proporcionado"
 
 #: ../js/ui/telepathyClient.js:1403
 msgid "Certificate untrusted"
-msgstr ""
+msgstr "No se confía en el certificado"
 
 #: ../js/ui/telepathyClient.js:1405
 msgid "Certificate expired"
@@ -1357,11 +1355,11 @@ msgstr "Certificado no activado"
 
 #: ../js/ui/telepathyClient.js:1409
 msgid "Certificate hostname mismatch"
-msgstr ""
+msgstr "El nombre del servidor dle certificado no coincide"
 
 #: ../js/ui/telepathyClient.js:1411
 msgid "Certificate fingerprint mismatch"
-msgstr ""
+msgstr "La huella del certificado no coincide"
 
 #: ../js/ui/telepathyClient.js:1413
 msgid "Certificate self-signed"
@@ -1396,49 +1394,56 @@ msgid "This resource is already connected to the server"
 msgstr "Este recurso ya está conectado al servidor"
 
 #: ../js/ui/telepathyClient.js:1429
-#, fuzzy
-msgid "Connection has been replaced by a new connection using the "
-msgstr "Se ha sustituido la conexión por una nueva conexión usando la "
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr ""
+"Se ha sustituido la conexión por una nueva conexión usando el mismo recurso"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1431
 msgid "The account already exists on the server"
 msgstr "La cuenta ya existe en el servidor"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1433
 msgid "Server is currently too busy to handle the connection"
 msgstr ""
 "Actualmente el servidor está muy ocupado intentando gestionar la conexión"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1435
 msgid "Certificate has been revoked"
 msgstr "Se ha revocado el certificado"
 
-#: ../js/ui/telepathyClient.js:1438
-#, fuzzy
-msgid "Certificate uses an insecure cipher algorithm or is "
-msgstr "El certificado usa un algoritmo de cifrado inseguro o es "
+#: ../js/ui/telepathyClient.js:1437
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"El certificado usa un algoritmo de cifrado inseguro o es criptográficamente "
+"débil"
 
-#: ../js/ui/telepathyClient.js:1441
-#, fuzzy
-msgid "The length of the server certificate, or the depth of the "
-msgstr "La longitud del certificado del servidor o la profundidad del"
+#: ../js/ui/telepathyClient.js:1439
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"La longitud del certificado del servidor o la profundidad de la cadena del "
+"certificado del servidor exceden los límites impuestos por la biblioteca de "
+"criptografía"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1452
+#: ../js/ui/telepathyClient.js:1448
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Falló la conexión a %s"
 
-#: ../js/ui/telepathyClient.js:1459
+#: ../js/ui/telepathyClient.js:1455
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
-#: ../js/ui/telepathyClient.js:1466
+#: ../js/ui/telepathyClient.js:1462
 msgid "Reconnect"
 msgstr "Reconectar"
 
-#: ../js/ui/telepathyClient.js:1467
+#: ../js/ui/telepathyClient.js:1463
 msgid "Edit account"
 msgstr "Editar cuenta"
 
@@ -1578,6 +1583,10 @@ msgstr "%1$s: %2$s"
 #: ../src/shell-util.c:600
 msgid "calendar:week_start:0"
 msgstr "calendar:week_start:1"
+
+#, fuzzy
+#~ msgid "The length of the server certificate, or the depth of the "
+#~ msgstr "La longitud del certificado del servidor o la profundidad del"
 
 #~ msgid "You're now connected to mobile broadband connection '%s'"
 #~ msgstr "Ahora está conectado a la red de banda ancha móvil «%s»"
