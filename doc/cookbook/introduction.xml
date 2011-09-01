@@ -15,7 +15,7 @@
   <para>There is a wonderful simile in the preface of the <emphasis>Perl
   Cookbook</emphasis>: approaching a programming problem is oftentimes
   similar to balancing Columbus's egg. The initial difficulties of dealing
-  with, and more importantly solving, problems in the computer programming
+  with, and more importantly solving, problems in the software engineering
   field sometimes can only be overcome if somebody shows you how to use a
   new tool. This is true for programming languages but also for programming
   libraries.</para>
@@ -24,14 +24,14 @@
   how to solve common issues that you might have to face when using
   the Clutter toolkit.</para>
 
-  <para>This book is not meant to be a replacement for the API reference,
-  even though there will be descriptions of how Clutter works and how
-  its API looks like. We will require knowledge of the Clutter API, but
-  we will also point out where to find more information on the API that
+  <para>This book is not meant to be a replacement for the Clutter API
+  reference, even though there will be descriptions of how Clutter works
+  and how its API looks like. We will require knowledge of the Clutter API,
+  but we will also point out where to find more information on the API that
   examples have used.</para>
 
   <para>Indeed, this book should be used as a companion to the API reference,
-  expanding the examples and showing how to achieve a specific result.</para>
+  expanding its examples and showing how to achieve a specific result.</para>
 
   <para>This is not a book for learning Clutter. This is also not a book
   for learning C, or GObject or even GUI development.</para>
@@ -46,8 +46,8 @@
   <emphasis>recipes</emphasis>. Each recipe starts with a problem, or a short
   statement describing what we want to achieve; a solution, containing the
   source code; and a discussion section, where the code is explained, where
-  alternative approaches might be useful, caveats and references to the
-  Clutter API for furher studying.</para>
+  alternative approaches might be useful, and where caveats and references to
+  the Clutter API for further studying can be found.</para>
 
   <para>This book, in the cookbook spirit, can be accessed mostly at
   random.</para>
@@ -77,6 +77,32 @@
     <para>The latest version is always available at
     <ulink url="&docurl;">&docurl;</ulink>.</para>
 
+    <para>To contribute to this document, see the
+    <link linkend="contributing">Contributing</link> appendix.</para>
+
+    <section>
+      <title>Compiling the examples</title>
+
+      <para>This document comes with full examples, usually stored
+      on disk in <filename><emphasis>datadir</emphasis>/clutter-1.0/cookbook/examples</filename>
+      directory.</para>
+
+      <para>Each example can be compiled using:</para>
+
+      <informalexample>
+        <programlisting>
+cc \
+  `pkg-config --cflags clutter-1.0` \
+  -o <emphasis>example</emphasis> <emphasis>example</emphasis>.c \
+  `pkg-config --libs clutter-1.0`
+        </programlisting>
+      </informalexample>
+
+      <para>substituting the <emphasis>example</emphasis> with in the
+      line above with the name of the example.</para>
+
+    </section>
+
   </section>
 
   <section>
@@ -85,12 +111,30 @@
     <para>This book has been written taking the inspiration from the Perl
     Cookbook, authored by Tom Christiansen and Nathan Torkington.</para>
 
+    <para>This book would not have been possible without the existence of
+    the Clutter library itself, and without the help and contributions of
+    all the people that have been working on it every day.</para>
+
+    <section>
+      <title>Acknowledgments from Emmanuele</title>
+
+      <para>To Matthew, for starting the flame. To Robert and Neil, for
+      keeping it ablaze.</para>
+
+      <para>To Marta, for her love and patience.</para>
+    </section>
+
+    <section>
+      <title>Acknowledgements from Elliot</title>
+    </section>
+
   </section>
 
   <section>
     <title>Where to get Clutter</title>
 
-    <para>You can obtain Clutter from <ulink url="&appurl;">&appurl;</ulink>.</para>
+    <para>You can obtain the Clutter source code ready for compilation
+    from <ulink url="&appurl;">&appurl;</ulink>.</para>
 
     <para>Clutter is also available on all major GNU/Linux distributions,
     in various package formats.</para>
