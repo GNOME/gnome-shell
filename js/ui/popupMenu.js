@@ -1507,6 +1507,10 @@ PopupComboMenu.prototype = {
         }
 
         this._getMenuItems()[position].actor.visible = visible;
+    },
+
+    getItemVisible: function(position) {
+        return this._getMenuItems()[position].actor.visible;
     }
 };
 
@@ -1533,6 +1537,8 @@ PopupComboBoxMenuItem.prototype = {
         if (params.style_class)
             this._menu.actor.add_style_class_name(params.style_class);
 
+        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+
         this._activeItemPos = -1;
         this._items = [];
     },
@@ -1549,6 +1555,33 @@ PopupComboBoxMenuItem.prototype = {
         }
 
         return null;
+    },
+
+    _onScrollEvent: function(actor, event) {
+        if (this._activeItemPos == -1)
+            return;
+
+        let position = this._activeItemPos;
+        let direction = event.get_scroll_direction();
+        if (direction == Clutter.ScrollDirection.DOWN) {
+            while (position < this._items.length - 1) {
+                position++;
+                if (this._menu.getItemVisible(position))
+                    break;
+            }
+        } else if (direction == Clutter.ScrollDirection.UP) {
+            while (position > 0) {
+                position--;
+                if (this._menu.getItemVisible(position))
+                    break;
+            }
+        }
+
+        if (position == this._activeItemPos)
+            return;
+
+        this.setActiveItem(position);
+        this.emit('active-item-changed', position);
     },
 
     activate: function(event) {
