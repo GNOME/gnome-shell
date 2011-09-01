@@ -163,6 +163,7 @@ struct _ClutterMainContext
    * clutter_threads_add_repaint_func()
    */
   GList *repaint_funcs;
+  guint last_repaint_id;
 
   /* main settings singleton */
   ClutterSettings *settings;
@@ -186,6 +187,8 @@ gboolean _clutter_threads_dispatch      (gpointer data);
 void     _clutter_threads_dispatch_free (gpointer data);
 
 ClutterMainContext *    _clutter_context_get_default                    (void);
+void                    _clutter_context_lock                           (void);
+void                    _clutter_context_unlock                         (void);
 gboolean                _clutter_context_is_initialized                 (void);
 PangoContext *          _clutter_context_create_pango_context           (void);
 PangoContext *          _clutter_context_get_pango_context              (void);
