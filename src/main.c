@@ -125,7 +125,7 @@ shell_dbus_init (gboolean replace)
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
     {
-      g_print ("failed to acquire org.freedesktop.Notifications: %s\n", error->message);
+      g_print ("failed to acquire org.gnome.Caribou.Keyboard: %s\n", error->message);
     }
 
   g_object_unref (bus);
