@@ -1329,9 +1329,8 @@ StTooltip StLabel {
     padding: 8px 0;
 }
 
-.chat-sent {
+.chat-received {
     padding-left: 4px;
-    border-radius: 4px;
 }
 
 .chat-received:rtl {
@@ -1341,8 +1340,7 @@ StTooltip StLabel {
 
 .chat-sent {
     padding-left: 18pt;
-    border-radius: 4px;
-    color: #7E7E7E;
+    color: #959595;
 }
 
 .chat-sent:rtl {
@@ -1352,7 +1350,6 @@ StTooltip StLabel {
 
 .chat-meta-message {
     padding-left: 4px;
-    border-radius: 4px;
     font-size: 9pt;
     color: #bbbbbb;
 }
