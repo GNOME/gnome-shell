@@ -28,9 +28,9 @@
  * @short_description: An action for drop targets
  *
  * #ClutterDropAction is a #ClutterAction that allows a #ClutterActor
- * implementation to control what happens when a dragged actor crosses
- * the target area or when a dragged actor is released (or "dropped")
- * on the target area.
+ * implementation to control what happens when an actor dragged using
+ * a #ClutterDragAction crosses the target area or when a dragged actor
+ * is released (or "dropped") on the target area.
  *
  * A trivial use of #ClutterDropAction consists in connecting to the
  * #ClutterDropAction::drop signal and handling the drop from there,
@@ -48,6 +48,18 @@
  * from a handler connected to the #ClutterDropAction::can-drop signal will
  * cause the #ClutterDropAction::drop signal to be skipped when the input
  * device button is released.
+ *
+ * <example id="drop-action-example">
+ *   <title>Drop targets</title>
+ *   <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-drop.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *   </programlisting>
+ * </example>
+ *
+ * It's important to note that #ClutterDropAction will only work with
+ * actors dragged using #ClutterDragAction.
  *
  * #ClutterDropAction is available since Clutter 1.8
  */
