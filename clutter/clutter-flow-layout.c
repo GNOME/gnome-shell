@@ -622,7 +622,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               item_x = x_off;
             }
 
-          new_x = ((line_item_count + 1) * (avail_width + priv->col_spacing))
+          new_x = x_off + ((line_item_count + 1) * (avail_width + priv->col_spacing))
                 / items_per_line;
           item_width = new_x - item_x - priv->col_spacing;
           item_height = g_array_index (priv->line_natural,
@@ -661,7 +661,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               item_y = y_off;
             }
 
-          new_y = ((line_item_count + 1) * (avail_height + priv->row_spacing))
+          new_y = y_off + ((line_item_count + 1) * (avail_height + priv->row_spacing))
                 / items_per_line;
           item_height = new_y - item_y - priv->row_spacing;
           item_width = g_array_index (priv->line_natural,
