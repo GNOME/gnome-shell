@@ -170,6 +170,7 @@ IMStatusChooserItem.prototype = {
         this._presence.connect('StatusChanged',
                                Lang.bind(this, this._sessionStatusChanged));
 
+        this._currentPresence = undefined;
         this._previousPresence = undefined;
 
         this._accountMgr = Tp.AccountManager.dup()
@@ -267,6 +268,11 @@ IMStatusChooserItem.prototype = {
     },
 
     _IMStatusChanged: function(accountMgr, presence, status, message) {
+        if (presence == this._currentPresence)
+            return;
+
+        this._currentPresence = presence;
+
         if (presence == Tp.ConnectionPresenceType.AVAILABLE)
             this._presence.setStatus(GnomeSession.PresenceStatus.AVAILABLE);
 
