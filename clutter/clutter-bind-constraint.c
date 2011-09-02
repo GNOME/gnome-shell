@@ -77,6 +77,21 @@
  *                        NULL);
  * ]|
  *
+ * <example id="bind-constraint-example">
+ *   <title>Animating the offset property of ClutterBindConstraint</title>
+ *   <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-constraints.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *   </programlisting>
+ *   <para>The example above creates eight rectangles and binds them to a
+ *   rectangle positioned in the center of the stage; when the user presses
+ *   the center rectangle, the #ClutterBindConstraint:offset property is
+ *   animated through the clutter_actor_animate() function to lay out the
+ *   eight rectangles around the center one. Pressing one of the outer
+ *   rectangles will animate the offset back to 0.</para>
+ * </example>
+ *
  * #ClutterBindConstraint is available since Clutter 1.4
  */
 
