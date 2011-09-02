@@ -199,7 +199,6 @@ function Keyboard() {
 Keyboard.prototype = {
     _init: function () {
         DBus.session.exportObject('/org/gnome/Caribou/Keyboard', this);
-        DBus.session.acquire_name('org.gnome.Caribou.Keyboard', 0, null, null);
 
         this._timestamp = global.get_current_time();
         this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
