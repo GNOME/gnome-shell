@@ -40,6 +40,8 @@
 
 #include "clutter-align-constraint.h"
 
+#include "clutter-actor-meta-private.h"
+#include "clutter-actor-private.h"
 #include "clutter-constraint.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -106,6 +108,19 @@ clutter_align_constraint_set_actor (ClutterActorMeta *meta,
 {
   ClutterAlignConstraint *align = CLUTTER_ALIGN_CONSTRAINT (meta);
   ClutterActorMetaClass *parent;
+
+  if (new_actor != NULL &&
+      align->source != NULL &&
+      clutter_actor_contains (new_actor, align->source))
+    {
+      g_warning (G_STRLOC ": The source actor '%s' is contained "
+                 "by the actor '%s' associated to the constraint "
+                 "'%s'",
+                 _clutter_actor_get_debug_name (align->source),
+                 _clutter_actor_get_debug_name (new_actor),
+                 _clutter_actor_meta_get_debug_name (meta));
+      return;
+    }
 
   /* store the pointer to the actor, for later use */
   align->actor = new_actor;
@@ -243,7 +258,10 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
   /**
    * ClutterAlignConstraint:source:
    *
-   * The #ClutterActor used as the source for the alignment
+   * The #ClutterActor used as the source for the alignment.
+   *
+   * The #ClutterActor must not be a child or a grandchild of the actor
+   * using the constraint.
    *
    * Since: 1.4
    */
@@ -346,13 +364,30 @@ void
 clutter_align_constraint_set_source (ClutterAlignConstraint *align,
                                      ClutterActor           *source)
 {
-  ClutterActor *old_source;
+  ClutterActor *old_source, *actor;
+  ClutterActorMeta *meta;
 
   g_return_if_fail (CLUTTER_IS_ALIGN_CONSTRAINT (align));
   g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
 
   if (align->source == source)
     return;
+
+  meta = CLUTTER_ACTOR_META (align);
+  actor = clutter_actor_meta_get_actor (meta);
+  if (actor != NULL && source != NULL)
+    {
+      if (clutter_actor_contains (actor, source))
+        {
+          g_warning (G_STRLOC ": The source actor '%s' is contained "
+                     "by the actor '%s' associated to the constraint "
+                     "'%s'",
+                     _clutter_actor_get_debug_name (source),
+                     _clutter_actor_get_debug_name (actor),
+                     _clutter_actor_meta_get_debug_name (meta));
+          return;
+        }
+    }
 
   old_source = align->source;
   if (old_source != NULL)
