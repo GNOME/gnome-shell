@@ -46,12 +46,8 @@ foo_button_pressed_cb (ClutterActor *actor,
                               NULL);
 
   /* remove the button press handler from the rectangle */
-  g_signal_handlers_disconnect_matched (actor,
-                                        G_SIGNAL_MATCH_FUNC,
-                                        0,
-                                        0,
-                                        NULL,
-                                        foo_button_pressed_cb,
+  g_signal_handlers_disconnect_by_func (actor,
+                                        G_CALLBACK (foo_button_pressed_cb),
                                         NULL);
 
   /* add a callback to clean up the script when the rig is destroyed */
