@@ -55,8 +55,8 @@ typedef struct _ClutterBehaviourScaleClass      ClutterBehaviourScaleClass;
  *
  * Since: 0.2
  *
- * Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:x-scale
- *   and #ClutterActor:y-scale instead.
+ * Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:scale-x
+ *   and #ClutterActor:scale-y instead.
  */
 struct _ClutterBehaviourScale
 {
