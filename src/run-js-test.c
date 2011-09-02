@@ -97,6 +97,7 @@ main(int argc, char **argv)
   setlocale (LC_ALL, "");
   g_type_init ();
 
+  _shell_global_init (NULL);
   global = shell_global_get ();
   js_context = _shell_global_get_gjs_context (global);
 
