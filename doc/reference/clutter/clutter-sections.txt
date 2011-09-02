@@ -913,6 +913,7 @@ clutter_backend_set_font_options
 clutter_backend_get_font_options
 clutter_backend_set_font_name
 clutter_backend_get_font_name
+clutter_backend_get_cogl_context
 <SUBSECTION Standard>
 CLUTTER_BACKEND
 CLUTTER_IS_BACKEND
