@@ -250,12 +250,21 @@ LayoutManager.prototype = {
     },
 
     _startupAnimation: function() {
+        // Don't animate the strut
+        this._chrome.freezeUpdateRegions();
+
         this.panelBox.anchor_y = this.panelBox.height;
         Tweener.addTween(this.panelBox,
                          { anchor_y: 0,
                            time: STARTUP_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
+                           transition: 'easeOutQuad',
+                           onComplete: this._startupAnimationComplete,
+                           onCompleteScope: this
                          });
+    },
+
+    _startupAnimationComplete: function() {
+        this._chrome.thawUpdateRegions();
     },
 
     showKeyboard: function () {
@@ -549,6 +558,8 @@ Chrome.prototype = {
 
         this._monitors = [];
         this._inOverview = false;
+        this._updateRegionIdle = 0;
+        this._freezeUpdateCount = 0;
 
         this._trackedActors = [];
 
@@ -744,9 +755,20 @@ Chrome.prototype = {
     },
 
     _queueUpdateRegions: function() {
-        if (!this._updateRegionIdle)
+        if (!this._updateRegionIdle && !this._freezeUpdateCount)
             this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this.updateRegions),
                                                        Meta.PRIORITY_BEFORE_REDRAW);
+    },
+
+    freezeUpdateRegions: function() {
+        if (this._updateRegionIdle)
+            this.updateRegions();
+        this._freezeUpdateCount++;
+    },
+
+    thawUpdateRegions: function() {
+        this._freezeUpdateCount--;
+        this._queueUpdateRegions();
     },
 
     _updateFullscreen: function() {
