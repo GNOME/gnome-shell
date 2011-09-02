@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-14 00:21+0300\n"
-"PO-Revision-Date: 2011-07-14 00:23+0300\n"
+"PO-Revision-Date: 2011-09-02 15:42+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -179,7 +179,7 @@ msgstr "Перамяніць рэжым \"на ўвесь экран\""
 
 #: ../src/core/all-keybindings.h:276
 msgid "Toggle maximization state"
-msgstr "Перамяніць разгорнутасць акна"
+msgstr "Перамяніць максімалізацыю акна"
 
 #: ../src/core/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
@@ -187,7 +187,7 @@ msgstr "Перамяніць, ці будзе акно заўсёды ўзнят
 
 #: ../src/core/all-keybindings.h:280
 msgid "Maximize window"
-msgstr "Разгарнуць акно"
+msgstr "Максімалізаваць акно"
 
 #: ../src/core/all-keybindings.h:282
 msgid "Restore window"
@@ -199,7 +199,7 @@ msgstr "Перамяніць скручанасць акна ў загалова
 
 #: ../src/core/all-keybindings.h:286
 msgid "Minimize window"
-msgstr "Прыхаваць акно"
+msgstr "Мінімалізаваць акно"
 
 #: ../src/core/all-keybindings.h:288
 msgid "Close window"
@@ -295,11 +295,11 @@ msgstr "Апусціць акно ніжэй за астатнія"
 
 #: ../src/core/all-keybindings.h:364
 msgid "Maximize window vertically"
-msgstr "Разгарнуць акно вертыкальна"
+msgstr "Вертыкальна максімалізаваць акно"
 
 #: ../src/core/all-keybindings.h:368
 msgid "Maximize window horizontally"
-msgstr "Разгарнуць акно гарызантальна"
+msgstr "Гарызантальна максімалізаваць акно"
 
 #: ../src/core/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
@@ -786,7 +786,7 @@ msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
-"Вызначае, ці трэба захоўваць дзейнымі схаваныя вокны (напрыклад, прыхаваныя "
+"Вызначае, ці трэба захоўваць дзейнымі схаваныя вокны (напрыклад, мінімалізаваныя "
 "або вокны з іншых прастор працы)."
 
 #: ../src/mutter.schemas.in.h:3
@@ -840,11 +840,11 @@ msgstr "Меню акна"
 
 #: ../src/ui/frames.c:1295
 msgid "Minimize Window"
-msgstr "Прыхаваць акно"
+msgstr "Мінімалізаваць акно"
 
 #: ../src/ui/frames.c:1298
 msgid "Maximize Window"
-msgstr "Разгарнуць акно"
+msgstr "Максімалізаваць акно"
 
 #: ../src/ui/frames.c:1301
 msgid "Restore Window"
@@ -877,17 +877,17 @@ msgstr "Змясціць акно на адзінай прасторы прац�
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
 msgid "Mi_nimize"
-msgstr "Пр_ыхаваць акно"
+msgstr "_Мінімалізаваць"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:71
 msgid "Ma_ximize"
-msgstr "_Разгарнуць акно"
+msgstr "Ма_ксімалізаваць"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:73
 msgid "Unma_ximize"
-msgstr "Адна_віць разгорнутае акно"
+msgstr "Скасаваць ма_ксімалізацыю"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:75
