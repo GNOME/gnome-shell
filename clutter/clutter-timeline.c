@@ -1555,7 +1555,7 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
  * Sets whether @timeline should reverse the direction after the
  * emission of the #ClutterTimeline::completed signal.
  *
- * Setting the #ClutterTimeline:reverse property to %TRUE is the
+ * Setting the #ClutterTimeline:auto-reverse property to %TRUE is the
  * equivalent of connecting a callback to the #ClutterTimeline::completed
  * signal and changing the direction of the timeline from that callback;
  * for instance, this code:
