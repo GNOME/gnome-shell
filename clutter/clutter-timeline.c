@@ -1378,7 +1378,7 @@ collect_markers (const gchar *key,
  * @msecs: the time to check, or -1
  * @n_markers: the number of markers returned
  *
- * Retrieves the list of markers at time @msecs. If @frame_num is a
+ * Retrieves the list of markers at time @msecs. If @msecs is a
  * negative integer, all the markers attached to @timeline will be
  * returned.
  *
