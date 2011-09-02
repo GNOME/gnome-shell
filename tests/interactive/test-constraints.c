@@ -22,6 +22,11 @@ static const gchar *colors[N_RECTS] = {
   "#729fcf", "#3465a4", "#204a87",
   "#ef2929", "#cc0000", "#a40000"
 };
+static const gchar *names[N_RECTS] = {
+  "North West", "North",  "North East",
+  "West",       "Center", "East",
+  "South West", "South",  "South East"
+};
 
 static const gchar *desaturare_glsl_shader =
 "uniform sampler2D tex;\n"
@@ -53,6 +58,10 @@ on_button_release (ClutterActor *actor,
       gfloat north_offset, south_offset;
       gfloat west_offset, east_offset;
 
+      /* expand the 8 rectangles by animating the offset of the
+       * bind constraints
+       */
+
       north_offset = (clutter_actor_get_height (rects[Center]) + V_PADDING)
                    * -1.0f;
       south_offset = (clutter_actor_get_height (rects[Center]) + V_PADDING);
@@ -61,46 +70,58 @@ on_button_release (ClutterActor *actor,
                   * -1.0f;
       east_offset = (clutter_actor_get_width (rects[Center]) + H_PADDING);
 
-      clutter_actor_animate (rects[NorthWest], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[NorthWest], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", west_offset,
                              "@constraints.y-bind.offset", north_offset,
+                             "reactive", TRUE,
                              NULL);
-      clutter_actor_animate (rects[North], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[North], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.y-bind.offset", north_offset,
+                             "reactive", TRUE,
                              NULL);
-      clutter_actor_animate (rects[NorthEast], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[NorthEast], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", east_offset,
                              "@constraints.y-bind.offset", north_offset,
+                             "reactive", TRUE,
                              NULL);
 
-      clutter_actor_animate (rects[West], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[West], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", west_offset,
+                             "reactive", TRUE,
                              NULL);
+      /* turn on the desaturation effect and set the center
+       * rectangle not reactive
+       */
       clutter_actor_animate (rects[Center], CLUTTER_LINEAR, 500,
                              "@effects.desaturate.enabled", TRUE,
+                             "reactive", FALSE,
                              NULL);
-      clutter_actor_animate (rects[East], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[East], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", east_offset,
+                             "reactive", TRUE,
                              NULL);
 
-      clutter_actor_animate (rects[SouthWest], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[SouthWest], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", west_offset,
                              "@constraints.y-bind.offset", south_offset,
+                             "reactive", TRUE,
                              NULL);
-      clutter_actor_animate (rects[South], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[South], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.y-bind.offset", south_offset,
+                             "reactive", TRUE,
                              NULL);
-      clutter_actor_animate (rects[SouthEast], CLUTTER_EASE_OUT_CUBIC, 500,
+      clutter_actor_animate (rects[SouthEast], CLUTTER_EASE_OUT_EXPO, 500,
                              "opacity", 255,
                              "@constraints.x-bind.offset", east_offset,
                              "@constraints.y-bind.offset", south_offset,
+                             "reactive", TRUE,
                              NULL);
     }
   else
@@ -109,6 +130,7 @@ on_button_release (ClutterActor *actor,
 
       clutter_actor_animate (rects[Center], CLUTTER_LINEAR, 500,
                              "@effects.desaturate.enabled", FALSE,
+                             "reactive", TRUE,
                              NULL);
 
       for (i = NorthWest; i < N_RECTS; i++)
@@ -116,15 +138,19 @@ on_button_release (ClutterActor *actor,
           if (i == Center)
             continue;
 
-          clutter_actor_animate (rects[i], CLUTTER_EASE_OUT_CUBIC, 500,
+          /* put the 8 rectangles back into their initial state */
+          clutter_actor_animate (rects[i], CLUTTER_EASE_OUT_EXPO, 500,
                                  "opacity", 0,
                                  "@constraints.x-bind.offset", 0.0f,
                                  "@constraints.y-bind.offset", 0.0f,
+                                 "reactive", FALSE,
                                  NULL);
         }
     }
 
   is_expanded = !is_expanded;
+
+  g_print ("Selected: [%s]\n", clutter_actor_get_name (actor));
 
   return TRUE;
 }
@@ -147,7 +173,7 @@ test_constraints_main (int argc, char *argv[])
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_size (stage, 800, 600);
 
-  /* main rect */
+  /* main rectangle */
   clutter_color_from_string (&rect_color, "#3465a4");
   rect = clutter_rectangle_new ();
   g_signal_connect (rect, "button-release-event",
@@ -156,8 +182,10 @@ test_constraints_main (int argc, char *argv[])
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &rect_color);
   clutter_actor_set_size (rect, RECT_SIZE, RECT_SIZE);
   clutter_actor_set_reactive (rect, TRUE);
+  clutter_actor_set_name (rect, names[Center]);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
+  /* align the center rectangle to the center of the stage */
   constraint = clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5);
   clutter_actor_add_constraint_with_name (rect, "x-align", constraint);
 
@@ -175,12 +203,16 @@ test_constraints_main (int argc, char *argv[])
   clutter_shader_effect_set_uniform (CLUTTER_SHADER_EFFECT (effect),
                                      "tex", G_TYPE_INT, 1, 0);
   clutter_shader_effect_set_uniform (CLUTTER_SHADER_EFFECT (effect),
-                                     "factor", G_TYPE_FLOAT, 1, 0.85);
+                                     "factor", G_TYPE_FLOAT, 1, 0.66);
   clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (effect), FALSE);
   clutter_actor_add_effect_with_name (rect, "desaturate", effect);
 
   rects[Center] = rect;
 
+  /* build the other rectangles, and bind their position and size
+   * to the center rectangle. we are going to animate the offset
+   * of the BindConstraints
+   */
   for (i = 0; i < N_RECTS; i++)
     {
       if (i == Center)
@@ -190,6 +222,7 @@ test_constraints_main (int argc, char *argv[])
       rect = clutter_rectangle_new ();
       clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &rect_color);
       clutter_actor_set_opacity (rect, 0);
+      clutter_actor_set_name (rect, names[i]);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
       constraint = clutter_bind_constraint_new (rects[Center], CLUTTER_BIND_X, 0.0);
@@ -200,6 +233,10 @@ test_constraints_main (int argc, char *argv[])
 
       constraint = clutter_bind_constraint_new (rects[Center], CLUTTER_BIND_SIZE, 0.0);
       clutter_actor_add_constraint_with_name (rect, "size-bind", constraint);
+
+      g_signal_connect (rect, "button-release-event",
+                        G_CALLBACK (on_button_release),
+                        NULL);
 
       rects[i] = rect;
     }
