@@ -275,7 +275,7 @@ Dash.prototype = {
 
         this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
         AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
-        this._tracker.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
+        this._appSystem.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
 
         Main.overview.connect('item-drag-begin',
                               Lang.bind(this, this._onDragBegin));
@@ -471,10 +471,7 @@ Dash.prototype = {
     _redisplay: function () {
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
-        /* hardcode here pending some design about how exactly desktop contexts behave */
-        let contextId = '';
-
-        let running = this._tracker.get_running_apps(contextId);
+        let running = this._appSystem.get_running();
 
         let children = this._box.get_children().filter(function(actor) {
                 return actor._delegate.child &&

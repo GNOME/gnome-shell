@@ -49,9 +49,6 @@ struct _ShellWindowTracker
   /* <MetaWindow * window, ShellApp *app> */
   GHashTable *window_to_app;
 
-  /* <const char *id, ShellApp *app> */
-  GHashTable *running_apps;
-
   /* <int, ShellApp *app> */
   GHashTable *launched_pid_to_app;
 };
@@ -64,7 +61,6 @@ enum {
 };
 
 enum {
-  APP_STATE_CHANGED,
   STARTUP_SEQUENCE_CHANGED,
   TRACKED_WINDOWS_CHANGED,
 
@@ -117,14 +113,6 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                                         SHELL_TYPE_APP,
                                                         G_PARAM_READABLE));
 
-  signals[APP_STATE_CHANGED] = g_signal_new ("app-state-changed",
-                                             SHELL_TYPE_WINDOW_TRACKER,
-                                             G_SIGNAL_RUN_LAST,
-                                             0,
-                                             NULL, NULL,
-                                             g_cclosure_marshal_VOID__OBJECT,
-                                             G_TYPE_NONE, 1,
-                                             SHELL_TYPE_APP);
   signals[STARTUP_SEQUENCE_CHANGED] = g_signal_new ("startup-sequence-changed",
                                    SHELL_TYPE_WINDOW_TRACKER,
                                    G_SIGNAL_RUN_LAST,
@@ -579,27 +567,6 @@ init_window_tracking (ShellWindowTracker *self)
   shell_window_tracker_on_n_workspaces_changed (screen, NULL, self);
 }
 
-void
-_shell_window_tracker_notify_app_state_changed (ShellWindowTracker *self,
-                                                ShellApp           *app)
-{
-  ShellAppState state = shell_app_get_state (app);
-
-  switch (state)
-    {
-    case SHELL_APP_STATE_RUNNING:
-      /* key is owned by the app */
-      g_hash_table_insert (self->running_apps, (char*)shell_app_get_id (app), app);
-      break;
-    case SHELL_APP_STATE_STARTING:
-      break;
-    case SHELL_APP_STATE_STOPPED:
-      g_hash_table_remove (self->running_apps, shell_app_get_id (app));
-      break;
-    }
-  g_signal_emit (self, signals[APP_STATE_CHANGED], 0, app);
-}
-
 static void
 on_startup_sequence_changed (MetaScreen            *screen,
                              SnStartupSequence     *sequence,
@@ -622,8 +589,6 @@ shell_window_tracker_init (ShellWindowTracker *self)
   self->window_to_app = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                                NULL, (GDestroyNotify) g_object_unref);
 
-  self->running_apps = g_hash_table_new (g_str_hash, g_str_equal);
-
   self->launched_pid_to_app = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_object_unref);
 
   screen = shell_global_get_screen (shell_global_get ());
@@ -640,7 +605,6 @@ shell_window_tracker_finalize (GObject *object)
 {
   ShellWindowTracker *self = SHELL_WINDOW_TRACKER (object);
 
-  g_hash_table_destroy (self->running_apps);
   g_hash_table_destroy (self->window_to_app);
   g_hash_table_destroy (self->launched_pid_to_app);
 
@@ -686,7 +650,7 @@ ShellApp *
 shell_window_tracker_get_app_from_pid (ShellWindowTracker *self, 
                                        int                 pid)
 {
-  GSList *running = shell_window_tracker_get_running_apps (self, "");
+  GSList *running = shell_app_system_get_running (shell_app_system_get_default());
   GSList *iter;
   ShellApp *result = NULL;
 
@@ -714,43 +678,6 @@ shell_window_tracker_get_app_from_pid (ShellWindowTracker *self,
   g_slist_free (running);
 
   return result;
-}
-
-/**
- * shell_window_tracker_get_running_apps:
- * @tracker: An app monitor instance
- * @context: Activity identifier
- *
- * Returns the set of applications which currently have at least one open
- * window in the given context.  The returned list will be sorted
- * by shell_app_compare().
- *
- * Returns: (element-type ShellApp) (transfer full): Active applications
- */
-GSList *
-shell_window_tracker_get_running_apps (ShellWindowTracker *tracker,
-                                       const char         *context)
-{
-  gpointer key, value;
-  GSList *ret;
-  GHashTableIter iter;
-
-  g_hash_table_iter_init (&iter, tracker->running_apps);
-
-  ret = NULL;
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      ShellApp *app = value;
-
-      if (strcmp (context, _shell_window_tracker_get_app_context (tracker, app)) != 0)
-        continue;
-
-      ret = g_slist_prepend (ret, g_object_ref (app));
-    }
-
-  ret = g_slist_sort (ret, (GCompareFunc)shell_app_compare);
-
-  return ret;
 }
 
 static void

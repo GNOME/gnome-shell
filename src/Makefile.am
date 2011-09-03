@@ -126,6 +126,7 @@ libgnome_shell_la_SOURCES =		\
 	$(shell_built_sources)		\
 	$(shell_public_headers_h)	\
 	shell-app-private.h		\
+	shell-app-system-private.h	\
 	shell-embedded-window-private.h	\
 	shell-global-private.h		\
 	shell-jsapi-compat-private.h	\

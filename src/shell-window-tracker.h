@@ -31,9 +31,6 @@ GType shell_window_tracker_get_type (void) G_GNUC_CONST;
 
 ShellWindowTracker* shell_window_tracker_get_default(void);
 
-GSList * shell_window_tracker_get_running_apps (ShellWindowTracker *tracker,
-                                                const char         *context);
-
 ShellApp *shell_window_tracker_get_window_app (ShellWindowTracker *tracker, MetaWindow *metawin);
 
 ShellApp *shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker, int pid);

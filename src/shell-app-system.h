@@ -53,6 +53,8 @@ ShellApp       *shell_app_system_lookup_heuristic_basename    (ShellAppSystem  *
 
 GSList         *shell_app_system_get_all                   (ShellAppSystem  *system);
 
+GSList         *shell_app_system_get_running               (ShellAppSystem  *self);
+
 GSList         *shell_app_system_initial_search            (ShellAppSystem  *system,
                                                             GSList          *terms);
 GSList         *shell_app_system_subsearch                 (ShellAppSystem  *system,

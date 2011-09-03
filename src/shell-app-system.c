@@ -14,6 +14,7 @@
 
 #include "shell-app-private.h"
 #include "shell-window-tracker-private.h"
+#include "shell-app-system-private.h"
 #include "shell-global.h"
 #include "shell-util.h"
 #include "st.h"
@@ -32,6 +33,7 @@ enum {
 };
 
 enum {
+  APP_STATE_CHANGED,
   INSTALLED_CHANGED,
   LAST_SIGNAL
 };
@@ -42,6 +44,8 @@ struct _ShellAppSystemPrivate {
   GMenuTree *apps_tree;
 
   GHashTable *entry_to_app;
+
+  GHashTable *running_apps;
 
   GSList *known_vendor_prefixes;
 
@@ -61,6 +65,14 @@ static void shell_app_system_class_init(ShellAppSystemClass *klass)
 
   gobject_class->finalize = shell_app_system_finalize;
 
+  signals[APP_STATE_CHANGED] = g_signal_new ("app-state-changed",
+                                             SHELL_TYPE_APP_SYSTEM,
+                                             G_SIGNAL_RUN_LAST,
+                                             0,
+                                             NULL, NULL,
+                                             g_cclosure_marshal_VOID__OBJECT,
+                                             G_TYPE_NONE, 1,
+                                             SHELL_TYPE_APP);
   signals[INSTALLED_CHANGED] =
     g_signal_new ("installed-changed",
 		  SHELL_TYPE_APP_SYSTEM,
@@ -81,6 +93,9 @@ shell_app_system_init (ShellAppSystem *self)
   self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                                    SHELL_TYPE_APP_SYSTEM,
                                                    ShellAppSystemPrivate);
+
+  priv->running_apps = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                              NULL, (GDestroyNotify) g_object_unref);
 
   priv->entry_to_app = g_hash_table_new_full (NULL, NULL,
                                               (GDestroyNotify)gmenu_tree_item_unref,
@@ -112,6 +127,7 @@ shell_app_system_finalize (GObject *object)
   g_object_unref (priv->apps_tree);
   g_object_unref (priv->settings_tree);
 
+  g_hash_table_destroy (priv->running_apps);
   g_hash_table_destroy (priv->entry_to_app);
   g_hash_table_destroy (priv->setting_entry_to_app);
 
@@ -248,7 +264,14 @@ load_app_entry (ShellAppSystem *self,
   else
     g_free (prefix);
 
-  app = _shell_app_new (entry);
+  /* Here we check to see whether the app is still running; if so, we
+   * keep the old data around.
+   */
+  app = g_hash_table_lookup (self->priv->running_apps, gmenu_tree_entry_get_desktop_file_id (entry));
+  if (app != NULL)
+    app = g_object_ref (app);
+  else
+    app = _shell_app_new (entry);
 
   g_hash_table_insert (self->priv->entry_to_app, gmenu_tree_item_ref (entry), app);
 }
@@ -492,7 +515,10 @@ ShellApp *
 shell_app_system_lookup_app_by_tree_entry (ShellAppSystem  *self,
                                            GMenuTreeEntry  *entry)
 {
-  return g_hash_table_lookup (self->priv->entry_to_app, entry);
+  /* If we looked up directly in ->entry_to_app, we'd lose the
+   * override of running apps.  Thus, indirect through the id.
+   */
+  return shell_app_system_lookup_app (self, gmenu_tree_entry_get_desktop_file_id (entry));
 }
 
 /**
@@ -582,11 +608,66 @@ shell_app_system_get_all (ShellAppSystem  *self)
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       ShellApp *app = value;
+      
       if (!g_desktop_app_info_get_nodisplay (shell_app_get_app_info (app)))
         result = g_slist_prepend (result, app);
     }
   return result;
 }
+
+void
+_shell_app_system_notify_app_state_changed (ShellAppSystem *self,
+                                            ShellApp       *app)
+{
+  ShellAppState state = shell_app_get_state (app);
+
+  switch (state)
+    {
+    case SHELL_APP_STATE_RUNNING:
+      /* key is owned by the app */
+      g_hash_table_insert (self->priv->running_apps, (char*)shell_app_get_id (app), g_object_ref (app));
+      break;
+    case SHELL_APP_STATE_STARTING:
+      break;
+    case SHELL_APP_STATE_STOPPED:
+      g_hash_table_remove (self->priv->running_apps, shell_app_get_id (app));
+      break;
+    }
+  g_signal_emit (self, signals[APP_STATE_CHANGED], 0, app);
+}
+
+/**
+ * shell_app_system_get_running:
+ * @self: A #ShellAppSystem
+ *
+ * Returns the set of applications which currently have at least one
+ * open window in the given context.  The returned list will be sorted
+ * by shell_app_compare().
+ *
+ * Returns: (element-type ShellApp) (transfer container): Active applications
+ */
+GSList *
+shell_app_system_get_running (ShellAppSystem *self)
+{
+  gpointer key, value;
+  GSList *ret;
+  GHashTableIter iter;
+
+  g_hash_table_iter_init (&iter, self->priv->running_apps);
+
+  ret = NULL;
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      ShellApp *app = value;
+
+      ret = g_slist_prepend (ret, app);
+    }
+
+  ret = g_slist_sort (ret, (GCompareFunc)shell_app_compare);
+
+  return ret;
+}
+
 
 static gint
 compare_apps_by_name (gconstpointer a,

@@ -122,8 +122,8 @@ AltTabPopup.prototype = {
     },
 
     show : function(backward, binding) {
-        let tracker = Shell.WindowTracker.get_default();
-        let apps = tracker.get_running_apps ('');
+        let appSys = Shell.AppSystem.get_default();
+        let apps = appSys.get_running ();
 
         if (!apps.length)
             return false;

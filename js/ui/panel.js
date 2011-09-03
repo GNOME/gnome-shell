@@ -292,8 +292,9 @@ AppMenuButton.prototype = {
         this._spinner.actor.lower_bottom();
 
         let tracker = Shell.WindowTracker.get_default();
+        let appSys = Shell.AppSystem.get_default();
         tracker.connect('notify::focus-app', Lang.bind(this, this._sync));
-        tracker.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
+        appSys.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
 
         global.window_manager.connect('switch-workspace', Lang.bind(this, this._sync));
 
@@ -457,7 +458,7 @@ AppMenuButton.prototype = {
         this._targetApp.request_quit();
     },
 
-    _onAppStateChanged: function(tracker, app) {
+    _onAppStateChanged: function(appSys, app) {
         let state = app.state;
         if (state != Shell.AppState.STARTING) {
             this._startingApps = this._startingApps.filter(function(a) {
