@@ -208,11 +208,11 @@ Overview.prototype = {
         this._viewSelector.addViewTab('applications', _("Applications"), appView.actor, 'system-run');
 
         // Default search providers
-        this._viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());
-        this._viewSelector.addSearchProvider(new AppDisplay.SettingsSearchProvider());
-        this._viewSelector.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
-        this._viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
-        this._viewSelector.addSearchProvider(new ContactDisplay.ContactSearchProvider());
+        this.addSearchProvider(new AppDisplay.AppSearchProvider());
+        this.addSearchProvider(new AppDisplay.SettingsSearchProvider());
+        this.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
+        this.addSearchProvider(new DocDisplay.DocSearchProvider());
+        this.addSearchProvider(new ContactDisplay.ContactSearchProvider());
 
         // TODO - recalculate everything when desktop size changes
         this._dash = new Dash.Dash();
@@ -231,6 +231,10 @@ Overview.prototype = {
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
+    },
+
+    addSearchProvider: function(provider) {
+        this._viewSelector.addSearchProvider(provider);
     },
 
     setMessage: function(text, undoCallback, undoLabel) {
