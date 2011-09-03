@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-01 07:55+0200\n"
-"PO-Revision-Date: 2011-09-01 08:06+0200\n"
+"POT-Creation-Date: 2011-09-03 13:55+0200\n"
+"PO-Revision-Date: 2011-09-03 13:58+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -85,7 +85,7 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "Liste av skrivebordfil-ider for favorittprogrammer"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
-#, fuzzy, no-c-format
+#, no-c-format, fuzzy
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -431,7 +431,7 @@ msgstr "Frakoblet"
 msgid "CONTACTS"
 msgstr "KONTAKTER"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1182
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Fjern"
 
@@ -560,7 +560,7 @@ msgstr "Systemet vil starte på nytt automatisk om %d sekunder."
 msgid "Restarting the system."
 msgstr "Starter systemet på nytt."
 
-#: ../js/ui/keyboard.js:509 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:508 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -598,11 +598,11 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1175
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:2337
+#: ../js/ui/messageTray.js:2352
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -654,7 +654,9 @@ msgstr "Autentisering kreves av trådløst nettverk"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
-msgstr "Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk «%s»."
+msgstr ""
+"Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk "
+"«%s»."
 
 #: ../js/ui/networkAgent.js:339
 msgid "Wired 802.1X authentication"
@@ -1380,45 +1382,49 @@ msgid "This resource is already connected to the server"
 msgstr "Denne ressursen er allerede koblet til tjeneren"
 
 #: ../js/ui/telepathyClient.js:1429
-msgid "Connection has been replaced by a new connection using the "
-msgstr "Tilkoblingen har blitt erstattet av en ny tilkobling som bruker "
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr "Tilkoblingen har blitt erstattet av en ny tilkobling som bruker samme ressurs"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1431
 msgid "The account already exists on the server"
 msgstr "Kontoen eksisterer allerede på tjeneren"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1433
 msgid "Server is currently too busy to handle the connection"
 msgstr "Tjener er for opptatt til å håndtere tilkoblingen"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1435
 msgid "Certificate has been revoked"
 msgstr "Sertifikatet er tilbaketrukket"
 
-#: ../js/ui/telepathyClient.js:1438
-msgid "Certificate uses an insecure cipher algorithm or is "
-msgstr "Sertifikatet bruker en usikker sifferalgoritme eller er "
+#: ../js/ui/telepathyClient.js:1437
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr "Sertifikatet bruker en usikker sifferalgoritme eller er krytografisk svakt"
 
-#: ../js/ui/telepathyClient.js:1441
-msgid "The length of the server certificate, or the depth of the "
-msgstr "Lengden på tjenersertifikatet, eller dybden av "
+#: ../js/ui/telepathyClient.js:1439
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr "Lengden eller dybden på tjenersertifikatet oversteg grensen som er satt i kryptografibiblioteket"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1452
+#: ../js/ui/telepathyClient.js:1448
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Tilkobling til %s feilet"
 
-#: ../js/ui/telepathyClient.js:1459
+#: ../js/ui/telepathyClient.js:1455
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
-#: ../js/ui/telepathyClient.js:1466
+#: ../js/ui/telepathyClient.js:1462
 msgid "Reconnect"
 msgstr "Koble til på nytt"
 
-#: ../js/ui/telepathyClient.js:1467
+#: ../js/ui/telepathyClient.js:1463
 msgid "Edit account"
 msgstr "Rediger konto"
 
@@ -1434,35 +1440,35 @@ msgstr "Ledig"
 msgid "Unavailable"
 msgstr "Ikke tilgjengelig"
 
-#: ../js/ui/userMenu.js:510 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:589
 msgid "Power Off..."
 msgstr "Slå av …"
 
-#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:582
+#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:588
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#: ../js/ui/userMenu.js:545
+#: ../js/ui/userMenu.js:551
 msgid "Do Not Disturb"
 msgstr "Ikke forstyrr"
 
-#: ../js/ui/userMenu.js:553
+#: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
 msgstr "Kontoer på nettet"
 
-#: ../js/ui/userMenu.js:557
+#: ../js/ui/userMenu.js:563
 msgid "System Settings"
 msgstr "Systeminnstillinger"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:570
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/userMenu.js:569
+#: ../js/ui/userMenu.js:575
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/userMenu.js:574
+#: ../js/ui/userMenu.js:580
 msgid "Log Out..."
 msgstr "Logg ut …"
 
@@ -1510,11 +1516,11 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/main.c:469
+#: ../src/main.c:480
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
-#: ../src/main.c:475
+#: ../src/main.c:486
 msgid "Mode used by GDM for login screen"
 msgstr "Modus som brukes av GDM for innloggingsskjermen"
 
