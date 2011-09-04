@@ -636,8 +636,7 @@ meta_show_dialog (const char *type,
   append_argument (args, "--class");
   append_argument (args, "mutter-dialog");
   append_argument (args, "--title");
-  /* Translators: This is the title used on dialog boxes */
-  append_argument (args, _("Mutter"));
+  append_argument (args, "");
   append_argument (args, "--text");
   append_argument (args, message);
 
