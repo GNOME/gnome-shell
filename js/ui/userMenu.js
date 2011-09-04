@@ -522,8 +522,8 @@ UserMenuButton.prototype = {
     },
 
     _updateSwitch: function(presence, status) {
-        let active = status == GnomeSession.PresenceStatus.BUSY;
-        this._dontDisturbSwitch.setToggleState(active);
+        let active = status == GnomeSession.PresenceStatus.AVAILABLE;
+        this._notificationsSwitch.setToggleState(active);
     },
 
     _updatePresenceIcon: function(accountMgr, presence, status, message) {
@@ -548,10 +548,10 @@ UserMenuButton.prototype = {
         item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupSwitchMenuItem(_("Do Not Disturb"));
+        item = new PopupMenu.PopupSwitchMenuItem(_("Notifications"));
         item.connect('activate', Lang.bind(this, this._updatePresenceStatus));
         this.menu.addMenuItem(item);
-        this._dontDisturbSwitch = item;
+        this._notificationsSwitch = item;
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
@@ -594,8 +594,8 @@ UserMenuButton.prototype = {
     },
 
     _updatePresenceStatus: function(item, event) {
-        let status = item.state ? GnomeSession.PresenceStatus.BUSY
-                                : GnomeSession.PresenceStatus.AVAILABLE;
+        let status = item.state ? GnomeSession.PresenceStatus.AVAILABLE
+                                : GnomeSession.PresenceStatus.BUSY;
         this._presence.setStatus(status);
     },
 
