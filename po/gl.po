@@ -5,22 +5,22 @@
 #
 # Anton Meixome <certima@certima.net>, 2009.
 # Antón Méixome <meixome@certima.net>, 2009.
-# Fran Dieguez <frandieguez@gnome.org>, 2011.
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011.
+# Fran Dieguez <frandieguez@gnome.org>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-31 22:21+0200\n"
-"PO-Revision-Date: 2011-08-31 22:27+0200\n"
-"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
+"POT-Creation-Date: 2011-09-04 20:00+0200\n"
+"PO-Revision-Date: 2011-09-04 20:01+0200\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"Language-Team: Galego <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Lokalize 1.2\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -447,7 +447,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1182
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -576,7 +576,7 @@ msgstr "O seu computador reiniciarase automaticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
 
-#: ../js/ui/keyboard.js:509 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:508 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -614,11 +614,11 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:1175
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2337
+#: ../js/ui/messageTray.js:2352
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -795,11 +795,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "Buscando..."
 
-#: ../js/ui/searchDisplay.js:351
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "Non hai resultados que coincidan."
 
@@ -1398,45 +1398,55 @@ msgid "This resource is already connected to the server"
 msgstr "Este recurso xa está conectado ao servidor"
 
 #: ../js/ui/telepathyClient.js:1429
-msgid "Connection has been replaced by a new connection using the "
-msgstr "A conexión foi substituída por unha nova conexión empregando o "
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr ""
+"A conexión foi substituída por unha nova conexión empregando o mesmo recurso"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1431
 msgid "The account already exists on the server"
 msgstr "Esta conta xa existe no servidor"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1433
 msgid "Server is currently too busy to handle the connection"
 msgstr "Nestes intres o servidor está moi ocupado para xesionar a conexión"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1435
 msgid "Certificate has been revoked"
 msgstr "O certificado foi revocado"
 
-#: ../js/ui/telepathyClient.js:1438
-msgid "Certificate uses an insecure cipher algorithm or is "
-msgstr "O certificado usa un algoritmo de cifrado inseguro ou é "
+#: ../js/ui/telepathyClient.js:1437
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"O certificado usa un algoritmo de cifrado inseguro ou é criptográficamente "
+"débil"
 
-#: ../js/ui/telepathyClient.js:1441
-msgid "The length of the server certificate, or the depth of the "
-msgstr "A lonxitude do certificado do servidor ou a profundidade de"
+#: ../js/ui/telepathyClient.js:1439
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"A lonxitude do certificado do servidor ou a profundidade da cadea do "
+"certificado do servidor excede os límites impostos pola biblioteca de "
+"criptografía."
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1452
+#: ../js/ui/telepathyClient.js:1448
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Produciuse un fallo na conexión a %s"
 
-#: ../js/ui/telepathyClient.js:1459
+#: ../js/ui/telepathyClient.js:1455
 msgid "Unknown reason"
 msgstr "Razón descoñecido"
 
-#: ../js/ui/telepathyClient.js:1466
+#: ../js/ui/telepathyClient.js:1462
 msgid "Reconnect"
 msgstr "Reconectar"
 
-#: ../js/ui/telepathyClient.js:1467
+#: ../js/ui/telepathyClient.js:1463
 msgid "Edit account"
 msgstr "Editar conta"
 
@@ -1452,35 +1462,35 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "Non dispoñíbel"
 
-#: ../js/ui/userMenu.js:510 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:589
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:582
+#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:588
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/userMenu.js:545
+#: ../js/ui/userMenu.js:551
 msgid "Do Not Disturb"
 msgstr "Non molestar"
 
-#: ../js/ui/userMenu.js:553
+#: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
 msgstr "Contas en liña"
 
-#: ../js/ui/userMenu.js:557
+#: ../js/ui/userMenu.js:563
 msgid "System Settings"
 msgstr "Configuracións do sistema"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:570
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/userMenu.js:569
+#: ../js/ui/userMenu.js:575
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:574
+#: ../js/ui/userMenu.js:580
 msgid "Log Out..."
 msgstr "Saír da sesión…"
 
@@ -1528,11 +1538,11 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/main.c:469
+#: ../src/main.c:480
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/main.c:475
+#: ../src/main.c:486
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para a pantalla de inicio"
 
@@ -1576,6 +1586,9 @@ msgstr "%1$s: %2$s"
 #: ../src/shell-util.c:600
 msgid "calendar:week_start:0"
 msgstr "calendar:week_start:1"
+
+#~ msgid "The length of the server certificate, or the depth of the "
+#~ msgstr "A lonxitude do certificado do servidor ou a profundidade de"
 
 #~ msgid "You're now connected to mobile broadband connection '%s'"
 #~ msgstr "Vostede está conectado agora á conexión de banda larga móbil «%s»"
