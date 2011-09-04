@@ -1975,9 +1975,37 @@ clutter_text_paint (ClutterActor *self)
   if (priv->editable && priv->single_line_mode)
     layout = clutter_text_create_layout (text, -1, -1);
   else
-    layout = clutter_text_create_layout (text,
-                                         alloc.x2 - alloc.x1,
-                                         alloc.y2 - alloc.y1);
+    {
+      /* the only time when we create the PangoLayout using the full
+       * width and height of the allocation is when we can both wrap
+       * and ellipsize
+       */
+      if (priv->wrap && priv->ellipsize)
+        {
+          layout = clutter_text_create_layout (text,
+                                               alloc.x2 - alloc.x1,
+                                               alloc.y2 - alloc.y1);
+        }
+      else
+        {
+          /* if we're not wrapping we cannot set the height of the
+           * layout, otherwise Pango will happily wrap the text to
+           * fit in the rectangle - thus making the :wrap property
+           * useless
+           *
+           * see bug:
+           *
+           *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2339
+           *
+           * in order to fix this, we create a layout that would fit
+           * in the assigned width, then we clip the actor if the
+           * logical rectangle overflows the allocation.
+           */
+          layout = clutter_text_create_layout (text,
+                                               alloc.x2 - alloc.x1,
+                                               -1);
+        }
+    }
 
   if (priv->editable && priv->cursor_visible)
     clutter_text_ensure_cursor_position (text);
@@ -2027,6 +2055,24 @@ clutter_text_paint (ClutterActor *self)
           text_x = TEXT_PADDING;
         }
     }
+  else if (!priv->editable && !(priv->wrap && priv->ellipsize))
+    {
+      PangoRectangle logical_rect = { 0, };
+
+      pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+
+      /* don't clip if the layout managed to fit inside our allocation */
+      if (logical_rect.width > (alloc.x2 - alloc.x1) ||
+          logical_rect.height > (alloc.y2 - alloc.y1))
+        {
+          cogl_clip_push_rectangle (0, 0,
+                                    alloc.x2 - alloc.x1,
+                                    alloc.y2 - alloc.y1);
+          clip_set = TRUE;
+        }
+
+      text_x = 0;
+    }
   else
     text_x = 0;
 
@@ -2053,7 +2099,6 @@ clutter_text_paint (ClutterActor *self)
 
   if (clip_set)
     cogl_clip_pop ();
-
 }
 
 static void
