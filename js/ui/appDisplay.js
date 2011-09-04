@@ -208,7 +208,8 @@ ViewByCategories.prototype = {
                 if (!entry.get_app_info().get_nodisplay())
                     appList.push(app);
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
-                this._loadCategory(iter.get_directory(), appList);
+                if (!dir.get_is_nodisplay())
+                    this._loadCategory(iter.get_directory(), appList);
             }
         }
     },
@@ -262,6 +263,8 @@ ViewByCategories.prototype = {
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
             if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 var dir = iter.get_directory();
+                if (dir.get_is_nodisplay())
+                    continue;
                 this._addCategory(dir.get_name(), i, dir);
                 i++;
             }
