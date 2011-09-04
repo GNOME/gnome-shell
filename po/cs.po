@@ -33,4 +33,4 @@ msgstr "Přepínače Cogl"
 
 #: ../cogl/cogl-debug.c:258
 msgid "Show Cogl options"
-msgstr "Zobrazit přepínače aplikace Cogl"
+msgstr "Zobrazit přepínače Cogl"
