@@ -356,6 +356,8 @@ cogl_sources_c = \
 	$(srcdir)/gl-prototypes/cogl-in-gles2-core-functions.h	\
 	$(srcdir)/gl-prototypes/cogl-fixed-functions.h	\
 	$(srcdir)/gl-prototypes/cogl-glsl-functions.h	\
+	$(srcdir)/cogl-memory-stack-private.h		\
+	$(srcdir)/cogl-memory-stack.c			\
 	$(NULL)
 
 if USE_GLIB
