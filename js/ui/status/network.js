@@ -1828,7 +1828,7 @@ NMApplet.prototype = {
             if (!a._inited) {
                 a._notifyDefaultId = a.connect('notify::default', Lang.bind(this, this._updateIcon));
                 a._notifyDefault6Id = a.connect('notify::default6', Lang.bind(this, this._updateIcon));
-                a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._updateIcon));
+                a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._notifyActivated));
 
                 a._inited = true;
             }
@@ -1872,10 +1872,26 @@ NMApplet.prototype = {
 
                 if (a._primaryDevice)
                     a._primaryDevice.setActiveConnection(a);
+
+                if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED
+                    && a._primaryDevice && a._primaryDevice._notification) {
+                    a._primaryDevice._notification.destroy();
+                    a._primaryDevice._notification = null;
+                }
             }
         }
 
         this._mainConnection = activating || default_ip4 || default_ip6 || this._activeConnections[0] || null;
+    },
+
+    _notifyActivated: function(activeConnection) {
+        if (activeConnection.state == NetworkManager.ActiveConnectionState.ACTIVATED
+            && activeConnection._primaryDevice && activeConnection._primaryDevice._notification) {
+            activeConnection._primaryDevice._notification.destroy();
+            activeConnection._primaryDevice._notification = null;
+        }
+
+        this._updateIcon();
     },
 
     _readConnections: function() {
