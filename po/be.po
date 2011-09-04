@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-02 21:39+0300\n"
-"PO-Revision-Date: 2011-09-02 21:39+0300\n"
+"POT-Creation-Date: 2011-09-04 19:01+0300\n"
+"PO-Revision-Date: 2011-09-04 19:01+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -232,7 +232,7 @@ msgstr "%s выдалены з вашага спіса ўпадабанага."
 #: ../js/ui/autorunManager.js:592
 #, c-format
 msgid "Open with %s"
-msgstr "Адчыніць у %s"
+msgstr "Адкрыць у %s"
 
 #: ../js/ui/autorunManager.js:618
 msgid "Eject"
@@ -409,7 +409,7 @@ msgstr "Па-за сеткай"
 msgid "CONTACTS"
 msgstr "КАНТАКТЫ"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1182
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Выдаліць"
 
@@ -419,7 +419,7 @@ msgstr "Настройкі даты і часу"
 
 #: ../js/ui/dateMenu.js:125
 msgid "Open Calendar"
-msgstr "Адчыніць каляндар"
+msgstr "Адкрыць каляндар"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
@@ -578,11 +578,11 @@ msgstr "Паглядзець выточны код"
 msgid "Web Page"
 msgstr "Сеціўная старонка"
 
-#: ../js/ui/messageTray.js:1175
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
-msgstr "Адчыніць"
+msgstr "Адкрыць"
 
-#: ../js/ui/messageTray.js:2337
+#: ../js/ui/messageTray.js:2352
 msgid "System Information"
 msgstr "Сістэмная інфармацыя"
 
@@ -761,11 +761,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Увядзіце загад:"
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "Пошук..."
 
-#: ../js/ui/searchDisplay.js:351
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "Нічога адпаведнага не знойдзена."
 
