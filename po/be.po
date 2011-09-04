@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-02 20:52+0300\n"
-"PO-Revision-Date: 2011-09-02 20:43+0300\n"
+"POT-Creation-Date: 2011-09-04 19:15+0300\n"
+"PO-Revision-Date: 2011-09-04 19:16+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -172,7 +172,7 @@ msgstr "Запусціць тэрмінал"
 
 #: ../src/core/all-keybindings.h:271
 msgid "Activate the window menu"
-msgstr "Адчыніць меню акна"
+msgstr "Адкрыць меню акна"
 
 #: ../src/core/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
@@ -204,7 +204,7 @@ msgstr "Мінімалізаваць акно"
 
 #: ../src/core/all-keybindings.h:288
 msgid "Close window"
-msgstr "Зачыніць акно"
+msgstr "Закрыць акно"
 
 #: ../src/core/all-keybindings.h:290
 msgid "Move window"
@@ -380,7 +380,7 @@ msgstr ""
 #: ../src/core/display.c:431
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Не ўдалося адчыніць X-дысплей аконнай сістэмы \"%s\"\n"
+msgstr "Не ўдалося адкрыць X-дысплей аконнай сістэмы \"%s\"\n"
 
 #: ../src/core/keybindings.c:759
 #, c-format
@@ -611,7 +611,7 @@ msgstr "Не ўдалося стварыць каталог \"%s\": %s\n"
 #: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Не ўдалося адчыніць файл сеанса \"%s\" для запісу: %s\n"
+msgstr "Не ўдалося адкрыць файл сеанса \"%s\" для запісу: %s\n"
 
 #: ../src/core/session.c:1001
 #, c-format
@@ -621,7 +621,7 @@ msgstr "Не ўдалося запісаць файл сеанса \"%s\": %s\n"
 #: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Не ўдалося зачыніць файл сеанса \"%s\": %s\n"
+msgstr "Не ўдалося закрыць файл сеанса \"%s\": %s\n"
 
 #: ../src/core/session.c:1136
 #, c-format
@@ -662,7 +662,7 @@ msgstr ""
 #: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Не ўдалося адчыніць адладачны журнал: %s\n"
+msgstr "Не ўдалося адкрыць адладачны журнал: %s\n"
 
 #: ../src/core/util.c:121
 #, c-format
@@ -672,7 +672,7 @@ msgstr "Не ўдалося выканаць fdopen() для журнальна�
 #: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Журнальны файл %s адчынены\n"
+msgstr "Журнальны файл %s адкрыты\n"
 
 #: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
 #, c-format
@@ -843,7 +843,7 @@ msgstr "Правілы выкарыстання: %s\n"
 
 #: ../src/ui/frames.c:1157
 msgid "Close Window"
-msgstr "Зачыніць акно"
+msgstr "Закрыць акно"
 
 #: ../src/ui/frames.c:1160
 msgid "Window Menu"
@@ -965,7 +965,7 @@ msgstr "Перамясціць на прастору працы з_нізу"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:104
 msgid "_Close"
-msgstr "_Зачыніць акно"
+msgstr "_Закрыць акно"
 
 #: ../src/ui/menu.c:204
 #, c-format
