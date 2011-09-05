@@ -86,7 +86,7 @@ release-message:
 	@echo ""
 	@echo "SHA256 Checksum:"
 	@echo ""
-	@cat $(top_builddir)/$(sha256_file)
+	@cat $(top_builddir)/build/$(sha256_file)
 	@echo ""
 	@echo "Additionally, a git clone of the source tree:"
 	@echo "  git clone git://git.gnome.org/cogl"
