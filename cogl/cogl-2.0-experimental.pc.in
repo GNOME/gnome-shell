@@ -9,5 +9,5 @@ Name: Cogl
 Description: An object oriented GL/GLES Abstraction/Utility Layer
 Version: @COGL_VERSION@
 Libs: -L${libdir} -lcogl
-Cflags: -I${includedir}/cogl -DCOGL_ENABLE_EXPERIMENTAL_2_0_API
+Cflags: -I${includedir}/cogl
 Requires: ${requires}

@@ -100,6 +100,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-context.h 		\
 	$(srcdir)/cogl2-path.h 			\
 	$(srcdir)/cogl2-clip-state.h		\
+	$(srcdir)/cogl2-experimental.h		\
 	$(NULL)
 
 # driver sources
