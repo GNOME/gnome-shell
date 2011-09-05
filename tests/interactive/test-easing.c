@@ -2,7 +2,8 @@
 #include <gmodule.h>
 #include <clutter/clutter.h>
 
-const struct {
+/* all the easing modes provided by Clutter */
+static const struct {
   const gchar *name;
   ClutterAnimationMode mode;
 } easing_modes[] = {
@@ -39,23 +40,28 @@ const struct {
   { "easeInOutBounce", CLUTTER_EASE_IN_OUT_BOUNCE },
 };
 
+#define HELP_TEXT       "Easing mode: %s (%d of %d)\n" \
+                        "Left click to tween\n" \
+                        "Right click to change the easing mode"
+
 static const gint n_easing_modes = G_N_ELEMENTS (easing_modes);
 static gint current_mode = 0;
 
 static gint duration = 1;
 static gboolean recenter = FALSE;
 
-static ClutterActor *main_stage        = NULL;
+static ClutterActor *main_stage = NULL;
 static ClutterActor *easing_mode_label = NULL;
 
 static ClutterAnimation *last_animation = NULL;
 
-static ClutterColor stage_color = { 0x88, 0x88, 0xdd, 0xff };
-static ClutterColor bouncer_color = { 0xee, 0x33, 0, 0xff };
-
+/* recenter_bouncer:
+ *
+ * repositions (through an animation) the bouncer at the center of the stage
+ */
 static void
-on_animation_completed (ClutterAnimation *animation,
-                        ClutterActor     *rectangle)
+recenter_bouncer (ClutterAnimation *animation,
+                  ClutterActor     *rectangle)
 {
   gfloat base_x, base_y;
   gint cur_mode;
@@ -65,7 +71,7 @@ on_animation_completed (ClutterAnimation *animation,
 
   cur_mode = easing_modes[current_mode].mode;
 
-  clutter_actor_animate (rectangle, cur_mode, 150,
+  clutter_actor_animate (rectangle, cur_mode, 250,
                          "x", base_x,
                          "y", base_y,
                          NULL);
@@ -79,31 +85,20 @@ on_button_press (ClutterActor       *actor,
   if (event->button == 3)
     {
       gchar *text;
-      gfloat stage_width, stage_height;
-      gfloat label_width, label_height;
 
-      current_mode = (current_mode + 1 < n_easing_modes) ? current_mode + 1
-                                                         : 0;
+      /* cycle through the various easing modes */
+      current_mode = (current_mode + 1 < n_easing_modes)
+                   ? current_mode + 1
+                   : 0;
 
-      text = g_strdup_printf ("Easing mode: %s (%d of %d)\n"
-                              "Right click to change the easing mode",
+      /* update the text of the label */
+      text = g_strdup_printf (HELP_TEXT,
                               easing_modes[current_mode].name,
                               current_mode + 1,
                               n_easing_modes);
 
       clutter_text_set_text (CLUTTER_TEXT (easing_mode_label), text);
       g_free (text);
-
-      clutter_actor_get_size (main_stage,
-                              &stage_width,
-                              &stage_height);
-      clutter_actor_get_size (easing_mode_label,
-                              &label_width,
-                              &label_height);
-
-      clutter_actor_set_position (easing_mode_label,
-                                  stage_width  - label_width  - 10,
-                                  stage_height - label_height - 10);
     }
   else if (event->button == 1)
     {
@@ -112,15 +107,20 @@ on_button_press (ClutterActor       *actor,
 
       cur_mode = easing_modes[current_mode].mode;
 
+      /* tween the actor using the current easing mode */
       animation =
         clutter_actor_animate (rectangle, cur_mode, duration * 1000,
                                "x", event->x,
                                "y", event->y,
                                NULL);
 
+      /* if we were asked to, recenter the bouncer at the end of the
+       * animation. we keep track of the animation to avoid connecting
+       * the signal handler to the same Animation twice.
+       */
       if (recenter && last_animation != animation)
         g_signal_connect_after (animation, "completed",
-                                G_CALLBACK (on_animation_completed),
+                                G_CALLBACK (recenter_bouncer),
                                 rectangle);
 
       last_animation = animation;
@@ -133,9 +133,10 @@ static gboolean
 draw_bouncer (ClutterCairoTexture *texture,
               cairo_t             *cr)
 {
+  const ClutterColor *bouncer_color;
+  cairo_pattern_t *pattern;
   guint width, height;
   float radius;
-  cairo_pattern_t *pattern;
 
   clutter_cairo_texture_get_surface_size (texture, &width, &height);
 
@@ -145,20 +146,22 @@ draw_bouncer (ClutterCairoTexture *texture,
 
   cairo_arc (cr, radius / 2, radius / 2, radius / 2, 0.0, 2.0 * G_PI);
 
+  bouncer_color = CLUTTER_COLOR_DarkScarletRed;
+
   pattern = cairo_pattern_create_radial (radius / 2, radius / 2, 0,
                                          radius, radius, radius);
   cairo_pattern_add_color_stop_rgba (pattern,
                                      0,
-                                     bouncer_color.red / 255.0,
-                                     bouncer_color.green / 255.0,
-                                     bouncer_color.blue / 255.0,
-                                     bouncer_color.alpha / 255.0);
+                                     bouncer_color->red / 255.0,
+                                     bouncer_color->green / 255.0,
+                                     bouncer_color->blue / 255.0,
+                                     bouncer_color->alpha / 255.0);
   cairo_pattern_add_color_stop_rgba (pattern,
-                                     0.9,
-                                     bouncer_color.red / 255.0,
-                                     bouncer_color.green / 255.0,
-                                     bouncer_color.blue / 255.0,
-                                     0.1);
+                                     0.85,
+                                     bouncer_color->red / 255.0,
+                                     bouncer_color->green / 255.0,
+                                     bouncer_color->blue / 255.0,
+                                     0.25);
 
   cairo_set_source (cr, pattern);
   cairo_fill_preserve (cr);
@@ -182,6 +185,7 @@ make_bouncer (gfloat width,
   clutter_actor_set_anchor_point (retval, width / 2, height / 2);
   clutter_actor_set_reactive (retval, TRUE);
 
+  /* make sure we draw the bouncer immediately */
   clutter_cairo_texture_invalidate (CLUTTER_CAIRO_TEXTURE (retval));
 
   return retval;
@@ -212,7 +216,6 @@ test_easing_main (int argc, char *argv[])
   ClutterActor *stage, *rect, *label;
   gchar *text;
   gfloat stage_width, stage_height;
-  gfloat label_width, label_height;
   GError *error = NULL;
 
   if (clutter_init_with_args (&argc, &argv,
@@ -224,30 +227,27 @@ test_easing_main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Easing Modes");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   main_stage = stage;
 
   clutter_actor_get_size (stage, &stage_width, &stage_height);
 
+  /* create the actor that we want to tween */
   rect = make_bouncer (50, 50);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
   clutter_actor_set_position (rect, stage_width / 2, stage_height / 2);
 
-  text = g_strdup_printf ("Easing mode: %s (%d of %d)\n"
-                          "Right click to change the easing mode",
+  text = g_strdup_printf (HELP_TEXT,
                           easing_modes[current_mode].name,
                           current_mode + 1,
                           n_easing_modes);
 
   label = clutter_text_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
-  clutter_text_set_font_name (CLUTTER_TEXT (label), "Sans 18px");
   clutter_text_set_text (CLUTTER_TEXT (label), text);
-  clutter_actor_get_size (label, &label_width, &label_height);
-  clutter_actor_set_position (label,
-                              stage_width - label_width - 10,
-                              stage_height - label_height - 10);
+  clutter_actor_add_constraint (label, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.95));
+  clutter_actor_add_constraint (label, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.95));
   easing_mode_label = label;
 
   g_free (text);

@@ -129,6 +129,15 @@
  *   </variablelist>
  * </refsect2>
  *
+ * <example id="example-clutter-animation">
+ *   <title>Tweening using clutter_actor_animate()</title>
+ *   <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-easing.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *   </programlisting>
+ * </example>
+ *
  * #ClutterAnimation is available since Clutter 1.0
  */
 
