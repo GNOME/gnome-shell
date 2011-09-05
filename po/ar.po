@@ -1,0 +1,37 @@
+# Arabic translation for cogl.
+# Copyright (C) 2011 cogl's COPYRIGHT HOLDER
+# This file is distributed under the same license as the cogl package.
+# Abdalrahim G. Fakhouri <abdilra7eem@yahoo.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-02 20:48+0000\n"
+"PO-Revision-Date: 2011-09-03 00:31+0300\n"
+"Last-Translator: Abdalrahim G. Fakhouri <abdilra7eem@yahoo.com>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "شارات تنقيح جتك+ التي ستُضبط"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "شارات تنقيح جتك+ التي ستُصفّر"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "خيارات Cogl"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "أظهر خيارات Cogl"
