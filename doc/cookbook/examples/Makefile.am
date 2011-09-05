@@ -59,13 +59,13 @@ INCLUDES = \
 
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
-AM_CFLAGS = \
-        $(CLUTTER_CFLAGS) \
-        $(MAINTAINER_CFLAGS) \
-        -DG_DISABLE_SINGLE_INCLUDES \
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+
+AM_CPPFLAGS = \
+	-DG_DISABLE_SINGLE_INCLUDES \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DCLUTTER_DISABLE_DEPRECATED \
-        -DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
+	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
 
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
@@ -118,17 +118,17 @@ events_buttons_SOURCES                     = events-buttons.c
 events_buttons_click_SOURCES               = events-buttons-click.c
 events_buttons_lasso_SOURCES               = events-buttons-lasso.c
 
-EXTRA_DIST += \
-	animations-complex.json			\
-	animations-complex-overlapping.json	\
-	animations-reuse-animation.json		\
-	animations-reuse-ui.json		\
-	script-signals.json			\
-	script-states.json			\
-	script-ui.json				\
+ui_data = \
+	$(srcdir)/animations-complex.json		\
+	$(srcdir)/animations-complex-overlapping.json	\
+	$(srcdir)/animations-reuse-animation.json	\
+	$(srcdir)/animations-reuse-ui.json		\
+	$(srcdir)/script-signals.json			\
+	$(srcdir)/script-states.json			\
+	$(srcdir)/script-ui.json			\
 	$(NULL)
 
 examplesdir = $(datadir)/clutter-1.0/cookbook/examples
-examples_DATA = *.c *.h *.json
+examples_DATA = $(uidata) $(srcdir)/*.c $(srcdir)/*.h
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
