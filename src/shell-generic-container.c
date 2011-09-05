@@ -264,6 +264,22 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
 
   container_class->get_focus_chain = shell_generic_container_get_focus_chain;
 
+  /**
+   * ShellGenericContainer::get-preferred-width:
+   * @self: the #ShellGenericContainer
+   * @for_height: as in clutter_actor_get_preferred_width()
+   * @alloc: a #ShellGenericContainerAllocation to be filled in
+   *
+   * Emitted when clutter_actor_get_preferred_width() is called
+   * on @self. You should fill in the fields of @alloc with the
+   * your minimum and natural widths. #ShellGenericContainer
+   * will deal with taking its borders and padding into account
+   * for you.
+   *
+   * @alloc's fields are initialized to 0, so unless you have a fixed
+   * width specified (via #ClutterActor:width or CSS), you must
+   * connect to this signal and fill in the values.
+   */
   shell_generic_container_signals[GET_PREFERRED_WIDTH] =
     g_signal_new ("get-preferred-width",
                   G_TYPE_FROM_CLASS (klass),
@@ -273,6 +289,22 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
                   gi_cclosure_marshal_generic,
                   G_TYPE_NONE, 2, G_TYPE_FLOAT, SHELL_TYPE_GENERIC_CONTAINER_ALLOCATION);
 
+  /**
+   * ShellGenericContainer::get-preferred-height:
+   * @self: the #ShellGenericContainer
+   * @for_width: as in clutter_actor_get_preferred_height()
+   * @alloc: a #ShellGenericContainerAllocation to be filled in
+   *
+   * Emitted when clutter_actor_get_preferred_height() is called
+   * on @self. You should fill in the fields of @alloc with the
+   * your minimum and natural heights. #ShellGenericContainer
+   * will deal with taking its borders and padding into account
+   * for you.
+   *
+   * @alloc's fields are initialized to 0, so unless you have a fixed
+   * height specified (via #ClutterActor:height or CSS), you must
+   * connect to this signal and fill in the values.
+   */
   shell_generic_container_signals[GET_PREFERRED_HEIGHT] =
     g_signal_new ("get-preferred-height",
                   G_TYPE_FROM_CLASS (klass),
@@ -282,6 +314,18 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
                   gi_cclosure_marshal_generic,
                   G_TYPE_NONE, 2, G_TYPE_FLOAT, SHELL_TYPE_GENERIC_CONTAINER_ALLOCATION);
 
+  /**
+   * ShellGenericContainer::allocate:
+   * @self: the #ShellGenericContainer
+   * @box: @self's content box
+   * @flags: the allocation flags.
+   *
+   * Emitted when @self is allocated, after chaining up to the parent
+   * allocate method.
+   *
+   * Note that @box is @self's content box (qv
+   * st_theme_node_get_content_box()), NOT its allocation.
+   */
   shell_generic_container_signals[ALLOCATE] =
     g_signal_new ("allocate",
                   G_TYPE_FROM_CLASS (klass),
