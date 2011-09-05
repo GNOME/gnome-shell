@@ -1,3 +1,39 @@
+Cogl 1.7.8                                                         2011-09-05
+
+  • List of changes since Cogl 1.7.6
+
+   » Getters for the display and renderer associated with context
+   » Getter for the number of supported texture units during fragment
+     processing. (ClutterGst needs to know this for example to know if GLSL
+     based YUV->RGB color space conversion can be used.)
+   » Optimizations for the GLSL codegen for fragment processing so we can
+     ignore redundant layers - if for example the "REPLACE" function is used
+     for layer N then computing anything for previous layers is redundant. Also
+     if texture combining needs to sample the same texture multiple times we
+     now re-use the same sample instead of repeating it.
+   » Optimize texture uploads to a texture atlas on GLES by avoiding lots of
+     redundant format conversions.
+   » Relax the requirement to need braces around blend factors when using the
+     CoglBlendString syntax. Braces are only needed for factors involving a
+     subtraction like "(1 - SRC_COLOR[A])"
+   » Adds API for querying the format of a CoglFramebuffer
+
+  • List of bugs fixes since Cogl 1.7.6
+
+    https://bugzilla.gnome.org:
+
+    #656426 - Improve the generated GLSL code
+    #656441 - Build failure in examples
+    #656587 - Outdated FSF Address in code files
+    #657347 - Retrieve the number of texture image units
+    #657840 - Atlas-ed bitmaps converted too many times
+    #656809 - cogl 1.7.6 doesn't compile on Fedora 16/17
+
+Many thanks to:
+    Damien Lespiau
+    Neil Roberts
+    Emmanuele Bassi
+
 Cogl 1.7.6                                                         2011-08-12
 ===============================================================================
 
