@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-04 17:36+0000\n"
-"PO-Revision-Date: 2011-09-05 14:04+0530\n"
+"PO-Revision-Date: 2011-09-05 17:46+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1606,7 +1606,7 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1890
 msgid "Accept Focus"
-msgstr ""
+msgstr "ಗಮನವನ್ನು ಅಂಗೀಕರಿಸು"
 
 #: ../clutter/clutter-stage.c:1891
 msgid "Whether the stage should accept focus on show"
@@ -1626,39 +1626,39 @@ msgstr ""
 
 #: ../clutter/clutter-table-layout.c:585
 msgid "Column Number"
-msgstr ""
+msgstr "ಲಂಬ ಸಂಖ್ಯೆ"
 
 #: ../clutter/clutter-table-layout.c:586
 msgid "The column the widget resides in"
-msgstr ""
+msgstr "ವಿಜೆಟ್ ಇರುವ ಲಂಬಸಾಲು"
 
 #: ../clutter/clutter-table-layout.c:593
 msgid "Row Number"
-msgstr ""
+msgstr "ಸಾಲಿನ ಸಂಖ್ಯೆ"
 
 #: ../clutter/clutter-table-layout.c:594
 msgid "The row the widget resides in"
-msgstr ""
+msgstr "ವಿಜೆಟ್ ಇರುವ ಅಡ್ಡಸಾಲು"
 
 #: ../clutter/clutter-table-layout.c:601
 msgid "Column Span"
-msgstr ""
+msgstr "ಲಂಬಸಾಲಿನ ವಿಸ್ತಾರ"
 
 #: ../clutter/clutter-table-layout.c:602
 msgid "The number of columns the widget should span"
-msgstr ""
+msgstr "ವಿಜೆಟ್‌ ಎಷ್ಟು ಲಂಬಸಾಲುಗಳವರೆಗೆ ಹರಡಬೇಕು"
 
 #: ../clutter/clutter-table-layout.c:609
 msgid "Row Span"
-msgstr ""
+msgstr "ಅಡ್ಡಸಾಲಿನ ವಿಸ್ತಾರ"
 
 #: ../clutter/clutter-table-layout.c:610
 msgid "The number of rows the widget should span"
-msgstr ""
+msgstr "ವಿಜೆಟ್‌ ಎಷ್ಟು ಅಡ್ಡಸಾಲುಗಳವರೆಗೆ ಹರಡಬೇಕು"
 
 #: ../clutter/clutter-table-layout.c:617
 msgid "Horizontal Expand"
-msgstr ""
+msgstr "ಸಮತಲ ವಿಸ್ತರಿಸುವಿಕೆ"
 
 #: ../clutter/clutter-table-layout.c:618
 msgid "Allocate extra space for the child in horizontal axis"
@@ -1666,7 +1666,7 @@ msgstr ""
 
 #: ../clutter/clutter-table-layout.c:624
 msgid "Vertical Expand"
-msgstr ""
+msgstr "ಲಂಬ ವಿಸ್ತರಣೆ"
 
 #: ../clutter/clutter-table-layout.c:625
 msgid "Allocate extra space for the child in vertical axis"
@@ -1674,23 +1674,23 @@ msgstr ""
 
 #: ../clutter/clutter-table-layout.c:1714
 msgid "Spacing between columns"
-msgstr ""
+msgstr "ಲಂಬಸಾಲುಗಳ ನಡುವಿನ ಅಂತರ"
 
 #: ../clutter/clutter-table-layout.c:1728
 msgid "Spacing between rows"
-msgstr ""
+msgstr "ಅಡ್ಡಸಾಲುಗಳ ನಡುವಿನ ಅಂತರ"
 
 #: ../clutter/clutter-text.c:2849
 msgid "The font to be used by the text"
-msgstr ""
+msgstr "ಪಠ್ಯದಲ್ಲಿ ಬಳಸಬೇಕಿರುವ ಅಕ್ಷರಶೈಲಿ"
 
 #: ../clutter/clutter-text.c:2866
 msgid "Font Description"
-msgstr ""
+msgstr "ಅಕ್ಷರಶೈಲಿ ವಿವರಣೆ"
 
 #: ../clutter/clutter-text.c:2867
 msgid "The font description to be used"
-msgstr ""
+msgstr "ಬಳಸಬೇಕಿರುವ ಅಕ್ಷರಶೈಲಿ ವಿವರಣೆ"
 
 #: ../clutter/clutter-text.c:2883
 msgid "Text"
@@ -1698,35 +1698,35 @@ msgstr "ಪಠ್ಯ"
 
 #: ../clutter/clutter-text.c:2884
 msgid "The text to render"
-msgstr ""
+msgstr "ರೆಂಡರ್ ಮಾಡಬೇಕಿರುವ ಪಠ್ಯ"
 
 #: ../clutter/clutter-text.c:2898
 msgid "Font Color"
-msgstr ""
+msgstr "ಅಕ್ಷರಶೈಲಿಯ ಬಣ್ಣ"
 
 #: ../clutter/clutter-text.c:2899
 msgid "Color of the font used by the text"
-msgstr ""
+msgstr "ಪಠ್ಯದಲ್ಲಿ ಬಳಸಲಾದ ಅಕ್ಷರಶೈಲಿಯ ಬಣ್ಣ"
 
 #: ../clutter/clutter-text.c:2913
 msgid "Editable"
-msgstr ""
+msgstr "ಸಂಪಾದಿಸಬಹುದಾದ"
 
 #: ../clutter/clutter-text.c:2914
 msgid "Whether the text is editable"
-msgstr ""
+msgstr "ಪಠ್ಯವನ್ನು ಸಂಪಾದಿಸಬಹುದೆ"
 
 #: ../clutter/clutter-text.c:2929
 msgid "Selectable"
-msgstr ""
+msgstr "ಆರಿಸಬಹುದಾದ"
 
 #: ../clutter/clutter-text.c:2930
 msgid "Whether the text is selectable"
-msgstr ""
+msgstr "ಪಠ್ಯವನ್ನು ಆರಿಸಬಹುದೆ"
 
 #: ../clutter/clutter-text.c:2944
 msgid "Activatable"
-msgstr ""
+msgstr "ಸಕ್ರಿಯಗೊಳಿಸಬಹುದಾದ"
 
 #: ../clutter/clutter-text.c:2945
 msgid "Whether pressing return causes the activate signal to be emitted"
@@ -1734,11 +1734,11 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2962
 msgid "Whether the input cursor is visible"
-msgstr ""
+msgstr "ಇನ್‌ಪುಟ್ ತೆರೆಸೂಚಕವು ಗೋಚರಿಸುತ್ತದೆಯೆ"
 
 #: ../clutter/clutter-text.c:2976 ../clutter/clutter-text.c:2977
 msgid "Cursor Color"
-msgstr ""
+msgstr "ತೆರೆಸೂಚಕದ ಬಣ್ಣ"
 
 #: ../clutter/clutter-text.c:2991
 msgid "Cursor Color Set"
@@ -1746,23 +1746,23 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2992
 msgid "Whether the cursor color has been set"
-msgstr ""
+msgstr "ತೆರೆಸೂಚಕದ ಬಣ್ಣವನ್ನು ಹೊಂದಿಸಲಾಗಿದೆಯೆ"
 
 #: ../clutter/clutter-text.c:3007
 msgid "Cursor Size"
-msgstr ""
+msgstr "ತೆರೆಸೂಚಕದ ಗಾತ್ರ"
 
 #: ../clutter/clutter-text.c:3008
 msgid "The width of the cursor, in pixels"
-msgstr ""
+msgstr "ತೆರೆಸೂಚಕದ ಅಗಲ, ಪಿಕ್ಸೆಲ್‌ಗಳಲ್ಲಿ"
 
 #: ../clutter/clutter-text.c:3022
 msgid "Cursor Position"
-msgstr ""
+msgstr "ತೆರೆಸೂಚಕದ ಸ್ಥಾನ"
 
 #: ../clutter/clutter-text.c:3023
 msgid "The cursor position"
-msgstr ""
+msgstr "ತೆರೆಸೂಚಕದ ಸ್ಥಾನ"
 
 #: ../clutter/clutter-text.c:3038
 msgid "Selection-bound"
@@ -1770,15 +1770,15 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3039
 msgid "The cursor position of the other end of the selection"
-msgstr ""
+msgstr "ಆಯ್ಕೆಯ ಇನ್ನೊಂದು ಬದಿಯ ತೆರೆಸೂಚಕದ ಸ್ಥಾನ"
 
 #: ../clutter/clutter-text.c:3054 ../clutter/clutter-text.c:3055
 msgid "Selection Color"
-msgstr ""
+msgstr "ಆಯ್ಕೆಯ ಬಣ್ಣ"
 
 #: ../clutter/clutter-text.c:3069
 msgid "Selection Color Set"
-msgstr ""
+msgstr "ಆಯ್ಕೆಯ ಬಣ್ಣದ ಸೆಟ್"
 
 #: ../clutter/clutter-text.c:3070
 msgid "Whether the selection color has been set"
@@ -1786,7 +1786,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3085
 msgid "Attributes"
-msgstr ""
+msgstr "ಗುಣವಿಶೇಷಗಳು"
 
 #: ../clutter/clutter-text.c:3086
 msgid "A list of style attributes to apply to the contents of the actor"
@@ -1794,7 +1794,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3108
 msgid "Use markup"
-msgstr ""
+msgstr "ಗುರುತನ್ನು ಬಳಸು"
 
 #: ../clutter/clutter-text.c:3109
 msgid "Whether or not the text includes Pango markup"
@@ -1802,7 +1802,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3125
 msgid "Line wrap"
-msgstr ""
+msgstr "ಸಾಲಿನ ಆವರಿಕೆ"
 
 #: ../clutter/clutter-text.c:3126
 msgid "If set, wrap the lines if the text becomes too wide"
@@ -1810,7 +1810,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3141
 msgid "Line wrap mode"
-msgstr ""
+msgstr "ಸಾಲಿನ ಆವರಿಕೆ ಕ್ರಮ"
 
 #: ../clutter/clutter-text.c:3142
 msgid "Control how line-wrapping is done"
@@ -1818,7 +1818,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3157
 msgid "Ellipsize"
-msgstr ""
+msgstr "ದೀರ್ಘವೃತ್ತಗೊಳಿಸು"
 
 #: ../clutter/clutter-text.c:3158
 msgid "The preferred place to ellipsize the string"
@@ -1834,15 +1834,15 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3191
 msgid "Justify"
-msgstr ""
+msgstr "ಜಸ್ಟಿಫೈ"
 
 #: ../clutter/clutter-text.c:3192
 msgid "Whether the text should be justified"
-msgstr ""
+msgstr "ಪಠ್ಯವನ್ನು ಜಸ್ಟಿಫೈ ಮಾಡಬೇಕೆ"
 
 #: ../clutter/clutter-text.c:3207
 msgid "Password Character"
-msgstr ""
+msgstr "ಗುಪ್ತಪದದ ಅಕ್ಷರ"
 
 #: ../clutter/clutter-text.c:3208
 msgid "If non-zero, use this character to display the actor's contents"
@@ -1850,7 +1850,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3222
 msgid "Max Length"
-msgstr ""
+msgstr "ಗರಿಷ್ಟ ಉದ್ದ"
 
 #: ../clutter/clutter-text.c:3223
 msgid "Maximum length of the text inside the actor"
@@ -1904,7 +1904,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1022
 msgid "Horizontal repeat"
-msgstr ""
+msgstr "ಅಡ್ಡ ಪುನರಾವರ್ತನೆ"
 
 #: ../clutter/clutter-texture.c:1023
 msgid "Repeat the contents rather than scaling them horizontally"
@@ -1912,7 +1912,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1030
 msgid "Vertical repeat"
-msgstr ""
+msgstr "ಲಂಬ ಪುನರಾವರ್ತನೆ"
 
 #: ../clutter/clutter-texture.c:1031
 msgid "Repeat the contents rather than scaling them vertically"
@@ -1920,23 +1920,23 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1038
 msgid "Filter Quality"
-msgstr ""
+msgstr "ಫಿಲ್ಟರ್ ಗುಣಮಟ್ಟ"
 
 #: ../clutter/clutter-texture.c:1039
 msgid "Rendering quality used when drawing the texture"
-msgstr ""
+msgstr "ಮೇಲ್ಮೈರಚನೆಯನ್ನು ಚಿತ್ರಿಸುವಾಗ ಬಳಸಲಾಗುವ ರೆಂಡರಿಂಗ್ ಗುಣಮಟ್ಟ"
 
 #: ../clutter/clutter-texture.c:1047
 msgid "Pixel Format"
-msgstr ""
+msgstr "ಪಿಕ್ಸೆಲ್ ವಿನ್ಯಾಸ"
 
 #: ../clutter/clutter-texture.c:1048
 msgid "The Cogl pixel format to use"
-msgstr ""
+msgstr "ಬಳಸಬೇಕಿರುವ Cogl ಪಿಕ್ಸೆಲ್ ವಿನ್ಯಾಸ"
 
 #: ../clutter/clutter-texture.c:1056
 msgid "Cogl Texture"
-msgstr ""
+msgstr "Cogl ಮೇಲ್ಮೈರಚನೆ"
 
 #: ../clutter/clutter-texture.c:1057
 msgid "The underlying Cogl texture handle used to draw this actor"
@@ -1944,7 +1944,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1064
 msgid "Cogl Material"
-msgstr ""
+msgstr "Cogl ಸಾಮಗ್ರಿ"
 
 #: ../clutter/clutter-texture.c:1065
 msgid "The underlying Cogl material handle used to draw this actor"
@@ -1952,11 +1952,11 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1082
 msgid "The path of the file containing the image data"
-msgstr ""
+msgstr "ಚಿತ್ರದ ಮಾಹಿತಿಯನ್ನು ಹೊಂದಿರುವ ಕಡತದ ಮಾರ್ಗ"
 
 #: ../clutter/clutter-texture.c:1089
 msgid "Keep Aspect Ratio"
-msgstr ""
+msgstr "ಆಕಾರ ಅನುಪಾತವನ್ನು ಇರಿಸಿಕೊ"
 
 #: ../clutter/clutter-texture.c:1090
 msgid ""
