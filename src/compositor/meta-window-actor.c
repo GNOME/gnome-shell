@@ -740,6 +740,13 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
     return FALSE;
 
   /*
+   * If we have two snap-tiled windows, we don't want the shadow to obstruct
+   * the other window.
+   */
+  if (meta_window_get_tile_match (priv->window))
+    return FALSE;
+
+  /*
    * Always put a shadow around windows with a frame - This should override
    * the restriction about not putting a shadow around ARGB windows.
    */
