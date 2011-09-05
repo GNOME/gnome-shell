@@ -1,3 +1,67 @@
+Clutter 1.7.14                                                       2011-09-05
+===============================================================================
+
+  • List of changes since Clutter 1.7.12
+
+    - Use newer version of ATK
+    Cally now depends on the latest version of ATK, to reduce the amount of
+    ad hoc code needed and to use newer features that simplify the
+    implementation of accessible objects in Clutter.
+
+    - Allow using Layout Managers with generic containers
+    Layout managers should not assume that they are allocating the whole
+    area available from the Actor using them; this allows actors that
+    support concepts like padding or margin to use a LayoutManager internally
+    for its children.
+
+    - Cookbook updates
+    Add a recipe on how to bind a ClutterState to the signals of objects
+    defined in ClutterScript. We also install the cookbook examples inside
+    the $datadir/clutter-1.0/cookbook/examples directory.
+
+    - Improve examples in the API reference
+    Some of the interactive test suite units are actually good examples of
+    how to use the Clutter API; we can use the XInclude tags to include the
+    source code inside the API reference.
+
+    - Ensure thread safety of the repaint functions add/removal
+    Fix a long standing issue where adding or removing repaint functions
+    was not acquiring a lock; now it's safe to manipulate the repaint
+    functions list from different threads.
+
+    - Make the ClutterText:line-wrap property work again
+    In 1.2 the :line-wrap property was broken, and ClutterText would paint
+    a PangoLayout wrapping until it fit the height of the allocation
+    regardless of whether the :line-wrap property was set to FALSE or
+    TRUE. Now we clip the PangoLayout before rendering it, if the :line-wrap
+    property is set to FALSE and there is no ellipsization policy set.
+
+    - Disable redirection to offscreen buffer by default
+    Whenever a ClutterActor with children was not fully opaque, the actor
+    was redirected to an FBO, to perform correct opacity computations.
+    Sadly, this can lead to 3x slowdowns, given the amount of framebuffer
+    objects created and the state changes that have to be performed. We
+    decided to turn off this feature by default, to avoid the performance
+    hit. It is still possible to enable this feature on a per-actor basis,
+    though, and will work to reduce the hit in future versions of Cogl,
+    Clutter and the drivers.
+
+  • List of bugs fixed since Clutter 1.7.12
+
+    [bugzilla.gnome.org]
+
+    #657681 - Crash when destroying an actor while dragging it
+
+    [bugzilla.clutter-project.org]
+
+    #2339 - ClutterText in 1.4 line-wraps even if line-wrap is disabled
+
+Many thanks to:
+
+  Alejandro Piñeiro, Shankar Prasad, Chao-Hsiung Liao, Dan Winship,
+  Daniel Mustieles, Daniel Nylander, Fran Dieguez, Marek Černocký,
+  Robert Bragg
+
 Clutter 1.7.12                                                       2011-08-29
 ===============================================================================
 
