@@ -1,3 +1,30 @@
+3.1.91
+======
+
+* Fix problem with applications vanishing from alt-Tab when
+  desktop files change. [Colin; #657990]
+* Fix interaction of on-screen keyboard with run-dialog and
+  Looking Glass console [Dan; #657986]
+* Add public API for adding and removing search providers
+  [Philippe; #657548, #658113]
+* Allow changing IM status with scroll wheel [Florian; #657973]
+* Limit volume slider to 100% [Bastien; #657607]
+* Change "Do Not Disturb" to "Notifications" in user menu [Florian; #652718]
+* Switch browser in default favorites to Epiphany [Colin; #650616]
+* Misc bug fixes [Dan, Florian, Jasper, Marc-Antoine, Rui;
+  #649631, #655069, #656142, #657703, #657759, #658007, #658065, #658176]
+
+Contributors:
+ Rui Matos, Florian Müllner, Philippe Normand, Marc-Antoine Perennou,
+ Jasper St. Pierre, Colin Walters, Dan Winship
+
+Translations:
+ Ihar Hrachyshka [be], Mario Blättermann [de], Kris Thomsen [da],
+ Jorge González [es], Arash Mousavi [fa], Fran Dieguez [gl],
+ Takayuki Kusano [ja],Aurimas Černius [lt], Kjartan Maraas [nb], A S Alam [pa],
+ Stas Solovey [ru], Daniel Nylander [se], Tirumurti Vasudevan [ta],
+ Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.1.90.1
 ========
 
