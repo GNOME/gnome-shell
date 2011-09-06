@@ -38,6 +38,7 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 
+const _PASSWORD_SERVICE_NAME = 'gdm-password';
 const _FADE_ANIMATION_TIME = 0.16;
 const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 2.0;
@@ -734,7 +735,7 @@ LoginDialog.prototype = {
 
         this._greeterClient.open_connection();
 
-        this._greeterClient.call_start_conversation('gdm-password');
+        this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
 
         this._greeterClient.connect('reset',
                                     Lang.bind(this, this._onReset));
@@ -851,7 +852,7 @@ LoginDialog.prototype = {
     },
 
     _onReset: function(client, serviceName) {
-        this._greeterClient.call_start_conversation('gdm-password');
+        this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
 
         let tasks = [this._hidePrompt,
 
@@ -1154,7 +1155,7 @@ LoginDialog.prototype = {
                                                       this._fadeOutNotListedButton]),
 
                      function() {
-                         this._greeterClient.call_begin_verification('gdm-password');
+                         this._greeterClient.call_begin_verification(_PASSWORD_SERVICE_NAME);
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -1204,7 +1205,7 @@ LoginDialog.prototype = {
 
                      function() {
                          let userName = activatedItem.user.get_user_name();
-                         this._greeterClient.call_begin_verification_for_user('gdm-password',
+                         this._greeterClient.call_begin_verification_for_user(_PASSWORD_SERVICE_NAME,
                                                                               userName);
                      }];
 
