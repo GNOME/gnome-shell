@@ -56,7 +56,7 @@
   </autotools>
 
   <autotools id="glib">
-    <branch repo="git.gnome.org" module="glib"/>
+    <branch repo="git.gnome.org" module="glib" revision="glib-2-30"/>
   </autotools>
 
   <tarball id="vala" version="0.13.1" autogenargs="--enable-vapigen">
