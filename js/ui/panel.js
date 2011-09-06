@@ -45,12 +45,13 @@ try {
     log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
 }
 
-const GDM_STATUS_AREA_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'battery'];
+const GDM_STATUS_AREA_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'battery', 'powerMenu'];
 const GDM_STATUS_AREA_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'volume': imports.ui.status.volume.Indicator,
     'battery': imports.ui.status.power.Indicator,
-    'keyboard': imports.ui.status.keyboard.XKBIndicator
+    'keyboard': imports.ui.status.keyboard.XKBIndicator,
+    'powerMenu': imports.gdm.powerMenu.PowerMenuButton
 };
 
 // To make sure the panel corners blend nicely with the panel,
