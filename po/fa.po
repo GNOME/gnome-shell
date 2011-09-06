@@ -1,0 +1,36 @@
+# Persian translation for cogl.
+# Copyright (C) 2011 cogl's COPYRIGHT HOLDER
+# This file is distributed under the same license as the cogl package.
+# Arash Mousavi <mousavi.arash@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-02 11:33+0000\n"
+"PO-Revision-Date: 2011-09-06 11:26+0330\n"
+"Last-Translator: Arash Mousavi <mousavi.arash@gmail.com>\n"
+"Language-Team: Persian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: IRAN, ISLAMIC REPUBLIC OF\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "پرچم‌های اشکال‌زدایی کوگل جهت تنظیم"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "پرچم‌های اشکال‌زدایی کوگل جهت خارج کردن از تنظیم"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "گزینه‌های کوگل"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "نمایش گزینه‌های کوگل"
+
