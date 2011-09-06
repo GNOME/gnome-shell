@@ -765,7 +765,6 @@ function popModal(actor, timestamp) {
 function createLookingGlass() {
     if (lookingGlass == null) {
         lookingGlass = new LookingGlass.LookingGlass();
-        lookingGlass.slaveTo(panel.actor);
     }
     return lookingGlass;
 }

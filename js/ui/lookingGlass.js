@@ -6,6 +6,7 @@ const GConf = imports.gi.GConf;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
@@ -761,9 +762,13 @@ LookingGlass.prototype = {
                                         Lang.bind(this, this._updateFont));
         this._updateFont();
 
-        // we add it to the chrome because we want it to appear to slide
-        // out from underneath the panel
-        Main.layoutManager.addChrome(this.actor);
+        // We want it to appear to slide out from underneath the panel
+        Main.layoutManager.panelBox.add_actor(this.actor);
+        this.actor.lower_bottom();
+        Main.layoutManager.panelBox.connect('allocation-changed',
+                                            Lang.bind(this, this._queueResize));
+        Main.layoutManager.keyboardBox.connect('allocation-changed',
+                                               Lang.bind(this, this._queueResize));
 
         this._objInspector = new ObjInspector();
         Main.uiGroup.add_actor(this._objInspector.actor);
@@ -844,6 +849,8 @@ LookingGlass.prototype = {
 
         this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY, 
                                                      entry: this._entry.clutter_text });
+
+        this._resize();
     },
 
     _updateFont: function() {
@@ -918,13 +925,18 @@ LookingGlass.prototype = {
             this.open();
     },
 
-    _resizeTo: function(actor) {
+    _queueResize: function() {
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                       Lang.bind(this, function () { this._resize(); }));
+    },
+
+    _resize: function() {
         let primary = Main.layoutManager.primaryMonitor;
         let myWidth = primary.width * 0.7;
-        let myHeight = primary.height * 0.7;
-        let [srcX, srcY] = actor.get_transformed_position();
-        this.actor.x = srcX + (primary.width - myWidth) / 2;
-        this._hiddenY = srcY + actor.height - myHeight - 4; // -4 to hide the top corners
+        let availableHeight = primary.height - Main.layoutManager.keyboardBox.height;
+        let myHeight = Math.min(primary.height * 0.7, availableHeight * 0.9);
+        this.actor.x = (primary.width - myWidth) / 2;
+        this._hiddenY = this.actor.get_parent().height - myHeight - 4; // -4 to hide the top corners
         this._targetY = this._hiddenY + myHeight;
         this.actor.y = this._hiddenY;
         this.actor.width = myWidth;
@@ -932,14 +944,6 @@ LookingGlass.prototype = {
         this._objInspector.actor.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
         this._objInspector.actor.set_position(this.actor.x + Math.floor(myWidth * 0.1),
                                               this._targetY + Math.floor(myHeight * 0.1));
-    },
-
-    slaveTo: function(actor) {
-        this._slaveTo = actor;
-        actor.connect('notify::allocation', Lang.bind(this, function () {
-            this._resizeTo(actor);
-        }));
-        this._resizeTo(actor);
     },
 
     insertObject: function(obj) {
@@ -974,7 +978,6 @@ LookingGlass.prototype = {
 
         this._notebook.selectIndex(0);
         this.actor.show();
-        this.actor.lower(Main.layoutManager.panelBox);
         this._open = true;
         this._history.lastItem();
 
@@ -1005,7 +1008,6 @@ LookingGlass.prototype = {
 
         Main.popModal(this._entry);
 
-        this.actor.lower(Main.layoutManager.panelBox);
         Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,
