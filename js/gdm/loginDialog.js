@@ -46,9 +46,12 @@ const _FADE_ANIMATION_TIME = 0.16;
 const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 2.0;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
+const _LOGO_ICON_NAME_SIZE = 48;
 
 const _LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const _FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
+
+const _LOGO_KEY = 'logo';
 
 let _loginDialog = null;
 
@@ -771,6 +774,12 @@ LoginDialog.prototype = {
 
         this._fprintManager = new Fprint.FprintManager();
         this._startFingerprintConversationIfNeeded();
+        this._settings.connect('changed::' + _LOGO_KEY,
+                               Lang.bind(this, this._updateLogo));
+
+        this._logoBox = new St.Bin({ style_class: 'login-dialog-logo-box' });
+        this.contentLayout.add(this._logoBox);
+        this._updateLogo();
 
         this._titleLabel = new St.Label({ style_class: 'login-dialog-title',
                                           text: C_("title", "Sign In") });
@@ -887,6 +896,20 @@ LoginDialog.prototype = {
             }));
     },
 
+    _updateLogo: function() {
+        this._logoBox.child = null;
+        let path = this._settings.get_string(_LOGO_KEY);
+
+        if (path) {
+            let file = Gio.file_new_for_path(path);
+            let uri = file.get_uri();
+
+            let textureCache = St.TextureCache.get_default();
+            this._logoBox.child = textureCache.load_uri_async(uri, -1, _LOGO_ICON_NAME_SIZE);
+        }
+
+    },
+
     _onReset: function(client, serviceName) {
         this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
         this._startFingerprintConversationIfNeeded();
@@ -894,7 +917,8 @@ LoginDialog.prototype = {
         let tasks = [this._hidePrompt,
 
                      new Batch.ConcurrentBatch(this, [this._fadeInTitleLabel,
-                                                      this._fadeInNotListedButton]),
+                                                      this._fadeInNotListedButton,
+                                                      this._fadeInLogo]),
 
                      function() {
                          this._sessionList.close();
@@ -1219,7 +1243,8 @@ LoginDialog.prototype = {
                      },
 
                      new Batch.ConcurrentBatch(this, [this._fadeOutTitleLabel,
-                                                      this._fadeOutNotListedButton]),
+                                                      this._fadeOutNotListedButton,
+                                                      this._fadeOutLogo]),
 
                      function() {
                          this._greeterClient.call_begin_verification(_PASSWORD_SERVICE_NAME);
@@ -1227,6 +1252,14 @@ LoginDialog.prototype = {
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
         batch.run();
+    },
+
+    _fadeInLogo: function() {
+        return _fadeInActor(this._logoBox);
+    },
+
+    _fadeOutLogo: function() {
+        return _fadeOutActor(this._logoBox);
     },
 
     _fadeInTitleLabel: function() {
@@ -1264,7 +1297,8 @@ LoginDialog.prototype = {
                      },
 
                      new Batch.ConcurrentBatch(this, [this._fadeOutTitleLabel,
-                                                      this._fadeOutNotListedButton]),
+                                                      this._fadeOutNotListedButton,
+                                                      this._fadeOutLogo]),
 
                      function() {
                          return this._userList.shrinkToNaturalHeight();
