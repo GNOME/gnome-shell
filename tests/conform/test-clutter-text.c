@@ -410,3 +410,95 @@ text_event (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
+static inline void
+validate_markup_attributes (ClutterText   *text,
+                            PangoAttrType  attr_type,
+                            int            start_index,
+                            int            end_index)
+{
+  PangoLayout *layout;
+  PangoAttrList *attrs;
+  PangoAttrIterator *iter;
+
+  layout = clutter_text_get_layout (text);
+  g_assert (layout != NULL);
+
+  attrs = pango_layout_get_attributes (layout);
+  g_assert (attrs != NULL);
+
+  iter = pango_attr_list_get_iterator (attrs);
+  while (pango_attr_iterator_next (iter))
+    {
+      GSList *attributes = pango_attr_iterator_get_attrs (iter);
+      PangoAttribute *a;
+
+      if (attributes == NULL)
+        break;
+
+      g_assert (attributes->data != NULL);
+
+      a = attributes->data;
+
+      g_assert (a->klass->type == attr_type);
+      g_assert_cmpint (a->start_index, ==, start_index);
+      g_assert_cmpint (a->end_index, ==, end_index);
+
+      g_slist_free_full (attributes, (GDestroyNotify) pango_attribute_destroy);
+    }
+
+  pango_attr_iterator_destroy (iter);
+}
+
+void
+idempotent_use_markup (void)
+{
+  ClutterText *text;
+  const char *contents = "foo <b>bar</b>";
+  const char *display = "foo bar";
+  int bar_start_index = strstr (display, "bar") - display;
+  int bar_end_index = bar_start_index + strlen ("bar");
+
+  /* case 1: text -> use_markup */
+  if (g_test_verbose ())
+    g_print ("text: '%s' -> use-markup: TRUE\n", contents);
+
+  text = g_object_new (CLUTTER_TYPE_TEXT,
+                       "text", contents, "use-markup", TRUE,
+                       NULL);
+
+  if (g_test_verbose ())
+    g_print ("Contents: '%s' (expected: '%s')\n",
+             clutter_text_get_text (text),
+             display);
+
+  g_assert_cmpstr (clutter_text_get_text (text), ==, display);
+
+  validate_markup_attributes (text,
+                              PANGO_ATTR_WEIGHT,
+                              bar_start_index,
+                              bar_end_index);
+
+  clutter_actor_destroy (CLUTTER_ACTOR (text));
+
+  /* case 2: use_markup -> text */
+  if (g_test_verbose ())
+    g_print ("use-markup: TRUE -> text: '%s'\n", contents);
+
+  text = g_object_new (CLUTTER_TYPE_TEXT,
+                       "use-markup", TRUE, "text", contents,
+                       NULL);
+
+  if (g_test_verbose ())
+    g_print ("Contents: '%s' (expected: '%s')\n",
+             clutter_text_get_text (text),
+             display);
+
+  g_assert_cmpstr (clutter_text_get_text (text), ==, display);
+
+  validate_markup_attributes (text,
+                              PANGO_ATTR_WEIGHT,
+                              bar_start_index,
+                              bar_end_index);
+
+  clutter_actor_destroy (CLUTTER_ACTOR (text));
+}

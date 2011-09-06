@@ -112,6 +112,9 @@ struct _ClutterTextPrivate
 {
   PangoFontDescription *font_desc;
 
+  /* the text passed to set_text and set_markup */
+  gchar *contents;
+
   /* the displayed text */
   gchar *text;
 
@@ -1028,10 +1031,35 @@ clutter_text_set_positions (ClutterText *self,
 }
 
 static inline void
+clutter_text_set_contents (ClutterText *self,
+                           const gchar *str)
+{
+  ClutterTextPrivate *priv = self->priv;
+
+  g_free (priv->contents);
+
+  if (str == NULL || *str == '\0')
+    priv->contents = g_strdup ("");
+  else
+    priv->contents = g_strdup (str);
+}
+
+static inline void
 clutter_text_set_text_internal (ClutterText *self,
                                 const gchar *text)
 {
   ClutterTextPrivate *priv = self->priv;
+
+  g_signal_emit (self, text_signals[DELETE_TEXT], 0, 0, -1);
+  if (text != NULL && *text != '\0')
+    {
+      gint tmp_pos = 0;
+
+      g_signal_emit (self, text_signals[INSERT_TEXT], 0,
+                     text,
+                     strlen (text),
+                     &tmp_pos);
+    }
 
   g_object_freeze_notify (G_OBJECT (self));
 
@@ -1154,7 +1182,15 @@ clutter_text_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_TEXT:
-      clutter_text_set_text_internal (self, g_value_get_string (value));
+      {
+        const char *str = g_value_get_string (value);
+
+        clutter_text_set_contents (self, str);
+        if (self->priv->use_markup)
+          clutter_text_set_markup_internal (self, str);
+        else
+          clutter_text_set_text_internal (self, str);
+      }
       break;
 
     case PROP_COLOR:
@@ -1422,6 +1458,7 @@ clutter_text_finalize (GObject *gobject)
 
   clutter_text_dirty_paint_volume (self);
 
+  g_free (priv->contents);
   g_free (priv->text);
   g_free (priv->font_name);
 
@@ -3550,6 +3587,7 @@ clutter_text_init (ClutterText *self)
    * or strcmp() on it
    */
   priv->text = g_strdup ("");
+  priv->contents = g_strdup ("");
 
   priv->text_color = default_text_color;
   priv->cursor_color = default_cursor_color;
@@ -4453,15 +4491,8 @@ clutter_text_set_text (ClutterText *self,
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  g_signal_emit (self, text_signals[DELETE_TEXT], 0, 0, -1);
-  if (text)
-    {
-      gint tmp_pos = 0;
-      g_signal_emit (self, text_signals[INSERT_TEXT], 0, text,
-                     strlen (text), &tmp_pos);
-    }
-
   clutter_text_set_use_markup_internal (self, FALSE);
+  clutter_text_set_contents (self, text);
   clutter_text_set_text_internal (self, text ? text : "");
 }
 
@@ -4490,6 +4521,7 @@ clutter_text_set_markup (ClutterText *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   clutter_text_set_use_markup_internal (self, TRUE);
+  clutter_text_set_contents (self, markup);
 
   if (markup != NULL && *markup != '\0')
     clutter_text_set_markup_internal (self, markup);
@@ -4883,7 +4915,7 @@ clutter_text_set_use_markup (ClutterText *self,
 
   priv = self->priv;
 
-  str = g_strdup (priv->text);
+  str = g_strdup (priv->contents);
 
   clutter_text_set_use_markup_internal (self, setting);
 
