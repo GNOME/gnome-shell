@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-01 13:20+0000\n"
-"PO-Revision-Date: 2011-09-01 19:40+0200\n"
+"POT-Creation-Date: 2011-09-06 15:20+0000\n"
+"PO-Revision-Date: 2011-09-06 20:01+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -230,27 +230,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:254
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:316
+#: ../js/ui/appDisplay.js:319
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:374
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:682
+#: ../js/ui/appDisplay.js:685
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:688
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:686
+#: ../js/ui/appDisplay.js:689
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -420,7 +420,7 @@ msgid "Next week"
 msgstr "La semana que viene"
 
 #: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:354
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:355
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -444,7 +444,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1182
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Quitar"
 
@@ -572,7 +572,7 @@ msgstr "El sistema se reiniciará automáticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando el sistema."
 
-#: ../js/ui/keyboard.js:509 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:508 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -610,11 +610,11 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1175
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2337
+#: ../js/ui/messageTray.js:2352
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -722,18 +722,18 @@ msgid "Dash"
 msgstr "Tablero"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:538
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:574
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -791,11 +791,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/searchDisplay.js:351
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
@@ -909,7 +909,7 @@ msgstr "Configuración del teclado"
 msgid "Mouse Settings"
 msgstr "Ajustes del ratón…"
 
-#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "Configuración del sonido"
 
@@ -1186,11 +1186,11 @@ msgstr "Tableta"
 msgid "Computer"
 msgstr "Equipo"
 
-#: ../js/ui/status/volume.js:43
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "Volumen"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "Micrófono"
 
@@ -1459,35 +1459,36 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:510 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:589
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:582
+#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:588
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/userMenu.js:545
-msgid "Do Not Disturb"
-msgstr "No molestar"
+#: ../js/ui/userMenu.js:551
+#| msgid "Applications"
+msgid "Notifications"
+msgstr "Notificaciones"
 
-#: ../js/ui/userMenu.js:553
+#: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
 msgstr "Cuentas en línea"
 
-#: ../js/ui/userMenu.js:557
+#: ../js/ui/userMenu.js:563
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:570
 msgid "Lock Screen"
 msgstr "Bloquear la pantalla"
 
-#: ../js/ui/userMenu.js:569
+#: ../js/ui/userMenu.js:575
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:574
+#: ../js/ui/userMenu.js:580
 msgid "Log Out..."
 msgstr "Cerrar la sesión…"
 
@@ -1535,15 +1536,15 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
-#: ../src/main.c:469
+#: ../src/main.c:480
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/main.c:475
+#: ../src/main.c:486
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para la pantalla de inicio"
 
-#: ../src/shell-app.c:580
+#: ../src/shell-app.c:581
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Falló al lanzar «%s»"
@@ -1583,6 +1584,9 @@ msgstr "%1$s: %2$s"
 #: ../src/shell-util.c:600
 msgid "calendar:week_start:0"
 msgstr "calendar:week_start:1"
+
+#~ msgid "Do Not Disturb"
+#~ msgstr "No molestar"
 
 #, fuzzy
 #~ msgid "The length of the server certificate, or the depth of the "
