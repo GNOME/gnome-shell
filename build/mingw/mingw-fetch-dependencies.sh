@@ -10,8 +10,7 @@ TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 TOR_BINARIES=( \
     glib/2.26/glib{-dev,}_2.26.0-2_win32.zip \
     gtk+/2.16/gtk+{-dev,}_2.16.6-2_win32.zip \
-    pango/1.28/pango{-dev,}_1.28.0-1_win32.zip \
-    atk/1.30/atk{-dev,}_1.30.0-1_win32.zip );
+    pango/1.28/pango{-dev,}_1.28.0-1_win32.zip );
 
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
 
@@ -26,7 +25,8 @@ TOR_DEPS=( \
 
 GNOME_SOURCES_URL="http://ftp.gnome.org/pub/GNOME/sources/"
 SOURCES_DEPS=(\
-    json-glib/0.12/json-glib-0.12.2.tar.gz );
+    json-glib/0.12/json-glib-0.12.2.tar.bz2 \
+    atk/2.1/atk-2.1.91.tar.bz2 );
 
 GL_HEADER_URLS=( \
     http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/gl.h \
@@ -125,7 +125,7 @@ function do_untar_source_d ()
     local exdir="$1"; shift;
     local tarfile="$1"; shift;
 
-    tar -C "$exdir" -zxvf "$tarfile" "$@";
+    tar -C "$exdir" -jxvf "$tarfile" "$@";
 
     if [ "$?" -ne 0 ]; then
 	echo "Failed to extract $tarfile";
@@ -345,7 +345,7 @@ find_compiler;
 for dep in "${SOURCES_DEPS[@]}"; do
     echo "Building $dep...";
     src="${dep##*/}";
-    src="${src%%.tar.gz}";
+    src="${src%%.tar.bz2}";
     do_cross_compile "$src"
 done;
 
