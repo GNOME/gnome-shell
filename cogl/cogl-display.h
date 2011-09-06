@@ -81,7 +81,7 @@ CoglDisplay *
 cogl_display_new (CoglRenderer *renderer,
                   CoglOnscreenTemplate *onscreen_template);
 
-#define cogl_display_get_rendrer cogl_display_get_rendrer_EXP
+#define cogl_display_get_renderer cogl_display_get_renderer_EXP
 CoglRenderer *
 cogl_display_get_renderer (CoglDisplay *display);
 
