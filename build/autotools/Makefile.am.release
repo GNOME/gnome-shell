@@ -26,16 +26,16 @@ $(sha256_file): $(tar_file)
 
 release-tag:
 	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xgit"; then \
-	  echo "Cannot tag a Git version; please, update the Clutter version" >&2; \
+	  echo "*** Cannot tag a Git version; please, update the Clutter version" >&2; \
 	else \
 	  if test -d "$(top_srcdir)/.git"; then \
-	    echo "Tagging release $(CLUTTER_VERSION)..." ; \
+	    echo " GIT   Tagging release $(CLUTTER_VERSION)..." ; \
 	    $(top_srcdir)/build/missing --run git tag \
 	 	-s \
 	      	-m "Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))" \
 		$(CLUTTER_VERSION) ; \
 	  else \
-	    echo A git checkout is required to tag a release >&2; \
+	    echo "*** A git checkout is required to tag a release" >&2; \
 	  fi \
 	fi
 
@@ -43,37 +43,37 @@ release-check: release-verify-even-micro release-verify-sane-changelogs release-
 	TAR_OPTIONS="$(TAR_OPTIONS)" $(MAKE) $(AM_MAKEFLAGS) distcheck
 
 release-verify-news:
-	@echo -n "Checking that the NEWS file has been updated..."
+	@echo -n " CHK   Checking that the NEWS file has been updated..."
 	@if ! grep -q "$(CLUTTER_VERSION)" $(top_srcdir)/NEWS; then \
 	  (echo "Ouch." && \
-	   echo "The version in the NEWS file does not match $(CLUTTER_VERSION)." && \
-	   echo "This probably means you haven't updated the NEWS file." && \
+	   echo "*** The version in the NEWS file does not match $(CLUTTER_VERSION)." && \
+	   echo "*** This probably means you haven't updated the NEWS file." && \
 	   false); else :; fi
 	@echo "Good."
 
 release-verify-sane-changelogs: changelogs
-	@echo -n "Checking that the ChangeLog files are sane..."
+	@echo -n " CHK   Checking that the ChangeLog files are sane..."
 	@if grep -q "is required to generate" $(CHANGELOGS); then \
 	  (echo "Ouch." && \
-	   echo "Some of the ChangeLogs are not generated correctly." && \
-	   echo "Remove ChangeLog* and make changelogs" && false); else :; fi
+	   echo "*** Some of the ChangeLogs are not generated correctly." && \
+	   echo "*** Remove ChangeLog* and make changelogs" && false); else :; fi
 	@echo "Good."
 
 release-verify-even-micro:
-	@echo -n "Checking that $(VERSION) has an even micro component..."
+	@echo -n " CHK   Checking that $(VERSION) has an even micro component..."
 	@test "$(CLUTTER_MICRO_VERSION)" = "`echo $(CLUTTER_MICRO_VERSION)/2*2 | bc`" || \
 	  (echo "Ouch." && \
-	   echo "The version micro component '$(CLUTTER_MICRO_VERSION)' is not an even number." && \
-	   echo "The version in configure.ac must be incremented before a new release." && \
+	   echo "*** The version micro component '$(CLUTTER_MICRO_VERSION)' is not an even number." && \
+	   echo "*** The version in configure.ac must be incremented before a new release." && \
 	   false)
 	@echo "Good."
 
 release-upload: $(sha256_file)
-	@echo "Uploading to $(RELEASE_UPLOAD_HOST)..."
+	@echo " SCP   Uploading to $(RELEASE_UPLOAD_HOST)..."
 	@scp $(tar_file) $(RELEASE_UPLOAD_DIR)
-	@echo "Uploading to master.gnome.org..."
+	@echo " SCP   Uploading to master.gnome.org..."
 	@scp $(tar_file) master.gnome.org:
-	@echo "Running ftpadmin install..."
+	@echo " EXEC  Running ftpadmin install..."
 	@ssh master.gnome.org ftpadmin install $(tar_file)
 	@mv -f $(sha256_file) $(top_builddir)/build/$(sha256_file)
 	@echo "Done."
@@ -83,7 +83,7 @@ release-message:
 	@echo "Release checksum: $(RELEASE_URL)/$(sha256_file)"
 	@echo "Send an email to: $(RELEASE_ANNOUNCE_LIST)"
 	@echo "              Cc: $(RELEASE_ANNOUNCE_CC)"
-	@echo "         Subject: Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))"
+	@echo "         Subject: ANNOUNCE: Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))"
 	@echo "        Contents:"
 	@echo "--- CUT HERE ---"
 	@echo "Good news, everyone!"
@@ -116,18 +116,16 @@ release-message:
 	@echo "Clutter depends on:"
 	@echo "  GLib ≥ @GLIB_REQ_VERSION@"
 	@echo "  JSON-GLib ≥ @JSON_GLIB_REQ_VERSION@"
+	@echo "  Cogl ≥ @COGL_REQ_VERSION@"
 	@echo "  Cairo ≥ @CAIRO_REQ_VERSION@"
 	@echo "  Pango ≥ @PANGO_REQ_VERSION@"
 	@echo "  Atk ≥ @ATK_REQ_VERSION@"
-	@echo "  OpenGL ≥ 1.3 (or 1.2 + multi-texturing), OpenGL|ES 1.1 or 2.0"
-	@echo "  GLX, WGL, Quartz, or an EGL implementation"
 	@echo ""
 	@echo "Clutter also has platform-specific dependencies; for more information, see"
 	@echo "the README file included in the release."
 	@echo ""
 	@echo "Documentation:"
 	@echo "   Clutter: $(RELEASE_DOC_URL)/clutter/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
-	@echo "      Cogl: $(RELEASE_DOC_URL)/cogl/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
 	@echo "     Cally: $(RELEASE_DOC_URL)/cally/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
 	@echo "  Cookbook: $(RELEASE_DOC_URL)/clutter-cookbook/$(CLUTTER_API_VERSION)/"
 	@echo ""
