@@ -33,16 +33,22 @@ const St = imports.gi.St;
 const GdmGreeter = imports.gi.GdmGreeter;
 
 const Batch = imports.gdm.batch;
+const DBus = imports.dbus;
+const Fprint = imports.gdm.fingerprint;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 
 const _PASSWORD_SERVICE_NAME = 'gdm-password';
+const _FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 const _FADE_ANIMATION_TIME = 0.16;
 const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 2.0;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
+
+const _LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+const _FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 
 let _loginDialog = null;
 
@@ -761,6 +767,11 @@ LoginDialog.prototype = {
         this._greeterClient.connect('conversation-stopped',
                                     Lang.bind(this, this._onConversationStopped));
 
+        this._settings = new Gio.Settings({ schema: _LOGIN_SCREEN_SCHEMA });
+
+        this._fprintManager = new Fprint.FprintManager();
+        this._startFingerprintConversationIfNeeded();
+
         this._titleLabel = new St.Label({ style_class: 'login-dialog-title',
                                           text: C_("title", "Sign In") });
 
@@ -805,6 +816,12 @@ LoginDialog.prototype = {
                               x_fill: true,
                               y_fill: false,
                               x_align: St.Align.START });
+        // translators: this message is shown below the password entry field
+        // to indicate the user can swipe their finger instead
+        this._promptFingerprintMessage = new St.Label({ text: _("(or swipe finger)"),
+                                                        style_class: 'login-dialog-prompt-fingerprint-message' });
+        this._promptFingerprintMessage.hide();
+        this._promptBox.add(this._promptFingerprintMessage);
 
         this._sessionList = new SessionList();
         this._sessionList.connect('session-activated',
@@ -852,10 +869,27 @@ LoginDialog.prototype = {
                                    this._onUserListActivated(item);
                                }));
 
+   },
+
+   _startFingerprintConversationIfNeeded: function() {
+        this._haveFingerprintReader = false;
+
+        if (!this._settings.get_boolean(_FINGERPRINT_AUTHENTICATION_KEY))
+            return;
+
+        this._fprintManager.GetDefaultDeviceRemote(DBus.CALL_FLAG_START, Lang.bind(this,
+            function(device, error) {
+                if (!error && device)
+                    this._haveFingerprintReader = true;
+
+                if (this._haveFingerprintReader)
+                    this._greeterClient.call_start_conversation(_FINGERPRINT_SERVICE_NAME);
+            }));
     },
 
     _onReset: function(client, serviceName) {
         this._greeterClient.call_start_conversation(_PASSWORD_SERVICE_NAME);
+        this._startFingerprintConversationIfNeeded();
 
         let tasks = [this._hidePrompt,
 
@@ -885,10 +919,17 @@ LoginDialog.prototype = {
     },
 
     _onInfo: function(client, serviceName, info) {
+        // we don't want fingerprint messages with the word UPEK in them
+        if (serviceName != _PASSWORD_SERVICE_NAME)
+            return;
         Main.notifyError(info);
     },
 
     _onProblem: function(client, serviceName, problem) {
+        // we don't want to show auth failed messages to
+        // users who haven't enrolled their fingerprint.
+        if (serviceName != _PASSWORD_SERVICE_NAME)
+            return;
         Main.notifyError(problem);
     },
 
@@ -903,6 +944,13 @@ LoginDialog.prototype = {
 
                      function() {
                          return _fadeInActor(this._promptEntry);
+                     },
+
+                     function() {
+                         if (!this._haveFingerprintReader)
+                             return null;
+
+                         return _fadeInActor(this._promptFingerprintMessage);
                      },
 
                      function() {
@@ -973,6 +1021,7 @@ LoginDialog.prototype = {
                      },
 
                      function() {
+                         this._promptFingerprintMessage.hide();
                          this._promptEntry.set_text('');
                      }];
 
@@ -996,12 +1045,20 @@ LoginDialog.prototype = {
         return batch.run();
     },
     _onInfoQuery: function(client, serviceName, question) {
+        // We only expect questions to come from the main auth service
+        if (serviceName != _PASSWORD_SERVICE_NAME)
+            return;
+
         this._promptEntry.set_text('');
         this._promptEntry.clutter_text.set_password_char('');
         this._askQuestion(serviceName, question);
     },
 
     _onSecretInfoQuery: function(client, serviceName, secretQuestion) {
+        // We only expect secret requests to come from the main auth service
+        if (serviceName != _PASSWORD_SERVICE_NAME)
+            return;
+
         this._promptEntry.set_text('');
         this._promptEntry.clutter_text.set_password_char('\u25cf');
         this._askQuestion(serviceName, secretQuestion);
@@ -1138,7 +1195,14 @@ LoginDialog.prototype = {
     },
 
     _onConversationStopped: function(client, serviceName) {
-        this._greeterClient.call_cancel();
+        // if the password service fails, then cancel everything.
+        // But if, e.g., fingerprint fails, still give
+        // password authentication a chance to succeed
+        if (serviceName == _PASSWORD_SERVICE_NAME) {
+            this._greeterClient.call_cancel();
+        } else if (serviceName == _FINGERPRINT_SERVICE_NAME) {
+            _fadeOutActor(this._promptFingerprintMessage);
+        }
     },
 
     _onNotListedClicked: function(user) {
@@ -1210,6 +1274,9 @@ LoginDialog.prototype = {
                          let userName = activatedItem.user.get_user_name();
                          this._greeterClient.call_begin_verification_for_user(_PASSWORD_SERVICE_NAME,
                                                                               userName);
+
+                         if (this._haveFingerprintReader)
+                             this._greeterClient.call_begin_verification_for_user(_FINGERPRINT_SERVICE_NAME, userName);
                      }];
 
         this._user = activatedItem.user;
