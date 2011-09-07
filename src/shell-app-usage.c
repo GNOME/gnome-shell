@@ -307,9 +307,9 @@ increment_usage_for_app (ShellAppUsage *self,
 }
 
 static void
-on_app_state_changed (ShellWindowTracker *tracker,
-                      ShellApp           *app,
-                      gpointer            user_data)
+on_app_state_changed (ShellAppSystem *app_system,
+                      ShellApp       *app,
+                      gpointer        user_data)
 {
   ShellAppUsage *self = SHELL_APP_USAGE (user_data);
   UsageData *usage;
@@ -391,6 +391,7 @@ shell_app_usage_init (ShellAppUsage *self)
   char *shell_userdata_dir, *path;
   GDBusConnection *session_bus;
   ShellWindowTracker *tracker;
+  ShellAppSystem *app_system;
 
   global = shell_global_get ();
 
@@ -398,7 +399,9 @@ shell_app_usage_init (ShellAppUsage *self)
 
   tracker = shell_window_tracker_get_default ();
   g_signal_connect (tracker, "notify::focus-app", G_CALLBACK (on_focus_app_changed), self);
-  g_signal_connect (tracker, "app-state-changed", G_CALLBACK (on_app_state_changed), self);
+
+  app_system = shell_app_system_get_default ();
+  g_signal_connect (app_system, "app-state-changed", G_CALLBACK (on_app_state_changed), self);
 
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   self->session_proxy = g_dbus_proxy_new_sync (session_bus,
