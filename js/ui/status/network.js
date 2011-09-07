@@ -1745,7 +1745,7 @@ NMApplet.prototype = {
             wrapper._networkLostId = wrapper.connect('network-lost', Lang.bind(this, function(device) {
                 this._notifyForDevice(device, 'network-offline',
                                       _("Connectivity lost"),
-                                      _("You're no longer connected to the network"),
+                                      _("You are no longer connected to the network"),
                                       // set critical urgency to popup the notification automatically
                                       MessageTray.Urgency.CRITICAL);
             }));
