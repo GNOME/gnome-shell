@@ -597,7 +597,9 @@ shell_util_get_week_start ()
 
   week_start = (week_1stday + first_weekday - 1) % 7;
 #else
-  gtk_week_start = dgettext ("gtk30", "calendar:week_start:0");
+  /* Use a define to hide the string from xgettext */
+# define GTK_WEEK_START "calendar:week_start:0"
+  gtk_week_start = dgettext ("gtk30", GTK_WEEK_START);
 
   if (strncmp (gtk_week_start, "calendar:week_start:", 20) == 0)
     week_start = *(gtk_week_start + 20) - '0';
