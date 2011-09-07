@@ -368,7 +368,7 @@ UserMenuButton.prototype = {
 
     _init: function() {
         PanelMenu.Button.prototype._init.call(this, 0.0);
-        let box = new St.BoxLayout({ name: 'panelStatusMenu' });
+        let box = new St.BoxLayout({ name: 'panelUserMenu' });
         this.actor.set_child(box);
 
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
