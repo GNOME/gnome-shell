@@ -607,7 +607,8 @@ function _globalKeyPressHandler(actor, event) {
     }
 
     if (action == Meta.KeyBindingAction.SWITCH_PANELS) {
-        ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK);
+        ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK,
+                                modifierState);
         return true;
     }
 

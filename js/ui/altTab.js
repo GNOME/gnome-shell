@@ -31,6 +31,18 @@ function mod(a, b) {
     return (a + b) % b;
 }
 
+function primaryModifier(mask) {
+    if (mask == 0)
+        return 0;
+
+    let primary = 1;
+    while (mask > 1) {
+        mask >>= 1;
+        primary <<= 1;
+    }
+    return primary;
+}
+
 function AltTabPopup() {
     this._init();
 }
@@ -48,6 +60,7 @@ AltTabPopup.prototype = {
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._haveModal = false;
+        this._modifierMask = 0;
 
         this._currentApp = 0;
         this._currentWindow = -1;
@@ -121,7 +134,7 @@ AltTabPopup.prototype = {
         }
     },
 
-    show : function(backward, binding) {
+    show : function(backward, binding, mask) {
         let appSys = Shell.AppSystem.get_default();
         let apps = appSys.get_running ();
 
@@ -131,6 +144,7 @@ AltTabPopup.prototype = {
         if (!Main.pushModal(this.actor))
             return false;
         this._haveModal = true;
+        this._modifierMask = primaryModifier(mask);
 
         this.actor.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
         this.actor.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
@@ -179,7 +193,7 @@ AltTabPopup.prototype = {
         // details.) So we check now. (Have to do this after updating
         // selection.)
         let [x, y, mods] = global.get_pointer();
-        if (!(mods & Gdk.ModifierType.MOD1_MASK)) {
+        if (!(mods & this._modifierMask)) {
             this._finish();
             return false;
         }
@@ -256,7 +270,7 @@ AltTabPopup.prototype = {
 
     _keyReleaseEvent : function(actor, event) {
         let [x, y, mods] = global.get_pointer();
-        let state = mods & Clutter.ModifierType.MOD1_MASK;
+        let state = mods & this._modifierMask;
 
         if (state == 0)
             this._finish();

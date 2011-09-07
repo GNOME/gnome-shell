@@ -131,6 +131,7 @@ shell_wm_class_init (ShellWMClass *klass)
    * ShellWM::keybinding:
    * @shellwm: the #ShellWM
    * @binding: the keybinding name
+   * @mask: the modifier mask used
    * @window: for window keybindings, the #MetaWindow
    * @backwards: for "reversible" keybindings, whether or not
    * the backwards (Shifted) variant was invoked
@@ -147,9 +148,10 @@ shell_wm_class_init (ShellWMClass *klass)
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
 		  0,
 		  NULL, NULL,
-		  _shell_marshal_VOID__STRING_OBJECT_BOOLEAN,
-		  G_TYPE_NONE, 3,
+		  _shell_marshal_VOID__STRING_UINT_OBJECT_BOOLEAN,
+		  G_TYPE_NONE, 4,
                   G_TYPE_STRING,
+                  G_TYPE_UINT,
                   META_TYPE_WINDOW,
                   G_TYPE_BOOLEAN);
 }
@@ -336,7 +338,7 @@ shell_wm_key_handler (MetaDisplay    *display,
 
   g_signal_emit (wm, shell_wm_signals[KEYBINDING],
                  g_quark_from_string (binding->name),
-                 binding->name, window, backwards);
+                 binding->name, binding->mask, window, backwards);
 }
 
 /**

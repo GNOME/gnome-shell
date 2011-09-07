@@ -94,7 +94,7 @@ CtrlAltTabManager.prototype = {
         return a.x - b.x;
     },
 
-    popup: function(backwards) {
+    popup: function(backwards, mask) {
         // Start with the set of focus groups that are currently mapped
         let items = this._items.filter(function (item) { return item.proxy.mapped; });
 
@@ -126,7 +126,7 @@ CtrlAltTabManager.prototype = {
 
         if (!this._popup) {
             this._popup = new CtrlAltTabPopup();
-            this._popup.show(items, backwards);
+            this._popup.show(items, backwards, mask);
 
             this._popup.actor.connect('destroy',
                                       Lang.bind(this, function() {
@@ -156,6 +156,7 @@ CtrlAltTabPopup.prototype = {
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._haveModal = false;
+        this._modifierMask = 0;
         this._selection = 0;
 
         Main.uiGroup.add_actor(this.actor);
@@ -192,10 +193,11 @@ CtrlAltTabPopup.prototype = {
         this._switcher.actor.allocate(childBox, flags);
     },
 
-    show : function(items, startBackwards) {
+    show : function(items, startBackwards, mask) {
         if (!Main.pushModal(this.actor))
             return false;
         this._haveModal = true;
+        this._modifierMask = AltTab.primaryModifier(mask);
 
         this._keyPressEventId = this.actor.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
         this._keyReleaseEventId = this.actor.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
@@ -209,7 +211,7 @@ CtrlAltTabPopup.prototype = {
         this._select(this._selection);
 
         let [x, y, mods] = global.get_pointer();
-        if (!(mods & Gdk.ModifierType.MOD1_MASK)) {
+        if (!(mods & this._modifierMask)) {
             this._finish();
             return false;
         }
@@ -255,7 +257,7 @@ CtrlAltTabPopup.prototype = {
 
     _keyReleaseEvent : function(actor, event) {
         let [x, y, mods] = global.get_pointer();
-        let state = mods & Clutter.ModifierType.MOD1_MASK;
+        let state = mods & this._modifierMask;
 
         if (state == 0)
             this._finish();

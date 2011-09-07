@@ -526,22 +526,22 @@ WindowManager.prototype = {
         shellwm.completed_switch_workspace();
     },
 
-    _startAppSwitcher : function(shellwm, binding, window, backwards) {
+    _startAppSwitcher : function(shellwm, binding, mask, window, backwards) {
         /* prevent a corner case where both popups show up at once */
         if (this._workspaceSwitcherPopup != null)
             this._workspaceSwitcherPopup.actor.hide();
 
         let tabPopup = new AltTab.AltTabPopup();
 
-        if (!tabPopup.show(backwards, binding))
+        if (!tabPopup.show(backwards, binding, mask))
             tabPopup.destroy();
     },
 
-    _startA11ySwitcher : function(shellwm, binding, window, backwards) {
-        Main.ctrlAltTabManager.popup(backwards);
+    _startA11ySwitcher : function(shellwm, binding, mask, window, backwards) {
+        Main.ctrlAltTabManager.popup(backwards, mask);
     },
 
-    _showWorkspaceSwitcher : function(shellwm, binding, window, backwards) {
+    _showWorkspaceSwitcher : function(shellwm, binding, mask, window, backwards) {
         if (global.screen.n_workspaces == 1)
             return;
 
