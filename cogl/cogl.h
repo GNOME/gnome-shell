@@ -88,6 +88,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-primitive.h>
 #include <cogl/cogl-depth-state.h>
 #include <cogl/cogl-pipeline.h>
+#include <cogl/cogl-pipeline-state.h>
 #include <cogl/cogl-framebuffer.h>
 #ifdef COGL_HAS_XLIB
 #include <cogl/cogl-xlib.h>

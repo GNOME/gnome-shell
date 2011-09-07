@@ -67,7 +67,6 @@ cogl_public_h = \
 	$(srcdir)/cogl-fixed.h 			\
 	$(srcdir)/cogl-depth-state.h 		\
 	$(srcdir)/cogl-material-compat.h 	\
-	$(srcdir)/cogl-pipeline.h 		\
 	$(srcdir)/cogl-vector.h 		\
 	$(srcdir)/cogl-euler.h 			\
 	$(srcdir)/cogl-quaternion.h 		\
@@ -99,6 +98,8 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-onscreen-template.h 	\
 	$(srcdir)/cogl-display.h 		\
 	$(srcdir)/cogl-context.h 		\
+	$(srcdir)/cogl-pipeline.h 		\
+	$(srcdir)/cogl-pipeline-state.h 	\
 	$(srcdir)/cogl2-path.h 			\
 	$(srcdir)/cogl2-clip-state.h		\
 	$(srcdir)/cogl2-experimental.h		\
@@ -244,6 +245,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-depth-state-private.h		\
 	$(srcdir)/cogl-pipeline.c			\
 	$(srcdir)/cogl-pipeline-private.h		\
+	$(srcdir)/cogl-pipeline-state.c			\
+	$(srcdir)/cogl-pipeline-state-private.h		\
 	$(srcdir)/cogl-pipeline-opengl.c		\
 	$(srcdir)/cogl-pipeline-opengl-private.h	\
 	$(srcdir)/cogl-pipeline-fragend-glsl.c		\

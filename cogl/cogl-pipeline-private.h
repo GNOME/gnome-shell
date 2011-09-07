@@ -610,6 +610,21 @@ typedef struct
   CoglPipelineLayer *layer;
 } CoglPipelineLayerCacheEntry;
 
+/* Sometimes when evaluating pipelines, either during comparisons or
+ * if calculating a hash value we need to tweak the evaluation
+ * semantics */
+typedef enum _CoglPipelineEvalFlags
+{
+  COGL_PIPELINE_EVAL_FLAG_NONE = 0
+} CoglPipelineEvalFlags;
+
+typedef struct _CoglPipelineHashState
+{
+  unsigned long layer_differences;
+  CoglPipelineEvalFlags flags;
+  unsigned int hash;
+} CoglPipelineHashState;
+
 /*
  * CoglPipelineDestroyCallback
  * @pipeline: The #CoglPipeline that has been destroyed
@@ -842,6 +857,27 @@ _cogl_pipeline_get_authority (CoglPipeline *pipeline,
   return authority;
 }
 
+typedef gboolean (*CoglPipelineStateComparitor) (CoglPipeline *authority0,
+                                                 CoglPipeline *authority1);
+
+void
+_cogl_pipeline_update_authority (CoglPipeline *pipeline,
+                                 CoglPipeline *authority,
+                                 CoglPipelineState state,
+                                 CoglPipelineStateComparitor comparitor);
+
+void
+_cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
+                                  CoglPipelineState change,
+                                  const CoglColor  *new_color,
+                                  gboolean          from_layer_change);
+
+void
+_cogl_pipeline_prune_redundant_ancestry (CoglPipeline *pipeline);
+
+void _cogl_pipeline_update_blend_enable (CoglPipeline *pipeline,
+                                         CoglPipelineState changes);
+
 /*
  * SECTION:cogl-pipeline-internals
  * @short_description: Functions for creating custom primitives that make use
@@ -1068,14 +1104,6 @@ _cogl_pipeline_get_colorubv (CoglPipeline *pipeline,
 unsigned long
 _cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
                                     CoglPipeline *pipeline1);
-
-/* Sometimes when evaluating pipelines, either during comparisons or
- * if calculating a hash value we need to tweak the evaluation
- * semantics */
-typedef enum _CoglPipelineEvalFlags
-{
-  COGL_PIPELINE_EVAL_FLAG_NONE = 0
-} CoglPipelineEvalFlags;
 
 gboolean
 _cogl_pipeline_equal (CoglPipeline *pipeline0,
