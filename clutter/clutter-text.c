@@ -337,10 +337,13 @@ clutter_text_get_display_text (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
 
-  if (priv->text == NULL)
+  /* simple short-circuit to avoid going through GString
+   * with an empty text and a password char set
+   */
+  if (priv->text[0] == '\0')
     return g_strdup ("");
 
-  if (G_LIKELY (priv->password_char == 0))
+  if (priv->password_char == 0)
     return g_strndup (priv->text, priv->n_bytes);
   else
     {
@@ -546,7 +549,7 @@ clutter_text_set_font_description_internal (ClutterText          *self,
 
   clutter_text_dirty_cache (self);
 
-  if (priv->text && priv->text[0] != '\0')
+  if (priv->text[0] != '\0')
     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_DESCRIPTION]);
@@ -981,7 +984,7 @@ clutter_text_delete_selection (ClutterText *self)
 
   priv = self->priv;
 
-  if (!priv->text)
+  if (priv->text[0] == '\0')
     return TRUE;
 
   start_index = offset_real (priv->text, priv->position);
@@ -1050,8 +1053,16 @@ clutter_text_set_text_internal (ClutterText *self,
 {
   ClutterTextPrivate *priv = self->priv;
 
+  g_assert (text != NULL);
+
   g_signal_emit (self, text_signals[DELETE_TEXT], 0, 0, -1);
-  if (text != NULL && *text != '\0')
+
+  /* emit ::insert-text only if we have text to insert; we need
+   * to emit this before actually changing the contents of the
+   * actor so that people connected to this signal will be able
+   * to intercept it
+   */
+  if (text[0] != '\0')
     {
       gint tmp_pos = 0;
 
@@ -1121,40 +1132,34 @@ clutter_text_set_markup_internal (ClutterText *self,
   PangoAttrList *attrs = NULL;
   gboolean res;
 
+  g_assert (str != NULL);
+
   error = NULL;
   res = pango_parse_markup (str, -1, 0,
                             &attrs,
                             &text,
                             NULL,
                             &error);
+
   if (!res)
     {
-      if (G_LIKELY (error))
+      if (G_LIKELY (error != NULL))
         {
-          g_warning ("Failed to set the markup of the actor of class '%s': %s",
-                     G_OBJECT_TYPE_NAME (self),
+          g_warning ("Failed to set the markup of the actor '%s': %s",
+                     _clutter_actor_get_debug_name (CLUTTER_ACTOR (self)),
                      error->message);
           g_error_free (error);
         }
       else
-        g_warning ("Failed to set the markup of the actor of class '%s'",
-                   G_OBJECT_TYPE_NAME (self));
+        g_warning ("Failed to set the markup of the actor '%s'",
+                   _clutter_actor_get_debug_name (CLUTTER_ACTOR (self)));
 
       return;
     }
 
-  if (text)
-    {
-      gint tmp_pos = 0;
+  clutter_text_set_text_internal (self, text ? text : "");
 
-      g_signal_emit (self, text_signals[DELETE_TEXT], 0, 0, -1);
-      g_signal_emit (self, text_signals[INSERT_TEXT], 0, text,
-                     strlen (text), &tmp_pos);
-
-      clutter_text_set_text_internal (self, text);
-
-      g_free (text);
-    }
+  g_free (text);
 
   /* Store the new markup attributes */
   if (priv->markup_attrs != NULL)
@@ -1659,10 +1664,9 @@ static gint
 clutter_text_move_word_backward (ClutterText *self,
                                  gint         start)
 {
-  ClutterTextPrivate *priv = self->priv;
   gint retval = start;
 
-  if (priv->text && start > 0)
+  if (start > 0)
     {
       PangoLayout *layout = clutter_text_get_layout (self);
       PangoLogAttr *log_attrs = NULL;
@@ -1687,7 +1691,7 @@ clutter_text_move_word_forward (ClutterText *self,
   ClutterTextPrivate *priv = self->priv;
   gint retval = start;
 
-  if (priv->text && start < priv->n_chars)
+  if (start < priv->n_chars)
     {
       PangoLayout *layout = clutter_text_get_layout (self);
       PangoLogAttr *log_attrs = NULL;
@@ -1824,7 +1828,7 @@ clutter_text_button_press (ClutterActor       *actor,
    * set up the dragging of the selection since there's nothing
    * to select
    */
-  if (priv->text == NULL || priv->text[0] == '\0')
+  if (priv->text[0] == '\0')
     {
       clutter_text_set_positions (self, -1, -1);
 
@@ -2000,13 +2004,16 @@ clutter_text_paint (ClutterActor *self)
      reflected in the get_paint_volume implementation which is tightly
      tied to the workings of this function */
 
-  if (G_UNLIKELY (priv->font_desc == NULL || priv->text == NULL))
+  if (G_UNLIKELY (priv->font_desc == NULL))
     {
-      CLUTTER_NOTE (ACTOR, "desc: %p, text %p",
-		    priv->font_desc ? priv->font_desc : 0x0,
-		    priv->text ? priv->text : 0x0);
+      CLUTTER_NOTE (ACTOR, "No font description for '%s'",
+                    _clutter_actor_get_debug_name (self));
       return;
     }
+
+  /* don't bother painting an empty text actor */
+  if (priv->text[0] == '\0')
+    return;
 
   clutter_actor_get_allocation_box (self, &alloc);
 
@@ -4428,9 +4435,12 @@ out:
  *
  * Which will return a newly allocated string.
  *
- * Return value: the contents of the actor. The returned string
- *   is owned by the #ClutterText actor and should never be
- *   modified or freed
+ * If the #ClutterText actor is empty, this function will return
+ * an empty string, and not %NULL.
+ *
+ * Return value: (transfer none): the contents of the actor. The returned
+ *   string is owned by the #ClutterText actor and should never be modified
+ *   or freed
  *
  * Since: 1.0
  */
@@ -5252,11 +5262,7 @@ clutter_text_insert_unichar (ClutterText *self,
 
   new = g_string_new (priv->text);
 
-  if (priv->text)
-    pos = offset_to_bytes (priv->text, priv->position);
-  else
-    pos = 0;
-
+  pos = offset_to_bytes (priv->text, priv->position);
   new = g_string_insert_unichar (new, pos, wc);
 
   g_signal_emit (self, text_signals[INSERT_TEXT], 0, &wc, 1, &pos);
@@ -5350,7 +5356,7 @@ clutter_text_delete_text (ClutterText *self,
 
   priv = self->priv;
 
-  if (!priv->text)
+  if (priv->text[0] == '\0')
     return;
 
   if (start_pos == 0)
@@ -5397,7 +5403,7 @@ clutter_text_delete_chars (ClutterText *self,
 
   priv = self->priv;
 
-  if (!priv->text)
+  if (priv->text[0] == '\0')
     return;
 
   new = g_string_new (priv->text);
