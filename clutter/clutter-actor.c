@@ -1990,7 +1990,7 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
  * @ancestor: (allow-none): A #ClutterActor ancestor, or %NULL to use the
  *   default #ClutterStage
  * @point: A point as #ClutterVertex
- * @vertex: The translated #ClutterVertex
+ * @vertex: (out caller-allocates): The translated #ClutterVertex
  *
  * Transforms @point in coordinates relative to the actor into
  * ancestor-relative coordinates using the relevant transform
@@ -2080,7 +2080,7 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
  * clutter_actor_apply_transform_to_point:
  * @self: A #ClutterActor
  * @point: A point as #ClutterVertex
- * @vertex: The translated #ClutterVertex
+ * @vertex: (out caller-allocates): The translated #ClutterVertex
  *
  * Transforms @point in coordinates relative to the actor
  * into screen-relative coordinates with the current actor
@@ -11135,7 +11135,7 @@ clutter_actor_unset_flags (ClutterActor      *self,
 /**
  * clutter_actor_get_transformation_matrix:
  * @self: a #ClutterActor
- * @matrix: (out): the return location for a #CoglMatrix
+ * @matrix: (out caller-allocates): the return location for a #CoglMatrix
  *
  * Retrieves the transformations applied to @self relative to its
  * parent.
