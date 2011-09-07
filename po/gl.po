@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-04 20:00+0200\n"
-"PO-Revision-Date: 2011-09-04 20:01+0200\n"
+"POT-Creation-Date: 2011-09-08 00:15+0200\n"
+"PO-Revision-Date: 2011-09-08 00:15+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galego <gnome-l10n-gl@gnome.org>\n"
+"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bits\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Lokalize 1.2\n"
 
@@ -233,27 +233,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:254
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:316
+#: ../js/ui/appDisplay.js:319
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:374
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:682
+#: ../js/ui/appDisplay.js:685
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:688
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:686
+#: ../js/ui/appDisplay.js:689
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
@@ -423,7 +423,7 @@ msgid "Next week"
 msgstr "A vindeira semana"
 
 #: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:354
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:355
 msgid "Unknown"
 msgstr "Descoñecido"
 
@@ -576,41 +576,41 @@ msgstr "O seu computador reiniciarase automaticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
 
-#: ../js/ui/keyboard.js:508 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:514 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "Non hai ningunha extensión instalada"
 
-#: ../js/ui/lookingGlass.js:686
+#: ../js/ui/lookingGlass.js:687
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:689 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:690
+#: ../js/ui/lookingGlass.js:691
 msgid "Error"
 msgstr "Erro"
 
-#: ../js/ui/lookingGlass.js:692
+#: ../js/ui/lookingGlass.js:693
 msgid "Out of date"
 msgstr "Desactualizado"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:695
 msgid "Downloading"
 msgstr "Descargando"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "Ver fonte"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "Páxina web"
 
@@ -726,18 +726,18 @@ msgid "Dash"
 msgstr "Panel"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:538
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:574
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -913,7 +913,7 @@ msgstr "Configuracións do teclado"
 msgid "Mouse Settings"
 msgstr "Configuracións do rato"
 
-#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "Configuracións do son"
 
@@ -1190,11 +1190,11 @@ msgstr "Tablet"
 msgid "Computer"
 msgstr "Computador"
 
-#: ../js/ui/status/volume.js:43
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "Micrófono"
 
@@ -1471,8 +1471,8 @@ msgid "Suspend"
 msgstr "Suspender"
 
 #: ../js/ui/userMenu.js:551
-msgid "Do Not Disturb"
-msgstr "Non molestar"
+msgid "Notifications"
+msgstr "Notificacións"
 
 #: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
@@ -1546,7 +1546,7 @@ msgstr "Imprimir versión"
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para a pantalla de inicio"
 
-#: ../src/shell-app.c:580
+#: ../src/shell-app.c:581
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Produciuse un fallo ao iniciar «%s»"
@@ -1583,9 +1583,11 @@ msgstr "Sistema de ficheiros"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:1"
+#~ msgid "Do Not Disturb"
+#~ msgstr "Non molestar"
+
+#~ msgid "calendar:week_start:0"
+#~ msgstr "calendar:week_start:1"
 
 #~ msgid "The length of the server certificate, or the depth of the "
 #~ msgstr "A lonxitude do certificado do servidor ou a profundidade de"
