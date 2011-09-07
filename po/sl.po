@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-06 22:36+0000\n"
-"PO-Revision-Date: 2011-09-06 22:36+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-07 19:04+0000\n"
+"PO-Revision-Date: 2011-09-07 21:05+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -36,4 +35,5 @@ msgstr "Možnosti Cogl"
 
 #: ../cogl/cogl-debug.c:258
 msgid "Show Cogl options"
-msgstr ""
+msgstr "Pokaži možnosti Cogl"
+
