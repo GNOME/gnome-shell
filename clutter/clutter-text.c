@@ -1186,10 +1186,11 @@ clutter_text_set_property (GObject      *gobject,
         const char *str = g_value_get_string (value);
 
         clutter_text_set_contents (self, str);
+
         if (self->priv->use_markup)
-          clutter_text_set_markup_internal (self, str);
+          clutter_text_set_markup_internal (self, str ? str : "");
         else
-          clutter_text_set_text_internal (self, str);
+          clutter_text_set_text_internal (self, str ? str : "");
       }
       break;
 
@@ -4508,6 +4509,7 @@ clutter_text_set_text (ClutterText *self,
  * Pango markup, and it is logically equivalent to:
  *
  * |[
+ *   /&ast; the order is important &ast;/
  *   clutter_text_set_text (CLUTTER_TEXT (actor), markup);
  *   clutter_text_set_use_markup (CLUTTER_TEXT (actor), TRUE);
  * ]|
@@ -4522,11 +4524,7 @@ clutter_text_set_markup (ClutterText *self,
 
   clutter_text_set_use_markup_internal (self, TRUE);
   clutter_text_set_contents (self, markup);
-
-  if (markup != NULL && *markup != '\0')
-    clutter_text_set_markup_internal (self, markup);
-  else
-    clutter_text_set_text_internal (self, "");
+  clutter_text_set_markup_internal (self, markup ? markup : "");
 }
 
 /**
