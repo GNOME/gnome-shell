@@ -118,7 +118,7 @@ Indicator.prototype = {
                         timestring = ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
                     this._batteryItem.label.text = timestring;
                 }
-                this._primaryPercentage.text = Math.round(percentage) + '%';
+                this._primaryPercentage.text = C_("percent of battery remaining", "%d%%").format(Math.round(percentage));
                 this._batteryItem.actor.show();
             } else {
                 this._hasPrimary = false;
@@ -191,7 +191,7 @@ DeviceItem.prototype = {
         this._box.add_actor(this._label);
         this.addActor(this._box);
 
-        let percentLabel = new St.Label({ text: '%d%%'.format(Math.round(percentage)) });
+        let percentLabel = new St.Label({ text: C_("percent of battery remaining", "%d%%").format(Math.round(percentage)) });
         this.addActor(percentLabel, { align: St.Align.END });
     },
 
