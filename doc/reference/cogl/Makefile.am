@@ -73,6 +73,7 @@ IGNORE_HFILES=\
 	cogl-pipeline-opengl-private.h		\
 	cogl-pipeline-private.h			\
 	cogl-pipeline-state-private.h		\
+	cogl-pipeline-layer-state-private.h	\
 	cogl-pipeline-progend-glsl-private.h	\
 	cogl-pipeline-vertend-fixed-private.h	\
 	cogl-pipeline-vertend-glsl-private.h	\

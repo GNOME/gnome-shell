@@ -860,6 +860,11 @@ _cogl_pipeline_get_authority (CoglPipeline *pipeline,
 typedef gboolean (*CoglPipelineStateComparitor) (CoglPipeline *authority0,
                                                  CoglPipeline *authority1);
 
+typedef gboolean
+(*CoglPipelineLayerStateComparitor) (CoglPipelineLayer *authority0,
+                                     CoglPipelineLayer *authority1);
+
+
 void
 _cogl_pipeline_update_authority (CoglPipeline *pipeline,
                                  CoglPipeline *authority,
@@ -877,6 +882,32 @@ _cogl_pipeline_prune_redundant_ancestry (CoglPipeline *pipeline);
 
 void _cogl_pipeline_update_blend_enable (CoglPipeline *pipeline,
                                          CoglPipelineState changes);
+
+CoglPipelineLayer *
+_cogl_pipeline_get_layer (CoglPipeline *pipeline,
+                          int layer_index);
+
+gboolean
+_cogl_is_pipeline_layer (void *object);
+
+static inline CoglPipelineLayer *
+_cogl_pipeline_layer_get_parent (CoglPipelineLayer *layer)
+{
+  CoglPipelineNode *parent_node = COGL_PIPELINE_NODE (layer)->parent;
+  return COGL_PIPELINE_LAYER (parent_node);
+}
+
+CoglPipelineLayer *
+_cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
+                                        CoglPipelineLayer *layer,
+                                        CoglPipelineLayerState change);
+
+void
+_cogl_pipeline_layer_prune_redundant_ancestry (CoglPipelineLayer *layer);
+
+void
+_cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
+                                             CoglPipelineLayer *layer);
 
 /*
  * SECTION:cogl-pipeline-internals

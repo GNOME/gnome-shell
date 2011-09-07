@@ -100,6 +100,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-context.h 		\
 	$(srcdir)/cogl-pipeline.h 		\
 	$(srcdir)/cogl-pipeline-state.h 	\
+	$(srcdir)/cogl-pipeline-layer-state.h 	\
 	$(srcdir)/cogl2-path.h 			\
 	$(srcdir)/cogl2-clip-state.h		\
 	$(srcdir)/cogl2-experimental.h		\
@@ -246,6 +247,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline.c			\
 	$(srcdir)/cogl-pipeline-private.h		\
 	$(srcdir)/cogl-pipeline-state.c			\
+	$(srcdir)/cogl-pipeline-layer-state-private.h	\
+	$(srcdir)/cogl-pipeline-layer-state.c		\
 	$(srcdir)/cogl-pipeline-state-private.h		\
 	$(srcdir)/cogl-pipeline-opengl.c		\
 	$(srcdir)/cogl-pipeline-opengl-private.h	\
