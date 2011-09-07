@@ -181,6 +181,8 @@ AC_SUBST(GIRDIR)
 TYPELIBDIR="$($PKG_CONFIG --variable=typelibdir gobject-introspection-1.0)"
 AC_SUBST(TYPELIBDIR)
 
+GTK_DOC_CHECK([1.15], [--flavour no-tmpl])
+
 # Stay command-line compatible with the gnome-common configure option. Here
 # minimum/yes/maximum are the same, however.
 AC_ARG_ENABLE(compile_warnings,
@@ -243,6 +245,12 @@ AC_ARG_VAR([BROWSER_PLUGIN_DIR],[Where to install the plugin to])
 AC_CONFIG_FILES([
   Makefile
   data/Makefile
+  docs/Makefile
+  docs/reference/Makefile
+  docs/reference/shell/Makefile
+  docs/reference/shell/shell-docs.sgml
+  docs/reference/st/Makefile
+  docs/reference/st/st-docs.sgml
   js/Makefile
   js/misc/config.js
   src/Makefile

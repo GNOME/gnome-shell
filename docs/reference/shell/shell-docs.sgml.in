@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+]>
+<book id="index">
+  <bookinfo>
+    <title>Shell Reference Manual</title>
+    <releaseinfo>
+      for Shell @VERSION@.
+      <!--The latest version of this documentation can be found on-line at
+      <ulink role="online-location" url="http://[SERVER]/shell/index.html">http://[SERVER]/shell/</ulink>.-->
+    </releaseinfo>
+  </bookinfo>
+
+  <chapter>
+    <title>Actors</title>
+    <xi:include href="xml/shell-generic-container.xml"/>
+    <xi:include href="xml/shell-slicer.xml"/>
+    <xi:include href="xml/shell-stack.xml"/>
+  </chapter>
+  <chapter>
+    <title>Application tracking</title>
+    <xi:include href="xml/shell-app.xml"/>
+    <xi:include href="xml/shell-app-usage.xml"/>
+    <xi:include href="xml/shell-window-tracker.xml"/>
+  </chapter>
+  <chapter>
+    <title>Search</title>
+    <xi:include href="xml/shell-app-system.xml"/>
+    <xi:include href="xml/shell-contact-system.xml"/>
+    <xi:include href="xml/shell-doc-system.xml"/>
+  </chapter>
+  <chapter>
+    <title>Tray Icons</title>
+    <xi:include href="xml/shell-embedded-window.xml"/>
+    <xi:include href="xml/shell-gtk-embed.xml"/>
+    <xi:include href="xml/shell-tray-icon.xml"/>
+    <xi:include href="xml/shell-tray-manager.xml"/>
+  </chapter>
+  <chapter>
+    <title>Recorder</title>
+    <xi:include href="xml/shell-recorder.xml"/>
+    <xi:include href="xml/shell-recorder-src.xml"/>
+  </chapter>
+  <chapter>
+    <title>Integration helpers and utilities</title>
+    <xi:include href="xml/shell-global.xml"/>
+    <xi:include href="xml/shell-wm.xml"/>
+    <xi:include href="xml/shell-xfixes-cursor.xml"/>
+    <xi:include href="xml/shell-util.xml"/>
+    <xi:include href="xml/shell-mount-operation.xml"/>
+    <xi:include href="xml/shell-mobile-providers.xml"/>
+    <xi:include href="xml/shell-network-agent.xml"/>
+    <xi:include href="xml/shell-polkit-authentication-agent.xml"/>
+    <xi:include href="xml/shell-tp-client.xml"/>
+  </chapter>
+  <chapter id="object-tree">
+    <title>Object Hierarchy</title>
+     <xi:include href="xml/tree_index.sgml"/>
+  </chapter>
+  <index id="api-index-full">
+    <title>API Index</title>
+    <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="deprecated-api-index" role="deprecated">
+    <title>Index of deprecated API</title>
+    <xi:include href="xml/api-index-deprecated.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
+</book>
