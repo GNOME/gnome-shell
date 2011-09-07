@@ -5,16 +5,26 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 3.0\n"
+"Project-Id-Version: 3.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-29 00:25+0100\n"
-"PO-Revision-Date: 2011-03-29 00:25+0000\n"
+"POT-Creation-Date: 2011-09-08 00:21+0100\n"
+"PO-Revision-Date: 2011-09-08 00:25+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:486
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr ""
+"Já se encontra em execução outro gestor de janelas no ecrã %i do monitor \"%s\"."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -340,13 +350,16 @@ msgstr "Evento de campainha"
 msgid "Unknown window information request: %d"
 msgstr "Pedido de informação de janela desconhecido: %d"
 
-#. Translators: %s is a window title
-#: ../src/core/delete.c:94
+#: ../src/core/delete.c:111
 #, c-format
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> não está a responder."
 
-#: ../src/core/delete.c:99
+#: ../src/core/delete.c:114
+msgid "Application is not responding."
+msgstr "A aplicação não está a responder."
+
+#: ../src/core/delete.c:119
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -354,11 +367,11 @@ msgstr ""
 "Poderá aguardar uns instantes para que continue ou forçar a aplicação a "
 "terminar definitivamente."
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Wait"
 msgstr "_Aguardar"
 
-#: ../src/core/delete.c:108
+#: ../src/core/delete.c:126
 msgid "_Force Quit"
 msgstr "_Forçar Terminar"
 
@@ -384,7 +397,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2468
+#: ../src/core/keybindings.c:2523
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -395,12 +408,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2558
+#: ../src/core/keybindings.c:2613
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Não foi definido nenhum comando %d.\n"
 
-#: ../src/core/keybindings.c:3570
+#: ../src/core/keybindings.c:3625
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Não foi definido nenhum comando de consola.\n"
@@ -429,12 +442,12 @@ msgstr "Inicializar a sessão a partir de um ficheiro de gravação de sessão"
 msgid "Make X calls synchronous"
 msgstr "Realizar as invocações X sincronamente"
 
-#: ../src/core/main.c:506
+#: ../src/core/main.c:504
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falha ao analizar directório de temas: %s\n"
 
-#: ../src/core/main.c:522
+#: ../src/core/main.c:520
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -477,36 +490,36 @@ msgstr "Lista separada por vírgulas de plugins de compositor"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
+#: ../src/core/prefs.c:550 ../src/core/prefs.c:711
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Chave GConf '%s' está definida com um valor inválido\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
+#: ../src/core/prefs.c:637 ../src/core/prefs.c:880
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d armazenado na chave GConf %s está fora do intervalo de %d a %d\n"
 
-#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
-#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
-#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
+#: ../src/core/prefs.c:681 ../src/core/prefs.c:758 ../src/core/prefs.c:806
+#: ../src/core/prefs.c:870 ../src/core/prefs.c:1331 ../src/core/prefs.c:1347
+#: ../src/core/prefs.c:1364 ../src/core/prefs.c:1380
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Chave GConf \"%s\" está definida para um tipo inválido\n"
 
-#: ../src/core/prefs.c:1203
+#: ../src/core/prefs.c:1210
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr ""
 "A chave GConf %s já está a ser utilizada e não pode ser utilizada para "
 "sobrepor %s\n"
 
-#: ../src/core/prefs.c:1262
+#: ../src/core/prefs.c:1269
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Incapaz de sobrepor a chave GConf, %s não foi encontrada\n"
 
-#: ../src/core/prefs.c:1447
+#: ../src/core/prefs.c:1454
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -514,12 +527,12 @@ msgstr ""
 "Recursos para aplicações problemáticas inactivos. Algumas aplicações poderão "
 "não funcionar correctamente.\n"
 
-#: ../src/core/prefs.c:1524
+#: ../src/core/prefs.c:1531
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Incapaz de processar descrição de fonte \"%s\" da chave GConf %s\n"
 
-#: ../src/core/prefs.c:1586
+#: ../src/core/prefs.c:1593
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -528,17 +541,17 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o modificador de botão de rato\n"
 
-#: ../src/core/prefs.c:2016
+#: ../src/core/prefs.c:2028
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro ao definir número de ambientes de trabalho para %d: %s\n"
 
-#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
+#: ../src/core/prefs.c:2212 ../src/core/prefs.c:2714
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
 
-#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
+#: ../src/core/prefs.c:2244 ../src/core/prefs.c:2422
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -547,27 +560,27 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o atalho de teclado \"%s\"\n"
 
-#: ../src/core/prefs.c:2783
+#: ../src/core/prefs.c:2795
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Erro ao definir nome da área de trabalho %d para \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2997
+#: ../src/core/prefs.c:3009
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Erro ao definir o estado das janelas escondidas activas: %s\n"
 
-#: ../src/core/prefs.c:3032
+#: ../src/core/prefs.c:3044
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Erro ao definir o estado de popup ao ciclar: %s\n"
 
-#: ../src/core/screen.c:624
+#: ../src/core/screen.c:663
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ecrã %d no monitor '%s' é inválido\n"
 
-#: ../src/core/screen.c:640
+#: ../src/core/screen.c:679
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -576,71 +589,71 @@ msgstr ""
 "Ecrã %d no monitor \"%s\" já tem um gestor de janelas; tente utilizar a "
 "opção --replace para substituir o gestor de janelas actual.\n"
 
-#: ../src/core/screen.c:667
+#: ../src/core/screen.c:706
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Incapaz de obter selecção do gestor de janelas no ecrã %d monitor \"%s\"\n"
 
-#: ../src/core/screen.c:722
+#: ../src/core/screen.c:761
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ecrã %d no monitor \"%s\" já tem um gestor de janelas\n"
 
-#: ../src/core/screen.c:907
+#: ../src/core/screen.c:946
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Incapaz libertar ecrã %d no monitor \"%s\"\n"
 
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Incapaz de criar directório '%s': %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Incapaz de abrir ficheiro de sessão '%s' para escrita: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1001
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erro ao escrever ficheiro de sessão '%s': %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erro ao fechar ficheiro de sessão '%s': %s\n"
 
-#: ../src/core/session.c:1130
+#: ../src/core/session.c:1136
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Falha ao processar ficheiro de sessão gravado: %s\n"
 
-#: ../src/core/session.c:1179
+#: ../src/core/session.c:1185
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "Atributo <mutter_session> observado mas o ID de sessão já é conhecido"
 
-#: ../src/core/session.c:1192 ../src/core/session.c:1267
-#: ../src/core/session.c:1299 ../src/core/session.c:1371
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1198 ../src/core/session.c:1273
+#: ../src/core/session.c:1305 ../src/core/session.c:1377
+#: ../src/core/session.c:1437
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Atributo %s desconhecido no elemento <%s>"
 
-#: ../src/core/session.c:1209
+#: ../src/core/session.c:1215
 #, c-format
 msgid "nested <window> tag"
 msgstr "etiqueta de <window> encadeada"
 
-#: ../src/core/session.c:1451
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento %s desconhecido"
 
-#: ../src/core/session.c:1803
+#: ../src/core/session.c:1809
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -669,30 +682,24 @@ msgid "Mutter was compiled without support for verbose mode\n"
 msgstr ""
 "Mutter foi compilado sem suporte para modo de registo detalhado (verbose)\n"
 
-#: ../src/core/util.c:286
+#: ../src/core/util.c:290
 msgid "Window manager: "
 msgstr "Gestor de janelas: "
 
-#: ../src/core/util.c:434
+#: ../src/core/util.c:438
 msgid "Bug in window manager: "
 msgstr "Erro no gestor de janelas: "
 
-#: ../src/core/util.c:467
+#: ../src/core/util.c:471
 msgid "Window manager warning: "
 msgstr "Aviso do gestor de janelas: "
 
-#: ../src/core/util.c:495
+#: ../src/core/util.c:499
 msgid "Window manager error: "
 msgstr "Erro do gestor de janelas: "
 
-#. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
-#: ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutter"
-
 #. first time through
-#: ../src/core/window.c:6847
+#: ../src/core/window.c:7019
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -708,7 +715,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7510
+#: ../src/core/window.c:7682
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -728,10 +735,15 @@ msgstr "Aplicação definiu um _NET_WM_PID %lu fictício\n"
 msgid "%s (on %s)"
 msgstr "%s (em %s)"
 
-#: ../src/core/window-props.c:1482
+#: ../src/core/window-props.c:1481
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Janela 0x%lx de WM_TRANSIENT_FOR inválido especificada para %s.\n"
+
+#: ../src/core/window-props.c:1492
+#, c-format
+msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+msgstr "Janela 0x%lx de WM_TRANSIENT_FOR para %s iria criar um ciclo infinito.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -762,6 +774,10 @@ msgstr ""
 "Propriedade %s na janela 0x%lx continha UTF-8 inválido para item %d na "
 "lista\n"
 
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
+
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
 msgstr "Anexar diálogos modais"
@@ -783,14 +799,27 @@ msgstr ""
 "todos os monitores ou apenas para janelas no monitor principal."
 
 #: ../src/mutter.schemas.in.h:4
+msgid "Draggable border width"
+msgstr "Largura da margem de arrasto"
+
+#: ../src/mutter.schemas.in.h:5
 msgid "Live Hidden Windows"
 msgstr "Janelas Escondidas Activas"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:6
 msgid "Modifier to use for extended window management operations"
 msgstr "Modificador a utilizar para operações estendidas de gestão de janelas"
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/mutter.schemas.in.h:7
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"A quantidade de margem total arrastável. Se as margens visíveis do tema não "
+"forem suficientes, serão adicionadas margens invisíveis para atingir este "
+"valor."
+
+#: ../src/mutter.schemas.in.h:8
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -802,7 +831,7 @@ msgstr ""
 "Windows\" em computadores PC. Espera-se que esta associação esteja para a "
 "omissão ou uma expressão vazia."
 
-#: ../src/mutter.schemas.in.h:7
+#: ../src/mutter.schemas.in.h:9
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -812,7 +841,7 @@ msgstr ""
 "diálogos modais surgem anexados à barra de título da janela pai e são "
 "movidos juntamente com a janela pai."
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/mutter.schemas.in.h:10
 msgid "Workspaces only on primary"
 msgstr "Áreas de trabalho apenas para a principal"
 
@@ -821,47 +850,47 @@ msgstr "Áreas de trabalho apenas para a principal"
 msgid "Usage: %s\n"
 msgstr "Utilização: %s\n"
 
-#: ../src/ui/frames.c:1099
+#: ../src/ui/frames.c:1157
 msgid "Close Window"
 msgstr "Fechar Janela"
 
-#: ../src/ui/frames.c:1102
+#: ../src/ui/frames.c:1160
 msgid "Window Menu"
 msgstr "Menu de Janela"
 
-#: ../src/ui/frames.c:1105
+#: ../src/ui/frames.c:1163
 msgid "Minimize Window"
 msgstr "Minimizar Janela"
 
-#: ../src/ui/frames.c:1108
+#: ../src/ui/frames.c:1166
 msgid "Maximize Window"
 msgstr "Maximizar Janela"
 
-#: ../src/ui/frames.c:1111
+#: ../src/ui/frames.c:1169
 msgid "Restore Window"
 msgstr "Restaurar a Janela"
 
-#: ../src/ui/frames.c:1114
+#: ../src/ui/frames.c:1172
 msgid "Roll Up Window"
 msgstr "Enrolar a Janela"
 
-#: ../src/ui/frames.c:1117
+#: ../src/ui/frames.c:1175
 msgid "Unroll Window"
 msgstr "Desenrolar a Janela"
 
-#: ../src/ui/frames.c:1120
+#: ../src/ui/frames.c:1178
 msgid "Keep Window On Top"
 msgstr "Manter a Janela no Topo"
 
-#: ../src/ui/frames.c:1123
+#: ../src/ui/frames.c:1181
 msgid "Remove Window From Top"
 msgstr "Remover a Janela do Topo"
 
-#: ../src/ui/frames.c:1126
+#: ../src/ui/frames.c:1184
 msgid "Always On Visible Workspace"
 msgstr "Sempre na Área de Trabalho Visível"
 
-#: ../src/ui/frames.c:1129
+#: ../src/ui/frames.c:1187
 msgid "Put Window On Only One Workspace"
 msgstr "Colocar a Janela Apenas em Uma Área de Trabalho"
 
@@ -1064,48 +1093,75 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:253
 msgid "top"
 msgstr "superior"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:255
 msgid "bottom"
 msgstr "inferior"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:257
 msgid "left"
 msgstr "esquerda"
 
-#: ../src/ui/theme.c:261
+#: ../src/ui/theme.c:259
 msgid "right"
 msgstr "direita"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:286
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "geometria de moldura não especifica dimensão \"%s\""
 
-#: ../src/ui/theme.c:307
+#: ../src/ui/theme.c:305
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "geometria de moldura não especifica dimensão \"%s\" para margem \"%s\""
 
-#: ../src/ui/theme.c:344
+#: ../src/ui/theme.c:342
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Rácio de aparência de botão %g não é um valor razoável"
 
-#: ../src/ui/theme.c:356
+#: ../src/ui/theme.c:354
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Geometria de moldura não especifica dimensão dos botões"
 
-#: ../src/ui/theme.c:1064
+#: ../src/ui/theme.c:1060
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Gradientes deverão ter pelo menos duas cores"
 
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1212
+#, c-format
+msgid ""
+"GTK custom color specification must have color name and fallback in "
+"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+msgstr ""
+"Especificação de cor GTK tem de ter o nome da cor e o recurso entre "
+"parentesis, por ex. gtk:custom(foo,bar); incapaz de processar \"%s\""
+
+#: ../src/ui/theme.c:1228
+#, c-format
+msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+"Caracter '%c' inválido no parâmetro color_name de gtk:custom, apenas são "
+"válidos os caracteres A-Za-z0-9-_"
+
+#: ../src/ui/theme.c:1242
+#, c-format
+msgid ""
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
+msgstr ""
+"Formato Gtk:custom é \"gtk:custom(color_name,fallback)\", \"%s\" não cumpre "
+"o formato"
+
+#: ../src/ui/theme.c:1287
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1114,7 +1170,7 @@ msgstr ""
 "Especificação de cor GTK tem de ter o estado entre parentesis rectos, por "
 "ex. gtk:fg[NORMAL] em que NORMAL é o estado; incapaz de processar \"%s\""
 
-#: ../src/ui/theme.c:1216
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1124,18 +1180,18 @@ msgstr ""
 "estado, por ex. gtk:fg[NORMAL] em que NORMAL é o estado; incapaz de "
 "processar \"%s\""
 
-#: ../src/ui/theme.c:1227
+#: ../src/ui/theme.c:1312
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Incapaz de compreender o estado \"%s\" na especificação de cor"
 
-#: ../src/ui/theme.c:1240
+#: ../src/ui/theme.c:1325
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr ""
 "Incapaz de compreender componente de cor \"%s\" na especificação de cor"
 
-#: ../src/ui/theme.c:1270
+#: ../src/ui/theme.c:1355
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1144,45 +1200,45 @@ msgstr ""
 "Formato de mistura é \"blend/bg_color/fg_color/alpha\", \"%s\" não cumpre o "
 "formato"
 
-#: ../src/ui/theme.c:1281
+#: ../src/ui/theme.c:1366
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Incapaz de processar o valor alfa \"%s\" na mistura de cor"
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1376
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Valor alfa \"%s\" na mistura de cor não está entre 0.0 e 1.0"
 
-#: ../src/ui/theme.c:1338
+#: ../src/ui/theme.c:1423
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Formato de sombra é \"shade/base_color/factor\", \"%s\" não cumpre o formato"
 
-#: ../src/ui/theme.c:1349
+#: ../src/ui/theme.c:1434
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr ""
 "Incapaz de processar o valor de factor de sombra \"%s\" na cor sombreada"
 
-#: ../src/ui/theme.c:1359
+#: ../src/ui/theme.c:1444
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Factor de sombreado \"%s\" na cor sombreada é negativo"
 
-#: ../src/ui/theme.c:1388
+#: ../src/ui/theme.c:1473
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Incapaz de processar cor \"%s\""
 
-#: ../src/ui/theme.c:1646
+#: ../src/ui/theme.c:1784
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Expressão de coordenada contém caracter '%s' que não é permitido"
 
-#: ../src/ui/theme.c:1673
+#: ../src/ui/theme.c:1811
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1191,14 +1247,14 @@ msgstr ""
 "Expressão de coordenada contém número decimal '%s' que não pode ser "
 "processado"
 
-#: ../src/ui/theme.c:1687
+#: ../src/ui/theme.c:1825
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Expressão de coordenada contém número inteiro '%s' que não pode ser "
 "processado"
 
-#: ../src/ui/theme.c:1809
+#: ../src/ui/theme.c:1947
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1207,40 +1263,40 @@ msgstr ""
 "Expressão de coordenada contém operador desconhecido no início deste texto: "
 "\"%s\""
 
-#: ../src/ui/theme.c:1866
+#: ../src/ui/theme.c:2004
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Expressão de coordenada está vazia ou não foi compreendida"
 
-#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2115 ../src/ui/theme.c:2125 ../src/ui/theme.c:2159
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Expressão de coordenada resulta em divisão por zero"
 
-#: ../src/ui/theme.c:2029
+#: ../src/ui/theme.c:2167
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Expressão de coordenada tenta utilizar operador mod num número decimal"
 
-#: ../src/ui/theme.c:2085
+#: ../src/ui/theme.c:2223
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Expressão de coordenada tem um operador \"%s\" onde era esperado um operando"
 
-#: ../src/ui/theme.c:2094
+#: ../src/ui/theme.c:2232
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Expressão de coordenada tem um operando onde era esperado um operador"
 
-#: ../src/ui/theme.c:2102
+#: ../src/ui/theme.c:2240
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Expressão de coordenada terminou com um operador em vez de um operando"
 
-#: ../src/ui/theme.c:2112
+#: ../src/ui/theme.c:2250
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1249,40 +1305,40 @@ msgstr ""
 "Expressão de coordenada tem o operador \"%c\" seguido do operador \"%c\" sem "
 "um operando entre os dois"
 
-#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
+#: ../src/ui/theme.c:2401 ../src/ui/theme.c:2446
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "Expressão de coordenada tem uma variável ou constante \"%s\" desconhecida"
 
-#: ../src/ui/theme.c:2362
+#: ../src/ui/theme.c:2500
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "O processador de expressão de coordenada transbordou o seu buffer."
 
-#: ../src/ui/theme.c:2391
+#: ../src/ui/theme.c:2529
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Expressão de coordenada tem um fecho de parentesis sem a respectiva abertura"
 
-#: ../src/ui/theme.c:2455
+#: ../src/ui/theme.c:2593
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Expressão de coordenada tem uma abertura de parentesis sem o respectivo fecho"
 
-#: ../src/ui/theme.c:2466
+#: ../src/ui/theme.c:2604
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Expressão de coordenada não aparenta ter operadores nem operandos"
 
-#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
+#: ../src/ui/theme.c:2816 ../src/ui/theme.c:2836 ../src/ui/theme.c:2856
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "O tema continha uma expressão que resultou num erro: %s\n"
 
-#: ../src/ui/theme.c:4410
+#: ../src/ui/theme.c:4527
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1291,7 +1347,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"qualquercoisa\"/> tem de ser "
 "especificado para este estilo de moldura"
 
-#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
+#: ../src/ui/theme.c:5060 ../src/ui/theme.c:5085
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1299,18 +1355,18 @@ msgstr ""
 "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"qualquercoisa\"/"
 ">"
 
-#: ../src/ui/theme.c:5013
+#: ../src/ui/theme.c:5133
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Falha ao ler tema \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
-#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
+#: ../src/ui/theme.c:5269 ../src/ui/theme.c:5276 ../src/ui/theme.c:5283
+#: ../src/ui/theme.c:5290 ../src/ui/theme.c:5297
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nenhum <%s> definido para o tema \"%s\""
 
-#: ../src/ui/theme.c:5185
+#: ../src/ui/theme.c:5305
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1319,7 +1375,7 @@ msgstr ""
 "Nenhum estilo de moldura definido para tipo de janela \"%s\" no tema \"%s\", "
 "adicione um elemento <window type=\"%s\" style_set=\"qualquer\"/>"
 
-#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
+#: ../src/ui/theme.c:5744 ../src/ui/theme.c:5806 ../src/ui/theme.c:5869
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1327,7 +1383,7 @@ msgstr ""
 "Constante definida pelo utilizador tem de começar com uma maiúscula; \"%s\" "
 "não começa"
 
-#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
+#: ../src/ui/theme.c:5752 ../src/ui/theme.c:5814 ../src/ui/theme.c:5877
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constante \"%s\" já foi definida"
@@ -1785,88 +1841,88 @@ msgstr "Esta é uma mensagem de exemplo num diálogo de exemplo"
 msgid "Fake menu item %d\n"
 msgstr "Item de menu %d falso\n"
 
-#: ../src/ui/theme-viewer.c:370
+#: ../src/ui/theme-viewer.c:371
 msgid "Border-only window"
 msgstr "Janela apenas com margem"
 
-#: ../src/ui/theme-viewer.c:372
+#: ../src/ui/theme-viewer.c:373
 msgid "Bar"
 msgstr "Barra"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:390
 msgid "Normal Application Window"
 msgstr "Janela Normal de Aplicação"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:394
 msgid "Dialog Box"
 msgstr "Janela de Diálogo"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:398
 msgid "Modal Dialog Box"
 msgstr "Janela de Diálogo Modal"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:402
 msgid "Utility Palette"
 msgstr "Paleta de Utilitários"
 
-#: ../src/ui/theme-viewer.c:405
+#: ../src/ui/theme-viewer.c:406
 msgid "Torn-off Menu"
 msgstr "Menu Destacável"
 
-#: ../src/ui/theme-viewer.c:409
+#: ../src/ui/theme-viewer.c:410
 msgid "Border"
 msgstr "Margem"
 
-#: ../src/ui/theme-viewer.c:413
+#: ../src/ui/theme-viewer.c:414
 msgid "Attached Modal Dialog"
 msgstr "Diálogo Modal Anexado"
 
-#: ../src/ui/theme-viewer.c:744
+#: ../src/ui/theme-viewer.c:747
 #, c-format
 msgid "Button layout test %d"
 msgstr "Teste %d de disposição de botão"
 
-#: ../src/ui/theme-viewer.c:773
+#: ../src/ui/theme-viewer.c:776
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisegundos para desenhar uma moldura de janela"
 
-#: ../src/ui/theme-viewer.c:818
+#: ../src/ui/theme-viewer.c:821
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Utilização: metacity-theme-viewer [NOMETEMA]\n"
 
-#: ../src/ui/theme-viewer.c:825
+#: ../src/ui/theme-viewer.c:828
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Erro ao ler tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:831
+#: ../src/ui/theme-viewer.c:834
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Tema \"%s\" lido em %g segundos\n"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:878
 msgid "Normal Title Font"
 msgstr "Fonte Normal de Título"
 
-#: ../src/ui/theme-viewer.c:881
+#: ../src/ui/theme-viewer.c:884
 msgid "Small Title Font"
 msgstr "Fonte Pequena de Título"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:890
 msgid "Large Title Font"
 msgstr "Fonte Grande de Título"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:895
 msgid "Button Layouts"
 msgstr "Disposição de Botões"
 
-#: ../src/ui/theme-viewer.c:897
+#: ../src/ui/theme-viewer.c:900
 msgid "Benchmark"
 msgstr "Análise de Desempenho"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:952
 msgid "Window Title Goes Here"
 msgstr "Título da Janela Fica Aqui"
 
