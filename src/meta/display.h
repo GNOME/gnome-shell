@@ -155,4 +155,7 @@ GSList *meta_display_sort_windows_by_stacking (MetaDisplay *display,
 
 Window meta_display_get_leader_window (MetaDisplay *display);
 
+void meta_display_add_ignored_crossing_serial (MetaDisplay  *display,
+                                               unsigned long serial);
+
 #endif

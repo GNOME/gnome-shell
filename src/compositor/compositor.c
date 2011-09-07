@@ -279,6 +279,12 @@ do_set_stage_input_region (MetaScreen   *screen,
   Window        xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
   XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
+
+  /* It's generally a good heuristic that when a crossing event is generated because
+   * we reshape the overlay, we don't want it to affect focus-follows-mouse focus -
+   * it's not the user doing something, it's the environment changing under the user.
+   */
+  meta_display_add_ignored_crossing_serial (display, XNextRequest (xdpy));
   XFixesSetWindowShapeRegion (xdpy, info->output, ShapeInput, 0, 0, region);
 }
 

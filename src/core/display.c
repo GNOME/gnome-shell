@@ -1383,9 +1383,20 @@ meta_display_get_current_time_roundtrip (MetaDisplay *display)
   return timestamp;
 }
 
-static void
-add_ignored_serial (MetaDisplay  *display,
-                    unsigned long serial)
+/**
+ * meta_display_add_ignored_crossing_serial:
+ * @display: a #MetaDisplay
+ * @serial: the serial to ignore
+ *
+ * Save the specified serial and ignore crossing events with that
+ * serial for the purpose of focus-follows-mouse. This can be used
+ * for certain changes to the window hierarchy that we don't want
+ * to change the focus window, even if they cause the pointer to
+ * end up in a new window.
+ */
+void
+meta_display_add_ignored_crossing_serial (MetaDisplay  *display,
+                                          unsigned long serial)
 {
   int i;
 
@@ -1603,7 +1614,7 @@ event_callback (XEvent   *event,
       if (meta_ui_window_should_not_cause_focus (display->xdisplay,
                                                  modified))
         {
-          add_ignored_serial (display, event->xany.serial);
+          meta_display_add_ignored_crossing_serial (display, event->xany.serial);
           meta_topic (META_DEBUG_FOCUS,
                       "Adding EnterNotify serial %lu to ignored focus serials\n",
                       event->xany.serial);
@@ -1613,7 +1624,7 @@ event_callback (XEvent   *event,
            event->xcrossing.mode == NotifyUngrab &&
            modified == display->ungrab_should_not_cause_focus_window)
     {
-      add_ignored_serial (display, event->xany.serial);
+      meta_display_add_ignored_crossing_serial (display, event->xany.serial);
       meta_topic (META_DEBUG_FOCUS,
                   "Adding LeaveNotify serial %lu to ignored focus serials\n",
                   event->xany.serial);
