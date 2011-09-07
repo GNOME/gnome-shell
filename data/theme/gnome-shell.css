@@ -371,18 +371,6 @@ StTooltip StLabel {
     -boxpointer-gap: 4px
 }
 
-/* The rounded panel corners we draw don't
- * support transitions, so disable transitions
- * for the buttons at the left/right edges
- */
-#panelActivities {
-    transition-duration: 0;
-}
-
-#panelStatus {
-    transition-duration: 0;
-}
-
 #panelStatusMenu {
     spacing: 4px;
 }

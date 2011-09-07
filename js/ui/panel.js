@@ -782,8 +782,10 @@ PanelCorner.prototype = {
             button = this._findRightmostButton(this._box);
 
         if (button) {
-            if (this._button && this._buttonStyleChangedSignalId)
+            if (this._button && this._buttonStyleChangedSignalId) {
                 this._button.disconnect(this._buttonStyleChangedSignalId);
+                this._button.style = null;
+            }
 
             this._button = button;
 
@@ -801,6 +803,10 @@ PanelCorner.prototype = {
                     let pseudoClass = button.get_style_pseudo_class();
                     this.actor.set_style_pseudo_class(pseudoClass);
                 }));
+
+            // The corner doesn't support theme transitions, so override
+            // the .panel-button default
+            button.style = 'transition-duration: 0';
         }
     },
 
