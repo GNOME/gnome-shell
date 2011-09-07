@@ -141,26 +141,6 @@ struct _ClutterTextPrivate
      creating a layout */
   PangoAttrList *preedit_attrs;
 
-  guint alignment           : 2;
-  guint wrap                : 1;
-  guint use_underline       : 1;
-  guint use_markup          : 1;
-  guint ellipsize           : 3;
-  guint single_line_mode    : 1;
-  guint wrap_mode           : 3;
-  guint justify             : 1;
-  guint editable            : 1;
-  guint cursor_visible      : 1;
-  guint activatable         : 1;
-  guint selectable          : 1;
-  guint selection_color_set : 1;
-  guint in_select_drag      : 1;
-  guint cursor_color_set    : 1;
-  guint preedit_set         : 1;
-  guint is_default_font     : 1;
-  guint has_focus           : 1;
-  guint selected_text_color_set : 1;
-
   /* current cursor position */
   gint position;
 
@@ -196,7 +176,6 @@ struct _ClutterTextPrivate
   /* Box representing the paint volume. The box is lazily calculated
      and cached */
   ClutterPaintVolume paint_volume;
-  gboolean paint_volume_valid;
 
   guint preedit_cursor_pos;
   gint preedit_n_chars;
@@ -214,6 +193,28 @@ struct _ClutterTextPrivate
 
   /* Signal handler for when the :text-direction changes */
   guint direction_changed_id;
+
+  /* bitfields */
+  guint alignment               : 2;
+  guint wrap                    : 1;
+  guint use_underline           : 1;
+  guint use_markup              : 1;
+  guint ellipsize               : 3;
+  guint single_line_mode        : 1;
+  guint wrap_mode               : 3;
+  guint justify                 : 1;
+  guint editable                : 1;
+  guint cursor_visible          : 1;
+  guint activatable             : 1;
+  guint selectable              : 1;
+  guint selection_color_set     : 1;
+  guint in_select_drag          : 1;
+  guint cursor_color_set        : 1;
+  guint preedit_set             : 1;
+  guint is_default_font         : 1;
+  guint has_focus               : 1;
+  guint selected_text_color_set : 1;
+  guint paint_volume_valid      : 1;
 };
 
 enum
