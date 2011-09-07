@@ -360,7 +360,7 @@ NetworkSecretDialog.prototype = {
         case 'bluetooth':
             content.title = _("Mobile broadband network password");
             content.message = _("A password is required to connect to '%s'.").format(connectionSetting.get_id());
-            this._getMobileSecrets(content.secrets);
+            this._getMobileSecrets(content.secrets, connectionType);
             break;
         default:
             log('Invalid connection type: ' + connectionType);
