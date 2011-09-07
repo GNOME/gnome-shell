@@ -35,6 +35,7 @@ const Indicator = new Lang.Class({
         this._output = null;
         this._outputVolumeId = 0;
         this._outputMutedId = 0;
+        /* Translators: This is the label for audio volume */
         this._outputTitle = new PopupMenu.PopupMenuItem(_("Volume"), { reactive: false });
         this._outputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._outputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_output'));
