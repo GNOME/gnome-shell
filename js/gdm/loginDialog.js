@@ -580,8 +580,11 @@ function SessionList() {
 
 SessionList.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ style_class: 'login-dialog-session-list',
-                                        vertical: true});
+        this.actor = new St.Bin();
+
+        this._box = new St.BoxLayout({ style_class: 'login-dialog-session-list',
+                                       vertical: true});
+        this.actor.child = this._box;
 
         this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
                                        can_focus: true,
@@ -606,17 +609,17 @@ SessionList.prototype = {
 
         this._button.connect('clicked',
                              Lang.bind(this, this._onClicked));
-        this.actor.add_actor(this._button,
-                             { x_fill: true,
-                               y_fill: true,
-                               expand: true });
+        this._box.add_actor(this._button,
+                            { x_fill: true,
+                              y_fill: true,
+                              expand: true });
         this._scrollView = new St.ScrollView({ style_class: 'login-dialog-session-list-scroll-view'});
         this._scrollView.set_policy(Gtk.PolicyType.NEVER,
                                     Gtk.PolicyType.AUTOMATIC);
-        this.actor.add_actor(this._scrollView,
-                             { x_fill: true,
-                               y_fill: true,
-                               expand: true });
+        this._box.add_actor(this._scrollView,
+                            { x_fill: true,
+                              y_fill: true,
+                              expand: true });
         this._itemList = new St.BoxLayout({ style_class: 'login-dialog-session-item-list',
                                             vertical: true });
         this._scrollView.add_actor(this._itemList,
@@ -679,9 +682,9 @@ SessionList.prototype = {
         ids.sort();
 
         if (ids.length <= 1)
-            this.actor.hide();
+            this._box.hide();
         else
-            this.actor.show();
+            this._box.show();
 
         for (let i = 0; i < ids.length; i++) {
             let [sessionName, sessionDescription] = GdmGreeter.get_session_name_and_description(ids[i]);
@@ -806,11 +809,10 @@ LoginDialog.prototype = {
                                             }));
 
         this._promptBox.add(this._sessionList.actor,
-                               { expand: true,
-                                 x_fill: true,
-                                 y_fill: true,
-                                 x_align: St.Align.START,
-                                 y_align: St.Align.START});
+                            { expand: true,
+                              x_fill: false,
+                              y_fill: true,
+                              x_align: St.Align.START });
         this._promptBox.hide();
 
         let notListedLabel = new St.Label({ text: _("Not listed?"),
