@@ -636,11 +636,10 @@ SwitcherList.prototype = {
                 this._items[this._highlighted].add_style_pseudo_class('selected');
         }
 
-        let monitor = Main.layoutManager.primaryMonitor;
-        let itemSize = this._items[index].allocation.x2 - this._items[index].allocation.x1;
-        let [posX, posY] = this._items[index].get_transformed_position();
-        posX += this.actor.x;
-        if (posX + itemSize > monitor.width + monitor.x)
+        let [absItemX, absItemY] = this._items[index].get_transformed_position();
+        let [result, posX, posY] = this.actor.transform_stage_point(absItemX, 0);
+        let [containerWidth, containerHeight] = this.actor.get_transformed_size();
+        if (posX + this._items[index].get_width() > containerWidth)
             this._scrollToRight();
         else if (posX < 0)
             this._scrollToLeft();
