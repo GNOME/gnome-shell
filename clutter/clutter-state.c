@@ -2136,17 +2136,17 @@ parse_state_transition (JsonArray *array,
           continue;
         }
 
-      mode = clutter_script_resolve_animation_mode (json_array_get_element (key, 2));
+      mode = _clutter_script_resolve_animation_mode (json_array_get_element (key, 2));
 
       state_key = clutter_state_key_new (target_state,
                                          gobject, property, pspec,
                                          mode);
 
-      res = clutter_script_parse_node (clos->script,
-                                       &(state_key->value),
-                                       property,
-                                       json_array_get_element (key, 3),
-                                       pspec);
+      res = _clutter_script_parse_node (clos->script,
+                                        &(state_key->value),
+                                        property,
+                                        json_array_get_element (key, 3),
+                                        pspec);
       if (!res)
         {
           g_warning ("Unable to parse the key value for the "

@@ -294,7 +294,7 @@ clutter_script_real_get_type_from_name (ClutterScript *script,
   if (gtype != G_TYPE_INVALID)
     return gtype;
 
-  return clutter_script_get_type_from_class (type_name);
+  return _clutter_script_get_type_from_class (type_name);
 }
 
 void

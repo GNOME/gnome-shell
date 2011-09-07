@@ -680,9 +680,9 @@ clutter_model_set_custom_property (ClutterScriptable *scriptable,
                   column_name = clutter_model_get_column_name (model, i);
                   columns[i] = i;
                   g_value_init (&v, column_type);
-                  clutter_script_parse_node (script, &v, column_name,
-                                             json_array_get_element (array, i),
-                                             NULL);
+                  _clutter_script_parse_node (script, &v, column_name,
+                                              json_array_get_element (array, i),
+                                              NULL);
                   g_value_array_append (values, &v);
                   g_value_unset (&v);
                 }
@@ -719,9 +719,9 @@ clutter_model_set_custom_property (ClutterScriptable *scriptable,
                           columns[column] = i;
                           g_value_init (&v, col_type);
                           member = json_object_get_member (object, mname);
-                          clutter_script_parse_node (script, &v,
-                                                     col_name, member,
-                                                     NULL);
+                          _clutter_script_parse_node (script, &v,
+                                                      col_name, member,
+                                                      NULL);
                           g_value_array_append (values, &v);
                           g_value_unset (&v);
                           break;

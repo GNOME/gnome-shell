@@ -431,7 +431,7 @@ clutter_animation_parse_custom_node (ClutterScriptable *scriptable,
     {
       gulong mode;
 
-      mode = clutter_script_resolve_animation_mode (node);
+      mode = _clutter_script_resolve_animation_mode (node);
 
       g_value_init (value, G_TYPE_ULONG);
       g_value_set_ulong (value, mode);

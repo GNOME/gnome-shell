@@ -101,33 +101,33 @@ void property_info_free (gpointer data);
 
 GType clutter_script_parser_get_type (void) G_GNUC_CONST;
 
-gboolean clutter_script_parse_node        (ClutterScript *script,
-                                           GValue        *value,
-                                           const gchar   *name,
-                                           JsonNode      *node,
-                                           GParamSpec    *pspec);
+gboolean _clutter_script_parse_node        (ClutterScript *script,
+                                            GValue        *value,
+                                            const gchar   *name,
+                                            JsonNode      *node,
+                                            GParamSpec    *pspec);
 
-GType    clutter_script_get_type_from_symbol (const gchar *symbol);
-GType    clutter_script_get_type_from_class  (const gchar *name);
+GType    _clutter_script_get_type_from_symbol (const gchar *symbol);
+GType    _clutter_script_get_type_from_class  (const gchar *name);
 
-gulong   clutter_script_resolve_animation_mode (JsonNode *node);
+gulong   _clutter_script_resolve_animation_mode (JsonNode *node);
 
-gboolean clutter_script_enum_from_string  (GType          gtype,
-                                           const gchar   *string,
-                                           gint          *enum_value);
-gboolean clutter_script_flags_from_string (GType          gtype,
-                                           const gchar   *string,
-                                           gint          *flags_value);
+gboolean _clutter_script_enum_from_string  (GType          gtype,
+                                            const gchar   *string,
+                                            gint          *enum_value);
+gboolean _clutter_script_flags_from_string (GType          gtype,
+                                            const gchar   *string,
+                                            gint          *flags_value);
 
-gboolean clutter_script_parse_knot        (ClutterScript   *script,
-                                           JsonNode        *node,
-                                           ClutterKnot     *knot);
-gboolean clutter_script_parse_geometry    (ClutterScript   *script,
-                                           JsonNode        *node,
-                                           ClutterGeometry *geometry);
-gboolean clutter_script_parse_color       (ClutterScript   *script,
-                                           JsonNode        *node,
-                                           ClutterColor    *color);
+gboolean _clutter_script_parse_knot        (ClutterScript   *script,
+                                            JsonNode        *node,
+                                            ClutterKnot     *knot);
+gboolean _clutter_script_parse_geometry    (ClutterScript   *script,
+                                            JsonNode        *node,
+                                            ClutterGeometry *geometry);
+gboolean _clutter_script_parse_color       (ClutterScript   *script,
+                                            JsonNode        *node,
+                                            ClutterColor    *color);
 GObject *_clutter_script_parse_alpha       (ClutterScript   *script,
                                             JsonNode        *node);
 

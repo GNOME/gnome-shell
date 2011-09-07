@@ -66,7 +66,7 @@ clutter_script_parser_init (ClutterScriptParser *parser)
 }
 
 GType
-clutter_script_get_type_from_symbol (const gchar *symbol)
+_clutter_script_get_type_from_symbol (const gchar *symbol)
 {
   static GModule *module = NULL;
   GTypeGetFunc func;
@@ -82,7 +82,7 @@ clutter_script_get_type_from_symbol (const gchar *symbol)
 }
 
 GType
-clutter_script_get_type_from_class (const gchar *name)
+_clutter_script_get_type_from_class (const gchar *name)
 {
   static GModule *module = NULL;
   GString *symbol_name = g_string_sized_new (64);
@@ -160,9 +160,9 @@ clutter_script_get_type_from_class (const gchar *name)
  * Return value: %TRUE if the conversion was successfull.
  */
 gboolean
-clutter_script_enum_from_string (GType        type, 
-                                 const gchar *string,
-                                 gint        *enum_value)
+_clutter_script_enum_from_string (GType        type,
+                                  const gchar *string,
+                                  gint        *enum_value)
 {
   GEnumClass *eclass;
   GEnumValue *ev;
@@ -195,9 +195,9 @@ clutter_script_enum_from_string (GType        type,
 }
 
 gboolean
-clutter_script_flags_from_string (GType        type, 
-                                  const gchar *string,
-                                  gint        *flags_value)
+_clutter_script_flags_from_string (GType        type,
+                                   const gchar *string,
+                                   gint        *flags_value)
 {
   gchar *endptr, *prevptr;
   guint i, j, ret, value;
@@ -323,9 +323,9 @@ parse_knot_from_object (JsonObject  *object,
 }
 
 gboolean
-clutter_script_parse_knot (ClutterScript *script,
-                           JsonNode      *node,
-                           ClutterKnot   *knot)
+_clutter_script_parse_knot (ClutterScript *script,
+                            JsonNode      *node,
+                            ClutterKnot   *knot)
 {
   g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
   g_return_val_if_fail (node != NULL, FALSE);
@@ -389,9 +389,9 @@ parse_geometry_from_object (JsonObject      *object,
 }
 
 gboolean
-clutter_script_parse_geometry (ClutterScript   *script,
-                               JsonNode        *node,
-                               ClutterGeometry *geometry)
+_clutter_script_parse_geometry (ClutterScript   *script,
+                                JsonNode        *node,
+                                ClutterGeometry *geometry)
 {
   g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
   g_return_val_if_fail (node != NULL, FALSE);
@@ -460,9 +460,9 @@ parse_color_from_object (JsonObject   *object,
 }
 
 gboolean
-clutter_script_parse_color (ClutterScript *script,
-                            JsonNode      *node,
-                            ClutterColor  *color)
+_clutter_script_parse_color (ClutterScript *script,
+                             JsonNode      *node,
+                             ClutterColor  *color)
 {
   g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
   g_return_val_if_fail (node != NULL, FALSE);
@@ -774,7 +774,7 @@ static const struct
 static const gint n_animation_modes = G_N_ELEMENTS (animation_modes);
 
 gulong
-clutter_script_resolve_animation_mode (JsonNode *node)
+_clutter_script_resolve_animation_mode (JsonNode *node)
 {
   gint i, res = CLUTTER_CUSTOM_MODE;
 
@@ -800,9 +800,9 @@ clutter_script_resolve_animation_mode (JsonNode *node)
             return animation_modes[i].mode;
         }
 
-      if (clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE,
-                                           name,
-                                           &res))
+      if (_clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE,
+                                            name,
+                                            &res))
         return res;
 
       g_warning ("Unable to find the animation mode '%s'", name);
@@ -869,7 +869,7 @@ _clutter_script_parse_alpha (ClutterScript *script,
 
   val = json_object_get_member (object, "mode");
   if (val != NULL)
-    mode = clutter_script_resolve_animation_mode (val);
+    mode = _clutter_script_resolve_animation_mode (val);
 
   if (mode == CLUTTER_CUSTOM_MODE)
     {
@@ -1083,11 +1083,11 @@ clutter_script_parser_parse_end (JsonParser *parser)
 }
 
 gboolean
-clutter_script_parse_node (ClutterScript *script,
-                           GValue        *value,
-                           const gchar   *name,
-                           JsonNode      *node,
-                           GParamSpec    *pspec)
+_clutter_script_parse_node (ClutterScript *script,
+                            GValue        *value,
+                            const gchar   *name,
+                            JsonNode      *node,
+                            GParamSpec    *pspec)
 {
   GValue node_value = { 0, };
   gboolean retval = FALSE;
@@ -1155,7 +1155,7 @@ clutter_script_parse_node (ClutterScript *script,
 
               /* knot := { "x" : (int), "y" : (int) } */
 
-              if (clutter_script_parse_knot (script, node, &knot))
+              if (_clutter_script_parse_knot (script, node, &knot))
                 {
                   g_value_set_boxed (value, &knot);
                   return TRUE;
@@ -1173,7 +1173,7 @@ clutter_script_parse_node (ClutterScript *script,
                * }
                */
 
-              if (clutter_script_parse_geometry (script, node, &geom))
+              if (_clutter_script_parse_geometry (script, node, &geom))
                 {
                   g_value_set_boxed (value, &geom);
                   return TRUE;
@@ -1191,7 +1191,7 @@ clutter_script_parse_node (ClutterScript *script,
                * }
                */
 
-              if (clutter_script_parse_color (script, node, &color))
+              if (_clutter_script_parse_color (script, node, &color))
                 {
                   g_value_set_boxed (value, &color);
                   return TRUE;
@@ -1214,7 +1214,7 @@ clutter_script_parse_node (ClutterScript *script,
 
               /* knot := [ (int), (int) ] */
 
-              if (clutter_script_parse_knot (script, node, &knot))
+              if (_clutter_script_parse_knot (script, node, &knot))
                 {
                   g_value_set_boxed (value, &knot);
                   return TRUE;
@@ -1226,7 +1226,7 @@ clutter_script_parse_node (ClutterScript *script,
 
               /* geometry := [ (int), (int), (int), (int) ] */
 
-              if (clutter_script_parse_geometry (script, node, &geom))
+              if (_clutter_script_parse_geometry (script, node, &geom))
                 {
                   g_value_set_boxed (value, &geom);
                   return TRUE;
@@ -1238,7 +1238,7 @@ clutter_script_parse_node (ClutterScript *script,
 
               /* color := [ (int), (int), (int), (int) ] */
 
-              if (clutter_script_parse_color (script, node, &color))
+              if (_clutter_script_parse_color (script, node, &color))
                 {
                   g_value_set_boxed (value, &color);
                   return TRUE;
@@ -1337,9 +1337,9 @@ clutter_script_parse_node (ClutterScript *script,
             {
               gint enum_value;
 
-              retval = clutter_script_enum_from_string (G_VALUE_TYPE (value),
-                                                        g_value_get_string (&node_value),
-                                                        &enum_value);
+              retval = _clutter_script_enum_from_string (G_VALUE_TYPE (value),
+                                                         g_value_get_string (&node_value),
+                                                         &enum_value);
               if (retval)
                 g_value_set_enum (value, enum_value);
             }
@@ -1355,9 +1355,9 @@ clutter_script_parse_node (ClutterScript *script,
             {
               gint flags_value;
 
-              retval = clutter_script_flags_from_string (G_VALUE_TYPE (value),
-                                                         g_value_get_string (&node_value),
-                                                         &flags_value);
+              retval = _clutter_script_flags_from_string (G_VALUE_TYPE (value),
+                                                          g_value_get_string (&node_value),
+                                                          &flags_value);
               if (retval)
                 g_value_set_flags (value, flags_value);
             }
@@ -1368,7 +1368,7 @@ clutter_script_parse_node (ClutterScript *script,
             {
               ClutterColor color = { 0, };
 
-              retval = clutter_script_parse_color (script, node, &color);
+              retval = _clutter_script_parse_color (script, node, &color);
               if (retval)
                 clutter_value_set_color (value, &color);
             }
@@ -1464,10 +1464,10 @@ clutter_script_translate_parameters (ClutterScript  *script,
                                         pinfo->node);
 
       if (!res)
-        res = clutter_script_parse_node (script, &param.value,
-                                         pinfo->name,
-                                         pinfo->node,
-                                         pinfo->pspec);
+        res = _clutter_script_parse_node (script, &param.value,
+                                          pinfo->name,
+                                          pinfo->node,
+                                          pinfo->pspec);
 
       if (!res)
         {
@@ -1534,10 +1534,10 @@ clutter_script_construct_parameters (ClutterScript  *script,
 
       param.name = g_strdup (pinfo->name);
 
-      if (!clutter_script_parse_node (script, &param.value,
-                                      pinfo->name,
-                                      pinfo->node,
-                                      pinfo->pspec))
+      if (!_clutter_script_parse_node (script, &param.value,
+                                       pinfo->name,
+                                       pinfo->node,
+                                       pinfo->pspec))
         {
           unparsed = g_list_prepend (unparsed, pinfo);
           continue;
@@ -1626,10 +1626,10 @@ apply_layout_properties (ClutterScript    *script,
                                         pinfo->node);
 
       if (!res)
-        res = clutter_script_parse_node (script, &value,
-                                         name,
-                                         pinfo->node,
-                                         pinfo->pspec);
+        res = _clutter_script_parse_node (script, &value,
+                                          name,
+                                          pinfo->node,
+                                          pinfo->pspec);
 
       if (!res)
         {
@@ -1726,10 +1726,10 @@ apply_child_properties (ClutterScript    *script,
                                         pinfo->node);
 
       if (!res)
-        res = clutter_script_parse_node (script, &value,
-                                         name,
-                                         pinfo->node,
-                                         pinfo->pspec);
+        res = _clutter_script_parse_node (script, &value,
+                                          name,
+                                          pinfo->node,
+                                          pinfo->pspec);
 
       if (!res)
         {
@@ -1952,7 +1952,7 @@ _clutter_script_construct_object (ClutterScript *script,
   if (oinfo->gtype == G_TYPE_INVALID)
     {
       if (G_UNLIKELY (oinfo->type_func))
-        oinfo->gtype = clutter_script_get_type_from_symbol (oinfo->type_func);
+        oinfo->gtype = _clutter_script_get_type_from_symbol (oinfo->type_func);
       else
         oinfo->gtype = clutter_script_get_type_from_name (script, oinfo->class_name);
 

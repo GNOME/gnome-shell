@@ -1513,9 +1513,9 @@ resolve_interpolation (JsonNode *node)
       gboolean res;
       gint enum_value;
 
-      res = clutter_script_enum_from_string (CLUTTER_TYPE_INTERPOLATION,
-                                             str,
-                                             &enum_value);
+      res = _clutter_script_enum_from_string (CLUTTER_TYPE_INTERPOLATION,
+                                              str,
+                                              &enum_value);
       if (res)
         return enum_value;
     }
@@ -1620,7 +1620,7 @@ parse_animator_property (JsonArray *array,
       gboolean res;
 
       progress = json_array_get_double_element (key, 0);
-      mode = clutter_script_resolve_animation_mode (json_array_get_element (key, 1));
+      mode = _clutter_script_resolve_animation_mode (json_array_get_element (key, 1));
 
       animator_key = clutter_animator_key_new (clos->animator,
                                                gobject,
@@ -1628,11 +1628,11 @@ parse_animator_property (JsonArray *array,
                                                progress,
                                                mode);
 
-      res = clutter_script_parse_node (clos->script,
-                                       &(animator_key->value),
-                                       pname,
-                                       json_array_get_element (key, 2),
-                                       pspec);
+      res = _clutter_script_parse_node (clos->script,
+                                        &(animator_key->value),
+                                        pname,
+                                        json_array_get_element (key, 2),
+                                        pspec);
       if (!res)
         {
           g_warning ("Unable to parse the key value for the "
