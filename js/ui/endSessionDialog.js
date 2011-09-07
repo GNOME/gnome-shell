@@ -60,8 +60,16 @@ const logoutDialogContent = {
     subjectWithUser: _("Log Out %s"),
     subject: _("Log Out"),
     inhibitedDescription: _("Click Log Out to quit these applications and log out of the system."),
-    uninhibitedDescriptionWithUser: _("%s will be logged out automatically in %d seconds."),
-    uninhibitedDescription: _("You will be logged out automatically in %d seconds."),
+    uninhibitedDescriptionWithUser: function(user, seconds) {
+        return ngettext("%s will be logged out automatically in %d second.",
+                        "%s will be logged out automatically in %d seconds.",
+                        seconds).format(user, seconds);
+    },
+    uninhibitedDescription: function(seconds) {
+        return ngettext("You will be logged out automatically in %d second.",
+                        "You will be logged out automatically in %d seconds.",
+                        seconds).format(seconds);
+    },
     endDescription: _("Logging out of the system."),
     confirmButtons: [{ signal: 'ConfirmedLogout',
                        label:  _("Log Out") }],
@@ -71,7 +79,11 @@ const logoutDialogContent = {
 const shutdownDialogContent = {
     subject: _("Power Off"),
     inhibitedDescription: _("Click Power Off to quit these applications and power off the system."),
-    uninhibitedDescription: _("The system will power off automatically in %d seconds."),
+    uninhibitedDescription: function(seconds) {
+        return ngettext("The system will power off automatically in %d second.",
+                        "The system will power off automatically in %d seconds.",
+                        seconds).format(seconds);
+    },
     endDescription: _("Powering off the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  _("Restart") },
@@ -84,7 +96,11 @@ const shutdownDialogContent = {
 const restartDialogContent = {
     subject: _("Restart"),
     inhibitedDescription: _("Click Restart to quit these applications and restart the system."),
-    uninhibitedDescription: _("The system will restart automatically in %d seconds."),
+    uninhibitedDescription: function(seconds) {
+        return ngettext("The system will restart automatically in %d second.",
+                        "The system will restart automatically in %d seconds.",
+                        seconds).format(seconds);
+    },
     endDescription: _("Restarting the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  _("Restart") }],
@@ -388,14 +404,14 @@ EndSessionDialog.prototype = {
                         subject = dialogContent.subjectWithUser.format(realName);
 
                     if (dialogContent.uninhibitedDescriptionWithUser)
-                        description = dialogContent.uninhibitedDescriptionWithUser.format(realName, displayTime);
+                        description = dialogContent.uninhibitedDescriptionWithUser(realName, displayTime);
                     else
-                        description = dialogContent.uninhibitedDescription.format(displayTime);
+                        description = dialogContent.uninhibitedDescription(displayTime);
                 }
             }
 
             if (!description)
-                description = dialogContent.uninhibitedDescription.format(displayTime);
+                description = dialogContent.uninhibitedDescription(displayTime);
         } else {
             description = dialogContent.endDescription;
         }
