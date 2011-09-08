@@ -1169,9 +1169,7 @@ SummaryItem.prototype = {
         this.notificationStack = new St.BoxLayout({ name: 'summary-notification-stack',
                                                      vertical: true });
         this.notificationStackView.add_actor(this.notificationStack);
-        this._notificationExpandedIds = [];
-        this._notificationDoneDisplayingIds = [];
-        this._notificationDestroyedIds = [];
+        this._stackedNotifications = [];
 
         this._oldMaxScrollAdjustment = 0;
 
@@ -1240,18 +1238,19 @@ SummaryItem.prototype = {
 
     doneShowingNotificationStack: function() {
         let notificationActors = this.notificationStack.get_children();
-        for (let i = 0; i < notificationActors.length; i++) {
-            notificationActors[i]._delegate.collapseCompleted();
-            notificationActors[i]._delegate.disconnect(this._notificationExpandedIds[i]);
-            notificationActors[i]._delegate.disconnect(this._notificationDoneDisplayingIds[i]);
-            notificationActors[i]._delegate.disconnect(this._notificationDestroyedIds[i]);
-            this.notificationStack.remove_actor(notificationActors[i]);
-            notificationActors[i]._delegate.setIconVisible(true);
-            notificationActors[i]._delegate.enableScrolling(true);
+        for (let i = 0; i < this._stackedNotifications.length; i++) {
+            let stackedNotification = this._stackedNotifications[i];
+            let notification = stackedNotification.notification;
+            notification.collapseCompleted();
+            notification.disconnect(stackedNotification.notificationExpandedId);
+            notification.disconnect(stackedNotification.notificationDoneDisplayingId);
+            notification.disconnect(stackedNotification.notificationDestroyedId);
+            if (notification.actor.get_parent() == this.notificationStack)
+                this.notificationStack.remove_actor(notification.actor);
+            notification.setIconVisible(true);
+            notification.enableScrolling(true);
         }
-        this._notificationExpandedIds = [];
-        this._notificationDoneDisplayingIds = [];
-        this._notificationDestroyedIds = [];
+        this._stackedNotifications = [];
     },
 
     _notificationAddedToSource: function(source, notification) {
@@ -1260,12 +1259,12 @@ SummaryItem.prototype = {
     },
 
     _appendNotificationToStack: function(notification) {
-        let notificationExpandedId = notification.connect('expanded', Lang.bind(this, this._contentUpdated));
-        this._notificationExpandedIds.push(notificationExpandedId);
-        let notificationDoneDisplayingId = notification.connect('done-displaying', Lang.bind(this, this._notificationDoneDisplaying));
-        this._notificationDoneDisplayingIds.push(notificationDoneDisplayingId);
-        let notificationDestroyedId = notification.connect('destroy', Lang.bind(this, this._notificationDestroyed));
-        this._notificationDestroyedIds.push(notificationDestroyedId);
+        let stackedNotification = {};
+        stackedNotification.notification = notification;
+        stackedNotification.notificationExpandedId = notification.connect('expanded', Lang.bind(this, this._contentUpdated));
+        stackedNotification.notificationDoneDisplayingId = notification.connect('done-displaying', Lang.bind(this, this._notificationDoneDisplaying));
+        stackedNotification.notificationDestroyedId = notification.connect('destroy', Lang.bind(this, this._notificationDestroyed));
+        this._stackedNotifications.push(stackedNotification);
         if (!this.source.isChat)
             notification.enableScrolling(false);
         if (this.notificationStack.get_children().length > 0)
@@ -1295,17 +1294,18 @@ SummaryItem.prototype = {
     },
 
     _notificationDestroyed: function(notification) {
-        let index = this.notificationStack.get_children().indexOf(notification.actor);
-        if (index >= 0) {
-            notification.disconnect(this._notificationExpandedIds[index]);
-            this._notificationExpandedIds.splice(index, 1);
-            notification.disconnect(this._notificationDoneDisplayingIds[index]);
-            this._notificationDoneDisplayingIds.splice(index, 1);
-            notification.disconnect(this._notificationDestroyedIds[index]);
-            this._notificationDestroyedIds.splice(index, 1);
-            this.notificationStack.remove_actor(notification.actor);
-            this._contentUpdated();
+        for (let i = 0; i < this._stackedNotifications.length; i++) {
+            if (this._stackedNotifications[i].notification == notification) {
+                let stackedNotification = this._stackedNotifications[i];
+                notification.disconnect(stackedNotification.notificationExpandedId);
+                notification.disconnect(stackedNotification.notificationDoneDisplayingId);
+                notification.disconnect(stackedNotification.notificationDestroyedId);
+                this._stackedNotifications.splice(i, 1);
+                this._contentUpdated();
+                break;
+            }
         }
+
         if (this.notificationStack.get_children().length > 0)
             this.notificationStack.get_children()[0]._delegate.setIconVisible(true);
     }
