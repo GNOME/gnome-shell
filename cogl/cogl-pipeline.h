@@ -32,6 +32,8 @@ G_BEGIN_DECLS
 
 #include <cogl/cogl-types.h>
 
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+
 /**
  * SECTION:cogl-pipeline
  * @short_description: Functions for creating and manipulating the GPU
@@ -50,6 +52,7 @@ typedef struct _CoglPipeline	      CoglPipeline;
 
 #define COGL_PIPELINE(OBJECT) ((CoglPipeline *)OBJECT)
 
+#define cogl_pipeline_new cogl_pipeline_new_EXP
 /**
  * cogl_pipeline_new:
  *
@@ -57,10 +60,14 @@ typedef struct _CoglPipeline	      CoglPipeline;
  * a primitive white.
  *
  * Return value: a pointer to a new #CoglPipeline
+ *
+ * Since: 2.0
+ * Stability: Unstable
  */
 CoglPipeline *
 cogl_pipeline_new (void);
 
+#define cogl_pipeline_copy cogl_pipeline_copy_EXP
 /**
  * cogl_pipeline_copy:
  * @source: a #CoglPipeline object to copy
@@ -77,10 +84,12 @@ cogl_pipeline_new (void);
  * Returns: a pointer to the newly allocated #CoglPipeline
  *
  * Since: 2.0
+ * Stability: Unstable
  */
 CoglPipeline *
 cogl_pipeline_copy (CoglPipeline *source);
 
+#define cogl_is_pipeline cogl_is_pipeline_EXP
 /**
  * cogl_is_pipeline:
  * @handle: A CoglHandle
@@ -89,11 +98,12 @@ cogl_pipeline_copy (CoglPipeline *source);
  *
  * Return value: %TRUE if the handle references a #CoglPipeline,
  *   %FALSE otherwise
+ *
+ * Since: 2.0
+ * Stability: Unstable
  */
 gboolean
 cogl_is_pipeline (CoglHandle handle);
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 
 /**
  * CoglPipelineLayerCallback:
@@ -111,6 +121,7 @@ typedef gboolean (*CoglPipelineLayerCallback) (CoglPipeline *pipeline,
                                                int layer_index,
                                                void *user_data);
 
+#define cogl_pipeline_foreach_layer cogl_pipeline_foreach_layer_EXP
 /**
  * cogl_pipeline_foreach_layer:
  * @pipeline: A #CoglPipeline object
