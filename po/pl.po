@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
 "POT-Creation-Date: 2011-09-05 21:29+0100\n"
-"PO-Revision-Date: 2011-03-29 17:24+0200\n"
+"PO-Revision-Date: 2011-09-08 21:55+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -175,14 +175,12 @@ msgid "Opacity of an actor"
 msgstr "Nieprzezroczystość aktora"
 
 #: clutter/clutter-actor.c:4231
-#, fuzzy
 msgid "Offscreen redirect"
-msgstr "Poza ekranem"
+msgstr "Przekierowanie poza ekranem"
 
 #: clutter/clutter-actor.c:4232
-#, fuzzy
 msgid "Flags controlling when to flatten the actor into a single image"
-msgstr "Określa, czy tekst powinien być pojedynczym wierszem"
+msgstr "Flaga kontrolująca, kiedy spłaszczać aktora do pojedynczego obrazu"
 
 #: clutter/clutter-actor.c:4250
 msgid "Visible"
@@ -908,14 +906,12 @@ msgid "The height of the Cairo surface"
 msgstr "Wysokość powierzchni biblioteki cairo"
 
 #: clutter/clutter-cairo-texture.c:615
-#, fuzzy
 msgid "Auto Resize"
-msgstr "Automatyczne odwracanie"
+msgstr "Automatyczna zmiana rozmiaru"
 
 #: clutter/clutter-cairo-texture.c:616
-#, fuzzy
 msgid "Whether the surface should match the allocation"
-msgstr "Określa, czy każdy element powinien otrzymać to samo przydzielenie"
+msgstr "Określa, czy powierzchnia powinna pasować do przydzielenia"
 
 #: clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -946,22 +942,20 @@ msgid "Whether the clickable has a grab"
 msgstr "Określa, czy element klikalny posiada przytrzymanie"
 
 #: clutter/clutter-click-action.c:574 clutter/clutter-settings.c:573
-#, fuzzy
 msgid "Long Press Duration"
-msgstr "Czas trwania upraszczania"
+msgstr "Czas trwania długiego przyciśnięcia"
 
 #: clutter/clutter-click-action.c:575
 msgid "The minimum duration of a long press to recognize the gesture"
-msgstr ""
+msgstr "Minimalny czas trwania długiego przyciśnięcia, aby rozpoznać gest"
 
 #: clutter/clutter-click-action.c:593
-#, fuzzy
 msgid "Long Press Threshold"
-msgstr "Próg przeciągnięcia"
+msgstr "Próg długiego przyciśnięcia"
 
 #: clutter/clutter-click-action.c:594
 msgid "The maximum threshold before a long press is cancelled"
-msgstr ""
+msgstr "Maksymalny próg, zanim długie przyciśnięcie zostanie anulowane"
 
 #: clutter/clutter-clone.c:341
 msgid "Specifies the actor to be cloned"
@@ -1249,7 +1243,6 @@ msgid "Playing"
 msgstr "Odtwarzanie"
 
 #: clutter/clutter-media.c:92
-#, fuzzy
 msgid "Whether the actor is playing"
 msgstr "Określa, czy aktor jest odtwarzany"
 
@@ -1444,15 +1437,15 @@ msgstr "Typ wygładzania podpikselowego (none, rgb, bgr, vrgb, vbgr)"
 
 #: clutter/clutter-settings.c:574
 msgid "The minimum duration for a long press gesture to be recognized"
-msgstr ""
+msgstr "Minimalny czas trwania gestu długiego przyciśnięcia"
 
 #: clutter/clutter-settings.c:581
 msgid "Fontconfig configuration timestamp"
-msgstr ""
+msgstr "Czas konfiguracji fontconfig"
 
 #: clutter/clutter-settings.c:582
 msgid "Timestamp of the current fontconfig configuration"
-msgstr ""
+msgstr "Czas bieżącej konfiguracji fontconfig"
 
 #: clutter/clutter-shader.c:255
 msgid "Vertex Source"
@@ -1883,19 +1876,16 @@ msgid "Whether the text should be a single line"
 msgstr "Określa, czy tekst powinien być pojedynczym wierszem"
 
 #: clutter/clutter-text.c:3306 clutter/clutter-text.c:3307
-#, fuzzy
 msgid "Selected Text Color"
-msgstr "Kolor zaznaczenia"
+msgstr "Kolor zaznaczonego tekstu"
 
 #: clutter/clutter-text.c:3321
-#, fuzzy
 msgid "Selected Text Color Set"
-msgstr "Ustawienie koloru zaznaczenia"
+msgstr "Ustawienie koloru zaznaczonego tekstu"
 
 #: clutter/clutter-text.c:3322
-#, fuzzy
 msgid "Whether the selected text color has been set"
-msgstr "Określa, czy kolor zaznaczenia został ustawiony"
+msgstr "Określa, czy kolor zaznaczonego tekstu został ustawiony"
 
 #: clutter/clutter-texture.c:995
 msgid "Sync size of actor"
@@ -2028,17 +2018,16 @@ msgstr "Kształtowanie aktora za pomocą kanału alfa podczas wybierania"
 
 #: clutter/clutter-texture.c:1557 clutter/clutter-texture.c:1967
 #: clutter/clutter-texture.c:2062 clutter/clutter-texture.c:2343
-#, fuzzy
 msgid "Failed to load the image data"
-msgstr "Ścieżka pliku zawierającego dane obrazu"
+msgstr "Wczytanie danych obrazu się nie powiodło"
 
 #: clutter/clutter-texture.c:1703
 msgid "YUV textures are not supported"
-msgstr ""
+msgstr "Tekstury YUV nie są obsługiwane"
 
 #: clutter/clutter-texture.c:1712
 msgid "YUV2 textues are not supported"
-msgstr ""
+msgstr "Tekstury YUV2 nie są obsługiwane"
 
 #: clutter/clutter-timeline.c:264
 msgid "Should the timeline automatically restart"
@@ -2203,18 +2192,3 @@ msgstr "Przekierowanie zastąpienia okna"
 #: clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
 msgstr "Czy to jest okno zastąpienia przekierowania"
-
-#~ msgid "Cogl debugging flags to set"
-#~ msgstr "Flagi debugowania biblioteki Cogl do ustawienia"
-
-#~ msgid "Cogl debugging flags to unset"
-#~ msgstr "Flagi debugowania biblioteki Cogl do usunięcia"
-
-#~ msgid "Cogl Options"
-#~ msgstr "Opcje biblioteki Cogl"
-
-#~ msgid "Show Cogl options"
-#~ msgstr "Wyświetla opcje biblioteki Cogl"
-
-#~ msgid "VBlank method to be used (none, dri or glx)"
-#~ msgstr "Używana metoda VBlank (\"none\" (brak), \"dri\" lub \"glx\")"
