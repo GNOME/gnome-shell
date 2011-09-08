@@ -127,34 +127,14 @@ NetworkSecretDialog.prototype = {
             } else
                 secret.valid = true;
 
-            secretTable.add(label, { row: pos, col: 0, x_align: St.Align.START, y_align: St.Align.START });
+            secretTable.add(label, { row: pos, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_align: St.Align.START });
             secretTable.add(secret.entry, { row: pos, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
             pos++;
 
-            if (secret.password) {
+            if (secret.password)
                 secret.entry.clutter_text.set_password_char('\u25cf');
-
-                // FIXME: need a real checkbox here
-                let button = new St.Button({ button_mask: St.ButtonMask.ONE,
-                                             can_focus: true });
-                let checkbox = new St.BoxLayout({ vertical: false,
-                                                  style_class: 'network-dialog-show-password-checkbox' 
-                                                });
-                let _switch = new PopupMenu.Switch(false);
-                checkbox.add(_switch.actor);
-                checkbox.add(new St.Label({ text: _("Show password") }), { expand: true });
-                button.connect('clicked', function() {
-                    _switch.toggle();
-                    if (_switch.state)
-                        secret.entry.clutter_text.set_password_char('');
-                    else
-                        secret.entry.clutter_text.set_password_char('\u25cf');
-                });
-                button.child = checkbox;
-                secretTable.add(button, { row: pos, col: 1, x_expand: true, x_fill: true, y_fill: true })
-                pos++;
-            }
         }
+
         messageBox.add(secretTable);
 
         this._okButton = { label:  _("Connect"),

@@ -1925,14 +1925,6 @@ StTooltip StLabel {
     padding-bottom: 8px;
 }
 
-.network-dialog-show-password-checkbox {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-size: 10pt;
-    color: white;
-    spacing: 10px;
-}
-
 .network-dialog-secret-table {
     spacing-rows: 15px;
 }
