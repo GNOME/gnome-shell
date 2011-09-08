@@ -72,3 +72,24 @@ stage {
 .vfade {
     -st-fade-offset: 68px;
 }
+
+#transition-container .transition-label {
+    color: white;
+    width: 1em;
+    height: 1em;
+    padding: 1em;
+    background-color: #333;
+    border: 2px solid black;
+    border-radius: 8px;
+    transition-duration: 1000; /* One second */
+}
+
+#transition-container:hover .transition-label {
+    background-color: blue;
+    border: 2px solid red;
+}
+
+#transition-container .transition-label:hover {
+    background-color: green;
+    border: 2px solid blue;
+}
