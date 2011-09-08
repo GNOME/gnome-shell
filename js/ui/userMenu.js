@@ -194,6 +194,10 @@ IMStatusChooserItem.prototype = {
         this._userChangedId = this._user.connect('changed',
                                                  Lang.bind(this,
                                                            this._updateUser));
+        this.actor.connect('notify::mapped', Lang.bind(this, function() {
+            if (this.actor.mapped)
+                this._updateUser();
+        }));
     },
 
     // Override getColumnWidths()/setColumnWidths() to make the item
@@ -421,6 +425,7 @@ UserMenuButton.prototype = {
         box.add(this._name, { y_align: St.Align.MIDDLE, y_fill: false });
         this._userLoadedId = this._user.connect('notify::is-loaded', Lang.bind(this, this._updateUserName));
         this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUserName));
+        this._updateUserName();
 
         this._createSubMenu();
         this._userManager.connect('notify::is-loaded',
