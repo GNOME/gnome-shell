@@ -50,6 +50,7 @@ static char*
 get_atk_bridge_path (void)
 {
   GSettings *atspi_settings = NULL;
+  GVariant *variant = NULL;
   char *value = NULL;
   const char * const *schemas = NULL;
   gboolean found = FALSE;
@@ -74,8 +75,9 @@ get_atk_bridge_path (void)
     }
 
   atspi_settings = g_settings_new (AT_SPI_SCHEMA);
-  value = g_settings_get_string (atspi_settings, ATK_BRIDGE_LOCATION_KEY);
-
+  variant = g_settings_get_value (atspi_settings, ATK_BRIDGE_LOCATION_KEY);
+  value = g_variant_dup_bytestring (variant, NULL);
+  g_variant_unref (variant);
   g_object_unref (atspi_settings);
 
   return value;
