@@ -284,7 +284,8 @@ FocusGrabber.prototype = {
         let source = event.get_source();
         switch (event.type()) {
             case Clutter.EventType.BUTTON_PRESS:
-                if (!this.actor.contains(source) && !Main.keyboard.actor.contains(source))
+                if (!this.actor.contains(source) &&
+                    !Main.layoutManager.keyboardBox.contains(source))
                     this.emit('button-pressed', source);
                 break;
             case Clutter.EventType.KEY_PRESS:
