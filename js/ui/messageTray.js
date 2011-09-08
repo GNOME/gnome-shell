@@ -2237,7 +2237,7 @@ MessageTray.prototype = {
     _showSummaryBoxPointer: function() {
         this._summaryBoxPointerItem = this._clickedSummaryItem;
         this._summaryBoxPointerContentUpdatedId = this._summaryBoxPointerItem.connect('content-updated',
-                                                                                      Lang.bind(this, this._adjustSummaryBoxPointerPosition));
+                                                                                      Lang.bind(this, this._onSummaryBoxPointerContentUpdated));
         this._summaryBoxPointerDoneDisplayingId = this._summaryBoxPointerItem.connect('done-displaying-content',
                                                                                       Lang.bind(this, this._escapeTray));
         if (this._clickedSummaryItemMouseButton == 1) {
@@ -2272,6 +2272,13 @@ MessageTray.prototype = {
         }));
     },
 
+    _onSummaryBoxPointerContentUpdated: function() {
+        if (this._summaryBoxPointerItem.notificationStack.get_children().length == 0)
+            this._hideSummaryBoxPointer();
+        this._adjustSummaryBoxPointerPosition();
+
+    },
+
     _adjustSummaryBoxPointerPosition: function() {
         // The position of the arrow origin should be the same as center of this._clickedSummaryItem.actor
         if (!this._clickedSummaryItem)
@@ -2295,6 +2302,14 @@ MessageTray.prototype = {
     },
 
     _hideSummaryBoxPointer: function() {
+        // We should be sure to hide the box pointer if all notifications in it are destroyed while
+        // it is hiding, so that we don't show an an animation of an empty blob being hidden.
+        if (this._summaryBoxPointerState == State.HIDING &&
+            this._summaryBoxPointerItem.notificationStack.get_children().length == 0) {
+            this._summaryBoxPointer.actor.hide();
+            return;
+        }
+
         this._summaryBoxPointerState = State.HIDING;
         // Unset this._clickedSummaryItem if we are no longer showing the summary
         if (this._summaryState != State.SHOWN)
