@@ -265,15 +265,14 @@ Keyboard.prototype = {
     _onKeyFocusChanged: function () {
         let focus = global.stage.key_focus;
 
-        if (focus == global.stage || focus == null)
+        // Showing an extended key popup will grab focus, but ignore that
+        if (focus && focus._extended_keys)
             return;
 
         if (focus instanceof Clutter.Text)
             this.show();
-        else {
-            if (focus._extended_keys == null)
-                this.hide();
-        }
+        else
+            this.hide();
     },
 
     _addKeys: function () {
