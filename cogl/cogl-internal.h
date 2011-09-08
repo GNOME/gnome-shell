@@ -131,6 +131,14 @@ typedef enum
   COGL_PRIVATE_FEATURE_MESA_PACK_INVERT = 1L<<1
 } CoglPrivateFeatureFlags;
 
+/* Sometimes when evaluating pipelines, either during comparisons or
+ * if calculating a hash value we need to tweak the evaluation
+ * semantics */
+typedef enum _CoglPipelineEvalFlags
+{
+  COGL_PIPELINE_EVAL_FLAG_NONE = 0
+} CoglPipelineEvalFlags;
+
 gboolean
 _cogl_check_extension (const char *name, const char *ext);
 

@@ -244,12 +244,18 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix-stack.h			\
 	$(srcdir)/cogl-depth-state.c			\
 	$(srcdir)/cogl-depth-state-private.h		\
+	$(srcdir)/cogl-node.c				\
+	$(srcdir)/cogl-node-private.h			\
 	$(srcdir)/cogl-pipeline.c			\
 	$(srcdir)/cogl-pipeline-private.h		\
+	$(srcdir)/cogl-pipeline-layer.c			\
+	$(srcdir)/cogl-pipeline-layer-private.h		\
 	$(srcdir)/cogl-pipeline-state.c			\
 	$(srcdir)/cogl-pipeline-layer-state-private.h	\
 	$(srcdir)/cogl-pipeline-layer-state.c		\
 	$(srcdir)/cogl-pipeline-state-private.h		\
+	$(srcdir)/cogl-pipeline-debug.c			\
+	$(srcdir)/cogl-pipeline-debug-private.h		\
 	$(srcdir)/cogl-pipeline-opengl.c		\
 	$(srcdir)/cogl-pipeline-opengl-private.h	\
 	$(srcdir)/cogl-pipeline-fragend-glsl.c		\

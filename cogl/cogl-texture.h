@@ -33,6 +33,7 @@
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 #include <cogl/cogl-pixel-buffer.h>
 #endif
+#include <cogl/cogl-bitmap.h>
 
 G_BEGIN_DECLS
 

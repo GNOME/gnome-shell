@@ -28,9 +28,9 @@
 #ifndef __COGL_PIPELINE_H__
 #define __COGL_PIPELINE_H__
 
-G_BEGIN_DECLS
-
 #include <cogl/cogl-types.h>
+
+G_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -47,7 +47,6 @@ G_BEGIN_DECLS
  * performs fragment processing including depth testing and texture
  * mapping. Finally it blends the result with the framebuffer.
  */
-
 typedef struct _CoglPipeline	      CoglPipeline;
 
 #define COGL_PIPELINE(OBJECT) ((CoglPipeline *)OBJECT)
