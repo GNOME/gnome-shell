@@ -64,7 +64,7 @@ tracker reference if applicable) and so forth. Be concise but not too
 brief. Don't be afraid of using UTF-8, or even ASCII art.
 === end example commit ===
 
-   Always add a brief description of the commit to the _first_ line of
+ - Always add a brief description of the commit to the _first_ line of
    the commit and terminate by two newlines (it will work without the
    second newline, but that is not nice for the interfaces).
 
@@ -72,22 +72,24 @@ brief. Don't be afraid of using UTF-8, or even ASCII art.
      <newline>                  - MANDATORY empty line
      long description           - Each line MUST be less than 76 characters
 
-   Do NOT put the commit message on the short description line. One line
+ - Do NOT put the commit message on the short description line. One line
    commit messages should be avoided, unless they can be *fully* explained
    in less than 72 characters (e.g. "Fix typo in
    clutter_actor_create_pango_context() docs").
 
-   The brief description might optionally have a "tag", enclosed in
-   square brackets, detailing what part of the repository the commit
+ - The brief description might optionally have a "tag", i.e. a word or two
+   followed by a color, detailing what part of the repository the commit
    affected, e.g.:
 
-      [alpha] Add :mode property
-      [text] Emit ::cursor-event only on changes
+      alpha: Add :mode property
+      text: Emit ::cursor-event only on changes
 
-   The tag counts as part of overall character count, so try using
-   a short word. Optionally, you can also use the "tag:" form.
+ - The tag counts as part of overall character count, so try using
+   a short word. Optionally, you can also use the "[tag]" form.
 
-   Think of the commit message as an email sent to the maintainers explaining
+ - Build environment fixes should use the "build" tag.
+
+ - Think of the commit message as an email sent to the maintainers explaining
    "what" you did and, more importantly, "why" you did it. The "how" is not
    important, since "git show" will show the patch inlined with the commit
    message.
