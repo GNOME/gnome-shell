@@ -71,8 +71,11 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
   clutter_stage_window_parent_iface->unrealize (stage_window);
 #endif
 
-  cogl_object_unref (stage_cogl->onscreen);
-  stage_cogl->onscreen = NULL;
+  if (stage_cogl->onscreen != NULL)
+    {
+      cogl_object_unref (stage_cogl->onscreen);
+      stage_cogl->onscreen = NULL;
+    }
 }
 
 static void
