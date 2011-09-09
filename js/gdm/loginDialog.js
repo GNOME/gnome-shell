@@ -758,7 +758,7 @@ LoginDialog.prototype = {
                                     Lang.bind(this, this._onConversationStopped));
 
         this._titleLabel = new St.Label({ style_class: 'login-dialog-title',
-                                          text: _("Sign In") });
+                                          text: C_("title", "Sign In") });
 
         this.contentLayout.add(this._titleLabel,
                               { y_fill: false,
@@ -930,7 +930,7 @@ LoginDialog.prototype = {
                        { action: Lang.bind(this, function() {
                                      hold.release();
                                  }),
-                         label: _("Sign In") }];
+                         label: C_("button", "Sign In") }];
 
         this._promptEntryActivateCallbackId = this._promptEntry.clutter_text.connect('activate',
                                                                                      Lang.bind(this, function() {
