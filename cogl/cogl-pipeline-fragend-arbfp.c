@@ -252,13 +252,6 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
                            "PARAM one = {1, 1, 1, 1};\n"
                            "PARAM two = {2, 2, 2, 2};\n"
                            "PARAM minus_one = {-1, -1, -1, -1};\n");
-
-          for (i = 0; i < n_layers; i++)
-            {
-              shader_state->unit_state[i].sampled = FALSE;
-              shader_state->unit_state[i].dirty_combine_constant = FALSE;
-            }
-          shader_state->next_constant_id = 0;
         }
     }
 
