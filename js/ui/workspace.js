@@ -102,6 +102,12 @@ WindowClone.prototype = {
         this._windowClone = new Clutter.Clone({ source: realWindow.get_texture(),
                                                 x: -borderX,
                                                 y: -borderY });
+        // We expect this.actor to be used for all interaction rather than
+        // this._windowClone; as the former is reactive and the latter
+        // is not, this just works for most cases. However, for DND all
+        // actors are picked, so DND operations would operate on the clone.
+        // To avoid this, we hide it from pick.
+        Shell.util_set_hidden_from_pick(this._windowClone, true);
 
         this.origX = realWindow.x + borderX;
         this.origY = realWindow.y + borderY;
