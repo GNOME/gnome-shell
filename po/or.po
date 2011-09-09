@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-07 15:16+0000\n"
-"PO-Revision-Date: 2011-09-08 17:10+0530\n"
+"PO-Revision-Date: 2011-09-09 10:53+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <or@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1710,7 +1710,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3004
 msgid "Editable"
-msgstr ""
+msgstr "ସମ୍ପାଦନଯୋଗ୍ୟ"
 
 #: ../clutter/clutter-text.c:3005
 msgid "Whether the text is editable"
@@ -1718,7 +1718,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3020
 msgid "Selectable"
-msgstr ""
+msgstr "ବଛାଯୋଗ୍ୟ"
 
 #: ../clutter/clutter-text.c:3021
 msgid "Whether the text is selectable"
@@ -1726,7 +1726,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3035
 msgid "Activatable"
-msgstr ""
+msgstr "ସକ୍ରିୟ କରିବା ଯୋଗ୍ୟ"
 
 #: ../clutter/clutter-text.c:3036
 msgid "Whether pressing return causes the activate signal to be emitted"
@@ -1738,11 +1738,11 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3067 ../clutter/clutter-text.c:3068
 msgid "Cursor Color"
-msgstr ""
+msgstr "ଦର୍ଶିକା ରଙ୍ଗ"
 
 #: ../clutter/clutter-text.c:3082
 msgid "Cursor Color Set"
-msgstr ""
+msgstr "ଦର୍ଶିକା ରଙ୍ଗ ସେଟ"
 
 #: ../clutter/clutter-text.c:3083
 msgid "Whether the cursor color has been set"
@@ -1750,7 +1750,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3098
 msgid "Cursor Size"
-msgstr ""
+msgstr "ସୂଚକ ଆକାର"
 
 #: ../clutter/clutter-text.c:3099
 msgid "The width of the cursor, in pixels"
@@ -1758,15 +1758,15 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3113
 msgid "Cursor Position"
-msgstr ""
+msgstr "ଦର୍ଶିକା ସ୍ଥିତି"
 
 #: ../clutter/clutter-text.c:3114
 msgid "The cursor position"
-msgstr ""
+msgstr "ଦର୍ଶିକା ସ୍ଥିତି"
 
 #: ../clutter/clutter-text.c:3129
 msgid "Selection-bound"
-msgstr ""
+msgstr "ମନୋନୟନ-ସୀମା"
 
 #: ../clutter/clutter-text.c:3130
 msgid "The cursor position of the other end of the selection"
@@ -1774,11 +1774,11 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3145 ../clutter/clutter-text.c:3146
 msgid "Selection Color"
-msgstr ""
+msgstr "ମନୋନୟନ ରଙ୍ଗ"
 
 #: ../clutter/clutter-text.c:3160
 msgid "Selection Color Set"
-msgstr ""
+msgstr "ମନୋନୟନ ରଙ୍ଗ ସେଟ"
 
 #: ../clutter/clutter-text.c:3161
 msgid "Whether the selection color has been set"
@@ -1786,7 +1786,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3176
 msgid "Attributes"
-msgstr ""
+msgstr "ଗୁଣଗୁଡିକ"
 
 #: ../clutter/clutter-text.c:3177
 msgid "A list of style attributes to apply to the contents of the actor"
@@ -1794,7 +1794,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3199
 msgid "Use markup"
-msgstr ""
+msgstr "ଚିହ୍ନ ବ୍ଯବହାର କରନ୍ତୁ"
 
 #: ../clutter/clutter-text.c:3200
 msgid "Whether or not the text includes Pango markup"
@@ -1802,7 +1802,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3216
 msgid "Line wrap"
-msgstr ""
+msgstr "ରେଖାକୁ ଆବ୍ରୁତ କରନ୍ତୁ"
 
 #: ../clutter/clutter-text.c:3217
 msgid "If set, wrap the lines if the text becomes too wide"
@@ -1810,7 +1810,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3232
 msgid "Line wrap mode"
-msgstr ""
+msgstr "ଧାଡ଼ି ଆବରଣ କରିବା ଅବସ୍ଥା"
 
 #: ../clutter/clutter-text.c:3233
 msgid "Control how line-wrapping is done"
@@ -1826,7 +1826,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3265
 msgid "Line Alignment"
-msgstr ""
+msgstr "ଧାଡ଼ି ପଂକ୍ତିକରଣ"
 
 #: ../clutter/clutter-text.c:3266
 msgid "The preferred alignment for the string, for multi-line text"
@@ -1834,7 +1834,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3282
 msgid "Justify"
-msgstr ""
+msgstr "ପ୍ରମାଣ କରନ୍ତୁ"
 
 #: ../clutter/clutter-text.c:3283
 msgid "Whether the text should be justified"
@@ -1842,7 +1842,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3298
 msgid "Password Character"
-msgstr ""
+msgstr "ପ୍ରବେଶ ସଂକେତ ଅକ୍ଷର"
 
 #: ../clutter/clutter-text.c:3299
 msgid "If non-zero, use this character to display the actor's contents"
@@ -1850,7 +1850,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3313
 msgid "Max Length"
-msgstr ""
+msgstr "ସରର୍ବାଧିକ ଲମ୍ବ"
 
 #: ../clutter/clutter-text.c:3314
 msgid "Maximum length of the text inside the actor"
@@ -1858,7 +1858,7 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3337
 msgid "Single Line Mode"
-msgstr ""
+msgstr "ଏକମାତ୍ର ରେଖା ଧାରା"
 
 #: ../clutter/clutter-text.c:3338
 msgid "Whether the text should be a single line"
@@ -2013,7 +2013,7 @@ msgstr ""
 
 #: ../clutter/clutter-timeline.c:278
 msgid "Delay"
-msgstr ""
+msgstr "ବିଳମ୍ବ"
 
 #: ../clutter/clutter-timeline.c:279
 msgid "Delay before start"
@@ -2037,51 +2037,51 @@ msgstr ""
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:147
 msgid "sysfs Path"
-msgstr ""
+msgstr "sysfs ପଥ"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:148
 msgid "Path of the device in sysfs"
-msgstr ""
+msgstr "sysfs ରେ ଉପକରଣର ପଥ"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:163
 msgid "Device Path"
-msgstr ""
+msgstr "ଉପକରଣ ପଥ"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:164
 msgid "Path of the device node"
-msgstr ""
+msgstr "ଉପକରଣ ନୋଡର ପଥ"
 
 #: ../clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
-msgstr ""
+msgstr "ବ୍ଯବହାର ପାଇଁ X ପ୍ରଦର୍ଶିକା"
 
 #: ../clutter/x11/clutter-backend-x11.c:489
 msgid "X screen to use"
-msgstr ""
+msgstr "ବ୍ଯବହାର ପାଇଁ X ପ୍ରଦର୍ଶିକା"
 
 #: ../clutter/x11/clutter-backend-x11.c:494
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "X ଡାକରା ସମକାଳିତ କରନ୍ତୁ"
 
 #: ../clutter/x11/clutter-backend-x11.c:501
 msgid "Enable XInput support"
-msgstr ""
+msgstr "XInput ସହାୟତାକୁ ସକ୍ରିୟ କରନ୍ତୁ"
 
 #: ../clutter/x11/clutter-keymap-x11.c:317
 msgid "The Clutter backend"
-msgstr ""
+msgstr "Clutter ପୃଷ୍ଠଭୂମି"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:545
 msgid "Pixmap"
-msgstr ""
+msgstr "Pixmap"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "The X11 Pixmap to be bound"
-msgstr ""
+msgstr "ବାନ୍ଧିବା ପାଇଁ X11 Pixmap"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap width"
-msgstr ""
+msgstr "Pixmap ଓସାର"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The width of the pixmap bound to this texture"
@@ -2089,7 +2089,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Pixmap height"
-msgstr ""
+msgstr "Pixmap ଉଚ୍ଚତା"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "The height of the pixmap bound to this texture"
@@ -2097,7 +2097,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:572
 msgid "Pixmap Depth"
-msgstr ""
+msgstr "Pixmap ଗଭୀରତା"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:573
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
@@ -2105,7 +2105,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:581
 msgid "Automatic Updates"
-msgstr ""
+msgstr "ସ୍ୱୟଂଚାଳିତ ଅଦ୍ୟତନ"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:582
 msgid "If the texture should be kept in sync with any pixmap changes."
@@ -2113,15 +2113,15 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:590
 msgid "Window"
-msgstr ""
+msgstr "ୱିଣ୍ଡୋ"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:591
 msgid "The X11 Window to be bound"
-msgstr ""
+msgstr "ବାନ୍ଧିବା ପାଇଁ X11 ୱିଣ୍ଡୋ"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:599
 msgid "Window Redirect Automatic"
-msgstr ""
+msgstr "ସ୍ବୟଂଚାଳିତ ୱିଣ୍ଡୋ ଦିଗ ପରିବର୍ତ୍ତନ"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:600
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
@@ -2129,23 +2129,23 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:610
 msgid "Window Mapped"
-msgstr ""
+msgstr "ୱିଣ୍ଡୋ ମେଳନ"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:611
 msgid "If window is mapped"
-msgstr ""
+msgstr "ଯଦି ୱିଣ୍ଡୋ ମେଳଖାଇଥାଏ"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:620
 msgid "Destroyed"
-msgstr ""
+msgstr "ନଷ୍ଟ ହୋଇଛି"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:621
 msgid "If window has been destroyed"
-msgstr ""
+msgstr "ଯଦି ୱିଣ୍ଡୋଟି ନଷ୍ଟ ହୋଇଛି"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:629
 msgid "Window X"
-msgstr ""
+msgstr "ୱିଣ୍ଡୋ X"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:630
 msgid "X position of window on screen according to X11"
@@ -2153,7 +2153,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:638
 msgid "Window Y"
-msgstr ""
+msgstr "ୱିଣ୍ଡୋ Y"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:639
 msgid "Y position of window on screen according to X11"
@@ -2166,4 +2166,5 @@ msgstr ""
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
 msgstr ""
+
 
