@@ -17,7 +17,7 @@ AC_CONFIG_HEADERS(config.h)
 
 AM_INIT_AUTOMAKE([dist-bzip2 no-dist-gzip])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
-AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 
 MUTTER_MAJOR_VERSION=mutter_major_version
 MUTTER_MINOR_VERSION=mutter_minor_version
