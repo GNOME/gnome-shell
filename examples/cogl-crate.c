@@ -9,6 +9,7 @@ typedef struct _Data
 
   CoglMatrix view;
 
+  CoglIndices *indices;
   CoglPrimitive *prim;
   CoglTexture *texture;
   CoglPipeline *crate_pipeline;
@@ -31,17 +32,16 @@ static CoglMatrix identity;
 static CoglColor black;
 static CoglColor white;
 
-/* A cube modelled as a list of triangles. Potentially this could be
- * done more efficiently as a triangle strip or using a separate index
- * array, but this way is pretty simple, if a little verbose. */
-CoglVertexP3T2 vertices[] =
+/* A cube modelled using 4 vertices for each face.
+ *
+ * We use an index buffer when drawing the cube later so the GPU will
+ * actually read each face as 2 separate triangles.
+ */
+static CoglVertexP3T2 vertices[] =
 {
   /* Front face */
   { /* pos = */ -1.0f, -1.0f,  1.0f, /* tex coords = */ 0.0f, 1.0f},
   { /* pos = */  1.0f, -1.0f,  1.0f, /* tex coords = */ 1.0f, 1.0f},
-  { /* pos = */  1.0f,  1.0f,  1.0f, /* tex coords = */ 1.0f, 0.0f},
-
-  { /* pos = */ -1.0f, -1.0f,  1.0f, /* tex coords = */ 0.0f, 1.0f},
   { /* pos = */  1.0f,  1.0f,  1.0f, /* tex coords = */ 1.0f, 0.0f},
   { /* pos = */ -1.0f,  1.0f,  1.0f, /* tex coords = */ 0.0f, 0.0f},
 
@@ -49,17 +49,11 @@ CoglVertexP3T2 vertices[] =
   { /* pos = */ -1.0f, -1.0f, -1.0f, /* tex coords = */ 1.0f, 0.0f},
   { /* pos = */ -1.0f,  1.0f, -1.0f, /* tex coords = */ 1.0f, 1.0f},
   { /* pos = */  1.0f,  1.0f, -1.0f, /* tex coords = */ 0.0f, 1.0f},
-
-  { /* pos = */ -1.0f, -1.0f, -1.0f, /* tex coords = */ 1.0f, 0.0f},
-  { /* pos = */  1.0f,  1.0f, -1.0f, /* tex coords = */ 0.0f, 1.0f},
   { /* pos = */  1.0f, -1.0f, -1.0f, /* tex coords = */ 0.0f, 0.0f},
 
   /* Top face */
   { /* pos = */ -1.0f,  1.0f, -1.0f, /* tex coords = */ 0.0f, 1.0f},
   { /* pos = */ -1.0f,  1.0f,  1.0f, /* tex coords = */ 0.0f, 0.0f},
-  { /* pos = */  1.0f,  1.0f,  1.0f, /* tex coords = */ 1.0f, 0.0f},
-
-  { /* pos = */ -1.0f,  1.0f, -1.0f, /* tex coords = */ 0.0f, 1.0f},
   { /* pos = */  1.0f,  1.0f,  1.0f, /* tex coords = */ 1.0f, 0.0f},
   { /* pos = */  1.0f,  1.0f, -1.0f, /* tex coords = */ 1.0f, 1.0f},
 
@@ -67,26 +61,17 @@ CoglVertexP3T2 vertices[] =
   { /* pos = */ -1.0f, -1.0f, -1.0f, /* tex coords = */ 1.0f, 1.0f},
   { /* pos = */  1.0f, -1.0f, -1.0f, /* tex coords = */ 0.0f, 1.0f},
   { /* pos = */  1.0f, -1.0f,  1.0f, /* tex coords = */ 0.0f, 0.0f},
-
-  { /* pos = */ -1.0f, -1.0f, -1.0f, /* tex coords = */ 1.0f, 1.0f},
-  { /* pos = */  1.0f, -1.0f,  1.0f, /* tex coords = */ 0.0f, 0.0f},
   { /* pos = */ -1.0f, -1.0f,  1.0f, /* tex coords = */ 1.0f, 0.0f},
 
   /* Right face */
   { /* pos = */ 1.0f, -1.0f, -1.0f, /* tex coords = */ 1.0f, 0.0f},
   { /* pos = */ 1.0f,  1.0f, -1.0f, /* tex coords = */ 1.0f, 1.0f},
   { /* pos = */ 1.0f,  1.0f,  1.0f, /* tex coords = */ 0.0f, 1.0f},
-
-  { /* pos = */ 1.0f, -1.0f, -1.0f, /* tex coords = */ 1.0f, 0.0f},
-  { /* pos = */ 1.0f,  1.0f,  1.0f, /* tex coords = */ 0.0f, 1.0f},
   { /* pos = */ 1.0f, -1.0f,  1.0f, /* tex coords = */ 0.0f, 0.0f},
 
   /* Left face */
   { /* pos = */ -1.0f, -1.0f, -1.0f, /* tex coords = */ 0.0f, 0.0f},
   { /* pos = */ -1.0f, -1.0f,  1.0f, /* tex coords = */ 1.0f, 0.0f},
-  { /* pos = */ -1.0f,  1.0f,  1.0f, /* tex coords = */ 1.0f, 1.0f},
-
-  { /* pos = */ -1.0f, -1.0f, -1.0f, /* tex coords = */ 0.0f, 0.0f},
   { /* pos = */ -1.0f,  1.0f,  1.0f, /* tex coords = */ 1.0f, 1.0f},
   { /* pos = */ -1.0f,  1.0f, -1.0f, /* tex coords = */ 0.0f, 1.0f}
 };
@@ -217,9 +202,21 @@ main (int argc, char **argv)
   cogl_color_set_from_4ub (&black, 0x00, 0x00, 0x00, 0xff);
   cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
 
+  /* rectangle indices allow the GPU to interpret a list of quads (the
+   * faces of our cube) as a list of triangles.
+   *
+   * Since this is a very common thing to do
+   * cogl_get_rectangle_indices() is a convenience function for
+   * accessing internal index buffers that can be shared.
+   */
+  data.indices = cogl_get_rectangle_indices (6 /* n_rectangles */);
   data.prim = cogl_primitive_new_p3t2 (COGL_VERTICES_MODE_TRIANGLES,
                                        G_N_ELEMENTS (vertices),
                                        vertices);
+  /* Each face will have 6 indices so we have 6 * 6 indices in total... */
+  cogl_primitive_set_indices (data.prim,
+                              data.indices,
+                              6 * 6);
 
   /* Load a jpeg crate texture from a file */
   printf ("crate.jpg (CC by-nc-nd http://bit.ly/9kP45T) ShadowRunner27 http://bit.ly/m1YXLh\n");
