@@ -1,0 +1,36 @@
+# British English translation for cogl.
+# Copyright (C) 2011 cogl'S COPYRIGHT HOLDER
+# This file is distributed under the same licence as the cogl package.
+# Bruce Cowan <bruce@bcowan.me.uk>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl\n"
+"Report-Msgid-Bugs-To: "
+"http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
+"POT-Creation-Date: 2011-09-09 13:12+0100\n"
+"PO-Revision-Date: 2011-09-09 13:13+0100\n"
+"Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
+"Language-Team: British English <en@li.org>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1-beta1\n"
+"X-Project-Style: gnome\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "Cogl debugging flags to set"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "Cogl debugging flags to unset"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "Cogl Options"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "Show Cogl options"
