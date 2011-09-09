@@ -1396,12 +1396,15 @@ MessageTray.prototype = {
            }));
         this._focusGrabber.connect('escape-pressed', Lang.bind(this, this._escapeTray));
 
+        Main.layoutManager.keyboardBox.connect('notify::hover', Lang.bind(this, this._onKeyboardHoverChanged));
+
         this._trayState = State.HIDDEN;
         this._locked = false;
         this._traySummoned = false;
         this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
+        this._pointerInKeyboard = false;
         this._summaryState = State.HIDDEN;
         this._summaryTimeoutId = 0;
         this._pointerInSummary = false;
@@ -1851,6 +1854,24 @@ MessageTray.prototype = {
         }
     },
 
+    _onKeyboardHoverChanged: function(keyboard) {
+        this._pointerInKeyboard = keyboard.hover;
+
+        if (!keyboard.hover) {
+            let event = Clutter.get_current_event();
+            if (event && event.type() == Clutter.EventType.LEAVE) {
+                let into = event.get_related();
+                if (into && this.actor.contains(into)) {
+                    // Don't call _updateState, because pointerInTray is
+                    // still false
+                    return;
+                }
+            }
+        }
+
+        this._updateState();
+    },
+
     _onStatusChanged: function(presence, status) {
         this._backFromAway = (this._userStatus == GnomeSession.PresenceStatus.IDLE && this._userStatus != status);
         this._userStatus = status;
@@ -1915,7 +1936,7 @@ MessageTray.prototype = {
         let notificationsPending = this._notificationQueue.length > 0 && (!this._busy || notificationUrgent);
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
-        let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked) || this._notificationRemoved;
+        let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked && !(this._pointerInKeyboard && notificationExpanded)) || this._notificationRemoved;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {

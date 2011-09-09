@@ -45,7 +45,9 @@ LayoutManager.prototype = {
         this.trayBox.connect('allocation-changed',
                              Lang.bind(this, this._updateTrayBarrier));
 
-        this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox' });
+        this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
+                                              reactive: true,
+                                              track_hover: true });
         this.addChrome(this.keyboardBox, { visibleInFullscreen: true });
         this._keyboardHeightNotifyId = 0;
 
