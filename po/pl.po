@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-08 20:57+0200\n"
-"PO-Revision-Date: 2011-09-08 20:58+0200\n"
+"POT-Creation-Date: 2011-09-09 22:52+0200\n"
+"PO-Revision-Date: 2011-09-09 22:53+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -198,9 +198,10 @@ msgstr "Wyłączeni dostawcy OpenSearch"
 msgid "Session..."
 msgstr "Sesja..."
 
-#: ../js/gdm/loginDialog.js:761 ../js/gdm/loginDialog.js:933
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
-msgstr "Zaloguj"
+msgstr "Proszę się zalogować"
 
 #: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
@@ -211,6 +212,11 @@ msgstr "Inny użytkownik?"
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Anuluj"
+
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "Zaloguj"
 
 #: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
@@ -516,7 +522,7 @@ msgstr "Wyloguj %s"
 
 #: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
 msgid "Log Out"
-msgstr "Wyloguj się"
+msgstr "Wyloguj"
 
 #: ../js/ui/endSessionDialog.js:62
 msgid "Click Log Out to quit these applications and log out of the system."
@@ -573,7 +579,7 @@ msgstr "System zostanie automatycznie uruchomiony ponownie za %d sekund."
 msgid "Restarting the system."
 msgstr "Ponowne uruchamianie systemu."
 
-#: ../js/ui/keyboard.js:514 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Klawiatura"
 
