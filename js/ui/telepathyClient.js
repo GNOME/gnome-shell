@@ -1019,7 +1019,7 @@ ChatNotification.prototype = {
            IM name. */
         let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
 
-        let label = this._append({ body: text,
+        let label = this._append({ body: message,
                                    group: 'meta',
                                    styles: ['chat-meta-message'] });
 
