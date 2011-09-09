@@ -1356,6 +1356,7 @@ MessageTray.prototype = {
         this._summaryBin.opacity = 0;
 
         this._summaryMotionId = 0;
+        this._trayMotionId = 0;
 
         this._summaryBoxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
                                                             { reactive: true,
@@ -2272,6 +2273,8 @@ MessageTray.prototype = {
         // _clickedSummaryItem.actor can change absolute position without changing allocation
         this._summaryMotionId = this._summary.connect('allocation-changed',
                                                       Lang.bind(this, this._adjustSummaryBoxPointerPosition));
+        this._trayMotionId = Main.layoutManager.trayBox.connect('notify::anchor-y',
+                                                                Lang.bind(this, this._adjustSummaryBoxPointerPosition));
 
         this._summaryBoxPointer.actor.opacity = 0;
         this._summaryBoxPointer.actor.show();
@@ -2303,8 +2306,10 @@ MessageTray.prototype = {
         if (this._clickedSummaryItemAllocationChangedId) {
             this._clickedSummaryItem.actor.disconnect(this._clickedSummaryItemAllocationChangedId);
             this._summary.disconnect(this._summaryMotionId);
+            Main.layoutManager.trayBox.disconnect(this._trayMotionId);
             this._clickedSummaryItemAllocationChangedId = 0;
             this._summaryMotionId = 0;
+            this._trayMotionId = 0;
         }
 
         if (this._clickedSummaryItem)
