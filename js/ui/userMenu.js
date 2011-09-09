@@ -321,33 +321,35 @@ IMStatusChooserItem.prototype = {
         this._accountMgr.set_all_requested_presences(newPresence, status, msg);
     },
 
+    getIMPresenceForSessionStatus: function(sessionStatus) {
+        if (sessionStatus == GnomeSession.PresenceStatus.AVAILABLE)
+            return this._previousPresence;
+
+        if (sessionStatus == GnomeSession.PresenceStatus.BUSY) {
+            // Only change presence if the current one is "more present" than
+            // busy, or if coming back from idle
+            if (this._currentPresence == Tp.ConnectionPresenceType.AVAILABLE ||
+                this._currentPresence == Tp.ConnectionPresenceType.EXTENDED_AWAY)
+                return Tp.ConnectionPresenceType.BUSY;
+        }
+
+        if (sessionStatus == GnomeSession.PresenceStatus.IDLE) {
+            // Only change presence if the current one is "more present" than
+            // idle
+            if (this._currentPresence != Tp.ConnectionPresenceType.OFFLINE)
+                return Tp.ConnectionPresenceType.EXTENDED_AWAY;
+        }
+
+        return this._currentPresence;
+    },
+
     _sessionStatusChanged: function(sessionPresence, sessionStatus) {
         let [presence, s, msg] = this._accountMgr.get_most_available_presence();
         let newPresence, status;
 
-        if (sessionStatus == GnomeSession.PresenceStatus.AVAILABLE) {
-            newPresence = this._previousPresence;
-        } else if (sessionStatus == GnomeSession.PresenceStatus.BUSY) {
-            // Only change presence if the current one is "more present" than
-            // busy, or if coming back from idle
-            if (presence == Tp.ConnectionPresenceType.AVAILABLE ||
-                presence == Tp.ConnectionPresenceType.EXTENDED_AWAY) {
-                newPresence = Tp.ConnectionPresenceType.BUSY;
-            } else {
-                return;
-            }
-        } else if (sessionStatus == GnomeSession.PresenceStatus.IDLE) {
-            // Only change presence if the current one is "more present" than
-            // idle
-            if (presence != Tp.ConnectionPresenceType.OFFLINE)
-                newPresence = Tp.ConnectionPresenceType.EXTENDED_AWAY;
-            else
-                return;
-        } else {
-            return;
-        }
+        let newPresence = this.getIMPresenceForSessionStatus(sessionStatus);
 
-        if (newPresence == undefined)
+        if (!newPresence || newPresence == presence)
             return;
 
         status = this._statusForPresence(newPresence);
@@ -547,6 +549,7 @@ UserMenuButton.prototype = {
         item = new IMStatusChooserItem();
         item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
+        this._statusChooser = item;
 
         item = new PopupMenu.PopupSwitchMenuItem(_("Notifications"));
         item.connect('activate', Lang.bind(this, this._updatePresenceStatus));
@@ -594,8 +597,21 @@ UserMenuButton.prototype = {
     },
 
     _updatePresenceStatus: function(item, event) {
-        let status = item.state ? GnomeSession.PresenceStatus.AVAILABLE
-                                : GnomeSession.PresenceStatus.BUSY;
+        let status;
+
+        if (item.state) {
+            status = GnomeSession.PresenceStatus.AVAILABLE;
+        } else {
+            status = GnomeSession.PresenceStatus.BUSY;
+
+            let [presence, s, msg] = this._account_mgr.get_most_available_presence();
+            let newPresence = this._statusChooser.getIMPresenceForSessionStatus(status);
+            if (newPresence != presence &&
+                newPresence == Tp.ConnectionPresenceType.BUSY)
+                Main.notify(_("Your chat status will be set to busy"),
+                            _("Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."));
+        }
+
         this._presence.setStatus(status);
     },
 
