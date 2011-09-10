@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 3.1.90\n"
+"Project-Id-Version: gnome-shell 3.1.91\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-03 19:16+0800\n"
-"PO-Revision-Date: 2011-09-03 14:42+0800\n"
+"POT-Creation-Date: 2011-09-10 15:01+0800\n"
+"PO-Revision-Date: 2011-09-10 10:25+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: \n"
@@ -177,65 +177,71 @@ msgstr "要使用哪種鍵盤"
 msgid "disabled OpenSearch providers"
 msgstr "已停用 OpenSearch 提供者"
 
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:604
 msgid "Session..."
 msgstr "作業階段…"
 
-#: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
 msgstr "登入"
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
 msgstr "沒有列出來？"
 
-#: ../js/gdm/loginDialog.js:926 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
 #: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/gdm/loginDialog.js:1251
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "登入"
+
+#: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "登入視窗"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "找不到指令"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "無法分析指令："
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "執行「%s」失敗："
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:254
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:316
+#: ../js/ui/appDisplay.js:319
 msgid "APPLICATIONS"
 msgstr "程式集"
 
-#: ../js/ui/appDisplay.js:374
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "設定值"
 
-#: ../js/ui/appDisplay.js:682
+#: ../js/ui/appDisplay.js:685
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:688
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:686
+#: ../js/ui/appDisplay.js:689
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
@@ -405,7 +411,7 @@ msgid "Next week"
 msgstr "下週"
 
 #: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:354
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:355
 msgid "Unknown"
 msgstr "不明"
 
@@ -429,7 +435,7 @@ msgstr "離線"
 msgid "CONTACTS"
 msgstr "連絡人"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "移除"
 
@@ -554,49 +560,49 @@ msgstr "系統會在 %d 秒內自動重新啟動。"
 msgid "Restarting the system."
 msgstr "重新啟動系統。"
 
-#: ../js/ui/keyboard.js:508 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "鍵盤"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "沒有安裝擴充功能"
 
-#: ../js/ui/lookingGlass.js:686
+#: ../js/ui/lookingGlass.js:687
 msgid "Enabled"
 msgstr "已啟用"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:689 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "已停用"
 
-#: ../js/ui/lookingGlass.js:690
+#: ../js/ui/lookingGlass.js:691
 msgid "Error"
 msgstr "錯誤"
 
-#: ../js/ui/lookingGlass.js:692
+#: ../js/ui/lookingGlass.js:693
 msgid "Out of date"
 msgstr "過期"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:695
 msgid "Downloading"
 msgstr "下載中"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "檢示來源"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "網頁"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "開啟"
 
-#: ../js/ui/messageTray.js:2352
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "系統資訊"
 
@@ -702,18 +708,18 @@ msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:538
 #, c-format
 msgid "Quit %s"
 msgstr "結束 %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:574
 msgid "Activities"
 msgstr "概覽 "
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "頂端列"
 
@@ -771,11 +777,11 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "請輸入指令："
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "搜尋中…"
 
-#: ../js/ui/searchDisplay.js:351
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "沒有相符的結果。"
 
@@ -889,7 +895,7 @@ msgstr "鍵盤設定值"
 msgid "Mouse Settings"
 msgstr "滑鼠設定值"
 
-#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "音效設定值"
 
@@ -1162,11 +1168,11 @@ msgstr "手寫板"
 msgid "Computer"
 msgstr "電腦"
 
-#: ../js/ui/status/volume.js:43
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "音量"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "麥克風"
 
@@ -1437,8 +1443,8 @@ msgid "Suspend"
 msgstr "暫停"
 
 #: ../js/ui/userMenu.js:551
-msgid "Do Not Disturb"
-msgstr "請勿打擾"
+msgid "Notifications"
+msgstr "通知"
 
 #: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
@@ -1510,7 +1516,7 @@ msgstr "顯示版本"
 msgid "Mode used by GDM for login screen"
 msgstr "GDM 在登入畫面使用的模式"
 
-#: ../src/shell-app.c:580
+#: ../src/shell-app.c:581
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "無法啟動「%s」"
@@ -1547,9 +1553,11 @@ msgstr "檔案系統"
 msgid "%1$s: %2$s"
 msgstr "%1$s：%2$s"
 
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:0"
+#~ msgid "Do Not Disturb"
+#~ msgstr "請勿打擾"
+
+#~ msgid "calendar:week_start:0"
+#~ msgstr "calendar:week_start:0"
 
 #~ msgid ""
 #~ "GNOME Shell extensions have a uuid property; this key lists extensions "
