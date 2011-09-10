@@ -30,6 +30,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
+#include <glib/gi18n-lib.h>
 
 #include "cogl-debug.h"
 #include "cogl-internal.h"
@@ -1121,6 +1122,9 @@ _cogl_init (void)
 
   if (g_once_init_enter (&init_status))
     {
+      bindtextdomain (GETTEXT_PACKAGE, COGL_LOCALEDIR);
+      bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
       g_type_init ();
 
       _cogl_config_read ();
