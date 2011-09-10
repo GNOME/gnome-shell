@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-08 00:15+0200\n"
-"PO-Revision-Date: 2011-09-08 00:15+0200\n"
+"POT-Creation-Date: 2011-09-10 03:37+0200\n"
+"PO-Revision-Date: 2011-09-10 03:37+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -195,39 +195,45 @@ msgstr "Que teclado usar"
 msgid "disabled OpenSearch providers"
 msgstr "fornecedores de OpenSearch desactivados"
 
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:604
 msgid "Session..."
 msgstr "Sesión…"
 
-#: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
-#: ../js/gdm/loginDialog.js:926 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
 #: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:1251
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "Iniciar sesión"
+
+#: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "Orde non atopada"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "Non foi posíbel analizar a orde:"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de «%s»:"
@@ -447,7 +453,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -576,7 +582,7 @@ msgstr "O seu computador reiniciarase automaticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
 
-#: ../js/ui/keyboard.js:514 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -614,11 +620,11 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2352
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "Información do sistema"
 
