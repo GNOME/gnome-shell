@@ -764,11 +764,21 @@ PanelCorner.prototype = {
     },
 
     _boxStyleChanged: function() {
-        let button;
+        let side = this._side;
 
-        if (this._side == St.Side.LEFT)
+        let rtlAwareContainer = this._box instanceof St.BoxLayout;
+        if (rtlAwareContainer &&
+            this._box.get_direction() == St.TextDirection.RTL) {
+            if (this._side == St.Side.LEFT)
+                side = St.Side.RIGHT;
+            else if (this._side == St.Side.RIGHT)
+                side = St.Side.LEFT;
+        }
+
+        let button;
+        if (side == St.Side.LEFT)
             button = this._findLeftmostButton(this._box);
-        else if (this._side == St.Side.RIGHT)
+        else if (side == St.Side.RIGHT)
             button = this._findRightmostButton(this._box);
 
         if (button) {
