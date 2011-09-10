@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-01 13:20+0000\n"
-"PO-Revision-Date: 2011-09-04 19:09+0530\n"
+"POT-Creation-Date: 2011-09-09 20:46+0000\n"
+"PO-Revision-Date: 2011-09-10 15:12+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,6 @@ msgid "If true, display date in the clock, in addition to time."
 msgstr "ਜੇ ਸੱਚ ਹੈ ਤਾਂ, ਘੜੀ ਵਿਚ ਸਮਾਂ ਨਾਲ ਮਿਤੀ ਵੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-#| msgid "If true, display seconds in time."
 msgid "If true, display onscreen keyboard."
 msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਆਨਸਕਰੀਨ ਕੀਬੋਰਡ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
 
@@ -123,7 +122,6 @@ msgid "Show date in clock"
 msgstr "ਘੜੀ ਵਿੱਚ ਮਿਤੀ ਵੇਖੋ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
-#| msgid "Screen Keyboard"
 msgid "Show the onscreen keyboard"
 msgstr "ਆਨਸਕਰੀਨ ਕੀਬੋਰਡ ਵੇਖਾਓ"
 
@@ -202,67 +200,73 @@ msgstr "ਕਿਹੜਾ ਕੀਬੋਰਡ ਵਰਤਣਾ ਹੈ"
 msgid "disabled OpenSearch providers"
 msgstr "ਓਪਨਸਰਚ ਉਪਲੱਬਧ ਕਰਵਾਉਣ ਵਾਲੇ ਬੰਦ ਹਨ"
 
-#: ../js/gdm/loginDialog.js:601
-#| msgid "Searching..."
+#: ../js/gdm/loginDialog.js:604
 msgid "Session..."
 msgstr "ਸ਼ੈਸ਼ਨ..."
 
-#: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+#| msgid "Sign In"
+msgctxt "title"
 msgid "Sign In"
 msgstr "ਸਾਇਨ ਇਨ"
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
-msgstr "ਲਿਸਟ ਨਹੀਂ ਹੈ?"
+msgstr "ਲਿਸਟ ਵਿੱਚ ਨਹੀਂ ਹੈ?"
 
-#: ../js/gdm/loginDialog.js:926 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
 #: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: ../js/gdm/loginDialog.js:1251
-#| msgid "New Window"
+#: ../js/gdm/loginDialog.js:933
+#| msgid "Sign In"
+msgctxt "button"
+msgid "Sign In"
+msgstr "ਸਾਇਨ ਇਨ"
+
+#: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "ਲਾਗਇਨ ਵਿੰਡੋ"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "ਕਮਾਂਡ ਨਹੀਂ ਲੱਭੀ"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "ਕਮਾਂਡ ਪਾਰਸ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ:"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:254
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "ਸਭ"
 
-#: ../js/ui/appDisplay.js:316
+#: ../js/ui/appDisplay.js:319
 msgid "APPLICATIONS"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../js/ui/appDisplay.js:374
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "ਸੈਟਿੰਗ"
 
-#: ../js/ui/appDisplay.js:682
+#: ../js/ui/appDisplay.js:685
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:688
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
-#: ../js/ui/appDisplay.js:686
+#: ../js/ui/appDisplay.js:689
 msgid "Add to Favorites"
 msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
@@ -432,7 +436,7 @@ msgid "Next week"
 msgstr "ਹਫ਼ਤਾ ਅੱਗੇ"
 
 #: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:354
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:355
 msgid "Unknown"
 msgstr "ਅਣਜਾਣ"
 
@@ -456,7 +460,7 @@ msgstr "ਆਫਲਾਈਨ"
 msgid "CONTACTS"
 msgstr "ਸੰਪਰਕ"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1182
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "ਹਟਾਓ"
 
@@ -583,59 +587,57 @@ msgstr "ਸਿਸਟਮ ਨੂੰ ਆਟੋਮੈਟਿਕ ਹੀ %d ਸਕਿ�
 msgid "Restarting the system."
 msgstr "ਸਿਸਟਮ ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
 
-#: ../js/ui/keyboard.js:509 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "ਕੀਬੋਰਡ"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "ਕੋਈ ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:686
+#: ../js/ui/lookingGlass.js:687
 msgid "Enabled"
 msgstr "ਚਾਲੂ ਹੈ"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:689 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "ਬੰਦ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:690
+#: ../js/ui/lookingGlass.js:691
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: ../js/ui/lookingGlass.js:692
+#: ../js/ui/lookingGlass.js:693
 msgid "Out of date"
 msgstr "ਪੁਰਾਣਾ"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:695
 msgid "Downloading"
 msgstr "ਡਾਊਨਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "ਸਰੋਤ ਵੇਖੋ"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/messageTray.js:1175
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ"
 
-#: ../js/ui/messageTray.js:2337
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "ਸਿਸਟਮ ਜਾਣਕਾਰੀ"
 
 #: ../js/ui/networkAgent.js:138
-#| msgid "Password:"
 msgid "Show password"
 msgstr "ਪਾਸਵਰਡ ਵੇਖਾਓ"
 
 #: ../js/ui/networkAgent.js:153
-#| msgid "Connection"
 msgid "Connect"
 msgstr "ਕੁਨੈਕਟ ਕਰੋ"
 
@@ -643,7 +645,6 @@ msgstr "ਕੁਨੈਕਟ ਕਰੋ"
 #: ../js/ui/networkAgent.js:248 ../js/ui/networkAgent.js:260
 #: ../js/ui/networkAgent.js:287 ../js/ui/networkAgent.js:307
 #: ../js/ui/networkAgent.js:317
-#| msgid "Password:"
 msgid "Password: "
 msgstr "ਪਾਸਵਰਡ: "
 
@@ -672,7 +673,6 @@ msgid "Service: "
 msgstr "ਸਰਵਿਸ: "
 
 #: ../js/ui/networkAgent.js:334
-#| msgid "Authentication Required"
 msgid "Authentication required by wireless network"
 msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ ਲਈ ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
 
@@ -688,12 +688,10 @@ msgid "Wired 802.1X authentication"
 msgstr "ਤਾਰ 802.1X ਪਰਮਾਣਕਿਤਾ"
 
 #: ../js/ui/networkAgent.js:341
-#| msgid "Network Manager"
 msgid "Network name: "
 msgstr "ਨੈੱਟਵਰਕ ਨਾਂ: "
 
 #: ../js/ui/networkAgent.js:346
-#| msgid "authentication required"
 msgid "DSL authentication"
 msgstr "DSL ਪਰਮਾਣਕਿਤਾ"
 
@@ -710,13 +708,11 @@ msgid "PIN: "
 msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:361
-#| msgid "Mobile broadband"
 msgid "Mobile broadband network password"
 msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਨੈੱਟਵਰਕ ਪਾਸਵਰਡ"
 
 #: ../js/ui/networkAgent.js:362
 #, c-format
-#| msgid "You're now connected to '%s'"
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋਣ ਲਈ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ। "
 
@@ -739,18 +735,18 @@ msgid "Dash"
 msgstr "ਡੈਸ਼"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:538
 #, c-format
 msgid "Quit %s"
 msgstr "%s ਬੰਦ ਕਰੋ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:574
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "ਉੱਤਲੀ ਪੱਟੀ"
 
@@ -808,11 +804,11 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "ਕਮਾਂਡ ਦਿਓ ਜੀ:"
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
 
-#: ../js/ui/searchDisplay.js:351
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
 
@@ -926,7 +922,7 @@ msgstr "ਕੀਬੋਰਡ ਸੈਟਿੰਗ"
 msgid "Mouse Settings"
 msgstr "ਮਾਊਸ ਸੈਟਿੰਗ"
 
-#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "ਸਾਊਂਡ ਸੈਟਿੰਗ"
 
@@ -1098,22 +1094,18 @@ msgid "Network Settings"
 msgstr "ਨੈੱਟਵਰਕ ਸੈਟਿੰਗ"
 
 #: ../js/ui/status/network.js:1747
-#| msgid "Connection"
 msgid "Connectivity lost"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਟੁੱਟ ਗਿਆ"
 
 #: ../js/ui/status/network.js:1748
-#| msgid "You're now connected to wired network '%s'"
 msgid "You're no longer connected to the network"
 msgstr "ਹੁਣ ਤੁਸੀਂ ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਨਹੀਂ ਰਹੇ ਹੋ"
 
 #: ../js/ui/status/network.js:1756
-#| msgid "connection failed"
 msgid "Connection failed"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
 #: ../js/ui/status/network.js:1757
-#| msgid "connection failed"
 msgid "Activation of network connection failed"
 msgstr "ਨੈੱਟਵਰਕ ਕੁਨੈਕਸ਼ਨ ਦੀ ਐਕਟੀਵੇਸ਼ਨ ਫੇਲ੍ਹ ਹੋਈ"
 
@@ -1207,11 +1199,11 @@ msgstr "ਟੇਬਲੇਟ"
 msgid "Computer"
 msgstr "ਕੰਪਿਊਟਰ"
 
-#: ../js/ui/status/volume.js:43
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "ਆਵਾਜ਼"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "ਮਾਈਕਰੋਫੋਨ"
 
@@ -1233,12 +1225,10 @@ msgid "File Transfer"
 msgstr "ਫਾਇਲ ਟਰਾਂਸਫਰ"
 
 #: ../js/ui/telepathyClient.js:432
-#| msgid "Authorization request from %s"
 msgid "Subscription request"
 msgstr "ਮੈਂਬਰੀ ਦੀ ਮੰਗ"
 
 #: ../js/ui/telepathyClient.js:460
-#| msgid "Connection"
 msgid "Connection error"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਗਲਤੀ"
 
@@ -1339,7 +1329,6 @@ msgstr "ਜਵਾਬ"
 #.
 #: ../js/ui/telepathyClient.js:1222
 #, c-format
-#| msgid "%s is inviting you to join %s"
 msgid "%s is sending you %s"
 msgstr "%s ਤੁਹਾਨੂੰ %s ਭੇਜ ਰਿਹਾ/ਰਹੀ ਹੈ"
 
@@ -1351,12 +1340,10 @@ msgstr ""
 "%s ਤੁਹਾਨੂੰ ਵੇਖਣ ਦਾ ਅਧਿਕਾਰ ਚਾਹੁੰਦਾ/ਚਾਹੁੰਦੀ ਹੈ, ਜਦੋਂ ਵੀ ਤੁਸੀਂ ਆਨਲਾਈਨ ਹੋਵੋ"
 
 #: ../js/ui/telepathyClient.js:1395
-#| msgid "Network Manager"
 msgid "Network error"
 msgstr "ਨੈੱਟਵਰਕ ਗਲਤੀ"
 
 #: ../js/ui/telepathyClient.js:1397
-#| msgid "Authentication Required"
 msgid "Authentication failed"
 msgstr "ਪਰਮਾਣਕਿਤਾ ਫੇਲ੍ਹ ਹੋਈ"
 
@@ -1393,7 +1380,6 @@ msgid "Certificate self-signed"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਖੁਦ-ਦਸਤਖਤੀ ਹੈ"
 
 #: ../js/ui/telepathyClient.js:1415
-#| msgid "%s is offline."
 msgid "Status is set to offline"
 msgstr "ਹਾਲਤ ਆਫਲਾਈਨ ਸੈੱਟ ਕੀਤੀ ਗਈ ਹੈ"
 
@@ -1406,17 +1392,14 @@ msgid "Certificate is invalid"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਗਲਤ ਹੈ"
 
 #: ../js/ui/telepathyClient.js:1421
-#| msgid "Connection established"
 msgid "Connection has been refused"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਤੋਂ ਇਨਕਾਰ ਕੀਤਾ ਗਿਆ"
 
 #: ../js/ui/telepathyClient.js:1423
-#| msgid "Connection established"
 msgid "Connection can't be established"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
 #: ../js/ui/telepathyClient.js:1425
-#| msgid "Connection established"
 msgid "Connection has been lost"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਖਤਮ ਹੋ ਗਿਆ"
 
@@ -1460,22 +1443,18 @@ msgstr ""
 #. * name@jabber.org for example.
 #: ../js/ui/telepathyClient.js:1448
 #, c-format
-#| msgid "connection failed"
 msgid "Connection to %s failed"
 msgstr "%s ਲਈ ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
 #: ../js/ui/telepathyClient.js:1455
-#| msgid "Unknown"
 msgid "Unknown reason"
 msgstr "ਅਣਜਾਣ ਕਾਰਨ"
 
 #: ../js/ui/telepathyClient.js:1462
-#| msgid "Reject"
 msgid "Reconnect"
 msgstr "ਮੁੜ-ਕੁਨੈਕਟ ਕਰੋ"
 
 #: ../js/ui/telepathyClient.js:1463
-#| msgid "My Account"
 msgid "Edit account"
 msgstr "ਅਕਾਊਂਟ ਸੋਧ"
 
@@ -1488,40 +1467,39 @@ msgid "Idle"
 msgstr "ਵੇਹਲਾ"
 
 #: ../js/ui/userMenu.js:162
-#| msgid "unavailable"
 msgid "Unavailable"
 msgstr "ਨਾ ਉਪਲੱਬਧ"
 
-#: ../js/ui/userMenu.js:510 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:589
 msgid "Power Off..."
 msgstr "...ਬੰਦ ਕਰੋ"
 
-#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:582
+#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:588
 msgid "Suspend"
 msgstr "ਸਸਪੈਂਡ"
 
-#: ../js/ui/userMenu.js:545
-msgid "Do Not Disturb"
-msgstr "ਤੰਗ ਨਾ ਕਰੋ"
+#: ../js/ui/userMenu.js:551
+#| msgid "Applications"
+msgid "Notifications"
+msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ"
 
-#: ../js/ui/userMenu.js:553
-#| msgid "My Account"
+#: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
 msgstr "ਆਨਲਾਈਨ ਅਕਾਊਂਟ"
 
-#: ../js/ui/userMenu.js:557
+#: ../js/ui/userMenu.js:563
 msgid "System Settings"
 msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:570
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
 
-#: ../js/ui/userMenu.js:569
+#: ../js/ui/userMenu.js:575
 msgid "Switch User"
 msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
 
-#: ../js/ui/userMenu.js:574
+#: ../js/ui/userMenu.js:580
 msgid "Log Out..."
 msgstr "...ਲਾਗਆਉਟ"
 
@@ -1569,15 +1547,15 @@ msgstr[1] "%u ਇੰਪੁੱਟ"
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../src/main.c:469
+#: ../src/main.c:480
 msgid "Print version"
 msgstr "ਵਰਜਨ ਛਾਪੋ"
 
-#: ../src/main.c:475
+#: ../src/main.c:486
 msgid "Mode used by GDM for login screen"
 msgstr "ਲਾਗਇਨ ਸਕਰੀਨ ਲਈ GDM ਵਲੋਂ ਵਰਤਿਆ ਮੋਡ"
 
-#: ../src/shell-app.c:580
+#: ../src/shell-app.c:581
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ"
@@ -1614,9 +1592,11 @@ msgstr "ਫਾਇਲ ਸਿਸਟਮ"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:1"
+#~ msgid "Do Not Disturb"
+#~ msgstr "ਤੰਗ ਨਾ ਕਰੋ"
+
+#~ msgid "calendar:week_start:0"
+#~ msgstr "calendar:week_start:1"
 
 #~ msgid ""
 #~ "GNOME Shell extensions have a uuid property; this key lists extensions "
