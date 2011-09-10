@@ -151,15 +151,16 @@ _cogl_parse_debug_string (const char *value,
     }
   else if (strcmp (value, "help") == 0)
     {
-      g_printerr ("\n\n%28s\n", "Supported debug values:");
+      g_printerr ("\n\n%28s\n", _("Supported debug values:"));
 #define OPT(MASK_NAME, GROUP, NAME, NAME_FORMATTED, DESCRIPTION) \
-      g_printerr ("%28s %s\n", NAME ":", DESCRIPTION);
+      g_printerr ("%28s %s\n", NAME ":", g_dgettext (GETTEXT_PACKAGE, \
+                                                     DESCRIPTION));
 #include "cogl-debug-options.h"
-      g_printerr ("\n%28s\n", "Special debug values:");
+      g_printerr ("\n%28s\n", _("Special debug values:"));
       OPT (IGNORED, "ignored", "all", "ignored", \
-           "Enables all non-behavioural debug options");
+           N_("Enables all non-behavioural debug options"));
       OPT (IGNORED, "ignored", "verbose", "ignored", \
-           "Enables all non-behavioural debug options");
+           N_("Enables all non-behavioural debug options"));
 #undef OPT
       exit (1);
     }

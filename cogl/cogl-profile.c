@@ -1,9 +1,13 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #ifdef COGL_ENABLE_PROFILE
 
 #include "cogl-profile.h"
 #include "cogl-debug.h"
 
+#include <glib/gi18n-lib.h>
 #include <stdlib.h>
 
 UProfContext *_cogl_uprof_context;
@@ -47,10 +51,12 @@ _cogl_uprof_init (void)
   G_STMT_START { \
     int shift = COGL_DEBUG_ ## MASK_NAME; \
     uprof_context_add_boolean_option (_cogl_uprof_context, \
-                                      GROUP, \
+                                      g_dgettext (GETTEXT_PACKAGE, GROUP), \
                                       NAME, \
-                                      NAME_FORMATTED, \
-                                      DESCRIPTION, \
+                                      g_dgettext (GETTEXT_PACKAGE, \
+                                                  NAME_FORMATTED), \
+                                      g_dgettext (GETTEXT_PACKAGE, \
+                                                  DESCRIPTION),    \
                                       debug_option_getter, \
                                       debug_option_setter, \
                                       GUINT_TO_POINTER (shift)); \

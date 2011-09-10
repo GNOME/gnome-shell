@@ -22,166 +22,166 @@
  */
 
 OPT (HANDLE,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "ref-counts",
-     "CoglObject references",
-     "Debug ref counting issues for CoglObjects")
+     N_("CoglObject references"),
+     N_("Debug ref counting issues for CoglObjects"))
 OPT (SLICING,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "slicing",
-     "Trace Texture Slicing",
-     "debug the creation of texture slices")
+     N_("Trace Texture Slicing"),
+     N_("debug the creation of texture slices"))
 OPT (ATLAS,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "atlas",
-     "Trace Atlas Textures",
-     "Debug texture atlas management")
+     N_("Trace Atlas Textures"),
+     N_("Debug texture atlas management"))
 OPT (BLEND_STRINGS,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "blend-strings",
-     "Trace Blend Strings",
-     "Debug CoglBlendString parsing")
+     N_("Trace Blend Strings"),
+     N_("Debug CoglBlendString parsing"))
 OPT (JOURNAL,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "journal",
-     "Trace Journal",
-     "View all the geometry passing through the journal")
+     N_("Trace Journal"),
+     N_("View all the geometry passing through the journal"))
 OPT (BATCHING,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "batching",
-     "Trace Batching",
-     "Show how geometry is being batched in the journal")
+     N_("Trace Batching"),
+     N_("Show how geometry is being batched in the journal"))
 OPT (MATRICES,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "matrices",
-     "Trace matrices",
-     "Trace all matrix manipulation")
+     N_("Trace matrices"),
+     N_("Trace all matrix manipulation"))
 /* XXX we should replace the "draw" option its very hand wavy... */
 OPT (DRAW,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "draw",
-     "Trace Misc Drawing",
-     "Trace some misc drawing operations")
+     N_("Trace Misc Drawing"),
+     N_("Trace some misc drawing operations"))
 OPT (PANGO,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "pango",
-     "Trace Pango Renderer",
-     "Trace the Cogl Pango renderer")
+     N_("Trace Pango Renderer"),
+     N_("Trace the Cogl Pango renderer"))
 OPT (TEXTURE_PIXMAP,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "texture-pixmap",
-     "Trace CoglTexturePixmap backend",
-     "Trace the Cogl texture pixmap backend")
+     N_("Trace CoglTexturePixmap backend"),
+     N_("Trace the Cogl texture pixmap backend"))
 OPT (RECTANGLES,
-     "Visualize",
+     N_("Visualize"),
      "rectangles",
-     "Outline rectangles",
-     "Add wire outlines for all rectangular geometry")
+     N_("Outline rectangles"),
+     N_("Add wire outlines for all rectangular geometry"))
 OPT (WIREFRAME,
-     "Visualize",
+     N_("Visualize"),
      "wireframe",
-     "Show wireframes",
-     "Add wire outlines for all geometry")
+     N_("Show wireframes"),
+     N_("Add wire outlines for all geometry"))
 OPT (DISABLE_BATCHING,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-batching",
-     "Disable Journal batching",
-     "Disable batching of geometry in the Cogl Journal.")
+     N_("Disable Journal batching"),
+     N_("Disable batching of geometry in the Cogl Journal."))
 OPT (DISABLE_VBOS,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-vbos",
-     "Disable GL Vertex Buffers",
-     "Disable use of OpenGL vertex buffer objects")
+     N_("Disable GL Vertex Buffers"),
+     N_("Disable use of OpenGL vertex buffer objects"))
 OPT (DISABLE_PBOS,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-pbos",
-     "Disable GL Pixel Buffers",
-     "Disable use of OpenGL pixel buffer objects")
+     N_("Disable GL Pixel Buffers"),
+     N_("Disable use of OpenGL pixel buffer objects"))
 OPT (DISABLE_SOFTWARE_TRANSFORM,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-software-transform",
-     "Disable software rect transform",
-     "Use the GPU to transform rectangular geometry")
+     N_("Disable software rect transform"),
+     N_("Use the GPU to transform rectangular geometry"))
 OPT (DUMP_ATLAS_IMAGE,
-     "Cogl Specialist",
+     N_("Cogl Specialist"),
      "dump-atlas-image",
-     "Dump atlas images",
-     "Dump texture atlas changes to an image file")
+     N_("Dump atlas images"),
+     N_("Dump texture atlas changes to an image file"))
 OPT (DISABLE_ATLAS,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-atlas",
-     "Disable texture atlasing",
-     "Disable use of texture atlasing")
+     N_("Disable texture atlasing"),
+     N_("Disable use of texture atlasing"))
 OPT (DISABLE_SHARED_ATLAS,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-shared-atlas",
-     "Disable sharing the texture atlas between text and images",
-     "When this is set the glyph cache will always use a separate texture "
-     "for its atlas. Otherwise it will try to share the atlas with images.")
+     N_("Disable sharing the texture atlas between text and images"),
+     N_("When this is set the glyph cache will always use a separate texture "
+        "for its atlas. Otherwise it will try to share the atlas with images."))
 OPT (DISABLE_TEXTURING,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-texturing",
-     "Disable texturing",
-     "Disable texturing any primitives")
+     N_("Disable texturing"),
+     N_("Disable texturing any primitives"))
 OPT (DISABLE_ARBFP,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-arbfp",
-     "Disable arbfp",
-     "Disable use of ARB fragment programs")
+     N_("Disable arbfp"),
+     N_("Disable use of ARB fragment programs"))
 OPT (DISABLE_FIXED,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-fixed",
-     "Disable fixed",
-     "Disable use of the fixed function pipeline backend")
+     N_("Disable fixed"),
+     N_("Disable use of the fixed function pipeline backend"))
 OPT (DISABLE_GLSL,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-glsl",
-     "Disable GLSL",
-     "Disable use of GLSL")
+     N_("Disable GLSL"),
+     N_("Disable use of GLSL"))
 OPT (DISABLE_BLENDING,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-blending",
-     "Disable blending",
-     "Disable use of blending")
+     N_("Disable blending"),
+     N_("Disable use of blending"))
 OPT (DISABLE_NPOT_TEXTURES,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-npot-textures",
-     "Disable non-power-of-two textures",
-     "Makes Cogl think that the GL driver doesn't support NPOT textures "
-     "so that it will create sliced textures or textures with waste instead.")
+     N_("Disable non-power-of-two textures"),
+     N_("Makes Cogl think that the GL driver doesn't support NPOT textures "
+        "so that it will create sliced textures or textures with waste instead."))
 OPT (DISABLE_SOFTWARE_CLIP,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-software-clip",
-     "Disable software clipping",
-     "Disables Cogl's attempts to clip some rectangles in software.")
+     N_("Disable software clipping"),
+     N_("Disables Cogl's attempts to clip some rectangles in software."))
 OPT (SHOW_SOURCE,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "show-source",
-     "Show source",
-     "Show generated ARBfp/GLSL source code")
+     N_("Show source"),
+     N_("Show generated ARBfp/GLSL source code"))
 OPT (OPENGL,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "opengl",
-     "Trace some OpenGL",
-     "Traces some select OpenGL calls")
+     N_("Trace some OpenGL"),
+     N_("Traces some select OpenGL calls"))
 OPT (OFFSCREEN,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "offscreen",
-     "Trace offscreen support",
-     "Debug offscreen support")
+     N_("Trace offscreen support"),
+     N_("Debug offscreen support"))
 OPT (DISABLE_BLENDING,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-program-caches",
-     "Disable program caches",
-     "Disable fallback caches for arbfp and glsl programs")
+     N_("Disable program caches"),
+     N_("Disable fallback caches for arbfp and glsl programs"))
 OPT (DISABLE_FAST_READ_PIXEL,
-     "Root Cause",
+     N_("Root Cause"),
      "disable-fast-read-pixel",
-     "Disable read pixel optimization",
-     "Disable optimization for reading 1px for simple "
-     "scenes of opaque rectangles")
+     N_("Disable read pixel optimization"),
+     N_("Disable optimization for reading 1px for simple "
+        "scenes of opaque rectangles"))
 OPT (CLIPPING,
-     "Cogl Tracing",
+     N_("Cogl Tracing"),
      "clipping",
-     "Trace clipping",
-     "Logs information about how Cogl is implementing clipping")
+     N_("Trace clipping"),
+     N_("Logs information about how Cogl is implementing clipping"))
