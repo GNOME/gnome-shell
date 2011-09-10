@@ -1,0 +1,33 @@
+# cogl's portuguese translation.
+# Copyright © 2011 cogl
+# This file is distributed under the same license as the cogl package.
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 3.2\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-10 16:22+0000\n"
+"PO-Revision-Date: 2011-09-11 00:55+0000\n"
+"Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "Parâmetros de depuração Cogl a definir"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "Parâmetros de depuração Cogl a desactivar"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "Opções Cogl"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "Apresentar as opções do Cogl"
