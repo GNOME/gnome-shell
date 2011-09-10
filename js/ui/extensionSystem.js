@@ -10,6 +10,7 @@ const Shell = imports.gi.Shell;
 const Soup = imports.gi.Soup;
 
 const Config = imports.misc.config;
+const FileUtils = imports.misc.fileUtils;
 
 const API_VERSION = 1;
 
@@ -118,6 +119,37 @@ function installExtensionFromUUID(uuid, version_tag) {
                                function(session, message) {
                                    gotExtensionZipFile(session, message, uuid);
                                });
+}
+
+function uninstallExtensionFromUUID(uuid) {
+    let meta = extensionMeta[uuid];
+    if (!meta)
+        return false;
+
+    // Try to disable it -- if it's ERROR'd, we can't guarantee that,
+    // but it will be removed on next reboot, and hopefully nothing
+    // broke too much.
+    disableExtension(uuid);
+
+    // Don't try to uninstall system extensions
+    if (meta.type != ExtensionType.PER_USER)
+        return false;
+
+    meta.state = ExtensionState.UNINSTALLED;
+    _signals.emit('extension-state-changed', meta);
+
+    delete extensionMeta[uuid];
+
+    // Importers are marked as PERMANENT, so we can't do this.
+    // delete extensions[uuid];
+    extensions[uuid] = undefined;
+
+    delete extensionStateObjs[uuid];
+    delete errors[uuid];
+
+    FileUtils.recursivelyDeleteDir(Gio.file_new_for_path(meta.path));
+
+    return true;
 }
 
 function gotExtensionZipFile(session, message, uuid) {

@@ -48,6 +48,10 @@ const GnomeShellIface = {
               { name: 'InstallRemoteExtension',
                 inSignature: 'ss',
                 outSignature: ''
+              },
+              { name: 'UninstallExtension',
+                inSignature: 's',
+                outSignature: 'b'
               }
              ],
     signals: [{ name: 'ExtensionStatusChanged',
@@ -176,6 +180,10 @@ GnomeShell.prototype = {
 
     InstallRemoteExtension: function(uuid, version_tag) {
         ExtensionSystem.installExtensionFromUUID(uuid, version_tag);
+    },
+
+    UninstallExtension: function(uuid) {
+        return ExtensionSystem.uninstallExtensionFromUUID(uuid);
     },
 
     get OverviewActive() {

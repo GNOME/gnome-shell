@@ -20,3 +20,25 @@ function listDirAsync(file, callback) {
         enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, onNextFileComplete);
     });
 }
+
+function deleteGFile(file) {
+    // Work around 'delete' being a keyword in JS.
+    return file['delete'](null);
+}
+
+function recursivelyDeleteDir(dir) {
+    let children = dir.enumerate_children('standard::name,standard::type',
+                                          Gio.FileQueryInfoFlags.NONE, null);
+
+    let info, child;
+    while ((info = children.next_file(null)) != null) {
+        let type = info.get_file_type();
+        let child = dir.get_child(info.get_name());
+        if (type == Gio.FileType.REGULAR)
+            deleteGFile(child);
+        else if (type == Gio.TypeType.DIRECTORY)
+            recursivelyDeleteDir(child);
+    }
+
+    deleteGFile(dir);
+}
