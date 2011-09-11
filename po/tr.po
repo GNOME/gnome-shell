@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-10 16:22+0000\n"
-"PO-Revision-Date: 2011-09-10 20:56+0300\n"
+"PO-Revision-Date: 2011-09-11 08:58+0300\n"
 "Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -376,158 +376,158 @@ msgstr ""
 
 #: ../clutter/clutter-actor.c:4642
 msgid "Text Direction"
-msgstr ""
+msgstr "Metin Yönü"
 
 #: ../clutter/clutter-actor.c:4643
 msgid "Direction of the text"
-msgstr ""
+msgstr "Metnin yönü"
 
 #: ../clutter/clutter-actor.c:4661
 msgid "Has Pointer"
-msgstr ""
+msgstr "İşaretçisi Var"
 
 #: ../clutter/clutter-actor.c:4662
 msgid "Whether the actor contains the pointer of an input device"
-msgstr ""
+msgstr "Aktörün, bir giriş aygıtının işaretçisini içerip içermemesi"
 
 #: ../clutter/clutter-actor.c:4679
 msgid "Actions"
-msgstr ""
+msgstr "Eylemler"
 
 #: ../clutter/clutter-actor.c:4680
 msgid "Adds an action to the actor"
-msgstr ""
+msgstr "Aktöre bir eylem ekler"
 
 #: ../clutter/clutter-actor.c:4694
 msgid "Constraints"
-msgstr ""
+msgstr "Kısıtlar"
 
 #: ../clutter/clutter-actor.c:4695
 msgid "Adds a constraint to the actor"
-msgstr ""
+msgstr "Aktöre bir kısıt ekler"
 
 #: ../clutter/clutter-actor-meta.c:193 ../clutter/clutter-child-meta.c:142
 msgid "Actor"
-msgstr ""
+msgstr "Aktör"
 
 #: ../clutter/clutter-actor-meta.c:194
 msgid "The actor attached to the meta"
-msgstr ""
+msgstr "Meta'ya ekli aktör"
 
 #: ../clutter/clutter-actor-meta.c:208
 msgid "The name of the meta"
-msgstr ""
+msgstr "Meta'nın adı"
 
 #: ../clutter/clutter-actor-meta.c:221 ../clutter/clutter-input-device.c:315
 #: ../clutter/clutter-shader.c:307
 msgid "Enabled"
-msgstr ""
+msgstr "Etkinleştirildi"
 
 #: ../clutter/clutter-actor-meta.c:222
 msgid "Whether the meta is enabled"
-msgstr ""
+msgstr "Meta'nın etkin olup olmaması"
 
 #: ../clutter/clutter-align-constraint.c:270
 #: ../clutter/clutter-bind-constraint.c:349 ../clutter/clutter-clone.c:340
 #: ../clutter/clutter-snap-constraint.c:321
 msgid "Source"
-msgstr ""
+msgstr "Kaynak"
 
 #: ../clutter/clutter-align-constraint.c:271
 msgid "The source of the alignment"
-msgstr ""
+msgstr "Hizalama kaynağı"
 
 #: ../clutter/clutter-align-constraint.c:284
 msgid "Align Axis"
-msgstr ""
+msgstr "Hizalama Ekseni"
 
 #: ../clutter/clutter-align-constraint.c:285
 msgid "The axis to align the position to"
-msgstr ""
+msgstr "Konumun hizalanacağı eksen"
 
 #: ../clutter/clutter-align-constraint.c:304
 #: ../clutter/clutter-desaturate-effect.c:304
 msgid "Factor"
-msgstr ""
+msgstr "Çarpan"
 
 #: ../clutter/clutter-align-constraint.c:305
 msgid "The alignment factor, between 0.0 and 1.0"
-msgstr ""
+msgstr "Hizalama çarpanı, 0.0 ile 1.0 arasında"
 
 #: ../clutter/clutter-alpha.c:345 ../clutter/clutter-animation.c:537
 #: ../clutter/clutter-animator.c:1802
 msgid "Timeline"
-msgstr ""
+msgstr "Zaman Çizgisi"
 
 #: ../clutter/clutter-alpha.c:346
 msgid "Timeline used by the alpha"
-msgstr ""
+msgstr "Alfa tarafından kullanılan zaman çizgisi"
 
 #: ../clutter/clutter-alpha.c:361
 msgid "Alpha value"
-msgstr ""
+msgstr "Alfa değeri"
 
 #: ../clutter/clutter-alpha.c:362
 msgid "Alpha value as computed by the alpha"
-msgstr ""
+msgstr "Alfa tarafından hesaplandığı haliyle alfa değeri"
 
 #: ../clutter/clutter-alpha.c:382 ../clutter/clutter-animation.c:493
 msgid "Mode"
-msgstr ""
+msgstr "Kip"
 
 #: ../clutter/clutter-alpha.c:383
 msgid "Progress mode"
-msgstr ""
+msgstr "İlerleme kipi"
 
 #: ../clutter/clutter-animation.c:477
 msgid "Object"
-msgstr ""
+msgstr "Nesne"
 
 #: ../clutter/clutter-animation.c:478
 msgid "Object to which the animation applies"
-msgstr ""
+msgstr "Canlandırmanın uygulanacağı nesne"
 
 #: ../clutter/clutter-animation.c:494
 msgid "The mode of the animation"
-msgstr ""
+msgstr "Canlandırma kipi"
 
 #: ../clutter/clutter-animation.c:508 ../clutter/clutter-animator.c:1786
 #: ../clutter/clutter-media.c:194 ../clutter/clutter-state.c:1486
 #: ../clutter/clutter-timeline.c:294
 msgid "Duration"
-msgstr ""
+msgstr "Süre"
 
 #: ../clutter/clutter-animation.c:509
 msgid "Duration of the animation, in milliseconds"
-msgstr ""
+msgstr "Milisaniye cinsinden canlandırma süresi"
 
 #: ../clutter/clutter-animation.c:523 ../clutter/clutter-timeline.c:263
 msgid "Loop"
-msgstr ""
+msgstr "Döngü"
 
 #: ../clutter/clutter-animation.c:524
 msgid "Whether the animation should loop"
-msgstr ""
+msgstr "Canlandırmanın tekrarlanıp tekrarlanmayacağı"
 
 #: ../clutter/clutter-animation.c:538
 msgid "The timeline used by the animation"
-msgstr ""
+msgstr "Canlandırma tarafından kullanılan zaman çizgisi"
 
 #: ../clutter/clutter-animation.c:551 ../clutter/clutter-behaviour.c:304
 msgid "Alpha"
-msgstr ""
+msgstr "Alfa"
 
 #: ../clutter/clutter-animation.c:552
 msgid "The alpha used by the animation"
-msgstr ""
+msgstr "Canlandırma tarafından kullanılan alfa"
 
 #: ../clutter/clutter-animator.c:1787
 msgid "The duration of the animation"
-msgstr ""
+msgstr "Canlandırma süresi"
 
 #: ../clutter/clutter-animator.c:1803
 msgid "The timeline of the animation"
-msgstr ""
+msgstr "Canlandırma zaman çizgisi"
 
 #: ../clutter/clutter-behaviour.c:305
 msgid "Alpha Object to drive the behaviour"
@@ -535,37 +535,37 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-depth.c:178
 msgid "Start Depth"
-msgstr ""
+msgstr "Başlangıç Derinliği"
 
 #: ../clutter/clutter-behaviour-depth.c:179
 msgid "Initial depth to apply"
-msgstr ""
+msgstr "Uygulanacak ilk derinlik"
 
 #: ../clutter/clutter-behaviour-depth.c:194
 msgid "End Depth"
-msgstr ""
+msgstr "Bitiş Derinliği"
 
 #: ../clutter/clutter-behaviour-depth.c:195
 msgid "Final depth to apply"
-msgstr ""
+msgstr "Uygulanacak son derinlik"
 
 #: ../clutter/clutter-behaviour-ellipse.c:397
 msgid "Start Angle"
-msgstr ""
+msgstr "Başlangıç Açısı"
 
 #: ../clutter/clutter-behaviour-ellipse.c:398
 #: ../clutter/clutter-behaviour-rotate.c:280
 msgid "Initial angle"
-msgstr ""
+msgstr "İlk açı"
 
 #: ../clutter/clutter-behaviour-ellipse.c:413
 msgid "End Angle"
-msgstr ""
+msgstr "Bitiş Açısı"
 
 #: ../clutter/clutter-behaviour-ellipse.c:414
 #: ../clutter/clutter-behaviour-rotate.c:298
 msgid "Final angle"
-msgstr ""
+msgstr "Son açı"
 
 #: ../clutter/clutter-behaviour-ellipse.c:429
 msgid "Angle x tilt"
@@ -593,215 +593,215 @@ msgstr ""
 
 #: ../clutter/clutter-behaviour-ellipse.c:478
 msgid "Width of the ellipse"
-msgstr ""
+msgstr "Elipsin genişliği"
 
 #: ../clutter/clutter-behaviour-ellipse.c:494
 msgid "Height of ellipse"
-msgstr ""
+msgstr "Elips yüksekliği"
 
 #: ../clutter/clutter-behaviour-ellipse.c:509
 msgid "Center"
-msgstr ""
+msgstr "Merkez"
 
 #: ../clutter/clutter-behaviour-ellipse.c:510
 msgid "Center of ellipse"
-msgstr ""
+msgstr "Elips merkezi"
 
 #: ../clutter/clutter-behaviour-ellipse.c:524
 #: ../clutter/clutter-behaviour-rotate.c:333 ../clutter/clutter-timeline.c:310
 msgid "Direction"
-msgstr ""
+msgstr "Yön"
 
 #: ../clutter/clutter-behaviour-ellipse.c:525
 #: ../clutter/clutter-behaviour-rotate.c:334
 msgid "Direction of rotation"
-msgstr ""
+msgstr "Dönme yönü"
 
 #: ../clutter/clutter-behaviour-opacity.c:181
 msgid "Opacity Start"
-msgstr ""
+msgstr "Matlık Başlangıcı"
 
 #: ../clutter/clutter-behaviour-opacity.c:182
 msgid "Initial opacity level"
-msgstr ""
+msgstr "İlk matlık düzeyi"
 
 #: ../clutter/clutter-behaviour-opacity.c:199
 msgid "Opacity End"
-msgstr ""
+msgstr "Matlık Bitişi"
 
 #: ../clutter/clutter-behaviour-opacity.c:200
 msgid "Final opacity level"
-msgstr ""
+msgstr "Son matlık düzeyi"
 
 #: ../clutter/clutter-behaviour-path.c:222
 #: ../clutter/clutter-path-constraint.c:212
 msgid "Path"
-msgstr ""
+msgstr "Yol"
 
 #: ../clutter/clutter-behaviour-path.c:223
 msgid "The ClutterPath object representing the path to animate along"
-msgstr ""
+msgstr "Üzerinde canlandırma yapılacak yolu ifade eden ClutterPath nesnesi"
 
 #: ../clutter/clutter-behaviour-rotate.c:279
 msgid "Angle Begin"
-msgstr ""
+msgstr "Açı Başlangıcı"
 
 #: ../clutter/clutter-behaviour-rotate.c:297
 msgid "Angle End"
-msgstr ""
+msgstr "Açı Sonu"
 
 #: ../clutter/clutter-behaviour-rotate.c:315
 msgid "Axis"
-msgstr ""
+msgstr "Eksen"
 
 #: ../clutter/clutter-behaviour-rotate.c:316
 msgid "Axis of rotation"
-msgstr ""
+msgstr "Dönme ekseni"
 
 #: ../clutter/clutter-behaviour-rotate.c:351
 msgid "Center X"
-msgstr ""
+msgstr "Merkez X"
 
 #: ../clutter/clutter-behaviour-rotate.c:352
 msgid "X coordinate of the center of rotation"
-msgstr ""
+msgstr "Dönme merkezinin X koordinatı"
 
 #: ../clutter/clutter-behaviour-rotate.c:369
 msgid "Center Y"
-msgstr ""
+msgstr "Merkez Y"
 
 #: ../clutter/clutter-behaviour-rotate.c:370
 msgid "Y coordinate of the center of rotation"
-msgstr ""
+msgstr "Dönme merkezinin Y koordinatı"
 
 #: ../clutter/clutter-behaviour-rotate.c:387
 msgid "Center Z"
-msgstr ""
+msgstr "Merkez Z"
 
 #: ../clutter/clutter-behaviour-rotate.c:388
 msgid "Z coordinate of the center of rotation"
-msgstr ""
+msgstr "Dönme merkezinin Z koordinatı"
 
 #: ../clutter/clutter-behaviour-scale.c:222
 msgid "X Start Scale"
-msgstr ""
+msgstr "X Başlangıç Ölçeği"
 
 #: ../clutter/clutter-behaviour-scale.c:223
 msgid "Initial scale on the X axis"
-msgstr ""
+msgstr "X eksenindeki ilk ölçek"
 
 #: ../clutter/clutter-behaviour-scale.c:241
 msgid "X End Scale"
-msgstr ""
+msgstr "X Bitiş Ölçeği"
 
 #: ../clutter/clutter-behaviour-scale.c:242
 msgid "Final scale on the X axis"
-msgstr ""
+msgstr "X eksenindeki son ölçek"
 
 #: ../clutter/clutter-behaviour-scale.c:260
 msgid "Y Start Scale"
-msgstr ""
+msgstr "Y Başlangıç Ölçeği"
 
 #: ../clutter/clutter-behaviour-scale.c:261
 msgid "Initial scale on the Y axis"
-msgstr ""
+msgstr "Y eksenindeki ilk ölçek"
 
 #: ../clutter/clutter-behaviour-scale.c:279
 msgid "Y End Scale"
-msgstr ""
+msgstr "Y Bitiş Ölçeği"
 
 #: ../clutter/clutter-behaviour-scale.c:280
 msgid "Final scale on the Y axis"
-msgstr ""
+msgstr "Y eksenindeki son ölçek"
 
 #: ../clutter/clutter-bind-constraint.c:350
 msgid "The source of the binding"
-msgstr ""
+msgstr "Bağlama kaynağı"
 
 #: ../clutter/clutter-bind-constraint.c:363
 msgid "Coordinate"
-msgstr ""
+msgstr "Koordinat"
 
 #: ../clutter/clutter-bind-constraint.c:364
 msgid "The coordinate to bind"
-msgstr ""
+msgstr "Bağlanacak koordinat"
 
 #: ../clutter/clutter-bind-constraint.c:378
 #: ../clutter/clutter-path-constraint.c:226
 #: ../clutter/clutter-snap-constraint.c:366
 msgid "Offset"
-msgstr ""
+msgstr "Denkleştirme"
 
 #: ../clutter/clutter-bind-constraint.c:379
 msgid "The offset in pixels to apply to the binding"
-msgstr ""
+msgstr "Bağlamaya uygulanacak piksel cinsinden denkleştirme"
 
 #: ../clutter/clutter-binding-pool.c:320
 msgid "The unique name of the binding pool"
-msgstr ""
+msgstr "Bağlama havuzunun özgün adı."
 
 #: ../clutter/clutter-bin-layout.c:261 ../clutter/clutter-bin-layout.c:585
 #: ../clutter/clutter-box-layout.c:395 ../clutter/clutter-table-layout.c:652
 msgid "Horizontal Alignment"
-msgstr ""
+msgstr "Yatay Hizalama"
 
 #: ../clutter/clutter-bin-layout.c:262
 msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Yerleşim yöneticisi içindeki aktörün yatay hizalaması"
 
 #: ../clutter/clutter-bin-layout.c:270 ../clutter/clutter-bin-layout.c:602
 #: ../clutter/clutter-box-layout.c:404 ../clutter/clutter-table-layout.c:667
 msgid "Vertical Alignment"
-msgstr ""
+msgstr "Dikey Hizalama"
 
 #: ../clutter/clutter-bin-layout.c:271
 msgid "Vertical alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Yerleşim yöneticisi içindeki aktörün dikey hizalaması"
 
 #: ../clutter/clutter-bin-layout.c:586
 msgid "Default horizontal alignment for the actors inside the layout manager"
-msgstr ""
+msgstr "Yerleşim yöneticisi içindeki aktörlerin öntanımlı yatay hizalaması"
 
 #: ../clutter/clutter-bin-layout.c:603
 msgid "Default vertical alignment for the actors inside the layout manager"
-msgstr ""
+msgstr "Yerleşim yöneticisi içindeki aktörlerin öntanımlı dikey hizalaması"
 
 #: ../clutter/clutter-box.c:544
 msgid "Layout Manager"
-msgstr ""
+msgstr "Yerleşim Yöneticisi"
 
 #: ../clutter/clutter-box.c:545
 msgid "The layout manager used by the box"
-msgstr ""
+msgstr "Kutu tarafından kullanılan yerleşim yöneticisi"
 
 #: ../clutter/clutter-box.c:564 ../clutter/clutter-rectangle.c:267
 #: ../clutter/clutter-stage.c:1765
 msgid "Color"
-msgstr ""
+msgstr "Renk"
 
 #: ../clutter/clutter-box.c:565
 msgid "The background color of the box"
-msgstr ""
+msgstr "Kutunun arkaplan rengi"
 
 #: ../clutter/clutter-box.c:579
 msgid "Color Set"
-msgstr ""
+msgstr "Renk Ayarı"
 
 #: ../clutter/clutter-box.c:580
 msgid "Whether the background color is set"
-msgstr ""
+msgstr "Arkaplan renginin atanmış olması"
 
 #: ../clutter/clutter-box-layout.c:370
 msgid "Expand"
-msgstr ""
+msgstr "Genişlet"
 
 #: ../clutter/clutter-box-layout.c:371
 msgid "Allocate extra space for the child"
-msgstr ""
+msgstr "Çocuk için fazladan yer ayır"
 
 #: ../clutter/clutter-box-layout.c:377 ../clutter/clutter-table-layout.c:631
 msgid "Horizontal Fill"
-msgstr ""
+msgstr "Yatay Doldurma"
 
 #: ../clutter/clutter-box-layout.c:378 ../clutter/clutter-table-layout.c:632
 msgid ""
@@ -2168,4 +2168,5 @@ msgstr ""
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
 msgstr ""
+
 
