@@ -183,7 +183,10 @@ cally_util_add_global_event_listener (GSignalEmissionHook listener,
 
   split_string = g_strsplit (event_type, ":", 3);
 
-  rc = add_listener (listener, split_string[1], split_string[2], event_type);
+  if (g_strv_length (split_string) == 3)
+    rc = add_listener (listener, split_string[1], split_string[2], event_type);
+
+  g_strfreev (split_string);
 
   return rc;
 }
