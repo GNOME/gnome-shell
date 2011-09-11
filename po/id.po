@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-19 14:59+0000\n"
-"PO-Revision-Date: 2011-08-21 21:25+0700\n"
+"POT-Creation-Date: 2011-09-09 20:46+0000\n"
+"PO-Revision-Date: 2011-09-11 16:01+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -51,20 +51,21 @@ msgid "GNOME Shell extensions have a uuid property; this key lists extensions wh
 msgstr "Ekstensi GNOME Shell memiliki suatu properti uuid; kunci ini mendaftar ekstensi yang mesti dimuat. disabled-extensions menimpa pengaturan ini bagi ekstensi yang muncul pada kedua daftar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded. This setting overrides enabled-extensions for extensions that appear in both lists."
-msgstr "Ekstensi GNOME Shell memiliki suatu properti uuid; kunci ini mendaftar ekstensi yang tak boleh dimuat. Pengaturan ini menimpa enabled-extensions bagi ekstensi yang muncul pada kedua daftar."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
 msgstr "Riwayat dialog perintah (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for the looking glass dialog"
 msgstr "Riwayat untuk dialog yang berpenampilan gelas kaca"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Jika bernilai benar (true), tanggal akan ditampilkan."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#| msgid "If true, display seconds in time."
+msgid "If true, display onscreen keyboard."
+msgstr "Jika bernilai benar (true), tampilkan papan tik di layar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display seconds in time."
@@ -88,86 +89,126 @@ msgid "Show date in clock"
 msgstr "Menampilkan tanggal pada jam"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the onscreen keyboard"
+msgstr "Tampilkan papan tik di layar"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "Menampilkan tanggal pada kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Show time with seconds"
 msgstr "Menampilkan detik"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
 msgstr "Aplikasi yang terkait dengan identifier-identifier ini akan ditampilkan pada area favorit."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
 msgstr "Nama berkas bagi screencast yang direkam akan berupa nama berkas unik yang didasarkan atas tanggal kini, dan memakai ekstensi ini. Ini mesti diubah ketika merekam ke format wadah yang berbeda."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
 msgstr "Laju frame dari hasil screencast yang direkam oleh perekam screencast GNOME Shell dalam frame per detik."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Jalur pipa gstreamer yang dipakai untuk mengode screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
 msgstr "Shell secara normal memantau aplikasi aktif untuk menyajikan yang paling sering dipakai (mis. di peluncur). Walaupun data ini dijaga tetap privat, Anda mungkin ingin mematikan ini karena alasan privasi. Mohon dicatata bahwa hal itu tak akan menghapus data yang telah disimpan."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid "Uuids of extensions to disable"
-msgstr "Ekstensi Uuid yang hendak dinonaktifkan"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "The type of keyboard to use."
+msgstr "Jenis papan tik yang akan dipakai."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Uuids of extensions to enable"
 msgstr "Uuid ekstensi yang hendak diaktifkan"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "Whether to collect stats about applications usage"
 msgstr "Apakah mengumpulkan statistik tentang penggunaan aplikasi"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Which keyboard to use"
+msgstr "Papan tik mana yang akan dipakai"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 msgid "disabled OpenSearch providers"
 msgstr "penyedia OpenSearch yang dinonaktifkan"
 
-#: ../js/misc/util.js:68
+#: ../js/gdm/loginDialog.js:604
+#| msgid "Searching..."
+msgid "Session..."
+msgstr "Sesi..."
+
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
+msgid "Sign In"
+msgstr "Masuk"
+
+#: ../js/gdm/loginDialog.js:818
+msgid "Not listed?"
+msgstr "Tak masuk daftar?"
+
+#: ../js/gdm/loginDialog.js:928
+#: ../js/ui/endSessionDialog.js:410
+#: ../js/ui/networkAgent.js:158
+#: ../js/ui/polkitAuthenticationAgent.js:170
+#: ../js/ui/status/bluetooth.js:480
+msgid "Cancel"
+msgstr "Batal"
+
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "Masuk"
+
+#: ../js/gdm/loginDialog.js:1253
+#| msgid "New Window"
+msgid "Login Window"
+msgstr "Jendela Log Masuk"
+
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "Perintah tidak ditemukan"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "Tidak dapat mengurai perintah:"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Eksekusi '%s' gagal:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:253
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Semua"
 
-#: ../js/ui/appDisplay.js:315
+#: ../js/ui/appDisplay.js:319
 msgid "APPLICATIONS"
 msgstr "APLIKASI"
 
-#: ../js/ui/appDisplay.js:373
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "PENGATURAN"
 
-#: ../js/ui/appDisplay.js:681
+#: ../js/ui/appDisplay.js:685
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: ../js/ui/appDisplay.js:684
+#: ../js/ui/appDisplay.js:688
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:689
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
@@ -181,12 +222,12 @@ msgstr "%s telah ditambahkan ke favorit Anda."
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
 
-#: ../js/ui/autorunManager.js:591
+#: ../js/ui/autorunManager.js:592
 #, c-format
 msgid "Open with %s"
 msgstr "Buka dengan %s"
 
-#: ../js/ui/autorunManager.js:617
+#: ../js/ui/autorunManager.js:618
 msgid "Eject"
 msgstr "Keluarkan"
 
@@ -304,95 +345,125 @@ msgid "S"
 msgstr "Sab"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:678
+#: ../js/ui/calendar.js:687
 msgid "Nothing Scheduled"
 msgstr "Tidak Ada Jadwal"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:694
+#: ../js/ui/calendar.js:703
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:697
+#: ../js/ui/calendar.js:706
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:707
+#: ../js/ui/calendar.js:716
 msgid "Today"
 msgstr "Hari ini"
 
-#: ../js/ui/calendar.js:711
+#: ../js/ui/calendar.js:720
 msgid "Tomorrow"
 msgstr "Besok"
 
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:729
 msgid "This week"
 msgstr "Minggu ini"
 
-#: ../js/ui/calendar.js:728
+#: ../js/ui/calendar.js:737
 msgid "Next week"
 msgstr "Minggu depan"
 
+#: ../js/ui/contactDisplay.js:59
+#: ../js/ui/notificationDaemon.js:444
+#: ../js/ui/status/power.js:223
+#: ../src/shell-app.c:355
+msgid "Unknown"
+msgstr "Tak dikenal"
+
+#: ../js/ui/contactDisplay.js:80
+#: ../js/ui/userMenu.js:147
+msgid "Available"
+msgstr "Ada"
+
+#: ../js/ui/contactDisplay.js:85
+#: ../js/ui/userMenu.js:156
+msgid "Away"
+msgstr "Pergi"
+
+#: ../js/ui/contactDisplay.js:89
+#: ../js/ui/userMenu.js:150
+msgid "Busy"
+msgstr "Sibuk"
+
+#: ../js/ui/contactDisplay.js:93
+msgid "Offline"
+msgstr "Luring"
+
+#: ../js/ui/contactDisplay.js:140
+msgid "CONTACTS"
+msgstr "KONTAK"
+
 #: ../js/ui/dash.js:172
-#: ../js/ui/messageTray.js:1123
+#: ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "Hapus"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:99
 msgid "Date and Time Settings"
 msgstr "Pengaturan Waktu dan Tanggal"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:125
 msgid "Open Calendar"
 msgstr "Buka Kalender"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:183
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:184
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:172
+#: ../js/ui/dateMenu.js:188
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:173
+#: ../js/ui/dateMenu.js:189
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:180
+#: ../js/ui/dateMenu.js:196
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %k:%M:%S"
 
-#: ../js/ui/dateMenu.js:181
+#: ../js/ui/dateMenu.js:197
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %k:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:185
+#: ../js/ui/dateMenu.js:201
 msgid "%a %l:%M:%S %p"
 msgstr "%a %k:%M:%S"
 
-#: ../js/ui/dateMenu.js:186
+#: ../js/ui/dateMenu.js:202
 msgid "%a %l:%M %p"
 msgstr "%a %k:%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:197
+#: ../js/ui/dateMenu.js:213
 msgid "%A %B %e, %Y"
 msgstr "%A, %e %B %Y"
 
@@ -465,88 +536,177 @@ msgstr "Sistem akan dinyalakan ulang setelah %d detik."
 msgid "Restarting the system."
 msgstr "Menyalan ulang sistem."
 
-#: ../js/ui/endSessionDialog.js:410
-#: ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:497
-msgid "Cancel"
-msgstr "Batal"
+#: ../js/ui/keyboard.js:513
+#: ../js/ui/status/power.js:211
+msgid "Keyboard"
+msgstr "Papan Ketik"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "Tak ada ekstensi terpasang"
 
-#: ../js/ui/lookingGlass.js:686
+#: ../js/ui/lookingGlass.js:687
 msgid "Enabled"
 msgstr "Diaktifkan"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:688
-#: ../src/gvc/gvc-mixer-control.c:1091
+#: ../js/ui/lookingGlass.js:689
+#: ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
-#: ../js/ui/lookingGlass.js:690
+#: ../js/ui/lookingGlass.js:691
 msgid "Error"
 msgstr "Galat"
 
-#: ../js/ui/lookingGlass.js:692
+#: ../js/ui/lookingGlass.js:693
 msgid "Out of date"
 msgstr "Kadaluarsa"
 
-#: ../js/ui/lookingGlass.js:717
+#: ../js/ui/lookingGlass.js:695
+msgid "Downloading"
+msgstr "Mengunduh"
+
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "Tilik Sumber"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: ../js/ui/messageTray.js:1116
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "Buka"
 
-#: ../js/ui/messageTray.js:2277
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "Informasi Sistem"
 
-#: ../js/ui/notificationDaemon.js:427
-#: ../js/ui/status/power.js:238
-#: ../src/shell-app.c:340
-msgid "Unknown"
-msgstr "Tak dikenal"
+#: ../js/ui/networkAgent.js:138
+#| msgid "Password:"
+msgid "Show password"
+msgstr "Tampilkan sandi"
 
-#: ../js/ui/overview.js:89
+#: ../js/ui/networkAgent.js:153
+#| msgid "Connection"
+msgid "Connect"
+msgstr "Sambung"
+
+#. Cisco LEAP
+#: ../js/ui/networkAgent.js:248
+#: ../js/ui/networkAgent.js:260
+#: ../js/ui/networkAgent.js:287
+#: ../js/ui/networkAgent.js:307
+#: ../js/ui/networkAgent.js:317
+#| msgid "Password:"
+msgid "Password: "
+msgstr "Sandi:"
+
+#. static WEP
+#: ../js/ui/networkAgent.js:253
+msgid "Key: "
+msgstr "Tombol:"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/ui/networkAgent.js:285
+#: ../js/ui/networkAgent.js:303
+msgid "Username: "
+msgstr "Nama pengguna: "
+
+#: ../js/ui/networkAgent.js:291
+msgid "Identity: "
+msgstr "Identitas:"
+
+#: ../js/ui/networkAgent.js:293
+msgid "Private key password: "
+msgstr "Sandi kunci privat:"
+
+#: ../js/ui/networkAgent.js:305
+msgid "Service: "
+msgstr "Layanan:"
+
+#: ../js/ui/networkAgent.js:334
+#| msgid "Authentication Required"
+msgid "Authentication required by wireless network"
+msgstr "Otentikasi dibutuhkan oleh jaringan nirkabel"
+
+#: ../js/ui/networkAgent.js:335
+#, c-format
+msgid "Passwords or encryption keys are required to access the wireless network '%s'."
+msgstr "Sandi atau kunci penyandian diperlukan untuk mengakses jaringan nirkabel '%s'."
+
+#: ../js/ui/networkAgent.js:339
+msgid "Wired 802.1X authentication"
+msgstr "Otentikasi 802.1X kabel"
+
+#: ../js/ui/networkAgent.js:341
+#| msgid "Network Manager"
+msgid "Network name: "
+msgstr "Nama jaringan:"
+
+#: ../js/ui/networkAgent.js:346
+#| msgid "authentication required"
+msgid "DSL authentication"
+msgstr "Otentikasi DSL"
+
+#: ../js/ui/networkAgent.js:353
+msgid "PIN code required"
+msgstr "Perlu kode PIN"
+
+#: ../js/ui/networkAgent.js:354
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Kode PIN dibutuhkan untuk perangkat data seluler"
+
+#: ../js/ui/networkAgent.js:355
+msgid "PIN: "
+msgstr "PIN: "
+
+#: ../js/ui/networkAgent.js:361
+#| msgid "Mobile broadband"
+msgid "Mobile broadband network password"
+msgstr "Sandi jaringan data seluler"
+
+#: ../js/ui/networkAgent.js:362
+#, c-format
+#| msgid "You're now connected to '%s'"
+msgid "A password is required to connect to '%s'."
+msgstr "Sebuah kata sandi dibutuhkan untuk menyambung ke '%s'."
+
+#: ../js/ui/overview.js:91
 msgid "Undo"
 msgstr "Batal"
 
-#: ../js/ui/overview.js:184
+#: ../js/ui/overview.js:205
 msgid "Windows"
 msgstr "Jendela"
 
-#: ../js/ui/overview.js:187
+#: ../js/ui/overview.js:208
 msgid "Applications"
 msgstr "Aplikasi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:203
+#: ../js/ui/overview.js:230
 msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:531
+#: ../js/ui/panel.js:538
 #, c-format
 msgid "Quit %s"
 msgstr "Keluar %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:574
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: ../js/ui/panel.js:876
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -597,7 +757,7 @@ msgstr "Sandi:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:676
+#: ../js/ui/popupMenu.js:687
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -605,11 +765,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Ketikkan perintah:"
 
-#: ../js/ui/searchDisplay.js:318
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "Mencari..."
 
-#: ../js/ui/searchDisplay.js:332
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "Tak ada yang cocok."
 
@@ -651,20 +811,20 @@ msgstr "Tombol Tetikus"
 msgid "Universal Access Settings"
 msgstr "Pengaturan Akses Universal"
 
-#: ../js/ui/status/accessibility.js:145
+#: ../js/ui/status/accessibility.js:141
 msgid "High Contrast"
 msgstr "Kontras Tinggi"
 
-#: ../js/ui/status/accessibility.js:182
+#: ../js/ui/status/accessibility.js:178
 msgid "Large Text"
 msgstr "Teks Besar"
 
 #: ../js/ui/status/bluetooth.js:39
-#: ../js/ui/status/bluetooth.js:270
-#: ../js/ui/status/bluetooth.js:364
-#: ../js/ui/status/bluetooth.js:398
-#: ../js/ui/status/bluetooth.js:438
-#: ../js/ui/status/bluetooth.js:471
+#: ../js/ui/status/bluetooth.js:261
+#: ../js/ui/status/bluetooth.js:347
+#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:454
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -680,116 +840,116 @@ msgstr "Kirim Berkas pada Perangkat..."
 msgid "Set up a New Device..."
 msgstr "Setel Perangkat Baru..."
 
-#: ../js/ui/status/bluetooth.js:92
+#: ../js/ui/status/bluetooth.js:91
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:116
+#: ../js/ui/status/bluetooth.js:111
 msgid "hardware disabled"
 msgstr "perangkat keras dinoaktifkan"
 
-#: ../js/ui/status/bluetooth.js:217
+#: ../js/ui/status/bluetooth.js:208
 msgid "Connection"
 msgstr "Koneksi"
 
-#: ../js/ui/status/bluetooth.js:226
-#: ../js/ui/status/network.js:497
+#: ../js/ui/status/bluetooth.js:217
+#: ../js/ui/status/network.js:486
 msgid "disconnecting..."
 msgstr "memutus..."
 
-#: ../js/ui/status/bluetooth.js:239
-#: ../js/ui/status/network.js:503
+#: ../js/ui/status/bluetooth.js:230
+#: ../js/ui/status/network.js:492
 msgid "connecting..."
 msgstr "menghubungi..."
 
-#: ../js/ui/status/bluetooth.js:257
+#: ../js/ui/status/bluetooth.js:248
 msgid "Send Files..."
 msgstr "Kirim Berkas..."
 
-#: ../js/ui/status/bluetooth.js:262
+#: ../js/ui/status/bluetooth.js:253
 msgid "Browse Files..."
 msgstr "Telusur Berkas..."
 
-#: ../js/ui/status/bluetooth.js:271
+#: ../js/ui/status/bluetooth.js:262
 msgid "Error browsing device"
 msgstr "Galat ketika menelusuri perangkat"
 
-#: ../js/ui/status/bluetooth.js:272
+#: ../js/ui/status/bluetooth.js:263
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Perangkat yang dipinta tidak dapat ditelusuri, dengan galat '%s'"
 
-#: ../js/ui/status/bluetooth.js:280
+#: ../js/ui/status/bluetooth.js:271
 msgid "Keyboard Settings"
 msgstr "Pengaturan Papan Ketik"
 
-#: ../js/ui/status/bluetooth.js:285
+#: ../js/ui/status/bluetooth.js:274
 msgid "Mouse Settings"
 msgstr "Pengaturan Tetikus"
 
-#: ../js/ui/status/bluetooth.js:292
-#: ../js/ui/status/volume.js:64
+#: ../js/ui/status/bluetooth.js:279
+#: ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
-#: ../js/ui/status/bluetooth.js:399
+#: ../js/ui/status/bluetooth.js:382
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Permintaan otorisasi dari %s"
 
-#: ../js/ui/status/bluetooth.js:405
+#: ../js/ui/status/bluetooth.js:388
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Perangkat %s ingin mengakses layanan '%s'"
 
-#: ../js/ui/status/bluetooth.js:407
+#: ../js/ui/status/bluetooth.js:390
 msgid "Always grant access"
 msgstr "Selalu berikan akses"
 
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:391
 msgid "Grant this time only"
 msgstr "Hanya untuk saat ini"
 
-#: ../js/ui/status/bluetooth.js:409
-#: ../js/ui/telepathyClient.js:985
+#: ../js/ui/status/bluetooth.js:392
+#: ../js/ui/telepathyClient.js:1185
 msgid "Reject"
 msgstr "Tolak"
 
-#: ../js/ui/status/bluetooth.js:439
+#: ../js/ui/status/bluetooth.js:422
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Konfirmasi berpasangan untuk %s"
 
-#: ../js/ui/status/bluetooth.js:445
-#: ../js/ui/status/bluetooth.js:479
+#: ../js/ui/status/bluetooth.js:428
+#: ../js/ui/status/bluetooth.js:462
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Perangkat %s ingin berpasangan dengan komputer ini"
 
-#: ../js/ui/status/bluetooth.js:446
+#: ../js/ui/status/bluetooth.js:429
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Harap konfirmasi apakah PIN '%s' sesuai dengan salah satu perangkat."
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:431
 msgid "Matches"
 msgstr "Cocok"
 
-#: ../js/ui/status/bluetooth.js:449
+#: ../js/ui/status/bluetooth.js:432
 msgid "Does not match"
 msgstr "Tidak cocok"
 
-#: ../js/ui/status/bluetooth.js:472
+#: ../js/ui/status/bluetooth.js:455
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Permintaan berpasangan untuk %s"
 
-#: ../js/ui/status/bluetooth.js:480
+#: ../js/ui/status/bluetooth.js:463
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Ketikkan PIN yang disebutkan oleh perangkat."
 
-#: ../js/ui/status/bluetooth.js:496
+#: ../js/ui/status/bluetooth.js:479
 msgid "OK"
 msgstr "Oke"
 
@@ -801,310 +961,267 @@ msgstr "Tampilkan Tata Letak Papan Tik"
 msgid "Region and Language Settings"
 msgstr "Pengaturan Bahasa dan Wilayah "
 
-#: ../js/ui/statusMenu.js:192
-#: ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:262
-msgid "Power Off..."
-msgstr "Matikan..."
-
-#: ../js/ui/statusMenu.js:194
-#: ../js/ui/statusMenu.js:196
-#: ../js/ui/statusMenu.js:261
-msgid "Suspend"
-msgstr "Suspensi"
-
-#: ../js/ui/statusMenu.js:217
-msgid "Available"
-msgstr "Ada"
-
-#: ../js/ui/statusMenu.js:222
-msgid "Busy"
-msgstr "Sibuk"
-
-#: ../js/ui/statusMenu.js:230
-msgid "My Account"
-msgstr "Akun Saya"
-
-#: ../js/ui/statusMenu.js:234
-msgid "System Settings"
-msgstr "Pengaturan Sistem"
-
-#: ../js/ui/statusMenu.js:242
-msgid "Lock Screen"
-msgstr "Kunci Layar"
-
-#: ../js/ui/statusMenu.js:247
-msgid "Switch User"
-msgstr "Ganti Pengguna"
-
-#: ../js/ui/statusMenu.js:252
-msgid "Log Out..."
-msgstr "Keluar..."
-
-#: ../js/ui/status/network.js:108
+#: ../js/ui/status/network.js:97
 msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:296
+#: ../js/ui/status/network.js:285
 msgid "disabled"
 msgstr "dinonaktifkan"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:495
+#: ../js/ui/status/network.js:484
 msgid "unmanaged"
 msgstr "tak dikelola"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:506
+#: ../js/ui/status/network.js:495
 msgid "authentication required"
 msgstr "diperlukan otentikasi"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:516
+#: ../js/ui/status/network.js:505
 msgid "firmware missing"
 msgstr "firmware hilang"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:523
+#: ../js/ui/status/network.js:512
 msgid "cable unplugged"
 msgstr "kabel tidak tersambung"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:528
+#: ../js/ui/status/network.js:517
 msgid "unavailable"
 msgstr "tidak tersedia"
 
-#: ../js/ui/status/network.js:530
+#: ../js/ui/status/network.js:519
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: ../js/ui/status/network.js:586
-#: ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:575
+#: ../js/ui/status/network.js:1515
 msgid "More..."
 msgstr "Lainnya..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:622
-#: ../js/ui/status/network.js:1448
+#: ../js/ui/status/network.js:611
+#: ../js/ui/status/network.js:1455
 msgid "Connected (private)"
 msgstr "Termsabung (pribadi)"
 
-#: ../js/ui/status/network.js:707
+#: ../js/ui/status/network.js:689
 msgid "Auto Ethernet"
 msgstr "Ethernet otomatis"
 
-#: ../js/ui/status/network.js:775
+#: ../js/ui/status/network.js:753
 msgid "Auto broadband"
 msgstr "Seluler otomatis"
 
-#: ../js/ui/status/network.js:778
+#: ../js/ui/status/network.js:756
 msgid "Auto dial-up"
 msgstr "Dial-up otomatis"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:902
-#: ../js/ui/status/network.js:1460
+#: ../js/ui/status/network.js:878
+#: ../js/ui/status/network.js:1467
 #, c-format
 msgid "Auto %s"
 msgstr "%s otomatis"
 
-#: ../js/ui/status/network.js:904
+#: ../js/ui/status/network.js:880
 msgid "Auto bluetooth"
 msgstr "Bluetooth otomatis"
 
-#: ../js/ui/status/network.js:1462
+#: ../js/ui/status/network.js:1469
 msgid "Auto wireless"
 msgstr "Nirkabel otomatis"
 
-#: ../js/ui/status/network.js:1554
+#: ../js/ui/status/network.js:1558
 msgid "Enable networking"
 msgstr "Aktifkan jaringan"
 
-#: ../js/ui/status/network.js:1566
+#: ../js/ui/status/network.js:1570
 msgid "Wired"
 msgstr "Berkabel"
 
-#: ../js/ui/status/network.js:1577
+#: ../js/ui/status/network.js:1581
 msgid "Wireless"
 msgstr "Nirkabel"
 
-#: ../js/ui/status/network.js:1587
+#: ../js/ui/status/network.js:1591
 msgid "Mobile broadband"
 msgstr "Data seluler"
 
-#: ../js/ui/status/network.js:1597
+#: ../js/ui/status/network.js:1601
 msgid "VPN Connections"
 msgstr "Koneksi VPN"
 
-#: ../js/ui/status/network.js:1609
+#: ../js/ui/status/network.js:1612
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
-#: ../js/ui/status/network.js:1901
-#, c-format
-msgid "You're now connected to mobile broadband connection '%s'"
-msgstr "Anda kini terhubung pada jaringan seluler '%s'"
+#: ../js/ui/status/network.js:1747
+#| msgid "Connection"
+msgid "Connectivity lost"
+msgstr "Sambungan putus"
 
-#: ../js/ui/status/network.js:1905
-#, c-format
-msgid "You're now connected to wireless network '%s'"
-msgstr "Anda kini terhubung pada jaringan nirkabel '%s'"
+#: ../js/ui/status/network.js:1748
+#| msgid "You're now connected to wired network '%s'"
+msgid "You're no longer connected to the network"
+msgstr "Anda tak terhubung lagi ke jaringan"
 
-#: ../js/ui/status/network.js:1909
-#, c-format
-msgid "You're now connected to wired network '%s'"
-msgstr "Anda kini terhubung pada jaringan berkabel '%s'"
+#: ../js/ui/status/network.js:1756
+#| msgid "connection failed"
+msgid "Connection failed"
+msgstr "Koneksi gagal"
 
-#: ../js/ui/status/network.js:1913
-#, c-format
-msgid "You're now connected to VPN network '%s'"
-msgstr "Anda kini terhubung pada jaringan VPN '%s'"
+#: ../js/ui/status/network.js:1757
+#| msgid "connection failed"
+msgid "Activation of network connection failed"
+msgstr "Aktivasi koneksi jaringan gagal"
 
-#: ../js/ui/status/network.js:1918
-#, c-format
-msgid "You're now connected to '%s'"
-msgstr "Anda kini terhubung pada '%s'"
-
-#: ../js/ui/status/network.js:1926
-msgid "Connection established"
-msgstr "Koneksi tersambung"
-
-#: ../js/ui/status/network.js:2052
+#: ../js/ui/status/network.js:1992
 msgid "Networking is disabled"
 msgstr "Jaringan tidak diaktifkan"
 
-#: ../js/ui/status/network.js:2177
+#: ../js/ui/status/network.js:2117
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
-#: ../js/ui/status/power.js:83
+#: ../js/ui/status/power.js:82
 msgid "Power Settings"
 msgstr "Pengaturan Daya"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:109
+#: ../js/ui/status/power.js:103
 msgid "Estimating..."
 msgstr "Memperkirakan..."
 
-#: ../js/ui/status/power.js:116
+#: ../js/ui/status/power.js:110
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "%d jam lagi"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:119
+#: ../js/ui/status/power.js:113
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s lagi"
 
-#: ../js/ui/status/power.js:121
+#: ../js/ui/status/power.js:115
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "jam"
 
-#: ../js/ui/status/power.js:121
+#: ../js/ui/status/power.js:115
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "menit"
 
-#: ../js/ui/status/power.js:124
+#: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d menit lagi"
 
-#: ../js/ui/status/power.js:216
+#: ../js/ui/status/power.js:201
 msgid "AC adapter"
 msgstr "Adaptor AC"
 
-#: ../js/ui/status/power.js:218
+#: ../js/ui/status/power.js:203
 msgid "Laptop battery"
 msgstr "Baterai laptop"
 
-#: ../js/ui/status/power.js:220
+#: ../js/ui/status/power.js:205
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:222
+#: ../js/ui/status/power.js:207
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:224
+#: ../js/ui/status/power.js:209
 msgid "Mouse"
 msgstr "Tetikus"
 
-#: ../js/ui/status/power.js:226
-msgid "Keyboard"
-msgstr "Papan Ketik"
-
-#: ../js/ui/status/power.js:228
+#: ../js/ui/status/power.js:213
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:230
+#: ../js/ui/status/power.js:215
 msgid "Cell phone"
 msgstr "Ponsel"
 
-#: ../js/ui/status/power.js:232
+#: ../js/ui/status/power.js:217
 msgid "Media player"
 msgstr "Pemutar media"
 
-#: ../js/ui/status/power.js:234
+#: ../js/ui/status/power.js:219
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:236
+#: ../js/ui/status/power.js:221
 msgid "Computer"
 msgstr "Komputer"
 
-#: ../js/ui/status/volume.js:43
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:56
+#: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "Mikrofon"
 
 #. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:229
+#: ../js/ui/telepathyClient.js:256
 msgid "Invitation"
 msgstr "Undangan"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:295
+#: ../js/ui/telepathyClient.js:322
 msgid "Call"
 msgstr "Panggil"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:323
+#: ../js/ui/telepathyClient.js:350
 msgid "File Transfer"
 msgstr "Transfer Berkas"
 
-#: ../js/ui/telepathyClient.js:573
+#: ../js/ui/telepathyClient.js:432
+#| msgid "Authorization request from %s"
+msgid "Subscription request"
+msgstr "Permintaan berlangganan"
+
+#: ../js/ui/telepathyClient.js:460
+#| msgid "Connection"
+msgid "Connection error"
+msgstr "Galat sambungan"
+
+#: ../js/ui/telepathyClient.js:722
 #, c-format
 msgid "%s is online."
 msgstr "%s tersedia."
 
-#: ../js/ui/telepathyClient.js:578
+#: ../js/ui/telepathyClient.js:727
 #, c-format
 msgid "%s is offline."
 msgstr "%s tidak tersedia."
 
-#: ../js/ui/telepathyClient.js:581
+#: ../js/ui/telepathyClient.js:730
 #, c-format
 msgid "%s is away."
 msgstr "%s sedang pergi."
 
-#: ../js/ui/telepathyClient.js:584
+#: ../js/ui/telepathyClient.js:733
 #, c-format
 msgid "%s is busy."
 msgstr "%s sibuk."
@@ -1112,35 +1229,35 @@ msgstr "%s sibuk."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:770
+#: ../js/ui/telepathyClient.js:967
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Dikirim pada <b>%X</b> hari <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:776
+#: ../js/ui/telepathyClient.js:973
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Dikirim pada <b>%A</b>, <b>%d %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:781
+#: ../js/ui/telepathyClient.js:978
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Dikirim pada <b>%A</b>, <b>%d %B</b> %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:822
+#: ../js/ui/telepathyClient.js:1020
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s sekarang dikenal sebagai %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:929
+#: ../js/ui/telepathyClient.js:1129
 #, c-format
 msgid "Invitation to %s"
 msgstr "Undangan ke %s"
@@ -1148,34 +1265,36 @@ msgstr "Undangan ke %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:937
+#: ../js/ui/telepathyClient.js:1137
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s mengundang Anda untuk bergabung dengan %s"
 
-#: ../js/ui/telepathyClient.js:939
-#: ../js/ui/telepathyClient.js:1028
+#: ../js/ui/telepathyClient.js:1139
+#: ../js/ui/telepathyClient.js:1228
+#: ../js/ui/telepathyClient.js:1332
 msgid "Decline"
 msgstr "Tolak"
 
-#: ../js/ui/telepathyClient.js:940
-#: ../js/ui/telepathyClient.js:1029
+#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1229
+#: ../js/ui/telepathyClient.js:1333
 msgid "Accept"
 msgstr "Terima"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:973
+#: ../js/ui/telepathyClient.js:1173
 #, c-format
 msgid "Video call from %s"
 msgstr "Panggilan video dari %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:976
+#: ../js/ui/telepathyClient.js:1176
 #, c-format
 msgid "Call from %s"
 msgstr "Panggilan dari %s"
 
-#: ../js/ui/telepathyClient.js:986
+#: ../js/ui/telepathyClient.js:1186
 msgid "Answer"
 msgstr "Jawab"
 
@@ -1184,10 +1303,188 @@ msgstr "Jawab"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1022
+#: ../js/ui/telepathyClient.js:1222
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sedang mengirimi Anda %s"
+
+#. To translators: The parameter is the contact's alias
+#: ../js/ui/telepathyClient.js:1297
+#, c-format
+msgid "%s would like permission to see when you are online"
+msgstr "%s ingin minta ijin melihat Anda ketika Anda daring"
+
+#: ../js/ui/telepathyClient.js:1395
+#| msgid "Network Manager"
+msgid "Network error"
+msgstr "Galat jaringan"
+
+#: ../js/ui/telepathyClient.js:1397
+#| msgid "Authentication Required"
+msgid "Authentication failed"
+msgstr "Otentikasi gagal"
+
+#: ../js/ui/telepathyClient.js:1399
+msgid "Encryption error"
+msgstr "Galat enkripsi"
+
+#: ../js/ui/telepathyClient.js:1401
+msgid "Certificate not provided"
+msgstr "Sertifikat tidak disediakan"
+
+#: ../js/ui/telepathyClient.js:1403
+msgid "Certificate untrusted"
+msgstr "Sertifikat tidak dipercaya"
+
+#: ../js/ui/telepathyClient.js:1405
+msgid "Certificate expired"
+msgstr "Sertifikat kadaluarsa"
+
+#: ../js/ui/telepathyClient.js:1407
+msgid "Certificate not activated"
+msgstr "Sertifikat tidak diaktifkan"
+
+#: ../js/ui/telepathyClient.js:1409
+msgid "Certificate hostname mismatch"
+msgstr "Nama host sertifikat tidak cocok"
+
+#: ../js/ui/telepathyClient.js:1411
+msgid "Certificate fingerprint mismatch"
+msgstr "Sidik jari sertifikat tidak cocok"
+
+#: ../js/ui/telepathyClient.js:1413
+msgid "Certificate self-signed"
+msgstr "Sertifikat ditandatangani sendiri"
+
+#: ../js/ui/telepathyClient.js:1415
+#| msgid "%s is offline."
+msgid "Status is set to offline"
+msgstr "Status diatur ke luring"
+
+#: ../js/ui/telepathyClient.js:1417
+msgid "Encryption is not available"
+msgstr "Enkripsi tidak tersedia"
+
+#: ../js/ui/telepathyClient.js:1419
+msgid "Certificate is invalid"
+msgstr "Sertifikat tidak valid"
+
+#: ../js/ui/telepathyClient.js:1421
+#| msgid "Connection established"
+msgid "Connection has been refused"
+msgstr "Koneksi telah ditolak"
+
+#: ../js/ui/telepathyClient.js:1423
+#| msgid "Connection established"
+msgid "Connection can't be established"
+msgstr "Koneksi tak dapat dijalin"
+
+#: ../js/ui/telepathyClient.js:1425
+#| msgid "Connection established"
+msgid "Connection has been lost"
+msgstr "Koneksi telah terputus"
+
+#: ../js/ui/telepathyClient.js:1427
+msgid "This resource is already connected to the server"
+msgstr "Sumber daya ini sudah tersambung ke server"
+
+#: ../js/ui/telepathyClient.js:1429
+msgid "Connection has been replaced by a new connection using the same resource"
+msgstr "Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
+
+#: ../js/ui/telepathyClient.js:1431
+msgid "The account already exists on the server"
+msgstr "Akun ini sudah ada di server"
+
+#: ../js/ui/telepathyClient.js:1433
+msgid "Server is currently too busy to handle the connection"
+msgstr "Server kini terlalu sibuk untuk menangani koneksi"
+
+#: ../js/ui/telepathyClient.js:1435
+msgid "Certificate has been revoked"
+msgstr "Sertifikat telah dicabut"
+
+#: ../js/ui/telepathyClient.js:1437
+msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr "Sertifikat memakai algorima cipher yang tak aman atau lemah secara kriptografi"
+
+#: ../js/ui/telepathyClient.js:1439
+msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
+msgstr "Panjang sertifikat server, atau kedalaman rantai sertifikat server, melampaui batas yang diberlakukan oleh pustaka kriptografi"
+
+#. translators: argument is the account name, like
+#. * name@jabber.org for example.
+#: ../js/ui/telepathyClient.js:1448
+#, c-format
+#| msgid "connection failed"
+msgid "Connection to %s failed"
+msgstr "Sambungan ke %s gagal"
+
+#: ../js/ui/telepathyClient.js:1455
+#| msgid "Unknown"
+msgid "Unknown reason"
+msgstr "Alasan yang tidak diketahui"
+
+#: ../js/ui/telepathyClient.js:1462
+#| msgid "Reject"
+msgid "Reconnect"
+msgstr "Hubungkan kembali"
+
+#: ../js/ui/telepathyClient.js:1463
+#| msgid "My Account"
+msgid "Edit account"
+msgstr "Sunting Akun"
+
+#: ../js/ui/userMenu.js:153
+msgid "Hidden"
+msgstr "Tersembunyi"
+
+#: ../js/ui/userMenu.js:159
+msgid "Idle"
+msgstr "Menganggur"
+
+#: ../js/ui/userMenu.js:162
+#| msgid "unavailable"
+msgid "Unavailable"
+msgstr "Tak tersedia"
+
+#: ../js/ui/userMenu.js:516
+#: ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:589
+msgid "Power Off..."
+msgstr "Matikan..."
+
+#: ../js/ui/userMenu.js:518
+#: ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:588
+msgid "Suspend"
+msgstr "Suspensi"
+
+#: ../js/ui/userMenu.js:551
+#| msgid "Applications"
+msgid "Notifications"
+msgstr "Pemberitahuan"
+
+#: ../js/ui/userMenu.js:559
+#| msgid "My Account"
+msgid "Online Accounts"
+msgstr "Akun Daring"
+
+#: ../js/ui/userMenu.js:563
+msgid "System Settings"
+msgstr "Pengaturan Sistem"
+
+#: ../js/ui/userMenu.js:570
+msgid "Lock Screen"
+msgstr "Kunci Layar"
+
+#: ../js/ui/userMenu.js:575
+msgid "Switch User"
+msgstr "Ganti Pengguna"
+
+#: ../js/ui/userMenu.js:580
+msgid "Log Out..."
+msgstr "Keluar..."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1214,7 +1511,7 @@ msgstr "'%s' telah siap"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1098
+#: ../src/gvc/gvc-mixer-control.c:1100
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1222,21 +1519,25 @@ msgstr[0] "%u Keluaran"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1108
+#: ../src/gvc/gvc-mixer-control.c:1110
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Masukan"
 
-#: ../src/gvc/gvc-mixer-control.c:1406
+#: ../src/gvc/gvc-mixer-control.c:1408
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
-#: ../src/main.c:466
+#: ../src/main.c:480
 msgid "Print version"
 msgstr "Versi Cetak"
 
-#: ../src/shell-app.c:566
+#: ../src/main.c:486
+msgid "Mode used by GDM for login screen"
+msgstr "Mode yang dipakai oleh layar log masuk GDM"
+
+#: ../src/shell-app.c:581
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Gagal meluncurkan '%s'"
@@ -1272,8 +1573,4 @@ msgstr "Sistem Berkas"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:0"
 
