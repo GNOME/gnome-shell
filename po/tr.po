@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-10 16:22+0000\n"
-"PO-Revision-Date: 2011-09-11 11:25+0300\n"
+"PO-Revision-Date: 2011-09-11 22:10+0300\n"
 "Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1311,94 +1311,97 @@ msgstr ""
 
 #: ../clutter/clutter-rectangle.c:268
 msgid "The color of the rectangle"
-msgstr ""
+msgstr "Dikdörtgenin rengi"
 
 #: ../clutter/clutter-rectangle.c:281
 msgid "Border Color"
-msgstr ""
+msgstr "Kenarlık Rengi"
 
 #: ../clutter/clutter-rectangle.c:282
 msgid "The color of the border of the rectangle"
-msgstr ""
+msgstr "Dikdörtgen kenarlığının rengi"
 
 #: ../clutter/clutter-rectangle.c:297
 msgid "Border Width"
-msgstr ""
+msgstr "Kenarlık Genişliği"
 
 #: ../clutter/clutter-rectangle.c:298
 msgid "The width of the border of the rectangle"
-msgstr ""
+msgstr "Dikdörtgen kenarlığının genişliği"
 
 #: ../clutter/clutter-rectangle.c:312
 msgid "Has Border"
-msgstr ""
+msgstr "Kenarlığı Var"
 
 #: ../clutter/clutter-rectangle.c:313
 msgid "Whether the rectangle should have a border"
-msgstr ""
+msgstr "Dikdörtgenin kenarlığının olup olmayacağı"
 
 #: ../clutter/clutter-script.c:434
 msgid "Filename Set"
-msgstr ""
+msgstr "Dosya Adı Ayarlandı"
 
 #: ../clutter/clutter-script.c:435
 msgid "Whether the :filename property is set"
-msgstr ""
+msgstr ":filename özelliğinin ayarlanmış olup olmaması"
 
 #: ../clutter/clutter-script.c:449 ../clutter/clutter-texture.c:1081
 msgid "Filename"
-msgstr ""
+msgstr "Dosya adı"
 
 #: ../clutter/clutter-script.c:450
 msgid "The path of the currently parsed file"
-msgstr ""
+msgstr "Şu anda ayrıştırılan dosyanın yolu"
 
 #: ../clutter/clutter-settings.c:414
 msgid "Double Click Time"
-msgstr ""
+msgstr "Çift Tıklama Zamanı"
 
 #: ../clutter/clutter-settings.c:415
 msgid "The time between clicks necessary to detect a multiple click"
-msgstr ""
+msgstr "Çoklu tıklamanın algılanması için gereken iki tık arası zaman"
 
 #: ../clutter/clutter-settings.c:430
 msgid "Double Click Distance"
-msgstr ""
+msgstr "Çift Tıklama Mesafesi"
 
 #: ../clutter/clutter-settings.c:431
 msgid "The distance between clicks necessary to detect a multiple click"
-msgstr ""
+msgstr "Çoklu tıklamanın algılanması için gereken iki tık arası mesafe"
 
 #: ../clutter/clutter-settings.c:446
 msgid "Drag Threshold"
-msgstr ""
+msgstr "Sürükleme Eşiği"
 
 #: ../clutter/clutter-settings.c:447
 msgid "The distance the cursor should travel before starting to drag"
-msgstr ""
+msgstr "Sürüklemeye başlamadan önce imlecin katetmesi gereken mesafe"
 
 #: ../clutter/clutter-settings.c:462 ../clutter/clutter-text.c:2939
 msgid "Font Name"
-msgstr ""
+msgstr "Yazıtipi Adı"
 
 #: ../clutter/clutter-settings.c:463
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
-msgstr ""
+msgstr "Öntanımlı yazıtipinin Pango tarafından ayrıştırılabilecek tanımı"
 
 #: ../clutter/clutter-settings.c:478
 msgid "Font Antialias"
-msgstr ""
+msgstr "Yazıtipi Yumuşatma"
 
 #: ../clutter/clutter-settings.c:479
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
 msgstr ""
+"Yumuşatma kullanılıp kullanılmayacağı (etkinleştirmek için 1, devre dışı "
+"bırakmak "
+"için 0, öntanımlı ayarı kullanmak için -1)"
 
 #: ../clutter/clutter-settings.c:495
 msgid "Font DPI"
-msgstr ""
+msgstr "Yazıtipi DPI"
 
 #: ../clutter/clutter-settings.c:496
 msgid ""
@@ -1432,72 +1435,72 @@ msgstr ""
 
 #: ../clutter/clutter-settings.c:574
 msgid "The minimum duration for a long press gesture to be recognized"
-msgstr ""
+msgstr "Hareketin algılanacağı en küçük uzun basma süresi"
 
 #: ../clutter/clutter-settings.c:581
 msgid "Fontconfig configuration timestamp"
-msgstr ""
+msgstr "Fontconfig yapılandırması zaman damgası"
 
 #: ../clutter/clutter-settings.c:582
 msgid "Timestamp of the current fontconfig configuration"
-msgstr ""
+msgstr "Mevcut fontconfig yapılandırmasının zaman damgası"
 
 #: ../clutter/clutter-shader.c:255
 msgid "Vertex Source"
-msgstr ""
+msgstr "Tepe Kaynağı"
 
 #: ../clutter/clutter-shader.c:256
 msgid "Source of vertex shader"
-msgstr ""
+msgstr "Tepe gölgelendiricisi kaynağı"
 
 #: ../clutter/clutter-shader.c:272
 msgid "Fragment Source"
-msgstr ""
+msgstr "Parça Kaynağı"
 
 #: ../clutter/clutter-shader.c:273
 msgid "Source of fragment shader"
-msgstr ""
+msgstr "Parça gölgelendiricisi kaynağı"
 
 #: ../clutter/clutter-shader.c:290
 msgid "Compiled"
-msgstr ""
+msgstr "Derlendi"
 
 #: ../clutter/clutter-shader.c:291
 msgid "Whether the shader is compiled and linked"
-msgstr ""
+msgstr "Gölgelendiricinin derlenmiş ve bağlanmış olup olmadığı"
 
 #: ../clutter/clutter-shader.c:308
 msgid "Whether the shader is enabled"
-msgstr ""
+msgstr "Gölgelendiricinin etkin olup olmadığı"
 
 #: ../clutter/clutter-shader.c:519
 #, c-format
 msgid "%s compilation failed: %s"
-msgstr ""
+msgstr "%s derlemesi başarısız: %s"
 
 #: ../clutter/clutter-shader.c:520
 msgid "Vertex shader"
-msgstr ""
+msgstr "Tepe gölgelendiricisi"
 
 #: ../clutter/clutter-shader.c:521
 msgid "Fragment shader"
-msgstr ""
+msgstr "Parça gölgelendiricisi"
 
 #: ../clutter/clutter-shader-effect.c:415
 msgid "Shader Type"
-msgstr ""
+msgstr "Gölgelendirici Türü"
 
 #: ../clutter/clutter-shader-effect.c:416
 msgid "The type of shader used"
-msgstr ""
+msgstr "Kullanılan gölgelendirici türü"
 
 #: ../clutter/clutter-snap-constraint.c:322
 msgid "The source of the constraint"
-msgstr ""
+msgstr "Kısıt kaynağı"
 
 #: ../clutter/clutter-snap-constraint.c:335
 msgid "From Edge"
-msgstr ""
+msgstr "Kenardan"
 
 #: ../clutter/clutter-snap-constraint.c:336
 msgid "The edge of the actor that should be snapped"
@@ -1505,7 +1508,7 @@ msgstr ""
 
 #: ../clutter/clutter-snap-constraint.c:350
 msgid "To Edge"
-msgstr ""
+msgstr "Kenara"
 
 #: ../clutter/clutter-snap-constraint.c:351
 msgid "The edge of the source that should be snapped"
@@ -1517,15 +1520,15 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1707
 msgid "Fullscreen Set"
-msgstr ""
+msgstr "Tam Ekran Ayarlandı"
 
 #: ../clutter/clutter-stage.c:1708
 msgid "Whether the main stage is fullscreen"
-msgstr ""
+msgstr "Ana sahnenin tam ekran olup olmayışı"
 
 #: ../clutter/clutter-stage.c:1724
 msgid "Offscreen"
-msgstr ""
+msgstr "Ekran Dışı"
 
 #: ../clutter/clutter-stage.c:1725
 msgid "Whether the main stage should be rendered offscreen"
@@ -1533,27 +1536,27 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1737 ../clutter/clutter-text.c:3052
 msgid "Cursor Visible"
-msgstr ""
+msgstr "Görünür İmleç"
 
 #: ../clutter/clutter-stage.c:1738
 msgid "Whether the mouse pointer is visible on the main stage"
-msgstr ""
+msgstr "Ana sahnede fare imlecinin görünürlüğü"
 
 #: ../clutter/clutter-stage.c:1752
 msgid "User Resizable"
-msgstr ""
+msgstr "Kullanıcı Yeniden Boyutlandırabilir"
 
 #: ../clutter/clutter-stage.c:1753
 msgid "Whether the stage is able to be resized via user interaction"
-msgstr ""
+msgstr "Sahnenin kullanıcı etkileşimi ile yeniden boyutlandırılabilirliği"
 
 #: ../clutter/clutter-stage.c:1766
 msgid "The color of the stage"
-msgstr ""
+msgstr "Sahne rengi"
 
 #: ../clutter/clutter-stage.c:1780
 msgid "Perspective"
-msgstr ""
+msgstr "Bakış Açısı"
 
 #: ../clutter/clutter-stage.c:1781
 msgid "Perspective projection parameters"
@@ -1561,15 +1564,15 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1796
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: ../clutter/clutter-stage.c:1797
 msgid "Stage Title"
-msgstr ""
+msgstr "Sahne Başlığı"
 
 #: ../clutter/clutter-stage.c:1812
 msgid "Use Fog"
-msgstr ""
+msgstr "Sis Kullan"
 
 #: ../clutter/clutter-stage.c:1813
 msgid "Whether to enable depth cueing"
@@ -1577,7 +1580,7 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1827
 msgid "Fog"
-msgstr ""
+msgstr "Sis"
 
 #: ../clutter/clutter-stage.c:1828
 msgid "Settings for the depth cueing"
@@ -1585,7 +1588,7 @@ msgstr ""
 
 #: ../clutter/clutter-stage.c:1844
 msgid "Use Alpha"
-msgstr ""
+msgstr "Alfa Kullan"
 
 #: ../clutter/clutter-stage.c:1845
 msgid "Whether to honour the alpha component of the stage color"
@@ -1617,7 +1620,7 @@ msgstr ""
 
 #: ../clutter/clutter-state.c:1472
 msgid "State"
-msgstr ""
+msgstr "Durum"
 
 #: ../clutter/clutter-state.c:1473
 msgid "Currently set state, (transition to this state might not be complete)"
@@ -1625,11 +1628,11 @@ msgstr ""
 
 #: ../clutter/clutter-state.c:1487
 msgid "Default transition duration"
-msgstr ""
+msgstr "Öntanımlı geçiş süresi"
 
 #: ../clutter/clutter-table-layout.c:585
 msgid "Column Number"
-msgstr ""
+msgstr "Sütun Numarası"
 
 #: ../clutter/clutter-table-layout.c:586
 msgid "The column the widget resides in"
@@ -1637,7 +1640,7 @@ msgstr ""
 
 #: ../clutter/clutter-table-layout.c:593
 msgid "Row Number"
-msgstr ""
+msgstr "Satır Numarası"
 
 #: ../clutter/clutter-table-layout.c:594
 msgid "The row the widget resides in"
@@ -1677,27 +1680,27 @@ msgstr ""
 
 #: ../clutter/clutter-table-layout.c:1714
 msgid "Spacing between columns"
-msgstr ""
+msgstr "Sütunlar arasındaki boşluk"
 
 #: ../clutter/clutter-table-layout.c:1728
 msgid "Spacing between rows"
-msgstr ""
+msgstr "Satırlar arasındaki boşluk"
 
 #: ../clutter/clutter-text.c:2940
 msgid "The font to be used by the text"
-msgstr ""
+msgstr "Metinde kullanılacak yazıtipi"
 
 #: ../clutter/clutter-text.c:2957
 msgid "Font Description"
-msgstr ""
+msgstr "Yazıtipi Tanımı"
 
 #: ../clutter/clutter-text.c:2958
 msgid "The font description to be used"
-msgstr ""
+msgstr "Kullanılacak yazıtipi tanımı"
 
 #: ../clutter/clutter-text.c:2974
 msgid "Text"
-msgstr ""
+msgstr "Metin"
 
 #: ../clutter/clutter-text.c:2975
 msgid "The text to render"
@@ -1705,67 +1708,69 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:2989
 msgid "Font Color"
-msgstr ""
+msgstr "Yazıtipi Rengi"
 
 #: ../clutter/clutter-text.c:2990
 msgid "Color of the font used by the text"
-msgstr ""
+msgstr "Metinde kullanılan yazıtipinin rengi"
 
 #: ../clutter/clutter-text.c:3004
 msgid "Editable"
-msgstr ""
+msgstr "Düzenlenebilir"
 
 #: ../clutter/clutter-text.c:3005
 msgid "Whether the text is editable"
-msgstr ""
+msgstr "Metnin düzenlenebilirliği"
 
 #: ../clutter/clutter-text.c:3020
 msgid "Selectable"
-msgstr ""
+msgstr "Seçilebilir"
 
 #: ../clutter/clutter-text.c:3021
 msgid "Whether the text is selectable"
-msgstr ""
+msgstr "Metnin seçilebilirliği"
 
 #: ../clutter/clutter-text.c:3035
 msgid "Activatable"
-msgstr ""
+msgstr "Aktifleştirilebilir"
 
 #: ../clutter/clutter-text.c:3036
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr ""
+"Enter tuşuna basılmasının aktifleştirme sinyalinin gönderilmesine sebep olup "
+"olmayacağı"
 
 #: ../clutter/clutter-text.c:3053
 msgid "Whether the input cursor is visible"
-msgstr ""
+msgstr "Giriş imlecinin görünürlüğü"
 
 #: ../clutter/clutter-text.c:3067 ../clutter/clutter-text.c:3068
 msgid "Cursor Color"
-msgstr ""
+msgstr "İmleç Rengi"
 
 #: ../clutter/clutter-text.c:3082
 msgid "Cursor Color Set"
-msgstr ""
+msgstr "İmleç Rengi Ayarlandı"
 
 #: ../clutter/clutter-text.c:3083
 msgid "Whether the cursor color has been set"
-msgstr ""
+msgstr "İmleç renginin ayarlanmış olup olmadığı"
 
 #: ../clutter/clutter-text.c:3098
 msgid "Cursor Size"
-msgstr ""
+msgstr "İmleç Boyutu"
 
 #: ../clutter/clutter-text.c:3099
 msgid "The width of the cursor, in pixels"
-msgstr ""
+msgstr "İmlecin piksel cinsinden genişliği"
 
 #: ../clutter/clutter-text.c:3113
 msgid "Cursor Position"
-msgstr ""
+msgstr "İmleç Konumu"
 
 #: ../clutter/clutter-text.c:3114
 msgid "The cursor position"
-msgstr ""
+msgstr "İmlecin konumu"
 
 #: ../clutter/clutter-text.c:3129
 msgid "Selection-bound"
@@ -1777,19 +1782,19 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3145 ../clutter/clutter-text.c:3146
 msgid "Selection Color"
-msgstr ""
+msgstr "Seçim Rengi"
 
 #: ../clutter/clutter-text.c:3160
 msgid "Selection Color Set"
-msgstr ""
+msgstr "Seçim Rengi Ayarlandı"
 
 #: ../clutter/clutter-text.c:3161
 msgid "Whether the selection color has been set"
-msgstr ""
+msgstr "Seçim renginin ayarlanmış olup olmadığı"
 
 #: ../clutter/clutter-text.c:3176
 msgid "Attributes"
-msgstr ""
+msgstr "Öznitelikler"
 
 #: ../clutter/clutter-text.c:3177
 msgid "A list of style attributes to apply to the contents of the actor"
@@ -1805,19 +1810,19 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3216
 msgid "Line wrap"
-msgstr ""
+msgstr "Satır kaydırma"
 
 #: ../clutter/clutter-text.c:3217
 msgid "If set, wrap the lines if the text becomes too wide"
-msgstr ""
+msgstr "Eğer atanmışsa, satırlar çok geniş olduğunda bölünür"
 
 #: ../clutter/clutter-text.c:3232
 msgid "Line wrap mode"
-msgstr ""
+msgstr "Satır kaydırma kipi"
 
 #: ../clutter/clutter-text.c:3233
 msgid "Control how line-wrapping is done"
-msgstr ""
+msgstr "Satır kaydırmanın nasıl yapıldığını denetle"
 
 #: ../clutter/clutter-text.c:3248
 msgid "Ellipsize"
@@ -1829,23 +1834,23 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3265
 msgid "Line Alignment"
-msgstr ""
+msgstr "Satır Hizalama"
 
 #: ../clutter/clutter-text.c:3266
 msgid "The preferred alignment for the string, for multi-line text"
-msgstr ""
+msgstr "Çok satırlı metinde dizge için tercih edilen hizalama"
 
 #: ../clutter/clutter-text.c:3282
 msgid "Justify"
-msgstr ""
+msgstr "İki yana yasla"
 
 #: ../clutter/clutter-text.c:3283
 msgid "Whether the text should be justified"
-msgstr ""
+msgstr "Metnin iki yana yaslanıp yaslanmayacağı"
 
 #: ../clutter/clutter-text.c:3298
 msgid "Password Character"
-msgstr ""
+msgstr "Parola Karakteri"
 
 #: ../clutter/clutter-text.c:3299
 msgid "If non-zero, use this character to display the actor's contents"
@@ -1853,15 +1858,15 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3313
 msgid "Max Length"
-msgstr ""
+msgstr "En Büyük Uzunluk"
 
 #: ../clutter/clutter-text.c:3314
 msgid "Maximum length of the text inside the actor"
-msgstr ""
+msgstr "Aktör içindeki metnin en büyük uzunluğu"
 
 #: ../clutter/clutter-text.c:3337
 msgid "Single Line Mode"
-msgstr ""
+msgstr "Tek Satır Kipi"
 
 #: ../clutter/clutter-text.c:3338
 msgid "Whether the text should be a single line"
@@ -1869,19 +1874,19 @@ msgstr ""
 
 #: ../clutter/clutter-text.c:3352 ../clutter/clutter-text.c:3353
 msgid "Selected Text Color"
-msgstr ""
+msgstr "Seçili Metin Rengi"
 
 #: ../clutter/clutter-text.c:3367
 msgid "Selected Text Color Set"
-msgstr ""
+msgstr "Seçili Metin Rengi Ayarlandı"
 
 #: ../clutter/clutter-text.c:3368
 msgid "Whether the selected text color has been set"
-msgstr ""
+msgstr "Seçili metin renginin ayarlanıp ayarlanmadığı"
 
 #: ../clutter/clutter-texture.c:995
 msgid "Sync size of actor"
-msgstr ""
+msgstr "Aktörün boyutunu eşle"
 
 #: ../clutter/clutter-texture.c:996
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
@@ -1907,7 +1912,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1022
 msgid "Horizontal repeat"
-msgstr ""
+msgstr "Yatay tekrarla"
 
 #: ../clutter/clutter-texture.c:1023
 msgid "Repeat the contents rather than scaling them horizontally"
@@ -1915,7 +1920,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1030
 msgid "Vertical repeat"
-msgstr ""
+msgstr "Dikey tekrarla"
 
 #: ../clutter/clutter-texture.c:1031
 msgid "Repeat the contents rather than scaling them vertically"
@@ -1923,7 +1928,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1038
 msgid "Filter Quality"
-msgstr ""
+msgstr "Filtre Kalitesi"
 
 #: ../clutter/clutter-texture.c:1039
 msgid "Rendering quality used when drawing the texture"
@@ -1931,15 +1936,15 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1047
 msgid "Pixel Format"
-msgstr ""
+msgstr "Piksel Biçimi"
 
 #: ../clutter/clutter-texture.c:1048
 msgid "The Cogl pixel format to use"
-msgstr ""
+msgstr "Kullanılacak Cogl piksel biçimi"
 
 #: ../clutter/clutter-texture.c:1056
 msgid "Cogl Texture"
-msgstr ""
+msgstr "Cogl Kaplaması"
 
 #: ../clutter/clutter-texture.c:1057
 msgid "The underlying Cogl texture handle used to draw this actor"
@@ -1947,7 +1952,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1064
 msgid "Cogl Material"
-msgstr ""
+msgstr "Cogl Malzemesi"
 
 #: ../clutter/clutter-texture.c:1065
 msgid "The underlying Cogl material handle used to draw this actor"
@@ -1959,7 +1964,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1089
 msgid "Keep Aspect Ratio"
-msgstr ""
+msgstr "En-Boy Oranını Koru"
 
 #: ../clutter/clutter-texture.c:1090
 msgid ""
@@ -1969,7 +1974,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1116
 msgid "Load asynchronously"
-msgstr ""
+msgstr "Eşzamansız yükle"
 
 #: ../clutter/clutter-texture.c:1117
 msgid ""
@@ -1978,7 +1983,7 @@ msgstr ""
 
 #: ../clutter/clutter-texture.c:1133
 msgid "Load data asynchronously"
-msgstr ""
+msgstr "Veriyi eşzamansız yükle"
 
 #: ../clutter/clutter-texture.c:1134
 msgid ""
@@ -1998,41 +2003,41 @@ msgstr ""
 #: ../clutter/clutter-texture.c:2062 ../clutter/clutter-texture.c:2343
 #, c-format
 msgid "Failed to load the image data"
-msgstr ""
+msgstr "Resim verisinin yüklenmesi başarısız oldu"
 
 #: ../clutter/clutter-texture.c:1703
 #, c-format
 msgid "YUV textures are not supported"
-msgstr ""
+msgstr "YUV kaplamaları desteklenmiyor"
 
 #: ../clutter/clutter-texture.c:1712
 #, c-format
 msgid "YUV2 textues are not supported"
-msgstr ""
+msgstr "YUV2 kaplamaları desteklenmiyor"
 
 #: ../clutter/clutter-timeline.c:264
 msgid "Should the timeline automatically restart"
-msgstr ""
+msgstr "Zaman çizgisi otomatik olarak yeniden başlamalı mı"
 
 #: ../clutter/clutter-timeline.c:278
 msgid "Delay"
-msgstr ""
+msgstr "Gecikme"
 
 #: ../clutter/clutter-timeline.c:279
 msgid "Delay before start"
-msgstr ""
+msgstr "Başlamadan önceki gecikme"
 
 #: ../clutter/clutter-timeline.c:295
 msgid "Duration of the timeline in milliseconds"
-msgstr ""
+msgstr "Milisaniye cinsinden zaman çizgisi süresi"
 
 #: ../clutter/clutter-timeline.c:311
 msgid "Direction of the timeline"
-msgstr ""
+msgstr "Zaman çizgisi yönü"
 
 #: ../clutter/clutter-timeline.c:326
 msgid "Auto Reverse"
-msgstr ""
+msgstr "Otomatik Tersine Çevir"
 
 #: ../clutter/clutter-timeline.c:327
 msgid "Whether the direction should be reversed when reaching the end"
@@ -2040,43 +2045,43 @@ msgstr ""
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:147
 msgid "sysfs Path"
-msgstr ""
+msgstr "sysfs Yolu"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:148
 msgid "Path of the device in sysfs"
-msgstr ""
+msgstr "sysfs'deki aygıt yolu"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:163
 msgid "Device Path"
-msgstr ""
+msgstr "Aygıt Yolu"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:164
 msgid "Path of the device node"
-msgstr ""
+msgstr "Aygıt düğümü yolu"
 
 #: ../clutter/x11/clutter-backend-x11.c:483
 msgid "X display to use"
-msgstr ""
+msgstr "Kullanılacak X göstericisi"
 
 #: ../clutter/x11/clutter-backend-x11.c:489
 msgid "X screen to use"
-msgstr ""
+msgstr "Kullanılacak X ekranı"
 
 #: ../clutter/x11/clutter-backend-x11.c:494
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "X çağrılarını eşazamanlı yap"
 
 #: ../clutter/x11/clutter-backend-x11.c:501
 msgid "Enable XInput support"
-msgstr ""
+msgstr "XInput desteğini etkinleştir"
 
 #: ../clutter/x11/clutter-keymap-x11.c:317
 msgid "The Clutter backend"
-msgstr ""
+msgstr "Clutter arka ucu"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:545
 msgid "Pixmap"
-msgstr ""
+msgstr "Pixmap"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "The X11 Pixmap to be bound"
@@ -2084,7 +2089,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap width"
-msgstr ""
+msgstr "Pixmap genişliği"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The width of the pixmap bound to this texture"
@@ -2092,7 +2097,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Pixmap height"
-msgstr ""
+msgstr "Pixmap yüksekliği"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "The height of the pixmap bound to this texture"
@@ -2100,7 +2105,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:572
 msgid "Pixmap Depth"
-msgstr ""
+msgstr "Pixmap Derinliği"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:573
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
@@ -2108,7 +2113,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:581
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Otomatik Güncellemeler"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:582
 msgid "If the texture should be kept in sync with any pixmap changes."
@@ -2116,7 +2121,7 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:590
 msgid "Window"
-msgstr ""
+msgstr "Pencere"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:591
 msgid "The X11 Window to be bound"
@@ -2148,19 +2153,19 @@ msgstr ""
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:629
 msgid "Window X"
-msgstr ""
+msgstr "Pencere X"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:630
 msgid "X position of window on screen according to X11"
-msgstr ""
+msgstr "X11'e göre ekranda pencere X konumu"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:638
 msgid "Window Y"
-msgstr ""
+msgstr "Pencere Y"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:639
 msgid "Y position of window on screen according to X11"
-msgstr ""
+msgstr "X11'e göre ekranda pencere Y konumu"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:646
 msgid "Window Override Redirect"
