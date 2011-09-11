@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-10 16:22+0000\n"
-"PO-Revision-Date: 2011-09-11 08:58+0300\n"
+"PO-Revision-Date: 2011-09-11 11:25+0300\n"
 "Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -531,7 +531,7 @@ msgstr "Canlandırma zaman çizgisi"
 
 #: ../clutter/clutter-behaviour.c:305
 msgid "Alpha Object to drive the behaviour"
-msgstr ""
+msgstr "Davranışı kontrol eden Alfa Nesnesi"
 
 #: ../clutter/clutter-behaviour-depth.c:178
 msgid "Start Depth"
@@ -801,7 +801,7 @@ msgstr "Çocuk için fazladan yer ayır"
 
 #: ../clutter/clutter-box-layout.c:377 ../clutter/clutter-table-layout.c:631
 msgid "Horizontal Fill"
-msgstr "Yatay Doldurma"
+msgstr "Yatay Doldur"
 
 #: ../clutter/clutter-box-layout.c:378 ../clutter/clutter-table-layout.c:632
 msgid ""
@@ -811,7 +811,7 @@ msgstr ""
 
 #: ../clutter/clutter-box-layout.c:386 ../clutter/clutter-table-layout.c:638
 msgid "Vertical Fill"
-msgstr ""
+msgstr "Dikey Doldur"
 
 #: ../clutter/clutter-box-layout.c:387 ../clutter/clutter-table-layout.c:639
 msgid ""
@@ -821,28 +821,29 @@ msgstr ""
 
 #: ../clutter/clutter-box-layout.c:396 ../clutter/clutter-table-layout.c:653
 msgid "Horizontal alignment of the actor within the cell"
-msgstr ""
+msgstr "Aktörün hücre içindeki yatay hizalaması"
 
 #: ../clutter/clutter-box-layout.c:405 ../clutter/clutter-table-layout.c:668
 msgid "Vertical alignment of the actor within the cell"
-msgstr ""
+msgstr "Aktörün hücre içindeki dikey hizalaması"
 
 #: ../clutter/clutter-box-layout.c:1305
 msgid "Vertical"
-msgstr ""
+msgstr "Dikey"
 
 #: ../clutter/clutter-box-layout.c:1306
 msgid "Whether the layout should be vertical, rather than horizontal"
-msgstr ""
+msgstr "Yerleşimin yatay değil de dikey olup olmaması"
 
 #: ../clutter/clutter-box-layout.c:1321 ../clutter/clutter-flow-layout.c:901
 msgid "Homogeneous"
-msgstr ""
+msgstr "Homojen"
 
 #: ../clutter/clutter-box-layout.c:1322
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
+"Yerleşimin homojen olup olmayacağı; bu durumda tüm çocuklar aynı boyutu alır"
 
 #: ../clutter/clutter-box-layout.c:1337
 msgid "Pack Start"
@@ -854,107 +855,107 @@ msgstr ""
 
 #: ../clutter/clutter-box-layout.c:1351
 msgid "Spacing"
-msgstr ""
+msgstr "Aralık"
 
 #: ../clutter/clutter-box-layout.c:1352
 msgid "Spacing between children"
-msgstr ""
+msgstr "Çocuklar arasındaki boşluk"
 
 #: ../clutter/clutter-box-layout.c:1366 ../clutter/clutter-table-layout.c:1742
 msgid "Use Animations"
-msgstr ""
+msgstr "Canlandırmaları Kullan"
 
 #: ../clutter/clutter-box-layout.c:1367 ../clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
-msgstr ""
+msgstr "Yerleşim değişikliklerinin canlandırılması"
 
 #: ../clutter/clutter-box-layout.c:1388 ../clutter/clutter-table-layout.c:1764
 msgid "Easing Mode"
-msgstr ""
+msgstr "Hafifletme Kipi"
 
 #: ../clutter/clutter-box-layout.c:1389 ../clutter/clutter-table-layout.c:1765
 msgid "The easing mode of the animations"
-msgstr ""
+msgstr "Canlandırmaları hafifletme kipi"
 
 #: ../clutter/clutter-box-layout.c:1406 ../clutter/clutter-table-layout.c:1782
 msgid "Easing Duration"
-msgstr ""
+msgstr "Hafifletme Süresi"
 
 #: ../clutter/clutter-box-layout.c:1407 ../clutter/clutter-table-layout.c:1783
 msgid "The duration of the animations"
-msgstr ""
+msgstr "Canlandırmaların süresi"
 
 #: ../clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
-msgstr ""
+msgstr "Yüzey Genişliği"
 
 #: ../clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
-msgstr ""
+msgstr "Cairo yüzey genişliği"
 
 #: ../clutter/clutter-cairo-texture.c:597
 msgid "Surface Height"
-msgstr ""
+msgstr "Yüzey Yüksekliği"
 
 #: ../clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
-msgstr ""
+msgstr "Cairo yüzey yüksekliği"
 
 #: ../clutter/clutter-cairo-texture.c:615
 msgid "Auto Resize"
-msgstr ""
+msgstr "Otomatik Yeniden Boyutlandır"
 
 #: ../clutter/clutter-cairo-texture.c:616
 msgid "Whether the surface should match the allocation"
-msgstr ""
+msgstr "Yüzeyin yer ayrımına uyumu"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
-msgstr ""
+msgstr "Kap"
 
 #: ../clutter/clutter-child-meta.c:128
 msgid "The container that created this data"
-msgstr ""
+msgstr "Bu veriyi oluşturan kap"
 
 #: ../clutter/clutter-child-meta.c:143
 msgid "The actor wrapped by this data"
-msgstr ""
+msgstr "Bu veri tarafından sarılan aktör"
 
 #: ../clutter/clutter-click-action.c:542
 msgid "Pressed"
-msgstr ""
+msgstr "Basıldı"
 
 #: ../clutter/clutter-click-action.c:543
 msgid "Whether the clickable should be in pressed state"
-msgstr ""
+msgstr "Tıklanabilirin basılmış durumda olup olmayacağı"
 
 #: ../clutter/clutter-click-action.c:556
 msgid "Held"
-msgstr ""
+msgstr "Basılı"
 
 #: ../clutter/clutter-click-action.c:557
 msgid "Whether the clickable has a grab"
-msgstr ""
+msgstr "Tıklanabilirin basılı halde beklemesi"
 
 #: ../clutter/clutter-click-action.c:574 ../clutter/clutter-settings.c:573
 msgid "Long Press Duration"
-msgstr ""
+msgstr "Uzun Basma Süresi"
 
 #: ../clutter/clutter-click-action.c:575
 msgid "The minimum duration of a long press to recognize the gesture"
-msgstr ""
+msgstr "Hareketin algılanacağı en küçük uzun basma süresi"
 
 #: ../clutter/clutter-click-action.c:593
 msgid "Long Press Threshold"
-msgstr ""
+msgstr "Uzun Basma Eşiği"
 
 #: ../clutter/clutter-click-action.c:594
 msgid "The maximum threshold before a long press is cancelled"
-msgstr ""
+msgstr "Uzun basma iptal edilmeden önceki en büyük eşik"
 
 #: ../clutter/clutter-clone.c:341
 msgid "Specifies the actor to be cloned"
-msgstr ""
+msgstr "Birebir kopyalanacak aktörü belirtir"
 
 #: ../clutter/clutter-colorize-effect.c:307
 msgid "Tint"
@@ -966,19 +967,19 @@ msgstr ""
 
 #: ../clutter/clutter-deform-effect.c:527
 msgid "Horizontal Tiles"
-msgstr ""
+msgstr "Yatay Döşemeler"
 
 #: ../clutter/clutter-deform-effect.c:528
 msgid "The number of horizontal tiles"
-msgstr ""
+msgstr "Yatay döşeme sayısı"
 
 #: ../clutter/clutter-deform-effect.c:543
 msgid "Vertical Tiles"
-msgstr ""
+msgstr "Dikey Döşemeler"
 
 #: ../clutter/clutter-deform-effect.c:544
 msgid "The number of vertical tiles"
-msgstr ""
+msgstr "Dikey döşeme sayısı"
 
 #: ../clutter/clutter-deform-effect.c:561
 msgid "Back Material"
@@ -990,157 +991,157 @@ msgstr ""
 
 #: ../clutter/clutter-desaturate-effect.c:305
 msgid "The desaturation factor"
-msgstr ""
+msgstr "Desatürasyon çarpanı"
 
 #: ../clutter/clutter-device-manager.c:131
 #: ../clutter/clutter-input-device.c:344
 #: ../clutter/x11/clutter-keymap-x11.c:316
 msgid "Backend"
-msgstr ""
+msgstr "Arka Uç"
 
 #: ../clutter/clutter-device-manager.c:132
 msgid "The ClutterBackend of the device manager"
-msgstr ""
+msgstr "Aygıt yöneticisindeki ClutterBackend"
 
 #: ../clutter/clutter-drag-action.c:596
 msgid "Horizontal Drag Threshold"
-msgstr ""
+msgstr "Yatay Sürükleme Eşiği"
 
 #: ../clutter/clutter-drag-action.c:597
 msgid "The horizontal amount of pixels required to start dragging"
-msgstr ""
+msgstr "Sürüklemeyi başlatmak için gereken yatay piksel miktarı"
 
 #: ../clutter/clutter-drag-action.c:624
 msgid "Vertical Drag Threshold"
-msgstr ""
+msgstr "Dikey Sürükleme Eşiği"
 
 #: ../clutter/clutter-drag-action.c:625
 msgid "The vertical amount of pixels required to start dragging"
-msgstr ""
+msgstr "Sürüklemeyi başlatmak için gereken dikey piksel miktarı"
 
 #: ../clutter/clutter-drag-action.c:646
 msgid "Drag Handle"
-msgstr ""
+msgstr "Sürükleme Kulpu"
 
 #: ../clutter/clutter-drag-action.c:647
 msgid "The actor that is being dragged"
-msgstr ""
+msgstr "Sürüklenmekte olan aktör"
 
 #: ../clutter/clutter-drag-action.c:660
 msgid "Drag Axis"
-msgstr ""
+msgstr "Sürükleme Ekseni"
 
 #: ../clutter/clutter-drag-action.c:661
 msgid "Constraints the dragging to an axis"
-msgstr ""
+msgstr "Sürüklemeyi bir eksenle kısıtlar"
 
 #: ../clutter/clutter-flow-layout.c:885
 msgid "Orientation"
-msgstr ""
+msgstr "Yönelim"
 
 #: ../clutter/clutter-flow-layout.c:886
 msgid "The orientation of the layout"
-msgstr ""
+msgstr "Yerleşim yönelimi"
 
 #: ../clutter/clutter-flow-layout.c:902
 msgid "Whether each item should receive the same allocation"
-msgstr ""
+msgstr "Her ögeye aynı miktarda yer ayrılması"
 
 #: ../clutter/clutter-flow-layout.c:917 ../clutter/clutter-table-layout.c:1713
 msgid "Column Spacing"
-msgstr ""
+msgstr "Sütun Aralığı"
 
 #: ../clutter/clutter-flow-layout.c:918
 msgid "The spacing between columns"
-msgstr ""
+msgstr "Sütunlar arasındaki boşluk"
 
 #: ../clutter/clutter-flow-layout.c:934 ../clutter/clutter-table-layout.c:1727
 msgid "Row Spacing"
-msgstr ""
+msgstr "Satır Aralığı"
 
 #: ../clutter/clutter-flow-layout.c:935
 msgid "The spacing between rows"
-msgstr ""
+msgstr "Satırlar arasındaki boşluk"
 
 #: ../clutter/clutter-flow-layout.c:949
 msgid "Minimum Column Width"
-msgstr ""
+msgstr "En Küçük Sütun Genişliği"
 
 #: ../clutter/clutter-flow-layout.c:950
 msgid "Minimum width for each column"
-msgstr ""
+msgstr "Her sütunun en küçük genişliği"
 
 #: ../clutter/clutter-flow-layout.c:965
 msgid "Maximum Column Width"
-msgstr ""
+msgstr "En Büyük Sütun Genişliği"
 
 #: ../clutter/clutter-flow-layout.c:966
 msgid "Maximum width for each column"
-msgstr ""
+msgstr "Her sütunun en büyük genişliği"
 
 #: ../clutter/clutter-flow-layout.c:980
 msgid "Minimum Row Height"
-msgstr ""
+msgstr "En Küçük Satır Yüksekliği"
 
 #: ../clutter/clutter-flow-layout.c:981
 msgid "Minimum height for each row"
-msgstr ""
+msgstr "Her satırın en küçük yüksekliği"
 
 #: ../clutter/clutter-flow-layout.c:996
 msgid "Maximum Row Height"
-msgstr ""
+msgstr "En Büyük Satır Yüksekliği"
 
 #: ../clutter/clutter-flow-layout.c:997
 msgid "Maximum height for each row"
-msgstr ""
+msgstr "Her satırın en büyük yüksekliği"
 
 #: ../clutter/clutter-input-device.c:220
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 #: ../clutter/clutter-input-device.c:221
 msgid "Unique identifier of the device"
-msgstr ""
+msgstr "Aygıtın özgün tanımlayıcısı"
 
 #: ../clutter/clutter-input-device.c:237
 msgid "The name of the device"
-msgstr ""
+msgstr "Aygıtın adı"
 
 #: ../clutter/clutter-input-device.c:251
 msgid "Device Type"
-msgstr ""
+msgstr "Aygıt Türü"
 
 #: ../clutter/clutter-input-device.c:252
 msgid "The type of the device"
-msgstr ""
+msgstr "Aygıtın türü"
 
 #: ../clutter/clutter-input-device.c:267
 msgid "Device Manager"
-msgstr ""
+msgstr "Aygıt Yöneticisi"
 
 #: ../clutter/clutter-input-device.c:268
 msgid "The device manager instance"
-msgstr ""
+msgstr "Aygıt yöneticisi örneği"
 
 #: ../clutter/clutter-input-device.c:281
 msgid "Device Mode"
-msgstr ""
+msgstr "Aygıt Kipi"
 
 #: ../clutter/clutter-input-device.c:282
 msgid "The mode of the device"
-msgstr ""
+msgstr "Aygıtın kipi"
 
 #: ../clutter/clutter-input-device.c:296
 msgid "Has Cursor"
-msgstr ""
+msgstr "İmleci Var"
 
 #: ../clutter/clutter-input-device.c:297
 msgid "Whether the device has a cursor"
-msgstr ""
+msgstr "Aygıtın bir imlecinin olup olmaması"
 
 #: ../clutter/clutter-input-device.c:316
 msgid "Whether the device is enabled"
-msgstr ""
+msgstr "Aygıtın etkin olup olmaması"
 
 #: ../clutter/clutter-input-device.c:329
 msgid "Number of Axes"
@@ -1152,23 +1153,23 @@ msgstr ""
 
 #: ../clutter/clutter-input-device.c:345
 msgid "The backend instance"
-msgstr ""
+msgstr "Arka uç örneği"
 
 #: ../clutter/clutter-interval.c:397
 msgid "Value Type"
-msgstr ""
+msgstr "Değer Türü"
 
 #: ../clutter/clutter-interval.c:398
 msgid "The type of the values in the interval"
-msgstr ""
+msgstr "Aralıktaki değerlerin türü"
 
 #: ../clutter/clutter-layout-meta.c:117
 msgid "Manager"
-msgstr ""
+msgstr "Yönetici"
 
 #: ../clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr ""
+msgstr "Bu veriyi oluşturan yönetici"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -1178,27 +1179,27 @@ msgstr ""
 #.
 #: ../clutter/clutter-main.c:490
 msgid "default:LTR"
-msgstr ""
+msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1321
 msgid "Show frames per second"
-msgstr ""
+msgstr "Saniye başına düşen çerçeveleri göster"
 
 #: ../clutter/clutter-main.c:1323
 msgid "Default frame rate"
-msgstr ""
+msgstr "Öntanımlı çerçeve hızı"
 
 #: ../clutter/clutter-main.c:1325
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "Tüm uyarıları ölümcül yap"
 
 #: ../clutter/clutter-main.c:1328
 msgid "Direction for the text"
-msgstr ""
+msgstr "Metin yönü"
 
 #: ../clutter/clutter-main.c:1331
 msgid "Disable mipmapping on text"
-msgstr ""
+msgstr "Metinde haritalamayı devre dışı bırak"
 
 #: ../clutter/clutter-main.c:1334
 msgid "Use 'fuzzy' picking"
@@ -1206,79 +1207,79 @@ msgstr ""
 
 #: ../clutter/clutter-main.c:1337
 msgid "Clutter debugging flags to set"
-msgstr ""
+msgstr "Ayarlanacak Clutter hata ayıklama bayrakları"
 
 #: ../clutter/clutter-main.c:1339
 msgid "Clutter debugging flags to unset"
-msgstr ""
+msgstr "Kaldırılacak Clutter hata ayıklama bayrakları"
 
 #: ../clutter/clutter-main.c:1343
 msgid "Clutter profiling flags to set"
-msgstr ""
+msgstr "Ayarlanacak Clutter profilleme bayrakları"
 
 #: ../clutter/clutter-main.c:1345
 msgid "Clutter profiling flags to unset"
-msgstr ""
+msgstr "Kaldırılacak Clutter profilleme bayrakları"
 
 #: ../clutter/clutter-main.c:1348
 msgid "Enable accessibility"
-msgstr ""
+msgstr "Erişilebilirliği etkinleştir"
 
 #: ../clutter/clutter-main.c:1530
 msgid "Clutter Options"
-msgstr ""
+msgstr "Clutter Seçenekleri"
 
 #: ../clutter/clutter-main.c:1531
 msgid "Show Clutter Options"
-msgstr ""
+msgstr "Clutter Seçeneklerini Göster"
 
 #: ../clutter/clutter-media.c:77
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: ../clutter/clutter-media.c:78
 msgid "URI of a media file"
-msgstr ""
+msgstr "Bir ortam dosyasının URI'si"
 
 #: ../clutter/clutter-media.c:91
 msgid "Playing"
-msgstr ""
+msgstr "Oynuyor"
 
 #: ../clutter/clutter-media.c:92
 msgid "Whether the actor is playing"
-msgstr ""
+msgstr "Aktörün oynamakta olup olmadığı"
 
 #: ../clutter/clutter-media.c:106
 msgid "Progress"
-msgstr ""
+msgstr "İlerleme"
 
 #: ../clutter/clutter-media.c:107
 msgid "Current progress of the playback"
-msgstr ""
+msgstr "Oynatmanın şu anki ilerleme durumu"
 
 #: ../clutter/clutter-media.c:120
 msgid "Subtitle URI"
-msgstr ""
+msgstr "Altyazı URI"
 
 #: ../clutter/clutter-media.c:121
 msgid "URI of a subtitle file"
-msgstr ""
+msgstr "Bir altyazı dosyasının URI adresi"
 
 #: ../clutter/clutter-media.c:136
 msgid "Subtitle Font Name"
-msgstr ""
+msgstr "Altyazı Yazıtipi Adı"
 
 #: ../clutter/clutter-media.c:137
 msgid "The font used to display subtitles"
-msgstr ""
+msgstr "Altyazıları göstermek için kullanılan yazıtipi"
 
 #: ../clutter/clutter-media.c:151
 msgid "Audio Volume"
-msgstr ""
+msgstr "Ses Düzeyi"
 
 #: ../clutter/clutter-media.c:152
 msgid "The volume of the audio"
-msgstr ""
+msgstr "Ses düzeyi"
 
 #: ../clutter/clutter-media.c:165
 msgid "Can Seek"
@@ -1290,19 +1291,19 @@ msgstr ""
 
 #: ../clutter/clutter-media.c:180
 msgid "Buffer Fill"
-msgstr ""
+msgstr "Tampon Doldurma"
 
 #: ../clutter/clutter-media.c:181
 msgid "The fill level of the buffer"
-msgstr ""
+msgstr "Tamponun doldurma düzeyi"
 
 #: ../clutter/clutter-media.c:195
 msgid "The duration of the stream, in seconds"
-msgstr ""
+msgstr "Akışın saniye cinsinden süresi"
 
 #: ../clutter/clutter-path-constraint.c:213
 msgid "The path used to constrain an actor"
-msgstr ""
+msgstr "Aktörü kısıtlamak için kullanılan yol"
 
 #: ../clutter/clutter-path-constraint.c:227
 msgid "The offset along the path, between -1.0 and 2.0"
