@@ -121,7 +121,7 @@ if test x$system = xMandrivaLinux ; then
 fi
 
 SOURCE=$HOME/Source
-BASEURL=http://git.clutter-project.org/clutter/plain/build
+BASEURL=http://git.gnome.org/browse/clutter/plain/build
 
 if [ -d $SOURCE ] ; then : ; else
     mkdir $SOURCE
@@ -171,4 +171,3 @@ if test "x`echo $PATH | grep $HOME/bin`" = x; then
 fi
 
 echo "Done."
-

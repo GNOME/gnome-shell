@@ -22,7 +22,7 @@
 # Only rebuild modules that have changed
 build_policy = 'updated'
 
-moduleset = 'http://git.clutter-project.org/clutter/plain/build/clutter.modules'
+moduleset = 'http://git.gnome.org/browse/clutter/plain/build/clutter.modules'
 
 modules = [ 'meta-clutter' ]
 
