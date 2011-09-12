@@ -102,24 +102,6 @@ void shell_tp_client_grab_contact_list_changed (ShellTpClient *self,
     TpConnection *conn);
 
 /* Telepathy utility functions */
-typedef void (*ShellGetTpContactCb) (TpConnection *connection,
-                                     GList *contacts,
-                                     TpHandle *failed);
-
-void shell_get_tp_contacts (TpConnection *self,
-                            guint n_handles,
-                            const TpHandle *handles,
-                            guint n_features,
-                            const TpContactFeature *features,
-                            ShellGetTpContactCb callback);
-
-typedef void (*ShellGetSelfContactFeaturesCb) (TpConnection *connection,
-                                               TpContact *contact);
-
-void shell_get_self_contact_features (TpConnection *self,
-                                      guint n_features,
-                                      const TpContactFeature *features,
-                                      ShellGetSelfContactFeaturesCb callback);
 
 void shell_get_contact_events (TplLogManager *log_manager,
                                TpAccount *account,

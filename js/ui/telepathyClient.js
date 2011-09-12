@@ -33,10 +33,6 @@ const NotificationDirection = {
     RECEIVED: 'chat-received'
 };
 
-let contactFeatures = [Tp.ContactFeature.ALIAS,
-                        Tp.ContactFeature.AVATAR_DATA,
-                        Tp.ContactFeature.PRESENCE];
-
 // This is GNOME Shell's implementation of the Telepathy 'Client'
 // interface. Specifically, the shell is a Telepathy 'Observer', which
 // lets us see messages even if they belong to another app (eg,
@@ -83,11 +79,21 @@ const Client = new Lang.Class({
         // account path -> AccountNotification
         this._accountNotifications = {};
 
+        // Define features we want
+        this._accountManager = Tp.AccountManager.dup();
+        let factory = this._accountManager.get_factory();
+        factory.add_account_features([Tp.Account.get_feature_quark_connection()]);
+        factory.add_connection_features([Tp.Connection.get_feature_quark_contact_list()]);
+        factory.add_channel_features([Tp.Channel.get_feature_quark_contacts()]);
+        factory.add_contact_features([Tp.ContactFeature.ALIAS,
+                                      Tp.ContactFeature.AVATAR_DATA,
+                                      Tp.ContactFeature.PRESENCE,
+                                      Tp.ContactFeature.SUBSCRIPTION_STATES]);
+
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
-        this._accountManager = Tp.AccountManager.dup();
         this._tpClient = new Shell.TpClient({ 'account-manager': this._accountManager,
                                               'name': 'GnomeShell',
                                               'uniquify-name': true })
@@ -114,16 +120,9 @@ const Client = new Lang.Class({
             throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
         }
 
-
         // Watch subscription requests and connection errors
         this._subscriptionSource = null;
         this._accountSource = null;
-        let factory = this._accountManager.get_factory();
-        factory.add_account_features([Tp.Account.get_feature_quark_connection()]);
-        factory.add_connection_features([Tp.Connection.get_feature_quark_contact_list()]);
-        factory.add_contact_features([Tp.ContactFeature.SUBSCRIPTION_STATES,
-                                      Tp.ContactFeature.ALIAS,
-                                      Tp.ContactFeature.AVATAR_DATA]);
 
         this._accountManager.connect('account-validity-changed',
             Lang.bind(this, this._accountValidityChanged));
@@ -133,22 +132,6 @@ const Client = new Lang.Class({
 
     _observeChannels: function(observer, account, conn, channels,
                                dispatchOp, requests, context) {
-        // If the self_contact doesn't have the ALIAS, make sure
-        // to fetch it before trying to grab the channels.
-        let self_contact = conn.get_self_contact();
-        if (self_contact.has_feature(Tp.ContactFeature.ALIAS)) {
-            this._finishObserveChannels(account, conn, channels, context);
-        } else {
-            Shell.get_self_contact_features(conn,
-                                            contactFeatures,
-                                            Lang.bind(this, function() {
-                                                this._finishObserveChannels(account, conn, channels, context);
-                                            }));
-            context.delay();
-        }
-    },
-
-    _finishObserveChannels: function(account, conn, channels, context) {
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
@@ -159,16 +142,7 @@ const Client = new Lang.Class({
                targetHandleType != Tp.HandleType.CONTACT)
                continue;
 
-            /* Request a TpContact */
-            Shell.get_tp_contacts(conn, [targetHandle],
-                    contactFeatures,
-                    Lang.bind(this,  function (connection, contacts, failed) {
-                        if (contacts.length < 1)
-                            return;
-
-                        /* We got the TpContact */
-                        this._createChatSource(account, conn, channel, contacts[0]);
-                    }), null);
+            this._createChatSource(account, conn, channel, channel.get_target_contact());
         }
 
         context.accept();
@@ -234,33 +208,17 @@ const Client = new Lang.Class({
 
     _displayRoomInvitation: function(conn, channel, dispatchOp, context) {
         // We can only approve the rooms if we have been invited to it
-        let selfHandle = channel.group_get_self_handle();
-        if (selfHandle == 0) {
+        let selfContact = channel.group_get_self_contact();
+        if (selfContact == null) {
             Shell.decline_dispatch_op(context, 'Not invited to the room');
             return;
         }
 
-        let [invited, inviter, reason, msg] = channel.group_get_local_pending_info(selfHandle);
+        let [invited, inviter, reason, msg] = channel.group_get_local_pending_contact_info(selfContact);
         if (!invited) {
             Shell.decline_dispatch_op(context, 'Not invited to the room');
             return;
         }
-
-        // Request a TpContact for the inviter
-        Shell.get_tp_contacts(conn, [inviter],
-                contactFeatures,
-                Lang.bind(this, this._createRoomInviteSource, channel, context, dispatchOp));
-
-        context.delay();
-     },
-
-    _createRoomInviteSource: function(connection, contacts, failed, channel, context, dispatchOp) {
-        if (contacts.length < 1) {
-            Shell.decline_dispatch_op(context, 'Failed to get inviter');
-            return;
-        }
-
-        // We got the TpContact
 
         // FIXME: We don't have a 'chat room' icon (bgo #653737) use
         // system-users for now as Empathy does.
@@ -268,7 +226,7 @@ const Client = new Lang.Class({
                                         Gio.icon_new_for_string('system-users'));
         Main.messageTray.add(source);
 
-        let notif = new RoomInviteNotification(source, dispatchOp, channel, contacts[0]);
+        let notif = new RoomInviteNotification(source, dispatchOp, channel, inviter);
         source.notify(notif);
         context.accept();
     },
@@ -308,21 +266,6 @@ const Client = new Lang.Class({
     },
 
     _approveCall: function(account, conn, channel, dispatchOp, context) {
-        let [targetHandle, targetHandleType] = channel.get_handle();
-
-        Shell.get_tp_contacts(conn, [targetHandle],
-                contactFeatures,
-                Lang.bind(this, this._createAudioVideoSource, channel, context, dispatchOp));
-
-        context.delay();
-    },
-
-    _createAudioVideoSource: function(connection, contacts, failed, channel, context, dispatchOp) {
-        if (contacts.length < 1) {
-            Shell.decline_dispatch_op(context, 'Failed to get inviter');
-            return;
-        }
-
         let isVideo = false;
 
         let props = channel.borrow_immutable_properties();
@@ -337,27 +280,13 @@ const Client = new Lang.Class({
                                         Gio.icon_new_for_string('audio-input-microphone'));
         Main.messageTray.add(source);
 
-        let notif = new AudioVideoNotification(source, dispatchOp, channel, contacts[0], isVideo);
+        let notif = new AudioVideoNotification(source, dispatchOp, channel,
+            channel.get_target_contact(), isVideo);
         source.notify(notif);
         context.accept();
     },
 
     _approveFileTransfer: function(account, conn, channel, dispatchOp, context) {
-        let [targetHandle, targetHandleType] = channel.get_handle();
-
-        Shell.get_tp_contacts(conn, [targetHandle],
-                contactFeatures,
-                Lang.bind(this, this._createFileTransferSource, channel, context, dispatchOp));
-
-        context.delay();
-    },
-
-    _createFileTransferSource: function(connection, contacts, failed, channel, context, dispatchOp) {
-        if (contacts.length < 1) {
-            Shell.decline_dispatch_op(context, 'Failed to get file sender');
-            return;
-        }
-
         // Use the icon of the file being transferred
         let gicon = Gio.content_type_get_icon(channel.get_mime_type());
 
@@ -365,7 +294,8 @@ const Client = new Lang.Class({
         let source = new ApproverSource(dispatchOp, _("File Transfer"), gicon);
         Main.messageTray.add(source);
 
-        let notif = new FileTransferNotification(source, dispatchOp, channel, contacts[0]);
+        let notif = new FileTransferNotification(source, dispatchOp, channel,
+            channel.get_target_contact());
         source.notify(notif);
         context.accept();
     },
