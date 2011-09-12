@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-06 09:19+0000\n"
-"PO-Revision-Date: 2011-09-07 15:45+0700\n"
+"PO-Revision-Date: 2011-09-12 12:15+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -761,7 +761,7 @@ msgstr "Perataan Horisontal"
 
 #: ../clutter/clutter-bin-layout.c:262
 msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Perataan horisontal bagi aktor di dalam manajer tata letak"
 
 #: ../clutter/clutter-bin-layout.c:270
 #: ../clutter/clutter-bin-layout.c:602
@@ -772,15 +772,15 @@ msgstr "Perataan Vertikal"
 
 #: ../clutter/clutter-bin-layout.c:271
 msgid "Vertical alignment for the actor inside the layout manager"
-msgstr ""
+msgstr "Perataan vertikal bagi aktor di dalam manajer tata letak"
 
 #: ../clutter/clutter-bin-layout.c:586
 msgid "Default horizontal alignment for the actors inside the layout manager"
-msgstr ""
+msgstr "Perataan horisontal baku bagi aktor di dalam manajer tata letak"
 
 #: ../clutter/clutter-bin-layout.c:603
 msgid "Default vertical alignment for the actors inside the layout manager"
-msgstr ""
+msgstr "Perataan vertikal baku bagi aktor di dalam manajer tata letak"
 
 #: ../clutter/clutter-box.c:544
 msgid "Layout Manager"
@@ -809,45 +809,42 @@ msgid "Whether the background color is set"
 msgstr "Apakah warna latar belakang ditata"
 
 #: ../clutter/clutter-box-layout.c:370
-#, fuzzy
 msgid "Expand"
-msgstr "Ekspansi"
+msgstr "Kembangkan"
 
 #: ../clutter/clutter-box-layout.c:371
 msgid "Allocate extra space for the child"
-msgstr ""
+msgstr "Alokasikan ruang ekstra bagi anak"
 
 #: ../clutter/clutter-box-layout.c:377
 #: ../clutter/clutter-table-layout.c:631
-#, fuzzy
 msgid "Horizontal Fill"
-msgstr "Warna isi:"
+msgstr "Penuhi Horisontal"
 
 #: ../clutter/clutter-box-layout.c:378
 #: ../clutter/clutter-table-layout.c:632
 msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
-msgstr ""
+msgstr "Apakah anak mesti menerima prioritas ketika wadah sedang mengalokasikan ruang cadangan pada sumbu horisontal"
 
 #: ../clutter/clutter-box-layout.c:386
 #: ../clutter/clutter-table-layout.c:638
-#, fuzzy
 msgid "Vertical Fill"
-msgstr "Warna isi:"
+msgstr "Penuhi Vertikal"
 
 #: ../clutter/clutter-box-layout.c:387
 #: ../clutter/clutter-table-layout.c:639
 msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
-msgstr ""
+msgstr "Apakah anak mesti menerima prioritas ketika wadah sedang mengalokasikan ruang cadangan pada sumbu vertikal"
 
 #: ../clutter/clutter-box-layout.c:396
 #: ../clutter/clutter-table-layout.c:653
 msgid "Horizontal alignment of the actor within the cell"
-msgstr ""
+msgstr "Perataan horisontal dari aktor dalam sel"
 
 #: ../clutter/clutter-box-layout.c:405
 #: ../clutter/clutter-table-layout.c:668
 msgid "Vertical alignment of the actor within the cell"
-msgstr ""
+msgstr "Perataan vertikal dari aktor dalam sel"
 
 #: ../clutter/clutter-box-layout.c:1305
 msgid "Vertical"
@@ -855,7 +852,7 @@ msgstr "Vertikal"
 
 #: ../clutter/clutter-box-layout.c:1306
 msgid "Whether the layout should be vertical, rather than horizontal"
-msgstr ""
+msgstr "Apakah tata letak mesti vertikal daripada horisontal"
 
 #: ../clutter/clutter-box-layout.c:1321
 #: ../clutter/clutter-flow-layout.c:901
@@ -864,26 +861,23 @@ msgstr "Homogen"
 
 #: ../clutter/clutter-box-layout.c:1322
 msgid "Whether the layout should be homogeneous, i.e. all childs get the same size"
-msgstr ""
+msgstr "Apakah tata letak mesti homogen, yaitu semua anak mendapat ukuran yang sama"
 
 #: ../clutter/clutter-box-layout.c:1337
-#, fuzzy
 msgid "Pack Start"
-msgstr "Tanggal mulai:"
+msgstr "Pak Awal"
 
 #: ../clutter/clutter-box-layout.c:1338
 msgid "Whether to pack items at the start of the box"
-msgstr ""
+msgstr "Apakah mengepak butir-butir di awal kotak"
 
 #: ../clutter/clutter-box-layout.c:1351
-#, fuzzy
 msgid "Spacing"
-msgstr "Spasi"
+msgstr "Sela"
 
 #: ../clutter/clutter-box-layout.c:1352
-#, fuzzy
 msgid "Spacing between children"
-msgstr "Ruang antar cells"
+msgstr "Sela antar anak"
 
 #: ../clutter/clutter-box-layout.c:1366
 #: ../clutter/clutter-table-layout.c:1742
@@ -893,7 +887,7 @@ msgstr "Gunakan Animasi"
 #: ../clutter/clutter-box-layout.c:1367
 #: ../clutter/clutter-table-layout.c:1743
 msgid "Whether layout changes should be animated"
-msgstr ""
+msgstr "Apakah perubahan tata letak mesti dianimasi"
 
 #: ../clutter/clutter-box-layout.c:1388
 #: ../clutter/clutter-table-layout.c:1764
@@ -914,9 +908,8 @@ msgstr "Durasi penyorotan"
 
 #: ../clutter/clutter-box-layout.c:1407
 #: ../clutter/clutter-table-layout.c:1783
-#, fuzzy
 msgid "The duration of the animations"
-msgstr "Tampilkan Animasi"
+msgstr "Durasi animasi"
 
 #: ../clutter/clutter-cairo-texture.c:582
 msgid "Surface Width"
@@ -924,16 +917,15 @@ msgstr "Lebar Permukaan"
 
 #: ../clutter/clutter-cairo-texture.c:583
 msgid "The width of the Cairo surface"
-msgstr ""
+msgstr "Lebar permukaan Cairo"
 
 #: ../clutter/clutter-cairo-texture.c:597
-#, fuzzy
 msgid "Surface Height"
-msgstr "Tinggi teks"
+msgstr "Tinggi permukaan"
 
 #: ../clutter/clutter-cairo-texture.c:598
 msgid "The height of the Cairo surface"
-msgstr ""
+msgstr "Tinggi permukaan Cairo"
 
 #: ../clutter/clutter-cairo-texture.c:615
 msgid "Auto Resize"
@@ -944,17 +936,16 @@ msgid "Whether the surface should match the allocation"
 msgstr ""
 
 #: ../clutter/clutter-child-meta.c:127
-#, fuzzy
 msgid "Container"
 msgstr "Kontainer"
 
 #: ../clutter/clutter-child-meta.c:128
 msgid "The container that created this data"
-msgstr ""
+msgstr "Kontainer yang membuat data ini"
 
 #: ../clutter/clutter-child-meta.c:143
 msgid "The actor wrapped by this data"
-msgstr ""
+msgstr "Aktor yang dibungkus oleh data ini"
 
 #: ../clutter/clutter-click-action.c:542
 msgid "Pressed"
@@ -965,7 +956,6 @@ msgid "Whether the clickable should be in pressed state"
 msgstr ""
 
 #: ../clutter/clutter-click-action.c:556
-#, fuzzy
 msgid "Held"
 msgstr "Ditahan"
 
@@ -975,18 +965,16 @@ msgstr ""
 
 #: ../clutter/clutter-click-action.c:574
 #: ../clutter/clutter-settings.c:573
-#, fuzzy
 msgid "Long Press Duration"
-msgstr "Waktu tekan lama"
+msgstr "Durasi Tekan Lama"
 
 #: ../clutter/clutter-click-action.c:575
 msgid "The minimum duration of a long press to recognize the gesture"
 msgstr ""
 
 #: ../clutter/clutter-click-action.c:593
-#, fuzzy
 msgid "Long Press Threshold"
-msgstr "Waktu tekan lama"
+msgstr "Ambang Tekan Lama"
 
 #: ../clutter/clutter-click-action.c:594
 msgid "The maximum threshold before a long press is cancelled"
@@ -1006,31 +994,28 @@ msgid "The tint to apply"
 msgstr "Stash yang akan Diterapkan"
 
 #: ../clutter/clutter-deform-effect.c:527
-#, fuzzy
 msgid "Horizontal Tiles"
-msgstr "kartu Mahjong"
+msgstr "Ubin Horisontal"
 
 #: ../clutter/clutter-deform-effect.c:528
 msgid "The number of horizontal tiles"
-msgstr ""
+msgstr "Cacah ubin horisontal"
 
 #: ../clutter/clutter-deform-effect.c:543
-#, fuzzy
 msgid "Vertical Tiles"
-msgstr "kartu Mahjong"
+msgstr "Ubin Vertikal"
 
 #: ../clutter/clutter-deform-effect.c:544
 msgid "The number of vertical tiles"
-msgstr ""
+msgstr "Cacah ubin vertikal"
 
 #: ../clutter/clutter-deform-effect.c:561
-#, fuzzy
 msgid "Back Material"
-msgstr "Sebelumnya - Identitas"
+msgstr "Material Belakang"
 
 #: ../clutter/clutter-deform-effect.c:562
 msgid "The material to be used when painting the back of the actor"
-msgstr ""
+msgstr "Material yang dipakai ketika mengecat belakang aktor"
 
 #: ../clutter/clutter-desaturate-effect.c:305
 #, fuzzy
@@ -1040,7 +1025,6 @@ msgstr "Faktor koreksi"
 #: ../clutter/clutter-device-manager.c:131
 #: ../clutter/clutter-input-device.c:344
 #: ../clutter/x11/clutter-keymap-x11.c:316
-#, fuzzy
 msgid "Backend"
 msgstr "Backend"
 
@@ -1051,7 +1035,7 @@ msgstr "Peran perangkat di dalam manajer"
 
 #: ../clutter/clutter-drag-action.c:596
 msgid "Horizontal Drag Threshold"
-msgstr ""
+msgstr "Ambang Penyeretan Horisontal"
 
 #: ../clutter/clutter-drag-action.c:597
 msgid "The horizontal amount of pixels required to start dragging"
@@ -1059,7 +1043,7 @@ msgstr ""
 
 #: ../clutter/clutter-drag-action.c:624
 msgid "Vertical Drag Threshold"
-msgstr ""
+msgstr "Ambang Penyeretan Vertikal"
 
 #: ../clutter/clutter-drag-action.c:625
 msgid "The vertical amount of pixels required to start dragging"
@@ -1072,19 +1056,17 @@ msgstr "Tambahkan Handel"
 
 #: ../clutter/clutter-drag-action.c:647
 msgid "The actor that is being dragged"
-msgstr ""
+msgstr "Aktor yang sedang diseret"
 
 #: ../clutter/clutter-drag-action.c:660
-#, fuzzy
 msgid "Drag Axis"
-msgstr "_Sumbu tunggal:"
+msgstr "Sumbu Seret"
 
 #: ../clutter/clutter-drag-action.c:661
 msgid "Constraints the dragging to an axis"
-msgstr ""
+msgstr "Batasi penyeretan ke suatu sumbu"
 
 #: ../clutter/clutter-flow-layout.c:885
-#, fuzzy
 msgid "Orientation"
 msgstr "Orientasi"
 
@@ -1126,7 +1108,7 @@ msgstr "Lebar minimal kolom yang diizinkan"
 
 #: ../clutter/clutter-flow-layout.c:950
 msgid "Minimum width for each column"
-msgstr ""
+msgstr "Lebar minimum bagi setiap kolom"
 
 #: ../clutter/clutter-flow-layout.c:965
 #, fuzzy
@@ -1135,7 +1117,7 @@ msgstr "Lebar maksimal kolom yang diizinkan"
 
 #: ../clutter/clutter-flow-layout.c:966
 msgid "Maximum width for each column"
-msgstr ""
+msgstr "Lebar maksimum bagi setiap kolom"
 
 #: ../clutter/clutter-flow-layout.c:980
 #, fuzzy
@@ -1144,7 +1126,7 @@ msgstr "Tinggi _baris (pt.):"
 
 #: ../clutter/clutter-flow-layout.c:981
 msgid "Minimum height for each row"
-msgstr ""
+msgstr "Tinggi minimum bagi setiap baris"
 
 #: ../clutter/clutter-flow-layout.c:996
 #, fuzzy
@@ -1153,7 +1135,7 @@ msgstr "Tinggi _baris (pt.):"
 
 #: ../clutter/clutter-flow-layout.c:997
 msgid "Maximum height for each row"
-msgstr ""
+msgstr "Tinggi maksimum bagi setiap baris"
 
 #: ../clutter/clutter-input-device.c:220
 msgid "Id"
@@ -1235,7 +1217,7 @@ msgstr "Jenis nilai tak didukung"
 
 #: ../clutter/clutter-interval.c:398
 msgid "The type of the values in the interval"
-msgstr ""
+msgstr "Jenis nilai dalam interval"
 
 #: ../clutter/clutter-layout-meta.c:117
 msgid "Manager"
@@ -1243,7 +1225,7 @@ msgstr "Manajer"
 
 #: ../clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr ""
+msgstr "Manajer yang membuat data ini"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -1258,7 +1240,7 @@ msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1321
 msgid "Show frames per second"
-msgstr ""
+msgstr "Tampilkan frame per detik"
 
 #: ../clutter/clutter-main.c:1323
 #, fuzzy
@@ -1382,7 +1364,7 @@ msgstr "Pencarian Sasaran (%s)"
 
 #: ../clutter/clutter-media.c:166
 msgid "Whether the current stream is seekable"
-msgstr ""
+msgstr "Apakah stream ini dapat di-seek"
 
 #: ../clutter/clutter-media.c:180
 #, fuzzy
@@ -1441,7 +1423,7 @@ msgstr "Warna pinggiran:"
 
 #: ../clutter/clutter-rectangle.c:313
 msgid "Whether the rectangle should have a border"
-msgstr ""
+msgstr "Apakah persegi panjang mesti memiliki tepi"
 
 #: ../clutter/clutter-script.c:434
 #, fuzzy
@@ -1450,7 +1432,7 @@ msgstr "Menentukan nama berkas"
 
 #: ../clutter/clutter-script.c:435
 msgid "Whether the :filename property is set"
-msgstr ""
+msgstr "Apakah properti :filename ditata"
 
 #: ../clutter/clutter-script.c:449
 #: ../clutter/clutter-texture.c:1081
@@ -1459,7 +1441,7 @@ msgstr "Nama Berkas"
 
 #: ../clutter/clutter-script.c:450
 msgid "The path of the currently parsed file"
-msgstr ""
+msgstr "Path dari berkas yang sedang diurai"
 
 #: ../clutter/clutter-settings.c:414
 #, fuzzy
@@ -1468,7 +1450,7 @@ msgstr "Waktu Klik ganda"
 
 #: ../clutter/clutter-settings.c:415
 msgid "The time between clicks necessary to detect a multiple click"
-msgstr ""
+msgstr "Waktu antar klik yang diperlukan untuk mendeteksi klik berganda"
 
 #: ../clutter/clutter-settings.c:430
 #, fuzzy
@@ -1477,7 +1459,7 @@ msgstr "Rentang Waktu Klik Ganda"
 
 #: ../clutter/clutter-settings.c:431
 msgid "The distance between clicks necessary to detect a multiple click"
-msgstr ""
+msgstr "Jarak antar klik yang diperlukan untuk mendeteksi klik berganda"
 
 #: ../clutter/clutter-settings.c:446
 #, fuzzy
@@ -1486,7 +1468,7 @@ msgstr "Ambang Drag"
 
 #: ../clutter/clutter-settings.c:447
 msgid "The distance the cursor should travel before starting to drag"
-msgstr ""
+msgstr "Jarak yang mesti ditempuh kursor sebelum memulai penyeretan"
 
 #: ../clutter/clutter-settings.c:462
 #: ../clutter/clutter-text.c:2893
