@@ -822,7 +822,7 @@ clutter_box_set_property_valist (ClutterBox   *box,
  * This function is a wrapper around clutter_container_add_actor()
  * and clutter_layout_manager_child_set()
  *
- * Language bindings should use the vector-based clutter_box_addv()
+ * Language bindings should use the vector-based clutter_box_packv()
  * variant instead
  *
  * Since: 1.2
