@@ -216,6 +216,7 @@ AC_CONFIG_FILES([
   js/Makefile
   js/misc/config.js
   src/Makefile
+  browser-plugin/Makefile
   tests/Makefile
   po/Makefile.in
   man/Makefile

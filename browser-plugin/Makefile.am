@@ -1,5 +1,5 @@
 
-mozillalibdir = $(datadir)/mozilla/plugins
+mozillalibdir = $(libdir)/mozilla/plugins
 
 mozillalib_LTLIBRARIES = libgnome-shell-browser-plugin.la
 
@@ -9,7 +9,11 @@ libgnome_shell_browser_plugin_la_LIBADD = 	\
 	$(BROWSER_PLUGIN_LIBS)
 
 libgnome_shell_browser_plugin_la_SOURCES = 	\
-	browser-plugin.c
+	browser-plugin.c \
+	npapi/npapi.h \
+	npapi/npfunctions.h \
+	npapi/npruntime.h \
+	npapi/nptypes.h
 
 libgnome_shell_browser_plugin_la_CFLAGS = 	\
 	$(BROWSER_PLUGIN_CFLAGS)		\
