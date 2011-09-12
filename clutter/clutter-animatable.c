@@ -29,10 +29,10 @@
  * #ClutterAnimatable is an interface that allows a #GObject class
  * to control how a #ClutterAnimation will animate a property.
  *
- * Each #ClutterAnimatable should implement the animate_property()
- * virtual function of the interface to compute the animation state
- * between two values of an interval depending on a progress factor,
- * expressed as a floating point value.
+ * Each #ClutterAnimatable should implement the
+ * <function>animate_property</function> virtual function of the interface
+ * to compute the animation state between two values of an interval depending
+ * on a progress factor, expressed as a floating point value.
  *
  * If a #ClutterAnimatable is animated by a #ClutterAnimation
  * instance, the #ClutterAnimation will call

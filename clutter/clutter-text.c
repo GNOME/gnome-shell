@@ -3727,7 +3727,7 @@ clutter_text_new_with_text (const gchar *font_name,
  * Sets whether the #ClutterText actor should be editable.
  *
  * An editable #ClutterText with key focus set using
- * clutter_actor_grab_key_focus() or clutter_stage_take_key_focus()
+ * clutter_actor_grab_key_focus() or clutter_stage_set_key_focus()
  * will receive key events and will update its contents accordingly.
  *
  * Since: 1.0

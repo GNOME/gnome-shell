@@ -73,8 +73,8 @@
  *     <title>Defining a ClutterAlpha in ClutterScript</title>
  *     <para>The following JSON fragment defines a #ClutterAlpha
  *     using a #ClutterTimeline with id "sine-timeline" and an alpha
- *     function called my_sine_alpha(). The defined #ClutterAlpha
- *     instance can be reused in multiple #ClutterBehaviour
+ *     function called <function>my_sine_alpha</function>. The defined
+ *     #ClutterAlpha instance can be reused in multiple #ClutterBehaviour
  *     definitions or for #ClutterAnimation definitions.</para>
  *     <programlisting><![CDATA[
  * {

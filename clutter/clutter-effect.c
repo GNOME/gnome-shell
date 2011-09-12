@@ -66,7 +66,7 @@
  *     the paint sequence. This is useful for example if the effect
  *     contains a cached image of the actor. In that case it can
  *     optimise painting by avoiding the actor paint and instead
- *     painting the cached image. The %CLUTTER_EFFECT_RUN_ACTOR_DIRTY
+ *     painting the cached image. The %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY
  *     flag is useful in this case. Clutter will set this flag when a
  *     redraw has been queued on the actor since it was last
  *     painted. The effect can use this information to decide if the
@@ -345,7 +345,7 @@ _clutter_effect_get_paint_volume (ClutterEffect      *effect,
  *
  * Queues a repaint of the effect. The effect can detect when the ‘paint’
  * method is called as a result of this function because it will not
- * have the %CLUTTER_EFFECT_RUN_ACTOR_DIRTY flag set. In that case the
+ * have the %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY flag set. In that case the
  * effect is free to assume that the actor has not changed its
  * appearance since the last time it was painted so it doesn't need to
  * call clutter_actor_continue_paint() if it can draw a cached
@@ -366,17 +366,17 @@ _clutter_effect_get_paint_volume (ClutterEffect      *effect,
  * Note however that modifying the position of the parent of an actor
  * may change the appearance of the actor because its transformation
  * matrix would change. In this case a redraw wouldn't be queued on
- * the actor itself so the %CLUTTER_EFFECT_RUN_ACTOR_DIRTY would still
+ * the actor itself so the %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY would still
  * not be set. The effect can detect this case by keeping track of the
  * last modelview matrix that was used to render the actor and
  * veryifying that it remains the same in the next paint.
  *
  * Any other effects that are layered on top of the passed in effect
- * will still be passed the %CLUTTER_EFFECT_RUN_ACTOR_DIRTY flag. If
+ * will still be passed the %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY flag. If
  * anything queues a redraw on the actor without specifying an effect
  * or with an effect that is lower in the chain of effects than this
  * one then that will override this call. In that case this effect
- * will instead be called with the %CLUTTER_EFFECT_RUN_ACTOR_DIRTY
+ * will instead be called with the %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY
  * flag set.
  *
  * Since: 1.8

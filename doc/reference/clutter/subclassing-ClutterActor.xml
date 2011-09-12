@@ -105,22 +105,22 @@ foo_actor_init (FooActor *actor)
     <para>The size requisition is split into two different phases: width
     requisition and height requisition.</para>
 
-    <para>The <classname>ClutterActor</classname>::get_preferred_width() and
-    <classname>ClutterActor</classname>::get_preferred_height() methods of a
+    <para>The <classname>ClutterActor</classname>::<function>get_preferred_width</function> and
+    <classname>ClutterActor</classname>::<function>get_preferred_height</function> methods of a
     #ClutterActor are invoked when clutter_actor_get_preferred_width() and 
     clutter_actor_get_preferred_height() are respectively called on an instance
     of that actor class. They are used to return the preferred size of the 
     actor. Container actors, or composite actors with internal children, 
     should call clutter_actor_get_preferred_width() and 
     clutter_actor_get_preferred_height() on each visible child inside
-    their implementation of the get_preferred_width() and get_preferred_height()
-    virtual functions.</para>
+    their implementation of the <function>get_preferred_width</function> and
+    <function>get_preferred_height</function> virtual functions.</para>
 
-    <para>The get_preferred_width() and get_preferred_height() virtual
-    functions return both the minimum size of the actor and its natural
-    size. The minimum size is defined as the amount of space an actor
-    must occupy to be useful; the natural size is defined as the amount
-    of space an actor would occupy if nothing would constrain it.</para>
+    <para>The <function>get_preferred_width</function> and <function>get_preferred_height</function>
+    virtual functions return both the minimum size of the actor and its natural
+    size. The minimum size is defined as the amount of space an actor must
+    occupy to be useful; the natural size is defined as the amount of space an
+    actor would occupy if nothing would constrain it.</para>
 
     <note><para>The natural size must always be greater than, or equal
     to the minimum size. #ClutterActor will just ignore a natural size
@@ -137,9 +137,10 @@ foo_actor_init (FooActor *actor)
     <note><para>The clutter_actor_get_preferred_size() function will
     automatically check the geometry management preferred by the actor
     and return its preferred size depending on the value of the request-mode
-    property and on the natural size of the actor. The get_preferred_size()
-    method, though, will ignore any notion of "available size" so it should
-    not be used inside a <classname>ClutterActor</classname>::allocate()
+    property and on the natural size of the actor. The
+    clutter_actor_get_preferred_size() method, though, will ignore any
+    notion of "available size" so it should not be used inside a
+    <classname>ClutterActor</classname>::<function>allocate</function>
     implementation.</para></note>
 
     <para>The size requisition starts from the #ClutterStage and it is
@@ -159,12 +160,13 @@ foo_actor_init (FooActor *actor)
       <title>Width requisition implementation of a container</title>
 
       <para>This example shows how an actor class should override the
-      get_preferred_width() virtual function of #ClutterActor. In this case,
-      the returned widths are the union of the extents of all the
-      <classname>FooActor</classname> children.</para>
+      <function>get_preferred_width</function> virtual function of
+      #ClutterActor. In this case, the returned widths are the union of
+      the extents of all the <classname>FooActor</classname> children.</para>
 
-      <para>The get_preferred_height() implementation would be similar to the
-      get_preferred_width() implementation, so it is omitted.</para>
+      <para>The <function>get_preferred_height</function> implementation
+      would be similar to the <function>get_preferred_width</function>
+      implementation, so it is omitted.</para>
 
       <programlisting>
 static void
@@ -250,21 +252,21 @@ foo_actor_get_preferred_width (ClutterActor *actor,
   <refsect1 id="actor-size-allocation">
     <title>Size allocation</title>
 
-    <para>The <classname>ClutterActor</classname>::allocate() method of a
-    #ClutterActor is invoked when clutter_actor_allocate() is called on an
-    instance of that actor class. It is used by a parent actor to set the 
-    coordinates of the bounding box for its children actors. Hence, 
-    container actors, or composite actors with internal children, should 
-    override the allocate() virtual function and call clutter_actor_allocate()
-    on each visible child.</para>
+    <para>The <classname>ClutterActor</classname>::<function>allocate</function>
+    virtual function of a #ClutterActor is invoked when clutter_actor_allocate()
+    is called on an instance of that actor class. It is used by a parent actor
+    to set the coordinates of the bounding box for its children actors. Hence,
+    container actors, or composite actors with internal children, should
+    override the <function>allocate</function> virtual function and call
+    clutter_actor_allocate() on each visible child.</para>
 
     <para>Each actor can know from their allocation box whether they
     have been moved with respect to their parent actor. Each child will
     also be able to tell whether their parent has been moved with respect
     to the stage.</para>
 
-    <note><para>The allocate() virtual function implementation will be
-    notified whether the actor has been moved, while clutter_actor_allocate()
+    <note><para>The <function>allocate</function> virtual function implementation
+    will be notified whether the actor has been moved, while clutter_actor_allocate()
     will usually be invoked with the %CLUTTER_ABSOLUTE_ORIGIN_CHANGED flag,
     meaning that the parent has been moved.</para></note>
 
@@ -376,16 +378,18 @@ foo_actor_allocate (ClutterActor           *actor,
   <refsect1 id="actor-painting-and-picking">
     <title>Painting and picking</title>
 
-    <para>The <classname>ClutterActor</classname>::paint() method should be
-    overridden if the actor needs to control its drawing process, by
-    painting other child actors or drawing with the Cogl 3D graphics
+    <para>The <classname>ClutterActor</classname>::<function>paint</function>
+    virtual function should be overridden if the actor needs to control its
+    drawing process, by painting other child actors or drawing with the Cogl
+    3D graphics
     API.</para>
 
     <example id="simple-actor-paint-example">
       <title>Paint implementation of a simple actor</title>
       <para>In this example, the <classname>FooActor</classname>
-      implementation of the paint() virtual function is drawing a rectangle
-      with rounded corners with a custom color using the Cogl API.</para>
+      implementation of the <function>paint</function> virtual function is
+      drawing a rectangle with rounded corners with a custom color using the
+      Cogl API.</para>
       <programlisting>
 static void
 foo_actor_paint (ClutterActor *actor)
@@ -422,8 +426,8 @@ foo_actor_paint (ClutterActor *actor)
       </programlisting>
     </example>
 
-    <note><para>When inside the <classname>ClutterActor</classname>::paint()
-    method the actor is already positioned at the coordinates specified by
+    <note><para>When inside the <classname>ClutterActor</classname>::<function>paint</function>
+    virtual function the actor is already positioned at the coordinates specified by
     its parent; all the paint operations should take place from the (0, 0)
     coordinates.</para></note>
 
@@ -456,16 +460,18 @@ foo_actor_paint (ClutterActor *actor)
 
     <para>If the actor has a non-rectangular shape, or it has internal
     children that need to be distinguished by the events delivery mechanism,
-    the <classname>ClutterActor</classname>::pick() method should also be
-    overridden. The pick() method works exactly like the paint() method, but
-    the actor should paint just its shape with the passed colour:</para>
+    the <classname>ClutterActor</classname>::<function>pick</function> virtual
+    function should also be overridden. The <function>pick</function> virtual
+    function works exactly like the <function>paint</function> virtual
+    function, but the actor should paint just its shape with the passed
+    colour:</para>
 
     <example id="simple-actor-pick-example">
       <title>Pick implementation of a simple actor</title>
       <para>In this example, <classname>FooActor</classname> overrides the
-      pick() virtual function default implementation to paint itself with a
-      shaped silhouette, to allow events only on the actual shape of the actor
-      instead of the whole paint area.</para>
+      <function>pick</function> virtual function default implementation to
+      paint itself with a shaped silhouette, to allow events only on the
+      actual shape of the actor instead of the whole paint area.</para>
       <programlisting>
 static void
 foo_actor_pick (ClutterActor       *actor,
@@ -500,8 +506,8 @@ foo_actor_pick (ClutterActor       *actor,
     </example>
 
     <para>Containers should simply chain up to the parent class'
-    pick() implementation to get their silhouette painted and then
-    paint their children:</para>
+    <function>pick</function> implementation to get their silhouette painted
+    and then paint their children:</para>
 
     <example id="container-actor-pick-example">
       <title>Pick implementation of a container</title>

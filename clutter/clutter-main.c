@@ -3029,11 +3029,11 @@ clutter_check_version (guint major,
  * clutter_get_default_text_direction:
  *
  * Retrieves the default direction for the text. The text direction is
- * determined by the locale and/or by the %CLUTTER_TEXT_DIRECTION environment
- * variable
+ * determined by the locale and/or by the <varname>CLUTTER_TEXT_DIRECTION</varname>
+ * environment variable.
  *
  * The default text direction can be overridden on a per-actor basis by using
- * clutter_actor_set_text_direction()
+ * clutter_actor_set_text_direction().
  *
  * Return value: the default text direction
  *

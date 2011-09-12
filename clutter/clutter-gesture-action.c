@@ -31,8 +31,8 @@
  * #ClutterGestureAction is a sub-class of #ClutterAction that implements
  * the logic for recognizing gesture gestures. It listens for low level events
  * such as #ClutterButtonEvent and #ClutterMotionEvent on the stage to raise
- * the signals #ClutterGestureAction::gesture-begin, #ClutterGestureAction::gesture-motion and
- * #ClutterGestureAction::gesture-end.
+ * the #ClutterGestureAction::gesture-begin, #ClutterGestureAction::gesture-progress,
+ * and * #ClutterGestureAction::gesture-end signals.
  *
  * To use #ClutterGestureAction you just need to apply it to a #ClutterActor
  * using clutter_actor_add_action() and connect to the signals:
@@ -43,7 +43,7 @@
  *   clutter_actor_add_action (actor, action);
  *
  *   g_signal_connect (action, "gesture-begin", G_CALLBACK (on_gesture_begin), NULL);
- *   g_signal_connect (action, "gesture-motion", G_CALLBACK (on_gesture_motion), NULL);
+ *   g_signal_connect (action, "gesture-progress", G_CALLBACK (on_gesture_progress), NULL);
  *   g_signal_connect (action, "gesture-end", G_CALLBACK (on_gesture_end), NULL);
  * ]|
  *

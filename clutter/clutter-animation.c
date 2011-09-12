@@ -60,8 +60,9 @@
  * #ClutterAnimation<!-- -->s are distinguished from #ClutterBehaviour<!-- -->s
  * because the former can only control #GObject properties of a single
  * #GObject instance, while the latter can control multiple properties
- * using accessor functions inside the #ClutterBehaviour::alpha_notify
- * virtual function, and can control multiple #ClutterActor<!-- -->s as well.
+ * using accessor functions inside the #ClutterBehaviour
+ * <function>alpha_notify</function> virtual function, and can control
+ * multiple #ClutterActor<!-- -->s as well.
  *
  * For convenience, it is possible to use the clutter_actor_animate()
  * function call which will take care of setting up and tearing down
@@ -735,7 +736,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
  * about animations, see clutter_actor_animate().
  *
  * If you need to update the interval instance use
- * clutter_animation_update_property() instead.
+ * clutter_animation_update_interval() instead.
  *
  * Return value: (transfer none): The animation itself.
  * Since: 1.0

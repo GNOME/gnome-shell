@@ -56,7 +56,7 @@ typedef struct _ClutterChildMetaClass           ClutterChildMetaClass;
  * about each individual child added to a container.
  *
  * In order to use it you should create your own subclass of
- * #ClutterChildMeta and set the #ClutterContainerIface::child_meta_type
+ * #ClutterChildMeta and set the #ClutterContainerIface child_meta_type
  * interface member to your subclass type, like:
  *
  * |[
@@ -80,9 +80,10 @@ typedef struct _ClutterChildMetaClass           ClutterChildMetaClass;
  * act like g_object_set() and g_object_get().
  *
  * You can provide hooks for your own storage as well as control the
- * instantiation by overriding #ClutterContainerIface::create_child_meta,
- * #ClutterContainerIface::destroy_child_meta and
- * #ClutterContainerIface::get_child_meta.
+ * instantiation by overriding the #ClutterContainerIface virtual functions
+ * <function>create_child_meta</function>,
+ * <function>destroy_child_meta</function>,
+ * and <function>get_child_meta</function>.
  *
  * Since: 0.8
  */
