@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-06 22:10+0200\n"
-"PO-Revision-Date: 2011-09-06 22:11+0200\n"
+"POT-Creation-Date: 2011-09-12 20:53+0200\n"
+"PO-Revision-Date: 2011-09-12 20:53+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -97,7 +97,9 @@ msgid ""
 "'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
 "records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
 "at the optimal thread count on the system."
-msgstr "Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som brukes for gst-launch. Røret må ha en..."
+msgstr ""
+"Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som "
+"brukes for gst-launch. Røret må ha en..."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
@@ -177,39 +179,45 @@ msgstr "Tastatur som skal brukes"
 msgid "disabled OpenSearch providers"
 msgstr "OpenSearch tilbydere slått av"
 
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:604
 msgid "Session..."
 msgstr "Økt …"
 
-#: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
 msgstr "Logg inn"
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:926 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
 #: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/loginDialog.js:1251
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "Logg inn"
+
+#: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "Kommando ikke funnet"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "Klarte ikke å lese kommando:"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
@@ -429,7 +437,7 @@ msgstr "Frakoblet"
 msgid "CONTACTS"
 msgstr "KONTAKTER"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "Fjern"
 
@@ -558,7 +566,7 @@ msgstr "Systemet vil starte på nytt automatisk om %d sekunder."
 msgid "Restarting the system."
 msgstr "Starter systemet på nytt."
 
-#: ../js/ui/keyboard.js:514 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -596,11 +604,11 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:2352
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1082,11 +1090,11 @@ msgstr "Tilkobling feilet"
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
@@ -1562,7 +1570,3 @@ msgstr "Filsystem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:1"
