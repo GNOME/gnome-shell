@@ -393,34 +393,6 @@ struct _ClutterActorPrivate
   ClutterActorBox allocation;
   ClutterAllocationFlags allocation_flags;
 
-  guint position_set                : 1;
-  guint min_width_set               : 1;
-  guint min_height_set              : 1;
-  guint natural_width_set           : 1;
-  guint natural_height_set          : 1;
-  /* cached request is invalid (implies allocation is too) */
-  guint needs_width_request         : 1;
-  /* cached request is invalid (implies allocation is too) */
-  guint needs_height_request        : 1;
-  /* cached allocation is invalid (request has changed, probably) */
-  guint needs_allocation            : 1;
-  guint show_on_set_parent          : 1;
-  guint has_clip                    : 1;
-  guint clip_to_allocation          : 1;
-  guint enable_model_view_transform : 1;
-  guint enable_paint_unmapped       : 1;
-  guint has_pointer                 : 1;
-  guint propagated_one_redraw       : 1;
-  guint paint_volume_valid          : 1;
-  guint last_paint_volume_valid     : 1;
-  guint in_clone_paint              : 1;
-  guint transform_valid             : 1;
-  /* This is TRUE if anything has queued a redraw since we were last
-     painted. In this case effect_to_redraw will point to an effect
-     the redraw was queued from or it will be NULL if the redraw was
-     queued without an effect. */
-  guint is_dirty                    : 1;
-
   gfloat clip[4];
 
   /* Rotation angles */
@@ -508,6 +480,35 @@ struct _ClutterActorPrivate
   ClutterPaintVolume last_paint_volume;
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
+
+  /* bitfields */
+  guint position_set                : 1;
+  guint min_width_set               : 1;
+  guint min_height_set              : 1;
+  guint natural_width_set           : 1;
+  guint natural_height_set          : 1;
+  /* cached request is invalid (implies allocation is too) */
+  guint needs_width_request         : 1;
+  /* cached request is invalid (implies allocation is too) */
+  guint needs_height_request        : 1;
+  /* cached allocation is invalid (request has changed, probably) */
+  guint needs_allocation            : 1;
+  guint show_on_set_parent          : 1;
+  guint has_clip                    : 1;
+  guint clip_to_allocation          : 1;
+  guint enable_model_view_transform : 1;
+  guint enable_paint_unmapped       : 1;
+  guint has_pointer                 : 1;
+  guint propagated_one_redraw       : 1;
+  guint paint_volume_valid          : 1;
+  guint last_paint_volume_valid     : 1;
+  guint in_clone_paint              : 1;
+  guint transform_valid             : 1;
+  /* This is TRUE if anything has queued a redraw since we were last
+     painted. In this case effect_to_redraw will point to an effect
+     the redraw was queued from or it will be NULL if the redraw was
+     queued without an effect. */
+  guint is_dirty                    : 1;
 };
 
 enum
