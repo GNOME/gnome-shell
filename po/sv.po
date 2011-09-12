@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-01 15:52+0200\n"
-"PO-Revision-Date: 2011-09-01 16:07+0100\n"
+"POT-Creation-Date: 2011-09-12 20:26+0200\n"
+"PO-Revision-Date: 2011-09-12 20:27+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -134,20 +134,20 @@ msgstr "Vilket tangentbord att använda"
 msgid "disabled OpenSearch providers"
 msgstr "inaktiverade OpenSearch-leverantörer"
 
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:604
 msgid "Session..."
 msgstr "Session..."
 
-#: ../js/gdm/loginDialog.js:758
-#: ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
 msgstr "Logga in"
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
 msgstr "Inte listad?"
 
-#: ../js/gdm/loginDialog.js:926
+#: ../js/gdm/loginDialog.js:928
 #: ../js/ui/endSessionDialog.js:410
 #: ../js/ui/networkAgent.js:158
 #: ../js/ui/polkitAuthenticationAgent.js:170
@@ -155,47 +155,52 @@ msgstr "Inte listad?"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/loginDialog.js:1251
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "Logga in"
+
+#: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Inloggningsfönster"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "Kommandot hittades inte"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "Kunde inte tolka kommando:"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Körning av \"%s\" misslyckades:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:254
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "Alla"
 
-#: ../js/ui/appDisplay.js:316
+#: ../js/ui/appDisplay.js:319
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
 
-#: ../js/ui/appDisplay.js:374
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "INSTÄLLNINGAR"
 
-#: ../js/ui/appDisplay.js:682
+#: ../js/ui/appDisplay.js:685
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:688
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: ../js/ui/appDisplay.js:686
+#: ../js/ui/appDisplay.js:689
 msgid "Add to Favorites"
 msgstr "Lägg till som favorit"
 
@@ -367,7 +372,7 @@ msgstr "Nästa vecka"
 #: ../js/ui/contactDisplay.js:59
 #: ../js/ui/notificationDaemon.js:444
 #: ../js/ui/status/power.js:223
-#: ../src/shell-app.c:354
+#: ../src/shell-app.c:355
 msgid "Unknown"
 msgstr "Okänt"
 
@@ -395,7 +400,7 @@ msgid "CONTACTS"
 msgstr "KONTAKTER"
 
 #: ../js/ui/dash.js:172
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -523,51 +528,51 @@ msgstr "Systemet kommer att startas om automatiskt om %d sekunder."
 msgid "Restarting the system."
 msgstr "Starta om systemet."
 
-#: ../js/ui/keyboard.js:509
+#: ../js/ui/keyboard.js:513
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tangentbord"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "Inga tillägg installerade"
 
-#: ../js/ui/lookingGlass.js:686
+#: ../js/ui/lookingGlass.js:687
 msgid "Enabled"
 msgstr "Aktiverad"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:688
+#: ../js/ui/lookingGlass.js:689
 #: ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: ../js/ui/lookingGlass.js:690
+#: ../js/ui/lookingGlass.js:691
 msgid "Error"
 msgstr "Fel"
 
-#: ../js/ui/lookingGlass.js:692
+#: ../js/ui/lookingGlass.js:693
 msgid "Out of date"
 msgstr "Utanför datumintervallet"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:695
 msgid "Downloading"
 msgstr "Hämtar"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "Visa källa"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "Webbsida"
 
-#: ../js/ui/messageTray.js:1175
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "Öppna"
 
-#: ../js/ui/messageTray.js:2337
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -674,18 +679,18 @@ msgid "Dash"
 msgstr "Favoriter"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:538
 #, c-format
 msgid "Quit %s"
 msgstr "Avsluta %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:574
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Övre rad"
 
@@ -743,11 +748,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Ange ett kommando:"
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "Söker..."
 
-#: ../js/ui/searchDisplay.js:351
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "Inga sökträffar."
 
@@ -867,7 +872,7 @@ msgid "Mouse Settings"
 msgstr "Musinställningar"
 
 #: ../js/ui/status/bluetooth.js:279
-#: ../js/ui/status/volume.js:63
+#: ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "Ljudinställningar"
 
@@ -1059,11 +1064,11 @@ msgstr "Anslutningen misslyckades"
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nätverksanslutning misslyckades"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Nätverk är inaktiverat"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
@@ -1149,11 +1154,11 @@ msgstr "Pekdator"
 msgid "Computer"
 msgstr "Dator"
 
-#: ../js/ui/status/volume.js:43
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "Volym"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1413,39 +1418,39 @@ msgstr "Overksam"
 msgid "Unavailable"
 msgstr "Inte tillgänglig"
 
-#: ../js/ui/userMenu.js:510
-#: ../js/ui/userMenu.js:514
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:516
+#: ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:589
 msgid "Power Off..."
 msgstr "Stäng av..."
 
-#: ../js/ui/userMenu.js:512
-#: ../js/ui/userMenu.js:514
-#: ../js/ui/userMenu.js:582
+#: ../js/ui/userMenu.js:518
+#: ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:588
 msgid "Suspend"
 msgstr "Vänteläge"
 
-#: ../js/ui/userMenu.js:545
-msgid "Do Not Disturb"
-msgstr "Stör inte"
+#: ../js/ui/userMenu.js:551
+msgid "Notifications"
+msgstr "Notifieringar"
 
-#: ../js/ui/userMenu.js:553
+#: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
 msgstr "Nätkonton"
 
-#: ../js/ui/userMenu.js:557
+#: ../js/ui/userMenu.js:563
 msgid "System Settings"
 msgstr "Systeminställningar"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:570
 msgid "Lock Screen"
 msgstr "Lås skärmen"
 
-#: ../js/ui/userMenu.js:569
+#: ../js/ui/userMenu.js:575
 msgid "Switch User"
 msgstr "Växla användare"
 
-#: ../js/ui/userMenu.js:574
+#: ../js/ui/userMenu.js:580
 msgid "Log Out..."
 msgstr "Logga ut..."
 
@@ -1494,15 +1499,15 @@ msgstr[1] "%u ingångar"
 msgid "System Sounds"
 msgstr "Systemljud"
 
-#: ../src/main.c:469
+#: ../src/main.c:480
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: ../src/main.c:475
+#: ../src/main.c:486
 msgid "Mode used by GDM for login screen"
 msgstr "Läge som används av GDM för inloggningsskärmen"
 
-#: ../src/shell-app.c:580
+#: ../src/shell-app.c:581
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Misslyckades med att starta \"%s\""
@@ -1539,10 +1544,10 @@ msgstr "Filsystem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:1"
-
+#~ msgid "Do Not Disturb"
+#~ msgstr "Stör inte"
+#~ msgid "calendar:week_start:0"
+#~ msgstr "calendar:week_start:1"
 #~ msgid ""
 #~ "GNOME Shell extensions have a uuid property; this key lists extensions "
 #~ "which should not be loaded. This setting overrides enabled-extensions for "
