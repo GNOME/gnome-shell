@@ -6349,9 +6349,6 @@ meta_window_client_message (MetaWindow *window,
 
       /* FIXME: What a braindead protocol; no timestamp?!? */
       timestamp = meta_display_get_current_time_roundtrip (display);
-      meta_warning ("Received a _NET_WM_MOVERESIZE message for %s; these "
-                    "messages lack timestamps and therefore suck.\n",
-                    window->desc);
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Received _NET_WM_MOVERESIZE message on %s, %d,%d action = %d, button %d\n",
                   window->desc,
