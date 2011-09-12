@@ -44,6 +44,16 @@ const _httpSession = new Soup.SessionAsync();
 if (Soup.Session.prototype.add_feature != null)
     Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
 
+function _getCertFile() {
+    let localCert = GLib.build_filenamev([global.userdatadir, 'extensions.gnome.org.crt']);
+    if (GLib.file_test(localCert, GLib.FileTest.EXISTS))
+        return localCert;
+    else
+        return Config.SHELL_SYSTEM_CA_FILE;
+}
+
+_httpSession.ssl_ca_file = _getCertFile();
+
 // Maps uuid -> metadata object
 const extensionMeta = {};
 // Maps uuid -> importer object (extension directory tree)
