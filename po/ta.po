@@ -34,9 +34,8 @@ msgstr ""
 #: ../src/compositor/compositor.c:492
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
-msgstr "காட்சி \"%s\" இல்  %i திரையில் இன்னொரு சாளர மேலாளர் இயங்கிக்கொண்டு இருக்கிறது."
+"Another compositing manager is already running on screen %i on display \"%s\"."
+msgstr " %i திரையில் காட்சி \"%s\" இல் இன்னொரு சாளர மேலாளர் இயங்கிக்கொண்டு இருக்கிறது."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
