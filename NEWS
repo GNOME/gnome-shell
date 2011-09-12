@@ -1,3 +1,46 @@
+Clutter 1.7.90                                                       2011-09-12
+===============================================================================
+
+  • List of changes since Clutter 1.7.14
+
+    - Make sure that setting :use-markup does not depend on the order
+    Setting the :use-markup property should yield the same results regardless
+    of whether the :text property is also set before or after. This applies to
+    ClutterText defined using ClutterScript as well.
+
+    - Protect against multiple unrealize call on ClutterStage
+    This should fix a segmentation fault in clutter-gtk when unrealize() is
+    called multiple times on an already unrealized stage.
+
+    - Fortify ATK event listener
+    Make sure that we subscribe only to the events we want to, and avoid
+    warnings caused by AT-SPI, as well as a leak.
+
+    - Documentation fixes
+
+    - Translation updates
+    Indonesian, British English, Brazilian Portuguese, Oriya, Polish,
+    Latvian, Hindi, Danish, Chinese (Simplified), Lithuanian, Turkish,
+    Russian, Spanish, Asturian.
+
+  • List of bugs fixed since Clutter 1.7.14
+
+    [bugzilla.gnome.org]
+
+    #651940 - "use-markup" is ignored when set after "text"
+    #658721 - cally: Fix up event listener registration minimally
+
+    [bugzilla.clutter-project.org]
+
+    #2629 - ClutterText thinks priv->text can be NULL, but it can't
+
+Many thanks to:
+
+  Muhammet Kara, Andika Triwidada, Manoj Kumar Giri, Piotr Drąg,
+  Aurimas Černius, Bruce Cowan, Edvaldo de Souza Cruz, Jorge González,
+  Kenneth Nielsen, Matthias Clasen, Neil Roberts, Og B. Maciel,
+  Rajesh Ranjan, Ray Wang, Rudolfs Mazurs, Xandru Armesto, Yuri Myasoedov
+
 Clutter 1.7.14                                                       2011-09-05
 ===============================================================================
 
