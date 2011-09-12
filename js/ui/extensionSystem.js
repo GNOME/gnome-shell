@@ -11,6 +11,8 @@ const Soup = imports.gi.Soup;
 
 const Config = imports.misc.config;
 
+const API_VERSION = 1;
+
 const ExtensionState = {
     ENABLED: 1,
     DISABLED: 2,
@@ -27,6 +29,10 @@ const ExtensionType = {
     SYSTEM: 1,
     PER_USER: 2
 };
+
+const REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
+const REPOSITORY_URL_DOWNLOAD = REPOSITORY_URL_BASE + '/download-extension/%s.shell-extension.zip';
+const REPOSITORY_URL_INFO =     REPOSITORY_URL_BASE + '/extension-info/';
 
 const _httpSession = new Soup.SessionAsync();
 
@@ -92,50 +98,23 @@ function versionCheck(required, current) {
     return false;
 }
 
-function installExtensionFromManifestURL(uuid, url) {
-    _httpSession.queue_message(
-        Soup.Message.new('GET', url),
-        function(session, message) {
-            if (message.status_code != Soup.KnownStatusCode.OK) {
-                logExtensionError(uuid, 'downloading manifest: ' + message.status_code.toString());
-                return;
-            }
+function installExtensionFromUUID(uuid, version_tag) {
+    let meta = { uuid: uuid,
+                 state: ExtensionState.DOWNLOADING,
+                 error: '' };
 
-            let manifest;
-            try {
-                manifest = JSON.parse(message.response_body.data);
-            } catch (e) {
-                logExtensionError(uuid, 'parsing: ' + e.toString());
-                return;
-            }
+    extensionMeta[uuid] = meta;
 
-            if (uuid != manifest['uuid']) {
-                logExtensionError(uuid, 'manifest: manifest uuids do not match');
-                return;
-            }
+    _signals.emit('extension-state-changed', meta);
 
-            let meta = extensionMeta[uuid] = { uuid: uuid,
-                                               state: ExtensionState.DOWNLOADING,
-                                               error: '' };
+    let params = { version_tag: version_tag,
+                   shell_version: Config.PACKAGE_VERSION,
+                   api_version: API_VERSION.toString() };
 
-            _signals.emit('extension-state-changed', meta);
+    let url = REPOSITORY_URL_DOWNLOAD.format(uuid);
+    let message = Soup.form_request_new_from_hash('GET', url, params);
 
-            installExtensionFromManifest(manifest, meta);
-        });
-}
-
-function installExtensionFromManifest(manifest, meta) {
-    let uuid = manifest['uuid'];
-    let name = manifest['name'];
-
-    if (!versionCheck(manifest['shell-version'], Config.PACKAGE_VERSION)) {
-        meta.state = ExtensionState.OUT_OF_DATE;
-        logExtensionError(uuid, 'version: ' + name + ' is not compatible with current GNOME Shell version', meta.state);
-        return;
-    }
-
-    let url = manifest['__installer'];
-    _httpSession.queue_message(Soup.Message.new('GET', url),
+    _httpSession.queue_message(message,
                                function(session, message) {
                                    gotExtensionZipFile(session, message, uuid);
                                });
