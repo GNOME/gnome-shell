@@ -119,12 +119,13 @@ _cogl_path_modify (CoglPath *path)
                            old_data->path_nodes->len);
 
       path->data->fill_attribute_buffer = NULL;
+      path->data->stroke_attribute_buffer = NULL;
       path->data->ref_count = 1;
 
       _cogl_path_data_unref (old_data);
     }
-  /* The path is altered so the vbo will now be invalid */
-  else if (path->data->fill_attribute_buffer)
+  else
+    /* The path is altered so the vbos will now be invalid */
     _cogl_path_data_clear_vbos (path->data);
 }
 
