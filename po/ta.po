@@ -36,7 +36,7 @@ msgstr ""
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr "காட்சி \"%s\" இல் இன்னொரு திரையில் சாளர மேலாளர் இயங்கிக்கொண்டு இருக்கிறது."
+msgstr "காட்சி \"%s\" இல்  %i திரையில் இன்னொரு சாளர மேலாளர் இயங்கிக்கொண்டு இருக்கிறது."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
