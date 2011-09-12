@@ -77,7 +77,7 @@ typedef enum {
  * also has to be big enough to hold ignored serials from the point
  * where we reshape the stage to the point where we get events back.
  */
-#define N_IGNORED_SERIALS           10
+#define N_IGNORED_CROSSING_SERIALS  10
 
 typedef enum {
   META_TILE_NONE,
@@ -155,7 +155,7 @@ struct _MetaDisplay
    * correspond to an enter event we should
    * ignore
    */
-  unsigned long ignored_serials[N_IGNORED_SERIALS];
+  unsigned long ignored_crossing_serials[N_IGNORED_CROSSING_SERIALS];
   Window ungrab_should_not_cause_focus_window;
   
   guint32 current_time;

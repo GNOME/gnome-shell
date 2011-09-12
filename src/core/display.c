@@ -532,9 +532,9 @@ meta_display_open (void)
                                           meta_unsigned_long_equal);
   
   i = 0;
-  while (i < N_IGNORED_SERIALS)
+  while (i < N_IGNORED_CROSSING_SERIALS)
     {
-      the_display->ignored_serials[i] = 0;
+      the_display->ignored_crossing_serials[i] = 0;
       ++i;
     }
   the_display->ungrab_should_not_cause_focus_window = None;
@@ -1401,30 +1401,30 @@ meta_display_add_ignored_crossing_serial (MetaDisplay  *display,
   int i;
 
   /* don't add the same serial more than once */
-  if (display->ignored_serials[N_IGNORED_SERIALS-1] == serial)
+  if (display->ignored_crossing_serials[N_IGNORED_CROSSING_SERIALS-1] == serial)
     return;
   
   /* shift serials to the left */
   i = 0;
-  while (i < (N_IGNORED_SERIALS - 1))
+  while (i < (N_IGNORED_CROSSING_SERIALS - 1))
     {
-      display->ignored_serials[i] = display->ignored_serials[i+1];
+      display->ignored_crossing_serials[i] = display->ignored_crossing_serials[i+1];
       ++i;
     }
   /* put new one on the end */
-  display->ignored_serials[i] = serial;
+  display->ignored_crossing_serials[i] = serial;
 }
 
 static gboolean
-serial_is_ignored (MetaDisplay  *display,
-                   unsigned long serial)
+crossing_serial_is_ignored (MetaDisplay  *display,
+                            unsigned long serial)
 {
   int i;
 
   i = 0;
-  while (i < N_IGNORED_SERIALS)
+  while (i < N_IGNORED_CROSSING_SERIALS)
     {
-      if (display->ignored_serials[i] == serial)
+      if (display->ignored_crossing_serials[i] == serial)
         return TRUE;
       ++i;
     }
@@ -1432,14 +1432,14 @@ serial_is_ignored (MetaDisplay  *display,
 }
 
 static void
-reset_ignores (MetaDisplay *display)
+reset_ignored_crossing_serials (MetaDisplay *display)
 {
   int i;
 
   i = 0;
-  while (i < N_IGNORED_SERIALS)
+  while (i < N_IGNORED_CROSSING_SERIALS)
     {
-      display->ignored_serials[i] = 0;
+      display->ignored_crossing_serials[i] = 0;
       ++i;
     }
 
@@ -2000,7 +2000,7 @@ event_callback (XEvent   *event,
       /* Check if we've entered a window; do this even if window->has_focus to
        * avoid races.
        */
-      if (window && !serial_is_ignored (display, event->xany.serial) &&
+      if (window && !crossing_serial_is_ignored (display, event->xany.serial) &&
                event->xcrossing.mode != NotifyGrab && 
                event->xcrossing.mode != NotifyUngrab &&
                event->xcrossing.detail != NotifyInferior &&
@@ -2025,7 +2025,7 @@ event_callback (XEvent   *event,
                   meta_window_focus (window, event->xcrossing.time);
 
                   /* stop ignoring stuff */
-                  reset_ignores (display);
+                  reset_ignored_crossing_serials (display);
                   
                   if (meta_prefs_get_auto_raise ()) 
                     {
