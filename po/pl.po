@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-09 22:52+0200\n"
-"PO-Revision-Date: 2011-09-09 22:53+0200\n"
+"POT-Creation-Date: 2011-09-14 00:47+0200\n"
+"PO-Revision-Date: 2011-09-14 00:48+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -208,8 +208,8 @@ msgid "Not listed?"
 msgstr "Inny użytkownik?"
 
 #: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
-#: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:480
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
+#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -578,6 +578,15 @@ msgstr "System zostanie automatycznie uruchomiony ponownie za %d sekund."
 #: ../js/ui/endSessionDialog.js:88
 msgid "Restarting the system."
 msgstr "Ponowne uruchamianie systemu."
+
+#: ../js/ui/extensionSystem.js:481
+msgid "Install"
+msgstr "Zainstaluj"
+
+#: ../js/ui/extensionSystem.js:485
+#, c-format
+msgid "Download and install '%s' from extensions.gnome.org?"
+msgstr "Pobrać i zainstalować \"%s\" z witryny extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
@@ -1103,11 +1112,11 @@ msgstr "Połączenie się nie powiodło"
 msgid "Activation of network connection failed"
 msgstr "Aktywacja połączenia sieciowego się nie powiodła"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Sieć jest wyłączona"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Menedżer sieci"
 
