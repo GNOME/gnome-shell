@@ -1884,7 +1884,7 @@ check_needs_pixmap (MetaWindowActor *self)
         {
           meta_verbose ("Unable to get named pixmap for %p\n", self);
           meta_window_actor_update_bounding_region_and_borders (self, 0, 0);
-          return;
+          goto out;
         }
 
       if (compositor->no_mipmaps)
@@ -1910,9 +1910,10 @@ check_needs_pixmap (MetaWindowActor *self)
       meta_window_actor_update_bounding_region_and_borders (self, pxm_width, pxm_height);
     }
 
-  meta_error_trap_pop (display);
-
   priv->needs_pixmap = FALSE;
+
+ out:
+  meta_error_trap_pop (display);
 }
 
 static void
