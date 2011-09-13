@@ -1336,6 +1336,8 @@ _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_INSECURE)]
   = _("Certificate uses an insecure cipher algorithm or is cryptographically weak");
 _connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_LIMIT_EXCEEDED)]
   = _("The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library");
+_connectionErrorMessages['org.freedesktop.DBus.Error.NoReply']
+  = _("Internal error");
 
 const AccountNotification = new Lang.Class({
     Name: 'AccountNotification',
