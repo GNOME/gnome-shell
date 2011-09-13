@@ -8,16 +8,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-08 18:29+0000\n"
-"PO-Revision-Date: 2011-09-07 23:26+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-14 00:08+0200\n"
+"PO-Revision-Date: 2011-09-14 00:09+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italiano <tp@lists.linux.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -199,9 +198,10 @@ msgstr "Fornitori OpenSearch disabilitati"
 msgid "Session..."
 msgstr "Sessione..."
 
-#: ../js/gdm/loginDialog.js:761 ../js/gdm/loginDialog.js:933
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
-msgstr "Accedi"
+msgstr "Accesso"
 
 #: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
@@ -212,6 +212,11 @@ msgstr "Non elencato?"
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Annulla"
+
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "Accedi"
 
 #: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
@@ -580,7 +585,7 @@ msgstr "Il sistema verrà riavviato automaticamente tra %d secondi."
 msgid "Restarting the system."
 msgstr "Riavvio del sistema."
 
-#: ../js/ui/keyboard.js:514 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastiera"
 
@@ -674,8 +679,8 @@ msgstr "Richiesta autenticazione dalla rete wireless"
 #: ../js/ui/networkAgent.js:335
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network '%"
-"s'."
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
 msgstr ""
 "È richiesta una password o una chiave di cifratura per accedere alla rete "
 "wireless «%s»."
@@ -1114,11 +1119,11 @@ msgstr "Connessione non riuscita"
 msgid "Activation of network connection failed"
 msgstr "Attivazione della connessione di rete non riuscita"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Rete disabilitata"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Gestore reti"
 
