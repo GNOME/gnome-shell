@@ -11,6 +11,7 @@ js/ui/dash.js
 js/ui/dateMenu.js
 js/ui/docDisplay.js
 js/ui/endSessionDialog.js
+js/ui/extensionSystem.js
 js/ui/keyboard.js
 js/ui/lookingGlass.js
 js/ui/messageTray.js
