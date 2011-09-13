@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-01 21:14+0530\n"
-"PO-Revision-Date: 2011-09-03 11:02+0530\n"
+"POT-Creation-Date: 2011-09-13 17:38+0530\n"
+"PO-Revision-Date: 2011-09-13 17:39+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -184,65 +184,71 @@ msgstr "எந்த விசைப்பலகையை பயன்படு�
 msgid "disabled OpenSearch providers"
 msgstr "ஓபன்செர்ச் வழங்குவோர் செயல்நீக்கம் செய்யபட்டனர்."
 
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:604
 msgid "Session..."
 msgstr "அமர்வு..."
 
-#: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
 msgstr "உள்நுழை"
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
 msgstr "பட்டியலில் இல்லை?"
 
-#: ../js/gdm/loginDialog.js:926 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
 #: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "ரத்துசெய்க"
 
-#: ../js/gdm/loginDialog.js:1251
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "உள்நுழை"
+
+#: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "உள்புகு சாளரம்"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "கட்டளை காணப்படவில்லை"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "கட்டளையை அலகிட முடியவில்லை"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ஐ நிறைவேற்றுதல் தோல்வி அடைந்தது:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:254
+#: ../js/ui/appDisplay.js:255
 msgid "All"
 msgstr "எல்லா"
 
-#: ../js/ui/appDisplay.js:316
+#: ../js/ui/appDisplay.js:319
 msgid "APPLICATIONS"
 msgstr "APPLICATIONS"
 
-#: ../js/ui/appDisplay.js:374
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "SETTINGS"
 
-#: ../js/ui/appDisplay.js:682
+#: ../js/ui/appDisplay.js:685
 msgid "New Window"
 msgstr "புதிய சாளரம்"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:688
 msgid "Remove from Favorites"
 msgstr "விருப்பத்தில் இருந்து நீக்கு"
 
-#: ../js/ui/appDisplay.js:686
+#: ../js/ui/appDisplay.js:689
 msgid "Add to Favorites"
 msgstr "விருப்பங்களுக்கு சேர்"
 
@@ -412,7 +418,7 @@ msgid "Next week"
 msgstr "அடுத்த வாரம்"
 
 #: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:354
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:355
 msgid "Unknown"
 msgstr "தெரியாத"
 
@@ -436,7 +442,7 @@ msgstr "இணைப்பு விலகி"
 msgid "CONTACTS"
 msgstr "CONTACTS"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1182
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "நீக்கு"
 
@@ -561,49 +567,49 @@ msgstr "கணினி தானியங்கியாக %d வினாட�
 msgid "Restarting the system."
 msgstr "கணினி மறு துவக்கம் செய்யப்படுகிறது"
 
-#: ../js/ui/keyboard.js:509 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "விசைப்பலகை"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "நீட்சிகள் ஏதும் நிறுவப்படவில்லை"
 
-#: ../js/ui/lookingGlass.js:686
+#: ../js/ui/lookingGlass.js:687
 msgid "Enabled"
 msgstr "செயலாக்கப்பட்டது"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:689 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "செயல்நீக்கப்பட்டது"
 
-#: ../js/ui/lookingGlass.js:690
+#: ../js/ui/lookingGlass.js:691
 msgid "Error"
 msgstr "பிழை"
 
-#: ../js/ui/lookingGlass.js:692
+#: ../js/ui/lookingGlass.js:693
 msgid "Out of date"
 msgstr "காலாவதியானது"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:695
 msgid "Downloading"
 msgstr "பதிவிறக்குகிறது"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "மூலத்தை பார்க்க"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "இணைய பக்கம்"
 
-#: ../js/ui/messageTray.js:1175
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "திற"
 
-#: ../js/ui/messageTray.js:2337
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "கணினி தகவல்கள்"
 
@@ -709,18 +715,18 @@ msgid "Dash"
 msgstr "டேஷ்போர்ட்"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:538
 #, c-format
 msgid "Quit %s"
 msgstr "%s லிருந்து வெளியேறு"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:574
 msgid "Activities"
 msgstr "செயல்பாடுகள்"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "மேல் பட்டை"
 
@@ -778,11 +784,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "தயை செய்து ஒரு கட்டளையை உள்ளிடுக:"
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
 msgstr "தேடுகிறது..."
 
-#: ../js/ui/searchDisplay.js:351
+#: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
 msgstr "பொருத்தமான விடைகள் இல்லை."
 
@@ -896,7 +902,7 @@ msgstr "விசைப்பலகை அமைப்புகள்"
 msgid "Mouse Settings"
 msgstr "சொடுக்கி அமைப்புகள்"
 
-#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:279 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "ஒலி அமைப்புகள்"
 
@@ -1083,11 +1089,11 @@ msgstr "இணைப்பு தோல்வியுற்றது"
 msgid "Activation of network connection failed"
 msgstr "வலைப்பின்னல் இணைப்பு செயலாக்கம் தோல்வி அடைந்தது"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "வலைப்பின்னல் செயல் நீக்கப்பட்டது"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "வலைப்பின்னல் மேலாளர்"
 
@@ -1173,11 +1179,11 @@ msgstr "திட்டு"
 msgid "Computer"
 msgstr "கணினி"
 
-#: ../js/ui/status/volume.js:43
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "ஒலிஅளவு"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "ஒலிவாங்கி"
 
@@ -1441,35 +1447,35 @@ msgstr "சும்மாயிருத்தல் "
 msgid "Unavailable"
 msgstr "இருப்பில் இல்லை"
 
-#: ../js/ui/userMenu.js:510 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:589
 msgid "Power Off..."
 msgstr "மின்சக்தி நிறுத்து..."
 
-#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:514 ../js/ui/userMenu.js:582
+#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:588
 msgid "Suspend"
 msgstr "இடைநிறுத்தம்."
 
-#: ../js/ui/userMenu.js:545
-msgid "Do Not Disturb"
-msgstr "தொந்திரவு செய்யாதே"
+#: ../js/ui/userMenu.js:551
+msgid "Notifications"
+msgstr "அறிவிப்புகள்"
 
-#: ../js/ui/userMenu.js:553
+#: ../js/ui/userMenu.js:559
 msgid "Online Accounts"
 msgstr "ஆன் லைன்  கணக்குகள்"
 
-#: ../js/ui/userMenu.js:557
+#: ../js/ui/userMenu.js:563
 msgid "System Settings"
 msgstr "கணினி அமைப்புகள்"
 
-#: ../js/ui/userMenu.js:564
+#: ../js/ui/userMenu.js:570
 msgid "Lock Screen"
 msgstr "திரையைப் பூட்டுக."
 
-#: ../js/ui/userMenu.js:569
+#: ../js/ui/userMenu.js:575
 msgid "Switch User"
 msgstr "பயனர் மாற்று"
 
-#: ../js/ui/userMenu.js:574
+#: ../js/ui/userMenu.js:580
 msgid "Log Out..."
 msgstr "வெளியேறு..."
 
@@ -1517,15 +1523,15 @@ msgstr[1] "%u உள்ளீடுகள்"
 msgid "System Sounds"
 msgstr "கணினி ஒலிகள்"
 
-#: ../src/main.c:469
+#: ../src/main.c:480
 msgid "Print version"
 msgstr "அச்சுப் பதிப்பு"
 
-#: ../src/main.c:475
+#: ../src/main.c:486
 msgid "Mode used by GDM for login screen"
 msgstr "ஜிடிஎம் உள்நுழைவு திரைக்கு பயன்படுத்தும் பாங்கு"
 
-#: ../src/shell-app.c:580
+#: ../src/shell-app.c:581
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' ஐ துவக்க முடியவில்லை"
@@ -1562,9 +1568,11 @@ msgstr "கோப்பு அமைப்பு"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:0"
+#~ msgid "Do Not Disturb"
+#~ msgstr "தொந்திரவு செய்யாதே"
+
+#~ msgid "calendar:week_start:0"
+#~ msgstr "calendar:week_start:0"
 
 #~ msgid "Localization Settings"
 #~ msgstr "உள்ளார்மை அமைப்புகள்"
