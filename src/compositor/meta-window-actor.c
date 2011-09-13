@@ -1858,8 +1858,6 @@ check_needs_pixmap (MetaWindowActor *self)
       priv->size_changed = FALSE;
     }
 
-  meta_error_trap_push (display);
-
   if (priv->back_pixmap == None)
     {
       gint pxm_width, pxm_height;
@@ -1909,8 +1907,6 @@ check_needs_pixmap (MetaWindowActor *self)
 
       meta_window_actor_update_bounding_region_and_borders (self, pxm_width, pxm_height);
     }
-
-  meta_error_trap_pop (display);
 
   priv->needs_pixmap = FALSE;
 }
