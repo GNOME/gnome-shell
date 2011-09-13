@@ -2288,7 +2288,13 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
       return;
     }
 
-  if (priv->received_damage && !self->priv->unredirected)
+  if (priv->unredirected)
+    {
+      /* Nothing to do here until/if the window gets redirected again */
+      return;
+    }
+
+  if (priv->received_damage)
     {
       meta_error_trap_push (display);
       XDamageSubtract (xdisplay, priv->damage, None, None);
