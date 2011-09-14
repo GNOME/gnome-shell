@@ -91,6 +91,7 @@ NetworkSecretDialog.prototype = {
         }
 
         let secretTable = new St.Table({ style_class: 'network-dialog-secret-table' });
+        let initialFocusSet = false;
         let pos = 0;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
@@ -109,6 +110,11 @@ NetworkSecretDialog.prototype = {
                 secret.valid = secret.value.length > 0;
 
             if (reactive) {
+                if (!initialFocusSet) {
+                    this.setInitialKeyFocus(secret.entry);
+                    initialFocusSet = true;
+                }
+
                 secret.entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
                     secret.value = secret.entry.get_text();
                     if (secret.validate)
