@@ -210,21 +210,11 @@ _cogl_path_stroke_nodes (CoglPath *path)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (G_UNLIKELY (ctx->legacy_state_set))
-    {
-      CoglPipeline *users_source = cogl_get_source ();
-      copy = cogl_pipeline_copy (users_source);
-      _cogl_pipeline_apply_legacy_state (copy);
-      source = copy;
-    }
-  else
-    source = cogl_get_source ();
+  source = cogl_get_source ();
 
   if (cogl_pipeline_get_n_layers (source) != 0)
     {
-      /* If we haven't already created a derivative pipeline... */
-      if (!copy)
-        copy = cogl_pipeline_copy (source);
+      copy = cogl_pipeline_copy (source);
       _cogl_pipeline_prune_to_n_layers (copy, 0);
       source = copy;
     }
