@@ -19,7 +19,8 @@ TEST_JS =					\
 	testcommon/face-plain.png		\
 	testcommon/ui.js                        \
 	unit/format.js				\
-	unit/markup.js
+	unit/markup.js				\
+	unit/url.js
 EXTRA_DIST += $(TEST_JS)
 
 TEST_MISC =					\
