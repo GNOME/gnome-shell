@@ -175,7 +175,7 @@ meta_shaped_texture_dirty_mask (MetaShapedTexture *stex)
       cairo_region_destroy (priv->visible_pixels_region);
       priv->visible_pixels_region = NULL;
 
-      if (priv->mask_texture == COGL_INVALID_HANDLE)
+      if (priv->mask_texture != COGL_INVALID_HANDLE)
         {
           cogl_handle_unref (priv->mask_texture);
           priv->mask_texture = COGL_INVALID_HANDLE;
