@@ -1641,10 +1641,6 @@ selection_paint (ClutterText *self)
 
           if (priv->selected_text_color_set)
             color = &priv->selected_text_color;
-          else if (priv->selection_color_set)
-            color = &priv->selection_color;
-          else if (priv->cursor_color_set)
-            color = &priv->cursor_color;
           else
             color = &priv->text_color;
 
