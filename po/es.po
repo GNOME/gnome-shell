@@ -6,26 +6,26 @@
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>,2002,2003.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-12 03:44+0000\n"
-"PO-Revision-Date: 2011-08-13 14:44+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"POT-Creation-Date: 2011-08-29 11:52+0000\n"
+"PO-Revision-Date: 2011-09-14 17:50+0200\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:487
+#: ../src/compositor/compositor.c:486
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -451,7 +451,7 @@ msgstr "Hacer que las llamadas a las X sean síncronas"
 #: ../src/core/main.c:504
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Falló al inspeccionar el directorio de temas: %s\n"
+msgstr "Falló al inspeccionar la carpeta de temas: %s\n"
 
 #: ../src/core/main.c:520
 #, c-format
@@ -622,7 +622,7 @@ msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
 #: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "No se ha podido crear el directorio «%s»: %s\n"
+msgstr "No se ha podido crear la carpeta «%s»: %s\n"
 
 #: ../src/core/session.c:860
 #, c-format
@@ -719,7 +719,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6959
+#: ../src/core/window.c:7019
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -735,7 +735,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7622
+#: ../src/core/window.c:7682
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -755,13 +755,13 @@ msgstr "La aplicación establecio un _NET_WM_PID %lu erróneo\n"
 msgid "%s (on %s)"
 msgstr "%s (on %s)"
 
-#: ../src/core/window-props.c:1488
+#: ../src/core/window-props.c:1481
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "WM_TRANSIENT_FOR inválido para la ventana 0x%lx especificada para %s.\n"
 
-#: ../src/core/window-props.c:1500
+#: ../src/core/window-props.c:1492
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR ventana 0x%lx para %s crearía un bucle.\n"
@@ -867,47 +867,47 @@ msgstr "Áreas de trabajo sólo en el primario"
 msgid "Usage: %s\n"
 msgstr "Uso: %s\n"
 
-#: ../src/ui/frames.c:1123
+#: ../src/ui/frames.c:1157
 msgid "Close Window"
 msgstr "Cerrar la ventana"
 
-#: ../src/ui/frames.c:1126
+#: ../src/ui/frames.c:1160
 msgid "Window Menu"
 msgstr "Menú de la ventana"
 
-#: ../src/ui/frames.c:1129
+#: ../src/ui/frames.c:1163
 msgid "Minimize Window"
 msgstr "Minimizar la ventana"
 
-#: ../src/ui/frames.c:1132
+#: ../src/ui/frames.c:1166
 msgid "Maximize Window"
 msgstr "Maximizar la ventana"
 
-#: ../src/ui/frames.c:1135
+#: ../src/ui/frames.c:1169
 msgid "Restore Window"
 msgstr "Restablecer la ventana"
 
-#: ../src/ui/frames.c:1138
+#: ../src/ui/frames.c:1172
 msgid "Roll Up Window"
 msgstr "Enrollar ventana"
 
-#: ../src/ui/frames.c:1141
+#: ../src/ui/frames.c:1175
 msgid "Unroll Window"
 msgstr "Desenrollar ventana"
 
-#: ../src/ui/frames.c:1144
+#: ../src/ui/frames.c:1178
 msgid "Keep Window On Top"
 msgstr "Mantener la ventana encima"
 
-#: ../src/ui/frames.c:1147
+#: ../src/ui/frames.c:1181
 msgid "Remove Window From Top"
 msgstr "Quitar ventana de encima"
 
-#: ../src/ui/frames.c:1150
+#: ../src/ui/frames.c:1184
 msgid "Always On Visible Workspace"
 msgstr "Siempre en el área de trabajo visible"
 
-#: ../src/ui/frames.c:1153
+#: ../src/ui/frames.c:1187
 msgid "Put Window On Only One Workspace"
 msgstr "Poner la ventana sólo en un área de trabajo"
 
