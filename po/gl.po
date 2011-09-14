@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-10 03:37+0200\n"
-"PO-Revision-Date: 2011-09-10 03:37+0200\n"
+"POT-Creation-Date: 2011-09-14 23:01+0200\n"
+"PO-Revision-Date: 2011-09-14 23:03+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -208,9 +208,9 @@ msgstr "Iniciar sesión"
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
-#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
-#: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:480
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
+#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -521,7 +521,7 @@ msgstr "ELEMENTOS RECENTES"
 msgid "Log Out %s"
 msgstr "Saír da sesión de %s"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
 msgid "Log Out"
 msgstr "Saír da sesión"
 
@@ -530,57 +530,74 @@ msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Prema sobre Saír da sesión para saír de estes aplicativos e pechar a sesión."
 
-#: ../js/ui/endSessionDialog.js:63
-#, c-format
-msgid "%s will be logged out automatically in %d seconds."
-msgstr "Vaise pechar a sesión de %s de forma automática en %d segundos."
-
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
-msgid "You will be logged out automatically in %d seconds."
-msgstr "A súa sesión pecharase automaticamente en %d segundos."
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "Vaise pechar a sesión de %s de forma automática en %d segundo."
+msgstr[1] "Vaise pechar a sesión de %s de forma automática en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:69
+#, c-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "A súa sesión pecharase automaticamente en %d segundo."
+msgstr[1] "A súa sesión pecharase automaticamente en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
 msgstr "Saíndo da sesión."
 
-#: ../js/ui/endSessionDialog.js:72 ../js/ui/endSessionDialog.js:79
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:73
+#: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Prema sobre Apagar para saír de estes aplicativos e apagar o computador."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
-msgid "The system will power off automatically in %d seconds."
-msgstr "O seu computador apagarase automaticamente en %d segundos."
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "O seu computador apagarase automaticamente en %d segundo."
+msgstr[1] "O seu computador apagarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Apagando o sistema."
 
-#: ../js/ui/endSessionDialog.js:77 ../js/ui/endSessionDialog.js:85
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Prema sobre Reiniciar para saír de estes aplicativos e reiniciar o seu "
 "computador."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:100
 #, c-format
-msgid "The system will restart automatically in %d seconds."
-msgstr "O seu computador reiniciarase automaticamente en %d segundos."
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "O seu computador reiniciarase automaticamente en %d segundo."
+msgstr[1] "O seu computador reiniciarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:104
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
+
+#: ../js/ui/extensionSystem.js:481
+msgid "Install"
+msgstr "Instalar"
+
+#: ../js/ui/extensionSystem.js:485
+#, c-format
+msgid "Download and install '%s' from extensions.gnome.org?"
+msgstr "Desexa descargar e instalar «%s» desde extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
@@ -743,7 +760,7 @@ msgstr "Saír de %s"
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:967
+#: ../js/ui/panel.js:977
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1095,7 +1112,7 @@ msgid "Connectivity lost"
 msgstr "Conectividade perdida"
 
 #: ../js/ui/status/network.js:1748
-msgid "You're no longer connected to the network"
+msgid "You are no longer connected to the network"
 msgstr "Xa non está conectado á rede"
 
 #: ../js/ui/status/network.js:1756
@@ -1106,11 +1123,11 @@ msgstr "Produciuse un fallo na conexión"
 msgid "Activation of network connection failed"
 msgstr "Produciuse un fallo na activación da conexión de rede"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "A rede está desactivada"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Xestor de rede"
 
@@ -1155,6 +1172,12 @@ msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minuto restante"
 msgstr[1] "%d minutos restantes"
+
+#: ../js/ui/status/power.js:121 ../js/ui/status/power.js:194
+#, c-format
+msgctxt "percent of battery remaining"
+msgid "%d%%"
+msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
