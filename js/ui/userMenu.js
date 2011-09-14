@@ -474,13 +474,22 @@ const UserMenuButton = new Lang.Class({
                                        style_class: 'popup-menu-icon' });
         this._idleIcon = new St.Icon({ icon_name: 'user-idle',
                                        style_class: 'popup-menu-icon' });
+        this._pendingIcon = new St.Icon({ icon_name: 'user-status-pending',
+                                          style_class: 'popup-menu-icon' });
 
         this._accountMgr.connect('most-available-presence-changed',
                                   Lang.bind(this, this._updatePresenceIcon));
+        this._accountMgr.connect('account-enabled',
+                                  Lang.bind(this, this._onAccountEnabled));
+        this._accountMgr.connect('account-disabled',
+                                 Lang.bind(this, this._onAccountDisabled));
+        this._accountMgr.connect('account-removed',
+                                  Lang.bind(this, this._onAccountDisabled));
         this._accountMgr.prepare_async(null, Lang.bind(this,
             function(mgr) {
                 let [presence, s, msg] = mgr.get_most_available_presence();
                 this._updatePresenceIcon(mgr, presence, s, msg);
+                this._setupAccounts();
             }));
 
         this._name = new St.Label();
@@ -618,6 +627,46 @@ const UserMenuButton = new Lang.Class({
             this._iconBox.child = this._idleIcon;
         else
             this._iconBox.child = this._offlineIcon;
+    },
+
+    _setupAccounts: function() {
+        let accounts = this._accountMgr.get_valid_accounts();
+        for (let i = 0; i < accounts.length; i++) {
+            accounts[i]._changingId = accounts[i].connect('notify::connection-status',
+                                                          Lang.bind(this, this._updateChangingPresence));
+        }
+        this._updateChangingPresence();
+    },
+
+    _onAccountEnabled: function(accountMgr, account) {
+        if (!account._changingId)
+            account._changingId = account.connect('notify::connection-status',
+                                                  Lang.bind(this, this._updateChangingPresence));
+        this._updateChangingPresence();
+    },
+
+    _onAccountDisabled: function(accountMgr, account) {
+        account.disconnect(account._changingId);
+        account._changingId = 0;
+        this._updateChangingPresence();
+    },
+
+    _updateChangingPresence: function() {
+        let accounts = this._accountMgr.get_valid_accounts();
+        let changing = false;
+        for (let i = 0; i < accounts.length; i++) {
+            if (accounts[i].connection_status == Tp.ConnectionStatus.CONNECTING) {
+                changing = true;
+                break;
+            }
+        }
+
+        if (changing) {
+            this._iconBox.child = this._pendingIcon;
+        } else {
+            let [presence, s, msg] = this._accountMgr.get_most_available_presence();
+            this._updatePresenceIcon(this._accountMgr, presence, s, msg);
+        }
     },
 
     _createSubMenu: function() {
