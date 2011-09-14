@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-13 17:38+0530\n"
-"PO-Revision-Date: 2011-09-13 17:39+0530\n"
+"POT-Creation-Date: 2011-09-14 05:39+0530\n"
+"PO-Revision-Date: 2011-09-14 05:41+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -198,8 +198,8 @@ msgid "Not listed?"
 msgstr "பட்டியலில் இல்லை?"
 
 #: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
-#: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:480
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
+#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "ரத்துசெய்க"
 
@@ -566,6 +566,15 @@ msgstr "கணினி தானியங்கியாக %d வினாட�
 #: ../js/ui/endSessionDialog.js:88
 msgid "Restarting the system."
 msgstr "கணினி மறு துவக்கம் செய்யப்படுகிறது"
+
+#: ../js/ui/extensionSystem.js:481
+msgid "Install"
+msgstr "நிறுவு"
+
+#: ../js/ui/extensionSystem.js:485
+#, c-format
+msgid "Download and install '%s' from extensions.gnome.org?"
+msgstr "'%s' ஐ எக்ஸ்டென்ஷன்ஸ்.க்னோம்.ஆர்க். இலிருந்து தரவிறக்கி நிறுவவா?"
 
 #: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
