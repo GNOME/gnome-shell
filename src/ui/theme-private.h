@@ -925,6 +925,7 @@ void             meta_frame_layout_unref         (MetaFrameLayout       *layout)
 void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
                                                   int                    text_height,
                                                   MetaFrameFlags         flags,
+                                                  MetaFrameType          type,
                                                   MetaFrameBorders      *borders);
 void             meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                                   int                     text_height,
@@ -932,6 +933,7 @@ void             meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout
                                                   int                     client_width,
                                                   int                     client_height,
                                                   const MetaButtonLayout *button_layout,
+                                                  MetaFrameType           type,
                                                   MetaFrameGeometry      *fgeom,
                                                   MetaTheme              *theme);
 

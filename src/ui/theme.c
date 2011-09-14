@@ -401,6 +401,7 @@ void
 meta_frame_layout_get_borders (const MetaFrameLayout *layout,
                                int                    text_height,
                                MetaFrameFlags         flags,
+                               MetaFrameType          type,
                                MetaFrameBorders      *borders)
 {
   int buttons_height, title_height, draggable_borders;
@@ -440,6 +441,9 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
    * algorithm here, titlebars are expectedly much bigger. Just subtract a couple
    * pixels to get a proper feel. */
   borders->invisible.top    = MAX (0, draggable_borders - 2);
+
+  if (type == META_FRAME_TYPE_ATTACHED)
+    borders->invisible.top = 0;
 
   borders->total.left   = borders->invisible.left   + borders->visible.left;
   borders->total.right  = borders->invisible.right  + borders->visible.right;
@@ -612,6 +616,7 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                  int                     client_width,
                                  int                     client_height,
                                  const MetaButtonLayout *button_layout,
+                                 MetaFrameType           type,
                                  MetaFrameGeometry      *fgeom,
                                  MetaTheme              *theme)
 {
@@ -636,7 +641,7 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   MetaFrameBorders borders;
   
   meta_frame_layout_get_borders (layout, text_height,
-                                 flags,
+                                 flags, type,
                                  &borders);
 
   fgeom->borders = borders;
@@ -5521,6 +5526,7 @@ meta_theme_draw_frame_with_style (MetaTheme              *theme,
                                    flags,
                                    client_width, client_height,
                                    button_layout,
+                                   type,
                                    &fgeom,
                                    theme);  
 
@@ -5580,7 +5586,7 @@ meta_theme_get_frame_borders (MetaTheme        *theme,
 
   meta_frame_layout_get_borders (style->layout,
                                  text_height,
-                                 flags,
+                                 flags, type,
                                  borders);
 }
 
@@ -5609,6 +5615,7 @@ meta_theme_calc_geometry (MetaTheme              *theme,
                                    flags,
                                    client_width, client_height,
                                    button_layout,
+                                   type,
                                    fgeom,
                                    theme);
 }
