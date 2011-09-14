@@ -1142,10 +1142,10 @@ function PopupMenu() {
 PopupMenu.prototype = {
     __proto__: PopupMenuBase.prototype,
 
-    _init: function(sourceActor, alignment, arrowSide) {
+    _init: function(sourceActor, arrowAlignment, arrowSide) {
         PopupMenuBase.prototype._init.call (this, sourceActor, 'popup-menu-content');
 
-        this._alignment = alignment;
+        this._arrowAlignment = arrowAlignment;
         this._arrowSide = arrowSide;
 
         this._boxPointer = new BoxPointer.BoxPointer(arrowSide,
@@ -1198,13 +1198,17 @@ PopupMenu.prototype = {
         this._boxPointer.setArrowOrigin(origin);
     },
 
+    setSourceAlignment: function(alignment) {
+        this._boxPointer.setSourceAlignment(alignment);
+    },
+
     open: function(animate) {
         if (this.isOpen)
             return;
 
         this.isOpen = true;
 
-        this._boxPointer.setPosition(this.sourceActor, this._alignment);
+        this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
         this._boxPointer.show(animate);
 
         this.actor.raise_top();

@@ -46,6 +46,7 @@ BoxPointer.prototype = {
         this._yOffset = 0;
         this._xPosition = 0;
         this._yPosition = 0;
+        this._sourceAlignment = 0.5;
     },
 
     show: function(animate, onComplete) {
@@ -180,7 +181,7 @@ BoxPointer.prototype = {
         this.bin.allocate(childBox, flags);
 
         if (this._sourceActor && this._sourceActor.mapped)
-            this._reposition(this._sourceActor, this._alignment);
+            this._reposition(this._sourceActor, this._arrowAlignment);
     },
 
     _drawBorder: function(area) {
@@ -312,9 +313,22 @@ BoxPointer.prototype = {
         this.actor.show();
 
         this._sourceActor = sourceActor;
-        this._alignment = alignment;
+        this._arrowAlignment = alignment;
 
         this._reposition(sourceActor, alignment);
+    },
+
+    setSourceAlignment: function(alignment) {
+        this._sourceAlignment = alignment;
+
+        if (!this._sourceActor)
+            return;
+
+        // We need to show it now to force an allocation,
+        // so that we can query the correct size.
+        this.actor.show();
+
+        this._reposition(this._sourceActor, this._arrowAlignment);
     },
 
     _reposition: function(sourceActor, alignment) {
@@ -322,8 +336,8 @@ BoxPointer.prototype = {
         let sourceNode = sourceActor.get_theme_node();
         let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
         let sourceAllocation = Shell.util_get_transformed_allocation(sourceActor);
-        let sourceCenterX = sourceAllocation.x1 + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) / 2;
-        let sourceCenterY = sourceAllocation.y1 + sourceContentBox.y1 + (sourceContentBox.y2 - sourceContentBox.y1) / 2;
+        let sourceCenterX = sourceAllocation.x1 + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) * this._sourceAlignment;
+        let sourceCenterY = sourceAllocation.y1 + sourceContentBox.y1 + (sourceContentBox.y2 - sourceContentBox.y1) * this._sourceAlignment;
         let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
 
         // We also want to keep it onscreen, and separated from the
