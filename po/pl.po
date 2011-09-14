@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-14 00:47+0200\n"
-"PO-Revision-Date: 2011-09-14 00:48+0200\n"
+"POT-Creation-Date: 2011-09-14 16:44+0200\n"
+"PO-Revision-Date: 2011-09-14 16:45+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -207,7 +207,7 @@ msgstr "Proszę się zalogować"
 msgid "Not listed?"
 msgstr "Inny użytkownik?"
 
-#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
 #: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
@@ -520,7 +520,7 @@ msgstr "Ostatnie elementy"
 msgid "Log Out %s"
 msgstr "Wyloguj %s"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
 msgid "Log Out"
 msgstr "Wyloguj"
 
@@ -528,54 +528,66 @@ msgstr "Wyloguj"
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "Kliknięcie Wyloguj zakończy poniższe programy i wyloguje z systemu."
 
-#: ../js/ui/endSessionDialog.js:63
-#, c-format
-msgid "%s will be logged out automatically in %d seconds."
-msgstr "Użytkownik %s zostanie automatycznie wylogowany za %d sekund."
-
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
-msgid "You will be logged out automatically in %d seconds."
-msgstr "Użytkownik zostanie automatycznie wylogowany za %d sekund."
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "Użytkownik %s zostanie automatycznie wylogowany za %d sekundę."
+msgstr[1] "Użytkownik %s zostanie automatycznie wylogowany za %d sekundy."
+msgstr[2] "Użytkownik %s zostanie automatycznie wylogowany za %d sekund."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:69
+#, c-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Użytkownik zostanie automatycznie wylogowany za %d sekundę."
+msgstr[1] "Użytkownik zostanie automatycznie wylogowany za %d sekundy."
+msgstr[2] "Użytkownik zostanie automatycznie wylogowany za %d sekund."
+
+#: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
 msgstr "Wylogowywanie z systemu."
 
-#: ../js/ui/endSessionDialog.js:72 ../js/ui/endSessionDialog.js:79
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
-#: ../js/ui/endSessionDialog.js:73
+#: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Kliknięcie Wyłącz zakończy poniższe programy i wyłączy komputer."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
-msgid "The system will power off automatically in %d seconds."
-msgstr "Komputer zostanie automatycznie wyłączony za %d sekund."
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Komputer zostanie automatycznie wyłączony za %d sekundę."
+msgstr[1] "Komputer zostanie automatycznie wyłączony za %d sekundy."
+msgstr[2] "Komputer zostanie automatycznie wyłączony za %d sekund."
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Wyłączanie komputera."
 
-#: ../js/ui/endSessionDialog.js:77 ../js/ui/endSessionDialog.js:85
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restart"
 msgstr "Uruchom ponownie"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Kliknięcie Uruchom ponownie zakończy poniższe programy i ponownie uruchomi "
 "system."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:100
 #, c-format
-msgid "The system will restart automatically in %d seconds."
-msgstr "System zostanie automatycznie uruchomiony ponownie za %d sekund."
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "System zostanie automatycznie uruchomiony ponownie za %d sekundę."
+msgstr[1] "System zostanie automatycznie uruchomiony ponownie za %d sekundy."
+msgstr[2] "System zostanie automatycznie uruchomiony ponownie za %d sekund."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:104
 msgid "Restarting the system."
 msgstr "Ponowne uruchamianie systemu."
 
@@ -1101,8 +1113,8 @@ msgid "Connectivity lost"
 msgstr "Utracono łączność"
 
 #: ../js/ui/status/network.js:1748
-msgid "You're no longer connected to the network"
-msgstr "Brak połączenia z siecią"
+msgid "You are no longer connected to the network"
+msgstr "Utracono połączenia z siecią"
 
 #: ../js/ui/status/network.js:1756
 msgid "Connection failed"
@@ -1165,6 +1177,12 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "Pozostała %d minuta"
 msgstr[1] "Pozostały %d minuty"
 msgstr[2] "Pozostało %d minut"
+
+#: ../js/ui/status/power.js:121 ../js/ui/status/power.js:194
+#, c-format
+msgctxt "percent of battery remaining"
+msgid "%d%%"
+msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
