@@ -83,6 +83,9 @@ Client.prototype = {
         this._chatSources = {};
         this._chatState = Tp.ChannelChatState.ACTIVE;
 
+        // account path -> AccountNotification
+        this._accountNotifications = {};
+
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
@@ -420,7 +423,6 @@ Client.prototype = {
 
         /* Display notification to ask user to accept/reject request */
         let source = this._ensureSubscriptionSource();
-        Main.messageTray.add(source);
 
         let notif = new SubscriptionRequestNotification(source, contact);
         source.notify(notif);
@@ -430,6 +432,7 @@ Client.prototype = {
         if (this._subscriptionSource == null) {
             this._subscriptionSource = new MultiNotificationSource(
                 _("Subscription request"), 'gtk-dialog-question');
+            Main.messageTray.add(this._subscriptionSource);
             this._subscriptionSource.connect('destroy', Lang.bind(this, function () {
                 this._subscriptionSource = null;
             }));
@@ -446,11 +449,18 @@ Client.prototype = {
             return;
         }
 
+        let notif = this._accountNotifications[account.get_object_path()];
+        if (notif)
+            return;
+
         /* Display notification that account failed to connect */
         let source = this._ensureAccountSource();
-        Main.messageTray.add(source);
 
-        let notif = new AccountNotification(source, account, connectionError);
+        notif = new AccountNotification(source, account, connectionError);
+        this._accountNotifications[account.get_object_path()] = notif;
+        notif.connect('destroy', Lang.bind(this, function() {
+            delete this._accountNotifications[account.get_object_path()];
+        }));
         source.notify(notif);
     },
 
@@ -458,6 +468,7 @@ Client.prototype = {
         if (this._accountSource == null) {
             this._accountSource = new MultiNotificationSource(
                 _("Connection error"), 'gtk-dialog-error');
+            Main.messageTray.add(this._accountSource);
             this._accountSource.connect('destroy', Lang.bind(this, function () {
                 this._accountSource = null;
             }));
@@ -1448,16 +1459,11 @@ AccountNotification.prototype = {
             _("Connection to %s failed").format(account.get_display_name()),
             null, { customContent: true });
 
-        let message;
-        if (connectionError in _connectionErrorMessages) {
-            message = _connectionErrorMessages[connectionError];
-        } else {
-            message = _("Unknown reason");
-        }
+        this._label = new St.Label();
+        this.addActor(this._label);
+        this._updateMessage(connectionError);
 
         this._account = account;
-
-        this.addBody(message);
 
         this.addButton('reconnect', _("Reconnect"));
         this.addButton('edit', _("Edit account"));
@@ -1492,9 +1498,23 @@ AccountNotification.prototype = {
 
         this._connectionStatusId = account.connect('notify::connection-status',
             Lang.bind(this, function() {
-                if (account.connection_status != Tp.ConnectionStatus.DISCONNECTED)
+                let status = account.connection_status;
+                if (status == Tp.ConnectionStatus.CONNECTED) {
                     this.destroy();
+                } else if (status == Tp.ConnectionStatus.DISCONNECTED) {
+                    this._updateMessage(account.connection_error);
+                }
             }));
+    },
+
+    _updateMessage: function(connectionError) {
+        let message;
+        if (connectionError in _connectionErrorMessages) {
+            message = _connectionErrorMessages[connectionError];
+        } else {
+            message = _("Unknown reason");
+        }
+        this._label.set_text(message);
     },
 
     destroy: function() {
