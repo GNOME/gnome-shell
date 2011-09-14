@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-14 05:39+0530\n"
-"PO-Revision-Date: 2011-09-14 05:41+0530\n"
+"POT-Creation-Date: 2011-09-14 21:13+0530\n"
+"PO-Revision-Date: 2011-09-14 21:16+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -197,7 +197,7 @@ msgstr "உள்நுழை"
 msgid "Not listed?"
 msgstr "பட்டியலில் இல்லை?"
 
-#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:410
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
 #: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
@@ -510,7 +510,7 @@ msgstr "RECENT ITEMS"
 msgid "Log Out %s"
 msgstr "%s யிலிருந்து வெளியேறு"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
 msgid "Log Out"
 msgstr "வெளியேறு"
 
@@ -518,52 +518,60 @@ msgstr "வெளியேறு"
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "இந்த பயன்பாடுகளை மூடி கணினியில் இருந்து வெளியேற வெளியேறு ஐ சொடுக்கவும்"
 
-#: ../js/ui/endSessionDialog.js:63
-#, c-format
-msgid "%s will be logged out automatically in %d seconds."
-msgstr "%s தானியங்கியாக %d வினாடிகளில் வெளியேறும்"
-
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
-msgid "You will be logged out automatically in %d seconds."
-msgstr "நீங்கள்  தானியங்கியாக %d வினாடிகளில் வெளியேற்றப்படுவீர்கள் "
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s தானியங்கியாக %d வினாடியில் வெளியேறும்"
+msgstr[1] "%s தானியங்கியாக %d வினாடிகளில் வெளியேறும்"
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:69
+#, c-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "நீங்கள்  தானியங்கியாக %d வினாடியில் வெளியேற்றப்படுவீர்கள் "
+msgstr[1] "நீங்கள்  தானியங்கியாக %d வினாடிகளில் வெளியேற்றப்படுவீர்கள் "
+
+#: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
 msgstr "கணினியில் இருந்து வெளியேறுகிறது"
 
-#: ../js/ui/endSessionDialog.js:72 ../js/ui/endSessionDialog.js:79
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
 msgid "Power Off"
 msgstr "மின்சக்தி நிறுத்தம்"
 
-#: ../js/ui/endSessionDialog.js:73
+#: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "இந்த பயன்பாடுகளை மூடி கணினி மின் நிறுத்தம் செய்ய மின் நிறுத்தம் ஐ சொடுக்கவும்"
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
-msgid "The system will power off automatically in %d seconds."
-msgstr "கணினி தானியங்கியாக %d வினாடிகளில் மின் நிறுத்தப்படும்"
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "கணினி தானியங்கியாக %d வினாடியில் மின் நிறுத்தப்படும்"
+msgstr[1] "கணினி தானியங்கியாக %d வினாடிகளில் மின் நிறுத்தப்படும்"
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "கணினி மின் நிறுத்தப்படுகிறது"
 
-#: ../js/ui/endSessionDialog.js:77 ../js/ui/endSessionDialog.js:85
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restart"
 msgstr "மறு துவக்கம்"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "இந்த பயன்பாடுகளை மூடி கணினி மீள் துவக்கம் செய்ய செய்ய மீள் துவக்கம் ஐ சொடுக்கவும்"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:100
 #, c-format
-msgid "The system will restart automatically in %d seconds."
-msgstr "கணினி தானியங்கியாக %d வினாடிகளில் மீள் துவக்கம்  செய்யப்படும்."
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "கணினி தானியங்கியாக %d வினாடியில் மீள் துவக்கம்  செய்யப்படும்."
+msgstr[1] "கணினி தானியங்கியாக %d வினாடிகளில் மீள் துவக்கம்  செய்யப்படும்."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:104
 msgid "Restarting the system."
 msgstr "கணினி மறு துவக்கம் செய்யப்படுகிறது"
 
@@ -1087,7 +1095,7 @@ msgid "Connectivity lost"
 msgstr "இணைப்பு அற்றுப்போயிற்று"
 
 #: ../js/ui/status/network.js:1748
-msgid "You're no longer connected to the network"
+msgid "You are no longer connected to the network"
 msgstr "நீங்கள் இப்போது பிணையத்துடன் இணைக்கப்படவில்லை"
 
 #: ../js/ui/status/network.js:1756
@@ -1147,6 +1155,12 @@ msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d நிமிடம் மீதி"
 msgstr[1] "%d நிமிடங்கள் மீதி"
+
+#: ../js/ui/status/power.js:121 ../js/ui/status/power.js:194
+#, c-format
+msgctxt "percent of battery remaining"
+msgid "%d%%"
+msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
