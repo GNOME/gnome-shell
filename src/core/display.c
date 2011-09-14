@@ -2294,11 +2294,8 @@ event_callback (XEvent   *event,
         screen = meta_display_screen_for_root (display,
                                                event->xconfigure.event);
         if (screen)
-          {
-            if (screen)
-              meta_stack_tracker_reparent_event (screen->stack_tracker,
-                                                 &event->xreparent);
-          }
+          meta_stack_tracker_reparent_event (screen->stack_tracker,
+                                             &event->xreparent);
       }
       break;
     case ConfigureNotify:
