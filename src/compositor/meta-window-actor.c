@@ -2300,6 +2300,27 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
       meta_error_trap_push (display);
       XDamageSubtract (xdisplay, priv->damage, None, None);
       meta_error_trap_pop (display);
+
+      /* We need to make sure that any X drawing that happens before the
+       * XDamageSubtract() above is visible to subsequent GL rendering;
+       * the only standardized way to do this is EXT_x11_sync_object,
+       * which isn't yet widely available. For now, we count on details
+       * of Xorg and the open source drivers, and hope for the best
+       * otherwise.
+       *
+       * Xorg and open source driver specifics:
+       *
+       * The X server makes sure to flush drawing to the kernel before
+       * sending out damage events, but since we use DamageReportBoundingBox
+       * there may be drawing between the last damage event and the
+       * XDamageSubtract() that needs to be flushed as well.
+       *
+       * Xorg always makes sure that drawing is flushed to the kernel
+       * before writing events or responses to the client, so any round trip
+       * request at this point is sufficient to flush the GLX buffers.
+       */
+      XSync (xdisplay, False);
+
       priv->received_damage = FALSE;
     }
 
