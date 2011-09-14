@@ -1085,20 +1085,6 @@ void meta_theme_draw_frame (MetaTheme              *theme,
                             GdkPixbuf              *mini_icon,
                             GdkPixbuf              *icon);
 
-void meta_theme_draw_frame_by_name (MetaTheme              *theme,
-                                    GtkWidget              *widget,
-                                    cairo_t                *cr,
-                                    const gchar             *style_name,
-                                    MetaFrameFlags          flags,
-                                    int                     client_width,
-                                    int                     client_height,
-                                    PangoLayout            *title_layout,
-                                    int                     text_height,
-                                    const MetaButtonLayout *button_layout,
-                                    MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                                    GdkPixbuf              *mini_icon,
-                                    GdkPixbuf              *icon);
-
 void meta_theme_draw_frame_with_style (MetaTheme              *theme,
                                        GtkStyleContext        *style_gtk,
                                        GtkWidget              *widget,
