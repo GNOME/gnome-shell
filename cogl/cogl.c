@@ -49,6 +49,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-config-private.h"
+#include "cogl-private.h"
 
 #ifndef GL_PACK_INVERT_MESA
 #define GL_PACK_INVERT_MESA 0x8758
@@ -927,15 +928,22 @@ typedef struct _CoglSourceState
 {
   CoglPipeline *pipeline;
   int push_count;
+  /* If this is TRUE then the pipeline will be copied and the legacy
+     state will be applied whenever the pipeline is used. This is
+     necessary because some internal Cogl code expects to be able to
+     push a temporary pipeline to put GL into a known state. For that
+     to work it also needs to prevent applying the legacy state */
+  gboolean enable_legacy;
 } CoglSourceState;
 
 static void
-_push_source_real (CoglPipeline *pipeline)
+_push_source_real (CoglPipeline *pipeline, gboolean enable_legacy)
 {
   CoglSourceState *top = g_slice_new (CoglSourceState);
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   top->pipeline = cogl_object_ref (pipeline);
+  top->enable_legacy = enable_legacy;
   top->push_count = 1;
 
   ctx->source_stack = g_list_prepend (ctx->source_stack, top);
@@ -947,8 +955,20 @@ _push_source_real (CoglPipeline *pipeline)
 void
 cogl_push_source (void *material_or_pipeline)
 {
-  CoglSourceState *top;
   CoglPipeline *pipeline = COGL_PIPELINE (material_or_pipeline);
+
+  g_return_if_fail (cogl_is_pipeline (pipeline));
+
+  _cogl_push_source (pipeline, TRUE);
+}
+
+/* This internal version of cogl_push_source is the same except it
+   never applies the legacy state. Some parts of Cogl use this
+   internally to set a temporary pipeline with a known state */
+void
+_cogl_push_source (CoglPipeline *pipeline, gboolean enable_legacy)
+{
+  CoglSourceState *top;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -957,16 +977,16 @@ cogl_push_source (void *material_or_pipeline)
   if (ctx->source_stack)
     {
       top = ctx->source_stack->data;
-      if (top->pipeline == pipeline)
+      if (top->pipeline == pipeline && top->enable_legacy == enable_legacy)
         {
           top->push_count++;
           return;
         }
       else
-        _push_source_real (pipeline);
+        _push_source_real (pipeline, enable_legacy);
     }
   else
-    _push_source_real (pipeline);
+    _push_source_real (pipeline, enable_legacy);
 }
 
 /* FIXME: This needs to take a context pointer for Cogl 2.0 */
@@ -1004,6 +1024,19 @@ cogl_get_source (void)
   return top->pipeline;
 }
 
+gboolean
+_cogl_get_enable_legacy_state (void)
+{
+  CoglSourceState *top;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  g_return_val_if_fail (ctx->source_stack, FALSE);
+
+  top = ctx->source_stack->data;
+  return top->enable_legacy;
+}
+
 void
 cogl_set_source (void *material_or_pipeline)
 {
@@ -1016,7 +1049,7 @@ cogl_set_source (void *material_or_pipeline)
   g_return_if_fail (ctx->source_stack);
 
   top = ctx->source_stack->data;
-  if (top->pipeline == pipeline)
+  if (top->pipeline == pipeline && top->enable_legacy)
     return;
 
   if (top->push_count == 1)
@@ -1026,6 +1059,7 @@ cogl_set_source (void *material_or_pipeline)
       cogl_object_ref (pipeline);
       cogl_object_unref (top->pipeline);
       top->pipeline = pipeline;
+      top->enable_legacy = TRUE;
     }
   else
     {

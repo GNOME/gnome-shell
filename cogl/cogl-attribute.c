@@ -43,6 +43,7 @@
 #ifdef HAVE_COGL_GLES2
 #include "cogl-pipeline-progend-glsl-private.h"
 #endif
+#include "cogl-private.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -535,7 +536,7 @@ enable_gl_state (CoglDrawFlags flags,
     }
 
   if (G_UNLIKELY (ctx->legacy_state_set) &&
-      (flags & COGL_DRAW_SKIP_LEGACY_STATE) == 0)
+      _cogl_get_enable_legacy_state ())
     {
       /* If we haven't already created a derived pipeline... */
       if (!copy)
@@ -1015,7 +1016,7 @@ draw_wireframe (CoglVerticesMode mode,
                                   0x00, 0xff, 0x00, 0xff);
     }
 
-  cogl_push_source (wire_pipeline);
+  _cogl_push_source (wire_pipeline, FALSE);
 
   /* temporarily disable the wireframe to avoid recursion! */
   COGL_DEBUG_CLEAR_FLAG (COGL_DEBUG_WIREFRAME);
@@ -1026,8 +1027,7 @@ draw_wireframe (CoglVerticesMode mode,
                          1,
                          COGL_DRAW_SKIP_JOURNAL_FLUSH |
                          COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                         COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
-                         COGL_DRAW_SKIP_LEGACY_STATE);
+                         COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
 
   COGL_DEBUG_SET_FLAG (COGL_DEBUG_WIREFRAME);
 

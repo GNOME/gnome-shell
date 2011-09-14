@@ -24,6 +24,8 @@
 #ifndef __COGL_PRIVATE_H__
 #define __COGL_PRIVATE_H__
 
+#include <cogl/cogl-pipeline.h>
+
 G_BEGIN_DECLS
 
 gboolean
@@ -52,6 +54,12 @@ _cogl_read_pixels_with_rowstride (int x,
 
 void
 _cogl_init (void);
+
+void
+_cogl_push_source (CoglPipeline *pipeline, gboolean enable_legacy);
+
+gboolean
+_cogl_get_enable_legacy_state (void);
 
 G_END_DECLS
 

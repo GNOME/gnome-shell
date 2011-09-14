@@ -35,6 +35,7 @@
 #include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-private.h"
 
 static const CoglBlitMode *_cogl_blit_default_mode = NULL;
 
@@ -90,7 +91,7 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
 
   cogl_pipeline_set_layer_texture (pipeline, 0, data->src_tex);
 
-  cogl_push_source (pipeline);
+  _cogl_push_source (pipeline, FALSE);
 
   return TRUE;
 }

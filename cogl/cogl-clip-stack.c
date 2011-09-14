@@ -41,6 +41,7 @@
 #include "cogl-path-private.h"
 #include "cogl-matrix-private.h"
 #include "cogl-primitives-private.h"
+#include "cogl-private.h"
 
 #ifndef GL_CLIP_PLANE0
 #define GL_CLIP_PLANE0 0x3000
@@ -210,7 +211,7 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* temporarily swap in our special stenciling pipeline */
-  cogl_push_source (ctx->stencil_pipeline);
+  _cogl_push_source (ctx->stencil_pipeline, FALSE);
 
   /* This can be called from the journal code which doesn't flush
      the matrix stacks between calls so we need to ensure they're

@@ -36,6 +36,7 @@
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-attribute-private.h"
+#include "cogl-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -711,13 +712,13 @@ _cogl_rectangles_with_multitexture_coords (
                                         struct _CoglMutiTexturedRect *rects,
                                         int                           n_rects)
 {
-  CoglPipeline *pipeline;
+  CoglPipeline *original_pipeline, *pipeline;
   ValidateLayerState state;
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  pipeline = cogl_get_source ();
+  pipeline = original_pipeline = cogl_get_source ();
 
   /*
    * Validate all the layers of the current source pipeline...
@@ -732,6 +733,15 @@ _cogl_rectangles_with_multitexture_coords (
 
   if (state.override_source)
     pipeline = state.override_source;
+
+  if (G_UNLIKELY (ctx->legacy_state_set) &&
+      _cogl_get_enable_legacy_state ())
+    {
+      /* If we haven't already made a pipeline copy */
+      if (pipeline == original_pipeline)
+        pipeline = cogl_pipeline_copy (pipeline);
+      _cogl_pipeline_apply_legacy_state (pipeline);
+    }
 
   /*
    * Emit geometry for each of the rectangles...
@@ -789,7 +799,7 @@ _cogl_rectangles_with_multitexture_coords (
                                               tex_coords[3]);
     }
 
-  if (state.override_source)
+  if (pipeline != original_pipeline)
     cogl_object_unref (pipeline);
 }
 

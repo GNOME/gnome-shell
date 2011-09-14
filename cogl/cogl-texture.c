@@ -1099,7 +1099,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
                                NULL);
     }
 
-  cogl_push_source (ctx->texture_download_pipeline);
+  _cogl_push_source (ctx->texture_download_pipeline, FALSE);
 
   cogl_pipeline_set_layer_texture (ctx->texture_download_pipeline, 0, handle);
 

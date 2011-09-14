@@ -62,17 +62,13 @@ typedef enum
   COGL_DRAW_SKIP_JOURNAL_FLUSH = 1 << 0,
   COGL_DRAW_SKIP_PIPELINE_VALIDATION = 1 << 1,
   COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH = 1 << 2,
-  /* When flushing from the journal the logged pipeline will already
-     contain the legacy state overrides so we don't want to apply them
-     again when we flush the pipeline for drawing */
-  COGL_DRAW_SKIP_LEGACY_STATE = 1 << 3,
   /* By default the vertex attribute drawing code will assume that if
      there is a color attribute array enabled then we can't determine
      if the colors will be opaque so we need to enabling
      blending. However when drawing from the journal we know what the
      contents of the color array is so we can override this by passing
      this flag. */
-  COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE = 1 << 4
+  COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE = 1 << 3
 } CoglDrawFlags;
 
 CoglAttribute *

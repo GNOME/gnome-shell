@@ -368,7 +368,7 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
                                   COGL_MATRIX_PROJECTION);
 
   /* Just setup a simple pipeline that doesn't use texturing... */
-  cogl_push_source (ctx->stencil_pipeline);
+  _cogl_push_source (ctx->stencil_pipeline, FALSE);
 
   _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE, 0);
 
