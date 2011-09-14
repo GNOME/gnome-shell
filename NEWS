@@ -1,3 +1,29 @@
+3.1.91.1
+========
+* Fix problem where certain application updates would get lost [#657071, Owen]
+* Fix a problem where after resuming from the screensaver, things got
+  slow [#658228, Jasper, Adel]
+* When a monitor is plugged or unplugged, keep existing windows on their
+  current monitor [#645408, Alex]
+* Remove 'Mutter' title from alerts such as
+  "The widow '%s' is not responding" [Matthias]
+* Remove pointless warning:
+   Received a _NET_WM_MOVERESIZE message for %s; these
+   messages lack timestamps and therefore suck.
+  [Rui]
+* Misc bug fixes [Jasper]
+* Build fixes [Javier]
+
+Contributors:
+ Matthias Clasen, Adel Gadllah, Javier Jardón, Alex Larsson, Rui Matos,
+ Jasper St. Pierre, Owen Taylor
+
+Translations:
+ Ihar Hrachyshka [be], Bruce Cowan [en_FB], Daniel Mustieles [es],
+ Claude Paroz [fr], Andika Triwidada [id], Luca Ferretti [it],
+ Rudolfs Mazurs [lt], Piotr Drąg [pl], Duarte Loreto [pt],
+ Matej Urbančič [sl], Tirumurti Vasudevan [ta], Chao-Hsiung Liao [zh_KH, TW]
+
 3.1.90.1
 ========
 * Fix crash when no windows are open [Adel; #657692]
