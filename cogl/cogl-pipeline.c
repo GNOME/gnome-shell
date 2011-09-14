@@ -2855,6 +2855,18 @@ _cogl_pipeline_update_authority (CoglPipeline *pipeline,
     }
 }
 
+gboolean
+_cogl_pipeline_get_fog_enabled (CoglPipeline *pipeline)
+{
+  CoglPipeline *authority;
+
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+
+  authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_FOG);
+  return authority->big_state->fog_state.enabled;
+}
+
 unsigned long
 _cogl_pipeline_get_age (CoglPipeline *pipeline)
 {

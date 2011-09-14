@@ -165,7 +165,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
     return FALSE;
 
   /* TODO: support fog */
-  if (ctx->legacy_fog_state.enabled)
+  if (_cogl_pipeline_get_fog_enabled (pipeline))
     return FALSE;
 
   user_program = cogl_pipeline_get_user_program (pipeline);

@@ -1184,6 +1184,9 @@ void
 _cogl_pipeline_set_blend_enabled (CoglPipeline *pipeline,
                                   CoglPipelineBlendEnable enable);
 
+gboolean
+_cogl_pipeline_get_fog_enabled (CoglPipeline *pipeline);
+
 void
 _cogl_pipeline_set_static_breadcrumb (CoglPipeline *pipeline,
                                       const char *breadcrumb);
