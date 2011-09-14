@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
 "POT-Creation-Date: 2011-09-12 13:51+0100\n"
-"PO-Revision-Date: 2011-09-10 19:12+0300\n"
+"PO-Revision-Date: 2011-09-14 20:07+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -613,7 +613,7 @@ msgstr "Kryptis"
 #: clutter/clutter-behaviour-ellipse.c:525
 #: clutter/clutter-behaviour-rotate.c:334
 msgid "Direction of rotation"
-msgstr "Sūkimosi kryptis"
+msgstr "Sukimosi kryptis"
 
 #: clutter/clutter-behaviour-opacity.c:181
 msgid "Opacity Start"
@@ -653,7 +653,7 @@ msgstr "Ašis"
 
 #: clutter/clutter-behaviour-rotate.c:316
 msgid "Axis of rotation"
-msgstr "Sūkimosi ašis"
+msgstr "Sukimosi ašis"
 
 #: clutter/clutter-behaviour-rotate.c:351
 msgid "Center X"
@@ -669,7 +669,7 @@ msgstr "Centro Y"
 
 #: clutter/clutter-behaviour-rotate.c:370
 msgid "Y coordinate of the center of rotation"
-msgstr "Sūkimosi centro Y koordinatė"
+msgstr "Sukimosi centro Y koordinatė"
 
 #: clutter/clutter-behaviour-rotate.c:387
 msgid "Center Z"
@@ -677,7 +677,7 @@ msgstr "Centro Z"
 
 #: clutter/clutter-behaviour-rotate.c:388
 msgid "Z coordinate of the center of rotation"
-msgstr "Sūkimosi centro Y koordinatė"
+msgstr "Sukimosi centro Y koordinatė"
 
 #: clutter/clutter-behaviour-scale.c:222
 msgid "X Start Scale"
@@ -991,7 +991,7 @@ msgstr "Medžiaga, naudojama piešiant aktoriaus foną"
 
 #: clutter/clutter-desaturate-effect.c:305
 msgid "The desaturation factor"
-msgstr "Nusodrinimo faktorius"
+msgstr "Nesodrinimo faktorius"
 
 #: clutter/clutter-device-manager.c:131 clutter/clutter-input-device.c:344
 #: clutter/x11/clutter-keymap-x11.c:316
@@ -1168,7 +1168,7 @@ msgstr "Tvarkyklė"
 
 #: clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr "Tvarkyklė, sukūrusi šiuos domenis"
+msgstr "Tvarkyklė, sukūrusi šiuos duomenis"
 
 #: clutter/clutter-main.c:490
 msgid "default:LTR"
@@ -1381,7 +1381,7 @@ msgstr "Numatytojo šrifto aprašymas, kurį gali perskaityti Pango"
 
 #: clutter/clutter-settings.c:478
 msgid "Font Antialias"
-msgstr "Šrifto glotninnimas"
+msgstr "Šrifto glotninimas"
 
 #: clutter/clutter-settings.c:479
 msgid ""
@@ -1459,7 +1459,7 @@ msgstr "Kompiliuotas"
 
 #: clutter/clutter-shader.c:291
 msgid "Whether the shader is compiled and linked"
-msgstr "Ar pešėjas yra kompiliuotas ir surištas"
+msgstr "Ar piešėjas yra kompiliuotas ir surištas"
 
 #: clutter/clutter-shader.c:308
 msgid "Whether the shader is enabled"
@@ -1596,7 +1596,7 @@ msgstr "Šiuo metu klavišų klausantis aktorius"
 
 #: clutter/clutter-stage.c:1878
 msgid "No Clear Hint"
-msgstr "Nepalymo patarimas"
+msgstr "Nevalymo patarimas"
 
 #: clutter/clutter-stage.c:1879
 msgid "Whether the stage should clear its contents"
@@ -1608,7 +1608,7 @@ msgstr "Tapti aktyvia"
 
 #: clutter/clutter-stage.c:1893
 msgid "Whether the stage should accept focus on show"
-msgstr "At scena turi tapti aktyvia parodymo metu"
+msgstr "Ar scena turi tapti aktyvia parodymo metu"
 
 #: clutter/clutter-state.c:1472
 msgid "State"
@@ -1672,7 +1672,7 @@ msgstr "Išskirti papildomai vietos vaikui vertikalioje ašyje"
 
 #: clutter/clutter-table-layout.c:1714
 msgid "Spacing between columns"
-msgstr "Tarpai tarp sulpelių"
+msgstr "Tarpai tarp stulpelių"
 
 #: clutter/clutter-table-layout.c:1728
 msgid "Spacing between rows"
@@ -1925,7 +1925,7 @@ msgstr "Filtro kokybė"
 
 #: clutter/clutter-texture.c:1039
 msgid "Rendering quality used when drawing the texture"
-msgstr "Piešimo kokybė priešiant tekstūrą"
+msgstr "Piešimo kokybė piešiant tekstūrą"
 
 #: clutter/clutter-texture.c:1047
 msgid "Pixel Format"
@@ -1963,7 +1963,7 @@ msgstr "Išlaikyti proporcijas"
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
-msgstr "Išlaikyti tekstūros proporcijas prašant pageidaujamo pročio ir aukščio"
+msgstr "Išlaikyti tekstūros proporcijas prašant pageidaujamo pločio ir aukščio"
 
 #: clutter/clutter-texture.c:1116
 msgid "Load asynchronously"
@@ -1993,7 +1993,7 @@ msgstr "Parinkti su alfa"
 
 #: clutter/clutter-texture.c:1159
 msgid "Shape actor with alpha channel when picking"
-msgstr "Sudaryti aktorių su slfa kanalu parenkimo metu"
+msgstr "Sudaryti aktorių su alfa kanalu parinkimo metu"
 
 #: clutter/clutter-texture.c:1557 clutter/clutter-texture.c:1967
 #: clutter/clutter-texture.c:2062 clutter/clutter-texture.c:2343
@@ -2082,7 +2082,7 @@ msgstr "Ribojamas X11 pikselių žemėlapis"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap width"
-msgstr "Piselių žemėlapio plotis"
+msgstr "Pikselių žemėlapio plotis"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The width of the pixmap bound to this texture"
@@ -2090,7 +2090,7 @@ msgstr "Pikselių žemėlapio, ribojamo šia tekstūra, plotis"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Pixmap height"
-msgstr "Piselių žemėlapio aukštis"
+msgstr "Pikselių žemėlapio aukštis"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "The height of the pixmap bound to this texture"
