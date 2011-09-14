@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-07 01:53+0300\n"
-"PO-Revision-Date: 2011-09-07 01:54+0300\n"
+"POT-Creation-Date: 2011-09-14 22:03+0300\n"
+"PO-Revision-Date: 2011-09-14 22:03+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -157,39 +157,45 @@ msgstr ""
 msgid "disabled OpenSearch providers"
 msgstr ""
 
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:604
 msgid "Session..."
 msgstr "Сеанс..."
 
-#: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
-msgstr "Увайсці"
+msgstr "Уваход"
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
 msgstr "Няма ў спісе?"
 
-#: ../js/gdm/loginDialog.js:926 ../js/ui/endSessionDialog.js:410
-#: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:480
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
+#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Скасаваць"
 
-#: ../js/gdm/loginDialog.js:1251
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr "Увайсці"
+
+#: ../js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Акно ўваходу"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "Загад не знойдзены"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "Не ўдалося разабраць загад:"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Не ўдалося выканаць \"%s\":"
@@ -409,7 +415,7 @@ msgstr "Па-за сеткай"
 msgid "CONTACTS"
 msgstr "КАНТАКТЫ"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1195
 msgid "Remove"
 msgstr "Выдаліць"
 
@@ -477,7 +483,7 @@ msgstr "НЯДАЎНЯЕ"
 msgid "Log Out %s"
 msgstr "Скончыць сеанс (%s)"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
 msgid "Log Out"
 msgstr "Скончыць сеанс"
 
@@ -487,60 +493,81 @@ msgstr ""
 "Пстрыкніце \"Скончыць сеанс\", каб выйсці з усіх праграм і скончыць сеанс "
 "працы з сістэмай."
 
-#: ../js/ui/endSessionDialog.js:63
-#, c-format
-msgid "%s will be logged out automatically in %d seconds."
-msgstr "%s аўтаматычна скончыць сеанс працы з сістэмай праз %d секунд."
-
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
-msgid "You will be logged out automatically in %d seconds."
-msgstr "Вы аўтаматычна скончыце сеанс працы з сістэмай праз %d секунд."
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s аўтаматычна скончыць сеанс працы з сістэмай праз %d секунду."
+msgstr[1] "%s аўтаматычна скончыць сеанс працы з сістэмай праз %d секунды."
+msgstr[2] "%s аўтаматычна скончыць сеанс працы з сістэмай праз %d секунд."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:69
+#, c-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Вы аўтаматычна скончыце сеанс працы з сістэмай праз %d секунду."
+msgstr[1] "Вы аўтаматычна скончыце сеанс працы з сістэмай праз %d секунды."
+msgstr[2] "Вы аўтаматычна скончыце сеанс працы з сістэмай праз %d секунд."
+
+#: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
 msgstr "Заканчэнне сеанса працы з сістэмай."
 
-#: ../js/ui/endSessionDialog.js:72 ../js/ui/endSessionDialog.js:79
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
 msgid "Power Off"
 msgstr "Выключыць камп'ютар"
 
-#: ../js/ui/endSessionDialog.js:73
+#: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Пстрыкніце \"Выключыць камп'ютар\", каб выйсці з усіх праграм і выключыць "
 "сістэму."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
-msgid "The system will power off automatically in %d seconds."
-msgstr "Сістэма аўтаматычна выключыцца праз %d секунд."
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Сістэма аўтаматычна выключыцца праз %d секунду."
+msgstr[1] "Сістэма аўтаматычна выключыцца праз %d секунды."
+msgstr[2] "Сістэма аўтаматычна выключыцца праз %d секунд."
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Выключэнне сістэмы."
 
-#: ../js/ui/endSessionDialog.js:77 ../js/ui/endSessionDialog.js:85
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restart"
 msgstr "Перазапусціць сістэму"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Пстрыкніце \"Перазапусціць сістэму\", каб выйсці з усіх праграм і "
 "перазапусціць камп'ютар."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:100
 #, c-format
-msgid "The system will restart automatically in %d seconds."
-msgstr "Сістэма аўтаматычна перазапусціцца праз %d секунд."
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Сістэма аўтаматычна перазапусціцца праз %d секунду."
+msgstr[1] "Сістэма аўтаматычна перазапусціцца праз %d секунды."
+msgstr[2] "Сістэма аўтаматычна перазапусціцца праз %d секунд."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:104
 msgid "Restarting the system."
 msgstr "Перазапуск сістэмы."
 
-#: ../js/ui/keyboard.js:514 ../js/ui/status/power.js:211
+#: ../js/ui/extensionSystem.js:481
+msgid "Install"
+msgstr "Усталяваць"
+
+#: ../js/ui/extensionSystem.js:485
+#, c-format
+msgid "Download and install '%s' from extensions.gnome.org?"
+msgstr "Сцягнуць і ўсталяваць \"%s\" з extensions.gnome.org?"
+
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Клавіятура"
 
@@ -578,11 +605,11 @@ msgstr "Паглядзець выточны код"
 msgid "Web Page"
 msgstr "Сеціўная старонка"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1188
 msgid "Open"
 msgstr "Адкрыць"
 
-#: ../js/ui/messageTray.js:2352
+#: ../js/ui/messageTray.js:2367
 msgid "System Information"
 msgstr "Сістэмная інфармацыя"
 
@@ -1056,8 +1083,8 @@ msgid "Connectivity lost"
 msgstr "Злучэнне страчана"
 
 #: ../js/ui/status/network.js:1748
-msgid "You're no longer connected to the network"
-msgstr "Вы адлучаны ад сеткі"
+msgid "You are no longer connected to the network"
+msgstr "Вы больш не злучаны з сеткай"
 
 #: ../js/ui/status/network.js:1756
 msgid "Connection failed"
@@ -1067,11 +1094,11 @@ msgstr "Не ўдалося злучыцца"
 msgid "Activation of network connection failed"
 msgstr "Не ўдалося ўключыць сеткавае злучэнне"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Сеткавыя функцыі выключаныя"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Сеткавы кіраўнік"
 
@@ -1120,6 +1147,12 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "засталося: %d хвіліна"
 msgstr[1] "засталося: %d хвіліны"
 msgstr[2] "засталося: %d хвілін"
+
+#: ../js/ui/status/power.js:121 ../js/ui/status/power.js:194
+#, c-format
+msgctxt "percent of battery remaining"
+msgid "%d%%"
+msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
@@ -1552,9 +1585,8 @@ msgstr "Файлавая сістэма"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr "calendar:week_start:1"
+#~ msgid "calendar:week_start:0"
+#~ msgstr "calendar:week_start:1"
 
 #~ msgid "Do Not Disturb"
 #~ msgstr "Не турбаваць"
