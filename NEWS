@@ -1,3 +1,36 @@
+3.1.91.1
+========
+
+* Add a browser plugin - this plugin, tied to extensions.gnome.org,
+  allows users to download and install shell extensions, and enable,
+  disable, and uninstall extensions they already have installed.
+  [Jasper; #658070, #658612]
+* Improve adding links to URLs in notifications [Dan; #636252]
+* Remove "connection lost" notifications after reconnecting [Giovanni; #658049]
+* Hide the onscreen keyboard when leaving a text entry [Dan; #658591]
+* Fixes for translated strings [Florian; #639987, #644097, #645037]
+* Bug fixes for network menu [Florian; #658492]
+* Code cleanup [Dan; #646934]
+* Build fixes [Javier, Rico]
+* Misc bug fixes [Emmanuele, Florian, Jasper, Marina, Matthias, Ray;
+  #652837, #658423, #658503, #658525, #658562, #658624, #658640, #658983]
+
+Conributors:
+ Emmanuele Bassi, Giovanni Campagna, Matthias Clasen, Javier Jardón,
+ Florian Muellner, Jasper St. Pierre, Ray Strode, Rico Tzschichholz,
+ Dan Winship, Marina Zhurakhinskaya
+
+Translations:
+ Ihar Hrachyshka [be], Bruce Cowan [en_GB], Jorge González,
+ Daniel Mustieles [es], Timo Jyrinki [fi], Bruno Brouard, Luc Guillemin,
+ Claude Paroz, Luc Pionchon [fr], Fran Dieguez [gl], Rajesh Ranjan [hi],
+ Andika Triwidada [id], Luca Ferretti [it], Changwoo Ryu [ko],
+ Rudolfs Mazurs [lt], Kjartan Maraas [nb], Manoj Kumar Giri [or],
+ A S Alam [pa], Piotr Drąg [pl], Duarte Loreto [pt], Henrique P. Machado,
+ Gabriel F. Vilar [pt_BR], Daniel Nylander [se], Matej Urbančič [sl],
+ Tirumurti Vasudevan [ta], Yinghua Wang [zh_CN],
+ Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.1.91
 ======
 
