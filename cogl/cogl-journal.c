@@ -908,6 +908,10 @@ can_software_clip_entry (CoglJournalEntry *journal_entry,
       clip_bounds_out->y_2 = MIN (clip_bounds_out->y_2, rect_y2 - ty);
     }
 
+  if (clip_bounds_out->x_2 <= clip_bounds_out->x_1 ||
+      clip_bounds_out->y_2 <= clip_bounds_out->y_1)
+    memset (clip_bounds_out, 0, sizeof (ClipBounds));
+
   return TRUE;
 }
 
