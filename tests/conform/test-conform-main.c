@@ -140,6 +140,7 @@ main (int argc, char **argv)
   UNPORTED_TEST ("/cogl", test_cogl_readpixels);
   UNPORTED_TEST ("/cogl", test_cogl_path);
   ADD_TEST ("/cogl", test_cogl_depth_test);
+  ADD_TEST ("/cogl", test_cogl_color_mask);
 
   UNPORTED_TEST ("/cogl/texture", test_cogl_npot_texture);
   UNPORTED_TEST ("/cogl/texture", test_cogl_multitexture);

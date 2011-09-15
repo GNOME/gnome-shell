@@ -42,6 +42,7 @@ unported_test_sources = \
 
 test_sources = \
 	test-depth-test.c \
+	test-color-mask.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
