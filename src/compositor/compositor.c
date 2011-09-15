@@ -606,22 +606,30 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
 
 /*
  * Shapes the cow so that the given window is exposed,
- * when xwin is None it clears the shape again
+ * when metaWindow is NULL it clears the shape again
  */
 static void
 meta_shape_cow_for_window (MetaScreen *screen,
-                           Window xwin)
+                           MetaWindow *metaWindow)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
   Display *xdisplay = meta_display_get_xdisplay (meta_screen_get_display (screen));
 
-  if (xwin == None)
-    XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
+  if (metaWindow == NULL)
+      XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
   else
     {
       XserverRegion output_region;
-      XRectangle screen_rect;
+      XRectangle screen_rect, window_bounds;
       int width, height;
+      MetaRectangle rect;
+
+      meta_window_get_outer_rect (metaWindow, &rect);
+
+      window_bounds.x = rect.x;
+      window_bounds.y = rect.y;
+      window_bounds.width = rect.width;
+      window_bounds.height = rect.height;
 
       meta_screen_get_size (screen, &width, &height);
       screen_rect.x = 0;
@@ -629,7 +637,8 @@ meta_shape_cow_for_window (MetaScreen *screen,
       screen_rect.width = width;
       screen_rect.height = height;
 
-      output_region = XFixesCreateRegionFromWindow (xdisplay, xwin, WindowRegionBounding);
+      output_region = XFixesCreateRegion (xdisplay, &window_bounds, 1);
+
       XFixesInvertRegion (xdisplay, output_region, &screen_rect, output_region);
       XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, output_region);
       XFixesDestroyRegion (xdisplay, output_region);
@@ -671,7 +680,7 @@ meta_compositor_remove_window (MetaCompositor *compositor,
     {
       meta_window_actor_set_redirected (window_actor, TRUE);
       meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
-                                 None);
+                                 NULL);
       info->unredirected_window = NULL;
     }
 
@@ -1166,13 +1175,13 @@ pre_paint_windows (MetaCompScreen *info)
         {
           meta_window_actor_set_redirected (info->unredirected_window, TRUE);
           meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
-                                     None);
+                                     NULL);
         }
 
       if (expected_unredirected_window != NULL)
         {
           meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (top_window)),
-                                     meta_window_actor_get_x_window (top_window));
+                                     meta_window_actor_get_meta_window (top_window));
           meta_window_actor_set_redirected (top_window, FALSE);
         }
 
