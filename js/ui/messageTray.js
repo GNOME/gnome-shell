@@ -1495,8 +1495,11 @@ MessageTray.prototype = {
         // after notifications are done showing. However, we don't want that to happen for
         // transient sources, which are removed after the notification is shown, but are
         // not removed fast enough because of the callbacks to avoid the summary popping up.
-        // So we just don't add transient sources to this._newSummaryItems .
-        if (!source.isTransient)
+        // So we just don't add transient sources to this._newSummaryItems.
+        // We don't want that to happen for chat sources neither, because they
+        // can be added when the user starts a chat from Empathy and they are not transient.
+        // The notification will popup on incoming message anyway. See bug #657249.
+        if (!source.isTransient && !source.isChat)
             this._newSummaryItems.push(summaryItem);
 
         source.connect('notify', Lang.bind(this, this._onNotify));
