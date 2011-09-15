@@ -19,7 +19,7 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 servicedir = $(datadir)/dbus-1/services
 service_DATA = $(service_in_files:.service.in=.service)
 
-$(service_DATA): $(service_in_files) Makefile
+%.service: %.service.in Makefile
 	$(AM_V_GEN)									\
 		[ -d $(@D) ] || $(mkdir_p) $(@D) ;					\
 		sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@.tmp && mv $@.tmp $@
