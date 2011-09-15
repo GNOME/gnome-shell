@@ -142,6 +142,7 @@ AuthenticationDialog.prototype = {
         this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
         this._passwordBox.add(this._passwordEntry,
                               {expand: true });
+        this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
 
         this._errorMessageLabel = new St.Label({ style_class: 'polkit-dialog-error-label' });
@@ -186,13 +187,6 @@ AuthenticationDialog.prototype = {
         this._session.connect('request', Lang.bind(this, this._onSessionRequest));
         this._session.connect('show-error', Lang.bind(this, this._onSessionShowError));
         this._session.connect('show-info', Lang.bind(this, this._onSessionShowInfo));
-
-        // Delay focus grab to avoid ModalDialog stealing focus with
-        // its buttons
-        this.connect('opened',
-                     Lang.bind(this, function() {
-                         this._passwordEntry.grab_key_focus();
-                     }));
     },
 
     startAuthentication: function() {
