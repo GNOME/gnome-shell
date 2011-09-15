@@ -559,7 +559,7 @@ AppWellIcon.prototype = {
             this._menu.connect('activate-window', Lang.bind(this, function (menu, window) {
                 this.activateWindow(window);
             }));
-            this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
+            this._menu.connect('open-state-changed', Lang.bind(this, function (menu, isPoppedUp) {
                 if (!isPoppedUp)
                     this._onMenuPoppedDown();
             }));
@@ -643,7 +643,6 @@ AppIconMenu.prototype = {
         this._source = source;
 
         this.connect('activate', Lang.bind(this, this._onActivate));
-        this.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
 
         this.actor.add_style_class_name('app-well-menu');
 
@@ -705,14 +704,6 @@ AppIconMenu.prototype = {
     popup: function(activatingButton) {
         this._redisplay();
         this.open();
-    },
-
-    _onOpenStateChanged: function (menu, open) {
-        if (open) {
-            this.emit('popup', true);
-        } else {
-            this.emit('popup', false);
-        }
     },
 
     _onActivate: function (actor, child) {
