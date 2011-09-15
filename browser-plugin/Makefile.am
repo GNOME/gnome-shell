@@ -1,5 +1,5 @@
 
-mozillalibdir = $(libdir)/mozilla/plugins
+mozillalibdir = $(BROWSER_PLUGIN_DIR)
 
 mozillalib_LTLIBRARIES = libgnome-shell-browser-plugin.la
 

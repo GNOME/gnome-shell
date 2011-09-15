@@ -235,6 +235,9 @@ else
 fi
 AC_SUBST(SHELL_SYSTEM_CA_FILE,["$with_ca_certificates"])
 
+BROWSER_PLUGIN_DIR="${BROWSER_PLUGIN_DIR:-"\${libdir}/mozilla/plugins"}"
+AC_ARG_VAR([BROWSER_PLUGIN_DIR],[Where to install the plugin to])
+
 AC_CONFIG_FILES([
   Makefile
   data/Makefile
