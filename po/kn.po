@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
 "POT-Creation-Date: 2011-09-12 13:51+0100\n"
-"PO-Revision-Date: 2011-09-05 17:46+0530\n"
+"PO-Revision-Date: 2011-09-15 22:42+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "Language: kn\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3852
 msgid "X coordinate"
-msgstr ""
+msgstr "X ಅಕ್ಷಾಂಶ"
 
 #: clutter/clutter-actor.c:3853
 msgid "X coordinate of the actor"
@@ -29,7 +29,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3868
 msgid "Y coordinate"
-msgstr ""
+msgstr "Y ಅಕ್ಷಾಂಶ"
 
 #: clutter/clutter-actor.c:3869
 msgid "Y coordinate of the actor"
@@ -2154,3 +2154,4 @@ msgstr ""
 #: clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
 msgstr ""
+
