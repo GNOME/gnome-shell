@@ -2741,7 +2741,7 @@ get_control (MetaFrames *frames,
     {
       if (has_vert && has_horiz)
         return META_FRAME_CONTROL_RESIZE_SW;
-      else if (has_vert && has_north_resize)
+      else if (has_vert)
         return META_FRAME_CONTROL_RESIZE_S;
       else if (has_horiz)
         return META_FRAME_CONTROL_RESIZE_W;
