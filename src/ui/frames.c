@@ -2787,7 +2787,10 @@ get_control (MetaFrames *frames,
         return META_FRAME_CONTROL_RESIZE_E;
     }
 
-  return META_FRAME_CONTROL_NONE;
+  if (y >= fgeom.borders.total.top)
+    return META_FRAME_CONTROL_NONE;
+  else
+    return META_FRAME_CONTROL_TITLE;
 }
 
 void
