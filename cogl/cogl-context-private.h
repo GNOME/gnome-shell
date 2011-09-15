@@ -74,8 +74,7 @@ struct _CoglContext
   /* Enable cache */
   unsigned long     enable_flags;
 
-  gboolean          enable_backface_culling;
-  CoglFrontWinding  flushed_front_winding;
+  gboolean          legacy_backface_culling_enabled;
 
   /* A few handy matrix constants */
   CoglMatrix        identity_matrix;

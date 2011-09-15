@@ -141,33 +141,6 @@ cogl_clear (const CoglColor *color, unsigned long buffers)
   cogl_framebuffer_clear (cogl_get_draw_framebuffer (), buffers, color);
 }
 
-static gboolean
-toggle_flag (CoglContext *ctx,
-	     unsigned long new_flags,
-	     unsigned long flag,
-	     GLenum gl_flag)
-{
-  /* Toggles and caches a single enable flag on or off
-   * by comparing to current state
-   */
-  if (new_flags & flag)
-    {
-      if (!(ctx->enable_flags & flag))
-	{
-	  GE( ctx, glEnable (gl_flag) );
-	  ctx->enable_flags |= flag;
-	  return TRUE;
-	}
-    }
-  else if (ctx->enable_flags & flag)
-    {
-      GE( ctx, glDisable (gl_flag) );
-      ctx->enable_flags &= ~flag;
-    }
-
-  return FALSE;
-}
-
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
 
 static gboolean
@@ -208,10 +181,6 @@ _cogl_enable (unsigned long flags)
    * hope of lessening number GL traffic.
   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  toggle_flag (ctx, flags,
-               COGL_ENABLE_BACKFACE_CULLING,
-               GL_CULL_FACE);
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   if (ctx->driver != COGL_DRIVER_GLES2)
@@ -264,13 +233,15 @@ cogl_set_backface_culling_enabled (gboolean setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->enable_backface_culling == setting)
+  if (ctx->legacy_backface_culling_enabled == setting)
     return;
 
-  /* Currently the journal can't track changes to backface culling state... */
-  _cogl_framebuffer_flush_journal (cogl_get_draw_framebuffer ());
+  ctx->legacy_backface_culling_enabled = setting;
 
-  ctx->enable_backface_culling = setting;
+  if (ctx->legacy_backface_culling_enabled)
+    ctx->legacy_state_set++;
+  else
+    ctx->legacy_state_set--;
 }
 
 gboolean
@@ -278,39 +249,7 @@ cogl_get_backface_culling_enabled (void)
 {
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  return ctx->enable_backface_culling;
-}
-
-void
-_cogl_flush_face_winding (void)
-{
-  CoglFrontWinding winding;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* The front face winding doesn't matter if we aren't performing any
-   * backface culling... */
-  if (!ctx->enable_backface_culling)
-    return;
-
-  /* NB: We use a clockwise face winding order when drawing offscreen because
-   * all offscreen rendering is done upside down resulting in reversed winding
-   * for all triangles.
-   */
-  if (cogl_is_offscreen (cogl_get_draw_framebuffer ()))
-    winding = COGL_FRONT_WINDING_CLOCKWISE;
-  else
-    winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
-
-  if (winding != ctx->flushed_front_winding)
-    {
-
-      if (winding == COGL_FRONT_WINDING_CLOCKWISE)
-        GE (ctx, glFrontFace (GL_CW));
-      else
-        GE (ctx, glFrontFace (GL_CCW));
-      ctx->flushed_front_winding = winding;
-    }
+  return ctx->legacy_backface_culling_enabled;
 }
 
 void
@@ -726,11 +665,7 @@ cogl_begin_gl (void)
                                  FALSE,
                                  cogl_pipeline_get_n_layers (pipeline));
 
-  if (ctx->enable_backface_culling)
-    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
-
   _cogl_enable (enable_flags);
-  _cogl_flush_face_winding ();
 
   /* Disable any cached vertex arrays */
   _cogl_attribute_disable_cached_arrays ();

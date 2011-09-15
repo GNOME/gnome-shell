@@ -106,6 +106,8 @@ COGL_EXT_FUNCTION (void, glFlush,
                    (void))
 COGL_EXT_FUNCTION (void, glFrontFace,
                    (GLenum mode))
+COGL_EXT_FUNCTION (void, glCullFace,
+                   (GLenum mode))
 COGL_EXT_FUNCTION (void, glGenTextures,
                    (GLsizei n, GLuint* textures))
 COGL_EXT_FUNCTION (GLenum, glGetError,

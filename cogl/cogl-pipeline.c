@@ -190,6 +190,7 @@ _cogl_pipeline_init_default_pipeline (void)
   CoglPipelineBlendState *blend_state = &big_state->blend_state;
   CoglDepthState *depth_state = &big_state->depth_state;
   CoglPipelineLogicOpsState *logic_ops_state = &big_state->logic_ops_state;
+  CoglPipelineCullFaceState *cull_face_state = &big_state->cull_face_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -296,6 +297,9 @@ _cogl_pipeline_init_default_pipeline (void)
   big_state->point_size = 1.0f;
 
   logic_ops_state->color_mask = COGL_COLOR_MASK_ALL;
+
+  cull_face_state->mode = COGL_PIPELINE_CULL_FACE_MODE_NONE;
+  cull_face_state->front_winding = COGL_WINDING_COUNTER_CLOCKWISE;
 
   ctx->default_pipeline = _cogl_pipeline_object_new (pipeline);
 }
@@ -1047,6 +1051,13 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
               sizeof (CoglPipelineLogicOpsState));
     }
 
+  if (differences & COGL_PIPELINE_STATE_CULL_FACE)
+    {
+      memcpy (&big_state->cull_face_state,
+              &src->big_state->cull_face_state,
+              sizeof (CoglPipelineCullFaceState));
+    }
+
   /* XXX: we shouldn't bother doing this in most cases since
    * _copy_differences is typically used to initialize pipeline state
    * by copying it from the current authority, so it's not actually
@@ -1122,6 +1133,13 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
         memcpy (&pipeline->big_state->logic_ops_state,
                 &authority->big_state->logic_ops_state,
                 sizeof (CoglPipelineLogicOpsState));
+        break;
+      }
+    case COGL_PIPELINE_STATE_CULL_FACE:
+      {
+        memcpy (&pipeline->big_state->cull_face_state,
+                &authority->big_state->cull_face_state,
+                sizeof (CoglPipelineCullFaceState));
         break;
       }
     }
@@ -2754,6 +2772,12 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
 
   if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
+                              COGL_PIPELINE_STATE_CULL_FACE_INDEX,
+                              _cogl_pipeline_cull_face_state_equal))
+    goto done;
+
+  if (!simple_property_equal (authorities0, authorities1,
+                              pipelines_difference,
                               COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
                               _cogl_pipeline_point_size_equal))
     goto done;
@@ -3208,6 +3232,14 @@ _cogl_pipeline_apply_legacy_state (CoglPipeline *pipeline)
 
   if (ctx->legacy_fog_state.enabled)
     _cogl_pipeline_set_fog_state (pipeline, &ctx->legacy_fog_state);
+
+  if (ctx->legacy_backface_culling_enabled)
+    {
+      CoglPipelineCullFaceState state;
+      state.mode = COGL_PIPELINE_CULL_FACE_MODE_BACK;
+      state.front_winding = COGL_WINDING_COUNTER_CLOCKWISE;
+      _cogl_pipeline_set_cull_face_state (pipeline, &state);
+    }
 }
 
 void
@@ -3346,13 +3378,15 @@ _cogl_pipeline_init_state_hash_functions (void)
     _cogl_pipeline_hash_depth_state;
   state_hash_functions[COGL_PIPELINE_STATE_FOG_INDEX] =
     _cogl_pipeline_hash_fog_state;
+  state_hash_functions[COGL_PIPELINE_STATE_CULL_FACE_INDEX] =
+    _cogl_pipeline_hash_cull_face_state;
   state_hash_functions[COGL_PIPELINE_STATE_POINT_SIZE_INDEX] =
     _cogl_pipeline_hash_point_size_state;
   state_hash_functions[COGL_PIPELINE_STATE_LOGIC_OPS_INDEX] =
     _cogl_pipeline_hash_logic_ops_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 12);
+  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 13);
 }
 
 unsigned int

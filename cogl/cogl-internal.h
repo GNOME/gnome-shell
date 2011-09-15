@@ -32,12 +32,6 @@
 #include <X11/Xutil.h>
 #endif
 
-typedef enum
-{
-  COGL_FRONT_WINDING_CLOCKWISE,
-  COGL_FRONT_WINDING_COUNTER_CLOCKWISE
-} CoglFrontWinding;
-
 typedef enum {
   COGL_BOXED_NONE,
   COGL_BOXED_INT,
@@ -98,7 +92,6 @@ cogl_gl_error_to_string (GLenum error_code);
 #define COGL_ENABLE_ALPHA_TEST        (1<<1)
 #define COGL_ENABLE_VERTEX_ARRAY      (1<<2)
 #define COGL_ENABLE_COLOR_ARRAY       (1<<3)
-#define COGL_ENABLE_BACKFACE_CULLING  (1<<4)
 
 int
 _cogl_get_format_bpp (CoglPixelFormat format);
@@ -108,9 +101,6 @@ _cogl_enable (unsigned long flags);
 
 unsigned long
 _cogl_get_enable (void);
-
-void
-_cogl_flush_face_winding (void);
 
 void
 _cogl_transform_point (const CoglMatrix *matrix_mv,

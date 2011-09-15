@@ -210,6 +210,27 @@ _cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
 }
 
 gboolean
+_cogl_pipeline_cull_face_state_equal (CoglPipeline *authority0,
+                                      CoglPipeline *authority1)
+{
+  CoglPipelineCullFaceState *cull_face_state0
+    = &authority0->big_state->cull_face_state;
+  CoglPipelineCullFaceState *cull_face_state1
+    = &authority1->big_state->cull_face_state;
+
+  /* The cull face state is considered equal if two pipelines are both
+     set to no culling. If the front winding property is ever used for
+     anything else or the comparison is used not just for drawing then
+     this would have to change */
+
+  if (cull_face_state0->mode == COGL_PIPELINE_CULL_FACE_MODE_NONE)
+    return cull_face_state1->mode == COGL_PIPELINE_CULL_FACE_MODE_NONE;
+
+  return (cull_face_state0->mode == cull_face_state1->mode &&
+          cull_face_state0->front_winding == cull_face_state1->front_winding);
+}
+
+gboolean
 _cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1)
 {
@@ -1155,6 +1176,52 @@ _cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
                                    _cogl_pipeline_fog_state_equal);
 }
 
+void
+_cogl_pipeline_set_cull_face_state (CoglPipeline *pipeline,
+                                    const CoglPipelineCullFaceState *
+                                                            cull_face_state)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_CULL_FACE;
+  CoglPipeline *authority;
+  CoglPipelineCullFaceState *current_cull_face_state;
+
+  g_return_if_fail (cogl_is_pipeline (pipeline));
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  current_cull_face_state = &authority->big_state->cull_face_state;
+
+  if (current_cull_face_state->mode == cull_face_state->mode &&
+      current_cull_face_state->front_winding == cull_face_state->front_winding)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
+
+  pipeline->big_state->cull_face_state = *cull_face_state;
+
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_cull_face_state_equal);
+}
+
+CoglPipelineCullFaceMode
+_cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_CULL_FACE;
+  CoglPipeline *authority;
+
+  g_return_val_if_fail (cogl_is_pipeline (pipeline),
+                        COGL_PIPELINE_CULL_FACE_MODE_NONE);
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  return authority->big_state->cull_face_state.mode;
+}
+
 float
 cogl_pipeline_get_point_size (CoglPipeline *pipeline)
 {
@@ -1364,4 +1431,27 @@ _cogl_pipeline_hash_logic_ops_state (CoglPipeline *authority,
   CoglPipelineLogicOpsState *logic_ops_state = &authority->big_state->logic_ops_state;
   state->hash = _cogl_util_one_at_a_time_hash (state->hash, &logic_ops_state->color_mask,
                                                sizeof (CoglColorMask));
+}
+
+void
+_cogl_pipeline_hash_cull_face_state (CoglPipeline *authority,
+                                     CoglPipelineHashState *state)
+{
+  CoglPipelineCullFaceState *cull_face_state
+    = &authority->big_state->cull_face_state;
+
+  /* The cull face state is considered equal if two pipelines are both
+     set to no culling. If the front winding property is ever used for
+     anything else or the hashing is used not just for drawing then
+     this would have to change */
+  if (cull_face_state->mode == COGL_PIPELINE_CULL_FACE_MODE_NONE)
+    state->hash =
+      _cogl_util_one_at_a_time_hash (state->hash,
+                                     &cull_face_state->mode,
+                                     sizeof (CoglPipelineCullFaceMode));
+  else
+    state->hash =
+      _cogl_util_one_at_a_time_hash (state->hash,
+                                     cull_face_state,
+                                     sizeof (CoglPipelineCullFaceState));
 }

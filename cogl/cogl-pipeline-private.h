@@ -429,6 +429,7 @@ typedef enum
   COGL_PIPELINE_STATE_FOG_INDEX,
   COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
   COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
+  COGL_PIPELINE_STATE_CULL_FACE_INDEX,
 
   /* non-sparse */
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -474,6 +475,8 @@ typedef enum _CoglPipelineState
     1L<<COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
   COGL_PIPELINE_STATE_LOGIC_OPS =
     1L<<COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
+  COGL_PIPELINE_STATE_CULL_FACE =
+    1L<<COGL_PIPELINE_STATE_CULL_FACE_INDEX,
 
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE =
     1L<<COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -508,7 +511,8 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_DEPTH | \
    COGL_PIPELINE_STATE_FOG | \
    COGL_PIPELINE_STATE_POINT_SIZE | \
-   COGL_PIPELINE_STATE_LOGIC_OPS)
+   COGL_PIPELINE_STATE_LOGIC_OPS | \
+   COGL_PIPELINE_STATE_CULL_FACE)
 
 #define COGL_PIPELINE_STATE_MULTI_PROPERTY \
   (COGL_PIPELINE_STATE_LAYERS | \
@@ -516,7 +520,8 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_BLEND | \
    COGL_PIPELINE_STATE_DEPTH | \
    COGL_PIPELINE_STATE_FOG | \
-   COGL_PIPELINE_STATE_LOGIC_OPS)
+   COGL_PIPELINE_STATE_LOGIC_OPS | \
+   COGL_PIPELINE_STATE_CULL_FACE)
 
 #define COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN \
   (COGL_PIPELINE_STATE_LAYERS | \
@@ -557,6 +562,20 @@ typedef enum _CoglPipelineBlendEnable
   COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC
 } CoglPipelineBlendEnable;
 
+typedef enum
+{
+  COGL_PIPELINE_CULL_FACE_MODE_NONE,
+  COGL_PIPELINE_CULL_FACE_MODE_FRONT,
+  COGL_PIPELINE_CULL_FACE_MODE_BACK,
+  COGL_PIPELINE_CULL_FACE_MODE_BOTH
+} CoglPipelineCullFaceMode;
+
+typedef enum
+{
+  COGL_WINDING_CLOCKWISE,
+  COGL_WINDING_COUNTER_CLOCKWISE
+} CoglWinding;
+
 typedef struct
 {
   /* Determines how this pipeline is blended with other primitives */
@@ -588,6 +607,12 @@ typedef struct
 
 typedef struct
 {
+  CoglPipelineCullFaceMode mode;
+  CoglWinding front_winding;
+} CoglPipelineCullFaceState;
+
+typedef struct
+{
   CoglPipelineLightingState lighting_state;
   CoglPipelineAlphaFuncState alpha_state;
   CoglPipelineBlendState blend_state;
@@ -596,6 +621,7 @@ typedef struct
   CoglPipelineFogState fog_state;
   float point_size;
   CoglPipelineLogicOpsState logic_ops_state;
+  CoglPipelineCullFaceState cull_face_state;
 } CoglPipelineBigState;
 
 typedef enum

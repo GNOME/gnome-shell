@@ -35,6 +35,14 @@ void
 _cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
                               const CoglPipelineFogState *fog_state);
 
+void
+_cogl_pipeline_set_cull_face_state (CoglPipeline *pipeline,
+                                    const CoglPipelineCullFaceState *
+                                                             cull_face_state);
+
+CoglPipelineCullFaceMode
+_cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline);
+
 gboolean
 _cogl_pipeline_color_equal (CoglPipeline *authority0,
                             CoglPipeline *authority1);
@@ -74,6 +82,10 @@ _cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
 gboolean
 _cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
                                   CoglPipeline *authority1);
+
+gboolean
+_cogl_pipeline_cull_face_state_equal (CoglPipeline *authority0,
+                                      CoglPipeline *authority1);
 
 void
 _cogl_pipeline_hash_color_state (CoglPipeline *authority,
@@ -121,6 +133,10 @@ _cogl_pipeline_hash_point_size_state (CoglPipeline *authority,
 
 void
 _cogl_pipeline_hash_logic_ops_state (CoglPipeline *authority,
+                                     CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_hash_cull_face_state (CoglPipeline *authority,
                                      CoglPipelineHashState *state);
 
 #endif /* __COGL_PIPELINE_STATE_PRIVATE_H */

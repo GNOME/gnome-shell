@@ -605,6 +605,58 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
       ctx->current_gl_color_mask = color_mask;
     }
 
+  if (pipelines_difference & COGL_PIPELINE_STATE_CULL_FACE)
+    {
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_CULL_FACE);
+      CoglPipelineCullFaceState *cull_face_state
+        = &authority->big_state->cull_face_state;
+
+      if (cull_face_state->mode == COGL_PIPELINE_CULL_FACE_MODE_NONE)
+        GE( ctx, glDisable (GL_CULL_FACE) );
+      else
+        {
+          CoglFramebuffer *draw_framebuffer = cogl_get_draw_framebuffer ();
+          gboolean invert_winding;
+
+          GE( ctx, glEnable (GL_CULL_FACE) );
+
+          switch (cull_face_state->mode)
+            {
+            case COGL_PIPELINE_CULL_FACE_MODE_NONE:
+              g_assert_not_reached ();
+
+            case COGL_PIPELINE_CULL_FACE_MODE_FRONT:
+              GE( ctx, glCullFace (GL_FRONT) );
+              break;
+
+            case COGL_PIPELINE_CULL_FACE_MODE_BACK:
+              GE( ctx, glCullFace (GL_BACK) );
+              break;
+
+            case COGL_PIPELINE_CULL_FACE_MODE_BOTH:
+              GE( ctx, glCullFace (GL_FRONT_AND_BACK) );
+              break;
+            }
+
+          /* If we are painting to an offscreen framebuffer then we
+             need to invert the winding of the front face because
+             everything is painted upside down */
+          invert_winding = cogl_is_offscreen (draw_framebuffer);
+
+          switch (cull_face_state->front_winding)
+            {
+            case COGL_WINDING_CLOCKWISE:
+              GE( ctx, glFrontFace (invert_winding ? GL_CCW : GL_CW) );
+              break;
+
+            case COGL_WINDING_COUNTER_CLOCKWISE:
+              GE( ctx, glFrontFace (invert_winding ? GL_CW : GL_CCW) );
+              break;
+            }
+        }
+    }
+
   if (pipeline->real_blend_enable != ctx->gl_blend_enable_cache)
     {
       if (pipeline->real_blend_enable)

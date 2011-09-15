@@ -39,6 +39,7 @@
 #include "cogl-clip-stack.h"
 #include "cogl-journal-private.h"
 #include "cogl-winsys-private.h"
+#include "cogl-pipeline-state-private.h"
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40
@@ -1143,16 +1144,32 @@ notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
 
   _cogl_clip_stack_dirty ();
 
-  /* If the two draw framebuffers have a different color mask then we
-     need to ensure the logic ops are reflushed the next time
-     something is drawn */
-  if (old_draw_buffer && new_draw_buffer &&
-      cogl_framebuffer_get_color_mask (old_draw_buffer) !=
-      cogl_framebuffer_get_color_mask (new_draw_buffer))
+  if (old_draw_buffer && new_draw_buffer)
     {
-      ctx->current_pipeline_changes_since_flush |=
-        COGL_PIPELINE_STATE_LOGIC_OPS;
-      ctx->current_pipeline_age--;
+      /* If the two draw framebuffers have a different color mask then
+         we need to ensure the logic ops are reflushed the next time
+         something is drawn */
+      if (cogl_framebuffer_get_color_mask (old_draw_buffer) !=
+          cogl_framebuffer_get_color_mask (new_draw_buffer))
+        {
+          ctx->current_pipeline_changes_since_flush |=
+            COGL_PIPELINE_STATE_LOGIC_OPS;
+          ctx->current_pipeline_age--;
+        }
+
+      /* If we're switching from onscreen to offscreen and the last
+         flush pipeline is using backface culling then we also need to
+         reflush the cull face state because the winding order of the
+         front face is flipped for offscreen buffers */
+      if (old_draw_buffer->type != new_draw_buffer->type &&
+          ctx->current_pipeline &&
+          _cogl_pipeline_get_cull_face_mode (ctx->current_pipeline) !=
+          COGL_PIPELINE_CULL_FACE_MODE_NONE)
+        {
+          ctx->current_pipeline_changes_since_flush |=
+            COGL_PIPELINE_STATE_CULL_FACE;
+          ctx->current_pipeline_age--;
+        }
     }
 
   /* XXX:

@@ -216,8 +216,7 @@ cogl_context_new (CoglDisplay *display,
   context->current_clip_stack_valid = FALSE;
   context->current_clip_stack = NULL;
 
-  context->enable_backface_culling = FALSE;
-  context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
+  context->legacy_backface_culling_enabled = FALSE;
 
   cogl_matrix_init_identity (&context->identity_matrix);
   cogl_matrix_init_identity (&context->y_flip_matrix);
@@ -369,7 +368,6 @@ cogl_context_new (CoglDisplay *display,
   cogl_push_source (context->opaque_color_pipeline);
   _cogl_pipeline_flush_gl_state (context->opaque_color_pipeline, FALSE, 0);
   _cogl_enable (enable_flags);
-  _cogl_flush_face_winding ();
 
   context->atlases = NULL;
   g_hook_list_init (&context->atlas_reorganize_callbacks, sizeof (GHook));

@@ -549,9 +549,6 @@ enable_gl_state (CoglDrawFlags flags,
 
   _cogl_pipeline_flush_gl_state (source, skip_gl_color, n_tex_coord_attribs);
 
-  if (ctx->enable_backface_culling)
-    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
-
   _cogl_bitmask_clear_all (&ctx->temp_bitmask);
 
   /* Bind the attribute pointers. We need to do this after the
@@ -726,7 +723,6 @@ enable_gl_state (CoglDrawFlags flags,
   set_enabled_arrays (&ctx->arrays_enabled, &ctx->temp_bitmask);
 
   _cogl_enable (enable_flags);
-  _cogl_flush_face_winding ();
 
   return source;
 }
