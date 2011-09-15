@@ -607,6 +607,9 @@ Memory.prototype = {
         this._gjs_closure = new St.Label();
         this.actor.add(this._gjs_closure);
 
+        this._last_gc_seconds_ago = new St.Label();
+        this.actor.add(this._last_gc_seconds_ago);
+
         this._gcbutton = new St.Button({ label: 'Full GC',
                                          style_class: 'lg-obj-inspector-button' });
         this._gcbutton.connect('clicked', Lang.bind(this, function () { global.gc(); this._renderText(); }));
@@ -626,6 +629,7 @@ Memory.prototype = {
         this._gjs_gobject.text = 'gjs_gobject: ' + memInfo.gjs_gobject;
         this._gjs_function.text = 'gjs_function: ' + memInfo.gjs_function;
         this._gjs_closure.text = 'gjs_closure: ' + memInfo.gjs_closure;
+        this._last_gc_seconds_ago.text = 'last_gc_seconds_ago: ' + memInfo.last_gc_seconds_ago;
     }
 };
 

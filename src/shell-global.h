@@ -96,6 +96,9 @@ typedef struct {
   guint gjs_gobject;
   guint gjs_function;
   guint gjs_closure;
+
+  /* 32 bit to avoid js conversion problems with 64 bit */
+  guint  last_gc_seconds_ago;
 } ShellMemoryInfo;
 
 void     shell_global_get_memory_info      (ShellGlobal     *global,

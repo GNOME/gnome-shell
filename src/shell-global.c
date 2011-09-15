@@ -42,6 +42,8 @@
 static ShellGlobal *the_object = NULL;
 
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
+static void shell_global_on_gc (GjsContext   *context,
+                                ShellGlobal  *global);
 
 struct _ShellGlobal {
   GObject parent;
@@ -87,6 +89,8 @@ struct _ShellGlobal {
   ca_context *sound_context;
 
   guint32 xdnd_timestamp;
+
+  gint64 last_gc_end_time;
 };
 
 enum {
@@ -270,7 +274,10 @@ shell_global_init (ShellGlobal *global)
   global->js_context = g_object_new (GJS_TYPE_CONTEXT,
                                      "search-path", search_path,
                                      "js-version", "1.8",
+                                     "gc-notifications", TRUE,
                                      NULL);
+  g_signal_connect (global->js_context, "gc", G_CALLBACK (shell_global_on_gc), global);
+
   g_strfreev (search_path);
 }
 
@@ -1149,6 +1156,13 @@ shell_global_maybe_gc (ShellGlobal *global)
   gjs_context_maybe_gc (global->js_context);
 }
 
+static void
+shell_global_on_gc (GjsContext   *context,
+                    ShellGlobal  *global)
+{
+  global->last_gc_end_time = g_get_monotonic_time ();
+}
+
 /**
  * shell_global_get_memory_info:
  * @global:
@@ -1161,6 +1175,7 @@ shell_global_get_memory_info (ShellGlobal        *global,
                               ShellMemoryInfo    *meminfo)
 {
   JSContext *context;
+  gint64 now;
 
   memset (meminfo, 0, sizeof (meminfo));
 #ifdef HAVE_MALLINFO
@@ -1178,6 +1193,10 @@ shell_global_get_memory_info (ShellGlobal        *global,
   meminfo->gjs_gobject = (unsigned int) gjs_counter_object.value;
   meminfo->gjs_function = (unsigned int) gjs_counter_function.value;
   meminfo->gjs_closure = (unsigned int) gjs_counter_closure.value;
+
+  now = g_get_monotonic_time ();
+
+  meminfo->last_gc_seconds_ago = (now - global->last_gc_end_time) / G_TIME_SPAN_SECOND;
 }
 
 
