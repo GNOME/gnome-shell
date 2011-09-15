@@ -131,7 +131,9 @@ ModalDialog.prototype = {
             else
                 x_alignment = St.Align.MIDDLE;
 
-            this._initialKeyFocus = buttonInfo.button;
+            if (this._initialKeyFocus == this._dialogLayout ||
+                this._buttonLayout.contains(this._initialKeyFocus))
+                this._initialKeyFocus = buttonInfo.button;
             this._buttonLayout.add(buttonInfo.button,
                                    { expand: true,
                                      x_fill: false,
