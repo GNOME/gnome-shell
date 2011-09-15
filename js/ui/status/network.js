@@ -1742,13 +1742,6 @@ NMApplet.prototype = {
         if (wrapperClass) {
             let wrapper = new wrapperClass(this._client, device, this._connections);
 
-            wrapper._networkLostId = wrapper.connect('network-lost', Lang.bind(this, function(device) {
-                this._notifyForDevice(device, 'network-offline',
-                                      _("Connectivity lost"),
-                                      _("You are no longer connected to the network"),
-                                      // set critical urgency to popup the notification automatically
-                                      MessageTray.Urgency.CRITICAL);
-            }));
             wrapper._activationFailedId = wrapper.connect('activation-failed', Lang.bind(this, function(device, reason) {
                 // XXX: nm-applet has no special text depending on reason
                 // but I'm not sure of this generic message
@@ -1761,7 +1754,6 @@ NMApplet.prototype = {
                 this._syncSectionTitle(dev.category);
             }));
             wrapper._destroyId = wrapper.connect('destroy', function(wrapper) {
-                wrapper.disconnect(wrapper._networkLostId);
                 wrapper.disconnect(wrapper._activationFailedId);
                 wrapper.disconnect(wrapper._deviceStateChangedId);
                 wrapper.disconnect(wrapper._destroyId);
