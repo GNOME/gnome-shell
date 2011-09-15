@@ -495,10 +495,10 @@ msgstr[3] "Uporabnik %s bo samodejno odjavljen čez %d sekunde."
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Uporabnik bo samodejno odjavljen čez %s sekund."
-msgstr[1] "Uporabnik bo samodejno odjavljen čez %s sekundo."
-msgstr[2] "Uporabnik bo samodejno odjavljen čez %s sekundi."
-msgstr[3] "Uporabnik bo samodejno odjavljen čez %s sekunde."
+msgstr[0] "Uporabnik bo samodejno odjavljen čez %d sekund."
+msgstr[1] "Uporabnik bo samodejno odjavljen čez %d sekundo."
+msgstr[2] "Uporabnik bo samodejno odjavljen čez %d sekundi."
+msgstr[3] "Uporabnik bo samodejno odjavljen čez %d sekunde."
 
 #: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
@@ -1437,7 +1437,7 @@ msgstr "Dolžina potrdila strežnika ali pa globina verige potrdila presega omej
 #: ../js/ui/telepathyClient.js:1459
 #, c-format
 msgid "Connection to %s failed"
-msgstr "Povezava z % je spodletela"
+msgstr "Povezava z %s je spodletela"
 
 #: ../js/ui/telepathyClient.js:1468
 msgid "Reconnect"
