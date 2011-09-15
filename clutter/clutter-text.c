@@ -2009,7 +2009,8 @@ clutter_text_paint (ClutterActor *self)
     }
 
   /* don't bother painting an empty text actor */
-  if (priv->text[0] == '\0')
+  if (priv->text[0] == '\0' &&
+      (!priv->editable || !priv->cursor_visible))
     return;
 
   clutter_actor_get_allocation_box (self, &alloc);
