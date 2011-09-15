@@ -115,6 +115,7 @@ NetworkSecretDialog.prototype = {
                     initialFocusSet = true;
                 }
 
+                secret.entry.clutter_text.connect('activate', Lang.bind(this, this._onOk));
                 secret.entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
                     secret.value = secret.entry.get_text();
                     if (secret.validate)
