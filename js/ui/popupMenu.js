@@ -35,6 +35,7 @@ PopupBaseMenuItem.prototype = {
         params = Params.parse (params, { reactive: true,
                                          activate: true,
                                          hover: true,
+                                         sensitive: true,
                                          style_class: null
                                        });
         this.actor = new Shell.GenericContainer({ style_class: 'popup-menu-item',
@@ -52,11 +53,15 @@ PopupBaseMenuItem.prototype = {
         this._columnWidths = null;
         this._spacing = 0;
         this.active = false;
+        this._activatable = params.reactive && params.activate;
+        this.sensitive = this._activatable && params.sensitive;
+
+        this.setSensitive(this.sensitive);
 
         if (params.style_class)
             this.actor.add_style_class_name(params.style_class);
 
-        if (params.reactive && params.activate) {
+        if (this._activatable) {
             this.actor.connect('button-release-event', Lang.bind(this, this._onButtonReleaseEvent));
             this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         }
@@ -115,6 +120,23 @@ PopupBaseMenuItem.prototype = {
                 this.actor.remove_style_pseudo_class('active');
             this.emit('active-changed', active);
         }
+    },
+
+    setSensitive: function(sensitive) {
+        if (!this._activatable)
+            return;
+        if (this.sensitive == sensitive)
+            return;
+
+        this.sensitive = sensitive;
+        this.actor.reactive = sensitive;
+        this.actor.can_focus = sensitive;
+
+        if (sensitive)
+            this.actor.remove_style_pseudo_class('insensitive');
+        else
+            this.actor.add_style_pseudo_class('insensitive');
+        this.emit('sensitive-changed', sensitive);
     },
 
     destroy: function() {
@@ -899,6 +921,17 @@ PopupMenuBase.prototype = {
                 this.emit('active-changed', null);
             }
         }));
+        menuItem._sensitiveChangeId = menuItem.connect('sensitive-changed', Lang.bind(this, function(menuItem, sensitive) {
+            if (!sensitive && this._activeMenuItem == menuItem) {
+                if (!this.actor.navigate_focus(menuItem.actor,
+                                               Gtk.DirectionType.TAB_FORWARD,
+                                               true))
+                    this.actor.grab_key_focus();
+            } else if (sensitive && this._activeMenuItem == null) {
+                if (global.stage.get_key_focus() == this.actor)
+                    menuItem.actor.grab_key_focus();
+            }
+        }));
         menuItem._activateId = menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             this.emit('activate', menuItem);
             this.close(true);
@@ -906,6 +939,7 @@ PopupMenuBase.prototype = {
         menuItem.connect('destroy', Lang.bind(this, function(emitter) {
             menuItem.disconnect(menuItem._activateId);
             menuItem.disconnect(menuItem._activeChangeId);
+            menuItem.disconnect(menuItem._sensitiveChangeId);
             if (menuItem.menu) {
                 menuItem.menu.disconnect(menuItem._subMenuActivateId);
                 menuItem.menu.disconnect(menuItem._subMenuActiveChangeId);
