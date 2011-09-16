@@ -649,6 +649,48 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(win32_resources_ldflag) \
 	$(NULL)
 
+dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters
+
+../build/win32/vs9/clutter.vcproj: $(top_srcdir)/build/win32/vs9/clutter.vcprojin
+	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(built_source_c) | tr '/' '\\'`; do \
+		case $$F in \
+		*.c)	echo '   <File RelativePath="..\..\..\clutter\'$$F'" />' \
+			;; \
+		esac; \
+	done >clutter.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/clutter.vcprojin >$@
+	rm clutter.sourcefiles
+	
+../build/win32/vs10/clutter.vcxproj: $(top_srcdir)/build/win32/vs10/clutter.vcxprojin
+	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(built_source_c) | tr '/' '\\'`; do \
+		case $$F in \
+		*.c)	echo '    <ClCompile Include="..\..\..\clutter\'$$F'" />' \
+			;; \
+		esac; \
+	done >clutter.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/clutter.vcxprojin >$@
+	rm clutter.vs10.sourcefiles
+	
+../build/win32/vs10/clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/clutter.vcxproj.filtersin
+	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(built_source_c) | tr '/' '\\'`; do \
+		case $$F in \
+		*.c)	echo '    <ClCompile Include="..\..\..\clutter\'$$F'"><Filter>Sources</Filter></ClCompile>' \
+			;; \
+		esac; \
+	done >clutter.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/clutter.vcxproj.filtersin >$@
+	rm clutter.vs10.sourcefiles.filters
+	
+EXTRA_DIST += \
+	clutter-version.h.win32	\
+	clutter-config.h.win32	\
+	clutter-version.h.win32.in	\
+	clutter.symbols	\
+	$(NULL)
+
+# Let the VS9/VS10 Project files be cleared out before they are re-expanded...
+DISTCLEANFILES += ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters
+
 # gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
 

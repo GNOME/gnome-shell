@@ -39,9 +39,9 @@ do_events (ClutterActor *stage)
 
   for (i = 0; i < n_events; i++)
     {
-      angle += (2.0 * M_PI) / (gdouble)n_actors;
-      while (angle > M_PI * 2.0)
-        angle -= M_PI * 2.0;
+      angle += (2.0 * G_PI) / (gdouble)n_actors;
+      while (angle > G_PI * 2.0)
+        angle -= G_PI * 2.0;
 
       /* If we synthesized events, they would be motion compressed;
        * calling get_actor_at_position() doesn't have that problem
@@ -99,7 +99,7 @@ main (int argc, char **argv)
 
   for (i = n_actors - 1; i >= 0; i--)
     {
-      angle = ((2.0 * M_PI) / (gdouble) n_actors) * i;
+      angle = ((2.0 * G_PI) / (gdouble) n_actors) * i;
 
       color.red = (1.0 - ABS ((MAX (0, MIN (n_actors/2.0 + 0, i))) /
                   (gdouble)(n_actors/4.0) - 1.0)) * 255.0;

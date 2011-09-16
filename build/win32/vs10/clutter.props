@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <GlibEtcInstallRoot>..\..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
+    <ClutterApiVersion>1.0</ClutterApiVersion>
+    <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
+    <BaseWinBuildDef>_WIN32_WINNT=0x0500</BaseWinBuildDef>
+    <BaseBuildDef>$(BaseWinBuildDef);CLUTTER_DISABLE_DEPRECATED;COGL_DISABLE_DEPRECATED</BaseBuildDef>
+    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
+    <DebugLibBuildDefines>$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG</DebugLibBuildDefines>
+    <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
+    <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_PREFIX="../";CLUTTER_LIBDIR="../lib";CLUTTER_DATADIR="../share";CLUTTER_LOCALEDIR="../share/locale"</ClutterBuildDefines>
+    <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir"</CallyTestDefs>
+    <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ClutterApiVersion)/data"</TestProgDef>
+    <PreBuildCmd>
+if exist ..\..\..\config.h goto DONE_CONFIG_H
+
+copy ..\..\..\config.h.win32 ..\..\..\config.h
+
+:DONE_CONFIG_H
+
+
+if exist ..\..\..\clutter\clutter-config.h goto DONE_CLUTTER_CONFIG_H
+
+copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h
+
+:DONE_CLUTTER_CONFIG_H
+
+
+if exist ..\..\..\clutter\clutter-version.h goto DONE_CLUTTER_VERSION_H
+
+copy ..\..\..\clutter\clutter-version.h.win32 ..\..\..\clutter\clutter-version.h
+
+:DONE_CLUTTER_VERSION_H
+
+
+if exist ..\..\..\clutter\clutter-enum-types.h goto DONE_CLUTTER_ENUM_H
+
+cd ..\..\..\clutter
+
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.h.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-behaviour.h ./clutter-behaviour-depth.h ./clutter-behaviour-ellipse.h ./clutter-behaviour-opacity.h ./clutter-behaviour-path.h ./clutter-behaviour-rotate.h ./clutter-behaviour-scale.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-deprecated.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-drop-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-frame-source.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-keysyms-compat.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-swipe-action.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-timeout-pool.h ./clutter-types.h ./clutter-units.h ./clutter-util.h ./win32/clutter-win32.h &gt; clutter-enum-types.h
+
+cd ..\build\win32\vs10
+
+:DONE_CLUTTER_ENUM_H
+
+
+if exist ..\..\..\clutter\clutter-enum-types.c goto DONE_CLUTTER_ENUM_C
+
+cd ..\..\..\clutter
+
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template clutter-enum-types.c.in ./clutter-action.h ./clutter-actor-meta.h ./clutter-actor.h ./clutter-align-constraint.h ./clutter-alpha.h ./clutter-animatable.h ./clutter-animation.h ./clutter-animator.h ./clutter-backend.h ./clutter-behaviour.h ./clutter-behaviour-depth.h ./clutter-behaviour-ellipse.h ./clutter-behaviour-opacity.h ./clutter-behaviour-path.h ./clutter-behaviour-rotate.h ./clutter-behaviour-scale.h ./clutter-bind-constraint.h ./clutter-binding-pool.h ./clutter-bin-layout.h ./clutter-blur-effect.h ./clutter-box.h  ./clutter-box-layout.h ./clutter-cairo-texture.h ./clutter-child-meta.h ./clutter-click-action.h ./clutter-clone.h ./clutter-color-static.h ./clutter-color.h ./clutter-colorize-effect.h ./clutter-constraint.h ./clutter-container.h ./clutter-deform-effect.h ./clutter-deprecated.h ./clutter-desaturate-effect.h ./clutter-device-manager.h ./clutter-drag-action.h ./clutter-drop-action.h ./clutter-effect.h ./clutter-event.h ./clutter-feature.h ./clutter-fixed.h ./clutter-fixed-layout.h ./clutter-flow-layout.h ./clutter-frame-source.h ./clutter-group.h ./clutter-input-device.h ./clutter-interval.h ./clutter-keysyms.h ./clutter-keysyms-compat.h ./clutter-layout-manager.h ./clutter-layout-meta.h ./clutter-list-model.h ./clutter-main.h ./clutter-media.h ./clutter-model.h ./clutter-offscreen-effect.h ./clutter-page-turn-effect.h ./clutter-path-constraint.h ./clutter-path.h ./clutter-rectangle.h ./clutter-score.h ./clutter-script.h ./clutter-scriptable.h ./clutter-settings.h ./clutter-shader.h ./clutter-shader-effect.h ./clutter-shader-types.h ./clutter-snap-constraint.h ./clutter-stage.h ./clutter-stage-manager.h ./clutter-stage-window.h ./clutter-state.h ./clutter-swipe-action.h ./clutter-table-layout.h ./clutter-texture.h ./clutter-text.h ./clutter-timeline.h ./clutter-timeout-pool.h ./clutter-types.h ./clutter-units.h ./clutter-util.h ./win32/clutter-win32.h &gt; clutter-enum-types.c
+
+cd ..\build\win32\vs10
+
+:DONE_CLUTTER_ENUM_C
+
+
+if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H
+
+cd ..\..\..\clutter
+
+$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --header clutter-marshal.list &gt; clutter-marshal.h
+
+cd ..\build\win32\vs10
+
+:DONE_CLUTTER_MARSHAL_H
+
+
+if exist ..\..\..\clutter\clutter-marshal.c goto DONE_CLUTTER_MARSHAL_C
+
+cd ..\..\..\clutter
+
+echo #include "clutter-marshal.h" &gt; clutter-marshal.c
+
+$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --body clutter-marshal.list &gt;&gt; clutter-marshal.c
+
+cd ..\build\win32\vs10
+
+:DONE_CLUTTER_MARSHAL_C
+
+</PreBuildCmd>
+    <ClutterDoInstall>
+mkdir $(CopyDir)
+
+mkdir $(CopyDir)\bin
+
+mkdir $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.exe $(CopyDir)\bin
+
+copy ..\*.bat $(CopyDir)\bin
+
+copy ..\..\..\tests\data\*.png $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+
+copy ..\..\..\tests\data\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+
+copy ..\..\..\tests\data\*.json $(CopyDir)\share\clutter-$(ClutterApiVersion)\data
+
+
+mkdir $(CopyDir)\lib
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ClutterApiVersion).lib $(CopyDir)\lib
+
+
+mkdir $(CopyDir)\include\clutter-1.0\clutter
+
+
+copy ..\..\..\clutter\clutter.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-actor-meta.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-actor.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-align-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-alpha.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-animatable.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-animation.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-animator.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-backend.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-behaviour.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-behaviour-depth.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-behaviour-ellipse.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-behaviour-opacity.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-behaviour-path.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-behaviour-rotate.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-behaviour-scale.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-bind-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-binding-pool.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-bin-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-blur-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-box.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-box-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-cairo-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-child-meta.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-click-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-clone.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-color-static.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-color.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-colorize-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-config.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-container.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-deform-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-deprecated.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-desaturate-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-device-manager.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-drag-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-drop-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-enum-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-event.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-feature.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-fixed.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-fixed-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-flow-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-frame-source.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-gesture-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-group.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-input-device.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-interval.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-keysyms.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-keysyms-compat.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-layout-manager.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-layout-meta.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-list-model.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-main.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-marshal.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-media.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-model.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-offscreen-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-page-turn-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-path-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-path.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-rectangle.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-score.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-script.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-scriptable.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-settings.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-shader.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-shader-effect.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-shader-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-snap-constraint.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-stage.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-stage-manager.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-stage-window.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-state.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-swipe-action.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-table-layout.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-text.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-timeline.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-timeout-pool.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-types.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-units.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-version.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+copy ..\..\..\clutter\win32\clutter-win32.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter
+
+
+mkdir $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-actor.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-clone.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-factory.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-group.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-main.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-rectangle.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-root.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-stage.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-text.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-texture.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\cally
+
+
+mkdir $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.c $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.h $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.json $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+copy ..\..\..\doc\cookbook\examples\*.png $(CopyDir)\share\clutter-$(ClutterApiVersion)\cookbook\examples
+
+</ClutterDoInstall>
+    <GenerateClutterDef>
+         echo EXPORTS &gt; ..\..\..\clutter\clutter.def
+
+         cl -EP -DHAVE_CAIRO -DHAVE_CLUTTER_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
+
+     </GenerateClutterDef>
+    <ClutterLibtoolCompatibleDllPrefix>lib</ClutterLibtoolCompatibleDllPrefix>
+    <ClutterLibtoolCompatibleDllSuffix>-$(ClutterApiVersion)-0</ClutterLibtoolCompatibleDllSuffix>
+    <ClutterSeparateVS10DllPrefix />
+    <ClutterSeparateVS10DllSuffix>-1-vs10</ClutterSeparateVS10DllSuffix>
+    <ClutterDllPrefix>$(ClutterSeparateVS10DllPrefix)</ClutterDllPrefix>
+    <ClutterDllSuffix>$(ClutterSeparateVS10DllSuffix)</ClutterDllSuffix>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>clutterprops</_PropertySheetDisplayName>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-2.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;G_DISABLE_DEPRECATED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <DisableSpecificWarnings>4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cogl-pango-2.0.lib;cogl-2.0.lib;glib-2.0.lib;gobject-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(GlibEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="GlibEtcInstallRoot">
+      <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterApiVersion">
+      <Value>$(ClutterApiVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BaseWinBuildDef">
+      <Value>$(BaseWinBuildDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BaseBuildDef">
+      <Value>$(BaseBuildDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LibBuildDefines">
+      <Value>$(LibBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DebugLibBuildDefines">
+      <Value>$(DebugLibBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ReleaseLibBuildDefines">
+      <Value>$(ReleaseLibBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterBuildDefines">
+      <Value>$(ClutterBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CallyTestDefs">
+      <Value>$(CallyTestDefs)</Value>
+    </BuildMacro>
+    <BuildMacro Include="TestProgDef">
+      <Value>$(TestProgDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PreBuildCmd">
+      <Value>$(PreBuildCmd)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDoInstall">
+      <Value>$(ClutterDoInstall)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateClutterDef">
+      <Value>$(GenerateClutterDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterLibtoolCompatibleDllPrefix">
+      <Value>$(ClutterLibtoolCompatibleDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterLibtoolCompatibleDllSuffix">
+      <Value>$(ClutterLibtoolCompatibleDllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterSeparateVS10DllPrefix">
+      <Value>$(ClutterSeparateVS10DllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterSeparateVS10DllSuffix">
+      <Value>$(ClutterSeparateVS10DllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDllPrefix">
+      <Value>$(ClutterDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDllSuffix">
+      <Value>$(ClutterDllSuffix)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
