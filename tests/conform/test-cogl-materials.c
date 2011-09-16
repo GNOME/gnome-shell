@@ -71,13 +71,21 @@ test_material_with_primitives (TestState *state,
                                int x, int y,
                                guint32 color)
 {
-  CoglTextureVertex verts[4] = {
-    { .x = 0,          .y = 0,          .z = 0 },
-    { .x = 0,          .y = QUAD_WIDTH, .z = 0 },
-    { .x = QUAD_WIDTH, .y = QUAD_WIDTH, .z = 0 },
-    { .x = QUAD_WIDTH, .y = 0,          .z = 0 },
-  };
+  CoglTextureVertex verts[4];
   CoglHandle vbo;
+
+  verts[0].x = 0;
+  verts[0].y = 0;
+  verts[0].z = 0;
+  verts[1].x = 0;
+  verts[1].y = QUAD_WIDTH;
+  verts[1].z = 0;
+  verts[2].x = QUAD_WIDTH;
+  verts[2].y = QUAD_WIDTH;
+  verts[2].z = 0;
+  verts[3].x = QUAD_WIDTH;
+  verts[3].y = 0;
+  verts[3].z = 0;
 
   cogl_push_matrix ();
 
