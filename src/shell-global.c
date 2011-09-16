@@ -1429,11 +1429,12 @@ run_leisure_functions (gpointer data)
   if (global->work_count > 0)
     return FALSE;
 
-  /*
-   * We do call MAYBE_GC() here to free up some memory and
-   * prevent the GC from running when we are busy doing other things.
+  /* Previously we called gjs_maybe_gc().  However, it simply doesn't
+   * trigger often enough.  Garbage collection is very fast here, so
+   * let's just aggressively GC.  This will help avoid both heap
+   * fragmentation, and the GC kicking in when we don't want it to.
    */
-  shell_global_maybe_gc (global);
+  gjs_context_gc (global->js_context);
 
   /* No leisure closures, so we are done */
   if (global->leisure_closures == NULL)
