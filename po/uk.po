@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-03 22:43+0300\n"
-"PO-Revision-Date: 2011-05-03 22:46+0300\n"
+"POT-Creation-Date: 2011-09-16 13:20+0300\n"
+"PO-Revision-Date: 2011-09-16 14:22+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -17,6 +17,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Virtaal 0.6.1\n"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:492
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr "Уже запущено інший композитний менеджер на екрані %i через показ «%s»."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -381,7 +390,7 @@ msgstr "Клавішу «%s» з модифікаторами «%x» вже ви
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2468
+#: ../src/core/keybindings.c:2523
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -392,12 +401,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2558
+#: ../src/core/keybindings.c:2613
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команду %d не визначено.\n"
 
-#: ../src/core/keybindings.c:3570
+#: ../src/core/keybindings.c:3625
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Команду термінала не визначено.\n"
@@ -473,34 +482,34 @@ msgstr "Список композитних додатків розділени�
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
+#: ../src/core/prefs.c:550 ../src/core/prefs.c:711
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ключ GConf «%s» встановлено у неправильний тип\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
+#: ../src/core/prefs.c:637 ../src/core/prefs.c:880
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "Значення %d збережене в ключі GConf %s виходить за межі %d ― %d\n"
 
-#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
-#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
-#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
+#: ../src/core/prefs.c:681 ../src/core/prefs.c:758 ../src/core/prefs.c:806
+#: ../src/core/prefs.c:870 ../src/core/prefs.c:1331 ../src/core/prefs.c:1347
+#: ../src/core/prefs.c:1364 ../src/core/prefs.c:1380
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ключу GConf «%s» вказано неправильний тип\n"
 
-#: ../src/core/prefs.c:1203
+#: ../src/core/prefs.c:1210
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr "Ключ GConf %s вже використовується і неможливо перевизначити %s\n"
 
-#: ../src/core/prefs.c:1262
+#: ../src/core/prefs.c:1269
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Неможливо перевизначити ключ GConf, %s не знайдено\n"
 
-#: ../src/core/prefs.c:1447
+#: ../src/core/prefs.c:1454
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -508,12 +517,12 @@ msgstr ""
 "Обхід для роботи із зіпсованими програмами вимкнено. Деякі додатки можуть "
 "працювати некоректно.\n"
 
-#: ../src/core/prefs.c:1524
+#: ../src/core/prefs.c:1531
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Неможливо проаналізувати опис шрифту «%s» у ключі GConf %s\n"
 
-#: ../src/core/prefs.c:1586
+#: ../src/core/prefs.c:1593
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -522,17 +531,17 @@ msgstr ""
 "У базі даних налаштування знайдено «%s» — що не є правильним значенням "
 "модифікатора клавіші миші.\n"
 
-#: ../src/core/prefs.c:2016
+#: ../src/core/prefs.c:2028
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Помилка налаштування кількості робочих просторів у %d: %s\n"
 
-#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
+#: ../src/core/prefs.c:2212 ../src/core/prefs.c:2714
 #, c-format
 msgid "Workspace %d"
 msgstr "Робочий простір %d"
 
-#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
+#: ../src/core/prefs.c:2244 ../src/core/prefs.c:2422
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -541,27 +550,27 @@ msgstr ""
 "Знайдене у базі даних налаштування значення «%s» не є правильним записом "
 "прив'язки клавіш «%s»\n"
 
-#: ../src/core/prefs.c:2783
+#: ../src/core/prefs.c:2795
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Помилка налаштуванні назви робочих просторів %d у «%s»: %s\n"
 
-#: ../src/core/prefs.c:2997
+#: ../src/core/prefs.c:3009
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Помилка налаштування стану схованих вікон: %s\n"
 
-#: ../src/core/prefs.c:3032
+#: ../src/core/prefs.c:3044
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Помилка налаштування стану контекстних вкладок: %s\n"
 
-#: ../src/core/screen.c:624
+#: ../src/core/screen.c:741
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї «%s» не правильний\n"
 
-#: ../src/core/screen.c:640
+#: ../src/core/screen.c:757
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -570,7 +579,7 @@ msgstr ""
 "Екран %d на дисплеї «%s» вже має менеджера вікон; спробуйте вказати параметр "
 "--replace, щоб замінити поточний менеджер вікон.\n"
 
-#: ../src/core/screen.c:667
+#: ../src/core/screen.c:784
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -578,12 +587,12 @@ msgstr ""
 "Не вдалось одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "«%s»\n"
 
-#: ../src/core/screen.c:722
+#: ../src/core/screen.c:839
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплеї «%s» вже має менеджера вікон\n"
 
-#: ../src/core/screen.c:907
+#: ../src/core/screen.c:1024
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не вдалось відпустити екран %d на дисплеї «%s»\n"
@@ -663,30 +672,24 @@ msgstr "Відкрито журнал %s\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter зібрано без підтримки докладного режиму\n"
 
-#: ../src/core/util.c:286
+#: ../src/core/util.c:290
 msgid "Window manager: "
 msgstr "Віконний менеджер:"
 
-#: ../src/core/util.c:434
+#: ../src/core/util.c:438
 msgid "Bug in window manager: "
 msgstr "Вада у віконному менеджері:"
 
-#: ../src/core/util.c:467
+#: ../src/core/util.c:471
 msgid "Window manager warning: "
 msgstr "Попередження віконного менеджера:"
 
-#: ../src/core/util.c:495
+#: ../src/core/util.c:499
 msgid "Window manager error: "
 msgstr "Помилка віконного менеджера:"
 
-#. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:632 ../src/mutter.desktop.in.h:1
-#: ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutter"
-
 #. first time through
-#: ../src/core/window.c:6860
+#: ../src/core/window.c:7066
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -702,7 +705,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7523
+#: ../src/core/window.c:7729
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -722,10 +725,15 @@ msgstr "Програма встановила неправильне значе�
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1482
+#: ../src/core/window-props.c:1481
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Неправильний параметр WM_TRANSIENT_FOR вікна 0x%lx вказано для %s.\n"
+
+#: ../src/core/window-props.c:1492
+#, c-format
+msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+msgstr "Вікно WM_TRANSIENT_FOR 0x%lx для %s створило б петлю.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -754,6 +762,10 @@ msgid ""
 msgstr ""
 "Властивість %s вікна 0x%lx містить неправильний UTF-8 у пункті %d списку\n"
 
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
+
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
 msgstr "Долучити модальні вікна"
@@ -775,15 +787,27 @@ msgstr ""
 "на всіх моніторах, чи лише для вікон на первинному моніторі."
 
 #: ../src/mutter.schemas.in.h:4
+msgid "Draggable border width"
+msgstr "Перетяжна ширина меж"
+
+#: ../src/mutter.schemas.in.h:5
 msgid "Live Hidden Windows"
 msgstr "Активувати сховані вікна"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:6
 msgid "Modifier to use for extended window management operations"
 msgstr ""
 "Модифікатор, що використовується для розширених дій віконного менеджера"
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/mutter.schemas.in.h:7
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"Загальний об'єм перетяжних меж. Якщо видимих меж теми не вистачає, буде "
+"використано це значення з невидимих меж."
+
+#: ../src/mutter.schemas.in.h:8
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -794,7 +818,7 @@ msgstr ""
 "запуску програм. Типово на це призначено клавішу «Win» в обладнанні. "
 "Очікується, що це буде прив'язка або типова, або порожній рядок."
 
-#: ../src/mutter.schemas.in.h:7
+#: ../src/mutter.schemas.in.h:9
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -804,7 +828,7 @@ msgstr ""
 "долучено до батьківського вікна заголовка і пересунуто разом з батьківських "
 "вікном."
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/mutter.schemas.in.h:10
 msgid "Workspaces only on primary"
 msgstr "Робочий простір лише на первинному"
 
@@ -813,47 +837,47 @@ msgstr "Робочий простір лише на первинному"
 msgid "Usage: %s\n"
 msgstr "Використання: %s\n"
 
-#: ../src/ui/frames.c:1177
+#: ../src/ui/frames.c:1157
 msgid "Close Window"
 msgstr "Закрити вікно"
 
-#: ../src/ui/frames.c:1180
+#: ../src/ui/frames.c:1160
 msgid "Window Menu"
 msgstr "Меню вікна"
 
-#: ../src/ui/frames.c:1183
+#: ../src/ui/frames.c:1163
 msgid "Minimize Window"
 msgstr "Згорнути вікно"
 
-#: ../src/ui/frames.c:1186
+#: ../src/ui/frames.c:1166
 msgid "Maximize Window"
 msgstr "Розгорнути вікно"
 
-#: ../src/ui/frames.c:1189
+#: ../src/ui/frames.c:1169
 msgid "Restore Window"
 msgstr "Відновити вікно"
 
-#: ../src/ui/frames.c:1192
+#: ../src/ui/frames.c:1172
 msgid "Roll Up Window"
 msgstr "Скотити вікно"
 
-#: ../src/ui/frames.c:1195
+#: ../src/ui/frames.c:1175
 msgid "Unroll Window"
 msgstr "Розкотити вікно"
 
-#: ../src/ui/frames.c:1198
+#: ../src/ui/frames.c:1178
 msgid "Keep Window On Top"
 msgstr "Тримати вікно нагорі"
 
-#: ../src/ui/frames.c:1201
+#: ../src/ui/frames.c:1181
 msgid "Remove Window From Top"
 msgstr "Прибрати вікно з гори"
 
-#: ../src/ui/frames.c:1204
+#: ../src/ui/frames.c:1184
 msgid "Always On Visible Workspace"
 msgstr "Завжди на видимому робочому просторі"
 
-#: ../src/ui/frames.c:1207
+#: ../src/ui/frames.c:1187
 msgid "Put Window On Only One Workspace"
 msgstr "Розміщувати вікно лише на одному робочому просторі"
 
@@ -1056,48 +1080,75 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:253
 msgid "top"
 msgstr "top"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:255
 msgid "bottom"
 msgstr "bottom"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:257
 msgid "left"
 msgstr "left"
 
-#: ../src/ui/theme.c:261
+#: ../src/ui/theme.c:259
 msgid "right"
 msgstr "right"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:286
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "геометрія рамки не визначає розмір «%s»"
 
-#: ../src/ui/theme.c:307
+#: ../src/ui/theme.c:305
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "геометрія рамки не визначає розмір «%s» рамки «%s»"
 
-#: ../src/ui/theme.c:344
+#: ../src/ui/theme.c:342
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Неприпустимий коефіцієнт пропорційності %g"
 
-#: ../src/ui/theme.c:356
+#: ../src/ui/theme.c:354
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Геометрія рамки не визначає розміри кнопок"
 
-#: ../src/ui/theme.c:1064
+#: ../src/ui/theme.c:1065
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Градієнти повинні мати принаймні два кольори"
 
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1217
+#, c-format
+msgid ""
+"GTK custom color specification must have color name and fallback in "
+"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+msgstr ""
+"Специфікації власного кольору GTK повинні мати назву кольору і запас у "
+"дужках, наприклад, gtk:custom(foo,bar); неможливо розібрати «%s»"
+
+#: ../src/ui/theme.c:1233
+#, c-format
+msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+"Неправильний символ «%c» у параметрі color_name для gtk:custom, дозволено "
+"тільки A-Za-z0-9-_"
+
+#: ../src/ui/theme.c:1247
+#, c-format
+msgid ""
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
+msgstr ""
+"Формат Gtk:custom — «gtk:custom(color_name,fallback)», «%s» не відповідає "
+"формату"
+
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1106,7 +1157,7 @@ msgstr ""
 "При визначенні кольору GTK потрібно вказувати режим у прямокутних дужках, "
 "наприклад, gtk:fg[NORMAL], де NORMAL — режим; неможливо розібрати «%s»"
 
-#: ../src/ui/theme.c:1216
+#: ../src/ui/theme.c:1306
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1116,17 +1167,17 @@ msgstr ""
 "прямокутна дужка, наприклад, gtk:fg[NORMAL], де NORMAL — режим; неможливо "
 "розібрати «%s»"
 
-#: ../src/ui/theme.c:1227
+#: ../src/ui/theme.c:1317
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Неможливо розпізнати режим «%s» у визначенні кольору"
 
-#: ../src/ui/theme.c:1240
+#: ../src/ui/theme.c:1330
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Неможливо розпізнати компонент кольору «%s» у визначенні кольору"
 
-#: ../src/ui/theme.c:1270
+#: ../src/ui/theme.c:1360
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1135,44 +1186,44 @@ msgstr ""
 "Формат визначення змішаного кольору такий — «blend/bg_color/fg_color/alpha», "
 "«%s» не відповідає формату"
 
-#: ../src/ui/theme.c:1281
+#: ../src/ui/theme.c:1371
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Неможливо розібрати значення альфа «%s» у змішаному кольорі"
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1381
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Значення альфа «%s» у змішаному кольорі поза межами 0.0 — 1.0"
 
-#: ../src/ui/theme.c:1338
+#: ../src/ui/theme.c:1428
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Формат тіні такий — «shade/base_color/factor», «%s» не відповідає формату"
 
-#: ../src/ui/theme.c:1349
+#: ../src/ui/theme.c:1439
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Не вдалось проаналізувати компонент тіні «%s» у затіненому кольорі"
 
-#: ../src/ui/theme.c:1359
+#: ../src/ui/theme.c:1449
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Компонент тіні «%s» у затіненому кольорі від'ємний"
 
-#: ../src/ui/theme.c:1388
+#: ../src/ui/theme.c:1478
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Не вдалось проаналізувати колір «%s»"
 
-#: ../src/ui/theme.c:1646
+#: ../src/ui/theme.c:1789
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Вираз координати містить заборонений символ «%s»"
 
-#: ../src/ui/theme.c:1673
+#: ../src/ui/theme.c:1816
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1180,29 +1231,29 @@ msgid ""
 msgstr ""
 "Вираз координати містить число з рухомою комою «%s», яке не вдалось розібрати"
 
-#: ../src/ui/theme.c:1687
+#: ../src/ui/theme.c:1830
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Вираз координати містить ціле число «%s», яке не вдалось розібрати"
 
-#: ../src/ui/theme.c:1809
+#: ../src/ui/theme.c:1952
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "Вираз координати містить невідомий оператор на початку тексту: «%s»"
 
-#: ../src/ui/theme.c:1866
+#: ../src/ui/theme.c:2009
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Вираз координати був пустий або його неможливо розпізнати"
 
-#: ../src/ui/theme.c:1977 ../src/ui/theme.c:1987 ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2120 ../src/ui/theme.c:2130 ../src/ui/theme.c:2164
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Вираз координати призвів до ділення на нуль"
 
-#: ../src/ui/theme.c:2029
+#: ../src/ui/theme.c:2172
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -1210,23 +1261,23 @@ msgstr ""
 "Вираз координати намагається використати оператор знаходження залишку від "
 "ділення для числа з рухомою комою"
 
-#: ../src/ui/theme.c:2085
+#: ../src/ui/theme.c:2228
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Вираз координати містить оператор «%s», там де очікувався операнд"
 
-#: ../src/ui/theme.c:2094
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Вираз координати містить оператор, там де очікувався оператор"
 
-#: ../src/ui/theme.c:2102
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Вираз координати закінчується оператором замість операнда"
 
-#: ../src/ui/theme.c:2112
+#: ../src/ui/theme.c:2255
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1235,37 +1286,37 @@ msgstr ""
 "Вираз координати містить оператор «%c», за яким йде оператор «%c» без "
 "операнду між ними"
 
-#: ../src/ui/theme.c:2263 ../src/ui/theme.c:2308
+#: ../src/ui/theme.c:2406 ../src/ui/theme.c:2451
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Вираз координати містить невідому змінну або константу «%s»"
 
-#: ../src/ui/theme.c:2362
+#: ../src/ui/theme.c:2505
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Переповнення буфера обробника координат."
 
-#: ../src/ui/theme.c:2391
+#: ../src/ui/theme.c:2534
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Вираз координати містить завершальну дужку без відповідної починальної"
 
-#: ../src/ui/theme.c:2455
+#: ../src/ui/theme.c:2598
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Вираз координати містить починальну дужку без відповідної завершальної"
 
-#: ../src/ui/theme.c:2466
+#: ../src/ui/theme.c:2609
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Здається, вираз координати не містить жодного оператора чи операнду"
 
-#: ../src/ui/theme.c:2676 ../src/ui/theme.c:2696 ../src/ui/theme.c:2716
+#: ../src/ui/theme.c:2821 ../src/ui/theme.c:2841 ../src/ui/theme.c:2861
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Тема містить вираз, що призводить до помилки: %s\n"
 
-#: ../src/ui/theme.c:4410
+#: ../src/ui/theme.c:4532
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1274,25 +1325,25 @@ msgstr ""
 "для цього стилю рамки треба вказати <button function=\"%s\" state=\"%s\" "
 "draw_ops=\"будь-що\"/>"
 
-#: ../src/ui/theme.c:4940 ../src/ui/theme.c:4965
+#: ../src/ui/theme.c:5065 ../src/ui/theme.c:5090
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Нема <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"будь-що\"/>"
 
-#: ../src/ui/theme.c:5013
+#: ../src/ui/theme.c:5138
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Не вдалось завантажити тему «%s»: %s\n"
 
-#: ../src/ui/theme.c:5149 ../src/ui/theme.c:5156 ../src/ui/theme.c:5163
-#: ../src/ui/theme.c:5170 ../src/ui/theme.c:5177
+#: ../src/ui/theme.c:5274 ../src/ui/theme.c:5281 ../src/ui/theme.c:5288
+#: ../src/ui/theme.c:5295 ../src/ui/theme.c:5302
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Не встановлено <%s> для теми «%s»"
 
-#: ../src/ui/theme.c:5185
+#: ../src/ui/theme.c:5310
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1301,7 +1352,7 @@ msgstr ""
 "Немає стилю рамки для вікна типу «%s» у темі «%s», додайте елемент  <window "
 "type=\"%s\" style_set=\"будь-що\"/> "
 
-#: ../src/ui/theme.c:5635 ../src/ui/theme.c:5697 ../src/ui/theme.c:5760
+#: ../src/ui/theme.c:5708 ../src/ui/theme.c:5770 ../src/ui/theme.c:5833
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1309,7 +1360,7 @@ msgstr ""
 "Визначені користувачем константи повинні починатись з великої літери; «%s» "
 "не починається з великої літери"
 
-#: ../src/ui/theme.c:5643 ../src/ui/theme.c:5705 ../src/ui/theme.c:5768
+#: ../src/ui/theme.c:5716 ../src/ui/theme.c:5778 ../src/ui/theme.c:5841
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константу «%s» вже визначено"
@@ -1766,88 +1817,88 @@ msgstr "Це зразок повідомлення у зразковому ді�
 msgid "Fake menu item %d\n"
 msgstr "Фальшивий елемент меню %d\n"
 
-#: ../src/ui/theme-viewer.c:370
+#: ../src/ui/theme-viewer.c:371
 msgid "Border-only window"
 msgstr "Вікно лише з рамкою"
 
-#: ../src/ui/theme-viewer.c:372
+#: ../src/ui/theme-viewer.c:373
 msgid "Bar"
 msgstr "Прямокутник"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:390
 msgid "Normal Application Window"
 msgstr "Звичайне вікно програми"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:394
 msgid "Dialog Box"
 msgstr "Діалог"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:398
 msgid "Modal Dialog Box"
 msgstr "Модальне вікно"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:402
 msgid "Utility Palette"
 msgstr "Допоміжна палітра"
 
-#: ../src/ui/theme-viewer.c:405
+#: ../src/ui/theme-viewer.c:406
 msgid "Torn-off Menu"
 msgstr "Відірване меню"
 
-#: ../src/ui/theme-viewer.c:409
+#: ../src/ui/theme-viewer.c:410
 msgid "Border"
 msgstr "Рамка"
 
-#: ../src/ui/theme-viewer.c:413
+#: ../src/ui/theme-viewer.c:414
 msgid "Attached Modal Dialog"
 msgstr "Долучене модальне вікно"
 
-#: ../src/ui/theme-viewer.c:744
+#: ../src/ui/theme-viewer.c:747
 #, c-format
 msgid "Button layout test %d"
 msgstr "Випробування компонування кнопок %d"
 
-#: ../src/ui/theme-viewer.c:773
+#: ../src/ui/theme-viewer.c:776
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g мілісекунд для малювання однієї рамки вікна"
 
-#: ../src/ui/theme-viewer.c:818
+#: ../src/ui/theme-viewer.c:821
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Використання: metacity-theme-viewer [НАЗВА_ТЕМИ]\n"
 
-#: ../src/ui/theme-viewer.c:825
+#: ../src/ui/theme-viewer.c:828
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Помилка завантаження теми: %s\n"
 
-#: ../src/ui/theme-viewer.c:831
+#: ../src/ui/theme-viewer.c:834
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Завантажено тему «%s» за %g секунд\n"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:878
 msgid "Normal Title Font"
 msgstr "Звичайний шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:881
+#: ../src/ui/theme-viewer.c:884
 msgid "Small Title Font"
 msgstr "Малий шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:890
 msgid "Large Title Font"
 msgstr "Великий шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:895
 msgid "Button Layouts"
 msgstr "Компонування кнопок"
 
-#: ../src/ui/theme-viewer.c:897
+#: ../src/ui/theme-viewer.c:900
 msgid "Benchmark"
 msgstr "Продуктивність"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:952
 msgid "Window Title Goes Here"
 msgstr "Тут буде заголовок вікна"
 
