@@ -325,9 +325,51 @@ mainBox.add(fadeBox);
 spacer = new St.Bin();
 fadeBox.add(spacer, { expand: true });
 
+fadeBox.add(new St.Label({ text: 'Padding: '}));
+let paddingButton = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;padding-right:3px;' });
+fadeBox.add(paddingButton);
+
+fadeBox.add(new St.Label({ text: 'Borders: '}));
+let borderButton = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;padding-right:3px;' });
+fadeBox.add(borderButton);
+
 fadeBox.add(new St.Label({ text: 'Vertical Fade: '}));
 let vfade = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;' });
 fadeBox.add(vfade);
+
+function togglePadding(button) {
+    switch(button.label) {
+    case 'No':
+	button.label = 'Yes';
+	break;
+    case 'Yes':
+	button.label = 'No';
+	break;
+    }
+    if (scrollView.style == null)
+        scrollView.style = (button.label == 'Yes' ? 'padding: 10px;' : 'padding: 0;');
+    else
+        scrollView.style += (button.label == 'Yes' ? 'padding: 10px;' : 'padding: 0;');
+}
+
+paddingButton.connect('clicked', function() { togglePadding(paddingButton); });
+
+function toggleBorders(button) {
+    switch(button.label) {
+    case 'No':
+	button.label = 'Yes';
+	break;
+    case 'Yes':
+	button.label = 'No';
+	break;
+    }
+    if (scrollView.style == null)
+        scrollView.style = (button.label == 'Yes' ? 'border: 2px solid red;' : 'border: 0;');
+    else
+        scrollView.style += (button.label == 'Yes' ? 'border: 2px solid red;' : 'border: 0;');
+}
+
+borderButton.connect('clicked', function() { toggleBorders(borderButton); });
 
 function toggleFade(button) {
     switch(button.label) {
