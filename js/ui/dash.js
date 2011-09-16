@@ -684,6 +684,8 @@ Dash.prototype = {
             }
 
             this._dragPlaceholder = new DragPlaceholderItem();
+            this._dragPlaceholder.child.set_width (this.iconSize);
+            this._dragPlaceholder.child.set_height (this.iconSize / 2);
             this._box.insert_actor(this._dragPlaceholder.actor,
                                    this._dragPlaceholderPos);
             if (fadeIn)

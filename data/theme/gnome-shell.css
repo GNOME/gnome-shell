@@ -511,8 +511,6 @@ StTooltip StLabel {
 
 .dash-placeholder {
     background-image: url("dash-placeholder.svg");
-    height: 27px;
-    width: 48px;
 }
 
 #viewSelector {
