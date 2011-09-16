@@ -1120,6 +1120,55 @@ _cogl_free_framebuffer_stack (GSList *stack)
   g_slist_free (stack);
 }
 
+static void
+notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
+                        CoglFramebuffer *new_draw_buffer,
+                        CoglFramebuffer *old_read_buffer,
+                        CoglFramebuffer *new_read_buffer)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  ctx->dirty_bound_framebuffer = 1;
+  ctx->dirty_gl_viewport = 1;
+
+  /* We've effectively just switched the current modelview and
+   * projection matrix stacks and clip state so we need to dirty
+   * them to ensure they get flushed for the next batch of geometry
+   * we flush */
+  if (new_draw_buffer)
+    {
+      _cogl_matrix_stack_dirty (new_draw_buffer->modelview_stack);
+      _cogl_matrix_stack_dirty (new_draw_buffer->projection_stack);
+    }
+
+  _cogl_clip_stack_dirty ();
+
+  /* If the two draw framebuffers have a different color mask then we
+     need to ensure the logic ops are reflushed the next time
+     something is drawn */
+  if (old_draw_buffer && new_draw_buffer &&
+      cogl_framebuffer_get_color_mask (old_draw_buffer) !=
+      cogl_framebuffer_get_color_mask (new_draw_buffer))
+    {
+      ctx->current_pipeline_changes_since_flush |=
+        COGL_PIPELINE_STATE_LOGIC_OPS;
+      ctx->current_pipeline_age--;
+    }
+
+  /* XXX:
+   * To support the deprecated cogl_set_draw_buffer API we keep track
+   * of the last onscreen framebuffer that was set so that it can
+   * be restored if the COGL_WINDOW_BUFFER enum is used. */
+  if (new_draw_buffer &&
+      new_draw_buffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      cogl_object_ref (new_draw_buffer);
+      if (ctx->window_buffer)
+        cogl_object_unref (ctx->window_buffer);
+      ctx->window_buffer = new_draw_buffer;
+    }
+}
+
 /* Set the current framebuffer without checking if it's already the
  * current framebuffer. This is used by cogl_pop_framebuffer while
  * the top of the stack is currently not up to date. */
@@ -1128,7 +1177,6 @@ _cogl_set_framebuffers_real (CoglFramebuffer *draw_buffer,
                              CoglFramebuffer *read_buffer)
 {
   CoglFramebufferStackEntry *entry;
-  GSList *l;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1138,8 +1186,10 @@ _cogl_set_framebuffers_real (CoglFramebuffer *draw_buffer,
 
   entry = ctx->framebuffer_stack->data;
 
-  ctx->dirty_bound_framebuffer = 1;
-  ctx->dirty_gl_viewport = 1;
+  notify_buffers_changed (entry->draw_buffer,
+                          draw_buffer,
+                          entry->read_buffer,
+                          read_buffer);
 
   if (draw_buffer)
     cogl_object_ref (draw_buffer);
@@ -1153,31 +1203,6 @@ _cogl_set_framebuffers_real (CoglFramebuffer *draw_buffer,
 
   entry->draw_buffer = draw_buffer;
   entry->read_buffer = read_buffer;
-
-  /* We've effectively just switched the current modelview and
-   * projection matrix stacks and clip state so we need to dirty
-   * them to ensure they get flushed for the next batch of geometry
-   * we flush */
-  if (draw_buffer)
-    {
-      _cogl_matrix_stack_dirty (draw_buffer->modelview_stack);
-      _cogl_matrix_stack_dirty (draw_buffer->projection_stack);
-    }
-
-  _cogl_clip_stack_dirty ();
-
-  /* XXX:
-   * To support the deprecated cogl_set_draw_buffer API we keep track
-   * of the last onscreen framebuffer that was pushed so that it can
-   * be restored if the COGL_WINDOW_BUFFER enum is used. */
-  ctx->window_buffer = NULL;
-  for (l = ctx->framebuffer_stack; l; l = l->next)
-    {
-      entry = l->data;
-      if (entry->draw_buffer &&
-          entry->draw_buffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-        ctx->window_buffer = entry->draw_buffer;
-    }
 }
 
 static void
@@ -1309,7 +1334,6 @@ cogl_pop_framebuffer (void)
 {
   CoglFramebufferStackEntry *to_pop;
   CoglFramebufferStackEntry *to_restore;
-  gboolean changed = FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1329,7 +1353,10 @@ cogl_pop_framebuffer (void)
       _cogl_framebuffer_flush_journal (to_pop->draw_buffer);
       _cogl_framebuffer_flush_journal (to_pop->read_buffer);
 
-      changed = TRUE;
+      notify_buffers_changed (to_pop->draw_buffer,
+                              to_restore->draw_buffer,
+                              to_pop->read_buffer,
+                              to_restore->read_buffer);
     }
 
   cogl_object_unref (to_pop->draw_buffer);
@@ -1339,13 +1366,6 @@ cogl_pop_framebuffer (void)
   ctx->framebuffer_stack =
     g_slist_delete_link (ctx->framebuffer_stack,
                          ctx->framebuffer_stack);
-
-  /* If the framebuffer has changed as a result of popping the top
-   * then re-assert the current buffer so as to dirty state as
-   * necessary. */
-  if (changed)
-    _cogl_set_framebuffers_real (to_restore->draw_buffer,
-                                 to_restore->read_buffer);
 }
 
 /* XXX: deprecated API */

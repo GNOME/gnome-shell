@@ -297,6 +297,7 @@ cogl_context_new (CoglDisplay *display,
   for (i = 0; i < COGL_BUFFER_BIND_TARGET_COUNT; i++)
     context->current_buffer[i] = NULL;
 
+  context->window_buffer = NULL;
   context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
   /* XXX: In this case the Clutter backend is still responsible for
@@ -398,6 +399,12 @@ _cogl_context_free (CoglContext *context)
   winsys->context_deinit (context);
 
   _cogl_destroy_texture_units ();
+
+  if (context->window_buffer)
+    {
+      cogl_object_unref (context->window_buffer);
+      context->window_buffer = NULL;
+    }
 
   _cogl_free_framebuffer_stack (context->framebuffer_stack);
 
