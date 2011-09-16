@@ -67,11 +67,13 @@ XKBIndicator.prototype = {
 
         this._sync_config();
 
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, function() {
-            Main.overview.hide();
-            Util.spawn(['gkbd-keyboard-display', '-g', String(this._config.get_current_group() + 1)]);
-        }));
+        if (global.session_type == Shell.SessionType.USER) {
+            this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+            this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, function() {
+                Main.overview.hide();
+                Util.spawn(['gkbd-keyboard-display', '-g', String(this._config.get_current_group() + 1)]);
+            }));
+        }
         this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
     },
 
