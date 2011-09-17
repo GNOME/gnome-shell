@@ -25,15 +25,22 @@ function getDimShaderSource() {
     return dimShader;
 }
 
-function WindowDimmer(actor) {
-    this._init(actor);
+function getTopInvisibleBorder(metaWindow) {
+    let outerRect = metaWindow.get_outer_rect();
+    let inputRect = metaWindow.get_input_rect();
+    return outerRect.y - inputRect.y;
+}
+
+function WindowDimmer(actor, window) {
+    this._init(actor, window);
 }
 
 WindowDimmer.prototype = {
-    _init: function(actor) {
+    _init: function(actor, window) {
         this.effect = new Clutter.ShaderEffect({ shader_type: Clutter.ShaderType.FRAGMENT_SHADER });
         this.effect.set_shader_source(getDimShaderSource());
 
+        this.window = window;
         this.actor = actor;
     },
 
@@ -45,6 +52,7 @@ WindowDimmer.prototype = {
         }
 
         if (fraction > 0.01) {
+            Shell.shader_effect_set_double_uniform(this.effect, 'startY', getTopInvisibleBorder(this.window));
             Shell.shader_effect_set_double_uniform(this.effect, 'height', this.actor.get_height());
             Shell.shader_effect_set_double_uniform(this.effect, 'fraction', fraction);
 
@@ -63,9 +71,9 @@ WindowDimmer.prototype = {
     _dimFraction: 0.0
 };
 
-function getWindowDimmer(texture) {
+function getWindowDimmer(texture, window) {
     if (!texture._windowDimmer)
-        texture._windowDimmer = new WindowDimmer(texture);
+        texture._windowDimmer = new WindowDimmer(texture, window);
 
     return texture._windowDimmer;
 }
@@ -264,13 +272,13 @@ WindowManager.prototype = {
             return;
         let texture = actor.get_texture();
         if (animate)
-            Tweener.addTween(getWindowDimmer(texture),
+            Tweener.addTween(getWindowDimmer(texture, window),
                              { dimFraction: 1.0,
                                time: DIM_TIME,
                                transition: 'linear'
                              });
         else
-            getWindowDimmer(texture).dimFraction = 1.0;
+            getWindowDimmer(texture, window).dimFraction = 1.0;
     },
 
     _undimWindow: function(window, animate) {
@@ -279,13 +287,13 @@ WindowManager.prototype = {
             return;
         let texture = actor.get_texture();
         if (animate)
-            Tweener.addTween(getWindowDimmer(texture),
+            Tweener.addTween(getWindowDimmer(texture, window),
                              { dimFraction: 0.0,
                                time: UNDIM_TIME,
                                transition: 'linear'
                              });
         else
-            getWindowDimmer(texture).dimFraction = 0.0;
+            getWindowDimmer(texture, window).dimFraction = 0.0;
     },
 
     _mapWindow : function(shellwm, actor) {

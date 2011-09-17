@@ -1,5 +1,6 @@
 #version 110
 uniform sampler2D tex;
+uniform float startY;
 uniform float fraction;
 uniform float height;
 const float c = -0.2;
@@ -18,10 +19,11 @@ void main()
   // To reduce contrast, blend with a mid gray
   cogl_color_out = color * contrast - off * c;
 
-  // We only fully dim at a distance of BORDER_MAX_HEIGHT from the edge and
+  // We only fully dim at a distance of BORDER_MAX_HEIGHT from startY and
   // when the fraction is 1.0. For other locations and fractions we linearly
-  // interpolate back to the original undimmed color.
-  cogl_color_out = color + (cogl_color_out - color) * min(y / border_max_height, 1.0);
+  // interpolate back to the original undimmed color, so the top of the window
+  // is at full color.
+  cogl_color_out = color + (cogl_color_out - color) * max(min((y - startY) / border_max_height, 1.0), 0.0);
   cogl_color_out = color + (cogl_color_out - color) * fraction;
 
   cogl_color_out *= color.a;
