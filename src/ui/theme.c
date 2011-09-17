@@ -420,10 +420,7 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
   borders->visible.top   = MAX (buttons_height, title_height);
   borders->visible.left  = layout->left_width;
   borders->visible.right = layout->right_width;
-  if (flags & META_FRAME_SHADED)
-    borders->visible.bottom = 0;
-  else
-    borders->visible.bottom = layout->bottom_height;
+  borders->visible.bottom = layout->bottom_height;
 
   if (flags & META_FRAME_FULLSCREEN)
     {
@@ -444,6 +441,9 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
 
   if (type == META_FRAME_TYPE_ATTACHED)
     borders->invisible.top = 0;
+
+  if (flags & META_FRAME_SHADED)
+    borders->visible.bottom = borders->invisible.bottom = 0;
 
   borders->total.left   = borders->invisible.left   + borders->visible.left;
   borders->total.right  = borders->invisible.right  + borders->visible.right;
