@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-15 18:04+0000\n"
-"PO-Revision-Date: 2011-09-15 21:49+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"POT-Creation-Date: 2011-09-17 15:25+0000\n"
+"PO-Revision-Date: 2011-09-17 17:51+0100\n"
+"Last-Translator: Martin Srebotnjak  <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: Slovenian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: Slovenian\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -197,15 +197,15 @@ msgstr "Programi"
 msgid "SETTINGS"
 msgstr "NASTAVITVE"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:684
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:688
+#: ../js/ui/appDisplay.js:687
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:688
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -563,38 +563,38 @@ msgstr "Ali naj se razširitev '%s'  namesti preko povezave z extensions.gnome.o
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:645
 msgid "No extensions installed"
 msgstr "Ni nameščenih razširitev"
 
-#: ../js/ui/lookingGlass.js:687
+#: ../js/ui/lookingGlass.js:691
 msgid "Enabled"
 msgstr "Omogočeno"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:689
+#: ../js/ui/lookingGlass.js:693
 #: ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: ../js/ui/lookingGlass.js:691
+#: ../js/ui/lookingGlass.js:695
 msgid "Error"
 msgstr "Napaka"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:697
 msgid "Out of date"
 msgstr "Zastarelo"
 
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:699
 msgid "Downloading"
 msgstr "Prejemanje"
 
-#: ../js/ui/lookingGlass.js:720
+#: ../js/ui/lookingGlass.js:724
 msgid "View Source"
 msgstr "Poglej vir"
 
-#: ../js/ui/lookingGlass.js:726
+#: ../js/ui/lookingGlass.js:730
 msgid "Web Page"
 msgstr "Spletna stran"
 
@@ -720,7 +720,7 @@ msgstr "Končaj %s"
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:977
+#: ../js/ui/panel.js:966
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -966,11 +966,11 @@ msgstr "Vnesite PIN, ki je naveden na napravi."
 msgid "OK"
 msgstr "V redu"
 
-#: ../js/ui/status/keyboard.js:71
+#: ../js/ui/status/keyboard.js:72
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
-#: ../js/ui/status/keyboard.js:75
+#: ../js/ui/status/keyboard.js:77
 msgid "Region and Language Settings"
 msgstr "Nastavitve območja in jezika"
 
@@ -1078,27 +1078,19 @@ msgstr "Povezave VPN"
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1747
-msgid "Connectivity lost"
-msgstr "Povezava je izgubljena"
-
-#: ../js/ui/status/network.js:1748
-msgid "You are no longer connected to the network"
-msgstr "Povezava z omrežjem ni več vzpostavljena."
-
-#: ../js/ui/status/network.js:1756
+#: ../js/ui/status/network.js:1749
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1757
+#: ../js/ui/status/network.js:1750
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
-#: ../js/ui/status/network.js:2008
+#: ../js/ui/status/network.js:2000
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
-#: ../js/ui/status/network.js:2133
+#: ../js/ui/status/network.js:2125
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -1463,41 +1455,49 @@ msgstr "Nedejavno"
 msgid "Unavailable"
 msgstr "Nedostopno"
 
-#: ../js/ui/userMenu.js:516
-#: ../js/ui/userMenu.js:520
-#: ../js/ui/userMenu.js:589
+#: ../js/ui/userMenu.js:518
+#: ../js/ui/userMenu.js:522
+#: ../js/ui/userMenu.js:592
 msgid "Power Off..."
 msgstr "Izklop ..."
 
-#: ../js/ui/userMenu.js:518
 #: ../js/ui/userMenu.js:520
-#: ../js/ui/userMenu.js:588
+#: ../js/ui/userMenu.js:522
+#: ../js/ui/userMenu.js:591
 msgid "Suspend"
 msgstr "Zaustavi"
 
-#: ../js/ui/userMenu.js:551
+#: ../js/ui/userMenu.js:554
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/userMenu.js:559
+#: ../js/ui/userMenu.js:562
 msgid "Online Accounts"
 msgstr "Spletni računi"
 
-#: ../js/ui/userMenu.js:563
+#: ../js/ui/userMenu.js:566
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/userMenu.js:570
+#: ../js/ui/userMenu.js:573
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/userMenu.js:575
+#: ../js/ui/userMenu.js:578
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/userMenu.js:580
+#: ../js/ui/userMenu.js:583
 msgid "Log Out..."
 msgstr "Odjava ..."
+
+#: ../js/ui/userMenu.js:611
+msgid "Your chat status will be set to busy"
+msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
+
+#: ../js/ui/userMenu.js:612
+msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
+msgstr "Obveščanje je zdaj onemogočeno, vključno s sporočili klepeta. Vaše stanje povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil morda ne boste opazili."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1592,331 +1592,3 @@ msgstr "Datotečni sistem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "calendar:week_start:0"
-#~ msgstr "calendar:week_start:0"
-
-#~ msgid ""
-#~ "GNOME Shell extensions have a uuid property; this key lists extensions "
-#~ "which should not be loaded. This setting overrides enabled-extensions for "
-#~ "extensions that appear in both lists."
-#~ msgstr ""
-#~ "Razširitve lupine GNOME imajo določila UUID; ključ določa seznam "
-#~ "razširitev, ki ne bodo naložene. Ta nastavitev prepiše seznam omogočenih "
-#~ "razširitev za tiste razširitve, ki so zapisane na obeh seznamih."
-
-#~ msgid "Uuids of extensions to disable"
-#~ msgstr "Določila UUID razširitev za onemogočenje"
-
-#~ msgid "Localization Settings"
-#~ msgstr "Krajevne nastavitve"
-
-#~ msgid "You're now connected to mobile broadband connection '%s'"
-#~ msgstr "Vzpostavljena je povezava z mobilnim širokopasovnim omrežjem '%s'."
-
-#~ msgid "You're now connected to wireless network '%s'"
-#~ msgstr "Vzpostavljena je povezava z brezžičnim omrežjem '%s'."
-
-#~ msgid "You're now connected to VPN network '%s'"
-#~ msgstr "Vzpostavljena je povezava z omrežjem VPN '%s'"
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "Pred manj kot eno minuto"
-
-#~ msgid "%d minute ago"
-
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "Pred %d minutami"
-#~ msgstr[1] "Pred %d minuto"
-#~ msgstr[2] "Pred %d minutama"
-#~ msgstr[3] "Pred %d minutami"
-
-#~ msgid "%d hour ago"
-
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "Pred %d urami"
-#~ msgstr[1] "Pred %d uro"
-#~ msgstr[2] "Pred %d urama"
-#~ msgstr[3] "Pred %d urami"
-
-#~ msgid "%d day ago"
-
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "Pred %d dnevi"
-#~ msgstr[1] "Pred %d dnevom"
-#~ msgstr[2] "Pred %d dnevoma"
-#~ msgstr[3] "Pred %d dnevi"
-
-#~ msgid "%d week ago"
-
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "Pred %d tedni"
-#~ msgstr[1] "Pred %d tednom"
-#~ msgstr[2] "Pred %d tednoma"
-#~ msgstr[3] "Pred %d tedni"
-
-#~ msgid "Shut Down"
-#~ msgstr "Izklopi"
-
-#~ msgid "Click Shut Down to quit these applications and shut down the system."
-#~ msgstr "Kliknite Izklop za končanje teh programov in izklop sistema."
-
-#~ msgid "The system will shut down automatically in %d seconds."
-#~ msgstr "Sistem se bo samodejno izklopil čez %d sekund."
-
-#~ msgid "Shutting down the system."
-#~ msgstr "Izklapljanje sistema."
-
-#~ msgid "Confirm"
-#~ msgstr "Potrdi"
-
-#~ msgid "Panel"
-#~ msgstr "Pult"
-
-#~ msgid "No such application"
-#~ msgstr "Ni takšnega programa"
-
-#~ msgid "Screen Reader"
-#~ msgstr "Zaslonski bralnik"
-
-#~ msgid "PREFERENCES"
-#~ msgstr "Možnosti"
-
-#~ msgid "Shut Down..."
-#~ msgstr "Izklopi ..."
-
-#~ msgid "Search your computer"
-#~ msgstr "Iskanje po računalniku"
-
-#~ msgid "Clip the crosshairs at the center"
-#~ msgstr "Ali merek prekriva kazalko miške v središču"
-
-#~ msgid "Color of the crosshairs"
-#~ msgstr "Barva merka"
-
-#~ msgid ""
-#~ "Determines the length of the vertical and horizontal lines that make up "
-#~ "the crosshairs."
-#~ msgstr "Določi dolžino navpične in vodoravne črte, ki določata merek."
-
-#~ msgid ""
-#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
-#~ "transparent."
-#~ msgstr "Določi prosojnost merka, od prekrivne to prozorne."
-
-#~ msgid "Enable lens mode"
-#~ msgstr "Omogočeni način leče"
-
-#~ msgid ""
-#~ "For centered mouse tracking, when the system pointer is at or near the "
-#~ "edge of the screen, the magnified contents continue to scroll such that "
-#~ "the screen edge moves into the magnified view."
-#~ msgstr ""
-#~ "Pri usredinjenem sledenju miški, ko je sistemski kazalnik ob robu "
-#~ "zaslona, približanje vsebine drsi naprej tako, da je rob zaslona v "
-#~ "približanem pogledu."
-
-#~ msgid "Length of the crosshairs"
-#~ msgstr "Dolžina merka"
-
-#~ msgid "Magnification factor"
-#~ msgstr "Faktor približanja"
-
-#~ msgid "Mouse Tracking Mode"
-#~ msgstr "Način sledenja miške"
-
-#~ msgid "Opacity of the crosshairs"
-#~ msgstr "Prosojnost merka"
-
-#~ msgid "Screen position"
-#~ msgstr "Položaj zaslona"
-
-#~ msgid "Scroll magnified contents beyond the edges of the desktop"
-#~ msgstr "Zdrsni približano vsebino preko robov namizja"
-
-#~ msgid "Show or hide crosshairs"
-#~ msgstr "Pokaži ali skrij merek"
-
-#~ msgid "Show or hide the magnifier"
-#~ msgstr "Pokaži ali skrij približevalnik"
-
-#~ msgid "Show or hide the magnifier and all of its zoom regions."
-#~ msgstr "Pokaže ali skrije povečevalo in vsa njegova območja približevanja."
-
-#~ msgid ""
-#~ "The color of the the vertical and horizontal lines that make up the "
-#~ "crosshairs."
-#~ msgstr "Barva navpične in vodoravne črte, ki določata merek."
-
-#~ msgid ""
-#~ "The magnified view either fills the entire screen, or occupies the top-"
-#~ "half, bottom-half, left-half, or right-half of the screen."
-#~ msgstr ""
-#~ "Približan pogled lahko zapolni celoten zaslon, lahko pa zasede zgornjo, "
-#~ "spodnjo, levo ali pa desno polovico zaslona."
-
-#~ msgid ""
-#~ "The power of the magnification. A value of 1.0 means no magnification. A "
-#~ "value of 2.0 doubles the size."
-#~ msgstr ""
-#~ "Vrednost približanja. Vrednost 1.0 pomeni brez približanja, vrednost 2.0 "
-#~ "pa podvoji učinek približanja."
-
-#~ msgid "Thickness of the crosshairs"
-#~ msgstr "Debelina merka"
-
-#~ msgid ""
-#~ "Whether the magnified view should be centered over the location of the "
-#~ "system mouse and move with it."
-#~ msgstr ""
-#~ "Ali naj bo približan pogled usredinjen na mesto sistemske miške in se z "
-#~ "njo premika."
-
-#~ msgid ""
-#~ "Width of the vertical and horizontal lines that make up the crosshairs."
-#~ msgstr "Širina navpične in vodoravne čete, ki določata merek."
-
-#, fuzzy
-#~ msgid "Bluetooth Agent"
-#~ msgstr "Agent KAOS"
-
-#~ msgid ""
-#~ "Can't add a new workspace because maximum workspaces limit has been "
-#~ "reached."
-#~ msgstr ""
-#~ "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo največje "
-#~ "dovoljeno število."
-
-#~ msgid "Can't remove the first workspace."
-#~ msgstr "Ni mogoče odstraniti prve delovne površine."
-
-#~ msgid "Clock"
-#~ msgstr "Ura"
-
-#~ msgid "Customize the panel clock"
-#~ msgstr "Prilagodi uro pladnja"
-
-#~ msgid "Custom format of the clock"
-#~ msgstr "Zapis ure po meri"
-
-#~ msgid "Hour format"
-#~ msgstr "Urni zapis"
-
-#~ msgid ""
-#~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
-#~ "in time."
-#~ msgstr ""
-#~ "Izbrana možnost določa ali \"12-urni\" ali pa \"24-urni\" zapis časa s "
-#~ "prikazanimi sekundami."
-
-#~ msgid ""
-#~ "This key specifies the format used by the panel clock when the format key "
-#~ "is set to \"custom\". You can use conversion specifiers understood by "
-#~ "strftime() to obtain a specific format. See the strftime() manual for "
-#~ "more information."
-#~ msgstr ""
-#~ "Ključ določa zapis, ki naj ga uporablja vstavek ure, kadar je ključ "
-#~ "zapisa nastavljen kot \"prikrojen\". Za določitev zapisa lahko uporabite "
-#~ "tudi oznake funkcije strftime(), ki so podrobneje zapisane v priročniku "
-#~ "funkcije."
-
-#~ msgid ""
-#~ "This key specifies the hour format used by the panel clock. Possible "
-#~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
-#~ msgstr ""
-#~ "Ključ določa zapis ure. Mogoče vrednosti so \"12-urni\", \"24-urni\", "
-#~ "\"unix\" in \"po meri\". Možnost \"unix\" prikazuje čas v sekundah od "
-#~ "začetka ere, torej od 01.01.1970, možnost \"po meri\" pa omogoča "
-#~ "prikrojen zapis. Pri izbiri zapisa \"unix\" ali \"po meri\" sta izbiri "
-#~ "pokaži datum in pokaži sekunde, prezrti."
-
-#~ msgid "Clock Format"
-#~ msgstr "Zapis ure"
-
-#~ msgid "Clock Preferences"
-#~ msgstr "Možnosti ure"
-
-#~ msgid "Panel Display"
-#~ msgstr "Prikazovanje pladnja"
-
-#~ msgid "Show seco_nds"
-#~ msgstr "Pokaži _sekunde"
-
-#~ msgid "Show the _date"
-#~ msgstr "Pokaži _datum"
-
-#~ msgid "_12 hour format"
-#~ msgstr "_12-urni zapis časa"
-
-#~ msgid "_24 hour format"
-#~ msgstr "_24-urni zapis časa"
-
-#~ msgid "Preferences"
-#~ msgstr "Možnosti"
-
-#~ msgid "What's using power..."
-#~ msgstr "Kaj porablja napetost ..."
-
-#~ msgid "Overview workspace view mode"
-#~ msgstr "Način pregleda predogleda delovnih površin"
-
-#~ msgid ""
-#~ "The selected workspace view mode in the overview. Supported values are "
-#~ "\"single\" and \"grid\"."
-#~ msgstr ""
-#~ "Izbrani pogled delovnih površin v predogledu. Podprte vrednosti sta "
-#~ "\"enojno\" in \"mrežno\"."
-
-#~ msgid "Drag here to add favorites"
-#~ msgstr "S potegom na to mesto se izbor doda med priljubljene"
-
-#~ msgid "Find"
-#~ msgstr "Najdi"
-
-#~ msgid "Invisible"
-#~ msgstr "Nevidno"
-
-#~ msgid "System Preferences..."
-#~ msgstr "Sistemske možnosti ..."
-
-#~ msgid "ON"
-#~ msgstr "⚪"
-
-#~ msgid "OFF"
-#~ msgstr "⚫"
-
-#~ msgid "Sidebar"
-#~ msgstr "Stranska vrstica"
-
-#~ msgid "Recent Documents"
-#~ msgstr "Nedavni dokumenti"
-
-#~ msgid "PLACES"
-#~ msgstr "Mesta"
-
-#~ msgid "SEARCH RESULTS"
-#~ msgstr "Rezultati iskanja"
-
-#~ msgid "Can't lock screen: %s"
-#~ msgstr "Ni mogoče zakleniti zaslona: %s"
-
-#~ msgid "Can't temporarily set screensaver to blank screen: %s"
-#~ msgstr ""
-#~ "Ni mogoče začasno nastaviti črnega zaslona za ohranjevalnik zaslona: %s"
-
-#~ msgid "Can't logout: %s"
-#~ msgstr "Ni se mogoče odjaviti: %s"
-
-#~ msgid "Frequent"
-#~ msgstr "Pogosto"
-
-#~ msgid "(see all)"
-#~ msgstr "(poglej vse)"
-
-#~ msgid "Browse"
-#~ msgstr "Prebrskaj"
