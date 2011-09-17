@@ -123,7 +123,16 @@ CtrlAltTabManager.prototype = {
             return;
 
         items.sort(Lang.bind(this, this._sortItems));
-        new CtrlAltTabPopup().show(items, backwards);
+
+        if (!this._popup) {
+            this._popup = new CtrlAltTabPopup();
+            this._popup.show(items, backwards);
+
+            this._popup.actor.connect('destroy',
+                                      Lang.bind(this, function() {
+                                          this._popup = null;
+                                      }));
+        }
     }
 };
 
