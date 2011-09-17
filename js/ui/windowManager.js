@@ -19,22 +19,9 @@ const UNDIM_TIME = 0.250;
 
 var dimShader = undefined;
 
-function getDimShader() {
-    if (dimShader === null)
-        return null;
-    if (!dimShader) {
-        let source = Shell.get_file_contents_utf8_sync(global.datadir + '/shaders/dim-window.glsl');
-        try {
-            let shader = new Clutter.Shader();
-            shader.set_fragment_source(source, -1);
-            shader.compile();
-
-            dimShader = shader;
-        } catch (e) {
-            log(e.message);
-            dimShader = null;
-        }
-    }
+function getDimShaderSource() {
+    if (!dimShader)
+        dimShader = Shell.get_file_contents_utf8_sync(global.datadir + '/shaders/dim-window.glsl');
     return dimShader;
 }
 
@@ -44,22 +31,29 @@ function WindowDimmer(actor) {
 
 WindowDimmer.prototype = {
     _init: function(actor) {
+        this.effect = new Clutter.ShaderEffect({ shader_type: Clutter.ShaderType.FRAGMENT_SHADER });
+        this.effect.set_shader_source(getDimShaderSource());
+
         this.actor = actor;
     },
 
     set dimFraction(fraction) {
         this._dimFraction = fraction;
-        let shader = getDimShader();
-        if (!Meta.prefs_get_attach_modal_dialogs() || !shader) {
-            this.actor.set_shader(null);
+        if (!Meta.prefs_get_attach_modal_dialogs()) {
+            this.effect.enabled = false;
             return;
         }
+
         if (fraction > 0.01) {
-            this.actor.set_shader(shader);
-            this.actor.set_shader_param_float('height', this.actor.get_height());
-            this.actor.set_shader_param_float('fraction', fraction);
-        } else
-            this.actor.set_shader(null);
+            Shell.shader_effect_set_double_uniform(this.effect, 'height', this.actor.get_height());
+            Shell.shader_effect_set_double_uniform(this.effect, 'fraction', fraction);
+
+            if (!this.effect.actor)
+                this.actor.add_effect(this.effect);
+        } else {
+            if (this.effect.actor)
+                this.actor.remove_effect(this.effect);
+        }
     },
 
     get dimFraction() {

@@ -1,5 +1,5 @@
 #version 110
-uniform sampler2D sampler0;
+uniform sampler2D tex;
 uniform float fraction;
 uniform float height;
 const float c = -0.2;
@@ -12,15 +12,17 @@ mat4 contrast = mat4 (1.0 + c, 0.0, 0.0, 0.0,
 vec4 off = vec4(0.633, 0.633, 0.633, 0);
 void main()
 {
-  vec4 color = texture2D(sampler0, gl_TexCoord[0].st);
-  float y = height * gl_TexCoord[0][1];
+  vec4 color = texture2D(tex, cogl_tex_coord_in[0].xy);
+  float y = height * cogl_tex_coord_in[0].y;
 
   // To reduce contrast, blend with a mid gray
-  gl_FragColor = color * contrast - off * c;
+  cogl_color_out = color * contrast - off * c;
 
   // We only fully dim at a distance of BORDER_MAX_HEIGHT from the edge and
   // when the fraction is 1.0. For other locations and fractions we linearly
   // interpolate back to the original undimmed color.
-  gl_FragColor = color + (gl_FragColor - color) * min(y / border_max_height, 1.0);
-  gl_FragColor = color + (gl_FragColor - color) * fraction;
+  cogl_color_out = color + (cogl_color_out - color) * min(y / border_max_height, 1.0);
+  cogl_color_out = color + (cogl_color_out - color) * fraction;
+
+  cogl_color_out *= color.a;
 }

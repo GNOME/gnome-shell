@@ -50,6 +50,10 @@ gboolean shell_parse_search_provider           (const char       *data,
                                                 char            **icon_data_uri,
                                                 GError          **error);
 
+void shell_shader_effect_set_double_uniform (ClutterShaderEffect *effect,
+                                             const gchar         *name,
+                                             gdouble             value);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
