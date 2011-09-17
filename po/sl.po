@@ -2194,4 +2194,3 @@ msgstr "Preusmeritev prepisa okna"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:647
 msgid "If this is an override-redirect window"
 msgstr "Ali je to okno preusmeritve prepisa"
-
