@@ -1054,11 +1054,6 @@ Panel.prototype = {
             let indicator = new constructor();
             this.addToStatusArea(role, indicator, i);
         }
-
-        // PopupMenuManager depends on menus being added in order for
-        // keyboard navigation
-        if (this._userMenu)
-            this._menus.addMenu(this._userMenu.menu);
     },
 
     _insertStatusItem: function(actor, position) {
