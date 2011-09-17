@@ -247,12 +247,15 @@ UserListItem.prototype = {
     showFocusAnimation: function(time) {
         let hold = new Batch.Hold();
 
+        let node = this.actor.get_theme_node();
+        let padding = node.get_horizontal_padding();
+
         let box = this._verticalBox.get_allocation_box();
 
         Tweener.removeTweens(this._focusBin);
         this._focusBin.width = 0;
         Tweener.addTween(this._focusBin,
-                         { width: box.x2 - box.x1,
+                         { width: (box.x2 - box.x1 - padding),
                            time: time,
                            transition: 'linear',
                            onComplete: function() {
