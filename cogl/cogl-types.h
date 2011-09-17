@@ -668,6 +668,10 @@ typedef enum _CoglWinsysFeature
    * to the vblank frequency. */
   COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE,
 
+  /* Available if the swap region implementation won't tear and thus
+   * only needs to be throttled to the framerate */
+  COGL_WINSYS_FEATURE_SWAP_REGION_SYNCHRONIZED,
+
   COGL_WINSYS_FEATURE_N_FEATURES
 } CoglWinsysFeature;
 

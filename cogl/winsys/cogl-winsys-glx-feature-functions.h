@@ -89,7 +89,7 @@ COGL_WINSYS_FEATURE_BEGIN (copy_sub_buffer,
                            "copy_sub_buffer\0",
                            0,
                            0,
-                           0)
+                           COGL_WINSYS_FEATURE_SWAP_REGION_SYNCHRONIZED)
 COGL_WINSYS_FEATURE_FUNCTION (void, glXCopySubBuffer,
                               (Display *dpy,
                                GLXDrawable drawable,

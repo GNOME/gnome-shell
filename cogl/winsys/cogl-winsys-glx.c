@@ -1127,6 +1127,16 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
   guint32 end_frame_vsync_counter = 0;
   gboolean have_counter;
   gboolean can_wait;
+
+  /*
+   * We assume that glXCopySubBuffer is synchronized which means it won't prevent multiple
+   * blits per retrace if they can all be performed in the blanking period. If that's the
+   * case then we still want to use the vblank sync menchanism but
+   * we only need it to throttle redraws.
+   */
+  gboolean blit_sub_buffer_is_synchronized =
+     _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION_SYNCHRONIZED);
+
   int framebuffer_height =  cogl_framebuffer_get_height (framebuffer);
   int *rectangles = g_alloca (sizeof (int) * n_rectangles * 4);
   int i;
@@ -1194,7 +1204,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
    */
   context->glFinish ();
 
-  if (have_counter && can_wait)
+  if (blit_sub_buffer_is_synchronized && have_counter && can_wait)
     {
       end_frame_vsync_counter = _cogl_winsys_get_vsync_counter ();
 
