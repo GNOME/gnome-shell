@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-06 02:16+0000\n"
-"PO-Revision-Date: 2011-07-12 22:54+0900\n"
-"Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
+"POT-Creation-Date: 2011-09-16 18:16+0000\n"
+"PO-Revision-Date: 2011-09-11 08:47+0900\n"
+"Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -190,43 +190,49 @@ msgstr ""
 msgid "disabled OpenSearch providers"
 msgstr "OpenSearch プロバイダーを無効にする"
 
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:604
 #, fuzzy
 #| msgid "Searching..."
 msgid "Session..."
 msgstr "検索しています..."
 
-#: ../js/gdm/loginDialog.js:758 ../js/gdm/loginDialog.js:931
+#: ../js/gdm/loginDialog.js:761
+msgctxt "title"
 msgid "Sign In"
 msgstr ""
 
-#: ../js/gdm/loginDialog.js:816
+#: ../js/gdm/loginDialog.js:818
 msgid "Not listed?"
 msgstr ""
 
-#: ../js/gdm/loginDialog.js:926 ../js/ui/endSessionDialog.js:410
-#: ../js/ui/networkAgent.js:158 ../js/ui/polkitAuthenticationAgent.js:170
-#: ../js/ui/status/bluetooth.js:480
+#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
+#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../js/gdm/loginDialog.js:1251
+#: ../js/gdm/loginDialog.js:933
+msgctxt "button"
+msgid "Sign In"
+msgstr ""
+
+#: ../js/gdm/loginDialog.js:1253
 #, fuzzy
 #| msgid "New Window"
 msgid "Login Window"
 msgstr "新しいウィンドウで開く"
 
-#: ../js/misc/util.js:68
+#: ../js/misc/util.js:92
 msgid "Command not found"
 msgstr "コマンドが見つかりません"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:95
+#: ../js/misc/util.js:119
 msgid "Could not parse command:"
 msgstr "次のコマンドは解析できません:"
 
-#: ../js/misc/util.js:103
+#: ../js/misc/util.js:127
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s'の実行に失敗しました:"
@@ -244,15 +250,15 @@ msgstr "アプリケーション"
 msgid "SETTINGS"
 msgstr "設定"
 
-#: ../js/ui/appDisplay.js:685
+#: ../js/ui/appDisplay.js:684
 msgid "New Window"
 msgstr "新しいウィンドウで開く"
 
-#: ../js/ui/appDisplay.js:688
+#: ../js/ui/appDisplay.js:687
 msgid "Remove from Favorites"
 msgstr "お気に入りから削除"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:688
 msgid "Add to Favorites"
 msgstr "お気に入りに追加"
 
@@ -448,7 +454,7 @@ msgstr ""
 msgid "CONTACTS"
 msgstr ""
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1196
 msgid "Remove"
 msgstr "削除"
 
@@ -516,7 +522,7 @@ msgstr "最近使用した項目"
 msgid "Log Out %s"
 msgstr "%s のログアウト"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
 msgid "Log Out"
 msgstr "ログアウト"
 
@@ -524,100 +530,117 @@ msgstr "ログアウト"
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "起動中のアプリケーションを終了しシステムからログアウトします。"
 
-#: ../js/ui/endSessionDialog.js:63
-#, c-format
-msgid "%s will be logged out automatically in %d seconds."
-msgstr "%s は %d 秒後に自動的にログアウトします。"
-
 #: ../js/ui/endSessionDialog.js:64
-#, c-format
-msgid "You will be logged out automatically in %d seconds."
-msgstr "%d 秒後に自動的にログアウトします。"
+#, fuzzy, c-format
+#| msgid "%s will be logged out automatically in %d seconds."
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s は %d 秒後に自動的にログアウトします。"
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:69
+#, fuzzy, c-format
+#| msgid "You will be logged out automatically in %d seconds."
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "%d 秒後に自動的にログアウトします。"
+
+#: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
 msgstr "システムからログアウトします。"
 
-#: ../js/ui/endSessionDialog.js:72 ../js/ui/endSessionDialog.js:79
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
 msgid "Power Off"
 msgstr "電源オフ"
 
-#: ../js/ui/endSessionDialog.js:73
+#: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "電源オフをクリックすると、起動中のアプリケーションを終了しシステムの電源を切"
 "ります。"
 
-#: ../js/ui/endSessionDialog.js:74
-#, c-format
-msgid "The system will power off automatically in %d seconds."
-msgstr "%d 秒後に自動的にシステムの電源を切ります。"
+#: ../js/ui/endSessionDialog.js:83
+#, fuzzy, c-format
+#| msgid "The system will power off automatically in %d seconds."
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "%d 秒後に自動的にシステムの電源を切ります。"
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "システムの電源を切ります。"
 
-#: ../js/ui/endSessionDialog.js:77 ../js/ui/endSessionDialog.js:85
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restart"
 msgstr "再起動"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "起動中のアプリケーションを終了しシステムを再起動します。"
 
-#: ../js/ui/endSessionDialog.js:87
-#, c-format
-msgid "The system will restart automatically in %d seconds."
-msgstr "%d 秒後にシステムを再起動します。"
+#: ../js/ui/endSessionDialog.js:100
+#, fuzzy, c-format
+#| msgid "The system will restart automatically in %d seconds."
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "%d 秒後にシステムを再起動します。"
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:104
 msgid "Restarting the system."
 msgstr "システムを再起動します。"
 
-#: ../js/ui/keyboard.js:508 ../js/ui/status/power.js:211
+#: ../js/ui/extensionSystem.js:481
+msgid "Install"
+msgstr ""
+
+#: ../js/ui/extensionSystem.js:485
+#, c-format
+msgid "Download and install '%s' from extensions.gnome.org?"
+msgstr ""
+
+#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "キーボード"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "機能拡張はインストールされていません"
 
-#: ../js/ui/lookingGlass.js:686
+#: ../js/ui/lookingGlass.js:687
 msgid "Enabled"
 msgstr "利用可能にする"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:688 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:689 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "利用不可能にする"
 
-#: ../js/ui/lookingGlass.js:690
+#: ../js/ui/lookingGlass.js:691
 msgid "Error"
 msgstr "エラー"
 
-#: ../js/ui/lookingGlass.js:692
+#: ../js/ui/lookingGlass.js:693
 msgid "Out of date"
 msgstr "最新ではありません"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:695
 msgid "Downloading"
 msgstr ""
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "ソースの表示"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "ウェブページ"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1189
 msgid "Open"
 msgstr "開く"
 
-#: ../js/ui/messageTray.js:2352
+#: ../js/ui/messageTray.js:2368
 msgid "System Information"
 msgstr "システム情報"
 
@@ -687,7 +710,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Network Manager"
 msgid "Network name: "
-msgstr "ネットワークマネージャ"
+msgstr "ネットワークマネージャー"
 
 #: ../js/ui/networkAgent.js:346
 #, fuzzy
@@ -749,7 +772,7 @@ msgstr "%s を終了"
 msgid "Activities"
 msgstr "アクティビティ"
 
-#: ../js/ui/panel.js:967
+#: ../js/ui/panel.js:966
 msgid "Top Bar"
 msgstr "トップバー"
 
@@ -764,7 +787,7 @@ msgstr "再試行"
 
 #: ../js/ui/placeDisplay.js:163
 msgid "Connect to..."
-msgstr "サーバへ接続..."
+msgstr "サーバーへ接続..."
 
 #: ../js/ui/placeDisplay.js:375
 msgid "PLACES & DEVICES"
@@ -776,7 +799,7 @@ msgstr "認証が要求されました"
 
 #: ../js/ui/polkitAuthenticationAgent.js:106
 msgid "Administrator"
-msgstr "アドミニストレータ"
+msgstr "アドミニストレーター"
 
 #: ../js/ui/polkitAuthenticationAgent.js:174
 msgid "Authenticate"
@@ -948,7 +971,7 @@ msgstr "許可"
 msgid "Grant this time only"
 msgstr "今回のみ許可"
 
-#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1185
+#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1196
 msgid "Reject"
 msgstr "拒否"
 
@@ -960,7 +983,7 @@ msgstr "%s からペアリングの確認"
 #: ../js/ui/status/bluetooth.js:428 ../js/ui/status/bluetooth.js:462
 #, c-format
 msgid "Device %s wants to pair with this computer"
-msgstr "デバイス %s がこのコンピュータとのペアリングを要求しています"
+msgstr "デバイス %s がこのコンピューターとのペアリングを要求しています"
 
 #: ../js/ui/status/bluetooth.js:429
 #, c-format
@@ -988,13 +1011,13 @@ msgstr "デバイスの PIN コードを入力してください。"
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:71
+#: ../js/ui/status/keyboard.js:72
 #, fuzzy
 #| msgid "Show Keyboard Layout..."
 msgid "Show Keyboard Layout"
 msgstr "キーボードレイアウトの表示..."
 
-#: ../js/ui/status/keyboard.js:75
+#: ../js/ui/status/keyboard.js:77
 #, fuzzy
 #| msgid "Date and Time Settings"
 msgid "Region and Language Settings"
@@ -1101,37 +1124,25 @@ msgstr "VPN 接続"
 msgid "Network Settings"
 msgstr "ネットワークの設定"
 
-#: ../js/ui/status/network.js:1747
-#, fuzzy
-#| msgid "Connection"
-msgid "Connectivity lost"
-msgstr "接続"
-
-#: ../js/ui/status/network.js:1748
-#, fuzzy
-#| msgid "You're now connected to wired network '%s'"
-msgid "You're no longer connected to the network"
-msgstr "有線ネットワーク '%s' に接続しました"
-
-#: ../js/ui/status/network.js:1756
+#: ../js/ui/status/network.js:1749
 #, fuzzy
 #| msgid "connection failed"
 msgid "Connection failed"
 msgstr "接続失敗"
 
-#: ../js/ui/status/network.js:1757
+#: ../js/ui/status/network.js:1750
 #, fuzzy
 #| msgid "connection failed"
 msgid "Activation of network connection failed"
 msgstr "接続失敗"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2000
 msgid "Networking is disabled"
 msgstr "ネットワークを利用できません"
 
-#: ../js/ui/status/network.js:2117
+#: ../js/ui/status/network.js:2125
 msgid "Network Manager"
-msgstr "ネットワークマネージャ"
+msgstr "ネットワークマネージャー"
 
 #: ../js/ui/status/power.js:82
 msgid "Power Settings"
@@ -1171,9 +1182,15 @@ msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "残り %d分"
 
+#: ../js/ui/status/power.js:121 ../js/ui/status/power.js:194
+#, c-format
+msgctxt "percent of battery remaining"
+msgid "%d%%"
+msgstr ""
+
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
-msgstr "AC アダプタ"
+msgstr "AC アダプター"
 
 #: ../js/ui/status/power.js:203
 msgid "Laptop battery"
@@ -1185,7 +1202,7 @@ msgstr "無停電電源装置"
 
 #: ../js/ui/status/power.js:207
 msgid "Monitor"
-msgstr "モニタ"
+msgstr "モニター"
 
 #: ../js/ui/status/power.js:209
 msgid "Mouse"
@@ -1201,7 +1218,7 @@ msgstr "携帯電話"
 
 #: ../js/ui/status/power.js:217
 msgid "Media player"
-msgstr "メディアプレイヤ"
+msgstr "メディアプレイヤー"
 
 #: ../js/ui/status/power.js:219
 msgid "Tablet"
@@ -1209,7 +1226,7 @@ msgstr "タブレット端末"
 
 #: ../js/ui/status/power.js:221
 msgid "Computer"
-msgstr "コンピュータ"
+msgstr "コンピューター"
 
 #: ../js/ui/status/volume.js:42
 msgid "Volume"
@@ -1222,50 +1239,50 @@ msgstr "マイク"
 #. We got the TpContact
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:256
+#: ../js/ui/telepathyClient.js:259
 msgid "Invitation"
 msgstr ""
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:322
+#: ../js/ui/telepathyClient.js:325
 #, fuzzy
 #| msgid "Cancel"
 msgid "Call"
 msgstr "キャンセル"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:350
+#: ../js/ui/telepathyClient.js:353
 msgid "File Transfer"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:432
+#: ../js/ui/telepathyClient.js:434
 #, fuzzy
 #| msgid "Authorization request from %s"
 msgid "Subscription request"
 msgstr "%s からアクセス許可の要求"
 
-#: ../js/ui/telepathyClient.js:460
+#: ../js/ui/telepathyClient.js:470
 #, fuzzy
 #| msgid "Connection"
 msgid "Connection error"
 msgstr "接続"
 
-#: ../js/ui/telepathyClient.js:722
+#: ../js/ui/telepathyClient.js:733
 #, c-format
 msgid "%s is online."
 msgstr "%s はオンラインです。"
 
-#: ../js/ui/telepathyClient.js:727
+#: ../js/ui/telepathyClient.js:738
 #, c-format
 msgid "%s is offline."
 msgstr "%s はオフラインです。"
 
-#: ../js/ui/telepathyClient.js:730
+#: ../js/ui/telepathyClient.js:741
 #, c-format
 msgid "%s is away."
 msgstr "'%s' は外出中です。"
 
-#: ../js/ui/telepathyClient.js:733
+#: ../js/ui/telepathyClient.js:744
 #, c-format
 msgid "%s is busy."
 msgstr "%s は取り込み中です。"
@@ -1273,7 +1290,7 @@ msgstr "%s は取り込み中です。"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:967
+#: ../js/ui/telepathyClient.js:978
 #, fuzzy, no-c-format
 #| msgid "Sent at %X on %A"
 msgid "Sent at <b>%X</b> on <b>%A</b>"
@@ -1281,28 +1298,28 @@ msgstr "%Aの%Xに送信"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:973
+#: ../js/ui/telepathyClient.js:984
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr ""
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:978
+#: ../js/ui/telepathyClient.js:989
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr ""
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1020
+#: ../js/ui/telepathyClient.js:1031
 #, c-format
 msgid "%s is now known as %s"
 msgstr ""
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1129
+#: ../js/ui/telepathyClient.js:1140
 #, c-format
 msgid "Invitation to %s"
 msgstr ""
@@ -1310,34 +1327,34 @@ msgstr ""
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1137
+#: ../js/ui/telepathyClient.js:1148
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1139 ../js/ui/telepathyClient.js:1228
-#: ../js/ui/telepathyClient.js:1332
+#: ../js/ui/telepathyClient.js:1150 ../js/ui/telepathyClient.js:1239
+#: ../js/ui/telepathyClient.js:1343
 msgid "Decline"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1140 ../js/ui/telepathyClient.js:1229
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1151 ../js/ui/telepathyClient.js:1240
+#: ../js/ui/telepathyClient.js:1344
 msgid "Accept"
 msgstr ""
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1173
+#: ../js/ui/telepathyClient.js:1184
 #, c-format
 msgid "Video call from %s"
 msgstr ""
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1176
+#: ../js/ui/telepathyClient.js:1187
 #, c-format
 msgid "Call from %s"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1186
+#: ../js/ui/telepathyClient.js:1197
 msgid "Answer"
 msgstr ""
 
@@ -1346,120 +1363,120 @@ msgstr ""
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1222
+#: ../js/ui/telepathyClient.js:1233
 #, c-format
 msgid "%s is sending you %s"
 msgstr ""
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1308
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1395
+#: ../js/ui/telepathyClient.js:1406
 #, fuzzy
 #| msgid "Network Manager"
 msgid "Network error"
-msgstr "ネットワークマネージャ"
+msgstr "ネットワークマネージャー"
 
-#: ../js/ui/telepathyClient.js:1397
+#: ../js/ui/telepathyClient.js:1408
 #, fuzzy
 #| msgid "Authentication Required"
 msgid "Authentication failed"
 msgstr "認証が要求されました"
 
-#: ../js/ui/telepathyClient.js:1399
+#: ../js/ui/telepathyClient.js:1410
 msgid "Encryption error"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1401
+#: ../js/ui/telepathyClient.js:1412
 msgid "Certificate not provided"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1403
+#: ../js/ui/telepathyClient.js:1414
 msgid "Certificate untrusted"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1405
+#: ../js/ui/telepathyClient.js:1416
 msgid "Certificate expired"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1407
+#: ../js/ui/telepathyClient.js:1418
 msgid "Certificate not activated"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1409
+#: ../js/ui/telepathyClient.js:1420
 msgid "Certificate hostname mismatch"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1411
+#: ../js/ui/telepathyClient.js:1422
 msgid "Certificate fingerprint mismatch"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1413
+#: ../js/ui/telepathyClient.js:1424
 msgid "Certificate self-signed"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1415
+#: ../js/ui/telepathyClient.js:1426
 #, fuzzy
 #| msgid "%s is offline."
 msgid "Status is set to offline"
 msgstr "%s はオフラインです。"
 
-#: ../js/ui/telepathyClient.js:1417
+#: ../js/ui/telepathyClient.js:1428
 msgid "Encryption is not available"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1419
+#: ../js/ui/telepathyClient.js:1430
 msgid "Certificate is invalid"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1421
+#: ../js/ui/telepathyClient.js:1432
 #, fuzzy
 #| msgid "Connection established"
 msgid "Connection has been refused"
 msgstr "接続を確立しました"
 
-#: ../js/ui/telepathyClient.js:1423
+#: ../js/ui/telepathyClient.js:1434
 #, fuzzy
 #| msgid "Connection established"
 msgid "Connection can't be established"
 msgstr "接続を確立しました"
 
-#: ../js/ui/telepathyClient.js:1425
+#: ../js/ui/telepathyClient.js:1436
 #, fuzzy
 #| msgid "Connection established"
 msgid "Connection has been lost"
 msgstr "接続を確立しました"
 
-#: ../js/ui/telepathyClient.js:1427
+#: ../js/ui/telepathyClient.js:1438
 msgid "This resource is already connected to the server"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1429
+#: ../js/ui/telepathyClient.js:1440
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1431
+#: ../js/ui/telepathyClient.js:1442
 msgid "The account already exists on the server"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1433
+#: ../js/ui/telepathyClient.js:1444
 msgid "Server is currently too busy to handle the connection"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1435
+#: ../js/ui/telepathyClient.js:1446
 msgid "Certificate has been revoked"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1437
+#: ../js/ui/telepathyClient.js:1448
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 
-#: ../js/ui/telepathyClient.js:1439
+#: ../js/ui/telepathyClient.js:1450
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1467,29 +1484,29 @@ msgstr ""
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1459
 #, fuzzy, c-format
 #| msgid "connection failed"
 msgid "Connection to %s failed"
 msgstr "接続失敗"
 
-#: ../js/ui/telepathyClient.js:1455
-#, fuzzy
-#| msgid "Unknown"
-msgid "Unknown reason"
-msgstr "不明なデバイス"
-
-#: ../js/ui/telepathyClient.js:1462
+#: ../js/ui/telepathyClient.js:1468
 #, fuzzy
 #| msgid "Reject"
 msgid "Reconnect"
 msgstr "拒否"
 
-#: ../js/ui/telepathyClient.js:1463
+#: ../js/ui/telepathyClient.js:1469
 #, fuzzy
 #| msgid "My Account"
 msgid "Edit account"
 msgstr "アカウント"
+
+#: ../js/ui/telepathyClient.js:1515
+#, fuzzy
+#| msgid "Unknown"
+msgid "Unknown reason"
+msgstr "不明なデバイス"
 
 #: ../js/ui/userMenu.js:153
 msgid "Hidden"
@@ -1514,8 +1531,10 @@ msgid "Suspend"
 msgstr "サスペンド"
 
 #: ../js/ui/userMenu.js:551
-msgid "Do Not Disturb"
-msgstr ""
+#, fuzzy
+#| msgid "Applications"
+msgid "Notifications"
+msgstr "アプリケーション"
 
 #: ../js/ui/userMenu.js:559
 #, fuzzy
@@ -1604,11 +1623,11 @@ msgstr "既定"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
-msgstr "認証ダイアログはユーザに拒否されました"
+msgstr "認証ダイアログはユーザーに拒否されました"
 
 #: ../src/shell-util.c:100
 msgid "Home Folder"
-msgstr "ホームフォルダ"
+msgstr "ホームフォルダー"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
@@ -1626,9 +1645,15 @@ msgstr "ファイルシステム"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: ../src/shell-util.c:600
-msgid "calendar:week_start:0"
-msgstr ""
+#, fuzzy
+#~| msgid "Connection"
+#~ msgid "Connectivity lost"
+#~ msgstr "接続"
+
+#, fuzzy
+#~| msgid "You're now connected to wired network '%s'"
+#~ msgid "You're no longer connected to the network"
+#~ msgstr "有線ネットワーク '%s' に接続しました"
 
 #, fuzzy
 #~ msgid ""
