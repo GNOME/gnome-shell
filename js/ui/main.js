@@ -595,9 +595,9 @@ function _globalKeyPressHandler(actor, event) {
         return true;
     }
 
-    // Other bindings are only available when the overview is up and
+    // Other bindings are only available to the user session when the overview is up and
     // no modal dialog is present.
-    if (!overview.visible || modalCount > 1)
+    if (global.session_type == Shell.SessionType.USER && (!overview.visible || modalCount > 1))
         return false;
 
     // This isn't a Meta.KeyBindingAction yet
