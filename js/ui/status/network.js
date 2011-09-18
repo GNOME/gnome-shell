@@ -1480,6 +1480,11 @@ NMDeviceWireless.prototype = {
     },
 
     _createNetworkItem: function(apObj, position) {
+        if(!apObj.accessPoints || apObj.accessPoints.length == 0) {
+            // this should not happen, but I have no idea why it happens
+            return;
+        }
+
         if(apObj.connections.length > 0) {
             if (apObj.connections.length == 1)
                 apObj.item = this._createAPItem(apObj.connections[0], apObj, false);
