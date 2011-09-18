@@ -641,9 +641,10 @@ st_table_preferred_allocate (ClutterActor          *self,
        */
       if (col + col_span > priv->n_cols)
         g_warning ("StTable: col-span exceeds number of columns");
+#if 0
       if (row + row_span > priv->n_rows)
         g_warning ("StTable: row-span exceeds number of rows");
-
+#endif
       if (col_span > 1)
         {
           for (i = col + 1; i < col + col_span && i < priv->n_cols; i++)
