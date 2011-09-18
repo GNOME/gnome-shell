@@ -1044,7 +1044,7 @@ msgstr[0] "giờ"
 #: ../js/ui/status/power.js:121
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] "%d phút"
+msgstr[0] "phút"
 
 #: ../js/ui/status/power.js:124
 #, c-format
