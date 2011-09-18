@@ -1291,6 +1291,9 @@ NMDeviceWireless.prototype = {
         apObj.accessPoints.splice(i, 1);
 
         if (apObj.accessPoints.length == 0) {
+            if (this._activeNetwork == apObj)
+                this._activeNetwork = null;
+
             if (apObj.item)
                 apObj.item.destroy();
 
