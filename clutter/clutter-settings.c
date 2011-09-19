@@ -609,7 +609,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
   obj_props[PROP_PASSWORD_HINT_TIME] =
     g_param_spec_uint ("password-hint-time",
                        P_("Password Hint Time"),
-                       P_("THow low to show the last input character in hidden entries"),
+                       P_("How long to show the last input character in hidden entries"),
                        0, G_MAXUINT,
                        0,
                        CLUTTER_PARAM_READWRITE);
