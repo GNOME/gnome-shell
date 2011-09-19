@@ -418,7 +418,7 @@ StTooltip StLabel {
 }
 
 .status-chooser-status-item,
-.status-chooser-combo > .popup-combobox-item {
+.status-chooser-combo .popup-combobox-item {
     spacing: .4em;
 }
 
