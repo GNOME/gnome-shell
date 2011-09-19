@@ -132,7 +132,6 @@ main (int argc, char **argv)
 
   UNPORTED_TEST ("/cogl", test_cogl_object);
   UNPORTED_TEST ("/cogl", test_cogl_fixed);
-  UNPORTED_TEST ("/cogl", test_cogl_backface_culling);
   UNPORTED_TEST ("/cogl", test_cogl_materials);
   UNPORTED_TEST ("/cogl", test_cogl_pipeline_user_matrix);
   UNPORTED_TEST ("/cogl", test_cogl_blend_strings);
@@ -141,6 +140,7 @@ main (int argc, char **argv)
   UNPORTED_TEST ("/cogl", test_cogl_path);
   ADD_TEST ("/cogl", test_cogl_depth_test);
   ADD_TEST ("/cogl", test_cogl_color_mask);
+  ADD_TEST ("/cogl", test_cogl_backface_culling);
 
   UNPORTED_TEST ("/cogl/texture", test_cogl_npot_texture);
   UNPORTED_TEST ("/cogl/texture", test_cogl_multitexture);

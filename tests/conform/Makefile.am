@@ -11,7 +11,6 @@ common_sources = \
 	$(NULL)
 
 unported_test_sources = \
-	test-backface-culling.c \
 	test-blend-strings.c \
 	test-fixed.c \
 	test-materials.c \
@@ -43,6 +42,7 @@ unported_test_sources = \
 test_sources = \
 	test-depth-test.c \
 	test-color-mask.c \
+	test-backface-culling.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
