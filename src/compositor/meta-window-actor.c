@@ -2078,7 +2078,11 @@ update_corners (MetaWindowActor   *self,
   cairo_surface_t *surface;
 
   if (!priv->window->frame)
-    return;
+    {
+      meta_shaped_texture_set_overlay_path (META_SHAPED_TEXTURE (priv->actor),
+                                            NULL, NULL);
+      return;
+    }
 
   meta_window_get_outer_rect (priv->window, &outer);
 
