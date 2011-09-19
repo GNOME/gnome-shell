@@ -49,9 +49,9 @@ XKBIndicator.prototype = {
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
 
         this._container = new Shell.GenericContainer();
-        this._container.connect('get-preferred-width', Lang.bind(this, this._get_preferred_width));
-        this._container.connect('get-preferred-height', Lang.bind(this, this._get_preferred_height));
-        this._container.connect('allocate', Lang.bind(this, this._allocate));
+        this._container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
+        this._container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
+        this._container.connect('allocate', Lang.bind(this, this._containerAllocate));
         this.actor.set_child(this._container);
 
         this._iconActor = new St.Icon({ icon_name: 'keyboard', icon_type: St.IconType.SYMBOLIC, style_class: 'system-status-icon' });
@@ -61,11 +61,11 @@ XKBIndicator.prototype = {
 
         this._showFlags = false;
         this._config = Gkbd.Configuration.get();
-        this._config.connect('changed', Lang.bind(this, this._sync_config));
-        this._config.connect('group-changed', Lang.bind(this, this._sync_group));
+        this._config.connect('changed', Lang.bind(this, this._syncConfig));
+        this._config.connect('group-changed', Lang.bind(this, this._syncGroup));
         this._config.start_listen();
 
-        this._sync_config();
+        this._syncConfig();
 
         if (global.session_type == Shell.SessionType.USER) {
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -77,7 +77,7 @@ XKBIndicator.prototype = {
         this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
     },
 
-    _adjust_group_names: function(names) {
+    _adjustGroupNames: function(names) {
         // Disambiguate duplicate names with a subscript
         // This is O(N^2) to avoid sorting names
         // but N <= 4 so who cares?
@@ -99,7 +99,7 @@ XKBIndicator.prototype = {
         return names;
     },
 
-    _sync_config: function() {
+    _syncConfig: function() {
         this._showFlags = this._config.if_flags_shown();
         if (this._showFlags) {
             this._container.set_skip_paint(this._iconActor, false);
@@ -121,7 +121,7 @@ XKBIndicator.prototype = {
         for (let i = 0; i < this._labelActors.length; i++)
             this._labelActors[i].destroy();
 
-        let short_names = this._adjust_group_names(this._config.get_short_group_names());
+        let short_names = this._adjustGroupNames(this._config.get_short_group_names());
 
         this._selectedLayout = null;
         this._layoutItems = [ ];
@@ -146,10 +146,10 @@ XKBIndicator.prototype = {
             this._container.set_skip_paint(shortLabel, true);
         }
 
-        this._sync_group();
+        this._syncGroup();
     },
 
-    _sync_group: function() {
+    _syncGroup: function() {
         let selected = this._config.get_current_group();
 
         if (this._selectedLayout) {
@@ -172,10 +172,10 @@ XKBIndicator.prototype = {
         this._selectedLayout = item;
     },
 
-    _get_preferred_width: function(container, for_height, alloc) {
-        /* Here, and in _get_preferred_height, we need to query for the
-           height of all children, but we ignore the results for those
-           we don't actually display. */
+    _containerGetPreferredWidth: function(container, for_height, alloc) {
+        // Here, and in _containerGetPreferredHeight, we need to query
+        // for the height of all children, but we ignore the results
+        // for those we don't actually display.
         let max_min_width = 0, max_natural_width = 0;
         if (this._showFlags)
             [max_min_width, max_natural_width] = this._iconActor.get_preferred_width(for_height);
@@ -192,7 +192,7 @@ XKBIndicator.prototype = {
         alloc.natural_size = max_natural_width;
     },
 
-    _get_preferred_height: function(container, for_width, alloc) {
+    _containerGetPreferredHeight: function(container, for_width, alloc) {
         let max_min_height = 0, max_natural_height = 0;
         if (this._showFlags)
             [max_min_height, max_natural_height] = this._iconActor.get_preferred_height(for_width);
@@ -209,7 +209,7 @@ XKBIndicator.prototype = {
         alloc.natural_size = max_natural_height;
     },
 
-    _allocate: function(container, box, flags) {
+    _containerAllocate: function(container, box, flags) {
         // translate box to (0, 0)
         box.x2 -= box.x1;
         box.x1 = 0;
