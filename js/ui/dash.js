@@ -37,6 +37,7 @@ DashItemContainer.prototype = {
         this.child = null;
         this._childScale = 1;
         this._childOpacity = 255;
+        this.animatingOut = false;
     },
 
     _allocate: function(actor, box, flags) {
@@ -115,6 +116,7 @@ DashItemContainer.prototype = {
             return;
         }
 
+        this.animatingOut = true;
         this.childScale = 1.0;
         Tweener.addTween(this,
                          { childScale: 0.0,
@@ -177,12 +179,6 @@ RemoveFavoriteIcon.prototype = {
         this._iconBin._delegate = this;
 
         this.setChild(this._iconBin);
-        this.hiding = false;
-    },
-
-    animateOutAndDestroy: function() {
-        DashItemContainer.prototype.animateOutAndDestroy.call(this);
-        this.hiding = true;
     },
 
     _createIcon: function(size) {
@@ -314,15 +310,12 @@ Dash.prototype = {
     _endDrag: function() {
         this._clearDragPlaceholder();
         if (this._favRemoveTarget) {
-            this._favRemoveTarget.actor.hide();
-            this._adjustIconSize();
-            this._favRemoveTarget.actor.show();
-
             this._favRemoveTarget.animateOutAndDestroy();
             this._favRemoveTarget.actor.connect('destroy', Lang.bind(this,
                 function() {
                     this._favRemoveTarget = null;
                 }));
+            this._adjustIconSize();
         }
         DND.removeDragMonitor(this._dragMonitor);
     },
@@ -412,6 +405,15 @@ Dash.prototype = {
         if (this._maxHeight == -1)
             return;
 
+        // Hide actors which are about to be removed to not take
+        // them into account when adjusting the icon size ...
+        let hidingChildren = children.filter(function(actor) {
+            return actor._delegate.animatingOut;
+        });
+
+        for (let i = 0; i < hidingChildren.length; i++)
+            hidingChildren[i].hide();
+
         let iconChildren = children.filter(function(actor) {
             return actor.visible &&
                    actor._delegate.child &&
@@ -419,10 +421,14 @@ Dash.prototype = {
                    actor._delegate.child._delegate.icon;
         });
 
+
         // Compute the amount of extra space (or missing space) we have
         // per icon with the current icon size
         let [minHeight, natHeight] = this.actor.get_preferred_height(-1);
         let diff = (this._maxHeight - natHeight) / iconChildren.length;
+
+        for (let i = 0; i < hidingChildren.length; i++)
+            hidingChildren[i].show();
 
         let iconSizes = [ 16, 22, 24, 32, 48, 64 ];
 
@@ -566,29 +572,7 @@ Dash.prototype = {
             this._box.insert_actor(addedItems[i].item.actor,
                                    addedItems[i].pos);
 
-        // Hide removed actors to not take them into account
-        // when adjusting the icon size ...
-        for (let i = 0; i < removedActors.length; i++)
-            removedActors[i].hide();
-
-        // ... and do the same for the remove target if necessary
-        if (this._favRemoveTarget && this._favRemoveTarget.hiding)
-            this._favRemoveTarget.actor.hide();
-
-        this._adjustIconSize();
-
-        if (this._favRemoveTarget && this._favRemoveTarget.hiding)
-            this._favRemoveTarget.actor.show();
-
-        // Skip animations on first run when adding the initial set
-        // of items, to avoid all items zooming in at once
-        if (!this._shownInitially) {
-            this._shownInitially = true;
-            return;
-        }
-
         for (let i = 0; i < removedActors.length; i++) {
-            removedActors[i].show();
             let item = removedActors[i]._delegate;
 
             // Don't animate item removal when the overview is hidden
@@ -596,6 +580,15 @@ Dash.prototype = {
                 item.animateOutAndDestroy();
             else
                 item.actor.destroy();
+        }
+
+        this._adjustIconSize();
+
+        // Skip animations on first run when adding the initial set
+        // of items, to avoid all items zooming in at once
+        if (!this._shownInitially) {
+            this._shownInitially = true;
+            return;
         }
 
         // Don't animate item addition when the overview is hidden
