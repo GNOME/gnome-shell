@@ -43,14 +43,13 @@ static guint signals[LAST_SIGNAL] = { 0 };
 struct _ShellAppSystemPrivate {
   GMenuTree *apps_tree;
 
-  GHashTable *entry_to_app;
-
   GHashTable *running_apps;
+  GHashTable *id_to_app;
 
   GSList *known_vendor_prefixes;
 
   GMenuTree *settings_tree;
-  GHashTable *setting_entry_to_app;
+  GHashTable *setting_id_to_app;
 };
 
 static void shell_app_system_finalize (GObject *object);
@@ -94,15 +93,13 @@ shell_app_system_init (ShellAppSystem *self)
                                                    SHELL_TYPE_APP_SYSTEM,
                                                    ShellAppSystemPrivate);
 
-  priv->running_apps = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                              NULL, (GDestroyNotify) g_object_unref);
-
-  priv->entry_to_app = g_hash_table_new_full (NULL, NULL,
-                                              (GDestroyNotify)gmenu_tree_item_unref,
-                                              (GDestroyNotify)g_object_unref);
-  priv->setting_entry_to_app = g_hash_table_new_full (NULL, NULL,
-                                                      (GDestroyNotify)gmenu_tree_item_unref,
-                                                      (GDestroyNotify)g_object_unref);
+  priv->running_apps = g_hash_table_new_full (NULL, NULL, (GDestroyNotify) g_object_unref, NULL);
+  priv->id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                           NULL,
+                                           (GDestroyNotify)g_object_unref);
+  priv->setting_id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                   NULL,
+                                                   (GDestroyNotify)g_object_unref);
 
   /* For now, we want to pick up Evince, Nautilus, etc.  We'll
    * handle NODISPLAY semantics at a higher level or investigate them
@@ -128,8 +125,8 @@ shell_app_system_finalize (GObject *object)
   g_object_unref (priv->settings_tree);
 
   g_hash_table_destroy (priv->running_apps);
-  g_hash_table_destroy (priv->entry_to_app);
-  g_hash_table_destroy (priv->setting_entry_to_app);
+  g_hash_table_destroy (priv->id_to_app);
+  g_hash_table_destroy (priv->setting_id_to_app);
 
   g_slist_foreach (priv->known_vendor_prefixes, (GFunc)g_free, NULL);
   g_slist_free (priv->known_vendor_prefixes);
@@ -312,10 +309,11 @@ on_apps_tree_changed_cb (GMenuTree *tree,
   GHashTable *new_apps;
   GHashTableIter iter;
   gpointer key, value;
+  GSList *removed_apps = NULL;
+  GSList *removed_node;
 
   g_assert (tree == self->priv->apps_tree);
 
-  g_hash_table_remove_all (self->priv->entry_to_app);
   g_slist_foreach (self->priv->known_vendor_prefixes, (GFunc)g_free, NULL);
   g_slist_free (self->priv->known_vendor_prefixes);
   self->priv->known_vendor_prefixes = NULL;
@@ -330,7 +328,9 @@ on_apps_tree_changed_cb (GMenuTree *tree,
   g_hash_table_iter_init (&iter, new_apps);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
+      const char *id = key;
       GMenuTreeEntry *entry = value;
+      GMenuTreeEntry *old_entry;
       char *prefix;
       ShellApp *app;
       
@@ -344,17 +344,53 @@ on_apps_tree_changed_cb (GMenuTree *tree,
       else
         g_free (prefix);
       
-      /* Here we check to see whether the app is still running; if so, we
-       * keep the old data around.
-       */
-      app = g_hash_table_lookup (self->priv->running_apps, gmenu_tree_entry_get_desktop_file_id (entry));
+      app = g_hash_table_lookup (self->priv->id_to_app, id);
       if (app != NULL)
-        app = g_object_ref (app);
+        {
+          /* We hold a reference to the original entry temporarily,
+           * because otherwise the hash table would be referencing
+           * potentially free'd memory until we replace it below with
+           * the new data.
+           */
+          old_entry = shell_app_get_tree_entry (app);
+          gmenu_tree_item_ref (old_entry);
+          _shell_app_set_entry (app, entry);
+          g_object_ref (app);  /* Extra ref, removed in _replace below */
+        }
       else
-        app = _shell_app_new (entry);
-      
-      g_hash_table_insert (self->priv->entry_to_app, gmenu_tree_item_ref (entry), app);
+        {
+          old_entry = NULL;
+          app = _shell_app_new (entry);
+        }
+      /* Note that "id" is owned by app->entry.  Since we're always
+       * setting a new entry, even if the app already exists in the
+       * hash table we need to replace the key so that the new id
+       * string is pointed to.
+       */
+      g_hash_table_replace (self->priv->id_to_app, (char*)id, app);
+
+      if (old_entry)
+        gmenu_tree_item_unref (old_entry);
     }
+  /* Now iterate over the apps again; we need to unreference any apps
+   * which have been removed.  The JS code may still be holding a
+   * reference; that's fine.
+   */
+  g_hash_table_iter_init (&iter, self->priv->id_to_app);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      const char *id = key;
+      
+      if (!g_hash_table_lookup (new_apps, id))
+        removed_apps = g_slist_prepend (removed_apps, (char*)id);
+    }
+  for (removed_node = removed_apps; removed_node; removed_node = removed_node->next)
+    {
+      const char *id = removed_node->data;
+      g_hash_table_remove (self->priv->id_to_app, id);
+    }
+  g_slist_free (removed_apps);
+      
   g_hash_table_destroy (new_apps);
 
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
@@ -372,7 +408,7 @@ on_settings_tree_changed_cb (GMenuTree *tree,
 
   g_assert (tree == self->priv->settings_tree);
 
-  g_hash_table_remove_all (self->priv->setting_entry_to_app);
+  g_hash_table_remove_all (self->priv->setting_id_to_app);
   if (!gmenu_tree_load_sync (self->priv->settings_tree, &error))
     {
       g_warning ("Failed to load settings: %s", error->message);
@@ -384,11 +420,12 @@ on_settings_tree_changed_cb (GMenuTree *tree,
   g_hash_table_iter_init (&iter, new_settings);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
+      const char *id = key;
       GMenuTreeEntry *entry = value;
       ShellApp *app;
-  
+
       app = _shell_app_new (entry);
-      g_hash_table_insert (self->priv->setting_entry_to_app, gmenu_tree_item_ref (entry), app);
+      g_hash_table_replace (self->priv->setting_id_to_app, (char*)id, app);
     }
   g_hash_table_destroy (new_settings);
 }
@@ -426,7 +463,6 @@ ShellApp *
 shell_app_system_lookup_setting (ShellAppSystem *self,
                                  const char     *id)
 {
-  GMenuTreeEntry *entry;
   ShellApp *app;
 
   /* Actually defer to the main app set if there's overlap */
@@ -434,18 +470,7 @@ shell_app_system_lookup_setting (ShellAppSystem *self,
   if (app != NULL)
     return app;
 
-  entry = gmenu_tree_get_entry_by_id (self->priv->settings_tree, id);
-  if (entry == NULL)
-    return NULL;
-  
-  app = g_hash_table_lookup (self->priv->setting_entry_to_app, entry);
-  if (app != NULL)
-    return app;
-  
-  app = _shell_app_new (entry);
-  g_hash_table_insert (self->priv->setting_entry_to_app, gmenu_tree_item_ref (entry), app); 
-
-  return app;
+  return g_hash_table_lookup (self->priv->setting_id_to_app, id);
 }
 
 /**
@@ -475,13 +500,7 @@ ShellApp *
 shell_app_system_lookup_app (ShellAppSystem   *self,
                              const char       *id)
 {
-  GMenuTreeEntry *entry;
-
-  entry = gmenu_tree_get_entry_by_id (self->priv->apps_tree, id);
-  if (entry == NULL)
-    return NULL;
-
-  return g_hash_table_lookup (self->priv->entry_to_app, entry);
+  return g_hash_table_lookup (self->priv->id_to_app, id);
 }
 
 /**
@@ -586,7 +605,7 @@ shell_app_system_get_all (ShellAppSystem  *self)
   GHashTableIter iter;
   gpointer key, value;
 
-  g_hash_table_iter_init (&iter, self->priv->entry_to_app);
+  g_hash_table_iter_init (&iter, self->priv->id_to_app);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       ShellApp *app = value;
@@ -606,13 +625,12 @@ _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
   switch (state)
     {
     case SHELL_APP_STATE_RUNNING:
-      /* key is owned by the app */
-      g_hash_table_insert (self->priv->running_apps, (char*)shell_app_get_id (app), g_object_ref (app));
+      g_hash_table_insert (self->priv->running_apps, g_object_ref (app), NULL);
       break;
     case SHELL_APP_STATE_STARTING:
       break;
     case SHELL_APP_STATE_STOPPED:
-      g_hash_table_remove (self->priv->running_apps, shell_app_get_id (app));
+      g_hash_table_remove (self->priv->running_apps, app);
       break;
     }
   g_signal_emit (self, signals[APP_STATE_CHANGED], 0, app);
@@ -640,7 +658,7 @@ shell_app_system_get_running (ShellAppSystem *self)
   ret = NULL;
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
-      ShellApp *app = value;
+      ShellApp *app = key;
 
       ret = g_slist_prepend (ret, app);
     }
@@ -749,7 +767,7 @@ GSList *
 shell_app_system_initial_search (ShellAppSystem  *self,
                                  GSList          *terms)
 {
-  return search_tree (self, terms, self->priv->entry_to_app);
+  return search_tree (self, terms, self->priv->id_to_app);
 }
 
 /**
@@ -807,5 +825,5 @@ GSList *
 shell_app_system_search_settings (ShellAppSystem  *self,
                                   GSList          *terms)
 {
-  return search_tree (self, terms, self->priv->setting_entry_to_app);
+  return search_tree (self, terms, self->priv->setting_id_to_app);
 }

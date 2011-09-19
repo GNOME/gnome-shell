@@ -819,10 +819,23 @@ _shell_app_new (GMenuTreeEntry *info)
   ShellApp *app;
 
   app = g_object_new (SHELL_TYPE_APP, NULL);
-  app->entry = gmenu_tree_item_ref (info);
-  app->name_collation_key = g_utf8_collate_key (shell_app_get_name (app), -1);
+
+  _shell_app_set_entry (app, info);
 
   return app;
+}
+
+void
+_shell_app_set_entry (ShellApp       *app,
+                      GMenuTreeEntry *entry)
+{
+  if (app->entry != NULL)
+    gmenu_tree_item_unref (app->entry);
+  app->entry = gmenu_tree_item_ref (entry);
+  
+  if (app->name_collation_key != NULL)
+    g_free (app->name_collation_key);
+  app->name_collation_key = g_utf8_collate_key (shell_app_get_name (app), -1);
 }
 
 static void

@@ -14,6 +14,8 @@ ShellApp* _shell_app_new_for_window (MetaWindow *window);
 
 ShellApp* _shell_app_new (GMenuTreeEntry *entry);
 
+void _shell_app_set_entry (ShellApp *app, GMenuTreeEntry *entry);
+
 void _shell_app_handle_startup_sequence (ShellApp *app, SnStartupSequence *sequence);
 
 void _shell_app_add_window (ShellApp *app, MetaWindow *window);
