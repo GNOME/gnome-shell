@@ -244,10 +244,25 @@ PopupBaseMenuItem.prototype = {
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
-        let height = 0;
+        let height = 0, x = 0, minWidth, childWidth;
         for (let i = 0; i < this._children.length; i++) {
             let child = this._children[i];
-            let [min, natural] = child.actor.get_preferred_height(forWidth);
+            if (this._columnWidths) {
+                if (child.span == -1) {
+                    childWidth = 0;
+                    for (let j = i; j < this._columnWidths.length; j++)
+                        childWidth += this._columnWidths[j]
+                } else
+                    childWidth = this._columnWidths[i];
+            } else {
+                if (child.span == -1)
+                    childWidth = forWidth - x;
+                else
+                    [minWidth, childWidth] = child.actor.get_preferred_width(-1);
+            }
+            x += childWidth;
+
+            let [min, natural] = child.actor.get_preferred_height(childWidth);
             if (natural > height)
                 height = natural;
         }
@@ -305,7 +320,10 @@ PopupBaseMenuItem.prototype = {
                 }
                 extraWidth = availWidth - naturalWidth;
             } else {
-                availWidth = naturalWidth;
+                if (child.span == -1)
+                    availWidth = box.x2 - x;
+                else
+                    availWidth = naturalWidth;
                 extraWidth = 0;
             }
 
