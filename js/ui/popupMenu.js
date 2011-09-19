@@ -313,7 +313,7 @@ PopupBaseMenuItem.prototype = {
                 if (child.expand) {
                     childBox.x1 = x;
                     childBox.x2 = x + availWidth;
-                } else if (child.align === St.Align.CENTER) {
+                } else if (child.align === St.Align.MIDDLE) {
                     childBox.x1 = x + Math.round(extraWidth / 2);
                     childBox.x2 = childBox.x1 + naturalWidth;
                 } else if (child.align === St.Align.END) {
@@ -327,7 +327,7 @@ PopupBaseMenuItem.prototype = {
                 if (child.expand) {
                     childBox.x1 = x - availWidth;
                     childBox.x2 = x;
-                } else if (child.align === St.Align.CENTER) {
+                } else if (child.align === St.Align.MIDDLE) {
                     childBox.x1 = x - Math.round(extraWidth / 2);
                     childBox.x2 = childBox.x1 + naturalWidth;
                 } else if (child.align === St.Align.END) {
