@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-17 16:00+0000\n"
-"PO-Revision-Date: 2011-09-17 16:04+0000\n"
+"POT-Creation-Date: 2011-09-19 09:24+0000\n"
+"PO-Revision-Date: 2011-09-19 09:25+0000\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -184,33 +184,54 @@ msgstr "使用哪个键盘"
 msgid "disabled OpenSearch providers"
 msgstr "已禁用的 OpenSearch 提供商"
 
-#: ../js/gdm/loginDialog.js:604
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "会话..."
 
-#: ../js/gdm/loginDialog.js:761
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "登录"
 
-#: ../js/gdm/loginDialog.js:818
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(或滑动手指)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "未列出？"
 
-#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
+#: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
 #: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/gdm/loginDialog.js:933
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "登录"
 
-#: ../js/gdm/loginDialog.js:1253
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "登录窗口"
+
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
+msgid "Suspend"
+msgstr "挂起"
+
+#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+msgid "Restart"
+msgstr "重启"
+
+#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:91
+msgid "Power Off"
+msgstr "关机"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -534,10 +555,6 @@ msgstr[0] "您将在 %d 秒后自动注销。"
 msgid "Logging out of the system."
 msgstr "从系统注销"
 
-#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
-msgid "Power Off"
-msgstr "关机"
-
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "点击关机以退出应用程序并关闭系统。"
@@ -551,11 +568,6 @@ msgstr[0] "系统将在 %d 秒后自动关机。"
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "关闭系统。"
-
-#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
-#: ../js/ui/endSessionDialog.js:106
-msgid "Restart"
-msgstr "重启"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -728,18 +740,18 @@ msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:538
+#: ../js/ui/panel.js:539
 #, c-format
 msgid "Quit %s"
 msgstr "退出 %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:574
+#: ../js/ui/panel.js:575
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -1456,10 +1468,6 @@ msgstr "不可用"
 msgid "Power Off..."
 msgstr "关机..."
 
-#: ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
-msgid "Suspend"
-msgstr "挂起"
-
 #: ../js/ui/userMenu.js:554
 msgid "Notifications"
 msgstr "提示"
@@ -1493,8 +1501,8 @@ msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
-"提示现已禁用，聊天消息也同时被禁用。您的在线状态已被自动调整，以便"
-"他人知道您可能无法看到消息。"
+"提示现已禁用，聊天消息也同时被禁用。您的在线状态已被自动调整，以便他人知道您"
+"可能无法看到消息。"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
