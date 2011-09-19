@@ -167,7 +167,8 @@ static const GDebugKey clutter_debug_keys[] = {
   { "multistage", CLUTTER_DEBUG_MULTISTAGE },
   { "animation", CLUTTER_DEBUG_ANIMATION },
   { "layout", CLUTTER_DEBUG_LAYOUT },
-  { "clipping", CLUTTER_DEBUG_CLIPPING }
+  { "clipping", CLUTTER_DEBUG_CLIPPING },
+  { "oob-transforms", CLUTTER_DEBUG_OOB_TRANSFORMS }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
