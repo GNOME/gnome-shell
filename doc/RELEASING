@@ -27,9 +27,13 @@ When making a new release;
 
    And verify that the code builds and installs from a clean Git snapshot.
 
+ - Run checks including running the conformance tests:
+
+    $ make check
+
  - Test with Clutter:
 
-   Since we haven't migrated the Cogl unit tests from Clutter yet, you
+   Since we haven't migrated all the Cogl unit tests from Clutter yet, you
    should now build Clutter against Cogl and run the conformance tests:
 
      $ ./autogen.sh
