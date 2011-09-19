@@ -529,24 +529,23 @@ _clutter_stage_do_paint (ClutterStage *stage, const ClutterGeometry *clip)
 {
   ClutterStagePrivate *priv = stage->priv;
   float clip_poly[8];
+  ClutterGeometry geom;
+
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
 
   if (clip)
     {
-      clip_poly[0] = clip->x;
-      clip_poly[1] = clip->y;
-      clip_poly[2] = clip->x + clip->width;
-      clip_poly[3] = clip->y;
-      clip_poly[4] = clip->x + clip->width;
-      clip_poly[5] = clip->y + clip->height;
-      clip_poly[6] = clip->x;
-      clip_poly[7] = clip->y + clip->height;
+      clip_poly[0] = MAX (clip->x, 0);
+      clip_poly[1] = MAX (clip->y, 0);
+      clip_poly[2] = MIN (clip->x + clip->width, geom.width);
+      clip_poly[3] = clip_poly[1];
+      clip_poly[4] = clip_poly[2];
+      clip_poly[5] = MIN (clip->y + clip->height, geom.height);
+      clip_poly[6] = clip_poly[0];
+      clip_poly[7] = clip_poly[5];
     }
   else
     {
-      ClutterGeometry geom;
-
-      _clutter_stage_window_get_geometry (priv->impl, &geom);
-
       clip_poly[0] = 0;
       clip_poly[1] = 0;
       clip_poly[2] = geom.width;
@@ -1118,6 +1117,8 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   ClutterGeometry stage_clip;
   ClutterPaintVolume *redraw_clip;
   ClutterActorBox bounding_box;
+  ClutterActorBox intersection_box;
+  ClutterGeometry geom;
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (actor))
     return;
@@ -1151,12 +1152,24 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
                                              stage,
                                              &bounding_box);
 
+  _clutter_stage_window_get_geometry (stage_window, &geom);
+
+  intersection_box.x1 = MAX (bounding_box.x1, 0);
+  intersection_box.y1 = MAX (bounding_box.y1, 0);
+  intersection_box.x2 = MIN (bounding_box.x2, geom.width);
+  intersection_box.y2 = MIN (bounding_box.y2, geom.height);
+
+  /* There is no need to track degenerate/empty redraw clips */
+  if (intersection_box.x2 <= intersection_box.x1 ||
+      intersection_box.y2 <= intersection_box.y1)
+    return;
+
   /* when converting to integer coordinates make sure we round the edges of the
    * clip rectangle outwards... */
-  stage_clip.x = bounding_box.x1;
-  stage_clip.y = bounding_box.y1;
-  stage_clip.width = bounding_box.x2 - stage_clip.x;
-  stage_clip.height = bounding_box.y2 - stage_clip.y;
+  stage_clip.x = intersection_box.x1;
+  stage_clip.y = intersection_box.y1;
+  stage_clip.width = intersection_box.x2 - stage_clip.x;
+  stage_clip.height = intersection_box.y2 - stage_clip.y;
 
   _clutter_stage_window_add_redraw_clip (stage_window, &stage_clip);
 }
