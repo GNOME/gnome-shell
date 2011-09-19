@@ -53,6 +53,7 @@ XKBIndicator.prototype = {
         this._container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
         this._container.connect('allocate', Lang.bind(this, this._containerAllocate));
         this.actor.set_child(this._container);
+        this.actor.add_style_class_name('panel-status-button');
 
         this._iconActor = new St.Icon({ icon_name: 'keyboard', icon_type: St.IconType.SYMBOLIC, style_class: 'system-status-icon' });
         this._container.add_actor(this._iconActor);
