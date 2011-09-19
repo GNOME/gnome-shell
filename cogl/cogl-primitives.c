@@ -636,20 +636,24 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
     {
       if (state->i == 0)
         {
-          static gboolean warning_seen = FALSE;
+          if (cogl_pipeline_get_n_layers (pipeline) > 1)
+            {
+              static gboolean warning_seen = FALSE;
 
-          if (!state->override_source)
-            state->override_source = cogl_pipeline_copy (pipeline);
-          _cogl_pipeline_prune_to_n_layers (state->override_source, 1);
+              if (!state->override_source)
+                state->override_source = cogl_pipeline_copy (pipeline);
+              _cogl_pipeline_prune_to_n_layers (state->override_source, 1);
+
+              if (!warning_seen)
+                g_warning ("Skipping layers 1..n of your pipeline since "
+                           "the first layer is sliced. We don't currently "
+                           "support any multi-texturing with sliced "
+                           "textures but assume layer 0 is the most "
+                           "important to keep");
+              warning_seen = TRUE;
+            }
+
           state->all_use_sliced_quad_fallback = TRUE;
-
-          if (!warning_seen)
-            g_warning ("Skipping layers 1..n of your pipeline since "
-                       "the first layer is sliced. We don't currently "
-                       "support any multi-texturing with sliced "
-                       "textures but assume layer 0 is the most "
-                       "important to keep");
-          warning_seen = TRUE;
 
           return FALSE;
         }
