@@ -110,9 +110,8 @@ ModalDialog.prototype = {
         this._buttonLayout.destroy_children();
         this._actionKeys = {};
 
-        let i = 0;
-        for (let index in buttons) {
-            let buttonInfo = buttons[index];
+        for (let i = 0; i < buttons.length; i ++) {
+            let buttonInfo = buttons[i];
             let label = buttonInfo['label'];
             let action = buttonInfo['action'];
             let key = buttonInfo['key'];
@@ -144,11 +143,10 @@ ModalDialog.prototype = {
 
             if (key)
                 this._actionKeys[key] = action;
-            i++;
         }
 
         // Fade in buttons if there weren't any before
-        if (!hadChildren && i > 0) {
+        if (!hadChildren && buttons.length > 0) {
             this._buttonLayout.opacity = 0;
             Tweener.addTween(this._buttonLayout,
                              { opacity: 255,
