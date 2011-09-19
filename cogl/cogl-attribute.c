@@ -205,7 +205,6 @@ cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
   gboolean status;
 
   attribute->attribute_buffer = cogl_object_ref (attribute_buffer);
-  attribute->name = g_strdup (name);
   attribute->stride = stride;
   attribute->offset = offset;
   attribute->n_components = n_components;
@@ -213,11 +212,46 @@ cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
   attribute->immutable_ref = 0;
 
   if (strncmp (name, "cogl_", 5) == 0)
-    status = validate_cogl_attribute (attribute->name,
-                                      n_components,
-                                      &attribute->name_id,
-                                      &attribute->normalized,
-                                      &attribute->texture_unit);
+    {
+      const char *common_tex_coord_names[8] = {
+          "cogl_tex_coord0_in",
+          "cogl_tex_coord1_in",
+          "cogl_tex_coord2_in",
+          "cogl_tex_coord3_in",
+          "cogl_tex_coord4_in",
+          "cogl_tex_coord5_in",
+          "cogl_tex_coord6_in",
+          "cogl_tex_coord7_in"
+      };
+      status = validate_cogl_attribute (name,
+                                        n_components,
+                                        &attribute->name_id,
+                                        &attribute->normalized,
+                                        &attribute->texture_unit);
+
+      /* Avoid even the cost of g_intern_string() for the very common case
+       * attribute names...*/
+      switch (attribute->name_id)
+        {
+        case COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
+          attribute->name = "cogl_position_in";
+          break;
+        case COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
+          attribute->name = "cogl_color_in";
+          break;
+        case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
+          if (attribute->texture_unit < 8)
+            attribute->name = common_tex_coord_names[attribute->texture_unit];
+          else
+            attribute->name = g_intern_string (name);
+          break;
+        case COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
+          attribute->name = "cogl_normal_in";
+          break;
+        default:
+          g_warn_if_reached ();
+        }
+    }
 #if 0
   else if (strncmp (name, "gl_", 3) == 0)
     status = validate_gl_attribute (attribute->name,
@@ -228,6 +262,7 @@ cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
 #endif
   else
     {
+      attribute->name = g_intern_string (name);
       attribute->name_id = COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY;
       attribute->normalized = FALSE;
       attribute->texture_unit = 0;
@@ -321,7 +356,6 @@ _cogl_attribute_immutable_unref (CoglAttribute *attribute)
 static void
 _cogl_attribute_free (CoglAttribute *attribute)
 {
-  g_free (attribute->name);
   cogl_object_unref (attribute->attribute_buffer);
 
   g_slice_free (CoglAttribute, attribute);
