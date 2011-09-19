@@ -1,3 +1,57 @@
+Cogl 1.8.0                                                         2011-09-19
+
+  • List of changes since Cogl 1.7.8
+
+  » Started porting Cogl conformance tests from Clutter to be standalone
+    Cogl tests including tests for depth-state and backface culling.
+  » Added a new color mask conformance test
+  » We no longer implicitly define COGL_ENABLE_EXPERIMENTAL_2_0_API in the
+    cogl-2.0-experimental.pc file cflags because the way pkgconfig works makes
+    it hard to then consume libraries depending on cogl-2.0-experimental.pc
+    with Clutter.
+  » Made progress re-factoring cogl-pipeline.c to be more maintainable by
+    starting to split the code up into more manageable pieces.
+  » We now bind the locale dir for the Cogl domain during init
+  » We now track backface culling state as part of CoglPipeline.
+
+  • List of bugs fixed since Cogl 1.7.8
+
+    https://bugzilla.gnome.org:
+
+    #656442 - README points to wrong bug product
+    #658092 - St ::hover transitions don't act as expected
+    #658333 - Typo in cogl/cogl-display.h
+    #658700 - Bind the locale domain so that gettext actually works
+    #659029 - Clipping problem
+    #659360 - Optimization in _cogl_winsys_onscreen_swap_region causes tearing
+
+Many thanks too:
+    Neil Roberts
+    Matej Urbančič
+    Abdalrahim G. Fakhouri
+    Adel Gadllah
+    Andika Triwidada
+    Arash Mousavi
+    Bruce Cowan
+    Chun-wei Fan
+    Duarte Loreto
+    Emmanuele Bassi
+    I Felix
+    Ihar Hrachyshka
+    Ioannis Zamboukas
+    Laura Balbastre
+    Luca Ferretti
+    Manoj Kumar Giri
+    Muhammet Kara
+    Rudolfs Mazurs
+    Tiffany Antopolski
+    Wolfgang Stöggl
+    Wouter Bolsterlee
+    Xandru Armesto
+    Yinghua Wang
+    Yuri Myasoedov
+    Мирослав Николић
+
 Cogl 1.7.8                                                         2011-09-05
 
   • List of changes since Cogl 1.7.6
@@ -18,7 +72,7 @@ Cogl 1.7.8                                                         2011-09-05
      subtraction like "(1 - SRC_COLOR[A])"
    » Adds API for querying the format of a CoglFramebuffer
 
-  • List of bugs fixes since Cogl 1.7.6
+  • List of bugs fixed since Cogl 1.7.6
 
     https://bugzilla.gnome.org:
 
@@ -49,7 +103,7 @@ Cogl 1.7.6                                                         2011-08-12
    » Some fixes for the WGL backend
    » Add experimental API to upload a texture subregion from a CoglBuffer
 
-  • List of bugs fixes since Cogl 1.7.4
+  • List of bugs fixed since Cogl 1.7.4
 
     https://bugzilla.gnome.org:
 
@@ -125,7 +179,7 @@ Cogl 1.7.4                                                         2011-07-20
      start of the frame instead of unintentionally relying on the driver
      to have cleared the framebuffer.
 
-  • List of bugs fixes since Cogl 1.7.2
+  • List of bugs fixed since Cogl 1.7.2
 
     https://bugzilla.gnome.org:
 
@@ -164,7 +218,7 @@ Cogl 1.7.2                                                         2011-07-01
 
    » Fixed building against GLES.
 
-  • List of bugs fixes since Cogl 1.7.0
+  • List of bugs fixed since Cogl 1.7.0
 
     https://bugzilla.gnome.org:
 
@@ -214,7 +268,7 @@ Cogl 1.7.0                                                         2011-06-10
       » Optimise paths that are just a rectangle
       » Journal: Use a pool of vertex-arrays to avoid allocation costs.
 
-  • List of bugs fixes since Clutter 1.6
+  • List of bugs fixed since Clutter 1.6
 
     http://bugzilla.clutter-project.org:
     #2538 - crash in gnome-shell
