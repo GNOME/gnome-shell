@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-17 20:15+0300\n"
-"PO-Revision-Date: 2011-09-17 20:14+0300\n"
+"POT-Creation-Date: 2011-09-19 21:58+0300\n"
+"PO-Revision-Date: 2011-09-19 21:58+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -60,22 +60,18 @@ msgid "If true, display date in the clock, in addition to time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display onscreen keyboard."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display seconds in time."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -90,46 +86,42 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show the onscreen keyboard"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -137,53 +129,74 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "The type of keyboard to use."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to enable"
 msgstr "UUID-значэнні пашырэнняў, якія трэба ўключыць"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Which keyboard to use"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "disabled OpenSearch providers"
 msgstr ""
 
-#: ../js/gdm/loginDialog.js:605
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "Сеанс..."
 
-#: ../js/gdm/loginDialog.js:762
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "Уваход"
 
-#: ../js/gdm/loginDialog.js:819
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(або правядзіце пальцам)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "Няма ў спісе?"
 
-#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:426
+#: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
 #: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Скасаваць"
 
-#: ../js/gdm/loginDialog.js:934
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "Увайсці"
 
-#: ../js/gdm/loginDialog.js:1254
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "Акно ўваходу"
+
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:525
+#: ../js/ui/userMenu.js:527 ../js/ui/userMenu.js:596
+msgid "Suspend"
+msgstr "Прыпыніць камп'ютар"
+
+#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+msgid "Restart"
+msgstr "Перазапусціць сістэму"
+
+#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:91
+msgid "Power Off"
+msgstr "Выключыць камп'ютар"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -513,10 +526,6 @@ msgstr[2] "Вы аўтаматычна скончыце сеанс працы з
 msgid "Logging out of the system."
 msgstr "Заканчэнне сеанса працы з сістэмай."
 
-#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
-msgid "Power Off"
-msgstr "Выключыць камп'ютар"
-
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -534,11 +543,6 @@ msgstr[2] "Сістэма аўтаматычна выключыцца праз %
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Выключэнне сістэмы."
-
-#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
-#: ../js/ui/endSessionDialog.js:106
-msgid "Restart"
-msgstr "Перазапусціць сістэму"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -567,7 +571,7 @@ msgstr "Усталяваць"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Сцягнуць і ўсталяваць \"%s\" з extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Клавіятура"
 
@@ -609,7 +613,7 @@ msgstr "Сеціўная старонка"
 msgid "Open"
 msgstr "Адкрыць"
 
-#: ../js/ui/messageTray.js:2368
+#: ../js/ui/messageTray.js:2371
 msgid "System Information"
 msgstr "Сістэмная інфармацыя"
 
@@ -719,18 +723,18 @@ msgid "Dash"
 msgstr "Прыборная дошка"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:538
+#: ../js/ui/panel.js:539
 #, c-format
 msgid "Quit %s"
 msgstr "%s: выйсці"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:574
+#: ../js/ui/panel.js:575
 msgid "Activities"
 msgstr "Заняткі"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Верхняя панэль"
 
@@ -780,7 +784,7 @@ msgstr "Пароль:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:687
+#: ../js/ui/popupMenu.js:709
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -807,9 +811,10 @@ msgstr "Маштабаванне"
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
-#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-#. 'screen-keyboard-enabled');
-#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:71
+msgid "Screen Keyboard"
+msgstr "Экранная клавіятура"
+
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
 msgstr "Візуальныя сігналы"
@@ -1454,43 +1459,39 @@ msgstr "Бяздзейны"
 msgid "Unavailable"
 msgstr "Недаступны"
 
-#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:592
+#: ../js/ui/userMenu.js:523 ../js/ui/userMenu.js:527 ../js/ui/userMenu.js:597
 msgid "Power Off..."
 msgstr "Выключыць камп'ютар..."
 
-#: ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
-msgid "Suspend"
-msgstr "Прыпыніць камп'ютар"
-
-#: ../js/ui/userMenu.js:554
+#: ../js/ui/userMenu.js:559
 msgid "Notifications"
 msgstr "Апавяшчэнні"
 
-#: ../js/ui/userMenu.js:562
+#: ../js/ui/userMenu.js:567
 msgid "Online Accounts"
 msgstr "Сеціўныя конты"
 
-#: ../js/ui/userMenu.js:566
+#: ../js/ui/userMenu.js:571
 msgid "System Settings"
 msgstr "Сістэмныя настройкі"
 
-#: ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:578
 msgid "Lock Screen"
 msgstr "Замкнуць экран"
 
-#: ../js/ui/userMenu.js:578
+#: ../js/ui/userMenu.js:583
 msgid "Switch User"
 msgstr "Перамяніць карыстальніка"
 
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:588
 msgid "Log Out..."
 msgstr "Скончыць сеанс..."
 
-#: ../js/ui/userMenu.js:611
+#: ../js/ui/userMenu.js:616
 msgid "Your chat status will be set to busy"
 msgstr "Вам прызначаны стан занятасці для чату"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:617
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
