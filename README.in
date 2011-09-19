@@ -8,10 +8,10 @@ sections out for other purposes, such as for release notes.
 DESCRIPTION
 -------------------------------------------------------------------------------
 
-Cogl is a small open source library for using 3D graphics hardware to draw
-pretty pictures. The API departs from the flat state machine style of
-OpenGL and is designed to make it easy to write orthogonal components that
-can render without stepping on each others toes.
+Cogl is a small open source library for using 3D graphics hardware for
+rendering. The API departs from the flat state machine style of OpenGL and is
+designed to make it easy to write orthogonal components that can render without
+stepping on each others toes.
 
 As well as aiming for a nice API, we think having a single library as opposed
 to an API specification like OpenGL has a few advantages too; like being
@@ -95,8 +95,8 @@ The experimental 2.0 API can be found here:
 
    http://docs.clutter-project.org/docs/cogl-2.0-experimental/stable/
 
-   Note: The conflicting "stable" at the end refers to the fact
-   to overall Cogl release status, not the documentation specifically.
+   Note: The confusing "stable" at the end refers to the overall Cogl release
+   status, not the documentation specifically.
 
 --
 LICENSE
