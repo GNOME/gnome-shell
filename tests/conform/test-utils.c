@@ -3,8 +3,8 @@
 
 #include "test-utils.h"
 
-#define FB_WIDTH 640
-#define FB_HEIGHT 480
+#define FB_WIDTH 512
+#define FB_HEIGHT 512
 
 void
 test_utils_init (TestUtilsGTestFixture *fixture,
