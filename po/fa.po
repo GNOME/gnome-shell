@@ -1122,6 +1122,7 @@ msgstr "درحال برآورد..."
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "%Id ساعت مانده"
+msgstr[1] "%Id ساعت مانده"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
 #: ../js/ui/status/power.js:113
@@ -1133,17 +1134,20 @@ msgstr "%Id %s %Id %s باقی‌مانده"
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ساعت"
+msgstr[1] "ساعت"
 
 #: ../js/ui/status/power.js:115
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "%Id دقیقه‌"
+msgstr[1] "%Id دقیقه‌"
 
 #: ../js/ui/status/power.js:118
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%Id دقیقه‌ی مانده"
+msgstr[1] "%Id دقیقه‌ی مانده"
 
 #: ../js/ui/status/power.js:121
 #: ../js/ui/status/power.js:194
@@ -1524,6 +1528,7 @@ msgstr "«%s» آماده است"
 msgid "%u Output"
 msgid_plural "%u Outputs"
 msgstr[0] "%Iu خروجی"
+msgstr[1] "%Iu خروجی"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1532,6 +1537,7 @@ msgstr[0] "%Iu خروجی"
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%Iu ورودی"
+msgstr[1] "%Iu ورودی"
 
 #: ../src/gvc/gvc-mixer-control.c:1408
 msgid "System Sounds"
