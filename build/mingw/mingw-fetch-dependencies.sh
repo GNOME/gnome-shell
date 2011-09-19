@@ -24,10 +24,9 @@ TOR_DEPS=( \
 
 GL_HEADER_URLS=( \
     http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/gl.h \
-    http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/mesa_wgl.h \
     http://www.opengl.org/registry/api/glext.h );
 
-GL_HEADERS=( gl.h mesa_wgl.h glext.h );
+GL_HEADERS=( gl.h glext.h );
 
 function download_file ()
 {
@@ -329,7 +328,7 @@ echo
 echo "To get started, you should be able to configure and build from"
 echo "the top of your clutter source directory as follows:"
 echo
-echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"\`./config.guess\`\" --enable-stub-winsys CFLAGS=\"-mms-bitfields\" PKG_CONFIG=\"$RUN_PKG_CONFIG\"" PKG_CONFIG_PATH=
+echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"\`./build/config.guess\`\" --enable-wgl CFLAGS=\"-mms-bitfields -I$ROOT_DIR/include\" PKG_CONFIG=\"$RUN_PKG_CONFIG\"" PKG_CONFIG_PATH=
 echo "make"
 echo
 echo "Note: the explicit --build option is often necessary to ensure autoconf"
