@@ -23,8 +23,6 @@ const AutorunSetting = {
     ASK: 3
 };
 
-const HOTPLUG_ICON_SIZE = 16;
-
 // misc utils
 function ignoreAutorunForMount(mount) {
     let root = mount.get_root();
@@ -284,7 +282,7 @@ AutorunResidentSource.prototype = {
         this._mounts = [];
 
         this._notification = new AutorunResidentNotification(this);
-        this._setSummaryIcon(this.createNotificationIcon(HOTPLUG_ICON_SIZE));
+        this._setSummaryIcon(this.createNotificationIcon());
     },
 
     addMount: function(mount, apps) {
@@ -329,10 +327,10 @@ AutorunResidentSource.prototype = {
         }
     },
 
-    createNotificationIcon: function(iconSize) {
+    createNotificationIcon: function() {
         return new St.Icon ({ icon_name: 'media-removable',
                               icon_type: St.IconType.FULLCOLOR,
-                              icon_size: iconSize ? iconSize : this.ICON_SIZE });
+                              icon_size: this.ICON_SIZE });
     }
 }
 
@@ -533,16 +531,16 @@ AutorunTransientSource.prototype = {
         this.apps = apps;
 
         this._notification = new AutorunTransientNotification(this);
-        this._setSummaryIcon(this.createNotificationIcon(this.ICON_SIZE));
+        this._setSummaryIcon(this.createNotificationIcon());
 
         // add ourselves as a source, and popup the notification
         Main.messageTray.add(this);
         this.notify(this._notification);
     },
 
-    createNotificationIcon: function(iconSize) {
+    createNotificationIcon: function() {
         return new St.Icon({ gicon: this.mount.get_icon(),
-                             icon_size: iconSize ? iconSize : this.ICON_SIZE });
+                             icon_size: this.ICON_SIZE });
     }
 }
 
