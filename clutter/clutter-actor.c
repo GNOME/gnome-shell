@@ -12044,7 +12044,7 @@ clutter_actor_remove_effect_by_name (ClutterActor *self,
   if (meta == NULL)
     return;
 
-  _clutter_meta_group_remove_meta (priv->effects, meta);
+  clutter_actor_remove_effect (self, CLUTTER_EFFECT (meta));
 }
 
 /**
