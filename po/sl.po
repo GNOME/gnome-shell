@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-17 15:25+0000\n"
-"PO-Revision-Date: 2011-09-17 17:51+0100\n"
-"Last-Translator: Martin Srebotnjak  <miles@filmsi.net>\n"
+"POT-Creation-Date: 2011-09-19 09:30+0000\n"
+"PO-Revision-Date: 2011-09-19 11:46+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -138,20 +138,26 @@ msgstr "Katera tipkovnica naj bo uporabljena?"
 msgid "disabled OpenSearch providers"
 msgstr "ponudniki OpenSearch so bili onemogočeni"
 
-#: ../js/gdm/loginDialog.js:604
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "Seja ..."
 
-#: ../js/gdm/loginDialog.js:761
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:818
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(ali pa povlecite prst)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:928
+#: ../js/gdm/loginDialog.js:1004
 #: ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477
 #: ../js/ui/networkAgent.js:158
@@ -160,14 +166,34 @@ msgstr "Ali je ni na seznamu?"
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/loginDialog.js:933
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:1253
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "Prijavno okno"
+
+#: ../js/gdm/powerMenu.js:116
+#: ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:522
+#: ../js/ui/userMenu.js:591
+msgid "Suspend"
+msgstr "Zaustavi"
+
+#: ../js/gdm/powerMenu.js:121
+#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:106
+msgid "Restart"
+msgstr "Zaženi znova"
+
+#: ../js/gdm/powerMenu.js:126
+#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:91
+msgid "Power Off"
+msgstr "Izklop"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -504,11 +530,6 @@ msgstr[3] "Uporabnik bo samodejno odjavljen čez %d sekunde."
 msgid "Logging out of the system."
 msgstr "Odjavljanje iz sistema."
 
-#: ../js/ui/endSessionDialog.js:80
-#: ../js/ui/endSessionDialog.js:91
-msgid "Power Off"
-msgstr "Izklop"
-
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Kliknite na gumb za izklop za končanje teh programov in izklop iz sistema."
@@ -525,12 +546,6 @@ msgstr[3] "Sistem se bo samodejno izklopil čez %d sekunde."
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Izklapljanje sistema"
-
-#: ../js/ui/endSessionDialog.js:89
-#: ../js/ui/endSessionDialog.js:97
-#: ../js/ui/endSessionDialog.js:106
-msgid "Restart"
-msgstr "Zaženi znova"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -709,18 +724,18 @@ msgid "Dash"
 msgstr "Armaturna plošča"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:538
+#: ../js/ui/panel.js:539
 #, c-format
 msgid "Quit %s"
 msgstr "Končaj %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:574
+#: ../js/ui/panel.js:575
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1461,12 +1476,6 @@ msgstr "Nedostopno"
 msgid "Power Off..."
 msgstr "Izklop ..."
 
-#: ../js/ui/userMenu.js:520
-#: ../js/ui/userMenu.js:522
-#: ../js/ui/userMenu.js:591
-msgid "Suspend"
-msgstr "Zaustavi"
-
 #: ../js/ui/userMenu.js:554
 msgid "Notifications"
 msgstr "Obvestila"
@@ -1592,3 +1601,4 @@ msgstr "Datotečni sistem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
