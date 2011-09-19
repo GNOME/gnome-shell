@@ -245,42 +245,10 @@ get_prefix_for_entry (GMenuTreeEntry *entry)
 }
 
 static void
-load_app_entry (ShellAppSystem *self,
-                GMenuTreeEntry *entry)
+get_flattened_entries_recurse (GMenuTreeDirectory *dir,
+                               GHashTable         *entry_set)
 {
-  char *prefix;
-  ShellApp *app;
-
-  if (g_hash_table_lookup (self->priv->entry_to_app, entry))
-    return;
-
-  prefix = get_prefix_for_entry (entry);
-
-  if (prefix
-      && !g_slist_find_custom (self->priv->known_vendor_prefixes, prefix,
-                               (GCompareFunc)g_strcmp0))
-    self->priv->known_vendor_prefixes = g_slist_append (self->priv->known_vendor_prefixes,
-                                                        prefix);
-  else
-    g_free (prefix);
-
-  /* Here we check to see whether the app is still running; if so, we
-   * keep the old data around.
-   */
-  app = g_hash_table_lookup (self->priv->running_apps, gmenu_tree_entry_get_desktop_file_id (entry));
-  if (app != NULL)
-    app = g_object_ref (app);
-  else
-    app = _shell_app_new (entry);
-
-  g_hash_table_insert (self->priv->entry_to_app, gmenu_tree_item_ref (entry), app);
-}
-
-static void
-gather_apps_recurse (ShellAppSystem     *self,
-                     GMenuTreeDirectory *root)
-{
-  GMenuTreeIter *iter = gmenu_tree_directory_iter (root);
+  GMenuTreeIter *iter = gmenu_tree_directory_iter (dir);
   GMenuTreeItemType next_type;
 
   while ((next_type = gmenu_tree_iter_next (iter)) != GMENU_TREE_ITEM_INVALID)
@@ -291,14 +259,18 @@ gather_apps_recurse (ShellAppSystem     *self,
         {
         case GMENU_TREE_ITEM_ENTRY:
           {
-            item = gmenu_tree_iter_get_entry (iter);
-            load_app_entry (self, (GMenuTreeEntry*)item);
+            GMenuTreeEntry *entry;
+            item = entry = gmenu_tree_iter_get_entry (iter);
+            /* Key is owned by entry */
+            g_hash_table_replace (entry_set,
+                                  (char*)gmenu_tree_entry_get_desktop_file_id (entry),
+                                  gmenu_tree_item_ref (entry));
           }
           break;
         case GMENU_TREE_ITEM_DIRECTORY:
           {
             item = gmenu_tree_iter_get_directory (iter);
-            gather_apps_recurse (self, (GMenuTreeDirectory*)item);
+            get_flattened_entries_recurse ((GMenuTreeDirectory*)item, entry_set);
           }
           break;
         default:
@@ -311,46 +283,24 @@ gather_apps_recurse (ShellAppSystem     *self,
   gmenu_tree_iter_unref (iter);
 }
 
-static void
-gather_settings_recurse (ShellAppSystem     *self,
-                         GMenuTreeDirectory *root)
+static GHashTable *
+get_flattened_entries_from_tree (GMenuTree *tree)
 {
-  GMenuTreeIter *iter = gmenu_tree_directory_iter (root);
-  GMenuTreeItemType next_type;
+  GHashTable *table;
+  GMenuTreeDirectory *root;
 
-  while ((next_type = gmenu_tree_iter_next (iter)) != GMENU_TREE_ITEM_INVALID)
-    {
-      gpointer item = NULL;
+  table = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                 (GDestroyNotify) NULL,
+                                 (GDestroyNotify) gmenu_tree_item_unref);
 
-      switch (next_type)
-        {
-        case GMENU_TREE_ITEM_ENTRY:
-          {
-            ShellApp *app;
+  root = gmenu_tree_get_root_directory (tree);
+  
+  if (root != NULL)
+    get_flattened_entries_recurse (root, table);
 
-            item = gmenu_tree_iter_get_entry (iter);
-            if (g_hash_table_lookup (self->priv->setting_entry_to_app, item))
-              return;
-            
-            app = _shell_app_new (item);
-
-            g_hash_table_insert (self->priv->setting_entry_to_app, gmenu_tree_item_ref (item), app);
-          }
-          break;
-        case GMENU_TREE_ITEM_DIRECTORY:
-          {
-            item = gmenu_tree_iter_get_directory (iter);
-            gather_settings_recurse (self, (GMenuTreeDirectory*)item);
-          }
-          break;
-        default:
-          break;
-        }
-      if (item != NULL)
-        gmenu_tree_item_unref (item);
-    }
-
-  gmenu_tree_iter_unref (iter);
+  gmenu_tree_item_unref (root);
+  
+  return table;
 }
 
 static void
@@ -359,7 +309,9 @@ on_apps_tree_changed_cb (GMenuTree *tree,
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
   GError *error = NULL;
-  GMenuTreeDirectory *root;
+  GHashTable *new_apps;
+  GHashTableIter iter;
+  gpointer key, value;
 
   g_assert (tree == self->priv->apps_tree);
 
@@ -374,13 +326,36 @@ on_apps_tree_changed_cb (GMenuTree *tree,
       return;
     }
 
-  root = gmenu_tree_get_root_directory (self->priv->apps_tree);
-
-  if (root)
+  new_apps = get_flattened_entries_from_tree (self->priv->apps_tree);
+  g_hash_table_iter_init (&iter, new_apps);
+  while (g_hash_table_iter_next (&iter, &key, &value))
     {
-      gather_apps_recurse (self, root);
-      gmenu_tree_item_unref (root);
+      GMenuTreeEntry *entry = value;
+      char *prefix;
+      ShellApp *app;
+      
+      prefix = get_prefix_for_entry (entry);
+      
+      if (prefix != NULL
+          && !g_slist_find_custom (self->priv->known_vendor_prefixes, prefix,
+                                   (GCompareFunc)g_strcmp0))
+        self->priv->known_vendor_prefixes = g_slist_append (self->priv->known_vendor_prefixes,
+                                                            prefix);
+      else
+        g_free (prefix);
+      
+      /* Here we check to see whether the app is still running; if so, we
+       * keep the old data around.
+       */
+      app = g_hash_table_lookup (self->priv->running_apps, gmenu_tree_entry_get_desktop_file_id (entry));
+      if (app != NULL)
+        app = g_object_ref (app);
+      else
+        app = _shell_app_new (entry);
+      
+      g_hash_table_insert (self->priv->entry_to_app, gmenu_tree_item_ref (entry), app);
     }
+  g_hash_table_destroy (new_apps);
 
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
 }
@@ -391,7 +366,9 @@ on_settings_tree_changed_cb (GMenuTree *tree,
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
   GError *error = NULL;
-  GMenuTreeDirectory *root;
+  GHashTable *new_settings;
+  GHashTableIter iter;
+  gpointer key, value;
 
   g_assert (tree == self->priv->settings_tree);
 
@@ -402,13 +379,18 @@ on_settings_tree_changed_cb (GMenuTree *tree,
       return;
     }
 
-  root = gmenu_tree_get_root_directory (self->priv->settings_tree);
+  new_settings = get_flattened_entries_from_tree (tree);
 
-  if (root)
+  g_hash_table_iter_init (&iter, new_settings);
+  while (g_hash_table_iter_next (&iter, &key, &value))
     {
-      gather_settings_recurse (self, root);
-      gmenu_tree_item_unref (root);
+      GMenuTreeEntry *entry = value;
+      ShellApp *app;
+  
+      app = _shell_app_new (entry);
+      g_hash_table_insert (self->priv->setting_entry_to_app, gmenu_tree_item_ref (entry), app);
     }
+  g_hash_table_destroy (new_settings);
 }
 
 /**
