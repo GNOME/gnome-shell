@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-17 21:20+0200\n"
-"PO-Revision-Date: 2011-09-17 21:21+0200\n"
+"POT-Creation-Date: 2011-09-19 13:18+0200\n"
+"PO-Revision-Date: 2011-09-19 13:18+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -195,33 +195,54 @@ msgstr "Que teclado usar"
 msgid "disabled OpenSearch providers"
 msgstr "fornecedores de OpenSearch desactivados"
 
-#: ../js/gdm/loginDialog.js:605
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "Sesión…"
 
-#: ../js/gdm/loginDialog.js:762
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:819
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(ou pase o dedo)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
-#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:426
+#: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
 #: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:934
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:1254
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
+
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:91
+msgid "Power Off"
+msgstr "Apagar"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -548,10 +569,6 @@ msgstr[1] "A súa sesión pecharase automaticamente en %d segundos."
 msgid "Logging out of the system."
 msgstr "Saíndo da sesión."
 
-#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
-msgid "Power Off"
-msgstr "Apagar"
-
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -567,11 +584,6 @@ msgstr[1] "O seu computador apagarase automaticamente en %d segundos."
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Apagando o sistema."
-
-#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
-#: ../js/ui/endSessionDialog.js:106
-msgid "Restart"
-msgstr "Reiniciar"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -749,18 +761,18 @@ msgid "Dash"
 msgstr "Panel"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:538
+#: ../js/ui/panel.js:539
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:574
+#: ../js/ui/panel.js:575
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1486,10 +1498,6 @@ msgstr "Non dispoñíbel"
 #: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:592
 msgid "Power Off..."
 msgstr "Apagar…"
-
-#: ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
-msgid "Suspend"
-msgstr "Suspender"
 
 #: ../js/ui/userMenu.js:554
 msgid "Notifications"
