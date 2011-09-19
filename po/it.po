@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-16 18:16+0000\n"
-"PO-Revision-Date: 2011-09-14 21:31+0200\n"
+"POT-Creation-Date: 2011-09-19 21:44+0000\n"
+"PO-Revision-Date: 2011-09-20 00:14+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -74,22 +74,18 @@ msgid "If true, display date in the clock, in addition to time."
 msgstr "Se VERO, mostra nell'orologio la data, oltre all'orario."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display onscreen keyboard."
-msgstr "Se VERO, mostra una tastiera a schermo."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display seconds in time."
 msgstr "Se VERO, mostra i secondi nell'orario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Se VERO, mostra il giorno della settimana ISO nel calendario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Elenco di ID di file desktop per le applicazioni preferite"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -115,23 +111,19 @@ msgstr ""
 "registra nel formato WEBM usando il codec VP8. %T è usato come un segnaposto "
 "per una stima del valore di thread ottimale per il sistema in uso."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Mostra la data nell'orologio"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show the onscreen keyboard"
-msgstr "Mostra la tastiera a schermo"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Mostra il giorno della settimana nel calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Mostra l'ora con i secondi"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -139,7 +131,7 @@ msgstr ""
 "Le applicazioni che corrispondono a questi identificatori vengono "
 "visualizzate nell'area dei preferiti."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -149,7 +141,7 @@ msgstr ""
 "data corrente e utilizza questa estensione. Dovrebbe essere modificato "
 "quando si registra utilizzando un diverso formato contenitore."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -157,12 +149,12 @@ msgstr ""
 "Il framerate in fotogrammi al secondo dello screencast registrato attraverso "
 "il registratore della GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La pipeline di gstreamer utilizzata per codificare lo screencast"
 
 # (ndt) quel "in launchers" non mi convince...
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -174,54 +166,75 @@ msgstr ""
 "disabilitare questa funzionalità per motivi di privacy. I dati già salvati "
 "non verranno comunque rimossi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "The type of keyboard to use."
 msgstr "Il tipo di tastiera da usare."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to enable"
 msgstr "UUID delle estensioni da abilitare"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica se raccogliere statistiche riguardo l'utilizzo delle applicazioni"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Which keyboard to use"
 msgstr "Quale tastiera usare"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "disabled OpenSearch providers"
 msgstr "Fornitori OpenSearch disabilitati"
 
-#: ../js/gdm/loginDialog.js:604
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "Sessione..."
 
-#: ../js/gdm/loginDialog.js:761
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "Accesso"
 
-#: ../js/gdm/loginDialog.js:818
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(o passare il dito)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "Non elencato?"
 
-#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
-#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
+#: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:165
+#: ../js/ui/polkitAuthenticationAgent.js:171 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../js/gdm/loginDialog.js:933
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "Accedi"
 
-#: ../js/gdm/loginDialog.js:1253
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "Finestra di accesso"
+
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:514
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:585
+msgid "Suspend"
+msgstr "Sospendi"
+
+#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+msgid "Restart"
+msgstr "Riavvia"
+
+#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:91
+msgid "Power Off"
+msgstr "Spegni"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -435,15 +448,15 @@ msgstr "Prossima settimana"
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:147
+#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:139
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:156
+#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:148
 msgid "Away"
 msgstr "Assente"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:150
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:142
 msgid "Busy"
 msgstr "Non disponibile"
 
@@ -552,10 +565,6 @@ msgstr[1] "La sessione verrà terminata automaticamente tra %d secondi."
 msgid "Logging out of the system."
 msgstr "Chiusura della sessione."
 
-#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
-msgid "Power Off"
-msgstr "Spegni"
-
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -571,11 +580,6 @@ msgstr[1] "Il sistema verrà spento automaticamente tra %d secondi."
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "pegnimento del sistema."
-
-#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
-#: ../js/ui/endSessionDialog.js:106
-msgid "Restart"
-msgstr "Riavvia"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -603,43 +607,43 @@ msgstr "Installa"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Scaricare e installare «%s» da extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastiera"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:645
 msgid "No extensions installed"
 msgstr "Nessuna estensione installata"
 
 # (ndt) o abilitata?
-#: ../js/ui/lookingGlass.js:687
+#: ../js/ui/lookingGlass.js:691
 msgid "Enabled"
 msgstr "Abilitato"
 
 # (ndt) o disabilitata?
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:689 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:693 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: ../js/ui/lookingGlass.js:691
+#: ../js/ui/lookingGlass.js:695
 msgid "Error"
 msgstr "Errore"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:697
 msgid "Out of date"
 msgstr "Non aggiornato"
 
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:699
 msgid "Downloading"
 msgstr "Scaricamento"
 
-#: ../js/ui/lookingGlass.js:720
+#: ../js/ui/lookingGlass.js:724
 msgid "View Source"
 msgstr "Visualizza sorgente"
 
-#: ../js/ui/lookingGlass.js:726
+#: ../js/ui/lookingGlass.js:730
 msgid "Web Page"
 msgstr "Pagina web"
 
@@ -647,54 +651,54 @@ msgstr "Pagina web"
 msgid "Open"
 msgstr "Apri"
 
-#: ../js/ui/messageTray.js:2368
+#: ../js/ui/messageTray.js:2371
 msgid "System Information"
 msgstr "Informazione di sistema"
 
-#: ../js/ui/networkAgent.js:138
+#: ../js/ui/networkAgent.js:145
 msgid "Show password"
 msgstr "Mostra la password"
 
-#: ../js/ui/networkAgent.js:153
+#: ../js/ui/networkAgent.js:160
 msgid "Connect"
 msgstr "Connetti"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:248 ../js/ui/networkAgent.js:260
-#: ../js/ui/networkAgent.js:287 ../js/ui/networkAgent.js:307
-#: ../js/ui/networkAgent.js:317
+#: ../js/ui/networkAgent.js:255 ../js/ui/networkAgent.js:267
+#: ../js/ui/networkAgent.js:294 ../js/ui/networkAgent.js:314
+#: ../js/ui/networkAgent.js:324
 msgid "Password: "
 msgstr "Password: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:253
+#: ../js/ui/networkAgent.js:260
 msgid "Key: "
 msgstr "Chiave: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:285 ../js/ui/networkAgent.js:303
+#: ../js/ui/networkAgent.js:292 ../js/ui/networkAgent.js:310
 msgid "Username: "
 msgstr "Nome utente: "
 
-#: ../js/ui/networkAgent.js:291
+#: ../js/ui/networkAgent.js:298
 msgid "Identity: "
 msgstr "Identità: "
 
-#: ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:300
 msgid "Private key password: "
 msgstr "Password chiave privata: "
 
-#: ../js/ui/networkAgent.js:305
+#: ../js/ui/networkAgent.js:312
 msgid "Service: "
 msgstr "Servizio: "
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:341
 msgid "Authentication required by wireless network"
 msgstr "Richiesta autenticazione dalla rete wireless"
 
-#: ../js/ui/networkAgent.js:335
+#: ../js/ui/networkAgent.js:342
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network '%"
@@ -703,35 +707,35 @@ msgstr ""
 "È richiesta una password o una chiave di cifratura per accedere alla rete "
 "wireless «%s»."
 
-#: ../js/ui/networkAgent.js:339
+#: ../js/ui/networkAgent.js:346
 msgid "Wired 802.1X authentication"
 msgstr "Autenticazione via cavo 802.1X"
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:348
 msgid "Network name: "
 msgstr "Nome rete: "
 
-#: ../js/ui/networkAgent.js:346
+#: ../js/ui/networkAgent.js:353
 msgid "DSL authentication"
 msgstr "Autenticazione DSL"
 
-#: ../js/ui/networkAgent.js:353
+#: ../js/ui/networkAgent.js:360
 msgid "PIN code required"
 msgstr "Richiesto codice PIN"
 
-#: ../js/ui/networkAgent.js:354
+#: ../js/ui/networkAgent.js:361
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "È necessario il codice PIN per il dispositivo mobile"
 
-#: ../js/ui/networkAgent.js:355
+#: ../js/ui/networkAgent.js:362
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:361
+#: ../js/ui/networkAgent.js:368
 msgid "Mobile broadband network password"
 msgstr "Password rete mobile"
 
-#: ../js/ui/networkAgent.js:362
+#: ../js/ui/networkAgent.js:369
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "È richiesta una password per connettersi a «%s»."
@@ -756,18 +760,18 @@ msgid "Dash"
 msgstr "Dash"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:538
+#: ../js/ui/panel.js:539
 #, c-format
 msgid "Quit %s"
 msgstr "Chiudi %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:574
+#: ../js/ui/panel.js:575
 msgid "Activities"
 msgstr "Attività"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "Barra superiore"
 
@@ -797,7 +801,7 @@ msgstr "Richiesta autenticazione"
 msgid "Administrator"
 msgstr "Amministratore"
 
-#: ../js/ui/polkitAuthenticationAgent.js:174
+#: ../js/ui/polkitAuthenticationAgent.js:175
 msgid "Authenticate"
 msgstr "Autentica"
 
@@ -805,11 +809,11 @@ msgstr "Autentica"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:262
+#: ../js/ui/polkitAuthenticationAgent.js:256
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Errore nell'autenticazione. Provare di nuovo."
 
-#: ../js/ui/polkitAuthenticationAgent.js:274
+#: ../js/ui/polkitAuthenticationAgent.js:268
 msgid "Password:"
 msgstr "Password:"
 
@@ -818,7 +822,7 @@ msgstr "Password:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:687
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -845,9 +849,10 @@ msgstr "Ingrandimento"
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
-#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-#. 'screen-keyboard-enabled');
-#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:71
+msgid "Screen Keyboard"
+msgstr "Tastiera a schermo"
+
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
 msgstr "Allerte visive"
@@ -1009,11 +1014,11 @@ msgstr "Inserire il PIN indicato sul dispositivo."
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
 msgid "Show Keyboard Layout"
 msgstr "Mostra disposizione tastiera"
 
-#: ../js/ui/status/keyboard.js:77
+#: ../js/ui/status/keyboard.js:78
 msgid "Region and Language Settings"
 msgstr "Impostazioni regione e lingua"
 
@@ -1488,49 +1493,59 @@ msgstr "Modifica account"
 msgid "Unknown reason"
 msgstr "Motivo sconosciuto"
 
-#: ../js/ui/userMenu.js:153
+#: ../js/ui/userMenu.js:145
 msgid "Hidden"
 msgstr "Invisibile"
 
-#: ../js/ui/userMenu.js:159
+#: ../js/ui/userMenu.js:151
 msgid "Idle"
 msgstr "Inattivo"
 
-#: ../js/ui/userMenu.js:162
+#: ../js/ui/userMenu.js:154
 msgid "Unavailable"
 msgstr "Non disponibile"
 
-#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:589
+#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:586
 msgid "Power Off..."
 msgstr "Spegni..."
 
-#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:588
-msgid "Suspend"
-msgstr "Sospendi"
-
-#: ../js/ui/userMenu.js:551
+#: ../js/ui/userMenu.js:548
 msgid "Notifications"
 msgstr "Notifiche"
 
-#: ../js/ui/userMenu.js:559
+#: ../js/ui/userMenu.js:556
 msgid "Online Accounts"
 msgstr "Account online"
 
-#: ../js/ui/userMenu.js:563
+#: ../js/ui/userMenu.js:560
 msgid "System Settings"
 msgstr "Impostazioni di sistema"
 
-#: ../js/ui/userMenu.js:570
+#: ../js/ui/userMenu.js:567
 msgid "Lock Screen"
 msgstr "Blocca schermo"
 
-#: ../js/ui/userMenu.js:575
+#: ../js/ui/userMenu.js:572
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/userMenu.js:580
+#: ../js/ui/userMenu.js:577
 msgid "Log Out..."
 msgstr "Termina sessione..."
+
+# accorciato, altrimenti non si legge...
+#: ../js/ui/userMenu.js:605
+msgid "Your chat status will be set to busy"
+msgstr "Stato per chat impostato a non disponibile"
+
+#: ../js/ui/userMenu.js:606
+msgid ""
+"Notifications are now disabled, including chat messages. Your online status "
+"has been adjusted to let others know that you might not see their messages."
+msgstr ""
+"Le notifiche sono ora disabilitate, inclusi i messaggi di chat. Lo stato "
+"online è stato modificato in modo che gli altri sappiano che i loro messaggi "
+"potrebbero non essere notati."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1623,6 +1638,12 @@ msgstr "File system"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "If true, display onscreen keyboard."
+#~ msgstr "Se VERO, mostra una tastiera a schermo."
+
+#~ msgid "Show the onscreen keyboard"
+#~ msgstr "Mostra la tastiera a schermo"
+
 # indica lo stato del device BT, per esempio gli auricolari
 # credo sia meglio l'aggettivo che il sostantivo
 #~ msgid "Connectivity lost"
@@ -1706,9 +1727,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "No such application"
 #~ msgstr "Applicazione inesistente"
-
-#~ msgid "Screen Reader"
-#~ msgstr "Lettore schermo"
 
 #~ msgid "PREFERENCES"
 #~ msgstr "PREFERENZE"
