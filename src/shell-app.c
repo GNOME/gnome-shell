@@ -1171,6 +1171,9 @@ trim_exec_line (const char *str)
 {
   const char *start, *end, *pos;
 
+  if (str == NULL)
+    return NULL;
+
   end = strchr (str, ' ');
   if (end == NULL)
     end = str + strlen (str);
