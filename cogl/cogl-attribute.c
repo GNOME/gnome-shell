@@ -47,6 +47,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 /* This isn't defined in the GLES headers */
 #ifndef GL_UNSIGNED_INT
@@ -163,7 +164,9 @@ validate_cogl_attribute (const char *name,
     *name_id = COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
   else if (strncmp (name, "tex_coord", strlen ("tex_coord")) == 0)
     {
-      if (sscanf (name, "tex_coord%u_in", texture_unit) != 1)
+      char *endptr;
+      *texture_unit = strtoul (name + 9, &endptr, 10);
+      if (strcmp (endptr, "_in") != 0)
 	{
 	  g_warning ("Texture coordinate attributes should either be named "
                      "\"cogl_tex_coord\" or named with a texture unit index "
