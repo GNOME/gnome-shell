@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-18 17:16+0000\n"
-"PO-Revision-Date: 2011-09-18 21:21+0300\n"
+"POT-Creation-Date: 2011-09-19 20:30+0000\n"
+"PO-Revision-Date: 2011-09-20 20:44+0300\n"
 "Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -73,22 +73,18 @@ msgid "If true, display date in the clock, in addition to time."
 msgstr "Ja patiess, rādīt pulkstenī arī datumu, ne tikai laiku."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display onscreen keyboard."
-msgstr "Ja patiess, rādīt ekrāna tastatūru."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display seconds in time."
 msgstr "Ja patiess, rādīt pulkstenī arī sekundes."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Ja patiess, kalendārā rādīt ISO nedēļas datumus."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Uzskaitīt iecienīto lietotņu darbvirsmas failu ID"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -114,30 +110,26 @@ msgstr ""
 "VP8 kodeku. %T tiek izmantots kā vietturis, lai uzminētu optimālo pavedienu "
 "skaitu sistēmā."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Pie pulksteņa rādīt arī datumu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show the onscreen keyboard"
-msgstr "Rādīt ekrāna tastatūru"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Kalendārā rādīt nedēļas datumu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Rādīt laiku ar sekundēm"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 "Lietotnes, kas atbilst šiem identifikatoriem, tiks rādīta izlases laukā."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -147,7 +139,7 @@ msgstr ""
 "pašreizējo datumu un izmantos šo paplašinājumu. To vajadzētu mainīt, kad "
 "ieraksta citā konteinera formātā."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -155,11 +147,11 @@ msgstr ""
 "Iegūtās ekrānraides kadrātrums, ko ieraksta GNOME Shell ekrānraižu "
 "ierakstītājs. Norāda kadros sekundē."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Gstreamer konveijers, ko izmanto ekrānraides iekodēšanai"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -171,56 +163,62 @@ msgstr ""
 "vēlēties to deaktivēt privātuma iemeslu dēļ. Ņemiet vērā, ka to izdarot "
 "netiks izņemti jau saglabātie dati."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "The type of keyboard to use."
 msgstr "Izmantojamās tastatūras tips."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to enable"
 msgstr "Uuid paplašinājumiem, kurus aktivēt"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Whether to collect stats about applications usage"
 msgstr "Vai ievākt statistiku par lietotņu izmantošanu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Which keyboard to use"
 msgstr "Kuru tastatūru izmantot"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "disabled OpenSearch providers"
 msgstr "deaktivētie OpenSearch piegādātāji"
 
-#: ../js/gdm/loginDialog.js:608
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "Sesija..."
 
-#: ../js/gdm/loginDialog.js:765
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "Pieteikties"
 
-#: ../js/gdm/loginDialog.js:822
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(vai velciet pirkstu)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "Nav sarakstā?"
 
-#: ../js/gdm/loginDialog.js:932 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
-#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
+#: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:165
+#: ../js/ui/polkitAuthenticationAgent.js:171 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: ../js/gdm/loginDialog.js:937
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "Pieteikties"
 
-#: ../js/gdm/loginDialog.js:1257
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "Pieteikšanās logs"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:520
-#: ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:525
+#: ../js/ui/userMenu.js:527 ../js/ui/userMenu.js:596
 msgid "Suspend"
 msgstr "Iesnaudināt"
 
@@ -604,7 +602,7 @@ msgstr "Instalēt"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Lejupielādēt un instalēt '%s' no extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastatūra"
 
@@ -646,54 +644,54 @@ msgstr "Tīmekļa lapa"
 msgid "Open"
 msgstr "Atvērt"
 
-#: ../js/ui/messageTray.js:2368
+#: ../js/ui/messageTray.js:2371
 msgid "System Information"
 msgstr "Sistēmas informācija"
 
-#: ../js/ui/networkAgent.js:138
+#: ../js/ui/networkAgent.js:145
 msgid "Show password"
 msgstr "Rādīt paroli"
 
-#: ../js/ui/networkAgent.js:153
+#: ../js/ui/networkAgent.js:160
 msgid "Connect"
 msgstr "Savienot"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:248 ../js/ui/networkAgent.js:260
-#: ../js/ui/networkAgent.js:287 ../js/ui/networkAgent.js:307
-#: ../js/ui/networkAgent.js:317
+#: ../js/ui/networkAgent.js:255 ../js/ui/networkAgent.js:267
+#: ../js/ui/networkAgent.js:294 ../js/ui/networkAgent.js:314
+#: ../js/ui/networkAgent.js:324
 msgid "Password: "
 msgstr "Parole: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:253
+#: ../js/ui/networkAgent.js:260
 msgid "Key: "
 msgstr "Atslēga: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:285 ../js/ui/networkAgent.js:303
+#: ../js/ui/networkAgent.js:292 ../js/ui/networkAgent.js:310
 msgid "Username: "
 msgstr "Lietotājvārds: "
 
-#: ../js/ui/networkAgent.js:291
+#: ../js/ui/networkAgent.js:298
 msgid "Identity: "
 msgstr "Identitāte: "
 
-#: ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:300
 msgid "Private key password: "
 msgstr "Privātās atslēgas parole: "
 
-#: ../js/ui/networkAgent.js:305
+#: ../js/ui/networkAgent.js:312
 msgid "Service: "
 msgstr "Serviss: "
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:341
 msgid "Authentication required by wireless network"
 msgstr "Bezvadu tīkls pieprasa autentifikāciju"
 
-#: ../js/ui/networkAgent.js:335
+#: ../js/ui/networkAgent.js:342
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network '%"
@@ -702,35 +700,35 @@ msgstr ""
 "Lai piekļūtu bezvadu tīklam '%s', ir nepieciešamas paroles vai šifrēšanas "
 "atslēgas."
 
-#: ../js/ui/networkAgent.js:339
+#: ../js/ui/networkAgent.js:346
 msgid "Wired 802.1X authentication"
 msgstr "Vadu 802.1X autentifikācija"
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:348
 msgid "Network name: "
 msgstr "Tīkla nosaukums: "
 
-#: ../js/ui/networkAgent.js:346
+#: ../js/ui/networkAgent.js:353
 msgid "DSL authentication"
 msgstr "DSL autentifikācija"
 
-#: ../js/ui/networkAgent.js:353
+#: ../js/ui/networkAgent.js:360
 msgid "PIN code required"
 msgstr "Nepieciešams PIN kods"
 
-#: ../js/ui/networkAgent.js:354
+#: ../js/ui/networkAgent.js:361
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Mobilā platjoslas tīkla ierīcei ir vajadzīgs PIN kods"
 
-#: ../js/ui/networkAgent.js:355
+#: ../js/ui/networkAgent.js:362
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:361
+#: ../js/ui/networkAgent.js:368
 msgid "Mobile broadband network password"
 msgstr "Mobilās platjoslas tīkla parole"
 
-#: ../js/ui/networkAgent.js:362
+#: ../js/ui/networkAgent.js:369
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Lai savienotos ar '%s', ir nepieciešama parole."
@@ -794,7 +792,7 @@ msgstr "Nepieciešama autentifikācija"
 msgid "Administrator"
 msgstr "Administrators"
 
-#: ../js/ui/polkitAuthenticationAgent.js:174
+#: ../js/ui/polkitAuthenticationAgent.js:175
 msgid "Authenticate"
 msgstr "Autentificēt"
 
@@ -802,11 +800,11 @@ msgstr "Autentificēt"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:262
+#: ../js/ui/polkitAuthenticationAgent.js:256
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Diemžēl tas nenostrādāja. Lūdzu, mēģiniet vēlreiz."
 
-#: ../js/ui/polkitAuthenticationAgent.js:274
+#: ../js/ui/polkitAuthenticationAgent.js:268
 msgid "Password:"
 msgstr "Parole:"
 
@@ -815,7 +813,7 @@ msgstr "Parole:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:687
+#: ../js/ui/popupMenu.js:709
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -842,9 +840,11 @@ msgstr "Mainīt tālumu"
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
-#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-#. 'screen-keyboard-enabled');
-#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:71
+#| msgid "Keyboard"
+msgid "Screen Keyboard"
+msgstr "Ekrāna tastatūra"
+
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
 msgstr "Vizuālie brīdinājumi"
@@ -1492,39 +1492,39 @@ msgstr "Dīkstāvē"
 msgid "Unavailable"
 msgstr "Nav pieejams"
 
-#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:592
+#: ../js/ui/userMenu.js:523 ../js/ui/userMenu.js:527 ../js/ui/userMenu.js:597
 msgid "Power Off..."
 msgstr "Izslēgt..."
 
-#: ../js/ui/userMenu.js:554
+#: ../js/ui/userMenu.js:559
 msgid "Notifications"
 msgstr "Paziņojumi"
 
-#: ../js/ui/userMenu.js:562
+#: ../js/ui/userMenu.js:567
 msgid "Online Accounts"
 msgstr "Tiešsaistes konti"
 
-#: ../js/ui/userMenu.js:566
+#: ../js/ui/userMenu.js:571
 msgid "System Settings"
 msgstr "Sistēmas iestatījumi"
 
-#: ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:578
 msgid "Lock Screen"
 msgstr "Bloķēt ekrānu"
 
-#: ../js/ui/userMenu.js:578
+#: ../js/ui/userMenu.js:583
 msgid "Switch User"
 msgstr "Mainīt lietotāju"
 
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:588
 msgid "Log Out..."
 msgstr "Izrakstīties..."
 
-#: ../js/ui/userMenu.js:611
+#: ../js/ui/userMenu.js:616
 msgid "Your chat status will be set to busy"
 msgstr "Tērzēšanas status tiks iestatīts uz 'aizņemts'"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:617
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1623,6 +1623,12 @@ msgstr "Failu sistēma"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "If true, display onscreen keyboard."
+#~ msgstr "Ja patiess, rādīt ekrāna tastatūru."
+
+#~ msgid "Show the onscreen keyboard"
+#~ msgstr "Rādīt ekrāna tastatūru"
 
 #~ msgid "Connectivity lost"
 #~ msgstr "Pazuda savienojums"
