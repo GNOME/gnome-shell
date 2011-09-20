@@ -35,6 +35,7 @@
 #include "cogl-attribute-private.h"
 
 #include <stdarg.h>
+#include <string.h>
 
 static void _cogl_primitive_free (CoglPrimitive *primitive);
 
@@ -46,17 +47,20 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
                                     CoglAttribute **attributes,
                                     int n_attributes)
 {
-  CoglPrimitive *primitive = g_slice_new (CoglPrimitive);
+  CoglPrimitive *primitive;
   int i;
 
+  primitive = g_slice_alloc (sizeof (CoglPrimitive) +
+                             sizeof (CoglAttribute *) * (n_attributes - 1));
   primitive->mode = mode;
   primitive->first_vertex = 0;
   primitive->n_vertices = n_vertices;
   primitive->indices = NULL;
-  primitive->attributes =
-    g_array_new (TRUE, FALSE, sizeof (CoglAttribute *));
   primitive->immutable_ref = 0;
 
+  primitive->n_attributes = n_attributes;
+  primitive->n_embedded_attributes = n_attributes;
+  primitive->attributes = &primitive->embedded_attribute;
   for (i = 0; i < n_attributes; i++)
     {
       CoglAttribute *attribute = attributes[i];
@@ -64,7 +68,7 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
 
       g_return_val_if_fail (cogl_is_attribute (attribute), NULL);
 
-      g_array_append_val (primitive->attributes, attribute);
+      primitive->attributes[i] = attribute;
     }
 
   return _cogl_primitive_object_new (primitive);
@@ -354,27 +358,20 @@ cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
 }
 
 static void
-free_attributes_list (CoglPrimitive *primitive)
+_cogl_primitive_free (CoglPrimitive *primitive)
 {
   int i;
 
-  for (i = 0; i < primitive->attributes->len; i++)
-    {
-      CoglAttribute *attribute =
-        g_array_index (primitive->attributes, CoglAttribute *, i);
-      cogl_object_unref (attribute);
-    }
-  g_array_set_size (primitive->attributes, 0);
-}
+  for (i = 0; i < primitive->n_attributes; i++)
+    cogl_object_unref (primitive->attributes[i]);
 
-static void
-_cogl_primitive_free (CoglPrimitive *primitive)
-{
-  free_attributes_list (primitive);
+  if (primitive->attributes != &primitive->embedded_attribute)
+    g_slice_free1 (sizeof (CoglAttribute *) * primitive->n_attributes,
+                   primitive->attributes);
 
-  g_array_free (primitive->attributes, TRUE);
-
-  g_slice_free (CoglPrimitive, primitive);
+  g_slice_free1 (sizeof (CoglPrimitive) +
+                 sizeof (CoglAttribute *) *
+                 (primitive->n_embedded_attributes - 1), primitive);
 }
 
 static void
@@ -383,7 +380,7 @@ warn_about_midscene_changes (void)
   static gboolean seen = FALSE;
   if (!seen)
     {
-      g_warning ("Mid-scene modification of buffers has "
+      g_warning ("Mid-scene modification of primitives has "
                  "undefined results\n");
       seen = TRUE;
     }
@@ -404,15 +401,42 @@ cogl_primitive_set_attributes (CoglPrimitive *primitive,
       return;
     }
 
-  free_attributes_list (primitive);
-
-  g_array_set_size (primitive->attributes, 0);
+  /* NB: we don't unref the previous attributes before refing the new
+   * in case we would end up releasing the last reference for an
+   * attribute thats actually in the new list too. */
   for (i = 0; i < n_attributes; i++)
     {
-      cogl_object_ref (attributes[i]);
       g_return_if_fail (cogl_is_attribute (attributes[i]));
-      g_array_append_val (primitive->attributes, attributes[i]);
+      cogl_object_ref (attributes[i]);
     }
+
+  for (i = 0; i < primitive->n_attributes; i++)
+    cogl_object_unref (primitive->attributes[i]);
+
+  /* First try to use the embedded storage assocated with the
+   * primitive, else fallback to slice allocating separate storage for
+   * the attribute pointers... */
+
+  if (n_attributes <= primitive->n_embedded_attributes)
+    {
+      if (primitive->attributes != &primitive->embedded_attribute)
+        g_slice_free1 (sizeof (CoglAttribute *) * primitive->n_attributes,
+                       primitive->attributes);
+      primitive->attributes = &primitive->embedded_attribute;
+    }
+  else
+    {
+      if (primitive->attributes != &primitive->embedded_attribute)
+        g_slice_free1 (sizeof (CoglAttribute *) * primitive->n_attributes,
+                       primitive->attributes);
+      primitive->attributes =
+        g_slice_alloc (sizeof (CoglAttribute *) * n_attributes);
+    }
+
+  memcpy (primitive->attributes, attributes,
+          sizeof (CoglAttribute *) * n_attributes);
+
+  primitive->n_attributes = n_attributes;
 }
 
 int
@@ -506,12 +530,8 @@ _cogl_primitive_immutable_ref (CoglPrimitive *primitive)
 
   primitive->immutable_ref++;
 
-  for (i = 0; i < primitive->attributes->len; i++)
-    {
-      CoglAttribute *attribute =
-        g_array_index (primitive->attributes, CoglAttribute *, i);
-      _cogl_attribute_immutable_ref (attribute);
-    }
+  for (i = 0; i < primitive->n_attributes; i++)
+    _cogl_attribute_immutable_ref (primitive->attributes[i]);
 
   return primitive;
 }
@@ -526,33 +546,25 @@ _cogl_primitive_immutable_unref (CoglPrimitive *primitive)
 
   primitive->immutable_ref--;
 
-  for (i = 0; i < primitive->attributes->len; i++)
-    {
-      CoglAttribute *attribute =
-        g_array_index (primitive->attributes, CoglAttribute *, i);
-      _cogl_attribute_immutable_unref (attribute);
-    }
+  for (i = 0; i < primitive->n_attributes; i++)
+    _cogl_attribute_immutable_unref (primitive->attributes[i]);
 }
 
 /* XXX: cogl_draw_primitive() ? */
 void
 cogl_primitive_draw (CoglPrimitive *primitive)
 {
-  CoglAttribute **attributes =
-    (CoglAttribute **)primitive->attributes->data;
-
   if (primitive->indices)
     cogl_draw_indexed_attributes (primitive->mode,
                                   primitive->first_vertex,
                                   primitive->n_vertices,
                                   primitive->indices,
-                                  attributes,
-                                  primitive->attributes->len);
+                                  primitive->attributes,
+                                  primitive->n_attributes);
   else
     cogl_draw_attributes (primitive->mode,
                           primitive->first_vertex,
                           primitive->n_vertices,
-                          attributes,
-                          primitive->attributes->len);
+                          primitive->attributes,
+                          primitive->n_attributes);
 }
-

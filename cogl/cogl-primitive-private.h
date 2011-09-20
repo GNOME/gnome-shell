@@ -39,9 +39,14 @@ struct _CoglPrimitive
   int first_vertex;
   int n_vertices;
   CoglIndices *indices;
-  GArray *attributes;
 
   int immutable_ref;
+
+  CoglAttribute **attributes;
+  int n_attributes;
+
+  int n_embedded_attributes;
+  CoglAttribute *embedded_attribute;
 };
 
 CoglPrimitive *
