@@ -1,3 +1,18 @@
+3.1.92
+======
+* Fix bug with unredirecting full-screen windows on multi-monitor -
+  notably affected gnome-screensaver [Adel; #657869]
+* Disable top resizing of attached dialogs [Jasper; #657795]
+* Code cleanup [Jasper, Rui]
+* Misc bug fixes [Adel, Florian, Jasper, Rui;
+  #658069, #659266, #659523, #659477]
+
+Contributors:
+ Adel Gadllah, Rui Matos, Florian Müllner, Jasper St. Pierre
+
+Translations:
+ Joan Duran [ca], Joe Hansen [dk], Jiro Matsuzawa [ja], Daniel Korostil [uk]
+
 3.1.91.1
 ========
 * Fix problem where certain application updates would get lost [#657071, Owen]
