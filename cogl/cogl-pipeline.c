@@ -1615,8 +1615,7 @@ _cogl_pipeline_get_layer (CoglPipeline *pipeline,
   CoglPipelineLayer *layer;
   int unit_index;
   int i;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglContext *ctx;
 
   /* The layer index of the layer we want info about */
   layer_info.layer_index = layer_index;
@@ -1644,6 +1643,8 @@ _cogl_pipeline_get_layer (CoglPipeline *pipeline,
 
   if (layer_info.layer)
     return layer_info.layer;
+
+  ctx = _cogl_context_get_default ();
 
   unit_index = layer_info.insert_after + 1;
   if (unit_index == 0)
