@@ -324,8 +324,23 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
 				 gpointer                       callback_data)
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (agent);
-  ShellAgentRequest *request = g_slice_new (ShellAgentRequest);
+  ShellAgentRequest *request;
+  NMSettingConnection *setting_connection;
+  const char *connection_type;
 
+  /* VPN secrets are currently unimplemented - bail out early */
+  setting_connection = nm_connection_get_setting_connection (connection);
+  connection_type = nm_setting_connection_get_connection_type (setting_connection);
+  if (strcmp (connection_type, "vpn") == 0)
+    {
+      GError *error = g_error_new (NM_SECRET_AGENT_ERROR,
+                                   NM_SECRET_AGENT_ERROR_AGENT_CANCELED,
+                                   "VPN secrets are currently unhandled.");
+      callback (NM_SECRET_AGENT (self), connection, NULL, error, callback_data);
+      return;
+    }
+
+  request = g_slice_new (ShellAgentRequest);
   request->self = g_object_ref (self);
   request->connection = g_object_ref (connection);
   request->setting_name = g_strdup (setting_name);
