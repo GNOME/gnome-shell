@@ -145,6 +145,25 @@ meta_window_group_paint (ClutterActor *actor)
       if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
         continue;
 
+      /* If an actor has effects applied, then that can change the area
+       * it paints and the opacity, so we no longer can figure out what
+       * portion of the actor is obscured and what portion of the screen
+       * it obscures, so we skip the actor.
+       *
+       * This has a secondary beneficial effect: if a ClutterOffscreenEffect
+       * is applied to an actor, then our clipped redraws interfere with the
+       * caching of the FBO - even if we only need to draw a small portion
+       * of the window right now, ClutterOffscreenEffect may use other portions
+       * of the FBO later. So, skipping actors with effects applied also
+       * prevents these bugs.
+       *
+       * Theoretically, we should check clutter_actor_get_offscreen_redirect()
+       * as well for the same reason, but omitted for simplicity in the
+       * hopes that no-one will do that.
+       */
+      if (clutter_actor_get_effects (l->data) != NULL)
+        continue;
+
       if (META_IS_WINDOW_ACTOR (l->data))
         {
           MetaWindowActor *window_actor = l->data;
