@@ -792,10 +792,11 @@ Notification.prototype = {
     },
 
     _bannerBoxAllocate: function(actor, box, flags) {
-        let [titleMinW, titleNatW] = this._titleLabel.get_preferred_width(-1);
-        let [titleMinH, titleNatH] = this._titleLabel.get_preferred_height(-1);
-        let [bannerMinW, bannerNatW] = this._bannerLabel.get_preferred_width(-1);
         let availWidth = box.x2 - box.x1;
+
+        let [titleMinW, titleNatW] = this._titleLabel.get_preferred_width(-1);
+        let [titleMinH, titleNatH] = this._titleLabel.get_preferred_height(availWidth);
+        let [bannerMinW, bannerNatW] = this._bannerLabel.get_preferred_width(availWidth);
 
         let titleBox = new Clutter.ActorBox();
         let titleBoxW = Math.min(titleNatW, availWidth);
