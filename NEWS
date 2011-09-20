@@ -1,3 +1,58 @@
+3.1.92
+======
+
+* Login screen
+  - Add the ability to set a logo at the top of the user list [Ray; #658062]
+  - Add fingerprint reader support [Ray; #657823]
+  - Add a power button offering the choice of Suspend/Restart/Power off
+    [Ray; #657822]
+  - Remove the option to view the current keyboad layout [Matthias; #659164]
+  - Make Control-Alt-Tab work for full keyboard access [Ray; #659177]
+* Frequently initiate a full garbage collection; Spidermonkey isn't very good
+  at tracking the amount of resources we have allocated so this hopefully will
+  improve memory usage without affecting performance too much [Colin; #659254]
+* Stop adding a notification when the network connection is lost
+  [Colin; #658954]
+* When disabling notifications; display a notification
+  "Your chat status will be set to busy" [Florian; #652718]
+* Fix keynav in network dialogs [Florian; #659133]
+* Improve calendar styling [Sean; #641135, #651299]
+* Shrink padding around panel buttons for narrow screens [Dan; #651299]
+* Allow enabling the onscreen keyboard through the accessibility menu
+  [Dan; #612662]
+* Fix problem that was causing VPN secret dialogs to be delayed before showing
+  [Florian; #658484]
+* Make custom-keybindings for the window switcher that don't use alt
+  work correctly [Florian; #645200]
+* Fix duplicate application icons in the Activities Overview [Colin; #659351]
+* Bug fixes for dimming windows with attached modal dialogs
+  [Jasper, Owen; #659302, 659634]
+* Add build-time support for BROWSER_PLUGIN_DIR environment variable
+  [Vincent; #659123]
+* Build fixes [Vincent; #659194]
+* Code cleanups and test cases
+  [Adel, Dan, Florian, Jasper; #651299, #658092, #658939]
+* Misc bug fixes
+  [Adel, Colin, Cosimo, Dan, Florian, Giovanni, Jasper, Ray, Xavier;
+  #651299, #652837, #657249, #658004, #658150, #658239, #658469, #658598,
+  #658605, #659050, #659159, #659210, #659270, #659370, #659633]
+
+Contributors:
+ Giovanni Campagna, Cosimo Cecchi, Xavier Claessens, Matthias Clasen,
+ Rui Matos, Florian Müllner, Jasper St. Pierre, Owen Taylor,
+ Vincent Untz, Colin Walters, Sean Wilson, Dan Winship
+
+Translations:
+ Ihar Hrachyshka [be], Alexander Shopov, Ivaylo Valkov [bg],
+ Mario Blättermann [de], Jorge González, Daniel Mustieles [es],
+ Arash Mousavi [fa], Ville-Pekka Vainio [fi], Fran Dieguez [gl],
+ Sweta Kothari [gu], Gabor Kelemen [hu], Jiro Matsuzawa [ja],
+ Luca Ferretti [it], Rudolfs Mazurs [lv], Kjartan Maraas [nb], A S Alam [pa],
+ Piotr Drąg [pl], Duarte Loreto [pt], Yuri Myasoedov [ru],
+ Daniel Nylander [se], Matej Urbančič [sl], Miroslav Nikolić [sr, sr@latin],
+ Michal Štrba [sv], Tirumurti Vasudevan [ta], Phương Lê Hoàng [vi],
+ Aron Xu [zh_CN], Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.1.91.1
 ========
 
