@@ -5062,11 +5062,16 @@ meta_window_move_frame (MetaWindow  *window,
 
   if (window->frame)
     {
-      /* offset by the distance between the origin of the window
-       * and the origin of the enclosing window decorations
+      MetaFrameBorders borders;
+      meta_frame_calc_borders (window->frame, &borders);
+
+      /* root_x_nw and root_y_nw correspond to where the top of
+       * the visible frame should be. Offset by the distance between
+       * the origin of the window and the origin of the enclosing
+       * window decorations.
        */
-      x += window->frame->child_x;
-      y += window->frame->child_y;
+      x += window->frame->child_x - borders.invisible.left;
+      y += window->frame->child_y - borders.invisible.top;
     }
   meta_window_move (window, user_op, x, y);
 }
