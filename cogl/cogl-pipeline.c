@@ -1914,87 +1914,76 @@ unsigned long
 _cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
                                     CoglPipeline *pipeline1)
 {
+  GSList *head0 = NULL;
+  GSList *head1 = NULL;
   CoglPipeline *node0;
   CoglPipeline *node1;
-  int len0;
-  int len1;
-  int len0_index;
-  int len1_index;
+  int len0 = 0;
+  int len1 = 0;
   int count;
-  int i;
-  CoglPipeline *common_ancestor = NULL;
+  GSList *common_ancestor0;
+  GSList *common_ancestor1;
   unsigned long pipelines_difference = 0;
-
-  _COGL_GET_CONTEXT (ctx, 0);
 
   /* Algorithm:
    *
-   * 1) Walk the ancestors of each layer to the root node, adding a
-   *    pointer to each ancester node to two GArrays:
-   *    ctx->pipeline0_nodes, and ctx->pipeline1_nodes.
+   * 1) Walk the ancestors of each pipeline to the root node, adding a
+   *    pointer to each ancester node to two linked lists
    *
-   * 2) Compare the arrays to find the nodes where they stop to
-   *    differ.
+   * 2) Compare the lists to find the nodes where they start to
+   *    differ marking the common_ancestor node for each list.
    *
-   * 3) For each array now iterate from index 0 to the first node of
-   *    difference ORing that nodes ->difference mask into the final
-   *    pipeline_differences mask.
+   * 3) For each list now iterate starting after the common_ancestor
+   *    nodes ORing each nodes ->difference mask into the final
+   *    differences mask.
    */
 
-  g_array_set_size (ctx->pipeline0_nodes, 0);
-  g_array_set_size (ctx->pipeline1_nodes, 0);
   for (node0 = pipeline0; node0; node0 = _cogl_pipeline_get_parent (node0))
-    g_array_append_vals (ctx->pipeline0_nodes, &node0, 1);
-  for (node1 = pipeline1; node1; node1 = _cogl_pipeline_get_parent (node1))
-    g_array_append_vals (ctx->pipeline1_nodes, &node1, 1);
-
-  len0 = ctx->pipeline0_nodes->len;
-  len1 = ctx->pipeline1_nodes->len;
-  /* There's no point looking at the last entries since we know both
-   * layers must have the same default layer as their root node. */
-  len0_index = len0 - 2;
-  len1_index = len1 - 2;
-  count = MIN (len0, len1) - 1;
-  for (i = 0; i < count; i++)
     {
-      node0 = g_array_index (ctx->pipeline0_nodes,
-                             CoglPipeline *, len0_index--);
-      node1 = g_array_index (ctx->pipeline1_nodes,
-                             CoglPipeline *, len1_index--);
-      if (node0 != node1)
-        {
-          common_ancestor = _cogl_pipeline_get_parent (node0);
-          break;
-        }
+      GSList *link = alloca (sizeof (GSList));
+      link->next = head0;
+      link->data = node0;
+      head0 = link;
+      len0++;
+    }
+  for (node1 = pipeline1; node1; node1 = _cogl_pipeline_get_parent (node1))
+    {
+      GSList *link = alloca (sizeof (GSList));
+      link->next = head1;
+      link->data = node1;
+      head1 = link;
+      len1++;
     }
 
-  /* If we didn't already find the first the common_ancestor ancestor
-   * that's because one pipeline is a direct descendant of the other
-   * and in this case the first common ancestor is the last node we
-   * looked at. */
-  if (!common_ancestor)
-    common_ancestor = node0;
-
-  count = len0 - 1;
-  for (i = 0; i < count; i++)
+  /* NB: There's no point looking at the head entries since we know both
+   * pipelines must have the same default pipeline as their root node. */
+  common_ancestor0 = head0;
+  common_ancestor1 = head1;
+  head0 = head0->next;
+  head1 = head1->next;
+  count = MIN (len0, len1) - 1;
+  while (count--)
     {
-      node0 = g_array_index (ctx->pipeline0_nodes, CoglPipeline *, i);
-      if (node0 == common_ancestor)
+      if (head0->data != head1->data)
         break;
+      common_ancestor0 = head0;
+      common_ancestor1 = head1;
+      head0 = head0->next;
+      head1 = head1->next;
+    }
+
+  for (head0 = common_ancestor0->next; head0; head0 = head0->next)
+    {
+      node0 = head0->data;
       pipelines_difference |= node0->differences;
     }
-
-  count = len1 - 1;
-  for (i = 0; i < count; i++)
+  for (head1 = common_ancestor1->next; head1; head1 = head1->next)
     {
-      node1 = g_array_index (ctx->pipeline1_nodes, CoglPipeline *, i);
-      if (node1 == common_ancestor)
-        break;
+      node1 = head1->data;
       pipelines_difference |= node1->differences;
     }
 
   return pipelines_difference;
-
 }
 
 static gboolean

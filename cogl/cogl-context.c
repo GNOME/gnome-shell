@@ -258,11 +258,6 @@ cogl_context_new (CoglDisplay *display,
   context->current_pipeline_changes_since_flush = 0;
   context->current_pipeline_skip_gl_color = FALSE;
 
-  context->pipeline0_nodes =
-    g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
-  context->pipeline1_nodes =
-    g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
-
   _cogl_bitmask_init (&context->arrays_enabled);
   _cogl_bitmask_init (&context->temp_bitmask);
   _cogl_bitmask_init (&context->arrays_to_change);

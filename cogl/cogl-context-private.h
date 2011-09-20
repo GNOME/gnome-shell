@@ -128,9 +128,6 @@ struct _CoglContext
   gboolean          current_pipeline_skip_gl_color;
   unsigned long     current_pipeline_age;
 
-  GArray           *pipeline0_nodes;
-  GArray           *pipeline1_nodes;
-
   /* Bitmask of attributes enabled. On GLES2 these are the vertex
      attribute numbers and on regular GL these are only used for the
      texture coordinate arrays */
