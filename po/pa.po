@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-17 15:25+0000\n"
-"PO-Revision-Date: 2011-09-18 00:41+0530\n"
+"POT-Creation-Date: 2011-09-19 11:34+0000\n"
+"PO-Revision-Date: 2011-09-20 07:22+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -71,22 +71,18 @@ msgid "If true, display date in the clock, in addition to time."
 msgstr "ਜੇ ਸੱਚ ਹੈ ਤਾਂ, ਘੜੀ ਵਿਚ ਸਮਾਂ ਨਾਲ ਮਿਤੀ ਵੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display onscreen keyboard."
-msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਆਨਸਕਰੀਨ ਕੀਬੋਰਡ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display seconds in time."
 msgstr "ਜੇ ਸੱਚ ਹੈ ਤਾਂ ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੀ ਵੇਖਾਏ ਜਾਣਗੇ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਕੈਲੰਡਰ ਵਿੱਚ ISO ਹਫਤਾ ਮਿਤੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਡੈਸਕਟਾਪ ਫਾਇਲ ID ਦੀ ਲਿਸਟ ਹੈ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -117,30 +113,26 @@ msgstr ""
 "ਸਿਸਟਮ ਉੱਤੇ "
 "ਢੁੱਕਵੀ ਥਰਿੱਡ ਗਿਣਤੀ ਦਾ ਅੰਦਾਜ਼ਾ ਲਗਾਉਣ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "ਘੜੀ ਵਿੱਚ ਮਿਤੀ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show the onscreen keyboard"
-msgstr "ਆਨਸਕਰੀਨ ਕੀਬੋਰਡ ਵੇਖਾਓ"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "ਕੈਲੰਡਰ ਵਿੱਚ ਹਫ਼ਤਾ ਮਿਤੀ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 "ਇਹਨਾਂ ਐਂਡਟਟੀਫਾਇਰ ਨਾਲ ਸਬੰਧਿਤ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਪਸੰਦੀਦਾ ਖੇਤਰ 'ਚ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -152,7 +144,7 @@ msgstr ""
 "ਰਿਕਾਰਡ ਕੀਤਾ "
 "ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -161,11 +153,11 @@ msgstr ""
 "ਫਰੇਮ ਪ੍ਰਤੀ "
 "ਸਕਿੰਟ 'ਚ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਇੰਕੋਡ ਕਰਨ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਜੀਸਟਰੀਮਰ ਪਾਇਪਲਾਇਨ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -180,53 +172,74 @@ msgstr ""
 "ਕਰਨ ਨਾਲ ਪਹਿਲਾਂ "
 "ਸੰਭਾਲਿਆ ਗਿਆ ਡਾਟਾ ਹਟਾਇਆ ਨਹੀਂ ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "The type of keyboard to use."
 msgstr "ਵਰਤਣ ਲਈ ਕੀਬੋਰਡ ਦੀ ਕਿਸਮ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to enable"
 msgstr "ਚਾਲੂ ਕਰਨ ਲਈ ਇਕਟੈਨਸ਼ਨ ਦੀ Uuid"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Whether to collect stats about applications usage"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਵਰਤੋਂ ਬਾਰੇ ਅੰਕੜੇ ਇੱਕਠੇ ਕਰਨੇ ਹਨ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Which keyboard to use"
 msgstr "ਕਿਹੜਾ ਕੀਬੋਰਡ ਵਰਤਣਾ ਹੈ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "disabled OpenSearch providers"
 msgstr "ਓਪਨਸਰਚ ਉਪਲੱਬਧ ਕਰਵਾਉਣ ਵਾਲੇ ਬੰਦ ਹਨ"
 
-#: ../js/gdm/loginDialog.js:604
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "ਸ਼ੈਸ਼ਨ..."
 
-#: ../js/gdm/loginDialog.js:761
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "ਸਾਇਨ ਇਨ"
 
-#: ../js/gdm/loginDialog.js:818
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(ਜਾਂ ਉਂਗਲ ਰੱਖੋ)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "ਲਿਸਟ ਵਿੱਚ ਨਹੀਂ ਹੈ?"
 
-#: ../js/gdm/loginDialog.js:928 ../js/ui/endSessionDialog.js:426
+#: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
 #: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: ../js/gdm/loginDialog.js:933
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "ਸਾਇਨ ਇਨ"
 
-#: ../js/gdm/loginDialog.js:1253
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "ਲਾਗਇਨ ਵਿੰਡੋ"
+
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:520
+#: ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
+msgid "Suspend"
+msgstr "ਸਸਪੈਂਡ"
+
+#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+msgid "Restart"
+msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
+
+#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:91
+msgid "Power Off"
+msgstr "ਬੰਦ ਕਰੋ"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -553,10 +566,6 @@ msgstr[1] "ਤੁਹਾਨੂੰ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਆਟੋ
 msgid "Logging out of the system."
 msgstr "ਸਿਸਟਮ ਲਾਗ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
 
-#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:91
-msgid "Power Off"
-msgstr "ਬੰਦ ਕਰੋ"
-
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨਾਂ ਬੰਦ ਕਰਨ ਅਤੇ ਸਿਸਟਮ ਨੂੰ ਬੰਦ ਕਰਨ ਲਈ ਬੰਦ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
@@ -571,11 +580,6 @@ msgstr[1] "ਸਿਸਟਮ ਨੂੰ ਆਟੋਮੈਟਿਕ ਹੀ %d ਸਕ�
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "ਸਿਸਟਮ ਬੰਦ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
-
-#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:97
-#: ../js/ui/endSessionDialog.js:106
-msgid "Restart"
-msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -602,7 +606,7 @@ msgstr "ਇੰਸਟਾਲ ਕਰੋ"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "ਕੀextensions.gnome.org ਤੋਂ '%s' ਡਾਊਨਲੋਡ ਅਤੇ ਇੰਸਟਾਲ ਕਰਨੀ ਹੈ?"
 
-#: ../js/ui/keyboard.js:513 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "ਕੀਬੋਰਡ"
 
@@ -750,18 +754,18 @@ msgid "Dash"
 msgstr "ਡੈਸ਼"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:538
+#: ../js/ui/panel.js:539
 #, c-format
 msgid "Quit %s"
 msgstr "%s ਬੰਦ ਕਰੋ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:574
+#: ../js/ui/panel.js:575
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
-#: ../js/ui/panel.js:966
+#: ../js/ui/panel.js:967
 msgid "Top Bar"
 msgstr "ਉੱਤਲੀ ਪੱਟੀ"
 
@@ -838,9 +842,11 @@ msgstr "ਜ਼ੂਮ"
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
-#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-#. 'screen-keyboard-enabled');
-#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:71
+#| msgid "Screen Reader"
+msgid "Screen Keyboard"
+msgstr "ਸਕਰੀਨ ਕੀਬੋਰਡ"
+
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
 msgstr "ਦਿੱਖ ਚੇਤਾਵਨੀ"
@@ -1487,10 +1493,6 @@ msgstr "ਨਾ ਉਪਲੱਬਧ"
 msgid "Power Off..."
 msgstr "...ਬੰਦ ਕਰੋ"
 
-#: ../js/ui/userMenu.js:520 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
-msgid "Suspend"
-msgstr "ਸਸਪੈਂਡ"
-
 #: ../js/ui/userMenu.js:554
 msgid "Notifications"
 msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ"
@@ -1525,8 +1527,8 @@ msgid ""
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
 "ਨੋਟੀਫਿਕੇਸ਼ਨ ਹੁਣ ਬੰਦ ਕੀਤੇ ਹੋਏ ਹਨ, ਜਿਸ ਵਿੱਚ ਗੱਲਬਾਤ (ਚੈਟ) ਸੁਨੇਹੇ ਵੀ ਹਨ। ਤੁਹਾਡੇ "
-"ਆਨਲਾਈਨ ਹਾਲਤ "
-"ਨੂੰ ਵੀ ਅਡਜੱਸਟ ਕੀਤਾ ਜਾਵੇਗਾ ਤਾਂ ਕਿ ਹੋਰਾਂ ਨੂੰ ਇਹ ਪਤਾ ਲੱਗ ਸਕੇ ਕਿ ਤੁਸੀਂ ਉਹਨਾਂ ਦੇ "
+"ਆਨਲਾਈਨ ਹਾਲਤ ਨੂੰ "
+"ਵੀ ਅਡਜੱਸਟ ਕੀਤਾ ਜਾਵੇਗਾ ਤਾਂ ਕਿ ਹੋਰਾਂ ਨੂੰ ਇਹ ਪਤਾ ਲੱਗ ਸਕੇ ਕਿ ਤੁਸੀਂ ਉਹਨਾਂ ਦੇ "
 "ਸੁਨੇਹੇ ਸ਼ਾਇਦ ਨਾ ਵੇਖੋਗੇ।"
 
 #. Translators: this is the text displayed
@@ -1618,6 +1620,12 @@ msgstr "ਫਾਇਲ ਸਿਸਟਮ"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "If true, display onscreen keyboard."
+#~ msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਆਨਸਕਰੀਨ ਕੀਬੋਰਡ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
+
+#~ msgid "Show the onscreen keyboard"
+#~ msgstr "ਆਨਸਕਰੀਨ ਕੀਬੋਰਡ ਵੇਖਾਓ"
+
 #~ msgid "Connectivity lost"
 #~ msgstr "ਕੁਨੈਕਸ਼ਨ ਟੁੱਟ ਗਿਆ"
 
@@ -1699,9 +1707,6 @@ msgstr "%1$s: %2$s"
 #~| msgid "Cancel"
 #~ msgid "Panel"
 #~ msgstr "ਪੈਨਲ"
-
-#~ msgid "Screen Reader"
-#~ msgstr "ਸਕਰੀਨ ਰੀਡਰ"
 
 #~ msgid "PREFERENCES"
 #~ msgstr "ਪਸੰਦ"
