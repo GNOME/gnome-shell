@@ -8,7 +8,7 @@
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
 TOR_BINARIES=( \
-    glib/2.26/glib{-dev,}_2.26.0-2_win32.zip \
+    glib/2.28/glib{-dev,}_2.28.1-1_win32.zip \
     gtk+/2.16/gtk+{-dev,}_2.16.6-2_win32.zip \
     pango/1.28/pango{-dev,}_1.28.0-1_win32.zip );
 
@@ -25,15 +25,15 @@ TOR_DEPS=( \
 
 GNOME_SOURCES_URL="http://ftp.gnome.org/pub/GNOME/sources/"
 SOURCES_DEPS=(\
+    cogl/1.8/cogl-1.8.0.tar.bz2 \
     json-glib/0.12/json-glib-0.12.2.tar.bz2 \
     atk/2.1/atk-2.1.91.tar.bz2 );
 
 GL_HEADER_URLS=( \
     http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/gl.h \
-    http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/mesa_wgl.h \
     http://www.opengl.org/registry/api/glext.h );
 
-GL_HEADERS=( gl.h mesa_wgl.h glext.h );
+GL_HEADERS=( gl.h glext.h );
 
 function download_file ()
 {
@@ -184,7 +184,7 @@ function do_cross_compile ()
     local builddir="$BUILD_DIR/$dep";
 
     cd "$builddir"
-    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`" CFLAGS="-mms-bitfields" PKG_CONFIG="$RUN_PKG_CONFIG";
+    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`" CFLAGS="-mms-bitfields -I$ROOT_DIR/include" PKG_CONFIG="$RUN_PKG_CONFIG";
 
     if [ "$?" -ne 0 ]; then
 	echo "Failed to configure $dep";
@@ -357,7 +357,7 @@ echo
 echo "To get started, you should be able to configure and build from"
 echo "the top of your clutter source directory as follows:"
 echo
-echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"`./config.guess`\" --with-flavour=win32 CFLAGS=\"-mms-bitfields\" PKG_CONFIG=\"$RUN_PKG_CONFIG\""
+echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"`./config.guess`\" --with-flavour=win32 CFLAGS=\"-mms-bitfields -I$ROOT_DIR/include\" PKG_CONFIG=\"$RUN_PKG_CONFIG\""
 echo "make"
 echo
 echo "Note: the explicit --build option is often necessary to ensure autoconf"
