@@ -394,8 +394,18 @@ Dash.prototype = {
     },
 
     _adjustIconSize: function() {
-        let children = this._box.get_children();
-        if (children.length == 0) {
+        // For the icon size, we only consider children which are "proper"
+        // icons (i.e. ignoring drag placeholders) and which are not
+        // animating out (which means they will be destroyed at the end of
+        // the animation)
+        let iconChildren = this._box.get_children().filter(function(actor) {
+            return actor._delegate.child &&
+                   actor._delegate.child._delegate &&
+                   actor._delegate.child._delegate.icon &&
+                   !actor._delegate.animatingOut;
+        });
+
+        if (iconChildren.length == 0) {
             this._box.add_style_pseudo_class('empty');
             return;
         }
@@ -405,36 +415,39 @@ Dash.prototype = {
         if (this._maxHeight == -1)
             return;
 
-        // Hide actors which are about to be removed to not take
-        // them into account when adjusting the icon size ...
-        let hidingChildren = children.filter(function(actor) {
-            return actor._delegate.animatingOut;
-        });
 
-        for (let i = 0; i < hidingChildren.length; i++)
-            hidingChildren[i].hide();
-
-        let iconChildren = children.filter(function(actor) {
-            return actor.visible &&
-                   actor._delegate.child &&
-                   actor._delegate.child._delegate &&
-                   actor._delegate.child._delegate.icon;
-        });
+        let themeNode = this.actor.get_theme_node();
+        let maxAllocation = new Clutter.ActorBox({ x1: 0, y1: 0,
+                                                   x2: 42 /* whatever */,
+                                                   y2: this._maxHeight });
+        let maxContent = themeNode.get_content_box(maxAllocation);
+        let availHeight = maxContent.y2 - maxContent.y1;
+        let spacing = themeNode.get_length('spacing');
 
 
-        // Compute the amount of extra space (or missing space) we have
-        // per icon with the current icon size
-        let [minHeight, natHeight] = this.actor.get_preferred_height(-1);
-        let diff = (this._maxHeight - natHeight) / iconChildren.length;
+        let firstIcon = iconChildren[0]._delegate.child._delegate.icon;
 
-        for (let i = 0; i < hidingChildren.length; i++)
-            hidingChildren[i].show();
+        // Icons may be animating, so enforce the current icon size
+        // during the size request
+        let [currentWidth, currentHeight] = firstIcon.icon.get_size();
+
+        firstIcon.icon.set_size(this.iconSize, this.iconSize);
+        let [minHeight, natHeight] = iconChildren[0].get_preferred_height(-1);
+
+        firstIcon.icon.set_size(currentWidth, currentHeight);
+
+
+        // Subtract icon padding and box spacing from the available height
+        availHeight -= iconChildren.length * (natHeight - this.iconSize) +
+                       (iconChildren.length - 1) * spacing;
+
+        let availSize = availHeight / iconChildren.length;
 
         let iconSizes = [ 16, 22, 24, 32, 48, 64 ];
 
         let newIconSize = 16;
         for (let i = 0; i < iconSizes.length; i++) {
-            if (iconSizes[i] < this.iconSize + diff)
+            if (iconSizes[i] < availSize)
                 newIconSize = iconSizes[i];
         }
 
