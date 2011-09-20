@@ -427,14 +427,20 @@ Dash.prototype = {
 
         let firstIcon = iconChildren[0]._delegate.child._delegate.icon;
 
-        // Icons may be animating, so enforce the current icon size
-        // during the size request
-        let [currentWidth, currentHeight] = firstIcon.icon.get_size();
+        let minHeight, natHeight;
 
-        firstIcon.icon.set_size(this.iconSize, this.iconSize);
-        let [minHeight, natHeight] = iconChildren[0].get_preferred_height(-1);
+        // Enforce the current icon size during the size request if
+        // the icon is animating
+        if (firstIcon._animating) {
+            let [currentWidth, currentHeight] = firstIcon.icon.get_size();
 
-        firstIcon.icon.set_size(currentWidth, currentHeight);
+            firstIcon.icon.set_size(this.iconSize, this.iconSize);
+            [minHeight, natHeight] = iconChildren[0].get_preferred_height(-1);
+
+            firstIcon.icon.set_size(currentWidth, currentHeight);
+        } else {
+            [minHeight, natHeight] = iconChildren[0].get_preferred_height(-1);
+        }
 
 
         // Subtract icon padding and box spacing from the available height
@@ -478,11 +484,15 @@ Dash.prototype = {
             icon.icon.set_size(icon.icon.width * scale,
                                icon.icon.height * scale);
 
+            icon._animating = true;
             Tweener.addTween(icon.icon,
                              { width: targetWidth,
                                height: targetHeight,
                                time: DASH_ANIMATION_TIME,
-                               transition: 'easeOutQuad'
+                               transition: 'easeOutQuad',
+                               onComplete: function() {
+                                   icon._animating = false;
+                               }
                              });
         }
     },
