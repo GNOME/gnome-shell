@@ -15,6 +15,7 @@ TEST_JS =					\
 	interactive/scrolling.js		\
 	interactive/scroll-view-sizing.js	\
 	interactive/table.js			\
+	interactive/transitions.js		\
 	testcommon/border-image.png		\
 	testcommon/face-plain.png		\
 	testcommon/ui.js                        \
