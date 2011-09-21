@@ -54,7 +54,7 @@ struct _ShellRecorder {
   gboolean have_xfixes;
   int xfixes_event_base;
 
-  CoglHandle *recording_icon; /* icon shown while playing */
+  CoglHandle recording_icon; /* icon shown while playing */
 
   cairo_surface_t *cursor_image;
   int cursor_hot_x;
@@ -160,13 +160,13 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * recording. The emblem is drawn *after* we record the frame so doesn't
  * show up in the frame.
  */
-static CoglHandle *
+static CoglHandle
 create_recording_icon (void)
 {
   cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 32, 32);
   cairo_t *cr;
   cairo_pattern_t *pat;
-  CoglHandle *texture;
+  CoglHandle texture;
 
   cr = cairo_create (surface);
 
