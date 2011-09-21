@@ -504,8 +504,11 @@ Notification.prototype = {
 
         let oldFocus = global.stage.key_focus;
 
-        if (this._icon)
+        if (this._icon && (params.icon || params.clear)) {
             this._icon.destroy();
+            this._icon = null;
+        }
+
         // We always clear the content area if we don't have custom
         // content because it might contain the @banner that didn't
         // fit in the banner mode.
@@ -531,13 +534,15 @@ Notification.prototype = {
         if (!this._scrollArea && !this._actionArea && !this._imageBin)
             this._table.remove_style_class_name('multi-line-notification');
 
-        this._icon = params.icon || this.source.createNotificationIcon();
-        this._table.add(this._icon, { row: 0,
-                                      col: 0,
-                                      x_expand: false,
-                                      y_expand: false,
-                                      y_fill: false,
-                                      y_align: St.Align.START });
+        if (!this._icon) {
+            this._icon = params.icon || this.source.createNotificationIcon();
+            this._table.add(this._icon, { row: 0,
+                                          col: 0,
+                                          x_expand: false,
+                                          y_expand: false,
+                                          y_fill: false,
+                                          y_align: St.Align.START });
+        }
 
         this.title = title;
         title = title ? _fixMarkup(title.replace(/\n/g, ' '), params.titleMarkup) : '';
