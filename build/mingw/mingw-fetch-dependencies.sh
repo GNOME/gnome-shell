@@ -331,7 +331,7 @@ echo
 echo "You should now have everything you need to cross compile Cogl"
 echo
 echo "To get started, you should be able to configure and build from"
-echo "the top of your clutter source directory as follows:"
+echo "the top of your cogl source directory as follows:"
 echo
 echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"\`./build/config.guess\`\" --enable-wgl CFLAGS=\"-mms-bitfields -I$ROOT_DIR/include\" PKG_CONFIG=\"$RUN_PKG_CONFIG\"" PKG_CONFIG_PATH=
 echo "make"
