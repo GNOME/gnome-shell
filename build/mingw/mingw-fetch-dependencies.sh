@@ -33,12 +33,17 @@ function download_file ()
     local url="$1"; shift;
     local filename="$1"; shift;
 
+    if test -f "$DOWNLOAD_DIR/$filename"; then
+        echo "Skipping download of $filename because the file already exists";
+        return 0;
+    fi;
+
     case "$DOWNLOAD_PROG" in
 	curl)
-	    curl -C - -o "$DOWNLOAD_DIR/$filename" "$url";
+	    curl -o "$DOWNLOAD_DIR/$filename" "$url";
 	    ;;
 	*)
-	    $DOWNLOAD_PROG -O "$DOWNLOAD_DIR/$filename" -c "$url";
+	    $DOWNLOAD_PROG -O "$DOWNLOAD_DIR/$filename" "$url";
 	    ;;
     esac;
 
