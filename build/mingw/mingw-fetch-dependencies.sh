@@ -35,17 +35,24 @@ GL_HEADER_URLS=( \
 
 GL_HEADERS=( gl.h glext.h );
 
+CONFIG_GUESS_URL="http://git.savannah.gnu.org/gitweb/?p=automake.git;a=blob_plain;f=lib/config.guess"
+
 function download_file ()
 {
     local url="$1"; shift;
     local filename="$1"; shift;
 
+    if test -f "$DOWNLOAD_DIR/$filename"; then
+        echo "Skipping download of $filename because the file already exists";
+        return 0;
+    fi;
+
     case "$DOWNLOAD_PROG" in
 	curl)
-	    curl -C - -o "$DOWNLOAD_DIR/$filename" "$url";
+	    curl -o "$DOWNLOAD_DIR/$filename" "$url";
 	    ;;
 	*)
-	    $DOWNLOAD_PROG -O "$DOWNLOAD_DIR/$filename" -c "$url";
+	    $DOWNLOAD_PROG -O "$DOWNLOAD_DIR/$filename" "$url";
 	    ;;
     esac;
 
@@ -263,6 +270,8 @@ for dep in "${SOURCES_DEPS[@]}"; do
     download_file "$GNOME_SOURCES_URL/$dep" "$src";
 done;
 
+download_file "$CONFIG_GUESS_URL" "config.guess";
+
 ##
 # Extract files
 ##
@@ -338,6 +347,8 @@ chmod a+x "$RUN_PKG_CONFIG";
 
 find_compiler;
 
+build_config=`bash $DOWNLOAD_DIR/config.guess`;
+
 ##
 # Build source dependencies
 ##
@@ -357,7 +368,7 @@ echo
 echo "To get started, you should be able to configure and build from"
 echo "the top of your clutter source directory as follows:"
 echo
-echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"`./config.guess`\" --with-flavour=win32 CFLAGS=\"-mms-bitfields -I$ROOT_DIR/include\" PKG_CONFIG=\"$RUN_PKG_CONFIG\""
+echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"$build_config\" --with-flavour=win32 CFLAGS=\"-mms-bitfields -I$ROOT_DIR/include\" PKG_CONFIG=\"$RUN_PKG_CONFIG\""
 echo "make"
 echo
 echo "Note: the explicit --build option is often necessary to ensure autoconf"
