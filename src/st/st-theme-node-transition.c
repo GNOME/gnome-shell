@@ -328,6 +328,9 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
 
       calculate_offscreen_box (transition, allocation);
       priv->needs_setup = !setup_framebuffers (transition, allocation);
+
+      if (priv->needs_setup) /* setting up framebuffers failed */
+        return;
     }
 
   cogl_color_set_from_4f (&constant, 0., 0., 0.,
