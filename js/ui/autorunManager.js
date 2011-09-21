@@ -277,7 +277,7 @@ AutorunResidentSource.prototype = {
     __proto__: MessageTray.Source.prototype,
 
     _init: function() {
-        MessageTray.Source.prototype._init.call(this, _('Removable Devices'));
+        MessageTray.Source.prototype._init.call(this, _("Removable Devices"));
 
         this._mounts = [];
 
