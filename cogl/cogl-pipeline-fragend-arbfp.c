@@ -390,7 +390,10 @@ setup_arg (CoglPipeline *pipeline,
       arg->name = "texel%d";
       arg->texture_unit = _cogl_pipeline_layer_get_unit_index (layer);
       texture = _cogl_pipeline_layer_get_texture (layer);
-      cogl_texture_get_gl_texture (texture, NULL, &gl_target);
+      if (texture)
+        cogl_texture_get_gl_texture (texture, NULL, &gl_target);
+      else
+        gl_target = GL_TEXTURE_2D;
       setup_texture_source (shader_state, arg->texture_unit, gl_target);
       break;
     case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
@@ -423,7 +426,10 @@ setup_arg (CoglPipeline *pipeline,
       arg->name = "texture[%d]";
       arg->texture_unit = src - GL_TEXTURE0;
       texture = _cogl_pipeline_layer_get_texture (layer);
-      cogl_texture_get_gl_texture (texture, NULL, &gl_target);
+      if (texture)
+        cogl_texture_get_gl_texture (texture, NULL, &gl_target);
+      else
+        gl_target = GL_TEXTURE_2D;
       setup_texture_source (shader_state, arg->texture_unit, gl_target);
     }
 
