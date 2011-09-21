@@ -1,0 +1,35 @@
+# Danish translation for cogl.
+# Copyright (C) 2011 cogl's COPYRIGHT HOLDER
+# This file is distributed under the same license as the cogl package.
+# flemming christensen <fc@stromata.dk>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2011-09-21 09:33+0200\n"
+"PO-Revision-Date: 2011-09-20 14:46+0200\n"
+"Last-Translator: flemming christensen <fc@stromata.dk>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "Cogl fejlfindingsflag der skal angives"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "Cogl fejlfindingsflag der skal fjernes"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "Cogl-tilvalg"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "Vis Cogl-tilvalg"
