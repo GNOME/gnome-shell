@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-21 00:41+0100\n"
-"PO-Revision-Date: 2011-09-21 00:45+0000\n"
+"POT-Creation-Date: 2011-09-22 00:34+0100\n"
+"PO-Revision-Date: 2011-09-22 00:35+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -281,6 +281,10 @@ msgstr "%s foi adicionada aos seus favoritos."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removida dos seus favoritos."
+
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Dispositivos Removíveis"
 
 #: ../js/ui/autorunManager.js:590
 #, c-format
@@ -1512,7 +1516,8 @@ msgstr "Terminar Sessão..."
 
 #: ../js/ui/userMenu.js:605
 msgid "Your chat status will be set to busy"
-msgstr "O seu estado de disponibilidade para diálogo será definido como ocupado"
+msgstr ""
+"O seu estado de disponibilidade para diálogo será definido como ocupado"
 
 #: ../js/ui/userMenu.js:606
 msgid ""
