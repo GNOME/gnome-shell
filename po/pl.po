@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-21 20:37+0200\n"
-"PO-Revision-Date: 2011-09-21 20:38+0200\n"
+"POT-Creation-Date: 2011-09-21 22:04+0200\n"
+"PO-Revision-Date: 2011-09-21 22:05+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -285,6 +285,10 @@ msgstr "Program %s został dodany do ulubionych."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "Program %s został usunięty z ulubionych."
+
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Urządzenia wymienne"
 
 #: ../js/ui/autorunManager.js:590
 #, c-format
