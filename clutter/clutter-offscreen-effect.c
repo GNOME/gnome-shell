@@ -215,7 +215,6 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   ClutterActorBox box;
   CoglMatrix projection;
   CoglColor transparent;
-  CoglMatrix modelview;
   gfloat fbo_width, fbo_height;
   gfloat width, height;
   gfloat xexpand, yexpand;
@@ -249,18 +248,17 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   if (!update_fbo (effect, fbo_width, fbo_height))
     return FALSE;
 
-  /* get the current modelview matrix so that we can copy it
-   * to the framebuffer
-   */
-  cogl_get_modelview_matrix (&modelview);
-
-  /* Store the matrix that was last used when we updated the FBO so
-     that we can detect when we don't need to update the FBO to paint
-     a second time */
-  priv->last_matrix_drawn = modelview;
+  /* get the current modelview matrix so that we can copy it to the
+   * framebuffer. We also store the matrix that was last used when we
+   * updated the FBO so that we can detect when we don't need to
+   * update the FBO to paint a second time */
+  cogl_get_modelview_matrix (&priv->last_matrix_drawn);
 
   /* let's draw offscreen */
   cogl_push_framebuffer (priv->offscreen);
+
+  /* Copy the modelview that would have been used if rendering onscreen */
+  cogl_set_modelview_matrix (&priv->last_matrix_drawn);
 
   /* Set up the viewport so that it has the same size as the stage,
    * but offset it so that the actor of interest lands on our
@@ -289,32 +287,25 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   /* Copy the stage's projection matrix across to the framebuffer */
   _clutter_stage_get_projection_matrix (CLUTTER_STAGE (priv->stage),
                                         &projection);
-  cogl_set_projection_matrix (&projection);
 
-  /* If we've expanded the viewport, make sure to scale the modelview
+  /* If we've expanded the viewport, make sure to scale the projection
    * matrix accordingly (as it's been initialised to work with the
    * original viewport and not our expanded one).
    */
   if (xexpand > 0.f || yexpand > 0.f)
     {
-      CoglMatrix correction;
       gfloat new_width, new_height;
 
       new_width = width + (2 * xexpand);
       new_height = height + (2 * yexpand);
 
-      cogl_matrix_init_identity (&correction);
-      cogl_matrix_scale (&correction,
+      cogl_matrix_scale (&projection,
                          width / new_width,
                          height / new_height,
                          1);
-
-      cogl_matrix_multiply (&correction, &correction, &modelview);
-      modelview = correction;
     }
 
-  /* Copy the modelview that would have been used if rendering onscreen */
-  cogl_set_modelview_matrix (&modelview);
+  cogl_set_projection_matrix (&projection);
 
   cogl_color_init_from_4ub (&transparent, 0, 0, 0, 0);
   cogl_clear (&transparent,
