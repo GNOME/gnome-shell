@@ -135,8 +135,11 @@ WindowClone.prototype = {
         this._realWindowDestroyId = this.realWindow.connect('destroy',
             Lang.bind(this, this._disconnectRealWindowSignals));
 
-        this.actor.connect('button-release-event',
-                           Lang.bind(this, this._onButtonRelease));
+        let clickAction = new Clutter.ClickAction();
+        clickAction.connect('clicked', Lang.bind(this, this._onClicked));
+        clickAction.connect('long-press', Lang.bind(this, this._onLongPress));
+
+        this.actor.add_action(clickAction);
 
         this.actor.connect('scroll-event',
                            Lang.bind(this, this._onScroll));
@@ -147,6 +150,7 @@ WindowClone.prototype = {
 
         this._draggable = DND.makeDraggable(this.actor,
                                             { restoreOnSuccess: true,
+                                              manualMode: true,
                                               dragActorMaxSize: WINDOW_DND_SIZE,
                                               dragActorOpacity: DRAGGING_WINDOW_OPACITY });
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
@@ -345,9 +349,27 @@ WindowClone.prototype = {
         this._zoomStep           = undefined;
     },
 
-    _onButtonRelease : function (actor, event) {
+    _onClicked: function(action, actor) {
         this._selected = true;
-        this.emit('selected', event.get_time());
+        this.emit('selected', global.get_current_time());
+    },
+
+    _onLongPress: function(action, actor, state) {
+        // Take advantage of the Clutter policy to consider
+        // a long-press canceled when the pointer movement
+        // exceeds dnd-drag-threshold to manually start the drag
+        if (state == Clutter.LongPressState.CANCEL) {
+            // A click cancels a long-press before any click handler is
+            // run - make sure to not start a drag in that case
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
+                function() {
+                    if (this._selected)
+                        return;
+                    let [x, y] = action.get_coords();
+                    this._draggable.startDrag(x, y, global.get_current_time());
+                }));
+        }
+        return true;
     },
 
     _onDragBegin : function (draggable, time) {
