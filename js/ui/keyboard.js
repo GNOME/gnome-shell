@@ -492,11 +492,11 @@ Keyboard.prototype = {
     },
 
     SetCursorLocation: function(x, y, w, h) {
-        this._setLocation(x, y);
+//        this._setLocation(x, y);
     },
 
     SetEntryLocation: function(x, y, w, h) {
-        this._setLocation(x, y);
+//        this._setLocation(x, y);
     },
 
     get Name() {
