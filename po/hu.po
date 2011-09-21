@@ -1,0 +1,36 @@
+# Hungarian translation of cogl
+# Copyright (C) 2011. Free Software Foundation, Inc.
+# This file is distributed under the same license as the cogl package.
+#
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
+"POT-Creation-Date: 2011-09-21 02:04+0200\n"
+"PO-Revision-Date: 2011-09-21 02:06+0200\n"
+"Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
+"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "Beállítandó Cogl hibakereső jelzők"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "Törlendő Cogl hibakereső jelzők"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "Cogl beállításai"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "Cogl beállításainak megjelenítése"
+
