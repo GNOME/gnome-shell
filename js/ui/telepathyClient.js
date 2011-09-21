@@ -543,13 +543,6 @@ ChatSource.prototype = {
     createNotificationIcon: function() {
         this._iconBox = new St.Bin({ style_class: 'avatar-box' });
         this._iconBox._size = this.ICON_SIZE;
-
-        this._updateAvatarIcon();
-
-        return this._iconBox;
-    },
-
-    _updateAvatarIcon: function() {
         let textureCache = St.TextureCache.get_default();
         let file = this._contact.get_avatar_file();
 
@@ -561,6 +554,13 @@ ChatSource.prototype = {
                                                 icon_type: St.IconType.FULLCOLOR,
                                                 icon_size: this._iconBox._size });
         }
+
+        return this._iconBox;
+    },
+
+    _updateAvatarIcon: function() {
+        this._setSummaryIcon(this.createNotificationIcon());
+        this._notification.update(this._notification.title, null, { customContent: true, icon: this.createNotificationIcon() });
     },
 
     open: function(notification) {

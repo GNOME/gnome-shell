@@ -416,6 +416,7 @@ Notification.prototype = {
 
     _init: function(source, title, banner, params) {
         this.source = source;
+        this.title = title;
         this.urgency = Urgency.NORMAL;
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
@@ -538,6 +539,7 @@ Notification.prototype = {
                                       y_fill: false,
                                       y_align: St.Align.START });
 
+        this.title = title;
         title = title ? _fixMarkup(title.replace(/\n/g, ' '), params.titleMarkup) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
 
