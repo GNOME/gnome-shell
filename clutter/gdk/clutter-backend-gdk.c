@@ -410,9 +410,15 @@ clutter_gdk_get_default_display (void)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
 
-  if (!backend || !CLUTTER_IS_BACKEND_GDK (backend))
+  if (backend == NULL)
     {
-      g_critical ("GDK backend has not been initialised");
+      g_critical ("The Clutter backend has not been initialised");
+      return NULL;
+    }
+
+  if (!CLUTTER_IS_BACKEND_GDK (backend))
+    {
+      g_critical ("The Clutter backend is not a GDK backend");
       return NULL;
     }
 
@@ -445,10 +451,4 @@ clutter_gdk_set_display (GdkDisplay *display)
     }
 
   _foreign_dpy = g_object_ref (display);
-}
-
-GType
-_clutter_backend_impl_get_type (void)
-{
-  return _clutter_backend_gdk_get_type ();
 }

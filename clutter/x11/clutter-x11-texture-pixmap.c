@@ -529,7 +529,6 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec        *pspec;
-  ClutterBackend    *default_backend;
 
   g_type_class_add_private (klass, sizeof (ClutterX11TexturePixmapPrivate));
 
@@ -714,15 +713,6 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   g_signal_override_class_handler ("queue-damage-redraw",
                                    CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
                                    G_CALLBACK (clutter_x11_texture_pixmap_real_queue_damage_redraw));
-
-  default_backend = clutter_get_default_backend ();
-
-  if (!CLUTTER_IS_BACKEND_X11 (default_backend))
-    {
-      g_critical ("ClutterX11TexturePixmap instantiated with a "
-                  "non-X11 backend");
-      return;
-    }
 }
 
 static void
@@ -954,11 +944,15 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
 {
   ClutterX11TexturePixmapPrivate *priv;
   XWindowAttributes attr;
-  Display *dpy = clutter_x11_get_default_display ();
+  Display *dpy;
 
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
   if (!clutter_x11_has_composite_extension ())
+    return;
+
+  dpy = clutter_x11_get_default_display ();
+  if (dpy == NULL)
     return;
 
 #if HAVE_XCOMPOSITE
@@ -1058,7 +1052,7 @@ clutter_x11_texture_pixmap_sync_window_internal (ClutterX11TexturePixmap *textur
   priv->window_height = height;
   priv->override_redirect = override_redirect;
 
-  if (!clutter_x11_has_composite_extension())
+  if (!clutter_x11_has_composite_extension ())
     {
       /* FIXME: this should just be an error, this is unlikely to work worth anything */
       clutter_x11_texture_pixmap_set_pixmap (texture, priv->window);
@@ -1148,11 +1142,14 @@ clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
   if (priv->destroyed)
     return;
 
-  if (priv->window)
+  if (priv->window != None)
     {
-      XWindowAttributes attr;
       Display *dpy = clutter_x11_get_default_display ();
+      XWindowAttributes attr;
       Status status;
+
+      if (dpy == NULL)
+        return;
 
       clutter_x11_trap_x_errors ();
 

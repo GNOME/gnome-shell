@@ -38,6 +38,7 @@
 #include <errno.h>
 
 #include "clutter-backend-eglnative.h"
+
 /* This is a Cogl based backend */
 #include "cogl/clutter-stage-cogl.h"
 
@@ -53,17 +54,17 @@
 #ifdef COGL_HAS_EGL_SUPPORT
 #include "clutter-egl.h"
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+#ifdef CLUTTER_EGL_BACKEND_CEX100
 #include "clutter-cex100.h"
 #endif
 
-static gchar *clutter_vblank = NULL;
-
-/* FIXME: We should have CLUTTER_ define for this... */
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+#ifdef CLUTTER_EGL_BACKEND_CEX100
 static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
 static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
 #endif
+
+static gboolean gdl_plane_set = FALSE;
+static gboolean gdl_n_buffers_set = FALSE;
 
 G_DEFINE_TYPE (ClutterBackendEglNative, _clutter_backend_egl_native, CLUTTER_TYPE_BACKEND_COGL);
 
@@ -91,6 +92,7 @@ clutter_backend_egl_native_init_events (ClutterBackend *backend)
 #ifdef HAVE_TSLIB
   _clutter_events_tslib_init (CLUTTER_BACKEND_EGL (backend));
 #endif
+
 #ifdef HAVE_EVDEV
   _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
 #endif
@@ -157,9 +159,8 @@ clutter_backend_egl_native_create_context (ClutterBackend  *backend,
 
   swap_chain = cogl_swap_chain_new ();
 
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  cogl_swap_chain_set_length (swap_chain, gdl_n_buffers);
-#endif
+  if (gdl_n_buffers_set)
+    cogl_swap_chain_set_length (swap_chain, gdl_n_buffers);
 
   onscreen_template = cogl_onscreen_template_new (swap_chain);
   cogl_object_unref (swap_chain);
@@ -176,9 +177,10 @@ clutter_backend_egl_native_create_context (ClutterBackend  *backend,
   backend->cogl_display = cogl_display_new (backend->cogl_renderer,
                                             onscreen_template);
 
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  cogl_gdl_display_set_plane (backend->cogl_display, gdl_plane);
-#endif
+#ifdef CLUTTER_EGL_BACKEND_CEX100
+  if (gdl_plane_set)
+    cogl_gdl_display_set_plane (backend->cogl_display, gdl_plane);
+#endif /* CLUTTER_EGL_BACKEND_CEX100 */
 
   cogl_object_unref (backend->cogl_renderer);
   cogl_object_unref (onscreen_template);
@@ -235,28 +237,41 @@ _clutter_backend_egl_native_init (ClutterBackendEglNative *backend_egl_native)
 #endif
 }
 
-GType
-_clutter_backend_impl_get_type (void)
-{
-  return _clutter_backend_egl_native_get_type ();
-}
-
-/* FIXME we should have a CLUTTER_ define for this */
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
+/**
+ * clutter_cex100_set_plane:
+ * @plane: FIXME
+ *
+ * FIXME
+ *
+ * Since:
+ */
 void
 clutter_cex100_set_plane (gdl_plane_id_t plane)
 {
+#ifdef CLUTTER_EGL_BACKEND_CEX100
   g_return_if_fail (plane >= GDL_PLANE_ID_UPP_A && plane <= GDL_PLANE_ID_UPP_E);
 
   gdl_plane = plane;
+  gdl_plane_set = TRUE;
+#endif
 }
 
+/**
+ * clutter_cex100_set_plane:
+ * @mode: FIXME
+ *
+ * FIXME
+ *
+ * Since:
+ */
 void
 clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode)
 {
+#ifdef CLUTTER_EGL_BACKEND_CEX100
   g_return_if_fail (mode == CLUTTER_CEX100_DOUBLE_BUFFERING ||
                     mode == CLUTTER_CEX100_TRIPLE_BUFFERING);
 
   gdl_n_buffers = mode;
-}
+  gdl_n_buffers_set = TRUE;
 #endif
+}

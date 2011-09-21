@@ -57,7 +57,7 @@ INCLUDES = \
 	-I$(top_builddir)/clutter \
 	$(NULL)
 
-LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 

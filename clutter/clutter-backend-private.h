@@ -87,9 +87,6 @@ struct _ClutterBackendClass
   void (* settings_changed)   (ClutterBackend *backend);
 };
 
-/* vfuncs implemented by backend */
-GType         _clutter_backend_impl_get_type  (void);
-
 void          _clutter_backend_redraw         (ClutterBackend  *backend,
                                                ClutterStage    *stage);
 ClutterStageWindow *_clutter_backend_create_stage   (ClutterBackend  *backend,

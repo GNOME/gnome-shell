@@ -650,12 +650,6 @@ _clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
   backend_wayland->drm_fd = -1;
 }
 
-GType
-_clutter_backend_impl_get_type (void)
-{
-  return _clutter_backend_wayland_get_type ();
-}
-
 EGLDisplay
 clutter_wayland_get_egl_display (void)
 {

@@ -14,8 +14,6 @@ lib_LTLIBRARIES =
 INCLUDES = \
 	-I$(top_srcdir) 				\
 	-I$(top_srcdir)/clutter				\
-	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS)	\
-	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS_BASE)	\
 	-I$(top_srcdir)/clutter/deprecated		\
 	-I$(top_srcdir)/clutter/cally			\
 	-I$(top_builddir)				\
@@ -301,6 +299,13 @@ EXTRA_DIST += clutter-keysyms-update.pl
 
 pc_files += clutter-$(CLUTTER_API_VERSION).pc
 
+# in order to be compatible with Clutter < 1.10, when we shipped a single
+# shared library whose name was determined by the single backend it
+# supported, we need to install symbolic links so that existing applications
+# using Clutter won't break in the Brave New World of multi-backend support
+# in the same shared object.
+compat_libs =
+
 # backends source listings
 #
 #   backend_source_c := source code
@@ -370,6 +375,11 @@ x11_introspection = $(x11_source_c) $(x11_source_h)
 
 clutterx11_includedir = $(clutter_includedir)/x11
 clutterx11_include_HEADERS = $(x11_source_h)
+
+clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-x11-$(CLUTTER_API_VERSION).pc
 endif # SUPPORT_X11
 
 # Shared cogl backend files
@@ -387,20 +397,31 @@ cogl_source_h_priv = \
 
 cogl_source_c_priv =
 
+if USE_COGL
+backend_source_h += $(cogl_source_h)
+backend_source_c += $(cogl_source_c)
+backend_source_h_priv += $(cogl_source_h_priv)
+backend_source_c_priv += $(cogl_source_c_priv)
+
 # pkg-config file for the cogl meta-backend
 clutter-cogl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-cogl-$(CLUTTER_API_VERSION).pc
+endif
 
-if SUPPORT_X11
-# For compatability with the old GLX backend
+# For compatibility with the old GLX backend
 #
 # Note: there wasn't actually anything GLX specific so we can add
-# the compatability if clutter supports x11
-backend_source_c += $(srcdir)/x11/clutter-glx-texture-pixmap.c
+# the compatibility if clutter supports x11
+glx_source_c = $(srcdir)/x11/clutter-glx-texture-pixmap.c
 glx_source_h = $(srcdir)/x11/clutter-glx-texture-pixmap.h \
 	       $(srcdir)/x11/clutter-glx.h
+
+if SUPPORT_X11
+backend_source_h += $(glx_source_h)
+backend_source_c += $(glx_source_c)
+
 clutterglx_includedir = $(clutter_includedir)/glx
 clutterglx_include_HEADERS = $(glx_source_h)
 
@@ -408,13 +429,9 @@ clutter-glx-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-glx-$(CLUTTER_API_VERSION).pc
-endif
 
-if SUPPORT_GLX
-backend_source_h += $(cogl_source_h) $(glx_source_h)
-backend_source_c += $(cogl_source_c) $(glx_source_c)
-backend_source_h_priv += $(cogl_source_h_priv)
-endif # SUPPORT_GLX
+compat_libs += libclutter-glx-$(CLUTTER_API_VERSION).so.0
+endif
 
 # GDK backend rules
 gdk_source_c = \
@@ -439,12 +456,19 @@ gdk_source_h_priv = \
 	$(NULL)
 
 if SUPPORT_GDK
-backend_source_h += $(cogl_source_h) $(gdk_source_h)
-backend_source_c += $(cogl_source_c) $(gdk_source_c)
-backend_source_h_priv += $(cogl_source_h_priv) $(gdk_source_h_priv)
+backend_source_h += $(gdk_source_h)
+backend_source_c += $(gdk_source_c)
+backend_source_h_priv += $(gdk_source_h_priv)
 
 cluttergdk_includedir = $(clutter_includedir)/gdk
 cluttergdk_include_HEADERS = $(gdk_source_h)
+
+clutter-gdk-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-gdk-$(CLUTTER_API_VERSION).pc
+
+gdk_introspection = $(gdk_source_c) $(gdk_source_h)
 endif # SUPPORT_GDK
 
 # Windows backend rules
@@ -486,6 +510,11 @@ backend_source_h_priv += $(win32_source_h_priv)
 
 clutterwin_includedir = $(clutter_includedir)/win32
 clutterwin_include_HEADERS = $(win32_source_h)
+
+clutter-win32-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-win32-$(CLUTTER_API_VERSION).pc
 endif # SUPPORT_WIN32
 
 EXTRA_DIST += \
@@ -520,23 +549,32 @@ if USE_TSLIB
 backend_source_c_priv += $(egl_tslib_c)
 endif # SUPPORT_TSLIB
 
-if SUPPORT_EVDEV
+if USE_EVDEV
 backend_source_c_priv += $(evdev_c_priv)
 backend_source_h_priv += $(evdev_h_priv)
 endif # SUPPORT_EVDEV
 
 if SUPPORT_CEX100
 backend_source_h += $(cex_h)
+
+clutter-cex100-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-cex100-$(CLUTTER_API_VERSION).pc
+
+compat_libs += libclutter-cex100-$(CLUTTER_API_VERSION).so.0
 endif # SUPPORT_CEX100
 
 if SUPPORT_EGL
-backend_source_h += $(cogl_source_h) $(egl_source_h)
-backend_source_c += $(cogl_source_c)
-backend_source_h_priv += $(cogl_source_h_priv)
-backend_source_c_priv += $(cogl_source_c_priv)
+backend_source_h += $(egl_source_h)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)
+
+clutter-egl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-egl-$(CLUTTER_API_VERSION).pc
 endif # SUPPORT_EGL
 
 # OSX backend rules
@@ -572,6 +610,11 @@ backend_source_c_priv += $(osx_source_c_priv)
 
 clutterosx_includedir = $(clutter_includedir)/osx
 clutterosx_include_HEADERS = $(osx_source_h)
+
+clutter-osx-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-osx-$(CLUTTER_API_VERSION).pc
 endif # SUPPORT_OSX
 
 # Wayland backend rules
@@ -593,6 +636,13 @@ backend_source_c += \
 
 clutterwayland_includedir = $(clutter_includedir)/wayland
 clutterwayland_include_HEADERS = $(wayland_source_h)
+
+clutter-wayland-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-wayland-$(CLUTTER_API_VERSION).pc
+
+compat_libs += libclutter-wayland-$(CLUTTER_API_VERSION).so.0
 endif # SUPPORT_WAYLAND
 
 # cally
@@ -648,12 +698,6 @@ glib_enum_c = clutter-enum-types.c
 glib_enum_headers = $(source_h) $(backend_source_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
-# backend-specific pkg-config file
-clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc
-
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 DISTCLEANFILES += $(pc_files)
@@ -666,17 +710,17 @@ nodist_clutter_include_HEADERS = \
 
 clutter_deprecated_HEADERS = $(deprecated_h)
 
-lib_LTLIBRARIES += libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+lib_LTLIBRARIES += libclutter-@CLUTTER_API_VERSION@.la
 
-libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
+libclutter_@CLUTTER_API_VERSION@_la_LIBADD = \
 	-lm \
 	$(CLUTTER_LIBS) \
 	$(CLUTTER_PROFILE_LIBS)
 
-libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
+libclutter_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
 	$(win32_resources)
 
-libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
+libclutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_c) \
 	$(backend_source_h) \
 	$(backend_source_c_priv) \
@@ -694,12 +738,12 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(cally_sources_private) \
 	$(NULL)
 
-nodist_libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
+nodist_libclutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_built) \
 	$(built_source_c) \
 	$(built_source_h)
 
-libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
+libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LINK_FLAGS) \
 	$(CLUTTER_LT_LDFLAGS) \
 	$(GCOV_LDFLAGS) \
@@ -709,15 +753,21 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(win32_resources_ldflag) \
 	$(NULL)
 
+install-exec-local:
+	for lib in "$(compat_libs)"; do \
+		rm -f $(DESTDIR)$(libdir)/$$lib ; \
+		ln -s libclutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $(DESTDIR)$(libdir)/$$lib ; \
+	done
+
 # gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
 
 if HAVE_INTROSPECTION
-Clutter-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la Makefile
+Clutter-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_API_VERSION@.la Makefile
 
 Clutter_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Clutter
 Clutter_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
-Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = \
 	$(clutter_include_HEADERS) \
 	$(clutter_deprecated_HEADERS) \
@@ -738,7 +788,7 @@ Cally-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
 Cally_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cally
 Cally_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
-Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
 Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
@@ -760,12 +810,29 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--pkg-export=clutter-x11-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_introspection)
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_X11
+
+if SUPPORT_GDK
+ClutterGdk-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
+
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--identifier-prefix=ClutterGdk \
+	--symbol-prefix=clutter_gdk \
+	--c-include='clutter/gdk/clutter-gdk.h' \
+	--pkg-export=clutter-gdk-@CLUTTER_API_VERSION@ \
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = Gdk-3.0
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_FILES = $(gdk_introspection)
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
+
+INTROSPECTION_GIRS += ClutterGdk-@CLUTTER_API_VERSION@.gir
+endif # SUPPORT_GDK
 
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.

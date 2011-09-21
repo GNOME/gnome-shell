@@ -376,12 +376,6 @@ clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
   timeBeginPeriod (1);
 }
 
-GType
-_clutter_backend_impl_get_type (void)
-{
-  return clutter_backend_win32_get_type ();
-}
-
 BOOL WINAPI
 DllMain (HINSTANCE hinst, DWORD reason, LPVOID reserved)
 {

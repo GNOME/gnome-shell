@@ -14,7 +14,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter
 
-common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
 LDADD = $(common_ldadd) $(CLUTTER_LIBS) -lm
 

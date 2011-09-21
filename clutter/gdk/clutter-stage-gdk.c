@@ -468,7 +468,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
  *
  * Since: 0.4
  */
-GdkWindow*
+GdkWindow *
 clutter_gdk_get_stage_window (ClutterStage *stage)
 {
   ClutterStageWindow *impl;
@@ -476,7 +476,11 @@ clutter_gdk_get_stage_window (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), None);
 
   impl = _clutter_stage_get_window (stage);
-  g_assert (CLUTTER_IS_STAGE_GDK (impl));
+  if (!CLUTTER_IS_STAGE_GDK (impl))
+    {
+      g_critical ("The Clutter backend is not a GDK backend");
+      return NULL;
+    }
 
   return CLUTTER_STAGE_GDK (impl)->window;
 }
@@ -552,6 +556,12 @@ clutter_gdk_set_stage_foreign (ClutterStage *stage,
   g_return_val_if_fail (GDK_IS_WINDOW (window), FALSE);
 
   impl = _clutter_stage_get_window (stage);
+  if (!CLUTTER_IS_STAGE_GDK (impl))
+    {
+      g_critical ("The Clutter backend is not a GDK backend");
+      return FALSE;
+    }
+
   stage_gdk = CLUTTER_STAGE_GDK (impl);
 
   if (g_object_get_data (G_OBJECT (window), "clutter-stage-window") != NULL)

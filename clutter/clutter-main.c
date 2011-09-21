@@ -100,6 +100,7 @@
 
 #include "clutter-actor.h"
 #include "clutter-backend-private.h"
+#include "clutter-config.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-event.h"
@@ -113,6 +114,25 @@
 #include "clutter-stage-manager.h"
 #include "clutter-stage-private.h"
 #include "clutter-version.h" 	/* For flavour define */
+
+#ifdef CLUTTER_WINDOWING_OSX
+#include "osx/clutter-backend-osx.h"
+#endif
+#ifdef CLUTTER_WINDOWING_WIN32
+#include "win32/clutter-backend-win32.h"
+#endif
+#ifdef CLUTTER_WINDOWING_GDK
+#include "gdk/clutter-backend-gdk.h"
+#endif
+#ifdef CLUTTER_WINDOWING_X11
+#include "x11/clutter-backend-x11.h"
+#endif
+#ifdef CLUTTER_WINDOWING_EGL
+#include "egl/clutter-backend-eglnative.h"
+#endif
+#ifdef CLUTTER_WINDOWING_WAYLAND
+#include "wayland/clutter-backend-wayland.h"
+#endif
 
 #include <cogl/cogl.h>
 #include <cogl-pango/cogl-pango.h>
@@ -1299,11 +1319,46 @@ clutter_context_get_default_unlocked (void)
   if (G_UNLIKELY (ClutterCntx == NULL))
     {
       ClutterMainContext *ctx;
+      const char *backend;
 
       ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
 
-      /* create the default backend */
-      ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
+      backend = g_getenv ("CLUTTER_BACKEND");
+
+#ifdef CLUTTER_WINDOWING_OSX
+      if (backend == NULL || strcmp (backend, "osx") == 0)
+        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
+      else
+#endif
+#ifdef CLUTTER_WINDOWING_WIN32
+      if (backend == NULL || strcmp (backend, "win32") == 0)
+        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
+      else
+#endif
+#ifdef CLUTTER_WINDOWING_WAYLAND
+      if (backend == NULL || strcmp (backend, "wayland") == 0)
+        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
+      else
+#endif
+#ifdef CLUTTER_WINDOWING_EGL
+      if (backend == NULL || strcmp (backend, "eglnative") == 0)
+        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_EGLNATIVE, NULL);
+      else
+#endif
+#ifdef CLUTTER_WINDOWING_X11
+      if (backend == NULL || strcmp (backend, "x11") == 0)
+        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
+      else
+#endif
+#ifdef CLUTTER_WINDOWING_GDK
+      if (backend == NULL || strcmp (backend, "gdk") == 0)
+        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
+      else
+#endif
+      if (backend != NULL)
+        g_error ("Unsupported Clutter backend: '%s'", backend);
+      else
+        g_error ("No default Clutter backend found.");
 
       ctx->is_initialized = FALSE;
       ctx->motion_events_per_actor = TRUE;
@@ -1320,6 +1375,10 @@ clutter_context_get_default_unlocked (void)
 #endif
 
       ctx->last_repaint_id = 1;
+
+      CLUTTER_NOTE (BACKEND, "Backend type: '%s' (requested: '%s')",
+                    G_OBJECT_TYPE_NAME (ctx->backend),
+                    backend != NULL ? backend : "<default>");
     }
 
   return ClutterCntx;

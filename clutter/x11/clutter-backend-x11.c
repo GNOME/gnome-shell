@@ -875,9 +875,15 @@ clutter_x11_get_default_display (void)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
 
-  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+  if (backend == NULL)
     {
-      g_critical ("X11 backend has not been initialised");
+      g_critical ("The Clutter backend has not been initialised");
+      return NULL;
+    }
+
+  if (!CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("The Clutter backend is not a X11 backend");
       return NULL;
     }
 
@@ -1006,9 +1012,15 @@ clutter_x11_get_default_screen (void)
 {
  ClutterBackend *backend = clutter_get_default_backend ();
 
-  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+  if (backend == NULL)
     {
-      g_critical ("X11 backend has not been initialised");
+      g_critical ("The Clutter backend has not been initialised");
+      return 0;
+    }
+
+  if (!CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("The Clutter backend is not a X11 backend");
       return 0;
     }
 
@@ -1029,9 +1041,15 @@ clutter_x11_get_root_window (void)
 {
  ClutterBackend *backend = clutter_get_default_backend ();
 
-  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+  if (backend == NULL)
     {
-      g_critical ("X11 backend has not been initialised");
+      g_critical ("The Clutter backend has not been initialised");
+      return None;
+    }
+
+  if (!CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("The Clutter backend is not a X11 backend");
       return None;
     }
 
@@ -1057,9 +1075,15 @@ clutter_x11_add_filter (ClutterX11FilterFunc func,
 
   g_return_if_fail (func != NULL);
 
-  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+  if (backend == NULL)
     {
-      g_critical ("X11 backend has not been initialised");
+      g_critical ("The Clutter backend has not been initialised");
+      return;
+    }
+
+  if (!CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("The Clutter backend is not a X11 backend");
       return;
     }
 
@@ -1095,9 +1119,15 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
 
   g_return_if_fail (func != NULL);
 
-  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+  if (backend == NULL)
     {
-      g_critical ("X11 backend has not been initialised");
+      g_critical ("The Clutter backend has not been initialised");
+      return;
+    }
+
+  if (!CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("The Clutter backend is not a X11 backend");
       return;
     }
 
@@ -1163,9 +1193,15 @@ clutter_x11_has_xinput (void)
 #if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
  ClutterBackend *backend = clutter_get_default_backend ();
 
-  if (!backend || !CLUTTER_IS_BACKEND_X11 (backend))
+  if (backend == NULL)
     {
-      g_critical ("X11 backend has not been initialised");
+      g_critical ("The Clutter backend has not been initialised");
+      return FALSE;
+    }
+
+  if (!CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("The Clutter backend is not a X11 backend.");
       return FALSE;
     }
 
@@ -1201,6 +1237,8 @@ clutter_x11_has_composite_extension (void)
     }
 
   dpy = clutter_x11_get_default_display();
+  if (dpy == NULL)
+    return FALSE;
 
   if (XCompositeQueryExtension (dpy, &event, &error))
     {
@@ -1292,8 +1330,16 @@ XVisualInfo *
 clutter_x11_get_visual_info (void)
 {
   ClutterBackendX11 *backend_x11;
+  ClutterBackend *backend;
 
-  backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
+  backend = clutter_get_default_backend ();
+  if (!CLUTTER_IS_BACKEND_X11 (backend))
+    {
+      g_critical ("The Clutter backend is not a X11 backend.");
+      return NULL;
+    }
+
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   return _clutter_backend_x11_get_visual_info (backend_x11);
 }
@@ -1347,10 +1393,4 @@ _clutter_x11_input_device_translate_screen_coord (ClutterInputDevice *device,
     *axis_value = offset + scale * (value - info->min_value);
 
   return TRUE;
-}
-
-GType
-_clutter_backend_impl_get_type (void)
-{
-  return _clutter_backend_x11_get_type ();
 }

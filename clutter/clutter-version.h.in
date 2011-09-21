@@ -103,6 +103,12 @@ G_BEGIN_DECLS
  * GL Windowing system used
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can be
+ *   compiled with multiple windowing system backends. Use the various
+ *   CLUTTER_WINDOWING_* macros to detect the windowing system that Clutter
+ *   is being compiled against, and the type check macros for the
+ *   #ClutterBackend for a run-time check.
  */
 #define CLUTTER_FLAVOUR         "@CLUTTER_FLAVOUR@"
 
@@ -113,6 +119,9 @@ G_BEGIN_DECLS
  * "gles" currently
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: The macro evaluates to "deprecated" as Cogl can be
+ *   compiled against multiple GL implementations.
  */
 #define CLUTTER_COGL            "@CLUTTER_COGL@"
 
@@ -122,6 +131,11 @@ G_BEGIN_DECLS
  * The default GObject type for the Clutter stage. 
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can
+ *   be compiled against multiple windowing systems. You can use the
+ *   CLUTTER_WINDOWING_* macros for compile-time checks, and the type
+ *   check macros for run-time checks.
  */
 #define CLUTTER_STAGE_TYPE @CLUTTER_STAGE_TYPE@
 
