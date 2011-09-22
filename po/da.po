@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-21 17:57+0200\n"
-"PO-Revision-Date: 2011-09-21 15:04+0000\n"
+"POT-Creation-Date: 2011-09-22 16:07+0200\n"
+"PO-Revision-Date: 2011-09-22 09:20+0000\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -199,7 +199,7 @@ msgstr "Log ind"
 #. to indicate the user can swipe their finger instead
 #: ../js/gdm/loginDialog.js:830
 msgid "(or swipe finger)"
-msgstr ""
+msgstr "(eller indlæs fingeraftryk)"
 
 #: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
@@ -284,6 +284,10 @@ msgstr "%s er blevet føjet til dine favoritter."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s er blevet fjernet fra dine favoritter."
+
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Flytbare enheder"
 
 #: ../js/ui/autorunManager.js:590
 #, c-format
@@ -542,17 +546,17 @@ msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "Tryk Log ud for at afslutte disse programmer og logge ud af systemet."
 
 #: ../js/ui/endSessionDialog.js:64
-#, fuzzy, c-format
+#, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s vil blive logget ud automatisk om %d sekunder."
+msgstr[0] "%s vil blive logget ud automatisk om %d sekund."
 msgstr[1] "%s vil blive logget ud automatisk om %d sekunder."
 
 #: ../js/ui/endSessionDialog.js:69
-#, fuzzy, c-format
+#, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Du vil blive logget ud automatisk om %d sekunder."
+msgstr[0] "Du vil blive logget ud automatisk om %d sekund."
 msgstr[1] "Du vil blive logget ud automatisk om %d sekunder."
 
 #: ../js/ui/endSessionDialog.js:73
@@ -564,10 +568,10 @@ msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Tryk Sluk for at afslutte disse programmer og lukke systemet ned."
 
 #: ../js/ui/endSessionDialog.js:83
-#, fuzzy, c-format
+#, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Systemet vil lukke ned automatisk om %d sekunder."
+msgstr[0] "Systemet vil lukke ned automatisk om %d sekund."
 msgstr[1] "Systemet vil lukke ned automatisk om %d sekunder."
 
 #: ../js/ui/endSessionDialog.js:87
@@ -579,10 +583,10 @@ msgid "Click Restart to quit these applications and restart the system."
 msgstr "Tryk Genstart for at afslutte disse programmer og genstarte systemet."
 
 #: ../js/ui/endSessionDialog.js:100
-#, fuzzy, c-format
+#, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Systemet vil genstarte automatisk om %d sekunder."
+msgstr[0] "Systemet vil genstarte automatisk om %d sekund."
 msgstr[1] "Systemet vil genstarte automatisk om %d sekunder."
 
 #: ../js/ui/endSessionDialog.js:104
@@ -837,9 +841,8 @@ msgstr "Zoom"
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:71
-#, fuzzy
 msgid "Screen Keyboard"
-msgstr "Skærmlæser"
+msgstr "Skærmtastatur"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
@@ -1170,7 +1173,7 @@ msgstr[1] "%d minutter tilbage"
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
@@ -1513,13 +1516,16 @@ msgstr "Log ud..."
 
 #: ../js/ui/userMenu.js:605
 msgid "Your chat status will be set to busy"
-msgstr ""
+msgstr "Din chat-status vil blive angivet som optaget"
 
 #: ../js/ui/userMenu.js:606
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
+"Meddelelser er nu deaktiveret, inklusiv chat-beskeder. Din online-status er "
+"blevet justeret, for at fortælle andre, at du muligvis ikke ser deres "
+"beskeder."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
