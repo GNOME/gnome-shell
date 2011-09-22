@@ -5619,14 +5619,17 @@ update_net_frame_extents (MetaWindow *window)
 
   if (window->frame)
     {
+      MetaFrameBorders borders;
+
+      meta_frame_calc_borders (window->frame, &borders);
       /* Left */
-      data[0] = window->frame->child_x;
+      data[0] = borders.visible.left;
       /* Right */
-      data[1] = window->frame->right_width;
+      data[1] = borders.visible.right;
       /* Top */
-      data[2] = window->frame->child_y;
+      data[2] = borders.visible.top;
       /* Bottom */
-      data[3] = window->frame->bottom_height;
+      data[3] = borders.visible.bottom;
     }
 
   meta_topic (META_DEBUG_GEOMETRY,
