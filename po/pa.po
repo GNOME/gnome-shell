@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-19 11:34+0000\n"
-"PO-Revision-Date: 2011-09-20 07:22+0530\n"
+"POT-Creation-Date: 2011-09-21 19:11+0000\n"
+"PO-Revision-Date: 2011-09-22 06:15+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -212,8 +212,8 @@ msgid "Not listed?"
 msgstr "ਲਿਸਟ ਵਿੱਚ ਨਹੀਂ ਹੈ?"
 
 #: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
-#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:165
+#: ../js/ui/polkitAuthenticationAgent.js:171 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
@@ -226,8 +226,8 @@ msgstr "ਸਾਇਨ ਇਨ"
 msgid "Login Window"
 msgstr "ਲਾਗਇਨ ਵਿੰਡੋ"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:520
-#: ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:514
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:585
 msgid "Suspend"
 msgstr "ਸਸਪੈਂਡ"
 
@@ -291,12 +291,16 @@ msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਵਿੱਚ ਸ਼ਾਮ�
 msgid "%s has been removed from your favorites."
 msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਤੋਂ ਹਟਾਇਆ ਜਾ ਚੁੱਕਿਆ ਹੈ।"
 
-#: ../js/ui/autorunManager.js:592
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "ਹਟਾਉਣਯੋਗ ਜੰਤਰ"
+
+#: ../js/ui/autorunManager.js:590
 #, c-format
 msgid "Open with %s"
 msgstr "%s ਨਾਲ ਖੋਲ੍ਹੋ"
 
-#: ../js/ui/autorunManager.js:618
+#: ../js/ui/autorunManager.js:616
 msgid "Eject"
 msgstr "ਬਾਹਰ ਕੱਢੋ"
 
@@ -451,15 +455,15 @@ msgstr "ਹਫ਼ਤਾ ਅੱਗੇ"
 msgid "Unknown"
 msgstr "ਅਣਜਾਣ"
 
-#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:147
+#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:139
 msgid "Available"
 msgstr "ਉਪਲੱਬਧ"
 
-#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:156
+#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:148
 msgid "Away"
 msgstr "ਦੂਰ"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:150
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:142
 msgid "Busy"
 msgstr "ਰੁਝਿਆ"
 
@@ -471,7 +475,7 @@ msgstr "ਆਫਲਾਈਨ"
 msgid "CONTACTS"
 msgstr "ਸੰਪਰਕ"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1196
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "ਹਟਾਓ"
 
@@ -604,7 +608,7 @@ msgstr "ਇੰਸਟਾਲ ਕਰੋ"
 #: ../js/ui/extensionSystem.js:485
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
-msgstr "ਕੀextensions.gnome.org ਤੋਂ '%s' ਡਾਊਨਲੋਡ ਅਤੇ ਇੰਸਟਾਲ ਕਰਨੀ ਹੈ?"
+msgstr "ਕੀ extensions.gnome.org ਤੋਂ '%s' ਡਾਊਨਲੋਡ ਅਤੇ ਇੰਸਟਾਲ ਕਰਨੀ ਹੈ?"
 
 #: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
 msgid "Keyboard"
@@ -644,93 +648,93 @@ msgstr "ਸਰੋਤ ਵੇਖੋ"
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ"
 
-#: ../js/ui/messageTray.js:2368
+#: ../js/ui/messageTray.js:2372
 msgid "System Information"
 msgstr "ਸਿਸਟਮ ਜਾਣਕਾਰੀ"
 
-#: ../js/ui/networkAgent.js:138
+#: ../js/ui/networkAgent.js:145
 msgid "Show password"
 msgstr "ਪਾਸਵਰਡ ਵੇਖਾਓ"
 
-#: ../js/ui/networkAgent.js:153
+#: ../js/ui/networkAgent.js:160
 msgid "Connect"
 msgstr "ਕੁਨੈਕਟ ਕਰੋ"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:248 ../js/ui/networkAgent.js:260
-#: ../js/ui/networkAgent.js:287 ../js/ui/networkAgent.js:307
-#: ../js/ui/networkAgent.js:317
+#: ../js/ui/networkAgent.js:255 ../js/ui/networkAgent.js:267
+#: ../js/ui/networkAgent.js:294 ../js/ui/networkAgent.js:314
+#: ../js/ui/networkAgent.js:324
 msgid "Password: "
 msgstr "ਪਾਸਵਰਡ: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:253
+#: ../js/ui/networkAgent.js:260
 msgid "Key: "
 msgstr "ਸਵਿੱਚ: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:285 ../js/ui/networkAgent.js:303
+#: ../js/ui/networkAgent.js:292 ../js/ui/networkAgent.js:310
 msgid "Username: "
 msgstr "ਯੂਜ਼ਰ ਨਾਂ: "
 
-#: ../js/ui/networkAgent.js:291
+#: ../js/ui/networkAgent.js:298
 msgid "Identity: "
 msgstr "ਪਛਾਣ: "
 
-#: ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:300
 msgid "Private key password: "
 msgstr "ਪ੍ਰਾਈਵੇਟ ਕੁੰਜੀ ਪਾਸਵਰਡ: "
 
-#: ../js/ui/networkAgent.js:305
+#: ../js/ui/networkAgent.js:312
 msgid "Service: "
 msgstr "ਸਰਵਿਸ: "
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:341
 msgid "Authentication required by wireless network"
 msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ ਲਈ ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
 
-#: ../js/ui/networkAgent.js:335
+#: ../js/ui/networkAgent.js:342
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network '%"
 "s'."
 msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ '%s' ਵਰਤਣ ਲਈ ਪਾਸਵਰਡ ਜਾਂ ਇੰਕ੍ਰਿਪਸ਼ਨ ਕੁੰਜੀਆਂ ਦੀ ਲੋੜ ਹੈ।"
 
-#: ../js/ui/networkAgent.js:339
+#: ../js/ui/networkAgent.js:346
 msgid "Wired 802.1X authentication"
 msgstr "ਤਾਰ 802.1X ਪਰਮਾਣਕਿਤਾ"
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:348
 msgid "Network name: "
 msgstr "ਨੈੱਟਵਰਕ ਨਾਂ: "
 
-#: ../js/ui/networkAgent.js:346
+#: ../js/ui/networkAgent.js:353
 msgid "DSL authentication"
 msgstr "DSL ਪਰਮਾਣਕਿਤਾ"
 
-#: ../js/ui/networkAgent.js:353
+#: ../js/ui/networkAgent.js:360
 msgid "PIN code required"
 msgstr "PIN ਕੋਡ ਲੋੜੀਦਾ ਹੈ"
 
-#: ../js/ui/networkAgent.js:354
+#: ../js/ui/networkAgent.js:361
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਜੰਤਰ ਲਈ PIN ਕੋਡ ਚਾਹੀਦਾ ਹੈ"
 
-#: ../js/ui/networkAgent.js:355
+#: ../js/ui/networkAgent.js:362
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:361
+#: ../js/ui/networkAgent.js:368
 msgid "Mobile broadband network password"
 msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਨੈੱਟਵਰਕ ਪਾਸਵਰਡ"
 
-#: ../js/ui/networkAgent.js:362
+#: ../js/ui/networkAgent.js:369
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋਣ ਲਈ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ। "
@@ -784,7 +788,7 @@ msgstr "...ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 
 #: ../js/ui/placeDisplay.js:375
 msgid "PLACES & DEVICES"
-msgstr "ਥਾਵਾਂ ਤੇ ਜੰਤਰ"
+msgstr "ਥਾਵਾਂ ਅਤੇ ਜੰਤਰ"
 
 #: ../js/ui/polkitAuthenticationAgent.js:72
 msgid "Authentication Required"
@@ -794,19 +798,19 @@ msgstr "ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
 msgid "Administrator"
 msgstr "ਪਰਸ਼ਾਸ਼ਕ"
 
-#: ../js/ui/polkitAuthenticationAgent.js:174
+#: ../js/ui/polkitAuthenticationAgent.js:175
 msgid "Authenticate"
-msgstr "ਪਰਮਾਣਕਿਤਾ"
+msgstr "ਪਰਮਾਣਿਤ"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:262
+#: ../js/ui/polkitAuthenticationAgent.js:256
 msgid "Sorry, that didn't work. Please try again."
 msgstr "ਅਫਸੋਸ, ਉਹ ਕੰਮ ਨਹੀਂ ਕਰਦਾ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ।"
 
-#: ../js/ui/polkitAuthenticationAgent.js:274
+#: ../js/ui/polkitAuthenticationAgent.js:268
 msgid "Password:"
 msgstr "ਪਾਸਵਰਡ:"
 
@@ -815,7 +819,7 @@ msgstr "ਪਾਸਵਰਡ:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:687
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -843,7 +847,6 @@ msgstr "ਜ਼ੂਮ"
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:71
-#| msgid "Screen Reader"
 msgid "Screen Keyboard"
 msgstr "ਸਕਰੀਨ ਕੀਬੋਰਡ"
 
@@ -895,7 +898,7 @@ msgstr "...ਜੰਤਰ ਨੂੰ ਫਾਇਲਾਂ ਭੇਜੋ"
 
 #: ../js/ui/status/bluetooth.js:67
 msgid "Set up a New Device..."
-msgstr "...ਨਵਾਂ ਜੰਤਰ ਸੈਟਅੱਪ"
+msgstr "...ਨਵਾਂ ਜੰਤਰ ਸੈਟਅੱਪ ਕਰੋ"
 
 #: ../js/ui/status/bluetooth.js:91
 msgid "Bluetooth Settings"
@@ -912,7 +915,7 @@ msgstr "ਕੁਨੈਕਸ਼ਨ"
 
 #: ../js/ui/status/bluetooth.js:217 ../js/ui/status/network.js:486
 msgid "disconnecting..."
-msgstr "ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
+msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
 #: ../js/ui/status/bluetooth.js:230 ../js/ui/status/network.js:492
 msgid "connecting..."
@@ -1005,11 +1008,11 @@ msgstr "ਜੰਤਰ ਉੱਤੇ ਦਿੱਤਾ ਗਿਆ ਪਿੰਨ ਦਿ�
 msgid "OK"
 msgstr "ਠੀਕ ਹੈ"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
 msgid "Show Keyboard Layout"
 msgstr "ਕੀਬੋਰਡ ਲੇਆਉਟ ਵੇਖਾਓ"
 
-#: ../js/ui/status/keyboard.js:77
+#: ../js/ui/status/keyboard.js:78
 msgid "Region and Language Settings"
 msgstr "ਖੇਤਰ ਅਤੇ ਭਾਸ਼ਾ ਸੈਟਿੰਗ"
 
@@ -1054,13 +1057,13 @@ msgstr "ਨਾ-ਉਪਲੱਬਧ"
 msgid "connection failed"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
-#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1515
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1523
 msgid "More..."
 msgstr "ਹੋਰ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1458
 msgid "Connected (private)"
 msgstr "ਕੁਨੈਕਟ ਹੈ (ਪ੍ਰਾਈਵੇਟ)"
 
@@ -1077,7 +1080,7 @@ msgid "Auto dial-up"
 msgstr "ਆਟੋ ਡਾਇਲ-ਅੱਪ"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1467
+#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1470
 #, c-format
 msgid "Auto %s"
 msgstr "ਆਟੋ %s"
@@ -1086,47 +1089,47 @@ msgstr "ਆਟੋ %s"
 msgid "Auto bluetooth"
 msgstr "ਆਟੋ ਬਲਿਊਟੁੱਥ"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1472
 msgid "Auto wireless"
 msgstr "ਆਟੋ ਬੇਤਾਰ"
 
-#: ../js/ui/status/network.js:1558
+#: ../js/ui/status/network.js:1566
 msgid "Enable networking"
 msgstr "ਨੈੱਟਵਰਕਿੰਗ ਚਾਲੂ ਹੈ"
 
-#: ../js/ui/status/network.js:1570
+#: ../js/ui/status/network.js:1578
 msgid "Wired"
 msgstr "ਤਾਰ"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1589
 msgid "Wireless"
 msgstr "ਬੇਤਾਰ"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1599
 msgid "Mobile broadband"
 msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ"
 
-#: ../js/ui/status/network.js:1601
+#: ../js/ui/status/network.js:1609
 msgid "VPN Connections"
 msgstr "VPN ਕੁਨੈਕਸ਼ਨ"
 
-#: ../js/ui/status/network.js:1612
+#: ../js/ui/status/network.js:1620
 msgid "Network Settings"
 msgstr "ਨੈੱਟਵਰਕ ਸੈਟਿੰਗ"
 
-#: ../js/ui/status/network.js:1749
+#: ../js/ui/status/network.js:1757
 msgid "Connection failed"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
-#: ../js/ui/status/network.js:1750
+#: ../js/ui/status/network.js:1758
 msgid "Activation of network connection failed"
 msgstr "ਨੈੱਟਵਰਕ ਕੁਨੈਕਸ਼ਨ ਦੀ ਐਕਟੀਵੇਸ਼ਨ ਫੇਲ੍ਹ ਹੋਈ"
 
-#: ../js/ui/status/network.js:2000
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "ਨੈੱਟਵਰਕਿੰਗ ਬੰਦ ਹੈ"
 
-#: ../js/ui/status/network.js:2125
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "ਨੈੱਟਵਰਕ ਮੈਨੇਜਰ"
 
@@ -1138,7 +1141,7 @@ msgstr "ਪਾਵਰ ਸੈਟਿੰਗ"
 #. to estimate battery life
 #: ../js/ui/status/power.js:103
 msgid "Estimating..."
-msgstr "...ਅਨੁਮਾਨ ਲਾਇਆ ਜਾ ਰਿਹਾ ਹੈ"
+msgstr "...ਅੰਦਾਜ਼ਾ ਲਾਇਆ ਜਾ ਰਿਹਾ ਹੈ"
 
 #: ../js/ui/status/power.js:110
 #, c-format
@@ -1339,7 +1342,7 @@ msgstr "%s ਵਲੋਂ ਕਾਲ"
 
 #: ../js/ui/telepathyClient.js:1197
 msgid "Answer"
-msgstr "ਜਵਾਬ"
+msgstr "ਜਵਾਬ ਦਿਓ"
 
 #. To translators: The first parameter is
 #. * the contact's alias and the second one is the
@@ -1477,51 +1480,51 @@ msgstr "ਅਕਾਊਂਟ ਸੋਧ"
 msgid "Unknown reason"
 msgstr "ਅਣਜਾਣ ਕਾਰਨ"
 
-#: ../js/ui/userMenu.js:153
+#: ../js/ui/userMenu.js:145
 msgid "Hidden"
 msgstr "ਲੁਕਵਾਂ"
 
-#: ../js/ui/userMenu.js:159
+#: ../js/ui/userMenu.js:151
 msgid "Idle"
 msgstr "ਵੇਹਲਾ"
 
-#: ../js/ui/userMenu.js:162
+#: ../js/ui/userMenu.js:154
 msgid "Unavailable"
 msgstr "ਨਾ ਉਪਲੱਬਧ"
 
-#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:592
+#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:586
 msgid "Power Off..."
 msgstr "...ਬੰਦ ਕਰੋ"
 
-#: ../js/ui/userMenu.js:554
+#: ../js/ui/userMenu.js:548
 msgid "Notifications"
 msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ"
 
-#: ../js/ui/userMenu.js:562
+#: ../js/ui/userMenu.js:556
 msgid "Online Accounts"
 msgstr "ਆਨਲਾਈਨ ਅਕਾਊਂਟ"
 
-#: ../js/ui/userMenu.js:566
+#: ../js/ui/userMenu.js:560
 msgid "System Settings"
 msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
 
-#: ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:567
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
 
-#: ../js/ui/userMenu.js:578
+#: ../js/ui/userMenu.js:572
 msgid "Switch User"
 msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
 
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:577
 msgid "Log Out..."
 msgstr "...ਲਾਗਆਉਟ"
 
-#: ../js/ui/userMenu.js:611
+#: ../js/ui/userMenu.js:605
 msgid "Your chat status will be set to busy"
 msgstr "ਤੁਹਾਡੀ ਚੈਟ ਹਾਲਤ ਰੁੱਝੇ ਵਜੋਂ ਸੈੱਟ ਕੀਤੀ ਜਾਵੇਗੀ"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:606
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
