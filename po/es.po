@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-19 11:34+0000\n"
-"PO-Revision-Date: 2011-09-19 14:57+0200\n"
+"POT-Creation-Date: 2011-09-21 19:11+0000\n"
+"PO-Revision-Date: 2011-09-22 11:46+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -204,8 +204,8 @@ msgid "Not listed?"
 msgstr "¿No está listado?"
 
 #: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:158
-#: ../js/ui/polkitAuthenticationAgent.js:170 ../js/ui/status/bluetooth.js:480
+#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:165
+#: ../js/ui/polkitAuthenticationAgent.js:171 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -218,8 +218,8 @@ msgstr "Iniciar sesión"
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:520
-#: ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:591
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:514
+#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:585
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -283,12 +283,16 @@ msgstr "Se ha añadido %s a sus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
 
-#: ../js/ui/autorunManager.js:592
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Dispositivos extraíbles"
+
+#: ../js/ui/autorunManager.js:590
 #, c-format
 msgid "Open with %s"
 msgstr "Abrir con %s"
 
-#: ../js/ui/autorunManager.js:618
+#: ../js/ui/autorunManager.js:616
 msgid "Eject"
 msgstr "Expulsar"
 
@@ -443,15 +447,15 @@ msgstr "La semana que viene"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:147
+#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:139
 msgid "Available"
 msgstr "Disponible"
 
-#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:156
+#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:148
 msgid "Away"
 msgstr "Ausente"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:150
+#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:142
 msgid "Busy"
 msgstr "Ocupado"
 
@@ -463,7 +467,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1196
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Quitar"
 
@@ -637,58 +641,58 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2368
+#: ../js/ui/messageTray.js:2372
 msgid "System Information"
 msgstr "Información del sistema"
 
-#: ../js/ui/networkAgent.js:138
+#: ../js/ui/networkAgent.js:145
 msgid "Show password"
 msgstr "Mostrar contraseña"
 
-#: ../js/ui/networkAgent.js:153
+#: ../js/ui/networkAgent.js:160
 msgid "Connect"
 msgstr "Conectar"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:248 ../js/ui/networkAgent.js:260
-#: ../js/ui/networkAgent.js:287 ../js/ui/networkAgent.js:307
-#: ../js/ui/networkAgent.js:317
+#: ../js/ui/networkAgent.js:255 ../js/ui/networkAgent.js:267
+#: ../js/ui/networkAgent.js:294 ../js/ui/networkAgent.js:314
+#: ../js/ui/networkAgent.js:324
 msgid "Password: "
 msgstr "Contraseña: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:253
+#: ../js/ui/networkAgent.js:260
 msgid "Key: "
 msgstr "Clave:"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:285 ../js/ui/networkAgent.js:303
+#: ../js/ui/networkAgent.js:292 ../js/ui/networkAgent.js:310
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: ../js/ui/networkAgent.js:291
+#: ../js/ui/networkAgent.js:298
 msgid "Identity: "
 msgstr "Identidad:"
 
-#: ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:300
 msgid "Private key password: "
 msgstr "Contraseña de la clave privada:"
 
-#: ../js/ui/networkAgent.js:305
+#: ../js/ui/networkAgent.js:312
 msgid "Service: "
 msgstr "Servicio:"
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:341
 msgid "Authentication required by wireless network"
 msgstr "La red inalámbrica requiere autenticación"
 
-#: ../js/ui/networkAgent.js:335
+#: ../js/ui/networkAgent.js:342
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network '%"
@@ -697,35 +701,35 @@ msgstr ""
 "Se necesitan contraseñas o claves de cifrado para acceder a la red "
 "inalámbrica «%s»."
 
-#: ../js/ui/networkAgent.js:339
+#: ../js/ui/networkAgent.js:346
 msgid "Wired 802.1X authentication"
 msgstr "Autenticación 802.1X cableada"
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:348
 msgid "Network name: "
 msgstr "Nombre de la red"
 
-#: ../js/ui/networkAgent.js:346
+#: ../js/ui/networkAgent.js:353
 msgid "DSL authentication"
 msgstr "Autenticación DSL"
 
-#: ../js/ui/networkAgent.js:353
+#: ../js/ui/networkAgent.js:360
 msgid "PIN code required"
 msgstr "Código PIN requerido"
 
-#: ../js/ui/networkAgent.js:354
+#: ../js/ui/networkAgent.js:361
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Se necesita un código PIN para el dispositivo de banda ancha móvil"
 
-#: ../js/ui/networkAgent.js:355
+#: ../js/ui/networkAgent.js:362
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:361
+#: ../js/ui/networkAgent.js:368
 msgid "Mobile broadband network password"
 msgstr "Contraseña de la red de banda ancha móvil"
 
-#: ../js/ui/networkAgent.js:362
+#: ../js/ui/networkAgent.js:369
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Se requiere una contraseña para conectar a «%s»."
@@ -789,7 +793,7 @@ msgstr "Se necesita autenticación"
 msgid "Administrator"
 msgstr "Administrador"
 
-#: ../js/ui/polkitAuthenticationAgent.js:174
+#: ../js/ui/polkitAuthenticationAgent.js:175
 msgid "Authenticate"
 msgstr "Autenticar"
 
@@ -797,11 +801,11 @@ msgstr "Autenticar"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:262
+#: ../js/ui/polkitAuthenticationAgent.js:256
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Inténtelo de nuevo,"
 
-#: ../js/ui/polkitAuthenticationAgent.js:274
+#: ../js/ui/polkitAuthenticationAgent.js:268
 msgid "Password:"
 msgstr "Contraseña:"
 
@@ -810,7 +814,7 @@ msgstr "Contraseña:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:687
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -838,7 +842,6 @@ msgstr "Ampliación"
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:71
-#| msgid "Screen Reader"
 msgid "Screen Keyboard"
 msgstr "Teclado en pantalla"
 
@@ -1000,11 +1003,11 @@ msgstr "Introduzca el PIN mencionado en el dispositivo."
 msgid "OK"
 msgstr "Aceptar"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
-#: ../js/ui/status/keyboard.js:77
+#: ../js/ui/status/keyboard.js:78
 msgid "Region and Language Settings"
 msgstr "Configuración de región e idioma"
 
@@ -1049,13 +1052,13 @@ msgstr "no disponible"
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1515
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1523
 msgid "More..."
 msgstr "Más…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1458
 msgid "Connected (private)"
 msgstr "Conectada (privada)"
 
@@ -1072,7 +1075,7 @@ msgid "Auto dial-up"
 msgstr "Marcado automático"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1467
+#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1470
 #, c-format
 msgid "Auto %s"
 msgstr "%s automática"
@@ -1081,47 +1084,47 @@ msgstr "%s automática"
 msgid "Auto bluetooth"
 msgstr "Bluetooth automático"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1472
 msgid "Auto wireless"
 msgstr "Inalámbrica automática"
 
-#: ../js/ui/status/network.js:1558
+#: ../js/ui/status/network.js:1566
 msgid "Enable networking"
 msgstr "Activar red"
 
-#: ../js/ui/status/network.js:1570
+#: ../js/ui/status/network.js:1578
 msgid "Wired"
 msgstr "Cableada"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1589
 msgid "Wireless"
 msgstr "Inalámbrica"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1599
 msgid "Mobile broadband"
 msgstr "Banda ancha móvil"
 
-#: ../js/ui/status/network.js:1601
+#: ../js/ui/status/network.js:1609
 msgid "VPN Connections"
 msgstr "Conexiones VPN"
 
-#: ../js/ui/status/network.js:1612
+#: ../js/ui/status/network.js:1620
 msgid "Network Settings"
 msgstr "Configuración de la red"
 
-#: ../js/ui/status/network.js:1749
+#: ../js/ui/status/network.js:1757
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: ../js/ui/status/network.js:1750
+#: ../js/ui/status/network.js:1758
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
-#: ../js/ui/status/network.js:2000
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "La red está desactivada"
 
-#: ../js/ui/status/network.js:2125
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
@@ -1474,51 +1477,51 @@ msgstr "Editar cuenta"
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
-#: ../js/ui/userMenu.js:153
+#: ../js/ui/userMenu.js:145
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ../js/ui/userMenu.js:159
+#: ../js/ui/userMenu.js:151
 msgid "Idle"
 msgstr "Inactivo"
 
-#: ../js/ui/userMenu.js:162
+#: ../js/ui/userMenu.js:154
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:518 ../js/ui/userMenu.js:522 ../js/ui/userMenu.js:592
+#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:586
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/userMenu.js:554
+#: ../js/ui/userMenu.js:548
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/userMenu.js:562
+#: ../js/ui/userMenu.js:556
 msgid "Online Accounts"
 msgstr "Cuentas en línea"
 
-#: ../js/ui/userMenu.js:566
+#: ../js/ui/userMenu.js:560
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:567
 msgid "Lock Screen"
 msgstr "Bloquear la pantalla"
 
-#: ../js/ui/userMenu.js:578
+#: ../js/ui/userMenu.js:572
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:577
 msgid "Log Out..."
 msgstr "Cerrar la sesión…"
 
-#: ../js/ui/userMenu.js:611
+#: ../js/ui/userMenu.js:605
 msgid "Your chat status will be set to busy"
 msgstr "Su estado del chat se establecerá a «ocupado»"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:606
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
