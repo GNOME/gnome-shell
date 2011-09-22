@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-20 09:15+0200\n"
-"PO-Revision-Date: 2011-09-20 09:16+0200\n"
+"POT-Creation-Date: 2011-09-22 10:10+0200\n"
+"PO-Revision-Date: 2011-09-22 10:10+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -270,6 +270,10 @@ msgstr "%s ble lagt til i dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra dine favoritter."
 
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Avtagbare enheter"
+
 #: ../js/ui/autorunManager.js:590
 #, c-format
 msgid "Open with %s"
@@ -450,7 +454,7 @@ msgstr "Frakoblet"
 msgid "CONTACTS"
 msgstr "KONTAKTER"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1196
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Fjern"
 
@@ -625,11 +629,11 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:2371
+#: ../js/ui/messageTray.js:2372
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1036,13 +1040,13 @@ msgstr "ikke tilgjengelig"
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1515
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1523
 msgid "More..."
 msgstr "Mer …"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1458
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
@@ -1059,7 +1063,7 @@ msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1467
+#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1470
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
@@ -1068,47 +1072,47 @@ msgstr "Automatisk %s"
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1472
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1558
+#: ../js/ui/status/network.js:1566
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1570
+#: ../js/ui/status/network.js:1578
 msgid "Wired"
 msgstr "Kablet"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1589
 msgid "Wireless"
 msgstr "Trådløst"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1599
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:1601
+#: ../js/ui/status/network.js:1609
 msgid "VPN Connections"
 msgstr "VPN-tilkoblinger"
 
-#: ../js/ui/status/network.js:1612
+#: ../js/ui/status/network.js:1620
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1749
+#: ../js/ui/status/network.js:1757
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1750
+#: ../js/ui/status/network.js:1758
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
-#: ../js/ui/status/network.js:2000
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
-#: ../js/ui/status/network.js:2125
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
@@ -1506,7 +1510,10 @@ msgstr "Din pratestatus vil bli satt til opptatt"
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
-msgstr "Varslinger er nå slått av. Dette inkluderer pratemeldinger. Din tilkoblingsstatus er justert for å la andre vite at du kanskje ikke ser deres meldinger."
+msgstr ""
+"Varslinger er nå slått av. Dette inkluderer pratemeldinger. Din "
+"tilkoblingsstatus er justert for å la andre vite at du kanskje ikke ser "
+"deres meldinger."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
