@@ -120,7 +120,7 @@ shell_dbus_init (gboolean replace)
   /* ...and the on-screen keyboard service */
   if (!dbus_g_proxy_call (bus, "RequestName", &error,
                           G_TYPE_STRING, "org.gnome.Caribou.Keyboard",
-                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | request_name_flags,
+                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
