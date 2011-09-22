@@ -406,6 +406,12 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
 {
   int buttons_height, title_height, draggable_borders;
   
+  meta_frame_borders_clear (borders);
+
+  /* For a full-screen window, we don't have any borders, visible or not. */
+  if (flags & META_FRAME_FULLSCREEN)
+    return;
+
   g_return_if_fail (layout != NULL);
 
   if (!layout->has_title)
@@ -417,33 +423,29 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
     layout->title_vertical_pad +
     layout->title_border.top + layout->title_border.bottom;
 
-  borders->visible.top   = MAX (buttons_height, title_height);
-  borders->visible.left  = layout->left_width;
-  borders->visible.right = layout->right_width;
+  borders->visible.top    = MAX (buttons_height, title_height);
+  borders->visible.left   = layout->left_width;
+  borders->visible.right  = layout->right_width;
   borders->visible.bottom = layout->bottom_height;
-
-  if (flags & META_FRAME_FULLSCREEN)
-    {
-      meta_frame_borders_clear (borders);
-      return;
-    }
 
   draggable_borders = meta_prefs_get_draggable_border_width ();
 
-  borders->invisible.left   = MAX (0, draggable_borders - borders->visible.left);
-  borders->invisible.right  = MAX (0, draggable_borders - borders->visible.right);
-  borders->invisible.bottom = MAX (0, draggable_borders - borders->visible.bottom);
+  if (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE)
+    {
+      borders->invisible.left   = MAX (0, draggable_borders - borders->visible.left);
+      borders->invisible.right  = MAX (0, draggable_borders - borders->visible.right);
+    }
 
-  /* borders.visible is the height of the *title bar*. We can't do the same
-   * algorithm here, titlebars are expectedly much bigger. Just subtract a couple
-   * pixels to get a proper feel. */
-  borders->invisible.top    = MAX (0, draggable_borders - 2);
+  if (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE)
+    {
+      borders->invisible.bottom = MAX (0, draggable_borders - borders->visible.bottom);
 
-  if (type == META_FRAME_TYPE_ATTACHED)
-    borders->invisible.top = 0;
-
-  if (flags & META_FRAME_SHADED)
-    borders->visible.bottom = borders->invisible.bottom = 0;
+      /* borders.visible.top is the height of the *title bar*. We can't do the same
+       * algorithm here, titlebars are expectedly much bigger. Just subtract a couple
+       * pixels to get a proper feel. */
+      if (type != META_FRAME_TYPE_ATTACHED)
+        borders->invisible.top    = MAX (0, draggable_borders - 2);
+    }
 
   borders->total.left   = borders->invisible.left   + borders->visible.left;
   borders->total.right  = borders->invisible.right  + borders->visible.right;
