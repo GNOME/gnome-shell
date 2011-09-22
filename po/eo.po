@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-22 17:28+0000\n"
-"PO-Revision-Date: 2011-09-22 20:24+0200\n"
+"PO-Revision-Date: 2011-09-22 20:29+0200\n"
 "Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
 "Language-Team: Esperanto <ubuntu-l10n-eo@lists.launchpad.net>\n"
 "MIME-Version: 1.0\n"
@@ -268,7 +268,7 @@ msgstr "%s estas forigita de via preferataj aplikaĵoj."
 
 #: ../js/ui/autorunManager.js:280
 msgid "Removable Devices"
-msgstr "Demetebla aparatoj"
+msgstr "Demeteblaj aparatoj"
 
 #: ../js/ui/autorunManager.js:590
 #, c-format
