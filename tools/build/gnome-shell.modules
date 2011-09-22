@@ -150,7 +150,7 @@
   </autotools>
 
   <autotools id="cogl">
-    <branch repo="git.gnome.org" module="cogl"/>
+    <branch repo="git.gnome.org" module="cogl" revision="cogl-1.8"/>
     <dependencies>
         <dep package="glib"/>
         <dep package="gobject-introspection"/>
@@ -161,7 +161,7 @@
   </autotools>
 
   <autotools id="clutter">
-    <branch repo="git.gnome.org" module="clutter"/>
+    <branch repo="git.gnome.org" module="clutter" revision="clutter-1.8"/>
     <dependencies>
         <dep package="cogl"/>
         <dep package="json-glib"/>
