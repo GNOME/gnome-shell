@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-20 01:52+0000\n"
-"PO-Revision-Date: 2011-09-20 08:48+0100\n"
+"POT-Creation-Date: 2011-09-22 10:19+0000\n"
+"PO-Revision-Date: 2011-09-22 13:18+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -237,6 +237,10 @@ msgstr "Program \"%s\" je dodan med priljubljeno."
 msgid "%s has been removed from your favorites."
 msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Odstranljive naprave"
+
 #: ../js/ui/autorunManager.js:590
 #, c-format
 msgid "Open with %s"
@@ -423,7 +427,7 @@ msgid "CONTACTS"
 msgstr "Stiki"
 
 #: ../js/ui/dash.js:172
-#: ../js/ui/messageTray.js:1196
+#: ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -605,11 +609,11 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:2371
+#: ../js/ui/messageTray.js:2372
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1024,14 +1028,14 @@ msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
 #: ../js/ui/status/network.js:575
-#: ../js/ui/status/network.js:1515
+#: ../js/ui/status/network.js:1523
 msgid "More..."
 msgstr "Več ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
 #: ../js/ui/status/network.js:611
-#: ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:1458
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
@@ -1049,7 +1053,7 @@ msgstr "Samodejni klicni dostop"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
 #: ../js/ui/status/network.js:878
-#: ../js/ui/status/network.js:1467
+#: ../js/ui/status/network.js:1470
 #, c-format
 msgid "Auto %s"
 msgstr "Samodejna povezava z %s"
@@ -1058,47 +1062,47 @@ msgstr "Samodejna povezava z %s"
 msgid "Auto bluetooth"
 msgstr "Samodejna povezava z Bluetooth"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1472
 msgid "Auto wireless"
 msgstr "Samodejni brezžični dostop"
 
-#: ../js/ui/status/network.js:1558
+#: ../js/ui/status/network.js:1566
 msgid "Enable networking"
 msgstr "Omogoči omrežje"
 
-#: ../js/ui/status/network.js:1570
+#: ../js/ui/status/network.js:1578
 msgid "Wired"
 msgstr "Žično"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1589
 msgid "Wireless"
 msgstr "Brezžično"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1599
 msgid "Mobile broadband"
 msgstr "Mobilni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:1601
+#: ../js/ui/status/network.js:1609
 msgid "VPN Connections"
 msgstr "Povezave VPN"
 
-#: ../js/ui/status/network.js:1612
+#: ../js/ui/status/network.js:1620
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1749
+#: ../js/ui/status/network.js:1757
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1750
+#: ../js/ui/status/network.js:1758
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
-#: ../js/ui/status/network.js:2000
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
-#: ../js/ui/status/network.js:2125
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -1595,8 +1599,3 @@ msgstr "Datotečni sistem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "If true, display onscreen keyboard."
-#~ msgstr "Izbrana možnost omogoča prikaz zaslonske tipkovnice."
-
-#~ msgid "Show the onscreen keyboard"
-#~ msgstr "Pokaži zaslonsko tipkovnico"
