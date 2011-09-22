@@ -4154,10 +4154,10 @@ adjust_for_gravity (MetaWindow        *window,
 
   if (borders)
     {
-      child_x = borders->total.left;
-      child_y = borders->total.top;
-      frame_width = child_x + rect->width + borders->total.left;
-      frame_height = child_y + rect->height + borders->total.top;
+      child_x = borders->visible.left;
+      child_y = borders->visible.top;
+      frame_width = child_x + rect->width + borders->visible.right;
+      frame_height = child_y + rect->height + borders->visible.bottom;
     }
   else
     {
