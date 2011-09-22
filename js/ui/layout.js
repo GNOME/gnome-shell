@@ -369,6 +369,10 @@ LayoutManager.prototype = {
     // Removes @actor from the chrome
     removeChrome: function(actor) {
         this._chrome.removeActor(actor);
+    },
+
+    findMonitorForActor: function(actor) {
+        return this._chrome.findMonitorForActor(actor);
     }
 };
 Signals.addSignalMethods(LayoutManager.prototype);
@@ -700,7 +704,7 @@ Chrome.prototype = {
             else if (this._inOverview)
                 visible = true;
             else if (!actorData.visibleInFullscreen &&
-                     this._findMonitorForActor(actorData.actor).inFullscreen)
+                     this.findMonitorForActor(actorData.actor).inFullscreen)
                 visible = false;
             else
                 visible = true;
@@ -762,7 +766,7 @@ Chrome.prototype = {
 
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
-    _findMonitorForActor: function(actor) {
+    findMonitorForActor: function(actor) {
         let [x, y] = actor.get_transformed_position();
         let [w, h] = actor.get_transformed_size();
         let monitor = this._findMonitorForRect(x, y, w, h);

@@ -329,7 +329,7 @@ BoxPointer.prototype = {
         // We also want to keep it onscreen, and separated from the
         // edge by the same distance as the main part of the box is
         // separated from its sourceActor
-        let primary = Main.layoutManager.primaryMonitor;
+        let monitor = Main.layoutManager.findMonitorForActor(sourceActor);
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let arrowBase = themeNode.get_length('-arrow-base');
@@ -364,8 +364,8 @@ BoxPointer.prototype = {
         case St.Side.BOTTOM:
             resX = sourceCenterX - (halfMargin + (natWidth - margin) * alignment);
 
-            resX = Math.max(resX, primary.x + 10);
-            resX = Math.min(resX, primary.x + primary.width - (10 + natWidth));
+            resX = Math.max(resX, monitor.x + 10);
+            resX = Math.min(resX, monitor.x + monitor.width - (10 + natWidth));
             this.setArrowOrigin(sourceCenterX - resX);
             break;
 
@@ -373,8 +373,8 @@ BoxPointer.prototype = {
         case St.Side.RIGHT:
             resY = sourceCenterY - (halfMargin + (natHeight - margin) * alignment);
 
-            resY = Math.max(resY, primary.y + 10);
-            resY = Math.min(resY, primary.y + primary.height - (10 + natHeight));
+            resY = Math.max(resY, monitor.y + 10);
+            resY = Math.min(resY, monitor.y + monitor.height - (10 + natHeight));
 
             this.setArrowOrigin(sourceCenterY - resY);
             break;
