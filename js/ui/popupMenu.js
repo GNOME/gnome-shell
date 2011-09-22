@@ -320,10 +320,14 @@ PopupBaseMenuItem.prototype = {
                 }
                 extraWidth = availWidth - naturalWidth;
             } else {
-                if (child.span == -1)
-                    availWidth = box.x2 - x;
-                else
+                if (child.span == -1) {
+                    if (direction == St.TextDirection.LTR)
+                        availWidth = box.x2 - x;
+                    else
+                        availWidth = x - box.x1;
+                } else {
                     availWidth = naturalWidth;
+                }
                 extraWidth = 0;
             }
 
