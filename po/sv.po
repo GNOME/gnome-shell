@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-18 19:33+0200\n"
-"PO-Revision-Date: 2011-09-18 19:35+0100\n"
+"POT-Creation-Date: 2011-09-22 06:36+0200\n"
+"PO-Revision-Date: 2011-09-22 06:38+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -58,117 +58,115 @@ msgid "If true, display date in the clock, in addition to time."
 msgstr "Om true, visa datum i klockan, i tillägg till tiden."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display onscreen keyboard."
-msgstr "Om true, visa skärmtangentbord."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display seconds in time."
 msgstr "Om true, visa sekunder i tiden."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Om true, visa veckodatum enligt ISO i kalendern."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lista över skrivbordsfil-id för favoritprogram"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
 msgstr "Ställer in GStreamer-rörledningen som används för att koda inspelningar. Den följer det syntax som används för gst-launch. Rörledningen bör ha en oansluten sink pad där den inspelade videon spelas in. Den kommer vanligtvis har en oansluten source pad; utmatning från denna pad kommer att skrivas till utmatningsfilen. Dock kan rörledningen också ta hand om sin egna utmatning - detta kan användas för att skicka utmatningen till en icecast-server via shout2send eller liknande. När den inte är inställd eller inställd till ett tomt värde så kommer standardrörledningen att användas. Detta är för närvarande \"videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux\" och inspelningar till WEBM använder kodeken VP8. %T används som en platshållare för en gissning av det optimala trådantalet på systemet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Visa datum i klocka"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show the onscreen keyboard"
-msgstr "Visa skärmtangentbordet"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Visa veckodatum i kalendern"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Visa tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
 msgstr "Programmen som motsvarar dessa identifierare kommer att visas i favoritområdet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
 msgstr "Filnamnet för skärminspelningar kommer att vara ett unikt filnamn baserat på aktuellt datum och använder denna filändelse. Den bör ändras när inspelningar sker i andra containerformat."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
 msgstr "Bildfrekvensen för skärminspelningen som spelats in av GNOME Shells skärminspelare i bilder per sekund."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Den gstreamer-rörledning som användes för att koda skärminspelningen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
 msgstr "Skalet övervakar normalt sett aktiva program för att kunna visa de mest använda (t.ex. i programstartare). Då denna data kommer att hållas privat så kan du inaktivera detta av integritetsskäl. Observera att göra det kommer inte ta bort redan sparat data."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "The type of keyboard to use."
 msgstr "Typen av tangentbord att använda."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Uuids of extensions to enable"
 msgstr "Uuid:er för tillägg att aktivera"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Whether to collect stats about applications usage"
 msgstr "Huruvida statistik ska samlas in för programanvändning"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Which keyboard to use"
 msgstr "Vilket tangentbord att använda"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "disabled OpenSearch providers"
 msgstr "inaktiverade OpenSearch-leverantörer"
 
-#: ../js/gdm/loginDialog.js:608
+#: ../js/gdm/loginDialog.js:617
 msgid "Session..."
 msgstr "Session..."
 
-#: ../js/gdm/loginDialog.js:765
+#: ../js/gdm/loginDialog.js:785
 msgctxt "title"
 msgid "Sign In"
 msgstr "Logga in"
 
-#: ../js/gdm/loginDialog.js:822
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/loginDialog.js:830
+msgid "(or swipe finger)"
+msgstr "(eller dra fingret)"
+
+#: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
 msgstr "Inte listad?"
 
-#: ../js/gdm/loginDialog.js:932
+#: ../js/gdm/loginDialog.js:1004
 #: ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477
-#: ../js/ui/networkAgent.js:158
-#: ../js/ui/polkitAuthenticationAgent.js:170
+#: ../js/ui/networkAgent.js:165
+#: ../js/ui/polkitAuthenticationAgent.js:171
 #: ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/loginDialog.js:937
+#: ../js/gdm/loginDialog.js:1009
 msgctxt "button"
 msgid "Sign In"
 msgstr "Logga in"
 
-#: ../js/gdm/loginDialog.js:1257
+#: ../js/gdm/loginDialog.js:1358
 msgid "Login Window"
 msgstr "Inloggningsfönster"
 
 #: ../js/gdm/powerMenu.js:116
-#: ../js/ui/userMenu.js:520
-#: ../js/ui/userMenu.js:522
-#: ../js/ui/userMenu.js:591
+#: ../js/ui/userMenu.js:514
+#: ../js/ui/userMenu.js:516
+#: ../js/ui/userMenu.js:585
 msgid "Suspend"
 msgstr "Vänteläge"
 
@@ -235,12 +233,16 @@ msgstr "%s har lagts till i dina favoriter."
 msgid "%s has been removed from your favorites."
 msgstr "%s har tagits bort från dina favoriter."
 
-#: ../js/ui/autorunManager.js:592
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Flyttbara enheter"
+
+#: ../js/ui/autorunManager.js:590
 #, c-format
 msgid "Open with %s"
 msgstr "Öppna med %s"
 
-#: ../js/ui/autorunManager.js:618
+#: ../js/ui/autorunManager.js:616
 msgid "Eject"
 msgstr "Mata ut"
 
@@ -398,17 +400,17 @@ msgid "Unknown"
 msgstr "Okänt"
 
 #: ../js/ui/contactDisplay.js:80
-#: ../js/ui/userMenu.js:147
+#: ../js/ui/userMenu.js:139
 msgid "Available"
 msgstr "Tillgänglig"
 
 #: ../js/ui/contactDisplay.js:85
-#: ../js/ui/userMenu.js:156
+#: ../js/ui/userMenu.js:148
 msgid "Away"
 msgstr "Borta"
 
 #: ../js/ui/contactDisplay.js:89
-#: ../js/ui/userMenu.js:150
+#: ../js/ui/userMenu.js:142
 msgid "Busy"
 msgstr "Upptagen"
 
@@ -421,7 +423,7 @@ msgid "CONTACTS"
 msgstr "KONTAKTER"
 
 #: ../js/ui/dash.js:172
-#: ../js/ui/messageTray.js:1196
+#: ../js/ui/messageTray.js:1197
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -555,7 +557,7 @@ msgstr "Installera"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Hämta och installera \"%s\" från extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:513
+#: ../js/ui/keyboard.js:517
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tangentbord"
@@ -595,94 +597,94 @@ msgstr "Visa källa"
 msgid "Web Page"
 msgstr "Webbsida"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1190
 msgid "Open"
 msgstr "Öppna"
 
-#: ../js/ui/messageTray.js:2368
+#: ../js/ui/messageTray.js:2372
 msgid "System Information"
 msgstr "Systeminformation"
 
-#: ../js/ui/networkAgent.js:138
+#: ../js/ui/networkAgent.js:145
 msgid "Show password"
 msgstr "Visa lösenord"
 
-#: ../js/ui/networkAgent.js:153
+#: ../js/ui/networkAgent.js:160
 msgid "Connect"
 msgstr "Anslut"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:248
-#: ../js/ui/networkAgent.js:260
-#: ../js/ui/networkAgent.js:287
-#: ../js/ui/networkAgent.js:307
-#: ../js/ui/networkAgent.js:317
+#: ../js/ui/networkAgent.js:255
+#: ../js/ui/networkAgent.js:267
+#: ../js/ui/networkAgent.js:294
+#: ../js/ui/networkAgent.js:314
+#: ../js/ui/networkAgent.js:324
 msgid "Password: "
 msgstr "Lösenord: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:253
+#: ../js/ui/networkAgent.js:260
 msgid "Key: "
 msgstr "Nyckel: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:285
-#: ../js/ui/networkAgent.js:303
+#: ../js/ui/networkAgent.js:292
+#: ../js/ui/networkAgent.js:310
 msgid "Username: "
 msgstr "Användarnamn: "
 
-#: ../js/ui/networkAgent.js:291
+#: ../js/ui/networkAgent.js:298
 msgid "Identity: "
 msgstr "Identitet: "
 
-#: ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:300
 msgid "Private key password: "
 msgstr "Lösenord för privat nyckel: "
 
-#: ../js/ui/networkAgent.js:305
+#: ../js/ui/networkAgent.js:312
 msgid "Service: "
 msgstr "Tjänst: "
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:341
 msgid "Authentication required by wireless network"
 msgstr "Autentisering krävs av trådlöst nätverk"
 
-#: ../js/ui/networkAgent.js:335
+#: ../js/ui/networkAgent.js:342
 #, c-format
 msgid "Passwords or encryption keys are required to access the wireless network '%s'."
 msgstr "Lösenord eller krypteringsnycklar krävs för att komma åt det trådlösa nätverket \"%s\"."
 
-#: ../js/ui/networkAgent.js:339
+#: ../js/ui/networkAgent.js:346
 msgid "Wired 802.1X authentication"
 msgstr "Trådbunden 802.1X-autentisering"
 
-#: ../js/ui/networkAgent.js:341
+#: ../js/ui/networkAgent.js:348
 msgid "Network name: "
 msgstr "Nätverksnamn: "
 
-#: ../js/ui/networkAgent.js:346
+#: ../js/ui/networkAgent.js:353
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: ../js/ui/networkAgent.js:353
+#: ../js/ui/networkAgent.js:360
 msgid "PIN code required"
 msgstr "PIN-kod krävs"
 
-#: ../js/ui/networkAgent.js:354
+#: ../js/ui/networkAgent.js:361
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-koden krävs för den mobila bredbandsenheten"
 
-#: ../js/ui/networkAgent.js:355
+#: ../js/ui/networkAgent.js:362
 msgid "PIN: "
 msgstr "PIN-kod: "
 
-#: ../js/ui/networkAgent.js:361
+#: ../js/ui/networkAgent.js:368
 msgid "Mobile broadband network password"
 msgstr "Lösenord för mobilt bredbandsnätverk"
 
-#: ../js/ui/networkAgent.js:362
+#: ../js/ui/networkAgent.js:369
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Ett lösenord krävs för att ansluta till \"%s\"."
@@ -746,7 +748,7 @@ msgstr "Autentisering krävs"
 msgid "Administrator"
 msgstr "Administratör"
 
-#: ../js/ui/polkitAuthenticationAgent.js:174
+#: ../js/ui/polkitAuthenticationAgent.js:175
 msgid "Authenticate"
 msgstr "Autentisera"
 
@@ -754,11 +756,11 @@ msgstr "Autentisera"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:262
+#: ../js/ui/polkitAuthenticationAgent.js:256
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Tyvärr, det fungerade inte. Försök igen."
 
-#: ../js/ui/polkitAuthenticationAgent.js:274
+#: ../js/ui/polkitAuthenticationAgent.js:268
 msgid "Password:"
 msgstr "Lösenord:"
 
@@ -767,7 +769,7 @@ msgstr "Lösenord:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:687
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -794,9 +796,10 @@ msgstr "Zooma"
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
-#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-#. 'screen-keyboard-enabled');
-#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:71
+msgid "Screen Keyboard"
+msgstr "Skärmtangentbord"
+
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
 msgstr "Visuella larm"
@@ -963,11 +966,11 @@ msgstr "Ange PIN-koden som anges på enheten."
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
 msgid "Show Keyboard Layout"
 msgstr "Visa tangentbordslayout"
 
-#: ../js/ui/status/keyboard.js:77
+#: ../js/ui/status/keyboard.js:78
 msgid "Region and Language Settings"
 msgstr "Inställningar för region och språk"
 
@@ -1013,14 +1016,14 @@ msgid "connection failed"
 msgstr "anslutningen misslyckades"
 
 #: ../js/ui/status/network.js:575
-#: ../js/ui/status/network.js:1515
+#: ../js/ui/status/network.js:1523
 msgid "More..."
 msgstr "Mer..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
 #: ../js/ui/status/network.js:611
-#: ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:1458
 msgid "Connected (private)"
 msgstr "Ansluten (privat)"
 
@@ -1038,7 +1041,7 @@ msgstr "Automatiskt uppringt nätverk"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
 #: ../js/ui/status/network.js:878
-#: ../js/ui/status/network.js:1467
+#: ../js/ui/status/network.js:1470
 #, c-format
 msgid "Auto %s"
 msgstr "Automatiskt %s"
@@ -1047,47 +1050,47 @@ msgstr "Automatiskt %s"
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:1472
 msgid "Auto wireless"
 msgstr "Automatiskt trådlöst nätverk"
 
-#: ../js/ui/status/network.js:1558
+#: ../js/ui/status/network.js:1566
 msgid "Enable networking"
 msgstr "Aktivera nätverk"
 
-#: ../js/ui/status/network.js:1570
+#: ../js/ui/status/network.js:1578
 msgid "Wired"
 msgstr "Trådbundet"
 
-#: ../js/ui/status/network.js:1581
+#: ../js/ui/status/network.js:1589
 msgid "Wireless"
 msgstr "Trådlöst"
 
-#: ../js/ui/status/network.js:1591
+#: ../js/ui/status/network.js:1599
 msgid "Mobile broadband"
 msgstr "Mobilt bredband"
 
-#: ../js/ui/status/network.js:1601
+#: ../js/ui/status/network.js:1609
 msgid "VPN Connections"
 msgstr "VPN-anslutningar"
 
-#: ../js/ui/status/network.js:1612
+#: ../js/ui/status/network.js:1620
 msgid "Network Settings"
 msgstr "Nätverksinställningar"
 
-#: ../js/ui/status/network.js:1749
+#: ../js/ui/status/network.js:1757
 msgid "Connection failed"
 msgstr "Anslutningen misslyckades"
 
-#: ../js/ui/status/network.js:1750
+#: ../js/ui/status/network.js:1758
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nätverksanslutning misslyckades"
 
-#: ../js/ui/status/network.js:2000
+#: ../js/ui/status/network.js:2008
 msgid "Networking is disabled"
 msgstr "Nätverk är inaktiverat"
 
-#: ../js/ui/status/network.js:2125
+#: ../js/ui/status/network.js:2133
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
@@ -1432,53 +1435,53 @@ msgstr "Redigera konto"
 msgid "Unknown reason"
 msgstr "Okänd anledning"
 
-#: ../js/ui/userMenu.js:153
+#: ../js/ui/userMenu.js:145
 msgid "Hidden"
 msgstr "Dold"
 
-#: ../js/ui/userMenu.js:159
+#: ../js/ui/userMenu.js:151
 msgid "Idle"
 msgstr "Overksam"
 
-#: ../js/ui/userMenu.js:162
+#: ../js/ui/userMenu.js:154
 msgid "Unavailable"
 msgstr "Inte tillgänglig"
 
-#: ../js/ui/userMenu.js:518
-#: ../js/ui/userMenu.js:522
-#: ../js/ui/userMenu.js:592
+#: ../js/ui/userMenu.js:512
+#: ../js/ui/userMenu.js:516
+#: ../js/ui/userMenu.js:586
 msgid "Power Off..."
 msgstr "Stäng av..."
 
-#: ../js/ui/userMenu.js:554
+#: ../js/ui/userMenu.js:548
 msgid "Notifications"
 msgstr "Notifieringar"
 
-#: ../js/ui/userMenu.js:562
+#: ../js/ui/userMenu.js:556
 msgid "Online Accounts"
 msgstr "Nätkonton"
 
-#: ../js/ui/userMenu.js:566
+#: ../js/ui/userMenu.js:560
 msgid "System Settings"
 msgstr "Systeminställningar"
 
-#: ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:567
 msgid "Lock Screen"
 msgstr "Lås skärmen"
 
-#: ../js/ui/userMenu.js:578
+#: ../js/ui/userMenu.js:572
 msgid "Switch User"
 msgstr "Växla användare"
 
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:577
 msgid "Log Out..."
 msgstr "Logga ut..."
 
-#: ../js/ui/userMenu.js:611
+#: ../js/ui/userMenu.js:605
 msgid "Your chat status will be set to busy"
 msgstr "Din chattstatus kommer att ställas in till upptagen"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:606
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Notifieringar är nu inaktiverade, inklusive chattmeddelanden. Din anslutningsstatus har ändrats till att låta andra veta att du kanske inte ser deras meddelanden."
 
@@ -1572,6 +1575,10 @@ msgstr "Filsystem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "If true, display onscreen keyboard."
+#~ msgstr "Om true, visa skärmtangentbord."
+#~ msgid "Show the onscreen keyboard"
+#~ msgstr "Visa skärmtangentbordet"
 #~ msgid "Connectivity lost"
 #~ msgstr "Anslutningen förlorades"
 #~ msgid "You're no longer connected to the network"
@@ -1624,8 +1631,6 @@ msgstr "%1$s: %2$s"
 #, fuzzy
 #~ msgid "Shut Down"
 #~ msgstr "Stäng av..."
-#~ msgid "Screen Reader"
-#~ msgstr "Skärmläsare"
 #~ msgid "Clock"
 #~ msgstr "Klocka"
 #~ msgid "Customize the panel clock"
