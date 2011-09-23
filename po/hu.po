@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-21 03:08+0200\n"
-"PO-Revision-Date: 2011-09-21 03:08+0200\n"
+"POT-Creation-Date: 2011-09-24 01:44+0200\n"
+"PO-Revision-Date: 2011-09-24 01:45+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: \n"
@@ -283,6 +283,10 @@ msgstr "%s felvéve a Kedvencek közé."
 msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
 
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Cserélhető eszközök"
+
 #: ../js/ui/autorunManager.js:590
 #, c-format
 msgid "Open with %s"
@@ -463,7 +467,7 @@ msgstr "Kilépett"
 msgid "CONTACTS"
 msgstr "KAPCSOLATOK"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1204
 msgid "Remove"
 msgstr "Eltávolítás"
 
@@ -640,11 +644,11 @@ msgstr "Forrás megtekintése"
 msgid "Web Page"
 msgstr "Weblap"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1197
 msgid "Open"
 msgstr "Megnyitás"
 
-#: ../js/ui/messageTray.js:2372
+#: ../js/ui/messageTray.js:2405
 msgid "System Information"
 msgstr "Rendszerinformációk"
 
@@ -814,7 +818,7 @@ msgstr "Jelszó:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
