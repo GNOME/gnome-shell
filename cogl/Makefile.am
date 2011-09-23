@@ -255,7 +255,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-layer-state.c		\
 	$(srcdir)/cogl-pipeline-state-private.h		\
 	$(srcdir)/cogl-pipeline-debug.c			\
-	$(srcdir)/cogl-pipeline-debug-private.h		\
 	$(srcdir)/cogl-pipeline-opengl.c		\
 	$(srcdir)/cogl-pipeline-opengl-private.h	\
 	$(srcdir)/cogl-pipeline-fragend-glsl.c		\
