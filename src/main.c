@@ -37,9 +37,60 @@ extern GType gnome_shell_plugin_get_type (void);
 static gboolean is_gdm_mode = FALSE;
 
 static void
-shell_dbus_init (gboolean replace)
+shell_dbus_acquire_name (DBusGProxy *bus,
+                         guint32     request_name_flags,
+                         guint32    *request_name_result,
+                         gchar      *name,
+                         gboolean    fatal)
 {
   GError *error = NULL;
+  if (!dbus_g_proxy_call (bus, "RequestName", &error,
+                          G_TYPE_STRING, name,
+                          G_TYPE_UINT, request_name_flags,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, request_name_result,
+                          G_TYPE_INVALID))
+    {
+      g_printerr ("failed to acquire %s: %s\n", name, error->message);
+      if (fatal)
+        exit (1);
+    }
+}
+
+static void
+shell_dbus_acquire_names (DBusGProxy *bus,
+                          guint32     request_name_flags,
+                          gchar      *name,
+                          gboolean    fatal,
+                          gchar      *other, ...) G_GNUC_NULL_TERMINATED;
+
+static void
+shell_dbus_acquire_names (DBusGProxy *bus,
+                          guint32     request_name_flags,
+                          gchar      *name,
+                          gboolean    fatal,
+                          gchar      *other, ...)
+{
+  va_list al;
+  guint32 request_name_result;
+  va_start (al, other);
+  for (;;)
+  {
+    shell_dbus_acquire_name (bus,
+                             request_name_flags,
+                             &request_name_result,
+                             name, fatal);
+    name = va_arg (al, gchar *);
+    if (!name)
+      break;
+    fatal = va_arg (al, gboolean);
+  }
+  va_end (al);
+}
+
+static void
+shell_dbus_init (gboolean replace)
+{
   DBusGConnection *session;
   DBusGProxy *bus;
   guint32 request_name_flags;
@@ -61,16 +112,10 @@ shell_dbus_init (gboolean replace)
   request_name_flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
   if (replace)
     request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, SHELL_DBUS_SERVICE,
-                          G_TYPE_UINT, request_name_flags,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, &request_name_result,
-                          G_TYPE_INVALID))
-    {
-      g_printerr ("failed to acquire org.gnome.Shell: %s\n", error->message);
-      exit (1);
-    }
+  shell_dbus_acquire_name (bus,
+                           request_name_flags,
+                           &request_name_result,
+                           SHELL_DBUS_SERVICE, TRUE);
   if (!(request_name_result == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER
         || request_name_result == DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER))
     {
@@ -79,56 +124,25 @@ shell_dbus_init (gboolean replace)
       exit (1);
     }
 
+  /*
+   * We always specify REPLACE_EXISTING to ensure we kill off
+   * the existing service if it was running.
+   */
+  request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
+  shell_dbus_acquire_names (bus,
+                            request_name_flags,
   /* Also grab org.gnome.Panel to replace any existing panel process */
-  if (!dbus_g_proxy_call (bus, "RequestName", &error, G_TYPE_STRING,
-                          "org.gnome.Panel", G_TYPE_UINT,
-                          DBUS_NAME_FLAG_REPLACE_EXISTING | request_name_flags,
-                          G_TYPE_INVALID, G_TYPE_UINT,
-                          &request_name_result, G_TYPE_INVALID))
-    {
-      g_print ("failed to acquire org.gnome.Panel: %s\n", error->message);
-      exit (1);
-    }
-
-  /* ...and the org.gnome.Magnifier service.
-   */
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, MAGNIFIER_DBUS_SERVICE,
-                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | request_name_flags,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, &request_name_result,
-                          G_TYPE_INVALID))
-    {
-      g_print ("failed to acquire %s: %s\n", MAGNIFIER_DBUS_SERVICE, error->message);
-      /* Failing to acquire the magnifer service is not fatal.  Log the error,
-       * but keep going. */
-    }
-
-  /* ...and the org.freedesktop.Notifications service; we always
-   * specify REPLACE_EXISTING to ensure we kill off
-   * notification-daemon if it was running.
-   */
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, "org.freedesktop.Notifications",
-                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | request_name_flags,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, &request_name_result,
-                          G_TYPE_INVALID))
-    {
-      g_print ("failed to acquire org.freedesktop.Notifications: %s\n", error->message);
-    }
-
+                            "org.gnome.Panel", TRUE,
+  /* ...and the org.gnome.Magnifier service. */
+                            MAGNIFIER_DBUS_SERVICE, FALSE,
+  /* ...and the org.freedesktop.Notifications service. */
+                            "org.freedesktop.Notifications", FALSE,
+                            NULL);
   /* ...and the on-screen keyboard service */
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, "org.gnome.Caribou.Keyboard",
-                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, &request_name_result,
-                          G_TYPE_INVALID))
-    {
-      g_print ("failed to acquire org.gnome.Caribou.Keyboard: %s\n", error->message);
-    }
-
+  shell_dbus_acquire_name (bus,
+                           DBUS_NAME_FLAG_REPLACE_EXISTING,
+                           &request_name_result,
+                           "org.gnome.Caribou.Keyboard", FALSE);
   g_object_unref (bus);
 }
 
