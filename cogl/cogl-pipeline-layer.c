@@ -29,6 +29,9 @@
 #include "config.h"
 #endif
 
+#include "cogl-context-private.h"
+#include "cogl-texture-private.h"
+
 #include "cogl-pipeline.h"
 #include "cogl-pipeline-layer-private.h"
 #include "cogl-pipeline-layer-state-private.h"

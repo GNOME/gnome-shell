@@ -35,6 +35,7 @@
 #include <cairo.h>
 
 #include "cogl/cogl-debug.h"
+#include "cogl/cogl-context-private.h"
 #include "cogl/cogl-texture-private.h"
 #include "cogl-pango-private.h"
 #include "cogl-pango-glyph-cache.h"

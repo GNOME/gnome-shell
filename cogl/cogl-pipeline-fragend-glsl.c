@@ -32,6 +32,7 @@
 
 #include <string.h>
 
+#include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-layer-private.h"
 #include "cogl-shader-private.h"

@@ -29,9 +29,9 @@
 #include "config.h"
 #endif
 
+#include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-cache.h"
-#include "cogl-context-private.h"
 
 struct _CoglPipelineCache
 {
