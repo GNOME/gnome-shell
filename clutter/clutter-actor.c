@@ -4730,8 +4730,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_object ("effect",
-                               "Effect",
-                               "Add an effect to be applied on the actor",
+                               P_("Effect"),
+                               P_("Add an effect to be applied on the actor"),
                                CLUTTER_TYPE_EFFECT,
                                CLUTTER_PARAM_WRITABLE);
   obj_props[PROP_EFFECT] = pspec;
