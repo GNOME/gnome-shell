@@ -483,11 +483,12 @@ clutter_get_text_direction (void)
     }
   else
     {
-      /* Translate to default:RTL if you want your widgets
-       * to be RTL, otherwise translate to default:LTR.
+      /* Translators: Leave this UNTRANSLATED if your language is
+       * left-to-right.  If your language is right-to-left
+       * (e.g. Hebrew, Arabic), translate it to "default:RTL".
        *
-       * Do *not* translate it to "predefinito:LTR": if it
-       * it isn't default:LTR or default:RTL it will not work
+       * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
+       * it isn't default:LTR or default:RTL it will not work.
        */
       char *e = _("default:LTR");
 
