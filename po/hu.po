@@ -418,13 +418,13 @@ msgstr "Semmi sincs ütemezve"
 #: ../js/ui/calendar.js:703
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %B %d."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:706
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %Y %B %d"
+msgstr "%A, %Y. %B %d."
 
 #: ../js/ui/calendar.js:716
 msgid "Today"
@@ -483,11 +483,11 @@ msgstr "Naptár megnyitása"
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:183
 msgid "%a %b %e, %R:%S"
-msgstr "%a %b %e, %k.%M.%S"
+msgstr "%a %b. %d., %k.%M.%S"
 
 #: ../js/ui/dateMenu.js:184
 msgid "%a %b %e, %R"
-msgstr "%a %b %e, %k.%M"
+msgstr "%a %b. %d., %k.%M"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
@@ -503,11 +503,11 @@ msgstr "%a %k.%M"
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:196
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %b %e, %p %l.%M.%S"
+msgstr "%a, %b. %d., %p %l.%M.%S"
 
 #: ../js/ui/dateMenu.js:197
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %b %e, %p %l.%M"
+msgstr "%a, %b. %d., %p %l.%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
@@ -524,7 +524,7 @@ msgstr "%a, %p %l.%M"
 #.
 #: ../js/ui/dateMenu.js:213
 msgid "%A %B %e, %Y"
-msgstr "%Y. %b %e %A"
+msgstr "%A, %Y. %B %d."
 
 #: ../js/ui/docDisplay.js:16
 msgid "RECENT ITEMS"
@@ -1279,21 +1279,21 @@ msgstr "%s elfoglalt."
 #: ../js/ui/telepathyClient.js:978
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr "Elküldve: <b>%X</b> <b>%A</b>"
+msgstr "Elküldve: <b>%A</b>, <b>%k.%M</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
 #: ../js/ui/telepathyClient.js:984
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr "Elküldve: <b>%B %d</b>, <b>%A</b>"
+msgstr "Elküldve: <b>%A</b>, <b>%B %d.</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
 #: ../js/ui/telepathyClient.js:989
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr "Elküldve: %Y, <b>%B %d</b>, <b>%A</b>"
+msgstr "Elküldve: <b>%A</b>, %Y. <b>%B %d.</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
