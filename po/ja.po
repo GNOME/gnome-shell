@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-15 00:03+0000\n"
-"PO-Revision-Date: 2011-09-11 08:23+0900\n"
-"Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
+"POT-Creation-Date: 2011-09-25 11:31+0000\n"
+"PO-Revision-Date: 2011-09-25 23:38+0900\n"
+"Last-Translator: OKANO Takayoshi <kano@na.rim.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -707,7 +707,7 @@ msgid "Window manager error: "
 msgstr "ウィンドウ・マネージャーのエラー: "
 
 #. first time through
-#: ../src/core/window.c:7066
+#: ../src/core/window.c:7069
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -723,7 +723,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7729
+#: ../src/core/window.c:7732
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -1169,8 +1169,8 @@ msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
-"Gtk:custom の書式は \"gtk:custom(color_name,fallback) です (\"%s\" はこの書式"
-"に合っていません)"
+"Gtk:custom の書式は \"gtk:custom(color_name,fallback)\" です (\"%s\" はこの書"
+"式に合っていません)"
 
 #: ../src/ui/theme.c:1292
 #, c-format
@@ -1558,7 +1558,7 @@ msgstr "階調度のタイプの値 \"%s\" は解釈されませんでした"
 #: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "<%2$s>エレメント用のフィルターイプ \"%1$s\"は解釈されませんでした"
+msgstr "<%2$s>エレメント用のフィルタイプ \"%1$s\"は解釈されませんでした"
 
 #: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
 #: ../src/ui/theme-parser.c:2506
