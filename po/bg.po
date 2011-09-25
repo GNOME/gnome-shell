@@ -1,0 +1,35 @@
+# Bulgarian translation of cogl po-file.
+# Copyright (C) 2011 Free Software Foundation, Inc.
+# This file is distributed under the same license as the cogl package.
+# Ivaylo Valkov <ivaylo@e-valkov.org>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2011-09-25 17:00+0300\n"
+"PO-Revision-Date: 2011-09-25 17:00+0300\n"
+"Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
+"Language-Team: Bulgarian <dict@fsa-bg.org>\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "Флагове за изчистване на грешки, които да се включат"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "Флагове за изчистване на грешки, които да се изключат"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "Опции на Cogl"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "Показване на опциите на Cogl"
