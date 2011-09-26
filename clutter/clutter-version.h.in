@@ -195,6 +195,8 @@ gboolean clutter_check_version (guint major,
                                 guint minor,
                                 guint micro);
 
+gboolean clutter_check_backend (const char *backend_type);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_VERSION_H__ */
