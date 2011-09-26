@@ -1632,6 +1632,22 @@ should_use_rectangle (CoglContext *context)
   return context->rectangle_state == COGL_WINSYS_RECTANGLE_STATE_ENABLE;
 }
 
+/* GCC's population count builtin is available since version 3.4 */
+#if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
+#define POPCOUNTL(n) __builtin_popcountl(n)
+#else
+/* HAKMEM 169 */
+static int
+hakmem_popcountl (unsigned long n)
+{
+  unsigned long tmp;
+
+  tmp = n - ((n >> 1) & 033333333333) - ((n >> 2) & 011111111111);
+  return ((tmp + (tmp >> 3)) & 030707070707) % 63;
+}
+#define POPCOUNTL(n) hakmem_popcountl(n)
+#endif
+
 static gboolean
 try_create_glx_pixmap (CoglContext *context,
                        CoglTexturePixmapX11 *tex_pixmap,
@@ -1651,17 +1667,19 @@ try_create_glx_pixmap (CoglContext *context,
   GLenum target;
   CoglXlibTrapState trap_state;
 
+  unsigned int depth = tex_pixmap->depth;
+  Visual* visual = tex_pixmap->visual;
+
   renderer = context->display->renderer;
   xlib_renderer = renderer->winsys;
   glx_renderer = renderer->winsys;
   dpy = xlib_renderer->xdpy;
 
-  if (!get_fbconfig_for_depth (context,
-                               tex_pixmap->depth, &fb_config,
+  if (!get_fbconfig_for_depth (context, depth, &fb_config,
                                &glx_tex_pixmap->can_mipmap))
     {
       COGL_NOTE (TEXTURE_PIXMAP, "No suitable FBConfig found for depth %i",
-                 tex_pixmap->depth);
+                 depth);
       return FALSE;
     }
 
@@ -1678,12 +1696,14 @@ try_create_glx_pixmap (CoglContext *context,
 
   attribs[i++] = GLX_TEXTURE_FORMAT_EXT;
 
-  if (tex_pixmap->depth == 24)
+  /* Check whether an alpha channel is used by comparing the total
+   * number of 1-bits in color masks against the color depth requested
+   * by the client.
+   */
+  if (POPCOUNTL(visual->red_mask|visual->green_mask|visual->blue_mask) == depth)
     attribs[i++] = GLX_TEXTURE_FORMAT_RGB_EXT;
-  else if (tex_pixmap->depth == 32)
-    attribs[i++] = GLX_TEXTURE_FORMAT_RGBA_EXT;
   else
-    return FALSE;
+    attribs[i++] = GLX_TEXTURE_FORMAT_RGBA_EXT;
 
   attribs[i++] = GLX_MIPMAP_TEXTURE_EXT;
   attribs[i++] = mipmap;
