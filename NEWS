@@ -1,3 +1,41 @@
+3.2.0
+=====
+* Prevent the fallback on-screen keyboard from showing up while
+  GNOME Shell is running [Dan, #659865]
+* Disable code to reposition windows around the on-screen keyboard;
+  it wasn't finished or working properly. [Dan; #659643]
+* Fix interaction between on-screen keyboard and notifications
+  [Dan; #658603]
+* Fix menu-sizing problems in right-to-left locales. [Florian; #659827]
+* Update chat icons in the message tray when an avatar image changes
+  [Marina; #659768]
+* Fix problem with empty notification bubbles being left [Marina; #659862]
+* Fix problem with chat notifications bouncing when new messages come in.
+  [Marina; #659768]
+* Fix bug that was causing SIP calls to automatically be accepted in some
+  circumstances [Guillaume; #660084]
+* Fix string that should have been marked translatable [Frédéric]
+* Fix a crash that could happen during CSS transitions [Florian; #659676]
+* Build fixes [Colin, Florian]
+
+Contributors:
+ Guillaume Desmottes, Florian Müllner, Frédéric Péters, Colin Walters,
+ Dan Winship, Marina Zhurakhinskaya
+
+Translations:
+ Friedel Wolff [af], Nilamdyuti Goswami [as], Ihar Hrachyshka [be],
+ Ivaylo Valkov [bg], Gil Forcada [ca], Carles Ferrando [ca@valencia],
+ Petr Kovar [cz], Mario Blättermann [de], Kris Thomsen [dk],
+ Tiffany Antopolski, Kristjan Schmidt [eo], Daniel Mustieles [es],
+ Inaki Larranaga Murgoitio [eu], Tommi Vainikainen [fi], Bruno Brouard [fr],
+ Fran Dieguez [gl], Yaron Shahrabani [he], Gabor Kelemen [hu],
+ Andika Triwidada [id], Jiro Matsuzawa [ja], Changwoo Ryu [ko],
+ Rudolfs Mazurs [lv], Aurimas Černius [lt], Kjartan Maraas [nb],
+ A S Alam [pa], Piotr Drąg [pl], Duarte Loreto [pt], Djavan Fagundes,
+ Rodolfo Ribeiro Gomes, Gabriel F. Vilar [pt_BR], Yuri Myasoedov [ru],
+ Daniel Nylander [se], Martin Srebotnjak [sl], Michal Štrba [sv],
+ Krishnababu Krothapalli, Praveen Illa [te], Cheng-Chia Tseng [zh_KH, zh_TW]
+
 3.1.92
 ======
 
