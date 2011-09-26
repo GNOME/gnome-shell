@@ -305,6 +305,8 @@ Client.prototype = {
         Shell.get_tp_contacts(conn, [targetHandle],
                 contactFeatures,
                 Lang.bind(this, this._createAudioVideoSource, channel, context, dispatchOp));
+
+        context.delay();
     },
 
     _createAudioVideoSource: function(connection, contacts, failed, channel, context, dispatchOp) {
@@ -338,6 +340,8 @@ Client.prototype = {
         Shell.get_tp_contacts(conn, [targetHandle],
                 contactFeatures,
                 Lang.bind(this, this._createFileTransferSource, channel, context, dispatchOp));
+
+        context.delay();
     },
 
     _createFileTransferSource: function(connection, contacts, failed, channel, context, dispatchOp) {
