@@ -61,7 +61,7 @@ msgid ""
 "that appear in both lists."
 msgstr ""
 "As extensões do GNOME Shell tem uma propriedade uuid; esta chave lista as "
-"extensões que devem ser carregadas. disabled-extensions, substitui essa "
+"extensões que devem ser carregadas. disabled-extensions substitui essa "
 "configuração para as extensões que aparecem nas duas listas."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
@@ -70,15 +70,15 @@ msgstr "Histórico do diálogo comandos (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for the looking glass dialog"
-msgstr "Histórico do diálogo comandos"
+msgstr "Histórico do diálogo do shell looking glass"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
-msgstr "Se verdadeiro, exibe data no relógio, em adição a hora."
+msgstr "Se verdadeiro, exibe a data no relógio, junto com a hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
-msgstr "Se verdadeiro, exibe segundos na hora."
+msgstr "Se verdadeiro, exibe os segundos na hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
@@ -150,7 +150,7 @@ msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
-"A taxa de quadros do screencast resultante gravado pelo gravador de "
+"A taxa de quadros do screencast resultante do gravador de "
 "screencasts do GNOME Shell em quadros por segundo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
@@ -165,9 +165,9 @@ msgid ""
 "remove already saved data."
 msgstr ""
 "O shell normalmente monitora os aplicativos em execução para apresentar os "
-"mais usados (ex: em lançadores). Embora estes dados serão mantidos em "
+"mais usados (ex: em lançadores). Embora esses dados sejam mantidos em "
 "segurança, você pode querer desabilitá-los por razões de privacidade. Por "
-"favor, note que que ao fazer isso não removerá os dados já salvos."
+"favor, note que ao fazer isso não removerá os dados já salvos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "The type of keyboard to use."
@@ -650,7 +650,7 @@ msgstr "Abrir"
 
 #: ../js/ui/messageTray.js:2372
 msgid "System Information"
-msgstr "Informação do sistema"
+msgstr "Informações do sistema"
 
 #: ../js/ui/networkAgent.js:145
 msgid "Show password"
@@ -685,7 +685,7 @@ msgstr "Identidade: "
 
 #: ../js/ui/networkAgent.js:300
 msgid "Private key password: "
-msgstr "Senha da Chave privada: "
+msgstr "Senha da chave privada: "
 
 #: ../js/ui/networkAgent.js:312
 msgid "Service: "
@@ -693,7 +693,7 @@ msgstr "Serviço: "
 
 #: ../js/ui/networkAgent.js:341
 msgid "Authentication required by wireless network"
-msgstr "Autenticação requisitada pela rede sem-fio"
+msgstr "Autenticação requisitada pela rede sem fio"
 
 #: ../js/ui/networkAgent.js:342
 #, c-format
@@ -701,7 +701,7 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network '%"
 "s'."
 msgstr ""
-"Senhas ou chaves criptografadas são necessárias para acessar a rede sem-fio "
+"Senhas ou chaves criptografadas são necessárias para acessar a rede sem fio "
 "\"%s\"."
 
 #: ../js/ui/networkAgent.js:346
@@ -759,7 +759,7 @@ msgstr "Dash"
 #: ../js/ui/panel.js:539
 #, c-format
 msgid "Quit %s"
-msgstr "Sair %s"
+msgstr "Sair de %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -819,7 +819,7 @@ msgstr "Senha:"
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
-msgstr "toggle-switch-us"
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:208
 msgid "Please enter a command:"
@@ -846,7 +846,7 @@ msgstr "Ampliador"
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:71
 msgid "Screen Keyboard"
-msgstr "Teclado"
+msgstr "Teclado de tela"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
@@ -896,7 +896,7 @@ msgstr "Enviar arquivos para o dispositivo..."
 
 #: ../js/ui/status/bluetooth.js:67
 msgid "Set up a New Device..."
-msgstr "Criar um novo dispositivo..."
+msgstr "Configurar um novo dispositivo..."
 
 #: ../js/ui/status/bluetooth.js:91
 msgid "Bluetooth Settings"
@@ -973,7 +973,7 @@ msgstr "Rejeitar"
 #: ../js/ui/status/bluetooth.js:422
 #, c-format
 msgid "Pairing confirmation for %s"
-msgstr "Confirmação de emparelhamento para %s"
+msgstr "Confirmação de pareamento para %s"
 
 #: ../js/ui/status/bluetooth.js:428 ../js/ui/status/bluetooth.js:462
 #, c-format
@@ -983,7 +983,7 @@ msgstr "O dispositivo %s deseja parear com este computador"
 #: ../js/ui/status/bluetooth.js:429
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr "Por favor confirme se o PIN \"%s\"' é o mesmo do dispositivo."
+msgstr "Por favor, confirme se o PIN \"%s\"' corresponde ao do dispositivo."
 
 #: ../js/ui/status/bluetooth.js:431
 msgid "Matches"
@@ -1008,11 +1008,11 @@ msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:73
 msgid "Show Keyboard Layout"
-msgstr "Exibir Layout de teclado"
+msgstr "Exibir disposição de teclado"
 
 #: ../js/ui/status/keyboard.js:78
 msgid "Region and Language Settings"
-msgstr "Região e Configurações idioma"
+msgstr "Região e configurações de idioma"
 
 #: ../js/ui/status/network.js:97
 msgid "<unknown>"
@@ -1181,7 +1181,7 @@ msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
-msgstr "Adaptador AC"
+msgstr "Adaptador CA"
 
 #: ../js/ui/status/power.js:203
 msgid "Laptop battery"
@@ -1246,7 +1246,7 @@ msgstr "Transferência de arquivo"
 
 #: ../js/ui/telepathyClient.js:434
 msgid "Subscription request"
-msgstr "Subscrição necessária"
+msgstr "Assinatura necessária"
 
 #: ../js/ui/telepathyClient.js:470
 msgid "Connection error"
@@ -1278,21 +1278,21 @@ msgstr "%s está ocupado."
 #: ../js/ui/telepathyClient.js:978
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr "Enviado às <b>%X</b> em <b>%A</b>"
+msgstr "Enviado na <b>%A</b> às <b>%X</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
 #: ../js/ui/telepathyClient.js:984
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr "Enviado em <b>%A</b>, <b>%d %B</b>"
+msgstr "Enviado na <b>%A</b>, <b>%d de %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
 #: ../js/ui/telepathyClient.js:989
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr "Enviado em <b>%A</b>, <b>%d %B</b>, %Y"
+msgstr "Enviado na <b>%A</b>, <b>%d de %B</b>, de %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1314,7 +1314,7 @@ msgstr "Convite para %s"
 #: ../js/ui/telepathyClient.js:1148
 #, c-format
 msgid "%s is inviting you to join %s"
-msgstr "%s está convidando você para participar %s"
+msgstr "%s está convidando você para participar de %s"
 
 #: ../js/ui/telepathyClient.js:1150 ../js/ui/telepathyClient.js:1239
 #: ../js/ui/telepathyClient.js:1343
@@ -1340,7 +1340,7 @@ msgstr "Chamada de %s"
 
 #: ../js/ui/telepathyClient.js:1197
 msgid "Answer"
-msgstr "Responder"
+msgstr "Atender"
 
 #. To translators: The first parameter is
 #. * the contact's alias and the second one is the
@@ -1350,7 +1350,7 @@ msgstr "Responder"
 #: ../js/ui/telepathyClient.js:1233
 #, c-format
 msgid "%s is sending you %s"
-msgstr "%s está enviando %s para você"
+msgstr "%s está lhe enviando %s"
 
 #. To translators: The parameter is the contact's alias
 #: ../js/ui/telepathyClient.js:1308
@@ -1364,7 +1364,7 @@ msgstr "Erro de rede"
 
 #: ../js/ui/telepathyClient.js:1408
 msgid "Authentication failed"
-msgstr "Falha de Autenticação"
+msgstr "Falha de autenticação"
 
 #: ../js/ui/telepathyClient.js:1410
 msgid "Encryption error"
@@ -1456,7 +1456,7 @@ msgid ""
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
 "O comprimento do certificado do servidor, ou a profundidade da cadeia do "
-"certificado do servidor excedeu os limites impostos pela biblioteca de "
+"certificado excedeu os limites impostos pela biblioteca de "
 "criptografia"
 
 #. translators: argument is the account name, like
@@ -1528,7 +1528,7 @@ msgid ""
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
 "As notificações estão desabilitadas agora, incluindo as do bate-papo. O seu "
-"status foi ajustado para que os outros saibam que você não pode ver suas "
+"status foi ajustado para que os outros saibam que você pode não ver suas "
 "mensagens."
 
 #. Translators: this is the text displayed
@@ -1590,7 +1590,7 @@ msgstr "Erro ao lançar \"%s\""
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
-msgstr "Reino unido"
+msgstr "Reino Unido"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
