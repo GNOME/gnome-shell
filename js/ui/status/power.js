@@ -43,8 +43,8 @@ const UPDeviceState = {
 const PowerManagerInterface = {
     name: 'org.gnome.SettingsDaemon.Power',
     methods: [
-        { name: 'GetDevices', inSignature: '', outSignature: 'a(susbut)' },
-        { name: 'GetPrimaryDevice', inSignature: '', outSignature: '(susbut)' },
+        { name: 'GetDevices', inSignature: '', outSignature: 'a(susdut)' },
+        { name: 'GetPrimaryDevice', inSignature: '', outSignature: '(susdut)' },
         ],
     signals: [
         { name: 'Changed', inSignature: '' },
