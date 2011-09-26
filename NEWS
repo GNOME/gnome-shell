@@ -1,3 +1,17 @@
+3.2.0
+=====
+* Fix _NET_WM_FRAME_EXTENTS not to include invisible borders [Jasper; #659848]
+* Fix application-specified window placement (-geometry) for
+  invisible borders [Jasper; #659848]
+
+Contributors:
+ Jasper St. Pierre
+
+Translations:
+ Nilamdyuti Goswami [as], Carles Ferrando [ca@valencia], Petr Kovar [cz],
+ Mario Blättermann [de], Inaki Larranaga [eu], Gabor Kelemen [hu],
+ Takayoshi Okano [ja], Changwoo Ryu [ko], Djavan Fagundes [pt_BR]
+
 3.1.92
 ======
 * Fix bug with unredirecting full-screen windows on multi-monitor -
