@@ -10,14 +10,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-29 18:56+0200\n"
-"PO-Revision-Date: 2011-04-03 23:45+0200\n"
+"POT-Creation-Date: 2011-09-26 14:18+0200\n"
+"PO-Revision-Date: 2011-09-16 23:15+0200\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:492
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr ""
+"Ja s'està executant un altre gestor de composició a la pantalla %i a la "
+"visualització «%s»."
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -146,7 +157,7 @@ msgstr "Mostra el diàleg d'execució d'aplicacions del quadre"
 
 #: ../src/core/all-keybindings.h:211
 msgid "Start or stop recording the session"
-msgstr "Inicia o para l'enregistrament de la sessió"
+msgstr "Inicia o atura l'enregistrament de la sessió"
 
 #: ../src/core/all-keybindings.h:252
 msgid "Take a screenshot"
@@ -336,7 +347,7 @@ msgstr "Mou la finestra al centre de la pantalla"
 msgid "Bell event"
 msgstr "Esdeveniment de campana"
 
-#: ../src/core/core.c:160
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Es desconeix la informació demanada sobre la finestra: %d"
@@ -347,9 +358,8 @@ msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> no està responent."
 
 #: ../src/core/delete.c:114
-#, fuzzy
 msgid "Application is not responding."
-msgstr "<tt>%s</tt> no està responent."
+msgstr "L'aplicació no està responent."
 
 #: ../src/core/delete.c:119
 msgid ""
@@ -389,7 +399,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2468
+#: ../src/core/keybindings.c:2523
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -400,12 +410,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../src/core/keybindings.c:2558
+#: ../src/core/keybindings.c:2613
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap orde %d.\n"
 
-#: ../src/core/keybindings.c:3570
+#: ../src/core/keybindings.c:3625
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "No s'ha definit cap orde de terminal.\n"
@@ -482,37 +492,37 @@ msgstr "Llista separada per comes de connectors de composició"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:543 ../src/core/prefs.c:704
+#: ../src/core/prefs.c:550 ../src/core/prefs.c:711
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clau «%s» del GConf està establerta a un valor no vàlid\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:873
+#: ../src/core/prefs.c:637 ../src/core/prefs.c:880
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "%d, emmagatzemat a la clau %s del GConf, està fora de l'interval de %d a %d\n"
 
-#: ../src/core/prefs.c:674 ../src/core/prefs.c:751 ../src/core/prefs.c:799
-#: ../src/core/prefs.c:863 ../src/core/prefs.c:1324 ../src/core/prefs.c:1340
-#: ../src/core/prefs.c:1357 ../src/core/prefs.c:1373
+#: ../src/core/prefs.c:681 ../src/core/prefs.c:758 ../src/core/prefs.c:806
+#: ../src/core/prefs.c:870 ../src/core/prefs.c:1331 ../src/core/prefs.c:1347
+#: ../src/core/prefs.c:1364 ../src/core/prefs.c:1380
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clau «%s» del GConf està establerta a un tipus no vàlid\n"
 
-#: ../src/core/prefs.c:1203
+#: ../src/core/prefs.c:1210
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr ""
 "La clau %s del GConf ja s'està utilitzant i no es pot fer servir per "
 "sobreescriure %s\n"
 
-#: ../src/core/prefs.c:1262
+#: ../src/core/prefs.c:1269
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "No es pot sobreescriure la clau del GConf; no s'ha trobat %s\n"
 
-#: ../src/core/prefs.c:1447
+#: ../src/core/prefs.c:1454
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -520,14 +530,14 @@ msgstr ""
 "Les solucions temporals per a aplicacions amb errors estan inhabilitades. "
 "Pot ser que certes aplicacions no funcionen correctament.\n"
 
-#: ../src/core/prefs.c:1524
+#: ../src/core/prefs.c:1531
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No s'ha pogut analitzar la descripció de tipus de lletra «%s» de la clau %s "
 "del GConf\n"
 
-#: ../src/core/prefs.c:1586
+#: ../src/core/prefs.c:1593
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -536,18 +546,18 @@ msgstr ""
 "«%s», trobat a la base de dades de la configuració, no és un valor vàlid per "
 "al modificador del botó del ratolí\n"
 
-#: ../src/core/prefs.c:2016
+#: ../src/core/prefs.c:2028
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "S'ha produït un error en establir el nombre d'espais de treball a %d: %s\n"
 
-#: ../src/core/prefs.c:2200 ../src/core/prefs.c:2702
+#: ../src/core/prefs.c:2212 ../src/core/prefs.c:2714
 #, c-format
 msgid "Workspace %d"
 msgstr "Espai de treball %d"
 
-#: ../src/core/prefs.c:2232 ../src/core/prefs.c:2410
+#: ../src/core/prefs.c:2244 ../src/core/prefs.c:2422
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -556,33 +566,33 @@ msgstr ""
 "«%s» trobat a la base de dades de la configuració no és un valor vàlid per a "
 "la vinculació de tecla «%s»\n"
 
-#: ../src/core/prefs.c:2783
+#: ../src/core/prefs.c:2795
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "S'ha produït un error en establir el nom de l'espai de treball %d a «%s»: "
 "%s\n"
 
-#: ../src/core/prefs.c:2997
+#: ../src/core/prefs.c:3009
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr ""
 "S'ha produït un error en establir l'estat de les finestres ocultes en viu: "
 "%s\n"
 
-#: ../src/core/prefs.c:3032
+#: ../src/core/prefs.c:3044
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr ""
 "S'ha produït un error en establir l'estat de les pestanyes sense finestra "
 "emergent: %s\n"
 
-#: ../src/core/screen.c:663
+#: ../src/core/screen.c:741
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La pantalla %d en la visualització '%s' no és vàlida\n"
 
-#: ../src/core/screen.c:679
+#: ../src/core/screen.c:757
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -591,7 +601,7 @@ msgstr ""
 "La pantalla %d en la visualització «%s» ja té un gestor de finestres; proveu "
 "l'opció --replace per reemplaçar el gestor de finestres actual.\n"
 
-#: ../src/core/screen.c:706
+#: ../src/core/screen.c:784
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -599,12 +609,12 @@ msgstr ""
 "No s'ha pogut adquirir la selecció del gestor de finestres en la pantalla %d "
 "visualització «%s»\n"
 
-#: ../src/core/screen.c:761
+#: ../src/core/screen.c:839
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La pantalla %d en la visualització «%s» ja té un gestor de finestres\n"
 
-#: ../src/core/screen.c:946
+#: ../src/core/screen.c:1024
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No s'ha pogut alliberar la pantalla %d en la visualització «%s»\n"
@@ -686,30 +696,24 @@ msgstr "S'ha obert el fitxer de registre %s\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter es va compilar sense compatibilitat per al mode detallat\n"
 
-#: ../src/core/util.c:286
+#: ../src/core/util.c:290
 msgid "Window manager: "
 msgstr "Gestor de finestres: "
 
-#: ../src/core/util.c:434
+#: ../src/core/util.c:438
 msgid "Bug in window manager: "
 msgstr "Error en el gestor de finestres: "
 
-#: ../src/core/util.c:467
+#: ../src/core/util.c:471
 msgid "Window manager warning: "
 msgstr "Avís del gestor de finestres: "
 
-#: ../src/core/util.c:495
+#: ../src/core/util.c:499
 msgid "Window manager error: "
 msgstr "Error del gestor de finestres: "
 
-#. Translators: This is the title used on dialog boxes
-#: ../src/core/util.c:632 ../src/mutter.desktop.in.h:1
-#: ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutter"
-
 #. first time through
-#: ../src/core/window.c:6873
+#: ../src/core/window.c:7069
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -725,7 +729,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7536
+#: ../src/core/window.c:7732
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -745,11 +749,16 @@ msgstr "L'aplicació ha definit un _NET_WM_PID %lu fals\n"
 msgid "%s (on %s)"
 msgstr "%s (a %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1481
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "WM_TRANSIENT_FOR no vàlid per a la finestra 0x%lx especificat per a %s.\n"
+
+#: ../src/core/window-props.c:1492
+#, c-format
+msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+msgstr "WM_TRANSIENT_FOR per a la finestra 0x%lx per a %s crearia un bucle.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -781,6 +790,10 @@ msgstr ""
 "La propietat %s en la finestra 0x%lx contenia caràcters UTF-8 no vàlids per "
 "a l'element %d en la llista\n"
 
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
+
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
 msgstr "Adjunta els diàlegs modals"
@@ -802,16 +815,29 @@ msgstr ""
 "tots els monitors o només en les finestres del monitor primari."
 
 #: ../src/mutter.schemas.in.h:4
+msgid "Draggable border width"
+msgstr "Amplada del contorn arrossegable"
+
+#: ../src/mutter.schemas.in.h:5
 msgid "Live Hidden Windows"
 msgstr "Finestres ocultes en viu"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:6
 msgid "Modifier to use for extended window management operations"
 msgstr ""
 "Modificador que s'utilitzarà per les operacions ampliades de gestió de "
 "finestres"
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/mutter.schemas.in.h:7
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"La quantitat total de contorn arrossegable. Si els contorns visibles del "
+"tema no són suficients, s'afegiran contorns invisibles per aconseguir este "
+"valor."
+
+#: ../src/mutter.schemas.in.h:8
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -823,7 +849,7 @@ msgstr ""
 "predeterminat és la «tecla Windows» en maquinari basat en ordinadors PC. El "
 "valor d'esta vinculació s'espera que siga el predeterminat o text en blanc."
 
-#: ../src/mutter.schemas.in.h:7
+#: ../src/mutter.schemas.in.h:9
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -833,7 +859,7 @@ msgstr ""
 "diàlegs modals apareixeran adjuntats a la barra de títol de la finestra mare "
 "i es mouran juntament amb esta."
 
-#: ../src/mutter.schemas.in.h:8
+#: ../src/mutter.schemas.in.h:10
 msgid "Workspaces only on primary"
 msgstr "Espais de treball només en el primari"
 
@@ -842,47 +868,47 @@ msgstr "Espais de treball només en el primari"
 msgid "Usage: %s\n"
 msgstr "Forma d'ús: %s\n"
 
-#: ../src/ui/frames.c:1280
+#: ../src/ui/frames.c:1157
 msgid "Close Window"
 msgstr "Tanca la finestra"
 
-#: ../src/ui/frames.c:1283
+#: ../src/ui/frames.c:1160
 msgid "Window Menu"
 msgstr "Menú de la finestra"
 
-#: ../src/ui/frames.c:1286
+#: ../src/ui/frames.c:1163
 msgid "Minimize Window"
 msgstr "Minimitza la finestra"
 
-#: ../src/ui/frames.c:1289
+#: ../src/ui/frames.c:1166
 msgid "Maximize Window"
 msgstr "Maximitza la finestra"
 
-#: ../src/ui/frames.c:1292
+#: ../src/ui/frames.c:1169
 msgid "Restore Window"
 msgstr "Restaura la finestra"
 
-#: ../src/ui/frames.c:1295
+#: ../src/ui/frames.c:1172
 msgid "Roll Up Window"
 msgstr "Enrotlla la finestra"
 
-#: ../src/ui/frames.c:1298
+#: ../src/ui/frames.c:1175
 msgid "Unroll Window"
 msgstr "Desenrotlla la finestra"
 
-#: ../src/ui/frames.c:1301
+#: ../src/ui/frames.c:1178
 msgid "Keep Window On Top"
 msgstr "Mantén la finestra per damunt"
 
-#: ../src/ui/frames.c:1304
+#: ../src/ui/frames.c:1181
 msgid "Remove Window From Top"
-msgstr "Trau la finestra de damunt"
+msgstr "Treu la finestra de damunt"
 
-#: ../src/ui/frames.c:1307
+#: ../src/ui/frames.c:1184
 msgid "Always On Visible Workspace"
 msgstr "Sempre a l'espai de treball visible"
 
-#: ../src/ui/frames.c:1310
+#: ../src/ui/frames.c:1187
 msgid "Put Window On Only One Workspace"
 msgstr "Posa la finestra només a un espai de treball"
 
@@ -1085,49 +1111,77 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:253
 msgid "top"
 msgstr "superior"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:255
 msgid "bottom"
 msgstr "inferior"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:257
 msgid "left"
 msgstr "esquerra"
 
-#: ../src/ui/theme.c:261
+#: ../src/ui/theme.c:259
 msgid "right"
 msgstr "dreta"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:286
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "la geometria del marc no especifica la dimensió «%s»"
 
-#: ../src/ui/theme.c:307
+#: ../src/ui/theme.c:305
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
 "la geometria del marc no especifica la dimensió «%s» per al contorn «%s»"
 
-#: ../src/ui/theme.c:344
+#: ../src/ui/theme.c:342
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "El ràtio d'aspecte dels botons %g no és raonable"
 
-#: ../src/ui/theme.c:356
+#: ../src/ui/theme.c:354
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "La geometria del marc no especifica la mida dels botons"
 
-#: ../src/ui/theme.c:1064
+#: ../src/ui/theme.c:1065
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Els degradats han de tindre almenys dos colors"
 
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1217
+#, c-format
+msgid ""
+"GTK custom color specification must have color name and fallback in "
+"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+msgstr ""
+"L'especificació personalitzada de color de GTK ha de tindre un nom de color "
+"i un alternatiu en parèntesis, p.e. gtk:personalitzat(foo,bar); no s'ha "
+"pogut analitzar «%s»"
+
+#: ../src/ui/theme.c:1233
+#, c-format
+msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+"El caràcter «%c» no és vàlid en el paràmetre color_name de gtk:"
+"personalitzat, només són vàlids A-Za-z0-9-_"
+
+#: ../src/ui/theme.c:1247
+#, c-format
+msgid ""
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
+msgstr ""
+"El format de Gtk:personalitzat és «gtk:personalitzat(color_name,"
+"alternatiu)», «%s» no s'ajusta al format"
+
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1136,7 +1190,7 @@ msgstr ""
 "L'especificació de color GTK ha de tindre l'estat entre claudàtors, p.e. gtk:"
 "fg[NORMAL] on NORMAL és l'estat; no s'ha pogut analitzar \"%s\""
 
-#: ../src/ui/theme.c:1216
+#: ../src/ui/theme.c:1306
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1146,17 +1200,17 @@ msgstr ""
 "de l'estat, p.e. gtk:fg[NORMAL] on NORMAL és l'estat; no s'ha pogut "
 "analitzar «%s»"
 
-#: ../src/ui/theme.c:1227
+#: ../src/ui/theme.c:1317
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "No s'entén l'estat «%s» en l'especificació del color"
 
-#: ../src/ui/theme.c:1240
+#: ../src/ui/theme.c:1330
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "No s'entén l'element de color «%s» en l'especificació del color"
 
-#: ../src/ui/theme.c:1270
+#: ../src/ui/theme.c:1360
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1165,49 +1219,44 @@ msgstr ""
 "El format de barreja és «blend/bg_color/fg_color/alpha», «%s» no s'ajusta al "
 "format"
 
-#: ../src/ui/theme.c:1281
+#: ../src/ui/theme.c:1371
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "No s'ha pogut analitzar el valor d'opacitat «%s» en el color barrejat"
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1381
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "El valor alfa «%s» en el color barrejat no està entre 0,0 i 1,0"
 
-#: ../src/ui/theme.c:1338
+#: ../src/ui/theme.c:1428
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "El format d'ombrejat és «shade/base_color/factor», «%s» no s'ajusta al format"
 
-#: ../src/ui/theme.c:1349
+#: ../src/ui/theme.c:1439
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "No s'ha pogut analitzar el factor d'ombrejat «%s» en el color ombrejat"
 
-#: ../src/ui/theme.c:1359
+#: ../src/ui/theme.c:1449
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "El factor d'ombrejat «%s» en el color ombrejat és negatiu"
 
-#: ../src/ui/theme.c:1388
+#: ../src/ui/theme.c:1478
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "No s'ha pogut analitzar el color «%s»"
 
-#: ../src/ui/theme.c:1481
-#, c-format
-msgid "Failed to retrieve color %s[%s] from GTK+ theme.\n"
-msgstr ""
-
-#: ../src/ui/theme.c:1713
+#: ../src/ui/theme.c:1789
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "L'expressió coordinada conté el caràcter '%s', el qual no és permés"
 
-#: ../src/ui/theme.c:1740
+#: ../src/ui/theme.c:1816
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1216,12 +1265,12 @@ msgstr ""
 "L'expressió coordinada conté el número '%s' de punt flotant el qual no es "
 "pot analitzar"
 
-#: ../src/ui/theme.c:1754
+#: ../src/ui/theme.c:1830
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "L'expressió coordinada conté l'enter '%s' el qual no es pot analitzar"
 
-#: ../src/ui/theme.c:1876
+#: ../src/ui/theme.c:1952
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1230,17 +1279,17 @@ msgstr ""
 "L'expressió coordinada conté un operador desconegut a l'inici d'este text: "
 "«%s»"
 
-#: ../src/ui/theme.c:1933
+#: ../src/ui/theme.c:2009
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "L'expressió coordinada estava buida o no s'ha entés"
 
-#: ../src/ui/theme.c:2044 ../src/ui/theme.c:2054 ../src/ui/theme.c:2088
+#: ../src/ui/theme.c:2120 ../src/ui/theme.c:2130 ../src/ui/theme.c:2164
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "L'expressió coordinada dóna una divisió per zero"
 
-#: ../src/ui/theme.c:2096
+#: ../src/ui/theme.c:2172
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -1248,25 +1297,25 @@ msgstr ""
 "L'expressió coordinada intenta utilitzar l'operador de mode en un número de "
 "punt flotant"
 
-#: ../src/ui/theme.c:2152
+#: ../src/ui/theme.c:2228
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "L'expressió coordinada té un operador «%s» on hi hauria d'anar un operand"
 
-#: ../src/ui/theme.c:2161
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "L'expressió coordinada té un operand on hi hauria d'anar un operador"
 
-#: ../src/ui/theme.c:2169
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "L'expressió coordinada ha finalitzat amb un operador en lloc d'un operand"
 
-#: ../src/ui/theme.c:2179
+#: ../src/ui/theme.c:2255
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1275,39 +1324,39 @@ msgstr ""
 "L'expressió coordinada té un operador «%c» seguit de l'operador «%c» sense "
 "cap operand enmig"
 
-#: ../src/ui/theme.c:2330 ../src/ui/theme.c:2375
+#: ../src/ui/theme.c:2406 ../src/ui/theme.c:2451
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "L'expressió coordinada té una variable o constant desconeguda «%s»"
 
-#: ../src/ui/theme.c:2429
+#: ../src/ui/theme.c:2505
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 "L'analitzador d'expressions de coordinades ha desbordat la seua memòria "
 "intermèdia."
 
-#: ../src/ui/theme.c:2458
+#: ../src/ui/theme.c:2534
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "L'expressió coordinada té un parèntesi de tancament i cap d'obertura"
 
-#: ../src/ui/theme.c:2522
+#: ../src/ui/theme.c:2598
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "L'expressió coordinada té un parèntesi d'obertura i cap de tancament"
 
-#: ../src/ui/theme.c:2533
+#: ../src/ui/theme.c:2609
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "L'expressió coordinada no pareix tindre cap operador o operand"
 
-#: ../src/ui/theme.c:2745 ../src/ui/theme.c:2765 ../src/ui/theme.c:2785
+#: ../src/ui/theme.c:2821 ../src/ui/theme.c:2841 ../src/ui/theme.c:2861
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "El tema conté una expressió que ha provocat un error: %s\n"
 
-#: ../src/ui/theme.c:4482
+#: ../src/ui/theme.c:4532
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1316,7 +1365,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"qualsevol\"/> s'ha "
 "d'especificar per a este estil de marc"
 
-#: ../src/ui/theme.c:5012 ../src/ui/theme.c:5037
+#: ../src/ui/theme.c:5065 ../src/ui/theme.c:5090
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1324,18 +1373,18 @@ msgstr ""
 "No s'ha trobat <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style="
 "\"qualsevol\"/>"
 
-#: ../src/ui/theme.c:5085
+#: ../src/ui/theme.c:5138
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "No s'ha pogut carregar el tema \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5221 ../src/ui/theme.c:5228 ../src/ui/theme.c:5235
-#: ../src/ui/theme.c:5242 ../src/ui/theme.c:5249
+#: ../src/ui/theme.c:5274 ../src/ui/theme.c:5281 ../src/ui/theme.c:5288
+#: ../src/ui/theme.c:5295 ../src/ui/theme.c:5302
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No s'ha definit <%s> per al tema «%s»"
 
-#: ../src/ui/theme.c:5257
+#: ../src/ui/theme.c:5310
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1344,7 +1393,7 @@ msgstr ""
 "No s'ha definit cap estil de marc per al tipus de finestra \"%s\" en el tema "
 "\"%s\", afegiu un element <window type=\"%s\" style_set=\"qualsevol\"/>"
 
-#: ../src/ui/theme.c:5707 ../src/ui/theme.c:5769 ../src/ui/theme.c:5832
+#: ../src/ui/theme.c:5708 ../src/ui/theme.c:5770 ../src/ui/theme.c:5833
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1352,7 +1401,7 @@ msgstr ""
 "Les constants de la definició d'usuari han de començar per una majúscula; "
 "«%s» no ho és"
 
-#: ../src/ui/theme.c:5715 ../src/ui/theme.c:5777 ../src/ui/theme.c:5840
+#: ../src/ui/theme.c:5716 ../src/ui/theme.c:5778 ../src/ui/theme.c:5841
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La constant «%s» ja s'ha definit"
@@ -1373,7 +1422,7 @@ msgstr "Línia %d caràcter %d: %s"
 #: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "S'ha repetit l'atribut «%s» dos vegades en el mateix element <%s>"
+msgstr "S'ha repetit l'atribut «%s» dues vegades en el mateix element <%s>"
 
 #: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
@@ -1435,7 +1484,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> amb nom «%s» s'ha utilitzat dos vegades"
+msgstr "<%s> amb nom «%s» s'ha utilitzat dues vegades"
 
 #: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
 #: ../src/ui/theme-parser.c:1231
@@ -1737,7 +1786,7 @@ msgstr "No es permet cap text dins de l'element <%s>"
 #: ../src/ui/theme-parser.c:4074
 #, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "S'ha especificat <%s> dos vegades per a este tema"
+msgstr "S'ha especificat <%s> dues vegades per a este tema"
 
 #: ../src/ui/theme-parser.c:4348
 #, c-format
@@ -1809,88 +1858,88 @@ msgstr "Este és un exemple de missatge en un diàleg d'exemple"
 msgid "Fake menu item %d\n"
 msgstr "Element fals de menú %d\n"
 
-#: ../src/ui/theme-viewer.c:370
+#: ../src/ui/theme-viewer.c:371
 msgid "Border-only window"
 msgstr "Finestra amb només contorn"
 
-#: ../src/ui/theme-viewer.c:372
+#: ../src/ui/theme-viewer.c:373
 msgid "Bar"
 msgstr "Barra"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:390
 msgid "Normal Application Window"
 msgstr "Finestra d'aplicació normal"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:394
 msgid "Dialog Box"
 msgstr "Caixa de diàleg"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:398
 msgid "Modal Dialog Box"
 msgstr "Caixa de diàleg modal"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:402
 msgid "Utility Palette"
 msgstr "Paleta d'utilitat"
 
-#: ../src/ui/theme-viewer.c:405
+#: ../src/ui/theme-viewer.c:406
 msgid "Torn-off Menu"
 msgstr "Menú arrossegable"
 
-#: ../src/ui/theme-viewer.c:409
+#: ../src/ui/theme-viewer.c:410
 msgid "Border"
 msgstr "Contorn"
 
-#: ../src/ui/theme-viewer.c:413
+#: ../src/ui/theme-viewer.c:414
 msgid "Attached Modal Dialog"
 msgstr "Diàleg modal adjuntat"
 
-#: ../src/ui/theme-viewer.c:744
+#: ../src/ui/theme-viewer.c:747
 #, c-format
 msgid "Button layout test %d"
 msgstr "Prova de disposició de botons %d"
 
-#: ../src/ui/theme-viewer.c:773
+#: ../src/ui/theme-viewer.c:776
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g mil·lisegons per dibuixar un marc de finestra"
 
-#: ../src/ui/theme-viewer.c:818
+#: ../src/ui/theme-viewer.c:821
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Forma d'ús: metacity-theme-viewer [NOMDELTEMA]\n"
 
-#: ../src/ui/theme-viewer.c:825
+#: ../src/ui/theme-viewer.c:828
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "S'ha produït un error en carregar el tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:831
+#: ../src/ui/theme-viewer.c:834
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "S'ha carregat el tema «%s» en %g segons\n"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:878
 msgid "Normal Title Font"
 msgstr "Tipus de lletra per a títol normal"
 
-#: ../src/ui/theme-viewer.c:881
+#: ../src/ui/theme-viewer.c:884
 msgid "Small Title Font"
 msgstr "Tipus de lletra per a títol petit"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:890
 msgid "Large Title Font"
 msgstr "Tipus de lletra per a títol gran"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:895
 msgid "Button Layouts"
 msgstr "Disposicions de botons"
 
-#: ../src/ui/theme-viewer.c:897
+#: ../src/ui/theme-viewer.c:900
 msgid "Benchmark"
 msgstr "Test de referència"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:952
 msgid "Window Title Goes Here"
 msgstr "El títol de la finestra va ací"
 
