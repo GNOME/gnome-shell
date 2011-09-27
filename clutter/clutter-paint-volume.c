@@ -967,10 +967,6 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
 
   clutter_actor_get_allocation_box (self, &box);
 
-  /* a zero-sized actor has no paint volume */
-  if (box.x1 == box.x2 || box.y1 == box.y2)
-    return FALSE;
-
   clutter_paint_volume_set_width (volume, box.x2 - box.x1);
   clutter_paint_volume_set_height (volume, box.y2 - box.y1);
 

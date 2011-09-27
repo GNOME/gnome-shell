@@ -434,8 +434,8 @@ clutter_stage_osx_hide (ClutterStageWindow *stage_window)
 }
 
 static void
-clutter_stage_osx_get_geometry (ClutterStageWindow *stage_window,
-                                ClutterGeometry    *geometry)
+clutter_stage_osx_get_geometry (ClutterStageWindow    *stage_window,
+                                cairo_rectangle_int_t *geometry)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);

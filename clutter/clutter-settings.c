@@ -69,6 +69,8 @@ struct _ClutterSettings
   gint long_press_duration;
 
   guint last_fontconfig_timestamp;
+
+  guint password_hint_time;
 };
 
 struct _ClutterSettingsClass
@@ -98,6 +100,8 @@ enum
   PROP_LONG_PRESS_DURATION,
 
   PROP_FONTCONFIG_TIMESTAMP,
+
+  PROP_PASSWORD_HINT_TIME,
 
   PROP_LAST
 };
@@ -304,6 +308,10 @@ clutter_settings_set_property (GObject      *gobject,
       settings_update_fontmap (self, g_value_get_uint (value));
       break;
 
+    case PROP_PASSWORD_HINT_TIME:
+      self->password_hint_time = g_value_get_uint (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -358,6 +366,10 @@ clutter_settings_get_property (GObject    *gobject,
 
     case PROP_LONG_PRESS_DURATION:
       g_value_set_int (value, self->long_press_duration);
+      break;
+
+    case PROP_PASSWORD_HINT_TIME:
+      g_value_set_uint (value, self->password_hint_time);
       break;
 
     default:
@@ -583,6 +595,24 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                        0, G_MAXUINT,
                        0,
                        CLUTTER_PARAM_WRITABLE);
+
+  /**
+   * ClutterText:password-hint-time:
+   *
+   * How long should Clutter show the last input character in editable
+   * ClutterText actors. The value is in milliseconds. A value of 0
+   * disables showing the password hint. 600 is a good value for
+   * enabling the hint.
+   *
+   * Since: 1.10
+   */
+  obj_props[PROP_PASSWORD_HINT_TIME] =
+    g_param_spec_uint ("password-hint-time",
+                       P_("Password Hint Time"),
+                       P_("How long to show the last input character in hidden entries"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READWRITE);
 
   gobject_class->set_property = clutter_settings_set_property;
   gobject_class->get_property = clutter_settings_get_property;

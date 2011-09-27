@@ -188,8 +188,11 @@ struct _ClutterTextPrivate
 
   gunichar password_char;
 
+  guint password_hint_id;
+  guint password_hint_timeout;
+
   /* Signal handler for when the backend changes its font settings */
-  guint font_changed_id;
+  guint settings_changed_id;
 
   /* Signal handler for when the :text-direction changes */
   guint direction_changed_id;
@@ -215,6 +218,8 @@ struct _ClutterTextPrivate
   guint has_focus               : 1;
   guint selected_text_color_set : 1;
   guint paint_volume_valid      : 1;
+  guint show_password_hint      : 1;
+  guint password_hint_visible   : 1;
 };
 
 enum
@@ -267,7 +272,7 @@ enum
 
 static guint text_signals[LAST_SIGNAL] = { 0, };
 
-static void clutter_text_font_changed_cb (ClutterText *text);
+static void clutter_text_settings_changed_cb (ClutterText *text);
 
 static void
 clutter_text_dirty_paint_volume (ClutterText *text)
@@ -362,8 +367,21 @@ clutter_text_get_display_text (ClutterText *self)
       memset (buf, 0, sizeof (buf));
       char_len = g_unichar_to_utf8 (invisible_char, buf);
 
-      for (i = 0; i < priv->n_chars; i++)
-        g_string_append_len (str, buf, char_len);
+      if (priv->show_password_hint && priv->password_hint_visible)
+        {
+          char *last_char;
+
+          for (i = 0; i < priv->n_chars - 1; i++)
+            g_string_append_len (str, buf, char_len);
+
+          last_char = g_utf8_offset_to_pointer (priv->text, priv->n_chars - 1);
+          g_string_append (str, last_char);
+        }
+      else
+        {
+          for (i = 0; i < priv->n_chars; i++)
+            g_string_append_len (str, buf, char_len);
+        }
 
       return g_string_free (str, FALSE);
     }
@@ -557,15 +575,24 @@ clutter_text_set_font_description_internal (ClutterText          *self,
 }
 
 static void
-clutter_text_font_changed_cb (ClutterText *text)
+clutter_text_settings_changed_cb (ClutterText *text)
 {
-  if (text->priv->is_default_font)
+  ClutterTextPrivate *priv = text->priv;
+  guint password_hint_time = 0;
+  ClutterSettings *settings;
+
+  settings = clutter_settings_get_default ();
+
+  g_object_get (settings, "password-hint-time", &password_hint_time, NULL);
+
+  priv->show_password_hint = password_hint_time > 0;
+  priv->password_hint_timeout = password_hint_time;
+
+  if (priv->is_default_font)
     {
       PangoFontDescription *font_desc;
-      ClutterSettings *settings;
       gchar *font_name = NULL;
 
-      settings = clutter_settings_get_default ();
       g_object_get (settings, "font-name", &font_name, NULL);
 
       CLUTTER_NOTE (ACTOR, "Text[%p]: default font changed to '%s'",
@@ -1435,11 +1462,17 @@ clutter_text_dispose (GObject *gobject)
       priv->direction_changed_id = 0;
     }
 
-  if (priv->font_changed_id)
+  if (priv->settings_changed_id)
     {
       g_signal_handler_disconnect (clutter_get_default_backend (),
-                                   priv->font_changed_id);
-      priv->font_changed_id = 0;
+                                   priv->settings_changed_id);
+      priv->settings_changed_id = 0;
+    }
+
+  if (priv->password_hint_id)
+    {
+      g_source_remove (priv->password_hint_id);
+      priv->password_hint_id = 0;
     }
 
   G_OBJECT_CLASS (clutter_text_parent_class)->dispose (gobject);
@@ -1920,6 +1953,20 @@ clutter_text_button_release (ClutterActor       *actor,
 }
 
 static gboolean
+clutter_text_remove_password_hint (gpointer data)
+{
+  ClutterText *self = data;
+
+  self->priv->password_hint_visible = FALSE;
+  self->priv->password_hint_id = 0;
+
+  clutter_text_dirty_cache (data);
+  clutter_text_queue_redraw (data);
+
+  return FALSE;
+}
+
+static gboolean
 clutter_text_key_press (ClutterActor    *actor,
                         ClutterKeyEvent *event)
 {
@@ -1975,6 +2022,18 @@ clutter_text_key_press (ClutterActor    *actor,
            */
           clutter_text_delete_selection (self);
           clutter_text_insert_unichar (self, key_unichar);
+
+          if (priv->show_password_hint)
+            {
+              if (priv->password_hint_id != 0)
+                g_source_remove (priv->password_hint_id);
+
+              priv->password_hint_visible = TRUE;
+              priv->password_hint_id =
+                g_timeout_add (priv->password_hint_timeout,
+                               clutter_text_remove_password_hint,
+                               self);
+            }
 
           return TRUE;
         }
@@ -3573,7 +3632,7 @@ clutter_text_init (ClutterText *self)
   ClutterSettings *settings;
   ClutterTextPrivate *priv;
   gchar *font_name;
-  int i;
+  int i, password_hint_time;
 
   self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
 
@@ -3605,7 +3664,10 @@ clutter_text_init (ClutterText *self)
    * the Text and we don't need notifications and sanity checks
    */
   settings = clutter_settings_get_default ();
-  g_object_get (settings, "font-name", &font_name, NULL);
+  g_object_get (settings,
+                "font-name", &font_name,
+                "password-hint-time", &password_hint_time,
+                NULL);
 
   priv->font_name = font_name; /* font_name is allocated */
   priv->font_desc = pango_font_description_from_string (font_name);
@@ -3625,6 +3687,8 @@ clutter_text_init (ClutterText *self)
   priv->preedit_set = FALSE;
 
   priv->password_char = 0;
+  priv->show_password_hint = password_hint_time > 0;
+  priv->password_hint_timeout = password_hint_time;
 
   priv->max_length = 0;
 
@@ -3633,10 +3697,10 @@ clutter_text_init (ClutterText *self)
   priv->cursor_size = DEFAULT_CURSOR_SIZE;
   memset (&priv->cursor_pos, 0, sizeof (ClutterGeometry));
 
-  priv->font_changed_id =
+  priv->settings_changed_id =
     g_signal_connect_swapped (clutter_get_default_backend (),
                               "settings-changed",
-                              G_CALLBACK (clutter_text_font_changed_cb),
+                              G_CALLBACK (clutter_text_settings_changed_cb),
                               self);
 
   priv->direction_changed_id =

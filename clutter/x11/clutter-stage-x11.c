@@ -193,8 +193,8 @@ clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 }
 
 static void
-clutter_stage_x11_get_geometry (ClutterStageWindow *stage_window,
-                                ClutterGeometry    *geometry)
+clutter_stage_x11_get_geometry (ClutterStageWindow    *stage_window,
+                                cairo_rectangle_int_t *geometry)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackendX11 *backend_x11 = stage_x11->backend;

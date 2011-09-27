@@ -2864,6 +2864,29 @@ clutter_actor_paint (ClutterActor *self)
       cogl_get_modelview_matrix (&matrix);
       _clutter_actor_apply_modelview_transform (self, &matrix);
       cogl_set_modelview_matrix (&matrix);
+
+      /* Catch when out-of-band transforms have been made by actors not as part
+       * of an apply_transform vfunc... */
+      if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_OOB_TRANSFORMS))
+        {
+          CoglMatrix expected_matrix;
+          _clutter_actor_get_relative_transformation_matrix (self, NULL,
+                                                             &expected_matrix);
+          if (!cogl_matrix_equal (&matrix, &expected_matrix))
+            {
+              ClutterActor *parent = self;
+              GString *parents = g_string_new ("");
+              while ((parent = clutter_actor_get_parent (parent)))
+                g_string_append_printf (parents, "->%s", G_OBJECT_TYPE_NAME (parent));
+              g_warning ("Unexpected transform found when painting actor "
+                         "\"%s\". This will be caused by one of the actor's "
+                         "ancestors (%s) using the Cogl API directly to transform "
+                         "children instead of using ::apply_transform().",
+                         _clutter_actor_get_debug_name (self),
+                         parents->str);
+              g_string_free (parents, TRUE);
+            }
+        }
     }
 
   if (priv->has_clip)
@@ -4707,8 +4730,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_object ("effect",
-                               "Effect",
-                               "Add an effect to be applied on the actor",
+                               P_("Effect"),
+                               P_("Add an effect to be applied on the actor"),
                                CLUTTER_TYPE_EFFECT,
                                CLUTTER_PARAM_WRITABLE);
   obj_props[PROP_EFFECT] = pspec;
@@ -12021,7 +12044,7 @@ clutter_actor_remove_effect_by_name (ClutterActor *self,
   if (meta == NULL)
     return;
 
-  _clutter_meta_group_remove_meta (priv->effects, meta);
+  clutter_actor_remove_effect (self, CLUTTER_EFFECT (meta));
 }
 
 /**

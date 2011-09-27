@@ -1969,8 +1969,13 @@ clutter_state_get_duration (ClutterState *state,
   if (target_state != NULL)
     {
       if (source_state_name)
-        ret = GPOINTER_TO_INT (g_hash_table_lookup (target_state->durations,
-                                                    source_state_name));
+        {
+          ret = GPOINTER_TO_INT (g_hash_table_lookup (target_state->durations,
+                                                      source_state_name));
+          if(!ret)
+            ret = GPOINTER_TO_INT (g_hash_table_lookup (target_state->durations,
+                                                        NULL));
+        }
       else
         ret = GPOINTER_TO_INT (g_hash_table_lookup (target_state->durations,
                                                     NULL));

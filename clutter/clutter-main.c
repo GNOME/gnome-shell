@@ -167,7 +167,8 @@ static const GDebugKey clutter_debug_keys[] = {
   { "multistage", CLUTTER_DEBUG_MULTISTAGE },
   { "animation", CLUTTER_DEBUG_ANIMATION },
   { "layout", CLUTTER_DEBUG_LAYOUT },
-  { "clipping", CLUTTER_DEBUG_CLIPPING }
+  { "clipping", CLUTTER_DEBUG_CLIPPING },
+  { "oob-transforms", CLUTTER_DEBUG_OOB_TRANSFORMS }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -182,7 +183,8 @@ static const GDebugKey clutter_paint_debug_keys[] = {
   { "redraws", CLUTTER_DEBUG_REDRAWS },
   { "paint-volumes", CLUTTER_DEBUG_PAINT_VOLUMES },
   { "disable-culling", CLUTTER_DEBUG_DISABLE_CULLING },
-  { "disable-offscreen-redirect", CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT }
+  { "disable-offscreen-redirect", CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT },
+  { "continuous-redraw", CLUTTER_DEBUG_CONTINUOUS_REDRAW }
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -481,11 +483,12 @@ clutter_get_text_direction (void)
     }
   else
     {
-      /* Translate to default:RTL if you want your widgets
-       * to be RTL, otherwise translate to default:LTR.
+      /* Translators: Leave this UNTRANSLATED if your language is
+       * left-to-right.  If your language is right-to-left
+       * (e.g. Hebrew, Arabic), translate it to "default:RTL".
        *
-       * Do *not* translate it to "predefinito:LTR": if it
-       * it isn't default:LTR or default:RTL it will not work
+       * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
+       * it isn't default:LTR or default:RTL it will not work.
        */
       char *e = _("default:LTR");
 

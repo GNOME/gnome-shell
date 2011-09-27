@@ -89,9 +89,9 @@ struct _ClutterStageWayland
   /* back pointer to the backend */
   ClutterBackendWayland *backend;
 
-  ClutterGeometry allocation;
-  ClutterGeometry save_allocation;
-  ClutterGeometry pending_allocation;
+  cairo_rectangle_int_t allocation;
+  cairo_rectangle_int_t save_allocation;
+  cairo_rectangle_int_t pending_allocation;
   struct wl_surface *wayland_surface;
   int pending_swaps;
 

@@ -57,15 +57,15 @@ struct _ClutterStageWindowIface
                                                  gint                width,
                                                  gint                height);
   void              (* get_geometry)            (ClutterStageWindow *stage_window,
-                                                 ClutterGeometry    *geometry);
+                                                 cairo_rectangle_int_t *geometry);
 
   int               (* get_pending_swaps)       (ClutterStageWindow *stage_window);
 
-  void              (* add_redraw_clip)         (ClutterStageWindow *stage_window,
-                                                 ClutterGeometry    *stage_rectangle);
-  gboolean          (* has_redraw_clips)        (ClutterStageWindow *stage_window);
-  gboolean          (* ignoring_redraw_clips)   (ClutterStageWindow *stage_window);
-  gboolean          (* get_redraw_clip_bounds)  (ClutterStageWindow *stage_window,
+  void              (* add_redraw_clip)         (ClutterStageWindow    *stage_window,
+                                                 cairo_rectangle_int_t *stage_rectangle);
+  gboolean          (* has_redraw_clips)        (ClutterStageWindow    *stage_window);
+  gboolean          (* ignoring_redraw_clips)   (ClutterStageWindow    *stage_window);
+  gboolean          (* get_redraw_clip_bounds)  (ClutterStageWindow    *stage_window,
                                                  cairo_rectangle_int_t *clip);
 
 
@@ -101,18 +101,18 @@ void              _clutter_stage_window_resize                  (ClutterStageWin
                                                                  gint                width,
                                                                  gint                height);
 void              _clutter_stage_window_get_geometry            (ClutterStageWindow *window,
-                                                                 ClutterGeometry    *geometry);
+                                                                 cairo_rectangle_int_t *geometry);
 int               _clutter_stage_window_get_pending_swaps       (ClutterStageWindow *window);
 
-void              _clutter_stage_window_add_redraw_clip         (ClutterStageWindow *window,
-                                                                 ClutterGeometry    *stage_clip);
-gboolean          _clutter_stage_window_has_redraw_clips        (ClutterStageWindow *window);
-gboolean          _clutter_stage_window_ignoring_redraw_clips   (ClutterStageWindow *window);
-gboolean          _clutter_stage_window_get_redraw_clip_bounds  (ClutterStageWindow *window,
+void              _clutter_stage_window_add_redraw_clip         (ClutterStageWindow    *window,
+                                                                 cairo_rectangle_int_t *stage_clip);
+gboolean          _clutter_stage_window_has_redraw_clips        (ClutterStageWindow    *window);
+gboolean          _clutter_stage_window_ignoring_redraw_clips   (ClutterStageWindow    *window);
+gboolean          _clutter_stage_window_get_redraw_clip_bounds  (ClutterStageWindow    *window,
                                                                  cairo_rectangle_int_t *clip);
 
 void              _clutter_stage_window_set_accept_focus        (ClutterStageWindow *window,
-                                                           gboolean            accept_focus);
+                                                                 gboolean            accept_focus);
 
 void              _clutter_stage_window_redraw                  (ClutterStageWindow *window);
 

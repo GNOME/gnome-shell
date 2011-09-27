@@ -6,6 +6,7 @@
 #endif
 
 #include <glib-object.h>
+#include <cairo.h>
 #include <clutter/clutter-stage.h>
 
 #ifdef COGL_HAS_X11_SUPPORT
@@ -57,7 +58,7 @@ struct _ClutterStageCogl
    * junk frames to start with. */
   unsigned long frame_count;
 
-  ClutterGeometry bounding_redraw_clip;
+  cairo_rectangle_int_t bounding_redraw_clip;
 
   guint initialized_redraw_clip : 1;
 

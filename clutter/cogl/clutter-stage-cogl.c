@@ -205,8 +205,8 @@ clutter_stage_cogl_hide (ClutterStageWindow *stage_window)
 }
 
 static void
-clutter_stage_cogl_get_geometry (ClutterStageWindow *stage_window,
-                                ClutterGeometry    *geometry)
+clutter_stage_cogl_get_geometry (ClutterStageWindow    *stage_window,
+                                 cairo_rectangle_int_t *geometry)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
@@ -288,8 +288,8 @@ clutter_stage_cogl_ignoring_redraw_clips (ClutterStageWindow *stage_window)
  *   buffer.
  */
 static void
-clutter_stage_cogl_add_redraw_clip (ClutterStageWindow *stage_window,
-                                   ClutterGeometry    *stage_clip)
+clutter_stage_cogl_add_redraw_clip (ClutterStageWindow    *stage_window,
+                                    cairo_rectangle_int_t *stage_clip)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
@@ -313,32 +313,27 @@ clutter_stage_cogl_add_redraw_clip (ClutterStageWindow *stage_window,
 
   if (!stage_cogl->initialized_redraw_clip)
     {
-      stage_cogl->bounding_redraw_clip.x = stage_clip->x;
-      stage_cogl->bounding_redraw_clip.y = stage_clip->y;
-      stage_cogl->bounding_redraw_clip.width = stage_clip->width;
-      stage_cogl->bounding_redraw_clip.height = stage_clip->height;
+      stage_cogl->bounding_redraw_clip = *stage_clip;
     }
   else if (stage_cogl->bounding_redraw_clip.width > 0)
     {
-      clutter_geometry_union (&stage_cogl->bounding_redraw_clip, stage_clip,
-			      &stage_cogl->bounding_redraw_clip);
+      _clutter_util_rectangle_union (&stage_cogl->bounding_redraw_clip,
+                                     stage_clip,
+                                     &stage_cogl->bounding_redraw_clip);
     }
 
   stage_cogl->initialized_redraw_clip = TRUE;
 }
 
 static gboolean
-clutter_stage_cogl_get_redraw_clip_bounds (ClutterStageWindow *stage_window,
+clutter_stage_cogl_get_redraw_clip_bounds (ClutterStageWindow    *stage_window,
                                            cairo_rectangle_int_t *stage_clip)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
   if (stage_cogl->using_clipped_redraw)
     {
-      stage_clip->x = stage_cogl->bounding_redraw_clip.x;
-      stage_clip->y = stage_cogl->bounding_redraw_clip.y;
-      stage_clip->width = stage_cogl->bounding_redraw_clip.width;
-      stage_clip->height = stage_cogl->bounding_redraw_clip.height;
+      *stage_clip = stage_cogl->bounding_redraw_clip;
 
       return TRUE;
     }
@@ -457,7 +452,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
       static CoglMaterial *outline = NULL;
-      ClutterGeometry *clip = &stage_cogl->bounding_redraw_clip;
+      cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
       ClutterActor *actor = CLUTTER_ACTOR (wrapper);
       CoglHandle vbo;
       float x_1 = clip->x;
@@ -504,7 +499,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   /* push on the screen */
   if (use_clipped_redraw)
     {
-      ClutterGeometry *clip = &stage_cogl->bounding_redraw_clip;
+      cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
       int copy_area[4];
 
       /* XXX: It seems there will be a race here in that the stage

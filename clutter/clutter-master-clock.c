@@ -277,6 +277,20 @@ clutter_clock_prepare (GSource *source,
   int delay;
 
   clutter_threads_enter ();
+
+  if (G_UNLIKELY (clutter_paint_debug_flags &
+                  CLUTTER_DEBUG_CONTINUOUS_REDRAW))
+    {
+      ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+      const GSList *stages, *l;
+
+      stages = clutter_stage_manager_peek_stages (stage_manager);
+
+      /* Queue a full redraw on all of the stages */
+      for (l = stages; l != NULL; l = l->next)
+        clutter_actor_queue_redraw (l->data);
+    }
+
   delay = master_clock_next_frame_delay (master_clock);
   clutter_threads_leave ();
 

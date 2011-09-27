@@ -148,3 +148,33 @@ _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
     }
 }
 
+/*< private >
+ * _clutter_util_rectangle_union:
+ * @src1: first rectangle to union
+ * @src2: second rectangle to union
+ * @dest: (out): return location for the unioned rectangle
+ *
+ * Calculates the union of two rectangles.
+ *
+ * The union of rectangles @src1 and @src2 is the smallest rectangle which
+ * includes both @src1 and @src2 within it.
+ *
+ * It is allowed for @dest to be the same as either @src1 or @src2.
+ *
+ * This function should really be in Cairo.
+ */
+void
+_clutter_util_rectangle_union (const cairo_rectangle_int_t *src1,
+                               const cairo_rectangle_int_t *src2,
+                               cairo_rectangle_int_t       *dest)
+{
+  int dest_x, dest_y;
+
+  dest_x = MIN (src1->x, src2->x);
+  dest_y = MIN (src1->y, src2->y);
+
+  dest->width = MAX (src1->x + src1->width, src2->x + src2->width) - dest_x;
+  dest->height = MAX (src1->y + src1->height, src2->y + src2->height) - dest_y;
+  dest->x = dest_x;
+  dest->y = dest_y;
+}

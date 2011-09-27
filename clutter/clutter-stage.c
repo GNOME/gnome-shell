@@ -225,7 +225,7 @@ clutter_stage_get_preferred_width (ClutterActor *self,
                                    gfloat       *natural_width_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-  ClutterGeometry geom = { 0, };
+  cairo_rectangle_int_t geom;
 
   if (priv->impl == NULL)
     return;
@@ -246,7 +246,7 @@ clutter_stage_get_preferred_height (ClutterActor *self,
                                     gfloat       *natural_height_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-  ClutterGeometry geom = { 0, };
+  cairo_rectangle_int_t geom;
 
   if (priv->impl == NULL)
     return;
@@ -287,25 +287,32 @@ clutter_stage_allocate (ClutterActor           *self,
                         ClutterAllocationFlags  flags)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-  ClutterGeometry prev_geom;
-  ClutterGeometry geom = { 0, };
+  ClutterGeometry prev_geom, geom;
+  cairo_rectangle_int_t window_size;
   gboolean origin_changed;
   gint width, height;
 
-  origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED) ? TRUE : FALSE;
+  origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
+                 ? TRUE
+                 : FALSE;
 
   if (priv->impl == NULL)
     return;
 
+  /* our old allocation */
   clutter_actor_get_allocation_geometry (self, &prev_geom);
 
+  /* the current allocation */
   width = clutter_actor_box_get_width (box);
   height = clutter_actor_box_get_height (box);
-  _clutter_stage_window_get_geometry (priv->impl, &geom);
 
-  /* if the stage is fixed size (for instance, it's using a frame-buffer)
+  /* the current Stage implementation size */
+  _clutter_stage_window_get_geometry (priv->impl, &window_size);
+
+  /* if the stage is fixed size (for instance, it's using a EGL framebuffer)
    * then we simply ignore any allocation request and override the
-   * allocation chain.
+   * allocation chain - because we cannot forcibly change the size of the
+   * stage window.
    */
   if ((!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC)))
     {
@@ -347,8 +354,11 @@ clutter_stage_allocate (ClutterActor           *self,
               priv->min_size_changed = FALSE;
             }
 
-          if ((geom.width != width) || (geom.height != height))
-            _clutter_stage_window_resize (priv->impl, width, height);
+          if (window_size.width != width ||
+              window_size.height != height)
+            {
+              _clutter_stage_window_resize (priv->impl, width, height);
+            }
         }
     }
   else
@@ -356,10 +366,11 @@ clutter_stage_allocate (ClutterActor           *self,
       ClutterActorBox override = { 0, };
       ClutterActorClass *klass;
 
+      /* override the passed allocation */
       override.x1 = 0;
       override.y1 = 0;
-      override.x2 = geom.width;
-      override.y2 = geom.height;
+      override.x2 = window_size.width;
+      override.y2 = window_size.height;
 
       CLUTTER_NOTE (LAYOUT,
                     "Overrigin original allocation of %dx%d "
@@ -378,19 +389,26 @@ clutter_stage_allocate (ClutterActor           *self,
    * Clutter need to manually keep it informed of the current window
    * size. We do this after the allocation above so that the stage
    * window has a chance to update the window size based on the
-   * allocation. */
-  _clutter_stage_window_get_geometry (priv->impl, &geom);
-  cogl_onscreen_clutter_backend_set_size (geom.width, geom.height);
+   * allocation.
+   */
+  _clutter_stage_window_get_geometry (priv->impl, &window_size);
+  cogl_onscreen_clutter_backend_set_size (window_size.width,
+                                          window_size.height);
 
+  /* reset the viewport if the allocation effectively changed */
   clutter_actor_get_allocation_geometry (self, &geom);
-  if (geom.width != prev_geom.width || geom.height != prev_geom.height)
+  if (geom.width != prev_geom.width ||
+      geom.height != prev_geom.height)
     {
       _clutter_stage_set_viewport (CLUTTER_STAGE (self),
-                                   0, 0, geom.width, geom.height);
+                                   0, 0,
+                                   geom.width,
+                                   geom.height);
 
       /* Note: we don't assume that set_viewport will queue a full redraw
        * since it may bail-out early if something preemptively set the
-       * viewport before the stage was really allocated its new size. */
+       * viewport before the stage was really allocated its new size.
+       */
       queue_full_redraw (CLUTTER_STAGE (self));
     }
 }
@@ -525,28 +543,28 @@ _clutter_stage_update_active_framebuffer (ClutterStage *stage)
  * be able to cull them.
  */
 void
-_clutter_stage_do_paint (ClutterStage *stage, const ClutterGeometry *clip)
+_clutter_stage_do_paint (ClutterStage                *stage,
+                         const cairo_rectangle_int_t *clip)
 {
   ClutterStagePrivate *priv = stage->priv;
   float clip_poly[8];
+  cairo_rectangle_int_t geom;
+
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
 
   if (clip)
     {
-      clip_poly[0] = clip->x;
-      clip_poly[1] = clip->y;
-      clip_poly[2] = clip->x + clip->width;
-      clip_poly[3] = clip->y;
-      clip_poly[4] = clip->x + clip->width;
-      clip_poly[5] = clip->y + clip->height;
-      clip_poly[6] = clip->x;
-      clip_poly[7] = clip->y + clip->height;
+      clip_poly[0] = MAX (clip->x, 0);
+      clip_poly[1] = MAX (clip->y, 0);
+      clip_poly[2] = MIN (clip->x + clip->width, geom.width);
+      clip_poly[3] = clip_poly[1];
+      clip_poly[4] = clip_poly[2];
+      clip_poly[5] = MIN (clip->y + clip->height, geom.height);
+      clip_poly[6] = clip_poly[0];
+      clip_poly[7] = clip_poly[5];
     }
   else
     {
-      ClutterGeometry geom;
-
-      _clutter_stage_window_get_geometry (priv->impl, &geom);
-
       clip_poly[0] = 0;
       clip_poly[1] = 0;
       clip_poly[2] = geom.width;
@@ -762,7 +780,7 @@ static void
 clutter_stage_real_fullscreen (ClutterStage *stage)
 {
   ClutterStagePrivate *priv = stage->priv;
-  ClutterGeometry geom;
+  cairo_rectangle_int_t geom;
   ClutterActorBox box;
 
   /* we need to force an allocation here because the size
@@ -1115,9 +1133,10 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
 {
   ClutterStage *stage = CLUTTER_STAGE (actor);
   ClutterStageWindow *stage_window;
-  ClutterGeometry stage_clip;
   ClutterPaintVolume *redraw_clip;
   ClutterActorBox bounding_box;
+  ClutterActorBox intersection_box;
+  cairo_rectangle_int_t geom, stage_clip;
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (actor))
     return;
@@ -1151,12 +1170,24 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
                                              stage,
                                              &bounding_box);
 
+  _clutter_stage_window_get_geometry (stage_window, &geom);
+
+  intersection_box.x1 = MAX (bounding_box.x1, 0);
+  intersection_box.y1 = MAX (bounding_box.y1, 0);
+  intersection_box.x2 = MIN (bounding_box.x2, geom.width);
+  intersection_box.y2 = MIN (bounding_box.y2, geom.height);
+
+  /* There is no need to track degenerate/empty redraw clips */
+  if (intersection_box.x2 <= intersection_box.x1 ||
+      intersection_box.y2 <= intersection_box.y1)
+    return;
+
   /* when converting to integer coordinates make sure we round the edges of the
    * clip rectangle outwards... */
-  stage_clip.x = bounding_box.x1;
-  stage_clip.y = bounding_box.y1;
-  stage_clip.width = bounding_box.x2 - stage_clip.x;
-  stage_clip.height = bounding_box.y2 - stage_clip.y;
+  stage_clip.x = intersection_box.x1;
+  stage_clip.y = intersection_box.y1;
+  stage_clip.width = intersection_box.x2 - stage_clip.x;
+  stage_clip.height = intersection_box.y2 - stage_clip.y;
 
   _clutter_stage_window_add_redraw_clip (stage_window, &stage_clip);
 }
@@ -1206,14 +1237,8 @@ clutter_stage_get_redraw_clip_bounds (ClutterStage          *stage,
 
   if (!_clutter_stage_window_get_redraw_clip_bounds (priv->impl, clip))
     {
-      ClutterGeometry geometry;
-
       /* Set clip to the full extents of the stage */
-      _clutter_stage_window_get_geometry (priv->impl, &geometry);
-      clip->x = 0;
-      clip->y = 0;
-      clip->width = geometry.width;
-      clip->height = geometry.height;
+      _clutter_stage_window_get_geometry (priv->impl, clip);
     }
 }
 
@@ -2013,7 +2038,7 @@ clutter_stage_init (ClutterStage *self)
 {
   ClutterStagePrivate *priv;
   ClutterBackend *backend;
-  ClutterGeometry geom;
+  cairo_rectangle_int_t geom;
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);
