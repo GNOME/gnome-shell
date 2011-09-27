@@ -476,6 +476,9 @@ Keyboard.prototype = {
 
     // D-Bus methods
     Show: function(timestamp) {
+        if (!this._enableKeyboard)
+            return;
+
         if (timestamp - this._timestamp < 0)
             return;
 
@@ -484,6 +487,9 @@ Keyboard.prototype = {
     },
 
     Hide: function(timestamp) {
+        if (!this._enableKeyboard)
+            return;
+
         if (timestamp - this._timestamp < 0)
             return;
 
@@ -492,10 +498,16 @@ Keyboard.prototype = {
     },
 
     SetCursorLocation: function(x, y, w, h) {
+        if (!this._enableKeyboard)
+            return;
+
 //        this._setLocation(x, y);
     },
 
     SetEntryLocation: function(x, y, w, h) {
+        if (!this._enableKeyboard)
+            return;
+
 //        this._setLocation(x, y);
     },
 
