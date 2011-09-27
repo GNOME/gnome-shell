@@ -218,7 +218,7 @@ Keyboard.prototype = {
         this._redraw();
     },
 
-    _settingsChanged: function () {
+    _settingsChanged: function (settings, key) {
         this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
         if (!this._enableKeyboard && !this._keyboard)
             return;
@@ -228,9 +228,20 @@ Keyboard.prototype = {
 
         if (this._keyboard)
             this._destroyKeyboard();
-        if (this._enableKeyboard)
-            this._setupKeyboard();
-        else
+
+        if (this._enableKeyboard) {
+            // If we've been called because the setting actually just
+            // changed to true (as opposed to being called from
+            // this._init()), then we want to pop up the keyboard.
+            let showKeyboard = (settings != null);
+
+            // However, caribou-gtk-module or this._onKeyFocusChanged
+            // will probably immediately tell us to hide it, so we
+            // have to fake things out so we'll ignore that request.
+            if (showKeyboard)
+                this._timestamp = global.display.get_current_time_roundtrip() + 1;
+            this._setupKeyboard(showKeyboard);
+        } else
             Main.layoutManager.hideKeyboard(true);
     },
 
@@ -246,7 +257,7 @@ Keyboard.prototype = {
         this._destroySource();
     },
 
-    _setupKeyboard: function() {
+    _setupKeyboard: function(show) {
         this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
         Main.layoutManager.keyboardBox.add_actor(this.actor);
         Main.layoutManager.trackChrome(this.actor);
@@ -263,7 +274,11 @@ Keyboard.prototype = {
 
         this._keyboardNotifyId = this._keyboard.connect('notify::active-group', Lang.bind(this, this._onGroupChanged));
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
-        this._createSource();
+
+        if (show)
+            this.show();
+        else
+            this._createSource();
     },
 
     _onKeyFocusChanged: function () {
@@ -274,10 +289,11 @@ Keyboard.prototype = {
         if (focus && (focus._extended_keys || (focus._key && focus._key.extended_key)))
             return;
 
+        let time = global.current_event_time();
         if (focus instanceof Clutter.Text)
-            this.show();
+            this.Show(time);
         else
-            this.hide();
+            this.Hide(time);
     },
 
     _addKeys: function () {
