@@ -285,6 +285,40 @@ COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS ${MAINTAINER_CFLAGS#*  }"
 
 
 dnl     ============================================================
+dnl     Enable deprecation guards
+dnl     ============================================================
+
+# disable deprecated options from Glib only when building from git;
+# the rules for distcheck will take care of turning this on when
+# making a release
+m4_define([deprecated_default],
+          [m4_if(cogl_release_status, [git], [no], [yes])])
+
+AC_ARG_ENABLE([deprecated],
+              [AS_HELP_STRING([--enable-deprecated=@<:@no/yes@:>@],
+                              [Whether deprecated symbols should be disabled when compiling Cogl @<:@default=]deprecated_default[@:>@])],
+              [],
+              [enable_deprecated=deprecated_default])
+
+AS_CASE([$enable_deprecated],
+
+        [no],
+        [
+          DEPRECATED_CFLAGS="-DG_DISABLE_DEPRECATED -DG_DISABLE_SINGLE_INCLUDES"
+        ],
+
+        [yes],
+        [
+          DEPRECATED_CFLAGS=""
+        ],
+
+        [AC_MSG_ERROR([Unknown argument for --enable-deprecated])]
+)
+
+# strip leading spaces
+COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS ${DEPRECATED_CFLAGS#*  }"
+
+dnl     ============================================================
 dnl     Choose image loading backend
 dnl     ============================================================
 AC_ARG_ENABLE(
@@ -1011,6 +1045,7 @@ echo "        Profiling: ${enable_profile}"
 echo ""
 echo " • Compiler options:"
 echo "        Cogl debug: ${enable_debug}"
+echo "        Enable deprecated symbols: ${enable_deprecated}"
 echo "        Compiler flags: ${CFLAGS} ${COGL_EXTRA_CFLAGS}"
 echo "        Linker flags: ${LDFLAGS} ${COGL_EXTRA_LDFLAGS}"
 

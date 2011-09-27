@@ -37,7 +37,6 @@ libcogl_pango_la_LDFLAGS = \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@
 
 INCLUDES = \
-	-DG_DISABLE_SINGLE_INCLUDES	\
 	-DCLUTTER_COMPILATION		\
 	-DG_LOG_DOMAIN=\"CoglPango\"	\
 	-I$(top_srcdir)/cogl		\

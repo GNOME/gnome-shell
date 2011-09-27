@@ -11,11 +11,6 @@ AM_CFLAGS = \
 	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API \
 	-DCOGL_EXAMPLES_DATA=\""$(abs_top_srcdir)/examples/"\"
 
-AM_CPPFLAGS = \
-	-DG_DISABLE_SINGLE_INCLUDES \
-	-DCOGL_DISABLE_DEPRECATED
-
-
 common_ldadd = \
 	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la

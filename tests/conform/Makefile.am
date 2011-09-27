@@ -106,7 +106,6 @@ BUILT_SOURCES = wrappers
 INCLUDES = -I$(top_srcdir)
 
 test_conformance_CPPFLAGS = \
-	-DG_DISABLE_SINGLE_INCLUDES \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
