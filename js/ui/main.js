@@ -129,8 +129,6 @@ function _initRecorder() {
 function _initUserSession() {
     _initRecorder();
 
-    keyboard.init();
-
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT, false, -1, 1);
 
     ExtensionSystem.init();
