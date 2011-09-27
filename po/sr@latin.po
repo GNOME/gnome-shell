@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-20 20:06+0000\n"
-"PO-Revision-Date: 2011-09-13 05:16+0200\n"
+"POT-Creation-Date: 2011-09-26 17:31+0000\n"
+"PO-Revision-Date: 2011-09-23 05:37+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Language: sr\n"
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 :    n%"
 "10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Virtaal 0.7.0\n"
+"X-Generator: Virtaal 0.7.0-beta5\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -196,7 +196,7 @@ msgstr "Prijavite se"
 #. to indicate the user can swipe their finger instead
 #: ../js/gdm/loginDialog.js:830
 msgid "(or swipe finger)"
-msgstr ""
+msgstr "(ili lupite prst)"
 
 #: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
@@ -281,6 +281,10 @@ msgstr "„%s“ je dodat među omiljene."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "„%s“ je uklonjen iz omiljenih."
+
+#: ../js/ui/autorunManager.js:280
+msgid "Removable Devices"
+msgstr "Uklonjivi uređaji"
 
 #: ../js/ui/autorunManager.js:590
 #, c-format
@@ -462,7 +466,7 @@ msgstr "Van mreže"
 msgid "CONTACTS"
 msgstr "KONTAKTI"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1204
 msgid "Remove"
 msgstr "Ukloni"
 
@@ -540,24 +544,22 @@ msgstr ""
 "Kliknite na „Odjavi“ da napustite ove programe i da se odjavite sa sistema."
 
 #: ../js/ui/endSessionDialog.js:64
-#, fuzzy, c-format
-#| msgid "%s will be logged out automatically in %d seconds."
+#, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "„%s“ će biti odjavljen automatski za %d sek."
-msgstr[1] "„%s“ će biti odjavljen automatski za %d sek."
-msgstr[2] "„%s“ će biti odjavljen automatski za %d sek."
-msgstr[3] "„%s“ će biti odjavljen automatski za %d sek."
+msgstr[0] "%s će biti odjavljen automatski za %d sekundu."
+msgstr[1] "%s će biti odjavljen automatski za %d sekunde."
+msgstr[2] "%s će biti odjavljen automatski za %d sekundi."
+msgstr[3] "%s će biti odjavljen automatski za jednu sekundu."
 
 #: ../js/ui/endSessionDialog.js:69
-#, fuzzy, c-format
-#| msgid "You will be logged out automatically in %d seconds."
+#, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Bićete automatski odjavljeni za %d sek."
-msgstr[1] "Bićete automatski odjavljeni za %d sek."
-msgstr[2] "Bićete automatski odjavljeni za %d sek."
-msgstr[3] "Bićete automatski odjavljeni za %d sek."
+msgstr[0] "Bićete automatski odjavljeni za %d sekundu."
+msgstr[1] "Bićete automatski odjavljeni za %d sekunde."
+msgstr[2] "Bićete automatski odjavljeni za %d sekundi."
+msgstr[3] "Bićete automatski odjavljeni za jednu sekundu."
 
 #: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
@@ -569,14 +571,13 @@ msgstr ""
 "Kliknite na „Isključi“ da napustite ove programe i da isključite računar."
 
 #: ../js/ui/endSessionDialog.js:83
-#, fuzzy, c-format
-#| msgid "The system will power off automatically in %d seconds."
+#, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Računar će se automatski isključiti za %d sek."
-msgstr[1] "Računar će se automatski isključiti za %d sek."
-msgstr[2] "Računar će se automatski isključiti za %d sek."
-msgstr[3] "Računar će se automatski isključiti za %d sek."
+msgstr[0] "Računar će se automatski isključiti za %d sekundu."
+msgstr[1] "Računar će se automatski isključiti za %d sekunde."
+msgstr[2] "Računar će se automatski isključiti za %d sekundi."
+msgstr[3] "Računar će se automatski isključiti za jednu sekundu."
 
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
@@ -589,14 +590,13 @@ msgstr ""
 "sistem."
 
 #: ../js/ui/endSessionDialog.js:100
-#, fuzzy, c-format
-#| msgid "The system will restart automatically in %d seconds."
+#, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Sistem će se automatski ponovo pokrenuti za %d sek."
-msgstr[1] "Sistem će se automatski ponovo pokrenuti za %d sek."
-msgstr[2] "Sistem će se automatski ponovo pokrenuti za %d sek."
-msgstr[3] "Sistem će se automatski ponovo pokrenuti za %d sek."
+msgstr[0] "Sistem će se automatski ponovo pokrenuti za %d sekundu."
+msgstr[1] "Sistem će se automatski ponovo pokrenuti za %d sekunde."
+msgstr[2] "Sistem će se automatski ponovo pokrenuti za %d sekundi."
+msgstr[3] "Sistem će se automatski ponovo pokrenuti za jednu sekundu."
 
 #: ../js/ui/endSessionDialog.js:104
 msgid "Restarting the system."
@@ -604,12 +604,12 @@ msgstr "Ponovno pokrećem sistem."
 
 #: ../js/ui/extensionSystem.js:481
 msgid "Install"
-msgstr ""
+msgstr "Instaliraj"
 
 #: ../js/ui/extensionSystem.js:485
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
-msgstr ""
+msgstr "Da preuzmem i da instaliram „%s“ sa extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
 msgid "Keyboard"
@@ -649,11 +649,11 @@ msgstr "Pogledaj izvor"
 msgid "Web Page"
 msgstr "Internet stranica"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1197
 msgid "Open"
 msgstr "Otvori"
 
-#: ../js/ui/messageTray.js:2372
+#: ../js/ui/messageTray.js:2406
 msgid "System Information"
 msgstr "Informacije o sistemu"
 
@@ -821,7 +821,7 @@ msgstr "Lozinka:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -849,10 +849,8 @@ msgstr "Zumiraj"
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:71
-#, fuzzy
-#| msgid "Screen Reader"
 msgid "Screen Keyboard"
-msgstr "Čitač ekrana"
+msgstr "Tastatura na ekranu"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
@@ -972,7 +970,7 @@ msgstr "Uvek odobri pristup"
 msgid "Grant this time only"
 msgstr "Odobri samo ovaj put"
 
-#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1196
+#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1200
 msgid "Reject"
 msgstr "Odbij"
 
@@ -1191,7 +1189,7 @@ msgstr[3] "Preostaje jedan minut"
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
 msgid "AC adapter"
@@ -1249,39 +1247,39 @@ msgid "Invitation"
 msgstr "Pozivnica"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:325
+#: ../js/ui/telepathyClient.js:327
 msgid "Call"
 msgstr "Poziv"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:353
+#: ../js/ui/telepathyClient.js:357
 msgid "File Transfer"
 msgstr "Prenos datoteka"
 
-#: ../js/ui/telepathyClient.js:434
+#: ../js/ui/telepathyClient.js:438
 msgid "Subscription request"
 msgstr "Zahtev za učlanjenje"
 
-#: ../js/ui/telepathyClient.js:470
+#: ../js/ui/telepathyClient.js:474
 msgid "Connection error"
 msgstr "Greška pri povezivanju"
 
-#: ../js/ui/telepathyClient.js:733
+#: ../js/ui/telepathyClient.js:737
 #, c-format
 msgid "%s is online."
 msgstr "„%s“ je na mreži."
 
-#: ../js/ui/telepathyClient.js:738
+#: ../js/ui/telepathyClient.js:742
 #, c-format
 msgid "%s is offline."
 msgstr "„%s“ je van mreže."
 
-#: ../js/ui/telepathyClient.js:741
+#: ../js/ui/telepathyClient.js:745
 #, c-format
 msgid "%s is away."
 msgstr "„%s“ je odsutan."
 
-#: ../js/ui/telepathyClient.js:744
+#: ../js/ui/telepathyClient.js:748
 #, c-format
 msgid "%s is busy."
 msgstr "„%s“ je zauzet."
@@ -1289,35 +1287,35 @@ msgstr "„%s“ je zauzet."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:978
+#: ../js/ui/telepathyClient.js:982
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Poslato je <b>%A</b> u <b>%X</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:984
+#: ../js/ui/telepathyClient.js:988
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Poslato je u <b>%A</b>, <b>%d. %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:989
+#: ../js/ui/telepathyClient.js:993
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Poslato je u <b>%A</b>, <b>%d %B</b>, %Y."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1031
+#: ../js/ui/telepathyClient.js:1035
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s je sada poznat kao %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1144
 #, c-format
 msgid "Invitation to %s"
 msgstr "Pozivnica za %s"
@@ -1325,34 +1323,34 @@ msgstr "Pozivnica za %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1148
+#: ../js/ui/telepathyClient.js:1152
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s vas poziva da se pridružite %s"
 
-#: ../js/ui/telepathyClient.js:1150 ../js/ui/telepathyClient.js:1239
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1154 ../js/ui/telepathyClient.js:1243
+#: ../js/ui/telepathyClient.js:1347
 msgid "Decline"
 msgstr "Odbij"
 
-#: ../js/ui/telepathyClient.js:1151 ../js/ui/telepathyClient.js:1240
-#: ../js/ui/telepathyClient.js:1344
+#: ../js/ui/telepathyClient.js:1155 ../js/ui/telepathyClient.js:1244
+#: ../js/ui/telepathyClient.js:1348
 msgid "Accept"
 msgstr "Prihvati"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1184
+#: ../js/ui/telepathyClient.js:1188
 #, c-format
 msgid "Video call from %s"
 msgstr "%s vam je uputio video poziv"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1187
+#: ../js/ui/telepathyClient.js:1191
 #, c-format
 msgid "Call from %s"
 msgstr "%s vas zove"
 
-#: ../js/ui/telepathyClient.js:1197
+#: ../js/ui/telepathyClient.js:1201
 msgid "Answer"
 msgstr "Odgovori"
 
@@ -1361,109 +1359,109 @@ msgstr "Odgovori"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1233
+#: ../js/ui/telepathyClient.js:1237
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s vam šalje „%s“"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1312
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s želi dozvolu da vidi kada ste na mreži"
 
-#: ../js/ui/telepathyClient.js:1406
+#: ../js/ui/telepathyClient.js:1410
 msgid "Network error"
 msgstr "Greška mreže"
 
-#: ../js/ui/telepathyClient.js:1408
+#: ../js/ui/telepathyClient.js:1412
 msgid "Authentication failed"
 msgstr "Potvrđivanje identiteta nije uspelo"
 
-#: ../js/ui/telepathyClient.js:1410
+#: ../js/ui/telepathyClient.js:1414
 msgid "Encryption error"
 msgstr "Greška šifrovanja"
 
-#: ../js/ui/telepathyClient.js:1412
+#: ../js/ui/telepathyClient.js:1416
 msgid "Certificate not provided"
 msgstr "Uverenje nije prosleđeno"
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1418
 msgid "Certificate untrusted"
 msgstr "Uverenje nije poverljivo"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1420
 msgid "Certificate expired"
 msgstr "Uverenje je isteklo"
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1422
 msgid "Certificate not activated"
 msgstr "Uverenje nije aktivirano"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1424
 msgid "Certificate hostname mismatch"
 msgstr "Naziv domaćina uverenja se ne poklapa"
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1426
 msgid "Certificate fingerprint mismatch"
 msgstr "Otisak uverenja se ne poklapa"
 
-#: ../js/ui/telepathyClient.js:1424
+#: ../js/ui/telepathyClient.js:1428
 msgid "Certificate self-signed"
 msgstr "Uverenje je samopotpisano"
 
-#: ../js/ui/telepathyClient.js:1426
+#: ../js/ui/telepathyClient.js:1430
 msgid "Status is set to offline"
 msgstr "Stanje je postavljeno na „nepovezan“"
 
-#: ../js/ui/telepathyClient.js:1428
+#: ../js/ui/telepathyClient.js:1432
 msgid "Encryption is not available"
 msgstr "Šifrovanje nije dostupno"
 
-#: ../js/ui/telepathyClient.js:1430
+#: ../js/ui/telepathyClient.js:1434
 msgid "Certificate is invalid"
 msgstr "Uverenje nije ispravno"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1436
 msgid "Connection has been refused"
 msgstr "Veza je odbijena"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1438
 msgid "Connection can't be established"
 msgstr "Veza ne može biti uspostavljena"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1440
 msgid "Connection has been lost"
 msgstr "Veza je izgubljena"
 
-#: ../js/ui/telepathyClient.js:1438
+#: ../js/ui/telepathyClient.js:1442
 msgid "This resource is already connected to the server"
 msgstr "Ovaj resurs je već povezan sa serverom"
 
-#: ../js/ui/telepathyClient.js:1440
+#: ../js/ui/telepathyClient.js:1444
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Veza je zamenjena novom vezom koristeći isti resurs"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1446
 msgid "The account already exists on the server"
 msgstr "Ovaj nalog već postoji na serveru"
 
-#: ../js/ui/telepathyClient.js:1444
+#: ../js/ui/telepathyClient.js:1448
 msgid "Server is currently too busy to handle the connection"
 msgstr "Server je trenutno previše zauzet da bi rukovao vezom"
 
-#: ../js/ui/telepathyClient.js:1446
+#: ../js/ui/telepathyClient.js:1450
 msgid "Certificate has been revoked"
 msgstr "Uverenje je opozvano"
 
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1452
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Uverenje koristi nesiguran algoritam šifrovanja ili je kriptografski slabo"
 
-#: ../js/ui/telepathyClient.js:1450
+#: ../js/ui/telepathyClient.js:1454
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1473,20 +1471,20 @@ msgstr ""
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1459
+#: ../js/ui/telepathyClient.js:1463
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Povezivanje na „%s“ nije uspelo"
 
-#: ../js/ui/telepathyClient.js:1468
+#: ../js/ui/telepathyClient.js:1472
 msgid "Reconnect"
 msgstr "Ponovo se poveži"
 
-#: ../js/ui/telepathyClient.js:1469
+#: ../js/ui/telepathyClient.js:1473
 msgid "Edit account"
 msgstr "Uredi nalog"
 
-#: ../js/ui/telepathyClient.js:1515
+#: ../js/ui/telepathyClient.js:1519
 msgid "Unknown reason"
 msgstr "Razlog nije poznat"
 
@@ -1532,13 +1530,16 @@ msgstr "Odjavi me..."
 
 #: ../js/ui/userMenu.js:605
 msgid "Your chat status will be set to busy"
-msgstr ""
+msgstr "Vaše stanje ćaskanja će biti postavljeno na zauzeto"
 
 #: ../js/ui/userMenu.js:606
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
+"Obaveštenja su sada isključena, obuhvatajući i poruke ćaskanja. Vaše stanje na "
+"mreži je podešeno tako da će ostali znati da vi ne možete videti njihove "
+"poruke."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
