@@ -166,7 +166,7 @@ static int texture_signals[LAST_SIGNAL] = { 0 };
 static GThreadPool *async_thread_pool = NULL;
 static guint        repaint_upload_func = 0;
 static GList       *upload_list = NULL;
-static GStaticMutex upload_list_mutex = G_STATIC_MUTEX_INIT;
+static GMutex       upload_list_mutex = G_MUTEX_INIT;
 
 static CoglMaterial *texture_template_material = NULL;
 
@@ -1795,7 +1795,7 @@ texture_repaint_upload_func (gpointer user_data)
 {
   gulong start_time;
 
-  g_static_mutex_lock (&upload_list_mutex);
+  g_mutex_lock (&upload_list_mutex);
 
   if (upload_list)
     {
@@ -1823,7 +1823,7 @@ texture_repaint_upload_func (gpointer user_data)
       _clutter_master_clock_ensure_next_iteration (master_clock);
     }
 
-  g_static_mutex_unlock (&upload_list_mutex);
+  g_mutex_unlock (&upload_list_mutex);
 
   return TRUE;
 }
@@ -1870,7 +1870,7 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
        * set it while we're holding the mutex so we can safely start the
        * idle handler now without the possibility of calling the
        * callback after it is aborted */
-      g_static_mutex_lock (&upload_list_mutex);
+      g_mutex_lock (&upload_list_mutex);
 
       if (repaint_upload_func == 0)
         {
@@ -1882,7 +1882,7 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
       upload_list = g_list_append (upload_list, data);
       data->upload_queued = TRUE;
 
-      g_static_mutex_unlock (&upload_list_mutex);
+      g_mutex_unlock (&upload_list_mutex);
 
       g_mutex_unlock (data->mutex);
 
