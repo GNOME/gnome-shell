@@ -340,11 +340,14 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
                                  GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterSettings *settings;
+  Atom atoms[N_ATOM_NAMES];
+  double dpi;
 
   if (_foreign_dpy)
     backend_x11->xdpy = _foreign_dpy;
-  /*
-   * Only open connection if not already set by prior call to
+
+  /* Only open connection if not already set by prior call to
    * clutter_x11_set_display()
    */
   if (backend_x11->xdpy == NULL)
@@ -377,78 +380,72 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
   g_assert (backend_x11->xdpy != NULL);
 
-    {
-      ClutterSettings *settings;
-      Atom atoms[N_ATOM_NAMES];
-      double dpi;
+  CLUTTER_NOTE (BACKEND, "Getting the X screen");
 
-      CLUTTER_NOTE (BACKEND, "Getting the X screen");
+  settings = clutter_settings_get_default ();
 
-      settings = clutter_settings_get_default ();
+  /* Cogl needs to know the Xlib display connection for
+     CoglTexturePixmapX11 */
+  cogl_xlib_set_display (backend_x11->xdpy);
 
-      /* Cogl needs to know the Xlib display connection for
-         CoglTexturePixmapX11 */
-      cogl_xlib_set_display (backend_x11->xdpy);
+  /* add event filter for Cogl events */
+  clutter_x11_add_filter (cogl_xlib_filter, NULL);
 
-      /* add event filter for Cogl events */
-      clutter_x11_add_filter (cogl_xlib_filter, NULL);
+  if (clutter_screen == -1)
+    backend_x11->xscreen = DefaultScreenOfDisplay (backend_x11->xdpy);
+  else
+    backend_x11->xscreen = ScreenOfDisplay (backend_x11->xdpy,
+                                            clutter_screen);
 
-      if (clutter_screen == -1)
-        backend_x11->xscreen = DefaultScreenOfDisplay (backend_x11->xdpy);
-      else
-        backend_x11->xscreen = ScreenOfDisplay (backend_x11->xdpy,
-                                                clutter_screen);
+  backend_x11->xscreen_num = XScreenNumberOfScreen (backend_x11->xscreen);
+  backend_x11->xscreen_width = WidthOfScreen (backend_x11->xscreen);
+  backend_x11->xscreen_height = HeightOfScreen (backend_x11->xscreen);
 
-      backend_x11->xscreen_num = XScreenNumberOfScreen (backend_x11->xscreen);
-      backend_x11->xscreen_width = WidthOfScreen (backend_x11->xscreen);
-      backend_x11->xscreen_height = HeightOfScreen (backend_x11->xscreen);
+  backend_x11->xwin_root = RootWindow (backend_x11->xdpy,
+                                       backend_x11->xscreen_num);
 
-      backend_x11->xwin_root = RootWindow (backend_x11->xdpy,
-                                           backend_x11->xscreen_num);
+  backend_x11->display_name = g_strdup (clutter_display_name);
 
-      backend_x11->display_name = g_strdup (clutter_display_name);
+  dpi = (((double) DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num) * 25.4)
+      / (double) DisplayHeightMM (backend_x11->xdpy, backend_x11->xscreen_num));
 
-      dpi = (((double) DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num) * 25.4)
-            / (double) DisplayHeightMM (backend_x11->xdpy, backend_x11->xscreen_num));
+  g_object_set (settings, "font-dpi", (int) dpi * 1024, NULL);
 
-      g_object_set (settings, "font-dpi", (int) dpi * 1024, NULL);
+  /* create the device manager */
+  clutter_backend_x11_create_device_manager (backend_x11);
 
-      /* create the device manager */
-      clutter_backend_x11_create_device_manager (backend_x11);
+  /* register keymap */
+  clutter_backend_x11_create_keymap (backend_x11);
 
-      /* register keymap */
-      clutter_backend_x11_create_keymap (backend_x11);
+  /* create XSETTINGS client */
+  backend_x11->xsettings =
+    _clutter_xsettings_client_new (backend_x11->xdpy,
+                                   backend_x11->xscreen_num,
+                                   clutter_backend_x11_xsettings_notify,
+                                   NULL,
+                                   backend_x11);
 
-      /* create XSETTINGS client */
-      backend_x11->xsettings =
-        _clutter_xsettings_client_new (backend_x11->xdpy,
-                                       backend_x11->xscreen_num,
-                                       clutter_backend_x11_xsettings_notify,
-                                       NULL,
-                                       backend_x11);
+  /* add event filter for XSETTINGS events */
+  clutter_x11_add_filter (xsettings_filter, backend_x11);
 
-      /* add event filter for XSETTINGS events */
-      clutter_x11_add_filter (xsettings_filter, backend_x11);
+  if (clutter_synchronise)
+    XSynchronize (backend_x11->xdpy, True);
 
-      if (clutter_synchronise)
-        XSynchronize (backend_x11->xdpy, True);
+  XInternAtoms (backend_x11->xdpy,
+                (char **) atom_names, N_ATOM_NAMES,
+                False, atoms);
 
-      XInternAtoms (backend_x11->xdpy,
-                    (char **) atom_names, N_ATOM_NAMES,
-                    False, atoms);
-
-      backend_x11->atom_NET_WM_PID = atoms[0];
-      backend_x11->atom_NET_WM_PING = atoms[1];
-      backend_x11->atom_NET_WM_STATE = atoms[2];
-      backend_x11->atom_NET_WM_STATE_FULLSCREEN = atoms[3];
-      backend_x11->atom_NET_WM_USER_TIME = atoms[4];
-      backend_x11->atom_WM_PROTOCOLS = atoms[5];
-      backend_x11->atom_WM_DELETE_WINDOW = atoms[6];
-      backend_x11->atom_XEMBED = atoms[7];
-      backend_x11->atom_XEMBED_INFO = atoms[8];
-      backend_x11->atom_NET_WM_NAME = atoms[9];
-      backend_x11->atom_UTF8_STRING = atoms[10];
-    }
+  backend_x11->atom_NET_WM_PID = atoms[0];
+  backend_x11->atom_NET_WM_PING = atoms[1];
+  backend_x11->atom_NET_WM_STATE = atoms[2];
+  backend_x11->atom_NET_WM_STATE_FULLSCREEN = atoms[3];
+  backend_x11->atom_NET_WM_USER_TIME = atoms[4];
+  backend_x11->atom_WM_PROTOCOLS = atoms[5];
+  backend_x11->atom_WM_DELETE_WINDOW = atoms[6];
+  backend_x11->atom_XEMBED = atoms[7];
+  backend_x11->atom_XEMBED_INFO = atoms[8];
+  backend_x11->atom_NET_WM_NAME = atoms[9];
+  backend_x11->atom_UTF8_STRING = atoms[10];
 
   g_free (clutter_display_name);
 
@@ -548,7 +545,8 @@ clutter_backend_x11_dispose (GObject *gobject)
 static ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend)
 {
-  ClutterFeatureFlags flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
+  ClutterFeatureFlags flags = CLUTTER_FEATURE_STAGE_USER_RESIZE
+                            | CLUTTER_FEATURE_STAGE_CURSOR;
 
   flags |= CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->get_features (backend);
 
@@ -758,6 +756,7 @@ error:
 
   if (onscreen_template != NULL)
     cogl_object_unref (onscreen_template);
+
   if (swap_chain != NULL)
     cogl_object_unref (swap_chain);
 
@@ -766,6 +765,7 @@ error:
       cogl_object_unref (backend->cogl_renderer);
       backend->cogl_renderer = NULL;
     }
+
   return FALSE;
 }
 
@@ -783,10 +783,11 @@ clutter_backend_x11_create_stage (ClutterBackend  *backend,
 			"wrapper", wrapper,
 			NULL);
 
+  /* the X11 stage does event translation */
   translator = CLUTTER_EVENT_TRANSLATOR (stage);
   _clutter_backend_add_event_translator (backend, translator);
 
-  CLUTTER_NOTE (MISC, "Cogl stage created (display:%p, screen:%d, root:%u)",
+  CLUTTER_NOTE (MISC, "X11 stage created (display:%p, screen:%d, root:%u)",
                 backend_x11->xdpy,
                 backend_x11->xscreen_num,
                 (unsigned int) backend_x11->xwin_root);
