@@ -168,7 +168,8 @@ static const GDebugKey clutter_debug_keys[] = {
   { "animation", CLUTTER_DEBUG_ANIMATION },
   { "layout", CLUTTER_DEBUG_LAYOUT },
   { "clipping", CLUTTER_DEBUG_CLIPPING },
-  { "oob-transforms", CLUTTER_DEBUG_OOB_TRANSFORMS }
+  { "oob-transforms", CLUTTER_DEBUG_OOB_TRANSFORMS },
+  { "paint-deform-tiles", CLUTTER_DEBUG_PAINT_DEFORM_TILES },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
