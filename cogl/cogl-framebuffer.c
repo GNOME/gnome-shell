@@ -2019,6 +2019,13 @@ cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
 }
 
 void
+cogl_framebuffer_finish (CoglFramebuffer *framebuffer)
+{
+  _cogl_framebuffer_flush_journal (framebuffer);
+  GE (framebuffer->context, glFinish ());
+}
+
+void
 cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
                                   gboolean throttled)
 {

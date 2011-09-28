@@ -561,6 +561,25 @@ void
 cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                                unsigned int id);
 
+/**
+ * cogl_framebuffer_finish:
+ * @framebuffer: A #CoglFramebuffer pointer
+ *
+ * This blocks the CPU until all pending rendering associated with the
+ * specified framebuffer has completed. It's very rare that developers should
+ * ever need this level of synchronization with the GPU and should never be
+ * used unless you clearly understand why you need to explicitly force
+ * synchronization.
+ *
+ * One example might be for benchmarking purposes to be sure timing
+ * measurements reflect the time that the GPU is busy for not just the time it
+ * takes to queue rendering commands.
+ *
+ * Stability: unstable
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_finish (CoglFramebuffer *framebuffer);
 
 typedef struct _CoglOnscreen CoglOnscreen;
 #define COGL_ONSCREEN(X) ((CoglOnscreen *)(X))
