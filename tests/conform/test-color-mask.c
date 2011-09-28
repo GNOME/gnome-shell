@@ -92,10 +92,13 @@ test_cogl_color_mask (TestUtilsGTestFixture *fixture,
 {
   TestUtilsSharedState *shared_state = data;
   TestState state;
+  CoglColor bg;
   int i;
 
   state.width = cogl_framebuffer_get_width (shared_state->fb);
   state.height = cogl_framebuffer_get_height (shared_state->fb);
+
+  cogl_color_init_from_4ub (&bg, 0, 0, 0, 255);
 
   for (i = 0; i < NUM_FBOS; i++)
     {
@@ -105,6 +108,12 @@ test_cogl_color_mask (TestUtilsGTestFixture *fixture,
 
 
       state.fbo[i] = cogl_offscreen_new_to_texture (state.tex[i]);
+
+      /* Clear the texture color bits */
+      cogl_push_framebuffer (state.fbo[i]);
+      cogl_clear (&bg, COGL_BUFFER_BIT_COLOR);
+      cogl_pop_framebuffer ();
+
       cogl_framebuffer_set_color_mask (state.fbo[i],
                                        i == 0 ? COGL_COLOR_MASK_RED :
                                        i == 1 ? COGL_COLOR_MASK_GREEN :
