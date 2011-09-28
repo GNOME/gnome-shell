@@ -12,33 +12,8 @@ function WindowAttentionHandler() {
 
 WindowAttentionHandler.prototype = {
     _init : function() {
-        this._startupIds = {};
         this._tracker = Shell.WindowTracker.get_default();
-        this._tracker.connect('startup-sequence-changed', Lang.bind(this, this._onStartupSequenceChanged));
-
         global.display.connect('window-demands-attention', Lang.bind(this, this._onWindowDemandsAttention));
-    },
-
-    _onStartupSequenceChanged : function(tracker) {
-        let sequences = tracker.get_startup_sequences();
-        this._startupIds = {};
-        for(let i = 0; i < sequences.length; i++) {
-            this._startupIds[sequences[i].get_id()] = true;
-        }
-    },
-
-    _getTitle : function(app, window) {
-        if (this._startupIds[window.get_startup_id()])
-            return app.get_name();
-        else
-            return window.title;
-    },
-
-    _getBanner : function(app, window) {
-        if (this._startupIds[window.get_startup_id()])
-            return _("%s has finished starting").format(app.get_name());
-        else
-            return _("'%s' is ready").format(window.title);
     },
 
     _onWindowDemandsAttention : function(display, window) {
@@ -57,12 +32,16 @@ WindowAttentionHandler.prototype = {
         let source = new Source(app, window);
         Main.messageTray.add(source);
 
-        let notification = new MessageTray.Notification(source, this._getTitle(app, window), this._getBanner(app, window));
+        let banner = _("'%s' is ready").format(window.title);
+        let title = app.get_name();
+
+        let notification = new MessageTray.Notification(source, title, banner);
         source.notify(notification);
 
-        source.signalIDs.push(window.connect('notify::title', Lang.bind(this, function(win) {
-                                    notification.update(this._getTitle(app, win), this._getBanner(app, win));
-                              })));
+        source.signalIDs.push(window.connect('notify::title',
+                                             Lang.bind(this, function() {
+                                                 notification.update(title, banner);
+                                             })));
     }
 };
 
