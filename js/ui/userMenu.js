@@ -1,4 +1,4 @@
-/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const AccountsService = imports.gi.AccountsService;
 const DBus = imports.dbus;

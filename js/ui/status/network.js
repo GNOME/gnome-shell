@@ -1,4 +1,4 @@
-// -*- mode: js2; indent-tabs-mode: nil; js2-basic-offset: 4 -*-
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 const ByteArray = imports.byteArray;
 const DBus = imports.dbus;
 const GLib = imports.gi.GLib;
