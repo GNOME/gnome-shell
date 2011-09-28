@@ -110,3 +110,9 @@ test_textures_main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_texture_slicing_describe (void)
+{
+  return "Check texture slicing support in CoglTexture";
+}

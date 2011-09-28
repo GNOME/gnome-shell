@@ -114,3 +114,9 @@ test_animation_main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_animation_describe (void)
+{
+  return "Simple clutter_actor_animate() demo";
+}

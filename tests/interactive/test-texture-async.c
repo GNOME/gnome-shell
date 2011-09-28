@@ -147,3 +147,9 @@ test_texture_async_main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_texture_async_describe (void)
+{
+  return "Texture asynchronous loading using threads";
+}

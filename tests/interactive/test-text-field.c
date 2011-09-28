@@ -334,3 +334,14 @@ test_text_field_main (gint    argc,
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_text_field_describe (void)
+{
+  return
+"Text actor single-line and password mode support\n"
+"\n"
+"This test checks the :single-line-mode and :password-char properties of\n"
+"the ClutterText actor, plus the password hint feature and the :max-length\n"
+"property.";
+}

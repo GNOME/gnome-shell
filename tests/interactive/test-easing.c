@@ -262,3 +262,9 @@ test_easing_main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_easing_describe (void)
+{
+  return "Visualize all easing modes provided by Clutter";
+}
