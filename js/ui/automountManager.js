@@ -209,10 +209,14 @@ AutomountManager.prototype = {
             }
         }
 
+        // Volume is already mounted, don't bother.
+        if (volume.get_mount())
+            return;
+
         if (!this._settings.get_boolean(SETTING_ENABLE_AUTOMOUNT) ||
             !volume.should_automount() ||
             !volume.can_mount()) {
-	    // allow the autorun to run anyway; this can happen if the
+            // allow the autorun to run anyway; this can happen if the
             // mount gets added programmatically later, even if 
             // should_automount() or can_mount() are false, like for
             // blank optical media.
