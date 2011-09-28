@@ -71,7 +71,6 @@ source_h =					\
 	$(srcdir)/clutter-blur-effect.h		\
 	$(srcdir)/clutter-box.h			\
 	$(srcdir)/clutter-box-layout.h		\
-	$(srcdir)/clutter-brightness-effect.h	\
 	$(srcdir)/clutter-cairo-texture.h	\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-click-action.h	\
@@ -81,7 +80,6 @@ source_h =					\
 	$(srcdir)/clutter-colorize-effect.h	\
 	$(srcdir)/clutter-constraint.h		\
 	$(srcdir)/clutter-container.h		\
-	$(srcdir)/clutter-contrast-effect.h	\
 	$(srcdir)/clutter-deform-effect.h	\
 	$(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-desaturate-effect.h	\
@@ -98,7 +96,6 @@ source_h =					\
 	$(srcdir)/clutter-gesture-action.h 		\
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-input-device.h	\
-	$(srcdir)/clutter-invert-lightness-effect.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-keysyms-compat.h	\
@@ -161,7 +158,6 @@ source_c = \
 	$(srcdir)/clutter-blur-effect.c		\
 	$(srcdir)/clutter-box.c			\
 	$(srcdir)/clutter-box-layout.c		\
-	$(srcdir)/clutter-brightness-effect.c	\
 	$(srcdir)/clutter-cairo-texture.c       \
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-click-action.c	\
@@ -170,7 +166,6 @@ source_c = \
 	$(srcdir)/clutter-colorize-effect.c	\
 	$(srcdir)/clutter-constraint.c		\
 	$(srcdir)/clutter-container.c		\
-	$(srcdir)/clutter-contrast-effect.c	\
 	$(srcdir)/clutter-deform-effect.c	\
 	$(srcdir)/clutter-desaturate-effect.c	\
 	$(srcdir)/clutter-device-manager.c	\
@@ -187,7 +182,6 @@ source_c = \
 	$(srcdir)/clutter-gesture-action.c 		\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
-	$(srcdir)/clutter-invert-lightness-effect.c	\
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-keysyms-table.c	\
 	$(srcdir)/clutter-layout-manager.c	\

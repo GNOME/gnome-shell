@@ -2641,53 +2641,6 @@ clutter_page_turn_effect_get_type
 </SECTION>
 
 <SECTION>
-<TITLE>ClutterBrightnessEffect</TITLE>
-<FILE>clutter-brightness-effect</FILE>
-ClutterBrightnessEffect
-clutter_brightness_effect_new
-clutter_brightness_effect_set_brightness
-clutter_brightness_effect_get_brightness
-<SUBSECTION Standard>
-CLUTTER_TYPE_BRIGHTNESS_EFFECT
-CLUTTER_BRIGHTNESS_EFFECT
-CLUTTER_IS_BRIGHTNESS_EFFECT
-<SUBSECTION Private>
-ClutterBrightnessEffectClass
-clutter_brightness_effect_get_type
-</SECTION>
-
-<SECTION>
-<TITLE>ClutterContrastEffect</TITLE>
-<FILE>clutter-contrast-effect</FILE>
-ClutterContrastEffect
-clutter_contrast_effect_new
-clutter_contrast_effect_set_contrast
-clutter_contrast_effect_get_contrast
-<SUBSECTION Standard>
-CLUTTER_TYPE_CONTRAST_EFFECT
-CLUTTER_CONTRAST_EFFECT
-CLUTTER_IS_CONTRAST_EFFECT
-<SUBSECTION Private>
-ClutterContrastEffectClass
-clutter_contrast_effect_get_type
-</SECTION>
-
-<SECTION>
-<TITLE>ClutterInvertLightnessEffect</TITLE>
-<FILE>clutter-invert-lightness-effect</FILE>
-ClutterInvertLightnessEffect
-clutter_contrast_effect_new
-<SUBSECTION Standard>
-CLUTTER_TYPE_INVERT_LIGHTNESS_EFFECT
-CLUTTER_INVERT_LIGHTNESS_EFFECT
-CLUTTER_IS_INVERT_LIGHTNESS_EFFECT
-<SUBSECTION Private>
-ClutterInvertLightnessEffectClass
-clutter_invert_lightness_effect_get_type
-</SECTION>
-
-
-<SECTION>
 <FILE>clutter-settings</FILE>
 ClutterSettings
 clutter_settings_get_default
