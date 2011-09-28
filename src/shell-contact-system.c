@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /* This implements a complete suite for caching and searching contacts in the
  * Shell. We retrieve contacts from libfolks asynchronously and we search
  * these for display to the user. */

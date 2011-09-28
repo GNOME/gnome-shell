@@ -1,5 +1,5 @@
-/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
- *
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
  * Copyright (C) 2010 Igalia, S.L.
  *
  * Author: Alejandro Piñeiro Iglesias <apinheiro@igalia.com>

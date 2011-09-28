@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 #ifndef __HOTPLUG_MIMETYPES_H__
 #define __HOTPLUG_MIMETYPES_H__
 

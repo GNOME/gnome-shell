@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
  * Copyright (C) 1999, 2000, 2001 Eazel, Inc.
  * Copyright (C) 2011 Red Hat, Inc.

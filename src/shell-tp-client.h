@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 #ifndef __SHELL_TP_CLIENT_H__
 #define __SHELL_TP_CLIENT_H__
 
