@@ -101,6 +101,8 @@ ClutterConstraint *clutter_actor_get_constraint            (ClutterActor      *s
                                                             const gchar       *name);
 void               clutter_actor_clear_constraints         (ClutterActor      *self);
 
+gboolean           clutter_actor_has_constraints           (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_CONSTRAINT_H__ */
