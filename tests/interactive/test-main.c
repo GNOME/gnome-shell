@@ -195,7 +195,11 @@ main (int argc, char **argv)
 
           unit_test_main = func;
 
-          ret = unit_test_main (argc, argv);
+          ret = unit_test_main (n_unit_names, unit_names);
+
+          g_free (unit_test);
+
+          break;
         }
 
       g_free (unit_test);
