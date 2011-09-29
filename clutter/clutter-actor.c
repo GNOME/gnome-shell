@@ -12493,6 +12493,25 @@ clutter_actor_has_constraints (ClutterActor *self)
   return self->priv->constraints != NULL;
 }
 
+/**
+ * clutter_actor_has_actions:
+ * @self: A #ClutterActor
+ *
+ * Returns whether the actor has any actions applied.
+ *
+ * Return value: %TRUE if the actor has any actions,
+ *   %FALSE otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_has_actions (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+
+  return self->priv->actions != NULL;
+}
+
 gint
 _clutter_actor_get_n_children (ClutterActor *self)
 {

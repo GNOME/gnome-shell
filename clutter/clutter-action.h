@@ -96,6 +96,8 @@ ClutterAction *clutter_actor_get_action            (ClutterActor  *self,
 GList *        clutter_actor_get_actions           (ClutterActor  *self);
 void           clutter_actor_clear_actions         (ClutterActor  *self);
 
+gboolean        clutter_actor_has_actions          (ClutterActor  *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTION_H__ */
