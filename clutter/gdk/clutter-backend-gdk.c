@@ -65,6 +65,8 @@ G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND_COGL
 /* global for pre init setup calls */
 static GdkDisplay  *_foreign_dpy = NULL;
 
+static gboolean disable_event_retrieval = FALSE;
+
 static void
 clutter_backend_gdk_init_settings (ClutterBackendGdk *backend_gdk)
 {
@@ -186,7 +188,8 @@ clutter_backend_gdk_init_events (ClutterBackend *backend)
 {
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
-  _clutter_backend_gdk_events_init (backend);
+  if (!disable_event_retrieval)
+    _clutter_backend_gdk_events_init (backend);
 }
 
 static void
@@ -451,4 +454,17 @@ clutter_gdk_set_display (GdkDisplay *display)
     }
 
   _foreign_dpy = g_object_ref (display);
+}
+
+void
+clutter_gdk_disable_event_retrieval (void)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  disable_event_retrieval = TRUE;
 }

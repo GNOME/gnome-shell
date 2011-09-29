@@ -51,6 +51,8 @@ GdkFilterReturn clutter_gdk_handle_event                (GdkEvent     *event);
 
 ClutterStage *  clutter_gdk_get_stage_from_window       (GdkWindow    *window);
 
+void            clutter_gdk_disable_event_retrieval     (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_GDK_H__ */
