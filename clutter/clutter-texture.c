@@ -99,35 +99,36 @@ struct _ClutterTexturePrivate
   guint seen_create_pick_material_warning : 1;
 };
 
+#define ASYNC_STATE_LOCKED      1
+#define ASYNC_STATE_CANCELLED   2
+#define ASYNC_STATE_QUEUED      3
+
 struct _ClutterTextureAsyncData
 {
-  /* Mutex used to synchronize setting the abort flag */
-  GMutex         *mutex;
-
-  /* If set to true, the loaded data will be discarded */
-  gboolean        abort;
-
   /* The texture for which the data is being loaded */
   ClutterTexture *texture;
 
-  /* Source ID of the idle handler for loading. If this is zero then
-     the data is being loaded in a thread from the thread pool. Once
-     the thread is finished it will be converted to idle load handler
-     and load_idle will be nonzero. If load_idle is nonzero, and
-     upload_queued is FALSE then the rest of the load can safely be
-     aborted by just removing the source, otherwise the abort flag
-     needs to be set and the data should be disowned */
-  guint           load_idle;
+  gchar *load_filename;
+  CoglHandle load_bitmap;
 
-  /* Set when the texture is queued for GPU upload, used to determine
-   * what to do with the texture data when load_idle is zero.
-  */
-  gboolean        upload_queued;
+  guint load_idle;
 
-  gchar          *load_filename;
-  CoglHandle      load_bitmap;
-  GError         *load_error;
+  GError *load_error;
+
+  gint state;
 };
+
+static inline void
+clutter_texture_async_data_lock (ClutterTextureAsyncData *data)
+{
+  g_bit_lock (&data->state, 0);
+}
+
+static inline void
+clutter_texture_async_data_unlock (ClutterTextureAsyncData *data)
+{
+  g_bit_unlock (&data->state, 0);
+}
 
 enum
 {
@@ -166,7 +167,7 @@ static int texture_signals[LAST_SIGNAL] = { 0 };
 static GThreadPool *async_thread_pool = NULL;
 static guint        repaint_upload_func = 0;
 static GList       *upload_list = NULL;
-static GStaticMutex upload_list_mutex = G_STATIC_MUTEX_INIT;
+static GMutex       upload_list_mutex = G_MUTEX_INIT;
 
 static CoglMaterial *texture_template_material = NULL;
 
@@ -711,18 +712,13 @@ clutter_texture_async_data_free (ClutterTextureAsyncData *data)
      once it is known that the load thread has completed or from the
      load thread/upload function itself if the abort flag is true (in
      which case the main thread has disowned the data) */
+  g_free (data->load_filename);
 
-  if (data->load_filename)
-    g_free (data->load_filename);
-
-  if (data->load_bitmap)
+  if (data->load_bitmap != NULL)
     cogl_handle_unref (data->load_bitmap);
 
-  if (data->load_error)
+  if (data->load_error != NULL)
     g_error_free (data->load_error);
-
-  if (data->mutex)
-    g_mutex_free (data->mutex);
 
   g_slice_free (ClutterTextureAsyncData, data);
 }
@@ -739,40 +735,30 @@ clutter_texture_async_load_cancel (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv = texture->priv;
 
-  if (priv->async_data)
+  if (priv->async_data != NULL)
     {
-      GMutex *mutex = priv->async_data->mutex;
+      ClutterTextureAsyncData *async_data = priv->async_data;
 
-      /* The mutex will only be NULL if the no thread was used for
-         this load, in which case there's no need for any
-         synchronization */
-      if (mutex)
-        g_mutex_lock (mutex);
+      priv->async_data = NULL;
 
-      /* If there is no thread behind this load then we can just abort
-         the idle handler and destroy the load data immediately */
-      if (priv->async_data->load_idle)
+      if (async_data->load_idle != 0)
         {
-          g_source_remove (priv->async_data->load_idle);
-          priv->async_data->load_idle = 0;
+          g_source_remove (async_data->load_idle);
+          async_data->load_idle = 0;
 
-          if (mutex)
-            g_mutex_unlock (mutex);
-
-          clutter_texture_async_data_free (priv->async_data);
+          clutter_texture_async_data_free (async_data);
         }
       else
         {
-          /* Otherwise we need to tell the thread to abort and disown
-             the data, if the data has been loaded and decoded the data
-             is now waiting for a master clock iteration to be repainted */
-          priv->async_data->abort = TRUE;
+          clutter_texture_async_data_lock (async_data);
 
-          if (mutex)
-            g_mutex_unlock (mutex);
+          CLUTTER_NOTE (TEXTURE, "[async] cancelling operation for '%s'",
+                        async_data->load_filename);
+
+          async_data->state |= ASYNC_STATE_CANCELLED;
+
+          clutter_texture_async_data_unlock (async_data);
         }
-
-      priv->async_data = NULL;
     }
 }
 
@@ -1736,8 +1722,8 @@ clutter_texture_async_load_complete (ClutterTexture *self,
                                      const GError   *error)
 {
   ClutterTexturePrivate *priv = self->priv;
-  CoglHandle handle;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
+  CoglHandle handle;
 
   priv->async_data = NULL;
 
@@ -1767,37 +1753,13 @@ clutter_texture_async_load_complete (ClutterTexture *self,
 }
 
 static gboolean
-clutter_texture_thread_idle_func (gpointer user_data)
-{
-  ClutterTextureAsyncData *data = user_data;
-
-  /* Grab the mutex so we can be sure the thread has unlocked it
-     before we destroy it */
-  g_mutex_lock (data->mutex);
-  if (data->abort)
-    {
-      g_mutex_unlock (data->mutex);
-      clutter_texture_async_data_free (data);
-      return FALSE;
-    }
-  g_mutex_unlock (data->mutex);
-
-  clutter_texture_async_load_complete (data->texture, data->load_bitmap,
-                                       data->load_error);
-
-  clutter_texture_async_data_free (data);
-
-  return FALSE;
-}
-
-static gboolean
 texture_repaint_upload_func (gpointer user_data)
 {
   gulong start_time;
 
-  g_static_mutex_lock (&upload_list_mutex);
+  g_mutex_lock (&upload_list_mutex);
 
-  if (upload_list)
+  if (upload_list != NULL)
     {
       start_time = clutter_get_timestamp ();
 
@@ -1806,16 +1768,32 @@ texture_repaint_upload_func (gpointer user_data)
        */
       do
         {
-          ClutterTextureAsyncData *data = upload_list->data;
+          ClutterTextureAsyncData *async_data = upload_list->data;
 
-          clutter_texture_thread_idle_func (data);
+          clutter_texture_async_data_lock (async_data);
 
-          upload_list = g_list_remove (upload_list, data);
+          if (async_data->state & ASYNC_STATE_QUEUED)
+            {
+              CLUTTER_NOTE (TEXTURE, "[async] operation complete for '%s'",
+                            async_data->load_filename);
+
+              clutter_texture_async_load_complete (async_data->texture,
+                                                   async_data->load_bitmap,
+                                                   async_data->load_error);
+            }
+          else
+            CLUTTER_NOTE (TEXTURE, "[async] operation cancelled for '%s'",
+                          async_data->load_filename);
+
+          clutter_texture_async_data_unlock (async_data);
+
+          upload_list = g_list_remove (upload_list, async_data);
+          clutter_texture_async_data_free (async_data);
         }
       while (upload_list && clutter_get_timestamp () < start_time + 5 * 1000);
     }
 
-  if (upload_list)
+  if (upload_list != NULL)
     {
       ClutterMasterClock *master_clock;
 
@@ -1823,54 +1801,30 @@ texture_repaint_upload_func (gpointer user_data)
       _clutter_master_clock_ensure_next_iteration (master_clock);
     }
 
-  g_static_mutex_unlock (&upload_list_mutex);
+  g_mutex_unlock (&upload_list_mutex);
 
   return TRUE;
 }
 
 static void
-clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
+clutter_texture_thread_load (gpointer user_data,
+                             gpointer pool_data)
 {
-  ClutterTextureAsyncData *data = user_data;
-  gboolean should_abort;
+  ClutterTextureAsyncData *async_data = user_data;
+  ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
 
-  /* Make sure we haven't been told to abort before the thread had a
-     chance to run */
-  g_mutex_lock (data->mutex);
-  should_abort = data->abort;
-  g_mutex_unlock (data->mutex);
+  clutter_texture_async_data_lock (async_data);
 
-  if (should_abort)
+  if (~async_data->state & ASYNC_STATE_CANCELLED)
     {
-      /* If we've been told to abort then main thread has disowned the
-         async data and we need to free it */
-      clutter_texture_async_data_free (data);
-      return;
-    }
+      CLUTTER_NOTE (TEXTURE, "[async] loading bitmap from file '%s'",
+                    async_data->load_filename);
 
-  data->load_bitmap = cogl_bitmap_new_from_file (data->load_filename,
-                                                 &data->load_error);
+      async_data->load_bitmap =
+        cogl_bitmap_new_from_file (async_data->load_filename,
+                                   &async_data->load_error);
 
-  /* Check again if we've been told to abort */
-  g_mutex_lock (data->mutex);
-
-  if (data->abort)
-    {
-      g_mutex_unlock (data->mutex);
-
-      clutter_texture_async_data_free (data);
-    }
-  else
-    {
-      ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
-
-      /* Make sure we give the image to GL in the main thread, where we
-       * hold the main Clutter lock. Once load_idle is non-NULL then the
-       * main thread is guaranteed not to set the abort flag. It can't
-       * set it while we're holding the mutex so we can safely start the
-       * idle handler now without the possibility of calling the
-       * callback after it is aborted */
-      g_static_mutex_lock (&upload_list_mutex);
+      g_mutex_lock (&upload_list_mutex);
 
       if (repaint_upload_func == 0)
         {
@@ -1879,33 +1833,40 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
                                               NULL, NULL);
         }
 
-      upload_list = g_list_append (upload_list, data);
-      data->upload_queued = TRUE;
+      upload_list = g_list_append (upload_list, async_data);
+      async_data->state |= ASYNC_STATE_QUEUED;
 
-      g_static_mutex_unlock (&upload_list_mutex);
+      CLUTTER_NOTE (TEXTURE, "[async] operation queued");
 
-      g_mutex_unlock (data->mutex);
-
-      _clutter_master_clock_ensure_next_iteration (master_clock);
+      g_mutex_unlock (&upload_list_mutex);
     }
+  else
+    {
+      clutter_texture_async_data_unlock (async_data);
+      clutter_texture_async_data_free (async_data);
+
+      return;
+    }
+
+  clutter_texture_async_data_unlock (async_data);
+
+  _clutter_master_clock_ensure_next_iteration (master_clock);
 }
 
 static gboolean
-clutter_texture_idle_func (gpointer user_data)
+clutter_texture_idle_load (gpointer data)
 {
-  ClutterTextureAsyncData *data = user_data;
-  GError *internal_error = NULL;
+  ClutterTextureAsyncData *async_data = data;
 
-  data->load_bitmap = cogl_bitmap_new_from_file (data->load_filename,
-                                                 &internal_error);
+  async_data->load_bitmap =
+    cogl_bitmap_new_from_file (async_data->load_filename,
+                               &async_data->load_error);
 
-  clutter_texture_async_load_complete (data->texture, data->load_bitmap,
-                                       internal_error);
+  clutter_texture_async_load_complete (async_data->texture,
+                                       async_data->load_bitmap,
+                                       async_data->load_error);
 
-  if (internal_error)
-    g_error_free (internal_error);
-
-  clutter_texture_async_data_free (data);
+  clutter_texture_async_data_free (async_data);
 
   return FALSE;
 }
@@ -1956,9 +1917,7 @@ clutter_texture_async_load (ClutterTexture *self,
       height = 0;
     }
   else
-    {
-      res = cogl_bitmap_get_size_from_file (filename, &width, &height);
-    }
+    res = cogl_bitmap_get_size_from_file (filename, &width, &height);
 
   if (!res)
     {
@@ -1975,35 +1934,34 @@ clutter_texture_async_load (ClutterTexture *self,
 
   clutter_texture_async_load_cancel (self);
 
-  data = g_slice_new (ClutterTextureAsyncData);
+  data = g_slice_new0 (ClutterTextureAsyncData);
 
-  data->abort = FALSE;
   data->texture = self;
-  data->load_idle = 0;
   data->load_filename = g_strdup (filename);
-  data->load_bitmap = NULL;
-  data->load_error = NULL;
 
   priv->async_data = data;
 
   if (g_thread_supported ())
     {
-      data->mutex = g_mutex_new ();
-
-      if (async_thread_pool == NULL)
-        /* This apparently can't fail if exclusive == FALSE */
-        async_thread_pool
-          = g_thread_pool_new (clutter_texture_thread_func,
-                               NULL, 1, FALSE, NULL);
+      if (G_UNLIKELY (async_thread_pool == NULL))
+        {
+          /* This apparently can't fail if exclusive == FALSE */
+          async_thread_pool =
+            g_thread_pool_new (clutter_texture_thread_load, NULL,
+                               1,
+                               FALSE,
+                               NULL);
+        }
 
       g_thread_pool_push (async_thread_pool, data, NULL);
     }
   else
     {
-      data->mutex = NULL;
-
-      data->load_idle
-        = clutter_threads_add_idle (clutter_texture_idle_func, data);
+      data->load_idle =
+        clutter_threads_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
+                                       clutter_texture_idle_load,
+                                       data,
+                                       NULL);
     }
 
   return TRUE;
@@ -2920,6 +2878,8 @@ clutter_texture_set_load_async (ClutterTexture *texture,
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
 
   priv = texture->priv;
+
+  load_async = !!load_async;
 
   if (priv->load_async_set != load_async)
     {

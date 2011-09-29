@@ -111,3 +111,9 @@ test_cairo_clock_main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_cairo_clock_describe (void)
+{
+  return "Simple 2D canvas using a Cairo texture actor";
+}

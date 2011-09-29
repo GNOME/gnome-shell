@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include <gmodule.h>
-
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 enum
@@ -10,6 +8,8 @@ enum
   LOAD_DATA_ASYNC,
   LOAD_ASYNC
 };
+
+static ClutterActor *stage = NULL;
 
 static void
 on_load_finished (ClutterTexture *texture,
@@ -52,16 +52,10 @@ size_change_cb (ClutterTexture *texture,
 static
 gboolean task (gpointer user_data)
 {
-  ClutterTimeline  *timeline;
-  ClutterAlpha     *alpha;
-  ClutterBehaviour *depth_behavior;
-  ClutterActor     *image[4];
-  ClutterActor     *clone[4];
-  ClutterActor     *stage;
-  gchar            *path = user_data;
+  const gchar *path = user_data;
+  ClutterActor *image[3];
+  ClutterActor *clone[3];
   gint i;
-
-  stage = clutter_stage_get_default ();
 
   image[0] = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
   g_signal_connect (image[0], "load-finished",
@@ -93,62 +87,69 @@ gboolean task (gpointer user_data)
     }
 
   for (i = 0; i < 3; i++)
-    clutter_container_add (CLUTTER_CONTAINER (stage), image[i], NULL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), image[i]);
 
   for (i = 0; i < 3; i++)
     {
-      clutter_actor_set_position (image[i], 50+i*100, 0+i*50);
-      clone[i]=clutter_clone_new (image[i]);
+      clutter_actor_set_position (image[i], 50 + i * 100, 0 + i * 50);
+      clone[i] = clutter_clone_new (image[i]);
       g_signal_connect (image[i], "size-change",
                         G_CALLBACK (size_change_cb), clone[i]);
-      clutter_container_add (CLUTTER_CONTAINER (stage), clone[i], NULL);
-      clutter_actor_set_position (clone[i], 50+i*100, 150+i*50+100);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), clone[i]);
+      clutter_actor_set_position (clone[i], 50 + i * 100, 150 + i * 50 + 100);
     }
 
   for (i = 0; i < 3; i++)
     {
-      timeline = clutter_timeline_new (5000);
-      alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
-      depth_behavior = clutter_behaviour_depth_new (alpha, -2500, 0);
-      clutter_behaviour_apply (depth_behavior, image[i]);
-      clutter_timeline_start (timeline);
+      clutter_actor_set_depth (image[i], -2500);
+      clutter_actor_animate (image[i], CLUTTER_LINEAR, 5000,
+                             "depth", 0.0,
+                             NULL);
     }
 
   return FALSE;
 }
 
+static void
+cleanup_task (gpointer data)
+{
+}
 
 G_MODULE_EXPORT gint
 test_texture_async_main (int argc, char *argv[])
 {
-  ClutterActor *stage;
-  ClutterColor  stage_color = { 0x12, 0x34, 0x56, 0xff };
-  gchar        *path;
+  gchar *path;
+
+  g_thread_init (NULL);
+  clutter_threads_init ();
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  g_thread_init (NULL);
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Asynchronous Texture Loading");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   clutter_actor_show (stage);
-  g_signal_connect (stage,
-                    "button-press-event", G_CALLBACK (clutter_main_quit),
-                    NULL);
 
   path = (argc > 1)
        ? g_strdup (argv[1])
        : g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
  
-  clutter_threads_add_timeout (500, task, path);
+  clutter_threads_add_timeout_full (G_PRIORITY_DEFAULT, 500,
+                                    task, path,
+                                    cleanup_task);
 
   clutter_main ();
 
   g_free (path);
 
-  /*g_object_unref (depth_behavior);
-  g_object_unref (timeline);*/
-
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_texture_async_describe (void)
+{
+  return "Texture asynchronous loading using threads";
 }

@@ -274,3 +274,9 @@ test_table_layout_main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_table_layout_describe (void)
+{
+  return "Table layout manager";
+}

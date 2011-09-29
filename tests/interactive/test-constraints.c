@@ -247,3 +247,9 @@ test_constraints_main (int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+G_MODULE_EXPORT const char *
+test_constraints_describe (void)
+{
+  return "Visualize usage of Bind and Align constraints";
+}
