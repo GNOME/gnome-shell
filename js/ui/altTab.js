@@ -98,43 +98,13 @@ const AppSwitcherPopup = new Lang.Class({
         }
     },
 
-    _getAppLists: function() {
-        let tracker = Shell.WindowTracker.get_default();
-        let appSys = Shell.AppSystem.get_default();
-        let allApps = appSys.get_running ();
-
-        let screen = global.screen;
-        let display = screen.get_display();
-        let windows = display.get_tab_list(Meta.TabList.NORMAL_ALL, screen,
-                                           screen.get_active_workspace());
-
-        // windows is only the windows on the current workspace. For
-        // each one, if it corresponds to an app we know, move that
-        // app from allApps to apps.
-        let apps = [];
-        for (let i = 0; i < windows.length && allApps.length != 0; i++) {
-            let app = tracker.get_window_app(windows[i]);
-            let index = allApps.indexOf(app);
-            if (index != -1) {
-                apps.push(app);
-                allApps.splice(index, 1);
-            }
-        }
-
-        // Now @apps is a list of apps on the current workspace, in
-        // standard Alt+Tab order (MRU except for minimized windows),
-        // and allApps is a list of apps that only appear on other
-        // workspaces, sorted by user_time, which is good enough.
-        return [apps, allApps];
-    },
-
     _createSwitcher: function() {
-        let [localApps, otherApps] = this._getAppLists();
+        let apps = Shell.AppSystem.get_default().get_running ();
 
-        if (localApps.length == 0 && otherApps.length == 0)
+        if (apps.length == 0)
             return false;
 
-        this._switcherList = new AppSwitcher(localApps, otherApps, this);
+        this._switcherList = new AppSwitcher(apps, this);
         this._items = this._switcherList.icons;
 
         return true;
@@ -265,12 +235,8 @@ const AppSwitcherPopup = new Lang.Class({
         this.parent();
 
         let appIcon = this._items[this._selectedIndex];
-        let window;
-        if (this._currentWindow >= 0)
-            window = appIcon.cachedWindows[this._currentWindow];
-        else
-            window = null;
-        appIcon.app.activate_window(window, timestamp);
+        let window = this._currentWindow > 0 ? this._currentWindow : 0;
+        appIcon.app.activate_window(appIcon.cachedWindows[window], timestamp);
     },
 
     _onDestroy : function() {
@@ -461,34 +427,26 @@ const AppSwitcher = new Lang.Class({
     Name: 'AppSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init : function(localApps, otherApps, altTabPopup) {
+    _init : function(apps, altTabPopup) {
         this.parent(true);
-
-        // Construct the AppIcons, add to the popup
-        let activeWorkspace = global.screen.get_active_workspace();
-        let workspaceIcons = [];
-        let otherIcons = [];
-        for (let i = 0; i < localApps.length; i++) {
-            let appIcon = new AppIcon(localApps[i]);
-            // Cache the window list now; we don't handle dynamic changes here,
-            // and we don't want to be continually retrieving it
-            appIcon.cachedWindows = appIcon.app.get_windows();
-            workspaceIcons.push(appIcon);
-        }
-        for (let i = 0; i < otherApps.length; i++) {
-            let appIcon = new AppIcon(otherApps[i]);
-            appIcon.cachedWindows = appIcon.app.get_windows();
-            otherIcons.push(appIcon);
-        }
 
         this.icons = [];
         this._arrows = [];
-        for (let i = 0; i < workspaceIcons.length; i++)
-            this._addIcon(workspaceIcons[i]);
-        if (workspaceIcons.length > 0 && otherIcons.length > 0)
-            this.addSeparator();
-        for (let i = 0; i < otherIcons.length; i++)
-            this._addIcon(otherIcons[i]);
+
+        let windowTracker = Shell.WindowTracker.get_default();
+        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL,
+                                                     global.screen, null);
+
+        // Construct the AppIcons, add to the popup
+        for (let i = 0; i < apps.length; i++) {
+            let appIcon = new AppIcon(apps[i]);
+            // Cache the window list now; we don't handle dynamic changes here,
+            // and we don't want to be continually retrieving it
+            appIcon.cachedWindows = allWindows.filter(function(w) {
+                return windowTracker.get_window_app (w) == appIcon.app;
+            });
+            this._addIcon(appIcon);
+        }
 
         this._curApp = -1;
         this._iconSize = 0;
@@ -514,8 +472,6 @@ const AppSwitcher = new Lang.Class({
         let [iconMinHeight, iconNaturalHeight] = this.icons[j].label.get_preferred_height(-1);
         let iconSpacing = iconNaturalHeight + iconPadding + iconBorder;
         let totalSpacing = this._list.spacing * (this._items.length - 1);
-        if (this._separator)
-           totalSpacing += this._separator.width + this._list.spacing;
 
         // We just assume the whole screen here due to weirdness happing with the passed width
         let primary = Main.layoutManager.primaryMonitor;
@@ -638,24 +594,12 @@ const ThumbnailList = new Lang.Class({
     _init : function(windows) {
         this.parent(false);
 
-        let activeWorkspace = global.screen.get_active_workspace();
-
-        // We fake the value of 'separatorAdded' when the app has no window
-        // on the current workspace, to avoid displaying a useless separator in
-        // that case.
-        let separatorAdded = windows.length == 0 || windows[0].get_workspace() != activeWorkspace;
-
         this._labels = new Array();
         this._thumbnailBins = new Array();
         this._clones = new Array();
         this._windows = windows;
 
         for (let i = 0; i < windows.length; i++) {
-            if (!separatorAdded && windows[i].get_workspace() != activeWorkspace) {
-              this.addSeparator();
-              separatorAdded = true;
-            }
-
             let box = new St.BoxLayout({ style_class: 'thumbnail-box',
                                          vertical: true });
 
