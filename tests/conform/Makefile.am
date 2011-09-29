@@ -75,6 +75,7 @@ units_sources += \
 	test-pick.c 			\
 	test-texture-fbo.c		\
         test-text-cache.c               \
+	test-shader-effect.c		\
 	$(NULL)
 
 # objects tests
