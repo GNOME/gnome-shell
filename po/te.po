@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-23 07:16+0000\n"
-"PO-Revision-Date: 2011-09-23 14:38+0530\n"
+"PO-Revision-Date: 2011-09-26 21:28+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <te@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,15 +24,15 @@ msgstr "X అక్షము"
 
 #: ../clutter/clutter-actor.c:3876
 msgid "X coordinate of the actor"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క X అక్షము"
 
 #: ../clutter/clutter-actor.c:3891
 msgid "Y coordinate"
-msgstr ""
+msgstr "Y అక్షము"
 
 #: ../clutter/clutter-actor.c:3892
 msgid "Y coordinate of the actor"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క Y అక్షము"
 
 #: ../clutter/clutter-actor.c:3907 ../clutter/clutter-behaviour-ellipse.c:477
 msgid "Width"
@@ -40,7 +40,7 @@ msgstr "వెడల్పు"
 
 #: ../clutter/clutter-actor.c:3908
 msgid "Width of the actor"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క వెడల్పు"
 
 #: ../clutter/clutter-actor.c:3922 ../clutter/clutter-behaviour-ellipse.c:493
 msgid "Height"
@@ -48,31 +48,31 @@ msgstr "ఎత్తు"
 
 #: ../clutter/clutter-actor.c:3923
 msgid "Height of the actor"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క యెత్తు"
 
 #: ../clutter/clutter-actor.c:3941
 msgid "Fixed X"
-msgstr ""
+msgstr "నిర్దిష్ట X"
 
 #: ../clutter/clutter-actor.c:3942
 msgid "Forced X position of the actor"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క నిర్దిష్ట X స్థానం"
 
 #: ../clutter/clutter-actor.c:3960
 msgid "Fixed Y"
-msgstr ""
+msgstr "నిర్దిష్ట Y"
 
 #: ../clutter/clutter-actor.c:3961
 msgid "Forced Y position of the actor"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క బలవంతపు Y స్థానం"
 
 #: ../clutter/clutter-actor.c:3977
 msgid "Fixed position set"
-msgstr ""
+msgstr "నిర్దిష్ట స్థాన అమర్పు"
 
 #: ../clutter/clutter-actor.c:3978
 msgid "Whether to use fixed positioning for the actor"
-msgstr ""
+msgstr "ఏక్టర్ కొరకు నిర్దిష్టంగా స్థానపరచుటను వుపయోగించాలా"
 
 #: ../clutter/clutter-actor.c:4000
 msgid "Min Width"
@@ -80,7 +80,7 @@ msgstr "కనిష్ఠ వెడల్పు"
 
 #: ../clutter/clutter-actor.c:4001
 msgid "Forced minimum width request for the actor"
-msgstr ""
+msgstr "ఏక్టర్ కొరకు అభ్యర్దించిన బలవంతపు కనిష్ట వెడల్పు"
 
 #: ../clutter/clutter-actor.c:4020
 msgid "Min Height"
@@ -88,119 +88,120 @@ msgstr "కనిష్ఠ ఎత్తు"
 
 #: ../clutter/clutter-actor.c:4021
 msgid "Forced minimum height request for the actor"
-msgstr ""
+msgstr "ఏక్టర్ కొరకు అభ్యర్దించిన బలవంతపు కనిష్ట యెత్తు"
 
 #: ../clutter/clutter-actor.c:4040
 msgid "Natural Width"
-msgstr ""
+msgstr "సహజ వెడల్పు"
 
 #: ../clutter/clutter-actor.c:4041
 msgid "Forced natural width request for the actor"
-msgstr ""
+msgstr "ఏక్టర్ కొరకు అభ్యర్దించిన బలవంతపు సహజ వెడల్పు"
 
 #: ../clutter/clutter-actor.c:4060
 msgid "Natural Height"
-msgstr ""
+msgstr "సహజ యెత్తు"
 
 #: ../clutter/clutter-actor.c:4061
 msgid "Forced natural height request for the actor"
-msgstr ""
+msgstr "ఏక్టర్ కొరకు అభ్యర్దించిన బలవంతపు సహజ యెత్తు"
 
 #: ../clutter/clutter-actor.c:4077
 msgid "Minimum width set"
-msgstr ""
+msgstr "కనిష్ట వెడల్పు అమర్పు"
 
 #: ../clutter/clutter-actor.c:4078
 msgid "Whether to use the min-width property"
-msgstr ""
+msgstr "కనిష్ట-వెడల్పు లక్షణం వుపయోగించాలా"
 
 #: ../clutter/clutter-actor.c:4093
 msgid "Minimum height set"
-msgstr ""
+msgstr "కనిష్ట యెత్తు అమర్పు"
 
 #: ../clutter/clutter-actor.c:4094
 msgid "Whether to use the min-height property"
-msgstr ""
+msgstr "కనిష్ట-యెత్తు లక్షణం వుపయోగించాలా"
 
 #: ../clutter/clutter-actor.c:4109
 msgid "Natural width set"
-msgstr ""
+msgstr "సహజ వెడల్పు అమర్పు"
 
 #: ../clutter/clutter-actor.c:4110
 msgid "Whether to use the natural-width property"
-msgstr ""
+msgstr "సహజ-వెడల్పు లక్షణం వుపయోగించాలా"
 
 #: ../clutter/clutter-actor.c:4127
 msgid "Natural height set"
-msgstr ""
+msgstr "సహజ యెత్తు అమర్పు"
 
 #: ../clutter/clutter-actor.c:4128
 msgid "Whether to use the natural-height property"
-msgstr ""
+msgstr "సహజ-యెత్తు లక్షణం వుపయోగించాలా"
 
 #: ../clutter/clutter-actor.c:4147
 msgid "Allocation"
-msgstr ""
+msgstr "కేటాయింపు"
 
 #: ../clutter/clutter-actor.c:4148
 msgid "The actor's allocation"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క కేటాయింపు"
 
 #: ../clutter/clutter-actor.c:4204
 msgid "Request Mode"
-msgstr ""
+msgstr "అభ్యర్దన రీతి"
 
 #: ../clutter/clutter-actor.c:4205
 msgid "The actor's request mode"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క అభ్యర్దన రీతి"
 
 #: ../clutter/clutter-actor.c:4220
 msgid "Depth"
-msgstr ""
+msgstr "లోతు"
 
 #: ../clutter/clutter-actor.c:4221
 msgid "Position on the Z axis"
-msgstr ""
+msgstr "Z అక్షంపై స్థానం"
 
 #: ../clutter/clutter-actor.c:4235
 msgid "Opacity"
-msgstr ""
+msgstr "మసక"
 
 #: ../clutter/clutter-actor.c:4236
 msgid "Opacity of an actor"
-msgstr ""
+msgstr "ఏక్టర్ యొక్క మసక"
 
 #: ../clutter/clutter-actor.c:4255
 msgid "Offscreen redirect"
-msgstr ""
+msgstr "ఆఫ్‌స్క్రీన్ రీడైరెక్ట్"
 
 #: ../clutter/clutter-actor.c:4256
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr ""
+"ఏక్టర్‌ను వొంటరి ప్రతిరూపమునకు యెప్పుడు ఫ్లాటెన్ చేయాలో నియంత్రించే ఫ్లాగులు"
 
 #: ../clutter/clutter-actor.c:4274
 msgid "Visible"
-msgstr ""
+msgstr "దృశ్యనీయం"
 
 #: ../clutter/clutter-actor.c:4275
 msgid "Whether the actor is visible or not"
-msgstr ""
+msgstr "ఏక్టర్ దృశ్యనీయం కావలెనా లేదా"
 
 #: ../clutter/clutter-actor.c:4290
 msgid "Mapped"
-msgstr ""
+msgstr "మాప్‌డ్"
 
 #: ../clutter/clutter-actor.c:4291
 msgid "Whether the actor will be painted"
-msgstr ""
+msgstr "ఏక్టర్ రంగు వేయబడుదురా"
 
 #: ../clutter/clutter-actor.c:4305
 msgid "Realized"
-msgstr ""
+msgstr "తెలుసుకొనెను"
 
 #: ../clutter/clutter-actor.c:4306
 msgid "Whether the actor has been realized"
-msgstr ""
+msgstr "ఏక్టర్‌కు తెలియవలెనా"
 
 #: ../clutter/clutter-actor.c:4322
 msgid "Reactive"
