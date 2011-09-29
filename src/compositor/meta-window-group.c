@@ -108,7 +108,7 @@ meta_window_group_paint (ClutterActor *actor)
   cairo_region_t *unredirected_window_region = NULL;
   ClutterActor *stage;
   cairo_rectangle_int_t visible_rect, unredirected_rect;
-  GList *children, *l;
+  GList *children, *l, *effects;
 
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
@@ -161,8 +161,11 @@ meta_window_group_paint (ClutterActor *actor)
        * as well for the same reason, but omitted for simplicity in the
        * hopes that no-one will do that.
        */
-      if (clutter_actor_get_effects (l->data) != NULL)
-        continue;
+      if ((effects = clutter_actor_get_effects (l->data)) != NULL)
+        {
+          g_list_free (effects);
+          continue;
+        }
 
       if (META_IS_WINDOW_ACTOR (l->data))
         {
