@@ -654,6 +654,9 @@ _clutter_paint_volume_complete (ClutterPaintVolume *pv)
   if (pv->is_empty)
     return;
 
+  if (pv->is_complete)
+    return;
+
   /* Find the vector that takes us from any vertex on the left face to
    * the corresponding vertex on the right face. */
   dx_l2r = pv->vertices[1].x - pv->vertices[0].x;
