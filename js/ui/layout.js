@@ -826,10 +826,15 @@ Chrome.prototype = {
             }
             if (layer == Meta.StackLayer.OVERRIDE_REDIRECT) {
                 // Check whether the window is screen sized
-                if (window.x == 0 && window.y == 0 &&
+                let isScreenSized =
+                    (window.x == 0 && window.y == 0 &&
                     window.width == global.screen_width &&
-                    window.height == global.screen_height)
-                    monitor.inFullscreen = true;
+                    window.height == global.screen_height);
+
+                if (isScreenSized) {
+                    for (let i = 0; i < this._monitors.length; i++)
+                        this._monitors[i].inFullscreen = true;
+                }
 
                 // Or whether it is monitor sized
                 let monitor = this._findMonitorForWindow(window);
