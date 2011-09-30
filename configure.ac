@@ -1015,6 +1015,7 @@ echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
 echo "        Build conformance test suite: ${enable_conformance}"
+echo "        Build X11-specific tests: ${x11_tests}"
 
 # Clutter backend related flags
 echo ""
@@ -1033,7 +1034,6 @@ echo "        Enable XInput: ${have_xinput}"
 echo "        Enable Xge: ${have_xge}"
 echo "        Enable XI2: ${have_xinput2}"
 echo "        Enable XKB: ${have_xkb}"
-echo "        Build X11-specific tests: ${x11_tests}"
 fi
 
 if test "x$SUPPORT_EGL" = "x1"; then
