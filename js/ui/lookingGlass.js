@@ -685,34 +685,6 @@ Extensions.prototype = {
         Main.lookingGlass.close();
     },
 
-    _onViewErrors: function (actor) {
-        let meta = actor._extensionMeta;
-        let shouldShow = !actor._isShowing;
-
-        if (shouldShow) {
-            let errors = ExtensionSystem.errors[meta.uuid];
-            let errorDisplay = new St.BoxLayout({ vertical: true });
-            if (errors && errors.length) {
-                for (let i = 0; i < errors.length; i ++)
-                    errorDisplay.add(new St.Label({ text: errors[i] }));
-            } else {
-                /* Translators: argument is an extension UUID. */
-                let message = _("%s has not emitted any errors.").format(meta.uuid);
-                errorDisplay.add(new St.Label({ text: message }));
-            }
-
-            actor._errorDisplay = errorDisplay;
-            actor._parentBox.add(errorDisplay);
-            actor.label = _("Hide Errors");
-        } else {
-            actor._errorDisplay.destroy();
-            actor._errorDisplay = null;
-            actor.label = _("Show Errors");
-        }
-
-        actor._isShowing = shouldShow;
-    },
-
     _stateToString: function(extensionState) {
         switch (extensionState) {
             case ExtensionSystem.ExtensionState.ENABLED:
@@ -756,13 +728,6 @@ Extensions.prototype = {
             webpage.actor.connect('clicked', Lang.bind(this, this._onWebPage));
             metaBox.add(webpage.actor);
         }
-
-        let viewerrors = new Link.Link({ label: _("Show Errors") });
-        viewerrors.actor._extensionMeta = meta;
-        viewerrors.actor._parentBox = box;
-        viewerrors.actor._isShowing = false;
-        viewerrors.actor.connect('clicked', Lang.bind(this, this._onViewErrors));
-        metaBox.add(viewerrors.actor);
 
         return box;
     }
