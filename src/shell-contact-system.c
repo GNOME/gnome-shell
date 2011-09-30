@@ -16,10 +16,10 @@
 
 G_DEFINE_TYPE (ShellContactSystem, shell_contact_system, G_TYPE_OBJECT);
 
-#define ALIAS_PREFIX_MATCH_WEIGHT 100
-#define ALIAS_SUBSTRING_MATCH_WEIGHT 90
-#define IM_PREFIX_MATCH_WEIGHT 10
-#define IM_SUBSTRING_MATCH_WEIGHT 5
+#define NAME_PREFIX_MATCH_WEIGHT 100
+#define NAME_SUBSTRING_MATCH_WEIGHT 90
+#define ADDR_PREFIX_MATCH_WEIGHT 10
+#define ADDR_SUBSTRING_MATCH_WEIGHT 5
 
 
 /* Callbacks */
@@ -117,60 +117,94 @@ do_match (ShellContactSystem  *self,
   guint weight = 0;
 
   char *alias = shell_util_normalize_and_casefold (folks_alias_details_get_alias (FOLKS_ALIAS_DETAILS (individual)));
+  char *name = shell_util_normalize_and_casefold (folks_name_details_get_full_name (FOLKS_NAME_DETAILS (individual)));
+  char *nick = shell_util_normalize_and_casefold (folks_name_details_get_nickname (FOLKS_NAME_DETAILS (individual)));
 
   GeeMultiMap *im_addr_map = folks_im_details_get_im_addresses (FOLKS_IM_DETAILS (individual));
   GeeCollection *im_addrs = gee_multi_map_get_values (im_addr_map);
-  GeeIterator *im_addrs_iter;
+  GeeSet *email_addrs = folks_email_details_get_email_addresses (FOLKS_EMAIL_DETAILS (individual));
+  GeeIterator *addrs_iter;
 
-  gboolean have_alias_prefix = FALSE;
-  gboolean have_alias_substring = FALSE;
+  gboolean have_name_prefix = FALSE;
+  gboolean have_name_substring = FALSE;
   
-  gboolean have_im_prefix = FALSE;
-  gboolean have_im_substring = FALSE;
+  gboolean have_addr_prefix = FALSE;
+  gboolean have_addr_substring = FALSE;
 
   for (term_iter = terms; term_iter; term_iter = term_iter->next)
     {
       const char *term = term_iter->data;
       const char *p;
 
-      /* Match on alias */
+      /* Match on alias, name, nickname */
       if (alias != NULL)
 	{
 	  p = strstr (alias, term);
 	  if (p == alias)
-	    have_alias_prefix = TRUE;
+	    have_name_prefix = TRUE;
 	  else if (p != NULL)
-	    have_alias_substring = TRUE;
+	    have_name_substring = TRUE;
+	}
+      if (name != NULL)
+	{
+	  p = strstr (name, term);
+	  if (p == name)
+	    have_name_prefix = TRUE;
+	  else if (p != NULL)
+	    have_name_substring = TRUE;
+	}
+      if (nick != NULL)
+	{
+	  p = strstr (nick, term);
+	  if (p == nick)
+	    have_name_prefix = TRUE;
+	  else if (p != NULL)
+	    have_name_substring = TRUE;
 	}
 
-      /* Match on one or more IM addresses */
-      im_addrs_iter = gee_iterable_iterator (GEE_ITERABLE (im_addrs));
+      /* Match on one or more IM or email addresses */
+      addrs_iter = gee_iterable_iterator (GEE_ITERABLE (im_addrs));
 
-      while (gee_iterator_next (im_addrs_iter))
+      while (gee_iterator_next (addrs_iter))
         {
-          const gchar *addr = gee_iterator_get (im_addrs_iter);
+          const gchar *addr = gee_iterator_get (addrs_iter);
 
           p = strstr (addr, term);
           if (p == addr)
-            have_im_prefix = TRUE;
+            have_addr_prefix = TRUE;
           else if (p != NULL)
-            have_im_substring = TRUE;
+            have_addr_substring = TRUE;
         }
 
-      g_object_unref (im_addrs_iter);
+      g_object_unref (addrs_iter);
+      addrs_iter = gee_iterable_iterator (GEE_ITERABLE (email_addrs));
+      while (gee_iterator_next (addrs_iter))
+        {
+          const gchar *addr = gee_iterator_get (addrs_iter);
+
+          p = strstr (addr, term);
+          if (p == addr)
+            have_addr_prefix = TRUE;
+          else if (p != NULL)
+            have_addr_substring = TRUE;
+        }
+
+      g_object_unref (addrs_iter);
     }
 
-    if (have_alias_prefix)
-      weight += ALIAS_PREFIX_MATCH_WEIGHT;
-    else if (have_alias_substring)
-      weight += ALIAS_SUBSTRING_MATCH_WEIGHT;
+    if (have_name_prefix)
+      weight += NAME_PREFIX_MATCH_WEIGHT;
+    else if (have_name_substring)
+      weight += NAME_SUBSTRING_MATCH_WEIGHT;
 
-    if (have_im_prefix)
-      weight += IM_PREFIX_MATCH_WEIGHT;
-    else if (have_im_substring)
-      weight += IM_SUBSTRING_MATCH_WEIGHT;
+    if (have_addr_prefix)
+      weight += ADDR_PREFIX_MATCH_WEIGHT;
+    else if (have_addr_substring)
+      weight += ADDR_SUBSTRING_MATCH_WEIGHT;
 
   g_free (alias);
+  g_free (name);
+  g_free (nick);
   g_object_unref (im_addrs);
 
   return weight;
