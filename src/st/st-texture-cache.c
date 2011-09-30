@@ -1177,8 +1177,15 @@ load_gicon_with_colors (StTextureCache    *cache,
   char *key;
   GtkIconTheme *theme;
   GtkIconInfo *info;
+  StTextureCachePolicy policy;
 
   gicon_string = g_icon_to_string (icon);
+  /* A return value of NULL indicates that the icon can not be serialized,
+   * so don't have a unique identifier for it as a cache key, and thus can't
+   * be cached. If it is cachable, we hardcode a policy of FOREVER here for
+   * now; we should actually blow this away on icon theme changes probably */
+  policy = gicon_string != NULL ? ST_TEXTURE_CACHE_POLICY_FOREVER
+                                : ST_TEXTURE_CACHE_POLICY_NONE;
   if (colors)
     {
       /* This raises some doubts about the practice of using string keys */
@@ -1210,9 +1217,7 @@ load_gicon_with_colors (StTextureCache    *cache,
     {
       /* Transfer ownership of key */
       request->key = key;
-      /* hardcoded here for now; we should actually blow this away on
-       * icon theme changes probably */
-      request->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
+      request->policy = policy;
       request->icon = g_object_ref (icon);
       request->icon_info = info;
       request->width = request->height = size;
