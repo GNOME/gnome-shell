@@ -289,7 +289,7 @@ function loadExtension(dir, enabled, type) {
     }
 
     if (extensions[uuid] != undefined) {
-        logExtensionError(uuid, "extension already loaded");
+        logExtensionError(uuid, 'extension already loaded');
         return;
     }
 

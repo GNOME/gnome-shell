@@ -570,7 +570,7 @@ ChatSource.prototype = {
     open: function(notification) {
           if (this._client.is_handling_channel(this._channel)) {
               // We are handling the channel, try to pass it to Empathy
-              this._client.delegate_channels_async([this._channel], global.get_current_time(), "", null);
+              this._client.delegate_channels_async([this._channel], global.get_current_time(), '', null);
           }
           else {
               // We are not the handler, just ask to present the channel

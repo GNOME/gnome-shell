@@ -75,7 +75,7 @@ BoxPointer.prototype = {
         Tweener.addTween(this, { opacity: 255,
                                  xOffset: 0,
                                  yOffset: 0,
-                                 transition: "linear",
+                                 transition: 'linear',
                                  onComplete: onComplete,
                                  time: POPUP_ANIMATION_TIME });
     },
@@ -106,7 +106,7 @@ BoxPointer.prototype = {
         Tweener.addTween(this, { opacity: 0,
                                  xOffset: xOffset,
                                  yOffset: yOffset,
-                                 transition: "linear",
+                                 transition: 'linear',
                                  time: POPUP_ANIMATION_TIME,
                                  onComplete: Lang.bind(this, function () {
                                      this.actor.hide();

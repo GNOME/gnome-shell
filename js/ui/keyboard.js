@@ -75,7 +75,7 @@ Key.prototype = {
         this._extended_keys = this._key.get_extended_keys();
         this._extended_keyboard = null;
 
-        if (this._key.name == "Control_L" || this._key.name == "Alt_L")
+        if (this._key.name == 'Control_L' || this._key.name == 'Alt_L')
             this._key.latch = true;
 
         this._key.connect('key-pressed', Lang.bind(this, function ()
@@ -340,7 +340,7 @@ Keyboard.prototype = {
                     right_box.add(button.actor);
                 else
                     left_box.add(button.actor);
-                if (key.name == "Caribou_Prefs") {
+                if (key.name == 'Caribou_Prefs') {
                     key.connect('key-released', Lang.bind(this, this.hide));
 
                     // Add new key for hiding message tray

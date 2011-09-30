@@ -494,9 +494,9 @@ function notify(msg, details) {
 function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
     if (details)
-        log("error: " + msg + ": " + details);
+        log('error: ' + msg + ': ' + details);
     else
-        log("error: " + msg)
+        log('error: ' + msg);
 
     notify(msg, details);
 }

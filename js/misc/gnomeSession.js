@@ -78,7 +78,7 @@ function Inhibitor(objectPath) {
 Inhibitor.prototype = {
     _init: function(objectPath) {
         DBus.session.proxifyObject(this,
-                                   "org.gnome.SessionManager",
+                                   'org.gnome.SessionManager',
                                    objectPath);
         this.isLoaded = false;
         this._loadingPropertiesCount = InhibitorIface.properties.length;
@@ -94,7 +94,7 @@ Inhibitor.prototype = {
 
                     if (this._loadingPropertiesCount == 0) {
                         this.isLoaded = true;
-                        this.emit("is-loaded");
+                        this.emit('is-loaded');
                     }
                 }));
         }

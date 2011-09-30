@@ -310,7 +310,7 @@ IMStatusChooserItem.prototype = {
             return;
 
         status = this._statusForPresence(newPresence);
-        msg = msg ? msg : "";
+        msg = msg ? msg : '';
         this._accountMgr.set_all_requested_presences(newPresence, status, msg);
     },
 
@@ -346,7 +346,7 @@ IMStatusChooserItem.prototype = {
             return;
 
         status = this._statusForPresence(newPresence);
-        msg = msg ? msg : "";
+        msg = msg ? msg : '';
 
         this._expectedPresence = newPresence;
         this._accountMgr.set_all_requested_presences(newPresence, status, msg);

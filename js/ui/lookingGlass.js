@@ -157,9 +157,9 @@ Signals.addSignalMethods(Notebook.prototype);
 function objectToString(o) {
     if (typeof(o) == typeof(objectToString)) {
         // special case this since the default is way, way too verbose
-        return "<js function>";
+        return '<js function>';
     } else {
-        return "" + o;
+        return o.toString();
     }
 }
 
@@ -322,7 +322,7 @@ ObjInspector.prototype = {
                     link = new St.Label({ text: '<error>' });
                 }
                 let hbox = new St.BoxLayout();
-                let propText = propName + ": " + valueStr;
+                let propText = propName + ': ' + valueStr;
                 hbox.add(new St.Label({ text: propName + ': ' }));
                 hbox.add(link);
                 this._container.add_actor(hbox);
@@ -343,7 +343,7 @@ ObjInspector.prototype = {
             this.actor.move_anchor_point(Math.floor(sourceX + sourceWidth / 2),
                                          Math.floor(sourceY + sourceHeight / 2));
             Tweener.addTween(this.actor, { scale_x: 1, scale_y: 1,
-                                           transition: "easeOutQuad",
+                                           transition: 'easeOutQuad',
                                            time: 0.2 });
         } else {
             this.actor.set_scale(1, 1);
