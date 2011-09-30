@@ -163,17 +163,23 @@ IMStatusChooserItem.prototype = {
                                Lang.bind(this, this._sessionStatusChanged));
 
         this._currentPresence = undefined;
-        this._previousPresence = undefined;
 
         this._accountMgr = Tp.AccountManager.dup()
         this._accountMgr.connect('most-available-presence-changed',
                                  Lang.bind(this, this._IMStatusChanged));
         this._accountMgr.prepare_async(null, Lang.bind(this,
             function(mgr) {
-                let [presence, s, msg] = mgr.get_most_available_presence();
+                let [presence, status, msg] = mgr.get_most_available_presence();
 
-                this._previousPresence = presence;
-                this._IMStatusChanged(mgr, presence, s, msg);
+                let savedPresence = global.settings.get_int('saved-im-presence');
+                if (savedPresence == presence) {
+                    this._IMStatusChanged(mgr, presence, status, msg);
+                } else {
+                    this._setComboboxPresence(savedPresence);
+                    status = this._statusForPresence(savedPresence);
+                    msg = msg ? msg : '';
+                    mgr.set_all_requested_presences(savedPresence, status, msg);
+                }
             }));
 
         this._userManager = AccountsService.UserManager.get_default();
@@ -265,15 +271,18 @@ IMStatusChooserItem.prototype = {
             return;
 
         this._currentPresence = presence;
+        this._setComboboxPresence(presence);
 
         if (presence == Tp.ConnectionPresenceType.AVAILABLE)
             this._presence.setStatus(GnomeSession.PresenceStatus.AVAILABLE);
 
         if (!this._expectedPresence || presence != this._expectedPresence)
-            this._previousPresence = presence;
+            global.settings.set_int('saved-im-presence', presence);
         else
             this._expectedPresence = undefined;
+    },
 
+    _setComboboxPresence: function(presence) {
         let activatedItem;
 
         if (presence == Tp.ConnectionPresenceType.AVAILABLE)
@@ -315,8 +324,11 @@ IMStatusChooserItem.prototype = {
     },
 
     getIMPresenceForSessionStatus: function(sessionStatus) {
+        // Restore the last user-set presence when coming back from
+        // BUSY/IDLE (otherwise the last user-set presence matches
+        // the current one)
         if (sessionStatus == GnomeSession.PresenceStatus.AVAILABLE)
-            return this._previousPresence;
+            return global.settings.get_int('saved-im-presence');
 
         if (sessionStatus == GnomeSession.PresenceStatus.BUSY) {
             // Only change presence if the current one is "more present" than
