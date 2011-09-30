@@ -1,0 +1,1572 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Xandru Armesto <xandru@softastur.org>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-08-22 19:51+0000\n"
+"PO-Revision-Date: 2011-09-30 21:01+0200\n"
+"Last-Translator: Xandru Armesto <xandru@softastur.org>\n"
+"Language-Team: Softastur <alministradores@softastur.org>\n"
+"Language: ast\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Virtaal 0.5.2\n"
+"X-Poedit-Language: asturian\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Xestión de ventanes y aniciu d'aplicaciones"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Permitir acceder a les ferramientes internes de depuración y monitorización "
+"usando'l diálogu Alt+F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Activar les ferramientes internes, útiles pa desendolcadores y probadores, "
+"dende Alt+F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "File extension used for storing the screencast"
+msgstr "Estensión de ficheru qu'usar p'almacenar los «screencast»"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "Framerate used for recording screencasts."
+msgstr "Tasa de fotogrames usada pa grabar «screencast»."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"Les estensiones de GNOME Shell tiene una propiedá uuid; esta tecla llista "
+"les estensiones que nun deberíen ser cargaes."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid "History for command (Alt-F2) dialog"
+msgstr "Históricu del diálogu de comandos (Alt+F2)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "Históricu del diálogu de «looking glass»"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Si ye cierta, amuesa la data nel reló, arriendes de la hora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "If true, display seconds in time."
+msgstr "Si ye cierta, amuesa los segundos na hora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Si ye cierta, amuesa la data de selmana ISO nel calendariu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Llista de ID de ficheros d'escritoriu pa les aplicaciones favorites"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+"Afita la tubería GStreamer usada pa codificar grabaciones. Sigue la sintaxis "
+"usada pa gst-launch. La tubería tendría tener un sumideru («sink») "
+"d'ensamblaxe/desensamblaxe au'l videu que se ta grabando, se graba. "
+"Xeneralmente tendrá un orixe d'ensambláu/desensambláu; la salida d'esi puntu "
+"escribiráse nel ficheru de salida. Sicasí, la tubería tamién pue tomar "
+"parte na so propia salida; esto pue usase pa unviar la salida a un sirvidor "
+"«icecast» a traviés de shout2send o similar. Cuando nun ta afitáu o lo ta a "
+"un valor baleru, va usase la tubería predeterminada. Anguaño te «videorate ! "
+"vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux» y graba en WEBM "
+"usando'l códec VP8. Úsase %T como suposición pal númberu de filos óptimos "
+"nel sistema."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show date in clock"
+msgstr "Amosar la data nel reló"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show the week date in the calendar"
+msgstr "Amosar la data de la selmana nel calendariu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr "Amosar la hora con segundos"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Les aplicaciones correspondientes con esos identificadores van amosase nel "
+"área de favoritos."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"El nome de ficheru pa los «screencast» sedrá un nome de ficheru únicu basáu "
+"na data actual y usará esta estensión. Tendría de camudase al grabar n'otru "
+"formatu contenedor distintu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"La tasa de fotogrames de la grabación resultante grabada pol grabador de "
+"«screencast» de GNOME Shell, en fotogrames per segundu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "La tubería de gstreamer usada pa codificar el «screencast»"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"La «shell» normalmente monitoriza toles aplicaciones actives pa presentar "
+"les más usaes (ex. nos lanzadores). Magar qu'estos datos se caltienen de "
+"forma privada, pues querer desactivalo por razones de privacidá. Nota que "
+"faciéndolo nun desanicies los datos yá guardaos."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Uuids of extensions to disable"
+msgstr "Uuid de les estensiones a desactivar"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "Whether to collect stats about applications usage"
+msgstr ""
+"Indica si hai de recolectar estadístiques tocante al usu de les aplicaciones"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr "fornidores OpenSearch desactivaos"
+
+#: ../js/misc/util.js:71
+msgid "Command not found"
+msgstr "Comandu non alcontráu"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:98
+msgid "Could not parse command:"
+msgstr "Nun pudo analizase'l comandu:"
+
+#: ../js/misc/util.js:106
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Falló la execución de «%s»:"
+
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:260
+msgid "All"
+msgstr "Toes"
+
+#: ../js/ui/appDisplay.js:359
+msgid "APPLICATIONS"
+msgstr "APLICACIONES"
+
+#: ../js/ui/appDisplay.js:385
+msgid "SETTINGS"
+msgstr "CONFIGURACIÓN"
+
+#: ../js/ui/appDisplay.js:656
+msgid "New Window"
+msgstr "Ventana nueva"
+
+#: ../js/ui/appDisplay.js:659
+msgid "Remove from Favorites"
+msgstr "Quitar de los favoritos"
+
+#: ../js/ui/appDisplay.js:660
+msgid "Add to Favorites"
+msgstr "Amestar a los favoritos"
+
+#: ../js/ui/appFavorites.js:91
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "Amestóse %s a los favoritos."
+
+#: ../js/ui/appFavorites.js:122
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "Desanicióse %s de los favoritos."
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:66
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Tol día"
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:71
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:78
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:118
+msgctxt "grid sunday"
+msgid "S"
+msgstr "D"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:120
+msgctxt "grid monday"
+msgid "M"
+msgstr "L"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:122
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "M"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:124
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "m"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:126
+msgctxt "grid thursday"
+msgid "T"
+msgstr "X"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:128
+msgctxt "grid friday"
+msgid "F"
+msgstr "V"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:130
+msgctxt "grid saturday"
+msgid "S"
+msgstr "S"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:143
+msgctxt "list sunday"
+msgid "Su"
+msgstr "Dom"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:145
+msgctxt "list monday"
+msgid "M"
+msgstr "Llu"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:147
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Mar"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:149
+msgctxt "list wednesday"
+msgid "W"
+msgstr "Mié"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:151
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Xue"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:153
+msgctxt "list friday"
+msgid "F"
+msgstr "Vie"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:155
+msgctxt "list saturday"
+msgid "S"
+msgstr "Sáb"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:704
+msgid "Nothing Scheduled"
+msgstr "Res programáu"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:496
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %d de %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:499
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %d de %B de %Y"
+
+#: ../js/ui/calendar.js:733
+msgid "Today"
+msgstr "Güei"
+
+#: ../js/ui/calendar.js:737
+msgid "Tomorrow"
+msgstr "Mañana"
+
+#: ../js/ui/calendar.js:746
+msgid "This week"
+msgstr "Esta selmana"
+
+#: ../js/ui/calendar.js:754
+msgid "Next week"
+msgstr "La selmana que vien"
+
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
+msgid "Remove"
+msgstr "Desaniciar"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "Axustes d'hora y data"
+
+#: ../js/ui/dateMenu.js:111
+msgid "Open Calendar"
+msgstr "Abrir calendariu"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:164
+msgid "%a %b %e, %R:%S"
+msgstr "%a %e de %b, %R:%S"
+
+#: ../js/ui/dateMenu.js:165
+msgid "%a %b %e, %R"
+msgstr "%a %e de %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:169
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/dateMenu.js:170
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:177
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %e de %b, %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:178
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %e de %b, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:182
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:183
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A, %e de %B de %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "ELEMENTOS RECIENTES"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Zarrar la sesión %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
+msgid "Log Out"
+msgstr "Zarrar la sesión"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Calca «Zarrar la sesión» pa colar d'eses aplicaciones y zarrar la sesión del "
+"sistema."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "va zarrase automáticamente la sesión de %s en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "La sesión va zarrase automáticamente en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Zarrando la sesión."
+
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Apagar"
+
+#: ../js/ui/endSessionDialog.js:76
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Calca «Apagar» pa colar d'eses aplicaciones y apagar el sistema."
+
+#: ../js/ui/endSessionDialog.js:77
+#, c-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "El sistema va apagase automáticamente en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "Apagando'l sistema."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
+msgid "Restart"
+msgstr "Reaniciar"
+
+#: ../js/ui/endSessionDialog.js:89
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "Calca «Reaniciar» pa colar d'eses aplicaciones y reaniciar el sistema."
+
+#: ../js/ui/endSessionDialog.js:90
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "El sistema va reaniciase automáticamente en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:91
+msgid "Restarting the system."
+msgstr "Reaniciando'l sistema."
+
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
+msgid "Cancel"
+msgstr "Encaboxar"
+
+#: ../js/ui/lookingGlass.js:588
+msgid "No extensions installed"
+msgstr "Nun hai estensiones instalaes"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Enabled"
+msgstr "Activáu"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
+msgid "Disabled"
+msgstr "Desactiváu"
+
+#: ../js/ui/lookingGlass.js:629
+msgid "Error"
+msgstr "Fallu"
+
+#: ../js/ui/lookingGlass.js:631
+msgid "Out of date"
+msgstr "Caducáu"
+
+#: ../js/ui/lookingGlass.js:656
+msgid "View Source"
+msgstr "Ver fonte"
+
+#: ../js/ui/lookingGlass.js:662
+msgid "Web Page"
+msgstr "Páxina web"
+
+#: ../js/ui/messageTray.js:1030
+msgid "Open"
+msgstr "Abrir"
+
+#: ../js/ui/messageTray.js:2194
+msgid "System Information"
+msgstr "Información del sistema"
+
+#: ../js/ui/overview.js:91
+msgid "Undo"
+msgstr "Desfacer"
+
+#: ../js/ui/overview.js:186
+msgid "Windows"
+msgstr "Ventanes"
+
+#: ../js/ui/overview.js:189
+msgid "Applications"
+msgstr "Aplicaciones"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr "Tableru"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:533
+#, c-format
+msgid "Quit %s"
+msgstr "Colar de %s"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:911
+msgid "Activities"
+msgstr "Actividaes"
+
+#: ../js/ui/panel.js:1012
+msgid "Top Bar"
+msgstr "Barra superior"
+
+#: ../js/ui/placeDisplay.js:122
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Falló al desmontar «%s»"
+
+#: ../js/ui/placeDisplay.js:125
+msgid "Retry"
+msgstr "Reintentar"
+
+#: ../js/ui/placeDisplay.js:165
+msgid "Connect to..."
+msgstr "Coneutar a…"
+
+#: ../js/ui/placeDisplay.js:380
+msgid "PLACES & DEVICES"
+msgstr "LLUGARES Y PRESEOS"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Necesítase autenticación"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Alministrador"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autenticar"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/polkitAuthenticationAgent.js:264
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Inténtalo de nueves,"
+
+#: ../js/ui/polkitAuthenticationAgent.js:276
+msgid "Password:"
+msgstr "Contraseña:"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:679
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:205
+msgid "Please enter a command:"
+msgstr "Introduz un comandu:"
+
+#: ../js/ui/searchDisplay.js:311
+msgid "Searching..."
+msgstr "Guetando…"
+
+#: ../js/ui/searchDisplay.js:325
+msgid "No matching results."
+msgstr "Nun s'atopó dengún resultáu coincidente."
+
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "Apagar…"
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../js/ui/statusMenu.js:184
+msgid "Available"
+msgstr "Disponible"
+
+#: ../js/ui/statusMenu.js:189
+msgid "Busy"
+msgstr "Ocupáu"
+
+#: ../js/ui/statusMenu.js:197
+msgid "My Account"
+msgstr "La mio cuenta"
+
+#: ../js/ui/statusMenu.js:201
+msgid "System Settings"
+msgstr "Configuración del sistema"
+
+#: ../js/ui/statusMenu.js:208
+msgid "Lock Screen"
+msgstr "Bloquiar la pantalla"
+
+#: ../js/ui/statusMenu.js:213
+msgid "Switch User"
+msgstr "Camudar d'usuariu"
+
+#: ../js/ui/statusMenu.js:218
+msgid "Log Out..."
+msgstr "Zarrar la sesión…"
+
+#: ../js/ui/status/accessibility.js:62
+msgid "Zoom"
+msgstr "Ampliación"
+
+#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+#. 'screen-reader-enabled');
+#. this.menu.addMenuItem(screenReader);
+#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+#. 'screen-keyboard-enabled');
+#. this.menu.addMenuItem(screenKeyboard);
+#: ../js/ui/status/accessibility.js:77
+msgid "Visual Alerts"
+msgstr "Alertes visuales"
+
+#: ../js/ui/status/accessibility.js:80
+msgid "Sticky Keys"
+msgstr "Tecles persistentes"
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Slow Keys"
+msgstr "Tecles lentes"
+
+#: ../js/ui/status/accessibility.js:86
+msgid "Bounce Keys"
+msgstr "Refugu de tecles"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Mouse Keys"
+msgstr "Tecles del mur"
+
+#: ../js/ui/status/accessibility.js:93
+msgid "Universal Access Settings"
+msgstr "Configuración del accesu universal"
+
+#: ../js/ui/status/accessibility.js:146
+msgid "High Contrast"
+msgstr "Contraste altu"
+
+#: ../js/ui/status/accessibility.js:183
+msgid "Large Text"
+msgstr "Testu grande"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Visibilidá"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Unviar ficheros al preséu…"
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Configurar un preséu nuevu..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Configuración de Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:188
+msgid "Connection"
+msgstr "Conexón"
+
+#: ../js/ui/status/bluetooth.js:224
+msgid "Send Files..."
+msgstr "Unviar ficheros…"
+
+#: ../js/ui/status/bluetooth.js:229
+msgid "Browse Files..."
+msgstr "Desaminar ficheros…"
+
+#: ../js/ui/status/bluetooth.js:238
+msgid "Error browsing device"
+msgstr "Fallu al desaminar el preséu"
+
+#: ../js/ui/status/bluetooth.js:239
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "Nun se pue desaminar el preséu solicitáu, el fallu ye «%s»"
+
+#: ../js/ui/status/bluetooth.js:247
+msgid "Keyboard Settings"
+msgstr "Configuración del tecláu"
+
+#: ../js/ui/status/bluetooth.js:252
+msgid "Mouse Settings"
+msgstr "Axustes del mur…"
+
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+msgid "Sound Settings"
+msgstr "Configuración del soníu"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Solicitú d'autorización de %s"
+
+#: ../js/ui/status/bluetooth.js:374
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "El preséu %s quier acceder al serviciu «%s»"
+
+#: ../js/ui/status/bluetooth.js:376
+msgid "Always grant access"
+msgstr "Conceder accesu siempre"
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Grant this time only"
+msgstr "Conceder namái esta vegada"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Reject"
+msgstr "Refugar"
+
+#: ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Confirmación d'emparexamientu pa «%s»"
+
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "El preséu «%s» quier emparexase con esti equipu"
+
+#: ../js/ui/status/bluetooth.js:415
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Confirma que'l PIN amosáu en «%s» concasa col del preséu."
+
+#: ../js/ui/status/bluetooth.js:417
+msgid "Matches"
+msgstr "Concasa"
+
+#: ../js/ui/status/bluetooth.js:418
+msgid "Does not match"
+msgstr "Nun concasa"
+
+#: ../js/ui/status/bluetooth.js:441
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Solicitú d'emparexamientu pa «%s»"
+
+#: ../js/ui/status/bluetooth.js:449
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Introduz el PIN mencionáu nel preséu."
+
+#: ../js/ui/status/bluetooth.js:465
+msgid "OK"
+msgstr "Aceutar"
+
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Amosar la distribución del tecláu..."
+
+#: ../js/ui/status/keyboard.js:76
+msgid "Localization Settings"
+msgstr "Configuraciones de Localización"
+
+#: ../js/ui/status/network.js:122 ../js/ui/status/network.js:1428
+msgid "<unknown>"
+msgstr "<desconocíu>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
+#: ../js/ui/status/network.js:339
+msgid "disabled"
+msgstr "desactivada"
+
+#: ../js/ui/status/network.js:538
+msgid "connecting..."
+msgstr "coneutando…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:541
+msgid "authentication required"
+msgstr "necesítase autenticación"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing
+#: ../js/ui/status/network.js:551
+msgid "firmware missing"
+msgstr "falta'l «firmware»"
+
+#. Translators: this is for wired network devices that are physically disconnected
+#: ../js/ui/status/network.js:558
+msgid "cable unplugged"
+msgstr "cable desconeutáu"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage
+#: ../js/ui/status/network.js:563
+msgid "unavailable"
+msgstr "non disponible"
+
+#: ../js/ui/status/network.js:565
+msgid "connection failed"
+msgstr "falló la conexón"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name)
+#: ../js/ui/status/network.js:646 ../js/ui/status/network.js:1376
+msgid "Connected (private)"
+msgstr "Coneutada (privada)"
+
+#: ../js/ui/status/network.js:731
+msgid "Auto Ethernet"
+msgstr "Ethernet automática"
+
+#: ../js/ui/status/network.js:799
+msgid "Auto broadband"
+msgstr "Banda ancha automática"
+
+#: ../js/ui/status/network.js:802
+msgid "Auto dial-up"
+msgstr "Marcáu automáticu"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name)
+#: ../js/ui/status/network.js:926 ../js/ui/status/network.js:1388
+#, c-format
+msgid "Auto %s"
+msgstr "%s automática"
+
+#: ../js/ui/status/network.js:928
+msgid "Auto bluetooth"
+msgstr "Bluetooth automáticu"
+
+#: ../js/ui/status/network.js:1390
+msgid "Auto wireless"
+msgstr "Inalámbrica automática"
+
+#: ../js/ui/status/network.js:1459
+msgid "More..."
+msgstr "Más…"
+
+#: ../js/ui/status/network.js:1482
+msgid "Enable networking"
+msgstr "Activar rede"
+
+#: ../js/ui/status/network.js:1494
+msgid "Wired"
+msgstr "Cableada"
+
+#: ../js/ui/status/network.js:1505
+msgid "Wireless"
+msgstr "Inalámbrica"
+
+#: ../js/ui/status/network.js:1515
+msgid "Mobile broadband"
+msgstr "Banda ancha móvil"
+
+#: ../js/ui/status/network.js:1525
+msgid "VPN Connections"
+msgstr "Conexones VPN"
+
+#: ../js/ui/status/network.js:1537
+msgid "Network Settings"
+msgstr "Configuración de la rede"
+
+#: ../js/ui/status/network.js:1831
+#, c-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Tas conteutáu a la conexón móvil '%s'"
+
+#: ../js/ui/status/network.js:1835
+#, c-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Tas conuetáu a la rede inalámbrica '%s'"
+
+#: ../js/ui/status/network.js:1839
+#, c-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Tas coneutáu a la rede '%s'"
+
+#: ../js/ui/status/network.js:1843
+#, c-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Tas coneutáu a la rede VPN '%s'"
+
+#: ../js/ui/status/network.js:1848
+#, c-format
+msgid "You're now connected to '%s'"
+msgstr "Tas coneutáu a '%s'"
+
+#: ../js/ui/status/network.js:1856
+msgid "Connection established"
+msgstr "Afitóse la conexón"
+
+#: ../js/ui/status/network.js:1982
+msgid "Networking is disabled"
+msgstr "La rede ta desactivada"
+
+#: ../js/ui/status/network.js:2107
+msgid "Network Manager"
+msgstr "Xestor de la rede"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Configuración d'enerxía"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "Estimando…"
+
+#: ../js/ui/status/power.js:118
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "Queda %d hora"
+msgstr[1] "Queden %d hores"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:121
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "Queden %d %s %d %s"
+
+#: ../js/ui/status/power.js:123
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "hora"
+msgstr[1] "hores"
+
+#: ../js/ui/status/power.js:123
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minutu"
+msgstr[1] "minutos"
+
+#: ../js/ui/status/power.js:126
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "Queda %d minutu"
+msgstr[1] "Queden %d minutos"
+
+#: ../js/ui/status/power.js:228
+msgid "AC adapter"
+msgstr "Adautador de corriente"
+
+#: ../js/ui/status/power.js:230
+msgid "Laptop battery"
+msgstr "Batería del portátil"
+
+#: ../js/ui/status/power.js:232
+msgid "UPS"
+msgstr "SAI"
+
+#: ../js/ui/status/power.js:234
+msgid "Monitor"
+msgstr "Monitor"
+
+#: ../js/ui/status/power.js:236
+msgid "Mouse"
+msgstr "Mur"
+
+#: ../js/ui/status/power.js:238
+msgid "Keyboard"
+msgstr "Tecláu"
+
+#: ../js/ui/status/power.js:240
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:242
+msgid "Cell phone"
+msgstr "Teléfonu móvil"
+
+#: ../js/ui/status/power.js:244
+msgid "Media player"
+msgstr "Reproductor multimedia"
+
+#: ../js/ui/status/power.js:246
+msgid "Tablet"
+msgstr "Tableta"
+
+#: ../js/ui/status/power.js:248
+msgid "Computer"
+msgstr "Equipu"
+
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
+msgid "Unknown"
+msgstr "Desconocíu"
+
+#: ../js/ui/status/volume.js:45
+msgid "Volume"
+msgstr "Volume"
+
+#: ../js/ui/status/volume.js:58
+msgid "Microphone"
+msgstr "Micrófonu"
+
+#: ../js/ui/telepathyClient.js:335
+#, c-format
+msgid "%s is online."
+msgstr "%s ta coneutáu/ada."
+
+#: ../js/ui/telepathyClient.js:340
+#, c-format
+msgid "%s is offline."
+msgstr "%s ta desconeutáu/ada."
+
+#: ../js/ui/telepathyClient.js:343
+#, c-format
+msgid "%s is away."
+msgstr "%s ta ausente."
+
+#: ../js/ui/telepathyClient.js:346
+#, c-format
+msgid "%s is busy."
+msgstr "%s ta ocupáu/ada."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:488
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Mandar a %X en %A"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "Escribi pa guetar…"
+
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Guetar"
+
+#: ../js/ui/windowAttentionHandler.js:42
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s finó'l so llanzamientu"
+
+#: ../js/ui/windowAttentionHandler.js:44
+#, c-format
+msgid "'%s' is ready"
+msgstr "«%s» ta preparáu"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1098
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u salida"
+msgstr[1] "%u salides"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1108
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u entrada"
+msgstr[1] "%u entraes"
+
+#: ../src/gvc/gvc-mixer-control.c:1406
+msgid "System Sounds"
+msgstr "Soníos del sistema"
+
+#: ../src/main.c:445
+msgid "Print version"
+msgstr "Imprentar versión"
+
+#: ../src/shell-app.c:464
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "Falló al llanzar «%s»"
+
+#: ../src/shell-global.c:1395
+msgid "Less than a minute ago"
+msgstr "Hai menos d'un minutu"
+
+#: ../src/shell-global.c:1399
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "hai %d minutu"
+msgstr[1] "hai %d minutos"
+
+#: ../src/shell-global.c:1404
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "hai %d hora"
+msgstr[1] "hai %d hores"
+
+#: ../src/shell-global.c:1409
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "hai %d día"
+msgstr[1] "hai %d díes"
+
+#: ../src/shell-global.c:1414
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "hai %d selmana"
+msgstr[1] "hai %d selmanes"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Reinu Xuníu"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Predeterminada"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "L'usuariu refugó'l diálogu d'autenticación"
+
+#: ../src/shell-util.c:89
+msgid "Home Folder"
+msgstr "Carpeta personal"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-util.c:104
+msgid "File System"
+msgstr "Sistema de ficheros"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#~ msgid ""
+#~ "GNOME Shell extensions have a uuid property; this key lists extensions which "
+#~ "should be loaded. disabled-extensions overrides this setting for extensions "
+#~ "that appear in both lists."
+#~ msgstr ""
+#~ "Les estensiones de GNOME Shell tienen una propiedá uuid; esta contraseña "
+#~ "llista les estensiones que nun se deben cargar. «disabled-extensions» "
+#~ "sobrescribe esti axuste pa les estensiones qu'aparecen en dambes llistes."
+
+#~ msgid "The type of keyboard to use."
+#~ msgstr "La triba de tecláu qu'usar."
+
+#~ msgid "Uuids of extensions to enable"
+#~ msgstr "Uuid de les estensiones qu'activar"
+
+#~ msgid "Which keyboard to use"
+#~ msgstr "Qué tecláu usar"
+
+#~ msgid "Session..."
+#~ msgstr "Sesión…"
+
+#~ msgctxt "title"
+#~ msgid "Sign In"
+#~ msgstr "Entamar sesión"
+
+#~ msgid "(or swipe finger)"
+#~ msgstr "(o pasa'l deu)"
+
+#~ msgid "Not listed?"
+#~ msgstr "¿Nun ta llistáu?"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "Entamar sesión"
+
+#~ msgid "Login Window"
+#~ msgstr "Ventana d'aniciu de sesión"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Preseos extraíbles"
+
+#, c-format
+#~ msgid "Open with %s"
+#~ msgstr "Abrir con %s"
+
+#~ msgid "Eject"
+#~ msgstr "Espulsar"
+
+#~ msgid "Away"
+#~ msgstr "Ausente"
+
+#~ msgid "Offline"
+#~ msgstr "Desconeutáu"
+
+#~ msgid "CONTACTS"
+#~ msgstr "CONTAUTOS"
+
+#~ msgid "Install"
+#~ msgstr "Instalar"
+
+#, c-format
+#~ msgid "Download and install '%s' from extensions.gnome.org?"
+#~ msgstr "¿Baxar ya instalar «%s» dende extensions.gnome.org?"
+
+#, c-format
+#~ msgid "%s has not emitted any errors."
+#~ msgstr "%s nun emitió error nengún."
+
+#~ msgid "Hide Errors"
+#~ msgstr "Anubrir Errores"
+
+#~ msgid "Show Errors"
+#~ msgstr "Amosar Errores"
+
+#~ msgid "Downloading"
+#~ msgstr "Descargando"
+
+#~ msgid "Show password"
+#~ msgstr "Amosar contraseña"
+
+#~ msgid "Connect"
+#~ msgstr "Coneutar"
+
+#~ msgid "Password: "
+#~ msgstr "Contraseña: "
+
+#~ msgid "Key: "
+#~ msgstr "Contraseña:"
+
+#~ msgid "Username: "
+#~ msgstr "Nome d'usuariu:"
+
+#~ msgid "Identity: "
+#~ msgstr "Identidá:"
+
+#~ msgid "Private key password: "
+#~ msgstr "Clave de la contraseña privada:"
+
+#~ msgid "Service: "
+#~ msgstr "Serviciu:"
+
+#~ msgid "Authentication required by wireless network"
+#~ msgstr "La rede inalámbrica requier autenticación"
+
+#, c-format
+#~ msgid ""
+#~ "Passwords or encryption keys are required to access the wireless network '%"
+#~ "s'."
+#~ msgstr ""
+#~ "Necesítense contraseñes o claves de cifráu p'acceder a la rede inalámbrica «"
+#~ "%s»."
+
+#~ msgid "Wired 802.1X authentication"
+#~ msgstr "Autenticación 802.1X cableada"
+
+#~ msgid "Network name: "
+#~ msgstr "Nome de la rede"
+
+#~ msgid "DSL authentication"
+#~ msgstr "Autenticación DSL"
+
+#~ msgid "PIN code required"
+#~ msgstr "Códigu PIN requeríu"
+
+#~ msgid "PIN code is needed for the mobile broadband device"
+#~ msgstr "Necesítase un códigu PIN pal preséu de banda ancha móvil"
+
+#~ msgid "PIN: "
+#~ msgstr "PIN: "
+
+#~ msgid "Mobile broadband network password"
+#~ msgstr "Contraseña de la rede de banda ancha móvil"
+
+#, c-format
+#~ msgid "A password is required to connect to '%s'."
+#~ msgstr "Requierse una contraseña pa coneutar a «%s»."
+
+#~ msgid "Wrong password, please try again"
+#~ msgstr "Contraseña incorreuta; inténtalo de nueves"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Tecláu en pantalla"
+
+#~ msgid "Set up a New Device..."
+#~ msgstr "Configurar un preséu nuevu…"
+
+#~ msgid "hardware disabled"
+#~ msgstr "hardware desactiváu"
+
+#~ msgid "disconnecting..."
+#~ msgstr "desconeutando…"
+
+#~ msgid "Show Keyboard Layout"
+#~ msgstr "Amosar la distribución del tecláu"
+
+#~ msgid "Region and Language Settings"
+#~ msgstr "Configuración de rexón y llingua"
+
+#~ msgid "unmanaged"
+#~ msgstr "non xestionada"
+
+#~ msgid "Connection failed"
+#~ msgstr "Falló la conexón"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "Falló l'activación de la conexón de rede"
+
+#, c-format
+#~ msgctxt "percent of battery remaining"
+#~ msgid "%d%%"
+#~ msgstr "%d%%"
+
+#~ msgid "Invitation"
+#~ msgstr "Invitación"
+
+#~ msgid "Call"
+#~ msgstr "Llamar"
+
+#~ msgid "File Transfer"
+#~ msgstr "Tresferencia de ficheros"
+
+#~ msgid "Subscription request"
+#~ msgstr "Solicitú de suscripción"
+
+#~ msgid "Connection error"
+#~ msgstr "Fally de conexón"
+
+#, no-c-format
+#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
+#~ msgstr "Unviáu el <b>%A</b> a les <b>%H:%M</b>"
+
+#, no-c-format
+#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+#~ msgstr "Unviáu el <b>%A</b>, <b>%d de %B</b>"
+
+#, no-c-format
+#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+#~ msgstr "Unviáu el <b>%A</b>, <b>%d de %B</b> de %Y"
+
+#, c-format
+#~ msgid "%s is now known as %s"
+#~ msgstr "Agora %s llámase %s"
+
+#, c-format
+#~ msgid "Invitation to %s"
+#~ msgstr "Invitación a %s"
+
+#, c-format
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s ta invitándote a xunite a %s"
+
+#~ msgid "Decline"
+#~ msgstr "Refugar"
+
+#~ msgid "Accept"
+#~ msgstr "Aceutar"
+
+#, c-format
+#~ msgid "Video call from %s"
+#~ msgstr "Videullamada de %s"
+
+#, c-format
+#~ msgid "Call from %s"
+#~ msgstr "Llamada de %s"
+
+#~ msgid "Answer"
+#~ msgstr "Retrucar"
+
+#, c-format
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s ta unviándote %s"
+
+#, c-format
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s solicita permisu pa ver cuándo tas en llinia"
+
+#~ msgid "Network error"
+#~ msgstr "Fallu de la rede"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Falló l'autenticación"
+
+#~ msgid "Encryption error"
+#~ msgstr "Fallu de cifráu"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Certificáu non proporcionáu"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Nun se confía nel certificáu"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Certificáu caducáu"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Certificáu non activáu"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "El nome del sirvidor del certificáu no concasa"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "La buelga del certificáu nun concasa"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Certificáu autofirmáu"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "L'estáu ta afitáu a «desconeutáu»"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "El cifráu nun ta disponible"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "El certificáu nun ye válidu"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Refugóse la conexón"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Nun pue afitase la conexón"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Perdióse la conexón"
+
+#~ msgid "This resource is already connected to the server"
+#~ msgstr "Esti recursu yá ta coneutáu al sirvidor"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "Sustituyóse la conexón por una nueva conexón usando'l mesmu recursu"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "La cuenta yá esiste nel sirvidor"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "Anguaño, el sirvidor ta mui ocupáu intentando xestionar la conexón"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Revocóse'l certificáu"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "El certificáu usa un algoritmu de cifráu inseguru o ye criptográficamente "
+#~ "feble"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server certificate "
+#~ "chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "El llargor del certificáu del sirvidor o la profundidá de la cadena del "
+#~ "certificáu del sirvidor perpasa llímites impuestos pola biblioteca de "
+#~ "criptografía"
+
+#, c-format
+#~ msgid "Connection to %s failed"
+#~ msgstr "Falló la conexón a %s"
+
+#~ msgid "Reconnect"
+#~ msgstr "Reconeutar"
+
+#~ msgid "Edit account"
+#~ msgstr "Editar cuenta"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Razón desconocida"
+
+#~ msgid "Hidden"
+#~ msgstr "Ocultu"
+
+#~ msgid "Idle"
+#~ msgstr "Inactivu"
+
+#~ msgid "Unavailable"
+#~ msgstr "Non disponible"
+
+#~ msgid "Notifications"
+#~ msgstr "Notificaciones"
+
+#~ msgid "Online Accounts"
+#~ msgstr "Cuentes en llinia"
+
+#~ msgid "Your chat status will be set to busy"
+#~ msgstr "El to estáu del chat va afitase a «ocupáu»"
+
+#~ msgid ""
+#~ "Notifications are now disabled, including chat messages. Your online status "
+#~ "has been adjusted to let others know that you might not see their messages."
+#~ msgstr ""
+#~ "Les notificaciones tán agora desactivaes, incluyendo los mensaxes de chat. "
+#~ "El to estáu en llinia axustóse pa qu'otros sepan que nun pues lleer los sos "
+#~ "mensaxes."
+
+#~ msgid "Mode used by GDM for login screen"
+#~ msgstr "Mou usáu por GDM na pantalla d'aniciu"
