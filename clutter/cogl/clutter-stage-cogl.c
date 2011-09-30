@@ -45,11 +45,6 @@
 #include "clutter-stage-private.h"
 #include "clutter-util.h"
 
-#ifdef CLUTTER_WINDOWING_X11
-/* FIXME: needed for a small check in redraw(), needs to be moved */
-#include "x11/clutter-stage-x11.h"
-#endif
-
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageCogl,
@@ -354,25 +349,15 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
   may_use_clipped_redraw = FALSE;
-  if (G_LIKELY (backend_cogl->can_blit_sub_buffer) &&
+  if (_clutter_stage_window_can_clip_redraws (stage_window) &&
+      G_LIKELY (backend_cogl->can_blit_sub_buffer) &&
       /* NB: a zero width redraw clip == full stage redraw */
       stage_cogl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
       G_LIKELY (stage_cogl->frame_count > 3))
     {
-#if defined(CLUTTER_WINDOWING_X11)
-      /* FIXME - move this to a StageWindow vfunc */
-
-      /* While resizing a window clipped redraws are disabled to avoid
-       * artefacts. See clutter-event-x11.c:event_translate for a
-       * detailed explanation */
-      if (CLUTTER_IS_STAGE_X11 (stage_cogl) &&
-          (CLUTTER_STAGE_X11 (stage_cogl)->clipped_redraws_cool_off == 0))
-        {
-          may_use_clipped_redraw = TRUE;
-        }
-#endif
+      may_use_clipped_redraw = TRUE;
     }
 
   if (may_use_clipped_redraw &&

@@ -234,3 +234,17 @@ _clutter_stage_window_get_active_framebuffer (ClutterStageWindow *window)
   else
     return NULL;
 }
+
+gboolean
+_clutter_stage_window_can_clip_redraws (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), FALSE);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->can_clip_redraws != NULL)
+    return iface->can_clip_redraws (window);
+
+  return FALSE;
+}

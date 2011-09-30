@@ -759,6 +759,18 @@ clutter_stage_x11_hide (ClutterStageWindow *stage_window)
     }
 }
 
+static gboolean
+clutter_stage_x11_can_clip_redraws (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  /* while resizing a window, clipped redraws are disabled in order to
+   * avoid artefacts. see clutter-event-x11.c:event_translate for a more
+   * detailed explanation
+   */
+  return stage_x11->clipped_redraws_cool_off == 0;
+}
+
 static void
 clutter_stage_x11_finalize (GObject *gobject)
 {
@@ -823,6 +835,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_geometry = clutter_stage_x11_get_geometry;
   iface->realize = clutter_stage_x11_realize;
   iface->unrealize = clutter_stage_x11_unrealize;
+  iface->can_clip_redraws = clutter_stage_x11_can_clip_redraws;
 }
 
 static inline void

@@ -406,6 +406,12 @@ clutter_stage_gdk_hide (ClutterStageWindow *stage_window)
   gdk_window_hide (stage_gdk->window);
 }
 
+static gboolean
+clutter_stage_gdk_can_clip_redraws (ClutterStageWindow *stage_window)
+{
+  return TRUE;
+}
+
 static void
 clutter_stage_gdk_dispose (GObject *gobject)
 {
@@ -461,6 +467,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_geometry = clutter_stage_gdk_get_geometry;
   iface->realize = clutter_stage_gdk_realize;
   iface->unrealize = clutter_stage_gdk_unrealize;
+  iface->can_clip_redraws = clutter_stage_gdk_can_clip_redraws;
 }
 
 /**
@@ -471,7 +478,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
  *
  * Return value: (transfer none): A GdkWindow* for the stage window.
  *
- * Since: 0.4
+ * Since: 1.10
  */
 GdkWindow *
 clutter_gdk_get_stage_window (ClutterStage *stage)
@@ -499,7 +506,7 @@ clutter_gdk_get_stage_window (ClutterStage *stage)
  * Return value: (transfer none): A #ClutterStage, or% NULL if a stage
  *   does not exist for the window
  *
- * Since: 0.8
+ * Since: 1.10
  */
 ClutterStage *
 clutter_gdk_get_stage_from_window (GdkWindow *window)
@@ -544,7 +551,7 @@ set_foreign_window_callback (ClutterActor *actor,
  *
  * Return value: %TRUE if foreign window is valid
  *
- * Since: 0.4
+ * Since: 1.10
  */
 gboolean
 clutter_gdk_set_stage_foreign (ClutterStage *stage,
@@ -554,7 +561,6 @@ clutter_gdk_set_stage_foreign (ClutterStage *stage,
   ClutterStageGdk *stage_gdk;
   ClutterStageWindow *impl;
   ClutterActor *actor;
-  gpointer gtk_data = NULL;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (!CLUTTER_ACTOR_IN_DESTRUCTION (stage), FALSE);
@@ -574,16 +580,6 @@ clutter_gdk_set_stage_foreign (ClutterStage *stage,
       g_critical ("The provided GdkWindow is already in use by another ClutterStage");
       return FALSE;
     }
-
-#if 0
-  gdk_window_get_user_data (window, &gtk_data);
-  if (gtk_data != NULL)
-    {
-      g_critical ("The provided GdkWindow is already in use by a GtkWidget. "
-		  "Use a child GdkWindow for embedding instead");
-      return FALSE;
-    }
-#endif
 
   closure.stage_gdk = stage_gdk;
   closure.window = g_object_ref (window);
