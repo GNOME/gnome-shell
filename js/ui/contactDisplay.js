@@ -26,7 +26,8 @@ function Contact(id) {
 
 Contact.prototype = {
     _init: function(id) {
-        this.individual = Shell.ContactSystem.get_default().get_individual(id);
+        this._contactSys = Shell.ContactSystem.get_default();
+        this.individual = this._contactSys.get_individual(id);
 
         this.actor = new St.Bin({ style_class: 'contact',
                                   reactive: true,
@@ -56,7 +57,12 @@ Contact.prototype = {
                                x_align: St.Align.START,
                                y_align: St.Align.MIDDLE });
 
-        let aliasText = this.individual.alias || _("Unknown");
+        let email = this._contactSys.get_email_for_display(this.individual);
+        let aliasText = this.individual.alias     ||
+                        this.individual.full_name ||
+                        this.individual.nickname  ||
+                        email                     ||
+                        _("Unknown");
         let aliasLabel = new St.Label({ text: aliasText,
                                         style_class: 'contact-details-alias' });
         details.add(aliasLabel, { x_fill: true,
