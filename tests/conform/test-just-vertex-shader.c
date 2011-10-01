@@ -6,8 +6,7 @@
 
 typedef struct _TestState
 {
-  int width;
-  int height;
+  int dummy;
 } TestState;
 
 static void
@@ -17,17 +16,9 @@ paint_legacy (TestState *state)
   CoglColor color;
   GError *error = NULL;
   CoglHandle shader, program;
-  CoglMatrix identity;
-
-  cogl_ortho (0, state->width, /* left, right */
-              state->height, 0, /* bottom, top */
-              -1, 100 /* z near, far */);
 
   cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
   cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
-
-  cogl_matrix_init_identity (&identity);
-  cogl_set_modelview_matrix (&identity);
 
   /* Set the primary vertex color as red */
   cogl_color_set_from_4ub (&color, 0xff, 0x00, 0x00, 0xff);
@@ -92,17 +83,9 @@ paint (TestState *state)
   CoglColor color;
   GError *error = NULL;
   CoglHandle shader, program;
-  CoglMatrix identity;
-
-  cogl_ortho (0, state->width, /* left, right */
-              state->height, 0, /* bottom, top */
-              -1, 100 /* z near, far */);
 
   cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
   cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
-
-  cogl_matrix_init_identity (&identity);
-  cogl_set_modelview_matrix (&identity);
 
   /* Set the primary vertex color as red */
   cogl_color_set_from_4ub (&color, 0xff, 0x00, 0x00, 0xff);
@@ -197,8 +180,9 @@ test_cogl_just_vertex_shader (TestUtilsGTestFixture *fixture,
   TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.width = cogl_framebuffer_get_width (shared_state->fb);
-  state.height = cogl_framebuffer_get_height (shared_state->fb);
+  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
+              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
+              -1, 100 /* z near, far */);
 
   /* If shaders aren't supported then we can't run the test */
   if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))

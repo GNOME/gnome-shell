@@ -18,8 +18,7 @@
 
 typedef struct _TestState
 {
-  int width;
-  int height;
+  int dummy;
 } TestState;
 
 typedef struct
@@ -142,16 +141,6 @@ test_depth (TestState *state,
 static void
 paint (TestState *state)
 {
-  CoglMatrix identity;
-
-  cogl_ortho (0, state->width, /* left, right */
-              state->height, 0, /* bottom, top */
-              -1, 100 /* z near, far */);
-
-  cogl_push_matrix ();
-  cogl_matrix_init_identity (&identity);
-  cogl_set_modelview_matrix (&identity);
-
   /* Sanity check a few of the different depth test functions
    * and that depth writing can be disabled... */
 
@@ -270,8 +259,6 @@ paint (TestState *state)
                 &rect0_state, &rect1_state, NULL,
                 0x00ff00ff); /* expected */
   }
-
-  cogl_pop_matrix ();
 }
 
 void
@@ -281,8 +268,10 @@ test_cogl_depth_test (TestUtilsGTestFixture *fixture,
   TestUtilsSharedState *shared_state = data;
   TestState state;
 
-  state.width = cogl_framebuffer_get_width (shared_state->fb);
-  state.height = cogl_framebuffer_get_height (shared_state->fb);
+  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
+              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
+              -1, 100 /* z near, far */);
+
   paint (&state);
 
   if (g_test_verbose ())
