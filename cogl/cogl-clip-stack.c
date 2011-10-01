@@ -42,6 +42,7 @@
 #include "cogl-matrix-private.h"
 #include "cogl-primitives-private.h"
 #include "cogl-private.h"
+#include "cogl-pipeline-opengl-private.h"
 
 #ifndef GL_CLIP_PLANE0
 #define GL_CLIP_PLANE0 0x3000
@@ -270,6 +271,117 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
   GE( ctx, glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 
   /* restore the original source pipeline */
+  cogl_pop_source ();
+}
+
+static void
+add_stencil_clip_path (CoglFramebuffer *framebuffer,
+                       CoglPath *path,
+                       gboolean merge,
+                       gboolean need_clear)
+{
+  CoglPathData *data = path->data;
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+  CoglContext *ctx = cogl_framebuffer_get_context (framebuffer);
+
+  /* This can be called from the clip stack code which doesn't flush
+     the matrix stacks between calls so we need to ensure they're
+     flushed now */
+  _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                  COGL_MATRIX_MODELVIEW);
+  _cogl_matrix_stack_flush_to_gl (projection_stack,
+                                  COGL_MATRIX_PROJECTION);
+
+  /* Just setup a simple pipeline that doesn't use texturing... */
+  _cogl_push_source (ctx->stencil_pipeline, FALSE);
+
+  _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE, 0);
+
+  GE( ctx, glEnable (GL_STENCIL_TEST) );
+
+  GE( ctx, glColorMask (FALSE, FALSE, FALSE, FALSE) );
+  GE( ctx, glDepthMask (FALSE) );
+
+  if (merge)
+    {
+      GE (ctx, glStencilMask (2));
+      GE (ctx, glStencilFunc (GL_LEQUAL, 0x2, 0x6));
+    }
+  else
+    {
+      /* If we're not using the stencil buffer for clipping then we
+         don't need to clear the whole stencil buffer, just the area
+         that will be drawn */
+      if (need_clear)
+        /* If this is being called from the clip stack code then it
+           will have set up a scissor for the minimum bounding box of
+           all of the clips. That box will likely mean that this
+           _cogl_clear won't need to clear the entire
+           buffer. _cogl_framebuffer_clear_without_flush4f is used instead
+           of cogl_clear because it won't try to flush the journal */
+        _cogl_framebuffer_clear_without_flush4f (framebuffer,
+                                                 COGL_BUFFER_BIT_STENCIL,
+                                                 0, 0, 0, 0);
+      else
+        {
+          /* Just clear the bounding box */
+          GE( ctx, glStencilMask (~(GLuint) 0) );
+          GE( ctx, glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
+          _cogl_rectangle_immediate (data->path_nodes_min.x,
+                                     data->path_nodes_min.y,
+                                     data->path_nodes_max.x,
+                                     data->path_nodes_max.y);
+        }
+      GE (ctx, glStencilMask (1));
+      GE (ctx, glStencilFunc (GL_LEQUAL, 0x1, 0x3));
+    }
+
+  GE (ctx, glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
+
+  if (path->data->path_nodes->len >= 3)
+    _cogl_path_fill_nodes (path,
+                           COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+
+  if (merge)
+    {
+      /* Now we have the new stencil buffer in bit 1 and the old
+         stencil buffer in bit 0 so we need to intersect them */
+      GE (ctx, glStencilMask (3));
+      GE (ctx, glStencilFunc (GL_NEVER, 0x2, 0x3));
+      GE (ctx, glStencilOp (GL_DECR, GL_DECR, GL_DECR));
+      /* Decrement all of the bits twice so that only pixels where the
+         value is 3 will remain */
+
+      _cogl_matrix_stack_push (projection_stack);
+      _cogl_matrix_stack_load_identity (projection_stack);
+      _cogl_matrix_stack_flush_to_gl (projection_stack,
+                                      COGL_MATRIX_PROJECTION);
+
+      _cogl_matrix_stack_push (modelview_stack);
+      _cogl_matrix_stack_load_identity (modelview_stack);
+      _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                      COGL_MATRIX_MODELVIEW);
+
+      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
+      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
+
+      _cogl_matrix_stack_pop (modelview_stack);
+      _cogl_matrix_stack_pop (projection_stack);
+    }
+
+  GE (ctx, glStencilMask (~(GLuint) 0));
+  GE (ctx, glDepthMask (TRUE));
+  GE (ctx, glColorMask (TRUE, TRUE, TRUE, TRUE));
+
+  GE (ctx, glStencilFunc (GL_EQUAL, 0x1, 0x1));
+  GE (ctx, glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP));
+
+  /* restore the original pipeline */
   cogl_pop_source ();
 }
 
@@ -689,9 +801,10 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
           _cogl_matrix_stack_push (modelview_stack);
           _cogl_matrix_stack_set (modelview_stack, &path_entry->matrix);
 
-          _cogl_add_path_to_stencil_buffer (path_entry->path,
-                                            using_stencil_buffer,
-                                            TRUE);
+          add_stencil_clip_path (framebuffer,
+                                 path_entry->path,
+                                 using_stencil_buffer,
+                                 TRUE);
 
           _cogl_matrix_stack_pop (modelview_stack);
 

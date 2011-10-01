@@ -113,4 +113,7 @@ _cogl_path_get_bounds (CoglPath *path,
 gboolean
 _cogl_path_is_rectangle (CoglPath *path);
 
+void
+_cogl_path_fill_nodes (CoglPath *path, CoglDrawFlags flags);
+
 #endif /* __COGL_PATH_PRIVATE_H */
