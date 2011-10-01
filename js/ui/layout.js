@@ -625,7 +625,7 @@ Chrome.prototype = {
         // We can't use Params.parse here because we want to drop
         // the extra values like ancestorData.actor
         for (let prop in defaultParams) {
-            if (!params[prop])
+            if (!params.hasOwnProperty(prop))
                 params[prop] = ancestorData[prop];
         }
 
