@@ -3558,7 +3558,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   meta_display_set_grab_op_cursor (display, screen, op, FALSE, grab_xwindow,
                                    timestamp);
 
-  if (!display->grab_have_pointer)
+  if (!display->grab_have_pointer && !grab_op_is_keyboard (op))
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "XGrabPointer() failed\n");
