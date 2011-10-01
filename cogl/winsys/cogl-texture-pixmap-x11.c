@@ -205,11 +205,14 @@ process_damage_event (CoglTexturePixmapX11 *tex_pixmap,
                                    damage_event->area.height);
     }
 
-  /* If we're using the texture from pixmap extension then there's no
-     point in getting the region and we can just mark that the texture
-     needs updating */
-  winsys = _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
-  winsys->texture_pixmap_x11_damage_notify (tex_pixmap);
+  if (tex_pixmap->winsys)
+    {
+      /* If we're using the texture from pixmap extension then there's no
+         point in getting the region and we can just mark that the texture
+         needs updating */
+      winsys = _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+      winsys->texture_pixmap_x11_damage_notify (tex_pixmap);
+    }
 }
 
 static CoglFilterReturn
@@ -420,7 +423,6 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
                                      int height)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
-  const CoglWinsysVtable *winsys;
 
   if (!cogl_is_texture_pixmap_x11 (handle))
     return;
@@ -429,8 +431,12 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
      texture because we can't determine which will be needed until we
      actually render something */
 
-  winsys = _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
-  winsys->texture_pixmap_x11_damage_notify (tex_pixmap);
+  if (tex_pixmap->winsys)
+    {
+      const CoglWinsysVtable *winsys;
+      winsys = _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+      winsys->texture_pixmap_x11_damage_notify (tex_pixmap);
+    }
 
   cogl_damage_rectangle_union (&tex_pixmap->damage_rect,
                                x, y, width, height);
