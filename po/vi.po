@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-30 16:20+0000\n"
-"PO-Revision-Date: 2011-10-01 10:29+1000\n"
+"PO-Revision-Date: 2011-10-01 10:31+1000\n"
 "Last-Translator: Ngô Chin <ndtrung4419@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -190,7 +190,7 @@ msgstr "Đăng nhập"
 #. to indicate the user can swipe their finger instead
 #: ../js/gdm/loginDialog.js:830
 msgid "(or swipe finger)"
-msgstr ""
+msgstr "(hoặc quẹt ngón tay)"
 
 #: ../js/gdm/loginDialog.js:848
 msgid "Not listed?"
@@ -278,7 +278,7 @@ msgstr "Đã bỏ đánh dấu ưa thích cho %s"
 
 #: ../js/ui/autorunManager.js:280
 msgid "Removable Devices"
-msgstr ""
+msgstr "Thiết bị di động"
 
 #: ../js/ui/autorunManager.js:590
 #, c-format
@@ -602,19 +602,17 @@ msgstr "Chưa cài phần mở rộng"
 #: ../js/ui/lookingGlass.js:700
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s không tạo ra bất kỳ lỗi gì."
 
 #: ../js/ui/lookingGlass.js:706
-#, fuzzy
 #| msgid "Error"
 msgid "Hide Errors"
-msgstr "Lỗi"
+msgstr "Ẩn lỗi"
 
 #: ../js/ui/lookingGlass.js:710 ../js/ui/lookingGlass.js:760
-#, fuzzy
 #| msgid "Error"
 msgid "Show Errors"
-msgstr "Lỗi"
+msgstr "Hiện lỗi"
 
 #: ../js/ui/lookingGlass.js:719
 msgid "Enabled"
@@ -845,10 +843,9 @@ msgstr "Phóng to"
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:71
-#, fuzzy
 #| msgid "Screen Reader"
 msgid "Screen Keyboard"
-msgstr "Trình đọc màn hình"
+msgstr "Bàn phím màn hình"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Visual Alerts"
