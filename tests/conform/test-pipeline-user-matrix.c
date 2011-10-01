@@ -1,12 +1,42 @@
-#include <clutter/clutter.h>
+#include <cogl/cogl.h>
+
 #include <string.h>
 
-#include "test-conform-common.h"
+#include "test-utils.h"
 
-static const ClutterColor stage_color = { 0x00, 0x00, 0x00, 0xff };
+typedef struct _TestState
+{
+  int width;
+  int height;
+} TestState;
 
 static void
-paint_cb (ClutterActor *stage)
+validate_result (TestState *state)
+{
+  guint32 *pixels, *p;
+  char *screen_pixel;
+  const char *intended_pixel = "#ffffff";
+
+  /* The textures are setup so that when added together with the
+     correct matrices then all of the pixels should be white. We can
+     verify this by reading back the entire stage */
+  pixels = g_malloc (state->width * state->height * 4);
+
+  cogl_read_pixels (0, 0, state->width, state->height,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                    (guint8 *)pixels);
+
+  for (p = pixels; p < pixels + state->width * state->height; p++)
+    {
+      screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (*p) >> 8);
+      g_assert_cmpstr (screen_pixel, ==, intended_pixel);
+      g_free (screen_pixel);
+    }
+}
+
+static void
+paint (TestState *state)
 {
   /* This texture is painted mirrored around the x-axis */
   guint8 data0[] = {
@@ -22,14 +52,21 @@ paint_cb (ClutterActor *stage)
     0xff, 0x00, 0xff, /* magenta -> becomes bottom right */
     0x00, 0xff, 0xff  /* cyan -> becomes bottom left */
   };
+  CoglColor bg;
   CoglHandle tex0, tex1;
   CoglPipeline *pipeline;
   CoglMatrix matrix;
-  int width, height;
-  guint8 *pixels, *p;
+  GError *error = NULL;
 
-  width = clutter_actor_get_width (stage);
-  height = clutter_actor_get_height (stage);
+  cogl_ortho (0, state->width, /* left, right */
+              state->height, 0, /* bottom, top */
+              -1, 100 /* z near, far */);
+
+  cogl_color_init_from_4ub (&bg, 0, 0, 0, 255);
+  cogl_clear (&bg, COGL_BUFFER_BIT_COLOR);
+
+  cogl_matrix_init_identity (&matrix);
+  cogl_set_modelview_matrix (&matrix);
 
   tex0 = cogl_texture_new_from_data (2, 2,
                                      COGL_TEXTURE_NO_ATLAS,
@@ -57,9 +94,13 @@ paint_cb (ClutterActor *stage)
                                    COGL_PIPELINE_FILTER_NEAREST);
 
   /* Set a combine mode so that the two textures get added together */
-  cogl_pipeline_set_layer_combine (pipeline, 1,
-                                   "RGBA=ADD(PREVIOUS, TEXTURE)",
-                                   NULL);
+  if (!cogl_pipeline_set_layer_combine (pipeline, 1,
+					"RGBA=ADD(PREVIOUS, TEXTURE)",
+					&error))
+    {
+      g_warning ("Error setting blend string: %s", error->message);
+      g_assert_not_reached ();
+    }
 
   /* Set a matrix on the first layer so that it will mirror about the y-axis */
   cogl_matrix_init_identity (&matrix);
@@ -74,70 +115,25 @@ paint_cb (ClutterActor *stage)
   cogl_pipeline_set_layer_matrix (pipeline, 1, &matrix);
 
   cogl_set_source (pipeline);
-  cogl_rectangle (0, 0, width, height);
+  cogl_rectangle (0, 0, state->width, state->height);
 
   cogl_handle_unref (tex1);
   cogl_handle_unref (tex0);
   cogl_object_unref (pipeline);
-
-  /* The textures are setup so that when added together with the
-     correct matrices then all of the pixels should be white. We can
-     verify this by reading back the entire stage */
-  pixels = g_malloc (width * height * 4);
-
-  cogl_read_pixels (0, 0, width, height,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixels);
-
-  for (p = pixels + width * height * 4; p > pixels;)
-    {
-      p -= 4;
-      g_assert_cmpint (p[0], ==, 0xff);
-      g_assert_cmpint (p[1], ==, 0xff);
-      g_assert_cmpint (p[2], ==, 0xff);
-    }
-
-  g_free (pixels);
-
-  clutter_main_quit ();
-}
-
-static gboolean
-queue_redraw (gpointer stage)
-{
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-  return TRUE;
 }
 
 void
 test_cogl_pipeline_user_matrix (TestUtilsGTestFixture *fixture,
                                 void *data)
 {
-  ClutterActor *stage;
-  unsigned int idle_source;
-  unsigned int paint_handler;
+  TestUtilsSharedState *shared_state = data;
+  TestState state;
 
-  stage = clutter_stage_get_default ();
+  state.width = cogl_framebuffer_get_width (shared_state->fb);
+  state.height = cogl_framebuffer_get_height (shared_state->fb);
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, stage);
-
-  paint_handler = g_signal_connect_after (stage, "paint",
-                                          G_CALLBACK (paint_cb),
-                                          NULL);
-
-  clutter_actor_show (stage);
-
-  clutter_main ();
-
-  g_source_remove (idle_source);
-  g_signal_handler_disconnect (stage, paint_handler);
+  paint (&state);
+  validate_result (&state);
 
   if (g_test_verbose ())
     g_print ("OK\n");
