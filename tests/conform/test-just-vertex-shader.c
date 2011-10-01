@@ -1,17 +1,33 @@
-#include <clutter/clutter.h>
+#include <cogl/cogl.h>
+
 #include <string.h>
 
-#include "test-conform-common.h"
+#include "test-utils.h"
 
-static const ClutterColor stage_color = { 0x00, 0x00, 0xff, 0xff };
+typedef struct _TestState
+{
+  int width;
+  int height;
+} TestState;
 
 static void
-draw_frame (void)
+paint_legacy (TestState *state)
 {
   CoglHandle material = cogl_material_new ();
   CoglColor color;
   GError *error = NULL;
   CoglHandle shader, program;
+  CoglMatrix identity;
+
+  cogl_ortho (0, state->width, /* left, right */
+              state->height, 0, /* bottom, top */
+              -1, 100 /* z near, far */);
+
+  cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
+  cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
+
+  cogl_matrix_init_identity (&identity);
+  cogl_set_modelview_matrix (&identity);
 
   /* Set the primary vertex color as red */
   cogl_color_set_from_4ub (&color, 0xff, 0x00, 0x00, 0xff);
@@ -70,63 +86,128 @@ draw_frame (void)
 }
 
 static void
-validate_pixel (int x, int y)
+paint (TestState *state)
 {
-  guint8 pixels[4];
+  CoglPipeline *pipeline = cogl_pipeline_new ();
+  CoglColor color;
+  GError *error = NULL;
+  CoglHandle shader, program;
+  CoglMatrix identity;
+
+  cogl_ortho (0, state->width, /* left, right */
+              state->height, 0, /* bottom, top */
+              -1, 100 /* z near, far */);
+
+  cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
+  cogl_clear (&color, COGL_BUFFER_BIT_COLOR);
+
+  cogl_matrix_init_identity (&identity);
+  cogl_set_modelview_matrix (&identity);
+
+  /* Set the primary vertex color as red */
+  cogl_color_set_from_4ub (&color, 0xff, 0x00, 0x00, 0xff);
+  cogl_pipeline_set_color (pipeline, &color);
+
+  /* Override the vertex color in the texture environment with a
+     constant green color */
+  cogl_color_set_from_4ub (&color, 0x00, 0xff, 0x00, 0xff);
+  cogl_pipeline_set_layer_combine_constant (pipeline, 0, &color);
+  if (!cogl_pipeline_set_layer_combine (pipeline, 0,
+                                        "RGBA=REPLACE(CONSTANT)",
+                                        &error))
+    {
+      g_warning ("Error setting blend constant: %s", error->message);
+      g_assert_not_reached ();
+    }
+
+  /* Set up a dummy vertex shader that does nothing but the usual
+     fixed function transform */
+  shader = cogl_create_shader (COGL_SHADER_TYPE_VERTEX);
+  cogl_shader_source (shader,
+                      "void\n"
+                      "main ()\n"
+                      "{\n"
+                      "  cogl_position_out = "
+                      "cogl_modelview_projection_matrix * "
+                      "cogl_position_in;\n"
+                      "  cogl_color_out = cogl_color_in;\n"
+                      "}\n");
+  cogl_shader_compile (shader);
+  if (!cogl_shader_is_compiled (shader))
+    {
+      char *log = cogl_shader_get_info_log (shader);
+      g_warning ("Shader compilation failed:\n%s", log);
+      g_free (log);
+      g_assert_not_reached ();
+    }
+
+  program = cogl_create_program ();
+  cogl_program_attach_shader (program, shader);
+  cogl_program_link (program);
+
+  cogl_handle_unref (shader);
+
+  /* Draw something without the program */
+  cogl_set_source (pipeline);
+  cogl_rectangle (0, 0, 50, 50);
+
+  /* Draw it again using the program. It should look exactly the same */
+  cogl_pipeline_set_user_program (pipeline, program);
+  cogl_handle_unref (program);
+
+  cogl_rectangle (50, 0, 100, 50);
+  cogl_pipeline_set_user_program (pipeline, COGL_INVALID_HANDLE);
+
+  cogl_object_unref (pipeline);
+}
+
+static void
+check_pixel (int x, int y, guint8 r, guint8 g, guint8 b)
+{
+  guint32 pixel;
+  char *screen_pixel;
+  char *intended_pixel;
 
   cogl_read_pixels (x, y, 1, 1, COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE, pixels);
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                    (guint8 *) &pixel);
 
-  /* The final color should be green. If it's blue then the layer
-     state is being ignored. If it's green then the stage is showing
-     through */
-  g_assert_cmpint (pixels[0], ==, 0x00);
-  g_assert_cmpint (pixels[1], ==, 0xff);
-  g_assert_cmpint (pixels[2], ==, 0x00);
+  screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (pixel) >> 8);
+  intended_pixel = g_strdup_printf ("#%02x%02x%02x", r, g, b);
+
+  g_assert_cmpstr (screen_pixel, ==, intended_pixel);
+
+  g_free (screen_pixel);
+  g_free (intended_pixel);
 }
 
 static void
 validate_result (void)
 {
   /* Non-shader version */
-  validate_pixel (25, 25);
+  check_pixel (25, 25, 0, 0xff, 0);
   /* Shader version */
-  validate_pixel (75, 25);
-}
-
-static void
-on_paint (void)
-{
-  draw_frame ();
-
-  validate_result ();
-
-  /* Comment this out to see what the test paints */
-  clutter_main_quit ();
+  check_pixel (75, 25, 0, 0xff, 0);
 }
 
 void
 test_cogl_just_vertex_shader (TestUtilsGTestFixture *fixture,
                               void *data)
 {
-  ClutterActor *stage;
-  unsigned int paint_handler;
+  TestUtilsSharedState *shared_state = data;
+  TestState state;
 
-  stage = clutter_stage_get_default ();
+  state.width = cogl_framebuffer_get_width (shared_state->fb);
+  state.height = cogl_framebuffer_get_height (shared_state->fb);
 
   /* If shaders aren't supported then we can't run the test */
   if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     {
-      clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+      paint_legacy (&state);
+      validate_result ();
 
-      paint_handler = g_signal_connect_after (stage, "paint",
-                                              G_CALLBACK (on_paint), NULL);
-
-      clutter_actor_show (stage);
-
-      clutter_main ();
-
-      g_signal_handler_disconnect (stage, paint_handler);
+      paint (&state);
+      validate_result ();
 
       if (g_test_verbose ())
         g_print ("OK\n");
