@@ -269,67 +269,62 @@ _cogl_path_get_bounds (CoglPath *path,
 }
 
 static void
-_cogl_path_fill_nodes_with_stencil_buffer (CoglPath *path)
+_cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_assert (ctx->current_clip_stack_valid);
+  if (!cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+    {
+      static gboolean seen_warning = FALSE;
 
-  _cogl_add_path_to_stencil_buffer (path,
-                                    ctx->current_clip_stack_uses_stencil,
-                                    FALSE);
+      if (!seen_warning)
+        {
+          g_warning ("Paths can not be filled using materials with "
+                     "sliced textures unless there is a stencil "
+                     "buffer");
+          seen_warning = TRUE;
+        }
+    }
 
-  _cogl_rectangle_immediate (path->data->path_nodes_min.x,
-                             path->data->path_nodes_min.y,
-                             path->data->path_nodes_max.x,
-                             path->data->path_nodes_max.y);
+  cogl_clip_push_from_path (path);
+  cogl_rectangle (path->data->path_nodes_min.x,
+                  path->data->path_nodes_min.y,
+                  path->data->path_nodes_max.x,
+                  path->data->path_nodes_max.y);
+  cogl_clip_pop ();
+}
 
-  /* The stencil buffer now contains garbage so the clip area needs to
-   * be rebuilt.
-   *
-   * NB: We only ever try and update the clip state during
-   * _cogl_journal_init (when we flush the framebuffer state) which is
-   * only called when the journal first gets something logged in it; so
-   * we call cogl_flush() to emtpy the journal.
+static gboolean
+validate_layer_cb (CoglPipelineLayer *layer, void *user_data)
+{
+  gboolean *needs_fallback = user_data;
+  CoglTexture *texture = _cogl_pipeline_layer_get_texture (layer);
+
+  /* If any of the layers of the current pipeline contain sliced
+   * textures or textures with waste then it won't work to draw the
+   * path directly. Instead we fallback to pushing the path as a clip
+   * on the clip-stack and drawing the path's bounding rectangle
+   * instead.
    */
-  _cogl_clip_stack_dirty ();
+
+  if (texture != NULL && (cogl_texture_is_sliced (texture) ||
+                          !_cogl_texture_can_hardware_repeat (texture)))
+    *needs_fallback = TRUE;
+
+  return !*needs_fallback;
 }
 
 static void
-_cogl_path_fill_nodes (CoglPath *path)
+_cogl_path_fill_nodes (CoglPath *path, CoglDrawFlags flags)
 {
-  const GList *l;
+  gboolean needs_fallback = FALSE;
 
-  /* If any of the layers of the current pipeline contain sliced
-     textures or textures with waste then it won't work to draw the
-     path directly. Instead we can use draw the texture as a quad
-     clipped to the stencil buffer. */
-  for (l = _cogl_pipeline_get_layers (cogl_get_source ()); l; l = l->next)
+  _cogl_pipeline_foreach_layer_internal (cogl_get_source (),
+                                         validate_layer_cb, &needs_fallback);
+  if (needs_fallback)
     {
-      CoglHandle layer = l->data;
-      CoglTexture *texture = _cogl_pipeline_layer_get_texture (layer);
-
-      if (texture != NULL &&
-          (cogl_texture_is_sliced (texture) ||
-           !_cogl_texture_can_hardware_repeat (texture)))
-        {
-          if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
-            _cogl_path_fill_nodes_with_stencil_buffer (path);
-          else
-            {
-              static gboolean seen_warning = FALSE;
-
-              if (!seen_warning)
-                {
-                  g_warning ("Paths can not be filled using materials with "
-                             "sliced textures unless there is a stencil "
-                             "buffer");
-                  seen_warning = TRUE;
-                }
-            }
-
-          return;
-        }
+      _cogl_path_fill_nodes_with_clipped_rectangle (path);
+      return;
     }
 
   _cogl_path_build_fill_attribute_buffer (path);
@@ -340,9 +335,7 @@ _cogl_path_fill_nodes (CoglPath *path)
                                  path->data->fill_vbo_indices,
                                  path->data->fill_attributes,
                                  COGL_PATH_N_ATTRIBUTES,
-                                 COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                                 COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                                 COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+                                 flags);
 }
 
 void
@@ -414,7 +407,10 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
   GE (ctx, glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
   if (path->data->path_nodes->len >= 3)
-    _cogl_path_fill_nodes (path);
+    _cogl_path_fill_nodes (path,
+                           COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
 
   if (merge)
     {
@@ -457,8 +453,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
 void
 cogl2_path_fill (CoglPath *path)
 {
-  CoglFramebuffer *framebuffer;
-
   g_return_if_fail (cogl_is_path (path));
 
   if (path->data->path_nodes->len == 0)
@@ -476,20 +470,7 @@ cogl2_path_fill (CoglPath *path)
       cogl_rectangle (x_1, y_1, x_2, y_2);
     }
   else
-    {
-      framebuffer = cogl_get_draw_framebuffer ();
-
-      _cogl_framebuffer_flush_journal (framebuffer);
-
-      /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-       * as the pipeline state) when flushing the clip stack, so should
-       * always be done first when preparing to draw. */
-      _cogl_framebuffer_flush_state (framebuffer,
-                                     _cogl_get_read_framebuffer (),
-                                     0);
-
-      _cogl_path_fill_nodes (path);
-    }
+    _cogl_path_fill_nodes (path, 0);
 }
 
 void

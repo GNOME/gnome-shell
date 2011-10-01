@@ -25,6 +25,7 @@
 #define __COGL_PATH_PRIVATE_H
 
 #include "cogl-object.h"
+#include "cogl-attribute-private.h"
 
 typedef struct _floatVec2
 {
