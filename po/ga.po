@@ -1,7 +1,7 @@
 # Irish translations for gnome-shell package.
 # Copyright (C) 2009-2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
-# Seán de Búrca <leftmostcat@gmail.com>, 2009-2011, 2011.
+# Seán de Búrca <leftmostcat@gmail.com>, 2009-2011.
 #
 msgid ""
 msgstr ""
@@ -405,11 +405,11 @@ msgstr "Amárach"
 
 #: ../js/ui/calendar.js:729
 msgid "This week"
-msgstr "An seachtain seo"
+msgstr "An tseachtain seo"
 
 #: ../js/ui/calendar.js:737
 msgid "Next week"
-msgstr "An seachtain seo chugainn"
+msgstr "An tseachtain seo chugainn"
 
 #: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
 #: ../js/ui/status/power.js:223 ../src/shell-app.c:355
