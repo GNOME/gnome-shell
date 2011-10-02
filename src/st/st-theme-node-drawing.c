@@ -601,8 +601,8 @@ create_cairo_pattern_of_background_image (StThemeNode *node,
           x_offset = - (node->alloc_width / 2. - scaled_width / 2.);
         }
 
-      cairo_matrix_init_translate (&matrix, x_offset, y_offset);
-      cairo_matrix_scale (&matrix, scale_factor, scale_factor);
+      cairo_matrix_init_scale (&matrix, scale_factor, scale_factor);
+      cairo_matrix_translate (&matrix, x_offset, y_offset);
 
       cairo_pattern_set_matrix (pattern, &matrix);
 
