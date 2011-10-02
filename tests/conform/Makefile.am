@@ -11,7 +11,6 @@ common_sources = \
 	$(NULL)
 
 unported_test_sources = \
-	test-blend-strings.c \
 	test-fixed.c \
 	test-materials.c \
 	test-viewport.c \
@@ -38,6 +37,7 @@ unported_test_sources = \
 	$(NULL)
 
 test_sources = \
+	test-blend-strings.c \
 	test-depth-test.c \
 	test-color-mask.c \
 	test-backface-culling.c \

@@ -134,7 +134,7 @@ main (int argc, char **argv)
   UNPORTED_TEST ("/cogl", test_cogl_fixed);
   UNPORTED_TEST ("/cogl", test_cogl_materials);
   ADD_TEST ("/cogl", test_cogl_pipeline_user_matrix);
-  UNPORTED_TEST ("/cogl", test_cogl_blend_strings);
+  ADD_TEST ("/cogl", test_cogl_blend_strings);
   UNPORTED_TEST ("/cogl", test_cogl_premult);
   UNPORTED_TEST ("/cogl", test_cogl_readpixels);
   UNPORTED_TEST ("/cogl", test_cogl_path);

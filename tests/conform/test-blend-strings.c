@@ -1,11 +1,8 @@
-
-#include <clutter/clutter.h>
 #include <cogl/cogl.h>
+
 #include <string.h>
 
-#include "test-conform-common.h"
-
-static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
+#include "test-utils.h"
 
 #define QUAD_WIDTH 20
 
@@ -24,30 +21,28 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 typedef struct _TestState
 {
-  ClutterGeometry stage_geom;
+  int dummy;
 } TestState;
 
 
 static void
-check_pixel (GLubyte *pixel, guint32 color)
+check_pixel (int x, int y, guint32 expected_pixel)
 {
-  guint8 r = MASK_RED (color);
-  guint8 g = MASK_GREEN (color);
-  guint8 b = MASK_BLUE (color);
-  guint8 a = MASK_ALPHA (color);
+  guint32 pixel;
+  char *screen_pixel;
+  char *intended_pixel;
 
-  if (g_test_verbose ())
-    g_print ("  expected = %x, %x, %x, %x\n",
-             r, g, b, a);
-  /* FIXME - allow for hardware in-precision */
-  g_assert_cmpint (pixel[RED], ==, r);
-  g_assert_cmpint (pixel[GREEN], ==, g);
-  g_assert_cmpint (pixel[BLUE], ==, b);
+  cogl_read_pixels (x, y, 1, 1, COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                    (guint8 *) &pixel);
 
-  /* FIXME
-   * We ignore the alpha, since we don't know if our render target is
-   * RGB or RGBA */
-  /* g_assert (pixel[ALPHA] == a); */
+  screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (pixel) >> 8);
+  intended_pixel = g_strdup_printf ("#%06x", expected_pixel >> 8);
+
+  g_assert_cmpstr (screen_pixel, ==, intended_pixel);
+
+  g_free (screen_pixel);
+  g_free (intended_pixel);
 }
 
 static void
@@ -78,11 +73,84 @@ test_blend (TestState *state,
   CoglColor blend_const_color;
 
   CoglHandle material;
+  CoglPipeline *pipeline;
   gboolean status;
   GError *error = NULL;
-  GLubyte pixel[4];
-  GLint y_off;
-  GLint x_off;
+  int y_off;
+  int x_off;
+
+  /* First write out the destination color without any blending... */
+  pipeline = cogl_pipeline_new ();
+  cogl_pipeline_set_color4ub (pipeline, Dr, Dg, Db, Da);
+  cogl_pipeline_set_blend (pipeline, "RGBA = ADD (SRC_COLOR, 0)", NULL);
+  cogl_set_source (pipeline);
+  cogl_rectangle (x * QUAD_WIDTH,
+                  y * QUAD_WIDTH,
+                  x * QUAD_WIDTH + QUAD_WIDTH,
+                  y * QUAD_WIDTH + QUAD_WIDTH);
+  cogl_object_unref (pipeline);
+
+  /*
+   * Now blend a rectangle over our well defined destination:
+   */
+
+  pipeline = cogl_pipeline_new ();
+  cogl_pipeline_set_color4ub (pipeline, Sr, Sg, Sb, Sa);
+
+  status = cogl_pipeline_set_blend (pipeline, blend_string, &error);
+  if (!status)
+    {
+      /* It's not strictly a test failure; you need a more capable GPU or
+       * driver to test this blend string. */
+      if (g_test_verbose ())
+	{
+	  g_debug ("Failed to test blend string %s: %s",
+		   blend_string, error->message);
+	  g_print ("Skipping\n");
+	}
+      return;
+    }
+
+  cogl_color_init_from_4ub (&blend_const_color, Br, Bg, Bb, Ba);
+  cogl_pipeline_set_blend_constant (pipeline, &blend_const_color);
+
+  cogl_set_source (pipeline);
+  cogl_rectangle (x * QUAD_WIDTH,
+                  y * QUAD_WIDTH,
+                  x * QUAD_WIDTH + QUAD_WIDTH,
+                  y * QUAD_WIDTH + QUAD_WIDTH);
+  cogl_object_unref (pipeline);
+
+  /* See what we got... */
+
+  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
+  x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
+
+  if (g_test_verbose ())
+    {
+      g_print ("test_blend (%d, %d):\n%s\n", x, y, blend_string);
+      g_print ("  src color = %02x, %02x, %02x, %02x\n", Sr, Sg, Sb, Sa);
+      g_print ("  dst color = %02x, %02x, %02x, %02x\n", Dr, Dg, Db, Da);
+      if (blend_constant != BLEND_CONSTANT_UNUSED)
+        g_print ("  blend constant = %02x, %02x, %02x, %02x\n",
+                 Br, Bg, Bb, Ba);
+      else
+        g_print ("  blend constant = UNUSED\n");
+    }
+
+  check_pixel (x_off, y_off, expected_result);
+
+
+  /*
+   * Test with legacy API
+   */
+
+  /* Clear previous work */
+  cogl_set_source_color4ub (0, 0, 0, 0xff);
+  cogl_rectangle (x * QUAD_WIDTH,
+                  y * QUAD_WIDTH,
+                  x * QUAD_WIDTH + QUAD_WIDTH,
+                  y * QUAD_WIDTH + QUAD_WIDTH);
 
   /* First write out the destination color without any blending... */
   material = cogl_material_new ();
@@ -105,10 +173,10 @@ test_blend (TestState *state,
   status = cogl_material_set_blend (material, blend_string, &error);
   if (!status)
     {
-      /* It's not strictly a test failure; you need a more capable GPU or
-       * driver to test this blend string. */
-      g_debug ("Failed to test blend string %s: %s",
-               blend_string, error->message);
+      /* This is a failure as it must be equivalent to the new API */
+      g_warning ("Error setting blend string %s: %s",
+		 blend_string, error->message);
+      g_assert_not_reached ();
     }
 
   cogl_color_init_from_4ub (&blend_const_color, Br, Bg, Bb, Ba);
@@ -123,28 +191,7 @@ test_blend (TestState *state,
 
   /* See what we got... */
 
-  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
-  x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
-
-  cogl_read_pixels (x_off, y_off, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-  if (g_test_verbose ())
-    {
-      g_print ("test_blend (%d, %d):\n%s\n", x, y, blend_string);
-      g_print ("  src color = %02x, %02x, %02x, %02x\n", Sr, Sg, Sb, Sa);
-      g_print ("  dst color = %02x, %02x, %02x, %02x\n", Dr, Dg, Db, Da);
-      if (blend_constant != BLEND_CONSTANT_UNUSED)
-        g_print ("  blend constant = %02x, %02x, %02x, %02x\n",
-                 Br, Bg, Bb, Ba);
-      else
-        g_print ("  blend constant = UNUSED\n");
-      g_print ("  result = %x, %x, %x, %x\n",
-               pixel[RED], pixel[GREEN], pixel[BLUE], pixel[ALPHA]);
-    }
-
-  check_pixel (pixel, expected_result);
+  check_pixel (x_off, y_off, expected_result);
 }
 
 static CoglHandle
@@ -204,9 +251,8 @@ test_tex_combine (TestState *state,
   CoglHandle material;
   gboolean status;
   GError *error = NULL;
-  GLubyte pixel[4];
-  GLint y_off;
-  GLint x_off;
+  int y_off;
+  int x_off;
 
 
   tex0 = make_texture (tex0_color);
@@ -250,10 +296,6 @@ test_tex_combine (TestState *state,
   y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
-  cogl_read_pixels (x_off, y_off, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
   if (g_test_verbose ())
     {
       g_print ("test_tex_combine (%d, %d):\n%s\n", x, y, combine_string);
@@ -264,15 +306,13 @@ test_tex_combine (TestState *state,
                  Cr, Cg, Cb, Ca);
       else
         g_print ("  combine constant = UNUSED\n");
-      g_print ("  result = %02x, %02x, %02x, %02x\n",
-               pixel[RED], pixel[GREEN], pixel[BLUE], pixel[ALPHA]);
     }
 
-  check_pixel (pixel, expected_result);
+  check_pixel (x_off, y_off, expected_result);
 }
 
 static void
-on_paint (ClutterActor *actor, TestState *state)
+paint (TestState *state)
 {
   test_blend (state, 0, 0, /* position */
               0xff0000ff, /* src */
@@ -385,48 +425,20 @@ on_paint (ClutterActor *actor, TestState *state)
                     "RGB = DOT3_RGBA (PREVIOUS, TEXTURE)"
                     "A = REPLACE (PREVIOUS)",
                     0x2a2a2abb); /* expected */
-
-  /* Comment this out if you want visual feedback for what this test paints */
-  clutter_main_quit ();
-}
-
-static gboolean
-queue_redraw (gpointer stage)
-{
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-  return TRUE;
 }
 
 void
 test_cogl_blend_strings (TestUtilsGTestFixture *fixture,
                          void *data)
 {
+  TestUtilsSharedState *shared_state = data;
   TestState state;
-  ClutterActor *stage;
-  ClutterActor *group;
-  unsigned int idle_source;
 
-  stage = clutter_stage_get_default ();
+  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
+              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
+              -1, 100 /* z near, far */);
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_actor_get_geometry (stage, &state.stage_geom);
-
-  group = clutter_group_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
-
-  /* We force continuous redrawing incase someone comments out the
-   * clutter_main_quit and wants visual feedback for the test since we
-   * wont be doing anything else that will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, stage);
-
-  g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
-
-  clutter_actor_show_all (stage);
-
-  clutter_main ();
-
-  g_source_remove (idle_source);
+  paint (&state);
 
   if (g_test_verbose ())
     g_print ("OK\n");
