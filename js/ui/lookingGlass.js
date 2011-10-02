@@ -738,23 +738,27 @@ Extensions.prototype = {
                                          text: meta.description || 'No description' });
         box.add(description, { expand: true });
 
-        let metaBox = new St.BoxLayout({ style_class: 'lg-extension-meta' });
+        let metaBox = new St.BoxLayout();
         box.add(metaBox);
         let stateString = this._stateToString(meta.state);
         let state = new St.Label({ style_class: 'lg-extension-state',
                                    text: this._stateToString(meta.state) });
-        metaBox.add(state);
+
+        let actionsContainer = new St.Bin({ x_align: St.Align.END });
+        metaBox.add(actionsContainer);
+        let actionsBox = new St.BoxLayout({ style_class: 'lg-extension-actions' });
+        actionsContainer.set_child(actionsBox);
 
         let viewsource = new Link.Link({ label: _("View Source") });
         viewsource.actor._extensionMeta = meta;
         viewsource.actor.connect('clicked', Lang.bind(this, this._onViewSource));
-        metaBox.add(viewsource.actor);
+        actionsBox.add(viewsource.actor);
 
         if (meta.url) {
             let webpage = new Link.Link({ label: _("Web Page") });
             webpage.actor._extensionMeta = meta;
             webpage.actor.connect('clicked', Lang.bind(this, this._onWebPage));
-            metaBox.add(webpage.actor);
+            actionsBox.add(webpage.actor);
         }
 
         let viewerrors = new Link.Link({ label: _("Show Errors") });
