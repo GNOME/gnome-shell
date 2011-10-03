@@ -539,9 +539,13 @@ ChatSource.prototype = {
 
     _updateAlias: function() {
         let oldAlias = this.title;
-        this.setTitle(this._contact.get_alias());
-        this._notification.appendAliasChange(oldAlias, this.title);
-        this.pushNotification(this._notification);
+        let newAlias = this._contact.get_alias();
+
+        if (oldAlias == newAlias)
+            return;
+
+        this.setTitle(newAlias);
+        this._notification.appendAliasChange(oldAlias, newAlias);
     },
 
     createNotificationIcon: function() {
