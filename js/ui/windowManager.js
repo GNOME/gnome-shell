@@ -38,10 +38,9 @@ function WindowDimmer(actor) {
 WindowDimmer.prototype = {
     _init: function(actor) {
         if (Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL)) {
-            this.effect = new Clutter.ShaderEffect({ shader_type: Clutter.ShaderType.FRAGMENT_SHADER });
-            this.effect.set_shader_source(getDimShaderSource());
-        }
-        else {
+            this._effect = new Clutter.ShaderEffect({ shader_type: Clutter.ShaderType.FRAGMENT_SHADER });
+            this._effect.set_shader_source(getDimShaderSource());
+        } else {
             this._effect = null;
         }
 
@@ -51,23 +50,23 @@ WindowDimmer.prototype = {
     set dimFraction(fraction) {
         this._dimFraction = fraction;
 
-        if (this.effect == null)
+        if (this._effect == null)
             return;
 
         if (!Meta.prefs_get_attach_modal_dialogs()) {
-            this.effect.enabled = false;
+            this._effect.enabled = false;
             return;
         }
 
         if (fraction > 0.01) {
-            Shell.shader_effect_set_double_uniform(this.effect, 'height', this.actor.get_height());
-            Shell.shader_effect_set_double_uniform(this.effect, 'fraction', fraction);
+            Shell.shader_effect_set_double_uniform(this._effect, 'height', this.actor.get_height());
+            Shell.shader_effect_set_double_uniform(this._effect, 'fraction', fraction);
 
-            if (!this.effect.actor)
-                this.actor.add_effect(this.effect);
+            if (!this._effect.actor)
+                this.actor.add_effect(this._effect);
         } else {
-            if (this.effect.actor)
-                this.actor.remove_effect(this.effect);
+            if (this._effect.actor)
+                this.actor.remove_effect(this._effect);
         }
     },
 
