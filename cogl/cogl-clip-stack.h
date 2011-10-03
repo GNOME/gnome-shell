@@ -40,12 +40,14 @@ typedef struct _CoglClipStack CoglClipStack;
 typedef struct _CoglClipStackRect CoglClipStackRect;
 typedef struct _CoglClipStackWindowRect CoglClipStackWindowRect;
 typedef struct _CoglClipStackPath CoglClipStackPath;
+typedef struct _CoglClipStackPrimitive CoglClipStackPrimitive;
 
 typedef enum
   {
     COGL_CLIP_STACK_RECT,
     COGL_CLIP_STACK_WINDOW_RECT,
-    COGL_CLIP_STACK_PATH
+    COGL_CLIP_STACK_PATH,
+    COGL_CLIP_STACK_PRIMITIVE
   } CoglClipStackType;
 
 /* A clip stack consists a list of entries. Each entry has a reference
@@ -149,6 +151,21 @@ struct _CoglClipStackPath
   CoglPath              *path;
 };
 
+struct _CoglClipStackPrimitive
+{
+  CoglClipStack _parent_data;
+
+  /* The matrix that was current when the clip was set */
+  CoglMatrix matrix;
+
+  CoglPrimitive *primitive;
+
+  float bounds_x1;
+  float bounds_y1;
+  float bounds_x2;
+  float bounds_y2;
+};
+
 CoglClipStack *
 _cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
                                         int x_offset,
@@ -168,6 +185,16 @@ CoglClipStack *
 _cogl_clip_stack_push_from_path (CoglClipStack *stack,
                                  CoglPath *path,
                                  const CoglMatrix *modelview_matrix);
+
+CoglClipStack *
+_cogl_clip_stack_push_primitive (CoglClipStack *stack,
+                                 CoglPrimitive *primitive,
+                                 float bounds_x1,
+                                 float bounds_y1,
+                                 float bounds_x2,
+                                 float bounds_y2,
+                                 const CoglMatrix *modelview_matrix);
+
 CoglClipStack *
 _cogl_clip_stack_pop (CoglClipStack *stack);
 

@@ -43,6 +43,8 @@
 #include "cogl-primitives-private.h"
 #include "cogl-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-attribute-private.h"
+#include "cogl-primitive-private.h"
 
 #ifndef GL_CLIP_PLANE0
 #define GL_CLIP_PLANE0 0x3000
@@ -274,13 +276,19 @@ add_stencil_clip_rectangle (CoglFramebuffer *framebuffer,
   cogl_pop_source ();
 }
 
+typedef void (*SilhouettePaintCallback) (void *user_data);
+
 static void
-add_stencil_clip_path (CoglFramebuffer *framebuffer,
-                       CoglPath *path,
-                       gboolean merge,
-                       gboolean need_clear)
+add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
+                             SilhouettePaintCallback silhouette_callback,
+                             float bounds_x1,
+                             float bounds_y1,
+                             float bounds_x2,
+                             float bounds_y2,
+                             gboolean merge,
+                             gboolean need_clear,
+                             void *user_data)
 {
-  CoglPathData *data = path->data;
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
   CoglMatrixStack *projection_stack =
@@ -330,10 +338,8 @@ add_stencil_clip_path (CoglFramebuffer *framebuffer,
           /* Just clear the bounding box */
           GE( ctx, glStencilMask (~(GLuint) 0) );
           GE( ctx, glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
-          _cogl_rectangle_immediate (data->path_nodes_min.x,
-                                     data->path_nodes_min.y,
-                                     data->path_nodes_max.x,
-                                     data->path_nodes_max.y);
+          _cogl_rectangle_immediate (bounds_x1, bounds_y1,
+                                     bounds_x2, bounds_y2);
         }
       GE (ctx, glStencilMask (1));
       GE (ctx, glStencilFunc (GL_LEQUAL, 0x1, 0x3));
@@ -341,11 +347,7 @@ add_stencil_clip_path (CoglFramebuffer *framebuffer,
 
   GE (ctx, glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
-  if (path->data->path_nodes->len >= 3)
-    _cogl_path_fill_nodes (path,
-                           COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+  silhouette_callback (user_data);
 
   if (merge)
     {
@@ -383,6 +385,65 @@ add_stencil_clip_path (CoglFramebuffer *framebuffer,
 
   /* restore the original pipeline */
   cogl_pop_source ();
+}
+
+static void
+paint_path_silhouette (void *user_data)
+{
+  CoglPath *path = user_data;
+  if (path->data->path_nodes->len >= 3)
+    _cogl_path_fill_nodes (path,
+                           COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+}
+
+static void
+add_stencil_clip_path (CoglFramebuffer *framebuffer,
+                       CoglPath *path,
+                       gboolean merge,
+                       gboolean need_clear)
+{
+  CoglPathData *data = path->data;
+  add_stencil_clip_silhouette (framebuffer,
+                               paint_path_silhouette,
+                               data->path_nodes_min.x,
+                               data->path_nodes_min.y,
+                               data->path_nodes_max.x,
+                               data->path_nodes_max.y,
+                               merge,
+                               need_clear,
+                               path);
+}
+
+static void
+paint_primitive_silhouette (void *user_data)
+{
+  _cogl_primitive_draw (user_data,
+                        COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                        COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                        COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+}
+
+void
+add_stencil_clip_primitive (CoglFramebuffer *framebuffer,
+                            CoglPrimitive *primitive,
+                            float bounds_x1,
+                            float bounds_y1,
+                            float bounds_x2,
+                            float bounds_y2,
+                            gboolean merge,
+                            gboolean need_clear)
+{
+  add_stencil_clip_silhouette (framebuffer,
+                               paint_primitive_silhouette,
+                               bounds_x1,
+                               bounds_y1,
+                               bounds_x2,
+                               bounds_y2,
+                               merge,
+                               need_clear,
+                               primitive);
 }
 
 static void
@@ -605,6 +666,39 @@ _cogl_clip_stack_push_from_path (CoglClipStack *stack,
 }
 
 CoglClipStack *
+_cogl_clip_stack_push_primitive (CoglClipStack *stack,
+                                 CoglPrimitive *primitive,
+                                 float bounds_x1,
+                                 float bounds_y1,
+                                 float bounds_x2,
+                                 float bounds_y2,
+                                 const CoglMatrix *modelview_matrix)
+{
+  CoglClipStackPrimitive *entry;
+
+  entry = _cogl_clip_stack_push_entry (stack,
+                                       sizeof (CoglClipStackPrimitive),
+                                       COGL_CLIP_STACK_PRIMITIVE);
+
+  entry->primitive = cogl_object_ref (primitive);
+
+  entry->matrix = *modelview_matrix;
+
+  entry->bounds_x1 = bounds_x1;
+  entry->bounds_y1 = bounds_y1;
+  entry->bounds_x2 = bounds_x2;
+  entry->bounds_y2 = bounds_y2;
+
+  /* NB: this is referring to the bounds in window coordinates as opposed
+   * to the bounds above in primitive local coordinates. */
+  _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
+                                     bounds_x1, bounds_y1, bounds_x2, bounds_y2,
+                                     modelview_matrix);
+
+  return (CoglClipStack *) entry;
+}
+
+CoglClipStack *
 _cogl_clip_stack_ref (CoglClipStack *entry)
 {
   /* A NULL pointer is considered a valid stack so we should accept
@@ -637,6 +731,11 @@ _cogl_clip_stack_unref (CoglClipStack *entry)
         case COGL_CLIP_STACK_PATH:
           cogl_object_unref (((CoglClipStackPath *) entry)->path);
           g_slice_free1 (sizeof (CoglClipStackPath), entry);
+          break;
+
+        case COGL_CLIP_STACK_PRIMITIVE:
+          cogl_object_unref (((CoglClipStackPrimitive *) entry)->primitive);
+          g_slice_free1 (sizeof (CoglClipStackPrimitive), entry);
           break;
 
         default:
@@ -792,69 +891,101 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
      order */
   for (entry = stack; entry; entry = entry->parent)
     {
-      if (entry->type == COGL_CLIP_STACK_PATH)
+      switch (entry->type)
         {
-          CoglClipStackPath *path_entry = (CoglClipStackPath *) entry;
-
-          COGL_NOTE (CLIPPING, "Adding stencil clip for path");
-
-          _cogl_matrix_stack_push (modelview_stack);
-          _cogl_matrix_stack_set (modelview_stack, &path_entry->matrix);
-
-          add_stencil_clip_path (framebuffer,
-                                 path_entry->path,
-                                 using_stencil_buffer,
-                                 TRUE);
-
-          _cogl_matrix_stack_pop (modelview_stack);
-
-          using_stencil_buffer = TRUE;
-        }
-      else if (entry->type == COGL_CLIP_STACK_RECT)
-        {
-          CoglClipStackRect *rect = (CoglClipStackRect *) entry;
-
-          /* We don't need to do anything extra if the clip for this
-             rectangle was entirely described by its scissor bounds */
-          if (!rect->can_be_scissor)
+        case COGL_CLIP_STACK_PATH:
             {
+              CoglClipStackPath *path_entry = (CoglClipStackPath *) entry;
+
+              COGL_NOTE (CLIPPING, "Adding stencil clip for path");
+
               _cogl_matrix_stack_push (modelview_stack);
-              _cogl_matrix_stack_set (modelview_stack, &rect->matrix);
+              _cogl_matrix_stack_set (modelview_stack, &path_entry->matrix);
 
-              /* If we support clip planes and we haven't already used
-                 them then use that instead */
-              if (has_clip_planes)
-                {
-                  COGL_NOTE (CLIPPING, "Adding clip planes clip for rectangle");
-
-                  set_clip_planes (framebuffer,
-                                   rect->x0,
-                                   rect->y0,
-                                   rect->x1,
-                                   rect->y1);
-                  using_clip_planes = TRUE;
-                  /* We can't use clip planes a second time */
-                  has_clip_planes = FALSE;
-                }
-              else
-                {
-                  COGL_NOTE (CLIPPING, "Adding stencil clip for rectangle");
-
-                  add_stencil_clip_rectangle (framebuffer,
-                                              rect->x0,
-                                              rect->y0,
-                                              rect->x1,
-                                              rect->y1,
-                                              !using_stencil_buffer);
-                  using_stencil_buffer = TRUE;
-                }
+              add_stencil_clip_path (framebuffer,
+                                     path_entry->path,
+                                     using_stencil_buffer,
+                                     TRUE);
 
               _cogl_matrix_stack_pop (modelview_stack);
+
+              using_stencil_buffer = TRUE;
+              break;
             }
+        case COGL_CLIP_STACK_PRIMITIVE:
+            {
+              CoglClipStackPrimitive *primitive_entry =
+                (CoglClipStackPrimitive *) entry;
+
+              COGL_NOTE (CLIPPING, "Adding stencil clip for primitive");
+
+              _cogl_matrix_stack_push (modelview_stack);
+              _cogl_matrix_stack_set (modelview_stack, &primitive_entry->matrix);
+
+              add_stencil_clip_primitive (framebuffer,
+                                          primitive_entry->primitive,
+                                          primitive_entry->bounds_x1,
+                                          primitive_entry->bounds_y1,
+                                          primitive_entry->bounds_x2,
+                                          primitive_entry->bounds_y2,
+                                          using_stencil_buffer,
+                                          TRUE);
+
+              _cogl_matrix_stack_pop (modelview_stack);
+
+              using_stencil_buffer = TRUE;
+              break;
+            }
+        case COGL_CLIP_STACK_RECT:
+            {
+              CoglClipStackRect *rect = (CoglClipStackRect *) entry;
+
+              /* We don't need to do anything extra if the clip for this
+                 rectangle was entirely described by its scissor bounds */
+              if (!rect->can_be_scissor)
+                {
+                  _cogl_matrix_stack_push (modelview_stack);
+                  _cogl_matrix_stack_set (modelview_stack, &rect->matrix);
+
+                  /* If we support clip planes and we haven't already used
+                     them then use that instead */
+                  if (has_clip_planes)
+                    {
+                      COGL_NOTE (CLIPPING,
+                                 "Adding clip planes clip for rectangle");
+
+                      set_clip_planes (framebuffer,
+                                       rect->x0,
+                                       rect->y0,
+                                       rect->x1,
+                                       rect->y1);
+                      using_clip_planes = TRUE;
+                      /* We can't use clip planes a second time */
+                      has_clip_planes = FALSE;
+                    }
+                  else
+                    {
+                      COGL_NOTE (CLIPPING, "Adding stencil clip for rectangle");
+
+                      add_stencil_clip_rectangle (framebuffer,
+                                                  rect->x0,
+                                                  rect->y0,
+                                                  rect->x1,
+                                                  rect->y1,
+                                                  !using_stencil_buffer);
+                      using_stencil_buffer = TRUE;
+                    }
+
+                  _cogl_matrix_stack_pop (modelview_stack);
+                }
+              break;
+            }
+        case COGL_CLIP_STACK_WINDOW_RECT:
+          break;
+          /* We don't need to do anything for window space rectangles because
+           * their functionality is entirely implemented by the entry bounding
+           * box */
         }
-      /* We don't need to do anything for window space rectangles
-         because their functionality is entirely implemented by the
-         entry bounding box */
     }
 
   /* Enabling clip planes is delayed to now so that they won't affect

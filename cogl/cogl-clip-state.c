@@ -125,6 +125,32 @@ cogl_clip_push_from_path (void)
   ctx->current_path = cogl2_path_new ();
 }
 
+void
+cogl_clip_push_primitive (CoglPrimitive *primitive,
+                          float bounds_x1,
+                          float bounds_y1,
+                          float bounds_x2,
+                          float bounds_y2)
+{
+  CoglFramebuffer *framebuffer;
+  CoglClipState *clip_state;
+  CoglMatrix modelview_matrix;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  framebuffer = cogl_get_draw_framebuffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  cogl_get_modelview_matrix (&modelview_matrix);
+
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_primitive (clip_state->stacks->data,
+                                     primitive,
+                                     bounds_x1, bounds_y1,
+                                     bounds_x2, bounds_y2,
+                                     &modelview_matrix);
+}
+
 static void
 _cogl_clip_pop_real (CoglClipState *clip_state)
 {

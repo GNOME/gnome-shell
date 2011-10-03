@@ -844,6 +844,44 @@ cogl_clip_push_rectangle (float x0,
 void
 cogl_clip_push_from_path_preserve (void);
 
+#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#define cogl_clip_push_primitive cogl_clip_push_primitive_EXP
+/**
+ * cogl_clip_push_primitive:
+ * @primitive: A #CoglPrimitive describing a flat 2D shape
+ * @bounds_x1: x coordinate for the top-left corner of the primitives
+ *             bounds
+ * @bounds_y1: y coordinate for the top-left corner of the primitives
+ *             bounds
+ * @bounds_x2: x coordinate for the top-left corner of the primitives
+ *             bounds
+ * @bounds_y2: x coordinate for the bottom-right corner of the
+ *             primitives bounds.
+ * @bounds_x1: y coordinate for the bottom-right corner of the
+ *             primitives bounds.
+ *
+ * Sets a new clipping area using a 2D shaped described with a
+ * #CoglPrimitive. The shape must not contain self overlapping
+ * geometry and must lie on a single 2D plane. A bounding box of the
+ * 2D shape in local coordinates (the same coordinates used to
+ * describe the shape) must be given. It is acceptable for the bounds
+ * to be larger than the true bounds but behaviour is undefined if the
+ * bounds are smaller than the true bounds.
+ *
+ * The clipping area is intersected with the previous clipping area.
+ * To restore the previous clipping area, call cogl_clip_pop().
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_clip_push_primitive (CoglPrimitive *primitive,
+                          float bounds_x1,
+                          float bounds_y1,
+                          float bounds_x2,
+                          float bounds_y2);
+#endif
+
 /**
  * cogl_clip_pop:
  *
