@@ -491,7 +491,7 @@ AutorunTransientDispatcher.prototype = {
         let app = null;
 
         if (setting == AutorunSetting.RUN) {
-            app = Gio.app_info_get_default_for_type(type, false);
+            app = Gio.app_info_get_default_for_type(contentTypes[0], false);
         } else if (setting == AutorunSetting.FILES) {
             app = Gio.app_info_get_default_for_type('inode/directory', false);
         }
