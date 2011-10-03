@@ -2846,6 +2846,9 @@ clutter_clear_glyph_cache (void)
  * introduce some artifacts if the text is animated.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.10: Use clutter_backend_set_font_options() and the
+ *   #cairo_font_option_t API.
  */
 void
 clutter_set_font_flags (ClutterFontFlags flags)
@@ -2897,6 +2900,9 @@ clutter_set_font_flags (ClutterFontFlags flags)
  * Return value: The font flags
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.10: Use clutter_backend_get_font_options() and the
+ *   #cairo_font_options_t API.
  */
 ClutterFontFlags
 clutter_get_font_flags (void)

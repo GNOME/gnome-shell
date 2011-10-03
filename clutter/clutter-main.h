@@ -167,10 +167,9 @@ ClutterActor *   clutter_get_keyboard_grab           (void);
 
 #if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 void             clutter_clear_glyph_cache           (void);
-#endif
-
 void             clutter_set_font_flags              (ClutterFontFlags flags);
 ClutterFontFlags clutter_get_font_flags              (void);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 #if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 ClutterInputDevice *clutter_get_input_device_for_id  (gint id_);

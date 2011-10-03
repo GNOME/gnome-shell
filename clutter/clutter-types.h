@@ -429,6 +429,8 @@ typedef enum {
  * clutter_set_font_flags().
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.10: Use the #ClutterBackend and #cairo_font_options_t instead
  */
 typedef enum
 {
