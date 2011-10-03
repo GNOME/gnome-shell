@@ -37,14 +37,23 @@ function WindowDimmer(actor) {
 
 WindowDimmer.prototype = {
     _init: function(actor) {
-        this.effect = new Clutter.ShaderEffect({ shader_type: Clutter.ShaderType.FRAGMENT_SHADER });
-        this.effect.set_shader_source(getDimShaderSource());
+        if (Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL)) {
+            this.effect = new Clutter.ShaderEffect({ shader_type: Clutter.ShaderType.FRAGMENT_SHADER });
+            this.effect.set_shader_source(getDimShaderSource());
+        }
+        else {
+            this._effect = null;
+        }
 
         this.actor = actor;
     },
 
     set dimFraction(fraction) {
         this._dimFraction = fraction;
+
+        if (this.effect == null)
+            return;
+
         if (!Meta.prefs_get_attach_modal_dialogs()) {
             this.effect.enabled = false;
             return;
