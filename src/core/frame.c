@@ -217,6 +217,11 @@ meta_window_destroy_frame (MetaWindow *window)
                                     frame->xwindow);
   
   window->frame = NULL;
+  if (window->frame_bounds)
+    {
+      cairo_region_destroy (window->frame_bounds);
+      window->frame_bounds = NULL;
+    }
 
   /* Move keybindings to window instead of frame */
   meta_window_grab_keys (window);
