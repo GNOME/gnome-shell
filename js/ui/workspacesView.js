@@ -109,8 +109,6 @@ WorkspacesView.prototype = {
         this._scrollAdjustment.connect('notify::value',
                                        Lang.bind(this, this._onScroll));
 
-        this._timeoutId = 0;
-
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
@@ -321,10 +319,6 @@ WorkspacesView.prototype = {
         if (this._inDrag)
             this._dragEnd();
 
-        if (this._timeoutId) {
-            Mainloop.source_remove(this._timeoutId);
-            this._timeoutId = 0;
-        }
         if (this._itemDragBeginId > 0) {
             Main.overview.disconnect(this._itemDragBeginId);
             this._itemDragBeginId = 0;
@@ -383,72 +377,10 @@ WorkspacesView.prototype = {
                 this._extraWorkspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
         }
 
-        let primary = Main.layoutManager.primaryMonitor;
-
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let topWorkspace, bottomWorkspace;
-        topWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
-        bottomWorkspace = this._workspaces[activeWorkspaceIndex + 1];
-        let hoverWorkspace = null;
-
-        // reactive monitor edges
-        let topEdge = primary.y;
-        let switchTop = (dragEvent.y <= topEdge && topWorkspace);
-        if (switchTop && this._dragOverLastY != topEdge) {
-            topWorkspace.metaWorkspace.activate(global.get_current_time());
-            this._dragOverLastY = topEdge;
-
-            return DND.DragMotionResult.CONTINUE;
-        }
-        let bottomEdge = primary.y + primary.height - 1;
-        let switchBottom = (dragEvent.y >= bottomEdge && bottomWorkspace);
-        if (switchBottom && this._dragOverLastY != bottomEdge) {
-            bottomWorkspace.metaWorkspace.activate(global.get_current_time());
-            this._dragOverLastY = bottomEdge;
-
-            return DND.DragMotionResult.CONTINUE;
-        }
-        this._dragOverLastY = dragEvent.y;
-        let result = DND.DragMotionResult.CONTINUE;
-
-        // check hover state of new workspace area / inactive workspaces
-        if (topWorkspace) {
-            if (topWorkspace.actor.contains(dragEvent.targetActor)) {
-                hoverWorkspace = topWorkspace;
-                result = topWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
-            }
-        }
-
-        if (bottomWorkspace) {
-            if (bottomWorkspace.actor.contains(dragEvent.targetActor)) {
-                hoverWorkspace = bottomWorkspace;
-                result = bottomWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
-            }
-        }
-
-        // handle delayed workspace switches
-        if (hoverWorkspace) {
-            if (!this._timeoutId)
-                this._timeoutId = Mainloop.timeout_add_seconds(1,
-                    Lang.bind(this, function() {
-                       hoverWorkspace.metaWorkspace.activate(global.get_current_time());
-                       return false;
-                    }));
-        } else {
-            if (this._timeoutId) {
-                Mainloop.source_remove(this._timeoutId);
-                this._timeoutId = 0;
-            }
-        }
-
-        return result;
+        return DND.DragMotionResult.CONTINUE;
     },
 
     _dragEnd: function() {
-        if (this._timeoutId) {
-            Mainloop.source_remove(this._timeoutId);
-            this._timeoutId = 0;
-        }
         DND.removeDragMonitor(this._dragMonitor);
         this._inDrag = false;
 
