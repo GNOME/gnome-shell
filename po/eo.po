@@ -1,23 +1,22 @@
-# Esperanto translation of gnome-shell.
+# Esperanto translation for gnome-shell.
 # Copyright (C) 2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 # Tiffany Antopolski <tiffany.antopolski@gmail.com>, 2011.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-22 17:28+0000\n"
-"PO-Revision-Date: 2011-09-22 20:29+0200\n"
-"Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
-"Language-Team: Esperanto <ubuntu-l10n-eo@lists.launchpad.net>\n"
+"POT-Creation-Date: 2011-10-02 16:05+0000\n"
+"PO-Revision-Date: 2011-10-03 10:32-0400\n"
+"Last-Translator: Tiffany Antopolski <tiffany.antopolski@gmail.com>\n"
+"Language-Team: Esperanto\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: eo\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.7.0\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
@@ -62,13 +61,12 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Historio de la komando-dialogo (Alt+F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#, fuzzy
 msgid "History for the looking glass dialog"
-msgstr "Historio de la vitro-dialogo"
+msgstr "Historio de la dialogo de 'looking glass'"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
-msgstr "Se vera, montri daton en la horloĝo, krom la horo."
+msgstr "Se vera, montri daton en la horloĝo, krom la horo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
@@ -100,7 +98,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
-msgstr "Montri daton en horloĝo"
+msgstr "Montri daton en horloĝo"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
@@ -415,11 +413,11 @@ msgstr "%a, %d. %B %Y"
 
 #: ../js/ui/calendar.js:716
 msgid "Today"
-msgstr "Hodiaŭ"
+msgstr "Hodiaŭ"
 
 #: ../js/ui/calendar.js:720
 msgid "Tomorrow"
-msgstr "Morgaŭ"
+msgstr "Morgaŭ"
 
 #: ../js/ui/calendar.js:729
 msgid "This week"
@@ -589,7 +587,7 @@ msgstr "Instali"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Elŝuti kaj instali '%s' de extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:529 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Klavaro"
 
@@ -597,41 +595,55 @@ msgstr "Klavaro"
 msgid "No extensions installed"
 msgstr "Neniu kromprogramo instalita"
 
-#: ../js/ui/lookingGlass.js:691
+#. Translators: argument is an extension UUID.
+#: ../js/ui/lookingGlass.js:700
+#, c-format
+msgid "%s has not emitted any errors."
+msgstr "%s ne eligintaj ajnaj eraroj."
+
+#: ../js/ui/lookingGlass.js:706
+msgid "Hide Errors"
+msgstr "Kaŝi Erarojn"
+
+#: ../js/ui/lookingGlass.js:710 ../js/ui/lookingGlass.js:764
+msgid "Show Errors"
+msgstr "Montri erarojn"
+
+#: ../js/ui/lookingGlass.js:719
 msgid "Enabled"
-msgstr "Enŝaltita"
+msgstr "Enŝaltita"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:693 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:721 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
-msgstr "Elŝaltita"
+msgstr "Elŝaltita"
 
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:723
 msgid "Error"
 msgstr "Eraro"
 
-#: ../js/ui/lookingGlass.js:697
+#: ../js/ui/lookingGlass.js:725
 msgid "Out of date"
 msgstr "Neaktuala"
 
-#: ../js/ui/lookingGlass.js:699
+#: ../js/ui/lookingGlass.js:727
 msgid "Downloading"
 msgstr "Elŝutanta"
 
-#: ../js/ui/lookingGlass.js:724
+#: ../js/ui/lookingGlass.js:752
 msgid "View Source"
 msgstr "Montri fonton"
 
-#: ../js/ui/lookingGlass.js:730
+#: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
-msgstr "Retpaĝo"
+msgstr "Retpaĝo"
 
 #: ../js/ui/messageTray.js:1197
 msgid "Open"
 msgstr "Malfermi"
 
-#: ../js/ui/messageTray.js:2379
+#: ../js/ui/messageTray.js:2406
 msgid "System Information"
 msgstr "Sisteminformoj"
 
@@ -676,16 +688,16 @@ msgstr "Servo:"
 
 #: ../js/ui/networkAgent.js:341
 msgid "Authentication required by wireless network"
-msgstr "Aŭtentokontrolo bezonitas de sendrata reto"
+msgstr "Aŭtentokontrolo bezonitas de sendrata reto"
 
 #: ../js/ui/networkAgent.js:342
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"Passwords or encryption keys are required to access the wireless network '%"
+"s'."
 msgstr ""
-"Pasvortoj aŭ ĉifrado-ŝlosiloj estas necesaĵoj por aliro al sendrata reto "
-"'%s'."
+"Pasvortoj aŭ ĉifrado-ŝlosiloj estas necesaĵoj por aliro al sendrata reto '%"
+"s'."
 
 #: ../js/ui/networkAgent.js:346
 msgid "Wired 802.1X authentication"
@@ -697,7 +709,7 @@ msgstr "Reta nomo: "
 
 #: ../js/ui/networkAgent.js:353
 msgid "DSL authentication"
-msgstr "DSL-a aŭtentokontrolo"
+msgstr "DSL-a aŭtentokontrolo"
 
 #: ../js/ui/networkAgent.js:360
 msgid "PIN code required"
@@ -713,7 +725,7 @@ msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:368
 msgid "Mobile broadband network password"
-msgstr "Portebla larĝkapacita retopasvorto"
+msgstr "Portebla larĝkapacita retopasvorto"
 
 #: ../js/ui/networkAgent.js:369
 #, c-format
@@ -774,7 +786,7 @@ msgstr "EJOJ kaj APARATOJ"
 
 #: ../js/ui/polkitAuthenticationAgent.js:72
 msgid "Authentication Required"
-msgstr "Aŭtentigo bezonita"
+msgstr "Aŭtentigo bezonita"
 
 #: ../js/ui/polkitAuthenticationAgent.js:106
 msgid "Administrator"
@@ -782,7 +794,7 @@ msgstr "Administranto"
 
 #: ../js/ui/polkitAuthenticationAgent.js:175
 msgid "Authenticate"
-msgstr "Aŭtentigi"
+msgstr "Aŭtentigi"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -801,7 +813,7 @@ msgstr "Pasvorto:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -811,7 +823,7 @@ msgstr "Bonvole enigu komandon:"
 
 #: ../js/ui/searchDisplay.js:340
 msgid "Searching..."
-msgstr "Serĉanta..."
+msgstr "Serĉanta..."
 
 #: ../js/ui/searchDisplay.js:363
 msgid "No matching results."
@@ -889,7 +901,7 @@ msgstr "Bludento-agordoj"
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:111
 msgid "hardware disabled"
-msgstr "aparato elŝaltita"
+msgstr "aparato elŝaltita"
 
 #: ../js/ui/status/bluetooth.js:208
 msgid "Connection"
@@ -950,7 +962,7 @@ msgstr "Ĉiam konsenti aliron"
 msgid "Grant this time only"
 msgstr "Konsenti nur ĉi tiun fojon"
 
-#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1196
+#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1200
 msgid "Reject"
 msgstr "Rifuzi"
 
@@ -1017,7 +1029,7 @@ msgstr "neadministrata"
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:495
 msgid "authentication required"
-msgstr "aŭtentokontrolo bezonita"
+msgstr "aŭtentokontrolo bezonita"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
@@ -1056,7 +1068,7 @@ msgstr "Aŭtoeterreto"
 
 #: ../js/ui/status/network.js:753
 msgid "Auto broadband"
-msgstr "Aŭtolarĝkapacita"
+msgstr "Aŭtolarĝkapacita"
 
 #: ../js/ui/status/network.js:756
 msgid "Auto dial-up"
@@ -1090,7 +1102,7 @@ msgstr "Sendrata"
 
 #: ../js/ui/status/network.js:1599
 msgid "Mobile broadband"
-msgstr "Portebla larĝkapacita konekto"
+msgstr "Portebla larĝkapacita konekto"
 
 #: ../js/ui/status/network.js:1609
 msgid "VPN Connections"
@@ -1186,11 +1198,11 @@ msgstr "Muso"
 
 #: ../js/ui/status/power.js:213
 msgid "PDA"
-msgstr "Poŝkomputilo"
+msgstr "Poŝkomputilo"
 
 #: ../js/ui/status/power.js:215
 msgid "Cell phone"
-msgstr "Poŝtelefono"
+msgstr "Poŝtelefono"
 
 #: ../js/ui/status/power.js:217
 msgid "Media player"
@@ -1206,7 +1218,7 @@ msgstr "Komputilo"
 
 #: ../js/ui/status/volume.js:42
 msgid "Volume"
-msgstr "Laŭteco"
+msgstr "Laŭteco"
 
 #: ../js/ui/status/volume.js:54
 msgid "Microphone"
@@ -1220,39 +1232,39 @@ msgid "Invitation"
 msgstr "Invito"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:325
+#: ../js/ui/telepathyClient.js:327
 msgid "Call"
 msgstr "Voki"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:353
+#: ../js/ui/telepathyClient.js:357
 msgid "File Transfer"
 msgstr "Dosiertransigo"
 
-#: ../js/ui/telepathyClient.js:434
+#: ../js/ui/telepathyClient.js:438
 msgid "Subscription request"
 msgstr "Abonopeto"
 
-#: ../js/ui/telepathyClient.js:470
+#: ../js/ui/telepathyClient.js:474
 msgid "Connection error"
 msgstr "Konekta eraro"
 
-#: ../js/ui/telepathyClient.js:733
+#: ../js/ui/telepathyClient.js:737
 #, c-format
 msgid "%s is online."
 msgstr "%s estas konektita."
 
-#: ../js/ui/telepathyClient.js:738
+#: ../js/ui/telepathyClient.js:742
 #, c-format
 msgid "%s is offline."
 msgstr "%s estas nekonektita."
 
-#: ../js/ui/telepathyClient.js:741
+#: ../js/ui/telepathyClient.js:745
 #, c-format
 msgid "%s is away."
 msgstr "%s estas fora."
 
-#: ../js/ui/telepathyClient.js:744
+#: ../js/ui/telepathyClient.js:748
 #, c-format
 msgid "%s is busy."
 msgstr "%s estas okupata."
@@ -1260,35 +1272,35 @@ msgstr "%s estas okupata."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:978
+#: ../js/ui/telepathyClient.js:982
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Sendita je <b>%X</b> je <b>A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:984
+#: ../js/ui/telepathyClient.js:988
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Sendita je <b>%A</b>, <b>%B %d</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:989
+#: ../js/ui/telepathyClient.js:993
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Sendita je <b>%A</b>, </b>%B %d</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1031
+#: ../js/ui/telepathyClient.js:1035
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s estas konata kiel %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1144
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invito al %s"
@@ -1296,34 +1308,34 @@ msgstr "Invito al %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1148
+#: ../js/ui/telepathyClient.js:1152
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s invitas vin aliĝi al %s"
 
-#: ../js/ui/telepathyClient.js:1150 ../js/ui/telepathyClient.js:1239
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1154 ../js/ui/telepathyClient.js:1243
+#: ../js/ui/telepathyClient.js:1347
 msgid "Decline"
 msgstr "Refuzi"
 
-#: ../js/ui/telepathyClient.js:1151 ../js/ui/telepathyClient.js:1240
-#: ../js/ui/telepathyClient.js:1344
+#: ../js/ui/telepathyClient.js:1155 ../js/ui/telepathyClient.js:1244
+#: ../js/ui/telepathyClient.js:1348
 msgid "Accept"
 msgstr "Akcepti"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1184
+#: ../js/ui/telepathyClient.js:1188
 #, c-format
 msgid "Video call from %s"
 msgstr "Videa voko de %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1187
+#: ../js/ui/telepathyClient.js:1191
 #, c-format
 msgid "Call from %s"
 msgstr "Voko de %s"
 
-#: ../js/ui/telepathyClient.js:1197
+#: ../js/ui/telepathyClient.js:1201
 msgid "Answer"
 msgstr "Repondo"
 
@@ -1332,109 +1344,109 @@ msgstr "Repondo"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1233
+#: ../js/ui/telepathyClient.js:1237
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sendas %s al vi"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1312
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s volus permiso por vidi kiam vi estas konektita"
 
-#: ../js/ui/telepathyClient.js:1406
+#: ../js/ui/telepathyClient.js:1410
 msgid "Network error"
 msgstr "Reta eraro"
 
-#: ../js/ui/telepathyClient.js:1408
+#: ../js/ui/telepathyClient.js:1412
 msgid "Authentication failed"
 msgstr "Aŭtentigo malsukcesis"
 
-#: ../js/ui/telepathyClient.js:1410
+#: ../js/ui/telepathyClient.js:1414
 msgid "Encryption error"
 msgstr "Ĉifrado-eraro"
 
-#: ../js/ui/telepathyClient.js:1412
+#: ../js/ui/telepathyClient.js:1416
 msgid "Certificate not provided"
 msgstr "Atestilo ne donita"
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1418
 msgid "Certificate untrusted"
 msgstr "Malfidita atestilo"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1420
 msgid "Certificate expired"
 msgstr "Posttempa atestilo"
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1422
 msgid "Certificate not activated"
 msgstr "Atestilo ne aktivigita"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1424
 msgid "Certificate hostname mismatch"
 msgstr "Atestilo-nomo de gastiga komputilo miskongruas"
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1426
 msgid "Certificate fingerprint mismatch"
 msgstr "Atestilo-fingropremo miskongruas"
 
-#: ../js/ui/telepathyClient.js:1424
+#: ../js/ui/telepathyClient.js:1428
 msgid "Certificate self-signed"
 msgstr "Memsubskribita atestilo"
 
-#: ../js/ui/telepathyClient.js:1426
+#: ../js/ui/telepathyClient.js:1430
 msgid "Status is set to offline"
 msgstr "Stato agordas kiam nekonektita."
 
-#: ../js/ui/telepathyClient.js:1428
+#: ../js/ui/telepathyClient.js:1432
 msgid "Encryption is not available"
 msgstr "Ĉifrado nehavebla"
 
-#: ../js/ui/telepathyClient.js:1430
+#: ../js/ui/telepathyClient.js:1434
 msgid "Certificate is invalid"
 msgstr "Nevalida atestilo"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1436
 msgid "Connection has been refused"
 msgstr "Refuzinta konekto"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1438
 msgid "Connection can't be established"
 msgstr "Ne povas establi konekton"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1440
 msgid "Connection has been lost"
 msgstr "Konekto perdiĝis"
 
-#: ../js/ui/telepathyClient.js:1438
+#: ../js/ui/telepathyClient.js:1442
 msgid "This resource is already connected to the server"
 msgstr "Ĉi tio risurco jam konektata al servilo"
 
-#: ../js/ui/telepathyClient.js:1440
+#: ../js/ui/telepathyClient.js:1444
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Konekto anstataŭigis per nova konekto uzanta la saman risurcon"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1446
 msgid "The account already exists on the server"
 msgstr "La konto jam ekzistas sur la servilo"
 
-#: ../js/ui/telepathyClient.js:1444
+#: ../js/ui/telepathyClient.js:1448
 msgid "Server is currently too busy to handle the connection"
 msgstr "Servilo estas nun tro okupata por akcepti la konekton"
 
-#: ../js/ui/telepathyClient.js:1446
+#: ../js/ui/telepathyClient.js:1450
 msgid "Certificate has been revoked"
 msgstr "Atestilo senvalidigita"
 
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1452
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Atestilo uzas malsekuran ĉifrigan algoritmon aŭ estas kriptografie malforta."
 
-#: ../js/ui/telepathyClient.js:1450
+#: ../js/ui/telepathyClient.js:1454
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1444,20 +1456,20 @@ msgstr ""
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1459
+#: ../js/ui/telepathyClient.js:1463
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Malsukcesis konekton al %s"
 
-#: ../js/ui/telepathyClient.js:1468
+#: ../js/ui/telepathyClient.js:1472
 msgid "Reconnect"
 msgstr "Rekonekti"
 
-#: ../js/ui/telepathyClient.js:1469
+#: ../js/ui/telepathyClient.js:1473
 msgid "Edit account"
 msgstr "Redakti konton"
 
-#: ../js/ui/telepathyClient.js:1515
+#: ../js/ui/telepathyClient.js:1519
 msgid "Unknown reason"
 msgstr "Nekonata kialo"
 
@@ -1475,7 +1487,7 @@ msgstr "Nedisponebla"
 
 #: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:586
 msgid "Power Off..."
-msgstr "Elŝalti..."
+msgstr "Elŝalti..."
 
 #: ../js/ui/userMenu.js:548
 msgid "Notifications"
@@ -1491,7 +1503,7 @@ msgstr "Sistem-agordoj"
 
 #: ../js/ui/userMenu.js:567
 msgid "Lock Screen"
-msgstr "Ŝlosi ekranon"
+msgstr "Ŝlosi ekranon"
 
 #: ../js/ui/userMenu.js:572
 msgid "Switch User"
@@ -1523,14 +1535,9 @@ msgstr "Tajpi por serĉi..."
 
 #: ../js/ui/viewSelector.js:140 ../src/shell-util.c:261
 msgid "Search"
-msgstr "Serĉi"
+msgstr "Serĉi"
 
-#: ../js/ui/windowAttentionHandler.js:39
-#, c-format
-msgid "%s has finished starting"
-msgstr "Starto de %s finiĝis"
-
-#: ../js/ui/windowAttentionHandler.js:41
+#: ../js/ui/windowAttentionHandler.js:35
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' prestas"
@@ -1576,7 +1583,7 @@ msgstr "Unuiĝinta Reĝlando"
 
 #: ../src/shell-mobile-providers.c:526
 msgid "Default"
-msgstr "Defaŭlto"
+msgstr "Defaŭlto"
 
 #: ../src/shell-polkit-authentication-agent.c:334
 msgid "Authentication dialog was dismissed by the user"
@@ -1601,3 +1608,6 @@ msgstr "Dosiersistemo"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "%s has finished starting"
+#~ msgstr "Starto de %s finiĝis"
