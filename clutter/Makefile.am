@@ -430,7 +430,9 @@ clutter-glx-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 
 pc_files += clutter-glx-$(CLUTTER_API_VERSION).pc
 
-compat_libs += libclutter-glx-$(CLUTTER_API_VERSION).so.0
+compat_libs += \
+	libclutter-glx-$(CLUTTER_API_VERSION).so \
+	$(NULL)
 endif
 
 # GDK backend rules
@@ -568,7 +570,9 @@ clutter-cex100-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 
 pc_files += clutter-cex100-$(CLUTTER_API_VERSION).pc
 
-compat_libs += libclutter-cex100-$(CLUTTER_API_VERSION).so.0
+compat_libs += \
+	libclutter-cex100-$(CLUTTER_API_VERSION).so \
+	$(NULL)
 endif # SUPPORT_CEX100
 
 if SUPPORT_EGL
@@ -650,7 +654,9 @@ clutter-wayland-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 
 pc_files += clutter-wayland-$(CLUTTER_API_VERSION).pc
 
-compat_libs += libclutter-wayland-$(CLUTTER_API_VERSION).so.0
+compat_libs += \
+	libclutter-wayland-$(CLUTTER_API_VERSION).so \
+	$(NULL)
 endif # SUPPORT_WAYLAND
 
 # cally
@@ -762,9 +768,17 @@ libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(NULL)
 
 install-exec-local:
-	for lib in "$(compat_libs)"; do \
-		rm -f $(DESTDIR)$(libdir)/$$lib ; \
-		ln -s libclutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $(DESTDIR)$(libdir)/$$lib ; \
+	for lib in `echo $(compat_libs)`; do \
+	  (cd $(DESTDIR)$(libdir) && \
+	    { ln -s -f libclutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0 || \
+	      { rm -f $$lib.0 && ln -s libclutter-1.0.so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0; }; \
+	    } \
+	  ) ; \
+	  (cd $(DESTDIR)$(libdir) && \
+	    { ln -s -f libclutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib || \
+	      { rm -f $$lib && ln -s libclutter-1.0.so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib; }; \
+	    } \
+	  ) ; \
 	done
 
 # gobject-introspection rules
