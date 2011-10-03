@@ -31,10 +31,12 @@
 #include "clutter-backend-gdk.h"
 #include "clutter-device-manager-gdk.h"
 
-#include "clutter-debug.h"
-#include "clutter-main.h"
+#include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
+#include "clutter-debug.h"
 #include "clutter-event-private.h"
+#include "clutter-main.h"
+#include "clutter-paint-volume-private.h"
 #include "clutter-stage-private.h"
 
 #include <string.h>
@@ -87,6 +89,8 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
   ClutterEvent *event = NULL;
   gint spin = 0;
   GdkFilterReturn result = GDK_FILTER_CONTINUE;
+  ClutterInputDevice *device, *source_device;
+  GdkDevice *gdk_device;
 
   backend = clutter_get_default_backend ();
   if (!CLUTTER_IS_BACKEND_GDK (backend))
@@ -98,6 +102,20 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
   backend_gdk = CLUTTER_BACKEND_GDK (backend);
   stage = clutter_gdk_get_stage_from_window (gdk_event->any.window);
   device_manager = clutter_device_manager_get_default ();
+
+  gdk_device = gdk_event_get_device (gdk_event);
+  if (gdk_device != NULL)
+    device = _clutter_device_manager_gdk_lookup_device (device_manager,
+                                                        gdk_device);
+  else
+    device = NULL;
+
+  gdk_device = gdk_event_get_source_device (gdk_event);
+  if (gdk_device != NULL)
+    source_device = _clutter_device_manager_gdk_lookup_device (device_manager,
+                                                               gdk_device);
+  else
+    source_device = NULL;
 
   if (stage == NULL)
     return GDK_FILTER_CONTINUE;
@@ -115,7 +133,32 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       break;
 
     case GDK_EXPOSE:
-      clutter_redraw (stage);
+      {
+        ClutterPaintVolume clip;
+        ClutterVertex origin;
+
+        CLUTTER_NOTE (EVENT, "Expose for stage '%s' [%p] { %d, %d - %d x %d }",
+                      _clutter_actor_get_debug_name (CLUTTER_ACTOR (stage)),
+                      stage,
+                      gdk_event->expose.area.x,
+                      gdk_event->expose.area.y,
+                      gdk_event->expose.area.width,
+                      gdk_event->expose.area.height);
+
+        origin.x = gdk_event->expose.area.x;
+        origin.y = gdk_event->expose.area.y;
+        origin.z = 0;
+
+        _clutter_paint_volume_init_static (&clip, CLUTTER_ACTOR (stage));
+
+        clutter_paint_volume_set_origin (&clip, &origin);
+        clutter_paint_volume_set_width (&clip, gdk_event->expose.area.width);
+        clutter_paint_volume_set_height (&clip, gdk_event->expose.area.height);
+
+        _clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), 0, &clip);
+
+        clutter_paint_volume_free (&clip);
+      }
       break;
 
     case GDK_DAMAGE:
@@ -130,9 +173,11 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       event->motion.axes = NULL;
       /* It's all X in the end, right? */
       event->motion.modifier_state = gdk_event->motion.state;
-      event->motion.device =
-        _clutter_device_manager_gdk_lookup_device (device_manager,
-                                                   gdk_event->motion.device);
+      clutter_event_set_device (event, device);
+      clutter_event_set_source_device (event, source_device);
+      CLUTTER_NOTE (EVENT, "Motion notifiy [%.2f, %.2f]",
+                    event->motion.x,
+                    event->motion.y);
       break;
 
     case GDK_BUTTON_PRESS:
@@ -147,9 +192,13 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       event->button.modifier_state = gdk_event->button.state;
       event->button.button = gdk_event->button.button;
       event->button.click_count = 1;
-      event->button.device =
-        _clutter_device_manager_gdk_lookup_device (device_manager,
-                                                   gdk_event->button.device);
+      clutter_event_set_device (event, device);
+      clutter_event_set_source_device (event, source_device);
+      CLUTTER_NOTE (EVENT, "Button %d %s [%.2f, %.2f]",
+                    event->button.button,
+                    event->type == CLUTTER_BUTTON_PRESS ? "press" : "release",
+                    event->button.x,
+                    event->button.y);
       break;
 
     case GDK_2BUTTON_PRESS:
@@ -167,6 +216,11 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       event->key.keyval = gdk_event->key.keyval;
       event->key.hardware_keycode = gdk_event->key.hardware_keycode;
       event->key.unicode_value = g_utf8_get_char (gdk_event->key.string);
+      clutter_event_set_device (event, device);
+      clutter_event_set_source_device (event, source_device);
+      CLUTTER_NOTE (EVENT, "Key %d %s",
+                    event->key.keyval,
+                    event->type == CLUTTER_KEY_PRESS ? "press" : "release");
       break;
 
     case GDK_ENTER_NOTIFY:
@@ -175,19 +229,21 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
                                  CLUTTER_ENTER :
                                  CLUTTER_LEAVE);
       event->crossing.source = CLUTTER_ACTOR (stage);
-      event->crossing.time = gdk_event->crossing.time;
+      event->crossing.time = gdk_event_get_time (gdk_event);
       event->crossing.x = gdk_event->crossing.x;
       event->crossing.y = gdk_event->crossing.y;
 
       /* XXX: no better fallback here? */
-      event->crossing.device =
-        clutter_device_manager_get_core_device (device_manager,
-                                                CLUTTER_POINTER_DEVICE);
-
+      clutter_event_set_device (event, device);
+      clutter_event_set_source_device (event, source_device);
       if (gdk_event->type == GDK_ENTER_NOTIFY)
-        _clutter_stage_add_device (stage, event->crossing.device);
+        _clutter_stage_add_device (stage, clutter_event_get_device (event));
       else
-        _clutter_stage_remove_device (stage, event->crossing.device);
+        _clutter_stage_remove_device (stage, clutter_event_get_device (event));
+      CLUTTER_NOTE (EVENT, "Crossing %s [%.2f, %.2f]",
+                    event->type == CLUTTER_ENTER ? "enter" : "leave",
+                    event->crossing.x,
+                    event->crossing.y);
       break;
 
     case GDK_FOCUS_CHANGE:
@@ -223,9 +279,8 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       event->scroll.modifier_state = gdk_event->scroll.state;
       event->scroll.axes = NULL;
       event->scroll.direction = gdk_event->scroll.direction;
-      event->scroll.device =
-        _clutter_device_manager_gdk_lookup_device (device_manager,
-                                                   gdk_event->scroll.device);
+      clutter_event_set_device (event, device);
+      clutter_event_set_source_device (event, source_device);
       break;
 
     case GDK_WINDOW_STATE:

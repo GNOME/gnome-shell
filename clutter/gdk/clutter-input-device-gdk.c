@@ -141,8 +141,8 @@ _clutter_input_device_gdk_new (ClutterDeviceManager    *manager,
     }
 
   if (device_type != CLUTTER_KEYBOARD_DEVICE)
-    /* why Gdk asserts if passed a GDK_SOURCE_KEYBOARD device? */
     has_cursor = gdk_device_get_has_cursor (device);
+
   name = gdk_device_get_name (device);
 
   clutter_device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_GDK,
