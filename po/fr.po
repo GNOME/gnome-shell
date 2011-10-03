@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: clutter 1.3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-23 14:34+0000\n"
+"POT-Creation-Date: 2011-10-01 11:10+0000\n"
 "PO-Revision-Date: 2011-09-12 22:43+0200 \n"
 "Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -403,6 +403,14 @@ msgstr "Contraintes"
 msgid "Adds a constraint to the actor"
 msgstr "Ajoute une contrainte à l'acteur"
 
+#: ../clutter/clutter-actor.c:4733
+msgid "Effect"
+msgstr "Effet"
+
+#: ../clutter/clutter-actor.c:4734
+msgid "Add an effect to be applied on the actor"
+msgstr "Ajoute un effet à appliquer à l'acteur"
+
 #: ../clutter/clutter-actor-meta.c:193 ../clutter/clutter-child-meta.c:142
 msgid "Actor"
 msgstr "Acteur"
@@ -779,7 +787,7 @@ msgid "The layout manager used by the box"
 msgstr "Le gestionnaire de disposition utilisé par la boite"
 
 #: ../clutter/clutter-box.c:564 ../clutter/clutter-rectangle.c:267
-#: ../clutter/clutter-stage.c:1778
+#: ../clutter/clutter-stage.c:1790
 msgid "Color"
 msgstr "Couleur"
 
@@ -974,27 +982,27 @@ msgstr "Teinte"
 msgid "The tint to apply"
 msgstr "La teinte à appliquer"
 
-#: ../clutter/clutter-deform-effect.c:527
+#: ../clutter/clutter-deform-effect.c:547
 msgid "Horizontal Tiles"
 msgstr "Tuiles horizontal"
 
-#: ../clutter/clutter-deform-effect.c:528
+#: ../clutter/clutter-deform-effect.c:548
 msgid "The number of horizontal tiles"
 msgstr "Le nombre de tuiles horizontales"
 
-#: ../clutter/clutter-deform-effect.c:543
+#: ../clutter/clutter-deform-effect.c:563
 msgid "Vertical Tiles"
 msgstr "Tuiles verticales"
 
-#: ../clutter/clutter-deform-effect.c:544
+#: ../clutter/clutter-deform-effect.c:564
 msgid "The number of vertical tiles"
 msgstr "Le nombre de tuiles verticales"
 
-#: ../clutter/clutter-deform-effect.c:561
+#: ../clutter/clutter-deform-effect.c:581
 msgid "Back Material"
 msgstr "Matériau de l'arrière"
 
-#: ../clutter/clutter-deform-effect.c:562
+#: ../clutter/clutter-deform-effect.c:582
 msgid "The material to be used when painting the back of the actor"
 msgstr "Le matériau à utiliser lors du dessin de l'arrière de l'acteur"
 
@@ -1181,65 +1189,66 @@ msgstr "Gestionnaire"
 msgid "The manager that created this data"
 msgstr "Le gestionnaire qui a créé ces données"
 
-#. Translate to default:RTL if you want your widgets
-#. * to be RTL, otherwise translate to default:LTR.
+#. Translators: Leave this UNTRANSLATED if your language is
+#. * left-to-right.  If your language is right-to-left
+#. * (e.g. Hebrew, Arabic), translate it to "default:RTL".
 #. *
-#. * Do *not* translate it to "predefinito:LTR": if it
-#. * it isn't default:LTR or default:RTL it will not work
+#. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
+#. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:492
+#: ../clutter/clutter-main.c:494
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1323
+#: ../clutter/clutter-main.c:1325
 msgid "Show frames per second"
 msgstr "Afficher le nombre d'images par seconde"
 
-#: ../clutter/clutter-main.c:1325
+#: ../clutter/clutter-main.c:1327
 msgid "Default frame rate"
 msgstr "Nombre d'images par seconde par défaut"
 
-#: ../clutter/clutter-main.c:1327
+#: ../clutter/clutter-main.c:1329
 msgid "Make all warnings fatal"
 msgstr "Rendre tous les avertissements fatals"
 
-#: ../clutter/clutter-main.c:1330
+#: ../clutter/clutter-main.c:1332
 msgid "Direction for the text"
 msgstr "Sens des textes"
 
-#: ../clutter/clutter-main.c:1333
+#: ../clutter/clutter-main.c:1335
 msgid "Disable mipmapping on text"
 msgstr "Désactiver le MIP mapping pour le texte"
 
-#: ../clutter/clutter-main.c:1336
+#: ../clutter/clutter-main.c:1338
 msgid "Use 'fuzzy' picking"
 msgstr "Utiliser la sélection « approximative »"
 
-#: ../clutter/clutter-main.c:1339
+#: ../clutter/clutter-main.c:1341
 msgid "Clutter debugging flags to set"
 msgstr "Drapeau de débogage de Clutter à activer"
 
-#: ../clutter/clutter-main.c:1341
+#: ../clutter/clutter-main.c:1343
 msgid "Clutter debugging flags to unset"
 msgstr "Drapeau de débogage de Clutter à désactiver"
 
-#: ../clutter/clutter-main.c:1345
+#: ../clutter/clutter-main.c:1347
 msgid "Clutter profiling flags to set"
 msgstr "Drapeau de profilage de Clutter à activer"
 
-#: ../clutter/clutter-main.c:1347
+#: ../clutter/clutter-main.c:1349
 msgid "Clutter profiling flags to unset"
 msgstr "Drapeau de profilage de Clutter à désactiver"
 
-#: ../clutter/clutter-main.c:1350
+#: ../clutter/clutter-main.c:1352
 msgid "Enable accessibility"
 msgstr "Activer l'accessibilité"
 
-#: ../clutter/clutter-main.c:1532
+#: ../clutter/clutter-main.c:1534
 msgid "Clutter Options"
 msgstr "Options de Clutter"
 
-#: ../clutter/clutter-main.c:1533
+#: ../clutter/clutter-main.c:1535
 msgid "Show Clutter Options"
 msgstr "Afficher les options de Clutter"
 
@@ -1355,7 +1364,7 @@ msgstr "« Filename » défini"
 msgid "Whether the :filename property is set"
 msgstr "Indique si la propriété :filename est définie"
 
-#: ../clutter/clutter-script.c:449 ../clutter/clutter-texture.c:1081
+#: ../clutter/clutter-script.c:449 ../clutter/clutter-texture.c:1067
 msgid "Filename"
 msgstr "Nom de fichier"
 
@@ -1467,8 +1476,9 @@ msgstr "Durée avant masquage du mot de passe"
 
 #: ../clutter/clutter-settings.c:612
 msgid "How long to show the last input character in hidden entries"
-msgstr "Pendant combien de temps il faut afficher le dernier caractère saisi "
-"dans les entrées masquées"
+msgstr ""
+"Pendant combien de temps il faut afficher le dernier caractère saisi dans "
+"les entrées masquées"
 
 #: ../clutter/clutter-shader.c:255
 msgid "Vertex Source"
@@ -1511,11 +1521,11 @@ msgstr "Shader vertex"
 msgid "Fragment shader"
 msgstr "Shader fragment"
 
-#: ../clutter/clutter-shader-effect.c:415
+#: ../clutter/clutter-shader-effect.c:482
 msgid "Shader Type"
 msgstr "Type de shader"
 
-#: ../clutter/clutter-shader-effect.c:416
+#: ../clutter/clutter-shader-effect.c:483
 msgid "The type of shader used"
 msgstr "Le type de shader utilisé"
 
@@ -1543,106 +1553,106 @@ msgstr "Le bord de la source qui doit être attrapé"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Le décalage, en pixels, à appliquer à la contrainte"
 
-#: ../clutter/clutter-stage.c:1720
+#: ../clutter/clutter-stage.c:1732
 msgid "Fullscreen Set"
 msgstr "Plein écran renseigné"
 
-#: ../clutter/clutter-stage.c:1721
+#: ../clutter/clutter-stage.c:1733
 msgid "Whether the main stage is fullscreen"
 msgstr "Indique si la scène principale est en plein écran"
 
-#: ../clutter/clutter-stage.c:1737
+#: ../clutter/clutter-stage.c:1749
 msgid "Offscreen"
 msgstr "Hors écran"
 
-#: ../clutter/clutter-stage.c:1738
+#: ../clutter/clutter-stage.c:1750
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Indique si la scène principale doit être rendue hors écran"
 
-#: ../clutter/clutter-stage.c:1750 ../clutter/clutter-text.c:3108
+#: ../clutter/clutter-stage.c:1762 ../clutter/clutter-text.c:3108
 msgid "Cursor Visible"
 msgstr "Curseur visible"
 
-#: ../clutter/clutter-stage.c:1751
+#: ../clutter/clutter-stage.c:1763
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr ""
 "Indique si le pointeur de la souris est visible sur la scène principale"
 
-#: ../clutter/clutter-stage.c:1765
+#: ../clutter/clutter-stage.c:1777
 msgid "User Resizable"
 msgstr "Redimensionnable par l'utilisateur"
 
-#: ../clutter/clutter-stage.c:1766
+#: ../clutter/clutter-stage.c:1778
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 "Indique si la scène peut être redimensionnée par des interactions de "
 "l'utilisateur"
 
-#: ../clutter/clutter-stage.c:1779
+#: ../clutter/clutter-stage.c:1791
 msgid "The color of the stage"
 msgstr "La couleur de la scène"
 
-#: ../clutter/clutter-stage.c:1793
+#: ../clutter/clutter-stage.c:1805
 msgid "Perspective"
 msgstr "Perspective"
 
-#: ../clutter/clutter-stage.c:1794
+#: ../clutter/clutter-stage.c:1806
 msgid "Perspective projection parameters"
 msgstr "Paramètres de projection de la perspective"
 
-#: ../clutter/clutter-stage.c:1809
+#: ../clutter/clutter-stage.c:1821
 msgid "Title"
 msgstr "Titre"
 
-#: ../clutter/clutter-stage.c:1810
+#: ../clutter/clutter-stage.c:1822
 msgid "Stage Title"
 msgstr "Titre de la scène"
 
-#: ../clutter/clutter-stage.c:1825
+#: ../clutter/clutter-stage.c:1837
 msgid "Use Fog"
 msgstr "Utiliser le brouillard"
 
-#: ../clutter/clutter-stage.c:1826
+#: ../clutter/clutter-stage.c:1838
 msgid "Whether to enable depth cueing"
 msgstr "Indique s'il faut activer la troncature d'arrière-plan"
 
-#: ../clutter/clutter-stage.c:1840
+#: ../clutter/clutter-stage.c:1852
 msgid "Fog"
 msgstr "Brouillard"
 
-#: ../clutter/clutter-stage.c:1841
+#: ../clutter/clutter-stage.c:1853
 msgid "Settings for the depth cueing"
 msgstr "Paramétrages de la troncature d'arrière-plan"
 
-#: ../clutter/clutter-stage.c:1857
+#: ../clutter/clutter-stage.c:1869
 msgid "Use Alpha"
 msgstr "Utiliser l'alpha"
 
-#: ../clutter/clutter-stage.c:1858
+#: ../clutter/clutter-stage.c:1870
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "S'il faut respecter le composant alpha de la couleur de la scène"
 
-#: ../clutter/clutter-stage.c:1874
+#: ../clutter/clutter-stage.c:1886
 msgid "Key Focus"
 msgstr "Focus clavier"
 
-#: ../clutter/clutter-stage.c:1875
+#: ../clutter/clutter-stage.c:1887
 msgid "The currently key focused actor"
 msgstr "L'acteur possédant actuellement le focus"
 
-#: ../clutter/clutter-stage.c:1891
+#: ../clutter/clutter-stage.c:1903
 msgid "No Clear Hint"
 msgstr "Aucun indicateur d'effacement"
 
-#: ../clutter/clutter-stage.c:1892
+#: ../clutter/clutter-stage.c:1904
 msgid "Whether the stage should clear its contents"
 msgstr "Indique si la scène doit effacer son contenu"
 
-#: ../clutter/clutter-stage.c:1905
+#: ../clutter/clutter-stage.c:1917
 msgid "Accept Focus"
 msgstr "Accepte le focus"
 
-#: ../clutter/clutter-stage.c:1906
+#: ../clutter/clutter-stage.c:1918
 msgid "Whether the stage should accept focus on show"
 msgstr "Indique si la scène doit accepter le focus à l'affichage"
 
@@ -1917,21 +1927,21 @@ msgstr "Couleur du texte sélectionné renseignée"
 msgid "Whether the selected text color has been set"
 msgstr "Indique si la couleur du texte sélectionné a été renseignée ou non"
 
-#: ../clutter/clutter-texture.c:995
+#: ../clutter/clutter-texture.c:981
 msgid "Sync size of actor"
 msgstr "Synchronise la taille de l'acteur"
 
-#: ../clutter/clutter-texture.c:996
+#: ../clutter/clutter-texture.c:982
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
 "Synchronisation de la taille de l'acteur avec les dimensions du pixbuf sous-"
 "jacent"
 
-#: ../clutter/clutter-texture.c:1003
+#: ../clutter/clutter-texture.c:989
 msgid "Disable Slicing"
 msgstr "Désactive le découpage"
 
-#: ../clutter/clutter-texture.c:1004
+#: ../clutter/clutter-texture.c:990
 msgid ""
 "Forces the underlying texture to be singular and not made of smaller space "
 "saving individual textures"
@@ -1939,72 +1949,72 @@ msgstr ""
 "Force la texture sous-jacente à être singulière et non composée de plus "
 "petites sous-textures économes en espace"
 
-#: ../clutter/clutter-texture.c:1013
+#: ../clutter/clutter-texture.c:999
 msgid "Tile Waste"
 msgstr "Perte de mosaïque"
 
-#: ../clutter/clutter-texture.c:1014
+#: ../clutter/clutter-texture.c:1000
 msgid "Maximum waste area of a sliced texture"
 msgstr "Zone maximale de perte d'une texture par morceaux"
 
-#: ../clutter/clutter-texture.c:1022
+#: ../clutter/clutter-texture.c:1008
 msgid "Horizontal repeat"
 msgstr "Répétition horizontale"
 
-#: ../clutter/clutter-texture.c:1023
+#: ../clutter/clutter-texture.c:1009
 msgid "Repeat the contents rather than scaling them horizontally"
 msgstr "Répète le contenu plutôt de le redimensionner horizontalement"
 
-#: ../clutter/clutter-texture.c:1030
+#: ../clutter/clutter-texture.c:1016
 msgid "Vertical repeat"
 msgstr "Répétition verticale"
 
-#: ../clutter/clutter-texture.c:1031
+#: ../clutter/clutter-texture.c:1017
 msgid "Repeat the contents rather than scaling them vertically"
 msgstr "Répète le contenu plutôt de le redimensionner verticalement"
 
-#: ../clutter/clutter-texture.c:1038
+#: ../clutter/clutter-texture.c:1024
 msgid "Filter Quality"
 msgstr "Qualité de filtrage"
 
-#: ../clutter/clutter-texture.c:1039
+#: ../clutter/clutter-texture.c:1025
 msgid "Rendering quality used when drawing the texture"
 msgstr "La qualité de rendu utilisée lors du dessin de la texture"
 
-#: ../clutter/clutter-texture.c:1047
+#: ../clutter/clutter-texture.c:1033
 msgid "Pixel Format"
 msgstr "Format des pixels"
 
-#: ../clutter/clutter-texture.c:1048
+#: ../clutter/clutter-texture.c:1034
 msgid "The Cogl pixel format to use"
 msgstr "Le format des pixels Cogl à utiliser"
 
-#: ../clutter/clutter-texture.c:1056
+#: ../clutter/clutter-texture.c:1042
 msgid "Cogl Texture"
 msgstr "Texture Cogl"
 
-#: ../clutter/clutter-texture.c:1057
+#: ../clutter/clutter-texture.c:1043
 msgid "The underlying Cogl texture handle used to draw this actor"
 msgstr "L'animateur de texture Cogl sous-jacent utilisé pour tracer cet acteur"
 
-#: ../clutter/clutter-texture.c:1064
+#: ../clutter/clutter-texture.c:1050
 msgid "Cogl Material"
 msgstr "Matériel Cogl"
 
-#: ../clutter/clutter-texture.c:1065
+#: ../clutter/clutter-texture.c:1051
 msgid "The underlying Cogl material handle used to draw this actor"
 msgstr ""
 "L'animateur de matériel Cogl sous-jacent utilisé pour tracer cet acteur"
 
-#: ../clutter/clutter-texture.c:1082
+#: ../clutter/clutter-texture.c:1068
 msgid "The path of the file containing the image data"
 msgstr "Le chemin du fichier contenant les données de l'image"
 
-#: ../clutter/clutter-texture.c:1089
+#: ../clutter/clutter-texture.c:1075
 msgid "Keep Aspect Ratio"
 msgstr "Conserver le rapport d'affichage"
 
-#: ../clutter/clutter-texture.c:1090
+#: ../clutter/clutter-texture.c:1076
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
@@ -2012,22 +2022,22 @@ msgstr ""
 "Conserve le rapport d'affichage de la texture au moment d'une requête de "
 "largeur ou hauteur préférée"
 
-#: ../clutter/clutter-texture.c:1116
+#: ../clutter/clutter-texture.c:1102
 msgid "Load asynchronously"
 msgstr "Chargement asynchrone"
 
-#: ../clutter/clutter-texture.c:1117
+#: ../clutter/clutter-texture.c:1103
 msgid ""
 "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 "Charger les fichiers à l'intérieur d'un thread pour éviter un blocage lors "
 "du chargement des images à partir du disque"
 
-#: ../clutter/clutter-texture.c:1133
+#: ../clutter/clutter-texture.c:1119
 msgid "Load data asynchronously"
 msgstr "Charger les données de manière asynchrone"
 
-#: ../clutter/clutter-texture.c:1134
+#: ../clutter/clutter-texture.c:1120
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
@@ -2035,26 +2045,26 @@ msgstr ""
 "Décode les fichiers de données d'image à l'intérieur d'un thread pour éviter "
 "un blocage lors du chargement des images à partir du disque"
 
-#: ../clutter/clutter-texture.c:1158
+#: ../clutter/clutter-texture.c:1144
 msgid "Pick With Alpha"
 msgstr "Sélection avec alpha"
 
-#: ../clutter/clutter-texture.c:1159
+#: ../clutter/clutter-texture.c:1145
 msgid "Shape actor with alpha channel when picking"
 msgstr "Acteur de forme avec canal alpha lors d'une sélection"
 
-#: ../clutter/clutter-texture.c:1557 ../clutter/clutter-texture.c:1967
-#: ../clutter/clutter-texture.c:2062 ../clutter/clutter-texture.c:2343
+#: ../clutter/clutter-texture.c:1543 ../clutter/clutter-texture.c:1926
+#: ../clutter/clutter-texture.c:2020 ../clutter/clutter-texture.c:2301
 #, c-format
 msgid "Failed to load the image data"
 msgstr "Impossible de charger les données de l'image"
 
-#: ../clutter/clutter-texture.c:1703
+#: ../clutter/clutter-texture.c:1689
 #, c-format
 msgid "YUV textures are not supported"
 msgstr "Les textures YUV ne sont pas prises en charge"
 
-#: ../clutter/clutter-texture.c:1712
+#: ../clutter/clutter-texture.c:1698
 #, c-format
 msgid "YUV2 textues are not supported"
 msgstr "Les textures YUV2 ne sont pas prises en charge"
