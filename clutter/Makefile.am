@@ -524,8 +524,8 @@ EXTRA_DIST += \
 
 # EGL backend rules
 egl_source_h = \
-	$(srcdir)/cogl/clutter-egl-headers.h	\
-	$(srcdir)/cogl/clutter-egl.h		\
+	$(srcdir)/egl/clutter-egl-headers.h	\
+	$(srcdir)/egl/clutter-egl.h		\
 	$(NULL)
 
 egl_tslib_c = $(srcdir)/tslib/clutter-event-tslib.c
@@ -541,7 +541,7 @@ evdev_h_priv = \
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
 	$(NULL)
 
-cex_h = cogl/clutter-cex100.h
+cex_h = egl/clutter-cex100.h
 BUILT_SOURCES += $(cex_h)
 EXTRA_DIST += $(srcdir)/$(cex_h).in
 

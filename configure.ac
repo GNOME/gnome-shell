@@ -955,7 +955,7 @@ AC_CONFIG_FILES([
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
 
-	clutter/cogl/clutter-cex100.h
+	clutter/egl/clutter-cex100.h
 
 	tests/Makefile
 	tests/accessibility/Makefile
