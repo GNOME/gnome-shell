@@ -215,15 +215,15 @@ AC_ARG_ENABLE([osx],
 AC_ARG_ENABLE([gdk],
               [AS_HELP_STRING([--enable-gdk=@<:@yes/no@:>@], [Enable the GDK backend (default=no)])],
               [],
-              [enable_gdk=no])
+              [enable_gdk=maybe])
 AC_ARG_ENABLE([wayland],
               [AS_HELP_STRING([--enable-wayland=@<:@yes/no@:>@], [Enable the Wayland client backend (default=no)])],
               [],
-              [enable_wayland=no])
+              [enable_wayland=maybe])
 AC_ARG_ENABLE([egl],
-              [AS_HELP_STRING([--enable-egl=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])]
+              [AS_HELP_STRING([--enable-egl=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [],
-              [enable_egl=no])
+              [enable_egl=maybe])
 
 dnl Define default values
 AS_IF([test "x$platform_glx" = "xyes"], [enable_x11=yes])
@@ -244,14 +244,6 @@ AS_IF([test "x$enable_x11" = "xyes"],
         PKG_CHECK_EXISTS([gl],
                          [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"],
                          [FLAVOUR_LIBS="$FLAVOUR_LIBS -lGL"])
-
-        # if Mesa has support for egl, we can use it as well
-        PKG_CHECK_EXISTS([egl],
-                         [
-                           BACKEND_PC_FILES="$BACKEND_PC_FILES egl"
-                           SUPPORT_EGL=1
-                         ],
-                         [])
 
         # We might fall back to DRM for sync-to-vblank on GLX
         PKG_CHECK_EXISTS([libdrm],
@@ -291,6 +283,7 @@ AS_IF([test "x$enable_wayland" = "xyes"],
         experimental_backend="yes"
 
         SUPPORT_WAYLAND=1
+        SUPPORT_EVDEV=1
 
         PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
         PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"], [])
@@ -307,6 +300,13 @@ AS_IF([test "x$enable_egl" = "xyes"],
 
         SUPPORT_EGL=1
         SUPPORT_COGL=1
+
+        # if Mesa has support for egl, we can use it as well
+        PKG_CHECK_EXISTS([egl],
+                         [
+                           BACKEND_PC_FILES="$BACKEND_PC_FILES egl"
+                         ],
+                         [])
 
         AC_ARG_WITH([tslib],
                     [AS_HELP_STRING([--with-tslib=@<:@yes/no@:>@], [Use TSLib for events])],
@@ -329,8 +329,10 @@ AS_IF([test "x$enable_egl" = "xyes"],
                 AS_IF([test "x$have_tslib" = "xyes"],
                       [
                         AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])
+                        SUPPORT_TSLIB=1
                       ])
-              ])
+              ],
+              [have_tslib=no])
 
         AS_IF([test "x$with_evdev" = "xyes"],
               [
@@ -338,8 +340,10 @@ AS_IF([test "x$enable_egl" = "xyes"],
                 AS_IF([test "x$have_evdev" = "xyes"],
                       [
                         AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
+                        SUPPORT_EVDEV=1
                       ])
-              ])
+              ],
+              [have_evdev=no])
 
         AS_IF([test "x$with_gdl" = "xyes"],
               [
@@ -366,14 +370,8 @@ AS_IF([test "x$enable_egl" = "xyes"],
                 SUPPORT_EGL_PLATFORM_GDL=1
 
                 AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend])
-              ])
-
-        # Make sure we don't enable tslib and evdev at the same time, we
-        # don't support multiple event backends yet.
-        AS_IF([test "x$have_tslib" = "xyes" -a "x$have_evdev" = "xyes"],
-              [
-                AC_MSG_ERROR([Cannot enable both tslib and evdev events])
-              ])
+              ],
+              [have_gdl=no])
 
         FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
         FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
@@ -471,6 +469,12 @@ AS_IF([test "x$SUPPORT_WIN32" = "x1"],
 AS_IF([test "x$SUPPORT_EGL_PLATFORM_GDL" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_CEX100 1"])
+AS_IF([test "x$SUPPORT_EVDEV" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_EVDEV 1"])
+AS_IF([test "x$SUPPORT_TSLIB" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_TSLIB 1"])
 
 AC_SUBST([CLUTTER_CONFIG_DEFINES])
 

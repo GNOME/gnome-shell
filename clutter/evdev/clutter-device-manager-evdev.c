@@ -855,17 +855,16 @@ clutter_device_manager_evdev_init (ClutterDeviceManagerEvdev *self)
 void
 _clutter_events_evdev_init (ClutterBackend *backend)
 {
+  ClutterDeviceManager *dummy G_GNUC_UNUSED;
+
   CLUTTER_NOTE (EVENT, "Initializing evdev backend");
 
-  /* We just have to create the singleon here */
-  clutter_device_manager_get_default ();
+  /* we need to create the device manager here */
+  dummy = clutter_device_manager_get_default ();
 }
 
 void
 _clutter_events_evdev_uninit (ClutterBackend *backend)
 {
-  ClutterDeviceManager *manager;
-
-  manager = clutter_device_manager_get_default ();
-  g_object_unref (manager);
+  CLUTTER_NOTE (EVENT, "Uninitializing evdev backend");
 }

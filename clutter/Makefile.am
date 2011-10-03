@@ -528,6 +528,11 @@ egl_source_h = \
 	$(srcdir)/egl/clutter-egl.h		\
 	$(NULL)
 
+egl_source_h_priv = $(srcdir)/egl/clutter-backend-eglnative.h
+egl_source_c = $(srcdir)/egl/clutter-backend-eglnative.c
+egl_source_c_priv =
+
+egl_tslib_h = $(srcdir)/tslib/clutter-event-tslib.h
 egl_tslib_c = $(srcdir)/tslib/clutter-event-tslib.c
 
 evdev_c_priv = \
@@ -546,16 +551,17 @@ BUILT_SOURCES += $(cex_h)
 EXTRA_DIST += $(srcdir)/$(cex_h).in
 
 if USE_TSLIB
-backend_source_c_priv += $(egl_tslib_c)
+egl_source_c_priv += $(egl_tslib_c)
+egl_source_h_priv += $(egl_tslib_h)
 endif # SUPPORT_TSLIB
 
 if USE_EVDEV
-backend_source_c_priv += $(evdev_c_priv)
-backend_source_h_priv += $(evdev_h_priv)
+egl_source_c_priv += $(evdev_c_priv)
+egl_source_h_priv += $(evdev_h_priv)
 endif # SUPPORT_EVDEV
 
 if SUPPORT_CEX100
-backend_source_h += $(cex_h)
+egl_source_h += $(cex_h)
 
 clutter-cex100-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
@@ -567,6 +573,8 @@ endif # SUPPORT_CEX100
 
 if SUPPORT_EGL
 backend_source_h += $(egl_source_h)
+backend_source_c += $(egl_source_c)
+backend_source_h_priv += $(egl_source_h_priv)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)

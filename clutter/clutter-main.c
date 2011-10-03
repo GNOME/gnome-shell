@@ -1342,7 +1342,7 @@ clutter_context_get_default_unlocked (void)
 #endif
 #ifdef CLUTTER_WINDOWING_EGL
       if (backend == NULL || strcmp (backend, CLUTTER_EGL_NATIVE_BACKEND) == 0)
-        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_EGLNATIVE, NULL);
+        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
       else
 #endif
 #ifdef CLUTTER_WINDOWING_X11
@@ -3649,7 +3649,7 @@ clutter_check_backend (const char *backend_type)
   else
 #endif
 #ifdef CLUTTER_WINDOWING_EGL
-  if (strcmp (backend_type, CLUTTER_EGL_BACKEND) == 0 &&
+  if (strcmp (backend_type, CLUTTER_EGL_NATIVE_BACKEND) == 0 &&
       CLUTTER_IS_BACKEND_EGL_NATIVE (context->backend))
     return TRUE;
   else

@@ -70,11 +70,6 @@ struct _ClutterBackendEglNativeClass
 
 GType _clutter_backend_egl_native_get_type (void) G_GNUC_CONST;
 
-#ifdef HAVE_TSLIB
-void _clutter_events_tslib_init   (ClutterBackendEglNative *backend);
-void _clutter_events_tslib_uninit (ClutterBackendEglNative *backend);
-#endif
-
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_EGL_NATIVE_H__ */

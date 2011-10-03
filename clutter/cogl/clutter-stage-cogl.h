@@ -1,10 +1,6 @@
 #ifndef __CLUTTER_STAGE_COGL_H__
 #define __CLUTTER_STAGE_COGL_H__
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <glib-object.h>
 #include <cairo.h>
 #include <clutter/clutter-stage.h>

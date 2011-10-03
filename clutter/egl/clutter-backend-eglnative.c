@@ -26,9 +26,7 @@
  *  Neil Roberts
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -46,6 +44,10 @@
 #include "clutter-device-manager-evdev.h"
 #endif
 
+#ifdef HAVE_TSLIB
+#include "clutter-event-tslib.h"
+#endif
+
 #include "clutter-debug.h"
 #include "clutter-private.h"
 #include "clutter-main.h"
@@ -54,6 +56,7 @@
 #ifdef COGL_HAS_EGL_SUPPORT
 #include "clutter-egl.h"
 #endif
+
 #ifdef CLUTTER_EGL_BACKEND_CEX100
 #include "clutter-cex100.h"
 #endif
@@ -63,10 +66,9 @@ static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
 static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
 #endif
 
-static gboolean gdl_plane_set = FALSE;
-static gboolean gdl_n_buffers_set = FALSE;
+#define clutter_backend_egl_native_get_type     _clutter_backend_egl_native_get_type
 
-G_DEFINE_TYPE (ClutterBackendEglNative, _clutter_backend_egl_native, CLUTTER_TYPE_BACKEND_COGL);
+G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND_COGL);
 
 static ClutterDeviceManager *
 clutter_backend_egl_native_get_device_manager (ClutterBackend *backend)
@@ -89,31 +91,54 @@ clutter_backend_egl_native_get_device_manager (ClutterBackend *backend)
 static void
 clutter_backend_egl_native_init_events (ClutterBackend *backend)
 {
-#ifdef HAVE_TSLIB
-  _clutter_events_tslib_init (CLUTTER_BACKEND_EGL (backend));
-#endif
+  const char *input_backend = NULL;
+
+  input_backend = g_getenv ("CLUTTER_INPUT_BACKEND");
 
 #ifdef HAVE_EVDEV
-  _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
+  if (input_backend != NULL &&
+      strcmp (input_backend, CLUTTER_EVDEV_INPUT_BACKEND) == 0)
+    _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
+  else
 #endif
+#ifdef HAVE_TSLIB
+  if (input_backend != NULL &&
+      strcmp (input_backend, CLUTTER_TSLIB_INPUT_BACKEND) == 0)
+    _clutter_events_tslib_init (CLUTTER_BACKEND (backend));
+  else
+#endif
+  if (input_backend != NULL)
+    g_error ("Unrecognized input backend '%s'", input_backend);
+  else
+    g_error ("Unknown input backend");
 }
 
 static void
-clutter_backend_cogl_dispose (GObject *gobject)
+clutter_backend_egl_native_dispose (GObject *gobject)
 {
-#ifdef HAVE_TSLIB
   ClutterBackendEglNative *backend_egl_native = CLUTTER_BACKEND_EGL_NATIVE (gobject);
-
-  _clutter_events_tslib_uninit (backend_egl_native);
 
   if (backend_egl_native->event_timer != NULL)
     {
       g_timer_destroy (backend_egl_native->event_timer);
       backend_egl_native->event_timer = NULL;
     }
+
+#ifdef HAVE_TSLIB
+  _clutter_events_tslib_uninit (CLUTTER_BACKEND (gobject));
 #endif
 
-  G_OBJECT_CLASS (_clutter_backend_cogl_parent_class)->dispose (gobject);
+#ifdef HAVE_EVDEV
+  _clutter_events_evdev_uninit (CLUTTER_BACKEND (gobject));
+
+  if (backend_egl_native->device_manager != NULL)
+    {
+      g_object_unref (backend_egl_native->device_manager);
+      backend_egl_native->device_manager = NULL;
+    }
+#endif
+
+  G_OBJECT_CLASS (clutter_backend_egl_native_parent_class)->dispose (gobject);
 }
 
 static ClutterStageWindow *
@@ -123,7 +148,6 @@ clutter_backend_egl_native_create_stage (ClutterBackend  *backend,
 {
   ClutterBackendEglNative *backend_egl_native = CLUTTER_BACKEND_EGL_NATIVE (backend);
   ClutterStageWindow *stage;
-  ClutterStageCogl *stage_cogl;
 
   if (G_UNLIKELY (backend_egl_native->stage != NULL))
     {
@@ -159,8 +183,9 @@ clutter_backend_egl_native_create_context (ClutterBackend  *backend,
 
   swap_chain = cogl_swap_chain_new ();
 
-  if (gdl_n_buffers_set)
-    cogl_swap_chain_set_length (swap_chain, gdl_n_buffers);
+#if defined(CLUTTER_EGL_BACKEND_CEX100) && defined(COGL_HAS_GDL_SUPPORT)
+  cogl_swap_chain_set_length (swap_chain, gdl_n_buffers);
+#endif
 
   onscreen_template = cogl_onscreen_template_new (swap_chain);
   cogl_object_unref (swap_chain);
@@ -177,9 +202,8 @@ clutter_backend_egl_native_create_context (ClutterBackend  *backend,
   backend->cogl_display = cogl_display_new (backend->cogl_renderer,
                                             onscreen_template);
 
-#ifdef CLUTTER_EGL_BACKEND_CEX100
-  if (gdl_plane_set)
-    cogl_gdl_display_set_plane (backend->cogl_display, gdl_plane);
+#if defined(CLUTTER_EGL_BACKEND_CEX100) && defined(COGL_HAS_GDL_SUPPORT)
+  cogl_gdl_display_set_plane (backend->cogl_display, gdl_plane);
 #endif /* CLUTTER_EGL_BACKEND_CEX100 */
 
   cogl_object_unref (backend->cogl_renderer);
@@ -203,6 +227,7 @@ error:
 
   if (onscreen_template != NULL)
     cogl_object_unref (onscreen_template);
+
   if (swap_chain != NULL)
     cogl_object_unref (swap_chain);
 
@@ -211,32 +236,31 @@ error:
       cogl_object_unref (backend->cogl_renderer);
       backend->cogl_renderer = NULL;
     }
+
   return FALSE;
 }
 
 static void
-_clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
+clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
-  gobject_class->dispose     = clutter_backend_egl_native_dispose;
-  gobject_class->finalize    = clutter_backend_egl_native_finalize;
+  gobject_class->dispose = clutter_backend_egl_native_dispose;
 
   backend_class->get_device_manager = clutter_backend_egl_native_get_device_manager;
-  backend_class->init_events        = clutter_backend_egl_native_init_events;
-  backend_class->create_stage       = clutter_backend_egl_native_create_stage;
-  backend_class->create_context     = clutter_backend_egl_native_create_context;
+  backend_class->init_events = clutter_backend_egl_native_init_events;
+  backend_class->create_stage = clutter_backend_egl_native_create_stage;
+  backend_class->create_context = clutter_backend_egl_native_create_context;
 }
 
 static void
-_clutter_backend_egl_native_init (ClutterBackendEglNative *backend_egl_native)
+clutter_backend_egl_native_init (ClutterBackendEglNative *backend_egl_native)
 {
-#ifdef HAVE_TSLIB
   backend_egl_native->event_timer = g_timer_new ();
-#endif
 }
 
+#ifdef CLUTTER_EGL_BACKEND_CEX100
 /**
  * clutter_cex100_set_plane:
  * @plane: FIXME
@@ -248,14 +272,13 @@ _clutter_backend_egl_native_init (ClutterBackendEglNative *backend_egl_native)
 void
 clutter_cex100_set_plane (gdl_plane_id_t plane)
 {
-#ifdef CLUTTER_EGL_BACKEND_CEX100
   g_return_if_fail (plane >= GDL_PLANE_ID_UPP_A && plane <= GDL_PLANE_ID_UPP_E);
 
   gdl_plane = plane;
-  gdl_plane_set = TRUE;
-#endif
 }
+#endif
 
+#ifdef CLUTTER_EGL_BACKEND_CEX100
 /**
  * clutter_cex100_set_plane:
  * @mode: FIXME
@@ -267,11 +290,79 @@ clutter_cex100_set_plane (gdl_plane_id_t plane)
 void
 clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode)
 {
-#ifdef CLUTTER_EGL_BACKEND_CEX100
   g_return_if_fail (mode == CLUTTER_CEX100_DOUBLE_BUFFERING ||
                     mode == CLUTTER_CEX100_TRIPLE_BUFFERING);
 
   gdl_n_buffers = mode;
-  gdl_n_buffers_set = TRUE;
+}
+#endif
+
+/**
+ * clutter_eglx_display:
+ *
+ * Retrieves the EGL display used by Clutter.
+ *
+ * Return value: the EGL display, or 0
+ *
+ * Since: 0.6
+ *
+ * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead.
+ */
+EGLDisplay
+clutter_eglx_display (void)
+{
+  return clutter_egl_get_egl_display ();
+}
+
+/**
+ * clutter_egl_display:
+ *
+ * Retrieves the EGL display used by Clutter.
+ *
+ * Return value: the EGL display used by Clutter, or 0
+ *
+ * Since: 0.6
+ *
+ * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead.
+ */
+EGLDisplay
+clutter_egl_display (void)
+{
+  return clutter_egl_get_egl_display ();
+}
+
+/**
+ * clutter_egl_get_egl_display:
+ *
+ * Retrieves the EGL display used by Clutter, if it supports the
+ * EGL windowing system and if it is running using an EGL backend.
+ *
+ * Return value: the EGL display used by Clutter, or 0
+ *
+ * Since: 1.6
+ */
+EGLDisplay
+clutter_egl_get_egl_display (void)
+{
+  ClutterBackend *backend;
+
+  if (!_clutter_context_is_initialized ())
+    {
+      g_critical ("The Clutter backend has not been initialized yet");
+      return 0;
+    }
+
+  backend = clutter_get_default_backend ();
+
+  if (!CLUTTER_IS_BACKEND_EGL_NATIVE (backend))
+    {
+      g_critical ("The Clutter backend is not an EGL backend");
+      return 0;
+    }
+
+#if COGL_HAS_EGL_SUPPORT
+  return cogl_egl_context_get_egl_display (backend->cogl_context);
+#else
+  return 0;
 #endif
 }

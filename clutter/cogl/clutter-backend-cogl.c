@@ -192,44 +192,16 @@ _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
   gobject_class->constructor = clutter_backend_cogl_constructor;
-  gobject_class->dispose     = clutter_backend_cogl_dispose;
-  gobject_class->finalize    = clutter_backend_cogl_finalize;
+  gobject_class->dispose = clutter_backend_cogl_dispose;
+  gobject_class->finalize = clutter_backend_cogl_finalize;
 
-  backend_class->pre_parse          = clutter_backend_cogl_pre_parse;
-  backend_class->post_parse         = clutter_backend_cogl_post_parse;
-  backend_class->get_features       = clutter_backend_cogl_get_features;
-  backend_class->ensure_context     = clutter_backend_cogl_ensure_context;
+  backend_class->pre_parse = clutter_backend_cogl_pre_parse;
+  backend_class->post_parse = clutter_backend_cogl_post_parse;
+  backend_class->get_features = clutter_backend_cogl_get_features;
+  backend_class->ensure_context = clutter_backend_cogl_ensure_context;
 }
 
 static void
 _clutter_backend_cogl_init (ClutterBackendCogl *backend_cogl)
 {
-
 }
-
-#ifdef COGL_HAS_EGL_SUPPORT
-EGLDisplay
-clutter_eglx_display (void)
-{
-  return clutter_egl_get_egl_display ();
-}
-
-EGLDisplay
-clutter_egl_display (void)
-{
-  return clutter_egl_get_egl_display ();
-}
-
-EGLDisplay
-clutter_egl_get_egl_display (void)
-{
-  if (backend_singleton == NULL)
-    {
-      g_critical ("%s has been called before clutter_init()", G_STRFUNC);
-      return 0;
-    }
-
-  return cogl_egl_context_get_egl_display (backend_singleton->cogl_context);
-}
-#endif
-
