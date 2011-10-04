@@ -135,31 +135,52 @@ do_match (ShellContactSystem  *self,
     {
       const char *term = term_iter->data;
       const char *p;
+      gboolean matched;
+
+      matched = FALSE;
 
       /* Match on alias, name, nickname */
       if (alias != NULL)
 	{
 	  p = strstr (alias, term);
 	  if (p == alias)
-	    have_name_prefix = TRUE;
+            {
+	      have_name_prefix = TRUE;
+              matched = TRUE;
+            }
 	  else if (p != NULL)
-	    have_name_substring = TRUE;
+            {
+	      have_name_substring = TRUE;
+              matched = TRUE;
+            }
 	}
       if (name != NULL)
 	{
 	  p = strstr (name, term);
 	  if (p == name)
-	    have_name_prefix = TRUE;
+            {
+	      have_name_prefix = TRUE;
+              matched = TRUE;
+            }
 	  else if (p != NULL)
-	    have_name_substring = TRUE;
+            {
+	      have_name_substring = TRUE;
+              matched = TRUE;
+            }
 	}
       if (nick != NULL)
 	{
 	  p = strstr (nick, term);
 	  if (p == nick)
-	    have_name_prefix = TRUE;
+            {
+	      have_name_prefix = TRUE;
+              matched = TRUE;
+            }
 	  else if (p != NULL)
-	    have_name_substring = TRUE;
+            {
+	      have_name_substring = TRUE;
+              matched = TRUE;
+            }
 	}
 
       /* Match on one or more IM or email addresses */
@@ -171,9 +192,15 @@ do_match (ShellContactSystem  *self,
 
           p = strstr (addr, term);
           if (p == addr)
-            have_addr_prefix = TRUE;
+            {
+              have_addr_prefix = TRUE;
+              matched = TRUE;
+            }
           else if (p != NULL)
-            have_addr_substring = TRUE;
+            {
+              have_addr_substring = TRUE;
+              matched = TRUE;
+            }
         }
 
       g_object_unref (addrs_iter);
@@ -184,12 +211,27 @@ do_match (ShellContactSystem  *self,
 
           p = strstr (addr, term);
           if (p == addr)
-            have_addr_prefix = TRUE;
+            {
+              have_addr_prefix = TRUE;
+              matched = TRUE;
+            }
           else if (p != NULL)
-            have_addr_substring = TRUE;
+            {
+              have_addr_substring = TRUE;
+              matched = TRUE;
+            }
         }
 
       g_object_unref (addrs_iter);
+
+      if (!matched)
+        {
+          have_name_prefix = FALSE;
+          have_name_substring = FALSE;
+          have_addr_prefix = FALSE;
+          have_addr_substring = FALSE;
+          break;
+        }
     }
 
     if (have_name_prefix)
