@@ -111,7 +111,6 @@ source_h =					\
 	$(srcdir)/clutter-path-constraint.h	\
 	$(srcdir)/clutter-path.h		\
 	$(srcdir)/clutter-rectangle.h		\
-	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-settings.h		\
@@ -195,7 +194,6 @@ source_c = \
 	$(srcdir)/clutter-path-constraint.c	\
 	$(srcdir)/clutter-path.c		\
 	$(srcdir)/clutter-rectangle.c 		\
-	$(srcdir)/clutter-score.c 		\
 	$(srcdir)/clutter-script.c		\
 	$(srcdir)/clutter-script-parser.c	\
 	$(srcdir)/clutter-scriptable.c		\
@@ -254,12 +252,14 @@ source_c_priv = \
 deprecated_h = \
 	$(srcdir)/deprecated/clutter-frame-source.h	\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 	\
+	$(srcdir)/deprecated/clutter-score.h 		\
 	$(NULL)
 
 # deprecated source code
 deprecated_c = \
 	$(srcdir)/deprecated/clutter-frame-source.c	\
 	$(srcdir)/deprecated/clutter-timeout-pool.c	\
+	$(srcdir)/deprecated/clutter-score.c 		\
 	$(NULL)
 
 # deprecated private headers; these should not be installed

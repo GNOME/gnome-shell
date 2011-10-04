@@ -28,8 +28,6 @@
 
 #define __CLUTTER_H_INSIDE__
 
-#include "clutter-deprecated.h"
-
 #include "clutter-config.h"
 
 #include "clutter-action.h"
@@ -89,7 +87,6 @@
 #include "clutter-path-constraint.h"
 #include "clutter-path.h"
 #include "clutter-rectangle.h"
-#include "clutter-score.h"
 #include "clutter-scriptable.h"
 #include "clutter-script.h"
 #include "clutter-settings.h"
@@ -112,6 +109,10 @@
 #include "clutter-version.h"
 
 #include "clutter-enum-types.h"
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
+#include "clutter-deprecated.h"
+#endif
 
 #undef __CLUTTER_H_INSIDE__
 
