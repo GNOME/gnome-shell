@@ -114,7 +114,6 @@ source_h =					\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-settings.h		\
-	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-shader-effect.h	\
 	$(srcdir)/clutter-shader-types.h	\
 	$(srcdir)/clutter-swipe-action.h	\
@@ -198,7 +197,6 @@ source_c = \
 	$(srcdir)/clutter-script-parser.c	\
 	$(srcdir)/clutter-scriptable.c		\
 	$(srcdir)/clutter-settings.c		\
-	$(srcdir)/clutter-shader.c		\
 	$(srcdir)/clutter-shader-effect.c	\
 	$(srcdir)/clutter-shader-types.c	\
 	$(srcdir)/clutter-swipe-action.c	\
@@ -253,6 +251,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-frame-source.h	\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 	\
 	$(srcdir)/deprecated/clutter-score.h 		\
+	$(srcdir)/deprecated/clutter-shader.h 		\
 	$(NULL)
 
 # deprecated source code
@@ -260,6 +259,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-frame-source.c	\
 	$(srcdir)/deprecated/clutter-timeout-pool.c	\
 	$(srcdir)/deprecated/clutter-score.c 		\
+	$(srcdir)/deprecated/clutter-shader.c 		\
 	$(NULL)
 
 # deprecated private headers; these should not be installed
