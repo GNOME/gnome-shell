@@ -1115,6 +1115,7 @@ st_texture_cache_load (StTextureCache       *cache,
  * @cache:
  * @key: A cache key
  * @size: Size in pixels
+ * @policy: Cache policy
  * @request: (out): If no request is outstanding, one will be created and returned here
  * @texture: (out): A new texture, also added to the request
  *
@@ -1128,6 +1129,7 @@ static gboolean
 create_texture_and_ensure_request (StTextureCache        *cache,
                                    const char            *key,
                                    guint                  size,
+                                   StTextureCachePolicy   policy,
                                    AsyncTextureLoadData **request,
                                    ClutterActor         **texture)
 {
@@ -1154,7 +1156,8 @@ create_texture_and_ensure_request (StTextureCache        *cache,
     {
       /* Not cached and no pending request, create it */
       *request = g_new0 (AsyncTextureLoadData, 1);
-      g_hash_table_insert (cache->priv->outstanding_requests, g_strdup (key), *request);
+      if (policy != ST_TEXTURE_CACHE_POLICY_NONE)
+        g_hash_table_insert (cache->priv->outstanding_requests, g_strdup (key), *request);
     }
   else
    *request = pending;
@@ -1203,7 +1206,7 @@ load_gicon_with_colors (StTextureCache    *cache,
     }
   g_free (gicon_string);
 
-  if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
+  if (create_texture_and_ensure_request (cache, key, size, policy, &request, &texture))
     {
       g_free (key);
       return texture;
