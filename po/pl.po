@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-04 20:08+0200\n"
-"PO-Revision-Date: 2011-10-04 20:09+0200\n"
+"POT-Creation-Date: 2011-10-04 23:24+0200\n"
+"PO-Revision-Date: 2011-10-04 23:25+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -609,7 +609,11 @@ msgstr "Zainstaluj"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Pobrać i zainstalować \"%s\" z witryny extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:529 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:308
+msgid "tray"
+msgstr "Ikona"
+
+#: ../js/ui/keyboard.js:530 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Klawiatura"
 
