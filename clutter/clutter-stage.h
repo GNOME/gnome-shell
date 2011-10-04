@@ -72,22 +72,6 @@ G_BEGIN_DECLS
 
 #endif /* !CLUTTER_DISABLE_DEPRECATED */
 
-/**
- * ClutterPickMode:
- * @CLUTTER_PICK_NONE: Do not paint any actor
- * @CLUTTER_PICK_REACTIVE: Paint only the reactive actors
- * @CLUTTER_PICK_ALL: Paint all actors
- *
- * Controls the paint cycle of the scene graph when in pick mode
- *
- * Since: 1.0
- */
-typedef enum {
-  CLUTTER_PICK_NONE = 0,
-  CLUTTER_PICK_REACTIVE,
-  CLUTTER_PICK_ALL
-} ClutterPickMode;
-
 typedef struct _ClutterPerspective  ClutterPerspective;
 typedef struct _ClutterFog          ClutterFog;
 

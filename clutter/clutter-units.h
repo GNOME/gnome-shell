@@ -38,28 +38,6 @@
 G_BEGIN_DECLS
 
 /**
- * ClutterUnitType:
- * @CLUTTER_UNIT_PIXEL: Unit expressed in pixels (with subpixel precision)
- * @CLUTTER_UNIT_EM: Unit expressed in em
- * @CLUTTER_UNIT_MM: Unit expressed in millimeters
- * @CLUTTER_UNIT_POINT: Unit expressed in points
- * @CLUTTER_UNIT_CM: Unit expressed in centimeters
- *
- * The type of unit in which a value is expressed
- *
- * This enumeration might be expanded at later date
- *
- * Since: 1.0
- */
-typedef enum {
-  CLUTTER_UNIT_PIXEL,
-  CLUTTER_UNIT_EM,
-  CLUTTER_UNIT_MM,
-  CLUTTER_UNIT_POINT,
-  CLUTTER_UNIT_CM
-} ClutterUnitType;
-
-/**
  * ClutterUnits:
  *
  * An opaque structure, to be used to store sizing and positioning
@@ -170,18 +148,18 @@ struct _ClutterParamSpecUnits
 
 GType clutter_param_units_get_type (void) G_GNUC_CONST;
 
-GParamSpec *                 clutter_param_spec_units (const gchar        *name,
-                                                       const gchar        *nick,
-                                                       const gchar        *blurb,
-                                                       ClutterUnitType     default_type,
-                                                       gfloat              minimum,
-                                                       gfloat              maximum,
-                                                       gfloat              default_value,
-                                                       GParamFlags         flags);
+GParamSpec *            clutter_param_spec_units (const gchar        *name,
+                                                  const gchar        *nick,
+                                                  const gchar        *blurb,
+                                                  ClutterUnitType     default_type,
+                                                  gfloat              minimum,
+                                                  gfloat              maximum,
+                                                  gfloat              default_value,
+                                                  GParamFlags         flags);
 
-void                    clutter_value_set_units (GValue             *value,
-                                                 const ClutterUnits *units);
-const ClutterUnits *    clutter_value_get_units (const GValue       *value);
+void                    clutter_value_set_units  (GValue             *value,
+                                                  const ClutterUnits *units);
+const ClutterUnits *    clutter_value_get_units  (const GValue       *value);
 
 G_END_DECLS
 

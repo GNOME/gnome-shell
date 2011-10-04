@@ -45,31 +45,6 @@ typedef struct _ClutterBinLayoutPrivate         ClutterBinLayoutPrivate;
 typedef struct _ClutterBinLayoutClass           ClutterBinLayoutClass;
 
 /**
- * ClutterBinAlignment:
- * @CLUTTER_BIN_ALIGNMENT_FIXED: Fixed position alignment; the
- *   #ClutterBinLayout will honour the fixed position provided
- *   by the actors themselves when allocating them
- * @CLUTTER_BIN_ALIGNMENT_FILL: Fill the allocation size
- * @CLUTTER_BIN_ALIGNMENT_START: Position the actors at the top
- *   or left side of the container, depending on the axis
- * @CLUTTER_BIN_ALIGNMENT_END: Position the actors at the bottom
- *   or right side of the container, depending on the axis
- * @CLUTTER_BIN_ALIGNMENT_CENTER: Position the actors at the
- *   center of the container, depending on the axis
- *
- * The alignment policies available on each axis for #ClutterBinLayout
- *
- * Since: 1.2
- */
-typedef enum {
-  CLUTTER_BIN_ALIGNMENT_FIXED,
-  CLUTTER_BIN_ALIGNMENT_FILL,
-  CLUTTER_BIN_ALIGNMENT_START,
-  CLUTTER_BIN_ALIGNMENT_END,
-  CLUTTER_BIN_ALIGNMENT_CENTER
-} ClutterBinAlignment;
-
-/**
  * ClutterBinLayout:
  *
  * The #ClutterBinLayout structure contains only private data

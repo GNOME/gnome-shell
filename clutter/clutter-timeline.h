@@ -28,7 +28,7 @@
 #ifndef __CLUTTER_TIMELINE_H__
 #define __CLUTTER_TIMELINE_H__
 
-#include <glib-object.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -38,20 +38,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_TIMELINE(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_TIMELINE))
 #define CLUTTER_IS_TIMELINE_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TIMELINE))
 #define CLUTTER_TIMELINE_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TIMELINE, ClutterTimelineClass))
-
-/**
- * ClutterTimelineDirection:
- * @CLUTTER_TIMELINE_FORWARD: forward direction for a timeline
- * @CLUTTER_TIMELINE_BACKWARD: backward direction for a timeline
- *
- * The direction of a #ClutterTimeline
- *
- * Since: 0.6
- */
-typedef enum {
-  CLUTTER_TIMELINE_FORWARD,
-  CLUTTER_TIMELINE_BACKWARD
-} ClutterTimelineDirection;
 
 typedef struct _ClutterTimeline        ClutterTimeline;
 typedef struct _ClutterTimelineClass   ClutterTimelineClass; 

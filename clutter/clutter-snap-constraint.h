@@ -48,24 +48,6 @@ G_BEGIN_DECLS
 typedef struct _ClutterSnapConstraint           ClutterSnapConstraint;
 typedef struct _ClutterSnapConstraintClass      ClutterSnapConstraintClass;
 
-/**
- * ClutterSnapEdge:
- * @CLUTTER_SNAP_EDGE_TOP: the top edge
- * @CLUTTER_SNAP_EDGE_RIGHT: the right edge
- * @CLUTTER_SNAP_EDGE_BOTTOM: the bottom edge
- * @CLUTTER_SNAP_EDGE_LEFT: the left edge
- *
- * The edge to snap
- *
- * Since: 1.6
- */
-typedef enum {
-  CLUTTER_SNAP_EDGE_TOP,
-  CLUTTER_SNAP_EDGE_RIGHT,
-  CLUTTER_SNAP_EDGE_BOTTOM,
-  CLUTTER_SNAP_EDGE_LEFT
-} ClutterSnapEdge;
-
 GType clutter_snap_constraint_get_type (void) G_GNUC_CONST;
 
 ClutterConstraint *     clutter_snap_constraint_new             (ClutterActor          *source,

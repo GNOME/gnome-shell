@@ -93,66 +93,6 @@ typedef void (*ClutterCallback) (ClutterActor *actor,
 #define CLUTTER_CALLBACK(f)        ((ClutterCallback) (f))
 
 /**
- * ClutterActorFlags:
- * @CLUTTER_ACTOR_MAPPED: the actor will be painted (is visible, and inside
- *   a toplevel, and all parents visible)
- * @CLUTTER_ACTOR_REALIZED: the resources associated to the actor have been
- *   allocated
- * @CLUTTER_ACTOR_REACTIVE: the actor 'reacts' to mouse events emmitting event
- *   signals
- * @CLUTTER_ACTOR_VISIBLE: the actor has been shown by the application program
- * @CLUTTER_ACTOR_NO_LAYOUT: the actor provides an explicit layout management
- *   policy for its children; this flag will prevent Clutter from automatic
- *   queueing of relayout and will defer all layouting to the actor itself
- *
- * Flags used to signal the state of an actor.
- */
-typedef enum
-{
-  CLUTTER_ACTOR_MAPPED    = 1 << 1,
-  CLUTTER_ACTOR_REALIZED  = 1 << 2,
-  CLUTTER_ACTOR_REACTIVE  = 1 << 3,
-  CLUTTER_ACTOR_VISIBLE   = 1 << 4,
-  CLUTTER_ACTOR_NO_LAYOUT = 1 << 5
-} ClutterActorFlags;
-
-/**
- * ClutterOffscreenRedirect:
- * @CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY: Only redirect
- *   the actor if it is semi-transparent and its has_overlaps()
- *   virtual returns %TRUE. This is the default.
- * @CLUTTER_OFFSCREEN_REDIRECT_ALWAYS: Always redirect the actor to an
- *   offscreen buffer even if it is fully opaque.
- *
- * Possible flags to pass to clutter_actor_set_offscreen_redirect().
- *
- * Since: 1.8
- */
-typedef enum
-{
-  CLUTTER_OFFSCREEN_REDIRECT_AUTOMATIC_FOR_OPACITY = 1<<0,
-  CLUTTER_OFFSCREEN_REDIRECT_ALWAYS = 1<<1
-} ClutterOffscreenRedirect;
-
-/**
- * ClutterAllocationFlags:
- * @CLUTTER_ALLOCATION_NONE: No flag set
- * @CLUTTER_ABSOLUTE_ORIGIN_CHANGED: Whether the absolute origin of the
- *   actor has changed; this implies that any ancestor of the actor has
- *   been moved
- *
- * Flags passed to the #ClutterActor::allocate() virtual function and
- * to the clutter_actor_allocate() function
- *
- * Since: 1.0
- */
-typedef enum
-{
-  CLUTTER_ALLOCATION_NONE         = 0,
-  CLUTTER_ABSOLUTE_ORIGIN_CHANGED = 1 << 1
-} ClutterAllocationFlags;
-
-/**
  * ClutterActor:
  * @flags: #ClutterActorFlags
  *

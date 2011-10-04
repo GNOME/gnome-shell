@@ -46,24 +46,6 @@ typedef struct _ClutterDragActionPrivate        ClutterDragActionPrivate;
 typedef struct _ClutterDragActionClass          ClutterDragActionClass;
 
 /**
- * ClutterDragAxis:
- * @CLUTTER_DRAG_AXIS_NONE: No constraint
- * @CLUTTER_DRAG_X_AXIS: Set a constraint on the X axis
- * @CLUTTER_DRAG_Y_AXIS: Set a constraint on the Y axis
- *
- * The axis of the constraint that should be applied on the
- * dragging action
- *
- * Since: 1.4
- */
-typedef enum { /*< prefix=CLUTTER_DRAG >*/
-  CLUTTER_DRAG_AXIS_NONE = 0,
-
-  CLUTTER_DRAG_X_AXIS,
-  CLUTTER_DRAG_Y_AXIS
-} ClutterDragAxis;
-
-/**
  * ClutterDragAction:
  *
  * The <structname>ClutterDragAction</structname> structure contains only

@@ -48,21 +48,6 @@ G_BEGIN_DECLS
 typedef struct _ClutterAlignConstraint          ClutterAlignConstraint;
 typedef struct _ClutterAlignConstraintClass     ClutterAlignConstraintClass;
 
-/**
- * ClutterAlignAxis:
- * @CLUTTER_ALIGN_X_AXIS: Maintain the alignment on the X axis
- * @CLUTTER_ALIGN_Y_AXIS: Maintain the alignment on the Y axis
- *
- * Specifies the axis on which #ClutterAlignConstraint should maintain
- * the alignment
- *
- * Since: 1.4
- */
-typedef enum { /*< prefix=CLUTTER_ALIGN >*/
-  CLUTTER_ALIGN_X_AXIS,
-  CLUTTER_ALIGN_Y_AXIS
-} ClutterAlignAxis;
-
 GType clutter_align_constraint_get_type (void) G_GNUC_CONST;
 
 ClutterConstraint *clutter_align_constraint_new            (ClutterActor           *source,

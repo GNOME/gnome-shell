@@ -29,6 +29,7 @@
 #define __CLUTTER_H_INSIDE__
 
 #include "clutter-config.h"
+#include "clutter-types.h"
 
 #include "clutter-action.h"
 #include "clutter-actor.h"
@@ -60,6 +61,7 @@
 #include "clutter-drag-action.h"
 #include "clutter-drop-action.h"
 #include "clutter-effect.h"
+#include "clutter-enums.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-fixed-layout.h"
@@ -95,7 +97,6 @@
 #include "clutter-texture.h"
 #include "clutter-text.h"
 #include "clutter-timeline.h"
-#include "clutter-types.h"
 #include "clutter-units.h"
 #include "clutter-util.h"
 #include "clutter-version.h"

@@ -82,6 +82,7 @@ source_h =					\
 	$(srcdir)/clutter-drag-action.h		\
 	$(srcdir)/clutter-drop-action.h		\
 	$(srcdir)/clutter-effect.h		\
+	$(srcdir)/clutter-enums.h		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed-layout.h	\

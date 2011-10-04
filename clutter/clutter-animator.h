@@ -58,20 +58,6 @@ typedef struct _ClutterAnimatorPrivate ClutterAnimatorPrivate;
 typedef struct _ClutterAnimatorKey     ClutterAnimatorKey;
 
 /**
- * ClutterInterpolation:
- * @CLUTTER_INTERPOLATION_LINEAR: linear interpolation
- * @CLUTTER_INTERPOLATION_CUBIC: cubic interpolation
- *
- * The mode of interpolation between key frames
- *
- * Since: 1.2
- */
-typedef enum {
-  CLUTTER_INTERPOLATION_LINEAR,
-  CLUTTER_INTERPOLATION_CUBIC
-} ClutterInterpolation;
-
-/**
  * ClutterAnimator:
  *
  * The #ClutterAnimator structure contains only private data and

@@ -28,9 +28,8 @@
 #ifndef __CLUTTER_EVENT_H__
 #define __CLUTTER_EVENT_H__
 
-#include <glib-object.h>
-#include <clutter/clutter-input-device.h>
 #include <clutter/clutter-types.h>
+#include <clutter/clutter-input-device.h>
 
 #define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
 
@@ -53,90 +52,6 @@
 #define CLUTTER_CURRENT_TIME    0L
 
 G_BEGIN_DECLS
-
-/**
- * ClutterEventFlags:
- * @CLUTTER_EVENT_NONE: No flag set
- * @CLUTTER_EVENT_FLAG_SYNTHETIC: Synthetic event
- *
- * Flags for the #ClutterEvent
- *
- * Since: 0.6
- */
-typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
-  CLUTTER_EVENT_NONE           = 0,
-  CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0
-} ClutterEventFlags;
-
-/**
- * ClutterEventType:
- * @CLUTTER_NOTHING: Empty event
- * @CLUTTER_KEY_PRESS: Key press event
- * @CLUTTER_KEY_RELEASE: Key release event
- * @CLUTTER_MOTION: Pointer motion event
- * @CLUTTER_ENTER: Actor enter event
- * @CLUTTER_LEAVE: Actor leave event
- * @CLUTTER_BUTTON_PRESS: Pointer button press event
- * @CLUTTER_BUTTON_RELEASE: Pointer button release event
- * @CLUTTER_SCROLL: Pointer scroll event
- * @CLUTTER_STAGE_STATE: Stage stage change event
- * @CLUTTER_DESTROY_NOTIFY: Destroy notification event
- * @CLUTTER_CLIENT_MESSAGE: Client message event
- * @CLUTTER_DELETE: Stage delete event
- *
- * Types of events.
- *
- * Since: 0.4
- */
-typedef enum { /*< prefix=CLUTTER >*/
-  CLUTTER_NOTHING = 0,
-  CLUTTER_KEY_PRESS,
-  CLUTTER_KEY_RELEASE,
-  CLUTTER_MOTION,
-  CLUTTER_ENTER,
-  CLUTTER_LEAVE,
-  CLUTTER_BUTTON_PRESS,
-  CLUTTER_BUTTON_RELEASE,
-  CLUTTER_SCROLL,
-  CLUTTER_STAGE_STATE,
-  CLUTTER_DESTROY_NOTIFY,
-  CLUTTER_CLIENT_MESSAGE,
-  CLUTTER_DELETE
-} ClutterEventType;
-
-/**
- * ClutterScrollDirection:
- * @CLUTTER_SCROLL_UP: Scroll up
- * @CLUTTER_SCROLL_DOWN: Scroll down
- * @CLUTTER_SCROLL_LEFT: Scroll left
- * @CLUTTER_SCROLL_RIGHT: Scroll right
- *
- * Direction of a pointer scroll event.
- *
- * Since: 0.4
- */
-typedef enum { /*< prefix=CLUTTER_SCROLL >*/
-  CLUTTER_SCROLL_UP,
-  CLUTTER_SCROLL_DOWN,
-  CLUTTER_SCROLL_LEFT,
-  CLUTTER_SCROLL_RIGHT
-} ClutterScrollDirection;
-
-/**
- * ClutterStageState:
- * @CLUTTER_STAGE_STATE_FULLSCREEN: Fullscreen mask
- * @CLUTTER_STAGE_STATE_OFFSCREEN: Offscreen mask
- * @CLUTTER_STAGE_STATE_ACTIVATED: Activated mask
- *
- * Stage state masks
- *
- * Since: 0.4
- */
-typedef enum {
-  CLUTTER_STAGE_STATE_FULLSCREEN       = (1<<1),
-  CLUTTER_STAGE_STATE_OFFSCREEN        = (1<<2),
-  CLUTTER_STAGE_STATE_ACTIVATED        = (1<<3)
-} ClutterStageState;
 
 typedef struct _ClutterAnyEvent         ClutterAnyEvent;
 typedef struct _ClutterButtonEvent      ClutterButtonEvent;
