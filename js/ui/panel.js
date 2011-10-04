@@ -6,6 +6,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -944,6 +945,7 @@ const Panel = new Lang.Class({
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
         /* Button on the left side of the panel. */
         if (global.session_type == Shell.SessionType.USER) {
@@ -1056,6 +1058,45 @@ const Panel = new Lang.Class({
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
         this._rightCorner.actor.allocate(childBox, flags);
+    },
+
+    _onButtonPress: function(actor, event) {
+        if (event.get_source() != actor)
+            return false;
+
+        let button = event.get_button();
+        if (button != 1)
+            return false;
+
+        let focusWindow = global.display.focus_window;
+        if (!focusWindow)
+            return false;
+
+        let dragWindow = focusWindow.is_attached_dialog() ? focusWindow.get_transient_for()
+                                                          : focusWindow;
+        if (!dragWindow)
+            return false;
+
+        let rect = dragWindow.get_outer_rect();
+        let [stageX, stageY] = event.get_coords();
+
+        let allowDrag = dragWindow.maximized_vertically &&
+                        stageX > rect.x && stageX < rect.x + rect.width;
+
+        if (!allowDrag)
+            return false;
+
+        global.display.begin_grab_op(global.screen,
+                                     dragWindow,
+                                     Meta.GrabOp.MOVING,
+                                     false, /* pointer grab */
+                                     true, /* frame action */
+                                     button,
+                                     event.get_state(),
+                                     event.get_time(),
+                                     stageX, stageY);
+
+        return true;
     },
 
     startStatusArea: function() {
