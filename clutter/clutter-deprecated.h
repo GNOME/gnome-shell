@@ -4,6 +4,7 @@
 #define __CLUTTER_DEPRECATED_H_INSIDE__
 
 #include "deprecated/clutter-frame-source.h"
+#include "deprecated/clutter-timeout-pool.h"
 
 #undef __CLUTTER_DEPRECATED_H_INSIDE__
 

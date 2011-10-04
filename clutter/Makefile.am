@@ -128,7 +128,6 @@ source_h =					\
 	$(srcdir)/clutter-texture.h 		\
         $(srcdir)/clutter-text.h                \
 	$(srcdir)/clutter-timeline.h 		\
-	$(srcdir)/clutter-timeout-pool.h 	\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
@@ -214,7 +213,6 @@ source_c = \
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c                \
 	$(srcdir)/clutter-timeline.c 		\
-	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
 	$(srcdir)/clutter-paint-volume.c 	\
@@ -243,7 +241,6 @@ source_h_priv = \
 	$(srcdir)/clutter-settings-private.h		\
 	$(srcdir)/clutter-stage-manager-private.h	\
 	$(srcdir)/clutter-stage-private.h		\
-	$(srcdir)/clutter-timeout-interval.h    	\
 	$(NULL)
 
 # private source code; these should not be introspected
@@ -251,25 +248,28 @@ source_c_priv = \
 	$(srcdir)/clutter-event-translator.c	\
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-profile.c		\
-	$(srcdir)/clutter-timeout-interval.c    \
 	$(NULL)
 
 # deprecated installed headers
 deprecated_h = \
 	$(srcdir)/deprecated/clutter-frame-source.h	\
+	$(srcdir)/deprecated/clutter-timeout-pool.h 	\
 	$(NULL)
 
 # deprecated source code
 deprecated_c = \
 	$(srcdir)/deprecated/clutter-frame-source.c	\
+	$(srcdir)/deprecated/clutter-timeout-pool.c	\
 	$(NULL)
 
 # deprecated private headers; these should not be installed
 deprecated_h_priv = \
+	$(srcdir)/deprecated/clutter-timeout-interval.h	\
 	$(NULL)
 
 # deprecated private source code; these should not be introspected
 deprecated_c_priv = \
+	$(srcdir)/deprecated/clutter-timeout-interval.c	\
 	$(NULL)
 
 # built sources
