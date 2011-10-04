@@ -38,7 +38,6 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_PAINT_VOLUME       (clutter_paint_volume_get_type ())
 #define CLUTTER_TYPE_VERTEX             (clutter_vertex_get_type ())
 
-/* Forward delarations to avoid header catch 22's */
 typedef struct _ClutterActor            ClutterActor;
 
 typedef struct _ClutterStage            ClutterStage;
@@ -48,16 +47,16 @@ typedef struct _ClutterLayoutMeta       ClutterLayoutMeta;
 typedef struct _ClutterActorMeta        ClutterActorMeta;
 
 typedef struct _ClutterAlpha            ClutterAlpha;
+typedef struct _ClutterAnimatable       ClutterAnimatable; /* dummy */
 typedef struct _ClutterAnimator         ClutterAnimator;
-typedef struct _ClutterPath             ClutterPath;
+typedef struct _ClutterState            ClutterState;
+typedef struct _ClutterTimeline         ClutterTimeline;
 
 typedef struct _ClutterAction           ClutterAction;
 typedef struct _ClutterConstraint       ClutterConstraint;
 typedef struct _ClutterEffect           ClutterEffect;
 
-typedef struct _ClutterColor            ClutterColor;
-
-typedef union _ClutterEvent             ClutterEvent;
+typedef struct _ClutterPath             ClutterPath;
 
 #if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 typedef struct _ClutterBehaviour        ClutterBehaviour;
@@ -66,9 +65,12 @@ typedef struct _ClutterShader           ClutterShader;
 #endif /* DISABLE_DEPRECATED */
 
 typedef struct _ClutterActorBox         ClutterActorBox;
+typedef struct _ClutterColor            ClutterColor;
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
 typedef struct _ClutterVertex           ClutterVertex;
+
+typedef union _ClutterEvent             ClutterEvent;
 
 /**
  * ClutterPaintVolume:

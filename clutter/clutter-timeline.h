@@ -39,7 +39,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_TIMELINE_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TIMELINE))
 #define CLUTTER_TIMELINE_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TIMELINE, ClutterTimelineClass))
 
-typedef struct _ClutterTimeline        ClutterTimeline;
 typedef struct _ClutterTimelineClass   ClutterTimelineClass; 
 typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
 

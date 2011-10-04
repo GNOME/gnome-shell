@@ -25,7 +25,6 @@
 #define __CLUTTER_STATE_H__
 
 #include <clutter/clutter-types.h>
-#include <clutter/clutter-timeline.h>
 
 G_BEGIN_DECLS
 
@@ -37,7 +36,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_STATE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_STATE))
 #define CLUTTER_STATE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_STATE, ClutterStateClass))
 
-typedef struct _ClutterState        ClutterState;
 typedef struct _ClutterStatePrivate ClutterStatePrivate;
 typedef struct _ClutterStateClass   ClutterStateClass;
 
