@@ -39,7 +39,6 @@
 #include "clutter-animation.h"
 #include "clutter-animator.h"
 #include "clutter-backend.h"
-#include "clutter-behaviour.h"
 #include "clutter-bind-constraint.h"
 #include "clutter-binding-pool.h"
 #include "clutter-bin-layout.h"

@@ -60,7 +60,6 @@ source_h =					\
 	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-animator.h		\
 	$(srcdir)/clutter-backend.h		\
-	$(srcdir)/clutter-behaviour.h     	\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
@@ -136,7 +135,6 @@ source_c = \
 	$(srcdir)/clutter-animation.c		\
 	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
-	$(srcdir)/clutter-behaviour.c 		\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
@@ -236,6 +234,7 @@ source_c_priv = \
 
 # deprecated installed headers
 deprecated_h = \
+	$(srcdir)/deprecated/clutter-behaviour.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-ellipse.h	\
 	$(srcdir)/deprecated/clutter-behaviour-opacity.h 	\
@@ -250,6 +249,7 @@ deprecated_h = \
 
 # deprecated source code
 deprecated_c = \
+	$(srcdir)/deprecated/clutter-behaviour.c 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.c		\
 	$(srcdir)/deprecated/clutter-behaviour-ellipse.c	\
 	$(srcdir)/deprecated/clutter-behaviour-opacity.c	\
