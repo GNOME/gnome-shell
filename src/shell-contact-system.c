@@ -188,7 +188,8 @@ do_match (ShellContactSystem  *self,
 
       while (gee_iterator_next (addrs_iter))
         {
-          const gchar *addr = gee_iterator_get (addrs_iter);
+          FolksImFieldDetails *field = gee_iterator_get (addrs_iter);
+          const gchar *addr = folks_abstract_field_details_get_value ((FolksAbstractFieldDetails*)field);
 
           p = strstr (addr, term);
           if (p == addr)
@@ -201,13 +202,16 @@ do_match (ShellContactSystem  *self,
               have_addr_substring = TRUE;
               matched = TRUE;
             }
+
+          g_object_unref (field);
         }
 
       g_object_unref (addrs_iter);
       addrs_iter = gee_iterable_iterator (GEE_ITERABLE (email_addrs));
       while (gee_iterator_next (addrs_iter))
         {
-          const gchar *addr = gee_iterator_get (addrs_iter);
+          FolksEmailFieldDetails *field = gee_iterator_get (addrs_iter);
+          const gchar *addr = folks_abstract_field_details_get_value ((FolksAbstractFieldDetails*)field);
 
           p = strstr (addr, term);
           if (p == addr)
@@ -220,6 +224,8 @@ do_match (ShellContactSystem  *self,
               have_addr_substring = TRUE;
               matched = TRUE;
             }
+
+          g_object_unref (field);
         }
 
       g_object_unref (addrs_iter);
