@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-01 16:00+0200\n"
-"PO-Revision-Date: 2011-10-01 16:03+0200\n"
+"POT-Creation-Date: 2011-10-04 23:29+0200\n"
+"PO-Revision-Date: 2011-10-04 23:30+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: català; valencià <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -604,7 +604,11 @@ msgstr "Instal·la"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Voleu baixar i instal·lar «%s» de extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:529 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:308
+msgid "tray"
+msgstr "safata"
+
+#: ../js/ui/keyboard.js:530 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Teclat"
 
@@ -612,47 +616,33 @@ msgstr "Teclat"
 msgid "No extensions installed"
 msgstr "No hi ha cap extensió instal·lada"
 
-#. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:700
-#, c-format
-msgid "%s has not emitted any errors."
-msgstr "%s no ha emès cap error."
-
-#: ../js/ui/lookingGlass.js:706
-msgid "Hide Errors"
-msgstr "Amaga els errors"
-
-#: ../js/ui/lookingGlass.js:710 ../js/ui/lookingGlass.js:760
-msgid "Show Errors"
-msgstr "Mostra els errors"
-
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:691
 msgid "Enabled"
 msgstr "Habilitat"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:721 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:693 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Inhabilitat"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:695
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:697
 msgid "Out of date"
 msgstr "Fora d'hora"
 
-#: ../js/ui/lookingGlass.js:727
+#: ../js/ui/lookingGlass.js:699
 msgid "Downloading"
 msgstr "S'està baixant"
 
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "Mostra el codi font"
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "Pàgina web"
 
@@ -1627,6 +1617,15 @@ msgstr "Sistema de fitxers"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "%s has not emitted any errors."
+#~ msgstr "%s no ha emès cap error."
+
+#~ msgid "Hide Errors"
+#~ msgstr "Amaga els errors"
+
+#~ msgid "Show Errors"
+#~ msgstr "Mostra els errors"
 
 #~ msgid "%s has finished starting"
 #~ msgstr "S'ha acabat d'iniciar %s"
