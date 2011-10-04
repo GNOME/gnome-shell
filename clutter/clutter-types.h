@@ -47,19 +47,23 @@ typedef struct _ClutterChildMeta        ClutterChildMeta;
 typedef struct _ClutterLayoutMeta       ClutterLayoutMeta;
 typedef struct _ClutterActorMeta        ClutterActorMeta;
 
+typedef struct _ClutterAlpha            ClutterAlpha;
 typedef struct _ClutterAnimator         ClutterAnimator;
+typedef struct _ClutterPath             ClutterPath;
 
 typedef struct _ClutterAction           ClutterAction;
 typedef struct _ClutterConstraint       ClutterConstraint;
 typedef struct _ClutterEffect           ClutterEffect;
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-typedef struct _ClutterShader           ClutterShader;
-#endif
-
 typedef struct _ClutterColor            ClutterColor;
 
 typedef union _ClutterEvent             ClutterEvent;
+
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
+typedef struct _ClutterBehaviour        ClutterBehaviour;
+
+typedef struct _ClutterShader           ClutterShader;
+#endif /* DISABLE_DEPRECATED */
 
 /**
  * ClutterGravity:

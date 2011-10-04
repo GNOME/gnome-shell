@@ -39,10 +39,10 @@
 #include "config.h"
 #endif
 
-#include "clutter-behaviour-rotate.h"
-
 #include <math.h>
 
+#include "clutter-behaviour.h"
+#include "clutter-behaviour-rotate.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"

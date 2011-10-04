@@ -28,9 +28,8 @@
 #ifndef __CLUTTER_PATH_H__
 #define __CLUTTER_PATH_H__
 
-#include <glib-object.h>
-#include <clutter/clutter-types.h>
 #include <cairo.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -75,7 +74,6 @@ typedef enum {
   CLUTTER_PATH_REL_CURVE_TO = CLUTTER_PATH_CURVE_TO | CLUTTER_PATH_RELATIVE
 } ClutterPathNodeType;
 
-typedef struct _ClutterPath        ClutterPath;
 typedef struct _ClutterPathClass   ClutterPathClass;
 typedef struct _ClutterPathPrivate ClutterPathPrivate;
 typedef struct _ClutterPathNode    ClutterPathNode;

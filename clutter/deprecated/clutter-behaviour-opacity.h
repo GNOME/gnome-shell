@@ -30,8 +30,7 @@
 #ifndef __CLUTTER_BEHAVIOUR_OPACITY_H__
 #define __CLUTTER_BEHAVIOUR_OPACITY_H__
 
-#include <clutter/clutter-alpha.h>
-#include <clutter/clutter-behaviour.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 

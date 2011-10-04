@@ -27,8 +27,8 @@
 #include "config.h"
 #endif
 
+#include "clutter-behaviour.h"
 #include "clutter-behaviour-depth.h"
-
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-debug.h"
