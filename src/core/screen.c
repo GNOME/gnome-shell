@@ -3490,6 +3490,14 @@ meta_screen_get_xroot (MetaScreen *screen)
   return screen->xroot;
 }
 
+/**
+ * meta_screen_get_size:
+ * @screen: A #MetaScreen
+ * @width: (out): The width of the screen
+ * @height: (out): The height of the screen
+ *
+ * Retrieve the size of the screen.
+ */
 void 
 meta_screen_get_size (MetaScreen *screen,
                       int        *width,

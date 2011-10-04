@@ -772,7 +772,7 @@ meta_shaped_texture_set_overlay_path (MetaShapedTexture *stex,
 
 /**
  * meta_shaped_texture_set_clip_region:
- * @frame: a #TidyTextureframe
+ * @frame: a #MetaShapedTexture
  * @clip_region: (transfer full): the region of the texture that
  *   is visible and should be painted. OWNERSHIP IS ASSUMED BY
  *   THE FUNCTION (for efficiency to avoid a copy.)

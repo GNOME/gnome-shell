@@ -111,8 +111,8 @@ texture_is_rectangle (CoglHandle texture)
 #endif /* GL_TEXTURE_RECTANGLE_ARB */
 
 /**
- * meta_texture_tower_update_area:
- * @tower: a MetaTextureTower
+ * meta_texture_tower_set_base_texture:
+ * @tower: a #MetaTextureTower
  * @texture: the new texture used as a base for scaled down versions
  *
  * Sets the base texture that is the scaled texture that the
@@ -175,7 +175,7 @@ meta_texture_tower_set_base_texture (MetaTextureTower *tower,
 
 /**
  * meta_texture_tower_update_area:
- * @tower: a MetaTextureTower
+ * @tower: a #MetaTextureTower
  * @x: X coordinate of upper left of rectangle that changed
  * @y: Y coordinate of upper left of rectangle that changed
  * @width: width of rectangle that changed
@@ -579,7 +579,7 @@ texture_tower_revalidate (MetaTextureTower *tower,
 
 /**
  * meta_texture_tower_get_paint_texture:
- * @tower: a MetaTextureTower
+ * @tower: a #MetaTextureTower
  *
  * Gets the texture from the tower that best matches the current
  * rendering scale. (On the assumption here the texture is going to
