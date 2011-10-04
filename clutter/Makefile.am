@@ -61,12 +61,6 @@ source_h =					\
 	$(srcdir)/clutter-animator.h		\
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
-	$(srcdir)/clutter-behaviour-depth.h 	\
-	$(srcdir)/clutter-behaviour-ellipse.h 	\
-	$(srcdir)/clutter-behaviour-opacity.h 	\
-	$(srcdir)/clutter-behaviour-path.h 	\
-	$(srcdir)/clutter-behaviour-rotate.h 	\
-	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
@@ -143,12 +137,6 @@ source_c = \
 	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
 	$(srcdir)/clutter-behaviour.c 		\
-	$(srcdir)/clutter-behaviour-depth.c	\
-	$(srcdir)/clutter-behaviour-ellipse.c	\
-	$(srcdir)/clutter-behaviour-opacity.c	\
-	$(srcdir)/clutter-behaviour-path.c	\
-	$(srcdir)/clutter-behaviour-rotate.c	\
-	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
@@ -248,18 +236,30 @@ source_c_priv = \
 
 # deprecated installed headers
 deprecated_h = \
-	$(srcdir)/deprecated/clutter-frame-source.h	\
-	$(srcdir)/deprecated/clutter-timeout-pool.h 	\
-	$(srcdir)/deprecated/clutter-score.h 		\
-	$(srcdir)/deprecated/clutter-shader.h 		\
+	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\
+	$(srcdir)/deprecated/clutter-behaviour-ellipse.h	\
+	$(srcdir)/deprecated/clutter-behaviour-opacity.h 	\
+	$(srcdir)/deprecated/clutter-behaviour-path.h 		\
+	$(srcdir)/deprecated/clutter-behaviour-rotate.h 	\
+	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
+	$(srcdir)/deprecated/clutter-frame-source.h		\
+	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
+	$(srcdir)/deprecated/clutter-score.h 			\
+	$(srcdir)/deprecated/clutter-shader.h 			\
 	$(NULL)
 
 # deprecated source code
 deprecated_c = \
-	$(srcdir)/deprecated/clutter-frame-source.c	\
-	$(srcdir)/deprecated/clutter-timeout-pool.c	\
-	$(srcdir)/deprecated/clutter-score.c 		\
-	$(srcdir)/deprecated/clutter-shader.c 		\
+	$(srcdir)/deprecated/clutter-behaviour-depth.c		\
+	$(srcdir)/deprecated/clutter-behaviour-ellipse.c	\
+	$(srcdir)/deprecated/clutter-behaviour-opacity.c	\
+	$(srcdir)/deprecated/clutter-behaviour-path.c		\
+	$(srcdir)/deprecated/clutter-behaviour-rotate.c		\
+	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
+	$(srcdir)/deprecated/clutter-frame-source.c		\
+	$(srcdir)/deprecated/clutter-timeout-pool.c		\
+	$(srcdir)/deprecated/clutter-score.c 			\
+	$(srcdir)/deprecated/clutter-shader.c 			\
 	$(NULL)
 
 # deprecated private headers; these should not be installed

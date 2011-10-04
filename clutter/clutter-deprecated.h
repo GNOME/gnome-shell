@@ -3,6 +3,12 @@
 
 #define __CLUTTER_DEPRECATED_H_INSIDE__
 
+#include "deprecated/clutter-behaviour-depth.h"
+#include "deprecated/clutter-behaviour-ellipse.h"
+#include "deprecated/clutter-behaviour-opacity.h"
+#include "deprecated/clutter-behaviour-path.h"
+#include "deprecated/clutter-behaviour-rotate.h"
+#include "deprecated/clutter-behaviour-scale.h"
 #include "deprecated/clutter-frame-source.h"
 #include "deprecated/clutter-timeout-pool.h"
 #include "deprecated/clutter-score.h"
