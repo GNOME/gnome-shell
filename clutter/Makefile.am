@@ -16,8 +16,8 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter				\
 	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS)	\
 	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS_BASE)	\
+	-I$(top_srcdir)/clutter/deprecated		\
 	-I$(top_srcdir)/clutter/cally			\
-	-I$(top_srcdir)/clutter/evdev			\
 	-I$(top_builddir)				\
 	-I$(top_builddir)/clutter			\
 	$(NULL)
@@ -44,6 +44,7 @@ INTROSPECTION_GIRS =
 # the base include path for headers
 clutter_base_includedir = $(includedir)/clutter-$(CLUTTER_API_VERSION)
 clutter_includedir = $(clutter_base_includedir)/clutter
+clutter_deprecateddir = $(clutter_base_includedir)/clutter/deprecated
 
 # pkg-config files
 pc_files =
@@ -93,8 +94,7 @@ source_h =					\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-fixed-layout.h	\
 	$(srcdir)/clutter-flow-layout.h		\
-	$(srcdir)/clutter-frame-source.h        \
-	$(srcdir)/clutter-gesture-action.h 		\
+	$(srcdir)/clutter-gesture-action.h 	\
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
@@ -179,8 +179,7 @@ source_c = \
 	$(srcdir)/clutter-fixed-layout.c	\
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
-	$(srcdir)/clutter-frame-source.c	\
-	$(srcdir)/clutter-gesture-action.c 		\
+	$(srcdir)/clutter-gesture-action.c 	\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
@@ -253,6 +252,24 @@ source_c_priv = \
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-profile.c		\
 	$(srcdir)/clutter-timeout-interval.c    \
+	$(NULL)
+
+# deprecated installed headers
+deprecated_h = \
+	$(srcdir)/deprecated/clutter-frame-source.h	\
+	$(NULL)
+
+# deprecated source code
+deprecated_c = \
+	$(srcdir)/deprecated/clutter-frame-source.c	\
+	$(NULL)
+
+# deprecated private headers; these should not be installed
+deprecated_h_priv = \
+	$(NULL)
+
+# deprecated private source code; these should not be introspected
+deprecated_c_priv = \
 	$(NULL)
 
 # built sources
@@ -612,6 +629,8 @@ nodist_clutter_include_HEADERS = \
 	$(top_builddir)/clutter/clutter-version.h \
 	$(built_source_h)
 
+clutter_deprecated_HEADERS = $(deprecated_h)
+
 lib_LTLIBRARIES += libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
@@ -631,6 +650,10 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_h) \
 	$(source_c_priv) \
 	$(source_h_priv) \
+	$(deprecated_c) \
+	$(deprecated_h) \
+	$(deprecated_c_priv) \
+	$(deprecated_h_priv) \
 	$(cally_sources_c) \
 	$(cally_sources_h) \
 	$(cally_sources_private) \
@@ -660,7 +683,13 @@ Clutter-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_AP
 Clutter_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Clutter
 Clutter_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
 Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutter_include_HEADERS) $(nodist_clutter_include_HEADERS) $(source_c) $(built_source_c)
+Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = \
+	$(clutter_include_HEADERS) \
+	$(clutter_deprecated_HEADERS) \
+	$(nodist_clutter_include_HEADERS) \
+	$(source_c) \
+	$(deprecated_c) \
+	$(built_source_c)
 Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cogl-1.0 CoglPango-1.0 Atk-1.0 Json-1.0
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \

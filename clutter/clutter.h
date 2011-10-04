@@ -73,7 +73,6 @@
 #include "clutter-feature.h"
 #include "clutter-fixed-layout.h"
 #include "clutter-flow-layout.h"
-#include "clutter-frame-source.h"
 #include "clutter-gesture-action.h"
 #include "clutter-group.h"
 #include "clutter-input-device.h"
