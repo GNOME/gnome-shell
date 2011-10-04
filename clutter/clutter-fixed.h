@@ -34,6 +34,8 @@
 
 G_BEGIN_DECLS
 
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
+
 #define CLUTTER_TYPE_PARAM_FIXED           (clutter_param_fixed_get_type ())
 #define CLUTTER_PARAM_SPEC_FIXED(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_FIXED, ClutterParamSpecFixed))
 #define CLUTTER_IS_PARAM_SPEC_FIXED(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_FIXED))
@@ -45,6 +47,8 @@ G_BEGIN_DECLS
  * Evaluates to %TRUE if @x holds a #CoglFixed   .
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Use %G_VALUE_HOLDS_INT instead
  */
 #define CLUTTER_VALUE_HOLDS_FIXED(x)    (G_VALUE_HOLDS ((x), COGL_TYPE_FIXED))
 
@@ -59,6 +63,8 @@ typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
  * #GParamSpec subclass for fixed point based properties
  *
  * Since: 0.8
+ *
+ * Deprecated: Use #GParamSpecInt instead
  */
 struct _ClutterParamSpecFixed
 {
@@ -85,6 +91,8 @@ GParamSpec * clutter_param_spec_fixed     (const gchar  *name,
                                            CoglFixed     default_value,
                                            GParamFlags   flags);
 
+
+#endif /* DISABLE_DEPRECATED */
 
 G_END_DECLS
 
