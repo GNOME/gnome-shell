@@ -84,7 +84,6 @@ source_h =					\
 	$(srcdir)/clutter-effect.h		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
-	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-fixed-layout.h	\
 	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-gesture-action.h 	\
@@ -158,7 +157,6 @@ source_c = \
 	$(srcdir)/clutter-effect.c		\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
-	$(srcdir)/clutter-fixed.c		\
 	$(srcdir)/clutter-fixed-layout.c	\
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
@@ -241,6 +239,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-behaviour-path.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-rotate.h 	\
 	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
+	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
 	$(srcdir)/deprecated/clutter-score.h 			\
@@ -256,6 +255,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-behaviour-path.c		\
 	$(srcdir)/deprecated/clutter-behaviour-rotate.c		\
 	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
+	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(srcdir)/deprecated/clutter-score.c 			\

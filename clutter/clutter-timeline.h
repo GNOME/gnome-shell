@@ -29,7 +29,6 @@
 #define __CLUTTER_TIMELINE_H__
 
 #include <glib-object.h>
-#include <clutter/clutter-fixed.h>
 
 G_BEGIN_DECLS
 
