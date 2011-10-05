@@ -180,20 +180,6 @@ st_texture_cache_finalize (GObject *object)
   G_OBJECT_CLASS (st_texture_cache_parent_class)->finalize (object);
 }
 
-typedef struct {
-  StTextureCache *cache;
-  char *uri;
-  char *mimetype;
-  gboolean thumbnail;
-  GIcon *icon;
-  GtkRecentInfo *recent_info;
-  GtkIconInfo *icon_info;
-  gint width;
-  gint height;
-  StIconColors *colors;
-  gpointer user_data;
-} AsyncIconLookupData;
-
 static gboolean
 compute_pixbuf_scale (gint      width,
                       gint      height,
@@ -313,26 +299,56 @@ typedef struct {
   int height;
 } Dimensions;
 
+/* This struct corresponds to a request for an texture.
+ * It's creasted when something needs a new texture,
+ * and destroyed when the texture data is loaded. */
+typedef struct {
+  StTextureCache *cache;
+  StTextureCachePolicy policy;
+  char *key;
+  char *checksum;
+
+  gboolean thumbnail;
+  gboolean enforced_square;
+
+  guint width;
+  guint height;
+  GSList *textures;
+
+  GIcon *icon;
+  char *mimetype;
+  GtkIconInfo *icon_info;
+  StIconColors *colors;
+  GtkRecentInfo *recent_info;
+  char *uri;
+} AsyncTextureLoadData;
+
 static void
-icon_lookup_data_destroy (gpointer p)
+texture_load_data_destroy (gpointer p)
 {
-  AsyncIconLookupData *data = p;
+  AsyncTextureLoadData *data = p;
 
   if (data->icon)
     {
       g_object_unref (data->icon);
       gtk_icon_info_free (data->icon_info);
+      if (data->colors)
+        st_icon_colors_unref (data->colors);
     }
   else if (data->uri)
     g_free (data->uri);
+  else if (data->recent_info)
+    gtk_recent_info_unref (data->recent_info);
+
+  if (data->key)
+    g_free (data->key);
+  if (data->checksum)
+    g_free (data->checksum);
   if (data->mimetype)
     g_free (data->mimetype);
-  if (data->recent_info)
-    gtk_recent_info_unref (data->recent_info);
-  if (data->colors)
-    st_icon_colors_unref (data->colors);
 
-  g_free (data);
+  if (data->textures)
+    g_slist_free (data->textures);
 }
 
 /**
@@ -603,10 +619,10 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
                     GCancellable *cancellable)
 {
   GdkPixbuf *pixbuf;
-  AsyncIconLookupData *data;
+  AsyncTextureLoadData *data;
   GError *error = NULL;
 
-  data = g_object_get_data (G_OBJECT (result), "load_pixbuf_async");
+  data = g_async_result_get_user_data (G_ASYNC_RESULT (result));
   g_assert (data != NULL);
 
   if (data->thumbnail)
@@ -644,127 +660,6 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
                                                g_object_unref);
 }
 
-/**
- * load_icon_pixbuf_async:
- *
- * Asynchronously load the #GdkPixbuf associated with a #GIcon.  Currently
- * the #GtkIconInfo must have already been provided.
- */
-static void
-load_icon_pixbuf_async (StTextureCache       *cache,
-                        GIcon                *icon,
-                        GtkIconInfo          *icon_info,
-                        gint                  size,
-                        StIconColors         *colors,
-                        GCancellable         *cancellable,
-                        GAsyncReadyCallback   callback,
-                        gpointer              user_data)
-{
-  GSimpleAsyncResult *result;
-  AsyncIconLookupData *data;
-
-  data = g_new0 (AsyncIconLookupData, 1);
-  data->cache = cache;
-  data->icon = g_object_ref (icon);
-  data->icon_info = gtk_icon_info_copy (icon_info);
-  data->width = data->height = size;
-  if (colors)
-    data->colors = st_icon_colors_ref (colors);
-  else
-    data->colors = NULL;
-  data->user_data = user_data;
-
-  result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_icon_pixbuf_async);
-
-  g_object_set_data_full (G_OBJECT (result), "load_pixbuf_async", data, icon_lookup_data_destroy);
-  g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
-
-  g_object_unref (result);
-}
-
-static void
-load_uri_pixbuf_async (StTextureCache     *cache,
-                       const char         *uri,
-                       guint               width,
-                       guint               height,
-                       GCancellable       *cancellable,
-                       GAsyncReadyCallback callback,
-                       gpointer            user_data)
-{
-  GSimpleAsyncResult *result;
-  AsyncIconLookupData *data;
-
-  data = g_new0 (AsyncIconLookupData, 1);
-  data->cache = cache;
-  data->uri = g_strdup (uri);
-  data->width = width;
-  data->height = height;
-  data->user_data = user_data;
-
-  result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_uri_pixbuf_async);
-
-  g_object_set_data_full (G_OBJECT (result), "load_pixbuf_async", data, icon_lookup_data_destroy);
-  g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
-
-  g_object_unref (result);
-}
-
-static void
-load_thumbnail_async (StTextureCache     *cache,
-                      const char         *uri,
-                      const char         *mimetype,
-                      guint               size,
-                      GCancellable       *cancellable,
-                      GAsyncReadyCallback callback,
-                      gpointer            user_data)
-{
-  GSimpleAsyncResult *result;
-  AsyncIconLookupData *data;
-
-  data = g_new0 (AsyncIconLookupData, 1);
-  data->cache = cache;
-  data->uri = g_strdup (uri);
-  data->mimetype = g_strdup (mimetype);
-  data->thumbnail = TRUE;
-  data->width = size;
-  data->height = size;
-  data->user_data = user_data;
-
-  result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_thumbnail_async);
-
-  g_object_set_data_full (G_OBJECT (result), "load_pixbuf_async", data, icon_lookup_data_destroy);
-  g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
-
-  g_object_unref (result);
-}
-
-static void
-load_recent_thumbnail_async (StTextureCache     *cache,
-                             GtkRecentInfo      *info,
-                             guint               size,
-                             GCancellable       *cancellable,
-                             GAsyncReadyCallback callback,
-                             gpointer            user_data)
-{
-  GSimpleAsyncResult *result;
-  AsyncIconLookupData *data;
-
-  data = g_new0 (AsyncIconLookupData, 1);
-  data->cache = cache;
-  data->thumbnail = TRUE;
-  data->recent_info = gtk_recent_info_ref (info);
-  data->width = size;
-  data->height = size;
-  data->user_data = user_data;
-
-  result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_recent_thumbnail_async);
-
-  g_object_set_data_full (G_OBJECT (result), "load_pixbuf_async", data, icon_lookup_data_destroy);
-  g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
-
-  g_object_unref (result);
-}
-
 static GdkPixbuf *
 load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **error)
 {
@@ -773,22 +668,6 @@ load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **
     return NULL;
   return g_simple_async_result_get_op_res_gpointer (simple);
 }
-
-typedef struct {
-  StTextureCachePolicy policy;
-  char *key;
-  char *uri;
-  gboolean thumbnail;
-  gboolean enforced_square;
-  char *mimetype;
-  GtkRecentInfo *recent_info;
-  char *checksum;
-  GIcon *icon;
-  GtkIconInfo *icon_info;
-  guint width;
-  guint height;
-  GSList *textures;
-} AsyncTextureLoadData;
 
 static CoglHandle
 pixbuf_to_cogl_handle (GdkPixbuf *pixbuf,
@@ -943,31 +822,21 @@ on_pixbuf_loaded (GObject      *source,
 out:
   if (texdata)
     cogl_handle_unref (texdata);
-  g_free (data->key);
 
-  if (data->icon)
-    {
-      gtk_icon_info_free (data->icon_info);
-      g_object_unref (data->icon);
-    }
-  else if (data->uri)
-    g_free (data->uri);
-
-  if (data->recent_info)
-    gtk_recent_info_unref (data->recent_info);
-  if (data->mimetype)
-    g_free (data->mimetype);
-
-  /* Alternatively we could weakref and just do nothing if the texture
-     is destroyed */
-  for (iter = data->textures; iter; iter = iter->next)
-    {
-      ClutterTexture *texture = iter->data;
-      g_object_unref (texture);
-    }
+  texture_load_data_destroy (data);
+  g_free (data);
 
   g_clear_error (&error);
-  g_free (data);
+}
+
+static void
+load_texture_async (StTextureCache       *cache,
+                    AsyncTextureLoadData *data)
+{
+  GSimpleAsyncResult *result;
+  result = g_simple_async_result_new (G_OBJECT (cache), on_pixbuf_loaded, data, load_texture_async);
+  g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, NULL);
+  g_object_unref (result);
 }
 
 typedef struct {
@@ -1221,6 +1090,7 @@ load_gicon_with_colors (StTextureCache    *cache,
   if (info != NULL)
     {
       /* Transfer ownership of key */
+      request->cache = cache;
       request->key = key;
       request->policy = policy;
       request->icon = g_object_ref (icon);
@@ -1228,7 +1098,7 @@ load_gicon_with_colors (StTextureCache    *cache,
       request->width = request->height = size;
       request->enforced_square = TRUE;
 
-      load_icon_pixbuf_async (cache, icon, info, size, colors, NULL, on_pixbuf_loaded, request);
+      load_texture_async (cache, request);
     }
   else
     {
@@ -1273,12 +1143,6 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   return load_gicon_with_colors (cache, icon, size, theme_node ? st_theme_node_get_icon_colors (theme_node) : NULL);
 }
 
-typedef struct {
-  gchar *path;
-  gint   grid_width, grid_height;
-  ClutterGroup *group;
-} AsyncImageData;
-
 static ClutterActor *
 load_from_pixbuf (GdkPixbuf *pixbuf)
 {
@@ -1299,6 +1163,21 @@ load_from_pixbuf (GdkPixbuf *pixbuf)
   return CLUTTER_ACTOR (texture);
 }
 
+typedef struct {
+  gchar *path;
+  gint   grid_width, grid_height;
+  ClutterGroup *group;
+} AsyncImageData;
+
+static void
+on_data_destroy (gpointer data)
+{
+  AsyncImageData *d = (AsyncImageData *)data;
+  g_free (d->path);
+  g_object_unref (d->group);
+  g_free (d);
+}
+
 static void
 on_sliced_image_loaded (GObject *source_object,
                         GAsyncResult *res,
@@ -1317,15 +1196,6 @@ on_sliced_image_loaded (GObject *source_object,
       clutter_actor_hide (actor);
       clutter_container_add_actor (CLUTTER_CONTAINER (data->group), actor);
     }
-}
-
-static void
-on_data_destroy (gpointer data)
-{
-  AsyncImageData *d = (AsyncImageData *)data;
-  g_free (d->path);
-  g_object_unref (d->group);
-  g_free (d);
 }
 
 static void
@@ -1585,13 +1455,14 @@ st_texture_cache_load_uri_async (StTextureCache *cache,
   texture = create_default_texture (cache);
 
   data = g_new0 (AsyncTextureLoadData, 1);
+  data->cache = cache;
   data->key = g_strconcat (CACHE_PREFIX_URI, uri, NULL);
   data->policy = ST_TEXTURE_CACHE_POLICY_NONE;
   data->uri = g_strdup (uri);
   data->width = available_width;
   data->height = available_height;
   data->textures = g_slist_prepend (data->textures, g_object_ref (texture));
-  load_uri_pixbuf_async (cache, uri, available_width, available_height, NULL, on_pixbuf_loaded, data);
+  load_texture_async (cache, data);
 
   return CLUTTER_ACTOR (texture);
 }
@@ -1986,6 +1857,7 @@ st_texture_cache_load_thumbnail (StTextureCache    *cache,
   if (!texdata)
     {
       data = g_new0 (AsyncTextureLoadData, 1);
+      data->cache = cache;
       data->key = g_strdup (key);
       data->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
       data->uri = g_strdup (uri);
@@ -1995,7 +1867,7 @@ st_texture_cache_load_thumbnail (StTextureCache    *cache,
       data->height = size;
       data->enforced_square = TRUE;
       data->textures = g_slist_prepend (data->textures, g_object_ref (texture));
-      load_thumbnail_async (cache, uri, mimetype, size, NULL, on_pixbuf_loaded, data);
+      load_texture_async (cache, data);
     }
   else
     {
@@ -2064,6 +1936,7 @@ st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
   if (!texdata)
     {
       data = g_new0 (AsyncTextureLoadData, 1);
+      data->cache = cache;
       data->key = g_strdup (key);
       data->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
       data->thumbnail = TRUE;
@@ -2072,7 +1945,7 @@ st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
       data->height = size;
       data->enforced_square = TRUE;
       data->textures = g_slist_prepend (data->textures, g_object_ref (texture));
-      load_recent_thumbnail_async (cache, info, size, NULL, on_pixbuf_loaded, data);
+      load_texture_async (cache, data);
     }
   else
     {
