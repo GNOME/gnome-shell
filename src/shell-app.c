@@ -1255,15 +1255,18 @@ _shell_app_match_search_terms (ShellApp  *app,
       current_match = MATCH_NONE;
 
       p = strstr (app->casefolded_name, term);
-      if (p == app->casefolded_name)
-        current_match = MATCH_PREFIX;
-      else if (p != NULL)
-        current_match = MATCH_SUBSTRING;
+      if (p != NULL)
+        {
+          if (p == app->casefolded_name || *(p - 1) == ' ')
+            current_match = MATCH_PREFIX;
+          else
+            current_match = MATCH_SUBSTRING;
+        }
 
       p = strstr (app->casefolded_exec, term);
       if (p != NULL)
         {
-          if (p == app->casefolded_exec)
+          if (p == app->casefolded_exec || *(p - 1) == '-')
             current_match = (current_match == MATCH_NONE) ? MATCH_PREFIX
                                                           : MATCH_MULTIPLE_PREFIX;
           else if (current_match < MATCH_PREFIX)
