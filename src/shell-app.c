@@ -19,9 +19,7 @@
 typedef enum {
   MATCH_NONE,
   MATCH_SUBSTRING, /* Not prefix, substring */
-  MATCH_MULTIPLE_SUBSTRING, /* Matches multiple criteria with substrings */
   MATCH_PREFIX, /* Strict prefix */
-  MATCH_MULTIPLE_PREFIX, /* Matches multiple criteria, at least one prefix */
 } ShellAppSearchMatch;
 
 /* This is mainly a memory usage optimization - the user is going to
@@ -1267,11 +1265,9 @@ _shell_app_match_search_terms (ShellApp  *app,
       if (p != NULL)
         {
           if (p == app->casefolded_exec || *(p - 1) == '-')
-            current_match = (current_match == MATCH_NONE) ? MATCH_PREFIX
-                                                          : MATCH_MULTIPLE_PREFIX;
+            current_match = MATCH_PREFIX;
           else if (current_match < MATCH_PREFIX)
-            current_match = (current_match == MATCH_NONE) ? MATCH_SUBSTRING
-                                                          : MATCH_MULTIPLE_SUBSTRING;
+            current_match = MATCH_SUBSTRING;
         }
 
       if (app->casefolded_description && current_match < MATCH_PREFIX)
@@ -1281,8 +1277,7 @@ _shell_app_match_search_terms (ShellApp  *app,
            */
           p = strstr (app->casefolded_description, term);
           if (p != NULL)
-            current_match = (current_match == MATCH_NONE) ? MATCH_SUBSTRING
-                                                          : MATCH_MULTIPLE_SUBSTRING;
+            current_match = MATCH_SUBSTRING;
         }
 
       if (current_match == MATCH_NONE)
@@ -1297,9 +1292,7 @@ _shell_app_match_search_terms (ShellApp  *app,
 void
 _shell_app_do_match (ShellApp         *app,
                      GSList           *terms,
-                     GSList          **multiple_prefix_results,
                      GSList          **prefix_results,
-                     GSList          **multiple_substring_results,
                      GSList          **substring_results)
 {
   ShellAppSearchMatch match;
@@ -1320,14 +1313,8 @@ _shell_app_do_match (ShellApp         *app,
     {
       case MATCH_NONE:
         break;
-      case MATCH_MULTIPLE_PREFIX:
-        *multiple_prefix_results = g_slist_prepend (*multiple_prefix_results, app);
-        break;
       case MATCH_PREFIX:
         *prefix_results = g_slist_prepend (*prefix_results, app);
-        break;
-      case MATCH_MULTIPLE_SUBSTRING:
-        *multiple_substring_results = g_slist_prepend (*multiple_substring_results, app);
         break;
       case MATCH_SUBSTRING:
         *substring_results = g_slist_prepend (*substring_results, app);

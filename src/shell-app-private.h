@@ -24,9 +24,7 @@ void _shell_app_remove_window (ShellApp *app, MetaWindow *window);
 
 void _shell_app_do_match (ShellApp         *app,
                           GSList           *terms,
-                          GSList          **multiple_prefix_results,
                           GSList          **prefix_results,
-                          GSList          **multiple_substring_results,
                           GSList          **substring_results);
 
 G_END_DECLS

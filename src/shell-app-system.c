@@ -685,24 +685,16 @@ compare_apps_by_usage (gconstpointer a,
 
 static GSList *
 sort_and_concat_results (ShellAppSystem *system,
-                         GSList         *multiple_prefix_matches,
                          GSList         *prefix_matches,
-                         GSList         *multiple_substring_matches,
                          GSList         *substring_matches)
 {
-  multiple_prefix_matches = g_slist_sort_with_data (multiple_prefix_matches,
-                                                    compare_apps_by_usage,
-                                                    system);
   prefix_matches = g_slist_sort_with_data (prefix_matches,
                                            compare_apps_by_usage,
                                            system);
-  multiple_substring_matches = g_slist_sort_with_data (multiple_substring_matches,
-                                                       compare_apps_by_usage,
-                                                       system);
   substring_matches = g_slist_sort_with_data (substring_matches,
                                               compare_apps_by_usage,
                                               system);
-  return g_slist_concat (multiple_prefix_matches, g_slist_concat (prefix_matches, g_slist_concat (multiple_substring_matches, substring_matches)));
+  return g_slist_concat (prefix_matches, substring_matches);
 }
 
 /**
@@ -729,9 +721,7 @@ search_tree (ShellAppSystem *self,
              GSList         *terms,
              GHashTable     *apps)
 {
-  GSList *multiple_prefix_results = NULL;
   GSList *prefix_results = NULL;
-  GSList *multiple_subtring_results = NULL;
   GSList *substring_results = NULL;
   GSList *normalized_terms;
   GHashTableIter iter;
@@ -746,14 +736,13 @@ search_tree (ShellAppSystem *self,
       ShellApp *app = value;
       (void)id;
       _shell_app_do_match (app, normalized_terms,
-                           &multiple_prefix_results, &prefix_results,
-                           &multiple_subtring_results, &substring_results);
+                           &prefix_results,
+                           &substring_results);
     }
   g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
   g_slist_free (normalized_terms);
 
-  return sort_and_concat_results (self, multiple_prefix_results, prefix_results,
-                                  multiple_subtring_results, substring_results);
+  return sort_and_concat_results (self, prefix_results, substring_results);
 
 }
 
@@ -792,9 +781,7 @@ shell_app_system_subsearch (ShellAppSystem   *system,
                             GSList           *terms)
 {
   GSList *iter;
-  GSList *multiple_prefix_results = NULL;
   GSList *prefix_results = NULL;
-  GSList *multiple_substring_results = NULL;
   GSList *substring_results = NULL;
   GSList *normalized_terms = normalize_terms (terms);
 
@@ -803,8 +790,8 @@ shell_app_system_subsearch (ShellAppSystem   *system,
       ShellApp *app = iter->data;
       
       _shell_app_do_match (app, normalized_terms,
-                           &multiple_prefix_results, &prefix_results,
-                           &multiple_substring_results, &substring_results);
+                           &prefix_results,
+                           &substring_results);
     }
   g_slist_foreach (normalized_terms, (GFunc)g_free, NULL);
   g_slist_free (normalized_terms);
@@ -812,7 +799,7 @@ shell_app_system_subsearch (ShellAppSystem   *system,
   /* Note that a shorter term might have matched as a prefix, but
      when extended only as a substring, so we have to redo the
      sort rather than reusing the existing ordering */
-  return sort_and_concat_results (system, multiple_prefix_results, prefix_results, multiple_substring_results, substring_results);
+  return sort_and_concat_results (system, prefix_results, substring_results);
 }
 
 /**
