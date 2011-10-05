@@ -895,7 +895,7 @@ get_property_from_object (GObject     *gobject,
 /**
  * clutter_state_set:
  * @state: a #ClutterState instance.
- * @source_state_name: the name of the source state keys are being added for
+ * @source_state_name: (allow-none): the name of the source state keys are being added for
  * @target_state_name: the name of the target state keys are being added for
  * @first_object: a #GObject
  * @first_property_name: a property of @first_object to specify a key for
@@ -921,7 +921,7 @@ get_property_from_object (GObject     *gobject,
  *                      NULL);
  * ]|
  *
- * will create a transition from any state (a @source_state_name of NULL is
+ * will create a transition from any state (a @source_state_name or NULL is
  * treated as a wildcard) and a state named "hover"; the
  * <emphasis>button</emphasis> object will have the #ClutterActor:opacity
  * property animated to a value of 255 using %CLUTTER_LINEAR as the animation
