@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-30 16:45+0000\n"
-"PO-Revision-Date: 2011-09-30 19:12+0100\n"
+"POT-Creation-Date: 2011-10-04 21:33+0000\n"
+"PO-Revision-Date: 2011-10-05 09:26+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: Slovenian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: Slovenian\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -569,7 +569,11 @@ msgstr "Namesti"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Ali naj se razširitev '%s'  namesti preko povezave z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:529
+#: ../js/ui/keyboard.js:308
+msgid "tray"
+msgstr "sistemska vrstica"
+
+#: ../js/ui/keyboard.js:530
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tipkovnica"
@@ -578,49 +582,34 @@ msgstr "Tipkovnica"
 msgid "No extensions installed"
 msgstr "Ni nameščenih razširitev"
 
-#. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:700
-#, c-format
-msgid "%s has not emitted any errors."
-msgstr "%s ni vrnil napak."
-
-#: ../js/ui/lookingGlass.js:706
-msgid "Hide Errors"
-msgstr "Skrij napake"
-
-#: ../js/ui/lookingGlass.js:710
-#: ../js/ui/lookingGlass.js:760
-msgid "Show Errors"
-msgstr "Pokaži napake"
-
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:691
 msgid "Enabled"
 msgstr "Omogočeno"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:693
 #: ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:695
 msgid "Error"
 msgstr "Napaka"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:697
 msgid "Out of date"
 msgstr "Zastarelo"
 
-#: ../js/ui/lookingGlass.js:727
+#: ../js/ui/lookingGlass.js:699
 msgid "Downloading"
 msgstr "Prejemanje"
 
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "Poglej vir"
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "Spletna stran"
 
@@ -1608,6 +1597,15 @@ msgstr "Datotečni sistem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "%s has not emitted any errors."
+#~ msgstr "%s ni vrnil napak."
+
+#~ msgid "Hide Errors"
+#~ msgstr "Skrij napake"
+
+#~ msgid "Show Errors"
+#~ msgstr "Pokaži napake"
 
 #~ msgid "%s has finished starting"
 #~ msgstr "%s je končal začenjanje"
