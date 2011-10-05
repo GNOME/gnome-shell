@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "shell-app-system.h"
+#include "shell-app-usage.h"
 #include <string.h>
 
 #include <gio/gio.h>
@@ -670,14 +671,16 @@ shell_app_system_get_running (ShellAppSystem *self)
 
 
 static gint
-compare_apps_by_name (gconstpointer a,
-                      gconstpointer b,
-                      gpointer      data)
+compare_apps_by_usage (gconstpointer a,
+                       gconstpointer b,
+                       gpointer      data)
 {
+  ShellAppUsage *usage = shell_app_usage_get_default ();
+
   ShellApp *app_a = (ShellApp*)a;
   ShellApp *app_b = (ShellApp*)b;
 
-  return shell_app_compare_by_name (app_a, app_b);
+  return shell_app_usage_compare (usage, "", app_a, app_b);
 }
 
 static GSList *
@@ -688,16 +691,16 @@ sort_and_concat_results (ShellAppSystem *system,
                          GSList         *substring_matches)
 {
   multiple_prefix_matches = g_slist_sort_with_data (multiple_prefix_matches,
-                                                    compare_apps_by_name,
+                                                    compare_apps_by_usage,
                                                     system);
   prefix_matches = g_slist_sort_with_data (prefix_matches,
-                                           compare_apps_by_name,
+                                           compare_apps_by_usage,
                                            system);
   multiple_substring_matches = g_slist_sort_with_data (multiple_substring_matches,
-                                                       compare_apps_by_name,
+                                                       compare_apps_by_usage,
                                                        system);
   substring_matches = g_slist_sort_with_data (substring_matches,
-                                              compare_apps_by_name,
+                                              compare_apps_by_usage,
                                               system);
   return g_slist_concat (multiple_prefix_matches, g_slist_concat (prefix_matches, g_slist_concat (multiple_substring_matches, substring_matches)));
 }

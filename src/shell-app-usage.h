@@ -30,6 +30,10 @@ ShellAppUsage* shell_app_usage_get_default(void);
 GSList *shell_app_usage_get_most_used (ShellAppUsage *usage,
                                        const char    *context,
                                        gint           max_count);
+int shell_app_usage_compare (ShellAppUsage *self,
+                             const char    *context,
+                             ShellApp      *app_a,
+                             ShellApp      *app_b);
 
 G_END_DECLS
 
