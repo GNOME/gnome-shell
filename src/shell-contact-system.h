@@ -40,6 +40,9 @@ GeeMap *shell_contact_system_get_all (ShellContactSystem *self);
 FolksIndividual *shell_contact_system_get_individual (ShellContactSystem  *self,
                                                       gchar               *id);
 
+char * shell_contact_system_get_email_for_display (ShellContactSystem *self,
+                                                   FolksIndividual    *individual);
+
 GSList * shell_contact_system_initial_search (ShellContactSystem  *shell,
                                               GSList              *terms);
 

@@ -316,6 +316,57 @@ shell_contact_system_get_individual (ShellContactSystem *self,
 }
 
 /**
+ * shell_contact_system_get_email_for_display:
+ * @self: A #ShellContactSystem
+ * @individual A #FolksIndividual
+ *
+ * Get an email address (either from IM addresses or email), which can be
+ * used to represent @individual.
+ *
+ * Return: (transfer full): a newly allocated string or %NULL if no address
+ *                          was found
+ */
+char *
+shell_contact_system_get_email_for_display (ShellContactSystem *self,
+                                            FolksIndividual    *individual)
+{
+  GeeMultiMap *im_addr_map = folks_im_details_get_im_addresses (FOLKS_IM_DETAILS (individual));
+  GeeCollection *im_addrs = gee_multi_map_get_values (im_addr_map);
+  GeeSet *email_addrs = folks_email_details_get_email_addresses (FOLKS_EMAIL_DETAILS (individual));
+  GeeIterator *addrs_iter;
+  char *email = NULL;
+
+  addrs_iter = gee_iterable_iterator (GEE_ITERABLE (im_addrs));
+  if (gee_iterator_first (addrs_iter))
+    {
+      FolksImFieldDetails *field = gee_iterator_get (addrs_iter);
+      email = g_strdup (folks_abstract_field_details_get_value ((FolksAbstractFieldDetails*)field));
+
+      g_object_unref (field);
+    }
+
+  g_object_unref (addrs_iter);
+  g_object_unref (im_addrs);
+
+  if (email != NULL)
+    return email;
+
+  addrs_iter = gee_iterable_iterator (GEE_ITERABLE (email_addrs));
+
+  if (gee_iterator_first (addrs_iter))
+    {
+      FolksEmailFieldDetails *field = gee_iterator_get (addrs_iter);
+      email = g_strdup (folks_abstract_field_details_get_value ((FolksAbstractFieldDetails*)field));
+
+      g_object_unref (field);
+    }
+
+  g_object_unref (addrs_iter);
+
+  return email;
+}
+
+/**
  * shell_contact_system_initial_search:
  * @shell: A #ShellContactSystem
  * @terms: (element-type utf8): List of terms, logical AND
