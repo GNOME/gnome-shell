@@ -126,6 +126,8 @@ ClutterEffect *clutter_actor_get_effect            (ClutterActor  *self,
                                                     const gchar   *name);
 void           clutter_actor_clear_effects         (ClutterActor  *self);
 
+gboolean        clutter_actor_has_effects           (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EFFECT_H__ */

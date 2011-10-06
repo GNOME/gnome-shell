@@ -553,6 +553,27 @@ _clutter_meta_group_get_metas_no_internal (ClutterMetaGroup *group)
 }
 
 /*
+ * _clutter_meta_group_has_metas_no_internal:
+ * @group: a #ClutterMetaGroup
+ *
+ * Returns whether the group has any metas that don't have an internal priority.
+ *
+ * Return value: %TRUE if metas without internal priority exist
+ *   %FALSE otherwise
+ */
+gboolean
+_clutter_meta_group_has_metas_no_internal (ClutterMetaGroup *group)
+{
+  GList *l;
+
+  for (l = group->meta; l; l = l->next)
+    if (!_clutter_actor_meta_is_internal (l->data))
+      return TRUE;
+
+  return FALSE;
+}
+
+/*
  * _clutter_meta_group_clear_metas:
  * @group: a #ClutterMetaGroup
  *

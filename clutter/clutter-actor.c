@@ -12452,6 +12452,66 @@ clutter_actor_has_overlaps (ClutterActor *self)
   return CLUTTER_ACTOR_GET_CLASS (self)->has_overlaps (self);
 }
 
+/**
+ * clutter_actor_has_effects:
+ * @self: A #ClutterActor
+ *
+ * Returns whether the actor has any effects applied.
+ *
+ * Return value: %TRUE if the actor has any effects,
+ *   %FALSE otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_has_effects (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+
+  if (self->priv->effects == NULL)
+    return FALSE;
+
+  return _clutter_meta_group_has_metas_no_internal (self->priv->effects);
+}
+
+/**
+ * clutter_actor_has_constraints:
+ * @self: A #ClutterActor
+ *
+ * Returns whether the actor has any constraints applied.
+ *
+ * Return value: %TRUE if the actor has any constraints,
+ *   %FALSE otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_has_constraints (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+
+  return self->priv->constraints != NULL;
+}
+
+/**
+ * clutter_actor_has_actions:
+ * @self: A #ClutterActor
+ *
+ * Returns whether the actor has any actions applied.
+ *
+ * Return value: %TRUE if the actor has any actions,
+ *   %FALSE otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_actor_has_actions (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), TRUE);
+
+  return self->priv->actions != NULL;
+}
+
 gint
 _clutter_actor_get_n_children (ClutterActor *self)
 {

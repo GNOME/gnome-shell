@@ -77,7 +77,7 @@
  *   multi-threaded environment is to never access the API from a thread that
  *   did not call clutter_init() and clutter_main().</para>
  *   <para>The common pattern for using threads with Clutter is to use worker
- *   threads to perform blocking operations and then install idle or timeour
+ *   threads to perform blocking operations and then install idle or timeout
  *   sources with the result when the thread finished.</para>
  *   <para>Clutter provides thread-aware variants of g_idle_add() and
  *   g_timeout_add() that acquire the Clutter lock before invoking the provided

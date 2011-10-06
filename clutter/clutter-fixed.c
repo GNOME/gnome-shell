@@ -44,6 +44,8 @@
  * Sets @value to @fixed_.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Use g_value_set_int() instead.
  */
 void
 clutter_value_set_fixed (GValue    *value,
@@ -63,6 +65,8 @@ clutter_value_set_fixed (GValue    *value,
  * Return value: the value inside the passed #GValue
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Use g_value_get_int() instead.
  */
 CoglFixed
 clutter_value_get_fixed (const GValue *value)
@@ -164,9 +168,11 @@ clutter_param_fixed_get_type (void)
  *
  * Creates a #GParamSpec for properties using #CoglFixed values
  *
- * Return value: the newly created #GParamSpec
+ * Return value: (transfer full): the newly created #GParamSpec
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Use #GParamSpecInt instead.
  */
 GParamSpec *
 clutter_param_spec_fixed (const gchar *name,

@@ -62,6 +62,11 @@ struct _ClutterShaderEffect
 
 /**
  * ClutterShaderEffectClass:
+ * @get_static_shader_source: Returns the GLSL source code to use for
+ *  instances of this shader effect. Note that this function is only
+ *  called once per subclass of #ClutterShaderEffect regardless of how
+ *  many instances are used. It is expected that subclasses will return
+ *  a copy of a static string from this function.
  *
  * The <structname>ClutterShaderEffectClass</structname> structure contains
  * only private data
@@ -73,13 +78,16 @@ struct _ClutterShaderEffectClass
   /*< private >*/
   ClutterOffscreenEffectClass parent_class;
 
+  /*< public >*/
+  gchar * (* get_static_shader_source) (ClutterShaderEffect *effect);
+
+  /*< private >*/
   /* padding */
   void (*_clutter_shader1) (void);
   void (*_clutter_shader2) (void);
   void (*_clutter_shader3) (void);
   void (*_clutter_shader4) (void);
   void (*_clutter_shader5) (void);
-  void (*_clutter_shader6) (void);
 };
 
 GType clutter_shader_effect_get_type (void) G_GNUC_CONST;
