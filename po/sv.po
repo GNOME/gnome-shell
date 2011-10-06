@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-01 21:56+0200\n"
-"PO-Revision-Date: 2011-10-01 21:57+0100\n"
+"POT-Creation-Date: 2011-10-06 08:08+0200\n"
+"PO-Revision-Date: 2011-10-06 08:09+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -392,33 +392,33 @@ msgstr "Denna vecka"
 msgid "Next week"
 msgstr "Nästa vecka"
 
-#: ../js/ui/contactDisplay.js:59
+#: ../js/ui/contactDisplay.js:65
 #: ../js/ui/notificationDaemon.js:444
 #: ../js/ui/status/power.js:223
 #: ../src/shell-app.c:355
 msgid "Unknown"
 msgstr "Okänt"
 
-#: ../js/ui/contactDisplay.js:80
+#: ../js/ui/contactDisplay.js:86
 #: ../js/ui/userMenu.js:139
 msgid "Available"
 msgstr "Tillgänglig"
 
-#: ../js/ui/contactDisplay.js:85
+#: ../js/ui/contactDisplay.js:91
 #: ../js/ui/userMenu.js:148
 msgid "Away"
 msgstr "Borta"
 
-#: ../js/ui/contactDisplay.js:89
+#: ../js/ui/contactDisplay.js:95
 #: ../js/ui/userMenu.js:142
 msgid "Busy"
 msgstr "Upptagen"
 
-#: ../js/ui/contactDisplay.js:93
+#: ../js/ui/contactDisplay.js:99
 msgid "Offline"
 msgstr "Frånkopplad"
 
-#: ../js/ui/contactDisplay.js:140
+#: ../js/ui/contactDisplay.js:146
 msgid "CONTACTS"
 msgstr "KONTAKTER"
 
@@ -557,7 +557,11 @@ msgstr "Installera"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Hämta och installera \"%s\" från extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:529
+#: ../js/ui/keyboard.js:308
+msgid "tray"
+msgstr "bricka"
+
+#: ../js/ui/keyboard.js:530
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tangentbord"
@@ -566,49 +570,34 @@ msgstr "Tangentbord"
 msgid "No extensions installed"
 msgstr "Inga tillägg installerade"
 
-#. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:700
-#, c-format
-msgid "%s has not emitted any errors."
-msgstr "%s har inte skickat ut några fel."
-
-#: ../js/ui/lookingGlass.js:706
-msgid "Hide Errors"
-msgstr "Dölj fel"
-
-#: ../js/ui/lookingGlass.js:710
-#: ../js/ui/lookingGlass.js:760
-msgid "Show Errors"
-msgstr "Visa fel"
-
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:691
 msgid "Enabled"
 msgstr "Aktiverad"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:693
 #: ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:695
 msgid "Error"
 msgstr "Fel"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:697
 msgid "Out of date"
 msgstr "Utanför datumintervallet"
 
-#: ../js/ui/lookingGlass.js:727
+#: ../js/ui/lookingGlass.js:699
 msgid "Downloading"
 msgstr "Hämtar"
 
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "Visa källa"
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "Webbsida"
 
@@ -940,7 +929,7 @@ msgid "Grant this time only"
 msgstr "Tillåt för denna gång"
 
 #: ../js/ui/status/bluetooth.js:392
-#: ../js/ui/telepathyClient.js:1200
+#: ../js/ui/telepathyClient.js:1204
 msgid "Reject"
 msgstr "Neka"
 
@@ -1231,22 +1220,22 @@ msgstr "Auktoriseringsbegäran"
 msgid "Connection error"
 msgstr "Anslutningsfel"
 
-#: ../js/ui/telepathyClient.js:737
+#: ../js/ui/telepathyClient.js:741
 #, c-format
 msgid "%s is online."
 msgstr "%s är ansluten."
 
-#: ../js/ui/telepathyClient.js:742
+#: ../js/ui/telepathyClient.js:746
 #, c-format
 msgid "%s is offline."
 msgstr "%s är frånkopplad."
 
-#: ../js/ui/telepathyClient.js:745
+#: ../js/ui/telepathyClient.js:749
 #, c-format
 msgid "%s is away."
 msgstr "%s är frånvarande."
 
-#: ../js/ui/telepathyClient.js:748
+#: ../js/ui/telepathyClient.js:752
 #, c-format
 msgid "%s is busy."
 msgstr "%s är upptagen."
@@ -1254,35 +1243,35 @@ msgstr "%s är upptagen."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:982
+#: ../js/ui/telepathyClient.js:986
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Skickades klockan <b>%X</b> den <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:988
+#: ../js/ui/telepathyClient.js:992
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Skickades <b>%A</b> <b>%d %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:993
+#: ../js/ui/telepathyClient.js:997
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Skickades <b>%A</b> <b>%d %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1035
+#: ../js/ui/telepathyClient.js:1039
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s är nu känd som %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1144
+#: ../js/ui/telepathyClient.js:1148
 #, c-format
 msgid "Invitation to %s"
 msgstr "Inbjudan till %s"
@@ -1290,36 +1279,36 @@ msgstr "Inbjudan till %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1152
+#: ../js/ui/telepathyClient.js:1156
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s bjuder in dig till %s"
 
-#: ../js/ui/telepathyClient.js:1154
-#: ../js/ui/telepathyClient.js:1243
-#: ../js/ui/telepathyClient.js:1347
+#: ../js/ui/telepathyClient.js:1158
+#: ../js/ui/telepathyClient.js:1247
+#: ../js/ui/telepathyClient.js:1351
 msgid "Decline"
 msgstr "Neka"
 
-#: ../js/ui/telepathyClient.js:1155
-#: ../js/ui/telepathyClient.js:1244
-#: ../js/ui/telepathyClient.js:1348
+#: ../js/ui/telepathyClient.js:1159
+#: ../js/ui/telepathyClient.js:1248
+#: ../js/ui/telepathyClient.js:1352
 msgid "Accept"
 msgstr "Acceptera"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1188
+#: ../js/ui/telepathyClient.js:1192
 #, c-format
 msgid "Video call from %s"
 msgstr "Videosamtal från %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1191
+#: ../js/ui/telepathyClient.js:1195
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
-#: ../js/ui/telepathyClient.js:1201
+#: ../js/ui/telepathyClient.js:1205
 msgid "Answer"
 msgstr "Svara"
 
@@ -1328,125 +1317,125 @@ msgstr "Svara"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1237
+#: ../js/ui/telepathyClient.js:1241
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s skickar dig %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1312
+#: ../js/ui/telepathyClient.js:1316
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s vill få behörighet att se när du är ansluten"
 
-#: ../js/ui/telepathyClient.js:1410
+#: ../js/ui/telepathyClient.js:1414
 msgid "Network error"
 msgstr "Nätverksfel"
 
-#: ../js/ui/telepathyClient.js:1412
+#: ../js/ui/telepathyClient.js:1416
 msgid "Authentication failed"
 msgstr "Autentisering misslyckades"
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1418
 msgid "Encryption error"
 msgstr "Krypteringsfel"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1420
 msgid "Certificate not provided"
 msgstr "Certifikat tillhandahålls inte"
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1422
 msgid "Certificate untrusted"
 msgstr "Certifikatet är inte pålitligt"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1424
 msgid "Certificate expired"
 msgstr "Certifikatet är utgånget"
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1426
 msgid "Certificate not activated"
 msgstr "Certifikatet är inte aktiverat"
 
-#: ../js/ui/telepathyClient.js:1424
+#: ../js/ui/telepathyClient.js:1428
 msgid "Certificate hostname mismatch"
 msgstr "Certifikatets värdnamn stämmer inte"
 
-#: ../js/ui/telepathyClient.js:1426
+#: ../js/ui/telepathyClient.js:1430
 msgid "Certificate fingerprint mismatch"
 msgstr "Certifikatets fingeravtryck stämmer inte"
 
-#: ../js/ui/telepathyClient.js:1428
+#: ../js/ui/telepathyClient.js:1432
 msgid "Certificate self-signed"
 msgstr "Certifikatet är självsignerat"
 
-#: ../js/ui/telepathyClient.js:1430
+#: ../js/ui/telepathyClient.js:1434
 msgid "Status is set to offline"
 msgstr "Status är inställd till frånkopplad"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1436
 msgid "Encryption is not available"
 msgstr "Kryptering är inte tillgänglig"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1438
 msgid "Certificate is invalid"
 msgstr "Certifikatet är ogiltigt"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1440
 msgid "Connection has been refused"
 msgstr "Anslutningen har nekats"
 
-#: ../js/ui/telepathyClient.js:1438
+#: ../js/ui/telepathyClient.js:1442
 msgid "Connection can't be established"
 msgstr "Anslutningen kan inte etableras"
 
-#: ../js/ui/telepathyClient.js:1440
+#: ../js/ui/telepathyClient.js:1444
 msgid "Connection has been lost"
 msgstr "Anslutningen har förlorats"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1446
 msgid "This resource is already connected to the server"
 msgstr "Denna resurs är redan ansluten till servern"
 
-#: ../js/ui/telepathyClient.js:1444
+#: ../js/ui/telepathyClient.js:1448
 msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "Anslutningen har ersatts av en ny anslutning med samma resurs"
 
-#: ../js/ui/telepathyClient.js:1446
+#: ../js/ui/telepathyClient.js:1450
 msgid "The account already exists on the server"
 msgstr "Kontot finns redan på servern"
 
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1452
 msgid "Server is currently too busy to handle the connection"
 msgstr "Servern är för närvarande för upptagen för att hantera anslutningen"
 
-#: ../js/ui/telepathyClient.js:1450
+#: ../js/ui/telepathyClient.js:1454
 msgid "Certificate has been revoked"
 msgstr "Certifikatet har spärrats"
 
-#: ../js/ui/telepathyClient.js:1452
+#: ../js/ui/telepathyClient.js:1456
 msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "Certifikatet använder en osäker skifferalgoritm eller är kryptografiskt svagt"
 
-#: ../js/ui/telepathyClient.js:1454
+#: ../js/ui/telepathyClient.js:1458
 msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
 msgstr "Längden på serverns certifikat, eller djupet av serverns certifikatkedja, överstiger gränserna som satts av det kryptografiska biblioteket"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1463
+#: ../js/ui/telepathyClient.js:1467
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Anslutningen till %s misslyckades"
 
-#: ../js/ui/telepathyClient.js:1472
+#: ../js/ui/telepathyClient.js:1476
 msgid "Reconnect"
 msgstr "Återanslut"
 
-#: ../js/ui/telepathyClient.js:1473
+#: ../js/ui/telepathyClient.js:1477
 msgid "Edit account"
 msgstr "Redigera konto"
 
-#: ../js/ui/telepathyClient.js:1519
+#: ../js/ui/telepathyClient.js:1523
 msgid "Unknown reason"
 msgstr "Okänd anledning"
 
@@ -1585,6 +1574,12 @@ msgstr "Filsystem"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "%s has not emitted any errors."
+#~ msgstr "%s har inte skickat ut några fel."
+#~ msgid "Hide Errors"
+#~ msgstr "Dölj fel"
+#~ msgid "Show Errors"
+#~ msgstr "Visa fel"
 #~ msgid "%s has finished starting"
 #~ msgstr "%s har startat"
 #~ msgid "If true, display onscreen keyboard."
