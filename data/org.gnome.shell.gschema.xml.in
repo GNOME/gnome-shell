@@ -54,6 +54,10 @@
       <default>0</default>
       <_summary></_summary>
     </key>
+    <key name="saved-session-presence" type="i">
+      <default>0</default>
+      <_summary></_summary>
+    </key>
     <child name="clock" schema="org.gnome.shell.clock"/>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="recorder" schema="org.gnome.shell.recorder"/>

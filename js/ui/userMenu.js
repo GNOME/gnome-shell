@@ -158,10 +158,11 @@ IMStatusChooserItem.prototype = {
                             Lang.bind(this, this._changeIMStatus));
 
         this._presence = new GnomeSession.Presence();
-        this._presence.getStatus(Lang.bind(this, this._sessionStatusChanged));
         this._presence.connect('StatusChanged',
                                Lang.bind(this, this._sessionStatusChanged));
 
+        this._sessionPresenceRestored = false;
+        this._imPresenceRestored = false;
         this._currentPresence = undefined;
 
         this._accountMgr = Tp.AccountManager.dup()
@@ -267,11 +268,19 @@ IMStatusChooserItem.prototype = {
     },
 
     _IMStatusChanged: function(accountMgr, presence, status, message) {
+        if (!this._imPresenceRestored)
+            this._imPresenceRestored = true;
+
         if (presence == this._currentPresence)
             return;
 
         this._currentPresence = presence;
         this._setComboboxPresence(presence);
+
+        if (!this._sessionPresenceRestored) {
+            this._presence.getStatus(Lang.bind(this, this._sessionStatusChanged));
+            return;
+        }
 
         if (presence == Tp.ConnectionPresenceType.AVAILABLE)
             this._presence.setStatus(GnomeSession.PresenceStatus.AVAILABLE);
@@ -349,6 +358,20 @@ IMStatusChooserItem.prototype = {
     },
 
     _sessionStatusChanged: function(sessionPresence, sessionStatus) {
+        if (!this._imPresenceRestored)
+            return;
+
+        if (!this._sessionPresenceRestored) {
+            let savedStatus = global.settings.get_int('saved-session-presence');
+            if (sessionStatus != savedStatus) {
+                this._presence.setStatus(savedStatus);
+                return;
+            }
+            this._sessionPresenceRestored = true;
+        }
+
+        global.settings.set_int('saved-session-presence', sessionStatus);
+
         let [presence, s, msg] = this._accountMgr.get_most_available_presence();
         let newPresence, status;
 
