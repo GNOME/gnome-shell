@@ -108,6 +108,9 @@ stamp-test-interactive: Makefile
 		( echo "test-interactive $$test_bin" ) >> test-interactive.bat ; \
 	done \
 	&& cp *.bat $(top_srcdir)/build/win32/
+	
+../../build/win32/test-unit-names.h: test-unit-names.h
+	cp test-unit-names.h $(top_srcdir)/build/win32
 
 test-unit-names.h: stamp-test-unit-names
 	@true
