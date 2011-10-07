@@ -1585,7 +1585,7 @@ MessageTray.prototype = {
 
         summaryItemToRemove.actor.destroy();
 
-        if (needUpdate);
+        if (needUpdate)
             this._updateState();
     },
 
