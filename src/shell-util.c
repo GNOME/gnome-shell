@@ -327,7 +327,7 @@ shell_util_get_label_for_uri (const char *text_uri)
  * Look up the icon that should be associated with a given URI.  Handles
  * various special GNOME-internal cases like x-nautilus-search, etc.
  *
- * Return Value: (transfer none): A new #GIcon
+ * Return Value: (transfer full): A new #GIcon
  */
 GIcon *
 shell_util_get_icon_for_uri (const char *text_uri)
