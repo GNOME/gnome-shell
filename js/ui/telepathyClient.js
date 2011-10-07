@@ -257,7 +257,7 @@ Client.prototype = {
         // FIXME: We don't have a 'chat room' icon (bgo #653737) use
         // system-users for now as Empathy does.
         let source = new ApproverSource(dispatchOp, _("Invitation"),
-                                        Shell.util_icon_from_string('system-users'));
+                                        Gio.icon_new_for_string('system-users'));
         Main.messageTray.add(source);
 
         let notif = new RoomInviteNotification(source, dispatchOp, channel, contacts[0]);
@@ -325,8 +325,8 @@ Client.prototype = {
 
         // We got the TpContact
         let source = new ApproverSource(dispatchOp, _("Call"), isVideo ?
-                                        Shell.util_icon_from_string('camera-web') :
-                                        Shell.util_icon_from_string('audio-input-microphone'));
+                                        Gio.icon_new_for_string('camera-web') :
+                                        Gio.icon_new_for_string('audio-input-microphone'));
         Main.messageTray.add(source);
 
         let notif = new AudioVideoNotification(source, dispatchOp, channel, contacts[0], isVideo);

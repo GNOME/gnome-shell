@@ -395,22 +395,6 @@ shell_util_get_icon_for_uri (const char *text_uri)
   return g_themed_icon_new ("gtk-file");
 }
 
-/**
- * shell_util_icon_from_string:
- * @string: a stringified #GIcon
- *
- * A static method equivalent to g_icon_new_for_string, workaround
- * for GJS not being able to represent Gio.Icon (which is an interface,
- * not a class).
- *
- * Returns: (transfer full): the icon which is represented by @string
- */
-GIcon *
-shell_util_icon_from_string (const char *string, GError **error)
-{
-  return g_icon_new_for_string (string, error);
-}
-
 static void
 stop_pick (ClutterActor       *actor,
            const ClutterColor *color)

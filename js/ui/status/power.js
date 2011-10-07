@@ -155,7 +155,7 @@ Indicator.prototype = {
     _devicesChanged: function() {
         this._proxy.GetRemote('Icon', Lang.bind(this, function(icon, error) {
             if (icon) {
-                let gicon = Shell.util_icon_from_string (icon);
+                let gicon = Gio.icon_new_for_string(icon);
                 this.setGIcon(gicon);
                 this.actor.show();
             } else {
@@ -183,7 +183,7 @@ DeviceItem.prototype = {
         this._box = new St.BoxLayout({ style_class: 'popup-device-menu-item' });
         this._label = new St.Label({ text: this._deviceTypeToString(device_type) });
 
-        this._icon = new St.Icon({ gicon: Shell.util_icon_from_string(icon),
+        this._icon = new St.Icon({ gicon: Gio.icon_new_for_string(icon),
                                    icon_type: St.IconType.SYMBOLIC,
                                    style_class: 'popup-menu-icon' });
 
