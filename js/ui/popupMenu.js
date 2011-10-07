@@ -1019,6 +1019,11 @@ PopupMenuBase.prototype = {
         }
         if (menuItem instanceof PopupMenuSection) {
             this._connectSubMenuSignals(menuItem, menuItem);
+            menuItem._closingId = this.connect('open-state-changed',
+                function(self, open) {
+                    if (!open)
+                        menuItem.close(false);
+                });
             menuItem.connect('destroy', Lang.bind(this, function() {
                 menuItem.disconnect(menuItem._subMenuActivateId);
                 menuItem.disconnect(menuItem._subMenuActiveChangeId);
@@ -1418,9 +1423,10 @@ PopupMenuSection.prototype = {
         this.isOpen = true;
     },
 
-    // deliberately ignore any attempt to open() or close()
-    open: function(animate) { },
-    close: function() { },
+    // deliberately ignore any attempt to open() or close(), but emit the
+    // corresponding signal so children can still pick it up
+    open: function(animate) { this.emit('open-state-changed', true); },
+    close: function() { this.emit('open-state-changed', false); },
 }
 
 function PopupSubMenuMenuItem() {
