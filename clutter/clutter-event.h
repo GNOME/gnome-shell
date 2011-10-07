@@ -454,6 +454,7 @@ void                    clutter_event_set_scroll_direction      (ClutterEvent   
 ClutterScrollDirection  clutter_event_get_scroll_direction      (const ClutterEvent     *event);
 
 guint32                 clutter_keysym_to_unicode               (guint                   keyval);
+guint                   clutter_unicode_to_keysym               (guint32                 wc);
 
 guint32                 clutter_get_current_event_time          (void);
 const ClutterEvent *    clutter_get_current_event               (void);
