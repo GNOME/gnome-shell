@@ -120,7 +120,6 @@ test_texture_async_main (int argc, char *argv[])
 {
   gchar *path;
 
-  g_thread_init (NULL);
   clutter_threads_init ();
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
