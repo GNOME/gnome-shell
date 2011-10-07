@@ -105,6 +105,7 @@ struct _MetaWindow
   char *dbus_unique_name;
   char *dbus_object_path;
 
+  int hide_titlebar_when_maximized;
   int net_wm_pid;
   
   Window xtransient_for;
