@@ -119,7 +119,7 @@ static ClutterMainContext *ClutterCntx       = NULL;
 G_LOCK_DEFINE_STATIC (ClutterCntx);
 
 /* main lock and locking/unlocking functions */
-static GMutex *clutter_threads_mutex         = NULL;
+static GMutex clutter_threads_mutex;
 static GCallback clutter_threads_lock        = NULL;
 static GCallback clutter_threads_unlock      = NULL;
 
@@ -694,15 +694,13 @@ clutter_main (void)
 static void
 clutter_threads_impl_lock (void)
 {
-  if (G_LIKELY (clutter_threads_mutex != NULL))
-    g_mutex_lock (clutter_threads_mutex);
+  g_mutex_lock (&clutter_threads_mutex);
 }
 
 static void
 clutter_threads_impl_unlock (void)
 {
-  if (G_LIKELY (clutter_threads_mutex != NULL))
-    g_mutex_unlock (clutter_threads_mutex);
+  g_mutex_unlock (&clutter_threads_mutex);
 }
 
 /**
@@ -723,18 +721,10 @@ clutter_threads_impl_unlock (void)
 void
 clutter_threads_init (void)
 {
-  if (!g_thread_supported ())
-    g_error ("g_thread_init() must be called before clutter_threads_init()");
-
-  if (clutter_threads_mutex != NULL)
-    return;
-
-  clutter_threads_mutex = g_mutex_new ();
-
-  if (!clutter_threads_lock)
+  if (clutter_threads_lock == NULL)
     clutter_threads_lock = clutter_threads_impl_lock;
 
-  if (!clutter_threads_unlock)
+  if (clutter_threads_unlock == NULL)
     clutter_threads_unlock = clutter_threads_impl_unlock;
 }
 
