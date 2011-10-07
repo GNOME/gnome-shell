@@ -1202,6 +1202,7 @@ AudioVideoNotification.prototype = {
         this.setResident(true);
 
         this.addButton('reject', _("Reject"));
+        /* translators: this is a button label (verb), not a noun */
         this.addButton('answer', _("Answer"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
