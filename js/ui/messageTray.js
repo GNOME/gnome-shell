@@ -960,8 +960,10 @@ const Source = new Lang.Class({
 
     ICON_SIZE: 24,
 
-    _init: function(title) {
+    _init: function(title, iconName, iconType) {
         this.title = title;
+        this.iconName = iconName;
+        this.iconType = iconType;
 
         this.actor = new Shell.GenericContainer();
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -991,6 +993,8 @@ const Source = new Lang.Class({
         this.isMuted = false;
 
         this.notifications = [];
+
+        this._setSummaryIcon(this.createNotificationIcon());
     },
 
     _getPreferredWidth: function (actor, forHeight, alloc) {
@@ -1061,10 +1065,12 @@ const Source = new Lang.Class({
     },
 
     // Called to create a new icon actor (of size this.ICON_SIZE).
-    // Must be overridden by the subclass if you do not pass icons
-    // explicitly to the Notification() constructor.
+    // Provides a sane default implementation, override if you need
+    // something more fancy.
     createNotificationIcon: function() {
-        throw new Error('no implementation of createNotificationIcon in ' + this);
+        return new St.Icon({ icon_name: this.iconName,
+                             icon_type: this.iconType,
+                             icon_size: this.ICON_SIZE });
     },
 
     // Unlike createNotificationIcon, this always returns the same actor;
@@ -1115,16 +1121,14 @@ const Source = new Lang.Class({
     },
 
     //// Protected methods ////
-
-    // The subclass must call this at least once to set the summary icon.
     _setSummaryIcon: function(icon) {
         if (this._iconBin.child)
             this._iconBin.child.destroy();
         this._iconBin.child = icon;
     },
 
-    // Default implementation is to do nothing, but subclasses can override
     open: function(notification) {
+        this.emit('opened', notification);
     },
 
     destroyNonResidentNotifications: function() {
