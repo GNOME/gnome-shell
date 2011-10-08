@@ -818,6 +818,19 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       return FALSE;
     }
 
+  /* Update the real number of samples_per_pixel now that we have
+   * found an fbconfig... */
+  if (framebuffer->config.samples_per_pixel)
+    {
+      int samples;
+      int status = glx_renderer->glXGetFBConfigAttrib (xlib_renderer->xdpy,
+                                                       fbconfig,
+                                                       GLX_SAMPLES,
+                                                       &samples);
+      g_return_val_if_fail (status == Success, TRUE);
+      framebuffer->samples_per_pixel = samples;
+    }
+
   /* FIXME: We need to explicitly Select for ConfigureNotify events.
    * For foreign windows we need to be careful not to mess up any
    * existing event mask.

@@ -92,6 +92,9 @@
 #ifndef GL_DRAW_FRAMEBUFFER
 #define GL_DRAW_FRAMEBUFFER               0x8CA9
 #endif
+#ifndef GL_TEXTURE_SAMPLES_IMG
+#define GL_TEXTURE_SAMPLES_IMG            0x9136
+#endif
 
 typedef enum {
   _TRY_DEPTH_STENCIL = 1L<<0,
@@ -162,6 +165,8 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
   framebuffer->dirty_bitmasks   = TRUE;
 
   framebuffer->color_mask       = COGL_COLOR_MASK_ALL;
+
+  framebuffer->samples_per_pixel = 0;
 
   /* Initialise the clip stack */
   _cogl_clip_state_init (&framebuffer->clip_state);
@@ -941,6 +946,21 @@ try_creating_fbo (CoglOffscreen *offscreen,
       return FALSE;
     }
 
+  /* Update the real number of samples_per_pixel now that we have a
+   * complete framebuffer */
+  if (n_samples)
+    {
+      GLenum attachment = GL_COLOR_ATTACHMENT0;
+      GLenum pname = GL_TEXTURE_SAMPLES_IMG;
+      int texture_samples;
+
+      GE( ctx, glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
+                                                      attachment,
+                                                      pname,
+                                                      &texture_samples) );
+      fb->samples_per_pixel = texture_samples;
+    }
+
   return TRUE;
 }
 
@@ -1524,6 +1544,15 @@ CoglPixelFormat
 cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer)
 {
   return framebuffer->format;
+}
+
+int
+cogl_framebuffer_get_samples_per_pixel (CoglFramebuffer *framebuffer)
+{
+  if (framebuffer->allocated)
+    return framebuffer->samples_per_pixel;
+  else
+    return framebuffer->config.samples_per_pixel;
 }
 
 void

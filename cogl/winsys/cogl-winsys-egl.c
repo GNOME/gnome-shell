@@ -1251,6 +1251,18 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       return FALSE;
     }
 
+  /* Update the real number of samples_per_pixel now that we have
+   * found an egl_config... */
+  if (framebuffer->config.samples_per_pixel)
+    {
+      EGLint samples;
+      status = eglGetConfigAttrib (egl_renderer->edpy,
+                                   egl_config,
+                                   EGL_SAMPLES, &samples);
+      g_return_val_if_fail (status == EGL_TRUE, TRUE);
+      framebuffer->samples_per_pixel = samples;
+    }
+
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 
   /* FIXME: We need to explicitly Select for ConfigureNotify events.

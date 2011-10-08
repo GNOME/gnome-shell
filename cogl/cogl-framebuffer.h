@@ -326,6 +326,36 @@ void
 cogl_framebuffer_set_samples_per_pixel (CoglFramebuffer *framebuffer,
                                         int samples_per_pixel);
 
+#define cogl_framebuffer_get_samples_per_pixel \
+  cogl_framebuffer_get_samples_per_pixel_EXP
+/**
+ * cogl_framebuffer_get_samples_per_pixel:
+ * @framebuffer: A #CoglFramebuffer framebuffer
+ *
+ * Gets the number of points that are sampled per-pixel when
+ * rasterizing geometry. Usually by default this will return 0 which
+ * means that single-sample not multisample rendering has been chosen.
+ * When using a GPU supporting multisample rendering it's possible to
+ * increase the number of samples per pixel using
+ * cogl_framebuffer_set_samples_per_pixel().
+ *
+ * Calling cogl_framebuffer_get_samples_per_pixel() before the
+ * framebuffer has been allocated will simply return the value set
+ * using cogl_framebuffer_set_samples_per_pixel(). After the
+ * framebuffer has been allocated the value will reflect the actual
+ * number of samples that will be made by the GPU.
+ *
+ * Returns: The number of point samples made per pixel when
+ *          rasterizing geometry or 0 if single-sample rendering
+ *          has been chosen.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+int
+cogl_framebuffer_get_samples_per_pixel (CoglFramebuffer *framebuffer);
+
+
 #define cogl_framebuffer_resolve_samples \
   cogl_framebuffer_resolve_samples_EXP
 /**
