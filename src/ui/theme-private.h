@@ -723,8 +723,6 @@ typedef enum
   META_FRAME_PIECE_LAST
 } MetaFramePiece;
 
-#define N_GTK_STATES 5
-
 /**
  * How to draw a frame in a particular state (say, a focussed, non-maximised,
  * resizable frame). This corresponds closely to the <frame_style> tag

@@ -1339,7 +1339,6 @@ meta_color_spec_new_from_string (const char *str,
       spec = meta_color_spec_new (META_COLOR_SPEC_GTK);
       spec->data.gtk.state = state;
       spec->data.gtk.component = component;
-      g_assert (spec->data.gtk.state < N_GTK_STATES);
       g_assert (spec->data.gtk.component < META_GTK_COLOR_LAST);
     }
   else if (str[0] == 'b' && str[1] == 'l' && str[2] == 'e' && str[3] == 'n' &&
