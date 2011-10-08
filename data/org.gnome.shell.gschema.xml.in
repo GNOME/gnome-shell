@@ -51,7 +51,7 @@
       <_summary>History for the looking glass dialog</_summary>
     </key>
     <key name="saved-im-presence" type="i">
-      <default>0</default>
+      <default>1</default>
       <_summary></_summary>
     </key>
     <key name="saved-session-presence" type="i">
