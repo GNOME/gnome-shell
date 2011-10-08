@@ -703,6 +703,7 @@ Notification.prototype = {
         this._imageBin.opacity = 230;
         this._table.add_style_class_name('multi-line-notification');
         this._table.add_style_class_name('notification-with-image');
+        this._addBannerBody();
         this._updateLastColumnSettings();
         this._table.add(this._imageBin, { row: 1,
                                           col: 1,
