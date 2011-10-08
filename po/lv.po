@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-21 19:11+0000\n"
-"PO-Revision-Date: 2011-09-25 21:54+0300\n"
-"Last-Translator: Pēteris Krišjānis <pecisk@gmail.com>\n"
+"POT-Creation-Date: 2011-10-01 00:31+0000\n"
+"PO-Revision-Date: 2011-10-04 15:08+0300\n"
+"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -424,7 +424,7 @@ msgstr "%A, %d %B"
 #: ../js/ui/calendar.js:706
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %d %B, %Y"
+msgstr "%A, %d. %B, %Y."
 
 #: ../js/ui/calendar.js:716
 msgid "Today"
@@ -467,7 +467,7 @@ msgstr "Nesaistē"
 msgid "CONTACTS"
 msgstr "Kontakti"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1204
 msgid "Remove"
 msgstr "Izņemt"
 
@@ -483,11 +483,11 @@ msgstr "Atvērt kalendāru"
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:183
 msgid "%a %b %e, %R:%S"
-msgstr "%a %e %b, %R:%S"
+msgstr "%a %e. %b, %R:%S"
 
 #: ../js/ui/dateMenu.js:184
 msgid "%a %b %e, %R"
-msgstr "%a %e %b, %R"
+msgstr "%a %e. %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
@@ -503,11 +503,11 @@ msgstr "%a %R"
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:196
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %e %b, %l:%M:%S %p"
+msgstr "%a %e. %b, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:197
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %e %b, %l:%M %p"
+msgstr "%a %e. %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
@@ -524,7 +524,7 @@ msgstr "%a %l:%M %p"
 #.
 #: ../js/ui/dateMenu.js:213
 msgid "%A %B %e, %Y"
-msgstr "%A %e %B, %Y"
+msgstr "%A %e. %B, %Y."
 
 #: ../js/ui/docDisplay.js:16
 msgid "RECENT ITEMS"
@@ -607,7 +607,7 @@ msgstr "Instalēt"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Lejupielādēt un instalēt '%s' no extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:529 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastatūra"
 
@@ -615,41 +615,57 @@ msgstr "Tastatūra"
 msgid "No extensions installed"
 msgstr "Nav instalētu paplašinājumu"
 
-#: ../js/ui/lookingGlass.js:691
+#. Translators: argument is an extension UUID.
+#: ../js/ui/lookingGlass.js:700
+#, c-format
+msgid "%s has not emitted any errors."
+msgstr "%s nav izdevis nevienu kļūdu."
+
+#: ../js/ui/lookingGlass.js:706
+#| msgid "Error"
+msgid "Hide Errors"
+msgstr "Slēpt kļūdas"
+
+#: ../js/ui/lookingGlass.js:710 ../js/ui/lookingGlass.js:760
+#| msgid "Error"
+msgid "Show Errors"
+msgstr "Rādīt kļūdas"
+
+#: ../js/ui/lookingGlass.js:719
 msgid "Enabled"
 msgstr "Aktivēta"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:693 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:721 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Deaktivēta"
 
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:723
 msgid "Error"
 msgstr "Kļūda"
 
-#: ../js/ui/lookingGlass.js:697
+#: ../js/ui/lookingGlass.js:725
 msgid "Out of date"
 msgstr "Nav aktuāls"
 
-#: ../js/ui/lookingGlass.js:699
+#: ../js/ui/lookingGlass.js:727
 msgid "Downloading"
 msgstr "Lejupielādē"
 
-#: ../js/ui/lookingGlass.js:724
+#: ../js/ui/lookingGlass.js:748
 msgid "View Source"
 msgstr "Skatīt avotu"
 
-#: ../js/ui/lookingGlass.js:730
+#: ../js/ui/lookingGlass.js:754
 msgid "Web Page"
 msgstr "Tīmekļa lapa"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1197
 msgid "Open"
 msgstr "Atvērt"
 
-#: ../js/ui/messageTray.js:2372
+#: ../js/ui/messageTray.js:2406
 msgid "System Information"
 msgstr "Sistēmas informācija"
 
@@ -818,7 +834,7 @@ msgstr "Parole:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -967,7 +983,7 @@ msgstr "Vienmēr piešķirt pieeju"
 msgid "Grant this time only"
 msgstr "Piešķirt tikai šoreiz"
 
-#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1196
+#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1200
 msgid "Reject"
 msgstr "Noraidīt"
 
@@ -1240,39 +1256,39 @@ msgid "Invitation"
 msgstr "Ielūgums"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:325
+#: ../js/ui/telepathyClient.js:327
 msgid "Call"
 msgstr "Izsaukums"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:353
+#: ../js/ui/telepathyClient.js:357
 msgid "File Transfer"
 msgstr "Failu pārraide"
 
-#: ../js/ui/telepathyClient.js:434
+#: ../js/ui/telepathyClient.js:438
 msgid "Subscription request"
 msgstr "Pierakstīšanās lūgums"
 
-#: ../js/ui/telepathyClient.js:470
+#: ../js/ui/telepathyClient.js:474
 msgid "Connection error"
 msgstr "Savienojuma kļūda"
 
-#: ../js/ui/telepathyClient.js:733
+#: ../js/ui/telepathyClient.js:737
 #, c-format
 msgid "%s is online."
 msgstr "%s ir tiešsaistē."
 
-#: ../js/ui/telepathyClient.js:738
+#: ../js/ui/telepathyClient.js:742
 #, c-format
 msgid "%s is offline."
 msgstr "%s ir nesaistē."
 
-#: ../js/ui/telepathyClient.js:741
+#: ../js/ui/telepathyClient.js:745
 #, c-format
 msgid "%s is away."
 msgstr "%s\" ir projām."
 
-#: ../js/ui/telepathyClient.js:744
+#: ../js/ui/telepathyClient.js:748
 #, c-format
 msgid "%s is busy."
 msgstr "%s\" ir aizņemts."
@@ -1280,35 +1296,35 @@ msgstr "%s\" ir aizņemts."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:978
+#: ../js/ui/telepathyClient.js:982
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Sūtīts <b>%X</b> <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:984
+#: ../js/ui/telepathyClient.js:988
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr "Sūtīts <b>%A</b>, <b>%d %B</b>"
+msgstr "Sūtīts <b>%A</b>, <b>%d. %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:989
+#: ../js/ui/telepathyClient.js:993
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr "Sūtīts <b>%A</b>, <b>%d %B</b>, %Y"
+msgstr "Sūtīts <b>%A</b>, <b>%d. %B</b>, %Y."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1031
+#: ../js/ui/telepathyClient.js:1035
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s tagad saucas %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1144
 #, c-format
 msgid "Invitation to %s"
 msgstr "Ielūgums uz %s"
@@ -1316,34 +1332,34 @@ msgstr "Ielūgums uz %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1148
+#: ../js/ui/telepathyClient.js:1152
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s jūs ielūdz pievienoties %s"
 
-#: ../js/ui/telepathyClient.js:1150 ../js/ui/telepathyClient.js:1239
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1154 ../js/ui/telepathyClient.js:1243
+#: ../js/ui/telepathyClient.js:1347
 msgid "Decline"
 msgstr "Noraidīt"
 
-#: ../js/ui/telepathyClient.js:1151 ../js/ui/telepathyClient.js:1240
-#: ../js/ui/telepathyClient.js:1344
+#: ../js/ui/telepathyClient.js:1155 ../js/ui/telepathyClient.js:1244
+#: ../js/ui/telepathyClient.js:1348
 msgid "Accept"
 msgstr "Pieņemt"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1184
+#: ../js/ui/telepathyClient.js:1188
 #, c-format
 msgid "Video call from %s"
 msgstr "Video zvans no %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1187
+#: ../js/ui/telepathyClient.js:1191
 #, c-format
 msgid "Call from %s"
 msgstr "Zvans no %s"
 
-#: ../js/ui/telepathyClient.js:1197
+#: ../js/ui/telepathyClient.js:1201
 msgid "Answer"
 msgstr "Atbildēt"
 
@@ -1352,112 +1368,112 @@ msgstr "Atbildēt"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1233
+#: ../js/ui/telepathyClient.js:1237
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sūta jums %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1312
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s vēlas saņemt atļauju redzēt tavu tiešsaistes statusu"
 
-#: ../js/ui/telepathyClient.js:1406
+#: ../js/ui/telepathyClient.js:1410
 msgid "Network error"
 msgstr "Tīkla kļūda"
 
-#: ../js/ui/telepathyClient.js:1408
+#: ../js/ui/telepathyClient.js:1412
 msgid "Authentication failed"
 msgstr "Autentifikācija neizdevās"
 
-#: ../js/ui/telepathyClient.js:1410
+#: ../js/ui/telepathyClient.js:1414
 msgid "Encryption error"
 msgstr "Šifrēšanas kļūda"
 
-#: ../js/ui/telepathyClient.js:1412
+#: ../js/ui/telepathyClient.js:1416
 msgid "Certificate not provided"
 msgstr "Nav sertifikāta"
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1418
 msgid "Certificate untrusted"
 msgstr "Neuzticams sertifikāts"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1420
 msgid "Certificate expired"
 msgstr "Sertifikāts izbeidzies"
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1422
 msgid "Certificate not activated"
 msgstr "Sertifikāts nav aktivizēts"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1424
 msgid "Certificate hostname mismatch"
 msgstr "Sertifikātu servera nosaukumu nesakritība"
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1426
 msgid "Certificate fingerprint mismatch"
 msgstr "Sertifikāta digitālo nospiedumu nesakritība"
 
-#: ../js/ui/telepathyClient.js:1424
+#: ../js/ui/telepathyClient.js:1428
 msgid "Certificate self-signed"
 msgstr "Sertifikāts ir pašparakstīts"
 
-#: ../js/ui/telepathyClient.js:1426
+#: ../js/ui/telepathyClient.js:1430
 msgid "Status is set to offline"
 msgstr "Statuss ir \"nesaistē\""
 
-#: ../js/ui/telepathyClient.js:1428
+#: ../js/ui/telepathyClient.js:1432
 msgid "Encryption is not available"
 msgstr "Šifrēšana nav pieejama"
 
-#: ../js/ui/telepathyClient.js:1430
+#: ../js/ui/telepathyClient.js:1434
 msgid "Certificate is invalid"
 msgstr "Sertifikāts nav derīgs"
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1436
 msgid "Connection has been refused"
 msgstr "Savienojums tika atteikts"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1438
 msgid "Connection can't be established"
 msgstr "Nevar izveidot savienojumu"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1440
 msgid "Connection has been lost"
 msgstr "Savienojums pārtrūka"
 
-#: ../js/ui/telepathyClient.js:1438
+#: ../js/ui/telepathyClient.js:1442
 msgid "This resource is already connected to the server"
 msgstr "Šis resurs jau ir savienots ar serveri"
 
-#: ../js/ui/telepathyClient.js:1440
+#: ../js/ui/telepathyClient.js:1444
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Savienojums tika aizvietots ar jaunu savienojumu, kurš izmanto to pašu "
 "resursu"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1446
 msgid "The account already exists on the server"
 msgstr "Uz servera šāds konts jau ir"
 
-#: ../js/ui/telepathyClient.js:1444
+#: ../js/ui/telepathyClient.js:1448
 msgid "Server is currently too busy to handle the connection"
 msgstr "Serveris ir pārāk aizņemts, lai apstrādātu savienojumu"
 
-#: ../js/ui/telepathyClient.js:1446
+#: ../js/ui/telepathyClient.js:1450
 msgid "Certificate has been revoked"
 msgstr "Sertifikāts tika atsaukts"
 
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1452
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Sertifikāts izmanto nedrošu šifrēšanas algoritmu vai arī ir kriptogrāfiski "
 "vājš"
 
-#: ../js/ui/telepathyClient.js:1450
+#: ../js/ui/telepathyClient.js:1454
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1467,20 +1483,20 @@ msgstr ""
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1459
+#: ../js/ui/telepathyClient.js:1463
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Savienojums ar %s neizdevās"
 
-#: ../js/ui/telepathyClient.js:1468
+#: ../js/ui/telepathyClient.js:1472
 msgid "Reconnect"
 msgstr "Savienoties atkal"
 
-#: ../js/ui/telepathyClient.js:1469
+#: ../js/ui/telepathyClient.js:1473
 msgid "Edit account"
 msgstr "Rediģēt kontu"
 
-#: ../js/ui/telepathyClient.js:1515
+#: ../js/ui/telepathyClient.js:1519
 msgid "Unknown reason"
 msgstr "Nezināms iemesls"
 
@@ -1549,12 +1565,7 @@ msgstr "Ierakstiet, lai meklētu..."
 msgid "Search"
 msgstr "Meklēt"
 
-#: ../js/ui/windowAttentionHandler.js:39
-#, c-format
-msgid "%s has finished starting"
-msgstr "%s ir beidzis startēties"
-
-#: ../js/ui/windowAttentionHandler.js:41
+#: ../js/ui/windowAttentionHandler.js:35
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' ir gatavs"
@@ -1627,6 +1638,9 @@ msgstr "Failu sistēma"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "%s has finished starting"
+#~ msgstr "%s ir beidzis startēties"
 
 #~ msgid "If true, display onscreen keyboard."
 #~ msgstr "Ja patiess, rādīt ekrāna tastatūru."
