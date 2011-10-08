@@ -1612,6 +1612,7 @@ process_mouse_move_resize_grab (MetaDisplay *display,
 
       /* Restore the original tile mode */
       window->tile_mode = display->grab_tile_mode;
+      window->tile_monitor_number = display->grab_tile_monitor_number;
 
       /* End move or resize and restore to original state.  If the
        * window was a maximized window that had been "shaken loose" we

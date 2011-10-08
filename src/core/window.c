@@ -965,6 +965,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->on_all_workspaces = FALSE;
   window->on_all_workspaces_requested = FALSE;
   window->tile_mode = META_TILE_NONE;
+  window->tile_monitor_number = -1;
   window->shaded = FALSE;
   window->initially_iconic = FALSE;
   window->minimized = FALSE;
@@ -4358,6 +4359,9 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
         }
     }
 
+  if (window->tile_mode != META_TILE_NONE)
+    window->tile_monitor_number = new->number;
+
   /* This will eventually reach meta_window_update_monitor that
    * will send leave/enter-monitor events. The old != new monitor
    * check will always fail (due to the new monitor_infos set) so
@@ -5015,6 +5019,9 @@ meta_window_move_to_monitor (MetaWindow  *window,
   meta_window_get_work_area_for_monitor (window,
                                          monitor,
                                          &new_area);
+
+  if (window->tile_mode != META_TILE_NONE)
+    window->tile_monitor_number = monitor;
 
   meta_window_move_between_rects (window, &old_area, &new_area);
 }
@@ -8431,11 +8438,15 @@ update_move (MetaWindow  *window,
       /* For side-by-side tiling we are interested in the inside vertical
        * edges of the work area of the monitor where the pointer is located,
        * and in the outside top edge for maximized tiling.
-       * Also see comment in meta_window_get_current_tile_area().
        *
        * For maximized tiling we use the outside edge instead of the
        * inside edge, because we don't want to force users to maximize
        * windows they are placing near the top of their screens.
+       *
+       * The "current" idea of meta_window_get_work_area_current_monitor() and
+       * meta_screen_get_current_monitor() is slightly different: the former
+       * refers to the monitor which contains the largest part of the window,
+       * the latter to the one where the pointer is located.
        */
       monitor = meta_screen_get_current_monitor (window->screen);
       meta_window_get_work_area_for_monitor (window,
@@ -8457,6 +8468,9 @@ update_move (MetaWindow  *window,
         window->tile_mode = META_TILE_MAXIMIZED;
       else
         window->tile_mode = META_TILE_NONE;
+
+      if (window->tile_mode != META_TILE_NONE)
+        window->tile_monitor_number = monitor->number;
     }
 
   /* shake loose (unmaximize) maximized or tiled window if dragged beyond
@@ -9271,17 +9285,18 @@ void
 meta_window_get_current_tile_area (MetaWindow    *window,
                                    MetaRectangle *tile_area)
 {
-  const MetaMonitorInfo *monitor;
+  int tile_monitor_number;
 
   g_return_if_fail (window->tile_mode != META_TILE_NONE);
 
-  /* The definition of "current" of meta_window_get_work_area_current_monitor()
-   * and meta_screen_get_current_monitor() is slightly different: the former
-   * refers to the monitor which contains the largest part of the window, the
-   * latter to the one where the pointer is located.
-   */
-  monitor = meta_screen_get_current_monitor (window->screen);
-  meta_window_get_work_area_for_monitor (window, monitor->number, tile_area);
+  tile_monitor_number = window->tile_monitor_number;
+  if (tile_monitor_number < 0)
+    {
+      meta_warning ("%s called with an invalid monitor number; using 0 instead\n", G_STRFUNC);
+      tile_monitor_number = 0;
+    }
+
+  meta_window_get_work_area_for_monitor (window, tile_monitor_number, tile_area);
 
   if (window->tile_mode == META_TILE_LEFT  ||
       window->tile_mode == META_TILE_RIGHT)

@@ -129,6 +129,7 @@ struct _MetaWindow
    * this is the current mode. If not, it is the mode which will be
    * requested after the window grab is released */
   guint tile_mode : 2;
+  int tile_monitor_number;
 
   /* Whether we're shaded */
   guint shaded : 1;
