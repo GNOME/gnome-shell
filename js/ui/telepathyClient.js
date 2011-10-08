@@ -365,8 +365,9 @@ const Client = new Lang.Class({
 
     _ensureSubscriptionSource: function() {
         if (this._subscriptionSource == null) {
-            this._subscriptionSource = new MultiNotificationSource(
-                _("Subscription request"), 'gtk-dialog-question');
+            this._subscriptionSource = new MessageTray.Source(_("Subscription request"),
+                                                              'gtk-dialog-question',
+                                                              St.IconType.FULLCOLOR);
             Main.messageTray.add(this._subscriptionSource);
             this._subscriptionSource.connect('destroy', Lang.bind(this, function () {
                 this._subscriptionSource = null;
@@ -401,8 +402,9 @@ const Client = new Lang.Class({
 
     _ensureAccountSource: function() {
         if (this._accountSource == null) {
-            this._accountSource = new MultiNotificationSource(
-                _("Connection error"), 'gtk-dialog-error');
+            this._accountSource = new MessageTray.Source(_("Connection error"),
+                                                         'gtk-dialog-error',
+                                                         St.IconType.FULLCOLOR);
             Main.messageTray.add(this._accountSource);
             this._accountSource.connect('destroy', Lang.bind(this, function () {
                 this._accountSource = null;
@@ -418,13 +420,13 @@ const ChatSource = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function(account, conn, channel, contact, client) {
-        this.parent(contact.get_alias());
-
         this.isChat = true;
 
         this._account = account;
         this._contact = contact;
         this._client = client;
+
+        this.parent(contact.get_alias());
 
         this._pendingMessages = [];
 
@@ -445,8 +447,6 @@ const ChatSource = new Lang.Class({
         this._sentId = this._channel.connect('message-sent', Lang.bind(this, this._messageSent));
         this._receivedId = this._channel.connect('message-received', Lang.bind(this, this._messageReceived));
         this._pendingId = this._channel.connect('pending-message-removed', Lang.bind(this, this._pendingRemoved));
-
-        this._setSummaryIcon(this.createNotificationIcon());
 
         this._notifyAliasId = this._contact.connect('notify::alias', Lang.bind(this, this._updateAlias));
         this._notifyAvatarId = this._contact.connect('notify::avatar-file', Lang.bind(this, this._updateAvatarIcon));
@@ -1002,10 +1002,9 @@ const ApproverSource = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function(dispatchOp, text, gicon) {
-        this.parent(text);
-
         this._gicon = gicon;
-        this._setSummaryIcon(this.createNotificationIcon());
+
+        this.parent(text);
 
         this._dispatchOp = dispatchOp;
 
@@ -1028,7 +1027,6 @@ const ApproverSource = new Lang.Class({
 
     createNotificationIcon: function() {
         return new St.Icon({ gicon: this._gicon,
-                             icon_type: St.IconType.FULLCOLOR,
                              icon_size: this.ICON_SIZE });
     }
 });
@@ -1148,40 +1146,6 @@ const FileTransferNotification = new Lang.Class({
             }
             this.destroy();
         }));
-    }
-});
-
-// A notification source that can embed multiple notifications
-const MultiNotificationSource = new Lang.Class({
-    Name: 'MultiNotificationSource',
-    Extends: MessageTray.Source,
-
-    _init: function(title, icon) {
-        this.parent(title);
-
-        this._icon = icon;
-        this._setSummaryIcon(this.createNotificationIcon());
-        this._nbNotifications = 0;
-    },
-
-    notify: function(notification) {
-        this.parent(notification);
-
-        this._nbNotifications += 1;
-
-        // Display the source while there is at least one notification
-        notification.connect('destroy', Lang.bind(this, function () {
-            this._nbNotifications -= 1;
-
-            if (this._nbNotifications == 0)
-                this.destroy();
-        }));
-    },
-
-    createNotificationIcon: function() {
-        return new St.Icon({ gicon: Gio.icon_new_for_string(this._icon),
-                             icon_type: St.IconType.FULLCOLOR,
-                             icon_size: this.ICON_SIZE });
     }
 });
 

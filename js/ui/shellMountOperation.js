@@ -243,6 +243,7 @@ const ShellMountPasswordSource = new Lang.Class({
         this.parent(strings[0]);
 
         this._notification = new ShellMountPasswordNotification(this, strings, icon, reaskPassword);
+        this._setSummaryIcon(icon);
 
         // add ourselves as a source, and popup the notification
         Main.messageTray.add(this);

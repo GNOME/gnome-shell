@@ -638,5 +638,10 @@ const Source = new Lang.Class({
         }
 
         this.parent();
+    },
+
+    createNotificationIcon: function() {
+        // We set the summary icon ourselves.
+        return null;
     }
 });

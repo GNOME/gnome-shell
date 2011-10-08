@@ -541,16 +541,8 @@ const KeyboardSource = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function(keyboard) {
-        this.parent(_("Keyboard"));
         this._keyboard = keyboard;
-
-        this._setSummaryIcon(this.createNotificationIcon());
-    },
-
-    createNotificationIcon: function() {
-        return new St.Icon({ icon_name: 'input-keyboard',
-                             icon_type: St.IconType.SYMBOLIC,
-                             icon_size: this.ICON_SIZE });
+        this.parent(_("Keyboard"), 'input-keyboard', St.IconType.SYMBOLIC);
     },
 
     handleSummaryClick: function() {

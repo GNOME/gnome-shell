@@ -1644,7 +1644,10 @@ const NMApplet = new Lang.Class({
 
     _ensureSource: function() {
         if (!this._source) {
-            this._source = new NMMessageTraySource();
+            this._source = new MessageTray.Source(_("Network Manager"),
+                                                  'network-transmit-receive',
+                                                  St.IconType.SYMBOLIC);
+
             this._source.connect('destroy', Lang.bind(this, function() {
                 this._source = null;
             }));
@@ -2098,20 +2101,5 @@ const NMApplet = new Lang.Class({
             this._mobileUpdateDevice = null;
             this._mobileUpdateId = 0;
         }
-    }
-});
-
-const NMMessageTraySource = new Lang.Class({
-    Name: 'NMMessageTraySource',
-    Extends: MessageTray.Source,
-
-    _init: function() {
-        this.parent(_("Network Manager"));
-
-        let icon = new St.Icon({ icon_name: 'network-transmit-receive',
-                                 icon_type: St.IconType.SYMBOLIC,
-                                 icon_size: this.ICON_SIZE
-                               });
-        this._setSummaryIcon(icon);
     }
 });

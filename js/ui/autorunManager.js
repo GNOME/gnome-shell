@@ -262,12 +262,11 @@ const AutorunResidentSource = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function() {
-        this.parent(_("Removable Devices"));
+        this.parent(_("Removable Devices"), 'media-removable', St.IconType.FULLCOLOR);
 
         this._mounts = [];
 
         this._notification = new AutorunResidentNotification(this);
-        this._setSummaryIcon(this.createNotificationIcon());
     },
 
     addMount: function(mount, apps) {
@@ -310,12 +309,6 @@ const AutorunResidentSource = new Lang.Class({
             Main.messageTray.add(this);
             this.pushNotification(this._notification);
         }
-    },
-
-    createNotificationIcon: function() {
-        return new St.Icon ({ icon_name: 'media-removable',
-                              icon_type: St.IconType.FULLCOLOR,
-                              icon_size: this.ICON_SIZE });
     }
 });
 
@@ -500,10 +493,10 @@ const AutorunTransientSource = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function(mount, apps) {
-        this.parent(mount.get_name());
-
         this.mount = mount;
         this.apps = apps;
+
+        this.parent(mount.get_name());
 
         this._notification = new AutorunTransientNotification(this);
         this._setSummaryIcon(this.createNotificationIcon());

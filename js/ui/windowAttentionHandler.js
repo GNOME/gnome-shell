@@ -53,10 +53,10 @@ const Source = new Lang.Class({
     Extends: MessageTray.Source,
 
     _init: function(app, window) {
-        this.parent(app.get_name());
         this._window = window;
         this._app = app;
-        this._setSummaryIcon(this.createNotificationIcon());
+
+        this.parent(app.get_name());
 
         this.signalIDs = [];
         this.signalIDs.push(this._window.connect('notify::demands-attention', Lang.bind(this, function() { this.destroy(); })));
