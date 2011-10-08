@@ -471,6 +471,8 @@ cogl_blend_string_error_quark (void);
  * CoglError:
  * @COGL_ERROR_UNSUPPORTED: You tried to use a feature or
  *    configuration not currently available.
+ * @COGL_ERROR_NO_MEMORY: You tried to allocate a resource
+ *    such as a texture and there wasn't enough memory.
  *
  * Error enumeration for Cogl
  *
@@ -480,7 +482,7 @@ cogl_blend_string_error_quark (void);
  * <itemizedlist>
  *  <listitem><para>You've tried to use a feature that is not
  *   advertised by cogl_get_features(). This could happen if you create
- *   a non-sliced texture with a non-power-of-two size when
+ *   a 2d texture with a non-power-of-two size when
  *   %COGL_FEATURE_TEXTURE_NPOT is not advertised.</para></listitem>
  *  <listitem><para>The GPU can not handle the configuration you have
  *   requested. An example might be if you try to use too many texture
@@ -493,9 +495,11 @@ cogl_blend_string_error_quark (void);
  * this enum should also be considered experimental.
  *
  * Since: 1.4
+ * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_ERROR >*/
-  COGL_ERROR_UNSUPPORTED
+  COGL_ERROR_UNSUPPORTED,
+  COGL_ERROR_NO_MEMORY
 } CoglError;
 
 GQuark

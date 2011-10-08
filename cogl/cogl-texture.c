@@ -405,10 +405,15 @@ cogl_texture_new_with_size (unsigned int     width,
 
   /* If it fails resort to sliced textures */
   if (tex == NULL)
-    tex = COGL_TEXTURE (_cogl_texture_2d_sliced_new_with_size (width,
-                                                               height,
-                                                               flags,
-                                                               internal_format));
+    {
+      int max_waste = flags & COGL_TEXTURE_NO_SLICING ? -1 : COGL_TEXTURE_MAX_WASTE;
+      tex = COGL_TEXTURE (cogl_texture_2d_sliced_new_with_size (ctx,
+                                                                width,
+                                                                height,
+                                                                max_waste,
+                                                                internal_format,
+                                                                NULL));
+    }
 
   return tex;
 }
@@ -471,9 +476,10 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
     return tex;
 
   /* Otherwise create a sliced texture */
-  return _cogl_texture_2d_sliced_new_from_bitmap (bitmap,
-                                                  flags,
-                                                  internal_format);
+  return
+    COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_bitmap (bitmap,
+                                                           flags,
+                                                           internal_format));
 }
 
 CoglTexture *
@@ -538,13 +544,13 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 #endif
 
   if (x_pot_waste != 0 || y_pot_waste != 0)
-    return _cogl_texture_2d_sliced_new_from_foreign (gl_handle,
-                                                     gl_target,
-                                                     width,
-                                                     height,
-                                                     x_pot_waste,
-                                                     y_pot_waste,
-                                                     format);
+    return COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_foreign (gl_handle,
+                                                                   gl_target,
+                                                                   width,
+                                                                   height,
+                                                                   x_pot_waste,
+                                                                   y_pot_waste,
+                                                                   format));
   else
     {
       _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);

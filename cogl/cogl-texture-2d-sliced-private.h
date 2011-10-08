@@ -21,17 +21,15 @@
  *
  */
 
-#ifndef __COGL_TEXTURE_2D_SLICED_H
-#define __COGL_TEXTURE_2D_SLICED_H
+#ifndef __COGL_TEXTURE_2D_SLICED_PRIVATE_H
+#define __COGL_TEXTURE_2D_SLICED_PRIVATE_H
 
 #include "cogl-bitmap-private.h"
-#include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-texture-2d-sliced.h"
 
-#define COGL_TEXTURE_2D_SLICED(tex) ((CoglTexture2DSliced *)tex)
-
-typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
+#include <glib.h>
 
 struct _CoglTexture2DSliced
 {
@@ -48,13 +46,7 @@ struct _CoglTexture2DSliced
 GQuark
 _cogl_handle_texture_2d_sliced_get_type (void);
 
-CoglHandle
-_cogl_texture_2d_sliced_new_with_size (unsigned int     width,
-                                       unsigned int     height,
-                                       CoglTextureFlags flags,
-                                       CoglPixelFormat  internal_format);
-
-CoglHandle
+CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           GLenum           gl_target,
                                           GLuint           width,
@@ -63,9 +55,9 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           GLuint           y_pot_waste,
                                           CoglPixelFormat  format);
 
-CoglHandle
+CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
                                          CoglTextureFlags flags,
                                          CoglPixelFormat  internal_format);
 
-#endif /* __COGL_TEXTURE_2D_SLICED_H */
+#endif /* __COGL_TEXTURE_2D_SLICED_PRIVATE_H */
