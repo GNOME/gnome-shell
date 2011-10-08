@@ -78,6 +78,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-texture-3d.h             \
 	$(srcdir)/cogl-texture-2d.h             \
 	$(srcdir)/cogl-texture-2d-sliced.h      \
+	$(srcdir)/cogl-meta-texture.h		\
 	$(srcdir)/cogl-types.h 			\
 	$(srcdir)/cogl-vertex-buffer.h 		\
 	$(srcdir)/cogl-index-buffer.h 		\
@@ -295,6 +296,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-atlas.c                          \
 	$(srcdir)/cogl-atlas-texture-private.h          \
 	$(srcdir)/cogl-atlas-texture.c                  \
+	$(srcdir)/cogl-meta-texture.c			\
 	$(srcdir)/cogl-blit.h				\
 	$(srcdir)/cogl-blit.c				\
 	$(srcdir)/cogl-spans.h				\

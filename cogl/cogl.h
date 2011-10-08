@@ -82,6 +82,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-texture-2d.h>
 #include <cogl/cogl-texture-3d.h>
 #include <cogl/cogl-texture-2d-sliced.h>
+#include <cogl/cogl-meta-texture.h>
 #include <cogl/cogl-index-buffer.h>
 #include <cogl/cogl-attribute-buffer.h>
 #include <cogl/cogl-indices.h>

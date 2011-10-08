@@ -37,6 +37,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-attribute-private.h"
 #include "cogl-private.h"
+#include "cogl-meta-texture.h"
 
 #include <string.h>
 #include <math.h>
@@ -139,6 +140,8 @@ validate_first_layer_cb (CoglPipeline *pipeline,
   ValidateFirstLayerState *state = user_data;
   CoglPipelineWrapMode clamp_to_edge =
     COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+  CoglPipelineWrapMode wrap_s;
+  CoglPipelineWrapMode wrap_t;
 
   /* We can't use hardware repeat so we need to set clamp to edge
    * otherwise it might pull in edge pixels from the other side. By
@@ -184,15 +187,16 @@ validate_first_layer_cb (CoglPipeline *pipeline,
  */
 /* TODO: support multitexturing */
 static void
-_cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
+_cogl_texture_quad_multiple_primitives (CoglTexture *texture,
                                         CoglPipeline *pipeline,
-                                        gboolean      clamp_s,
-                                        gboolean      clamp_t,
-                                        const float  *position,
-                                        float         tx_1,
-                                        float         ty_1,
-                                        float         tx_2,
-                                        float         ty_2)
+                                        int layer_index,
+                                        gboolean check_clamp_s,
+                                        gboolean check_clamp_t,
+                                        const float *position,
+                                        float tx_1,
+                                        float ty_1,
+                                        float tx_2,
+                                        float ty_2)
 {
   TextureSlicedQuadState state;
   gboolean tex_virtual_flipped_x;
@@ -200,12 +204,17 @@ _cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
   gboolean quad_flipped_x;
   gboolean quad_flipped_y;
   ValidateFirstLayerState validate_first_layer_state;
+  CoglPipelineWrapMode wrap_s, wrap_t;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  wrap_s = cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index);
+  wrap_t = cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index);
+
   /* If the wrap mode is clamp to edge then we'll recursively draw the
      stretched part and replace the coordinates */
-  if (clamp_s && tx_1 != tx_2)
+  if (check_clamp_s &&
+      wrap_s == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE && tx_1 != tx_2)
     {
       float *replacement_position = g_newa (float, 4);
       float old_tx_1 = tx_1, old_tx_2 = tx_2;
@@ -225,7 +234,8 @@ _cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
                (tx_1 - old_tx_1) / (old_tx_2 - old_tx_1)),
               position[3] };
           _cogl_texture_quad_multiple_primitives (texture, pipeline,
-                                                  FALSE, clamp_t,
+                                                  layer_index,
+                                                  FALSE, TRUE,
                                                   tmp_position,
                                                   tx_1, ty_1, tx_1, ty_2);
           replacement_position[0] = tmp_position[2];
@@ -240,7 +250,8 @@ _cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
                (tx_2 - old_tx_1) / (old_tx_2 - old_tx_1)),
               position[1], position[2], position[3] };
           _cogl_texture_quad_multiple_primitives (texture, pipeline,
-                                                  FALSE, clamp_t,
+                                                  layer_index,
+                                                  FALSE, TRUE,
                                                   tmp_position,
                                                   tx_2, ty_1, tx_2, ty_2);
           replacement_position[2] = tmp_position[0];
@@ -253,7 +264,8 @@ _cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
       position = replacement_position;
     }
 
-  if (clamp_t && ty_1 != ty_2)
+  if (check_clamp_t &&
+      wrap_t == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE && ty_1 != ty_2)
     {
       float *replacement_position = g_newa (float, 4);
       float old_ty_1 = ty_1, old_ty_2 = ty_2;
@@ -272,7 +284,8 @@ _cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
                (position[3] - position[1]) *
                (ty_1 - old_ty_1) / (old_ty_2 - old_ty_1)) };
           _cogl_texture_quad_multiple_primitives (texture, pipeline,
-                                                  clamp_s, FALSE,
+                                                  layer_index,
+                                                  TRUE, FALSE,
                                                   tmp_position,
                                                   tx_1, ty_1, tx_2, ty_1);
           replacement_position[1] = tmp_position[3];
@@ -288,7 +301,8 @@ _cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
                (ty_2 - old_ty_1) / (old_ty_2 - old_ty_1)),
               position[2], position[3] };
           _cogl_texture_quad_multiple_primitives (texture, pipeline,
-                                                  clamp_s, FALSE,
+                                                  layer_index,
+                                                  TRUE, FALSE,
                                                   tmp_position,
                                                   tx_1, ty_2, tx_2, ty_2);
           replacement_position[3] = tmp_position[1];
@@ -354,10 +368,23 @@ _cogl_texture_quad_multiple_primitives (CoglTexture  *texture,
   state.v_to_q_scale_x = fabs (state.quad_len_x / (tx_2 - tx_1));
   state.v_to_q_scale_y = fabs (state.quad_len_y / (ty_2 - ty_1));
 
-  _cogl_texture_foreach_sub_texture_in_region (texture,
-                                               tx_1, ty_1, tx_2, ty_2,
-                                               log_quad_sub_textures_cb,
-                                               &state);
+  /* cogl_meta_texture_foreach_in_region only allows WRAP_MODE_REPEAT.
+   * If CLAMP_TO_EDGE is in use then we have already dealt with
+   * emulation for that and we can just pass WRAP_MODE_REPEAT here...
+   */
+  if (wrap_s == COGL_PIPELINE_WRAP_MODE_AUTOMATIC ||
+      wrap_s == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
+    wrap_s = COGL_PIPELINE_WRAP_MODE_REPEAT;
+  if (wrap_t == COGL_PIPELINE_WRAP_MODE_AUTOMATIC ||
+      wrap_t == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
+    wrap_t = COGL_PIPELINE_WRAP_MODE_REPEAT;
+
+  cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (texture),
+                                       tx_1, ty_1, tx_2, ty_2,
+                                       wrap_s,
+                                       wrap_t,
+                                       log_quad_sub_textures_cb,
+                                       &state);
 
   if (validate_first_layer_state.override_pipeline)
     cogl_object_unref (validate_first_layer_state.override_pipeline);
@@ -760,7 +787,6 @@ _cogl_rectangles_with_multitexture_coords (
       CoglTexture *texture;
       const float default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       const float *tex_coords;
-      gboolean clamp_s, clamp_t;
 
       if (!state.all_use_sliced_quad_fallback)
         {
@@ -788,18 +814,12 @@ _cogl_rectangles_with_multitexture_coords (
       else
         tex_coords = default_tex_coords;
 
-      clamp_s = (cogl_pipeline_get_layer_wrap_mode_s (pipeline,
-                                                      state.first_layer) ==
-                 COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
-      clamp_t = (cogl_pipeline_get_layer_wrap_mode_t (pipeline,
-                                                      state.first_layer) ==
-                 COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
-
       COGL_NOTE (DRAW, "Drawing Tex Quad (Multi-Prim Mode)");
 
       _cogl_texture_quad_multiple_primitives (texture,
                                               pipeline,
-                                              clamp_s, clamp_t,
+                                              state.first_layer,
+                                              TRUE, TRUE,
                                               rects[i].position,
                                               tex_coords[0],
                                               tex_coords[1],

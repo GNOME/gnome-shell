@@ -225,19 +225,21 @@ _cogl_atlas_texture_foreach_sub_texture_in_region (
                                        float virtual_ty_1,
                                        float virtual_tx_2,
                                        float virtual_ty_2,
-                                       CoglTextureSliceCallback callback,
+                                       CoglMetaTextureCallback callback,
                                        void *user_data)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
   /* Forward on to the sub texture */
-  _cogl_texture_foreach_sub_texture_in_region (atlas_tex->sub_texture,
-                                               virtual_tx_1,
-                                               virtual_ty_1,
-                                               virtual_tx_2,
-                                               virtual_ty_2,
-                                               callback,
-                                               user_data);
+  cogl_meta_texture_foreach_in_region (atlas_tex->sub_texture,
+                                       virtual_tx_1,
+                                       virtual_ty_1,
+                                       virtual_tx_2,
+                                       virtual_ty_2,
+                                       COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                       COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                       callback,
+                                       user_data);
 }
 
 static void

@@ -27,16 +27,9 @@
 #include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
+#include "cogl-spans.h"
 
 typedef struct _CoglTextureVtable     CoglTextureVtable;
-
-typedef void (*CoglTextureSliceCallback) (CoglTexture *texture,
-                                          const float *slice_coords,
-                                          const float *virtual_coords,
-                                          void *user_data);
-
-typedef void (* CoglTextureManualRepeatCallback) (const float *coords,
-                                                  void *user_data);
 
 /* Encodes three possibiloities result of transforming a quad */
 typedef enum {
@@ -92,7 +85,7 @@ struct _CoglTextureVtable
                                           float virtual_ty_1,
                                           float virtual_tx_2,
                                           float virtual_ty_2,
-                                          CoglTextureSliceCallback callback,
+                                          CoglMetaTextureCallback callback,
                                           void *user_data);
 
   int (* get_max_waste) (CoglTexture *tex);
@@ -189,15 +182,6 @@ _cogl_texture_register_texture_type (GQuark type);
    _cogl_texture_register_texture_type (_cogl_handle_                   \
                                         ## type_name ## _get_type ()))
 
-void
-_cogl_texture_foreach_sub_texture_in_region (CoglTexture *texture,
-                                             float virtual_tx_1,
-                                             float virtual_ty_1,
-                                             float virtual_tx_2,
-                                             float virtual_ty_2,
-                                             CoglTextureSliceCallback callback,
-                                             void *user_data);
-
 gboolean
 _cogl_texture_can_hardware_repeat (CoglTexture *texture);
 
@@ -256,17 +240,6 @@ _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
 void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
 
-/* Utility function for implementing manual repeating. Even texture
-   backends that always support hardware repeating need this because
-   when foreach_sub_texture_in_region is invoked Cogl will set the
-   wrap mode to GL_CLAMP_TO_EDGE so hardware repeating can't be
-   done */
-void
-_cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
-                                      float tx_1, float ty_1,
-                                      float tx_2, float ty_2,
-                                      void *user_data);
-
 /* Utility function to use as a fallback for getting the data of any
    texture via the framebuffer */
 
@@ -288,5 +261,19 @@ _cogl_texture_get_associated_framebuffers (CoglTexture *texture);
 
 void
 _cogl_texture_flush_journal_rendering (CoglTexture *texture);
+
+void
+_cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
+                                       int n_x_spans,
+                                       CoglSpan *y_spans,
+                                       int n_y_spans,
+                                       CoglTexture **textures,
+                                       float *virtual_coords,
+                                       float x_normalize_factor,
+                                       float y_normalize_factor,
+                                       CoglPipelineWrapMode wrap_x,
+                                       CoglPipelineWrapMode wrap_y,
+                                       CoglMetaTextureCallback callback,
+                                       void *user_data);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

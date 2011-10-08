@@ -56,14 +56,33 @@ COGL_TEXTURE_DEFINE (Texture2DSliced, texture_2d_sliced);
 
 static const CoglTextureVtable cogl_texture_2d_sliced_vtable;
 
-/* To differentiate between texture coordinates of a specific, real, slice
- * texture and the texture coordinates of the composite, sliced texture, the
- * coordinates of the sliced texture are called "virtual" coordinates and the
- * coordinates of slices are called "slice" coordinates. */
-/* This function lets you iterate all the slices that lie within the given
- * virtual coordinates of the parent sliced texture. */
-/* Note: no guarantee is given about the order in which the slices will be
- * visited */
+typedef struct _ForeachData
+{
+  CoglMetaTextureCallback callback;
+  void *user_data;
+  float x_normalize_factor;
+  float y_normalize_factor;
+} ForeachData;
+
+static void
+re_normalize_sub_texture_coords_cb (CoglTexture *sub_texture,
+                                    const float *sub_texture_coords,
+                                    const float *meta_coords,
+                                    void *user_data)
+{
+  ForeachData *data = user_data;
+  float re_normalized_coords[4] =
+    {
+      sub_texture_coords[0] * data->x_normalize_factor,
+      sub_texture_coords[1] * data->y_normalize_factor,
+      sub_texture_coords[2] * data->x_normalize_factor,
+      sub_texture_coords[3] * data->y_normalize_factor
+    };
+
+  data->callback (sub_texture, re_normalized_coords, meta_coords,
+                  data->user_data);
+}
+
 static void
 _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
                                        CoglTexture *tex,
@@ -71,103 +90,44 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
                                        float virtual_ty_1,
                                        float virtual_tx_2,
                                        float virtual_ty_2,
-                                       CoglTextureSliceCallback callback,
+                                       CoglMetaTextureCallback callback,
                                        void *user_data)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
-  float width = tex_2ds->width;
-  float height = tex_2ds->height;
-  CoglSpanIter iter_x;
-  CoglSpanIter iter_y;
-  float slice_coords[4];
+  CoglSpan *x_spans = (CoglSpan *)tex_2ds->slice_x_spans->data;
+  CoglSpan *y_spans = (CoglSpan *)tex_2ds->slice_y_spans->data;
+  CoglTexture **textures = (CoglTexture **)tex_2ds->slice_textures->data;
+  float un_normalized_coords[4];
+  ForeachData data;
 
-  /* Slice spans are stored in denormalized coordinates, and this is what
-   * the _cogl_span_iter_* funcs expect to be given, so we scale the given
-   * virtual coordinates by the texture size to denormalize.
+  /* NB: its convenient for us to store non-normalized coordinates in
+   * our CoglSpans but that means we need to un-normalize the incoming
+   * virtual coordinates and make sure we re-normalize the coordinates
+   * before calling the given callback.
    */
-  /* XXX: I wonder if it's worth changing how we store spans so we can avoid
-   * the need to denormalize here */
-  virtual_tx_1 *= width;
-  virtual_ty_1 *= height;
-  virtual_tx_2 *= width;
-  virtual_ty_2 *= height;
 
-  /* Iterate the y axis of the virtual rectangle */
-  for (_cogl_span_iter_begin (&iter_y,
-                              tex_2ds->slice_y_spans,
-                              height,
-                              virtual_ty_1,
-                              virtual_ty_2);
-       !_cogl_span_iter_end (&iter_y);
-       _cogl_span_iter_next (&iter_y))
-    {
-      if (iter_y.flipped)
-        {
-          slice_coords[1] = iter_y.intersect_end;
-          slice_coords[3] = iter_y.intersect_start;
-        }
-      else
-        {
-          slice_coords[1] = iter_y.intersect_start;
-          slice_coords[3] = iter_y.intersect_end;
-        }
+  data.callback = callback;
+  data.user_data = user_data;
+  data.x_normalize_factor = 1.0f / tex_2ds->width;
+  data.y_normalize_factor = 1.0f / tex_2ds->height;
 
-      /* Localize slice texture coordinates */
-      slice_coords[1] -= iter_y.pos;
-      slice_coords[3] -= iter_y.pos;
+  un_normalized_coords[0] = virtual_tx_1 * data.x_normalize_factor;
+  un_normalized_coords[1] = virtual_ty_1 * data.y_normalize_factor;
+  un_normalized_coords[2] = virtual_tx_2 * data.x_normalize_factor;
+  un_normalized_coords[3] = virtual_ty_2 * data.y_normalize_factor;
 
-      /* Normalize slice texture coordinates */
-      slice_coords[1] /= iter_y.span->size;
-      slice_coords[3] /= iter_y.span->size;
-
-      /* Iterate the x axis of the virtual rectangle */
-      for (_cogl_span_iter_begin (&iter_x,
-                                  tex_2ds->slice_x_spans,
-                                  width,
-                                  virtual_tx_1,
-                                  virtual_tx_2);
-	   !_cogl_span_iter_end (&iter_x);
-	   _cogl_span_iter_next (&iter_x))
-        {
-          CoglTexture2D *slice_tex;
-          float normalized_virtual_coords[4];
-
-          if (iter_x.flipped)
-            {
-              slice_coords[0] = iter_x.intersect_end;
-              slice_coords[2] = iter_x.intersect_start;
-            }
-          else
-            {
-              slice_coords[0] = iter_x.intersect_start;
-              slice_coords[2] = iter_x.intersect_end;
-            }
-
-	  /* Localize slice texture coordinates */
-          slice_coords[0] -= iter_x.pos;
-          slice_coords[2] -= iter_x.pos;
-
-          /* Normalize slice texture coordinates */
-          slice_coords[0] /= iter_x.span->size;
-          slice_coords[2] /= iter_x.span->size;
-
-	  /* Pluck out the cogl texture for this slice */
-          slice_tex = g_array_index (tex_2ds->slice_textures, CoglTexture2D *,
-				     iter_y.index *
-                                     tex_2ds->slice_x_spans->len +
-                                     iter_x.index);
-
-          normalized_virtual_coords[0] = iter_x.intersect_start / width;
-          normalized_virtual_coords[1] = iter_y.intersect_start / height;
-          normalized_virtual_coords[2] = iter_x.intersect_end / width;
-          normalized_virtual_coords[3] = iter_y.intersect_end / height;
-
-          callback (COGL_TEXTURE (slice_tex),
-                    slice_coords,
-                    normalized_virtual_coords,
-                    user_data);
-	}
-    }
+  _cogl_texture_spans_foreach_in_region (x_spans,
+                                         tex_2ds->slice_x_spans->len,
+                                         y_spans,
+                                         tex_2ds->slice_y_spans->len,
+                                         textures,
+                                         un_normalized_coords,
+                                         1, /* x_normalize_factor */
+                                         1, /* y_normalize_factor */
+                                         COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                         COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                         re_normalize_sub_texture_coords_cb,
+                                         &data);
 }
 
 static guint8 *
@@ -455,10 +415,12 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
   /* Iterate vertical spans */
   for (source_y = src_y,
        _cogl_span_iter_begin (&y_iter,
-                              tex_2ds->slice_y_spans,
+                              (CoglSpan *)tex_2ds->slice_y_spans->data,
+                              tex_2ds->slice_y_spans->len,
                               tex_2ds->height,
                               dst_y,
-                              dst_y + height);
+                              dst_y + height,
+                              COGL_PIPELINE_WRAP_MODE_REPEAT);
 
        !_cogl_span_iter_end (&y_iter);
 
@@ -471,10 +433,12 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
       /* Iterate horizontal spans */
       for (source_x = src_x,
            _cogl_span_iter_begin (&x_iter,
-                                  tex_2ds->slice_x_spans,
+                                  (CoglSpan *)tex_2ds->slice_x_spans->data,
+                                  tex_2ds->slice_x_spans->len,
                                   tex_2ds->width,
                                   dst_x,
-                                  dst_x + width);
+                                  dst_x + width,
+                                  COGL_PIPELINE_WRAP_MODE_REPEAT);
 
            !_cogl_span_iter_end (&x_iter);
 

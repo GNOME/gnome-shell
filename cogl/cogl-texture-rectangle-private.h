@@ -52,6 +52,9 @@ struct _CoglTextureRectangle
   gboolean        is_foreign;
 };
 
+gboolean
+_cogl_is_texture_rectangle (void *object);
+
 GQuark
 _cogl_handle_texture_rectangle_get_type (void);
 

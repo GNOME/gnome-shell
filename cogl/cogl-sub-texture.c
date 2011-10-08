@@ -36,6 +36,7 @@
 #include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-texture-driver.h"
+#include "cogl-texture-rectangle-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -47,155 +48,88 @@ COGL_TEXTURE_INTERNAL_DEFINE (SubTexture, sub_texture);
 static const CoglTextureVtable cogl_sub_texture_vtable;
 
 static void
-_cogl_sub_texture_map_range (float *t1, float *t2,
-                             int sub_offset,
-                             int sub_size,
-                             int full_size)
+_cogl_sub_texture_unmap_quad (CoglSubTexture *sub_tex,
+                              float *coords)
 {
-  float t1_frac, t1_int, t2_frac, t2_int;
-
-  t1_frac = modff (*t1, &t1_int);
-  t2_frac = modff (*t2, &t2_int);
-
-  if (t1_frac < 0.0f)
+  /* NB: coords[] come in as non-normalized if sub_tex->full_texture
+   * is a CoglTextureRectangle otherwhise they are normalized. The
+   * coordinates we write out though must always be normalized.
+   *
+   * NB: sub_tex->sub_x/y/width/height are in non-normalized
+   * coordinates.
+   */
+  if (_cogl_is_texture_rectangle (sub_tex->full_texture))
     {
-      t1_frac += 1.0f;
-      t1_int -= 1.0f;
-    }
-  if (t2_frac < 0.0f)
-    {
-      t2_frac += 1.0f;
-      t2_int -= 1.0f;
-    }
-
-  /* If one of the coordinates is zero we need to make sure it is
-     still greater than the other coordinate if it was originally so
-     we'll flip it to the other side  */
-  if (*t1 < *t2)
-    {
-      if (t2_frac == 0.0f)
-        {
-          t2_frac = 1.0f;
-          t2_int -= 1.0f;
-        }
+      coords[0] = (coords[0] - sub_tex->sub_x) / sub_tex->sub_width;
+      coords[1] = (coords[1] - sub_tex->sub_y) / sub_tex->sub_height;
+      coords[2] = (coords[2] - sub_tex->sub_x) / sub_tex->sub_width;
+      coords[3] = (coords[3] - sub_tex->sub_y) / sub_tex->sub_height;
     }
   else
     {
-      if (t1_frac == 0.0f)
-        {
-          t1_frac = 1.0f;
-          t1_int -= 1.0f;
-        }
+      float width = cogl_texture_get_width (sub_tex->full_texture);
+      float height = cogl_texture_get_height (sub_tex->full_texture);
+      coords[0] = (coords[0] * width - sub_tex->sub_x) / sub_tex->sub_width;
+      coords[1] = (coords[1] * height - sub_tex->sub_y) / sub_tex->sub_height;
+      coords[2] = (coords[2] * width - sub_tex->sub_x) / sub_tex->sub_width;
+      coords[3] = (coords[3] * height - sub_tex->sub_y) / sub_tex->sub_height;
     }
-
-  /* Convert the fractional part leaving the integer part intact */
-  t1_frac = (sub_offset + t1_frac * sub_size) / full_size;
-  *t1 = t1_frac + t1_int;
-
-  t2_frac = (sub_offset + t2_frac * sub_size) / full_size;
-  *t2 = t2_frac + t2_int;
 }
 
 static void
 _cogl_sub_texture_map_quad (CoglSubTexture *sub_tex,
                             float *coords)
 {
-  unsigned int full_width = cogl_texture_get_width (sub_tex->full_texture);
-  unsigned int full_height = cogl_texture_get_height (sub_tex->full_texture);
+  /* NB: coords[] always come in as normalized coordinates but may go
+   * out as non-normalized if sub_tex->full_texture is a
+   * CoglTextureRectangle.
+   *
+   * NB: sub_tex->sub_x/y/width/height are in non-normalized
+   * coordinates.
+   */
 
-  _cogl_sub_texture_map_range (coords + 0, coords + 2,
-                               sub_tex->sub_x, sub_tex->sub_width,
-                               full_width);
-  _cogl_sub_texture_map_range (coords + 1, coords + 3,
-                               sub_tex->sub_y, sub_tex->sub_height,
-                               full_height);
-}
-
-/* Maps from the texture coordinates of the full texture to the
-   texture coordinates of the sub texture */
-static float
-_cogl_sub_texture_unmap_coord (float t,
-                               int sub_offset,
-                               int sub_size,
-                               int full_size)
-{
-  float frac_part, int_part;
-
-  /* Convert the fractional part leaving the integer part in tact */
-  frac_part = modff (t, &int_part);
-
-  if (cogl_util_float_signbit (frac_part))
-    frac_part = ((1.0f + frac_part) * full_size -
-                 sub_offset - sub_size) / sub_size;
+  if (_cogl_is_texture_rectangle (sub_tex->full_texture))
+    {
+      coords[0] = coords[0] * sub_tex->sub_width + sub_tex->sub_x;
+      coords[1] = coords[1] * sub_tex->sub_height + sub_tex->sub_y;
+      coords[2] = coords[2] * sub_tex->sub_width + sub_tex->sub_x;
+      coords[3] = coords[3] * sub_tex->sub_height + sub_tex->sub_y;
+    }
   else
-    frac_part = (frac_part * full_size - sub_offset) / sub_size;
-
-  return frac_part + int_part;
-}
-
-static void
-_cogl_sub_texture_unmap_coords (CoglSubTexture *sub_tex,
-                                float *s,
-                                float *t)
-{
-  unsigned int full_width = cogl_texture_get_width (sub_tex->full_texture);
-  unsigned int full_height = cogl_texture_get_height (sub_tex->full_texture);
-
-  *s = _cogl_sub_texture_unmap_coord (*s, sub_tex->sub_x, sub_tex->sub_width,
-                                      full_width);
-  *t = _cogl_sub_texture_unmap_coord (*t, sub_tex->sub_y, sub_tex->sub_height,
-                                      full_height);
+    {
+      float width = cogl_texture_get_width (sub_tex->full_texture);
+      float height = cogl_texture_get_height (sub_tex->full_texture);
+      coords[0] = (coords[0] * sub_tex->sub_width + sub_tex->sub_x) / width;
+      coords[1] = (coords[1] * sub_tex->sub_height + sub_tex->sub_y) / height;
+      coords[2] = (coords[2] * sub_tex->sub_width + sub_tex->sub_x) / width;
+      coords[3] = (coords[3] * sub_tex->sub_height + sub_tex->sub_y) / height;
+    }
 }
 
 typedef struct _CoglSubTextureForeachData
 {
   CoglSubTexture *sub_tex;
-  CoglTextureSliceCallback callback;
+  CoglMetaTextureCallback callback;
   void *user_data;
 } CoglSubTextureForeachData;
 
 static void
-_cogl_sub_texture_foreach_cb (CoglTexture *texture,
-                              const float *slice_coords,
-                              const float *full_virtual_coords,
-                              void *user_data)
+unmap_coords_cb (CoglTexture *slice_texture,
+                 const float *slice_texture_coords,
+                 const float *meta_coords,
+                 void *user_data)
 {
   CoglSubTextureForeachData *data = user_data;
-  float virtual_coords[4];
+  float unmapped_coords[4];
 
-  memcpy (virtual_coords, full_virtual_coords, sizeof (virtual_coords));
-  /* Convert the virtual coords from the full-texture space to the sub
-     texture space */
-  _cogl_sub_texture_unmap_coords (data->sub_tex,
-                                  &virtual_coords[0],
-                                  &virtual_coords[1]);
-  _cogl_sub_texture_unmap_coords (data->sub_tex,
-                                  &virtual_coords[2],
-                                  &virtual_coords[3]);
+  memcpy (unmapped_coords, meta_coords, sizeof (unmapped_coords));
 
-  data->callback (texture,
-                  slice_coords, virtual_coords,
+  _cogl_sub_texture_unmap_quad (data->sub_tex, unmapped_coords);
+
+  data->callback (slice_texture,
+                  slice_texture_coords,
+                  unmapped_coords,
                   data->user_data);
-}
-
-static void
-_cogl_sub_texture_manual_repeat_cb (const float *coords,
-                                    void *user_data)
-{
-  CoglSubTextureForeachData *data = user_data;
-  float mapped_coords[4];
-
-  memcpy (mapped_coords, coords, sizeof (mapped_coords));
-
-  _cogl_sub_texture_map_quad (data->sub_tex, mapped_coords);
-
-  _cogl_texture_foreach_sub_texture_in_region (data->sub_tex->full_texture,
-                                               mapped_coords[0],
-                                               mapped_coords[1],
-                                               mapped_coords[2],
-                                               mapped_coords[3],
-                                               _cogl_sub_texture_foreach_cb,
-                                               user_data);
 }
 
 static void
@@ -205,20 +139,46 @@ _cogl_sub_texture_foreach_sub_texture_in_region (
                                        float virtual_ty_1,
                                        float virtual_tx_2,
                                        float virtual_ty_2,
-                                       CoglTextureSliceCallback callback,
+                                       CoglMetaTextureCallback callback,
                                        void *user_data)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
-  CoglSubTextureForeachData data;
+  CoglTexture *full_texture = sub_tex->full_texture;
+  float mapped_coords[4] =
+    { virtual_tx_1, virtual_ty_1, virtual_tx_2, virtual_ty_2};
+  float virtual_coords[4] =
+    { virtual_tx_1, virtual_ty_1, virtual_tx_2, virtual_ty_2};
 
-  data.sub_tex = sub_tex;
-  data.callback = callback;
-  data.user_data = user_data;
+  /* map the virtual coordinates to ->full_texture coordinates */
+  _cogl_sub_texture_map_quad (sub_tex, mapped_coords);
 
-  _cogl_texture_iterate_manual_repeats (_cogl_sub_texture_manual_repeat_cb,
-                                        virtual_tx_1, virtual_ty_1,
-                                        virtual_tx_2, virtual_ty_2,
-                                        &data);
+  /* TODO: Add something like cogl_is_low_level_texture() */
+  if (cogl_is_texture_2d (full_texture) ||
+      _cogl_is_texture_rectangle (full_texture))
+    {
+      callback (sub_tex->full_texture,
+                mapped_coords,
+                virtual_coords,
+                user_data);
+    }
+  else
+    {
+      CoglSubTextureForeachData data;
+
+      data.sub_tex = sub_tex;
+      data.callback = callback;
+      data.user_data = user_data;
+
+      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (full_texture),
+                                           mapped_coords[0],
+                                           mapped_coords[1],
+                                           mapped_coords[2],
+                                           mapped_coords[3],
+                                           COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                           COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                           unmap_coords_cb,
+                                           &data);
+    }
 }
 
 static void

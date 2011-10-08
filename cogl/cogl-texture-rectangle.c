@@ -59,85 +59,6 @@ COGL_TEXTURE_INTERNAL_DEFINE (TextureRectangle, texture_rectangle);
 
 static const CoglTextureVtable cogl_texture_rectangle_vtable;
 
-typedef struct _CoglTextureRectangleManualRepeatData
-{
-  CoglTextureRectangle *tex_rect;
-  CoglTextureSliceCallback callback;
-  void *user_data;
-} CoglTextureRectangleManualRepeatData;
-
-static void
-_cogl_texture_rectangle_wrap_coords (float t_1, float t_2,
-                                     float *out_t_1, float *out_t_2)
-{
-  float int_part;
-
-  /* Wrap t_1 and t_2 to the range [0,1] */
-
-  modff (t_1 < t_2 ? t_1 : t_2, &int_part);
-  t_1 -= int_part;
-  t_2 -= int_part;
-  if (cogl_util_float_signbit (int_part))
-    {
-      *out_t_1 = 1.0f + t_1;
-      *out_t_2 = 1.0f + t_2;
-    }
-  else
-    {
-      *out_t_1 = t_1;
-      *out_t_2 = t_2;
-    }
-}
-
-static void
-_cogl_texture_rectangle_manual_repeat_cb (const float *coords,
-                                          void *user_data)
-{
-  CoglTextureRectangleManualRepeatData *data = user_data;
-  float slice_coords[4];
-
-  _cogl_texture_rectangle_wrap_coords (coords[0], coords[2],
-                                       slice_coords + 0, slice_coords + 2);
-  _cogl_texture_rectangle_wrap_coords (coords[1], coords[3],
-                                       slice_coords + 1, slice_coords + 3);
-
-  slice_coords[0] *= data->tex_rect->width;
-  slice_coords[1] *= data->tex_rect->height;
-  slice_coords[2] *= data->tex_rect->width;
-  slice_coords[3] *= data->tex_rect->height;
-
-  data->callback (COGL_TEXTURE (data->tex_rect),
-                  slice_coords,
-                  coords,
-                  data->user_data);
-}
-
-static void
-_cogl_texture_rectangle_foreach_sub_texture_in_region (
-                                           CoglTexture *tex,
-                                           float virtual_tx_1,
-                                           float virtual_ty_1,
-                                           float virtual_tx_2,
-                                           float virtual_ty_2,
-                                           CoglTextureSliceCallback callback,
-                                           void *user_data)
-{
-  CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
-  CoglTextureRectangleManualRepeatData data;
-
-  data.tex_rect = tex_rect;
-  data.callback = callback;
-  data.user_data = user_data;
-
-  /* We need to implement manual repeating because if Cogl is calling
-     this function then it will set the wrap mode to GL_CLAMP_TO_EDGE
-     and hardware repeating can't be done */
-  _cogl_texture_iterate_manual_repeats
-    (_cogl_texture_rectangle_manual_repeat_cb,
-     virtual_tx_1, virtual_ty_1, virtual_tx_2, virtual_ty_2,
-     &data);
-}
-
 static gboolean
 can_use_wrap_mode (GLenum wrap_mode)
 {
@@ -653,7 +574,7 @@ cogl_texture_rectangle_vtable =
   {
     _cogl_texture_rectangle_set_region,
     _cogl_texture_rectangle_get_data,
-    _cogl_texture_rectangle_foreach_sub_texture_in_region,
+    NULL, /* foreach_sub_texture_in_region */
     _cogl_texture_rectangle_get_max_waste,
     _cogl_texture_rectangle_is_sliced,
     _cogl_texture_rectangle_can_hardware_repeat,
