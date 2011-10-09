@@ -289,9 +289,11 @@ SearchTab.prototype = {
     _onCapturedEvent: function(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS) {
             let source = event.get_source();
-            if (source != this._text && this._text.text == '') {
+            if (source != this._text && this._text.text == '' &&
+                !Main.layoutManager.keyboardBox.contains(source)) {
                 // the user clicked outside after activating the entry, but
-                // with no search term entered - cancel the search
+                // with no search term entered and no keyboard button pressed
+                // - cancel the search
                 this._reset();
             }
         }
