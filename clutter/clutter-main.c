@@ -2937,6 +2937,8 @@ clutter_get_font_flags (void)
  * Return value: (transfer none): a #ClutterInputDevice, or %NULL
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Use clutter_device_manager_get_device() instead.
  */
 ClutterInputDevice *
 clutter_get_input_device_for_id (gint id_)

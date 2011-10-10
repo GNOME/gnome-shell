@@ -169,9 +169,9 @@ void             clutter_clear_glyph_cache           (void);
 void             clutter_set_font_flags              (ClutterFontFlags flags);
 ClutterFontFlags clutter_get_font_flags              (void);
 
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 ClutterInputDevice *clutter_get_input_device_for_id  (gint id_);
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
                                                       gint           id_);
 void             clutter_ungrab_pointer_for_device   (gint id_);
