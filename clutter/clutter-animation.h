@@ -114,9 +114,6 @@ gboolean             clutter_animation_get_loop        (ClutterAnimation     *an
 void                 clutter_animation_set_timeline    (ClutterAnimation     *animation,
                                                         ClutterTimeline      *timeline);
 ClutterTimeline *    clutter_animation_get_timeline    (ClutterAnimation     *animation);
-void                 clutter_animation_set_alpha       (ClutterAnimation     *animation,
-                                                        ClutterAlpha         *alpha);
-ClutterAlpha *       clutter_animation_get_alpha       (ClutterAnimation     *animation);
 
 ClutterAnimation *   clutter_animation_bind            (ClutterAnimation     *animation,
                                                         const gchar          *property_name,
@@ -138,6 +135,13 @@ ClutterInterval     *clutter_animation_get_interval    (ClutterAnimation     *an
                                                         const gchar          *property_name);
 void                 clutter_animation_completed       (ClutterAnimation     *animation);
 
+CLUTTER_DEPRECATED_FOR(clutter_timeline_set_progress_mode and clutter_animation_set_timeline)
+void                 clutter_animation_set_alpha       (ClutterAnimation     *animation,
+                                                        ClutterAlpha         *alpha);
+
+CLUTTER_DEPRECATED_FOR(clutter_animation_get_timeline and clutter_timeline_get_progress_mode)
+ClutterAlpha *       clutter_animation_get_alpha       (ClutterAnimation     *animation);
+
 ClutterAnimation *   clutter_actor_animate               (ClutterActor         *actor,
                                                           gulong                mode,
                                                           guint                 duration,
@@ -148,11 +152,6 @@ ClutterAnimation *   clutter_actor_animate_with_timeline (ClutterActor         *
                                                           ClutterTimeline      *timeline,
                                                           const gchar          *first_property_name,
                                                           ...) G_GNUC_NULL_TERMINATED;
-ClutterAnimation *   clutter_actor_animate_with_alpha    (ClutterActor         *actor,
-                                                          ClutterAlpha         *alpha,
-                                                          const gchar          *first_property_name,
-                                                          ...) G_GNUC_NULL_TERMINATED;
-
 ClutterAnimation *   clutter_actor_animatev               (ClutterActor         *actor,
                                                            gulong                mode,
                                                            guint                 duration,
@@ -165,15 +164,22 @@ ClutterAnimation *   clutter_actor_animate_with_timelinev (ClutterActor         
                                                            gint                  n_properties,
                                                            const gchar * const   properties[],
                                                            const GValue         *values);
+
+ClutterAnimation *   clutter_actor_get_animation          (ClutterActor         *actor);
+void                 clutter_actor_detach_animation       (ClutterActor         *actor);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate_with_timeline)
+ClutterAnimation *   clutter_actor_animate_with_alpha    (ClutterActor         *actor,
+                                                          ClutterAlpha         *alpha,
+                                                          const gchar          *first_property_name,
+                                                          ...) G_GNUC_NULL_TERMINATED;
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate_with_timelinev)
 ClutterAnimation *   clutter_actor_animate_with_alphav    (ClutterActor         *actor,
                                                            ClutterAlpha         *alpha,
                                                            gint                  n_properties,
                                                            const gchar * const   properties[],
                                                            const GValue         *values);
-
-ClutterAnimation *   clutter_actor_get_animation          (ClutterActor         *actor);
-void                 clutter_actor_detach_animation       (ClutterActor         *actor);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_ANIMATION_H__ */
