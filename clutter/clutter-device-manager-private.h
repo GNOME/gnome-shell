@@ -75,6 +75,7 @@ struct _ClutterInputDevice
 
   /* the actor that has a grab in place for the device */
   ClutterActor *pointer_grab_actor;
+  ClutterActor *keyboard_grab_actor;
 
   /* the current click count */
   gint click_count;

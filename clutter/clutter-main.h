@@ -96,7 +96,7 @@ void             clutter_main                       (void);
 void             clutter_main_quit                  (void);
 gint             clutter_main_level                 (void);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 void             clutter_redraw                     (ClutterStage *stage)
                                                     G_GNUC_DEPRECATED_FOR (clutter_stage_ensure_redraw);
 #endif
@@ -110,7 +110,7 @@ gulong           clutter_get_timestamp              (void);
 gboolean         clutter_get_accessibility_enabled  (void);
 
 /* Threading functions */
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 void             clutter_threads_init                  (void);
 #endif
 
@@ -133,7 +133,7 @@ guint            clutter_threads_add_timeout_full      (gint           priority,
                                                         gpointer       data,
                                                         GDestroyNotify notify);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 guint            clutter_threads_add_frame_source      (guint          fps,
 						        GSourceFunc    func,
 						        gpointer       data);
@@ -149,7 +149,7 @@ guint            clutter_threads_add_repaint_func      (GSourceFunc    func,
                                                         GDestroyNotify notify);
 void             clutter_threads_remove_repaint_func   (guint          handle_id);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 void             clutter_set_motion_events_enabled   (gboolean enable);
 gboolean         clutter_get_motion_events_enabled   (void);
 #endif /* CLUTTER_DISABLE_DEPRECATED */
@@ -171,9 +171,11 @@ ClutterFontFlags clutter_get_font_flags              (void);
 
 ClutterInputDevice *clutter_get_input_device_for_id  (gint id_);
 
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
                                                       gint           id_);
 void             clutter_ungrab_pointer_for_device   (gint id_);
+#endif
 
 PangoFontMap *   clutter_get_font_map                (void);
 
