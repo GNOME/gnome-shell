@@ -132,11 +132,13 @@ static ClutterTextDirection clutter_text_direction = CLUTTER_TEXT_DIRECTION_LTR;
 static guint clutter_main_loop_level         = 0;
 static GSList *main_loops                    = NULL;
 
-guint clutter_debug_flags = 0;  /* global clutter debug flag */
+/* debug flags */
+guint clutter_debug_flags       = 0;
 guint clutter_paint_debug_flags = 0;
-guint clutter_pick_debug_flags = 0;
+guint clutter_pick_debug_flags  = 0;
 
-guint clutter_profile_flags = 0;  /* global clutter profile flag */
+/* profile flags */
+guint clutter_profile_flags     = 0;
 
 const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
 const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
@@ -756,7 +758,7 @@ clutter_threads_init (void)
  *
  * Most threaded Clutter apps won't need to use this method.
  *
- * This method must be called before clutter_threads_init(), and cannot
+ * This method must be called before clutter_init(), and cannot
  * be called multiple times.
  *
  * Since: 0.4
@@ -850,7 +852,7 @@ _clutter_threads_dispatch_free (gpointer data)
  *   closure-&gt;callback = callback;
  *   closure-&gt;data = data;
  *
- *   return g_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
+ *   return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
  *                           idle_safe_callback,
  *                           closure,
  *                           g_free)
@@ -962,9 +964,7 @@ clutter_threads_add_idle (GSourceFunc func,
  *
  * It is important to note that, due to how the Clutter main loop is
  * implemented, the timing will not be accurate and it will not try to
- * "keep up" with the interval. A more reliable source is available
- * using clutter_threads_add_frame_source_full(), which is also internally
- * used by #ClutterTimeline.
+ * "keep up" with the interval.
  *
  * See also clutter_threads_add_idle_full().
  *
@@ -1031,7 +1031,7 @@ clutter_threads_add_timeout (guint       interval,
 void
 clutter_threads_enter (void)
 {
-  if (clutter_threads_lock)
+  if (clutter_threads_lock != NULL)
     (* clutter_threads_lock) ();
 }
 
@@ -1045,7 +1045,7 @@ clutter_threads_enter (void)
 void
 clutter_threads_leave (void)
 {
-  if (clutter_threads_unlock)
+  if (clutter_threads_unlock != NULL)
     (* clutter_threads_unlock) ();
 }
 
