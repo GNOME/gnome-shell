@@ -216,10 +216,10 @@ LayoutManager.prototype = {
         let monitorLeft = monitor.x, monitorRight = monitor.x + monitor.width;
         let primaryLeft = primary.x, primaryRight = primary.x + primary.width;
 
-        if ((monitorLeft >= primaryLeft && monitorLeft <= primaryRight) ||
-            (monitorRight >= primaryLeft && monitorRight <= primaryRight) ||
-            (primaryLeft >= monitorLeft && primaryLeft <= monitorRight) ||
-            (primaryRight >= monitorLeft && primaryRight <= monitorRight))
+        if ((monitorLeft >= primaryLeft && monitorLeft < primaryRight) ||
+            (monitorRight > primaryLeft && monitorRight <= primaryRight) ||
+            (primaryLeft >= monitorLeft && primaryLeft < monitorRight) ||
+            (primaryRight > monitorLeft && primaryRight <= monitorRight))
             return true;
 
         return false;
