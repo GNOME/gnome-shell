@@ -258,6 +258,8 @@ clutter_get_accessibility_enabled (void)
  *
  * This function should only be used by libraries integrating Clutter from
  * within another toolkit.
+ *
+ * Deprecated: 1.10: Use clutter_stage_ensure_redraw() instead.
  */
 void
 clutter_redraw (ClutterStage *stage)
@@ -2299,7 +2301,7 @@ _clutter_process_event_details (ClutterActor        *stage,
     }
 }
 
-/**
+/*
  * _clutter_process_event
  * @event: a #ClutterEvent.
  *

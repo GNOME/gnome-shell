@@ -96,7 +96,10 @@ void             clutter_main                       (void);
 void             clutter_main_quit                  (void);
 gint             clutter_main_level                 (void);
 
-void             clutter_redraw                     (ClutterStage *stage);
+#ifndef CLUTTER_DISABLE_DEPRECATED
+void             clutter_redraw                     (ClutterStage *stage)
+                                                    G_GNUC_DEPRECATED_FOR (clutter_stage_ensure_redraw);
+#endif
 
 void             clutter_do_event                   (ClutterEvent *event);
 
