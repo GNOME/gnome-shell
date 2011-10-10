@@ -2819,6 +2819,9 @@ clutter_get_keyboard_grab (void)
  * drawn.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Use clutter_get_font_map() and
+ *   cogl_pango_font_map_clear_glyph_cache() instead.
  */
 void
 clutter_clear_glyph_cache (void)

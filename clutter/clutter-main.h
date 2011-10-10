@@ -165,7 +165,10 @@ void             clutter_grab_keyboard               (ClutterActor *actor);
 void             clutter_ungrab_keyboard             (void);
 ClutterActor *   clutter_get_keyboard_grab           (void);
 
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 void             clutter_clear_glyph_cache           (void);
+#endif
+
 void             clutter_set_font_flags              (ClutterFontFlags flags);
 ClutterFontFlags clutter_get_font_flags              (void);
 
