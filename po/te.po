@@ -1,18 +1,18 @@
 # Telugu translation for gnome-shell.
-# Copyright (C) 2011 gnome-shell's COPYRIGHT HOLDER
+# Copyright (C) 2011 Free Software Foundation, Andhra Pradesh.
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Krishnababu Krothapalli <kkrothap@redhat.com>, 2011.
 # Praveen Illa <mail2ipn@gmail.com>, 2011.
-#
+# Hari Krishna <hari@swecha.net>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell gnome-3-0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-21 19:11+0000\n"
+"POT-Creation-Date: 2011-10-04 20:49+0000\n"
 "PO-Revision-Date: 2011-09-26 22:44+0530\n"
-"Last-Translator: Praveen Illa <mail2ipn@gmail.com>\n"
+"Last-Translator: Hari Krishna <hari@swecha.net>\n"
 "Language-Team: తెలుగు <indlinux-telugu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -176,7 +176,6 @@ msgid "disabled OpenSearch providers"
 msgstr "బహిరంగశోధన సమకూర్పకాలను అచేతపరుచు"
 
 #: ../js/gdm/loginDialog.js:617
-#| msgid "Searching..."
 msgid "Session..."
 msgstr "సెషన్..."
 
@@ -207,7 +206,6 @@ msgid "Sign In"
 msgstr "సైన్ ఇన్"
 
 #: ../js/gdm/loginDialog.js:1358
-#| msgid "New Window"
 msgid "Login Window"
 msgstr "లాగిన్ విండో"
 
@@ -286,7 +284,6 @@ msgid "Open with %s"
 msgstr "%s‍తో తెరువు"
 
 #: ../js/ui/autorunManager.js:616
-#| msgid "Reject"
 msgid "Eject"
 msgstr "బయటకునెట్టు"
 
@@ -461,7 +458,7 @@ msgstr "ఆఫ్‌లైన్"
 msgid "CONTACTS"
 msgstr "పరిచయాలు"
 
-#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1197
+#: ../js/ui/dash.js:172 ../js/ui/messageTray.js:1204
 msgid "Remove"
 msgstr "తీసివేయి"
 
@@ -539,7 +536,6 @@ msgstr "ఈ అనువర్తనాలను మూసివెళ్ళు�
 
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
-#| msgid "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s స్వయంచాలకంగా %d క్షణంలో లాగ్ అవుట్ అగును."
@@ -547,7 +543,6 @@ msgstr[1] "%s స్వయంచాలకంగా %d క్షణాలలో �
 
 #: ../js/ui/endSessionDialog.js:69
 #, c-format
-#| msgid "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "మీరు %d క్షణంలో స్వయంచాలకంగా లాగ్ అవుట్ అగుదురు."
@@ -563,7 +558,6 @@ msgstr "ఈ అనువర్తనాలను విడిచివెళ్�
 
 #: ../js/ui/endSessionDialog.js:83
 #, c-format
-#| msgid "The system will power off automatically in %d seconds."
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "%d సెకన్లలో వ్యవస్థ స్వయంచాలకంగా ఆపివేయబడుతుంది."
@@ -579,7 +573,6 @@ msgstr "ఈ అనువర్తనాలను విడిచివెళ్�
 
 #: ../js/ui/endSessionDialog.js:100
 #, c-format
-#| msgid "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "%d క్షణంలో వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
@@ -598,7 +591,11 @@ msgstr "స్థాపించు"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org నుండి '%s' డౌనులోడ్ చేసి మరియు సంస్థాపించాలా?"
 
-#: ../js/ui/keyboard.js:517 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:308
+msgid "tray"
+msgstr "ట్రే"
+
+#: ../js/ui/keyboard.js:530 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "కీబోర్డు"
 
@@ -628,29 +625,27 @@ msgstr "కాలం చెల్లినది"
 msgid "Downloading"
 msgstr "దింపుకుంటున్నది"
 
-#: ../js/ui/lookingGlass.js:724
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "మూలాన్ని చూడు"
 
-#: ../js/ui/lookingGlass.js:730
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "వెబ్ పేజీ"
 
-#: ../js/ui/messageTray.js:1190
+#: ../js/ui/messageTray.js:1197
 msgid "Open"
 msgstr "తెరువు"
 
-#: ../js/ui/messageTray.js:2372
+#: ../js/ui/messageTray.js:2406
 msgid "System Information"
 msgstr "వ్యవస్థ సమాచారం"
 
 #: ../js/ui/networkAgent.js:145
-#| msgid "Password:"
 msgid "Show password"
 msgstr "సంకేతపదం చూపు"
 
 #: ../js/ui/networkAgent.js:160
-#| msgid "Connection"
 msgid "Connect"
 msgstr "అనుసంధానించు"
 
@@ -658,7 +653,6 @@ msgstr "అనుసంధానించు"
 #: ../js/ui/networkAgent.js:255 ../js/ui/networkAgent.js:267
 #: ../js/ui/networkAgent.js:294 ../js/ui/networkAgent.js:314
 #: ../js/ui/networkAgent.js:324
-#| msgid "Password:"
 msgid "Password: "
 msgstr "సంకేతపదం:"
 
@@ -687,15 +681,14 @@ msgid "Service: "
 msgstr "సేవ: "
 
 #: ../js/ui/networkAgent.js:341
-#| msgid "Authentication Required"
 msgid "Authentication required by wireless network"
 msgstr "వైర్‌లెస్ నెట్వర్క్ చేత ధృవీకరణ అవసరమైంది"
 
 #: ../js/ui/networkAgent.js:342
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"Passwords or encryption keys are required to access the wireless network '%"
+"s'."
 msgstr "వైర్‌లెస్ నెట్వర్కు '%s' యాక్సెస్ చేయుటకు సంకేతపదాలు లేదా యెన్క్రిప్షన్ కీలు అవసరం."
 
 #: ../js/ui/networkAgent.js:346
@@ -703,12 +696,10 @@ msgid "Wired 802.1X authentication"
 msgstr "వైర్డ్ 802.1X ధృవీకరణ"
 
 #: ../js/ui/networkAgent.js:348
-#| msgid "Network Manager"
 msgid "Network name: "
 msgstr "నెట్‍‌వర్క్ పేరు: "
 
 #: ../js/ui/networkAgent.js:353
-#| msgid "authentication required"
 msgid "DSL authentication"
 msgstr "DSL ధృవీకరణ"
 
@@ -725,13 +716,11 @@ msgid "PIN: "
 msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:368
-#| msgid "Mobile broadband"
 msgid "Mobile broadband network password"
 msgstr "మొబైల్ బ్రాడ్‌బాండ్ నెట్వర్క్ సంకేతపదం"
 
 #: ../js/ui/networkAgent.js:369
 #, c-format
-#| msgid "You're now connected to '%s'"
 msgid "A password is required to connect to '%s'."
 msgstr "%s'కు అనుసంధానమగుటకు వొక సంకేతపదం అవసరమైంది."
 
@@ -815,7 +804,7 @@ msgstr "సంకేతపదం:"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "టోగిల్-స్విచ్-అజ్"
 
@@ -843,7 +832,6 @@ msgstr "జూమ్"
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
 #: ../js/ui/status/accessibility.js:71
-#| msgid "Keyboard"
 msgid "Screen Keyboard"
 msgstr "తెర కీబోర్డు"
 
@@ -903,7 +891,6 @@ msgstr "బ్లూటూత్ అమరికలు"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:111
-#| msgid "disabled"
 msgid "hardware disabled"
 msgstr "హార్డువేర్ అచేతనమైంది"
 
@@ -966,7 +953,7 @@ msgstr "ఎల్లప్పుడు ప్రవేశ సౌలభ్యత�
 msgid "Grant this time only"
 msgstr "ఈ సారికి మాత్రమే అనుమతించు"
 
-#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1196
+#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1200
 msgid "Reject"
 msgstr "తిరస్కరించు"
 
@@ -1007,12 +994,10 @@ msgid "OK"
 msgstr "సరే"
 
 #: ../js/ui/status/keyboard.js:73
-#| msgid "Show Keyboard Layout..."
 msgid "Show Keyboard Layout"
 msgstr "కీబోర్డు నమూనాను చూపించు"
 
 #: ../js/ui/status/keyboard.js:78
-#| msgid "Date and Time Settings"
 msgid "Region and Language Settings"
 msgstr "ప్రాంతము మరియు భాష అమర్పులు"
 
@@ -1118,12 +1103,10 @@ msgid "Network Settings"
 msgstr "నెట్‌వర్క్ అమరికలు"
 
 #: ../js/ui/status/network.js:1757
-#| msgid "connection failed"
 msgid "Connection failed"
 msgstr "అనుసంధానం విఫలమైంది"
 
 #: ../js/ui/status/network.js:1758
-#| msgid "connection failed"
 msgid "Activation of network connection failed"
 msgstr "నెట్‌వర్క్అనుసంధానం క్రియాశీలపరచుట విఫలమైంది"
 
@@ -1239,42 +1222,39 @@ msgid "Invitation"
 msgstr "ఆహ్వానం"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:325
-#| msgid "Cancel"
+#: ../js/ui/telepathyClient.js:327
 msgid "Call"
 msgstr "కాల్"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:353
+#: ../js/ui/telepathyClient.js:357
 msgid "File Transfer"
 msgstr "ఫైల్ బదిలీ"
 
-#: ../js/ui/telepathyClient.js:434
-#| msgid "Authorization request from %s"
+#: ../js/ui/telepathyClient.js:438
 msgid "Subscription request"
 msgstr "సబ్‌స్క్రిప్షన్ అభ్యర్ధన"
 
-#: ../js/ui/telepathyClient.js:470
-#| msgid "Connection"
+#: ../js/ui/telepathyClient.js:474
 msgid "Connection error"
 msgstr "అనుసంధానం దోషం"
 
-#: ../js/ui/telepathyClient.js:733
+#: ../js/ui/telepathyClient.js:737
 #, c-format
 msgid "%s is online."
 msgstr "%s ఆన్‌లైనులో ఉన్నారు"
 
-#: ../js/ui/telepathyClient.js:738
+#: ../js/ui/telepathyClient.js:742
 #, c-format
 msgid "%s is offline."
 msgstr "%s ఆఫ్‌లైనులో ఉన్నారు"
 
-#: ../js/ui/telepathyClient.js:741
+#: ../js/ui/telepathyClient.js:745
 #, c-format
 msgid "%s is away."
 msgstr "%s దూరంగా ఉన్నారు"
 
-#: ../js/ui/telepathyClient.js:744
+#: ../js/ui/telepathyClient.js:748
 #, c-format
 msgid "%s is busy."
 msgstr "%s తీరిక లేదు."
@@ -1282,36 +1262,35 @@ msgstr "%s తీరిక లేదు."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:978
+#: ../js/ui/telepathyClient.js:982
 #, no-c-format
-#| msgid "Sent at %X on %A"
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "<b>%X</b> వద్ద <b>%A</b> పైన పంపబడెను"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:984
+#: ../js/ui/telepathyClient.js:988
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "<b>%A</b>, <b>%B %d</b> పై అమర్చు"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:989
+#: ../js/ui/telepathyClient.js:993
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "<b>%A</b>, <b>%B %d</b>, %Y పై అమర్చు"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1031
+#: ../js/ui/telepathyClient.js:1035
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s యిప్పుడు %s గా తెలియును"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1144
 #, c-format
 msgid "Invitation to %s"
 msgstr "%sకు ఆహ్వానం"
@@ -1319,34 +1298,34 @@ msgstr "%sకు ఆహ్వానం"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1148
+#: ../js/ui/telepathyClient.js:1152
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s మిమ్ములను %s పై చేరుటకు ఆహ్వానిస్తోంది"
 
-#: ../js/ui/telepathyClient.js:1150 ../js/ui/telepathyClient.js:1239
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1154 ../js/ui/telepathyClient.js:1243
+#: ../js/ui/telepathyClient.js:1347
 msgid "Decline"
 msgstr "తిరస్కారం"
 
-#: ../js/ui/telepathyClient.js:1151 ../js/ui/telepathyClient.js:1240
-#: ../js/ui/telepathyClient.js:1344
+#: ../js/ui/telepathyClient.js:1155 ../js/ui/telepathyClient.js:1244
+#: ../js/ui/telepathyClient.js:1348
 msgid "Accept"
 msgstr "ఆమోదం"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1184
+#: ../js/ui/telepathyClient.js:1188
 #, c-format
 msgid "Video call from %s"
 msgstr "%s నుండి వీడియో కాల్"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1187
+#: ../js/ui/telepathyClient.js:1191
 #, c-format
 msgid "Call from %s"
 msgstr "%s నుండి కాల్"
 
-#: ../js/ui/telepathyClient.js:1197
+#: ../js/ui/telepathyClient.js:1201
 msgid "Answer"
 msgstr "సమాధానం"
 
@@ -1355,115 +1334,109 @@ msgstr "సమాధానం"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1233
+#: ../js/ui/telepathyClient.js:1237
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s మీకు %s పంపుచున్నది"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1312
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "మీరు ఆన్‌లైన్‌లో వున్నప్పుడు చూడుటకు %s అనుమతి కోరుతున్నారు"
 
-#: ../js/ui/telepathyClient.js:1406
-#| msgid "Network Manager"
+#: ../js/ui/telepathyClient.js:1410
 msgid "Network error"
 msgstr "నెట్‍‌వర్క్ దోషం"
 
-#: ../js/ui/telepathyClient.js:1408
-#| msgid "Authentication Required"
+#: ../js/ui/telepathyClient.js:1412
 msgid "Authentication failed"
 msgstr "ధృవీకరణ వైఫల్యం"
 
-#: ../js/ui/telepathyClient.js:1410
+#: ../js/ui/telepathyClient.js:1414
 msgid "Encryption error"
 msgstr "ఎన్క్రిప్షన్ దోషం"
 
-#: ../js/ui/telepathyClient.js:1412
+#: ../js/ui/telepathyClient.js:1416
 msgid "Certificate not provided"
 msgstr "ధృవీకరణపత్రం అందించబడలేదు"
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1418
 msgid "Certificate untrusted"
 msgstr "ధృవీకరణపత్రం అపనమ్మకమైంది"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1420
 msgid "Certificate expired"
 msgstr "ధృవీకరణపత్రం గడువుతీరెను"
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1422
 msgid "Certificate not activated"
 msgstr "ధృవీకరణపత్రం క్రియాశీలపరచబడిలేదు"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1424
 msgid "Certificate hostname mismatch"
 msgstr "ధృవీకరణపత్రం హోస్టుపేరు సరిపోలలేదు"
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1426
 msgid "Certificate fingerprint mismatch"
 msgstr "ధృవీకరణపత్రం వ్రేలిముద్ర సరిపోలలేదు"
 
-#: ../js/ui/telepathyClient.js:1424
+#: ../js/ui/telepathyClient.js:1428
 msgid "Certificate self-signed"
 msgstr "ధృవీకరణపత్రం తనంతతాను-సంతకంచేయబడెను"
 
-#: ../js/ui/telepathyClient.js:1426
-#| msgid "%s is offline."
+#: ../js/ui/telepathyClient.js:1430
 msgid "Status is set to offline"
 msgstr "స్థితి ఆఫ్‌లైన్‌కు అమర్చబడెను"
 
-#: ../js/ui/telepathyClient.js:1428
+#: ../js/ui/telepathyClient.js:1432
 msgid "Encryption is not available"
 msgstr "ఎన్క్రిప్షన్ అందుబాటులో లేదు"
 
-#: ../js/ui/telepathyClient.js:1430
+#: ../js/ui/telepathyClient.js:1434
 msgid "Certificate is invalid"
 msgstr "ధృవీకరణపత్రం చెల్లనిది"
 
-#: ../js/ui/telepathyClient.js:1432
-#| msgid "Connection established"
+#: ../js/ui/telepathyClient.js:1436
 msgid "Connection has been refused"
 msgstr "అనుసంధానము తిరస్కరించబడెను"
 
-#: ../js/ui/telepathyClient.js:1434
-#| msgid "Connection established"
+#: ../js/ui/telepathyClient.js:1438
 msgid "Connection can't be established"
 msgstr "అనుసంధానము యేర్పరచబడలేదు"
 
-#: ../js/ui/telepathyClient.js:1436
-#| msgid "Connection established"
+#: ../js/ui/telepathyClient.js:1440
 msgid "Connection has been lost"
 msgstr "అనుసంధానము కోల్పోయింది"
 
-#: ../js/ui/telepathyClient.js:1438
+#: ../js/ui/telepathyClient.js:1442
 msgid "This resource is already connected to the server"
 msgstr "ఈ వనరు యిప్పటికే సేవికకు అనుసంధానమైంది"
 
-#: ../js/ui/telepathyClient.js:1440
+#: ../js/ui/telepathyClient.js:1444
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "అనుసంధానం అదే వనరు వుపయోగించి కొత్త అనుసంధానంచే పునఃస్థాపించబడెను"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1446
 msgid "The account already exists on the server"
 msgstr "ఖాతా యిప్పటికే సేవికపైన వున్నది"
 
-#: ../js/ui/telepathyClient.js:1444
+#: ../js/ui/telepathyClient.js:1448
 msgid "Server is currently too busy to handle the connection"
 msgstr "అనుసంధానంను సంభాలించుటకు సేవిక మరీ వత్తిడిలో వుంది"
 
-#: ../js/ui/telepathyClient.js:1446
+#: ../js/ui/telepathyClient.js:1450
 msgid "Certificate has been revoked"
 msgstr "ధృవీకరణపత్రం కొట్టివేయబడింది"
 
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1452
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "ధృవీకరణపత్రం సురక్షితం కాని సైఫర్ ఆల్గార్దెమ్ వుపయోగించుచున్నది లేదా క్రిప్టోగ్రఫీ పరంగా బలహీనంగా వుంది"
 
-#: ../js/ui/telepathyClient.js:1450
+#: ../js/ui/telepathyClient.js:1454
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1473,24 +1446,20 @@ msgstr ""
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1459
+#: ../js/ui/telepathyClient.js:1463
 #, c-format
-#| msgid "connection failed"
 msgid "Connection to %s failed"
 msgstr "%s కు అనుసంధానం విఫలమైంది"
 
-#: ../js/ui/telepathyClient.js:1468
-#| msgid "Reject"
+#: ../js/ui/telepathyClient.js:1472
 msgid "Reconnect"
 msgstr "తిరిగిఅనుసంధానం"
 
-#: ../js/ui/telepathyClient.js:1469
-#| msgid "My Account"
+#: ../js/ui/telepathyClient.js:1473
 msgid "Edit account"
 msgstr "ఖాతా సవరించు"
 
-#: ../js/ui/telepathyClient.js:1515
-#| msgid "Unknown"
+#: ../js/ui/telepathyClient.js:1519
 msgid "Unknown reason"
 msgstr "తెలియని కారణం"
 
@@ -1503,7 +1472,6 @@ msgid "Idle"
 msgstr "జడం"
 
 #: ../js/ui/userMenu.js:154
-#| msgid "unavailable"
 msgid "Unavailable"
 msgstr "అందుబాటులోలేదు"
 
@@ -1512,12 +1480,10 @@ msgid "Power Off..."
 msgstr "విద్యుత్ ఆపు..."
 
 #: ../js/ui/userMenu.js:548
-#| msgid "Applications"
 msgid "Notifications"
 msgstr "ప్రకటనలు"
 
 #: ../js/ui/userMenu.js:556
-#| msgid "My Account"
 msgid "Online Accounts"
 msgstr "ఆన్‌లైన్ ఖాతాలు"
 
@@ -1561,12 +1527,7 @@ msgstr "వెతకడానికి టైపు చేయండి..."
 msgid "Search"
 msgstr "శోధించు"
 
-#: ../js/ui/windowAttentionHandler.js:39
-#, c-format
-msgid "%s has finished starting"
-msgstr "ప్రారంభించుటను %s పూర్తిచేసినది"
-
-#: ../js/ui/windowAttentionHandler.js:41
+#: ../js/ui/windowAttentionHandler.js:35
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' సిద్దంగా ఉంది"
@@ -1638,6 +1599,9 @@ msgstr "ఫైల్ వ్యవస్థ"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "%s has finished starting"
+#~ msgstr "ప్రారంభించుటను %s పూర్తిచేసినది"
+
 #~ msgid ""
 #~ "GNOME Shell extensions have a uuid property; this key lists extensions "
 #~ "which should not be loaded. This setting overrides enabled-extensions for "
@@ -1687,3 +1651,4 @@ msgstr "%1$s: %2$s"
 #~ msgid_plural "%d weeks ago"
 #~ msgstr[0] "%d వారం క్రితం"
 #~ msgstr[1] "%d వారాల క్రితం"
+
