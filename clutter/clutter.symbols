@@ -1265,6 +1265,7 @@ clutter_timeout_pool_remove
 clutter_ungrab_keyboard
 clutter_ungrab_pointer
 clutter_ungrab_pointer_for_device
+clutter_unicode_to_keysym
 clutter_units_copy
 clutter_units_free
 clutter_units_from_cm
