@@ -228,5 +228,102 @@
 
     </section>
 
+    <section id="configuration-file">
+      <title>Configuration File</title>
+
+      <para>Clutter will look for files named <filename>settings.ini</filename>
+      located in the <filename>/etc/clutter-1.0</filename> and
+      <filename>$XDG_CONFIG_HOME/clutter-1.0</filename> directories. These files
+      must be valid key files (see #GKeyFile in the GLib documentation) and may
+      have three sections:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term>Environment</term>
+          <listitem><para>The keys in this section map the environment variables
+          honoured by Clutter.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Debug</term>
+          <listitem><para>The keys in this section related to the debugging notes
+          that Clutter exposes when compiled with debugging support; similarly to
+          the environment variables and command line arguments related to the
+          debugging notes, Clutter must be compiled with support for these notes
+          in order to use them.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Settings</term>
+          <listitem><para>The keys in this section strictly map to the #GObject
+          properties exposed by the #ClutterSettings type; if Clutter is running
+          on an X11 platform, the XSettings manager will take precedence over the
+          values specified in the <filename>settings.ini<filename>
+          file.</para></listitem>
+        </varlistentry>
+      </variablelist>
+
+      <section id="configuration-keys-environment">
+        <title>Keys available for the Environment group</title>
+
+        <variablelist>
+          <varlistentry>
+            <term>ShowFps</term>
+            <listitem><para>A boolean value, equivalent to setting
+            <variable>CLUTTER_SHOW_FPS</variable>.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>DisableMipmappedText</term>
+            <listitem><para>A boolean value, equivalent to setting
+            <variable>CLUTTER_DISABLE_MIPMAPPED_TEXT</variable>.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>UseFuzzyPicking</term>
+            <listitem><para>A boolean value, equivalent to setting
+            <variable>CLUTTER_FUZZY_PICK</variable>.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>EnableAccessibility</term>
+            <listitem><para>A boolean value, equivalent to setting
+            <variable>CLUTTER_ENABLE_ACCESSIBILITY</variable>.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>DefaultFps</term>
+            <listitem><para>An integer value, equivalent to setting
+            <variable>CLUTTER_DEFAULT_FPS</variable>.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>TextDirection</term>
+            <listitem><para>A string value, equivalent to setting
+            <variable>CLUTTER_TEXT_DIRECTION</variable>.</para></listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
+      <section id="configuration-keys-debug">
+        <title>Keys available for the Debug group</title>
+
+        <variablelist>
+          <varlistentry>
+            <term>Debug</term>
+            <listitem><para>A string containing the debugging flags, in the same
+            format that should be used with the <variable>CLUTTER_DEBUG</variable>
+            environment variable.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>PaintDebug</term>
+            <listitem><para>A string containing the paint debugging flags, in the same
+            format that should be used with the <variable>CLUTTER_PAINT</variable>
+            environment variable.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>PickDebug</term>
+            <listitem><para>A string containing the pick debugging flags, in the same
+            format that should be used with the <variable>CLUTTER_PICK</variable>
+            environment variable.</para></listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
+    </section>
+
   </partintro>
 </part>
