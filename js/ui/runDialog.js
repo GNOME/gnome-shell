@@ -12,6 +12,7 @@ const Signals = imports.signals;
 const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
+const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const History = imports.misc.history;
@@ -210,6 +211,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
         this.contentLayout.add(label, { y_align: St.Align.START });
 
         let entry = new St.Entry({ style_class: 'run-dialog-entry' });
+        ShellEntry.addContextMenu(entry);
 
         this._entryText = entry.clutter_text;
         this.contentLayout.add(entry, { y_align: St.Align.START });

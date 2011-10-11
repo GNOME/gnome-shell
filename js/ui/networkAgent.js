@@ -30,6 +30,7 @@ const St = imports.gi.St;
 
 const ModalDialog = imports.ui.modalDialog;
 const PopupMenu = imports.ui.popupMenu;
+const ShellEntry = imports.ui.shellEntry;
 
 function NetworkSecretDialog() {
     this._init.apply(this, arguments);
@@ -103,6 +104,8 @@ NetworkSecretDialog.prototype = {
             secret.entry = new St.Entry({ style_class: 'polkit-dialog-password-entry',
                                           text: secret.value, can_focus: reactive,
                                           reactive: reactive });
+            ShellEntry.addContextMenu(secret.entry,
+                                      { isPassword: secret.password });
 
             if (secret.validate)
                 secret.valid = secret.validate(secret);

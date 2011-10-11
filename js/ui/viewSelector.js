@@ -12,6 +12,7 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const Search = imports.ui.search;
 const SearchDisplay = imports.ui.searchDisplay;
+const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 
 function BaseTab(titleActor, pageActor, name, a11yIcon) {
@@ -120,6 +121,7 @@ SearchTab.prototype = {
                                      hint_text: _("Type to search..."),
                                      track_hover: true,
                                      can_focus: true });
+        ShellEntry.addContextMenu(this._entry);
         this._text = this._entry.clutter_text;
         this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
 

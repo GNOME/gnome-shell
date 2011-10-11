@@ -17,6 +17,7 @@ const Mainloop = imports.mainloop;
 const History = imports.misc.history;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Link = imports.ui.link;
+const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 
@@ -816,6 +817,7 @@ LookingGlass.prototype = {
         entryArea.add(label);
 
         this._entry = new St.Entry({ can_focus: true });
+        ShellEntry.addContextMenu(this._entry);
         entryArea.add(this._entry, { expand: true });
 
         this._windowList = new WindowList();

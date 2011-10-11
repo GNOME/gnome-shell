@@ -33,6 +33,7 @@ const Polkit = imports.gi.Polkit;
 const PolkitAgent = imports.gi.PolkitAgent;
 
 const ModalDialog = imports.ui.modalDialog;
+const ShellEntry = imports.ui.shellEntry;
 
 function AuthenticationDialog(actionId, message, cookie, userNames) {
     this._init(actionId, message, cookie, userNames);
@@ -139,6 +140,7 @@ AuthenticationDialog.prototype = {
         this._passwordEntry = new St.Entry({ style_class: 'polkit-dialog-password-entry',
                                              text: "",
                                              can_focus: true});
+        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
         this._passwordBox.add(this._passwordEntry,
                               {expand: true });
