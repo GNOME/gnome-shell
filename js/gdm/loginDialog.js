@@ -694,10 +694,13 @@ SessionList.prototype = {
         let ids = GdmGreeter.get_session_ids();
         ids.sort();
 
-        if (ids.length <= 1)
+        if (ids.length <= 1) {
             this._box.hide();
-        else
+            this._button.hide();
+        } else {
+            this._button.show();
             this._box.show();
+        }
 
         for (let i = 0; i < ids.length; i++) {
             let [sessionName, sessionDescription] = GdmGreeter.get_session_name_and_description(ids[i]);
