@@ -146,10 +146,6 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
       float slice_ty1;
       float slice_ty2;
 
-      /* Discard slices out of rectangle early */
-      if (!iter_y.intersects)
-        continue;
-
       if (iter_y.flipped)
         {
           y_intersect_start = iter_y.intersect_end;
@@ -180,10 +176,6 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
           float slice_tx1;
           float slice_tx2;
           CoglTexture2D *slice_tex;
-
-	  /* Discard slices out of rectangle early */
-	  if (!iter_x.intersects)
-            continue;
 
           if (iter_x.flipped)
             {
@@ -510,13 +502,6 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
        _cogl_span_iter_next (&y_iter),
        source_y += inter_h )
     {
-      /* Discard slices out of the subregion early */
-      if (!y_iter.intersects)
-        {
-          inter_h = 0;
-          continue;
-        }
-
       y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan,
                                y_iter.index);
 
@@ -534,13 +519,6 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
            source_x += inter_w )
         {
           int slice_num;
-
-          /* Discard slices out of the subregion early */
-          if (!x_iter.intersects)
-            {
-              inter_w = 0;
-              continue;
-            }
 
           x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan,
                                    x_iter.index);

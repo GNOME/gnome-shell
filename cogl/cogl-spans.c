@@ -107,6 +107,9 @@ _cogl_span_iter_begin (CoglSpanIter *iter,
 
   /* Update intersection */
   _cogl_span_iter_update (iter);
+
+  while (iter->next_pos <= iter->cover_start)
+    _cogl_span_iter_next (iter);
 }
 
 void
