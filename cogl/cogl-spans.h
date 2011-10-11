@@ -45,8 +45,6 @@ typedef struct _CoglSpanIter
   float     cover_end;
   float     intersect_start;
   float     intersect_end;
-  float     intersect_start_local;
-  float     intersect_end_local;
   gboolean  intersects;
   gboolean  flipped;
 } CoglSpanIter;
