@@ -285,7 +285,12 @@ IMStatusChooserItem.prototype = {
         if (presence == Tp.ConnectionPresenceType.AVAILABLE)
             this._presence.setStatus(GnomeSession.PresenceStatus.AVAILABLE);
 
-        if (!this._expectedPresence || presence != this._expectedPresence)
+        // We ignore the actual value of _expectedPresence and never safe
+        // the first presence change after an "automatic" change, assuming
+        // that it is the response to our request; this is to account for
+        // mission control falling back to "similar" presences if an account
+        // type does not implement the requested presence.
+        if (!this._expectedPresence)
             global.settings.set_int('saved-im-presence', presence);
         else
             this._expectedPresence = undefined;
