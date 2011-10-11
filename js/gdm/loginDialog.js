@@ -922,6 +922,7 @@ LoginDialog.prototype = {
 
                      function() {
                          this._sessionList.close();
+                         this._promptFingerprintMessage.hide();
                          this._userList.actor.show();
                          this._userList.actor.opacity = 255;
                          return this._userList.showItems();
@@ -943,7 +944,18 @@ LoginDialog.prototype = {
     },
 
     _onInfo: function(client, serviceName, info) {
-        // we don't want fingerprint messages with the word UPEK in them
+        // We don't display fingerprint messages, because they
+        // have words like UPEK in them. Instead we use the messages
+        // as a cue to display our own message.
+        if (serviceName == _FINGERPRINT_SERVICE_NAME &&
+            this._haveFingerprintReader &&
+            (!this._promptFingerprintMessage.visible ||
+             this._promptFingerprintMessage.opacity != 255)) {
+
+            _fadeInActor(this._promptFingerprintMessage);
+            return;
+        }
+
         if (serviceName != _PASSWORD_SERVICE_NAME)
             return;
         Main.notifyError(info);
@@ -971,10 +983,10 @@ LoginDialog.prototype = {
                      },
 
                      function() {
-                         if (!this._haveFingerprintReader)
-                             return null;
-
-                         return _fadeInActor(this._promptFingerprintMessage);
+                         // Show it with 0 opacity so we preallocate space for it
+                         // in the event we need to fade in the message
+                         this._promptFingerprintMessage.opacity = 0;
+                         this._promptFingerprintMessage.show();
                      },
 
                      function() {
