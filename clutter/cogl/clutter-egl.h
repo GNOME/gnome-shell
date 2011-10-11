@@ -62,6 +62,7 @@ G_BEGIN_DECLS
  *
  * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead
  */
+CLUTTER_DEPRECATED_FOR(clutter_egl_get_egl_display)
 EGLDisplay      clutter_eglx_display            (void);
 
 /**
@@ -73,6 +74,7 @@ EGLDisplay      clutter_eglx_display            (void);
  *
  * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead
  */
+CLUTTER_DEPRECATED_FOR(clutter_egl_get_egl_display)
 EGLDisplay      clutter_egl_display             (void);
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 

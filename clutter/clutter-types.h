@@ -32,6 +32,20 @@
 
 G_BEGIN_DECLS
 
+/* these macros are used to mark deprecated functions, and thus have to be
+ * exposed in a public header.
+ *
+ * do *not* use them in other libraries depending on Clutter: use G_DEPRECATED
+ * and G_DEPRECATED_FOR, or use your own wrappers around them.
+ */
+#ifdef CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#define CLUTTER_DEPRECATED
+#define CLUTTER_DEPRECATED_FOR(f)
+#else
+#define CLUTTER_DEPRECATED G_DEPRECATED
+#define CLUTTER_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
+#endif
+
 #define CLUTTER_TYPE_ACTOR_BOX          (clutter_actor_box_get_type ())
 #define CLUTTER_TYPE_GEOMETRY           (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT               (clutter_knot_get_type ())

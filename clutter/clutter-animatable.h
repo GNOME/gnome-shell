@@ -98,6 +98,7 @@ struct _ClutterAnimatableIface
 GType clutter_animatable_get_type (void) G_GNUC_CONST;
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
+CLUTTER_DEPRECATED_FOR(clutter_animatable_interpolate_value)
 gboolean    clutter_animatable_animate_property  (ClutterAnimatable *animatable,
                                                   ClutterAnimation  *animation,
                                                   const gchar       *property_name,

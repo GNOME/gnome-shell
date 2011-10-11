@@ -34,7 +34,8 @@ G_BEGIN_DECLS
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
 
-gint clutter_util_next_p2 (gint a) G_GNUC_DEPRECATED;
+CLUTTER_DEPRECATED
+gint clutter_util_next_p2 (gint a);
 
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 

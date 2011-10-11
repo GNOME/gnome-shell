@@ -128,6 +128,7 @@ ClutterActor *       clutter_texture_new_from_file          (const gchar        
                                                              GError                **error);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
+CLUTTER_DEPRECATED_FOR(ClutterOffscreenEffect)
 ClutterActor *       clutter_texture_new_from_actor         (ClutterActor           *actor);
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 
