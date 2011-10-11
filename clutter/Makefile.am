@@ -27,6 +27,7 @@ AM_CPPFLAGS = \
 	-DCLUTTER_LIBDIR=\""$(libdir)"\"	\
 	-DCLUTTER_DATADIR=\""$(datadir)"\"	\
 	-DCLUTTER_LOCALEDIR=\""$(localedir)"\"	\
+	-DCLUTTER_SYSCONFDIR=\""$(sysconfdir)"\" \
 	-DCLUTTER_COMPILATION=1			\
 	-DCOGL_ENABLE_EXPERIMENTAL_API		\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
@@ -240,6 +241,7 @@ source_h_priv = \
 	$(srcdir)/clutter-private.h 			\
 	$(srcdir)/clutter-profile.h			\
 	$(srcdir)/clutter-script-private.h		\
+	$(srcdir)/clutter-settings-private.h		\
 	$(srcdir)/clutter-stage-manager-private.h	\
 	$(srcdir)/clutter-stage-private.h		\
 	$(srcdir)/clutter-timeout-interval.h    	\

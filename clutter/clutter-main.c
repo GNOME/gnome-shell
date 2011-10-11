@@ -99,6 +99,7 @@
 #include "clutter-master-clock.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
+#include "clutter-settings-private.h"
 #include "clutter-stage-manager.h"
 #include "clutter-stage-private.h"
 #include "clutter-version.h" 	/* For flavour define */
@@ -213,6 +214,35 @@ clutter_threads_init_default (void)
 
   if (clutter_threads_unlock == NULL)
     clutter_threads_unlock = clutter_threads_impl_unlock;
+}
+
+#define N_CONF_DIRS     2
+
+static void
+clutter_config_read (void)
+{
+  ClutterSettings *settings;
+  gchar *config_path;
+
+  settings = clutter_settings_get_default ();
+
+  config_path = g_build_filename (CLUTTER_SYSCONFDIR,
+                                  "clutter-1.0",
+                                  "settings.ini",
+                                  NULL);
+  if (g_file_test (config_path, G_FILE_TEST_EXISTS))
+    _clutter_settings_read_from_file (settings, config_path);
+
+  g_free (config_path);
+
+  config_path = g_build_filename (g_get_user_config_dir (),
+                                  "clutter-1.0",
+                                  "settings.ini",
+                                  NULL);
+  if (g_file_test (config_path, G_FILE_TEST_EXISTS))
+    _clutter_settings_read_from_file (settings, config_path);
+
+  g_free (config_path);
 }
 
 /**
@@ -1105,6 +1135,12 @@ clutter_context_get_default_unlocked (void)
       ctx->is_initialized = FALSE;
       ctx->motion_events_per_actor = TRUE;
 
+      /* create the default settings object, and store a back pointer to
+       * the backend singleton
+       */
+      ctx->settings = clutter_settings_get_default ();
+      _clutter_settings_set_backend (ctx->settings, ctx->backend);
+
 #ifdef CLUTTER_ENABLE_DEBUG
       ctx->timer = g_timer_new ();
       g_timer_start (ctx->timer);
@@ -1369,6 +1405,12 @@ pre_parse_hook (GOptionContext  *context,
   if (setlocale (LC_ALL, "") == NULL)
     g_warning ("Locale not supported by C library.\n"
                "Using the fallback 'C' locale.");
+
+  /* read the configuration file, if it exists; the configuration file
+   * determines the initial state of the settings, so that command line
+   * arguments can override them.
+   */
+  clutter_config_read ();
 
   clutter_context = _clutter_context_get_default ();
 
