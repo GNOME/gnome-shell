@@ -760,12 +760,12 @@ _clutter_settings_read_from_key_file (ClutterSettings *settings,
 
         case G_TYPE_STRING:
           {
-            const gchar *val;
+            gchar *val;
 
             val = g_key_file_get_string (keyfile,
                                          SETTINGS_GROUP, p_name,
                                          &key_error);
-            g_value_set_string (&value, val);
+            g_value_take_string (&value, val);
           }
           break;
         }

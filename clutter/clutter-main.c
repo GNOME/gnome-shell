@@ -225,7 +225,7 @@ clutter_config_read_from_key_file (GKeyFile *keyfile)
   GError *key_error = NULL;
   gboolean bool_value;
   gint int_value;
-  const gchar *str_value;
+  gchar *str_value;
 
   if (!g_key_file_has_group (keyfile, ENVIRONMENT_GROUP))
     return;
@@ -294,6 +294,8 @@ clutter_config_read_from_key_file (GKeyFile *keyfile)
       else
         clutter_text_direction = CLUTTER_TEXT_DIRECTION_LTR;
     }
+
+  g_free (str_value);
 }
 
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -301,7 +303,7 @@ static void
 clutter_debug_read_from_key_file (GKeyFile *keyfile)
 {
   GError *key_error = NULL;
-  const gchar *value;
+  gchar *value;
 
   if (!g_key_file_has_group (keyfile, DEBUG_GROUP))
     return;
@@ -319,6 +321,8 @@ clutter_debug_read_from_key_file (GKeyFile *keyfile)
   else
     g_clear_error (&key_error);
 
+  g_free (value);
+
   value = g_key_file_get_value (keyfile, DEBUG_GROUP,
                                 "PaintDebug",
                                 &key_error);
@@ -332,6 +336,8 @@ clutter_debug_read_from_key_file (GKeyFile *keyfile)
   else
     g_clear_error (&key_error);
 
+  g_free (value);
+
   value = g_key_file_get_value (keyfile, DEBUG_GROUP,
                                 "PickDebug",
                                 &key_error);
@@ -344,6 +350,8 @@ clutter_debug_read_from_key_file (GKeyFile *keyfile)
     }
   else
     g_clear_error (&key_error);
+
+  g_free (value);
 }
 #endif
 
