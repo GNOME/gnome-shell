@@ -52,7 +52,7 @@ test_thread_done_idle (gpointer user_data)
   return FALSE;
 }
 
-static GStaticPrivate test_thread_data = G_STATIC_PRIVATE_INIT;
+static GPrivate test_thread_data;
 
 typedef struct
 {
@@ -93,7 +93,7 @@ do_something_very_slow (void)
   TestThreadData *data;
   gint i;
 
-  data = (TestThreadData *) g_static_private_get (&test_thread_data);
+  data = g_private_get (&test_thread_data);
   if (data->cancelled)
     return;
 
@@ -124,10 +124,9 @@ do_something_very_slow (void)
 static gpointer
 test_thread_func (gpointer user_data)
 {
-  TestThreadData *data;
+  TestThreadData *data = user_data;
 
-  data = user_data;
-  g_static_private_set (&test_thread_data, data, NULL);
+  g_private_set (&test_thread_data, data);
 
   do_something_very_slow ();
 
@@ -162,11 +161,14 @@ on_key_press_event (ClutterStage *stage,
       data->label = g_object_ref (count_label);
       data->progress = g_object_ref (progress_rect);
       data->timeline = g_object_ref (timeline);
-      g_thread_create (test_thread_func, data, FALSE, NULL);
+
+      g_thread_new ("counter", test_thread_func, data, FALSE, NULL);
+
       return TRUE;
 
     case CLUTTER_KEY_q:
       clutter_main_quit ();
+
       return TRUE;
 
     default:
