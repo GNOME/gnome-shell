@@ -1009,6 +1009,8 @@ echo "Clutter - $VERSION (${CLUTTER_RELEASE_STATUS})"
 echo ""
 echo " • Global:"
 echo "        Prefix: ${prefix}"
+echo "        Libdir: ${libdir}"
+echo "        Sysconfdir: ${sysconfdir}"
 echo "        Flavour: ${CLUTTER_WINSYS}"
 echo "        Target library: ${CLUTTER_WINSYS_LIB}"
 
