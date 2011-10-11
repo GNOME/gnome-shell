@@ -52,7 +52,7 @@ test_thread_done_idle (gpointer user_data)
   return FALSE;
 }
 
-static GPrivate test_thread_data;
+static GPrivate test_thread_data = G_PRIVATE_INIT (test_thread_data_free);
 
 typedef struct
 {
