@@ -28,7 +28,7 @@
 #ifndef __CLUTTER_UTIL_H__
 #define __CLUTTER_UTIL_H__
 
-#include <glib.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
