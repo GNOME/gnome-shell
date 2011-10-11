@@ -256,7 +256,7 @@
           <listitem><para>The keys in this section strictly map to the #GObject
           properties exposed by the #ClutterSettings type; if Clutter is running
           on an X11 platform, the XSettings manager will take precedence over the
-          values specified in the <filename>settings.ini<filename>
+          values specified in the <filename>settings.ini</filename>
           file.</para></listitem>
         </varlistentry>
       </variablelist>
@@ -268,32 +268,32 @@
           <varlistentry>
             <term>ShowFps</term>
             <listitem><para>A boolean value, equivalent to setting
-            <variable>CLUTTER_SHOW_FPS</variable>.</para></listitem>
+            <code>CLUTTER_SHOW_FPS</code>.</para></listitem>
           </varlistentry>
           <varlistentry>
             <term>DisableMipmappedText</term>
             <listitem><para>A boolean value, equivalent to setting
-            <variable>CLUTTER_DISABLE_MIPMAPPED_TEXT</variable>.</para></listitem>
+            <code>CLUTTER_DISABLE_MIPMAPPED_TEXT</code>.</para></listitem>
           </varlistentry>
           <varlistentry>
             <term>UseFuzzyPicking</term>
             <listitem><para>A boolean value, equivalent to setting
-            <variable>CLUTTER_FUZZY_PICK</variable>.</para></listitem>
+            <code>CLUTTER_FUZZY_PICK</code>.</para></listitem>
           </varlistentry>
           <varlistentry>
             <term>EnableAccessibility</term>
             <listitem><para>A boolean value, equivalent to setting
-            <variable>CLUTTER_ENABLE_ACCESSIBILITY</variable>.</para></listitem>
+            <code>CLUTTER_ENABLE_ACCESSIBILITY</code>.</para></listitem>
           </varlistentry>
           <varlistentry>
             <term>DefaultFps</term>
             <listitem><para>An integer value, equivalent to setting
-            <variable>CLUTTER_DEFAULT_FPS</variable>.</para></listitem>
+            <code>CLUTTER_DEFAULT_FPS</code>.</para></listitem>
           </varlistentry>
           <varlistentry>
             <term>TextDirection</term>
             <listitem><para>A string value, equivalent to setting
-            <variable>CLUTTER_TEXT_DIRECTION</variable>.</para></listitem>
+            <code>CLUTTER_TEXT_DIRECTION</code>.</para></listitem>
           </varlistentry>
         </variablelist>
       </section>
@@ -305,19 +305,19 @@
           <varlistentry>
             <term>Debug</term>
             <listitem><para>A string containing the debugging flags, in the same
-            format that should be used with the <variable>CLUTTER_DEBUG</variable>
+            format that should be used with the <code>CLUTTER_DEBUG</code>
             environment variable.</para></listitem>
           </varlistentry>
           <varlistentry>
             <term>PaintDebug</term>
             <listitem><para>A string containing the paint debugging flags, in the same
-            format that should be used with the <variable>CLUTTER_PAINT</variable>
+            format that should be used with the <code>CLUTTER_PAINT</code>
             environment variable.</para></listitem>
           </varlistentry>
           <varlistentry>
             <term>PickDebug</term>
             <listitem><para>A string containing the pick debugging flags, in the same
-            format that should be used with the <variable>CLUTTER_PICK</variable>
+            format that should be used with the <code>CLUTTER_PICK</code>
             environment variable.</para></listitem>
           </varlistentry>
         </variablelist>
