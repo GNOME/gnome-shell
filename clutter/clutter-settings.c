@@ -690,36 +690,20 @@ _clutter_settings_set_backend (ClutterSettings *settings,
 #define SETTINGS_GROUP  "Settings"
 
 void
-_clutter_settings_read_from_file (ClutterSettings *settings,
-                                  const gchar     *file)
+_clutter_settings_read_from_key_file (ClutterSettings *settings,
+                                      GKeyFile        *keyfile)
 {
   GObjectClass *settings_class;
   GObject *settings_obj;
   GParamSpec **pspecs;
-  GKeyFile *keyfile;
-  GError *error;
   guint n_pspecs, i;
 
-  error = NULL;
-  keyfile = g_key_file_new ();
-  g_key_file_load_from_file (keyfile, file, G_KEY_FILE_NONE, &error);
-  if (error != NULL)
-    {
-      g_critical ("Unable to read configuration from '%s': %s",
-                  file,
-                  error->message);
-      g_error_free (error);
-      goto out;
-    }
-
   if (!g_key_file_has_group (keyfile, SETTINGS_GROUP))
-    goto out;
+    return;
 
   settings_obj = G_OBJECT (settings);
   settings_class = G_OBJECT_GET_CLASS (settings);
   pspecs = g_object_class_list_properties (settings_class, &n_pspecs);
-
-  CLUTTER_NOTE (BACKEND, "Reading settings from '%s'", file);
 
   for (i = 0; i < n_pspecs; i++)
     {
@@ -790,9 +774,8 @@ _clutter_settings_read_from_file (ClutterSettings *settings,
           key_error->domain != G_KEY_FILE_ERROR &&
           key_error->code != G_KEY_FILE_ERROR_KEY_NOT_FOUND)
         {
-          g_critical ("Unable to read the value for setting '%s' in '%s': %s",
+          g_critical ("Unable to read the value for setting '%s': %s",
                       p_name,
-                      file,
                       key_error->message);
         }
 
@@ -805,7 +788,4 @@ _clutter_settings_read_from_file (ClutterSettings *settings,
     }
 
   g_free (pspecs);
-
-out:
-  g_key_file_free (keyfile);
 }

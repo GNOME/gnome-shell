@@ -216,22 +216,175 @@ clutter_threads_init_default (void)
     clutter_threads_unlock = clutter_threads_impl_unlock;
 }
 
-#define N_CONF_DIRS     2
+#define ENVIRONMENT_GROUP       "Environment"
+#define DEBUG_GROUP             "Debug"
+
+static void
+clutter_config_read_from_key_file (GKeyFile *keyfile)
+{
+  GError *key_error = NULL;
+  gboolean bool_value;
+  gint int_value;
+  const gchar *str_value;
+
+  if (!g_key_file_has_group (keyfile, ENVIRONMENT_GROUP))
+    return;
+
+  bool_value =
+    g_key_file_get_boolean (keyfile, ENVIRONMENT_GROUP,
+                            "ShowFps",
+                            &key_error);
+
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_show_fps = bool_value;
+
+  bool_value =
+    g_key_file_get_boolean (keyfile, ENVIRONMENT_GROUP,
+                            "DisableMipmappedText",
+                            &key_error);
+
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_disable_mipmap_text = bool_value;
+
+  bool_value =
+    g_key_file_get_boolean (keyfile, ENVIRONMENT_GROUP,
+                            "UseFuzzyPicking",
+                            &key_error);
+
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_use_fuzzy_picking = bool_value;
+
+  bool_value =
+    g_key_file_get_boolean (keyfile, ENVIRONMENT_GROUP,
+                            "EnableAccessibility",
+                            &key_error);
+
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_enable_accessibility = bool_value;
+
+  int_value =
+    g_key_file_get_integer (keyfile, ENVIRONMENT_GROUP,
+                            "DefaultFps",
+                            &key_error);
+
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_default_fps = int_value;
+
+  str_value =
+    g_key_file_get_string (keyfile, ENVIRONMENT_GROUP,
+                           "TextDirection",
+                           &key_error);
+
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    {
+      if (g_strcmp0 (str_value, "rtl") == 0)
+        clutter_text_direction = CLUTTER_TEXT_DIRECTION_RTL;
+      else
+        clutter_text_direction = CLUTTER_TEXT_DIRECTION_LTR;
+    }
+}
+
+#ifdef CLUTTER_ENABLE_DEBUG
+static void
+clutter_debug_read_from_key_file (GKeyFile *keyfile)
+{
+  GError *key_error = NULL;
+  const gchar *value;
+
+  if (!g_key_file_has_group (keyfile, DEBUG_GROUP))
+    return;
+
+  value = g_key_file_get_value (keyfile, DEBUG_GROUP,
+                                "Debug",
+                                &key_error);
+  if (key_error == NULL)
+    {
+      clutter_debug_flags |=
+        g_parse_debug_string (value,
+                              clutter_debug_keys,
+                              G_N_ELEMENTS (clutter_debug_keys));
+    }
+  else
+    g_clear_error (&key_error);
+
+  value = g_key_file_get_value (keyfile, DEBUG_GROUP,
+                                "PaintDebug",
+                                &key_error);
+  if (key_error == NULL)
+    {
+      clutter_paint_debug_flags |=
+        g_parse_debug_string (value,
+                              clutter_paint_debug_keys,
+                              G_N_ELEMENTS (clutter_paint_debug_keys));
+    }
+  else
+    g_clear_error (&key_error);
+
+  value = g_key_file_get_value (keyfile, DEBUG_GROUP,
+                                "PickDebug",
+                                &key_error);
+  if (key_error == NULL)
+    {
+      clutter_pick_debug_flags |=
+        g_parse_debug_string (value,
+                              clutter_pick_debug_keys,
+                              G_N_ELEMENTS (clutter_pick_debug_keys));
+    }
+  else
+    g_clear_error (&key_error);
+}
+#endif
+
+static void
+clutter_config_read_from_file (const gchar *config_path)
+{
+  ClutterSettings *settings = clutter_settings_get_default ();
+  GKeyFile *key_file = g_key_file_new ();
+  GError *error = NULL;
+
+  g_key_file_load_from_file (key_file, config_path, G_KEY_FILE_NONE, &error);
+  if (error == NULL)
+    {
+      clutter_config_read_from_key_file (key_file);
+#ifdef CLUTTER_ENABLE_DEBUG
+      clutter_debug_read_from_key_file (key_file);
+#endif
+      _clutter_settings_read_from_key_file (settings, key_file);
+    }
+  else
+    {
+      g_warning ("Unable to read configuration settings from '%s': %s",
+                 config_path,
+                 error->message);
+      g_error_free (error);
+    }
+
+  g_key_file_free (key_file);
+}
 
 static void
 clutter_config_read (void)
 {
-  ClutterSettings *settings;
   gchar *config_path;
-
-  settings = clutter_settings_get_default ();
 
   config_path = g_build_filename (CLUTTER_SYSCONFDIR,
                                   "clutter-1.0",
                                   "settings.ini",
                                   NULL);
   if (g_file_test (config_path, G_FILE_TEST_EXISTS))
-    _clutter_settings_read_from_file (settings, config_path);
+    clutter_config_read_from_file (config_path);
 
   g_free (config_path);
 
@@ -240,7 +393,7 @@ clutter_config_read (void)
                                   "settings.ini",
                                   NULL);
   if (g_file_test (config_path, G_FILE_TEST_EXISTS))
-    _clutter_settings_read_from_file (settings, config_path);
+    clutter_config_read_from_file (config_path);
 
   g_free (config_path);
 }

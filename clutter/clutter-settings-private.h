@@ -8,8 +8,8 @@ G_BEGIN_DECLS
 
 void    _clutter_settings_set_backend           (ClutterSettings *settings,
                                                  ClutterBackend  *backend);
-void    _clutter_settings_read_from_file        (ClutterSettings *settings,
-                                                 const gchar     *file);
+void    _clutter_settings_read_from_key_file    (ClutterSettings *settings,
+                                                 GKeyFile        *key_file);
 
 G_END_DECLS
 
