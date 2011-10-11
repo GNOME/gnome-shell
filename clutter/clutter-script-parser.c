@@ -1937,7 +1937,7 @@ void
 _clutter_script_construct_object (ClutterScript *script,
                                   ObjectInfo    *oinfo)
 {
-  GArray *params;
+  GArray *params = NULL;
   guint i;
 
   /* we have completely updated the object */

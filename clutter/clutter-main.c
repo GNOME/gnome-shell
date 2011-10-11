@@ -684,7 +684,7 @@ clutter_context_get_pango_fontmap (void)
 static ClutterTextDirection
 clutter_get_text_direction (void)
 {
-  PangoDirection dir = PANGO_DIRECTION_LTR;
+  ClutterTextDirection dir = CLUTTER_TEXT_DIRECTION_LTR;
   const gchar *direction;
 
   direction = g_getenv ("CLUTTER_TEXT_DIRECTION");
