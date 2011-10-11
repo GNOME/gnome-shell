@@ -196,7 +196,7 @@ struct _ClutterAnimationPrivate
 
   guint timeline_started_id;
   guint timeline_completed_id;
-  guint alpha_notify_id;
+  guint timeline_frame_id;
 };
 
 static guint animation_signals[LAST_SIGNAL] = { 0, };
@@ -318,24 +318,24 @@ clutter_animation_dispose (GObject *gobject)
   if (timeline != NULL && priv->timeline_completed_id != 0)
     g_signal_handler_disconnect (timeline, priv->timeline_completed_id);
 
+  if (timeline != NULL && priv->timeline_frame_id != 0)
+    g_signal_handler_disconnect (timeline, priv->timeline_frame_id);
+
   priv->timeline_started_id = 0;
   priv->timeline_completed_id = 0;
+  priv->timeline_frame_id = 0;
 
   if (priv->alpha != NULL)
     {
-      if (priv->alpha_notify_id != 0)
-        g_signal_handler_disconnect (priv->alpha, priv->alpha_notify_id);
-
       g_object_unref (priv->alpha);
+      priv->alpha = NULL;
     }
 
-  priv->alpha_notify_id = 0;
-  priv->alpha = NULL;
-
   if (priv->object != NULL)
-    g_object_unref (priv->object);
-
-  priv->object = NULL;
+    {
+      g_object_unref (priv->object);
+      priv->object = NULL;
+    }
 
   G_OBJECT_CLASS (clutter_animation_parent_class)->dispose (gobject);
 }
@@ -1074,9 +1074,9 @@ on_timeline_completed (ClutterTimeline  *timeline,
 }
 
 static void
-on_alpha_notify (GObject          *gobject,
-                 GParamSpec       *pspec,
-                 ClutterAnimation *animation)
+on_timeline_frame (ClutterTimeline  *timeline,
+                   gint              elapsed,
+                   ClutterAnimation *animation)
 {
   ClutterAnimationPrivate *priv;
   GList *properties, *p;
@@ -1089,7 +1089,7 @@ on_alpha_notify (GObject          *gobject,
 
   priv = animation->priv;
 
-  alpha_value = clutter_alpha_get_alpha (CLUTTER_ALPHA (gobject));
+  alpha_value = clutter_alpha_get_alpha (priv->alpha);
 
   if (CLUTTER_IS_ANIMATABLE (priv->object))
     {
@@ -1156,11 +1156,6 @@ clutter_animation_get_alpha_internal (ClutterAnimation *animation)
       alpha = clutter_alpha_new ();
       clutter_alpha_set_mode (alpha, CLUTTER_LINEAR);
 
-      priv->alpha_notify_id =
-        g_signal_connect (alpha, "notify::alpha",
-                          G_CALLBACK (on_alpha_notify),
-                          animation);
-
       priv->alpha = g_object_ref_sink (alpha);
 
       g_object_notify_by_pspec (G_OBJECT (animation), obj_props[PROP_ALPHA]);
@@ -1191,6 +1186,11 @@ clutter_animation_get_timeline_internal (ClutterAnimation *animation)
   priv->timeline_completed_id =
     g_signal_connect (timeline, "completed",
                       G_CALLBACK (on_timeline_completed),
+                      animation);
+
+  priv->timeline_frame_id =
+    g_signal_connect (timeline, "new-frame",
+                      G_CALLBACK (on_timeline_frame),
                       animation);
 
   clutter_alpha_set_timeline (alpha, timeline);
@@ -1489,8 +1489,12 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
   if (cur_timeline != NULL && priv->timeline_completed_id != 0)
     g_signal_handler_disconnect (cur_timeline, priv->timeline_completed_id);
 
+  if (cur_timeline != NULL && priv->timeline_frame_id != 0)
+    g_signal_handler_disconnect (cur_timeline, priv->timeline_frame_id);
+
   priv->timeline_started_id = 0;
   priv->timeline_completed_id = 0;
+  priv->timeline_frame_id = 0;
 
   alpha = clutter_animation_get_alpha_internal (animation);
   clutter_alpha_set_timeline (alpha, timeline);
@@ -1507,6 +1511,10 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
       priv->timeline_completed_id =
         g_signal_connect (timeline, "completed",
                           G_CALLBACK (on_timeline_completed),
+                          animation);
+      priv->timeline_frame_id =
+        g_signal_connect (timeline, "new-frame",
+                          G_CALLBACK (on_timeline_frame),
                           animation);
     }
 
@@ -1579,10 +1587,10 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
     }
 
   /* then we need to disconnect the signal handler from the old alpha */
-  if (priv->alpha_notify_id != 0)
+  if (timeline != NULL && priv->timeline_frame_id != 0)
     {
-      g_signal_handler_disconnect (priv->alpha, priv->alpha_notify_id);
-      priv->alpha_notify_id = 0;
+      g_signal_handler_disconnect (timeline, priv->timeline_frame_id);
+      priv->timeline_frame_id = 0;
     }
 
   if (priv->alpha != NULL)
@@ -1596,10 +1604,6 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
     goto out;
 
   priv->alpha = g_object_ref_sink (alpha);
-  priv->alpha_notify_id =
-    g_signal_connect (priv->alpha, "notify::alpha",
-                      G_CALLBACK (on_alpha_notify),
-                      animation);
 
   /* if the alpha has a timeline then we use it, otherwise we create one */
   timeline = clutter_alpha_get_timeline (priv->alpha);
@@ -1612,6 +1616,10 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
       priv->timeline_completed_id =
         g_signal_connect (timeline, "completed",
                           G_CALLBACK (on_timeline_completed),
+                          animation);
+      priv->timeline_frame_id =
+        g_signal_connect (timeline, "new-frame",
+                          G_CALLBACK (on_timeline_frame),
                           animation);
     }
   else

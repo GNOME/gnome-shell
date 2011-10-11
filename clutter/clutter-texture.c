@@ -167,7 +167,7 @@ static int texture_signals[LAST_SIGNAL] = { 0 };
 static GThreadPool *async_thread_pool = NULL;
 static guint        repaint_upload_func = 0;
 static GList       *upload_list = NULL;
-static GMutex       upload_list_mutex = G_MUTEX_INIT;
+static GMutex       upload_list_mutex;
 
 static CoglMaterial *texture_template_material = NULL;
 
@@ -1941,7 +1941,7 @@ clutter_texture_async_load (ClutterTexture *self,
 
   priv->async_data = data;
 
-  if (g_thread_supported ())
+  if (1)
     {
       if (G_UNLIKELY (async_thread_pool == NULL))
         {

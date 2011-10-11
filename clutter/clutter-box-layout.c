@@ -749,16 +749,15 @@ count_expand_children (ClutterLayoutManager *layout,
                        gint                 *visible_children,
                        gint                 *expand_children)
 {
-  GList        *children;
+  GList        *children, *l;
   ClutterActor *child;
 
   *visible_children = *expand_children = 0;
 
-  for (children = clutter_container_get_children (container);
-       children;
-       children = children->next)
+  children = clutter_container_get_children (container);
+  for (l = children; l != NULL; l = l->next)
     {
-      child = children->data;
+      child = l->data;
 
       if (CLUTTER_ACTOR_IS_VISIBLE (child))
         {
@@ -901,7 +900,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 {
   ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (layout)->priv;
   ClutterActor *child;
-  GList *children;
+  GList *children, *l;
   gint nvis_children;
   gint nexpand_children;
   gboolean is_rtl;
@@ -929,11 +928,10 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
     size = box->x2 - box->x1 - (nvis_children - 1) * priv->spacing;
 
   /* Retrieve desired size for visible children. */
-  for (i = 0, children = clutter_container_get_children (container);
-       children;
-       children = children->next)
+  children = clutter_container_get_children (container);
+  for (i = 0, l = children; l != NULL; l = l->next)
     {
-      child = children->data;
+      child = l->data;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
@@ -1037,14 +1035,14 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
     }
 
   children = clutter_container_get_children (container);
-  for (i = g_list_length (children) - 1, children = g_list_last (children);
-       children;
-       children = children->prev, i--)
+  for (i = g_list_length (children) - 1, l = g_list_last (children);
+       l != NULL;
+       l = l->prev, i--)
     {
       ClutterLayoutMeta *meta;
       ClutterBoxChild *box_child;
 
-      child = children->data;
+      child = l->data;
       meta = clutter_layout_manager_get_child_meta (layout,
                                                     container,
                                                     child);
