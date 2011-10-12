@@ -819,20 +819,6 @@ clutter_shader_set_uniform (ClutterShader *shader,
     g_assert_not_reached ();
 }
 
-/*
- * _clutter_shader_release_all:
- *
- * Iterate through all #ClutterShaders and tell them to release GL context
- * related sources.
- */
-void
-_clutter_shader_release_all (void)
-{
-  g_list_foreach (clutter_shaders_list,
-                  (GFunc) clutter_shader_release,
-                  NULL);
-}
-
 /**
  * clutter_shader_get_fragment_source:
  * @shader: a #ClutterShader

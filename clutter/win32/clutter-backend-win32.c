@@ -146,9 +146,6 @@ clutter_backend_win32_dispose (GObject *gobject)
   CLUTTER_NOTE (BACKEND, "Removing the event source");
   _clutter_backend_win32_events_uninit (CLUTTER_BACKEND (backend_win32));
 
-  /* Unrealize all shaders, since the GL context is going away */
-  _clutter_shader_release_all ();
-
   G_OBJECT_CLASS (clutter_backend_win32_parent_class)->dispose (gobject);
 
   if (backend->cogl_context)
