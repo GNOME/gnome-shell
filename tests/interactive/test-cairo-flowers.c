@@ -3,6 +3,7 @@
  */
 
 #undef CLUTTER_DISABLE_DEPRECATED
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 
 #ifndef _MSC_VER

@@ -1,7 +1,7 @@
 /*#define TEST_GROUP */
 
 #undef CLUTTER_DISABLE_DEPRECATED
-
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 
 #include <errno.h>
