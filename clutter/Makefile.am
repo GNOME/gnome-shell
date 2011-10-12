@@ -242,7 +242,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
 	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
-	$(srcdir)/deprecated/clutter-timeout-interval.h	\
+	$(srcdir)/deprecated/clutter-timeout-interval.h		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
 	$(srcdir)/deprecated/clutter-score.h 			\
 	$(srcdir)/deprecated/clutter-shader.h 			\
@@ -259,7 +259,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
 	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
-	$(srcdir)/deprecated/clutter-timeout-interval.c	\
+	$(srcdir)/deprecated/clutter-timeout-interval.c		\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\
