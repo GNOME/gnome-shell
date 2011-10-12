@@ -136,6 +136,7 @@ m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.15])
 m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
+m4_define([gdk_req_version],            [3.0.0])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
 AC_SUBST([COGL_REQ_VERSION],       [cogl_req_version])
@@ -148,6 +149,7 @@ AC_SUBST([UPROF_REQ_VERSION],      [uprof_req_version])
 AC_SUBST([GTK_DOC_REQ_VERSION],    [gtk_doc_req_version])
 AC_SUBST([XFIXES_REQ_VERSION],     [xfixes_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
+AC_SUBST([GDK_REQ_VERSION],        [gdk_req_version])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AM_PATH_GLIB_2_0([glib_req_version],
@@ -181,11 +183,6 @@ AC_SUBST(CLUTTER_LINK_FLAGS)
 
 dnl ========================================================================
 
-# defaults
-AS_IF([test "x$platform_win32" = "xyes"],  [CLUTTER_FLAVOUR=win32],
-      [test "x$platform_quartz" = "xyes"], [CLUTTER_FLAVOUR=osx],
-      [CLUTTER_FLAVOUR=glx])
-
 FLAVOUR_LIBS=""
 FLAVOUR_CFLAGS=""
 CLUTTER_BACKENDS=""
@@ -200,35 +197,51 @@ BACKEND_PC_FILES=""
 
 dnl === Clutter windowing system backend ======================================
 
-AC_ARG_ENABLE([x11],
-              [AS_HELP_STRING([--enable-x11=@<:@yes/no@:>@], [Enable the X11 backend (default=no)])],
-              [],
-              [enable_x11=maybe])
-AC_ARG_ENABLE([win32],
-              [AS_HELP_STRING([--enable-win32=@<:@yes/no@:>@], [Enable the Windows backend (default=no)])],
-              [],
-              [enable_win32=maybe])
-AC_ARG_ENABLE([osx],
-              [AS_HELP_STRING([--enable-osx=@<:@yes/no@:>@], [Enable the OS X backend (default=no)])],
-              [],
-              [enable_osx=maybe])
-AC_ARG_ENABLE([gdk],
-              [AS_HELP_STRING([--enable-gdk=@<:@yes/no@:>@], [Enable the GDK backend (default=no)])],
-              [],
-              [enable_gdk=maybe])
-AC_ARG_ENABLE([wayland],
-              [AS_HELP_STRING([--enable-wayland=@<:@yes/no@:>@], [Enable the Wayland client backend (default=no)])],
-              [],
-              [enable_wayland=maybe])
-AC_ARG_ENABLE([egl],
-              [AS_HELP_STRING([--enable-egl=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
-              [],
-              [enable_egl=maybe])
+AC_ARG_ENABLE([x11-backend],
+              [AS_HELP_STRING([--enable-x11-backend=@<:@yes/no@:>@], [Enable the X11 backend (default=check)])],
+              [enable_x11=$enableval],
+              [enable_x11=check])
+AC_ARG_ENABLE([win32-backend],
+              [AS_HELP_STRING([--enable-win32-backend=@<:@yes/no@:>@], [Enable the Windows backend (default=check)])],
+              [enable_win32=$enableval],
+              [enable_win32=check])
+AC_ARG_ENABLE([quartz-backend],
+              [AS_HELP_STRING([--enable-quartz-backend=@<:@yes/no@:>@], [Enable the OS X backend (default=check)])],
+              [enable_osx=$enableval],
+              [enable_osx=check])
+AC_ARG_ENABLE([gdk-backend],
+              [AS_HELP_STRING([--enable-gdk-backend=@<:@yes/no@:>@], [Enable the GDK backend (default=check)])],
+              [enable_gdk=$enableval],
+              [enable_gdk=check])
+AC_ARG_ENABLE([wayland-backend],
+              [AS_HELP_STRING([--enable-wayland-backend=@<:@yes/no@:>@], [Enable the Wayland client backend (default=no)])],
+              [enable_wayland=$enableval],
+              [enable_wayland=no])
+AC_ARG_ENABLE([egl-backend],
+              [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
+              [enable_egl=$enableval],
+              [enable_egl=no])
 
 dnl Define default values
-AS_IF([test "x$platform_glx" = "xyes"], [enable_x11=yes])
-AS_IF([test "x$platform_win32" = "xyes"], [enable_win32=yes])
-AS_IF([test "x$platform_quartz" = "xyes"], [enable_osx=yes])
+AS_IF([test "x$enable_x11" = "xcheck"],
+      [
+        AS_IF([test "x$platform_glx" = "xyes"], [enable_x11=yes], [enable_x11=no])
+      ])
+
+AS_IF([test "x$enable_win32" = "xcheck"],
+      [
+        AS_IF([test "x$platform_win32" = "xyes"], [enable_win32=yes], [enable_win32=no])
+      ])
+
+AS_IF([test "x$enable_osx" = "xcheck"],
+      [
+        AS_IF([test "x$platform_quartz" = "xyes"], [enable_osx=yes], [enable_osx=no])
+      ])
+
+AS_IF([test "x$enable_gdk" = "xcheck"],
+      [
+        PKG_CHECK_EXISTS([gdk-3.0 >= gdk_req_version], [enable_gdk=yes], [enable_gdk=no])
+      ])
 
 dnl Per-backend rules
 AS_IF([test "x$enable_x11" = "xyes"],
