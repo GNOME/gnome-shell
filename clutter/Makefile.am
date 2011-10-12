@@ -242,7 +242,6 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
 	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
-	$(srcdir)/deprecated/clutter-timeout-interval.h		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
 	$(srcdir)/deprecated/clutter-score.h 			\
 	$(srcdir)/deprecated/clutter-shader.h 			\
@@ -259,7 +258,6 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
 	$(srcdir)/deprecated/clutter-fixed.c			\
 	$(srcdir)/deprecated/clutter-frame-source.c		\
-	$(srcdir)/deprecated/clutter-timeout-interval.c		\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\
@@ -680,7 +678,7 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters
 
 ../build/win32/vs9/clutter.vcproj: $(top_srcdir)/build/win32/vs9/clutter.vcprojin
-	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(built_source_c) | tr '/' '\\'`; do \
+	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
 		case $$F in \
 		*.c)	echo '   <File RelativePath="..\..\..\clutter\'$$F'" />' \
 			;; \
@@ -690,7 +688,7 @@ dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj
 	rm clutter.sourcefiles
 	
 ../build/win32/vs10/clutter.vcxproj: $(top_srcdir)/build/win32/vs10/clutter.vcxprojin
-	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(built_source_c) | tr '/' '\\'`; do \
+	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
 		case $$F in \
 		*.c)	echo '    <ClCompile Include="..\..\..\clutter\'$$F'" />' \
 			;; \
@@ -700,7 +698,7 @@ dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj
 	rm clutter.vs10.sourcefiles
 	
 ../build/win32/vs10/clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/clutter.vcxproj.filtersin
-	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(built_source_c) | tr '/' '\\'`; do \
+	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
 		case $$F in \
 		*.c)	echo '    <ClCompile Include="..\..\..\clutter\'$$F'"><Filter>Sources</Filter></ClCompile>' \
 			;; \
