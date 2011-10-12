@@ -100,7 +100,7 @@ _cogl_gles_update_features (CoglContext *context,
     flags |= COGL_FEATURE_OFFSCREEN;
 
   if (context->glBlitFramebuffer)
-    flags |= COGL_FEATURE_OFFSCREEN_BLIT;
+    private_flags |= COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT;
 
   if (_cogl_check_extension ("GL_OES_element_index_uint", gl_extensions))
     flags |= COGL_FEATURE_UNSIGNED_INT_INDICES;

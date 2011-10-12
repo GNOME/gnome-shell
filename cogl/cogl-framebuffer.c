@@ -1494,7 +1494,8 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
           /* NB: Currently we only take advantage of binding separate
            * read/write buffers for offscreen framebuffer blit
            * purposes.  */
-          g_return_if_fail (cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT));
+          g_return_if_fail (ctx->private_feature_flags &
+                            COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
           g_return_if_fail (draw_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
           g_return_if_fail (read_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
 
@@ -1783,7 +1784,9 @@ _cogl_blit_framebuffer (unsigned int src_x,
   read_buffer = _cogl_get_read_framebuffer ();
   ctx = draw_buffer->context;
 
-  g_return_if_fail (cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT));
+  g_return_if_fail (ctx->private_feature_flags &
+                    COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
+
   /* We can only support blitting between offscreen buffers because
      otherwise we would need to mirror the image and GLES2.0 doesn't
      support this */

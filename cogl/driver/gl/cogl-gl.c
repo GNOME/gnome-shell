@@ -193,7 +193,7 @@ _cogl_gl_update_features (CoglContext *context,
     flags |= COGL_FEATURE_OFFSCREEN;
 
   if (context->glBlitFramebuffer)
-    flags |= COGL_FEATURE_OFFSCREEN_BLIT;
+    private_flags |= COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT;
 
   if (context->glRenderbufferStorageMultisampleIMG)
       flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;

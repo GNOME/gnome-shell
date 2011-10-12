@@ -307,7 +307,7 @@ _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
  * This blits a region of the color buffer of the current draw buffer
  * to the current read buffer. The draw and read buffers can be set up
  * using _cogl_push_framebuffers(). This function should only be
- * called if the COGL_FEATURE_OFFSCREEN_BLIT feature is
+ * called if the COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT feature is
  * advertised. The two buffers must both be offscreen and have the
  * same format.
  *
