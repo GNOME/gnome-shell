@@ -1,48 +1,59 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 INCLUDES = \
-	-I$(top_srcdir) \
-	-I$(top_srcdir)/clutter/cogl \
-	-I$(top_builddir)/clutter/cogl
+	-I$(top_srcdir)
 
 AM_CFLAGS = \
 	$(COGL_DEP_CFLAGS) \
 	$(COGL_EXTRA_CFLAGS) \
-	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API \
-	-DCOGL_EXAMPLES_DATA=\""$(abs_top_srcdir)/examples/"\"
+	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API
+
+if INSTALL_EXAMPLES
+AM_CFLAGS += -DCOGL_EXAMPLES_DATA=\""$(pkgdatadir)/examples-data/"\"
+else
+AM_CFLAGS += -DCOGL_EXAMPLES_DATA=\""$(abs_top_srcdir)/examples/"\"
+endif
 
 common_ldadd = \
 	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la
 
-noinst_PROGRAMS = hello
+programs = cogl-hello
+examples_datadir = $(pkgdatadir)/examples-data
+examples_data_DATA =
 
-hello_SOURCES = hello.c
-hello_LDADD = $(common_ldadd)
+cogl_hello_SOURCES = cogl-hello.c
+cogl_hello_LDADD = $(common_ldadd)
 
 if BUILD_COGL_PANGO
-noinst_PROGRAMS += crate
-crate_SOURCES = crate.c
-crate_LDADD = $(common_ldadd) $(COGL_PANGO_DEP_LIBS) $(top_builddir)/cogl-pango/libcogl-pango.la
-crate_CFLAGS = $(AM_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
+programs += cogl-crate
+cogl_crate_SOURCES = cogl-crate.c
+cogl_crate_LDADD = $(common_ldadd) $(COGL_PANGO_DEP_LIBS) $(top_builddir)/cogl-pango/libcogl-pango.la
+cogl_crate_CFLAGS = $(AM_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
+examples_data_DATA += crate.jpg
 endif
 
 if X11_TESTS
-noinst_PROGRAMS += x11-foreign x11-tfp
-x11_foreign_SOURCES = x11-foreign.c
-x11_foreign_LDADD = $(common_ldadd)
-x11_tfp_SOURCES = x11-tfp.c
-x11_tfp_LDADD = $(common_ldadd)
+programs += cogl-x11-foreign cogl-x11-tfp
+cogl_x11_foreign_SOURCES = cogl-x11-foreign.c
+cogl_x11_foreign_LDADD = $(common_ldadd)
+cogl_x11_tfp_SOURCES = cogl-x11-tfp.c
+cogl_x11_tfp_LDADD = $(common_ldadd)
 endif
 
 if SUPPORT_WAYLAND_EGL_SERVER
-noinst_PROGRAMS += cogland
+programs += cogland
 cogland_SOURCES = cogland.c
 cogland_LDADD = $(common_ldadd)
 endif
 
+if INSTALL_EXAMPLES
+bin_PROGRAMS = $(programs)
+else
+noinst_PROGRAMS = $(programs)
+endif
+
 EXTRA_DIST = \
-	crate.jpg \
 	android/hello/AndroidManifest.xml \
 	android/hello/jni/Application.mk \
 	android/hello/jni/Android.mk \

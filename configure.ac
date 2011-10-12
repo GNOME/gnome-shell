@@ -384,6 +384,17 @@ AS_IF([test "x$enable_cogl_pango" = "xyes"],
 )
 
 dnl     ============================================================
+dnl     Should examples be installed?
+dnl     ============================================================
+AC_ARG_ENABLE(
+  [examples-install],
+  [AC_HELP_STRING([--enable-examples-install=@<:@no/yes@:>@], [Enable installation of examples @<:@default=no@:>@])],
+  [],
+  enable_examples_install=no
+)
+AM_CONDITIONAL([INSTALL_EXAMPLES], [test "x$enable_examples_install" = "xyes"])
+
+dnl     ============================================================
 dnl     Determine which drivers and window systems we can support
 dnl     ============================================================
 
