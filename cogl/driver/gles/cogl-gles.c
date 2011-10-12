@@ -70,7 +70,7 @@ _cogl_gles_update_features (CoglContext *context,
   GE( context, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
   if (num_stencil_bits > 2)
-    flags |= COGL_FEATURE_STENCIL_BUFFER;
+    private_flags |= COGL_PRIVATE_FEATURE_STENCIL_BUFFER;
 
 #ifdef HAVE_COGL_GLES
   if (context->driver == COGL_DRIVER_GLES1)

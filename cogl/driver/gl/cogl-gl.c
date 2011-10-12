@@ -183,7 +183,7 @@ _cogl_gl_update_features (CoglContext *context,
   GE( ctx, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
   if (num_stencil_bits > 2)
-    flags |= COGL_FEATURE_STENCIL_BUFFER;
+    private_flags |= COGL_PRIVATE_FEATURE_STENCIL_BUFFER;
 
   GE( ctx, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)

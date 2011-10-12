@@ -273,7 +273,7 @@ _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_STENCIL_BUFFER))
     {
       static gboolean seen_warning = FALSE;
 
