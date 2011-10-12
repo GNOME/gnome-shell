@@ -656,11 +656,7 @@ clutter_get_font_flags
 clutter_get_font_map
 clutter_get_input_device_for_id
 clutter_get_keyboard_grab
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_get_motion_events_enabled
-#endif
-
 clutter_get_option_group
 clutter_get_option_group_without_init
 clutter_get_pointer_grab
@@ -948,11 +944,7 @@ clutter_settings_get_default
 clutter_settings_get_type
 clutter_set_default_frame_rate
 clutter_set_font_flags
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_set_motion_events_enabled
-#endif
-
 clutter_shader_compile
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
@@ -1214,10 +1206,8 @@ clutter_text_set_single_line_mode
 clutter_text_set_text
 clutter_text_set_use_markup
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
 clutter_threads_add_frame_source
 clutter_threads_add_frame_source_full
-#endif
 
 clutter_threads_add_idle
 clutter_threads_add_idle_full
