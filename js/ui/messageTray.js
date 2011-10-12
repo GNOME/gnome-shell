@@ -441,7 +441,7 @@ const Notification = new Lang.Class({
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._table = new St.Table({ name: 'notification',
+        this._table = new St.Table({ style_class: 'notification',
                                      reactive: true });
         this._table.connect('style-changed', Lang.bind(this, this._styleChanged));
         this.actor.set_child(this._table);
@@ -592,13 +592,13 @@ const Notification = new Lang.Class({
 
     _createScrollArea: function() {
         this._table.add_style_class_name('multi-line-notification');
-        this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
+        this._scrollArea = new St.ScrollView({ style_class: 'notification-scrollview',
                                                vscrollbar_policy: this._scrollPolicy,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER });
         this._table.add(this._scrollArea, { row: 1,
                                             col: 2 });
         this._updateLastColumnSettings();
-        this._contentArea = new St.BoxLayout({ name: 'notification-body',
+        this._contentArea = new St.BoxLayout({ style_class: 'notification-body',
                                                vertical: true });
         this._scrollArea.add_actor(this._contentArea);
         // If we know the notification will be expandable, we need to add
@@ -734,7 +734,7 @@ const Notification = new Lang.Class({
     addButton: function(id, label) {
         if (!this._buttonBox) {
 
-            let box = new St.BoxLayout({ name: 'notification-actions' });
+            let box = new St.BoxLayout({ style_class: 'notification-actions' });
             this.setActionArea(box, { x_expand: false,
                                       y_expand: false,
                                       x_fill: false,
