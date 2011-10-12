@@ -16,8 +16,8 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter				\
 	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS)	\
 	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS_BASE)	\
+	-I$(top_srcdir)/clutter/deprecated		\
 	-I$(top_srcdir)/clutter/cally			\
-	-I$(top_srcdir)/clutter/evdev			\
 	-I$(top_builddir)				\
 	-I$(top_builddir)/clutter			\
 	$(NULL)
@@ -27,6 +27,7 @@ AM_CPPFLAGS = \
 	-DCLUTTER_LIBDIR=\""$(libdir)"\"	\
 	-DCLUTTER_DATADIR=\""$(datadir)"\"	\
 	-DCLUTTER_LOCALEDIR=\""$(localedir)"\"	\
+	-DCLUTTER_SYSCONFDIR=\""$(sysconfdir)"\" \
 	-DCLUTTER_COMPILATION=1			\
 	-DCOGL_ENABLE_EXPERIMENTAL_API		\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
@@ -43,6 +44,7 @@ INTROSPECTION_GIRS =
 # the base include path for headers
 clutter_base_includedir = $(includedir)/clutter-$(CLUTTER_API_VERSION)
 clutter_includedir = $(clutter_base_includedir)/clutter
+clutter_deprecateddir = $(clutter_base_includedir)/clutter/deprecated
 
 # pkg-config files
 pc_files =
@@ -58,13 +60,6 @@ source_h =					\
 	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-animator.h		\
 	$(srcdir)/clutter-backend.h		\
-	$(srcdir)/clutter-behaviour.h     	\
-	$(srcdir)/clutter-behaviour-depth.h 	\
-	$(srcdir)/clutter-behaviour-ellipse.h 	\
-	$(srcdir)/clutter-behaviour-opacity.h 	\
-	$(srcdir)/clutter-behaviour-path.h 	\
-	$(srcdir)/clutter-behaviour-rotate.h 	\
-	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-bind-constraint.h	\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
@@ -87,13 +82,12 @@ source_h =					\
 	$(srcdir)/clutter-drag-action.h		\
 	$(srcdir)/clutter-drop-action.h		\
 	$(srcdir)/clutter-effect.h		\
+	$(srcdir)/clutter-enums.h		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
-	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-fixed-layout.h	\
 	$(srcdir)/clutter-flow-layout.h		\
-	$(srcdir)/clutter-frame-source.h        \
-	$(srcdir)/clutter-gesture-action.h 		\
+	$(srcdir)/clutter-gesture-action.h 	\
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
@@ -110,11 +104,9 @@ source_h =					\
 	$(srcdir)/clutter-path-constraint.h	\
 	$(srcdir)/clutter-path.h		\
 	$(srcdir)/clutter-rectangle.h		\
-	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-settings.h		\
-	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-shader-effect.h	\
 	$(srcdir)/clutter-shader-types.h	\
 	$(srcdir)/clutter-swipe-action.h	\
@@ -127,7 +119,6 @@ source_h =					\
 	$(srcdir)/clutter-texture.h 		\
         $(srcdir)/clutter-text.h                \
 	$(srcdir)/clutter-timeline.h 		\
-	$(srcdir)/clutter-timeout-pool.h 	\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
@@ -144,13 +135,6 @@ source_c = \
 	$(srcdir)/clutter-animation.c		\
 	$(srcdir)/clutter-animator.c		\
 	$(srcdir)/clutter-backend.c		\
-	$(srcdir)/clutter-behaviour.c 		\
-	$(srcdir)/clutter-behaviour-depth.c	\
-	$(srcdir)/clutter-behaviour-ellipse.c	\
-	$(srcdir)/clutter-behaviour-opacity.c	\
-	$(srcdir)/clutter-behaviour-path.c	\
-	$(srcdir)/clutter-behaviour-rotate.c	\
-	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-bind-constraint.c	\
 	$(srcdir)/clutter-binding-pool.c	\
@@ -174,12 +158,10 @@ source_c = \
 	$(srcdir)/clutter-effect.c		\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
-	$(srcdir)/clutter-fixed.c		\
 	$(srcdir)/clutter-fixed-layout.c	\
 	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
-	$(srcdir)/clutter-frame-source.c	\
-	$(srcdir)/clutter-gesture-action.c 		\
+	$(srcdir)/clutter-gesture-action.c 	\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
@@ -196,12 +178,10 @@ source_c = \
 	$(srcdir)/clutter-path-constraint.c	\
 	$(srcdir)/clutter-path.c		\
 	$(srcdir)/clutter-rectangle.c 		\
-	$(srcdir)/clutter-score.c 		\
 	$(srcdir)/clutter-script.c		\
 	$(srcdir)/clutter-script-parser.c	\
 	$(srcdir)/clutter-scriptable.c		\
 	$(srcdir)/clutter-settings.c		\
-	$(srcdir)/clutter-shader.c		\
 	$(srcdir)/clutter-shader-effect.c	\
 	$(srcdir)/clutter-shader-types.c	\
 	$(srcdir)/clutter-swipe-action.c	\
@@ -214,7 +194,6 @@ source_c = \
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c                \
 	$(srcdir)/clutter-timeline.c 		\
-	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
 	$(srcdir)/clutter-paint-volume.c 	\
@@ -240,9 +219,9 @@ source_h_priv = \
 	$(srcdir)/clutter-private.h 			\
 	$(srcdir)/clutter-profile.h			\
 	$(srcdir)/clutter-script-private.h		\
+	$(srcdir)/clutter-settings-private.h		\
 	$(srcdir)/clutter-stage-manager-private.h	\
 	$(srcdir)/clutter-stage-private.h		\
-	$(srcdir)/clutter-timeout-interval.h    	\
 	$(NULL)
 
 # private source code; these should not be introspected
@@ -250,7 +229,48 @@ source_c_priv = \
 	$(srcdir)/clutter-event-translator.c	\
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-profile.c		\
-	$(srcdir)/clutter-timeout-interval.c    \
+	$(NULL)
+
+# deprecated installed headers
+deprecated_h = \
+	$(srcdir)/deprecated/clutter-behaviour.h 		\
+	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\
+	$(srcdir)/deprecated/clutter-behaviour-ellipse.h	\
+	$(srcdir)/deprecated/clutter-behaviour-opacity.h 	\
+	$(srcdir)/deprecated/clutter-behaviour-path.h 		\
+	$(srcdir)/deprecated/clutter-behaviour-rotate.h 	\
+	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
+	$(srcdir)/deprecated/clutter-fixed.h			\
+	$(srcdir)/deprecated/clutter-frame-source.h		\
+	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
+	$(srcdir)/deprecated/clutter-score.h 			\
+	$(srcdir)/deprecated/clutter-shader.h 			\
+	$(NULL)
+
+# deprecated source code
+deprecated_c = \
+	$(srcdir)/deprecated/clutter-behaviour.c 		\
+	$(srcdir)/deprecated/clutter-behaviour-depth.c		\
+	$(srcdir)/deprecated/clutter-behaviour-ellipse.c	\
+	$(srcdir)/deprecated/clutter-behaviour-opacity.c	\
+	$(srcdir)/deprecated/clutter-behaviour-path.c		\
+	$(srcdir)/deprecated/clutter-behaviour-rotate.c		\
+	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
+	$(srcdir)/deprecated/clutter-fixed.c			\
+	$(srcdir)/deprecated/clutter-frame-source.c		\
+	$(srcdir)/deprecated/clutter-timeout-pool.c		\
+	$(srcdir)/deprecated/clutter-score.c 			\
+	$(srcdir)/deprecated/clutter-shader.c 			\
+	$(NULL)
+
+# deprecated private headers; these should not be installed
+deprecated_h_priv = \
+	$(srcdir)/deprecated/clutter-timeout-interval.h	\
+	$(NULL)
+
+# deprecated private source code; these should not be introspected
+deprecated_c_priv = \
+	$(srcdir)/deprecated/clutter-timeout-interval.c	\
 	$(NULL)
 
 # built sources
@@ -610,6 +630,8 @@ nodist_clutter_include_HEADERS = \
 	$(top_builddir)/clutter/clutter-version.h \
 	$(built_source_h)
 
+clutter_deprecated_HEADERS = $(deprecated_h)
+
 lib_LTLIBRARIES += libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
@@ -629,6 +651,10 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_h) \
 	$(source_c_priv) \
 	$(source_h_priv) \
+	$(deprecated_c) \
+	$(deprecated_h) \
+	$(deprecated_c_priv) \
+	$(deprecated_h_priv) \
 	$(cally_sources_c) \
 	$(cally_sources_h) \
 	$(cally_sources_private) \
@@ -700,7 +726,13 @@ Clutter-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_AP
 Clutter_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Clutter
 Clutter_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
 Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutter_include_HEADERS) $(nodist_clutter_include_HEADERS) $(source_c) $(built_source_c)
+Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = \
+	$(clutter_include_HEADERS) \
+	$(clutter_deprecated_HEADERS) \
+	$(nodist_clutter_include_HEADERS) \
+	$(source_c) \
+	$(deprecated_c) \
+	$(built_source_c)
 Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cogl-1.0 CoglPango-1.0 Atk-1.0 Json-1.0
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \

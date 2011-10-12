@@ -42,8 +42,8 @@
 
 #include <math.h>
 
+#include "clutter-behaviour.h"
 #include "clutter-behaviour-opacity.h"
-
 #include "clutter-private.h"
 #include "clutter-debug.h"
 

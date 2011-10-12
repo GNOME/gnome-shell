@@ -30,8 +30,6 @@
 #ifndef __CLUTTER_BEHAVIOUR_H__
 #define __CLUTTER_BEHAVIOUR_H__
 
-#include <glib-object.h>
-#include <clutter/clutter-alpha.h>
 #include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
@@ -60,7 +58,6 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_BEHAVIOUR, ClutterBehaviourClass))
 
-typedef struct _ClutterBehaviour        ClutterBehaviour;
 typedef struct _ClutterBehaviourPrivate ClutterBehaviourPrivate;
 typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
 

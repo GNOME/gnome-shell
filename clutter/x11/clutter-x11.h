@@ -107,7 +107,8 @@ XVisualInfo *clutter_x11_get_visual_info (void);
 void     clutter_x11_set_display         (Display * xdpy);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
-XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage) G_GNUC_DEPRECATED;
+CLUTTER_DEPRECATED_FOR(clutter_x11_get_visual_info)
+XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage);
 #endif
 
 Window       clutter_x11_get_stage_window  (ClutterStage *stage);
@@ -127,7 +128,8 @@ gboolean clutter_x11_has_event_retrieval (void);
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
-const GSList* clutter_x11_get_input_devices (void) G_GNUC_DEPRECATED;
+CLUTTER_DEPRECATED_FOR(clutter_device_manager_peek_devices)
+const GSList* clutter_x11_get_input_devices (void);
 #endif
 
 void     clutter_x11_enable_xinput (void);

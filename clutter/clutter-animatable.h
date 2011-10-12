@@ -38,7 +38,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_ANIMATABLE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_ANIMATABLE))
 #define CLUTTER_ANIMATABLE_GET_IFACE(obj)       (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_ANIMATABLE, ClutterAnimatableIface))
 
-typedef struct _ClutterAnimatable               ClutterAnimatable; /* dummy typedef */
 typedef struct _ClutterAnimatableIface          ClutterAnimatableIface;
 
 /**
@@ -99,6 +98,7 @@ struct _ClutterAnimatableIface
 GType clutter_animatable_get_type (void) G_GNUC_CONST;
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
+CLUTTER_DEPRECATED_FOR(clutter_animatable_interpolate_value)
 gboolean    clutter_animatable_animate_property  (ClutterAnimatable *animatable,
                                                   ClutterAnimation  *animation,
                                                   const gchar       *property_name,

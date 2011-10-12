@@ -48,25 +48,6 @@ typedef struct _ClutterTableLayoutPrivate         ClutterTableLayoutPrivate;
 typedef struct _ClutterTableLayoutClass           ClutterTableLayoutClass;
 
 /**
- * ClutterTableAlignment:
- * @CLUTTER_TABLE_ALIGNMENT_START: Align the child to the top or to the
- *   left of a cell in the table, depending on the axis
- * @CLUTTER_TABLE_ALIGNMENT_CENTER: Align the child to the center of
- *   a cell in the table
- * @CLUTTER_TABLE_ALIGNMENT_END: Align the child to the bottom or to the
- *   right of a cell in the table, depending on the axis
- *
- * The alignment policies available on each axis of the #ClutterTableLayout
- *
- * Since: 1.4
- */
-typedef enum {
-  CLUTTER_TABLE_ALIGNMENT_START,
-  CLUTTER_TABLE_ALIGNMENT_CENTER,
-  CLUTTER_TABLE_ALIGNMENT_END
-} ClutterTableAlignment;
-
-/**
  * ClutterTableLayout:
  *
  * The #ClutterTableLayout structure contains only private data

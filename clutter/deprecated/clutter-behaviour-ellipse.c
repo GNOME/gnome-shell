@@ -50,8 +50,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "clutter-behaviour.h"
 #include "clutter-behaviour-ellipse.h"
-
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"

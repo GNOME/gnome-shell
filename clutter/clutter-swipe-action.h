@@ -49,24 +49,6 @@ typedef struct _ClutterSwipeActionPrivate       ClutterSwipeActionPrivate;
 typedef struct _ClutterSwipeActionClass         ClutterSwipeActionClass;
 
 /**
- * ClutterSwipeDirection:
- * @CLUTTER_SWIPE_DIRECTION_UP: Upwards swipe gesture
- * @CLUTTER_SWIPE_DIRECTION_DOWN: Downwards swipe gesture
- * @CLUTTER_SWIPE_DIRECTION_LEFT: Leftwards swipe gesture
- * @CLUTTER_SWIPE_DIRECTION_RIGHT: Rightwards swipe gesture
- *
- * The main direction of the swipe gesture
- *
- * Since: 1.8
- */
-typedef enum { /*< prefix=CLUTTER_SWIPE_DIRECTION >*/
-  CLUTTER_SWIPE_DIRECTION_UP    = 1 << 0,
-  CLUTTER_SWIPE_DIRECTION_DOWN  = 1 << 1,
-  CLUTTER_SWIPE_DIRECTION_LEFT  = 1 << 2,
-  CLUTTER_SWIPE_DIRECTION_RIGHT = 1 << 3
-} ClutterSwipeDirection;
-
-/**
  * ClutterSwipeAction:
  *
  * The <structname>ClutterSwipeAction</structname> structure contains

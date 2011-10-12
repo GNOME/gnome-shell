@@ -45,23 +45,6 @@ typedef struct _ClutterFlowLayoutPrivate        ClutterFlowLayoutPrivate;
 typedef struct _ClutterFlowLayoutClass          ClutterFlowLayoutClass;
 
 /**
- * ClutterFlowOrientation:
- * @CLUTTER_FLOW_HORIZONTAL: Arrange the children of the flow layout
- *   horizontally first
- * @CLUTTER_FLOW_VERTICAL: Arrange the children of the flow layout
- *   vertically first
- *
- * The direction of the arrangement of the children inside
- * a #ClutterFlowLayout
- *
- * Since: 1.2
- */
-typedef enum { /*< prefix=CLUTTER_FLOW >*/
-  CLUTTER_FLOW_HORIZONTAL,
-  CLUTTER_FLOW_VERTICAL
-} ClutterFlowOrientation;
-
-/**
  * ClutterFlowLayout:
  *
  * The #ClutterFlowLayout structure contains only private data

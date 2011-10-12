@@ -117,11 +117,14 @@ ClutterActor *  clutter_cairo_texture_new                       (guint          
                                                                  guint                  height);
 
 #ifndef CLUTTER_DISABLE_DEPRECATED
+CLUTTER_DEPRECATED_FOR(clutter_cairo_texture_invalidate_rectangle)
 cairo_t *       clutter_cairo_texture_create_region             (ClutterCairoTexture   *self,
                                                                  gint                   x_offset,
                                                                  gint                   y_offset,
                                                                  gint                   width,
                                                                  gint                   height);
+
+CLUTTER_DEPRECATED_FOR(clutter_cairo_texture_invalidate)
 cairo_t *       clutter_cairo_texture_create                    (ClutterCairoTexture   *self);
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 

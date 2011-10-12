@@ -428,6 +428,7 @@ clutter_actor_add_action
 clutter_actor_add_action_with_name
 clutter_actor_remove_action
 clutter_actor_remove_action_by_name
+clutter_actor_has_actions
 clutter_actor_get_actions
 clutter_actor_get_action
 clutter_actor_clear_actions
@@ -435,6 +436,7 @@ clutter_actor_add_constraint
 clutter_actor_add_constraint_with_name
 clutter_actor_remove_constraint
 clutter_actor_remove_constraint_by_name
+clutter_actor_has_constraints
 clutter_actor_get_constraints
 clutter_actor_get_constraint
 clutter_actor_clear_constraints
@@ -442,6 +444,7 @@ clutter_actor_add_effect
 clutter_actor_add_effect_with_name
 clutter_actor_remove_effect
 clutter_actor_remove_effect_by_name
+clutter_actor_has_effects
 clutter_actor_get_effects
 clutter_actor_get_effect
 clutter_actor_clear_effects
@@ -1065,6 +1068,7 @@ clutter_event_get_key_code
 clutter_event_set_key_unicode
 clutter_event_get_key_unicode
 clutter_keysym_to_unicode
+clutter_unicode_to_keysym
 
 <SUBSECTION>
 clutter_event_set_related
@@ -1124,6 +1128,11 @@ clutter_input_device_get_axis_value
 clutter_input_device_get_device_coords
 clutter_input_device_get_pointer_actor
 clutter_input_device_get_pointer_stage
+
+<SUBSECTION>
+clutter_input_device_grab
+clutter_input_device_ungrab
+clutter_input_device_get_grabbed_actor
 
 <SUBSECTION>
 clutter_input_device_update_from_event

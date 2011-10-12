@@ -29,7 +29,6 @@
 #define __CLUTTER_SCRIPT_H__
 
 #include <clutter/clutter-types.h>
-#include <clutter/clutter-state.h>
 
 G_BEGIN_DECLS
 

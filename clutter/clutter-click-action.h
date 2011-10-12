@@ -49,23 +49,6 @@ typedef struct _ClutterClickActionPrivate       ClutterClickActionPrivate;
 typedef struct _ClutterClickActionClass         ClutterClickActionClass;
 
 /**
- * ClutterLongPressState:
- * @CLUTTER_LONG_PRESS_QUERY: Queries the action whether it supports
- *   long presses
- * @CLUTTER_LONG_PRESS_ACTIVATE: Activates the action on a long press
- * @CLUTTER_LONG_PRESS_CANCEL: The long press was cancelled
- *
- * The states for the #ClutterClikAction::long-press signal.
- *
- * Since: 1.8
- */
-typedef enum { /*< prefix=CLUTTER_LONG_PRESS >*/
-  CLUTTER_LONG_PRESS_QUERY,
-  CLUTTER_LONG_PRESS_ACTIVATE,
-  CLUTTER_LONG_PRESS_CANCEL
-} ClutterLongPressState;
-
-/**
  * ClutterClickAction:
  *
  * The <structname>ClutterClickAction</structname> structure contains

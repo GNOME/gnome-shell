@@ -43,19 +43,6 @@ G_BEGIN_DECLS
 typedef struct _ClutterEffectClass      ClutterEffectClass;
 
 /**
- * ClutterEffectPaintFlags:
- * @CLUTTER_EFFECT_PAINT_ACTOR_DIRTY: The actor or one of its children
- *   has queued a redraw before this paint. This implies that the effect
- *   should call clutter_actor_continue_paint() to chain to the next
- *   effect and can not cache any results from a previous paint.
- *
- * Flags passed to the ‘paint’ or ‘pick’ method of #ClutterEffect.
- */
-typedef enum { /*< prefix=CLUTTER_EFFECT_PAINT >*/
-  CLUTTER_EFFECT_PAINT_ACTOR_DIRTY = (1 << 0)
-} ClutterEffectPaintFlags;
-
-/**
  * ClutterEffect:
  *
  * The #ClutterEffect structure contains only private data and should

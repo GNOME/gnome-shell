@@ -44,7 +44,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_ALPHA_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ALPHA))
 #define CLUTTER_ALPHA_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ALPHA, ClutterAlphaClass))
 
-typedef struct _ClutterAlpha            ClutterAlpha;
 typedef struct _ClutterAlphaClass       ClutterAlphaClass;
 typedef struct _ClutterAlphaPrivate     ClutterAlphaPrivate;
 

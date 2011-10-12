@@ -48,30 +48,6 @@ G_BEGIN_DECLS
 typedef struct _ClutterBindConstraint           ClutterBindConstraint;
 typedef struct _ClutterBindConstraintClass      ClutterBindConstraintClass;
 
-/**
- * ClutterBindCoordinate:
- * @CLUTTER_BIND_X: Bind the X coordinate
- * @CLUTTER_BIND_Y: Bind the Y coordinate
- * @CLUTTER_BIND_WIDTH: Bind the width
- * @CLUTTER_BIND_HEIGHT: Bind the height
- * @CLUTTER_BIND_POSITION: Equivalent to to %CLUTTER_BIND_X and
- *   %CLUTTER_BIND_Y
- * @CLUTTER_BIND_SIZE: Equivalent to %CLUTTER_BIND_WIDTH and
- *   %CLUTTER_BIND_HEIGHT
- *
- * Specifies which property should be used in a binding
- *
- * Since: 1.4
- */
-typedef enum { /*< prefix=CLUTTER_BIND >*/
-  CLUTTER_BIND_X,
-  CLUTTER_BIND_Y,
-  CLUTTER_BIND_WIDTH,
-  CLUTTER_BIND_HEIGHT,
-  CLUTTER_BIND_POSITION,
-  CLUTTER_BIND_SIZE
-} ClutterBindCoordinate;
-
 GType clutter_bind_constraint_get_type (void) G_GNUC_CONST;
 
 ClutterConstraint *   clutter_bind_constraint_new            (ClutterActor          *source,

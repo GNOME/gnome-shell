@@ -741,7 +741,7 @@ AS_CASE([$enable_deprecated],
 
         [yes],
         [
-          CLUTTER_DEPRECATED_CFLAGS=""
+          CLUTTER_DEPRECATED_CFLAGS="-DGLIB_DISABLE_DEPRECATION_WARNINGS -DCLUTTER_DISABLE_DEPRECATION_WARNINGS"
         ],
 
         [AC_MSG_ERROR([Unknown argument for --enable-deprecated])]
@@ -1013,6 +1013,8 @@ echo "Clutter - $VERSION (${CLUTTER_RELEASE_STATUS})"
 echo ""
 echo " • Global:"
 echo "        Prefix: ${prefix}"
+echo "        Libdir: ${libdir}"
+echo "        Sysconfdir: ${sysconfdir}"
 echo "        Flavour: ${CLUTTER_WINSYS}"
 echo "        Target library: ${CLUTTER_WINSYS_LIB}"
 

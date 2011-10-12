@@ -28,9 +28,8 @@
 #ifndef __CLUTTER_PATH_H__
 #define __CLUTTER_PATH_H__
 
-#include <glib-object.h>
-#include <clutter/clutter-types.h>
 #include <cairo.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -42,40 +41,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_PATH_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_PATH))
 #define CLUTTER_PATH_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_PATH, ClutterPathClass))
 
-#define CLUTTER_PATH_RELATIVE           (32)
-
-/**
- * ClutterPathNodeType:
- * @CLUTTER_PATH_MOVE_TO: jump to the given position
- * @CLUTTER_PATH_LINE_TO: create a line from the last node to the
- *   given position
- * @CLUTTER_PATH_CURVE_TO: bezier curve using the last position and
- *   three control points.
- * @CLUTTER_PATH_CLOSE: create a line from the last node to the last
- *   %CLUTTER_PATH_MOVE_TO node.
- * @CLUTTER_PATH_REL_MOVE_TO: same as %CLUTTER_PATH_MOVE_TO but with
- *   coordinates relative to the last node.
- * @CLUTTER_PATH_REL_LINE_TO: same as %CLUTTER_PATH_LINE_TO but with
- *   coordinates relative to the last node.
- * @CLUTTER_PATH_REL_CURVE_TO: same as %CLUTTER_PATH_CURVE_TO but with
- *   coordinates relative to the last node.
- *
- * Types of nodes in a #ClutterPath.
- *
- * Since: 1.0
- */
-typedef enum {
-  CLUTTER_PATH_MOVE_TO      = 0,
-  CLUTTER_PATH_LINE_TO      = 1,
-  CLUTTER_PATH_CURVE_TO     = 2,
-  CLUTTER_PATH_CLOSE        = 3,
-
-  CLUTTER_PATH_REL_MOVE_TO  = CLUTTER_PATH_MOVE_TO | CLUTTER_PATH_RELATIVE,
-  CLUTTER_PATH_REL_LINE_TO  = CLUTTER_PATH_LINE_TO | CLUTTER_PATH_RELATIVE,
-  CLUTTER_PATH_REL_CURVE_TO = CLUTTER_PATH_CURVE_TO | CLUTTER_PATH_RELATIVE
-} ClutterPathNodeType;
-
-typedef struct _ClutterPath        ClutterPath;
 typedef struct _ClutterPathClass   ClutterPathClass;
 typedef struct _ClutterPathPrivate ClutterPathPrivate;
 typedef struct _ClutterPathNode    ClutterPathNode;

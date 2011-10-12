@@ -67,8 +67,8 @@
 #include "config.h"
 #endif
 
+#include "clutter-behaviour.h"
 #include "clutter-behaviour-path.h"
-
 #include "clutter-bezier.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
