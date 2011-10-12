@@ -27,8 +27,13 @@ test_thread_data_new (void)
 }
 
 static void
-test_thread_data_free (TestThreadData *data)
+test_thread_data_free (gpointer _data)
 {
+  TestThreadData *data = _data;
+
+  if (data == NULL)
+    return;
+
   g_object_unref (data->progress);
   g_object_unref (data->label);
   g_object_unref (data->stage);

@@ -139,7 +139,7 @@ main (int argc, char **argv)
 
           g_print ("  - %s:%*s%s\n",
                    test_unit_names[i],
-                   (int) len - strlen (str), " ",
+                   (int) (len - strlen (str)), " ",
                    str);
 
           g_free (str);
