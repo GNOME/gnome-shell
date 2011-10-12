@@ -39,6 +39,7 @@
 #include "cogl-node-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-context-private.h"
+#include "cogl-texture-private.h"
 
 static void
 _cogl_pipeline_layer_free (CoglPipelineLayer *layer);
