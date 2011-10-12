@@ -1643,7 +1643,7 @@ static const int clutter_unicode_to_keysym_tab_size =
  * Since: 1.10
  */
 guint
-clutter_unicode_to_keyval (guint32 wc)
+clutter_unicode_to_keysym (guint32 wc)
 {
   int min = 0;
   int max = clutter_unicode_to_keysym_tab_size - 1;
