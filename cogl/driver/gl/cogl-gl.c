@@ -177,13 +177,6 @@ _cogl_gl_update_features (CoglContext *context,
         | COGL_FEATURE_TEXTURE_NPOT_REPEAT;
     }
 
-#ifdef GL_YCBCR_MESA
-  if (_cogl_check_extension ("GL_MESA_ycbcr_texture", gl_extensions))
-    {
-      flags |= COGL_FEATURE_TEXTURE_YUV;
-    }
-#endif
-
   if (_cogl_check_extension ("GL_MESA_pack_invert", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_MESA_PACK_INVERT;
 
