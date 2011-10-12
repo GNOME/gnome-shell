@@ -10200,6 +10200,26 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
     }
 }
 
+static inline void
+clutter_actor_set_shader_param_internal (ClutterActor *self,
+                                         const gchar  *param,
+                                         const GValue *value)
+{
+  ShaderData *shader_data;
+  GValue *var;
+
+  shader_data = g_object_get_qdata (G_OBJECT (self), quark_shader_data);
+  if (shader_data == NULL)
+    return;
+
+  var = g_slice_new0 (GValue);
+  g_value_init (var, G_VALUE_TYPE (value));
+  g_value_copy (value, var);
+  g_hash_table_insert (shader_data->value_hash, g_strdup (param), var);
+
+  clutter_actor_queue_redraw (self);
+}
+
 /**
  * clutter_actor_set_shader_param:
  * @self: a #ClutterActor
@@ -10218,9 +10238,6 @@ clutter_actor_set_shader_param (ClutterActor *self,
                                 const gchar  *param,
                                 const GValue *value)
 {
-  ShaderData *shader_data;
-  GValue *var;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (param != NULL);
   g_return_if_fail (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value) ||
@@ -10229,16 +10246,7 @@ clutter_actor_set_shader_param (ClutterActor *self,
                     G_VALUE_HOLDS_FLOAT (value) ||
                     G_VALUE_HOLDS_INT (value));
 
-  shader_data = g_object_get_qdata (G_OBJECT (self), quark_shader_data);
-  if (shader_data == NULL)
-    return;
-
-  var = g_slice_new0 (GValue);
-  g_value_init (var, G_VALUE_TYPE (value));
-  g_value_copy (value, var);
-  g_hash_table_insert (shader_data->value_hash, g_strdup (param), var);
-
-  clutter_actor_queue_redraw (self);
+  clutter_actor_set_shader_param_internal (self, param, value);
 }
 
 /**
@@ -10264,7 +10272,7 @@ clutter_actor_set_shader_param_float (ClutterActor *self,
   g_value_init (&var, G_TYPE_FLOAT);
   g_value_set_float (&var, value);
 
-  clutter_actor_set_shader_param (self, param, &var);
+  clutter_actor_set_shader_param_internal (self, param, &var);
 
   g_value_unset (&var);
 }
@@ -10292,7 +10300,7 @@ clutter_actor_set_shader_param_int (ClutterActor *self,
   g_value_init (&var, G_TYPE_INT);
   g_value_set_int (&var, value);
 
-  clutter_actor_set_shader_param (self, param, &var);
+  clutter_actor_set_shader_param_internal (self, param, &var);
 
   g_value_unset (&var);
 }
