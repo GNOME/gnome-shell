@@ -470,6 +470,8 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
 
   g_list_free (pipeline->deprecated_get_layers_list);
 
+  recursively_free_layer_caches (pipeline);
+
   g_slice_free (CoglPipeline, pipeline);
 }
 
