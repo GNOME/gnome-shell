@@ -101,7 +101,7 @@ prep_gl_for_pixels_upload_full (int pixels_rowstride,
   GE( ctx, glPixelStorei (GL_UNPACK_SKIP_PIXELS, pixels_src_x) );
   GE( ctx, glPixelStorei (GL_UNPACK_SKIP_ROWS, pixels_src_y) );
 
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+  if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     GE( ctx, glPixelStorei (GL_UNPACK_IMAGE_HEIGHT, image_height) );
 
   _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
@@ -130,7 +130,7 @@ prep_gl_for_pixels_download_full (int pixels_rowstride,
   GE( ctx, glPixelStorei (GL_PACK_SKIP_PIXELS, pixels_src_x) );
   GE( ctx, glPixelStorei (GL_PACK_SKIP_ROWS, pixels_src_y) );
 
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+  if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     GE( ctx, glPixelStorei (GL_PACK_IMAGE_HEIGHT, image_height) );
 
   _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);

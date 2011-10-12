@@ -629,7 +629,7 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
 
 #ifdef HAVE_COGL_GL
   if (ctx->driver == COGL_DRIVER_GL &&
-      cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
+      cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN) &&
       framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
     {
       GLenum attachment, pname;
@@ -701,7 +701,7 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return COGL_INVALID_HANDLE;
 
   /* Make texture is a valid texture object */
@@ -1469,7 +1469,7 @@ bind_gl_framebuffer (CoglContext *ctx,
         _cogl_framebuffer_get_winsys (framebuffer);
       winsys->onscreen_bind (COGL_ONSCREEN (framebuffer));
       /* glBindFramebuffer is an an extension with OpenGL ES 1.1 */
-      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+      if (cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
         GE (ctx, glBindFramebuffer (target, 0));
     }
 }

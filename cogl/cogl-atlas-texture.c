@@ -657,7 +657,7 @@ _cogl_atlas_texture_new_with_size (unsigned int width,
 
   /* If we can't use FBOs then it will be too slow to migrate textures
      and we shouldn't use the atlas */
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return COGL_INVALID_HANDLE;
 
   COGL_NOTE (ATLAS, "Adding texture of size %ix%i", width, height);

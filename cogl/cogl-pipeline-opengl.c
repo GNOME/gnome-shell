@@ -687,8 +687,8 @@ get_max_activateable_texture_units (void)
              defines the number of texture coordinates that can be
              uploaded (but doesn't necessarily relate to how many texture
              images can be sampled) */
-          if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL) ||
-              cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
+          if (cogl_has_feature (ctx, COGL_FEATURE_ID_GLSL) ||
+              cogl_has_feature (ctx, COGL_FEATURE_ID_ARBFP))
             /* Previously this code subtracted the value by one but there
                was no explanation for why it did this and it doesn't seem
                to make sense so it has been removed */
@@ -697,7 +697,7 @@ get_max_activateable_texture_units (void)
 
           /* GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is defined for GLSL but
              not ARBfp */
-          if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
+          if (cogl_has_feature (ctx, COGL_FEATURE_ID_GLSL))
             GE (ctx, glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
                                     values + n_values++));
         }

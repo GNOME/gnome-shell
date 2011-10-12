@@ -160,6 +160,9 @@ _cogl_gl_update_features (CoglContext *context,
   flags = (COGL_FEATURE_TEXTURE_READ_PIXELS
            | COGL_FEATURE_UNSIGNED_INT_INDICES
            | COGL_FEATURE_DEPTH_RANGE);
+  COGL_FLAGS_SET (ctx->features,
+                  COGL_FEATURE_ID_UNSIGNED_INT_INDICES, TRUE);
+  COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_DEPTH_RANGE, TRUE);
 
   gl_extensions = (const char *)ctx->glGetString (GL_EXTENSIONS);
 
@@ -175,6 +178,13 @@ _cogl_gl_update_features (CoglContext *context,
         | COGL_FEATURE_TEXTURE_NPOT_BASIC
         | COGL_FEATURE_TEXTURE_NPOT_MIPMAP
         | COGL_FEATURE_TEXTURE_NPOT_REPEAT;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_TEXTURE_NPOT, TRUE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_BASIC, TRUE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP, TRUE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT, TRUE);
     }
 
   if (_cogl_check_extension ("GL_MESA_pack_invert", gl_extensions))
@@ -190,13 +200,20 @@ _cogl_gl_update_features (CoglContext *context,
     private_flags |= COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
 
   if (context->glGenRenderbuffers)
-    flags |= COGL_FEATURE_OFFSCREEN;
+    {
+      flags |= COGL_FEATURE_OFFSCREEN;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_OFFSCREEN, TRUE);
+    }
 
   if (context->glBlitFramebuffer)
     private_flags |= COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT;
 
   if (context->glRenderbufferStorageMultisampleIMG)
+    {
       flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_OFFSCREEN_MULTISAMPLE, TRUE);
+    }
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 1) ||
       _cogl_check_extension ("GL_EXT_pixel_buffer_object", gl_extensions))
@@ -204,26 +221,46 @@ _cogl_gl_update_features (CoglContext *context,
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
       _cogl_check_extension ("GL_ARB_point_sprite", gl_extensions))
-    flags |= COGL_FEATURE_POINT_SPRITE;
+    {
+      flags |= COGL_FEATURE_POINT_SPRITE;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_POINT_SPRITE, TRUE);
+    }
 
   if (context->glGenPrograms)
-    flags |= COGL_FEATURE_SHADERS_ARBFP;
+    {
+      flags |= COGL_FEATURE_SHADERS_ARBFP;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_ARBFP, TRUE);
+    }
 
   if (context->glCreateProgram)
-    flags |= COGL_FEATURE_SHADERS_GLSL;
+    {
+      flags |= COGL_FEATURE_SHADERS_GLSL;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, TRUE);
+    }
 
   if (context->glGenBuffers)
     {
       private_flags |= COGL_PRIVATE_FEATURE_VBOS;
       flags |= (COGL_FEATURE_MAP_BUFFER_FOR_READ |
                 COGL_FEATURE_MAP_BUFFER_FOR_WRITE);
+      COGL_FLAGS_SET (ctx->features,
+                         COGL_FEATURE_ID_MAP_BUFFER_FOR_READ, TRUE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE, TRUE);
     }
 
   if (_cogl_check_extension ("GL_ARB_texture_rectangle", gl_extensions))
-    flags |= COGL_FEATURE_TEXTURE_RECTANGLE;
+    {
+      flags |= COGL_FEATURE_TEXTURE_RECTANGLE;
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_RECTANGLE, TRUE);
+    }
 
   if (context->glTexImage3D)
-    flags |= COGL_FEATURE_TEXTURE_3D;
+    {
+      flags |= COGL_FEATURE_TEXTURE_3D;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_TEXTURE_3D, TRUE);
+    }
 
   if (context->glEGLImageTargetTexture2D)
     private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE;

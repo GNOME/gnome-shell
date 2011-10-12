@@ -395,6 +395,8 @@ update_winsys_features (CoglContext *context, GError **error)
   COGL_NOTE (WINSYS, "  GLX Extensions: %s", glx_extensions);
 
   context->feature_flags |= COGL_FEATURE_ONSCREEN_MULTIPLE;
+  COGL_FLAGS_SET (context->features,
+                  COGL_FEATURE_ID_ONSCREEN_MULTIPLE, TRUE);
   COGL_FLAGS_SET (context->winsys_features,
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
@@ -1604,7 +1606,7 @@ get_fbconfig_for_depth (CoglContext *context,
       stencil = value;
 
       /* glGenerateMipmap is defined in the offscreen extension */
-      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+      if (cogl_has_feature (context, COGL_FEATURE_ID_OFFSCREEN))
         {
           glx_renderer->glXGetFBConfigAttrib (dpy,
                                               fbconfigs[i],
@@ -1639,7 +1641,7 @@ should_use_rectangle (CoglContext *context)
 
   if (context->rectangle_state == COGL_WINSYS_RECTANGLE_STATE_UNKNOWN)
     {
-      if (cogl_features_available (COGL_FEATURE_TEXTURE_RECTANGLE))
+      if (cogl_has_feature (context, COGL_FEATURE_ID_TEXTURE_RECTANGLE))
         {
           const char *rect_env;
 
@@ -1654,7 +1656,7 @@ should_use_rectangle (CoglContext *context)
              are not available */
 
           context->rectangle_state =
-            cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) ?
+            cogl_has_feature (context, COGL_FEATURE_ID_TEXTURE_NPOT) ?
             COGL_WINSYS_RECTANGLE_STATE_DISABLE :
             COGL_WINSYS_RECTANGLE_STATE_ENABLE;
 

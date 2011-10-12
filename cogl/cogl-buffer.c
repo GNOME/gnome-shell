@@ -134,10 +134,10 @@ bo_map (CoglBuffer       *buffer,
   _COGL_GET_CONTEXT (ctx, NULL);
 
   if ((access & COGL_BUFFER_ACCESS_READ) &&
-      !cogl_features_available (COGL_FEATURE_MAP_BUFFER_FOR_READ))
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_READ))
     return NULL;
   if ((access & COGL_BUFFER_ACCESS_WRITE) &&
-      !cogl_features_available (COGL_FEATURE_MAP_BUFFER_FOR_WRITE))
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE))
     return NULL;
 
   target = buffer->last_target;

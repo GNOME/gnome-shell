@@ -171,7 +171,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
   /* First validate that we can handle the current state using ARBfp
    */
 
-  if (!cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_ARBFP))
     return FALSE;
 
   /* TODO: support fog */

@@ -319,6 +319,38 @@ cogl_features_available (CoglFeatureFlags features)
   return (ctx->feature_flags & features) == features;
 }
 
+gboolean
+cogl_has_feature (CoglContext *ctx, CoglFeatureID feature)
+{
+  return COGL_FLAGS_GET (ctx->features, feature);
+}
+
+gboolean
+cogl_has_features (CoglContext *ctx, ...)
+{
+  va_list args;
+  CoglFeatureID feature;
+
+  va_start (args, ctx);
+  while ((feature = va_arg (args, CoglFeatureID)))
+    if (!cogl_has_feature (ctx, feature))
+      return FALSE;
+  va_end (args);
+
+  return TRUE;
+}
+
+void
+cogl_foreach_feature (CoglContext *ctx,
+                      CoglFeatureCallback callback,
+                      void *user_data)
+{
+  int i;
+  for (i = 0; i < _COGL_N_FEATURE_IDS; i++)
+    if (COGL_FLAGS_GET (ctx->features, i))
+      callback (i, user_data);
+}
+
 /* XXX: This function should either be replaced with one returning
  * integers, or removed/deprecated and make the
  * _cogl_framebuffer_get_viewport* functions public.

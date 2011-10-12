@@ -49,8 +49,8 @@ G_BEGIN_DECLS
  *
  * You should be aware that many GPUs only support power of two sizes
  * for #CoglTexture2D textures. You can check support for non power of
- * two textures by checking for the %COGL_FEATURE_TEXTURE_NPOT feature
- * via cogl_features_available ().
+ * two textures by checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature
+ * via cogl_has_feature().
  */
 
 typedef struct _CoglTexture2D CoglTexture2D;
@@ -87,8 +87,8 @@ cogl_is_texture_2d (void *object);
  *
  * <note>Many GPUs only support power of two sizes for #CoglTexture2D
  * textures. You can check support for non power of two textures by
- * checking for the %COGL_FEATURE_TEXTURE_NPOT feature via
- * cogl_features_available ().</note>
+ * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
+ * cogl_has_feature().</note>
  *
  * Returns: A newly allocated #CoglTexture2D, or if the size is not
  *          supported (because it is too large or a non-power-of-two
@@ -132,8 +132,8 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
  *
  * <note>Many GPUs only support power of two sizes for #CoglTexture2D
  * textures. You can check support for non power of two textures by
- * checking for the %COGL_FEATURE_TEXTURE_NPOT feature via
- * cogl_features_available ().</note>
+ * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
+ * cogl_has_feature().</note>
  *
  * Returns: A newly allocated #CoglTexture2D, or if the size is not
  *          supported (because it is too large or a non-power-of-two

@@ -1121,7 +1121,7 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return FALSE;
 
   framebuffer = _cogl_offscreen_new_to_texture_full

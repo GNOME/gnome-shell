@@ -219,8 +219,8 @@ cogl_depth_state_get_test_function (CoglDepthState *state);
  * using GLES 1 drivers) then if you don't use the default range
  * values you will get an error reported when calling
  * cogl_pipeline_set_depth_state (). You can check ahead of time for
- * the %COGL_FEATURE_DEPTH_RANGE feature with
- * cogl_features_available() to know if this function will succeed.
+ * the %COGL_FEATURE_ID_DEPTH_RANGE feature with
+ * cogl_has_feature() to know if this function will succeed.
  *
  * By default normalized device coordinate depth values are mapped to
  * the full range of depth buffer values, [0, 1].

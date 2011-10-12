@@ -198,7 +198,7 @@ _cogl_texture_rectangle_can_create (unsigned int width,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (!cogl_features_available (COGL_FEATURE_TEXTURE_RECTANGLE))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_RECTANGLE))
     return FALSE;
 
   ctx->texture_driver->pixel_format_to_gl (internal_format,

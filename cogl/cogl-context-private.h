@@ -63,7 +63,8 @@ struct _CoglContext
   const CoglTextureDriver *texture_driver;
 
   /* Features cache */
-  CoglFeatureFlags feature_flags;
+  unsigned int features[COGL_FLAGS_N_INTS_FOR_SIZE (_COGL_N_FEATURE_IDS)];
+  CoglFeatureFlags feature_flags; /* legacy/deprecated feature flags */
   CoglPrivateFeatureFlags private_feature_flags;
 
   CoglHandle        default_pipeline;

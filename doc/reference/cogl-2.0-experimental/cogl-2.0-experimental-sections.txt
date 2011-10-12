@@ -77,6 +77,13 @@ cogl_context_new
 cogl_context_get_display
 
 <SUBSECTION>
+CoglFeatureID
+cogl_has_feature
+cogl_has_features
+CoglFeatureCallback
+cogl_foreach_feature
+
+<SUBSECTION>
 cogl_push_matrix
 cogl_pop_matrix
 cogl_scale

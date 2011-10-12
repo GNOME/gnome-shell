@@ -80,16 +80,31 @@ _cogl_init_feature_overrides (CoglContext *ctx)
     ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_PBOS;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ARBFP)))
-    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
+    {
+      ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_ARBFP, FALSE);
+    }
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_GLSL)))
-    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
+    {
+      ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, FALSE);
+    }
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_NPOT_TEXTURES)))
-    ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
-                            COGL_FEATURE_TEXTURE_NPOT_BASIC |
-                            COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
-                            COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+    {
+      ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
+                              COGL_FEATURE_TEXTURE_NPOT_BASIC |
+                              COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
+                              COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_TEXTURE_NPOT, FALSE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_BASIC, FALSE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP, FALSE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT, FALSE);
+    }
 }
 
 const CoglWinsysVtable *
@@ -148,6 +163,7 @@ cogl_context_new (CoglDisplay *display,
   _context = context;
 
   /* Init default values */
+  memset (context->features, 0, sizeof (context->features));
   context->feature_flags = 0;
   context->private_feature_flags = 0;
 
@@ -378,7 +394,7 @@ cogl_context_new (CoglDisplay *display,
      coords enabled. We don't need to do this for GLES2 because point
      sprites are handled using a builtin varying in the shader. */
   if (_context->driver != COGL_DRIVER_GLES2 &&
-      cogl_features_available (COGL_FEATURE_POINT_SPRITE))
+      cogl_has_feature (context, COGL_FEATURE_ID_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
 
   return _cogl_context_object_new (context);

@@ -702,7 +702,7 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
   int   (*slices_for_size) (int, int, int, GArray*);
 
   /* Initialize size of largest slice according to supported features */
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT))
+  if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
     {
       max_width = width;
       max_height = height;

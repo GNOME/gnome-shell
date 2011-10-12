@@ -89,36 +89,74 @@ _cogl_gles_update_features (CoglContext *context,
        * repeat modes other than CLAMP_TO_EDGE. */
       flags |= COGL_FEATURE_TEXTURE_NPOT_BASIC;
       flags |= COGL_FEATURE_DEPTH_RANGE;
+      COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_GLSL, TRUE);
+      COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_OFFSCREEN, TRUE);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_BASIC, TRUE);
+      COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_DEPTH_RANGE, TRUE);
     }
 
   private_flags |= COGL_PRIVATE_FEATURE_VBOS;
 
   /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
   flags |= COGL_FEATURE_POINT_SPRITE;
+  COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_POINT_SPRITE, TRUE);
 
   if (context->glGenRenderbuffers)
-    flags |= COGL_FEATURE_OFFSCREEN;
+    {
+      flags |= COGL_FEATURE_OFFSCREEN;
+      COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_OFFSCREEN, TRUE);
+    }
 
   if (context->glBlitFramebuffer)
     private_flags |= COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT;
 
   if (_cogl_check_extension ("GL_OES_element_index_uint", gl_extensions))
-    flags |= COGL_FEATURE_UNSIGNED_INT_INDICES;
+    {
+      flags |= COGL_FEATURE_UNSIGNED_INT_INDICES;
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_UNSIGNED_INT_INDICES, TRUE);
+    }
 
-  if (_cogl_check_extension ("GL_OES_texture_npot", gl_extensions) ||
-      _cogl_check_extension ("GL_IMG_texture_npot", gl_extensions))
-    flags |= (COGL_FEATURE_TEXTURE_NPOT |
-              COGL_FEATURE_TEXTURE_NPOT_BASIC |
-              COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
-              COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+  if (_cogl_check_extension ("GL_OES_texture_npot", gl_extensions))
+    {
+      flags |= (COGL_FEATURE_TEXTURE_NPOT |
+                COGL_FEATURE_TEXTURE_NPOT_BASIC |
+                COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
+                COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT, TRUE);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_BASIC, TRUE);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP, TRUE);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT, TRUE);
+    }
+  else if (_cogl_check_extension ("GL_IMG_texture_npot", gl_extensions))
+    {
+      flags |= (COGL_FEATURE_TEXTURE_NPOT_BASIC |
+                COGL_FEATURE_TEXTURE_NPOT_MIPMAP);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_BASIC, TRUE);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP, TRUE);
+    }
 
   if (context->glTexImage3D)
-    flags |= COGL_FEATURE_TEXTURE_3D;
+    {
+      flags |= COGL_FEATURE_TEXTURE_3D;
+      COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_TEXTURE_3D, TRUE);
+    }
 
   if (context->glMapBuffer)
-    /* The GL_OES_mapbuffer extension doesn't support mapping for
-       read */
-    flags |= COGL_FEATURE_MAP_BUFFER_FOR_WRITE;
+    {
+      /* The GL_OES_mapbuffer extension doesn't support mapping for
+         read */
+      flags |= COGL_FEATURE_MAP_BUFFER_FOR_WRITE;
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE, TRUE);
+    }
 
   if (context->glEGLImageTargetTexture2D)
     private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE;

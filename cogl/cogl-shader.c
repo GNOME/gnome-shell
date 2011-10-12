@@ -203,7 +203,7 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
     }
 
   if (ctx->driver == COGL_DRIVER_GLES2 &&
-      cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+      cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     {
       static const char texture_3d_extension[] =
         "#extension GL_OES_texture_3D : enable\n";

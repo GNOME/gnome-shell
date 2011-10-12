@@ -181,7 +181,7 @@ _cogl_texture_2d_can_create (unsigned int width,
 
   /* If NPOT textures aren't supported then the size must be a power
      of two */
-  if (!cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) &&
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT) &&
       (!_cogl_util_is_pot (width) ||
        !_cogl_util_is_pot (height)))
     return FALSE;
@@ -329,7 +329,7 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
 
   /* Keep a copy of the first pixel so that if glGenerateMipmap isn't
      supported we can fallback to using GL_GENERATE_MIPMAP */
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN) &&
       (data = _cogl_bitmap_map (dst_bmp,
                                 COGL_BUFFER_ACCESS_READ, 0)))
     {
@@ -771,7 +771,7 @@ _cogl_texture_2d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
       /* glGenerateMipmap is defined in the FBO extension. If it's not
          available we'll fallback to temporarily enabling
          GL_GENERATE_MIPMAP and reuploading the first pixel */
-      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+      if (cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
         ctx->texture_driver->gl_generate_mipmaps (GL_TEXTURE_2D);
 #if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GL)
       else
@@ -825,7 +825,7 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
 
   /* If this touches the first pixel then we'll update our copy */
   if (dst_x == 0 && dst_y == 0 &&
-      !cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN) &&
       (data = _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0)))
     {
       CoglPixelFormat bpp =

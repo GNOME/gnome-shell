@@ -664,11 +664,13 @@ cogl_pipeline_set_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
   CoglPipelineLayer           *new;
   CoglPipelineLayer           *authority;
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   /* Don't allow point sprite coordinates to be enabled if the driver
      doesn't support it */
-  if (enable && !cogl_features_available (COGL_FEATURE_POINT_SPRITE))
+  if (enable && !cogl_has_feature (ctx, COGL_FEATURE_ID_POINT_SPRITE))
     {
       if (error)
         {
