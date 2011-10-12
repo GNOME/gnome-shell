@@ -8,14 +8,14 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories="..\..\..;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-2.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include"
+		AdditionalIncludeDirectories="..\..\..;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-1.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include"
 		PreprocessorDefinitions="G_DISABLE_SINGLE_INCLUDES;G_DISABLE_DEPRECATED"
 		ForcedIncludeFiles="msvc_recommended_pragmas.h"
 		DisableSpecificWarnings="4819"
 	/>
 	<Tool
 		Name="VCLinkerTool"
-		AdditionalDependencies="cogl-pango-2.0.lib cogl-2.0.lib glib-2.0.lib gobject-2.0.lib"
+		AdditionalDependencies="cogl-pango-1.0.lib cogl-1.0.lib glib-2.0.lib gobject-2.0.lib"
 		AdditionalLibraryDirectories="$(GlibEtcInstallRoot)\lib"
 	/>
 	<UserMacro
