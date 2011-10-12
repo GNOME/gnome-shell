@@ -143,23 +143,27 @@ validate_first_layer_cb (CoglPipeline *pipeline,
   /* We can't use hardware repeat so we need to set clamp to edge
    * otherwise it might pull in edge pixels from the other side. By
    * default WRAP_MODE_AUTOMATIC becomes CLAMP_TO_EDGE so we only need
-   * to override if the wrap mode is repeat.
+   * to override if the wrap mode isn't already automatic or
+   * clamp_to_edge.
    */
-  if (cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index) ==
-      COGL_PIPELINE_WRAP_MODE_REPEAT)
+  wrap_s = cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index);
+  if (wrap_s != COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE &&
+      wrap_s != COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
     {
       if (!state->override_pipeline)
         state->override_pipeline = cogl_pipeline_copy (pipeline);
-      cogl_pipeline_set_layer_wrap_mode_s (pipeline, layer_index,
-                                           clamp_to_edge);
+      cogl_pipeline_set_layer_wrap_mode_s (state->override_pipeline,
+                                           layer_index, clamp_to_edge);
     }
-  if (cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index) ==
-      COGL_PIPELINE_WRAP_MODE_REPEAT)
+
+  wrap_t = cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index);
+  if (wrap_t != COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE &&
+      wrap_t != COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
     {
       if (!state->override_pipeline)
         state->override_pipeline = cogl_pipeline_copy (pipeline);
-      cogl_pipeline_set_layer_wrap_mode_t (pipeline, layer_index,
-                                           clamp_to_edge);
+      cogl_pipeline_set_layer_wrap_mode_t (state->override_pipeline,
+                                           layer_index, clamp_to_edge);
     }
 
   return FALSE;
