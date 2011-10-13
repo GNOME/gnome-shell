@@ -76,7 +76,7 @@ _cogl_pixel_buffer_new (unsigned int size)
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  if (!cogl_features_available (COGL_FEATURE_PBOS))
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_PBOS))
     use_malloc = TRUE;
   else
     use_malloc = FALSE;

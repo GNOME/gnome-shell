@@ -77,7 +77,7 @@ _cogl_init_feature_overrides (CoglContext *ctx)
     ctx->feature_flags &= ~COGL_FEATURE_VBOS;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PBOS)))
-    ctx->feature_flags &= ~COGL_FEATURE_PBOS;
+    ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_PBOS;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ARBFP)))
     ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;

@@ -200,7 +200,7 @@ _cogl_gl_update_features (CoglContext *context,
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 1) ||
       _cogl_check_extension ("GL_EXT_pixel_buffer_object", gl_extensions))
-    flags |= COGL_FEATURE_PBOS;
+    private_flags |= COGL_PRIVATE_FEATURE_PBOS;
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
       _cogl_check_extension ("GL_ARB_point_sprite", gl_extensions))
