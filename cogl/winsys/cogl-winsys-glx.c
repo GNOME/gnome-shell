@@ -45,6 +45,7 @@
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-onscreen-private.h"
 #include "cogl-swap-chain-private.h"
 
 #include <stdlib.h>

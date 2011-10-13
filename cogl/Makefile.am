@@ -88,6 +88,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-primitive.h 		\
 	$(srcdir)/cogl-clip-state.h		\
 	$(srcdir)/cogl-framebuffer.h		\
+	$(srcdir)/cogl-onscreen.h		\
 	$(srcdir)/cogl-clutter.h       		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
@@ -305,6 +306,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-journal.c			\
 	$(srcdir)/cogl-framebuffer-private.h		\
 	$(srcdir)/cogl-framebuffer.c 			\
+	$(srcdir)/cogl-onscreen.c 			\
 	$(srcdir)/cogl-profile.h 			\
 	$(srcdir)/cogl-profile.c 			\
 	$(srcdir)/cogl-flags.h				\

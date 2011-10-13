@@ -59,6 +59,7 @@ IGNORE_HFILES=\
 	cogl-color-private.h			\
 	cogl-feature-private.h			\
 	cogl-framebuffer-private.h		\
+	cogl-onscreen-private.h			\
 	cogl-gtype-private.h			\
 	cogl-index-buffer-private.h		\
 	cogl-indices-private.h			\

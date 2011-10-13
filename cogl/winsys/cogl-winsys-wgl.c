@@ -35,6 +35,7 @@
 #include "cogl-winsys-private.h"
 #include "cogl-context-private.h"
 #include "cogl-framebuffer.h"
+#include "cogl-onscreen-private.h"
 #include "cogl-swap-chain-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-display-private.h"

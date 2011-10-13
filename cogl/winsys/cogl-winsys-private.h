@@ -25,8 +25,8 @@
 #define __COGL_WINSYS_PRIVATE_H
 
 #include "cogl-renderer.h"
+#include "cogl-onscreen.h"
 
-#include "cogl-framebuffer-private.h"
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-texture-pixmap-x11-private.h"
 #endif

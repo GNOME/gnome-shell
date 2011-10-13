@@ -28,6 +28,7 @@
 #include "cogl-matrix-stack.h"
 #include "cogl-clip-state-private.h"
 #include "cogl-journal-private.h"
+#include "cogl-winsys-private.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -36,10 +37,6 @@
 #ifdef COGL_HAS_GLX_SUPPORT
 #include <GL/glx.h>
 #include <GL/glxext.h>
-#endif
-
-#ifdef COGL_HAS_WIN32_SUPPORT
-#include <windows.h>
 #endif
 
 typedef enum _CoglFramebufferType {
@@ -139,31 +136,18 @@ typedef struct _CoglOffscreen
 
 #define COGL_OFFSCREEN(X) ((CoglOffscreen *)(X))
 
-struct _CoglOnscreen
-{
-  CoglFramebuffer  _parent;
-
-#ifdef COGL_HAS_X11_SUPPORT
-  guint32 foreign_xid;
-  CoglOnscreenX11MaskCallback foreign_update_mask_callback;
-  void *foreign_update_mask_data;
-#endif
-
-#ifdef COGL_HAS_WIN32_SUPPORT
-  HWND foreign_hwnd;
-#endif
-
-  gboolean swap_throttled;
-
-  void *winsys;
-};
-
 void
-_cogl_framebuffer_state_init (void);
+_cogl_framebuffer_init (CoglFramebuffer *framebuffer,
+                        CoglContext *ctx,
+                        CoglFramebufferType type,
+                        CoglPixelFormat format,
+                        int width,
+                        int height);
 
-void
-_cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
-                                      int width, int height);
+void _cogl_framebuffer_free (CoglFramebuffer *framebuffer);
+
+const CoglWinsysVtable *
+_cogl_framebuffer_get_winsys (CoglFramebuffer *framebuffer);
 
 void
 _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
@@ -348,8 +332,4 @@ _cogl_blit_framebuffer (unsigned int src_x,
                         unsigned int width,
                         unsigned int height);
 
-CoglOnscreen *
-_cogl_onscreen_new (void);
-
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */
-

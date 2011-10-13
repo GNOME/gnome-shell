@@ -36,6 +36,7 @@
 #include "cogl-pipeline-private.h"
 #include "cogl-context-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-framebuffer-private.h"
 
 /* This is needed to set the color attribute on GLES2 */
 #ifdef HAVE_COGL_GLES2

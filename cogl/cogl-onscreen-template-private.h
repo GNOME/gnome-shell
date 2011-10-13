@@ -26,6 +26,7 @@
 
 #include "cogl-object-private.h"
 #include "cogl-swap-chain.h"
+#include "cogl-framebuffer-private.h"
 
 struct _CoglOnscreenTemplate
 {

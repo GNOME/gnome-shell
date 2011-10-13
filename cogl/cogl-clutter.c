@@ -37,6 +37,7 @@
 #include "cogl-winsys-private.h"
 #include "cogl-winsys-stub-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-onscreen-private.h"
 
 gboolean
 cogl_clutter_check_extension (const char *name, const char *ext)
