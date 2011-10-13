@@ -149,7 +149,7 @@ toggle_client_flag (CoglContext *ctx,
 		    unsigned long flag,
 		    GLenum gl_flag)
 {
-  g_return_val_if_fail (ctx->driver != COGL_DRIVER_GLES2, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->driver != COGL_DRIVER_GLES2, FALSE);
 
   /* Toggles and caches a single client-side enable flag
    * on or off by comparing to current state
@@ -453,7 +453,7 @@ _cogl_read_pixels_with_rowstride (int x,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
+  _COGL_RETURN_IF_FAIL (source == COGL_READ_PIXELS_COLOR_BUFFER);
 
   if (width == 1 && height == 1 && !framebuffer->clear_clip_dirty)
     {
@@ -924,7 +924,7 @@ cogl_push_source (void *material_or_pipeline)
 {
   CoglPipeline *pipeline = COGL_PIPELINE (material_or_pipeline);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   _cogl_push_source (pipeline, TRUE);
 }
@@ -939,7 +939,7 @@ _cogl_push_source (CoglPipeline *pipeline, gboolean enable_legacy)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   if (ctx->source_stack)
     {
@@ -964,7 +964,7 @@ cogl_pop_source (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (ctx->source_stack);
+  _COGL_RETURN_IF_FAIL (ctx->source_stack);
 
   top = ctx->source_stack->data;
   top->push_count--;
@@ -985,7 +985,7 @@ cogl_get_source (void)
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_val_if_fail (ctx->source_stack, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->source_stack, NULL);
 
   top = ctx->source_stack->data;
   return top->pipeline;
@@ -998,7 +998,7 @@ _cogl_get_enable_legacy_state (void)
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  g_return_val_if_fail (ctx->source_stack, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->source_stack, FALSE);
 
   top = ctx->source_stack->data;
   return top->enable_legacy;
@@ -1012,8 +1012,8 @@ cogl_set_source (void *material_or_pipeline)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-  g_return_if_fail (ctx->source_stack);
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (ctx->source_stack);
 
   top = ctx->source_stack->data;
   if (top->pipeline == pipeline && top->enable_legacy)
@@ -1040,7 +1040,7 @@ cogl_set_source_texture (CoglTexture *texture)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (texture != NULL);
+  _COGL_RETURN_IF_FAIL (texture != NULL);
 
   cogl_pipeline_set_layer_texture (ctx->texture_pipeline, 0, texture);
   cogl_set_source (ctx->texture_pipeline);

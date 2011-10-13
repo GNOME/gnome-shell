@@ -29,6 +29,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-util.h"
 #include "cogl-context-private.h"
 #include "cogl-object-private.h"
 #include "cogl-journal-private.h"
@@ -284,7 +285,7 @@ cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
 gboolean
 cogl_attribute_get_normalized (CoglAttribute *attribute)
 {
-  g_return_val_if_fail (cogl_is_attribute (attribute), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_attribute (attribute), FALSE);
 
   return attribute->normalized;
 }
@@ -305,7 +306,7 @@ void
 cogl_attribute_set_normalized (CoglAttribute *attribute,
                                       gboolean normalized)
 {
-  g_return_if_fail (cogl_is_attribute (attribute));
+  _COGL_RETURN_IF_FAIL (cogl_is_attribute (attribute));
 
   if (G_UNLIKELY (attribute->immutable_ref))
     warn_about_midscene_changes ();
@@ -316,7 +317,7 @@ cogl_attribute_set_normalized (CoglAttribute *attribute,
 CoglAttributeBuffer *
 cogl_attribute_get_buffer (CoglAttribute *attribute)
 {
-  g_return_val_if_fail (cogl_is_attribute (attribute), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_attribute (attribute), NULL);
 
   return attribute->attribute_buffer;
 }
@@ -325,7 +326,7 @@ void
 cogl_attribute_set_buffer (CoglAttribute *attribute,
                            CoglAttributeBuffer *attribute_buffer)
 {
-  g_return_if_fail (cogl_is_attribute (attribute));
+  _COGL_RETURN_IF_FAIL (cogl_is_attribute (attribute));
 
   if (G_UNLIKELY (attribute->immutable_ref))
     warn_about_midscene_changes ();
@@ -339,7 +340,7 @@ cogl_attribute_set_buffer (CoglAttribute *attribute,
 CoglAttribute *
 _cogl_attribute_immutable_ref (CoglAttribute *attribute)
 {
-  g_return_val_if_fail (cogl_is_attribute (attribute), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_attribute (attribute), NULL);
 
   attribute->immutable_ref++;
   _cogl_buffer_immutable_ref (COGL_BUFFER (attribute->attribute_buffer));
@@ -349,8 +350,8 @@ _cogl_attribute_immutable_ref (CoglAttribute *attribute)
 void
 _cogl_attribute_immutable_unref (CoglAttribute *attribute)
 {
-  g_return_if_fail (cogl_is_attribute (attribute));
-  g_return_if_fail (attribute->immutable_ref > 0);
+  _COGL_RETURN_IF_FAIL (cogl_is_attribute (attribute));
+  _COGL_RETURN_IF_FAIL (attribute->immutable_ref > 0);
 
   attribute->immutable_ref--;
   _cogl_buffer_immutable_unref (COGL_BUFFER (attribute->attribute_buffer));

@@ -32,6 +32,7 @@
 #include <string.h>
 
 #include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-private.h"
 #include "cogl-object.h"
@@ -133,10 +134,10 @@ void
 cogl_xlib_renderer_set_foreign_display (CoglRenderer *renderer,
                                         Display *xdisplay)
 {
-  g_return_if_fail (cogl_is_renderer (renderer));
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
 
   /* NB: Renderers are considered immutable once connected */
-  g_return_if_fail (!renderer->connected);
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
 
   renderer->foreign_xdpy = xdisplay;
 }
@@ -144,7 +145,7 @@ cogl_xlib_renderer_set_foreign_display (CoglRenderer *renderer,
 Display *
 cogl_xlib_renderer_get_foreign_display (CoglRenderer *renderer)
 {
-  g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
 
   return renderer->foreign_xdpy;
 }
@@ -374,7 +375,7 @@ void
 cogl_renderer_set_winsys_id (CoglRenderer *renderer,
                              CoglWinsysID winsys_id)
 {
-  g_return_if_fail (!renderer->connected);
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
 
   renderer->winsys_id_override = winsys_id;
 }
@@ -382,7 +383,7 @@ cogl_renderer_set_winsys_id (CoglRenderer *renderer,
 CoglWinsysID
 cogl_renderer_get_winsys_id (CoglRenderer *renderer)
 {
-  g_return_val_if_fail (renderer->connected, 0);
+  _COGL_RETURN_VAL_IF_FAIL (renderer->connected, 0);
 
   return renderer->winsys_vtable->id;
 }

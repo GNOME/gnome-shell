@@ -27,6 +27,7 @@
 
 #include "cogl.h"
 
+#include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"
@@ -107,9 +108,9 @@ cogl_program_attach_shader (CoglHandle program_handle,
 
   /* Only one shader is allowed if the type is ARBfp */
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
-    g_return_if_fail (program->attached_shaders == NULL);
+    _COGL_RETURN_IF_FAIL (program->attached_shaders == NULL);
   else if (shader->language == COGL_SHADER_LANGUAGE_GLSL)
-    g_return_if_fail (_cogl_program_get_language (program) ==
+    _COGL_RETURN_IF_FAIL (_cogl_program_get_language (program) ==
                       COGL_SHADER_LANGUAGE_GLSL);
 
   program->attached_shaders
@@ -132,7 +133,7 @@ cogl_program_use (CoglHandle handle)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (handle == COGL_INVALID_HANDLE ||
+  _COGL_RETURN_IF_FAIL (handle == COGL_INVALID_HANDLE ||
                     cogl_is_program (handle));
 
   if (ctx->current_program == 0 && handle != 0)
@@ -202,8 +203,8 @@ cogl_program_uniform_x (CoglHandle handle,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_program (handle));
-  g_return_if_fail (program != NULL);
+  _COGL_RETURN_IF_FAIL (cogl_is_program (handle));
+  _COGL_RETURN_IF_FAIL (program != NULL);
 
   if (uniform_no >= 0 && uniform_no < program->custom_uniforms->len &&
       size >= 1 && size <= 4 && count >= 1)
@@ -342,7 +343,7 @@ cogl_program_set_uniform_matrix (CoglHandle handle,
                                  gboolean transpose,
                                  const float *value)
 {
-  g_return_if_fail (cogl_is_program (handle));
+  _COGL_RETURN_IF_FAIL (cogl_is_program (handle));
 
   cogl_program_uniform_x (handle,
                           uniform_location, dimensions, count,
@@ -383,13 +384,13 @@ get_local_param_index (const char *uniform_name)
       *p++ = input[i];
   input[i] = '\0';
 
-  g_return_val_if_fail (strncmp ("program.local[", input, 14) == 0, -1);
+  _COGL_RETURN_VAL_IF_FAIL (strncmp ("program.local[", input, 14) == 0, -1);
 
   _index = g_ascii_strtoull (input + 14, &endptr, 10);
-  g_return_val_if_fail (endptr != input + 14, -1);
-  g_return_val_if_fail (*endptr == ']', -1);
+  _COGL_RETURN_VAL_IF_FAIL (endptr != input + 14, -1);
+  _COGL_RETURN_VAL_IF_FAIL (*endptr == ']', -1);
 
-  g_return_val_if_fail (_index >= 0, -1);
+  _COGL_RETURN_VAL_IF_FAIL (_index >= 0, -1);
 
   g_free (input);
 
@@ -484,9 +485,9 @@ _cogl_program_flush_uniform_arbfp (GLint location,
 
   if (value->type != COGL_BOXED_NONE)
     {
-      g_return_if_fail (value->type == COGL_BOXED_FLOAT);
-      g_return_if_fail (value->size == 4);
-      g_return_if_fail (value->count == 1);
+      _COGL_RETURN_IF_FAIL (value->type == COGL_BOXED_FLOAT);
+      _COGL_RETURN_IF_FAIL (value->size == 4);
+      _COGL_RETURN_IF_FAIL (value->count == 1);
 
       GE( ctx, glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB, location,
                                            value->v.float_value) );
@@ -505,7 +506,7 @@ _cogl_program_flush_uniforms (CoglProgram *program,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (ctx->driver != COGL_DRIVER_GLES1);
+  _COGL_RETURN_IF_FAIL (ctx->driver != COGL_DRIVER_GLES1);
 
   for (i = 0; i < program->custom_uniforms->len; i++)
     {

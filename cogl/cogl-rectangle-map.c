@@ -30,6 +30,7 @@
 
 #include <glib.h>
 
+#include "cogl-util.h"
 #include "cogl-rectangle-map.h"
 #include "cogl-debug.h"
 
@@ -354,7 +355,7 @@ _cogl_rectangle_map_add (CoglRectangleMap *map,
 
   /* Zero-sized rectangles break the algorithm for removing rectangles
      so we'll disallow them */
-  g_return_val_if_fail (width > 0 && height > 0, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (width > 0 && height > 0, FALSE);
 
   /* Start with the root node */
   g_array_set_size (stack, 0);

@@ -397,7 +397,7 @@ cogl_texture_new_from_file (const char        *filename,
   CoglTexture *texture = NULL;
   CoglPixelFormat src_format;
 
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, NULL);
 
   bmp = cogl_bitmap_new_from_file (filename, error);
   if (bmp == NULL)
@@ -515,7 +515,7 @@ cogl_texture_new_from_buffer_EXP (CoglPixelBuffer    *buffer,
   CoglPixelBuffer *pixel_buffer;
   CoglBitmap *bmp;
 
-  g_return_val_if_fail (cogl_is_buffer (buffer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
 
   if (format == COGL_PIXEL_FORMAT_ANY)
     return NULL;

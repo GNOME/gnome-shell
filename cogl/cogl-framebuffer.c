@@ -505,7 +505,7 @@ cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                float width,
                                float height)
 {
-  g_return_if_fail (width > 0 && height > 0);
+  _COGL_RETURN_IF_FAIL (width > 0 && height > 0);
 
   if (framebuffer->viewport_x == x &&
       framebuffer->viewport_y == y &&
@@ -1146,8 +1146,8 @@ _cogl_set_framebuffers_real (CoglFramebuffer *draw_buffer,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (ctx != NULL);
-  g_return_if_fail (draw_buffer && read_buffer ?
+  _COGL_RETURN_IF_FAIL (ctx != NULL);
+  _COGL_RETURN_IF_FAIL (draw_buffer && read_buffer ?
                     draw_buffer->context == read_buffer->context : TRUE);
 
   entry = ctx->framebuffer_stack->data;
@@ -1178,8 +1178,8 @@ _cogl_set_framebuffers (CoglFramebuffer *draw_buffer,
   CoglFramebuffer *current_draw_buffer;
   CoglFramebuffer *current_read_buffer;
 
-  g_return_if_fail (_cogl_is_framebuffer (draw_buffer));
-  g_return_if_fail (_cogl_is_framebuffer (read_buffer));
+  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (draw_buffer));
+  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (read_buffer));
 
   current_draw_buffer = cogl_get_draw_framebuffer ();
   current_read_buffer = _cogl_get_read_framebuffer ();
@@ -1257,14 +1257,14 @@ _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
   CoglContext *ctx;
   CoglFramebuffer *old_draw_buffer, *old_read_buffer;
 
-  g_return_if_fail (_cogl_is_framebuffer (draw_buffer));
-  g_return_if_fail (_cogl_is_framebuffer (read_buffer));
+  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (draw_buffer));
+  _COGL_RETURN_IF_FAIL (_cogl_is_framebuffer (read_buffer));
 
   ctx = draw_buffer->context;
-  g_return_if_fail (ctx != NULL);
-  g_return_if_fail (draw_buffer->context == read_buffer->context);
+  _COGL_RETURN_IF_FAIL (ctx != NULL);
+  _COGL_RETURN_IF_FAIL (draw_buffer->context == read_buffer->context);
 
-  g_return_if_fail (ctx->framebuffer_stack != NULL);
+  _COGL_RETURN_IF_FAIL (ctx->framebuffer_stack != NULL);
 
   /* Copy the top of the stack so that when we call cogl_set_framebuffer
      it will still know what the old framebuffer was */
@@ -1380,10 +1380,10 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
           /* NB: Currently we only take advantage of binding separate
            * read/write buffers for offscreen framebuffer blit
            * purposes.  */
-          g_return_if_fail (ctx->private_feature_flags &
-                            COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
-          g_return_if_fail (draw_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
-          g_return_if_fail (read_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
+          _COGL_RETURN_IF_FAIL (ctx->private_feature_flags &
+                                COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
+          _COGL_RETURN_IF_FAIL (draw_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
+          _COGL_RETURN_IF_FAIL (read_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
 
           bind_gl_framebuffer (ctx, GL_DRAW_FRAMEBUFFER, draw_buffer);
           bind_gl_framebuffer (ctx, GL_READ_FRAMEBUFFER, read_buffer);
@@ -1530,7 +1530,7 @@ void
 cogl_framebuffer_set_samples_per_pixel (CoglFramebuffer *framebuffer,
                                         int samples_per_pixel)
 {
-  g_return_if_fail (!framebuffer->allocated);
+  _COGL_RETURN_IF_FAIL (!framebuffer->allocated);
 
   framebuffer->config.samples_per_pixel = samples_per_pixel;
 }
@@ -1584,7 +1584,7 @@ cogl_framebuffer_resolve_samples_region (CoglFramebuffer *framebuffer,
 CoglContext *
 cogl_framebuffer_get_context (CoglFramebuffer *framebuffer)
 {
-  g_return_val_if_fail (framebuffer != NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (framebuffer != NULL, NULL);
 
   return framebuffer->context;
 }
@@ -1670,16 +1670,16 @@ _cogl_blit_framebuffer (unsigned int src_x,
   read_buffer = _cogl_get_read_framebuffer ();
   ctx = draw_buffer->context;
 
-  g_return_if_fail (ctx->private_feature_flags &
+  _COGL_RETURN_IF_FAIL (ctx->private_feature_flags &
                     COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
 
   /* We can only support blitting between offscreen buffers because
      otherwise we would need to mirror the image and GLES2.0 doesn't
      support this */
-  g_return_if_fail (cogl_is_offscreen (draw_buffer));
-  g_return_if_fail (cogl_is_offscreen (read_buffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_offscreen (draw_buffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_offscreen (read_buffer));
   /* The buffers must be the same format */
-  g_return_if_fail (draw_buffer->format == read_buffer->format);
+  _COGL_RETURN_IF_FAIL (draw_buffer->format == read_buffer->format);
 
   /* Make sure the current framebuffers are bound. We explicitly avoid
      flushing the clip state so we can bind our own empty state */
@@ -1741,7 +1741,7 @@ void
 cogl_framebuffer_discard_buffers (CoglFramebuffer *framebuffer,
                                   unsigned long buffers)
 {
-  g_return_if_fail (buffers & COGL_BUFFER_BIT_COLOR);
+  _COGL_RETURN_IF_FAIL (buffers & COGL_BUFFER_BIT_COLOR);
 
   _cogl_framebuffer_discard_buffers_real (framebuffer, buffers);
 }

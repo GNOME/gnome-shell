@@ -236,5 +236,4 @@ _cogl_util_ffs (int num)
 
   return i;
 }
-
 #endif /* HAVE_FFS */

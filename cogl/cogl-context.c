@@ -525,7 +525,7 @@ cogl_egl_context_get_egl_display (CoglContext *context)
   const CoglWinsysVtable *winsys = _cogl_context_get_winsys (context);
 
   /* This should only be called for EGL contexts */
-  g_return_val_if_fail (winsys->context_egl_get_egl_display != NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (winsys->context_egl_get_egl_display != NULL, NULL);
 
   return winsys->context_egl_get_egl_display (context);
 }

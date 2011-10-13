@@ -288,7 +288,7 @@ get_texture_target (CoglTexture *texture)
   GLuint ignore_handle;
   GLenum gl_target;
 
-  g_return_val_if_fail (texture, 0);
+  _COGL_RETURN_VAL_IF_FAIL (texture, 0);
 
   cogl_texture_get_gl_texture (texture, &ignore_handle, &gl_target);
 
@@ -395,7 +395,7 @@ public_to_internal_wrap_mode (CoglPipelineWrapMode mode)
 static CoglPipelineWrapMode
 internal_to_public_wrap_mode (CoglPipelineWrapModeInternal internal_mode)
 {
-  g_return_val_if_fail (internal_mode !=
+  _COGL_RETURN_VAL_IF_FAIL (internal_mode !=
                         COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER,
                         COGL_PIPELINE_WRAP_MODE_AUTOMATIC);
   return (CoglPipelineWrapMode)internal_mode;
@@ -412,7 +412,7 @@ cogl_pipeline_set_layer_wrap_mode_s (CoglPipeline *pipeline,
   CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -443,7 +443,7 @@ cogl_pipeline_set_layer_wrap_mode_t (CoglPipeline        *pipeline,
   CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -486,7 +486,7 @@ cogl_pipeline_set_layer_wrap_mode_p (CoglPipeline        *pipeline,
   CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -517,7 +517,7 @@ cogl_pipeline_set_layer_wrap_mode (CoglPipeline        *pipeline,
   CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -546,7 +546,7 @@ _cogl_pipeline_layer_get_wrap_mode_s (CoglPipelineLayer *layer)
   CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
   CoglPipelineLayer     *authority;
 
-  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_is_pipeline_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
@@ -560,7 +560,7 @@ cogl_pipeline_get_layer_wrap_mode_s (CoglPipeline *pipeline, int layer_index)
 {
   CoglPipelineLayer *layer;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -581,7 +581,7 @@ _cogl_pipeline_layer_get_wrap_mode_t (CoglPipelineLayer *layer)
   CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
   CoglPipelineLayer     *authority;
 
-  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_is_pipeline_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
@@ -595,7 +595,7 @@ cogl_pipeline_get_layer_wrap_mode_t (CoglPipeline *pipeline, int layer_index)
 {
   CoglPipelineLayer *layer;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -624,7 +624,7 @@ cogl_pipeline_get_layer_wrap_mode_p (CoglPipeline *pipeline, int layer_index)
 {
   CoglPipelineLayer *layer;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -666,7 +666,7 @@ cogl_pipeline_set_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   /* Don't allow point sprite coordinates to be enabled if the driver
      doesn't support it */
@@ -758,7 +758,7 @@ cogl_pipeline_get_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
   CoglPipelineLayer *layer;
   CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -1009,7 +1009,7 @@ cogl_pipeline_set_layer_combine (CoglPipeline *pipeline,
   GError *internal_error = NULL;
   int count;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -1119,7 +1119,7 @@ cogl_pipeline_set_layer_combine_constant (CoglPipeline *pipeline,
   CoglPipelineLayer     *new;
   float                  color_as_floats[4];
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -1202,7 +1202,7 @@ _cogl_pipeline_get_layer_combine_constant (CoglPipeline *pipeline,
   CoglPipelineLayer *layer;
   CoglPipelineLayer *authority;
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -1229,7 +1229,7 @@ _cogl_pipeline_get_layer_matrix (CoglPipeline *pipeline, int layer_index)
   CoglPipelineLayer *layer;
   CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), NULL);
 
   layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
@@ -1247,7 +1247,7 @@ cogl_pipeline_set_layer_matrix (CoglPipeline *pipeline,
   CoglPipelineLayer     *authority;
   CoglPipelineLayer     *new;
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
@@ -1311,7 +1311,7 @@ cogl_pipeline_set_layer_matrix (CoglPipeline *pipeline,
 CoglTexture *
 _cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer)
 {
-  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_is_pipeline_layer (layer), NULL);
 
   return _cogl_pipeline_layer_get_texture_real (layer);
 }
@@ -1355,7 +1355,7 @@ _cogl_pipeline_get_layer_filters (CoglPipeline *pipeline,
   CoglPipelineLayer *layer;
   CoglPipelineLayer *authority;
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
@@ -1396,7 +1396,7 @@ _cogl_pipeline_layer_get_min_filter (CoglPipelineLayer *layer)
 {
   CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), 0);
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_is_pipeline_layer (layer), 0);
 
   authority =
     _cogl_pipeline_layer_get_authority (layer,
@@ -1410,7 +1410,7 @@ _cogl_pipeline_layer_get_mag_filter (CoglPipelineLayer *layer)
 {
   CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), 0);
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_is_pipeline_layer (layer), 0);
 
   authority =
     _cogl_pipeline_layer_get_authority (layer,
@@ -1430,7 +1430,7 @@ cogl_pipeline_set_layer_filters (CoglPipeline      *pipeline,
   CoglPipelineLayer     *authority;
   CoglPipelineLayer     *new;
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.

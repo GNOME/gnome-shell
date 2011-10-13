@@ -30,6 +30,7 @@
 
 #include "cogl.h"
 
+#include "cogl-util.h"
 #include "cogl-winsys-private.h"
 #include "cogl-feature-private.h"
 #include "cogl-context-private.h"
@@ -381,7 +382,7 @@ update_winsys_features (CoglContext *context, GError **error)
   int default_screen;
   int i;
 
-  g_return_val_if_fail (glx_display->glx_context, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (glx_display->glx_context, FALSE);
 
   if (!_cogl_context_update_features (context, error))
     return FALSE;
@@ -592,7 +593,7 @@ create_context (CoglDisplay *display, GError **error)
   GLXDrawable dummy_drawable;
   CoglXlibTrapState old_state;
 
-  g_return_val_if_fail (glx_display->glx_context == NULL, TRUE);
+  _COGL_RETURN_VAL_IF_FAIL (glx_display->glx_context == NULL, TRUE);
 
   glx_display->found_fbconfig =
     find_fbconfig (display, &display->onscreen_template->config, &config,
@@ -714,7 +715,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
   CoglGLXRenderer *glx_renderer = display->renderer->winsys;
 
-  g_return_if_fail (glx_display != NULL);
+  _COGL_RETURN_IF_FAIL (glx_display != NULL);
 
   if (glx_display->glx_context)
     {
@@ -749,7 +750,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   CoglGLXDisplay *glx_display;
   int i;
 
-  g_return_val_if_fail (display->winsys == NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (display->winsys == NULL, FALSE);
 
   glx_display = g_slice_new0 (CoglGLXDisplay);
   display->winsys = glx_display;
@@ -803,7 +804,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   GLXFBConfig fbconfig;
   GError *fbconfig_error = NULL;
 
-  g_return_val_if_fail (glx_display->glx_context, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (glx_display->glx_context, FALSE);
 
   if (!find_fbconfig (display, &framebuffer->config,
                       &fbconfig,
@@ -1483,7 +1484,7 @@ _cogl_winsys_xlib_get_visual_info (void)
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_val_if_fail (ctx->display->winsys, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->display->winsys, FALSE);
 
   glx_display = ctx->display->winsys;
   xlib_renderer = ctx->display->renderer->winsys;

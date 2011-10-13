@@ -330,7 +330,7 @@ cogl_texture_3d_new_from_data (unsigned int      width,
   CoglHandle ret;
 
   /* These are considered a programmer errors so we won't set a
-     GError. It would be nice if this was a g_return_if_fail but the
+     GError. It would be nice if this was a _COGL_RETURN_IF_FAIL but the
      rest of Cogl isn't using that */
   if (format == COGL_PIXEL_FORMAT_ANY)
     return COGL_INVALID_HANDLE;

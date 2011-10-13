@@ -224,7 +224,7 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  g_return_val_if_fail (bmp != NULL, COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (bmp != NULL, COGL_INVALID_HANDLE);
 
   internal_format =
     _cogl_texture_determine_internal_format (_cogl_bitmap_get_format (bmp),
@@ -303,8 +303,8 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
   CoglBitmap *bmp;
   CoglHandle tex;
 
-  g_return_val_if_fail (format != COGL_PIXEL_FORMAT_ANY, NULL);
-  g_return_val_if_fail (data != NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (format != COGL_PIXEL_FORMAT_ANY, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (data != NULL, NULL);
 
   /* Rowstride from width if not given */
   if (rowstride == 0)
@@ -458,11 +458,11 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
   CoglTexture2D *tex_2d;
   GLenum gl_error;
 
-  g_return_val_if_fail (_cogl_context_get_winsys (ctx) ==
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx) ==
                         _cogl_winsys_egl_get_vtable (),
                         NULL);
 
-  g_return_val_if_fail (ctx->private_feature_flags &
+  _COGL_RETURN_VAL_IF_FAIL (ctx->private_feature_flags &
                         COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE,
                         NULL);
 
@@ -538,7 +538,7 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
     {
       EGLImageKHR image;
 
-      g_return_val_if_fail (_cogl_context_get_winsys (ctx) ==
+      _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx) ==
                             _cogl_winsys_egl_get_vtable (),
                             NULL);
       image = _cogl_egl_create_image (ctx,
@@ -577,7 +577,7 @@ _cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_texture_2d (handle));
+  _COGL_RETURN_IF_FAIL (cogl_is_texture_2d (handle));
 
   tex_2d = COGL_TEXTURE_2D (handle);
 

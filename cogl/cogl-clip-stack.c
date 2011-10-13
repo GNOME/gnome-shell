@@ -751,7 +751,7 @@ _cogl_clip_stack_pop (CoglClipStack *stack)
 {
   CoglClipStack *new_top;
 
-  g_return_val_if_fail (stack != NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (stack != NULL, NULL);
 
   /* To pop we are moving the top of the stack to the old top's parent
      node. The stack always needs to have a reference to the top entry

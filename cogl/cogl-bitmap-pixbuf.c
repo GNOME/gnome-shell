@@ -26,6 +26,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-bitmap-private.h"
 
@@ -195,7 +196,7 @@ _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height)
 {
-  g_return_val_if_fail (filename != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (filename != NULL, FALSE);
 
   if (gdk_pixbuf_get_file_info (filename, width, height) != NULL)
     return TRUE;
@@ -224,7 +225,7 @@ _cogl_bitmap_from_file (const char   *filename,
   int               bits_per_sample;
   int               n_channels;
 
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
 
   /* Load from file using GdkPixbuf */
   pixbuf = gdk_pixbuf_new_from_file (filename, error);
@@ -307,7 +308,7 @@ _cogl_bitmap_from_file (const char  *filename,
   int      height;
   guint8  *pixels;
 
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
 
   /* Load from file using stb */
   pixels = stbi_load (filename,

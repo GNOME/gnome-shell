@@ -29,6 +29,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-util.h"
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
@@ -168,8 +169,8 @@ _cogl_pipeline_progend_glsl_get_position_attribute (CoglPipeline *pipeline)
 
   _COGL_GET_CONTEXT (ctx, -1);
 
-  g_return_val_if_fail (program_state != NULL, -1);
-  g_return_val_if_fail (program_state->program != 0, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
 
   if (program_state->position_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
     GE_RET( program_state->position_attribute_location,
@@ -186,8 +187,8 @@ _cogl_pipeline_progend_glsl_get_color_attribute (CoglPipeline *pipeline)
 
   _COGL_GET_CONTEXT (ctx, -1);
 
-  g_return_val_if_fail (program_state != NULL, -1);
-  g_return_val_if_fail (program_state->program != 0, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
 
   if (program_state->color_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
     GE_RET( program_state->color_attribute_location,
@@ -204,8 +205,8 @@ _cogl_pipeline_progend_glsl_get_normal_attribute (CoglPipeline *pipeline)
 
   _COGL_GET_CONTEXT (ctx, -1);
 
-  g_return_val_if_fail (program_state != NULL, -1);
-  g_return_val_if_fail (program_state->program != 0, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
 
   if (program_state->normal_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
     GE_RET( program_state->normal_attribute_location,
@@ -223,8 +224,8 @@ _cogl_pipeline_progend_glsl_get_tex_coord_attribute (CoglPipeline *pipeline,
 
   _COGL_GET_CONTEXT (ctx, -1);
 
-  g_return_val_if_fail (program_state != NULL, -1);
-  g_return_val_if_fail (program_state->program != 0, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state != NULL, -1);
+  _COGL_RETURN_VAL_IF_FAIL (program_state->program != 0, -1);
 
   if (unit == 0)
     {
@@ -921,7 +922,7 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
 
   /* We only need to update the matrices if we're using the the GLSL
      vertend, but this is a requirement on GLES2 anyway */
-  g_return_if_fail (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL);
+  _COGL_RETURN_IF_FAIL (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL);
 
   program_state = get_program_state (pipeline);
 

@@ -32,6 +32,7 @@
 
 #include "cogl.h"
 
+#include "cogl-util.h"
 #include "cogl-winsys-private.h"
 #include "cogl-context-private.h"
 #include "cogl-framebuffer.h"
@@ -420,7 +421,7 @@ create_context (CoglDisplay *display, GError **error)
 {
   CoglDisplayWgl *wgl_display = display->winsys;
 
-  g_return_val_if_fail (wgl_display->wgl_context == NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (wgl_display->wgl_context == NULL, FALSE);
 
   /* Cogl assumes that there is always a GL context selected; in order
    * to make sure that a WGL context exists and is made current, we
@@ -496,7 +497,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
 {
   CoglDisplayWgl *wgl_display = display->winsys;
 
-  g_return_if_fail (wgl_display != NULL);
+  _COGL_RETURN_IF_FAIL (wgl_display != NULL);
 
   if (wgl_display->wgl_context)
     {
@@ -524,7 +525,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 {
   CoglDisplayWgl *wgl_display;
 
-  g_return_val_if_fail (display->winsys == NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (display->winsys == NULL, FALSE);
 
   wgl_display = g_slice_new0 (CoglDisplayWgl);
   display->winsys = wgl_display;
@@ -585,7 +586,7 @@ update_winsys_features (CoglContext *context, GError **error)
   const char *wgl_extensions;
   int i;
 
-  g_return_val_if_fail (wgl_display->wgl_context, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (wgl_display->wgl_context, FALSE);
 
   if (!_cogl_context_update_features (context, error))
     return FALSE;
@@ -660,7 +661,7 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
      NULL, but this isn't really going to work because before checking
      whether onscreen == NULL it reads the pointer to get the
      context */
-  g_return_if_fail (onscreen != NULL);
+  _COGL_RETURN_IF_FAIL (onscreen != NULL);
 
   context = COGL_FRAMEBUFFER (onscreen)->context;
   wgl_context = context->winsys;
@@ -734,7 +735,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   int pf;
   HWND hwnd;
 
-  g_return_val_if_fail (wgl_display->wgl_context, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (wgl_display->wgl_context, FALSE);
 
   /* XXX: Note we ignore the user's original width/height when given a
    * foreign window. */

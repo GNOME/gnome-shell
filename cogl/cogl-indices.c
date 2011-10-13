@@ -30,6 +30,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-util.h"
 #include "cogl-object-private.h"
 #include "cogl-context-private.h"
 #include "cogl-indices.h"
@@ -104,15 +105,15 @@ cogl_indices_get_buffer (CoglIndices *indices)
 CoglIndicesType
 cogl_indices_get_type (CoglIndices *indices)
 {
-  g_return_val_if_fail (cogl_is_indices (indices),
-                        COGL_INDICES_TYPE_UNSIGNED_BYTE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_indices (indices),
+                            COGL_INDICES_TYPE_UNSIGNED_BYTE);
   return indices->type;
 }
 
 gsize
 cogl_indices_get_offset (CoglIndices *indices)
 {
-  g_return_val_if_fail (cogl_is_indices (indices), 0);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_indices (indices), 0);
 
   return indices->offset;
 }
@@ -133,7 +134,7 @@ void
 cogl_indices_set_offset (CoglIndices *indices,
                          gsize offset)
 {
-  g_return_if_fail (cogl_is_indices (indices));
+  _COGL_RETURN_IF_FAIL (cogl_is_indices (indices));
 
   if (G_UNLIKELY (indices->immutable_ref))
     warn_about_midscene_changes ();
@@ -151,7 +152,7 @@ _cogl_indices_free (CoglIndices *indices)
 CoglIndices *
 _cogl_indices_immutable_ref (CoglIndices *indices)
 {
-  g_return_val_if_fail (cogl_is_indices (indices), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_indices (indices), NULL);
 
   indices->immutable_ref++;
   _cogl_buffer_immutable_ref (COGL_BUFFER (indices->buffer));
@@ -161,8 +162,8 @@ _cogl_indices_immutable_ref (CoglIndices *indices)
 void
 _cogl_indices_immutable_unref (CoglIndices *indices)
 {
-  g_return_if_fail (cogl_is_indices (indices));
-  g_return_if_fail (indices->immutable_ref > 0);
+  _COGL_RETURN_IF_FAIL (cogl_is_indices (indices));
+  _COGL_RETURN_IF_FAIL (indices->immutable_ref > 0);
 
   indices->immutable_ref--;
   _cogl_buffer_immutable_unref (COGL_BUFFER (indices->buffer));

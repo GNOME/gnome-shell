@@ -296,8 +296,8 @@ _cogl_buffer_fini (CoglBuffer *buffer)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED));
-  g_return_if_fail (buffer->immutable_ref == 0);
+  _COGL_RETURN_IF_FAIL (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED));
+  _COGL_RETURN_IF_FAIL (buffer->immutable_ref == 0);
 
   if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     GE( ctx, glDeleteBuffers (1, &buffer->gl_handle) );
@@ -341,14 +341,14 @@ _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 {
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_val_if_fail (buffer != NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (buffer != NULL, NULL);
 
   /* Don't allow binding the buffer to multiple targets at the same time */
-  g_return_val_if_fail (ctx->current_buffer[buffer->last_target] != buffer,
-                        NULL);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->current_buffer[buffer->last_target] != buffer,
+                            NULL);
 
   /* Don't allow nesting binds to the same target */
-  g_return_val_if_fail (ctx->current_buffer[target] == NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->current_buffer[target] == NULL, NULL);
 
   buffer->last_target = target;
   ctx->current_buffer[target] = buffer;
@@ -368,10 +368,10 @@ _cogl_buffer_unbind (CoglBuffer *buffer)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (buffer != NULL);
+  _COGL_RETURN_IF_FAIL (buffer != NULL);
 
   /* the unbind should pair up with a previous bind */
-  g_return_if_fail (ctx->current_buffer[buffer->last_target] == buffer);
+  _COGL_RETURN_IF_FAIL (ctx->current_buffer[buffer->last_target] == buffer);
 
   if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     {
@@ -430,7 +430,7 @@ cogl_buffer_map (CoglBuffer        *buffer,
                  CoglBufferAccess   access,
                  CoglBufferMapHint  hints)
 {
-  g_return_val_if_fail (cogl_is_buffer (buffer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
 
   if (G_UNLIKELY (buffer->immutable_ref))
     warn_about_midscene_changes ();
@@ -461,7 +461,7 @@ _cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer)
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_val_if_fail (!ctx->buffer_map_fallback_in_use, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (!ctx->buffer_map_fallback_in_use, NULL);
 
   ctx->buffer_map_fallback_in_use = TRUE;
 
@@ -490,7 +490,7 @@ _cogl_buffer_unmap_for_fill_or_fallback (CoglBuffer *buffer)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (ctx->buffer_map_fallback_in_use);
+  _COGL_RETURN_IF_FAIL (ctx->buffer_map_fallback_in_use);
 
   ctx->buffer_map_fallback_in_use = FALSE;
 
@@ -511,8 +511,8 @@ cogl_buffer_set_data (CoglBuffer   *buffer,
                       const void   *data,
                       gsize         size)
 {
-  g_return_val_if_fail (cogl_is_buffer (buffer), FALSE);
-  g_return_val_if_fail ((offset + size) <= buffer->size, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL ((offset + size) <= buffer->size, FALSE);
 
   if (G_UNLIKELY (buffer->immutable_ref))
     warn_about_midscene_changes ();
@@ -523,7 +523,7 @@ cogl_buffer_set_data (CoglBuffer   *buffer,
 CoglBuffer *
 _cogl_buffer_immutable_ref (CoglBuffer *buffer)
 {
-  g_return_val_if_fail (cogl_is_buffer (buffer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
 
   buffer->immutable_ref++;
   return buffer;
@@ -532,8 +532,8 @@ _cogl_buffer_immutable_ref (CoglBuffer *buffer)
 void
 _cogl_buffer_immutable_unref (CoglBuffer *buffer)
 {
-  g_return_if_fail (cogl_is_buffer (buffer));
-  g_return_if_fail (buffer->immutable_ref > 0);
+  _COGL_RETURN_IF_FAIL (cogl_is_buffer (buffer));
+  _COGL_RETURN_IF_FAIL (buffer->immutable_ref > 0);
 
   buffer->immutable_ref--;
 }

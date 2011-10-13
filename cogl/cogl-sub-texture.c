@@ -219,10 +219,13 @@ _cogl_sub_texture_new (CoglHandle next_texture,
   next_height = cogl_texture_get_height (next_texture);
 
   /* The region must specify a non-zero subset of the full texture */
-  g_return_val_if_fail (sub_x >= 0 && sub_y >= 0, COGL_INVALID_HANDLE);
-  g_return_val_if_fail (sub_width > 0 && sub_height > 0, COGL_INVALID_HANDLE);
-  g_return_val_if_fail (sub_x + sub_width <= next_width, COGL_INVALID_HANDLE);
-  g_return_val_if_fail (sub_y + sub_height <= next_height, COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (sub_x >= 0 && sub_y >= 0, COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (sub_width > 0 && sub_height > 0,
+                            COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (sub_x + sub_width <= next_width,
+                            COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (sub_y + sub_height <= next_height,
+                            COGL_INVALID_HANDLE);
 
   sub_tex = g_new (CoglSubTexture, 1);
 

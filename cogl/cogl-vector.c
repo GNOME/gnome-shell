@@ -25,6 +25,7 @@
  */
 
 #include <cogl.h>
+#include <cogl-util.h>
 #include <cogl-vector.h>
 
 #include <glib.h>
@@ -51,8 +52,8 @@ cogl_vector3_equal (gconstpointer v1, gconstpointer v2)
   CoglVector3 *vector0 = (CoglVector3 *)v1;
   CoglVector3 *vector1 = (CoglVector3 *)v2;
 
-  g_return_val_if_fail (v1 != NULL, FALSE);
-  g_return_val_if_fail (v2 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v1 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v2 != NULL, FALSE);
 
   /* There's no point picking an arbitrary epsilon that's appropriate
    * for comparing the components so we just use == that will at least
@@ -68,8 +69,8 @@ cogl_vector3_equal_with_epsilon (const CoglVector3 *vector0,
                                  const CoglVector3 *vector1,
                                  float epsilon)
 {
-  g_return_val_if_fail (vector0 != NULL, FALSE);
-  g_return_val_if_fail (vector1 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (vector0 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (vector1 != NULL, FALSE);
 
   if (fabsf (vector0->x - vector1->x) < epsilon &&
       fabsf (vector0->y - vector1->y) < epsilon &&
@@ -219,8 +220,8 @@ cogl_vector4_init_from_vector4 (CoglVector4 *vector, CoglVector4 *src)
 gboolean
 cogl_vector4_equal (gconstpointer *v0, gconstpointer *v1)
 {
-  g_return_val_if_fail (v1 != NULL, FALSE);
-  g_return_val_if_fail (v2 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v1 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v2 != NULL, FALSE);
 
   return memcmp (v1, v2, sizeof (float) * 4) == 0 ? TRUE : FALSE;
 }

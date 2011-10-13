@@ -150,7 +150,7 @@ void
 cogl_gdl_display_set_plane (CoglDisplay *display,
                             gdl_plane_id_t plane)
 {
-  g_return_if_fail (display->setup == FALSE);
+  _COGL_RETURN_IF_FAIL (display->setup == FALSE);
 
   display->gdl_plane = plane;
 }
@@ -161,7 +161,7 @@ void
 cogl_wayland_display_set_compositor_display (CoglDisplay *display,
                                              struct wl_display *wayland_display)
 {
-  g_return_if_fail (display->setup == FALSE);
+  _COGL_RETURN_IF_FAIL (display->setup == FALSE);
 
   display->wayland_compositor_display = wayland_display;
 }

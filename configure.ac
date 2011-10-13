@@ -395,6 +395,27 @@ AC_ARG_ENABLE(
 AM_CONDITIONAL([INSTALL_EXAMPLES], [test "x$enable_examples_install" = "xyes"])
 
 dnl     ============================================================
+dnl     Should glib be used?
+dnl     ============================================================
+AC_ARG_ENABLE(
+  [glib],
+  [AC_HELP_STRING([--enable-glib=@<:@no/yes@:>@], [Enable glib support @<:@default=yes@:>@])],
+  [],
+  enable_glib=yes
+)
+AM_CONDITIONAL([USE_GLIB], [test "x$enable_glib" = "xyes"])
+
+AS_IF([test "x$enable_glib" = "xyes"],
+      [
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
+      ],
+      [
+        EXPERIMENTAL_CONFIG=yes
+        EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS --disable-glib,"
+      ]
+)
+
+dnl     ============================================================
 dnl     Determine which drivers and window systems we can support
 dnl     ============================================================
 

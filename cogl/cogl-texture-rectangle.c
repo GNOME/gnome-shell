@@ -216,7 +216,7 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  g_return_val_if_fail (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
 
   internal_format =
     _cogl_texture_determine_internal_format (_cogl_bitmap_get_format (bmp),

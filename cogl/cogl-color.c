@@ -28,6 +28,7 @@
 #include <string.h>
 
 #include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-color.h"
 #include "cogl-fixed.h"
 
@@ -60,7 +61,7 @@ cogl_color_init_from_4ub (CoglColor *color,
                           guint8     blue,
                           guint8     alpha)
 {
-  g_return_if_fail (color != NULL);
+  _COGL_RETURN_IF_FAIL (color != NULL);
 
   color->red   = red;
   color->green = green;
@@ -86,7 +87,7 @@ cogl_color_init_from_4f (CoglColor *color,
                          float      blue,
                          float      alpha)
 {
-  g_return_if_fail (color != NULL);
+  _COGL_RETURN_IF_FAIL (color != NULL);
 
   color->red   =  (red * 255);
   color->green =  (green * 255);
@@ -109,7 +110,7 @@ void
 cogl_color_init_from_4fv (CoglColor *color,
                           float *color_array)
 {
-  g_return_if_fail (color != NULL);
+  _COGL_RETURN_IF_FAIL (color != NULL);
 
   color->red   =  (color_array[0] * 255);
   color->green =  (color_array[1] * 255);
@@ -297,8 +298,8 @@ cogl_color_equal (gconstpointer v1, gconstpointer v2)
 {
   const guint32 *c1 = v1, *c2 = v2;
 
-  g_return_val_if_fail (v1 != NULL, FALSE);
-  g_return_val_if_fail (v2 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v1 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v2 != NULL, FALSE);
 
   /* XXX: We don't compare the padding */
   return *c1 == *c2 ? TRUE : FALSE;

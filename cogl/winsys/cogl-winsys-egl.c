@@ -30,6 +30,7 @@
 
 #include "cogl.h"
 
+#include "cogl-util.h"
 #include "cogl-winsys-egl-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-feature-private.h"
@@ -522,7 +523,7 @@ update_winsys_features (CoglContext *context, GError **error)
   CoglDisplayEGL *egl_display = context->display->winsys;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
 
-  g_return_val_if_fail (egl_display->egl_context, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
@@ -691,7 +692,7 @@ try_create_context (CoglDisplay *display,
                                           with_stencil_buffer,
                                           cfg_attribs);
 
-  g_return_val_if_fail (egl_display->egl_context == NULL, TRUE);
+  _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context == NULL, TRUE);
 
   edpy = egl_renderer->edpy;
 
@@ -1045,7 +1046,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
 {
   CoglDisplayEGL *egl_display = display->winsys;
 
-  g_return_if_fail (egl_display != NULL);
+  _COGL_RETURN_IF_FAIL (egl_display != NULL);
 
   cleanup_context (display);
 
@@ -1148,7 +1149,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
 #endif
 
-  g_return_val_if_fail (display->winsys == NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (display->winsys == NULL, FALSE);
 
   egl_display = g_slice_new0 (CoglDisplayEGL);
   display->winsys = egl_display;
@@ -1231,7 +1232,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   gboolean need_stencil =
     egl_display->stencil_disabled ? FALSE : framebuffer->config.need_stencil;
 
-  g_return_val_if_fail (egl_display->egl_context, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
   egl_attributes_from_framebuffer_config (display,
                                           &framebuffer->config,
@@ -1642,7 +1643,7 @@ _cogl_winsys_xlib_get_visual_info (void)
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_val_if_fail (ctx->display->winsys, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->display->winsys, FALSE);
 
   egl_display = ctx->display->winsys;
 
@@ -1833,10 +1834,10 @@ void
 cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
                                            struct wl_display *display)
 {
-  g_return_if_fail (cogl_is_renderer (renderer));
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
 
   /* NB: Renderers are considered immutable once connected */
-  g_return_if_fail (!renderer->connected);
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
 
   renderer->foreign_wayland_display = display;
 }
@@ -1844,7 +1845,7 @@ cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
 struct wl_display *
 cogl_wayland_renderer_get_display (CoglRenderer *renderer)
 {
-  g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
 
   if (renderer->foreign_wayland_display)
     return renderer->foreign_wayland_display;
@@ -1861,10 +1862,10 @@ void
 cogl_wayland_renderer_set_foreign_compositor (CoglRenderer *renderer,
                                               struct wl_compositor *compositor)
 {
-  g_return_if_fail (cogl_is_renderer (renderer));
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
 
   /* NB: Renderers are considered immutable once connected */
-  g_return_if_fail (!renderer->connected);
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
 
   renderer->foreign_wayland_compositor = compositor;
 }
@@ -1872,7 +1873,7 @@ cogl_wayland_renderer_set_foreign_compositor (CoglRenderer *renderer,
 struct wl_compositor *
 cogl_wayland_renderer_get_compositor (CoglRenderer *renderer)
 {
-  g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
 
   if (renderer->foreign_wayland_compositor)
     return renderer->foreign_wayland_compositor;
@@ -1913,7 +1914,7 @@ _cogl_egl_create_image (CoglContext *ctx,
   CoglRendererEGL *egl_renderer = ctx->display->renderer->winsys;
   EGLContext egl_ctx;
 
-  g_return_val_if_fail (egl_renderer->pf_eglCreateImage, EGL_NO_IMAGE_KHR);
+  _COGL_RETURN_VAL_IF_FAIL (egl_renderer->pf_eglCreateImage, EGL_NO_IMAGE_KHR);
 
   /* The EGL_KHR_image_pixmap spec explicitly states that EGL_NO_CONTEXT must
    * always be used in conjunction with the EGL_NATIVE_PIXMAP_KHR target */
@@ -1937,7 +1938,7 @@ _cogl_egl_destroy_image (CoglContext *ctx,
 {
   CoglRendererEGL *egl_renderer = ctx->display->renderer->winsys;
 
-  g_return_if_fail (egl_renderer->pf_eglDestroyImage);
+  _COGL_RETURN_IF_FAIL (egl_renderer->pf_eglDestroyImage);
 
   egl_renderer->pf_eglDestroyImage (egl_renderer->edpy, image);
 }

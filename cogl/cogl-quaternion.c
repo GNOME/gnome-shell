@@ -35,6 +35,7 @@
  */
 
 #include <cogl.h>
+#include <cogl-util.h>
 #include <cogl-quaternion.h>
 #include <cogl-quaternion-private.h>
 #include <cogl-matrix.h>
@@ -319,8 +320,8 @@ cogl_quaternion_equal (gconstpointer v1, gconstpointer v2)
   const CoglQuaternion *a = v1;
   const CoglQuaternion *b = v2;
 
-  g_return_val_if_fail (v1 != NULL, FALSE);
-  g_return_val_if_fail (v2 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v1 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v2 != NULL, FALSE);
 
   if (v1 == v2)
     return TRUE;
@@ -486,7 +487,7 @@ cogl_quaternion_slerp (CoglQuaternion *result,
   float fa;
   float fb;
 
-  g_return_if_fail (t >=0 && t <= 1.0f);
+  _COGL_RETURN_IF_FAIL (t >=0 && t <= 1.0f);
 
   if (t == 0)
     {
@@ -573,7 +574,7 @@ cogl_quaternion_nlerp (CoglQuaternion *result,
   float fa;
   float fb;
 
-  g_return_if_fail (t >=0 && t <= 1.0f);
+  _COGL_RETURN_IF_FAIL (t >=0 && t <= 1.0f);
 
   if (t == 0)
     {

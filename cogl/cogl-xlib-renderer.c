@@ -29,6 +29,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-object.h"
 
@@ -197,7 +198,7 @@ cogl_xlib_renderer_get_display (CoglRenderer *renderer)
 {
   CoglXlibRenderer *xlib_renderer;
 
-  g_return_val_if_fail (cogl_is_renderer (renderer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
 
   xlib_renderer = renderer->winsys;
 

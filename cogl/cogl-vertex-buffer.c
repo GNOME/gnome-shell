@@ -1163,7 +1163,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
         ;
     }
 
-  g_return_if_fail (n_attributes > 0);
+  _COGL_RETURN_IF_FAIL (n_attributes > 0);
 
   attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
 

@@ -222,7 +222,7 @@ _cogl_clip_stack_restore_real (CoglClipState *clip_state)
 {
   CoglHandle stack;
 
-  g_return_if_fail (clip_state->stacks != NULL);
+  _COGL_RETURN_IF_FAIL (clip_state->stacks != NULL);
 
   stack = clip_state->stacks->data;
 

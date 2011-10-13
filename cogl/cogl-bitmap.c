@@ -26,6 +26,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-bitmap-private.h"
@@ -310,7 +311,7 @@ cogl_bitmap_new_from_file (const char  *filename,
 {
   CoglBitmap *bmp;
 
-  g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
   if ((bmp = _cogl_bitmap_from_file (filename, error)) == NULL)
     {
@@ -336,7 +337,7 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
 {
   CoglBitmap *bmp;
 
-  g_return_val_if_fail (cogl_is_buffer (buffer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
 
   bmp = _cogl_bitmap_new_from_data (NULL, /* data */
                                     format,

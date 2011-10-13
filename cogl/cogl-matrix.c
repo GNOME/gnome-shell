@@ -66,6 +66,7 @@
 #endif
 
 #include <cogl.h>
+#include <cogl-util.h>
 #include <cogl-debug.h>
 #include <cogl-quaternion.h>
 #include <cogl-quaternion-private.h>
@@ -375,7 +376,7 @@ _cogl_matrix_print (const CoglMatrix *matrix)
 {
   if (!(matrix->flags & MAT_DIRTY_TYPE))
     {
-      g_return_if_fail (matrix->type < COGL_MATRIX_N_TYPES);
+      _COGL_RETURN_IF_FAIL (matrix->type < COGL_MATRIX_N_TYPES);
       g_print ("Matrix type: %s, flags: %x\n",
                types[matrix->type], (int)matrix->flags);
     }
@@ -1777,8 +1778,8 @@ cogl_matrix_equal (gconstpointer v1, gconstpointer v2)
   const CoglMatrix *a = v1;
   const CoglMatrix *b = v2;
 
-  g_return_val_if_fail (v1 != NULL, FALSE);
-  g_return_val_if_fail (v2 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v1 != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (v2 != NULL, FALSE);
 
   /* We want to avoid having a fuzzy _equal() function (e.g. that uses
    * an arbitrary epsilon value) since this function noteably conforms
@@ -2002,7 +2003,7 @@ cogl_matrix_transform_points (const CoglMatrix *matrix,
                               int n_points)
 {
   /* The results of transforming always have three components... */
-  g_return_if_fail (stride_out >= sizeof (Point3f));
+  _COGL_RETURN_IF_FAIL (stride_out >= sizeof (Point3f));
 
   if (n_components == 2)
     _cogl_matrix_transform_points_f2 (matrix,
@@ -2011,7 +2012,7 @@ cogl_matrix_transform_points (const CoglMatrix *matrix,
                                       n_points);
   else
     {
-      g_return_if_fail (n_components == 3);
+      _COGL_RETURN_IF_FAIL (n_components == 3);
 
       _cogl_matrix_transform_points_f3 (matrix,
                                         stride_in, points_in,
@@ -2041,7 +2042,7 @@ cogl_matrix_project_points (const CoglMatrix *matrix,
                                     n_points);
   else
     {
-      g_return_if_fail (n_components == 4);
+      _COGL_RETURN_IF_FAIL (n_components == 4);
 
       _cogl_matrix_project_points_f4 (matrix,
                                       stride_in, points_in,

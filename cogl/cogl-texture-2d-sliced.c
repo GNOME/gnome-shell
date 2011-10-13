@@ -883,7 +883,7 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_val_if_fail (cogl_is_bitmap (bmp), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
 
   width = _cogl_bitmap_get_width (bmp);
   height = _cogl_bitmap_get_height (bmp);

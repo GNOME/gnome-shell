@@ -28,6 +28,7 @@
 #include "math.h"
 
 #include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-spans.h"
 
@@ -77,8 +78,8 @@ _cogl_span_iter_begin (CoglSpanIter *iter,
 
   /* XXX: If CLAMP_TO_EDGE needs to be emulated then it needs to be
    * done at a higher level than here... */
-  g_return_if_fail (wrap_mode == COGL_PIPELINE_WRAP_MODE_REPEAT ||
-                    wrap_mode == COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT);
+  _COGL_RETURN_IF_FAIL (wrap_mode == COGL_PIPELINE_WRAP_MODE_REPEAT ||
+                        wrap_mode == COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT);
 
   iter->span = NULL;
 

@@ -29,6 +29,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-util.h"
 #include "cogl-node-private.h"
 
 void
@@ -79,7 +80,7 @@ _cogl_pipeline_node_unparent_real (CoglNode *node)
   if (parent == NULL)
     return;
 
-  g_return_if_fail (!COGL_LIST_EMPTY (&parent->children));
+  _COGL_RETURN_IF_FAIL (!COGL_LIST_EMPTY (&parent->children));
 
   COGL_LIST_REMOVE (node, list_node);
 

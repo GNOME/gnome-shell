@@ -29,6 +29,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-util.h"
 #include "cogl-object-private.h"
 #include "cogl-primitive.h"
 #include "cogl-primitive-private.h"
@@ -66,7 +67,7 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
       CoglAttribute *attribute = attributes[i];
       cogl_object_ref (attribute);
 
-      g_return_val_if_fail (cogl_is_attribute (attribute), NULL);
+      _COGL_RETURN_VAL_IF_FAIL (cogl_is_attribute (attribute), NULL);
 
       primitive->attributes[i] = attribute;
     }
@@ -393,7 +394,7 @@ cogl_primitive_set_attributes (CoglPrimitive *primitive,
 {
   int i;
 
-  g_return_if_fail (cogl_is_primitive (primitive));
+  _COGL_RETURN_IF_FAIL (cogl_is_primitive (primitive));
 
   if (G_UNLIKELY (primitive->immutable_ref))
     {
@@ -406,7 +407,7 @@ cogl_primitive_set_attributes (CoglPrimitive *primitive,
    * attribute thats actually in the new list too. */
   for (i = 0; i < n_attributes; i++)
     {
-      g_return_if_fail (cogl_is_attribute (attributes[i]));
+      _COGL_RETURN_IF_FAIL (cogl_is_attribute (attributes[i]));
       cogl_object_ref (attributes[i]);
     }
 
@@ -442,7 +443,7 @@ cogl_primitive_set_attributes (CoglPrimitive *primitive,
 int
 cogl_primitive_get_first_vertex (CoglPrimitive *primitive)
 {
-  g_return_val_if_fail (cogl_is_primitive (primitive), 0);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_primitive (primitive), 0);
 
   return primitive->first_vertex;
 }
@@ -451,7 +452,7 @@ void
 cogl_primitive_set_first_vertex (CoglPrimitive *primitive,
                                  int first_vertex)
 {
-  g_return_if_fail (cogl_is_primitive (primitive));
+  _COGL_RETURN_IF_FAIL (cogl_is_primitive (primitive));
 
   if (G_UNLIKELY (primitive->immutable_ref))
     {
@@ -465,7 +466,7 @@ cogl_primitive_set_first_vertex (CoglPrimitive *primitive,
 int
 cogl_primitive_get_n_vertices (CoglPrimitive *primitive)
 {
-  g_return_val_if_fail (cogl_is_primitive (primitive), 0);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_primitive (primitive), 0);
 
   return primitive->n_vertices;
 }
@@ -474,7 +475,7 @@ void
 cogl_primitive_set_n_vertices (CoglPrimitive *primitive,
                                int n_vertices)
 {
-  g_return_if_fail (cogl_is_primitive (primitive));
+  _COGL_RETURN_IF_FAIL (cogl_is_primitive (primitive));
 
   primitive->n_vertices = n_vertices;
 }
@@ -482,7 +483,7 @@ cogl_primitive_set_n_vertices (CoglPrimitive *primitive,
 CoglVerticesMode
 cogl_primitive_get_mode (CoglPrimitive *primitive)
 {
-  g_return_val_if_fail (cogl_is_primitive (primitive), 0);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_primitive (primitive), 0);
 
   return primitive->mode;
 }
@@ -491,7 +492,7 @@ void
 cogl_primitive_set_mode (CoglPrimitive *primitive,
                          CoglVerticesMode mode)
 {
-  g_return_if_fail (cogl_is_primitive (primitive));
+  _COGL_RETURN_IF_FAIL (cogl_is_primitive (primitive));
 
   if (G_UNLIKELY (primitive->immutable_ref))
     {
@@ -506,7 +507,7 @@ void
 cogl_primitive_set_indices (CoglPrimitive *primitive,
                             CoglIndices *indices)
 {
-  g_return_if_fail (cogl_is_primitive (primitive));
+  _COGL_RETURN_IF_FAIL (cogl_is_primitive (primitive));
 
   if (G_UNLIKELY (primitive->immutable_ref))
     {
@@ -526,7 +527,7 @@ _cogl_primitive_immutable_ref (CoglPrimitive *primitive)
 {
   int i;
 
-  g_return_val_if_fail (cogl_is_primitive (primitive), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_primitive (primitive), NULL);
 
   primitive->immutable_ref++;
 
@@ -541,8 +542,8 @@ _cogl_primitive_immutable_unref (CoglPrimitive *primitive)
 {
   int i;
 
-  g_return_if_fail (cogl_is_primitive (primitive));
-  g_return_if_fail (primitive->immutable_ref > 0);
+  _COGL_RETURN_IF_FAIL (cogl_is_primitive (primitive));
+  _COGL_RETURN_IF_FAIL (primitive->immutable_ref > 0);
 
   primitive->immutable_ref--;
 

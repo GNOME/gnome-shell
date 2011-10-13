@@ -28,6 +28,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl2-path.h"
@@ -292,7 +293,7 @@ cogl_set_path (CoglPath *path)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_path (path));
+  _COGL_RETURN_IF_FAIL (cogl_is_path (path));
 
   /* Reference the new object first in case it is the same as the old
      object */

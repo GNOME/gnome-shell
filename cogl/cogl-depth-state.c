@@ -28,6 +28,7 @@
 #endif
 
 #include <cogl/cogl.h>
+#include "cogl-util.h"
 #include "cogl-depth-state-private.h"
 
 void
@@ -46,14 +47,14 @@ void
 cogl_depth_state_set_test_enabled (CoglDepthState *state,
                                    gboolean enabled)
 {
-  g_return_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC);
+  _COGL_RETURN_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC);
   state->test_enabled = enabled;
 }
 
 gboolean
 cogl_depth_state_get_test_enabled (CoglDepthState *state)
 {
-  g_return_val_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC, FALSE);
   return state->test_enabled;
 }
 
@@ -61,14 +62,14 @@ void
 cogl_depth_state_set_write_enabled (CoglDepthState *state,
                                     gboolean enabled)
 {
-  g_return_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC);
+  _COGL_RETURN_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC);
   state->write_enabled = enabled;
 }
 
 gboolean
 cogl_depth_state_get_write_enabled (CoglDepthState *state)
 {
-  g_return_val_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC, FALSE);
   return state->write_enabled;
 }
 
@@ -76,14 +77,14 @@ void
 cogl_depth_state_set_test_function (CoglDepthState *state,
                                     CoglDepthTestFunction function)
 {
-  g_return_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC);
+  _COGL_RETURN_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC);
   state->test_function = function;
 }
 
 CoglDepthTestFunction
 cogl_depth_state_get_test_function (CoglDepthState *state)
 {
-  g_return_val_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC, FALSE);
   return state->test_function;
 }
 
@@ -92,7 +93,7 @@ cogl_depth_state_set_range (CoglDepthState *state,
                             float near,
                             float far)
 {
-  g_return_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC);
+  _COGL_RETURN_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC);
   state->range_near = near;
   state->range_far = far;
 }
@@ -102,7 +103,7 @@ cogl_depth_state_get_range (CoglDepthState *state,
                             float *near_out,
                             float *far_out)
 {
-  g_return_if_fail (state->magic == COGL_DEPTH_STATE_MAGIC);
+  _COGL_RETURN_IF_FAIL (state->magic == COGL_DEPTH_STATE_MAGIC);
   *near_out = state->range_near;
   *far_out = state->range_far;
 }
