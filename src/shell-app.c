@@ -75,6 +75,7 @@ struct _ShellApp
   char *name_collation_key;
   char *casefolded_description;
   char *casefolded_exec;
+  char **casefolded_keywords;
 };
 
 enum {
@@ -1299,6 +1300,7 @@ shell_app_init_search_data (ShellApp *app)
   const char *name;
   const char *exec;
   const char *comment;
+  const char * const *keywords;
   char *normalized_exec;
   GDesktopAppInfo *appinfo;
 
@@ -1313,6 +1315,25 @@ shell_app_init_search_data (ShellApp *app)
   normalized_exec = shell_util_normalize_and_casefold (exec);
   app->casefolded_exec = trim_exec_line (normalized_exec);
   g_free (normalized_exec);
+
+  keywords = g_desktop_app_info_get_keywords (appinfo);
+
+  if (keywords)
+    {
+      int i;
+
+      app->casefolded_keywords = g_new0 (char*, g_strv_length (keywords) + 1);
+
+      i = 0;
+      while (keywords[i])
+        {
+          app->casefolded_keywords[i] = shell_util_normalize_and_casefold (keywords[i]);
+          ++i;
+        }
+      app->casefolded_keywords[i] = NULL;
+    }
+  else
+    app->casefolded_keywords = NULL;
 }
 
 /**
@@ -1379,6 +1400,23 @@ _shell_app_match_search_terms (ShellApp  *app,
           p = strstr (app->casefolded_description, term);
           if (p != NULL)
             current_match = MATCH_SUBSTRING;
+        }
+
+      if (app->casefolded_keywords)
+        {
+          int i = 0;
+          while (app->casefolded_keywords[i] && current_match < MATCH_PREFIX)
+            {
+              p = strstr (app->casefolded_keywords[i], term);
+              if (p != NULL)
+                {
+                  if (p == app->casefolded_keywords[i])
+                    current_match = MATCH_PREFIX;
+                  else
+                    current_match = MATCH_SUBSTRING;
+                }
+              ++i;
+            }
         }
 
       if (current_match == MATCH_NONE)
@@ -1464,6 +1502,7 @@ shell_app_finalize (GObject *object)
   g_free (app->name_collation_key);
   g_free (app->casefolded_description);
   g_free (app->casefolded_exec);
+  g_strfreev (app->casefolded_keywords);
 
   G_OBJECT_CLASS(shell_app_parent_class)->finalize (object);
 }
