@@ -32,6 +32,7 @@
 #include "cogl-object-private.h"
 #include "cogl-indices.h"
 #include "cogl-indices-private.h"
+#include "cogl-context-private.h"
 
 static void _cogl_index_buffer_free (CoglIndexBuffer *indices);
 
@@ -46,7 +47,9 @@ cogl_index_buffer_new (gsize bytes)
   CoglIndexBuffer *indices = g_slice_new (CoglIndexBuffer);
   gboolean use_malloc;
 
-  if (!cogl_features_available (COGL_FEATURE_VBOS))
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
     use_malloc = TRUE;
   else
     use_malloc = FALSE;

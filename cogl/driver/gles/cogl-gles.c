@@ -91,7 +91,7 @@ _cogl_gles_update_features (CoglContext *context,
       flags |= COGL_FEATURE_DEPTH_RANGE;
     }
 
-  flags |= COGL_FEATURE_VBOS;
+  private_flags |= COGL_PRIVATE_FEATURE_VBOS;
 
   /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
   flags |= COGL_FEATURE_POINT_SPRITE;

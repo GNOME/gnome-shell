@@ -74,7 +74,7 @@ static void
 _cogl_init_feature_overrides (CoglContext *ctx)
 {
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_VBOS)))
-    ctx->feature_flags &= ~COGL_FEATURE_VBOS;
+    ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_VBOS;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PBOS)))
     ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_PBOS;

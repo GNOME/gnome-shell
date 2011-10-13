@@ -213,9 +213,11 @@ _cogl_gl_update_features (CoglContext *context,
     flags |= COGL_FEATURE_SHADERS_GLSL;
 
   if (context->glGenBuffers)
-    flags |= (COGL_FEATURE_VBOS |
-              COGL_FEATURE_MAP_BUFFER_FOR_READ |
-              COGL_FEATURE_MAP_BUFFER_FOR_WRITE);
+    {
+      private_flags |= COGL_PRIVATE_FEATURE_VBOS;
+      flags |= (COGL_FEATURE_MAP_BUFFER_FOR_READ |
+                COGL_FEATURE_MAP_BUFFER_FOR_WRITE);
+    }
 
   if (_cogl_check_extension ("GL_ARB_texture_rectangle", gl_extensions))
     flags |= COGL_FEATURE_TEXTURE_RECTANGLE;

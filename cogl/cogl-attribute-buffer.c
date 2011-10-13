@@ -32,6 +32,7 @@
 #include "cogl-object-private.h"
 #include "cogl-attribute-buffer.h"
 #include "cogl-attribute-buffer-private.h"
+#include "cogl-context-private.h"
 
 static void _cogl_attribute_buffer_free (CoglAttributeBuffer *array);
 
@@ -43,7 +44,9 @@ cogl_attribute_buffer_new (gsize bytes, const void *data)
   CoglAttributeBuffer *array = g_slice_new (CoglAttributeBuffer);
   gboolean use_malloc;
 
-  if (!cogl_features_available (COGL_FEATURE_VBOS))
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
     use_malloc = TRUE;
   else
     use_malloc = FALSE;
