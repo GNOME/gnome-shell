@@ -77,6 +77,16 @@
  *   g_timeout_add() that acquire the Clutter lock before invoking the provided
  *   callback: clutter_threads_add_idle() and
  *   clutter_threads_add_timeout().</para>
+ *   <para>The example below shows how to use a worker thread to perform a
+ *   blocking operation, and perform UI updates using the main loop.</para>
+ *   <example id="worker-thread-example">
+ *     <title>A worker thread example</title>
+ *     <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-thread.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *     </programlisting>
+ *   </example>
  * </refsect2>
  */
 
