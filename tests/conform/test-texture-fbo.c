@@ -1,5 +1,3 @@
-#undef CLUTTER_DISABLE_DEPRECATED
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 

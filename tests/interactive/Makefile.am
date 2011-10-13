@@ -137,8 +137,8 @@ test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 test_interactive_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
 	-DG_DISABLE_SINGLE_INCLUDES \
-	-DCOGL_DISABLE_DEPRECATED \
-	-DCLUTTER_DISABLE_DEPRECATED
+	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
+	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd) -lm
 
