@@ -241,8 +241,6 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
       shader_state->user_program = user_program;
       if (user_program == COGL_INVALID_HANDLE)
         {
-          int i;
-
           /* We reuse a single grow-only GString for code-gen */
           g_string_set_size (ctx->codegen_source_buffer, 0);
           shader_state->source = ctx->codegen_source_buffer;
