@@ -27,8 +27,7 @@ typedef enum {
   CLUTTER_DEBUG_PICK                = 1 << 16,
   CLUTTER_DEBUG_EVENTLOOP           = 1 << 17,
   CLUTTER_DEBUG_CLIPPING            = 1 << 18,
-  CLUTTER_DEBUG_OOB_TRANSFORMS      = 1 << 19,
-  CLUTTER_DEBUG_PAINT_DEFORM_TILES  = 1 << 20,
+  CLUTTER_DEBUG_OOB_TRANSFORMS      = 1 << 19
 } ClutterDebugFlag;
 
 typedef enum {
@@ -43,7 +42,8 @@ typedef enum {
   CLUTTER_DEBUG_PAINT_VOLUMES           = 1 << 3,
   CLUTTER_DEBUG_DISABLE_CULLING         = 1 << 4,
   CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT = 1 << 5,
-  CLUTTER_DEBUG_CONTINUOUS_REDRAW       = 1 << 6
+  CLUTTER_DEBUG_CONTINUOUS_REDRAW       = 1 << 6,
+  CLUTTER_DEBUG_PAINT_DEFORM_TILES      = 1 << 7
 } ClutterDrawDebugFlag;
 
 #ifdef CLUTTER_ENABLE_DEBUG

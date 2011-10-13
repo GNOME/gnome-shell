@@ -176,13 +176,12 @@ static const GDebugKey clutter_debug_keys[] = {
   { "layout", CLUTTER_DEBUG_LAYOUT },
   { "clipping", CLUTTER_DEBUG_CLIPPING },
   { "oob-transforms", CLUTTER_DEBUG_OOB_TRANSFORMS },
-  { "paint-deform-tiles", CLUTTER_DEBUG_PAINT_DEFORM_TILES },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
 static const GDebugKey clutter_pick_debug_keys[] = {
   { "nop-picking", CLUTTER_DEBUG_NOP_PICKING },
-  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS }
+  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS },
 };
 
 static const GDebugKey clutter_paint_debug_keys[] = {
@@ -192,7 +191,8 @@ static const GDebugKey clutter_paint_debug_keys[] = {
   { "paint-volumes", CLUTTER_DEBUG_PAINT_VOLUMES },
   { "disable-culling", CLUTTER_DEBUG_DISABLE_CULLING },
   { "disable-offscreen-redirect", CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT },
-  { "continuous-redraw", CLUTTER_DEBUG_CONTINUOUS_REDRAW }
+  { "continuous-redraw", CLUTTER_DEBUG_CONTINUOUS_REDRAW },
+  { "paint-deform-tiles", CLUTTER_DEBUG_PAINT_DEFORM_TILES },
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE
