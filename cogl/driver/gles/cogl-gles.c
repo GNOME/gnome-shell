@@ -94,6 +94,8 @@ _cogl_gles_update_features (CoglContext *context,
       COGL_FLAGS_SET (context->features,
                       COGL_FEATURE_ID_TEXTURE_NPOT_BASIC, TRUE);
       COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_DEPTH_RANGE, TRUE);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_MIRRORED_REPEAT, TRUE);
     }
 
   private_flags |= COGL_PRIVATE_FEATURE_VBOS;

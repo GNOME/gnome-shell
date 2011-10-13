@@ -164,6 +164,9 @@ _cogl_gl_update_features (CoglContext *context,
                   COGL_FEATURE_ID_UNSIGNED_INT_INDICES, TRUE);
   COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_DEPTH_RANGE, TRUE);
 
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 1, 4))
+    COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_MIRRORED_REPEAT, TRUE);
+
   gl_extensions = (const char *)ctx->glGetString (GL_EXTENSIONS);
 
   _cogl_feature_check_ext_functions (context,

@@ -198,6 +198,8 @@ cogl_features_available (CoglFeatureFlags features);
  *     supported with CoglBufferAccess including read support.
  * @COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE: Whether cogl_buffer_map() is
  *     supported with CoglBufferAccess including write support.
+ * @COGL_FEATURE_ID_MIRRORED_REPEAT: Whether
+ *    %COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT is supported.
  *
  *
  * All the capabilities that can vary between different GPUs supported
@@ -224,6 +226,7 @@ typedef enum _CoglFeatureID
   COGL_FEATURE_ID_POINT_SPRITE,
   COGL_FEATURE_ID_MAP_BUFFER_FOR_READ,
   COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE,
+  COGL_FEATURE_ID_MIRRORED_REPEAT,
 
   /*< private > */
   _COGL_N_FEATURE_IDS

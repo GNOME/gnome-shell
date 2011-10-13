@@ -77,9 +77,9 @@ _cogl_span_iter_begin (CoglSpanIter *iter,
 
   /* XXX: If CLAMP_TO_EDGE needs to be emulated then it needs to be
    * done at a higher level than here... */
-  g_return_if_fail (wrap_mode == COGL_PIPELINE_WRAP_MODE_REPEAT);
+  g_return_if_fail (wrap_mode == COGL_PIPELINE_WRAP_MODE_REPEAT ||
+                    wrap_mode == COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT);
 
-  iter->index = 0;
   iter->span = NULL;
 
   iter->spans = spans;
@@ -109,6 +109,25 @@ _cogl_span_iter_begin (CoglSpanIter *iter,
 
   iter->wrap_mode = wrap_mode;
 
+  if (wrap_mode == COGL_PIPELINE_WRAP_MODE_REPEAT)
+    iter->index = 0;
+  else if (wrap_mode == COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT)
+    {
+      if ((int)iter->origin % 2)
+        {
+          iter->index = iter->n_spans - 1;
+          iter->mirror_direction = -1;
+          iter->flipped = !iter->flipped;
+        }
+      else
+        {
+          iter->index = 0;
+          iter->mirror_direction = 1;
+        }
+    }
+  else
+    g_warn_if_reached ();
+
   iter->cover_start = cover_start;
   iter->cover_end = cover_end;
   iter->pos = iter->origin;
@@ -126,7 +145,20 @@ _cogl_span_iter_next (CoglSpanIter *iter)
   /* Move current position */
   iter->pos = iter->next_pos;
 
-  iter->index = (iter->index + 1) % iter->n_spans;
+  if (iter->wrap_mode == COGL_PIPELINE_WRAP_MODE_REPEAT)
+    iter->index = (iter->index + 1) % iter->n_spans;
+  else if (iter->wrap_mode == COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT)
+    {
+      iter->index += iter->mirror_direction;
+      if (iter->index == iter->n_spans || iter->index == -1)
+        {
+          iter->mirror_direction = -iter->mirror_direction;
+          iter->index += iter->mirror_direction;
+          iter->flipped = !iter->flipped;
+        }
+    }
+  else
+    g_warn_if_reached ();
 
   /* Update intersection */
   _cogl_span_iter_update (iter);

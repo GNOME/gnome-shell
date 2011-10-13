@@ -111,8 +111,9 @@ typedef enum {
  */
 typedef enum {
   COGL_PIPELINE_WRAP_MODE_REPEAT = 0x2901,
+  COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT = 0x8370,
   COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE = 0x812F,
-  COGL_PIPELINE_WRAP_MODE_AUTOMATIC = 0x0207
+  COGL_PIPELINE_WRAP_MODE_AUTOMATIC = 0x0207 /* GL_ALWAYS */
 } CoglPipelineWrapMode;
 /* NB: these values come from the equivalents in gl.h */
 

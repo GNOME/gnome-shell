@@ -368,10 +368,10 @@ _cogl_texture_quad_multiple_primitives (CoglTexture *texture,
   state.v_to_q_scale_x = fabs (state.quad_len_x / (tx_2 - tx_1));
   state.v_to_q_scale_y = fabs (state.quad_len_y / (ty_2 - ty_1));
 
-  /* cogl_meta_texture_foreach_in_region only allows WRAP_MODE_REPEAT.
-   * If CLAMP_TO_EDGE is in use then we have already dealt with
-   * emulation for that and we can just pass WRAP_MODE_REPEAT here...
-   */
+  /* cogl_meta_texture_foreach_in_region only allows WRAP_MODE_REPEAT
+   * and WRAP_MODE_MIRRORED_REPEAT. If CLAMP_TO_EDGE is in use then we
+   * have already dealt with emulation for that and we can just pass
+   * WRAP_MODE_REPEAT here... */
   if (wrap_s == COGL_PIPELINE_WRAP_MODE_AUTOMATIC ||
       wrap_s == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
     wrap_s = COGL_PIPELINE_WRAP_MODE_REPEAT;

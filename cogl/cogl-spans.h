@@ -50,6 +50,7 @@ typedef struct _CoglSpanIter
   gboolean intersects;
   gboolean flipped;
   CoglPipelineWrapMode wrap_mode;
+  int mirror_direction;
 } CoglSpanIter;
 
 void
