@@ -78,7 +78,7 @@ _cogl_gles_update_features (CoglContext *context,
       int max_clip_planes;
       GE( context, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
       if (max_clip_planes >= 4)
-        flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+        private_flags |= COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
     }
 #endif
 

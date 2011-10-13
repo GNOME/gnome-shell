@@ -828,7 +828,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
   modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
 
-  has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
+  has_clip_planes =
+    ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
 
   if (has_clip_planes)
     disable_clip_planes ();

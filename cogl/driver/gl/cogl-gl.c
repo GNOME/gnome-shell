@@ -187,7 +187,7 @@ _cogl_gl_update_features (CoglContext *context,
 
   GE( ctx, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)
-    flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+    private_flags |= COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
 
   if (context->glGenRenderbuffers)
     flags |= COGL_FEATURE_OFFSCREEN;
