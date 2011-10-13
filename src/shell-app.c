@@ -1359,6 +1359,7 @@ shell_app_finalize (GObject *object)
   g_free (app->casefolded_name);
   g_free (app->name_collation_key);
   g_free (app->casefolded_description);
+  g_free (app->casefolded_exec);
 
   G_OBJECT_CLASS(shell_app_parent_class)->finalize (object);
 }
