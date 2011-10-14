@@ -450,7 +450,6 @@ function _loadExtensionsIn(dir, type) {
 }
 
 function loadExtensions() {
-    _loadExtensionsIn(userExtensionsDir, ExtensionType.PER_USER);
     let systemDataDirs = GLib.get_system_data_dirs();
     for (let i = 0; i < systemDataDirs.length; i++) {
         let dirPath = systemDataDirs[i] + '/gnome-shell/extensions';
@@ -458,6 +457,7 @@ function loadExtensions() {
         if (dir.query_exists(null))
             _loadExtensionsIn(dir, ExtensionType.SYSTEM);
     }
+    _loadExtensionsIn(userExtensionsDir, ExtensionType.PER_USER);
 }
 
 function InstallExtensionDialog(uuid, version_tag, name) {
