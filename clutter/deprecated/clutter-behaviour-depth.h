@@ -34,8 +34,6 @@
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 #define CLUTTER_TYPE_BEHAVIOUR_DEPTH            (clutter_behaviour_depth_get_type ())
 #define CLUTTER_BEHAVIOUR_DEPTH(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BEHAVIOUR_DEPTH, ClutterBehaviourDepth))
 #define CLUTTER_IS_BEHAVIOUR_DEPTH(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BEHAVIOUR_DEPTH))
@@ -82,18 +80,20 @@ struct _ClutterBehaviourDepthClass
 };
 
 GType             clutter_behaviour_depth_get_type (void) G_GNUC_CONST;
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate and ClutterActor:depth)
 ClutterBehaviour *clutter_behaviour_depth_new      (ClutterAlpha *alpha,
                                                     gint          depth_start,
                                                     gint          depth_end);
 
+CLUTTER_DEPRECATED
 void clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
                                          gint                   depth_start,
                                          gint                   depth_end);
+CLUTTER_DEPRECATED
 void clutter_behaviour_depth_get_bounds (ClutterBehaviourDepth *behaviour,
                                          gint                  *depth_start,
                                          gint                  *depth_end);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

@@ -27,6 +27,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-depth.h"
 #include "clutter-enum-types.h"

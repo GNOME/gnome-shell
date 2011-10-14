@@ -28,23 +28,21 @@
 #ifndef __CLUTTER_FRAME_SOURCE_H__
 #define __CLUTTER_FRAME_SOURCE_H__
 
-#include <glib.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
+CLUTTER_DEPRECATED
 guint clutter_frame_source_add (guint          fps,
 				GSourceFunc    func,
 				gpointer       data);
 
+CLUTTER_DEPRECATED
 guint clutter_frame_source_add_full (gint           priority,
 				     guint          fps,
 				     GSourceFunc    func,
 				     gpointer       data,
 				     GDestroyNotify notify);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

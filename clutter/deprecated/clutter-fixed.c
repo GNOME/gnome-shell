@@ -29,6 +29,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include <cogl/cogl.h>
 
 #include <glib-object.h>

@@ -67,6 +67,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-path.h"
 #include "clutter-bezier.h"

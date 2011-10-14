@@ -52,6 +52,8 @@
 #include <unistd.h>
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 

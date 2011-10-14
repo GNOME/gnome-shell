@@ -35,11 +35,9 @@
 #ifndef __CLUTTER_TIMEOUT_POOL_H__
 #define __CLUTTER_TIMEOUT_POOL_H__
 
-#include <glib.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
-
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 
 /**
  * ClutterTimeoutPool: (skip)
@@ -53,16 +51,18 @@ G_BEGIN_DECLS
  */
 typedef struct _ClutterTimeoutPool    ClutterTimeoutPool;
 
+CLUTTER_DEPRECATED
 ClutterTimeoutPool *clutter_timeout_pool_new    (gint                priority);
+
+CLUTTER_DEPRECATED
 guint               clutter_timeout_pool_add    (ClutterTimeoutPool *pool,
                                                  guint               fps,
                                                  GSourceFunc         func,
                                                  gpointer            data,
                                                  GDestroyNotify      notify);
+CLUTTER_DEPRECATED
 void                clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
                                                  guint               id_);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

@@ -35,8 +35,6 @@
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 #define CLUTTER_TYPE_BEHAVIOUR_PATH (clutter_behaviour_path_get_type ())
 
 #define CLUTTER_BEHAVIOUR_PATH(obj) \
@@ -110,24 +108,26 @@ struct _ClutterBehaviourPathClass
 
 GType clutter_behaviour_path_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate)
 ClutterBehaviour *clutter_behaviour_path_new          (ClutterAlpha         *alpha,
                                                        ClutterPath          *path);
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate)
 ClutterBehaviour *clutter_behaviour_path_new_with_description
                                                       (ClutterAlpha         *alpha,
                                                        const gchar          *desc);
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate)
 ClutterBehaviour *clutter_behaviour_path_new_with_knots
                                                       (ClutterAlpha         *alpha,
                                                        const ClutterKnot    *knots,
                                                        guint                 n_knots);
 
+CLUTTER_DEPRECATED
 void              clutter_behaviour_path_set_path     (ClutterBehaviourPath *pathb,
                                                        ClutterPath          *path);
-
+CLUTTER_DEPRECATED
 ClutterPath *     clutter_behaviour_path_get_path     (ClutterBehaviourPath *pathb);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

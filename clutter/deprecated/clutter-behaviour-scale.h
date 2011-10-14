@@ -34,8 +34,6 @@
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 #define CLUTTER_TYPE_BEHAVIOUR_SCALE            (clutter_behaviour_scale_get_type ())
 #define CLUTTER_BEHAVIOUR_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScale))
 #define CLUTTER_BEHAVIOUR_SCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
@@ -83,23 +81,25 @@ struct _ClutterBehaviourScaleClass
 
 GType clutter_behaviour_scale_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate with ClutterActor:scale-x and ClutterActor:scale-y)
 ClutterBehaviour *clutter_behaviour_scale_new        (ClutterAlpha          *alpha,
                                                       gdouble                x_scale_start,
                                                       gdouble                y_scale_start,
                                                       gdouble                x_scale_end,
                                                       gdouble                y_scale_end);
+
+CLUTTER_DEPRECATED
 void              clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
                                                       gdouble                x_scale_start,
                                                       gdouble                y_scale_start,
                                                       gdouble                x_scale_end,
                                                       gdouble                y_scale_end);
+CLUTTER_DEPRECATED
 void              clutter_behaviour_scale_get_bounds (ClutterBehaviourScale *scale,
                                                       gdouble               *x_scale_start,
                                                       gdouble               *y_scale_start,
                                                       gdouble               *x_scale_end,
                                                       gdouble               *y_scale_end);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
