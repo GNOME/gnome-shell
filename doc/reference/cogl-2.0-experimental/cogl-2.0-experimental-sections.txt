@@ -305,6 +305,15 @@ COGL_TEXTURE_MAX_WASTE
 </SECTION>
 
 <SECTION>
+<FILE>cogl-texture-2d</FILE>
+<TITLE>2D textures</TITLE>
+cogl_texture_2d_new_with_size
+cogl_texture_2d_new_from_data
+cogl_texture_2d_new_from_foreign
+cogl_is_texture_rectangle
+</SECTION>
+
+<SECTION>
 <FILE>cogl-texture-rectangle</FILE>
 <TITLE>Rectangle textures (non-normalized coordinates)</TITLE>
 cogl_texture_rectangle_new_with_size
