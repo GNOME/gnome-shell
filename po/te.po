@@ -1,0 +1,34 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Sasi Bhushan Boddepalli<sasi@swecha.net>, 2011.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-10-02 00:02+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Fasi Bhushan Boddepalli<sasi@swecha.net>\n"
+"Language-Team: Swecha-Telugu language team <indlinux-telugu@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../cogl/cogl-debug.c:206
+msgid "Cogl debugging flags to set"
+msgstr "Cogl క్రమబద్దీకరించడానికి దోష నివారణ జెండాలు"
+
+#: ../cogl/cogl-debug.c:208
+msgid "Cogl debugging flags to unset"
+msgstr "Cogl క్రమరహిత పరచడానికి దోష నివారణ జెండాలు"
+
+#: ../cogl/cogl-debug.c:257
+msgid "Cogl Options"
+msgstr "Cogl ఇచ్ఛాపూర్వకాలు"
+
+#: ../cogl/cogl-debug.c:258
+msgid "Show Cogl options"
+msgstr "Cogl ఇచ్ఛాపూర్వకాలను చూపుము"
