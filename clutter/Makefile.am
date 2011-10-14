@@ -770,6 +770,9 @@ libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 install-exec-local:
 	for lib in `echo $(compat_libs)`; do \
 	  (cd $(DESTDIR)$(libdir) && \
+	    rm -f $$lib.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION); \
+	  ) ; \
+	  (cd $(DESTDIR)$(libdir) && \
 	    { ln -s -f libclutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0 || \
 	      { rm -f $$lib.0 && ln -s libclutter-1.0.so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0; }; \
 	    } \
