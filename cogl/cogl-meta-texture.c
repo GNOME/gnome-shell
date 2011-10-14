@@ -291,7 +291,7 @@ cogl_meta_texture_foreach_in_region (CoglMetaTexture *meta_texture,
    * coordinates beyond this point and only re-normalize just before
    * calling the user's callback... */
 
-  if (!_cogl_is_texture_rectangle (COGL_TEXTURE (meta_texture)))
+  if (!cogl_is_texture_rectangle (COGL_TEXTURE (meta_texture)))
     {
       normalize_data.callback = callback;
       normalize_data.user_data = user_data;
@@ -367,7 +367,7 @@ cogl_meta_texture_foreach_in_region (CoglMetaTexture *meta_texture,
        * callback that un_normalizes the slice coordinates we get from
        * _cogl_texture_spans_foreach_in_region before passing them to
        * the user's callback. */
-      if (_cogl_is_texture_rectangle (meta_texture))
+      if (cogl_is_texture_rectangle (meta_texture))
         {
           un_normalize_data.callback = callback;
           un_normalize_data.user_data = user_data;

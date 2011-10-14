@@ -77,6 +77,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-texture.h 		\
 	$(srcdir)/cogl-texture-3d.h             \
 	$(srcdir)/cogl-texture-2d.h             \
+	$(srcdir)/cogl-texture-rectangle.h      \
 	$(srcdir)/cogl-texture-2d-sliced.h      \
 	$(srcdir)/cogl-meta-texture.h		\
 	$(srcdir)/cogl-types.h 			\

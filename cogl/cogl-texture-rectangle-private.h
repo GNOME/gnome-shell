@@ -24,13 +24,8 @@
 #ifndef __COGL_TEXTURE_RECTANGLE_H
 #define __COGL_TEXTURE_RECTANGLE_H
 
-#include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
-
-#define COGL_TEXTURE_RECTANGLE(tex) ((CoglTextureRectangle *) tex)
-
-typedef struct _CoglTextureRectangle CoglTextureRectangle;
 
 struct _CoglTextureRectangle
 {
@@ -52,24 +47,15 @@ struct _CoglTextureRectangle
   gboolean        is_foreign;
 };
 
-gboolean
-_cogl_is_texture_rectangle (void *object);
-
 GQuark
 _cogl_handle_texture_rectangle_get_type (void);
 
-CoglHandle
-_cogl_texture_rectangle_new_with_size (unsigned int     width,
-                                       unsigned int     height,
-                                       CoglTextureFlags flags,
-                                       CoglPixelFormat  internal_format);
-
-CoglHandle
+CoglTextureRectangle *
 _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
                                          CoglTextureFlags flags,
                                          CoglPixelFormat  internal_format);
 
-CoglHandle
+CoglTextureRectangle *
 _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
                                           GLuint width,
                                           GLuint height,

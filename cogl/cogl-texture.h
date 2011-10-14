@@ -74,7 +74,8 @@ typedef struct _CoglTexture CoglTexture;
 typedef enum {
   COGL_TEXTURE_ERROR_SIZE,
   COGL_TEXTURE_ERROR_FORMAT,
-  COGL_TEXTURE_ERROR_BAD_PARAMETER
+  COGL_TEXTURE_ERROR_BAD_PARAMETER,
+  COGL_TEXTURE_ERROR_TYPE
 } CoglTextureError;
 
 GQuark cogl_texture_error_quark (void);

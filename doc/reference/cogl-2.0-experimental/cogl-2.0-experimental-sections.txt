@@ -305,6 +305,13 @@ COGL_TEXTURE_MAX_WASTE
 </SECTION>
 
 <SECTION>
+<FILE>cogl-texture-rectangle</FILE>
+<TITLE>Rectangle textures (non-normalized coordinates)</TITLE>
+cogl_texture_rectangle_new_with_size
+cogl_is_texture_rectangle
+</SECTION>
+
+<SECTION>
 <FILE>cogl-texture-3d</FILE>
 <TITLE>3D textures</TITLE>
 cogl_texture_3d_new_with_size

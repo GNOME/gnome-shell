@@ -58,7 +58,7 @@ _cogl_sub_texture_unmap_quad (CoglSubTexture *sub_tex,
    * NB: sub_tex->sub_x/y/width/height are in non-normalized
    * coordinates.
    */
-  if (_cogl_is_texture_rectangle (sub_tex->full_texture))
+  if (cogl_is_texture_rectangle (sub_tex->full_texture))
     {
       coords[0] = (coords[0] - sub_tex->sub_x) / sub_tex->sub_width;
       coords[1] = (coords[1] - sub_tex->sub_y) / sub_tex->sub_height;
@@ -88,7 +88,7 @@ _cogl_sub_texture_map_quad (CoglSubTexture *sub_tex,
    * coordinates.
    */
 
-  if (_cogl_is_texture_rectangle (sub_tex->full_texture))
+  if (cogl_is_texture_rectangle (sub_tex->full_texture))
     {
       coords[0] = coords[0] * sub_tex->sub_width + sub_tex->sub_x;
       coords[1] = coords[1] * sub_tex->sub_height + sub_tex->sub_y;
@@ -154,7 +154,7 @@ _cogl_sub_texture_foreach_sub_texture_in_region (
 
   /* TODO: Add something like cogl_is_low_level_texture() */
   if (cogl_is_texture_2d (full_texture) ||
-      _cogl_is_texture_rectangle (full_texture))
+      cogl_is_texture_rectangle (full_texture))
     {
       callback (sub_tex->full_texture,
                 mapped_coords,

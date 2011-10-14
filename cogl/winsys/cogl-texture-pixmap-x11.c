@@ -785,7 +785,7 @@ _cogl_texture_pixmap_x11_foreach_sub_texture_in_region
    * CoglTextureRectangle texture which uses un-normalized texture
    * coordinates but we want to consistently deal with normalized
    * texture coordinates with CoglTexturePixmapX11... */
-  if (_cogl_is_texture_rectangle (child_tex))
+  if (cogl_is_texture_rectangle (child_tex))
     {
       NormalizeCoordsWrapperData data;
       int width = tex_pixmap->width;
