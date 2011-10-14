@@ -241,8 +241,6 @@ paint (TestState *state)
 
   validate_result (0);
   validate_result (2);
-
-  cogl_framebuffer_swap_buffers (state->fb);
 }
 
 static CoglHandle
