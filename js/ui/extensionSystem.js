@@ -64,6 +64,8 @@ const extensions = {};
 const extensionStateObjs = {};
 // Maps uuid -> [GFile to the extension directory, Extension type]
 const extensionDirs = {};
+// Contains the order that extensions were enabled in.
+const extensionOrder = [];
 
 // Arrays of uuids
 var enabledExtensions;
@@ -215,11 +217,41 @@ function disableExtension(uuid) {
 
     let extensionState = extensionStateObjs[uuid];
 
+    // "Rebase" the extension order by disabling and then enabling extensions
+    // in order to help prevent conflicts.
+
+    // Example:
+    //   order = [A, B, C, D, E]
+    //   user disables C
+    //   this should: disable E, disable D, disable C, enable D, enable E
+
+    let orderIdx = extensionOrder.indexOf(uuid);
+    let order = extensionOrder.slice(orderIdx + 1);
+    let orderReversed = order.slice().reverse();
+
+    for (let i = 0; i < orderReversed.length; i++) {
+        let uuid = orderReversed[i];
+        try {
+            extensionStateObjs[uuid].disable();
+        } catch(e) {
+            logExtensionError(uuid, e.toString());
+        }
+    }
+
     try {
         extensionState.disable();
     } catch(e) {
         logExtensionError(uuid, e.toString());
         return;
+    }
+
+    for (let i = 0; i < order.length; i++) {
+        let uuid = order[i];
+        try {
+            extensionStateObjs[uuid].enable();
+        } catch(e) {
+            logExtensionError(uuid, e.toString());
+        }
     }
 
     meta.state = ExtensionState.DISABLED;
@@ -240,6 +272,8 @@ function enableExtension(uuid) {
         return;
 
     let extensionState = extensionStateObjs[uuid];
+
+    extensionOrder.push(uuid);
 
     try {
         extensionState.enable();
