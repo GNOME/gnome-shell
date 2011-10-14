@@ -62,6 +62,9 @@ const extensionMeta = {};
 const extensions = {};
 // Maps uuid -> extension state object (returned from init())
 const extensionStateObjs = {};
+// Maps uuid -> [GFile to the extension directory, Extension type]
+const extensionDirs = {};
+
 // Arrays of uuids
 var enabledExtensions;
 // GFile for user extensions
@@ -225,8 +228,13 @@ function disableExtension(uuid) {
 
 function enableExtension(uuid) {
     let meta = extensionMeta[uuid];
-    if (!meta)
+    if (!meta) {
+        if (extensionDirs[uuid]) {
+            let [dir, type] = extensionDirs[uuid];
+            loadExtension(dir, type);
+        }
         return;
+    }
 
     if (meta.state != ExtensionState.DISABLED)
         return;
@@ -254,7 +262,7 @@ function logExtensionError(uuid, message, state) {
                                                state: state });
 }
 
-function loadExtension(dir, enabled, type) {
+function loadExtension(dir, type) {
     let info;
     let uuid = dir.get_basename();
 
@@ -383,8 +391,7 @@ function loadExtension(dir, enabled, type) {
 
     meta.state = ExtensionState.DISABLED;
 
-    if (enabled)
-        enableExtension(uuid);
+    enableExtension(uuid);
 
     _signals.emit('extension-loaded', meta.uuid);
     _signals.emit('extension-state-changed', meta);
@@ -444,7 +451,9 @@ function _loadExtensionsIn(dir, type) {
         let name = info.get_name();
         let child = dir.get_child(name);
         let enabled = enabledExtensions.indexOf(name) != -1;
-        loadExtension(child, enabled, type);
+        extensionDirs[name] = [dir, type];
+        if (enabled)
+            loadExtension(child, type);
     }
     fileEnum.close(null);
 }
