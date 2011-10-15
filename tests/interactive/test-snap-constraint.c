@@ -27,8 +27,7 @@ test_snap_constraint_main (int   argc,
   clutter_actor_set_size (layer_a, 100.0, 25.0);
 
   /* the first layer is anchored to the middle of the stage */
-  clutter_actor_add_constraint (layer_a, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
-  clutter_actor_add_constraint (layer_a, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
+  clutter_actor_add_constraint (layer_a, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
 
   /* second layer, with no implicit size */
   layer_b = clutter_rectangle_new_with_color (CLUTTER_COLOR_DarkButter);

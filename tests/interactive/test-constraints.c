@@ -186,11 +186,8 @@ test_constraints_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
   /* align the center rectangle to the center of the stage */
-  constraint = clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5);
-  clutter_actor_add_constraint_with_name (rect, "x-align", constraint);
-
-  constraint = clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5);
-  clutter_actor_add_constraint_with_name (rect, "y-align", constraint);
+  constraint = clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5);
+  clutter_actor_add_constraint_with_name (rect, "align", constraint);
 
   /* this is the equivalent of the DesaturateEffect; we cannot animate
    * the factor because the animation API only understands GObject
