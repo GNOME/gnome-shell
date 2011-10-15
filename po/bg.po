@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-15 10:00+0300\n"
-"PO-Revision-Date: 2011-10-15 10:00+0300\n"
-"Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
+"POT-Creation-Date: 2011-10-15 10:43+0300\n"
+"PO-Revision-Date: 2011-10-05 13:04+0300\n"
+"Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
@@ -609,7 +609,7 @@ msgstr "Да се изтегли и инсталира ли „%s“ от from e
 
 #: ../js/ui/keyboard.js:309
 msgid "tray"
-msgstr "съобщения"
+msgstr "област за уведомяване"
 
 #: ../js/ui/keyboard.js:531 ../js/ui/status/power.js:211
 msgid "Keyboard"
@@ -1618,3 +1618,12 @@ msgstr "Файлова система"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "%s has not emitted any errors."
+#~ msgstr "Разширение %s не е давало грешки."
+
+#~ msgid "Hide Errors"
+#~ msgstr "Скриване на грешките"
+
+#~ msgid "Show Errors"
+#~ msgstr "Показване на грешките"
