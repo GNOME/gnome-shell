@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-02 13:52+0300\n"
-"PO-Revision-Date: 2011-10-02 13:52+0300\n"
+"POT-Creation-Date: 2011-10-15 10:00+0300\n"
+"PO-Revision-Date: 2011-10-15 10:00+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -188,38 +188,38 @@ msgstr "изключени доставчици на OpenSearch"
 msgid "Session..."
 msgstr "Сесия…"
 
-#: ../js/gdm/loginDialog.js:785
+#: ../js/gdm/loginDialog.js:788
 msgctxt "title"
 msgid "Sign In"
 msgstr "Регистриране"
 
 #. translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:830
+#: ../js/gdm/loginDialog.js:833
 msgid "(or swipe finger)"
 msgstr "(или се регистрирайте с пръстов отпечатък)"
 
-#: ../js/gdm/loginDialog.js:848
+#: ../js/gdm/loginDialog.js:851
 msgid "Not listed?"
 msgstr "Липсва в списъка?"
 
-#: ../js/gdm/loginDialog.js:1004 ../js/ui/endSessionDialog.js:426
+#: ../js/gdm/loginDialog.js:1019 ../js/ui/endSessionDialog.js:426
 #: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:165
 #: ../js/ui/polkitAuthenticationAgent.js:171 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Отказване"
 
-#: ../js/gdm/loginDialog.js:1009
+#: ../js/gdm/loginDialog.js:1024
 msgctxt "button"
 msgid "Sign In"
 msgstr "Регистриране"
 
-#: ../js/gdm/loginDialog.js:1358
+#: ../js/gdm/loginDialog.js:1373
 msgid "Login Window"
 msgstr "Екран за идентификация"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:514
-#: ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:585
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:549
+#: ../js/ui/userMenu.js:551 ../js/ui/userMenu.js:620
 msgid "Suspend"
 msgstr "Приспиване"
 
@@ -442,28 +442,28 @@ msgstr "Тази седмица"
 msgid "Next week"
 msgstr "Следващата седмица"
 
-#: ../js/ui/contactDisplay.js:59 ../js/ui/notificationDaemon.js:444
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:355
+#: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:444
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:353
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../js/ui/contactDisplay.js:80 ../js/ui/userMenu.js:139
+#: ../js/ui/contactDisplay.js:86 ../js/ui/userMenu.js:139
 msgid "Available"
 msgstr "На линия"
 
-#: ../js/ui/contactDisplay.js:85 ../js/ui/userMenu.js:148
+#: ../js/ui/contactDisplay.js:91 ../js/ui/userMenu.js:148
 msgid "Away"
 msgstr "Отсъстващ"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:142
+#: ../js/ui/contactDisplay.js:95 ../js/ui/userMenu.js:142
 msgid "Busy"
 msgstr "Зает"
 
-#: ../js/ui/contactDisplay.js:93
+#: ../js/ui/contactDisplay.js:99
 msgid "Offline"
 msgstr "Извън мрежата"
 
-#: ../js/ui/contactDisplay.js:140
+#: ../js/ui/contactDisplay.js:146
 msgid "CONTACTS"
 msgstr "КОНТАКТИ"
 
@@ -607,7 +607,11 @@ msgstr "Инсталиране"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Да се изтегли и инсталира ли „%s“ от from extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:529 ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:309
+msgid "tray"
+msgstr "съобщения"
+
+#: ../js/ui/keyboard.js:531 ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Клавиатура"
 
@@ -615,47 +619,33 @@ msgstr "Клавиатура"
 msgid "No extensions installed"
 msgstr "Няма инсталирани разширения"
 
-#. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:700
-#, c-format
-msgid "%s has not emitted any errors."
-msgstr "Разширение %s не е давало грешки."
-
-#: ../js/ui/lookingGlass.js:706
-msgid "Hide Errors"
-msgstr "Скриване на грешките"
-
-#: ../js/ui/lookingGlass.js:710 ../js/ui/lookingGlass.js:760
-msgid "Show Errors"
-msgstr "Показване на грешките"
-
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:691
 msgid "Enabled"
 msgstr "Включено"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:721 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:693 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Изключено"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:695
 msgid "Error"
 msgstr "Грешка"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:697
 msgid "Out of date"
 msgstr "Остаряло"
 
-#: ../js/ui/lookingGlass.js:727
+#: ../js/ui/lookingGlass.js:699
 msgid "Downloading"
 msgstr "Изтегляне"
 
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:720
 msgid "View Source"
 msgstr "Преглед на изходния код"
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:726
 msgid "Web Page"
 msgstr "Домашна страница"
 
@@ -981,7 +971,7 @@ msgstr "Винаги позволяване на достъп"
 msgid "Grant this time only"
 msgstr "Позволяване само този път"
 
-#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1200
+#: ../js/ui/status/bluetooth.js:392 ../js/ui/telepathyClient.js:1204
 msgid "Reject"
 msgstr "Отхвърляне"
 
@@ -1267,22 +1257,22 @@ msgstr "Искане за записване"
 msgid "Connection error"
 msgstr "Грешка при свързване"
 
-#: ../js/ui/telepathyClient.js:737
+#: ../js/ui/telepathyClient.js:741
 #, c-format
 msgid "%s is online."
 msgstr "%s е на линия."
 
-#: ../js/ui/telepathyClient.js:742
+#: ../js/ui/telepathyClient.js:746
 #, c-format
 msgid "%s is offline."
 msgstr "%s не е на линия."
 
-#: ../js/ui/telepathyClient.js:745
+#: ../js/ui/telepathyClient.js:749
 #, c-format
 msgid "%s is away."
 msgstr "%s отсъства."
 
-#: ../js/ui/telepathyClient.js:748
+#: ../js/ui/telepathyClient.js:752
 #, c-format
 msgid "%s is busy."
 msgstr "%s е зает."
@@ -1290,35 +1280,35 @@ msgstr "%s е зает."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:982
+#: ../js/ui/telepathyClient.js:986
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Изпратено в <b>%X</b> на <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:988
+#: ../js/ui/telepathyClient.js:992
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Изпратено на <b>%3$d %2$B</b>, <b>%1$A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:993
+#: ../js/ui/telepathyClient.js:997
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Изпратено на <b>%3$d %2$B %4$Y</b>, <b>%1$A</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:1035
+#: ../js/ui/telepathyClient.js:1039
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s в момента е познат като %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1144
+#: ../js/ui/telepathyClient.js:1148
 #, c-format
 msgid "Invitation to %s"
 msgstr "Покана за присъединяване към %s"
@@ -1326,34 +1316,35 @@ msgstr "Покана за присъединяване към %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1152
+#: ../js/ui/telepathyClient.js:1156
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s ви кани да се присъедините към %s"
 
-#: ../js/ui/telepathyClient.js:1154 ../js/ui/telepathyClient.js:1243
-#: ../js/ui/telepathyClient.js:1347
+#: ../js/ui/telepathyClient.js:1158 ../js/ui/telepathyClient.js:1248
+#: ../js/ui/telepathyClient.js:1352
 msgid "Decline"
 msgstr "Отклоняване"
 
-#: ../js/ui/telepathyClient.js:1155 ../js/ui/telepathyClient.js:1244
-#: ../js/ui/telepathyClient.js:1348
+#: ../js/ui/telepathyClient.js:1159 ../js/ui/telepathyClient.js:1249
+#: ../js/ui/telepathyClient.js:1353
 msgid "Accept"
 msgstr "Приемане"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1188
+#: ../js/ui/telepathyClient.js:1192
 #, c-format
 msgid "Video call from %s"
 msgstr "Видео разговор от %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1191
+#: ../js/ui/telepathyClient.js:1195
 #, c-format
 msgid "Call from %s"
 msgstr "Повикване от %s"
 
-#: ../js/ui/telepathyClient.js:1201
+#. translators: this is a button label (verb), not a noun
+#: ../js/ui/telepathyClient.js:1206
 msgid "Answer"
 msgstr "Отговор"
 
@@ -1362,109 +1353,109 @@ msgstr "Отговор"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1237
+#: ../js/ui/telepathyClient.js:1242
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s ви праща „%s“"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1312
+#: ../js/ui/telepathyClient.js:1317
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s иска разрешение да вижда дали сте в мрежата"
 
-#: ../js/ui/telepathyClient.js:1410
+#: ../js/ui/telepathyClient.js:1415
 msgid "Network error"
 msgstr "Мрежова грешка"
 
-#: ../js/ui/telepathyClient.js:1412
+#: ../js/ui/telepathyClient.js:1417
 msgid "Authentication failed"
 msgstr "Неуспешно идентифициране"
 
-#: ../js/ui/telepathyClient.js:1414
+#: ../js/ui/telepathyClient.js:1419
 msgid "Encryption error"
 msgstr "Грешка в шифрирането"
 
-#: ../js/ui/telepathyClient.js:1416
+#: ../js/ui/telepathyClient.js:1421
 msgid "Certificate not provided"
 msgstr "Не е предоставен сертификат"
 
-#: ../js/ui/telepathyClient.js:1418
+#: ../js/ui/telepathyClient.js:1423
 msgid "Certificate untrusted"
 msgstr "Сертификатът не е доверен"
 
-#: ../js/ui/telepathyClient.js:1420
+#: ../js/ui/telepathyClient.js:1425
 msgid "Certificate expired"
 msgstr "Сертификатът е изтекъл"
 
-#: ../js/ui/telepathyClient.js:1422
+#: ../js/ui/telepathyClient.js:1427
 msgid "Certificate not activated"
 msgstr "Сертификатът не е влязъл в сила"
 
-#: ../js/ui/telepathyClient.js:1424
+#: ../js/ui/telepathyClient.js:1429
 msgid "Certificate hostname mismatch"
 msgstr "Несъвпадане на името с това в сертификата"
 
-#: ../js/ui/telepathyClient.js:1426
+#: ../js/ui/telepathyClient.js:1431
 msgid "Certificate fingerprint mismatch"
 msgstr "Несъвпадане на отпечатъка на сертификата"
 
-#: ../js/ui/telepathyClient.js:1428
+#: ../js/ui/telepathyClient.js:1433
 msgid "Certificate self-signed"
 msgstr "Сертификатът е самоподписан"
 
-#: ../js/ui/telepathyClient.js:1430
+#: ../js/ui/telepathyClient.js:1435
 msgid "Status is set to offline"
 msgstr "Състоянието е „Извън мрежата“."
 
-#: ../js/ui/telepathyClient.js:1432
+#: ../js/ui/telepathyClient.js:1437
 msgid "Encryption is not available"
 msgstr "Не е налично шифриране"
 
-#: ../js/ui/telepathyClient.js:1434
+#: ../js/ui/telepathyClient.js:1439
 msgid "Certificate is invalid"
 msgstr "Сертификатът е неправилен"
 
-#: ../js/ui/telepathyClient.js:1436
+#: ../js/ui/telepathyClient.js:1441
 msgid "Connection has been refused"
 msgstr "Връзката е отказана"
 
-#: ../js/ui/telepathyClient.js:1438
+#: ../js/ui/telepathyClient.js:1443
 msgid "Connection can't be established"
 msgstr "Не може да се установи връзка"
 
-#: ../js/ui/telepathyClient.js:1440
+#: ../js/ui/telepathyClient.js:1445
 msgid "Connection has been lost"
 msgstr "Връзката прекъсна"
 
-#: ../js/ui/telepathyClient.js:1442
+#: ../js/ui/telepathyClient.js:1447
 msgid "This resource is already connected to the server"
 msgstr "Ресурсът вече е свързан към сървъра"
 
-#: ../js/ui/telepathyClient.js:1444
+#: ../js/ui/telepathyClient.js:1449
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Връзката бе заместена от нова връзка, използваща същия ресурс"
 
-#: ../js/ui/telepathyClient.js:1446
+#: ../js/ui/telepathyClient.js:1451
 msgid "The account already exists on the server"
 msgstr "На сървъра вече има регистрация с такова име."
 
-#: ../js/ui/telepathyClient.js:1448
+#: ../js/ui/telepathyClient.js:1453
 msgid "Server is currently too busy to handle the connection"
 msgstr ""
 "В момента сървърът е твърде натоварен, за да обработи заявката за свързване"
 
-#: ../js/ui/telepathyClient.js:1450
+#: ../js/ui/telepathyClient.js:1455
 msgid "Certificate has been revoked"
 msgstr "Сертификатът е анулиран"
 
-#: ../js/ui/telepathyClient.js:1452
+#: ../js/ui/telepathyClient.js:1457
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "Сертификатът използва несигурен шифър или слаб алгоритъм за шифриране"
 
-#: ../js/ui/telepathyClient.js:1454
+#: ../js/ui/telepathyClient.js:1459
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1474,20 +1465,20 @@ msgstr ""
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1463
+#: ../js/ui/telepathyClient.js:1468
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Връзката е към „%s“ е неуспешна"
 
-#: ../js/ui/telepathyClient.js:1472
+#: ../js/ui/telepathyClient.js:1477
 msgid "Reconnect"
 msgstr "Ново свързване"
 
-#: ../js/ui/telepathyClient.js:1473
+#: ../js/ui/telepathyClient.js:1478
 msgid "Edit account"
 msgstr "Редактиране на регистрацията"
 
-#: ../js/ui/telepathyClient.js:1519
+#: ../js/ui/telepathyClient.js:1524
 msgid "Unknown reason"
 msgstr "Неизвестна причина"
 
@@ -1503,39 +1494,39 @@ msgstr "Бездействие"
 msgid "Unavailable"
 msgstr "Недостъпно"
 
-#: ../js/ui/userMenu.js:512 ../js/ui/userMenu.js:516 ../js/ui/userMenu.js:586
+#: ../js/ui/userMenu.js:547 ../js/ui/userMenu.js:551 ../js/ui/userMenu.js:621
 msgid "Power Off..."
 msgstr "Изключване..."
 
-#: ../js/ui/userMenu.js:548
+#: ../js/ui/userMenu.js:583
 msgid "Notifications"
 msgstr "Известяване"
 
-#: ../js/ui/userMenu.js:556
+#: ../js/ui/userMenu.js:591
 msgid "Online Accounts"
 msgstr "Мрежови регистрации"
 
-#: ../js/ui/userMenu.js:560
+#: ../js/ui/userMenu.js:595
 msgid "System Settings"
 msgstr "Настройки на системата"
 
-#: ../js/ui/userMenu.js:567
+#: ../js/ui/userMenu.js:602
 msgid "Lock Screen"
 msgstr "Заключване на екрана"
 
-#: ../js/ui/userMenu.js:572
+#: ../js/ui/userMenu.js:607
 msgid "Switch User"
 msgstr "Смяна на потребител"
 
-#: ../js/ui/userMenu.js:577
+#: ../js/ui/userMenu.js:612
 msgid "Log Out..."
 msgstr "Изход…"
 
-#: ../js/ui/userMenu.js:605
+#: ../js/ui/userMenu.js:640
 msgid "Your chat status will be set to busy"
 msgstr "Състоянието ви ще се зададе да е „Зает“"
 
-#: ../js/ui/userMenu.js:606
+#: ../js/ui/userMenu.js:641
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1591,7 +1582,7 @@ msgstr "Показване на версията"
 msgid "Mode used by GDM for login screen"
 msgstr "Режим използван от GDM за екрана за влизане"
 
-#: ../src/shell-app.c:581
+#: ../src/shell-app.c:579
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Неуспех при стартиране на „%s“"
