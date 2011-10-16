@@ -17,15 +17,7 @@ except ImportError:
         print 'The Python simplejson module is required'
         sys.exit(1)
 
-parser = optparse.OptionParser()
-parser.add_option("", "--create-extension", action="store_true",
-                  help="Create a new GNOME Shell extension")
-
-options, args = parser.parse_args()
-
-if args:
-    parser.print_usage()
-    sys.exit(1)
+from gi.repository import Gio
 
 SAMPLE_EXTENSION_FILES = {
     "extension.js": """
@@ -96,7 +88,7 @@ function disable() {
 """,
 }
 
-if options.create_extension:
+def create_extension():
     print
     print '''Name should be a very short (ideally descriptive) string.
 Examples are: "Click To Focus",  "Adblock", "Shell Window Shrinker".
@@ -150,4 +142,63 @@ use an extension title clicktofocus@janedoe.example.com.'''
     print "Created extension in %r" % (extension_path, )
     extensionjs_path = os.path.join(extension_path, 'extension.js')
     subprocess.Popen(['xdg-open', extensionjs_path])
-    sys.exit(0)
+
+ENABLED_EXTENSIONS_KEY = 'enabled-extensions'
+
+def enable_extension(uuid):
+    settings = Gio.Settings(schema='org.gnome.shell')
+    extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
+
+    if uuid in extensions:
+        print >> sys.stderr, "%r is already enabled." % (uuid,)
+        sys.exit(1)
+
+    extensions.append(uuid)
+    settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
+    print >> sys.stderr, "%r is now enabled." % (uuid,)
+
+def disable_extension(uuid):
+    settings = Gio.Settings(schema='org.gnome.shell')
+    extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
+
+    if uuid not in extensions:
+        print >> sys.stderr, "%r is not enabled or installed." % (uuid,)
+        sys.exit(1)
+
+    # Use a while loop here to remove *all* mentions instances
+    # of the extension. Some faulty tools like to append more than one.
+    while uuid in extensions:
+        extensions.remove(uuid)
+
+    settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
+    print >> sys.stderr, "%r is now disabled." % (uuid,)
+
+def main():
+    parser = optparse.OptionParser()
+    parser.add_option("-d", "--disable-extension", dest="disable",
+                      help="Disable a GNOME Shell extension")
+    parser.add_option("-e", "--enable-extension", dest="enable",
+                      help="Enable a GNOME Shell extension")
+    parser.add_option("-c", "--create-extension", dest="create", action="store_true",
+                      help="Create a new GNOME Shell extension")
+    options, args = parser.parse_args()
+
+    if args:
+        parser.print_usage()
+        sys.exit(1)
+
+    if options.disable:
+        disable_extension(options.disable)
+
+    elif options.enable:
+        enable_extension(options.enable)
+
+    elif options.create:
+        create_extension()
+
+    else:
+        parser.print_usage()
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
