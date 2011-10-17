@@ -173,6 +173,7 @@ void
 meta_window_destroy_frame (MetaWindow *window)
 {
   MetaFrame *frame;
+  MetaFrameBorders borders;
   
   if (window->frame == NULL)
     return;
@@ -180,6 +181,8 @@ meta_window_destroy_frame (MetaWindow *window)
   meta_verbose ("Unframing window %s\n", window->desc);
   
   frame = window->frame;
+
+  meta_frame_calc_borders (frame, &borders);
   
   meta_bell_notify_frame_destroy (frame);
   
@@ -207,8 +210,8 @@ meta_window_destroy_frame (MetaWindow *window)
                     * coordinates here means we'll need to ensure a configure
                     * notify event is sent; see bug 399552.
                     */
-                   window->frame->rect.x,
-                   window->frame->rect.y);
+                   window->frame->rect.x + borders.invisible.left,
+                   window->frame->rect.y + borders.invisible.top);
   meta_error_trap_pop (window->display);
 
   meta_ui_destroy_frame_window (window->screen->ui, frame->xwindow);
