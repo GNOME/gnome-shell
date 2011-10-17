@@ -60,13 +60,20 @@
         <varlistentry>
           <term>CLUTTER_DEBUG</term>
           <listitem>
-            <para>Enables debugging modes for Clutter.</para>
+            <para>Enables debugging modes for Clutter; debugging modes are
+            used to print debugging messages on the console. Clutter must be
+            compiled with the --enable-debug configuration switch for these
+            messages to be printed out. Multiple debugging modes can be
+            enabled by separating them using a colon (":") or a comma
+            (",").</para>
           </listitem>
         </varlistentry>
         <varlistentry>
-          <term>COGL_DEBUG</term>
+          <term>CLUTTER_PAINT</term>
           <listitem>
-            <para>Enables debugging modes for Cogl.</para>
+            <para>Enables paint debugging modes for Clutter; the modes change
+            the way Clutter paints a scene and are useful for debugging the
+            behaviour of the paint cycle.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -177,7 +184,7 @@
 
       <para>The debugging flags can be used for the CLUTTER_DEBUG environment
       variable and the --clutter-debug command line switch. Multiple flags can
-      be separated by a colon (:).</para>
+      be separated by a colon (:) or a comma (,).</para>
 
       <!--
       keep in sync with the list of Clutter debug keys inside clutter-main.c
@@ -196,11 +203,6 @@
           <listitem><para>Backend-related notes, including initialization of
           the backend features and GL context creation</para></listitem>
         </varlistentry>
-        <varlistentry>
-          <term>behaviour</term>
-          <listitem><para>#ClutterBehaviour notes</para></listitem>
-        </varlistentry>
-        <varlistentry>
           <term>event</term>
           <listitem><para>Event handling notes</para></listitem>
         </varlistentry>
