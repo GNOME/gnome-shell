@@ -3329,7 +3329,7 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
  * Executes the repaint functions added using the
  * clutter_threads_add_repaint_func() function.
  *
- * Must be called before calling clutter_redraw() and
+ * Must be called before calling _clutter_stage_do_paint() and
  * with the Clutter thread lock held.
  */
 void

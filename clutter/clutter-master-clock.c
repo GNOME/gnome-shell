@@ -532,8 +532,8 @@ _clutter_master_clock_start_running (ClutterMasterClock *master_clock)
  * @master_clock: a #ClutterMasterClock
  *
  * Advances all the timelines held by the master clock. This function
- * should be called before calling clutter_redraw() to make sure that
- * all the timelines are advanced and the scene is updated.
+ * should be called before calling _clutter_stage_do_update() to
+ * make sure that all the timelines are advanced and the scene is updated.
  */
 void
 _clutter_master_clock_advance (ClutterMasterClock *master_clock)
