@@ -107,7 +107,8 @@ enum CoglMatrixType {
    COGL_MATRIX_TYPE_PERSPECTIVE,	/**< perspective projection matrix */
    COGL_MATRIX_TYPE_2D,		/**< 2-D transformation */
    COGL_MATRIX_TYPE_2D_NO_ROT,	/**< 2-D scale & translate only */
-   COGL_MATRIX_TYPE_3D		/**< 3-D transformation */
+   COGL_MATRIX_TYPE_3D,		/**< 3-D transformation */
+   COGL_MATRIX_N_TYPES
 } ;
 
 #define DEG2RAD (G_PI/180.0)
@@ -372,8 +373,15 @@ print_matrix_floats (const float m[16])
 void
 _cogl_matrix_print (const CoglMatrix *matrix)
 {
-  g_print ("Matrix type: %s, flags: %x\n",
-           types[matrix->type], (int)matrix->flags);
+  if (!(matrix->flags & MAT_DIRTY_TYPE))
+    {
+      g_return_if_fail (matrix->type < COGL_MATRIX_N_TYPES);
+      g_print ("Matrix type: %s, flags: %x\n",
+               types[matrix->type], (int)matrix->flags);
+    }
+  else
+    g_print ("Matrix type: DIRTY, flags: %x\n", (int)matrix->flags);
+
   print_matrix_floats ((float *)matrix);
   g_print ("Inverse: \n");
   if (!(matrix->flags & MAT_DIRTY_INVERSE))
