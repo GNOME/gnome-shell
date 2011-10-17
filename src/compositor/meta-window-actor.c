@@ -1217,8 +1217,9 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
 {
   MetaWindow *metaWindow = meta_window_actor_get_meta_window (self);
   MetaScreen *screen = meta_window_get_screen (metaWindow);
+  MetaWindowActorPrivate *priv = self->priv;
 
-  if (meta_window_is_override_redirect (metaWindow) && self->priv->opacity == 0xff)
+  if (meta_window_is_override_redirect (metaWindow) && priv->opacity == 0xff && !priv->argb32)
     {
       int screen_width, screen_height;
       MetaRectangle window_rect;
