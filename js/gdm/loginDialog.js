@@ -297,6 +297,20 @@ UserList.prototype = {
                                x_align: St.Align.START,
                                y_align: St.Align.MIDDLE });
         this._items = {};
+
+        this.actor.connect('key-focus-in', Lang.bind(this, this._moveFocusToItems));
+    },
+
+    _moveFocusToItems: function() {
+        let hasItems = Object.keys(this._items).length > 0;
+
+        if (!hasItems)
+            return;
+
+        if (global.stage.get_key_focus() != this.actor)
+            return;
+
+        this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
     _showItem: function(item) {
@@ -501,6 +515,8 @@ UserList.prototype = {
                                          this.scrollToItem(item);
                                          item.showFocusAnimation(0);
                                      }));
+
+        this._moveFocusToItems();
 
         this.emit('item-added', item);
     },
