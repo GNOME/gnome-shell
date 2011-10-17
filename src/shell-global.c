@@ -1122,6 +1122,10 @@ shell_global_reexec_self (ShellGlobal *global)
    */
   pre_exec_close_fds ();
 
+  meta_display_unmanage_screen (shell_global_get_display (global),
+                                shell_global_get_screen (global),
+                                shell_global_get_current_time (global));
+
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
   g_ptr_array_free (arr, TRUE);
