@@ -29,7 +29,6 @@ int main (int argc, char **argv)
   ClutterAnimation *animation;
   ClutterColor red, green, blue;
 
-  g_thread_init (NULL);
   gst_init (&argc, &argv);
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;

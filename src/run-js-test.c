@@ -73,8 +73,6 @@ main(int argc, char **argv)
   gsize len;
   int code;
 
-  g_thread_init (NULL);
-
   gtk_init (&argc, &argv);
 
   clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
