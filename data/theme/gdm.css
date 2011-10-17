@@ -126,6 +126,11 @@
     warning-color: #999;
 }
 
+.login-dialog-prompt-entry:insensitive {
+    color: rgba(0,0,0,0.7);
+    border: 2px solid #565656;
+}
+
 .login-dialog-session-list {
     color: #ffffff;
     font-size: 10.5pt;
