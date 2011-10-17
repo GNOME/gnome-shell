@@ -1356,7 +1356,6 @@ _clutter_events_osx_uninit
 #endif
 
 #ifndef CLUTTER_NO_UNDERSCORE
-_clutter_shader_release_all
 _clutter_stage_window_add_redraw_clip
 _clutter_stage_window_get_active_framebuffer
 _clutter_stage_window_get_geometry
