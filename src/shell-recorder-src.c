@@ -10,6 +10,7 @@ struct _ShellRecorderSrc
 {
   GstPushSrc parent;
 
+  GMutex mutex_data;
   GMutex *mutex;
 
   GstCaps *caps;
@@ -40,7 +41,8 @@ shell_recorder_src_init (ShellRecorderSrc      *src,
 			 ShellRecorderSrcClass *klass)
 {
   src->queue = g_async_queue_new ();
-  src->mutex = g_mutex_new ();
+  src->mutex = &src->mutex_data;
+  g_mutex_init (src->mutex);
 }
 
 static void
@@ -140,7 +142,7 @@ shell_recorder_src_finalize (GObject *object)
   shell_recorder_src_set_caps (src, NULL);
   g_async_queue_unref (src->queue);
 
-  g_mutex_free (src->mutex);
+  g_mutex_clear (src->mutex);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
