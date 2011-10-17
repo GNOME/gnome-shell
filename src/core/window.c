@@ -3906,6 +3906,11 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
        */
       ensure_size_hints_satisfied (&target_rect, &window->size_hints);
 
+      /* Need to update window->has_resize_func before we move_resize()
+       */
+      recalc_window_features (window);
+      set_net_wm_state (window);
+
       meta_window_move_resize (window,
                                FALSE,
                                target_rect.x,
@@ -3918,9 +3923,6 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       force_save_user_window_placement (window);
 
       meta_window_update_layer (window);
-
-      recalc_window_features (window);
-      set_net_wm_state (window);
 
       g_object_notify (G_OBJECT (window), "fullscreen");
     }
