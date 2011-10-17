@@ -1,24 +1,23 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <stdlib.h>
 #include <string.h>
 #include <gmodule.h>
+
+#include <cairo.h>
+
+#ifdef CAIRO_HAS_XLIB_SURFACE
+#include <cairo-xlib.h>
+#endif
 
 #undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 #ifdef CLUTTER_WINDOWING_X11
+#include <X11/Xlib.h>
+#include <X11/extensions/Xcomposite.h>
 
-# include <clutter/x11/clutter-x11.h>
-# include <clutter/x11/clutter-x11-texture-pixmap.h>
-
-# include <X11/Xlib.h>
-# include <X11/extensions/Xcomposite.h>
-
-# include <cairo.h>
-# include <cairo-xlib.h>
+#include <clutter/x11/clutter-x11.h>
+#include <clutter/x11/clutter-x11-texture-pixmap.h>
+#endif
 
 #define IMAGE   TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png"
 
@@ -127,6 +126,7 @@ stage_button_press_cb (ClutterActor    *actor,
 		       gpointer         data)
 {
   draw_arc ((Pixmap)data);
+
   return FALSE;
 }
 
@@ -172,9 +172,12 @@ create_pixmap (guint *width, guint *height, guint *depth)
   cairo_paint (cr);
   cairo_surface_destroy (image);
 
-  if (width) *width = w;
-  if (height) *height = h;
-  if (depth) *depth = 32;
+  if (width)
+    *width = w;
+  if (height)
+    *height = h;
+  if (depth)
+    *depth = 32;
 
   return pixmap;
 }
@@ -209,6 +212,11 @@ test_pixmap_main (int argc, char **argv)
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
+
+#ifdef CLUTTER_WINDOWING_X11
+  if (!clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
+    g_error ("test-pixmap requires the X11 Clutter backend.");
+#endif
 
   xdpy = clutter_x11_get_default_display ();
   XSynchronize (xdpy, True);
@@ -308,13 +316,3 @@ test_pixmap_main (int argc, char **argv)
 
   return EXIT_SUCCESS;
 }
-
-#else
-
-int
-test_pixmap_main (int argc, char **argv)
-{
-  return EXIT_SUCCESS;
-};
-
-#endif /* CLUTTER_WINDOWING_X11 */
