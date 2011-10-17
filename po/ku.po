@@ -260,7 +260,7 @@ msgstr ""
 #: ../js/ui/autorunManager.js:590
 #, c-format
 msgid "Open with %s"
-msgstr "Bi %1 veke"
+msgstr "Bi %s veke"
 
 #: ../js/ui/autorunManager.js:616
 msgid "Eject"
