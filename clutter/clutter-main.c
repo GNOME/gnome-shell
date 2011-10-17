@@ -77,6 +77,16 @@
  *   g_timeout_add() that acquire the Clutter lock before invoking the provided
  *   callback: clutter_threads_add_idle() and
  *   clutter_threads_add_timeout().</para>
+ *   <para>The example below shows how to use a worker thread to perform a
+ *   blocking operation, and perform UI updates using the main loop.</para>
+ *   <example id="worker-thread-example">
+ *     <title>A worker thread example</title>
+ *     <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-thread.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ *     </programlisting>
+ *   </example>
  * </refsect2>
  */
 
@@ -166,13 +176,12 @@ static const GDebugKey clutter_debug_keys[] = {
   { "layout", CLUTTER_DEBUG_LAYOUT },
   { "clipping", CLUTTER_DEBUG_CLIPPING },
   { "oob-transforms", CLUTTER_DEBUG_OOB_TRANSFORMS },
-  { "paint-deform-tiles", CLUTTER_DEBUG_PAINT_DEFORM_TILES },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
 static const GDebugKey clutter_pick_debug_keys[] = {
   { "nop-picking", CLUTTER_DEBUG_NOP_PICKING },
-  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS }
+  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS },
 };
 
 static const GDebugKey clutter_paint_debug_keys[] = {
@@ -182,7 +191,8 @@ static const GDebugKey clutter_paint_debug_keys[] = {
   { "paint-volumes", CLUTTER_DEBUG_PAINT_VOLUMES },
   { "disable-culling", CLUTTER_DEBUG_DISABLE_CULLING },
   { "disable-offscreen-redirect", CLUTTER_DEBUG_DISABLE_OFFSCREEN_REDIRECT },
-  { "continuous-redraw", CLUTTER_DEBUG_CONTINUOUS_REDRAW }
+  { "continuous-redraw", CLUTTER_DEBUG_CONTINUOUS_REDRAW },
+  { "paint-deform-tiles", CLUTTER_DEBUG_PAINT_DEFORM_TILES },
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -2855,6 +2865,7 @@ void
 clutter_grab_pointer_for_device (ClutterActor *actor,
                                  gint          id_)
 {
+  ClutterDeviceManager *manager;
   ClutterInputDevice *dev;
 
   g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
@@ -2870,7 +2881,8 @@ clutter_grab_pointer_for_device (ClutterActor *actor,
       return;
     }
 
-  dev = clutter_get_input_device_for_id (id_);
+  manager = clutter_device_manager_get_default ();
+  dev = clutter_device_manager_get_device (manager, id_);
   if (dev == NULL)
     return;
 
@@ -2910,7 +2922,13 @@ clutter_ungrab_pointer (void)
 void
 clutter_ungrab_pointer_for_device (gint id_)
 {
-  clutter_grab_pointer_for_device (NULL, id_);
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *device;
+
+  manager = clutter_device_manager_get_default ();
+  device = clutter_device_manager_get_device (manager, id_);
+  if (device != NULL)
+    clutter_input_device_ungrab (device);
 }
 
 
@@ -3061,29 +3079,47 @@ clutter_set_font_flags (ClutterFontFlags flags)
   ClutterFontFlags old_flags, changed_flags;
   const cairo_font_options_t *font_options;
   cairo_font_options_t *new_font_options;
+  cairo_hint_style_t hint_style;
   gboolean use_mipmapping;
   ClutterBackend *backend;
 
   backend = clutter_get_default_backend ();
-
   font_map = clutter_context_get_pango_fontmap ();
-  use_mipmapping = (flags & CLUTTER_FONT_MIPMAPPING) != 0;
-  cogl_pango_font_map_set_use_mipmapping (font_map, use_mipmapping);
-
-  old_flags = clutter_get_font_flags ();
-
   font_options = clutter_backend_get_font_options (backend);
+  old_flags = 0;
+
+  if (cogl_pango_font_map_get_use_mipmapping (font_map))
+    old_flags |= CLUTTER_FONT_MIPMAPPING;
+
+  hint_style = cairo_font_options_get_hint_style (font_options);
+  if (hint_style != CAIRO_HINT_STYLE_DEFAULT &&
+      hint_style != CAIRO_HINT_STYLE_NONE)
+    old_flags |= CLUTTER_FONT_HINTING;
+
+  if (old_flags == flags)
+    return;
+
   new_font_options = cairo_font_options_copy (font_options);
 
   /* Only set the font options that have actually changed so we don't
      override a detailed setting from the backend */
   changed_flags = old_flags ^ flags;
 
+  if ((changed_flags & CLUTTER_FONT_MIPMAPPING))
+    {
+      use_mipmapping = (changed_flags & CLUTTER_FONT_MIPMAPPING) != 0;
+
+      cogl_pango_font_map_set_use_mipmapping (font_map, use_mipmapping);
+    }
+
   if ((changed_flags & CLUTTER_FONT_HINTING))
-    cairo_font_options_set_hint_style (new_font_options,
-                                       (flags & CLUTTER_FONT_HINTING)
-                                       ? CAIRO_HINT_STYLE_FULL
-                                       : CAIRO_HINT_STYLE_NONE);
+    {
+      hint_style = (flags & CLUTTER_FONT_HINTING)
+                 ? CAIRO_HINT_STYLE_FULL
+                 : CAIRO_HINT_STYLE_NONE;
+
+      cairo_font_options_set_hint_style (new_font_options, hint_style);
+    }
 
   clutter_backend_set_font_options (backend, new_font_options);
 

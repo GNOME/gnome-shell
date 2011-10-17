@@ -83,6 +83,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-score.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"

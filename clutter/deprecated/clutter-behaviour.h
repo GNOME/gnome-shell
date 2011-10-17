@@ -34,8 +34,6 @@
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 #define CLUTTER_TYPE_BEHAVIOUR clutter_behaviour_get_type()
 
 #define CLUTTER_BEHAVIOUR(obj) \
@@ -138,25 +136,33 @@ struct _ClutterBehaviourClass
 
 GType clutter_behaviour_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED
 void          clutter_behaviour_apply          (ClutterBehaviour            *behave,
                                                 ClutterActor                *actor);
+CLUTTER_DEPRECATED
 void          clutter_behaviour_remove         (ClutterBehaviour            *behave,
                                                 ClutterActor                *actor);
+CLUTTER_DEPRECATED
 void          clutter_behaviour_remove_all     (ClutterBehaviour            *behave);
+CLUTTER_DEPRECATED
 void          clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
                                                 ClutterBehaviourForeachFunc  func,
                                                 gpointer                     data);
+CLUTTER_DEPRECATED
 gint          clutter_behaviour_get_n_actors   (ClutterBehaviour            *behave);
+CLUTTER_DEPRECATED
 ClutterActor *clutter_behaviour_get_nth_actor  (ClutterBehaviour            *behave,
 						gint                         index_);
+CLUTTER_DEPRECATED
 GSList *      clutter_behaviour_get_actors     (ClutterBehaviour            *behave);
+CLUTTER_DEPRECATED
 ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour            *behave);
+CLUTTER_DEPRECATED
 void          clutter_behaviour_set_alpha      (ClutterBehaviour            *behave,
                                                 ClutterAlpha                *alpha);
+CLUTTER_DEPRECATED
 gboolean      clutter_behaviour_is_applied     (ClutterBehaviour            *behave,
 						ClutterActor                *actor);
-
-#endif /* !CLUTTER_DISABLE_DEPRECATED || CLUTTER_COMPILATION */
 
 G_END_DECLS
 

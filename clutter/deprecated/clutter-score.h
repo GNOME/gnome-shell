@@ -32,8 +32,6 @@
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 #define CLUTTER_TYPE_SCORE              (clutter_score_get_type ())
 
 #define CLUTTER_SCORE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_SCORE, ClutterScore))
@@ -100,33 +98,45 @@ struct _ClutterScoreClass
 
 GType clutter_score_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED
 ClutterScore *   clutter_score_new            (void);
 
+CLUTTER_DEPRECATED
 void             clutter_score_set_loop         (ClutterScore    *score,
                                                  gboolean         loop);
+CLUTTER_DEPRECATED
 gboolean         clutter_score_get_loop         (ClutterScore    *score);
 
+CLUTTER_DEPRECATED
 gulong           clutter_score_append           (ClutterScore    *score,
                                                  ClutterTimeline *parent,
                                                  ClutterTimeline *timeline);
+CLUTTER_DEPRECATED
 gulong           clutter_score_append_at_marker (ClutterScore    *score,
                                                  ClutterTimeline *parent,
                                                  const gchar     *marker_name,
                                                  ClutterTimeline *timeline);
+CLUTTER_DEPRECATED
 void             clutter_score_remove           (ClutterScore    *score,
                                                  gulong           id_);
+CLUTTER_DEPRECATED
 void             clutter_score_remove_all       (ClutterScore    *score);
+CLUTTER_DEPRECATED
 ClutterTimeline *clutter_score_get_timeline     (ClutterScore    *score,
                                                  gulong           id_);
+CLUTTER_DEPRECATED
 GSList *         clutter_score_list_timelines   (ClutterScore    *score);
 
+CLUTTER_DEPRECATED
 void             clutter_score_start            (ClutterScore    *score);
+CLUTTER_DEPRECATED
 void             clutter_score_stop             (ClutterScore    *score);
+CLUTTER_DEPRECATED
 void             clutter_score_pause            (ClutterScore    *score);
+CLUTTER_DEPRECATED
 void             clutter_score_rewind           (ClutterScore    *score);
+CLUTTER_DEPRECATED
 gboolean         clutter_score_is_playing       (ClutterScore    *score);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

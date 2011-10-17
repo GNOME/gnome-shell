@@ -1,4 +1,3 @@
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 

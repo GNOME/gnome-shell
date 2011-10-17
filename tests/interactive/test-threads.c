@@ -5,6 +5,7 @@
 #undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
+/* our thread-specific data */
 typedef struct
 {
   ClutterActor *stage;
@@ -12,8 +13,6 @@ typedef struct
   ClutterActor *progress;
 
   ClutterTimeline *timeline;
-
-  volatile gboolean cancelled;
 } TestThreadData;
 
 static TestThreadData *
@@ -27,8 +26,13 @@ test_thread_data_new (void)
 }
 
 static void
-test_thread_data_free (TestThreadData *data)
+test_thread_data_free (gpointer _data)
 {
+  TestThreadData *data = _data;
+
+  if (data == NULL)
+    return;
+
   g_object_unref (data->progress);
   g_object_unref (data->label);
   g_object_unref (data->stage);
@@ -52,7 +56,22 @@ test_thread_done_idle (gpointer user_data)
   return FALSE;
 }
 
-static GPrivate test_thread_data = G_PRIVATE_INIT (test_thread_data_free);
+static void
+test_thread_data_done (gpointer _data)
+{
+  TestThreadData *data = _data;
+
+  /* since the TestThreadData structure references Clutter data structures
+   * we need to free it from within the same thread that called clutter_main()
+   * which means using an idle handler in the main loop.
+   *
+   * clutter_threads_add_idle() is guaranteed to run the callback passed to
+   * to it under the Big Clutter Lock.
+   */
+  clutter_threads_add_idle (test_thread_done_idle, data);
+}
+
+static GPrivate test_thread_data = G_PRIVATE_INIT (test_thread_data_done);
 
 typedef struct
 {
@@ -68,7 +87,6 @@ update_label_idle (gpointer data)
   gchar *text;
 
   text = g_strdup_printf ("Count to %d", update->count);
-
   clutter_text_set_text (CLUTTER_TEXT (update->thread_data->label), text);
   clutter_actor_set_width (update->thread_data->label, -1);
 
@@ -94,8 +112,6 @@ do_something_very_slow (void)
   gint i;
 
   data = g_private_get (&test_thread_data);
-  if (data->cancelled)
-    return;
 
   for (i = 0; i < 100; i++)
     {
@@ -103,13 +119,18 @@ do_something_very_slow (void)
 
       msecs = 1 + (int) (100.0 * rand () / ((RAND_MAX + 1.0) / 3));
 
-      /* sleep for a while */
+      /* sleep for a while, to emulate some work being done */
       g_usleep (msecs * 1000);
 
       if ((i % 10) == 0)
         {
           TestUpdate *update;
 
+          /* update the UI from within the main loop, making sure that the
+           * Big Clutter Lock is held; only one thread at a time can call
+           * Clutter API, and it's better to do this from the same thread
+           * that called clutter_init()/clutter_main().
+           */
           update = g_new (TestUpdate, 1);
           update->count = i;
           update->thread_data = data;
@@ -128,11 +149,8 @@ test_thread_func (gpointer user_data)
 
   g_private_set (&test_thread_data, data);
 
+  /* this function will block */
   do_something_very_slow ();
-
-  clutter_threads_add_idle_full (G_PRIORITY_DEFAULT + 30,
-                                 test_thread_done_idle,
-                                 data, NULL);
 
   return NULL;
 }
@@ -162,7 +180,8 @@ on_key_press_event (ClutterStage *stage,
       data->progress = g_object_ref (progress_rect);
       data->timeline = g_object_ref (timeline);
 
-      g_thread_new ("counter", test_thread_func, data, FALSE, NULL);
+      /* start the thread that updates the counter and the progress bar */
+      g_thread_new ("counter", test_thread_func, data);
 
       return TRUE;
 
@@ -255,4 +274,10 @@ test_threads_main (int argc, char *argv[])
   g_object_unref (timeline);
 
   return EXIT_SUCCESS;
+}
+
+const char *
+test_threads_describe (void)
+{
+  return "Multi-threading programming with Clutter";
 }

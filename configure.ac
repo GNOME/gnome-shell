@@ -121,7 +121,7 @@ m4_define([cairo_req_version],          [1.10])
 m4_define([pango_req_version],          [1.20])
 m4_define([gi_req_version],             [0.9.5])
 m4_define([uprof_req_version],          [0.3])
-m4_define([gtk_doc_req_version],        [1.13])
+m4_define([gtk_doc_req_version],        [1.15])
 m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
 
@@ -736,7 +736,7 @@ AS_CASE([$enable_deprecated],
 
         [no],
         [
-          CLUTTER_DEPRECATED_CFLAGS="-DG_DISABLE_DEPRECATED -DG_DISABLE_SINGLE_INCLUDES -DCOGL_DISABLE_DEPRECATED -DCLUTTER_DISABLE_DEPRECATED"
+          CLUTTER_DEPRECATED_CFLAGS="-DG_DISABLE_SINGLE_INCLUDES -DCOGL_DISABLE_DEPRECATED -DCLUTTER_DISABLE_DEPRECATED"
         ],
 
         [yes],

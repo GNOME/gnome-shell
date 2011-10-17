@@ -88,8 +88,7 @@ test_scrolling_main (int argc, char *argv[])
   scroll = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), scroll);
   clutter_actor_set_size (scroll, RECT_WIDTH, RECT_HEIGHT);
-  clutter_actor_add_constraint (scroll, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
-  clutter_actor_add_constraint (scroll, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
+  clutter_actor_add_constraint (scroll, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
   clutter_actor_set_clip_to_allocation (scroll, TRUE);
 
   /* viewport: the actual container for the children; we scroll it using

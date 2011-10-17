@@ -142,13 +142,14 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
   if (align->source == NULL)
     return;
 
+  clutter_actor_box_get_size (allocation, &actor_width, &actor_height);
+
   clutter_actor_get_position (align->source, &source_x, &source_y);
   clutter_actor_get_size (align->source, &source_width, &source_height);
 
   switch (align->align_axis)
     {
     case CLUTTER_ALIGN_X_AXIS:
-      actor_width = clutter_actor_box_get_width (allocation);
       allocation->x1 = ((source_width - actor_width) * align->factor)
                      + source_x;
       allocation->x1 = floorf (allocation->x1 + 0.5);
@@ -156,10 +157,20 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
       break;
 
     case CLUTTER_ALIGN_Y_AXIS:
-      actor_height = clutter_actor_box_get_height (allocation);
       allocation->y1 = ((source_height - actor_height) * align->factor)
                      + source_y;
       allocation->y1 = floorf (allocation->y1 + 0.5);
+      allocation->y2 = allocation->y1 + actor_height;
+      break;
+
+    case CLUTTER_ALIGN_BOTH:
+      allocation->x1 = ((source_width - actor_width) * align->factor)
+                     + source_x;
+      allocation->y1 = ((source_height - actor_height) * align->factor)
+                     + source_y;
+      allocation->x1 = floorf (allocation->x1 + 0.5f);
+      allocation->y1 = floorf (allocation->y1 + 0.5f);
+      allocation->x2 = allocation->x1 + actor_width;
       allocation->y2 = allocation->y1 + actor_height;
       break;
 

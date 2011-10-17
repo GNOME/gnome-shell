@@ -34,8 +34,6 @@
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 #define CLUTTER_TYPE_BEHAVIOUR_OPACITY (clutter_behaviour_opacity_get_type ())
 
 #define CLUTTER_BEHAVIOUR_OPACITY(obj) \
@@ -97,18 +95,19 @@ struct _ClutterBehaviourOpacityClass
 
 GType clutter_behaviour_opacity_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED_FOR(clutter_actor_animate and ClutterActor:opacity)
 ClutterBehaviour *clutter_behaviour_opacity_new (ClutterAlpha *alpha,
                                                  guint8        opacity_start,
                                                  guint8        opacity_end);
 
+CLUTTER_DEPRECATED
 void clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
                                            guint8                   opacity_start,
                                            guint8                   opacity_end);
+CLUTTER_DEPRECATED
 void clutter_behaviour_opacity_get_bounds (ClutterBehaviourOpacity *behaviour,
                                            guint8                  *opacity_start,
                                            guint8                  *opacity_end);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

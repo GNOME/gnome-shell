@@ -44,6 +44,9 @@
 #include "config.h"
 #endif
 
+/* sadly, we are still using ClutterShader internally */
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-texture.h"
 
 #include "clutter-actor-private.h"
@@ -54,8 +57,9 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
-#include "clutter-shader.h"
 #include "clutter-stage-private.h"
+
+#include "clutter-shader.h"
 #include "clutter-util.h"
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);

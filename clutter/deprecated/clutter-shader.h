@@ -34,8 +34,6 @@
 
 G_BEGIN_DECLS
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-
 #define CLUTTER_TYPE_SHADER         (clutter_shader_get_type ())
 #define CLUTTER_SHADER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), CLUTTER_TYPE_SHADER, ClutterShader))
 #define CLUTTER_SHADER_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), CLUTTER_TYPE_SHADER, ClutterShaderClass))
@@ -110,39 +108,47 @@ struct _ClutterShaderClass
 GQuark clutter_shader_error_quark (void);
 GType clutter_shader_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 ClutterShader *       clutter_shader_new                      (void);
 
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 void                  clutter_shader_set_is_enabled           (ClutterShader      *shader,
                                                                gboolean            enabled);
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 gboolean              clutter_shader_get_is_enabled           (ClutterShader      *shader);
 
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 gboolean              clutter_shader_compile                  (ClutterShader      *shader,
                                                                GError            **error);
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 void                  clutter_shader_release                  (ClutterShader      *shader);
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 gboolean              clutter_shader_is_compiled              (ClutterShader      *shader);
 
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 void                  clutter_shader_set_vertex_source        (ClutterShader      *shader,
                                                                const gchar        *data,
                                                                gssize              length);
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 void                  clutter_shader_set_fragment_source      (ClutterShader      *shader,
                                                                const gchar        *data,
                                                                gssize              length);
-
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 const gchar *         clutter_shader_get_vertex_source        (ClutterShader      *shader);
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 const gchar *         clutter_shader_get_fragment_source      (ClutterShader      *shader);
 
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 void                  clutter_shader_set_uniform              (ClutterShader      *shader,
                                                                const gchar        *name,
                                                                const GValue       *value);
 
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 CoglHandle            clutter_shader_get_cogl_program         (ClutterShader      *shader);
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 CoglHandle            clutter_shader_get_cogl_fragment_shader (ClutterShader      *shader);
+CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 CoglHandle            clutter_shader_get_cogl_vertex_shader   (ClutterShader      *shader);
-
-/* private */
-void                  _clutter_shader_release_all        (void);
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

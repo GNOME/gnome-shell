@@ -42,6 +42,8 @@
 
 #include <math.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-opacity.h"
 #include "clutter-private.h"

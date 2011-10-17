@@ -291,7 +291,7 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
   else if (priv->back_material == COGL_INVALID_HANDLE && is_cull_enabled)
     cogl_set_backface_culling_enabled (TRUE);
 
-  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_PAINT_DEFORM_TILES))
+  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_DEFORM_TILES))
     {
       cogl_set_source_color4f (1.0, 0, 0, 1.0);
       cogl_vertex_buffer_draw_elements (priv->vbo,

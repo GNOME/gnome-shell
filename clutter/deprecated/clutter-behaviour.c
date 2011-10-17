@@ -77,6 +77,7 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "clutter-behaviour.h"
 
 #include "clutter-debug.h"
@@ -85,73 +86,6 @@
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
-
-/**
- * clutter_knot_copy:
- * @knot: a #ClutterKnot
- *
- * Makes an allocated copy of a knot.
- *
- * Return value: the copied knot.
- *
- * Since: 0.2
- */
-ClutterKnot *
-clutter_knot_copy (const ClutterKnot *knot)
-{
-  ClutterKnot *copy;
-
-  copy = g_slice_new0 (ClutterKnot);
-  
-  *copy = *knot;
-
-  return copy;
-}
-
-/**
- * clutter_knot_free:
- * @knot: a #ClutterKnot
- *
- * Frees the memory of an allocated knot.
- *
- * Since: 0.2
- */
-void
-clutter_knot_free (ClutterKnot *knot)
-{
-  if (G_LIKELY (knot))
-    {
-      g_slice_free (ClutterKnot, knot);
-    }
-}
-
-/**
- * clutter_knot_equal:
- * @knot_a: First knot
- * @knot_b: Second knot
- *
- * Compares to knot and checks if the point to the same location.
- *
- * Return value: %TRUE if the knots point to the same location.
- *
- * Since: 0.2
- */
-gboolean
-clutter_knot_equal (const ClutterKnot *knot_a,
-                    const ClutterKnot *knot_b)
-{
-  g_return_val_if_fail (knot_a != NULL, FALSE);
-  g_return_val_if_fail (knot_b != NULL, FALSE);
-
-  if (knot_a == knot_b)
-    return TRUE;
-
-  return knot_a->x == knot_b->x && knot_a->y == knot_b->y;
-}
-
-G_DEFINE_BOXED_TYPE (ClutterKnot, clutter_knot,
-                     clutter_knot_copy,
-                     clutter_knot_free);
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
@@ -298,6 +232,8 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    * the alpha-notify virtual function is called.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.6
    */
   obj_props[PROP_ALPHA] =
     g_param_spec_object ("alpha",
@@ -321,6 +257,8 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    * to an actor.
    *
    * Since: 0.4
+   *
+   * Deprecated: 1.6
    */
   behave_signals[APPLIED] =
     g_signal_new ("applied",
@@ -340,6 +278,8 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    * to an actor anymore.
    *
    * Since: 0.4
+   *
+   * Deprecated: 1.6
    */
   behave_signals[REMOVED] =
     g_signal_new ("removed",
@@ -376,6 +316,8 @@ remove_actor_on_destroy (ClutterActor     *actor,
  * the actor.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_apply (ClutterBehaviour *behave,
@@ -415,6 +357,8 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
  * Return value: TRUE if actor has behaviour. FALSE otherwise.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 gboolean
 clutter_behaviour_is_applied (ClutterBehaviour *behave,
@@ -435,6 +379,8 @@ clutter_behaviour_is_applied (ClutterBehaviour *behave,
  * @behave applies.  This function removes a reference on the actor.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_remove (ClutterBehaviour *behave,
@@ -476,6 +422,8 @@ clutter_behaviour_remove (ClutterBehaviour *behave,
  * Return value: The number of applied actors 
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 gint
 clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
@@ -495,8 +443,10 @@ clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
  * Return value: (transfer none): A Clutter actor or NULL if @index_ is invalid.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
-ClutterActor*
+ClutterActor *
 clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
 				 gint              index_)
 {
@@ -515,6 +465,8 @@ clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
  * Calls @func for every actor driven by @behave.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
@@ -546,6 +498,8 @@ clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
  *   object has been bound to this behaviour.
  * 
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 ClutterAlpha *
 clutter_behaviour_get_alpha (ClutterBehaviour *behave)
@@ -598,6 +552,8 @@ notify_cb (GObject          *object,
  * of the #ClutterAlpha instance.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_set_alpha (ClutterBehaviour *behave,
@@ -658,6 +614,8 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
  *   finished using it.
  * 
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 GSList *
 clutter_behaviour_get_actors (ClutterBehaviour *behave)
@@ -682,6 +640,8 @@ clutter_behaviour_get_actors (ClutterBehaviour *behave)
  * Removes every actor from the list that @behave holds.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_remove_all (ClutterBehaviour *behave)

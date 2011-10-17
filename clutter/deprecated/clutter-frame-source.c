@@ -27,6 +27,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-frame-source.h"
 #include "clutter-timeout-interval.h"
 #include "clutter-private.h"

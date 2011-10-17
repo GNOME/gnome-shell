@@ -50,6 +50,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-ellipse.h"
 #include "clutter-debug.h"

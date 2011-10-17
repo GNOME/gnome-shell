@@ -416,15 +416,17 @@ typedef enum {
  * ClutterAlignAxis:
  * @CLUTTER_ALIGN_X_AXIS: Maintain the alignment on the X axis
  * @CLUTTER_ALIGN_Y_AXIS: Maintain the alignment on the Y axis
+ * @CLUTTER_ALIGN_BOTH: Maintain the alignment on both the X and Y axis
  *
  * Specifies the axis on which #ClutterAlignConstraint should maintain
- * the alignment
+ * the alignment.
  *
  * Since: 1.4
  */
 typedef enum { /*< prefix=CLUTTER_ALIGN >*/
   CLUTTER_ALIGN_X_AXIS,
-  CLUTTER_ALIGN_Y_AXIS
+  CLUTTER_ALIGN_Y_AXIS,
+  CLUTTER_ALIGN_BOTH
 } ClutterAlignAxis;
 
 /**

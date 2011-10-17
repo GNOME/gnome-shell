@@ -25,6 +25,8 @@
 #include "config.h"
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 /* This file contains the common code to check whether an interval has
    expired used in clutter-frame-source and clutter-timeout-pool. */
 

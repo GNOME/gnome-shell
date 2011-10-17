@@ -52,6 +52,8 @@
 #include <unistd.h>
 #endif
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 
@@ -817,20 +819,6 @@ clutter_shader_set_uniform (ClutterShader *shader,
     }
   else
     g_assert_not_reached ();
-}
-
-/*
- * _clutter_shader_release_all:
- *
- * Iterate through all #ClutterShaders and tell them to release GL context
- * related sources.
- */
-void
-_clutter_shader_release_all (void)
-{
-  g_list_foreach (clutter_shaders_list,
-                  (GFunc) clutter_shader_release,
-                  NULL);
 }
 
 /**
