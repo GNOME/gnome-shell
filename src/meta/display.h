@@ -158,4 +158,8 @@ Window meta_display_get_leader_window (MetaDisplay *display);
 void meta_display_add_ignored_crossing_serial (MetaDisplay  *display,
                                                unsigned long serial);
 
+void meta_display_unmanage_screen (MetaDisplay *display,
+                                   MetaScreen  *screen,
+                                   guint32      timestamp);
+
 #endif
