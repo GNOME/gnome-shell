@@ -275,9 +275,9 @@ event_filter_cb (XEvent *xevent, void *data)
         {
           CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
 
-          /* XXX: consider adding an abstraction for this... */
-          framebuffer->width = xevent->xconfigure.width;
-          framebuffer->height = xevent->xconfigure.height;
+          _cogl_framebuffer_winsys_update_size (framebuffer,
+                                                xevent->xconfigure.width,
+                                                xevent->xconfigure.height);
         }
     }
 
