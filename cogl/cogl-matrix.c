@@ -2107,9 +2107,9 @@ cogl_matrix_look_at (CoglMatrix *matrix,
   tmp.zw = 0;
   tmp.ww = 1;
 
-  cogl_matrix_translate (&tmp, -eye_position_x, -eye_position_y, -eye_position_z);
-
   tmp.flags = (MAT_FLAG_GENERAL_3D | MAT_DIRTY_TYPE | MAT_DIRTY_INVERSE);
+
+  cogl_matrix_translate (&tmp, -eye_position_x, -eye_position_y, -eye_position_z);
 
   cogl_matrix_multiply (matrix, matrix, &tmp);
 }
