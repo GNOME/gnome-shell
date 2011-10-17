@@ -252,7 +252,8 @@ FocusGrabber.prototype = {
         this._prevFocusedWindow = global.display.focus_window;
         this._prevKeyFocusActor = global.stage.get_key_focus();
 
-        if (!Main.overview.visible)
+        if (global.stage_input_mode == Shell.StageInputMode.NONREACTIVE ||
+            global.stage_input_mode == Shell.StageInputMode.NORMAL)
             global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
 
         // Use captured-event to notice clicks outside the focused actor
