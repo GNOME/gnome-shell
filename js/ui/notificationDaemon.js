@@ -109,6 +109,14 @@ NotificationDaemon.prototype = {
     _iconForNotificationData: function(icon, hints, size) {
         let textureCache = St.TextureCache.get_default();
 
+        // If an icon is not specified, we use 'image-data' or 'image-path' hint for an icon
+        // and don't show a large image. There are currently many applications that use
+        // notify_notification_set_icon_from_pixbuf() from libnotify, which in turn sets
+        // the 'image-data' hint. These applications don't typically pass in 'app_icon'
+        // argument to Notify() and actually expect the pixbuf to be shown as an icon.
+        // So the logic here does the right thing for this case. If both an icon and either
+        // one of 'image-data' or 'image-path' are specified, we show both an icon and
+        // a large image.
         if (icon) {
             if (icon.substr(0, 7) == 'file://')
                 return textureCache.load_uri_async(icon, size, size);
@@ -119,6 +127,12 @@ NotificationDaemon.prototype = {
                 return new St.Icon({ icon_name: icon,
                                      icon_type: St.IconType.FULLCOLOR,
                                      icon_size: size });
+        } else if (hints['image-data']) {
+            let [width, height, rowStride, hasAlpha,
+                 bitsPerSample, nChannels, data] = hints['image-data'];
+            return textureCache.load_from_raw(data, hasAlpha, width, height, rowStride, size);
+        } else if (hints['image-path']) {
+            return textureCache.load_uri_async(GLib.filename_to_uri(hints['image-path'], null), size, size);
         } else {
             let stockIcon;
             switch (hints.urgency) {
@@ -330,7 +344,8 @@ NotificationDaemon.prototype = {
                                                  clear: true });
         }
 
-        if (hints['image-data'] || hints['image-path']) {
+        // We only display a large image if an icon is also specified.
+        if (icon && (hints['image-data'] || hints['image-path'])) {
             let image = null;
             if (hints['image-data']) {
                 let [width, height, rowStride, hasAlpha,
