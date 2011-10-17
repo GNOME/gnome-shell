@@ -1319,44 +1319,43 @@ clutter_create_backend (void)
   const char *backend = g_getenv ("CLUTTER_BACKEND");
   ClutterBackend *retval = NULL;
 
+  if (backend != NULL)
+    backend = g_intern_string (backend);
+
 #ifdef CLUTTER_WINDOWING_OSX
-  if (backend == NULL || strcmp (backend, CLUTTER_OSX_BACKEND) == 0)
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_OSX))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
   else
 #endif
 #ifdef CLUTTER_WINDOWING_WIN32
-  if (backend == NULL || strcmp (backend, CLUTTER_WIN32_BACKEND) == 0)
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WIN32))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
   else
 #endif
 #ifdef CLUTTER_WINDOWING_WAYLAND
-  if (backend == NULL || strcmp (backend, CLUTTER_WAYLAND_BACKEND) == 0)
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WAYLAND))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
   else
 #endif
 #ifdef CLUTTER_WINDOWING_EGL
-  if (backend == NULL || strcmp (backend, CLUTTER_EGL_NATIVE_BACKEND) == 0)
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_EGL))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
   else
 #endif
 #ifdef CLUTTER_WINDOWING_X11
-  if (backend == NULL || strcmp (backend, CLUTTER_X11_BACKEND) == 0)
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_X11))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
   else
 #endif
 #ifdef CLUTTER_WINDOWING_GDK
-  if (backend == NULL || strcmp (backend, CLUTTER_GDK_BACKEND) == 0)
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_GDK))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
   else
 #endif
-  if (backend != NULL)
-    g_error ("Unsupported Clutter backend: '%s'", backend);
-  else
+  if (backend == NULL)
     g_error ("No default Clutter backend found.");
-
-  CLUTTER_NOTE (BACKEND, "Backend type: '%s' (requested: '%s')",
-                G_OBJECT_TYPE_NAME (retval),
-                backend != NULL ? backend : "<default>");
+  else
+    g_error ("Unsupported Clutter backend: '%s'", backend);
 
   return retval;
 }
@@ -3621,57 +3620,83 @@ _clutter_context_get_motion_events_enabled (void)
 }
 
 /**
- * clutter_check_backend:
+ * clutter_check_windowing_backend:
  * @backend_type: the name of the backend to check
  *
- * Checks the run-time name of the Clutter backend, using the symbolic
- * macros like %CLUTTER_OSX_BACKEND or %CLUTTER_X11_BACKEND.
+ * Checks the run-time name of the Clutter windowing system backend, using
+ * the symbolic macros like %CLUTTER_WINDOWING_WIN32 or
+ * %CLUTTER_WINDOWING_X11.
  *
- * Return value: %TRUE if the current Clutter backend is the one checked,
- *   and %FALSE otherwise
+ * This function should be used in conjuction with the compile-time macros
+ * inside applications and libraries that are using the platform-specific
+ * windowing system API, to ensure that they are running on the correct
+ * windowing system; for instance:
+ *
+ * |[
+ * &num;ifdef CLUTTER_WINDOWING_X11
+ *   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
+ *     {
+ *       /&ast; it is safe to use the clutter_x11_* API &ast;/
+ *     }
+ *   else
+ * &num;endif
+ * &num;ifdef CLUTTER_WINDOWING_WIN32
+ *   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WIN32))
+ *     {
+ *       /&ast; it is safe to use the clutter_win32_* API &ast;/
+ *     }
+ *   else
+ * &num;endif
+ *     g_error ("Unknown Clutter backend.");
+ * ]|
+ *
+ * Return value: %TRUE if the current Clutter windowing system backend is
+ *   the one checked, and %FALSE otherwise
  *
  * Since: 1.10
  */
 gboolean
-clutter_check_backend (const char *backend_type)
+clutter_check_windowing_backend (const char *backend_type)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
   g_return_val_if_fail (backend_type != NULL, FALSE);
 
+  backend_type = g_intern_string (backend_type);
+
 #ifdef CLUTTER_WINDOWING_OSX
-  if (strcmp (backend_type, CLUTTER_OSX_BACKEND) == 0 &&
+  if (backend_type == I_(CLUTTER_WINDOWING_OSX) &&
       CLUTTER_IS_BACKEND_OSX (context->backend))
     return TRUE;
   else
 #endif
 #ifdef CLUTTER_WINDOWING_WIN32
-  if (strcmp (backend_type, CLUTTER_WIN32_BACKEND) == 0 &&
+  if (backend_type == I_(CLUTTER_WINDOWING_WIN32) &&
       CLUTTER_IS_BACKEND_WIN32 (context->backend))
     return TRUE;
   else
 #endif
 #ifdef CLUTTER_WINDOWING_WAYLAND
-  if (strcmp (backend_type, CLUTTER_WAYLAND_BACKEND) == 0 &&
+  if (backend_type == I_(CLUTTER_WINDOWING_WAYLAND) &&
       CLUTTER_IS_BACKEND_WAYLAND (context->backend))
     return TRUE;
   else
 #endif
 #ifdef CLUTTER_WINDOWING_EGL
-  if (strcmp (backend_type, CLUTTER_EGL_NATIVE_BACKEND) == 0 &&
+  if (backend_type == I_(CLUTTER_WINDOWING_EGL) &&
       CLUTTER_IS_BACKEND_EGL_NATIVE (context->backend))
     return TRUE;
   else
 #endif
-#ifdef CLUTTER_WINDOWING_X11
-  if (strcmp (backend_type, CLUTTER_X11_BACKEND) == 0 &&
-      CLUTTER_IS_BACKEND_X11 (context->backend))
+#ifdef CLUTTER_WINDOWING_GDK
+  if (backend_type == I_(CLUTTER_WINDOWING_GDK) &&
+      CLUTTER_IS_BACKEND_GDK (context->backend))
     return TRUE;
   else
 #endif
-#ifdef CLUTTER_WINDOWING_GDK
-  if (strcmp (backend_type, CLUTTER_GDK_BACKEND) == 0 &&
-      CLUTTER_IS_BACKEND_GDK (context->backend))
+#ifdef CLUTTER_WINDOWING_X11
+  if (backend_type == I_(CLUTTER_WINDOWING_X11) &&
+      CLUTTER_IS_BACKEND_X11 (context->backend))
     return TRUE;
   else
 #endif

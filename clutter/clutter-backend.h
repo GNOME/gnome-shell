@@ -29,91 +29,20 @@
 #define __CLUTTER_BACKEND_H__
 
 #include <cairo.h>
-#include <glib-object.h>
 #include <pango/pango.h>
+
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
 #endif
 
-#include <clutter/clutter-actor.h>
-#include <clutter/clutter-device-manager.h>
-#include <clutter/clutter-event.h>
-#include <clutter/clutter-feature.h>
-#include <clutter/clutter-stage.h>
-#include <clutter/clutter-stage-window.h>
+#include <clutter/clutter-config.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND            (clutter_backend_get_type ())
 #define CLUTTER_BACKEND(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND, ClutterBackend))
 #define CLUTTER_IS_BACKEND(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND))
-
-/**
- * CLUTTER_OSX_BACKEND:
- *
- * Evaluates to the symbolic name of the Quartz Clutter backend.
- *
- * This macro should be used with clutter_check_backend().
- *
- * Since: 1.10
- */
-#define CLUTTER_OSX_BACKEND             "osx"
-
-/**
- * CLUTTER_X11_BACKEND:
- *
- * Evaluates to the symbolic name of the X11 Clutter backend.
- *
- * This macro should be used with clutter_check_backend().
- *
- * Since: 1.10
- */
-
-#define CLUTTER_X11_BACKEND             "x11"
-
-/**
- * CLUTTER_WIN32_BACKEND:
- *
- * Evaluates to the symbolic name of the Windows Clutter backend.
- *
- * This macro should be used with clutter_check_backend().
- *
- * Since: 1.10
- */
-#define CLUTTER_WIN32_BACKEND           "win32"
-
-/**
- * CLUTTER_EGL_NATIVE_BACKEND:
- *
- * Evaluates to the symbolic name of the EGL framebuffer Clutter backend.
- *
- * This macro should be used with clutter_check_backend().
- *
- * Since: 1.10
- */
-#define CLUTTER_EGL_NATIVE_BACKEND      "eglnative"
-
-/**
- * CLUTTER_WAYLAND_BACKEND:
- *
- * Evaluates to the symbolic name of the Wayland client Clutter backend.
- *
- * This macro should be used with clutter_check_backend().
- *
- * Since: 1.10
- */
-#define CLUTTER_WAYLAND_BACKEND         "wayland"
-
-/**
- * CLUTTER_GDK_BACKEND:
- *
- * Evaluates to the symbolic name of the GDK Clutter backend.
- *
- * This macro should be used with clutter_check_backend().
- *
- * Since: 1.10
- */
-#define CLUTTER_GDK_BACKEND             "gdk"
 
 /**
  * ClutterBackend:
