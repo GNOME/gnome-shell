@@ -98,6 +98,10 @@
     color: #666666;
 }
 
+.login-dialog-not-listed-button:hover .login-dialog-not-listed-label {
+    color: white;
+}
+
 .login-dialog-prompt-layout {
     padding-bottom: 32px;
 }
