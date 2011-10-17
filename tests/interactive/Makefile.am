@@ -59,10 +59,11 @@ UNIT_TESTS = \
 	test-path-constraint.c \
 	test-snap-constraint.c \
 	test-state-script.c \
-	test-drop.c
+	test-drop.c \
+	test-devices.c
 
 if X11_TESTS
-UNIT_TESTS += test-pixmap.c test-devices.c
+UNIT_TESTS += test-pixmap.c
 endif
 
 if OS_WIN32
