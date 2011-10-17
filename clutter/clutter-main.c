@@ -1313,55 +1313,67 @@ _clutter_context_is_initialized (void)
   return ClutterCntx->is_initialized;
 }
 
-static inline ClutterMainContext *
+static ClutterBackend *
+clutter_create_backend (void)
+{
+  const char *backend = g_getenv ("CLUTTER_BACKEND");
+  ClutterBackend *retval = NULL;
+
+#ifdef CLUTTER_WINDOWING_OSX
+  if (backend == NULL || strcmp (backend, CLUTTER_OSX_BACKEND) == 0)
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_WIN32
+  if (backend == NULL || strcmp (backend, CLUTTER_WIN32_BACKEND) == 0)
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_WAYLAND
+  if (backend == NULL || strcmp (backend, CLUTTER_WAYLAND_BACKEND) == 0)
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_EGL
+  if (backend == NULL || strcmp (backend, CLUTTER_EGL_NATIVE_BACKEND) == 0)
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_X11
+  if (backend == NULL || strcmp (backend, CLUTTER_X11_BACKEND) == 0)
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_GDK
+  if (backend == NULL || strcmp (backend, CLUTTER_GDK_BACKEND) == 0)
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
+  else
+#endif
+  if (backend != NULL)
+    g_error ("Unsupported Clutter backend: '%s'", backend);
+  else
+    g_error ("No default Clutter backend found.");
+
+  CLUTTER_NOTE (BACKEND, "Backend type: '%s' (requested: '%s')",
+                G_OBJECT_TYPE_NAME (retval),
+                backend != NULL ? backend : "<default>");
+
+  return retval;
+}
+
+static ClutterMainContext *
 clutter_context_get_default_unlocked (void)
 {
   if (G_UNLIKELY (ClutterCntx == NULL))
     {
       ClutterMainContext *ctx;
-      const char *backend;
 
       ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
 
-      backend = g_getenv ("CLUTTER_BACKEND");
-
-#ifdef CLUTTER_WINDOWING_OSX
-      if (backend == NULL || strcmp (backend, CLUTTER_OSX_BACKEND) == 0)
-        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
-      else
-#endif
-#ifdef CLUTTER_WINDOWING_WIN32
-      if (backend == NULL || strcmp (backend, CLUTTER_WIN32_BACKEND) == 0)
-        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
-      else
-#endif
-#ifdef CLUTTER_WINDOWING_WAYLAND
-      if (backend == NULL || strcmp (backend, CLUTTER_WAYLAND_BACKEND) == 0)
-        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
-      else
-#endif
-#ifdef CLUTTER_WINDOWING_EGL
-      if (backend == NULL || strcmp (backend, CLUTTER_EGL_NATIVE_BACKEND) == 0)
-        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
-      else
-#endif
-#ifdef CLUTTER_WINDOWING_X11
-      if (backend == NULL || strcmp (backend, CLUTTER_X11_BACKEND) == 0)
-        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
-      else
-#endif
-#ifdef CLUTTER_WINDOWING_GDK
-      if (backend == NULL || strcmp (backend, CLUTTER_GDK_BACKEND) == 0)
-        ctx->backend = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
-      else
-#endif
-      if (backend != NULL)
-        g_error ("Unsupported Clutter backend: '%s'", backend);
-      else
-        g_error ("No default Clutter backend found.");
-
       ctx->is_initialized = FALSE;
-      ctx->motion_events_per_actor = TRUE;
+
+      /* create the windowing system backend */
+      ctx->backend = clutter_create_backend ();
 
       /* create the default settings object, and store a back pointer to
        * the backend singleton
@@ -1374,11 +1386,8 @@ clutter_context_get_default_unlocked (void)
       g_timer_start (ctx->timer);
 #endif
 
+      ctx->motion_events_per_actor = TRUE;
       ctx->last_repaint_id = 1;
-
-      CLUTTER_NOTE (BACKEND, "Backend type: '%s' (requested: '%s')",
-                    G_OBJECT_TYPE_NAME (ctx->backend),
-                    backend != NULL ? backend : "<default>");
     }
 
   return ClutterCntx;
