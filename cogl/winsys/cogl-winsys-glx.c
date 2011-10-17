@@ -48,6 +48,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-private.h"
 #include "cogl-swap-chain-private.h"
+#include "cogl-xlib-renderer.h"
 
 #include <stdlib.h>
 #include <sys/types.h>

@@ -28,7 +28,7 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
+#include "cogl-xlib-renderer.h"
 #include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-object.h"

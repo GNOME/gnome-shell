@@ -330,6 +330,7 @@ cogl_sources_c = \
 
 if SUPPORT_XLIB
 cogl_public_h += \
+	$(srcdir)/cogl-clutter-xlib.h \
 	$(srcdir)/cogl-xlib-renderer.h
 
 cogl_experimental_h += \

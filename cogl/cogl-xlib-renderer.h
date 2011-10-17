@@ -21,15 +21,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
+#if !defined(__COGL_XLIB_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cogl/cogl-xlib.h> can be included directly."
 #endif
 
 #ifndef __COGL_XLIB_RENDERER_H__
 #define __COGL_XLIB_RENDERER_H__
 
-#include <cogl/cogl-types.h>
-#include <cogl/cogl-renderer.h>
+#include <cogl/cogl.h>
 
 #include <X11/Xlib.h>
 

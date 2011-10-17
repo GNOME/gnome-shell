@@ -21,16 +21,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
-#endif
-
 #ifndef __COGL_XLIB_H__
 #define __COGL_XLIB_H__
 
-#include <cogl/cogl-types.h>
-
 #include <X11/Xlib.h>
+
+#define __COGL_XLIB_H_INSIDE__
+
+#include <cogl/cogl.h>
+#include <cogl/cogl-clutter-xlib.h>
+#include <cogl/cogl-xlib-renderer.h>
 
 G_BEGIN_DECLS
 
@@ -80,5 +80,7 @@ cogl_xlib_set_display (Display *display);
 #define cogl_xlib_handle_event cogl_xlib_handle_event_EXP
 CoglFilterReturn
 cogl_xlib_handle_event (XEvent *xevent);
+
+#undef __COGL_XLIB_H_INSIDE__
 
 #endif /* __COGL_XLIB_H__ */

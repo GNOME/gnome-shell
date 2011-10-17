@@ -1,4 +1,5 @@
 #include <cogl/cogl.h>
+#include <cogl/cogl-xlib.h>
 #include <cogl/winsys/cogl-texture-pixmap-x11.h>
 #include <glib.h>
 #include <stdio.h>

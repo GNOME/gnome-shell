@@ -45,6 +45,7 @@
 #include "cogl-winsys-stub-private.h"
 #include "cogl-winsys-egl-private.h"
 #include "cogl-config-private.h"
+#include "cogl-xlib-renderer.h"
 
 #ifdef COGL_HAS_GLX_SUPPORT
 extern const CoglWinsysVtable *_cogl_winsys_glx_get_vtable (void);

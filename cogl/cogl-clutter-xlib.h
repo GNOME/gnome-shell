@@ -21,27 +21,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
+#if !defined(__COGL_XLIB_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <cogl/cogl-xlib.h> can be included directly."
 #endif
 
-#ifndef __COGL_CLUTTER_H__
-#define __COGL_CLUTTER_H__
+#ifndef __COGL_CLUTTER_XLIB_H__
+#define __COGL_CLUTTER_XLIB_H__
+
+#include <X11/Xutil.h>
 
 G_BEGIN_DECLS
 
-#define cogl_clutter_check_extension cogl_clutter_check_extension_CLUTTER
-gboolean
-cogl_clutter_check_extension (const char *name, const char *ext);
-
-#define cogl_clutter_winsys_has_feature cogl_clutter_winsys_has_feature_CLUTTER
-gboolean
-cogl_clutter_winsys_has_feature (CoglWinsysFeature feature);
-
-#define cogl_onscreen_clutter_backend_set_size cogl_onscreen_clutter_backend_set_size_CLUTTER
-void
-cogl_onscreen_clutter_backend_set_size (int width, int height);
+#define cogl_clutter_winsys_xlib_get_visual_info cogl_clutter_winsys_xlib_get_visual_info_CLUTTER
+XVisualInfo *
+cogl_clutter_winsys_xlib_get_visual_info (void);
 
 G_END_DECLS
 
-#endif /* __COGL_CLUTTER_H__ */
+#endif /* __COGL_CLUTTER_XLIB_H__ */

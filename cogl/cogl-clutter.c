@@ -39,6 +39,9 @@
 #include "cogl-winsys-stub-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-private.h"
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include "cogl-clutter-xlib.h"
+#endif
 
 gboolean
 cogl_clutter_check_extension (const char *name, const char *ext)

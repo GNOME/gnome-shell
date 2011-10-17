@@ -31,9 +31,6 @@
 #include <glib-object.h>
 
 #include <cogl/cogl-defines.h>
-#ifdef COGL_HAS_XLIB
-#include <X11/Xlib.h>
-#endif
 
 G_BEGIN_DECLS
 

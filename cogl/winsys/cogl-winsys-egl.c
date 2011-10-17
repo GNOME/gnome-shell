@@ -43,6 +43,7 @@
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 #include "cogl-xlib-renderer-private.h"
 #include "cogl-xlib-display-private.h"
+#include "cogl-xlib-renderer.h"
 #endif
 
 #ifdef COGL_HAS_XLIB_SUPPORT

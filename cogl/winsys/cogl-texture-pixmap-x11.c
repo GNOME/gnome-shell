@@ -47,6 +47,7 @@
 #include "cogl-handle.h"
 #include "cogl-winsys-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-xlib.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
