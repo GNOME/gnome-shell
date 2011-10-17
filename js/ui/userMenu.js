@@ -199,6 +199,21 @@ IMStatusChooserItem.prototype = {
         }));
     },
 
+    destroy: function() {
+        // clean up signal handlers
+        if (this._userLoadedId != 0) {
+            this._user.disconnect(this._userLoadedId);
+            this._userLoadedId = 0;
+        }
+
+        if (this._userChangedId != 0) {
+            this._user.disconnect(this._userChangedId);
+            this._userChangedId = 0;
+        }
+
+        PopupMenu.PopupBaseMenuItem.prototype.destroy.call(this);
+    },
+
     // Override getColumnWidths()/setColumnWidths() to make the item
     // independent from the overall column layout of the menu
     getColumnWidths: function() {
