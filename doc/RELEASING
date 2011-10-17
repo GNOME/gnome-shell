@@ -40,6 +40,12 @@ When making a new release;
      $ make all
      $ make test
 
+ - Test cross-compiling for Windows:
+
+   Please use the build/mingw/mingw-fetch-dependencies.sh with a fresh
+   build directory to make sure that all of the download links still
+   work.
+
  - Update the release documentation:
 
      - NEWS: new feature details, bugs fixed, acknowledgements
