@@ -465,7 +465,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
         {
           new_stage = NULL;
 
-          CLUTTER_NOTE (MULTISTAGE,
+          CLUTTER_NOTE (BACKEND,
                         "Stage [%p] is not realized, unsetting the stage",
                         stage);
         }
@@ -473,7 +473,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
         {
           new_stage = stage;
 
-          CLUTTER_NOTE (MULTISTAGE,
+          CLUTTER_NOTE (BACKEND,
                         "Setting the new stage [%p]",
                         new_stage);
         }
@@ -515,7 +515,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
       current_context_stage = new_stage;
     }
   else
-    CLUTTER_NOTE (MULTISTAGE, "Stage is the same");
+    CLUTTER_NOTE (BACKEND, "Stage is the same");
 }
 
 

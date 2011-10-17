@@ -97,7 +97,7 @@ clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
             * (priv->opacity_end - priv->opacity_start)
             + priv->opacity_start;
 
-  CLUTTER_NOTE (BEHAVIOUR, "alpha: %.4f, opacity: %u",
+  CLUTTER_NOTE (ANIMATION, "alpha: %.4f, opacity: %u",
                 alpha_value,
                 opacity);
 

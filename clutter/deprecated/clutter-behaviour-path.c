@@ -128,7 +128,7 @@ actor_apply_knot_foreach (ClutterBehaviour *behaviour,
 {
   ClutterKnot *knot = data;
 
-  CLUTTER_NOTE (BEHAVIOUR, "Setting actor to %ix%i", knot->x, knot->y);
+  CLUTTER_NOTE (ANIMATION, "Setting actor to %ix%i", knot->x, knot->y);
 
   clutter_actor_set_position (actor, knot->x, knot->y);
 }

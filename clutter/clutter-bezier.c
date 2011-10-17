@@ -180,7 +180,7 @@ _clutter_bezier_advance (const ClutterBezier *b, gint L, ClutterKnot * knot)
   knot->x = _clutter_bezier_t2x (b, t);
   knot->y = _clutter_bezier_t2y (b, t);
   
-  CLUTTER_NOTE (BEHAVIOUR, "advancing to relative pt %f: t %f, {%d,%d}",
+  CLUTTER_NOTE (MISC, "advancing to relative pt %f: t %f, {%d,%d}",
                 (double) L / (double) CBZ_T_ONE,
                 (double) t / (double) CBZ_T_ONE,
                 knot->x, knot->y);
