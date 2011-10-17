@@ -59,6 +59,7 @@
 #include "st-entry.h"
 
 #include "st-im-text.h"
+#include "st-icon.h"
 #include "st-widget.h"
 #include "st-texture-cache.h"
 #include "st-marshal.h"
@@ -102,6 +103,7 @@ struct _StEntryPrivate
   gfloat        spacing;
 
   gboolean      hint_visible;
+  gboolean      capslock_warning_shown;
 };
 
 static guint entry_signals[LAST_SIGNAL] = { 0, };
@@ -161,15 +163,61 @@ st_entry_get_property (GObject    *gobject,
 }
 
 static void
+show_capslock_feedback (StEntry *entry)
+{
+  if (entry->priv->secondary_icon == NULL)
+    {
+      ClutterActor *icon = g_object_new (ST_TYPE_ICON,
+                                         "style-class", "capslock-warning",
+                                         "icon-type", ST_ICON_SYMBOLIC,
+                                         "icon-name", "dialog-warning",
+                                         NULL);
+
+      st_entry_set_secondary_icon (entry, icon);
+      entry->priv->capslock_warning_shown = TRUE;
+    }
+}
+
+static void
+remove_capslock_feedback (StEntry *entry)
+{
+  if (entry->priv->capslock_warning_shown)
+    {
+      st_entry_set_secondary_icon (entry, NULL);
+      entry->priv->capslock_warning_shown = FALSE;
+    }
+}
+
+static void
+keymap_state_changed (GdkKeymap *keymap,
+                      gpointer   user_data)
+{
+  StEntry *entry = ST_ENTRY (user_data);
+
+  if (clutter_text_get_password_char (CLUTTER_TEXT (entry->priv->entry)) != 0)
+    {
+      if (gdk_keymap_get_caps_lock_state (keymap))
+        show_capslock_feedback (entry);
+      else
+        remove_capslock_feedback (entry);
+    }
+}
+
+static void
 st_entry_dispose (GObject *object)
 {
-  StEntryPrivate *priv = ST_ENTRY_PRIV (object);
+  StEntry *entry = ST_ENTRY (object);
+  StEntryPrivate *priv = entry->priv;
+  GdkKeymap *keymap;
 
   if (priv->entry)
     {
       clutter_actor_destroy (priv->entry);
       priv->entry = NULL;
     }
+
+  keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
+  g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
 
   G_OBJECT_CLASS (st_entry_parent_class)->dispose (object);
 }
@@ -407,7 +455,9 @@ static void
 clutter_text_focus_in_cb (ClutterText  *text,
                           ClutterActor *actor)
 {
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  StEntry *entry = ST_ENTRY (actor);
+  StEntryPrivate *priv = entry->priv;
+  GdkKeymap *keymap;
 
   /* remove the hint if visible */
   if (priv->hint && priv->hint_visible)
@@ -416,6 +466,12 @@ clutter_text_focus_in_cb (ClutterText  *text,
 
       clutter_text_set_text (text, "");
     }
+
+  keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
+  keymap_state_changed (keymap, entry);
+  g_signal_connect (keymap, "state-changed",
+                    G_CALLBACK (keymap_state_changed), entry);
+
   st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
   st_widget_add_style_pseudo_class (ST_WIDGET (actor), "focus");
   clutter_text_set_cursor_visible (text, TRUE);
@@ -425,7 +481,9 @@ static void
 clutter_text_focus_out_cb (ClutterText  *text,
                            ClutterActor *actor)
 {
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  StEntry *entry = ST_ENTRY (actor);
+  StEntryPrivate *priv = entry->priv;
+  GdkKeymap *keymap;
 
   st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "focus");
 
@@ -438,6 +496,21 @@ clutter_text_focus_out_cb (ClutterText  *text,
       st_widget_add_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
     }
   clutter_text_set_cursor_visible (text, FALSE);
+  remove_capslock_feedback (entry);
+
+  keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
+  g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
+}
+
+static void
+clutter_text_password_char_cb (GObject    *object,
+                               GParamSpec *pspec,
+                               gpointer    user_data)
+{
+  StEntry *entry = ST_ENTRY (user_data);
+
+  if (clutter_text_get_password_char (CLUTTER_TEXT (entry->priv->entry)) == 0)
+    remove_capslock_feedback (entry);
 }
 
 static void
@@ -699,6 +772,9 @@ st_entry_init (StEntry *entry)
 
   g_signal_connect (priv->entry, "key-focus-out",
                     G_CALLBACK (clutter_text_focus_out_cb), entry);
+
+  g_signal_connect (priv->entry, "notify::password-char",
+                    G_CALLBACK (clutter_text_password_char_cb), entry);
 
   priv->spacing = 6.0f;
 
