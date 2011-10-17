@@ -121,6 +121,11 @@
     width: 15em;
 }
 
+.login-dialog-prompt-entry .capslock-warning {
+    icon-size: 16px;
+    warning-color: #999;
+}
+
 .login-dialog-session-list {
     color: #ffffff;
     font-size: 10.5pt;

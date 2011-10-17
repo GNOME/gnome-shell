@@ -1907,6 +1907,12 @@ StTooltip StLabel {
     border: 2px solid #3465a4;
 }
 
+.polkit-dialog-password-entry .capslock-warning {
+    icon-size: 16px;
+    warning-color: #999;
+    padding: 0 4px;
+}
+
 .polkit-dialog-error-label {
     font-size: 10pt;
     color: #ffff00;
