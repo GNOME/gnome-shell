@@ -13,11 +13,6 @@ typedef struct _Data
   CoglTexture *texture;
   CoglPipeline *crate_pipeline;
 
-  /* The cube continually rotates around each axis. */
-  float rotate_x;
-  float rotate_y;
-  float rotate_z;
-
   CoglPangoFontMap *pango_font_map;
   PangoContext *pango_context;
   PangoFontDescription *pango_font_desc;
@@ -25,6 +20,8 @@ typedef struct _Data
   PangoLayout *hello_label;
   int hello_label_width;
   int hello_label_height;
+
+  GTimer *timer;
 
 } Data;
 
@@ -97,6 +94,8 @@ CoglVertexP3T2 vertices[] =
 static void
 paint (Data *data)
 {
+  float rotation;
+
   cogl_clear (&black, COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_DEPTH);
 
   cogl_push_matrix ();
@@ -104,6 +103,11 @@ paint (Data *data)
   cogl_translate (data->framebuffer_width / 2, data->framebuffer_height / 2, 0);
 
   cogl_scale (75, 75, 75);
+
+  /* Update the rotation based on the time the application has been
+     running so that we get a linear animation regardless of the frame
+     rate */
+  rotation = g_timer_elapsed (data->timer, NULL) * 60.0f;
 
   /* Rotate the cube separately around each axis.
    *
@@ -114,9 +118,9 @@ paint (Data *data)
    * we want it to be a rotation around the origin, before it is
    * scaled and translated.
    */
-  cogl_rotate (data->rotate_x++, 0, 0, 1);
-  cogl_rotate (data->rotate_y++, 0, 1, 0);
-  cogl_rotate (data->rotate_z++, 1, 0, 0);
+  cogl_rotate (rotation, 0, 0, 1);
+  cogl_rotate (rotation, 0, 1, 0);
+  cogl_rotate (rotation, 1, 0, 0);
 
   /* Whenever you draw something with Cogl using geometry defined by
    * one of cogl_rectangle, cogl_polygon, cogl_path or
@@ -174,6 +178,8 @@ main (int argc, char **argv)
       fprintf (stderr, "Failed to allocate framebuffer: %s\n", error->message);
       return 1;
   }
+
+  data.timer = g_timer_new ();
 
   cogl_onscreen_show (onscreen);
 
