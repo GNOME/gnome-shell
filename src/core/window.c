@@ -7754,10 +7754,8 @@ recalc_window_features (MetaWindow *window)
       window->override_redirect)
     window->always_sticky = TRUE;
 
-  if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_SPLASHSCREEN ||
-      window->override_redirect)
+  if (window->override_redirect ||
+      meta_window_get_frame_type (window) == META_FRAME_TYPE_LAST)
     {
       window->decorated = FALSE;
       window->has_close_func = FALSE;
