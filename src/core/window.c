@@ -6903,11 +6903,15 @@ send_configure_notify (MetaWindow *window)
     {
       if (window->withdrawn)
         {
-          /* WARNING: x & y need to be set to whatever the XReparentWindow
-           * call in meta_window_destroy_frame will use so that the window
-           * has the right coordinates.  Currently, that means no change to
-           * x & y.
+          MetaFrameBorders borders;
+          /* We reparent the client window and put it to the position
+           * where the visible top-left of the frame window currently is.
            */
+
+          meta_frame_calc_borders (window->frame, &borders);
+
+          event.xconfigure.x = window->frame->rect.x + borders.invisible.left;
+          event.xconfigure.y = window->frame->rect.y + borders.invisible.top;
         }
       else
         {
