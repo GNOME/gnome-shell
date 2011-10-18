@@ -184,10 +184,27 @@ meta_stack_update_transient (MetaStack  *stack,
 void
 meta_stack_raise (MetaStack  *stack,
                   MetaWindow *window)
-{  
-  meta_window_set_stack_position_no_sync (window,
-                                          stack->n_positions - 1);
-  
+{
+  GList *l;
+  int max_stack_position = window->stack_position;
+  MetaWorkspace *workspace;
+
+  g_assert (stack->added == NULL);
+
+  workspace = meta_window_get_workspace (window);
+  for (l = stack->sorted; l; l = l->next)
+    {
+      MetaWindow *w = (MetaWindow *) l->data;
+      if (meta_window_located_on_workspace (w, workspace) &&
+          w->stack_position > max_stack_position)
+        max_stack_position = w->stack_position;
+    }
+
+  if (max_stack_position == window->stack_position)
+    return;
+
+  meta_window_set_stack_position_no_sync (window, max_stack_position);
+
   stack_sync_to_server (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
 }
@@ -196,7 +213,25 @@ void
 meta_stack_lower (MetaStack  *stack,
                   MetaWindow *window)
 {
-  meta_window_set_stack_position_no_sync (window, 0);
+  GList *l;
+  int min_stack_position = window->stack_position;
+  MetaWorkspace *workspace;
+
+  g_assert (stack->added == NULL);
+
+  workspace = meta_window_get_workspace (window);
+  for (l = stack->sorted; l; l = l->next)
+    {
+      MetaWindow *w = (MetaWindow *) l->data;
+      if (meta_window_located_on_workspace (w, workspace) &&
+          w->stack_position < min_stack_position)
+        min_stack_position = w->stack_position;
+    }
+
+  if (min_stack_position == window->stack_position)
+    return;
+
+  meta_window_set_stack_position_no_sync (window, min_stack_position);
   
   stack_sync_to_server (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
