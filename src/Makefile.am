@@ -89,13 +89,10 @@ privlibdir = $(pkglibdir)
 privlib_LTLIBRARIES = libgnome-shell.la
 
 shell_built_sources = \
-	shell-marshal.h \
-	shell-marshal.c \
 	shell-enum-types.h \
 	shell-enum-types.c
 
 BUILT_SOURCES += $(shell_built_sources)
-EXTRA_DIST += shell-marshal.list
 
 shell_public_headers_h =		\
 	shell-app.h			\
@@ -229,28 +226,6 @@ run_js_test_SOURCES =			\
 	run-js-test.c
 
 ########################################
-
-shell-marshal.h: stamp-shell-marshal.h
-	@true
-stamp-shell-marshal.h: Makefile shell-marshal.list
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
-		--prefix=_shell_marshal \
-		--header \
-	$(srcdir)/shell-marshal.list > xgen-smh && \
-	(cmp -s xgen-smh shell-marshal.h || cp -f xgen-smh shell-marshal.h) && \
-	rm -f xgen-smh && \
-	echo timestamp > $(@F)
-CLEANFILES += stamp-shell-marshal.h
-
-shell-marshal.c: Makefile shell-marshal.list
-	$(AM_V_GEN) (echo "#include \"shell-marshal.h\"" ; \
-	 $(GLIB_GENMARSHAL) \
-		--prefix=_shell_marshal \
-		--body \
-	 $(srcdir)/shell-marshal.list ) > xgen-smc && \
-	cp -f xgen-smc shell-marshal.c && \
-	rm -f xgen-smc
-
 
 shell-enum-types.h: stamp-shell-enum-types.h Makefile
 	@true

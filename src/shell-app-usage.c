@@ -18,7 +18,6 @@
 #include "shell-app-usage.h"
 #include "shell-window-tracker.h"
 #include "shell-global.h"
-#include "shell-marshal.h"
 
 /* This file includes modified code from
  * desktop-data-engine/engine-dbus/hippo-application-monitor.c

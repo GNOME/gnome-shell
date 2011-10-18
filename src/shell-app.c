@@ -1520,8 +1520,7 @@ shell_app_class_init(ShellAppClass *klass)
                                      SHELL_TYPE_APP,
                                      G_SIGNAL_RUN_LAST,
                                      0,
-                                     NULL, NULL,
-                                     g_cclosure_marshal_VOID__VOID,
+                                     NULL, NULL, NULL,
                                      G_TYPE_NONE, 0);
 
   /**

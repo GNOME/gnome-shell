@@ -24,7 +24,6 @@
 #include <gnome-keyring.h>
 
 #include "shell-network-agent.h"
-#include "shell-marshal.h"
 
 enum {
   SIGNAL_NEW_REQUEST,
@@ -775,7 +774,7 @@ shell_network_agent_class_init (ShellNetworkAgentClass *klass)
 					      0, /* class offset */
 					      NULL, /* accumulator */
 					      NULL, /* accu_data */
-					      _shell_marshal_VOID__STRING_OBJECT_STRING_BOXED,
+                                              NULL, /* marshaller */
 					      G_TYPE_NONE, /* return */
 					      3, /* n_params */
 					      G_TYPE_STRING,
@@ -789,7 +788,7 @@ shell_network_agent_class_init (ShellNetworkAgentClass *klass)
                                                  0, /* class offset */
                                                  NULL, /* accumulator */
                                                  NULL, /* accu_data */
-                                                 g_cclosure_marshal_VOID__STRING,
+                                                 NULL, /* marshaller */
                                                  G_TYPE_NONE,
                                                  1, /* n_params */
                                                  G_TYPE_STRING);

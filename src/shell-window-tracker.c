@@ -20,7 +20,6 @@
 #include "shell-window-tracker-private.h"
 #include "shell-app-private.h"
 #include "shell-global.h"
-#include "shell-marshal.h"
 #include "st.h"
 
 /* This file includes modified code from
@@ -117,15 +116,13 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                    SHELL_TYPE_WINDOW_TRACKER,
                                    G_SIGNAL_RUN_LAST,
                                    0,
-                                   NULL, NULL,
-                                   g_cclosure_marshal_VOID__BOXED,
+                                   NULL, NULL, NULL,
                                    G_TYPE_NONE, 1, SHELL_TYPE_STARTUP_SEQUENCE);
   signals[TRACKED_WINDOWS_CHANGED] = g_signal_new ("tracked-windows-changed",
                                                    SHELL_TYPE_WINDOW_TRACKER,
                                                    G_SIGNAL_RUN_LAST,
                                                    0,
-                                                   NULL, NULL,
-                                                   g_cclosure_marshal_VOID__VOID,
+                                                   NULL, NULL, NULL,
                                                    G_TYPE_NONE, 0);
 }
 

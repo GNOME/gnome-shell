@@ -8,7 +8,6 @@
 
 #include "shell-wm-private.h"
 #include "shell-global.h"
-#include "shell-marshal.h"
 
 struct _ShellWM {
   GObject parent;
@@ -58,8 +57,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[MAXIMIZE] =
@@ -67,8 +65,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  _shell_marshal_VOID__OBJECT_INT_INT_INT_INT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 5,
                   META_TYPE_WINDOW_ACTOR, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
   shell_wm_signals[UNMAXIMIZE] =
@@ -76,8 +73,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  _shell_marshal_VOID__OBJECT_INT_INT_INT_INT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
   shell_wm_signals[MAP] =
@@ -85,8 +81,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[DESTROY] =
@@ -94,8 +89,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[SWITCH_WORKSPACE] =
@@ -103,8 +97,7 @@ shell_wm_class_init (ShellWMClass *klass)
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,
-		  NULL, NULL,
-		  _shell_marshal_VOID__INT_INT_INT,
+          NULL, NULL, NULL,
 		  G_TYPE_NONE, 3,
                   G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
   shell_wm_signals[KILL_SWITCH_WORKSPACE] =
@@ -112,16 +105,14 @@ shell_wm_class_init (ShellWMClass *klass)
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+          NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
   shell_wm_signals[KILL_WINDOW_EFFECTS] =
     g_signal_new ("kill-window-effects",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
+          NULL, NULL, NULL,
 		  G_TYPE_NONE, 1,
 		  META_TYPE_WINDOW_ACTOR);
 }

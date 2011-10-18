@@ -320,8 +320,7 @@ shell_doc_system_class_init(ShellDocSystemClass *klass)
 		  SHELL_TYPE_DOC_SYSTEM,
 		  G_SIGNAL_RUN_LAST,
 		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+          NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
 
   signals[DELETED] =
@@ -329,8 +328,7 @@ shell_doc_system_class_init(ShellDocSystemClass *klass)
 		  SHELL_TYPE_DOC_SYSTEM,
 		  G_SIGNAL_RUN_LAST,
 		  0,
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__BOXED,
+          NULL, NULL, NULL,
 		  G_TYPE_NONE, 1, GTK_TYPE_RECENT_INFO);
 
   g_type_class_add_private (gobject_class, sizeof (ShellDocSystemPrivate));

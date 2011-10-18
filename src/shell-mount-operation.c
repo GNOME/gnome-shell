@@ -135,8 +135,7 @@ shell_mount_operation_class_init (ShellMountOperationClass *klass)
     g_signal_new ("show-processes-2",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  0, NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
   g_type_class_add_private (klass, sizeof (ShellMountOperationPrivate));
