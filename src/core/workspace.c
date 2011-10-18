@@ -46,7 +46,7 @@ enum {
 };
 
 void meta_workspace_queue_calc_showing   (MetaWorkspace *workspace);
-static void focus_ancestor_or_mru_window (MetaWorkspace *workspace,
+static void focus_ancestor_or_top_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
                                           guint32        timestamp);
 static void free_this                    (gpointer candidate,
@@ -1201,7 +1201,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
 
   if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK ||
       !workspace->screen->display->mouse_mode)
-    focus_ancestor_or_mru_window (workspace, not_this_one, timestamp);
+    focus_ancestor_or_top_window (workspace, not_this_one, timestamp);
   else
     {
       MetaWindow * window;
@@ -1238,7 +1238,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
             }
         }
       else if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_SLOPPY)
-        focus_ancestor_or_mru_window (workspace, not_this_one, timestamp);
+        focus_ancestor_or_top_window (workspace, not_this_one, timestamp);
       else if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_MOUSE)
         {
           meta_topic (META_DEBUG_FOCUS,
@@ -1261,17 +1261,13 @@ record_ancestor (MetaWindow *window,
   return FALSE; /* quit with the first ancestor we find */
 }
 
-/* Focus ancestor of not_this_one if there is one, otherwise focus the MRU
- * window on active workspace
- */
+/* Focus ancestor of not_this_one if there is one */
 static void
-focus_ancestor_or_mru_window (MetaWorkspace *workspace,
+focus_ancestor_or_top_window (MetaWorkspace *workspace,
                               MetaWindow    *not_this_one,
                               guint32        timestamp)
 {
   MetaWindow *window = NULL;
-  MetaWindow *desktop_window = NULL;
-  GList *tmp;
 
   if (not_this_one)
     meta_topic (META_DEBUG_FOCUS,
@@ -1305,36 +1301,9 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
         }
     }
 
-  /* No ancestor, look for the MRU window */
-  tmp = workspace->mru_list;  
-
-  while (tmp)
-    {
-      MetaWindow* tmp_window;
-      tmp_window = ((MetaWindow*) tmp->data);
-      if (tmp_window != not_this_one           &&
-          meta_window_showing_on_its_workspace (tmp_window) &&
-          tmp_window->type != META_WINDOW_DOCK &&
-          tmp_window->type != META_WINDOW_DESKTOP)
-        {
-          window = tmp->data;
-          break;
-        }
-      else if (tmp_window != not_this_one      &&
-               desktop_window == NULL          &&
-               meta_window_showing_on_its_workspace (tmp_window) &&
-               tmp_window->type == META_WINDOW_DESKTOP)
-        {
-          /* Found the most recently used desktop window */
-          desktop_window = tmp_window;
-        }
-
-      tmp = tmp->next;
-    }
-
-  /* If no window was found, default to the MRU desktop-window */
-  if (window == NULL)
-    window = desktop_window;
+  window = meta_stack_get_default_focus_window (workspace->screen->stack,
+                                                workspace,
+                                                NULL);
 
   if (window)
     {

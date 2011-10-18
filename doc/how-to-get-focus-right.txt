@@ -31,8 +31,7 @@ workspaces.  In these cases, there needs to be a rule consistent with
 the above about the new window to choose.
 
 Focus method  Behavior
-    click     Focus the most recently used window (same as the window
-              on top)
+    click     Focus the window on top
    sloppy     Focus the window containing the pointer if there is such
               a window, otherwise focus the most recently used window.
     mouse     Focus the non-DESKTOP window containing the pointer if

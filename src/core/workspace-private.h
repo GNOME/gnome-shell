@@ -42,6 +42,16 @@ struct _MetaWorkspace
   MetaScreen *screen;
   
   GList *windows;
+
+  /* The "MRU list", or "most recently used" list, is a list of
+   * MetaWindows ordered based on the time the the user interacted
+   * with the window most recently.
+   *
+   * For historical reasons, we keep an MRU list per workspace.
+   * It used to be used to calculate the default focused window,
+   * but isn't anymore, as the window next in the stacking order
+   * can sometimes be not the window the user interacted with last,
+   */
   GList *mru_list;
 
   GList  *list_containing_self;
