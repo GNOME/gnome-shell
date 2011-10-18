@@ -454,8 +454,7 @@ st_theme_node_transition_class_init (StThemeNodeTransitionClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (StThemeNodeTransitionClass, completed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
   signals[NEW_FRAME] =
@@ -463,7 +462,6 @@ st_theme_node_transition_class_init (StThemeNodeTransitionClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (StThemeNodeTransitionClass, new_frame),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 }
