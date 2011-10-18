@@ -1,3 +1,26 @@
+3.2.1
+=====
+* Allow keyboard window switching (alt-Tab) during drag-and-drop
+  [Matthias, #660457]
+* Don't add invisible resize borders to fullscreen windows
+  [Jasper, Owen; #659854]
+* Fix crash when toplevel windows were set to unexpected window types
+  [Owen; #599988]
+* Correct problems with windows moving when restarting or switching
+  window managers [Jasper; #660848]
+* Fix interaction of tiled windows with multiple monitors
+  [Rui; #642580, #657519]
+* Make meta_display_unmanage_screen() public [Jasper; #660848]
+* Fix problem with turning off window decorations on the fly [Rui; #660773]
+* Fix spurious assertion failures with themes such as Nodoka [Sandro; #661286]
+* Misc bug fixes [Adel, Jasper, Rui; #660464, #660854, #662053]
+
+Contributors:
+ Matthias Clasen, Sandro Mani, Rui Matos, Jasper St. Pierre, Owen Taylor
+
+Translations:
+ Tommi Vainikainen [fi], Miroslav Nikolić [sr, sr@latin], Muhammet Kara [tr]
+
 3.2.0
 =====
 * Fix _NET_WM_FRAME_EXTENTS not to include invisible borders [Jasper; #659848]
