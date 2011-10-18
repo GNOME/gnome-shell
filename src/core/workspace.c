@@ -121,16 +121,14 @@ meta_workspace_class_init (MetaWorkspaceClass *klass)
                                         G_TYPE_FROM_CLASS (klass),
                                         G_SIGNAL_RUN_LAST,
                                         0,
-                                        NULL, NULL,
-                                        g_cclosure_marshal_VOID__OBJECT,
+                                        NULL, NULL, NULL,
                                         G_TYPE_NONE, 1,
                                         META_TYPE_WINDOW);
   signals[WINDOW_REMOVED] = g_signal_new ("window-removed",
                                           G_TYPE_FROM_CLASS (klass),
                                           G_SIGNAL_RUN_LAST,
                                           0,
-                                          NULL, NULL,
-                                          g_cclosure_marshal_VOID__OBJECT,
+                                          NULL, NULL, NULL,
                                           G_TYPE_NONE, 1,
                                           META_TYPE_WINDOW);
 

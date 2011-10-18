@@ -230,8 +230,7 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
   display_signals[WINDOW_CREATED] =
@@ -239,8 +238,7 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1, META_TYPE_WINDOW);
 
   display_signals[WINDOW_DEMANDS_ATTENTION] =
@@ -248,8 +246,7 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1, META_TYPE_WINDOW);
 
   display_signals[WINDOW_MARKED_URGENT] =
@@ -257,8 +254,7 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW);
 

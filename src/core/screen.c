@@ -39,7 +39,6 @@
 #include "stack.h"
 #include "xprops.h"
 #include <meta/compositor.h>
-#include "mutter-marshal.h"
 #include "mutter-enum-types.h"
 
 #ifdef HAVE_SOLARIS_XINERAMA
@@ -162,8 +161,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MetaScreenClass, restacked),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
   pspec = g_param_spec_int ("n-workspaces",
@@ -177,8 +175,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__INT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE,
                   1,
                   G_TYPE_INT);
@@ -188,8 +185,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__INT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE,
                   1,
                   G_TYPE_INT);
@@ -199,8 +195,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  _mutter_marshal_VOID__INT_INT_ENUM,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE,
                   3,
                   G_TYPE_INT,
@@ -212,8 +207,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  _mutter_marshal_VOID__INT_OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 2,
                   G_TYPE_INT,
                   META_TYPE_WINDOW);
@@ -223,8 +217,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  _mutter_marshal_VOID__INT_OBJECT,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 2,
                   G_TYPE_INT,
                   META_TYPE_WINDOW);
@@ -234,8 +227,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__POINTER,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 1, G_TYPE_POINTER);
 
   screen_signals[TOGGLE_RECORDING] =
@@ -243,8 +235,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
   screen_signals[WORKAREAS_CHANGED] =
@@ -252,8 +243,7 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MetaScreenClass, workareas_changed),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
   screen_signals[MONITORS_CHANGED] =
@@ -261,8 +251,7 @@ meta_screen_class_init (MetaScreenClass *klass)
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (MetaScreenClass, monitors_changed),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+          NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,

@@ -27,8 +27,6 @@ INCLUDES=								\
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"
 
 mutter_built_sources = \
-	mutter-marshal.h \
-	mutter-marshal.c \
 	mutter-enum-types.h \
 	mutter-enum-types.c
 
@@ -307,32 +305,11 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	libmutter.pc.in \
 	mutter-plugins.pc.in  \
 	mutter-enum-types.h.in \
-	mutter-enum-types.c.in \
-	mutter-marshal.list
+	mutter-enum-types.c.in
 
 BUILT_SOURCES += $(mutter_built_sources)
-MUTTER_STAMP_FILES = stamp-mutter-marshal.h stamp-mutter-enum-types.h
+MUTTER_STAMP_FILES = stamp-mutter-enum-types.h
 CLEANFILES += $(MUTTER_STAMP_FILES)
-
-mutter-marshal.h: stamp-mutter-marshal.h
-	@true
-stamp-mutter-marshal.h: Makefile mutter-marshal.list
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
-		--prefix=_mutter_marshal \
-		--header \
-	$(srcdir)/mutter-marshal.list > xgen-tmh && \
-	(cmp -s xgen-tmh mutter-marshal.h || cp -f xgen-tmh mutter-marshal.h) && \
-	rm -f xgen-tmh && \
-	echo timestamp > $(@F)
-
-mutter-marshal.c: Makefile mutter-marshal.list
-	 $(AM_V_GEN) (echo "#include \"mutter-marshal.h\"" ; \
-	 $(GLIB_GENMARSHAL) \
-		--prefix=_mutter_marshal \
-		--body \
-	 $(srcdir)/mutter-marshal.list ) > xgen-tmc && \
-	cp -f xgen-tmc mutter-marshal.c && \
-	rm -f xgen-tmc
 
 mutter-enum-types.h: stamp-mutter-enum-types.h Makefile
 	@true
