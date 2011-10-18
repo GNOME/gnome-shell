@@ -474,6 +474,8 @@ UserMenuButton.prototype = {
         this._createSubMenu();
         this._userManager.connect('notify::is-loaded',
                                   Lang.bind(this, this._updateSwitchUser));
+        this._userManager.connect('notify::has-multiple-users',
+                                  Lang.bind(this, this._updateSwitchUser));
         this._userManager.connect('user-added',
                                   Lang.bind(this, this._updateSwitchUser));
         this._userManager.connect('user-removed',
@@ -518,7 +520,9 @@ UserMenuButton.prototype = {
 
     _updateSwitchUser: function() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
-        if (allowSwitch && this._userManager.can_switch ())
+        if (allowSwitch &&
+            this._userManager.can_switch() &&
+            this._userManager.has_multiple_users)
             this._loginScreenItem.actor.show();
         else
             this._loginScreenItem.actor.hide();
