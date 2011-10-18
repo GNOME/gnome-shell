@@ -518,17 +518,17 @@ notify_cb (GObject          *object,
 
   klass = CLUTTER_BEHAVIOUR_GET_CLASS (behave);
 
-  CLUTTER_NOTE (BEHAVIOUR, "notify::alpha");
+  CLUTTER_NOTE (ANIMATION, "notify::alpha");
 
   /* no actors, we can stop right here */
   if (behave->priv->actors == NULL)
     return;
 
-  if (klass->alpha_notify)
+  if (klass->alpha_notify != NULL)
     {
       gdouble alpha_value = clutter_alpha_get_alpha (behave->priv->alpha);
 
-      CLUTTER_NOTE (BEHAVIOUR, "calling %s::alpha_notify (%p, %.4f)",
+      CLUTTER_NOTE (ANIMATION, "calling %s::alpha_notify (%p, %.4f)",
                     g_type_name (G_TYPE_FROM_CLASS (klass)),
                     behave, alpha_value);
 
@@ -571,7 +571,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 
   if (priv->notify_id)
     {
-      CLUTTER_NOTE (BEHAVIOUR, "removing previous notify-id (%d)",
+      CLUTTER_NOTE (ANIMATION, "removing previous notify-id (%d)",
                     priv->notify_id);
 
       g_signal_handler_disconnect (priv->alpha, priv->notify_id);
@@ -580,7 +580,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 
   if (priv->alpha != NULL)
     {
-      CLUTTER_NOTE (BEHAVIOUR, "removing previous alpha object");
+      CLUTTER_NOTE (ANIMATION, "removing previous alpha object");
 
       g_object_unref (priv->alpha);
       priv->alpha = NULL;
@@ -594,7 +594,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
                                           G_CALLBACK(notify_cb),
                                           behave);
       
-      CLUTTER_NOTE (BEHAVIOUR, "setting new alpha object (%p, notify:%d)",
+      CLUTTER_NOTE (ANIMATION, "setting new alpha object (%p, notify:%d)",
                     priv->alpha, priv->notify_id);
     }
 

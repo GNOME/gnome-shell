@@ -91,7 +91,7 @@ clutter_behaviour_depth_alpha_notify (ClutterBehaviour *behaviour,
   depth = (alpha_value * (priv->depth_end - priv->depth_start))
         + priv->depth_start;
 
-  CLUTTER_NOTE (BEHAVIOUR, "alpha: %.4f, depth: %d", alpha_value, depth);
+  CLUTTER_NOTE (ANIMATION, "alpha: %.4f, depth: %d", alpha_value, depth);
 
   clutter_behaviour_actors_foreach (behaviour,
                                     alpha_notify_foreach,

@@ -176,7 +176,7 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
   knot->y = y;
   knot->z = z;
 
-  CLUTTER_NOTE (BEHAVIOUR, "advancing to angle %.2f [%d, %d] (a: %d, b: %d)",
+  CLUTTER_NOTE (ANIMATION, "advancing to angle %.2f [%d, %d] (a: %d, b: %d)",
                 angle,
                 knot->x, knot->y,
                 priv->a, priv->b);

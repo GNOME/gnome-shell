@@ -75,38 +75,10 @@
  *   <function>set_container()</function> virtual function. The layout manager
  *   should not hold a real reference (i.e. call g_object_ref()) on the
  *   container actor, to avoid reference cycles.</para>
- *   <para>If the layout manager has properties affecting the layout
+ *   <para>If a layout manager has properties affecting the layout
  *   policies then it should emit the #ClutterLayoutManager::layout-changed
  *   signal on itself by using the clutter_layout_manager_layout_changed()
  *   function whenever one of these properties changes.</para>
- *   <para>If the layout manager has layout properties, that is properties that
- *   should exist only as the result of the presence of a specific (layout
- *   manager, container actor, child actor) combination, and it wishes to store
- *   those properties inside a #ClutterLayoutMeta then it should override the
- *   <structname>ClutterLayoutManager</structname>::get_child_meta_type()
- *   virtual function to return the #GType of the #ClutterLayoutMeta sub-class
- *   used to store the layout properties; optionally, the #ClutterLayoutManager
- *   sub-class might also override the
- *   <structname>ClutterLayoutManager</structname>::create_child_meta() virtual
- *   function to control how the #ClutterLayoutMeta instance is created,
- *   otherwise the default implementation will be equivalent to:</para>
- *   <informalexample><programlisting>
- *  ClutterLayoutManagerClass *klass;
- *  GType meta_type;
- *
- *  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
- *  meta_type = klass->get_child_meta_type (manager);
- *
- *  return g_object_new (meta_type,
- *                       "manager", manager,
- *                       "container", container,
- *                       "actor", actor,
- *                       NULL);
- *   </programlisting></informalexample>
- *   <para>Where <varname>manager</varname> is the  #ClutterLayoutManager,
- *   <varname>container</varname> is the #ClutterContainer using the
- *   #ClutterLayoutManager and <varname>actor</varname> is the #ClutterActor
- *   child of the #ClutterContainer.</para>
  * </refsect2>
  *
  * <refsect2 id="ClutterLayoutManager-animation">
@@ -277,6 +249,79 @@
  *   </informalexample>
  *   <para>The code above will animate a change in the
  *   <varname>orientation</varname> layout property of a layout manager.</para>
+ * </refsect2>
+ *
+ * <refsect2 id="clutter-layout-properties">
+ *   <title>Layout Properties</title>
+ *   <para>If a layout manager has layout properties, that is properties that
+ *   should exist only as the result of the presence of a specific (layout
+ *   manager, container actor, child actor) combination, and it wishes to store
+ *   those properties inside a #ClutterLayoutMeta, then it should override the
+ *   <structname>ClutterLayoutManager</structname>::get_child_meta_type()
+ *   virtual function to return the #GType of the #ClutterLayoutMeta sub-class
+ *   used to store the layout properties; optionally, the #ClutterLayoutManager
+ *   sub-class might also override the
+ *   <structname>ClutterLayoutManager</structname>::create_child_meta() virtual
+ *   function to control how the #ClutterLayoutMeta instance is created,
+ *   otherwise the default implementation will be equivalent to:</para>
+ *   <informalexample><programlisting>
+ *  ClutterLayoutManagerClass *klass;
+ *  GType meta_type;
+ *
+ *  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+ *  meta_type = klass->get_child_meta_type (manager);
+ *
+ *  return g_object_new (meta_type,
+ *                       "manager", manager,
+ *                       "container", container,
+ *                       "actor", actor,
+ *                       NULL);
+ *   </programlisting></informalexample>
+ *   <para>Where <varname>manager</varname> is the  #ClutterLayoutManager,
+ *   <varname>container</varname> is the #ClutterContainer using the
+ *   #ClutterLayoutManager and <varname>actor</varname> is the #ClutterActor
+ *   child of the #ClutterContainer.</para>
+ * </refsect2>
+ *
+ * <refsect2 id="clutter-layout-script">
+ *   <title>Using ClutterLayoutManager with ClutterScript</title>
+ *   <para>#ClutterLayoutManager instance can be created in the same way
+ *   as other objects in #ClutterScript; properties can be set using the
+ *   common syntax.</para>
+ *   <para>Layout properties can be set on children of a container with
+ *   a #ClutterLayoutManager using the <emphasis>layout::</emphasis>
+ *   modifier on the property name, for instance:</para>
+ *   <informalexample><programlisting>
+ * {
+ *   "type" : "ClutterBox",
+ *   "layout-manager" : { "type" : "ClutterTableLayout" },
+ *   "children" : [
+ *     {
+ *       "type" : "ClutterTexture",
+ *       "filename" : "image-00.png",
+ *
+ *       "layout::row" : 0,
+ *       "layout::column" : 0,
+ *       "layout::x-align" : "left",
+ *       "layout::y-align" : "center",
+ *       "layout::x-expand" : true,
+ *       "layout::y-expand" : true
+ *     },
+ *     {
+ *       "type" : "ClutterTexture",
+ *       "filename" : "image-01.png",
+ *
+ *       "layout::row" : 0,
+ *       "layout::column" : 1,
+ *       "layout::x-align" : "right",
+ *       "layout::y-align" : "center",
+ *       "layout::x-expand" : true,
+ *       "layout::y-expand" : true
+ *     }
+ *   ]
+ * }
+ *   </programlisting></informalexample>
+ *
  * </refsect2>
  *
  * #ClutterLayoutManager is available since Clutter 1.2

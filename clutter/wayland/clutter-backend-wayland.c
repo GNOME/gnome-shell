@@ -401,7 +401,7 @@ try_create_context (ClutterBackend  *backend,
           goto fail;
         }
 
-      CLUTTER_NOTE (GL, "Created EGL Context");
+      CLUTTER_NOTE (BACKEND, "Created EGL Context");
     }
 
   if (!eglMakeCurrent (backend_wayland->edpy,

@@ -4832,23 +4832,25 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * The default implementation for #ClutterActor chains up to the
    * parent actor and queues a redraw on the parent, thus "bubbling"
    * the redraw queue up through the actor graph. The default
-   * implementation for #ClutterStage queues a clutter_redraw() in a
-   * main loop idle handler.
+   * implementation for #ClutterStage queues a clutter_stage_ensure_redraw()
+   * in a main loop idle handler.
    *
    * Note that the @origin actor may be the stage, or a container; it
    * does not have to be a leaf node in the actor graph.
    *
    * Toolkits embedding a #ClutterStage which require a redraw and
    * relayout cycle can stop the emission of this signal using the
-   * GSignal API, redraw the UI and then call clutter_redraw()
+   * GSignal API, redraw the UI and then call clutter_stage_ensure_redraw()
    * themselves, like:
    *
    * |[
    *   static void
-   *   on_redraw_complete (void)
+   *   on_redraw_complete (gpointer data)
    *   {
+   *     ClutterStage *stage = data;
+   *
    *     /&ast; execute the Clutter drawing pipeline &ast;/
-   *     clutter_redraw ();
+   *     clutter_stage_ensure_redraw (stage);
    *   }
    *
    *   static void
@@ -4860,7 +4862,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *     /&ast; queue a redraw with the host toolkit and call
    *      &ast; a function when the redraw has been completed
    *      &ast;/
-   *     queue_a_redraw (G_CALLBACK (on_redraw_complete));
+   *     queue_a_redraw (G_CALLBACK (on_redraw_complete), stage);
    *   }
    * ]|
    *

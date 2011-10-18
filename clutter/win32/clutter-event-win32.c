@@ -440,8 +440,8 @@ clutter_win32_handle_event (const MSG *msg)
       break;
 
     case WM_PAINT:
-      CLUTTER_NOTE (MULTISTAGE, "expose for stage:%p, redrawing", stage);
-      clutter_redraw (stage);
+      CLUTTER_NOTE (BACKEND, "expose for stage:%p, redrawing", stage);
+      clutter_stage_ensure_redraw (stage);
       break;
 
     case WM_DESTROY:

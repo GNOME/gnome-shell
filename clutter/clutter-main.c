@@ -163,15 +163,11 @@ static const GDebugKey clutter_debug_keys[] = {
   { "event", CLUTTER_DEBUG_EVENT },
   { "paint", CLUTTER_DEBUG_PAINT },
   { "pick", CLUTTER_DEBUG_PICK },
-  { "gl", CLUTTER_DEBUG_GL },
-  { "alpha", CLUTTER_DEBUG_ALPHA },
-  { "behaviour", CLUTTER_DEBUG_BEHAVIOUR },
   { "pango", CLUTTER_DEBUG_PANGO },
   { "backend", CLUTTER_DEBUG_BACKEND },
   { "scheduler", CLUTTER_DEBUG_SCHEDULER },
   { "script", CLUTTER_DEBUG_SCRIPT },
   { "shader", CLUTTER_DEBUG_SHADER },
-  { "multistage", CLUTTER_DEBUG_MULTISTAGE },
   { "animation", CLUTTER_DEBUG_ANIMATION },
   { "layout", CLUTTER_DEBUG_LAYOUT },
   { "clipping", CLUTTER_DEBUG_CLIPPING },
@@ -3333,7 +3329,7 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
  * Executes the repaint functions added using the
  * clutter_threads_add_repaint_func() function.
  *
- * Must be called before calling clutter_redraw() and
+ * Must be called before calling _clutter_stage_do_paint() and
  * with the Clutter thread lock held.
  */
 void
