@@ -9,8 +9,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-08-29 11:52+0000\n"
-"PO-Revision-Date: 2011-04-02 12:49+0700\n"
-"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"PO-Revision-Date: 2011-10-18 14:40+1100\n"
+"Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,15 +22,14 @@ msgstr ""
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
 #: ../src/compositor/compositor.c:486
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
-"Không thể lấy vùng chọn bộ quản lý cửa sổ trên Màn hình %d trên bộ trình bày "
-"« %s ».\n"
+"Bộ quản lý cửa sổ đã đang chạy trên Màn hình %i trên bộ trình bày \"%s\""
 
 #: ../src/core/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -358,10 +357,9 @@ msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> không trả lời."
 
 #: ../src/core/delete.c:114
-#, fuzzy
 #| msgid "<tt>%s</tt> is not responding."
 msgid "Application is not responding."
-msgstr "<tt>%s</tt> không trả lời."
+msgstr "Ứng dụng không trả lời."
 
 #: ../src/core/delete.c:119
 msgid ""
@@ -746,10 +744,10 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Cửa sổ « WM_TRANSIENT_FOR » không hợp lệ 0x%lx được xác định cho %s.\n"
 
 #: ../src/core/window-props.c:1492
-#, fuzzy, c-format
+#, c-format
 #| msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "Cửa sổ « WM_TRANSIENT_FOR » không hợp lệ 0x%lx được xác định cho %s.\n"
+msgstr "Cửa sổ WM_TRANSIENT_FOR 0x%lx cho %s tạo vòng lặp.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -801,7 +799,7 @@ msgstr ""
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Draggable border width"
-msgstr ""
+msgstr "Độ rông biên có thể kéo"
 
 #: ../src/mutter.schemas.in.h:5
 msgid "Live Hidden Windows"
@@ -816,6 +814,8 @@ msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
+"Kích thước biên có thể kéo. Nếu biên thấy được của sắc thái không đủ, biên "
+"vô hình sẽ được thêm vào để thoả mãn giá trị này."
 
 #: ../src/mutter.schemas.in.h:8
 msgid ""
@@ -1141,7 +1141,7 @@ msgid "Gradients should have at least two colors"
 msgstr "Thang độ nên có ít nhất hai màu."
 
 #: ../src/ui/theme.c:1212
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "GTK color specification must have a close bracket after the state, e.g. "
 #| "gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
@@ -1149,8 +1149,8 @@ msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"Lời ghi rõ màu GTK phải có dấu đóng ngoặc sau trạng thái, v.d. «fg[NORMAL]», "
-"NORMAL (bình thường) là trạng thái; không thể phân tích « %s »."
+"Đặc tả màu tự chọn GTK phải có tên màu nằm và fallback trong dấu ngoặc, ví "
+"dụ gtk:custom(foo,bar); không thể phân tích \"%s\""
 
 #: ../src/ui/theme.c:1228
 #, c-format
@@ -1158,9 +1158,11 @@ msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
+"Ký tự không hợp lệ '%c' trong tham số color_name của gtk:custom, chỉ chấp "
+"nhận A-Za-z0-9-_"
 
 #: ../src/ui/theme.c:1242
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the "
 #| "format"
@@ -1168,8 +1170,8 @@ msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
-"Dạng thức bóng là « shade/base_color/factor » (bóng/màu cơ bản/hệ số), « %s "
-"» không tuân theo dạng thức đó."
+"Định dạng Gtk:custom là \"gtk:custom(color_name,fallback)\", \"%s\" không "
+"tuân theo định dạng này"
 
 #: ../src/ui/theme.c:1287
 #, c-format
