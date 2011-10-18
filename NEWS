@@ -1,3 +1,69 @@
+3.2.1
+=====
+* Restore the IM state on startup - if you were available in when you logged
+  out, then you'll be set available again when you log in.
+  [Florian; #65902, #661485]
+* Improve searching for contacts in the overview: search more fields,
+  show a more meaningful name, require that all search terms match.
+  [Florian, Matthias; #660580]
+* Improve search for applications in the overview: take frequency into
+  account and tweak match algorithm [Florian; #623372]
+* Remove the "Show Password" switch from network password prompts, and
+  move the functionality to a right-click menu [Florian; #658948]
+* Add context menus with Cut/Paste options to most entries [Florian; #659275]
+* On screen keyboard:
+ - Show the keyboard immediately when it's turned enabled [Dan; #659743]
+ - Fix problem where keyboard would hide when starting to type
+   in the search entry [Nohemi; #661340]
+ - Fix problem with keyboard hiding when selected accented characters
+   [Nohemi; 661707]
+* Login mode:
+  - Allow hitting Enter to select the first user [Ray; #657996]
+  - Fix flicker of a fingerprint prompt that could show up [Ray; #660492]
+  - Fix password bullets vanishing during login [Ray; #657894]
+  - Misc bug fixes and visual tweaks [Ray; #659763, #660919, #661479]
+* Display a caps-lock warning in password entries [Florian; #660806]
+* Show the state of installed extensions in Looking Glass [Jasper; #660494]
+* Load user extensions after system ones [Jasper; #661815]
+* Fix problem with many applications showing extra-large icons in
+  notifications [Marina; #659158]
+* Fix a problem where alt-Tab had trouble tracking the current
+  application with certain applications such as Emacs. [Dan; #645026]
+* Fix confusion between different users avatar images [Florian; #660585]
+* Remove behavior where you could switch workspaces by bumping
+  a dragged window in the overview against a screen edge; it was
+  leftover and just confusing. [Florian; #660838]
+* Fix long-standing bug where the Dash in the overview could end up mis-sized
+  and run off the screen [Florian; #649248]
+* Fix automatic launching of applications when media is inserted
+  [Cosimo; #660821]
+* Fix handling of vertically stacked monitors with NVIDIA drivers
+  [Florian; #661387]
+* Translation marking fixes [Jasper, Wouter; #660600]
+* Code cleanups and warning fixes [Adel, Dan, Florian, Jasper;
+  #659822, #659940, #660122, #660358, #660968, #661231]
+* Small memory leak fixes [Florian, Jasper; #661231]
+* Misc bug fixes [Adel, Florian, Jasper; #659274, #659861, #660166, #660310,
+  #660397, #660608,  #660606, #660674, #660774. #660848, #661151, #661617]
+
+Contributors:
+  Wouter Bolsterlee, Cosimo Cecchi, Matthias Clasen, Nohemi Fernandez,
+  Adel Gadllah, Florian Müllner, Jasper St. Pierre, Ray Strode, Dan Winship,
+  Marina Zhurakhinskaya
+
+Translations:
+ Tiffany Antopolski [eo], Xandru Armesto [ast], Alexander Shopov,
+ Ivaylo Valkov [bg], Gil Forcada [ca], Carles Ferrando [ca@valencia],
+ Mario Blättermann, Paul Seyfert [de], Bruce Cowan [en_GB],
+ Jorge González, Daniel Mustieles [es], Arash Mousavi [fa], Bruno Brouard [fr],
+ Seán de Búrca [ga], Fran Diéguez [gl], Gabor Kelemen [hu], Luca Ferretti [it],
+ Takayuki Kusano [ja], Changwoo Ryu [ko], Erdal Ronahi [ku],
+ Algimantas Margevičius [lt], Rudolfs Mazurs [lv], Wouter Bolsterlee [nl],
+ Piotr Drąg [pl], Adorilson Bezerra [pt_BR], Yuri Myasoedov [ru],
+ Matej Urbančič [sl], Daniel Nylander [sv], Miroslav Nikolić [sr, sr@latin],
+ Tirumurti Vasudevan [ta], Krishnababu Krothapalli [te], Daniel Korostil [uk],
+ Nguyễn Thái Ngọc Duy [vi], YunQiang Su [zh_CN]
+
 3.2.0
 =====
 * Prevent the fallback on-screen keyboard from showing up while
