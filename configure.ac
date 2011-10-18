@@ -70,6 +70,7 @@ GJS_MIN_VERSION=1.29.18
 MUTTER_MIN_VERSION=3.2.1
 FOLKS_MIN_VERSION=0.5.2
 GTK_MIN_VERSION=3.0.0
+GLIB_MIN_VERSION=2.31.0
 GIO_MIN_VERSION=2.29.10
 LIBECAL_MIN_VERSION=2.32.0
 LIBEDATASERVER_MIN_VERSION=1.2.0
@@ -80,7 +81,8 @@ POLKIT_MIN_VERSION=0.100
 STARTUP_NOTIFICATION_MIN_VERSION=0.11
 
 # Collect more than 20 libraries for a prize!
-PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
+PKG_CHECK_MODULES(GNOME_SHELL, glib-2.0 >= $GLIB_MIN_VERSION
+                               gio-2.0 >= $GIO_MIN_VERSION
                                gio-unix-2.0 dbus-glib-1 libxml-2.0
                                gtk+-3.0 >= $GTK_MIN_VERSION
                                folks >= $FOLKS_MIN_VERSION
