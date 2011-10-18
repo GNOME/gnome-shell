@@ -1252,7 +1252,7 @@ load_sliced_image (GSimpleAsyncResult *result,
  * note that the dimensions of the image loaded from @path 
  * should be a multiple of the specified grid dimensions.
  *
- * Returns: (transfer none): A new ClutterGroup
+ * Returns: (transfer none): A new #ClutterGroup
  */
 ClutterGroup *
 st_texture_cache_load_sliced_image (StTextureCache    *cache,
@@ -1349,7 +1349,7 @@ symbolic_names_for_icon (const char *name)
  * @theme_node: (allow-none): a #StThemeNode
  * @name: Name of a themed icon
  * @icon_type: the type of icon to load
- * @size: Size of themed
+ * @size: Size of themed icon
  *
  * Load a themed icon into a texture. See the #StIconType documentation
  * for an explanation of how @icon_type affects the returned icon. The
@@ -1628,7 +1628,7 @@ st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
  * into a cairo surface.  On error, a warning is emitted
  * and %NULL is returned.
  *
- * Returns: (transfer full): a new #cairo_surface_t *
+ * Returns: (transfer full): a new #cairo_surface_t
  */
 cairo_surface_t *
 st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
