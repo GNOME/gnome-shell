@@ -171,8 +171,7 @@ gvc_channel_map_class_init (GvcChannelMapClass *klass)
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcChannelMapClass, volume_changed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__BOOLEAN,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
 
         g_type_class_add_private (klass, sizeof (GvcChannelMapPrivate));
