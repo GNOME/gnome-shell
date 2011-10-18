@@ -360,7 +360,7 @@ meta_shadow_paint (MetaShadow     *shadow,
  * @window_height: actual height of the region to paint a shadow for
  *
  * Computes the bounds of the pixels that will be affected by
- * meta_shadow_paints()
+ * meta_shadow_paint()
  */
 void
 meta_shadow_get_bounds  (MetaShadow            *shadow,

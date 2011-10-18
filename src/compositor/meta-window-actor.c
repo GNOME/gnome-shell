@@ -828,9 +828,9 @@ meta_window_actor_get_x_window (MetaWindowActor *self)
 /**
  * meta_window_actor_get_meta_window:
  *
- * Gets the MetaWindow object that the the MetaWindowActor is displaying
+ * Gets the #MetaWindow object that the the #MetaWindowActor is displaying
  *
- * Return value: (transfer none): the displayed MetaWindow
+ * Return value: (transfer none): the displayed #MetaWindow
  */
 MetaWindow *
 meta_window_actor_get_meta_window (MetaWindowActor *self)
@@ -843,7 +843,7 @@ meta_window_actor_get_meta_window (MetaWindowActor *self)
  *
  * Gets the ClutterActor that is used to display the contents of the window
  *
- * Return value: (transfer none): the ClutterActor for the contents
+ * Return value: (transfer none): the #ClutterActor for the contents
  */
 ClutterActor *
 meta_window_actor_get_texture (MetaWindowActor *self)
@@ -1805,7 +1805,7 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
  * @self: a #MetaWindowActor
  *
  * Unsets the regions set by meta_window_actor_reset_visible_region() and
- *meta_window_actor_reset_visible_region_beneath()
+ * meta_window_actor_reset_visible_region_beneath()
  */
 void
 meta_window_actor_reset_visible_regions (MetaWindowActor *self)
