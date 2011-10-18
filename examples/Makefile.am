@@ -54,6 +54,7 @@ noinst_PROGRAMS = $(programs)
 endif
 
 EXTRA_DIST = \
+	crate.jpg \
 	android/hello/AndroidManifest.xml \
 	android/hello/jni/Application.mk \
 	android/hello/jni/Android.mk \
