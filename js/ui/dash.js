@@ -501,7 +501,7 @@ const Dash = new Lang.Class({
             return;
 
 
-        let themeNode = this.actor.get_theme_node();
+        let themeNode = this._box.get_theme_node();
         let maxAllocation = new Clutter.ActorBox({ x1: 0, y1: 0,
                                                    x2: 42 /* whatever */,
                                                    y2: this._maxHeight });
