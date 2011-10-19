@@ -376,7 +376,8 @@ const IMStatusChooserItem = new Lang.Class({
         if (sessionStatus == GnomeSession.PresenceStatus.IDLE) {
             // Only change presence if the current one is "more present" than
             // idle
-            if (this._currentPresence != Tp.ConnectionPresenceType.OFFLINE)
+            if (this._currentPresence != Tp.ConnectionPresenceType.OFFLINE &&
+                this._currentPresence != Tp.ConnectionPresenceType.HIDDEN)
                 return Tp.ConnectionPresenceType.EXTENDED_AWAY;
         }
 
