@@ -1081,6 +1081,7 @@ shell_app_launch (ShellApp     *app,
   gboolean ret;
   ShellGlobal *global;
   MetaScreen *screen;
+  GdkDisplay *gdisplay;
 
   if (startup_id)
     *startup_id = NULL;
@@ -1099,6 +1100,7 @@ shell_app_launch (ShellApp     *app,
 
   global = shell_global_get ();
   screen = shell_global_get_screen (global);
+  gdisplay = gdk_screen_get_display (shell_global_get_gdk_screen (global));
 
   if (timestamp == 0)
     timestamp = shell_global_get_current_time (global);
@@ -1106,7 +1108,7 @@ shell_app_launch (ShellApp     *app,
   if (workspace < 0)
     workspace = meta_screen_get_active_workspace_index (screen);
 
-  context = gdk_app_launch_context_new ();
+  context = gdk_display_get_app_launch_context (gdisplay);
   gdk_app_launch_context_set_timestamp (context, timestamp);
   gdk_app_launch_context_set_desktop (context, workspace);
 

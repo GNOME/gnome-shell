@@ -648,7 +648,7 @@ shell_global_set_cursor (ShellGlobal *global,
 
   gdk_window_set_cursor (global->stage_gdk_window, cursor);
 
-  gdk_cursor_unref (cursor);
+  g_object_unref (cursor);
 }
 
 /**
@@ -1282,9 +1282,17 @@ shell_global_get_pointer (ShellGlobal         *global,
                           int                 *y,
                           ClutterModifierType *mods)
 {
+  GdkDeviceManager *gmanager;
+  GdkDevice *gdevice;
+  GdkScreen *gscreen;
   GdkModifierType raw_mods;
 
-  gdk_display_get_pointer (global->gdk_display, NULL, x, y, &raw_mods);
+  gmanager = gdk_display_get_device_manager (global->gdk_display);
+  gdevice = gdk_device_manager_get_client_pointer (gmanager);
+  gdk_device_get_position (gdevice, &gscreen, x, y);
+  gdk_device_get_state (gdevice,
+                        gdk_screen_get_root_window (gscreen),
+                        NULL, &raw_mods);
   *mods = raw_mods & GDK_MODIFIER_MASK;
 }
 
@@ -1301,9 +1309,18 @@ shell_global_sync_pointer (ShellGlobal *global)
 {
   int x, y;
   GdkModifierType mods;
+  GdkDeviceManager *gmanager;
+  GdkDevice *gdevice;
+  GdkScreen *gscreen;
   ClutterMotionEvent event;
 
-  gdk_display_get_pointer (global->gdk_display, NULL, &x, &y, &mods);
+  gmanager = gdk_display_get_device_manager (global->gdk_display);
+  gdevice = gdk_device_manager_get_client_pointer (gmanager);
+
+  gdk_device_get_position (gdevice, &gscreen, &x, &y);
+  gdk_device_get_state (gdevice,
+                        gdk_screen_get_root_window (gscreen),
+                        NULL, &mods);
 
   event.type = CLUTTER_MOTION;
   event.time = shell_global_get_current_time (global);
@@ -1405,7 +1422,7 @@ shell_global_create_app_launch_context (ShellGlobal *global)
 {
   GdkAppLaunchContext *context;
 
-  context = gdk_app_launch_context_new ();
+  context = gdk_display_get_app_launch_context (global->gdk_display);
   gdk_app_launch_context_set_timestamp (context, shell_global_get_current_time (global));
 
   // Make sure that the app is opened on the current workspace even if
