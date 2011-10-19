@@ -106,7 +106,7 @@ typedef struct
    * array of texture coordinate varyings, but to know how to emit the
    * declaration we need to know how many texture coordinate
    * attributes are in use.  The boilerplate also needs to be changed
-   * if this increases. */
+   * if this changes. */
   int n_tex_coord_attribs;
 
 #ifdef HAVE_COGL_GLES2
@@ -620,11 +620,12 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
    * need to relink
    *
    * Also if the number of texture coordinate attributes in use has
-   * increased, then delete the program so we can prepend a new
+   * changed, then delete the program so we can prepend a new
    * _cogl_tex_coord[] varying array declaration. */
-  if (program_state->program && user_program &&
-      (user_program->age != program_state->user_program_age ||
-       n_tex_coord_attribs > program_state->n_tex_coord_attribs))
+  if ((program_state->program && user_program &&
+       user_program->age != program_state->user_program_age) ||
+      (ctx->driver == COGL_DRIVER_GLES2 &&
+       n_tex_coord_attribs != program_state->n_tex_coord_attribs))
     {
       GE( ctx, glDeleteProgram (program_state->program) );
       program_state->program = 0;
@@ -640,23 +641,6 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       /* Attach all of the shader from the user program */
       if (user_program)
         {
-          if (program_state->n_tex_coord_attribs > n_tex_coord_attribs)
-            n_tex_coord_attribs = program_state->n_tex_coord_attribs;
-
-#ifdef HAVE_COGL_GLES2
-          /* Find the largest count of texture coordinate attributes
-           * associated with each of the shaders so we can ensure a consistent
-           * _cogl_tex_coord[] array declaration across all of the shaders.*/
-          if (ctx->driver == COGL_DRIVER_GLES2 &&
-              user_program)
-            for (l = user_program->attached_shaders; l; l = l->next)
-              {
-                CoglShader *shader = l->data;
-                n_tex_coord_attribs = MAX (shader->n_tex_coord_attribs,
-                                           n_tex_coord_attribs);
-              }
-#endif
-
           for (l = user_program->attached_shaders; l; l = l->next)
             {
               CoglShader *shader = l->data;

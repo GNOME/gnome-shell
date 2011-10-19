@@ -342,7 +342,7 @@ _cogl_shader_compile_real (CoglHandle handle,
 #ifdef HAVE_COGL_GLES2
           &&
           (ctx->driver != COGL_DRIVER_GLES2 ||
-           shader->n_tex_coord_attribs >= n_tex_coord_attribs)
+           shader->n_tex_coord_attribs == n_tex_coord_attribs)
 #endif
          )
         return;
@@ -424,9 +424,11 @@ cogl_shader_get_info_log (CoglHandle handle)
        * Here we force an early compile if the user is interested in
        * log information to increase the chance that the log will be
        * useful! We have to guess the number of texture coordinate
-       * attributes that may be used (normally less than 4) since that
-       * affects the boilerplate.
-       */
+       * attributes that may be used since that affects the
+       * boilerplate. We use four so that the shader will still
+       * compile if the user is using more than one
+       * layer. Unfortunately this is likely to end up causing it to
+       * be compiled again when we know the actual number of layers */
       if (!shader->gl_handle)
         _cogl_shader_compile_real (handle, 4);
 

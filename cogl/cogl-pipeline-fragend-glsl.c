@@ -103,6 +103,11 @@ typedef struct
      program changes then we may need to redecide whether to generate
      a shader at all */
   unsigned int user_program_age;
+
+  /* The number of tex coord attributes that the shader was generated
+     for. If this changes on GLES2 then we need to regenerate the
+     shader */
+  int n_tex_coord_attribs;
 } CoglPipelineShaderState;
 
 static CoglUserDataKey shader_state_key;
@@ -268,9 +273,14 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
     {
       /* If we already have a valid GLSL shader then we don't need to
          generate a new one. However if there's a user program and it
-         has changed since the last link then we do need a new shader */
-      if (user_program == NULL ||
-          shader_state->user_program_age == user_program->age)
+         has changed since the last link then we do need a new
+         shader. If the number of tex coord attribs changes on GLES2
+         then we need to regenerate the shader with a different boiler
+         plate */
+      if ((user_program == NULL ||
+           shader_state->user_program_age == user_program->age)
+          && (ctx->driver != COGL_DRIVER_GLES2 ||
+              shader_state->n_tex_coord_attribs == n_tex_coord_attribs))
         return TRUE;
 
       /* We need to recreate the shader so destroy the existing one */
@@ -284,6 +294,8 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
 
   if (user_program)
     shader_state->user_program_age = user_program->age;
+
+  shader_state->n_tex_coord_attribs = n_tex_coord_attribs;
 
   /* If the user program contains a fragment shader then we don't need
      to generate one */
@@ -873,8 +885,6 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       GLint lengths[2];
       GLint compile_status;
       GLuint shader;
-      int n_tex_coord_attribs = 0;
-      int i, n_layers;
 
       COGL_STATIC_COUNTER (fragend_glsl_compile_counter,
                            "glsl fragment compile counter",
@@ -921,15 +931,9 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       lengths[1] = shader_state->source->len;
       source_strings[1] = shader_state->source->str;
 
-      /* Find the highest texture unit that is sampled to pass as the
-         number of texture coordinate attributes */
-      n_layers = cogl_pipeline_get_n_layers (pipeline);
-      for (i = 0; i < n_layers; i++)
-        if (shader_state->unit_state[i].sampled)
-          n_tex_coord_attribs = i + 1;
-
       _cogl_shader_set_source_with_boilerplate (shader, GL_FRAGMENT_SHADER,
-                                                n_tex_coord_attribs,
+                                                shader_state
+                                                ->n_tex_coord_attribs,
                                                 2, /* count */
                                                 source_strings, lengths);
 

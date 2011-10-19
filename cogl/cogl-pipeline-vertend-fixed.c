@@ -46,7 +46,8 @@ const CoglPipelineVertend _cogl_pipeline_fixed_vertend;
 static gboolean
 _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
-                                    unsigned long pipelines_difference)
+                                    unsigned long pipelines_difference,
+                                    int n_tex_coord_attribs)
 {
   CoglProgram *user_program;
 
