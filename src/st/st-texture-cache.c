@@ -209,14 +209,15 @@ compute_pixbuf_scale (gint      width,
 
   if (available_width >= 0 && available_height >= 0)
     {
-      // This should keep the aspect ratio of the image intact, because if
-      // available_width < (available_height * width) / height
-      // than
-      // (available_width * height) / width < available_height
-      // So we are guaranteed to either scale the image to have an available_width
-      // for width and height scaled accordingly OR have the available_height
-      // for height and width scaled accordingly, whichever scaling results
-      // in the image that can fit both available dimensions.
+      /* This should keep the aspect ratio of the image intact, because if
+       * available_width < (available_height * width) / height
+       * then
+       * (available_width * height) / width < available_height
+       * So we are guaranteed to either scale the image to have an available_width
+       * for width and height scaled accordingly OR have the available_height
+       * for height and width scaled accordingly, whichever scaling results
+       * in the image that can fit both available dimensions.
+       */
       scaled_width = MIN (available_width, (available_height * width) / height);
       scaled_height = MIN (available_height, (available_width * height) / width);
     }
@@ -235,7 +236,7 @@ compute_pixbuf_scale (gint      width,
       scaled_width = scaled_height = 0;
     }
 
-  // Scale the image only if that will not increase its original dimensions.
+  /* Scale the image only if that will not increase its original dimensions. */
   if (scaled_width > 0 && scaled_height > 0 && scaled_width < width && scaled_height < height)
     {
       *new_width = scaled_width;
@@ -306,7 +307,7 @@ impl_load_pixbuf_gicon (GIcon        *icon,
   return pixbuf;
 }
 
-// A private structure for keeping width and height.
+/* A private structure for keeping width and height. */
 typedef struct {
   int width;
   int height;
@@ -401,10 +402,11 @@ impl_load_pixbuf_data (const guchar   *data,
   rotated_pixbuf = gdk_pixbuf_apply_embedded_orientation (pixbuf);
   width_after_rotation = gdk_pixbuf_get_width (rotated_pixbuf);
 
-  // There is currently no way to tell if the pixbuf will need to be rotated before it is loaded,
-  // so we only check that once it is loaded, and reload it again if it needs to be rotated in order
-  // to use the available width and height correctly.
-  // http://bugzilla.gnome.org/show_bug.cgi?id=579003
+  /* There is currently no way to tell if the pixbuf will need to be rotated before it is loaded,
+   * so we only check that once it is loaded, and reload it again if it needs to be rotated in order
+   * to use the available width and height correctly.
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=579003
+   */
   if (width_before_rotation != width_after_rotation)
     {
       g_object_unref (pixbuf_loader);
@@ -413,7 +415,7 @@ impl_load_pixbuf_data (const guchar   *data,
 
       pixbuf_loader = gdk_pixbuf_loader_new ();
 
-      // We know that the image will later be rotated, so we reverse the available dimensions.
+      /* We know that the image will later be rotated, so we reverse the available dimensions. */
       available_dimensions.width = available_height;
       available_dimensions.height = available_width;
       g_signal_connect (pixbuf_loader, "size-prepared",
@@ -568,7 +570,7 @@ impl_load_thumbnail (StTextureCache    *cache,
       pixbuf = gnome_desktop_thumbnail_factory_generate_thumbnail (thumbnail_factory, uri, mime_type);
       if (pixbuf)
         {
-          // we need to save the thumbnail so that we don't need to generate it again in the future
+          /* we need to save the thumbnail so that we don't need to generate it again in the future */
           gnome_desktop_thumbnail_factory_save_thumbnail (thumbnail_factory, pixbuf, uri, mtime);
         }
       else
