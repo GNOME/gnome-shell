@@ -9,10 +9,26 @@ typedef struct _TestState
   int dummy;
 } TestState;
 
+static CoglHandle
+create_dummy_texture (void)
+{
+  /* Create a dummy 1x1 green texture to replace the color from the
+     vertex shader */
+  static const guint8 data[4] = { 0x00, 0xff, 0x00, 0xff };
+
+  return cogl_texture_new_from_data (1, 1, /* size */
+                                     COGL_TEXTURE_NONE,
+                                     COGL_PIXEL_FORMAT_RGB_888,
+                                     COGL_PIXEL_FORMAT_ANY,
+                                     4, /* rowstride */
+                                     data);
+}
+
 static void
 paint_legacy (TestState *state)
 {
   CoglHandle material = cogl_material_new ();
+  CoglHandle tex;
   CoglColor color;
   GError *error = NULL;
   CoglHandle shader, program;
@@ -25,14 +41,15 @@ paint_legacy (TestState *state)
   cogl_material_set_color (material, &color);
 
   /* Override the vertex color in the texture environment with a
-     constant green color */
-  cogl_color_set_from_4ub (&color, 0x00, 0xff, 0x00, 0xff);
-  cogl_material_set_layer_combine_constant (material, 0, &color);
+     constant green color provided by a texture */
+  tex = create_dummy_texture ();
+  cogl_material_set_layer (material, 0, tex);
+  cogl_handle_unref (tex);
   if (!cogl_material_set_layer_combine (material, 0,
-                                        "RGBA=REPLACE(CONSTANT)",
+                                        "RGBA=REPLACE(TEXTURE)",
                                         &error))
     {
-      g_warning ("Error setting blend constant: %s", error->message);
+      g_warning ("Error setting layer combine: %s", error->message);
       g_assert_not_reached ();
     }
 
@@ -47,6 +64,7 @@ paint_legacy (TestState *state)
                       "cogl_modelview_projection_matrix * "
                       "cogl_position_in;\n"
                       "  cogl_color_out = cogl_color_in;\n"
+                      "  cogl_tex_coord_out[0] = cogl_tex_coord_in;\n"
                       "}\n");
   cogl_shader_compile (shader);
   if (!cogl_shader_is_compiled (shader))
@@ -80,6 +98,7 @@ static void
 paint (TestState *state)
 {
   CoglPipeline *pipeline = cogl_pipeline_new ();
+  CoglHandle tex;
   CoglColor color;
   GError *error = NULL;
   CoglHandle shader, program;
@@ -92,14 +111,15 @@ paint (TestState *state)
   cogl_pipeline_set_color (pipeline, &color);
 
   /* Override the vertex color in the texture environment with a
-     constant green color */
-  cogl_color_set_from_4ub (&color, 0x00, 0xff, 0x00, 0xff);
-  cogl_pipeline_set_layer_combine_constant (pipeline, 0, &color);
+     constant green color provided by a texture */
+  tex = create_dummy_texture ();
+  cogl_pipeline_set_layer_texture (pipeline, 0, tex);
+  cogl_handle_unref (tex);
   if (!cogl_pipeline_set_layer_combine (pipeline, 0,
-                                        "RGBA=REPLACE(CONSTANT)",
+                                        "RGBA=REPLACE(TEXTURE)",
                                         &error))
     {
-      g_warning ("Error setting blend constant: %s", error->message);
+      g_warning ("Error setting layer combine: %s", error->message);
       g_assert_not_reached ();
     }
 
@@ -114,6 +134,7 @@ paint (TestState *state)
                       "cogl_modelview_projection_matrix * "
                       "cogl_position_in;\n"
                       "  cogl_color_out = cogl_color_in;\n"
+                      "  cogl_tex_coord_out[0] = cogl_tex_coord_in;\n"
                       "}\n");
   cogl_shader_compile (shader);
   if (!cogl_shader_is_compiled (shader))
