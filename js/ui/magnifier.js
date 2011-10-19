@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GDesktopEnums = imports.gi.GDesktopEnums;
 const Gio = imports.gi.Gio;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -12,22 +13,6 @@ const Main = imports.ui.main;
 const MagnifierDBus = imports.ui.magnifierDBus;
 const Params = imports.misc.params;
 
-// Keep enums in sync with GSettings schemas
-const MouseTrackingMode = {
-    NONE: 0,
-    CENTERED: 1,
-    PROPORTIONAL: 2,
-    PUSH: 3
-};
-
-const ScreenPosition = {
-    NONE: 0,
-    FULL_SCREEN: 1,
-    TOP_HALF: 2,
-    BOTTOM_HALF: 3,
-    LEFT_HALF: 4,
-    RIGHT_HALF: 5
-};
 
 const MOUSE_POLL_FREQUENCY = 50;
 const CROSSHAIRS_CLIP_SIZE = [100, 100];
@@ -520,7 +505,7 @@ Magnifier.prototype = {
         if (this._zoomRegions.length) {
             let position = this._settings.get_enum(SCREEN_POSITION_KEY);
             this._zoomRegions[0].setScreenPosition(position);
-            if (position != ScreenPosition.FULL_SCREEN)
+            if (position != GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN)
                 this._updateLensMode();
         }
     },
@@ -569,10 +554,10 @@ ZoomRegion.prototype = {
     _init: function(magnifier, mouseSourceActor) {
         this._magnifier = magnifier;
 
-        this._mouseTrackingMode = MouseTrackingMode.NONE;
+        this._mouseTrackingMode = GDesktopEnums.MagnifierMouseTrackingMode.NONE;
         this._clampScrollingAtEdges = false;
         this._lensMode = false;
-        this._screenPosition = ScreenPosition.FULL_SCREEN;
+        this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
 
         this._magView = null;
         this._uiGroupClone = null;
@@ -647,7 +632,8 @@ ZoomRegion.prototype = {
      * @mode:     One of the enum MouseTrackingMode values.
      */
     setMouseTrackingMode: function(mode) {
-        if (mode >= MouseTrackingMode.NONE && mode <= MouseTrackingMode.PUSH)
+        if (mode >= GDesktopEnums.MagnifierMouseTrackingMode.NONE &&
+            mode <= GDesktopEnums.MagnifierMouseTrackingMode.PUSH)
             this._mouseTrackingMode = mode;
     },
 
@@ -668,7 +654,7 @@ ZoomRegion.prototype = {
      */
     setViewPort: function(viewPort) {
         this._setViewPort(viewPort);
-        this._screenPosition = ScreenPosition.NONE;
+        this._screenPosition = GDesktopEnums.MagnifierScreenPosition.NONE;
     },
 
     /**
@@ -750,7 +736,7 @@ ZoomRegion.prototype = {
         viewPort.width = global.screen_width;
         viewPort.height = global.screen_height/2;
         this._setViewPort(viewPort);
-        this._screenPosition = ScreenPosition.TOP_HALF;
+        this._screenPosition = GDesktopEnums.MagnifierScreenPosition.TOP_HALF;
     },
 
     /**
@@ -764,7 +750,7 @@ ZoomRegion.prototype = {
         viewPort.width = global.screen_width;
         viewPort.height = global.screen_height/2;
         this._setViewPort(viewPort);
-        this._screenPosition = ScreenPosition.BOTTOM_HALF;
+        this._screenPosition = GDesktopEnums.MagnifierScreenPosition.BOTTOM_HALF;
     },
 
     /**
@@ -778,7 +764,7 @@ ZoomRegion.prototype = {
         viewPort.width = global.screen_width/2;
         viewPort.height = global.screen_height;
         this._setViewPort(viewPort);
-        this._screenPosition = ScreenPosition.LEFT_HALF;
+        this._screenPosition = GDesktopEnums.MagnifierScreenPosition.LEFT_HALF;
     },
 
     /**
@@ -792,7 +778,7 @@ ZoomRegion.prototype = {
         viewPort.width = global.screen_width/2;
         viewPort.height = global.screen_height;
         this._setViewPort(viewPort);
-        this._screenPosition = ScreenPosition.RIGHT_HALF;
+        this._screenPosition = GDesktopEnums.MagnifierScreenPosition.RIGHT_HALF;
     },
 
     /**
@@ -808,7 +794,7 @@ ZoomRegion.prototype = {
         viewPort.height = global.screen_height;
         this.setViewPort(viewPort);
 
-        this._screenPosition = ScreenPosition.FULL_SCREEN;
+        this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
     },
 
     /**
@@ -821,19 +807,19 @@ ZoomRegion.prototype = {
      */
     setScreenPosition: function(inPosition) {
         switch (inPosition) {
-            case ScreenPosition.FULL_SCREEN:
+            case GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN:
                 this.setFullScreenMode();
                 break;
-            case ScreenPosition.TOP_HALF:
+            case GDesktopEnums.MagnifierScreenPosition.TOP_HALF:
                 this.setTopHalf();
                 break;
-            case ScreenPosition.BOTTOM_HALF:
+            case GDesktopEnums.MagnifierScreenPosition.BOTTOM_HALF:
                 this.setBottomHalf();
                 break;
-            case ScreenPosition.LEFT_HALF:
+            case GDesktopEnums.MagnifierScreenPosition.LEFT_HALF:
                 this.setLeftHalf();
                 break;
-            case ScreenPosition.RIGHT_HALF:
+            case GDesktopEnums.MagnifierScreenPosition.RIGHT_HALF:
                 this.setRightHalf();
                 break;
         }
@@ -856,7 +842,7 @@ ZoomRegion.prototype = {
      */
     scrollToMousePos: function() {
         this._followingCursor = true;
-        if (this._mouseTrackingMode != MouseTrackingMode.NONE)
+        if (this._mouseTrackingMode != GDesktopEnums.MagnifierMouseTrackingMode.NONE)
             this._changeROI({ redoCursorTracking: true });
         else
             this._updateMousePosition();
@@ -991,7 +977,7 @@ ZoomRegion.prototype = {
         this._yMagFactor = params.yMagFactor;
 
         if (params.redoCursorTracking &&
-            this._mouseTrackingMode != MouseTrackingMode.NONE) {
+            this._mouseTrackingMode != GDesktopEnums.MagnifierMouseTrackingMode.NONE) {
             // This depends on this.xMagFactor/yMagFactor already being updated
             [params.xCenter, params.yCenter] = this._centerFromMousePosition();
         }
@@ -1041,7 +1027,7 @@ ZoomRegion.prototype = {
     _isFullScreen: function() {
         // Does the magnified view occupy the whole screen? Note that this
         // doesn't necessarily imply
-        // this._screenPosition = ScreenPosition.FULL_SCREEN;
+        // this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
 
         if (this._viewPortX != 0 || this._viewPortY != 0)
             return false;
@@ -1058,13 +1044,13 @@ ZoomRegion.prototype = {
         let xMouse = this._magnifier.xMouse;
         let yMouse = this._magnifier.yMouse;
 
-        if (this._mouseTrackingMode == MouseTrackingMode.PROPORTIONAL) {
+        if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PROPORTIONAL) {
             return this._centerFromMouseProportional(xMouse, yMouse);
         }
-        else if (this._mouseTrackingMode == MouseTrackingMode.PUSH) {
+        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PUSH) {
             return this._centerFromMousePush(xMouse, yMouse);
         }
-        else if (this._mouseTrackingMode == MouseTrackingMode.CENTERED) {
+        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.CENTERED) {
             return this._centerFromMouseCentered(xMouse, yMouse);
         }
 
