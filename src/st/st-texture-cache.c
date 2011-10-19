@@ -1053,6 +1053,18 @@ load_gicon_with_colors (StTextureCache    *cache,
   GtkIconInfo *info;
   StTextureCachePolicy policy;
 
+  /* Do theme lookups in the main thread to avoid thread-unsafety */
+  theme = cache->priv->icon_theme;
+
+  info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
+  if (info == NULL)
+    {
+      /* gah, the icon doesn't exist. Return a blank texture that will never load */
+      texture = CLUTTER_ACTOR (create_default_texture (cache));
+      clutter_actor_set_size (texture, size, size);
+      return texture;
+    }
+
   gicon_string = g_icon_to_string (icon);
   /* A return value of NULL indicates that the icon can not be serialized,
    * so don't have a unique identifier for it as a cache key, and thus can't
@@ -1079,18 +1091,15 @@ load_gicon_with_colors (StTextureCache    *cache,
 
   if (create_texture_and_ensure_request (cache, key, size, policy, &request, &texture))
     {
+      /* If there's an outstanding request, we've just added ourselves to it */
       g_free (key);
-      return texture;
     }
-
-  /* Do theme lookups in the main thread to avoid thread-unsafety */
-  theme = cache->priv->icon_theme;
-
-  info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
-  if (info != NULL)
+  else
     {
-      /* Transfer ownership of key */
+      /* Else, make a new request */
+
       request->cache = cache;
+      /* Transfer ownership of key */
       request->key = key;
       request->policy = policy;
       request->icon = g_object_ref (icon);
@@ -1099,19 +1108,6 @@ load_gicon_with_colors (StTextureCache    *cache,
       request->enforced_square = TRUE;
 
       load_texture_async (cache, request);
-    }
-  else
-    {
-      /* Blah; we failed to find the icon, but we've added our texture to the outstanding
-       * requests.  In that case, just undo what create_texture_and_ensure_request() did.
-       */
-       g_slist_foreach (request->textures, (GFunc) g_object_unref, NULL);
-       g_slist_free (request->textures);
-       g_free (request);
-       g_hash_table_remove (cache->priv->outstanding_requests, key);
-       g_free (key);
-       g_object_unref (texture);
-       texture = NULL;
     }
 
   return CLUTTER_ACTOR (texture);
