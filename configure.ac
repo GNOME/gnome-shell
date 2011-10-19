@@ -179,19 +179,13 @@ FLAVOUR_CFLAGS=""
 CLUTTER_WINSYS_BASE=
 CLUTTER_WINSYS_BASE_LIB=
 CLUTTER_WINSYS=
-glesversion=1.1
-use_gles2_wrapper=no
+
 experimental_backend=no
 
 AC_ARG_WITH([flavour],
             [AS_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/cex100@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_FLAVOUR=$with_flavour])
-
-AC_ARG_WITH([gles],
-            [AS_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
-                            [Select Clutter GLES version (for EGL backends)])],
-            [glesversion=$with_gles])
 
 # base dependencies for core
 CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
