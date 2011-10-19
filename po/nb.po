@@ -6,10 +6,10 @@
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 3.1.x\n"
+"Project-Id-Version: gnome-shell 3.3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-18 07:47+0200\n"
-"PO-Revision-Date: 2011-10-18 07:48+0200\n"
+"POT-Creation-Date: 2011-10-19 22:42+0200\n"
+"PO-Revision-Date: 2011-10-19 22:42+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -603,33 +603,47 @@ msgstr "Tastatur"
 msgid "No extensions installed"
 msgstr "Ingen utvidelser installert"
 
-#: ../js/ui/lookingGlass.js:692
+#. Translators: argument is an extension UUID.
+#: ../js/ui/lookingGlass.js:701
+#, c-format
+msgid "%s has not emitted any errors."
+msgstr "%s har ikke avgitt noen feil."
+
+#: ../js/ui/lookingGlass.js:707
+msgid "Hide Errors"
+msgstr "Skjul feil"
+
+#: ../js/ui/lookingGlass.js:711 ../js/ui/lookingGlass.js:761
+msgid "Show Errors"
+msgstr "Vis feil"
+
+#: ../js/ui/lookingGlass.js:720
 msgid "Enabled"
 msgstr "Aktivert"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:694 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:722 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: ../js/ui/lookingGlass.js:696
+#: ../js/ui/lookingGlass.js:724
 msgid "Error"
 msgstr "Feil"
 
-#: ../js/ui/lookingGlass.js:698
+#: ../js/ui/lookingGlass.js:726
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:700
+#: ../js/ui/lookingGlass.js:728
 msgid "Downloading"
 msgstr "Laster ned"
 
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:749
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:727
+#: ../js/ui/lookingGlass.js:755
 msgid "Web Page"
 msgstr "Nettside"
 
@@ -1540,7 +1554,7 @@ msgstr ""
 msgid "Type to search..."
 msgstr "Skriv for å søke …"
 
-#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:261
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:244
 msgid "Search"
 msgstr "Søk"
 
@@ -1596,13 +1610,15 @@ msgstr "Forvalg"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Autentiseringsdialogen ble lukket av brukeren"
 
-#: ../src/shell-util.c:100
-msgid "Home Folder"
-msgstr "Hjemmemappe"
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-util.c:89
+msgid "Home"
+msgstr "Hjem"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:115
+#: ../src/shell-util.c:98
 msgid "File System"
 msgstr "Filsystem"
 
@@ -1611,7 +1627,7 @@ msgstr "Filsystem"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:311
+#: ../src/shell-util.c:294
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
