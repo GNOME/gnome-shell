@@ -1182,12 +1182,13 @@ shell_global_get_memory_info (ShellGlobal        *global,
   JSContext *context;
   gint64 now;
 
-  memset (meminfo, 0, sizeof (meminfo));
 #ifdef HAVE_MALLINFO
   {
     struct mallinfo info = mallinfo ();
     meminfo->glibc_uordblks = info.uordblks;
   }
+#else
+  meminfo->glibc_uordblks = 0;
 #endif
 
   context = gjs_context_get_native_context (global->js_context);
