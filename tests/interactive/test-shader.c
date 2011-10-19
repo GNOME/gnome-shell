@@ -36,8 +36,7 @@ typedef struct
  * correctly).
  */
 #define FRAGMENT_SHADER_END                    \
-      "  gl_FragColor = color;"    \
-      "  gl_FragColor = gl_FragColor * cogl_color_in;" \
+      "  cogl_color_out = color * cogl_color_in;" \
       "}"
 
 static ShaderSource shaders[]=
