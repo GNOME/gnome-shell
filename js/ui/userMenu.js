@@ -430,7 +430,7 @@ UserMenuButton.prototype = {
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
 
-        this._account_mgr = Tp.AccountManager.dup()
+        this._accountMgr = Tp.AccountManager.dup()
 
         this._upClient = new UPowerGlib.Client();
         this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
@@ -457,9 +457,9 @@ UserMenuButton.prototype = {
                                Lang.bind(this, this._updateSwitch));
         this._presence.getStatus(Lang.bind(this, this._updateSwitch));
 
-        this._account_mgr.connect('most-available-presence-changed',
+        this._accountMgr.connect('most-available-presence-changed',
                                   Lang.bind(this, this._updatePresenceIcon));
-        this._account_mgr.prepare_async(null, Lang.bind(this,
+        this._accountMgr.prepare_async(null, Lang.bind(this,
             function(mgr) {
                 let [presence, s, msg] = mgr.get_most_available_presence();
                 this._updatePresenceIcon(mgr, presence, s, msg);
@@ -653,7 +653,7 @@ UserMenuButton.prototype = {
         } else {
             status = GnomeSession.PresenceStatus.BUSY;
 
-            let [presence, s, msg] = this._account_mgr.get_most_available_presence();
+            let [presence, s, msg] = this._accountMgr.get_most_available_presence();
             let newPresence = this._statusChooser.getIMPresenceForSessionStatus(status);
             if (newPresence != presence &&
                 newPresence == Tp.ConnectionPresenceType.BUSY)
