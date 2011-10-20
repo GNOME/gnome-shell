@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="test-interactive"
-	ProjectGUID="{75F9E5AF-040C-448E-96BE-C282EFFFE2D9}"
-	RootNamespace="testinteractive"
+	Name="test-conformance-clutter"
+	ProjectGUID="{0F08F253-DE1A-40CB-A890-93AE3CA23ADE}"
+	RootNamespace="testconformanceclutter"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -22,7 +22,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			InheritedPropertySheets=".\clutter.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-interactive"
+			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-conformance"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -31,9 +31,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;$(TestProgDef)"
+				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -44,7 +43,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalDependencies="pango-1.0.lib cairo.lib gmodule-2.0.lib gthread-2.0.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -54,7 +53,7 @@
 			Name="Debug|x64"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\clutter.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-interactive"
+			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-conformance"
 			CharacterSet="2"
 			>
 			<Tool
@@ -62,9 +61,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;$(TestProgDef)"
+				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -75,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pango-1.0.lib cairo.lib gmodule-2.0.lib gthread-2.0.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -87,7 +85,7 @@
 		<Configuration
 			Name="Release|Win32"
 			InheritedPropertySheets=".\clutter.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-interactive"
+			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-conformance"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -97,10 +95,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="$(TestProgDef)"
+				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -110,7 +107,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalDependencies="pango-1.0.lib cairo.lib gmodule-2.0.lib gthread-2.0.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -122,7 +119,7 @@
 			Name="Release|x64"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\clutter.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-interactive"
+			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-conformance"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -131,8 +128,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
-				PreprocessorDefinitions="$(TestProgDef)"
+				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -141,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pango-1.0.lib cairo.lib gmodule-2.0.lib gthread-2.0.lib OpenGL32.lib"
+				AdditionalDependencies="pango-1.0.lib cairo.lib atk-1.0.lib OpenGL32.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -161,7 +157,7 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-#include "testinteractive.sourcefiles"
+#include "testconformance.sourcefiles"
 		</Filter>
 	</Files>
 	<Globals>

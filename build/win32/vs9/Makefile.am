@@ -10,10 +10,10 @@ EXTRA_DIST = \
 	clutter.vsprops		\
 	install.vcproj	\
 	test-cogl-perf.vcproj		\
-	test-conformance.vcproj		\
-	test-conformance.vcprojin	\
-	test-interactive.vcproj		\
-	test-interactive.vcprojin	\
+	test-conformance-clutter.vcproj		\
+	test-conformance-clutter.vcprojin	\
+	test-interactive-clutter.vcproj		\
+	test-interactive-clutter.vcprojin	\
 	test-picking.vcproj		\
 	test-random-text.vcproj	\
 	test-text-perf.vcproj	\

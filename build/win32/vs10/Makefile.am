@@ -18,14 +18,14 @@ EXTRA_DIST = \
 	install.vcxproj	\
 	test-cogl-perf.vcxproj		\
 	test-cogl-perf.vcxproj.filters		\
-	test-conformance.vcxproj		\
-	test-conformance.vcxprojin	\
-	test-conformance.vcxproj.filters		\
-	test-conformance.vcxproj.filtersin	\
-	test-interactive.vcxproj		\
-	test-interactive.vcxprojin	\
-	test-interactive.vcxproj.filters		\
-	test-interactive.vcxproj.filtersin	\
+	test-conformance-clutter.vcxproj		\
+	test-conformance-clutter.vcxprojin	\
+	test-conformance-clutter.vcxproj.filters		\
+	test-conformance-clutter.vcxproj.filtersin	\
+	test-interactive-clutter.vcxproj		\
+	test-interactive-clutter.vcxprojin	\
+	test-interactive-clutter.vcxproj.filters		\
+	test-interactive-clutter.vcxproj.filtersin	\
 	test-picking.vcxproj		\
 	test-picking.vcxproj.filters		\
 	test-random-text.vcxproj	\

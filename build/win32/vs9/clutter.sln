@@ -53,12 +53,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cally-clone-example", "call
 		{EA036190-0950-4640-84F9-D459A33B33A8} = {EA036190-0950-4640-84F9-D459A33B33A8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-conformance", "test-conformance.vcproj", "{0F08F253-DE1A-40CB-A890-93AE3CA23ADE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-conformance-clutter", "test-conformance-clutter.vcproj", "{0F08F253-DE1A-40CB-A890-93AE3CA23ADE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EA036190-0950-4640-84F9-D459A33B33A8} = {EA036190-0950-4640-84F9-D459A33B33A8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-interactive", "test-interactive.vcproj", "{75F9E5AF-040C-448E-96BE-C282EFFFE2D9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-interactive-clutter", "test-interactive-clutter.vcproj", "{75F9E5AF-040C-448E-96BE-C282EFFFE2D9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EA036190-0950-4640-84F9-D459A33B33A8} = {EA036190-0950-4640-84F9-D459A33B33A8}
 	EndProjectSection

@@ -23,9 +23,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cally-atkevents-example", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cally-clone-example", "cally-clone-example.vcxproj", "{E77D40D0-19D4-4865-BE20-B6DA05BA234D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-conformance", "test-conformance.vcxproj", "{0F08F253-DE1A-40CB-A890-93AE3CA23ADE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-conformance-clutter", "test-conformance-clutter.vcxproj", "{0F08F253-DE1A-40CB-A890-93AE3CA23ADE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-interactive", "test-interactive.vcxproj", "{75F9E5AF-040C-448E-96BE-C282EFFFE2D9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-interactive-clutter", "test-interactive-clutter.vcxproj", "{75F9E5AF-040C-448E-96BE-C282EFFFE2D9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "install.vcxproj", "{35B2A4AC-7235-4FC7-995D-469D59195041}"
 EndProject

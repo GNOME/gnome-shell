@@ -290,42 +290,42 @@ HTML_REPORTS = \
 EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
 DISTCLEANFILES = test-launcher.sh .gitignore
 
-dist-hook: ../../build/win32/vs9/test-conformance.vcproj ../../build/win32/vs10/test-conformance.vcxproj ../../build/win32/vs10/test-conformance.vcxproj.filters
+dist-hook: ../../build/win32/vs9/test-conformance-clutter.vcproj ../../build/win32/vs10/test-conformance-clutter.vcxproj ../../build/win32/vs10/test-conformance-clutter.vcxproj.filters
 
-../../build/win32/vs9/test-conformance.vcproj: $(top_srcdir)/build/win32/vs9/test-conformance.vcprojin
+../../build/win32/vs9/test-conformance-clutter.vcproj: $(top_srcdir)/build/win32/vs9/test-conformance-clutter.vcprojin
 	for F in $(test_conformance_SOURCES); do \
 		case $$F in \
 		*.c)	echo '   <File RelativePath="..\..\..\tests\conform\'$$F'" />' \
 			;; \
 		esac; \
 	done >testconformance.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-conformance.vcprojin >$@
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-conformance-clutter.vcprojin >$@
 	rm testconformance.sourcefiles
 	
-../../build/win32/vs10/test-conformance.vcxproj: $(top_srcdir)/build/win32/vs10/test-conformance.vcxprojin
+../../build/win32/vs10/test-conformance-clutter.vcxproj: $(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxprojin
 	for F in $(test_conformance_SOURCES); do \
 		case $$F in \
 		*.c)	echo '    <ClCompile Include="..\..\..\tests\conform\'$$F'" />' \
 			;; \
 		esac; \
 	done >testconformance.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance.vcxprojin >$@
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxprojin >$@
 	rm testconformance.vs10.sourcefiles
 	
-../../build/win32/vs10/test-conformance.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-conformance.vcxproj.filtersin
+../../build/win32/vs10/test-conformance-clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxproj.filtersin
 	for F in $(test_conformance_SOURCES); do \
 		case $$F in \
 		*.c)	echo '    <ClCompile Include="..\..\..\tests\conform\'$$F'"><Filter>Sources</Filter></ClCompile>' \
 			;; \
 		esac; \
 	done >testconformance.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance.vcxproj.filtersin >$@
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxproj.filtersin >$@
 	rm testconformance.vs10.sourcefiles.filters
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += ../../build/win32/vs9/test-conformance.vcproj	\
-		  ../../build/win32/vs10/test-conformance.vcxproj	\
-		  ../../build/win32/vs10/test-conformance.vcxproj.filters
+DISTCLEANFILES += ../../build/win32/vs9/test-conformance-clutter.vcproj	\
+		  ../../build/win32/vs10/test-conformance-clutter.vcxproj	\
+		  ../../build/win32/vs10/test-conformance-clutter.vcxproj.filters
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES

@@ -166,9 +166,9 @@ DISTCLEANFILES = wrapper.sh .gitignore test-unit-names.h
 
 BUILT_SOURCES = wrappers test-unit-names.h
 
-dist-hook: ../../build/win32/vs9/test-interactive.vcproj ../../build/win32/vs10/test-interactive.vcxproj ../../build/win32/vs10/test-interactive.vcxproj.filters
+dist-hook: ../../build/win32/vs9/test-interactive-clutter.vcproj ../../build/win32/vs10/test-interactive-clutter.vcxproj ../../build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
-../../build/win32/vs9/test-interactive.vcproj: $(top_srcdir)/build/win32/vs9/test-interactive.vcprojin
+../../build/win32/vs9/test-interactive-clutter.vcproj: $(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
 		test-pixmap.c|test-devices.c) ;; \
@@ -176,10 +176,10 @@ dist-hook: ../../build/win32/vs9/test-interactive.vcproj ../../build/win32/vs10/
 			;; \
 		esac; \
 	done >testinteractive.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-interactive.vcprojin >$@
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin >$@
 	rm testinteractive.sourcefiles
 	
-../../build/win32/vs10/test-interactive.vcxproj: $(top_srcdir)/build/win32/vs10/test-interactive.vcxprojin
+../../build/win32/vs10/test-interactive-clutter.vcxproj: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
 		test-pixmap.c|test-devices.c) ;; \
@@ -187,10 +187,10 @@ dist-hook: ../../build/win32/vs9/test-interactive.vcproj ../../build/win32/vs10/
 			;; \
 		esac; \
 	done >testinteractive.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive.vcxprojin >$@
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin >$@
 	rm testinteractive.vs10.sourcefiles
 	
-../../build/win32/vs10/test-interactive.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-interactive.vcxproj.filtersin
+../../build/win32/vs10/test-interactive-clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxproj.filtersin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
 		test-pixmap.c|test-devices.c) ;; \
@@ -198,12 +198,12 @@ dist-hook: ../../build/win32/vs9/test-interactive.vcproj ../../build/win32/vs10/
 			;; \
 		esac; \
 	done >testinteractive.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive.vcxproj.filtersin >$@
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxproj.filtersin >$@
 	rm testinteractive.vs10.sourcefiles.filters
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += ../../build/win32/vs9/test-interactive.vcproj	\
-		  ../../build/win32/vs10/test-interactive.vcxproj	\
-		  ../../build/win32/vs10/test-interactive.vcxproj.filters
+DISTCLEANFILES += ../../build/win32/vs9/test-interactive-clutter.vcproj	\
+		  ../../build/win32/vs10/test-interactive-clutter.vcxproj	\
+		  ../../build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
 clean-local: clean-wrappers
