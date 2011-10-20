@@ -165,7 +165,7 @@ IMStatusChooserItem.prototype = {
         this._imPresenceRestored = false;
         this._currentPresence = undefined;
 
-        this._accountMgr = Tp.AccountManager.dup()
+        this._accountMgr = Tp.AccountManager.dup();
         this._accountMgr.connect('most-available-presence-changed',
                                  Lang.bind(this, this._IMStatusChanged));
         this._accountMgr.prepare_async(null, Lang.bind(this,
@@ -430,7 +430,7 @@ UserMenuButton.prototype = {
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
 
-        this._accountMgr = Tp.AccountManager.dup()
+        this._accountMgr = Tp.AccountManager.dup();
 
         this._upClient = new UPowerGlib.Client();
         this._screenSaverProxy = new ScreenSaver.ScreenSaverProxy();
