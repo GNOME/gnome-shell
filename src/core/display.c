@@ -153,6 +153,12 @@ static guint display_signals [LAST_SIGNAL] = { 0 };
  */
 static MetaDisplay *the_display = NULL;
 
+
+/* By default, the GNOME keybindings capplet should include both the Mutter
+ * and Metacity keybindings */
+static const char *gnome_wm_keybindings = "Mutter,Metacity";
+static const char *net_wm_name = "Mutter";
+
 #ifdef WITH_VERBOSE_MODE
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
@@ -407,6 +413,36 @@ meta_display_init (MetaDisplay *disp)
 {
   /* Some stuff could go in here that's currently in _open,
    * but it doesn't really matter. */
+}
+
+/**
+ * meta_set_wm_name: (skip)
+ * @wm_name: value for _NET_WM_NAME
+ *
+ * Set the value to use for the _NET_WM_NAME property. To take effect,
+ * it is necessary to call this function before meta_init().
+ */
+void
+meta_set_wm_name (const char *wm_name)
+{
+  g_return_if_fail (the_display == NULL);
+
+  net_wm_name = wm_name;
+}
+
+/**
+ * meta_set_gnome_wm_keybindings: (skip)
+ * @wm_keybindings: value for _GNOME_WM_KEYBINDINGS
+ *
+ * Set the value to use for the _GNOME_WM_KEYBINDINGS property. To take
+ * effect, it is necessary to call this function before meta_init().
+ */
+void
+meta_set_gnome_wm_keybindings (const char *wm_keybindings)
+{
+  g_return_if_fail (the_display == NULL);
+
+  gnome_wm_keybindings = wm_keybindings;
 }
 
 /**
@@ -762,14 +798,12 @@ meta_display_open (void)
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,
                                     the_display->atom__NET_WM_NAME,
-                                    "Mutter");
+                                    net_wm_name);
 
-    /* The GNOME keybindings capplet should include both the Mutter and Metacity
-     * keybindings */
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,
                                     the_display->atom__GNOME_WM_KEYBINDINGS,
-                                    "Mutter,Metacity");
+                                    gnome_wm_keybindings);
     
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,

@@ -31,6 +31,9 @@ void            meta_init               (void);
 int             meta_run                (void);
 gboolean        meta_get_replace_current_wm (void);  /* Actually defined in util.c */
 
+void            meta_set_wm_name              (const char *wm_name);
+void            meta_set_gnome_wm_keybindings (const char *wm_keybindings);
+
 typedef enum
 {
   META_EXIT_SUCCESS,
