@@ -81,9 +81,9 @@ struct _ClutterCloneClass
 GType clutter_clone_get_type (void) G_GNUC_CONST;
 
 ClutterActor *clutter_clone_new        (ClutterActor *source);
-void          clutter_clone_set_source (ClutterClone *clone,
+void          clutter_clone_set_source (ClutterClone *self,
                                         ClutterActor *source);
-ClutterActor *clutter_clone_get_source (ClutterClone *clone);
+ClutterActor *clutter_clone_get_source (ClutterClone *self);
 
 G_END_DECLS
 

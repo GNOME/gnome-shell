@@ -210,17 +210,6 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
   return parent_class->pre_paint (effect);
 }
 
-static CoglHandle
-clutter_blur_effect_create_texture (ClutterOffscreenEffect *effect,
-                                    gfloat                  min_width,
-                                    gfloat                  min_height)
-{
-  return cogl_texture_new_with_size (min_width + (2 * BLUR_PADDING),
-                                     min_height + (2 * BLUR_PADDING),
-                                     COGL_TEXTURE_NO_SLICING,
-                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE);
-}
-
 static void
 clutter_blur_effect_paint_target (ClutterOffscreenEffect *effect)
 {
@@ -303,7 +292,6 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
   effect_class->get_paint_volume = clutter_blur_effect_get_paint_volume;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
-  offscreen_class->create_texture = clutter_blur_effect_create_texture;
   offscreen_class->paint_target = clutter_blur_effect_paint_target;
 }
 

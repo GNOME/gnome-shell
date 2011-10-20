@@ -179,20 +179,13 @@ FLAVOUR_CFLAGS=""
 CLUTTER_WINSYS_BASE=
 CLUTTER_WINSYS_BASE_LIB=
 CLUTTER_WINSYS=
-glesversion=1.1
-use_gles2_wrapper=no
+
 experimental_backend=no
-experimental_image=no
 
 AC_ARG_WITH([flavour],
             [AS_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/cex100@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_FLAVOUR=$with_flavour])
-
-AC_ARG_WITH([gles],
-            [AS_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
-                            [Select Clutter GLES version (for EGL backends)])],
-            [glesversion=$with_gles])
 
 # base dependencies for core
 CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
@@ -404,14 +397,6 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [
         AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
-
-        AC_CHECK_HEADERS([GL/glx.h],
-                         [],
-                         [AC_MSG_ERROR([Unable to locate required GLX headers])])
-
-        AC_CHECK_LIB(GL, [glXCreateContext],
-                     [HAVE_LIBGLX=yes],
-                     [AC_MSG_ERROR([Required GLX library not found])])
       ])
 
 AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
@@ -1061,9 +1046,7 @@ fi
 echo ""
 
 # General warning about experimental features
-if test "x$experimental_backend" = "xyes" ||
-   test "x$experimental_image" = "xyes"
-then
+if test "x$experimental_backend" = "xyes"; then
 echo ""
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo " *WARNING*"

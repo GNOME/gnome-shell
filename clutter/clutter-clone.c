@@ -154,19 +154,17 @@ clutter_clone_apply_transform (ClutterActor *self, CoglMatrix *matrix)
 }
 
 static void
-clutter_clone_paint (ClutterActor *self)
+clutter_clone_paint (ClutterActor *actor)
 {
-  ClutterClone *clone = CLUTTER_CLONE (self);
-  ClutterClonePrivate *priv = clone->priv;
+  ClutterClone *self = CLUTTER_CLONE (actor);
+  ClutterClonePrivate *priv = self->priv;
   gboolean was_unmapped = FALSE;
 
   if (priv->clone_source == NULL)
     return;
 
-  CLUTTER_NOTE (PAINT,
-                "painting clone actor '%s'",
-		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
-                                              : "unknown");
+  CLUTTER_NOTE (PAINT, "painting clone actor '%s'",
+                _clutter_actor_get_debug_name (actor));
 
   /* The final bits of magic:
    * - We need to override the paint opacity of the actor with our own
@@ -178,7 +176,7 @@ clutter_clone_paint (ClutterActor *self)
    */
   _clutter_actor_set_in_clone_paint (priv->clone_source, TRUE);
   _clutter_actor_set_opacity_override (priv->clone_source,
-                                       clutter_actor_get_paint_opacity (self));
+                                       clutter_actor_get_paint_opacity (actor));
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, FALSE);
 
   if (!CLUTTER_ACTOR_IS_MAPPED (priv->clone_source))
@@ -200,10 +198,10 @@ clutter_clone_paint (ClutterActor *self)
 }
 
 static gboolean
-clutter_clone_get_paint_volume (ClutterActor *self,
+clutter_clone_get_paint_volume (ClutterActor       *actor,
                                 ClutterPaintVolume *volume)
 {
-  ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
+  ClutterClonePrivate *priv = CLUTTER_CLONE (actor)->priv;
   const ClutterPaintVolume *source_volume;
 
   /* if the source is not set the paint volume is defined to be empty */
@@ -213,18 +211,19 @@ clutter_clone_get_paint_volume (ClutterActor *self,
   /* query the volume of the source actor and simply masquarade it as
    * the clones volume... */
   source_volume = clutter_actor_get_paint_volume (priv->clone_source);
-  if (!source_volume)
+  if (source_volume == NULL)
     return FALSE;
 
   _clutter_paint_volume_set_from_volume (volume, source_volume);
-  _clutter_paint_volume_set_reference_actor (volume, self);
+  _clutter_paint_volume_set_reference_actor (volume, actor);
+
   return TRUE;
 }
 
 static gboolean
-clutter_clone_has_overlaps (ClutterActor *self)
+clutter_clone_has_overlaps (ClutterActor *actor)
 {
-  ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
+  ClutterClonePrivate *priv = CLUTTER_CLONE (actor)->priv;
 
   /* The clone has overlaps iff the source has overlaps */
 
@@ -249,15 +248,21 @@ clutter_clone_allocate (ClutterActor           *self,
   if (priv->clone_source == NULL)
     return;
 
+#if 0
+  /* XXX - this is wrong: ClutterClone cannot clone unparented
+   * actors, as it will break all invariants
+   */
+
   /* we act like a "foster parent" for the source we are cloning;
    * if the source has not been parented we have to force an
    * allocation on it, so that we can paint it correctly from
-   * within out paint() implementation. since the actor does not
+   * within our paint() implementation. since the actor does not
    * have a parent, and thus it won't be painted by the usual
    * paint cycle, we can safely give it as much size as it requires
    */
   if (clutter_actor_get_parent (priv->clone_source) == NULL)
     clutter_actor_allocate_preferred_size (priv->clone_source, flags);
+#endif
 }
 
 static void
@@ -266,12 +271,12 @@ clutter_clone_set_property (GObject      *gobject,
                             const GValue *value,
                             GParamSpec   *pspec)
 {
-  ClutterClone *clone = CLUTTER_CLONE (gobject);
+  ClutterClone *self = CLUTTER_CLONE (gobject);
 
   switch (prop_id)
     {
     case PROP_SOURCE:
-      clutter_clone_set_source (clone, g_value_get_object (value));
+      clutter_clone_set_source (self, g_value_get_object (value));
       break;
 
     default:
@@ -316,15 +321,15 @@ clutter_clone_class_init (ClutterCloneClass *klass)
 
   g_type_class_add_private (gobject_class, sizeof (ClutterClonePrivate));
 
-  actor_class->apply_transform      = clutter_clone_apply_transform;
-  actor_class->paint                = clutter_clone_paint;
-  actor_class->get_paint_volume     = clutter_clone_get_paint_volume;
-  actor_class->get_preferred_width  = clutter_clone_get_preferred_width;
+  actor_class->apply_transform = clutter_clone_apply_transform;
+  actor_class->paint = clutter_clone_paint;
+  actor_class->get_paint_volume = clutter_clone_get_paint_volume;
+  actor_class->get_preferred_width = clutter_clone_get_preferred_width;
   actor_class->get_preferred_height = clutter_clone_get_preferred_height;
-  actor_class->allocate             = clutter_clone_allocate;
-  actor_class->has_overlaps         = clutter_clone_has_overlaps;
+  actor_class->allocate = clutter_clone_allocate;
+  actor_class->has_overlaps = clutter_clone_has_overlaps;
 
-  gobject_class->dispose      = clutter_clone_dispose;
+  gobject_class->dispose = clutter_clone_dispose;
   gobject_class->set_property = clutter_clone_set_property;
   gobject_class->get_property = clutter_clone_get_property;
 
@@ -343,9 +348,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
                          G_PARAM_CONSTRUCT |
                          CLUTTER_PARAM_READWRITE);
 
-  g_object_class_install_properties (gobject_class,
-                                     PROP_LAST,
-                                     obj_props);
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void
@@ -377,84 +380,84 @@ clutter_clone_new (ClutterActor *source)
 static void
 clone_source_queue_redraw_cb (ClutterActor *source,
 			      ClutterActor *origin,
-			      ClutterClone *clone)
+			      ClutterClone *self)
 {
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (clone));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
 static void
 clone_source_queue_relayout_cb (ClutterActor *source,
-				ClutterClone *clone)
+				ClutterClone *self)
 {
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 static void
-clutter_clone_set_source_internal (ClutterClone *clone,
+clutter_clone_set_source_internal (ClutterClone *self,
 				   ClutterActor *source)
 {
-  ClutterClonePrivate *priv = clone->priv;
+  ClutterClonePrivate *priv = self->priv;
 
-  if (priv->clone_source)
+  if (priv->clone_source != NULL)
     {
       g_signal_handlers_disconnect_by_func (priv->clone_source,
-					    (void *) clone_source_queue_redraw_cb,
-					    clone);
+                                            G_CALLBACK (clone_source_queue_redraw_cb),
+					    self);
       g_signal_handlers_disconnect_by_func (priv->clone_source,
-					    (void *) clone_source_queue_relayout_cb,
-					    clone);
+					    G_CALLBACK (clone_source_queue_relayout_cb),
+					    self);
       g_object_unref (priv->clone_source);
       priv->clone_source = NULL;
     }
 
-  if (source)
+  if (source != NULL)
     {
       priv->clone_source = g_object_ref (source);
       g_signal_connect (priv->clone_source, "queue-redraw",
-			G_CALLBACK (clone_source_queue_redraw_cb), clone);
+			G_CALLBACK (clone_source_queue_redraw_cb), self);
       g_signal_connect (priv->clone_source, "queue-relayout",
-			G_CALLBACK (clone_source_queue_relayout_cb), clone);
+			G_CALLBACK (clone_source_queue_relayout_cb), self);
     }
 
-  g_object_notify_by_pspec (G_OBJECT (clone), obj_props[PROP_SOURCE]);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SOURCE]);
 
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 /**
  * clutter_clone_set_source:
- * @clone: a #ClutterClone
- * @source: a #ClutterActor, or %NULL
+ * @self: a #ClutterClone
+ * @source: (allow-none): a #ClutterActor, or %NULL
  *
- * Sets @source as the source actor to be cloned by @clone.
+ * Sets @source as the source actor to be cloned by @self.
  *
  * Since: 1.0
  */
 void
-clutter_clone_set_source (ClutterClone *clone,
+clutter_clone_set_source (ClutterClone *self,
                           ClutterActor *source)
 {
-  g_return_if_fail (CLUTTER_IS_CLONE (clone));
+  g_return_if_fail (CLUTTER_IS_CLONE (self));
   g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
 
-  clutter_clone_set_source_internal (clone, source);
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
+  clutter_clone_set_source_internal (self, source);
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 /**
  * clutter_clone_get_source:
- * @clone: a #ClutterClone
+ * @self: a #ClutterClone
  *
- * Retrieves the source #ClutterActor being cloned by @clone
+ * Retrieves the source #ClutterActor being cloned by @self.
  *
  * Return value: (transfer none): the actor source for the clone
  *
  * Since: 1.0
  */
 ClutterActor *
-clutter_clone_get_source (ClutterClone *clone)
+clutter_clone_get_source (ClutterClone *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_CLONE (clone), NULL);
+  g_return_val_if_fail (CLUTTER_IS_CLONE (self), NULL);
 
-  return clone->priv->clone_source;
+  return self->priv->clone_source;
 }

@@ -55,8 +55,8 @@ shader_paint (ClutterEffect           *effect,
     "uniform float step;\n"
     "void main (void)\n"
     "{\n"
-    "  gl_FragColor = texture2D(tex, vec2 (gl_TexCoord[0].s + step,\n"
-    "                                      gl_TexCoord[0].t));\n"
+    "  cogl_color_out = texture2D(tex, vec2 (cogl_tex_coord_in[0].s + step,\n"
+    "                                        cogl_tex_coord_in[0].t));\n"
     "}\n");
 
   tex_width = clutter_actor_get_width (actor);
