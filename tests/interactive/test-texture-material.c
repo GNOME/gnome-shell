@@ -10,6 +10,8 @@ test_texture_material_main (int argc, char *argv[])
   ClutterLayoutManager *manager;
   int i;
 
+  g_thread_init (NULL);
+  clutter_threads_init ();
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 

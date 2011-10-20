@@ -34,7 +34,7 @@
  *   <para>Clutter is <emphasis>thread-aware</emphasis>: all operations
  *   performed by Clutter are assumed to be under the big Clutter lock,
  *   which is created when the threading is initialized through
- *   clutter_init().</para>
+ *   clutter_threads_init().</para>
  *   <example id="example-Thread-Init">
  *     <title>Thread Initialization</title>
  *     <para>The code below shows how to correctly initialize Clutter
@@ -44,6 +44,12 @@
  * int
  * main (int argc, char *argv[])
  * {
+ *   /&ast; initialize GLib's threading support &ast;/
+ *   g_thread_init (NULL);
+ *
+ *   /&ast; initialize Clutter's threading support &ast;/
+ *   clutter_threads_init ();
+ *
  *   /&ast; initialize Clutter &ast;/
  *   clutter_init (&amp;argc, &amp;argv);
  *
@@ -910,6 +916,18 @@ clutter_main (void)
     CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);
 }
 
+static void
+clutter_threads_impl_lock (void)
+{
+  g_mutex_lock (&clutter_threads_mutex);
+}
+
+static void
+clutter_threads_impl_unlock (void)
+{
+  g_mutex_unlock (&clutter_threads_mutex);
+}
+
 /**
  * clutter_threads_init:
  *
@@ -924,13 +942,15 @@ clutter_main (void)
  * It is safe to call this function multiple times.
  *
  * Since: 0.4
- *
- * Deprecated: 1.10: This function does not do anything. Threading support
- *   is initialized when Clutter is initialized.
  */
 void
 clutter_threads_init (void)
 {
+  if (clutter_threads_lock == NULL)
+    clutter_threads_lock = clutter_threads_impl_lock;
+
+  if (clutter_threads_unlock == NULL)
+    clutter_threads_unlock = clutter_threads_impl_unlock;
 }
 
 /**
@@ -2584,9 +2604,6 @@ clutter_base_init (void)
 
       /* initialise GLib type system */
       g_type_init ();
-
-      /* initialise the Big Clutter Lock™ if necessary */
-      clutter_threads_init_default ();
     }
 }
 

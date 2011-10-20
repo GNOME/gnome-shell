@@ -110,11 +110,7 @@ gulong           clutter_get_timestamp              (void);
 gboolean         clutter_get_accessibility_enabled  (void);
 
 /* Threading functions */
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-CLUTTER_DEPRECATED
 void             clutter_threads_init                  (void);
-#endif
-
 void             clutter_threads_enter                 (void);
 void             clutter_threads_leave                 (void);
 void             clutter_threads_set_lock_functions    (GCallback enter_fn,
