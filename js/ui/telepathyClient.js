@@ -900,7 +900,7 @@ ChatNotification.prototype = {
         }
 
         let groups = this._contentArea.get_children();
-        for (let i = 0; i < groups.length; i ++) {
+        for (let i = 0; i < groups.length; i++) {
             let group = groups[i];
             if (group.get_children().length == 0)
                 group.destroy();
@@ -938,7 +938,7 @@ ChatNotification.prototype = {
         let body = highlighter.actor;
 
         let styles = props.styles;
-        for (let i = 0; i < styles.length; i ++)
+        for (let i = 0; i < styles.length; i++)
             body.add_style_class_name(styles[i]);
 
         let group = props.group;

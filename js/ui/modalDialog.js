@@ -110,7 +110,7 @@ ModalDialog.prototype = {
         this._buttonLayout.destroy_children();
         this._actionKeys = {};
 
-        for (let i = 0; i < buttons.length; i ++) {
+        for (let i = 0; i < buttons.length; i++) {
             let buttonInfo = buttons[i];
             let label = buttonInfo['label'];
             let action = buttonInfo['action'];
