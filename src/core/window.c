@@ -8432,9 +8432,16 @@ update_move (MetaWindow  *window,
   shake_threshold = meta_ui_get_drag_threshold (window->screen->ui) *
     DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
 
-  if (meta_prefs_get_edge_tiling () &&
-      !META_WINDOW_MAXIMIZED (window) &&
-      !META_WINDOW_TILED_SIDE_BY_SIDE (window))
+  if (snap)
+    {
+      /* We don't want to tile while snapping. Also, clear any previous tile
+         request. */
+      window->tile_mode = META_TILE_NONE;
+      window->tile_monitor_number = -1;
+    }
+  else if (meta_prefs_get_edge_tiling () &&
+           !META_WINDOW_MAXIMIZED (window) &&
+           !META_WINDOW_TILED_SIDE_BY_SIDE (window))
     {
       const MetaMonitorInfo *monitor;
       MetaRectangle work_area;
