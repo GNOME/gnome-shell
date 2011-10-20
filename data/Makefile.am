@@ -47,6 +47,13 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-up.png		\
 	theme/ws-switch-arrow-down.png
 
+keysdir = @GNOME_KEYBINDINGS_KEYSDIR@
+keys_in_files =					\
+	50-gnome-shell-screenshot.xml.in	\
+	50-gnome-shell-system.xml.in		\
+	$(NULL)
+keys_DATA = $(keys_in_files:.xml.in=.xml)
+
 gsettings_SCHEMAS = org.gnome.shell.gschema.xml
 
 @INTLTOOL_XML_NOMERGE_RULE@
@@ -73,12 +80,14 @@ EXTRA_DIST =						\
 	$(introspection_DATA)				\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
+	$(keys_in_files)				\
 	org.gnome.shell.gschema.xml.in.in
 
 CLEANFILES =						\
 	gnome-shell.desktop.in				\
 	gnome-shell-extension-prefs.in			\
 	$(desktop_DATA)					\
+	$(keys_DATA)					\
 	$(gsettings_SCHEMAS)				\
 	gschemas.compiled				\
 	org.gnome.shell.gschema.valid			\

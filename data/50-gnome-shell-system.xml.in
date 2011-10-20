@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.shell.keybindings"
+                group="system"
+                _name="System"
+                wm_name="GNOME Shell"
+                package="gnome-shell">
+
+	<KeyListEntry name="toggle-message-tray"
+                      _description="Show the message tray"/>
+
+</KeyListEntries>
+

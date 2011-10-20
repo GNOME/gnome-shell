@@ -37,6 +37,9 @@ extern GType gnome_shell_plugin_get_type (void);
 
 #define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
 
+#define WM_NAME "GNOME Shell"
+#define GNOME_WM_KEYBINDINGS "Metacity,Mutter,GNOME Shell"
+
 static gboolean is_gdm_mode = FALSE;
 static char *session_mode = NULL;
 
@@ -373,6 +376,9 @@ main (int argc, char **argv)
   g_option_context_free (ctx);
 
   meta_plugin_manager_set_plugin_type (gnome_shell_plugin_get_type ());
+
+  meta_set_wm_name (WM_NAME);
+  meta_set_gnome_wm_keybindings (GNOME_WM_KEYBINDINGS);
 
   /* Prevent meta_init() from causing gtk to load gail and at-bridge */
   g_setenv ("NO_AT_BRIDGE", "1", TRUE);

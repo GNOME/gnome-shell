@@ -1,3 +1,5 @@
+data/50-gnome-shell-screenshot.xml.in
+data/50-gnome-shell-system.xml.in
 data/gnome-shell.desktop.in.in
 data/gnome-shell-extension-prefs.desktop.in.in
 data/org.gnome.shell.gschema.xml.in.in

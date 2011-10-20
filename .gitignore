@@ -16,6 +16,7 @@ config.log
 config.status
 config
 configure
+data/50-gnome-shell-*.xml
 data/gnome-shell.desktop
 data/gnome-shell.desktop.in
 data/gnome-shell-extension-prefs.desktop
