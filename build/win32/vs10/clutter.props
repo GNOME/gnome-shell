@@ -5,7 +5,7 @@
     <ClutterApiVersion>1.0</ClutterApiVersion>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <BaseWinBuildDef>_WIN32_WINNT=0x0500</BaseWinBuildDef>
-    <BaseBuildDef>$(BaseWinBuildDef);CLUTTER_DISABLE_DEPRECATED;COGL_DISABLE_DEPRECATED</BaseBuildDef>
+    <BaseBuildDef>$(BaseWinBuildDef)</BaseBuildDef>
     <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
     <DebugLibBuildDefines>$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG</DebugLibBuildDefines>
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>

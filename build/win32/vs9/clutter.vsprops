@@ -32,7 +32,7 @@
 	/>
 	<UserMacro
 		Name="BaseBuildDef"
-		Value="$(BaseWinBuildDef);CLUTTER_DISABLE_DEPRECATED;COGL_DISABLE_DEPRECATED"
+		Value="$(BaseWinBuildDef)"
 	/>
 	<UserMacro
 		Name="LibBuildDefines"
