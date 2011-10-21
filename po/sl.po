@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-07 19:04+0000\n"
-"PO-Revision-Date: 2011-09-07 21:05+0100\n"
+"POT-Creation-Date: 2011-10-21 11:28+0000\n"
+"PO-Revision-Date: 2011-10-21 20:15+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -21,19 +21,367 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../cogl/cogl-debug.c:206
+#: ../cogl/cogl-debug.c:154
+msgid "Supported debug values:"
+msgstr "Podprte vrednosti razhroščevanja:"
+
+#: ../cogl/cogl-debug.c:159
+#, fuzzy
+msgid "Special debug values:"
+msgstr "Vrednosti za opazovanje"
+
+#: ../cogl/cogl-debug.c:161
+#: ../cogl/cogl-debug.c:163
+msgid "Enables all non-behavioural debug options"
+msgstr ""
+
+#: ../cogl/cogl-debug.c:207
 msgid "Cogl debugging flags to set"
 msgstr "Zastavice razhroščevanja Cogl za nastavljanje"
 
-#: ../cogl/cogl-debug.c:208
+#: ../cogl/cogl-debug.c:209
 msgid "Cogl debugging flags to unset"
 msgstr "Zastavice razhroščevanja Cogl za odstranitev"
 
-#: ../cogl/cogl-debug.c:257
+#: ../cogl/cogl-debug.c:258
 msgid "Cogl Options"
 msgstr "Možnosti Cogl"
 
-#: ../cogl/cogl-debug.c:258
+#: ../cogl/cogl-debug.c:259
 msgid "Show Cogl options"
 msgstr "Pokaži možnosti Cogl"
+
+#: ../cogl/cogl-debug-options.h:25
+#: ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35
+#: ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45
+#: ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55
+#: ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66
+#: ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158
+#: ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168
+#: ../cogl/cogl-debug-options.h:184
+#, fuzzy
+msgid "Cogl Tracing"
+msgstr "Tekstura Cogl"
+
+#: ../cogl/cogl-debug-options.h:27
+#, fuzzy
+msgid "CoglObject references"
+msgstr "Deklaracija sklicev"
+
+#: ../cogl/cogl-debug-options.h:28
+msgid "Debug ref counting issues for CoglObjects"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:32
+#, fuzzy
+msgid "Trace Texture Slicing"
+msgstr "Slika tlakovanja ozadja"
+
+#: ../cogl/cogl-debug-options.h:33
+msgid "debug the creation of texture slices"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:37
+#, fuzzy
+msgid "Trace Atlas Textures"
+msgstr "Pridobi zaznavo sklada"
+
+#: ../cogl/cogl-debug-options.h:38
+msgid "Debug texture atlas management"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:42
+#, fuzzy
+msgid "Trace Blend Strings"
+msgstr "Pridobi zaznavo sklada"
+
+#: ../cogl/cogl-debug-options.h:43
+#, fuzzy
+msgid "Debug CoglBlendString parsing"
+msgstr "Napaka med razčlenjevanjem možnosti --gdk-debug"
+
+#: ../cogl/cogl-debug-options.h:47
+#, fuzzy
+msgid "Trace Journal"
+msgstr "_Dnevnik"
+
+#: ../cogl/cogl-debug-options.h:48
+msgid "View all the geometry passing through the journal"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:52
+#, fuzzy
+msgid "Trace Batching"
+msgstr "Naslov zaznave:"
+
+#: ../cogl/cogl-debug-options.h:53
+msgid "Show how geometry is being batched in the journal"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:57
+#, fuzzy
+msgid "Trace matrices"
+msgstr "Naslov zaznave:"
+
+#: ../cogl/cogl-debug-options.h:58
+#, fuzzy
+msgid "Trace all matrix manipulation"
+msgstr "Izračun zmnožka vseh predmetov matrike"
+
+#: ../cogl/cogl-debug-options.h:63
+#, fuzzy
+msgid "Trace Misc Drawing"
+msgstr "Risanje (rastrsko)"
+
+#: ../cogl/cogl-debug-options.h:64
+msgid "Trace some misc drawing operations"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:68
+#, fuzzy
+msgid "Trace Pango Renderer"
+msgstr "Pridobi zaznavo sklada"
+
+#: ../cogl/cogl-debug-options.h:69
+msgid "Trace the Cogl Pango renderer"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:73
+#, fuzzy
+msgid "Trace CoglTexturePixmap backend"
+msgstr "Zaledje je zaposleno"
+
+#: ../cogl/cogl-debug-options.h:74
+msgid "Trace the Cogl texture pixmap backend"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:76
+#: ../cogl/cogl-debug-options.h:81
+msgid "Visualize"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:78
+#, fuzzy
+msgid "Outline rectangles"
+msgstr "Uporabi pravokotnike"
+
+#: ../cogl/cogl-debug-options.h:79
+msgid "Add wire outlines for all rectangular geometry"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:83
+#, fuzzy
+msgid "Show wireframes"
+msgstr "_Pokaži stanje"
+
+#: ../cogl/cogl-debug-options.h:84
+msgid "Add wire outlines for all geometry"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:86
+#: ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96
+#: ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111
+#: ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122
+#: ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132
+#: ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142
+#: ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153
+#: ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
+#, fuzzy
+msgid "Root Cause"
+msgstr "korenski pladenj"
+
+#: ../cogl/cogl-debug-options.h:88
+#, fuzzy
+msgid "Disable Journal batching"
+msgstr "Journal za Ext3"
+
+#: ../cogl/cogl-debug-options.h:89
+msgid "Disable batching of geometry in the Cogl Journal."
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:93
+msgid "Disable GL Vertex Buffers"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:94
+msgid "Disable use of OpenGL vertex buffer objects"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:98
+msgid "Disable GL Pixel Buffers"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:99
+msgid "Disable use of OpenGL pixel buffer objects"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:103
+msgid "Disable software rect transform"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:104
+msgid "Use the GPU to transform rectangular geometry"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:106
+#, fuzzy
+msgid "Cogl Specialist"
+msgstr "Tekstura Cogl"
+
+#: ../cogl/cogl-debug-options.h:108
+#, fuzzy
+msgid "Dump atlas images"
+msgstr "Obe sliki videa"
+
+#: ../cogl/cogl-debug-options.h:109
+msgid "Dump texture atlas changes to an image file"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:113
+#, fuzzy
+msgid "Disable texture atlasing"
+msgstr "Slika tlakovanja ozadja"
+
+#: ../cogl/cogl-debug-options.h:114
+msgid "Disable use of texture atlasing"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:118
+msgid "Disable sharing the texture atlas between text and images"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:119
+msgid "When this is set the glyph cache will always use a separate texture for its atlas. Otherwise it will try to share the atlas with images."
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:124
+#, fuzzy
+msgid "Disable texturing"
+msgstr "_Onemogoči vse"
+
+#: ../cogl/cogl-debug-options.h:125
+#, fuzzy
+msgid "Disable texturing any primitives"
+msgstr "Onemogoči nalaganje vseh vstavkov."
+
+#: ../cogl/cogl-debug-options.h:129
+#, fuzzy
+msgid "Disable arbfp"
+msgstr "_Onemogoči vse"
+
+#: ../cogl/cogl-debug-options.h:130
+msgid "Disable use of ARB fragment programs"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:134
+#, fuzzy
+msgid "Disable fixed"
+msgstr "_Določena širina:"
+
+#: ../cogl/cogl-debug-options.h:135
+msgid "Disable use of the fixed function pipeline backend"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:139
+#, fuzzy
+msgid "Disable GLSL"
+msgstr "_Onemogoči vse"
+
+#: ../cogl/cogl-debug-options.h:140
+#, fuzzy
+msgid "Disable use of GLSL"
+msgstr "Uporabi predelavo/oznako:"
+
+#: ../cogl/cogl-debug-options.h:144
+#, fuzzy
+msgid "Disable blending"
+msgstr "_Onemogoči vse"
+
+#: ../cogl/cogl-debug-options.h:145
+#, fuzzy
+msgid "Disable use of blending"
+msgstr "Uporabi predelavo/oznako:"
+
+#: ../cogl/cogl-debug-options.h:149
+msgid "Disable non-power-of-two textures"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:150
+msgid "Makes Cogl think that the GL driver doesn't support NPOT textures so that it will create sliced textures or textures with waste instead."
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:155
+#, fuzzy
+msgid "Disable software clipping"
+msgstr "Filtriranje neželene pošte:"
+
+#: ../cogl/cogl-debug-options.h:156
+msgid "Disables Cogl's attempts to clip some rectangles in software."
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:160
+msgid "Show source"
+msgstr "Prikaži vir"
+
+#: ../cogl/cogl-debug-options.h:161
+msgid "Show generated ARBfp/GLSL source code"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:165
+#, fuzzy
+msgid "Trace some OpenGL"
+msgstr "OpenGL senčilni jezik"
+
+#: ../cogl/cogl-debug-options.h:166
+msgid "Traces some select OpenGL calls"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:170
+#, fuzzy
+msgid "Trace offscreen support"
+msgstr "Opozorilo podpore Python"
+
+#: ../cogl/cogl-debug-options.h:171
+#, fuzzy
+msgid "Debug offscreen support"
+msgstr "Opozorilo podpore Python"
+
+#: ../cogl/cogl-debug-options.h:175
+#, fuzzy
+msgid "Disable program caches"
+msgstr "_Premor program"
+
+#: ../cogl/cogl-debug-options.h:176
+msgid "Disable fallback caches for arbfp and glsl programs"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:180
+msgid "Disable read pixel optimization"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:181
+msgid "Disable optimization for reading 1px for simple scenes of opaque rectangles"
+msgstr ""
+
+#: ../cogl/cogl-debug-options.h:186
+#, fuzzy
+msgid "Trace clipping"
+msgstr "3. Širina odreza:"
+
+#: ../cogl/cogl-debug-options.h:187
+msgid "Logs information about how Cogl is implementing clipping"
+msgstr ""
 
