@@ -1814,6 +1814,10 @@ clutter_get_option_group_without_init (void)
  * error message will be placed inside @error instead of being
  * printed on the display.
  *
+ * Just like clutter_init(), if this function returns an error code then
+ * any subsequent call to any other Clutter API will result in undefined
+ * behaviour - including segmentation faults.
+ *
  * Return value: %CLUTTER_INIT_SUCCESS if Clutter has been successfully
  *   initialised, or other values or #ClutterInitError in case of
  *   error.
@@ -1950,6 +1954,11 @@ clutter_parse_args (int      *argc,
  * code to handle this case. If you need to display the error message
  * yourself, you can use clutter_init_with_args(), which takes a #GError
  * pointer.</note>
+ *
+ * If this function fails, and returns an error code, any subsequent
+ * Clutter API will have undefined behaviour - including segmentation
+ * faults and assertion failures. Make sure to handle the returned
+ * #ClutterInitError enumeration value.
  *
  * Return value: a #ClutterInitError value
  */
