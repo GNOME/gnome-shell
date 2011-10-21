@@ -800,13 +800,13 @@ StTooltip StLabel {
 
 #LookingGlassDialog
 {
-    background-color: rgba(0,0,0,0.85);
+    background-color: rgba(0,0,0,0.80);
     spacing: 4px;
     padding: 4px;
     border: 2px solid grey;
     border-radius: 4px;
 
-    color: #88ff66;
+    color: #ffffff;
 }
 
 #LookingGlassDialog > #Toolbar
@@ -820,17 +820,25 @@ StTooltip StLabel {
 }
 
 #LookingGlassDialog .notebook-tab {
-    padding: 2px;
+    -natural-hpadding: 12px;
+    -minimum-hpadding: 6px;
+    font-weight: bold;
+    color: #ccc;
+    transition-duration: 100;
+    padding-left: .3em;
+    padding-right: .3em;
 }
 
 #LookingGlassDialog .notebook-tab:hover {
-    color: #00ff00;
+    color: white;
+    text-shadow: black 0px 2px 2px;
 }
 
 #LookingGlassDialog .notebook-tab:selected {
-    border: 1px solid #88ff66;
-    border-radius: 4px;
-    padding: 5px;
+    border-image: url("panel-button-border.svg") 10 10 0 2;
+    background-image: url("panel-button-highlight-wide.svg");
+    color: white;
+    text-shadow: black 0px 2px 2px;
 }
 
 #LookingGlassDialog .lg-inspector-title {
@@ -840,14 +848,14 @@ StTooltip StLabel {
 
 .lg-dialog StLabel
 {
-    color: #88ff66;
+    color: #ffffff;
 }
 
 .lg-dialog StEntry
 {
-    color: #88ff66;
-    selection-background-color: #88ff66;
-    selected-color: black;
+    color: #ffffff;
+    selection-background-color: #bbbbbb;
+    selected-color: #333333;
 }
 
 .lg-obj-inspector-title
@@ -857,24 +865,24 @@ StTooltip StLabel {
 
 .lg-obj-inspector-button
 {
-    border: 1px solid #88ff66;
+    border: 1px solid gray;
     padding: 4px;
     border-radius: 4px;
 }
 
 .lg-obj-inspector-button:hover
 {
-    border: 1px solid #00ff00;
+    border: 1px solid #ffffff;
 }
 
 .lg-dialog .shell-link
 {
-    color: #88ff66;
+    color: #999999;
 }
 
 .lg-dialog .shell-link:hover
 {
-    color: #00ff00;
+    color: #dddddd;
 }
 
 #LookingGlassDialog StBoxLayout#EvalBox
@@ -912,11 +920,11 @@ StTooltip StLabel {
 }
 
 #LookingGlassPropertyInspector {
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.8);
     border: 2px solid grey;
     border-radius: 4px;
     padding: 6px;
-    color: #88ff66;
+    color: #ffffff;
 }
 
 /* Calendar popup */
