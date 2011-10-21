@@ -36,18 +36,18 @@ stage {
 
 StScrollBar
 {
-  padding: 0px;
+    padding: 0px;
 }
 
 StScrollView.vfade
 {
-  -st-vfade-offset: 68px;
+    -st-vfade-offset: 68px;
 }
 
 StScrollView StScrollBar
 {
-  min-width: 16px;
-  min-height: 16px;
+    min-width: 16px;
+    min-height: 16px;
 }
 
 
@@ -742,24 +742,24 @@ StTooltip StLabel {
 }
 
 .contact-icon {
-  border-radius: 4px;
+    border-radius: 4px;
 }
 
 .contact-details {
-  padding: 6px 8px 11px 8px;
+    padding: 6px 8px 11px 8px;
 }
 
 .contact-details-alias {
-  font-size: 16px;
-  padding-bottom: 11px;
+    font-size: 16px;
+    padding-bottom: 11px;
 }
 
 .contact-details-status {
-  font-size: 11pt;
+    font-size: 11pt;
 }
 
 .contact-details-status-icon {
-  padding-right: 2px;
+    padding-right: 2px;
 }
 
 .contact:hover {
@@ -800,37 +800,37 @@ StTooltip StLabel {
 
 #LookingGlassDialog
 {
-  background-color: rgba(0,0,0,0.85);
-  spacing: 4px;
-  padding: 4px;
-  border: 2px solid grey;
-  border-radius: 4px;
+    background-color: rgba(0,0,0,0.85);
+    spacing: 4px;
+    padding: 4px;
+    border: 2px solid grey;
+    border-radius: 4px;
 
-  color: #88ff66;
+    color: #88ff66;
 }
 
 #LookingGlassDialog > #Toolbar
 {
-  border: 1px solid grey;
-  border-radius: 4px;
+    border: 1px solid grey;
+    border-radius: 4px;
 }
 
 #LookingGlassDialog .labels {
-  spacing: 4px;
+    spacing: 4px;
 }
 
 #LookingGlassDialog .notebook-tab {
-  padding: 2px;
+    padding: 2px;
 }
 
 #LookingGlassDialog .notebook-tab:hover {
-  color: #00ff00;
+    color: #00ff00;
 }
 
 #LookingGlassDialog .notebook-tab:selected {
-  border: 1px solid #88ff66;
-  border-radius: 4px;
-  padding: 5px;
+    border: 1px solid #88ff66;
+    border-radius: 4px;
+    padding: 5px;
 }
 
 #LookingGlassDialog .lg-inspector-title {
@@ -840,52 +840,52 @@ StTooltip StLabel {
 
 .lg-dialog StLabel
 {
-  color: #88ff66;
+    color: #88ff66;
 }
 
 .lg-dialog StEntry
 {
-  color: #88ff66;
-  selection-background-color: #88ff66;
-  selected-color: black;
+    color: #88ff66;
+    selection-background-color: #88ff66;
+    selected-color: black;
 }
 
 .lg-obj-inspector-title
 {
-  spacing: 4px;
+    spacing: 4px;
 }
 
 .lg-obj-inspector-button
 {
-  border: 1px solid #88ff66;
-  padding: 4px;
-  border-radius: 4px;
+    border: 1px solid #88ff66;
+    padding: 4px;
+    border-radius: 4px;
 }
 
 .lg-obj-inspector-button:hover
 {
-  border: 1px solid #00ff00;
+    border: 1px solid #00ff00;
 }
 
 .lg-dialog .shell-link
 {
-  color: #88ff66;
+    color: #88ff66;
 }
 
 .lg-dialog .shell-link:hover
 {
-  color: #00ff00;
+    color: #00ff00;
 }
 
 #LookingGlassDialog StBoxLayout#EvalBox
 {
-  padding: 4px;
-  spacing: 4px;
+    padding: 4px;
+    spacing: 4px;
 }
 
 #LookingGlassDialog StBoxLayout#ResultsArea
 {
-  spacing: 4px;
+    spacing: 4px;
 }
 
 #lookingGlassExtensions {
