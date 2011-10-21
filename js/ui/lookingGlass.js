@@ -151,16 +151,6 @@ Notebook.prototype = {
             return;
         let vAdjust = tabData.scrollView.vscroll.adjustment;
         vAdjust.value = vAdjust.upper - vAdjust.page_size;
-    },
-
-    nextTab: function() {
-            let nextIndex = this._selectedIndex < this._tabs.length - 1 ? this._selectedIndex + 1 : this._selectedIndex;
-            this.selectIndex(nextIndex);
-    },
-
-    prevTab: function() {
-            let nextIndex = this._selectedIndex > 0 ? this._selectedIndex - 1 : 0;
-            this.selectIndex(nextIndex);
     }
 };
 Signals.addSignalMethods(Notebook.prototype);
@@ -1005,7 +995,6 @@ LookingGlass.prototype = {
     // Handle key events which are relevant for all tabs of the LookingGlass
     _globalKeyPressEvent : function(actor, event) {
         let symbol = event.get_key_symbol();
-        let modifierState = Shell.get_event_state(event);
         if (symbol == Clutter.Escape) {
             if (this._objInspector.actor.visible) {
                 this._objInspector.close();
@@ -1013,14 +1002,6 @@ LookingGlass.prototype = {
                 this.close();
             }
             return true;
-        }
-        // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
-        if (modifierState & Clutter.ModifierType.CONTROL_MASK) {
-            if (symbol == Clutter.KEY_Page_Up) {
-                this._notebook.nextTab();
-            } else if (symbol == Clutter.KEY_Page_Down) {
-                this._notebook.prevTab();
-            }
         }
         return false;
     },
