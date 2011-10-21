@@ -137,7 +137,7 @@ main (int argc, char **argv)
   ADD_TEST ("/cogl", test_cogl_blend_strings);
   UNPORTED_TEST ("/cogl", test_cogl_premult);
   UNPORTED_TEST ("/cogl", test_cogl_readpixels);
-  UNPORTED_TEST ("/cogl", test_cogl_path);
+  ADD_TEST ("/cogl", test_cogl_path);
   ADD_TEST ("/cogl", test_cogl_depth_test);
   ADD_TEST ("/cogl", test_cogl_color_mask);
   ADD_TEST ("/cogl", test_cogl_backface_culling);

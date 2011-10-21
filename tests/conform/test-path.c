@@ -1,20 +1,17 @@
-#include <clutter/clutter.h>
 #include <cogl/cogl.h>
 
-#include "test-conform-common.h"
+#include <string.h>
+
+#include "test-utils.h"
 
 #define BLOCK_SIZE 16
 
 /* Number of pixels at the border of a block quadrant to skip when verifying */
 #define TEST_INSET 1
 
-static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
-static const ClutterColor block_color = { 0xff, 0xff, 0xff, 0xff };
-
 typedef struct _TestState
 {
-  ClutterActor *stage;
-  unsigned int frame;
+  int dummy;
 } TestState;
 
 static void
@@ -27,9 +24,9 @@ draw_path_at (int x, int y)
 }
 
 static void
-verify_block (int block_x, int block_y, int block_mask)
+check_block (int block_x, int block_y, int block_mask)
 {
-  guint8 data[BLOCK_SIZE * BLOCK_SIZE * 4];
+  guint32 data[BLOCK_SIZE * BLOCK_SIZE];
   int qx, qy;
 
   /* Block mask represents which quarters of the block should be
@@ -41,37 +38,33 @@ verify_block (int block_x, int block_y, int block_mask)
                     BLOCK_SIZE, BLOCK_SIZE,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    data);
+                    (guint8 *)data);
 
   for (qy = 0; qy < 2; qy++)
     for (qx = 0; qx < 2; qx++)
       {
         int bit = qx | (qy << 1);
-        const ClutterColor *color =
-          ((block_mask & (1 << bit)) ? &block_color : &stage_color);
+	const char *intended_pixel = ((block_mask & (1 << bit)) ? "#ffffff" : "#000000");
         int x, y;
 
         for (x = 0; x < BLOCK_SIZE / 2 - TEST_INSET * 2; x++)
           for (y = 0; y < BLOCK_SIZE / 2 - TEST_INSET * 2; y++)
             {
-              const guint8 *p = data + (qx * BLOCK_SIZE / 2 * 4 +
-                                        qy * BLOCK_SIZE * 4 * BLOCK_SIZE / 2 +
-                                        (x + TEST_INSET) * 4 +
-                                        (y + TEST_INSET) * BLOCK_SIZE * 4);
-              g_assert_cmpint (p[0], ==, color->red);
-              g_assert_cmpint (p[1], ==, color->green);
-              g_assert_cmpint (p[2], ==, color->blue);
+              const guint32 *p = data + (qx * BLOCK_SIZE / 2 +
+                                        qy * BLOCK_SIZE * BLOCK_SIZE / 2 +
+                                        (x + TEST_INSET) +
+                                        (y + TEST_INSET) * BLOCK_SIZE);
+	      char *screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (*p) >> 8);
+	      g_assert_cmpstr (screen_pixel, ==, intended_pixel);
+	      g_free (screen_pixel);
             }
       }
 }
 
 static void
-on_paint (ClutterActor *actor, TestState *state)
+paint (TestState *state)
 {
   CoglHandle path_a, path_b, path_c;
-
-  if (state->frame++ < 2)
-    return;
 
   cogl_set_source_color4ub (255, 255, 255, 255);
 
@@ -175,58 +168,38 @@ on_paint (ClutterActor *actor, TestState *state)
   draw_path_at (11, 0);
 
   cogl_handle_unref (path_a);
-
-  verify_block (0, 0, 0x8 /* bottom right */);
-  verify_block (1, 0, 0xf /* all of them */);
-  verify_block (2, 0, 0x8 /* bottom right */);
-  verify_block (3, 0, 0x8 /* bottom right */);
-  verify_block (4, 0, 0x9 /* top left and bottom right */);
-  verify_block (5, 0, 0x8 /* bottom right */);
-  verify_block (6, 0, 0xa /* bottom right and top right */);
-  verify_block (7, 0, 0x9 /* top_left and bottom right */);
-  verify_block (8, 0, 0xe /* all but top left */);
-  verify_block (9, 0, 0x7 /* all but bottom right */);
-  verify_block (10, 0, 0xc /* bottom two */);
-  verify_block (11, 0, 0xd /* all but top right */);
-
-  /* Comment this out if you want visual feedback of what this test
-   * paints.
-   */
-  clutter_main_quit ();
 }
 
-static gboolean
-queue_redraw (gpointer stage)
+static void
+validate_result ()
 {
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-  return TRUE;
+  check_block (0, 0, 0x8 /* bottom right */);
+  check_block (1, 0, 0xf /* all of them */);
+  check_block (2, 0, 0x8 /* bottom right */);
+  check_block (3, 0, 0x8 /* bottom right */);
+  check_block (4, 0, 0x9 /* top left and bottom right */);
+  check_block (5, 0, 0x8 /* bottom right */);
+  check_block (6, 0, 0xa /* bottom right and top right */);
+  check_block (7, 0, 0x9 /* top_left and bottom right */);
+  check_block (8, 0, 0xe /* all but top left */);
+  check_block (9, 0, 0x7 /* all but bottom right */);
+  check_block (10, 0, 0xc /* bottom two */);
+  check_block (11, 0, 0xd /* all but top right */);
 }
 
 void
 test_cogl_path (TestUtilsGTestFixture *fixture,
                 void *data)
 {
+  TestUtilsSharedState *shared_state = data;
   TestState state;
-  unsigned int idle_source;
-  unsigned int paint_handler;
 
-  state.frame = 0;
-  state.stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
+  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
+              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
+              -1, 100 /* z near, far */);
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, state.stage);
-  paint_handler = g_signal_connect_after (state.stage, "paint",
-                                          G_CALLBACK (on_paint), &state);
-
-  clutter_actor_show (state.stage);
-  clutter_main ();
-
-  g_signal_handler_disconnect (state.stage, paint_handler);
-  g_source_remove (idle_source);
+  paint (&state);
+  validate_result ();
 
   if (g_test_verbose ())
     g_print ("OK\n");

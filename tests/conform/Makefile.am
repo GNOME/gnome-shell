@@ -18,7 +18,6 @@ unported_test_sources = \
 	test-npot-texture.c \
 	test-object.c \
 	test-offscreen.c \
-	test-path.c \
 	test-pixel-buffer.c \
 	test-premult.c \
 	test-readpixels.c \
@@ -40,6 +39,7 @@ test_sources = \
 	test-color-mask.c \
 	test-backface-culling.c \
 	test-just-vertex-shader.c \
+	test-path.c \
 	test-pipeline-user-matrix.c \
 	test-wrap-modes.c \
 	test-sub-texture.c \
