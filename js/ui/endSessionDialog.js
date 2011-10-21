@@ -57,8 +57,8 @@ const EndSessionDialogIface = {
 };
 
 const logoutDialogContent = {
-    subjectWithUser: _("Log Out %s"),
-    subject: _("Log Out"),
+    subjectWithUser: C_("title", "Log Out %s"),
+    subject: C_("title", "Log Out"),
     inhibitedDescription: _("Click Log Out to quit these applications and log out of the system."),
     uninhibitedDescriptionWithUser: function(user, seconds) {
         return ngettext("%s will be logged out automatically in %d second.",
@@ -72,12 +72,12 @@ const logoutDialogContent = {
     },
     endDescription: _("Logging out of the system."),
     confirmButtons: [{ signal: 'ConfirmedLogout',
-                       label:  _("Log Out") }],
+                       label:  C_("button", "Log Out") }],
     iconStyleClass: 'end-session-dialog-logout-icon'
 };
 
 const shutdownDialogContent = {
-    subject: _("Power Off"),
+    subject: C_("title", "Power Off"),
     inhibitedDescription: _("Click Power Off to quit these applications and power off the system."),
     uninhibitedDescription: function(seconds) {
         return ngettext("The system will power off automatically in %d second.",
@@ -86,15 +86,15 @@ const shutdownDialogContent = {
     },
     endDescription: _("Powering off the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label:  _("Restart") },
+                       label:  C_("button", "Restart") },
                      { signal: 'ConfirmedShutdown',
-                       label:  _("Power Off") }],
+                       label:  C_("button", "Power Off") }],
     iconName: 'system-shutdown',
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
 
 const restartDialogContent = {
-    subject: _("Restart"),
+    subject: C_("title", "Restart"),
     inhibitedDescription: _("Click Restart to quit these applications and restart the system."),
     uninhibitedDescription: function(seconds) {
         return ngettext("The system will restart automatically in %d second.",
@@ -103,7 +103,7 @@ const restartDialogContent = {
     },
     endDescription: _("Restarting the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label:  _("Restart") }],
+                       label:  C_("button", "Restart") }],
     iconName: 'system-shutdown',
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
