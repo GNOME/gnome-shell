@@ -348,7 +348,7 @@ texture_load_data_destroy (gpointer p)
     g_free (data->mimetype);
 
   if (data->textures)
-    g_slist_free (data->textures);
+    g_slist_free_full (data->textures, (GDestroyNotify) g_object_unref);
 }
 
 /**
