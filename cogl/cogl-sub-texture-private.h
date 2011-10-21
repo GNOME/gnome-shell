@@ -21,15 +21,12 @@
  *
  */
 
-#ifndef __COGL_SUB_TEXTURE_H
-#define __COGL_SUB_TEXTURE_H
+#ifndef __COGL_SUB_TEXTURE_PRIVATE_H
+#define __COGL_SUB_TEXTURE_PRIVATE_H
 
-#include "cogl-handle.h"
 #include "cogl-texture-private.h"
 
-#define COGL_SUB_TEXTURE(tex) ((CoglSubTexture *) tex)
-
-typedef struct _CoglSubTexture CoglSubTexture;
+#include <glib.h>
 
 struct _CoglSubTexture
 {
@@ -40,12 +37,12 @@ struct _CoglSubTexture
      use the full texture from that to render instead of making a
      chain. However we want to preserve the next texture in case the
      user is expecting us to keep a reference and also so that we can
-     later add a cogl_sub_texture_get_full_texture() function. */
-  CoglHandle  next_texture;
+     later add a cogl_sub_texture_get_parent_texture() function. */
+  CoglTexture *next_texture;
   /* This is the texture that will actually be used to draw. It will
      point to the end of the chain if a sub texture of a sub texture
      is created */
-  CoglHandle  full_texture;
+  CoglTexture *full_texture;
 
   /* The region represented by this sub-texture. This is the region of
      full_texture which won't necessarily be the same as the region
@@ -60,11 +57,4 @@ struct _CoglSubTexture
 GQuark
 _cogl_handle_sub_texture_get_type (void);
 
-CoglHandle
-_cogl_sub_texture_new (CoglHandle next_texture,
-                       int sub_x,
-                       int sub_y,
-                       int sub_width,
-                       int sub_height);
-
-#endif /* __COGL_SUB_TEXTURE_H */
+#endif /* __COGL_SUB_TEXTURE_PRIVATE_H */

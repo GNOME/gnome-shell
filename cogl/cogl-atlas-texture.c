@@ -58,11 +58,13 @@ _cogl_atlas_texture_create_sub_texture (CoglHandle full_texture,
 {
   /* Create a subtexture for the given rectangle not including the
      1-pixel border */
-  return _cogl_sub_texture_new (full_texture,
-                                rectangle->x + 1,
-                                rectangle->y + 1,
-                                rectangle->width - 2,
-                                rectangle->height - 2);
+  _COGL_GET_CONTEXT (ctx, NULL);
+  return cogl_sub_texture_new (ctx,
+                               full_texture,
+                               rectangle->x + 1,
+                               rectangle->y + 1,
+                               rectangle->width - 2,
+                               rectangle->height - 2);
 }
 
 static void

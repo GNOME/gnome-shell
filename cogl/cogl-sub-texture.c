@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2009,2010 Intel Corporation.
+ * Copyright (C) 2009,2010,2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-sub-texture-private.h"
 #include "cogl-context-private.h"
-#include "cogl-handle.h"
+#include "cogl-object.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-rectangle-private.h"
 
@@ -43,7 +43,7 @@
 
 static void _cogl_sub_texture_free (CoglSubTexture *sub_tex);
 
-COGL_TEXTURE_INTERNAL_DEFINE (SubTexture, sub_texture);
+COGL_TEXTURE_DEFINE (SubTexture, sub_texture);
 
 static const CoglTextureVtable cogl_sub_texture_vtable;
 
@@ -198,19 +198,20 @@ _cogl_sub_texture_set_wrap_mode_parameters (CoglTexture *tex,
 static void
 _cogl_sub_texture_free (CoglSubTexture *sub_tex)
 {
-  cogl_handle_unref (sub_tex->next_texture);
-  cogl_handle_unref (sub_tex->full_texture);
+  cogl_object_unref (sub_tex->next_texture);
+  cogl_object_unref (sub_tex->full_texture);
 
   /* Chain up */
   _cogl_texture_free (COGL_TEXTURE (sub_tex));
 }
 
-CoglHandle
-_cogl_sub_texture_new (CoglHandle next_texture,
-                       int sub_x, int sub_y,
-                       int sub_width, int sub_height)
+CoglSubTexture *
+cogl_sub_texture_new (CoglContext *ctx,
+                      CoglTexture *next_texture,
+                      int sub_x, int sub_y,
+                      int sub_width, int sub_height)
 {
-  CoglHandle      full_texture;
+  CoglTexture    *full_texture;
   CoglSubTexture *sub_tex;
   CoglTexture    *tex;
   unsigned int    next_width, next_height;
@@ -219,13 +220,10 @@ _cogl_sub_texture_new (CoglHandle next_texture,
   next_height = cogl_texture_get_height (next_texture);
 
   /* The region must specify a non-zero subset of the full texture */
-  _COGL_RETURN_VAL_IF_FAIL (sub_x >= 0 && sub_y >= 0, COGL_INVALID_HANDLE);
-  _COGL_RETURN_VAL_IF_FAIL (sub_width > 0 && sub_height > 0,
-                            COGL_INVALID_HANDLE);
-  _COGL_RETURN_VAL_IF_FAIL (sub_x + sub_width <= next_width,
-                            COGL_INVALID_HANDLE);
-  _COGL_RETURN_VAL_IF_FAIL (sub_y + sub_height <= next_height,
-                            COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (sub_x >= 0 && sub_y >= 0, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (sub_width > 0 && sub_height > 0, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (sub_x + sub_width <= next_width, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (sub_y + sub_height <= next_height, NULL);
 
   sub_tex = g_new (CoglSubTexture, 1);
 
@@ -236,7 +234,7 @@ _cogl_sub_texture_new (CoglHandle next_texture,
   /* If the next texture is also a sub texture we can avoid one level
      of indirection by referencing the full texture of that texture
      instead. */
-  if (_cogl_is_sub_texture (next_texture))
+  if (cogl_is_sub_texture (next_texture))
     {
       CoglSubTexture *other_sub_tex =
         _cogl_sub_texture_pointer_from_handle (next_texture);
@@ -247,8 +245,8 @@ _cogl_sub_texture_new (CoglHandle next_texture,
   else
     full_texture = next_texture;
 
-  sub_tex->next_texture = cogl_handle_ref (next_texture);
-  sub_tex->full_texture = cogl_handle_ref (full_texture);
+  sub_tex->next_texture = cogl_object_ref (next_texture);
+  sub_tex->full_texture = cogl_object_ref (full_texture);
 
   sub_tex->sub_x = sub_x;
   sub_tex->sub_y = sub_y;

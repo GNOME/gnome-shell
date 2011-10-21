@@ -329,6 +329,13 @@ cogl_is_texture_3d
 </SECTION>
 
 <SECTION>
+<FILE>cogl-sub-texture</FILE>
+<TITLE>Sub Textures</TITLE>
+cogl_sub_texture_new
+cogl_is_sub_texture
+</SECTION>
+
+<SECTION>
 <FILE>cogl-framebuffer</FILE>
 <TITLE>CoglFramebuffer: The Framebuffer Interface</TITLE>
 CoglFramebuffer

@@ -454,8 +454,9 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
        * coordinates, but the semantics for this function that people
        * depend on are that all returned texture works with normalized
        * coordinates so we wrap with a CoglSubTexture... */
-      sub_texture = _cogl_sub_texture_new (COGL_TEXTURE (texture_rectangle),
-                                           0, 0, width, height);
+      sub_texture = cogl_sub_texture_new (ctx,
+                                          COGL_TEXTURE (texture_rectangle),
+                                          0, 0, width, height);
       return COGL_TEXTURE (sub_texture);
     }
 #endif
@@ -496,8 +497,10 @@ cogl_texture_new_from_sub_texture (CoglTexture *full_texture,
                                    int sub_width,
                                    int sub_height)
 {
-  return _cogl_sub_texture_new (full_texture, sub_x, sub_y,
-                                sub_width, sub_height);
+  _COGL_GET_CONTEXT (ctx, NULL);
+  return COGL_TEXTURE (cogl_sub_texture_new (ctx,
+                                             full_texture, sub_x, sub_y,
+                                             sub_width, sub_height));
 }
 
 CoglTexture *
