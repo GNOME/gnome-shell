@@ -916,6 +916,18 @@ clutter_main (void)
     CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);
 }
 
+static void
+clutter_threads_impl_lock (void)
+{
+  g_mutex_lock (&clutter_threads_mutex);
+}
+
+static void
+clutter_threads_impl_unlock (void)
+{
+  g_mutex_unlock (&clutter_threads_mutex);
+}
+
 /**
  * clutter_threads_init:
  *
