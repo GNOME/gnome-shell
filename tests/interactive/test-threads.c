@@ -209,8 +209,6 @@ test_threads_main (int argc, char *argv[])
     { 400, 150 }
   };
 
-  g_thread_init (NULL);
-  clutter_threads_init ();
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
