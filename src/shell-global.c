@@ -864,11 +864,11 @@ _shell_global_get_gjs_context (ShellGlobal *global)
  *  was previouly called.
  */
 gboolean
-shell_global_begin_modal (ShellGlobal *global,
-                          guint32      timestamp)
+shell_global_begin_modal (ShellGlobal       *global,
+                          guint32           timestamp,
+                          MetaModalOptions  options)
 {
-  return meta_plugin_begin_modal (global->plugin, global->stage_xwindow,
-                                  None, 0, timestamp);
+  return meta_plugin_begin_modal (global->plugin, global->stage_xwindow, None, options, timestamp);
 }
 
 /**

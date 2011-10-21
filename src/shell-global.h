@@ -39,7 +39,8 @@ guint32        shell_global_get_current_time          (ShellGlobal *global);
 
 /* Input/event handling */
 gboolean shell_global_begin_modal            (ShellGlobal         *global,
-                                              guint32              timestamp);
+                                              guint32             timestamp,
+                                              MetaModalOptions    options);
 void     shell_global_end_modal              (ShellGlobal         *global,
                                               guint32              timestamp);
 
