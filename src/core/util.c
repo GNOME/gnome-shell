@@ -916,7 +916,7 @@ meta_later_remove (guint later_id)
       MetaLater *later = l->data;
       if (later->id == later_id)
         {
-          laters = g_slist_remove_link (laters, l);
+          laters = g_slist_delete_link (laters, l);
           /* If this was a "repaint func" later, we just let the
            * repaint func run and get removed
            */
