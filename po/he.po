@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-22 11:15+0200\n"
-"PO-Revision-Date: 2011-10-22 11:16+0200\n"
+"POT-Creation-Date: 2011-10-22 11:52+0200\n"
+"PO-Revision-Date: 2011-10-22 11:53+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -401,7 +401,7 @@ msgstr "לא ידוע"
 #: ../js/ui/contactDisplay.js:86
 #: ../js/ui/userMenu.js:139
 msgid "Available"
-msgstr "פנוי"
+msgstr "זמין"
 
 #: ../js/ui/contactDisplay.js:91
 #: ../js/ui/userMenu.js:148
