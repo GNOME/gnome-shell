@@ -246,8 +246,8 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
         {
           src = (bmp_data + ((src_y + (int) y_iter->intersect_start - dst_y) *
                              bmp_rowstride) +
-                 (src_x + x_span->start + x_span->size -
-                  x_span->waste - dst_x - 1) * bpp);
+                 (src_x + (int)x_span->start + (int)x_span->size -
+                  (int)x_span->waste - dst_x - 1) * bpp);
 
           dst = waste_buf;
 
@@ -295,8 +295,8 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
 
           src = (bmp_data + ((src_x + (int) x_iter->intersect_start - dst_x) *
                              bpp) +
-                 (src_y + y_span->start + y_span->size - y_span->waste
-                  - dst_y - 1) * bmp_rowstride);
+                 (src_y + (int)y_span->start + (int)y_span->size -
+                  (int)y_span->waste - dst_y - 1) * bmp_rowstride);
 
           dst = waste_buf;
 
@@ -790,8 +790,8 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
 
           COGL_NOTE (SLICING, "CREATE SLICE (%d,%d)\tsize (%d,%d)",
                      x, y,
-                     x_span->size - x_span->waste,
-                     y_span->size - y_span->waste);
+                     (int)(x_span->size - x_span->waste),
+                     (int)(y_span->size - y_span->waste));
 
           slice_textures[y * n_x_slices + x] =
             cogl_texture_2d_new_with_size (ctx, x_span->size, y_span->size,

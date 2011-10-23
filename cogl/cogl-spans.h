@@ -28,9 +28,9 @@
 
 typedef struct _CoglSpan
 {
-  int start;
-  int size;
-  int waste;
+  float start;
+  float size;
+  float waste;
 } CoglSpan;
 
 typedef struct _CoglSpanIter

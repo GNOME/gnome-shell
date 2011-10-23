@@ -38,8 +38,7 @@ _cogl_span_iter_update (CoglSpanIter *iter)
   iter->span = &g_array_index (iter->array, CoglSpan, iter->index);
 
   /* Offset next position by span size */
-  iter->next_pos = iter->pos +
-    (float)(iter->span->size - iter->span->waste);
+  iter->next_pos = iter->pos + iter->span->size - iter->span->waste;
 
   /* Check if span intersects the area to cover */
   if (iter->next_pos <= iter->cover_start ||
