@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-21 20:30+0000\n"
-"PO-Revision-Date: 2011-10-23 13:54+0200\n"
+"POT-Creation-Date: 2011-10-23 11:55+0000\n"
+"PO-Revision-Date: 2011-10-23 19:42+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -218,8 +218,8 @@ msgstr "Iniciar sesión"
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:569
-#: ../js/ui/userMenu.js:571 ../js/ui/userMenu.js:640
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:575 ../js/ui/userMenu.js:644
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -529,14 +529,13 @@ msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
 #: ../js/ui/endSessionDialog.js:60
-#, fuzzy, c-format
+#, c-format
 #| msgid "Log Out %s"
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Cerrar la sesión %s"
 
 #: ../js/ui/endSessionDialog.js:61
-#| msgid "Log Out"
 msgctxt "title"
 msgid "Log Out"
 msgstr "Cerrar la sesión"
@@ -566,13 +565,11 @@ msgid "Logging out of the system."
 msgstr "Cerrando la sesión."
 
 #: ../js/ui/endSessionDialog.js:75
-#| msgid "Log Out"
 msgctxt "button"
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
 #: ../js/ui/endSessionDialog.js:80
-#| msgid "Power Off"
 msgctxt "title"
 msgid "Power Off"
 msgstr "Apagar"
@@ -593,19 +590,16 @@ msgid "Powering off the system."
 msgstr "Apagando el sistema."
 
 #: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:106
-#| msgid "Restart"
 msgctxt "button"
 msgid "Restart"
 msgstr "Reiniciar"
 
 #: ../js/ui/endSessionDialog.js:91
-#| msgid "Power Off"
 msgctxt "button"
 msgid "Power Off"
 msgstr "Apagar"
 
 #: ../js/ui/endSessionDialog.js:97
-#| msgid "Restart"
 msgctxt "title"
 msgid "Restart"
 msgstr "Reiniciar"
@@ -1552,39 +1546,39 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:567 ../js/ui/userMenu.js:571 ../js/ui/userMenu.js:641
+#: ../js/ui/userMenu.js:571 ../js/ui/userMenu.js:575 ../js/ui/userMenu.js:645
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/userMenu.js:603
+#: ../js/ui/userMenu.js:607
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/userMenu.js:611
+#: ../js/ui/userMenu.js:615
 msgid "Online Accounts"
 msgstr "Cuentas en línea"
 
-#: ../js/ui/userMenu.js:615
+#: ../js/ui/userMenu.js:619
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/userMenu.js:622
+#: ../js/ui/userMenu.js:626
 msgid "Lock Screen"
 msgstr "Bloquear la pantalla"
 
-#: ../js/ui/userMenu.js:627
+#: ../js/ui/userMenu.js:631
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:632
+#: ../js/ui/userMenu.js:636
 msgid "Log Out..."
 msgstr "Cerrar la sesión…"
 
-#: ../js/ui/userMenu.js:660
+#: ../js/ui/userMenu.js:664
 msgid "Your chat status will be set to busy"
 msgstr "Su estado del chat se establecerá a «ocupado»"
 
-#: ../js/ui/userMenu.js:661
+#: ../js/ui/userMenu.js:665
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1660,7 +1654,6 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #. Translators: this is the same string as the one found in
 #. * nautilus
 #: ../src/shell-util.c:89
-#| msgid "Volume"
 msgid "Home"
 msgstr "Carpeta personal"
 
