@@ -109,11 +109,19 @@ get_shader_state (CoglPipeline *pipeline)
 }
 
 static void
-destroy_shader_state (void *user_data)
+destroy_shader_state (void *user_data,
+                      void *instance)
 {
   CoglPipelineShaderState *shader_state = user_data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* If the shader state was last used for this pipeline then clear it
+     so that if same address gets used again for a new pipeline then
+     we won't think it's the same pipeline and avoid updating the
+     constants */
+  if (shader_state->last_used_for_pipeline == instance)
+    shader_state->last_used_for_pipeline = NULL;
 
   if (--shader_state->ref_count == 0)
     {
@@ -132,10 +140,10 @@ destroy_shader_state (void *user_data)
 static void
 set_shader_state (CoglPipeline *pipeline, CoglPipelineShaderState *shader_state)
 {
-  cogl_object_set_user_data (COGL_OBJECT (pipeline),
-                             &shader_state_key,
-                             shader_state,
-                             destroy_shader_state);
+  _cogl_object_set_user_data (COGL_OBJECT (pipeline),
+                              &shader_state_key,
+                              shader_state,
+                              destroy_shader_state);
 }
 
 static void

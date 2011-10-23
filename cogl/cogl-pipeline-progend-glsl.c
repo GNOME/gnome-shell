@@ -319,11 +319,19 @@ program_state_new (int n_layers)
 }
 
 static void
-destroy_program_state (void *user_data)
+destroy_program_state (void *user_data,
+                       void *instance)
 {
   CoglPipelineProgramState *program_state = user_data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* If the program state was last used for this pipeline then clear
+     it so that if same address gets used again for a new pipeline
+     then we won't think it's the same pipeline and avoid updating the
+     uniforms */
+  if (program_state->last_used_for_pipeline == instance)
+    program_state->last_used_for_pipeline = NULL;
 
   if (--program_state->ref_count == 0)
     {
@@ -348,10 +356,10 @@ static void
 set_program_state (CoglPipeline *pipeline,
                   CoglPipelineProgramState *program_state)
 {
-  cogl_object_set_user_data (COGL_OBJECT (pipeline),
-                             &program_state_key,
-                             program_state,
-                             destroy_program_state);
+  _cogl_object_set_user_data (COGL_OBJECT (pipeline),
+                              &program_state_key,
+                              program_state,
+                              destroy_program_state);
 }
 
 static void
