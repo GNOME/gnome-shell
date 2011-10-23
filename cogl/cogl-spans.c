@@ -74,8 +74,6 @@ _cogl_span_iter_begin (CoglSpanIter *iter,
                        float cover_end,
                        CoglPipelineWrapMode wrap_mode)
 {
-  float cover_start_normalized;
-
   /* XXX: If CLAMP_TO_EDGE needs to be emulated then it needs to be
    * done at a higher level than here... */
   _COGL_RETURN_IF_FAIL (wrap_mode == COGL_PIPELINE_WRAP_MODE_REPEAT ||
@@ -105,8 +103,13 @@ _cogl_span_iter_begin (CoglSpanIter *iter,
    * iteration of any range so we need to relate the start of the range to the
    * nearest point equivalent to 0.
    */
-  cover_start_normalized = cover_start / normalize_factor;
-  iter->origin = floorf (cover_start_normalized) * normalize_factor;
+  if (normalize_factor != 1.0)
+    {
+      float cover_start_normalized = cover_start / normalize_factor;
+      iter->origin = floorf (cover_start_normalized) * normalize_factor;
+    }
+  else
+    iter->origin = floorf (cover_start);
 
   iter->wrap_mode = wrap_mode;
 
