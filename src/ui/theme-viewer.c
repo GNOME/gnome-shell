@@ -122,19 +122,18 @@ static GtkActionEntry tool_items[] =
 static GtkWidget *
 normal_contents (void)
 {
-  GtkWidget *table;
-  GtkWidget *handlebox;
+  GtkWidget *grid;
   GtkWidget *statusbar;
   GtkWidget *contents;
   GtkWidget *sw;
   GtkActionGroup *action_group;
   GtkUIManager *ui_manager;
       
-  table = gtk_table_new (1, 4, FALSE);
-  
+  grid = gtk_grid_new ();
+
   /* Create the menubar
    */
-      
+
   action_group = gtk_action_group_new ("mainmenu");
   gtk_action_group_add_actions (action_group,
                                 menu_items,
@@ -152,24 +151,15 @@ normal_contents (void)
   /* create menu items */
   gtk_ui_manager_add_ui_from_string (ui_manager, menu_item_string, -1, NULL);
 
-  gtk_table_attach (GTK_TABLE (table),
-                    gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
-                    /* X direction */          /* Y direction */
-                    0, 1,                      0, 1,
-                    GTK_EXPAND | GTK_FILL,     0,
-                    0,                         0);
+  gtk_grid_attach (GTK_GRID (grid),
+                   gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
+                   0, 0, 1, 1);
 
-  handlebox = gtk_handle_box_new ();
-
-  gtk_container_add (GTK_CONTAINER (handlebox),
-                     gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"));
-
-  gtk_table_attach (GTK_TABLE (table),
-                    handlebox,
-                    /* X direction */       /* Y direction */
-                    0, 1,                   1, 2,
-                    GTK_EXPAND | GTK_FILL,  0,
-                    0,                      0);
+  /* Create the toolbar
+   */
+  gtk_grid_attach (GTK_GRID (grid),
+                   gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"),
+                   0, 1, 1, 1);
 
   /* Create document
    */
@@ -183,12 +173,9 @@ normal_contents (void)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
                                        GTK_SHADOW_IN);
       
-  gtk_table_attach (GTK_TABLE (table),
-                    sw,
-                    /* X direction */       /* Y direction */
-                    0, 1,                   2, 3,
-                    GTK_EXPAND | GTK_FILL,  GTK_EXPAND | GTK_FILL,
-                    0,                      0);
+  gtk_grid_attach (GTK_GRID (grid),
+                   sw,
+                   0, 2, 1, 1);
       
   contents = gtk_text_view_new ();
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (contents),
@@ -200,18 +187,15 @@ normal_contents (void)
   /* Create statusbar */
 
   statusbar = gtk_statusbar_new ();
-  gtk_table_attach (GTK_TABLE (table),
-                    statusbar,
-                    /* X direction */       /* Y direction */
-                    0, 1,                   3, 4,
-                    GTK_EXPAND | GTK_FILL,  0,
-                    0,                      0);
+  gtk_grid_attach (GTK_GRID (grid),
+                   statusbar,
+                   0, 3, 1, 1);
 
-  gtk_widget_show_all (table);
+  gtk_widget_show_all (grid);
 
   g_object_unref (ui_manager);
 
-  return table;
+  return grid;
 }
 
 static void
@@ -233,7 +217,7 @@ dialog_contents (void)
   GtkWidget *image;
   GtkWidget *button;
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   action_area = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
 
@@ -258,7 +242,7 @@ dialog_contents (void)
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_selectable (GTK_LABEL (label), TRUE);
   
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
   gtk_box_pack_start (GTK_BOX (hbox), image,
                       FALSE, FALSE, 0);
@@ -278,11 +262,11 @@ dialog_contents (void)
 static GtkWidget*
 utility_contents (void)
 {
-  GtkWidget *table;
+  GtkWidget *grid;
   GtkWidget *button;
   int i, j;
 
-  table = gtk_table_new (3, 4, FALSE);
+  grid = gtk_grid_new ();
 
   i = 0;
   while (i < 3)
@@ -298,12 +282,9 @@ utility_contents (void)
 
           g_free (str);
           
-          gtk_table_attach (GTK_TABLE (table),
-                            button,
-                            /* X direction */       /* Y direction */
-                            i, i+1,                   j, j+1,
-                            GTK_EXPAND | GTK_FILL,  GTK_EXPAND | GTK_FILL,
-                            0,                      0);
+          gtk_grid_attach (GTK_GRID (grid),
+                           button,
+                           i, j, 1, 1);
 
           ++j;
         }
@@ -311,9 +292,9 @@ utility_contents (void)
       ++i;
     }
 
-  gtk_widget_show_all (table);
+  gtk_widget_show_all (grid);
   
-  return table;
+  return grid;
 }
 
 static GtkWidget*
@@ -328,7 +309,7 @@ menu_contents (void)
   gtk_frame_set_shadow_type (GTK_FRAME (frame),
                              GTK_SHADOW_OUT);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   i = 0;
   while (i < 10)
@@ -365,7 +346,7 @@ border_only_contents (void)
   color.alpha = 1.0;
   gtk_widget_override_background_color (event_box, 0, &color);
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 3);
   
   w = gtk_label_new (_("Border-only window"));
@@ -487,7 +468,7 @@ preview_collection (int font_size,
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
 
-  box = gtk_vbox_new (FALSE, 0);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_set_spacing (GTK_BOX (box), 20);
   gtk_container_set_border_width (GTK_CONTAINER (box), 20);
 
@@ -711,7 +692,7 @@ previews_of_button_layouts (void)
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
 
-  box = gtk_vbox_new (FALSE, 0);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_set_spacing (GTK_BOX (box), 20);
   gtk_container_set_border_width (GTK_CONTAINER (box), 20);
 
