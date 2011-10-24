@@ -464,8 +464,8 @@ clutter_cairo_texture_allocate (ClutterActor           *self,
 
       clutter_actor_box_get_size (allocation, &width, &height);
 
-      priv->surface_width = ceilf (width + 0.5);
-      priv->surface_height = ceilf (height + 0.5);
+      priv->surface_width = ceilf (width);
+      priv->surface_height = ceilf (height);
 
       clutter_cairo_texture_surface_resize_internal (texture);
       clutter_cairo_texture_invalidate (texture);
