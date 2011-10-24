@@ -1942,7 +1942,7 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
   Display *display;
   
   frames = META_FRAMES (widget);
-  display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+  display = GDK_DISPLAY_XDISPLAY (gdk_window_get_display (event->window));
   
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
@@ -1971,7 +1971,8 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
         MetaFrameControl control;
         int x, y;
         
-        gdk_window_get_pointer (frame->window, &x, &y, NULL);
+        gdk_window_get_device_position (frame->window, event->device,
+                                        &x, &y, NULL);
 
         /* Control is set to none unless it matches
          * the current grab
@@ -2012,7 +2013,8 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
         MetaFrameControl control;
         int x, y;
         
-        gdk_window_get_pointer (frame->window, &x, &y, NULL);
+        gdk_window_get_device_position (frame->window, event->device,
+                                        &x, &y, NULL);
 
         control = get_control (frames, frame, x, y);
 
