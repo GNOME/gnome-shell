@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-19 22:42+0200\n"
-"PO-Revision-Date: 2011-10-19 22:42+0200\n"
+"POT-Creation-Date: 2011-10-24 09:36+0200\n"
+"PO-Revision-Date: 2011-10-24 09:36+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -191,7 +191,7 @@ msgid "Not listed?"
 msgstr "Ikke listet?"
 
 #: ../js/gdm/loginDialog.js:1035 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:148
+#: ../js/ui/extensionSystem.js:520 ../js/ui/networkAgent.js:148
 #: ../js/ui/polkitAuthenticationAgent.js:173 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Avbryt"
@@ -205,18 +205,16 @@ msgstr "Logg inn"
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:554
-#: ../js/ui/userMenu.js:556 ../js/ui/userMenu.js:625
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:575 ../js/ui/userMenu.js:644
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
-#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+#: ../js/gdm/powerMenu.js:121
 msgid "Restart"
 msgstr "Start på nytt"
 
-#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
-#: ../js/ui/endSessionDialog.js:91
+#: ../js/gdm/powerMenu.js:126
 msgid "Power Off"
 msgstr "Slå av"
 
@@ -519,10 +517,12 @@ msgstr "SISTE OPPFØRINGER"
 
 #: ../js/ui/endSessionDialog.js:60
 #, c-format
+msgctxt "title"
 msgid "Log Out %s"
 msgstr "Logg ut %s"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:61
+msgctxt "title"
 msgid "Log Out"
 msgstr "Logg ut"
 
@@ -549,6 +549,16 @@ msgstr[1] "Du vil bli logget ut automatisk om %d sekunder."
 msgid "Logging out of the system."
 msgstr "Logger ut av systemet"
 
+#: ../js/ui/endSessionDialog.js:75
+msgctxt "button"
+msgid "Log Out"
+msgstr "Logg ut"
+
+#: ../js/ui/endSessionDialog.js:80
+msgctxt "title"
+msgid "Power Off"
+msgstr "Slå av"
+
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -564,6 +574,21 @@ msgstr[1] "Systemet vil slås av automatisk om %d sekunder."
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Slår av systemet."
+
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:106
+msgctxt "button"
+msgid "Restart"
+msgstr "Start på nytt"
+
+#: ../js/ui/endSessionDialog.js:91
+msgctxt "button"
+msgid "Power Off"
+msgstr "Slå av"
+
+#: ../js/ui/endSessionDialog.js:97
+msgctxt "title"
+msgid "Restart"
+msgstr "Start på nytt"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -582,11 +607,11 @@ msgstr[1] "Systemet vil starte på nytt automatisk om %d sekunder."
 msgid "Restarting the system."
 msgstr "Starter systemet på nytt."
 
-#: ../js/ui/extensionSystem.js:481
+#: ../js/ui/extensionSystem.js:524
 msgid "Install"
 msgstr "Installer"
 
-#: ../js/ui/extensionSystem.js:485
+#: ../js/ui/extensionSystem.js:528
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
@@ -599,51 +624,51 @@ msgstr "varslingsområde"
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: ../js/ui/lookingGlass.js:646
+#: ../js/ui/lookingGlass.js:664
 msgid "No extensions installed"
 msgstr "Ingen utvidelser installert"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:701
+#: ../js/ui/lookingGlass.js:719
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s har ikke avgitt noen feil."
 
-#: ../js/ui/lookingGlass.js:707
+#: ../js/ui/lookingGlass.js:725
 msgid "Hide Errors"
 msgstr "Skjul feil"
 
-#: ../js/ui/lookingGlass.js:711 ../js/ui/lookingGlass.js:761
+#: ../js/ui/lookingGlass.js:729 ../js/ui/lookingGlass.js:779
 msgid "Show Errors"
 msgstr "Vis feil"
 
-#: ../js/ui/lookingGlass.js:720
+#: ../js/ui/lookingGlass.js:738
 msgid "Enabled"
 msgstr "Aktivert"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:722 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:740 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: ../js/ui/lookingGlass.js:724
+#: ../js/ui/lookingGlass.js:742
 msgid "Error"
 msgstr "Feil"
 
-#: ../js/ui/lookingGlass.js:726
+#: ../js/ui/lookingGlass.js:744
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:728
+#: ../js/ui/lookingGlass.js:746
 msgid "Downloading"
 msgstr "Laster ned"
 
-#: ../js/ui/lookingGlass.js:749
+#: ../js/ui/lookingGlass.js:767
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:755
+#: ../js/ui/lookingGlass.js:773
 msgid "Web Page"
 msgstr "Nettside"
 
@@ -1505,39 +1530,39 @@ msgstr "Ledig"
 msgid "Unavailable"
 msgstr "Ikke tilgjengelig"
 
-#: ../js/ui/userMenu.js:552 ../js/ui/userMenu.js:556 ../js/ui/userMenu.js:626
+#: ../js/ui/userMenu.js:571 ../js/ui/userMenu.js:575 ../js/ui/userMenu.js:645
 msgid "Power Off..."
 msgstr "Slå av …"
 
-#: ../js/ui/userMenu.js:588
+#: ../js/ui/userMenu.js:607
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/userMenu.js:596
+#: ../js/ui/userMenu.js:615
 msgid "Online Accounts"
 msgstr "Kontoer på nettet"
 
-#: ../js/ui/userMenu.js:600
+#: ../js/ui/userMenu.js:619
 msgid "System Settings"
 msgstr "Systeminnstillinger"
 
-#: ../js/ui/userMenu.js:607
+#: ../js/ui/userMenu.js:626
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:631
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/userMenu.js:617
+#: ../js/ui/userMenu.js:636
 msgid "Log Out..."
 msgstr "Logg ut …"
 
-#: ../js/ui/userMenu.js:645
+#: ../js/ui/userMenu.js:664
 msgid "Your chat status will be set to busy"
 msgstr "Din pratestatus vil bli satt til opptatt"
 
-#: ../js/ui/userMenu.js:646
+#: ../js/ui/userMenu.js:665
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
