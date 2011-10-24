@@ -215,13 +215,11 @@ clutter_threads_init_default (void)
 {
   g_mutex_init (&clutter_threads_mutex);
 
-#ifndef HAVE_CLUTTER_WIN32
   if (clutter_threads_lock == NULL)
     clutter_threads_lock = clutter_threads_impl_lock;
 
   if (clutter_threads_unlock == NULL)
     clutter_threads_unlock = clutter_threads_impl_unlock;
-#endif
 }
 
 #define ENVIRONMENT_GROUP       "Environment"
