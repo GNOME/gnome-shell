@@ -1297,7 +1297,7 @@ MultiNotificationSource.prototype = {
     },
 
     createNotificationIcon: function() {
-        return new St.Icon({ gicon: Shell.util_icon_from_string(this._icon),
+        return new St.Icon({ gicon: Gio.icon_new_for_string(this._icon),
                              icon_type: St.IconType.FULLCOLOR,
                              icon_size: this.ICON_SIZE });
     }
