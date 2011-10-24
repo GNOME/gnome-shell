@@ -71,13 +71,6 @@ G_DEFINE_TYPE (ClutterBackendCogl, _clutter_backend_cogl, CLUTTER_TYPE_BACKEND_X
 G_DEFINE_TYPE (ClutterBackendCogl, _clutter_backend_cogl, CLUTTER_TYPE_BACKEND);
 #endif
 
-static void
-clutter_backend_at_exit (void)
-{
-  if (backend_singleton)
-    g_object_run_dispose (G_OBJECT (backend_singleton));
-}
-
 const gchar*
 _clutter_backend_cogl_get_vblank (void)
 {
@@ -123,8 +116,6 @@ clutter_backend_cogl_post_parse (ClutterBackend  *backend,
 
   return TRUE;
 #endif
-
-  g_atexit (clutter_backend_at_exit);
 
   return TRUE;
 }
