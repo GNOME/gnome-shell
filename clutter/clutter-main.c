@@ -215,11 +215,17 @@ clutter_threads_init_default (void)
 {
   g_mutex_init (&clutter_threads_mutex);
 
+#ifndef CLUTTER_WINDOWING_WIN32
+  /* we don't need nor want locking functions on Windows.here
+  * as Windows GUI system assumes multithreadedness
+  * see bug: https://bugzilla.gnome.org/show_bug.cgi?id=662071
+  */
   if (clutter_threads_lock == NULL)
     clutter_threads_lock = clutter_threads_impl_lock;
 
   if (clutter_threads_unlock == NULL)
     clutter_threads_unlock = clutter_threads_impl_unlock;
+#endif /* CLUTTER_WINDOWING_WIN32 */
 }
 
 #define ENVIRONMENT_GROUP       "Environment"
