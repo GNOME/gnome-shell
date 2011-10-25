@@ -62,12 +62,13 @@ fi
 # iso-codes, libical, libxml2, ORBit2, pam, python, readline, upower,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
-# libgcrypt, libtasn1, libgnome-keyring, libgtop, cups, xcb, WebKit-gtk
-# libusb, libproxy, libdb, libproxy, sqlite, gudev, lcms2, sane
+# libgcrypt, libtasn1, libgnome-keyring, libgtop, cups, xcb, libwebkitgtk,
+# libusb, libproxy, libdb, libproxy, sqlite, gudev, liblcms2, sane,
+# python-gobject, libxtst, liboauth, libnm
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
-# gvfs, python, pygobject, gnome-python (gconf),
+# gvfs, python, gnome-python (gconf),
 # icon-naming-utils, zenity, libtasn1-tools accountsservice
 
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
@@ -77,15 +78,23 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     gvfs gvfs-backends icon-naming-utils
     libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev libgtop2-dev
     libical-dev libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
-    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev
-    mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
-    xulrunner-dev libcroco3-dev
+    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline-dev libxml2-dev
+    mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject-dev
+    libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
     libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0-0-dev
     libupower-glib-dev libcups2-dev libproxy-dev libdb-dev libproxy-dev
-    libsqlite3-dev libgudev-1.0-dev libsane-dev libwebkitgtk-3.0-0
+    libsqlite3-dev libgudev-1.0-dev libsane-dev libwebkitgtk-3.0-dev
     libx11-xcb-dev libupower-glib-dev accountsservice
+    gnome-doc-utils liblcms2-dev libxtst-dev liboauth-dev
+    libnm-glib-dev libnm-util-dev
     "
+
+  if apt-cache show libmozjs-dev > /dev/null 2> /dev/null; then
+    reqd="$reqd libmozjs-dev"
+  elif apt-cache show xulrunner-dev > /dev/null 2> /dev/null; then
+    reqd="$reqd xulrunner-dev"
+  fi
 
   if apt-cache show libxcb-util0-dev > /dev/null 2> /dev/null; then
     reqd="$reqd libxcb-util0-dev"
