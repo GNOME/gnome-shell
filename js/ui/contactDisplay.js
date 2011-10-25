@@ -93,23 +93,30 @@ const Contact = new Lang.Class({
             text = _("Busy");
             iconName = 'user-busy';
             break;
-          default:
+          case Folks.PresenceType.OFFLINE:
             text = _("Offline");
             iconName = 'user-offline';
+            break;
+          default:
+            text = '';
+            iconName = null;
           }
-
-        let icon = new St.Icon({ icon_name: iconName,
-                                 icon_type: St.IconType.FULLCOLOR,
-                                 icon_size: 16,
-                                 style_class: 'contact-details-status-icon' });
-        let label = new St.Label({ text: text });
 
         let box = new St.BoxLayout({ vertical: false,
                                      style_class: 'contact-details-status' });
-        box.add(icon, { x_fill: true,
-                        y_fill: false,
-                        x_align: St.Align.START,
-                        y_align: St.Align.START });
+
+        if (iconName) {
+            let icon = new St.Icon({ icon_name: iconName,
+                                     icon_type: St.IconType.FULLCOLOR,
+                                     icon_size: 16,
+                                     style_class: 'contact-details-status-icon' });
+            box.add(icon, { x_fill: true,
+                            y_fill: false,
+                            x_align: St.Align.START,
+                            y_align: St.Align.START });
+        }
+
+        let label = new St.Label({ text: text });
 
         box.add(label, { x_fill: true,
                          y_fill: false,
