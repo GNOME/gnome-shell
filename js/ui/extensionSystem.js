@@ -253,6 +253,8 @@ function disableExtension(uuid) {
         }
     }
 
+    extensionOrder.splice(orderIdx, 1);
+
     meta.state = ExtensionState.DISABLED;
     _signals.emit('extension-state-changed', meta);
 }
