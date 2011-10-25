@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-10-25 17:15+0000\n"
-"PO-Revision-Date: 2011-10-25 20:44+0100\n"
+"PO-Revision-Date: 2011-10-25 21:16+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -608,7 +608,7 @@ msgstr "Ni nameščenih razširitev"
 #: ../js/ui/lookingGlass.js:719
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr "% ni javil napak."
+msgstr "%s ni javil napak."
 
 #: ../js/ui/lookingGlass.js:725
 msgid "Hide Errors"
