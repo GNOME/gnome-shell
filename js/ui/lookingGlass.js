@@ -737,6 +737,7 @@ Extensions.prototype = {
             case ExtensionSystem.ExtensionState.ENABLED:
                 return _("Enabled");
             case ExtensionSystem.ExtensionState.DISABLED:
+            case ExtensionSystem.ExtensionState.INITIALIZED:
                 return _("Disabled");
             case ExtensionSystem.ExtensionState.ERROR:
                 return _("Error");

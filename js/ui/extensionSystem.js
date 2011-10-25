@@ -22,6 +22,7 @@ const ExtensionState = {
     ERROR: 3,
     OUT_OF_DATE: 4,
     DOWNLOADING: 5,
+    INITIALIZED: 6,
 
     // Used as an error state for operations on unknown extensions,
     // should never be in a real extensionMeta object.
@@ -62,8 +63,6 @@ const extensionMeta = {};
 const extensions = {};
 // Maps uuid -> extension state object (returned from init())
 const extensionStateObjs = {};
-// Maps uuid -> [GFile to the extension directory, Extension type]
-const extensionDirs = {};
 // Contains the order that extensions were enabled in.
 const extensionOrder = [];
 
@@ -260,11 +259,11 @@ function disableExtension(uuid) {
 
 function enableExtension(uuid) {
     let meta = extensionMeta[uuid];
-    if (!meta) {
-        if (extensionDirs[uuid]) {
-            let [dir, type] = extensionDirs[uuid];
-            loadExtension(dir, type);
-        }
+    if (!meta)
+        return;
+
+    if (meta.state == ExtensionState.INITIALIZED) {
+        loadExtension(meta.dir, meta.type, true);
         return;
     }
 
@@ -296,7 +295,7 @@ function logExtensionError(uuid, message, state) {
                                                state: state });
 }
 
-function loadExtension(dir, type) {
+function loadExtension(dir, type, enabled) {
     let info;
     let uuid = dir.get_basename();
 
@@ -353,6 +352,7 @@ function loadExtension(dir, type) {
 
     extensionMeta[uuid] = meta;
     meta.type = type;
+    meta.dir = dir;
     meta.path = dir.get_path();
     meta.error = '';
 
@@ -363,6 +363,11 @@ function loadExtension(dir, type) {
         (meta['js-version'] && !versionCheck(meta['js-version'], Config.GJS_VERSION))) {
         logExtensionError(uuid, 'extension is not compatible with current GNOME Shell and/or GJS version', ExtensionState.OUT_OF_DATE);
         meta.state = ExtensionState.OUT_OF_DATE;
+        return;
+    }
+
+    if (!enabled) {
+        meta.state = ExtensionState.INITIALIZED;
         return;
     }
 
@@ -485,9 +490,7 @@ function _loadExtensionsIn(dir, type) {
         let name = info.get_name();
         let child = dir.get_child(name);
         let enabled = enabledExtensions.indexOf(name) != -1;
-        extensionDirs[name] = [dir, type];
-        if (enabled)
-            loadExtension(child, type);
+        loadExtension(child, type, enabled);
     }
     fileEnum.close(null);
 }
