@@ -586,8 +586,10 @@ const Notification = new Lang.Class({
 
     enableScrolling: function(enableScrolling) {
         this._scrollPolicy = enableScrolling ? Gtk.PolicyType.AUTOMATIC : Gtk.PolicyType.NEVER;
-        if (this._scrollArea)
+        if (this._scrollArea) {
             this._scrollArea.vscrollbar_policy = this._scrollPolicy;
+            this._scrollArea.enable_mouse_scrolling = enableScrolling;
+        }
     },
 
     _createScrollArea: function() {
