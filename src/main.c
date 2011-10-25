@@ -554,6 +554,8 @@ main (int argc, char **argv)
                      muted_log_handler, NULL);
   g_log_set_handler ("tp-glib/proxy", G_LOG_LEVEL_DEBUG,
                      muted_log_handler, NULL);
+  g_log_set_handler ("GnomeShellBrowserPlugin", G_LOG_LEVEL_DEBUG,
+                     muted_log_handler, NULL);
 
   /* Turn on telepathy-glib debugging but filter it out in
    * default_log_handler. This handler also exposes all the logs over D-Bus
