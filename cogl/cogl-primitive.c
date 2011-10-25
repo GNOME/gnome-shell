@@ -505,7 +505,8 @@ cogl_primitive_set_mode (CoglPrimitive *primitive,
 
 void
 cogl_primitive_set_indices (CoglPrimitive *primitive,
-                            CoglIndices *indices)
+                            CoglIndices *indices,
+                            int n_indices)
 {
   _COGL_RETURN_IF_FAIL (cogl_is_primitive (primitive));
 
@@ -520,6 +521,7 @@ cogl_primitive_set_indices (CoglPrimitive *primitive,
   if (primitive->indices)
     cogl_object_unref (primitive->indices);
   primitive->indices = indices;
+  primitive->n_vertices = n_indices;
 }
 
 CoglPrimitive *

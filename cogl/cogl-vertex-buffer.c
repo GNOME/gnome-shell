@@ -1590,9 +1590,9 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
   cogl_primitive_set_n_vertices (buffer->primitive, count);
 
   if (buffer_indices)
-    cogl_primitive_set_indices (buffer->primitive, buffer_indices->indices);
+    cogl_primitive_set_indices (buffer->primitive, buffer_indices->indices, count);
   else
-    cogl_primitive_set_indices (buffer->primitive, NULL);
+    cogl_primitive_set_indices (buffer->primitive, NULL, count);
 
   cogl_vertex_buffer_submit_real (buffer);
 

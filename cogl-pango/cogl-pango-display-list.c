@@ -353,9 +353,8 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
           CoglIndices *indices =
             cogl_get_rectangle_indices (node->d.texture.rectangles->len);
 
-          cogl_primitive_set_indices (prim, indices);
-          cogl_primitive_set_n_vertices (prim,
-                                         node->d.texture.rectangles->len * 6);
+          cogl_primitive_set_indices (prim, indices,
+                                      node->d.texture.rectangles->len * 6);
         }
 
       node->d.texture.primitive = prim;

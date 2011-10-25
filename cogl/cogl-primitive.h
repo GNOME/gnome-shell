@@ -221,6 +221,11 @@ typedef struct
  * and defines a vertex count so a #CoglPrimitive object can be retained and
  * drawn later with no addition information required.
  *
+ * The value passed as @n_vertices will simply update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+ *
  * Returns: A newly allocated #CoglPrimitive object
  *
  * Since: 1.6
@@ -240,7 +245,8 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p2:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -261,6 +267,12 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -284,7 +296,8 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p3:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP3 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -305,6 +318,12 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -328,7 +347,8 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p2c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -351,6 +371,12 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -374,7 +400,8 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p3c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP3C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -397,6 +424,12 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -420,7 +453,8 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p2t2:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP2T2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -443,6 +477,12 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -466,7 +506,8 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p3t2:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP3T2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -489,6 +530,12 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -512,7 +559,8 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p2t2c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP2T2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -535,6 +583,12 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -558,7 +612,8 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
 /**
  * cogl_primitive_new_p3t2c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
- * @n_vertices: The number of vertices to process when drawing
+ * @n_vertices: The number of vertices to read from @data and also
+ *              the number of vertices to read when later drawing.
  * @data: An array of #CoglVertexP3T2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
@@ -581,6 +636,12 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
  * cogl_primitive_draw (prim);
  * ]|
  *
+ * The value passed as @n_vertices is initially used to determine how
+ * much can be read from @data but it will also be used to update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+
  * <note>The primitive API doesn't support drawing with sliced
  * textures (since switching between slices implies changing state and
  * so that implies multiple primitives need to be submitted). You
@@ -607,9 +668,51 @@ void
 cogl_primitive_set_first_vertex (CoglPrimitive *primitive,
                                  int first_vertex);
 
+#define cogl_primitive_get_n_vertices cogl_primitive_get_n_vertices_EXP
+/**
+ * cogl_primitive_get_n_vertices:
+ * @primitive: A #CoglPrimitive object
+ *
+ * Queries the number of vertices to read when drawing the given
+ * @primitive. Usually this value is implicitly set when associating
+ * vertex data or indices with a #CoglPrimitive.
+ *
+ * If cogl_primitive_set_indices() has been used to associate a
+ * sequence of #CoglIndices with the given @primitive then the
+ * number of vertices to read can also be phrased as the number
+ * of indices to read.
+ *
+ * <note>To be clear; it doesn't refer to the number of vertices - in
+ * terms of data - associated with the primitive it's just the number
+ * of vertices to read and draw.</note>
+ *
+ * Returns: The number of vertices to read when drawing.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 int
 cogl_primitive_get_n_vertices (CoglPrimitive *primitive);
 
+#define cogl_primitive_set_n_vertices cogl_primitive_set_n_vertices_EXP
+/**
+ * cogl_primitive_set_n_vertices:
+ * @primitive: A #CoglPrimitive object
+ * @n_vertices: The number of vertices to read when drawing.
+ *
+ * Specifies how many vertices should be read when drawing the given
+ * @primitive.
+ *
+ * Usually this value is set implicitly when associating vertex data
+ * or indices with a #CoglPrimitive.
+ *
+ * <note>To be clear; it doesn't refer to the number of vertices - in
+ * terms of data - associated with the primitive it's just the number
+ * of vertices to read and draw.</note>
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
 void
 cogl_primitive_set_n_vertices (CoglPrimitive *primitive,
                                int n_vertices);
@@ -637,10 +740,39 @@ cogl_primitive_set_attributes (CoglPrimitive *primitive,
                                CoglAttribute **attributes,
                                int n_attributes);
 
-
+#define cogl_primitive_set_indices cogl_primitive_set_indices_EXP
+/**
+ * cogl_primitive_set_indices:
+ * @primitive: A #CoglPrimitive
+ * @indices: A #CoglIndices array
+ * @n_indices: The number of indices to reference when drawing
+ *
+ * Associates a sequence of #CoglIndices with the given @primitive.
+ *
+ * #CoglIndices provide a way to virtualize your real vertex data by
+ * providing a sequence of indices that index into your real vertex
+ * data. The GPU will walk though the index values to indirectly
+ * lookup the data for each vertex instead of sequentially walking
+ * through the data directly. This lets you save memory by indexing
+ * shared data multiple times instead of duplicating the data.
+ *
+ * The value passed as @n_indices will simply update the
+ * #CoglPrimitive::n_vertices property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to draw or, put another way, how many
+ * indices should be read from @indices when drawing.
+ *
+ * <note>The #CoglPrimitive::first_vertex property also affects
+ * drawing with indices by defining the first entry of the indices to
+ * start drawing from.</note>
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
 void
 cogl_primitive_set_indices (CoglPrimitive *primitive,
-                            CoglIndices *indices);
+                            CoglIndices *indices,
+                            int n_indices);
 
 /**
  * cogl_primitive_draw:
