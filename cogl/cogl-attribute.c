@@ -428,13 +428,13 @@ validated:
   return status;
 }
 
-static void
+static gboolean
 toggle_enabled_cb (int bit_num, void *user_data)
 {
   const CoglBitmask *new_values = user_data;
   gboolean enabled = _cogl_bitmask_get (new_values, bit_num);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (ctx->driver == COGL_DRIVER_GLES2)
     {
@@ -454,6 +454,8 @@ toggle_enabled_cb (int bit_num, void *user_data)
         GE( ctx, glDisableClientState (GL_TEXTURE_COORD_ARRAY) );
     }
 #endif
+
+  return TRUE;
 }
 
 static void

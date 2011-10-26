@@ -231,7 +231,7 @@ _cogl_bitmask_clear_all_in_array (CoglBitmask *bitmask)
 void
 _cogl_bitmask_foreach (const CoglBitmask *bitmask,
                        CoglBitmaskForeachFunc func,
-                       gpointer user_data)
+                       void *user_data)
 {
   if (_cogl_bitmask_has_array (bitmask))
     {
@@ -251,8 +251,9 @@ _cogl_bitmask_foreach (const CoglBitmask *bitmask,
               bit += next_bit;
               mask >>= next_bit;
 
-              func (array_index * sizeof (unsigned long) * 8 + bit - 1,
-                    user_data);
+              if (!func (array_index * sizeof (unsigned long) * 8 + bit - 1,
+                         user_data))
+                return;
             }
         }
     }
@@ -268,7 +269,8 @@ _cogl_bitmask_foreach (const CoglBitmask *bitmask,
           bit += next_bit;
           mask >>= next_bit;
 
-          func (bit - 1, user_data);
+          if (!func (bit - 1, user_data))
+            return;
         }
     }
 }

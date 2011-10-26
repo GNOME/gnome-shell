@@ -125,7 +125,8 @@ void
 _cogl_bitmask_xor_bits (CoglBitmask *dst,
                         const CoglBitmask *src);
 
-typedef void (* CoglBitmaskForeachFunc) (int bit_num, gpointer user_data);
+/* The foreach function can return FALSE to stop iteration */
+typedef gboolean (* CoglBitmaskForeachFunc) (int bit_num, void *user_data);
 
 /*
  * cogl_bitmask_foreach:
@@ -138,7 +139,7 @@ typedef void (* CoglBitmaskForeachFunc) (int bit_num, gpointer user_data);
 void
 _cogl_bitmask_foreach (const CoglBitmask *bitmask,
                        CoglBitmaskForeachFunc func,
-                       gpointer user_data);
+                       void *user_data);
 
 /*
  * _cogl_bitmask_get:

@@ -19,7 +19,7 @@ typedef struct
   int *bits;
 } CheckData;
 
-static void
+static gboolean
 check_bit (int bit_num, void *user_data)
 {
   CheckData *data = user_data;
@@ -29,12 +29,12 @@ check_bit (int bit_num, void *user_data)
     if (data->bits[i] == bit_num)
       {
         data->bits[i] = -1;
-        return;
+        return TRUE;
       }
 
   g_assert_not_reached ();
 
-  return;
+  return TRUE;
 }
 
 static void
