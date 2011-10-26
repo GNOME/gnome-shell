@@ -168,11 +168,20 @@ IMStatusChooserItem.prototype = {
         this._accountMgr = Tp.AccountManager.dup();
         this._accountMgr.connect('most-available-presence-changed',
                                  Lang.bind(this, this._IMStatusChanged));
+        this._accountMgr.connect('account-enabled',
+                                 Lang.bind(this, this._IMAccountsChanged));
+        this._accountMgr.connect('account-disabled',
+                                 Lang.bind(this, this._IMAccountsChanged));
+        this._accountMgr.connect('account-removed',
+                                 Lang.bind(this, this._IMAccountsChanged));
         this._accountMgr.prepare_async(null, Lang.bind(this,
             function(mgr) {
                 let [presence, status, msg] = mgr.get_most_available_presence();
 
                 let savedPresence = global.settings.get_int('saved-im-presence');
+
+                this._IMAccountsChanged(mgr);
+
                 if (savedPresence == presence) {
                     this._IMStatusChanged(mgr, presence, status, msg);
                 } else {
@@ -280,6 +289,13 @@ IMStatusChooserItem.prototype = {
             default:
                 return 'unknown';
         }
+    },
+
+    _IMAccountsChanged: function(mgr) {
+        let accounts = mgr.get_valid_accounts().filter(function(account) {
+            return account.enabled;
+        });
+        this._combo.setSensitive(accounts.length > 0);
     },
 
     _IMStatusChanged: function(accountMgr, presence, status, message) {
