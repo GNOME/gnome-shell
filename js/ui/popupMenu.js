@@ -1500,6 +1500,8 @@ PopupComboMenu.prototype = {
         this.actor._delegate = this;
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+        sourceActor.connect('style-changed',
+                            Lang.bind(this, this._onSourceActorStyleChanged));
         this._activeItemPos = -1;
         global.focus_manager.add_group(this.actor);
     },
@@ -1517,6 +1519,10 @@ PopupComboMenu.prototype = {
         let items = this._getMenuItems();
         let activeItem = items[this._activeItemPos];
         activeItem.actor.grab_key_focus();
+    },
+
+    _onSourceActorStyleChanged: function() {
+        _ensureStyle(this.actor);
     },
 
     open: function() {
