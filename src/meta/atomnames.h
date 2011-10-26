@@ -164,6 +164,7 @@ item(_NET_WM_ACTION_ABOVE)
 item(_NET_WM_ACTION_BELOW)
 item(_NET_WM_STATE_STICKY)
 item(_NET_WM_FULLSCREEN_MONITORS)
+item(_NET_WM_STATE_FOCUSED)
 
 #if 0
 /* We apparently never use: */

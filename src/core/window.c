@@ -1897,7 +1897,7 @@ static void
 set_net_wm_state (MetaWindow *window)
 {
   int i;
-  unsigned long data[12];
+  unsigned long data[13];
 
   i = 0;
   if (window->shaded)
@@ -1958,6 +1958,11 @@ set_net_wm_state (MetaWindow *window)
   if (window->on_all_workspaces_requested)
     {
       data[i] = window->display->atom__NET_WM_STATE_STICKY;
+      ++i;
+    }
+  if (meta_window_appears_focused (window))
+    {
+      data[i] = window->display->atom__NET_WM_STATE_FOCUSED;
       ++i;
     }
 
@@ -6629,6 +6634,17 @@ meta_window_client_message (MetaWindow *window,
   return FALSE;
 }
 
+static void
+meta_window_appears_focused_changed (MetaWindow *window)
+{
+  set_net_wm_state (window);
+
+  g_object_notify (G_OBJECT (window), "appears-focused");
+
+  if (window->frame)
+    meta_frame_queue_draw (window->frame);
+}
+
 /**
  * meta_window_propagate_focus_appearance:
  * @window: the window to start propagating from
@@ -6674,9 +6690,7 @@ meta_window_propagate_focus_appearance (MetaWindow *window,
       if (child_focus_state_changed && !parent->has_focus &&
           parent != window->display->expected_focus_window)
         {
-          g_object_notify (G_OBJECT (parent), "appears-focused");
-          if (parent->frame)
-            meta_frame_queue_draw (parent->frame);
+          meta_window_appears_focused_changed (parent);
         }
 
       child = parent;
@@ -6830,11 +6844,8 @@ meta_window_notify_focus (MetaWindow *window,
           g_object_notify (G_OBJECT (window->display), "focus-window");
 
           if (!window->attached_focus_window)
-            {
-              g_object_notify (G_OBJECT (window), "appears-focused");
-              if (window->frame)
-                meta_frame_queue_draw (window->frame);
-            }
+            meta_window_appears_focused_changed (window);
+
           meta_window_propagate_focus_appearance (window, TRUE);
         }
     }
@@ -6867,11 +6878,7 @@ meta_window_notify_focus (MetaWindow *window,
           window->has_focus = FALSE;
 
           if (!window->attached_focus_window)
-            {
-              g_object_notify (G_OBJECT (window), "appears-focused");
-              if (window->frame)
-                meta_frame_queue_draw (window->frame);
-            }
+            meta_window_appears_focused_changed (window);
 
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,
