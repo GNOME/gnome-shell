@@ -32,28 +32,6 @@ typedef struct
   float                 range_far;
 } TestDepthState;
 
-static void
-check_pixel (GLubyte *pixel, guint32 color)
-{
-  guint8 r = MASK_RED (color);
-  guint8 g = MASK_GREEN (color);
-  guint8 b = MASK_BLUE (color);
-  guint8 a = MASK_ALPHA (color);
-
-  if (g_test_verbose ())
-    g_print ("  expected = %x, %x, %x, %x\n",
-             r, g, b, a);
-  /* FIXME - allow for hardware in-precision */
-  g_assert_cmpint (pixel[RED], ==, r);
-  g_assert_cmpint (pixel[GREEN], ==, g);
-  g_assert_cmpint (pixel[BLUE], ==, b);
-
-  /* FIXME
-   * We ignore the alpha, since we don't know if our render target is
-   * RGB or RGBA */
-  /* g_assert (pixel[ALPHA] == a); */
-}
-
 static gboolean
 draw_rectangle (TestState *state,
                 int x,
@@ -108,9 +86,6 @@ test_depth (TestState *state,
             TestDepthState *rect2_state,
             guint32 expected_result)
 {
-  GLubyte pixel[4];
-  int y_off;
-  int x_off;
   gboolean missing_feature = FALSE;
 
   if (rect0_state)
@@ -125,17 +100,9 @@ test_depth (TestState *state,
   if (missing_feature)
     return;
 
-  /* See what we got... */
-
-  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
-  x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
-
-  cogl_read_pixels (x_off, y_off, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-
-  check_pixel (pixel, expected_result);
+  test_utils_check_pixel (x * QUAD_WIDTH + (QUAD_WIDTH / 2),
+                          y * QUAD_WIDTH + (QUAD_WIDTH / 2),
+                          expected_result);
 }
 
 static void

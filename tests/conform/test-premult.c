@@ -25,29 +25,6 @@ typedef struct _TestState
   CoglHandle passthrough_material;
 } TestState;
 
-
-static void
-check_pixel (GLubyte *pixel, guint32 color)
-{
-  guint8 r = MASK_RED (color);
-  guint8 g = MASK_GREEN (color);
-  guint8 b = MASK_BLUE (color);
-  guint8 a = MASK_ALPHA (color);
-
-  if (g_test_verbose ())
-    g_print ("  expected = %x, %x, %x, %x\n",
-             r, g, b, a);
-  /* FIXME - allow for hardware in-precision */
-  g_assert (pixel[RED] == r);
-  g_assert (pixel[GREEN] == g);
-  g_assert (pixel[BLUE] == b);
-
-  /* FIXME
-   * We ignore the alpha, since we don't know if our render target is
-   * RGB or RGBA */
-  /* g_assert (pixel[ALPHA] == a); */
-}
-
 static guchar *
 gen_tex_data (guint32 color)
 {
@@ -110,23 +87,7 @@ check_texture (TestState *state,
                   x * QUAD_WIDTH + QUAD_WIDTH,
                   y * QUAD_WIDTH + QUAD_WIDTH);
 
-  /* See what we got... */
-
-  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
-  x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
-
-  cogl_read_pixels (x_off, y_off, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-  if (g_test_verbose ())
-    {
-      g_print ("check texture (%d, %d):\n", x, y);
-      g_print ("  result = %02x, %02x, %02x, %02x\n",
-               pixel[RED], pixel[GREEN], pixel[BLUE], pixel[ALPHA]);
-    }
-
-  check_pixel (pixel, expected_result);
+  test_utils_check_pixel (x_off, y_off, expected_result);
 }
 
 static void

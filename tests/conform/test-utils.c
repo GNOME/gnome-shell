@@ -78,3 +78,29 @@ test_utils_fini (TestUtilsGTestFixture *fixture,
   if (state->ctx)
     cogl_object_unref (state->ctx);
 }
+
+void
+test_utils_check_pixel (int x, int y, guint32 expected_pixel)
+{
+  guint32 pixel;
+  char *screen_pixel;
+  char *intended_pixel;
+
+  cogl_read_pixels (x, y, 1, 1, COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                    (guint8 *) &pixel);
+
+  screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (pixel) >> 8);
+  intended_pixel = g_strdup_printf ("#%06x", expected_pixel >> 8);
+
+  g_assert_cmpstr (screen_pixel, ==, intended_pixel);
+
+  g_free (screen_pixel);
+  g_free (intended_pixel);
+}
+
+void
+test_utils_check_pixel_rgb (int x, int y, int r, int g, int b)
+{
+  test_utils_check_pixel (x, y, (r << 24) | (g << 16) | (b << 8));
+}

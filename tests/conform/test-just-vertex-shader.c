@@ -145,32 +145,12 @@ paint (TestState *state)
 }
 
 static void
-check_pixel (int x, int y, guint8 r, guint8 g, guint8 b)
-{
-  guint32 pixel;
-  char *screen_pixel;
-  char *intended_pixel;
-
-  cogl_read_pixels (x, y, 1, 1, COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    (guint8 *) &pixel);
-
-  screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (pixel) >> 8);
-  intended_pixel = g_strdup_printf ("#%02x%02x%02x", r, g, b);
-
-  g_assert_cmpstr (screen_pixel, ==, intended_pixel);
-
-  g_free (screen_pixel);
-  g_free (intended_pixel);
-}
-
-static void
 validate_result (void)
 {
   /* Non-shader version */
-  check_pixel (25, 25, 0, 0xff, 0);
+  test_utils_check_pixel (25, 25, 0x00ff0000);
   /* Shader version */
-  check_pixel (75, 25, 0, 0xff, 0);
+  test_utils_check_pixel (75, 25, 0x00ff0000);
 }
 
 void

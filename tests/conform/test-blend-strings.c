@@ -26,26 +26,6 @@ typedef struct _TestState
 
 
 static void
-check_pixel (int x, int y, guint32 expected_pixel)
-{
-  guint32 pixel;
-  char *screen_pixel;
-  char *intended_pixel;
-
-  cogl_read_pixels (x, y, 1, 1, COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    (guint8 *) &pixel);
-
-  screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (pixel) >> 8);
-  intended_pixel = g_strdup_printf ("#%06x", expected_pixel >> 8);
-
-  g_assert_cmpstr (screen_pixel, ==, intended_pixel);
-
-  g_free (screen_pixel);
-  g_free (intended_pixel);
-}
-
-static void
 test_blend (TestState *state,
             int x,
             int y,
@@ -138,7 +118,7 @@ test_blend (TestState *state,
         g_print ("  blend constant = UNUSED\n");
     }
 
-  check_pixel (x_off, y_off, expected_result);
+  test_utils_check_pixel (x_off, y_off, expected_result);
 
 
   /*
@@ -191,7 +171,7 @@ test_blend (TestState *state,
 
   /* See what we got... */
 
-  check_pixel (x_off, y_off, expected_result);
+  test_utils_check_pixel (x_off, y_off, expected_result);
 }
 
 static CoglHandle
@@ -308,7 +288,7 @@ test_tex_combine (TestState *state,
         g_print ("  combine constant = UNUSED\n");
     }
 
-  check_pixel (x_off, y_off, expected_result);
+  test_utils_check_pixel (x_off, y_off, expected_result);
 }
 
 static void

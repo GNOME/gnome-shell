@@ -25,44 +25,12 @@ typedef struct _TestState
   ClutterGeometry stage_geom;
 } TestState;
 
-
 static void
-check_pixel (TestState *state, int x, int y, guint32 color)
+check_quad (int quad_x, int quad_y, guint32 color)
 {
-  GLint y_off;
-  GLint x_off;
-  GLubyte pixel[4];
-  guint8 r = MASK_RED (color);
-  guint8 g = MASK_GREEN (color);
-  guint8 b = MASK_BLUE (color);
-  guint8 a = MASK_ALPHA (color);
-
-  /* See what we got... */
-
-  /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
-  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
-  x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
-
-  cogl_read_pixels (x_off, y_off, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
-  if (g_test_verbose ())
-    g_print ("  result = %02x, %02x, %02x, %02x\n",
-             pixel[RED], pixel[GREEN], pixel[BLUE], pixel[ALPHA]);
-
-  if (g_test_verbose ())
-    g_print ("  expected = %x, %x, %x, %x\n",
-             r, g, b, a);
-  /* FIXME - allow for hardware in-precision */
-  g_assert (pixel[RED] == r);
-  g_assert (pixel[GREEN] == g);
-  g_assert (pixel[BLUE] == b);
-
-  /* FIXME
-   * We ignore the alpha, since we don't know if our render target is
-   * RGB or RGBA */
-  /* g_assert (pixel[ALPHA] == a); */
+  test_utils_check_pixel (x * QUAD_WIDTH + (QUAD_WIDTH / 2),
+                          y * QUAD_WIDTH + (QUAD_WIDTH / 2),
+                          color);
 }
 
 static void
@@ -104,9 +72,9 @@ test_material_with_primitives (TestState *state,
 
   cogl_pop_matrix ();
 
-  check_pixel (state, x, y,   color);
-  check_pixel (state, x, y+1, color);
-  check_pixel (state, x, y+2, color);
+  check_quad (x, y,   color);
+  check_quad (x, y+1, color);
+  check_quad (x, y+2, color);
 }
 
 static void

@@ -38,4 +38,35 @@ void
 test_utils_fini (TestUtilsGTestFixture *fixture,
                  const void *data);
 
+/*
+ * test_utils_check_pixel:
+ * @x: x co-ordinate of the pixel to test
+ * @y: y co-ordinate of the pixel to test
+ * @pixel: An integer of the form 0xRRGGBBAA representing the expected
+ *         pixel value
+ *
+ * This performs reads a pixel on the current cogl framebuffer and
+ * asserts that it matches the given color. The alpha channel of the
+ * color is ignored. The pixels are converted to a string and compared
+ * with g_assert_cmpstr so that if the comparison fails then the
+ * assert will display a meaningful message
+ */
+void
+test_utils_check_pixel (int x, int y, guint32 expected_pixel);
+
+/*
+ * test_utils_check_pixel:
+ * @x: x co-ordinate of the pixel to test
+ * @y: y co-ordinate of the pixel to test
+ * @pixel: An integer of the form 0xrrggbb representing the expected pixel value
+ *
+ * This performs reads a pixel on the current cogl framebuffer and
+ * asserts that it matches the given color. The alpha channel of the
+ * color is ignored. The pixels are converted to a string and compared
+ * with g_assert_cmpstr so that if the comparison fails then the
+ * assert will display a meaningful message
+ */
+void
+test_utils_check_pixel_rgb (int x, int y, int r, int g, int b);
+
 #endif /* _TEST_UTILS_H_ */
