@@ -108,14 +108,16 @@ PopupBaseMenuItem.prototype = {
         this.emit('activate', event);
     },
 
-    setActive: function (active) {
+    setActive: function (active, params) {
         let activeChanged = active != this.active;
+        params = Params.parse (params, { grabKeyboard: true });
 
         if (activeChanged) {
             this.active = active;
             if (active) {
                 this.actor.add_style_pseudo_class('active');
-                this.actor.grab_key_focus();
+                if (params.grabKeyboard)
+                    this.actor.grab_key_focus();
             } else
                 this.actor.remove_style_pseudo_class('active');
             this.emit('active-changed', active);
@@ -1522,6 +1524,22 @@ PopupComboMenu.prototype = {
     },
 
     _onSourceActorStyleChanged: function() {
+        // PopupComboBoxMenuItem clones the active item's actors
+        // to work with arbitrary items in the menu; this means
+        // that we need to propagate some style information and
+        // enforce style updates even when the menu is closed
+        let activeItem = this._getMenuItems()[this._activeItemPos];
+        if (this.sourceActor.has_style_pseudo_class('insensitive'))
+            activeItem.actor.add_style_pseudo_class('insensitive');
+        else
+            activeItem.actor.remove_style_pseudo_class('insensitive');
+
+        // To propagate the :active style, we need to make sure that the
+        // internal state of the PopupComboMenu is updated as well, but
+        // we must not move the keyboard grab
+        activeItem.setActive(this.sourceActor.has_style_pseudo_class('active'),
+                             { grabKeyboard: false });
+
         _ensureStyle(this.actor);
     },
 
