@@ -222,13 +222,22 @@
  *
  * Evaluates to %TRUE if the %CLUTTER_ACTOR_MAPPED flag is set.
  *
- * Means "the actor will be painted if the stage is mapped."
+ * The mapped state is set when the actor is visible and all its parents up
+ * to a top-level (e.g. a #ClutterStage) are visible, realized, and mapped.
  *
- * %TRUE if the actor is visible; and all parents with possible exception
- * of the stage are visible; and an ancestor of the actor is a toplevel.
+ * This check can be used to see if an actor is going to be painted, as only
+ * actors with the %CLUTTER_ACTOR_MAPPED flag set are going to be painted.
  *
- * Clutter auto-maintains the mapped flag whenever actors are
- * reparented or shown/hidden.
+ * The %CLUTTER_ACTOR_MAPPED flag is managed by Clutter itself, and it should
+ * not be checked directly; instead, the recommended usage is to connect a
+ * handler on the #GObject::notify signal for the #ClutterActor:mapped
+ * property of #ClutterActor, and check the presence of
+ * the %CLUTTER_ACTOR_MAPPED flag on state changes.
+ *
+ * It is also important to note that Clutter may delay the changes of
+ * the %CLUTTER_ACTOR_MAPPED flag on top-levels due to backend-specific
+ * limitations, or during the reparenting of an actor, to optimize
+ * unnecessary (and potentially expensive) state changes.
  *
  * Since: 0.2
  */
@@ -243,7 +252,7 @@
  * actor wants to delay allocating resources until it is attached to a
  * stage, it may use the realize state to do so. However it is
  * perfectly acceptable for an actor to allocate Cogl resources before
- * being realized because there is only one GL context used by Clutter
+ * being realized because there is only one drawing context used by Clutter
  * so any resources will work on any stage.  If an actor is mapped it
  * must also be realized, but an actor can be realized and unmapped
  * (this is so hiding an actor temporarily doesn't do an expensive
@@ -264,7 +273,7 @@
  *
  * Note that an actor is only painted onscreen if it's mapped, which
  * means it's visible, and all its parents are visible, and one of the
- * parents is a toplevel stage.
+ * parents is a toplevel stage; see also %CLUTTER_ACTOR_IS_MAPPED.
  *
  * Since: 0.2
  */
