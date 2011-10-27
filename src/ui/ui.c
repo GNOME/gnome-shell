@@ -102,6 +102,7 @@ maybe_redirect_mouse_event (XEvent *xevent)
 {
   GdkDisplay *gdisplay;
   GdkDeviceManager *gmanager;
+  GdkDevice *gdevice;
   MetaUI *ui;
   GdkEvent *gevent;
   GdkWindow *gdk_window;
@@ -133,11 +134,14 @@ maybe_redirect_mouse_event (XEvent *xevent)
   if (gdk_window == NULL)
     return FALSE;
 
+  gmanager = gdk_display_get_device_manager (gdisplay);
+  gdevice = gdk_device_manager_get_client_pointer (gmanager);
+
   /* If GDK already thinks it has a grab, we better let it see events; this
    * is the menu-navigation case and events need to get sent to the appropriate
    * (client-side) subwindow for individual menu items.
    */
-  if (gdk_display_pointer_is_grabbed (gdisplay))
+  if (gdk_display_device_is_grabbed (gdisplay, gdevice))
     return FALSE;
 
   switch (xevent->type)
@@ -207,8 +211,7 @@ maybe_redirect_mouse_event (XEvent *xevent)
     }
 
   /* If we've gotten here, we've created the gdk_event and should send it on */
-  gmanager = gdk_display_get_device_manager (gdisplay);
-  gdk_event_set_device (gevent, gdk_device_manager_get_client_pointer (gmanager));
+  gdk_event_set_device (gevent, gdevice);
   gtk_main_do_event (gevent);
   gdk_event_free (gevent);
 
