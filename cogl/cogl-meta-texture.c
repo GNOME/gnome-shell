@@ -217,6 +217,224 @@ create_grid_and_repeat_cb (CoglTexture *slice_texture,
   data->padded_textures[n_y_spans * y_real_index + x_real_index] = NULL;
 }
 
+#define SWAP(A,B) do { float tmp = B; B = A; A = tmp; } while (0)
+
+typedef struct _ClampData
+{
+  float start;
+  float end;
+  gboolean s_flipped;
+  gboolean t_flipped;
+  CoglMetaTextureCallback callback;
+  void *user_data;
+} ClampData;
+
+static void
+clamp_s_cb (CoglTexture *sub_texture,
+            const float *sub_texture_coords,
+            const float *meta_coords,
+            void *user_data)
+{
+  ClampData *clamp_data = user_data;
+  float mapped_meta_coords[4] = {
+    clamp_data->start,
+    meta_coords[1],
+    clamp_data->end,
+    meta_coords[3]
+  };
+  if (clamp_data->s_flipped)
+    SWAP (mapped_meta_coords[0], mapped_meta_coords[2]);
+  /* NB: we never need to flip the t coords when dealing with
+   * s-axis clamping so no need to check if ->t_flipped */
+  clamp_data->callback (sub_texture,
+                        sub_texture_coords, mapped_meta_coords,
+                        clamp_data->user_data);
+}
+
+static void
+clamp_t_cb (CoglTexture *sub_texture,
+            const float *sub_texture_coords,
+            const float *meta_coords,
+            void *user_data)
+{
+  ClampData *clamp_data = user_data;
+  float mapped_meta_coords[4] = {
+    meta_coords[0],
+    clamp_data->start,
+    meta_coords[2],
+    clamp_data->end,
+  };
+  if (clamp_data->s_flipped)
+    SWAP (mapped_meta_coords[0], mapped_meta_coords[2]);
+  if (clamp_data->t_flipped)
+    SWAP (mapped_meta_coords[1], mapped_meta_coords[3]);
+  clamp_data->callback (sub_texture,
+                        sub_texture_coords, mapped_meta_coords,
+                        clamp_data->user_data);
+}
+
+static gboolean
+foreach_clamped_region (CoglMetaTexture *meta_texture,
+                        float *tx_1,
+                        float *ty_1,
+                        float *tx_2,
+                        float *ty_2,
+                        CoglPipelineWrapMode wrap_s,
+                        CoglPipelineWrapMode wrap_t,
+                        CoglMetaTextureCallback callback,
+                        void *user_data)
+{
+  float width = cogl_texture_get_width (COGL_TEXTURE (meta_texture));
+  ClampData clamp_data;
+
+  /* Consider that *tx_1 may be > *tx_2 and to simplify things
+   * we just flip them around if that's the case and keep a note
+   * of the fact that they are flipped. */
+  if (*tx_1 > *tx_2)
+    {
+      SWAP (*tx_1, *tx_2);
+      clamp_data.s_flipped = TRUE;
+    }
+  else
+    clamp_data.s_flipped = FALSE;
+
+  /* The same goes for ty_1 and ty_2... */
+  if (*ty_1 > *ty_2)
+    {
+      SWAP (*ty_1, *ty_2);
+      clamp_data.t_flipped = TRUE;
+    }
+  else
+    clamp_data.t_flipped = FALSE;
+
+  clamp_data.callback = callback;
+  clamp_data.user_data = user_data;
+
+  if (wrap_s == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
+    {
+      float max_s_coord;
+      float half_texel_width;
+
+      /* Consider that rectangle textures have non-normalized
+       * coordinates... */
+      if (cogl_is_texture_rectangle (meta_texture))
+        max_s_coord = width;
+      else
+        max_s_coord = 1.0;
+
+      half_texel_width = max_s_coord / (width * 2);
+
+      /* Handle any left clamped region */
+      if (*tx_1 < 0)
+        {
+          clamp_data.start = *tx_1;
+          clamp_data.end = MIN (0, *tx_2);;
+          cogl_meta_texture_foreach_in_region (meta_texture,
+                                               half_texel_width, *ty_1,
+                                               half_texel_width, *ty_2,
+                                               COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                               wrap_t,
+                                               clamp_s_cb,
+                                               &clamp_data);
+          /* Have we handled everything? */
+          if (tx_2 <= 0)
+            return TRUE;
+
+          /* clamp tx_1 since we've handled everything with x < 0 */
+          *tx_1 = 0;
+        }
+
+      /* Handle any right clamped region - including the corners */
+      if (*tx_2 > max_s_coord)
+        {
+          clamp_data.start = MAX (max_s_coord, *tx_1);
+          clamp_data.end = *tx_2;
+          cogl_meta_texture_foreach_in_region (meta_texture,
+                                               max_s_coord - half_texel_width,
+                                               *ty_1,
+                                               max_s_coord - half_texel_width,
+                                               *ty_2,
+                                               COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                               wrap_t,
+                                               clamp_s_cb,
+                                               &clamp_data);
+          /* Have we handled everything? */
+          if (*tx_1 >= max_s_coord)
+            return TRUE;
+
+          /* clamp tx_2 since we've handled everything with x >
+           * max_s_coord */
+          *tx_2 = max_s_coord;
+        }
+    }
+
+  if (wrap_t == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
+    {
+      float height = cogl_texture_get_height (COGL_TEXTURE (meta_texture));
+      float max_t_coord;
+      float half_texel_height;
+
+      /* Consider that rectangle textures have non-normalized
+       * coordinates... */
+      if (cogl_is_texture_rectangle (meta_texture))
+        max_t_coord = height;
+      else
+        max_t_coord = 1.0;
+
+      half_texel_height = max_t_coord / (height * 2);
+
+      /* Handle any top clamped region */
+      if (*ty_1 < 0)
+        {
+          clamp_data.start = *ty_1;
+          clamp_data.end = MIN (0, *ty_2);;
+          cogl_meta_texture_foreach_in_region (meta_texture,
+                                               *tx_1, half_texel_height,
+                                               *tx_2, half_texel_height,
+                                               wrap_s,
+                                               COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                               clamp_t_cb,
+                                               &clamp_data);
+          /* Have we handled everything? */
+          if (tx_2 <= 0)
+            return TRUE;
+
+          /* clamp ty_1 since we've handled everything with y < 0 */
+          *ty_1 = 0;
+        }
+
+      /* Handle any bottom clamped region */
+      if (*ty_2 > max_t_coord)
+        {
+          clamp_data.start = MAX (max_t_coord, *ty_1);;
+          clamp_data.end = *ty_2;
+          cogl_meta_texture_foreach_in_region (meta_texture,
+                                               *tx_1,
+                                               max_t_coord - half_texel_height,
+                                               *tx_2,
+                                               max_t_coord - half_texel_height,
+                                               wrap_s,
+                                               COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                               clamp_t_cb,
+                                               &clamp_data);
+          /* Have we handled everything? */
+          if (*ty_1 >= max_t_coord)
+            return TRUE;
+
+          /* clamp ty_2 since we've handled everything with y >
+           * max_t_coord */
+          *ty_2 = max_t_coord;
+        }
+    }
+
+  if (clamp_data.s_flipped)
+    SWAP (*tx_1, *tx_2);
+  if (clamp_data.t_flipped)
+    SWAP (*ty_1, *ty_2);
+
+  return FALSE;
+}
+
 typedef struct _NormalizeData
 {
   CoglMetaTextureCallback callback;
@@ -286,6 +504,32 @@ cogl_meta_texture_foreach_in_region (CoglMetaTexture *meta_texture,
   float width = cogl_texture_get_width (texture);
   float height = cogl_texture_get_height (texture);
   NormalizeData normalize_data;
+
+  if (wrap_s == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+    wrap_s = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+  if (wrap_t == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+    wrap_t = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+
+  if (wrap_s == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE ||
+      wrap_t == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
+    {
+      gboolean finished = foreach_clamped_region (meta_texture,
+                                                  &tx_1, &ty_1, &tx_2, &ty_2,
+                                                  wrap_s, wrap_t,
+                                                  callback,
+                                                  user_data);
+      if (finished)
+        return;
+
+      /* Since clamping has been handled we now want to normalize our
+       * wrap modes we se can assume from this point on we don't
+       * need to consider CLAMP_TO_EDGE. (NB: The spans code will
+       * assert that CLAMP_TO_EDGE isn't requested) */
+      if (wrap_s == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
+        wrap_s = COGL_PIPELINE_WRAP_MODE_REPEAT;
+      if (wrap_t == COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE)
+        wrap_t = COGL_PIPELINE_WRAP_MODE_REPEAT;
+    }
 
   /* It makes things simpler to deal with non-normalized region
    * coordinates beyond this point and only re-normalize just before
@@ -389,3 +633,4 @@ cogl_meta_texture_foreach_in_region (CoglMetaTexture *meta_texture,
                                              user_data);
     }
 }
+#undef SWAP

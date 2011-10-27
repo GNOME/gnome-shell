@@ -129,10 +129,8 @@ typedef void (*CoglMetaTextureCallback) (CoglTexture *sub_texture,
  * @ty_1: The top-left y coordinate of the region to iterate
  * @tx_2: The bottom-right x coordinate of the region to iterate
  * @ty_2: The bottom-right y coordinate of the region to iterate
- * @wrap_x: The wrap mode for the x-axis (Only
- *          %COGL_PIPELINE_WRAP_MODE_REPEAT may be passed here.)
- * @wrap_y: The wrap mode for the y-axis (Only
- *          %COGL_PIPELINE_WRAP_MODE_REPEAT may be passed here.)
+ * @wrap_x: The wrap mode for the x-axis
+ * @wrap_y: The wrap mode for the y-axis
  * @callback: A #CoglMetaTextureCallback pointer to be called
  *            for each low-level texture within the specified region.
  * @user_data: A private pointer that is passed to @callback.
@@ -163,13 +161,6 @@ typedef void (*CoglMetaTextureCallback) (CoglTexture *sub_texture,
  * For each low-level texture that makes up part of the given region
  * of the @meta_texture, @callback is called specifying how the
  * low-level texture maps to the original region.
- *
- * <note>Currently this interface can only be used to iterate in terms
- * of %COGL_PIPELINE_WRAP_MODE_REPEAT) which means if you want to
- * support %COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE for a custom
- * primitive then you need to do that manually by using this interface
- * to find edge textures and then stretching the edge texels out using
- * geometry.</note>
  *
  * Since: 1.10
  * Stability: unstable
