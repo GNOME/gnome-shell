@@ -1217,6 +1217,7 @@ StTooltip StLabel {
 
 #notification-scrollview {
     max-height: 10em;
+    -st-vfade-offset: 24px;
 }
 
 #notification-scrollview > .top-shadow, #notification-scrollview > .bottom-shadow {

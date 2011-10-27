@@ -597,8 +597,7 @@ Notification.prototype = {
         this._table.add_style_class_name('multi-line-notification');
         this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
                                                vscrollbar_policy: this._scrollPolicy,
-                                               hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                               style_class: 'vfade' });
+                                               hscrollbar_policy: Gtk.PolicyType.NEVER });
         this._table.add(this._scrollArea, { row: 1,
                                             col: 2 });
         this._updateLastColumnSettings();
