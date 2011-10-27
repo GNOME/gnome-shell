@@ -93,6 +93,9 @@ GnomeShell.prototype = {
      *
      */
     Eval: function(code) {
+        if (!global.settings.get_boolean('development-tools'))
+            return [false, null];
+
         let returnValue;
         let success;
         try {
