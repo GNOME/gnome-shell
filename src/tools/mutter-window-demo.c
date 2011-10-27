@@ -353,7 +353,7 @@ utility_cb (GtkAction           *action,
   
   gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (callback_data));
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -386,7 +386,7 @@ toolbar_cb (GtkAction           *action,
   
   gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (callback_data));
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -410,7 +410,7 @@ menu_cb (GtkAction           *action,
   
   gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (callback_data));
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -431,7 +431,7 @@ override_redirect_cb (GtkAction           *action,
   window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_window_set_title (GTK_WINDOW (window), "Override Redirect");
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -455,7 +455,7 @@ border_only_cb (GtkAction           *action,
   
   gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (callback_data));
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -477,7 +477,7 @@ changing_icon_cb (GtkAction           *action,
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Changing Icon");
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -545,7 +545,7 @@ splashscreen_cb (GtkAction           *action,
   set_gtk_window_type (GTK_WINDOW (window), "_NET_WM_WINDOW_TYPE_SPLASHSCREEN");
   gtk_window_set_title (GTK_WINDOW (window), "Splashscreen");
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   
   image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG);
   gtk_box_pack_start (GTK_BOX (vbox), image, FALSE, FALSE, 0);
@@ -581,11 +581,11 @@ make_dock (int type)
     {
     case DOCK_LEFT:
     case DOCK_RIGHT:      
-      box = gtk_vbox_new (FALSE, 0);
+      box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
       break;
     case DOCK_TOP:
     case DOCK_BOTTOM:
-      box = gtk_hbox_new (FALSE, 0);
+      box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
       break;
     case DOCK_ALL:
       break;
@@ -909,8 +909,7 @@ static GtkWidget *
 do_appwindow (void)
 {
   GtkWidget *window;
-  GtkWidget *table;
-  GtkWidget *handlebox;
+  GtkWidget *grid;
   GtkWidget *statusbar;
   GtkWidget *contents;
   GtkWidget *sw;
@@ -931,9 +930,12 @@ do_appwindow (void)
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (destroy_cb), NULL);
       
-  table = gtk_table_new (1, 4, FALSE);
-      
-  gtk_container_add (GTK_CONTAINER (window), table);
+  grid = gtk_grid_new ();
+
+  gtk_widget_set_vexpand (grid, TRUE);
+  gtk_widget_set_hexpand (grid, TRUE);
+
+  gtk_container_add (GTK_CONTAINER (window), grid);
       
   /* Create the menubar
    */
@@ -958,12 +960,12 @@ do_appwindow (void)
 
   gtk_ui_manager_add_ui_from_string (ui_manager, menu_item_string, -1, NULL);
 
-  gtk_table_attach (GTK_TABLE (table),
-                    gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
-                    /* X direction */          /* Y direction */
-                    0, 1,                      0, 1,
-                    GTK_EXPAND | GTK_FILL,     0,
-                    0,                         0);
+  gtk_grid_attach (GTK_GRID (grid),
+                   gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
+                   0, 0, 1, 1);
+
+  gtk_widget_set_hexpand (gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
+                          TRUE);
 
   /* Create document
    */
@@ -976,13 +978,13 @@ do_appwindow (void)
 
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
                                        GTK_SHADOW_IN);
-      
-  gtk_table_attach (GTK_TABLE (table),
-                    sw,
-                    /* X direction */       /* Y direction */
-                    0, 1,                   2, 3,
-                    GTK_EXPAND | GTK_FILL,  GTK_EXPAND | GTK_FILL,
-                    0,                      0);
+
+  gtk_grid_attach (GTK_GRID (grid),
+                   sw,
+                   0, 2, 1, 1);
+
+  gtk_widget_set_hexpand (sw, TRUE);
+  gtk_widget_set_vexpand (sw, TRUE);
 
   gtk_window_set_default_size (GTK_WINDOW (window),
                                200, 200);
@@ -996,27 +998,22 @@ do_appwindow (void)
   /* Create the toolbar
    */
 
-  handlebox = gtk_handle_box_new ();
+  gtk_grid_attach (GTK_GRID (grid),
+                   gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"),
+                   0, 1, 1, 1);
 
-  gtk_container_add (GTK_CONTAINER (handlebox),
-                     gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"));
-      
-  gtk_table_attach (GTK_TABLE (table),
-                    handlebox,
-                    /* X direction */       /* Y direction */
-                    0, 1,                   1, 2,
-                    GTK_EXPAND | GTK_FILL,  0,
-                    0,                      0);
+  gtk_widget_set_hexpand (gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"),
+                          TRUE);
 
   /* Create statusbar */
 
   statusbar = gtk_statusbar_new ();
-  gtk_table_attach (GTK_TABLE (table),
-                    statusbar,
-                    /* X direction */       /* Y direction */
-                    0, 1,                   3, 4,
-                    GTK_EXPAND | GTK_FILL,  0,
-                    0,                      0);
+  gtk_grid_attach (GTK_GRID (grid),
+                   statusbar,
+                   0, 3, 1, 1);
+
+  gtk_widget_set_hexpand (statusbar,
+                          TRUE);
 
   /* Show text widget info in the statusbar */
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (contents));
