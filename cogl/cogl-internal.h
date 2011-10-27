@@ -32,29 +32,6 @@
 #include <X11/Xutil.h>
 #endif
 
-typedef enum {
-  COGL_BOXED_NONE,
-  COGL_BOXED_INT,
-  COGL_BOXED_FLOAT,
-  COGL_BOXED_MATRIX
-} CoglBoxedType;
-
-typedef struct _CoglBoxedValue
-{
-  CoglBoxedType type;
-  int size, count;
-  gboolean transpose;
-
-  union {
-    float float_value[4];
-    int int_value[4];
-    float matrix[16];
-    float *float_array;
-    int *int_array;
-    void *array;
-  } v;
-} CoglBoxedValue;
-
 #ifdef COGL_GL_DEBUG
 
 const char *

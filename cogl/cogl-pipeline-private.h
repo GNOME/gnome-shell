@@ -36,6 +36,7 @@
 #include "cogl-profile.h"
 #include "cogl-queue.h"
 #include "cogl-internal.h"
+#include "cogl-boxed-value.h"
 
 #include <glib.h>
 

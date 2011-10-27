@@ -327,6 +327,8 @@ cogl_sources_c = \
 	$(srcdir)/winsys/cogl-winsys-stub.c		\
 	$(srcdir)/cogl-config-private.h			\
 	$(srcdir)/cogl-config.c				\
+	$(srcdir)/cogl-boxed-value.h			\
+	$(srcdir)/cogl-boxed-value.c			\
 	$(NULL)
 
 if SUPPORT_XLIB
