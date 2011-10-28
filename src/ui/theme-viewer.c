@@ -1013,8 +1013,8 @@ run_theme_benchmark (void)
        */
       pixmap = gdk_window_create_similar_surface (gtk_widget_get_window (widget),
                                                   CAIRO_CONTENT_COLOR,
-                                                  client_width + borders.visible.left + borders.visible.right,
-                                                  client_height + borders.visible.top + borders.visible.bottom);
+                                                  client_width + borders.total.left + borders.total.right,
+                                                  client_height + borders.total.top + borders.total.bottom);
 
       cr = cairo_create (pixmap);
 
