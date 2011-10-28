@@ -863,10 +863,6 @@ const PopupMenuBase = new Lang.Class({
         // for the menu which causes its prelight state to freeze
         this.blockSourceEvents = false;
 
-        // Can be set while a menu is up to let all events through without special
-        // menu handling useful for scrollbars in menus, and probably not otherwise.
-        this.passEvents = false;
-
         this._activeMenuItem = null;
         this._childMenus = [];
         this._settingsActions = { };
@@ -1284,24 +1280,6 @@ const PopupSubMenu = new Lang.Class({
         this.actor = new St.ScrollView({ style_class: 'popup-sub-menu',
                                          hscrollbar_policy: Gtk.PolicyType.NEVER,
                                          vscrollbar_policy: Gtk.PolicyType.NEVER });
-
-        // StScrollbar plays dirty tricks with events, calling
-        // clutter_set_motion_events_enabled (FALSE) during the scroll; this
-        // confuses our event tracking, so we just turn it off during the
-        // scroll.
-        let vscroll = this.actor.get_vscroll_bar();
-        vscroll.connect('scroll-start',
-                        Lang.bind(this, function() {
-                                      let topMenu = this._getTopMenu();
-                                      if (topMenu)
-                                          topMenu.passEvents = true;
-                                  }));
-        vscroll.connect('scroll-stop',
-                        Lang.bind(this, function() {
-                                      let topMenu = this._getTopMenu();
-                                      if (topMenu)
-                                          topMenu.passEvents = false;
-                                  }));
 
         this.actor.add_actor(this.box);
         this.actor._delegate = this;
@@ -2278,9 +2256,6 @@ const PopupMenuManager = new Lang.Class({
         if (this._owner.menuEventFilter &&
             this._owner.menuEventFilter(event))
             return true;
-
-        if (this._activeMenu != null && this._activeMenu.passEvents)
-            return false;
 
         if (this._didPop) {
             this._didPop = false;

@@ -52,7 +52,7 @@ struct _StScrollBarPrivate
 {
   StAdjustment *adjustment;
 
-  gulong        capture_handler;
+  gboolean      grabbed;
   gfloat        x_origin;
   gfloat        y_origin;
 
@@ -586,52 +586,37 @@ move_slider (StScrollBar *bar,
 static void
 stop_scrolling (StScrollBar *bar)
 {
-  ClutterStage *stage;
-
-  if (!bar->priv->capture_handler)
+  if (!bar->priv->grabbed)
     return;
 
   st_widget_remove_style_pseudo_class (ST_WIDGET (bar->priv->handle), "active");
 
-  stage = CLUTTER_STAGE (clutter_actor_get_stage (bar->priv->trough));
-  g_signal_handler_disconnect (stage, bar->priv->capture_handler);
-  bar->priv->capture_handler = 0;
-
-  clutter_stage_set_motion_events_enabled (stage, TRUE);
+  clutter_ungrab_pointer ();
+  bar->priv->grabbed = FALSE;
   g_signal_emit (bar, signals[SCROLL_STOP], 0);
 }
 
 static gboolean
-handle_capture_event_cb (ClutterActor *trough,
-                         ClutterEvent *event,
-                         StScrollBar  *bar)
+handle_motion_event_cb (ClutterActor       *trough,
+                        ClutterMotionEvent *event,
+                        StScrollBar        *bar)
 {
-  if (clutter_event_type (event) == CLUTTER_MOTION)
-    {
-      move_slider (bar,
-                   ((ClutterMotionEvent*) event)->x,
-                   ((ClutterMotionEvent*) event)->y);
-    }
-  else if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE
-           && ((ClutterButtonEvent*) event)->button == 1)
-    {
-      ClutterActor *stage, *target;
+  if (!bar->priv->grabbed)
+    return FALSE;
 
-      stop_scrolling (bar);
+  move_slider (bar, event->x, event->y);
+  return TRUE;
+}
 
-      /* check if the mouse pointer has left the handle during the drag and
-       * remove the hover state if it has */
-      stage = clutter_actor_get_stage (bar->priv->trough);
-      target = clutter_stage_get_actor_at_pos ((ClutterStage*) stage,
-                                               CLUTTER_PICK_REACTIVE,
-                                               ((ClutterButtonEvent*) event)->x,
-                                               ((ClutterButtonEvent*) event)->y);
-      if (target != bar->priv->handle)
-        {
-          st_widget_remove_style_pseudo_class ((StWidget*) bar->priv->handle, "hover");
-        }
-    }
+static gboolean
+handle_button_release_event_cb (ClutterActor       *trough,
+                                ClutterButtonEvent *event,
+                                StScrollBar        *bar)
+{
+  if (event->button != 1)
+    return FALSE;
 
+  stop_scrolling (bar);
   return TRUE;
 }
 
@@ -640,7 +625,6 @@ handle_button_press_event_cb (ClutterActor       *actor,
                               ClutterButtonEvent *event,
                               StScrollBar        *bar)
 {
-  ClutterStage *stage;
   StScrollBarPrivate *priv = bar->priv;
 
   if (event->button != 1)
@@ -659,16 +643,10 @@ handle_button_press_event_cb (ClutterActor       *actor,
   priv->x_origin += clutter_actor_get_x (priv->trough);
   priv->y_origin += clutter_actor_get_y (priv->trough);
 
-  stage = CLUTTER_STAGE (clutter_actor_get_stage (bar->priv->trough));
+  g_assert (!priv->grabbed);
 
-  /* Turn off picking for motion events */
-  clutter_stage_set_motion_events_enabled (stage, FALSE);
-
-  priv->capture_handler = g_signal_connect_after (
-    clutter_actor_get_stage (priv->trough),
-    "captured-event",
-    G_CALLBACK (handle_capture_event_cb),
-    bar);
+  clutter_grab_pointer (priv->handle);
+  priv->grabbed = TRUE;
   g_signal_emit (bar, signals[SCROLL_START], 0);
 
   return TRUE;
@@ -885,6 +863,10 @@ st_scroll_bar_init (StScrollBar *self)
                            CLUTTER_ACTOR (self->priv->handle));
   g_signal_connect (self->priv->handle, "button-press-event",
                     G_CALLBACK (handle_button_press_event_cb), self);
+  g_signal_connect (self->priv->handle, "button-release-event",
+                    G_CALLBACK (handle_button_release_event_cb), self);
+  g_signal_connect (self->priv->handle, "motion-event",
+                    G_CALLBACK (handle_motion_event_cb), self);
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
