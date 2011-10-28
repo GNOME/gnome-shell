@@ -11,6 +11,7 @@
 
 #include <cogl/cogl-bitmask.h>
 #include <cogl/cogl-bitmask.c>
+#include <cogl/cogl-util.c>
 
 typedef struct
 {

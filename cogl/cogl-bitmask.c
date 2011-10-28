@@ -32,6 +32,7 @@
 #include <string.h>
 
 #include "cogl-bitmask.h"
+#include "cogl-util.h"
 
 /* This code assumes that we can cast an unsigned long to a pointer
    and back without losing any data */
@@ -245,12 +246,13 @@ _cogl_bitmask_foreach (const CoglBitmask *bitmask,
 
           while (mask)
             {
-              if (mask & 1UL)
-                func (array_index * sizeof (unsigned long) * 8 + bit,
-                      user_data);
+              int next_bit = _cogl_util_ffsl (mask);
 
-              bit++;
-              mask >>= 1;
+              bit += next_bit;
+              mask >>= next_bit;
+
+              func (array_index * sizeof (unsigned long) * 8 + bit - 1,
+                    user_data);
             }
         }
     }
@@ -261,11 +263,12 @@ _cogl_bitmask_foreach (const CoglBitmask *bitmask,
 
       while (mask)
         {
-          if (mask & 1UL)
-            func (bit, user_data);
+          int next_bit = _cogl_util_ffsl (mask);
 
-          bit++;
-          mask >>= 1;
+          bit += next_bit;
+          mask >>= next_bit;
+
+          func (bit - 1, user_data);
         }
     }
 }

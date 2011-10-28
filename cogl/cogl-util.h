@@ -108,6 +108,21 @@ int
 _cogl_util_ffs (int num);
 #endif
 
+/* The 'ffsl' function is non-standard but GCC has a builtin for it
+   since 3.4 which we can use */
+#if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
+#define _cogl_util_ffsl __builtin_ffsl
+#define COGL_UTIL_HAVE_BUILTIN_FFSL
+#else
+/* If ints and longs are the same size we can just use ffs. Hopefully
+   the compiler will optimise away this conditional */
+#define _cogl_util_ffsl(x)                                              \
+  (sizeof (long int) == sizeof (int) ? _cogl_util_ffs ((int) x) :       \
+   _cogl_util_ffsl_wrapper (x))
+int
+_cogl_util_ffsl_wrapper (long int num);
+#endif
+
 #ifdef COGL_HAS_GLIB_SUPPORT
 #define _COGL_RETURN_IF_FAIL(EXPR) g_return_if_fail(EXPR)
 #define _COGL_RETURN_VAL_IF_FAIL(EXPR, VAL) g_return_val_if_fail(EXPR, VAL)

@@ -77,3 +77,26 @@ _cogl_util_ffs (int num)
   return i;
 }
 #endif /* HAVE_FFS */
+
+/* The 'ffsl' is non-standard but when building with GCC we'll use its
+   builtin instead */
+#ifndef COGL_UTIL_HAVE_BUILTIN_FFSL
+
+int
+_cogl_util_ffsl_wrapper (long int num)
+{
+  int i = 1;
+
+  if (num == 0)
+    return 0;
+
+  while ((num & 1) == 0)
+    {
+      num >>= 1;
+      i++;
+    }
+
+  return i;
+}
+
+#endif /* COGL_UTIL_HAVE_BUILTIN_FFSL */
