@@ -3422,20 +3422,6 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       break;
 
     case META_DRAW_RECTANGLE:
-      if (op->data.rectangle.filled)
-        {
-          GdkRGBA color;
-
-          meta_color_spec_render (op->data.rectangle.color_spec,
-                                  context,
-                                  &color);
-
-          pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                                   FALSE,
-                                   8, width, height);
-
-          gdk_pixbuf_fill (pixbuf, GDK_COLOR_RGBA (color));
-        }
       break;
 
     case META_DRAW_ARC:
