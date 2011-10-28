@@ -1907,6 +1907,7 @@ StTooltip StLabel {
     background-gradient-end: white;
     background-gradient-direction: vertical;
     color: black;
+    selected-color: white;
     border-radius: 5px;
     border: 2px solid #555753;
 }
