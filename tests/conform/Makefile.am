@@ -34,6 +34,7 @@ unported_test_sources = \
 	$(NULL)
 
 test_sources = \
+	test-bitmask.c \
 	test-blend-strings.c \
 	test-depth-test.c \
 	test-color-mask.c \
@@ -103,12 +104,18 @@ clean-wrappers:
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers
 
-INCLUDES = -I$(top_srcdir)
+# The include of the $(buildir)/cogl directory here is to make it so
+# that tests that directly include Cogl source code for whitebox
+# testing (such as test-bitmask) will still compile
+INCLUDES = \
+	-I$(top_srcdir) \
+	-I$(top_builddir)/cogl
 
 test_conformance_CPPFLAGS = \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	-DCOGL_DISABLE_DEPRECATED \
-	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
+	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
+	-DCLUTTER_COMPILATION
 
 test_conformance_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 test_conformance_LDADD = $(COGL_DEP_LIBS) $(top_builddir)/cogl/libcogl.la
