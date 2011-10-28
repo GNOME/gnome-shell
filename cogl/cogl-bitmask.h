@@ -36,14 +36,17 @@ G_BEGIN_DECLS
  * be allocated on the stack but it must be initialised with
  * _cogl_bitmask_init() before use and then destroyed with
  * _cogl_bitmask_destroy(). A CoglBitmask will try to avoid allocating
- * any memory unless more than 31 bits are needed.
+ * any memory unless more than the number of bits in a long - 1 bits
+ * are needed.
  *
  * Internally a CoglBitmask is a pointer. If the least significant bit
  * of the pointer is 1 then the rest of the bits are directly used as
  * part of the bitmask, otherwise it is a pointer to a GArray of
  * unsigned ints. This relies on the fact the g_malloc will return a
  * pointer aligned to at least two bytes (so that the least
- * significant bit of the address is always 0)
+ * significant bit of the address is always 0). It also assumes that
+ * the size of a pointer is always greater than or equal to the size
+ * of a long (although there is a compile time assert to verify this).
  *
  * If the maximum possible bit number in the set is known at compile
  * time, it may make more sense to use the macros in cogl-flags.h
@@ -52,13 +55,23 @@ G_BEGIN_DECLS
 
 typedef struct _CoglBitmaskImaginaryType *CoglBitmask;
 
+/* These are internal helper macros */
+#define _cogl_bitmask_to_number(bitmask) \
+  ((unsigned long) (*bitmask))
+#define _cogl_bitmask_to_bits(bitmask) \
+  (_cogl_bitmask_to_number (bitmask) >> 1UL)
+/* The least significant bit is set to mark that no array has been
+   allocated yet */
+#define _cogl_bitmask_from_bits(bits) \
+  ((void *) ((((unsigned long) (bits)) << 1UL) | 1UL))
+
 /* Internal helper macro to determine whether this bitmask has a
    GArray allocated or whether the pointer is just used directly */
 #define _cogl_bitmask_has_array(bitmask) \
-  (!(GPOINTER_TO_UINT (*bitmask) & 1))
+  (!(_cogl_bitmask_to_number (bitmask) & 1UL))
 
 /* Number of bits we can use before needing to allocate an array */
-#define COGL_BITMASK_MAX_DIRECT_BITS (sizeof (unsigned int) * 8 - 1)
+#define COGL_BITMASK_MAX_DIRECT_BITS (sizeof (unsigned long) * 8 - 1)
 
 /*
  * _cogl_bitmask_init:
@@ -68,10 +81,8 @@ typedef struct _CoglBitmaskImaginaryType *CoglBitmask;
  * bitmask functions are called. Initially all of the values are
  * zero
  */
-/* Set the last significant bit to mark that no array has been
-   allocated yet */
 #define _cogl_bitmask_init(bitmask) \
-  G_STMT_START { *(bitmask) = GUINT_TO_POINTER (1); } G_STMT_END
+  G_STMT_START { *(bitmask) = _cogl_bitmask_from_bits (0); } G_STMT_END
 
 gboolean
 _cogl_bitmask_get_from_array (const CoglBitmask *bitmask,
@@ -144,7 +155,7 @@ _cogl_bitmask_get (const CoglBitmask *bitmask, unsigned int bit_num)
   else if (bit_num >= COGL_BITMASK_MAX_DIRECT_BITS)
     return FALSE;
   else
-    return !!(GPOINTER_TO_UINT (*bitmask) & (1 << (bit_num + 1)));
+    return !!(_cogl_bitmask_to_bits (bitmask) & (1UL << bit_num));
 }
 
 /*
@@ -162,11 +173,11 @@ _cogl_bitmask_set (CoglBitmask *bitmask, unsigned int bit_num, gboolean value)
       bit_num >= COGL_BITMASK_MAX_DIRECT_BITS)
     _cogl_bitmask_set_in_array (bitmask, bit_num, value);
   else if (value)
-    *bitmask = GUINT_TO_POINTER (GPOINTER_TO_UINT (*bitmask) |
-                                 (1 << (bit_num + 1)));
+    *bitmask = _cogl_bitmask_from_bits (_cogl_bitmask_to_bits (bitmask) |
+                                        (1UL << bit_num));
   else
-    *bitmask = GUINT_TO_POINTER (GPOINTER_TO_UINT (*bitmask) &
-                                 ~(1 << (bit_num + 1)));
+    *bitmask = _cogl_bitmask_from_bits (_cogl_bitmask_to_bits (bitmask) &
+                                        ~(1UL << bit_num));
 }
 
 /*
@@ -186,11 +197,11 @@ _cogl_bitmask_set_range (CoglBitmask *bitmask,
       n_bits > COGL_BITMASK_MAX_DIRECT_BITS)
     _cogl_bitmask_set_range_in_array (bitmask, n_bits, value);
   else if (value)
-    *bitmask = GUINT_TO_POINTER (GPOINTER_TO_UINT (*bitmask) |
-                                 ~(~(unsigned int) 1 << n_bits));
+    *bitmask = _cogl_bitmask_from_bits (_cogl_bitmask_to_bits (bitmask) |
+                                        ~(~0UL << n_bits));
   else
-    *bitmask = GUINT_TO_POINTER (GPOINTER_TO_UINT (*bitmask) &
-                                 ((~(unsigned int) 1 << n_bits) | 1));
+    *bitmask = _cogl_bitmask_from_bits (_cogl_bitmask_to_bits (bitmask) &
+                                        (~0UL << n_bits));
 }
 
 /*
@@ -218,7 +229,7 @@ _cogl_bitmask_clear_all (CoglBitmask *bitmask)
   if (_cogl_bitmask_has_array (bitmask))
     _cogl_bitmask_clear_all_in_array (bitmask);
   else
-    *bitmask = GUINT_TO_POINTER (1);
+    *bitmask = _cogl_bitmask_from_bits (0);
 }
 
 G_END_DECLS
