@@ -204,6 +204,8 @@ key_press (GtkWidget   *invisible,
       g_signal_handlers_disconnect_by_func (invisible, mouse_press, NULL);
       g_signal_handlers_disconnect_by_func (invisible, key_press, NULL);
       
+      gtk_main_quit ();
+
       return TRUE;
     }
 
