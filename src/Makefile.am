@@ -162,8 +162,6 @@ libmutter_la_SOURCES =				\
 	meta/errors.h				\
 	core/frame.c				\
 	core/frame.h				\
-	ui/gradient.c				\
-	meta/gradient.h				\
 	core/meta-gesture-tracker.c		\
 	core/meta-gesture-tracker-private.h	\
 	core/keybindings.c			\
@@ -290,7 +288,6 @@ libmutterinclude_headers =			\
 	meta/compositor.h			\
 	meta/display.h				\
 	meta/errors.h				\
-	meta/gradient.h				\
 	meta/group.h				\
 	meta/keybindings.h			\
 	meta/main.h				\

@@ -774,9 +774,6 @@ parse_alpha (const char             *str,
 
   n_alphas = i;
 
-  /* FIXME allow specifying horizontal/vertical/diagonal in theme format,
-   * once we implement vertical/diagonal in gradient.c
-   */
   spec = meta_alpha_gradient_spec_new (META_GRADIENT_HORIZONTAL,
                                        n_alphas);
 

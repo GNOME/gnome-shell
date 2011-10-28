@@ -38,7 +38,6 @@
 #include "theme-private.h"
 #include "frames.h" /* for META_TYPE_FRAMES */
 #include "util-private.h"
-#include <meta/gradient.h>
 #include <meta/prefs.h>
 #include <gtk/gtk.h>
 #include <string.h>
@@ -1010,42 +1009,84 @@ meta_gradient_spec_free (MetaGradientSpec *spec)
   g_free (spec);
 }
 
-GdkPixbuf*
-meta_gradient_spec_render (const MetaGradientSpec *spec,
-                           GtkStyleContext        *style,
-                           int                     width,
-                           int                     height)
+static cairo_pattern_t *
+meta_gradient_spec_pattern (const MetaGradientSpec *spec,
+                            const MetaAlphaGradientSpec *alpha_spec,
+                            GtkStyleContext        *style)
 {
+  cairo_pattern_t *pattern;
   int n_colors;
-  GdkRGBA *colors;
-  GSList *tmp;
+  GSList *l;
   int i;
-  GdkPixbuf *pixbuf;
+
+  if (spec->type == META_GRADIENT_HORIZONTAL)
+    pattern = cairo_pattern_create_linear (0, 0, 1, 0);
+  if (spec->type == META_GRADIENT_VERTICAL)
+    pattern = cairo_pattern_create_linear (0, 0, 0, 1);
+  else if (spec->type == META_GRADIENT_DIAGONAL)
+    pattern = cairo_pattern_create_linear (0, 0, 1, 1);
+  else
+    g_assert_not_reached ();
 
   n_colors = g_slist_length (spec->color_specs);
 
   if (n_colors == 0)
     return NULL;
 
-  colors = g_new (GdkRGBA, n_colors);
+  if (alpha_spec != NULL)
+    g_assert (n_colors == alpha_spec->n_alphas);
 
   i = 0;
-  tmp = spec->color_specs;
-  while (tmp != NULL)
+  for (l = spec->color_specs; l != NULL; l = l->next)
     {
-      meta_color_spec_render (tmp->data, style, &colors[i]);
+      MetaColorSpec *color_spec = l->data;
+      GdkRGBA color;
 
-      tmp = tmp->next;
+      meta_color_spec_render (color_spec, style, &color);
+
+      if (alpha_spec != NULL)
+        color.alpha *= alpha_spec->alphas[i];
+
+      cairo_pattern_add_color_stop_rgba (pattern,
+                                         i / (float) n_colors,
+                                         color.red,
+                                         color.green,
+                                         color.blue,
+                                         color.alpha);
       ++i;
     }
 
-  pixbuf = meta_gradient_create_multi (width, height,
-                                       colors, n_colors,
-                                       spec->type);
+  return pattern;
+}
 
-  g_free (colors);
+void
+meta_gradient_spec_render (const MetaGradientSpec *spec,
+                           const MetaAlphaGradientSpec *alpha_spec,
+                           cairo_t                *cr,
+                           GtkStyleContext        *style,
+                           int                     x,
+                           int                     y,
+                           int                     width,
+                           int                     height)
+{
+  cairo_pattern_t *pattern;
 
-  return pixbuf;
+  cairo_save (cr);
+
+  pattern = meta_gradient_spec_pattern (spec, alpha_spec, style);
+  if (pattern == NULL)
+    return;
+
+  cairo_rectangle (cr, x, y, width, height);
+
+  cairo_translate (cr, x, y);
+  cairo_scale (cr, width, height);
+
+  cairo_set_source (cr, pattern);
+  cairo_fill (cr);
+  cairo_pattern_destroy (pattern);
+
+  cairo_restore (cr);
 }
 
 gboolean
@@ -3133,42 +3174,6 @@ meta_draw_op_free (MetaDrawOp *op)
 }
 
 static GdkPixbuf*
-apply_alpha (GdkPixbuf             *pixbuf,
-             MetaAlphaGradientSpec *spec,
-             gboolean               force_copy)
-{
-  GdkPixbuf *new_pixbuf;
-  gboolean needs_alpha;
-
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-
-  needs_alpha = spec && (spec->n_alphas > 1 ||
-                         spec->alphas[0] != 0xff);
-
-  if (!needs_alpha)
-    return pixbuf;
-
-  if (!gdk_pixbuf_get_has_alpha (pixbuf))
-    {
-      new_pixbuf = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
-      g_object_unref (G_OBJECT (pixbuf));
-      pixbuf = new_pixbuf;
-    }
-  else if (force_copy)
-    {
-      new_pixbuf = gdk_pixbuf_copy (pixbuf);
-      g_object_unref (G_OBJECT (pixbuf));
-      pixbuf = new_pixbuf;
-    }
-
-  g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
-
-  meta_gradient_add_alpha (pixbuf, spec->alphas, spec->n_alphas, spec->type);
-
-  return pixbuf;
-}
-
-static GdkPixbuf*
 pixbuf_tile (GdkPixbuf *tile,
              int        width,
              int        height)
@@ -3297,13 +3302,12 @@ replicate_cols (GdkPixbuf  *src,
 }
 
 static GdkPixbuf*
-scale_and_alpha_pixbuf (GdkPixbuf             *src,
-                        MetaAlphaGradientSpec *alpha_spec,
-                        MetaImageFillType      fill_type,
-                        int                    width,
-                        int                    height,
-                        gboolean               vertical_stripes,
-                        gboolean               horizontal_stripes)
+scale_pixbuf (GdkPixbuf             *src,
+              MetaImageFillType      fill_type,
+              int                    width,
+              int                    height,
+              gboolean               vertical_stripes,
+              gboolean               horizontal_stripes)
 {
   GdkPixbuf *pixbuf;
   GdkPixbuf *temp_pixbuf;
@@ -3381,9 +3385,6 @@ scale_and_alpha_pixbuf (GdkPixbuf             *src,
         }
     }
 
-  if (pixbuf)
-    pixbuf = apply_alpha (pixbuf, alpha_spec, pixbuf == src);
-
   return pixbuf;
 }
 
@@ -3437,28 +3438,6 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
 
             gdk_pixbuf_fill (pixbuf, rgba);
           }
-        else
-          {
-            rgba = GDK_COLOR_RGBA (color);
-
-            gdk_pixbuf_fill (pixbuf, rgba);
-
-            meta_gradient_add_alpha (pixbuf,
-                                     op->data.tint.alpha_spec->alphas,
-                                     op->data.tint.alpha_spec->n_alphas,
-                                     op->data.tint.alpha_spec->type);
-          }
-      }
-      break;
-
-    case META_DRAW_GRADIENT:
-      {
-        pixbuf = meta_gradient_spec_render (op->data.gradient.gradient_spec,
-                                            context, width, height);
-
-        pixbuf = apply_alpha (pixbuf,
-                              op->data.gradient.alpha_spec,
-                              FALSE);
       }
       break;
 
@@ -3487,22 +3466,20 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
 
             if (op->data.image.colorize_cache_pixbuf)
               {
-                pixbuf = scale_and_alpha_pixbuf (op->data.image.colorize_cache_pixbuf,
-                                                 op->data.image.alpha_spec,
-                                                 op->data.image.fill_type,
-                                                 width, height,
-                                                 op->data.image.vertical_stripes,
-                                                 op->data.image.horizontal_stripes);
+                pixbuf = scale_pixbuf (op->data.image.colorize_cache_pixbuf,
+                                       op->data.image.fill_type,
+                                       width, height,
+                                       op->data.image.vertical_stripes,
+                                       op->data.image.horizontal_stripes);
               }
           }
         else
           {
-            pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
-                                             op->data.image.alpha_spec,
-                                             op->data.image.fill_type,
-                                             width, height,
-                                             op->data.image.vertical_stripes,
-                                             op->data.image.horizontal_stripes);
+            pixbuf = scale_pixbuf (op->data.image.pixbuf,
+                                   op->data.image.fill_type,
+                                   width, height,
+                                   op->data.image.vertical_stripes,
+                                   op->data.image.horizontal_stripes);
           }
         break;
       }
@@ -3510,23 +3487,22 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       if (info->mini_icon &&
           width <= gdk_pixbuf_get_width (info->mini_icon) &&
           height <= gdk_pixbuf_get_height (info->mini_icon))
-        pixbuf = scale_and_alpha_pixbuf (info->mini_icon,
-                                         op->data.icon.alpha_spec,
-                                         op->data.icon.fill_type,
-                                         width, height,
-                                         FALSE, FALSE);
+        pixbuf = scale_pixbuf (info->mini_icon,
+                               op->data.icon.fill_type,
+                               width, height,
+                               FALSE, FALSE);
       else if (info->icon)
-        pixbuf = scale_and_alpha_pixbuf (info->icon,
-                                         op->data.icon.alpha_spec,
-                                         op->data.icon.fill_type,
-                                         width, height,
-                                         FALSE, FALSE);
+        pixbuf = scale_pixbuf (info->icon,
+                               op->data.icon.fill_type,
+                               width, height,
+                               FALSE, FALSE);
       break;
 
     case META_DRAW_LINE:
     case META_DRAW_RECTANGLE:
     case META_DRAW_ARC:
     case META_DRAW_CLIP:
+    case META_DRAW_GRADIENT:
     case META_DRAW_GTK_ARROW:
     case META_DRAW_GTK_BOX:
     case META_DRAW_GTK_VLINE:
@@ -3578,6 +3554,31 @@ fill_env (MetaPositionExprEnv *env,
   env->theme = meta_current_theme;
 }
 
+static cairo_pattern_t *
+meta_alpha_gradient_spec_pattern (const MetaAlphaGradientSpec *alpha_spec)
+{
+
+  /* Hardcoded in theme-parser.c */
+  g_assert (alpha_spec->type == META_GRADIENT_HORIZONTAL);
+
+  int n_alphas = alpha_spec->n_alphas;
+  if (n_alphas == 0)
+    return NULL;
+  else if (n_alphas == 1)
+    return cairo_pattern_create_rgba (0, 0, 0, alpha_spec->alphas[0]);
+  else
+    {
+      cairo_pattern_t *pattern = cairo_pattern_create_linear (0, 0, 1, 0);
+      int i;
+
+      for (i = 0; i < n_alphas; i++)
+        cairo_pattern_add_color_stop_rgba (pattern,
+                                           i / (float) n_alphas,
+                                           0, 0, 0, alpha_spec->alphas[i]);
+
+      return pattern;
+    }
+}
 
 /* This code was originally rendering anti-aliased using X primitives, and
  * now has been switched to draw anti-aliased using cairo. In general, the
@@ -3800,23 +3801,16 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
     case META_DRAW_GRADIENT:
       {
         int rx, ry, rwidth, rheight;
-        GdkPixbuf *pixbuf;
 
         rx = parse_x_position_unchecked (op->data.gradient.x, env);
         ry = parse_y_position_unchecked (op->data.gradient.y, env);
         rwidth = parse_size_unchecked (op->data.gradient.width, env);
         rheight = parse_size_unchecked (op->data.gradient.height, env);
 
-        pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
-                                    rwidth, rheight);
-
-        if (pixbuf)
-          {
-            gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
-            cairo_paint (cr);
-
-            g_object_unref (G_OBJECT (pixbuf));
-          }
+        meta_gradient_spec_render (op->data.gradient.gradient_spec,
+                                   op->data.gradient.alpha_spec,
+                                   cr, style_gtk,
+                                   rx, ry, rwidth, rheight);
       }
       break;
 
@@ -3843,7 +3837,20 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             ry = parse_y_position_unchecked (op->data.image.y, env);
 
             gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
-            cairo_paint (cr);
+
+            if (op->data.image.alpha_spec)
+              {
+                cairo_translate (cr, rx, ry);
+                cairo_scale (cr, rwidth, rheight);
+
+                cairo_pattern_t *pattern = meta_alpha_gradient_spec_pattern (op->data.image.alpha_spec);
+                cairo_mask (cr, pattern);
+                cairo_pattern_destroy (pattern);
+              }
+            else
+              {
+                cairo_paint (cr);
+              }
 
             g_object_unref (G_OBJECT (pixbuf));
           }
@@ -3930,7 +3937,20 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             ry = parse_y_position_unchecked (op->data.icon.y, env);
 
             gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
-            cairo_paint (cr);
+
+            if (op->data.icon.alpha_spec)
+              {
+                cairo_translate (cr, rx, ry);
+                cairo_scale (cr, rwidth, rheight);
+
+                cairo_pattern_t *pattern = meta_alpha_gradient_spec_pattern (op->data.icon.alpha_spec);
+                cairo_mask (cr, pattern);
+                cairo_pattern_destroy (pattern);
+              }
+            else
+              {
+                cairo_paint (cr);
+              }
 
             g_object_unref (G_OBJECT (pixbuf));
           }

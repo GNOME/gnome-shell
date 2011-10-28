@@ -23,7 +23,6 @@
 #define META_THEME_PRIVATE_H
 
 #include <meta/boxes.h>
-#include <meta/gradient.h>
 #include <meta/theme.h>
 #include <meta/common.h>
 #include <gtk/gtk.h>
@@ -272,6 +271,14 @@ typedef enum
   META_IMAGE_FILL_SCALE, /* default, needs to be all-bits-zero for g_new0 */
   META_IMAGE_FILL_TILE
 } MetaImageFillType;
+
+typedef enum
+{
+  META_GRADIENT_VERTICAL,
+  META_GRADIENT_HORIZONTAL,
+  META_GRADIENT_DIAGONAL,
+  META_GRADIENT_LAST
+} MetaGradientType;
 
 typedef enum
 {
@@ -972,8 +979,12 @@ gboolean       meta_draw_op_list_contains (MetaDrawOpList    *op_list,
 
 MetaGradientSpec* meta_gradient_spec_new    (MetaGradientType        type);
 void              meta_gradient_spec_free   (MetaGradientSpec       *desc);
-GdkPixbuf*        meta_gradient_spec_render (const MetaGradientSpec *desc,
-                                             GtkStyleContext        *gtk_style,
+void              meta_gradient_spec_render (const MetaGradientSpec *spec,
+                                             const MetaAlphaGradientSpec *alpha_spec,
+                                             cairo_t                *cr,
+                                             GtkStyleContext        *style,
+                                             int                     x,
+                                             int                     y,
                                              int                     width,
                                              int                     height);
 gboolean          meta_gradient_spec_validate (MetaGradientSpec     *spec,
