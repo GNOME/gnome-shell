@@ -27,6 +27,7 @@
 
 /* This header is a "common" one between the UI and core side */
 #include <meta/common.h>
+#include <meta/types.h>
 #include <pango/pango-font.h>
 #include <gdesktop-enums.h>
 
@@ -233,6 +234,14 @@ typedef enum _MetaKeyBindingAction
   META_KEYBINDING_ACTION_LAST
 } MetaKeyBindingAction;
 
+typedef enum
+{
+  META_KEY_BINDING_NONE,
+  META_KEY_BINDING_PER_WINDOW  = 1 << 0,
+  META_KEY_BINDING_REVERSES    = 1 << 1,
+  META_KEY_BINDING_IS_REVERSED = 1 << 2
+} MetaKeyBindingFlags;
+
 typedef struct
 {
   unsigned int keysym;
@@ -240,9 +249,27 @@ typedef struct
   MetaVirtualModifier modifiers;
 } MetaKeyCombo;
 
+/**
+ * MetaKeyHandlerFunc: (skip)
+ *
+ */
+typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
+                                     MetaScreen     *screen,
+                                     MetaWindow     *window,
+                                     XEvent         *event,
+                                     MetaKeyBinding *binding,
+                                     gpointer        user_data);
+
+typedef struct _MetaKeyHandler MetaKeyHandler;
+
+
 typedef struct
 {
-  const char   *name;
+  char *name;
+  char *schema;
+
+  MetaKeyBindingAction action;
+
   /**
    * A list of MetaKeyCombos. Each of them is bound to
    * this keypref. If one has keysym==modifiers==0, it is
@@ -257,8 +284,7 @@ typedef struct
   gboolean      per_window:1;
 } MetaKeyPref;
 
-void meta_prefs_get_key_bindings (const MetaKeyPref **bindings,
-                                  int                *n_bindings);
+GList *meta_prefs_get_keybindings (void);
 
 MetaKeyBindingAction meta_prefs_get_keybinding_action (const char *name);
 

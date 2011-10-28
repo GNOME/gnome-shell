@@ -33,6 +33,7 @@
 #include <gio/gio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "keybindings-private.h"
 
 /* If you add a key, it needs updating in init() and in the gsettings
  * notify listener and of course in the .schemas file.
@@ -61,9 +62,6 @@
 #define SCHEMA_GENERAL         "org.gnome.desktop.wm.preferences"
 #define SCHEMA_MUTTER          "org.gnome.mutter"
 #define SCHEMA_INTERFACE       "org.gnome.desktop.interface"
-
-#define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
-#define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"
 
 #define SETTINGS(s) g_hash_table_lookup (settings_schemas, (s))
 
@@ -831,17 +829,6 @@ meta_prefs_init (void)
                     G_CALLBACK (settings_changed), NULL);
   g_hash_table_insert (settings_schemas, g_strdup (SCHEMA_INTERFACE), settings);
 
-  /* Bindings have a separate handler, since they are in separate schemas
-   * and work differently */
-  settings = g_settings_new (SCHEMA_COMMON_KEYBINDINGS);
-  g_signal_connect (settings, "changed", G_CALLBACK (bindings_changed), NULL);
-  g_hash_table_insert (settings_schemas,
-                       g_strdup (SCHEMA_COMMON_KEYBINDINGS), settings);
-
-  settings = g_settings_new (SCHEMA_MUTTER_KEYBINDINGS);
-  g_signal_connect (settings, "changed", G_CALLBACK (bindings_changed), NULL);
-  g_hash_table_insert (settings_schemas,
-                       g_strdup (SCHEMA_MUTTER_KEYBINDINGS), settings);
 
   for (tmp = overridden_keys; tmp; tmp = tmp->next)
     {
@@ -1644,15 +1631,20 @@ meta_prefs_set_num_workspaces (int n_workspaces)
                       n_workspaces);
 }
 
-#define keybind(name, handler, param, flags) \
-  { #name, NULL, !!(flags & BINDING_REVERSES), !!(flags & BINDING_PER_WINDOW) },
-static MetaKeyPref key_bindings[] = {
-#include "all-keybindings.h"
-  { NULL, NULL, FALSE }
-};
-#undef keybind
+static GHashTable *key_bindings;
 
 static MetaKeyCombo overlay_key_combo = { 0, 0, 0 };
+
+static void
+meta_key_pref_free (MetaKeyPref *pref)
+{
+  update_binding (pref, NULL);
+
+  g_free (pref->name);
+  g_free (pref->schema);
+
+  g_free (pref);
+}
 
 /* These bindings are for modifiers alone, so they need special handling */
 static void
@@ -1682,34 +1674,8 @@ init_special_bindings (void)
 static void
 init_bindings (void)
 {
-  int i;
-  gchar **keys;
-  gchar **strokes;
-
-  g_assert (G_N_ELEMENTS (key_bindings) == META_KEYBINDING_ACTION_LAST + 1);
-
-  keys = g_settings_list_keys (SETTINGS (SCHEMA_COMMON_KEYBINDINGS));
-  for (i = 0; (guint)i < g_strv_length (keys); i++)
-    {
-      strokes = g_settings_get_strv (SETTINGS (SCHEMA_COMMON_KEYBINDINGS),
-                                     keys[i]);
-      update_key_binding (keys[i], strokes);
-
-      g_strfreev (strokes);
-    }
-  g_strfreev (keys);
-
-  keys = g_settings_list_keys (SETTINGS (SCHEMA_MUTTER_KEYBINDINGS));
-  for (i = 0; (guint)i < g_strv_length (keys); i++)
-    {
-      strokes = g_settings_get_strv (SETTINGS (SCHEMA_MUTTER_KEYBINDINGS),
-                                               keys[i]);
-      update_key_binding (keys[i], strokes);
-
-      g_strfreev (strokes);
-    }
-  g_strfreev (keys);
-
+  key_bindings = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
+                                        (GDestroyNotify)meta_key_pref_free);
   init_special_bindings ();  
 }
 
@@ -1796,15 +1762,10 @@ static gboolean
 update_key_binding (const char *key,
                     gchar     **strokes)
 {
-  int i;
+  MetaKeyPref *pref = g_hash_table_lookup (key_bindings, key);
 
-  i = 0;
-  while (key_bindings[i].name &&
-         strcmp (key, key_bindings[i].name) != 0)
-    ++i;
-
-  if (key_bindings[i].name)
-    return update_binding (&key_bindings[i], strokes);
+  if (pref)
+    return update_binding (pref, strokes);
   else
     return FALSE;
 }
@@ -1938,13 +1899,56 @@ meta_prefs_get_visual_bell_type (void)
   return visual_bell_type;
 }
 
-void
-meta_prefs_get_key_bindings (const MetaKeyPref **bindings,
-                                int                *n_bindings)
+gboolean
+meta_prefs_add_keybinding (const char           *name,
+                           const char           *schema,
+                           MetaKeyBindingAction  action,
+                           MetaKeyBindingFlags   flags)
 {
-  
-  *bindings = key_bindings;
-  *n_bindings = (int) G_N_ELEMENTS (key_bindings) - 1;
+  MetaKeyPref  *pref;
+  GSettings    *settings;
+  char        **strokes;
+
+  if (g_hash_table_lookup (key_bindings, name))
+    {
+      meta_warning ("Trying to re-add keybinding \"%s\".\n", name);
+      return FALSE;
+    }
+
+  settings = SETTINGS (schema);
+  if (settings == NULL)
+    {
+      settings = g_settings_new (schema);
+      g_signal_connect (settings, "changed",
+                        G_CALLBACK (bindings_changed), NULL);
+      g_hash_table_insert (settings_schemas, g_strdup (schema), settings);
+    }
+
+  pref = g_new0 (MetaKeyPref, 1);
+  pref->name = g_strdup (name);
+  pref->schema = g_strdup (schema);
+  pref->action = action;
+  pref->bindings = NULL;
+  pref->add_shift = (flags & META_KEY_BINDING_REVERSES) != 0;
+  pref->per_window = (flags & META_KEY_BINDING_PER_WINDOW) != 0;
+
+  strokes = g_settings_get_strv (settings, name);
+  update_binding (pref, strokes);
+  g_strfreev (strokes);
+
+  g_hash_table_insert (key_bindings, g_strdup (name), pref);
+
+  return TRUE;
+}
+
+/**
+ * meta_prefs_get_keybindings: (skip)
+ * Return: (element-type MetaKeyPref) (transfer container):
+ */
+GList *
+meta_prefs_get_keybindings ()
+{
+  return g_hash_table_get_values (key_bindings);
 }
 
 void 
@@ -2004,18 +2008,10 @@ meta_prefs_get_edge_tiling ()
 MetaKeyBindingAction
 meta_prefs_get_keybinding_action (const char *name)
 {
-  int i;
+  MetaKeyPref *pref = g_hash_table_lookup (key_bindings, name);
 
-  i = G_N_ELEMENTS (key_bindings) - 2; /* -2 for dummy entry at end */
-  while (i >= 0)
-    {
-      if (strcmp (key_bindings[i].name, name) == 0)
-        return (MetaKeyBindingAction) i;
-      
-      --i;
-    }
-
-  return META_KEYBINDING_ACTION_NONE;
+  return pref ? pref->action
+              : META_KEYBINDING_ACTION_NONE;
 }
 
 /* This is used by the menu system to decide what key binding
@@ -2027,36 +2023,29 @@ meta_prefs_get_window_binding (const char          *name,
                                unsigned int        *keysym,
                                MetaVirtualModifier *modifiers)
 {
-  int i;
+  MetaKeyPref *pref = g_hash_table_lookup (key_bindings, name);
 
-  i = G_N_ELEMENTS (key_bindings) - 2; /* -2 for dummy entry at end */
-  while (i >= 0)
+  if (pref->per_window)
     {
-      if (key_bindings[i].per_window &&
-          strcmp (key_bindings[i].name, name) == 0)
+      GSList *s = pref->bindings;
+
+      while (s)
         {
-          GSList *s = key_bindings[i].bindings;
+          MetaKeyCombo *c = s->data;
 
-          while (s)
+          if (c->keysym != 0 || c->modifiers != 0)
             {
-              MetaKeyCombo *c = s->data;
-
-              if (c->keysym!=0 || c->modifiers!=0)
-                {
-                  *keysym = c->keysym;
-                  *modifiers = c->modifiers;
-                  return;
-                }
-
-              s = s->next;
+              *keysym = c->keysym;
+              *modifiers = c->modifiers;
+              return;
             }
 
-          /* Not found; return the disabled value */
-          *keysym = *modifiers = 0;
-          return;
+          s = s->next;
         }
-      
-      --i;
+
+      /* Not found; return the disabled value */
+      *keysym = *modifiers = 0;
+      return;
     }
 
   g_assert_not_reached ();

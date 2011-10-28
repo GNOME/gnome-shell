@@ -152,7 +152,6 @@ libmutter_la_SOURCES =				\
 	meta/theme.h				\
 	ui/theme-private.h			\
 	ui/ui.c					\
-	core/all-keybindings.h			\
 	meta/preview-widget.h			\
 	ui/preview-widget.c			\
 	$(mutter_built_sources)
