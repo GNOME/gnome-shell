@@ -46,7 +46,9 @@ FIXXREF_OPTIONS=\
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB=\
 	$(top_srcdir)/cogl/*.h \
-	$(top_builddir)/cogl/*.h
+	$(top_builddir)/cogl/*.h \
+	$(top_srcdir)/cogl/winsys/*.h \
+	$(top_builddir)/cogl/winsys/*.h
 CFILE_GLOB=$(top_srcdir)/cogl/*.c
 
 # Header files to ignore when scanning.
@@ -111,8 +113,7 @@ IGNORE_HFILES=\
 	cogl-profile.h				\
 	cogl-util.h 				\
 	driver 					\
-	tesselator				\
-	winsys
+	tesselator
 
 EXTRA_HFILES=
 

@@ -97,7 +97,17 @@
     <section id="cogl-textures">
       <title>Textures</title>
       <xi:include href="xml/cogl-texture.xml"/>
+      <xi:include href="xml/cogl-texture-2d.xml"/>
       <xi:include href="xml/cogl-texture-3d.xml"/>
+      <xi:include href="xml/cogl-texture-rectangle.xml"/>
+    </section>
+
+    <section id="cogl-meta-textures">
+      <title>Meta Textures</title>
+      <xi:include href="xml/cogl-meta-texture.xml"/>
+      <xi:include href="xml/cogl-sub-texture.xml"/>
+      <xi:include href="xml/cogl-texture-2d-sliced.xml"/>
+      <xi:include href="xml/cogl-texture-pixmap-x11.xml"/>
     </section>
 
     <xi:include href="xml/cogl-clipping.xml"/>

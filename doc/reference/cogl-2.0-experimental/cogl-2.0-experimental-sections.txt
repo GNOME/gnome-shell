@@ -173,6 +173,7 @@ cogl_clip_push_rectangle
 cogl_clip_push_window_rectangle
 cogl_clip_push_from_path
 cogl_clip_push_from_path_preserve
+cogl_clip_push_primitive
 cogl_clip_pop
 </SECTION>
 
@@ -279,24 +280,14 @@ cogl_draw_indexed_vertex_attributes_array
 <SECTION>
 <FILE>cogl-texture</FILE>
 <TITLE>The Texture Interface</TITLE>
-CoglTextureVertex
-CoglTextureFlags
-cogl_texture_new_with_size
-cogl_texture_new_from_file
-cogl_texture_new_from_data
-cogl_texture_new_from_foreign
-cogl_texture_new_from_bitmap
-cogl_texture_new_from_sub_texture
+CoglTexture
 cogl_is_texture
 
 <SUBSECTION>
 cogl_texture_get_width
 cogl_texture_get_height
 cogl_texture_get_format
-cogl_texture_get_rowstride
-cogl_texture_get_max_waste
 cogl_texture_is_sliced
-cogl_texture_get_gl_texture
 cogl_texture_get_data
 cogl_texture_set_region
 
@@ -307,6 +298,7 @@ COGL_TEXTURE_MAX_WASTE
 <SECTION>
 <FILE>cogl-texture-2d</FILE>
 <TITLE>2D textures</TITLE>
+CoglTexture2D
 cogl_texture_2d_new_with_size
 cogl_texture_2d_new_from_data
 cogl_texture_2d_new_from_foreign
@@ -316,6 +308,7 @@ cogl_is_texture_rectangle
 <SECTION>
 <FILE>cogl-texture-rectangle</FILE>
 <TITLE>Rectangle textures (non-normalized coordinates)</TITLE>
+CoglTextureRectangle
 cogl_texture_rectangle_new_with_size
 cogl_is_texture_rectangle
 </SECTION>
@@ -323,16 +316,44 @@ cogl_is_texture_rectangle
 <SECTION>
 <FILE>cogl-texture-3d</FILE>
 <TITLE>3D textures</TITLE>
+CoglTexture3D
 cogl_texture_3d_new_with_size
 cogl_texture_3d_new_from_data
 cogl_is_texture_3d
 </SECTION>
 
 <SECTION>
+<FILE>cogl-meta-texture</FILE>
+<TITLE>High Level Meta Textures</TITLE>
+CoglMetaTexture
+CoglMetaTextureCallback
+cogl_meta_texture_foreach_in_region
+</SECTION>
+
+<SECTION>
 <FILE>cogl-sub-texture</FILE>
 <TITLE>Sub Textures</TITLE>
+CoglSubTexture
 cogl_sub_texture_new
 cogl_is_sub_texture
+</SECTION>
+
+<SECTION>
+<FILE>cogl-texture-2d-sliced</FILE>
+<TITLE>Sliced Textures</TITLE>
+CoglTexture2DSliced
+cogl_texture_2d_sliced_new_with_size
+cogl_is_texture_2d_sliced
+</SECTION>
+
+<SECTION>
+<FILE>cogl-texture-pixmap-x11</FILE>
+<TITLE>X11 Texture From Pixmap</TITLE>
+cogl_texture_pixmap_x11_new
+cogl_texture_pixmap_x11_update_area
+cogl_texture_pixmap_x11_is_using_tfp_extension
+cogl_texture_pixmap_x11_set_damage_object
+cogl_is_texture_pixmap_x11
 </SECTION>
 
 <SECTION>

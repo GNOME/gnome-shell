@@ -28,6 +28,16 @@
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
+/**
+ * SECTION:cogl-texture-pixmap-x11
+ * @short_description: Functions for creating and manipulating 2D meta
+ *                     textures derived from X11 pixmaps.
+ *
+ * These functions allow high-level meta textures (See the
+ * #CoglMetaTexture interface) that derive their contents from an X11
+ * pixmap.
+ */
+
 /* All of the cogl-texture-pixmap-x11 API is currently experimental so
  * we suffix the actual symbols with _EXP so if somone is monitoring
  * for ABI changes it will hopefully be clearer to them what's going
