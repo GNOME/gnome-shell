@@ -346,12 +346,6 @@ function loadExtension(dir, type, enabled) {
         return;
     }
 
-    if (!versionCheck(meta['shell-version'], Config.PACKAGE_VERSION) ||
-        (meta['js-version'] && !versionCheck(meta['js-version'], Config.GJS_VERSION))) {
-        logExtensionError(uuid, 'extension is not compatible with current GNOME Shell and/or GJS version');
-        return;
-    }
-
     extensionMeta[uuid] = meta;
     meta.type = type;
     meta.dir = dir;
