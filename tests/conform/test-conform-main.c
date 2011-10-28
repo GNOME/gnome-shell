@@ -145,7 +145,7 @@ main (int argc, char **argv)
   UNPORTED_TEST ("/cogl/texture", test_cogl_npot_texture);
   UNPORTED_TEST ("/cogl/texture", test_cogl_multitexture);
   UNPORTED_TEST ("/cogl/texture", test_cogl_texture_mipmaps);
-  UNPORTED_TEST ("/cogl/texture", test_cogl_sub_texture);
+  ADD_TEST ("/cogl/texture", test_cogl_sub_texture);
   UNPORTED_TEST ("/cogl/texture", test_cogl_pixel_array);
   UNPORTED_TEST ("/cogl/texture", test_cogl_texture_rectangle);
   UNPORTED_TEST ("/cogl/texture", test_cogl_texture_3d);

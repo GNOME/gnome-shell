@@ -1,9 +1,7 @@
-
-#include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
 
-#include "test-conform-common.h"
+#include "test-utils.h"
 
 #define SOURCE_SIZE        32
 #define SOURCE_DIVISIONS_X 2
@@ -13,37 +11,35 @@
 
 #define TEST_INSET         1
 
-static const ClutterColor
+static const guint32
 corner_colors[SOURCE_DIVISIONS_X * SOURCE_DIVISIONS_Y] =
   {
-    { 0xff, 0x00, 0x00, 0xff }, /* red top left */
-    { 0x00, 0xff, 0x00, 0xff }, /* green top right */
-    { 0x00, 0x00, 0xff, 0xff }, /* blue bottom left */
-    { 0xff, 0x00, 0xff, 0xff }  /* purple bottom right */
+    0xff0000ff, /* red top left */
+    0x00ff00ff, /* green top right */
+    0x0000ffff, /* blue bottom left */
+    0xff00ffff  /* purple bottom right */
   };
-
-static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 typedef struct _TestState
 {
-  ClutterActor *stage;
-  unsigned int frame;
-
-  CoglHandle tex;
+  CoglContext *ctx;
+  CoglTexture2D *tex;
 } TestState;
 
-static CoglHandle
-create_source (void)
+static CoglTexture2D *
+create_source (TestState *state)
 {
   int dx, dy;
-  guchar *data = g_malloc (SOURCE_SIZE * SOURCE_SIZE * 4);
+  guint8 *data = g_malloc (SOURCE_SIZE * SOURCE_SIZE * 4);
+  CoglTexture2D *tex;
+  GError *error = NULL;
 
   /* Create a texture with a different coloured rectangle at each
      corner */
   for (dy = 0; dy < SOURCE_DIVISIONS_Y; dy++)
     for (dx = 0; dx < SOURCE_DIVISIONS_X; dx++)
       {
-        guchar *p = (data + dy * DIVISION_HEIGHT * SOURCE_SIZE * 4 +
+        guint8 *p = (data + dy * DIVISION_HEIGHT * SOURCE_SIZE * 4 +
                      dx * DIVISION_WIDTH * 4);
         int x, y;
 
@@ -51,7 +47,8 @@ create_source (void)
           {
             for (x = 0; x < DIVISION_WIDTH; x++)
               {
-                memcpy (p, corner_colors + dx + dy * SOURCE_DIVISIONS_X, 4);
+                guint32 color = GUINT32_FROM_BE (corner_colors[dx + dy * SOURCE_DIVISIONS_X]);
+                memcpy (p, &color, 4);
                 p += 4;
               }
 
@@ -59,20 +56,24 @@ create_source (void)
           }
       }
 
-  return cogl_texture_new_from_data (SOURCE_SIZE, SOURCE_SIZE,
-                                     COGL_TEXTURE_NONE,
-                                     COGL_PIXEL_FORMAT_RGBA_8888,
-                                     COGL_PIXEL_FORMAT_ANY,
-                                     SOURCE_SIZE * 4,
-                                     data);
+  tex = cogl_texture_2d_new_from_data (state->ctx,
+                                       SOURCE_SIZE, SOURCE_SIZE,
+                                       COGL_PIXEL_FORMAT_RGBA_8888,
+                                       COGL_PIXEL_FORMAT_ANY,
+                                       SOURCE_SIZE * 4,
+                                       data,
+                                       &error);
+  g_assert_no_error (error);
+  return tex;
 }
 
-static CoglHandle
-create_test_texture (void)
+static CoglTexture2D *
+create_test_texture (TestState *state)
 {
-  CoglHandle tex;
+  CoglTexture2D *tex;
   guint8 *data = g_malloc (256 * 256 * 4), *p = data;
   int x, y;
+  GError *error = NULL;
 
   /* Create a texture that is 256x256 where the red component ranges
      from 0->255 along the x axis and the green component ranges from
@@ -87,11 +88,14 @@ create_test_texture (void)
         *(p++) = 255;
       }
 
-  tex = cogl_texture_new_from_data (256, 256, COGL_TEXTURE_NONE,
-                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                    COGL_PIXEL_FORMAT_ANY,
-                                    256 * 4,
-                                    data);
+  tex = cogl_texture_2d_new_from_data (state->ctx,
+                                       256, 256,
+                                       COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                       COGL_PIXEL_FORMAT_ANY,
+                                       256 * 4,
+                                       data,
+                                       &error);
+  g_assert_no_error (error);
 
   g_free (data);
 
@@ -99,80 +103,66 @@ create_test_texture (void)
 }
 
 static void
-draw_frame (TestState *state)
+paint (TestState *state)
 {
-  CoglHandle full_texture, sub_texture, sub_sub_texture;
+  CoglTexture2D *full_texture;
+  CoglSubTexture *sub_texture, *sub_sub_texture;
 
   /* Create a sub texture of the bottom right quarter of the texture */
-  sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   DIVISION_WIDTH,
-                                                   DIVISION_HEIGHT,
-                                                   DIVISION_WIDTH,
-                                                   DIVISION_HEIGHT);
+  sub_texture = cogl_sub_texture_new (state->ctx,
+                                      COGL_TEXTURE (state->tex),
+                                      DIVISION_WIDTH,
+                                      DIVISION_HEIGHT,
+                                      DIVISION_WIDTH,
+                                      DIVISION_HEIGHT);
 
   /* Paint it */
-  cogl_set_source_texture (sub_texture);
+  cogl_set_source_texture (COGL_TEXTURE (sub_texture));
   cogl_rectangle (0.0f, 0.0f, DIVISION_WIDTH, DIVISION_HEIGHT);
 
-  cogl_handle_unref (sub_texture);
+  cogl_object_unref (sub_texture);
 
   /* Repeat a sub texture of the top half of the full texture. This is
      documented to be undefined so it doesn't technically have to work
      but it will with the current implementation */
-  sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   0, 0,
-                                                   SOURCE_SIZE,
-                                                   DIVISION_HEIGHT);
-  cogl_set_source_texture (sub_texture);
+  sub_texture = cogl_sub_texture_new (state->ctx,
+                                      COGL_TEXTURE (state->tex),
+                                      0, 0,
+                                      SOURCE_SIZE,
+                                      DIVISION_HEIGHT);
+  cogl_set_source_texture (COGL_TEXTURE (sub_texture));
   cogl_rectangle_with_texture_coords (0.0f, SOURCE_SIZE,
                                       SOURCE_SIZE * 2.0f, SOURCE_SIZE * 1.5f,
                                       0.0f, 0.0f,
                                       2.0f, 1.0f);
-  cogl_handle_unref (sub_texture);
+  cogl_object_unref (sub_texture);
 
   /* Create a sub texture of a sub texture */
-  full_texture = create_test_texture ();
-  sub_texture = cogl_texture_new_from_sub_texture (full_texture,
-                                                   20, 10, 30, 20);
-  sub_sub_texture = cogl_texture_new_from_sub_texture (sub_texture,
-                                                       20, 10, 10, 10);
-  cogl_set_source_texture (sub_sub_texture);
+  full_texture = create_test_texture (state);
+  sub_texture = cogl_sub_texture_new (state->ctx,
+                                      COGL_TEXTURE (full_texture),
+                                      20, 10, 30, 20);
+  sub_sub_texture = cogl_sub_texture_new (state->ctx,
+                                          COGL_TEXTURE (sub_texture),
+                                          20, 10, 10, 10);
+  cogl_set_source_texture (COGL_TEXTURE (sub_sub_texture));
   cogl_rectangle (0.0f, SOURCE_SIZE * 2.0f,
                   10.0f, SOURCE_SIZE * 2.0f + 10.0f);
-  cogl_handle_unref (sub_sub_texture);
-  cogl_handle_unref (sub_texture);
-  cogl_handle_unref (full_texture);
+  cogl_object_unref (sub_sub_texture);
+  cogl_object_unref (sub_texture);
+  cogl_object_unref (full_texture);
 }
 
-static gboolean
-validate_part (TestState *state,
-               int xpos, int ypos,
+static void
+validate_part (int xpos, int ypos,
                int width, int height,
-               const ClutterColor *color)
+               guint32 color)
 {
-  int x, y;
-  gboolean pass = TRUE;
-  guchar *pixels, *p;
-
-  p = pixels = clutter_stage_read_pixels (CLUTTER_STAGE (state->stage),
-                                          xpos + TEST_INSET,
-                                          ypos + TEST_INSET,
-                                          width - TEST_INSET - 2,
-                                          height - TEST_INSET - 2);
-
-  /* Check whether the center of each division is the right color */
-  for (y = 0; y < height - TEST_INSET - 2; y++)
-    for (x = 0; x < width - TEST_INSET - 2; x++)
-      {
-        if (p[0] != color->red ||
-            p[1] != color->green ||
-            p[2] != color->blue)
-          pass = FALSE;
-
-        p += 4;
-      }
-
-  return pass;
+  test_utils_check_region (xpos + TEST_INSET,
+                           ypos + TEST_INSET,
+                           width - TEST_INSET - 2,
+                           height - TEST_INSET - 2,
+                           color);
 }
 
 static guint8 *
@@ -201,28 +191,31 @@ static void
 validate_result (TestState *state)
 {
   int i, division_num, x, y;
-  CoglHandle sub_texture, test_tex;
-  guchar *texture_data, *p;
+  CoglTexture2D *test_tex;
+  CoglSubTexture *sub_texture;
+  guint8 *texture_data, *p;
   int tex_width, tex_height;
 
   /* Sub texture of the bottom right corner of the texture */
-  g_assert (validate_part (state, 0, 0, DIVISION_WIDTH, DIVISION_HEIGHT,
-                           corner_colors +
-                           (SOURCE_DIVISIONS_Y - 1) * SOURCE_DIVISIONS_X +
-                           SOURCE_DIVISIONS_X - 1));
+  validate_part (0, 0, DIVISION_WIDTH, DIVISION_HEIGHT,
+                 corner_colors[
+                 (SOURCE_DIVISIONS_Y - 1) * SOURCE_DIVISIONS_X +
+                 SOURCE_DIVISIONS_X - 1]);
 
   /* Sub texture of the top half repeated horizontally */
   for (i = 0; i < 2; i++)
     for (division_num = 0; division_num < SOURCE_DIVISIONS_X; division_num++)
-      g_assert (validate_part (state,
-                               i * SOURCE_SIZE + division_num * DIVISION_WIDTH,
-                               SOURCE_SIZE,
-                               DIVISION_WIDTH, DIVISION_HEIGHT,
-                               corner_colors + division_num));
+      validate_part (i * SOURCE_SIZE + division_num * DIVISION_WIDTH,
+                     SOURCE_SIZE,
+                     DIVISION_WIDTH, DIVISION_HEIGHT,
+                     corner_colors[division_num]);
 
   /* Sub sub texture */
-  p = texture_data = clutter_stage_read_pixels (CLUTTER_STAGE (state->stage),
-                                                0, SOURCE_SIZE * 2, 10, 10);
+  p = texture_data = g_malloc (10 * 10 * 4);
+  cogl_read_pixels (0, SOURCE_SIZE * 2, 10, 10,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    p);
   for (y = 0; y < 10; y++)
     for (x = 0; x < 10; x++)
       {
@@ -233,15 +226,17 @@ validate_result (TestState *state)
   g_free (texture_data);
 
   /* Try reading back the texture data */
-  sub_texture = cogl_texture_new_from_sub_texture (state->tex,
-                                                   SOURCE_SIZE / 4,
-                                                   SOURCE_SIZE / 4,
-                                                   SOURCE_SIZE / 2,
-                                                   SOURCE_SIZE / 2);
-  tex_width = cogl_texture_get_width (sub_texture);
-  tex_height = cogl_texture_get_height (sub_texture);
+  sub_texture = cogl_sub_texture_new (state->ctx,
+                                      COGL_TEXTURE (state->tex),
+                                      SOURCE_SIZE / 4,
+                                      SOURCE_SIZE / 4,
+                                      SOURCE_SIZE / 2,
+                                      SOURCE_SIZE / 2);
+  tex_width = cogl_texture_get_width (COGL_TEXTURE (sub_texture));
+  tex_height = cogl_texture_get_height (COGL_TEXTURE (sub_texture));
   p = texture_data = g_malloc (tex_width * tex_height * 4);
-  cogl_texture_get_data (sub_texture, COGL_PIXEL_FORMAT_RGBA_8888,
+  cogl_texture_get_data (COGL_TEXTURE (sub_texture),
+                         COGL_PIXEL_FORMAT_RGBA_8888,
                          tex_width * 4,
                          texture_data);
   for (y = 0; y < tex_height; y++)
@@ -251,31 +246,32 @@ validate_result (TestState *state)
                      DIVISION_WIDTH);
         int div_y = ((y * SOURCE_SIZE / 2 / tex_height + SOURCE_SIZE / 4) /
                      DIVISION_HEIGHT);
-        const ClutterColor *color = (corner_colors + div_x +
-                                     div_y * SOURCE_DIVISIONS_X);
-        g_assert (p[0] == color->red);
-        g_assert (p[1] == color->green);
-        g_assert (p[2] == color->blue);
+        guint32 reference = corner_colors[div_x + div_y * SOURCE_DIVISIONS_X] >> 8;
+        guint32 color = GUINT32_FROM_BE (*((guint32 *)p)) >> 8;
+        g_assert (color == reference);
         p += 4;
       }
   g_free (texture_data);
-  cogl_handle_unref (sub_texture);
+  cogl_object_unref (sub_texture);
 
   /* Create a 256x256 test texture */
-  test_tex = create_test_texture ();
+  test_tex = create_test_texture (state);
   /* Create a sub texture the views the center half of the texture */
-  sub_texture = cogl_texture_new_from_sub_texture (test_tex,
-                                                   64, 64, 128, 128);
+  sub_texture = cogl_sub_texture_new (state->ctx,
+                                      COGL_TEXTURE (test_tex),
+                                      64, 64, 128, 128);
   /* Update the center half of the sub texture */
   texture_data = create_update_data ();
-  cogl_texture_set_region (sub_texture, 0, 0, 32, 32, 64, 64, 256, 256,
+  cogl_texture_set_region (COGL_TEXTURE (sub_texture),
+                           0, 0, 32, 32, 64, 64, 256, 256,
                            COGL_PIXEL_FORMAT_RGBA_8888_PRE, 256 * 4,
                            texture_data);
   g_free (texture_data);
-  cogl_handle_unref (sub_texture);
+  cogl_object_unref (sub_texture);
   /* Get the texture data */
   p = texture_data = g_malloc (256 * 256 * 4);
-  cogl_texture_get_data (test_tex, COGL_PIXEL_FORMAT_RGBA_8888,
+  cogl_texture_get_data (COGL_TEXTURE (test_tex),
+                         COGL_PIXEL_FORMAT_RGBA_8888,
                          256 * 4, texture_data);
 
   /* Verify the texture data */
@@ -299,71 +295,27 @@ validate_result (TestState *state)
           }
       }
   g_free (texture_data);
-  cogl_handle_unref (test_tex);
-
-  /* Comment this out to see what the test paints */
-  clutter_main_quit ();
-}
-
-static void
-on_paint (ClutterActor *actor, TestState *state)
-{
-  int frame_num;
-
-  draw_frame (state);
-
-  /* XXX: validate_result calls clutter_stage_read_pixels which will result in
-   * another paint run so to avoid infinite recursion we only aim to validate
-   * the first frame. */
-  frame_num = state->frame++;
-  if (frame_num == 1)
-    validate_result (state);
-}
-
-static gboolean
-queue_redraw (gpointer stage)
-{
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-  return TRUE;
+  cogl_object_unref (test_tex);
 }
 
 void
 test_cogl_sub_texture (TestUtilsGTestFixture *fixture,
                        void *data)
 {
+  TestUtilsSharedState *shared_state = data;
   TestState state;
-  unsigned int idle_source;
-  unsigned int paint_handler;
 
-  state.frame = 0;
+  state.ctx = shared_state->ctx;
+  state.tex = create_source (&state);
 
-  state.stage = clutter_stage_get_default ();
-  state.tex = create_source ();
+  cogl_ortho (0, cogl_framebuffer_get_width (shared_state->fb), /* left, right */
+              cogl_framebuffer_get_height (shared_state->fb), 0, /* bottom, top */
+              -1, 100 /* z near, far */);
 
-  clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
+  paint (&state);
+  validate_result (&state);
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, state.stage);
-
-  paint_handler = g_signal_connect_after (state.stage, "paint",
-                                          G_CALLBACK (on_paint), &state);
-
-  clutter_actor_show_all (state.stage);
-
-  clutter_main ();
-
-  g_source_remove (idle_source);
-  g_signal_handler_disconnect (state.stage, paint_handler);
-
-  cogl_handle_unref (state.tex);
-
-  /* Remove all of the actors from the stage */
-  clutter_container_foreach (CLUTTER_CONTAINER (state.stage),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
+  cogl_object_unref (state.tex);
 
   if (g_test_verbose ())
     g_print ("OK\n");

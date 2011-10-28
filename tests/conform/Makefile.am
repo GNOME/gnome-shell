@@ -22,7 +22,6 @@ unported_test_sources = \
 	test-pixel-buffer.c \
 	test-premult.c \
 	test-readpixels.c \
-	test-sub-texture.c \
 	test-texture-3d.c \
 	test-texture-get-set-data.c \
 	test-texture-mipmaps.c \
@@ -43,6 +42,7 @@ test_sources = \
 	test-just-vertex-shader.c \
 	test-pipeline-user-matrix.c \
 	test-wrap-modes.c \
+	test-sub-texture.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
