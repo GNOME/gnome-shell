@@ -155,11 +155,17 @@ normal_contents (void)
                    gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
                    0, 0, 1, 1);
 
+  gtk_widget_set_hexpand (gtk_ui_manager_get_widget (ui_manager, "/ui/menubar"),
+                          TRUE);
+
   /* Create the toolbar
    */
   gtk_grid_attach (GTK_GRID (grid),
                    gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"),
                    0, 1, 1, 1);
+
+  gtk_widget_set_hexpand (gtk_ui_manager_get_widget (ui_manager, "/ui/toolbar"),
+                          TRUE);
 
   /* Create document
    */
@@ -176,6 +182,9 @@ normal_contents (void)
   gtk_grid_attach (GTK_GRID (grid),
                    sw,
                    0, 2, 1, 1);
+
+  gtk_widget_set_hexpand (sw, TRUE);
+  gtk_widget_set_vexpand (sw, TRUE);
       
   contents = gtk_text_view_new ();
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (contents),
@@ -190,6 +199,8 @@ normal_contents (void)
   gtk_grid_attach (GTK_GRID (grid),
                    statusbar,
                    0, 3, 1, 1);
+
+  gtk_widget_set_hexpand (statusbar, TRUE);
 
   gtk_widget_show_all (grid);
 
