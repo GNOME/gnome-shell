@@ -3484,20 +3484,6 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
         break;
       }
     case META_DRAW_ICON:
-      if (info->mini_icon &&
-          width <= gdk_pixbuf_get_width (info->mini_icon) &&
-          height <= gdk_pixbuf_get_height (info->mini_icon))
-        pixbuf = scale_pixbuf (info->mini_icon,
-                               op->data.icon.fill_type,
-                               width, height,
-                               FALSE, FALSE);
-      else if (info->icon)
-        pixbuf = scale_pixbuf (info->icon,
-                               op->data.icon.fill_type,
-                               width, height,
-                               FALSE, FALSE);
-      break;
-
     case META_DRAW_LINE:
     case META_DRAW_RECTANGLE:
     case META_DRAW_ARC:
@@ -3578,6 +3564,61 @@ meta_alpha_gradient_spec_pattern (const MetaAlphaGradientSpec *alpha_spec)
 
       return pattern;
     }
+}
+
+static void
+draw_image (cairo_t               *cr,
+            GdkPixbuf             *src,
+            MetaImageFillType      fill_type,
+            MetaAlphaGradientSpec *alpha_spec,
+            int                    x,
+            int                    y,
+            int                    width,
+            int                    height)
+{
+  cairo_save (cr);
+
+  cairo_rectangle (cr, x, y, width, height);
+
+  if (fill_type == META_IMAGE_FILL_TILE)
+    {
+      gdk_cairo_set_source_pixbuf (cr, src, 0, 0);
+
+      cairo_pattern_set_extend (cairo_get_source (cr),
+                                CAIRO_EXTEND_REPEAT);
+    }
+  else
+    {
+      float pixbuf_width, pixbuf_height;
+
+      pixbuf_width = gdk_pixbuf_get_width (src);
+      pixbuf_height = gdk_pixbuf_get_height (src);
+
+      cairo_save (cr);
+      cairo_translate (cr, x, y);
+      cairo_scale (cr,
+                   pixbuf_width / width,
+                   pixbuf_height / height);
+
+      gdk_cairo_set_source_pixbuf (cr, src, 0, 0);
+      cairo_restore (cr);
+    }
+
+  if (alpha_spec)
+    {
+      cairo_translate (cr, x, y);
+      cairo_scale (cr, width, height);
+
+      cairo_pattern_t *pattern = meta_alpha_gradient_spec_pattern (alpha_spec);
+      cairo_mask (cr, pattern);
+      cairo_pattern_destroy (pattern);
+    }
+  else
+    {
+      cairo_fill (cr);
+    }
+
+  cairo_restore (cr);
 }
 
 /* This code was originally rendering anti-aliased using X primitives, and
@@ -3923,37 +3964,27 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
     case META_DRAW_ICON:
       {
         int rx, ry, rwidth, rheight;
-        GdkPixbuf *pixbuf;
+        GdkPixbuf *src;
 
         rwidth = parse_size_unchecked (op->data.icon.width, env);
         rheight = parse_size_unchecked (op->data.icon.height, env);
 
-        pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
-                                    rwidth, rheight);
+        if (info->mini_icon &&
+            rwidth < gdk_pixbuf_get_width (info->mini_icon) &&
+            rheight < gdk_pixbuf_get_height (info->mini_icon))
+          src = info->mini_icon;
+        else if (info->icon)
+          src = info->icon;
+        else
+          break;
 
-        if (pixbuf)
-          {
-            rx = parse_x_position_unchecked (op->data.icon.x, env);
-            ry = parse_y_position_unchecked (op->data.icon.y, env);
+        rx = parse_x_position_unchecked (op->data.icon.x, env);
+        ry = parse_y_position_unchecked (op->data.icon.y, env);
 
-            gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
-
-            if (op->data.icon.alpha_spec)
-              {
-                cairo_translate (cr, rx, ry);
-                cairo_scale (cr, rwidth, rheight);
-
-                cairo_pattern_t *pattern = meta_alpha_gradient_spec_pattern (op->data.icon.alpha_spec);
-                cairo_mask (cr, pattern);
-                cairo_pattern_destroy (pattern);
-              }
-            else
-              {
-                cairo_paint (cr);
-              }
-
-            g_object_unref (G_OBJECT (pixbuf));
-          }
+        draw_image (cr, src,
+                    op->data.icon.fill_type,
+                    op->data.icon.alpha_spec,
+                    rx, ry, rwidth, rheight);
       }
       break;
 
