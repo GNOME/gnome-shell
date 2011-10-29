@@ -1103,6 +1103,7 @@ load_gicon_with_colors (StTextureCache    *cache,
       request->key = key;
       request->policy = policy;
       request->icon = g_object_ref (icon);
+      request->colors = colors ? st_icon_colors_ref (colors) : NULL;
       request->icon_info = info;
       request->width = request->height = size;
       request->enforced_square = TRUE;
