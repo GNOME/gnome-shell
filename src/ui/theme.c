@@ -3813,16 +3813,24 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             env->object_height = gdk_pixbuf_get_height (op->data.image.pixbuf);
           }
 
+        rx = parse_x_position_unchecked (op->data.image.x, env);
+        ry = parse_y_position_unchecked (op->data.image.y, env);
+
         rwidth = parse_size_unchecked (op->data.image.width, env);
         rheight = parse_size_unchecked (op->data.image.height, env);
 
-        pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
-                                    rwidth, rheight);
-
-        if (pixbuf)
+        if (op->data.image.colorize_spec == NULL)
           {
-            rx = parse_x_position_unchecked (op->data.image.x, env);
-            ry = parse_y_position_unchecked (op->data.image.y, env);
+            draw_image (cr,
+                        op->data.image.pixbuf,
+                        op->data.image.fill_type,
+                        op->data.image.alpha_spec,
+                        rx, ry, rwidth, rheight);
+          }
+        else
+          {
+            pixbuf = draw_op_as_pixbuf (op, style_gtk, info,
+                                        rwidth, rheight);
 
             gdk_cairo_set_source_pixbuf (cr, pixbuf, rx, ry);
 
