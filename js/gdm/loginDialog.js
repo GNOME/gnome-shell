@@ -844,7 +844,7 @@ LoginDialog.prototype = {
                               x_fill: true,
                               y_fill: false,
                               x_align: St.Align.START });
-        // translators: this message is shown below the password entry field
+        // Translators: this message is shown below the password entry field
         // to indicate the user can swipe their finger instead
         this._promptFingerprintMessage = new St.Label({ text: _("(or swipe finger)"),
                                                         style_class: 'login-dialog-prompt-fingerprint-message' });
@@ -864,6 +864,9 @@ LoginDialog.prototype = {
                               x_align: St.Align.START });
         this._promptBox.hide();
 
+        // translators: this message is shown below the user list on the
+        // login screen. It can be activated to reveal an entry for
+        // manually entering the username.
         let notListedLabel = new St.Label({ text: _("Not listed?"),
                                             style_class: 'login-dialog-not-listed-label' });
         this._notListedButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
