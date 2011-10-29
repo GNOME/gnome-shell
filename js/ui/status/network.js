@@ -2065,10 +2065,11 @@ NMApplet.prototype = {
                         }
                         this.setIcon('network-wireless-connected');
                     } else {
-                        if (this._accessPointUpdateId && this._activeAccessPoint != ap) {
-                            this._activeAccessPoint.disconnect(this._accessPointUpdateId);
+                        if (this._activeAccessPoint != ap) {
+                            if (this._accessPointUpdateId)
+                                this._activeAccessPoint.disconnect(this._accessPointUpdateId);
                             this._activeAccessPoint = ap;
-                            this._activeAccessPointUpdateId = ap.connect('notify::strength', Lang.bind(function() {
+                            this._activeAccessPointUpdateId = ap.connect('notify::strength', Lang.bind(this, function() {
                                 this.setIcon('network-wireless-signal-' + signalToIcon(ap.strength));
                             }));
                         }
@@ -2095,8 +2096,9 @@ NMApplet.prototype = {
                     break;
                 }
 
-                if (this._mobileUpdateId && this._mobileUpdateDevice != dev) {
-                    this._mobileUpdateDevice.disconnect(this._mobileUpdateId);
+                if (dev.mobileDevice != this._mobileUpdateDevice) {
+                    if (this._mobileUpdateId)
+                        this._mobileUpdateDevice.disconnect(this._mobileUpdateId);
                     this._mobileUpdateDevice = dev.mobileDevice;
                     this._mobileUpdateId = dev.mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
                         this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality));
