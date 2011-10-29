@@ -20,6 +20,7 @@ const Link = imports.ui.link;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
+const JsParse = imports.misc.jsParse;
 
 /* Imports...feel free to add here as needed */
 var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
@@ -41,6 +42,86 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                     'const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ';
 
 const HISTORY_KEY = 'looking-glass-history';
+// Time between tabs for them to count as a double-tab event
+const AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
+const AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 0.2;
+const AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
+
+function _getAutoCompleteGlobalKeywords() {
+    const keywords = ['true', 'false', 'null', 'new'];
+    // Don't add the private properties of window (i.e., ones starting with '_')
+    const windowProperties = Object.getOwnPropertyNames(window).filter(function(a){ return a.charAt(0) != '_' });
+    const headerProperties = JsParse.getDeclaredConstants(commandHeader);
+
+    return keywords.concat(windowProperties).concat(headerProperties);
+}
+
+function AutoComplete(entry) {
+    this._init(entry);
+}
+
+AutoComplete.prototype = {
+    _init: function(entry) {
+        this._entry = entry;
+        this._entry.connect('key-press-event', Lang.bind(this, this._entryKeyPressEvent));
+        this._lastTabTime = global.get_current_time();
+    },
+
+    _processCompletionRequest: function(event) {
+        if (event.completions.length == 0) {
+            return;
+        }
+        // Unique match = go ahead and complete; multiple matches + single tab = complete the common starting string;
+        // multiple matches + double tab = emit a suggest event with all possible options
+        if (event.completions.length == 1) {
+            this.additionalCompletionText(event.completions[0], event.attrHead);
+            this.emit('completion', { completion: event.completions[0], type: 'whole-word' });
+        } else if (event.completions.length > 1 && event.tabType === 'single') {
+            let commonPrefix = JsParse.getCommonPrefix(event.completions);
+
+            if (commonPrefix.length > 0) {
+                this.additionalCompletionText(commonPrefix, event.attrHead);
+                this.emit('completion', { completion: commonPrefix, type: 'prefix' });
+                this.emit('suggest', { completions: event.completions});
+            }
+        } else if (event.completions.length > 1 && event.tabType === 'double') {
+            this.emit('suggest', { completions: event.completions});
+        }
+    },
+
+    _entryKeyPressEvent: function(actor, event) {
+        let cursorPos = this._entry.clutter_text.get_cursor_position();
+        let text = this._entry.get_text();
+        if (cursorPos != -1) {
+            text = text.slice(0, cursorPos);
+        }
+        if (event.get_key_symbol() == Clutter.Tab) {
+            let [completions, attrHead] = JsParse.getCompletions(text, commandHeader, AUTO_COMPLETE_GLOBAL_KEYWORDS);
+            let currTime = global.get_current_time();
+            if ((currTime - this._lastTabTime) < AUTO_COMPLETE_DOUBLE_TAB_DELAY) {
+                this._processCompletionRequest({ tabType: 'double',
+                                                 completions: completions,
+                                                 attrHead: attrHead });
+            } else {
+                this._processCompletionRequest({ tabType: 'single',
+                                                 completions: completions,
+                                                 attrHead: attrHead });
+            }
+            this._lastTabTime = currTime;
+        }
+    },
+
+    // Insert characters of text not already included in head at cursor position.  i.e., if text="abc" and head="a",
+    // the string "bc" will be appended to this._entry
+    additionalCompletionText: function(text, head) {
+        let additionalCompletionText = text.slice(head.length);
+        let cursorPos = this._entry.clutter_text.get_cursor_position();
+
+        this._entry.clutter_text.insert_text(additionalCompletionText, cursorPos);
+    }
+};
+Signals.addSignalMethods(AutoComplete.prototype);
+
 
 function Notebook() {
     this._init();
@@ -864,15 +945,15 @@ LookingGlass.prototype = {
         this._resultsArea = new St.BoxLayout({ name: 'ResultsArea', vertical: true });
         this._evalBox.add(this._resultsArea, { expand: true });
 
-        let entryArea = new St.BoxLayout({ name: 'EntryArea' });
-        this._evalBox.add_actor(entryArea);
+        this._entryArea = new St.BoxLayout({ name: 'EntryArea' });
+        this._evalBox.add_actor(this._entryArea);
 
         let label = new St.Label({ text: 'js>>> ' });
-        entryArea.add(label);
+        this._entryArea.add(label);
 
         this._entry = new St.Entry({ can_focus: true });
         ShellEntry.addContextMenu(this._entry);
-        entryArea.add(this._entry, { expand: true });
+        this._entryArea.add(this._entry, { expand: true });
 
         this._windowList = new WindowList();
         this._windowList.connect('selected', Lang.bind(this, function(list, window) {
@@ -891,6 +972,9 @@ LookingGlass.prototype = {
         notebook.appendPage('Extensions', this._extensions.actor);
 
         this._entry.clutter_text.connect('activate', Lang.bind(this, function (o, e) {
+            // Hide any completions we are currently showing
+            this._hideCompletions();
+
             let text = o.get_text();
             // Ensure we don't get newlines in the command; the history file is
             // newline-separated.
@@ -905,6 +989,17 @@ LookingGlass.prototype = {
 
         this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY, 
                                                      entry: this._entry.clutter_text });
+
+        this._autoComplete = new AutoComplete(this._entry);
+        this._autoComplete.connect('suggest', Lang.bind(this, function(a,e) {
+            this._showCompletions(e.completions);
+        }));
+        // If a completion is completed unambiguously, the currently-displayed completion
+        // suggestions become irrelevant.
+        this._autoComplete.connect('completion', Lang.bind(this, function(a,e) {
+            if (e.type == 'whole-word')
+                this._hideCompletions();
+        }));
 
         this._resize();
     },
@@ -948,6 +1043,59 @@ LookingGlass.prototype = {
 
         // Scroll to bottom
         this._notebook.scrollToBottom(0);
+    },
+
+    _showCompletions: function(completions) {
+        if (!this._completionActor) {
+            let actor = new St.BoxLayout({ vertical: true });
+
+            this._completionText = new St.Label({ name: 'LookingGlassAutoCompletionText', style_class: 'lg-completions-text' });
+            this._completionText.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._completionText.clutter_text.line_wrap = true;
+            actor.add(this._completionText);
+
+            let line = new Clutter.Rectangle();
+            let padBin = new St.Bin({ x_fill: true, y_fill: true });
+            padBin.add_actor(line);
+            actor.add(padBin);
+
+            this._completionActor = actor;
+            this._evalBox.insert_before(this._completionActor, this._entryArea);
+        }
+
+        this._completionText.set_text(completions.join(', '));
+
+        // Setting the height to -1 allows us to get its actual preferred height rather than
+        // whatever was last given in set_height by Tweener.
+        this._completionActor.set_height(-1);
+        let [minHeight, naturalHeight] = this._completionText.get_preferred_height(this._resultsArea.get_width());
+
+        // Don't reanimate if we are already visible
+        if (this._completionActor.visible) {
+            this._completionActor.height = naturalHeight;
+        } else {
+            this._completionActor.show();
+            Tweener.removeTweens(this._completionActor);
+            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / St.get_slow_down_factor(),
+                                                      transition: 'easeOutQuad',
+                                                      height: naturalHeight,
+                                                      opacity: 255
+                                                    });
+        }
+    },
+
+    _hideCompletions: function() {
+        if (this._completionActor) {
+            Tweener.removeTweens(this._completionActor);
+            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / St.get_slow_down_factor(),
+                                                      transition: 'easeOutQuad',
+                                                      height: 0,
+                                                      opacity: 0,
+                                                      onComplete: Lang.bind(this, function () {
+                                                          this._completionActor.hide();
+                                                      })
+                                                    });
+        }
     },
 
     _evaluate : function(command) {

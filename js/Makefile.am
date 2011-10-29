@@ -13,6 +13,7 @@ nobase_dist_js_DATA = 	\
 	misc/format.js		\
 	misc/gnomeSession.js	\
 	misc/history.js		\
+	misc/jsParse.js		\
 	misc/modemManager.js	\
 	misc/params.js		\
 	misc/screenSaver.js     \

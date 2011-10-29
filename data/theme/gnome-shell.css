@@ -858,6 +858,12 @@ StTooltip StLabel {
     selected-color: #333333;
 }
 
+.lg-completions-text
+{
+    font-size: .9em;
+    font-style: italic;
+}
+
 .lg-obj-inspector-title
 {
     spacing: 4px;
