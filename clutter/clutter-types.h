@@ -28,6 +28,8 @@
 #ifndef __CLUTTER_TYPES_H__
 #define __CLUTTER_TYPES_H__
 
+#include <cairo.h>
+
 #include <clutter/clutter-enums.h>
 
 G_BEGIN_DECLS

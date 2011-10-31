@@ -5696,8 +5696,8 @@ clutter_actor_queue_redraw (ClutterActor *self)
                                     NULL /* effect */);
 }
 
-/*
- * clutter_actor_queue_redraw_with_clip:
+/*< private >
+ * _clutter_actor_queue_redraw_with_clip:
  * @self: A #ClutterActor
  * @flags: A mask of #ClutterRedrawFlags controlling the behaviour of
  *   this queue redraw.
@@ -5768,6 +5768,49 @@ _clutter_actor_queue_only_relayout (ClutterActor *self)
 #endif /* CLUTTER_ENABLE_DEBUG */
 
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
+}
+
+/**
+ * clutter_actor_queue_redraw_with_clip:
+ * @self: a #ClutterActor
+ * @clip: (allow-none): a rectangular clip region, or %NULL
+ *
+ * Queues a redraw on @self limited to a specific, actor-relative
+ * rectangular area.
+ *
+ * If @clip is %NULL this function is equivalent to
+ * clutter_actor_queue_redraw().
+ *
+ * Since: 1.10
+ */
+void
+clutter_actor_queue_redraw_with_clip (ClutterActor                *self,
+                                      const cairo_rectangle_int_t *clip)
+{
+  ClutterPaintVolume volume;
+  ClutterVertex origin;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (clip == NULL)
+    {
+      clutter_actor_queue_redraw (self);
+      return;
+    }
+
+  _clutter_paint_volume_init_static (&volume, self);
+
+  origin.x = clip->x;
+  origin.y = clip->y;
+  origin.z = 0.0f;
+
+  clutter_paint_volume_set_origin (&volume, &origin);
+  clutter_paint_volume_set_width (&volume, clip->width);
+  clutter_paint_volume_set_height (&volume, clip->height);
+
+  _clutter_actor_queue_redraw_full (self, 0, &volume, NULL);
+
+  clutter_paint_volume_free (&volume);
 }
 
 /**

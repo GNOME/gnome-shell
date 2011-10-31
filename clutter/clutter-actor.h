@@ -280,6 +280,8 @@ void                  clutter_actor_unmap                     (ClutterActor     
 void                  clutter_actor_paint                     (ClutterActor          *self);
 void                  clutter_actor_continue_paint            (ClutterActor          *self);
 void                  clutter_actor_queue_redraw              (ClutterActor          *self);
+void                  clutter_actor_queue_redraw_with_clip    (ClutterActor          *self,
+                                                               const cairo_rectangle_int_t *clip);
 
 void                  clutter_actor_queue_relayout            (ClutterActor          *self);
 void                  clutter_actor_destroy                   (ClutterActor          *self);
