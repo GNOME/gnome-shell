@@ -104,3 +104,40 @@ test_utils_check_pixel_rgb (int x, int y, int r, int g, int b)
 {
   test_utils_check_pixel (x, y, (r << 24) | (g << 16) | (b << 8));
 }
+
+void
+test_utils_check_region (int x, int y,
+                         int width, int height,
+                         guint32 expected_rgba)
+{
+  guint32 reference = expected_rgba >> 8;
+  guint8 *pixels, *p;
+
+  pixels = p = g_malloc (width * height * 4);
+  cogl_read_pixels (x,
+                    y,
+                    width,
+                    height,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    p);
+
+  /* Check whether the center of each division is the right color */
+  for (y = 0; y < height; y++)
+    for (x = 0; x < width; x++)
+      {
+        guint32 current = GUINT32_FROM_BE (*((guint32 *)p)) >> 8;
+        if (current != reference)
+          {
+            /* Ensure we have a meaningful error message... */
+            char *screen_pixel = g_strdup_printf ("#%06x", current);
+            char *intended_pixel = g_strdup_printf ("#%06x", reference);
+            g_assert_cmpstr (screen_pixel, == ,intended_pixel);
+          }
+        p += 4;
+      }
+
+  g_free (pixels);
+}
+
+
