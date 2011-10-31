@@ -1111,8 +1111,7 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
     case Expose:
       {
         XExposeEvent *expose = (XExposeEvent *) xevent;
-        ClutterPaintVolume clip;
-        ClutterVertex origin;
+        cairo_rectangle_int_t clip;
 
         CLUTTER_NOTE (EVENT,
                       "expose for stage: %s[%p], win:0x%x - "
@@ -1125,19 +1124,11 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                       expose->width,
                       expose->height);
 
-        origin.x = expose->x;
-        origin.y = expose->y;
-        origin.z = 0;
-
-        _clutter_paint_volume_init_static (&clip, CLUTTER_ACTOR (stage));
-
-        clutter_paint_volume_set_origin (&clip, &origin);
-        clutter_paint_volume_set_width (&clip, expose->width);
-        clutter_paint_volume_set_height (&clip, expose->height);
-
-        _clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), 0, &clip);
-
-        clutter_paint_volume_free (&clip);
+        clip.x = expose->x;
+        clip.y = expose->y;
+        clip.width = expose->width;
+        clip.height = expose->height;
+        clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), &clip);
       }
       break;
 
