@@ -63,7 +63,7 @@ struct _CoglContext
   const CoglTextureDriver *texture_driver;
 
   /* Features cache */
-  unsigned int features[COGL_FLAGS_N_INTS_FOR_SIZE (_COGL_N_FEATURE_IDS)];
+  unsigned long features[COGL_FLAGS_N_LONGS_FOR_SIZE (_COGL_N_FEATURE_IDS)];
   CoglFeatureFlags feature_flags; /* legacy/deprecated feature flags */
   CoglPrivateFeatureFlags private_feature_flags;
 
@@ -254,8 +254,8 @@ struct _CoglContext
   CoglXlibTrapState *trap_state;
 #endif
 
-  unsigned int winsys_features
-    [COGL_FLAGS_N_INTS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
+  unsigned long winsys_features
+    [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
   void *winsys;
 
   /* This defines a list of function pointers that Cogl uses from

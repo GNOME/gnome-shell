@@ -83,7 +83,7 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
 static const int n_cogl_behavioural_debug_keys =
   G_N_ELEMENTS (cogl_behavioural_debug_keys);
 
-unsigned int _cogl_debug_flags[COGL_DEBUG_N_INTS];
+unsigned long _cogl_debug_flags[COGL_DEBUG_N_LONGS];
 GHashTable *_cogl_debug_instances;
 
 static void
@@ -92,36 +92,54 @@ _cogl_parse_debug_string_for_keys (const char *value,
                                    const GDebugKey *keys,
                                    unsigned int nkeys)
 {
-  int int_num, key_num;
+  int long_num, key_num;
 
   /* g_parse_debug_string expects the value field in GDebugKey to be a
-     mask in a guint but we may have multiple guints so we need to
-     build a separate array for each possible guint */
+     mask in a guint but the flags is stored in an array of multiple
+     longs so we need to build a separate array for each possible
+     guint */
 
-  for (int_num = 0; int_num < COGL_DEBUG_N_INTS; int_num++)
+  for (long_num = 0; long_num < COGL_DEBUG_N_LONGS; long_num++)
     {
-      GDebugKey keys_for_int[sizeof (unsigned int) * 8];
-      unsigned int mask_for_int;
-      int nkeys_for_int = 0;
+      int int_num;
 
-      for (key_num = 0; key_num < nkeys; key_num++)
-        if (COGL_FLAGS_GET_INDEX (keys[key_num].value) == int_num)
-          {
-            keys_for_int[nkeys_for_int] = keys[key_num];
-            keys_for_int[nkeys_for_int].value =
-              COGL_FLAGS_GET_MASK (keys[key_num].value);
-            nkeys_for_int++;
-          }
-
-      if (nkeys_for_int > 0)
+      for (int_num = 0;
+           int_num < sizeof (unsigned long) / sizeof (unsigned int);
+           int_num++)
         {
-          mask_for_int = g_parse_debug_string (value,
-                                               keys_for_int,
-                                               nkeys_for_int);
-          if (enable)
-            _cogl_debug_flags[int_num] |= mask_for_int;
-          else
-            _cogl_debug_flags[int_num] &= ~mask_for_int;
+          GDebugKey keys_for_int[sizeof (unsigned int) * 8];
+          int nkeys_for_int = 0;
+
+          for (key_num = 0; key_num < nkeys; key_num++)
+            {
+              int long_index = COGL_FLAGS_GET_INDEX (keys[key_num].value);
+              int int_index = (keys[key_num].value %
+                               (sizeof (unsigned long) * 8) /
+                               (sizeof (unsigned int) * 8));
+
+              if (long_index == long_num && int_index == int_num)
+                {
+                  keys_for_int[nkeys_for_int] = keys[key_num];
+                  keys_for_int[nkeys_for_int].value =
+                    COGL_FLAGS_GET_MASK (keys[key_num].value) >>
+                    (int_num * sizeof (unsigned int) * 8);
+                  nkeys_for_int++;
+                }
+            }
+
+          if (nkeys_for_int > 0)
+            {
+              unsigned long mask =
+                ((unsigned long) g_parse_debug_string (value,
+                                                       keys_for_int,
+                                                       nkeys_for_int)) <<
+                (int_num * sizeof (unsigned int) * 8);
+
+              if (enable)
+                _cogl_debug_flags[long_num] |= mask;
+              else
+                _cogl_debug_flags[long_num] &= ~mask;
+            }
         }
     }
 }
