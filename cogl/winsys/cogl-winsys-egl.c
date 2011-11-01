@@ -95,7 +95,7 @@ typedef struct _CoglRendererEGL
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   struct wl_display *wayland_display;
   struct wl_compositor *wayland_compositor;
-  uint32_t wayland_event_mask;
+  struct wl_shell *wayland_shell;
 #endif
 
   EGLDisplay edpy;
@@ -319,18 +319,14 @@ display_handle_global_cb (struct wl_display *display,
                           uint32_t version,
                           void *data)
 {
-  struct wl_compositor **compositor = data;
+  CoglRendererEGL *egl_renderer = (CoglRendererEGL *)data;
 
   if (strcmp (interface, "wl_compositor") == 0)
-    *compositor = wl_compositor_create (display, id, 1);
-}
-
-static int
-event_mask_update_cb (uint32_t mask, void *user_data)
-{
-  CoglRendererEGL *egl_renderer = user_data;
-  egl_renderer->wayland_event_mask = mask;
-  return 0;
+    egl_renderer->wayland_compositor =
+      wl_display_bind (display, id, &wl_compositor_interface);
+  else if (strcmp(interface, "wl_shell") == 0)
+    egl_renderer->wayland_shell =
+      wl_display_bind (display, id, &wl_shell_interface);
 }
 
 #endif
@@ -418,19 +414,18 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
           goto error;
         }
 
-      /*
-       * XXX: For some reason, this can only be done after calling
-       * eglInitialize otherwise eglInitialize fails in
-       * dri2_initialize_wayland because dri2_dpy->wl_dpy->fd doesn't get
-       * updated.
-       *
-       * XXX: Hmm actually now it seems to work :-/
-       * There seems to be some fragility about when this is called.
-       */
       wl_display_add_global_listener (egl_renderer->wayland_display,
                                       display_handle_global_cb,
-                                      &egl_renderer->wayland_compositor);
+                                      egl_renderer);
     }
+
+  /*
+   * Ensure that that we've received the messages setting up the compostor and
+   * shell object. This is better than just wl_display_iterate since it will
+   * always ensure that something is available to be read
+   */
+  while (!(egl_renderer->wayland_compositor && egl_renderer->wayland_shell))
+    wl_display_roundtrip (egl_renderer->wayland_display);
 
   egl_renderer->edpy =
     eglGetDisplay ((EGLNativeDisplayType)egl_renderer->wayland_display);
@@ -439,15 +434,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 			  &egl_renderer->egl_version_major,
 			  &egl_renderer->egl_version_minor);
 
-  wl_display_flush (egl_renderer->wayland_display);
-
-  wl_display_get_fd (egl_renderer->wayland_display,
-                     event_mask_update_cb, egl_renderer);
-
-  /* Wait until we have been notified about the compositor object */
-  while (!egl_renderer->wayland_compositor)
-    wl_display_iterate (egl_renderer->wayland_display,
-                        egl_renderer->wayland_event_mask);
 #else
   egl_renderer->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
 
@@ -665,9 +651,6 @@ try_create_context (CoglDisplay *display,
   XVisualInfo *xvisinfo;
   XSetWindowAttributes attrs;
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  struct wl_visual *wayland_visual;
-#endif
   const char *error_message;
 
   egl_attributes_from_framebuffer_config (display,
@@ -775,13 +758,10 @@ try_create_context (CoglDisplay *display,
       goto fail;
     }
 
-  wayland_visual =
-    wl_display_get_premultiplied_argb_visual (egl_renderer->wayland_display);
   egl_display->wayland_egl_native_window =
     wl_egl_window_create (egl_display->wayland_surface,
                           1,
-                          1,
-                          wayland_visual);
+                          1);
   if (!egl_display->wayland_egl_native_window)
     {
       error_message= "Failed to create a dummy wayland native egl surface";
@@ -1205,9 +1185,6 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
 #endif
   CoglOnscreenEGL *egl_onscreen;
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  struct wl_visual *wayland_visual;
-#endif
   EGLint attributes[MAX_EGL_CONFIG_ATTRIBS];
   EGLConfig egl_config;
   EGLint config_count = 0;
@@ -1382,13 +1359,10 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       return FALSE;
     }
 
-  wayland_visual =
-    wl_display_get_premultiplied_argb_visual (egl_renderer->wayland_display);
   egl_onscreen->wayland_egl_native_window =
     wl_egl_window_create (egl_onscreen->wayland_surface,
                           cogl_framebuffer_get_width (framebuffer),
-                          cogl_framebuffer_get_height (framebuffer),
-                          wayland_visual);
+                          cogl_framebuffer_get_height (framebuffer));
   if (!egl_onscreen->wayland_egl_native_window)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -1405,7 +1379,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             egl_onscreen->wayland_egl_native_window,
                             NULL);
 
-  wl_surface_map_toplevel (egl_onscreen->wayland_surface);
+  wl_shell_set_toplevel (egl_renderer->wayland_shell,
+                         egl_onscreen->wayland_surface);
 
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
       defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
@@ -1596,13 +1571,15 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 
   eglSwapBuffers (egl_renderer->edpy, egl_onscreen->egl_surface);
-#if 0
-  /* XXX: I think really this should be done automatically for
-   * us in eglSwapBuffers since the spec says eglSwapBuffers
-   * implicitly flushes client commands. */
-  while (egl_renderer->wayland_event_mask & WL_DISPLAY_WRITABLE)
-    wl_display_iterate (egl_renderer->wayland_display,
-                        WL_DISPLAY_WRITABLE);
+
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  /*
+   * The implementation of eglSwapBuffers may do a flush however the semantics
+   * of eglSwapBuffers on Wayland has changed in the past. So to be safe to
+   * the implementation changing we should explicitly ensure all messages are
+   * sent.
+   */
+  wl_display_flush (egl_renderer->wayland_display);
 #endif
 }
 
