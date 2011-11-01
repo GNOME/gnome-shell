@@ -27,6 +27,9 @@
 #include "config.h"
 #endif
 
+#include <glib-object.h>
+#include <gobject/gvaluecollector.h>
+
 #include "cogl-fixed.h"
 
 /* pre-computed sin table for 1st quadrant
@@ -947,4 +950,148 @@ cogl_fixed_cos (CoglFixed angle)
   CoglFixed a = angle + COGL_FIXED_PI_2;
 
   return cogl_fixed_sin (a);
+}
+
+/* GType */
+
+static GTypeInfo _info = {
+  0,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  0,
+  0,
+  NULL,
+  NULL,
+};
+
+static GTypeFundamentalInfo _finfo = { 0, };
+
+static void
+cogl_value_init_fixed (GValue *value)
+{
+  value->data[0].v_int = 0;
+}
+
+static void
+cogl_value_copy_fixed (const GValue *src,
+                       GValue       *dest)
+{
+  dest->data[0].v_int = src->data[0].v_int;
+}
+
+static char *
+cogl_value_collect_fixed (GValue       *value,
+                          unsigned int  n_collect_values,
+                          GTypeCValue  *collect_values,
+                          unsigned int  collect_flags)
+{
+  value->data[0].v_int = collect_values[0].v_int;
+
+  return NULL;
+}
+
+static char *
+cogl_value_lcopy_fixed (const GValue *value,
+                        unsigned int  n_collect_values,
+                        GTypeCValue  *collect_values,
+                        unsigned int  collect_flags)
+{
+  gint32 *fixed_p = collect_values[0].v_pointer;
+
+  if (!fixed_p)
+    return g_strdup_printf ("value location for '%s' passed as NULL",
+                            G_VALUE_TYPE_NAME (value));
+
+  *fixed_p = value->data[0].v_int;
+
+  return NULL;
+}
+
+static void
+cogl_value_transform_fixed_int (const GValue *src,
+                                GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_TO_INT (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_fixed_double (const GValue *src,
+                                      GValue       *dest)
+{
+  dest->data[0].v_double = COGL_FIXED_TO_DOUBLE (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_fixed_float (const GValue *src,
+                                  GValue       *dest)
+{
+  dest->data[0].v_float = COGL_FIXED_TO_FLOAT (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_int_fixed (const GValue *src,
+                                GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_FROM_INT (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_double_fixed (const GValue *src,
+                                   GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_FROM_DOUBLE (src->data[0].v_double);
+}
+
+static void
+cogl_value_transform_float_fixed (const GValue *src,
+                                  GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_FROM_FLOAT (src->data[0].v_float);
+}
+
+
+static const GTypeValueTable _cogl_fixed_value_table = {
+  cogl_value_init_fixed,
+  NULL,
+  cogl_value_copy_fixed,
+  NULL,
+  "i",
+  cogl_value_collect_fixed,
+  "p",
+  cogl_value_lcopy_fixed
+};
+
+GType
+cogl_fixed_get_type (void)
+{
+  static GType _cogl_fixed_type = 0;
+
+  if (G_UNLIKELY (_cogl_fixed_type == 0))
+    {
+      _info.value_table = & _cogl_fixed_value_table;
+      _cogl_fixed_type =
+        g_type_register_fundamental (g_type_fundamental_next (),
+                                     g_intern_static_string ("CoglFixed"),
+                                     &_info, &_finfo, 0);
+
+      g_value_register_transform_func (_cogl_fixed_type, G_TYPE_INT,
+                                       cogl_value_transform_fixed_int);
+      g_value_register_transform_func (G_TYPE_INT, _cogl_fixed_type,
+                                       cogl_value_transform_int_fixed);
+
+      g_value_register_transform_func (_cogl_fixed_type, G_TYPE_FLOAT,
+                                       cogl_value_transform_fixed_float);
+      g_value_register_transform_func (G_TYPE_FLOAT, _cogl_fixed_type,
+                                       cogl_value_transform_float_fixed);
+
+      g_value_register_transform_func (_cogl_fixed_type, G_TYPE_DOUBLE,
+                                       cogl_value_transform_fixed_double);
+      g_value_register_transform_func (G_TYPE_DOUBLE, _cogl_fixed_type,
+                                       cogl_value_transform_double_fixed);
+    }
+
+  return _cogl_fixed_type;
 }
