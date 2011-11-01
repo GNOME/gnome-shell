@@ -59,6 +59,7 @@
 #endif
 
 #include <cogl/cogl.h>
+#include <cogl/cogl-xlib.h>
 
 #include "clutter-backend.h"
 #include "clutter-debug.h"

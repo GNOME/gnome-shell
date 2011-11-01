@@ -55,6 +55,8 @@
 #include "clutter-cex100.h"
 #endif
 
+#include <cogl/cogl-xlib.h>
+
 static ClutterBackendCogl *backend_singleton = NULL;
 
 static gchar *clutter_vblank = NULL;
