@@ -49,6 +49,7 @@
 #include "cogl-onscreen-private.h"
 #include "cogl-swap-chain-private.h"
 #include "cogl-xlib-renderer.h"
+#include "cogl-util.h"
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -1697,22 +1698,6 @@ should_use_rectangle (CoglContext *context)
   return context->rectangle_state == COGL_WINSYS_RECTANGLE_STATE_ENABLE;
 }
 
-/* GCC's population count builtin is available since version 3.4 */
-#if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
-#define POPCOUNTL(n) __builtin_popcountl(n)
-#else
-/* HAKMEM 169 */
-static int
-hakmem_popcountl (unsigned long n)
-{
-  unsigned long tmp;
-
-  tmp = n - ((n >> 1) & 033333333333) - ((n >> 2) & 011111111111);
-  return ((tmp + (tmp >> 3)) & 030707070707) % 63;
-}
-#define POPCOUNTL(n) hakmem_popcountl(n)
-#endif
-
 static gboolean
 try_create_glx_pixmap (CoglContext *context,
                        CoglTexturePixmapX11 *tex_pixmap,
@@ -1765,7 +1750,9 @@ try_create_glx_pixmap (CoglContext *context,
    * number of 1-bits in color masks against the color depth requested
    * by the client.
    */
-  if (POPCOUNTL(visual->red_mask|visual->green_mask|visual->blue_mask) == depth)
+  if (_cogl_util_popcountl (visual->red_mask |
+                            visual->green_mask |
+                            visual->blue_mask) == depth)
     attribs[i++] = GLX_TEXTURE_FORMAT_RGB_EXT;
   else
     attribs[i++] = GLX_TEXTURE_FORMAT_RGBA_EXT;
