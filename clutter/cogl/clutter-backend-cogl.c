@@ -289,6 +289,7 @@ clutter_backend_cogl_create_context (ClutterBackend  *backend,
 #endif
   CoglSwapChain *swap_chain = NULL;
   CoglOnscreenTemplate *onscreen_template = NULL;
+  gboolean status;
 
   if (backend->cogl_context)
     return TRUE;
@@ -318,9 +319,28 @@ clutter_backend_cogl_create_context (ClutterBackend  *backend,
    * Conceptually should we be able to check an onscreen_template
    * without more details about the CoglDisplay configuration?
    */
-  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                              onscreen_template,
-                                              error))
+  status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                                  onscreen_template,
+                                                  error);
+#ifdef COGL_HAS_XLIB_SUPPORT
+  if (!status && clutter_x11_get_use_argb_visual ())
+    {
+      g_clear_error (error);
+      /* It's possible that the current renderer doesn't support transparency
+       * in a swap_chain so lets see if we can fallback to not having any
+       * transparency...
+       *
+       * XXX: It might be nice to have a CoglRenderer feature we could
+       * explicitly check for ahead of time.
+       */
+      cogl_swap_chain_set_has_alpha (swap_chain, FALSE);
+      status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                                      onscreen_template,
+                                                      error);
+    }
+#endif
+
+  if (!status)
     goto error;
 
   backend->cogl_display = cogl_display_new (backend->cogl_renderer,
