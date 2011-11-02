@@ -77,126 +77,69 @@ GQuark clutter_init_error_quark (void);
 #define CLUTTER_PRIORITY_REDRAW         (G_PRIORITY_HIGH_IDLE + 50)
 
 /* Initialisation */
-void             clutter_base_init        (void);
-ClutterInitError clutter_init             (int          *argc,
-                                           char       ***argv)
-                                          G_GNUC_WARN_UNUSED_RESULT;
-ClutterInitError clutter_init_with_args   (int          *argc,
-                                           char       ***argv,
-                                           const char   *parameter_string,
-                                           GOptionEntry *entries,
-                                           const char   *translation_domain,
-                                           GError      **error)
-                                          G_GNUC_WARN_UNUSED_RESULT;
-GOptionGroup *   clutter_get_option_group (void);
-GOptionGroup *   clutter_get_option_group_without_init (void);
+void                    clutter_base_init                       (void);
+ClutterInitError        clutter_init                            (int          *argc,
+                                                                 char       ***argv) G_GNUC_WARN_UNUSED_RESULT;
+ClutterInitError        clutter_init_with_args                  (int          *argc,
+                                                                 char       ***argv,
+                                                                 const char   *parameter_string,
+                                                                 GOptionEntry *entries,
+                                                                 const char   *translation_domain,
+                                                                 GError      **error) G_GNUC_WARN_UNUSED_RESULT;
+
+GOptionGroup *          clutter_get_option_group                (void);
+GOptionGroup *          clutter_get_option_group_without_init   (void);
 
 /* Mainloop */
-void             clutter_main                       (void);
-void             clutter_main_quit                  (void);
-gint             clutter_main_level                 (void);
+void                    clutter_main                            (void);
+void                    clutter_main_quit                       (void);
+gint                    clutter_main_level                      (void);
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-CLUTTER_DEPRECATED_FOR(clutter_stage_ensure_redraw)
-void             clutter_redraw                     (ClutterStage *stage);
-#endif
-
-void             clutter_do_event                   (ClutterEvent *event);
+void                    clutter_do_event                        (ClutterEvent *event);
 
 /* Debug utility functions */
-gboolean         clutter_get_debug_enabled          (void);
-gboolean         clutter_get_show_fps               (void);
-gulong           clutter_get_timestamp              (void);
-gboolean         clutter_get_accessibility_enabled  (void);
+gboolean                clutter_get_debug_enabled               (void);
+gboolean                clutter_get_show_fps                    (void);
+gulong                  clutter_get_timestamp                   (void);
+gboolean                clutter_get_accessibility_enabled       (void);
 
 /* Threading functions */
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-CLUTTER_DEPRECATED
-void             clutter_threads_init                  (void);
-#endif
+void                    clutter_threads_enter                   (void);
+void                    clutter_threads_leave                   (void);
+void                    clutter_threads_set_lock_functions      (GCallback enter_fn,
+                                                                 GCallback leave_fn);
+guint                   clutter_threads_add_idle                (GSourceFunc    func,
+                                                                 gpointer       data);
+guint                   clutter_threads_add_idle_full           (gint           priority,
+                                                                 GSourceFunc    func,
+                                                                 gpointer       data,
+                                                                 GDestroyNotify notify);
+guint                   clutter_threads_add_timeout             (guint          interval,
+                                                                 GSourceFunc    func,
+                                                                 gpointer       data);
+guint                   clutter_threads_add_timeout_full        (gint           priority,
+                                                                 guint          interval,
+                                                                 GSourceFunc    func,
+                                                                 gpointer       data,
+                                                                 GDestroyNotify notify);
+guint                   clutter_threads_add_repaint_func        (GSourceFunc    func,
+                                                                 gpointer       data,
+                                                                 GDestroyNotify notify);
+void                    clutter_threads_remove_repaint_func     (guint          handle_id);
 
-void             clutter_threads_enter                 (void);
-void             clutter_threads_leave                 (void);
-void             clutter_threads_set_lock_functions    (GCallback enter_fn,
-                                                        GCallback leave_fn);
-guint            clutter_threads_add_idle              (GSourceFunc    func,
-                                                        gpointer       data);
-guint            clutter_threads_add_idle_full         (gint           priority,
-                                                        GSourceFunc    func,
-                                                        gpointer       data,
-                                                        GDestroyNotify notify);
-guint            clutter_threads_add_timeout           (guint          interval,
-                                                        GSourceFunc    func,
-                                                        gpointer       data);
-guint            clutter_threads_add_timeout_full      (gint           priority,
-                                                        guint          interval,
-                                                        GSourceFunc    func,
-                                                        gpointer       data,
-                                                        GDestroyNotify notify);
+void                    clutter_set_default_frame_rate          (guint          frames_per_sec);
+guint                   clutter_get_default_frame_rate          (void);
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-CLUTTER_DEPRECATED
-guint            clutter_threads_add_frame_source      (guint          fps,
-						        GSourceFunc    func,
-						        gpointer       data);
-CLUTTER_DEPRECATED
-guint            clutter_threads_add_frame_source_full (gint           priority,
-						        guint          fps,
-						        GSourceFunc    func,
-						        gpointer       data,
-						        GDestroyNotify notify);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
+void                    clutter_grab_pointer                    (ClutterActor  *actor);
+void                    clutter_ungrab_pointer                  (void);
+ClutterActor *          clutter_get_pointer_grab                (void);
+void                    clutter_grab_keyboard                   (ClutterActor  *actor);
+void                    clutter_ungrab_keyboard                 (void);
+ClutterActor *          clutter_get_keyboard_grab               (void);
 
-guint            clutter_threads_add_repaint_func      (GSourceFunc    func,
-                                                        gpointer       data,
-                                                        GDestroyNotify notify);
-void             clutter_threads_remove_repaint_func   (guint          handle_id);
+PangoFontMap *          clutter_get_font_map                    (void);
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-CLUTTER_DEPRECATED_FOR(clutter_stage_set_motion_events_enabled)
-void             clutter_set_motion_events_enabled   (gboolean enable);
-
-CLUTTER_DEPRECATED_FOR(clutter_stage_get_motion_events_enabled)
-gboolean         clutter_get_motion_events_enabled   (void);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
-void             clutter_set_default_frame_rate      (guint    frames_per_sec);
-guint            clutter_get_default_frame_rate      (void);
-
-void             clutter_grab_pointer                (ClutterActor *actor);
-void             clutter_ungrab_pointer              (void);
-ClutterActor *   clutter_get_pointer_grab            (void);
-
-void             clutter_grab_keyboard               (ClutterActor *actor);
-void             clutter_ungrab_keyboard             (void);
-ClutterActor *   clutter_get_keyboard_grab           (void);
-
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-CLUTTER_DEPRECATED_FOR(cogl_pango_font_map_clear_glyph_cache)
-void             clutter_clear_glyph_cache           (void);
-
-CLUTTER_DEPRECATED_FOR(clutter_backend_set_font_options)
-void             clutter_set_font_flags              (ClutterFontFlags flags);
-
-CLUTTER_DEPRECATED_FOR(clutter_backend_get_font_options)
-ClutterFontFlags clutter_get_font_flags              (void);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-CLUTTER_DEPRECATED_FOR(clutter_device_manager_get_device)
-ClutterInputDevice *clutter_get_input_device_for_id  (gint id_);
-
-CLUTTER_DEPRECATED_FOR(clutter_input_device_grab)
-void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
-                                                      gint           id_);
-
-CLUTTER_DEPRECATED_FOR(clutter_input_device_ungrab)
-void             clutter_ungrab_pointer_for_device   (gint id_);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
-PangoFontMap *   clutter_get_font_map                (void);
-
-ClutterTextDirection clutter_get_default_text_direction (void);
+ClutterTextDirection    clutter_get_default_text_direction      (void);
 
 G_END_DECLS
 
