@@ -559,8 +559,6 @@ find_fbconfig (CoglDisplay *display,
             }
         }
 
-      /* If we make it here then we didn't find an RGBA config so
-         we'll fall back to using an RGB config */
       g_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to find fbconfig with rgba visual");
