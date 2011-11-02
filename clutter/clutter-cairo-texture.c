@@ -757,48 +757,18 @@ intersect_rectangles (cairo_rectangle_int_t *a,
     }
 }
 
-/**
- * clutter_cairo_texture_create_region:
- * @self: a #ClutterCairoTexture
- * @x_offset: offset of the region on the X axis
- * @y_offset: offset of the region on the Y axis
- * @width: width of the region, or -1 for the full surface width
- * @height: height of the region, or -1 for the full surface height
- *
- * Creates a new Cairo context that will updat the region defined
- * by @x_offset, @y_offset, @width and @height.
- *
- * <warning><para>Do not call this function within the paint virtual
- * function or from a callback to the #ClutterActor::paint
- * signal.</para></warning>
- *
- * Return value: a newly created Cairo context. Use cairo_destroy()
- *   to upload the contents of the context when done drawing
- *
- * Since: 1.0
- *
- * Deprecated: 1.8: Use the #ClutterCairoTexture::draw signal and
- *   clutter_cairo_texture_invalidate_rectangle() to obtain a
- *   clipped Cairo context for 2D drawing.
- */
-cairo_t *
-clutter_cairo_texture_create_region (ClutterCairoTexture *self,
-                                     gint                 x_offset,
-                                     gint                 y_offset,
-                                     gint                 width,
-                                     gint                 height)
+static cairo_t *
+clutter_cairo_texture_create_region_internal (ClutterCairoTexture *self,
+                                              gint                 x_offset,
+                                              gint                 y_offset,
+                                              gint                 width,
+                                              gint                 height)
 {
-  ClutterCairoTexturePrivate *priv;
-  DrawContext *ctxt;
+  ClutterCairoTexturePrivate *priv = self->priv;
   cairo_rectangle_int_t region, area, inter;
   cairo_surface_t *surface;
+  DrawContext *ctxt;
   cairo_t *cr;
-
-  g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), NULL);
-
-  clutter_warn_if_paint_fail (self);
-
-  priv = self->priv;
 
   if (width < 0)
     width = priv->surface_width;
@@ -840,6 +810,46 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
                        clutter_cairo_texture_context_destroy);
 
   return cr;
+}
+
+/**
+ * clutter_cairo_texture_create_region:
+ * @self: a #ClutterCairoTexture
+ * @x_offset: offset of the region on the X axis
+ * @y_offset: offset of the region on the Y axis
+ * @width: width of the region, or -1 for the full surface width
+ * @height: height of the region, or -1 for the full surface height
+ *
+ * Creates a new Cairo context that will updat the region defined
+ * by @x_offset, @y_offset, @width and @height.
+ *
+ * <warning><para>Do not call this function within the paint virtual
+ * function or from a callback to the #ClutterActor::paint
+ * signal.</para></warning>
+ *
+ * Return value: a newly created Cairo context. Use cairo_destroy()
+ *   to upload the contents of the context when done drawing
+ *
+ * Since: 1.0
+ *
+ * Deprecated: 1.8: Use the #ClutterCairoTexture::draw signal and
+ *   clutter_cairo_texture_invalidate_rectangle() to obtain a
+ *   clipped Cairo context for 2D drawing.
+ */
+cairo_t *
+clutter_cairo_texture_create_region (ClutterCairoTexture *self,
+                                     gint                 x_offset,
+                                     gint                 y_offset,
+                                     gint                 width,
+                                     gint                 height)
+{
+  g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), NULL);
+
+  clutter_warn_if_paint_fail (self);
+
+  return clutter_cairo_texture_create_region_internal (self,
+                                                       x_offset, y_offset,
+                                                       width, height);
 }
 
 /**
@@ -953,7 +963,7 @@ clutter_cairo_texture_create (ClutterCairoTexture *self)
 
   clutter_warn_if_paint_fail (self);
 
-  return clutter_cairo_texture_create_region (self, 0, 0, -1, -1);
+  return clutter_cairo_texture_create_region_internal (self, 0, 0, -1, -1);
 }
 
 /**
