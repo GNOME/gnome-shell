@@ -25,9 +25,10 @@
  */
 
 /**
- * \file display.c Handles operations on an X display.
+ * SECTION:MetaDisplay
+ * @short_description: Handles operations on an X display.
  *
- * The display is represented as a MetaDisplay struct.
+ * The display is represented as a #MetaDisplay struct.
  */
 
 #define _XOPEN_SOURCE 600 /* for gethostname() */
@@ -87,7 +88,7 @@
          g == META_GRAB_OP_KEYBOARD_ESCAPING_GROUP)
 
 /**
- * \defgroup pings Pings
+ * SECTION:pings
  *
  * Sometimes we want to see whether a window is responding,
  * so we send it a "ping" message and see whether it sends us back a "pong"
@@ -102,13 +103,13 @@
  */
 
 /**
+ * MetaPingData:
+ *
  * Describes a ping on a window. When we send a ping to a window, we build
  * one of these structs, and it eventually gets passed to the timeout function
  * or to the function which handles the response from the window. If the window
  * does or doesn't respond to the ping, we use this information to deal with
  * these facts; we have a handler function for each.
- *
- * \ingroup pings
  */
 typedef struct 
 {
@@ -150,7 +151,7 @@ enum {
 
 static guint display_signals [LAST_SIGNAL] = { 0 };
 
-/**
+/*
  * The display we're managing.  This is a singleton object.  (Historically,
  * this was a list of displays, but there was never any way to add more
  * than one element to it.)  The goofy name is because we don't want it
@@ -185,7 +186,7 @@ static void    prefs_changed_callback    (MetaPreference pref,
 
 static void    sanity_check_timestamps   (MetaDisplay *display,
                                           guint32      known_good_timestamp);
-
+ 
 MetaGroup*     get_focussed_group (MetaDisplay *display);
 
 static void
@@ -295,10 +296,10 @@ meta_display_class_init (MetaDisplayClass *klass)
 
 
 /**
- * Destructor for MetaPingData structs. Will destroy the
- * event source for the struct as well.
+ * ping_data_free:
  *
- * \ingroup pings
+ * Destructor for #MetaPingData structs. Will destroy the
+ * event source for the struct as well.
  */
 static void
 ping_data_free (MetaPingData *ping_data)
@@ -311,14 +312,12 @@ ping_data_free (MetaPingData *ping_data)
 }
 
 /**
+ * remove_pending_pings_for_window:
+ * @display: The display the window appears on
+ * @xwindow: The X ID of the window whose pings we should remove
+ *
  * Frees every pending ping structure for the given X window on the
  * given display. This means that we also destroy the timeouts.
- *
- * \param display The display the window appears on
- * \param xwindow The X ID of the window whose pings we should remove
- *
- * \ingroup pings
- *
  */
 static void
 remove_pending_pings_for_window (MetaDisplay *display, Window xwindow)
@@ -417,14 +416,14 @@ meta_display_init (MetaDisplay *disp)
 }
 
 /**
+ * meta_display_open:
+ *
  * Opens a new display, sets it up, initialises all the X extensions
  * we will need, and adds it to the list of displays.
  *
- * \return True if the display was opened successfully, and False
+ * Returns: %TRUE if the display was opened successfully, and %FALSE
  * otherwise-- that is, if the display doesn't exist or it already
  * has a window manager.
- *
- * \ingroup main
  */
 gboolean
 meta_display_open (void)
@@ -1168,14 +1167,16 @@ meta_display_ungrab (MetaDisplay *display)
 }
 
 /**
- * Returns the singleton MetaDisplay if "xdisplay" matches the X display it's
- * managing; otherwise gives a warning and returns NULL.  When we were claiming
+ * meta_display_for_x_display:
+ * @xdisplay: An X display
+ *
+ * Returns the singleton MetaDisplay if @xdisplay matches the X display it's
+ * managing; otherwise gives a warning and returns %NULL.  When we were claiming
  * to be able to manage multiple displays, this was supposed to find the
  * display out of the list which matched that display.  Now it's merely an
  * extra sanity check.
  *
- * \param xdisplay  An X display
- * \return  The singleton X display, or NULL if "xdisplay" isn't the one
+ * Returns: The singleton X display, or %NULL if @xdisplay isn't the one
  *          we're managing.
  */
 MetaDisplay*
@@ -1191,9 +1192,11 @@ meta_display_for_x_display (Display *xdisplay)
 }
 
 /**
+ * meta_get_display:
+ *
  * Accessor for the singleton MetaDisplay.
  *
- * \return  The only MetaDisplay there is.  This can be NULL, but only
+ * Returns: The only #MetaDisplay there is.  This can be %NULL, but only
  *          during startup.
  */
 MetaDisplay*
@@ -1601,19 +1604,18 @@ handle_net_restack_window (MetaDisplay* display,
 #endif
 
 /**
+ * event_callback:
+ * @event: The event that just happened
+ * @data: The #MetaDisplay that events are coming from, cast to a gpointer
+ *        so that it can be sent to a callback
+ *
  * This is the most important function in the whole program. It is the heart,
  * it is the nexus, it is the Grand Central Station of Mutter's world.
- * When we create a MetaDisplay, we ask GDK to pass *all* events for *all*
+ * When we create a #MetaDisplay, we ask GDK to pass *all* events for *all*
  * windows to this function. So every time anything happens that we might
  * want to know about, this function gets called. You see why it gets a bit
  * busy around here. Most of this function is a ginormous switch statement
  * dealing with all the kinds of events that might turn up.
- *
- * \param event The event that just happened
- * \param data  The MetaDisplay that events are coming from, cast to a gpointer
- *              so that it can be sent to a callback
- *
- * \ingroup main
  */
 static gboolean
 event_callback (XEvent   *event,
@@ -4197,21 +4199,23 @@ meta_display_set_cursor_theme (const char *theme,
 #endif
 }
 
-/**
+/*
  * Stores whether syncing is currently enabled.
  */
 static gboolean is_syncing = FALSE;
 
 /**
+ * meta_is_syncing:
+ *
  * Returns whether X synchronisation is currently enabled.
  *
- * \return true if we must wait for events whenever we send X requests;
- * false otherwise.
- *
- * \bug This is *only* called by meta_display_open, but by that time
+ * FIXME: This is *only* called by meta_display_open(), but by that time
  * we have already turned syncing on or off on startup, and we don't
  * have any way to do so while Mutter is running, so it's rather
  * pointless.
+ *
+ * Returns: %TRUE if we must wait for events whenever we send X requests;
+ * %FALSE otherwise.
  */
 gboolean
 meta_is_syncing (void)
@@ -4220,10 +4224,9 @@ meta_is_syncing (void)
 }
 
 /**
- * A handy way to turn on synchronisation on or off for every display.
+ * meta_set_syncing:
  *
- * \bug Of course there is only one display ever anyway, so this can
- * be rather hugely simplified.
+ * A handy way to turn on synchronisation on or off for every display.
  */
 void
 meta_set_syncing (gboolean setting)
@@ -4236,26 +4239,25 @@ meta_set_syncing (gboolean setting)
     }
 }
 
-/**
+/*
  * How long, in milliseconds, we should wait after pinging a window
  * before deciding it's not going to get back to us.
  */
 #define PING_TIMEOUT_DELAY 5000
 
 /**
+ * meta_display_ping_timeout:
+ * @data: All the information about this ping. It is a #MetaPingData
+ *        cast to a #gpointer in order to be passable to a timeout function.
+ *        This function will also free this parameter.
+ *
  * Does whatever it is we decided to do when a window didn't respond
  * to a ping. We also remove the ping from the display's list of
  * pending pings. This function is called by the event loop when the timeout
  * times out which we created at the start of the ping.
  *
- * \param data All the information about this ping. It is a MetaPingData
- *             cast to a void* in order to be passable to a timeout function.
- *             This function will also free this parameter.
- *
- * \return Always returns false, because this function is called as a
- *         timeout and we don't want to run the timer again.
- *
- * \ingroup pings
+ * Returns: Always returns %FALSE, because this function is called as a
+ *          timeout and we don't want to run the timer again.
  */
 static gboolean
 meta_display_ping_timeout (gpointer data)
@@ -4282,6 +4284,17 @@ meta_display_ping_timeout (gpointer data)
 }
 
 /**
+ * meta_display_ping_window:
+ * @display: The #MetaDisplay that the window is on
+ * @window: The #MetaWindow to send the ping to
+ * @timestamp: The timestamp of the ping. Used for uniqueness.
+ *             Cannot be CurrentTime; use a real timestamp!
+ * @ping_reply_func: The callback to call if we get a response.
+ * @ping_timeout_func: The callback to call if we don't get a response.
+ * @user_data: Arbitrary data that will be passed to the callback
+ *             function. (In practice it's often a pointer to
+ *             the window.)
+ *
  * Sends a ping request to a window. The window must respond to
  * the request within a certain amount of time. If it does, we
  * will call one callback; if the time passes and we haven't had
@@ -4291,20 +4304,9 @@ meta_display_ping_timeout (gpointer data)
  * This function returns straight away after setting things up;
  * the callbacks will be called from the event loop.
  *
- * \param display  The MetaDisplay that the window is on
- * \param window   The MetaWindow to send the ping to
- * \param timestamp The timestamp of the ping. Used for uniqueness.
- *                  Cannot be CurrentTime; use a real timestamp!
- * \param ping_reply_func The callback to call if we get a response.
- * \param ping_timeout_func The callback to call if we don't get a response.
- * \param user_data Arbitrary data that will be passed to the callback
- *                  function. (In practice it's often a pointer to
- *                  the window.)
+ * FIXME: This should probably be a method on windows, rather than displays
+ *        for one of their windows.
  *
- * \bug This should probably be a method on windows, rather than displays
- *      for one of their windows.
- *
- * \ingroup pings
  */
 void
 meta_display_ping_window (MetaDisplay       *display,
@@ -4412,16 +4414,15 @@ process_request_frame_extents (MetaDisplay    *display,
 }
 
 /**
+ * process_pong_message:
+ * @display: the display we got the pong from
+ * @event: the #XEvent which is a pong; we can tell which
+ *         ping it corresponds to because it bears the
+ *         same timestamp.
+ *
  * Process the pong (the response message) from the ping we sent
  * to the window. This involves removing the timeout, calling the
  * reply handler function, and freeing memory.
- *
- * \param display  the display we got the pong from
- * \param event    the XEvent which is a pong; we can tell which
- *                 ping it corresponds to because it bears the
- *                 same timestamp.
- *
- * \ingroup pings
  */
 static void
 process_pong_message (MetaDisplay    *display,
@@ -4468,18 +4469,17 @@ process_pong_message (MetaDisplay    *display,
 }
 
 /**
+ * meta_display_window_has_pending_pings:
+ * @display: The #MetaDisplay of the window.
+ * @window: The #MetaWindow whose pings we want to know about.
+ *
  * Finds whether a window has any pings waiting on it.
  *
- * \param display The MetaDisplay of the window.
- * \param window  The MetaWindow whose pings we want to know about.
+ * FIXME: This should probably be a method on windows, rather than displays
+ *        for one of their windows.
  *
- * \return True if there is at least one ping which has been sent
- *         to the window without getting a response; false otherwise.
- *
- * \bug This should probably be a method on windows, rather than displays
- *      for one of their windows.
- *
- * \ingroup pings
+ * Returns: %TRUE if there is at least one ping which has been sent
+ *          to the window without getting a response; %FALSE otherwise.
  */
 gboolean
 meta_display_window_has_pending_pings (MetaDisplay *display,

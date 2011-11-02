@@ -396,7 +396,7 @@ meta_plugin_begin_modal (MetaPlugin       *plugin,
 }
 
 /**
- * meta_plugin_end_modal
+ * meta_plugin_end_modal:
  * @plugin: a #MetaPlugin
  * @timestamp: the time used for releasing grabs
  *

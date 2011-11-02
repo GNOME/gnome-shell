@@ -165,36 +165,30 @@ typedef struct
   gboolean *target;
 } MetaBoolPreference;
 
+
+/**
+ * MetaStringPreference:
+ * @handler: (allow-none): A handler. Many of the string preferences
+ * aren't stored as strings and need parsing; others of them have
+ * default values which can't be solved in the general case.  If you
+ * include a function pointer here, it will be called instead of writing
+ * the string value out to the target variable.
+ * The function will be passed to g_settings_get_mapped() and should
+ * return %TRUE if the mapping was successful and %FALSE otherwise.
+ * In the former case the function is expected to handle the result
+ * of the conversion itself and call queue_changed() appropriately;
+ * in particular the @result (out) parameter as returned by
+ * g_settings_get_mapped() will be ignored in all cases.
+ * This may be %NULL.  If it is, see "target", below.
+ * @target: (allow-none): Where to write the incoming string.
+ * This must be %NULL if the handler is non-%NULL.
+ * If the incoming string is %NULL, no change will be made.
+ */
 typedef struct
 {
   MetaBasePreference base;
-
-  /**
-   * A handler.  Many of the string preferences aren't stored as
-   * strings and need parsing; others of them have default values
-   * which can't be solved in the general case.  If you include a
-   * function pointer here, it will be called instead of writing
-   * the string value out to the target variable.
-   *
-   * The function will be passed to g_settings_get_mapped() and should
-   * return %TRUE if the mapping was successful and %FALSE otherwise.
-   * In the former case the function is expected to handle the result
-   * of the conversion itself and call queue_changed() appropriately;
-   * in particular the @result (out) parameter as returned by
-   * g_settings_get_mapped() will be ignored in all cases.
-   *
-   * This may be NULL.  If it is, see "target", below.
-   */
   GSettingsGetMapping handler;
-
-  /**
-   * Where to write the incoming string.
-   *
-   * This must be NULL if the handler is non-NULL.
-   * If the incoming string is NULL, no change will be made.
-   */
   gchar **target;
-
 } MetaStringPreference;
 
 typedef struct
@@ -931,9 +925,9 @@ do_override (char *key,
 
 
 /**
- * meta_prefs_override_preference_schema
+ * meta_prefs_override_preference_schema:
  * @key: the preference name
- * @schema: new schema for preference %key
+ * @schema: new schema for preference @key
  *
  * Specify a schema whose keys are used to override the standard Metacity
  * keys. This might be used if a plugin expected a different value for
@@ -1062,6 +1056,8 @@ bindings_changed (GSettings *settings,
 }
 
 /**
+ * maybe_give_disable_workaround_warning:
+ *
  * Special case: give a warning the first time disable_workarounds
  * is turned on.
  */
@@ -2004,7 +2000,8 @@ meta_prefs_remove_keybinding (const char *name)
 
 /**
  * meta_prefs_get_keybindings:
- * Return: (element-type MetaKeyPref) (transfer container):
+ *
+ * Returns: (element-type MetaKeyPref) (transfer container):
  */
 GList *
 meta_prefs_get_keybindings ()

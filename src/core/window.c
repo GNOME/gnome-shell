@@ -3452,10 +3452,11 @@ meta_window_save_rect (MetaWindow *window)
 }
 
 /**
+ * force_save_user_window_placement:
+ * @window: Store current position of this window for future reference
+ *
  * Save the user_rect regardless of whether the window is maximized or
  * fullscreen. See save_user_window_placement() for most uses.
- *
- * \param window  Store current position of this window for future reference
  */
 static void
 force_save_user_window_placement (MetaWindow *window)
@@ -3464,11 +3465,12 @@ force_save_user_window_placement (MetaWindow *window)
 }
 
 /**
+ * save_user_window_placement:
+ * @window: Store current position of this window for future reference
+ *
  * Save the user_rect, but only if the window is neither maximized nor
  * fullscreen, otherwise the window may snap back to those dimensions
  * (bug #461927).
- *
- * \param window  Store current position of this window for future reference
  */
 static void
 save_user_window_placement (MetaWindow *window)

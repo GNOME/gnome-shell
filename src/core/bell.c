@@ -23,7 +23,8 @@
  */
 
 /**
- * \file bell.c Ring the bell or flash the screen
+ * SECTION:Bell
+ * @short_description: Ring the bell or flash the screen
  *
  * Sometimes, X programs "ring the bell", whatever that means. Mutter lets
  * the user configure the bell to be audible or visible (aka visual), and
@@ -57,6 +58,10 @@
 #endif
 
 /**
+ * bell_flash_screen:
+ * @display:  The display which owns the screen (rather redundant)
+ * @screen:   The screen to flash
+ *
  * Flashes one entire screen.  This is done by making a window the size of the
  * whole screen (or reusing the old one, if it's still around), mapping it,
  * painting it white and then black, and then unmapping it. We set saveunder so
@@ -65,14 +70,12 @@
  * Unlike frame flashes, we don't do fullscreen flashes with a timeout; rather,
  * we do them in one go, because we don't have to rely on the theme code
  * redrawing the frame for us in order to do the flash.
- *
- * \param display  The display which owns the screen (rather redundant)
- * \param screen   The screen to flash
- *
- * \bug The way I read it, this appears not to do the flash
+ */
+/*
+ * Bug: The way I read it, this appears not to do the flash
  * the first time we flash a particular display. Am I wrong?
  *
- * \bug This appears to destroy our current XSync status.
+ * Bug: This appears to destroy our current XSync status.
  */
 static void
 bell_flash_screen (MetaDisplay *display, 
@@ -137,14 +140,15 @@ bell_flash_screen (MetaDisplay *display,
 }
 
 /**
+ * bell_flash_fullscreen:
+ * @display: The display the event came in on
+ * @xkb_ev: The bell event
+ *
  * Flashes one screen, or all screens, in response to a bell event.
  * If the event is on a particular window, flash the screen that
  * window is on. Otherwise, flash every screen on this display.
  *
  * If the configure script found we had no XKB, this does not exist.
- *
- * \param display  The display the event came in on
- * \param xkb_ev   The bell event
  */
 #ifdef HAVE_XKB
 static void
@@ -182,17 +186,21 @@ bell_flash_fullscreen (MetaDisplay *display,
 }
 
 /**
+ * bell_unflash_frame:
+ * @data: The frame to unflash, cast to a gpointer so it can go into
+ *        a callback function.
+ *
  * Makes a frame be not flashed; this is the timeout half of
  * bell_flash_window_frame(). This is done simply by clearing the
  * flash flag and queuing a redraw of the frame.
  *
  * If the configure script found we had no XKB, this does not exist.
  *
- * \param data  The frame to unflash, cast to a gpointer so it can go into
- *              a callback function.
- * \return Always FALSE, so we don't get called again.
- *
- * \bug This is the parallel to bell_flash_window_frame(), so it should
+ * Returns: Always FALSE, so we don't get called again.
+ */
+
+/*
+ * Bug: This is the parallel to bell_flash_window_frame(), so it should
  * really be called meta_bell_unflash_window_frame().
  */
 static gboolean 
@@ -205,6 +213,9 @@ bell_unflash_frame (gpointer data)
 }
 
 /**
+ * bell_flash_window_frame:
+ * @window: The window to flash
+ *
  * Makes a frame flash and then return to normal shortly afterwards.
  * This is done by setting a flag so that the theme
  * code will temporarily draw the frame as focussed if it's unfocussed and
@@ -212,8 +223,6 @@ bell_unflash_frame (gpointer data)
  * that the flag can be unset and the frame re-redrawn.
  *
  * If the configure script found we had no XKB, this does not exist.
- *
- * \param window  The window to flash
  */
 static void
 bell_flash_window_frame (MetaWindow *window)
@@ -231,11 +240,12 @@ bell_flash_window_frame (MetaWindow *window)
 }
 
 /**
+ * bell_flash_frame:
+ * @display:  The display the bell event came in on
+ * @xkb_ev:   The bell event we just received
+ *
  * Flashes the frame of the focussed window. If there is no focussed window,
  * flashes the screen.
- *
- * \param display  The display the bell event came in on
- * \param xkb_ev   The bell event we just received
  */
 static void
 bell_flash_frame (MetaDisplay *display, 
@@ -261,15 +271,18 @@ bell_flash_frame (MetaDisplay *display,
 }
 
 /**
+ * bell_visual_notify:
+ * @display: The display the bell event came in on
+ * @xkb_ev: The bell event we just received
+ *
  * Gives the user some kind of visual bell substitute, in response to a
  * bell event. What this is depends on the "visual bell type" pref.
  *
  * If the configure script found we had no XKB, this does not exist.
- *
- * \param display  The display the bell event came in on
- * \param xkb_ev   The bell event we just received
- *
- * \bug This should be merged with meta_bell_notify().
+ */
+
+/*
+ * Bug: This should be merged with meta_bell_notify().
  */
 static void
 bell_visual_notify (MetaDisplay *display, 
@@ -407,12 +420,13 @@ meta_bell_shutdown (MetaDisplay *display)
 }
 
 /**
+ * meta_bell_notify_frame_destroy:
+ * @frame: The frame which is being destroyed
+ *
  * Deals with a frame being destroyed. This is important because if we're
  * using a visual bell, we might be flashing the edges of the frame, and
  * so we'd have a timeout function waiting ready to un-flash them. If the
  * frame's going away, we can tell the timeout not to bother.
- *
- * \param frame  The frame which is being destroyed
  */
 void
 meta_bell_notify_frame_destroy (MetaFrame *frame)

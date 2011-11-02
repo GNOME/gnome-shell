@@ -23,18 +23,19 @@
  */
 
 /**
- * \file 
- * Program startup.
+ * SECTION:main
+ * @short_description: Program startup.
+ *
  * Functions which parse the command-line arguments, create the display,
  * kick everything off and then close down Mutter when it's time to go.
- */
-
-/**
- * \mainpage
+ *
+ *
+ *
  * Mutter - a boring window manager for the adult in you
  *
  * Many window managers are like Marshmallow Froot Loops; Mutter
- * is like Cheerios.
+ * is like Frosted Flakes: it's still plain old corn, but dusted
+ * with some sugar.
  *
  * The best way to get a handle on how the whole system fits together
  * is discussed in doc/code-overview.txt; if you're looking for functions
@@ -77,12 +78,12 @@
 #include <girepository.h>
 #endif
 
-/**
+/*
  * The exit code we'll return to our parent process when we eventually die.
  */
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 
-/**
+/*
  * Handle on the main loop, so that we have an easy way of shutting Mutter
  * down.
  */
@@ -92,14 +93,15 @@ static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
 /**
+ * log_handler:
+ * @log_domain: the domain the error occurred in (we ignore this)
+ * @log_level: the log level so that we can filter out less
+ *             important messages
+ * @message: the message to log
+ * @user_data: arbitrary data (we ignore this)
+ *
  * Prints log messages. If Mutter was compiled with backtrace support,
  * also prints a backtrace (see meta_print_backtrace()).
- *
- * \param log_domain  the domain the error occurred in (we ignore this)
- * \param log_level   the log level so that we can filter out less
- *                    important messages
- * \param message     the message to log
- * \param user_data   arbitrary data (we ignore this)
  */
 static void
 log_handler (const gchar   *log_domain,
@@ -112,10 +114,12 @@ log_handler (const gchar   *log_domain,
 }
 
 /**
+ * meta_print_compilation_info:
+ *
  * Prints a list of which configure script options were used to
  * build this copy of Mutter. This is actually always called
  * on startup, but it's all no-op unless we're in verbose mode
- * (see meta_set_verbose).
+ * (see meta_set_verbose()).
  */
 static void
 meta_print_compilation_info (void)
@@ -158,12 +162,14 @@ meta_print_compilation_info (void)
 }
 
 /**
+ * meta_print_self_identity:
+ *
  * Prints the version number, the current timestamp (not the
  * build date), the locale, the character encoding, and a list
  * of configure script options that were used to build this
  * copy of Mutter. This is actually always called
  * on startup, but it's all no-op unless we're in verbose mode
- * (see meta_set_verbose).
+ * (see meta_set_verbose()).
  */
 static void
 meta_print_self_identity (void)
@@ -188,7 +194,7 @@ meta_print_self_identity (void)
   meta_print_compilation_info ();
 }
 
-/**
+/*
  * The set of possible options that can be set on Mutter's
  * command line.
  */
@@ -327,10 +333,12 @@ meta_clutter_init (void)
 }
 
 /**
+ * meta_select_display:
+ *
  * Selects which display Mutter should use. It first tries to use
- * display_name as the display. If display_name is NULL then
+ * @display_name as the display. If @display_name is %NULL then
  * try to use the environment variable MUTTER_DISPLAY. If that
- * also is NULL, use the default - :0.0
+ * also is %NULL, use the default - :0.0
  */
 static void
 meta_select_display (gchar *display_name)
@@ -560,13 +568,14 @@ meta_run (void)
 }
 
 /**
+ * meta_quit:
+ * @code: The success or failure code to return to the calling process.
+ *
  * Stops Mutter. This tells the event loop to stop processing; it is
  * rather dangerous to use this because this will leave the user with
  * no window manager. We generally do this only if, for example, the
  * session manager asks us to; we assume the session manager knows
  * what it's talking about.
- *
- * \param code The success or failure code to return to the calling process.
  */
 void
 meta_quit (MetaExitCode code)
@@ -579,13 +588,14 @@ meta_quit (MetaExitCode code)
 }
 
 /**
+ * prefs_changed_callback:
+ * @pref  Which preference has changed
+ * @data  Arbitrary data (which we ignore)
+ *
  * Called on pref changes. (One of several functions of its kind and purpose.)
  *
- * \bug Why are these particular prefs handled in main.c and not others?
- * Should they be?
- *
- * \param pref  Which preference has changed
- * \param data  Arbitrary data (which we ignore)
+ * FIXME: Why are these particular prefs handled in main.c and not others?
+ *        Should they be?
  */
 static void
 prefs_changed_callback (MetaPreference pref,

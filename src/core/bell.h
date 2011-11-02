@@ -1,17 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/**
- * \file bell.h Ring the bell or flash the screen
- *
- * Sometimes, X programs "ring the bell", whatever that means. Mutter lets
- * the user configure the bell to be audible or visible (aka visual), and
- * if it's visual it can be configured to be frame-flash or fullscreen-flash.
- * We never get told about audible bells; X handles them just fine by itself.
- *
- * The visual bell was the result of a discussion in Bugzilla here:
- * <http://bugzilla.gnome.org/show_bug.cgi?id=99886>.
- */
-
 /* 
  * Copyright (C) 2002 Sun Microsystems Inc.
  * 

@@ -1,7 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /**
- * \file window-props.c    MetaWindow property handling
+ * SECTION:window-props
+ * @short_description: #MetaWindow property handling
  *
  * A system which can inspect sets of properties of given windows
  * and take appropriate action given their values.
@@ -389,11 +390,13 @@ reload_net_wm_user_time_window (MetaWindow    *window,
 #define MAX_TITLE_LENGTH 512
 
 /**
- * Called by set_window_title and set_icon_title to set the value of
- * *target to title. It required and atom is set, it will update the
+ * set_title_text:
+ *
+ * Called by set_window_title() and set_icon_title() to set the value of
+ * @target to @title. It required and @atom is set, it will update the
  * appropriate property.
  *
- * Returns TRUE if a new title was set.
+ * Returns: %TRUE if a new title was set.
  */
 static gboolean
 set_title_text (MetaWindow  *window,
@@ -1643,6 +1646,9 @@ RELOAD_STRING (gtk_menubar_object_path,     "gtk-menubar-object-path")
 #undef RELOAD_STRING
 
 /**
+ * meta_display_init_window_prop_hooks:
+ * @display: The #MetaDisplay
+ *
  * Initialises the property hooks system.  Each row in the table named "hooks"
  * represents an action to take when a property is found on a newly-created
  * window, or when a property changes its value.

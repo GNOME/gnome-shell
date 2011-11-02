@@ -844,9 +844,12 @@ meta_select_workspace_class_init (MetaSelectWorkspaceClass *klass)
 }
 
 /**
- * meta_convert_meta_to_wnck() converts a MetaWindow to a
- * WnckWindowDisplayInfo window that is used to build a thumbnail of a
- * workspace.
+ * meta_convert_meta_to_wnck:
+ * @window: the #MetaWindow
+ * @screen: the #MetaScreen the window is on
+ *
+ * Converts a #MetaWindow to a #WnckWindowDisplayInfo window
+ * that is used to build a thumbnail of a workspace.
  **/
 static WnckWindowDisplayInfo
 meta_convert_meta_to_wnck (MetaWindow *window, MetaScreen *screen)

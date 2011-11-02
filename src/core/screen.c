@@ -3454,9 +3454,10 @@ meta_screen_get_screen_number (MetaScreen *screen)
 
 /**
  * meta_screen_get_display:
- * Retrieve the display associated with screen.
  * @screen: A #MetaScreen
  * 
+ * Retrieve the display associated with screen.
+ *
  * Returns: (transfer none): Display 
  */
 MetaDisplay *
