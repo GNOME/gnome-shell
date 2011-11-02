@@ -322,17 +322,17 @@ AS_IF([test "x$enable_egl" = "xyes"],
                          [])
 
         AC_ARG_WITH([tslib],
-                    [AS_HELP_STRING([--with-tslib=@<:@yes/no@:>@], [Use TSLib for events])],
+                    [AS_HELP_STRING([--with-tslib=@<:@yes/no@:>@], [Use TSLib for events (default=no)])],
                     [],
-                    [with_tslib=yes])
+                    [with_tslib=no])
 
         AC_ARG_WITH([evdev],
-                    [AS_HELP_STRING([--with-evdev=@<:@yes/no@:>@], [Use evdev for events])],
+                    [AS_HELP_STRING([--with-evdev=@<:@yes/no@:>@], [Use evdev for events (default=yes)])],
                     [],
                     [with_evdev=yes])
 
         AC_ARG_WITH([gdl],
-                    [AS_HELP_STRING([--with-gdl=@<:@yes/no@:>@], [Use libgdl for CE3100/CE4100 support])],
+                    [AS_HELP_STRING([--with-gdl=@<:@yes/no@:>@], [Use libgdl for CE3100/CE4100 support (default=no)])],
                     [],
                     [with_gdl=no])
 
