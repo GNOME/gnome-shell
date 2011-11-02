@@ -1860,7 +1860,7 @@ MessageTray.prototype = {
                 // automatically. Instead, the user is able to expand the notification by mousing away from it and then
                 // mousing back in. Because this is an expected action, we set the boolean flag that indicates that a longer
                 // timeout should be used before popping down the notification.
-                if (this._notificationBin.contains(actorAtShowNotificationPosition)) {
+                if (this.actor.contains(actorAtShowNotificationPosition)) {
                     this._useLongerTrayLeftTimeout = true;
                     return;
                 }
