@@ -3,6 +3,7 @@
 
 #define __CLUTTER_DEPRECATED_H_INSIDE__
 
+#include "deprecated/clutter-actor-deprecated.h"
 #include "deprecated/clutter-backend-deprecated.h"
 #include "deprecated/clutter-behaviour.h"
 #include "deprecated/clutter-behaviour-depth.h"
