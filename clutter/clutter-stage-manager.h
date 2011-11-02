@@ -77,10 +77,9 @@ ClutterStage *       clutter_stage_manager_get_default_stage (ClutterStageManage
 GSList *             clutter_stage_manager_list_stages       (ClutterStageManager *stage_manager);
 const GSList *       clutter_stage_manager_peek_stages       (ClutterStageManager *stage_manager);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+CLUTTER_DEPRECATED
 void                 clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
                                                               ClutterStage        *stage);
-#endif
 
 G_END_DECLS
 
