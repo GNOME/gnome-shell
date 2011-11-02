@@ -23,7 +23,6 @@
 #include "config.h"
 #endif
 
-#include "clutter-stage-egl.h"
 #include "clutter-backend-egl.h"
 #include "clutter-egl.h"
 
