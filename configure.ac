@@ -513,6 +513,7 @@ IMAGE_PC_FILES=""
 
 dnl === X11 checks, only for X11-based backends ===============================
 X11_PC_FILES=""
+X11_EXTS=""
 x11_tests=no
 
 AS_IF([test "x$SUPPORT_X11" = "x1"],
@@ -560,6 +561,7 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 
                 X11_LIBS="$X11_LIBS -lXext"
                 X11_PC_FILES="$X11_PC_FILES xext"
+                X11_EXTS="$X11_EXTS xext"
 
                 AC_MSG_RESULT([found])
               ],
@@ -575,6 +577,7 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 
                 X11_LIBS="$X11_LIBS -lXfixes"
                 X11_PC_FILES="$X11_PC_FILES xfixes >= $XFIXES_REQ_VERSION"
+                X11_EXTS="$X11_EXTS xfixes"
 
                 AC_MSG_RESULT([found])
               ],
@@ -590,6 +593,7 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 
                 X11_LIBS="$X11_LIBS -lXdamage"
                 X11_PC_FILES="$X11_PC_FILES xdamage"
+                X11_EXTS="$X11_EXTS xdamage"
 
                 AC_MSG_RESULT([found])
               ],
@@ -605,6 +609,7 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 
                 X11_LIBS="$X11_LIBS -lXcomposite"
                 X11_PC_FILES="$X11_PC_FILES xcomposite >= $XCOMPOSITE_REQ_VERSION"
+                X11_EXTS="$X11_EXTS xcomposite"
 
                 AC_MSG_RESULT([found])
               ],
@@ -623,6 +628,7 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
                       [
                         AC_DEFINE([HAVE_XGE], [1], [Define to 1 if X Generic Extensions is available])
                         have_xge=yes
+                        X11_EXTS="$X11_EXTS xge"
                       ])
 
         CPPFLAGS="$clutter_save_CPPFLAGS"
@@ -662,6 +668,7 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 
                   X11_LIBS="$X11_LIBS $XINPUT_LIBS"
                   X11_PC_FILES="$X11_PC_FILES xi"
+                  X11_EXTS="$X11_EXTS xi"
                 ],
 
                 [no],
@@ -683,6 +690,8 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
                       [
                         AC_DEFINE(HAVE_XKB, 1, [Define to use XKB extension])
                         have_xkb=yes
+
+                        X11_EXTS="$X11_EXTS xkb"
                       ])
 
         CPPFLAGS="$clutter_save_CPPFLAGS"
@@ -697,6 +706,10 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
 
 AM_CONDITIONAL([BUILD_XI2], [test "x$have_xinput2" = "xyes"])
 AM_CONDITIONAL([X11_TESTS], [test "x$x11_tests" = "xyes"])
+
+X11_EXTS=${X11_EXTS#* }
+
+AC_CACHE_SAVE
 
 dnl === Enable debug level ====================================================
 
@@ -1054,15 +1067,14 @@ fi
 
 if test "x$SUPPORT_X11" = "x1"; then
 echo ""
-echo "        Enable XComposite: ${have_xcomposite}"
-echo "        Enable XInput: ${have_xinput}"
-echo "        Enable Xge: ${have_xge}"
-echo "        Enable XI2: ${have_xinput2}"
-echo "        Enable XKB: ${have_xkb}"
+echo "     - X11 backend options:"
+echo "        Enabled extensions: ${X11_EXTS}"
+echo "        Build X11-specific tests: ${x11_tests}"
 fi
 
 if test "x$SUPPORT_EGL" = "x1"; then
 echo ""
+echo "     - EGL backend options:"
 echo "        Enable TSLib: ${have_tslib}"
 echo "        Enable evdev: ${have_evdev}"
 echo "        Enable GDL: ${have_gdl}"
@@ -1073,11 +1085,13 @@ echo ""
 # General warning about experimental features
 if test "x$experimental_backend" = "xyes"; then
 echo ""
-echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
-echo " *WARNING*"
+echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
+echo "*WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*"
 echo ""
 echo "  The stability of your build might be affected by one or more"
 echo "  experimental backends or experimental and unsupported features"
-echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
+echo ""
+echo "*WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*"
+echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo ""
 fi
