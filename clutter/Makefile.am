@@ -233,6 +233,7 @@ source_c_priv = \
 
 # deprecated installed headers
 deprecated_h = \
+	$(srcdir)/deprecated/clutter-backend-deprecated.h	\
 	$(srcdir)/deprecated/clutter-behaviour.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-ellipse.h	\
