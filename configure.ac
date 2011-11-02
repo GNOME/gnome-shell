@@ -364,6 +364,8 @@ if test "x$enable_debug" = "xyes"; then
 	CFLAGS="$CFLAGS -g -O"
 fi
 
+GTK_DOC_CHECK([1.15], [--flavour no-tmpl])
+
 #### Warnings (last since -Werror can disturb other tests)
 
 # Stay command-line compatible with the gnome-common configure option. Here
@@ -434,6 +436,7 @@ AC_CONFIG_FILES([
 Makefile
 doc/Makefile
 doc/man/Makefile
+doc/reference/Makefile
 src/Makefile
 src/wm-tester/Makefile
 src/libmutter.pc
