@@ -40,6 +40,7 @@ INCLUDES = \
 	-DCLUTTER_COMPILATION		\
 	-DG_LOG_DOMAIN=\"CoglPango\"	\
 	-I$(top_srcdir)/cogl		\
+	-I$(top_builddir)/cogl		\
 	-I$(top_srcdir)/cogl/winsys	\
 	-I$(top_srcdir)			\
 	-I$(top_builddir)

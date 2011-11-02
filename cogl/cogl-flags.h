@@ -29,6 +29,8 @@
 
 #include <glib.h>
 
+#include "cogl-util.h"
+
 G_BEGIN_DECLS
 
 /* These are macros used to implement a fixed-size array of bits. This
@@ -77,6 +79,40 @@ G_BEGIN_DECLS
       ((array)[COGL_FLAGS_GET_INDEX (flag)] &=  \
        ~COGL_FLAGS_GET_MASK (flag));            \
   } G_STMT_END
+
+/* Macros to help iterate an array of flags. It should be used like
+ * this:
+ *
+ * int n_longs = COGL_FLAGS_N_LONGS_FOR_SIZE (...);
+ * unsigned long flags[n_longs];
+ * int bit_num;
+ *
+ * COGL_FLAGS_FOREACH_START (flags, n_longs, bit_num)
+ *   {
+ *     do_something_with_the_bit (bit_num);
+ *   }
+ * COGL_FLAGS_FOREACH_END;
+ */
+#define COGL_FLAGS_FOREACH_START(array, n_longs, bit)   \
+  G_STMT_START {                                        \
+  const unsigned long *_p = (array);                    \
+  int _n_longs = (n_longs);                             \
+  int _i;                                               \
+                                                        \
+  for (_i = 0; _i < _n_longs; _i++)                     \
+    {                                                   \
+      unsigned long _mask = *(_p++);                    \
+                                                        \
+      (bit) = _i * sizeof (unsigned long) * 8 - 1;      \
+                                                        \
+      while (_mask)                                     \
+        {                                               \
+          int _next_bit = _cogl_util_ffsl (_mask);      \
+          (bit) += _next_bit;                           \
+          _mask >>= _next_bit;
+
+#define COGL_FLAGS_FOREACH_END \
+  } } } G_STMT_END
 
 G_END_DECLS
 

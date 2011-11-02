@@ -33,6 +33,7 @@
 
 #include "cogl-bitmask.h"
 #include "cogl-util.h"
+#include "cogl-flags.h"
 
 /* This code assumes that we can cast an unsigned long to a pointer
    and back without losing any data */
@@ -236,41 +237,26 @@ _cogl_bitmask_foreach (const CoglBitmask *bitmask,
   if (_cogl_bitmask_has_array (bitmask))
     {
       GArray *array = (GArray *) *bitmask;
-      int array_index;
+      const unsigned long *values = &g_array_index (array, unsigned long, 0);
+      int bit_num;
 
-      for (array_index = 0; array_index < array->len; array_index++)
+      COGL_FLAGS_FOREACH_START (values, array->len, bit_num)
         {
-          unsigned long mask =
-            g_array_index (array, unsigned long, array_index);
-          int bit = 0;
-
-          while (mask)
-            {
-              int next_bit = _cogl_util_ffsl (mask);
-
-              bit += next_bit;
-              mask >>= next_bit;
-
-              if (!func (array_index * sizeof (unsigned long) * 8 + bit - 1,
-                         user_data))
-                return;
-            }
+          if (!func (bit_num, user_data))
+            return;
         }
+      COGL_FLAGS_FOREACH_END;
     }
   else
     {
       unsigned long mask = _cogl_bitmask_to_bits (bitmask);
-      int bit = 0;
+      int bit_num;
 
-      while (mask)
+      COGL_FLAGS_FOREACH_START (&mask, 1, bit_num)
         {
-          int next_bit = _cogl_util_ffsl (mask);
-
-          bit += next_bit;
-          mask >>= next_bit;
-
-          if (!func (bit - 1, user_data))
+          if (!func (bit_num, user_data))
             return;
         }
+      COGL_FLAGS_FOREACH_END;
     }
 }
