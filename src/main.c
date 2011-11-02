@@ -96,7 +96,7 @@ shell_dbus_init (gboolean replace)
   guint32 request_name_flags;
   guint32 request_name_result;
 
-  /** TODO:
+  /* TODO:
    * In the future we should use GDBus for this.  However, in
    * order to do that, we need to port all of the JavaScript
    * code.  Otherwise, the name will be claimed on the wrong

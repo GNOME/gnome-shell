@@ -7,8 +7,8 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:ShellRecorder
- * short_description: Record from a #ClutterStage
+ * SECTION:shell-recorder
+ * @short_description: Record from a #ClutterStage
  *
  * The #ShellRecorder object is used to make recordings ("screencasts")
  * of a #ClutterStage. Recording is done via #GStreamer. The default is

@@ -619,9 +619,9 @@ static const GMarkupParser mobile_parser = {
  * @out_ccs: (out) (allow-none): (element-type utf8 utf8): a #GHashTable containing
  *   country codes
  *
- * Returns: (element-type utf8 GList<Shell.MobileProvider>) (transfer container): a
- *   hash table where keys are country names 'char *', values are a 'GSList *'
- *   of 'ShellMobileProvider *'. Everything is destroyed with g_hash_table_destroy ().
+ * Returns: (element-type utf8 GList) (transfer container): a
+ *   hash table where keys are country names #gchar, values are a #GSList
+ *   of #ShellMobileProvider. Everything is destroyed with g_hash_table_destroy().
 */
 GHashTable *
 shell_mobile_providers_parse (GHashTable **out_ccs)

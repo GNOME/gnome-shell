@@ -491,10 +491,12 @@ pseudo_class_add_sel_matches_style (StTheme         *a_this,
 }
 
 /**
- *@param a_add_sel the class additional selector to consider.
- *@param a_node the style node to consider.
- *@return TRUE if the class additional selector matches
- *the style node given in argument, FALSE otherwise.
+ * class_add_sel_matches_style:
+ * @a_add_sel: The class additional selector to consider.
+ * @a_node: The style node to consider.
+ *
+ * Returns: %TRUE if the class additional selector matches
+ * the style node given in argument, %FALSE otherwise.
  */
 static gboolean
 class_add_sel_matches_style (CRAdditionalSel *a_add_sel,

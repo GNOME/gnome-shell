@@ -639,7 +639,7 @@ shell_window_tracker_get_window_app (ShellWindowTracker *tracker,
 
 /**
  * shell_window_tracker_get_app_from_pid:
- * @self; A #ShellAppSystem
+ * @tracker: A #ShellAppSystem
  * @pid: A Unix process identifier
  *
  * Look up the application corresponding to a process.
@@ -647,7 +647,7 @@ shell_window_tracker_get_window_app (ShellWindowTracker *tracker,
  * Returns: (transfer none): A #ShellApp, or %NULL if none
  */
 ShellApp *
-shell_window_tracker_get_app_from_pid (ShellWindowTracker *self, 
+shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker,
                                        int                 pid)
 {
   GSList *running = shell_app_system_get_running (shell_app_system_get_default());

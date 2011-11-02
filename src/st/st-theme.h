@@ -27,7 +27,7 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:StTheme
+ * SECTION:st-theme
  * @short_description: a set of stylesheets
  *
  * #StTheme holds a set of stylesheets. (The "cascade" of the name

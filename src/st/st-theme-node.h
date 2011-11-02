@@ -31,7 +31,7 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:StThemeNode
+ * SECTION:st-theme-node
  * @short_description: style information for one node in a tree of themed objects
  *
  * A #StThemeNode represents the CSS style information (the set of CSS properties) for one

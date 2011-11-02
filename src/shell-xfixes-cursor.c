@@ -8,8 +8,8 @@
 #include <X11/extensions/Xfixes.h>
 
 /**
- * SECTION:ShellXFixesCursor
- * short_description: Capture/manipulate system mouse cursor.
+ * SECTION:shell-xfixes-cursor
+ * @short_description: Capture/manipulate system mouse cursor.
  *
  * The #ShellXFixesCursor object uses the XFixes extension to show/hide the
  * the system mouse pointer, to grab its image as it changes, and emit a

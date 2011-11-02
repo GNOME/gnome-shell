@@ -25,7 +25,7 @@
  */
 
 /**
- * SECTION:StIMText
+ * SECTION:st-im-text
  * @short_description: Text widget with input method support
  * @stability: Unstable
  * @see_also: #ClutterText

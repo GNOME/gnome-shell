@@ -52,16 +52,17 @@ shell_doc_system_get_all (ShellDocSystem    *self)
 }
 
 /**
- * @self: A #ShellDocSystem
- * @uri: Url
+ * shell_doc_system_lookup_by_uri:
+ * @system: A #ShellDocSystem
+ * @uri: URI
  *
  * Returns: (transfer none): Recent file info corresponding to given @uri
  */
 GtkRecentInfo *
-shell_doc_system_lookup_by_uri (ShellDocSystem  *self,
+shell_doc_system_lookup_by_uri (ShellDocSystem  *system,
                                 const char      *uri)
 {
-  return g_hash_table_lookup (self->priv->infos_by_uri, uri);
+  return g_hash_table_lookup (system->priv->infos_by_uri, uri);
 }
 
 static gboolean

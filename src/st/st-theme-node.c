@@ -1476,7 +1476,7 @@ st_theme_node_get_outline_width (StThemeNode  *node)
  * @node: a #StThemeNode
  * @color: (out caller-allocates): location to store the color
  *
- * Returns the color of @node's outline.
+ * Gets the color of @node's outline.
  */
 void
 st_theme_node_get_outline_color (StThemeNode  *node,
@@ -1745,7 +1745,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
  * @node: a #StThemeNode
  * @color: (out caller-allocates): location to store the color
  *
- * Returns @node's background color.
+ * Gets @node's background color.
  */
 void
 st_theme_node_get_background_color (StThemeNode  *node,
@@ -1773,7 +1773,7 @@ st_theme_node_get_background_image (StThemeNode *node)
  * @node: a #StThemeNode
  * @color: (out caller-allocates): location to store the color
  *
- * Returns @node's foreground color.
+ * Gets @node's foreground color.
  */
 void
 st_theme_node_get_foreground_color (StThemeNode  *node,
@@ -1847,7 +1847,7 @@ st_theme_node_get_background_gradient (StThemeNode    *node,
  * @side: a #StSide
  * @color: (out caller-allocates): location to store the color
  *
- * Returns the color of @node's border on @side
+ * Gets the color of @node's border on @side
  */
 void
 st_theme_node_get_border_color (StThemeNode  *node,

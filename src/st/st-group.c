@@ -20,7 +20,7 @@
 
 /**
  * SECTION:st-group
- * SECTION:clutter-group
+ * @see_also:#ClutterGroup
  * @short_description: A fixed layout container
  *
  * A #StGroup is an Actor which contains multiple child actors positioned

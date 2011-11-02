@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:StThemeContext
+ * SECTION:st-theme-context
  * @short_description: holds global information about a tree of styled objects
  *
  * #StThemeContext is responsible for managing information global to a tree of styled objects,

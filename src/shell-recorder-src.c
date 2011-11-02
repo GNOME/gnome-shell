@@ -282,6 +282,7 @@ plugin_init (GstPlugin *plugin)
 
 /**
  * shell_recorder_src_register:
+ *
  * Registers a plugin holding our single element to use privately in
  * this application. Can safely be called multiple times.
  */

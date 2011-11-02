@@ -1220,12 +1220,13 @@ shell_app_init_search_data (ShellApp *app)
 
 /**
  * shell_app_compare_by_name:
- * @app:
- * @other:
+ * @app: One app
+ * @other: The other app
  *
  * Order two applications by name.
  *
- * Returns: -1, 0, or 1; suitable for use as a comparison function for e.g. g_slist_sort()
+ * Returns: -1, 0, or 1; suitable for use as a comparison function
+ * for e.g. g_slist_sort()
  */
 int
 shell_app_compare_by_name (ShellApp *app, ShellApp *other)

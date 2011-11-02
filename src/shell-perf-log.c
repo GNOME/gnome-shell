@@ -590,7 +590,7 @@ shell_perf_log_update_statistic_x (ShellPerfLog *perf_log,
 }
 
 /**
- * shell_perf_log_add statistics_callback:
+ * shell_perf_log_add_statistics_callback:
  * @perf_log: a #ShellPerfLog
  * @callback: function to call before recording statistics
  * @user_data: data to pass to @callback

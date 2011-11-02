@@ -963,7 +963,7 @@ st_scroll_view_new (void)
  *
  * Gets the horizontal scrollbar of the scrollbiew
  *
- * Return value: (transfer none): the horizontal #StScrollbar
+ * Return value: (transfer none): the horizontal #StScrollBar
  */
 ClutterActor *
 st_scroll_view_get_hscroll_bar (StScrollView *scroll)
@@ -979,7 +979,7 @@ st_scroll_view_get_hscroll_bar (StScrollView *scroll)
  *
  * Gets the vertical scrollbar of the scrollbiew
  *
- * Return value: (transfer none): the vertical #StScrollbar
+ * Return value: (transfer none): the vertical #StScrollBar
  */
 ClutterActor *
 st_scroll_view_get_vscroll_bar (StScrollView *scroll)
