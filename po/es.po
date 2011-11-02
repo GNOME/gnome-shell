@@ -2,20 +2,21 @@
 # Copyright (C) 2011 cogl's COPYRIGHT HOLDER
 # This file is distributed under the same license as the cogl package.
 # Jorge González <jorgegonz@svn.gnome.org>, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-14 16:04+0000\n"
-"PO-Revision-Date: 2011-10-23 13:41+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-10-26 18:04+0000\n"
+"PO-Revision-Date: 2011-11-02 14:17+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../cogl/cogl-debug.c:154
 msgid "Supported debug values:"
@@ -238,7 +239,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
-msgstr ""
+msgstr "Desactivar arbfp"
 
 #: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
@@ -254,11 +255,11 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
-msgstr ""
+msgstr "Desactivar GLSL"
 
 #: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
-msgstr ""
+msgstr "Desactivar el uso de GLSL"
 
 #: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
