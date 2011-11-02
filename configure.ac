@@ -83,6 +83,8 @@ AC_SUBST([CLUTTER_LT_VERSION],  [$CLUTTER_LT_VERSION])
 
 AC_PROG_SED
 
+dnl = Preliminary platform checks =============================================
+
 AC_CANONICAL_HOST
 
 platform_win32=no
@@ -112,7 +114,9 @@ AM_CONDITIONAL(OS_GLX, [test "$platform_glx" = "yes"])
 
 AC_SUBST(CLUTTER_LT_LDFLAGS)
 
-dnl ========================================================================
+AC_CACHE_SAVE
+
+dnl = Dependencies =========================================================
 
 # Checks for programs.
 AM_PROG_CC_C_O
@@ -180,6 +184,8 @@ AC_ARG_ENABLE([Bsymbolic],
 
 AS_IF([test "x$enable_Bsymbolic" = "xyes"], [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
 AC_SUBST(CLUTTER_LINK_FLAGS)
+
+AC_CACHE_SAVE
 
 dnl ========================================================================
 
@@ -452,6 +458,8 @@ AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1], [Can use Cogl 2.0 API interna
 dnl strip leading spaces
 CLUTTER_BACKENDS=${CLUTTER_BACKENDS#* }
 AC_SUBST(CLUTTER_BACKENDS)
+
+AC_CACHE_SAVE
 
 dnl === Clutter configuration =================================================
 
