@@ -308,6 +308,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-journal.c			\
 	$(srcdir)/cogl-framebuffer-private.h		\
 	$(srcdir)/cogl-framebuffer.c 			\
+	$(srcdir)/cogl-onscreen-private.h		\
 	$(srcdir)/cogl-onscreen.c 			\
 	$(srcdir)/cogl-profile.h 			\
 	$(srcdir)/cogl-profile.c 			\
