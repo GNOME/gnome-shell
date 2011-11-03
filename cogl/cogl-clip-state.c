@@ -185,16 +185,12 @@ _cogl_clip_state_flush (CoglClipState *clip_state,
 void
 cogl_clip_ensure (void)
 {
-  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
-  CoglClipState *clip_state;
-
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-  /* Flushing the clip state doesn't cause the journal to be
-     flushed. This function may be being called by an external
-     application however so it makes sense to flush the journal
-     here */
-  _cogl_framebuffer_flush_journal (framebuffer);
-  _cogl_clip_state_flush (clip_state, framebuffer);
+  /* Do nothing.
+   *
+   * This API shouldn't be used by anyone and the documented semantics
+   * are basically vague enough that we can get away with doing
+   * nothing here.
+   */
 }
 
 static void
