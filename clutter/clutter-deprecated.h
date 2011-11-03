@@ -19,6 +19,7 @@
 #include "deprecated/clutter-main.h"
 #include "deprecated/clutter-score.h"
 #include "deprecated/clutter-shader.h"
+#include "deprecated/clutter-stage.h"
 #include "deprecated/clutter-timeout-pool.h"
 
 #undef __CLUTTER_DEPRECATED_H_INSIDE__
