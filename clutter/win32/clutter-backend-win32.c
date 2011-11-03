@@ -271,16 +271,6 @@ error:
   return FALSE;
 }
 
-static void
-clutter_backend_win32_ensure_context (ClutterBackend *backend, 
-				      ClutterStage   *stage)
-{
-  ClutterStageWin32 *stage_win32 =
-    CLUTTER_STAGE_WIN32 (_clutter_stage_get_window (stage));
-
-  cogl_set_framebuffer (COGL_FRAMEBUFFER (stage_win32->onscreen));
-}
-
 static ClutterStageWindow *
 clutter_backend_win32_create_stage (ClutterBackend  *backend,
 				    ClutterStage    *wrapper,
@@ -355,7 +345,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   backend_class->add_options      = clutter_backend_win32_add_options;
   backend_class->get_features     = clutter_backend_win32_get_features;
   backend_class->create_context   = clutter_backend_win32_create_context;
-  backend_class->ensure_context   = clutter_backend_win32_ensure_context;
   backend_class->get_device_manager = clutter_backend_win32_get_device_manager;
 }
 
