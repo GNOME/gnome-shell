@@ -170,22 +170,6 @@ clutter_backend_cogl_get_features (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_cogl_ensure_context (ClutterBackend *backend,
-                                     ClutterStage   *stage)
-{
-  ClutterStageCogl *stage_cogl;
-
-  /* ignore ensuring the context on an empty stage */
-  if (stage == NULL)
-    return;
-
-  stage_cogl =
-    CLUTTER_STAGE_COGL (_clutter_stage_get_window (stage));
-
-  cogl_set_framebuffer (COGL_FRAMEBUFFER (stage_cogl->onscreen));
-}
-
-static void
 _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -198,7 +182,6 @@ _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
   backend_class->pre_parse = clutter_backend_cogl_pre_parse;
   backend_class->post_parse = clutter_backend_cogl_post_parse;
   backend_class->get_features = clutter_backend_cogl_get_features;
-  backend_class->ensure_context = clutter_backend_cogl_ensure_context;
 }
 
 static void
