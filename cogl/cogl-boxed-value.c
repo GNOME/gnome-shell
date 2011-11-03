@@ -229,10 +229,18 @@ _cogl_boxed_value_set_uniform (CoglContext *ctx,
 
         switch (value->size)
           {
-          case 1: ctx->glUniform1iv (location, value->count, ptr); break;
-          case 2: ctx->glUniform2iv (location, value->count, ptr); break;
-          case 3: ctx->glUniform3iv (location, value->count, ptr); break;
-          case 4: ctx->glUniform4iv (location, value->count, ptr); break;
+          case 1:
+            GE( ctx, glUniform1iv (location, value->count, ptr) );
+            break;
+          case 2:
+            GE( ctx, glUniform2iv (location, value->count, ptr) );
+            break;
+          case 3:
+            GE( ctx, glUniform3iv (location, value->count, ptr) );
+            break;
+          case 4:
+            GE( ctx, glUniform4iv (location, value->count, ptr) );
+            break;
           }
       }
       break;
@@ -248,10 +256,18 @@ _cogl_boxed_value_set_uniform (CoglContext *ctx,
 
         switch (value->size)
           {
-          case 1: ctx->glUniform1fv (location, value->count, ptr); break;
-          case 2: ctx->glUniform2fv (location, value->count, ptr); break;
-          case 3: ctx->glUniform3fv (location, value->count, ptr); break;
-          case 4: ctx->glUniform4fv (location, value->count, ptr); break;
+          case 1:
+            GE( ctx, glUniform1fv (location, value->count, ptr) );
+            break;
+          case 2:
+            GE( ctx, glUniform2fv (location, value->count, ptr) );
+            break;
+          case 3:
+            GE( ctx, glUniform3fv (location, value->count, ptr) );
+            break;
+          case 4:
+            GE( ctx, glUniform4fv (location, value->count, ptr) );
+            break;
           }
       }
       break;
@@ -268,16 +284,16 @@ _cogl_boxed_value_set_uniform (CoglContext *ctx,
         switch (value->size)
           {
           case 2:
-            ctx->glUniformMatrix2fv (location, value->count,
-                                     value->transpose, ptr);
+            GE( ctx, glUniformMatrix2fv (location, value->count,
+                                         value->transpose, ptr) );
             break;
           case 3:
-            ctx->glUniformMatrix3fv (location, value->count,
-                                     value->transpose, ptr);
+            GE( ctx, glUniformMatrix3fv (location, value->count,
+                                         value->transpose, ptr) );
             break;
           case 4:
-            ctx->glUniformMatrix4fv (location, value->count,
-                                     value->transpose, ptr);
+            GE( ctx, glUniformMatrix4fv (location, value->count,
+                                         value->transpose, ptr) );
             break;
           }
       }
