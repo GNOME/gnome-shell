@@ -241,6 +241,7 @@ cogl_program_uniform_x (CoglHandle handle,
       uniform->value.type = type;
       uniform->value.size = size;
       uniform->value.count = count;
+      uniform->value.transpose = transpose;
       uniform->dirty = TRUE;
     }
 }
