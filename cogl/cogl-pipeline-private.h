@@ -167,6 +167,7 @@ typedef enum
   COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
   COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
   COGL_PIPELINE_STATE_CULL_FACE_INDEX,
+  COGL_PIPELINE_STATE_UNIFORMS_INDEX,
 
   /* non-sparse */
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -214,6 +215,8 @@ typedef enum _CoglPipelineState
     1L<<COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
   COGL_PIPELINE_STATE_CULL_FACE =
     1L<<COGL_PIPELINE_STATE_CULL_FACE_INDEX,
+  COGL_PIPELINE_STATE_UNIFORMS =
+    1L<<COGL_PIPELINE_STATE_UNIFORMS_INDEX,
 
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE =
     1L<<COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -249,7 +252,8 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_FOG | \
    COGL_PIPELINE_STATE_POINT_SIZE | \
    COGL_PIPELINE_STATE_LOGIC_OPS | \
-   COGL_PIPELINE_STATE_CULL_FACE)
+   COGL_PIPELINE_STATE_CULL_FACE | \
+   COGL_PIPELINE_STATE_UNIFORMS)
 
 #define COGL_PIPELINE_STATE_MULTI_PROPERTY \
   (COGL_PIPELINE_STATE_LAYERS | \
@@ -258,7 +262,8 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_DEPTH | \
    COGL_PIPELINE_STATE_FOG | \
    COGL_PIPELINE_STATE_LOGIC_OPS | \
-   COGL_PIPELINE_STATE_CULL_FACE)
+   COGL_PIPELINE_STATE_CULL_FACE | \
+   COGL_PIPELINE_STATE_UNIFORMS)
 
 #define COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN \
   (COGL_PIPELINE_STATE_LAYERS | \
@@ -334,6 +339,34 @@ typedef struct
   CoglWinding front_winding;
 } CoglPipelineCullFaceState;
 
+typedef struct _CoglPipelineUniformOverride CoglPipelineUniformOverride;
+
+COGL_SLIST_HEAD (CoglPipelineUniformOverrideList,
+                 CoglPipelineUniformOverride);
+
+struct _CoglPipelineUniformOverride
+{
+  COGL_SLIST_ENTRY (CoglPipelineUniformOverride) list_node;
+
+  /* We don't need to store the location of the uniform here because
+     it is implicit from the order in the list */
+
+  /* One of these overrides can effectively remove a uniform by
+     setting the boxed value type to none. In that case no attempt
+     will be made to upload the value */
+
+  CoglBoxedValue value;
+};
+
+typedef struct
+{
+  CoglBitmask override_mask;
+  /* Uniforms that have been modified since this pipeline was last
+     flushed */
+  CoglBitmask changed_mask;
+  CoglPipelineUniformOverrideList override_list;
+} CoglPipelineUniformsState;
+
 typedef struct
 {
   CoglPipelineLightingState lighting_state;
@@ -345,6 +378,7 @@ typedef struct
   float point_size;
   CoglPipelineLogicOpsState logic_ops_state;
   CoglPipelineCullFaceState cull_face_state;
+  CoglPipelineUniformsState uniforms_state;
 } CoglPipelineBigState;
 
 typedef enum

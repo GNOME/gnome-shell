@@ -221,6 +221,9 @@ cogl_context_new (CoglDisplay *display,
       g_assert_not_reached ();
     }
 
+  context->uniform_names = NULL;
+  context->n_uniform_names = 0;
+
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);
 
@@ -478,7 +481,11 @@ _cogl_context_free (CoglContext *context)
 
   cogl_pipeline_cache_free (context->pipeline_cache);
 
+
   _cogl_destroy_texture_units ();
+
+  g_slist_foreach (context->uniform_names, (GFunc) g_free, NULL);
+  g_slist_free (context->uniform_names);
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 

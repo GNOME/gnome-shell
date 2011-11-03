@@ -258,6 +258,14 @@ struct _CoglContext
     [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
   void *winsys;
 
+  /* List of names of uniforms. These are used like quarks to give a
+     unique number to each uniform name except that we ensure that
+     they increase sequentially so that we can use the id as an index
+     into a bitfield representing the uniforms that a pipeline
+     overrides from its parent */
+  GSList *uniform_names;
+  int n_uniform_names;
+
   /* This defines a list of function pointers that Cogl uses from
      either GL or GLES. All functions are accessed indirectly through
      these pointers rather than linking to them directly */

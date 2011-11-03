@@ -29,6 +29,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "cogl-util.h"
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
@@ -44,6 +46,7 @@
 #include "cogl-pipeline-fragend-glsl-private.h"
 #include "cogl-pipeline-vertend-glsl-private.h"
 #include "cogl-pipeline-cache.h"
+#include "cogl-pipeline-state-private.h"
 
 #ifdef HAVE_COGL_GLES2
 
@@ -140,6 +143,11 @@ typedef struct
    * so know if we need to update all of the uniforms */
   CoglPipeline *last_used_for_pipeline;
 
+  /* Array of GL uniform locations indexed by Cogl's uniform
+     location. We are careful only to allocated this array if a custom
+     uniform is actually set */
+  GArray *uniform_locations;
+
   UnitState *unit_state;
 } CoglPipelineProgramState;
 
@@ -150,6 +158,8 @@ get_program_state (CoglPipeline *pipeline)
 {
   return cogl_object_get_user_data (COGL_OBJECT (pipeline), &program_state_key);
 }
+
+#define UNIFORM_LOCATION_UNKNOWN -2
 
 #ifdef HAVE_COGL_GLES2
 
@@ -309,6 +319,7 @@ program_state_new (int n_layers)
   program_state->program = 0;
   program_state->n_tex_coord_attribs = 0;
   program_state->unit_state = g_new (UnitState, n_layers);
+  program_state->uniform_locations = NULL;
 #ifdef HAVE_COGL_GLES2
   program_state->tex_coord_attribute_locations = NULL;
   program_state->flushed_modelview_stack = NULL;
@@ -348,6 +359,9 @@ destroy_program_state (void *user_data,
         GE( ctx, glDeleteProgram (program_state->program) );
 
       g_free (program_state->unit_state);
+
+      if (program_state->uniform_locations)
+        g_array_free (program_state->uniform_locations, TRUE);
 
       g_slice_free (CoglPipelineProgramState, program_state);
     }
@@ -539,6 +553,166 @@ update_builtin_uniforms (CoglPipeline *pipeline,
 
 #endif /* HAVE_COGL_GLES2 */
 
+typedef struct
+{
+  CoglPipelineProgramState *program_state;
+  unsigned long *uniform_differences;
+  int n_differences;
+  CoglContext *ctx;
+  CoglPipelineUniformOverride *override;
+} FlushUniformsClosure;
+
+static gboolean
+flush_uniform_cb (int uniform_num, void *user_data)
+{
+  FlushUniformsClosure *data = user_data;
+
+  if (COGL_FLAGS_GET (data->uniform_differences, uniform_num))
+    {
+      GArray *uniform_locations;
+      GLint uniform_location;
+
+      if (data->program_state->uniform_locations == NULL)
+        data->program_state->uniform_locations =
+          g_array_new (FALSE, FALSE, sizeof (GLint));
+
+      uniform_locations = data->program_state->uniform_locations;
+
+      if (uniform_locations->len <= uniform_num)
+        {
+          unsigned int old_len = uniform_locations->len;
+
+          g_array_set_size (uniform_locations, uniform_num + 1);
+
+          while (old_len <= uniform_num)
+            {
+              g_array_index (uniform_locations, GLint, old_len) =
+                UNIFORM_LOCATION_UNKNOWN;
+              old_len++;
+            }
+        }
+
+      uniform_location = g_array_index (uniform_locations, GLint, uniform_num);
+
+      if (uniform_location == UNIFORM_LOCATION_UNKNOWN)
+        {
+          const char *uniform_name =
+            g_slist_nth (data->ctx->uniform_names, uniform_num)->data;
+
+          uniform_location =
+            data->ctx->glGetUniformLocation (data->program_state->program,
+                                             uniform_name);
+          g_array_index (uniform_locations, GLint, uniform_num) =
+            uniform_location;
+        }
+
+      if (uniform_location != -1)
+        _cogl_boxed_value_set_uniform (data->ctx,
+                                       uniform_location,
+                                       &data->override->value);
+
+      data->n_differences--;
+      COGL_FLAGS_SET (data->uniform_differences, uniform_num, FALSE);
+    }
+
+  data->override = COGL_SLIST_NEXT (data->override, list_node);
+
+  return data->n_differences > 0;
+}
+
+static void
+_cogl_pipeline_progend_glsl_flush_uniforms (CoglPipeline *pipeline,
+                                            CoglPipelineProgramState *
+                                                                  program_state,
+                                            GLuint gl_program,
+                                            gboolean program_changed)
+{
+  CoglPipelineUniformsState *uniforms_state;
+  FlushUniformsClosure data;
+  int n_uniform_longs;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (pipeline->differences & COGL_PIPELINE_STATE_UNIFORMS)
+    uniforms_state = &pipeline->big_state->uniforms_state;
+  else
+    uniforms_state = NULL;
+
+  data.program_state = program_state;
+  data.ctx = ctx;
+
+  n_uniform_longs = COGL_FLAGS_N_LONGS_FOR_SIZE (ctx->n_uniform_names);
+
+  data.uniform_differences = g_newa (unsigned long, n_uniform_longs);
+
+  /* Try to find a common ancestor for the values that were already
+     flushed on the pipeline that this program state was last used for
+     so we can avoid flushing those */
+
+  if (program_changed || program_state->last_used_for_pipeline == NULL)
+    {
+      if (program_changed)
+        {
+          /* The program has changed so all of the uniform locations
+             are invalid */
+          if (program_state->uniform_locations)
+            g_array_set_size (program_state->uniform_locations, 0);
+        }
+
+      /* We need to flush everything so mark all of the uniforms as
+         dirty */
+      memset (data.uniform_differences, 0xff,
+              n_uniform_longs * sizeof (unsigned long));
+      data.n_differences = G_MAXINT;
+    }
+  else if (program_state->last_used_for_pipeline)
+    {
+      int i;
+
+      memset (data.uniform_differences, 0,
+              n_uniform_longs * sizeof (unsigned long));
+      _cogl_pipeline_compare_uniform_differences
+        (data.uniform_differences,
+         program_state->last_used_for_pipeline,
+         pipeline);
+
+      /* We need to be sure to flush any uniforms that have changed
+         since the last flush */
+      if (uniforms_state)
+        _cogl_bitmask_set_flags (&uniforms_state->changed_mask,
+                                 data.uniform_differences);
+
+      /* Count the number of differences. This is so we can stop early
+         when we've flushed all of them */
+      data.n_differences = 0;
+
+      for (i = 0; i < n_uniform_longs; i++)
+        data.n_differences +=
+          _cogl_util_popcountl (data.uniform_differences[i]);
+    }
+
+  while (pipeline && data.n_differences > 0)
+    {
+      if (pipeline->differences & COGL_PIPELINE_STATE_UNIFORMS)
+        {
+          const CoglPipelineUniformsState *parent_uniforms_state =
+            &pipeline->big_state->uniforms_state;
+
+          data.override =
+            COGL_SLIST_FIRST (&parent_uniforms_state->override_list);
+
+          _cogl_bitmask_foreach (&parent_uniforms_state->override_mask,
+                                 flush_uniform_cb,
+                                 &data);
+        }
+
+      pipeline = _cogl_pipeline_get_parent (pipeline);
+    }
+
+  if (uniforms_state)
+    _cogl_bitmask_clear_all (&uniforms_state->changed_mask);
+}
+
 static void
 _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference,
@@ -729,6 +903,11 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       update_builtin_uniforms (pipeline, gl_program, program_state);
     }
 #endif
+
+  _cogl_pipeline_progend_glsl_flush_uniforms (pipeline,
+                                              program_state,
+                                              gl_program,
+                                              program_changed);
 
   if (user_program)
     _cogl_program_flush_uniforms (user_program,

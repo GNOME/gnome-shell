@@ -598,6 +598,13 @@ cogl_pipeline_remove_layer
 cogl_pipeline_get_n_layers
 cogl_pipeline_foreach_layer
 
+cogl_pipeline_get_uniform_location
+cogl_pipeline_set_uniform_1f
+cogl_pipeline_set_uniform_1i
+cogl_pipeline_set_uniform_float
+cogl_pipeline_set_uniform_int
+cogl_pipeline_set_uniform_matrix
+
 <SUBSECTION Private>
 cogl_blend_string_error_get_type
 cogl_blend_string_error_quark

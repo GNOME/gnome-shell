@@ -111,6 +111,7 @@ _cogl_pipeline_init_default_pipeline (void)
   CoglDepthState *depth_state = &big_state->depth_state;
   CoglPipelineLogicOpsState *logic_ops_state = &big_state->logic_ops_state;
   CoglPipelineCullFaceState *cull_face_state = &big_state->cull_face_state;
+  CoglPipelineUniformsState *uniforms_state = &big_state->uniforms_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -220,6 +221,10 @@ _cogl_pipeline_init_default_pipeline (void)
 
   cull_face_state->mode = COGL_PIPELINE_CULL_FACE_MODE_NONE;
   cull_face_state->front_winding = COGL_WINDING_COUNTER_CLOCKWISE;
+
+  _cogl_bitmask_init (&uniforms_state->override_mask);
+  _cogl_bitmask_init (&uniforms_state->changed_mask);
+  COGL_SLIST_INIT (&uniforms_state->override_list);
 
   ctx->default_pipeline = _cogl_pipeline_object_new (pipeline);
 }
@@ -457,6 +462,25 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
   if (pipeline->differences & COGL_PIPELINE_STATE_USER_SHADER &&
       pipeline->big_state->user_program)
     cogl_handle_unref (pipeline->big_state->user_program);
+
+  if (pipeline->differences & COGL_PIPELINE_STATE_UNIFORMS)
+    {
+      CoglPipelineUniformsState *uniforms_state
+        = &pipeline->big_state->uniforms_state;
+      CoglPipelineUniformOverride *override, *tmp;
+
+      COGL_SLIST_FOREACH_SAFE (override,
+                               &uniforms_state->override_list,
+                               list_node,
+                               tmp)
+        {
+          _cogl_boxed_value_destroy (&override->value);
+          g_slice_free (CoglPipelineUniformOverride, override);
+        }
+
+      _cogl_bitmask_destroy (&uniforms_state->override_mask);
+      _cogl_bitmask_destroy (&uniforms_state->changed_mask);
+    }
 
   if (pipeline->differences & COGL_PIPELINE_STATE_NEEDS_BIG_STATE)
     g_slice_free (CoglPipelineBigState, pipeline->big_state);
@@ -927,6 +951,38 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
               sizeof (CoglPipelineCullFaceState));
     }
 
+  if (differences & COGL_PIPELINE_STATE_UNIFORMS)
+    {
+      CoglPipelineUniformOverride *prev = NULL;
+      CoglPipelineUniformOverride *override;
+
+      COGL_SLIST_INIT (&big_state->uniforms_state.override_list);
+
+      COGL_SLIST_FOREACH (override,
+                          &src->big_state->uniforms_state.override_list,
+                          list_node)
+        {
+          CoglPipelineUniformOverride *new_override =
+            g_slice_new (CoglPipelineUniformOverride);
+          _cogl_boxed_value_copy (&new_override->value,
+                                  &override->value);
+          if (prev)
+            COGL_SLIST_INSERT_AFTER (prev, new_override, list_node);
+          else
+            COGL_SLIST_INSERT_HEAD (&big_state->uniforms_state.override_list,
+                                    new_override,
+                                    list_node);
+
+          prev = new_override;
+        }
+
+      _cogl_bitmask_init (&big_state->uniforms_state.override_mask);
+      _cogl_bitmask_set_bits (&big_state->uniforms_state.override_mask,
+                              &src->big_state->uniforms_state.override_mask);
+
+      _cogl_bitmask_init (&big_state->uniforms_state.changed_mask);
+    }
+
   /* XXX: we shouldn't bother doing this in most cases since
    * _copy_differences is typically used to initialize pipeline state
    * by copying it from the current authority, so it's not actually
@@ -1010,6 +1066,14 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
                 &authority->big_state->cull_face_state,
                 sizeof (CoglPipelineCullFaceState));
         break;
+      }
+    case COGL_PIPELINE_STATE_UNIFORMS:
+      {
+        CoglPipelineUniformsState *uniforms_state =
+          &pipeline->big_state->uniforms_state;
+        _cogl_bitmask_init (&uniforms_state->override_mask);
+        _cogl_bitmask_init (&uniforms_state->changed_mask);
+        COGL_SLIST_INIT (&uniforms_state->override_list);
       }
     }
 }
@@ -2199,6 +2263,12 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                               _cogl_pipeline_user_shader_equal))
     goto done;
 
+  if (!simple_property_equal (authorities0, authorities1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_UNIFORMS_INDEX,
+                              _cogl_pipeline_uniforms_state_equal))
+    goto done;
+
   if (pipelines_difference & COGL_PIPELINE_STATE_LAYERS)
     {
       CoglPipelineStateIndex state_index = COGL_PIPELINE_STATE_LAYERS_INDEX;
@@ -2606,9 +2676,11 @@ _cogl_pipeline_init_state_hash_functions (void)
     _cogl_pipeline_hash_point_size_state;
   state_hash_functions[COGL_PIPELINE_STATE_LOGIC_OPS_INDEX] =
     _cogl_pipeline_hash_logic_ops_state;
+  state_hash_functions[COGL_PIPELINE_STATE_UNIFORMS_INDEX] =
+    _cogl_pipeline_hash_uniforms_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 13);
+  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 14);
 }
 
 unsigned int
@@ -2803,4 +2875,35 @@ _cogl_pipeline_get_state_for_fragment_codegen (CoglContext *context)
     state |= COGL_PIPELINE_STATE_ALPHA_FUNC;
 
   return state;
+}
+
+int
+cogl_pipeline_get_uniform_location (CoglPipeline *pipeline,
+                                    const char *uniform_name)
+{
+  GSList *l;
+  int location = 0;
+
+  _COGL_GET_CONTEXT (ctx, -1);
+
+  /* This API is designed as if the uniform locations are specific to
+     a pipeline but they are actually unique across a whole
+     CoglContext. Potentially this could just be
+     cogl_context_get_uniform_location but it seems to make sense to
+     keep the API this way so that we can change the internals if need
+     be. */
+
+  /* Look for an existing uniform with this name */
+  for (l = ctx->uniform_names; l; l = l->next)
+    {
+      if (!strcmp (uniform_name, l->data))
+        return location;
+
+      location++;
+    }
+
+  ctx->uniform_names =
+    g_slist_append (ctx->uniform_names, g_strdup (uniform_name));
+
+  return ctx->n_uniform_names++;
 }

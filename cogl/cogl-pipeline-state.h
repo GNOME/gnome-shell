@@ -777,6 +777,166 @@ cogl_pipeline_set_front_face_winding (CoglPipeline *pipeline,
 CoglWinding
 cogl_pipeline_get_front_face_winding (CoglPipeline *pipeline);
 
+#define cogl_pipeline_set_uniform_1f \
+        cogl_pipeline_set_uniform_1f_EXP
+/**
+ * cogl_pipeline_set_uniform_1f:
+ * @pipeline: A #CoglPipeline object
+ * @uniform_location: The uniform's location identifier
+ * @value: The new value for the uniform
+ *
+ * Sets a new value for the uniform at @uniform_location. If this
+ * pipeline has a user program attached and is later used as a source
+ * for drawing, the given value will be assigned to the uniform which
+ * can be accessed from the shader's source. The value for
+ * @uniform_location should be retrieved from the string name of the
+ * uniform by calling cogl_pipeline_get_uniform_location().
+ *
+ * This function should be used to set uniforms that are of type
+ * float. It can also be used to set a single member of a float array
+ * uniform.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+void
+cogl_pipeline_set_uniform_1f (CoglPipeline *pipeline,
+                              int uniform_location,
+                              float value);
+
+#define cogl_pipeline_set_uniform_1i \
+        cogl_pipeline_set_uniform_1i_EXP
+/**
+ * cogl_pipeline_set_uniform_1i:
+ * @pipeline: A #CoglPipeline object
+ * @uniform_location: The uniform's location identifier
+ * @value: The new value for the uniform
+ *
+ * Sets a new value for the uniform at @uniform_location. If this
+ * pipeline has a user program attached and is later used as a source
+ * for drawing, the given value will be assigned to the uniform which
+ * can be accessed from the shader's source. The value for
+ * @uniform_location should be retrieved from the string name of the
+ * uniform by calling cogl_pipeline_get_uniform_location().
+ *
+ * This function should be used to set uniforms that are of type
+ * int. It can also be used to set a single member of a int array
+ * uniform or a sampler uniform.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+void
+cogl_pipeline_set_uniform_1i (CoglPipeline *pipeline,
+                              int uniform_location,
+                              int value);
+
+#define cogl_pipeline_set_uniform_float \
+        cogl_pipeline_set_uniform_float_EXP
+/**
+ * cogl_pipeline_set_uniform_float:
+ * @pipeline: A #CoglPipeline object
+ * @uniform_location: The uniform's location identifier
+ * @n_components: The number of components in the corresponding uniform's type
+ * @count: The number of values to set
+ * @value: Pointer to the new values to set
+ *
+ * Sets new values for the uniform at @uniform_location. If this
+ * pipeline has a user program attached and is later used as a source
+ * for drawing, the given values will be assigned to the uniform which
+ * can be accessed from the shader's source. The value for
+ * @uniform_location should be retrieved from the string name of the
+ * uniform by calling cogl_pipeline_get_uniform_location().
+ *
+ * This function can be used to set any floating point type uniform,
+ * including float arrays and float vectors. For example, to set a
+ * single vec4 uniform you would use 4 for @n_components and 1 for
+ * @count. To set an array of 8 float values, you could use 1 for
+ * @n_components and 8 for @count.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+void
+cogl_pipeline_set_uniform_float (CoglPipeline *pipeline,
+                                 int uniform_location,
+                                 int n_components,
+                                 int count,
+                                 const float *value);
+
+#define cogl_pipeline_set_uniform_int \
+        cogl_pipeline_set_uniform_int_EXP
+/**
+ * cogl_pipeline_set_uniform_int:
+ * @pipeline: A #CoglPipeline object
+ * @uniform_location: The uniform's location identifier
+ * @n_components: The number of components in the corresponding uniform's type
+ * @count: The number of values to set
+ * @value: Pointer to the new values to set
+ *
+ * Sets new values for the uniform at @uniform_location. If this
+ * pipeline has a user program attached and is later used as a source
+ * for drawing, the given values will be assigned to the uniform which
+ * can be accessed from the shader's source. The value for
+ * @uniform_location should be retrieved from the string name of the
+ * uniform by calling cogl_pipeline_get_uniform_location().
+ *
+ * This function can be used to set any integer type uniform,
+ * including int arrays and int vectors. For example, to set a single
+ * ivec4 uniform you would use 4 for @n_components and 1 for
+ * @count. To set an array of 8 int values, you could use 1 for
+ * @n_components and 8 for @count.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+void
+cogl_pipeline_set_uniform_int (CoglPipeline *pipeline,
+                               int uniform_location,
+                               int n_components,
+                               int count,
+                               const int *value);
+
+#define cogl_pipeline_set_uniform_matrix \
+        cogl_pipeline_set_uniform_matrix_EXP
+/**
+ * cogl_pipeline_set_uniform_matrix:
+ * @pipeline: A #CoglPipeline object
+ * @uniform_location: The uniform's location identifier
+ * @dimensions: The size of the matrix
+ * @count: The number of values to set
+ * @transpose: Whether to transpose the matrix
+ * @value: Pointer to the new values to set
+ *
+ * Sets new values for the uniform at @uniform_location. If this
+ * pipeline has a user program attached and is later used as a source
+ * for drawing, the given values will be assigned to the uniform which
+ * can be accessed from the shader's source. The value for
+ * @uniform_location should be retrieved from the string name of the
+ * uniform by calling cogl_pipeline_get_uniform_location().
+ *
+ * This function can be used to set any matrix type uniform, including
+ * matrix arrays. For example, to set a single mat4 uniform you would
+ * use 4 for @dimensions and 1 for @count. To set an array of 8
+ * mat3 values, you could use 3 for @dimensions and 8 for @count.
+ *
+ * If @transpose is %FALSE then the matrix is expected to be in
+ * column-major order or if it is %TRUE then the matrix is in
+ * row-major order. You can pass a #CoglMatrix by calling by passing
+ * the result of cogl_matrix_get_array() in @value and setting
+ * @transpose to %FALSE.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+void
+cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
+                                  int uniform_location,
+                                  int dimensions,
+                                  int count,
+                                  gboolean transpose,
+                                  const float *value);
+
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS

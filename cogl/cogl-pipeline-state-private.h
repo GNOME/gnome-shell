@@ -79,6 +79,10 @@ gboolean
 _cogl_pipeline_cull_face_state_equal (CoglPipeline *authority0,
                                       CoglPipeline *authority1);
 
+gboolean
+_cogl_pipeline_uniforms_state_equal (CoglPipeline *authority0,
+                                     CoglPipeline *authority1);
+
 void
 _cogl_pipeline_hash_color_state (CoglPipeline *authority,
                                  CoglPipelineHashState *state);
@@ -130,5 +134,14 @@ _cogl_pipeline_hash_logic_ops_state (CoglPipeline *authority,
 void
 _cogl_pipeline_hash_cull_face_state (CoglPipeline *authority,
                                      CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_hash_uniforms_state (CoglPipeline *authority,
+                                    CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_compare_uniform_differences (unsigned long *differences,
+                                            CoglPipeline *pipeline0,
+                                            CoglPipeline *pipeline1);
 
 #endif /* __COGL_PIPELINE_STATE_PRIVATE_H */

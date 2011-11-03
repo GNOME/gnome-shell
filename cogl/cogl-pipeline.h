@@ -138,6 +138,33 @@ cogl_pipeline_foreach_layer (CoglPipeline *pipeline,
                              CoglPipelineLayerCallback callback,
                              void *user_data);
 
+#define cogl_pipeline_get_uniform_location \
+        cogl_pipeline_get_uniform_location_EXP
+/**
+ * cogl_pipeline_get_uniform_location:
+ * @pipeline: A #CoglPipeline object
+ * @uniform_name: The name of a uniform
+ *
+ * This is used to get an integer representing the uniform with the
+ * name @uniform_name. The integer can be passed to functions such as
+ * cogl_pipeline_set_uniform_1f() to set the value of a uniform.
+ *
+ * This function will always return a valid integer. Ie, unlike
+ * OpenGL, it does not return -1 if the uniform is not available in
+ * this pipeline so it can not be used to test whether uniforms are
+ * present. It is not necessary to set the program on the pipeline
+ * before calling this function.
+ *
+ * Return value: A integer representing the location of the given uniform.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ */
+int
+cogl_pipeline_get_uniform_location (CoglPipeline *pipeline,
+                                    const char *uniform_name);
+
+
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS
