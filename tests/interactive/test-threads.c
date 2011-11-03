@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gmodule.h>
-
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 /* our thread-specific data */

@@ -8,7 +8,6 @@
 #include <cairo-xlib.h>
 #endif
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 #ifdef CLUTTER_WINDOWING_X11

@@ -5,8 +5,6 @@
 
 #include <glib.h>
 #include <gmodule.h>
-
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 static ClutterScript *script = NULL;
