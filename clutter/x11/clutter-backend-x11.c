@@ -687,6 +687,7 @@ clutter_backend_x11_create_context (ClutterBackend  *backend,
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   CoglOnscreenTemplate *onscreen_template = NULL;
   CoglSwapChain *swap_chain = NULL;
+  GError *internal_error = NULL;
   gboolean status;
 
   if (backend->cogl_context != NULL)
@@ -695,26 +696,31 @@ clutter_backend_x11_create_context (ClutterBackend  *backend,
   backend->cogl_renderer = cogl_renderer_new ();
   cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
                                           backend_x11->xdpy);
-  if (!cogl_renderer_connect (backend->cogl_renderer, error))
+  if (!cogl_renderer_connect (backend->cogl_renderer, &internal_error))
     goto error;
 
   swap_chain = cogl_swap_chain_new ();
-  cogl_swap_chain_set_has_alpha (swap_chain,
-                                 clutter_x11_get_use_argb_visual ());
+  cogl_swap_chain_set_has_alpha (swap_chain, clutter_enable_argb);
 
   onscreen_template = cogl_onscreen_template_new (swap_chain);
   cogl_object_unref (swap_chain);
 
   /* XXX: I have some doubts that this is a good design.
+   *
    * Conceptually should we be able to check an onscreen_template
    * without more details about the CoglDisplay configuration?
    */
   status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
                                                   onscreen_template,
-                                                  error);
-  if (!status && clutter_x11_get_use_argb_visual ())
+                                                  &internal_error);
+  if (!status && clutter_enable_argb)
     {
-      g_clear_error (error);
+      CLUTTER_NOTE (BACKEND,
+                    "Creation of a context with a ARGB visual failed: %s",
+                    internal_error != NULL ? internal_error->message
+                                           : "Unknown reason");
+
+      g_clear_error (&internal_error);
 
       /* It's possible that the current renderer doesn't support transparency
        * in a swap_chain so lets see if we can fallback to not having any
@@ -723,10 +729,11 @@ clutter_backend_x11_create_context (ClutterBackend  *backend,
        * XXX: It might be nice to have a CoglRenderer feature we could
        * explicitly check for ahead of time.
        */
+      clutter_enable_argb = FALSE;
       cogl_swap_chain_set_has_alpha (swap_chain, FALSE);
       status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
                                                       onscreen_template,
-                                                      error);
+                                                      &internal_error);
     }
 
   if (!status)
@@ -738,16 +745,28 @@ clutter_backend_x11_create_context (ClutterBackend  *backend,
   cogl_object_unref (backend->cogl_renderer);
   cogl_object_unref (onscreen_template);
 
-  if (!cogl_display_setup (backend->cogl_display, error))
+  if (!cogl_display_setup (backend->cogl_display, &internal_error))
     goto error;
 
-  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
+  backend->cogl_context = cogl_context_new (backend->cogl_display,
+                                            &internal_error);
   if (backend->cogl_context == NULL)
     goto error;
 
   return TRUE;
 
 error:
+  if (internal_error != NULL)
+    {
+      CLUTTER_NOTE (BACKEND, "Backend creation failed: %s",
+                    internal_error->message);
+
+      g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                           CLUTTER_INIT_ERROR_BACKEND,
+                           internal_error->message);
+      g_error_free (internal_error);
+    }
+
   if (backend->cogl_display != NULL)
     {
       cogl_object_unref (backend->cogl_display);
