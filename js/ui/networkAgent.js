@@ -21,6 +21,8 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const NetworkManager = imports.gi.NetworkManager;
 const NMClient = imports.gi.NMClient;
@@ -28,15 +30,18 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const Config = imports.misc.config;
 const ModalDialog = imports.ui.modalDialog;
 const PopupMenu = imports.ui.popupMenu;
 const ShellEntry = imports.ui.shellEntry;
+
+const VPN_UI_GROUP = 'VPN Plugin UI';
 
 const NetworkSecretDialog = new Lang.Class({
     Name: 'NetworkSecretDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(agent, requestId, connection, settingName, hints) {
+    _init: function(agent, requestId, connection, settingName, hints, contentOverride) {
         this.parent({ styleClass: 'prompt-dialog' });
 
         this._agent = agent;
@@ -45,7 +50,10 @@ const NetworkSecretDialog = new Lang.Class({
         this._settingName = settingName;
         this._hints = hints;
 
-        this._content = this._getContent();
+        if (contentOverride)
+            this._content = contentOverride;
+        else
+            this._content = this._getContent();
 
         let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
                                                 vertical: false });
@@ -174,14 +182,14 @@ const NetworkSecretDialog = new Lang.Class({
         }
 
         if (valid) {
-            this._agent.respond(this._requestId, false);
+            this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
             this.close(global.get_current_time());
         }
         // do nothing if not valid
     },
 
     cancel: function() {
-        this._agent.respond(this._requestId, true);
+        this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
         this.close(global.get_current_time());
     },
 
@@ -357,6 +365,240 @@ const NetworkSecretDialog = new Lang.Class({
     }
 });
 
+const VPNRequestHandler = new Lang.Class({
+    Name: 'VPNRequestHandler',
+
+    _init: function(agent, requestId, authHelper, serviceType, connection, hints, flags) {
+        this._agent = agent;
+        this._requestId = requestId;
+        this._connection = connection;
+        this._pluginOutBuffer = [];
+        this._title = null;
+        this._description = null;
+        this._content = [ ];
+        this._shellDialog = null;
+
+        let connectionSetting = connection.get_setting_connection();
+
+        let argv = [ authHelper.fileName,
+                     '-u', connectionSetting.uuid,
+                     '-n', connectionSetting.id,
+                     '-s', serviceType
+                   ];
+        if (authHelper.externalUIMode)
+            argv.push('--external-ui-mode');
+        if (flags & NMClient.SecretAgentGetSecretsFlags.ALLOW_INTERACTION)
+            argv.push('-i');
+        if (flags & NMClient.SecretAgentGetSecretsFlags.REQUEST_NEW)
+            argv.push('-r');
+
+        this._newStylePlugin = authHelper.externalUIMode;
+
+        try {
+            let [success, pid, stdin, stdout, stderr] =
+                GLib.spawn_async_with_pipes(null, /* pwd */
+                                            argv,
+                                            null, /* envp */
+                                            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                                            null /* child_setup */);
+
+            this._childPid = pid;
+            this._stdin = new Gio.UnixOutputStream({ fd: stdin, close_fd: true });
+            this._stdout = new Gio.UnixInputStream({ fd: stdout, close_fd: true });
+            // We need this one too, even if don't actually care of what the process
+            // has to say on stderr, because otherwise the fd opened by g_spawn_async_with_pipes
+            // is kept open indefinitely
+            let stderrStream = new Gio.UnixInputStream({ fd: stderr, close_fd: true });
+            stderrStream.close(null);
+            this._dataStdout = new Gio.DataInputStream({ base_stream: this._stdout });
+
+            if (this._newStylePlugin)
+                this._readStdoutNewStyle();
+            else
+                this._readStdoutOldStyle();
+
+            this._childWatch = GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid,
+                                                    Lang.bind(this, this._vpnChildFinished));
+
+            this._writeConnection();
+        } catch(e) {
+            logError(e, 'error while spawning VPN auth helper');
+
+            this._agent.respond(requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+        }
+    },
+
+    cancel: function() {
+        if (this._newStylePlugin && this._shellDialog) {
+            this._shellDialog.close(global.get_current_time());
+            this._shellDialog.destroy();
+        } else {
+            try {
+                this._stdin.write('QUIT\n\n', null);
+            } catch(e) { /* ignore broken pipe errors */ }
+        }
+
+        this.destroy();
+    },
+
+    destroy: function() {
+        if (this._destroyed)
+            return;
+
+        GLib.source_remove(this._childWatch);
+
+        this._stdin.close(null);
+        // Stdout is closed when we finish reading from it
+
+        this._destroyed = true;
+    },
+
+    _vpnChildFinished: function(pid, status, requestObj) {
+        if (this._newStylePlugin) {
+            // For new style plugin, all work is done in the async reading functions
+            // Just reap the process here
+            return;
+        }
+
+        let [exited, exitStatus] = Shell.util_wifexited(status);
+
+        if (exited) {
+            if (exitStatus != 0)
+                this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
+            else
+                this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
+        } else
+            this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+
+        this.destroy();
+    },
+
+    _vpnChildProcessLineOldStyle: function(line) {
+        if (this._previousLine != undefined) {
+            // Two consecutive newlines mean that the child should be closed
+            // (the actual newlines are eaten by Gio.DataInputStream)
+            // Send a termination message
+            if (line == '' && this._previousLine == '') {
+                try {
+                    this._stdin.write('QUIT\n\n', null);
+                } catch(e) { /* ignore broken pipe errors */ }
+            } else {
+                this._agent.set_password(this._requestId, this._previousLine, line);
+                this._previousLine = undefined;
+            }
+        } else {
+            this._previousLine = line;
+        }
+    },
+
+    _readStdoutOldStyle: function() {
+        this._dataStdout.read_line_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(stream, result) {
+            let [line, len] = this._dataStdout.read_line_finish_utf8(result);
+
+            if (line == null) {
+                // end of file
+                this._stdout.close(null);
+                return;
+            }
+
+            this._vpnChildProcessLineOldStyle(line);
+
+            // try to read more!
+            this._readStdoutOldStyle();
+        }));
+    },
+
+    _readStdoutNewStyle: function() {
+        this._dataStdout.fill_async(-1, GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(stream, result) {
+            let cnt = this._dataStdout.fill_finish(result);
+
+            if (cnt == 0) {
+                // end of file
+                this._showNewStyleDialog();
+
+                this._stdout.close(null);
+                return;
+            }
+
+            // Try to read more
+            this._dataStdout.set_buffer_size(2 * this._dataStdout.get_buffer_size());
+            this._readStdoutNewStyle();
+        }));
+    },
+
+    _showNewStyleDialog: function() {
+        let keyfile = new GLib.KeyFile();
+        let contentOverride;
+
+        try {
+            keyfile.load_from_data(this._dataStdout.peek_buffer(),
+                                   GLib.KeyFileFlags.NONE);
+
+            if (keyfile.get_integer(VPN_UI_GROUP, 'Version') != 2)
+                throw new Error('Invalid plugin keyfile version, is %d');
+
+            contentOverride = { title: keyfile.get_string(VPN_UI_GROUP, 'Title'),
+                                message: keyfile.get_string(VPN_UI_GROUP, 'Description'),
+                                secrets: [] };
+
+            let [groups, len] = keyfile.get_groups();
+            for (let i = 0; i < groups.length; i++) {
+                if (groups[i] == VPN_UI_GROUP)
+                    continue;
+
+                let value = keyfile.get_string(groups[i], 'Value');
+                let shouldAsk = keyfile.get_boolean(groups[i], 'ShouldAsk');
+
+                if (shouldAsk) {
+                    contentOverride.secrets.push({ label: keyfile.get_string(groups[i], 'Label'),
+                                                   key: groups[i],
+                                                   value: value,
+                                                   password: keyfile.get_boolean(groups[i], 'IsSecret')
+                                                 });
+                } else {
+                    if (!value.length) // Ignore empty secrets
+                        continue;
+
+                    this._agent.set_password(this._requestId, groups[i], value);
+                }
+            }
+        } catch(e) {
+            logError(e, 'error while reading VPN plugin output keyfile');
+
+            this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+            return;
+        }
+
+        if (contentOverride.secrets.length) {
+            // Only show the dialog if we actually have something to ask
+            this._shellDialog = new NetworkSecretDialog(this._agent, this._requestId, this._connection, 'vpn', [], contentOverride);
+            this._shellDialog.open(global.get_current_time());
+        } else {
+            this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
+        }
+    },
+
+    _writeConnection: function() {
+        let vpnSetting = this._connection.get_setting_vpn();
+
+        try {
+            vpnSetting.foreach_data_item(Lang.bind(this, function(key, value) {
+                this._stdin.write('DATA_KEY=' + key + '\n', null);
+                this._stdin.write('DATA_VAL=' + (value || '') + '\n\n', null);
+            }));
+            vpnSetting.foreach_secret(Lang.bind(this, function(key, value) {
+                this._stdin.write('SECRET_KEY=' + key + '\n', null);
+                this._stdin.write('SECRET_VAL=' + (value || '') + '\n\n', null);
+            }));
+            this._stdin.write('DONE\n\n', null);
+        } catch(e) {
+            logError(e, 'internal error while writing connection to helper');
+
+            this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+        }
+    },
+});
+
 const NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
 
@@ -365,11 +607,18 @@ const NetworkAgent = new Lang.Class({
                                                 identifier: 'org.gnome.Shell.NetworkAgent' });
 
         this._dialogs = { };
+        this._vpnRequests = { };
+
         this._native.connect('new-request', Lang.bind(this, this._newRequest));
         this._native.connect('cancel-request', Lang.bind(this, this._cancelRequest));
     },
 
-    _newRequest:  function(agent, requestId, connection, settingName, hints) {
+    _newRequest:  function(agent, requestId, connection, settingName, hints, flags) {
+        if (settingName == 'vpn') {
+            this._vpnRequest(requestId, connection, hints, flags);
+            return;
+        }
+
         let dialog = new NetworkSecretDialog(agent, requestId, connection, settingName, hints);
         dialog.connect('destroy', Lang.bind(this, function() {
             delete this._dialogs[requestId];
@@ -379,7 +628,74 @@ const NetworkAgent = new Lang.Class({
     },
 
     _cancelRequest: function(agent, requestId) {
-        this._dialogs[requestId].close(global.get_current_time());
-        this._dialogs[requestId].destroy();
+        if (this._dialogs[requestId]) {
+            this._dialogs[requestId].close(global.get_current_time());
+            this._dialogs[requestId].destroy();
+            delete this._dialogs[requestId];
+        } else if (this._vpnRequests[requestId]) {
+            this._vpnRequests[requestId].cancel();
+            delete this._vpnRequests[requestId];
+        }
+    },
+
+    _vpnRequest: function(requestId, connection, hints, flags) {
+        let vpnSetting = connection.get_setting_vpn();
+        let serviceType = vpnSetting.service_type;
+
+        this._buildVPNServiceCache();
+
+        let binary = this._vpnBinaries[serviceType];
+        if (!binary) {
+            log('Invalid VPN service type (cannot find authentication binary)');
+
+            /* cancel the auth process */
+            this._native.respond(requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+            return;
+        }
+
+        this._vpnRequests[requestId] = new VPNRequestHandler(this._native, requestId, binary, serviceType, connection, hints, flags);
+    },
+
+    _buildVPNServiceCache: function() {
+        if (this._vpnCacheBuilt)
+            return;
+
+        this._vpnCacheBuilt = true;
+        this._vpnBinaries = { };
+
+        let dir = Gio.file_new_for_path(GLib.build_filenamev([Config.SYSCONFDIR, 'NetworkManager/VPN']));
+        try {
+            let fileEnum = dir.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
+            let info;
+
+            while ((info = fileEnum.next_file(null))) {
+                let name = info.get_name();
+                if (name.substr(-5) != '.name')
+                    continue;
+
+                try {
+                    let keyfile = new GLib.KeyFile();
+                    keyfile.load_from_file(dir.get_child(name).get_path(), GLib.KeyFileFlags.NONE);
+                    let service = keyfile.get_string('VPN Connection', 'service');
+                    let binary = keyfile.get_string('GNOME', 'auth-dialog');
+                    let externalUIMode = false;
+                    try {
+                        externalUIMode = keyfile.get_boolean('GNOME', 'external-ui-mode');
+                    } catch(e) { } // ignore errors if key does not exist
+                    let path = GLib.build_filenamev([Config.LIBEXECDIR, binary]);
+
+                    if (GLib.file_test(path, GLib.FileTest.IS_EXECUTABLE))
+                        this._vpnBinaries[service] = { fileName: path, externalUIMode: externalUIMode };
+                    else
+                        throw new Error('VPN plugin at %s is not executable'.format(path));
+                } catch(e) {
+                    log('Error \'%s\' while processing VPN keyfile \'%s\''.
+                        format(e.message, dir.get_child(name).get_path()));
+                    continue;
+                }
+            }
+        } catch(e) {
+            logError(e, 'error while enumerating VPN auth helpers');
+        }
     }
 });

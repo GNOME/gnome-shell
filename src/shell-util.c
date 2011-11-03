@@ -2,6 +2,9 @@
 
 #include "config.h"
 
+#include <sys/types.h>
+#include <sys/wait.h>
+
 #include "shell-util.h"
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
@@ -860,4 +863,27 @@ shell_session_is_active_for_systemd (void)
 #else
   return TRUE;
 #endif
+}
+
+/**
+ * shell_util_wifexited:
+ * @status: the status returned by wait() or waitpid()
+ * @exit: (out): the actual exit status of the process
+ *
+ * Implements libc standard WIFEXITED, that cannot be used JS
+ * code.
+ * Returns: TRUE if the process exited normally, FALSE otherwise
+ */
+gboolean
+shell_util_wifexited (int  status,
+                      int *exit)
+{
+  gboolean ret;
+
+  ret = WIFEXITED(status);
+
+  if (ret)
+    *exit = WEXITSTATUS(status);
+
+  return ret;
 }

@@ -9,6 +9,12 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+  SHELL_NETWORK_AGENT_CONFIRMED,
+  SHELL_NETWORK_AGENT_USER_CANCELED,
+  SHELL_NETWORK_AGENT_INTERNAL_ERROR
+} ShellNetworkAgentResponse;
+
 typedef struct _ShellNetworkAgent         ShellNetworkAgent;
 typedef struct _ShellNetworkAgentClass    ShellNetworkAgentClass;
 typedef struct _ShellNetworkAgentPrivate  ShellNetworkAgentPrivate;
@@ -45,7 +51,7 @@ void               shell_network_agent_set_password (ShellNetworkAgent *self,
                                                      gchar             *setting_value);
 void               shell_network_agent_respond      (ShellNetworkAgent *self,
                                                      gchar             *request_id,
-                                                     gboolean           canceled);
+                                                     ShellNetworkAgentResponse response);
 
 /* If these are kept in sync with nm-applet, secrets will be shared */
 #define SHELL_KEYRING_UUID_TAG "connection-uuid"
