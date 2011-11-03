@@ -463,7 +463,7 @@ clutter_group_new (void)
 
 /**
  * clutter_group_remove_all:
- * @group: A #ClutterGroup
+ * @self: A #ClutterGroup
  *
  * Removes all children actors from the #ClutterGroup.
  */
