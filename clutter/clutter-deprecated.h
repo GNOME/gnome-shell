@@ -3,8 +3,8 @@
 
 #define __CLUTTER_DEPRECATED_H_INSIDE__
 
-#include "deprecated/clutter-actor-deprecated.h"
-#include "deprecated/clutter-backend-deprecated.h"
+#include "deprecated/clutter-actor.h"
+#include "deprecated/clutter-backend.h"
 #include "deprecated/clutter-behaviour.h"
 #include "deprecated/clutter-behaviour-depth.h"
 #include "deprecated/clutter-behaviour-ellipse.h"
@@ -15,7 +15,7 @@
 #include "deprecated/clutter-fixed.h"
 #include "deprecated/clutter-frame-source.h"
 #include "deprecated/clutter-keysyms.h"
-#include "deprecated/clutter-main-deprecated.h"
+#include "deprecated/clutter-main.h"
 #include "deprecated/clutter-score.h"
 #include "deprecated/clutter-shader.h"
 #include "deprecated/clutter-timeout-pool.h"

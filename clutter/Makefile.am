@@ -230,8 +230,8 @@ source_c_priv = \
 
 # deprecated installed headers
 deprecated_h = \
-	$(srcdir)/deprecated/clutter-actor-deprecated.h		\
-	$(srcdir)/deprecated/clutter-backend-deprecated.h	\
+	$(srcdir)/deprecated/clutter-actor.h			\
+	$(srcdir)/deprecated/clutter-backend.h			\
 	$(srcdir)/deprecated/clutter-behaviour.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\
 	$(srcdir)/deprecated/clutter-behaviour-ellipse.h	\
@@ -242,7 +242,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
 	$(srcdir)/deprecated/clutter-keysyms.h			\
-	$(srcdir)/deprecated/clutter-main-deprecated.h		\
+	$(srcdir)/deprecated/clutter-main.h			\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
 	$(srcdir)/deprecated/clutter-score.h 			\
 	$(srcdir)/deprecated/clutter-shader.h 			\
