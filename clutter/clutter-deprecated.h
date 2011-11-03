@@ -14,6 +14,7 @@
 #include "deprecated/clutter-behaviour-scale.h"
 #include "deprecated/clutter-fixed.h"
 #include "deprecated/clutter-frame-source.h"
+#include "deprecated/clutter-group.h"
 #include "deprecated/clutter-keysyms.h"
 #include "deprecated/clutter-main.h"
 #include "deprecated/clutter-score.h"

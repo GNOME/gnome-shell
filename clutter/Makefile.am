@@ -241,6 +241,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
 	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
+	$(srcdir)/deprecated/clutter-group.h			\
 	$(srcdir)/deprecated/clutter-keysyms.h			\
 	$(srcdir)/deprecated/clutter-main.h			\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
