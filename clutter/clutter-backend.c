@@ -50,6 +50,7 @@
 #include "clutter-profile.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
+#include "clutter-stage-window.h"
 #include "clutter-version.h"
 
 #include <cogl/cogl.h>
@@ -206,6 +207,27 @@ clutter_backend_real_font_changed (ClutterBackend *backend)
 }
 
 static void
+clutter_backend_real_ensure_context (ClutterBackend *backend,
+                                     ClutterStage   *stage)
+{
+  ClutterStageWindow *stage_impl;
+  CoglFramebuffer *framebuffer;
+
+  if (stage == NULL)
+    return;
+
+  stage_impl = _clutter_stage_get_window (stage);
+  if (stage_impl == NULL)
+    return;
+
+  framebuffer = _clutter_stage_window_get_active_framebuffer (stage_impl);
+  if (framebuffer == NULL)
+    return;
+
+  cogl_set_framebuffer (framebuffer);
+}
+
+static void
 clutter_backend_real_redraw (ClutterBackend *backend,
                              ClutterStage   *stage)
 {
@@ -316,7 +338,9 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 
   klass->resolution_changed = clutter_backend_real_resolution_changed;
   klass->font_changed = clutter_backend_real_font_changed;
+
   klass->translate_event = clutter_backend_real_translate_event;
+  klass->ensure_context = clutter_backend_real_ensure_context;
   klass->redraw = clutter_backend_real_redraw;
 }
 
