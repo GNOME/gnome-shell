@@ -101,6 +101,9 @@ _cogl_bitmask_set_range_in_array (CoglBitmask *bitmask,
 void
 _cogl_bitmask_clear_all_in_array (CoglBitmask *bitmask);
 
+void
+_cogl_bitmask_set_flags_array (const CoglBitmask *bitmask,
+                               unsigned long *flags);
 /*
  * cogl_bitmask_set_bits:
  * @dst: The bitmask to modify
@@ -233,7 +236,24 @@ _cogl_bitmask_clear_all (CoglBitmask *bitmask)
     *bitmask = _cogl_bitmask_from_bits (0);
 }
 
+/*
+ * _cogl_bitmask_set_flags:
+ * @bitmask: A pointer to a bitmask
+ * @flags: An array of flags
+ *
+ * Bitwise or's the bits from @bitmask into the flags array (see
+ * cogl-flags) pointed to by @flags.
+ */
+static inline void
+_cogl_bitmask_set_flags (const CoglBitmask *bitmask,
+                         unsigned long *flags)
+{
+  if (_cogl_bitmask_has_array (bitmask))
+    return _cogl_bitmask_set_flags_array (bitmask, flags);
+  else
+    flags[0] |= _cogl_bitmask_to_bits (bitmask);
+}
+
 G_END_DECLS
 
 #endif /* __COGL_BITMASK_H */
-

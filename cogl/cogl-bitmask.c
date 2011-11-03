@@ -260,3 +260,14 @@ _cogl_bitmask_foreach (const CoglBitmask *bitmask,
       COGL_FLAGS_FOREACH_END;
     }
 }
+
+void
+_cogl_bitmask_set_flags_array (const CoglBitmask *bitmask,
+                               unsigned long *flags)
+{
+  const GArray *array = (const GArray *) *bitmask;
+  int i;
+
+  for (i = 0; i < array->len; i++)
+    flags[i] |= g_array_index (array, unsigned long, i);
+}
