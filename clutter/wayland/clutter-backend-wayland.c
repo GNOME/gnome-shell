@@ -500,11 +500,6 @@ clutter_backend_wayland_redraw (ClutterBackend *backend,
 }
 
 static void
-clutter_backend_wayland_init_events (ClutterBackend *backend)
-{
-}
-
-static void
 clutter_backend_wayland_finalize (GObject *gobject)
 {
   if (backend_singleton)
@@ -628,7 +623,6 @@ _clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
   backend_class->pre_parse        = clutter_backend_wayland_pre_parse;
   backend_class->post_parse       = clutter_backend_wayland_post_parse;
   backend_class->get_features     = clutter_backend_wayland_get_features;
-  backend_class->init_events      = clutter_backend_wayland_init_events;
   backend_class->create_stage     = clutter_backend_wayland_create_stage;
   backend_class->create_context   = clutter_backend_wayland_create_context;
   backend_class->redraw           = clutter_backend_wayland_redraw;

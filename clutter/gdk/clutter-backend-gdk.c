@@ -182,14 +182,20 @@ _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
 									       error);
 }
 
-
 static void
-clutter_backend_gdk_init_events (ClutterBackend *backend)
+gdk_event_handler (GdkEvent *event,
+		   gpointer  user_data)
+{
+  clutter_gdk_handle_event (event);
+}
+
+void
+_clutter_backend_gdk_events_init (ClutterBackend *backend)
 {
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
   if (!disable_event_retrieval)
-    _clutter_backend_gdk_events_init (backend);
+    gdk_event_handler_set (gdk_event_handler, NULL, NULL);
 }
 
 static void
@@ -206,17 +212,6 @@ clutter_backend_gdk_finalize (GObject *gobject)
 static void
 clutter_backend_gdk_dispose (GObject *gobject)
 {
-  ClutterBackendGdk   *backend_gdk = CLUTTER_BACKEND_GDK (gobject);
-  ClutterStageManager *stage_manager;
-
-  CLUTTER_NOTE (BACKEND, "Disposing the of stages");
-  stage_manager = clutter_stage_manager_get_default ();
-
-  g_object_unref (stage_manager);
-
-  CLUTTER_NOTE (BACKEND, "Removing the event source");
-  _clutter_backend_gdk_events_uninit (CLUTTER_BACKEND (backend_gdk));
-
   G_OBJECT_CLASS (clutter_backend_gdk_parent_class)->dispose (gobject);
 }
 
@@ -384,7 +379,6 @@ clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
   gobject_class->finalize = clutter_backend_gdk_finalize;
 
   backend_class->post_parse = _clutter_backend_gdk_post_parse;
-  backend_class->init_events = clutter_backend_gdk_init_events;
   backend_class->get_features = clutter_backend_gdk_get_features;
   backend_class->get_device_manager = clutter_backend_gdk_get_device_manager;
   backend_class->copy_event_data = clutter_backend_gdk_copy_event_data;

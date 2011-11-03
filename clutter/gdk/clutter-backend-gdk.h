@@ -64,9 +64,9 @@ struct _ClutterBackendGdkClass
 GType _clutter_backend_gdk_get_type (void) G_GNUC_CONST;
 
 void   _clutter_backend_gdk_events_init (ClutterBackend *backend);
-void   _clutter_backend_gdk_events_uninit (ClutterBackend *backend);
 
-void   _clutter_backend_gdk_update_setting (ClutterBackendGdk *backend, const gchar *name);
+void   _clutter_backend_gdk_update_setting (ClutterBackendGdk *backend,
+                                            const gchar *name);
 
 G_END_DECLS
 

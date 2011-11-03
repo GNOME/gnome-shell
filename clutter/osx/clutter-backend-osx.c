@@ -28,6 +28,7 @@
 #include "clutter-device-manager-osx.h"
 #include "clutter-shader.h"
 #include "clutter-stage-osx.h"
+#include "clutter-event-loop-osx.h"
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
@@ -36,6 +37,8 @@
 #include "cogl/cogl.h"
 
 #import <AppKit/AppKit.h>
+
+#define clutter_backend_osx_get_type    _clutter_backend_osx_get_type
 
 G_DEFINE_TYPE (ClutterBackendOSX, clutter_backend_osx, CLUTTER_TYPE_BACKEND)
 
@@ -112,8 +115,8 @@ clutter_backend_osx_get_device_manager (ClutterBackend *backend)
   return backend_osx->device_manager;
 }
 
-static void
-clutter_backend_osx_init_events (ClutterBackend *backend)
+void
+_clutter_backend_osx_events_init (ClutterBackend *backend)
 {
   ClutterBackendOSX *backend_osx = CLUTTER_BACKEND_OSX (backend);
 
@@ -123,7 +126,8 @@ clutter_backend_osx_init_events (ClutterBackend *backend)
   CLUTTER_NOTE (BACKEND, "init_events");
 
   clutter_backend_osx_create_device_manager (backend_osx);
-  _clutter_events_osx_init ();
+
+  _clutter_osx_event_loop_init ();
 }
 
 static gboolean
@@ -250,6 +254,5 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
   backend_class->create_stage       = clutter_backend_osx_create_stage;
   backend_class->create_context     = clutter_backend_osx_create_context;
   backend_class->ensure_context     = clutter_backend_osx_ensure_context;
-  backend_class->init_events        = clutter_backend_osx_init_events;
   backend_class->get_device_manager = clutter_backend_osx_get_device_manager;
 }

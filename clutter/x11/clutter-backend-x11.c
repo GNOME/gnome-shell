@@ -411,12 +411,6 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
   g_object_set (settings, "font-dpi", (int) dpi * 1024, NULL);
 
-  /* create the device manager */
-  clutter_backend_x11_create_device_manager (backend_x11);
-
-  /* register keymap */
-  clutter_backend_x11_create_keymap (backend_x11);
-
   /* create XSETTINGS client */
   backend_x11->xsettings =
     _clutter_xsettings_client_new (backend_x11->xdpy,
@@ -461,14 +455,46 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
 									       error);
 }
 
-
-static void
-clutter_backend_x11_init_events (ClutterBackend *backend)
+void
+_clutter_backend_x11_events_init (ClutterBackend *backend)
 {
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
+  /* the event source is optional */
   if (!_no_xevent_retrieval)
-    _clutter_backend_x11_events_init (backend);
+    {
+      GSource *source;
+
+      source = _clutter_x11_event_source_new (backend_x11);
+
+      /* default priority for events
+       *
+       * XXX - at some point we'll have a common EventSource API that
+       * is created by the backend, and this code will most likely go
+       * into the default implementation of ClutterBackend
+       */
+      g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
+
+      /* attach the source to the default context, and transfer the
+       * ownership to the GMainContext itself
+       */
+      g_source_attach (source, NULL);
+      g_source_unref (source);
+
+      backend_x11->event_source = source;
+    }
+
+  /* create the device manager; we need this because we can effectively
+   * choose between core+XI1 and XI2 input events
+   */
+  clutter_backend_x11_create_device_manager (backend_x11);
+
+  /* register keymap; unless we create a generic Keymap object, I'm
+   * afraid this will have to stay
+   */
+  clutter_backend_x11_create_keymap (backend_x11);
 }
 
 static const GOptionEntry entries[] =
@@ -528,17 +554,6 @@ clutter_backend_x11_finalize (GObject *gobject)
 static void
 clutter_backend_x11_dispose (GObject *gobject)
 {
-  ClutterBackendX11   *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
-  ClutterStageManager *stage_manager;
-
-  CLUTTER_NOTE (BACKEND, "Disposing the of stages");
-  stage_manager = clutter_stage_manager_get_default ();
-
-  g_object_unref (stage_manager);
-
-  CLUTTER_NOTE (BACKEND, "Removing the event source");
-  _clutter_backend_x11_events_uninit (CLUTTER_BACKEND (backend_x11));
-
   G_OBJECT_CLASS (clutter_backend_x11_parent_class)->dispose (gobject);
 }
 
@@ -825,7 +840,6 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 
   backend_class->pre_parse = _clutter_backend_x11_pre_parse;
   backend_class->post_parse = _clutter_backend_x11_post_parse;
-  backend_class->init_events = clutter_backend_x11_init_events;
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
   backend_class->get_device_manager = clutter_backend_x11_get_device_manager;

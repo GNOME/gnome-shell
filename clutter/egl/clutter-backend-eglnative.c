@@ -89,31 +89,6 @@ clutter_backend_egl_native_get_device_manager (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_egl_native_init_events (ClutterBackend *backend)
-{
-  const char *input_backend = NULL;
-
-  input_backend = g_getenv ("CLUTTER_INPUT_BACKEND");
-
-#ifdef HAVE_EVDEV
-  if (input_backend != NULL &&
-      strcmp (input_backend, CLUTTER_EVDEV_INPUT_BACKEND) == 0)
-    _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
-  else
-#endif
-#ifdef HAVE_TSLIB
-  if (input_backend != NULL &&
-      strcmp (input_backend, CLUTTER_TSLIB_INPUT_BACKEND) == 0)
-    _clutter_events_tslib_init (CLUTTER_BACKEND (backend));
-  else
-#endif
-  if (input_backend != NULL)
-    g_error ("Unrecognized input backend '%s'", input_backend);
-  else
-    g_error ("Unknown input backend");
-}
-
-static void
 clutter_backend_egl_native_dispose (GObject *gobject)
 {
   ClutterBackendEglNative *backend_egl_native = CLUTTER_BACKEND_EGL_NATIVE (gobject);
@@ -249,7 +224,6 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
   gobject_class->dispose = clutter_backend_egl_native_dispose;
 
   backend_class->get_device_manager = clutter_backend_egl_native_get_device_manager;
-  backend_class->init_events = clutter_backend_egl_native_init_events;
   backend_class->create_stage = clutter_backend_egl_native_create_stage;
   backend_class->create_context = clutter_backend_egl_native_create_context;
 }

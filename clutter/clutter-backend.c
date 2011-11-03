@@ -55,6 +55,23 @@
 
 #include <cogl/cogl.h>
 
+#ifdef CLUTTER_INPUT_X11
+#include "x11/clutter-backend-x11.h"
+#endif
+#ifdef CLUTTER_INPUT_WIN32
+#include "win32/clutter-backend-win32.h"
+#endif
+#ifdef CLUTTER_INPUT_OSX
+#include "osx/clutter-backend-osx.h"
+#endif
+#ifdef CLUTTER_INPUT_EVDEV
+#include "evdev/clutter-device-manager-evdev.h"
+#endif
+#ifdef CLUTTER_INPUT_TSLIB
+/* XXX - should probably warn, here */
+#include "tslib/clutter-event-tslib.h"
+#endif
+
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
 #define DEFAULT_FONT_NAME       "Sans 10"
@@ -243,6 +260,70 @@ clutter_backend_real_redraw (ClutterBackend *backend,
   _clutter_stage_window_redraw (impl);
 }
 
+static void
+clutter_backend_real_init_events (ClutterBackend *backend)
+{
+  const char *input_backend = NULL;
+
+  input_backend = g_getenv ("CLUTTER_INPUT_BACKEND");
+  if (input_backend != NULL)
+    input_backend = g_intern_string (input_backend);
+
+#ifdef CLUTTER_INPUT_X11
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11) &&
+      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_X11)))
+    {
+      _clutter_backend_x11_events_init (backend);
+    }
+  else
+#endif
+#ifdef CLUTTER_INPUT_OSX
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_OSX) &&
+      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_OSX)))
+    {
+      _clutter_backend_osx_events_init (backend);
+    }
+#endif
+#ifdef CLUTTER_INPUT_WIN32
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WIN32) &&
+      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_WIN32)))
+    {
+      _clutter_backend_win32_events_init (backend);
+    }
+  else
+#endif
+#ifdef CLUTTER_INPUT_GDK
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_GDK) &&
+      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_GDK)))
+    {
+      _clutter_backend_gdk_events_init (backend);
+    }
+  else
+#endif
+#ifdef CLUTTER_INPUT_EVDEV
+  /* Evdev can be used regardless of the windowing system */
+  if (input_backend != NULL &&
+      strcmp (input_backend, CLUTTER_INPUT_EVDEV) == 0)
+    {
+      _clutter_events_evdev_init (backend);
+    }
+  else
+#endif
+#ifdef CLUTTER_INPUT_TSLIB
+  /* Tslib can be used regardless of the windowing system */
+  if (input_backend != NULL &&
+      strcmp (input_backend, CLUTTER_INPUT_TSLIB) == 0)
+    {
+      _clutter_events_tslib_init (backend);
+    }
+  else
+#endif
+  if (input_backend != NULL)
+    g_error ("Unrecognized input backend '%s'", input_backend);
+  else
+    g_error ("Unknown input backend");
+}
+
 static gboolean
 clutter_backend_real_translate_event (ClutterBackend *backend,
                                       gpointer        native,
@@ -339,6 +420,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   klass->resolution_changed = clutter_backend_real_resolution_changed;
   klass->font_changed = clutter_backend_real_font_changed;
 
+  klass->init_events = clutter_backend_real_init_events;
   klass->translate_event = clutter_backend_real_translate_event;
   klass->ensure_context = clutter_backend_real_ensure_context;
   klass->redraw = clutter_backend_real_redraw;
@@ -591,8 +673,7 @@ _clutter_backend_init_events (ClutterBackend *backend)
   g_assert (CLUTTER_IS_BACKEND (backend));
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (klass->init_events)
-    klass->init_events (backend);
+  klass->init_events (backend);
 }
 
 gfloat
