@@ -29,6 +29,8 @@
 #ifndef __CLUTTER_KEYSYMS_DEPRECATED_H__
 #define __CLUTTER_KEYSYMS_DEPRECATED_H__
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_VoidSymbol 0xffffff
 #define CLUTTER_BackSpace 0xff08
 #define CLUTTER_Tab 0xff09
@@ -2294,5 +2296,7 @@
 #define CLUTTER_Prev_VMode 0x1008fe23
 #define CLUTTER_LogWindowTree 0x1008fe24
 #define CLUTTER_LogGrabInfo 0x1008fe25
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 #endif /* __CLUTTER_KEYSYMS_DEPRECATED_H__ */

@@ -103,9 +103,7 @@
 
 #include "clutter-enum-types.h"
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-deprecated.h"
-#endif
 
 #undef __CLUTTER_H_INSIDE__
 
