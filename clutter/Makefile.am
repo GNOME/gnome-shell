@@ -90,7 +90,6 @@ source_h =					\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
-	$(srcdir)/clutter-keysyms-compat.h	\
 	$(srcdir)/clutter-layout-manager.h	\
 	$(srcdir)/clutter-layout-meta.h		\
 	$(srcdir)/clutter-list-model.h		\
@@ -242,6 +241,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
 	$(srcdir)/deprecated/clutter-fixed.h			\
 	$(srcdir)/deprecated/clutter-frame-source.h		\
+	$(srcdir)/deprecated/clutter-keysyms.h			\
 	$(srcdir)/deprecated/clutter-main-deprecated.h		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
 	$(srcdir)/deprecated/clutter-score.h 			\

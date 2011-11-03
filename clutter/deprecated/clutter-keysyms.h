@@ -26,8 +26,8 @@
  * instead.
  */
 
-#ifndef __CLUTTER_KEYSYMS_COMPAT_H__
-#define __CLUTTER_KEYSYMS_COMPAT_H__
+#ifndef __CLUTTER_KEYSYMS_DEPRECATED_H__
+#define __CLUTTER_KEYSYMS_DEPRECATED_H__
 
 #define CLUTTER_VoidSymbol 0xffffff
 #define CLUTTER_BackSpace 0xff08
@@ -334,6 +334,12 @@
 #define CLUTTER_Pointer_Accelerate 0xfefa
 #define CLUTTER_Pointer_DfltBtnNext 0xfefb
 #define CLUTTER_Pointer_DfltBtnPrev 0xfefc
+#define CLUTTER_ch 0xfea0
+#define CLUTTER_Ch 0xfea1
+#define CLUTTER_CH 0xfea2
+#define CLUTTER_c_h 0xfea3
+#define CLUTTER_C_h 0xfea4
+#define CLUTTER_C_H 0xfea5
 #define CLUTTER_3270_Duplicate 0xfd01
 #define CLUTTER_3270_FieldMark 0xfd02
 #define CLUTTER_3270_Right2 0xfd03
@@ -2286,5 +2292,7 @@
 #define CLUTTER_ClearGrab 0x1008fe21
 #define CLUTTER_Next_VMode 0x1008fe22
 #define CLUTTER_Prev_VMode 0x1008fe23
+#define CLUTTER_LogWindowTree 0x1008fe24
+#define CLUTTER_LogGrabInfo 0x1008fe25
 
-#endif /* __CLUTTER_KEYSYMS_COMPAT_H__ */
+#endif /* __CLUTTER_KEYSYMS_DEPRECATED_H__ */

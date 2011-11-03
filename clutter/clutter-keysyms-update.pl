@@ -58,9 +58,9 @@ die "Could not open file keysymdef.h: $!\n"
 die "Could not open file clutter-keysyms.h: $!\n"
     unless open(OUT_KEYSYMS, ">:utf8", "clutter-keysyms.h");
 
-# Output: clutter/clutter/clutter-keysyms-compat.h
+# Output: clutter/clutter/deprecated/clutter-keysyms.h
 die "Could not open file clutter-keysyms-compat.h: $!\n"
-    unless open(OUT_KEYSYMS_COMPAT, ">:utf8", "clutter-keysyms-compat.h");
+    unless open(OUT_KEYSYMS_COMPAT, ">:utf8", "deprecated/clutter-keysyms.h");
 
 my $LICENSE_HEADER= <<EOF;
 /* Clutter
@@ -114,8 +114,8 @@ print OUT_KEYSYMS_COMPAT<<EOF;
  * instead.
  */
 
-#ifndef __CLUTTER_KEYSYMS_COMPAT_H__
-#define __CLUTTER_KEYSYMS_COMPAT_H__
+#ifndef __CLUTTER_KEYSYMS_DEPRECATED_H__
+#define __CLUTTER_KEYSYMS_DEPRECATED_H__
 
 EOF
 
@@ -195,17 +195,12 @@ close IN_XF86KEYSYM;
 
 print OUT_KEYSYMS<<EOF;
 
-/* include the compatibility header */
-#ifndef CLUTTER_DISABLE_DEPRECATED
-#include "clutter-keysyms-compat.h"
-#endif
-
 #endif /* __CLUTTER_KEYSYMS_H__ */
 EOF
 
 print OUT_KEYSYMS_COMPAT<<EOF;
 
-#endif /* __CLUTTER_KEYSYMS_COMPAT_H__ */
+#endif /* __CLUTTER_KEYSYMS_DEPRECATED_H__ */
 EOF
 
 foreach my $f (qw/ keysymdef.h XF86keysym.h /) {
@@ -213,4 +208,4 @@ foreach my $f (qw/ keysymdef.h XF86keysym.h /) {
 }
 
 printf "We just finished converting keysymdef.h to clutter-keysyms.h "
-     . "and clutter-keysyms-compat.h\nThank you\n";
+     . "and deprecated/clutter-keysyms.h\nThank you\n";
