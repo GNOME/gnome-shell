@@ -538,6 +538,14 @@ clutter_stage_win32_redraw (ClutterStageWindow *stage_window)
     cogl_framebuffer_swap_buffers (COGL_FRAMEBUFFER (stage_win32->onscreen));
 }
 
+static CoglFramebuffer *
+clutter_stage_win32_get_active_framebuffer (ClutterStageWindow *stage_window)
+{
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
+
+  return COGL_FRAMEBUFFER (stage_win32->onscreen);
+}
+
 static void
 clutter_stage_win32_dispose (GObject *gobject)
 {
@@ -598,6 +606,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_win32_realize;
   iface->unrealize = clutter_stage_win32_unrealize;
   iface->redraw = clutter_stage_win32_redraw;
+  iface->get_active_framebuffer = clutter_stage_win32_get_active_framebuffer;
 }
 
 /**
