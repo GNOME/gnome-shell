@@ -991,6 +991,7 @@ Source.prototype = {
 
         this.isTransient = false;
         this.isChat = false;
+        this.isMuted = false;
 
         this.notifications = [];
     },
@@ -1055,6 +1056,13 @@ Source.prototype = {
         this.emit('title-changed');
     },
 
+    setMuted: function(muted) {
+        if (!this.isChat || this.isMuted == muted)
+            return;
+        this.isMuted = muted;
+        this.emit('muted-changed');
+    },
+
     // Called to create a new icon actor (of size this.ICON_SIZE).
     // Must be overridden by the subclass if you do not pass icons
     // explicitly to the Notification() constructor.
@@ -1093,7 +1101,8 @@ Source.prototype = {
 
     notify: function(notification) {
         this.pushNotification(notification);
-        this.emit('notify', notification);
+        if (!this.isMuted)
+             this.emit('notify', notification);
     },
 
     destroy: function(reason) {
@@ -1208,6 +1217,18 @@ SummaryItem.prototype = {
             this.emit('done-displaying-content');
         }));
         this.rightClickMenu.add(item.actor);
+
+	if (source.isChat) {
+            item = new PopupMenu.PopupMenuItem('');
+            item.actor.connect('notify::mapped', Lang.bind(this, function() {
+                item.label.set_text(source.isMuted ? _("Unmute") : _("Mute"));
+            }));
+            item.connect('activate', Lang.bind(this, function() {
+                source.setMuted(!source.isMuted);
+                this.emit('done-displaying-content');
+            }));
+            this.rightClickMenu.add(item.actor);
+	}
 
         let focusManager = St.FocusManager.get_for_stage(global.stage);
         focusManager.add_group(this.rightClickMenu);
@@ -1516,6 +1537,14 @@ MessageTray.prototype = {
             this._newSummaryItems.push(summaryItem);
 
         source.connect('notify', Lang.bind(this, this._onNotify));
+
+        source.connect('muted-changed', Lang.bind(this,
+            function () {
+                if (source.isMuted)
+                    this._notificationQueue = this._notificationQueue.filter(function(notification) {
+                        return source != notification.source;
+                    });
+            }));
 
         summaryItem.actor.connect('notify::hover', Lang.bind(this,
             function () {
