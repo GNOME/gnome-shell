@@ -2,6 +2,7 @@
 #define __CLUTTER_MAIN_DEPRECATED_H__
 
 #include <clutter/clutter-types.h>
+#include <clutter/clutter-input-device.h>
 
 G_BEGIN_DECLS
 
