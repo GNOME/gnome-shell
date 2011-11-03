@@ -485,12 +485,6 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
 }
 
 static void
-clutter_backend_wayland_ensure_context (ClutterBackend *backend,
-					ClutterStage   *stage)
-{
-}
-
-static void
 clutter_backend_wayland_redraw (ClutterBackend *backend,
 				ClutterStage   *stage)
 {
@@ -637,7 +631,6 @@ _clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
   backend_class->init_events      = clutter_backend_wayland_init_events;
   backend_class->create_stage     = clutter_backend_wayland_create_stage;
   backend_class->create_context   = clutter_backend_wayland_create_context;
-  backend_class->ensure_context   = clutter_backend_wayland_ensure_context;
   backend_class->redraw           = clutter_backend_wayland_redraw;
 }
 
