@@ -321,7 +321,6 @@
  *   ]
  * }
  *   </programlisting></informalexample>
- *
  * </refsect2>
  *
  * #ClutterLayoutManager is available since Clutter 1.2
