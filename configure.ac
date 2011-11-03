@@ -501,6 +501,10 @@ AS_IF([test "x$SUPPORT_TSLIB" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_INPUT_TSLIB \"tslib\""])
 
+# the 'null' input backend is special
+CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_INPUT_NULL \"null\""
+
 AC_SUBST([CLUTTER_CONFIG_DEFINES])
 
 dnl === Clutter substitutions kept for backwards compatibility ================

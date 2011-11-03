@@ -64,6 +64,9 @@
 #ifdef CLUTTER_INPUT_OSX
 #include "osx/clutter-backend-osx.h"
 #endif
+#ifdef CLUTTER_INPUT_GDK
+#include "gdk/clutter-backend-gdk.h"
+#endif
 #ifdef CLUTTER_INPUT_EVDEV
 #include "evdev/clutter-device-manager-evdev.h"
 #endif
@@ -319,7 +322,10 @@ clutter_backend_real_init_events (ClutterBackend *backend)
   else
 #endif
   if (input_backend != NULL)
-    g_error ("Unrecognized input backend '%s'", input_backend);
+    {
+      if (input_backend != I_(CLUTTER_INPUT_NULL))
+        g_error ("Unrecognized input backend '%s'", input_backend);
+    }
   else
     g_error ("Unknown input backend");
 }
