@@ -653,6 +653,18 @@ cogl_matrix_project_points (const CoglMatrix *matrix,
 gboolean
 cogl_matrix_is_identity (const CoglMatrix *matrix);
 
+/**
+ * cogl_matrix_transpose:
+ * @matrix: A #CoglMatrix
+ *
+ * Replaces @matrix with its transpose. Ie, every element (i,j) in the
+ * new matrix is taken from element (j,i) in the old matrix.
+ *
+ * Since: 1.10
+ */
+void
+cogl_matrix_transpose (CoglMatrix *matrix);
+
 #ifdef _COGL_SUPPORTS_GTYPE_INTEGRATION
 
 #define COGL_GTYPE_TYPE_MATRIX (cogl_gtype_matrix_get_type ())

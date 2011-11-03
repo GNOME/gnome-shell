@@ -1689,7 +1689,6 @@ cogl_matrix_init_from_quaternion (CoglMatrix *matrix,
   _cogl_matrix_init_from_quaternion (matrix, quaternion);
 }
 
-#if 0
 /*
  * Transpose a float matrix.
  */
@@ -1713,7 +1712,6 @@ _cogl_matrix_util_transposef (float to[16], const float from[16])
   to[14] = from[11];
   to[15] = from[15];
 }
-#endif
 
 void
 cogl_matrix_view_2d_in_frustum (CoglMatrix *matrix,
@@ -2121,4 +2119,19 @@ cogl_matrix_look_at (CoglMatrix *matrix,
   cogl_matrix_translate (&tmp, -eye_position_x, -eye_position_y, -eye_position_z);
 
   cogl_matrix_multiply (matrix, matrix, &tmp);
+}
+
+void
+cogl_matrix_transpose (CoglMatrix *matrix)
+{
+  float new_values[16];
+
+  /* We don't need to do anything if the matrix is the identity matrix */
+  if (!(matrix->flags & MAT_DIRTY_TYPE) &&
+      matrix->type == COGL_MATRIX_TYPE_IDENTITY)
+    return;
+
+  _cogl_matrix_util_transposef (new_values, cogl_matrix_get_array (matrix));
+
+  cogl_matrix_init_from_array (matrix, new_values);
 }

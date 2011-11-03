@@ -486,6 +486,7 @@ cogl_matrix_multiply
 cogl_matrix_rotate
 cogl_matrix_translate
 cogl_matrix_scale
+cogl_matrix_transpose
 cogl_matrix_get_array
 cogl_matrix_get_inverse
 cogl_matrix_transform_point
