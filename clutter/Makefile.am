@@ -770,6 +770,7 @@ libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(NULL)
 
 install-exec-local:
+	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"
 	for lib in `echo $(compat_libs)`; do \
 	  (cd $(DESTDIR)$(libdir) && \
 	    rm -f $$lib.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION); \
