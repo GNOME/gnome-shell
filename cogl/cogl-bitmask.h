@@ -28,6 +28,7 @@
 #define __COGL_BITMASK_H
 
 #include <glib.h>
+#include "cogl-util.h"
 
 G_BEGIN_DECLS
 
@@ -104,6 +105,14 @@ _cogl_bitmask_clear_all_in_array (CoglBitmask *bitmask);
 void
 _cogl_bitmask_set_flags_array (const CoglBitmask *bitmask,
                                unsigned long *flags);
+
+int
+_cogl_bitmask_popcount_in_array (const CoglBitmask *bitmask);
+
+int
+_cogl_bitmask_popcount_upto_in_array (const CoglBitmask *bitmask,
+                                      int upto);
+
 /*
  * cogl_bitmask_set_bits:
  * @dst: The bitmask to modify
@@ -252,6 +261,45 @@ _cogl_bitmask_set_flags (const CoglBitmask *bitmask,
     return _cogl_bitmask_set_flags_array (bitmask, flags);
   else
     flags[0] |= _cogl_bitmask_to_bits (bitmask);
+}
+
+/*
+ * _cogl_bitmask_popcount:
+ * @bitmask: A pointer to a bitmask
+ *
+ * Counts the number of bits that are set in the bitmask.
+ *
+ * Return value: the number of bits set in @bitmask.
+ */
+static inline int
+_cogl_bitmask_popcount (const CoglBitmask *bitmask)
+{
+  return (_cogl_bitmask_has_array (bitmask) ?
+          _cogl_bitmask_popcount_in_array (bitmask) :
+          _cogl_util_popcountl (_cogl_bitmask_to_bits (bitmask)));
+}
+
+/*
+ * _cogl_bitmask_popcount:
+ * @Bitmask: A pointer to a bitmask
+ * @upto: The maximum bit index to consider
+ *
+ * Counts the number of bits that are set and have an index which is
+ * less than @upto.
+ *
+ * Return value: the number of bits set in @bitmask that are less than @upto.
+ */
+static inline int
+_cogl_bitmask_popcount_upto (const CoglBitmask *bitmask,
+                             int upto)
+{
+  if (_cogl_bitmask_has_array (bitmask))
+    return _cogl_bitmask_popcount_upto_in_array (bitmask, upto);
+  else if (upto >= COGL_BITMASK_MAX_DIRECT_BITS)
+    return _cogl_util_popcountl (_cogl_bitmask_to_bits (bitmask));
+  else
+    return _cogl_util_popcountl (_cogl_bitmask_to_bits (bitmask) &
+                                 ((1UL << upto) - 1));
 }
 
 G_END_DECLS

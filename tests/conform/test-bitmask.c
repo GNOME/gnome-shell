@@ -62,9 +62,22 @@ verify_bits (const CoglBitmask *bitmask,
   for (i = 0; i < data.n_bits; i++)
     g_assert_cmpint (data.bits[i], ==, -1);
 
+  g_assert_cmpint (_cogl_bitmask_popcount (bitmask), ==, data.n_bits);
+
   for (i = 0; i < 1024; i++)
     {
+      int upto_popcount = 0;
       int j;
+
+      G_VA_COPY (ap, ap_copy);
+
+      for (j = 0; j < data.n_bits; j++)
+        if (va_arg (ap, int) < i)
+          upto_popcount++;
+
+      g_assert_cmpint (_cogl_bitmask_popcount_upto (bitmask, i),
+                       ==,
+                       upto_popcount);
 
       G_VA_COPY (ap, ap_copy);
 

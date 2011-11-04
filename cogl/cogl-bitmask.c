@@ -271,3 +271,41 @@ _cogl_bitmask_set_flags_array (const CoglBitmask *bitmask,
   for (i = 0; i < array->len; i++)
     flags[i] |= g_array_index (array, unsigned long, i);
 }
+
+int
+_cogl_bitmask_popcount_in_array (const CoglBitmask *bitmask)
+{
+  const GArray *array = (const GArray *) *bitmask;
+  int pop = 0;
+  int i;
+
+  for (i = 0; i < array->len; i++)
+    pop += _cogl_util_popcountl (g_array_index (array, unsigned long, i));
+
+  return pop;
+}
+
+int
+_cogl_bitmask_popcount_upto_in_array (const CoglBitmask *bitmask,
+                                      int upto)
+{
+  const GArray *array = (const GArray *) *bitmask;
+
+  if (upto >= array->len * sizeof (unsigned long) * 8)
+    return _cogl_bitmask_popcount_in_array (bitmask);
+  else
+    {
+      unsigned long top_mask;
+      int array_index = ARRAY_INDEX (upto);
+      int bit_index = BIT_INDEX (upto);
+      int pop = 0;
+      int i;
+
+      for (i = 0; i < array_index; i++)
+        pop += _cogl_util_popcountl (g_array_index (array, unsigned long, i));
+
+      top_mask = g_array_index (array, unsigned long, array_index);
+
+      return pop + _cogl_util_popcountl (top_mask & ((1UL << bit_index) - 1));
+    }
+}
