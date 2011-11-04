@@ -191,7 +191,15 @@ gdk_event_handler (GdkEvent *event,
 void
 _clutter_backend_gdk_events_init (ClutterBackend *backend)
 {
+  ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
+
   CLUTTER_NOTE (EVENT, "initialising the event loop");
+
+  backend->device_manager =
+    g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_GDK,
+                  "backend", backend,
+                  "gdk-display", backend_gdk->display,
+                  NULL);
 
   if (!disable_event_retrieval)
     gdk_event_handler_set (gdk_event_handler, NULL, NULL);
@@ -247,22 +255,6 @@ clutter_backend_gdk_free_event_data (ClutterBackend *backend,
   gdk_event = _clutter_event_get_platform_data (event);
   if (gdk_event != NULL)
     gdk_event_free (gdk_event);
-}
-
-static ClutterDeviceManager *
-clutter_backend_gdk_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
-
-  if (G_UNLIKELY (backend_gdk->device_manager == NULL))
-    {
-      backend_gdk->device_manager = g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_GDK,
-						  "backend", backend_gdk,
-						  "gdk-display", backend_gdk->display,
-						  NULL);
-    }
-
-  return backend_gdk->device_manager;
 }
 
 static CoglRenderer *
@@ -381,7 +373,6 @@ clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
   backend_class->post_parse = _clutter_backend_gdk_post_parse;
 
   backend_class->get_features = clutter_backend_gdk_get_features;
-  backend_class->get_device_manager = clutter_backend_gdk_get_device_manager;
   backend_class->copy_event_data = clutter_backend_gdk_copy_event_data;
   backend_class->free_event_data = clutter_backend_gdk_free_event_data;
 

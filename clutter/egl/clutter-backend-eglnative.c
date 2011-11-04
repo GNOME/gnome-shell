@@ -57,24 +57,6 @@
 
 G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
 
-static ClutterDeviceManager *
-clutter_backend_egl_native_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendEglNative *backend_egl_native = CLUTTER_BACKEND_EGL_NATIVE (backend);
-
-#ifdef HAVE_EVDEV
-  if (G_UNLIKELY (backend_egl_native->device_manager == NULL))
-    {
-      backend_egl_native->device_manager =
-	g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_EVDEV,
-		      "backend", backend_egl_native,
-		      NULL);
-    }
-#endif
-
-  return backend_egl_native->device_manager;
-}
-
 static void
 clutter_backend_egl_native_dispose (GObject *gobject)
 {
@@ -84,12 +66,6 @@ clutter_backend_egl_native_dispose (GObject *gobject)
     {
       g_timer_destroy (backend_egl_native->event_timer);
       backend_egl_native->event_timer = NULL;
-    }
-
-  if (backend_egl_native->device_manager != NULL)
-    {
-      g_object_unref (backend_egl_native->device_manager);
-      backend_egl_native->device_manager = NULL;
     }
 
   G_OBJECT_CLASS (clutter_backend_egl_native_parent_class)->dispose (gobject);
@@ -104,8 +80,6 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
   gobject_class->dispose = clutter_backend_egl_native_dispose;
 
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
-
-  backend_class->get_device_manager = clutter_backend_egl_native_get_device_manager;
 }
 
 static void

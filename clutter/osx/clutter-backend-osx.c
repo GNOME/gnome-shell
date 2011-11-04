@@ -94,27 +94,6 @@ clutter_backend_osx_create_stage (ClutterBackend  *backend,
   return impl;
 }
 
-static inline void
-clutter_backend_osx_create_device_manager (ClutterBackendOSX *backend_osx)
-{
-  if (backend_osx->device_manager != NULL)
-    return;
-
-  backend_osx->device_manager = g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_OSX,
-                                              "backend", CLUTTER_BACKEND(backend_osx),
-                                              NULL);
-}
-
-static ClutterDeviceManager *
-clutter_backend_osx_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendOSX *backend_osx = CLUTTER_BACKEND_OSX (backend);
-
-  clutter_backend_osx_create_device_manager (backend_osx);
-
-  return backend_osx->device_manager;
-}
-
 void
 _clutter_backend_osx_events_init (ClutterBackend *backend)
 {
@@ -125,7 +104,10 @@ _clutter_backend_osx_events_init (ClutterBackend *backend)
 
   CLUTTER_NOTE (BACKEND, "init_events");
 
-  clutter_backend_osx_create_device_manager (backend_osx);
+  backend->device_manager = backend_osx->device_manager =
+    g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_OSX,
+                  "backend", CLUTTER_BACKEND(backend_osx),
+                  NULL);
 
   _clutter_osx_event_loop_init ();
 }
@@ -256,5 +238,4 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
   backend_class->create_stage       = clutter_backend_osx_create_stage;
   backend_class->create_context     = clutter_backend_osx_create_context;
   backend_class->ensure_context     = clutter_backend_osx_ensure_context;
-  backend_class->get_device_manager = clutter_backend_osx_get_device_manager;
 }

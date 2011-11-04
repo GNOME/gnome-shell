@@ -200,12 +200,9 @@ clutter_device_manager_init (ClutterDeviceManager *self)
 ClutterDeviceManager *
 clutter_device_manager_get_default (void)
 {
-  ClutterBackendClass *klass;
+  ClutterBackend *backend = clutter_get_default_backend ();
 
-  klass = CLUTTER_BACKEND_GET_CLASS (clutter_get_default_backend ());
-  g_assert (klass->get_device_manager != NULL);
-
-  return klass->get_device_manager (clutter_get_default_backend ());
+  return backend->device_manager;
 }
 
 /**

@@ -59,7 +59,7 @@ clutter_backend_win32_init_events (ClutterBackend *backend)
 
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
-  backend_win32->device_manager =
+  backend->device_manager =
     g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_WIN32,
                   "backend", backend_win32,
                   NULL);
@@ -168,22 +168,6 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
     | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
-static ClutterDeviceManager *
-clutter_backend_win32_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-
-  if (G_UNLIKELY (backend_win32->device_manager == NULL))
-    {
-      backend_win32->device_manager =
-        g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_WIN32,
-                      "backend", backend_win32,
-                      NULL);
-    }
-
-  return backend_win32->device_manager;
-}
-
 /**
  * clutter_win32_disable_event_retrieval
  *
@@ -222,7 +206,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   backend_class->init_events = clutter_backend_win32_init_events;
   backend_class->add_options = clutter_backend_win32_add_options;
   backend_class->get_features = clutter_backend_win32_get_features;
-  backend_class->get_device_manager = clutter_backend_win32_get_device_manager;
 }
 
 static void

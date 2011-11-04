@@ -39,11 +39,13 @@ typedef struct _ClutterBackendPrivate   ClutterBackendPrivate;
 struct _ClutterBackend
 {
   /*< private >*/
-  GObject                parent_instance;
+  GObject parent_instance;
 
-  CoglRenderer          *cogl_renderer;
-  CoglDisplay           *cogl_display;
-  CoglContext           *cogl_context;
+  CoglRenderer *cogl_renderer;
+  CoglDisplay *cogl_display;
+  CoglContext *cogl_context;
+
+  ClutterDeviceManager *device_manager;
 
   ClutterBackendPrivate *priv;
 };

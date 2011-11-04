@@ -62,24 +62,6 @@ static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
 
 G_DEFINE_TYPE (ClutterBackendCex100, clutter_backend_cex100, CLUTTER_TYPE_BACKEND);
 
-static ClutterDeviceManager *
-clutter_backend_cex100_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendCex100 *backend_cex100 = CLUTTER_BACKEND_CEX100 (backend);
-
-#ifdef HAVE_EVDEV
-  if (G_UNLIKELY (backend_cex100->device_manager == NULL))
-    {
-      backend_cex100->device_manager =
-	g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_EVDEV,
-		      "backend", backend_cex100,
-		      NULL);
-    }
-#endif /* HAVE_EVDEV */
-
-  return backend_cex100->device_manager;
-}
-
 static void
 clutter_backend_cex100_dispose (GObject *gobject)
 {
@@ -89,12 +71,6 @@ clutter_backend_cex100_dispose (GObject *gobject)
     {
       g_timer_destroy (backend_cex100->event_timer);
       backend_cex100->event_timer = NULL;
-    }
-
-  if (backend_cex100->device_manager != NULL)
-    {
-      g_object_unref (backend_cex100->device_manager);
-      backend_cex100->device_manager = NULL;
     }
 
   G_OBJECT_CLASS (clutter_backend_cex100_parent_class)->dispose (gobject);
@@ -145,7 +121,6 @@ clutter_backend_cex100_class_init (ClutterBackendCex100Class *klass)
 
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
 
-  backend_class->get_device_manager = clutter_backend_cex100_get_device_manager;
   backend_class->get_display = clutter_backend_cex100_get_display;
 }
 

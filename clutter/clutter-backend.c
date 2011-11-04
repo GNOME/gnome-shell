@@ -504,6 +504,18 @@ clutter_backend_real_init_events (ClutterBackend *backend)
     g_error ("Unknown input backend");
 }
 
+static ClutterDeviceManager *
+clutter_backend_real_get_device_manager (ClutterBackend *backend)
+{
+  if (G_UNLIKELY (backend->device_manager == NULL))
+    {
+      g_critical ("No device manager available, expect broken input");
+      return NULL;
+    }
+
+  return backend->device_manager;
+}
+
 static gboolean
 clutter_backend_real_translate_event (ClutterBackend *backend,
                                       gpointer        native,
@@ -603,6 +615,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   klass->font_changed = clutter_backend_real_font_changed;
 
   klass->init_events = clutter_backend_real_init_events;
+  klass->get_device_manager = clutter_backend_real_get_device_manager;
   klass->translate_event = clutter_backend_real_translate_event;
   klass->create_context = clutter_backend_real_create_context;
   klass->ensure_context = clutter_backend_real_ensure_context;

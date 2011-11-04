@@ -277,6 +277,8 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
         }
 
       backend = CLUTTER_BACKEND (backend_x11);
+      backend->device_manager = backend_x11->device_manager;
+
       translator = CLUTTER_EVENT_TRANSLATOR (backend_x11->device_manager);
       _clutter_backend_add_event_translator (backend, translator);
     }
@@ -589,16 +591,6 @@ clutter_backend_x11_free_event_data (ClutterBackend *backend,
     _clutter_event_x11_free (event_x11);
 }
 
-static ClutterDeviceManager *
-clutter_backend_x11_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
-  clutter_backend_x11_create_device_manager (backend_x11);
-
-  return backend_x11->device_manager;
-}
-
 static void
 update_last_event_time (ClutterBackendX11 *backend_x11,
                         XEvent            *xevent)
@@ -815,7 +807,6 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
 
-  backend_class->get_device_manager = clutter_backend_x11_get_device_manager;
   backend_class->copy_event_data = clutter_backend_x11_copy_event_data;
   backend_class->free_event_data = clutter_backend_x11_free_event_data;
   backend_class->translate_event = clutter_backend_x11_translate_event;
