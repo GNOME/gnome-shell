@@ -398,7 +398,6 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
   gfloat width;
   gfloat height;
   GError *error = NULL;
-  const char *clutter_vblank;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
@@ -470,9 +469,8 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
   cogl_win32_onscreen_set_foreign_window (stage_win32->onscreen,
                                           stage_win32->hwnd);
 
-  clutter_vblank = _clutter_backend_win32_get_vblank ();
-  if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
-    cogl_onscreen_set_swap_throttled (stage_win32->onscreen, FALSE);
+  cogl_onscreen_set_swap_throttled (stage_win32->onscreen,
+                                    _clutter_get_sync_to_vblank ());
 
   framebuffer = COGL_FRAMEBUFFER (stage_win32->onscreen);
   if (!cogl_framebuffer_allocate (framebuffer, &error))

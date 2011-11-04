@@ -331,8 +331,7 @@ _clutter_backend_x11_pre_parse (ClutterBackend  *backend,
       env_string = NULL;
     }
 
-  return CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->pre_parse (backend,
-									      error);
+  return TRUE;
 }
 
 gboolean
@@ -451,8 +450,7 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
                 (unsigned int) backend_x11->xwin_root,
                 clutter_backend_get_resolution (backend));
 
-  return CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->post_parse (backend,
-									       error);
+  return TRUE;
 }
 
 void

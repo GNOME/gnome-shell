@@ -63,8 +63,6 @@ struct _ClutterBackendCoglClass
 
 GType _clutter_backend_cogl_get_type (void) G_GNUC_CONST;
 
-const gchar *_clutter_backend_cogl_get_vblank (void);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_COGL_H__ */

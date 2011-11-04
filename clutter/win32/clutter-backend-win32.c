@@ -47,33 +47,10 @@ typedef int (WINAPI * SwapIntervalProc) (int interval);
 /* singleton object */
 static ClutterBackendWin32 *backend_singleton = NULL;
 
-static gchar *clutter_vblank_name = NULL;
-
 static HINSTANCE clutter_hinst = NULL;
 
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_event_retrieval = FALSE;
-
-const gchar *
-_clutter_backend_win32_get_vblank (void)
-{
-  if (clutter_vblank_name && strcmp (clutter_vblank_name, "0") == 0)
-    return "none";
-  else
-    return clutter_vblank_name;
-}
-
-gboolean
-clutter_backend_win32_pre_parse (ClutterBackend  *backend,
-				 GError         **error)
-{
-  const gchar *env_string;
-
-  if ((env_string = g_getenv ("CLUTTER_VBLANK")))
-    clutter_vblank_name = g_strdup (env_string);
-
-  return TRUE;
-}
 
 static void
 clutter_backend_win32_init_events (ClutterBackend *backend)
@@ -259,7 +236,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   gobject_class->dispose = clutter_backend_win32_dispose;
   gobject_class->finalize = clutter_backend_win32_finalize;
 
-  backend_class->pre_parse        = clutter_backend_win32_pre_parse;
   backend_class->init_events      = clutter_backend_win32_init_events;
   backend_class->create_stage     = clutter_backend_win32_create_stage;
   backend_class->add_options      = clutter_backend_win32_add_options;

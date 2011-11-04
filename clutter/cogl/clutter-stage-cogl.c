@@ -102,7 +102,6 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
   GError *error = NULL;
   gfloat width = 800;
   gfloat height = 600;
-  const char *clutter_vblank;
 
   CLUTTER_NOTE (BACKEND, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_cogl),
@@ -116,9 +115,8 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 						width, height);
     }
 
-  clutter_vblank = _clutter_backend_cogl_get_vblank ();
-  if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
-    cogl_onscreen_set_swap_throttled (stage_cogl->onscreen, FALSE);
+  cogl_onscreen_set_swap_throttled (stage_cogl->onscreen,
+                                    _clutter_get_sync_to_vblank ());
 
   framebuffer = COGL_FRAMEBUFFER (stage_cogl->onscreen);
   if (!cogl_framebuffer_allocate (framebuffer, &error))
