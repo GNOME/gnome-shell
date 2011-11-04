@@ -58,6 +58,14 @@ wayland_swap_buffers (ClutterStageWayland *stage_wayland);
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
+enum
+{
+  PROP_0,
+
+  PROP_BACKEND,
+  PROP_WRAPPER
+};
+
 G_DEFINE_TYPE_WITH_CODE (ClutterStageWayland,
                          _clutter_stage_wayland,
                          G_TYPE_OBJECT,
@@ -428,8 +436,37 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 }
 
 static void
+clutter_stage_wayland_set_property (GObject      *gobject,
+                                    guint         prop_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec)
+{
+  ClutterStageWayland *self = CLUTTER_STAGE_WAYLAND (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      self->backend = g_value_get_object (value);
+      break;
+
+    case PROP_WRAPPER:
+      self->wrapper = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    }
+}
+
+static void
 _clutter_stage_wayland_class_init (ClutterStageWaylandClass *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->set_property = clutter_stage_wayland_set_property;
+
+  g_object_class_override_property (gobject_class, PROP_BACKEND, "backend");
+  g_object_class_override_property (gobject_class, PROP_WRAPPER, "wrapper");
 }
 
 static void

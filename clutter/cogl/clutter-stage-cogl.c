@@ -565,19 +565,8 @@ _clutter_stage_cogl_class_init (ClutterStageCoglClass *klass)
 
   gobject_class->set_property = clutter_stage_cogl_set_property;
 
-  g_object_class_install_property (gobject_class, PROP_WRAPPER,
-				   g_param_spec_object ("wrapper",
-							"Wrapper",
-							"ClutterStage wrapping this native stage",
-							CLUTTER_TYPE_STAGE,
-							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_install_property (gobject_class, PROP_BACKEND,
-				   g_param_spec_object ("backend",
-							"ClutterBackend",
-							"The Clutter backend singleton",
-							CLUTTER_TYPE_BACKEND,
-							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_override_property (gobject_class, PROP_WRAPPER, "wrapper");
+  g_object_class_override_property (gobject_class, PROP_BACKEND, "backend");
 }
 
 static void

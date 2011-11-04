@@ -42,6 +42,14 @@
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
+enum
+{
+  PROP_0,
+
+  PROP_BACKEND,
+  PROP_WRAPPER
+};
+
 G_DEFINE_TYPE_WITH_CODE (ClutterStageWin32,
 			 clutter_stage_win32,
 			 G_TYPE_OBJECT,
@@ -545,6 +553,29 @@ clutter_stage_win32_get_active_framebuffer (ClutterStageWindow *stage_window)
 }
 
 static void
+clutter_stage_win32_set_property (GObject      *gobject,
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
+{
+  ClutterStageWin32 *self = CLUTTER_STAGE_WIN32 (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      self->backend = g_value_get_object (value);
+      break;
+
+    case PROP_WRAPPER:
+      self->wrapper = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    }
+}
+
+static void
 clutter_stage_win32_dispose (GObject *gobject)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (gobject);
@@ -569,7 +600,11 @@ clutter_stage_win32_class_init (ClutterStageWin32Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->set_property = clutter_stage_win32_set_property;
   gobject_class->dispose = clutter_stage_win32_dispose;
+
+  g_object_class_override_property (gobject_class, PROP_BACKEND, "backend");
+  g_object_class_override_property (gobject_class, PROP_WRAPPER, "wrapper");
 }
 
 static void

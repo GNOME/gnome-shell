@@ -32,6 +32,14 @@
 
 #import <AppKit/AppKit.h>
 
+enum
+{
+  PROP_0,
+
+  PROP_BACKEND,
+  PROP_WRAPPER
+};
+
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
 #define clutter_stage_osx_get_type      _clutter_stage_osx_get_type
@@ -608,15 +616,17 @@ _clutter_stage_osx_new (ClutterBackend *backend,
 {
   ClutterStageOSX *self;
 
-  self = g_object_new (CLUTTER_TYPE_STAGE_OSX, NULL);
-  self->backend = backend;
-  self->wrapper = wrapper;
+  self = g_object_new (CLUTTER_TYPE_STAGE_OSX,
+                       "backend", backend,
+                       "wrapper", wrapper,
+                       NULL);
+
   self->isHiding = false;
   self->haveRealized = false;
   self->view = NULL;
   self->window = NULL;
 
-  return CLUTTER_STAGE_WINDOW(self);
+  return CLUTTER_STAGE_WINDOW (self);
 }
 
 /*************************************************************************/
@@ -626,6 +636,30 @@ clutter_stage_osx_init (ClutterStageOSX *self)
   self->requisition_width  = 640;
   self->requisition_height = 480;
   self->acceptFocus = TRUE;
+}
+
+static void
+clutter_stage_osx_set_property (GObject      *gobject,
+                                guint         prop_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
+{
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      self->backend = g_value_get_object (value);
+      break;
+
+    case PROP_WRAPPER:
+      self->wrapper = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -645,6 +679,10 @@ clutter_stage_osx_class_init (ClutterStageOSXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->set_property = clutter_stage_osx_set_property;
   gobject_class->finalize = clutter_stage_osx_finalize;
   gobject_class->dispose = clutter_stage_osx_dispose;
+
+  g_object_class_override_property (gobject_class, PROP_BACKEND, "backend");
+  g_object_class_override_property (gobject_class, PROP_WRAPPER, "wrapper");
 }
