@@ -272,26 +272,27 @@ clutter_backend_real_init_events (ClutterBackend *backend)
   if (input_backend != NULL)
     input_backend = g_intern_string (input_backend);
 
-#ifdef CLUTTER_INPUT_X11
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11) &&
-      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_X11)))
-    {
-      _clutter_backend_x11_events_init (backend);
-    }
-  else
-#endif
 #ifdef CLUTTER_INPUT_OSX
   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_OSX) &&
       (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_OSX)))
     {
       _clutter_backend_osx_events_init (backend);
     }
+  else
 #endif
 #ifdef CLUTTER_INPUT_WIN32
   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WIN32) &&
       (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_WIN32)))
     {
       _clutter_backend_win32_events_init (backend);
+    }
+  else
+#endif
+#ifdef CLUTTER_INPUT_X11
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11) &&
+      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_X11)))
+    {
+      _clutter_backend_x11_events_init (backend);
     }
   else
 #endif
