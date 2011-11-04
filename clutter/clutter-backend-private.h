@@ -68,6 +68,12 @@ struct _ClutterBackendClass
   ClutterFeatureFlags   (* get_features)       (ClutterBackend  *backend);
   void                  (* redraw)             (ClutterBackend  *backend,
                                                 ClutterStage    *stage);
+  CoglRenderer *        (* get_renderer)       (ClutterBackend  *backend,
+                                                GError         **error);
+  CoglDisplay *         (* get_display)        (ClutterBackend  *backend,
+                                                CoglRenderer    *renderer,
+                                                CoglSwapChain   *swap_chain,
+                                                GError         **error);
   gboolean              (* create_context)     (ClutterBackend  *backend,
                                                 GError         **error);
   void                  (* ensure_context)     (ClutterBackend  *backend,

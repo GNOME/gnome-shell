@@ -226,6 +226,115 @@ clutter_backend_real_font_changed (ClutterBackend *backend)
   CLUTTER_NOTE (BACKEND, "Units per em: %.2f", priv->units_per_em);
 }
 
+static gboolean
+clutter_backend_real_create_context (ClutterBackend  *backend,
+                                     GError         **error)
+{
+  ClutterBackendClass *klass;
+  CoglSwapChain *swap_chain;
+  GError *internal_error;
+
+  if (backend->cogl_context != NULL)
+    return TRUE;
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+
+  swap_chain = NULL;
+  internal_error = NULL;
+
+  CLUTTER_NOTE (BACKEND, "Creating Cogl renderer");
+  if (klass->get_renderer != NULL)
+    backend->cogl_renderer = klass->get_renderer (backend, &internal_error);
+  else
+    backend->cogl_renderer = cogl_renderer_new ();
+
+  if (backend->cogl_renderer == NULL)
+    goto error;
+
+  CLUTTER_NOTE (BACKEND, "Connecting the renderer");
+  if (!cogl_renderer_connect (backend->cogl_renderer, &internal_error))
+    goto error;
+
+  CLUTTER_NOTE (BACKEND, "Creating Cogl swap chain");
+  swap_chain = cogl_swap_chain_new ();
+
+  CLUTTER_NOTE (BACKEND, "Creating Cogl display");
+  if (klass->get_display != NULL)
+    {
+      backend->cogl_display = klass->get_display (backend,
+                                                  backend->cogl_renderer,
+                                                  swap_chain,
+                                                  &internal_error);
+    }
+  else
+    {
+      CoglOnscreenTemplate *tmpl;
+      gboolean res;
+
+      tmpl = cogl_onscreen_template_new (swap_chain);
+
+      /* XXX: I have some doubts that this is a good design.
+       *
+       * Conceptually should we be able to check an onscreen_template
+       * without more details about the CoglDisplay configuration?
+       */
+      res = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                                   tmpl,
+                                                   &internal_error);
+
+      if (!res)
+        goto error;
+
+      backend->cogl_display = cogl_display_new (backend->cogl_renderer, tmpl);
+
+      /* the display owns the template */
+      cogl_object_unref (tmpl);
+    }
+
+  if (backend->cogl_display == NULL)
+    goto error;
+
+  CLUTTER_NOTE (BACKEND, "Setting up the display");
+  if (!cogl_display_setup (backend->cogl_display, &internal_error))
+    goto error;
+
+  CLUTTER_NOTE (BACKEND, "Creating the Cogl context");
+  backend->cogl_context = cogl_context_new (backend->cogl_display, &internal_error);
+  if (backend->cogl_context == NULL)
+    goto error;
+
+  /* the display owns the renderer and the swap chain */
+  cogl_object_unref (backend->cogl_renderer);
+  cogl_object_unref (swap_chain);
+
+  return TRUE;
+
+error:
+  if (backend->cogl_display != NULL)
+    {
+      cogl_object_unref (backend->cogl_display);
+      backend->cogl_display = NULL;
+    }
+
+  if (backend->cogl_renderer != NULL)
+    {
+      cogl_object_unref (backend->cogl_renderer);
+      backend->cogl_renderer = NULL;
+    }
+
+  if (swap_chain != NULL)
+    cogl_object_unref (swap_chain);
+
+  if (internal_error != NULL)
+    g_propagate_error (error, internal_error);
+  else
+    g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                         CLUTTER_INIT_ERROR_BACKEND,
+                         _("Unable to initialize the Clutter backend"));
+
+  return FALSE;
+}
+
 static void
 clutter_backend_real_ensure_context (ClutterBackend *backend,
                                      ClutterStage   *stage)
@@ -429,6 +538,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 
   klass->init_events = clutter_backend_real_init_events;
   klass->translate_event = clutter_backend_real_translate_event;
+  klass->create_context = clutter_backend_real_create_context;
   klass->ensure_context = clutter_backend_real_ensure_context;
   klass->redraw = clutter_backend_real_redraw;
 }
@@ -546,10 +656,8 @@ _clutter_backend_create_context (ClutterBackend  *backend,
   ClutterBackendClass *klass;
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (klass->create_context)
-    return klass->create_context (backend, error);
 
-  return TRUE;
+  return klass->create_context (backend, error);
 }
 
 void
