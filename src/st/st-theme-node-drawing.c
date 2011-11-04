@@ -402,7 +402,7 @@ st_theme_node_lookup_corner (StThemeNode    *node,
     return COGL_INVALID_HANDLE;
 
   key = corner_to_string (&corner);
-  texture = st_texture_cache_load (cache, key, ST_TEXTURE_CACHE_POLICY_NONE, load_corner, &corner, NULL);
+  texture = st_texture_cache_load (cache, key, ST_TEXTURE_CACHE_POLICY_FOREVER, load_corner, &corner, NULL);
 
   if (texture)
     {
