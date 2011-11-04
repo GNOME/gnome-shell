@@ -559,7 +559,8 @@ typedef struct
   unsigned long *uniform_differences;
   int n_differences;
   CoglContext *ctx;
-  CoglPipelineUniformOverride *override;
+  const CoglBoxedValue *values;
+  int value_index;
 } FlushUniformsClosure;
 
 static gboolean
@@ -609,13 +610,13 @@ flush_uniform_cb (int uniform_num, void *user_data)
       if (uniform_location != -1)
         _cogl_boxed_value_set_uniform (data->ctx,
                                        uniform_location,
-                                       &data->override->value);
+                                       data->values + data->value_index);
 
       data->n_differences--;
       COGL_FLAGS_SET (data->uniform_differences, uniform_num, FALSE);
     }
 
-  data->override = COGL_SLIST_NEXT (data->override, list_node);
+  data->value_index++;
 
   return data->n_differences > 0;
 }
@@ -698,8 +699,8 @@ _cogl_pipeline_progend_glsl_flush_uniforms (CoglPipeline *pipeline,
           const CoglPipelineUniformsState *parent_uniforms_state =
             &pipeline->big_state->uniforms_state;
 
-          data.override =
-            COGL_SLIST_FIRST (&parent_uniforms_state->override_list);
+          data.values = parent_uniforms_state->override_values;
+          data.value_index = 0;
 
           _cogl_bitmask_foreach (&parent_uniforms_state->override_mask,
                                  flush_uniform_cb,

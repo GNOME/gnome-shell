@@ -339,32 +339,18 @@ typedef struct
   CoglWinding front_winding;
 } CoglPipelineCullFaceState;
 
-typedef struct _CoglPipelineUniformOverride CoglPipelineUniformOverride;
-
-COGL_SLIST_HEAD (CoglPipelineUniformOverrideList,
-                 CoglPipelineUniformOverride);
-
-struct _CoglPipelineUniformOverride
-{
-  COGL_SLIST_ENTRY (CoglPipelineUniformOverride) list_node;
-
-  /* We don't need to store the location of the uniform here because
-     it is implicit from the order in the list */
-
-  /* One of these overrides can effectively remove a uniform by
-     setting the boxed value type to none. In that case no attempt
-     will be made to upload the value */
-
-  CoglBoxedValue value;
-};
-
 typedef struct
 {
   CoglBitmask override_mask;
+
+  /* This is an array of values. Only the uniforms that have a bit set
+     in override_mask have a corresponding value here. The uniform's
+     location is implicit from the order in this array */
+  CoglBoxedValue *override_values;
+
   /* Uniforms that have been modified since this pipeline was last
      flushed */
   CoglBitmask changed_mask;
-  CoglPipelineUniformOverrideList override_list;
 } CoglPipelineUniformsState;
 
 typedef struct

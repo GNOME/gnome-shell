@@ -224,7 +224,7 @@ _cogl_pipeline_init_default_pipeline (void)
 
   _cogl_bitmask_init (&uniforms_state->override_mask);
   _cogl_bitmask_init (&uniforms_state->changed_mask);
-  COGL_SLIST_INIT (&uniforms_state->override_list);
+  uniforms_state->override_values = NULL;
 
   ctx->default_pipeline = _cogl_pipeline_object_new (pipeline);
 }
@@ -467,16 +467,12 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
     {
       CoglPipelineUniformsState *uniforms_state
         = &pipeline->big_state->uniforms_state;
-      CoglPipelineUniformOverride *override, *tmp;
+      int n_overrides = _cogl_bitmask_popcount (&uniforms_state->override_mask);
+      int i;
 
-      COGL_SLIST_FOREACH_SAFE (override,
-                               &uniforms_state->override_list,
-                               list_node,
-                               tmp)
-        {
-          _cogl_boxed_value_destroy (&override->value);
-          g_slice_free (CoglPipelineUniformOverride, override);
-        }
+      for (i = 0; i < n_overrides; i++)
+        _cogl_boxed_value_destroy (uniforms_state->override_values + i);
+      g_free (uniforms_state->override_values);
 
       _cogl_bitmask_destroy (&uniforms_state->override_mask);
       _cogl_bitmask_destroy (&uniforms_state->changed_mask);
@@ -953,27 +949,21 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
 
   if (differences & COGL_PIPELINE_STATE_UNIFORMS)
     {
-      CoglPipelineUniformOverride *prev = NULL;
-      CoglPipelineUniformOverride *override;
+      int n_overrides =
+        _cogl_bitmask_popcount (&src->big_state->uniforms_state.override_mask);
+      int i;
 
-      COGL_SLIST_INIT (&big_state->uniforms_state.override_list);
+      big_state->uniforms_state.override_values =
+        g_malloc (n_overrides * sizeof (CoglBoxedValue));
 
-      COGL_SLIST_FOREACH (override,
-                          &src->big_state->uniforms_state.override_list,
-                          list_node)
+      for (i = 0; i < n_overrides; i++)
         {
-          CoglPipelineUniformOverride *new_override =
-            g_slice_new (CoglPipelineUniformOverride);
-          _cogl_boxed_value_copy (&new_override->value,
-                                  &override->value);
-          if (prev)
-            COGL_SLIST_INSERT_AFTER (prev, new_override, list_node);
-          else
-            COGL_SLIST_INSERT_HEAD (&big_state->uniforms_state.override_list,
-                                    new_override,
-                                    list_node);
+          CoglBoxedValue *dst_bv =
+            big_state->uniforms_state.override_values + i;
+          const CoglBoxedValue *src_bv =
+            src->big_state->uniforms_state.override_values + i;
 
-          prev = new_override;
+          _cogl_boxed_value_copy (dst_bv, src_bv);
         }
 
       _cogl_bitmask_init (&big_state->uniforms_state.override_mask);
@@ -1073,7 +1063,7 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
           &pipeline->big_state->uniforms_state;
         _cogl_bitmask_init (&uniforms_state->override_mask);
         _cogl_bitmask_init (&uniforms_state->changed_mask);
-        COGL_SLIST_INIT (&uniforms_state->override_list);
+        uniforms_state->override_values = NULL;
       }
     }
 }

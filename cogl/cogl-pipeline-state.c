@@ -240,8 +240,9 @@ _cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
 
 typedef struct
 {
-  const CoglBoxedValue **values;
-  const CoglPipelineUniformOverride *override_values;
+  const CoglBoxedValue **dst_values;
+  const CoglBoxedValue *src_values;
+  int override_count;
 } GetUniformsClosure;
 
 static gboolean
@@ -249,10 +250,10 @@ get_uniforms_cb (int uniform_num, void *user_data)
 {
   GetUniformsClosure *data = user_data;
 
-  if (data->values[uniform_num] == NULL)
-    data->values[uniform_num] = &data->override_values->value;
+  if (data->dst_values[uniform_num] == NULL)
+    data->dst_values[uniform_num] = data->src_values + data->override_count;
 
-  data->override_values = COGL_SLIST_NEXT (data->override_values, list_node);
+  data->override_count++;
 
   return TRUE;
 }
@@ -268,14 +269,15 @@ _cogl_pipeline_get_all_uniform_values (CoglPipeline *pipeline,
   memset (values, 0,
           sizeof (const CoglBoxedValue *) * ctx->n_uniform_names);
 
-  data.values = values;
+  data.dst_values = values;
 
   do
     {
       const CoglPipelineUniformsState *uniforms_state =
         &pipeline->big_state->uniforms_state;
 
-      data.override_values = COGL_SLIST_FIRST (&uniforms_state->override_list);
+      data.override_count = 0;
+      data.src_values = uniforms_state->override_values;
 
       if ((pipeline->differences & COGL_PIPELINE_STATE_UNIFORMS))
         _cogl_bitmask_foreach (&uniforms_state->override_mask,
@@ -1398,44 +1400,13 @@ cogl_pipeline_set_point_size (CoglPipeline *pipeline,
                                    _cogl_pipeline_point_size_equal);
 }
 
-typedef struct
-{
-  int location;
-  CoglPipelineUniformOverride *previous_override;
-  CoglPipelineUniformOverride *found_override;
-  CoglPipelineUniformOverride *it;
-} FindUniformOverrideClosure;
-
-static gboolean
-find_uniform_override_cb (int it_location,
-                          void *user_data)
-{
-  FindUniformOverrideClosure *data = user_data;
-
-  if (it_location < data->location)
-    {
-      data->previous_override = data->it;
-      data->it = COGL_SLIST_NEXT (data->it, list_node);
-
-      return TRUE;
-    }
-  else
-    {
-      if (it_location == data->location)
-        data->found_override = data->it;
-
-      return FALSE;
-    }
-}
-
 static CoglBoxedValue *
 _cogl_pipeline_override_uniform (CoglPipeline *pipeline,
                                  int location)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_UNIFORMS;
   CoglPipelineUniformsState *uniforms_state;
-  FindUniformOverrideClosure find_data;
-  CoglPipelineUniformOverride *override;
+  int override_index;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
@@ -1452,36 +1423,53 @@ _cogl_pipeline_override_uniform (CoglPipeline *pipeline,
 
   uniforms_state = &pipeline->big_state->uniforms_state;
 
-  find_data.previous_override = NULL;
-  find_data.found_override = NULL;
-  find_data.it = COGL_SLIST_FIRST (&uniforms_state->override_list);
-  find_data.location = location;
-
-  _cogl_bitmask_foreach (&uniforms_state->override_mask,
-                         find_uniform_override_cb,
-                         &find_data);
+  /* Count the number of bits that are set below this location. That
+     should give us the position where our new value should lie */
+  override_index = _cogl_bitmask_popcount_upto (&uniforms_state->override_mask,
+                                                location);
 
   _cogl_bitmask_set (&uniforms_state->changed_mask, location, TRUE);
 
   /* If this pipeline already has an override for this value then we
      can just use it directly */
-  if (find_data.found_override)
-    return &find_data.found_override->value;
+  if (_cogl_bitmask_get (&uniforms_state->override_mask, location))
+    return uniforms_state->override_values + override_index;
 
-  /* We need to add a new override */
-  override = g_slice_new (CoglPipelineUniformOverride);
-  _cogl_boxed_value_init (&override->value);
+  /* We need to create a new override value in the right position
+     within the array. This is pretty inefficient but the hope is that
+     it will be much more common to modify an existing uniform rather
+     than modify a new one so it is more important to optimise the
+     former case. */
 
-  if (find_data.previous_override)
-    COGL_SLIST_INSERT_AFTER (find_data.previous_override, override, list_node);
+  if (uniforms_state->override_values == NULL)
+    {
+      g_assert (override_index == 0);
+      uniforms_state->override_values = g_new (CoglBoxedValue, 1);
+    }
   else
-    COGL_SLIST_INSERT_HEAD (&uniforms_state->override_list,
-                            override,
-                            list_node);
+    {
+      /* We need to grow the array and copy in the old values */
+      CoglBoxedValue *old_values = uniforms_state->override_values;
+      int old_size = _cogl_bitmask_popcount (&uniforms_state->override_mask);
+
+      uniforms_state->override_values = g_new (CoglBoxedValue, old_size + 1);
+
+      /* Copy in the old values leaving a gap for the new value */
+      memcpy (uniforms_state->override_values,
+              old_values,
+              sizeof (CoglBoxedValue) * override_index);
+      memcpy (uniforms_state->override_values,
+              old_values + override_index + 1,
+              sizeof (CoglBoxedValue) * (old_size - override_index));
+
+      g_free (old_values);
+    }
+
+  _cogl_boxed_value_init (uniforms_state->override_values + override_index);
 
   _cogl_bitmask_set (&uniforms_state->override_mask, location, TRUE);
 
-  return &override->value;
+  return uniforms_state->override_values + override_index;
 }
 
 void
