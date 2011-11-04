@@ -192,8 +192,10 @@ dnl ========================================================================
 FLAVOUR_LIBS=""
 FLAVOUR_CFLAGS=""
 CLUTTER_BACKENDS=""
+CLUTTER_INPUT_BACKENDS=""
 
 experimental_backend=no
+experimental_input_backend=no
 
 # base dependencies for core
 CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
@@ -257,6 +259,7 @@ dnl Per-backend rules
 AS_IF([test "x$enable_x11" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS x11"
+        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS x11"
 
         SUPPORT_X11=1
         SUPPORT_GLX=1
@@ -291,6 +294,7 @@ AS_IF([test "x$enable_x11" = "xyes"],
 AS_IF([test "x$enable_gdk" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS gdk"
+        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS gdk"
 
 	SUPPORT_GDK=1
         SUPPORT_COGL=1
@@ -320,6 +324,8 @@ AS_IF([test "x$enable_wayland" = "xyes"],
 AS_IF([test "x$enable_cex100" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS cex100"
+
+        experimental_backend="yes"
 
         SUPPORT_COGL=1
         SUPPORT_EGL_PLATFORM_GDL=1
@@ -353,6 +359,8 @@ AS_IF([test "x$enable_egl" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
 
+        experimental_backend="yes"
+
         SUPPORT_EGL=1
         SUPPORT_COGL=1
 
@@ -374,6 +382,7 @@ AS_IF([test "x$enable_egl" = "xyes"],
 AS_IF([test "x$enable_osx" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS osx"
+        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS osx"
 
         AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
 
@@ -385,6 +394,7 @@ AS_IF([test "x$enable_osx" = "xyes"],
 AS_IF([test "x$enable_win32" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS win32"
+        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS win32"
 
         AC_DEFINE([HAVE_CLUTTER_WIN32], [1], [Have the Win32 backend])
 
@@ -417,6 +427,8 @@ AS_IF([test "x$enable_tslib" = "xyes"],
         PKG_CHECK_MODULES(TSLIB, [tslib-1.0], [have_tslib=yes], [have_tslib=no])
         AS_IF([test "x$have_tslib" = "xyes"],
               [
+                CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS tslib"
+                experimental_input_backend="yes"
                 AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])
                 SUPPORT_TSLIB=1
               ])
@@ -427,6 +439,8 @@ AS_IF([test "x$enable_evdev" = "xyes"],
         PKG_CHECK_MODULES(EVDEV, [gudev-1.0 xkbcommon], [have_evdev=yes], [have_evdev=no])
         AS_IF([test "x$have_evdev" = "xyes"],
               [
+                CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
+                experimental_input_backend="yes"
                 AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
                 SUPPORT_EVDEV=1
               ])
@@ -460,6 +474,9 @@ AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1], [Can use Cogl 2.0 API interna
 dnl strip leading spaces
 CLUTTER_BACKENDS=${CLUTTER_BACKENDS#* }
 AC_SUBST(CLUTTER_BACKENDS)
+
+CLUTTER_INPUT_BACKENDS=${CLUTTER_INPUT_BACKENDS#* }
+AC_SUBST(CLUTTER_INPUT_BACKENDS)
 
 AC_CACHE_SAVE
 
@@ -1075,6 +1092,12 @@ else
 echo "        Windowing systems: ${CLUTTER_BACKENDS} (WARNING: Experimental backends enabled)"
 fi
 
+if test "x$experimental_input_backend" = "xno"; then
+echo "        Input backends: ${CLUTTER_INPUT_BACKENDS}"
+else
+echo "        Input backends: ${CLUTTER_INPUT_BACKENDS} (WARNING: Experimental backends enabled)"
+fi
+
 if test "x$SUPPORT_X11" = "x1"; then
 echo ""
 echo "     - X11 backend options:"
@@ -1082,12 +1105,10 @@ echo "        Enabled extensions: ${X11_EXTS}"
 echo "        Build X11-specific tests: ${x11_tests}"
 fi
 
-if test "x$SUPPORT_EGL" = "x1"; then
+if test "x$SUPPORT_CEX100" = "x1"; then
 echo ""
-echo "     - EGL backend options:"
-echo "        Enable TSLib: ${have_tslib}"
-echo "        Enable evdev: ${have_evdev}"
-echo "        Enable GDL: ${have_gdl}"
+echo "     - CEx100 backend options:"
+echo "        libGDL include prefix: ${CLUTTER_CEX100_LIBGDL_PREFIX}"
 fi
 
 echo ""
