@@ -53,6 +53,8 @@ struct _ClutterBackendClass
   /*< private >*/
   GObjectClass parent_class;
 
+  GType stage_window_type;
+
   /* vfuncs */
   gboolean              (* pre_parse)          (ClutterBackend  *backend,
                                                 GError         **error);

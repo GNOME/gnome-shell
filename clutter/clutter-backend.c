@@ -512,6 +512,8 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 
   g_type_class_add_private (gobject_class, sizeof (ClutterBackendPrivate));
 
+  klass->stage_window_type = G_TYPE_INVALID;
+
   /**
    * ClutterBackend::resolution-changed:
    * @backend: the #ClutterBackend that emitted the signal
