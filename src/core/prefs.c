@@ -1919,8 +1919,9 @@ meta_prefs_add_keybinding (const char           *name,
   if (settings == NULL)
     {
       settings = g_settings_new (schema);
-      g_signal_connect (settings, "changed",
-                        G_CALLBACK (bindings_changed), NULL);
+      if ((flags & META_KEY_BINDING_BUILTIN) != 0)
+        g_signal_connect (settings, "changed",
+                          G_CALLBACK (bindings_changed), NULL);
       g_hash_table_insert (settings_schemas, g_strdup (schema), settings);
     }
 
@@ -1931,6 +1932,7 @@ meta_prefs_add_keybinding (const char           *name,
   pref->bindings = NULL;
   pref->add_shift = (flags & META_KEY_BINDING_REVERSES) != 0;
   pref->per_window = (flags & META_KEY_BINDING_PER_WINDOW) != 0;
+  pref->builtin = (flags & META_KEY_BINDING_BUILTIN) != 0;
 
   strokes = g_settings_get_strv (settings, name);
   update_binding (pref, strokes);
@@ -1938,11 +1940,55 @@ meta_prefs_add_keybinding (const char           *name,
 
   g_hash_table_insert (key_bindings, g_strdup (name), pref);
 
+  if (!pref->builtin)
+    {
+      guint id;
+      char *changed_signal = g_strdup_printf ("changed::%s", name);
+      id = g_signal_connect (settings, changed_signal,
+                             G_CALLBACK (bindings_changed), NULL);
+      g_free (changed_signal);
+
+      g_object_set_data (G_OBJECT (settings), name, GUINT_TO_POINTER (id));
+
+      queue_changed (META_PREF_KEYBINDINGS);
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_prefs_remove_keybinding (const char *name)
+{
+  MetaKeyPref *pref;
+  GSettings   *settings;
+  guint        id;
+
+  pref = g_hash_table_lookup (key_bindings, name);
+  if (!pref)
+    {
+      meta_warning ("Trying to remove non-existent keybinding \"%s\".\n", name);
+      return FALSE;
+    }
+
+  if (pref->builtin)
+    {
+      meta_warning ("Trying to remove builtin keybinding \"%s\".\n", name);
+      return FALSE;
+    }
+
+  settings = SETTINGS (pref->schema);
+  id = GPOINTER_TO_UINT (g_object_steal_data (G_OBJECT (settings), name));
+  g_signal_handler_disconnect (settings, id);
+
+  g_hash_table_remove (key_bindings, name);
+
+  queue_changed (META_PREF_KEYBINDINGS);
+
   return TRUE;
 }
 
 /**
- * meta_prefs_get_keybindings: (skip)
+ * meta_prefs_get_keybindings:
  * Return: (element-type MetaKeyPref) (transfer container):
  */
 GList *

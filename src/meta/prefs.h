@@ -238,8 +238,9 @@ typedef enum
 {
   META_KEY_BINDING_NONE,
   META_KEY_BINDING_PER_WINDOW  = 1 << 0,
-  META_KEY_BINDING_REVERSES    = 1 << 1,
-  META_KEY_BINDING_IS_REVERSED = 1 << 2
+  META_KEY_BINDING_BUILTIN     = 1 << 1,
+  META_KEY_BINDING_REVERSES    = 1 << 2,
+  META_KEY_BINDING_IS_REVERSED = 1 << 3
 } MetaKeyBindingFlags;
 
 typedef struct
@@ -250,7 +251,8 @@ typedef struct
 } MetaKeyCombo;
 
 /**
- * MetaKeyHandlerFunc: (skip)
+ * MetaKeyHandlerFunc:
+ * @event: (type gpointer):
  *
  */
 typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
@@ -261,7 +263,6 @@ typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
                                      gpointer        user_data);
 
 typedef struct _MetaKeyHandler MetaKeyHandler;
-
 
 typedef struct
 {
@@ -282,7 +283,12 @@ typedef struct
 
   /** for keybindings that apply only to a window */
   gboolean      per_window:1;
+
+  /** for keybindings not added with meta_display_add_keybinding() */
+  gboolean      builtin:1;
 } MetaKeyPref;
+
+GType meta_key_binding_get_type    (void);
 
 GList *meta_prefs_get_keybindings (void);
 

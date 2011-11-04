@@ -77,6 +77,9 @@ gboolean meta_prefs_add_keybinding          (const char           *name,
                                              MetaKeyBindingAction  action,
                                              MetaKeyBindingFlags   flags);
 
+gboolean meta_prefs_remove_keybinding       (const char    *name);
+
+
 #endif
 
 

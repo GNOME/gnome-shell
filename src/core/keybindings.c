@@ -59,6 +59,49 @@ static gboolean add_builtin_keybinding (MetaDisplay          *display,
                                         MetaKeyHandlerFunc    handler,
                                         int                   handler_arg);
 
+static void
+meta_key_binding_free (MetaKeyBinding *binding)
+{
+  g_slice_free (MetaKeyBinding, binding);
+}
+
+static MetaKeyBinding *
+meta_key_binding_copy (MetaKeyBinding *binding)
+{
+  return g_slice_dup (MetaKeyBinding, binding);
+}
+
+GType
+meta_key_binding_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (G_UNLIKELY (type_id == 0))
+    type_id = g_boxed_type_register_static (g_intern_static_string ("MetaKeyBinding"),
+                                            (GBoxedCopyFunc)meta_key_binding_copy,
+                                            (GBoxedFreeFunc)meta_key_binding_free);
+
+  return type_id;
+}
+
+const char *
+meta_key_binding_get_name (MetaKeyBinding *binding)
+{
+  return binding->name;
+}
+
+MetaVirtualModifier
+meta_key_binding_get_modifiers (MetaKeyBinding *binding)
+{
+  return binding->modifiers;
+}
+
+guint
+meta_key_binding_get_mask (MetaKeyBinding *binding)
+{
+  return binding->mask;
+}
+
 /* These can't be bound to anything, but they are used to handle
  * various other events.  TODO: Possibly we should include them as event
  * handler functions and have some kind of flag to say they're unbindable.
@@ -501,13 +544,15 @@ display_get_keybinding (MetaDisplay  *display,
 }
 
 static gboolean
-add_builtin_keybinding (MetaDisplay          *display,
-                        const char           *name,
-                        const char           *schema,
-                        MetaKeyBindingFlags   flags,
-                        MetaKeyBindingAction  action,
-                        MetaKeyHandlerFunc    func,
-                        int                   data)
+add_keybinding_internal (MetaDisplay          *display,
+                         const char           *name,
+                         const char           *schema,
+                         MetaKeyBindingFlags   flags,
+                         MetaKeyBindingAction  action,
+                         MetaKeyHandlerFunc    func,
+                         int                   data,
+                         gpointer              user_data,
+                         GDestroyNotify        free_data)
 {
   MetaKeyHandler *handler;
 
@@ -520,8 +565,88 @@ add_builtin_keybinding (MetaDisplay          *display,
   handler->default_func = func;
   handler->data = data;
   handler->flags = flags;
+  handler->user_data = user_data;
+  handler->user_data_free_func = free_data;
 
   g_hash_table_insert (key_handlers, g_strdup (name), handler);
+
+  return TRUE;
+}
+
+static gboolean
+add_builtin_keybinding (MetaDisplay          *display,
+                        const char           *name,
+                        const char           *schema,
+                        MetaKeyBindingFlags   flags,
+                        MetaKeyBindingAction  action,
+                        MetaKeyHandlerFunc    handler,
+                        int                   handler_arg)
+{
+  return add_keybinding_internal (display, name, schema,
+                                  flags | META_KEY_BINDING_BUILTIN,
+                                  action, handler, handler_arg, NULL, NULL);
+}
+
+/**
+ * meta_display_add_keybinding:
+ * @display: a #MetaDisplay
+ * @name: the binding's name
+ * @schema: the #GSettings schema where @name is stored
+ * @flags: flags to specify binding details
+ * @handler: function to run when the keybinding is invoked
+ * @user_data: the data to pass to @handler
+ * @free_data: function to free @user_data
+ *
+ * Add a keybinding at runtime. The key @name in @schema needs to be of
+ * type %G_VARIANT_TYPE_STRING_ARRAY, with each string describing a
+ * keybinding in the form of "<Control>a" or "<Shift><Alt>F1". The parser
+ * is fairly liberal and allows lower or upper case, and also abbreviations
+ * such as "<Ctl>" and "<Ctrl>". If the key is set to the empty list or a
+ * list with a single element of either "" or "disabled", the keybinding is
+ * disabled.
+ * If %META_KEY_BINDING_REVERSES is specified in @flags, the binding
+ * may be reversed by holding down the "shift" key; therefore, "<Shift>"
+ * cannot be one of the keys used. @handler is expected to check for the
+ * "shift" modifier in this case and reverse its action.
+ *
+ * Use meta_display_remove_keybinding() to remove the binding.
+ *
+ * Returns: %TRUE if the keybinding was added successfully,
+ *          otherwise %FALSE
+ */
+gboolean
+meta_display_add_keybinding (MetaDisplay         *display,
+                             const char          *name,
+                             const char          *schema,
+                             MetaKeyBindingFlags  flags,
+                             MetaKeyHandlerFunc   handler,
+                             gpointer             user_data,
+                             GDestroyNotify       free_data)
+{
+  return add_keybinding_internal (display, name, schema, flags,
+                                  META_KEYBINDING_ACTION_NONE,
+                                  handler, 0, user_data, free_data);
+}
+
+/**
+ * meta_display_remove_keybinding:
+ * @display: the #MetaDisplay
+ * @name: name of the keybinding to remove
+ *
+ * Remove keybinding @name; the function will fail if @name is not a known
+ * keybinding or has not been added with meta_display_add_keybinding().
+ *
+ * Returns: %TRUE if the binding has been removed sucessfully,
+ *          otherwise %FALSE
+ */
+gboolean
+meta_display_remove_keybinding (MetaDisplay *display,
+                                const char  *name)
+{
+  if (!meta_prefs_remove_keybinding (name))
+    return FALSE;
+
+  g_hash_table_remove (key_handlers, name);
 
   return TRUE;
 }
@@ -531,6 +656,11 @@ add_builtin_keybinding (MetaDisplay          *display,
  * @display: A #MetaDisplay
  * @keycode: Raw keycode
  * @mask: Event mask
+ *
+ * Get the #MetaKeyBindingAction bound to %keycode. Only builtin
+ * keybindings have an associated #MetaKeyBindingAction, for
+ * bindings added dynamically with meta_display_add_keybinding()
+ * the function will always return %META_KEYBINDING_ACTION_NONE.
  *
  * Returns: The action that should be taken for the given key, or
  * %META_KEYBINDING_ACTION_NONE.
