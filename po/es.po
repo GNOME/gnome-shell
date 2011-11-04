@@ -2,22 +2,22 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-23 11:55+0000\n"
-"PO-Revision-Date: 2011-10-23 19:42+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-11-03 16:20+0000\n"
+"PO-Revision-Date: 2011-11-04 13:17+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -98,16 +98,16 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
-"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
-"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
-"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
-"también puede tomar parte en su propia salida; esto se puede usar para "
-"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
-"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
-"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 "
-"threads=%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T "
-"como suposición para el número de hilos óptimos en el sistema."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
+"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
+"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
+"punto se escibirá en el archivo de salida. No obstante la tubería también "
+"puede tomar parte en su propia salida; esto se puede usar para enviar la "
+"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
+"está establecido o lo está a un valor vacío, se usará la tubería "
+"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 threads="
+"%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T como "
+"suposición para el número de hilos óptimos en el sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -204,7 +204,7 @@ msgid "Not listed?"
 msgstr "¿No está listado?"
 
 #: ../js/gdm/loginDialog.js:1035 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:520 ../js/ui/networkAgent.js:148
+#: ../js/ui/extensionSystem.js:519 ../js/ui/networkAgent.js:148
 #: ../js/ui/polkitAuthenticationAgent.js:173 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Cancelar"
@@ -441,7 +441,7 @@ msgid "Next week"
 msgstr "La semana que viene"
 
 #: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:459
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:353
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:350
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -465,7 +465,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1206
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1214
 msgid "Remove"
 msgstr "Quitar"
 
@@ -530,7 +530,6 @@ msgstr "ELEMENTOS RECIENTES"
 
 #: ../js/ui/endSessionDialog.js:60
 #, c-format
-#| msgid "Log Out %s"
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Cerrar la sesión %s"
@@ -620,11 +619,11 @@ msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando el sistema."
 
-#: ../js/ui/extensionSystem.js:524
+#: ../js/ui/extensionSystem.js:523
 msgid "Install"
 msgstr "Instalar"
 
-#: ../js/ui/extensionSystem.js:528
+#: ../js/ui/extensionSystem.js:527
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
@@ -651,7 +650,7 @@ msgstr "%s no ha generado ningún error."
 msgid "Hide Errors"
 msgstr "Ocultar errores"
 
-#: ../js/ui/lookingGlass.js:729 ../js/ui/lookingGlass.js:779
+#: ../js/ui/lookingGlass.js:729 ../js/ui/lookingGlass.js:780
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
@@ -661,35 +660,46 @@ msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:740 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:741 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:742
+#: ../js/ui/lookingGlass.js:743
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:744
+#: ../js/ui/lookingGlass.js:745
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:746
+#: ../js/ui/lookingGlass.js:747
 msgid "Downloading"
 msgstr "Descargando"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:768
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:774
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1199
+#: ../js/ui/messageTray.js:1207
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2408
+#: ../js/ui/messageTray.js:1224
+#| msgid "minute"
+#| msgid_plural "minutes"
+msgid "Unmute"
+msgstr "Dar voz"
+
+#: ../js/ui/messageTray.js:1224
+#| msgid "Mouse"
+msgid "Mute"
+msgstr "Silenciar"
+
+#: ../js/ui/messageTray.js:2436
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -735,8 +745,8 @@ msgstr "La red inalámbrica requiere autenticación"
 #: ../js/ui/networkAgent.js:325
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"Passwords or encryption keys are required to access the wireless network '%"
+"s'."
 msgstr ""
 "Se necesitan contraseñas o claves de cifrado para acceder a la red "
 "inalámbrica «%s»."
@@ -1108,13 +1118,13 @@ msgstr "no disponible"
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1523
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1532
 msgid "More..."
 msgstr "Más…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1467
 msgid "Connected (private)"
 msgstr "Conectada (privada)"
 
@@ -1131,7 +1141,7 @@ msgid "Auto dial-up"
 msgstr "Marcado automático"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1470
+#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1479
 #, c-format
 msgid "Auto %s"
 msgstr "%s automática"
@@ -1140,47 +1150,47 @@ msgstr "%s automática"
 msgid "Auto bluetooth"
 msgstr "Bluetooth automático"
 
-#: ../js/ui/status/network.js:1472
+#: ../js/ui/status/network.js:1481
 msgid "Auto wireless"
 msgstr "Inalámbrica automática"
 
-#: ../js/ui/status/network.js:1566
+#: ../js/ui/status/network.js:1575
 msgid "Enable networking"
 msgstr "Activar red"
 
-#: ../js/ui/status/network.js:1578
+#: ../js/ui/status/network.js:1587
 msgid "Wired"
 msgstr "Cableada"
 
-#: ../js/ui/status/network.js:1589
+#: ../js/ui/status/network.js:1598
 msgid "Wireless"
 msgstr "Inalámbrica"
 
-#: ../js/ui/status/network.js:1599
+#: ../js/ui/status/network.js:1608
 msgid "Mobile broadband"
 msgstr "Banda ancha móvil"
 
-#: ../js/ui/status/network.js:1609
+#: ../js/ui/status/network.js:1618
 msgid "VPN Connections"
 msgstr "Conexiones VPN"
 
-#: ../js/ui/status/network.js:1620
+#: ../js/ui/status/network.js:1629
 msgid "Network Settings"
 msgstr "Configuración de la red"
 
-#: ../js/ui/status/network.js:1757
+#: ../js/ui/status/network.js:1766
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: ../js/ui/status/network.js:1758
+#: ../js/ui/status/network.js:1767
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
-#: ../js/ui/status/network.js:2008
+#: ../js/ui/status/network.js:2017
 msgid "Networking is disabled"
 msgstr "La red está desactivada"
 
-#: ../js/ui/status/network.js:2133
+#: ../js/ui/status/network.js:2142
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
@@ -1626,15 +1636,15 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
-#: ../src/main.c:480
+#: ../src/main.c:483
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/main.c:486
+#: ../src/main.c:489
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para la pantalla de inicio"
 
-#: ../src/shell-app.c:579
+#: ../src/shell-app.c:567
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Falló al lanzar «%s»"
@@ -1945,8 +1955,8 @@ msgstr "%1$s: %2$s"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
-#~ "segundos en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
+#~ "en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -1963,19 +1973,18 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
-#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
-#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
-#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
-#~ "especificado en la clave «custom_format». Note que si se establece a "
-#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
+#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
+#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
+#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
+#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
+#~ "ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
