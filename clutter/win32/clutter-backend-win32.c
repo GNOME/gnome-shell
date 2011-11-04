@@ -236,10 +236,12 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   gobject_class->dispose = clutter_backend_win32_dispose;
   gobject_class->finalize = clutter_backend_win32_finalize;
 
-  backend_class->init_events      = clutter_backend_win32_init_events;
-  backend_class->create_stage     = clutter_backend_win32_create_stage;
-  backend_class->add_options      = clutter_backend_win32_add_options;
-  backend_class->get_features     = clutter_backend_win32_get_features;
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_WIN32;
+
+  backend_class->init_events = clutter_backend_win32_init_events;
+  backend_class->create_stage = clutter_backend_win32_create_stage;
+  backend_class->add_options = clutter_backend_win32_add_options;
+  backend_class->get_features = clutter_backend_win32_get_features;
   backend_class->get_device_manager = clutter_backend_win32_get_device_manager;
 }
 

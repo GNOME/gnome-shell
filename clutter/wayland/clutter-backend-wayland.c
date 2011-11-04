@@ -620,6 +620,8 @@ _clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
   gobject_class->dispose     = clutter_backend_wayland_dispose;
   gobject_class->finalize    = clutter_backend_wayland_finalize;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_WAYLAND;
+
   backend_class->pre_parse        = clutter_backend_wayland_pre_parse;
   backend_class->post_parse       = clutter_backend_wayland_post_parse;
   backend_class->get_features     = clutter_backend_wayland_get_features;

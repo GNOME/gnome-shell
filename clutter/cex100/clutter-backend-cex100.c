@@ -169,6 +169,8 @@ clutter_backend_cex100_class_init (ClutterBackendCex100Class *klass)
 
   gobject_class->dispose = clutter_backend_cex100_dispose;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
+
   backend_class->get_device_manager = clutter_backend_cex100_get_device_manager;
   backend_class->create_stage = clutter_backend_cex100_create_stage;
   backend_class->get_display = clutter_backend_cex100_get_display;

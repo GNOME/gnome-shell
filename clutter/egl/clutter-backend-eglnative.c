@@ -129,6 +129,8 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 
   gobject_class->dispose = clutter_backend_egl_native_dispose;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
+
   backend_class->get_device_manager = clutter_backend_egl_native_get_device_manager;
   backend_class->create_stage = clutter_backend_egl_native_create_stage;
 }

@@ -388,7 +388,10 @@ clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
   gobject_class->dispose = clutter_backend_gdk_dispose;
   gobject_class->finalize = clutter_backend_gdk_finalize;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_GDK;
+
   backend_class->post_parse = _clutter_backend_gdk_post_parse;
+
   backend_class->get_features = clutter_backend_gdk_get_features;
   backend_class->get_device_manager = clutter_backend_gdk_get_device_manager;
   backend_class->copy_event_data = clutter_backend_gdk_copy_event_data;

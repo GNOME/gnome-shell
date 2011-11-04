@@ -808,14 +808,18 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   gobject_class->dispose = clutter_backend_x11_dispose;
   gobject_class->finalize = clutter_backend_x11_finalize;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_X11;
+
   backend_class->pre_parse = _clutter_backend_x11_pre_parse;
   backend_class->post_parse = _clutter_backend_x11_post_parse;
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
+
   backend_class->get_device_manager = clutter_backend_x11_get_device_manager;
   backend_class->copy_event_data = clutter_backend_x11_copy_event_data;
   backend_class->free_event_data = clutter_backend_x11_free_event_data;
   backend_class->translate_event = clutter_backend_x11_translate_event;
+
   backend_class->get_renderer = clutter_backend_x11_get_renderer;
   backend_class->get_display = clutter_backend_x11_get_display;
   backend_class->create_stage = clutter_backend_x11_create_stage;

@@ -249,6 +249,8 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
 
   object_class->dispose = clutter_backend_osx_dispose;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_OSX;
+
   backend_class->post_parse         = clutter_backend_osx_post_parse;
   backend_class->get_features       = clutter_backend_osx_get_features;
   backend_class->create_stage       = clutter_backend_osx_create_stage;
