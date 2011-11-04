@@ -356,6 +356,39 @@ clutter_backend_real_ensure_context (ClutterBackend *backend,
   cogl_set_framebuffer (framebuffer);
 }
 
+static ClutterFeatureFlags
+clutter_backend_real_get_features (ClutterBackend *backend)
+{
+  ClutterFeatureFlags flags = 0;
+
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports multiple onscreen framebuffers");
+      flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
+    }
+  else
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl only supports one onscreen framebuffer");
+      flags |= CLUTTER_FEATURE_STAGE_STATIC;
+    }
+
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_THROTTLE))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers throttling");
+      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+    }
+  else
+    CLUTTER_NOTE (BACKEND, "Cogl doesn't support swap buffers throttling");
+
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers complete events");
+      flags |= CLUTTER_FEATURE_SWAP_EVENTS;
+    }
+
+  return flags;
+}
+
 static void
 clutter_backend_real_redraw (ClutterBackend *backend,
                              ClutterStage   *stage)
@@ -540,6 +573,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   klass->translate_event = clutter_backend_real_translate_event;
   klass->create_context = clutter_backend_real_create_context;
   klass->ensure_context = clutter_backend_real_ensure_context;
+  klass->get_features = clutter_backend_real_get_features;
   klass->redraw = clutter_backend_real_redraw;
 }
 

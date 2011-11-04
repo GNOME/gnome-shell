@@ -316,11 +316,10 @@ static void
 clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  ClutterActor *wrapper;
-  ClutterBackend *backend;
-  ClutterBackendCogl *backend_cogl;
   gboolean may_use_clipped_redraw;
   gboolean use_clipped_redraw;
+  gboolean can_blit_sub_buffer;
+  ClutterActor *wrapper;
 
   CLUTTER_STATIC_TIMER (painting_timer,
                         "Redrawing", /* parent */
@@ -343,19 +342,19 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   if (!stage_cogl->onscreen)
     return;
 
-  backend = clutter_get_default_backend ();
-  backend_cogl = CLUTTER_BACKEND_COGL (backend);
-
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
+
+  can_blit_sub_buffer =
+    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
 
   may_use_clipped_redraw = FALSE;
   if (_clutter_stage_window_can_clip_redraws (stage_window) &&
-      G_LIKELY (backend_cogl->can_blit_sub_buffer) &&
+      can_blit_sub_buffer &&
       /* NB: a zero width redraw clip == full stage redraw */
       stage_cogl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
-      G_LIKELY (stage_cogl->frame_count > 3))
+      stage_cogl->frame_count > 3)
     {
       may_use_clipped_redraw = TRUE;
     }

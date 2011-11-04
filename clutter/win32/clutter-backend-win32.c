@@ -183,34 +183,12 @@ ClutterFeatureFlags
 clutter_backend_win32_get_features (ClutterBackend *backend)
 {
   ClutterBackendClass *parent_class;
-  ClutterFeatureFlags flags;
 
   parent_class = CLUTTER_BACKEND_CLASS (clutter_backend_win32_parent_class);
 
-  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports multiple onscreen framebuffers");
-      flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
-    }
-  else
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl only supports one onscreen framebuffer");
-      flags |= CLUTTER_FEATURE_STAGE_STATIC;
-    }
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_THROTTLE))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers throttling");
-      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-    }
-  else
-    CLUTTER_NOTE (BACKEND, "Cogl doesn't support swap buffers throttling");
-
-  CLUTTER_NOTE (BACKEND, "backend features checked");
-
-  return flags;
+  return parent_class->get_features (backend)
+    | CLUTTER_FEATURE_STAGE_USER_RESIZE
+    | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
 static ClutterStageWindow *

@@ -129,46 +129,6 @@ clutter_backend_cogl_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
-static ClutterFeatureFlags
-clutter_backend_cogl_get_features (ClutterBackend *backend)
-{
-  ClutterBackendCogl *backend_cogl = CLUTTER_BACKEND_COGL (backend);
-  ClutterFeatureFlags flags = 0;
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports multiple onscreen framebuffers");
-      flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
-    }
-  else
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl only supports one onscreen framebuffer");
-      flags |= CLUTTER_FEATURE_STAGE_STATIC;
-    }
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_THROTTLE))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers throttling");
-      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-    }
-  else
-    CLUTTER_NOTE (BACKEND, "Cogl doesn't support swap buffers throttling");
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers complete events");
-      flags |= CLUTTER_FEATURE_SWAP_EVENTS;
-    }
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports swapping buffer regions");
-      backend_cogl->can_blit_sub_buffer = TRUE;
-    }
-
-  return flags;
-}
-
 static void
 _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
 {
@@ -181,7 +141,6 @@ _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
 
   backend_class->pre_parse = clutter_backend_cogl_pre_parse;
   backend_class->post_parse = clutter_backend_cogl_post_parse;
-  backend_class->get_features = clutter_backend_cogl_get_features;
 }
 
 static void

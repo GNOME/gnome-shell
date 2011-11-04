@@ -218,11 +218,13 @@ clutter_backend_gdk_dispose (GObject *gobject)
 static ClutterFeatureFlags
 clutter_backend_gdk_get_features (ClutterBackend *backend)
 {
-  ClutterFeatureFlags flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
+  ClutterBackendClass *parent_class;
 
-  flags |= CLUTTER_BACKEND_CLASS (clutter_backend_gdk_parent_class)->get_features (backend);
+  parent_class = CLUTTER_BACKEND_CLASS (clutter_backend_gdk_parent_class);
 
-  return flags;
+  return parent_class->get_features (backend)
+        | CLUTTER_FEATURE_STAGE_USER_RESIZE
+        | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
 static void
