@@ -178,8 +178,7 @@ _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
                 "Gdk Display '%s' opened",
                 gdk_display_get_name (backend_gdk->display));
 
-  return CLUTTER_BACKEND_CLASS (clutter_backend_gdk_parent_class)->post_parse (backend,
-									       error);
+  return TRUE;
 }
 
 static void
