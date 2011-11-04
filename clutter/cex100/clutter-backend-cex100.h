@@ -49,9 +49,6 @@ struct _ClutterBackendCex100
 {
   ClutterBackend parent_instance;
 
-  /* main stage singleton */
-  ClutterStageWindow *stage;
-
   /* device manager (ie evdev) */
   ClutterDeviceManager *device_manager;
 

@@ -100,32 +100,6 @@ clutter_backend_cex100_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_cex100_parent_class)->dispose (gobject);
 }
 
-static ClutterStageWindow *
-clutter_backend_cex100_create_stage (ClutterBackend  *backend,
-					 ClutterStage    *wrapper,
-					 GError         **error)
-{
-  ClutterBackendCex100 *backend_cex100 = CLUTTER_BACKEND_CEX100 (backend);
-  ClutterStageWindow *stage;
-
-  if (G_UNLIKELY (backend_cex100->stage != NULL))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "The Cex100 backend does not support multiple "
-                   "onscreen windows");
-      return backend_cex100->stage;
-    }
-
-  stage = g_object_new (CLUTTER_TYPE_STAGE_COGL,
-			"backend", backend,
-			"wrapper", wrapper,
-			NULL);
-  backend_cex100->stage = stage;
-
-  return stage;
-}
-
 static CoglDisplay *
 clutter_backend_cex100_get_display (ClutterBackend  *backend,
                                     CoglRenderer    *renderer,
@@ -172,7 +146,6 @@ clutter_backend_cex100_class_init (ClutterBackendCex100Class *klass)
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
 
   backend_class->get_device_manager = clutter_backend_cex100_get_device_manager;
-  backend_class->create_stage = clutter_backend_cex100_create_stage;
   backend_class->get_display = clutter_backend_cex100_get_display;
 }
 

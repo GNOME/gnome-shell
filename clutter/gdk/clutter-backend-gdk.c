@@ -367,17 +367,6 @@ clutter_backend_gdk_get_display (ClutterBackend  *backend,
   return display;
 }
 
-static ClutterStageWindow *
-clutter_backend_gdk_create_stage (ClutterBackend  *backend,
-				  ClutterStage    *wrapper,
-				  GError         **error)
-{
-  return g_object_new (CLUTTER_TYPE_STAGE_GDK,
-		       "backend", backend,
-		       "wrapper", wrapper,
-		       NULL);
-}
-
 static void
 clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
 {
@@ -398,7 +387,6 @@ clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
 
   backend_class->get_renderer = clutter_backend_gdk_get_renderer;
   backend_class->get_display = clutter_backend_gdk_get_display;
-  backend_class->create_stage = clutter_backend_gdk_create_stage;
 }
 
 static void

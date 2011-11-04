@@ -168,25 +168,6 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
     | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
-static ClutterStageWindow *
-clutter_backend_win32_create_stage (ClutterBackend  *backend,
-				    ClutterStage    *wrapper,
-				    GError         **error)
-{
-  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-  ClutterStageWin32 *stage_win32;
-  ClutterStageWindow *stage;
-
-  stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);
-
-  /* copy backend data into the stage */
-  stage_win32 = CLUTTER_STAGE_WIN32 (stage);
-  stage_win32->backend = backend_win32;
-  stage_win32->wrapper = wrapper;
-
-  return stage;
-}
-
 static ClutterDeviceManager *
 clutter_backend_win32_get_device_manager (ClutterBackend *backend)
 {
@@ -239,7 +220,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_WIN32;
 
   backend_class->init_events = clutter_backend_win32_init_events;
-  backend_class->create_stage = clutter_backend_win32_create_stage;
   backend_class->add_options = clutter_backend_win32_add_options;
   backend_class->get_features = clutter_backend_win32_get_features;
   backend_class->get_device_manager = clutter_backend_win32_get_device_manager;

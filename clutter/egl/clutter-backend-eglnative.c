@@ -95,32 +95,6 @@ clutter_backend_egl_native_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_egl_native_parent_class)->dispose (gobject);
 }
 
-static ClutterStageWindow *
-clutter_backend_egl_native_create_stage (ClutterBackend  *backend,
-					 ClutterStage    *wrapper,
-					 GError         **error)
-{
-  ClutterBackendEglNative *backend_egl_native = CLUTTER_BACKEND_EGL_NATIVE (backend);
-  ClutterStageWindow *stage;
-
-  if (G_UNLIKELY (backend_egl_native->stage != NULL))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "The EglNative backend does not support multiple "
-                   "onscreen windows");
-      return backend_egl_native->stage;
-    }
-
-  stage = g_object_new (CLUTTER_TYPE_STAGE_COGL,
-			"backend", backend,
-			"wrapper", wrapper,
-			NULL);
-  backend_egl_native->stage = stage;
-
-  return stage;
-}
-
 static void
 clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 {
@@ -132,7 +106,6 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
 
   backend_class->get_device_manager = clutter_backend_egl_native_get_device_manager;
-  backend_class->create_stage = clutter_backend_egl_native_create_stage;
 }
 
 static void
