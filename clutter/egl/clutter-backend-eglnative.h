@@ -32,7 +32,6 @@
 #include <clutter/clutter-device-manager.h>
 
 #include "clutter-backend-private.h"
-#include "cogl/clutter-backend-cogl.h"
 
 G_BEGIN_DECLS
 
@@ -48,7 +47,7 @@ typedef struct _ClutterBackendEglNativeClass  ClutterBackendEglNativeClass;
 
 struct _ClutterBackendEglNative
 {
-  ClutterBackendCogl parent_instance;
+  ClutterBackend parent_instance;
 
   /* main stage singleton */
   ClutterStageWindow *stage;
@@ -65,7 +64,7 @@ struct _ClutterBackendEglNative
 
 struct _ClutterBackendEglNativeClass
 {
-  ClutterBackendCoglClass parent_class;
+  ClutterBackendClass parent_class;
 };
 
 GType _clutter_backend_egl_native_get_type (void) G_GNUC_CONST;

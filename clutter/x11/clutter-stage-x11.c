@@ -787,10 +787,9 @@ static void
 clutter_stage_x11_dispose (GObject *gobject)
 {
   ClutterEventTranslator *translator = CLUTTER_EVENT_TRANSLATOR (gobject);
-  ClutterBackendCogl *backend = CLUTTER_STAGE_COGL (gobject)->backend;
+  ClutterBackend *backend = CLUTTER_STAGE_COGL (gobject)->backend;
 
-  _clutter_backend_remove_event_translator (CLUTTER_BACKEND (backend),
-                                            translator);
+  _clutter_backend_remove_event_translator (backend, translator);
 
   G_OBJECT_CLASS (clutter_stage_x11_parent_class)->dispose (gobject);
 }

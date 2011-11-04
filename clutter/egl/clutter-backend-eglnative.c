@@ -68,7 +68,7 @@ static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
 
 #define clutter_backend_egl_native_get_type     _clutter_backend_egl_native_get_type
 
-G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND_COGL);
+G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
 
 static ClutterDeviceManager *
 clutter_backend_egl_native_get_device_manager (ClutterBackend *backend)

@@ -33,15 +33,15 @@
 #include "clutter-config.h"
 
 #include "clutter-stage-cogl.h"
-#include "clutter-backend-cogl.h"
 
+#include "clutter-actor-private.h"
+#include "clutter-backend-private.h"
 #include "clutter-debug.h"
 #include "clutter-event.h"
 #include "clutter-enum-types.h"
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
-#include "clutter-actor-private.h"
 #include "clutter-stage-private.h"
 #include "clutter-util.h"
 
@@ -545,11 +545,11 @@ clutter_stage_cogl_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_WRAPPER:
-      self->wrapper = CLUTTER_STAGE (g_value_get_object (value));
+      self->wrapper = g_value_get_object (value);
       break;
 
     case PROP_BACKEND:
-      self->backend = CLUTTER_BACKEND_COGL (g_value_get_object (value));
+      self->backend = g_value_get_object (value);
       break;
 
     default:
@@ -576,7 +576,7 @@ _clutter_stage_cogl_class_init (ClutterStageCoglClass *klass)
 				   g_param_spec_object ("backend",
 							"ClutterBackend",
 							"The Clutter backend singleton",
-							CLUTTER_TYPE_BACKEND_COGL,
+							CLUTTER_TYPE_BACKEND,
 							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 }
 

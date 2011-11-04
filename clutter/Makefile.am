@@ -388,12 +388,10 @@ endif # SUPPORT_X11
 cogl_source_h =
 
 cogl_source_c = \
-	$(srcdir)/cogl/clutter-backend-cogl.c	\
 	$(srcdir)/cogl/clutter-stage-cogl.c	\
 	$(NULL)
 
 cogl_source_h_priv = \
-	$(srcdir)/cogl/clutter-backend-cogl.h	\
 	$(srcdir)/cogl/clutter-stage-cogl.h	\
 	$(NULL)
 

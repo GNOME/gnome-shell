@@ -31,7 +31,6 @@
 
 #include "clutter-backend-private.h"
 #include "clutter-keymap-x11.h"
-#include "cogl/clutter-backend-cogl.h"
 
 #include "xsettings/xsettings-client.h"
 
@@ -68,7 +67,7 @@ struct _ClutterEventX11
 
 struct _ClutterBackendX11
 {
-  ClutterBackendCogl parent_instance;
+  ClutterBackend parent_instance;
 
   Display *xdpy;
   gchar   *display_name;
@@ -113,7 +112,7 @@ struct _ClutterBackendX11
 
 struct _ClutterBackendX11Class
 {
-  ClutterBackendCoglClass parent_class;
+  ClutterBackendClass parent_class;
 };
 
 GType _clutter_backend_x11_get_type (void) G_GNUC_CONST;

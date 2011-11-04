@@ -1,8 +1,8 @@
 #ifndef __CLUTTER_STAGE_COGL_H__
 #define __CLUTTER_STAGE_COGL_H__
 
-#include <glib-object.h>
 #include <cairo.h>
+#include <clutter/clutter-backend.h>
 #include <clutter/clutter-stage.h>
 
 #ifdef COGL_HAS_X11_SUPPORT
@@ -10,8 +10,6 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 #endif
-
-#include "clutter-backend-cogl.h"
 
 G_BEGIN_DECLS
 
@@ -30,10 +28,10 @@ struct _ClutterStageCogl
   GObject parent_instance;
 
  /* the stage wrapper */
-  ClutterStage      *wrapper;
+  ClutterStage *wrapper;
 
   /* back pointer to the backend */
-  ClutterBackendCogl *backend;
+  ClutterBackend *backend;
 
   CoglOnscreen *onscreen;
 

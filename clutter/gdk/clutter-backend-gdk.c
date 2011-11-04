@@ -60,7 +60,7 @@
 #include "clutter-private.h"
 
 #define clutter_backend_gdk_get_type _clutter_backend_gdk_get_type
-G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND_COGL);
+G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND);
 
 /* global for pre init setup calls */
 static GdkDisplay  *_foreign_dpy = NULL;
