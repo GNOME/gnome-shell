@@ -547,7 +547,9 @@ evdev_h_priv = \
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
 	$(NULL)
 
-cex_h = egl/clutter-cex100.h
+cex_source_h_priv = $(srcdir)/cex100/clutter-backend-cex100.h
+cex_source_c = $(srcdir)/cex100/clutter-backend-cex100.c
+cex_h = cex100/clutter-cex100.h
 BUILT_SOURCES += $(cex_h)
 EXTRA_DIST += $(srcdir)/$(cex_h).in
 
@@ -562,7 +564,12 @@ egl_source_h_priv += $(evdev_h_priv)
 endif # SUPPORT_EVDEV
 
 if SUPPORT_CEX100
-egl_source_h += $(cex_h)
+backend_source_h += $(cex_h)
+backend_source_c += $(cex_source_c)
+backend_source_h_priv += $(cex_source_h_priv)
+
+cluttercex100_includedir = $(clutter_includedir)/cex100
+cluttercex100_include_HEADERS = $(cex_h)
 
 clutter-cex100-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)

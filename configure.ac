@@ -227,6 +227,10 @@ AC_ARG_ENABLE([egl-backend],
               [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [enable_egl=$enableval],
               [enable_egl=no])
+AC_ARG_ENABLE([cex100-backend],
+              [AS_HELP_STRING([--enable-cex100-backend=@<:@yes/no@:>@], [Enable the CEx100 backend (default=no)])],
+              [enable_cex100=$enableval],
+              [enable_cex100=no])
 
 dnl Define default values
 AS_IF([test "x$enable_x11" = "xcheck"],
@@ -313,6 +317,38 @@ AS_IF([test "x$enable_wayland" = "xyes"],
         AC_DEFINE([HAVE_CLUTTER_WAYLAND], [1], [Have the Wayland backend])
       ])
 
+AS_IF([test "x$enable_cex100" = "xyes"],
+      [
+        CLUTTER_BACKENDS="$CLUTTER_BACKENDS cex100"
+
+        SUPPORT_COGL=1
+        SUPPORT_EGL_PLATFORM_GDL=1
+
+        have_gdl=no
+        AC_CHECK_HEADERS([libgdl.h], [have_gdl=yes])
+
+        AS_IF([test "x$have_gdl" = "xno"],
+              [
+                AC_CHECK_HEADERS([CE4100/libgdl.h],
+                                 [
+                                   FLAVOUR_CFLAGS="-I/usr/include/CE4100"
+                                   have_gdl=yes
+                                   CLUTTER_CEX100_LIBGDL_PREFIX=CE4100/
+                                 ])
+              ])
+
+        AS_IF([test "x$have_gdl" = "xno"],
+              [AC_MSG_ERROR([libgdl.h not found but the CEx100 backend has been explicitly enabled])])
+
+        AC_SUBST(CLUTTER_CEX100_LIBGDL_PREFIX)
+
+        FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl"
+
+        AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend])
+        AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
+        AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
+      ])
+
 AS_IF([test "x$enable_egl" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
@@ -326,71 +362,6 @@ AS_IF([test "x$enable_egl" = "xyes"],
                            BACKEND_PC_FILES="$BACKEND_PC_FILES egl"
                          ],
                          [])
-
-        AC_ARG_WITH([tslib],
-                    [AS_HELP_STRING([--with-tslib=@<:@yes/no@:>@], [Use TSLib for events (default=no)])],
-                    [],
-                    [with_tslib=no])
-
-        AC_ARG_WITH([evdev],
-                    [AS_HELP_STRING([--with-evdev=@<:@yes/no@:>@], [Use evdev for events (default=yes)])],
-                    [],
-                    [with_evdev=yes])
-
-        AC_ARG_WITH([gdl],
-                    [AS_HELP_STRING([--with-gdl=@<:@yes/no@:>@], [Use libgdl for CE3100/CE4100 support (default=no)])],
-                    [],
-                    [with_gdl=no])
-
-        AS_IF([test "x$with_tslib" = "xyes"],
-              [
-                PKG_CHECK_MODULES(TSLIB, [tslib-1.0], [have_tslib=yes], [have_tslib=no])
-                AS_IF([test "x$have_tslib" = "xyes"],
-                      [
-                        AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])
-                        SUPPORT_TSLIB=1
-                      ])
-              ],
-              [have_tslib=no])
-
-        AS_IF([test "x$with_evdev" = "xyes"],
-              [
-                PKG_CHECK_MODULES(EVDEV, [gudev-1.0 xkbcommon], [have_evdev=yes], [have_evdev=no])
-                AS_IF([test "x$have_evdev" = "xyes"],
-                      [
-                        AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
-                        SUPPORT_EVDEV=1
-                      ])
-              ],
-              [have_evdev=no])
-
-        AS_IF([test "x$with_gdl" = "xyes"],
-              [
-                have_gdl=no
-
-                AC_CHECK_HEADERS([libgdl.h], [have_gdl=yes])
-
-                AS_IF([test "x$have_gdl" = "xno"],
-                      [
-                        AC_CHECK_HEADERS([CE4100/libgdl.h],
-                                         [
-                                           FLAVOUR_CFLAGS="-I/usr/include/CE4100"
-                                           have_gdl=yes
-                                           CLUTTER_CEX100_LIBGDL_PREFIX=CE4100/
-                                         ])
-                      ])
-
-                AC_SUBST(CLUTTER_CEX100_LIBGDL_PREFIX)
-
-                AS_IF([test "x$have_gdl" = "xno"], [AC_MSG_ERROR([libgdl.h not found])])
-
-                FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl"
-
-                SUPPORT_EGL_PLATFORM_GDL=1
-
-                AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend])
-              ],
-              [have_gdl=no])
 
         FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
         FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
@@ -428,6 +399,37 @@ AS_IF([test "x$enable_win32" = "xyes"],
 AS_IF([test "x$CLUTTER_BACKENDS" = "x"],
       [
         AC_MSG_ERROR([No backend enabled. You need to enable at least one backend.])
+      ])
+
+# additional input backends
+
+AC_ARG_ENABLE([tslib-input],
+              [AS_HELP_STRING([--enable-tslib-input=@<:@yes/no@:>@], [Enable TSLib for input events (default=no)])],
+              [enable_tslib=$enableval],
+              [enable_tslib=no])
+AC_ARG_ENABLE([evdev-input],
+              [AS_HELP_STRING([--with-evdev=@<:@yes/no@:>@], [Enable evdev for input events (default=yes)])],
+              [enable_evdev=$enableval],
+              [enable_evdev=yes])
+
+AS_IF([test "x$enable_tslib" = "xyes"],
+      [
+        PKG_CHECK_MODULES(TSLIB, [tslib-1.0], [have_tslib=yes], [have_tslib=no])
+        AS_IF([test "x$have_tslib" = "xyes"],
+              [
+                AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])
+                SUPPORT_TSLIB=1
+              ])
+      ])
+
+AS_IF([test "x$enable_evdev" = "xyes"],
+      [
+        PKG_CHECK_MODULES(EVDEV, [gudev-1.0 xkbcommon], [have_evdev=yes], [have_evdev=no])
+        AS_IF([test "x$have_evdev" = "xyes"],
+              [
+                AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
+                SUPPORT_EVDEV=1
+              ])
       ])
 
 # conditionals for use in automake files...
@@ -1001,7 +1003,7 @@ AC_CONFIG_FILES([
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
 
-	clutter/egl/clutter-cex100.h
+	clutter/cex100/clutter-cex100.h
 
 	tests/Makefile
 	tests/accessibility/Makefile
