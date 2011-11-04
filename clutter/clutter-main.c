@@ -155,6 +155,7 @@ static gboolean clutter_fatal_warnings       = FALSE;
 static gboolean clutter_disable_mipmap_text  = FALSE;
 static gboolean clutter_use_fuzzy_picking    = FALSE;
 static gboolean clutter_enable_accessibility = TRUE;
+static gboolean clutter_sync_to_vblank       = TRUE;
 
 static guint clutter_default_fps             = 60;
 
@@ -301,6 +302,16 @@ clutter_config_read_from_key_file (GKeyFile *keyfile)
     g_clear_error (&key_error);
   else
     clutter_enable_accessibility = bool_value;
+
+  bool_value =
+    g_key_file_get_boolean (keyfile, ENVIRONMENT_GROUP,
+                            "SyncToVblank",
+                            &key_error);
+
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_sync_to_vblank = bool_value;
 
   int_value =
     g_key_file_get_integer (keyfile, ENVIRONMENT_GROUP,
@@ -1724,6 +1735,10 @@ pre_parse_hook (GOptionContext  *context,
   env_string = g_getenv ("CLUTTER_FUZZY_PICK");
   if (env_string)
     clutter_use_fuzzy_picking = TRUE;
+
+  env_string = g_getenv ("CLUTTER_VBLANK");
+  if (g_strcmp0 (env_string, "none") == 0)
+    clutter_sync_to_vblank = FALSE;
 
   return _clutter_backend_pre_parse (backend, error);
 }
@@ -3698,4 +3713,10 @@ clutter_check_windowing_backend (const char *backend_type)
   else
 #endif
   return FALSE;
+}
+
+gboolean
+_clutter_get_sync_to_vblank (void)
+{
+  return clutter_sync_to_vblank;
 }
