@@ -31,6 +31,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\clutter"
 				PreprocessorDefinitions="_DEBUG;$(CallyTestDefs)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -60,6 +61,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\clutter"
 				PreprocessorDefinitions="_DEBUG;$(CallyTestDefs)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -94,6 +96,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\..\..\clutter"
 				PreprocessorDefinitions="$(CallyTestDefs)"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -124,6 +127,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\clutter"
 				PreprocessorDefinitions="$(CallyTestDefs)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
