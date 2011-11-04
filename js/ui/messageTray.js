@@ -1419,8 +1419,16 @@ MessageTray.prototype = {
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
 
+        this._corner = new Clutter.Rectangle({ width: 1,
+                                               height: 1,
+                                               opacity: 0,
+                                               reactive: true });
+        this._corner.connect('enter-event', Lang.bind(this, this._onCornerEnter));
+        Main.layoutManager.trayBox.add_actor(this._corner);
+        Main.layoutManager.trackChrome(this._corner);
+
         Main.layoutManager.trayBox.add_actor(this.actor);
-        this.actor.y = -1;
+        this.actor.y = this.actor.height;
         Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.trackChrome(this._notificationBin);
 
@@ -1459,12 +1467,24 @@ MessageTray.prototype = {
         this._chatSummaryItemsCount = 0;
     },
 
+    _onCornerEnter: function(actor, event) {
+        this._pointerInSummary = true;
+        this._updateState();
+    },
+
     _setSizePosition: function() {
         let monitor = Main.layoutManager.bottomMonitor;
         this._notificationBin.x = 0;
         this._notificationBin.width = monitor.width;
         this._summaryBin.x = 0;
         this._summaryBin.width = monitor.width;
+
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            this._corner.x = 0;
+        else
+            this._corner.x = Main.layoutManager.trayBox.width - 1;
+
+        this._corner.y = Main.layoutManager.trayBox.height - 1;
     },
 
     contains: function(source) {
@@ -2057,7 +2077,7 @@ MessageTray.prototype = {
 
     _hideTray: function() {
         this._tween(this.actor, '_trayState', State.HIDDEN,
-                    { y: -1,
+                    { y: this.actor.height,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
