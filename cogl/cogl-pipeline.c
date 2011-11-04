@@ -2871,8 +2871,8 @@ int
 cogl_pipeline_get_uniform_location (CoglPipeline *pipeline,
                                     const char *uniform_name)
 {
-  GSList *l;
-  int location = 0;
+  void *location_ptr;
+  char *uniform_name_copy;
 
   _COGL_GET_CONTEXT (ctx, -1);
 
@@ -2884,16 +2884,17 @@ cogl_pipeline_get_uniform_location (CoglPipeline *pipeline,
      be. */
 
   /* Look for an existing uniform with this name */
-  for (l = ctx->uniform_names; l; l = l->next)
-    {
-      if (!strcmp (uniform_name, l->data))
-        return location;
+  if (g_hash_table_lookup_extended (ctx->uniform_name_hash,
+                                    uniform_name,
+                                    NULL,
+                                    &location_ptr))
+    return GPOINTER_TO_INT (location_ptr);
 
-      location++;
-    }
-
-  ctx->uniform_names =
-    g_slist_append (ctx->uniform_names, g_strdup (uniform_name));
+  uniform_name_copy = g_strdup (uniform_name);
+  g_ptr_array_add (ctx->uniform_names, uniform_name_copy);
+  g_hash_table_insert (ctx->uniform_name_hash,
+                       uniform_name_copy,
+                       GINT_TO_POINTER (ctx->n_uniform_names));
 
   return ctx->n_uniform_names++;
 }

@@ -221,7 +221,9 @@ cogl_context_new (CoglDisplay *display,
       g_assert_not_reached ();
     }
 
-  context->uniform_names = NULL;
+  context->uniform_names =
+    g_ptr_array_new_with_free_func ((GDestroyNotify) g_free);
+  context->uniform_name_hash = g_hash_table_new (g_str_hash, g_str_equal);
   context->n_uniform_names = 0;
 
   /* Initialise the driver specific state */
@@ -484,8 +486,8 @@ _cogl_context_free (CoglContext *context)
 
   _cogl_destroy_texture_units ();
 
-  g_slist_foreach (context->uniform_names, (GFunc) g_free, NULL);
-  g_slist_free (context->uniform_names);
+  g_ptr_array_free (context->uniform_names, TRUE);
+  g_hash_table_destroy (context->uniform_name_hash);
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 

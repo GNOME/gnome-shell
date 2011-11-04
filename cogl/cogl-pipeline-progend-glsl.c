@@ -598,7 +598,7 @@ flush_uniform_cb (int uniform_num, void *user_data)
       if (uniform_location == UNIFORM_LOCATION_UNKNOWN)
         {
           const char *uniform_name =
-            g_slist_nth (data->ctx->uniform_names, uniform_num)->data;
+            g_ptr_array_index (data->ctx->uniform_names, uniform_num);
 
           uniform_location =
             data->ctx->glGetUniformLocation (data->program_state->program,
