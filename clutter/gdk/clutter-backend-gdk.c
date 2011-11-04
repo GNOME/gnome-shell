@@ -264,25 +264,19 @@ clutter_backend_gdk_get_device_manager (ClutterBackend *backend)
   return backend_gdk->device_manager;
 }
 
-static gboolean
-clutter_backend_gdk_create_context (ClutterBackend  *backend,
-				    GError         **error)
+static CoglRenderer *
+clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
+                                  GError         **error)
 {
   ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
-  CoglSwapChain *swap_chain = NULL;
-  CoglOnscreenTemplate *onscreen_template = NULL;
-  GdkVisual *rgba_visual = NULL;
-
-  if (backend->cogl_context != NULL)
-    return TRUE;
-
-  backend->cogl_renderer = cogl_renderer_new ();
+  CoglRenderer *renderer = cogl_renderer_new ();
 
 #if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
   if (GDK_IS_X11_DISPLAY (backend_gdk->display))
     {
-      cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
-					      gdk_x11_display_get_xdisplay (backend_gdk->display));
+      Display *xdisplay = gdk_x11_display_get_xdisplay (backend_gdk->display);
+
+      cogl_xlib_renderer_set_foreign_display (renderer, xdisplay);
     }
   else
 #endif
@@ -297,65 +291,79 @@ clutter_backend_gdk_create_context (ClutterBackend  *backend,
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
-                   "Could not find a suitable CoglWinsys for"
-                   "a GdkDisplay of type %s", G_OBJECT_TYPE_NAME (backend_gdk->display));
-      goto error;
+                   _("Could not find a suitable CoglWinsys for a GdkDisplay of type %s"),
+                   G_OBJECT_TYPE_NAME (backend_gdk->display));
+      cogl_object_unref (renderer);
+
+      return NULL;
     }
 
+  return renderer;
+}
 
-  if (!cogl_renderer_connect (backend->cogl_renderer, error))
-    goto error;
+static CoglDisplay *
+clutter_backend_gdk_get_display (ClutterBackend  *backend,
+                                 CoglRenderer    *renderer,
+                                 CoglSwapChain   *swap_chain,
+                                 GError         **error)
+{
+  ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (backend);
+  CoglOnscreenTemplate *onscreen_template;
+  GError *internal_error = NULL;
+  CoglDisplay *display;
+  gboolean has_rgba_visual;
+  gboolean res;
 
-  swap_chain = cogl_swap_chain_new ();
+  has_rgba_visual = gdk_screen_get_rgba_visual (backend_gdk->screen) == NULL;
 
-  rgba_visual = gdk_screen_get_rgba_visual (backend_gdk->screen);
-  cogl_swap_chain_set_has_alpha (swap_chain, rgba_visual != NULL);
+  CLUTTER_NOTE (BACKEND, "Alpha on Cogl swap chain: %s",
+                has_rgba_visual ? "enabled" : "disabled");
+
+  cogl_swap_chain_set_has_alpha (swap_chain, has_rgba_visual);
 
   onscreen_template = cogl_onscreen_template_new (swap_chain);
-  cogl_object_unref (swap_chain);
 
-  /* XXX: I have some doubts that this is a good design.
-   * Conceptually should we be able to check an onscreen_template
-   * without more details about the CoglDisplay configuration?
-   */
-  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                              onscreen_template,
-                                              error))
-    goto error;
+  res = cogl_renderer_check_onscreen_template (renderer,
+                                               onscreen_template,
+                                               &internal_error);
+  if (!res && has_rgba_visual)
+    {
+      CLUTTER_NOTE (BACKEND,
+                    "Creation of a context with a ARGB visual failed: %s",
+                    internal_error != NULL ? internal_error->message
+                                           : "Unknown reason");
 
-  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
-                                            onscreen_template);
+      g_clear_error (&internal_error);
 
-  cogl_object_unref (backend->cogl_renderer);
+      /* It's possible that the current renderer doesn't support transparency
+       * in a swap_chain so lets see if we can fallback to not having any
+       * transparency...
+       *
+       * XXX: It might be nice to have a CoglRenderer feature we could
+       * explicitly check for ahead of time.
+       */
+      cogl_swap_chain_set_has_alpha (swap_chain, FALSE);
+      res = cogl_renderer_check_onscreen_template (renderer,
+                                                   onscreen_template,
+                                                   &internal_error);
+    }
+
+  if (!res)
+    {
+      g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                           CLUTTER_INIT_ERROR_BACKEND,
+                           internal_error->message);
+
+      g_error_free (internal_error);
+      cogl_object_unref (onscreen_template);
+
+      return NULL;
+    }
+
+  display = cogl_display_new (renderer, onscreen_template);
   cogl_object_unref (onscreen_template);
 
-  if (!cogl_display_setup (backend->cogl_display, error))
-    goto error;
-
-  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
-  if (backend->cogl_context == NULL)
-    goto error;
-
-  return TRUE;
-
-error:
-  if (backend->cogl_display != NULL)
-    {
-      cogl_object_unref (backend->cogl_display);
-      backend->cogl_display = NULL;
-    }
-
-  if (onscreen_template != NULL)
-    cogl_object_unref (onscreen_template);
-  if (swap_chain != NULL)
-    cogl_object_unref (swap_chain);
-
-  if (backend->cogl_renderer != NULL)
-    {
-      cogl_object_unref (backend->cogl_renderer);
-      backend->cogl_renderer = NULL;
-    }
-  return FALSE;
+  return display;
 }
 
 static ClutterStageWindow *
@@ -383,7 +391,9 @@ clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
   backend_class->get_device_manager = clutter_backend_gdk_get_device_manager;
   backend_class->copy_event_data = clutter_backend_gdk_copy_event_data;
   backend_class->free_event_data = clutter_backend_gdk_free_event_data;
-  backend_class->create_context = clutter_backend_gdk_create_context;
+
+  backend_class->get_renderer = clutter_backend_gdk_get_renderer;
+  backend_class->get_display = clutter_backend_gdk_get_display;
   backend_class->create_stage = clutter_backend_gdk_create_stage;
 }
 
