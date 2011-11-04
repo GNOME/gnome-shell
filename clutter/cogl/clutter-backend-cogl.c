@@ -46,41 +46,7 @@
 
 static ClutterBackendCogl *backend_singleton = NULL;
 
-static gchar *clutter_vblank = NULL;
-
 G_DEFINE_TYPE (ClutterBackendCogl, _clutter_backend_cogl, CLUTTER_TYPE_BACKEND);
-
-const gchar*
-_clutter_backend_cogl_get_vblank (void)
-{
-  if (clutter_vblank && strcmp (clutter_vblank, "0") == 0)
-    return "none";
-  else
-    return clutter_vblank;
-}
-
-static gboolean
-clutter_backend_cogl_pre_parse (ClutterBackend  *backend,
-                                GError         **error)
-{
-  const gchar *env_string;
-
-  env_string = g_getenv ("CLUTTER_VBLANK");
-  if (env_string)
-    {
-      clutter_vblank = g_strdup (env_string);
-      env_string = NULL;
-    }
-
-  return TRUE;
-}
-
-static gboolean
-clutter_backend_cogl_post_parse (ClutterBackend  *backend,
-                                 GError         **error)
-{
-  return TRUE;
-}
 
 static void
 clutter_backend_cogl_finalize (GObject *gobject)
@@ -133,14 +99,10 @@ static void
 _clutter_backend_cogl_class_init (ClutterBackendCoglClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
   gobject_class->constructor = clutter_backend_cogl_constructor;
   gobject_class->dispose = clutter_backend_cogl_dispose;
   gobject_class->finalize = clutter_backend_cogl_finalize;
-
-  backend_class->pre_parse = clutter_backend_cogl_pre_parse;
-  backend_class->post_parse = clutter_backend_cogl_post_parse;
 }
 
 static void
