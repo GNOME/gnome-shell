@@ -695,40 +695,46 @@ clutter_backend_x11_translate_event (ClutterBackend *backend,
   return parent_class->translate_event (backend, native, event);
 }
 
-static gboolean
-clutter_backend_x11_create_context (ClutterBackend  *backend,
-				    GError         **error)
+static CoglRenderer *
+clutter_backend_x11_get_renderer (ClutterBackend  *backend,
+                                  GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  CoglOnscreenTemplate *onscreen_template = NULL;
-  CoglSwapChain *swap_chain = NULL;
+  Display *xdisplay = backend_x11->xdpy;
+  CoglRenderer *renderer;
+
+  CLUTTER_NOTE (BACKEND, "Creating a new Xlib renderer");
+
+  renderer = cogl_renderer_new ();
+
+  /* set the display object we're using */
+  cogl_xlib_renderer_set_foreign_display (renderer, xdisplay);
+
+  return renderer;
+}
+
+static CoglDisplay *
+clutter_backend_x11_get_display (ClutterBackend  *backend,
+                                 CoglRenderer    *renderer,
+                                 CoglSwapChain   *swap_chain,
+                                 GError         **error)
+{
+  CoglOnscreenTemplate *onscreen_template;
   GError *internal_error = NULL;
-  gboolean status;
+  CoglDisplay *display;
+  gboolean res;
 
-  if (backend->cogl_context != NULL)
-    return TRUE;
+  CLUTTER_NOTE (BACKEND, "Alpha on Cogl swap chain: %s",
+                clutter_enable_argb ? "enabled" : "disabled");
 
-  backend->cogl_renderer = cogl_renderer_new ();
-  cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
-                                          backend_x11->xdpy);
-  if (!cogl_renderer_connect (backend->cogl_renderer, &internal_error))
-    goto error;
-
-  swap_chain = cogl_swap_chain_new ();
   cogl_swap_chain_set_has_alpha (swap_chain, clutter_enable_argb);
 
   onscreen_template = cogl_onscreen_template_new (swap_chain);
-  cogl_object_unref (swap_chain);
 
-  /* XXX: I have some doubts that this is a good design.
-   *
-   * Conceptually should we be able to check an onscreen_template
-   * without more details about the CoglDisplay configuration?
-   */
-  status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                                  onscreen_template,
-                                                  &internal_error);
-  if (!status && clutter_enable_argb)
+  res = cogl_renderer_check_onscreen_template (renderer,
+                                               onscreen_template,
+                                               &internal_error);
+  if (!res && clutter_enable_argb)
     {
       CLUTTER_NOTE (BACKEND,
                     "Creation of a context with a ARGB visual failed: %s",
@@ -746,61 +752,27 @@ clutter_backend_x11_create_context (ClutterBackend  *backend,
        */
       clutter_enable_argb = FALSE;
       cogl_swap_chain_set_has_alpha (swap_chain, FALSE);
-      status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                                      onscreen_template,
-                                                      &internal_error);
+      res = cogl_renderer_check_onscreen_template (renderer,
+                                                   onscreen_template,
+                                                   &internal_error);
     }
 
-  if (!status)
-    goto error;
-
-  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
-                                            onscreen_template);
-
-  cogl_object_unref (backend->cogl_renderer);
-  cogl_object_unref (onscreen_template);
-
-  if (!cogl_display_setup (backend->cogl_display, &internal_error))
-    goto error;
-
-  backend->cogl_context = cogl_context_new (backend->cogl_display,
-                                            &internal_error);
-  if (backend->cogl_context == NULL)
-    goto error;
-
-  return TRUE;
-
-error:
-  if (internal_error != NULL)
+  if (!res)
     {
-      CLUTTER_NOTE (BACKEND, "Backend creation failed: %s",
-                    internal_error->message);
-
       g_set_error_literal (error, CLUTTER_INIT_ERROR,
                            CLUTTER_INIT_ERROR_BACKEND,
                            internal_error->message);
+
       g_error_free (internal_error);
+      cogl_object_unref (onscreen_template);
+
+      return NULL;
     }
 
-  if (backend->cogl_display != NULL)
-    {
-      cogl_object_unref (backend->cogl_display);
-      backend->cogl_display = NULL;
-    }
+  display = cogl_display_new (renderer, onscreen_template);
+  cogl_object_unref (onscreen_template);
 
-  if (onscreen_template != NULL)
-    cogl_object_unref (onscreen_template);
-
-  if (swap_chain != NULL)
-    cogl_object_unref (swap_chain);
-
-  if (backend->cogl_renderer != NULL)
-    {
-      cogl_object_unref (backend->cogl_renderer);
-      backend->cogl_renderer = NULL;
-    }
-
-  return FALSE;
+  return display;
 }
 
 static ClutterStageWindow *
@@ -846,7 +818,8 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   backend_class->copy_event_data = clutter_backend_x11_copy_event_data;
   backend_class->free_event_data = clutter_backend_x11_free_event_data;
   backend_class->translate_event = clutter_backend_x11_translate_event;
-  backend_class->create_context = clutter_backend_x11_create_context;
+  backend_class->get_renderer = clutter_backend_x11_get_renderer;
+  backend_class->get_display = clutter_backend_x11_get_display;
   backend_class->create_stage = clutter_backend_x11_create_stage;
 }
 
