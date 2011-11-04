@@ -213,64 +213,6 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
   return flags;
 }
 
-static gboolean
-clutter_backend_win32_create_context (ClutterBackend  *backend,
-                                      GError         **error)
-{
-  CoglSwapChain *swap_chain;
-  CoglOnscreenTemplate *onscreen_template;
-
-  if (backend->cogl_context)
-    return TRUE;
-
-  backend->cogl_renderer = cogl_renderer_new ();
-  if (!cogl_renderer_connect (backend->cogl_renderer, error))
-    goto error;
-
-  swap_chain = cogl_swap_chain_new ();
-
-  onscreen_template = cogl_onscreen_template_new (swap_chain);
-  cogl_object_unref (swap_chain);
-
-  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                              onscreen_template,
-                                              error))
-    goto error;
-
-  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
-                                            onscreen_template);
-  cogl_object_unref (backend->cogl_renderer);
-  cogl_object_unref (onscreen_template);
-
-  if (!cogl_display_setup (backend->cogl_display, error))
-    goto error;
-
-  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
-  if (!backend->cogl_context)
-    goto error;
-
-  return TRUE;
-
-error:
-  if (backend->cogl_display)
-    {
-      cogl_object_unref (backend->cogl_display);
-      backend->cogl_display = NULL;
-    }
-
-  if (onscreen_template)
-    cogl_object_unref (onscreen_template);
-  if (swap_chain)
-    cogl_object_unref (swap_chain);
-
-  if (backend->cogl_renderer)
-    {
-      cogl_object_unref (backend->cogl_renderer);
-      backend->cogl_renderer = NULL;
-    }
-  return FALSE;
-}
-
 static ClutterStageWindow *
 clutter_backend_win32_create_stage (ClutterBackend  *backend,
 				    ClutterStage    *wrapper,
@@ -344,7 +286,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   backend_class->create_stage     = clutter_backend_win32_create_stage;
   backend_class->add_options      = clutter_backend_win32_add_options;
   backend_class->get_features     = clutter_backend_win32_get_features;
-  backend_class->create_context   = clutter_backend_win32_create_context;
   backend_class->get_device_manager = clutter_backend_win32_get_device_manager;
 }
 
