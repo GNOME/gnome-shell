@@ -202,6 +202,40 @@ _cogl_boxed_value_set_matrix (CoglBoxedValue *bv,
 }
 
 void
+_cogl_boxed_value_copy (CoglBoxedValue *dst,
+                        const CoglBoxedValue *src)
+{
+  *dst = *src;
+
+  if (src->count > 1)
+    {
+      switch (src->type)
+        {
+        case COGL_BOXED_NONE:
+          break;
+
+        case COGL_BOXED_INT:
+          dst->v.int_array = g_memdup (src->v.int_array,
+                                       src->size * src->count * sizeof (int));
+          break;
+
+        case COGL_BOXED_FLOAT:
+          dst->v.float_array = g_memdup (src->v.float_array,
+                                         src->size *
+                                         src->count *
+                                         sizeof (float));
+          break;
+
+        case COGL_BOXED_MATRIX:
+          dst->v.float_array = g_memdup (src->v.float_array,
+                                         src->size * src->size *
+                                         src->count * sizeof (float));
+          break;
+        }
+    }
+}
+
+void
 _cogl_boxed_value_destroy (CoglBoxedValue *bv)
 {
   if (bv->count > 1)

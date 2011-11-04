@@ -89,6 +89,17 @@ _cogl_boxed_value_set_matrix (CoglBoxedValue *bv,
                               gboolean transpose,
                               const float *value);
 
+/*
+ * _cogl_boxed_value_copy:
+ * @dst: The destination boxed value
+ * @src: The source boxed value
+ *
+ * This copies @src to @dst. It is assumed that @dst is initialised.
+ */
+void
+_cogl_boxed_value_copy (CoglBoxedValue *dst,
+                        const CoglBoxedValue *src);
+
 void
 _cogl_boxed_value_destroy (CoglBoxedValue *bv);
 
