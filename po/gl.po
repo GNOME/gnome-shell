@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-18 00:04+0200\n"
-"PO-Revision-Date: 2011-10-18 00:04+0200\n"
+"POT-Creation-Date: 2011-11-04 12:55+0100\n"
+"PO-Revision-Date: 2011-11-04 12:57+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -187,52 +187,50 @@ msgstr "Que teclado usar"
 msgid "disabled OpenSearch providers"
 msgstr "fornecedores de OpenSearch desactivados"
 
-#: ../js/gdm/loginDialog.js:617
+#: ../js/gdm/loginDialog.js:633
 msgid "Session..."
 msgstr "Sesión…"
 
-#: ../js/gdm/loginDialog.js:788
+#: ../js/gdm/loginDialog.js:804
 msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
 #. translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:833
+#: ../js/gdm/loginDialog.js:849
 msgid "(or swipe finger)"
 msgstr "(ou pase o dedo)"
 
-#: ../js/gdm/loginDialog.js:851
+#: ../js/gdm/loginDialog.js:867
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
-#: ../js/gdm/loginDialog.js:1019 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:148
+#: ../js/gdm/loginDialog.js:1035 ../js/ui/endSessionDialog.js:426
+#: ../js/ui/extensionSystem.js:519 ../js/ui/networkAgent.js:148
 #: ../js/ui/polkitAuthenticationAgent.js:173 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:1024
+#: ../js/gdm/loginDialog.js:1040
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:1376
+#: ../js/gdm/loginDialog.js:1392
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:549
-#: ../js/ui/userMenu.js:551 ../js/ui/userMenu.js:620
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:573
+#: ../js/ui/userMenu.js:575 ../js/ui/userMenu.js:644
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
-#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+#: ../js/gdm/powerMenu.js:121
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
-#: ../js/ui/endSessionDialog.js:91
+#: ../js/gdm/powerMenu.js:126
 msgid "Power Off"
 msgstr "Apagar"
 
@@ -446,7 +444,7 @@ msgid "Next week"
 msgstr "A vindeira semana"
 
 #: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:459
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:353
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:350
 msgid "Unknown"
 msgstr "Descoñecido"
 
@@ -470,7 +468,7 @@ msgstr "Desconectado"
 msgid "CONTACTS"
 msgstr "CONTACTOS"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1205
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1214
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -535,10 +533,12 @@ msgstr "ELEMENTOS RECENTES"
 
 #: ../js/ui/endSessionDialog.js:60
 #, c-format
+msgctxt "title"
 msgid "Log Out %s"
-msgstr "Saír da sesión de %s"
+msgstr "Saír da sesión %s"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:61
+msgctxt "title"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
@@ -565,6 +565,16 @@ msgstr[1] "A súa sesión pecharase automaticamente en %d segundos."
 msgid "Logging out of the system."
 msgstr "Saíndo da sesión."
 
+#: ../js/ui/endSessionDialog.js:75
+msgctxt "button"
+msgid "Log Out"
+msgstr "Saír da sesión"
+
+#: ../js/ui/endSessionDialog.js:80
+msgctxt "title"
+msgid "Power Off"
+msgstr "Apagar"
+
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -580,6 +590,21 @@ msgstr[1] "O seu computador apagarase automaticamente en %d segundos."
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Apagando o sistema."
+
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:106
+msgctxt "button"
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../js/ui/endSessionDialog.js:91
+msgctxt "button"
+msgid "Power Off"
+msgstr "Apagar"
+
+#: ../js/ui/endSessionDialog.js:97
+msgctxt "title"
+msgid "Restart"
+msgstr "Reiniciar"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -598,11 +623,11 @@ msgstr[1] "O seu computador reiniciarase automaticamente en %d segundos."
 msgid "Restarting the system."
 msgstr "Reiniciando o computador."
 
-#: ../js/ui/extensionSystem.js:481
+#: ../js/ui/extensionSystem.js:523
 msgid "Install"
 msgstr "Instalar"
 
-#: ../js/ui/extensionSystem.js:485
+#: ../js/ui/extensionSystem.js:527
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Desexa descargar e instalar «%s» desde extensions.gnome.org?"
@@ -615,45 +640,67 @@ msgstr "área de notificación"
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/lookingGlass.js:646
+#: ../js/ui/lookingGlass.js:664
 msgid "No extensions installed"
 msgstr "Non hai ningunha extensión instalada"
 
-#: ../js/ui/lookingGlass.js:692
+#. Translators: argument is an extension UUID.
+#: ../js/ui/lookingGlass.js:719
+#, c-format
+msgid "%s has not emitted any errors."
+msgstr "%s non xerou ningún erro."
+
+#: ../js/ui/lookingGlass.js:725
+msgid "Hide Errors"
+msgstr "Ocultar erros"
+
+#: ../js/ui/lookingGlass.js:729 ../js/ui/lookingGlass.js:780
+msgid "Show Errors"
+msgstr "Mostrar erros"
+
+#: ../js/ui/lookingGlass.js:738
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:694 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:741 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:696
+#: ../js/ui/lookingGlass.js:743
 msgid "Error"
 msgstr "Erro"
 
-#: ../js/ui/lookingGlass.js:698
+#: ../js/ui/lookingGlass.js:745
 msgid "Out of date"
 msgstr "Desactualizado"
 
-#: ../js/ui/lookingGlass.js:700
+#: ../js/ui/lookingGlass.js:747
 msgid "Downloading"
 msgstr "Descargando"
 
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:768
 msgid "View Source"
 msgstr "Ver fonte"
 
-#: ../js/ui/lookingGlass.js:727
+#: ../js/ui/lookingGlass.js:774
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:1198
+#: ../js/ui/messageTray.js:1207
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:2407
+#: ../js/ui/messageTray.js:1224
+msgid "Unmute"
+msgstr "Desactivar silencio"
+
+#: ../js/ui/messageTray.js:1224
+msgid "Mute"
+msgstr "Silenciar"
+
+#: ../js/ui/messageTray.js:2436
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -1072,13 +1119,13 @@ msgstr "non dispoñíbel"
 msgid "connection failed"
 msgstr "conexión fallida"
 
-#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1523
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1532
 msgid "More..."
 msgstr "Máis..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1467
 msgid "Connected (private)"
 msgstr "Conectado (privado)"
 
@@ -1095,7 +1142,7 @@ msgid "Auto dial-up"
 msgstr "Por liña conmutada automática"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1470
+#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1479
 #, c-format
 msgid "Auto %s"
 msgstr "%s automática"
@@ -1104,47 +1151,47 @@ msgstr "%s automática"
 msgid "Auto bluetooth"
 msgstr "Bluetooth automática"
 
-#: ../js/ui/status/network.js:1472
+#: ../js/ui/status/network.js:1481
 msgid "Auto wireless"
 msgstr "Sen fíos automática"
 
-#: ../js/ui/status/network.js:1566
+#: ../js/ui/status/network.js:1575
 msgid "Enable networking"
 msgstr "Activar rede"
 
-#: ../js/ui/status/network.js:1578
+#: ../js/ui/status/network.js:1587
 msgid "Wired"
 msgstr "Con fíos"
 
-#: ../js/ui/status/network.js:1589
+#: ../js/ui/status/network.js:1598
 msgid "Wireless"
 msgstr "Sen fíos"
 
-#: ../js/ui/status/network.js:1599
+#: ../js/ui/status/network.js:1608
 msgid "Mobile broadband"
 msgstr "Banda larga móbil"
 
-#: ../js/ui/status/network.js:1609
+#: ../js/ui/status/network.js:1618
 msgid "VPN Connections"
 msgstr "Conexións VPN"
 
-#: ../js/ui/status/network.js:1620
+#: ../js/ui/status/network.js:1629
 msgid "Network Settings"
 msgstr "Configuracións da rede"
 
-#: ../js/ui/status/network.js:1757
+#: ../js/ui/status/network.js:1766
 msgid "Connection failed"
 msgstr "Produciuse un fallo na conexión"
 
-#: ../js/ui/status/network.js:1758
+#: ../js/ui/status/network.js:1767
 msgid "Activation of network connection failed"
 msgstr "Produciuse un fallo na activación da conexión de rede"
 
-#: ../js/ui/status/network.js:2008
+#: ../js/ui/status/network.js:2017
 msgid "Networking is disabled"
 msgstr "A rede está desactivada"
 
-#: ../js/ui/status/network.js:2133
+#: ../js/ui/status/network.js:2144
 msgid "Network Manager"
 msgstr "Xestor de rede"
 
@@ -1509,39 +1556,39 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "Non dispoñíbel"
 
-#: ../js/ui/userMenu.js:547 ../js/ui/userMenu.js:551 ../js/ui/userMenu.js:621
+#: ../js/ui/userMenu.js:571 ../js/ui/userMenu.js:575 ../js/ui/userMenu.js:645
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:607
 msgid "Notifications"
 msgstr "Notificacións"
 
-#: ../js/ui/userMenu.js:591
+#: ../js/ui/userMenu.js:615
 msgid "Online Accounts"
 msgstr "Contas en liña"
 
-#: ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:619
 msgid "System Settings"
 msgstr "Configuracións do sistema"
 
-#: ../js/ui/userMenu.js:602
+#: ../js/ui/userMenu.js:626
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/userMenu.js:607
+#: ../js/ui/userMenu.js:631
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:636
 msgid "Log Out..."
 msgstr "Saír da sesión…"
 
-#: ../js/ui/userMenu.js:640
+#: ../js/ui/userMenu.js:664
 msgid "Your chat status will be set to busy"
 msgstr "O seu estado de chat será estabelecido a «ocupado»"
 
-#: ../js/ui/userMenu.js:641
+#: ../js/ui/userMenu.js:665
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1558,7 +1605,7 @@ msgstr ""
 msgid "Type to search..."
 msgstr "Teclear para buscar…"
 
-#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:261
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:244
 msgid "Search"
 msgstr "Buscar"
 
@@ -1589,15 +1636,15 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/main.c:480
+#: ../src/main.c:483
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/main.c:486
+#: ../src/main.c:489
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para a pantalla de inicio"
 
-#: ../src/shell-app.c:579
+#: ../src/shell-app.c:567
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Produciuse un fallo ao iniciar «%s»"
@@ -1614,13 +1661,15 @@ msgstr "Predeterminado"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O usuario rexeitou o diálogo de autenticación"
 
-#: ../src/shell-util.c:100
-msgid "Home Folder"
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-util.c:89
+msgid "Home"
 msgstr "Cartafol persoal"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:115
+#: ../src/shell-util.c:98
 msgid "File System"
 msgstr "Sistema de ficheiros"
 
@@ -1629,22 +1678,16 @@ msgstr "Sistema de ficheiros"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:311
+#: ../src/shell-util.c:294
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Home Folder"
+#~ msgstr "Cartafol persoal"
+
 #~ msgid "Show password"
 #~ msgstr "Mostrar contrasinal"
-
-#~ msgid "%s has not emitted any errors."
-#~ msgstr "%s non xerou ningún erro."
-
-#~ msgid "Hide Errors"
-#~ msgstr "Ocultar erros"
-
-#~ msgid "Show Errors"
-#~ msgstr "Mostrar erros"
 
 #~ msgid "%s has finished starting"
 #~ msgstr "%s rematou de iniarse"
