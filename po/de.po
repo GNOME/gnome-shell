@@ -6,7 +6,7 @@
 #
 # Hendrik Brandt <heb@gnome-de.org>, 2009.
 # Hendrik Richter <hendrikr@gnome.org>, 2009, 2010, 2011.
-# Mario Blättermann <mariobl@freenet.de>, 2009, 2010, 2011.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2009-2011.
 # Mario Klug <mario@klug.me>, 2010.
 # Jakob Kramer <jakob.kramer@gmx.de>, 2010.
 # Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2010, 2011.
@@ -17,9 +17,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-17 20:04+0000\n"
-"PO-Revision-Date: 2011-10-17 22:05+0100\n"
-"Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
+"POT-Creation-Date: 2011-11-05 13:23+0000\n"
+"PO-Revision-Date: 2011-11-05 21:08+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,10 +56,12 @@ msgid "Framerate used for recording screencasts."
 msgstr "Bildwiederholungsrate zur Aufnahme von Screencasts"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
+#, fuzzy
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should be loaded. disabled-extensions overrides this setting for extensions "
-"that appear in both lists."
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
 "Die Erweiterungen der GNOME-Shell besitzen eine UUID-Eigenschaft. Dieser "
 "Schlüssel listet Erweiterungen auf, welche geladen werden sollen. »disabled-"
@@ -113,11 +115,11 @@ msgstr ""
 "Auffüllung haben; die Ausgabe dieser Auffüllung wird in die Ausgabedatei "
 "geschrieben. Die Weiterleitung kann auch mit ihrer eigenen Ausgabe umgehen. "
 "Das kann zum Senden der Ausgabe über shout2send an einen Icecast-Server oder "
-"Ähnliches verwendet werden. Falls nicht (oder auf einen leeren Wert) "
-"gesetzt, so wird die vorgegebene Weiterleitung verwendet, welche derzeit "
-"»videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux« lautet "
-"und nach WEBM mittels des VP8-Codecs aufzeichnet. %T wird als Platzhalter "
-"für die vermutete optimale Threadanzahl auf dem System verwendet."
+"Ähnliches verwendet werden. Falls nicht (oder auf einen leeren Wert) gesetzt, "
+"so wird die vorgegebene Weiterleitung verwendet, welche derzeit »videorate ! "
+"vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux« lautet und nach WEBM "
+"mittels des VP8-Codecs aufzeichnet. %T wird als Platzhalter für die vermutete "
+"optimale Threadanzahl auf dem System verwendet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -136,8 +138,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-"
-"Bereich angezeigt."
+"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-Bereich "
+"angezeigt."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
@@ -196,52 +198,50 @@ msgstr "Zu verwendende Tastatur"
 msgid "disabled OpenSearch providers"
 msgstr "deaktivierte OpenSearch-Provider"
 
-#: ../js/gdm/loginDialog.js:617
+#: ../js/gdm/loginDialog.js:633
 msgid "Session..."
 msgstr "Sitzung …"
 
-#: ../js/gdm/loginDialog.js:788
+#: ../js/gdm/loginDialog.js:804
 msgctxt "title"
 msgid "Sign In"
 msgstr "Anmelden"
 
 #. translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:833
+#: ../js/gdm/loginDialog.js:849
 msgid "(or swipe finger)"
 msgstr "(oder benutzen Sie den Fingerabdruckleser)"
 
-#: ../js/gdm/loginDialog.js:851
+#: ../js/gdm/loginDialog.js:867
 msgid "Not listed?"
 msgstr "Nicht aufgeführt?"
 
-#: ../js/gdm/loginDialog.js:1019 ../js/ui/endSessionDialog.js:426
-#: ../js/ui/extensionSystem.js:477 ../js/ui/networkAgent.js:148
+#: ../js/gdm/loginDialog.js:1035 ../js/ui/endSessionDialog.js:426
+#: ../js/ui/extensionSystem.js:519 ../js/ui/networkAgent.js:148
 #: ../js/ui/polkitAuthenticationAgent.js:173 ../js/ui/status/bluetooth.js:480
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../js/gdm/loginDialog.js:1024
+#: ../js/gdm/loginDialog.js:1040
 msgctxt "button"
 msgid "Sign In"
 msgstr "Anmelden"
 
-#: ../js/gdm/loginDialog.js:1373
+#: ../js/gdm/loginDialog.js:1392
 msgid "Login Window"
 msgstr "Anmeldefenster"
 
-#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:549
-#: ../js/ui/userMenu.js:551 ../js/ui/userMenu.js:620
+#: ../js/gdm/powerMenu.js:116 ../js/ui/userMenu.js:573 ../js/ui/userMenu.js:575
+#: ../js/ui/userMenu.js:644
 msgid "Suspend"
 msgstr "Bereitschaft"
 
-#: ../js/gdm/powerMenu.js:121 ../js/ui/endSessionDialog.js:89
-#: ../js/ui/endSessionDialog.js:97 ../js/ui/endSessionDialog.js:106
+#: ../js/gdm/powerMenu.js:121
 msgid "Restart"
 msgstr "Neu starten"
 
-#: ../js/gdm/powerMenu.js:126 ../js/ui/endSessionDialog.js:80
-#: ../js/ui/endSessionDialog.js:91
+#: ../js/gdm/powerMenu.js:126
 msgid "Power Off"
 msgstr "Ausschalten"
 
@@ -458,8 +458,8 @@ msgstr "Diese Woche"
 msgid "Next week"
 msgstr "Nächste Woche"
 
-#: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:444
-#: ../js/ui/status/power.js:223 ../src/shell-app.c:353
+#: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:459
+#: ../js/ui/status/power.js:223 ../src/shell-app.c:350
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -483,7 +483,7 @@ msgstr "Abgemeldet"
 msgid "CONTACTS"
 msgstr "KONTAKTE"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1205
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1214
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -548,10 +548,12 @@ msgstr "ZULETZT GEÖFFNETE DOKUMENTE"
 
 #: ../js/ui/endSessionDialog.js:60
 #, c-format
+msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s abmelden"
 
-#: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:61
+msgctxt "title"
 msgid "Log Out"
 msgstr "Abmelden"
 
@@ -579,6 +581,16 @@ msgstr[1] "Sie werden automatisch in %d Sekunden abgemeldet."
 msgid "Logging out of the system."
 msgstr "Abmeldung vom System."
 
+#: ../js/ui/endSessionDialog.js:75
+msgctxt "button"
+msgid "Log Out"
+msgstr "Abmelden"
+
+#: ../js/ui/endSessionDialog.js:80
+msgctxt "title"
+msgid "Power Off"
+msgstr "Ausschalten"
+
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -595,6 +607,21 @@ msgstr[1] "Das System wird automatisch in %d Sekunden ausgeschaltet."
 #: ../js/ui/endSessionDialog.js:87
 msgid "Powering off the system."
 msgstr "Das System wird ausgeschaltet."
+
+#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:106
+msgctxt "button"
+msgid "Restart"
+msgstr "Neu starten"
+
+#: ../js/ui/endSessionDialog.js:91
+msgctxt "button"
+msgid "Power Off"
+msgstr "Ausschalten"
+
+#: ../js/ui/endSessionDialog.js:97
+msgctxt "title"
+msgid "Restart"
+msgstr "Neu starten"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
@@ -613,11 +640,11 @@ msgstr[1] "Das System wird automatisch in %d Sekunden neu gestartet."
 msgid "Restarting the system."
 msgstr "Neustart des Systems."
 
-#: ../js/ui/extensionSystem.js:481
+#: ../js/ui/extensionSystem.js:523
 msgid "Install"
 msgstr "Installieren"
 
-#: ../js/ui/extensionSystem.js:485
+#: ../js/ui/extensionSystem.js:527
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
@@ -630,45 +657,68 @@ msgstr "Benachrichtigungsfeld"
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: ../js/ui/lookingGlass.js:646
+#: ../js/ui/lookingGlass.js:664
 msgid "No extensions installed"
 msgstr "Keine Erweiterungen installiert"
 
-#: ../js/ui/lookingGlass.js:692
+#. Translators: argument is an extension UUID.
+#: ../js/ui/lookingGlass.js:719
+#, c-format
+msgid "%s has not emitted any errors."
+msgstr "%s hat keine Fehler ausgegeben."
+
+#: ../js/ui/lookingGlass.js:725
+msgid "Hide Errors"
+msgstr "Fehler verbergen"
+
+#: ../js/ui/lookingGlass.js:729 ../js/ui/lookingGlass.js:780
+msgid "Show Errors"
+msgstr "Fehler anzeigen"
+
+#: ../js/ui/lookingGlass.js:738
 msgid "Enabled"
 msgstr "Aktiviert"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:694 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:741 ../src/gvc/gvc-mixer-control.c:1093
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: ../js/ui/lookingGlass.js:696
+#: ../js/ui/lookingGlass.js:743
 msgid "Error"
 msgstr "Fehler"
 
-#: ../js/ui/lookingGlass.js:698
+#: ../js/ui/lookingGlass.js:745
 msgid "Out of date"
 msgstr "Veraltet"
 
-#: ../js/ui/lookingGlass.js:700
+#: ../js/ui/lookingGlass.js:747
 msgid "Downloading"
 msgstr "Herunterladen"
 
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:768
 msgid "View Source"
 msgstr "Quelle zeigen"
 
-#: ../js/ui/lookingGlass.js:727
+#: ../js/ui/lookingGlass.js:774
 msgid "Web Page"
 msgstr "Webseite"
 
-#: ../js/ui/messageTray.js:1198
+#: ../js/ui/messageTray.js:1207
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../js/ui/messageTray.js:2407
+#: ../js/ui/messageTray.js:1224
+#, fuzzy
+msgid "Unmute"
+msgstr "Minute"
+
+#: ../js/ui/messageTray.js:1224
+msgid "Mute"
+msgstr "Stumm"
+
+#: ../js/ui/messageTray.js:2436
 msgid "System Information"
 msgstr "Systeminformationen"
 
@@ -714,8 +764,7 @@ msgstr "Legitimierung für Funknetzwerk wird benötigt"
 #: ../js/ui/networkAgent.js:325
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network '%"
-"s'."
+"Passwords or encryption keys are required to access the wireless network '%s'."
 msgstr ""
 "Passwörter oder Schlüssel sind erforderlich, um auf das Funknetzwerk »%s« "
 "zuzugreifen."
@@ -1090,13 +1139,13 @@ msgstr "nicht verfügbar"
 msgid "connection failed"
 msgstr "Verbindung gescheitert"
 
-#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1523
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1532
 msgid "More..."
 msgstr "Mehr ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1467
 msgid "Connected (private)"
 msgstr "Verbunden (privat)"
 
@@ -1113,7 +1162,7 @@ msgid "Auto dial-up"
 msgstr "Einwählverbindung (automatisch)"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1470
+#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1479
 #, c-format
 msgid "Auto %s"
 msgstr "%s (automatisch)"
@@ -1122,47 +1171,47 @@ msgstr "%s (automatisch)"
 msgid "Auto bluetooth"
 msgstr "Bluetooth (automatisch)"
 
-#: ../js/ui/status/network.js:1472
+#: ../js/ui/status/network.js:1481
 msgid "Auto wireless"
 msgstr "Drahtlos (automatisch)"
 
-#: ../js/ui/status/network.js:1566
+#: ../js/ui/status/network.js:1575
 msgid "Enable networking"
 msgstr "Netzwerk aktivieren"
 
-#: ../js/ui/status/network.js:1578
+#: ../js/ui/status/network.js:1587
 msgid "Wired"
 msgstr "Kabelgebunden"
 
-#: ../js/ui/status/network.js:1589
+#: ../js/ui/status/network.js:1598
 msgid "Wireless"
 msgstr "Drahtlos"
 
-#: ../js/ui/status/network.js:1599
+#: ../js/ui/status/network.js:1608
 msgid "Mobile broadband"
 msgstr "Mobiles Breitband"
 
-#: ../js/ui/status/network.js:1609
+#: ../js/ui/status/network.js:1618
 msgid "VPN Connections"
 msgstr "VPN-Verbindungen"
 
-#: ../js/ui/status/network.js:1620
+#: ../js/ui/status/network.js:1629
 msgid "Network Settings"
 msgstr "Netzwerkeinstellungen"
 
-#: ../js/ui/status/network.js:1757
+#: ../js/ui/status/network.js:1766
 msgid "Connection failed"
 msgstr "Verbindung gescheitert"
 
-#: ../js/ui/status/network.js:1758
+#: ../js/ui/status/network.js:1767
 msgid "Activation of network connection failed"
 msgstr "Aktivierung der Netzwerkverbindung ist gescheitert"
 
-#: ../js/ui/status/network.js:2008
+#: ../js/ui/status/network.js:2017
 msgid "Networking is disabled"
 msgstr "Netzwerk ist deaktiviert"
 
-#: ../js/ui/status/network.js:2133
+#: ../js/ui/status/network.js:2144
 msgid "Network Manager"
 msgstr "Netzwerk-Verwaltung"
 
@@ -1463,8 +1512,7 @@ msgid "This resource is already connected to the server"
 msgstr "Diese Ressource ist bereits mit dem Server verbunden"
 
 #: ../js/ui/telepathyClient.js:1449
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
+msgid "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Die Verbindung wurde durch eine neue Verbindung mit der gleichen Ressource "
 "ersetzt"
@@ -1529,39 +1577,39 @@ msgstr "Untätig"
 msgid "Unavailable"
 msgstr "Nicht verfügbar"
 
-#: ../js/ui/userMenu.js:547 ../js/ui/userMenu.js:551 ../js/ui/userMenu.js:621
+#: ../js/ui/userMenu.js:571 ../js/ui/userMenu.js:575 ../js/ui/userMenu.js:645
 msgid "Power Off..."
 msgstr "Ausschalten …"
 
-#: ../js/ui/userMenu.js:583
+#: ../js/ui/userMenu.js:607
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: ../js/ui/userMenu.js:591
+#: ../js/ui/userMenu.js:615
 msgid "Online Accounts"
 msgstr "Online-Konten"
 
-#: ../js/ui/userMenu.js:595
+#: ../js/ui/userMenu.js:619
 msgid "System Settings"
 msgstr "Systemeinstellungen"
 
-#: ../js/ui/userMenu.js:602
+#: ../js/ui/userMenu.js:626
 msgid "Lock Screen"
 msgstr "Bildschirm sperren"
 
-#: ../js/ui/userMenu.js:607
+#: ../js/ui/userMenu.js:631
 msgid "Switch User"
 msgstr "Benutzer wechseln"
 
-#: ../js/ui/userMenu.js:612
+#: ../js/ui/userMenu.js:636
 msgid "Log Out..."
 msgstr "Abmelden …"
 
-#: ../js/ui/userMenu.js:640
+#: ../js/ui/userMenu.js:664
 msgid "Your chat status will be set to busy"
 msgstr "Ihr Anwesenheitsstatus wird auf »Beschäftigt« gesetzt"
 
-#: ../js/ui/userMenu.js:641
+#: ../js/ui/userMenu.js:665
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1578,7 +1626,7 @@ msgstr ""
 msgid "Type to search..."
 msgstr "Suchbegriff eingeben …"
 
-#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:261
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:244
 msgid "Search"
 msgstr "Suchen"
 
@@ -1609,15 +1657,15 @@ msgstr[1] "%u Eingänge"
 msgid "System Sounds"
 msgstr "Systemklänge"
 
-#: ../src/main.c:480
+#: ../src/main.c:483
 msgid "Print version"
 msgstr "Version ausgeben"
 
-#: ../src/main.c:486
+#: ../src/main.c:489
 msgid "Mode used by GDM for login screen"
 msgstr "Der durch GDM im Anmeldefenster verwendete Modus"
 
-#: ../src/shell-app.c:579
+#: ../src/shell-app.c:567
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "»%s« konnte nicht gestartet werden"
@@ -1634,13 +1682,16 @@ msgstr "Vorgabe"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Der Dialog zur Legitimierung wurde vom Benutzer geschlossen"
 
-#: ../src/shell-util.c:100
-msgid "Home Folder"
-msgstr "Persönlicher Ordner"
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-util.c:89
+#, fuzzy
+msgid "Home"
+msgstr "Lautstärke"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:115
+#: ../src/shell-util.c:98
 msgid "File System"
 msgstr "Dateisystem"
 
@@ -1649,22 +1700,16 @@ msgstr "Dateisystem"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:311
+#: ../src/shell-util.c:294
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Home Folder"
+#~ msgstr "Persönlicher Ordner"
+
 #~ msgid "Show password"
 #~ msgstr "Passwort anzeigen"
-
-#~ msgid "%s has not emitted any errors."
-#~ msgstr "%s hat keine Fehler ausgegeben."
-
-#~ msgid "Hide Errors"
-#~ msgstr "Fehler verbergen"
-
-#~ msgid "Show Errors"
-#~ msgstr "Fehler anzeigen"
 
 #~ msgid "%s has finished starting"
 #~ msgstr "Start von %s ist abgeschlossen"
