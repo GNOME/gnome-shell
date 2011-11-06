@@ -1,22 +1,22 @@
 # Spanish translation for cogl.
 # Copyright (C) 2011 cogl's COPYRIGHT HOLDER
 # This file is distributed under the same license as the cogl package.
-# Jorge González <jorgegonz@svn.gnome.org>, 2011.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
+# Jorge González <jorgegonz@svn.gnome.org>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-26 18:04+0000\n"
-"PO-Revision-Date: 2011-11-02 14:17+0100\n"
-"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-11-03 20:31+0000\n"
+"PO-Revision-Date: 2011-11-06 13:44+0100\n"
+"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../cogl/cogl-debug.c:154
 msgid "Supported debug values:"
@@ -54,7 +54,7 @@ msgstr "Mostrar las opciones de Cogl"
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "Rastreo de Cogl"
 
 #: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
@@ -62,7 +62,7 @@ msgstr "Referencias de CoglObject"
 
 #: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "Depurar problemas de conteo de referencias para CoglObjects"
 
 #: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
@@ -74,11 +74,11 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "Rastrear texturas atlas"
 
 #: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "Gestión de la depuración de texturas atlas"
 
 #: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
@@ -90,11 +90,11 @@ msgstr "Análisis de depuración de CoglBlendString"
 
 #: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr ""
+msgstr "Rastrear diario"
 
 #: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "Ver toda la geometría que pasa a través del diario"
 
 #: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
@@ -106,7 +106,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
-msgstr ""
+msgstr "Rastrear matrices"
 
 #: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
@@ -281,11 +281,12 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
-msgstr ""
+msgstr "Desactivar rectorte software"
 
 #: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
 msgstr ""
+"Desactiva los intentos de Cogl de recortar algunos rectángulos en software."
 
 #: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
@@ -293,23 +294,23 @@ msgstr "Mostrar fuente"
 
 #: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
-msgstr ""
+msgstr "Mostrar el código fuente ARBfp/GLSL generado"
 
 #: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
-msgstr ""
+msgstr "Rastrear algunas OpenGL"
 
 #: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "Rastrea algunas llamadas OpenGL seleccionadas"
 
 #: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "Rastrear soporte para fuera de la pantalla"
 
 #: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "Depurar soporte para fuera de la pantalla"
 
 #: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
@@ -327,11 +328,14 @@ msgstr "Desactivar optimización de lectura de píxel"
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
+"Desactivar la optimización de lectura de 1px para escenas simples de "
+"rectángulos opacos"
 
 #: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
-msgstr ""
+msgstr "Rastrear recortes"
 
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr ""
+"Información de los registros acerca de cómo implementa Cogl los recortes"
