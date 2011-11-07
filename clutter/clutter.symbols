@@ -631,6 +631,15 @@ clutter_frame_source_add
 clutter_frame_source_add_full
 #endif
 
+#ifdef CLUTTER_WINDOWING_GDK
+clutter_gdk_disable_event_retrieval
+clutter_gdk_get_stage_from_window
+clutter_gdk_get_stage_window
+clutter_gdk_handle_event
+clutter_gdk_set_display
+clutter_gdk_set_stage_foreign
+#endif
+
 clutter_geometry_get_type
 clutter_geometry_intersects
 clutter_geometry_union
