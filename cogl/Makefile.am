@@ -370,6 +370,11 @@ if SUPPORT_EGL_PLATFORM_WAYLAND
 cogl_public_h += \
 	$(srcdir)/cogl-wayland-renderer.h
 endif
+if SUPPORT_EGL_PLATFORM_KMS
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-kms.c \
+	$(srcdir)/winsys/cogl-winsys-kms.h
+endif
 if SUPPORT_EGL
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c \

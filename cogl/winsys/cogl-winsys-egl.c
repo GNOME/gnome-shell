@@ -62,7 +62,12 @@
 #include <android/native_window.h>
 #endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+#include "cogl-winsys-kms.h"
+#endif
+
 #include <stdlib.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -106,6 +111,9 @@ typedef struct _CoglRendererEGL
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   gboolean gdl_initialized;
 #endif
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  CoglRendererKMS kms_renderer;
+#endif
 
   /* Function pointers for GLX specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d)
@@ -137,8 +145,13 @@ typedef struct _CoglDisplayEGL
   EGLSurface dummy_surface;
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
       defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT) || \
-      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)
+      defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT) || \
+      defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   EGLSurface egl_surface;
+#else
+  CoglDisplayKMS kms_display;
+#endif
   int egl_surface_width;
   int egl_surface_height;
   gboolean have_onscreen;
@@ -175,7 +188,11 @@ typedef struct _CoglOnscreenEGL
   struct wl_surface *wayland_surface;
 #endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  CoglOnscreenKMS kms_onscreen;
+#else
   EGLSurface egl_surface;
+#endif
 } CoglOnscreenEGL;
 
 #ifdef EGL_KHR_image_pixmap
@@ -434,6 +451,11 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 			  &egl_renderer->egl_version_major,
 			  &egl_renderer->egl_version_minor);
 
+#elif defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+  if (!_cogl_winsys_kms_connect (&egl_renderer->kms_renderer, error))
+    goto error;
+  egl_renderer->edpy = egl_renderer->kms_renderer.dpy;
+  status = EGL_TRUE;
 #else
   egl_renderer->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
 
@@ -641,12 +663,14 @@ try_create_context (CoglDisplay *display,
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
 #endif
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   EGLDisplay edpy;
   EGLConfig config;
   EGLint config_count = 0;
   EGLBoolean status;
-  EGLint cfg_attribs[MAX_EGL_CONFIG_ATTRIBS];
   EGLint attribs[3];
+#endif
+  EGLint cfg_attribs[MAX_EGL_CONFIG_ATTRIBS];
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   XVisualInfo *xvisinfo;
   XSetWindowAttributes attrs;
@@ -660,10 +684,11 @@ try_create_context (CoglDisplay *display,
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context == NULL, TRUE);
 
-  edpy = egl_renderer->edpy;
-
   if (display->renderer->driver == COGL_DRIVER_GL)
     eglBindAPI (EGL_OPENGL_API);
+
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  edpy = egl_renderer->edpy;
 
   status = eglChooseConfig (edpy,
                             cfg_attribs,
@@ -695,7 +720,7 @@ try_create_context (CoglDisplay *display,
       error_message = "Unable to create a suitable EGL context";
       goto fail;
     }
-
+#endif
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 
   xvisinfo = get_visual_info (display, config);
@@ -907,14 +932,24 @@ try_create_context (CoglDisplay *display,
                    EGL_HEIGHT,
                    &egl_display->egl_surface_height);
 
+#elif defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+  if (!_cogl_winsys_kms_create_context (&egl_renderer->kms_renderer,
+                                        &egl_display->kms_display,
+                                        error))
+    return FALSE;
+
+  egl_display->egl_surface_width = egl_display->kms_display.width;
+  egl_display->egl_surface_height = egl_display->kms_display.height;
+  egl_display->egl_context = egl_display->kms_display.egl_context;
 #else
 #error "Unknown EGL platform"
 #endif
 
   return TRUE;
 
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 fail:
-
+#endif
   g_set_error (error, COGL_WINSYS_ERROR,
                COGL_WINSYS_ERROR_CREATE_CONTEXT,
                "%s", error_message);
@@ -929,6 +964,17 @@ cleanup_context (CoglDisplay *display)
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglXlibDisplay *xlib_display = display->winsys;
   CoglXlibRenderer *xlib_renderer = display->renderer->winsys;
+#endif
+#if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+  GError *error = NULL;
+
+  if (!_cogl_winsys_kms_destroy_context (&egl_renderer->kms_renderer,
+                                         &egl_display->kms_display,
+                                         &error))
+    {
+      g_critical (G_STRLOC ": Error cleaning up KMS rendering state: %s", error->message);
+      g_clear_error (&error);
+    }
 #endif
 
   if (egl_display->egl_context != EGL_NO_CONTEXT)
@@ -1108,7 +1154,8 @@ _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
   CoglDisplayEGL *egl_display;
-#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+#if defined (COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT) || \
+  defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
 #endif
 
@@ -1129,6 +1176,13 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       egl_renderer->pf_eglBindWaylandDisplay (egl_renderer->edpy,
                                               wayland_display);
     }
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  if (!_cogl_winsys_kms_display_setup (&egl_renderer->kms_renderer,
+                                       &egl_display->kms_display,
+                                       error))
+    goto error;
 #endif
 
   if (!create_context (display, error))
@@ -1181,19 +1235,24 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglOnscreenXlib *xlib_onscreen;
   Window xwin;
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT) || \
+    defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
 #endif
   CoglOnscreenEGL *egl_onscreen;
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   EGLint attributes[MAX_EGL_CONFIG_ATTRIBS];
   EGLConfig egl_config;
   EGLint config_count = 0;
   EGLBoolean status;
   gboolean need_stencil =
     egl_display->stencil_disabled ? FALSE : framebuffer->config.need_stencil;
+#endif
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
+
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   egl_attributes_from_framebuffer_config (display,
                                           &framebuffer->config,
                                           need_stencil,
@@ -1222,7 +1281,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       g_return_val_if_fail (status == EGL_TRUE, TRUE);
       framebuffer->samples_per_pixel = samples;
     }
-
+#endif
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 
   /* FIXME: We need to explicitly Select for ConfigureNotify events.
@@ -1384,7 +1443,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
       defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
-      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
+      defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)          || \
+      defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
   if (egl_display->have_onscreen)
     {
       g_set_error (error, COGL_WINSYS_ERROR,
@@ -1393,7 +1453,16 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       return FALSE;
     }
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  if (!_cogl_winsys_kms_onscreen_init (cogl_framebuffer_get_context (framebuffer),
+                                       &egl_renderer->kms_renderer,
+                                       &egl_display->kms_display,
+                                       &egl_onscreen->kms_onscreen,
+                                       error))
+    return FALSE;
+#else
   egl_onscreen->egl_surface = egl_display->egl_surface;
+#endif
 
   _cogl_framebuffer_winsys_update_size (framebuffer,
                                         egl_display->egl_surface_width,
@@ -1411,6 +1480,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
+  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
   CoglXlibRenderer *xlib_renderer = context->display->renderer->winsys;
   CoglXlibTrapState old_state;
@@ -1418,13 +1488,12 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT)
   CoglDisplayEGL *egl_display = context->display->winsys;
 #endif
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 
   /* If we never successfully allocated then there's nothing to do */
   if (egl_onscreen == NULL)
     return;
-
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   if (egl_onscreen->egl_surface != EGL_NO_SURFACE)
     {
       if (eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface)
@@ -1432,7 +1501,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
         g_warning ("Failed to destroy EGL surface");
       egl_onscreen->egl_surface = EGL_NO_SURFACE;
     }
-
+#endif
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT
   egl_display->have_onscreen = FALSE;
 #endif
@@ -1469,6 +1538,11 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
     }
 #endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  _cogl_winsys_kms_onscreen_deinit (&egl_renderer->kms_renderer,
+                                    &egl_onscreen->kms_onscreen);
+#endif
+
   g_slice_free (CoglOnscreenEGL, onscreen->winsys);
   onscreen->winsys = NULL;
 }
@@ -1477,10 +1551,19 @@ static void
 _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglContextEGL *egl_context = context->winsys;
   CoglDisplayEGL *egl_display = context->display->winsys;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglContextEGL *egl_context = context->winsys;
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  _cogl_winsys_kms_bind (&egl_renderer->kms_renderer,
+                         &egl_display->kms_display);
+  return;
+
+#else
 
   if (egl_context->current_surface == egl_onscreen->egl_surface)
     return;
@@ -1497,6 +1580,7 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 #elif defined (COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT) || \
       defined (COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT)      || \
       defined (COGL_HAS_EGL_PLATFORM_GDL_SUPPORT)
+
       return;
 #else
 #error "Unknown EGL platform"
@@ -1515,6 +1599,8 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
     eglSwapInterval (egl_renderer->edpy, 1);
   else
     eglSwapInterval (egl_renderer->edpy, 0);
+
+#endif
 }
 
 static void
@@ -1522,6 +1608,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                    const int *user_rectangles,
                                    int n_rectangles)
 {
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
@@ -1545,6 +1632,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                              n_rectangles,
                                              rectangles) == EGL_FALSE)
     g_warning ("Error reported by eglSwapBuffersRegion");
+#endif
 }
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
@@ -1569,8 +1657,18 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  CoglDisplayEGL *egl_display = context->display->winsys;
+#endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  _cogl_winsys_kms_swap_buffers (&egl_renderer->kms_renderer,
+                                 &egl_display->kms_display,
+                                 &egl_onscreen->kms_onscreen);
+  return;
+#else
   eglSwapBuffers (egl_renderer->edpy, egl_onscreen->egl_surface);
+#endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
   /*
@@ -1595,6 +1693,7 @@ _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 static void
 _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 {
+#ifndef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglContextEGL *egl_context = context->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
@@ -1603,6 +1702,7 @@ _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
     return;
 
   egl_context->current_surface = EGL_NO_SURFACE;
+#endif
   _cogl_winsys_onscreen_bind (onscreen);
 }
 

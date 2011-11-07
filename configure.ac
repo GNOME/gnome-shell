@@ -755,6 +755,32 @@ AS_IF([test "x$enable_wayland_egl_platform" == "xyes"],
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_WAYLAND,
                [test "x$enable_wayland_egl_platform" = "xyes"])
 
+
+AC_ARG_ENABLE(
+  [kms-egl-platform],
+  [AC_HELP_STRING([--enable-kms-egl-platform=@<:@no/yes@:>@], [Enable support for the Wayland egl platform @<:@default=no@:>@])],
+  [],
+  enable_kms_egl_platform=no
+)
+AS_IF([test "x$enable_kms_egl_platform" == "xyes"],
+      [
+        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
+        NEED_EGL=yes
+        EGL_PLATFORMS="$EGL_PLATFORMS kms"
+
+        PKG_CHECK_EXISTS([gbm],
+                         [
+                           COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gbm"
+                           COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES libdrm"
+                           COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gl"
+                         ],
+                         [AC_MSG_ERROR([Unable to locate required kms libraries])])
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_KMS_SUPPORT"
+      ])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_KMS,
+               [test "x$enable_kms_egl_platform" = "xyes"])
+
 AC_ARG_ENABLE(
   [wayland-egl-server],
   [AC_HELP_STRING([--enable-wayland-egl-server=@<:@no/yes@:>@], [Enable server side wayland support @<:@default=no@:>@])],
