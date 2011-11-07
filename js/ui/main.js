@@ -132,15 +132,11 @@ function _initUserSession() {
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
 
-    let shellwm = global.window_manager;
-
-    shellwm.takeover_keybinding('panel-run-dialog');
-    shellwm.connect('keybinding::panel-run-dialog', function () {
+    Meta.keybindings_set_custom_handler('panel-run-dialog', function() {
        getRunDialog().open();
     });
 
-    shellwm.takeover_keybinding('panel-main-menu');
-    shellwm.connect('keybinding::panel-main-menu', function () {
+    Meta.keybindings_set_custom_handler('panel-main-menu', function () {
         overview.toggle();
     });
 

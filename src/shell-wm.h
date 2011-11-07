@@ -39,10 +39,6 @@ void     shell_wm_completed_destroy          (ShellWM         *wm,
                                               MetaWindowActor *actor);
 void     shell_wm_completed_switch_workspace (ShellWM         *wm);
 
-/* Keybinding stuff */
-void shell_wm_takeover_keybinding (ShellWM    *wm,
-				   const char *binding_name);
-
 G_END_DECLS
 
 #endif /* __SHELL_WM_H__ */
