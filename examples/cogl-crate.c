@@ -164,6 +164,9 @@ main (int argc, char **argv)
       return 1;
   }
 
+  data.framebuffer_width = cogl_framebuffer_get_width (fb);
+  data.framebuffer_height = cogl_framebuffer_get_height (fb);
+
   data.timer = g_timer_new ();
 
   cogl_onscreen_show (onscreen);
