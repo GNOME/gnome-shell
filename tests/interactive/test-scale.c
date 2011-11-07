@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include <gmodule.h>
-
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 static const ClutterGravity gravities[] = {

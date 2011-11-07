@@ -34,31 +34,16 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_GROUP clutter_group_get_type()
+#define CLUTTER_TYPE_GROUP              (clutter_group_get_type ())
+#define CLUTTER_GROUP(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_GROUP, ClutterGroup))
+#define CLUTTER_GROUP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_GROUP, ClutterGroupClass))
+#define CLUTTER_IS_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_GROUP))
+#define CLUTTER_IS_GROUP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_GROUP))
+#define CLUTTER_GROUP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_GROUP, ClutterGroupClass))
 
-#define CLUTTER_GROUP(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_GROUP, ClutterGroup))
-
-#define CLUTTER_GROUP_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_GROUP, ClutterGroupClass))
-
-#define CLUTTER_IS_GROUP(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_GROUP))
-
-#define CLUTTER_IS_GROUP_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_GROUP))
-
-#define CLUTTER_GROUP_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_GROUP, ClutterGroupClass))
-
-typedef struct _ClutterGroup        ClutterGroup;
-typedef struct _ClutterGroupClass   ClutterGroupClass;
-typedef struct _ClutterGroupPrivate ClutterGroupPrivate;
+typedef struct _ClutterGroup            ClutterGroup;
+typedef struct _ClutterGroupClass       ClutterGroupClass;
+typedef struct _ClutterGroupPrivate     ClutterGroupPrivate;
 
 /**
  * ClutterGroup:
@@ -97,25 +82,13 @@ struct _ClutterGroupClass
   void (*_clutter_reserved6) (void);
 };
 
-GType         clutter_group_get_type         (void) G_GNUC_CONST;
-ClutterActor *clutter_group_new              (void);
-ClutterActor *clutter_group_get_nth_child    (ClutterGroup    *self,
-                                              gint             index_);
-gint          clutter_group_get_n_children   (ClutterGroup    *self);
-void          clutter_group_remove_all       (ClutterGroup    *group);
+GType clutter_group_get_type (void) G_GNUC_CONST;
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-
-/* for Mr. Mallum only */
-#define clutter_group_add(group,actor)                  G_STMT_START {  \
-  ClutterActor *_actor = (ClutterActor *) (actor);                      \
-  if (CLUTTER_IS_GROUP ((group)) && CLUTTER_IS_ACTOR ((_actor)))        \
-    {                                                                   \
-      ClutterContainer *_container = (ClutterContainer *) (group);      \
-      clutter_container_add_actor (_container, _actor);                 \
-    }                                                   } G_STMT_END
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
+ClutterActor *  clutter_group_new               (void);
+ClutterActor *  clutter_group_get_nth_child     (ClutterGroup *self,
+                                                 gint          index_);
+gint            clutter_group_get_n_children    (ClutterGroup *self);
+void            clutter_group_remove_all        (ClutterGroup *self);
 
 G_END_DECLS
 

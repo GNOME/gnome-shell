@@ -253,9 +253,3 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
   backend_class->init_events        = clutter_backend_osx_init_events;
   backend_class->get_device_manager = clutter_backend_osx_get_device_manager;
 }
-
-GType
-_clutter_backend_impl_get_type (void)
-{
-  return clutter_backend_osx_get_type ();
-}

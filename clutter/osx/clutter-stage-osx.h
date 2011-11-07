@@ -22,8 +22,9 @@
 #ifndef __CLUTTER_STAGE_OSX_H__
 #define __CLUTTER_STAGE_OSX_H__
 
-#include <clutter/clutter-stage.h>
 #include <clutter/clutter-backend.h>
+#include <clutter/clutter-stage.h>
+#include <clutter/clutter-stage-window.h>
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>

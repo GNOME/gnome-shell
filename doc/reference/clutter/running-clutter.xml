@@ -203,6 +203,7 @@
           <listitem><para>Backend-related notes, including initialization of
           the backend features and GL context creation</para></listitem>
         </varlistentry>
+        <varlistentry>
           <term>event</term>
           <listitem><para>Event handling notes</para></listitem>
         </varlistentry>

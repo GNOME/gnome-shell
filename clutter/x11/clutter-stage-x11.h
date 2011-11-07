@@ -28,6 +28,7 @@
 #include <X11/Xatom.h>
 
 #include "clutter-backend-x11.h"
+#include "cogl/clutter-stage-cogl.h"
 
 G_BEGIN_DECLS
 
@@ -48,7 +49,7 @@ typedef enum
 
 struct _ClutterStageX11
 {
-  GObject parent_instance;
+  ClutterStageCogl parent_instance;
 
   Window xwin;
   gint xwin_width;
@@ -62,10 +63,6 @@ struct _ClutterStageX11
 
   ClutterStageX11State wm_state;
 
-  /* backpointers */
-  ClutterStage *wrapper;
-  ClutterBackendX11 *backend;
-
   guint is_foreign_xwin      : 1;
   guint fullscreening        : 1;
   guint is_cursor_visible    : 1;
@@ -75,7 +72,7 @@ struct _ClutterStageX11
 
 struct _ClutterStageX11Class
 {
-  GObjectClass parent_class;
+  ClutterStageCoglClass parent_class;
 };
 
 #define CLUTTER_STAGE_X11_EVENT_MASK \

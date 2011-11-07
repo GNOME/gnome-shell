@@ -49,6 +49,9 @@
 
 G_BEGIN_DECLS
 
+#define CLUTTER_TSLIB_INPUT_BACKEND     "tslib"
+#define CLUTTER_EVDEV_INPUT_BACKEND     "evdev"
+
 #ifndef CLUTTER_DISABLE_DEPRECATED
 /**
  * clutter_eglx_display:

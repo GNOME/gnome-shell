@@ -23,6 +23,9 @@
 #define __CLUTTER_BACKEND_PRIVATE_H__
 
 #include <clutter/clutter-backend.h>
+#include <clutter/clutter-device-manager.h>
+#include <clutter/clutter-stage-window.h>
+
 #include "clutter-event-translator.h"
 
 #define CLUTTER_BACKEND_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND, ClutterBackendClass))
@@ -86,9 +89,6 @@ struct _ClutterBackendClass
   void (* font_changed)       (ClutterBackend *backend);
   void (* settings_changed)   (ClutterBackend *backend);
 };
-
-/* vfuncs implemented by backend */
-GType         _clutter_backend_impl_get_type  (void);
 
 void          _clutter_backend_redraw         (ClutterBackend  *backend,
                                                ClutterStage    *stage);

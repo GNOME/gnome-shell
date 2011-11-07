@@ -52,13 +52,6 @@ static ClutterBackendWayland *backend_singleton = NULL;
 
 G_DEFINE_TYPE (ClutterBackendWayland, _clutter_backend_wayland, CLUTTER_TYPE_BACKEND);
 
-static void
-clutter_backend_at_exit (void)
-{
-  if (backend_singleton)
-    g_object_run_dispose (G_OBJECT (backend_singleton));
-}
-
 static gboolean
 clutter_backend_wayland_pre_parse (ClutterBackend  *backend,
 				   GError         **error)
@@ -280,8 +273,6 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   EGLBoolean status;
-
-  g_atexit (clutter_backend_at_exit);
 
   /* TODO: expose environment variable/commandline option for this... */
   backend_wayland->wayland_display = wl_display_connect (NULL);
@@ -657,12 +648,6 @@ _clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
   backend_wayland->egl_context = EGL_NO_CONTEXT;
 
   backend_wayland->drm_fd = -1;
-}
-
-GType
-_clutter_backend_impl_get_type (void)
-{
-  return _clutter_backend_wayland_get_type ();
 }
 
 EGLDisplay

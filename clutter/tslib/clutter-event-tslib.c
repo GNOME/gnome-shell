@@ -19,11 +19,8 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
-#include "clutter-stage-egl.h"
 #include "clutter-backend-egl.h"
 #include "clutter-egl.h"
 
@@ -37,9 +34,7 @@
 
 #include <glib.h>
 
-#ifdef HAVE_TSLIB
 #include <tslib.h>
-#endif
 
 typedef struct _ClutterEventSource  ClutterEventSource;
 
@@ -50,12 +45,8 @@ struct _ClutterEventSource
   ClutterBackendEGL *backend;
   GPollFD event_poll_fd;
 
-#ifdef HAVE_TSLIB
-  struct tsdev   *ts_device;
-#endif
+  struct tsdev *ts_device;
 };
-
-#ifdef HAVE_TSLIB
 
 static gboolean clutter_event_prepare  (GSource     *source,
                                         gint        *timeout);
@@ -93,15 +84,16 @@ get_backend_time (void)
 
   return g_timer_elapsed (backend_egl->event_timer, NULL) * 1000;
 }
-#endif
 
 void
-_clutter_events_tslib_init (ClutterBackendEGL *backend_egl)
+_clutter_events_tslib_init (ClutterBackend *backend)
 {
-#ifdef HAVE_TSLIB
+  ClutterBackendEglNative *backend_egl;
   ClutterEventSource *event_source;
   const char *device_name;
   GSource *source;
+
+  backend_egl = CLUTTER_BACKEND_EGL (backend);
 
   CLUTTER_NOTE (EVENT, "Starting timer");
   g_assert (backend_egl->event_timer != NULL);
@@ -148,13 +140,11 @@ _clutter_events_tslib_init (ClutterBackendEGL *backend_egl)
       g_warning ("Unable to open '%s'", device_name);
       g_source_unref (source);
     }
-#endif /* HAVE_TSLIB */
 }
 
 void
-_clutter_events_egl_uninit (ClutterBackendEGL *backend_egl)
+_clutter_events_egl_uninit (ClutterBackendEglNative *backend_egl)
 {
-#ifdef HAVE_TSLIB
   if (backend_egl->event_timer != NULL)
     {
       CLUTTER_NOTE (EVENT, "Stopping the timer");
@@ -175,10 +165,7 @@ _clutter_events_egl_uninit (ClutterBackendEGL *backend_egl)
       g_source_unref (backend_egl->event_source);
       backend_egl->event_source = NULL;
     }
-#endif /* HAVE_TSLIB */
 }
-
-#ifdef HAVE_TSLIB
 
 static gboolean
 clutter_event_prepare (GSource *source,
@@ -227,7 +214,7 @@ clutter_event_dispatch (GSource     *source,
   if ((!clutter_events_pending()) &&
       (ts_read(event_source->ts_device, &tsevent, 1) == 1))
     {
-      static gint     last_x = 0, last_y = 0;
+      static gint last_x = 0, last_y = 0;
       static gboolean clicked = FALSE;
 
       /* Avoid sending too many events which are just pressure changes.
@@ -290,5 +277,3 @@ out:
 
   return TRUE;
 }
-
-#endif

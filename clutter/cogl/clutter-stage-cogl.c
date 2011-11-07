@@ -30,6 +30,8 @@
 #include "config.h"
 #endif
 
+#include "clutter-config.h"
+
 #include "clutter-stage-cogl.h"
 #include "clutter-backend-cogl.h"
 
@@ -43,21 +45,20 @@
 #include "clutter-stage-private.h"
 #include "clutter-util.h"
 
-#ifdef COGL_HAS_X11_SUPPORT
-static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
-#endif
-
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageCogl,
                          _clutter_stage_cogl,
-#ifdef COGL_HAS_X11_SUPPORT
-                         CLUTTER_TYPE_STAGE_X11,
-#else
                          G_TYPE_OBJECT,
-#endif
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
+
+enum {
+  PROP_0,
+  PROP_WRAPPER,
+  PROP_BACKEND,
+  PROP_LAST
+};
 
 static void
 clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
@@ -65,11 +66,6 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
   CLUTTER_NOTE (BACKEND, "Unrealizing Cogl stage [%p]", stage_cogl);
-
-#ifdef COGL_HAS_XLIB_SUPPORT
-  /* chain up to the StageX11 implementation */
-  clutter_stage_window_parent_iface->unrealize (stage_window);
-#endif
 
   if (stage_cogl->onscreen != NULL)
     {
@@ -101,9 +97,6 @@ static gboolean
 clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-#ifdef COGL_HAS_XLIB_SUPPORT
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-#endif
   ClutterBackend *backend;
   CoglFramebuffer *framebuffer;
   GError *error = NULL;
@@ -117,23 +110,11 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 
   backend = clutter_get_default_backend ();
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-  clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
-#endif
-
-  stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
-                                            width, height);
-
-#ifdef COGL_HAS_XLIB_SUPPORT
-  if (stage_x11->xwin != None)
+  if (stage_cogl->onscreen == NULL)
     {
-      cogl_x11_onscreen_set_foreign_window_xid (stage_cogl->onscreen,
-                                                stage_x11->xwin,
-                                                _clutter_stage_x11_update_foreign_event_mask,
-                                                stage_x11);
-
+      stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
+						width, height);
     }
-#endif
 
   clutter_vblank = _clutter_backend_cogl_get_vblank ();
   if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
@@ -149,7 +130,7 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
       return FALSE;
     }
 
-  /* FIXME: for fullscreen Cogl platforms then the size we gave above
+  /* FIXME: for fullscreen Cogl platforms then the size we gave
    * will be ignored, so we need to make sure the stage size is
    * updated to this size. */
 
@@ -161,14 +142,7 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
                                                     stage_cogl);
     }
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-  if (stage_x11->xwin == None)
-    stage_x11->xwin = cogl_x11_onscreen_get_window_xid (stage_cogl->onscreen);
-
-  return clutter_stage_window_parent_iface->realize (stage_window);
-#else
   return TRUE;
-#endif
 }
 
 static int
@@ -179,8 +153,6 @@ clutter_stage_cogl_get_pending_swaps (ClutterStageWindow *stage_window)
   return stage_cogl->pending_swaps;
 }
 
-#ifndef COGL_HAS_XLIB_SUPPORT
-
 static ClutterActor *
 clutter_stage_cogl_get_wrapper (ClutterStageWindow *stage_window)
 {
@@ -189,7 +161,7 @@ clutter_stage_cogl_get_wrapper (ClutterStageWindow *stage_window)
 
 static void
 clutter_stage_cogl_show (ClutterStageWindow *stage_window,
-                        gboolean            do_raise)
+			 gboolean            do_raise)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
@@ -237,8 +209,6 @@ clutter_stage_cogl_resize (ClutterStageWindow *stage_window,
                           gint                height)
 {
 }
-
-#endif /* COGL_HAS_XLIB_SUPPORT */
 
 static gboolean
 clutter_stage_cogl_has_redraw_clips (ClutterStageWindow *stage_window)
@@ -368,13 +338,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                         "The time spent in blit_sub_buffer",
                         0 /* no application private data */);
 
-#ifdef COGL_HAS_X11_SUPPORT
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_cogl);
-
-  wrapper = CLUTTER_ACTOR (stage_x11->wrapper);
-#else
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
-#endif
 
   if (!stage_cogl->onscreen)
     return;
@@ -384,24 +348,17 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
-  if (G_LIKELY (backend_cogl->can_blit_sub_buffer) &&
+  may_use_clipped_redraw = FALSE;
+  if (_clutter_stage_window_can_clip_redraws (stage_window) &&
+      G_LIKELY (backend_cogl->can_blit_sub_buffer) &&
       /* NB: a zero width redraw clip == full stage redraw */
       stage_cogl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
-      G_LIKELY (stage_cogl->frame_count > 3)
-#ifdef COGL_HAS_X11_SUPPORT
-      /* While resizing a window clipped redraws are disabled to avoid
-       * artefacts. See clutter-event-x11.c:event_translate for a
-       * detailed explanation */
-      && G_LIKELY (stage_x11->clipped_redraws_cool_off == 0)
-#endif
-      )
+      G_LIKELY (stage_cogl->frame_count > 3))
     {
       may_use_clipped_redraw = TRUE;
     }
-  else
-    may_use_clipped_redraw = FALSE;
 
   if (may_use_clipped_redraw &&
       G_LIKELY (!(clutter_paint_debug_flags &
@@ -564,16 +521,6 @@ clutter_stage_cogl_get_active_framebuffer (ClutterStageWindow *stage_window)
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
-#ifdef COGL_HAS_X11_SUPPORT
-  clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
-
-  iface->realize = clutter_stage_cogl_realize;
-  iface->unrealize = clutter_stage_cogl_unrealize;
-
-  /* the rest is inherited from ClutterStageX11 */
-
-#else /* COGL_HAS_X11_SUPPORT */
-
   iface->realize = clutter_stage_cogl_realize;
   iface->unrealize = clutter_stage_cogl_unrealize;
   iface->get_wrapper = clutter_stage_cogl_get_wrapper;
@@ -581,9 +528,6 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->resize = clutter_stage_cogl_resize;
   iface->show = clutter_stage_cogl_show;
   iface->hide = clutter_stage_cogl_hide;
-
-#endif /* COGL_HAS_X11_SUPPORT */
-
   iface->get_pending_swaps = clutter_stage_cogl_get_pending_swaps;
   iface->add_redraw_clip = clutter_stage_cogl_add_redraw_clip;
   iface->has_redraw_clips = clutter_stage_cogl_has_redraw_clips;
@@ -593,11 +537,28 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_active_framebuffer = clutter_stage_cogl_get_active_framebuffer;
 }
 
-#ifdef COGL_HAS_X11_SUPPORT
 static void
-clutter_stage_cogl_dispose (GObject *gobject)
+clutter_stage_cogl_set_property (GObject      *gobject,
+				 guint         prop_id,
+				 const GValue *value,
+				 GParamSpec   *pspec)
 {
-  G_OBJECT_CLASS (_clutter_stage_cogl_parent_class)->dispose (gobject);
+  ClutterStageCogl *self = CLUTTER_STAGE_COGL (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_WRAPPER:
+      self->wrapper = CLUTTER_STAGE (g_value_get_object (value));
+      break;
+
+    case PROP_BACKEND:
+      self->backend = CLUTTER_BACKEND_COGL (g_value_get_object (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -605,14 +566,22 @@ _clutter_stage_cogl_class_init (ClutterStageCoglClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->dispose = clutter_stage_cogl_dispose;
+  gobject_class->set_property = clutter_stage_cogl_set_property;
+
+  g_object_class_install_property (gobject_class, PROP_WRAPPER,
+				   g_param_spec_object ("wrapper",
+							"Wrapper",
+							"ClutterStage wrapping this native stage",
+							CLUTTER_TYPE_STAGE,
+							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
+  g_object_class_install_property (gobject_class, PROP_BACKEND,
+				   g_param_spec_object ("backend",
+							"ClutterBackend",
+							"The Clutter backend singleton",
+							CLUTTER_TYPE_BACKEND_COGL,
+							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 }
-#else
-static void
-_clutter_stage_cogl_class_init (ClutterStageCoglClass *klass)
-{
-}
-#endif /* COGL_HAS_X11_SUPPORT */
 
 static void
 _clutter_stage_cogl_init (ClutterStageCogl *stage)

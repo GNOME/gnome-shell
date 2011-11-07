@@ -150,6 +150,30 @@ CoglHandle            clutter_shader_get_cogl_fragment_shader (ClutterShader    
 CLUTTER_DEPRECATED_FOR(ClutterShaderEffect)
 CoglHandle            clutter_shader_get_cogl_vertex_shader   (ClutterShader      *shader);
 
+/* ClutterActor methods */
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_add_effect)
+gboolean              clutter_actor_set_shader                (ClutterActor       *self,
+                                                               ClutterShader      *shader);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_get_effect)
+ClutterShader *       clutter_actor_get_shader                (ClutterActor       *self);
+
+CLUTTER_DEPRECATED_FOR(clutter_shader_effect_set_uniform_value)
+void                  clutter_actor_set_shader_param          (ClutterActor       *self,
+                                                               const gchar        *param,
+                                                               const GValue       *value);
+
+CLUTTER_DEPRECATED_FOR(clutter_shader_effect_set_uniform)
+void                  clutter_actor_set_shader_param_int      (ClutterActor       *self,
+                                                               const gchar        *param,
+                                                               gint                value);
+
+CLUTTER_DEPRECATED_FOR(clutter_shader_effect_set_uniform)
+void                  clutter_actor_set_shader_param_float    (ClutterActor       *self,
+                                                               const gchar        *param,
+                                                               gfloat              value);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_SHADER_H__ */

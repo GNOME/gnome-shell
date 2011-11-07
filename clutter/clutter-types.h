@@ -72,17 +72,14 @@ typedef struct _ClutterEffect           ClutterEffect;
 
 typedef struct _ClutterPath             ClutterPath;
 
-#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
-typedef struct _ClutterBehaviour        ClutterBehaviour;
-
-typedef struct _ClutterShader           ClutterShader;
-#endif /* DISABLE_DEPRECATED */
-
 typedef struct _ClutterActorBox         ClutterActorBox;
 typedef struct _ClutterColor            ClutterColor;
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
 typedef struct _ClutterVertex           ClutterVertex;
+
+typedef struct _ClutterBehaviour        ClutterBehaviour;
+typedef struct _ClutterShader           ClutterShader;
 
 typedef union _ClutterEvent             ClutterEvent;
 

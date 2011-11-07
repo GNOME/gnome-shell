@@ -733,9 +733,13 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (hwnd != NULL, FALSE);
 
-  actor = CLUTTER_ACTOR (stage);
-
   impl = _clutter_stage_get_window (stage);
+  if (!CLUTTER_IS_STAGE_WIN32 (impl))
+    {
+      g_critical ("The Clutter backend is not a Windows backend");
+      return FALSE;
+    }
+
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
 
   if (!GetClientRect (hwnd, &client_rect))
@@ -757,6 +761,8 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
   fwd.geom.y = 0;
   fwd.geom.width = client_rect.right - client_rect.left;
   fwd.geom.height = client_rect.bottom - client_rect.top;
+
+  actor = CLUTTER_ACTOR (stage);
 
   _clutter_actor_rerealize (actor,
                             set_foreign_window_callback,

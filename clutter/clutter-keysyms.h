@@ -336,6 +336,12 @@
 #define CLUTTER_KEY_Pointer_Accelerate 0xfefa
 #define CLUTTER_KEY_Pointer_DfltBtnNext 0xfefb
 #define CLUTTER_KEY_Pointer_DfltBtnPrev 0xfefc
+#define CLUTTER_KEY_ch 0xfea0
+#define CLUTTER_KEY_Ch 0xfea1
+#define CLUTTER_KEY_CH 0xfea2
+#define CLUTTER_KEY_c_h 0xfea3
+#define CLUTTER_KEY_C_h 0xfea4
+#define CLUTTER_KEY_C_H 0xfea5
 #define CLUTTER_KEY_3270_Duplicate 0xfd01
 #define CLUTTER_KEY_3270_FieldMark 0xfd02
 #define CLUTTER_KEY_3270_Right2 0xfd03
@@ -2288,10 +2294,7 @@
 #define CLUTTER_KEY_ClearGrab 0x1008fe21
 #define CLUTTER_KEY_Next_VMode 0x1008fe22
 #define CLUTTER_KEY_Prev_VMode 0x1008fe23
-
-/* include the compatibility header */
-#ifndef CLUTTER_DISABLE_DEPRECATED
-#include "clutter-keysyms-compat.h"
-#endif
+#define CLUTTER_KEY_LogWindowTree 0x1008fe24
+#define CLUTTER_KEY_LogGrabInfo 0x1008fe25
 
 #endif /* __CLUTTER_KEYSYMS_H__ */

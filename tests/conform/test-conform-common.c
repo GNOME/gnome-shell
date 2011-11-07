@@ -3,7 +3,7 @@
 #include <clutter/clutter.h>
 #include <stdlib.h>
 
-#ifdef COGL_HAS_XLIB
+#ifdef CLUTTER_WINDOWING_X11
 #include <X11/Xlib.h>
 #include <clutter/x11/clutter-x11.h>
 #endif
@@ -48,7 +48,7 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
   g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
             == CLUTTER_INIT_SUCCESS);
 
-#ifdef COGL_HAS_XLIB
+#ifdef CLUTTER_WINDOWING_X11
   /* A lot of the tests depend on a specific stage / framebuffer size
    * when they read pixels back to verify the results of the test.
    *

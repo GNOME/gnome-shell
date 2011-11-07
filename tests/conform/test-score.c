@@ -1,5 +1,3 @@
-#undef CLUTTER_DISABLE_DEPRECATED
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <clutter/clutter.h>

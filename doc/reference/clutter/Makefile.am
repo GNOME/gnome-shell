@@ -52,16 +52,19 @@ HFILE_GLOB=\
 	$(top_builddir)/clutter/*.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/cogl/clutter-glx-texture-pixmap.h \
-	$(top_srcdir)/clutter/cogl/clutter-egl.h \
-	$(top_srcdir)/clutter/cogl/clutter-cex100.h \
-	$(top_srcdir)/clutter/win32/clutter-win32.h
+	$(top_srcdir)/clutter/x11/clutter-glx-texture-pixmap.h \
+	$(top_srcdir)/clutter/egl/clutter-egl.h \
+	$(top_srcdir)/clutter/egl/clutter-cex100.h \
+	$(top_srcdir)/clutter/win32/clutter-win32.h \
+	$(top_srcdir)/clutter/gdk/clutter-gdk.h
 
 CFILE_GLOB=\
 	$(top_srcdir)/clutter/*.c \
 	$(top_srcdir)/clutter/cogl/*.c \
 	$(top_srcdir)/clutter/x11/*.c \
-	$(top_srcdir)/clutter/win32/*.c
+	$(top_srcdir)/clutter/win32/*.c \
+	$(top_srcdir)/clutter/gdk/*.c \
+	$(top_srcdir)/clutter/egl/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -96,8 +99,11 @@ IGNORE_HFILES=\
 	clutter-timeout-interval.h 	\
 	cally				\
 	cogl 				\
+	egl				\
 	evdev				\
+	gdk				\
 	osx 				\
+	tslib				\
 	x11 				\
 	wayland				\
 	win32
@@ -105,11 +111,12 @@ IGNORE_HFILES=\
 EXTRA_HFILES=\
         $(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/cogl/clutter-glx-texture-pixmap.h \
-	$(top_srcdir)/clutter/cogl/clutter-egl.h \
-	$(top_srcdir)/clutter/cogl/clutter-cex100.h \
+	$(top_srcdir)/clutter/x11/clutter-glx-texture-pixmap.h \
+	$(top_srcdir)/clutter/egl/clutter-egl.h \
+	$(top_srcdir)/clutter/egl/clutter-cex100.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
-	$(top_srcdir)/clutter/win32/clutter-win32.h
+	$(top_srcdir)/clutter/win32/clutter-win32.h \
+	$(top_srcdir)/clutter/gdk/clutter-gdk.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -162,7 +169,7 @@ expand_content_files= \
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 
 INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_srcdir)/clutter/cogl -I$(top_builddir) -I$(top_builddir)/clutter -I$(top_builddir)/clutter/cogl $(CLUTTER_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
+GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make

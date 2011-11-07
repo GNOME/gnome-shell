@@ -1,6 +1,7 @@
-
 #ifdef CLUTTER_ENABLE_PROFILE
 
+/* XXX - we need this for g_atexit() */
+#define G_DISABLE_DEPRECATION_WARNINGS
 #include "clutter-profile.h"
 
 #include <stdlib.h>

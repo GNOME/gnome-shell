@@ -1,6 +1,6 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
-common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = \
 	test-text \

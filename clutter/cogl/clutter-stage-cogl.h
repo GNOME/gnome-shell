@@ -1,10 +1,6 @@
 #ifndef __CLUTTER_STAGE_COGL_H__
 #define __CLUTTER_STAGE_COGL_H__
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <glib-object.h>
 #include <cairo.h>
 #include <clutter/clutter-stage.h>
@@ -13,7 +9,6 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
-#include "../x11/clutter-stage-x11.h"
 #endif
 
 #include "clutter-backend-cogl.h"
@@ -32,12 +27,6 @@ typedef struct _ClutterStageCoglClass    ClutterStageCoglClass;
 
 struct _ClutterStageCogl
 {
-#ifdef COGL_HAS_X11_SUPPORT
-
-  ClutterStageX11 parent_instance;
-
-#else
-
   GObject parent_instance;
 
  /* the stage wrapper */
@@ -45,8 +34,6 @@ struct _ClutterStageCogl
 
   /* back pointer to the backend */
   ClutterBackendCogl *backend;
-
-#endif
 
   CoglOnscreen *onscreen;
 
@@ -69,11 +56,7 @@ struct _ClutterStageCogl
 
 struct _ClutterStageCoglClass
 {
-#ifdef COGL_HAS_X11_SUPPORT
-  ClutterStageX11Class parent_class;
-#else
   GObjectClass parent_class;
-#endif
 };
 
 GType _clutter_stage_cogl_get_type (void) G_GNUC_CONST;

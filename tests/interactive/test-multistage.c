@@ -1,6 +1,4 @@
 #include <gmodule.h>
-
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 static GList *stages = NULL;

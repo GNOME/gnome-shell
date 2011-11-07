@@ -29,18 +29,14 @@
 #define __CLUTTER_BACKEND_H__
 
 #include <cairo.h>
-#include <glib-object.h>
 #include <pango/pango.h>
+
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
 #endif
 
-#include <clutter/clutter-actor.h>
-#include <clutter/clutter-device-manager.h>
-#include <clutter/clutter-event.h>
-#include <clutter/clutter-feature.h>
-#include <clutter/clutter-stage.h>
-#include <clutter/clutter-stage-window.h>
+#include <clutter/clutter-config.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -62,33 +58,6 @@ typedef struct _ClutterBackendClass     ClutterBackendClass;
 GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-CLUTTER_DEPRECATED_FOR(ClutterSettings:font_dpi)
-void                        clutter_backend_set_resolution            (ClutterBackend             *backend,
-                                                                       gdouble                     dpi);
-
-CLUTTER_DEPRECATED_FOR(ClutterSettings:double_click_time)
-void                        clutter_backend_set_double_click_time     (ClutterBackend             *backend,
-                                                                       guint                       msec);
-
-CLUTTER_DEPRECATED_FOR(ClutterSettings:double_click_time)
-guint                       clutter_backend_get_double_click_time     (ClutterBackend             *backend);
-
-CLUTTER_DEPRECATED_FOR(ClutterSettings:double_click_distance)
-void                        clutter_backend_set_double_click_distance (ClutterBackend             *backend,
-                                                                       guint                       distance);
-
-CLUTTER_DEPRECATED_FOR(ClutterSettings:double_click_distance)
-guint                       clutter_backend_get_double_click_distance (ClutterBackend             *backend);
-
-CLUTTER_DEPRECATED_FOR(ClutterSettings:font_name)
-void                        clutter_backend_set_font_name             (ClutterBackend             *backend,
-                                                                       const gchar                *font_name);
-
-CLUTTER_DEPRECATED_FOR(ClutterSettings:font_name)
-const gchar *               clutter_backend_get_font_name             (ClutterBackend             *backend);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 gdouble                     clutter_backend_get_resolution            (ClutterBackend             *backend);
 

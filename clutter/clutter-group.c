@@ -353,7 +353,7 @@ clutter_group_dispose (GObject *object)
   /* Note: we are careful to consider that destroying children could
    * have the side-effect of destroying other children so
    * priv->children may be modified during clutter_actor_destroy. */
-  while (priv->children)
+  while (priv->children != NULL)
     {
       ClutterActor *child = priv->children->data;
       priv->children = g_list_delete_link (priv->children, priv->children);
@@ -463,24 +463,27 @@ clutter_group_new (void)
 
 /**
  * clutter_group_remove_all:
- * @group: A #ClutterGroup
+ * @self: A #ClutterGroup
  *
  * Removes all children actors from the #ClutterGroup.
  */
 void
-clutter_group_remove_all (ClutterGroup *group)
+clutter_group_remove_all (ClutterGroup *self)
 {
+  ClutterContainer *container;
   GList *children;
 
-  g_return_if_fail (CLUTTER_IS_GROUP (group));
+  g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  children = group->priv->children;
-  while (children)
+  container = CLUTTER_CONTAINER (self);
+  children = self->priv->children;
+
+  while (children != NULL)
     {
       ClutterActor *child = children->data;
       children = children->next;
 
-      clutter_container_remove_actor (CLUTTER_CONTAINER (group), child);
+      clutter_container_remove_actor (container, child);
     }
 }
 
