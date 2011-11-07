@@ -128,7 +128,7 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (NSSize) windowWillResize:(NSWindow *) sender toSize:(NSSize) frameSize
 {
-  if ( clutter_stage_get_user_resizable (self->stage_osx->wrapper) )
+  if (clutter_stage_get_user_resizable (self->stage_osx->wrapper))
     {
       guint min_width, min_height;
       clutter_stage_get_minimum_size (self->stage_osx->wrapper,
@@ -143,7 +143,7 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (void)windowDidChangeScreen:(NSNotification *)notification
 {
-  clutter_stage_ensure_redraw (CLUTTER_STAGE(self->stage_osx->wrapper));
+  clutter_stage_ensure_redraw (CLUTTER_STAGE (self->stage_osx->wrapper));
 }
 @end
 
@@ -203,8 +203,8 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   stage_osx->requisition_width = [self bounds].size.width;
   stage_osx->requisition_height = [self bounds].size.height;
   clutter_actor_set_size (CLUTTER_ACTOR (self->stage_osx->wrapper),
-                          (int)[self bounds].size.width,
-                          (int)[self bounds].size.height);
+                          stage_osx->requisition_width,
+                          stage_osx->requisition_height);
 
   [self removeTrackingRect:tracking_rect];
   tracking_rect = [self addTrackingRect:[self bounds]
@@ -610,32 +610,17 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 }
 
 /*************************************************************************/
-ClutterStageWindow *
-_clutter_stage_osx_new (ClutterBackend *backend,
-                        ClutterStage   *wrapper)
-{
-  ClutterStageOSX *self;
-
-  self = g_object_new (CLUTTER_TYPE_STAGE_OSX,
-                       "backend", backend,
-                       "wrapper", wrapper,
-                       NULL);
-
-  self->isHiding = false;
-  self->haveRealized = false;
-  self->view = NULL;
-  self->window = NULL;
-
-  return CLUTTER_STAGE_WINDOW (self);
-}
-
-/*************************************************************************/
 static void
 clutter_stage_osx_init (ClutterStageOSX *self)
 {
   self->requisition_width  = 640;
   self->requisition_height = 480;
   self->acceptFocus = TRUE;
+
+  self->isHiding = false;
+  self->haveRealized = false;
+  self->view = NULL;
+  self->window = NULL;
 }
 
 static void

@@ -82,9 +82,6 @@ struct _ClutterStageOSXClass
 
 GType _clutter_stage_osx_get_type (void) G_GNUC_CONST;
 
-ClutterStageWindow *    _clutter_stage_osx_new  (ClutterBackend *backend,
-                                                 ClutterStage   *wrapper);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_OSX_H__ */

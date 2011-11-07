@@ -71,27 +71,8 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
 static ClutterFeatureFlags
 clutter_backend_osx_get_features (ClutterBackend *backend)
 {
-  return CLUTTER_FEATURE_STAGE_MULTIPLE|CLUTTER_FEATURE_STAGE_USER_RESIZE;
-}
-
-static ClutterStageWindow*
-clutter_backend_osx_create_stage (ClutterBackend  *backend,
-                                  ClutterStage    *wrapper,
-                                  GError         **error)
-{
-  ClutterStageWindow *impl;
-
-  CLUTTER_OSX_POOL_ALLOC();
-
-  impl = _clutter_stage_osx_new (backend, wrapper);
-
-  CLUTTER_NOTE (BACKEND, "create_stage: wrapper=%p - impl=%p",
-                wrapper,
-                impl);
-
-  CLUTTER_OSX_POOL_RELEASE();
-
-  return impl;
+  return CLUTTER_FEATURE_STAGE_MULTIPLE
+       | CLUTTER_FEATURE_STAGE_USER_RESIZE;
 }
 
 void
@@ -127,7 +108,7 @@ clutter_backend_osx_create_context (ClutterBackend  *backend,
        */
       NSOpenGLPixelFormatAttribute attrs[] = {
         NSOpenGLPFADoubleBuffer,
-        NSOpenGLPFADepthSize, 24,
+        NSOpenGLPFADepthSize, 32,
         NSOpenGLPFAStencilSize, 8,
         0
       };
@@ -174,6 +155,7 @@ clutter_backend_osx_ensure_context (ClutterBackend *backend,
       g_assert (CLUTTER_IS_STAGE_OSX (impl));
       stage_osx = CLUTTER_STAGE_OSX (impl);
 
+      [backend_osx->context clearDrawable];
       [backend_osx->context setView:stage_osx->view];
       [backend_osx->context makeCurrentContext];
     }
@@ -235,7 +217,6 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
 
   backend_class->post_parse         = clutter_backend_osx_post_parse;
   backend_class->get_features       = clutter_backend_osx_get_features;
-  backend_class->create_stage       = clutter_backend_osx_create_stage;
   backend_class->create_context     = clutter_backend_osx_create_context;
   backend_class->ensure_context     = clutter_backend_osx_ensure_context;
 }
