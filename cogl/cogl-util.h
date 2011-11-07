@@ -26,6 +26,7 @@
 
 #include <glib.h>
 #include <math.h>
+#include "cogl-defines.h"
 
 #ifndef COGL_HAS_GLIB_SUPPORT
 #include <stdio.h>
