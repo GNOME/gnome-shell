@@ -61,19 +61,17 @@ static void
 shell_dbus_acquire_names (DBusGProxy *bus,
                           guint32     request_name_flags,
                           gchar      *name,
-                          gboolean    fatal,
-                          gchar      *other, ...) G_GNUC_NULL_TERMINATED;
+                          gboolean    fatal, ...) G_GNUC_NULL_TERMINATED;
 
 static void
 shell_dbus_acquire_names (DBusGProxy *bus,
                           guint32     request_name_flags,
                           gchar      *name,
-                          gboolean    fatal,
-                          gchar      *other, ...)
+                          gboolean    fatal, ...)
 {
   va_list al;
   guint32 request_name_result;
-  va_start (al, other);
+  va_start (al, fatal);
   for (;;)
   {
     shell_dbus_acquire_name (bus,
