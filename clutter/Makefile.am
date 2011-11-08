@@ -455,7 +455,6 @@ gdk_source_h_priv = \
 	$(srcdir)/gdk/clutter-backend-gdk.h 		\
 	$(srcdir)/gdk/clutter-device-manager-gdk.h 	\
 	$(srcdir)/gdk/clutter-input-device-gdk.h 	\
-	$(srcdir)/gdk/clutter-event-gdk.h 		\
 	$(srcdir)/gdk/clutter-stage-gdk.h		\
 	$(NULL)
 
