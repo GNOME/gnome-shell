@@ -1269,7 +1269,7 @@ clutter_x11_get_stage_visual (ClutterStage *stage)
 
 typedef struct {
   ClutterStageX11 *stage_x11;
-  ClutterGeometry geom;
+  cairo_rectangle_int_t geom;
   Window xwindow;
   guint destroy_old_xwindow : 1;
 } ForeignWindowData;

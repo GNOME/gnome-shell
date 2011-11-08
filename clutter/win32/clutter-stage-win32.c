@@ -673,7 +673,7 @@ clutter_win32_get_stage_from_window (HWND hwnd)
 
 typedef struct {
   ClutterStageWin32 *stage_win32;
-  ClutterGeometry geom;
+  cairo_rectangle_int_t geom;
   HWND hwnd;
   guint destroy_old_hwnd : 1;
 } ForeignWindowData;
