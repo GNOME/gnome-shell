@@ -6289,6 +6289,9 @@ clutter_actor_allocate (ClutterActor           *self,
  * size, in pixels. This means the untransformed actor will have the
  * given geometry. This is the same as calling clutter_actor_set_position()
  * and clutter_actor_set_size().
+ *
+ * Deprecated: 1.10: Use clutter_actor_set_position() and
+ *   clutter_actor_set_size() instead.
  */
 void
 clutter_actor_set_geometry (ClutterActor          *self,
@@ -6305,12 +6308,16 @@ clutter_actor_set_geometry (ClutterActor          *self,
 /**
  * clutter_actor_get_geometry:
  * @self: A #ClutterActor
- * @geometry: (out): A location to store actors #ClutterGeometry
+ * @geometry: (out caller-allocates): A location to store actors #ClutterGeometry
  *
  * Gets the size and position of an actor relative to its parent
  * actor. This is the same as calling clutter_actor_get_position() and
  * clutter_actor_get_size(). It tries to "do what you mean" and get the
  * requested size and position if the actor's allocation is invalid.
+ *
+ * Deprecated: 1.10: Use clutter_actor_get_position() and
+ *   clutter_actor_get_size(), or clutter_actor_get_allocation_geometry()
+ *   instead.
  */
 void
 clutter_actor_get_geometry (ClutterActor    *self,

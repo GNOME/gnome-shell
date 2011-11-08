@@ -326,10 +326,6 @@ void                  clutter_actor_get_allocation_geometry   (ClutterActor     
 void                  clutter_actor_get_allocation_vertices   (ClutterActor          *self,
 							       ClutterActor          *ancestor,
                                                                ClutterVertex          verts[]);
-void                  clutter_actor_set_geometry              (ClutterActor          *self,
-                                                               const ClutterGeometry *geometry);
-void                  clutter_actor_get_geometry              (ClutterActor          *self,
-                                                               ClutterGeometry       *geometry);
 void                  clutter_actor_set_size                  (ClutterActor          *self,
                                                                gfloat                 width,
                                                                gfloat                 height);
