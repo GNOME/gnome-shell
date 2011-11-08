@@ -243,7 +243,7 @@ make_ui (ClutterActor *stage)
 int
 main (int argc, char *argv[])
 {
-  ClutterActor *stage         = NULL;
+  ClutterActor *stage;
 
   g_set_application_name ("AtkText");
 
@@ -252,7 +252,8 @@ main (int argc, char *argv[])
 
   cally_util_a11y_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkText Test");
 
   make_ui (stage);
 
@@ -262,6 +263,8 @@ main (int argc, char *argv[])
   test_atk_text (text_editable_actor);
 
   clutter_main ();
+
+  clutter_actor_destroy (stage);
 
   return 0;
 }

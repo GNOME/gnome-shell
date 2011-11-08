@@ -168,12 +168,12 @@ _create_button (const gchar *text)
 static void
 make_ui (ClutterActor *stage)
 {
-  ClutterColor  color_stage = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor  color_text  = { 0xff, 0x00, 0x00, 0xff };
   ClutterColor  color_sel   = { 0x00, 0xff, 0x00, 0x55 };
   ClutterActor *button      = NULL;
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &color_stage);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkEditable Test");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_White);
   clutter_actor_set_size (stage, WIDTH, HEIGHT);
 
   /* text */
@@ -256,7 +256,7 @@ main (int argc, char *argv[])
 
   cally_util_a11y_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   make_ui (stage);
 

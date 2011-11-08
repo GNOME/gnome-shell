@@ -138,8 +138,8 @@ make_ui (ClutterActor *stage)
 int
 main (int argc, char *argv[])
 {
-  ClutterActor *stage         = NULL;
-  Data data1, data2,data3;
+  ClutterActor *stage, *stage_main
+  Data data1, data2, data3;
   guint id_2 = 0;
 
   g_set_application_name ("AtkText");
@@ -171,19 +171,25 @@ main (int argc, char *argv[])
   atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:activate");
   atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:deactivate");
 
-  stage = clutter_stage_get_default ();
-  make_ui (stage);
+  stage_main = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkEvents/1");
+  make_ui (stage_main);
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show_all (stage_main);
 
   if (clutter_feature_available (CLUTTER_FEATURE_STAGE_MULTIPLE))
     {
       stage = clutter_stage_new ();
+      clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkEvents/2");
+
       make_ui (stage);
       clutter_actor_show_all (stage);
     }
 
   clutter_main ();
+
+  clutter_actor_destroy (stage);
+  clutter_actor_destroy (stage_main);
 
   return 0;
 }
