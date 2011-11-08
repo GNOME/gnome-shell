@@ -41,7 +41,7 @@
       "It can be used only by extensions.gnome.org"
 #define PLUGIN_MIME_STRING "application/x-gnome-shell-integration::Gnome Shell Integration Dummy Content-Type";
 
-#define PLUGIN_API_VERSION 1
+#define PLUGIN_API_VERSION 2
 
 typedef struct {
   GDBusProxy *proxy;
@@ -262,11 +262,13 @@ NPP_Destroy(NPP           instance,
 /* =================== scripting interface =================== */
 
 typedef struct {
-	NPObject     parent;
-	NPP          instance;
-	GDBusProxy  *proxy;
-	NPObject    *listener;
-	gint         signal_id;
+  NPObject     parent;
+  NPP          instance;
+  GDBusProxy  *proxy;
+  NPObject    *listener;
+  NPObject    *restart_listener;
+  gint         signal_id;
+  guint        watch_name_id;
 } PluginObject;
 
 static void
@@ -300,6 +302,25 @@ on_shell_signal (GDBusProxy *proxy,
     }
 }
 
+static void
+on_shell_appeared (GDBusConnection *connection,
+                   const gchar     *name,
+                   const gchar     *name_owner,
+                   gpointer         user_data)
+{
+  PluginObject *obj = (PluginObject*) user_data;
+
+  if (obj->restart_listener)
+    {
+      NPVariant result = { NPVariantType_Void };
+
+      funcs.invokeDefault (obj->instance, obj->restart_listener,
+                           NULL, 0, &result);
+
+      funcs.releasevariantvalue (&result);
+    }
+}
+
 static NPObject *
 plugin_object_allocate (NPP      instance,
                         NPClass *klass)
@@ -311,6 +332,14 @@ plugin_object_allocate (NPP      instance,
   obj->proxy = g_object_ref (data->proxy);
   obj->signal_id = g_signal_connect (obj->proxy, "g-signal",
                                      G_CALLBACK (on_shell_signal), obj);
+
+  obj->watch_name_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
+                                         "org.gnome.Shell",
+                                         G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                         on_shell_appeared,
+                                         NULL,
+                                         obj,
+                                         NULL);
 
   g_debug ("plugin object created");
 
@@ -328,6 +357,9 @@ plugin_object_deallocate (NPObject *npobj)
   if (obj->listener)
     funcs.releaseobject (obj->listener);
 
+  if (obj->watch_name_id)
+    g_bus_unwatch_name (obj->watch_name_id);
+
   g_debug ("plugin object destroyed");
 
   g_slice_free (PluginObject, obj);
@@ -341,6 +373,7 @@ static NPIdentifier enable_extension_id;
 static NPIdentifier install_extension_id;
 static NPIdentifier uninstall_extension_id;
 static NPIdentifier onextension_changed_id;
+static NPIdentifier onrestart_id;
 static NPIdentifier get_errors_id;
 
 static bool
@@ -738,6 +771,7 @@ plugin_object_has_property (NPObject     *npobj,
                             NPIdentifier  name)
 {
   return (name == onextension_changed_id ||
+          name == onrestart_id ||
           name == api_version_id ||
           name == shell_version_id);
 }
@@ -761,6 +795,13 @@ plugin_object_get_property (NPObject     *npobj,
     {
       if (obj->listener)
         OBJECT_TO_NPVARIANT (obj->listener, *result);
+      else
+        NULL_TO_NPVARIANT (*result);
+    }
+  else if (name == onrestart_id)
+    {
+      if (obj->restart_listener)
+        OBJECT_TO_NPVARIANT (obj->restart_listener, *result);
       else
         NULL_TO_NPVARIANT (*result);
     }
@@ -789,6 +830,23 @@ plugin_object_set_property (NPObject        *npobj,
         {
           obj->listener = NPVARIANT_TO_OBJECT (*value);
           funcs.retainobject (obj->listener);
+          return TRUE;
+        }
+      else if (NPVARIANT_IS_NULL (*value))
+        return TRUE;
+    }
+
+  if (name == onrestart_id)
+    {
+      obj = (PluginObject*) npobj;
+      if (obj->restart_listener)
+        funcs.releaseobject (obj->restart_listener);
+
+      obj->restart_listener = NULL;
+      if (NPVARIANT_IS_OBJECT (*value))
+        {
+          obj->restart_listener = NPVARIANT_TO_OBJECT (*value);
+          funcs.retainobject (obj->restart_listener);
           return TRUE;
         }
       else if (NPVARIANT_IS_NULL (*value))
@@ -828,6 +886,7 @@ init_methods_and_properties (void)
   uninstall_extension_id = funcs.getstringidentifier ("uninstallExtension");
   get_errors_id = funcs.getstringidentifier ("getExtensionErrors");
 
+  onrestart_id = funcs.getstringidentifier ("onshellrestart");
   onextension_changed_id = funcs.getstringidentifier ("onchange");
 }
 
