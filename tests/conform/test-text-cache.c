@@ -263,7 +263,7 @@ text_cache (void)
 
   memset (&data, 0, sizeof (data));
 
-  data.stage = clutter_stage_get_default ();
+  data.stage = clutter_stage_new ();
 
   data.label = clutter_text_new_with_text (TEST_FONT, "");
 
@@ -278,6 +278,8 @@ text_cache (void)
   clutter_threads_add_idle ((GSourceFunc) do_tests, &data);
 
   clutter_main ();
+
+  clutter_actor_destroy (data.stage);
 
   if (g_test_verbose ())
     g_print ("\nOverall result: ");

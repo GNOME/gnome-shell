@@ -150,7 +150,7 @@ test_cogl_texture_get_set_data (TestConformSimpleFixture *fixture,
   /* We create a stage even though we don't usually need it so that if
      the draw-and-read texture fallback is needed then it will have
      something to draw to */
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   paint_handler = g_signal_connect_after (stage, "paint",
                                           G_CALLBACK (paint_cb), NULL);
@@ -160,6 +160,8 @@ test_cogl_texture_get_set_data (TestConformSimpleFixture *fixture,
   clutter_main ();
 
   g_signal_handler_disconnect (stage, paint_handler);
+
+  clutter_actor_destroy (stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");

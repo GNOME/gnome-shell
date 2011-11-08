@@ -301,7 +301,7 @@ test_offscreen_redirect (TestConformSimpleFixture *fixture,
     {
       Data data;
 
-      data.stage = clutter_stage_get_default ();
+      data.stage = clutter_stage_new ();
 
       data.parent_container = clutter_group_new ();
 
@@ -336,6 +336,8 @@ test_offscreen_redirect (TestConformSimpleFixture *fixture,
       g_timeout_add_full (G_PRIORITY_LOW, 250, timeout_cb, &data, NULL);
 
       clutter_main ();
+
+      clutter_actor_destroy (data.stage);
 
       if (g_test_verbose ())
         g_print ("OK\n");

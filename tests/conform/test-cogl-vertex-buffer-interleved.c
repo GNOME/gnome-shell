@@ -92,7 +92,7 @@ test_cogl_vertex_buffer_interleved (TestConformSimpleFixture *fixture,
   ClutterActor *group;
   guint idle_source;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_clr);
   clutter_actor_get_geometry (stage, &state.stage_geom);
@@ -156,7 +156,8 @@ test_cogl_vertex_buffer_interleved (TestConformSimpleFixture *fixture,
 
   g_source_remove (idle_source);
 
+  clutter_actor_destroy (stage);
+
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

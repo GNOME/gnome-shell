@@ -211,7 +211,7 @@ test_cogl_primitive (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   guint paint_handler;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
@@ -224,7 +224,8 @@ test_cogl_primitive (TestConformSimpleFixture *fixture,
 
   g_signal_handler_disconnect (stage, paint_handler);
 
+  clutter_actor_destroy (stage);
+
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

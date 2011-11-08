@@ -286,7 +286,7 @@ test_cogl_pixel_array (TestConformSimpleFixture *fixture,
 
   state.frame = 0;
 
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
 
   create_map_tile (&tiles[TILE_MAP]);
 #if 0
@@ -319,12 +319,8 @@ test_cogl_pixel_array (TestConformSimpleFixture *fixture,
       cogl_handle_unref (state.tiles[i].texture);
     }
 
-  /* Remove all of the actors from the stage */
-  clutter_container_foreach (CLUTTER_CONTAINER (state.stage),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
+  clutter_actor_destroy (state.stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

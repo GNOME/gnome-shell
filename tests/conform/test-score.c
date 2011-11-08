@@ -54,7 +54,7 @@ test_score (TestConformSimpleFixture *fixture,
   ClutterTimeline *timeline_5;
   GSList *timelines;
 
-  /* this is necessary to make the master clock spin */
+  /* FIXME - this is necessary to make the master clock spin */
   (void) clutter_stage_get_default ();
 
   timeline_1 = clutter_timeline_new (100);

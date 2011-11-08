@@ -298,7 +298,7 @@ test_cogl_backface_culling (TestConformSimpleFixture *fixture,
   ClutterActor *group;
   guint idle_source;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_get_size (stage, &stage_width, &stage_height);
 
   state.offscreen = COGL_INVALID_HANDLE;
@@ -333,7 +333,8 @@ test_cogl_backface_culling (TestConformSimpleFixture *fixture,
   cogl_handle_unref (state.offscreen_tex);
   cogl_handle_unref (state.texture);
 
+  clutter_actor_destroy (stage);
+
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-
