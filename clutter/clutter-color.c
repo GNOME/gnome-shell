@@ -589,6 +589,7 @@ parse_hsla (ClutterColor *color,
   str += 1;
 
   l = CLAMP (number / 100.0, 0.0, 1.0);
+  skip_whitespace (&str);
 
   /* alpha (optional); since the alpha channel value can only
    * be between 0 and 1 we don't use the parse_rgb_value()
