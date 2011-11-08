@@ -35,14 +35,6 @@ void
 _cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
                               const CoglPipelineFogState *fog_state);
 
-void
-_cogl_pipeline_set_cull_face_state (CoglPipeline *pipeline,
-                                    const CoglPipelineCullFaceState *
-                                                             cull_face_state);
-
-CoglPipelineCullFaceMode
-_cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline);
-
 gboolean
 _cogl_pipeline_color_equal (CoglPipeline *authority0,
                             CoglPipeline *authority1);

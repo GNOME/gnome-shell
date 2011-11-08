@@ -686,6 +686,97 @@ void
 cogl_pipeline_get_depth_state (CoglPipeline *pipeline,
                                CoglDepthState *state_out);
 
+/**
+ * CoglPipelineCullFaceMode:
+ * @COGL_PIPELINE_CULL_FACE_MODE_NONE: Neither face will be
+ *  called. This is the default.
+ * @COGL_PIPELINE_CULL_FACE_MODE_FRONT: Front faces will be called.
+ * @COGL_PIPELINE_CULL_FACE_MODE_BACK: Back faces will be called.
+ * @COGL_PIPELINE_CULL_FACE_MODE_BOTH: All faces will be called.
+ *
+ * Specifies which faces should be called. This can be set on a
+ * pipeline using cogl_pipeline_set_cull_face_mode().
+ */
+typedef enum
+{
+  COGL_PIPELINE_CULL_FACE_MODE_NONE,
+  COGL_PIPELINE_CULL_FACE_MODE_FRONT,
+  COGL_PIPELINE_CULL_FACE_MODE_BACK,
+  COGL_PIPELINE_CULL_FACE_MODE_BOTH
+} CoglPipelineCullFaceMode;
+
+/**
+ * cogl_pipeline_set_cull_face_mode:
+ * @pipeline: A #CoglPipeline
+ * @cull_face_mode: The new mode to set
+ *
+ * Sets which faces will be culled when drawing. Face culling can be
+ * used to increase efficiency by avoiding drawing faces that would
+ * get overridden. For example, if a model has gaps so that it is
+ * impossible to see the inside then faces which are facing away from
+ * the screen will never be seen so there is no point in drawing
+ * them. This can be acheived by setting the cull face mode to
+ * %COGL_PIPELINE_CULL_FACE_MODE_BACK.
+ *
+ * Face culling relies on the primitives being drawn with a specific
+ * order to represent which faces are facing inside and outside the
+ * model. This order can be specified by calling
+ * cogl_pipeline_set_front_face_winding().
+ *
+ * Status: Unstable
+ * Since: 2.0
+ */
+void
+cogl_pipeline_set_cull_face_mode (CoglPipeline *pipeline,
+                                  CoglPipelineCullFaceMode cull_face_mode);
+
+/**
+ * cogl_pipeline_get_cull_face_mode:
+ *
+ * Return value: the cull face mode that was previously set with
+ * cogl_pipeline_set_cull_face_mode().
+ *
+ * Status: Unstable
+ * Since: 2.0
+ */
+CoglPipelineCullFaceMode
+cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline);
+
+/**
+ * cogl_pipeline_set_front_face_winding:
+ *
+ * The order of the vertices within a primitive specifies whether it
+ * is considered to be front or back facing. This function specifies
+ * which order is considered to be the front
+ * faces. %COGL_WINDING_COUNTER_CLOCKWISE sets the front faces to
+ * primitives with vertices in a counter-clockwise order and
+ * %COGL_WINDING_CLOCKWISE sets them to be clockwise. The default is
+ * %COGL_WINDING_COUNTER_CLOCKWISE.
+ *
+ * Status: Unstable
+ * Since: 2.0
+ */
+void
+cogl_pipeline_set_front_face_winding (CoglPipeline *pipeline,
+                                      CoglWinding front_winding);
+
+/**
+ * cogl_pipeline_set_front_face_winding:
+ *
+ * The order of the vertices within a primitive specifies whether it
+ * is considered to be front or back facing. This function specifies
+ * which order is considered to be the front
+ * faces. %COGL_WINDING_COUNTER_CLOCKWISE sets the front faces to
+ * primitives with vertices in a counter-clockwise order and
+ * %COGL_WINDING_CLOCKWISE sets them to be clockwise. The default is
+ * %COGL_WINDING_COUNTER_CLOCKWISE.
+ *
+ * Status: Unstable
+ * Since: 2.0
+ */
+CoglWinding
+cogl_pipeline_get_front_face_winding (CoglPipeline *pipeline);
+
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS

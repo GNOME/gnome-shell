@@ -2460,12 +2460,8 @@ _cogl_pipeline_apply_legacy_state (CoglPipeline *pipeline)
     _cogl_pipeline_set_fog_state (pipeline, &ctx->legacy_fog_state);
 
   if (ctx->legacy_backface_culling_enabled)
-    {
-      CoglPipelineCullFaceState state;
-      state.mode = COGL_PIPELINE_CULL_FACE_MODE_BACK;
-      state.front_winding = COGL_WINDING_COUNTER_CLOCKWISE;
-      _cogl_pipeline_set_cull_face_state (pipeline, &state);
-    }
+    cogl_pipeline_set_cull_face_mode (pipeline,
+                                      COGL_PIPELINE_CULL_FACE_MODE_BACK);
 }
 
 void

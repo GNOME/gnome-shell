@@ -298,20 +298,6 @@ typedef enum _CoglPipelineBlendEnable
   COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC
 } CoglPipelineBlendEnable;
 
-typedef enum
-{
-  COGL_PIPELINE_CULL_FACE_MODE_NONE,
-  COGL_PIPELINE_CULL_FACE_MODE_FRONT,
-  COGL_PIPELINE_CULL_FACE_MODE_BACK,
-  COGL_PIPELINE_CULL_FACE_MODE_BOTH
-} CoglPipelineCullFaceMode;
-
-typedef enum
-{
-  COGL_WINDING_CLOCKWISE,
-  COGL_WINDING_COUNTER_CLOCKWISE
-} CoglWinding;
-
 typedef struct
 {
   /* Determines how this pipeline is blended with other primitives */

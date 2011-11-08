@@ -702,6 +702,21 @@ typedef enum
   COGL_COLOR_MASK_ALL = (COGL_COLOR_MASK_RED | COGL_COLOR_MASK_GREEN | COGL_COLOR_MASK_BLUE | COGL_COLOR_MASK_ALPHA)
 } CoglColorMask;
 
+/**
+ * CoglWinding:
+ * @COGL_WINDING_CLOCKWISE: Vertices are in a clockwise order
+ * @COGL_WINDING_COUNTER_CLOCKWISE: Vertices are in a counter-clockwise order
+ *
+ * Enum used to represent the two directions of rotation. This can be
+ * used to set the front face for culling by calling
+ * cogl_pipeline_set_front_face_winding().
+ */
+typedef enum
+{
+  COGL_WINDING_CLOCKWISE,
+  COGL_WINDING_COUNTER_CLOCKWISE
+} CoglWinding;
+
 G_END_DECLS
 
 #endif /* __COGL_TYPES_H__ */

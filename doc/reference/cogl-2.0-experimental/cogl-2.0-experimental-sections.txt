@@ -570,6 +570,11 @@ cogl_pipeline_get_point_size
 cogl_pipeline_get_color_mask
 cogl_pipeline_set_color_mask
 
+CoglPipelineCullFaceMode
+cogl_pipeline_set_cull_face_mode
+CoglWinding
+cogl_pipeline_set_front_face_winding
+
 cogl_pipeline_set_layer_texture
 cogl_pipeline_get_layer_texture
 CoglMaterialFilter

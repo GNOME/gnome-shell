@@ -1132,7 +1132,7 @@ notify_buffers_changed (CoglFramebuffer *old_draw_buffer,
          front face is flipped for offscreen buffers */
       if (old_draw_buffer->type != new_draw_buffer->type &&
           ctx->current_pipeline &&
-          _cogl_pipeline_get_cull_face_mode (ctx->current_pipeline) !=
+          cogl_pipeline_get_cull_face_mode (ctx->current_pipeline) !=
           COGL_PIPELINE_CULL_FACE_MODE_NONE)
         {
           ctx->current_pipeline_changes_since_flush |=

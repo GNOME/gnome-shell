@@ -1177,22 +1177,20 @@ _cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
 }
 
 void
-_cogl_pipeline_set_cull_face_state (CoglPipeline *pipeline,
-                                    const CoglPipelineCullFaceState *
-                                                            cull_face_state)
+cogl_pipeline_set_cull_face_mode (CoglPipeline *pipeline,
+                                  CoglPipelineCullFaceMode cull_face_mode)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_CULL_FACE;
   CoglPipeline *authority;
-  CoglPipelineCullFaceState *current_cull_face_state;
+  CoglPipelineCullFaceState *cull_face_state;
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   authority = _cogl_pipeline_get_authority (pipeline, state);
 
-  current_cull_face_state = &authority->big_state->cull_face_state;
+  cull_face_state = &authority->big_state->cull_face_state;
 
-  if (current_cull_face_state->mode == cull_face_state->mode &&
-      current_cull_face_state->front_winding == cull_face_state->front_winding)
+  if (cull_face_state->mode == cull_face_mode)
     return;
 
   /* - Flush journal primitives referencing the current state.
@@ -1202,14 +1200,44 @@ _cogl_pipeline_set_cull_face_state (CoglPipeline *pipeline,
    */
   _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  pipeline->big_state->cull_face_state = *cull_face_state;
+  pipeline->big_state->cull_face_state.mode = cull_face_mode;
+
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_cull_face_state_equal);
+}
+
+void
+cogl_pipeline_set_front_face_winding (CoglPipeline *pipeline,
+                                      CoglWinding front_winding)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_CULL_FACE;
+  CoglPipeline *authority;
+  CoglPipelineCullFaceState *cull_face_state;
+
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  cull_face_state = &authority->big_state->cull_face_state;
+
+  if (cull_face_state->front_winding == front_winding)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
+
+  pipeline->big_state->cull_face_state.front_winding = front_winding;
 
   _cogl_pipeline_update_authority (pipeline, authority, state,
                                    _cogl_pipeline_cull_face_state_equal);
 }
 
 CoglPipelineCullFaceMode
-_cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline)
+cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_CULL_FACE;
   CoglPipeline *authority;
@@ -1220,6 +1248,20 @@ _cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline)
   authority = _cogl_pipeline_get_authority (pipeline, state);
 
   return authority->big_state->cull_face_state.mode;
+}
+
+CoglWinding
+cogl_pipeline_get_front_face_winding (CoglPipeline *pipeline)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_CULL_FACE;
+  CoglPipeline *authority;
+
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline),
+                            COGL_PIPELINE_CULL_FACE_MODE_NONE);
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  return authority->big_state->cull_face_state.front_winding;
 }
 
 float
