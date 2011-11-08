@@ -41,7 +41,6 @@ make_ui (ClutterActor *stage)
   ClutterColor     color_sel     = { 0x00, 0xff, 0x00, 0x55 };
   ClutterColor     color_label   = { 0x00, 0xff, 0x55, 0xff };
   ClutterColor     color_rect    = { 0x00, 0xff, 0xff, 0x55 };
-  ClutterGeometry  editable_geom = {150, 50, 100, 75};
   ClutterActor    *full_entry    = NULL;
   ClutterActor    *cloned_entry  = NULL;
 
@@ -68,7 +67,8 @@ make_ui (ClutterActor *stage)
 
   /* rectangle: to create a entry "feeling" */
   rectangle = clutter_rectangle_new_with_color (&color_rect);
-  clutter_actor_set_geometry (rectangle, &editable_geom);
+  clutter_actor_set_position (rectangle, 150, 50);
+  clutter_actor_add_constraint (rectangle, clutter_bind_constraint_new (editable, CLUTTER_BIND_SIZE, 0));
 
   full_entry = clutter_group_new ();
   clutter_actor_set_position (full_entry, 0, 50);

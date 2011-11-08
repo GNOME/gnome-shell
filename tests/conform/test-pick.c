@@ -251,11 +251,14 @@ actor_picking (void)
 	ClutterColor color = { x * 255 / (ACTORS_X - 1),
 			       y * 255 / (ACTORS_Y - 1),
 			       128, 255 };
-	ClutterGeometry geom = { x * state.actor_width, y * state.actor_height,
-				 state.actor_width, state.actor_height };
 	ClutterActor *rect = clutter_rectangle_new_with_color (&color);
 
-	clutter_actor_set_geometry (rect, &geom);
+        clutter_actor_set_position (rect,
+                                    x * state.actor_width,
+                                    y * state.actor_height);
+        clutter_actor_set_size (rect,
+                                state.actor_width,
+                                state.actor_height);
 
 	clutter_container_add (CLUTTER_CONTAINER (state.stage), rect, NULL);
 

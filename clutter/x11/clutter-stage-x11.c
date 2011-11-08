@@ -1298,7 +1298,7 @@ set_foreign_window_callback (ClutterActor *actor,
   fwd->stage_x11->xwin_width = fwd->geom.width;
   fwd->stage_x11->xwin_height = fwd->geom.height;
 
-  clutter_actor_set_geometry (actor, &fwd->geom);
+  clutter_actor_set_size (actor, fwd->geom.width, fwd->geom.height);
 
   if (clutter_stages_by_xid == NULL)
     clutter_stages_by_xid = g_hash_table_new (NULL, NULL);
