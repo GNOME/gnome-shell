@@ -88,17 +88,17 @@ make_ui (ClutterActor *stage)
   ClutterActor    *editable      = NULL;
   ClutterActor    *rectangle     = NULL;
   ClutterActor    *label         = NULL;
-  ClutterColor     color_stage   = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor     color_text    = { 0xff, 0x00, 0x00, 0xff };
   ClutterColor     color_sel     = { 0x00, 0xff, 0x00, 0x55 };
   ClutterColor     color_label   = { 0x00, 0xff, 0x55, 0xff };
   ClutterColor     color_rect    = { 0x00, 0xff, 0xff, 0x55 };
-  ClutterGeometry  label_geom    = {0, 50, -1, -1};
-  ClutterGeometry  editable_geom = {150, 50, 500, 75};
+  float label_geom_y, editable_geom_y;
 
-
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &color_stage);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_White);
   clutter_actor_set_size (stage, WIDTH, HEIGHT);
+
+  label_geom_y = 50;
+  editable_geom_y = 50;
 
   for (i = 0; i < NUM_ENTRIES; i++)
     {
@@ -106,13 +106,14 @@ make_ui (ClutterActor *stage)
       label = clutter_text_new_full ("Sans Bold 32px",
                                      "Entry",
                                      &color_label);
-      clutter_actor_set_geometry (label, &label_geom);
+      clutter_actor_set_position (label, 0, label_geom_y);
 
       /* editable */
       editable = clutter_text_new_full ("Sans Bold 32px",
                                         "ddd",
                                         &color_text);
-      clutter_actor_set_geometry (editable, &editable_geom);
+      clutter_actor_set_position (editable, 150, editable_geom_y);
+      clutter_actor_set_size (editable, 500, 75);
       clutter_text_set_editable (CLUTTER_TEXT (editable), TRUE);
       clutter_text_set_selectable (CLUTTER_TEXT (editable), TRUE);
       clutter_text_set_selection_color (CLUTTER_TEXT (editable),
@@ -122,14 +123,15 @@ make_ui (ClutterActor *stage)
 
       /* rectangle: to create a entry "feeling" */
       rectangle = clutter_rectangle_new_with_color (&color_rect);
-      clutter_actor_set_geometry (rectangle, &editable_geom);
+      clutter_actor_set_position (rectangle, 150, editable_geom_y);
+      clutter_actor_set_size (rectangle, 500, 75);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), editable);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), rectangle);
 
-      label_geom.y += HEIGHT_STEP;
-      editable_geom.y += HEIGHT_STEP;
+      label_geom_y += HEIGHT_STEP;
+      editable_geom_y += HEIGHT_STEP;
     }
 }
 

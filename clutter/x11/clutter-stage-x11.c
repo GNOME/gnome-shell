@@ -1269,7 +1269,7 @@ clutter_x11_get_stage_visual (ClutterStage *stage)
 
 typedef struct {
   ClutterStageX11 *stage_x11;
-  ClutterGeometry geom;
+  cairo_rectangle_int_t geom;
   Window xwindow;
   guint destroy_old_xwindow : 1;
 } ForeignWindowData;
@@ -1298,7 +1298,7 @@ set_foreign_window_callback (ClutterActor *actor,
   fwd->stage_x11->xwin_width = fwd->geom.width;
   fwd->stage_x11->xwin_height = fwd->geom.height;
 
-  clutter_actor_set_geometry (actor, &fwd->geom);
+  clutter_actor_set_size (actor, fwd->geom.width, fwd->geom.height);
 
   if (clutter_stages_by_xid == NULL)
     clutter_stages_by_xid = g_hash_table_new (NULL, NULL);

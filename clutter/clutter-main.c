@@ -2701,18 +2701,13 @@ clutter_get_default_frame_rate (void)
  * is possible, this value is ignored.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.10: This function does not do anything any more.
  */
 void
 clutter_set_default_frame_rate (guint frames_per_sec)
 {
-  ClutterMainContext *context;
-
-  context = _clutter_context_get_default ();
-
-  if (context->frame_rate != frames_per_sec)
-    context->frame_rate = frames_per_sec;
 }
-
 
 static void
 on_grab_actor_destroy (ClutterActor       *actor,

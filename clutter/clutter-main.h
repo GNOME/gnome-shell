@@ -127,9 +127,6 @@ guint                   clutter_threads_add_repaint_func        (GSourceFunc    
                                                                  GDestroyNotify notify);
 void                    clutter_threads_remove_repaint_func     (guint          handle_id);
 
-void                    clutter_set_default_frame_rate          (guint          frames_per_sec);
-guint                   clutter_get_default_frame_rate          (void);
-
 void                    clutter_grab_pointer                    (ClutterActor  *actor);
 void                    clutter_ungrab_pointer                  (void);
 ClutterActor *          clutter_get_pointer_grab                (void);
@@ -140,6 +137,8 @@ ClutterActor *          clutter_get_keyboard_grab               (void);
 PangoFontMap *          clutter_get_font_map                    (void);
 
 ClutterTextDirection    clutter_get_default_text_direction      (void);
+
+guint                   clutter_get_default_frame_rate          (void);
 
 G_END_DECLS
 

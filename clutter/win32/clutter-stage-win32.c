@@ -673,7 +673,7 @@ clutter_win32_get_stage_from_window (HWND hwnd)
 
 typedef struct {
   ClutterStageWin32 *stage_win32;
-  ClutterGeometry geom;
+  cairo_rectangle_int_t geom;
   HWND hwnd;
   guint destroy_old_hwnd : 1;
 } ForeignWindowData;
@@ -700,7 +700,7 @@ set_foreign_window_callback (ClutterActor *actor,
   fwd->stage_win32->win_width = fwd->geom.width;
   fwd->stage_win32->win_height = fwd->geom.height;
 
-  clutter_actor_set_geometry (actor, &fwd->geom);
+  clutter_actor_set_size (actor, fwd->geom.width, fwd->geom.height);
 
   /* calling this with the stage unrealized will unset the stage
    * from the GL context; once the stage is realized the GL context

@@ -29,23 +29,16 @@
 #define SIZE 50
 #define DEPTH -100
 
-static const ClutterColor color1 = { 0xff, 0xff, 0x00, 0xff };
-static const ClutterColor color2 = { 0x00, 0xff, 0x00, 0xff };
-static const ClutterColor color3 = { 0x00, 0x00, 0xff, 0xff };
-static const ClutterColor color4 = { 0xff, 0x00, 0xff, 0xff };
-
 int
 main (int argc, char *argv[])
 {
   ClutterActor *stage = NULL;
-  ClutterColor  color = { 0x00, 0x00, 0x00, 0xff };
   ClutterActor *button1 = NULL;
   ClutterActor *button2 = NULL;
   ClutterActor *button3 = NULL;
   ClutterActor *button4 = NULL;
   ClutterActor *group[4];
-  ClutterGeometry geom = {0, 0, SIZE, SIZE};
-  gint i = 0;
+  int i = 0;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
@@ -54,39 +47,34 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &color);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_White);
   clutter_actor_set_size (stage, WIDTH, HEIGHT);
 
-  button1 = clutter_rectangle_new_with_color (&color1);
-  clutter_actor_set_geometry (button1, &geom);
+  button1 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Yellow);
+  clutter_actor_set_size (button1, SIZE, SIZE);
 
-  button2 = clutter_rectangle_new_with_color (&color2);
-  geom.x = 2*SIZE;
-  geom.y = 0;
-  clutter_actor_set_geometry (button2, &geom);
+  button2 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Green);
+  clutter_actor_set_position (button2, 2 * SIZE, 0);
+  clutter_actor_set_size (button2, SIZE, SIZE);
 
-  geom.x = 0;
-  geom.y = 2*SIZE;
-  button3 = clutter_rectangle_new_with_color (&color3);
-  clutter_actor_set_geometry (button3, &geom);
+  button3 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Blue);
+  clutter_actor_set_position (button3, 0, 2 * SIZE);
+  clutter_actor_set_size (button3, SIZE, SIZE);
   clutter_actor_set_depth( button3, DEPTH);
 
   /* a nested hierarchy, to check that the relative positions are
      computed properly */
-  geom.x = SIZE/2;
-  geom.y = SIZE/2;
-  button4 = clutter_rectangle_new_with_color (&color4);
-  clutter_actor_set_geometry (button4, &geom);
-  clutter_actor_show (button4);
+  button4 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Magenta);
+  clutter_actor_set_position (button4, SIZE / 2, SIZE / 2);
+  clutter_actor_set_size (button4, SIZE, SIZE);
 
   for (i = 0; i < 4; i++) {
     group[i] = clutter_group_new ();
-    clutter_actor_set_geometry (group[i], &geom);
+    clutter_actor_set_position (group[i], SIZE / 2, SIZE / 2);
+    clutter_actor_set_size (group[i], SIZE, SIZE);
 
     if (i > 0)
       clutter_container_add_actor (CLUTTER_CONTAINER (group[i]), group [i - 1]);
-
-    clutter_actor_show_all (group[i]);
   }
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), button1);
@@ -95,7 +83,7 @@ main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group[3]);
   clutter_container_add_actor (CLUTTER_CONTAINER (group[0]), button4);
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
 
   clutter_main ();
 
