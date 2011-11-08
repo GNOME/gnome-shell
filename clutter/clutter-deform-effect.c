@@ -76,10 +76,7 @@ struct _ClutterDeformEffectPrivate
 
   CoglAttributeBuffer *buffer;
 
-  /* These two primitives use the same attributes but with different
-     indices */
-  CoglPrimitive *front_primitive;
-  CoglPrimitive *back_primitive;
+  CoglPrimitive *primitive;
 
   CoglPrimitive *lines_primitive;
 
@@ -173,8 +170,9 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
 {
   ClutterDeformEffect *self= CLUTTER_DEFORM_EFFECT (effect);
   ClutterDeformEffectPrivate *priv = self->priv;
-  gboolean is_depth_enabled, is_cull_enabled;
   CoglHandle material;
+  CoglPipeline *pipeline;
+  CoglDepthState depth_state;
 
   if (priv->is_dirty)
     {
@@ -271,46 +269,45 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
       priv->is_dirty = FALSE;
     }
 
-  /* enable depth test, if it's not already enabled */
-  is_depth_enabled = cogl_get_depth_test_enabled ();
-  if (!is_depth_enabled)
-    cogl_set_depth_test_enabled (TRUE);
+  material = clutter_offscreen_effect_get_target (effect);
+  pipeline = COGL_PIPELINE (material);
 
-  /* enable backface culling if it's not already enabled and if
-   * we have a back material
-   */
-  is_cull_enabled = cogl_get_backface_culling_enabled ();
-  if (priv->back_material != COGL_INVALID_HANDLE && !is_cull_enabled)
-    cogl_set_backface_culling_enabled (TRUE);
-  else if (priv->back_material == COGL_INVALID_HANDLE && is_cull_enabled)
-    cogl_set_backface_culling_enabled (FALSE);
+  /* enable depth testing */
+  cogl_depth_state_init (&depth_state);
+  cogl_depth_state_set_test_enabled (&depth_state, TRUE);
+  cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL);
+
+  /* enable backface culling if we have a back material */
+  if (priv->back_material != COGL_INVALID_HANDLE)
+    cogl_pipeline_set_cull_face_mode (pipeline,
+                                      COGL_PIPELINE_CULL_FACE_MODE_BACK);
 
   /* draw the front */
-  material = clutter_offscreen_effect_get_target (effect);
   if (material != COGL_INVALID_HANDLE)
     {
-      cogl_push_source (material);
-      cogl_primitive_draw (priv->front_primitive);
+      cogl_push_source (pipeline);
+      cogl_primitive_draw (priv->primitive);
       cogl_pop_source ();
     }
 
   /* draw the back */
-  material = priv->back_material;
-  if (material != COGL_INVALID_HANDLE)
+  if (priv->back_material != COGL_INVALID_HANDLE)
     {
-      cogl_push_source (material);
-      cogl_primitive_draw (priv->back_primitive);
+      CoglPipeline *back_pipeline;
+
+      /* We probably shouldn't be modifying the user's material so
+         instead we make a temporary copy */
+      back_pipeline = cogl_pipeline_copy (priv->back_material);
+      cogl_pipeline_set_depth_state (back_pipeline, &depth_state, NULL);
+      cogl_pipeline_set_cull_face_mode (pipeline,
+                                        COGL_PIPELINE_CULL_FACE_MODE_FRONT);
+
+      cogl_push_source (back_pipeline);
+      cogl_primitive_draw (priv->primitive);
       cogl_pop_source ();
+
+      cogl_object_unref (back_pipeline);
     }
-
-  /* restore the previous state */
-  if (!is_depth_enabled)
-    cogl_set_depth_test_enabled (FALSE);
-
-  if (priv->back_material != COGL_INVALID_HANDLE && !is_cull_enabled)
-    cogl_set_backface_culling_enabled (FALSE);
-  else if (priv->back_material == COGL_INVALID_HANDLE && is_cull_enabled)
-    cogl_set_backface_culling_enabled (TRUE);
 
   if (G_UNLIKELY (priv->lines_primitive != NULL))
     {
@@ -330,16 +327,10 @@ clutter_deform_effect_free_arrays (ClutterDeformEffect *self)
       priv->buffer = NULL;
     }
 
-  if (priv->front_primitive)
+  if (priv->primitive)
     {
-      cogl_object_unref (priv->front_primitive);
-      priv->front_primitive = NULL;
-    }
-
-  if (priv->back_primitive)
-    {
-      cogl_object_unref (priv->back_primitive);
-      priv->back_primitive = NULL;
+      cogl_object_unref (priv->primitive);
+      priv->primitive = NULL;
     }
 
   if (priv->lines_primitive)
@@ -353,11 +344,11 @@ static void
 clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
 {
   ClutterDeformEffectPrivate *priv = self->priv;
-  guint16 *static_front_indices, *static_back_indices;
-  CoglIndices *front_indices, *back_indices;
-  CoglAttribute *attributes[3];
-  guint16 *front_idx, *back_idx;
   gint x, y, direction, n_indices;
+  CoglAttribute *attributes[3];
+  guint16 *static_indices;
+  CoglIndices *indices;
+  guint16 *idx;
   int i;
 
   clutter_deform_effect_free_arrays (self);
@@ -366,23 +357,17 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
                * priv->y_tiles
                + (priv->y_tiles - 1));
 
-  static_front_indices = g_new (guint16, n_indices);
-  static_back_indices = g_new (guint16, n_indices);
+  static_indices = g_new (guint16, n_indices);
 
 #define MESH_INDEX(x,y) ((y) * (priv->x_tiles + 1) + (x))
 
   /* compute all the triangles from the various tiles */
   direction = 1;
 
-  front_idx = static_front_indices;
-  front_idx[0] = MESH_INDEX (0, 0);
-  front_idx[1] = MESH_INDEX (0, 1);
-  front_idx += 2;
-
-  back_idx = static_back_indices;
-  back_idx[0] = MESH_INDEX (priv->x_tiles, 0);
-  back_idx[1] = MESH_INDEX (priv->x_tiles, 1);
-  back_idx += 2;
+  idx = static_indices;
+  idx[0] = MESH_INDEX (0, 0);
+  idx[1] = MESH_INDEX (0, 1);
+  idx += 2;
 
   for (y = 0; y < priv->y_tiles; y++)
     {
@@ -390,23 +375,16 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
         {
           if (direction)
             {
-              front_idx[0] = MESH_INDEX (x + 1, y);
-              front_idx[1] = MESH_INDEX (x + 1, y + 1);
-
-              back_idx[0] = MESH_INDEX (priv->x_tiles - (x + 1), y);
-              back_idx[1] = MESH_INDEX (priv->x_tiles - (x + 1), y + 1);
+              idx[0] = MESH_INDEX (x + 1, y);
+              idx[1] = MESH_INDEX (x + 1, y + 1);
             }
           else
             {
-              front_idx[0] = MESH_INDEX (priv->x_tiles - x - 1, y);
-              front_idx[1] = MESH_INDEX (priv->x_tiles - x - 1, y + 1);
-
-              back_idx[0] = MESH_INDEX (x + 1, y);
-              back_idx[1] = MESH_INDEX (x + 1, y + 1);
+              idx[0] = MESH_INDEX (priv->x_tiles - x - 1, y);
+              idx[1] = MESH_INDEX (priv->x_tiles - x - 1, y + 1);
             }
 
-          front_idx += 2;
-          back_idx += 2;
+          idx += 2;
         }
 
       if (y == (priv->y_tiles - 1))
@@ -414,42 +392,29 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
 
       if (direction)
         {
-          front_idx[0] = MESH_INDEX (priv->x_tiles, y + 1);
-          front_idx[1] = MESH_INDEX (priv->x_tiles, y + 1);
-          front_idx[2] = MESH_INDEX (priv->x_tiles, y + 2);
-
-          back_idx[0] = MESH_INDEX (0, y + 1);
-          back_idx[1] = MESH_INDEX (0, y + 1);
-          back_idx[2] = MESH_INDEX (0, y + 2);
+          idx[0] = MESH_INDEX (priv->x_tiles, y + 1);
+          idx[1] = MESH_INDEX (priv->x_tiles, y + 1);
+          idx[2] = MESH_INDEX (priv->x_tiles, y + 2);
         }
       else
         {
-          front_idx[0] = MESH_INDEX (0, y + 1);
-          front_idx[1] = MESH_INDEX (0, y + 1);
-          front_idx[2] = MESH_INDEX (0, y + 2);
-
-          back_idx[0] = MESH_INDEX (priv->x_tiles, y + 1);
-          back_idx[1] = MESH_INDEX (priv->x_tiles, y + 1);
-          back_idx[2] = MESH_INDEX (priv->x_tiles, y + 2);
+          idx[0] = MESH_INDEX (0, y + 1);
+          idx[1] = MESH_INDEX (0, y + 1);
+          idx[2] = MESH_INDEX (0, y + 2);
         }
 
-      front_idx += 3;
-      back_idx += 3;
+      idx += 3;
 
       direction = !direction;
     }
 
 #undef MESH_INDEX
 
-  front_indices = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
-                                    static_front_indices,
-                                    n_indices);
-  back_indices = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
-                                   static_back_indices,
-                                   n_indices);
+  indices = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
+                              static_indices,
+                              n_indices);
 
-  g_free (static_front_indices);
-  g_free (static_back_indices);
+  g_free (static_indices);
 
   priv->n_vertices = (priv->x_tiles + 1) * (priv->y_tiles + 1);
 
@@ -482,22 +447,13 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
                                       4, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
 
-  priv->front_primitive =
+  priv->primitive =
     cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLE_STRIP,
                                         priv->n_vertices,
                                         attributes,
                                         3 /* n_attributes */);
-  cogl_primitive_set_indices (priv->front_primitive,
-                              front_indices,
-                              n_indices);
-
-  priv->back_primitive =
-    cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                                        priv->n_vertices,
-                                        attributes,
-                                        3 /* n_attributes */);
-  cogl_primitive_set_indices (priv->back_primitive,
-                              back_indices,
+  cogl_primitive_set_indices (priv->primitive,
+                              indices,
                               n_indices);
 
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_DEFORM_TILES))
@@ -508,12 +464,11 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
                                             attributes,
                                             2 /* n_attributes */);
       cogl_primitive_set_indices (priv->lines_primitive,
-                                  front_indices,
+                                  indices,
                                   n_indices);
     }
 
-  cogl_object_unref (front_indices);
-  cogl_object_unref (back_indices);
+  cogl_object_unref (indices);
 
   for (i = 0; i < 3; i++)
     cogl_object_unref (attributes[i]);
