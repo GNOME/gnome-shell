@@ -43,8 +43,6 @@ int
 main (int argc, char *argv[])
 {
   ClutterActor    *stage;
-  ClutterColor     stage_color = { 0x00, 0x00, 0x00, 0xff };
-  ClutterColor     label_color = { 0xff, 0xff, 0xff, 0xff };
   ClutterActor    *group;
 
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
@@ -53,9 +51,10 @@ main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Text");
 
   group = clutter_group_new ();
   clutter_actor_set_size (group, STAGE_WIDTH, STAGE_WIDTH);
@@ -98,7 +97,7 @@ main (int argc, char *argv[])
             }
 
           label = clutter_text_new_with_text (font_name, text);
-          clutter_text_set_color (CLUTTER_TEXT (label), &label_color);
+          clutter_text_set_color (CLUTTER_TEXT (label), CLUTTER_COLOR_White);
           clutter_actor_set_position (label, (1.0*STAGE_WIDTH/COLS)*col,
                                              (1.0*STAGE_HEIGHT/ROWS)*row);
           /*clutter_actor_set_clip (label, 0,0, (1.0*STAGE_WIDTH/COLS),
@@ -114,6 +113,8 @@ main (int argc, char *argv[])
 		    G_CALLBACK (clutter_main_quit), NULL);
 
   clutter_main();
+
+  clutter_actor_destroy (stage);
 
   return 0;
 }
