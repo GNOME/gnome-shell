@@ -198,6 +198,9 @@ meta_texture_tower_update_area (MetaTextureTower *tower,
 
   g_return_if_fail (tower != NULL);
 
+  if (tower->textures[0] == COGL_INVALID_HANDLE)
+    return;
+
   texture_width = cogl_texture_get_width (tower->textures[0]);
   texture_height = cogl_texture_get_height (tower->textures[0]);
 

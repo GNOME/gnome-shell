@@ -958,6 +958,9 @@ meta_window_actor_damage_all (MetaWindowActor *self)
                 "pixmap-height", &pixmap_height,
                 NULL);
 
+  if (!priv->mapped || priv->needs_pixmap)
+    return;
+
   clutter_x11_texture_pixmap_update_area (texture_x11,
                                           0,
                                           0,
@@ -2029,6 +2032,8 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
       return;
     }
 
+  if (!priv->mapped || priv->needs_pixmap)
+    return;
 
   clutter_x11_texture_pixmap_update_area (texture_x11,
                                           event->area.x,
