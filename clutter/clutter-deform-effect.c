@@ -766,5 +766,5 @@ clutter_deform_effect_invalidate (ClutterDeformEffect *effect)
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
   if (actor != NULL)
-    clutter_actor_queue_redraw (actor);
+    clutter_effect_queue_repaint (CLUTTER_EFFECT (effect));
 }
