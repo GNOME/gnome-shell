@@ -44,7 +44,9 @@ test_stage_sizing_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Stage Sizing");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   label = clutter_text_new_with_text ("Sans 16", "Toggle fullscreen");
   rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_LightScarletRed);
@@ -106,4 +108,10 @@ test_stage_sizing_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_stage_sizing_describe (void)
+{
+  return "Check stage sizing policies.";
 }

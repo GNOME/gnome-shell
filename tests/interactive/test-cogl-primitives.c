@@ -114,9 +114,10 @@ test_cogl_primitives_main (int argc, char *argv[])
   clutter_timeline_set_loop (tl, TRUE);
   clutter_timeline_start (tl);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 400, 400);
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Test");
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Path Primitives");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   coglbox = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
@@ -135,4 +136,10 @@ test_cogl_primitives_main (int argc, char *argv[])
   g_object_unref (tl);
 
   return 0;
+}
+
+G_MODULE_EXPORT const char *
+test_cogl_primitives (void)
+{
+  return "2D Path primitives support in Cogl.";
 }

@@ -751,8 +751,10 @@ test_layout_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 800, 600);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Layout");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   main_timeline = clutter_timeline_new (2000);
   clutter_timeline_set_loop (main_timeline, TRUE);
@@ -822,4 +824,10 @@ test_layout_main (int argc, char *argv[])
   g_object_unref (main_timeline);
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_layout_describe (void)
+{
+  return "Container implementing a layout policy.";
 }

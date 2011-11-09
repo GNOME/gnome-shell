@@ -250,10 +250,11 @@ test_binding_pool_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   g_signal_connect (stage,
                     "button-press-event", G_CALLBACK (clutter_main_quit),
                     NULL);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   key_group = g_object_new (TYPE_KEY_GROUP, NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), key_group);
@@ -307,4 +308,10 @@ test_binding_pool_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_binding_pool_describe (void)
+{
+  return "Binding pools example";
 }

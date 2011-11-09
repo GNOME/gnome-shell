@@ -16,16 +16,16 @@ test_text_main (gint    argc,
 {
   ClutterActor *stage;
   ClutterActor *text;
-  ClutterColor  text_color       = { 0x33, 0xff, 0x33, 0xff };
-  ClutterColor  cursor_color     = { 0xff, 0x33, 0x33, 0xff };
-  ClutterColor  background_color = { 0x00, 0x00, 0x00, 0xff };
-  ClutterColor  selected_text_color = { 0x00, 0x00, 0xff, 0xff };
+  ClutterColor  text_color = { 0x33, 0xff, 0x33, 0xff };
+  ClutterColor  cursor_color = { 0xff, 0x33, 0x33, 0xff };
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &background_color);
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Text Editing");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   text = clutter_text_new_full (FONT, "·", &text_color);
 
@@ -40,7 +40,7 @@ test_text_main (gint    argc,
   clutter_text_set_editable (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_selectable (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_cursor_color (CLUTTER_TEXT (text), &cursor_color);
-  clutter_text_set_selected_text_color (CLUTTER_TEXT (text), &selected_text_color);
+  clutter_text_set_selected_text_color (CLUTTER_TEXT (text), CLUTTER_COLOR_Blue);
 
   if (argv[1])
     {
@@ -67,4 +67,10 @@ test_text_main (gint    argc,
   clutter_main ();
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_text_describe (void)
+{
+  return "Multi-line text editing.";
 }

@@ -50,6 +50,7 @@ typedef struct _TestState
   guint            n_static_indices;
   CoglHandle       indices;
   ClutterTimeline *timeline;
+  guint            frame_id;
 } TestState;
 
 static void
@@ -324,37 +325,47 @@ create_dummy_actor (guint width, guint height)
   return group;
 }
 
+static void
+stop_and_quit (ClutterActor *actor,
+               TestState    *state)
+{
+  clutter_timeline_stop (state->timeline);
+  clutter_main_quit ();
+}
+
 G_MODULE_EXPORT int
 test_cogl_vertex_buffer_main (int argc, char *argv[])
 {
   TestState       state;
   ClutterActor   *stage;
-  ClutterColor    stage_clr = {0x0, 0x0, 0x0, 0xff};
-  ClutterGeometry stage_geom;
+  gfloat          stage_w, stage_h;
   gint            dummy_width, dummy_height;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_clr);
-  clutter_actor_get_geometry (stage, &stage_geom);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Vertex Buffers");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
+  g_signal_connect (stage, "destroy", G_CALLBACK (stop_and_quit), &state);
+  clutter_actor_get_size (stage, &stage_w, &stage_h);
 
   dummy_width = MESH_WIDTH * QUAD_WIDTH;
   dummy_height = MESH_HEIGHT * QUAD_HEIGHT;
   state.dummy = create_dummy_actor (dummy_width, dummy_height);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), state.dummy);
   clutter_actor_set_position (state.dummy,
-                              (stage_geom.width / 2.0) - (dummy_width / 2.0),
-                              (stage_geom.height / 2.0) - (dummy_height / 2.0));
+                              (stage_w / 2.0) - (dummy_width / 2.0),
+                              (stage_h / 2.0) - (dummy_height / 2.0));
 
   state.timeline = clutter_timeline_new (1000);
   clutter_timeline_set_loop (state.timeline, TRUE);
-  g_signal_connect (state.timeline,
-                    "new-frame",
-                    G_CALLBACK (frame_cb),
-                    &state);
+
+  state.frame_id = g_signal_connect (state.timeline,
+                                     "new-frame",
+                                     G_CALLBACK (frame_cb),
+                                     &state);
 
   g_signal_connect (state.dummy, "paint", G_CALLBACK (on_paint), &state);
 
@@ -372,3 +383,8 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
   return 0;
 }
 
+G_MODULE_EXPORT const char *
+test_cogl_vertex_buffer_describe (void)
+{
+  return "Vertex buffers support in Cogl.";
+}

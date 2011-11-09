@@ -98,9 +98,10 @@ test_swipe_action_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Swipe action test");
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Swipe action");
   clutter_actor_set_size (stage, 640, 480);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_Red);
   clutter_actor_set_name (rect, "Vertical swipes");
@@ -184,4 +185,10 @@ test_swipe_action_main (int argc, char *argv[])
   clutter_main ();
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_swipe_action_describe (void)
+{
+  return "Swipe gesture recognizer.";
 }

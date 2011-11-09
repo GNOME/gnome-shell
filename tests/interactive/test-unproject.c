@@ -104,10 +104,11 @@ test_unproject_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
-
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Unprojecting events");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_clr);
   clutter_actor_set_size (stage, 640, 480);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   rect = clutter_rectangle_new_with_color (&white);
   clutter_actor_set_size (rect, RECT_W, RECT_H);
@@ -146,8 +147,11 @@ test_unproject_main (int argc, char *argv[])
 
   clutter_main();
 
-  test_rectangle = NULL;
-  label = NULL;
-
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_unproject_describe (void)
+{
+  return "Transform stage coordinates into actor coordinates.";
 }

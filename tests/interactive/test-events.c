@@ -48,13 +48,13 @@ stage_state_cb (ClutterStage    *stage,
 }
 
 static gboolean
-blue_button_cb (ClutterActor    *actor,
-		ClutterEvent    *event,
-		gpointer         data)
+blue_button_cb (ClutterActor *actor,
+		ClutterEvent *event,
+		gpointer      data)
 {
   ClutterActor *stage;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_actor_get_stage (actor);
 
   if (IsFullScreen)
     IsFullScreen = FALSE;
@@ -104,12 +104,12 @@ capture_cb (ClutterActor *actor,
 }
 
 static void
-key_focus_in_cb (ClutterActor    *actor,
-		 gpointer         data)
+key_focus_in_cb (ClutterActor *actor,
+		 gpointer      data)
 {
-  ClutterActor *focus_box = CLUTTER_ACTOR(data);  
+  ClutterActor *focus_box = CLUTTER_ACTOR (data);  
 
-  if (actor == clutter_stage_get_default ())
+  if (CLUTTER_IS_STAGE (actor))
     clutter_actor_hide (focus_box);
   else
     {
@@ -171,7 +171,7 @@ input_cb (ClutterActor *actor,
 	  ClutterEvent *event,
 	  gpointer      data)
 {
-  ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
+  ClutterActor *stage = clutter_actor_get_stage (actor); 
   ClutterActor *source_actor = clutter_event_get_source (event);
   gchar keybuf[128];
 
@@ -223,11 +223,11 @@ input_cb (ClutterActor *actor,
                clutter_event_get_button (event),
                clutter_event_get_click_count (event));
 
-      if (source_actor == CLUTTER_ACTOR (stage))
-        clutter_stage_set_key_focus (stage, NULL);
+      if (source_actor == stage)
+        clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
       else if (source_actor == actor &&
-               clutter_actor_get_parent (actor) == CLUTTER_ACTOR (stage))
-	clutter_stage_set_key_focus (stage, actor);
+               clutter_actor_get_parent (actor) == stage)
+	clutter_stage_set_key_focus (CLUTTER_STAGE (stage), actor);
       break;
     case CLUTTER_SCROLL:
       g_print ("[%s] BUTTON SCROLL (direction:%s)",
@@ -263,21 +263,15 @@ input_cb (ClutterActor *actor,
 G_MODULE_EXPORT int
 test_events_main (int argc, char *argv[])
 {
-  ClutterActor    *stage, *actor, *focus_box, *group;
-  ClutterColor    rcol = { 0xff, 0,    0,    0xff },
-                  bcol = { 0,    0,    0xff, 0xff },
-		  gcol = { 0,    0xff, 0,    0xff },
-		  ycol = { 0xff, 0xff, 0,    0xff },
-		  ncol = { 0,    0,    0,    0xff },
-                  xcol = { 0xff, 0,    0xff, 0xff };
+  ClutterActor *stage, *actor, *focus_box, *group;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-
-
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Events");
   clutter_actor_set_name (stage, "Stage");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   g_signal_connect (stage, "event", G_CALLBACK (input_cb), "stage");
   g_signal_connect (stage, "fullscreen", 
 		    G_CALLBACK (stage_state_cb), "fullscreen");
@@ -287,13 +281,12 @@ test_events_main (int argc, char *argv[])
 		    G_CALLBACK (stage_state_cb), "activate");
   g_signal_connect (stage, "deactivate", 
 		    G_CALLBACK (stage_state_cb), "deactivate");
-/*g_signal_connect (stage, "captured-event", G_CALLBACK (capture_cb), NULL);*/
 
-  focus_box = clutter_rectangle_new_with_color (&ncol);
+  focus_box = clutter_rectangle_new_with_color (CLUTTER_COLOR_Black);
   clutter_actor_set_name (focus_box, "Focus Box");
   clutter_container_add (CLUTTER_CONTAINER(stage), focus_box, NULL);
 
-  actor = clutter_rectangle_new_with_color (&rcol);
+  actor = clutter_rectangle_new_with_color (CLUTTER_COLOR_Red);
   clutter_actor_set_name (actor, "Red Box");
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 100, 100);
@@ -308,7 +301,7 @@ test_events_main (int argc, char *argv[])
 
   clutter_stage_set_key_focus (CLUTTER_STAGE (stage), actor);
 
-  actor = clutter_rectangle_new_with_color (&gcol);
+  actor = clutter_rectangle_new_with_color (CLUTTER_COLOR_Green);
   clutter_actor_set_name (actor, "Green Box");
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 250, 100);
@@ -319,7 +312,7 @@ test_events_main (int argc, char *argv[])
 		    focus_box);
   g_signal_connect (actor, "captured-event", G_CALLBACK (capture_cb), NULL);
 
-  actor = clutter_rectangle_new_with_color (&bcol);
+  actor = clutter_rectangle_new_with_color (CLUTTER_COLOR_Blue);
   clutter_actor_set_name (actor, "Blue Box");
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 400, 100);
@@ -333,7 +326,7 @@ test_events_main (int argc, char *argv[])
                     G_CALLBACK (blue_button_cb), NULL);
 
   /* non reactive */
-  actor = clutter_rectangle_new_with_color (&ncol);
+  actor = clutter_rectangle_new_with_color (CLUTTER_COLOR_Black);
   clutter_actor_set_name (actor, "Black Box");
   clutter_actor_set_size (actor, 400, 50);
   clutter_actor_set_position (actor, 100, 250);
@@ -345,7 +338,7 @@ test_events_main (int argc, char *argv[])
 		    focus_box);
 
   /* non reactive group, with reactive child */
-  actor = clutter_rectangle_new_with_color (&ycol);
+  actor = clutter_rectangle_new_with_color (CLUTTER_COLOR_Yellow);
   clutter_actor_set_name (actor, "Yellow Box");
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_reactive (actor, TRUE);
@@ -360,7 +353,7 @@ test_events_main (int argc, char *argv[])
   clutter_actor_show_all (group);
 
   /* border actor */
-  actor = clutter_rectangle_new_with_color (&xcol);
+  actor = clutter_rectangle_new_with_color (CLUTTER_COLOR_Magenta);
   clutter_actor_set_name (actor, "Border Box");
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor,
@@ -375,4 +368,10 @@ test_events_main (int argc, char *argv[])
   clutter_main();
 
   return 0;
+}
+
+G_MODULE_EXPORT const char *
+test_events_describe (void)
+{
+  return "Event handling and propagation.";
 }

@@ -185,7 +185,6 @@ void
 test_timeline (TestConformSimpleFixture *fixture,
 	       gconstpointer data)
 {
-  ClutterActor *stage G_GNUC_UNUSED;
   ClutterTimeline *timeline_1;
   TimelineData data_1;
   ClutterTimeline *timeline_2;
@@ -198,7 +197,7 @@ test_timeline (TestConformSimpleFixture *fixture,
 
   /* NB: We have to ensure a stage is instantiated else the master
    * clock wont run... */
-  stage = clutter_stage_get_default ();
+  ClutterActor *stage = clutter_stage_new ();
 
   timeline_data_init (&data_1, 1);
   timeline_1 = clutter_timeline_new (FRAME_COUNT * 1000 / FPS);
@@ -316,4 +315,6 @@ test_timeline (TestConformSimpleFixture *fixture,
   timeline_data_destroy (&data_3);
 
   g_source_remove (delay_tag);
+
+  clutter_actor_destroy (stage);
 }
