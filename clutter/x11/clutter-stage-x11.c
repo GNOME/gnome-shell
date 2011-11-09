@@ -204,6 +204,8 @@ clutter_stage_x11_get_geometry (ClutterStageWindow    *stage_window,
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_x11);
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (stage_cogl->backend);
 
+  geometry->x = geometry->y = 0;
+
   /* If we're fullscreen, return the size of the display. */
   if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) &&
       stage_x11->fullscreening)
