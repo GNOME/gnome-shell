@@ -276,6 +276,23 @@ queue_full_redraw (ClutterStage *stage)
   _clutter_stage_window_add_redraw_clip (stage_window, NULL);
 }
 
+static gboolean
+stage_is_default (ClutterStage *stage)
+{
+  ClutterStageManager *stage_manager;
+  ClutterStageWindow *impl;
+
+  stage_manager = clutter_stage_manager_get_default ();
+  if (stage != clutter_stage_manager_get_default_stage (stage_manager))
+    return FALSE;
+
+  impl = _clutter_stage_get_window (stage);
+  if (impl != _clutter_stage_get_default_window ())
+    return FALSE;
+
+  return TRUE;
+}
+
 static void
 clutter_stage_allocate (ClutterActor           *self,
                         const ClutterActorBox  *box,
@@ -1472,7 +1489,7 @@ static gboolean
 clutter_stage_real_delete_event (ClutterStage *stage,
                                  ClutterEvent *event)
 {
-  if (clutter_stage_is_default (stage))
+  if (stage_is_default (stage))
     clutter_main_quit ();
   else
     clutter_actor_destroy (CLUTTER_ACTOR (stage));
@@ -2197,6 +2214,8 @@ clutter_stage_init (ClutterStage *self)
  * Return value: (transfer none) (type Clutter.Stage): the main
  *   #ClutterStage. You should never destroy or unref the returned
  *   actor.
+ *
+ * Deprecated: 1.10: Use clutter_stage_new() instead.
  */
 ClutterActor *
 clutter_stage_get_default (void)
@@ -3497,24 +3516,17 @@ clutter_stage_queue_redraw (ClutterStage *stage)
  * Return value: %TRUE if the passed stage is the default one
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Track the stage pointer inside your application
+ *   code, or use clutter_actor_get_stage() to retrieve the stage for
+ *   a given actor.
  */
 gboolean
 clutter_stage_is_default (ClutterStage *stage)
 {
-  ClutterStageManager *stage_manager;
-  ClutterStageWindow *impl;
-
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
-  stage_manager = clutter_stage_manager_get_default ();
-  if (stage != clutter_stage_manager_get_default_stage (stage_manager))
-    return FALSE;
-
-  impl = _clutter_stage_get_window (stage);
-  if (impl != _clutter_stage_get_default_window ())
-    return FALSE;
-
-  return TRUE;
+  return stage_is_default (stage);
 }
 
 void
