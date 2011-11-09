@@ -397,6 +397,8 @@ clutter_config_read_from_file (const gchar *config_path)
   g_key_file_load_from_file (key_file, config_path, G_KEY_FILE_NONE, &error);
   if (error == NULL)
     {
+      CLUTTER_NOTE (MISC, "Reading configuration from '%s'", config_path);
+
       clutter_config_read_from_key_file (key_file);
 #ifdef CLUTTER_ENABLE_DEBUG
       clutter_debug_read_from_key_file (key_file);
