@@ -12,8 +12,9 @@ main (int argc, char **argv)
     return 1;
 
   /* Get the default stage */
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Sub-texture");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   /* Create a new ClutterTexture that shows smiley.png */
   image = clutter_texture_new_from_file ("smiley.png", NULL);

@@ -125,7 +125,7 @@ main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "cross-fade");
   clutter_actor_set_size (stage, stage_side, stage_side);
