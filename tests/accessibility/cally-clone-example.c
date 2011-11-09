@@ -104,14 +104,13 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - Clone Test");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   make_ui (stage);
 
   clutter_actor_show_all (stage);
 
   clutter_main ();
-
-  clutter_actor_destroy (stage);
 
   return 0;
 }

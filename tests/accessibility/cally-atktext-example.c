@@ -237,7 +237,6 @@ make_ui (ClutterActor *stage)
                           G_CALLBACK (button_press_cb), NULL);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), button);
-
 }
 
 int
@@ -254,6 +253,7 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkText Test");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   make_ui (stage);
 
@@ -263,8 +263,6 @@ main (int argc, char *argv[])
   test_atk_text (text_editable_actor);
 
   clutter_main ();
-
-  clutter_actor_destroy (stage);
 
   return 0;
 }
