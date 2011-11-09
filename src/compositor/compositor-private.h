@@ -25,9 +25,9 @@ struct _MetaCompositor
 
   MetaPlugin     *modal_plugin;
 
-  gboolean        show_redraw : 1;
-  gboolean        debug       : 1;
-  gboolean        no_mipmaps  : 1;
+  guint           show_redraw : 1;
+  guint           debug       : 1;
+  guint           no_mipmaps  : 1;
 };
 
 struct _MetaCompScreen
