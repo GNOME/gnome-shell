@@ -551,14 +551,12 @@ cally_actor_ref_state_set (AtkObject *obj)
       atk_state_set_add_state (state_set, ATK_STATE_FOCUSABLE);
 
       stage = CLUTTER_STAGE (clutter_actor_get_stage (actor));
-      /* If for any reason this actor doesn't have a stage
-         associated, we try the default one as fallback */
-      if (stage == NULL)
-          stage = CLUTTER_STAGE (clutter_stage_get_default ());
-
-      focus_actor = clutter_stage_get_key_focus (stage);
-      if (focus_actor == actor)
-        atk_state_set_add_state (state_set, ATK_STATE_FOCUSED);
+      if (stage != NULL)
+        {
+          focus_actor = clutter_stage_get_key_focus (stage);
+          if (focus_actor == actor)
+            atk_state_set_add_state (state_set, ATK_STATE_FOCUSED);
+        }
     }
 
   return state_set;
