@@ -186,7 +186,7 @@ meta_window_group_paint (ClutterActor *actor)
       if (META_IS_WINDOW_ACTOR (l->data))
         {
           MetaWindowActor *window_actor = l->data;
-          gboolean x, y;
+          int x, y;
 
           if (!actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
             continue;
