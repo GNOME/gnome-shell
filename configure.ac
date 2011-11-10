@@ -418,9 +418,9 @@ AC_ARG_ENABLE([tslib-input],
               [enable_tslib=$enableval],
               [enable_tslib=no])
 AC_ARG_ENABLE([evdev-input],
-              [AS_HELP_STRING([--with-evdev=@<:@yes/no@:>@], [Enable evdev for input events (default=yes)])],
+              [AS_HELP_STRING([--with-evdev=@<:@yes/no@:>@], [Enable evdev for input events (default=no)])],
               [enable_evdev=$enableval],
-              [enable_evdev=yes])
+              [enable_evdev=no])
 
 AS_IF([test "x$enable_tslib" = "xyes"],
       [
