@@ -205,6 +205,20 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert_cmpint (color.green, ==, 0);
   g_assert_cmpint (color.blue, ==, 0);
   g_assert_cmpint (color.alpha, ==, 255);
+
+  g_assert (clutter_color_from_string (&color, "hsla( 0, 100%, 50%, 0.5 )"));
+  if (g_test_verbose ())
+    {
+      g_print ("color = { %x, %x, %x, %x }, expected = { 255, 0, 0, 127 }\n",
+               color.red,
+               color.green,
+               color.blue,
+               color.alpha);
+    }
+  g_assert_cmpint (color.red, ==, 255);
+  g_assert_cmpint (color.green, ==, 0);
+  g_assert_cmpint (color.blue, ==, 0);
+  g_assert_cmpint (color.alpha, ==, 127);
 }
 
 void
