@@ -30,7 +30,7 @@
  * specific API
  *
  * You need to include
- * <filename class="headerfile">&lt;clutter/egl/clutter-cex100.h&gt;</filename>
+ * <filename class="headerfile">&lt;clutter/cex100/clutter-cex100.h&gt;</filename>
  * to have access to the functions documented here.
  */
 
