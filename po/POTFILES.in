@@ -58,7 +58,6 @@ clutter/clutter-text.c
 clutter/clutter-texture.c
 clutter/clutter-timeline.c
 clutter/clutter-units.c
-clutter/cogl/clutter-backend-cogl.c
 clutter/evdev/clutter-input-device-evdev.c
 clutter/x11/clutter-backend-x11.c
 clutter/x11/clutter-keymap-x11.c
