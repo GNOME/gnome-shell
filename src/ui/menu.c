@@ -116,7 +116,7 @@ popup_position_func (GtkMenu   *menu,
 
   pos = user_data;
   
-  gtk_widget_size_request (GTK_WIDGET (menu), &req);
+  gtk_widget_get_preferred_size (GTK_WIDGET (menu), &req, NULL);
 
   *x = pos->x;
   *y = pos->y;

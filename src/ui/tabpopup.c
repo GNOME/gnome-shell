@@ -356,7 +356,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
           /* Efficiency rules! */
           gtk_label_set_markup (GTK_LABEL (popup->label),
                               te->title);
-          gtk_widget_size_request (popup->label, &req);
+          gtk_widget_get_preferred_size (popup->label, &req, NULL);
           max_label_width = MAX (max_label_width, req.width);
           
           tmp = tmp->next;
