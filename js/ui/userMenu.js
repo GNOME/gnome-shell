@@ -158,7 +158,7 @@ IMStatusChooserItem.prototype = {
 
         this._presence = new GnomeSession.Presence();
         this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
-	    this._sessionStatusChanged(status);
+            this._sessionStatusChanged(status);
         }));
 
         this._sessionPresenceRestored = false;
@@ -293,14 +293,12 @@ IMStatusChooserItem.prototype = {
         this._setComboboxPresence(presence);
 
         if (!this._sessionPresenceRestored) {
-            this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
-		this._sessionStatusChanged(status);
-	    }));
+            this._sessionStatusChanged(this._presence.status);
             return;
         }
 
         if (presence == Tp.ConnectionPresenceType.AVAILABLE)
-            this._presence.setStatus(GnomeSession.PresenceStatus.AVAILABLE);
+            this._presence.status = GnomeSession.PresenceStatus.AVAILABLE;
 
         // We ignore the actual value of _expectedPresence and never safe
         // the first presence change after an "automatic" change, assuming
@@ -455,10 +453,6 @@ UserMenuButton.prototype = {
         this._idleIcon = new St.Icon({ icon_name: 'user-idle',
                                        style_class: 'popup-menu-icon' });
 
-        this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
-	    this._updateSwitch(status);
-	}));
-
         this._accountMgr.connect('most-available-presence-changed',
                                   Lang.bind(this, this._updatePresenceIcon));
         this._accountMgr.prepare_async(null, Lang.bind(this,
@@ -474,6 +468,12 @@ UserMenuButton.prototype = {
         this._updateUserName();
 
         this._createSubMenu();
+
+        this._updateSwitch(this._presence.status);
+        this._presence.connectSignal('StatusChanged', Lang.bind(this, function (proxy, senderName, [status]) {
+            this._updateSwitch(status);
+        }));
+
         this._userManager.connect('notify::is-loaded',
                                   Lang.bind(this, this._updateSwitchUser));
         this._userManager.connect('notify::has-multiple-users',
@@ -667,7 +667,7 @@ UserMenuButton.prototype = {
                             _("Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."));
         }
 
-        this._presence.setStatus(status);
+        this._presence.status = status;
     },
 
     _onMyAccountActivate: function() {
