@@ -267,7 +267,7 @@ gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
 @GSETTINGS_RULES@
 
 convertdir = $(datadir)/GConf/gsettings
-convert_DATA=$(srcdir)/mutter-schemas.convert
+convert_DATA = mutter-schemas.convert
 
 IMAGES=stock_maximize.png stock_minimize.png stock_delete.png
 VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
@@ -297,6 +297,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	org.gnome.mutter.gschema.xml.in \
+	mutter-schemas.convert \
 	libmutter.pc.in \
 	mutter-plugins.pc.in  \
 	mutter-enum-types.h.in \
