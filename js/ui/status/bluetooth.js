@@ -204,9 +204,10 @@ Indicator.prototype = {
 
     _buildDeviceSubMenu: function(item, device) {
         if (device.can_connect) {
+            let menuitem = new PopupMenu.PopupSwitchMenuItem(_("Connection"), device.connected);
             item._connected = device.connected;
-            item._connectedMenuitem = new PopupMenu.PopupSwitchMenuItem(_("Connection"), device.connected);
-            item._connectedMenuitem.connect('toggled', Lang.bind(this, function() {
+            item._connectedMenuItem = menuitem;
+            menuitem.connect('toggled', Lang.bind(this, function() {
                 if (item._connected > ConnectionState.CONNECTED) {
                     // operation already in progress, revert
                     // (should not happen anyway)
@@ -241,7 +242,7 @@ Indicator.prototype = {
                 }
             }));
 
-            item.menu.addMenuItem(item._connectedMenuitem);
+            item.menu.addMenuItem(menuitem);
         }
 
         if (device.capabilities & GnomeBluetoothApplet.Capabilities.OBEX_PUSH) {
