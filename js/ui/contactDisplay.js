@@ -29,6 +29,7 @@ const Contact = new Lang.Class({
 
         this.actor = new St.Bin({ style_class: 'contact',
                                   reactive: true,
+                                  can_focus: true,
                                   track_hover: true });
 
         let content = new St.BoxLayout( { style_class: 'contact-content',

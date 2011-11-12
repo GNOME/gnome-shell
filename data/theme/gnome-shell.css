@@ -308,6 +308,7 @@ StScrollBar StButton#vhandle:hover
 }
 
 .dash-search-button:selected,
+.dash-search-button:focus,
 .notification-button:focus,
 .notification-icon-button:focus,
 .hotplug-notification-item:focus,
@@ -693,6 +694,7 @@ StScrollBar StButton#vhandle:hover
     font-weight: bold;
 }
 
+.dash-search-button:focus,
 .dash-search-button:selected {
     padding-top: 3px;
     padding-bottom: 4px;
