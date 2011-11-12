@@ -58,7 +58,9 @@ shell_dbus_acquire_name (GDBusProxy *bus,
                                                        NULL, /* cancellable */
                                                        &error)))
     {
-      g_printerr ("failed to acquire org.gnome.Shell: %s\n", error->message);
+      g_printerr ("failed to acquire %s: %s\n", name, error->message);
+      if (!fatal)
+        return;
       exit (1);
     }
   g_variant_get (request_name_variant, "(u)", request_name_result);
