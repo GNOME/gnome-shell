@@ -227,9 +227,7 @@ GnomeShell.prototype = {
     ShellVersion: Config.PACKAGE_VERSION,
 
     _extensionStateChanged: function(_, newState) {
-        DBus.session.emit_signal('/org/gnome/Shell',
-                                 'org.gnome.Shell',
-                                 'ExtensionStatusChanged', 'sis',
-                                 [newState.uuid, newState.state, newState.error]);
+        this._dbusImpl.emit_signal('ExtensionStatusChanged',
+                                   GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
     }
 };
