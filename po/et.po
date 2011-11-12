@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-30 17:13+0000\n"
-"PO-Revision-Date: 2011-03-30 23:56+0300\n"
+"POT-Creation-Date: 2011-11-05 13:23+0000\n"
+"PO-Revision-Date: 2011-11-05 18:16+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "Language: et\n"
@@ -50,10 +50,13 @@ msgstr "Ekraanivideo lindistamisel kasutatav kaadrikiirus."
 
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should not be loaded."
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
-"GNOME Shelli laiendustel on omadus UUID. Selle võtmega määratakse "
-"laiendused, mida ei peaks laaditama."
+"GNOME Shelli laiendustel on UUID omadus; selles võtmes loetletud laiendused "
+"tuleks laadida. Seda loendit saab muuta kasutades EnableExtension ja "
+"DisableExtension DBus-i meetodit kohas org.gnome.Shell."
 
 msgid "History for command (Alt-F2) dialog"
 msgstr "Käsudialoogi (Alt-F2) ajalugu"
@@ -142,14 +145,54 @@ msgstr ""
 "privaatsuse suurendamiseks selle keelata. Selle keelamine siiski ei eemalda "
 "juba salvestatud andmeid."
 
-msgid "Uuids of extensions to disable"
-msgstr "Keelatavate laienduste UUID-d"
+msgid "The type of keyboard to use."
+msgstr "Kasutatava klaviatuuri liik."
+
+msgid "Uuids of extensions to enable"
+msgstr "Lubatavate laienduste UUID-d"
 
 msgid "Whether to collect stats about applications usage"
 msgstr "Kas rakenduste kasutuse kohta kogutakse andmeid"
 
+msgid "Which keyboard to use"
+msgstr "Millist klaviatuuri kasutada"
+
 msgid "disabled OpenSearch providers"
 msgstr "keelatud OpenSearch pakkujad"
+
+msgid "Session..."
+msgstr "Seanss..."
+
+msgctxt "title"
+msgid "Sign In"
+msgstr "Sisselogimine"
+
+#. translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+msgid "(or swipe finger)"
+msgstr "(või libista näpp üle lugeja)"
+
+msgid "Not listed?"
+msgstr "Pole loendis?"
+
+msgid "Cancel"
+msgstr "Katkesta"
+
+msgctxt "button"
+msgid "Sign In"
+msgstr "Logi sisse"
+
+msgid "Login Window"
+msgstr "Sisselogimisaken"
+
+msgid "Suspend"
+msgstr "Uinak"
+
+msgid "Restart"
+msgstr "Taaskäivita"
+
+msgid "Power Off"
+msgstr "Lülita välja"
 
 msgid "Command not found"
 msgstr "Käsku ei leitud"
@@ -168,10 +211,10 @@ msgid "All"
 msgstr "Kõik"
 
 msgid "APPLICATIONS"
-msgstr "Rakendused"
+msgstr "RAKENDUSED"
 
 msgid "SETTINGS"
-msgstr "Seaded"
+msgstr "SEADED"
 
 msgid "New Window"
 msgstr "Uus aken"
@@ -189,6 +232,16 @@ msgstr "%s lisati lemmikutesse."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s eemaldati lemmikutest."
+
+msgid "Removable Devices"
+msgstr "Eemaldatavad seadmed"
+
+#, c-format
+msgid "Open with %s"
+msgstr "Ava programmiga %s"
+
+msgid "Eject"
+msgstr "Väljasta"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -312,6 +365,24 @@ msgstr "Käesolev nädal"
 msgid "Next week"
 msgstr "Järgmine nädal"
 
+msgid "Unknown"
+msgstr "Tundmatu"
+
+msgid "Available"
+msgstr "Saadaval"
+
+msgid "Away"
+msgstr "Eemal"
+
+msgid "Busy"
+msgstr "Hõivatud"
+
+msgid "Offline"
+msgstr "Ühendamata"
+
+msgid "CONTACTS"
+msgstr "KONTAKTID"
+
 msgid "Remove"
 msgstr "Eemalda"
 
@@ -360,14 +431,16 @@ msgid "%A %B %e, %Y"
 msgstr "%A, %d. %B %Y"
 
 msgid "RECENT ITEMS"
-msgstr "Hiljutised dokumendid"
+msgstr "HILJUTISED DOKUMENDID"
 
 #, c-format
+msgctxt "title"
 msgid "Log Out %s"
-msgstr "Logi %s välja"
+msgstr "%s väljalogimine"
 
+msgctxt "title"
 msgid "Log Out"
-msgstr "Logi välja"
+msgstr "Väljalogimine"
 
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
@@ -375,18 +448,27 @@ msgstr ""
 "Logi välja."
 
 #, c-format
-msgid "%s will be logged out automatically in %d seconds."
-msgstr "%s logitakse %d sekundi pärast automaatselt välja."
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s logitakse %d sekundi pärast automaatselt välja."
+msgstr[1] "%s logitakse %d sekundi pärast automaatselt välja."
 
 #, c-format
-msgid "You will be logged out automatically in %d seconds."
-msgstr "Sind logitakse %d sekundi pärast automaatselt välja."
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Sind logitakse %d sekundi pärast automaatselt välja."
+msgstr[1] "Sind logitakse %d sekundi pärast automaatselt välja."
 
 msgid "Logging out of the system."
 msgstr "Süsteemist väljalogimine"
 
+msgctxt "button"
+msgid "Log Out"
+msgstr "Logi välja"
+
+msgctxt "title"
 msgid "Power Off"
-msgstr "Lülita välja"
+msgstr "Väljalülitamine"
 
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -394,14 +476,25 @@ msgstr ""
 "Lülita välja."
 
 #, c-format
-msgid "The system will power off automatically in %d seconds."
-msgstr "%d sekundi pärast lülitub süsteem automaatselt välja."
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "%d sekundi pärast lülitub süsteem automaatselt välja."
+msgstr[1] "%d sekundi pärast lülitub süsteem automaatselt välja."
 
 msgid "Powering off the system."
 msgstr "Süsteemi väljalülitamine."
 
+msgctxt "button"
 msgid "Restart"
 msgstr "Taaskäivita"
+
+msgctxt "button"
+msgid "Power Off"
+msgstr "Lülita välja"
+
+msgctxt "title"
+msgid "Restart"
+msgstr "Taaskäivitamine"
 
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
@@ -409,17 +502,40 @@ msgstr ""
 "\"Taaskäivita\"."
 
 #, c-format
-msgid "The system will restart automatically in %d seconds."
-msgstr "Süsteem taaskäivitatakse automaatselt %d sekundi pärast."
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Süsteem taaskäivitub automaatselt %d sekundi pärast."
+msgstr[1] "Süsteem taaskäivitub automaatselt %d sekundi pärast."
 
 msgid "Restarting the system."
 msgstr "Süsteemi taaskäivitamine."
 
-msgid "Cancel"
-msgstr "Katkesta"
+msgid "Install"
+msgstr "Paigalda"
+
+#, c-format
+msgid "Download and install '%s' from extensions.gnome.org?"
+msgstr "Kas laadida alla ja paigaldada '%s' aadressilt extensions.gnome.org?"
+
+msgid "tray"
+msgstr "salv"
+
+msgid "Keyboard"
+msgstr "Klaviatuur"
 
 msgid "No extensions installed"
 msgstr "Ühtegi laiendust pole paigaldatud"
+
+#. Translators: argument is an extension UUID.
+#, c-format
+msgid "%s has not emitted any errors."
+msgstr "%s ei ole väljastanud ühtegi veateadet."
+
+msgid "Hide Errors"
+msgstr "Peida vead"
+
+msgid "Show Errors"
+msgstr "Näita vigu"
 
 msgid "Enabled"
 msgstr "Lubatud"
@@ -435,6 +551,9 @@ msgstr "Viga"
 msgid "Out of date"
 msgstr "Pole värske"
 
+msgid "Downloading"
+msgstr "Allalaadimine"
+
 msgid "View Source"
 msgstr "Kuva lähtekoodi"
 
@@ -444,8 +563,75 @@ msgstr "Veebileht"
 msgid "Open"
 msgstr "Ava"
 
+msgid "Unmute"
+msgstr "Heli peale"
+
+msgid "Mute"
+msgstr "Heli maha"
+
 msgid "System Information"
 msgstr "Süsteemi andmed"
+
+msgid "Connect"
+msgstr "Ühendu"
+
+#. Cisco LEAP
+msgid "Password: "
+msgstr "Parool: "
+
+#. static WEP
+msgid "Key: "
+msgstr "Võti: "
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+msgid "Username: "
+msgstr "Kasutajanimi: "
+
+msgid "Identity: "
+msgstr "Identiteet: "
+
+msgid "Private key password: "
+msgstr "Privaatvõtme parool: "
+
+msgid "Service: "
+msgstr "Teenus: "
+
+msgid "Authentication required by wireless network"
+msgstr "Juhtmeta võrgu jaoks on vajalik autentimine"
+
+#, c-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
+msgstr ""
+"Juhtmeta võrguga '%s' ühendumiseks on vajalik parool või krüptimisvõti."
+
+msgid "Wired 802.1X authentication"
+msgstr "Juhtmega ühenduse 802.1X autentimine"
+
+msgid "Network name: "
+msgstr "Võrgu nimi: "
+
+msgid "DSL authentication"
+msgstr "DSL autentimine"
+
+msgid "PIN code required"
+msgstr "Vajalik on PIN kood"
+
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Mobiiliühenduse loomiseks on vaja PIN koodi."
+
+msgid "PIN: "
+msgstr "PIN: "
+
+msgid "Mobile broadband network password"
+msgstr "Mobiiliühenduse võrgu parool"
+
+#, c-format
+msgid "A password is required to connect to '%s'."
+msgstr "'%s' ühenduse loomiseks on vaja parooli."
 
 msgid "Undo"
 msgstr "Võta tagasi"
@@ -464,10 +650,10 @@ msgstr "Dokk"
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
 #, c-format
 msgid "Quit %s"
-msgstr "Lõpeta %s"
+msgstr "Sulge %s"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
 msgid "Activities"
 msgstr "Tegevused"
 
@@ -485,7 +671,7 @@ msgid "Connect to..."
 msgstr "Ühendumine..."
 
 msgid "PLACES & DEVICES"
-msgstr "Asukohad ja seadmed"
+msgstr "ASUKOHAD JA SEADMED"
 
 msgid "Authentication Required"
 msgstr "Vajalik on autentimine"
@@ -523,32 +709,20 @@ msgstr "Otsimine..."
 msgid "No matching results."
 msgstr "Tulemused puuduvad."
 
-msgid "Power Off..."
-msgstr "Lülita välja..."
+msgid "Copy"
+msgstr "Kopeeri"
 
-msgid "Suspend"
-msgstr "Uinak"
+msgid "Paste"
+msgstr "Aseta"
 
-msgid "Available"
-msgstr "Saadaval"
+msgid "Show Text"
+msgstr "Teksti näidatakse"
 
-msgid "Busy"
-msgstr "Hõivatud"
+msgid "Hide Text"
+msgstr "Tekst on peidetud"
 
-msgid "My Account"
-msgstr "Minu konto"
-
-msgid "System Settings"
-msgstr "Süsteemi sätted"
-
-msgid "Lock Screen"
-msgstr "Lukusta ekraan"
-
-msgid "Switch User"
-msgstr "Vaheta kasutajat"
-
-msgid "Log Out..."
-msgstr "Logi välja..."
+msgid "Wrong password, please try again"
+msgstr "Vale parool, palun proovi uuesti"
 
 msgid "Zoom"
 msgstr "Suurendus"
@@ -556,9 +730,9 @@ msgstr "Suurendus"
 #. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
 #. 'screen-reader-enabled');
 #. this.menu.addMenuItem(screenReader);
-#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-#. 'screen-keyboard-enabled');
-#. this.menu.addMenuItem(screenKeyboard);
+msgid "Screen Keyboard"
+msgstr "Ekraaniklaviatuur"
+
 msgid "Visual Alerts"
 msgstr "Visuaalsed märguanded"
 
@@ -592,14 +766,24 @@ msgstr "Nähtavus"
 msgid "Send Files to Device..."
 msgstr "Failide saatmine seadmesse..."
 
-msgid "Setup a New Device..."
+msgid "Set up a New Device..."
 msgstr "Uue seadme häälestamine..."
 
 msgid "Bluetooth Settings"
 msgstr "Bluetoothi sätted"
 
+#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
+msgid "hardware disabled"
+msgstr "riistvara on keelatud"
+
 msgid "Connection"
 msgstr "Ühendus"
+
+msgid "disconnecting..."
+msgstr "ühenduse katkestamine..."
+
+msgid "connecting..."
+msgstr "ühendumine..."
 
 msgid "Send Files..."
 msgstr "Failide saatmine..."
@@ -668,11 +852,11 @@ msgstr "Palun sisesta seadme poolt öeldav PIN-kood."
 msgid "OK"
 msgstr "Olgu"
 
-msgid "Show Keyboard Layout..."
-msgstr "Klaviatuuripaigutuse kuvamine..."
+msgid "Show Keyboard Layout"
+msgstr "Klaviatuuripaigutuse kuvamine"
 
-msgid "Localization Settings"
-msgstr "Lokaliseerimissätted"
+msgid "Region and Language Settings"
+msgstr "Asukoha ja keele sätted"
 
 msgid "<unknown>"
 msgstr "<tundmatu>"
@@ -681,8 +865,10 @@ msgstr "<tundmatu>"
 msgid "disabled"
 msgstr "keelatud"
 
-msgid "connecting..."
-msgstr "ühendumine..."
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu)
+msgid "unmanaged"
+msgstr "pole hallatud"
 
 #. Translators: this is for network connections that require some kind of key or password
 msgid "authentication required"
@@ -704,6 +890,9 @@ msgstr "pole saadaval"
 
 msgid "connection failed"
 msgstr "ühendumine nurjus"
+
+msgid "More..."
+msgstr "Veel..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
@@ -730,9 +919,6 @@ msgstr "Automaatne bluetooth"
 msgid "Auto wireless"
 msgstr "Automaatne juhtmeta ühendus"
 
-msgid "More..."
-msgstr "Veel..."
-
 msgid "Enable networking"
 msgstr "Luba võrguühendused"
 
@@ -751,28 +937,11 @@ msgstr "VPN-ühendused"
 msgid "Network Settings"
 msgstr "Võrgusätted"
 
-#, c-format
-msgid "You're now connected to mobile broadband connection '%s'"
-msgstr "Loodi mobiiliühendus '%s'"
+msgid "Connection failed"
+msgstr "Ühendus nurjus"
 
-#, c-format
-msgid "You're now connected to wireless network '%s'"
-msgstr "Loodi ühendus juhtmeta võrguga '%s'"
-
-#, c-format
-msgid "You're now connected to wired network '%s'"
-msgstr "Loodi ühendus juhtmega võrguga '%s'"
-
-#, c-format
-msgid "You're now connected to VPN network '%s'"
-msgstr "Loodi ühendus VPN-võrguga '%s'"
-
-#, c-format
-msgid "You're now connected to '%s'"
-msgstr "Loodi võrguühendus '%s' kaudu"
-
-msgid "Connection established"
-msgstr "Ühendus loodud"
+msgid "Activation of network connection failed"
+msgstr "Võrguühenduse aktiveerimine nurjus"
 
 msgid "Networking is disabled"
 msgstr "Võrguühendused on keelatud"
@@ -815,6 +984,11 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "jäänud %d minut"
 msgstr[1] "jäänud %d minutit"
 
+#, c-format
+msgctxt "percent of battery remaining"
+msgid "%d%%"
+msgstr "%d%%"
+
 msgid "AC adapter"
 msgstr "Võrgutoite adapter"
 
@@ -829,9 +1003,6 @@ msgstr "Monitor"
 
 msgid "Mouse"
 msgstr "Hiir"
-
-msgid "Keyboard"
-msgstr "Klaviatuur"
 
 msgid "PDA"
 msgstr "Elektronmärkmik"
@@ -848,14 +1019,31 @@ msgstr "Graafikalaud"
 msgid "Computer"
 msgstr "Arvuti"
 
-msgid "Unknown"
-msgstr "Tundmatu"
-
 msgid "Volume"
 msgstr "Helivaljus"
 
 msgid "Microphone"
 msgstr "Mikrofon"
+
+#. We got the TpContact
+#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
+#. system-users for now as Empathy does.
+msgid "Invitation"
+msgstr "Kutse"
+
+#. We got the TpContact
+msgid "Call"
+msgstr "Helista"
+
+#. We got the TpContact
+msgid "File Transfer"
+msgstr "Failiülekanne"
+
+msgid "Subscription request"
+msgstr "Tellimuse päring"
+
+msgid "Connection error"
+msgstr "Ühenduse viga"
 
 #, c-format
 msgid "%s is online."
@@ -877,8 +1065,204 @@ msgstr "%s on hõivatud."
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
 #, no-c-format
-msgid "Sent at %X on %A"
-msgstr "Saadetud: %a, kell %X"
+msgid "Sent at <b>%X</b> on <b>%A</b>"
+msgstr "Saadetud: <b>%A</b>, <b>%X</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25",
+#. shown when you get a chat message in the same year.
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+msgstr "Saadeti <b>%A</b>, <b>%B %d</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+#. shown when you get a chat message in a different year.
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr "Saadeti <b>%A</b>, <b>%B %d</b>, %Y"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s nimi on nüüd %s"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#, c-format
+msgid "Invitation to %s"
+msgstr "Kutse: %s"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "%s kutsub sind liituma: %s"
+
+msgid "Decline"
+msgstr "Keeldu"
+
+msgid "Accept"
+msgstr "Nõustu"
+
+#. translators: argument is a contact name like Alice for example.
+#, c-format
+msgid "Video call from %s"
+msgstr "%s tahab alustada videokõnet"
+
+#. translators: argument is a contact name like Alice for example.
+#, c-format
+msgid "Call from %s"
+msgstr "%s helistab"
+
+#. translators: this is a button label (verb), not a noun
+msgid "Answer"
+msgstr "Vasta"
+
+#. To translators: The first parameter is
+#. * the contact's alias and the second one is the
+#. * file name. The string will be something
+#. * like: "Alice is sending you test.ogg"
+#.
+#, c-format
+msgid "%s is sending you %s"
+msgstr "%s saadab sulle %s"
+
+#. To translators: The parameter is the contact's alias
+#, c-format
+msgid "%s would like permission to see when you are online"
+msgstr "%s palub sinu luba, et näha, kui sa oled võrgus"
+
+msgid "Network error"
+msgstr "Võrgu viga"
+
+msgid "Authentication failed"
+msgstr "Autentimine nurjus"
+
+msgid "Encryption error"
+msgstr "Krüptimise viga"
+
+msgid "Certificate not provided"
+msgstr "Sertifikaati pole"
+
+msgid "Certificate untrusted"
+msgstr "Sertifikaat pole usaldusväärne"
+
+msgid "Certificate expired"
+msgstr "Sertifikaat on aegunud"
+
+msgid "Certificate not activated"
+msgstr "Sertifikaat pole aktiivne"
+
+msgid "Certificate hostname mismatch"
+msgstr "Sertifikaadi hostinimi ei klapi"
+
+msgid "Certificate fingerprint mismatch"
+msgstr "Sertifikaadi sõrmejälg ei klapi"
+
+msgid "Certificate self-signed"
+msgstr "Sertifikaat on ise-allkirjastatud"
+
+msgid "Status is set to offline"
+msgstr "Oled nüüd ühenduseta olekus"
+
+msgid "Encryption is not available"
+msgstr "Krüpteering pole saadaval"
+
+msgid "Certificate is invalid"
+msgstr "Sertifikaat on vigane"
+
+msgid "Connection has been refused"
+msgstr "Ühendusest keelduti"
+
+msgid "Connection can't be established"
+msgstr "Ühendust pole võimalik luua"
+
+msgid "Connection has been lost"
+msgstr "Ühendus katkes"
+
+msgid "This resource is already connected to the server"
+msgstr "Selle kontoga on juba serverisse ühendutud"
+
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr "Ühendus on asendatud sama kontot kasutades uue ühendusega"
+
+msgid "The account already exists on the server"
+msgstr "See konto on serveris juba olemas"
+
+msgid "Server is currently too busy to handle the connection"
+msgstr "Server on praegu ühendusega toimetulekuks liiga hõivatud"
+
+msgid "Certificate has been revoked"
+msgstr "Sertifikaat on tühistatud"
+
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"Sertifikaat kasutab ebaturvalist šifrialgoritmini ning on nõrgalt krüptitud"
+
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"Serveri sertifikaadi pikkus ehk sertifikaatide keti sügavus ületab "
+"krüptograafiateegi määratud piiri"
+
+#. translators: argument is the account name, like
+#. * name@jabber.org for example.
+#, c-format
+msgid "Connection to %s failed"
+msgstr "Ühendus %s nurjus"
+
+msgid "Reconnect"
+msgstr "Ühendu uuesti"
+
+msgid "Edit account"
+msgstr "Konto muutmine"
+
+msgid "Unknown reason"
+msgstr "Põhjus teadmata"
+
+msgid "Hidden"
+msgstr "Nähtamatu"
+
+msgid "Idle"
+msgstr "Jõude"
+
+msgid "Unavailable"
+msgstr "Pole saadaval"
+
+msgid "Power Off..."
+msgstr "Lülita välja..."
+
+msgid "Notifications"
+msgstr "Märguanded"
+
+msgid "Online Accounts"
+msgstr "Netikontod"
+
+msgid "System Settings"
+msgstr "Süsteemi sätted"
+
+msgid "Lock Screen"
+msgstr "Lukusta ekraan"
+
+msgid "Switch User"
+msgstr "Vaheta kasutajat"
+
+msgid "Log Out..."
+msgstr "Logi välja..."
+
+msgid "Your chat status will be set to busy"
+msgstr "Sinu vestluse olekuks määratakse hõivatud"
+
+msgid ""
+"Notifications are now disabled, including chat messages. Your online status "
+"has been adjusted to let others know that you might not see their messages."
+msgstr ""
+"Märguanded on nüüd keelatud, sealhulgas vestlusteated. Sinu netiolekut "
+"muudeti, et teised teaksid, et sa ei pruugi nende teateid näha."
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -889,10 +1273,6 @@ msgstr "Otsing..."
 
 msgid "Search"
 msgstr "Otsing"
-
-#, c-format
-msgid "%s has finished starting"
-msgstr "%s läks käima"
 
 #, c-format
 msgid "'%s' is ready"
@@ -920,36 +1300,12 @@ msgstr "Süsteemi helid"
 msgid "Print version"
 msgstr "Printimise versioon"
 
+msgid "Mode used by GDM for login screen"
+msgstr "Sisselogimise kuval kasutatav GDM-i režiim"
+
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' käivitamine nurjus"
-
-msgid "Less than a minute ago"
-msgstr "Vähem kui minuti eest"
-
-#, c-format
-msgid "%d minute ago"
-msgid_plural "%d minutes ago"
-msgstr[0] "%d minut tagasi"
-msgstr[1] "%d minutit tagasi"
-
-#, c-format
-msgid "%d hour ago"
-msgid_plural "%d hours ago"
-msgstr[0] "%d tund tagasi"
-msgstr[1] "%d tundi tagasi"
-
-#, c-format
-msgid "%d day ago"
-msgid_plural "%d days ago"
-msgstr[0] "%d päev tagasi"
-msgstr[1] "%d päeva tagasi"
-
-#, c-format
-msgid "%d week ago"
-msgid_plural "%d weeks ago"
-msgstr[0] "%d nädal tagasi"
-msgstr[1] "%d nädalat tagasi"
 
 msgid "United Kingdom"
 msgstr "Suurbritannia"
@@ -960,8 +1316,10 @@ msgstr "Vaikimisi"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kasutaja katkestas autentimisdialoogi"
 
-msgid "Home Folder"
-msgstr "Kodukaust"
+#. Translators: this is the same string as the one found in
+#. * nautilus
+msgid "Home"
+msgstr "Kodukataloog"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
@@ -976,183 +1334,3 @@ msgstr "Failisüsteem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "Shut Down"
-#~ msgstr "Lülita välja"
-
-#~ msgid "Click Shut Down to quit these applications and shut down the system."
-#~ msgstr ""
-#~ "Nende rakenduste sulgemiseks ja süsteemi väljalülitamiseks klõpsa nupule "
-#~ "Logi välja."
-
-#~ msgid "The system will shut down automatically in %d seconds."
-#~ msgstr "%d sekundi pärast lülitub süsteem automaatselt välja."
-
-#~ msgid "Shutting down the system."
-#~ msgstr "Süsteemi väljalülitamine."
-
-#~ msgid "Confirm"
-#~ msgstr "Kinnita"
-
-#~ msgid "Panel"
-#~ msgstr "Paneel"
-
-#~ msgid "No such application"
-#~ msgstr "Sellist rakendust ei ole"
-
-#~ msgid "Screen Reader"
-#~ msgstr "Ekraanilugeja"
-
-#~ msgid "Screen Keyboard"
-#~ msgstr "Ekraaniklaviatuur"
-
-#~ msgid "Clip the crosshairs at the center"
-#~ msgstr "Niitristi keskel on auk"
-
-#~ msgid "Color of the crosshairs"
-#~ msgstr "Niitristi värvus"
-
-#~ msgid ""
-#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
-#~ "transparent."
-#~ msgstr ""
-#~ "Määrab niitristi läbipaistvuse, alates täiesti läbipaistmatust kuni "
-#~ "täiesti läbipaistvani."
-
-#~ msgid ""
-#~ "Determines whether the crosshairs intersect the magnified mouse sprite, "
-#~ "or are clipped such that the ends of the horizontal and vertical lines "
-#~ "surround the mouse image."
-#~ msgstr ""
-#~ "Määrab, kas niitrist kattub suurendatud hiire pildiga või on keskelt ära "
-#~ "lõigatud nii, et jooned ümbritsevad hiirekursori pilti."
-
-#~ msgid "Enable lens mode"
-#~ msgstr "Läätsede režiimi lubamine"
-
-#~ msgid ""
-#~ "Enables/disables display of crosshairs centered on the magnified mouse "
-#~ "sprite."
-#~ msgstr "Lubab/keelab niitristi kuvamise suurendatud hiirekursori kohal."
-
-#~ msgid "Length of the crosshairs"
-#~ msgstr "Niitristi pikkus"
-
-#~ msgid "Magnification factor"
-#~ msgstr "Suurendustegur"
-
-#~ msgid "Mouse Tracking Mode"
-#~ msgstr "Hiire jälitamise režiim"
-
-#~ msgid "Opacity of the crosshairs"
-#~ msgstr "Niitristi läbipaistvus"
-
-#~ msgid "Screen position"
-#~ msgstr "Ekraani asukoht"
-
-#~ msgid "Scroll magnified contents beyond the edges of the desktop"
-#~ msgstr "Suurendusklaas võib liikuda töölauapiiridest väljapoole"
-
-#~ msgid "Show or hide crosshairs"
-#~ msgstr "Niitristi kuvamine või peitmine"
-
-#~ msgid "Show or hide the magnifier"
-#~ msgstr "Suurendusklaasi kuvamine või peitmine"
-
-#~ msgid "Show or hide the magnifier and all of its zoom regions."
-#~ msgstr ""
-#~ "Suurendusklaasi ja selle kõigi suurenduspiirkondade kuvamine või peitmine."
-
-#~ msgid ""
-#~ "The color of the the vertical and horizontal lines that make up the "
-#~ "crosshairs."
-#~ msgstr "Niitristi püst- ja rõhtjoone värvus."
-
-#~ msgid ""
-#~ "The magnified view either fills the entire screen, or occupies the top-"
-#~ "half, bottom-half, left-half, or right-half of the screen."
-#~ msgstr ""
-#~ "Suurendatud vaade täidab kas kogu ekraani või täidab ülemise, alumise, "
-#~ "vasaku või parema ekraanipoole."
-
-#~ msgid ""
-#~ "The power of the magnification. A value of 1.0 means no magnification. A "
-#~ "value of 2.0 doubles the size."
-#~ msgstr ""
-#~ "Suurendustegur. 1,0 tähendab originaalsuurust. 2,0 muudab kaks korda."
-
-#~ msgid "Thickness of the crosshairs"
-#~ msgstr "Niitristi paksus"
-
-#~ msgid ""
-#~ "Whether the magnified view should be centered over the location of the "
-#~ "system mouse and move with it."
-#~ msgstr ""
-#~ "Kas suurendatud vaate keskkoht peaks asetsema süsteemi hiire kohal ning "
-#~ "liikuma sellega kaasa."
-
-#~ msgid ""
-#~ "Width of the vertical and horizontal lines that make up the crosshairs."
-#~ msgstr "Niitristi moodustavate püst- ja rõhtjoone laius"
-
-#~ msgid "PREFERENCES"
-#~ msgstr "Eelistused"
-
-#~ msgid "Shut Down..."
-#~ msgstr "Lülita välja..."
-
-#~ msgid "Bluetooth Agent"
-#~ msgstr "Bluetoothi agent"
-
-#~ msgid ""
-#~ "Can't add a new workspace because maximum workspaces limit has been "
-#~ "reached."
-#~ msgstr "Pole võimalik uut tööala lisada, kuna tööalade piir on saavutatud."
-
-#~ msgid "Can't remove the first workspace."
-#~ msgstr "Esimest tööala pole võimalik eemaldada."
-
-#~ msgid "Clock"
-#~ msgstr "Kell"
-
-#~ msgid "Customize the panel clock"
-#~ msgstr "Paneelikella kohandamine"
-
-#~ msgid "Custom format of the clock"
-#~ msgstr "Kellaaaja kohandatud vorming"
-
-#~ msgid "Hour format"
-#~ msgstr "Tundide vorming"
-
-#~ msgid "Clock Format"
-#~ msgstr "Kellaaja vorming"
-
-#~ msgid "Clock Preferences"
-#~ msgstr "Kella eelistused"
-
-#~ msgid "Panel Display"
-#~ msgstr "Paneelikuva"
-
-#~ msgid "Show seco_nds"
-#~ msgstr "_Sekundeid näidatakse"
-
-#~ msgid "Show the _date"
-#~ msgstr "_Kuupäeva näidatakse"
-
-#~ msgid "_12 hour format"
-#~ msgstr "_12 tunni vorming"
-
-#~ msgid "_24 hour format"
-#~ msgstr "_24 tunni vorming"
-
-#~ msgid "Preferences"
-#~ msgstr "Eelistused"
-
-#~ msgid "Drag here to add favorites"
-#~ msgstr "Lemmikute lisamiseks lohista need siia"
-
-#~ msgid "Find"
-#~ msgstr "Otsi"
-
-#~ msgid "Invisible"
-#~ msgstr "Nähtamatu"
