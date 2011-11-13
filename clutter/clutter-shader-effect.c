@@ -380,7 +380,7 @@ clutter_shader_effect_try_static_source (ClutterShaderEffect *self)
             {
               gchar *log_buf = cogl_shader_get_info_log (class_priv->shader);
 
-              g_warning ("Unable to compile the GLSL shader: %s", log_buf);
+              g_warning (G_STRLOC ": Unable to compile the GLSL shader: %s", log_buf);
               g_free (log_buf);
             }
         }
@@ -916,7 +916,7 @@ clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,
     {
       gchar *log_buf = cogl_shader_get_info_log (priv->shader);
 
-      g_warning ("Unable to compile the GLSL shader: %s", log_buf);
+      g_warning (G_STRLOC ": Unable to compile the GLSL shader: %s", log_buf);
       g_free (log_buf);
     }
 
