@@ -1517,6 +1517,7 @@ clutter_stage_constructed (GObject *gobject)
 
   stage_manager = clutter_stage_manager_get_default ();
 
+  /* this will take care to sinking the floating reference */
   _clutter_stage_manager_add_stage (stage_manager, self);
 
   /* if this stage has been created on a backend that does not
@@ -1530,19 +1531,12 @@ clutter_stage_constructed (GObject *gobject)
         {
           g_error ("Unable to create another stage: the backend of "
                    "type '%s' does not support multiple stages. Use "
-                   "clutter_stage_get_default() instead to access the "
-                   "stage singleton.",
+                   "clutter_stage_manager_get_default_stage() instead "
+                   "to access the stage singleton.",
                    G_OBJECT_TYPE_NAME (clutter_get_default_backend ()));
         }
 
-      /* This will take care of automatically adding the stage to the
-       * stage manager and setting it as the default. Its floating
-       * reference will be claimed by the stage manager.
-       */
       _clutter_stage_manager_set_default_stage (stage_manager, self);
-
-      /* the default stage is realized by default */
-      clutter_actor_realize (CLUTTER_ACTOR (self));
     }
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->constructed (gobject);
@@ -1698,6 +1692,10 @@ clutter_stage_dispose (GObject *object)
 
   clutter_actor_hide (CLUTTER_ACTOR (object));
 
+  /* remove_stage() will unref() the stage instance, so we need to
+   * add a reference here to keep it temporarily alive
+   */
+  g_object_ref (object);
   stage_manager = clutter_stage_manager_get_default ();
   _clutter_stage_manager_remove_stage (stage_manager, stage);
 
@@ -2088,10 +2086,10 @@ clutter_stage_notify_min_size (ClutterStage *self)
 static void
 clutter_stage_init (ClutterStage *self)
 {
+  cairo_rectangle_int_t geom = { 0, };
   ClutterStagePrivate *priv;
   ClutterStageWindow *impl;
   ClutterBackend *backend;
-  cairo_rectangle_int_t geom;
   GError *error;
 
   /* a stage is a top-level object */
@@ -2104,7 +2102,13 @@ clutter_stage_init (ClutterStage *self)
 
   error = NULL;
   impl = _clutter_backend_create_stage (backend, self, &error);
-  if (G_UNLIKELY (impl == NULL))
+
+  if (G_LIKELY (impl != NULL))
+    {
+      _clutter_stage_set_window (self, impl);
+      _clutter_stage_window_get_geometry (priv->impl, &geom);
+    }
+  else
     {
       if (error != NULL)
         {
@@ -2115,8 +2119,6 @@ clutter_stage_init (ClutterStage *self)
       else
         g_critical ("Unable to create a new stage implementation.");
     }
-
-  _clutter_stage_set_window (self, impl);
 
   priv->event_queue = g_queue_new ();
 
@@ -2137,10 +2139,8 @@ clutter_stage_init (ClutterStage *self)
 
   priv->color = default_stage_color;
 
-  _clutter_stage_window_get_geometry (priv->impl, &geom);
-
   priv->perspective.fovy   = 60.0; /* 60 Degrees */
-  priv->perspective.aspect = (float)geom.width / (float)geom.height;
+  priv->perspective.aspect = (float) geom.width / (float) geom.height;
   priv->perspective.z_near = 0.1;
   priv->perspective.z_far  = 100.0;
 
@@ -3552,9 +3552,14 @@ _clutter_stage_get_window (ClutterStage *stage)
 ClutterStageWindow *
 _clutter_stage_get_default_window (void)
 {
-  ClutterActor *stage = clutter_stage_get_default ();
+  ClutterStageManager *manager = clutter_stage_manager_get_default ();
+  ClutterStage *stage;
 
-  return _clutter_stage_get_window (CLUTTER_STAGE (stage));
+  stage = clutter_stage_manager_get_default_stage (manager);
+  if (stage == NULL)
+    return NULL;
+
+  return _clutter_stage_get_window (stage);
 }
 
 /**
