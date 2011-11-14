@@ -82,24 +82,6 @@ _clutter_backend_win32_get_invisible_cursor (ClutterBackend *backend)
   return backend_win32->invisible_cursor;
 }
 
-static const GOptionEntry entries[] =
-  {
-    {
-      "vblank", 0, 
-      0, 
-      G_OPTION_ARG_STRING, &clutter_vblank_name,
-      "VBlank method to be used (none, default or wgl)", "METHOD" 
-    },
-    { NULL }
-  };
-
-void
-clutter_backend_win32_add_options (ClutterBackend *backend,
-				   GOptionGroup   *group)
-{
-  g_option_group_add_entries (group, entries);
-}
-
 static void
 clutter_backend_win32_finalize (GObject *gobject)
 {
@@ -206,7 +188,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   backend_class->stage_window_type = CLUTTER_TYPE_STAGE_WIN32;
 
   backend_class->init_events = clutter_backend_win32_init_events;
-  backend_class->add_options = clutter_backend_win32_add_options;
   backend_class->get_features = clutter_backend_win32_get_features;
 }
 
