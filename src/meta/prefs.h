@@ -268,7 +268,7 @@ void meta_prefs_get_window_binding (const char          *name,
 
 void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
 
-gboolean           meta_prefs_get_visible_bell     (void);
+gboolean           meta_prefs_get_visual_bell      (void);
 gboolean           meta_prefs_bell_is_audible      (void);
 GDesktopVisualBellType meta_prefs_get_visual_bell_type (void);
 
