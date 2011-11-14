@@ -40,6 +40,7 @@
 #include "clutter-layout-manager.h"
 #include "clutter-master-clock.h"
 #include "clutter-settings.h"
+#include "clutter-stage-manager.h"
 #include "clutter-stage.h"
 
 G_BEGIN_DECLS
@@ -123,6 +124,9 @@ struct _ClutterMainContext
 {
   /* the main windowing system backend */
   ClutterBackend *backend;
+
+  /* the object holding all the stage instances */
+  ClutterStageManager *stage_manager;
 
   /* the main event queue */
   GQueue *events_queue;
