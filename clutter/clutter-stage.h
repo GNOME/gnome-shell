@@ -192,7 +192,6 @@ void                  clutter_stage_set_key_focus      (ClutterStage *stage,
                                                         ClutterActor *actor);
 ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
 void                  clutter_stage_ensure_current     (ClutterStage *stage);
-void                  clutter_stage_queue_redraw       (ClutterStage *stage);
 void                  clutter_stage_ensure_viewport    (ClutterStage *stage);
 void                  clutter_stage_ensure_redraw      (ClutterStage *stage);
 

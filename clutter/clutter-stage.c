@@ -3493,10 +3493,9 @@ clutter_stage_ensure_redraw (ClutterStage *stage)
  * <note>Applications should call clutter_actor_queue_redraw() and not
  * this function.</note>
  *
- * <note>This function is just a wrapper for clutter_actor_queue_redraw()
- * and should probably go away.</note>
- *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Use clutter_actor_queue_redraw() instead.
  */
 void
 clutter_stage_queue_redraw (ClutterStage *stage)
