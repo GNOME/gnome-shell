@@ -128,6 +128,9 @@ struct _ClutterMainContext
   /* the object holding all the stage instances */
   ClutterStageManager *stage_manager;
 
+  /* the clock driving all the frame operations */
+  ClutterMasterClock *master_clock;
+
   /* the main event queue */
   GQueue *events_queue;
 
