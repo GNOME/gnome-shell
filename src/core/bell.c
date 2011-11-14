@@ -283,9 +283,6 @@ bell_visual_notify (MetaDisplay *display,
     case G_DESKTOP_VISUAL_BELL_FRAME_FLASH:
       bell_flash_frame (display, xkb_ev); /* does nothing yet */
       break;
-    case G_DESKTOP_VISUAL_BELL_NONE:
-      /* do nothing */
-      break;
     }
 }
 
@@ -293,8 +290,9 @@ void
 meta_bell_notify (MetaDisplay *display, 
 		  XkbAnyEvent *xkb_ev)
 {
-  /* flash something if appropriate */
-  bell_visual_notify (display, xkb_ev);
+  /* flash something */
+  if (meta_prefs_get_visual_bell ())
+    bell_visual_notify (display, xkb_ev);
 
 #ifdef HAVE_LIBCANBERRA
   if (meta_prefs_bell_is_audible ())
