@@ -133,14 +133,14 @@ const SearchTab = new Lang.Class({
         this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
         this._text.connect('key-press-event', Lang.bind(this, function (o, e) {
             // We can't connect to 'activate' here because search providers
-            // might want to do something with the modifiers in activateSelected.
+            // might want to do something with the modifiers in activateDefault.
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 if (this._searchTimeoutId > 0) {
                     Mainloop.source_remove(this._searchTimeoutId);
                     this._doSearch();
                 }
-                this._searchResults.activateSelected();
+                this._searchResults.activateDefault();
                 return true;
             }
             return false;
@@ -151,6 +151,13 @@ const SearchTab = new Lang.Class({
         global.stage.connect('notify::key-focus', Lang.bind(this, this._updateCursorVisibility));
 
         this._capturedEventId = 0;
+
+        this._text.connect('key-focus-in', Lang.bind(this, function() {
+            this._searchResults.highlightDefault(true);
+        }));
+        this._text.connect('key-focus-out', Lang.bind(this, function() {
+            this._searchResults.highlightDefault(false);
+        }));
 
         // Since the entry isn't inside the results container we install this
         // dummy widget as the last results container child so that we can
@@ -271,30 +278,18 @@ const SearchTab = new Lang.Class({
 
     _onKeyPress: function(entry, event) {
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.Up) {
-            if (!this.active)
-                return true;
-            this._searchResults.selectUp(false);
-
-            return true;
-        } else if (symbol == Clutter.Down) {
-            if (!this.active)
-                return true;
-
-            this._searchResults.selectDown(false);
-            return true;
-        } else if (symbol == Clutter.Escape) {
+        if (symbol == Clutter.Escape) {
             if (this._isActivated()) {
                 this._reset();
                 return true;
             }
         } else if (this.active) {
             if (symbol == Clutter.Tab) {
-                this._searchResults.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+                this._searchResults.navigateFocus(Gtk.DirectionType.TAB_FORWARD);
                 return true;
             } else if (symbol == Clutter.ISO_Left_Tab) {
                 this._focusTrap.can_focus = false;
-                this._searchResults.actor.navigate_focus(null, Gtk.DirectionType.TAB_BACKWARD, false);
+                this._searchResults.navigateFocus(Gtk.DirectionType.TAB_BACKWARD);
                 this._focusTrap.can_focus = true;
                 return true;
             }

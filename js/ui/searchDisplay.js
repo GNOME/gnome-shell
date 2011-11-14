@@ -190,6 +190,13 @@ const GridSearchResults = new Lang.Class({
             return;
         let targetActor = this._grid.getItemAtIndex(this.selectionIndex);
         targetActor._delegate.activate();
+    },
+
+    getFirstResult: function() {
+        if (this.getVisibleResultCount() > 0)
+            return this._grid.getItemAtIndex(0)._delegate;
+        else
+            return null;
     }
 });
 
@@ -245,6 +252,9 @@ const SearchResults = new Lang.Class({
         this._openSearchProviders = [];
         this._openSearchSystem.connect('changed', Lang.bind(this, this._updateOpenSearchProviderButtons));
         this._updateOpenSearchProviderButtons();
+
+        this._highlightDefault = false;
+        this._defaultResult = null;
     },
 
     _updateOpenSearchProviderButtons: function() {
@@ -283,6 +293,16 @@ const SearchResults = new Lang.Class({
         bin.set_child(title);
         button.set_child(bin);
         provider.actor = button;
+
+        button.setSelected = function(selected) {
+            if (selected)
+                button.add_style_pseudo_class('selected');
+            else
+                button.remove_style_pseudo_class('selected');
+        };
+        button.activate = Lang.bind(this, function() {
+            this._openSearchSystem.activateResult(provider.id);
+        });
 
         this._searchProvidersBox.add(button);
     },
@@ -364,17 +384,31 @@ const SearchResults = new Lang.Class({
         if (this._selectedOpenSearchButton > -1 || this._selectedProvider > -1)
             return;
 
+        let newDefaultResult = null;
+
         for (let i = 0; i < this._providerMeta.length; i++) {
             let meta = this._providerMeta[i];
             if (meta.hasPendingResults)
                 return;
 
-            if (meta.actor.visible)
+            let firstResult = meta.resultDisplay.getFirstResult();
+            if (firstResult && firstResult.actor.visible) {
+                newDefaultResult = firstResult;
                 break; // select this one!
+            }
         }
 
-        this.selectDown(false);
-        this._initialSelectionSet = true;
+        if (!newDefaultResult)
+            newDefaultResult = this._searchProvidersBox.get_first_child();
+
+        if (newDefaultResult != this._defaultResult) {
+            if (this._defaultResult)
+                this._defaultResult.setSelected(false);
+            if (newDefaultResult)
+                newDefaultResult.setSelected(this._highlightDefault);
+
+            this._defaultResult = newDefaultResult;
+        }
     },
 
     _updateCurrentResults: function(searchSystem, results) {
@@ -428,11 +462,9 @@ const SearchResults = new Lang.Class({
         let terms = searchSystem.getTerms();
         this._openSearchSystem.setSearchTerms(terms);
 
-        // To avoid CSS transitions causing flickering
-        // of the selection when the first search result
-        // stays the same, we hide the content while
-        // filling in the results and setting the initial
-        // selection.
+        // To avoid CSS transitions causing flickering when the first search
+        // result stays the same, we hide the content while filling in the
+        // results.
         this._content.hide();
 
         for (let i = 0; i < results.length; i++) {
@@ -535,5 +567,27 @@ const SearchResults = new Lang.Class({
         let resultDisplay = meta.resultDisplay;
         resultDisplay.activateSelected();
         Main.overview.hide();
+    },
+
+    activateDefault: function() {
+        if (this._defaultResult && this._defaultResult.actor.visible)
+            this._defaultResult.activate();
+    },
+
+    highlightDefault: function(highlight) {
+        this._highlightDefault = highlight;
+        if (this._defaultResult)
+            this._defaultResult.setSelected(highlight);
+    },
+
+    navigateFocus: function(direction) {
+        if (direction == Gtk.DirectionType.TAB_FORWARD && this._defaultResult) {
+            // The default result appears focused, so navigate directly to the
+            // next result.
+            this.actor.navigate_focus(null, direction, false);
+            this.actor.navigate_focus(global.stage.key_focus, direction, false);
+        } else {
+            this.actor.navigate_focus(null, direction, false);
+        }
     }
 });
