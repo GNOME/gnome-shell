@@ -38,8 +38,6 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
-#include "clutter-event-loop-osx.h"
-
 #define WHEEL_DELTA 1
 
 /*************************************************************************/
@@ -490,16 +488,4 @@ _clutter_event_osx_put (NSEvent      *nsevent,
     }
   else
     clutter_event_free (event);
-}
-
-void
-_clutter_events_osx_init (void)
-{
-  _clutter_osx_event_loop_init ();
-}
-
-void
-_clutter_events_osx_uninit (void)
-{
-  g_assert_not_reached ();
 }

@@ -73,8 +73,24 @@ test_color_hls_roundtrip (TestConformSimpleFixture *fixture,
 }
 
 void
-test_color_from_string (TestConformSimpleFixture *fixture,
-                        gconstpointer data)
+test_color_from_string_invalid (TestConformSimpleFixture *fixture,
+                                gconstpointer data)
+{
+  ClutterColor color;
+
+  g_assert (!clutter_color_from_string (&color, "ff0000ff"));
+  g_assert (!clutter_color_from_string (&color, "#decaffbad"));
+  g_assert (!clutter_color_from_string (&color, "ponies"));
+  g_assert (!clutter_color_from_string (&color, "rgb(255, 0, 0, 0)"));
+  g_assert (!clutter_color_from_string (&color, "rgba(1.0, 0, 0)"));
+  g_assert (!clutter_color_from_string (&color, "hsl(100, 0, 0)"));
+  g_assert (!clutter_color_from_string (&color, "hsla(10%, 0%, 50%)"));
+  g_assert (!clutter_color_from_string (&color, "hsla(100%, 0%, 50%, 20%)"));
+}
+
+void
+test_color_from_string_valid (TestConformSimpleFixture *fixture,
+                              gconstpointer data)
 {
   ClutterColor color;
 
@@ -205,6 +221,20 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert_cmpint (color.green, ==, 0);
   g_assert_cmpint (color.blue, ==, 0);
   g_assert_cmpint (color.alpha, ==, 255);
+
+  g_assert (clutter_color_from_string (&color, "hsla( 0, 100%, 50%, 0.5 )"));
+  if (g_test_verbose ())
+    {
+      g_print ("color = { %x, %x, %x, %x }, expected = { 255, 0, 0, 127 }\n",
+               color.red,
+               color.green,
+               color.blue,
+               color.alpha);
+    }
+  g_assert_cmpint (color.red, ==, 255);
+  g_assert_cmpint (color.green, ==, 0);
+  g_assert_cmpint (color.blue, ==, 0);
+  g_assert_cmpint (color.alpha, ==, 127);
 }
 
 void

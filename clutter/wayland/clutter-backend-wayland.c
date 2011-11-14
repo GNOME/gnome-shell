@@ -485,12 +485,6 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
 }
 
 static void
-clutter_backend_wayland_ensure_context (ClutterBackend *backend,
-					ClutterStage   *stage)
-{
-}
-
-static void
 clutter_backend_wayland_redraw (ClutterBackend *backend,
 				ClutterStage   *stage)
 {
@@ -503,11 +497,6 @@ clutter_backend_wayland_redraw (ClutterBackend *backend,
   g_assert (CLUTTER_IS_STAGE_WAYLAND (impl));
 
   _clutter_stage_wayland_redraw (CLUTTER_STAGE_WAYLAND (impl), stage);
-}
-
-static void
-clutter_backend_wayland_init_events (ClutterBackend *backend)
-{
 }
 
 static void
@@ -603,24 +592,6 @@ clutter_backend_wayland_get_features (ClutterBackend *backend)
   return flags;
 }
 
-static ClutterStageWindow *
-clutter_backend_wayland_create_stage (ClutterBackend  *backend,
-				      ClutterStage    *wrapper,
-				      GError         **error)
-{
-  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  ClutterStageWindow *stage;
-  ClutterStageWayland *stage_wayland;
-
-  stage = g_object_new (CLUTTER_TYPE_STAGE_WAYLAND, NULL);
-
-  stage_wayland = CLUTTER_STAGE_WAYLAND (stage);
-  stage_wayland->backend = backend_wayland;
-  stage_wayland->wrapper = wrapper;
-
-  return stage;
-}
-
 static void
 _clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
 {
@@ -631,13 +602,12 @@ _clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
   gobject_class->dispose     = clutter_backend_wayland_dispose;
   gobject_class->finalize    = clutter_backend_wayland_finalize;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_WAYLAND;
+
   backend_class->pre_parse        = clutter_backend_wayland_pre_parse;
   backend_class->post_parse       = clutter_backend_wayland_post_parse;
   backend_class->get_features     = clutter_backend_wayland_get_features;
-  backend_class->init_events      = clutter_backend_wayland_init_events;
-  backend_class->create_stage     = clutter_backend_wayland_create_stage;
   backend_class->create_context   = clutter_backend_wayland_create_context;
-  backend_class->ensure_context   = clutter_backend_wayland_ensure_context;
   backend_class->redraw           = clutter_backend_wayland_redraw;
 }
 

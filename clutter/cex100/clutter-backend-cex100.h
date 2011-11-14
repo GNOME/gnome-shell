@@ -23,8 +23,8 @@
  *  Robert Bragg
  */
 
-#ifndef __CLUTTER_BACKEND_EGL_NATIVE_H__
-#define __CLUTTER_BACKEND_EGL_NATIVE_H__
+#ifndef __CLUTTER_BACKEND_CEX100_H__
+#define __CLUTTER_BACKEND_CEX100_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
@@ -35,17 +35,17 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_EGL_NATIVE                (_clutter_backend_egl_native_get_type ())
-#define CLUTTER_BACKEND_EGL_NATIVE(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_EGL_NATIVE, ClutterBackendEglNative))
-#define CLUTTER_IS_BACKEND_EGL_NATIVE(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_EGL_NATIVE))
-#define CLUTTER_BACKEND_EGL_NATIVE_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_EGL_NATIVE, ClutterBackendEglNativeClass))
-#define CLUTTER_IS_BACKEND_EGL_NATIVE_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND_EGL_NATIVE))
-#define CLUTTER_BACKEND_EGL_NATIVE_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_EGL_NATIVE, ClutterBackendEglNativeClass))
+#define CLUTTER_TYPE_BACKEND_CEX100                (_clutter_backend_cex100_get_type ())
+#define CLUTTER_BACKEND_CEX100(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_CEX100, ClutterBackendCex100))
+#define CLUTTER_IS_BACKEND_CEX100(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_CEX100))
+#define CLUTTER_BACKEND_CEX100_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_CEX100, ClutterBackendCex100Class))
+#define CLUTTER_IS_BACKEND_CEX100_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND_CEX100))
+#define CLUTTER_BACKEND_CEX100_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_CEX100, ClutterBackendCex100Class))
 
-typedef struct _ClutterBackendEglNative       ClutterBackendEglNative;
-typedef struct _ClutterBackendEglNativeClass  ClutterBackendEglNativeClass;
+typedef struct _ClutterBackendCex100       ClutterBackendCex100;
+typedef struct _ClutterBackendCex100Class  ClutterBackendCex100Class;
 
-struct _ClutterBackendEglNative
+struct _ClutterBackendCex100
 {
   ClutterBackend parent_instance;
 
@@ -59,13 +59,13 @@ struct _ClutterBackendEglNative
   GTimer *event_timer;
 };
 
-struct _ClutterBackendEglNativeClass
+struct _ClutterBackendCex100Class
 {
   ClutterBackendClass parent_class;
 };
 
-GType _clutter_backend_egl_native_get_type (void) G_GNUC_CONST;
+GType _clutter_backend_cex100_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __CLUTTER_BACKEND_EGL_NATIVE_H__ */
+#endif /* __CLUTTER_BACKEND_CEX100_H__ */

@@ -182,7 +182,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/model", test_list_model_from_script);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_row_changed);
 
-  TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
+  TEST_CONFORM_SIMPLE ("/color", test_color_from_string_valid);
+  TEST_CONFORM_SIMPLE ("/color", test_color_from_string_invalid);
   TEST_CONFORM_SIMPLE ("/color", test_color_to_string);
   TEST_CONFORM_SIMPLE ("/color", test_color_hls_roundtrip);
   TEST_CONFORM_SIMPLE ("/color", test_color_operators);

@@ -847,20 +847,14 @@ clutter_device_manager_evdev_init (ClutterDeviceManagerEvdev *self)
   self->priv = CLUTTER_DEVICE_MANAGER_EVDEV_GET_PRIVATE (self);
 }
 
-/*
- * _clutter_events_evdev_init() and _clutter_events_evdev_uninit() are the two
- * symbol to use the evdev event backend from the EGL backend
- */
-
 void
 _clutter_events_evdev_init (ClutterBackend *backend)
 {
-  ClutterDeviceManager *dummy G_GNUC_UNUSED;
-
   CLUTTER_NOTE (EVENT, "Initializing evdev backend");
 
-  /* we need to create the device manager here */
-  dummy = clutter_device_manager_get_default ();
+  backend->device_manager = g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_EVDEV,
+                                          "backend", backend,
+                                          NULL);
 }
 
 void

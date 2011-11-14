@@ -49,10 +49,6 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TSLIB_INPUT_BACKEND     "tslib"
-#define CLUTTER_EVDEV_INPUT_BACKEND     "evdev"
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 /**
  * clutter_eglx_display:
  *
@@ -79,7 +75,6 @@ EGLDisplay      clutter_eglx_display            (void);
  */
 CLUTTER_DEPRECATED_FOR(clutter_egl_get_egl_display)
 EGLDisplay      clutter_egl_display             (void);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 /**
  * clutter_egl_get_egl_display:

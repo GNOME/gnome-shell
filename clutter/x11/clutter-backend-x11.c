@@ -70,7 +70,7 @@
 
 #define clutter_backend_x11_get_type    _clutter_backend_x11_get_type
 
-G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND_COGL);
+G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
 
 /* atoms; remember to add the code that assigns the atom value to
  * the member of the ClutterBackendX11 structure if you add an
@@ -277,6 +277,8 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
         }
 
       backend = CLUTTER_BACKEND (backend_x11);
+      backend->device_manager = backend_x11->device_manager;
+
       translator = CLUTTER_EVENT_TRANSLATOR (backend_x11->device_manager);
       _clutter_backend_add_event_translator (backend, translator);
     }
@@ -331,8 +333,7 @@ _clutter_backend_x11_pre_parse (ClutterBackend  *backend,
       env_string = NULL;
     }
 
-  return CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->pre_parse (backend,
-									      error);
+  return TRUE;
 }
 
 gboolean
@@ -411,12 +412,6 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
   g_object_set (settings, "font-dpi", (int) dpi * 1024, NULL);
 
-  /* create the device manager */
-  clutter_backend_x11_create_device_manager (backend_x11);
-
-  /* register keymap */
-  clutter_backend_x11_create_keymap (backend_x11);
-
   /* create XSETTINGS client */
   backend_x11->xsettings =
     _clutter_xsettings_client_new (backend_x11->xdpy,
@@ -457,18 +452,49 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
                 (unsigned int) backend_x11->xwin_root,
                 clutter_backend_get_resolution (backend));
 
-  return CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class)->post_parse (backend,
-									       error);
+  return TRUE;
 }
 
-
-static void
-clutter_backend_x11_init_events (ClutterBackend *backend)
+void
+_clutter_backend_x11_events_init (ClutterBackend *backend)
 {
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
+  /* the event source is optional */
   if (!_no_xevent_retrieval)
-    _clutter_backend_x11_events_init (backend);
+    {
+      GSource *source;
+
+      source = _clutter_x11_event_source_new (backend_x11);
+
+      /* default priority for events
+       *
+       * XXX - at some point we'll have a common EventSource API that
+       * is created by the backend, and this code will most likely go
+       * into the default implementation of ClutterBackend
+       */
+      g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
+
+      /* attach the source to the default context, and transfer the
+       * ownership to the GMainContext itself
+       */
+      g_source_attach (source, NULL);
+      g_source_unref (source);
+
+      backend_x11->event_source = source;
+    }
+
+  /* create the device manager; we need this because we can effectively
+   * choose between core+XI1 and XI2 input events
+   */
+  clutter_backend_x11_create_device_manager (backend_x11);
+
+  /* register keymap; unless we create a generic Keymap object, I'm
+   * afraid this will have to stay
+   */
+  clutter_backend_x11_create_keymap (backend_x11);
 }
 
 static const GOptionEntry entries[] =
@@ -528,17 +554,6 @@ clutter_backend_x11_finalize (GObject *gobject)
 static void
 clutter_backend_x11_dispose (GObject *gobject)
 {
-  ClutterBackendX11   *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
-  ClutterStageManager *stage_manager;
-
-  CLUTTER_NOTE (BACKEND, "Disposing the of stages");
-  stage_manager = clutter_stage_manager_get_default ();
-
-  g_object_unref (stage_manager);
-
-  CLUTTER_NOTE (BACKEND, "Removing the event source");
-  _clutter_backend_x11_events_uninit (CLUTTER_BACKEND (backend_x11));
-
   G_OBJECT_CLASS (clutter_backend_x11_parent_class)->dispose (gobject);
 }
 
@@ -574,16 +589,6 @@ clutter_backend_x11_free_event_data (ClutterBackend *backend,
   event_x11 = _clutter_event_get_platform_data (event);
   if (event_x11 != NULL)
     _clutter_event_x11_free (event_x11);
-}
-
-static ClutterDeviceManager *
-clutter_backend_x11_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
-  clutter_backend_x11_create_device_manager (backend_x11);
-
-  return backend_x11->device_manager;
 }
 
 static void
@@ -680,40 +685,46 @@ clutter_backend_x11_translate_event (ClutterBackend *backend,
   return parent_class->translate_event (backend, native, event);
 }
 
-static gboolean
-clutter_backend_x11_create_context (ClutterBackend  *backend,
-				    GError         **error)
+static CoglRenderer *
+clutter_backend_x11_get_renderer (ClutterBackend  *backend,
+                                  GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  CoglOnscreenTemplate *onscreen_template = NULL;
-  CoglSwapChain *swap_chain = NULL;
+  Display *xdisplay = backend_x11->xdpy;
+  CoglRenderer *renderer;
+
+  CLUTTER_NOTE (BACKEND, "Creating a new Xlib renderer");
+
+  renderer = cogl_renderer_new ();
+
+  /* set the display object we're using */
+  cogl_xlib_renderer_set_foreign_display (renderer, xdisplay);
+
+  return renderer;
+}
+
+static CoglDisplay *
+clutter_backend_x11_get_display (ClutterBackend  *backend,
+                                 CoglRenderer    *renderer,
+                                 CoglSwapChain   *swap_chain,
+                                 GError         **error)
+{
+  CoglOnscreenTemplate *onscreen_template;
   GError *internal_error = NULL;
-  gboolean status;
+  CoglDisplay *display;
+  gboolean res;
 
-  if (backend->cogl_context != NULL)
-    return TRUE;
+  CLUTTER_NOTE (BACKEND, "Alpha on Cogl swap chain: %s",
+                clutter_enable_argb ? "enabled" : "disabled");
 
-  backend->cogl_renderer = cogl_renderer_new ();
-  cogl_xlib_renderer_set_foreign_display (backend->cogl_renderer,
-                                          backend_x11->xdpy);
-  if (!cogl_renderer_connect (backend->cogl_renderer, &internal_error))
-    goto error;
-
-  swap_chain = cogl_swap_chain_new ();
   cogl_swap_chain_set_has_alpha (swap_chain, clutter_enable_argb);
 
   onscreen_template = cogl_onscreen_template_new (swap_chain);
-  cogl_object_unref (swap_chain);
 
-  /* XXX: I have some doubts that this is a good design.
-   *
-   * Conceptually should we be able to check an onscreen_template
-   * without more details about the CoglDisplay configuration?
-   */
-  status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                                  onscreen_template,
-                                                  &internal_error);
-  if (!status && clutter_enable_argb)
+  res = cogl_renderer_check_onscreen_template (renderer,
+                                               onscreen_template,
+                                               &internal_error);
+  if (!res && clutter_enable_argb)
     {
       CLUTTER_NOTE (BACKEND,
                     "Creation of a context with a ARGB visual failed: %s",
@@ -731,61 +742,27 @@ clutter_backend_x11_create_context (ClutterBackend  *backend,
        */
       clutter_enable_argb = FALSE;
       cogl_swap_chain_set_has_alpha (swap_chain, FALSE);
-      status = cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                                      onscreen_template,
-                                                      &internal_error);
+      res = cogl_renderer_check_onscreen_template (renderer,
+                                                   onscreen_template,
+                                                   &internal_error);
     }
 
-  if (!status)
-    goto error;
-
-  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
-                                            onscreen_template);
-
-  cogl_object_unref (backend->cogl_renderer);
-  cogl_object_unref (onscreen_template);
-
-  if (!cogl_display_setup (backend->cogl_display, &internal_error))
-    goto error;
-
-  backend->cogl_context = cogl_context_new (backend->cogl_display,
-                                            &internal_error);
-  if (backend->cogl_context == NULL)
-    goto error;
-
-  return TRUE;
-
-error:
-  if (internal_error != NULL)
+  if (!res)
     {
-      CLUTTER_NOTE (BACKEND, "Backend creation failed: %s",
-                    internal_error->message);
-
       g_set_error_literal (error, CLUTTER_INIT_ERROR,
                            CLUTTER_INIT_ERROR_BACKEND,
                            internal_error->message);
+
       g_error_free (internal_error);
+      cogl_object_unref (onscreen_template);
+
+      return NULL;
     }
 
-  if (backend->cogl_display != NULL)
-    {
-      cogl_object_unref (backend->cogl_display);
-      backend->cogl_display = NULL;
-    }
+  display = cogl_display_new (renderer, onscreen_template);
+  cogl_object_unref (onscreen_template);
 
-  if (onscreen_template != NULL)
-    cogl_object_unref (onscreen_template);
-
-  if (swap_chain != NULL)
-    cogl_object_unref (swap_chain);
-
-  if (backend->cogl_renderer != NULL)
-    {
-      cogl_object_unref (backend->cogl_renderer);
-      backend->cogl_renderer = NULL;
-    }
-
-  return FALSE;
+  return display;
 }
 
 static ClutterStageWindow *
@@ -823,16 +800,19 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   gobject_class->dispose = clutter_backend_x11_dispose;
   gobject_class->finalize = clutter_backend_x11_finalize;
 
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_X11;
+
   backend_class->pre_parse = _clutter_backend_x11_pre_parse;
   backend_class->post_parse = _clutter_backend_x11_post_parse;
-  backend_class->init_events = clutter_backend_x11_init_events;
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
-  backend_class->get_device_manager = clutter_backend_x11_get_device_manager;
+
   backend_class->copy_event_data = clutter_backend_x11_copy_event_data;
   backend_class->free_event_data = clutter_backend_x11_free_event_data;
   backend_class->translate_event = clutter_backend_x11_translate_event;
-  backend_class->create_context = clutter_backend_x11_create_context;
+
+  backend_class->get_renderer = clutter_backend_x11_get_renderer;
+  backend_class->get_display = clutter_backend_x11_get_display;
   backend_class->create_stage = clutter_backend_x11_create_stage;
 }
 

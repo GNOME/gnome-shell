@@ -67,7 +67,8 @@ struct _ClutterEventSource
 {
   GSource source;
 
-  ClutterBackend *backend;
+  ClutterBackendX11 *backend;
+
   GPollFD event_poll_fd;
 };
 
@@ -100,8 +101,6 @@ static gboolean clutter_event_dispatch (GSource     *source,
                                         GSourceFunc  callback,
                                         gpointer     user_data);
 
-static GList *event_sources = NULL;
-
 static GSourceFuncs event_funcs = {
   clutter_event_prepare,
   clutter_event_check,
@@ -109,150 +108,33 @@ static GSourceFuncs event_funcs = {
   NULL
 };
 
-static GSource *
-clutter_event_source_new (ClutterBackend *backend)
+GSource *
+_clutter_x11_event_source_new (ClutterBackendX11 *backend_x11)
 {
-  GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
-  ClutterEventSource *event_source = (ClutterEventSource *) source;
-
-  event_source->backend = backend;
-
-  return source;
-}
-
-static gboolean
-check_xpending (ClutterBackend *backend)
-{
-  return XPending (CLUTTER_BACKEND_X11 (backend)->xdpy);
-}
-
-#if 0
-static gboolean
-xembed_send_message (ClutterBackendX11 *backend_x11,
-                     Window             window,
-                     long               message,
-                     long               detail,
-                     long               data1,
-                     long               data2)
-{
-  XEvent ev;
-
-  memset (&ev, 0, sizeof (ev));
-
-  ev.xclient.type = ClientMessage;
-  ev.xclient.window = window;
-  ev.xclient.message_type = backend_x11->atom_XEMBED;
-  ev.xclient.format = 32;
-  ev.xclient.data.l[0] = CurrentTime;
-  ev.xclient.data.l[1] = message;
-  ev.xclient.data.l[2] = detail;
-  ev.xclient.data.l[3] = data1;
-  ev.xclient.data.l[4] = data2;
-
-  clutter_x11_trap_x_errors ();
-
-  XSendEvent (backend_x11->xdpy, window, False, NoEventMask, &ev);
-  XSync (backend_x11->xdpy, False);
-
-  if (clutter_x11_untrap_x_errors ())
-    return False;
-
-  return True;
-}
-
-static void
-xembed_set_info (ClutterBackendX11 *backend_x11,
-                 Window             window,
-                 gint               flags)
-{
-  gint32 list[2];
-
-  list[0] = MAX_SUPPORTED_XEMBED_VERSION;
-  list[1] = XEMBED_MAPPED;
-
-  XChangeProperty (backend_x11->xdpy, window,
-                   backend_x11->atom_XEMBED_INFO,
-                   backend_x11->atom_XEMBED_INFO, 32,
-                   PropModeReplace, (unsigned char *) list, 2);
-}
-#endif
-
-void
-_clutter_backend_x11_events_init (ClutterBackend *backend)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  GSource *source;
   ClutterEventSource *event_source;
   int connection_number;
+  GSource *source;
   gchar *name;
 
   connection_number = ConnectionNumber (backend_x11->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
 
-  source = backend_x11->event_source = clutter_event_source_new (backend);
+  source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   event_source = (ClutterEventSource *) source;
-  g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
 
   name = g_strdup_printf ("Clutter X11 Event (connection: %d)",
                           connection_number);
   g_source_set_name (source, name);
   g_free (name);
 
+  event_source->backend = backend_x11;
   event_source->event_poll_fd.fd = connection_number;
   event_source->event_poll_fd.events = G_IO_IN;
 
-  event_sources = g_list_prepend (event_sources, event_source);
-
   g_source_add_poll (source, &event_source->event_poll_fd);
   g_source_set_can_recurse (source, TRUE);
-  g_source_attach (source, NULL);
-}
 
-void
-_clutter_backend_x11_events_uninit (ClutterBackend *backend)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
-  if (backend_x11->event_source)
-    {
-      CLUTTER_NOTE (EVENT, "Destroying the event source");
-
-      event_sources = g_list_remove (event_sources,
-                                     backend_x11->event_source);
-
-      g_source_destroy (backend_x11->event_source);
-      g_source_unref (backend_x11->event_source);
-      backend_x11->event_source = NULL;
-    }
-}
-
-static void
-events_queue (ClutterBackend *backend)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  Display *xdisplay = backend_x11->xdpy;
-  ClutterEvent *event;
-  XEvent xevent;
-
-  while (!clutter_events_pending () && XPending (xdisplay))
-    {
-      XNextEvent (xdisplay, &xevent);
-
-      event = clutter_event_new (CLUTTER_NOTHING);
-
-#ifdef HAVE_XGE
-      XGetEventData (xdisplay, &xevent.xcookie);
-#endif
-
-      if (_clutter_backend_translate_event (backend, &xevent, event))
-        _clutter_event_push (event, FALSE);
-      else
-        clutter_event_free (event);
-
-#ifdef HAVE_XGE
-      XFreeEventData (xdisplay, &xevent.xcookie);
-#endif
-    }
+  return source;
 }
 
 /**
@@ -357,13 +239,13 @@ static gboolean
 clutter_event_prepare (GSource *source,
                        gint    *timeout)
 {
-  ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
+  ClutterBackendX11 *backend = ((ClutterEventSource *) source)->backend;
   gboolean retval;
 
   clutter_threads_enter ();
 
   *timeout = -1;
-  retval = (clutter_events_pending () || check_xpending (backend));
+  retval = (clutter_events_pending () || XPending (backend->xdpy));
 
   clutter_threads_leave ();
 
@@ -374,13 +256,13 @@ static gboolean
 clutter_event_check (GSource *source)
 {
   ClutterEventSource *event_source = (ClutterEventSource *) source;
-  ClutterBackend *backend = event_source->backend;
+  ClutterBackendX11 *backend = event_source->backend;
   gboolean retval;
 
   clutter_threads_enter ();
 
   if (event_source->event_poll_fd.revents & G_IO_IN)
-    retval = (clutter_events_pending () || check_xpending (backend));
+    retval = (clutter_events_pending () || XPending (backend->xdpy));
   else
     retval = FALSE;
 
@@ -389,12 +271,41 @@ clutter_event_check (GSource *source)
   return retval;
 }
 
+static void
+events_queue (ClutterBackendX11 *backend_x11)
+{
+  ClutterBackend *backend = CLUTTER_BACKEND (backend_x11);
+  Display *xdisplay = backend_x11->xdpy;
+  ClutterEvent *event;
+  XEvent xevent;
+
+  while (!clutter_events_pending () && XPending (xdisplay))
+    {
+      XNextEvent (xdisplay, &xevent);
+
+      event = clutter_event_new (CLUTTER_NOTHING);
+
+#ifdef HAVE_XGE
+      XGetEventData (xdisplay, &xevent.xcookie);
+#endif
+
+      if (_clutter_backend_translate_event (backend, &xevent, event))
+        _clutter_event_push (event, FALSE);
+      else
+        clutter_event_free (event);
+
+#ifdef HAVE_XGE
+      XFreeEventData (xdisplay, &xevent.xcookie);
+#endif
+    }
+}
+
 static gboolean
 clutter_event_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
-  ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
+  ClutterBackendX11 *backend = ((ClutterEventSource *) source)->backend;
   ClutterEvent *event;
 
   clutter_threads_enter ();

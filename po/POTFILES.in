@@ -6,13 +6,6 @@ clutter/clutter-alpha.c
 clutter/clutter-animation.c
 clutter/clutter-animator.c
 clutter/clutter-backend.c
-clutter/deprecated/clutter-behaviour.c
-clutter/deprecated/clutter-behaviour-depth.c
-clutter/deprecated/clutter-behaviour-ellipse.c
-clutter/deprecated/clutter-behaviour-opacity.c
-clutter/deprecated/clutter-behaviour-path.c
-clutter/deprecated/clutter-behaviour-rotate.c
-clutter/deprecated/clutter-behaviour-scale.c
 clutter/clutter-bind-constraint.c
 clutter/clutter-binding-pool.c
 clutter/clutter-bin-layout.c
@@ -31,8 +24,6 @@ clutter/clutter-device-manager.c
 clutter/clutter-drag-action.c
 clutter/clutter-drop-action.c
 clutter/clutter-event.c
-clutter/deprecated/clutter-fixed.c
-clutter/deprecated/clutter-fixed.h
 clutter/clutter-flow-layout.c
 clutter/clutter-gesture-action.c
 clutter/clutter-input-device.c
@@ -45,7 +36,6 @@ clutter/clutter-path-constraint.c
 clutter/clutter-rectangle.c
 clutter/clutter-script.c
 clutter/clutter-settings.c
-clutter/deprecated/clutter-shader.c
 clutter/clutter-shader-effect.c
 clutter/clutter-shader-types.c
 clutter/clutter-snap-constraint.c
@@ -58,7 +48,6 @@ clutter/clutter-text.c
 clutter/clutter-texture.c
 clutter/clutter-timeline.c
 clutter/clutter-units.c
-clutter/cogl/clutter-backend-cogl.c
 clutter/deprecated/clutter-behaviour.c
 clutter/deprecated/clutter-behaviour-depth.c
 clutter/deprecated/clutter-behaviour-ellipse.c
@@ -70,6 +59,7 @@ clutter/deprecated/clutter-fixed.c
 clutter/deprecated/clutter-fixed.h
 clutter/deprecated/clutter-shader.c
 clutter/evdev/clutter-input-device-evdev.c
+clutter/gdk/clutter-backend-gdk.c
 clutter/x11/clutter-backend-x11.c
 clutter/x11/clutter-keymap-x11.c
 clutter/x11/clutter-x11-texture-pixmap.c

@@ -15,6 +15,25 @@ G_DEFINE_INTERFACE (ClutterStageWindow, clutter_stage_window, G_TYPE_OBJECT);
 static void
 clutter_stage_window_default_init (ClutterStageWindowInterface *iface)
 {
+  GParamSpec *pspec;
+
+  pspec = g_param_spec_object ("backend",
+                               "Backend",
+                               "Back pointer to the Backend instance",
+                               CLUTTER_TYPE_BACKEND,
+                               G_PARAM_WRITABLE |
+                               G_PARAM_CONSTRUCT_ONLY |
+                               G_PARAM_STATIC_STRINGS);
+  g_object_interface_install_property (iface, pspec);
+
+  pspec = g_param_spec_object ("wrapper",
+                               "Wrapper",
+                               "Back pointer to the Stage actor",
+                               CLUTTER_TYPE_STAGE,
+                               G_PARAM_WRITABLE |
+                               G_PARAM_CONSTRUCT_ONLY |
+                               G_PARAM_STATIC_STRINGS);
+  g_object_interface_install_property (iface, pspec);
 }
 
 ClutterActor *

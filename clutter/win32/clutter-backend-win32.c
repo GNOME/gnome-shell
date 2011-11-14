@@ -49,33 +49,10 @@ typedef int (WINAPI * SwapIntervalProc) (int interval);
 /* singleton object */
 static ClutterBackendWin32 *backend_singleton = NULL;
 
-static gchar *clutter_vblank_name = NULL;
-
 static HINSTANCE clutter_hinst = NULL;
 
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_event_retrieval = FALSE;
-
-const gchar *
-_clutter_backend_win32_get_vblank (void)
-{
-  if (clutter_vblank_name && strcmp (clutter_vblank_name, "0") == 0)
-    return "none";
-  else
-    return clutter_vblank_name;
-}
-
-gboolean
-clutter_backend_win32_pre_parse (ClutterBackend  *backend,
-				 GError         **error)
-{
-  const gchar *env_string;
-
-  if ((env_string = g_getenv ("CLUTTER_VBLANK")))
-    clutter_vblank_name = g_strdup (env_string);
-
-  return TRUE;
-}
 
 static void
 clutter_backend_win32_init_events (ClutterBackend *backend)
@@ -84,7 +61,7 @@ clutter_backend_win32_init_events (ClutterBackend *backend)
 
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
-  backend_win32->device_manager =
+  backend->device_manager =
     g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_WIN32,
                   "backend", backend_win32,
                   NULL);
@@ -185,137 +162,12 @@ ClutterFeatureFlags
 clutter_backend_win32_get_features (ClutterBackend *backend)
 {
   ClutterBackendClass *parent_class;
-  ClutterFeatureFlags flags;
 
   parent_class = CLUTTER_BACKEND_CLASS (clutter_backend_win32_parent_class);
 
-  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports multiple onscreen framebuffers");
-      flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
-    }
-  else
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl only supports one onscreen framebuffer");
-      flags |= CLUTTER_FEATURE_STAGE_STATIC;
-    }
-
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_THROTTLE))
-    {
-      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers throttling");
-      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-    }
-  else
-    CLUTTER_NOTE (BACKEND, "Cogl doesn't support swap buffers throttling");
-
-  CLUTTER_NOTE (BACKEND, "backend features checked");
-
-  return flags;
-}
-
-static gboolean
-clutter_backend_win32_create_context (ClutterBackend  *backend,
-                                      GError         **error)
-{
-  CoglSwapChain *swap_chain;
-  CoglOnscreenTemplate *onscreen_template;
-
-  if (backend->cogl_context)
-    return TRUE;
-
-  backend->cogl_renderer = cogl_renderer_new ();
-  if (!cogl_renderer_connect (backend->cogl_renderer, error))
-    goto error;
-
-  swap_chain = cogl_swap_chain_new ();
-
-  onscreen_template = cogl_onscreen_template_new (swap_chain);
-  cogl_object_unref (swap_chain);
-
-  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
-                                              onscreen_template,
-                                              error))
-    goto error;
-
-  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
-                                            onscreen_template);
-  cogl_object_unref (backend->cogl_renderer);
-  cogl_object_unref (onscreen_template);
-
-  if (!cogl_display_setup (backend->cogl_display, error))
-    goto error;
-
-  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
-  if (!backend->cogl_context)
-    goto error;
-
-  return TRUE;
-
-error:
-  if (backend->cogl_display)
-    {
-      cogl_object_unref (backend->cogl_display);
-      backend->cogl_display = NULL;
-    }
-
-  if (onscreen_template)
-    cogl_object_unref (onscreen_template);
-  if (swap_chain)
-    cogl_object_unref (swap_chain);
-
-  if (backend->cogl_renderer)
-    {
-      cogl_object_unref (backend->cogl_renderer);
-      backend->cogl_renderer = NULL;
-    }
-  return FALSE;
-}
-
-static void
-clutter_backend_win32_ensure_context (ClutterBackend *backend, 
-				      ClutterStage   *stage)
-{
-  ClutterStageWin32 *stage_win32 =
-    CLUTTER_STAGE_WIN32 (_clutter_stage_get_window (stage));
-
-  cogl_set_framebuffer (COGL_FRAMEBUFFER (stage_win32->onscreen));
-}
-
-static ClutterStageWindow *
-clutter_backend_win32_create_stage (ClutterBackend  *backend,
-				    ClutterStage    *wrapper,
-				    GError         **error)
-{
-  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-  ClutterStageWin32 *stage_win32;
-  ClutterStageWindow *stage;
-
-  stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);
-
-  /* copy backend data into the stage */
-  stage_win32 = CLUTTER_STAGE_WIN32 (stage);
-  stage_win32->backend = backend_win32;
-  stage_win32->wrapper = wrapper;
-
-  return stage;
-}
-
-static ClutterDeviceManager *
-clutter_backend_win32_get_device_manager (ClutterBackend *backend)
-{
-  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-
-  if (G_UNLIKELY (backend_win32->device_manager == NULL))
-    {
-      backend_win32->device_manager =
-        g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_WIN32,
-                      "backend", backend_win32,
-                      NULL);
-    }
-
-  return backend_win32->device_manager;
+  return parent_class->get_features (backend)
+    | CLUTTER_FEATURE_STAGE_USER_RESIZE
+    | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
 /**
@@ -351,14 +203,11 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   gobject_class->dispose = clutter_backend_win32_dispose;
   gobject_class->finalize = clutter_backend_win32_finalize;
 
-  backend_class->pre_parse        = clutter_backend_win32_pre_parse;
-  backend_class->init_events      = clutter_backend_win32_init_events;
-  backend_class->create_stage     = clutter_backend_win32_create_stage;
-  backend_class->add_options      = clutter_backend_win32_add_options;
-  backend_class->get_features     = clutter_backend_win32_get_features;
-  backend_class->create_context   = clutter_backend_win32_create_context;
-  backend_class->ensure_context   = clutter_backend_win32_ensure_context;
-  backend_class->get_device_manager = clutter_backend_win32_get_device_manager;
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_WIN32;
+
+  backend_class->init_events = clutter_backend_win32_init_events;
+  backend_class->add_options = clutter_backend_win32_add_options;
+  backend_class->get_features = clutter_backend_win32_get_features;
 }
 
 static void

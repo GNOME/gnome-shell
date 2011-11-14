@@ -344,7 +344,10 @@ cally_text_real_initialize(AtkObject *obj,
 
   _check_activate_action (cally_text, clutter_text);
 
-  obj->role = ATK_ROLE_TEXT;
+  if (clutter_text_get_password_char (clutter_text) != 0)
+    obj->role = ATK_ROLE_PASSWORD_TEXT;
+  else
+    obj->role = ATK_ROLE_TEXT;
 }
 
 static const gchar *
@@ -1090,6 +1093,13 @@ cally_text_notify_clutter (GObject    *obj,
   else if (g_strcmp0 (pspec->name, "activatable") == 0)
     {
       _check_activate_action (cally_text, clutter_text);
+    }
+  else if (g_strcmp0 (pspec->name, "password-char") == 0)
+    {
+      if (clutter_text_get_password_char (clutter_text) != 0)
+        atk_object_set_role (atk_obj, ATK_ROLE_PASSWORD_TEXT);
+      else
+        atk_object_set_role (atk_obj, ATK_ROLE_TEXT);
     }
   else
     {

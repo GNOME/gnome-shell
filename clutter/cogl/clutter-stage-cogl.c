@@ -33,15 +33,15 @@
 #include "clutter-config.h"
 
 #include "clutter-stage-cogl.h"
-#include "clutter-backend-cogl.h"
 
+#include "clutter-actor-private.h"
+#include "clutter-backend-private.h"
 #include "clutter-debug.h"
 #include "clutter-event.h"
 #include "clutter-enum-types.h"
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
-#include "clutter-actor-private.h"
 #include "clutter-stage-private.h"
 #include "clutter-util.h"
 
@@ -102,7 +102,6 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
   GError *error = NULL;
   gfloat width = 800;
   gfloat height = 600;
-  const char *clutter_vblank;
 
   CLUTTER_NOTE (BACKEND, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_cogl),
@@ -116,9 +115,8 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 						width, height);
     }
 
-  clutter_vblank = _clutter_backend_cogl_get_vblank ();
-  if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
-    cogl_onscreen_set_swap_throttled (stage_cogl->onscreen, FALSE);
+  cogl_onscreen_set_swap_throttled (stage_cogl->onscreen,
+                                    _clutter_get_sync_to_vblank ());
 
   framebuffer = COGL_FRAMEBUFFER (stage_cogl->onscreen);
   if (!cogl_framebuffer_allocate (framebuffer, &error))
@@ -316,11 +314,10 @@ static void
 clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  ClutterActor *wrapper;
-  ClutterBackend *backend;
-  ClutterBackendCogl *backend_cogl;
   gboolean may_use_clipped_redraw;
   gboolean use_clipped_redraw;
+  gboolean can_blit_sub_buffer;
+  ClutterActor *wrapper;
 
   CLUTTER_STATIC_TIMER (painting_timer,
                         "Redrawing", /* parent */
@@ -343,19 +340,19 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   if (!stage_cogl->onscreen)
     return;
 
-  backend = clutter_get_default_backend ();
-  backend_cogl = CLUTTER_BACKEND_COGL (backend);
-
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
+
+  can_blit_sub_buffer =
+    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
 
   may_use_clipped_redraw = FALSE;
   if (_clutter_stage_window_can_clip_redraws (stage_window) &&
-      G_LIKELY (backend_cogl->can_blit_sub_buffer) &&
+      can_blit_sub_buffer &&
       /* NB: a zero width redraw clip == full stage redraw */
       stage_cogl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
-      G_LIKELY (stage_cogl->frame_count > 3))
+      stage_cogl->frame_count > 3)
     {
       may_use_clipped_redraw = TRUE;
     }
@@ -548,11 +545,11 @@ clutter_stage_cogl_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_WRAPPER:
-      self->wrapper = CLUTTER_STAGE (g_value_get_object (value));
+      self->wrapper = g_value_get_object (value);
       break;
 
     case PROP_BACKEND:
-      self->backend = CLUTTER_BACKEND_COGL (g_value_get_object (value));
+      self->backend = g_value_get_object (value);
       break;
 
     default:
@@ -568,19 +565,8 @@ _clutter_stage_cogl_class_init (ClutterStageCoglClass *klass)
 
   gobject_class->set_property = clutter_stage_cogl_set_property;
 
-  g_object_class_install_property (gobject_class, PROP_WRAPPER,
-				   g_param_spec_object ("wrapper",
-							"Wrapper",
-							"ClutterStage wrapping this native stage",
-							CLUTTER_TYPE_STAGE,
-							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_install_property (gobject_class, PROP_BACKEND,
-				   g_param_spec_object ("backend",
-							"ClutterBackend",
-							"The Clutter backend singleton",
-							CLUTTER_TYPE_BACKEND_COGL,
-							CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_override_property (gobject_class, PROP_WRAPPER, "wrapper");
+  g_object_class_override_property (gobject_class, PROP_BACKEND, "backend");
 }
 
 static void

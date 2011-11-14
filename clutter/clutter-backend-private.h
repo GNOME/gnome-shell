@@ -39,11 +39,13 @@ typedef struct _ClutterBackendPrivate   ClutterBackendPrivate;
 struct _ClutterBackend
 {
   /*< private >*/
-  GObject                parent_instance;
+  GObject parent_instance;
 
-  CoglRenderer          *cogl_renderer;
-  CoglDisplay           *cogl_display;
-  CoglContext           *cogl_context;
+  CoglRenderer *cogl_renderer;
+  CoglDisplay *cogl_display;
+  CoglContext *cogl_context;
+
+  ClutterDeviceManager *device_manager;
 
   ClutterBackendPrivate *priv;
 };
@@ -52,6 +54,8 @@ struct _ClutterBackendClass
 {
   /*< private >*/
   GObjectClass parent_class;
+
+  GType stage_window_type;
 
   /* vfuncs */
   gboolean              (* pre_parse)          (ClutterBackend  *backend,
@@ -68,6 +72,12 @@ struct _ClutterBackendClass
   ClutterFeatureFlags   (* get_features)       (ClutterBackend  *backend);
   void                  (* redraw)             (ClutterBackend  *backend,
                                                 ClutterStage    *stage);
+  CoglRenderer *        (* get_renderer)       (ClutterBackend  *backend,
+                                                GError         **error);
+  CoglDisplay *         (* get_display)        (ClutterBackend  *backend,
+                                                CoglRenderer    *renderer,
+                                                CoglSwapChain   *swap_chain,
+                                                GError         **error);
   gboolean              (* create_context)     (ClutterBackend  *backend,
                                                 GError         **error);
   void                  (* ensure_context)     (ClutterBackend  *backend,

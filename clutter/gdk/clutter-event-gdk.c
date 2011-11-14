@@ -43,27 +43,6 @@
 
 #include <glib.h>
 
-static void
-gdk_event_handler (GdkEvent *event,
-		   gpointer  user_data)
-{
-  clutter_gdk_handle_event (event);
-}
-
-void
-_clutter_backend_gdk_events_init (ClutterBackend *backend)
-{
-  gdk_event_handler_set (gdk_event_handler, NULL, NULL);
-
-  CLUTTER_NOTE (EVENT, "GDK event handler set");
-}
-
-void
-_clutter_backend_gdk_events_uninit (ClutterBackend *backend)
-{
-  gdk_event_handler_set (NULL, NULL, NULL);
-}
-
 /**
  * clutter_gdk_handle_event:
  * @event: a #GdkEvent

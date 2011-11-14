@@ -42,6 +42,14 @@
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
+enum
+{
+  PROP_0,
+
+  PROP_BACKEND,
+  PROP_WRAPPER
+};
+
 G_DEFINE_TYPE_WITH_CODE (ClutterStageWin32,
 			 clutter_stage_win32,
 			 G_TYPE_OBJECT,
@@ -398,7 +406,6 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
   gfloat width;
   gfloat height;
   GError *error = NULL;
-  const char *clutter_vblank;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
@@ -470,9 +477,8 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
   cogl_win32_onscreen_set_foreign_window (stage_win32->onscreen,
                                           stage_win32->hwnd);
 
-  clutter_vblank = _clutter_backend_win32_get_vblank ();
-  if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
-    cogl_onscreen_set_swap_throttled (stage_win32->onscreen, FALSE);
+  cogl_onscreen_set_swap_throttled (stage_win32->onscreen,
+                                    _clutter_get_sync_to_vblank ());
 
   framebuffer = COGL_FRAMEBUFFER (stage_win32->onscreen);
   if (!cogl_framebuffer_allocate (framebuffer, &error))
@@ -538,6 +544,37 @@ clutter_stage_win32_redraw (ClutterStageWindow *stage_window)
     cogl_framebuffer_swap_buffers (COGL_FRAMEBUFFER (stage_win32->onscreen));
 }
 
+static CoglFramebuffer *
+clutter_stage_win32_get_active_framebuffer (ClutterStageWindow *stage_window)
+{
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
+
+  return COGL_FRAMEBUFFER (stage_win32->onscreen);
+}
+
+static void
+clutter_stage_win32_set_property (GObject      *gobject,
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
+{
+  ClutterStageWin32 *self = CLUTTER_STAGE_WIN32 (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      self->backend = g_value_get_object (value);
+      break;
+
+    case PROP_WRAPPER:
+      self->wrapper = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    }
+}
+
 static void
 clutter_stage_win32_dispose (GObject *gobject)
 {
@@ -563,7 +600,11 @@ clutter_stage_win32_class_init (ClutterStageWin32Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->set_property = clutter_stage_win32_set_property;
   gobject_class->dispose = clutter_stage_win32_dispose;
+
+  g_object_class_override_property (gobject_class, PROP_BACKEND, "backend");
+  g_object_class_override_property (gobject_class, PROP_WRAPPER, "wrapper");
 }
 
 static void
@@ -598,6 +639,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_win32_realize;
   iface->unrealize = clutter_stage_win32_unrealize;
   iface->redraw = clutter_stage_win32_redraw;
+  iface->get_active_framebuffer = clutter_stage_win32_get_active_framebuffer;
 }
 
 /**
