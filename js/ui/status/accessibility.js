@@ -31,7 +31,7 @@ const DPI_FACTOR_LARGER  = 1.5;
 const DPI_FACTOR_LARGEST = 2.0;
 
 const WM_SCHEMA            = 'org.gnome.desktop.wm.preferences';
-const KEY_VISUAL_BELL_TYPE = 'visual-bell-type';
+const KEY_VISUAL_BELL      = 'visual-bell';
 
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const KEY_GTK_THEME      = 'gtk-theme';
@@ -68,7 +68,7 @@ ATIndicator.prototype = {
                                                                    'screen-keyboard-enabled');
         this.menu.addMenuItem(screenKeyboard);
 
-        let visualBell = this._buildVisualBellItem();
+        let visualBell = this._buildItem(_("Visual Alerts"), WM_SCHEMA, KEY_VISUAL_BELL);
         this.menu.addMenuItem(visualBell);
 
         let stickyKeys = this._buildItem(_("Sticky Keys"), A11Y_SCHEMA, KEY_STICKY_KEYS_ENABLED);
@@ -110,27 +110,6 @@ ATIndicator.prototype = {
             widget.setToggleState(settings.get_boolean(key));
         });
         return widget;
-    },
-
-    _buildVisualBellItem: function() {
-        let settings = new Gio.Settings({ schema: WM_SCHEMA });
-        let currentValue = settings.get_enum(KEY_VISUAL_BELL_TYPE);
-        let visualBellItem = this._buildItemExtended(
-            _("Visual Alerts"),
-            currentValue != GDesktopEnums.VisualBellType.NONE,
-            settings.is_writable(KEY_VISUAL_BELL_TYPE),
-            function(enabled) {
-                if (enabled)
-                    settings.set_enum(KEY_VISUAL_BELL_TYPE,
-                                      GDesktopEnums.VisualBellType.FULLSCREEN_FLASH);
-                else
-                    settings.reset(KEY_VISUAL_BELL_TYPE);
-            });
-        settings.connect('changed::' + KEY_VISUAL_BELL_TYPE, function() {
-            let value = settings.get_enum(KEY_VISUAL_BELL_TYPE);
-            visualBellItem.setToggleState(value != GDesktopEnums.VisualBellType.NONE);
-        });
-        return visualBellItem;
     },
 
     _buildHCItem: function() {
