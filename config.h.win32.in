@@ -6,9 +6,6 @@
 /* Use Generic EGL backend */
 /*#undef CLUTTER_EGL_BACKEND_GENERIC*/
 
-/* Built against the system Cogl library */
-/*#undef CLUTTER_USING_SYSTEM_COGL*/
-
 /* Can use Cogl 2.0 API internally */
 #define COGL_ENABLE_EXPERIMENTAL_2_0_API 1
 
@@ -60,9 +57,6 @@
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
-
-/* Define to 1 if you have the <GL/glx.h> header file. */
-/*#undef HAVE_GL_GLX_H*/
 
 /* Define if you have the iconv() function and it works. */
 #define HAVE_ICONV 1
@@ -119,6 +113,9 @@
 
 /* Define to 1 if we have the XFIXES X extension */
 /*#undef HAVE_XFIXES*/
+
+/* Define to 1 if X Generic Extensions is available */
+/* #undef HAVE_XGE */
 
 /* Define to 1 if XInput is available */
 /*#undef HAVE_XINPUT*/
