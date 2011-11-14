@@ -325,7 +325,9 @@ test_clip_main (int argc, char **argv)
   data.current_clip.type = CLIP_NONE;
   data.clips = NULL;
 
-  data.stage = clutter_stage_get_default ();
+  data.stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (data.stage), "Clipping");
+  g_signal_connect (data.stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   stub_actor = clutter_rectangle_new ();
   clutter_container_add (CLUTTER_CONTAINER (data.stage), stub_actor, NULL);
@@ -365,4 +367,10 @@ test_clip_main (int argc, char **argv)
   free_clips (&data);
 
   return 0;
+}
+
+G_MODULE_EXPORT const char *
+test_clip_describe (void)
+{
+  return "Actor clipping with various techniques";
 }

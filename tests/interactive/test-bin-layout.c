@@ -163,10 +163,11 @@ test_bin_layout_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Box test");
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "BinLayout");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_actor_set_size (stage, 640, 480);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
                                    CLUTTER_BIN_ALIGNMENT_CENTER);
@@ -268,4 +269,10 @@ test_bin_layout_main (int argc, char *argv[])
   clutter_color_free (color);
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_bin_layout_describe (void)
+{
+  return "BinLayout layout manager example";
 }

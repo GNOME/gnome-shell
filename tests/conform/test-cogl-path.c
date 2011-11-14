@@ -212,7 +212,7 @@ test_cogl_path (TestConformSimpleFixture *fixture,
   unsigned int paint_handler;
 
   state.frame = 0;
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
   clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
 
   /* We force continuous redrawing of the stage, since we need to skip
@@ -228,7 +228,8 @@ test_cogl_path (TestConformSimpleFixture *fixture,
   g_signal_handler_disconnect (state.stage, paint_handler);
   g_source_remove (idle_source);
 
+  clutter_actor_destroy (state.stage);
+
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

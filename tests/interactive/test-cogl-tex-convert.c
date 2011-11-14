@@ -202,10 +202,11 @@ test_cogl_tex_convert_main (int argc, char *argv[])
     return 1;
   
   /* Stage */
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 400, 400);
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Test");
-  
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Texture Conversion");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
+
   /* Cogl Box */
   coglbox = test_coglbox_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
@@ -215,4 +216,10 @@ test_cogl_tex_convert_main (int argc, char *argv[])
   clutter_main ();
   
   return 0;
+}
+
+G_MODULE_EXPORT const char *
+test_cogl_tex_convert_describe (void)
+{
+  return "Pixel format conversion of Cogl textures.";
 }

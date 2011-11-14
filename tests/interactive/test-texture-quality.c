@@ -55,11 +55,13 @@ test_texture_quality_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_stage_set_use_fog (CLUTTER_STAGE (stage), TRUE);
   clutter_stage_set_fog (CLUTTER_STAGE (stage), &stage_fog);
-
+  g_signal_connect (stage,
+                    "destroy", G_CALLBACK (clutter_main_quit),
+                    NULL);
   g_signal_connect (stage,
                     "button-press-event", G_CALLBACK (clutter_main_quit),
                     NULL);
@@ -97,7 +99,7 @@ test_texture_quality_main (int argc, char *argv[])
   clutter_actor_show (stage);
   clutter_timeline_start (timeline);
 
-  g_timeout_add (10000, change_filter, image);
+  clutter_threads_add_timeout (10000, change_filter, image);
 
   clutter_main ();
 
@@ -105,4 +107,10 @@ test_texture_quality_main (int argc, char *argv[])
   g_object_unref (timeline);
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_texture_quality_describe (void)
+{
+  return "Change the texture filtering quality.";
 }

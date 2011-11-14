@@ -293,7 +293,7 @@ test_cogl_wrap_modes (TestConformSimpleFixture *fixture,
   guint idle_source;
   guint paint_handler;
 
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
 
   clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
 
@@ -311,6 +311,8 @@ test_cogl_wrap_modes (TestConformSimpleFixture *fixture,
 
   g_source_remove (idle_source);
   g_signal_handler_disconnect (state.stage, paint_handler);
+
+  clutter_actor_destroy (state.stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");

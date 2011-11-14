@@ -88,7 +88,6 @@ make_ui (ClutterActor *stage)
   ClutterActor    *editable      = NULL;
   ClutterActor    *rectangle     = NULL;
   ClutterActor    *label         = NULL;
-  ClutterColor     color_text    = { 0xff, 0x00, 0x00, 0xff };
   ClutterColor     color_sel     = { 0x00, 0xff, 0x00, 0x55 };
   ClutterColor     color_label   = { 0x00, 0xff, 0x55, 0xff };
   ClutterColor     color_rect    = { 0x00, 0xff, 0xff, 0x55 };
@@ -111,7 +110,7 @@ make_ui (ClutterActor *stage)
       /* editable */
       editable = clutter_text_new_full ("Sans Bold 32px",
                                         "ddd",
-                                        &color_text);
+                                        CLUTTER_COLOR_Red);
       clutter_actor_set_position (editable, 150, editable_geom_y);
       clutter_actor_set_size (editable, 500, 75);
       clutter_text_set_editable (CLUTTER_TEXT (editable), TRUE);
@@ -138,8 +137,8 @@ make_ui (ClutterActor *stage)
 int
 main (int argc, char *argv[])
 {
-  ClutterActor *stage         = NULL;
-  Data data1, data2,data3;
+  ClutterActor *stage, *stage_main;
+  Data data1, data2, data3;
   guint id_2 = 0;
 
   g_set_application_name ("AtkText");
@@ -171,14 +170,19 @@ main (int argc, char *argv[])
   atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:activate");
   atk_add_global_event_listener (window_event_listener, "Atk:AtkWindow:deactivate");
 
-  stage = clutter_stage_get_default ();
-  make_ui (stage);
+  stage_main = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage_main), "Cally - AtkEvents/1");
+  g_signal_connect (stage_main, "destroy", G_CALLBACK (clutter_main_quit), NULL);
+  make_ui (stage_main);
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show_all (stage_main);
 
   if (clutter_feature_available (CLUTTER_FEATURE_STAGE_MULTIPLE))
     {
       stage = clutter_stage_new ();
+      clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkEvents/2");
+      g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
+
       make_ui (stage);
       clutter_actor_show_all (stage);
     }

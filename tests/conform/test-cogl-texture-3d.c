@@ -204,12 +204,11 @@ test_cogl_texture_3d (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   guint paint_handler;
 
-  stage = clutter_stage_get_default ();
-
   /* Check whether GL supports the rectangle extension. If not we'll
      just assume the test passes */
   if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
     {
+      stage = clutter_stage_new ();
       clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
       paint_handler = g_signal_connect_after (stage, "paint",
@@ -221,10 +220,11 @@ test_cogl_texture_3d (TestConformSimpleFixture *fixture,
 
       g_signal_handler_disconnect (stage, paint_handler);
 
+      clutter_actor_destroy (stage);
+
       if (g_test_verbose ())
         g_print ("OK\n");
     }
   else if (g_test_verbose ())
     g_print ("Skipping\n");
 }
-

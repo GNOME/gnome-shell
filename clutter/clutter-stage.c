@@ -30,11 +30,6 @@
  * #ClutterStage is a top level 'window' on which child actors are placed
  * and manipulated.
  *
- * Clutter creates a default stage upon initialization, which can be retrieved
- * using clutter_stage_get_default(). Clutter always provides the default
- * stage, unless the backend is unable to create one. The stage returned
- * by clutter_stage_get_default() is guaranteed to always be the same.
- *
  * Backends might provide support for multiple stages. The support for this
  * feature can be checked at run-time using the clutter_feature_available()
  * function and the %CLUTTER_FEATURE_STAGE_MULTIPLE flag. If the backend used
@@ -279,6 +274,23 @@ queue_full_redraw (ClutterStage *stage)
     return;
 
   _clutter_stage_window_add_redraw_clip (stage_window, NULL);
+}
+
+static gboolean
+stage_is_default (ClutterStage *stage)
+{
+  ClutterStageManager *stage_manager;
+  ClutterStageWindow *impl;
+
+  stage_manager = clutter_stage_manager_get_default ();
+  if (stage != clutter_stage_manager_get_default_stage (stage_manager))
+    return FALSE;
+
+  impl = _clutter_stage_get_window (stage);
+  if (impl != _clutter_stage_get_default_window ())
+    return FALSE;
+
+  return TRUE;
 }
 
 static void
@@ -1477,7 +1489,7 @@ static gboolean
 clutter_stage_real_delete_event (ClutterStage *stage,
                                  ClutterEvent *event)
 {
-  if (clutter_stage_is_default (stage))
+  if (stage_is_default (stage))
     clutter_main_quit ();
   else
     clutter_actor_destroy (CLUTTER_ACTOR (stage));
@@ -1495,6 +1507,45 @@ clutter_stage_real_apply_transform (ClutterActor *stage,
    * here... */
   cogl_matrix_init_identity (matrix);
   cogl_matrix_multiply (matrix, matrix, &priv->view);
+}
+
+static void
+clutter_stage_constructed (GObject *gobject)
+{
+  ClutterStage *self = CLUTTER_STAGE (gobject);
+  ClutterStageManager *stage_manager;
+
+  stage_manager = clutter_stage_manager_get_default ();
+
+  _clutter_stage_manager_add_stage (stage_manager, self);
+
+  /* if this stage has been created on a backend that does not
+   * support multiple stages then it becomes the default stage
+   * as well; any other attempt at creating a ClutterStage will
+   * fail.
+   */
+  if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_MULTIPLE))
+    {
+      if (G_UNLIKELY (clutter_stage_manager_get_default_stage (stage_manager) != NULL))
+        {
+          g_error ("Unable to create another stage: the backend of "
+                   "type '%s' does not support multiple stages. Use "
+                   "clutter_stage_get_default() instead to access the "
+                   "stage singleton.",
+                   G_OBJECT_TYPE_NAME (clutter_get_default_backend ()));
+        }
+
+      /* This will take care of automatically adding the stage to the
+       * stage manager and setting it as the default. Its floating
+       * reference will be claimed by the stage manager.
+       */
+      _clutter_stage_manager_set_default_stage (stage_manager, self);
+
+      /* the default stage is realized by default */
+      clutter_actor_realize (CLUTTER_ACTOR (self));
+    }
+
+  G_OBJECT_CLASS (clutter_stage_parent_class)->constructed (gobject);
 }
 
 static void
@@ -1696,6 +1747,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
+  gobject_class->constructed = clutter_stage_constructed;
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
   gobject_class->dispose = clutter_stage_dispose;
@@ -2037,8 +2089,10 @@ static void
 clutter_stage_init (ClutterStage *self)
 {
   ClutterStagePrivate *priv;
+  ClutterStageWindow *impl;
   ClutterBackend *backend;
   cairo_rectangle_int_t geom;
+  GError *error;
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);
@@ -2047,25 +2101,31 @@ clutter_stage_init (ClutterStage *self)
 
   CLUTTER_NOTE (BACKEND, "Creating stage from the default backend");
   backend = clutter_get_default_backend ();
-  priv->impl = _clutter_backend_create_stage (backend, self, NULL);
-  if (!priv->impl)
-    {
-      g_warning ("Unable to create a new stage, falling back to the "
-                 "default stage.");
-      priv->impl = _clutter_stage_get_default_window ();
 
-      /* at this point we must have a default stage, or we're screwed */
-      g_assert (priv->impl != NULL);
+  error = NULL;
+  impl = _clutter_backend_create_stage (backend, self, &error);
+  if (G_UNLIKELY (impl == NULL))
+    {
+      if (error != NULL)
+        {
+          g_critical ("Unable to create a new stage implementation: %s",
+                      error->message);
+          g_error_free (error);
+        }
+      else
+        g_critical ("Unable to create a new stage implementation.");
     }
+
+  _clutter_stage_set_window (self, impl);
 
   priv->event_queue = g_queue_new ();
 
-  priv->is_fullscreen          = FALSE;
-  priv->is_user_resizable      = FALSE;
-  priv->is_cursor_visible      = TRUE;
-  priv->use_fog                = FALSE;
+  priv->is_fullscreen = FALSE;
+  priv->is_user_resizable = FALSE;
+  priv->is_cursor_visible = TRUE;
+  priv->use_fog = FALSE;
   priv->throttle_motion_events = TRUE;
-  priv->min_size_changed       = FALSE;
+  priv->min_size_changed = FALSE;
 
   /* XXX - we need to keep the invariant that calling
    * clutter_set_motion_event_enabled() before the stage creation
@@ -2133,16 +2193,29 @@ clutter_stage_init (ClutterStage *self)
 /**
  * clutter_stage_get_default:
  *
- * Returns the main stage. The default #ClutterStage is a singleton,
- * so the stage will be created the first time this function is
- * called (typically, inside clutter_init()); all the subsequent
- * calls to clutter_stage_get_default() will return the same instance.
+ * Retrieves a #ClutterStage singleton.
  *
- * Clutter guarantess the existence of the default stage.
+ * This function is not as useful as it sounds, and will most likely
+ * by deprecated in the future. Application code should only create
+ * a #ClutterStage instance using clutter_stage_new(), and manage the
+ * lifetime of the stage manually.
+ *
+ * The default stage singleton has a platform-specific behaviour: on
+ * platforms without the %CLUTTER_FEATURE_STAGE_MULTIPLE feature flag
+ * set, the first #ClutterStage instance will also be set to be the
+ * default stage instance, and this function will always return a
+ * pointer to it.
+ *
+ * On platforms with the %CLUTTER_FEATURE_STAGE_MULTIPLE feature flag
+ * set, the default stage will be created by the first call to this
+ * function, and every following call will return the same pointer to
+ * it.
  *
  * Return value: (transfer none) (type Clutter.Stage): the main
- *   #ClutterStage.  You should never destroy or unref the returned
+ *   #ClutterStage. You should never destroy or unref the returned
  *   actor.
+ *
+ * Deprecated: 1.10: Use clutter_stage_new() instead.
  */
 ClutterActor *
 clutter_stage_get_default (void)
@@ -3149,16 +3222,6 @@ G_DEFINE_BOXED_TYPE (ClutterFog, clutter_fog, clutter_fog_copy, clutter_fog_free
 ClutterActor *
 clutter_stage_new (void)
 {
-  if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_MULTIPLE))
-    {
-      g_warning ("Unable to create a new stage: the %s backend does not "
-                 "support multiple stages.",
-                 CLUTTER_FLAVOUR);
-      return NULL;
-    }
-
-  /* The stage manager will grab the floating reference when the stage
-     is added to it in the constructor */
   return g_object_new (CLUTTER_TYPE_STAGE, NULL);
 }
 
@@ -3453,24 +3516,17 @@ clutter_stage_queue_redraw (ClutterStage *stage)
  * Return value: %TRUE if the passed stage is the default one
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.10: Track the stage pointer inside your application
+ *   code, or use clutter_actor_get_stage() to retrieve the stage for
+ *   a given actor.
  */
 gboolean
 clutter_stage_is_default (ClutterStage *stage)
 {
-  ClutterStageManager *stage_manager;
-  ClutterStageWindow *impl;
-
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
-  stage_manager = clutter_stage_manager_get_default ();
-  if (stage != clutter_stage_manager_get_default_stage (stage_manager))
-    return FALSE;
-
-  impl = _clutter_stage_get_window (stage);
-  if (impl != _clutter_stage_get_default_window ())
-    return FALSE;
-
-  return TRUE;
+  return stage_is_default (stage);
 }
 
 void
@@ -3480,7 +3536,7 @@ _clutter_stage_set_window (ClutterStage       *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
   g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (stage_window));
 
-  if (stage->priv->impl)
+  if (stage->priv->impl != NULL)
     g_object_unref (stage->priv->impl);
 
   stage->priv->impl = stage_window;

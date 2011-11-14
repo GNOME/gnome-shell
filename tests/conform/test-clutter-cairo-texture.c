@@ -169,7 +169,7 @@ test_clutter_cairo_texture (TestConformSimpleFixture *fixture,
   unsigned int paint_handler;
 
   state.frame = 0;
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
   state.progress = TEST_BEFORE_DRAW_FIRST_FRAME;
 
   state.ct = clutter_cairo_texture_new (BLOCK_SIZE * 2, BLOCK_SIZE);
@@ -192,5 +192,7 @@ test_clutter_cairo_texture (TestConformSimpleFixture *fixture,
 
   if (g_test_verbose ())
     g_print ("OK\n");
+
+  clutter_actor_destroy (state.stage);
 }
 

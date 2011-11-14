@@ -32,15 +32,18 @@ static const ClutterColor corner_colors[PARTS * PARTS] =
 
 typedef struct _TestState
 {
+  ClutterActor *stage;
   guint frame;
   CoglHandle texture;
 } TestState;
 
 static gboolean
-validate_part (int xnum, int ynum, const ClutterColor *color)
+validate_part (ClutterActor *stage,
+               int xnum,
+               int ynum,
+               const ClutterColor *color)
 {
   guchar *pixels, *p;
-  ClutterActor *stage = clutter_stage_get_default ();
   gboolean ret = TRUE;
 
   /* Read the appropriate part but skip out a few pixels around the
@@ -75,10 +78,10 @@ validate_result (TestState *state)
 {
   /* Validate that all four corners of the texture are drawn in the
      right color */
-  g_assert (validate_part (0, 0, corner_colors + 0));
-  g_assert (validate_part (1, 0, corner_colors + 1));
-  g_assert (validate_part (0, 1, corner_colors + 2));
-  g_assert (validate_part (1, 1, corner_colors + 3));
+  g_assert (validate_part (state->stage, 0, 0, corner_colors + 0));
+  g_assert (validate_part (state->stage, 1, 0, corner_colors + 1));
+  g_assert (validate_part (state->stage, 0, 1, corner_colors + 2));
+  g_assert (validate_part (state->stage, 1, 1, corner_colors + 3));
 
   /* Comment this out if you want visual feedback of what this test
    * paints.
@@ -208,7 +211,7 @@ test_cogl_npot_texture (TestConformSimpleFixture *fixture,
 
   state.texture = make_texture ();
 
-  stage = clutter_stage_get_default ();
+  state.stage = stage = clutter_stage_new ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
@@ -230,7 +233,8 @@ test_cogl_npot_texture (TestConformSimpleFixture *fixture,
 
   cogl_handle_unref (state.texture);
 
+  clutter_actor_destroy (state.stage);
+
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

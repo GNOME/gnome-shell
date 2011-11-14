@@ -12575,7 +12575,7 @@ _clutter_actor_foreach_child (ClutterActor *self,
 /* For debugging purposes this gives us a simple way to print out
  * the scenegraph e.g in gdb using:
  * [|
- *   _clutter_actor_traverse (clutter_stage_get_default (),
+ *   _clutter_actor_traverse (stage,
  *                            0,
  *                            _clutter_debug_print_actor_cb,
  *                            NULL,

@@ -106,9 +106,11 @@ main (int argc, char *argv[])
 
   g_print ("Monospace %dpx, string length = %d\n", font_size, n_chars);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Text Performance");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   label = create_label ();
   w = clutter_actor_get_width (label);

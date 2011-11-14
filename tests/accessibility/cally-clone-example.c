@@ -93,7 +93,7 @@ make_ui (ClutterActor *stage)
 int
 main (int argc, char *argv[])
 {
-  ClutterActor *stage         = NULL;
+  ClutterActor *stage;
 
   g_set_application_name ("Clone Example");
 
@@ -102,7 +102,10 @@ main (int argc, char *argv[])
 
   cally_util_a11y_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - Clone Test");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
+
   make_ui (stage);
 
   clutter_actor_show_all (stage);

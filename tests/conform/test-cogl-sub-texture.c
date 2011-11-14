@@ -339,7 +339,7 @@ test_cogl_sub_texture (TestConformSimpleFixture *fixture,
 
   state.frame = 0;
 
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
   state.tex = create_source ();
 
   clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
@@ -361,12 +361,8 @@ test_cogl_sub_texture (TestConformSimpleFixture *fixture,
 
   cogl_handle_unref (state.tex);
 
-  /* Remove all of the actors from the stage */
-  clutter_container_foreach (CLUTTER_CONTAINER (state.stage),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
+  clutter_actor_destroy (state.stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

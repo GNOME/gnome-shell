@@ -115,9 +115,10 @@ main (int argc, char *argv[])
   cogl_path_new ();
   context->cogl_path = cogl_get_path ();
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 400, 400);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   rect = clutter_rectangle_new_with_color (&actor_color);
   clutter_actor_set_size (rect, 300, 300);

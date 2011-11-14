@@ -79,7 +79,7 @@ if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
   state->animator = clutter_animator_new ();
   clutter_animator_set_duration (state->animator, 500);
 
-  state->stage = clutter_stage_get_default ();
+  state->stage = clutter_stage_new ();
   clutter_actor_set_size (state->stage, 400, 350);
   clutter_stage_set_color (CLUTTER_STAGE (state->stage), &stage_color);
   g_signal_connect (state->stage,

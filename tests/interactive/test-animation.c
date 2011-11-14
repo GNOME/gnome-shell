@@ -84,15 +84,16 @@ G_MODULE_EXPORT int
 test_animation_main (int argc, char *argv[])
 {
   ClutterActor *stage, *rect;
-  ClutterColor stage_color = { 0x66, 0x66, 0xdd, 0xff };
   ClutterColor rect_color = { 0x44, 0xdd, 0x44, 0xff };
   ClutterAction *action;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  stage = clutter_stage_new ();
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Animation");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   rect = clutter_rectangle_new_with_color (&rect_color);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);

@@ -146,7 +146,6 @@ GType         clutter_perspective_get_type    (void) G_GNUC_CONST;
 GType         clutter_fog_get_type            (void) G_GNUC_CONST;
 GType         clutter_stage_get_type          (void) G_GNUC_CONST;
 
-ClutterActor *clutter_stage_get_default       (void);
 ClutterActor *clutter_stage_new               (void);
 
 void          clutter_stage_set_color         (ClutterStage       *stage,
@@ -194,7 +193,6 @@ void                  clutter_stage_set_key_focus      (ClutterStage *stage,
 ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
 void                  clutter_stage_ensure_current     (ClutterStage *stage);
 void                  clutter_stage_queue_redraw       (ClutterStage *stage);
-gboolean              clutter_stage_is_default         (ClutterStage *stage);
 void                  clutter_stage_ensure_viewport    (ClutterStage *stage);
 void                  clutter_stage_ensure_redraw      (ClutterStage *stage);
 

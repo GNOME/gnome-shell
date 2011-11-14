@@ -302,7 +302,8 @@ main (int argc, char *argv[])
   if (clutter_init (&amp;argc, &amp;argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   actor = clutter_texture_new_from_file ("ohpowers.png", NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);

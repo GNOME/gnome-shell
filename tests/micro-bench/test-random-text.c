@@ -90,13 +90,16 @@ main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Random Text");
 
   clutter_actor_show (stage);
 
   clutter_threads_add_idle (on_idle, stage);
 
   clutter_main ();
+
+  clutter_actor_destroy (stage);
 
   return 0;
 }

@@ -117,10 +117,12 @@ test_multistage_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
   
-  stage_default = clutter_stage_get_default ();
+  stage_default = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage_default), "Default Stage");
   clutter_actor_set_name (stage_default, "Default Stage");
-
+  g_signal_connect (stage_default, "destroy",
+                    G_CALLBACK (clutter_main_quit),
+                    NULL);
   g_signal_connect (stage_default, "button-press-event",
                     G_CALLBACK (on_button_press),
                     NULL);

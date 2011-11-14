@@ -322,7 +322,7 @@ main (int   argc,
   state->expand = FALSE;
   state->x_align = CLUTTER_BOX_ALIGNMENT_START;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, STAGE_SIDE, STAGE_SIDE);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);

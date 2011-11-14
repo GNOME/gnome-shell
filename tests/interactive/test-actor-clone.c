@@ -10,10 +10,11 @@
 
 typedef struct SuperOH
 {
-  ClutterActor **hand, *bgtex;
-  ClutterActor  *real_hand;
-  ClutterActor  *group;
-  ClutterActor  *stage;
+  ClutterActor **hand;
+  ClutterActor *bgtex;
+  ClutterActor *real_hand;
+  ClutterActor *group;
+  ClutterActor *stage;
 
   gint stage_width;
   gint stage_height;
@@ -22,6 +23,8 @@ typedef struct SuperOH
   ClutterBehaviour *scaler_1;
   ClutterBehaviour *scaler_2;
   ClutterTimeline *timeline;
+
+  guint frame_id;
 } SuperOH;
 
 static gint n_hands = NHANDS;
@@ -35,6 +38,15 @@ static GOptionEntry super_oh_entries[] = {
   },
   { NULL }
 };
+
+static void
+clean_and_quit (ClutterActor *actor,
+                SuperOH      *oh)
+{
+  g_signal_handler_disconnect (oh->timeline, oh->frame_id);
+
+  clutter_main_quit ();
+}
 
 static gboolean
 on_button_press_event (ClutterActor *actor,
@@ -155,20 +167,23 @@ test_actor_clone_main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  stage = clutter_stage_get_default ();
+  oh = g_new (SuperOH, 1);
+
+  oh->stage = stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 800, 600);
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Clone Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
-  oh = g_new (SuperOH, 1);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clean_and_quit), oh);
 
   /* Create a timeline to manage animation */
   oh->timeline = clutter_timeline_new (6000);
   clutter_timeline_set_loop (oh->timeline, TRUE);
 
   /* fire a callback for frame change */
-  g_signal_connect (oh->timeline, "new-frame", G_CALLBACK (frame_cb), oh);
+  oh->frame_id =
+    g_signal_connect (oh->timeline, "new-frame", G_CALLBACK (frame_cb), oh);
 
   /* Set up some behaviours to handle scaling  */
   alpha = clutter_alpha_new_with_func (oh->timeline, my_sine_wave, NULL, NULL);
@@ -207,7 +222,7 @@ test_actor_clone_main (int argc, char *argv[])
   clutter_actor_hide (real_hand);
 
   /* create a new group to hold multiple actors in a group */
-  oh->group = clutter_group_new();
+  oh->group = clutter_group_new ();
 
   oh->hand = g_new (ClutterActor*, n_hands);
 
@@ -274,11 +289,12 @@ test_actor_clone_main (int argc, char *argv[])
 
   clutter_main ();
 
-  /* clean up */
   g_object_unref (oh->scaler_1);
   g_object_unref (oh->scaler_2);
   g_object_unref (oh->timeline);
+
   g_free (oh->hand);
+
   g_free (oh);
 
   return EXIT_SUCCESS;

@@ -149,7 +149,15 @@ main (int argc, char **argv)
       goto out;
     }
 
-  n_unit_names = g_strv_length (unit_names);
+  if (unit_names != NULL)
+    n_unit_names = g_strv_length (unit_names);
+  else
+    {
+      g_print ("Usage: test-interactive <unit_test>\n");
+      ret = EXIT_FAILURE;
+      goto out;
+    }
+
   for (i = 0; i < n_unit_names; i++)
     {
       const char *unit_name = unit_names[i];

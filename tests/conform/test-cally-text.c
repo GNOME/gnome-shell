@@ -279,7 +279,7 @@ cally_text (void)
 
   memset (&data, 0, sizeof (data));
 
-  data.stage = clutter_stage_get_default ();
+  data.stage = clutter_stage_new ();
 
   data.default_attributes = default_attributes;
   data.run_attributes = build_attribute_set ("fg-color", "0,0,0", NULL);
@@ -294,9 +294,8 @@ cally_text (void)
   data.extents_height = 17;
   clutter_actor_set_position (data.label, 20, 100);
 
-
   memset (&data1, 0, sizeof (data1));
-  data1.stage = clutter_stage_get_default ();
+  data1.stage = data.stage;
   data1.default_attributes = default_attributes;
   data1.run_attributes = build_attribute_set ("bg-color", "0,65535,0",
                                               "fg-color", "65535,65535,0",
@@ -314,10 +313,11 @@ cally_text (void)
   clutter_actor_set_position (data1.label, 20, 200);
   data.next = &data1;
 
-
   clutter_actor_show (data.stage);
   clutter_threads_add_idle ((GSourceFunc) do_tests, &data);
   clutter_main ();
+
+  clutter_actor_destroy (data.stage);
 
   if (g_test_verbose ())
     g_print ("\nOverall result: ");

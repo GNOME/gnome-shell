@@ -59,10 +59,11 @@ test_scale_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
-
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Scaling");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_actor_set_size (stage, 300, 300);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   rect = clutter_rectangle_new_with_color (&rect_color);
   clutter_actor_set_size (rect, 100, 100);
@@ -112,4 +113,10 @@ test_scale_main (int argc, char *argv[])
   g_object_unref (behave);
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_scale_describe (void)
+{
+  return "Scaling animation and scaling center changes";
 }

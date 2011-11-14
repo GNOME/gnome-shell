@@ -170,9 +170,11 @@ test_grab_main (int argc, char *argv[])
   g_print ("Green box:  toggle per actor motion events.\n\n");
   g_print ("Cyan  box:  toggle grab (from cyan box) for keyboard events.\n\n");
 
-  stage = clutter_stage_get_default ();
-  g_signal_connect (stage, "event", G_CALLBACK (debug_event_cb), "stage");
-
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Grabs");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
+  g_signal_connect (stage, "event",
+                    G_CALLBACK (debug_event_cb), "stage");
   g_signal_connect (stage, "fullscreen", 
 		    G_CALLBACK (stage_state_cb), "fullscreen");
   g_signal_connect (stage, "unfullscreen", 
@@ -240,4 +242,10 @@ test_grab_main (int argc, char *argv[])
   clutter_main();
 
   return 0;
+}
+
+G_MODULE_EXPORT const char *
+test_grab_describe (void)
+{
+  return "Examples of using actor grabs";
 }

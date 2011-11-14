@@ -117,9 +117,10 @@ main (int    argc,
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_get_size (stage, &stage_width, &stage_height);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Animate sub-textures");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   /* Load smiley.png, creating a new ClutterTexture, get its size and the
    * Cogl texture handle */
