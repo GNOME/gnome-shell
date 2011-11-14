@@ -677,7 +677,7 @@ actor_anchors (void)
   TestState state;
   ClutterActor *stage;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   state.rect = clutter_rectangle_new ();
   clutter_container_add (CLUTTER_CONTAINER (stage), state.rect, NULL);
@@ -699,6 +699,6 @@ actor_anchors (void)
 
   g_idle_remove_by_data (&state);
 
-  clutter_actor_destroy (state.rect);
+  clutter_actor_destroy (stage);
 }
 

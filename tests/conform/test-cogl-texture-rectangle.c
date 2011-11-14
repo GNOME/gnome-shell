@@ -248,7 +248,7 @@ test_cogl_texture_rectangle (TestConformSimpleFixture *fixture,
   guint idle_source;
   guint paint_handler;
 
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
 
   test_conform_get_gl_functions (&gl_functions);
 
@@ -272,6 +272,8 @@ test_cogl_texture_rectangle (TestConformSimpleFixture *fixture,
 
       g_source_remove (idle_source);
       g_signal_handler_disconnect (state.stage, paint_handler);
+
+      clutter_actor_destroy (state.stage);
 
       if (g_test_verbose ())
         g_print ("OK\n");

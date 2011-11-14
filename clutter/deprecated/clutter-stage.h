@@ -40,6 +40,15 @@ G_BEGIN_DECLS
 
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 
+CLUTTER_DEPRECATED_FOR(clutter_stage_new)
+ClutterActor *  clutter_stage_get_default       (void);
+
+CLUTTER_DEPRECATED
+gboolean        clutter_stage_is_default        (ClutterStage *stage);
+
+CLUTTER_DEPRECATED_FOR(clutter_actor_queue_redraw)
+void            clutter_stage_queue_redraw      (ClutterStage *stage);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_DEPRECATED_H__ */

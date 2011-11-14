@@ -684,13 +684,10 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
                                GError         **error)
 {
   ClutterBackendClass *klass;
-  ClutterStageManager *stage_manager;
   ClutterStageWindow *stage_window;
 
   g_assert (CLUTTER_IS_BACKEND (backend));
   g_assert (CLUTTER_IS_STAGE (wrapper));
-
-  stage_manager = clutter_stage_manager_get_default ();
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->create_stage != NULL)
@@ -702,8 +699,6 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
     return NULL;
 
   g_assert (CLUTTER_IS_STAGE_WINDOW (stage_window));
-  _clutter_stage_set_window (wrapper, stage_window);
-  _clutter_stage_manager_add_stage (stage_manager, wrapper);
 
   return stage_window;
 }

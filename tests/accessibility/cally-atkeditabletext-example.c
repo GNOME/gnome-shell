@@ -148,15 +148,14 @@ _create_button (const gchar *text)
   ClutterActor *button     = NULL;
   ClutterActor *rectangle  = NULL;
   ClutterActor *label      = NULL;
-  ClutterColor  color_rect = { 0x00, 0xff, 0xff, 0xff };
-  ClutterColor  color_label = { 0x00, 0x00, 0x00, 0xff };
 
   button = clutter_group_new ();
-  rectangle = clutter_rectangle_new_with_color (&color_rect);
+  rectangle = clutter_rectangle_new_with_color (CLUTTER_COLOR_Magenta);
   clutter_actor_set_size (rectangle, 375, 35);
 
   label = clutter_text_new_full ("Sans Bold 32px",
-                                 text, &color_label);
+                                 text,
+                                 CLUTTER_COLOR_Black);
   clutter_container_add_actor (CLUTTER_CONTAINER (button), rectangle);
   clutter_container_add_actor (CLUTTER_CONTAINER (button), label);
   clutter_actor_set_reactive (button, TRUE);
@@ -164,33 +163,30 @@ _create_button (const gchar *text)
   return button;
 }
 
-
 static void
 make_ui (ClutterActor *stage)
 {
-  ClutterColor  color_stage = { 0x00, 0x00, 0x00, 0xff };
-  ClutterColor  color_text  = { 0xff, 0x00, 0x00, 0xff };
-  ClutterColor  color_sel   = { 0x00, 0xff, 0x00, 0x55 };
   ClutterActor *button      = NULL;
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &color_stage);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkEditable Test");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_White);
   clutter_actor_set_size (stage, WIDTH, HEIGHT);
 
   /* text */
   text_actor = clutter_text_new_full ("Sans Bold 32px",
                                       "Lorem ipsum dolor sit amet",
-                                      &color_text);
+                                      CLUTTER_COLOR_Red);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text_actor);
 
   /* text_editable */
   text_editable_actor = clutter_text_new_full ("Sans Bold 32px",
                                                "consectetur adipisicing elit",
-                                               &color_text);
+                                               CLUTTER_COLOR_Red);
   clutter_actor_set_position (text_editable_actor, 0, 100);
   clutter_text_set_editable (CLUTTER_TEXT (text_editable_actor), TRUE);
   clutter_text_set_selectable (CLUTTER_TEXT (text_editable_actor), TRUE);
   clutter_text_set_selection_color (CLUTTER_TEXT (text_editable_actor),
-                                    &color_sel);
+                                    CLUTTER_COLOR_Green);
   clutter_text_set_activatable (CLUTTER_TEXT (text_editable_actor),
                                 TRUE);
   clutter_text_set_line_wrap (CLUTTER_TEXT (text_editable_actor), TRUE);
@@ -256,7 +252,8 @@ main (int argc, char *argv[])
 
   cally_util_a11y_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   make_ui (stage);
 

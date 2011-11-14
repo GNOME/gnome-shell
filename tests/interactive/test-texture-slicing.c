@@ -47,6 +47,12 @@ make_rgba_data (int width, int height, int bpp, int has_alpha, int *rowstride_p)
   return pixels;
 }
 
+static void
+exit_on_destroy (ClutterActor *actor)
+{
+  exit(EXIT_SUCCESS);
+}
+
 #define SPIN()   while (g_main_context_pending (NULL)) \
                      g_main_context_iteration (NULL, FALSE);
 
@@ -60,8 +66,9 @@ test_textures_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_show_all (CLUTTER_ACTOR (stage));
+  g_signal_connect (stage, "destroy", G_CALLBACK (exit_on_destroy), NULL);
 
   SPIN();
 

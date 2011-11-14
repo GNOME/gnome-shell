@@ -72,7 +72,6 @@ main (int argc, char **argv)
 {
   glong i;
   gdouble angle;
-  const ClutterColor black = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor color = { 0x00, 0x00, 0x00, 0xff };
   ClutterActor *stage, *rect;
   GError *error = NULL;
@@ -88,9 +87,10 @@ main (int argc, char **argv)
                               &error) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 512, 512);
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &black);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Picking");
 
   printf ("Picking performance test with "
           "%d actors and %d events per frame\n",
@@ -126,11 +126,13 @@ main (int argc, char **argv)
 
   clutter_actor_show (stage);
 
-  g_idle_add (queue_redraw, stage);
+  clutter_threads_add_idle (queue_redraw, stage);
 
   g_signal_connect (stage, "paint", G_CALLBACK (on_paint), NULL);
 
   clutter_main ();
+
+  clutter_actor_destroy (stage);
 
   return 0;
 }

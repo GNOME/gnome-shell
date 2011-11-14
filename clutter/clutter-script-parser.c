@@ -43,6 +43,8 @@
 #include "clutter-script-private.h"
 #include "clutter-scriptable.h"
 
+#include "clutter-stage-manager.h"
+
 #include "clutter-private.h"
 
 static void clutter_script_parser_object_end (JsonParser *parser,
@@ -1966,7 +1968,9 @@ _clutter_script_construct_object (ClutterScript *script,
 
   if (oinfo->is_stage && oinfo->is_stage_default)
     {
+      ClutterStageManager *manager = clutter_stage_manager_get_default ();
       GList *properties = oinfo->properties;
+      ClutterStage *default_stage;
 
       /* the default stage is a complex beast: we cannot create it using
        * g_object_newv() but we need clutter_script_construct_parameters()
@@ -1981,7 +1985,8 @@ _clutter_script_construct_object (ClutterScript *script,
                                              properties,
                                              &params);
 
-      oinfo->object = G_OBJECT (clutter_stage_get_default ());
+      default_stage = clutter_stage_manager_get_default_stage (manager);
+      oinfo->object = G_OBJECT (default_stage);
 
       for (i = 0; i < params->len; i++)
         {

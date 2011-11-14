@@ -92,24 +92,26 @@ G_MODULE_EXPORT gint
 test_state_main (gint    argc,
                   gchar **argv)
 {
-  ClutterColor  black={0,0,0,0xff};
   ClutterActor *stage;
   ClutterState *layout_state;
   gint i;
+
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
   layout_state = clutter_state_new ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &black);
-  clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
 
+  stage = clutter_stage_new ();
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "State Machine");
+  clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   g_signal_connect (stage, "button-press-event",
                     G_CALLBACK (press_event), layout_state);
   g_signal_connect (stage, "button-release-event",
                     G_CALLBACK (release_event), layout_state);
 
-  for (i=0; i<TOTAL; i++)
+  for (i = 0; i < TOTAL; i++)
     {
       ClutterActor *actor;
       ClutterState *a_state;
@@ -117,8 +119,8 @@ test_state_main (gint    argc,
       int row = i/COLS;
       int col = i%COLS;
 
-      actor = new_rect (255 * ( 1.0*col/COLS), 50,
-                        255 * ( 1.0*row/ROWS), 255);
+      actor = new_rect (255 * (1.0 * col / COLS), 50,
+                        255 * (1.0 * row / ROWS), 255);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
       clutter_actor_set_position (actor, 320.0, 240.0);
       clutter_actor_set_reactive (actor, TRUE);
@@ -187,7 +189,14 @@ test_state_main (gint    argc,
   clutter_state_set_state (layout_state, "active");
 
   clutter_main ();
+
   g_object_unref (layout_state);
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_state_describe (void)
+{
+  return "Animating using the State class.";
 }

@@ -23,6 +23,7 @@ static GOptionEntry entries[] = {
 
 typedef struct _TestState
 {
+  ClutterActor *stage;
   int current_test;
 } TestState;
 
@@ -89,8 +90,6 @@ test_rectangles (TestState *state)
           cogl_pop_matrix ();
         }
     }
-
-
 }
 
 TestCallback tests[] =
@@ -117,8 +116,6 @@ main (int argc, char *argv[])
 {
   TestState state;
   ClutterActor *stage;
-  ClutterColor stage_clr = {0x0, 0x0, 0x0, 0xff};
-  guint idle_source;
   GError *error = NULL;
 
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
@@ -139,13 +136,14 @@ main (int argc, char *argv[])
 
   state.current_test = 0;
 
-  stage = clutter_stage_get_default ();
+  state.stage = stage = clutter_stage_new ();
 
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_clr);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_White);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Performance Test");
 
   /* We want continuous redrawing of the stage... */
-  idle_source = g_idle_add (queue_redraw, stage);
+  clutter_threads_add_idle (queue_redraw, stage);
 
   g_signal_connect_after (stage, "paint", G_CALLBACK (on_paint), &state);
 
@@ -153,7 +151,7 @@ main (int argc, char *argv[])
 
   clutter_main ();
 
-  g_source_remove (idle_source);
+  clutter_actor_destroy (stage);
 
   return 0;
 }

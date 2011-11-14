@@ -239,7 +239,7 @@ test_shader_effect (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   ClutterActor *rect;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   rect = make_actor (foo_old_shader_effect_get_type ());
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
@@ -261,6 +261,8 @@ test_shader_effect (TestConformSimpleFixture *fixture,
   g_signal_connect_after (stage, "paint", G_CALLBACK (paint_cb), NULL);
 
   clutter_main ();
+
+  clutter_actor_destroy (stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");

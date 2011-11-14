@@ -203,7 +203,7 @@ clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
 {
 }
 
-/*
+/*< private >
  * _clutter_stage_manager_set_default_stage:
  * @stage_manager: a #ClutterStageManager
  * @stage: a #ClutterStage
@@ -211,10 +211,6 @@ clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
  * Sets @stage as the default stage
  *
  * A no-op if there already is a default stage
- *
- * This is called by clutter_stage_get_default() and should be removed
- * along with #ClutterStageManager:default-stage when we stop having
- * the default stage
  */
 void
 _clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
@@ -223,6 +219,9 @@ _clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
   if (G_UNLIKELY (default_stage == NULL))
     {
       default_stage = stage;
+
+      /* the default stage is immediately realized */
+      clutter_actor_realize (CLUTTER_ACTOR (stage));
 
       g_object_notify (G_OBJECT (stage_manager), "default-stage");
     }
@@ -312,10 +311,9 @@ _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
 
   stage_manager->stages = g_slist_remove (stage_manager->stages, stage);
 
-  /* if it's the default stage, get the first available from the list */
+  /* if the default stage is being destroyed then we unset the pointer */
   if (default_stage == stage)
-    default_stage = stage_manager->stages ? stage_manager->stages->data
-                                          : NULL;
+    default_stage = NULL;
 
   g_signal_emit (stage_manager, manager_signals[STAGE_REMOVED], 0, stage);
 

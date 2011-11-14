@@ -55,18 +55,20 @@ test_animator_main (gint    argc,
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Animator");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  for (i=0; i<COUNT; i++)
+  for (i = 0; i < COUNT; i++)
     {
-      rects[i]=new_rect (255 *(i * 1.0/COUNT), 50, 160, 255);
+      rects[i] = new_rect (255 * (i * 1.0 / COUNT), 50, 160, 255);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), rects[i]);
       clutter_actor_set_anchor_point (rects[i], 64, 64);
       clutter_actor_set_position (rects[i], 320.0, 240.0);
       clutter_actor_set_opacity (rects[i], 0x70);
     }
 
-  g_timeout_add (10000, nuke_one, rects[2]);
+  clutter_threads_add_timeout (10000, nuke_one, rects[2]);
 
   animator = clutter_animator_new ();
 
@@ -129,6 +131,7 @@ test_animator_main (gint    argc,
   g_signal_connect (clutter_animator_start (animator),
                     "completed", G_CALLBACK (reverse_timeline), NULL);
   clutter_main ();
+
   g_object_unref (animator);
 
   return EXIT_SUCCESS;

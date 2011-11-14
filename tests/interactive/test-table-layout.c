@@ -171,10 +171,11 @@ test_table_layout_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Table Layout");
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_size (stage, 640, 480);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   layout = clutter_table_layout_new ();
   clutter_table_layout_set_column_spacing (CLUTTER_TABLE_LAYOUT (layout), 10);
@@ -278,5 +279,5 @@ test_table_layout_main (int argc, char *argv[])
 G_MODULE_EXPORT const char *
 test_table_layout_describe (void)
 {
-  return "Table layout manager";
+  return "TableLayout layout manager example.";
 }

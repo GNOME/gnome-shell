@@ -53,7 +53,6 @@ gint
 main (gint    argc,
       gchar **argv)
 {
-  ClutterColor  black={0,0,0,0xff};
   ClutterActor *stage;
   ClutterActor *group;
   ClutterState *layout_state;
@@ -63,11 +62,13 @@ main (gint    argc,
   if (CLUTTER_INIT_SUCCESS != clutter_init (&argc, &argv))
     g_error ("Failed to initialize Clutter");
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   group = clutter_group_new ();
   layout_state = clutter_state_new ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &black);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "State Performance [hidden]");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Black);
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   for (i=0; i<TOTAL; i++)
     {

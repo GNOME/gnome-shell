@@ -240,7 +240,7 @@ actor_picking (void)
   
   state.pass = TRUE;
 
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
 
   state.actor_width = STAGE_WIDTH / ACTORS_X;
   state.actor_height = STAGE_HEIGHT / ACTORS_Y;
@@ -271,9 +271,10 @@ actor_picking (void)
 
   clutter_main ();
 
-
   if (g_test_verbose ())
     g_print ("end result: %s\n", state.pass ? "pass" : "FAIL");
 
   g_assert (state.pass);
+
+  clutter_actor_destroy (state.stage);
 }

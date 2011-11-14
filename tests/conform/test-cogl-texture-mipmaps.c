@@ -111,8 +111,7 @@ test_cogl_texture_mipmaps (TestConformSimpleFixture *fixture,
   ClutterActor *group;
   guint idle_source;
 
-  stage = clutter_stage_get_default ();
-
+  stage = clutter_stage_new ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
   group = clutter_group_new ();
@@ -130,6 +129,8 @@ test_cogl_texture_mipmaps (TestConformSimpleFixture *fixture,
   clutter_main ();
 
   g_source_remove (idle_source);
+
+  clutter_actor_destroy (stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");

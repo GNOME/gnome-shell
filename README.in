@@ -289,6 +289,12 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• The "default stage" has been deprecated; since the 1.0 release, the default
+  stage creation was deferred to the call to clutter_stage_get_default(), and
+  the preferred way for getting a ClutterStage was calling clutter_stage_new()
+  instead. On platforms that do not support multiple stages, attempting to
+  create more than one stage will lead to an error, and Clutter will abort.
+
 • Clutter can support multiple backends in the same shared library. Only one
   windowing or input backend can be used at run time. As a result of this
   change, the shared library name used by Clutter has changed from:

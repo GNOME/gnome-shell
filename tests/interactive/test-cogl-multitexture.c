@@ -102,7 +102,7 @@ test_cogl_multitexture_main (int argc, char *argv[])
   ClutterActor	    *stage;
   ClutterColor       stage_color = { 0x61, 0x56, 0x56, 0xff };
   TestMultiLayerMaterialState *state = g_new0 (TestMultiLayerMaterialState, 1);
-  ClutterGeometry    geom;
+  gfloat             stage_w, stage_h;
   gchar            **files;
   gfloat             tex_coords[] =
     {
@@ -115,17 +115,20 @@ test_cogl_multitexture_main (int argc, char *argv[])
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
-  clutter_actor_get_geometry (stage, &geom);
+  stage = clutter_stage_new ();
+  clutter_actor_get_size (stage, &stage_w, &stage_h);
 
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl: Multi-texturing");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   /* We create a non-descript actor that we know doesn't have a
    * default paint handler, so that we can easily control
    * painting in a paint signal handler, without having to
    * sub-class anything etc. */
   state->group = clutter_group_new ();
-  clutter_actor_set_position (state->group, geom.width/2, geom.height/2);
+  clutter_actor_set_position (state->group, stage_w / 2, stage_h / 2);
   g_signal_connect (state->group, "paint",
 		    G_CALLBACK(material_rectangle_paint), state);
 
@@ -226,4 +229,10 @@ test_cogl_multitexture_main (int argc, char *argv[])
   g_free (state);
 
   return 0;
+}
+
+G_MODULE_EXPORT const char *
+test_cogl_multitexture_describe (void)
+{
+  return "Multi-texturing support in Cogl.";
 }

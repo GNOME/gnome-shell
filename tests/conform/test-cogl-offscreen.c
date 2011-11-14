@@ -142,7 +142,7 @@ test_cogl_offscreen (TestConformSimpleFixture *fixture,
   guint idle_source;
   ClutterActor *stage;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
   /* We force continuous redrawing of the stage, since we need to skip
@@ -156,12 +156,8 @@ test_cogl_offscreen (TestConformSimpleFixture *fixture,
 
   g_source_remove (idle_source);
 
-  /* Remove all of the actors from the stage */
-  clutter_container_foreach (CLUTTER_CONTAINER (stage),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
+  clutter_actor_destroy (stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

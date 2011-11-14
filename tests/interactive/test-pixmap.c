@@ -235,9 +235,11 @@ test_pixmap_main (int argc, char **argv)
 
   XMapWindow (xdpy, win_remote);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_position (stage, 0, 150);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &gry);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "X11 Texture from Pixmap");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   timeline = clutter_timeline_new (5000);
   g_signal_connect (timeline,
@@ -314,4 +316,10 @@ test_pixmap_main (int argc, char **argv)
   clutter_main ();
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_pixmap_describe (void)
+{
+  return "GLX Texture from pixmap extension support.";
 }

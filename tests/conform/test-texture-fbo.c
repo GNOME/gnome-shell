@@ -173,14 +173,12 @@ test_texture_fbo (TestConformSimpleFixture *fixture,
                   gconstpointer data)
 {
   TestState state;
-  guint idle_source;
-  gulong paint_handler;
   ClutterActor *actor;
   int ypos = 0;
 
   state.frame = 0;
 
-  state.stage = clutter_stage_get_default ();
+  state.stage = clutter_stage_new ();
 
   clutter_stage_set_color (CLUTTER_STAGE (state.stage), &stage_color);
 
@@ -229,25 +227,15 @@ test_texture_fbo (TestConformSimpleFixture *fixture,
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that
    * will trigger redrawing. */
-  idle_source = g_idle_add (queue_redraw, state.stage);
-
-  paint_handler = g_signal_connect_after (state.stage, "paint",
-                                          G_CALLBACK (on_paint), &state);
+  g_idle_add (queue_redraw, state.stage);
+  g_signal_connect_after (state.stage, "paint", G_CALLBACK (on_paint), &state);
 
   clutter_actor_show_all (state.stage);
 
   clutter_main ();
 
-  g_signal_handler_disconnect (state.stage, paint_handler);
-
-  g_source_remove (idle_source);
-
-  /* Remove all of the actors from the stage */
-  clutter_container_foreach (CLUTTER_CONTAINER (state.stage),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
+  clutter_actor_destroy (state.stage);
 
   if (g_test_verbose ())
     g_print ("OK\n");
 }
-

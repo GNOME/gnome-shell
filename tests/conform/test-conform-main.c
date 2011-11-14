@@ -145,6 +145,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
   TEST_CONFORM_SIMPLE ("/invariants", test_clone_no_map);
   TEST_CONFORM_SIMPLE ("/invariants", test_contains);
+  TEST_CONFORM_SIMPLE ("/invariants", default_stage);
 
   TEST_CONFORM_SIMPLE ("/opacity", test_label_opacity);
   TEST_CONFORM_SIMPLE ("/opacity", test_rectangle_opacity);

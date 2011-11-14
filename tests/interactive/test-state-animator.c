@@ -52,14 +52,17 @@ test_state_animator_main (gint    argc,
   ClutterActor *stage;
   ClutterActor *rects[40];
   gint i;
+
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "State and Animator");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  for (i=0; i<2; i++)
+  for (i = 0; i < 2; i++)
     {
-      rects[i]=new_rect (255 *(i * 1.0/40), 50, 160, 255);
+      rects[i] = new_rect (255 * (i * 1.0 / 40), 50, 160, 255);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), rects[i]);
       clutter_actor_set_anchor_point (rects[i], 64, 64);
       clutter_actor_set_position (rects[i], 320.0, 240.0);
@@ -132,4 +135,10 @@ test_state_animator_main (gint    argc,
   g_object_unref (state);
 
   return EXIT_SUCCESS;
+}
+
+G_MODULE_EXPORT const char *
+test_state_animator_describe (void)
+{
+  return "Animate using the State and Animator classes.";
 }

@@ -33,7 +33,7 @@ test_texture_pick_with_alpha (TestConformSimpleFixture *fixture,
                               gconstpointer data)
 {
   ClutterTexture *tex = CLUTTER_TEXTURE (clutter_texture_new ());
-  ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
+  ClutterStage *stage = CLUTTER_STAGE (clutter_stage_new ());
   ClutterActor *actor;
 
   clutter_texture_set_cogl_texture (tex, make_texture ());
@@ -81,7 +81,7 @@ test_texture_pick_with_alpha (TestConformSimpleFixture *fixture,
     g_print ("actor @ (10, 10) = %p\n", actor);
   g_assert (actor == CLUTTER_ACTOR (tex));
 
-  clutter_actor_destroy (CLUTTER_ACTOR (tex));
+  clutter_actor_destroy (CLUTTER_ACTOR (stage));
 
   if (g_test_verbose ())
     g_print ("OK\n");
