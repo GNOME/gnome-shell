@@ -111,7 +111,6 @@ const GridSearchResults = new Lang.Class({
         this.actor = new St.Bin({ x_align: St.Align.START });
 
         this.actor.set_child(this._grid.actor);
-        this.selectionIndex = -1;
         this._width = 0;
         this.actor.connect('notify::width', Lang.bind(this, function() {
             this._width = this.actor.width;
@@ -164,32 +163,7 @@ const GridSearchResults = new Lang.Class({
 
     clear: function () {
         this._grid.removeAll();
-        this.selectionIndex = -1;
         this._pendingClear = false;
-    },
-
-    selectIndex: function (index) {
-        let nVisible = this.getVisibleResultCount();
-        if (this.selectionIndex >= 0) {
-            let prevActor = this._grid.getItemAtIndex(this.selectionIndex);
-            prevActor._delegate.setSelected(false);
-        }
-        this.selectionIndex = -1;
-        if (index >= nVisible)
-            return false;
-        else if (index < 0)
-            return false;
-        let targetActor = this._grid.getItemAtIndex(index);
-        targetActor._delegate.setSelected(true);
-        this.selectionIndex = index;
-        return true;
-    },
-
-    activateSelected: function() {
-        if (this.selectionIndex < 0)
-            return;
-        let targetActor = this._grid.getItemAtIndex(this.selectionIndex);
-        targetActor._delegate.activate();
     },
 
     getFirstResult: function() {
@@ -238,7 +212,6 @@ const SearchResults = new Lang.Class({
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._content.add(this._statusText);
-        this._selectedProvider = -1;
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
         this._providerMetaResults = {};
@@ -258,21 +231,11 @@ const SearchResults = new Lang.Class({
     },
 
     _updateOpenSearchProviderButtons: function() {
-        this._selectedOpenSearchButton = -1;
         for (let i = 0; i < this._openSearchProviders.length; i++)
             this._openSearchProviders[i].actor.destroy();
         this._openSearchProviders = this._openSearchSystem.getProviders();
         for (let i = 0; i < this._openSearchProviders.length; i++)
             this._createOpenSearchProviderButton(this._openSearchProviders[i]);
-    },
-
-    _updateOpenSearchButtonState: function() {
-         for (let i = 0; i < this._openSearchProviders.length; i++) {
-             if (i == this._selectedOpenSearchButton)
-                 this._openSearchProviders[i].actor.add_style_pseudo_class('selected');
-             else
-                 this._openSearchProviders[i].actor.remove_style_pseudo_class('selected');
-         }
     },
 
     _createOpenSearchProviderButton: function(provider) {
@@ -343,7 +306,6 @@ const SearchResults = new Lang.Class({
     },
 
     _clearDisplay: function() {
-        this._selectedProvider = -1;
         this._visibleResultsCount = 0;
         for (let i = 0; i < this._providerMeta.length; i++) {
             let meta = this._providerMeta[i];
@@ -362,8 +324,6 @@ const SearchResults = new Lang.Class({
         this._searchSystem.reset();
         this._statusText.hide();
         this._clearDisplay();
-        this._selectedOpenSearchButton = -1;
-        this._updateOpenSearchButtonState();
     },
 
     startingSearch: function() {
@@ -381,9 +341,6 @@ const SearchResults = new Lang.Class({
     },
 
     _maybeSetInitialSelection: function() {
-        if (this._selectedOpenSearchButton > -1 || this._selectedProvider > -1)
-            return;
-
         let newDefaultResult = null;
 
         for (let i = 0; i < this._providerMeta.length; i++) {
@@ -453,9 +410,6 @@ const SearchResults = new Lang.Class({
             this._statusText.set_text(_("No matching results."));
             this._statusText.show();
         } else {
-            this._selectedOpenSearchButton = -1;
-            this._updateOpenSearchButtonState();
-            this._selectedProvider = -1;
             this._statusText.hide();
         }
 
@@ -479,94 +433,6 @@ const SearchResults = new Lang.Class({
         this._content.show();
 
         return true;
-    },
-
-    _modifyActorSelection: function(resultDisplay, up) {
-        let success;
-        let index = resultDisplay.getSelectionIndex();
-        if (up && index == -1)
-            index = resultDisplay.getVisibleResultCount() - 1;
-        else if (up)
-            index = index - 1;
-        else
-            index = index + 1;
-        return resultDisplay.selectIndex(index);
-    },
-
-    selectUp: function(recursing) {
-        if (this._selectedOpenSearchButton == -1) {
-            for (let i = this._selectedProvider; i >= 0; i--) {
-                let meta = this._providerMeta[i];
-                if (!meta.actor.visible)
-                    continue;
-                let success = this._modifyActorSelection(meta.resultDisplay, true);
-                if (success) {
-                    this._selectedProvider = i;
-                    return;
-                }
-            }
-        }
-
-        if (this._selectedOpenSearchButton == -1)
-            this._selectedOpenSearchButton = this._openSearchProviders.length;
-        this._selectedOpenSearchButton--;
-        this._updateOpenSearchButtonState();
-        if (this._selectedOpenSearchButton >= 0)
-            return;
-
-        if (this._providerMeta.length > 0 && !recursing) {
-            this._selectedProvider = this._providerMeta.length - 1;
-            this.selectUp(true);
-        }
-    },
-
-    selectDown: function(recursing) {
-        let current = this._selectedProvider;
-        if (this._selectedOpenSearchButton == -1) {
-            if (current == -1)
-                current = 0;
-            for (let i = current; i < this._providerMeta.length; i++) {
-                let meta = this._providerMeta[i];
-                if (!meta.actor.visible)
-                    continue;
-                 let success = this._modifyActorSelection(meta.resultDisplay, false);
-                 if (success) {
-                    this._selectedProvider = i;
-                    return;
-                 }
-            }
-        }
-        this._selectedOpenSearchButton++;
-
-        if (this._selectedOpenSearchButton < this._openSearchProviders.length) {
-            this._updateOpenSearchButtonState();
-            return;
-        }
-
-        this._selectedOpenSearchButton = -1;
-        this._updateOpenSearchButtonState();
-
-        if (this._providerMeta.length > 0 && !recursing) {
-            this._selectedProvider = 0;
-            this.selectDown(true);
-        }
-    },
-
-    activateSelected: function() {
-        if (this._selectedOpenSearchButton != -1) {
-            let provider = this._openSearchProviders[this._selectedOpenSearchButton];
-            this._openSearchSystem.activateResult(provider.id);
-            Main.overview.hide();
-            return;
-        }
-
-        let current = this._selectedProvider;
-        if (current < 0)
-            return;
-        let meta = this._providerMeta[current];
-        let resultDisplay = meta.resultDisplay;
-        resultDisplay.activateSelected();
-        Main.overview.hide();
     },
 
     activateDefault: function() {

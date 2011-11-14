@@ -29,7 +29,6 @@ const SearchResultDisplay = new Lang.Class({
     _init: function(provider) {
         this.provider = provider;
         this.actor = null;
-        this.selectionIndex = -1;
     },
 
     /**
@@ -51,20 +50,10 @@ const SearchResultDisplay = new Lang.Class({
 
     /**
      * clear:
-     * Remove all results from this display and reset the selection index.
+     * Remove all results from this display.
      */
     clear: function() {
         this.actor.get_children().forEach(function (actor) { actor.destroy(); });
-        this.selectionIndex = -1;
-    },
-
-    /**
-     * getSelectionIndex:
-     *
-     * Returns the index of the selected actor, or -1 if none.
-     */
-    getSelectionIndex: function() {
-        return this.selectionIndex;
     },
 
     /**
@@ -75,25 +64,6 @@ const SearchResultDisplay = new Lang.Class({
     getVisibleResultCount: function() {
         throw new Error('Not implemented');
     },
-
-    /**
-     * selectIndex:
-     * @index: Integer index
-     *
-     * Move selection to the given index.
-     * Return true if successful, false if no more results
-     * available.
-     */
-    selectIndex: function() {
-        throw new Error('Not implemented');
-    },
-
-    /**
-     * Activate the currently selected search result.
-     */
-    activateSelected: function() {
-        throw new Error('Not implemented');
-    }
 });
 
 /**
