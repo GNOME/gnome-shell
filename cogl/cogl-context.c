@@ -408,12 +408,6 @@ _cogl_context_free (CoglContext *context)
 
   winsys->context_deinit (context);
 
-  if (context->window_buffer)
-    {
-      cogl_object_unref (context->window_buffer);
-      context->window_buffer = NULL;
-    }
-
   _cogl_free_framebuffer_stack (context->framebuffer_stack);
 
   if (context->current_path)
