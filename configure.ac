@@ -82,7 +82,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
                                folks >= $FOLKS_MIN_VERSION
                                libmutter >= $MUTTER_MIN_VERSION
                                gjs-internals-1.0 >= $GJS_MIN_VERSION
-			       libgnome-menu-3.0 $recorder_modules gconf-2.0
+			       libgnome-menu-3.0 $recorder_modules
                                gdk-x11-3.0 libsoup-2.4
 			       clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
 			       clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
