@@ -134,9 +134,6 @@ struct _ClutterMainContext
   /* the main event queue */
   GQueue *events_queue;
 
-  /* timer used to print the FPS count */
-  GTimer *timer;
-
   ClutterPickMode  pick_mode;
 
   /* mapping between reused integer ids and actors */

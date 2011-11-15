@@ -1393,11 +1393,6 @@ clutter_context_get_default_unlocked (void)
       ctx->settings = clutter_settings_get_default ();
       _clutter_settings_set_backend (ctx->settings, ctx->backend);
 
-#ifdef CLUTTER_ENABLE_DEBUG
-      ctx->timer = g_timer_new ();
-      g_timer_start (ctx->timer);
-#endif
-
       ctx->motion_events_per_actor = TRUE;
       ctx->last_repaint_id = 1;
     }
@@ -1431,21 +1426,9 @@ gulong
 clutter_get_timestamp (void)
 {
 #ifdef CLUTTER_ENABLE_DEBUG
-  ClutterMainContext *ctx;
-  gdouble seconds;
-
-  _clutter_context_lock ();
-
-  ctx = clutter_context_get_default_unlocked ();
-
-  /* FIXME: may need a custom timer for embedded setups */
-  seconds = g_timer_elapsed (ctx->timer, NULL);
-
-  _clutter_context_unlock ();
-
-  return (gulong)(seconds / 1.0e-6);
+  return (gulong) g_get_monotonic_time ();
 #else
-  return 0;
+  return 0L;
 #endif
 }
 
