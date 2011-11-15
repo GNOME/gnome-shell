@@ -156,7 +156,7 @@ GnomeShell.prototype = {
     },
 
     ListExtensions: function() {
-        let out;
+        let out = {};
         for (let uuid in ExtensionSystem.extensionMeta) {
             let dbusObj = this.GetExtensionInfo(uuid);
             out[uuid] = dbusObj;
@@ -166,7 +166,7 @@ GnomeShell.prototype = {
 
     GetExtensionInfo: function(uuid) {
         let meta = ExtensionSystem.extensionMeta[uuid] || {};
-        let out;
+        let out = {};
         for (let key in meta) {
             let val = meta[key];
             let type;
