@@ -600,9 +600,9 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
 
   g_object_ref (timeline);
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Timeline [%p] activated (cur: %ld)\n",
-                     timeline,
-                     (long) priv->elapsed_time);
+  CLUTTER_NOTE (SCHEDULER, "Timeline [%p] activated (cur: %ld)\n",
+                timeline,
+                (long) priv->elapsed_time);
 
   /* Advance time */
   if (priv->direction == CLUTTER_TIMELINE_FORWARD)
