@@ -1417,10 +1417,22 @@ _clutter_context_get_default (void)
 /**
  * clutter_get_timestamp:
  *
- * Returns the approximate number of microseconds passed since clutter was
+ * Returns the approximate number of microseconds passed since Clutter was
  * intialised.
  *
- * Return value: Number of microseconds since clutter_init() was called.
+ * This function shdould not be used by application code.
+ *
+ * The output of this function depends on whether Clutter was configured to
+ * enable its debugging code paths, so it's less useful than intended.
+ *
+ * Since Clutter 1.10, this function is an alias to g_get_monotonic_time()
+ * if Clutter was configured to enable the debugging code paths.
+ *
+ * Return value: Number of microseconds since clutter_init() was called, or
+ *   zero if Clutter was not configured with debugging code paths.
+ *
+ * Deprecated: 1.10: Use #GTimer or g_get_monotonic_time() for a proper
+ *   timing source
  */
 gulong
 clutter_get_timestamp (void)

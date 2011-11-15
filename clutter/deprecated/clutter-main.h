@@ -51,6 +51,9 @@ void                    clutter_ungrab_pointer_for_device       (gint           
 CLUTTER_DEPRECATED
 void                    clutter_set_default_frame_rate          (guint             frames_per_sec);
 
+CLUTTER_DEPRECATED
+gulong                  clutter_get_timestamp                   (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_MAIN_DEPRECATED_H__ */
