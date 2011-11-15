@@ -288,7 +288,7 @@ copy ..\..\..\clutter\deprecated\clutter-frame-source.h $(CopyDir)\include\clutt
 
 copy ..\..\..\clutter\deprecated\clutter-group.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
-copy ..\..\..\clutter\deprecated\clutter-keysyms-compat.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
+copy ..\..\..\clutter\deprecated\clutter-keysyms.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 
 copy ..\..\..\clutter\deprecated\clutter-main.h $(CopyDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated
 

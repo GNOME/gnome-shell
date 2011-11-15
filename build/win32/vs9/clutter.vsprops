@@ -208,7 +208,7 @@ copy ..\..\..\clutter\deprecated\clutter-behaviour-scale.h $(OutDir)\include\clu
 copy ..\..\..\clutter\deprecated\clutter-group.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-fixed.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-frame-source.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
-copy ..\..\..\clutter\deprecated\clutter-keysyms-compat.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
+copy ..\..\..\clutter\deprecated\clutter-keysyms.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-main.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-score.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-shader.h $(OutDir)\include\clutter-$(ClutterApiVersion)\clutter\deprecated&#x0D;&#x0A;
