@@ -329,7 +329,7 @@ const NMDevice = new Lang.Class({
         }
         this.section = new PopupMenu.PopupMenuSection();
 
-        this._createSection();
+        this._deferredWorkId = Main.initializeDeferredWork(this.section.actor, Lang.bind(this, this._createSection));
     },
 
     destroy: function() {
@@ -396,16 +396,29 @@ const NMDevice = new Lang.Class({
         this._activeConnection = activeConnection;
 
         this._clearSection();
-        this._createSection();
+        this._queueCreateSection();
     },
 
     checkConnection: function(connection) {
-        let exists = this._findConnection(connection._uuid) != -1;
+        let pos = this._findConnection(connection._uuid);
+        let exists = pos != -1;
         let valid = this.connectionValid(connection);
+
         if (exists && !valid)
             this.removeConnection(connection);
         else if (!exists && valid)
             this.addConnection(connection);
+        else if (exists && valid) {
+            // propagate changes and update the UI
+
+            if (this._connections[pos].timestamp != connection._timestamp) {
+                this._connections[pos].timestamp = connection._timestamp;
+                this._connections.sort(this._connectionSortFunction);
+
+                this._clearSection();
+                this._queueCreateSection();
+            }
+        }
     },
 
     addConnection: function(connection) {
@@ -420,7 +433,7 @@ const NMDevice = new Lang.Class({
         this._connections.sort(this._connectionSortFunction);
 
         this._clearSection();
-        this._createSection();
+        this._queueCreateSection();
     },
 
     removeConnection: function(connection) {
@@ -444,7 +457,7 @@ const NMDevice = new Lang.Class({
             // (or in the case of NMDeviceWired, we want to hide
             // the only explicit connection)
             this._clearSection();
-            this._createSection();
+            this._queueCreateSection();
         }
     },
 
@@ -526,6 +539,11 @@ const NMDevice = new Lang.Class({
                 return i;
         }
         return -1;
+    },
+
+    _queueCreateSection: function() {
+        this._clearSection();
+        Main.queueDeferredWork(this._deferredWorkId);
     },
 
     _clearSection: function() {
@@ -622,7 +640,7 @@ const NMDevice = new Lang.Class({
         this._updateStatusItem();
 
         this._clearSection();
-        this._createSection();
+        this._queueCreateSection();
         this.emit('state-changed');
     },
 
@@ -866,7 +884,12 @@ const NMDeviceBluetooth = new Lang.Class({
         this._autoConnectionName = this._makeConnectionName(this.device);
 
         this._clearSection();
-        this._createSection();
+        this._queueCreateSection();
+        this._updateStatusItem();
+    },
+
+    _getDescription: function() {
+        return this.device.name || _("Bluetooth");
     }
 });
 
@@ -1227,36 +1250,8 @@ const NMDeviceWireless = new Lang.Class({
         }
 
         if (needsupdate) {
-            if (apObj.item)
-                apObj.item.destroy();
-
-            if (pos != -1)
-                this._networks.splice(pos, 1);
-
-            if (this._networks.length == 0) {
-                // only network in the list
-                this._networks.push(apObj);
-                this._clearSection();
-                this._createSection();
-                return;
-            }
-
-            // skip networks that should appear earlier
-            let menuPos = 0;
-            for (pos = 0;
-                 pos < this._networks.length &&
-                 this._networkSortFunction(this._networks[pos], apObj) < 0; ++pos) {
-                if (this._networks[pos] != this._activeNetwork)
-                    menuPos++;
-            }
-
-            // (re-)add the network
-            this._networks.splice(pos, 0, apObj);
-
-            if (this._shouldShowConnectionList()) {
-                menuPos += (this._activeConnectionItem ? 1 : 0);
-                this._createNetworkItem(apObj, menuPos);
-            }
+            this._clearSection();
+            this._queueCreateSection();
         }
     },
 
@@ -1343,7 +1338,7 @@ const NMDeviceWireless = new Lang.Class({
         let obj = this._connections[pos];
         this._connections.splice(pos, 1);
 
-        let anyauto = false, forceupdate = false;
+        let forceupdate = false;
         for (let i = 0; i < this._networks.length; i++) {
             let apObj = this._networks[i];
             let connections = apObj.connections;
@@ -1351,16 +1346,14 @@ const NMDeviceWireless = new Lang.Class({
                 if (connections[k]._uuid == connection._uuid) {
                     // remove the connection from the access point group
                     connections.splice(k);
-                    anyauto = connections.length == 0;
+                    forceupdate = forceupdate || connections.length == 0;
 
-                    if (anyauto) {
-                        // this potentially changes the sorting order
-                        forceupdate = true;
+                    if (forceupdate)
                         break;
-                    }
+
                     if (apObj.item) {
                         if (apObj.item instanceof PopupMenu.PopupSubMenuMenuItem) {
-                            let items = apObj.item.menu.getMenuItems();
+                            let items = apObj.item.menu._getMenuItems();
                             if (items.length == 2) {
                                 // we need to update the connection list to convert this to a normal item
                                 forceupdate = true;
@@ -1382,10 +1375,10 @@ const NMDeviceWireless = new Lang.Class({
             }
         }
 
-        if (forceupdate || anyauto) {
+        if (forceupdate) {
             this._networks.sort(this._networkSortFunction);
             this._clearSection();
-            this._createSection();
+            this._queueCreateSection();
         }
     },
 
@@ -1418,13 +1411,13 @@ const NMDeviceWireless = new Lang.Class({
         if (forceupdate) {
             this._networks.sort(this._networkSortFunction);
             this._clearSection();
-            this._createSection();
+            this._queueCreateSection();
         }
     },
 
     _createActiveConnectionItem: function() {
         let icon, title;
-        if (this._activeConnection._connection) {
+        if (this._activeConnection && this._activeConnection._connection) {
             let connection = this._activeConnection._connection;
             if (this._activeNetwork)
                 this._activeConnectionItem = new NMNetworkMenuItem(this._activeNetwork.accessPoints, undefined,
@@ -1517,7 +1510,7 @@ const NMDeviceWireless = new Lang.Class({
         if (!this._shouldShowConnectionList())
             return;
 
-        if(this._activeConnection) {
+        if (this._activeNetwork) {
             this._createActiveConnectionItem();
             this.section.addMenuItem(this._activeConnectionItem);
         }
