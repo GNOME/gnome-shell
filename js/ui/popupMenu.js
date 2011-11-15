@@ -870,6 +870,10 @@ const PopupMenuBase = new Lang.Class({
         return menuItem;
     },
 
+    isEmpty: function() {
+        return this.box.get_children().length == 0;
+    },
+
     isChildMenu: function(menu) {
         return this._childMenus.indexOf(menu) != -1;
     },
@@ -1195,6 +1199,9 @@ const PopupMenu = new Lang.Class({
         if (this.isOpen)
             return;
 
+        if (this.isEmpty())
+            return;
+
         this.isOpen = true;
 
         this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
@@ -1284,6 +1291,9 @@ const PopupSubMenu = new Lang.Class({
 
     open: function(animate) {
         if (this.isOpen)
+            return;
+
+        if (this.isEmpty())
             return;
 
         this.isOpen = true;
@@ -1528,6 +1538,9 @@ const PopupComboMenu = new Lang.Class({
 
     open: function() {
         if (this.isOpen)
+            return;
+
+        if (this.isEmpty())
             return;
 
         this.isOpen = true;
