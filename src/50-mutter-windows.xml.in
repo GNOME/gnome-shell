@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.mutter.keybindings"
+                group="system"
+                _name="Windows"
+                wm_name="Mutter"
+                package="mutter">
+
+	<KeyListEntry name="toggle-tiled-left"
+                      _description="View split on left"/>
+
+	<KeyListEntry name="toggle-tiled-right"
+                      _description="View split on right"/>
+
+</KeyListEntries>
+

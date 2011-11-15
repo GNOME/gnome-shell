@@ -261,6 +261,11 @@ wmproperties_in_files=mutter-wm.desktop.in
 wmproperties_files=$(wmproperties_in_files:.desktop.in=.desktop)
 wmproperties_DATA = $(wmproperties_files)
 
+xmldir       = @GNOME_KEYBINDINGS_KEYSDIR@
+xml_in_files = \
+        50-mutter-windows.xml.in
+xml_DATA     = $(xml_in_files:.xml.in=.xml)
+
 gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
@@ -279,6 +284,7 @@ CLEANFILES =					\
 	mutter.desktop				\
 	mutter-wm.desktop			\
 	org.gnome.mutter.gschema.xml		\
+	$(xml_DATA)				\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
 	$(gir_DATA)
@@ -295,6 +301,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(IMAGES) 			\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
+	$(xml_in_files)			\
 	org.gnome.mutter.gschema.xml.in \
 	mutter-schemas.convert \
 	libmutter.pc.in \
