@@ -126,12 +126,40 @@
       <Project>{75f9e5af-040c-448e-96be-c282efffe2d9}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="test-picking-performance.vcxproj">
+      <Project>{2035d56a-e748-475f-b3d5-c123bf652143}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="test-picking.vcxproj">
       <Project>{f433db3c-1223-489a-ad0c-c64b09f51139}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="test-random-text.vcxproj">
       <Project>{b8849c58-6773-453c-a2e5-00f02ee20b18}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="test-state-hidden-performance.vcxproj">
+      <Project>{2d60135e-2e37-4f54-a1c5-43bcd5bbba4f}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="test-state-interactive-performance.vcxproj">
+      <Project>{011f9197-f986-44bd-a8f2-045c746b1b70}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="test-state-mini-performance.vcxproj">
+      <Project>{d4a09850-e35b-4124-a9ff-784ab5bbcd2c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="test-state-performance.vcxproj">
+      <Project>{bee86058-b4bf-4aa5-91bf-e3620538ed5e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="test-state-pick-performance.vcxproj">
+      <Project>{0c1e8e6c-1563-4f95-a994-6366ee992cb3}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="test-text-perf-performance.vcxproj">
+      <Project>{8af1ea8e-305b-42c0-919d-12b1843b21a4}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="test-text-perf.vcxproj">

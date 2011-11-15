@@ -59,6 +59,10 @@
 		Value="$(BaseBuildDef);TESTS_DATADIR=\&quot;../share/clutter-$(ClutterApiVersion)/data\&quot;"
 	/>
 	<UserMacro
+		Name="TestPerfProgDef"
+		Value="$(BaseBuildDef);TESTS_DATA_DIR=\&quot;../share/clutter-$(ClutterApiVersion)/data\&quot;"
+	/>
+	<UserMacro
 		Name="PreBuildCmd"
 		Value="
 if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;

@@ -12,6 +12,7 @@
     <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_PREFIX="../";CLUTTER_LIBDIR="../lib";CLUTTER_DATADIR="../share";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc"</ClutterBuildDefines>
     <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir"</CallyTestDefs>
     <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ClutterApiVersion)/data"</TestProgDef>
+    <TestPerfProgDef>$(BaseBuildDef);TESTS_DATA_DIR=\"../share/clutter-$(ClutterApiVersion)/data\"</TestPerfProgDef>
     <PreBuildCmd>
 if exist ..\..\..\config.h goto DONE_CONFIG_H
 
@@ -399,6 +400,9 @@ copy ..\..\..\doc\cookbook\examples\*.png $(CopyDir)\share\clutter-$(ClutterApiV
     </BuildMacro>
     <BuildMacro Include="TestProgDef">
       <Value>$(TestProgDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="TestPerfProgDef">
+      <Value>$(TestPerfProgDef)</Value>
     </BuildMacro>
     <BuildMacro Include="PreBuildCmd">
       <Value>$(PreBuildCmd)</Value>

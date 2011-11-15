@@ -28,10 +28,24 @@ EXTRA_DIST = \
 	test-interactive-clutter.vcxproj.filtersin	\
 	test-picking.vcxproj		\
 	test-picking.vcxproj.filters		\
+	test-picking-performance.vcxproj	\
+	test-picking-performance.vcxproj.filters	\
 	test-random-text.vcxproj	\
 	test-random-text.vcxproj.filters	\
+	test-state-hidden-performance.vcxproj	\
+	test-state-hidden-performance.vcxproj.filters	\
+	test-state-interactive-performance.vcxproj	\
+	test-state-interactive-performance.vcxproj.filters	\
+	test-state-mini-performance.vcxproj	\
+	test-state-mini-performance.vcxproj.filters	\
+	test-state-performance.vcxproj	\
+	test-state-performance.vcxproj.filters	\
+	test-state-pick-performance.vcxproj	\
+	test-state-pick-performance.vcxproj.filters	\
 	test-text-perf.vcxproj	\
 	test-text-perf.vcxproj.filters	\
+	test-text-perf-performance.vcxproj	\
+	test-text-perf-performance.vcxproj.filters	\
 	test-text.vcxproj	\
 	test-text.vcxproj.filters	\
 	README.txt
