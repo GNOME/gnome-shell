@@ -3703,3 +3703,29 @@ _clutter_get_sync_to_vblank (void)
 {
   return clutter_sync_to_vblank;
 }
+
+void
+_clutter_debug_messagev (const char *format,
+                         va_list     var_args)
+{
+  gchar *stamp, *fmt;
+
+  stamp = g_strdup_printf ("[%16" G_GINT64_FORMAT "]",
+                           g_get_monotonic_time ());
+  fmt = g_strconcat (stamp, ":", format, NULL);
+  g_free (stamp);
+
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, fmt, var_args);
+
+  g_free (fmt);
+}
+
+void
+_clutter_debug_message (const char *format, ...)
+{
+  va_list args;
+
+  va_start (args, format);
+  _clutter_debug_messagev (format, args);
+  va_end (args);
+}

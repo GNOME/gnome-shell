@@ -1,10 +1,10 @@
 #ifdef CLUTTER_ENABLE_PROFILE
 
+#include <stdlib.h>
+
 /* XXX - we need this for g_atexit() */
 #define G_DISABLE_DEPRECATION_WARNINGS
 #include "clutter-profile.h"
-
-#include <stdlib.h>
 
 UProfContext *_clutter_uprof_context;
 
@@ -287,12 +287,10 @@ _clutter_profile_trace_message (const char *format, ...)
   va_list ap;
 
   va_start (ap, format);
-  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, ap);
+  _clutter_debug_messagev (format, ap);
   va_end (ap);
 
-  if (_clutter_uprof_context)
+  if (_clutter_uprof_context != NULL)
     uprof_context_vtrace_message (_clutter_uprof_context, format, ap);
 }
-
 #endif
-
