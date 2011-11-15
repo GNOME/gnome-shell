@@ -177,6 +177,7 @@ struct _ClutterMainContext
   guint motion_events_per_actor : 1;
   guint defer_display_setup     : 1;
   guint options_parsed          : 1;
+  guint show_fps                : 1;
 };
 
 /* shared between clutter-main.c and clutter-frame-source.c */
@@ -203,6 +204,7 @@ ClutterActor *          _clutter_context_peek_shader_stack              (void);
 guint32                 _clutter_context_acquire_id                     (gpointer      key);
 void                    _clutter_context_release_id                     (guint32       id_);
 gboolean                _clutter_context_get_motion_events_enabled      (void);
+gboolean                _clutter_context_get_show_fps                   (void);
 
 const gchar *_clutter_gettext (const gchar *str);
 

@@ -462,11 +462,23 @@ clutter_config_read (void)
  * Return value: %TRUE if Clutter should show the FPS.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: This function does not do anything. Use the environment
+ *   variable or the configuration file to determine whether Clutter should
+ *   print out the FPS counter on the console.
  */
 gboolean
 clutter_get_show_fps (void)
 {
-  return clutter_show_fps;
+  return FALSE;
+}
+
+gboolean
+_clutter_context_get_show_fps (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return context->show_fps;
 }
 
 /**
@@ -1291,18 +1303,16 @@ clutter_threads_leave (void)
 /**
  * clutter_get_debug_enabled:
  *
- * Check if clutter has debugging turned on.
+ * Check if Clutter has debugging enabled.
  *
- * Return value: TRUE if debugging is turned on, FALSE otherwise.
+ * Return value: %FALSE
+ *
+ * Deprecated: 1.10: This function does not do anything.
  */
 gboolean
 clutter_get_debug_enabled (void)
 {
-#ifdef CLUTTER_ENABLE_DEBUG
-  return clutter_debug_flags != 0;
-#else
   return FALSE;
-#endif
 }
 
 void
@@ -1767,10 +1777,10 @@ post_parse_hook (GOptionContext  *context,
     }
 
   clutter_context->frame_rate = clutter_default_fps;
+  clutter_context->show_fps = clutter_show_fps;
   clutter_context->options_parsed = TRUE;
 
-  /*
-   * If not asked to defer display setup, call clutter_init_real(),
+  /* If not asked to defer display setup, call clutter_init_real(),
    * which in turn calls the backend post parse hooks.
    */
   if (!clutter_context->defer_display_setup)

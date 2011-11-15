@@ -54,6 +54,12 @@ void                    clutter_set_default_frame_rate          (guint          
 CLUTTER_DEPRECATED
 gulong                  clutter_get_timestamp                   (void);
 
+CLUTTER_DEPRECATED
+gboolean                clutter_get_debug_enabled               (void);
+
+CLUTTER_DEPRECATED
+gboolean                clutter_get_show_fps                    (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_MAIN_DEPRECATED_H__ */

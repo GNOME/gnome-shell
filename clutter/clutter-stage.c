@@ -1043,7 +1043,7 @@ clutter_stage_do_redraw (ClutterStage *stage)
 
   _clutter_backend_ensure_context (backend, stage);
 
-  if (clutter_get_show_fps ())
+  if (_clutter_context_get_show_fps ())
     {
       if (priv->fps_timer == NULL)
         priv->fps_timer = g_timer_new ();
@@ -1053,7 +1053,7 @@ clutter_stage_do_redraw (ClutterStage *stage)
 
   _clutter_backend_redraw (backend, stage);
 
-  if (clutter_get_show_fps ())
+  if (_clutter_context_get_show_fps ())
     {
       priv->timer_n_frames += 1;
 
