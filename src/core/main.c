@@ -197,7 +197,7 @@ static GOptionEntry meta_options[] = {
     NULL
   },
   {
-    "replace", 0, 0, G_OPTION_ARG_NONE,
+    "replace", 'r', 0, G_OPTION_ARG_NONE,
     &opt_replace_wm,
     N_("Replace the running window manager"),
     NULL
