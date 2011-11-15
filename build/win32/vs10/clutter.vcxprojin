@@ -88,9 +88,9 @@
     </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
+      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -117,9 +117,9 @@
     </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
+      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
@@ -146,9 +146,9 @@
     </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
+      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -174,9 +174,9 @@
     </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)-win32$(ClutterDllSuffix).dll</OutputFile>
+      <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>..\..\..\clutter\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
