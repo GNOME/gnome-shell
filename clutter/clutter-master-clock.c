@@ -95,8 +95,6 @@ static gboolean clutter_clock_dispatch (GSource     *source,
                                         GSourceFunc  callback,
                                         gpointer     user_data);
 
-static ClutterMasterClock *default_clock = NULL;
-
 static GSourceFuncs clock_funcs = {
   clutter_clock_prepare,
   clutter_clock_check,
@@ -461,12 +459,12 @@ clutter_master_clock_init (ClutterMasterClock *self)
 ClutterMasterClock *
 _clutter_master_clock_get_default (void)
 {
-  if (G_LIKELY (default_clock != NULL))
-    return default_clock;
+  ClutterMainContext *context = _clutter_context_get_default ();
 
-  default_clock = g_object_new (CLUTTER_TYPE_MASTER_CLOCK, NULL);
+  if (G_UNLIKELY (context->master_clock == NULL))
+    context->master_clock = g_object_new (CLUTTER_TYPE_MASTER_CLOCK, NULL);
 
-  return default_clock;
+  return context->master_clock;
 }
 
 /*
