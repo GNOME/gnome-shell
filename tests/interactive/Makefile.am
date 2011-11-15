@@ -73,7 +73,7 @@ SHEXT = $(EXEEXT)
 endif
 
 # For convenience, this provides a way to easily run individual unit tests:
-wrappers: stamp-test-interactive ../../build/win32/test-interactive.bat
+wrappers: stamp-test-interactive ../../build/win32/test-interactive-clutter.bat
 	@true
 stamp-test-interactive: Makefile
 	@wrapper=$(abs_builddir)/wrapper.sh ; \
@@ -96,8 +96,8 @@ stamp-test-interactive: Makefile
 	done \
 	&& echo timestamp > $(@F)
 
-../../build/win32/test-interactive.bat: Makefile test-interactive$(EXEEXT)
-	echo "  GEN    test-interactive.bat" ; \
+../../build/win32/test-interactive-clutter.bat: Makefile test-interactive$(EXEEXT)
+	echo "  GEN    test-interactive-clutter.bat" ; \
 	for i in $(UNIT_TESTS); \
 	do \
 		case $$i in \
@@ -105,8 +105,8 @@ stamp-test-interactive: Makefile
 		*.c)	test_bin=$${i%*.c} \
 			;; \
 		esac; \
-		( echo "test-interactive-clutter $$test_bin" ) > $$test_bin.bat ; \
-		( echo "test-interactive-clutter $$test_bin" ) >> test-interactive.bat ; \
+		( echo "test-interactive-clutter $$test_bin" ) > $$test_bin-clutter.bat ; \
+		( echo "test-interactive-clutter $$test_bin" ) >> test-interactive-clutter.bat ; \
 	done \
 	&& cp *.bat $(top_srcdir)/build/win32/
 	
