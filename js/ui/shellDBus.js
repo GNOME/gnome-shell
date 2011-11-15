@@ -171,14 +171,14 @@ GnomeShell.prototype = {
             let val = meta[key];
             let type;
             switch (typeof val) {
-            case 'object':
-                throw Error('Extension had a nested object in the metadata. This is not supported');
             case 'string':
                 type = 's';
                 break;
             case 'number':
                 type = 'd';
                 break;
+            default:
+                continue;
             }
             out[key] = GLib.Variant.new(type, val);
         }
