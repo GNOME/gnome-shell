@@ -22,7 +22,6 @@ UNIT_TESTS = \
 	test-animator.c \
 	test-state.c \
 	test-state-animator.c \
-	test-unproject.c \
 	test-fbo.c \
 	test-multistage.c \
 	test-cogl-primitives.c \
