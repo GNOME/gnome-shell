@@ -13,7 +13,6 @@ UNIT_TESTS = \
 	test-depth.c \
 	test-threads.c \
 	test-script.c \
-	test-model.c \
 	test-grab.c \
 	test-fullscreen.c \
 	test-shader.c \
