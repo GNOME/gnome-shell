@@ -497,6 +497,9 @@ const AppMenuButton = new Lang.Class({
             return;
         }
 
+        if (!targetApp.is_on_workspace(workspace))
+            return;
+
         if (!this._targetIsCurrent) {
             this.actor.reactive = true;
             this._targetIsCurrent = true;
