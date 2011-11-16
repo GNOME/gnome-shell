@@ -462,11 +462,23 @@ clutter_config_read (void)
  * Return value: %TRUE if Clutter should show the FPS.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.10: This function does not do anything. Use the environment
+ *   variable or the configuration file to determine whether Clutter should
+ *   print out the FPS counter on the console.
  */
 gboolean
 clutter_get_show_fps (void)
 {
-  return clutter_show_fps;
+  return FALSE;
+}
+
+gboolean
+_clutter_context_get_show_fps (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return context->show_fps;
 }
 
 /**
@@ -1291,18 +1303,16 @@ clutter_threads_leave (void)
 /**
  * clutter_get_debug_enabled:
  *
- * Check if clutter has debugging turned on.
+ * Check if Clutter has debugging enabled.
  *
- * Return value: TRUE if debugging is turned on, FALSE otherwise.
+ * Return value: %FALSE
+ *
+ * Deprecated: 1.10: This function does not do anything.
  */
 gboolean
 clutter_get_debug_enabled (void)
 {
-#ifdef CLUTTER_ENABLE_DEBUG
-  return clutter_debug_flags != 0;
-#else
   return FALSE;
-#endif
 }
 
 void
@@ -1393,11 +1403,6 @@ clutter_context_get_default_unlocked (void)
       ctx->settings = clutter_settings_get_default ();
       _clutter_settings_set_backend (ctx->settings, ctx->backend);
 
-#ifdef CLUTTER_ENABLE_DEBUG
-      ctx->timer = g_timer_new ();
-      g_timer_start (ctx->timer);
-#endif
-
       ctx->motion_events_per_actor = TRUE;
       ctx->last_repaint_id = 1;
     }
@@ -1422,30 +1427,30 @@ _clutter_context_get_default (void)
 /**
  * clutter_get_timestamp:
  *
- * Returns the approximate number of microseconds passed since clutter was
+ * Returns the approximate number of microseconds passed since Clutter was
  * intialised.
  *
- * Return value: Number of microseconds since clutter_init() was called.
+ * This function shdould not be used by application code.
+ *
+ * The output of this function depends on whether Clutter was configured to
+ * enable its debugging code paths, so it's less useful than intended.
+ *
+ * Since Clutter 1.10, this function is an alias to g_get_monotonic_time()
+ * if Clutter was configured to enable the debugging code paths.
+ *
+ * Return value: Number of microseconds since clutter_init() was called, or
+ *   zero if Clutter was not configured with debugging code paths.
+ *
+ * Deprecated: 1.10: Use #GTimer or g_get_monotonic_time() for a proper
+ *   timing source
  */
 gulong
 clutter_get_timestamp (void)
 {
 #ifdef CLUTTER_ENABLE_DEBUG
-  ClutterMainContext *ctx;
-  gdouble seconds;
-
-  _clutter_context_lock ();
-
-  ctx = clutter_context_get_default_unlocked ();
-
-  /* FIXME: may need a custom timer for embedded setups */
-  seconds = g_timer_elapsed (ctx->timer, NULL);
-
-  _clutter_context_unlock ();
-
-  return (gulong)(seconds / 1.0e-6);
+  return (gulong) g_get_monotonic_time ();
 #else
-  return 0;
+  return 0L;
 #endif
 }
 
@@ -1772,10 +1777,10 @@ post_parse_hook (GOptionContext  *context,
     }
 
   clutter_context->frame_rate = clutter_default_fps;
+  clutter_context->show_fps = clutter_show_fps;
   clutter_context->options_parsed = TRUE;
 
-  /*
-   * If not asked to defer display setup, call clutter_init_real(),
+  /* If not asked to defer display setup, call clutter_init_real(),
    * which in turn calls the backend post parse hooks.
    */
   if (!clutter_context->defer_display_setup)
@@ -2641,7 +2646,7 @@ _clutter_process_event (ClutterEvent *event)
   if (stage == NULL)
     return;
 
-  CLUTTER_TIMESTAMP (EVENT, "Event received");
+  CLUTTER_NOTE (EVENT, "Event received");
 
   context->last_event_time = clutter_event_get_time (event);
 
@@ -3719,4 +3724,30 @@ gboolean
 _clutter_get_sync_to_vblank (void)
 {
   return clutter_sync_to_vblank;
+}
+
+void
+_clutter_debug_messagev (const char *format,
+                         va_list     var_args)
+{
+  gchar *stamp, *fmt;
+
+  stamp = g_strdup_printf ("[%16" G_GINT64_FORMAT "]",
+                           g_get_monotonic_time ());
+  fmt = g_strconcat (stamp, ":", format, NULL);
+  g_free (stamp);
+
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, fmt, var_args);
+
+  g_free (fmt);
+}
+
+void
+_clutter_debug_message (const char *format, ...)
+{
+  va_list args;
+
+  va_start (args, format);
+  _clutter_debug_messagev (format, args);
+  va_end (args);
 }

@@ -19,12 +19,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <clutter/clutter.h> can be included directly."
-#endif
-
-#ifndef _CLUTTER_PROFILE_H_
-#define _CLUTTER_PROFILE_H_
+#ifndef __CLUTTER_PROFILE_H__
+#define __CLUTTER_PROFILE_H__
 
 #include <glib.h>
 
@@ -39,7 +35,8 @@ typedef enum {
 
 #include <uprof.h>
 
-extern UProfContext *_clutter_uprof_context;
+extern UProfContext *   _clutter_uprof_context;
+extern guint            clutter_profile_flags;
 
 #define CLUTTER_STATIC_TIMER    UPROF_STATIC_TIMER
 #define CLUTTER_STATIC_COUNTER  UPROF_STATIC_COUNTER
@@ -48,34 +45,26 @@ extern UProfContext *_clutter_uprof_context;
 #define CLUTTER_TIMER_START     UPROF_TIMER_START
 #define CLUTTER_TIMER_STOP      UPROF_TIMER_STOP
 
-void
-_clutter_uprof_init (void);
-
-void
-_clutter_profile_suspend (void);
-void
-_clutter_profile_resume (void);
-
-void
-_clutter_profile_trace_message (const char *format, ...);
+void    _clutter_uprof_init             (void);
+void    _clutter_profile_suspend        (void);
+void    _clutter_profile_resume         (void);
+void    _clutter_profile_trace_message  (const char *format, ...);
 
 #else /* CLUTTER_ENABLE_PROFILE */
 
 #define CLUTTER_STATIC_TIMER(A,B,C,D,E) extern void _clutter_dummy_decl (void)
 #define CLUTTER_STATIC_COUNTER(A,B,C,D) extern void _clutter_dummy_decl (void)
-#define CLUTTER_COUNTER_INC(A,B) G_STMT_START{ (void)0; }G_STMT_END
-#define CLUTTER_COUNTER_DEC(A,B) G_STMT_START{ (void)0; }G_STMT_END
-#define CLUTTER_TIMER_START(A,B) G_STMT_START{ (void)0; }G_STMT_END
-#define CLUTTER_TIMER_STOP(A,B) G_STMT_START{ (void)0; }G_STMT_END
+#define CLUTTER_COUNTER_INC(A,B)        G_STMT_START{ (void)0; }G_STMT_END
+#define CLUTTER_COUNTER_DEC(A,B)        G_STMT_START{ (void)0; }G_STMT_END
+#define CLUTTER_TIMER_START(A,B)        G_STMT_START{ (void)0; }G_STMT_END
+#define CLUTTER_TIMER_STOP(A,B)         G_STMT_START{ (void)0; }G_STMT_END
 
-#define _clutter_profile_suspend() G_STMT_START {} G_STMT_END
-#define _clutter_profile_resume() G_STMT_START {} G_STMT_END
+#define _clutter_profile_suspend()      G_STMT_START {} G_STMT_END
+#define _clutter_profile_resume()       G_STMT_START {} G_STMT_END
 
-#define _clutter_profile_trace_message g_message
+#define _clutter_profile_trace_message  _clutter_debug_message
 
 #endif /* CLUTTER_ENABLE_PROFILE */
-
-extern guint clutter_profile_flags;
 
 G_END_DECLS
 

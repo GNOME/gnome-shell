@@ -74,13 +74,13 @@ struct _ClutterDeformEffectPrivate
   gint x_tiles;
   gint y_tiles;
 
-  CoglHandle vbo;
+  CoglAttributeBuffer *buffer;
 
-  CoglHandle indices;
-  CoglHandle back_indices;
-  gint n_indices;
+  CoglPrimitive *primitive;
 
-  CoglTextureVertex *vertices;
+  CoglPrimitive *lines_primitive;
+
+  gint n_vertices;
 
   gulong allocation_id;
 
@@ -170,12 +170,14 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
 {
   ClutterDeformEffect *self= CLUTTER_DEFORM_EFFECT (effect);
   ClutterDeformEffectPrivate *priv = self->priv;
-  gboolean is_depth_enabled, is_cull_enabled;
   CoglHandle material;
-  gint n_tiles;
+  CoglPipeline *pipeline;
+  CoglDepthState depth_state;
 
   if (priv->is_dirty)
     {
+      gboolean mapped_buffer;
+      CoglVertexP3T2C4 *verts;
       ClutterActor *actor;
       gfloat width, height;
       guint opacity;
@@ -190,125 +192,127 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
       if (!clutter_offscreen_effect_get_target_size (effect, &width, &height))
         clutter_actor_get_size (actor, &width, &height);
 
+      /* XXX ideally, the sub-classes should tell us what they
+       * changed in the texture vertices; we then would be able to
+       * avoid resubmitting the same data, if it did not change. for
+       * the time being, we resubmit everything
+       */
+      verts = cogl_buffer_map (COGL_BUFFER (priv->buffer),
+                               COGL_BUFFER_ACCESS_WRITE,
+                               COGL_BUFFER_MAP_HINT_DISCARD);
+
+      /* If the map failed then we'll resort to allocating a temporary
+         buffer */
+      if (verts == NULL)
+        {
+          mapped_buffer = FALSE;
+          verts = g_malloc (sizeof (*verts) * priv->n_vertices);
+        }
+      else
+        mapped_buffer = TRUE;
+
       for (i = 0; i < priv->y_tiles + 1; i++)
         {
           for (j = 0; j < priv->x_tiles + 1; j++)
             {
-              CoglTextureVertex *vertex;
+              CoglVertexP3T2C4 *vertex_out;
+              CoglTextureVertex vertex;
 
-              vertex = &priv->vertices[(i * (priv->x_tiles + 1)) + j];
+              /* CoglTextureVertex isn't an ideal structure to use for
+                 this because it contains a CoglColor. The internal
+                 layout of CoglColor is mean to be private so Clutter
+                 can not pass a pointer to it as a vertex
+                 attribute. Also it contains padding so we end up
+                 storing more data in the vertex buffer than we need
+                 to. Instead we let the application modify a dummy
+                 vertex and then copy the details back out to a more
+                 well-defined struct */
 
-              vertex->tx = (float) j / priv->x_tiles;
-              vertex->ty = (float) i / priv->y_tiles;
+              vertex.tx = (float) j / priv->x_tiles;
+              vertex.ty = (float) i / priv->y_tiles;
 
-              vertex->x = width * vertex->tx;
-              vertex->y = height * vertex->ty;
-              vertex->z = 0.0f;
+              vertex.x = width * vertex.tx;
+              vertex.y = height * vertex.ty;
+              vertex.z = 0.0f;
 
-              cogl_color_init_from_4ub (&vertex->color, 255, 255, 255, opacity);
+              cogl_color_init_from_4ub (&vertex.color, 255, 255, 255, opacity);
 
-              _clutter_deform_effect_deform_vertex (self, width, height, vertex);
+              _clutter_deform_effect_deform_vertex (self,
+                                                    width, height,
+                                                    &vertex);
+
+              vertex_out = verts + i * (priv->x_tiles + 1) + j;
+
+              vertex_out->x = vertex.x;
+              vertex_out->y = vertex.y;
+              vertex_out->z = vertex.z;
+              vertex_out->s = vertex.tx;
+              vertex_out->t = vertex.ty;
+              vertex_out->r = cogl_color_get_red_byte (&vertex.color);
+              vertex_out->g = cogl_color_get_green_byte (&vertex.color);
+              vertex_out->b = cogl_color_get_blue_byte (&vertex.color);
+              vertex_out->a = cogl_color_get_alpha_byte (&vertex.color);
             }
         }
 
-      /* XXX in theory, the sub-classes should tell us what they changed
-       * in the texture vertices; we then would be able to avoid resubmitting
-       * the same data, if it did not change. for the time being, we resubmit
-       * everything
-       */
-      cogl_vertex_buffer_add (priv->vbo, "gl_Vertex",
-                              3,
-                              COGL_ATTRIBUTE_TYPE_FLOAT,
-                              FALSE,
-                              sizeof (CoglTextureVertex),
-                              &priv->vertices->x);
-      cogl_vertex_buffer_add (priv->vbo, "gl_MultiTexCoord0",
-                              2,
-                              COGL_ATTRIBUTE_TYPE_FLOAT,
-                              FALSE,
-                              sizeof (CoglTextureVertex),
-                              &priv->vertices->tx);
-      cogl_vertex_buffer_add (priv->vbo, "gl_Color",
-                              4,
-                              COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE,
-                              FALSE,
-                              sizeof (CoglTextureVertex),
-                              &priv->vertices->color);
+      if (mapped_buffer)
+        cogl_buffer_unmap (COGL_BUFFER (priv->buffer));
+      else
+        {
+          cogl_buffer_set_data (COGL_BUFFER (priv->buffer),
+                                0, /* offset */
+                                verts,
+                                sizeof (*verts) * priv->n_vertices);
+          g_free (verts);
+        }
 
       priv->is_dirty = FALSE;
     }
 
-  /* enable depth test, if it's not already enabled */
-  is_depth_enabled = cogl_get_depth_test_enabled ();
-  if (!is_depth_enabled)
-    cogl_set_depth_test_enabled (TRUE);
+  material = clutter_offscreen_effect_get_target (effect);
+  pipeline = COGL_PIPELINE (material);
 
-  /* enable backface culling if it's not already enabled and if
-   * we have a back material
-   */
-  is_cull_enabled = cogl_get_backface_culling_enabled ();
-  if (priv->back_material != COGL_INVALID_HANDLE && !is_cull_enabled)
-    cogl_set_backface_culling_enabled (TRUE);
-  else if (priv->back_material == COGL_INVALID_HANDLE && is_cull_enabled)
-    cogl_set_backface_culling_enabled (FALSE);
+  /* enable depth testing */
+  cogl_depth_state_init (&depth_state);
+  cogl_depth_state_set_test_enabled (&depth_state, TRUE);
+  cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL);
 
-  n_tiles = (priv->x_tiles + 1) * (priv->y_tiles + 1);
+  /* enable backface culling if we have a back material */
+  if (priv->back_material != COGL_INVALID_HANDLE)
+    cogl_pipeline_set_cull_face_mode (pipeline,
+                                      COGL_PIPELINE_CULL_FACE_MODE_BACK);
 
   /* draw the front */
-  material = clutter_offscreen_effect_get_target (effect);
   if (material != COGL_INVALID_HANDLE)
     {
-      cogl_set_source (material);
-      cogl_vertex_buffer_draw_elements (priv->vbo,
-                                        COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                                        priv->indices,
-                                        0,
-                                        n_tiles,
-                                        0,
-                                        priv->n_indices);
+      cogl_push_source (pipeline);
+      cogl_primitive_draw (priv->primitive);
+      cogl_pop_source ();
     }
 
   /* draw the back */
-  material = priv->back_material;
-  if (material != COGL_INVALID_HANDLE)
+  if (priv->back_material != COGL_INVALID_HANDLE)
     {
-      cogl_set_source (priv->back_material);
-      cogl_vertex_buffer_draw_elements (priv->vbo,
-                                        COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                                        priv->back_indices,
-                                        0,
-                                        n_tiles,
-                                        0,
-                                        priv->n_indices);
+      CoglPipeline *back_pipeline;
+
+      /* We probably shouldn't be modifying the user's material so
+         instead we make a temporary copy */
+      back_pipeline = cogl_pipeline_copy (priv->back_material);
+      cogl_pipeline_set_depth_state (back_pipeline, &depth_state, NULL);
+      cogl_pipeline_set_cull_face_mode (pipeline,
+                                        COGL_PIPELINE_CULL_FACE_MODE_FRONT);
+
+      cogl_push_source (back_pipeline);
+      cogl_primitive_draw (priv->primitive);
+      cogl_pop_source ();
+
+      cogl_object_unref (back_pipeline);
     }
 
-  /* restore the previous state */
-  if (!is_depth_enabled)
-    cogl_set_depth_test_enabled (FALSE);
-
-  if (priv->back_material != COGL_INVALID_HANDLE && !is_cull_enabled)
-    cogl_set_backface_culling_enabled (FALSE);
-  else if (priv->back_material == COGL_INVALID_HANDLE && is_cull_enabled)
-    cogl_set_backface_culling_enabled (TRUE);
-
-  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_DEFORM_TILES))
+  if (G_UNLIKELY (priv->lines_primitive != NULL))
     {
       cogl_set_source_color4f (1.0, 0, 0, 1.0);
-      cogl_vertex_buffer_draw_elements (priv->vbo,
-                                        COGL_VERTICES_MODE_LINE_STRIP,
-                                        priv->indices,
-                                        0,
-                                        n_tiles,
-                                        0,
-                                        priv->n_indices);
-
-      cogl_vertex_buffer_draw_elements (priv->vbo,
-                                        COGL_VERTICES_MODE_LINE_STRIP,
-                                        priv->back_indices,
-                                        0,
-                                        n_tiles,
-                                        0,
-                                        priv->n_indices);
+      cogl_primitive_draw (priv->lines_primitive);
     }
 }
 
@@ -317,39 +321,43 @@ clutter_deform_effect_free_arrays (ClutterDeformEffect *self)
 {
   ClutterDeformEffectPrivate *priv = self->priv;
 
-  if (priv->vbo != COGL_INVALID_HANDLE)
+  if (priv->buffer)
     {
-      cogl_handle_unref (priv->vbo);
-      priv->vbo = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->buffer);
+      priv->buffer = NULL;
     }
 
-  if (priv->indices != COGL_INVALID_HANDLE)
+  if (priv->primitive)
     {
-      cogl_handle_unref (priv->indices);
-      priv->indices = COGL_INVALID_HANDLE;
+      cogl_object_unref (priv->primitive);
+      priv->primitive = NULL;
     }
 
-  g_free (priv->vertices);
-  priv->vertices = NULL;
+  if (priv->lines_primitive)
+    {
+      cogl_object_unref (priv->lines_primitive);
+      priv->lines_primitive = NULL;
+    }
 }
 
 static void
 clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
 {
   ClutterDeformEffectPrivate *priv = self->priv;
-  GLushort *static_indices, *static_back_indices;
-  GLushort *idx, *back_idx;
-  gint x, y, direction;
-  gint n_tiles;
+  gint x, y, direction, n_indices;
+  CoglAttribute *attributes[3];
+  guint16 *static_indices;
+  CoglIndices *indices;
+  guint16 *idx;
+  int i;
 
   clutter_deform_effect_free_arrays (self);
 
-  priv->n_indices = (2 + 2 * priv->x_tiles)
-                  * priv->y_tiles
-                  + (priv->y_tiles - 1);
+  n_indices = ((2 + 2 * priv->x_tiles)
+               * priv->y_tiles
+               + (priv->y_tiles - 1));
 
-  static_indices = g_new (GLushort, priv->n_indices);
-  static_back_indices = g_new (GLushort, priv->n_indices);
+  static_indices = g_new (guint16, n_indices);
 
 #define MESH_INDEX(x,y) ((y) * (priv->x_tiles + 1) + (x))
 
@@ -361,11 +369,6 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
   idx[1] = MESH_INDEX (0, 1);
   idx += 2;
 
-  back_idx = static_back_indices;
-  back_idx[0] = MESH_INDEX (priv->x_tiles, 0);
-  back_idx[1] = MESH_INDEX (priv->x_tiles, 1);
-  back_idx += 2;
-
   for (y = 0; y < priv->y_tiles; y++)
     {
       for (x = 0; x < priv->x_tiles; x++)
@@ -374,21 +377,14 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
             {
               idx[0] = MESH_INDEX (x + 1, y);
               idx[1] = MESH_INDEX (x + 1, y + 1);
-
-              back_idx[0] = MESH_INDEX (priv->x_tiles - (x + 1), y);
-              back_idx[1] = MESH_INDEX (priv->x_tiles - (x + 1), y + 1);
             }
           else
             {
               idx[0] = MESH_INDEX (priv->x_tiles - x - 1, y);
               idx[1] = MESH_INDEX (priv->x_tiles - x - 1, y + 1);
-
-              back_idx[0] = MESH_INDEX (x + 1, y);
-              back_idx[1] = MESH_INDEX (x + 1, y + 1);
             }
 
           idx += 2;
-          back_idx += 2;
         }
 
       if (y == (priv->y_tiles - 1))
@@ -399,45 +395,83 @@ clutter_deform_effect_init_arrays (ClutterDeformEffect *self)
           idx[0] = MESH_INDEX (priv->x_tiles, y + 1);
           idx[1] = MESH_INDEX (priv->x_tiles, y + 1);
           idx[2] = MESH_INDEX (priv->x_tiles, y + 2);
-
-          back_idx[0] = MESH_INDEX (0, y + 1);
-          back_idx[1] = MESH_INDEX (0, y + 1);
-          back_idx[2] = MESH_INDEX (0, y + 2);
         }
       else
         {
           idx[0] = MESH_INDEX (0, y + 1);
           idx[1] = MESH_INDEX (0, y + 1);
           idx[2] = MESH_INDEX (0, y + 2);
-
-          back_idx[0] = MESH_INDEX (priv->x_tiles, y + 1);
-          back_idx[1] = MESH_INDEX (priv->x_tiles, y + 1);
-          back_idx[2] = MESH_INDEX (priv->x_tiles, y + 2);
         }
 
       idx += 3;
-      back_idx += 3;
 
       direction = !direction;
     }
 
 #undef MESH_INDEX
 
-  priv->indices =
-    cogl_vertex_buffer_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
-                                    static_indices,
-                                    priv->n_indices);
-  priv->back_indices =
-    cogl_vertex_buffer_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
-                                    static_back_indices,
-                                    priv->n_indices);
+  indices = cogl_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
+                              static_indices,
+                              n_indices);
 
   g_free (static_indices);
-  g_free (static_back_indices);
 
-  n_tiles = (priv->x_tiles + 1) * (priv->y_tiles + 1);
-  priv->vertices = g_new (CoglTextureVertex, n_tiles);
-  priv->vbo = cogl_vertex_buffer_new (n_tiles);
+  priv->n_vertices = (priv->x_tiles + 1) * (priv->y_tiles + 1);
+
+  priv->buffer =
+    cogl_attribute_buffer_new (sizeof (CoglVertexP3T2C4) *
+                               priv->n_vertices,
+                               NULL);
+
+  /* The application is expected to continuously modify the vertices
+     so we should give a hint to Cogl about that */
+  cogl_buffer_set_update_hint (COGL_BUFFER (priv->buffer),
+                               COGL_BUFFER_UPDATE_HINT_DYNAMIC);
+
+  attributes[0] = cogl_attribute_new (priv->buffer,
+                                      "cogl_position_in",
+                                      sizeof (CoglVertexP3T2C4),
+                                      G_STRUCT_OFFSET (CoglVertexP3T2C4, x),
+                                      3, /* n_components */
+                                      COGL_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] = cogl_attribute_new (priv->buffer,
+                                      "cogl_tex_coord0_in",
+                                      sizeof (CoglVertexP3T2C4),
+                                      G_STRUCT_OFFSET (CoglVertexP3T2C4, s),
+                                      2, /* n_components */
+                                      COGL_ATTRIBUTE_TYPE_FLOAT);
+  attributes[2] = cogl_attribute_new (priv->buffer,
+                                      "cogl_color_in",
+                                      sizeof (CoglVertexP3T2C4),
+                                      G_STRUCT_OFFSET (CoglVertexP3T2C4, r),
+                                      4, /* n_components */
+                                      COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
+
+  priv->primitive =
+    cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLE_STRIP,
+                                        priv->n_vertices,
+                                        attributes,
+                                        3 /* n_attributes */);
+  cogl_primitive_set_indices (priv->primitive,
+                              indices,
+                              n_indices);
+
+  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_DEFORM_TILES))
+    {
+      priv->lines_primitive =
+        cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_LINE_STRIP,
+                                            priv->n_vertices,
+                                            attributes,
+                                            2 /* n_attributes */);
+      cogl_primitive_set_indices (priv->lines_primitive,
+                                  indices,
+                                  n_indices);
+    }
+
+  cogl_object_unref (indices);
+
+  for (i = 0; i < 3; i++)
+    cogl_object_unref (attributes[i]);
 
   priv->is_dirty = TRUE;
 }

@@ -1034,16 +1034,16 @@ clutter_stage_do_redraw (ClutterStage *stage)
   ClutterActor *actor = CLUTTER_ACTOR (stage);
   ClutterStagePrivate *priv = stage->priv;
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw started for %s[%p]",
-                     _clutter_actor_get_debug_name (actor),
-                     stage);
+  CLUTTER_NOTE (PAINT, "Redraw started for stage '%s'[%p]",
+                _clutter_actor_get_debug_name (actor),
+                stage);
 
   _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
   priv->picks_per_frame = 0;
 
   _clutter_backend_ensure_context (backend, stage);
 
-  if (clutter_get_show_fps ())
+  if (_clutter_context_get_show_fps ())
     {
       if (priv->fps_timer == NULL)
         priv->fps_timer = g_timer_new ();
@@ -1053,7 +1053,7 @@ clutter_stage_do_redraw (ClutterStage *stage)
 
   _clutter_backend_redraw (backend, stage);
 
-  if (clutter_get_show_fps ())
+  if (_clutter_context_get_show_fps ())
     {
       priv->timer_n_frames += 1;
 
@@ -1068,9 +1068,9 @@ clutter_stage_do_redraw (ClutterStage *stage)
         }
     }
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finished for %s[%p]",
-                     _clutter_actor_get_debug_name (actor),
-                     stage);
+  CLUTTER_NOTE (PAINT, "Redraw finished for stage '%s'[%p]",
+                _clutter_actor_get_debug_name (actor),
+                stage);
 }
 
 /**

@@ -1759,13 +1759,11 @@ clutter_texture_async_load_complete (ClutterTexture *self,
 static gboolean
 texture_repaint_upload_func (gpointer user_data)
 {
-  gulong start_time;
-
   g_mutex_lock (&upload_list_mutex);
 
   if (upload_list != NULL)
     {
-      start_time = clutter_get_timestamp ();
+      gint64 start_time = g_get_monotonic_time ();
 
       /* continue uploading textures as long as we havent spent more
        * then 5ms doing so this stage redraw cycle.
@@ -1794,7 +1792,8 @@ texture_repaint_upload_func (gpointer user_data)
           upload_list = g_list_remove (upload_list, async_data);
           clutter_texture_async_data_free (async_data);
         }
-      while (upload_list && clutter_get_timestamp () < start_time + 5 * 1000);
+      while (upload_list != NULL &&
+             g_get_monotonic_time () < start_time + 5 * 1000000L);
     }
 
   if (upload_list != NULL)
