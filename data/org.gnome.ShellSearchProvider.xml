@@ -1,0 +1,147 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+  <interface name="org.gnome.Shell.SearchProvider">
+    <doc:doc>
+      <doc:description>
+        <doc:para>
+          The interface used for integrating into GNOME Shell's search
+          interface.
+        </doc:para>
+      </doc:description>
+    </doc:doc>
+
+    <method name="GetInitialResultSet">
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            Called when the user first begins a search.
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+      <arg type="as" direction="in">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              Array of search terms, which the provider should treat as
+              logical AND.
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+      <arg type="as" direction="out">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              An array of result identifier strings representing items which
+              match the given search terms. Identifiers must be unique within
+              the provider's domain, but other than that may be chosen freely
+              by the provider.
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+    </method>
+
+    <method name="GetSubsearchResultSet">
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            Called when a search is performed which is a "subsearch" of
+            the previous search, e.g. the method may return less results, but
+            not more or different results.
+
+            This allows search providers to only search through the previous
+            result set, rather than possibly performing a full re-query.
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+      <arg type="as" direction="in">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              Array of item identifiers
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+      <arg type="as" direction="in">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              Array of updated search terms, which the provider should treat as
+              logical AND.
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+      <arg type="as" direction="out">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              An array of result identifier strings representing items which
+              match the given search terms. Identifiers must be unique within
+              the provider's domain, but other than that may be chosen freely
+              by the provider.
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+    </method>
+
+    <method name="GetResultMetas">
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            Return an array of meta data used to display each given result
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+      <arg type="as" direction="in">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              An array of result identifiers as returned by
+              GetInitialResultSet() or GetSubsearchResultSet()
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+      <arg type="a{sv}" direction="out">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              A dictionary describing the given search result, containing
+              'id', 'name' (both strings) and either 'icon' (a serialized
+              GIcon) or 'icon-data' (raw image data as (iiibiiay) - width,
+              height, rowstride, has-alpha, bits per sample, channels, data)
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+    </method>
+
+    <method name="ActivateResult">
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            Called when the users chooses a given result. The result should
+            be displayed in the application associated with the corresponding
+            provider.
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+      <arg type="s" direction="in">
+        <doc:doc>
+          <doc:summary>
+            <doc:para>
+              A result identifier as returned by GetInitialResultSet() or
+              GetSubsearchResultSet()
+            </doc:para>
+          </doc:summary>
+        </doc:doc>
+      </arg>
+    </method>
+  </interface>
+</node>

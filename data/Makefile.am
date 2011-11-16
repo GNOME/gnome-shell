@@ -17,6 +17,9 @@ dist_searchproviders_DATA =				\
 	open-search-providers/google.xml		\
 	open-search-providers/wikipedia.xml
 
+introspectiondir = $(datadir)/dbus-1/interfaces
+introspection_DATA = org.gnome.ShellSearchProvider.xml
+
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
 	theme/calendar-arrow-left.svg		\
@@ -73,6 +76,7 @@ shaders_DATA = \
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
 	gnome-shell-extension-prefs.desktop.in.in	\
+	$(introspection_DATA)				\
 	$(menu_DATA)					\
 	$(shaders_DATA)					\
 	$(convert_DATA)					\
