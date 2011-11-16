@@ -249,6 +249,7 @@ const AppMenuButton = new Lang.Class({
         let bin = new St.Bin({ name: 'appMenu' });
         this.actor.add_actor(bin);
 
+        this.actor.bind_property("reactive", this.actor, "can-focus", 0);
         this.actor.reactive = false;
         this._targetIsCurrent = false;
 
