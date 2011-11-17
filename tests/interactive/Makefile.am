@@ -13,7 +13,6 @@ UNIT_TESTS = \
 	test-depth.c \
 	test-threads.c \
 	test-script.c \
-	test-model.c \
 	test-grab.c \
 	test-fullscreen.c \
 	test-shader.c \
@@ -22,7 +21,6 @@ UNIT_TESTS = \
 	test-animator.c \
 	test-state.c \
 	test-state-animator.c \
-	test-unproject.c \
 	test-fbo.c \
 	test-multistage.c \
 	test-cogl-primitives.c \

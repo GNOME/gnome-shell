@@ -289,6 +289,16 @@ features).
 Release Notes for Clutter 1.10
 -------------------------------------------------------------------------------
 
+• ClutterDeformEffect switched from using CoglVertexBuffer to using the
+  CoglPrimitive API internally, to improve performance and use non-deprecated
+  Cogl API. CoglPrimitive converts COGL_WRAP_MODE_AUTOMATIC to
+  COGL_WRAP_MODE_CLAMP_TO_EDGE, unlike CoglVertexBuffer which converts it to
+  COGL_WRAP_MODE_REPEAT. This prevents artifacts when sampling texture
+  coordinates outside the [ 0, 1 ] range. This change may cause the back
+  texture to not be painted if its coordinates go outside the allowed range,
+  for instance when using a custom transformation matrix on the back material
+  used by the ClutterDeformEffect.
+
 • The "default stage" has been deprecated; since the 1.0 release, the default
   stage creation was deferred to the call to clutter_stage_get_default(), and
   the preferred way for getting a ClutterStage was calling clutter_stage_new()
