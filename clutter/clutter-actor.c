@@ -644,6 +644,7 @@ enum
 
 static guint actor_signals[LAST_SIGNAL] = { 0, };
 
+static void clutter_container_iface_init  (ClutterContainerIface  *iface);
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
 static void atk_implementor_iface_init    (AtkImplementorIface    *iface);
@@ -715,6 +716,8 @@ static GQuark quark_shader_data = 0;
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
                                   G_TYPE_INITIALLY_UNOWNED,
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                         clutter_container_iface_init)
                                   G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
                                                          clutter_scriptable_iface_init)
                                   G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
@@ -2795,6 +2798,21 @@ add_or_remove_flatten_effect (ClutterActor *self)
           priv->flatten_effect = NULL;
         }
     }
+}
+
+static gboolean
+foreach_child_paint (ClutterActor *child,
+                     gpointer      dummy G_GNUC_UNUSED)
+{
+  clutter_actor_paint (child);
+
+  return TRUE;
+}
+
+static void
+clutter_actor_real_paint (ClutterActor *actor)
+{
+  _clutter_actor_foreach_child (actor, foreach_child_paint, NULL);
 }
 
 /**
@@ -5303,6 +5321,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->get_accessible = clutter_actor_real_get_accessible;
   klass->get_paint_volume = clutter_actor_real_get_paint_volume;
   klass->has_overlaps = clutter_actor_real_has_overlaps;
+  klass->paint = clutter_actor_real_paint;
 }
 
 static void
@@ -9083,6 +9102,69 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_Y]);
     }
+}
+
+static void
+actor_add_actor (ClutterContainer *container,
+                 ClutterActor     *actor)
+{
+  clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
+
+  g_signal_emit_by_name (container, "actor-added", actor);
+}
+
+static void
+actor_remove_actor (ClutterContainer *container,
+                    ClutterActor     *actor)
+{
+  g_object_ref (actor);
+
+  clutter_actor_remove_child (CLUTTER_ACTOR (container), actor);
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
+
+  g_signal_emit_by_name (container, "actor-removed", actor);
+
+  g_object_unref (actor);
+}
+
+typedef struct {
+  ClutterCallback callback;
+  gpointer data;
+} ForeachClosure;
+
+static gboolean
+foreach_cb (ClutterActor *actor,
+            gpointer      data)
+{
+  ForeachClosure *clos = data;
+
+  clos->callback (actor, clos->data);
+
+  return TRUE;
+}
+
+static void
+actor_foreach (ClutterContainer *container,
+               ClutterCallback   callback,
+               gpointer          user_data)
+{
+  ForeachClosure clos;
+
+  clos.callback = callback;
+  clos.data = user_data;
+
+  _clutter_actor_foreach_child (CLUTTER_ACTOR (container),
+                                foreach_cb,
+                                &clos);
+}
+
+static void
+clutter_container_iface_init (ClutterContainerIface *iface)
+{
+  iface->add = actor_add_actor;
+  iface->remove = actor_remove_actor;
+  iface->foreach = actor_foreach;
 }
 
 typedef enum
