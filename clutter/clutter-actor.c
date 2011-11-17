@@ -8217,100 +8217,130 @@ clutter_actor_get_clip (ClutterActor *self,
 }
 
 /**
- * clutter_actor_set_parent:
- * @self: A #ClutterActor
- * @parent: A new #ClutterActor parent
+ * clutter_actor_get_children:
+ * @self: a #ClutterActor
  *
- * Sets the parent of @self to @parent.  The opposite function is
- * clutter_actor_unparent().
+ * Retrieves the list of children of @self.
  *
- * This function should not be used by applications, but by custom
- * container actor subclasses.
+ * Return value: (transfer container) (element-type ClutterActor): A newly
+ *   allocated #GList of #ClutterActor<!-- -->s. Use g_list_free() when
+ *   done.
+ *
+ * Since: 1.10
+ */
+GList *
+clutter_actor_get_children (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return g_list_copy (self->priv->children);
+}
+
+/**
+ * clutter_actor_add_child:
+ * @self: a #ClutterActor
+ * @child: a #ClutterActor
+ *
+ * Adds @child to the children of @self.
+ *
+ * This function will acquire a reference on @child.
+ *
+ * Since: 1.10
  */
 void
-clutter_actor_set_parent (ClutterActor *self,
-		          ClutterActor *parent)
+clutter_actor_add_child (ClutterActor *self,
+                         ClutterActor *child)
 {
-  ClutterActorPrivate *priv;
-  ClutterActorPrivate *parent_priv;
   ClutterTextDirection text_dir;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (CLUTTER_IS_ACTOR (parent));
-  g_return_if_fail (self != parent);
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (self != child);
 
-  priv = self->priv;
-
-  if (priv->parent_actor != NULL)
+  if (child->priv->parent_actor != NULL)
     {
       g_warning ("Cannot set a parent on an actor which has a parent.\n"
 		 "You must use clutter_actor_unparent() first.\n");
       return;
     }
 
-  if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (child))
     {
       g_warning ("Cannot set a parent on a toplevel actor\n");
       return;
     }
 
-  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (child))
     {
       g_warning ("Cannot set a parent currently being destroyed");
       return;
     }
 
-  g_object_ref_sink (self);
-  priv->parent_actor = parent;
+  g_object_ref_sink (child);
+  child->priv->parent_actor = self;
 
   /* Maintain an explicit list of children for every actor... */
-  parent_priv = parent->priv;
-  parent_priv->children =
-    g_list_prepend (parent_priv->children, self);
-  parent_priv->n_children++;
+  self->priv->children = g_list_prepend (self->priv->children, child);
+  self->priv->n_children++;
 
   /* if push_internal() has been called then we automatically set
    * the flag on the actor
    */
-  if (parent->priv->internal_child)
-    CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_INTERNAL_CHILD);
+  if (self->priv->internal_child)
+    CLUTTER_SET_PRIVATE_FLAGS (child, CLUTTER_INTERNAL_CHILD);
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
-  if (!CLUTTER_ACTOR_IN_REPARENT (self))
-    g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
+  if (!CLUTTER_ACTOR_IN_REPARENT (child))
+    g_signal_emit (child, actor_signals[PARENT_SET], 0, NULL);
 
   /* If parent is mapped or realized, we need to also be mapped or
    * realized once we're inside the parent.
    */
-  clutter_actor_update_map_state (self, MAP_STATE_CHECK);
+  clutter_actor_update_map_state (child, MAP_STATE_CHECK);
 
   /* propagate the parent's text direction to the child */
-  text_dir = clutter_actor_get_text_direction (parent);
-  clutter_actor_set_text_direction (self, text_dir);
+  text_dir = clutter_actor_get_text_direction (self);
+  clutter_actor_set_text_direction (child, text_dir);
 
-  if (priv->show_on_set_parent)
-    clutter_actor_show (self);
+  if (child->priv->show_on_set_parent)
+    clutter_actor_show (child);
 
-  if (CLUTTER_ACTOR_IS_MAPPED (self))
-    clutter_actor_queue_redraw (self);
+  if (CLUTTER_ACTOR_IS_MAPPED (child))
+    clutter_actor_queue_redraw (child);
 
   /* maintain the invariant that if an actor needs layout,
    * its parents do as well
    */
-  if (priv->needs_width_request ||
-      priv->needs_height_request ||
-      priv->needs_allocation)
+  if (child->priv->needs_width_request ||
+      child->priv->needs_height_request ||
+      child->priv->needs_allocation)
     {
       /* we work around the short-circuiting we do
        * in clutter_actor_queue_relayout() since we
        * want to force a relayout
        */
-      priv->needs_width_request = TRUE;
-      priv->needs_height_request = TRUE;
-      priv->needs_allocation = TRUE;
+      child->priv->needs_width_request = TRUE;
+      child->priv->needs_height_request = TRUE;
+      child->priv->needs_allocation = TRUE;
 
-      clutter_actor_queue_relayout (priv->parent_actor);
+      clutter_actor_queue_relayout (child->priv->parent_actor);
     }
+}
+
+/**
+ * clutter_actor_set_parent:
+ * @self: A #ClutterActor
+ * @parent: A new #ClutterActor parent
+ *
+ * Sets the parent of @self to @parent.
+ *
+ * This function just calls clutter_actor_add_child().
+ */
+void
+clutter_actor_set_parent (ClutterActor *self,
+		          ClutterActor *parent)
+{
+  clutter_actor_add_child (parent, self);
 }
 
 /**
@@ -8368,35 +8398,33 @@ invalidate_queue_redraw_entry (ClutterActor *self,
 }
 
 /**
- * clutter_actor_unparent:
+ * clutter_actor_remove_child:
  * @self: a #ClutterActor
+ * @child: a #ClutterActor
  *
- * Removes the parent of @self.
+ * Removes @child from the children of @self.
  *
- * This function should not be used in applications.
+ * This function will release the reference added by
+ * clutter_actor_add_child().
  *
- * This function should only be called by implementations of the
- * #ClutterContainer interface, or by composite actors that do
- * not implicitly create their children.
- *
- * Since: 0.1.1
+ * Since: 1.10
  */
 void
-clutter_actor_unparent (ClutterActor *self)
+clutter_actor_remove_child (ClutterActor *self,
+                            ClutterActor *child)
 {
-  ClutterActorPrivate *priv;
-  ClutterActor *old_parent;
-  ClutterActorPrivate *old_parent_priv;
   gboolean was_mapped;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
 
-  priv = self->priv;
-
-  if (priv->parent_actor == NULL)
+  if (child->priv->parent_actor == NULL)
     return;
 
-  was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
+  if (child->priv->parent_actor != self)
+    return;
+
+  was_mapped = CLUTTER_ACTOR_IS_MAPPED (child);
 
   /* we need to unrealize *before* we set parent_actor to NULL,
    * because in an unrealize method actors are dissociating from the
@@ -8404,7 +8432,7 @@ clutter_actor_unparent (ClutterActor *self)
    * clutter_actor_get_stage(). This should unmap and unrealize,
    * unless we're reparenting.
    */
-  clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
+  clutter_actor_update_map_state (child, MAP_STATE_MAKE_UNREALIZED);
 
    /* We take this opportunity to invalidate any queue redraw entry
     * associated with the actor and descendants since we won't be able to
@@ -8419,31 +8447,45 @@ clutter_actor_unparent (ClutterActor *self)
     *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2621
     *   https://bugzilla.gnome.org/show_bug.cgi?id=652036
     */
-  _clutter_actor_traverse (self,
+  _clutter_actor_traverse (child,
                            0,
                            invalidate_queue_redraw_entry,
                            NULL,
                            NULL);
 
-  old_parent = priv->parent_actor;
-  priv->parent_actor = NULL;
+  child->priv->parent_actor = NULL;
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
-  if (!CLUTTER_ACTOR_IN_REPARENT (self))
-    g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
+  if (!CLUTTER_ACTOR_IN_REPARENT (child))
+    g_signal_emit (child, actor_signals[PARENT_SET], 0, self);
 
-  old_parent_priv = old_parent->priv;
-  old_parent_priv->children = g_list_remove (old_parent_priv->children, self);
-  old_parent_priv->n_children--;
+  self->priv->children = g_list_remove (self->priv->children, child);
+  self->priv->n_children--;
 
   /* Queue a redraw on old_parent only if we were painted in the first
    * place. Will be no-op if old parent is not shown.
    */
-  if (was_mapped && !CLUTTER_ACTOR_IS_MAPPED (self))
-    clutter_actor_queue_redraw (old_parent);
+  if (was_mapped && !CLUTTER_ACTOR_IS_MAPPED (child))
+    clutter_actor_queue_redraw (self);
 
   /* remove the reference we acquired in clutter_actor_set_parent() */
-  g_object_unref (self);
+  g_object_unref (child);
+}
+
+/**
+ * clutter_actor_unparent:
+ * @self: a #ClutterActor
+ *
+ * Removes the parent of @self.
+ *
+ * This function just calls clutter_actor_remove_child().
+ *
+ * Since: 0.1.1
+ */
+void
+clutter_actor_unparent (ClutterActor *self)
+{
+  clutter_actor_remove_child (self->priv->parent_actor, self);
 }
 
 /**

@@ -411,6 +411,11 @@ void                  clutter_actor_set_clip_to_allocation    (ClutterActor     
                                                                gboolean               clip_set);
 gboolean              clutter_actor_get_clip_to_allocation    (ClutterActor          *self);
 
+void                  clutter_actor_add_child                 (ClutterActor          *self,
+                                                               ClutterActor          *child);
+void                  clutter_actor_remove_child              (ClutterActor          *self,
+                                                               ClutterActor          *child);
+GList *               clutter_actor_get_children              (ClutterActor          *self);
 void                  clutter_actor_set_parent                (ClutterActor          *self,
                                                                ClutterActor          *parent);
 ClutterActor *        clutter_actor_get_parent                (ClutterActor          *self);
