@@ -37,6 +37,7 @@ struct _CoglPipelineCache
 {
   GHashTable *fragment_hash;
   GHashTable *vertex_hash;
+  GHashTable *combined_hash;
 };
 
 static unsigned int
@@ -101,6 +102,46 @@ pipeline_vertex_equal (const void *a, const void *b)
                                0);
 }
 
+static unsigned int
+pipeline_combined_hash (const void *data)
+{
+  unsigned int combined_state;
+  unsigned int layer_combined_state;
+
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  combined_state =
+    _cogl_pipeline_get_state_for_fragment_codegen (ctx) |
+    COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN;
+  layer_combined_state =
+    _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx) |
+    COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN;
+
+  return _cogl_pipeline_hash ((CoglPipeline *)data,
+                              combined_state, layer_combined_state,
+                              0);
+}
+
+static gboolean
+pipeline_combined_equal (const void *a, const void *b)
+{
+  unsigned int combined_state;
+  unsigned int layer_combined_state;
+
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  combined_state =
+    _cogl_pipeline_get_state_for_fragment_codegen (ctx) |
+    COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN;
+  layer_combined_state =
+    _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx) |
+    COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN;
+
+  return _cogl_pipeline_equal ((CoglPipeline *)a, (CoglPipeline *)b,
+                               combined_state, layer_combined_state,
+                               0);
+}
+
 CoglPipelineCache *
 cogl_pipeline_cache_new (void)
 {
@@ -114,6 +155,10 @@ cogl_pipeline_cache_new (void)
                                               pipeline_vertex_equal,
                                               cogl_object_unref,
                                               cogl_object_unref);
+  cache->combined_hash = g_hash_table_new_full (pipeline_combined_hash,
+                                                pipeline_combined_equal,
+                                                cogl_object_unref,
+                                                cogl_object_unref);
 
   return cache;
 }
@@ -123,6 +168,7 @@ cogl_pipeline_cache_free (CoglPipelineCache *cache)
 {
   g_hash_table_destroy (cache->fragment_hash);
   g_hash_table_destroy (cache->vertex_hash);
+  g_hash_table_destroy (cache->combined_hash);
   g_free (cache);
 }
 
@@ -210,27 +256,27 @@ CoglPipeline *
 _cogl_pipeline_cache_get_combined_template (CoglPipelineCache *cache,
                                             CoglPipeline *key_pipeline)
 {
-  unsigned int pipeline_state_for_fragment_codegen;
-  unsigned int pipeline_layer_state_for_fragment_codegen;
+  CoglPipeline *template =
+    g_hash_table_lookup (cache->combined_hash, key_pipeline);
 
-  _COGL_GET_CONTEXT (ctx, NULL);
+  if (template == NULL)
+    {
+      template = cogl_pipeline_copy (key_pipeline);
 
-  pipeline_state_for_fragment_codegen =
-    _cogl_pipeline_get_state_for_fragment_codegen (ctx);
-  pipeline_layer_state_for_fragment_codegen =
-    _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx);
+      g_hash_table_insert (cache->combined_hash,
+                           template,
+                           cogl_object_ref (template));
 
-  /* Currently the vertex shader state is a subset of the fragment
-     shader state so we can avoid a third hash table here by just
-     using the fragment shader table. This assert should catch it if
-     that ever changes */
+      if (G_UNLIKELY (g_hash_table_size (cache->combined_hash) > 50))
+        {
+          static gboolean seen = FALSE;
+          if (!seen)
+            g_warning ("Over 50 separate programs have been "
+                       "generated which is very unusual, so something "
+                       "is probably wrong!\n");
+          seen = TRUE;
+        }
+    }
 
-  g_assert ((pipeline_state_for_fragment_codegen |
-             COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN) ==
-            pipeline_state_for_fragment_codegen);
-  g_assert ((pipeline_layer_state_for_fragment_codegen |
-             COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN) ==
-            pipeline_layer_state_for_fragment_codegen);
-
-  return _cogl_pipeline_cache_get_fragment_template (cache, key_pipeline);
+  return template;
 }

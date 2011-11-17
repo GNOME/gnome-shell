@@ -31,6 +31,7 @@
 
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
+#include "cogl-pipeline-state-private.h"
 #include "cogl-pipeline-opengl-private.h"
 
 #ifdef COGL_PIPELINE_FRAGEND_FIXED
@@ -99,6 +100,10 @@ _cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
     return FALSE;
 
   if (ctx->driver == COGL_DRIVER_GLES2)
+    return FALSE;
+
+  /* Fragment snippets are only supported in the GLSL fragend */
+  if (_cogl_pipeline_has_fragment_snippets (pipeline))
     return FALSE;
 
   /* If there is a user program with a fragment shader then the

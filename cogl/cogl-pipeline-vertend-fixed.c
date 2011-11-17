@@ -31,6 +31,7 @@
 
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
+#include "cogl-pipeline-state-private.h"
 #include "cogl-pipeline-opengl-private.h"
 
 #ifdef COGL_PIPELINE_VERTEND_FIXED
@@ -57,6 +58,10 @@ _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
     return FALSE;
 
   if (ctx->driver == COGL_DRIVER_GLES2)
+    return FALSE;
+
+  /* Vertex snippets are only supported in the GLSL fragend */
+  if (_cogl_pipeline_has_vertex_snippets (pipeline))
     return FALSE;
 
   /* If there is a user program with a vertex shader then the

@@ -181,6 +181,16 @@ _cogl_pipeline_fragend_glsl_get_shader (CoglPipeline *pipeline)
     return 0;
 }
 
+static CoglPipelineSnippetList *
+get_fragment_snippets (CoglPipeline *pipeline)
+{
+  pipeline =
+    _cogl_pipeline_get_authority (pipeline,
+                                  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
+
+  return &pipeline->big_state->fragment_snippets;
+}
+
 static gboolean
 _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
@@ -190,6 +200,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;
   CoglPipeline *template_pipeline = NULL;
+  CoglPipelineSnippet *snippet;
   CoglProgram *user_program;
   int i;
 
@@ -318,6 +329,37 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
                    "void\n"
                    "main ()\n"
                    "{\n");
+
+  COGL_LIST_FOREACH (snippet, get_fragment_snippets (pipeline), list_node)
+    {
+      const char *declarations =
+        cogl_snippet_get_declarations (snippet->snippet);
+
+      /* Add all of the declarations for fragment snippets */
+      if (declarations)
+        {
+          g_string_append (shader_state->header, declarations);
+          g_string_append_c (shader_state->header, '\n');
+        }
+
+      /* Add all of the pre-hooks for fragment processing */
+      if (snippet->hook == COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT)
+        {
+          const char *pre =
+            cogl_snippet_get_pre (snippet->snippet);
+
+          if (pre)
+            {
+              g_string_append (shader_state->source, "  {\n");
+              g_string_append (shader_state->source, pre);
+              g_string_append (shader_state->source, "  }\n");
+            }
+        }
+    }
+
+  /* Enclose the generated fragment processing in a block so that any
+     variables declared in it won't be in the scope of the snippets */
+  g_string_append (shader_state->source, "  {\n");
 
   for (i = 0; i < n_layers; i++)
     {
@@ -885,6 +927,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       GLint lengths[2];
       GLint compile_status;
       GLuint shader;
+      CoglPipelineSnippet *snippet;
 
       COGL_STATIC_COUNTER (fragend_glsl_compile_counter,
                            "glsl fragment compile counter",
@@ -921,6 +964,24 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       if (ctx->driver == COGL_DRIVER_GLES2)
         add_alpha_test_snippet (pipeline, shader_state);
 #endif
+
+      /* Close the block surrounding the generated fragment processing */
+      g_string_append (shader_state->source, "  }\n");
+
+      /* Add all of the post-hooks for fragment processing */
+      COGL_LIST_FOREACH (snippet, get_fragment_snippets (pipeline), list_node)
+        if (snippet->hook == COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT)
+          {
+            const char *post =
+              cogl_snippet_get_post (snippet->snippet);
+
+            if (post)
+              {
+                g_string_append (shader_state->source, "  {\n");
+                g_string_append (shader_state->source, post);
+                g_string_append (shader_state->source, "  }\n");
+              }
+          }
 
       g_string_append (shader_state->source, "}\n");
 

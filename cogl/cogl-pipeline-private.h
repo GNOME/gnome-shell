@@ -168,6 +168,8 @@ typedef enum
   COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
   COGL_PIPELINE_STATE_CULL_FACE_INDEX,
   COGL_PIPELINE_STATE_UNIFORMS_INDEX,
+  COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX,
+  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX,
 
   /* non-sparse */
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -217,6 +219,10 @@ typedef enum _CoglPipelineState
     1L<<COGL_PIPELINE_STATE_CULL_FACE_INDEX,
   COGL_PIPELINE_STATE_UNIFORMS =
     1L<<COGL_PIPELINE_STATE_UNIFORMS_INDEX,
+  COGL_PIPELINE_STATE_VERTEX_SNIPPETS =
+    1L<<COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX,
+  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS =
+    1L<<COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX,
 
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE =
     1L<<COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -240,7 +246,9 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_LAYERS | \
    COGL_PIPELINE_STATE_LIGHTING | \
    COGL_PIPELINE_STATE_BLEND | \
-   COGL_PIPELINE_STATE_USER_SHADER)
+   COGL_PIPELINE_STATE_USER_SHADER | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS | \
+   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
 
 #define COGL_PIPELINE_STATE_NEEDS_BIG_STATE \
   (COGL_PIPELINE_STATE_LIGHTING | \
@@ -253,7 +261,9 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_POINT_SIZE | \
    COGL_PIPELINE_STATE_LOGIC_OPS | \
    COGL_PIPELINE_STATE_CULL_FACE | \
-   COGL_PIPELINE_STATE_UNIFORMS)
+   COGL_PIPELINE_STATE_UNIFORMS | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS | \
+   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
 
 #define COGL_PIPELINE_STATE_MULTI_PROPERTY \
   (COGL_PIPELINE_STATE_LAYERS | \
@@ -263,11 +273,14 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_FOG | \
    COGL_PIPELINE_STATE_LOGIC_OPS | \
    COGL_PIPELINE_STATE_CULL_FACE | \
-   COGL_PIPELINE_STATE_UNIFORMS)
+   COGL_PIPELINE_STATE_UNIFORMS | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS | \
+   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
 
 #define COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN \
   (COGL_PIPELINE_STATE_LAYERS | \
-   COGL_PIPELINE_STATE_USER_SHADER)
+   COGL_PIPELINE_STATE_USER_SHADER | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
 
 typedef enum
 {
@@ -353,6 +366,35 @@ typedef struct
   CoglBitmask changed_mask;
 } CoglPipelineUniformsState;
 
+/* Enumeration of all the hook points that a snippet can be attached
+   to within a pipeline. Note that although there are currently only
+   two points that directly correspond to the two state flags, the
+   idea isn't that each new enum here will mean a state flag. The
+   state flags are just intended to mark the split between hooks that
+   affect the fragment shader and hooks that affect the vertex
+   shader. For example, if we add a hook to wrap around the processing
+   for a particular layer then that hook would be part of the fragment
+   snippets state. */
+typedef enum
+{
+  COGL_PIPELINE_SNIPPET_HOOK_VERTEX,
+  COGL_PIPELINE_SNIPPET_HOOK_FRAGMENT
+} CoglPipelineSnippetHook;
+
+typedef struct _CoglPipelineSnippet CoglPipelineSnippet;
+
+COGL_LIST_HEAD (CoglPipelineSnippetList, CoglPipelineSnippet);
+
+struct _CoglPipelineSnippet
+{
+  COGL_LIST_ENTRY (CoglPipelineSnippet) list_node;
+
+  /* Hook where this snippet is attached */
+  CoglPipelineSnippetHook hook;
+
+  CoglSnippet *snippet;
+};
+
 typedef struct
 {
   CoglPipelineLightingState lighting_state;
@@ -365,6 +407,8 @@ typedef struct
   CoglPipelineLogicOpsState logic_ops_state;
   CoglPipelineCullFaceState cull_face_state;
   CoglPipelineUniformsState uniforms_state;
+  CoglPipelineSnippetList vertex_snippets;
+  CoglPipelineSnippetList fragment_snippets;
 } CoglPipelineBigState;
 
 typedef enum

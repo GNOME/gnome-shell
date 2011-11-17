@@ -29,6 +29,7 @@
 #define __COGL_PIPELINE_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-snippet.h>
 
 G_BEGIN_DECLS
 

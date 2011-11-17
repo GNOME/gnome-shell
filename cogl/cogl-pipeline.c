@@ -445,6 +445,22 @@ destroy_weak_children_cb (CoglNode *node,
 }
 
 static void
+_cogl_pipeline_snippet_free (CoglPipelineSnippet *pipeline_snippet)
+{
+  cogl_object_unref (pipeline_snippet->snippet);
+  g_slice_free (CoglPipelineSnippet, pipeline_snippet);
+}
+
+static void
+_cogl_pipeline_snippet_list_free (CoglPipelineSnippetList *list)
+{
+  CoglPipelineSnippet *pipeline_snippet, *tmp;
+
+  COGL_LIST_FOREACH_SAFE (pipeline_snippet, list, list_node, tmp)
+    _cogl_pipeline_snippet_free (pipeline_snippet);
+}
+
+static void
 _cogl_pipeline_free (CoglPipeline *pipeline)
 {
   if (!pipeline->is_weak)
@@ -487,6 +503,12 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
                       (GFunc)cogl_object_unref, NULL);
       g_list_free (pipeline->layer_differences);
     }
+
+  if (pipeline->differences & COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
+    _cogl_pipeline_snippet_list_free (&pipeline->big_state->vertex_snippets);
+
+  if (pipeline->differences & COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
+    _cogl_pipeline_snippet_list_free (&pipeline->big_state->fragment_snippets);
 
   g_list_free (pipeline->deprecated_get_layers_list);
 
@@ -831,6 +853,30 @@ _cogl_pipeline_set_vertend (CoglPipeline *pipeline, int vertend)
 }
 
 static void
+_cogl_pipeline_snippet_list_copy (CoglPipelineSnippetList *dst,
+                                  const CoglPipelineSnippetList *src)
+{
+  CoglPipelineSnippet *tail = NULL;
+  const CoglPipelineSnippet *l;
+
+  COGL_LIST_INIT (dst);
+
+  COGL_LIST_FOREACH (l, src, list_node)
+    {
+      CoglPipelineSnippet *copy = g_slice_dup (CoglPipelineSnippet, l);
+
+      cogl_object_ref (copy->snippet);
+
+      if (tail)
+        COGL_LIST_INSERT_AFTER (tail, copy, list_node);
+      else
+        COGL_LIST_INSERT_HEAD (dst, copy, list_node);
+
+      tail = copy;
+    }
+}
+
+static void
 _cogl_pipeline_copy_differences (CoglPipeline *dest,
                                  CoglPipeline *src,
                                  unsigned long differences)
@@ -973,6 +1019,14 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
       _cogl_bitmask_init (&big_state->uniforms_state.changed_mask);
     }
 
+  if (differences & COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
+    _cogl_pipeline_snippet_list_copy (&big_state->vertex_snippets,
+                                      &src->big_state->vertex_snippets);
+
+  if (differences & COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
+    _cogl_pipeline_snippet_list_copy (&big_state->fragment_snippets,
+                                      &src->big_state->fragment_snippets);
+
   /* XXX: we shouldn't bother doing this in most cases since
    * _copy_differences is typically used to initialize pipeline state
    * by copying it from the current authority, so it's not actually
@@ -1066,6 +1120,16 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
         uniforms_state->override_values = NULL;
         break;
       }
+    case COGL_PIPELINE_STATE_VERTEX_SNIPPETS:
+      _cogl_pipeline_snippet_list_copy (&pipeline->big_state->vertex_snippets,
+                                        &authority->big_state->vertex_snippets);
+      break;
+
+    case COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS:
+      _cogl_pipeline_snippet_list_copy (&pipeline->big_state->fragment_snippets,
+                                        &authority->big_state->
+                                        fragment_snippets);
+      break;
     }
 }
 
@@ -2260,6 +2324,18 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                               _cogl_pipeline_uniforms_state_equal))
     goto done;
 
+  if (!simple_property_equal (authorities0, authorities1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX,
+                              _cogl_pipeline_vertex_snippets_state_equal))
+    goto done;
+
+  if (!simple_property_equal (authorities0, authorities1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX,
+                              _cogl_pipeline_fragment_snippets_state_equal))
+    goto done;
+
   if (pipelines_difference & COGL_PIPELINE_STATE_LAYERS)
     {
       CoglPipelineStateIndex state_index = COGL_PIPELINE_STATE_LAYERS_INDEX;
@@ -2669,9 +2745,13 @@ _cogl_pipeline_init_state_hash_functions (void)
     _cogl_pipeline_hash_logic_ops_state;
   state_hash_functions[COGL_PIPELINE_STATE_UNIFORMS_INDEX] =
     _cogl_pipeline_hash_uniforms_state;
+  state_hash_functions[COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX] =
+    _cogl_pipeline_hash_vertex_snippets_state;
+  state_hash_functions[COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX] =
+    _cogl_pipeline_hash_fragment_snippets_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 14);
+  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 16);
 }
 
 unsigned int
@@ -2860,7 +2940,8 @@ CoglPipelineState
 _cogl_pipeline_get_state_for_fragment_codegen (CoglContext *context)
 {
   CoglPipelineState state = (COGL_PIPELINE_STATE_LAYERS |
-                             COGL_PIPELINE_STATE_USER_SHADER);
+                             COGL_PIPELINE_STATE_USER_SHADER |
+                             COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
 
   if (context->driver == COGL_DRIVER_GLES2)
     state |= COGL_PIPELINE_STATE_ALPHA_FUNC;

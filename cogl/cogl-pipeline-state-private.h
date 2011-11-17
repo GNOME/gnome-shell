@@ -31,6 +31,12 @@
 CoglPipeline *
 _cogl_pipeline_get_user_program (CoglPipeline *pipeline);
 
+gboolean
+_cogl_pipeline_has_vertex_snippets (CoglPipeline *pipeline);
+
+gboolean
+_cogl_pipeline_has_fragment_snippets (CoglPipeline *pipeline);
+
 void
 _cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
                               const CoglPipelineFogState *fog_state);
@@ -82,6 +88,14 @@ _cogl_pipeline_cull_face_state_equal (CoglPipeline *authority0,
 gboolean
 _cogl_pipeline_uniforms_state_equal (CoglPipeline *authority0,
                                      CoglPipeline *authority1);
+
+gboolean
+_cogl_pipeline_vertex_snippets_state_equal (CoglPipeline *authority0,
+                                            CoglPipeline *authority1);
+
+gboolean
+_cogl_pipeline_fragment_snippets_state_equal (CoglPipeline *authority0,
+                                              CoglPipeline *authority1);
 
 void
 _cogl_pipeline_hash_color_state (CoglPipeline *authority,
@@ -138,6 +152,14 @@ _cogl_pipeline_hash_cull_face_state (CoglPipeline *authority,
 void
 _cogl_pipeline_hash_uniforms_state (CoglPipeline *authority,
                                     CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_hash_vertex_snippets_state (CoglPipeline *authority,
+                                           CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_hash_fragment_snippets_state (CoglPipeline *authority,
+                                             CoglPipelineHashState *state);
 
 void
 _cogl_pipeline_compare_uniform_differences (unsigned long *differences,
