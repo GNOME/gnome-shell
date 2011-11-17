@@ -350,57 +350,6 @@ clutter_box_real_pick (ClutterActor       *actor,
 }
 
 static void
-clutter_box_real_get_preferred_width (ClutterActor *actor,
-                                      gfloat        for_height,
-                                      gfloat       *min_width,
-                                      gfloat       *natural_width)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
-
-  clutter_layout_manager_get_preferred_width (priv->manager,
-                                              CLUTTER_CONTAINER (actor),
-                                              for_height,
-                                              min_width, natural_width);
-}
-
-static void
-clutter_box_real_get_preferred_height (ClutterActor *actor,
-                                       gfloat        for_width,
-                                       gfloat       *min_height,
-                                       gfloat       *natural_height)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
-
-  clutter_layout_manager_get_preferred_height (priv->manager,
-                                               CLUTTER_CONTAINER (actor),
-                                               for_width,
-                                               min_height, natural_height);
-}
-
-static void
-clutter_box_real_allocate (ClutterActor           *actor,
-                           const ClutterActorBox  *allocation,
-                           ClutterAllocationFlags  flags)
-{
-  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
-  ClutterActorClass *klass;
-  ClutterActorBox box;
-  gfloat w, h;
-
-  klass = CLUTTER_ACTOR_CLASS (clutter_box_parent_class);
-  klass->allocate (actor, allocation, flags);
-
-  clutter_actor_box_get_size (allocation, &w, &h);
-
-  clutter_actor_box_set_origin (&box, 0.f, 0.f);
-  clutter_actor_box_set_size (&box, w, h);
-
-  clutter_layout_manager_allocate (priv->manager,
-                                   CLUTTER_CONTAINER (actor),
-                                   &box, flags);
-}
-
-static void
 clutter_box_destroy (ClutterActor *actor)
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
@@ -412,51 +361,9 @@ clutter_box_destroy (ClutterActor *actor)
     CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy (actor);
 }
 
-static inline void
-set_layout_manager (ClutterBox           *self,
-                    ClutterLayoutManager *manager)
-{
-  ClutterBoxPrivate *priv = self->priv;
-
-  if (priv->manager == manager)
-    return;
-
-  if (priv->manager != NULL)
-    {
-      if (priv->changed_id != 0)
-        g_signal_handler_disconnect (priv->manager, priv->changed_id);
-
-      clutter_layout_manager_set_container (priv->manager, NULL);
-      g_object_unref (priv->manager);
-
-      priv->manager = NULL;
-      priv->changed_id = 0;
-    }
-
-  if (manager != NULL)
-    {
-      priv->manager = g_object_ref_sink (manager);
-      clutter_layout_manager_set_container (manager,
-                                            CLUTTER_CONTAINER (self));
-
-      priv->changed_id =
-        g_signal_connect_swapped (priv->manager, "layout-changed",
-                                  G_CALLBACK (clutter_actor_queue_relayout),
-                                  self);
-    }
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
-
-  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAYOUT_MANAGER]);
-}
-
 static void
 clutter_box_dispose (GObject *gobject)
 {
-  ClutterBox *self = CLUTTER_BOX (gobject);
-
-  set_layout_manager (self, NULL);
-
   G_OBJECT_CLASS (clutter_box_parent_class)->dispose (gobject);
 }
 
@@ -470,10 +377,6 @@ clutter_box_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_LAYOUT_MANAGER:
-      set_layout_manager (self, g_value_get_object (value));
-      break;
-
     case PROP_COLOR:
       clutter_box_set_color (self, clutter_value_get_color (value));
       break;
@@ -494,10 +397,6 @@ clutter_box_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_LAYOUT_MANAGER:
-      g_value_set_object (value, priv->manager);
-      break;
-
     case PROP_COLOR:
       clutter_value_set_color (value, &priv->color);
       break;
@@ -521,9 +420,6 @@ clutter_box_class_init (ClutterBoxClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterBoxPrivate));
 
-  actor_class->get_preferred_width = clutter_box_real_get_preferred_width;
-  actor_class->get_preferred_height = clutter_box_real_get_preferred_height;
-  actor_class->allocate = clutter_box_real_allocate;
   actor_class->paint = clutter_box_real_paint;
   actor_class->get_paint_volume = clutter_box_real_get_paint_volume;
   actor_class->pick = clutter_box_real_pick;
@@ -532,24 +428,6 @@ clutter_box_class_init (ClutterBoxClass *klass)
   gobject_class->set_property = clutter_box_set_property;
   gobject_class->get_property = clutter_box_get_property;
   gobject_class->dispose = clutter_box_dispose;
-
-  /**
-   * ClutterBox:layout-manager:
-   *
-   * The #ClutterLayoutManager used by the #ClutterBox
-   *
-   * Since: 1.2
-   */
-  pspec = g_param_spec_object ("layout-manager",
-                               P_("Layout Manager"),
-                               P_("The layout manager used by the box"),
-                               CLUTTER_TYPE_LAYOUT_MANAGER,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT);
-  obj_props[PROP_LAYOUT_MANAGER] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_LAYOUT_MANAGER,
-                                   pspec);
 
   /**
    * ClutterBox:color:
@@ -629,10 +507,7 @@ void
 clutter_box_set_layout_manager (ClutterBox           *box,
                                 ClutterLayoutManager *manager)
 {
-  g_return_if_fail (CLUTTER_IS_BOX (box));
-  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
-
-  set_layout_manager (box, manager);
+  clutter_actor_set_layout_manager (CLUTTER_ACTOR (box), manager);
 }
 
 /**
@@ -650,9 +525,7 @@ clutter_box_set_layout_manager (ClutterBox           *box,
 ClutterLayoutManager *
 clutter_box_get_layout_manager (ClutterBox *box)
 {
-  g_return_val_if_fail (CLUTTER_IS_BOX (box), NULL);
-
-  return box->priv->manager;
+  return clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
 }
 
 /**
@@ -677,8 +550,8 @@ clutter_box_packv (ClutterBox          *box,
                    const gchar * const  properties[],
                    const GValue        *values)
 {
+  ClutterLayoutManager *manager;
   ClutterContainer *container;
-  ClutterBoxPrivate *priv;
   ClutterLayoutMeta *meta;
   GObjectClass *klass;
   gint i;
@@ -689,9 +562,11 @@ clutter_box_packv (ClutterBox          *box,
   container = CLUTTER_CONTAINER (box);
   clutter_container_add_actor (container, actor);
 
-  priv = box->priv;
+  manager = clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
+  if (manager == NULL)
+    return;
 
-  meta = clutter_layout_manager_get_child_meta (priv->manager,
+  meta = clutter_layout_manager_get_child_meta (manager,
                                                 container,
                                                 actor);
 
@@ -712,7 +587,7 @@ clutter_box_packv (ClutterBox          *box,
                      "of type '%s' (meta type '%s') does not exist",
                      G_STRLOC,
                      pname,
-                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (manager),
                      G_OBJECT_TYPE_NAME (meta));
           break;
         }
@@ -723,12 +598,12 @@ clutter_box_packv (ClutterBox          *box,
                      "of type '%s' (meta type '%s') is not writable",
                      G_STRLOC,
                      pspec->name,
-                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (manager),
                      G_OBJECT_TYPE_NAME (meta));
           break;
         }
 
-      clutter_layout_manager_child_set_property (priv->manager,
+      clutter_layout_manager_child_set_property (manager,
                                                  container, actor,
                                                  pname, &values[i]);
     }
@@ -741,15 +616,16 @@ clutter_box_set_property_valist (ClutterBox   *box,
                                  va_list       var_args)
 {
   ClutterContainer *container = CLUTTER_CONTAINER (box);
-  ClutterBoxPrivate *priv = box->priv;
+  ClutterLayoutManager *manager;
   ClutterLayoutMeta *meta;
   GObjectClass *klass;
   const gchar *pname;
 
-  if (priv->manager == NULL)
+  manager = clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
+  if (manager == NULL)
     return;
 
-  meta = clutter_layout_manager_get_child_meta (priv->manager,
+  meta = clutter_layout_manager_get_child_meta (manager,
                                                 container,
                                                 actor);
 
@@ -772,7 +648,7 @@ clutter_box_set_property_valist (ClutterBox   *box,
                      "of type '%s' (meta type '%s') does not exist",
                      G_STRLOC,
                      pname,
-                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (manager),
                      G_OBJECT_TYPE_NAME (meta));
           break;
         }
@@ -783,7 +659,7 @@ clutter_box_set_property_valist (ClutterBox   *box,
                      "of type '%s' (meta type '%s') is not writable",
                      G_STRLOC,
                      pspec->name,
-                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (manager),
                      G_OBJECT_TYPE_NAME (meta));
           break;
         }
@@ -799,7 +675,7 @@ clutter_box_set_property_valist (ClutterBox   *box,
           break;
         }
 
-      clutter_layout_manager_child_set_property (priv->manager,
+      clutter_layout_manager_child_set_property (manager,
                                                  container, actor,
                                                  pspec->name, &value);
 
