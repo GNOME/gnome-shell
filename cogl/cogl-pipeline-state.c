@@ -321,9 +321,14 @@ _cogl_pipeline_uniforms_state_equal (CoglPipeline *authority0,
       const CoglBoxedValue *value0 = values0[i];
       const CoglBoxedValue *value1 = values1[i];
 
-      if (value0 == NULL || value0->type == COGL_BOXED_NONE)
+      if (value0 == NULL)
         {
           if (value1 != NULL && value1->type != COGL_BOXED_NONE)
+            return FALSE;
+        }
+      else if (value1 == NULL)
+        {
+          if (value0 != NULL && value0->type != COGL_BOXED_NONE)
             return FALSE;
         }
       else if (!_cogl_boxed_value_equal (value0, value1))
