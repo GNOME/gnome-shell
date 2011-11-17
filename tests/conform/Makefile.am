@@ -43,6 +43,7 @@ test_sources = \
 	test-path.c \
 	test-pipeline-user-matrix.c \
 	test-pipeline-uniforms.c \
+	test-snippets.c \
 	test-wrap-modes.c \
 	test-sub-texture.c \
 	$(NULL)
