@@ -1,0 +1,54 @@
+/*
+ * Cogl
+ *
+ * An object oriented GL/GLES Abstraction/Utility Layer
+ *
+ * Copyright (C) 2011 Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ *
+ *
+ * Authors:
+ *   Neil Roberts <neil@linux.intel.com>
+ */
+
+#ifndef __COGL_SNIPPET_PRIVATE_H
+#define __COGL_SNIPPET_PRIVATE_H
+
+#include <glib.h>
+
+#include "cogl-snippet.h"
+#include "cogl-object-private.h"
+
+struct _CoglSnippet
+{
+  CoglObject _parent;
+
+  /* This is set to TRUE the first time the snippet is attached to the
+     pipeline. After that any attempts to modify the snippet will be
+     ignored. */
+  gboolean immutable;
+
+  char *declarations;
+  char *pre;
+  char *post;
+};
+
+void
+_cogl_snippet_make_immutable (CoglSnippet *snippet);
+
+#endif /* __COGL_SNIPPET_PRIVATE_H */
+
