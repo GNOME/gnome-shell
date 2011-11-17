@@ -3746,7 +3746,7 @@ clutter_actor_dispose (GObject *object)
           clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
         }
       else
-        clutter_actor_unparent (self);
+        clutter_actor_remove_child (parent, self);
     }
 
   /* parent should be gone */
@@ -8259,8 +8259,8 @@ clutter_actor_add_child (ClutterActor *self,
 
   if (child->priv->parent_actor != NULL)
     {
-      g_warning ("Cannot set a parent on an actor which has a parent.\n"
-		 "You must use clutter_actor_unparent() first.\n");
+      g_warning ("Cannot set a parent on an actor which has a parent. "
+		 "You must use clutter_actor_remove_child() first.");
       return;
     }
 
@@ -8542,19 +8542,19 @@ clutter_actor_reparent (ClutterActor *self,
       if (CLUTTER_IS_CONTAINER (priv->parent_actor) &&
           !CLUTTER_ACTOR_IS_INTERNAL_CHILD (self))
         {
-          ClutterContainer *parent = CLUTTER_CONTAINER (priv->parent_actor);
+          ClutterContainer *parent = CLUTTER_CONTAINER (old_parent);
 
           /* this will have to call unparent() */
           clutter_container_remove_actor (parent, self);
         }
       else
-        clutter_actor_unparent (self);
+        clutter_actor_remove_child (old_parent, self);
 
       /* Note, will call parent() */
       if (CLUTTER_IS_CONTAINER (new_parent))
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
-        clutter_actor_set_parent (self, new_parent);
+        clutter_actor_add_child (new_parent, self);
 
       /* we emit the ::parent-set signal once */
       g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);

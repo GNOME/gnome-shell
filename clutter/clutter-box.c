@@ -165,7 +165,7 @@ clutter_box_real_add (ClutterContainer *container,
   else
     priv->children = l;
 
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
+  clutter_actor_add_child (CLUTTER_ACTOR (container), actor);
 
   clutter_actor_queue_relayout (actor);
 
@@ -183,7 +183,7 @@ clutter_box_real_remove (ClutterContainer *container,
   g_object_ref (actor);
 
   priv->children = g_list_remove (priv->children, actor);
-  clutter_actor_unparent (actor);
+  clutter_actor_remove_child (CLUTTER_ACTOR (container), actor);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 
@@ -974,7 +974,7 @@ clutter_box_pack_at (ClutterBox   *box,
                                   actor,
                                   position);
 
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (box));
+  clutter_actor_add_child (CLUTTER_ACTOR (box), actor);
   clutter_actor_queue_relayout (actor);
 
   /* we need to explicitly call this, because we're not going through

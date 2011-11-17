@@ -2386,12 +2386,14 @@ on_fbo_parent_change (ClutterActor        *actor,
   ClutterActor        *parent = CLUTTER_ACTOR(texture);
 
   while ((parent = clutter_actor_get_parent (parent)) != NULL)
-    if (parent == actor)
-      {
-        g_warning ("Offscreen texture is ancestor of source!");
-        /* Desperate but will avoid infinite loops */
-        clutter_actor_unparent (actor);
-      }
+    {
+      if (parent == actor)
+        {
+          g_warning ("Offscreen texture is ancestor of source!");
+          /* Desperate but will avoid infinite loops */
+          clutter_actor_remove_child (parent, actor);
+        }
+    }
 }
 
 static void
@@ -2544,7 +2546,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   /* If the actor doesn't have a parent then claim it so that it will
      get a size allocation during layout */
   if (clutter_actor_get_parent (actor) == NULL)
-    clutter_actor_set_parent (actor, CLUTTER_ACTOR (texture));
+    clutter_actor_add_child (CLUTTER_ACTOR (texture), actor);
 
   /* Connect up any signals which could change our underlying size */
   g_signal_connect (actor,
@@ -2606,11 +2608,14 @@ texture_fbo_free_resources (ClutterTexture *texture)
 
   if (priv->fbo_source != NULL)
     {
+      ClutterActor *parent;
+
+      parent = clutter_actor_get_parent (priv->fbo_source);
+
       /* If we parented the texture then unparent it again so that it
 	 will lose the reference */
-      if (clutter_actor_get_parent (priv->fbo_source)
-	  == CLUTTER_ACTOR (texture))
-	clutter_actor_unparent (priv->fbo_source);
+      if (parent == CLUTTER_ACTOR (texture))
+	clutter_actor_remove_child (parent, priv->fbo_source);
 
       g_signal_handlers_disconnect_by_func
                             (priv->fbo_source,
