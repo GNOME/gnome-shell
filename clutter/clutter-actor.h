@@ -363,6 +363,10 @@ void                  clutter_actor_set_x                     (ClutterActor     
                                                                gfloat                 x);
 void                  clutter_actor_set_y                     (ClutterActor          *self,
                                                                gfloat                 y);
+void                  clutter_actor_set_layout_manager        (ClutterActor          *self,
+                                                               ClutterLayoutManager  *manager);
+ClutterLayoutManager *clutter_actor_get_layout_manager        (ClutterActor          *self);
+
 void                  clutter_actor_set_rotation              (ClutterActor          *self,
                                                                ClutterRotateAxis      axis,
                                                                gdouble                angle,

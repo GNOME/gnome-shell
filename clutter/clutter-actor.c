@@ -492,6 +492,8 @@ struct _ClutterActorPrivate
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
 
+  ClutterLayoutManager *layout_manager;
+
   /* bitfields */
   guint position_set                : 1;
   guint min_width_set               : 1;
@@ -607,6 +609,8 @@ enum
   PROP_ACTIONS,
   PROP_CONSTRAINTS,
   PROP_EFFECT,
+
+  PROP_LAYOUT_MANAGER,
 
   PROP_LAST
 };
@@ -1756,6 +1760,26 @@ clutter_actor_real_get_preferred_width (ClutterActor *self,
                                         gfloat       *min_width_p,
                                         gfloat       *natural_width_p)
 {
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->children != NULL && priv->layout_manager != NULL)
+    {
+      ClutterContainer *container = CLUTTER_CONTAINER (self);
+
+      CLUTTER_NOTE (LAYOUT, "Querying the layout manager '%s'[%p] "
+                    "for the preferred width",
+                    G_OBJECT_TYPE_NAME (priv->layout_manager),
+                    priv->layout_manager);
+
+      clutter_layout_manager_get_preferred_width (priv->layout_manager,
+                                                  container,
+                                                  for_height,
+                                                  min_width_p,
+                                                  natural_width_p);
+
+      return;
+    }
+
   /* Default implementation is always 0x0, usually an actor
    * using this default is relying on someone to set the
    * request manually
@@ -1775,6 +1799,25 @@ clutter_actor_real_get_preferred_height (ClutterActor *self,
                                          gfloat       *min_height_p,
                                          gfloat       *natural_height_p)
 {
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->children != NULL && priv->layout_manager != NULL)
+    {
+      ClutterContainer *container = CLUTTER_CONTAINER (self);
+
+      CLUTTER_NOTE (LAYOUT, "Querying the layout manager '%s'[%p] "
+                    "for the preferred height",
+                    G_OBJECT_TYPE_NAME (priv->layout_manager),
+                    priv->layout_manager);
+
+      clutter_layout_manager_get_preferred_height (priv->layout_manager,
+                                                   container,
+                                                   for_width,
+                                                   min_height_p,
+                                                   natural_height_p);
+
+      return;
+    }
   /* Default implementation is always 0x0, usually an actor
    * using this default is relying on someone to set the
    * request manually
@@ -1875,6 +1918,28 @@ clutter_actor_real_allocate (ClutterActor           *self,
   priv->allocation = *box;
   priv->allocation_flags = flags;
   priv->needs_allocation = FALSE;
+
+  /* we allocate our children before we notify changes in our geometry,
+   * so that people connecting to properties will be able to get valid
+   * data out of the sub-tree of the scene graph that has this actor at
+   * the root
+   */
+  if (priv->children != NULL && priv->layout_manager != NULL)
+    {
+      ClutterContainer *container = CLUTTER_CONTAINER (self);
+      gfloat width, height;
+      ClutterActorBox children_box;
+
+      clutter_actor_box_get_size (&priv->allocation, &width, &height);
+
+      clutter_actor_box_set_origin (&children_box, 0, 0);
+      clutter_actor_box_set_size (&children_box, width, height);
+
+      clutter_layout_manager_allocate (priv->layout_manager,
+                                       container,
+                                       &children_box,
+                                       priv->allocation_flags);
+    }
 
   g_object_freeze_notify (G_OBJECT (self));
 
@@ -3466,6 +3531,10 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_add_effect (actor, g_value_get_object (value));
       break;
 
+    case PROP_LAYOUT_MANAGER:
+      clutter_actor_set_layout_manager (actor, g_value_get_object (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3729,6 +3798,10 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_HAS_POINTER:
       g_value_set_boolean (value, priv->has_pointer);
+      break;
+
+    case PROP_LAYOUT_MANAGER:
+      g_value_set_object (value, priv->layout_manager);
       break;
 
     default:
@@ -4758,6 +4831,15 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                CLUTTER_PARAM_WRITABLE);
   obj_props[PROP_EFFECT] = pspec;
   g_object_class_install_property (object_class, PROP_EFFECT, pspec);
+
+  obj_props[PROP_LAYOUT_MANAGER] =
+    g_param_spec_object ("layout-manager",
+                         P_("Layout Manager"),
+                         P_("The object controlling the layout of an actor's children"),
+                         CLUTTER_TYPE_LAYOUT_MANAGER,
+                         CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_LAYOUT_MANAGER,
+                                   obj_props[PROP_LAYOUT_MANAGER]);
 
   /**
    * ClutterActor::destroy:
@@ -12863,4 +12945,66 @@ _clutter_actor_traverse (ClutterActor              *actor,
                                    after_children_callback,
                                    0, /* start depth */
                                    user_data);
+}
+
+static void
+on_layout_manager_changed (ClutterLayoutManager *manager,
+                           ClutterActor         *self)
+{
+  clutter_actor_queue_relayout (self);
+}
+
+void
+clutter_actor_set_layout_manager (ClutterActor         *self,
+                                  ClutterLayoutManager *manager)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (manager == NULL || CLUTTER_IS_LAYOUT_MANAGER (manager));
+
+  priv = self->priv;
+
+  if (priv->layout_manager != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (priv->layout_manager,
+                                            G_CALLBACK (on_layout_manager_changed),
+                                            self);
+      clutter_layout_manager_set_container (priv->layout_manager, NULL);
+      g_object_unref (priv->layout_manager);
+    }
+
+  priv->layout_manager = manager;
+
+  if (priv->layout_manager != NULL)
+    {
+      g_object_ref_sink (priv->layout_manager);
+      clutter_layout_manager_set_container (priv->layout_manager,
+                                            CLUTTER_CONTAINER (self));
+      g_signal_connect (priv->layout_manager, "layout-changed",
+                        G_CALLBACK (on_layout_manager_changed),
+                        self);
+    }
+
+  clutter_actor_queue_relayout (self);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAYOUT_MANAGER]);
+}
+
+/**
+ * clutter_actor_get_layout_manager:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the #ClutterLayoutManager used by @self.
+ *
+ * Return value: (transfer none): a pointer to the #ClutterLayoutManager,
+ *   or %NULL
+ *
+ * Since: 1.10
+ */
+ClutterLayoutManager *
+clutter_actor_get_layout_manager (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return self->priv->layout_manager;
 }
