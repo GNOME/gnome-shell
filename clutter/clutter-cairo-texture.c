@@ -330,6 +330,12 @@ clutter_cairo_texture_emit_draw (ClutterCairoTexture        *self,
   gboolean result;
   cairo_t *cr;
 
+  /* 0x0 surfaces don't need a ::draw */
+  if (self->priv->surface_width == 0 ||
+      self->priv->surface_height == 0)
+    return;
+
+  /* if the size is !0 then we must have a surface */
   g_assert (self->priv->cr_surface != NULL);
 
   cr = cairo_create (self->priv->cr_surface);
