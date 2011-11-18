@@ -3735,6 +3735,11 @@ _clutter_debug_messagev (const char *format,
 
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, fmt, var_args);
 
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (_clutter_uprof_context != NULL)
+    uprof_context_vtrace_message (_clutter_uprof_context, format, args);
+#endif
+
   g_free (fmt);
 }
 

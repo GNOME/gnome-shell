@@ -3,7 +3,6 @@
 
 #include <glib.h>
 #include "clutter-main.h"
-#include "clutter-profile.h"
 
 G_BEGIN_DECLS
 
@@ -50,25 +49,24 @@ typedef enum {
 #ifdef __GNUC__
 
 /* Try the GCC extension for valists in macros */
-#define CLUTTER_NOTE(type,x,a...)                     G_STMT_START { \
-        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type)))                   \
-          { _clutter_profile_trace_message ("[" #type "]:"           \
-                                            G_STRLOC ": " x, ##a); } \
-                                                      } G_STMT_END
+#define CLUTTER_NOTE(type,x,a...)                       G_STMT_START {  \
+        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type))) {                    \
+          _clutter_debug_message ("[" #type "]:"                        \
+                                  G_STRLOC ": " x, ##a);                \
+        }                                               } G_STMT_END
 
 #else /* !__GNUC__ */
 /* Try the C99 version; unfortunately, this does not allow us to pass
  * empty arguments to the macro, which means we have to
  * do an intemediate printf.
  */
-#define CLUTTER_NOTE(type,...)                        G_STMT_START { \
-        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type)))                   \
-          {                                                          \
-            gchar * _fmt = g_strdup_printf (__VA_ARGS__);            \
-            _clutter_profile_trace_message ("[" #type "]:"           \
-                                            G_STRLOC ": %s",_fmt);   \
-            g_free (_fmt);                                           \
-          }                                           } G_STMT_END
+#define CLUTTER_NOTE(type,...)                          G_STMT_START {  \
+        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type))) {                    \
+          gchar * _fmt = g_strdup_printf (__VA_ARGS__);                 \
+          _clutter_debug_message ("[" #type "]:"                        \
+                                  G_STRLOC ": %s", _fmt);               \
+            g_free (_fmt);                                              \
+        }                                               } G_STMT_END
 #endif
 
 #else /* !CLUTTER_ENABLE_DEBUG */

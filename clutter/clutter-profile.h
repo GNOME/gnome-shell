@@ -48,21 +48,19 @@ extern guint            clutter_profile_flags;
 void    _clutter_uprof_init             (void);
 void    _clutter_profile_suspend        (void);
 void    _clutter_profile_resume         (void);
-void    _clutter_profile_trace_message  (const char *format, ...);
 
 #else /* CLUTTER_ENABLE_PROFILE */
 
 #define CLUTTER_STATIC_TIMER(A,B,C,D,E) extern void _clutter_dummy_decl (void)
 #define CLUTTER_STATIC_COUNTER(A,B,C,D) extern void _clutter_dummy_decl (void)
-#define CLUTTER_COUNTER_INC(A,B)        G_STMT_START{ (void)0; }G_STMT_END
-#define CLUTTER_COUNTER_DEC(A,B)        G_STMT_START{ (void)0; }G_STMT_END
-#define CLUTTER_TIMER_START(A,B)        G_STMT_START{ (void)0; }G_STMT_END
-#define CLUTTER_TIMER_STOP(A,B)         G_STMT_START{ (void)0; }G_STMT_END
+#define CLUTTER_COUNTER_INC(A,B)        G_STMT_START { } G_STMT_END
+#define CLUTTER_COUNTER_DEC(A,B)        G_STMT_START { } G_STMT_END
+#define CLUTTER_TIMER_START(A,B)        G_STMT_START { } G_STMT_END
+#define CLUTTER_TIMER_STOP(A,B)         G_STMT_START { } G_STMT_END
 
-#define _clutter_profile_suspend()      G_STMT_START {} G_STMT_END
-#define _clutter_profile_resume()       G_STMT_START {} G_STMT_END
-
-#define _clutter_profile_trace_message  _clutter_debug_message
+#define _clutter_uprof_init             G_STMT_START { } G_STMT_END
+#define _clutter_profile_suspend        G_STMT_START { } G_STMT_END
+#define _clutter_profile_resume         G_STMT_START { } G_STMT_END
 
 #endif /* CLUTTER_ENABLE_PROFILE */
 
