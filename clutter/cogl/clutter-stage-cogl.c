@@ -42,6 +42,7 @@
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-profile.h"
 #include "clutter-stage-private.h"
 #include "clutter-util.h"
 
