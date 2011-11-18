@@ -163,7 +163,7 @@ test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd) -lm
 EXTRA_DIST = wrapper.sh.in
 DISTCLEANFILES = wrapper.sh .gitignore test-unit-names.h
 
-BUILT_SOURCES = wrappers test-unit-names.h
+BUILT_SOURCES = test-unit-names.h wrappers
 
 dist-hook: ../../build/win32/vs9/test-interactive-clutter.vcproj ../../build/win32/vs10/test-interactive-clutter.vcxproj ../../build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
