@@ -20,6 +20,7 @@ stamp-marshal
 /clutter/clutter-enum-types.[ch]
 /clutter/clutter-marshal.[ch]
 /clutter/clutter-version.h
+/clutter/clutter-version.h.win32
 /clutter/gcov-report.txt
 /clutter/clutter-json.h
 /clutter/cex100/clutter-cex100.h

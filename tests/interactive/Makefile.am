@@ -71,7 +71,7 @@ SHEXT = $(EXEEXT)
 endif
 
 # For convenience, this provides a way to easily run individual unit tests:
-wrappers: stamp-test-interactive ../../build/win32/test-interactive-clutter.bat
+wrappers: stamp-test-interactive $(top_builddir)/build/win32/test-interactive-clutter.bat
 	@true
 stamp-test-interactive: Makefile
 	@wrapper=$(abs_builddir)/wrapper.sh ; \
@@ -94,8 +94,8 @@ stamp-test-interactive: Makefile
 	done \
 	&& echo timestamp > $(@F)
 
-../../build/win32/test-interactive-clutter.bat: Makefile test-interactive$(EXEEXT)
-	echo "  GEN    test-interactive-clutter.bat" ; \
+$(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interactive$(EXEEXT)
+	@echo "  GEN    test-interactive-clutter.bat" ; \
 	for i in $(UNIT_TESTS); \
 	do \
 		case $$i in \
@@ -106,10 +106,10 @@ stamp-test-interactive: Makefile
 		( echo "test-interactive-clutter $$test_bin" ) > $$test_bin-clutter.bat ; \
 		( echo "test-interactive-clutter $$test_bin" ) >> test-interactive-clutter.bat ; \
 	done \
-	&& cp *.bat $(top_srcdir)/build/win32/
+	&& mv -f *.bat $(top_srcdir)/build/win32/
 	
-../../build/win32/test-unit-names.h: test-unit-names.h
-	cp test-unit-names.h $(top_srcdir)/build/win32
+$(top_builddir)/build/win32/test-unit-names.h: test-unit-names.h
+	@echo "  CP     "; cp test-unit-names.h $(top_srcdir)/build/win32
 
 test-unit-names.h: stamp-test-unit-names
 	@true
@@ -142,9 +142,7 @@ clean-wrappers:
 INCLUDES = \
 	-I$(top_srcdir)			\
 	-I$(top_srcdir)/clutter 	\
-	-I$(top_srcdir)/clutter/cogl 	\
-	-I$(top_builddir)/clutter 	\
-	-I$(top_builddir)/clutter/cogl
+	-I$(top_builddir)/clutter
 
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
@@ -167,7 +165,7 @@ BUILT_SOURCES = test-unit-names.h wrappers
 
 dist-hook: ../../build/win32/vs9/test-interactive-clutter.vcproj ../../build/win32/vs10/test-interactive-clutter.vcxproj ../../build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
-../../build/win32/vs9/test-interactive-clutter.vcproj: $(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin
+$(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj: $(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
 		test-pixmap.c|test-devices.c) ;; \
@@ -178,7 +176,7 @@ dist-hook: ../../build/win32/vs9/test-interactive-clutter.vcproj ../../build/win
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin >$@
 	rm testinteractive.sourcefiles
 	
-../../build/win32/vs10/test-interactive-clutter.vcxproj: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin
+$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
 		test-pixmap.c|test-devices.c) ;; \
@@ -189,7 +187,7 @@ dist-hook: ../../build/win32/vs9/test-interactive-clutter.vcproj ../../build/win
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin >$@
 	rm testinteractive.vs10.sourcefiles
 	
-../../build/win32/vs10/test-interactive-clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxproj.filtersin
+$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxproj.filtersin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
 		test-pixmap.c|test-devices.c) ;; \
@@ -201,8 +199,8 @@ dist-hook: ../../build/win32/vs9/test-interactive-clutter.vcproj ../../build/win
 	rm testinteractive.vs10.sourcefiles.filters
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += ../../build/win32/vs9/test-interactive-clutter.vcproj	\
-		  ../../build/win32/vs10/test-interactive-clutter.vcxproj	\
-		  ../../build/win32/vs10/test-interactive-clutter.vcxproj.filters
+DISTCLEANFILES += $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj	\
+		  $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj	\
+		  $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
 clean-local: clean-wrappers
