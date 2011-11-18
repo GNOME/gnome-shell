@@ -220,8 +220,6 @@ texture_free_gl_resources (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv = texture->priv;
 
-  CLUTTER_MARK();
-
   if (priv->material != COGL_INVALID_HANDLE)
     {
       /* We want to keep the layer so that the filter settings will
@@ -243,8 +241,6 @@ clutter_texture_unrealize (ClutterActor *actor)
   if (priv->material == COGL_INVALID_HANDLE)
     return;
 
-  CLUTTER_MARK();
-
   if (priv->fbo_source != NULL)
     {
       /* Free up our fbo handle and texture resources, realize will recreate */
@@ -265,8 +261,6 @@ clutter_texture_realize (ClutterActor *actor)
 
   texture = CLUTTER_TEXTURE(actor);
   priv = texture->priv;
-
-  CLUTTER_MARK();
 
   if (priv->fbo_source)
     {
@@ -2609,8 +2603,6 @@ texture_fbo_free_resources (ClutterTexture *texture)
   ClutterTexturePrivate *priv;
 
   priv = texture->priv;
-
-  CLUTTER_MARK();
 
   if (priv->fbo_source != NULL)
     {

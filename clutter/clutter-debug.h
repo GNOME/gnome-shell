@@ -71,8 +71,6 @@ typedef enum {
           }                                           } G_STMT_END
 #endif
 
-#define CLUTTER_MARK()      CLUTTER_NOTE(MISC, "== mark ==")
-
 #define CLUTTER_GLERR()                         G_STMT_START {  \
         if (clutter_debug_flags & CLUTTER_DEBUG_GL) {           \
           GLenum _err = glGetError (); /* roundtrip */          \
@@ -84,7 +82,6 @@ typedef enum {
 #else /* !CLUTTER_ENABLE_DEBUG */
 
 #define CLUTTER_NOTE(type,...)         G_STMT_START { } G_STMT_END
-#define CLUTTER_MARK()                 G_STMT_START { } G_STMT_END
 #define CLUTTER_GLERR()                G_STMT_START { } G_STMT_END
 #define CLUTTER_HAS_DEBUG(type)        FALSE
 

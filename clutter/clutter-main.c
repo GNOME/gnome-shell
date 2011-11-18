@@ -927,8 +927,6 @@ clutter_main (void)
       return;
     }
 
-  CLUTTER_MARK ();
-
   clutter_main_loop_level++;
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -954,8 +952,6 @@ clutter_main (void)
   g_main_loop_unref (loop);
 
   clutter_main_loop_level--;
-
-  CLUTTER_MARK ();
 
   if (clutter_main_loop_level == 0)
     CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);
