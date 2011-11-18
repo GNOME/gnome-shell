@@ -73,6 +73,7 @@ endif
 # For convenience, this provides a way to easily run individual unit tests:
 wrappers: stamp-test-interactive $(top_builddir)/build/win32/test-interactive-clutter.bat
 	@true
+
 stamp-test-interactive: Makefile
 	@wrapper=$(abs_builddir)/wrapper.sh ; \
 	chmod +x $$wrapper && \
@@ -107,7 +108,7 @@ $(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interact
 		( echo "test-interactive-clutter $$test_bin" ) >> test-interactive-clutter.bat ; \
 	done \
 	&& mv -f *.bat $(top_srcdir)/build/win32/
-	
+
 $(top_builddir)/build/win32/test-unit-names.h: test-unit-names.h
 	@echo "  CP     "; cp test-unit-names.h $(top_srcdir)/build/win32
 
@@ -175,7 +176,7 @@ $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj: $(top_srcdir)/b
 	done >testinteractive.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin >$@
 	rm testinteractive.sourcefiles
-	
+
 $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
@@ -186,7 +187,7 @@ $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj: $(top_srcdir)
 	done >testinteractive.vs10.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxprojin >$@
 	rm testinteractive.vs10.sourcefiles
-	
+
 $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-interactive-clutter.vcxproj.filtersin
 	for F in $(test_interactive_SOURCES); do \
 		case $$F in \
