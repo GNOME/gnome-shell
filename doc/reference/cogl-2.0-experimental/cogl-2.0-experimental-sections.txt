@@ -479,7 +479,7 @@ cogl_matrix_copy
 cogl_matrix_equal
 cogl_matrix_free
 cogl_matrix_frustum
-cogl_matrix_ortho
+cogl_matrix_orthographic
 cogl_matrix_perspective
 cogl_matrix_look_at
 cogl_matrix_multiply

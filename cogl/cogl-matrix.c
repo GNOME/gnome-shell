@@ -1420,31 +1420,31 @@ cogl_matrix_perspective (CoglMatrix *matrix,
  * MAT_FLAG_GENERAL_SCALE and MAT_FLAG_TRANSLATION flags.
  */
 static void
-_cogl_matrix_ortho (CoglMatrix *matrix,
-                    float left,
-                    float right,
-                    float bottom,
-                    float top,
-                    float nearval,
-                    float farval)
+_cogl_matrix_orthographic (CoglMatrix *matrix,
+                           float x_1,
+                           float y_1,
+                           float x_2,
+                           float y_2,
+                           float nearval,
+                           float farval)
 {
   float m[16];
 
-#define M(row,col)  m[col*4+row]
-  M (0,0) = 2.0f / (right-left);
+#define M(row, col)  m[col * 4 + row]
+  M (0,0) = 2.0f / (x_2 - x_1);
   M (0,1) = 0.0f;
   M (0,2) = 0.0f;
-  M (0,3) = -(right+left) / (right-left);
+  M (0,3) = -(x_2 + x_1) / (x_2 - x_1);
 
   M (1,0) = 0.0f;
-  M (1,1) = 2.0f / (top-bottom);
+  M (1,1) = 2.0f / (y_1 - y_2);
   M (1,2) = 0.0f;
-  M (1,3) = -(top+bottom) / (top-bottom);
+  M (1,3) = -(y_1 + y_2) / (y_1 - y_2);
 
   M (2,0) = 0.0f;
   M (2,1) = 0.0f;
-  M (2,2) = -2.0f / (farval-nearval);
-  M (2,3) = -(farval+nearval) / (farval-nearval);
+  M (2,2) = -2.0f / (farval - nearval);
+  M (2,3) = -(farval + nearval) / (farval - nearval);
 
   M (3,0) = 0.0f;
   M (3,1) = 0.0f;
@@ -1463,10 +1463,23 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float right,
                    float bottom,
                    float top,
-                   float near_val,
-                   float far_val)
+                   float near,
+                   float far)
 {
-  _cogl_matrix_ortho (matrix, left, right, bottom, top, near_val, far_val);
+  _cogl_matrix_orthographic (matrix, left, top, right, bottom, near, far);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
+
+void
+cogl_matrix_orthographic (CoglMatrix *matrix,
+                          float x_1,
+                          float y_1,
+                          float x_2,
+                          float y_2,
+                          float near,
+                          float far)
+{
+  _cogl_matrix_orthographic (matrix, x_1, y_1, x_2, y_2, near, far);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 

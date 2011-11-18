@@ -294,6 +294,36 @@ cogl_matrix_perspective (CoglMatrix *matrix,
                          float       z_near,
                          float       z_far);
 
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+#define cogl_matrix_orthographic cogl_matrix_orthographic_EXP
+/**
+ * cogl_matrix_orthographic:
+ * @matrix: A 4x4 transformation matrix
+ * @x_1: The x coordinate for the first vertical clipping plane
+ * @y_1: The y coordinate for the first horizontal clipping plane
+ * @x_2: The x coordinate for the second vertical clipping plane
+ * @y_2: The y coordinate for the second horizontal clipping plane
+ * @near: The <emphasis>distance</emphasis> to the near clipping
+ *   plane (will be <emphasis>negative</emphasis> if the plane is
+ *   behind the viewer)
+ * @far: The <emphasis>distance</emphasis> to the far clipping
+ *   plane (will be <emphasis>negative</emphasis> if the plane is
+ *   behind the viewer)
+ *
+ * Multiplies @matrix by a parallel projection matrix.
+ *
+ * Since: 1.10
+ */
+void
+cogl_matrix_orthographic (CoglMatrix *matrix,
+                          float x_1,
+                          float y_1,
+                          float x_2,
+                          float y_2,
+                          float near,
+                          float far);
+#endif
+
 /**
  * cogl_matrix_ortho:
  * @matrix: A 4x4 transformation matrix
@@ -307,6 +337,8 @@ cogl_matrix_perspective (CoglMatrix *matrix,
  *   the plane is behind the viewer)
  *
  * Multiplies @matrix by a parallel projection matrix.
+ *
+ * Deprecated: 1.10: Use cogl_matrix_orthographic()
  */
 void
 cogl_matrix_ortho (CoglMatrix *matrix,
