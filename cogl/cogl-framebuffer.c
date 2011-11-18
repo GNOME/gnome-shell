@@ -40,6 +40,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-pipeline-state-private.h"
+#include "cogl-matrix-private.h"
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40
@@ -1778,4 +1779,176 @@ cogl_framebuffer_finish (CoglFramebuffer *framebuffer)
 {
   _cogl_framebuffer_flush_journal (framebuffer);
   GE (framebuffer->context, glFinish ());
+}
+
+void
+cogl_framebuffer_push_matrix (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_push (modelview_stack);
+}
+
+void
+cogl_framebuffer_pop_matrix (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_pop (modelview_stack);
+}
+
+void
+cogl_framebuffer_scale (CoglFramebuffer *framebuffer,
+                        float x,
+                        float y,
+                        float z)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_scale (modelview_stack, x, y, z);
+}
+
+void
+cogl_framebuffer_translate (CoglFramebuffer *framebuffer,
+                            float x,
+                            float y,
+                            float z)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_translate (modelview_stack, x, y, z);
+}
+
+void
+cogl_framebuffer_rotate (CoglFramebuffer *framebuffer,
+                         float angle,
+                         float x,
+                         float y,
+                         float z)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_rotate (modelview_stack, angle, x, y, z);
+}
+
+void
+cogl_framebuffer_transform (CoglFramebuffer *framebuffer,
+                            const CoglMatrix *matrix)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_multiply (modelview_stack, matrix);
+}
+
+void
+cogl_framebuffer_perspective (CoglFramebuffer *framebuffer,
+                              float fov_y,
+                              float aspect,
+                              float z_near,
+                              float z_far)
+{
+  float ymax = z_near * tanf (fov_y * G_PI / 360.0);
+
+  cogl_framebuffer_frustum (framebuffer,
+                            -ymax * aspect,  /* left */
+                            ymax * aspect,   /* right */
+                            -ymax,           /* bottom */
+                            ymax,            /* top */
+                            z_near,
+                            z_far);
+}
+
+void
+cogl_framebuffer_frustum (CoglFramebuffer *framebuffer,
+                          float left,
+                          float right,
+                          float bottom,
+                          float top,
+                          float z_near,
+                          float z_far)
+{
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+
+  /* XXX: The projection matrix isn't currently tracked in the journal
+   * so we need to flush all journaled primitives first... */
+  _cogl_framebuffer_flush_journal (framebuffer);
+
+  _cogl_matrix_stack_load_identity (projection_stack);
+
+  _cogl_matrix_stack_frustum (projection_stack,
+                              left,
+                              right,
+                              bottom,
+                              top,
+                              z_near,
+                              z_far);
+}
+
+void
+cogl_framebuffer_orthographic (CoglFramebuffer *framebuffer,
+                               float x_1,
+                               float y_1,
+                               float x_2,
+                               float y_2,
+                               float near,
+                               float far)
+{
+  CoglMatrix ortho;
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+
+  /* XXX: The projection matrix isn't currently tracked in the journal
+   * so we need to flush all journaled primitives first... */
+  _cogl_framebuffer_flush_journal (framebuffer);
+
+  cogl_matrix_init_identity (&ortho);
+  cogl_matrix_orthographic (&ortho, x_1, y_1, x_2, y_2, near, far);
+  _cogl_matrix_stack_set (projection_stack, &ortho);
+}
+
+void
+cogl_framebuffer_get_modelview_matrix (CoglFramebuffer *framebuffer,
+                                       CoglMatrix *matrix)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_get (modelview_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
+
+void
+cogl_framebuffer_set_modelview_matrix (CoglFramebuffer *framebuffer,
+                                       CoglMatrix *matrix)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  _cogl_matrix_stack_set (modelview_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
+
+void
+cogl_framebuffer_get_projection_matrix (CoglFramebuffer *framebuffer,
+                                        CoglMatrix *matrix)
+{
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+  _cogl_matrix_stack_get (projection_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
+
+void
+cogl_framebuffer_set_projection_matrix (CoglFramebuffer *framebuffer,
+                                        CoglMatrix *matrix)
+{
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+
+  /* XXX: The projection matrix isn't currently tracked in the journal
+   * so we need to flush all journaled primitives first... */
+  _cogl_framebuffer_flush_journal (framebuffer);
+
+  _cogl_matrix_stack_set (projection_stack, matrix);
+
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }

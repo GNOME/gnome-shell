@@ -127,6 +127,249 @@ void
 cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
                                   float *viewport);
 
+#define cogl_framebuffer_push_matrix cogl_framebuffer_push_matrix_EXP
+/**
+ * cogl_framebuffer_push_matrix:
+ * @framebuffer: A #CoglFramebuffer pointer
+ *
+ * Copies the current model-view matrix onto the matrix stack. The matrix
+ * can later be restored with cogl_framebuffer_pop_matrix().
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_push_matrix (CoglFramebuffer *framebuffer);
+
+#define cogl_framebuffer_pop_matrix cogl_framebuffer_pop_matrix_EXP
+/**
+ * cogl_framebuffer_pop_matrix:
+ * @framebuffer: A #CoglFramebuffer pointer
+ *
+ * Restores the model-view matrix on the top of the matrix stack.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_pop_matrix (CoglFramebuffer *framebuffer);
+
+#define cogl_framebuffer_scale cogl_framebuffer_scale_EXP
+/**
+ * cogl_framebuffer_scale:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @x: Amount to scale along the x-axis
+ * @y: Amount to scale along the y-axis
+ * @z: Amount to scale along the z-axis
+ *
+ * Multiplies the current model-view matrix by one that scales the x,
+ * y and z axes by the given values.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_scale (CoglFramebuffer *framebuffer,
+                        float x,
+                        float y,
+                        float z);
+
+#define cogl_framebuffer_translate cogl_framebuffer_translate_EXP
+/**
+ * cogl_framebuffer_translate:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @x: Distance to translate along the x-axis
+ * @y: Distance to translate along the y-axis
+ * @z: Distance to translate along the z-axis
+ *
+ * Multiplies the current model-view matrix by one that translates the
+ * model along all three axes according to the given values.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_translate (CoglFramebuffer *framebuffer,
+                            float x,
+                            float y,
+                            float z);
+
+#define cogl_framebuffer_rotate cogl_framebuffer_rotate_EXP
+/**
+ * cogl_framebuffer_rotate:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @angle: Angle in degrees to rotate.
+ * @x: X-component of vertex to rotate around.
+ * @y: Y-component of vertex to rotate around.
+ * @z: Z-component of vertex to rotate around.
+ *
+ * Multiplies the current model-view matrix by one that rotates the
+ * model around the vertex specified by @x, @y and @z. The rotation
+ * follows the right-hand thumb rule so for example rotating by 10
+ * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
+ * rotation.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_rotate (CoglFramebuffer *framebuffer,
+                         float angle,
+                         float x,
+                         float y,
+                         float z);
+
+#define cogl_framebuffer_transform cogl_framebuffer_transform_EXP
+/**
+ * cogl_framebuffer_transform:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @matrix: the matrix to multiply with the current model-view
+ *
+ * Multiplies the current model-view matrix by the given matrix.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_transform (CoglFramebuffer *framebuffer,
+                            const CoglMatrix *matrix);
+
+#define cogl_framebuffer_get_modelview_matrix \
+  cogl_framebuffer_get_modelview_matrix_EXP
+/**
+ * cogl_framebuffer_get_modelview_matrix:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @matrix: (out): return location for the model-view matrix
+ *
+ * Stores the current model-view matrix in @matrix.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_get_modelview_matrix (CoglFramebuffer *framebuffer,
+                                       CoglMatrix *matrix);
+
+#define cogl_framebuffer_set_modelview_matrix \
+  cogl_framebuffer_set_modelview_matrix_EXP
+/**
+ * cogl_framebuffer_set_modelview_matrix:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @matrix: the new model-view matrix
+ *
+ * Sets @matrix as the new model-view matrix.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_set_modelview_matrix (CoglFramebuffer *framebuffer,
+                                       CoglMatrix *matrix);
+
+#define cogl_framebuffer_perspective cogl_framebuffer_perspective_EXP
+/**
+ * cogl_framebuffer_perspective:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @fovy: Vertical field of view angle in degrees.
+ * @aspect: The (width over height) aspect ratio for display
+ * @z_near: The distance to the near clipping plane (Must be positive,
+ *   and must not be 0)
+ * @z_far: The distance to the far clipping plane (Must be positive)
+ *
+ * Replaces the current projection matrix with a perspective matrix
+ * based on the provided values.
+ *
+ * <note>You should be careful not to have to great a @z_far / @z_near
+ * ratio since that will reduce the effectiveness of depth testing
+ * since there wont be enough precision to identify the depth of
+ * objects near to each other.</note>
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_perspective (CoglFramebuffer *framebuffer,
+                              float fov_y,
+                              float aspect,
+                              float z_near,
+                              float z_far);
+
+#define cogl_framebuffer_frustum cogl_framebuffer_frustum_EXP
+/**
+ * cogl_framebuffer_frustum:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @left: X position of the left clipping plane where it
+ *   intersects the near clipping plane
+ * @right: X position of the right clipping plane where it
+ *   intersects the near clipping plane
+ * @bottom: Y position of the bottom clipping plane where it
+ *   intersects the near clipping plane
+ * @top: Y position of the top clipping plane where it intersects
+ *   the near clipping plane
+ * @z_near: The distance to the near clipping plane (Must be positive)
+ * @z_far: The distance to the far clipping plane (Must be positive)
+ *
+ * Replaces the current projection matrix with a perspective matrix
+ * for a given viewing frustum defined by 4 side clip planes that
+ * all cross through the origin and 2 near and far clip planes.
+ *
+ * Since: 1.10
+ */
+void
+cogl_framebuffer_frustum (CoglFramebuffer *framebuffer,
+                          float left,
+                          float right,
+                          float bottom,
+                          float top,
+                          float z_near,
+                          float z_far);
+
+#define cogl_framebuffer_orthographic cogl_framebuffer_orthographic_EXP
+/**
+ * cogl_framebuffer_orthographic:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @x_1: The x coordinate for the first vertical clipping plane
+ * @y_1: The y coordinate for the first horizontal clipping plane
+ * @x_2: The x coordinate for the second vertical clipping plane
+ * @y_2: The y coordinate for the second horizontal clipping plane
+ * @near: The <emphasis>distance</emphasis> to the near clipping
+ *   plane (will be <emphasis>negative</emphasis> if the plane is
+ *   behind the viewer)
+ * @far: The <emphasis>distance</emphasis> to the far clipping
+ *   plane (will be <emphasis>negative</emphasis> if the plane is
+ *   behind the viewer)
+ *
+ * Replaces the current projection matrix with an orthographic projection
+ * matrix.
+ *
+ * Since: 1.0
+ */
+void
+cogl_framebuffer_orthographic (CoglFramebuffer *framebuffer,
+                               float x_1,
+                               float y_1,
+                               float x_2,
+                               float y_2,
+                               float near,
+                               float far);
+
+#define cogl_framebuffer_get_projection_matrix \
+  cogl_framebuffer_get_projection_matrix
+/**
+ * cogl_framebuffer_get_projection_matrix:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @matrix: (out): return location for the projection matrix
+ *
+ * Stores the current projection matrix in @matrix.
+ */
+void
+cogl_framebuffer_get_projection_matrix (CoglFramebuffer *framebuffer,
+                                        CoglMatrix *matrix);
+
+#define cogl_framebuffer_set_projection_matrix \
+  cogl_framebuffer_set_projection_matrix
+/**
+ * cogl_set_projection_matrix:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @matrix: the new projection matrix
+ *
+ * Sets @matrix as the new projection matrix.
+ */
+void
+cogl_framebuffer_set_projection_matrix (CoglFramebuffer *framebuffer,
+                                        CoglMatrix *matrix);
+
 /**
  * cogl_framebuffer_get_red_bits:
  * @framebuffer: a pointer to a #CoglFramebuffer
