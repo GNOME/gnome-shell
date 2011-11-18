@@ -940,7 +940,7 @@ clutter_path_get_n_nodes (ClutterPath *path)
  * clutter_path_get_node:
  * @path: a #ClutterPath
  * @index_: the node number to retrieve
- * @node: a location to store a copy of the node
+ * @node: (out): a location to store a copy of the node
  *
  * Retrieves the node of the path indexed by @index.
  *
@@ -1384,7 +1384,7 @@ clutter_path_ensure_node_data (ClutterPath *path)
  * clutter_path_get_position:
  * @path: a #ClutterPath
  * @progress: a position along the path as a fraction of its length
- * @position: location to store the position
+ * @position: (out): location to store the position
  *
  * The value in @progress represents a position along the path where
  * 0.0 is the beginning and 1.0 is the end of the path. An
