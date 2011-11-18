@@ -107,10 +107,10 @@ $(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interact
 		( echo "test-interactive-clutter $$test_bin" ) > $$test_bin-clutter.bat ; \
 		( echo "test-interactive-clutter $$test_bin" ) >> test-interactive-clutter.bat ; \
 	done \
-	&& mv -f *.bat $(top_srcdir)/build/win32/
+	&& mv -f *.bat $(top_builddir)/build/win32/
 
 $(top_builddir)/build/win32/test-unit-names.h: test-unit-names.h
-	@echo "  CP     "; cp test-unit-names.h $(top_srcdir)/build/win32
+	@echo "  CP     "; cp test-unit-names.h $(top_builddir)/build/win32/
 
 test-unit-names.h: stamp-test-unit-names
 	@true
@@ -134,7 +134,7 @@ clean-wrappers:
 		echo "  RM    $$test_bin"; \
 		rm -f $$test_bin$(SHEXT); \
 	done \
-	&& rm -f $(top_srcdir)/build/win32/*.bat \
+	&& rm -f $(top_builddir)/build/win32/*.bat \
 	&& rm -f *.bat \
 	&& rm -f stamp-test-interactive
 
@@ -159,12 +159,15 @@ test_interactive_CPPFLAGS = \
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd) -lm
 
-EXTRA_DIST = wrapper.sh.in
+EXTRA_DIST = \
+	wrapper.sh.in			\
+	$(top_builddir)/build/win32/test-unit-names.h
+
 DISTCLEANFILES = wrapper.sh .gitignore test-unit-names.h
 
 BUILT_SOURCES = test-unit-names.h wrappers
 
-dist-hook: ../../build/win32/vs9/test-interactive-clutter.vcproj ../../build/win32/vs10/test-interactive-clutter.vcxproj ../../build/win32/vs10/test-interactive-clutter.vcxproj.filters
+dist-hook: $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
 $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj: $(top_srcdir)/build/win32/vs9/test-interactive-clutter.vcprojin
 	for F in $(test_interactive_SOURCES); do \
@@ -203,5 +206,9 @@ $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters: $(top
 DISTCLEANFILES += $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj	\
 		  $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj	\
 		  $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
+EXTRA_DIST += \
+	$(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj			\
+	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj		\
+	$(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 
 clean-local: clean-wrappers
