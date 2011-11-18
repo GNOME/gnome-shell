@@ -340,4 +340,10 @@ _cogl_framebuffer_push_projection (CoglFramebuffer *framebuffer);
 void
 _cogl_framebuffer_pop_projection (CoglFramebuffer *framebuffer);
 
+void
+_cogl_framebuffer_save_clip_stack (CoglFramebuffer *framebuffer);
+
+void
+_cogl_framebuffer_restore_clip_stack (CoglFramebuffer *framebuffer);
+
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */

@@ -46,18 +46,8 @@ cogl_clip_push_window_rectangle (int x_offset,
                                  int width,
                                  int height)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_window_rectangle (clip_state->stacks->data,
-                                            x_offset, y_offset,
-                                            width, height);
+  cogl_framebuffer_push_scissor_clip (cogl_get_draw_framebuffer (),
+                                      x_offset, y_offset, width, height);
 }
 
 /* XXX: This is deprecated API */
@@ -76,21 +66,8 @@ cogl_clip_push_rectangle (float x_1,
                           float x_2,
                           float y_2)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-  CoglMatrix modelview_matrix;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  cogl_get_modelview_matrix (&modelview_matrix);
-
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_rectangle (clip_state->stacks->data,
-                                     x_1, y_1, x_2, y_2,
-                                     &modelview_matrix);
+  cogl_framebuffer_push_rectangle_clip (cogl_get_draw_framebuffer (),
+                                        x_1, y_1, x_2, y_2);
 }
 
 /* XXX: Deprecated API */
@@ -132,53 +109,30 @@ cogl_clip_push_primitive (CoglPrimitive *primitive,
                           float bounds_x2,
                           float bounds_y2)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-  CoglMatrix modelview_matrix;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  cogl_get_modelview_matrix (&modelview_matrix);
-
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_primitive (clip_state->stacks->data,
-                                     primitive,
-                                     bounds_x1, bounds_y1,
-                                     bounds_x2, bounds_y2,
-                                     &modelview_matrix);
-}
-
-static void
-_cogl_clip_pop_real (CoglClipState *clip_state)
-{
-  clip_state->stacks->data = _cogl_clip_stack_pop (clip_state->stacks->data);
+  cogl_framebuffer_push_primitive_clip (cogl_get_draw_framebuffer (),
+                                        primitive,
+                                        bounds_x1,
+                                        bounds_y1,
+                                        bounds_x2,
+                                        bounds_y2);
 }
 
 void
 cogl_clip_pop (void)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  _cogl_clip_pop_real (clip_state);
+  cogl_framebuffer_pop_clip (cogl_get_draw_framebuffer ());
 }
 
 void
-_cogl_clip_state_flush (CoglClipState *clip_state,
-                        CoglFramebuffer *framebuffer)
+cogl_clip_stack_save (void)
 {
-  /* Flush the topmost stack. The clip stack code will bail out early
-     if this is already flushed */
-  _cogl_clip_stack_flush (clip_state->stacks->data,
-                          framebuffer);
+  _cogl_framebuffer_save_clip_stack (cogl_get_draw_framebuffer ());
+}
+
+void
+cogl_clip_stack_restore (void)
+{
+  _cogl_framebuffer_restore_clip_stack (cogl_get_draw_framebuffer ());
 }
 
 /* XXX: This should never have been made public API! */
@@ -193,56 +147,6 @@ cogl_clip_ensure (void)
    */
 }
 
-static void
-_cogl_clip_stack_save_real (CoglClipState *clip_state)
-{
-  clip_state->stacks = g_slist_prepend (clip_state->stacks, NULL);
-}
-
-void
-cogl_clip_stack_save (void)
-{
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  _cogl_clip_stack_save_real (clip_state);
-}
-
-static void
-_cogl_clip_stack_restore_real (CoglClipState *clip_state)
-{
-  CoglHandle stack;
-
-  _COGL_RETURN_IF_FAIL (clip_state->stacks != NULL);
-
-  stack = clip_state->stacks->data;
-
-  _cogl_clip_stack_unref (stack);
-
-  /* Revert to an old stack */
-  clip_state->stacks = g_slist_delete_link (clip_state->stacks,
-                                            clip_state->stacks);
-}
-
-void
-cogl_clip_stack_restore (void)
-{
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  _cogl_clip_stack_restore_real (clip_state);
-}
-
 void
 _cogl_clip_state_init (CoglClipState *clip_state)
 {
@@ -251,7 +155,7 @@ _cogl_clip_state_init (CoglClipState *clip_state)
   clip_state->stacks = NULL;
 
   /* Add an intial stack */
-  _cogl_clip_stack_save_real (clip_state);
+  _cogl_clip_state_save_clip_stack (clip_state);
 }
 
 void
@@ -259,7 +163,7 @@ _cogl_clip_state_destroy (CoglClipState *clip_state)
 {
   /* Destroy all of the stacks */
   while (clip_state->stacks)
-    _cogl_clip_stack_restore_real (clip_state);
+    _cogl_clip_state_restore_clip_stack (clip_state);
 }
 
 CoglClipStack *
@@ -276,4 +180,36 @@ _cogl_clip_state_set_stack (CoglClipState *clip_state,
   _cogl_clip_stack_ref (stack);
   _cogl_clip_stack_unref (clip_state->stacks->data);
   clip_state->stacks->data = stack;
+}
+
+void
+_cogl_clip_state_save_clip_stack (CoglClipState *clip_state)
+{
+  clip_state->stacks = g_slist_prepend (clip_state->stacks, NULL);
+}
+
+void
+_cogl_clip_state_restore_clip_stack (CoglClipState *clip_state)
+{
+  CoglHandle stack;
+
+  _COGL_RETURN_IF_FAIL (clip_state->stacks != NULL);
+
+  stack = clip_state->stacks->data;
+
+  _cogl_clip_stack_unref (stack);
+
+  /* Revert to an old stack */
+  clip_state->stacks = g_slist_delete_link (clip_state->stacks,
+                                            clip_state->stacks);
+}
+
+void
+_cogl_clip_state_flush (CoglClipState *clip_state,
+                        CoglFramebuffer *framebuffer)
+{
+  /* Flush the topmost stack. The clip stack code will bail out early
+     if this is already flushed */
+  _cogl_clip_stack_flush (clip_state->stacks->data,
+                          framebuffer);
 }

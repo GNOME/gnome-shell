@@ -33,17 +33,5 @@
 void
 cogl2_clip_push_from_path (CoglPath *path)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-  CoglMatrix modelview_matrix;
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  cogl_get_modelview_matrix (&modelview_matrix);
-
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_from_path (clip_state->stacks->data,
-                                     path,
-                                     &modelview_matrix);
+  cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (), path);
 }

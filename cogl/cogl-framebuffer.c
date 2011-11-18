@@ -1981,3 +1981,93 @@ cogl_framebuffer_set_projection_matrix (CoglFramebuffer *framebuffer,
 
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
+
+void
+cogl_framebuffer_push_scissor_clip (CoglFramebuffer *framebuffer,
+                                    int x,
+                                    int y,
+                                    int width,
+                                    int height)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_window_rectangle (clip_state->stacks->data,
+                                            x, y, width, height);
+}
+
+void
+cogl_framebuffer_push_rectangle_clip (CoglFramebuffer *framebuffer,
+                                      float x_1,
+                                      float y_1,
+                                      float x_2,
+                                      float y_2)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+  CoglMatrix modelview_matrix;
+
+  cogl_framebuffer_get_modelview_matrix (framebuffer, &modelview_matrix);
+
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_rectangle (clip_state->stacks->data,
+                                     x_1, y_1, x_2, y_2,
+                                     &modelview_matrix);
+}
+
+void
+cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
+                                 CoglPath *path)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+  CoglMatrix modelview_matrix;
+
+  cogl_framebuffer_get_modelview_matrix (framebuffer, &modelview_matrix);
+
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_from_path (clip_state->stacks->data,
+                                     path,
+                                     &modelview_matrix);
+}
+
+void
+cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
+                                      CoglPrimitive *primitive,
+                                      float bounds_x1,
+                                      float bounds_y1,
+                                      float bounds_x2,
+                                      float bounds_y2)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+  CoglMatrix modelview_matrix;
+
+  cogl_get_modelview_matrix (&modelview_matrix);
+
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_primitive (clip_state->stacks->data,
+                                     primitive,
+                                     bounds_x1, bounds_y1,
+                                     bounds_x2, bounds_y2,
+                                     &modelview_matrix);
+}
+
+void
+cogl_framebuffer_pop_clip (CoglFramebuffer *framebuffer)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  clip_state->stacks->data = _cogl_clip_stack_pop (clip_state->stacks->data);
+}
+
+void
+_cogl_framebuffer_save_clip_stack (CoglFramebuffer *framebuffer)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+  _cogl_clip_state_save_clip_stack (clip_state);
+}
+
+void
+_cogl_framebuffer_restore_clip_stack (CoglFramebuffer *framebuffer)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+  _cogl_clip_state_restore_clip_stack (clip_state);
+}

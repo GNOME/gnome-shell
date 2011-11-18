@@ -384,6 +384,138 @@ void
 cogl_framebuffer_set_projection_matrix (CoglFramebuffer *framebuffer,
                                         CoglMatrix *matrix);
 
+#define cogl_framebuffer_push_scissor_clip \
+  cogl_framebuffer_push_scissor_clip_EXP
+/**
+ * cogl_framebuffer_push_scissor_clip:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @x: left edge of the clip rectangle in window coordinates
+ * @y: top edge of the clip rectangle in window coordinates
+ * @width: width of the clip rectangle
+ * @height: height of the clip rectangle
+ *
+ * Specifies a rectangular clipping area for all subsequent drawing
+ * operations. Any drawing commands that extend outside the rectangle
+ * will be clipped so that only the portion inside the rectangle will
+ * be displayed. The rectangle dimensions are not transformed by the
+ * current model-view matrix.
+ *
+ * The rectangle is intersected with the current clip region. To undo
+ * the effect of this function, call cogl_framebuffer_pop_clip().
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_push_scissor_clip (CoglFramebuffer *framebuffer,
+                                    int x,
+                                    int y,
+                                    int width,
+                                    int height);
+
+#define cogl_framebuffer_push_rectangle_clip \
+  cogl_framebuffer_push_rectangle_clip_EXP
+/**
+ * cogl_framebuffer_push_rectangle_clip:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @x_1: x coordinate for top left corner of the clip rectangle
+ * @y_1: y coordinate for top left corner of the clip rectangle
+ * @x_2: x coordinate for bottom right corner of the clip rectangle
+ * @y_2: y coordinate for bottom right corner of the clip rectangle
+ *
+ * Specifies a modelview transformed rectangular clipping area for all
+ * subsequent drawing operations. Any drawing commands that extend
+ * outside the rectangle will be clipped so that only the portion
+ * inside the rectangle will be displayed. The rectangle dimensions
+ * are transformed by the current model-view matrix.
+ *
+ * The rectangle is intersected with the current clip region. To undo
+ * the effect of this function, call cogl_framebuffer_pop_clip().
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_push_rectangle_clip (CoglFramebuffer *framebuffer,
+                                      float x_1,
+                                      float y_1,
+                                      float x_2,
+                                      float y_2);
+
+#define cogl_framebuffer_push_path_clip \
+  cogl_framebuffer_push_path_clip_EXP
+/**
+ * cogl_framebuffer_push_path_clip:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @path: The path to clip with.
+ *
+ * Sets a new clipping area using the silhouette of the specified,
+ * filled @path.  The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_framebuffer_pop_clip().
+ *
+ * Since: 1.0
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
+                                 CoglPath *path);
+
+#define cogl_framebuffer_push_primitive_clip \
+  cogl_framebuffer_push_primitive_clip_EXP
+/**
+ * cogl_framebuffer_push_primitive_clip:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @primitive: A #CoglPrimitive describing a flat 2D shape
+ * @bounds_x1: x coordinate for the top-left corner of the primitives
+ *             bounds
+ * @bounds_y1: y coordinate for the top-left corner of the primitives
+ *             bounds
+ * @bounds_x2: x coordinate for the top-left corner of the primitives
+ *             bounds
+ * @bounds_y2: x coordinate for the bottom-right corner of the
+ *             primitives bounds.
+ * @bounds_x1: y coordinate for the bottom-right corner of the
+ *             primitives bounds.
+ *
+ * Sets a new clipping area using a 2D shaped described with a
+ * #CoglPrimitive. The shape must not contain self overlapping
+ * geometry and must lie on a single 2D plane. A bounding box of the
+ * 2D shape in local coordinates (the same coordinates used to
+ * describe the shape) must be given. It is acceptable for the bounds
+ * to be larger than the true bounds but behaviour is undefined if the
+ * bounds are smaller than the true bounds.
+ *
+ * The primitive is transformed by the current model-view matrix and
+ * the silhouette is intersected with the previous clipping area.  To
+ * restore the previous clipping area, call
+ * cogl_framebuffer_pop_clip().
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
+                                      CoglPrimitive *primitive,
+                                      float bounds_x1,
+                                      float bounds_y1,
+                                      float bounds_x2,
+                                      float bounds_y2);
+
+#define cogl_framebuffer_pop_clip cogl_framebuffer_pop_clip_EXP
+/**
+ * cogl_framebuffer_pop_clip:
+ * @framebuffer: A #CoglFramebuffer pointer
+ *
+ * Reverts the clipping region to the state before the last call to
+ * cogl_framebuffer_push_clip().
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_pop_clip (CoglFramebuffer *framebuffer);
+
 /**
  * cogl_framebuffer_get_red_bits:
  * @framebuffer: a pointer to a #CoglFramebuffer

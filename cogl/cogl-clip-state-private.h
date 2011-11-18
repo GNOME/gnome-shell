@@ -51,4 +51,10 @@ void
 _cogl_clip_state_set_stack (CoglClipState *clip_state,
                             CoglClipStack *clip_stack);
 
+void
+_cogl_clip_state_save_clip_stack (CoglClipState *clip_state);
+
+void
+_cogl_clip_state_restore_clip_stack (CoglClipState *clip_state);
+
 #endif /* __COGL_CLIP_STATE_PRIVATE_H */
