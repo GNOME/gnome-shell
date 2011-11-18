@@ -27,6 +27,7 @@ const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 const Pango = imports.gi.Pango;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 const Polkit = imports.gi.Polkit;
@@ -88,10 +89,14 @@ AuthenticationDialog.prototype = {
         if (userNames.length > 1) {
             log('polkitAuthenticationAgent: Received ' + userNames.length +
                 ' identities that can be used for authentication. Only ' +
-                'considering the first one.');
+                'considering one.');
         }
 
-        let userName = userNames[0];
+        let userName = GLib.get_user_name();
+        if (userNames.indexOf(userName) < 0)
+            userName = 'root';
+        if (userNames.indexOf(userName) < 0)
+            userName = userNames[0];
 
         this._user = AccountsService.UserManager.get_default().get_user(userName);
         let userRealName = this._user.get_real_name()
