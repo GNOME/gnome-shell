@@ -22,11 +22,6 @@ typedef struct test_tile
   CoglHandle texture;
 } TestTile;
 
-static const ClutterColor
-buffer_colors[] =
-  {0
-  };
-
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 typedef struct _TestState
