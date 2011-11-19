@@ -1524,8 +1524,10 @@ const NMDeviceWireless = new Lang.Class({
 
         for(let j = 0; j < this._networks.length; j++) {
             let apObj = this._networks[j];
-            if (apObj == this._activeNetwork)
+            if (apObj == this._activeNetwork) {
+                activeOffset--;
                 continue;
+            }
 
             this._createNetworkItem(apObj, j + activeOffset);
         }
