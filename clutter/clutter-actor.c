@@ -523,6 +523,8 @@ struct _ClutterActorPrivate
      the redraw was queued from or it will be NULL if the redraw was
      queued without an effect. */
   guint is_dirty                    : 1;
+  guint x_expand                    : 1;
+  guint y_expand                    : 1;
 };
 
 enum
@@ -612,6 +614,9 @@ enum
   PROP_EFFECT,
 
   PROP_LAYOUT_MANAGER,
+
+  PROP_X_EXPAND,
+  PROP_Y_EXPAND,
 
   PROP_LAST
 };
@@ -3536,6 +3541,14 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_layout_manager (actor, g_value_get_object (value));
       break;
 
+    case PROP_X_EXPAND:
+      clutter_actor_set_x_expand (actor, g_value_get_boolean (value));
+      break;
+
+    case PROP_Y_EXPAND:
+      clutter_actor_set_y_expand (actor, g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -3803,6 +3816,14 @@ clutter_actor_get_property (GObject    *object,
 
     case PROP_LAYOUT_MANAGER:
       g_value_set_object (value, priv->layout_manager);
+      break;
+
+    case PROP_X_EXPAND:
+      g_value_set_boolean (value, priv->x_expand);
+      break;
+
+    case PROP_Y_EXPAND:
+      g_value_set_boolean (value, priv->y_expand);
       break;
 
     default:
@@ -4857,6 +4878,24 @@ clutter_actor_class_init (ClutterActorClass *klass)
                          CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_LAYOUT_MANAGER,
                                    obj_props[PROP_LAYOUT_MANAGER]);
+
+  obj_props[PROP_X_EXPAND] =
+    g_param_spec_boolean ("x-expand",
+                          P_("X Expand"),
+                          P_("Whether the actor should expand on the X axis"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_X_EXPAND,
+                                   obj_props[PROP_X_EXPAND]);
+
+  obj_props[PROP_Y_EXPAND] =
+    g_param_spec_boolean ("y-expand",
+                          P_("Y Expand"),
+                          P_("Whether the actor should expand on the Y axis"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_Y_EXPAND,
+                                   obj_props[PROP_Y_EXPAND]);
 
   /**
    * ClutterActor::destroy:
@@ -13024,4 +13063,64 @@ clutter_actor_get_layout_manager (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   return self->priv->layout_manager;
+}
+
+void
+clutter_actor_set_x_expand (ClutterActor *self,
+                            gboolean      x_expand)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  x_expand = !!x_expand;
+
+  priv = self->priv;
+
+  if (priv->x_expand != x_expand)
+    {
+      priv->x_expand = x_expand;
+
+      clutter_actor_queue_relayout (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_EXPAND]);
+    }
+}
+
+gboolean
+clutter_actor_get_x_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return self->priv->x_expand;
+}
+
+void
+clutter_actor_set_y_expand (ClutterActor *self,
+                            gboolean      y_expand)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  y_expand = !!y_expand;
+
+  priv = self->priv;
+
+  if (priv->y_expand != y_expand)
+    {
+      priv->y_expand = y_expand;
+
+      clutter_actor_queue_relayout (self);
+
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_EXPAND]);
+    }
+}
+
+gboolean
+clutter_actor_get_y_expand (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return self->priv->y_expand;
 }
